@@ -11,6 +11,7 @@
 
     <modules>
         <module>koulutusinformaatio-service</module>
+        <module>koulutusinformaatio-api</module>
     </modules>
 
     <properties>
