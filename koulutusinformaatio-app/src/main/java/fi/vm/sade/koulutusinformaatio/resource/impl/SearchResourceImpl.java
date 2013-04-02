@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.resource.impl;
 
+import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
 import fi.vm.sade.koulutusinformaatio.resource.SearchResource;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +25,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Hannu Lyytikainen
@@ -36,7 +39,7 @@ public class SearchResourceImpl implements SearchResource {
     @GET
     @Path("/{text}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Object search(@PathParam("text") String text) {
-        return "NOT IMPLEMENTED - search key: " + text;
+    public List<LearningOpportunitySearchResultDTO> searchLearningOpportunities(String text) {
+        return new ArrayList<LearningOpportunitySearchResultDTO>();
     }
 }

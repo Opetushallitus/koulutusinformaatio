@@ -1,5 +1,5 @@
-package fi.vm.sade.koulutusinformaatio.resource;/*
- * Copyright (c) 2013 The Finnish Board of Education - Opetushallitus
+/*
+ * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
  *
  * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
  * soon as they will be approved by the European Commission - subsequent versions
@@ -14,21 +14,31 @@ package fi.vm.sade.koulutusinformaatio.resource;/*
  * European Union Public Licence for more details.
  */
 
-import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
-
-import java.util.List;
+package fi.vm.sade.koulutusinformaatio.domain.dto;
 
 /**
- * @author Mikko Majapuro
+ * Free word education search result.
+ *
+ * @author Hannu Lyytikainen
  */
-public interface SearchResource {
+public class LearningOpportunitySearchResultDTO {
 
-    /**
-     * Searches learning opportunities.
-     *
-     * @param text search key
-     * @return list of search results
-     */
-    public List<LearningOpportunitySearchResultDTO> searchLearningOpportunities(String text);
+    private String id;
+    private String name;
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

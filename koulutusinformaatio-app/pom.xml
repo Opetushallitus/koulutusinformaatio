@@ -32,6 +32,17 @@
             <artifactId>jersey-server</artifactId>
             <version>${jersey.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-json</artifactId>
+            <version>${jersey.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>jersey-core</artifactId>
+                    <groupId>com.sun.jersey</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <!-- Spring -->
         <dependency>
             <groupId>org.springframework</groupId>
