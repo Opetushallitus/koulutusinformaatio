@@ -19,4 +19,13 @@ package fi.vm.sade.koulutusinformaatio.resource;
  * @author Mikko Majapuro
  */
 public interface SearchResource {
+
+    /**
+     * Free text search.
+     *
+     * @param text
+     * @return search results
+     */
+    public Object search(String text);
+
 }
