@@ -12,6 +12,14 @@
     <packaging>war</packaging>
     <name>Koulutusinformaatio :: APP</name>
 
+    <dependencies>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>${servlet.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
     <build>
         <plugins>
             <plugin>
@@ -24,7 +32,6 @@
                     <addContextWarDependencies>true</addContextWarDependencies>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
 
