@@ -87,6 +87,10 @@ public class ParserServiceImpl implements ParserService {
             ParentLearningOpportunity parent = parents.get(aoParentLos.getId());
             parent.getApplicationOptions().add(ao);
 
+            // update application system refs to providers
+            LearningOpportunityProvider provider = providers.get(parent.getProvider().getId());
+            provider.getApplicationSystemIDs().add(ao.getApplicationSystemId());
+
             // add application option to child learning opportunities
             List<LearningOpportunityInstanceRefType> aoChildLosRefs =
                     applicationOptionType.getLearningOpportunities().getInstanceRef();
@@ -105,6 +109,7 @@ public class ParserServiceImpl implements ParserService {
 
         learningOpportunityData.setApplicationOptions(applicationOptions);
         learningOpportunityData.setParentLearningOpportinities(new ArrayList<ParentLearningOpportunity>(parents.values()));
+        learningOpportunityData.setProviders(new ArrayList<LearningOpportunityProvider>(providers.values()));
 
         return learningOpportunityData;
     }

@@ -55,10 +55,10 @@
         </constructor-arg>
     </bean>
 
-    <bean id="aoHttpSolrServer"
+    <bean id="lopHttpSolrServer"
           class="org.apache.solr.client.solrj.impl.HttpSolrServer">
         <constructor-arg>
-            <value>${solr.base.url}${solr.applicationoption.url}</value>
+            <value>${solr.base.url}${solr.provider.url}</value>
         </constructor-arg>
     </bean>
 

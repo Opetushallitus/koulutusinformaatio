@@ -50,6 +50,6 @@
   <cores adminPath="/admin/cores" defaultCoreName="koulutustarjonta">
     <core name="koulutustarjonta" instanceDir="koulutustarjonta" />
     <core name="learning_opportunity" instanceDir="learning_opportunity" />
-    <core name="application_option" instanceDir="application_option" />
+    <core name="provider" instanceDir="provider" />
   </cores>
 </solr>

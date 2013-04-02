@@ -25,6 +25,7 @@ public class LearningOpportunityData {
 
     private List<ParentLearningOpportunity> parentLearningOpportinities;
     private List<ApplicationOption> applicationOptions;
+    private List<LearningOpportunityProvider> providers;
 
     public List<ApplicationOption> getApplicationOptions() {
         return applicationOptions;
@@ -40,5 +41,13 @@ public class LearningOpportunityData {
 
     public void setParentLearningOpportinities(List<ParentLearningOpportunity> parentLearningOpportinities) {
         this.parentLearningOpportinities = parentLearningOpportinities;
+    }
+
+    public List<LearningOpportunityProvider> getProviders() {
+        return providers;
+    }
+
+    public void setProviders(List<LearningOpportunityProvider> providers) {
+        this.providers = providers;
     }
 }

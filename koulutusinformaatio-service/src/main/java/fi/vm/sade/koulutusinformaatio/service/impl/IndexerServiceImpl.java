@@ -2,10 +2,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import fi.vm.sade.koulutusinformaatio.client.SolrClient;
 import fi.vm.sade.koulutusinformaatio.client.TarjontaClient;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLearningOpportunity;
-import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityData;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import fi.vm.sade.tarjonta.publication.types.*;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -38,8 +35,8 @@ public class IndexerServiceImpl implements IndexerService {
     private final HttpSolrServer httpSolrServer;
     // solr client for learning opportunity index
     private final HttpSolrServer loHttpSolrServer;
-    // solr client for application option index
-    private final HttpSolrServer aoHttpSolrServer;
+    // solr client for learning opportunity provider index
+    private final HttpSolrServer lopHttpSolrServer;
 
     private final TarjontaClient tarjontaClient;
 
@@ -52,11 +49,11 @@ public class IndexerServiceImpl implements IndexerService {
     @Autowired
     public IndexerServiceImpl(@Qualifier("HttpSolrServer") HttpSolrServer httpSolrServer,
                               @Qualifier("loHttpSolrServer") HttpSolrServer loHttpSolrServer,
-                              @Qualifier("aoHttpSolrServer") HttpSolrServer aoHttpSolrServer,
+                              @Qualifier("lopHttpSolrServer") HttpSolrServer lopHttpSolrServer,
                               TarjontaClient tarjontaClient, SolrClient client) {
         this.httpSolrServer = httpSolrServer;
         this.loHttpSolrServer = loHttpSolrServer;
-        this.aoHttpSolrServer = aoHttpSolrServer;
+        this.lopHttpSolrServer = lopHttpSolrServer;
         this.tarjontaClient = tarjontaClient;
         this.client = client;
     }
@@ -69,10 +66,10 @@ public class IndexerServiceImpl implements IndexerService {
         loHttpSolrServer.commit();
         loHttpSolrServer.optimize();
 
-        Collection<SolrInputDocument> aoDocuments = resolveAODocuments(data.getApplicationOptions());
-        aoHttpSolrServer.add(aoDocuments);
-        aoHttpSolrServer.commit();
-        aoHttpSolrServer.optimize();
+        Collection<SolrInputDocument> lopDocuments = resolveLOPDocuments(data.getProviders());
+        lopHttpSolrServer.add(lopDocuments);
+        lopHttpSolrServer.commit();
+        lopHttpSolrServer.optimize();
 
     }
 
@@ -99,16 +96,17 @@ public class IndexerServiceImpl implements IndexerService {
         return solrDocuments;
     }
 
-    public Collection<SolrInputDocument> resolveAODocuments(List<ApplicationOption> applicatOptions) {
+    public Collection<SolrInputDocument> resolveLOPDocuments(List<LearningOpportunityProvider> lops) {
         Collection<SolrInputDocument> solrDocuments = new ArrayList<SolrInputDocument>();
-        for (ApplicationOption applicatOption : applicatOptions) {
-            SolrInputDocument document = new SolrInputDocument();
-            document.addField("id", applicatOption.getId());
-            document.addField("name", applicatOption.getName());
-            document.addField("educationDegree", applicatOption.getEducationDegree());
-            solrDocuments.add(document);
-        }
 
+        for (LearningOpportunityProvider lop : lops) {
+            SolrInputDocument document = new SolrInputDocument();
+            document.addField("id", lop.getId());
+            document.addField("name", lop.getName());
+            for (String asId : lop.getApplicationSystemIDs()) {
+                document.addField("asId", lop.getName());
+            }
+        }
         return solrDocuments;
     }
 

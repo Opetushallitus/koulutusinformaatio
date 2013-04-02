@@ -16,6 +16,9 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Hannu Lyytikainen
  */
@@ -23,6 +26,7 @@ public class LearningOpportunityProvider {
 
     private String id;
     private String name;
+    private List<String> applicationSystemIDs = new ArrayList<String>();
 
     public LearningOpportunityProvider(String id, String name) {
         this.id = id;
@@ -45,5 +49,13 @@ public class LearningOpportunityProvider {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<String> getApplicationSystemIDs() {
+        return applicationSystemIDs;
+    }
+
+    public void setApplicationSystemIDs(List<String> applicationSystemIDs) {
+        this.applicationSystemIDs = applicationSystemIDs;
     }
 }

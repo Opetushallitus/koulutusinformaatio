@@ -22,7 +22,7 @@
         <!-- in use -->
         <field name="id" type="text_general" indexed="true" stored="true" multiValued="false"/>
         <field name="name" type="text_general" indexed="true" stored="true" multiValued="false"/>
-        <field name="educationDegree" type="text_general" indexed="true" stored="true" multiValued="false"/>
+        <field name="asId" type="text_general" indexed="true" stored="true" multiValued="true"/>
 
         <field name="text" type="text_general" indexed="true" stored="false" multiValued="true"/>
     </fields>
