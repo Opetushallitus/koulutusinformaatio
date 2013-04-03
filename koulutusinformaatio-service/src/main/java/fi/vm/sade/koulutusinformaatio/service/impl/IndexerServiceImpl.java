@@ -104,8 +104,9 @@ public class IndexerServiceImpl implements IndexerService {
             document.addField("id", lop.getId());
             document.addField("name", lop.getName());
             for (String asId : lop.getApplicationSystemIDs()) {
-                document.addField("asId", lop.getName());
+                document.addField("asId", asId);
             }
+            solrDocuments.add(document);
         }
         return solrDocuments;
     }
