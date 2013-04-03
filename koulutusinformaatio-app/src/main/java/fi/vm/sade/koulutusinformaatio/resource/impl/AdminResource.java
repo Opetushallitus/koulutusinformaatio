@@ -16,6 +16,8 @@
 
 package fi.vm.sade.koulutusinformaatio.resource.impl;
 
+import fi.vm.sade.koulutusinformaatio.service.UpdateService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.GET;
@@ -28,10 +30,15 @@ import javax.ws.rs.Path;
 @Path("/admin")
 public class AdminResource {
 
+    @Autowired
+    UpdateService updateService;
+
     @GET
     @Path("/update")
     public String updateEducationData() {
-        return "";
+        updateService.updateEducationData();
+
+        return "education data updated";
     }
 
 }

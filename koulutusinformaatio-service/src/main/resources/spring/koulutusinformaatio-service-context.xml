@@ -23,12 +23,8 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <!--<context:property-placeholder-->
-            <!--location="classpath:koulutusinformaatio.properties, file:///${user.home:''}/oph-configuration/haku.properties"-->
-            <!--ignore-resource-not-found="false" properties-ref="defaultProps"/>-->
-
     <context:property-placeholder
-            location="classpath:koulutusinformaatio.properties, file:///${user.home:''}/oph-configuration/haku.properties"
+            location="classpath:koulutusinformaatio.properties, file:///${user.home:''}/oph-configuration/koulutusinformaatio.properties"
             ignore-resource-not-found="true"/>
 
 
