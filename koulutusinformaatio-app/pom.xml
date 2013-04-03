@@ -92,6 +92,15 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
+        <!-- embedded solr -->
+        <dependency>
+            <groupId>org.apache.solr</groupId>
+            <artifactId>solr</artifactId>
+            <version>${solr.version}</version>
+            <type>war</type>
+            <scope>tomcat</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -103,6 +112,9 @@
                     <charset>UTF-8</charset>
                     <uriEncoding>UTF-8</uriEncoding>
                     <addContextWarDependencies>true</addContextWarDependencies>
+                    <systemProperties>
+                        <solr.solr.home>${project.build.directory}/classes/solr</solr.solr.home>
+                    </systemProperties>
                 </configuration>
             </plugin>
         </plugins>
