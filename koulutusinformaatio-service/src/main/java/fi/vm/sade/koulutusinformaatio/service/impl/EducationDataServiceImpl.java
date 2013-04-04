@@ -16,18 +16,24 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
 import fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunityDAO;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunityEntity;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityData;
+import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityProvider;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author Mikko Majapuro
@@ -58,6 +64,10 @@ public class EducationDataServiceImpl implements EducationDataService {
             parentLearningOpportunityDAO.getCollection().drop();
             learningOpportunityProviderDAO.getCollection().drop();
 
+            for (LearningOpportunityProvider learningOpportunityProvider : learningOpportunityData.getProviders()) {
+                LearningOpportunityProviderEntity learningOpportunityProviderEntity = modelMapper.map(learningOpportunityProvider, LearningOpportunityProviderEntity.class);
+                learningOpportunityProviderDAO.save(learningOpportunityProviderEntity);
+            }
             for (ApplicationOption applicationOption: learningOpportunityData.getApplicationOptions()) {
                 ApplicationOptionEntity applicationOptionEntity = modelMapper.map(applicationOption, ApplicationOptionEntity.class);
                 applicationOptionDAO.save(applicationOptionEntity);
@@ -65,7 +75,6 @@ public class EducationDataServiceImpl implements EducationDataService {
             for (ParentLearningOpportunity parentLearningOpportunity :learningOpportunityData.getParentLearningOpportinities()) {
                 ParentLearningOpportunityEntity parentLearningOpportunityEntity =
                         modelMapper.map(parentLearningOpportunity, ParentLearningOpportunityEntity.class);
-                learningOpportunityProviderDAO.save(parentLearningOpportunityEntity.getProvider());
                 parentLearningOpportunityDAO.save(parentLearningOpportunityEntity);
             }
         }
@@ -80,5 +89,16 @@ public class EducationDataServiceImpl implements EducationDataService {
             //TODO should throw exception?
             return null;
         }
+    }
+
+    @Override
+    public List<ApplicationOption> findApplicationOptions(String asId, String lopId) {
+        List<ApplicationOptionEntity> applicationOptions = applicationOptionDAO.find(asId, lopId);
+        return Lists.transform(applicationOptions, new Function<ApplicationOptionEntity, ApplicationOption>() {
+            @Override
+            public ApplicationOption apply(ApplicationOptionEntity applicationOptionEntity) {
+                return modelMapper.map(applicationOptionEntity, ApplicationOption.class);
+            }
+        });
     }
 }

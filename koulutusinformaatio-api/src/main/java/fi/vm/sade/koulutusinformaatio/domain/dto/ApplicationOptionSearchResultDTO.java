@@ -14,27 +14,19 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.koulutusinformaatio.dao.entity;
+package fi.vm.sade.koulutusinformaatio.domain.dto;
 
-import com.google.code.morphia.annotations.Entity;
-import com.google.code.morphia.annotations.Id;
-
-import java.util.List;
-import java.util.Set;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 /**
  * @author Mikko Majapuro
  */
-@Entity("learningOpportunityProviders")
-public class LearningOpportunityProviderEntity {
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
+public class ApplicationOptionSearchResultDTO {
 
-    @Id
     private String id;
     private String name;
-    private Set<String> applicationSystemIds;
-
-    public LearningOpportunityProviderEntity() {
-    }
+    private String educationDegree;
 
     public String getId() {
         return id;
@@ -52,11 +44,11 @@ public class LearningOpportunityProviderEntity {
         this.name = name;
     }
 
-    public Set<String> getApplicationSystemIds() {
-        return applicationSystemIds;
+    public String getEducationDegree() {
+        return educationDegree;
     }
 
-    public void setApplicationSystemIds(Set<String> applicationSystemIds) {
-        this.applicationSystemIds = applicationSystemIds;
+    public void setEducationDegree(String educationDegree) {
+        this.educationDegree = educationDegree;
     }
 }

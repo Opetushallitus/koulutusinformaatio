@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2013 The Finnish Board of Education - Opetushallitus
+  ~
+  ~ This program is free software:  Licensed under the EUPL, Version 1.1 or - as
+  ~ soon as they will be approved by the European Commission - subsequent versions
+  ~ of the EUPL (the "Licence");
+  ~
+  ~ You may not use this work except in compliance with the Licence.
+  ~ You may obtain a copy of the Licence at: http://www.osor.eu/eupl/
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ European Union Public Licence for more details.
+  -->
+
+<project name="koulutusinformaatio-deploy" basedir="." >
+
+    <target name="deploy-to-remote-tomcat">
+        <!--
+        <echo>Backup old koulutusinformaatio.war</echo>
+        <sshexec command="export DATE=`date +%F_%H-%M-%S`; mkdir $DATE ; cp -rf /data00/tomcat/apache-tomcat-7.0.29/webapps/ROOT $DATE"
+                host="${tomcat-host}" username="tomcat" keyfile="${user.home}/.ssh/id_rsa"
+                passphrase="" trust="true" failonerror="false" />
+        -->
+        <echo>Stop Tomcat</echo>
+        <sshexec command="/etc/init.d/tomcat stop"
+                 host="${tomcat-host}" username="tomcat" keyfile="${user.home}/.ssh/id_rsa"
+                 passphrase="" trust="true" failonerror="false" />
+        <echo>Wait Tomcat to stop...</echo>
+
+        <waitfor maxwait="3000" checkevery="500">
+            <not>
+                <socket server="${tomcat-host}" port="8282"/>
+            </not>
+        </waitfor>
+
+        <echo>Tomcat stopped.</echo>
+
+        <echo>Clean Tomcat</echo>
+        <sshexec command="rm -rf /data00/tomcat/apache-tomcat-7.0.29/webapps/koulutusinformaatio-app* /data00/tomcat/apache-tomcat-7.0.29/webapps/ROOT /data00/tomcat/apache-tomcat-7.0.29/work/* /data00/tomcat/apache-tomcat-7.0.29/temp/*"
+                 host="${tomcat-host}" username="tomcat" keyfile="${user.home}/.ssh/id_rsa"
+                 passphrase="" trust="true" failonerror="false" />
+
+        <echo>Copy new koulutusinformaatio-app.war</echo>
+
+    	<available file="koulutusinformaatio-app/target/koulutusinformaatio-app.war"
+    	           property="koulutusinformaatio.war.path"
+    	           value="koulutusinformaatio-app/target/koulutusinformaatio-app.war" />
+    	<available file="target/koulutusinformaatio-app.war"
+    	           property="koulutusinformaatio.war.path"
+    	           value="target/koulutusinformaatio-app.war" />
+    	
+	   	<scp file="${koulutusinformaatio.war.path}"	
+	         todir="tomcat@${tomcat-host}:/data00/tomcat/apache-tomcat-7.0.29/webapps/"
+	         keyfile="${user.home}/.ssh/id_rsa"
+	         />
+
+        <echo>rename koulutusinformaatio-app.war as ROOT</echo>
+        <sshexec command="rm -rf /data00/tomcat/apache-tomcat-7.0.29/webapps/ROOT;
+        mkdir /data00/tomcat/apache-tomcat-7.0.29/webapps/ROOT;
+        unzip -qo -d/data00/tomcat/apache-tomcat-7.0.29/webapps/ROOT /data00/tomcat/apache-tomcat-7.0.29/webapps/koulutusinformaatio-app.war;
+        rm -rf /data00/tomcat/apache-tomcat-7.0.29/webapps/koulutusinformaatio-app.war"
+                 host="${tomcat-host}" username="tomcat" keyfile="${user.home}/.ssh/id_rsa"
+                 passphrase="" trust="true" failonerror="false" />
+
+        <echo>Start Tomcat</echo>
+        <sshexec command="/etc/init.d/tomcat start"
+                 host="${tomcat-host}" username="tomcat" keyfile="${user.home}/.ssh/id_rsa"
+                 passphrase="" trust="true" failonerror="false" />
+
+        <echo>Successfully deployed koulutusinformaatio-app.war to ${tomcat-host}</echo>
+    </target>
+
+</project>

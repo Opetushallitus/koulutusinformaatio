@@ -28,7 +28,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -68,24 +70,34 @@ public class ParentLearningOpportunityDAOTest {
         ChildLearningOpportunityEntity child = new ChildLearningOpportunityEntity();
         child.setId("2.2.2");
         child.setName("child name");
+
+        LearningOpportunityProviderEntity provider = new LearningOpportunityProviderEntity();
+        provider.setId("5.5.5");
+        provider.setName("provider name");
+        Set<String> aoIds = new HashSet<String>();
+        aoIds.add("6.7.5.3");
+        aoIds.add("4.7.9.3");
+        provider.setApplicationSystemIds(aoIds);
+
         List<ApplicationOptionEntity> aos = new ArrayList<ApplicationOptionEntity>();
         ApplicationOptionEntity ao = new ApplicationOptionEntity();
         ao.setId("7.7.7");
         ao.setApplicationSystemId("sysId");
         ao.setEducationDegree("degree");
         ao.setName("ao name");
+        ao.setProvider(provider);
         aos.add(ao);
         child.setApplicationOptions(aos);
         entity.setApplicationOptions(aos);
-        LearningOpportunityProviderEntity provider = new LearningOpportunityProviderEntity();
-        provider.setId("5.5.5");
-        provider.setName("provider name");
+
         children.add(child);
         entity.setChildren(children);
         entity.setProvider(provider);
+
+        learningOpportunityProviderDAO.save(provider);
         applicationOptionDAO.save(ao);
         parentLearningOpportunityDAO.save(entity);
-        learningOpportunityProviderDAO.save(provider);
+
         assertEquals(1, applicationOptionDAO.count());
         assertEquals(1, parentLearningOpportunityDAO.count());
         assertEquals(1, learningOpportunityProviderDAO.count());
@@ -95,6 +107,7 @@ public class ParentLearningOpportunityDAOTest {
         assertNotNull(fromDB.getApplicationOptions());
         assertEquals(1, fromDB.getChildren().size());
         assertEquals(1, fromDB.getApplicationOptions().size());
+        assertEquals(ao.getId(), fromDB.getApplicationOptions().get(0).getId());
         assertNotNull(fromDB.getChildren().get(0).getApplicationOptions());
         assertEquals(1, fromDB.getChildren().get(0).getApplicationOptions().size());
         assertEquals(entity.getId(), fromDB.getId());
