@@ -16,6 +16,9 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Hannu Lyytikainen
  */
@@ -25,6 +28,7 @@ public class ApplicationOption {
     private String name;
     private String applicationSystemId;
     private String educationDegree;
+    private List<String> childLONames = new ArrayList<String>();
 
     public String getId() {
         return id;
@@ -56,5 +60,13 @@ public class ApplicationOption {
 
     public void setEducationDegree(String educationDegree) {
         this.educationDegree = educationDegree;
+    }
+
+    public List<String> getChildLONames() {
+        return childLONames;
+    }
+
+    public void setChildLONames(List<String> childLONames) {
+        this.childLONames = childLONames;
     }
 }

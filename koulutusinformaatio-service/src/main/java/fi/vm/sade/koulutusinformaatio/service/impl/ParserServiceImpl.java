@@ -91,15 +91,19 @@ public class ParserServiceImpl implements ParserService {
             LearningOpportunityProvider provider = providers.get(parent.getProvider().getId());
             provider.getApplicationSystemIDs().add(ao.getApplicationSystemId());
 
-            // add application option to child learning opportunities
+            // add application option to child learning opportunities and
+            // add names of child LOs to application option
             List<LearningOpportunityInstanceRefType> aoChildLosRefs =
                     applicationOptionType.getLearningOpportunities().getInstanceRef();
-
             for (LearningOpportunityInstanceRefType aoChildLosRef : aoChildLosRefs) {
+                // AO to LO
                 LearningOpportunityInstanceType loi = (LearningOpportunityInstanceType) aoChildLosRef.getRef();
                 LearningOpportunitySpecificationType los =
                         (LearningOpportunitySpecificationType) loi.getSpecificationRef().getRef();
                 children.get(los.getId()).getApplicationOptions().add(ao);
+
+                // LO name to AO
+                ao.getChildLONames().add(children.get(los.getId()).getName());
             }
 
             // add education degree info to application option
