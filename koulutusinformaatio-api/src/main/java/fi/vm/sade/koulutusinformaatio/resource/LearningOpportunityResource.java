@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * @author Mikko Majapuro
  */
-public interface SearchResource {
+public interface LearningOpportunityResource {
 
     /**
      * Searches learning opportunities.

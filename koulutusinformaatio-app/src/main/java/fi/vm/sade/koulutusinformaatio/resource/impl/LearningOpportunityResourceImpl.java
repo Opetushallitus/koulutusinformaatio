@@ -17,12 +17,11 @@
 package fi.vm.sade.koulutusinformaatio.resource.impl;
 
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
-import fi.vm.sade.koulutusinformaatio.resource.SearchResource;
+import fi.vm.sade.koulutusinformaatio.resource.LearningOpportunityResource;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
@@ -33,7 +32,7 @@ import java.util.List;
  */
 @Component
 @Path("/search")
-public class SearchResourceImpl implements SearchResource {
+public class LearningOpportunityResourceImpl implements LearningOpportunityResource {
 
     @Override
     @GET
