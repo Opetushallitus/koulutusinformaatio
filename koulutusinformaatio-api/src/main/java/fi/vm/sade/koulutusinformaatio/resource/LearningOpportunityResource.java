@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * @author Mikko Majapuro
  */
-@Path("/search")
+@Path("/lo")
 public interface LearningOpportunityResource {
 
     /**
@@ -36,7 +36,7 @@ public interface LearningOpportunityResource {
      * @return list of search results
      */
     @GET
-    @Path("/{text}")
+    @Path("search/{text}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<LearningOpportunitySearchResultDTO> searchLearningOpportunities(String text);
 
