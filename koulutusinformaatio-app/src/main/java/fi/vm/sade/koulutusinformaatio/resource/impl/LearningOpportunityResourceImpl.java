@@ -20,10 +20,6 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResult
 import fi.vm.sade.koulutusinformaatio.resource.LearningOpportunityResource;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,13 +27,9 @@ import java.util.List;
  * @author Hannu Lyytikainen
  */
 @Component
-@Path("/search")
 public class LearningOpportunityResourceImpl implements LearningOpportunityResource {
 
     @Override
-    @GET
-    @Path("/{text}")
-    @Produces(MediaType.APPLICATION_JSON)
     public List<LearningOpportunitySearchResultDTO> searchLearningOpportunities(String text) {
         return new ArrayList<LearningOpportunitySearchResultDTO>();
     }

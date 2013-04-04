@@ -17,11 +17,16 @@ package fi.vm.sade.koulutusinformaatio.resource;
 
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
 
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 /**
  * @author Mikko Majapuro
  */
+@Path("/search")
 public interface LearningOpportunityResource {
 
     /**
@@ -30,6 +35,9 @@ public interface LearningOpportunityResource {
      * @param text search key
      * @return list of search results
      */
+    @GET
+    @Path("/{text}")
+    @Produces(MediaType.APPLICATION_JSON)
     public List<LearningOpportunitySearchResultDTO> searchLearningOpportunities(String text);
 
 }
