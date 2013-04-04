@@ -7,10 +7,7 @@ import fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunityDAO;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunityEntity;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLearningOpportunity;
-import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityData;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.domain.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.modelmapper.ModelMapper;
@@ -59,10 +56,18 @@ public class EducationDataServiceImplTest {
         LearningOpportunityData learningOpportunityData = new LearningOpportunityData();
         List<ParentLearningOpportunity> parentLearningOpportunities = new ArrayList<ParentLearningOpportunity>();
         List<ApplicationOption> applicationOptions = new ArrayList<ApplicationOption>();
+        List<LearningOpportunityProvider> providers = new ArrayList<LearningOpportunityProvider>();
+
+        LearningOpportunityProvider lop = new LearningOpportunityProvider();
+        lop.setId("6.7.8");
+        providers.add(lop);
+
         ApplicationOption ao = new ApplicationOption();
         ao.setId("3.3.3");
+        ao.setProvider(lop);
         applicationOptions.add(ao);
         ParentLearningOpportunity plo = new ParentLearningOpportunity();
+        plo.setProvider(lop);
         plo.setId("1.2.3");
         plo.setApplicationOptions(applicationOptions);
         ChildLearningOpportunity clo = new ChildLearningOpportunity();
@@ -74,6 +79,7 @@ public class EducationDataServiceImplTest {
         parentLearningOpportunities.add(plo);
         learningOpportunityData.setApplicationOptions(applicationOptions);
         learningOpportunityData.setParentLearningOpportinities(parentLearningOpportunities);
+        learningOpportunityData.setProviders(providers);
 
         service.save(learningOpportunityData);
         verify(ploCollection, times(1)).drop();

@@ -20,9 +20,11 @@ import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
 import fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunityDAO;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunityEntity;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityData;
+import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityProvider;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataService;
 import org.modelmapper.ModelMapper;
@@ -58,6 +60,10 @@ public class EducationDataServiceImpl implements EducationDataService {
             parentLearningOpportunityDAO.getCollection().drop();
             learningOpportunityProviderDAO.getCollection().drop();
 
+            for (LearningOpportunityProvider learningOpportunityProvider : learningOpportunityData.getProviders()) {
+                LearningOpportunityProviderEntity learningOpportunityProviderEntity = modelMapper.map(learningOpportunityProvider, LearningOpportunityProviderEntity.class);
+                learningOpportunityProviderDAO.save(learningOpportunityProviderEntity);
+            }
             for (ApplicationOption applicationOption: learningOpportunityData.getApplicationOptions()) {
                 ApplicationOptionEntity applicationOptionEntity = modelMapper.map(applicationOption, ApplicationOptionEntity.class);
                 applicationOptionDAO.save(applicationOptionEntity);
@@ -65,7 +71,6 @@ public class EducationDataServiceImpl implements EducationDataService {
             for (ParentLearningOpportunity parentLearningOpportunity :learningOpportunityData.getParentLearningOpportinities()) {
                 ParentLearningOpportunityEntity parentLearningOpportunityEntity =
                         modelMapper.map(parentLearningOpportunity, ParentLearningOpportunityEntity.class);
-                learningOpportunityProviderDAO.save(parentLearningOpportunityEntity.getProvider());
                 parentLearningOpportunityDAO.save(parentLearningOpportunityEntity);
             }
         }

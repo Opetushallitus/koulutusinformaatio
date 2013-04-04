@@ -18,6 +18,10 @@ package fi.vm.sade.koulutusinformaatio.dao.entity;
 
 import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Id;
+import com.google.code.morphia.annotations.Reference;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Mikko Majapuro
@@ -30,6 +34,9 @@ public class ApplicationOptionEntity {
     private String name;
     private String applicationSystemId;
     private String educationDegree;
+    @Reference
+    private LearningOpportunityProviderEntity provider;
+    private List<String> childLONames = new ArrayList<String>();
 
     public ApplicationOptionEntity() {
 
@@ -65,5 +72,21 @@ public class ApplicationOptionEntity {
 
     public void setEducationDegree(String educationDegree) {
         this.educationDegree = educationDegree;
+    }
+
+    public LearningOpportunityProviderEntity getProvider() {
+        return provider;
+    }
+
+    public void setProvider(LearningOpportunityProviderEntity provider) {
+        this.provider = provider;
+    }
+
+    public List<String> getChildLONames() {
+        return childLONames;
+    }
+
+    public void setChildLONames(List<String> childLONames) {
+        this.childLONames = childLONames;
     }
 }

@@ -17,12 +17,16 @@
 package fi.vm.sade.koulutusinformaatio.dao;
 
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -36,10 +40,13 @@ public class ApplicationOptionDAOTest {
 
     @Autowired
     private ApplicationOptionDAO applicationOptionDAO;
+    @Autowired
+    private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
 
     @After
     public void removeTestData() {
         applicationOptionDAO.getCollection().drop();
+        learningOpportunityProviderDAO.getCollection().drop();
     }
 
     @Test
@@ -50,6 +57,17 @@ public class ApplicationOptionDAOTest {
         entity.setName("ao name");
         entity.setApplicationSystemId("123");
         entity.setEducationDegree("degree");
+        List<String> childLoNames = new ArrayList<String>();
+        childLoNames.add("clo name");
+        childLoNames.add("clo name 2");
+        entity.setChildLONames(childLoNames);
+
+        LearningOpportunityProviderEntity lop = new LearningOpportunityProviderEntity();
+        lop.setId("3.3.3");
+        lop.setName("lop name");
+        entity.setProvider(lop);
+        learningOpportunityProviderDAO.save(lop);
+
         applicationOptionDAO.save(entity);
         assertEquals(1, applicationOptionDAO.count());
         ApplicationOptionEntity fromDB = applicationOptionDAO.get("1.2.3");
@@ -58,5 +76,9 @@ public class ApplicationOptionDAOTest {
         assertEquals(entity.getName(), fromDB.getName());
         assertEquals(entity.getApplicationSystemId(), fromDB.getApplicationSystemId());
         assertEquals(entity.getEducationDegree(), fromDB.getEducationDegree());
+        assertNotNull(entity.getProvider());
+        assertEquals(lop.getId(), entity.getProvider().getId());
+        assertNotNull(entity.getChildLONames());
+        assertEquals(2, entity.getChildLONames().size());
     }
 }

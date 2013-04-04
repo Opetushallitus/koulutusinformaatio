@@ -1,4 +1,3 @@
-package fi.vm.sade.koulutusinformaatio.resource;
 /*
  * Copyright (c) 2013 The Finnish Board of Education - Opetushallitus
  *
@@ -14,6 +13,8 @@ package fi.vm.sade.koulutusinformaatio.resource;
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * European Union Public Licence for more details.
  */
+
+package fi.vm.sade.koulutusinformaatio.resource;
 
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
 
