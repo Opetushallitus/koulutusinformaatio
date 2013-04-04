@@ -29,6 +29,7 @@ public class ApplicationOption {
     private String applicationSystemId;
     private String educationDegree;
     private List<String> childLONames = new ArrayList<String>();
+    private LearningOpportunityProvider provider;
 
     public String getId() {
         return id;
@@ -68,5 +69,13 @@ public class ApplicationOption {
 
     public void setChildLONames(List<String> childLONames) {
         this.childLONames = childLONames;
+    }
+
+    public LearningOpportunityProvider getProvider() {
+        return provider;
+    }
+
+    public void setProvider(LearningOpportunityProvider provider) {
+        this.provider = provider;
     }
 }
