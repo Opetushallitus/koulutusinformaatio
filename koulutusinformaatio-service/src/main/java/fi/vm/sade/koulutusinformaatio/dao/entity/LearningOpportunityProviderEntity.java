@@ -19,6 +19,9 @@ package fi.vm.sade.koulutusinformaatio.dao.entity;
 import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Id;
 
+import java.util.List;
+import java.util.Set;
+
 /**
  * @author Mikko Majapuro
  */
@@ -28,6 +31,7 @@ public class LearningOpportunityProviderEntity {
     @Id
     private String id;
     private String name;
+    private Set<String> applicationSystemIds;
 
     public LearningOpportunityProviderEntity() {
     }
@@ -46,5 +50,13 @@ public class LearningOpportunityProviderEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<String> getApplicationSystemIds() {
+        return applicationSystemIds;
+    }
+
+    public void setApplicationSystemIds(Set<String> applicationSystemIds) {
+        this.applicationSystemIds = applicationSystemIds;
     }
 }

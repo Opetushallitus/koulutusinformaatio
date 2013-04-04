@@ -29,6 +29,7 @@ public class ParentLearningOpportunity {
     private List<ChildLearningOpportunity> children = new ArrayList<ChildLearningOpportunity>();
     private List<ApplicationOption> applicationOptions = new ArrayList<ApplicationOption>();
     private LearningOpportunityProvider provider;
+    private String educationDegree;
 
     public String getEducationDegree() {
         return educationDegree;
@@ -45,8 +46,6 @@ public class ParentLearningOpportunity {
     public void setApplicationOptions(List<ApplicationOption> applicationOptions) {
         this.applicationOptions = applicationOptions;
     }
-
-    private String educationDegree;
 
     public String getId() {
         return id;
