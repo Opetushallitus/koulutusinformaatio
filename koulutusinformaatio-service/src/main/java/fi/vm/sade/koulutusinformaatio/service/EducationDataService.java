@@ -16,8 +16,11 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityData;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLearningOpportunity;
+
+import java.util.List;
 
 /**
  * @author Hannu Lyytikainen
@@ -37,4 +40,12 @@ public interface EducationDataService {
      * @return
      */
     ParentLearningOpportunity getParentLearningOpportunity(final String oid);
+
+    /**
+     * Finds application options by the application system and learning opportunity provider
+     * @param asId application system id
+     * @param lopId learning opportunity provider id
+     * @return list of the application options
+     */
+    List<ApplicationOption> findApplicationOptions(final String asId, final String lopId);
 }

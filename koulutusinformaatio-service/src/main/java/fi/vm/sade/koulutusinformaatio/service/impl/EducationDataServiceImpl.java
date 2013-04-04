@@ -16,6 +16,8 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
 import fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunityDAO;
@@ -30,6 +32,8 @@ import fi.vm.sade.koulutusinformaatio.service.EducationDataService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author Mikko Majapuro
@@ -85,5 +89,16 @@ public class EducationDataServiceImpl implements EducationDataService {
             //TODO should throw exception?
             return null;
         }
+    }
+
+    @Override
+    public List<ApplicationOption> findApplicationOptions(String asId, String lopId) {
+        List<ApplicationOptionEntity> applicationOptions = applicationOptionDAO.find(asId, lopId);
+        return Lists.transform(applicationOptions, new Function<ApplicationOptionEntity, ApplicationOption>() {
+            @Override
+            public ApplicationOption apply(ApplicationOptionEntity applicationOptionEntity) {
+                return modelMapper.map(applicationOptionEntity, ApplicationOption.class);
+            }
+        });
     }
 }
