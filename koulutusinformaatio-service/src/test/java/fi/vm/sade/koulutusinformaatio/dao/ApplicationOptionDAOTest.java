@@ -81,4 +81,42 @@ public class ApplicationOptionDAOTest {
         assertNotNull(entity.getChildLONames());
         assertEquals(2, entity.getChildLONames().size());
     }
+
+    @Test
+    public void testFind() {
+        String asId = "123";
+        String lopId = "3.3.3";
+
+        LearningOpportunityProviderEntity lop = new LearningOpportunityProviderEntity();
+        lop.setId(lopId);
+
+        ApplicationOptionEntity entity = new ApplicationOptionEntity();
+        entity.setId("1.2.3");
+        entity.setName("ao name");
+        entity.setApplicationSystemId(asId);
+        entity.setProvider(lop);
+
+        ApplicationOptionEntity entity2 = new ApplicationOptionEntity();
+        entity2.setId("1.2.4");
+        entity2.setName("ao2 name");
+        entity2.setApplicationSystemId(asId);
+        entity2.setProvider(lop);
+
+        ApplicationOptionEntity entity3 = new ApplicationOptionEntity();
+        entity3.setId("1.2.5");
+        entity3.setName("ao3 name");
+        entity3.setApplicationSystemId("4.4.4");
+        entity3.setProvider(lop);
+
+        learningOpportunityProviderDAO.save(lop);
+        applicationOptionDAO.save(entity);
+        applicationOptionDAO.save(entity2);
+        applicationOptionDAO.save(entity3);
+
+        List<ApplicationOptionEntity> result = applicationOptionDAO.find(asId, lopId);
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertNotNull(result.get(0));
+        assertEquals(asId, result.get(0).getApplicationSystemId());
+    }
 }
