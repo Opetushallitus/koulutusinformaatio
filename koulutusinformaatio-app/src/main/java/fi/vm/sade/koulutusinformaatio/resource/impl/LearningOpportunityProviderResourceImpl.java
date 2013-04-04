@@ -14,25 +14,21 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.koulutusinformaatio.service;
+package fi.vm.sade.koulutusinformaatio.resource.impl;
 
-import fi.vm.sade.koulutusinformaatio.domain.search.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.search.Organization;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResult;
+import fi.vm.sade.koulutusinformaatio.resource.LearningOpportunityProviderResource;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 /**
- * Service for searching education institutes
- *
- * @author Mikko Majapuro
+ * @author Hannu Lyytikainen
  */
-public interface ApplicationOptionService {
-
-    /**
-     * @param term search term
-     * @return list of education institutes matching search term
-     */
-    List<Organization> searchOrganisaatio(final String hakuId, final String term, final String prerequisite, final String vocational);
-
-    List<ApplicationOption> searchHakukohde(final String hakuId, final String organisaatioId, final String prerequisite, final String vocational);
+@Component
+public class LearningOpportunityProviderResourceImpl implements LearningOpportunityProviderResource {
+    @Override
+    public List<ProviderSearchResult> searchProviders(String term, String asId, String prerequisite, boolean vocational) {
+        return null;
+    }
 }

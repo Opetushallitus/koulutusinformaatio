@@ -14,14 +14,10 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.koulutusinformaatio.service;
+package fi.vm.sade.koulutusinformaatio.domain.dto;
 
-import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityProvider;
-
-import java.util.List;
-
-public interface SearchService {
-
-    List<LearningOpportunityProvider> searchLearningOpportunityProviders(final String term, final String asId, final String prerequisite, final boolean vocational);
-
+/**
+ * @author Hannu Lyytikainen
+ */
+public class ProviderSearchResult {
 }
