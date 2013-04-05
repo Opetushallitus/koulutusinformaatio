@@ -16,10 +16,17 @@
 
 package fi.vm.sade.koulutusinformaatio.resource.impl;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityProvider;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResult;
 import fi.vm.sade.koulutusinformaatio.resource.LearningOpportunityProviderResource;
+import fi.vm.sade.koulutusinformaatio.service.SearchService;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,8 +34,25 @@ import java.util.List;
  */
 @Component
 public class LearningOpportunityProviderResourceImpl implements LearningOpportunityProviderResource {
+
+
+    private SearchService searchService;
+    private ModelMapper modelMapper;
+
+    @Autowired
+    public LearningOpportunityProviderResourceImpl(SearchService searchService, ModelMapper modelMapper) {
+        this.searchService = searchService;
+        this.modelMapper = modelMapper;
+    }
+
     @Override
     public List<ProviderSearchResult> searchProviders(String term, String asId, String prerequisite, boolean vocational) {
-        return null;
+        List<LearningOpportunityProvider> learningOpportunityProviders = searchService.searchLearningOpportunityProviders(term, asId, prerequisite, vocational);
+        return Lists.transform(learningOpportunityProviders, new Function<LearningOpportunityProvider, ProviderSearchResult>() {
+            @Override
+            public ProviderSearchResult apply(LearningOpportunityProvider lop) {
+                return modelMapper.map(lop, ProviderSearchResult.class);
+            }
+        });
     }
 }
