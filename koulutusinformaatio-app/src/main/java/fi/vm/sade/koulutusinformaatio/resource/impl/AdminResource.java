@@ -26,10 +26,10 @@ import javax.ws.rs.Path;
 /**
  * @author Hannu Lyytikainen
  */
-//@Component
-//@Path("/admin")
+@Component
+@Path("/admin")
 public class AdminResource {
-    /*
+
     @Autowired
     UpdateService updateService;
 
@@ -39,6 +39,6 @@ public class AdminResource {
         updateService.updateEducationData();
 
         return "education data updated";
-    } */
+    }
 
 }
