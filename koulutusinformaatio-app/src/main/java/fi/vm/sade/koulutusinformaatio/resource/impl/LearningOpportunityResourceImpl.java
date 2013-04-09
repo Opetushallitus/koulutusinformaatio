@@ -19,13 +19,17 @@ package fi.vm.sade.koulutusinformaatio.resource.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunitySearchResult;
+import fi.vm.sade.koulutusinformaatio.domain.ParentLearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunityDTO;
 import fi.vm.sade.koulutusinformaatio.resource.LearningOpportunityResource;
+import fi.vm.sade.koulutusinformaatio.service.EducationDataService;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.ws.rs.PathParam;
 import java.util.List;
 
 /**
@@ -34,13 +38,16 @@ import java.util.List;
 @Component
 public class LearningOpportunityResourceImpl implements LearningOpportunityResource {
 
-    SearchService searchService;
-    ModelMapper modelMapper;
+    private SearchService searchService;
+    private ModelMapper modelMapper;
+    private EducationDataService educationDataService;
 
     @Autowired
-    public LearningOpportunityResourceImpl(SearchService searchService, ModelMapper modelMapper) {
+    public LearningOpportunityResourceImpl(SearchService searchService, ModelMapper modelMapper,
+                                           EducationDataService educationDataService) {
         this.searchService = searchService;
         this.modelMapper = modelMapper;
+        this.educationDataService = educationDataService;
     }
 
     @Override
@@ -52,5 +59,11 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
                 return modelMapper.map(input, LearningOpportunitySearchResultDTO.class);
             }
         });
+    }
+
+    @Override
+    public ParentLearningOpportunityDTO getParentLearningOpportunity(String parentId) {
+        ParentLearningOpportunity parent = educationDataService.getParentLearningOpportunity(parentId);
+        return modelMapper.map(parent, ParentLearningOpportunityDTO.class);
     }
 }
