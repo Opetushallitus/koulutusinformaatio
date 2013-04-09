@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
+ * Copyright (c) 2013 The Finnish Board of Education - Opetushallitus
  *
  * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
  * soon as they will be approved by the European Commission - subsequent versions
