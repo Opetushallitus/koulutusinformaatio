@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>fi.vm.sade.haku</groupId>
+    <version>1.0-SNAPSHOT</version>
+    <artifactId>haku-app</artifactId>
+    <packaging>war</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>fi.vm.sade.haku</groupId>
+            <artifactId>koulutusinformaatio-app</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>war</type>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.5.1</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <stripVersion>true</stripVersion>
+                            <overWrite>true</overWrite>
+                            <outputDirectory>target</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <distributionManagement>
+        <repository>
+            <id>oph-sade-artifactory</id>
+            <name>oph-sade-artifactory-releases</name>
+            <url>http://penaali.hard.ware.fi/artifactory/oph-sade-release-local</url>
+        </repository>
+        <snapshotRepository>
+            <id>oph-sade-artifactory</id>
+            <name>oph-sade-artifactory-snapshots</name>
+            <url>http://penaali.hard.ware.fi/artifactory/oph-sade-snapshot-local</url>
+        </snapshotRepository>
+    </distributionManagement>
+</project>
+	
