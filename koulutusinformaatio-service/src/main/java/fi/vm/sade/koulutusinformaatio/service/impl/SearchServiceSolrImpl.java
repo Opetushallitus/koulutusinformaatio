@@ -17,9 +17,8 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
-import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityProvider;
-import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
+import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunitySearchResult;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.MapToSolrQueryTransformer;
 import org.apache.solr.client.solrj.SolrQuery;
@@ -33,7 +32,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Component
 public class SearchServiceSolrImpl implements SearchService {
@@ -85,8 +87,8 @@ public class SearchServiceSolrImpl implements SearchService {
     }
 
     @Override
-    public List<LearningOpportunity> searchLearningOpportunities(String term) {
-        List<LearningOpportunity> learningOpportunities = new ArrayList<LearningOpportunity>();
+    public List<LearningOpportunitySearchResult> searchLearningOpportunities(String term) {
+        List<LearningOpportunitySearchResult> learningOpportunities = new ArrayList<LearningOpportunitySearchResult>();
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>(1);
 
         parameters.put("text", Lists.newArrayList(term));
@@ -101,7 +103,9 @@ public class SearchServiceSolrImpl implements SearchService {
         }
 
         for (SolrDocument doc : response.getResults()) {
-            LearningOpportunity lo = new LearningOpportunity(doc.get("id").toString(), doc.get("name").toString());
+            LearningOpportunitySearchResult lo = new LearningOpportunitySearchResult(
+                    doc.get("id").toString(), doc.get("name").toString(),
+                    doc.get("lopId").toString(), doc.get("lopName").toString());
             learningOpportunities.add(lo);
         }
 

@@ -18,7 +18,7 @@ package fi.vm.sade.koulutusinformaatio.resource.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunitySearchResult;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
 import fi.vm.sade.koulutusinformaatio.resource.LearningOpportunityResource;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
@@ -26,7 +26,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,10 +45,10 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
 
     @Override
     public List<LearningOpportunitySearchResultDTO> searchLearningOpportunities(String text) {
-        List<LearningOpportunity> learningOpportunities = searchService.searchLearningOpportunities(text);
-        return Lists.transform(learningOpportunities, new Function<LearningOpportunity, LearningOpportunitySearchResultDTO>() {
+        List<LearningOpportunitySearchResult> learningOpportunities = searchService.searchLearningOpportunities(text);
+        return Lists.transform(learningOpportunities, new Function<LearningOpportunitySearchResult, LearningOpportunitySearchResultDTO>() {
             @Override
-            public LearningOpportunitySearchResultDTO apply(LearningOpportunity input) {
+            public LearningOpportunitySearchResultDTO apply(LearningOpportunitySearchResult input) {
                 return modelMapper.map(input, LearningOpportunitySearchResultDTO.class);
             }
         });

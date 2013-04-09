@@ -14,22 +14,24 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.koulutusinformaatio.domain.dto;
-
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+package fi.vm.sade.koulutusinformaatio.domain;
 
 /**
- * Free word education search result.
- *
  * @author Hannu Lyytikainen
  */
-@JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
-public class LearningOpportunitySearchResultDTO {
+public class LearningOpportunitySearchResult {
 
     private String id;
     private String name;
     private String lopId;
     private String lopName;
+
+    public LearningOpportunitySearchResult(String id, String name, String lopId, String lopName) {
+        this.id = id;
+        this.name = name;
+        this.lopId = lopId;
+        this.lopName = lopName;
+    }
 
     public String getId() {
         return id;
