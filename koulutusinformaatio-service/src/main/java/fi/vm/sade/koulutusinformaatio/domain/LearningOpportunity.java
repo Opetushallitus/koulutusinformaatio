@@ -16,30 +16,35 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author Hannu Lyytikainen
  */
-public class ChildLearningOpportunity extends LearningOpportunity {
+public class LearningOpportunity {
 
-    private List<ApplicationOption> applicationOptions = new ArrayList<ApplicationOption>();
+    private String id;
+    private String name;
 
-    public ChildLearningOpportunity(String id, String name) {
-        super(id, name);
+    public LearningOpportunity() {
     }
 
-    public ChildLearningOpportunity() {
-
+    public LearningOpportunity(String id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
-    public List<ApplicationOption> getApplicationOptions() {
-        return applicationOptions;
+    public String getId() {
+        return id;
     }
 
-    public void setApplicationOptions(List<ApplicationOption> applicationOptions) {
-        this.applicationOptions = applicationOptions;
+    public void setId(String id) {
+        this.id = id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

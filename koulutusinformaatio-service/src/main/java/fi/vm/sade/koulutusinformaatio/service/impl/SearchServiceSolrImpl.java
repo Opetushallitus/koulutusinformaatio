@@ -16,6 +16,8 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import com.google.common.collect.Lists;
+import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityProvider;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
@@ -41,11 +43,14 @@ public class SearchServiceSolrImpl implements SearchService {
     private HttpSolrServer httpSolrServer;
 
     private final HttpSolrServer lopHttpSolrServer;
+    private final HttpSolrServer loHttpSolrServer;
     private final MapToSolrQueryTransformer mapToSolrQueryTransformer = new MapToSolrQueryTransformer();
 
     @Autowired
-    public SearchServiceSolrImpl(@Qualifier("lopHttpSolrServer") final HttpSolrServer lopHttpSolrServer) {
+    public SearchServiceSolrImpl(@Qualifier("lopHttpSolrServer") final HttpSolrServer lopHttpSolrServer,
+                                 @Qualifier("loHttpSolrServer") final HttpSolrServer loHttpSolrServer) {
         this.lopHttpSolrServer = lopHttpSolrServer;
+        this.loHttpSolrServer = loHttpSolrServer;
     }
 
     @Override
@@ -77,6 +82,30 @@ public class SearchServiceSolrImpl implements SearchService {
 
         }
         return new ArrayList<LearningOpportunityProvider>(providers);
+    }
+
+    @Override
+    public List<LearningOpportunity> searchLearningOpportunities(String term) {
+        List<LearningOpportunity> learningOpportunities = new ArrayList<LearningOpportunity>();
+        MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>(1);
+
+        parameters.put("text", Lists.newArrayList(term));
+        SolrQuery query = mapToSolrQueryTransformer.transform(parameters.entrySet());
+
+        QueryResponse response = null;
+
+        try {
+            response = loHttpSolrServer.query(query);
+        } catch (SolrServerException e) {
+            e.printStackTrace();
+        }
+
+        for (SolrDocument doc : response.getResults()) {
+            LearningOpportunity lo = new LearningOpportunity(doc.get("id").toString(), doc.get("name").toString());
+            learningOpportunities.add(lo);
+        }
+
+        return learningOpportunities;
     }
 
     private MultiValueMap<String, String> addPrerequisite(MultiValueMap<String, String> parameters, String prerequisite, boolean vocational) {

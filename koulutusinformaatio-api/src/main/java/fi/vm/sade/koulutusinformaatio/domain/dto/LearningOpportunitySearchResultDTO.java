@@ -16,11 +16,14 @@
 
 package fi.vm.sade.koulutusinformaatio.domain.dto;
 
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
 /**
  * Free word education search result.
  *
  * @author Hannu Lyytikainen
  */
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 public class LearningOpportunitySearchResultDTO {
 
     private String id;

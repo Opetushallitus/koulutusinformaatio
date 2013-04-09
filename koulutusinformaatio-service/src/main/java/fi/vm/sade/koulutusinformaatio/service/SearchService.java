@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
+import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityProvider;
 
 import java.util.List;
@@ -23,5 +24,7 @@ import java.util.List;
 public interface SearchService {
 
     List<LearningOpportunityProvider> searchLearningOpportunityProviders(final String term, final String asId, final String prerequisite, final boolean vocational);
+
+    List<LearningOpportunity> searchLearningOpportunities(final String term);
 
 }
