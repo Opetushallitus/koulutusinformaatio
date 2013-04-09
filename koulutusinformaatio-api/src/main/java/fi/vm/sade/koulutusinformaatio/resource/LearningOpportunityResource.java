@@ -20,6 +20,7 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResult
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
@@ -39,6 +40,6 @@ public interface LearningOpportunityResource {
     @GET
     @Path("search/{text}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<LearningOpportunitySearchResultDTO> searchLearningOpportunities(String text);
+    public List<LearningOpportunitySearchResultDTO> searchLearningOpportunities(@PathParam("text") String text);
 
 }
