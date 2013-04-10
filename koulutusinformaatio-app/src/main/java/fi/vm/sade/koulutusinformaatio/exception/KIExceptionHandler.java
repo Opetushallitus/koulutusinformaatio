@@ -16,7 +16,11 @@
 
 package fi.vm.sade.koulutusinformaatio.exception;
 
+import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
+
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 
 /**
  * Provides utility methods that turn
@@ -29,9 +33,15 @@ import javax.ws.rs.WebApplicationException;
 public class KIExceptionHandler {
 
     public static WebApplicationException resolveException(Exception e) {
-        WebApplicationException webException = new WebApplicationException();
-
-
+        WebApplicationException webException = null;
+        if (e instanceof KIException) {
+            if(e instanceof SearchException) {
+                webException = new WebApplicationException(Response.status(Response.Status.INTERNAL_SERVER_ERROR).build());
+            }
+        }
+        else {
+            webException = new WebApplicationException(Response.status(Response.Status.INTERNAL_SERVER_ERROR).build());
+        }
 
         return webException;
     }

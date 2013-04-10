@@ -36,7 +36,6 @@ import java.util.List;
 @Component
 public class LearningOpportunityProviderResourceImpl implements LearningOpportunityProviderResource {
 
-
     private SearchService searchService;
     private ModelMapper modelMapper;
 
