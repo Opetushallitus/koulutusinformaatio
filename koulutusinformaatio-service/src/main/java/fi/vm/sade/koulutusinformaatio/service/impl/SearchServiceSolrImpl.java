@@ -69,7 +69,7 @@ public class SearchServiceSolrImpl implements SearchService {
             QueryResponse queryResponse = null;
             try {
                 queryResponse = lopHttpSolrServer.query(query);
-                System.out.println(""+queryResponse);
+                System.out.println("" + queryResponse);
 
             } catch (SolrServerException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -89,24 +89,25 @@ public class SearchServiceSolrImpl implements SearchService {
     @Override
     public List<LearningOpportunitySearchResult> searchLearningOpportunities(String term) {
         List<LearningOpportunitySearchResult> learningOpportunities = new ArrayList<LearningOpportunitySearchResult>();
-        MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>(1);
+        String trimmed = term.trim();
+        if (!trimmed.isEmpty()) {
+            MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>(1);
+            parameters.put("text", Lists.newArrayList(term));
+            SolrQuery query = mapToSolrQueryTransformer.transform(parameters.entrySet());
 
-        parameters.put("text", Lists.newArrayList(term));
-        SolrQuery query = mapToSolrQueryTransformer.transform(parameters.entrySet());
+            QueryResponse response = null;
+            try {
+                response = loHttpSolrServer.query(query);
+            } catch (SolrServerException e) {
+                e.printStackTrace();
+            }
 
-        QueryResponse response = null;
-
-        try {
-            response = loHttpSolrServer.query(query);
-        } catch (SolrServerException e) {
-            e.printStackTrace();
-        }
-
-        for (SolrDocument doc : response.getResults()) {
-            LearningOpportunitySearchResult lo = new LearningOpportunitySearchResult(
-                    doc.get("id").toString(), doc.get("name").toString(),
-                    doc.get("lopId").toString(), doc.get("lopName").toString());
-            learningOpportunities.add(lo);
+            for (SolrDocument doc : response.getResults()) {
+                LearningOpportunitySearchResult lo = new LearningOpportunitySearchResult(
+                        doc.get("id").toString(), doc.get("name").toString(),
+                        doc.get("lopId").toString(), doc.get("lopName").toString());
+                learningOpportunities.add(lo);
+            }
         }
 
         return learningOpportunities;
