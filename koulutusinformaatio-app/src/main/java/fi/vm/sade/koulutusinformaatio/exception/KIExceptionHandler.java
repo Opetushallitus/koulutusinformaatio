@@ -32,15 +32,15 @@ import javax.ws.rs.core.Response;
  */
 public class KIExceptionHandler {
 
-    public static WebApplicationException resolveException(Exception e) {
-        WebApplicationException webException = null;
+    public static HTTPException resolveException(Exception e) {
+        HTTPException webException = null;
         if (e instanceof KIException) {
             if(e instanceof SearchException) {
-                webException = new WebApplicationException(Response.status(Response.Status.INTERNAL_SERVER_ERROR).build());
+                webException = new HTTPException(Response.Status.INTERNAL_SERVER_ERROR, "Error occurred while searching");
             }
         }
         else {
-            webException = new WebApplicationException(Response.status(Response.Status.INTERNAL_SERVER_ERROR).build());
+            webException = new HTTPException(Response.Status.INTERNAL_SERVER_ERROR, "Internal error occurred");
         }
 
         return webException;
