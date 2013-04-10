@@ -16,8 +16,13 @@
 
 package fi.vm.sade.koulutusinformaatio.domain.exception;
 
-public class SearchException extends KIException {
-    public SearchException(String message) {
-        super(message);
+/**
+ * Abstract super class for all koulutusinformaatio-service exceptions.
+ *
+ * @author Hannu Lyytikainen
+ */
+public abstract class KIException extends Exception {
+    public KIException(String s) {
+        super(s);
     }
 }

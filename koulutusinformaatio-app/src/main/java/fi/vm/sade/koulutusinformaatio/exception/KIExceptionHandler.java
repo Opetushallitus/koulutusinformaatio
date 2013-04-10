@@ -14,10 +14,27 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.koulutusinformaatio.domain.exception;
+package fi.vm.sade.koulutusinformaatio.exception;
 
-public class SearchException extends KIException {
-    public SearchException(String message) {
-        super(message);
+import javax.ws.rs.WebApplicationException;
+
+/**
+ * Provides utility methods that turn
+ * {@link fi.vm.sade.koulutusinformaatio.domain.exception.KIException} objects thrown
+ * by the service layer into {@link javax.ws.rs.WebApplicationException}
+ * objects that can be thrown from resource methods.
+ *
+ * @author Hannu Lyytikainen
+ */
+public class KIExceptionHandler {
+
+    public static WebApplicationException resolveException(Exception e) {
+        WebApplicationException webException = new WebApplicationException();
+
+
+
+        return webException;
     }
+
+
 }

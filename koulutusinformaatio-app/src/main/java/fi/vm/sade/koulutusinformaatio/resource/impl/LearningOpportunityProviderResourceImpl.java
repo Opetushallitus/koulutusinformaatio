@@ -20,13 +20,14 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityProvider;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResult;
+import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
+import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
 import fi.vm.sade.koulutusinformaatio.resource.LearningOpportunityProviderResource;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,12 +48,18 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
 
     @Override
     public List<ProviderSearchResult> searchProviders(String term, String asId, String prerequisite, boolean vocational) {
-        List<LearningOpportunityProvider> learningOpportunityProviders = searchService.searchLearningOpportunityProviders(term, asId, prerequisite, vocational);
-        return Lists.transform(learningOpportunityProviders, new Function<LearningOpportunityProvider, ProviderSearchResult>() {
-            @Override
-            public ProviderSearchResult apply(LearningOpportunityProvider lop) {
-                return modelMapper.map(lop, ProviderSearchResult.class);
-            }
-        });
+        List<LearningOpportunityProvider> learningOpportunityProviders = null;
+        try {
+            learningOpportunityProviders = searchService.searchLearningOpportunityProviders(term, asId, prerequisite, vocational);
+            return Lists.transform(learningOpportunityProviders, new Function<LearningOpportunityProvider, ProviderSearchResult>() {
+                @Override
+                public ProviderSearchResult apply(LearningOpportunityProvider lop) {
+                    return modelMapper.map(lop, ProviderSearchResult.class);
+                }
+            });
+        } catch (SearchException e) {
+            throw KIExceptionHandler.resolveException(e);
+        }
+
     }
 }

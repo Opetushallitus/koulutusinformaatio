@@ -19,13 +19,15 @@ package fi.vm.sade.koulutusinformaatio.service;
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityProvider;
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunitySearchResult;
+import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 
 import java.util.List;
 
 public interface SearchService {
 
-    List<LearningOpportunityProvider> searchLearningOpportunityProviders(final String term, final String asId, final String prerequisite, final boolean vocational);
+    List<LearningOpportunityProvider> searchLearningOpportunityProviders(
+            final String term, final String asId, final String prerequisite, final boolean vocational) throws SearchException;
 
-    List<LearningOpportunitySearchResult> searchLearningOpportunities(final String term);
+    List<LearningOpportunitySearchResult> searchLearningOpportunities(final String term) throws SearchException;
 
 }
