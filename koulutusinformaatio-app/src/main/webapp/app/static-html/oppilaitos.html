@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Opetushallitus</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="resources/css/oppija.css" type="text/css" rel="stylesheet" />
+    <link href="resources/jquery/jquery-ui-theme/jquery-ui-1.8.23.custom.css" type="text/css" rel="stylesheet" />
+    <script src="resources/jquery/jquery-1.8.0.min.js" type="text/javascript"></script>
+    <script src="resources/jquery/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
+    <script src="resources/javascript/master.js" type="text/javascript"></script>
+</head>
+<body>
+    <div id="site">
+        <header id="siteheader">
+            <div class="header-container">
+                <div class="sitelogo">
+                    <a href="">Sivuston logo</a>
+                    <a href="/test/addPerson">/test/addPerson</a>
+                </div>
+
+                <div class="actions">
+                    <ul>
+                        <li><a href="#" data-popup-action="open">Kirjaudu sisään</a></li>
+                        <li><a href="/user/postLogin?redirect=https://test-oppija.oph.ware.fi/WEB-INF/jsp/tarjonta/tarjontatiedot.jsp">CAS Login</a></li>
+                    </ul>
+                    <ul>
+                        <li><a href="http://www.sanasto.fi/">Sanasto</a></li>
+                        <li><a href="http://google.fi">Kysy neuvoa</a></li>
+                        <li><a href="http://www.koulutusnetti.fi/?path=hakuajat">Hakuajat</a></li>
+                    </ul>
+
+                    <ul>
+                        <li><a href="?lang=fi">Suomeksi</a></li>
+                        <li><a href="?lang=sv">På svenska</a></li>
+                        <li><a href="?lang=en">in English</a></li>
+                        <li><a href="#">Mobiili</a></li>
+                        <li><a href="#">Tekstiversion</a></li>
+                    </ul>
+                    <ul>
+                    </ul>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <div class="line clear"></div>
+        </header>
+        <div class="line clear"></div>
+        <div id="page">
+            <div id="pageheader" class="grid16-16">
+                <nav class="main-navigation">
+                    <ul class="navigation">
+                        <li class="home"><a href="">Etusivu</a></li>
+                        <li><a href="osio/osio_etusivu">Lukio</a></li>
+                        <li><a href="#">Ammatillinen koulutus</a></li>
+                        <li><a href="#">Ammattikorkeakoulu</a></li>
+                        <li>
+                            <a href="#">Yliopisto</a>
+                            <ul class="dropdown" style="display: none;">
+                                <li class="header"><span>Alinavigaation otsikko</span></li>
+                                <li class="first-item"><a href="#">Tampereen Teknillinen Yliopisto</a></li>
+                                <li class="sub-dropdown">
+                                    <a href="#">Helsingin Yliopisto</a>
+                                    <ul style="display: none;">
+                                        <li class="header"><span>Alinavigaation otsikko</span></li>
+                                        <li class="first-item"><a href="#">Tampereen Teknillinen Yliopisto</a></li>
+                                        <li><a href="#">Helsingin Yliopisto</a></li>
+                                        <li><a href="#">Turun Yliopisto</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="#">Turun Yliopisto</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">Täydennyskoulutus</a></li>
+                        <li><a href="#">Opintojen valinta</a></li>
+                    </ul>
+                </nav>
+                <div class="clear"></div>
+                <section>
+                    <button class="left" name="phaseId" type="submit" value="henkilotiedot-skip-validators">
+                        <span>
+                            <span>Takaisin hakutuloksiin</span>
+                        </span>
+                    </button>
+                </section>
+                <section id="main-info">
+                    <h1>Sosiaali- ja terveysalan perustutkinto, 120 ov</h1>
+                    <span>Sosiaali- terveys- ja liikunta-ala, lähihoitaja</span>
+                    <span><span class="bold">Stadin ammattiopisto</span>, Helsinki</span>
+                </section>
+            </div>
+            <section class="grid16-12" id="wide-column">
+                <div class="tabs">
+                    <a class="tab"><span>Koulutuksen kuvaus</span></a>
+                    <a class="tab"><span>Koulutukseen hakeutuminen</span></a>
+                    <a class="tab current"><span>Sosiaali- ja terveysalan yksikkö</span></a>
+                </div>
+                <div class="tabsheets">
+                    <section class="tabsheet" style="display: block;">
+                        <div class="ribbon">
+                            <a href="#" class="disabled">Oppilaitoksen esittely</a>
+                            <span class="list-separator">|</span>
+                            <a href="#">Esteettömyys ja opiskelijan edut</a>
+                            <span class="list-separator">|</span>
+                            <a href="#">Yhteystiedot</a>
+                        </div>
+                        <figure>
+                            <img src="content/bulevardi31.png" alt="Oppilaitos" />
+                        </figure>
+                        <div class="ribbon">
+                            <a href="#">På svenska</a>
+                            <span class="list-separator">|</span>
+                            <a href="#">In English</a>
+                        </div>
+                        <h3>Stadin ammattiopisto, Sosiaali- jaterveysalan yksikkö</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur viverra massa nec massa rutrum et viverra urna adipiscing. Maecenas ullamcorper quam vitae odio venenatis gravida. Maecenas convallis blandit nunc, nec vestibulum est viverra ac. Aenean id nulla eu turpis facilisis auctor. Sed est elit, ultrices id cursus in, hendrerit eu ipsum. Curabitur vel aliquet odio. Phasellus est neque, lacinia id ultrices at, fringilla ut lacus. Curabitur nisi elit, feugiat eget accumsan luctus, pellentesque tincidunt lacus.</p>
+
+                        <h4>Tietoa oppimisympäristöstä</h4>
+                        <p>Aenean sit amet rutrum augue. Integer eu risus turpis, a tincidunt arcu. Cras tempus neque in augue convallis a malesuada diam gravida. Curabitur tincidunt enim leo, a gravida lacus. Curabitur varius, est ac tincidunt rutrum, felis purus tempor odio, non iaculis lacus lacus ac dolor.</p>
+
+                        <h4>Esteettömyys ja oppimisen tuki</h4>
+                        <p>Quisque dui sapien, scelerisque at rhoncus eget, ullamcorper in dui. Phasellus sit amet viverra odio. Nulla volutpat justo at sem facilisis egestas. Morbi mollis felis sit amet dui consectetur interdum vitae non mauris. Donec sed iaculis enim. Quisque ultricies sem a neque pharetra a hendrerit magna varius. Quisque diam velit, lacinia ut molestie eget, venenatis sit amet tortor. In ac urna mi, at malesuada magna.</p>
+
+                        <h3>Opiskelijan edut</h3>
+                        <h4>Tietoa elämisen kustannuksista</h4>
+                        <p>Phasellus sit amet viverra odio. Nulla volutpat justo at sem facilisis egestas. Morbi mollis felis sit amet dui consectetur interdum vitae non mauris. Donec sed iaculis enim.</p>
+                        <p>Nulla volutpat justo at sem facilisis egestas. Morbi mollis felis sit amet dui consectetur interdum vitae non mauris. Donec sed iaculis enim. Quisque ultricies sem a neque pharetra a hendrerit magna varius. Quisque diam velit, lacinia ut molestie eget, venenatis sit amet tortor. In ac urna mi, at malesuada magna.</p>
+                        <h4>Opiskelijaruokailu</h4>
+                        <p>Aenean sit amet rutrum augue. Integer eu risus turpis, a tincidunt arcu.</p>
+                        <h4>Terveydenhuoltopalvelut</h4>
+                        <p>Maecenas convallis blandit nunc, nec vestibulum est viverra ac. Aenean id nulla eu turpis facilisis auctor. Sed est elit, ultrices id cursus in, hendrerit eu ipsum. Curabitur vel aliquet odio. Phasellus est neque, lacinia id ultrices at, fringilla ut lacus. Curabitur nisi elit, feugiat eget accumsan luctus, pellentesque tincidunt lacus.</p>
+
+                        <h3>Yhteystiedot</h3>
+                        <p><a href="#">Oppilaitoksen omat sivut</a></p>
+                        <p>
+                            Hakutoimisto<br/>
+                            Latokartanontie 16, 00700 Helsinki<br/>
+                            PL 3925, 00099 Helsingin kaupunki<br/>
+                            Opintosihteeri Anja Telin<br/>
+                            anja.telin(at)edu.hel.fi<br/>
+                            puh. 310 81321
+                        </p>
+                    </section>
+                </div>
+
+            </section>
+            <aside class="grid16-4">
+                <div class="infobox">
+                    <a href="#">Stadin ammattiopiston muu koulutus</a>
+                </div>
+            </aside>
+        </div>
+        <div class="clear"></div>
+        <footer>Footer</footer>
+    </div>
+</body>
+</html>
