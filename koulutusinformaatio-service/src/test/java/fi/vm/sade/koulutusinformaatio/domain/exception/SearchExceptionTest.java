@@ -31,6 +31,6 @@ public class SearchExceptionTest {
 
     @Test(expected = SearchException.class)
     public void testExeption() throws Exception {
-        throw new SearchException("foo", new RuntimeException("blaa"));
+        throw new SearchException("foo");
     }
 }

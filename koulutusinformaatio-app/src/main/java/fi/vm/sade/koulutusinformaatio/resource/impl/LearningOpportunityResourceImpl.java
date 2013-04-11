@@ -22,6 +22,8 @@ import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunitySearchResult;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunityDTO;
+import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
+import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
 import fi.vm.sade.koulutusinformaatio.resource.LearningOpportunityResource;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataService;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
@@ -29,7 +31,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.PathParam;
 import java.util.List;
 
 /**
@@ -52,13 +53,17 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
 
     @Override
     public List<LearningOpportunitySearchResultDTO> searchLearningOpportunities(String text) {
-        List<LearningOpportunitySearchResult> learningOpportunities = searchService.searchLearningOpportunities(text);
-        return Lists.transform(learningOpportunities, new Function<LearningOpportunitySearchResult, LearningOpportunitySearchResultDTO>() {
-            @Override
-            public LearningOpportunitySearchResultDTO apply(LearningOpportunitySearchResult input) {
-                return modelMapper.map(input, LearningOpportunitySearchResultDTO.class);
-            }
-        });
+        try {
+            List<LearningOpportunitySearchResult> learningOpportunities = searchService.searchLearningOpportunities(text);
+            return Lists.transform(learningOpportunities, new Function<LearningOpportunitySearchResult, LearningOpportunitySearchResultDTO>() {
+                @Override
+                public LearningOpportunitySearchResultDTO apply(LearningOpportunitySearchResult input) {
+                    return modelMapper.map(input, LearningOpportunitySearchResultDTO.class);
+                }
+            });
+        } catch (SearchException e) {
+            throw KIExceptionHandler.resolveException(e);
+        }
     }
 
     @Override

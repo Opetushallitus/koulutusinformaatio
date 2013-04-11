@@ -19,6 +19,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityProvider;
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunitySearchResult;
+import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.MapToSolrQueryTransformer;
 import org.apache.solr.client.solrj.SolrQuery;
@@ -56,7 +57,8 @@ public class SearchServiceSolrImpl implements SearchService {
     }
 
     @Override
-    public List<LearningOpportunityProvider> searchLearningOpportunityProviders(String term, String asId, String prerequisite, boolean vocational) {
+    public List<LearningOpportunityProvider> searchLearningOpportunityProviders(
+            String term, String asId, String prerequisite, boolean vocational) throws SearchException {
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>(3);
         Set<LearningOpportunityProvider> providers = new HashSet<LearningOpportunityProvider>();
         String startswith = term.trim();
@@ -69,10 +71,8 @@ public class SearchServiceSolrImpl implements SearchService {
             QueryResponse queryResponse = null;
             try {
                 queryResponse = lopHttpSolrServer.query(query);
-                System.out.println("" + queryResponse);
-
             } catch (SolrServerException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                throw new SearchException("Solr search error occured.");
             }
 
             for (SolrDocument result : queryResponse.getResults()) {
@@ -87,7 +87,7 @@ public class SearchServiceSolrImpl implements SearchService {
     }
 
     @Override
-    public List<LearningOpportunitySearchResult> searchLearningOpportunities(String term) {
+    public List<LearningOpportunitySearchResult> searchLearningOpportunities(String term) throws SearchException {
         List<LearningOpportunitySearchResult> learningOpportunities = new ArrayList<LearningOpportunitySearchResult>();
         String trimmed = term.trim();
         if (!trimmed.isEmpty()) {
@@ -99,7 +99,7 @@ public class SearchServiceSolrImpl implements SearchService {
             try {
                 response = loHttpSolrServer.query(query);
             } catch (SolrServerException e) {
-                e.printStackTrace();
+                throw new SearchException("Solr search error occured.");
             }
 
             for (SolrDocument doc : response.getResults()) {

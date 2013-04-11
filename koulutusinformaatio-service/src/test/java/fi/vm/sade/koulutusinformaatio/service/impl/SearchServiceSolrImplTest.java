@@ -19,6 +19,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 import com.sun.org.apache.xpath.internal.axes.LocPathIterator;
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityProvider;
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunitySearchResult;
+import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -77,27 +78,27 @@ public class SearchServiceSolrImplTest {
     }
 
     @Test
-    public void testSearchProviders() {
+    public void testSearchProviders() throws SearchException {
         List<LearningOpportunityProvider> lops = service.searchLearningOpportunityProviders(
                 "query", "1.2.3.4", null, Boolean.parseBoolean(null));
         assertEquals(1, lops.size());
     }
 
     @Test
-    public void testSearchProvidersEmptyTerm() {
+    public void testSearchProvidersEmptyTerm() throws SearchException {
         List<LearningOpportunityProvider> lops = service.searchLearningOpportunityProviders(
                 "", "1.2.3.4", null, Boolean.parseBoolean(null));
         assertEquals(0, lops.size());
     }
 
     @Test
-    public void testSearchLearningOpportunities() {
+    public void testSearchLearningOpportunities() throws SearchException {
         List<LearningOpportunitySearchResult> results = service.searchLearningOpportunities("query");
         assertEquals(1, results.size());
     }
 
     @Test
-    public void testSearchLearningOpportunitiesEmptyTerm() {
+    public void testSearchLearningOpportunitiesEmptyTerm() throws SearchException {
         List<LearningOpportunitySearchResult> results = service.searchLearningOpportunities("");
         assertEquals(0, results.size());
     }

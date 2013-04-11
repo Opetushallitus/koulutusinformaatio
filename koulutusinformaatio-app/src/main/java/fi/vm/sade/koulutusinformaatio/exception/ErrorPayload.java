@@ -14,10 +14,27 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.koulutusinformaatio.domain.exception;
+package fi.vm.sade.koulutusinformaatio.exception;
 
-public class SearchException extends KIException {
-    public SearchException(String message) {
-        super(message);
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
+/**
+ * @author Hannu Lyytikainen
+ */
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
+public class ErrorPayload {
+
+    private String message;
+
+    public ErrorPayload(String message) {
+        this.message = message;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }
