@@ -20,7 +20,7 @@ describe('SearchController', function(){
             ctrl = $controller(SearchCtrl, {$scope: scope, $routeParams: {queryString: searchterms.kasityo}, LearningOpportunity: LearningOpportunity});
         }));
 
-        it('should have scope varables set when a proper query string is given', function() {
+        it('should have scope variables set when a proper query string is given', function() {
             expect(scope.queryString).toEqual(searchterms.kasityo);
             expect(scope.loResult.length).toEqual(0);
             expect(scope.showFilters).toBeTruthy();

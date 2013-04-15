@@ -21,8 +21,11 @@ function SearchCtrl($scope, $routeParams, LearningOpportunity) {
     $scope.search = function() {
         if ($scope.queryString) {
             $scope.loResult = LearningOpportunity.query({queryString: $scope.queryString});
-            $scope.showFilters = $scope.queryString ? true : false;
+        } else {
+            $scope.loResult = [];
         }
+        
+        $scope.showFilters = $scope.queryString ? true : false;
     };
 
     // TODO: how to make sure DOM is ready?
