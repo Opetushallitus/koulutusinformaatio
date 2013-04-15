@@ -3,7 +3,7 @@
     <section>
         <div id="searchfield-wrapper">
             <div id="searchfield">
-                <form method="get" ng-submit="search()">
+                <form method="get" ng-submit="search()" novalidate>
                     <div class="field-container-text">
                         <input type="text" name="text" required="required" value=""
                         class="haku" ng-model="queryString" />
@@ -37,7 +37,7 @@
             <div class="infobox">
                 <h3>Pohjakoulutus</h3>
                 <small>Valitse ylin suorittamasi koulutus</small>
-                <form name="filter-form">
+                <form name="filter-form" novalidate>
                     <ul>
                         <li>
                             <input type="radio" name="radio1" id="radio1"/><label for="radio1">Perusopetus (peruskoulu)</label>
@@ -61,9 +61,10 @@
                             <input type="radio" name="radio1" id="radio7"/><label for="radio7">Yliopistotutkinto</label>
                         </li>
                     </ul>
+                    <h3>Haettavan koulutuksen sijainti</h3>
+                <input type="text" name="text1" id="text1" required="required" />
                 </form>
-                <h3>Haettavan koulutuksen sijainti</h3>
-                <input type="text" name="text1" id="text1" />
+                
             </div>
         </div>
     </div>
