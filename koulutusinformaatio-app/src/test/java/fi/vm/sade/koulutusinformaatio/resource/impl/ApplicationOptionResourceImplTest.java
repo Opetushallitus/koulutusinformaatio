@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.resource.impl;
 
+import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionSearchResultDTO;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataService;
@@ -53,6 +54,10 @@ public class ApplicationOptionResourceImplTest {
         ao.setId("1.1.2");
         ao.setName("ao 1");
         ao.setEducationDegree("degree 1");
+        List<String> cloNames = new ArrayList<String>();
+        cloNames.add("clo name 1");
+        cloNames.add("clo name 2");
+        ao.setChildLONames(cloNames);
 
         ApplicationOption ao2 = new ApplicationOption();
         ao2.setId("2.3.2");
@@ -73,5 +78,8 @@ public class ApplicationOptionResourceImplTest {
         assertEquals(2, result.size());
         assertEquals("1.1.2", result.get(0).getId());
         assertEquals("2.3.2", result.get(1).getId());
+
+        assertNotNull(result.get(0).getChildLONames());
+        assertEquals(2, result.get(0).getChildLONames().size());
     }
 }

@@ -18,6 +18,9 @@ package fi.vm.sade.koulutusinformaatio.domain.dto;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Mikko Majapuro
  */
@@ -27,6 +30,7 @@ public class ApplicationOptionSearchResultDTO {
     private String id;
     private String name;
     private String educationDegree;
+    private List<String> childLONames = new ArrayList<String>();
 
     public String getId() {
         return id;
@@ -50,5 +54,13 @@ public class ApplicationOptionSearchResultDTO {
 
     public void setEducationDegree(String educationDegree) {
         this.educationDegree = educationDegree;
+    }
+
+    public List<String> getChildLONames() {
+        return childLONames;
+    }
+
+    public void setChildLONames(List<String> childLONames) {
+        this.childLONames = childLONames;
     }
 }

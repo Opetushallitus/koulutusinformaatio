@@ -14,10 +14,18 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.koulutusinformaatio.domain.exception;
+package fi.vm.sade.koulutusinformaatio.exception;
 
-public class SearchException extends KIException {
-    public SearchException(String message) {
-        super(message);
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+/**
+ * @author Hannu Lyytikainen
+ */
+public class HTTPException extends WebApplicationException {
+
+    public HTTPException(Response.Status status, String message) {
+        super(Response.status(status).entity(new ErrorPayload(message)).type(MediaType.APPLICATION_JSON).build());
     }
 }
