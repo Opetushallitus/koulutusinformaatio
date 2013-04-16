@@ -37,6 +37,6 @@ function SearchCtrl($scope, $routeParams, LearningOpportunity) {
 
 angular.module('kiApp', ['kiApp.services']).
 config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/search/:queryString', {templateUrl: 'partials/hakutulokset.html', controller: SearchCtrl});
-    $routeProvider.otherwise({redirectTo: '/search/'});
+    $routeProvider.when('/haku/:queryString', {templateUrl: 'partials/hakutulokset.html', controller: SearchCtrl});
+    $routeProvider.otherwise({redirectTo: '/haku/'});
 }]);
