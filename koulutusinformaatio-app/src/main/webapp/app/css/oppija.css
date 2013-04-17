@@ -3134,20 +3134,11 @@ p {
     }
 }
 */
-/* clearfix for firefox, probably not needed
 .clear {
-    *zoom: 1;
-    &:before,
-    &:after {
-        display: table;
-        content: "";
-        // Fixes Opera/contenteditable bug:
-        // http://nicolasgallagher.com/micro-clearfix-hack/#comment-36952
-        line-height: 0;
-    }
-    
-    &:after {
-        clear: both;
-    }
-}
-*/
+  *zoom: 1; }
+  .clear:before, .clear:after {
+    display: table;
+    content: "";
+    line-height: 0; }
+  .clear:after {
+    clear: both; }
