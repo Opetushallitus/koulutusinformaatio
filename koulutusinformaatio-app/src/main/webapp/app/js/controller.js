@@ -24,7 +24,7 @@ function SearchCtrl($scope, $routeParams, LearningOpportunity) {
         } else {
             $scope.loResult = [];
         }
-        
+
         $scope.showFilters = $scope.queryString ? true : false;
     };
 
@@ -32,11 +32,21 @@ function SearchCtrl($scope, $routeParams, LearningOpportunity) {
     //$scope.$on('$viewContentLoaded', ngReady);
 };
 
+function IndexCtrl($scope, $routeParams, LearningOpportunity, $location) {
+
+    // route to search page
+    $scope.search = function() {
+        if ($scope.queryString) {
+            $location.path('/haku/' + $scope.queryString);
+        }
+    };
+};
 
 /*  Application module */
 
 angular.module('kiApp', ['kiApp.services']).
 config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/haku/:queryString', {templateUrl: 'partials/hakutulokset.html', controller: SearchCtrl});
-    $routeProvider.otherwise({redirectTo: '/haku/'});
+    $routeProvider.when('/index/', {templateUrl: 'partials/etusivu.html', controller: IndexCtrl});
+    $routeProvider.otherwise({redirectTo: '/index/'});
 }]);
