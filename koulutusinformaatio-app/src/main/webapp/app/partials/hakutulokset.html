@@ -1,0 +1,86 @@
+<div id="pageheader" class="grid16-16">
+    <div ng-include src="'partials/navigaatio.html'"></div>  
+    <section>
+        <div id="searchfield-wrapper">
+            <div id="searchfield">
+                <form method="get" ng-submit="search()" novalidate>
+                    <div class="field-container-text">
+                        <input type="text" name="text" required="required" value=""
+                        class="haku" ng-model="queryString" />
+                    </div>
+                    <button class="btn-search" type="submit" id="btn-search" >
+                        <span><span></span></span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+<section class="content-container margin-bottom-2">
+    <div class="grid16-12" id="search-results" >
+        <div ng-switch="loResult.length">
+            <div ng-switch-when="0">
+                <div class="notification info">
+                    <h3>Ei hakutuloksia</h3>
+                    <span>Hakusanallasi ei löytynyt yhtään hakutulosta. Ole hyvä ja yritä toisella hakusanalla.</span>
+                </div>
+            </div>
+            <div ng-switch-default>
+                <ul>
+                    <li ng-repeat="lo in loResult">
+                        <div>
+                            <div class="result-content">
+                                <a href="">{{lo.name}}</a><br/>
+                                <span>{{lo.lopName}}</span>
+                            </div>
+                            <aside><!-- Tulossa hakuun 13.4.2013! --></aside>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="clear"></div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <aside class="grid16-4" id="column-narrow">
+    <!-- filters not yet implemented
+    <div ng-switch="showFilters">
+        <div ng-switch-when="true">
+            <div class="infobox">
+                <h3>Pohjakoulutus</h3>
+                <small>Valitse ylin suorittamasi koulutus</small>
+                <form name="filter-form" novalidate>
+                    <ul>
+                        <li>
+                            <input type="radio" name="radio1" id="radio1"/><label for="radio1">Perusopetus (peruskoulu)</label>
+                        </li>
+                        <li>    
+                            <input type="radio" name="radio1" id="radio2"/><label for="radio2">Lukio / Ylioppilas</label>
+                        </li>
+                        <li>    
+                            <input type="radio" name="radio1" id="radio3"/><label for="radio3">Ammatillinen perustutkinot (120 ov)</label>
+                        </li>
+                        <li>    
+                            <input type="radio" name="radio1" id="radio4"/><label for="radio4">Ammatti- tai erikoisammattitutkinto</label>
+                        </li>
+                        <li>    
+                            <input type="radio" name="radio1" id="radio5"/><label for="radio5">Kouluasteen, opistoasteen tai ammatillisen korkea-asteen tutkinto</label>
+                        </li>
+                        <li>
+                            <input type="radio" name="radio1" id="radio6"/><label for="radio6">Ammattikorkeakoulututkinto</label>
+                        </li>
+                        <li>    
+                            <input type="radio" name="radio1" id="radio7"/><label for="radio7">Yliopistotutkinto</label>
+                        </li>
+                    </ul>
+                    <h3>Haettavan koulutuksen sijainti</h3>
+                <input type="text" name="text1" id="text1" required="required" />
+                </form>
+                
+            </div>
+        </div>
+    </div>
+-->
+</aside>
+<div class="clear"></div>
+</section>
