@@ -730,7 +730,7 @@
                 <Label lang="sv">Humanistisk utbildning och konstutbildning</Label>
             </EducationDomain>
             <EducationDegree>
-                <Code scheme="Koodisto" version="1" uri="ammatillinen-koulutus">32</Code>
+                <Code scheme="Koodisto" version="1" uri="ammatillinen-koulutus">10</Code>
                 <Label lang="fi">Ammatillinen koulutus</Label>
             </EducationDegree>
             <StudyDomain>
