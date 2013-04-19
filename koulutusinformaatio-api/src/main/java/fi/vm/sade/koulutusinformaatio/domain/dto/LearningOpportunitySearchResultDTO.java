@@ -30,6 +30,7 @@ public class LearningOpportunitySearchResultDTO {
     private String name;
     private String lopId;
     private String lopName;
+    private String parentId;
 
     public String getId() {
         return id;
@@ -61,5 +62,13 @@ public class LearningOpportunitySearchResultDTO {
 
     public void setLopName(String lopName) {
         this.lopName = lopName;
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
 }

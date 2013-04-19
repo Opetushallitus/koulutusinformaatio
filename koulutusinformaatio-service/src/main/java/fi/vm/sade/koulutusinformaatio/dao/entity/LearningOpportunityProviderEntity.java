@@ -16,11 +16,10 @@
 
 package fi.vm.sade.koulutusinformaatio.dao.entity;
 
+import java.util.Set;
+
 import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Id;
-
-import java.util.List;
-import java.util.Set;
 
 /**
  * @author Mikko Majapuro

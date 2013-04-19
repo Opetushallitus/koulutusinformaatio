@@ -1,0 +1,33 @@
+<!--<div ng-include src="'partials/pageheader.html'"></div> -->
+<section class="content-container margin-bottom-2 grid16-16">
+   <section class="margin-bottom-4">
+    <button class="left">
+        <span>
+            <span ng-click="back()">Takaisin hakutuloksiin</span>
+        </span>
+    </button>
+</section>
+<section id="main-info">
+    <h2>
+    <span class="block"><span class="bold"></span>{{viewLO.provider.name}}</span>
+    <span class="block">{{parentLO.classification.educationDomain}}<span class="hidden">, lähihoitaja (tutkintonimike)</span></span>
+</h2>
+    <h1>{{parentLO.name}}</h1>
+</section>
+<div class="tabs">
+    <a class="tab current" data-tabs-group="koulutus" data-tabs-id="kuvaus"><span>Koulutuksen kuvaus</span></a>
+    <a class="tab" data-tabs-group="koulutus" data-tabs-id="hakeutuminen"><span>Koulutukseen hakeutuminen</span></a>
+    <a class="tab" data-tabs-group="koulutus" data-tabs-id="oppilaitos"><span>Sosiaali- ja terveysalan yksikkö</span></a>
+</div>
+<div class="tabsheets">
+    <section class="tabsheet" style="display: block;" data-tabs-group="koulutus" data-tabs-id="kuvaus">
+        <div ng-include src="'partials/tabs/kuvaus_ylataso.html'"></div>
+    </section>
+    <section class="tabsheet" data-tabs-group="koulutus"  data-tabs-id="hakeutuminen">
+        <div ng-include src="'partials/tabs/hakeutuminen.html'"></div>
+    </section>
+    <section class="tabsheet" data-tabs-group="koulutus"  data-tabs-id="oppilaitos">
+        <div ng-include src="'partials/tabs/oppilaitos.html'"></div>
+    </section>
+</div>
+</section>

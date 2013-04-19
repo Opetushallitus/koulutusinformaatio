@@ -125,9 +125,28 @@ public class ParserServiceImpl implements ParserService {
                                                                      Map<String, ChildLearningOpportunity> children,
                                                                      Map<String, LearningOpportunityProvider> providers) {
         ParentLearningOpportunity parent = new ParentLearningOpportunity();
+        
         parent.setId(los.getId());
         parent.setName(resolveFinnishText(los.getName()));
-        parent.setEducationDegree(los.getClassification().getEducationDegree().getCode().getValue());
+        
+        // descriptions
+        String educationAndProfessionalGoals = resolveFinnishText(los.getDescription().getEducationAndProfessionalGoals());
+        String accessToFurtherStudies = resolveFinnishText(los.getDescription().getAccessToFurtherStudies());
+        String selectionOfDegreeProgram = resolveFinnishText(los.getDescription().getSelectionOfDegreeProgram());
+        String structureDiagram = resolveFinnishText(los.getDescription().getStructureDiagram());
+        parent.setDescription( new Description(accessToFurtherStudies, educationAndProfessionalGoals, selectionOfDegreeProgram, structureDiagram) );
+
+        // credit information
+        String creditValue = resolveFinnishText(los.getCredits().getValue().getLabel());
+        String creditUnit = resolveFinnishText(los.getCredits().getUnits().getLabel());
+        parent.setCredits( new Credits(creditValue, creditUnit) );
+        
+        // classification information
+        String educationDomain = resolveFinnishText(los.getClassification().getEducationDomain().getLabel());
+        String educationDegree = los.getClassification().getEducationDegree().getCode().getValue();
+        parent.setClassification( new Classification(educationDomain, educationDegree) );
+        parent.setEducationDegree(educationDegree); // TODO: refactor away?
+
         List<ChildLearningOpportunity> childList = new ArrayList<ChildLearningOpportunity>();
         for (LearningOpportunitySpecificationRefType ref : los.getChildLOSRefs()) {
             LearningOpportunitySpecificationType child = (LearningOpportunitySpecificationType) ref.getRef();
@@ -146,6 +165,8 @@ public class ParserServiceImpl implements ParserService {
         LearningOpportunitySpecificationType los = (LearningOpportunitySpecificationType) loi.getSpecificationRef().getRef();
 
         ChildLearningOpportunity child = new ChildLearningOpportunity(los.getId(), resolveFinnishText(los.getName()));
+        child.setQualification(resolveFinnishText(los.getQualification().getLabel()));
+        child.setDegreeTitle(resolveFinnishText(los.getDegreeTitle().getLabel()));
 
         return child;
     }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="kiApp">
+<html ng-app="kiApp" id="ng-app">
 <head>
     <title>Opetushallitus</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -10,12 +10,15 @@
     <script src="lib/jquery/jquery-1.8.0.min.js" type="text/javascript"></script>
     <script src="lib/jquery/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
     <script src="js/controller.js" type="text/javascript"></script>
+    <script src="js/navigation.js" type="text/javascript"></script>
+    <script src="js/main.js" type="text/javascript"></script>
     <script src="js/master.js" type="text/javascript"></script>
 </head>
 <body>
     <div id="site">
         <div ng-include src="'partials/header.html'"></div>
         <div id="page">
+            <div ng-include src="'partials/pageheader.html'"></div>
             <div ng-view></div>
             <div class="clear"></div>
         </div>

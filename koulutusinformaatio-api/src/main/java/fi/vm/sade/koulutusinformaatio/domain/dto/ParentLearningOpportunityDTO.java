@@ -16,10 +16,10 @@
 
 package fi.vm.sade.koulutusinformaatio.domain.dto;
 
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 /**
  * @author Hannu Lyytikainen
@@ -33,6 +33,10 @@ public class ParentLearningOpportunityDTO {
     private List<ApplicationOptionDTO> applicationOptions = new ArrayList<ApplicationOptionDTO>();
     private LearningOpportunityProviderDTO provider;
     private String educationDegree;
+
+    private DescriptionDTO description;
+    private ClassificationDTO classification;
+    private CreditsDTO credits;
 
     public String getId() {
         return id;
@@ -81,4 +85,29 @@ public class ParentLearningOpportunityDTO {
     public void setEducationDegree(String educationDegree) {
         this.educationDegree = educationDegree;
     }
+
+    public CreditsDTO getCredits() {
+        return credits;
+    }
+
+    public void setCredits(CreditsDTO credits) {
+        this.credits = credits;
+    }
+
+    public DescriptionDTO getDescription() {
+        return description;
+    }
+
+    public void setDescription(DescriptionDTO description) {
+        this.description = description;
+    }
+
+    public ClassificationDTO getClassification() {
+        return classification;
+    }
+
+    public void setClassification(ClassificationDTO classification) {
+        this.classification = classification;
+    }
+
 }

@@ -28,6 +28,8 @@ public class ChildLearningOpportunityDTO {
 
     private String id;
     private String name;
+    private String qualification;
+    private String degreeTitle;
     private List<ApplicationOptionDTO> applicationOptions;
 
     public String getId() {
@@ -52,5 +54,21 @@ public class ChildLearningOpportunityDTO {
 
     public void setApplicationOptions(List<ApplicationOptionDTO> applicationOptions) {
         this.applicationOptions = applicationOptions;
+    }
+
+    public String getQualification() {
+        return qualification;
+    }
+
+    public void setQualification(String qualification) {
+        this.qualification = qualification;
+    }
+
+    public String getDegreeTitle() {
+        return degreeTitle;
+    }
+
+    public void setDegreeTitle(String degreeTitle) {
+        this.degreeTitle = degreeTitle;
     }
 }

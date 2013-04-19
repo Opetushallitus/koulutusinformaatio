@@ -31,6 +31,10 @@ public class ParentLearningOpportunity {
     private LearningOpportunityProvider provider;
     private String educationDegree;
 
+    private Description description;
+    private Classification classification;
+    private Credits credits;
+
     public String getEducationDegree() {
         return educationDegree;
     }
@@ -77,5 +81,29 @@ public class ParentLearningOpportunity {
 
     public void setProvider(LearningOpportunityProvider provider) {
         this.provider = provider;
+    }
+
+    public Credits getCredits() {
+        return credits;
+    }
+
+    public void setCredits(Credits credits) {
+        this.credits = credits;
+    }
+
+    public Description getDescription() {
+        return description;
+    }
+
+    public void setDescription(Description description) {
+        this.description = description;
+    }
+
+    public Classification getClassification() {
+        return classification;
+    }
+
+    public void setClassification(Classification classification) {
+        this.classification = classification;
     }
 }

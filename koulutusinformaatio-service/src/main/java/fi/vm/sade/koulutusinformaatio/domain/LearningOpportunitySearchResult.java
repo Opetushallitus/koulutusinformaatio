@@ -25,12 +25,14 @@ public class LearningOpportunitySearchResult {
     private String name;
     private String lopId;
     private String lopName;
+    private String parentId;
 
-    public LearningOpportunitySearchResult(String id, String name, String lopId, String lopName) {
+    public LearningOpportunitySearchResult(String id, String name, String lopId, String lopName, String parentId) {
         this.id = id;
         this.name = name;
         this.lopId = lopId;
         this.lopName = lopName;
+        this.parentId = parentId;
     }
 
     public String getId() {
@@ -63,5 +65,9 @@ public class LearningOpportunitySearchResult {
 
     public void setLopName(String lopName) {
         this.lopName = lopName;
+    }
+
+    public String getParentId() {
+        return parentId;
     }
 }

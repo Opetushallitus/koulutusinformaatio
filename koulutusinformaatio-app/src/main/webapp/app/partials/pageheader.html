@@ -1,0 +1,18 @@
+<div id="pageheader" class="grid16-16" ng-controller="SearchCtrl">
+    <div ng-include src="'partials/navigaatio.html'" onload="initNavigation()"></div>  
+    <section>
+        <div id="searchfield-wrapper">
+            <div id="searchfield">
+                <form method="get" ng-submit="search()" novalidate>
+                    <div class="field-container-text">
+                        <input type="text" name="text" required="required" value=""
+                        class="haku" ng-model="queryString" />
+                    </div>
+                    <button class="btn-search" type="submit" id="btn-search" >
+                        <span><span></span></span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>

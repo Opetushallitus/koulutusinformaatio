@@ -384,6 +384,7 @@
 	
 	orgSearch.build();
 	
+	/*
 	var tabsMenu = {
 		build:function(){
 			tabsMenu.load();
@@ -415,6 +416,7 @@
 			}
 		
 			$('.tabs .tab').click(function(event){
+				console.log('tabclick');
 				event.preventDefault();
 				group = $(this).attr('data-tabs-group');
 				id = $(this).attr('data-tabs-id');
@@ -429,6 +431,7 @@
 		},
 		setTriggers:function(){
 			$('.tabs .tab').click(function(event){
+				console.log('click tab');
 				event.preventDefault();
 				group = $(this).attr('data-tabs-group');
 				id = $(this).attr('data-tabs-id');
@@ -442,6 +445,7 @@
 			});
 		}
 	}
+	*/
 
 	var hierarchyList = {
 		build: function() {
@@ -571,11 +575,10 @@
 
 	}
 */
-
+/*
 	var dropDownMenu = {
 		// initiate dropDownMenus
 		build: function() {
-			console.log('dropdown build');
 			dropDownMenu.load();
 			dropDownMenu.setTriggers();
 		},
@@ -592,7 +595,6 @@
 
 			// bring dropdown navigation visible on mouseover
 			function navigationMouseOver() {
-				console.log('mouseover');
 				if( $(this).children().filter('ul').length !== 0 ) {
 					$(this).children().filter('ul').fadeIn(200);
 				}
@@ -607,7 +609,6 @@
 
 			//bring sub-dropdown navigation visible on mouseover
 			function dropdownMouseOver() {
-				console.log('mover');
 				$(this).children().filter('ul').fadeIn(200);
 			}
 
@@ -617,6 +618,7 @@
 			}
 		}
 	}
+*/
 
 	var tableRowHighlight = {
 		build: function() {
@@ -1111,6 +1113,7 @@
         },
         setTriggers:function(){
             $('.tabs .tab').click(function(event){
+            	console.log('tabclick');
                 event.preventDefault();
                 group = $(this).attr('data-tabs-group');
                 id = $(this).attr('data-tabs-id');
@@ -1362,9 +1365,9 @@
     defaultActions.build();
     applicationBasket.build();
 	// popupWindow.build();
-	tabsMenu.build();
+	//tabsMenu.build();
 	hierarchyList.build();
-	dropDownMenu.build();
+	//dropDownMenu.build();
 	tableRowHighlight.build();
 	tableSorter.build();
 	scrollHelpPage.build();

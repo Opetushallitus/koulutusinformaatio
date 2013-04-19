@@ -90,6 +90,7 @@ public class IndexerServiceImpl implements IndexerService {
                 childDocument.addField("name", childLos.getName());
                 childDocument.addField("lopId", parentLos.getProvider().getId());
                 childDocument.addField("lopName", parentLos.getProvider().getName());
+                childDocument.addField("parentId", parentLos.getId());
                 solrDocuments.add(childDocument);
             }
         }

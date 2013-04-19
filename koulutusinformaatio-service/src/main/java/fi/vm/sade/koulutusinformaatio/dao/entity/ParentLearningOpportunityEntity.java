@@ -16,12 +16,16 @@
 
 package fi.vm.sade.koulutusinformaatio.dao.entity;
 
+import java.util.List;
+
 import com.google.code.morphia.annotations.Embedded;
 import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Id;
 import com.google.code.morphia.annotations.Reference;
 
-import java.util.List;
+import fi.vm.sade.koulutusinformaatio.domain.Classification;
+import fi.vm.sade.koulutusinformaatio.domain.Credits;
+import fi.vm.sade.koulutusinformaatio.domain.Description;
 
 /**
  * @author Mikko Majapuro
@@ -33,6 +37,11 @@ public class ParentLearningOpportunityEntity {
     private String id;
     private String name;
     private String educationDegree;
+
+    private Description description;
+    private Classification classification;
+    private Credits credits;
+    
     @Embedded
     private List<ChildLearningOpportunityEntity> children;
     @Reference
@@ -89,5 +98,29 @@ public class ParentLearningOpportunityEntity {
 
     public void setProvider(LearningOpportunityProviderEntity provider) {
         this.provider = provider;
+    }
+    
+    public Credits getCredits() {
+        return credits;
+    }
+
+    public void setCredits(Credits credits) {
+        this.credits = credits;
+    }
+
+    public Description getDescription() {
+        return description;
+    }
+
+    public void setDescription(Description description) {
+        this.description = description;
+    }
+
+    public Classification getClassification() {
+        return classification;
+    }
+
+    public void setClassification(Classification classification) {
+        this.classification = classification;
     }
 }

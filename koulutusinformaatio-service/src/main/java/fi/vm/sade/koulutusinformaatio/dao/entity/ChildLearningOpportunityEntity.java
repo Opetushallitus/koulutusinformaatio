@@ -31,6 +31,8 @@ public class ChildLearningOpportunityEntity {
     @Id
     private String id;
     private String name;
+    private String qualification;
+    private String degreeTitle;
     @Reference
     private List<ApplicationOptionEntity> applicationOptions;
 
@@ -59,5 +61,21 @@ public class ChildLearningOpportunityEntity {
 
     public void setApplicationOptions(List<ApplicationOptionEntity> applicationOptions) {
         this.applicationOptions = applicationOptions;
+    }
+
+    public String getQualification() {
+        return qualification;
+    }
+
+    public void setQualification(String qualification) {
+        this.qualification = qualification;
+    }
+
+    public String getDegreeTitle() {
+        return degreeTitle;
+    }
+
+    public void setDegreeTitle(String degreeTitle) {
+        this.degreeTitle = degreeTitle;
     }
 }

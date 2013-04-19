@@ -1540,7 +1540,7 @@ hr {
 #sitecontent,
 #page {
   width: auto;
-  max-width: 1140px;
+  max-width: 960px;
   margin: 0px auto; }
 
 #sitefooter .footer-container {
@@ -3047,15 +3047,13 @@ input {
         content: ""; }
 
 .ribbon {
-  margin: 0 0 1em 0; }
-
-a .disabled {
-  cursor: default;
-  text-decoration: none;
-  color: black; }
-
-.tabsheets .list-separator {
-  margin: 0 0.5em; }
+  margin: 1em 0 1em 0; }
+  .ribbon a.disabled {
+    cursor: default;
+    text-decoration: none;
+    color: black; }
+  .ribbon .list-separator {
+    margin: 0 0.5em; }
 
 p {
   max-width: 80em; }
@@ -3063,10 +3061,21 @@ p {
 #main-info {
   margin: 0 0 2.5em 0; }
   #main-info span {
-    display: block; }
+    /*display: block;*/ }
     #main-info span .bold {
       display: inline;
       font-weight: bold; }
+
+.sideitem span {
+  display: block; }
+
+.grid16-10.no-left-gutter {
+  margin-left: 0;
+  margin-right: 1.25%; }
+
+.grid16-6.no-right-gutter {
+  margin-right: 0;
+  margin-left: 1.25%; }
 
 /*** Siteheader
 ************************************************/

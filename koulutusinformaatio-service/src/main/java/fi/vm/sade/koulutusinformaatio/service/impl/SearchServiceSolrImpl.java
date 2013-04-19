@@ -103,9 +103,10 @@ public class SearchServiceSolrImpl implements SearchService {
             }
 
             for (SolrDocument doc : response.getResults()) {
+                String parentId = doc.get("parentId") != null ? doc.get("parentId").toString() : null;
                 LearningOpportunitySearchResult lo = new LearningOpportunitySearchResult(
                         doc.get("id").toString(), doc.get("name").toString(),
-                        doc.get("lopId").toString(), doc.get("lopName").toString());
+                        doc.get("lopId").toString(), doc.get("lopName").toString(), parentId);
                 learningOpportunities.add(lo);
             }
         }

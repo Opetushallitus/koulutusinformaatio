@@ -24,6 +24,7 @@
         <field name="name" type="text_general" indexed="true" stored="true" multiValued="false"/>
         <field name="lopId" type="text_general" indexed="true" stored="true" multiValued="false"/>
         <field name="lopName" type="text_general" indexed="true" stored="true" multiValued="false"/>
+        <field name="parentId" type="text_general" indexed="false" stored="true" multiValued="false"/>
 
         <field name="text" type="text_general" indexed="true" stored="false" multiValued="true"/>
     </fields>
