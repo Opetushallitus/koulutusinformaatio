@@ -18,9 +18,39 @@ package fi.vm.sade.koulutusinformaatio.domain.dto;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
+import java.util.Set;
+
 /**
  * @author Hannu Lyytikainen
  */
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 public class LearningOpportunityProviderDTO {
+
+    private String id;
+    private String name;
+    private Set<String> applicationSystemIds;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Set<String> getApplicationSystemIds() {
+        return applicationSystemIds;
+    }
+
+    public void setApplicationSystemIds(Set<String> applicationSystemIds) {
+        this.applicationSystemIds = applicationSystemIds;
+    }
 }
