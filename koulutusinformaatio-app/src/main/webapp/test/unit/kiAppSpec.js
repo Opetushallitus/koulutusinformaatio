@@ -1,6 +1,6 @@
 'use strict';
 
-describe('SearchController', function(){
+describe('SearchController', function() {
     var ctrl, scope;
 
     var searchterms = {
@@ -47,20 +47,45 @@ describe('SearchController', function(){
         });
     });
 
-    describe('when initial query string is not given', function() {
-        beforeEach(inject(function($httpBackend, $rootScope, $controller, LearningOpportunity){
-            $httpBackend.when('GET', '../lo/search/' + searchterms.kasityo).respond([]);
-            $httpBackend.when('GET', '../lo/search/' + searchterms.musiikki).respond([]);
-            $httpBackend.when('GET', '../lo/search' + searchterms.empty).respond([]);
+describe('when initial query string is not given', function() {
+    beforeEach(inject(function($httpBackend, $rootScope, $controller, LearningOpportunity){
+        $httpBackend.when('GET', '../lo/search/' + searchterms.kasityo).respond([]);
+        $httpBackend.when('GET', '../lo/search/' + searchterms.musiikki).respond([]);
+        $httpBackend.when('GET', '../lo/search' + searchterms.empty).respond([]);
+        scope = $rootScope.$new();
+        ctrl = $controller(SearchCtrl, {$scope: scope, $routeParams: {}, LearningOpportunity: LearningOpportunity});
+    }));
+
+    it('should have scope varables set when a proper query string is given', function() {
+        expect(scope.queryString).toBeUndefined();
+        expect(scope.loResult).toBeUndefined();
+        expect(scope.showFilters).toBeUndefined();
+    });
+});
+
+});
+
+describe('InfoController', function() {
+    var ctrl, scope;
+
+    beforeEach(module('kiApp'));
+
+    describe('when parent LO is selected', function() {
+        beforeEach(inject(function($httpBackend, $rootScope, $controller, ParentLearningOpportunity, SearchService, $location){
+            $httpBackend.when('GET', '../lo/123456').respond({});
             scope = $rootScope.$new();
-            ctrl = $controller(SearchCtrl, {$scope: scope, $routeParams: {}, LearningOpportunity: LearningOpportunity});
+            ctrl = $controller(IndexCtrl, {
+                $scope: scope, 
+                $routeParams: {parentId: '123456'}, 
+                ParentLearningOpportunity: ParentLearningOpportunity,
+                SearchService: SearchService,
+                $location: $location
+            });
         }));
 
-        it('should have scope varables set when a proper query string is given', function() {
-            expect(scope.queryString).toBeUndefined();
-            expect(scope.loResult).toBeUndefined();
-            expect(scope.showFilters).toBeUndefined();
+        it('should fetch parent data', function() {
+            //expect(scope.parentLO.length).toEqual(0);
+            //expect(scope.showFilters).toBeTruthy();
         });
     });
-
 });

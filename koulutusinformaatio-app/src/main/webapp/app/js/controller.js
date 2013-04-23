@@ -1,21 +1,38 @@
 /*  Services */
 
 angular.module('kiApp.services', ['ngResource']).
+
+/**
+ *  Resource for making string based search
+ */
 factory('LearningOpportunity', function($resource) {
     return $resource('../lo/search/:queryString', {}, {
         query: {method:'GET', isArray:true}
     });
 }).
+
+/**
+ *  Resource for requesting LO data (parent and its children)
+ */
 factory('ParentLearningOpportunity', function($resource) {
     return $resource('../lo/:parentId', {}, {
         query: {method:'GET', isArray:false}
     });
 }).
+
+/**
+ *  Resource for requesting AO data
+ */
 factory('ApplicationOption', function($resource) {
     return $resource('../ao/search/:asId/:lopId', {}, {
         query: {method:'GET', isArray:true}
     });
 }).
+
+/**
+ *  Service taking care of search term saving
+ *  TODO: this data should be persisted?
+ */
 service('SearchService', function() {
     var term;
 
@@ -28,7 +45,16 @@ service('SearchService', function() {
             term = newTerm;
         }
     };
-}).
+});
+
+
+/* Directives */
+
+angular.module('kiApp.directives', ['ngResource']).
+
+/**
+ *  Creates and controls the link "ribbon" of sibling LOs in child view
+ */
 directive('kiSiblingRibbon', function() {
     return function(scope, element, attrs) {
         var result = "";
@@ -55,9 +81,11 @@ directive('kiSiblingRibbon', function() {
 });
 
 
-
 /* Controllers */
 
+/**
+ *  Controller for index view
+ */
 function IndexCtrl($scope, $routeParams, LearningOpportunity, $location) {
 
     // route to search page
@@ -73,8 +101,11 @@ function IndexCtrl($scope, $routeParams, LearningOpportunity, $location) {
     }
 };
 
-function SearchCtrl($scope, $routeParams, LearningOpportunity, ParentLearningOpportunity, SearchService, $location) {
-    $scope.queryString = SearchService.getTerm();
+/**
+ *  Controller for search functionality 
+ */
+function SearchCtrl($scope, $routeParams, LearningOpportunity, SearchService, $location) {
+    $scope.queryString = SearchService.getTerm(); // TODO: persist this
 
     if ($routeParams.queryString) {
         $scope.loResult = LearningOpportunity.query({queryString: $routeParams.queryString});
@@ -87,7 +118,6 @@ function SearchCtrl($scope, $routeParams, LearningOpportunity, ParentLearningOpp
     // Perform search using LearningOpportunity service
     $scope.search = function() {
         if ($scope.queryString) {
-            console.log($scope.queryString);
             SearchService.setTerm($scope.queryString);
             $location.path('/haku/' + $scope.queryString);
         }
@@ -105,9 +135,13 @@ function SearchCtrl($scope, $routeParams, LearningOpportunity, ParentLearningOpp
     };
 };
 
-function InfoCtrl($scope, $routeParams, LearningOpportunity, ParentLearningOpportunity, SearchService, ApplicationOption, $location) {
-    $scope.queryString = SearchService.getTerm();
+/**
+ *  Controller for info views (parent and child)
+ */
+function InfoCtrl($scope, $routeParams, ParentLearningOpportunity, SearchService, $location) {
+    $scope.queryString = SearchService.getTerm(); // TODO: persist this
 
+    // fetch data for parent and its children LOs
     if ($routeParams.parentId) {
         $scope.parentId = $routeParams.parentId;
         $scope.parentLO = ParentLearningOpportunity.query({parentId: $routeParams.parentId}, function(data) {
@@ -117,23 +151,15 @@ function InfoCtrl($scope, $routeParams, LearningOpportunity, ParentLearningOppor
                     break;
                 }
             }
-
-            //$scope.viewLO = $scope.childLO ? $scope.childLO : $scope.parentLO;
-
-            /*
-            $scope.ao = ApplicationOption.query({asId: $scope.parentLO.provider.applicationSystemIds[0], lopId: $scope.parentLO.provider.id});
-            console.log($scope.ao);
-            */
-        });
-
-        
+        });  
     }
 
+    // go back to search view
     $scope.back = function() {
         $location.path('/haku/' + SearchService.getTerm());
     }
 
-    // TODO: how to make sure DOM is ready?
+    // trigger once content is loaded
     $scope.$on('$viewContentLoaded', tabsMenu.build);
 };
 
@@ -141,7 +167,7 @@ function InfoCtrl($scope, $routeParams, LearningOpportunity, ParentLearningOppor
 
 /*  Application module */
 
-angular.module('kiApp', ['kiApp.services']).
+angular.module('kiApp', ['kiApp.services', 'kiApp.directives']).
 config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     $routeProvider.when('/haku/:queryString', {templateUrl: 'partials/hakutulokset.html', controller: SearchCtrl});
     $routeProvider.when('/index/', {templateUrl: 'partials/etusivu.html', controller: IndexCtrl});
