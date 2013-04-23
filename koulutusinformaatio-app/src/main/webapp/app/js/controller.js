@@ -118,7 +118,7 @@ function InfoCtrl($scope, $routeParams, LearningOpportunity, ParentLearningOppor
                 }
             }
 
-            $scope.viewLO = $scope.childLO ? $scope.childLO : $scope.parentLO;
+            //$scope.viewLO = $scope.childLO ? $scope.childLO : $scope.parentLO;
 
             /*
             $scope.ao = ApplicationOption.query({asId: $scope.parentLO.provider.applicationSystemIds[0], lopId: $scope.parentLO.provider.id});

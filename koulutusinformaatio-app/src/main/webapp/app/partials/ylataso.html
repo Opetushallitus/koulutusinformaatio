@@ -9,7 +9,7 @@
 </section>
 <section id="main-info">
     <h2>
-    <span class="block"><span class="bold"></span>{{viewLO.provider.name}}</span>
+    <span class="block"><span class="bold"></span>{{parentLO.provider.name}}</span>
     <span class="block">{{parentLO.classification.educationDomain}}<span class="hidden">, lähihoitaja (tutkintonimike)</span></span>
 </h2>
     <h1>{{parentLO.name}}</h1>
@@ -17,7 +17,7 @@
 <div class="tabs">
     <a class="tab current" data-tabs-group="koulutus" data-tabs-id="kuvaus"><span>Koulutuksen kuvaus</span></a>
     <a class="tab" data-tabs-group="koulutus" data-tabs-id="hakeutuminen"><span>Koulutukseen hakeutuminen</span></a>
-    <a class="tab" data-tabs-group="koulutus" data-tabs-id="oppilaitos"><span>Sosiaali- ja terveysalan yksikkö</span></a>
+    <a class="tab" data-tabs-group="koulutus" data-tabs-id="oppilaitos"><span>{{parentLO.provider.name}}</span></a>
 </div>
 <div class="tabsheets">
     <section class="tabsheet" style="display: block;" data-tabs-group="koulutus" data-tabs-id="kuvaus">
