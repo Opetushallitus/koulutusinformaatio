@@ -78,7 +78,60 @@ directive('kiSiblingRibbon', function() {
         }, true);
         
     }
-});
+}).
+directive('kiBreadcrumb', ['$location', function($location) {
+    return {
+        restrict: 'E,A',
+        templateUrl: 'partials/breadcrumb.html',
+        link: function(scope, element, attrs) {
+            scope.goto = function(parentId, childId) {
+                $location.path('/info/' + parentId);
+            }
+        }
+    };
+    /*
+    return function(scope, element, attrs) {
+        var home = "Hakutulokset";
+        var parent;
+        var child;
+
+        scope.$watch('parentLO.name', function(data) {
+            parent = data;
+            update();
+        }, true);
+
+        scope.$watch('childLO.degreeTitle', function(data) {
+            child = data;
+            update();
+        }, true);
+
+        var update = function() {
+            var crumbs = [home, parent, child];
+            element.html( createBreadcrumb(crumbs) );
+        };
+
+        var createBreadcrumb = function(items) {
+            //console.log(parent);
+            //console.log(child);
+            var result = '<ul>';
+            for (var i = 0; i < items.length; i++) {
+                var nextItemIsUndefined = items[i+1] ? false : true;
+                var isLast = i == items.length - 1 ? true : false;
+                var clazz =  (nextItemIsUndefined || isLast) ? 'breadcrumb-item current' : 'breadcrumb-item';
+                if (items[i]) {
+                    if (i == 0) {
+                        result += '<li><a href="#" ng-click="alert(123)">' + items[i]+ '</a></li>';
+                    } else {
+                        result += '<li class="' + clazz + '"><a href="#">' + items[i] + '</a></li>';
+                    }
+                }
+            }
+
+            return result + '</ul>';
+        }
+    }
+    */
+}]);
 
 
 /* Controllers */
@@ -151,14 +204,30 @@ function InfoCtrl($scope, $routeParams, ParentLearningOpportunity, SearchService
                     break;
                 }
             }
+
+            // prepare breadcrumb data
+            $scope.breadcrumbItems = [{value: 'Hakutulokset', cssClass: ''}];
+
+            if ($scope.childLO && $scope.parentLO) {
+                $scope.breadcrumbItems.push({value: $scope.parentLO.name, cssClass: 'breadcrumb-item'});
+                $scope.breadcrumbItems.push({value: $scope.childLO.degreeTitle, cssClass: 'breadcrumb-item current'});
+            } else if ($scope.parentLO) {
+                $scope.breadcrumbItems.push({value: $scope.parentLO.name, cssClass: 'breadcrumb-item current'});
+            }
         });  
     }
+
+    
 
     // go back to search view
     $scope.back = function() {
         $location.path('/haku/' + SearchService.getTerm());
     }
-
+/*
+    $scope.test = function() {
+        console.log('test');
+    }
+*/
     // trigger once content is loaded
     $scope.$on('$viewContentLoaded', tabsMenu.build);
 };
