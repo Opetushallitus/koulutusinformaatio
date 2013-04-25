@@ -1685,12 +1685,16 @@ hr {
 /*** Breadcrumb
 **************************************************************/
 #breadcrumb {
-  margin-top: 15px;
-  margin-bottom: 15px; }
+  margin-bottom: 2em; }
   #breadcrumb ul {
     list-style-type: none;
     padding: 0;
-    margin: 0; }
+    margin: 0;
+    /*
+    .current a {
+        color: #3e3e3e;
+    }
+    */ }
     #breadcrumb ul a {
       display: block;
       text-decoration: none; }
@@ -1703,10 +1707,21 @@ hr {
       background-image: url(../img/breadcrumb-arrow.png);
       background-color: transparent;
       background-repeat: no-repeat;
-      background-position: left center; }
-      #breadcrumb ul li.breadcrumb-item a:hover,
-      #breadcrumb ul li.breadcrumb-item a:active {
-        text-shadow: 0 0 3px #ccc; }
+      background-position: left center;
+      /*
+      a:hover,
+      a:active {
+          text-shadow: 0 0 3px #ccc;
+      }
+      */ }
+      #breadcrumb ul li.breadcrumb-item:last-child a {
+        color: #3e3e3e;
+        cursor: default; }
+        #breadcrumb ul li.breadcrumb-item:last-child a:hover, #breadcrumb ul li.breadcrumb-item:last-child a:active {
+          text-decoration: none; }
+      #breadcrumb ul li.breadcrumb-item:first-child {
+        background: none;
+        padding-left: 0; }
     #breadcrumb ul .home {
       padding-left: 0; }
       #breadcrumb ul .home a {
@@ -1717,8 +1732,6 @@ hr {
         width: 19px;
         height: 17px;
         display: block; }
-    #breadcrumb ul .current a {
-      color: #3e3e3e; }
 
 /*** Form generic
 ************************************************/
@@ -2015,11 +2028,14 @@ label, .label {
   background-color: #ffffff;
   border: solid 2px #bdbdbd;
   padding: 10px; }
+  .tabsheets.sub {
+    border: none;
+    padding: 0; }
 
 .tabsheet {
   display: none; }
 
-.tabs .tab {
+.tabs.main .tab {
   color: #3E3E3E;
   background-color: #ffffff;
   display: inline-block;
@@ -2029,7 +2045,7 @@ label, .label {
   text-shadow: 0 1px 0 #FFFFFF;
   position: relative;
   top: 1px; }
-  .tabs .tab span {
+  .tabs.main .tab span {
     display: block;
     padding: 0px 20px;
     height: 36px;
@@ -2041,7 +2057,7 @@ label, .label {
     background: -moz-linear-gradient(top, whitesmoke, #c6c6c6);
     background: -ms-linear-gradient(top, whitesmoke, #c6c6c6);
     background: -o-linear-gradient(top, whitesmoke, #c6c6c6); }
-  .tabs .tab:hover span {
+  .tabs.main .tab:hover span {
     background: #c6c6c6;
     background: whitesmoke;
     background: -webkit-gradient(linear, left top, left bottom, from(#c6c6c6), to(whitesmoke));
@@ -2049,7 +2065,7 @@ label, .label {
     background: -moz-linear-gradient(top, #c6c6c6, whitesmoke);
     background: -ms-linear-gradient(top, #c6c6c6, whitesmoke);
     background: -o-linear-gradient(top, #c6c6c6, whitesmoke); }
-.tabs .tab.current {
+.tabs.main .tab.current {
   border-top-width: 2px;
   border-right-width: 2px;
   border-left-width: 2px;
@@ -2057,7 +2073,7 @@ label, .label {
   padding-bottom: 2px;
   position: relative;
   top: 2px; }
-  .tabs .tab.current span {
+  .tabs.main .tab.current span {
     background: white;
     background: white;
     background: -webkit-gradient(linear, left top, left bottom, from(whitesmoke), to(white));
@@ -2065,6 +2081,22 @@ label, .label {
     background: -moz-linear-gradient(top, whitesmoke, white);
     background: -ms-linear-gradient(top, whitesmoke, white);
     background: -o-linear-gradient(top, whitesmoke, white); }
+.tabs.sub {
+  padding: 1em 0; }
+  .tabs.sub .tab {
+    border-right-width: 1px;
+    border-right-style: solid;
+    border-right-color: #3e3e3e; }
+    .tabs.sub .tab:last-child {
+      border: none; }
+    .tabs.sub .tab:first-child span {
+      margin: 0 1em 0 0; }
+    .tabs.sub .tab span {
+      margin: 0 1em; }
+  .tabs.sub .tab.current {
+    color: #3e3e3e;
+    cursor: default;
+    text-decoration: none; }
 
 /*** Image figure, Video Figure
 ************************************************/
@@ -2889,11 +2921,6 @@ button {
 /*** Main navigation
 **************************************************************/
 .main-navigation {
-  /*display:inline-block;
-  border:solid 4px #ffffff;
-  margin:0.5em 0px;
-  @include box-shadow(0 0 1px 0 #c4c4c4);
-  border-radius:6px;*/
   background-color: #05526b;
   height: 3.077em; }
   .main-navigation .navigation {
@@ -2902,27 +2929,7 @@ button {
     .main-navigation .navigation li {
       position: relative;
       list-style: none;
-      display: inline-block;
-            /*
-            &.home a {
-                display:block;
-                height:3.077em;
-                width:3.077em;
-                line-height:3.077em;
-                padding:0;
-                color:transparent;
-                @include background-image("menu-level-1-home.png");
-                background-repeat:no-repeat;
-                background-position:center center;
-
-                &:hover,
-                &:active {
-                    background-color: #149ecb;
-                    @include box-shadow(none);
-                }
-
-            }
-            */ }
+      display: inline-block; }
       .main-navigation .navigation li a {
         display: block;
         height: 3.077em;
@@ -3020,11 +3027,6 @@ ul {
 input {
   margin: 0 0.5em 0 0; }
 
-/*
-.content-container {
-    margin: 0 0 15px 0;
-}
-*/
 #search-results {
   min-height: 1px; }
   #search-results ul {
@@ -3047,13 +3049,21 @@ input {
         content: ""; }
 
 .ribbon {
-  margin: 1em 0 1em 0; }
-  .ribbon a.disabled {
-    cursor: default;
-    text-decoration: none;
-    color: black; }
-  .ribbon .list-separator {
-    margin: 0 0.5em; }
+  margin: 1em 0 1em 0;
+  /*.list-separator {margin: 0 0.5em;}*/ }
+  .ribbon a {
+    border-right-width: 1px;
+    border-right-style: solid;
+    border-right-color: #3e3e3e;
+    padding: 0 1em; }
+    .ribbon a:last-child {
+      border: none; }
+    .ribbon a:first-child {
+      padding: 0 1em 0 0; }
+    .ribbon a.disabled {
+      cursor: default;
+      text-decoration: none;
+      color: #3e3e3e; }
 
 p {
   max-width: 80em; }
@@ -3079,7 +3089,7 @@ p {
 
 /*** Siteheader
 ************************************************/
-/*
+/* siteheader styles already described in structure.scss
 #siteheader {
 
     .header-container {

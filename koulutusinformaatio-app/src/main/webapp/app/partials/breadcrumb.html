@@ -1,5 +1,5 @@
 <ul>
-	<li ng-repeat="crumb in breadcrumbItems" class="{{crumb.cssClass}}">
-		<a ng-click="goto(parentLO.id)">{{crumb.value}}</a>
+	<li ng-repeat="crumb in breadcrumbItems" class="breadcrumb-item">
+		<a ng-click="crumb.callback()">{{crumb.name}}</a>
 	</li>
 </ul>

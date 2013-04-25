@@ -1,21 +1,18 @@
 <section class="grid16-10 no-left-gutter" id="wide-column">
 
     <div class="ribbon">
-        <a href="#" class="disabled">Oppilaitoksen esittely</a>
-        <span class="list-separator">|</span>
-        <a href="#">Esteettömyys ja opiskelijan edut</a>
-        <span class="list-separator">|</span>
-        <a href="#">Yhteystiedot</a>
+        <a ng-click="scrollToAnchor('oppilaitos-anchor')">Oppilaitoksen esittely</a>
+        <a ng-click="scrollToAnchor('edut-anchor')">Esteettömyys ja opiskelijan edut</a>
+        <a ng-click="scrollToAnchor('yhteystiedot-anchor')">Yhteystiedot</a>
     </div>
     <figure>
         <img src="img/content/bulevardi31.png" alt="Oppilaitos" />
     </figure>
     <div class="ribbon">
         <a href="#">På svenska</a>
-        <span class="list-separator">|</span>
         <a href="#">In English</a>
     </div>
-    <h3>{{parentLO.provider.name}}, {{parentLO.classification.educationDomain}}</h3>
+    <h3 id="oppilaitos-anchor">{{parentLO.provider.name}}, {{parentLO.classification.educationDomain}}</h3>
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur viverra massa nec massa rutrum et viverra urna adipiscing. Maecenas ullamcorper quam vitae odio venenatis gravida. Maecenas convallis blandit nunc, nec vestibulum est viverra ac. Aenean id nulla eu turpis facilisis auctor. Sed est elit, ultrices id cursus in, hendrerit eu ipsum. Curabitur vel aliquet odio. Phasellus est neque, lacinia id ultrices at, fringilla ut lacus. Curabitur nisi elit, feugiat eget accumsan luctus, pellentesque tincidunt lacus.</p>
 
     <h4>Tietoa oppimisympäristöstä</h4>
@@ -24,7 +21,7 @@
     <h4>Esteettömyys ja oppimisen tuki</h4>
     <p>Quisque dui sapien, scelerisque at rhoncus eget, ullamcorper in dui. Phasellus sit amet viverra odio. Nulla volutpat justo at sem facilisis egestas. Morbi mollis felis sit amet dui consectetur interdum vitae non mauris. Donec sed iaculis enim. Quisque ultricies sem a neque pharetra a hendrerit magna varius. Quisque diam velit, lacinia ut molestie eget, venenatis sit amet tortor. In ac urna mi, at malesuada magna.</p>
 
-    <h3>Opiskelijan edut</h3>
+    <h3 id="edut-anchor">Opiskelijan edut</h3>
     <h4>Tietoa elämisen kustannuksista</h4>
     <p>Phasellus sit amet viverra odio. Nulla volutpat justo at sem facilisis egestas. Morbi mollis felis sit amet dui consectetur interdum vitae non mauris. Donec sed iaculis enim.</p>
     <p>Nulla volutpat justo at sem facilisis egestas. Morbi mollis felis sit amet dui consectetur interdum vitae non mauris. Donec sed iaculis enim. Quisque ultricies sem a neque pharetra a hendrerit magna varius. Quisque diam velit, lacinia ut molestie eget, venenatis sit amet tortor. In ac urna mi, at malesuada magna.</p>
@@ -33,7 +30,7 @@
     <h4>Terveydenhuoltopalvelut</h4>
     <p>Maecenas convallis blandit nunc, nec vestibulum est viverra ac. Aenean id nulla eu turpis facilisis auctor. Sed est elit, ultrices id cursus in, hendrerit eu ipsum. Curabitur vel aliquet odio. Phasellus est neque, lacinia id ultrices at, fringilla ut lacus. Curabitur nisi elit, feugiat eget accumsan luctus, pellentesque tincidunt lacus.</p>
 
-    <h3>Yhteystiedot</h3>
+    <h3 id="yhteystiedot-anchor">Yhteystiedot</h3>
     <!--
     <p><a href="#">Oppilaitoksen omat sivut</a></p>
     <p>
