@@ -5,7 +5,7 @@ angular.module('kiApp.services', ['ngResource']).
 /**
  *  Resource for making string based search
  */
-factory('LearningOpportunity', function($resource) {
+ factory('LearningOpportunity', function($resource) {
     return $resource('../lo/search/:queryString', {}, {
         query: {method:'GET', isArray:true}
     });
@@ -14,7 +14,7 @@ factory('LearningOpportunity', function($resource) {
 /**
  *  Resource for requesting LO data (parent and its children)
  */
-factory('ParentLearningOpportunity', function($resource) {
+ factory('ParentLearningOpportunity', function($resource) {
     return $resource('../lo/:parentId', {}, {
         query: {method:'GET', isArray:false}
     });
@@ -23,7 +23,7 @@ factory('ParentLearningOpportunity', function($resource) {
 /**
  *  Resource for requesting AO data
  */
-factory('ApplicationOption', function($resource) {
+ factory('ApplicationOption', function($resource) {
     return $resource('../ao/search/:asId/:lopId', {}, {
         query: {method:'GET', isArray:true}
     });
@@ -31,31 +31,63 @@ factory('ApplicationOption', function($resource) {
 
 /**
  *  Service taking care of search term saving
- *  TODO: this data should be persisted?
  */
-service('SearchService', function() {
-    var term;
-
+ service('SearchService', function($cookies) {
+    //var term;
+    console.log($cookies);
     return {
         getTerm: function() {
-            return term;
+            return $cookies.searchTerm;
         },
 
         setTerm: function(newTerm) {
-            term = newTerm;
+            $cookies.searchTerm = newTerm;
+        }
+    };
+}).
+
+/**
+ *  Service taking care of search term saving
+ */
+ service('LODataService', function() {
+    var data;
+
+    return {
+        getLOData: function() {
+            return data;
+        },
+
+        getChildData: function(id) {
+            var result;
+            for (var index in data.children) {
+                if (data.children[index].id == id) {
+                    result = data.children[index];
+                    break;
+                }
+            }
+
+            return result;
+        },
+
+        setLOData: function(newData) {
+            data = newData;
+        },
+
+        dataExists: function(id) {
+            return data && data.id == id; 
         }
     };
 });
 
 
-/* Directives */
+ /* Directives */
 
-angular.module('kiApp.directives', ['ngResource']).
+ angular.module('kiApp.directives', []).
 
 /**
  *  Creates and controls the link "ribbon" of sibling LOs in child view
  */
-directive('kiSiblingRibbon', function() {
+ directive('kiSiblingRibbon', function() {
     return function(scope, element, attrs) {
         var result = "";
         scope.$watch('parentLO', function(parentData) {
@@ -68,10 +100,6 @@ directive('kiSiblingRibbon', function() {
                 var isCurrentSelection = child.id == scope.childLO.id ? true : false;
                 var clazz = isCurrentSelection ? 'disabled' : '';
                 result += '<a href="#/info/' + parentData.id + '/' + child.id + '" class="' + clazz + '">' + child.degreeTitle + '</a>';
-
-                if (index < parentData.children.length - 1) { 
-                    result += '<span class="list-separator">|</span>';
-                }
             }
 
             element.html(result);
@@ -79,58 +107,52 @@ directive('kiSiblingRibbon', function() {
         
     }
 }).
-directive('kiBreadcrumb', ['$location', function($location) {
+
+/**
+ *  Creates and controls the breadcrumb 
+ */
+ directive('kiBreadcrumb', ['$location', 'SearchService', function($location, SearchService) {
     return {
         restrict: 'E,A',
         templateUrl: 'partials/breadcrumb.html',
         link: function(scope, element, attrs) {
-            scope.goto = function(parentId, childId) {
-                $location.path('/info/' + parentId);
+            var home = "Hakutulokset";
+            var parent;
+            var child;
+
+            scope.$watch('parentLO.name', function(data) {
+                parent = data;
+                update();
+            }, true);
+
+            scope.$watch('childLO.degreeTitle', function(data) {
+                child = data;
+                update();
+            }, true);
+
+            var update = function() {
+                //scope.breadcrumbItems = [{value: 'Hakutulokset', cssClass: ''}];
+                scope.breadcrumbItems = [];
+                pushItem({name: home, callback: scope.search});
+                pushItem({name: parent, callback: scope.goto});
+                pushItem({name: child, callback: scope.goto});
+            };
+
+            var pushItem = function(item) {
+                if (item.name) {
+                    scope.breadcrumbItems.push(item);
+                }
+            };
+
+            scope.search = function() {
+                $location.path('/haku/' + SearchService.getTerm());
+            }
+
+            scope.goto = function() {
+                $location.path('/info/' + scope.parentLO.id );
             }
         }
     };
-    /*
-    return function(scope, element, attrs) {
-        var home = "Hakutulokset";
-        var parent;
-        var child;
-
-        scope.$watch('parentLO.name', function(data) {
-            parent = data;
-            update();
-        }, true);
-
-        scope.$watch('childLO.degreeTitle', function(data) {
-            child = data;
-            update();
-        }, true);
-
-        var update = function() {
-            var crumbs = [home, parent, child];
-            element.html( createBreadcrumb(crumbs) );
-        };
-
-        var createBreadcrumb = function(items) {
-            //console.log(parent);
-            //console.log(child);
-            var result = '<ul>';
-            for (var i = 0; i < items.length; i++) {
-                var nextItemIsUndefined = items[i+1] ? false : true;
-                var isLast = i == items.length - 1 ? true : false;
-                var clazz =  (nextItemIsUndefined || isLast) ? 'breadcrumb-item current' : 'breadcrumb-item';
-                if (items[i]) {
-                    if (i == 0) {
-                        result += '<li><a href="#" ng-click="alert(123)">' + items[i]+ '</a></li>';
-                    } else {
-                        result += '<li class="' + clazz + '"><a href="#">' + items[i] + '</a></li>';
-                    }
-                }
-            }
-
-            return result + '</ul>';
-        }
-    }
-    */
 }]);
 
 
@@ -139,7 +161,7 @@ directive('kiBreadcrumb', ['$location', function($location) {
 /**
  *  Controller for index view
  */
-function IndexCtrl($scope, $routeParams, LearningOpportunity, $location) {
+ function IndexCtrl($scope, $routeParams, LearningOpportunity, SearchService, $location) {
 
     // route to search page
     $scope.search = function() {
@@ -157,8 +179,8 @@ function IndexCtrl($scope, $routeParams, LearningOpportunity, $location) {
 /**
  *  Controller for search functionality 
  */
-function SearchCtrl($scope, $routeParams, LearningOpportunity, SearchService, $location) {
-    $scope.queryString = SearchService.getTerm(); // TODO: persist this
+ function SearchCtrl($scope, $routeParams, LearningOpportunity, SearchService, $location) {
+    $scope.queryString = SearchService.getTerm();
 
     if ($routeParams.queryString) {
         $scope.loResult = LearningOpportunity.query({queryString: $routeParams.queryString});
@@ -191,43 +213,29 @@ function SearchCtrl($scope, $routeParams, LearningOpportunity, SearchService, $l
 /**
  *  Controller for info views (parent and child)
  */
-function InfoCtrl($scope, $routeParams, ParentLearningOpportunity, SearchService, $location) {
-    $scope.queryString = SearchService.getTerm(); // TODO: persist this
+ function InfoCtrl($scope, $routeParams, ParentLearningOpportunity, SearchService, LODataService, $location, $anchorScroll) {
+    $scope.queryString = SearchService.getTerm();
 
     // fetch data for parent and its children LOs
-    if ($routeParams.parentId) {
+    if ($routeParams) {
         $scope.parentId = $routeParams.parentId;
-        $scope.parentLO = ParentLearningOpportunity.query({parentId: $routeParams.parentId}, function(data) {
-            for (var index in data.children) {
-                if (data.children[index].id == $routeParams.childId) {
-                    $scope.childLO = data.children[index];
-                    break;
-                }
-            }
-
-            // prepare breadcrumb data
-            $scope.breadcrumbItems = [{value: 'Hakutulokset', cssClass: ''}];
-
-            if ($scope.childLO && $scope.parentLO) {
-                $scope.breadcrumbItems.push({value: $scope.parentLO.name, cssClass: 'breadcrumb-item'});
-                $scope.breadcrumbItems.push({value: $scope.childLO.degreeTitle, cssClass: 'breadcrumb-item current'});
-            } else if ($scope.parentLO) {
-                $scope.breadcrumbItems.push({value: $scope.parentLO.name, cssClass: 'breadcrumb-item current'});
-            }
-        });  
+        if (!LODataService.dataExists($scope.parentId)) {
+            $scope.parentLO = ParentLearningOpportunity.query({parentId: $routeParams.parentId}, function(data) {
+                LODataService.setLOData(data);
+                $scope.childLO = LODataService.getChildData($routeParams.childId);
+            });
+        } else {
+            $scope.parentLO = LODataService.getLOData();
+            $scope.childLO = LODataService.getChildData($routeParams.childId);
+        }
     }
 
-    
+    $scope.scrollToAnchor = function(id) {
+        $('body').scrollTop($('#' + id).offset().top);
+    };
 
-    // go back to search view
-    $scope.back = function() {
-        $location.path('/haku/' + SearchService.getTerm());
-    }
-/*
-    $scope.test = function() {
-        console.log('test');
-    }
-*/
+    $scope.initTabs = tabsMenu.build;
+
     // trigger once content is loaded
     $scope.$on('$viewContentLoaded', tabsMenu.build);
 };
@@ -236,7 +244,7 @@ function InfoCtrl($scope, $routeParams, ParentLearningOpportunity, SearchService
 
 /*  Application module */
 
-angular.module('kiApp', ['kiApp.services', 'kiApp.directives']).
+angular.module('kiApp', ['kiApp.services', 'kiApp.directives', 'ngCookies']).
 config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     $routeProvider.when('/haku/:queryString', {templateUrl: 'partials/hakutulokset.html', controller: SearchCtrl});
     $routeProvider.when('/index/', {templateUrl: 'partials/etusivu.html', controller: IndexCtrl});

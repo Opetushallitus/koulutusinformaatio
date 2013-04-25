@@ -1,0 +1,29 @@
+<div class="notification info">
+    <h3>Tähän syksyllä 2013 alkavaan koulutukseen alkaa haku 3.4.2013!</h3>
+    <ul>
+        <li>
+            Koulutus alkaa: 
+        </li>
+        <li>
+            Opetuskieli:
+        </li>
+        <li>
+            Opetusmuoto:
+        </li>
+        <li>
+            Koulutuksen laajuus:
+        </li>
+    </ul>
+</div>
+<h3>Koulutuksen tavoite</h3>
+{{parentLO.description.educationAndProfessionalGoals}}
+<h3>Koulutusohjelman valinta</h3>
+{{parentLO.description.selectionOfDegreeProgram}}
+<h3>Peruskoulupohjaisena järjestettävä koulutus</h3>
+<ul>
+    <li ng-repeat="child in parentLO.children">
+        <a href="#/info/{{parentId}}/{{child.id}}">{{child.degreeTitle}}</a>
+    </li>
+</ul>
+<h3>Jatko-opintomahdollisuudet</h3>
+{{parentLO.description.accessToFurtherStudies}}

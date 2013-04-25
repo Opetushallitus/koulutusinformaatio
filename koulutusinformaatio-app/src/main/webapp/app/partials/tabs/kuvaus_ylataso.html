@@ -1,39 +1,17 @@
 <section class="grid16-10 no-left-gutter" id="wide-column">
 
-    <div class="ribbon">
-        <a href="#" class="disabled">Peruskoulupohjainen koulutus</a>
-        <span class="list-separator">|</span>
-        <a href="#">Lukiopohjainen koulutus</a>
+    <div class="tabs sub">
+        <a class="tab current" data-tabs-group="koulutuksenkuvaus" data-tabs-id="koulutuksenkuvaus_peruskoulu"><span>Peruskoulupohjainen koulutus</span></a>
+        <a class="tab" data-tabs-group="koulutuksenkuvaus" data-tabs-id="koulutuksenkuvaus_lukio"><span>Lukiopohjainen koulutus</span></a>
     </div>
-    <div class="notification info">
-        <h3>Tähän syksyllä 2013 alkavaan koulutukseen alkaa haku 3.4.2013!</h3>
-        <ul>
-            <li>
-                Koulutus alkaa: 
-            </li>
-            <li>
-                Opetuskieli:
-            </li>
-            <li>
-                Opetusmuoto:
-            </li>
-            <li>
-                Koulutuksen laajuus:
-            </li>
-        </ul>
+    <div class="tabsheets sub">
+        <section class="tabsheet" style="display: block;" data-tabs-group="koulutuksenkuvaus" data-tabs-id="koulutuksenkuvaus_peruskoulu">
+            <div ng-include src="'partials/tabs/subtabs/kuvaus_peruskoulu.html'"></div>
+        </section>
+        <section class="tabsheet" data-tabs-group="koulutuksenkuvaus" data-tabs-id="koulutuksenkuvaus_lukio">
+            <div ng-include src="'partials/tabs/subtabs/kuvaus_lukio.html'"></div>
+        </section>
     </div>
-    <h3>Koulutuksen tavoite</h3>
-    {{parentLO.description.educationAndProfessionalGoals}}
-    <h3>Koulutusohjelman valinta</h3>
-    {{parentLO.description.selectionOfDegreeProgram}}
-    <h3>Peruskoulupohjaisena järjestettävä koulutus</h3>
-    <ul>
-        <li ng-repeat="child in parentLO.children">
-            <a href="#/info/{{parentId}}/{{child.id}}">{{child.degreeTitle}}</a>
-        </li>
-    </ul>
-    <h3>Jatko-opintomahdollisuudet</h3>
-    {{parentLO.description.accessToFurtherStudies}}
 </section>
 <aside class="grid16-6 no-right-gutter">
     <div class="sideitem margin-bottom-3 hidden">

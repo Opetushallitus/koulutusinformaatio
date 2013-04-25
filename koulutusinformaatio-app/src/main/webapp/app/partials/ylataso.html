@@ -17,7 +17,7 @@
 </h2>
     <h1>{{parentLO.name}}</h1>
 </section>
-<div class="tabs">
+<div class="tabs main">
     <a class="tab current" data-tabs-group="koulutus" data-tabs-id="kuvaus"><span>Koulutuksen kuvaus</span></a>
     <a class="tab" data-tabs-group="koulutus" data-tabs-id="hakeutuminen"><span>Koulutukseen hakeutuminen</span></a>
     <a class="tab" data-tabs-group="koulutus" data-tabs-id="oppilaitos"><span>{{parentLO.provider.name}}</span></a>
@@ -27,7 +27,7 @@
         <div ng-include src="'partials/tabs/kuvaus_ylataso.html'"></div>
     </section>
     <section class="tabsheet" data-tabs-group="koulutus"  data-tabs-id="hakeutuminen">
-        <div ng-include src="'partials/tabs/hakeutuminen.html'"></div>
+        <div ng-include src="'partials/tabs/hakeutuminen.html'" onload="initTabs()"></div>
     </section>
     <section class="tabsheet" data-tabs-group="koulutus"  data-tabs-id="oppilaitos">
         <div ng-include src="'partials/tabs/oppilaitos.html'"></div>
