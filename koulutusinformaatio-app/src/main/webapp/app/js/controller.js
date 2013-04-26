@@ -278,7 +278,8 @@ directive('renderTextBlock', function() {
 
     $scope.initTabs = tabsMenu.build;
 
-    $scope.lorem = 'Lorem ipsum...';
+    $scope.lorem = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla posuere, nisl eu gravida elementum, risus risus varius quam, eu rutrum lectus purus quis arcu. Donec euismod porta mi, sed imperdiet ligula sagittis et. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed ut felis sit amet ipsum eleifend rhoncus. Donec sed viverra velit. Morbi mollis pellentesque mollis.';
+    $scope.loremshort = 'Etiam sit amet urna justo, vitae luctus eros. In hac habitasse platea dictumst. Suspendisse ut ultricies enim. Etiam quis ante massa, sit amet interdum nulla. Donec ultrices velit nec turpis ullamcorper pharetra.';
 
     // trigger once content is loaded
     $scope.$on('$viewContentLoaded', tabsMenu.build);
