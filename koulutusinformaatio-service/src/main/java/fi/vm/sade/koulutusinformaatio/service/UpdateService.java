@@ -23,7 +23,11 @@ package fi.vm.sade.koulutusinformaatio.service;
  */
 public interface UpdateService {
 
-    public void updateEducationData();
+    /**
+     * Updates all the eduction data. Drops old data and
+     * replaces it with new.
+     */
+    public void updateAllEducationData() throws Exception;
 
 
 }

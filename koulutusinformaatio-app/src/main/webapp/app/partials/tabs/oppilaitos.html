@@ -1,25 +1,22 @@
 <section class="grid16-10 no-left-gutter" id="wide-column">
 
     <div class="ribbon">
-        <a ng-click="scrollToAnchor('oppilaitos-anchor')">Oppilaitoksen esittely</a>
-        <a ng-click="scrollToAnchor('edut-anchor')">Esteettömyys ja opiskelijan edut</a>
-        <a ng-click="scrollToAnchor('yhteystiedot-anchor')">Yhteystiedot</a>
+        <a ng-click="scrollToAnchor('oppilaitos-anchor')" data-ki-i18n="academy-description"></a>
+        <a ng-click="scrollToAnchor('edut-anchor')"data-ki-i18n="accessibility-and-benefits"></a>
+        <a ng-click="scrollToAnchor('yhteystiedot-anchor')" data-ki-i18n="contact-information"></a>
     </div>
     <figure>
         <img src="img/content/bulevardi31.png" alt="Oppilaitos" />
     </figure>
-    <div class="ribbon">
-        <a href="#">På svenska</a>
-        <a href="#">In English</a>
-    </div>
-    <div render-text-block data-title="{{parentLO.provider.name}} {{parentLO.classification.educationDomain}}" data-content="{{lorem}}" data-anchor="oppilaitos-anchor"></div>
-    <div render-text-block data-title="Tietoa oppimisympäristöstä" data-content="{{loremshort}}" data-level="4"></div>
-    <div render-text-block data-title="Esteettömyys ja oppimisen tuki" data-content="{{loremshort}}" data-level="4"></div>
-    <div render-text-block data-title="Opiskelijan edut" data-content="{{lorem}}" data-anchor="edut-anchor"></div>
-    <div render-text-block data-title="Tietoa elämisen kustannuksista" data-content="{{loremshort}}" data-level="4"></div>
-    <div render-text-block data-title="Opiskelijaruokailu" data-content="{{loremshort}}" data-level="4"></div>
-    <div render-text-block data-title="Terveydenhuoltopalvelut" data-content="{{loremshort}}" data-level="4"></div>
-    <div render-text-block data-title="Yhteystiedot" data-content="{{lorem}}" data-anchor="yhteystiedot-anchor"></div>
+    <div data-ki-language-ribbon class="ribbon"></div>
+    <div render-text-block data-title="{{parentLO.provider.name}} {{parentLO.educationDomain}}" data-content="{{lorem}}" data-anchor="oppilaitos-anchor"></div>
+    <div render-text-block data-title="learning-environment-info" data-content="{{loremshort}}" data-level="4"></div>
+    <div render-text-block data-title="accessibility-and-learning-support" data-content="{{loremshort}}" data-level="4"></div>
+    <div render-text-block data-title="student-benefits" data-content="{{lorem}}" data-anchor="edut-anchor"></div>
+    <div render-text-block data-title="living-expenses" data-content="{{loremshort}}" data-level="4"></div>
+    <div render-text-block data-title="student-dining" data-content="{{loremshort}}" data-level="4"></div>
+    <div render-text-block data-title="health-care-services" data-content="{{loremshort}}" data-level="4"></div>
+    <div render-text-block data-title="contact-information" data-content="{{lorem}}" data-anchor="yhteystiedot-anchor"></div>
     <!--
     <p><a href="#">Oppilaitoksen omat sivut</a></p>
     <p>
@@ -34,7 +31,7 @@
 </section>
 <aside class="grid16-6 no-right-gutter">
     <div class="sideitem margin-bottom-3 margin-top-2">
-        <a href="#">{{parentLO.provider.name}} muu koulutus</a>
+        <span data-ki-i18n="see-also"></span><a href="#">{{parentLO.provider.name}}</a>
     </div>
 </aside>
 <div class="clear"></div>

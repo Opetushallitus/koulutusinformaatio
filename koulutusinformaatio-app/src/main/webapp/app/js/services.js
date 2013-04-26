@@ -12,18 +12,18 @@ angular.module('kiApp.services', ['ngResource']).
     });
 }).
 */
-service('SearchLearningOpportunity', ['$http', '$timeout', '$q', function($http, $timeout, $q) {
+service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', function($http, $timeout, $q) {
     return {
         query: function(params) {
             var deferred = $q.defer();
 
             $http.get('../lo/search/' + params.queryString).
-                success(function(result) {
-                    deferred.resolve(result);
-                }).
-                error(function(result) {
-                    deferred.reject(result);
-                });
+            success(function(result) {
+                deferred.resolve(result);
+            }).
+            error(function(result) {
+                deferred.reject(result);
+            });
 
             return deferred.promise;
         }
@@ -41,18 +41,24 @@ service('SearchLearningOpportunity', ['$http', '$timeout', '$q', function($http,
 }).
 */
 
- service('ParentLearningOpportunity', ['$http', '$timeout', '$q', function($http, $timeout, $q) {
+service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', 'LanguageService', function($http, $timeout, $q, LanguageService) {
     return {
         query: function(params) {
             var deferred = $q.defer();
+            var descriptionLanguage = LanguageService.getDescriptionLanguage();
 
-            $http.get('../lo/' + params.parentId).
-                success(function(result) {
-                    deferred.resolve(result);
-                }).
-                error(function(result) {
-                    deferred.reject(result);
-                });
+            $http.get('../lo/' + params.parentId, {
+            //$http.get('mock/parent-' + descriptionLanguage + '.json', {
+                params: {
+                    lang: descriptionLanguage
+                }
+            }).
+            success(function(result) {
+                deferred.resolve(result);
+            }).
+            error(function(result) {
+                deferred.reject(result);
+            });
 
             return deferred.promise;
         }
@@ -60,15 +66,31 @@ service('SearchLearningOpportunity', ['$http', '$timeout', '$q', function($http,
 }]).
 
 /**
- *  Resource for requesting AO data
+ *  
  */
- /* currently not in use
- factory('ApplicationOption', function($resource) {
-    return $resource('../ao/search/:asId/:lopId', {}, {
-        query: {method:'GET', isArray:true}
-    });
-}).
-*/
+service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'LanguageService', function($http, $timeout, $q, LanguageService) {
+    return {
+        query: function(params) {
+            var deferred = $q.defer();
+            var descriptionLanguage = LanguageService.getDescriptionLanguage();
+
+            $http.get('../lo/' + params.parentId + '/' + params.closId + '/' + params.cloiId, {
+            //$http.get('mock/child-' + descriptionLanguage + '.json', {
+                params: {
+                    lang: descriptionLanguage
+                }
+            }).
+            success(function(result) {
+                deferred.resolve(result);
+            }).
+            error(function(result) {
+                deferred.reject(result);
+            });
+
+            return deferred.promise;
+        }
+    }
+}]).
 
 /**
  *  Service taking care of search term saving
@@ -76,39 +98,57 @@ service('SearchLearningOpportunity', ['$http', '$timeout', '$q', function($http,
  service('SearchService', function($cookies) {
     return {
         getTerm: function() {
-            return $cookies.searchTerm;
+            return $.cookie('searchTerm');
         },
 
         setTerm: function(newTerm) {
-            $cookies.searchTerm = newTerm;
+            $.cookie('searchTerm', newTerm);
+        }
+    };
+}).
+
+service('LanguageService', function($cookies) {
+    var defaultLanguage = 'fi';
+
+    return {
+        getLanguage: function() {
+            if ($.cookie('language')) {
+                return $.cookie('language');
+            } else {
+                return defaultLanguage;
+            }
+        },
+
+        setLanguage: function(language) {
+            $.cookie('language', language);
+        },
+
+        getDescriptionLanguage: function() {
+            if ($cookies.descriptionlanguage) {
+                return $.cookie('descriptionlanguage');
+            } else {
+                return defaultLanguage;
+            }
+        },
+
+        setDescriptionLanguage: function(language) {
+            $.cookie('descriptionlanguage', language);
         }
     };
 }).
 
 /**
- *  Service taking care of search term saving
+ *  Service for "caching" current parent selection
  */
- service('LODataService', function() {
+ service('ParentLODataService', function() {
     var data;
 
     return {
-        getLOData: function() {
+        getParentLOData: function() {
             return data;
         },
 
-        getChildData: function(id) {
-            var result;
-            for (var index in data.children) {
-                if (data.children[index].id == id) {
-                    result = data.children[index];
-                    break;
-                }
-            }
-
-            return result;
-        },
-
-        setLOData: function(newData) {
+        setParentLOData: function(newData) {
             data = newData;
         },
 
@@ -121,7 +161,7 @@ service('SearchLearningOpportunity', ['$http', '$timeout', '$q', function($http,
 /**
  *  Service handling page titles
  */
-service('TitleService', function() {
+ service('TitleService', function() {
     var title;
     
     return {
@@ -134,6 +174,16 @@ service('TitleService', function() {
 
         getTitle: function() {
             return title;
+        }
+    }
+}).
+
+service('TranslationService', function() {
+    return {
+        getTranslation: function(key) {
+            if (key) {
+                return i18n.t(key);
+            }
         }
     }
 });

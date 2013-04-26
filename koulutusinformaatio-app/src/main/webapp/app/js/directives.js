@@ -2,33 +2,53 @@
 
  angular.module('kiApp.directives', []).
 
+ directive('kiLanguageRibbon', ['$location', 'LanguageService', 'ParentLearningOpportunityService', function($location, LanguageService, ParentLearningOpportunityService) {
+    return {
+        restrict: 'E,A',
+        templateUrl: 'partials/languageRibbon.html',
+        
+        link: function(scope, element, attrs) {
+            scope.descriptionLanguageClass = function(languageCode) {
+                if (LanguageService.getDescriptionLanguage() == languageCode) {
+                    return 'disabled';
+                } else {
+                    return '';
+                }
+            };
+
+            scope.changeDescriptionLanguage = function(languageCode) {
+                LanguageService.setDescriptionLanguage(languageCode);
+                //var curPath = $location.search('lang', languageCode);
+                document.location.reload(true);
+            };
+        }
+    };
+ }]).
+
 /**
  *  Creates and controls the link "ribbon" of sibling LOs in child view
  */
- directive('kiSiblingRibbon', function() {
-    return function(scope, element, attrs) {
-        var result = "";
-        scope.$watch('parentLO', function(parentData) {
-            if (parentData) {
+  directive('kiSiblingRibbon', ['$location', '$routeParams', function($location, $routeParams) {
+    return {
+        restrict: 'E,A',
+        template: '<a ng-repeat="relatedChild in childLO.related" ng-click="changeChild(relatedChild)" ng-class="siblingClass(relatedChild)">{{relatedChild.name}}</a>',
+        link: function(scope, element, attrs) {
 
-                // if parentLO has only 1 (or less) child, do not show ribbon
-                if (parentData.children && parentData.children.length <= 1) {
-                    return;
-                } 
-
-                for(var index in parentData.children) {
-                    var child = parentData.children[index];
-                    var isCurrentSelection = child.id == scope.childLO.id ? true : false;
-                    var clazz = isCurrentSelection ? 'disabled' : '';
-                    result += '<a href="#/info/' + parentData.id + '/' + child.id + '" class="' + clazz + '">' + child.degreeTitle + '</a>';
+            scope.siblingClass = function(sibling) {
+                if (sibling.losId == $routeParams.closId && sibling.loiId == $routeParams.cloiId) {
+                    return 'disabled';
+                } else {
+                    return '';
                 }
-
-                element.html(result);
             }
-        }, true);
-        
+
+            scope.changeChild = function(sibling) {
+                $location.path('/info/' + scope.parentLO.id + '/' + sibling.losId + '/' + sibling.loiId);
+            }
+        }
     }
-}).
+}]).
+
 
 /**
  *  Creates and controls the breadcrumb 
@@ -38,7 +58,7 @@
         restrict: 'E,A',
         templateUrl: 'partials/breadcrumb.html',
         link: function(scope, element, attrs) {
-            var home = "Hakutulokset";
+            var home = i18n.t('breadcrumb-search-results');
             var parent;
             var child;
 
@@ -47,7 +67,7 @@
                 update();
             }, true);
 
-            scope.$watch('childLO.degreeTitle', function(data) {
+            scope.$watch('childLO.name', function(data) {
                 child = data;
                 update();
             }, true);
@@ -86,7 +106,7 @@ directive('renderTextBlock', function() {
             var content;
 
             attrs.$observe('title', function(value) {
-                title = value;
+                title = i18n.t(value); //value;
                 update();
             });
 
@@ -110,10 +130,11 @@ directive('renderTextBlock', function() {
             }
 
             var createTitleElement = function(text, anchortag, level) {
+                var idAttr = anchortag ? 'id="' + anchortag + '"' : '';
                 if (level) {
-                    return $('<h' + level + ' id="' + anchortag + '">' + text + '</h' + level + '>');
+                    return $('<h' + level + ' ' + idAttr + '>' + text + '</h' + level + '>');
                 } else {
-                    return $('<h3 id="' + anchortag + '">' + text + '</h3>');
+                    return $('<h3 ' + idAttr + '>' + text + '</h3>');
                 }
             }
         }
@@ -129,4 +150,13 @@ directive('kiAppTitle', ['TitleService', function(TitleService) {
         });
         //element.html(TitleService.getTitle());
     };
+}]).
+
+
+directive('kiI18n', ['TranslationService', function(TranslationService) {
+    return function(scope, element, attrs) {
+        attrs.$observe('kiI18n', function(value) {
+            element.append(TranslationService.getTranslation(value));
+        });
+    }    
 }]);

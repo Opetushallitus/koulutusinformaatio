@@ -1,0 +1,62 @@
+{
+    "title-front-page": "Etusivu (sv)",
+    "title-search-results": "Hakutulokset (sv)",
+
+    "breadcrumb-search-results": "Hakutulokset (sv)",
+
+    "lo-description": "Koulutuksen kuvaus (sv)",
+    "lo-application": "Koulutukseen hakeutuminen (sv)",
+
+    "elementary-based": "Peruskoulupohjainen koulutus (sv)",
+    "elementary-graduate-selection": "Peruskoulun päättäneiden valinta (sv)",
+    "secondary-school-based": "Lukiopohjainen koulutus (sv)",
+
+    "no-search-results": "Ei hakutuloksia (sv)",
+    "no-search-results-info": "Hakusanallasi ei löytynyt yhtään hakutulosta. Ole hyvä ja yritä toisella hakusanalla. (sv)",
+
+    "education-starts": "Koulutus alkaa (sv):",
+    "language-of-instruction": "Opetuskieli (sv):",
+    "form-of-education": "Opetusmuoto (sv):",
+    "duration": "Koulutuksen laajuus (sv):",
+
+    "goals-of-education": "Tavoite (sv)",
+    "selection-of-degree-program": "Koulutusohjelman valinta (sv)",
+    "elementary-based-education": "Peruskoulupohjaisena järjestettävä koulutus (sv)",
+    "access-to-further-studies": "Jatko-opintomahdollisuudet (sv)",
+
+    "general-selection-criteria": "Yleiset valintaperusteet (sv)",
+    "elementary-graduate-selection": "Perusopetuksen päättäneiden valinta (sv)",
+    "scoring": "Pisteytys (sv)",
+    "entrance-exam": "Pääsykoe (sv)",
+    "further-application-info": "Lisätietoa hakemisesta (sv)",
+
+    "academy-description": "Oppilaitoksen esittely (sv)",
+    "accessibility-and-benefits": "Esteettömyys ja opiskelijan edut (sv)",
+    "contact-information": "Yhteystiedot (sv)",
+
+    "learning-environment-info": "Tietoa oppimisympäristöstä (sv)",
+    "accessibility-and-learning-support": "Esteettömyys ja oppimisen tuki (sv)",
+    "student-benefits": "Opiskelijan edut (sv)",
+    "living-expenses": "Tietoa elämisen kustannuksista (sv)",
+    "student-dining": "Opiskelijaruokailu (sv)",
+    "health-care-services": "Terveydenhuoltopalvelut (sv)",
+    "contact-information": "Yhteystiedot (sv)",
+    "see-also": "Katso myös muu koulutus (sv):",
+
+    "structure-of-studies": "Opintojen rakenne (sv)",
+    "getting-to-work": "Sijoittuminen työelämään (sv)",
+    "profession-title": "Ammattinimikkeet (sv)",
+    "internationalization": "Kansainvälistyminen (sv)",
+
+    "application-title": "Haku (sv)",
+    "application-period": "Hakuaika (sv)",
+    "apply-button-label": "Hae koulutukseen (sv)",
+
+    "directly-applicable": "Suoraan haettavissa olevat koulutusohjelmat (sv):",
+
+    "apply-as-part-of-degree-program": "Tähän koulutukseen haetaan osana tutkintoa (sv):",
+
+    "language-fi": "Suomeksi",
+    "language-sv": "På svenska",
+    "language-en": "In English"
+}

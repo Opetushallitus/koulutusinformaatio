@@ -16,20 +16,31 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
-import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityData;
+import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import org.apache.solr.client.solrj.SolrServerException;
 
 import java.io.IOException;
 
 public interface IndexerService {
-    String update();
-
-    boolean drop();
 
     /**
-     * Updates all required indexes with the given education data.
      *
-     * @param data Education data.
      */
-    void updateIndexes(LearningOpportunityData data) throws IOException, SolrServerException;
+    void dropLOs() throws Exception;
+
+    /**
+     *
+     */
+    void dropLOPs()  throws Exception;
+
+    /**
+     * Adds an learning opportunity parent and it's children into solar.
+     * The data is not committed to index.
+     */
+    void addParentLearningOpportunity(ParentLOS parent) throws Exception;
+
+    /**
+     * Commits learning opportunities from memory to index.
+     */
+    void commitLOChnages() throws Exception;
 }

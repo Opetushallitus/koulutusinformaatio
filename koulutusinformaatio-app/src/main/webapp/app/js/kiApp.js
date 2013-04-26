@@ -14,15 +14,33 @@ kiApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $l
     	templateUrl: 'partials/ylataso.html', 
     	controller: InfoCtrl
     });
-    $routeProvider.when('/info/:parentId/:childId', {
+    $routeProvider.when('/info/:parentId/:closId/:cloiId', {
     	templateUrl: 'partials/alataso.html', 
     	controller: InfoCtrl
     });
+    /*
+    $routeProvider.when('/info/:parentId', {
+        redirectTo: '/info/:parentId/kuvaus'
+    });
+    */
     $routeProvider.otherwise({
     	redirectTo: '/index/'
     });
 
     //$locationProvider.html5Mode(true);
+}]);
+
+// initialize i18n library
+kiApp.run(['LanguageService', function(LanguageService) {
+    i18n.init({
+        resGetPath : 'locales/__ns__-__lng__.json',
+        lng : LanguageService.getLanguage(),
+        ns: 'language',
+        getAsync : false,
+        sendMissing : false,
+        fallbackLng : 'fi',
+        debug : false
+    });
 }]);
 
 /*

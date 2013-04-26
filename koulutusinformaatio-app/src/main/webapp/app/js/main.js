@@ -1,16 +1,17 @@
 var tabsMenu = {
     build:function(){
         tabsMenu.load();
-        tabsMenu.setTriggers();
+        //tabsMenu.setTriggers();
     },
 
     load:function() {
         if(window.location.hash) {
+            
             hash = window.location.hash.substr(1);
             key = "tabsheet";
             hashparams = hash.split(':');
             id = hashparams[1];
-
+            
             if(hash.indexOf(key) != -1) {
                 $('.tabs .tab[data-tabs-id="'+hashparams[1]+'"]').each(function() {
 
@@ -36,8 +37,9 @@ var tabsMenu = {
 
             $('.tabsheet[data-tabs-group="'+group+'"][data-tabs-id="'+id+'"]').show();
         });
-    },
+    }
 
+    /*
     setTriggers:function(){
         $('.tabs .tab').click(function(event) {
             event.preventDefault();
@@ -52,4 +54,5 @@ var tabsMenu = {
             $('.tabsheet[data-tabs-group="'+group+'"][data-tabs-id="'+id+'"]').show();
         });
     }
+    */
 }

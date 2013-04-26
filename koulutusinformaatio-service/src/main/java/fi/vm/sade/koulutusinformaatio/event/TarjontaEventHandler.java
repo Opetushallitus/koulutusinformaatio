@@ -6,6 +6,8 @@ import fi.vm.sade.events.impl.EventListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Hannu Lyytikainen
@@ -18,13 +20,12 @@ public class TarjontaEventHandler implements EventHandler {
     @Autowired
     public TarjontaEventHandler(EventListener eventListener) {
         eventListener.addEventHandler(this);
-
     }
 
     @Override
     public void handleEvent(Event event) {
         // update education data...
-        LOGGER.debug("Received event: " + "\n" +
+        LOGGER.info("Received event: " + "\n" +
         event.getCategory() + "\n" +
         event.toString());
     }
