@@ -33,8 +33,6 @@ angular.module('kiApp.services', ['ngResource']).
  *  Service taking care of search term saving
  */
  service('SearchService', function($cookies) {
-    //var term;
-    console.log($cookies);
     return {
         getTerm: function() {
             return $cookies.searchTerm;
@@ -153,7 +151,51 @@ angular.module('kiApp.services', ['ngResource']).
             }
         }
     };
-}]);
+}]).
+
+directive('renderTextBlock', function() {
+    return function(scope, element, attrs) {
+        var title;
+        var content;
+
+        attrs.$observe('title', function(value) {
+            title = value;
+            update();
+        });
+
+        attrs.$observe('content', function(value) {
+            content = value;
+            update();
+        });
+
+        var update = function() {
+            if (content) {
+                var titleElement = createTitleElement(title, attrs.anchor, attrs.level);
+                element.append(titleElement);
+                element.append(content);
+            }
+        }
+
+        /*
+        scope.$watch('parentLO', function(data) {
+            console.log(attrs.content);
+            if (attrs.content) {
+                var title = createTitleElement(attrs);
+                element.append(title);
+                element.append(attrs.content);
+            }
+        });
+*/
+
+        var createTitleElement = function(text, anchortag, level) {
+            if (level) {
+                return $('<h' + level + ' id="' + anchortag + '">' + text + '</h' + level + '>');
+            } else {
+                return $('<h3 id="' + anchortag + '">' + text + '</h3>');
+            }
+        }
+    };
+});
 
 
 /* Controllers */
@@ -235,6 +277,8 @@ angular.module('kiApp.services', ['ngResource']).
     };
 
     $scope.initTabs = tabsMenu.build;
+
+    $scope.lorem = 'Lorem ipsum...';
 
     // trigger once content is loaded
     $scope.$on('$viewContentLoaded', tabsMenu.build);
