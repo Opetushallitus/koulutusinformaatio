@@ -27,35 +27,15 @@
             location="classpath:koulutusinformaatio.properties, file:///${user.home:''}/oph-configuration/koulutusinformaatio.properties"
             ignore-resource-not-found="true"/>
 
-
-    <!--<import resource="classpath:META-INF/spring/events-context.xml" />-->
-
-    <!--
-    Register durable subscription to receive events, notice clientId AND durableSubscriptionName
-    -->
-
-    <!--<bean id="eventsMessageContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">-->
-        <!--<property name="connectionFactory" ref="eventsJmsFactory"/>     &lt;!&ndash; defined in "events-context.xml" &ndash;&gt;-->
-        <!--<property name="destination" ref="eventsDestination"/>          &lt;!&ndash; defined in "events-context.xml" &ndash;&gt;-->
-        <!--<property name="messageListener" ref="eventsMessageListener"/>  &lt;!&ndash; defined in "events-context.xml" &ndash;&gt;-->
-
-        <!--<property name="concurrentConsumers" value="1"/>-->
-        <!--<property name="sessionTransacted" value="true"/>-->
-        <!--<property name="pubSubDomain" value="true"/>-->
-        <!--<property name="subscriptionDurable" value="true"/>-->
-
-        <!--<property name="clientId" value="generic-events-junit"/>-->
-        <!--<property name="durableSubscriptionName" value="events"/>-->
-        <!--<property name="messageSelector" value="category = 'test' OR category = 'junit'"/>-->
-    <!--</bean>-->
-
-    <!--<bean id="eventsMessageContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">-->
-        <!--<property name="connectionFactory" ref="eventsJmsFactory"/>-->
-        <!--<property name="destination" ref="eventsDestination"/>-->
-        <!--<property name="messageListener" ref="eventsMessageListener"/>-->
-    <!--</bean>-->
-
     <context:component-scan base-package="fi.vm.sade.koulutusinformaatio"/>
+
+    <bean id="eventsMessageContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="eventsJmsFactory"/>
+        <property name="destination" ref="eventsDestination"/>
+        <property name="messageListener" ref="eventsMessageListener"/>
+    </bean>
+
+    <import resource="classpath:META-INF/spring/events-context.xml" />
 
     <bean id="HttpSolrServer"
           class="org.apache.solr.client.solrj.impl.HttpSolrServer">
