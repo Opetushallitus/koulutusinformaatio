@@ -75,4 +75,17 @@ angular.module('kiApp.services', ['ngResource']).
             return data && data.id == id; 
         }
     };
+}).
+
+service('TitleService', function() {
+    var title;
+    
+    return {
+        setTitle: function(value) {
+            title = value + ' - Opintopolku.fi';
+
+            // TODO: could this be done in angular way?
+            $('title').trigger('updatetitle', [title]);
+        }
+    }
 });

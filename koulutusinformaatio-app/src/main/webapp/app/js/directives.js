@@ -49,7 +49,6 @@
             }, true);
 
             var update = function() {
-                //scope.breadcrumbItems = [{value: 'Hakutulokset', cssClass: ''}];
                 scope.breadcrumbItems = [];
                 pushItem({name: home, callback: scope.search});
                 pushItem({name: parent, callback: scope.goto});
@@ -96,17 +95,6 @@ directive('renderTextBlock', function() {
             }
         }
 
-        /*
-        scope.$watch('parentLO', function(data) {
-            console.log(attrs.content);
-            if (attrs.content) {
-                var title = createTitleElement(attrs);
-                element.append(title);
-                element.append(attrs.content);
-            }
-        });
-*/
-
         var createTitleElement = function(text, anchortag, level) {
             if (level) {
                 return $('<h' + level + ' id="' + anchortag + '">' + text + '</h' + level + '>');
@@ -115,4 +103,13 @@ directive('renderTextBlock', function() {
             }
         }
     };
-});
+}).
+
+directive('kiAppTitle', ['TitleService', function(TitleService) {
+    return function(scope, element, attrs) {
+        $(element).on('updatetitle', function(e, param) {
+            element.html(param);
+        });
+        //element.html(TitleService.getTitle());
+    };
+}]);

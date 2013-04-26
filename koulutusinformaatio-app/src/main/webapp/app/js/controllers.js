@@ -1,17 +1,10 @@
 /* Controllers */
 
-
 /**
  *  Controller for index view
  */
- function IndexCtrl($scope, $routeParams, LearningOpportunity, SearchService, $location) {
-
-    // route to search page
-    $scope.search = function() {
-        if ($scope.queryString) {
-            $location.path('/haku/' + $scope.queryString);
-        }
-    };
+ function IndexCtrl($scope, $routeParams, LearningOpportunity, SearchService, TitleService, $location) {
+    TitleService.setTitle('Etusivu');
 
     // launch navigation script
     $scope.initNavigation = function() {
@@ -22,14 +15,14 @@
 /**
  *  Controller for search functionality 
  */
- function SearchCtrl($scope, $routeParams, LearningOpportunity, SearchService, $location) {
+ function SearchCtrl($scope, $routeParams, LearningOpportunity, SearchService, TitleService, $location) {
     $scope.queryString = SearchService.getTerm();
+    TitleService.setTitle('Hakutulokset');
 
     if ($routeParams.queryString) {
         $scope.loResult = LearningOpportunity.query({queryString: $routeParams.queryString});
         $scope.queryString = $routeParams.queryString;
         $scope.showFilters = $scope.queryString ? true : false;
-
         SearchService.setTerm($routeParams.queryString);
     }
 
@@ -56,8 +49,16 @@
 /**
  *  Controller for info views (parent and child)
  */
- function InfoCtrl($scope, $routeParams, ParentLearningOpportunity, SearchService, LODataService, $location, $anchorScroll) {
+ function InfoCtrl($scope, $routeParams, ParentLearningOpportunity, SearchService, LODataService, TitleService, $location, $anchorScroll) {
     $scope.queryString = SearchService.getTerm();
+
+    var setTitle = function(parent, child) {
+        if (child) {
+            TitleService.setTitle(child.degreeTitle);
+        } else {
+            TitleService.setTitle(parent.name);
+        }
+    };
 
     // fetch data for parent and its children LOs
     if ($routeParams) {
@@ -66,10 +67,12 @@
             $scope.parentLO = ParentLearningOpportunity.query({parentId: $routeParams.parentId}, function(data) {
                 LODataService.setLOData(data);
                 $scope.childLO = LODataService.getChildData($routeParams.childId);
+                setTitle(data, $scope.childLO);
             });
         } else {
             $scope.parentLO = LODataService.getLOData();
             $scope.childLO = LODataService.getChildData($routeParams.childId);
+            setTitle($scope.parentLO, $scope.childLO);
         }
     }
 
