@@ -17,37 +17,23 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:ehcache="http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring"
+       xmlns:jaxrs="http://cxf.apache.org/jaxrs"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
-
         http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context.xsd">
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://cxf.apache.org/jaxrs
+        http://cxf.apache.org/schemas/jaxrs.xsd
+        http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring
+        http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring/ehcache-spring-1.1.xsd
+        ">
 
     <context:property-placeholder
             location="classpath:koulutusinformaatio.properties, file:///${user.home:''}/oph-configuration/koulutusinformaatio.properties"
             ignore-resource-not-found="true"/>
 
-
-    <!--<import resource="classpath:META-INF/spring/events-context.xml" />-->
-
-    <!--
-    Register durable subscription to receive events, notice clientId AND durableSubscriptionName
-    -->
-
-    <!--<bean id="eventsMessageContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">-->
-        <!--<property name="connectionFactory" ref="eventsJmsFactory"/>     &lt;!&ndash; defined in "events-context.xml" &ndash;&gt;-->
-        <!--<property name="destination" ref="eventsDestination"/>          &lt;!&ndash; defined in "events-context.xml" &ndash;&gt;-->
-        <!--<property name="messageListener" ref="eventsMessageListener"/>  &lt;!&ndash; defined in "events-context.xml" &ndash;&gt;-->
-
-        <!--<property name="concurrentConsumers" value="1"/>-->
-        <!--<property name="sessionTransacted" value="true"/>-->
-        <!--<property name="pubSubDomain" value="true"/>-->
-        <!--<property name="subscriptionDurable" value="true"/>-->
-
-        <!--<property name="clientId" value="generic-events-junit"/>-->
-        <!--<property name="durableSubscriptionName" value="events"/>-->
-        <!--<property name="messageSelector" value="category = 'test' OR category = 'junit'"/>-->
-    <!--</bean>-->
+    <context:component-scan base-package="fi.vm.sade.koulutusinformaatio"/>
 
     <!--<bean id="eventsMessageContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">-->
         <!--<property name="connectionFactory" ref="eventsJmsFactory"/>-->
@@ -55,14 +41,7 @@
         <!--<property name="messageListener" ref="eventsMessageListener"/>-->
     <!--</bean>-->
 
-    <context:component-scan base-package="fi.vm.sade.koulutusinformaatio"/>
-
-    <bean id="HttpSolrServer"
-          class="org.apache.solr.client.solrj.impl.HttpSolrServer">
-        <constructor-arg>
-            <value>${solr.base.url}</value>
-        </constructor-arg>
-    </bean>
+    <!--<import resource="classpath:META-INF/spring/events-context.xml" />-->
 
     <bean id="loHttpSolrServer"
           class="org.apache.solr.client.solrj.impl.HttpSolrServer">
@@ -88,7 +67,7 @@
 
     <bean id="morphia" class="com.google.code.morphia.Morphia" />
 
-    <bean id="parentLearningOpportunityDAO" class="fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunityDAO">
+    <bean id="parentLearningOpportunitySpecificationDAO" class="fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecificationDAO">
         <constructor-arg>
             <ref bean="mongo"/>
         </constructor-arg>
@@ -118,5 +97,107 @@
         <constructor-arg value="${mongo.db.name}"/>
     </bean>
 
+    <bean id="childLearningOpportunitySpecificationDAO" class="fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunitySpecificationDAO">
+        <constructor-arg>
+            <ref bean="mongo"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="morphia"/>
+        </constructor-arg>
+        <constructor-arg value="${mongo.db.name}"/>
+    </bean>
+
+    <bean id="childLearningOpportunityInstanceDAO" class="fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityInstanceDAO">
+        <constructor-arg>
+            <ref bean="mongo"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="morphia"/>
+        </constructor-arg>
+        <constructor-arg value="${mongo.db.name}"/>
+    </bean>
+
     <bean id="modelMapper" class="org.modelmapper.ModelMapper"/>
+
+    <bean id="conversionService" class="fi.vm.sade.koulutusinformaatio.converter.KoulutusinformaatioConversionServiceFactoryBean">
+        <!-- Converters that need access to ConversionService are registered in KoulutusinformaatioConversionServiceFactoryBean -->
+        <property name="converters">
+            <list>
+                <bean class="fi.vm.sade.koulutusinformaatio.converter.KoodiTypeToI18nText"/>
+                <bean class="fi.vm.sade.koulutusinformaatio.converter.KoodiTypeToCode"/>
+                <bean class="fi.vm.sade.koulutusinformaatio.converter.OrganisaatioRDTOToProvider"/>
+            </list>
+        </property>
+    </bean>
+
+    <ehcache:annotation-driven cache-manager="ehCacheManager" />
+
+    <bean id="ehCacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        <property name="configLocation"  value="/WEB-INF/ehcache.xml"/>
+    </bean>
+
+    <jaxrs:client id="komoResource"
+                  address="${tarjonta.api.rest.url}"
+                  serviceClass="fi.vm.sade.tarjonta.service.resources.KomoResource"
+                  inheritHeaders="true">
+        <jaxrs:providers>
+            <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>
+        </jaxrs:providers>
+    </jaxrs:client>
+
+    <jaxrs:client id="komotoResource"
+                  address="${tarjonta.api.rest.url}"
+                  serviceClass="fi.vm.sade.tarjonta.service.resources.KomotoResource"
+                  inheritHeaders="true">
+        <jaxrs:providers>
+            <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>
+        </jaxrs:providers>
+    </jaxrs:client>
+
+    <jaxrs:client id="hakukohdeResource"
+                  address="${tarjonta.api.rest.url}"
+                  serviceClass="fi.vm.sade.tarjonta.service.resources.HakukohdeResource"
+                  inheritHeaders="true">
+        <jaxrs:providers>
+            <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>
+        </jaxrs:providers>
+    </jaxrs:client>
+
+    <jaxrs:client id="organisaatioResource"
+                  address="${organisaatio.api.rest.url}"
+                  serviceClass="fi.vm.sade.organisaatio.resource.OrganisaatioResource"
+                  inheritHeaders="true">
+        <jaxrs:providers>
+            <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>
+        </jaxrs:providers>
+    </jaxrs:client>
+
+    <bean id="organisaatioService" class="fi.vm.sade.koulutusinformaatio.service.impl.OrganisaatioServiceImpl">
+        <constructor-arg>
+            <ref bean="organisaatioResource"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="conversionService"/>
+        </constructor-arg>
+    </bean>
+
+    <bean id="tarjontaService"
+          class="fi.vm.sade.koulutusinformaatio.service.impl.TarjontaServiceImpl">
+        <constructor-arg>
+            <ref bean="komoResource"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="komotoResource"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="hakukohdeResource"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="organisaatioService"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="conversionService"/>
+        </constructor-arg>
+    </bean>
+
 </beans>

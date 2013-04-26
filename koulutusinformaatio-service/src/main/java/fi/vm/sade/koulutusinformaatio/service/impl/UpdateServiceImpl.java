@@ -16,19 +16,16 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import fi.vm.sade.koulutusinformaatio.client.TarjontaClient;
-import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityData;
-import fi.vm.sade.koulutusinformaatio.service.EducationDataService;
-import fi.vm.sade.koulutusinformaatio.service.IndexerService;
-import fi.vm.sade.koulutusinformaatio.service.ParserService;
-import fi.vm.sade.koulutusinformaatio.service.UpdateService;
-import org.apache.solr.client.solrj.SolrServerException;
+import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
+import fi.vm.sade.koulutusinformaatio.service.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.xml.bind.JAXBException;
-import javax.xml.transform.Source;
-import java.io.IOException;
+import java.util.List;
 
 /**
  * @author Hannu Lyytikainen
@@ -36,35 +33,47 @@ import java.io.IOException;
 @Service
 public class UpdateServiceImpl implements UpdateService {
 
-    private TarjontaClient tarjontaClient;
-    private ParserService parserService;
+    public static final Logger LOG = LoggerFactory.getLogger(UpdateServiceImpl.class);
+
+    private TarjontaService tarjontaService;
     private IndexerService indexerService;
     private EducationDataService educationDataService;
 
     @Autowired
-    public UpdateServiceImpl(TarjontaClient tarjontaClient, ParserService parserService,
+    public UpdateServiceImpl(TarjontaService tarjontaService,
                              IndexerService indexerService, EducationDataService educationDataService) {
-        this.tarjontaClient = tarjontaClient;
-        this.parserService = parserService;
+        this.tarjontaService = tarjontaService;
         this.indexerService = indexerService;
         this.educationDataService = educationDataService;
     }
 
     @Override
-    public void updateEducationData() {
+    public void updateAllEducationData() throws Exception {
+        // drop db
+        // drop index
+        this.educationDataService.dropAllData();
 
-        Source source = tarjontaClient.retrieveTarjontaAsSource();
-        try {
-            LearningOpportunityData loData = parserService.parse(source);
-            this.indexerService.updateIndexes(loData);
-            this.educationDataService.save(loData);
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        } catch (SolrServerException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        List<String> parentOids = tarjontaService.listParentLearnignOpportunityOids();
+
+        for (String parentOid : parentOids) {
+            ParentLOS parent = null;
+
+            try {
+                parent = tarjontaService.findParentLearningOpportunity(parentOid);
+            } catch (TarjontaParseException e) {
+                LOG.warn("Exception while updating parent learning opportunity, oid: " + parentOid + ", Message: " + e.getMessage());
+                continue;
+            }
+            catch (KoodistoException e) {
+                LOG.warn("Exception while updating parent learning opportunity, oid: " + parentOid + ", Message: " + e.getMessage());
+                continue;
+            }
+
+            this.indexerService.addParentLearningOpportunity(parent);
+            this.educationDataService.save(parent);
         }
-    }
 
+        this.indexerService.commitLOChnages();
+
+    }
 }

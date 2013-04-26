@@ -17,8 +17,10 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
-import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityProvider;
-import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunitySearchResult;
+import com.google.common.collect.Maps;
+import fi.vm.sade.koulutusinformaatio.domain.I18nText;
+import fi.vm.sade.koulutusinformaatio.domain.LOSearchResult;
+import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.MapToSolrQueryTransformer;
@@ -33,10 +35,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Component
 public class SearchServiceSolrImpl implements SearchService {
@@ -57,10 +56,10 @@ public class SearchServiceSolrImpl implements SearchService {
     }
 
     @Override
-    public List<LearningOpportunityProvider> searchLearningOpportunityProviders(
+    public List<Provider> searchLearningOpportunityProviders(
             String term, String asId, String prerequisite, boolean vocational) throws SearchException {
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>(3);
-        Set<LearningOpportunityProvider> providers = new HashSet<LearningOpportunityProvider>();
+        Set<Provider> providers = new HashSet<Provider>();
         String startswith = term.trim();
         if (!startswith.isEmpty()) {
             parameters.put("name", createParameter(term + "*"));
@@ -76,19 +75,24 @@ public class SearchServiceSolrImpl implements SearchService {
             }
 
             for (SolrDocument result : queryResponse.getResults()) {
-                LearningOpportunityProvider provider = new LearningOpportunityProvider();
+                Provider provider = new Provider();
                 provider.setId(result.get("id").toString());
-                provider.setName(result.get("name").toString());
+
+                // TODO: i18n handling
+                Map<String, String> texts = Maps.newHashMap();
+                texts.put("fi", result.get("name").toString());
+
+                provider.setName(new I18nText(texts));
                 providers.add(provider);
             }
 
         }
-        return new ArrayList<LearningOpportunityProvider>(providers);
+        return new ArrayList<Provider>(providers);
     }
 
     @Override
-    public List<LearningOpportunitySearchResult> searchLearningOpportunities(String term) throws SearchException {
-        List<LearningOpportunitySearchResult> learningOpportunities = new ArrayList<LearningOpportunitySearchResult>();
+    public List<LOSearchResult> searchLearningOpportunities(String term) throws SearchException {
+        List<LOSearchResult> learningOpportunities = new ArrayList<LOSearchResult>();
         String trimmed = term.trim();
         if (!trimmed.isEmpty()) {
             MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>(1);
@@ -104,9 +108,10 @@ public class SearchServiceSolrImpl implements SearchService {
 
             for (SolrDocument doc : response.getResults()) {
                 String parentId = doc.get("parentId") != null ? doc.get("parentId").toString() : null;
-                LearningOpportunitySearchResult lo = new LearningOpportunitySearchResult(
+                String losId = doc.get("losId") != null ? doc.get("losId").toString() : null;
+                LOSearchResult lo = new LOSearchResult(
                         doc.get("id").toString(), doc.get("name").toString(),
-                        doc.get("lopId").toString(), doc.get("lopName").toString(), parentId);
+                        doc.get("lopId").toString(), doc.get("lopName").toString(), parentId, losId);
                 learningOpportunities.add(lo);
             }
         }

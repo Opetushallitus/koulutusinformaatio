@@ -16,9 +16,8 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import com.sun.org.apache.xpath.internal.axes.LocPathIterator;
-import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityProvider;
-import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunitySearchResult;
+import fi.vm.sade.koulutusinformaatio.domain.LOSearchResult;
+import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -29,12 +28,10 @@ import org.apache.solr.common.params.SolrParams;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -79,27 +76,27 @@ public class SearchServiceSolrImplTest {
 
     @Test
     public void testSearchProviders() throws SearchException {
-        List<LearningOpportunityProvider> lops = service.searchLearningOpportunityProviders(
+        List<Provider> lops = service.searchLearningOpportunityProviders(
                 "query", "1.2.3.4", null, Boolean.parseBoolean(null));
         assertEquals(1, lops.size());
     }
 
     @Test
     public void testSearchProvidersEmptyTerm() throws SearchException {
-        List<LearningOpportunityProvider> lops = service.searchLearningOpportunityProviders(
+        List<Provider> lops = service.searchLearningOpportunityProviders(
                 "", "1.2.3.4", null, Boolean.parseBoolean(null));
         assertEquals(0, lops.size());
     }
 
     @Test
     public void testSearchLearningOpportunities() throws SearchException {
-        List<LearningOpportunitySearchResult> results = service.searchLearningOpportunities("query");
+        List<LOSearchResult> results = service.searchLearningOpportunities("query");
         assertEquals(1, results.size());
     }
 
     @Test
     public void testSearchLearningOpportunitiesEmptyTerm() throws SearchException {
-        List<LearningOpportunitySearchResult> results = service.searchLearningOpportunities("");
+        List<LOSearchResult> results = service.searchLearningOpportunities("");
         assertEquals(0, results.size());
     }
 

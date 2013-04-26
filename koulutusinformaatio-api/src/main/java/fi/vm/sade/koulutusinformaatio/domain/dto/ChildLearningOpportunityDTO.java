@@ -18,7 +18,7 @@ package fi.vm.sade.koulutusinformaatio.domain.dto;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Hannu Lyytikainen
@@ -26,18 +26,40 @@ import java.util.List;
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 public class ChildLearningOpportunityDTO {
 
-    private String id;
+    private String losId;
+    private String loiId;
     private String name;
     private String qualification;
     private String degreeTitle;
-    private List<ApplicationOptionDTO> applicationOptions;
+    private ApplicationOptionDTO applicationOption;
+    private List<ChildLORefDTO> related = new ArrayList<ChildLORefDTO>();
 
-    public String getId() {
-        return id;
+    private Date startDate;
+    private List<String> formOfEducation = new ArrayList<String>();
+    private Map<String, String> webLinks;
+    private List<String> formOfTeaching = new ArrayList<String>();
+    private String prerequisite;
+
+    private String translationLanguage;
+    private Set<String> availableTranslationLanguages = new HashSet<String>();
+    private Set<String> teachingLanguages = new HashSet<String>();
+
+    private ParentLOSRefDTO parent;
+
+    public String getLosId() {
+        return losId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setLosId(String losId) {
+        this.losId = losId;
+    }
+
+    public String getLoiId() {
+        return loiId;
+    }
+
+    public void setLoiId(String loiId) {
+        this.loiId = loiId;
     }
 
     public String getName() {
@@ -48,12 +70,12 @@ public class ChildLearningOpportunityDTO {
         this.name = name;
     }
 
-    public List<ApplicationOptionDTO> getApplicationOptions() {
-        return applicationOptions;
+    public ApplicationOptionDTO getApplicationOption() {
+        return applicationOption;
     }
 
-    public void setApplicationOptions(List<ApplicationOptionDTO> applicationOptions) {
-        this.applicationOptions = applicationOptions;
+    public void setApplicationOption(ApplicationOptionDTO applicationOption) {
+        this.applicationOption = applicationOption;
     }
 
     public String getQualification() {
@@ -70,5 +92,87 @@ public class ChildLearningOpportunityDTO {
 
     public void setDegreeTitle(String degreeTitle) {
         this.degreeTitle = degreeTitle;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public List<String> getFormOfEducation() {
+        return formOfEducation;
+    }
+
+    public void setFormOfEducation(List<String> formOfEducation) {
+        this.formOfEducation = formOfEducation;
+    }
+
+    public Map<String, String> getWebLinks() {
+        return webLinks;
+    }
+
+    public void setWebLinks(Map<String, String> webLinks) {
+        this.webLinks = webLinks;
+    }
+
+    public List<String> getFormOfTeaching() {
+        return formOfTeaching;
+    }
+
+    public void setFormOfTeaching(List<String> formOfTeaching) {
+        this.formOfTeaching = formOfTeaching;
+    }
+
+    public String getPrerequisite() {
+        return prerequisite;
+    }
+
+    public void setPrerequisite(String prerequisite) {
+        this.prerequisite = prerequisite;
+    }
+
+    public String getTranslationLanguage() {
+        return translationLanguage;
+
+    }
+
+    public void setTranslationLanguage(String translationLanguage) {
+        this.translationLanguage = translationLanguage;
+    }
+
+    public Set<String> getAvailableTranslationLanguages() {
+        return availableTranslationLanguages;
+    }
+
+    public void setAvailableTranslationLanguages(Set<String> availableTranslationLanguages) {
+        this.availableTranslationLanguages = availableTranslationLanguages;
+    }
+
+    public List<ChildLORefDTO> getRelated() {
+        return related;
+    }
+
+    public Set<String> getTeachingLanguages() {
+        return teachingLanguages;
+    }
+
+    public void setTeachingLanguages(Set<String> teachingLanguages) {
+        this.teachingLanguages = teachingLanguages;
+    }
+
+    public void setRelated(List<ChildLORefDTO> related) {
+        this.related = related;
+
+    }
+
+    public ParentLOSRefDTO getParent() {
+        return parent;
+    }
+
+    public void setParent(ParentLOSRefDTO parent) {
+        this.parent = parent;
     }
 }
