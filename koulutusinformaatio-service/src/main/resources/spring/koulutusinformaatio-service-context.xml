@@ -119,4 +119,12 @@
     </bean>
 
     <bean id="modelMapper" class="org.modelmapper.ModelMapper"/>
+
+    <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+            <list>
+                <bean class="fi.vm.sade.koulutusinformaatio.converter.KoodiTypeToI18nText" />
+            </list>
+        </property>
+    </bean>
 </beans>

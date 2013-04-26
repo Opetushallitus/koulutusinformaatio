@@ -1,11 +1,78 @@
+/*
+ * Copyright (c) 2013 The Finnish Board of Education - Opetushallitus
+ *
+ * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
+ * soon as they will be approved by the European Commission - subsequent versions
+ * of the EUPL (the "Licence");
+ *
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy of the Licence at: http://www.osor.eu/eupl/
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * European Union Public Licence for more details.
+ */
+
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+import fi.vm.sade.koodisto.service.GenericFault;
+import fi.vm.sade.koodisto.service.KoodiService;
+import fi.vm.sade.koodisto.service.types.SearchKoodisCriteriaType;
+import fi.vm.sade.koodisto.service.types.common.KoodiType;
+import fi.vm.sade.koodisto.util.KoodiServiceSearchCriteriaBuilder;
+import fi.vm.sade.koulutusinformaatio.domain.I18nText;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
+import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
 /**
- * Created with IntelliJ IDEA.
- * User: majapuro
- * Date: 4/26/13
- * Time: 10:20 AM
- * To change this template use File | Settings | File Templates.
+ * @author Mikko Majapuro
  */
-public class KoodistoServiceImpl {
+@Service
+public class KoodistoServiceImpl implements KoodistoService {
+
+    private final KoodiService koodiService;
+    private final ConversionService conversionService;
+
+    @Autowired
+    public KoodistoServiceImpl(final KoodiService koodiService, final ConversionService conversionService) {
+        this.koodiService = koodiService;
+        this.conversionService = conversionService;
+    }
+
+    @Override
+    public List<I18nText> search(String koodiUriWithVersion) throws KoodistoException {
+        if (koodiUriWithVersion != null && koodiUriWithVersion.matches("^[^#]+#\\d+$")) {
+            String[] splitted = koodiUriWithVersion.split("#");
+            String koodiUri = splitted[0];
+            Integer version = Integer.parseInt(splitted[1]);
+            List<KoodiType> codes = getKoodiTypes(koodiUri, version);
+            return Lists.transform(codes, new Function<KoodiType, I18nText>() {
+                @Override
+                public I18nText apply(fi.vm.sade.koodisto.service.types.common.KoodiType koodiType) {
+                    return conversionService.convert(koodiType, I18nText.class);
+                }
+            });
+
+        } else {
+            throw new KoodistoException("Illegal arguments: " + koodiUriWithVersion);
+        }
+    }
+
+    private List<KoodiType> getKoodiTypes(final String koodiUri, int version) throws KoodistoException {
+        SearchKoodisCriteriaType criteria = KoodiServiceSearchCriteriaBuilder.koodiByUriAndVersion(koodiUri, version);
+        try {
+            List<KoodiType> codes = koodiService.searchKoodis(criteria);
+            return codes;
+        } catch (GenericFault e) {
+            throw new KoodistoException(e);
+        }
+    }
 }
