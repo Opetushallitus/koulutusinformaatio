@@ -58,7 +58,7 @@
 				<include name="koulutusinformaatio-app*.war"/>
 			</fileset>
 			
-			<fileset dir="${user.home}/.m2/repository/org/apache/solr/solr/4.2.1">
+			<fileset dir="${maven.repo}/org/apache/solr/solr/4.2.1">
 				<include name="*.war"/>
 			</fileset>
 		</scp>
