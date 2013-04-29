@@ -14,16 +14,16 @@ describe('SearchController', function() {
     describe('when initial query string is given in path', function() {
         var $httpBackend_;
         var $controller_ ;
-        var LearningOpportunity_;
+        var SearchLearningOpportunity_;
         var ParentLearningOpportunity_;
         var SearchService_;
         var $location_;
 
-        beforeEach(inject(function($httpBackend, $rootScope, $controller, LearningOpportunity, 
+        beforeEach(inject(function($httpBackend, $rootScope, $controller, SearchLearningOpportunity, 
                 ParentLearningOpportunity, SearchService, $location) {
             $httpBackend_ = $httpBackend;
             $controller_ = $controller;
-            LearningOpportunity_ = LearningOpportunity;
+            SearchLearningOpportunity_ = SearchLearningOpportunity;
             ParentLearningOpportunity_ = ParentLearningOpportunity;
             SearchService_ = SearchService;
             $location_ = $location;
@@ -36,38 +36,38 @@ describe('SearchController', function() {
         });
 
         it('should have scope variables set when an empty query string is given', function() {
-            spyOn(LearningOpportunity_, 'query').andCallThrough();
+            spyOn(SearchLearningOpportunity_, 'query').andCallThrough();
             
             ctrl = $controller_(SearchCtrl, {
                 $scope: scope, 
                 $routeParams: {}, 
-                LearningOpportunity: LearningOpportunity_,
+                SearchLearningOpportunity: SearchLearningOpportunity_,
                 ParentLearningOpportunity: ParentLearningOpportunity_,
                 SearchService: SearchService_,
                 $location: $location_
             });
 
-            expect(LearningOpportunity_.query).not.toHaveBeenCalled();
+            expect(SearchLearningOpportunity_.query).not.toHaveBeenCalled();
             expect(scope.queryString).toBeUndefined();
             expect(scope.loResult).toBeUndefined();
         });
 
         it('should have scope variables set when a proper query string is given', function() {
-            spyOn(LearningOpportunity_, 'query').andCallThrough();
+            spyOn(SearchLearningOpportunity_, 'query').andCallThrough();
 
             $httpBackend_.when('GET', '../lo/search/' + searchterms.kasityo).respond(200, '[]');
             ctrl = $controller_(SearchCtrl, {
                 $scope: scope, 
                 $routeParams: {queryString: searchterms.kasityo}, 
-                LearningOpportunity: LearningOpportunity_,
+                SearchLearningOpportunity: SearchLearningOpportunity_,
                 ParentLearningOpportunity: ParentLearningOpportunity_,
                 SearchService: SearchService_,
                 $location: $location_
             });
             $httpBackend_.flush();
 
-            expect(LearningOpportunity_.query).toHaveBeenCalled();
-            expect(LearningOpportunity_.query.calls.length).toEqual(1);
+            expect(SearchLearningOpportunity_.query).toHaveBeenCalled();
+            expect(SearchLearningOpportunity_.query.calls.length).toEqual(1);
             expect(scope.queryString).toEqual(searchterms.kasityo);
             expect(scope.loResult.length).toEqual(0);
         });
@@ -76,7 +76,7 @@ describe('SearchController', function() {
             ctrl = $controller_(SearchCtrl, {
                 $scope: scope, 
                 $routeParams: {}, 
-                LearningOpportunity: LearningOpportunity_,
+                SearchLearningOpportunity: SearchLearningOpportunity_,
                 ParentLearningOpportunity: ParentLearningOpportunity_,
                 SearchService: SearchService_,
                 $location: $location_
@@ -93,7 +93,7 @@ describe('SearchController', function() {
             ctrl = $controller_(SearchCtrl, {
                 $scope: scope, 
                 $routeParams: {}, 
-                LearningOpportunity: LearningOpportunity_,
+                SearchLearningOpportunity: SearchLearningOpportunity_,
                 ParentLearningOpportunity: ParentLearningOpportunity_,
                 SearchService: SearchService_,
                 $location: $location_

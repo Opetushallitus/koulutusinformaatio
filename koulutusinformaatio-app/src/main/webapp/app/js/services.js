@@ -5,7 +5,7 @@ angular.module('kiApp.services', ['ngResource']).
 /**
  *  Resource for making string based search
  */
- factory('LearningOpportunity', function($resource) {
+ factory('SearchLearningOpportunity', function($resource) {
     return $resource('../lo/search/:queryString', {}, {
         query: {method:'GET', isArray:true}
     });

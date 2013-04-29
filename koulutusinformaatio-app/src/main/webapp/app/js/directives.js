@@ -73,33 +73,40 @@
 }]).
 
 directive('renderTextBlock', function() {
-    return function(scope, element, attrs) {
-        var title;
-        var content;
+    return {
+        restrict: 'E,A',
+        replace: true,
+        link: function(scope, element, attrs) {
+            var title;
+            var content;
 
-        attrs.$observe('title', function(value) {
-            title = value;
-            update();
-        });
+            attrs.$observe('title', function(value) {
+                title = value;
+                update();
+            });
 
-        attrs.$observe('content', function(value) {
-            content = value;
-            update();
-        });
+            attrs.$observe('content', function(value) {
+                content = value;
+                update();
+            });
 
-        var update = function() {
-            if (content) {
-                var titleElement = createTitleElement(title, attrs.anchor, attrs.level);
-                element.append(titleElement);
-                element.append(content);
+            var update = function() {
+                if (content) {
+                    var titleElement = createTitleElement(title, attrs.anchor, attrs.level);
+                    var contentElement = $('<p></p>');
+                    contentElement.append(content);
+
+                    element.replaceWith(titleElement);
+                    contentElement.insertAfter(titleElement);
+                }
             }
-        }
 
-        var createTitleElement = function(text, anchortag, level) {
-            if (level) {
-                return $('<h' + level + ' id="' + anchortag + '">' + text + '</h' + level + '>');
-            } else {
-                return $('<h3 id="' + anchortag + '">' + text + '</h3>');
+            var createTitleElement = function(text, anchortag, level) {
+                if (level) {
+                    return $('<h' + level + ' id="' + anchortag + '">' + text + '</h' + level + '>');
+                } else {
+                    return $('<h3 id="' + anchortag + '">' + text + '</h3>');
+                }
             }
         }
     };

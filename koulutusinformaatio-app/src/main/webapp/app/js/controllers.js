@@ -15,12 +15,12 @@
 /**
  *  Controller for search functionality 
  */
- function SearchCtrl($scope, $routeParams, LearningOpportunity, SearchService, TitleService, $location) {
+ function SearchCtrl($scope, $routeParams, SearchLearningOpportunity, SearchService, TitleService, $location) {
     $scope.queryString = SearchService.getTerm();
     TitleService.setTitle('Hakutulokset');
 
     if ($routeParams.queryString) {
-        $scope.loResult = LearningOpportunity.query({queryString: $routeParams.queryString});
+        $scope.loResult = SearchLearningOpportunity.query({queryString: $routeParams.queryString});
         $scope.queryString = $routeParams.queryString;
         $scope.showFilters = $scope.queryString ? true : false;
         SearchService.setTerm($routeParams.queryString);
