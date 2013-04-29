@@ -78,11 +78,10 @@
                  passphrase="${ssh.keypass}" trust="true" failonerror="false" />
 
 	<echo>Wait for service http-url</echo>
-	<http url="http://${tomcat-host}:${tomcat-port}"/>
-	<condition property="app-url" value="https://itest-oppija.oph.ware.fi/app/#/index/">
+	<condition property="app-url" value="http://itest-oppija.oph.ware.fi/app/">
        		<isset property="integration-test" />
         </condition>
-	<condition property="app-url" value="http://test-oppija.oph.ware.fi/app/#/index/">
+	<condition property="app-url" value="http://test-oppija.oph.ware.fi/app/">
        		<isset property="system-test" />
        	</condition>
 
