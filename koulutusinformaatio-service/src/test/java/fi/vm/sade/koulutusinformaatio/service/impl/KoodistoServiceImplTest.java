@@ -82,8 +82,23 @@ public class KoodistoServiceImplTest {
         assertEquals("nimi_sv", result.get(0).getTranslations().get("sv"));
     }
 
+    @Test
+    public void testSearchWithNoVersion() throws KoodistoException {
+        List<I18nText> result = koodistoService.search("test_1234");
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertNotNull(result.get(0).getTranslations());
+        assertEquals("nimi_fi", result.get(0).getTranslations().get("fi"));
+        assertEquals("nimi_sv", result.get(0).getTranslations().get("sv"));
+    }
+
     @Test(expected = KoodistoException.class)
-    public void testSearchWithNonValidUrl() throws KoodistoException {
-        koodistoService.search("foobar");
+    public void testSearchWithEmptyUri() throws KoodistoException {
+        koodistoService.search("");
+    }
+
+    @Test(expected = KoodistoException.class)
+    public void testSearchWithNullUri() throws KoodistoException {
+        koodistoService.search(null);
     }
 }

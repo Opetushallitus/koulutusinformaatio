@@ -30,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,31 +49,44 @@ public class KoodistoServiceImpl implements KoodistoService {
     }
 
     @Override
-    public List<I18nText> search(String koodiUriWithVersion) throws KoodistoException {
-        if (koodiUriWithVersion != null && koodiUriWithVersion.matches("^[^#]+#\\d+$")) {
-            String[] splitted = koodiUriWithVersion.split("#");
-            String koodiUri = splitted[0];
+    public List<I18nText> search(String koodiUri) throws KoodistoException {
+        if (koodiUri != null && koodiUri.matches("^[^#]+#\\d+$")) {
+            String[] splitted = koodiUri.split("#");
+            String uri = splitted[0];
             Integer version = Integer.parseInt(splitted[1]);
-            List<KoodiType> codes = getKoodiTypes(koodiUri, version);
-            return Lists.transform(codes, new Function<KoodiType, I18nText>() {
-                @Override
-                public I18nText apply(fi.vm.sade.koodisto.service.types.common.KoodiType koodiType) {
-                    return conversionService.convert(koodiType, I18nText.class);
-                }
-            });
-
+            return convert(getKoodiTypes(uri, version));
+        } else if (koodiUri != null && !koodiUri.isEmpty()) {
+             return convert(getKoodiTypes(koodiUri));
         } else {
-            throw new KoodistoException("Illegal arguments: " + koodiUriWithVersion);
+            throw new KoodistoException("Illegal arguments: " + koodiUri);
         }
     }
 
     private List<KoodiType> getKoodiTypes(final String koodiUri, int version) throws KoodistoException {
         SearchKoodisCriteriaType criteria = KoodiServiceSearchCriteriaBuilder.koodiByUriAndVersion(koodiUri, version);
+        return searchKoodis(criteria);
+    }
+
+    private List<KoodiType> getKoodiTypes(final String koodiUri) throws KoodistoException {
+        SearchKoodisCriteriaType criteria = KoodiServiceSearchCriteriaBuilder.latestKoodisByUris(koodiUri);
+        return searchKoodis(criteria);
+    }
+
+    private List<KoodiType> searchKoodis(final SearchKoodisCriteriaType criteria) throws KoodistoException {
         try {
             List<KoodiType> codes = koodiService.searchKoodis(criteria);
             return codes;
         } catch (GenericFault e) {
             throw new KoodistoException(e);
         }
+    }
+
+    private List<I18nText> convert(final List<KoodiType> codes) {
+        return Lists.transform(codes, new Function<KoodiType, I18nText>() {
+            @Override
+            public I18nText apply(fi.vm.sade.koodisto.service.types.common.KoodiType koodiType) {
+                return conversionService.convert(koodiType, I18nText.class);
+            }
+        });
     }
 }
