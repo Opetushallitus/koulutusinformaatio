@@ -38,6 +38,22 @@
         <ehcache.version>2.4.8</ehcache.version> <!-- sallii monta samannimista cachemanageria -->
     </properties>
 
+    <profiles>
+        <profile>
+            <id>integration-test</id>
+            <build>
+                <testResources>
+                    <testResource>
+                        <directory>config/integration-test</directory>
+                    </testResource>
+                    <testResource>
+                        <directory>src/test/resources</directory>
+                    </testResource>
+                </testResources>
+            </build>
+        </profile>
+
+    </profiles>
     <repositories>
         <repository>
             <id>oph-sade-artifactory-snapshots</id>
