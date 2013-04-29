@@ -20,7 +20,7 @@
     <target name="deploy-to-remote-tomcat">
 <!--
 	shell command:
-	#ant -Dtomcat-host=luokka -Dtomcat-port=8307
+	#ant -Dtomcat-host=luokka -Dtomcat-port=8406
 -->
 		<property name="oph.name" value="koulutusinformaatio"/>
 		<property name="pom.version" value="5.0-SNAPSHOT"/>
@@ -31,7 +31,6 @@
 		<property name="ssh.keyfile" location="${user.home}/.ssh/id_rsa"/>
 		<property name="ssh.keypass" value=""/>
 
-		
         <echo>Stop Tomcat</echo>
         <sshexec command="/etc/init.d/${tomcat.name} stop"
                  host="${tomcat-host}" username="tomcat" keyfile="${ssh.keyfile}"
@@ -53,7 +52,6 @@
         <echo>Copy files to ${tomcat-host}</echo>
 		<scp todir="tomcat@${tomcat-host}:${tomcat.home}/webapps/"
                keyfile="${ssh.keyfile}" passphrase="${ssh.keypass}" >
-			
 			<fileset dir="koulutusinformaatio-app/target">
 				<include name="koulutusinformaatio-app*.war"/>
 			</fileset>
@@ -79,17 +77,26 @@
                  host="${tomcat-host}" username="tomcat" keyfile="${ssh.keyfile}"
                  passphrase="${ssh.keypass}" trust="true" failonerror="false" />
 
-		<echo>Wait for service http-url</echo>
-		<waitfor maxwait="3000" checkevery="500" >
-			<http url="http://${tomcat-host}:${tomcat-port}"/>
-		</waitfor>
-		<fail message="App did not come up.  Check your log files, fix and try again.  Good Luck :-).">     
-			<condition>
-				<not>
-					<http url="http://${tomcat-host}:${tomcat-port}" />
-				</not>
-			</condition>
-		</fail>
+	<echo>Wait for service http-url</echo>
+	<http url="http://${tomcat-host}:${tomcat-port}"/>
+	<condition property="app-url" value="https://itest-oppija.oph.ware.fi/app/#/index/">
+       		<isset property="integration-test" />
+        </condition>
+	<condition property="app-url" value="http://test-oppija.oph.ware.fi/app/#/index/">
+       		<isset property="system-test" />
+       	</condition>
+
+        <echo message="Trying ${app-url}" />
+	<waitfor maxwait="3000" checkevery="500" >
+		<http url="${app-url}"/>
+	</waitfor>
+	<fail message="App did not come up.  Check your log files, fix and try again.  Good Luck :-).">     
+		<condition>
+			<not>
+				<http url="${app-url}" />
+			</not>
+		</condition>
+	</fail>
 		
         <echo>Successfully deployed to ${tomcat-host}</echo>
     </target>
