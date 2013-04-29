@@ -86,6 +86,10 @@ service('TitleService', function() {
 
             // TODO: could this be done in angular way?
             $('title').trigger('updatetitle', [title]);
+        },
+
+        getTitle: function() {
+            return title;
         }
     }
 });

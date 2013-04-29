@@ -3,7 +3,7 @@
 /**
  *  Controller for index view
  */
- function IndexCtrl($scope, $routeParams, LearningOpportunity, SearchService, TitleService, $location) {
+ function IndexCtrl($scope, TitleService) {
     TitleService.setTitle('Etusivu');
 
     // launch navigation script
@@ -49,7 +49,7 @@
 /**
  *  Controller for info views (parent and child)
  */
- function InfoCtrl($scope, $routeParams, ParentLearningOpportunity, SearchService, LODataService, TitleService, $location, $anchorScroll) {
+ function InfoCtrl($scope, $routeParams, ParentLearningOpportunity, SearchService, LODataService, TitleService) {
     $scope.queryString = SearchService.getTerm();
 
     var setTitle = function(parent, child) {
@@ -82,6 +82,7 @@
 
     $scope.initTabs = tabsMenu.build;
 
+    // TODO: remove these after we get some real data (references in templates as well)
     $scope.lorem = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla posuere, nisl eu gravida elementum, risus risus varius quam, eu rutrum lectus purus quis arcu. Donec euismod porta mi, sed imperdiet ligula sagittis et. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed ut felis sit amet ipsum eleifend rhoncus. Donec sed viverra velit. Morbi mollis pellentesque mollis.';
     $scope.loremshort = 'Etiam sit amet urna justo, vitae luctus eros. In hac habitasse platea dictumst. Suspendisse ut ultricies enim. Etiam quis ante massa, sit amet interdum nulla. Donec ultrices velit nec turpis ullamcorper pharetra.';
 
