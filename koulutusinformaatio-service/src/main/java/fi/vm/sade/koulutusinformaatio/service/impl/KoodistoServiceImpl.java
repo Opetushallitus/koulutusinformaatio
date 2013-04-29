@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.googlecode.ehcache.annotations.Cacheable;
 import fi.vm.sade.koodisto.service.GenericFault;
 import fi.vm.sade.koodisto.service.KoodiService;
 import fi.vm.sade.koodisto.service.types.SearchKoodisCriteriaType;
@@ -26,11 +27,12 @@ import fi.vm.sade.koodisto.util.KoodiServiceSearchCriteriaBuilder;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,6 +43,7 @@ public class KoodistoServiceImpl implements KoodistoService {
 
     private final KoodiService koodiService;
     private final ConversionService conversionService;
+    public static final Logger LOGGER = LoggerFactory.getLogger(KoodistoServiceImpl.class);
 
     @Autowired
     public KoodistoServiceImpl(final KoodiService koodiService, final ConversionService conversionService) {
@@ -49,7 +52,9 @@ public class KoodistoServiceImpl implements KoodistoService {
     }
 
     @Override
+    @Cacheable(cacheName = "koodiCache")
     public List<I18nText> search(String koodiUri) throws KoodistoException {
+        LOGGER.debug("search koodi: " + koodiUri);
         if (koodiUri != null && koodiUri.matches("^[^#]+#\\d+$")) {
             String[] splitted = koodiUri.split("#");
             String uri = splitted[0];
