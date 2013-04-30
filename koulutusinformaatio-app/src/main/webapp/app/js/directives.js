@@ -72,6 +72,9 @@
     };
 }]).
 
+/**
+ *  Renders a text block with title. If no content exists the whole text block gets removed. 
+ */
 directive('renderTextBlock', function() {
     return {
         restrict: 'E,A',
@@ -112,6 +115,9 @@ directive('renderTextBlock', function() {
     };
 }).
 
+/**
+ *  Updates the title element of the page.
+ */
 directive('kiAppTitle', ['TitleService', function(TitleService) {
     return function(scope, element, attrs) {
         $(element).on('updatetitle', function(e, param) {

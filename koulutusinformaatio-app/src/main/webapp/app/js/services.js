@@ -23,11 +23,13 @@ angular.module('kiApp.services', ['ngResource']).
 /**
  *  Resource for requesting AO data
  */
+ /* currently not in use
  factory('ApplicationOption', function($resource) {
     return $resource('../ao/search/:asId/:lopId', {}, {
         query: {method:'GET', isArray:true}
     });
 }).
+*/
 
 /**
  *  Service taking care of search term saving
@@ -77,6 +79,9 @@ angular.module('kiApp.services', ['ngResource']).
     };
 }).
 
+/**
+ *  Service handling page titles
+ */
 service('TitleService', function() {
     var title;
     
