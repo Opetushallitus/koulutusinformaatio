@@ -76,10 +76,7 @@
  *  Renders a text block with title. If no content exists the whole text block gets removed. 
  */
 directive('renderTextBlock', function() {
-    return {
-        restrict: 'E,A',
-        replace: true,
-        link: function(scope, element, attrs) {
+    return function(scope, element, attrs) {
             var title;
             var content;
 
@@ -95,12 +92,15 @@ directive('renderTextBlock', function() {
 
             var update = function() {
                 if (content) {
+                    $(element).empty();
                     var titleElement = createTitleElement(title, attrs.anchor, attrs.level);
-                    var contentElement = $('<p></p>');
-                    contentElement.append(content);
+                    element.append(titleElement);
+                    element.append(content);
+                    //var contentElement = $('<p></p>');
+                    //contentElement.append(content);
+                    //element.replaceWith(titleElement);
 
-                    element.replaceWith(titleElement);
-                    contentElement.insertAfter(titleElement);
+                    //contentElement.insertAfter(titleElement);
                 }
             }
 
@@ -112,7 +112,6 @@ directive('renderTextBlock', function() {
                 }
             }
         }
-    };
 }).
 
 /**
