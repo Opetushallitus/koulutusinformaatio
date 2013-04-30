@@ -18,10 +18,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import fi.vm.sade.koulutusinformaatio.client.TarjontaClient;
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityData;
-import fi.vm.sade.koulutusinformaatio.service.EducationDataService;
-import fi.vm.sade.koulutusinformaatio.service.IndexerService;
-import fi.vm.sade.koulutusinformaatio.service.ParserService;
-import fi.vm.sade.koulutusinformaatio.service.UpdateService;
+import fi.vm.sade.koulutusinformaatio.service.*;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,15 +33,15 @@ import java.io.IOException;
 @Service
 public class UpdateServiceImpl implements UpdateService {
 
-    private TarjontaClient tarjontaClient;
+    private TarjontaService tarjontaService;
     private ParserService parserService;
     private IndexerService indexerService;
     private EducationDataService educationDataService;
 
     @Autowired
-    public UpdateServiceImpl(TarjontaClient tarjontaClient, ParserService parserService,
+    public UpdateServiceImpl(TarjontaService tarjontaService, ParserService parserService,
                              IndexerService indexerService, EducationDataService educationDataService) {
-        this.tarjontaClient = tarjontaClient;
+        this.tarjontaService = tarjontaService;
         this.parserService = parserService;
         this.indexerService = indexerService;
         this.educationDataService = educationDataService;
@@ -52,19 +49,21 @@ public class UpdateServiceImpl implements UpdateService {
 
     @Override
     public void updateEducationData() {
+        tarjontaService.findLearningOpportunity("1234");
 
-        Source source = tarjontaClient.retrieveTarjontaAsSource();
-        try {
-            LearningOpportunityData loData = parserService.parse(source);
-            this.indexerService.updateIndexes(loData);
-            this.educationDataService.save(loData);
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        } catch (SolrServerException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+//        Source source = tarjontaClient.retrieveTarjontaAsSource();
+//        try {
+//            LearningOpportunityData loData = parserService.parse(source);
+//            this.indexerService.updateIndexes(loData);
+//            this.educationDataService.save(loData);
+//        } catch (JAXBException e) {
+//            e.printStackTrace();
+//        } catch (SolrServerException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
 }

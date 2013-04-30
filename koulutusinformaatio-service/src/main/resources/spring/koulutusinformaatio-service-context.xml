@@ -17,11 +17,13 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jaxrs="http://cxf.apache.org/jaxrs"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
-
         http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context.xsd">
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://cxf.apache.org/jaxrs
+        http://cxf.apache.org/schemas/jaxrs.xsd">
 
     <context:property-placeholder
             location="classpath:koulutusinformaatio.properties, file:///${user.home:''}/oph-configuration/koulutusinformaatio.properties"
@@ -107,4 +109,21 @@
             </list>
         </property>
     </bean>
+
+    <jaxrs:client id="komoResource"
+                  address="${tarjonta.api.rest.url}"
+                  serviceClass="fi.vm.sade.tarjonta.service.resources.KomoResource"
+                  inheritHeaders="true">
+        <jaxrs:providers>
+            <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>
+        </jaxrs:providers>
+    </jaxrs:client>
+
+    <bean id="tarjontaService"
+          class="fi.vm.sade.koulutusinformaatio.service.impl.TarjontaServiceImpl">
+        <constructor-arg>
+            <ref bean="komoResource"/>
+        </constructor-arg>
+    </bean>
+
 </beans>
