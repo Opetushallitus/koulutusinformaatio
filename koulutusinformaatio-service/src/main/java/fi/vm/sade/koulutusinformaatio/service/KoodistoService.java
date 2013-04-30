@@ -26,5 +26,11 @@ import java.util.List;
  */
 public interface KoodistoService {
 
-    List<I18nText> search(final String koodiUriWithVersion) throws KoodistoException;
+    /**
+     * Search localized texts by given koodi uri
+     * @param koodiUri koodi uri with specified version e.g. "tutkintonimikkeet_10129#1" or the latest version "tutkintonimikkeet_10129"
+     * @return list of I18nText objects
+     * @throws KoodistoException
+     */
+    List<I18nText> search(final String koodiUri) throws KoodistoException;
 }
