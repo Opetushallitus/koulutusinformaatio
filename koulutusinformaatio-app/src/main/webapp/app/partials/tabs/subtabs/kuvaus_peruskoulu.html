@@ -18,12 +18,10 @@
 <div render-text-block data-title="Koulutuksen tavoite" data-content="{{parentLO.description.educationAndProfessionalGoals}}"></div>
 <div render-text-block data-title="Koulutusohjelman valinta" data-content="{{parentLO.description.selectionOfDegreeProgram}}"></div>
 <div render-text-block data-title="Koulutuksen tavoite" data-content="{{parentLO.description.educationAndProfessionalGoals}}"></div>
-
 <h3>Peruskoulupohjaisena järjestettävä koulutus</h3>
 <ul>
     <li ng-repeat="child in parentLO.children">
         <a href="#/info/{{parentId}}/{{child.id}}">{{child.degreeTitle}}</a>
     </li>
 </ul>
-
 <div render-text-block data-title="Jatko-opintomahdollisuudet" data-content="{{parentLO.description.accessToFurtherStudies}}"></div>

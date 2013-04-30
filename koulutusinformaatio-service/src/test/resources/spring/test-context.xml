@@ -23,7 +23,7 @@
        >
 
     <context:property-placeholder
-            location="classpath:haku.properties, classpath:generic-events.properties, file:///${user.home:''}/oph-configuration/haku.properties"
+            location="classpath:koulutusinformaatio.properties, classpath:generic-events.properties"
             ignore-resource-not-found="true"/>
 
     <bean id="mongo" class="com.mongodb.Mongo">

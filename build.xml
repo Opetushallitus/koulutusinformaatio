@@ -15,62 +15,89 @@
   ~ European Union Public Licence for more details.
   -->
 
-<project name="koulutusinformaatio-deploy" basedir="." >
+<project name="koulutusinformaatio-deploy" basedir="." default="deploy-to-remote-tomcat" >
 
     <target name="deploy-to-remote-tomcat">
-        <!--
-        <echo>Backup old koulutusinformaatio.war</echo>
-        <sshexec command="export DATE=`date +%F_%H-%M-%S`; mkdir $DATE ; cp -rf /data00/tomcat/apache-tomcat-7.0.29/webapps/ROOT $DATE"
-                host="${tomcat-host}" username="tomcat" keyfile="${user.home}/.ssh/id_rsa"
-                passphrase="" trust="true" failonerror="false" />
-        -->
-        <echo>Stop Tomcat</echo>
-        <sshexec command="/etc/init.d/tomcat stop"
-                 host="${tomcat-host}" username="tomcat" keyfile="${user.home}/.ssh/id_rsa"
-                 passphrase="" trust="true" failonerror="false" />
-        <echo>Wait Tomcat to stop...</echo>
+<!--
+	shell command:
+	#ant -Dtomcat-host=luokka -Dtomcat-port=8406
+-->
+		<property name="oph.name" value="koulutusinformaatio"/>
+		<property name="pom.version" value="5.0-SNAPSHOT"/>
 
+		<property name="maven.repo" value="${user.home}/.m2/repository"/>
+		<property name="tomcat.name" value="tomcat_${oph.name}"/>
+		<property name="tomcat.home" value="/data00/oph/${oph.name}/apache-tomcat-7.0.29"/>
+		<property name="ssh.keyfile" location="${user.home}/.ssh/id_rsa"/>
+		<property name="ssh.keypass" value=""/>
+
+        <echo>Stop Tomcat</echo>
+        <sshexec command="/etc/init.d/${tomcat.name} stop"
+                 host="${tomcat-host}" username="tomcat" keyfile="${ssh.keyfile}"
+                 passphrase="${ssh.keypass}" trust="true" failonerror="false" />
+
+		<echo>Wait Tomcat to stop...</echo>
         <waitfor maxwait="3000" checkevery="500">
             <not>
-                <socket server="${tomcat-host}" port="8282"/>
+                <socket server="${tomcat-host}" port="${tomcat-port}" />
             </not>
         </waitfor>
-
         <echo>Tomcat stopped.</echo>
 
         <echo>Clean Tomcat</echo>
-        <sshexec command="rm -rf /data00/tomcat/apache-tomcat-7.0.29/webapps/koulutusinformaatio-app* /data00/tomcat/apache-tomcat-7.0.29/webapps/ROOT /data00/tomcat/apache-tomcat-7.0.29/work/* /data00/tomcat/apache-tomcat-7.0.29/temp/*"
-                 host="${tomcat-host}" username="tomcat" keyfile="${user.home}/.ssh/id_rsa"
-                 passphrase="" trust="true" failonerror="false" />
+        <sshexec command="rm -rf ${tomcat.home}/webapps/* ${tomcat.home}/work/* ${tomcat.home}/temp/*"
+                 host="${tomcat-host}" username="tomcat" keyfile="${ssh.keyfile}"
+                 passphrase="${ssh.keypass}" trust="true" failonerror="false" />
 
-        <echo>Copy new koulutusinformaatio-app.war</echo>
+        <echo>Copy files to ${tomcat-host}</echo>
+		<scp todir="tomcat@${tomcat-host}:${tomcat.home}/webapps/"
+               keyfile="${ssh.keyfile}" passphrase="${ssh.keypass}" >
+			<fileset dir="koulutusinformaatio-app/target">
+				<include name="koulutusinformaatio-app*.war"/>
+			</fileset>
+			
+			<fileset dir="${maven.repo}/org/apache/solr/solr/4.2.1">
+				<include name="*.war"/>
+			</fileset>
+		</scp>
 
-    	<available file="koulutusinformaatio-app/target/koulutusinformaatio-app.war"
-    	           property="koulutusinformaatio.war.path"
-    	           value="koulutusinformaatio-app/target/koulutusinformaatio-app.war" />
-    	<available file="target/koulutusinformaatio-app.war"
-    	           property="koulutusinformaatio.war.path"
-    	           value="target/koulutusinformaatio-app.war" />
-    	
-	   	<scp file="${koulutusinformaatio.war.path}"	
-	         todir="tomcat@${tomcat-host}:/data00/tomcat/apache-tomcat-7.0.29/webapps/"
-	         keyfile="${user.home}/.ssh/id_rsa"
-	         />
-
-        <echo>rename koulutusinformaatio-app.war as ROOT</echo>
-        <sshexec command="rm -rf /data00/tomcat/apache-tomcat-7.0.29/webapps/ROOT;
-        mkdir /data00/tomcat/apache-tomcat-7.0.29/webapps/ROOT;
-        unzip -qo -d/data00/tomcat/apache-tomcat-7.0.29/webapps/ROOT /data00/tomcat/apache-tomcat-7.0.29/webapps/koulutusinformaatio-app.war;
-        rm -rf /data00/tomcat/apache-tomcat-7.0.29/webapps/koulutusinformaatio-app.war"
-                 host="${tomcat-host}" username="tomcat" keyfile="${user.home}/.ssh/id_rsa"
-                 passphrase="" trust="true" failonerror="false" />
-
+		<!-- eiks koulutusinformaatio-service tuotakkaan warria? -->
+		<echo>Unzip files...</echo>
+        <sshexec command="
+				mkdir ${tomcat.home}/webapps/ROOT;
+				unzip -qo -d${tomcat.home}/webapps/ROOT ${tomcat.home}/webapps/koulutusinformaatio-app*.war;
+				rm -rf ${tomcat.home}/webapps/koulutusinformaatio-app*.war;
+				mv ${tomcat.home}/webapps/solr*.war ${tomcat.home}/webapps/solr.war;
+				"
+                 host="${tomcat-host}" username="tomcat" keyfile="${ssh.keyfile}"
+                 passphrase="${ssh.keypass}" trust="true" failonerror="false" />
+				 
         <echo>Start Tomcat</echo>
-        <sshexec command="/etc/init.d/tomcat start"
-                 host="${tomcat-host}" username="tomcat" keyfile="${user.home}/.ssh/id_rsa"
-                 passphrase="" trust="true" failonerror="false" />
+        <sshexec command="/etc/init.d/${tomcat.name} start"
+                 host="${tomcat-host}" username="tomcat" keyfile="${ssh.keyfile}"
+                 passphrase="${ssh.keypass}" trust="true" failonerror="false" />
 
-        <echo>Successfully deployed koulutusinformaatio-app.war to ${tomcat-host}</echo>
+	<echo>Wait for service http-url</echo>
+	<condition property="app-url" value="http://itest-oppija.oph.ware.fi/app/">
+       		<isset property="integration-test" />
+        </condition>
+	<condition property="app-url" value="http://test-oppija.oph.ware.fi/app/">
+       		<isset property="system-test" />
+       	</condition>
+
+        <echo message="Trying ${app-url}" />
+	<waitfor maxwait="3000" checkevery="500" >
+		<http url="${app-url}"/>
+	</waitfor>
+	<fail message="App did not come up.  Check your log files, fix and try again.  Good Luck :-).">     
+		<condition>
+			<not>
+				<http url="${app-url}" />
+			</not>
+		</condition>
+	</fail>
+		
+        <echo>Successfully deployed to ${tomcat-host}</echo>
     </target>
 
 </project>
