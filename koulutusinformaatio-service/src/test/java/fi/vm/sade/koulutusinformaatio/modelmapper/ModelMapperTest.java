@@ -51,13 +51,13 @@ public class ModelMapperTest {
         ao.setId("8.8.8");
         ao.setApplicationSystemId("3.4.3");
         ao.setEducationDegree("e degree");
-        ao.setName("ao name");
+        ao.setName(TestUtil.createI18nText("ao name", "ao name", "ao name"));
         applicationOptions.add(ao);
         parent.setApplicationOptions(applicationOptions);
 
-        ChildLearningOpportunity child = new ChildLearningOpportunity("111", "child1Name");
+        ChildLearningOpportunity child = new ChildLearningOpportunity("111", TestUtil.createI18nText("child1Name", "child1Name", "child1Name"));
         child.setApplicationOptions(applicationOptions);
-        ChildLearningOpportunity child2 = new ChildLearningOpportunity("222", "child2Name");
+        ChildLearningOpportunity child2 = new ChildLearningOpportunity("222", TestUtil.createI18nText("child2Name", "child2Name", "child2Name"));
         child2.setApplicationOptions(applicationOptions);
 
         List<ChildLearningOpportunity> children = new ArrayList<ChildLearningOpportunity>();
@@ -87,12 +87,12 @@ public class ModelMapperTest {
     public void testMapParentLearningOpportunityEntityToDomainObject() {
         ParentLearningOpportunityEntity entity = new ParentLearningOpportunityEntity();
         entity.setId("999");
-        entity.setName("entityName");
+        entity.setName(TestUtil.createI18nTextEntity("entityName", "entityName", "entityName"));
 
         List<ApplicationOptionEntity> aos = new ArrayList<ApplicationOptionEntity>();
         ApplicationOptionEntity ao = new ApplicationOptionEntity();
         ao.setId("900");
-        ao.setName("ao name");
+        ao.setName(TestUtil.createI18nTextEntity("ao name", "ao name", "ao name"));
         ao.setApplicationSystemId("54543");
         ao.setEducationDegree("degree");
         aos.add(ao);
@@ -100,12 +100,12 @@ public class ModelMapperTest {
         List<ChildLearningOpportunityEntity> children = new ArrayList<ChildLearningOpportunityEntity>();
         ChildLearningOpportunityEntity child = new ChildLearningOpportunityEntity();
         child.setId("444");
-        child.setName("child1EntityName");
+        child.setName(TestUtil.createI18nTextEntity("child1EntityName", "child1EntityName", "child1EntityName"));
         child.setApplicationOptions(aos);
         children.add(child);
         ChildLearningOpportunityEntity child2 = new ChildLearningOpportunityEntity();
         child2.setId("555");
-        child2.setName("child2EntityName");
+        child2.setName(TestUtil.createI18nTextEntity("child2EntityName", "child2EntityName", "child2EntityName"));
         child2.setApplicationOptions(aos);
         children.add(child2);
 

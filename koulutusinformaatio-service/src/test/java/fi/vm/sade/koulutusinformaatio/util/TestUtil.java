@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.util;
 
 import com.google.common.collect.Maps;
+import fi.vm.sade.koulutusinformaatio.dao.entity.I18nTextEntity;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 
 import java.util.Map;
@@ -32,5 +33,15 @@ public class TestUtil {
         values.put("sv", sv);
         values.put("en", en);
         return new I18nText(values);
+    }
+
+    public static I18nTextEntity createI18nTextEntity(String fi, String sv, String en) {
+        Map<String, String> values = Maps.newHashMap();
+        values.put("fi", fi);
+        values.put("sv", sv);
+        values.put("en", en);
+        I18nTextEntity entity = new I18nTextEntity();
+        entity.setTranslations(values);
+        return entity;
     }
 }
