@@ -106,6 +106,7 @@
     <bean id="modelMapper" class="org.modelmapper.ModelMapper"/>
 
     <bean id="conversionService" class="fi.vm.sade.koulutusinformaatio.converter.KoulutusinformaatioConversionServiceFactoryBean">
+        <!-- Converters that need access to ConversionService are registered in KoulutusinformaatioConversionServiceFactoryBean -->
         <property name="converters">
             <list>
                 <bean class="fi.vm.sade.koulutusinformaatio.converter.KoodiTypeToI18nText" />

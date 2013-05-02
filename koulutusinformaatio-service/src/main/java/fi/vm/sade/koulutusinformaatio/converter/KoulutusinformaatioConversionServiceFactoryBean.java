@@ -30,6 +30,7 @@ public class KoulutusinformaatioConversionServiceFactoryBean extends ConversionS
         super.afterPropertiesSet();
         ConversionService conversionService = getObject();
         ConverterRegistry registry = (ConverterRegistry) conversionService;
+        // register converters that need access to ConversionService
         registry.addConverter(new KomoDTOToParentLearningOpportunity(conversionService));
     }
 }
