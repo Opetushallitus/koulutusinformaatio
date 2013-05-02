@@ -16,48 +16,34 @@
 
 package fi.vm.sade.koulutusinformaatio.dao.entity;
 
-import java.util.Set;
-
 import com.google.code.morphia.annotations.Embedded;
-import com.google.code.morphia.annotations.Entity;
-import com.google.code.morphia.annotations.Id;
 
 /**
  * @author Mikko Majapuro
  */
-@Entity("learningOpportunityProviders")
-public class LearningOpportunityProviderEntity {
+@Embedded
+public class CreditsEntity {
 
-    @Id
-    private String id;
     @Embedded
-    private I18nTextEntity name;
-    private Set<String> applicationSystemIds;
+    private I18nTextEntity creditValue;
+    @Embedded
+    private I18nTextEntity creditUnit;
 
-    public LearningOpportunityProviderEntity() {
+    public CreditsEntity() {}
+
+    public I18nTextEntity getCreditValue() {
+        return creditValue;
     }
 
-    public String getId() {
-        return id;
+    public void setCreditValue(I18nTextEntity creditValue) {
+        this.creditValue = creditValue;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public I18nTextEntity getCreditUnit() {
+        return creditUnit;
     }
 
-    public I18nTextEntity getName() {
-        return name;
-    }
-
-    public void setName(I18nTextEntity name) {
-        this.name = name;
-    }
-
-    public Set<String> getApplicationSystemIds() {
-        return applicationSystemIds;
-    }
-
-    public void setApplicationSystemIds(Set<String> applicationSystemIds) {
-        this.applicationSystemIds = applicationSystemIds;
+    public void setCreditUnit(I18nTextEntity creditUnit) {
+        this.creditUnit = creditUnit;
     }
 }
