@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import javax.xml.bind.JAXBException;
 import javax.xml.transform.Source;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author Hannu Lyytikainen
@@ -34,7 +35,6 @@ import java.io.IOException;
 public class UpdateServiceImpl implements UpdateService {
 
     private TarjontaService tarjontaService;
-    private ParserService parserService;
     private IndexerService indexerService;
     private EducationDataService educationDataService;
 
@@ -42,28 +42,25 @@ public class UpdateServiceImpl implements UpdateService {
     public UpdateServiceImpl(TarjontaService tarjontaService, ParserService parserService,
                              IndexerService indexerService, EducationDataService educationDataService) {
         this.tarjontaService = tarjontaService;
-        this.parserService = parserService;
         this.indexerService = indexerService;
         this.educationDataService = educationDataService;
     }
 
     @Override
-    public void updateEducationData() {
-        tarjontaService.findLearningOpportunity("1234");
+    public void updateAllEducationData() {
+        // drop db
+        // drop index
+
+        List<String> parentOids = tarjontaService.listParentLearnignOpportunityOids();
+        for (String parentOid : parentOids) {
+            // builder service builds parent
+            // save parent
+            // index parent
+
+        }
 
 
-//        Source source = tarjontaClient.retrieveTarjontaAsSource();
-//        try {
-//            LearningOpportunityData loData = parserService.parse(source);
-//            this.indexerService.updateIndexes(loData);
-//            this.educationDataService.save(loData);
-//        } catch (JAXBException e) {
-//            e.printStackTrace();
-//        } catch (SolrServerException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+
     }
 
 }

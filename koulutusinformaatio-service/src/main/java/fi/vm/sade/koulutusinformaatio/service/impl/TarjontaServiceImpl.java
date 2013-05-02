@@ -47,7 +47,7 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     @Override
     public List<String> listParentLearnignOpportunityOids() {
-        return null;
+        return komoResource.search(null, 0, 0, null, null);
     }
 
 }
