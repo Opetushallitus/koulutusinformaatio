@@ -25,8 +25,8 @@ import java.util.List;
 public class ChildLearningOpportunity extends LearningOpportunity {
 
     private List<ApplicationOption> applicationOptions = new ArrayList<ApplicationOption>();
-    private String qualification;
-    private String degreeTitle;
+    private I18nText qualification;
+    private I18nText degreeTitle;
 
     public ChildLearningOpportunity(String id, I18nText name) {
         super(id, name);
@@ -44,20 +44,19 @@ public class ChildLearningOpportunity extends LearningOpportunity {
         this.applicationOptions = applicationOptions;
     }
 
-    public String getQualification() {
+    public I18nText getQualification() {
         return qualification;
     }
 
-    public void setQualification(String qualification) {
+    public void setQualification(I18nText qualification) {
         this.qualification = qualification;
     }
 
-    public String getDegreeTitle() {
+    public I18nText getDegreeTitle() {
         return degreeTitle;
     }
 
-    public void setDegreeTitle(String degreeTitle) {
+    public void setDegreeTitle(I18nText degreeTitle) {
         this.degreeTitle = degreeTitle;
     }
-
 }

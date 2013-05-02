@@ -2,27 +2,29 @@ package fi.vm.sade.koulutusinformaatio.domain;
 
 public class Credits {
 
-    private String creditValue;
-    private String creditUnit;
+    private I18nText creditValue;
+    private I18nText creditUnit;
     
     public Credits() {} 
     
-    public Credits(String creditValue, String creditUnit) {
+    public Credits(I18nText creditValue, I18nText creditUnit) {
         this.creditValue = creditValue;
         this.creditUnit = creditUnit;
     }
-    
-    public String getCreditValue() {
+
+    public I18nText getCreditValue() {
         return creditValue;
     }
-    public void setCreditValue(String creditValue) {
+
+    public void setCreditValue(I18nText creditValue) {
         this.creditValue = creditValue;
     }
-    public String getCreditUnit() {
+
+    public I18nText getCreditUnit() {
         return creditUnit;
     }
-    public void setCreditUnit(String creditUnit) {
+
+    public void setCreditUnit(I18nText creditUnit) {
         this.creditUnit = creditUnit;
     }
-    
 }

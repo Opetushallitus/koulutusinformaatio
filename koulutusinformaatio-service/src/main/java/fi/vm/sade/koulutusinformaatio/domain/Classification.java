@@ -2,30 +2,29 @@ package fi.vm.sade.koulutusinformaatio.domain;
 
 public class Classification {
     
-    private String educationDomain;
-    private String educationDegree;
+    private I18nText educationDomain;
+    private I18nText educationDegree;
     
     public Classification() {}
 
-    public Classification(String educationDomain, String educationDegree) {
+    public Classification(I18nText educationDomain, I18nText educationDegree) {
         this.educationDomain = educationDomain;
         this.educationDegree = educationDegree;
     }
 
-    public String getEducationDomain() {
+    public I18nText getEducationDomain() {
         return educationDomain;
     }
 
-    public void setEducationDomain(String educationDomain) {
+    public void setEducationDomain(I18nText educationDomain) {
         this.educationDomain = educationDomain;
     }
 
-    public String getEducationDegree() {
+    public I18nText getEducationDegree() {
         return educationDegree;
     }
 
-    public void setEducationDegree(String educationDegree) {
+    public void setEducationDegree(I18nText educationDegree) {
         this.educationDegree = educationDegree;
     }
-
 }

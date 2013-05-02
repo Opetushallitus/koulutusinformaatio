@@ -38,7 +38,7 @@ public class ApplicationOptionEntity {
     private String educationDegree;
     @Reference
     private LearningOpportunityProviderEntity provider;
-    private List<String> childLONames = new ArrayList<String>();
+    private List<I18nTextEntity> childLONames = new ArrayList<I18nTextEntity>();
 
     public ApplicationOptionEntity() {
 
@@ -84,11 +84,11 @@ public class ApplicationOptionEntity {
         this.provider = provider;
     }
 
-    public List<String> getChildLONames() {
+    public List<I18nTextEntity> getChildLONames() {
         return childLONames;
     }
 
-    public void setChildLONames(List<String> childLONames) {
+    public void setChildLONames(List<I18nTextEntity> childLONames) {
         this.childLONames = childLONames;
     }
 }

@@ -2,51 +2,49 @@ package fi.vm.sade.koulutusinformaatio.domain;
 
 public class Description {
     
-    private String accessToFurtherStudies;
-    private String educationAndProfessionalGoals;
-    private String selectionOfDegreeProgram;
-    private String structureDiagram;
+    private I18nText accessToFurtherStudies;
+    private I18nText educationAndProfessionalGoals;
+    private I18nText selectionOfDegreeProgram;
+    private I18nText structureDiagram;
     
     public Description() {}
     
-    public Description(String accessToFurtherStudies, String educationAndProfessionalGoals, String selectionOfDegreeProgram, String structureDiagram) {
+    public Description(I18nText accessToFurtherStudies, I18nText educationAndProfessionalGoals, I18nText selectionOfDegreeProgram, I18nText structureDiagram) {
         this.accessToFurtherStudies = accessToFurtherStudies;
         this.educationAndProfessionalGoals = educationAndProfessionalGoals;
         this.selectionOfDegreeProgram = selectionOfDegreeProgram;
         this.structureDiagram = structureDiagram;
     }
 
-    public String getAccessToFurtherStudies() {
+    public I18nText getAccessToFurtherStudies() {
         return accessToFurtherStudies;
     }
 
-    public void setAccessToFurtherStudies(String accessToFurtherStudies) {
+    public void setAccessToFurtherStudies(I18nText accessToFurtherStudies) {
         this.accessToFurtherStudies = accessToFurtherStudies;
     }
 
-    public String getEducationAndProfessionalGoals() {
+    public I18nText getEducationAndProfessionalGoals() {
         return educationAndProfessionalGoals;
     }
 
-    public void setEducationAndProfessionalGoals(
-            String educationAndProfessionalGoals) {
+    public void setEducationAndProfessionalGoals(I18nText educationAndProfessionalGoals) {
         this.educationAndProfessionalGoals = educationAndProfessionalGoals;
     }
 
-    public String getSelectionOfDegreeProgram() {
+    public I18nText getSelectionOfDegreeProgram() {
         return selectionOfDegreeProgram;
     }
 
-    public void setSelectionOfDegreeProgram(String selectionOfDegreeProgram) {
+    public void setSelectionOfDegreeProgram(I18nText selectionOfDegreeProgram) {
         this.selectionOfDegreeProgram = selectionOfDegreeProgram;
     }
 
-    public String getStructureDiagram() {
+    public I18nText getStructureDiagram() {
         return structureDiagram;
     }
 
-    public void setStructureDiagram(String structureDiagram) {
+    public void setStructureDiagram(I18nText structureDiagram) {
         this.structureDiagram = structureDiagram;
     }
-
 }
