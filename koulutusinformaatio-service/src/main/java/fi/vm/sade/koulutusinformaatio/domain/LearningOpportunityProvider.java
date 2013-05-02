@@ -25,10 +25,10 @@ import java.util.Set;
 public class LearningOpportunityProvider {
 
     private String id;
-    private String name;
+    private I18nText name;
     private Set<String> applicationSystemIDs = new HashSet<String>();
 
-    public LearningOpportunityProvider(String id, String name) {
+    public LearningOpportunityProvider(String id, I18nText name) {
         this.id = id;
         this.name = name;
     }
@@ -43,11 +43,11 @@ public class LearningOpportunityProvider {
         this.id = id;
     }
 
-    public String getName() {
+    public I18nText getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(I18nText name) {
         this.name = name;
     }
 

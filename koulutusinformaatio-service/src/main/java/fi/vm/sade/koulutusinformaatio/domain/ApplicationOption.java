@@ -25,10 +25,10 @@ import java.util.List;
 public class ApplicationOption {
 
     private String id;
-    private String name;
+    private I18nText name;
     private String applicationSystemId;
     private String educationDegree;
-    private List<String> childLONames = new ArrayList<String>();
+    private List<I18nText> childLONames = new ArrayList<I18nText>();
     private LearningOpportunityProvider provider;
 
     public String getId() {
@@ -39,11 +39,11 @@ public class ApplicationOption {
         this.id = id;
     }
 
-    public String getName() {
+    public I18nText getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(I18nText name) {
         this.name = name;
     }
 
@@ -63,11 +63,11 @@ public class ApplicationOption {
         this.educationDegree = educationDegree;
     }
 
-    public List<String> getChildLONames() {
+    public List<I18nText> getChildLONames() {
         return childLONames;
     }
 
-    public void setChildLONames(List<String> childLONames) {
+    public void setChildLONames(List<I18nText> childLONames) {
         this.childLONames = childLONames;
     }
 

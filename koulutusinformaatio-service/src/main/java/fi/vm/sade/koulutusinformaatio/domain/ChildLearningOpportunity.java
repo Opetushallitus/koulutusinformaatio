@@ -28,7 +28,7 @@ public class ChildLearningOpportunity extends LearningOpportunity {
     private String qualification;
     private String degreeTitle;
 
-    public ChildLearningOpportunity(String id, String name) {
+    public ChildLearningOpportunity(String id, I18nText name) {
         super(id, name);
     }
 

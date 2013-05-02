@@ -22,12 +22,12 @@ package fi.vm.sade.koulutusinformaatio.domain;
 public class LearningOpportunity {
 
     private String id;
-    private String name;
+    private I18nText name;
 
     public LearningOpportunity() {
     }
 
-    public LearningOpportunity(String id, String name) {
+    public LearningOpportunity(String id, I18nText name) {
         this.id = id;
         this.name = name;
     }
@@ -40,11 +40,11 @@ public class LearningOpportunity {
         this.id = id;
     }
 
-    public String getName() {
+    public I18nText getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(I18nText name) {
         this.name = name;
     }
 }

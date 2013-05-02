@@ -22,12 +22,12 @@ package fi.vm.sade.koulutusinformaatio.domain;
 public class LearningOpportunitySearchResult {
 
     private String id;
-    private String name;
+    private I18nText name;
     private String lopId;
-    private String lopName;
+    private I18nText lopName;
     private String parentId;
 
-    public LearningOpportunitySearchResult(String id, String name, String lopId, String lopName, String parentId) {
+    public LearningOpportunitySearchResult(String id, I18nText name, String lopId, I18nText lopName, String parentId) {
         this.id = id;
         this.name = name;
         this.lopId = lopId;
@@ -43,11 +43,11 @@ public class LearningOpportunitySearchResult {
         this.id = id;
     }
 
-    public String getName() {
+    public I18nText getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(I18nText name) {
         this.name = name;
     }
 
@@ -59,11 +59,11 @@ public class LearningOpportunitySearchResult {
         this.lopId = lopId;
     }
 
-    public String getLopName() {
+    public I18nText getLopName() {
         return lopName;
     }
 
-    public void setLopName(String lopName) {
+    public void setLopName(I18nText lopName) {
         this.lopName = lopName;
     }
 
