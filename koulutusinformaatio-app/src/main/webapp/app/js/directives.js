@@ -9,18 +9,22 @@
     return function(scope, element, attrs) {
         var result = "";
         scope.$watch('parentLO', function(parentData) {
-            if (parentData.children && parentData.children.length <= 1) {
-                return;
-            } 
+            if (parentData) {
 
-            for(var index in parentData.children) {
-                var child = parentData.children[index];
-                var isCurrentSelection = child.id == scope.childLO.id ? true : false;
-                var clazz = isCurrentSelection ? 'disabled' : '';
-                result += '<a href="#/info/' + parentData.id + '/' + child.id + '" class="' + clazz + '">' + child.degreeTitle + '</a>';
+                // if parentLO has only 1 (or less) child, do not show ribbon
+                if (parentData.children && parentData.children.length <= 1) {
+                    return;
+                } 
+
+                for(var index in parentData.children) {
+                    var child = parentData.children[index];
+                    var isCurrentSelection = child.id == scope.childLO.id ? true : false;
+                    var clazz = isCurrentSelection ? 'disabled' : '';
+                    result += '<a href="#/info/' + parentData.id + '/' + child.id + '" class="' + clazz + '">' + child.degreeTitle + '</a>';
+                }
+
+                element.html(result);
             }
-
-            element.html(result);
         }, true);
         
     }
@@ -77,6 +81,7 @@
  */
 directive('renderTextBlock', function() {
     return function(scope, element, attrs) {
+
             var title;
             var content;
 

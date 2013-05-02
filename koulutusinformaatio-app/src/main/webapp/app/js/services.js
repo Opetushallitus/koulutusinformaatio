@@ -5,20 +5,59 @@ angular.module('kiApp.services', ['ngResource']).
 /**
  *  Resource for making string based search
  */
+ /*
  factory('SearchLearningOpportunity', function($resource) {
     return $resource('../lo/search/:queryString', {}, {
         query: {method:'GET', isArray:true}
     });
 }).
+*/
+service('SearchLearningOpportunity', ['$http', '$timeout', '$q', function($http, $timeout, $q) {
+    return {
+        query: function(params) {
+            var deferred = $q.defer();
+
+            $http.get('../lo/search/' + params.queryString).
+                success(function(result) {
+                    deferred.resolve(result);
+                }).
+                error(function(result) {
+                    deferred.reject(result);
+                });
+
+            return deferred.promise;
+        }
+    }
+}]).
 
 /**
  *  Resource for requesting LO data (parent and its children)
  */
+ /*
  factory('ParentLearningOpportunity', function($resource) {
     return $resource('../lo/:parentId', {}, {
         query: {method:'GET', isArray:false}
     });
 }).
+*/
+
+ service('ParentLearningOpportunity', ['$http', '$timeout', '$q', function($http, $timeout, $q) {
+    return {
+        query: function(params) {
+            var deferred = $q.defer();
+
+            $http.get('../lo/' + params.parentId).
+                success(function(result) {
+                    deferred.resolve(result);
+                }).
+                error(function(result) {
+                    deferred.reject(result);
+                });
+
+            return deferred.promise;
+        }
+    }
+}]).
 
 /**
  *  Resource for requesting AO data

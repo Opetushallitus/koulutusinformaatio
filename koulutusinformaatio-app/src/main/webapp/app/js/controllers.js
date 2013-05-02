@@ -20,7 +20,9 @@
     TitleService.setTitle('Hakutulokset');
 
     if ($routeParams.queryString) {
-        $scope.loResult = SearchLearningOpportunity.query({queryString: $routeParams.queryString});
+        SearchLearningOpportunity.query({queryString: $routeParams.queryString}).then(function(result) {
+            $scope.loResult = result;
+        });
         $scope.queryString = $routeParams.queryString;
         $scope.showFilters = $scope.queryString ? true : false;
         SearchService.setTerm($routeParams.queryString);
@@ -64,10 +66,17 @@
     if ($routeParams) {
         $scope.parentId = $routeParams.parentId;
         if (!LODataService.dataExists($scope.parentId)) {
+            /*
             $scope.parentLO = ParentLearningOpportunity.query({parentId: $routeParams.parentId}, function(data) {
                 LODataService.setLOData(data);
                 $scope.childLO = LODataService.getChildData($routeParams.childId);
                 setTitle(data, $scope.childLO);
+            }*/
+            ParentLearningOpportunity.query({parentId: $routeParams.parentId}).then(function(result) {
+                $scope.parentLO = result;
+                LODataService.setLOData(result);
+                $scope.childLO = LODataService.getChildData($routeParams.childId);
+                setTitle(result, $scope.childLO);
             });
         } else {
             $scope.parentLO = LODataService.getLOData();
