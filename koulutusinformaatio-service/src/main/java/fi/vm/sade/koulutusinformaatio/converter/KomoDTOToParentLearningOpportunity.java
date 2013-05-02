@@ -38,8 +38,7 @@ public class KomoDTOToParentLearningOpportunity implements Converter<KomoDTO, Pa
     public ParentLearningOpportunity convert(KomoDTO source) {
         ParentLearningOpportunity parent = new ParentLearningOpportunity();
         parent.setId(source.getOid());
-        parent.setName("dummy name");
-        //parent.setName(conversionService.convert(source.getNimi(), I18nText.class));
+        parent.setName(conversionService.convert(source.getNimi(), I18nText.class));
         return parent;
     }
 

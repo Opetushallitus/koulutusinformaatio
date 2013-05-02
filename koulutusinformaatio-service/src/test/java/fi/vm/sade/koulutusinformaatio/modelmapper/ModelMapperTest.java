@@ -22,6 +22,7 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunityEntity
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 import org.junit.Test;
 import org.modelmapper.ModelMapper;
 
@@ -42,7 +43,7 @@ public class ModelMapperTest {
     public void testMapParentLearningOpportunityToEntity() {
         ParentLearningOpportunity parent = new ParentLearningOpportunity();
         parent.setId("123");
-        parent.setName("parentName");
+        parent.setName(TestUtil.createI18nText("parent name fi", "parent name sv", "parent name en"));
         parent.setEducationDegree("degree");
 
         List<ApplicationOption> applicationOptions = new ArrayList<ApplicationOption>();

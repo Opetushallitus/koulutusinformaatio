@@ -14,25 +14,23 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.koulutusinformaatio.converter;
+package fi.vm.sade.koulutusinformaatio.util;
 
+import com.google.common.collect.Maps;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-import fi.vm.sade.tarjonta.service.resources.dto.MonikielinenTekstisDTO;
-import org.springframework.core.convert.converter.Converter;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
  * @author Hannu Lyytikainen
  */
-public class MonikielinenTekstisDTOToI18nText implements Converter<MonikielinenTekstisDTO, I18nText> {
-    @Override
-    public I18nText convert(MonikielinenTekstisDTO source) {
-        Map<String, String> translations = new HashMap<String, String>();
+public class TestUtil {
 
-
-
-        return new I18nText(translations);
+    public static I18nText createI18nText(String fi, String sv, String en) {
+        Map<String, String> values = Maps.newHashMap();
+        values.put("fi", fi);
+        values.put("sv", sv);
+        values.put("en", en);
+        return new I18nText(values);
     }
 }

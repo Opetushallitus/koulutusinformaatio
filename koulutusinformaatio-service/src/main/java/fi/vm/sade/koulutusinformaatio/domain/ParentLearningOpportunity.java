@@ -25,7 +25,7 @@ import java.util.List;
 public class ParentLearningOpportunity {
 
     private String id;
-    private String name;
+    private I18nText name;
     private List<ChildLearningOpportunity> children = new ArrayList<ChildLearningOpportunity>();
     private List<ApplicationOption> applicationOptions = new ArrayList<ApplicationOption>();
     private LearningOpportunityProvider provider;
@@ -59,11 +59,11 @@ public class ParentLearningOpportunity {
         this.id = id;
     }
 
-    public String getName() {
+    public I18nText getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(I18nText name) {
         this.name = name;
     }
 
