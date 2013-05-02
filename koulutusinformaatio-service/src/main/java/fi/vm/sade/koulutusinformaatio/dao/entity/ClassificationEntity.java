@@ -16,48 +16,34 @@
 
 package fi.vm.sade.koulutusinformaatio.dao.entity;
 
-import java.util.Set;
-
 import com.google.code.morphia.annotations.Embedded;
-import com.google.code.morphia.annotations.Entity;
-import com.google.code.morphia.annotations.Id;
 
 /**
  * @author Mikko Majapuro
  */
-@Entity("learningOpportunityProviders")
-public class LearningOpportunityProviderEntity {
+@Embedded
+public class ClassificationEntity {
 
-    @Id
-    private String id;
     @Embedded
-    private I18nTextEntity name;
-    private Set<String> applicationSystemIds;
+    private I18nTextEntity educationDomain;
+    @Embedded
+    private I18nTextEntity educationDegree;
 
-    public LearningOpportunityProviderEntity() {
+    public ClassificationEntity() {}
+
+    public I18nTextEntity getEducationDomain() {
+        return educationDomain;
     }
 
-    public String getId() {
-        return id;
+    public void setEducationDomain(I18nTextEntity educationDomain) {
+        this.educationDomain = educationDomain;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public I18nTextEntity getEducationDegree() {
+        return educationDegree;
     }
 
-    public I18nTextEntity getName() {
-        return name;
-    }
-
-    public void setName(I18nTextEntity name) {
-        this.name = name;
-    }
-
-    public Set<String> getApplicationSystemIds() {
-        return applicationSystemIds;
-    }
-
-    public void setApplicationSystemIds(Set<String> applicationSystemIds) {
-        this.applicationSystemIds = applicationSystemIds;
+    public void setEducationDegree(I18nTextEntity educationDegree) {
+        this.educationDegree = educationDegree;
     }
 }

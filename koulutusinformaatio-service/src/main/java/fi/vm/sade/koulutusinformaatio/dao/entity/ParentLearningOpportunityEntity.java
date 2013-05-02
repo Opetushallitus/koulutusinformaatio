@@ -35,13 +35,15 @@ public class ParentLearningOpportunityEntity {
 
     @Id
     private String id;
-    private String name;
+    @Embedded
+    private I18nTextEntity name;
     private String educationDegree;
-
-    private Description description;
-    private Classification classification;
-    private Credits credits;
-    
+    @Embedded
+    private DescriptionEntity description;
+    @Embedded
+    private ClassificationEntity classification;
+    @Embedded
+    private CreditsEntity credits;
     @Embedded
     private List<ChildLearningOpportunityEntity> children;
     @Reference
@@ -60,11 +62,11 @@ public class ParentLearningOpportunityEntity {
         this.id = id;
     }
 
-    public String getName() {
+    public I18nTextEntity getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(I18nTextEntity name) {
         this.name = name;
     }
 
@@ -99,28 +101,28 @@ public class ParentLearningOpportunityEntity {
     public void setProvider(LearningOpportunityProviderEntity provider) {
         this.provider = provider;
     }
-    
-    public Credits getCredits() {
+
+    public CreditsEntity getCredits() {
         return credits;
     }
 
-    public void setCredits(Credits credits) {
+    public void setCredits(CreditsEntity credits) {
         this.credits = credits;
     }
 
-    public Description getDescription() {
+    public DescriptionEntity getDescription() {
         return description;
     }
 
-    public void setDescription(Description description) {
+    public void setDescription(DescriptionEntity description) {
         this.description = description;
     }
 
-    public Classification getClassification() {
+    public ClassificationEntity getClassification() {
         return classification;
     }
 
-    public void setClassification(Classification classification) {
+    public void setClassification(ClassificationEntity classification) {
         this.classification = classification;
     }
 }

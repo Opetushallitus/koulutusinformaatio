@@ -30,9 +30,12 @@ public class ChildLearningOpportunityEntity {
 
     @Id
     private String id;
-    private String name;
-    private String qualification;
-    private String degreeTitle;
+    @Embedded
+    private I18nTextEntity name;
+    @Embedded
+    private I18nTextEntity qualification;
+    @Embedded
+    private I18nTextEntity degreeTitle;
     @Reference
     private List<ApplicationOptionEntity> applicationOptions;
 
@@ -47,12 +50,28 @@ public class ChildLearningOpportunityEntity {
         this.id = id;
     }
 
-    public String getName() {
+    public I18nTextEntity getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(I18nTextEntity name) {
         this.name = name;
+    }
+
+    public I18nTextEntity getQualification() {
+        return qualification;
+    }
+
+    public void setQualification(I18nTextEntity qualification) {
+        this.qualification = qualification;
+    }
+
+    public I18nTextEntity getDegreeTitle() {
+        return degreeTitle;
+    }
+
+    public void setDegreeTitle(I18nTextEntity degreeTitle) {
+        this.degreeTitle = degreeTitle;
     }
 
     public List<ApplicationOptionEntity> getApplicationOptions() {
@@ -61,21 +80,5 @@ public class ChildLearningOpportunityEntity {
 
     public void setApplicationOptions(List<ApplicationOptionEntity> applicationOptions) {
         this.applicationOptions = applicationOptions;
-    }
-
-    public String getQualification() {
-        return qualification;
-    }
-
-    public void setQualification(String qualification) {
-        this.qualification = qualification;
-    }
-
-    public String getDegreeTitle() {
-        return degreeTitle;
-    }
-
-    public void setDegreeTitle(String degreeTitle) {
-        this.degreeTitle = degreeTitle;
     }
 }
