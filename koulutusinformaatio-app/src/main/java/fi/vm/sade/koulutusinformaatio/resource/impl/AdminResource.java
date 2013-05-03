@@ -36,7 +36,7 @@ public class AdminResource {
     @GET
     @Path("/update")
     public String updateEducationData() {
-        updateService.updateEducationData();
+        updateService.updateAllEducationData();
 
         return "education data updated";
     }

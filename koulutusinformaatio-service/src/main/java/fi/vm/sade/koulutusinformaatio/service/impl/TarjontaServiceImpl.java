@@ -19,8 +19,10 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
+import fi.vm.sade.tarjonta.service.resources.HakukohdeResource;
 import fi.vm.sade.tarjonta.service.resources.KomoResource;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
+import org.springframework.core.convert.ConversionService;
 
 import java.util.List;
 
@@ -30,9 +32,12 @@ import java.util.List;
 public class TarjontaServiceImpl implements TarjontaService {
 
     private KomoResource komoResource;
+    private HakukohdeResource aoResource;
+    private ConversionService conversionService;
 
-    public TarjontaServiceImpl(KomoResource komoResource) {
+    public TarjontaServiceImpl(KomoResource komoResource, ConversionService conversionService) {
         this.komoResource = komoResource;
+        this.conversionService = conversionService;
     }
 
     @Override
@@ -42,12 +47,18 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     @Override
     public ParentLearningOpportunity findParentLearningOpportunity(String oid) {
-        return null;
+        KomoDTO parentKomo = komoResource.getByOID(oid);
+        return conversionService.convert(parentKomo, ParentLearningOpportunity.class);
     }
 
     @Override
     public List<String> listParentLearnignOpportunityOids() {
         return komoResource.search(null, 0, 0, null, null);
+    }
+
+    @Override
+    public List<String> listApplicationOptionOids() {
+        return aoResource.search(null, 0, 0, null, null);
     }
 
 }

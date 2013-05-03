@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import fi.vm.sade.koulutusinformaatio.client.TarjontaClient;
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityData;
+import fi.vm.sade.koulutusinformaatio.domain.ParentLearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.service.*;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,11 +54,14 @@ public class UpdateServiceImpl implements UpdateService {
 
         List<String> parentOids = tarjontaService.listParentLearnignOpportunityOids();
         for (String parentOid : parentOids) {
-            // builder service builds parent
+            ParentLearningOpportunity parent = tarjontaService.findParentLearningOpportunity(parentOid);
+
             // save parent
             // index parent
 
         }
+
+
 
 
 
