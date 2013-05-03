@@ -22,6 +22,7 @@ import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunitySearchResult;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunityDTO;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
 import fi.vm.sade.koulutusinformaatio.resource.LearningOpportunityResource;
@@ -68,7 +69,11 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
 
     @Override
     public ParentLearningOpportunityDTO getParentLearningOpportunity(String parentId) {
-        ParentLearningOpportunity parent = educationDataService.getParentLearningOpportunity(parentId);
-        return modelMapper.map(parent, ParentLearningOpportunityDTO.class);
+        try {
+            ParentLearningOpportunity parent = educationDataService.getParentLearningOpportunity(parentId);
+            return modelMapper.map(parent, ParentLearningOpportunityDTO.class);
+        } catch (ResourceNotFoundException e) {
+            throw KIExceptionHandler.resolveException(e);
+        }
     }
 }

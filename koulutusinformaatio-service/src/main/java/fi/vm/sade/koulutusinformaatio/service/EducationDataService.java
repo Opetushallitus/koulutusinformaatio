@@ -21,6 +21,7 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEnti
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityData;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 
 import java.util.List;
 
@@ -57,7 +58,7 @@ public interface EducationDataService {
      * @param oid
      * @return
      */
-    ParentLearningOpportunity getParentLearningOpportunity(final String oid);
+    ParentLearningOpportunity getParentLearningOpportunity(final String oid) throws ResourceNotFoundException;
 
     /**
      * Finds application options by the application system and learning opportunity provider

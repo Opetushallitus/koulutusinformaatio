@@ -29,6 +29,7 @@ import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityData;
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityProvider;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,13 +111,12 @@ public class EducationDataServiceImpl implements EducationDataService {
     }
 
     @Override
-    public ParentLearningOpportunity getParentLearningOpportunity(String oid) {
+    public ParentLearningOpportunity getParentLearningOpportunity(String oid) throws ResourceNotFoundException {
         ParentLearningOpportunityEntity entity = parentLearningOpportunityDAO.get(oid);
         if (entity != null) {
             return modelMapper.map(entity, ParentLearningOpportunity.class);
         } else {
-            //TODO should throw exception?
-            return null;
+            throw new ResourceNotFoundException("Parent learning opportunity not found: " + oid);
         }
     }
 
