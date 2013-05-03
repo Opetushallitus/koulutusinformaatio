@@ -1,0 +1,34 @@
+<aside class="grid16-6 no-right-gutter">
+    <div class="sideitem margin-bottom-3 hidden">
+        <span>Suoraan haettavissa olevat koulutusohjelmat:</span>
+        <ul>
+            <li><a href="#">Ensihoidon koulutusohjelma</a></li>
+        </ul>
+    </div>
+    <div class="sideitem margin-bottom-3">
+        <span>Haku</span>
+        <span class="bold">Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku, kevät 2014</span>
+    </div>
+    <div class="sideitem margin-bottom-3">
+        <span>Hakuaika</span>
+        <span class="bold">3.4.2013 - 31.5.2013</span>
+    </div>
+    <form name="level-selection-form" action="/haku-app/lomake/{{parentLO.applicationOptions[0].applicationSystemId}}/yhteishaku" method="POST">
+        <form name="level-selection-form" action="" method="POST">
+        <ul class="margin-bottom-2">
+            <li>
+                <input type="radio" name="input1" id="input1" /><label for="input1">Peruskoulupohjainen koulutus</label>
+            </li>
+            <li>
+                <input type="radio" name="input1" id="input2" /><label for="input2">Lukiopohjainen koulutus</label>
+            </li>
+        </ul>
+        <input type="hidden" name="preference1-Opetuspiste" value="{{parentLO.provider.name}}"/>
+        <input type="hidden" name="preference1-Opetuspiste-id" value="{{parentLO.provider.id}}"/>
+        <input type="hidden" name="preference1-Koulutus" value="{{parentLO.applicationOptions[0].name}}"/>
+        <input type="hidden" name="preference1-Koulutus-id" value="{{parentLO.applicationOptions[0].id}}"/>
+        <input type="hidden" name="preference1-Koulutus-educationDegree" value="{{parentLO.educationDegree}}"/>
+        <!--<input type="hidden" name="enabling-submit"/>-->
+        <button type="submit" class="primary"><span><span>Hae koulutukseen</span></span></button>
+    </form>
+</aside>
