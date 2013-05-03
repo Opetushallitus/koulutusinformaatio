@@ -16,6 +16,8 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
+import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityData;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLearningOpportunity;
@@ -28,11 +30,27 @@ import java.util.List;
 public interface EducationDataService {
 
     /**
-     *  Saves the learning opportunity data.
-     *  Deletes previously stored data.
-     * @param learningOpportunityData
+     *  Saves the parent learning opportunity data.
+     *  Updates previously stored if exists
+     * @param parentLearningOpportunity
      */
-    void save(final LearningOpportunityData learningOpportunityData);
+    void save(final ParentLearningOpportunity parentLearningOpportunity);
+
+    /**
+     * Saves the learning opportunity provider
+     * Updates previously stored if exists
+     * @param learningOpportunityProvider
+     */
+    void save(final LearningOpportunityProviderEntity learningOpportunityProvider);
+
+    /**
+     * Saves the application option
+     * Updates previously stored if exists
+     * @param applicationOption
+     */
+    void save(final ApplicationOptionEntity applicationOption);
+
+    void dropAllData();
 
     /**
      * Gets the parent learning opportunity by oid

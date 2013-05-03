@@ -22,6 +22,7 @@ import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
 import fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunityDAO;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunityEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunityEntity;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
@@ -33,7 +34,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Mikko Majapuro
@@ -57,27 +60,52 @@ public class EducationDataServiceImpl implements EducationDataService {
     }
 
     @Override
-    public void save(LearningOpportunityData learningOpportunityData) {
-        if (learningOpportunityData != null) {
-            //drop current data
-            applicationOptionDAO.getCollection().drop();
-            parentLearningOpportunityDAO.getCollection().drop();
-            learningOpportunityProviderDAO.getCollection().drop();
+    public void save(final ParentLearningOpportunity parentLearningOpportunity) {
+        if (parentLearningOpportunity != null) {
+            ParentLearningOpportunityEntity plo =
+                    modelMapper.map(parentLearningOpportunity, ParentLearningOpportunityEntity.class);
+            Map<String, ApplicationOptionEntity> aos = new HashMap<String, ApplicationOptionEntity>();
+            save(plo.getProvider());
 
-            for (LearningOpportunityProvider learningOpportunityProvider : learningOpportunityData.getProviders()) {
-                LearningOpportunityProviderEntity learningOpportunityProviderEntity = modelMapper.map(learningOpportunityProvider, LearningOpportunityProviderEntity.class);
-                learningOpportunityProviderDAO.save(learningOpportunityProviderEntity);
+            if (plo.getApplicationOptions() != null) {
+                for (ApplicationOptionEntity ao : plo.getApplicationOptions()) {
+                    aos.put(ao.getId(), ao);
+                }
             }
-            for (ApplicationOption applicationOption: learningOpportunityData.getApplicationOptions()) {
-                ApplicationOptionEntity applicationOptionEntity = modelMapper.map(applicationOption, ApplicationOptionEntity.class);
-                applicationOptionDAO.save(applicationOptionEntity);
+            if (plo.getChildren() != null) {
+                for (ChildLearningOpportunityEntity clo : plo.getChildren()) {
+                    for (ApplicationOptionEntity ao : clo.getApplicationOptions()) {
+                        aos.put(ao.getId(), ao);
+                    }
+                }
             }
-            for (ParentLearningOpportunity parentLearningOpportunity :learningOpportunityData.getParentLearningOpportinities()) {
-                ParentLearningOpportunityEntity parentLearningOpportunityEntity =
-                        modelMapper.map(parentLearningOpportunity, ParentLearningOpportunityEntity.class);
-                parentLearningOpportunityDAO.save(parentLearningOpportunityEntity);
+            for (ApplicationOptionEntity ao : aos.values()) {
+                save(ao);
             }
         }
+    }
+
+    @Override
+    public void save(LearningOpportunityProviderEntity learningOpportunityProvider) {
+        if (learningOpportunityProvider != null) {
+            learningOpportunityProviderDAO.save(learningOpportunityProvider);
+        }
+    }
+
+    @Override
+    public void save(ApplicationOptionEntity applicationOption) {
+        if (applicationOption != null) {
+            save(applicationOption.getProvider());
+            applicationOptionDAO.save(applicationOption);
+        }
+    }
+
+    @Override
+    public void dropAllData() {
+        //drop current data
+        applicationOptionDAO.getCollection().drop();
+        parentLearningOpportunityDAO.getCollection().drop();
+        learningOpportunityProviderDAO.getCollection().drop();
     }
 
     @Override
