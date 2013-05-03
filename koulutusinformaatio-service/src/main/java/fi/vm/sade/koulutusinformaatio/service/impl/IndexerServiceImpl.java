@@ -32,31 +32,44 @@ public class IndexerServiceImpl implements IndexerService {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(IndexerServiceImpl.class);
 
-    private final HttpSolrServer httpSolrServer;
     // solr client for learning opportunity index
     private final HttpSolrServer loHttpSolrServer;
     // solr client for learning opportunity provider index
     private final HttpSolrServer lopHttpSolrServer;
 
-    private final TarjontaClient tarjontaClient;
-
-    private final SolrClient client;
-
-
-    /*@Autowired
-    EventListener listener;*/
-
     @Autowired
-    public IndexerServiceImpl(@Qualifier("HttpSolrServer") HttpSolrServer httpSolrServer,
-                              @Qualifier("loHttpSolrServer") HttpSolrServer loHttpSolrServer,
-                              @Qualifier("lopHttpSolrServer") HttpSolrServer lopHttpSolrServer,
-                              TarjontaClient tarjontaClient, SolrClient client) {
-        this.httpSolrServer = httpSolrServer;
+    public IndexerServiceImpl(@Qualifier("loHttpSolrServer") HttpSolrServer loHttpSolrServer,
+                              @Qualifier("lopHttpSolrServer") HttpSolrServer lopHttpSolrServer) {
         this.loHttpSolrServer = loHttpSolrServer;
         this.lopHttpSolrServer = lopHttpSolrServer;
-        this.tarjontaClient = tarjontaClient;
-        this.client = client;
     }
+
+    @Override
+    public void dropLOs() throws Exception {
+        try {
+            loHttpSolrServer.deleteByQuery("*:*");
+            loHttpSolrServer.commit();
+            loHttpSolrServer.optimize();
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    @Override
+    public void dropLOPs() throws Exception {
+        try {
+            lopHttpSolrServer.deleteByQuery("*:*");
+            lopHttpSolrServer.commit();
+            lopHttpSolrServer.optimize();
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    @Override
+    public void indexParentLearningOpportunity(ParentLearningOpportunity parent) throws Exception {
+    }
+
 
     @Override
     public void updateIndexes(LearningOpportunityData data) throws IOException, SolrServerException {
@@ -110,43 +123,6 @@ public class IndexerServiceImpl implements IndexerService {
             solrDocuments.add(document);
         }
         return solrDocuments;
-    }
-
-
-    @Override
-    public String update() {
-
-        final Source source = tarjontaClient.retrieveTarjontaAsSource();
-
-        try {
-            Collection<SolrInputDocument> documents = parseDocuments(source);
-            httpSolrServer.add(documents);
-            httpSolrServer.commit();
-            httpSolrServer.optimize();
-        } catch (Exception e) {
-            LOGGER.error("Indeksin päivitys epäonnistui ", e);
-            return "error";
-        }
-        return "index update ok";
-
-            //final ByteArrayOutputStream result = transform(source);
-            //return client.update(result);
-    }
-
-
-
-    @Override
-    public boolean drop() {
-        boolean dropped = false;
-        try {
-            httpSolrServer.deleteByQuery("*:*");
-            httpSolrServer.commit();
-            httpSolrServer.optimize();
-            dropped = true;
-        } catch (Exception e) {
-            LOGGER.error("drop failed", e);
-        }
-        return dropped;
     }
 
     public Collection<SolrInputDocument> parseDocuments(final Source source) throws JAXBException, MalformedURLException {

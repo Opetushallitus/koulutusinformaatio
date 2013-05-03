@@ -17,14 +17,28 @@
 package fi.vm.sade.koulutusinformaatio.service;
 
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityData;
+import fi.vm.sade.koulutusinformaatio.domain.ParentLearningOpportunity;
 import org.apache.solr.client.solrj.SolrServerException;
 
 import java.io.IOException;
 
 public interface IndexerService {
-    String update();
 
-    boolean drop();
+    /**
+     *
+     */
+    void dropLOs() throws Exception;
+
+    /**
+     *
+     */
+    void dropLOPs()  throws Exception;
+
+    /**
+     * Indexes a parent learning opportunity and it's child
+     * learning opportunities.
+     */
+    void indexParentLearningOpportunity(ParentLearningOpportunity parent) throws Exception;
 
     /**
      * Updates all required indexes with the given education data.
