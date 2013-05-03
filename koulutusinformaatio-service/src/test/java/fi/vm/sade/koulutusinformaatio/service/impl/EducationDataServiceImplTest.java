@@ -8,6 +8,7 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunityEntity;
 import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import org.modelmapper.ModelMapper;
@@ -92,16 +93,15 @@ public class EducationDataServiceImplTest {
     }
 
     @Test
-    public void testGetParentLearningOpportunity() {
+    public void testGetParentLearningOpportunity() throws ResourceNotFoundException {
         ParentLearningOpportunity plo = service.getParentLearningOpportunity("1.2.3");
         assertNotNull(plo);
         assertEquals("1.2.3", plo.getId());
     }
 
-    @Test
-    public void testGetParentLearningOpportunityNotExists() {
+    @Test(expected = ResourceNotFoundException.class)
+    public void testGetParentLearningOpportunityNotExists() throws ResourceNotFoundException {
         ParentLearningOpportunity plo = service.getParentLearningOpportunity("1.1.1");
-        assertNull(plo);
     }
 
     @Test
