@@ -35,12 +35,13 @@ import java.util.List;
 public class TarjontaServiceImpl implements TarjontaService {
 
     private KomoResource komoResource;
-    private HakukohdeResource aoResource;
+    private HakukohdeResource hakukohdeResource;
     private ConversionService conversionService;
 
     @Autowired
-    public TarjontaServiceImpl(KomoResource komoResource, ConversionService conversionService) {
+    public TarjontaServiceImpl(KomoResource komoResource, HakukohdeResource aoResource, ConversionService conversionService) {
         this.komoResource = komoResource;
+        this.hakukohdeResource = aoResource;
         this.conversionService = conversionService;
     }
 
@@ -62,7 +63,7 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     @Override
     public List<String> listApplicationOptionOids() {
-        return aoResource.search(null, 0, 0, null, null);
+        return hakukohdeResource.search(null, 0, 0, null, null);
     }
 
 }
