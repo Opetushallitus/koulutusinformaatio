@@ -25,7 +25,10 @@ import java.util.Map;
  */
 public class I18nText {
 
-    private final Map<String, String> translations;
+    private Map<String, String> translations;
+
+
+    public I18nText() {}
 
     public I18nText(final Map<String, String> translations) {
         this.translations = ImmutableMap.copyOf(translations);
@@ -33,5 +36,9 @@ public class I18nText {
 
     public Map<String, String> getTranslations() {
         return translations;
+    }
+
+    public void setTranslations(Map<String, String> translations) {
+        this.translations = translations;
     }
 }

@@ -58,16 +58,10 @@ public class EducationDataServiceImplTest {
     }
 
     @Test
-    public void testSave() {
-        LearningOpportunityData learningOpportunityData = new LearningOpportunityData();
-        List<ParentLearningOpportunity> parentLearningOpportunities = new ArrayList<ParentLearningOpportunity>();
+    public void testSaveParentLearningOpportunity() {
         List<ApplicationOption> applicationOptions = new ArrayList<ApplicationOption>();
-        List<LearningOpportunityProvider> providers = new ArrayList<LearningOpportunityProvider>();
-
         LearningOpportunityProvider lop = new LearningOpportunityProvider();
         lop.setId("6.7.8");
-        providers.add(lop);
-
         ApplicationOption ao = new ApplicationOption();
         ao.setId("3.3.3");
         ao.setProvider(lop);
@@ -82,18 +76,19 @@ public class EducationDataServiceImplTest {
         List<ChildLearningOpportunity> children = new ArrayList<ChildLearningOpportunity>();
         children.add(clo);
         plo.setChildren(children);
-        parentLearningOpportunities.add(plo);
-        learningOpportunityData.setApplicationOptions(applicationOptions);
-        learningOpportunityData.setParentLearningOpportinities(parentLearningOpportunities);
-        learningOpportunityData.setProviders(providers);
 
-        service.save(learningOpportunityData);
+        service.save(plo);
+        verify(parentLearningOpportunityDAO, times(1)).save(any(ParentLearningOpportunityEntity.class));
+        verify(applicationOptionDAO, times(1)).save(any(ApplicationOptionEntity.class));
+        verify(learningOpportunityProviderDAO, times(2)).save(any(LearningOpportunityProviderEntity.class));
+    }
+
+    @Test
+    public void testDropAll() {
+        service.dropAllData();
         verify(ploCollection, times(1)).drop();
         verify(aoCollection, times(1)).drop();
         verify(lopCollection, times(1)).drop();
-        verify(parentLearningOpportunityDAO, times(1)).save(any(ParentLearningOpportunityEntity.class));
-        verify(applicationOptionDAO, times(1)).save(any(ApplicationOptionEntity.class));
-        verify(learningOpportunityProviderDAO, times(1)).save(any(LearningOpportunityProviderEntity.class));
     }
 
     @Test

@@ -82,6 +82,7 @@ public class EducationDataServiceImpl implements EducationDataService {
             for (ApplicationOptionEntity ao : aos.values()) {
                 save(ao);
             }
+            parentLearningOpportunityDAO.save(plo);
         }
     }
 

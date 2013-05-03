@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.dao;
 
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
+import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,7 +52,7 @@ public class LearningOpportunityProviderDAOTest {
         LearningOpportunityProviderEntity entity = new LearningOpportunityProviderEntity();
         String oid = "1.2.3.4.5";
         entity.setId(oid);
-        entity.setName("lop name");
+        entity.setName(TestUtil.createI18nTextEntity("lop name fi", "lop name sv", "lop name en"));
         Set<String> asIds = new HashSet<String>();
         asIds.add("1.2.3");
         asIds.add("2.2.2");
@@ -62,7 +63,7 @@ public class LearningOpportunityProviderDAOTest {
         LearningOpportunityProviderEntity fromDb = learningOpportunityProviderDAO.get(oid);
         assertNotNull(fromDb);
         assertEquals(oid, fromDb.getId());
-        assertEquals(entity.getName(), fromDb.getName());
+        assertEquals(entity.getName().getTranslations().get("fi"), fromDb.getName().getTranslations().get("fi"));
         assertNotNull(fromDb.getApplicationSystemIds());
         assertEquals(3, fromDb.getApplicationSystemIds().size());
     }
