@@ -129,4 +129,12 @@ directive('kiAppTitle', ['TitleService', function(TitleService) {
         });
         //element.html(TitleService.getTitle());
     };
+}]).
+
+
+directive('kiI18n', ['TranslationService', function(TranslationService) {
+    return function(scope, element, attrs) {
+        console.log(attrs);
+        element.append(TranslationService.getTranslation(attrs.kiI18n));
+    }    
 }]);

@@ -25,6 +25,19 @@ kiApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $l
     //$locationProvider.html5Mode(true);
 }]);
 
+// initialize i18n library
+kiApp.run(function() {
+    i18n.init({
+        resGetPath : 'locales/__ns__-__lng__.json',
+        lng : 'fi',
+        ns: 'language',
+        getAsync : false,
+        sendMissing : false,
+        fallbackLng : 'fi',
+        debug : true
+    });
+});
+
 /*
 kiApp.run(['$location', '$rootScope', function($location, $rootScope) {
     $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {

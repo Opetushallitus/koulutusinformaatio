@@ -18,12 +18,12 @@ service('SearchLearningOpportunity', ['$http', '$timeout', '$q', function($http,
             var deferred = $q.defer();
 
             $http.get('../lo/search/' + params.queryString).
-                success(function(result) {
-                    deferred.resolve(result);
-                }).
-                error(function(result) {
-                    deferred.reject(result);
-                });
+            success(function(result) {
+                deferred.resolve(result);
+            }).
+            error(function(result) {
+                deferred.reject(result);
+            });
 
             return deferred.promise;
         }
@@ -41,18 +41,18 @@ service('SearchLearningOpportunity', ['$http', '$timeout', '$q', function($http,
 }).
 */
 
- service('ParentLearningOpportunity', ['$http', '$timeout', '$q', function($http, $timeout, $q) {
+service('ParentLearningOpportunity', ['$http', '$timeout', '$q', function($http, $timeout, $q) {
     return {
         query: function(params) {
             var deferred = $q.defer();
 
             $http.get('../lo/' + params.parentId).
-                success(function(result) {
-                    deferred.resolve(result);
-                }).
-                error(function(result) {
-                    deferred.reject(result);
-                });
+            success(function(result) {
+                deferred.resolve(result);
+            }).
+            error(function(result) {
+                deferred.reject(result);
+            });
 
             return deferred.promise;
         }
@@ -86,7 +86,7 @@ service('SearchLearningOpportunity', ['$http', '$timeout', '$q', function($http,
 }).
 
 /**
- *  Service taking care of search term saving
+ *  Service for "caching" current selection
  */
  service('LODataService', function() {
     var data;
@@ -121,7 +121,7 @@ service('SearchLearningOpportunity', ['$http', '$timeout', '$q', function($http,
 /**
  *  Service handling page titles
  */
-service('TitleService', function() {
+ service('TitleService', function() {
     var title;
     
     return {
@@ -136,4 +136,14 @@ service('TitleService', function() {
             return title;
         }
     }
-});
+}).
+
+service('TranslationService', ['$http', '$timeout', '$q', function($http, $timeout, $q) {
+    var language;
+
+    return {
+        getTranslation: function(key) {
+            return i18n.t(key);
+        }
+    }
+}]);

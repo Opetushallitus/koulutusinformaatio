@@ -1,7 +1,11 @@
 <section class="grid16-10 no-left-gutter" id="wide-column">
     <div class="tabs sub">
-        <a class="tab current" data-tabs-group="koulutuksenkuvaus" data-tabs-id="koulutuksenkuvaus_peruskoulu"><span>Peruskoulupohjainen koulutus</span></a>
-        <a class="tab" data-tabs-group="koulutuksenkuvaus" data-tabs-id="koulutuksenkuvaus_lukio"><span>Lukiopohjainen koulutus</span></a>
+        <a class="tab current" data-tabs-group="koulutuksenkuvaus" data-tabs-id="koulutuksenkuvaus_peruskoulu">
+            <span>Peruskoulupohjainen koulutus</span>
+        </a>
+        <a class="tab" data-tabs-group="koulutuksenkuvaus" data-tabs-id="koulutuksenkuvaus_lukio">
+            <span>Lukiopohjainen koulutus</span>
+        </a>
     </div>
     <div class="tabsheets sub">
         <section class="tabsheet" style="display: block;" data-tabs-group="koulutuksenkuvaus" data-tabs-id="koulutuksenkuvaus_peruskoulu">
@@ -27,7 +31,9 @@
         <span>Hakuaika</span>
         <span class="bold">3.4.2013 - 31.5.2013</span>
     </div>
-    <form name="level-selection-form" action="/haku-app/lomake/1.2.246.562.5.50476818906/yhteishaku">
+    <!--
+    <form name="level-selection-form" action="http://test-oppija.oph.ware.fi/haku-app/lomake/{{parentLO.applicationOptions[0].applicationSystemId}}/yhteishaku" method="POST"> -->
+        <form name="level-selection-form" action="" method="POST">
         <ul class="margin-bottom-2">
             <li>
                 <input type="radio" name="input1" id="input1" /><label for="input1">Peruskoulupohjainen koulutus</label>
@@ -36,6 +42,13 @@
                 <input type="radio" name="input1" id="input2" /><label for="input2">Lukiopohjainen koulutus</label>
             </li>
         </ul>
+        <!--
+        <input type="hidden" name="preference1-Opetuspiste" value="{{parentLO.provider.name}}"/>
+        <input type="hidden" name="preference1-Opetuspiste-id" value="{{parentLO.provider.id}}"/>
+        <input type="hidden" name="preference1-Koulutus" value="{{parentLO.applicationOptions[0].name}}"/>
+        <input type="hidden" name="preference1-Koulutus-id" value="{{parentLO.applicationOptions[0].id}}"/>
+        <input type="hidden" name="preference1-Koulutus-educationDegree" value="{{parentLO.educationDegree}}"/>
+        <input type="hidden" name="enabling-submit"/>-->
         <button type="submit" class="primary"><span><span>Hae koulutukseen</span></span></button>
     </form>
 </aside>
