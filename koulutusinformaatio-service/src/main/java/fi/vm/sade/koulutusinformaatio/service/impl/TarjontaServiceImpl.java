@@ -22,19 +22,23 @@ import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.tarjonta.service.resources.HakukohdeResource;
 import fi.vm.sade.tarjonta.service.resources.KomoResource;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * @author Hannu Lyytikainen
  */
+@Service
 public class TarjontaServiceImpl implements TarjontaService {
 
     private KomoResource komoResource;
     private HakukohdeResource aoResource;
     private ConversionService conversionService;
 
+    @Autowired
     public TarjontaServiceImpl(KomoResource komoResource, ConversionService conversionService) {
         this.komoResource = komoResource;
         this.conversionService = conversionService;
