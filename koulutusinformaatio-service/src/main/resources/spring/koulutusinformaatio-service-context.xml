@@ -42,13 +42,6 @@
 
     <import resource="classpath:META-INF/spring/events-context.xml" />
 
-    <bean id="HttpSolrServer"
-          class="org.apache.solr.client.solrj.impl.HttpSolrServer">
-        <constructor-arg>
-            <value>${solr.base.url}</value>
-        </constructor-arg>
-    </bean>
-
     <bean id="loHttpSolrServer"
           class="org.apache.solr.client.solrj.impl.HttpSolrServer">
         <constructor-arg>
