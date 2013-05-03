@@ -17,7 +17,9 @@
 package fi.vm.sade.koulutusinformaatio.dao;
 
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.I18nTextEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
+import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -54,17 +56,17 @@ public class ApplicationOptionDAOTest {
         assertEquals(0, applicationOptionDAO.count());
         ApplicationOptionEntity entity = new ApplicationOptionEntity();
         entity.setId("1.2.3");
-        entity.setName("ao name");
+        entity.setName(TestUtil.createI18nTextEntity("ao name fi", "ao name sv", "ao name en"));
         entity.setApplicationSystemId("123");
         entity.setEducationDegree("degree");
-        List<String> childLoNames = new ArrayList<String>();
-        childLoNames.add("clo name");
-        childLoNames.add("clo name 2");
+        List<I18nTextEntity> childLoNames = new ArrayList<I18nTextEntity>();
+        childLoNames.add(TestUtil.createI18nTextEntity("clo name fi", "clo name sv", "clo name en"));
+        childLoNames.add(TestUtil.createI18nTextEntity("clo name 2 fi", "clo name 2 sv", "clo name 2 en"));
         entity.setChildLONames(childLoNames);
 
         LearningOpportunityProviderEntity lop = new LearningOpportunityProviderEntity();
         lop.setId("3.3.3");
-        lop.setName("lop name");
+        lop.setName(TestUtil.createI18nTextEntity("lop name fi", "lop name sv", "lop name en"));
         entity.setProvider(lop);
         learningOpportunityProviderDAO.save(lop);
 
@@ -73,7 +75,7 @@ public class ApplicationOptionDAOTest {
         ApplicationOptionEntity fromDB = applicationOptionDAO.get("1.2.3");
         assertNotNull(fromDB);
         assertEquals(entity.getId(), fromDB.getId());
-        assertEquals(entity.getName(), fromDB.getName());
+        assertEquals(entity.getName().getTranslations().get("fi"), fromDB.getName().getTranslations().get("fi"));
         assertEquals(entity.getApplicationSystemId(), fromDB.getApplicationSystemId());
         assertEquals(entity.getEducationDegree(), fromDB.getEducationDegree());
         assertNotNull(entity.getProvider());
@@ -92,19 +94,19 @@ public class ApplicationOptionDAOTest {
 
         ApplicationOptionEntity entity = new ApplicationOptionEntity();
         entity.setId("1.2.3");
-        entity.setName("ao name");
+        entity.setName(TestUtil.createI18nTextEntity("ao name fi", "ao name sv", "ao name en"));
         entity.setApplicationSystemId(asId);
         entity.setProvider(lop);
 
         ApplicationOptionEntity entity2 = new ApplicationOptionEntity();
         entity2.setId("1.2.4");
-        entity2.setName("ao2 name");
+        entity2.setName(TestUtil.createI18nTextEntity("ao2 name fi", "ao2 name sv", "ao2 name en"));
         entity2.setApplicationSystemId(asId);
         entity2.setProvider(lop);
 
         ApplicationOptionEntity entity3 = new ApplicationOptionEntity();
         entity3.setId("1.2.5");
-        entity3.setName("ao3 name");
+        entity3.setName(TestUtil.createI18nTextEntity("ao3 name fi", "ao3 name sv", "ao3 name en"));
         entity3.setApplicationSystemId("4.4.4");
         entity3.setProvider(lop);
 

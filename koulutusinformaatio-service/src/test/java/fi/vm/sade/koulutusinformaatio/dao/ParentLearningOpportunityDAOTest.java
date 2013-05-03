@@ -20,6 +20,7 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunityEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunityEntity;
+import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -64,16 +65,16 @@ public class ParentLearningOpportunityDAOTest {
         assertEquals(0, learningOpportunityProviderDAO.count());
         ParentLearningOpportunityEntity entity = new ParentLearningOpportunityEntity();
         entity.setId("1.2.3.4.5");
-        entity.setName("parent name");
+        entity.setName(TestUtil.createI18nTextEntity("parent name fi", "parent name sv", "parent name en"));
         entity.setEducationDegree("degree");
         List<ChildLearningOpportunityEntity> children = new ArrayList<ChildLearningOpportunityEntity>();
         ChildLearningOpportunityEntity child = new ChildLearningOpportunityEntity();
         child.setId("2.2.2");
-        child.setName("child name");
+        child.setName(TestUtil.createI18nTextEntity("child name fi", "child name sv", "child name en"));
 
         LearningOpportunityProviderEntity provider = new LearningOpportunityProviderEntity();
         provider.setId("5.5.5");
-        provider.setName("provider name");
+        provider.setName(TestUtil.createI18nTextEntity("provider name fi", "provider name sv", "provider name en"));
         Set<String> aoIds = new HashSet<String>();
         aoIds.add("6.7.5.3");
         aoIds.add("4.7.9.3");
@@ -84,7 +85,7 @@ public class ParentLearningOpportunityDAOTest {
         ao.setId("7.7.7");
         ao.setApplicationSystemId("sysId");
         ao.setEducationDegree("degree");
-        ao.setName("ao name");
+        ao.setName(TestUtil.createI18nTextEntity("ao name fi", "ao name sv", "ao name en"));
         ao.setProvider(provider);
         aos.add(ao);
         child.setApplicationOptions(aos);

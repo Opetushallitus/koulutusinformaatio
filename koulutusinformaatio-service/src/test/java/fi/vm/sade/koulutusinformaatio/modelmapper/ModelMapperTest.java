@@ -69,13 +69,13 @@ public class ModelMapperTest {
 
         assertNotNull(entity);
         assertEquals(parent.getId(), entity.getId());
-        assertEquals(parent.getName(), entity.getName());
+        assertEquals(parent.getName().getTranslations().get("fi"), entity.getName().getTranslations().get("fi"));
         assertNotNull(entity.getChildren());
         assertEquals(2, entity.getChildren().size());
         assertEquals(child.getId(), entity.getChildren().get(0).getId());
-        assertEquals(child.getName(), entity.getChildren().get(0).getName());
+        assertEquals(child.getName().getTranslations().get("fi"), entity.getChildren().get(0).getName().getTranslations().get("fi"));
         assertEquals(child2.getId(), entity.getChildren().get(1).getId());
-        assertEquals(child2.getName(), entity.getChildren().get(1).getName());
+        assertEquals(child2.getName().getTranslations().get("fi"), entity.getChildren().get(1).getName().getTranslations().get("fi"));
         assertNotNull(entity.getApplicationOptions());
         assertEquals(1, entity.getApplicationOptions().size());
         assertEquals(ao.getId(), entity.getApplicationOptions().get(0).getId());
@@ -114,13 +114,13 @@ public class ModelMapperTest {
         ParentLearningOpportunity domain = modelMapper.map(entity, ParentLearningOpportunity.class);
         assertNotNull(domain);
         assertEquals(entity.getId(), domain.getId());
-        assertEquals(entity.getName(), domain.getName());
+        assertEquals(entity.getName().getTranslations().get("fi"), domain.getName().getTranslations().get("fi"));
         assertNotNull(domain.getChildren());
         assertEquals(2, domain.getChildren().size());
         assertEquals(child.getId(), domain.getChildren().get(0).getId());
-        assertEquals(child.getName(), domain.getChildren().get(0).getName());
+        assertEquals(child.getName().getTranslations().get("fi"), domain.getChildren().get(0).getName().getTranslations().get("fi"));
         assertEquals(child2.getId(), domain.getChildren().get(1).getId());
-        assertEquals(child2.getName(), domain.getChildren().get(1).getName());
+        assertEquals(child2.getName().getTranslations().get("fi"), domain.getChildren().get(1).getName().getTranslations().get("fi"));
         assertNotNull(domain.getApplicationOptions());
         assertEquals(1, domain.getApplicationOptions().size());
         assertEquals(ao.getId(), domain.getApplicationOptions().get(0).getId());
