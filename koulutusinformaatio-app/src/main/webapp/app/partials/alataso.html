@@ -13,7 +13,7 @@
     <section id="main-info">
         <h2>
             <span class="block">{{parentLO.provider.name}}</span>
-            <a href="#/info/{{parentId}}" class="block">{{parentLO.name}}</a>
+            <a ng-click="gotoParent()" class="block">{{parentLO.name}}</a>
         </h2>
         <div ki-sibling-ribbon class="ribbon"></div>
         <!--

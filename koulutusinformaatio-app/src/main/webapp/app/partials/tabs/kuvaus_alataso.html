@@ -1,17 +1,26 @@
 <section class="grid16-10 no-left-gutter" id="wide-column">
+    <div class="notification info">
+    <!--<h3>Tähän syksyllä 2013 alkavaan koulutukseen alkaa haku 3.4.2013!</h3>-->
+        <ul>
+            <li><span data-ki-i18n="education-starts"></span>{{childLO.startDate}}</li>
+            <li><span data-ki-i18n="language-of-instruction"></span>{{childLO.teachingLanguages}}</li>
+            <li><span data-ki-i18n="form-of-education"></span>{{childLO.formOfEducation}}</li>
+            <li><span data-ki-i18n="duration"></span></li>
+        </ul>
+    </div>
     <h1 class="margin-top-0">{{childLO.degreeTitle}}</h1>
-    <div render-text-block data-title="Koulutuksen tavoite" data-content="{{lorem}}"></div>
-    <div render-text-block data-title="Opintojen rakenne" data-content="{{parentLO.description.structureDiagram}}"></div>
-    <div render-text-block data-title="Sijoittuminen työelämään" data-content="{{lorem}}"></div>
-    <div render-text-block data-title="Ammattinimikkeet" data-content="{{childLO.qualification}}"></div>
-    <div render-text-block data-title="Kansainvälistyminen" data-content="{{lorem}}"></div>
+    <div render-text-block data-title="goals-of-education" data-content="{{lorem}}"></div>
+    <div render-text-block data-title="structure-of-studies" data-content="{{parentLO.structureDiagram}}"></div>
+    <div render-text-block data-title="getting-to-work" data-content="{{lorem}}"></div>
+    <div render-text-block data-title="profession-title" data-content="{{childLO.qualification}}"></div>
+    <div render-text-block data-title="internationalization" data-content="{{lorem}}"></div>
 </section>
 <aside class="grid16-6 no-right-gutter">
     <div class="sideitem margin-bottom-3 infobox">
         <h2 class="margin-top-0">
-            <span class="block">Tähän koulutukseen haetaan osana tutkintoa:</span>
+            <span class="block" data-ki-i18n="apply-as-part-of-degree-program"></span>
             <span class="block">{{parentLO.provider.name}}</span>
-            <a href="#/info/{{parentId}}">{{parentLO.name}}</a>
+            <a ng-click="gotoParent()">{{parentLO.name}}</a>
         </h2>
     </div>
 </aside>
