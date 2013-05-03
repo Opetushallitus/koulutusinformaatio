@@ -62,7 +62,7 @@ public class TarjontaServiceImplTest {
         komoDTO.setNimi(TestUtil.createI18nText("parent_fi", "parent_sv", "parent_en").getTranslations());
 
         KomoDTOToParentLearningOpportunity converter = new KomoDTOToParentLearningOpportunity(conversionService);
-        when(conversionService.convert(komoDTO, eq(ParentLearningOpportunity.class))).thenReturn(converter.convert(komoDTO));
+        when(conversionService.convert(any(KomoDTO.class), eq(ParentLearningOpportunity.class))).thenReturn(converter.convert(komoDTO));
 
         komoResource = mock(KomoResource.class);
         when(komoResource.search(null, 0, 0, null, null)).thenReturn(IDS);
