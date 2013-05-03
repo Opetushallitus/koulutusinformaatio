@@ -17,6 +17,8 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityProvider;
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunitySearchResult;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
@@ -33,10 +35,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Component
 public class SearchServiceSolrImpl implements SearchService {
@@ -78,7 +77,12 @@ public class SearchServiceSolrImpl implements SearchService {
             for (SolrDocument result : queryResponse.getResults()) {
                 LearningOpportunityProvider provider = new LearningOpportunityProvider();
                 provider.setId(result.get("id").toString());
-                provider.setName(result.get("name").toString());
+
+                // TODO: i18n handling
+                Map<String, String> texts = Maps.newHashMap();
+                texts.put("fi", result.get("name").toString());
+
+                provider.setName(new I18nText(texts));
                 providers.add(provider);
             }
 
@@ -104,9 +108,16 @@ public class SearchServiceSolrImpl implements SearchService {
 
             for (SolrDocument doc : response.getResults()) {
                 String parentId = doc.get("parentId") != null ? doc.get("parentId").toString() : null;
+
+                // TODO: i18n handling
+                Map<String, String> nameTexts = Maps.newHashMap();
+                nameTexts.put("fi", doc.get("name").toString());
+                Map<String, String> lopNameTexts = Maps.newHashMap();
+                lopNameTexts.put("fi", doc.get("lopName").toString());
+
                 LearningOpportunitySearchResult lo = new LearningOpportunitySearchResult(
-                        doc.get("id").toString(), doc.get("name").toString(),
-                        doc.get("lopId").toString(), doc.get("lopName").toString(), parentId);
+                        doc.get("id").toString(), new I18nText(nameTexts),
+                        doc.get("lopId").toString(), new I18nText(lopNameTexts), parentId);
                 learningOpportunities.add(lo);
             }
         }

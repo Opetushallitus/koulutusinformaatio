@@ -27,7 +27,7 @@ public interface UpdateService {
      * Updates all the eduction data. Drops old data and
      * replaces it with new.
      */
-    public void updateAllEducationData();
+    public void updateAllEducationData() throws Exception;
 
 
 }

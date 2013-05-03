@@ -36,7 +36,11 @@ public class AdminResource {
     @GET
     @Path("/update")
     public String updateEducationData() {
-        updateService.updateAllEducationData();
+        try {
+            updateService.updateAllEducationData();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return "education data updated";
     }

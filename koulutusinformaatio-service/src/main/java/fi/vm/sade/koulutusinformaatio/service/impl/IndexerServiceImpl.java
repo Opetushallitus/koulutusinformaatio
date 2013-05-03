@@ -1,5 +1,6 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.client.SolrClient;
 import fi.vm.sade.koulutusinformaatio.client.TarjontaClient;
 import fi.vm.sade.koulutusinformaatio.domain.*;
@@ -68,6 +69,27 @@ public class IndexerServiceImpl implements IndexerService {
 
     @Override
     public void indexParentLearningOpportunity(ParentLearningOpportunity parent) throws Exception {
+        // TODO: index all languages
+        List<SolrInputDocument> docs = Lists.newArrayList();
+        SolrInputDocument parentDoc = new SolrInputDocument();
+        parentDoc.addField("id", parent.getId());
+        parentDoc.addField("name", parent.getName().getTranslations().get("fi"));
+        LearningOpportunityProvider provider = parent.getProvider();
+        parentDoc.addField("lopId", provider.getId());
+        parentDoc.addField("lopName", provider.getName().getTranslations().get("fi"));
+        docs.add(parentDoc);
+
+        for (ChildLearningOpportunity child : parent.getChildren()) {
+            SolrInputDocument childDoc = new SolrInputDocument();
+            childDoc.addField("id", child.getId());
+            childDoc.addField("name", child.getName().getTranslations().get("fi"));
+            childDoc.addField("lopId", provider.getId());
+            childDoc.addField("lopName", provider.getName().getTranslations().get("fi"));
+            docs.add(childDoc);
+        }
+        loHttpSolrServer.add(docs);
+        loHttpSolrServer.commit();
+        loHttpSolrServer.optimize();
     }
 
 

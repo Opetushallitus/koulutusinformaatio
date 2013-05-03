@@ -48,16 +48,14 @@ public class UpdateServiceImpl implements UpdateService {
     }
 
     @Override
-    public void updateAllEducationData() {
+    public void updateAllEducationData() throws Exception {
         // drop db
         // drop index
 
         List<String> parentOids = tarjontaService.listParentLearnignOpportunityOids();
         for (String parentOid : parentOids) {
             ParentLearningOpportunity parent = tarjontaService.findParentLearningOpportunity(parentOid);
-
-            // save parent
-            // index parent
+            this.indexerService.indexParentLearningOpportunity(parent);
 
         }
 
