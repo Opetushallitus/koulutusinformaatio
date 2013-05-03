@@ -1,8 +1,6 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
-import fi.vm.sade.koulutusinformaatio.client.SolrClient;
-import fi.vm.sade.koulutusinformaatio.client.TarjontaClient;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import fi.vm.sade.tarjonta.publication.types.*;
