@@ -34,6 +34,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * @author Mikko Majapuro
@@ -43,19 +44,22 @@ public class KoodistoServiceImpl implements KoodistoService {
 
     private final KoodiService koodiService;
     private final ConversionService conversionService;
+    private final Pattern pattern;
+    private static final String KOODI_URI_WITH_VERSION_PATTERN = "^[^#]+#\\d+$";
     public static final Logger LOGGER = LoggerFactory.getLogger(KoodistoServiceImpl.class);
 
     @Autowired
     public KoodistoServiceImpl(final KoodiService koodiService, final ConversionService conversionService) {
         this.koodiService = koodiService;
         this.conversionService = conversionService;
+        this.pattern = Pattern.compile(KOODI_URI_WITH_VERSION_PATTERN);
     }
 
     @Override
     @Cacheable(cacheName = "koodiCache")
     public List<I18nText> search(String koodiUri) throws KoodistoException {
         LOGGER.debug("search koodi: " + koodiUri);
-        if (koodiUri != null && koodiUri.matches("^[^#]+#\\d+$")) {
+        if (koodiUri != null && pattern.matcher(koodiUri).matches()) {
             String[] splitted = koodiUri.split("#");
             String uri = splitted[0];
             Integer version = Integer.parseInt(splitted[1]);
