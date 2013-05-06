@@ -1,16 +1,16 @@
 {
-    "breadcrumb-search-results": "Hakutulokset",
+    "breadcrumb-search-results": "Search results",
 
-    "lo-description": "Koulutuksen kuvaus",
+    "lo-description": "Description of education",
     "lo-application": "Koulutukseen hakeutuminen",
 
     "elementary-based": "Perukoulupohjainen koulutus",
     "secondary-school-based": "Lukiopohjainen koulutus",
 
-    "education-starts": "Koulutus alkaa",
-    "language-of-instruction": "Opetuskieli",
-    "form-of-education": "Opetusmuoto",
-    "duration": "Koulutuksen laajuus",
+    "education-starts": "Education begins",
+    "language-of-instruction": "Language of instruction",
+    "form-of-education": "Form of education",
+    "duration": "Duration",
 
     "goals-of-education": "Tavoite",
     "selection-of-degree-program": "Koulutusohjelman valinta",
