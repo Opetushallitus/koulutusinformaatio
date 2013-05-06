@@ -85,6 +85,24 @@ service('ParentLearningOpportunity', ['$http', '$timeout', '$q', function($http,
     };
 }).
 
+service('LanguageService', function($cookies) {
+    var defaultLanguage = 'fi';
+
+    return {
+        getLanguage: function() {
+            if ($cookies.language) {
+                return $cookies.language;
+            } else {
+                return defaultLanguage;
+            }
+        },
+
+        setLanguage: function(language) {
+            $cookies.language = language;
+        }
+    };
+}).
+
 /**
  *  Service for "caching" current selection
  */

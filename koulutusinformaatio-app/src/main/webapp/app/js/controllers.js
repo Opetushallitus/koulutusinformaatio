@@ -1,5 +1,15 @@
 /* Controllers */
 
+function LanguageCtrl($scope, $location, LanguageService) {
+    $scope.changeLanguage = function(code) {
+       LanguageService.setLanguage(code);
+       console.log(i18n);
+       i18n.setLng(code);
+       document.location.reload(true);
+    }
+
+};
+
 /**
  *  Controller for index view
  */
@@ -86,7 +96,7 @@
     }
 
     $scope.scrollToAnchor = function(id) {
-        $('body').scrollTop($('#' + id).offset().top);
+        $('html, body').scrollTop($('#' + id).offset().top);
     };
 
     $scope.initTabs = tabsMenu.build;

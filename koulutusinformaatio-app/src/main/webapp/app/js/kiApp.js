@@ -26,17 +26,17 @@ kiApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $l
 }]);
 
 // initialize i18n library
-kiApp.run(function() {
+kiApp.run(['LanguageService', function(LanguageService) {
     i18n.init({
         resGetPath : 'locales/__ns__-__lng__.json',
-        lng : 'fi',
+        lng : LanguageService.getLanguage(),
         ns: 'language',
         getAsync : false,
         sendMissing : false,
         fallbackLng : 'fi',
-        debug : true
+        debug : false
     });
-});
+}]);
 
 /*
 kiApp.run(['$location', '$rootScope', function($location, $rootScope) {

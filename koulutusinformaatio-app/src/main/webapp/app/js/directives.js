@@ -38,7 +38,7 @@
         restrict: 'E,A',
         templateUrl: 'partials/breadcrumb.html',
         link: function(scope, element, attrs) {
-            var home = "Hakutulokset";
+            var home = i18n.t('breadcrumb-search-results');
             var parent;
             var child;
 
@@ -134,7 +134,6 @@ directive('kiAppTitle', ['TitleService', function(TitleService) {
 
 directive('kiI18n', ['TranslationService', function(TranslationService) {
     return function(scope, element, attrs) {
-        console.log(attrs);
         element.append(TranslationService.getTranslation(attrs.kiI18n));
     }    
 }]);
