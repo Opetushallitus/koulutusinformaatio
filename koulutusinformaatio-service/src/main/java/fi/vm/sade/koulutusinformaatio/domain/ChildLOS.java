@@ -24,18 +24,37 @@ import java.util.List;
  *
  * @author Hannu Lyytikainen
  */
-public class ChildLOS extends LearningOpportunity {
+public class ChildLOS {
 
+    private String id;
+    private I18nText name;
     private List<ApplicationOption> applicationOptions = new ArrayList<ApplicationOption>();
     private I18nText qualification;
     private I18nText degreeTitle;
 
     public ChildLOS(String id, I18nText name) {
-        super(id, name);
+        this.id = id;
+        this.name = name;
     }
 
     public ChildLOS() {
 
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public I18nText getName() {
+        return name;
+    }
+
+    public void setName(I18nText name) {
+        this.name = name;
     }
 
     public List<ApplicationOption> getApplicationOptions() {

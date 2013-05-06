@@ -16,7 +16,6 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
-import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 
 import java.util.List;
@@ -25,14 +24,6 @@ import java.util.List;
  * @author Hannu Lyytikainen
  */
 public interface TarjontaService {
-
-    /**
-     * Finds a learning opportunity by oid.
-     *
-     * @param oid
-     * @return learning opportunity
-     */
-    public LearningOpportunity findLearningOpportunity(String oid);
 
     /**
      * Finds a parent learning opportunity by oid.

@@ -16,7 +16,6 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.tarjonta.service.resources.HakukohdeResource;
@@ -43,11 +42,6 @@ public class TarjontaServiceImpl implements TarjontaService {
         this.komoResource = komoResource;
         this.hakukohdeResource = aoResource;
         this.conversionService = conversionService;
-    }
-
-    @Override
-    public LearningOpportunity findLearningOpportunity(String oid) {
-        return null;
     }
 
     @Override
