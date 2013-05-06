@@ -17,9 +17,11 @@
 package fi.vm.sade.koulutusinformaatio.domain;
 
 /**
+ * Learning opportunity instance search result.
+ *
  * @author Hannu Lyytikainen
  */
-public class LearningOpportunitySearchResult {
+public class LOISearchResult {
 
     private String id;
     private I18nText name;
@@ -27,7 +29,7 @@ public class LearningOpportunitySearchResult {
     private I18nText lopName;
     private String parentId;
 
-    public LearningOpportunitySearchResult(String id, I18nText name, String lopId, I18nText lopName, String parentId) {
+    public LOISearchResult(String id, I18nText name, String lopId, I18nText lopName, String parentId) {
         this.id = id;
         this.name = name;
         this.lopId = lopId;

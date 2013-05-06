@@ -19,8 +19,8 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
+import fi.vm.sade.koulutusinformaatio.domain.LOSearchResult;
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityProvider;
-import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunitySearchResult;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.MapToSolrQueryTransformer;
@@ -91,8 +91,8 @@ public class SearchServiceSolrImpl implements SearchService {
     }
 
     @Override
-    public List<LearningOpportunitySearchResult> searchLearningOpportunities(String term) throws SearchException {
-        List<LearningOpportunitySearchResult> learningOpportunities = new ArrayList<LearningOpportunitySearchResult>();
+    public List<LOSearchResult> searchLearningOpportunities(String term) throws SearchException {
+        List<LOSearchResult> learningOpportunities = new ArrayList<LOSearchResult>();
         String trimmed = term.trim();
         if (!trimmed.isEmpty()) {
             MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>(1);
@@ -115,7 +115,7 @@ public class SearchServiceSolrImpl implements SearchService {
                 Map<String, String> lopNameTexts = Maps.newHashMap();
                 lopNameTexts.put("fi", doc.get("lopName").toString());
 
-                LearningOpportunitySearchResult lo = new LearningOpportunitySearchResult(
+                LOSearchResult lo = new LOSearchResult(
                         doc.get("id").toString(), new I18nText(nameTexts),
                         doc.get("lopId").toString(), new I18nText(lopNameTexts), parentId);
                 learningOpportunities.add(lo);

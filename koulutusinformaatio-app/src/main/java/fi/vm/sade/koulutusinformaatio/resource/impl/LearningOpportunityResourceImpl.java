@@ -18,7 +18,7 @@ package fi.vm.sade.koulutusinformaatio.resource.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunitySearchResult;
+import fi.vm.sade.koulutusinformaatio.domain.LOSearchResult;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunityDTO;
@@ -55,10 +55,10 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
     @Override
     public List<LearningOpportunitySearchResultDTO> searchLearningOpportunities(String text) {
         try {
-            List<LearningOpportunitySearchResult> learningOpportunities = searchService.searchLearningOpportunities(text);
-            return Lists.transform(learningOpportunities, new Function<LearningOpportunitySearchResult, LearningOpportunitySearchResultDTO>() {
+            List<LOSearchResult> learningOpportunities = searchService.searchLearningOpportunities(text);
+            return Lists.transform(learningOpportunities, new Function<LOSearchResult, LearningOpportunitySearchResultDTO>() {
                 @Override
-                public LearningOpportunitySearchResultDTO apply(LearningOpportunitySearchResult input) {
+                public LearningOpportunitySearchResultDTO apply(LOSearchResult input) {
                     return modelMapper.map(input, LearningOpportunitySearchResultDTO.class);
                 }
             });

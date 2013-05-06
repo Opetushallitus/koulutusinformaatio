@@ -18,7 +18,7 @@ package fi.vm.sade.koulutusinformaatio.modelmapper;
 
 import com.google.common.collect.Maps;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunitySearchResult;
+import fi.vm.sade.koulutusinformaatio.domain.LOSearchResult;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -56,7 +56,7 @@ public class ModelMapperTest {
         lopNameMap.put("en", "lop name en");
 
         I18nText lopName = new I18nText(lopNameMap);
-        LearningOpportunitySearchResult result = new LearningOpportunitySearchResult("loid", name, "lopid", lopName, "parentId");
+        LOSearchResult result = new LOSearchResult("loid", name, "lopid", lopName, "parentId");
 
         LearningOpportunitySearchResultDTO dto = modelMapper.map(result, LearningOpportunitySearchResultDTO.class);
 
