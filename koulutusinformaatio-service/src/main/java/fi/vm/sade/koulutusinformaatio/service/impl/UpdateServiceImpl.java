@@ -34,7 +34,7 @@ public class UpdateServiceImpl implements UpdateService {
     private EducationDataService educationDataService;
 
     @Autowired
-    public UpdateServiceImpl(TarjontaService tarjontaService, ParserService parserService,
+    public UpdateServiceImpl(TarjontaService tarjontaService    ,
                              IndexerService indexerService, EducationDataService educationDataService) {
         this.tarjontaService = tarjontaService;
         this.indexerService = indexerService;
