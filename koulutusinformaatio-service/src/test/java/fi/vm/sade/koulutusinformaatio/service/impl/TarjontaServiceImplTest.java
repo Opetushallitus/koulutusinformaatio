@@ -18,7 +18,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.converter.KomoDTOToParentLearningOpportunity;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 import fi.vm.sade.tarjonta.service.resources.HakukohdeResource;
@@ -62,7 +62,7 @@ public class TarjontaServiceImplTest {
         komoDTO.setNimi(TestUtil.createI18nText("parent_fi", "parent_sv", "parent_en").getTranslations());
 
         KomoDTOToParentLearningOpportunity converter = new KomoDTOToParentLearningOpportunity(conversionService);
-        when(conversionService.convert(any(KomoDTO.class), eq(ParentLearningOpportunity.class))).thenReturn(converter.convert(komoDTO));
+        when(conversionService.convert(any(KomoDTO.class), eq(ParentLOS.class))).thenReturn(converter.convert(komoDTO));
 
         komoResource = mock(KomoResource.class);
         when(komoResource.search(null, 0, 0, null, null)).thenReturn(IDS);
@@ -89,7 +89,7 @@ public class TarjontaServiceImplTest {
 
     @Test
     public void testFindParentLearningOpportunityByOid() {
-        ParentLearningOpportunity parent = tarjontaService.findParentLearningOpportunity(ID_1);
+        ParentLOS parent = tarjontaService.findParentLearningOpportunity(ID_1);
         assertNotNull(parent);
         assertEquals(ID_1, parent.getId());
     }

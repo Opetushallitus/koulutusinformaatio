@@ -19,7 +19,7 @@ package fi.vm.sade.koulutusinformaatio.resource.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunitySearchResult;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunityDTO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
@@ -70,7 +70,7 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
     @Override
     public ParentLearningOpportunityDTO getParentLearningOpportunity(String parentId) {
         try {
-            ParentLearningOpportunity parent = educationDataService.getParentLearningOpportunity(parentId);
+            ParentLOS parent = educationDataService.getParentLearningOpportunity(parentId);
             return modelMapper.map(parent, ParentLearningOpportunityDTO.class);
         } catch (ResourceNotFoundException e) {
             throw KIExceptionHandler.resolveException(e);

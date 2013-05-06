@@ -66,7 +66,7 @@ public class IndexerServiceImpl implements IndexerService {
     }
 
     @Override
-    public void indexParentLearningOpportunity(ParentLearningOpportunity parent) throws Exception {
+    public void indexParentLearningOpportunity(ParentLOS parent) throws Exception {
         // TODO: index all languages
         List<SolrInputDocument> docs = Lists.newArrayList();
         SolrInputDocument parentDoc = new SolrInputDocument();
@@ -77,7 +77,7 @@ public class IndexerServiceImpl implements IndexerService {
         parentDoc.addField("lopName", provider.getName().getTranslations().get("fi"));
         docs.add(parentDoc);
 
-        for (ChildLearningOpportunity child : parent.getChildren()) {
+        for (ChildLOS child : parent.getChildren()) {
             SolrInputDocument childDoc = new SolrInputDocument();
             childDoc.addField("id", child.getId());
             childDoc.addField("name", child.getName().getTranslations().get("fi"));
@@ -106,10 +106,10 @@ public class IndexerServiceImpl implements IndexerService {
 
     }
 
-    public Collection<SolrInputDocument> resolveLODocuments(List<ParentLearningOpportunity> parentLosList) {
+    public Collection<SolrInputDocument> resolveLODocuments(List<ParentLOS> parentLosList) {
         Collection<SolrInputDocument> solrDocuments = new ArrayList<SolrInputDocument>();
 
-        for (ParentLearningOpportunity parentLos : parentLosList) {
+        for (ParentLOS parentLos : parentLosList) {
             SolrInputDocument parentDocument = new SolrInputDocument();
             parentDocument.addField("id", parentLos.getId());
             parentDocument.addField("name", parentLos.getName());
@@ -117,7 +117,7 @@ public class IndexerServiceImpl implements IndexerService {
             parentDocument.addField("lopName", parentLos.getProvider().getName());
             solrDocuments.add(parentDocument);
 
-            for (ChildLearningOpportunity childLos : parentLos.getChildren()) {
+            for (ChildLOS childLos : parentLos.getChildren()) {
                 SolrInputDocument childDocument = new SolrInputDocument();
                 childDocument.addField("id", childLos.getId());
                 childDocument.addField("name", childLos.getName());

@@ -17,7 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.service;
 
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunity;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 
 import java.util.List;
 
@@ -40,7 +40,7 @@ public interface TarjontaService {
      * @param oid
      * @return
      */
-    public ParentLearningOpportunity findParentLearningOpportunity(String oid);
+    public ParentLOS findParentLearningOpportunity(String oid);
 
     /**
      * Returns a list of all parent learning opportunity oids.

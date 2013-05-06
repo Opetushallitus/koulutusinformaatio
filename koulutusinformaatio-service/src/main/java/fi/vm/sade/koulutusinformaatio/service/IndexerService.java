@@ -17,7 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.service;
 
 import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityData;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import org.apache.solr.client.solrj.SolrServerException;
 
 import java.io.IOException;
@@ -38,7 +38,7 @@ public interface IndexerService {
      * Indexes a parent learning opportunity and it's child
      * learning opportunities.
      */
-    void indexParentLearningOpportunity(ParentLearningOpportunity parent) throws Exception;
+    void indexParentLearningOpportunity(ParentLOS parent) throws Exception;
 
     /**
      * Updates all required indexes with the given education data.

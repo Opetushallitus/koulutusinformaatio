@@ -17,7 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.converter;
 
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.converter.Converter;
@@ -25,7 +25,7 @@ import org.springframework.core.convert.converter.Converter;
 /**
  * @author Hannu Lyytikainen
  */
-public class KomoDTOToParentLearningOpportunity implements Converter<KomoDTO, ParentLearningOpportunity> {
+public class KomoDTOToParentLearningOpportunity implements Converter<KomoDTO, ParentLOS> {
 
     private ConversionService conversionService;
 
@@ -34,8 +34,8 @@ public class KomoDTOToParentLearningOpportunity implements Converter<KomoDTO, Pa
     }
 
     @Override
-    public ParentLearningOpportunity convert(KomoDTO source) {
-        ParentLearningOpportunity parent = new ParentLearningOpportunity();
+    public ParentLOS convert(KomoDTO source) {
+        ParentLOS parent = new ParentLOS();
         parent.setId(source.getOid());
         parent.setName(new I18nText(source.getNimi()));
         return parent;

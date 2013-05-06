@@ -67,14 +67,14 @@ public class EducationDataServiceImplTest {
         ao.setId("3.3.3");
         ao.setProvider(lop);
         applicationOptions.add(ao);
-        ParentLearningOpportunity plo = new ParentLearningOpportunity();
+        ParentLOS plo = new ParentLOS();
         plo.setProvider(lop);
         plo.setId("1.2.3");
         plo.setApplicationOptions(applicationOptions);
-        ChildLearningOpportunity clo = new ChildLearningOpportunity();
+        ChildLOS clo = new ChildLOS();
         clo.setId("2.2.2");
         clo.setApplicationOptions(applicationOptions);
-        List<ChildLearningOpportunity> children = new ArrayList<ChildLearningOpportunity>();
+        List<ChildLOS> children = new ArrayList<ChildLOS>();
         children.add(clo);
         plo.setChildren(children);
 
@@ -94,14 +94,14 @@ public class EducationDataServiceImplTest {
 
     @Test
     public void testGetParentLearningOpportunity() throws ResourceNotFoundException {
-        ParentLearningOpportunity plo = service.getParentLearningOpportunity("1.2.3");
+        ParentLOS plo = service.getParentLearningOpportunity("1.2.3");
         assertNotNull(plo);
         assertEquals("1.2.3", plo.getId());
     }
 
     @Test(expected = ResourceNotFoundException.class)
     public void testGetParentLearningOpportunityNotExists() throws ResourceNotFoundException {
-        ParentLearningOpportunity plo = service.getParentLearningOpportunity("1.1.1");
+        ParentLOS plo = service.getParentLearningOpportunity("1.1.1");
     }
 
     @Test

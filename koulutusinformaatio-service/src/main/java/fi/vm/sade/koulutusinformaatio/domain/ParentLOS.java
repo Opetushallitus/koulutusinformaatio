@@ -20,13 +20,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Parent level learning opportunity specification.
+ *
  * @author Hannu Lyytikainen
  */
-public class ParentLearningOpportunity {
+public class ParentLOS {
 
     private String id;
     private I18nText name;
-    private List<ChildLearningOpportunity> children = new ArrayList<ChildLearningOpportunity>();
+    private List<ChildLOS> children = new ArrayList<ChildLOS>();
     private List<ApplicationOption> applicationOptions = new ArrayList<ApplicationOption>();
     private LearningOpportunityProvider provider;
     private String educationDegree;
@@ -67,11 +69,11 @@ public class ParentLearningOpportunity {
         this.name = name;
     }
 
-    public List<ChildLearningOpportunity> getChildren() {
+    public List<ChildLOS> getChildren() {
         return children;
     }
 
-    public void setChildren(List<ChildLearningOpportunity> children) {
+    public void setChildren(List<ChildLOS> children) {
         this.children = children;
     }
 

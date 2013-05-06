@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class LearningOpportunityData {
 
-    private List<ParentLearningOpportunity> parentLearningOpportinities;
+    private List<ParentLOS> parentLearningOpportinities;
     private List<ApplicationOption> applicationOptions;
     private List<LearningOpportunityProvider> providers;
 
@@ -35,11 +35,11 @@ public class LearningOpportunityData {
         this.applicationOptions = applicationOptions;
     }
 
-    public List<ParentLearningOpportunity> getParentLearningOpportinities() {
+    public List<ParentLOS> getParentLearningOpportinities() {
         return parentLearningOpportinities;
     }
 
-    public void setParentLearningOpportinities(List<ParentLearningOpportunity> parentLearningOpportinities) {
+    public void setParentLearningOpportinities(List<ParentLOS> parentLearningOpportinities) {
         this.parentLearningOpportinities = parentLearningOpportinities;
     }
 

@@ -20,19 +20,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Child level learning opportunity specification.
+ *
  * @author Hannu Lyytikainen
  */
-public class ChildLearningOpportunity extends LearningOpportunity {
+public class ChildLOS extends LearningOpportunity {
 
     private List<ApplicationOption> applicationOptions = new ArrayList<ApplicationOption>();
     private I18nText qualification;
     private I18nText degreeTitle;
 
-    public ChildLearningOpportunity(String id, I18nText name) {
+    public ChildLOS(String id, I18nText name) {
         super(id, name);
     }
 
-    public ChildLearningOpportunity() {
+    public ChildLOS() {
 
     }
 

@@ -20,8 +20,8 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunityEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunityEntity;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLearningOpportunity;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
+import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 import org.junit.Test;
 import org.modelmapper.ModelMapper;
@@ -41,7 +41,7 @@ public class ModelMapperTest {
 
     @Test
     public void testMapParentLearningOpportunityToEntity() {
-        ParentLearningOpportunity parent = new ParentLearningOpportunity();
+        ParentLOS parent = new ParentLOS();
         parent.setId("123");
         parent.setName(TestUtil.createI18nText("parent name fi", "parent name sv", "parent name en"));
         parent.setEducationDegree("degree");
@@ -55,12 +55,12 @@ public class ModelMapperTest {
         applicationOptions.add(ao);
         parent.setApplicationOptions(applicationOptions);
 
-        ChildLearningOpportunity child = new ChildLearningOpportunity("111", TestUtil.createI18nText("child1Name", "child1Name", "child1Name"));
+        ChildLOS child = new ChildLOS("111", TestUtil.createI18nText("child1Name", "child1Name", "child1Name"));
         child.setApplicationOptions(applicationOptions);
-        ChildLearningOpportunity child2 = new ChildLearningOpportunity("222", TestUtil.createI18nText("child2Name", "child2Name", "child2Name"));
+        ChildLOS child2 = new ChildLOS("222", TestUtil.createI18nText("child2Name", "child2Name", "child2Name"));
         child2.setApplicationOptions(applicationOptions);
 
-        List<ChildLearningOpportunity> children = new ArrayList<ChildLearningOpportunity>();
+        List<ChildLOS> children = new ArrayList<ChildLOS>();
         children.add(child);
         children.add(child2);
         parent.setChildren(children);
@@ -111,7 +111,7 @@ public class ModelMapperTest {
 
         entity.setChildren(children);
 
-        ParentLearningOpportunity domain = modelMapper.map(entity, ParentLearningOpportunity.class);
+        ParentLOS domain = modelMapper.map(entity, ParentLOS.class);
         assertNotNull(domain);
         assertEquals(entity.getId(), domain.getId());
         assertEquals(entity.getName().getTranslations().get("fi"), domain.getName().getTranslations().get("fi"));

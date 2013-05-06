@@ -16,7 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import fi.vm.sade.koulutusinformaatio.domain.ParentLearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,7 +48,7 @@ public class UpdateServiceImpl implements UpdateService {
 
         List<String> parentOids = tarjontaService.listParentLearnignOpportunityOids();
         for (String parentOid : parentOids) {
-            ParentLearningOpportunity parent = tarjontaService.findParentLearningOpportunity(parentOid);
+            ParentLOS parent = tarjontaService.findParentLearningOpportunity(parentOid);
             this.indexerService.indexParentLearningOpportunity(parent);
 
         }

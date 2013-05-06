@@ -26,9 +26,7 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunityEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunityEntity;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityData;
-import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityProvider;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataService;
 import org.modelmapper.ModelMapper;
@@ -61,10 +59,10 @@ public class EducationDataServiceImpl implements EducationDataService {
     }
 
     @Override
-    public void save(final ParentLearningOpportunity parentLearningOpportunity) {
-        if (parentLearningOpportunity != null) {
+    public void save(final ParentLOS parentLOS) {
+        if (parentLOS != null) {
             ParentLearningOpportunityEntity plo =
-                    modelMapper.map(parentLearningOpportunity, ParentLearningOpportunityEntity.class);
+                    modelMapper.map(parentLOS, ParentLearningOpportunityEntity.class);
             Map<String, ApplicationOptionEntity> aos = new HashMap<String, ApplicationOptionEntity>();
             save(plo.getProvider());
 
@@ -111,10 +109,10 @@ public class EducationDataServiceImpl implements EducationDataService {
     }
 
     @Override
-    public ParentLearningOpportunity getParentLearningOpportunity(String oid) throws ResourceNotFoundException {
+    public ParentLOS getParentLearningOpportunity(String oid) throws ResourceNotFoundException {
         ParentLearningOpportunityEntity entity = parentLearningOpportunityDAO.get(oid);
         if (entity != null) {
-            return modelMapper.map(entity, ParentLearningOpportunity.class);
+            return modelMapper.map(entity, ParentLOS.class);
         } else {
             throw new ResourceNotFoundException("Parent learning opportunity not found: " + oid);
         }
