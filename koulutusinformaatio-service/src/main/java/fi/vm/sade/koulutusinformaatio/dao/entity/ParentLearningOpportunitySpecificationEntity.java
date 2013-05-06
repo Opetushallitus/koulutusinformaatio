@@ -23,15 +23,11 @@ import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Id;
 import com.google.code.morphia.annotations.Reference;
 
-import fi.vm.sade.koulutusinformaatio.domain.Classification;
-import fi.vm.sade.koulutusinformaatio.domain.Credits;
-import fi.vm.sade.koulutusinformaatio.domain.Description;
-
 /**
  * @author Mikko Majapuro
  */
 @Entity("learningOpportunities")
-public class ParentLearningOpportunityEntity {
+public class ParentLearningOpportunitySpecificationEntity {
 
     @Id
     private String id;
@@ -45,13 +41,13 @@ public class ParentLearningOpportunityEntity {
     @Embedded
     private CreditsEntity credits;
     @Embedded
-    private List<ChildLearningOpportunityEntity> children;
+    private List<ChildLearningOpportunitySpecificationEntity> children;
     @Reference
     private List<ApplicationOptionEntity> applicationOptions;
     @Reference
     private LearningOpportunityProviderEntity provider;
 
-    public ParentLearningOpportunityEntity() {
+    public ParentLearningOpportunitySpecificationEntity() {
     }
 
     public String getId() {
@@ -78,11 +74,11 @@ public class ParentLearningOpportunityEntity {
         this.educationDegree = educationDegree;
     }
 
-    public List<ChildLearningOpportunityEntity> getChildren() {
+    public List<ChildLearningOpportunitySpecificationEntity> getChildren() {
         return children;
     }
 
-    public void setChildren(List<ChildLearningOpportunityEntity> children) {
+    public void setChildren(List<ChildLearningOpportunitySpecificationEntity> children) {
         this.children = children;
     }
 

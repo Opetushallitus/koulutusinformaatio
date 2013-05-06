@@ -20,11 +20,11 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
 import fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO;
-import fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunityDAO;
+import fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecificationDAO;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunityEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunitySpecificationEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunityEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunitySpecificationEntity;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
@@ -43,16 +43,16 @@ import java.util.Map;
 @Service
 public class EducationDataServiceImpl implements EducationDataService {
 
-    private ParentLearningOpportunityDAO parentLearningOpportunityDAO;
+    private ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO;
     private ApplicationOptionDAO applicationOptionDAO;
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
     private ModelMapper modelMapper;
 
     @Autowired
-    public EducationDataServiceImpl(ParentLearningOpportunityDAO parentLearningOpportunityDAO,
+    public EducationDataServiceImpl(ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO,
                                     ApplicationOptionDAO applicationOptionDAO, LearningOpportunityProviderDAO learningOpportunityProviderDAO,
             ModelMapper modelMapper) {
-        this.parentLearningOpportunityDAO = parentLearningOpportunityDAO;
+        this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;
         this.learningOpportunityProviderDAO = learningOpportunityProviderDAO;
         this.modelMapper = modelMapper;
@@ -61,8 +61,8 @@ public class EducationDataServiceImpl implements EducationDataService {
     @Override
     public void save(final ParentLOS parentLOS) {
         if (parentLOS != null) {
-            ParentLearningOpportunityEntity plo =
-                    modelMapper.map(parentLOS, ParentLearningOpportunityEntity.class);
+            ParentLearningOpportunitySpecificationEntity plo =
+                    modelMapper.map(parentLOS, ParentLearningOpportunitySpecificationEntity.class);
             Map<String, ApplicationOptionEntity> aos = new HashMap<String, ApplicationOptionEntity>();
             save(plo.getProvider());
 
@@ -72,7 +72,7 @@ public class EducationDataServiceImpl implements EducationDataService {
                 }
             }
             if (plo.getChildren() != null) {
-                for (ChildLearningOpportunityEntity clo : plo.getChildren()) {
+                for (ChildLearningOpportunitySpecificationEntity clo : plo.getChildren()) {
                     for (ApplicationOptionEntity ao : clo.getApplicationOptions()) {
                         aos.put(ao.getId(), ao);
                     }
@@ -81,7 +81,7 @@ public class EducationDataServiceImpl implements EducationDataService {
             for (ApplicationOptionEntity ao : aos.values()) {
                 save(ao);
             }
-            parentLearningOpportunityDAO.save(plo);
+            parentLearningOpportunitySpecificationDAO.save(plo);
         }
     }
 
@@ -104,13 +104,13 @@ public class EducationDataServiceImpl implements EducationDataService {
     public void dropAllData() {
         //drop current data
         applicationOptionDAO.getCollection().drop();
-        parentLearningOpportunityDAO.getCollection().drop();
+        parentLearningOpportunitySpecificationDAO.getCollection().drop();
         learningOpportunityProviderDAO.getCollection().drop();
     }
 
     @Override
     public ParentLOS getParentLearningOpportunity(String oid) throws ResourceNotFoundException {
-        ParentLearningOpportunityEntity entity = parentLearningOpportunityDAO.get(oid);
+        ParentLearningOpportunitySpecificationEntity entity = parentLearningOpportunitySpecificationDAO.get(oid);
         if (entity != null) {
             return modelMapper.map(entity, ParentLOS.class);
         } else {

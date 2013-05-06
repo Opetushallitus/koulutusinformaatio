@@ -26,7 +26,7 @@ import java.util.List;
  * @author Mikko Majapuro
  */
 @Embedded
-public class ChildLearningOpportunityEntity {
+public class ChildLearningOpportunitySpecificationEntity {
 
     @Id
     private String id;
@@ -39,7 +39,7 @@ public class ChildLearningOpportunityEntity {
     @Reference
     private List<ApplicationOptionEntity> applicationOptions;
 
-    public ChildLearningOpportunityEntity() {
+    public ChildLearningOpportunitySpecificationEntity() {
     }
 
     public String getId() {

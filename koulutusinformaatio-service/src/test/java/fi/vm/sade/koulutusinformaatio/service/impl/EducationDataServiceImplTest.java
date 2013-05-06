@@ -3,10 +3,10 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 import com.mongodb.DBCollection;
 import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
 import fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO;
-import fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunityDAO;
+import fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecificationDAO;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunityEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunitySpecificationEntity;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import org.junit.Before;
@@ -25,7 +25,7 @@ import static org.mockito.Mockito.*;
 public class EducationDataServiceImplTest {
 
     private EducationDataServiceImpl service;
-    private ParentLearningOpportunityDAO parentLearningOpportunityDAO;
+    private ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO;
     private ApplicationOptionDAO applicationOptionDAO;
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
     private DBCollection ploCollection;
@@ -35,13 +35,13 @@ public class EducationDataServiceImplTest {
     @Before
     public void setUp() {
         ModelMapper modelMapper = new ModelMapper();
-        parentLearningOpportunityDAO = mock(ParentLearningOpportunityDAO.class);
+        parentLearningOpportunitySpecificationDAO = mock(ParentLearningOpportunitySpecificationDAO.class);
         ploCollection = mock(DBCollection.class);
-        ParentLearningOpportunityEntity plo = new ParentLearningOpportunityEntity();
+        ParentLearningOpportunitySpecificationEntity plo = new ParentLearningOpportunitySpecificationEntity();
         String ploOid = "1.2.3";
         plo.setId(ploOid);
-        when(parentLearningOpportunityDAO.getCollection()).thenReturn(ploCollection);
-        when(parentLearningOpportunityDAO.get(eq("1.2.3"))).thenReturn(plo);
+        when(parentLearningOpportunitySpecificationDAO.getCollection()).thenReturn(ploCollection);
+        when(parentLearningOpportunitySpecificationDAO.get(eq("1.2.3"))).thenReturn(plo);
         applicationOptionDAO = mock(ApplicationOptionDAO.class);
         aoCollection = mock(DBCollection.class);
         when(applicationOptionDAO.getCollection()).thenReturn(aoCollection);
@@ -54,7 +54,7 @@ public class EducationDataServiceImplTest {
         learningOpportunityProviderDAO = mock(LearningOpportunityProviderDAO.class);
         lopCollection = mock(DBCollection.class);
         when(learningOpportunityProviderDAO.getCollection()).thenReturn(lopCollection);
-        service = new EducationDataServiceImpl(parentLearningOpportunityDAO, applicationOptionDAO,
+        service = new EducationDataServiceImpl(parentLearningOpportunitySpecificationDAO, applicationOptionDAO,
                 learningOpportunityProviderDAO, modelMapper);
     }
 
@@ -79,7 +79,7 @@ public class EducationDataServiceImplTest {
         plo.setChildren(children);
 
         service.save(plo);
-        verify(parentLearningOpportunityDAO, times(1)).save(any(ParentLearningOpportunityEntity.class));
+        verify(parentLearningOpportunitySpecificationDAO, times(1)).save(any(ParentLearningOpportunitySpecificationEntity.class));
         verify(applicationOptionDAO, times(1)).save(any(ApplicationOptionEntity.class));
         verify(learningOpportunityProviderDAO, times(2)).save(any(LearningOpportunityProviderEntity.class));
     }

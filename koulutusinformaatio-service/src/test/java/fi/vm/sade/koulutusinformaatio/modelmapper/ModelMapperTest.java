@@ -17,8 +17,8 @@
 package fi.vm.sade.koulutusinformaatio.modelmapper;
 
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunityEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunityEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunitySpecificationEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunitySpecificationEntity;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
@@ -65,7 +65,7 @@ public class ModelMapperTest {
         children.add(child2);
         parent.setChildren(children);
 
-        ParentLearningOpportunityEntity entity = modelMapper.map(parent, ParentLearningOpportunityEntity.class);
+        ParentLearningOpportunitySpecificationEntity entity = modelMapper.map(parent, ParentLearningOpportunitySpecificationEntity.class);
 
         assertNotNull(entity);
         assertEquals(parent.getId(), entity.getId());
@@ -85,7 +85,7 @@ public class ModelMapperTest {
 
     @Test
     public void testMapParentLearningOpportunityEntityToDomainObject() {
-        ParentLearningOpportunityEntity entity = new ParentLearningOpportunityEntity();
+        ParentLearningOpportunitySpecificationEntity entity = new ParentLearningOpportunitySpecificationEntity();
         entity.setId("999");
         entity.setName(TestUtil.createI18nTextEntity("entityName", "entityName", "entityName"));
 
@@ -97,13 +97,13 @@ public class ModelMapperTest {
         ao.setEducationDegree("degree");
         aos.add(ao);
         entity.setApplicationOptions(aos);
-        List<ChildLearningOpportunityEntity> children = new ArrayList<ChildLearningOpportunityEntity>();
-        ChildLearningOpportunityEntity child = new ChildLearningOpportunityEntity();
+        List<ChildLearningOpportunitySpecificationEntity> children = new ArrayList<ChildLearningOpportunitySpecificationEntity>();
+        ChildLearningOpportunitySpecificationEntity child = new ChildLearningOpportunitySpecificationEntity();
         child.setId("444");
         child.setName(TestUtil.createI18nTextEntity("child1EntityName", "child1EntityName", "child1EntityName"));
         child.setApplicationOptions(aos);
         children.add(child);
-        ChildLearningOpportunityEntity child2 = new ChildLearningOpportunityEntity();
+        ChildLearningOpportunitySpecificationEntity child2 = new ChildLearningOpportunitySpecificationEntity();
         child2.setId("555");
         child2.setName(TestUtil.createI18nTextEntity("child2EntityName", "child2EntityName", "child2EntityName"));
         child2.setApplicationOptions(aos);

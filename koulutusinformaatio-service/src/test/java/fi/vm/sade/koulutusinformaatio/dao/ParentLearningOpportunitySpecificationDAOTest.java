@@ -17,9 +17,9 @@
 package fi.vm.sade.koulutusinformaatio.dao;
 
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunityEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunitySpecificationEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunityEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunitySpecificationEntity;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 import org.junit.After;
 import org.junit.Test;
@@ -42,10 +42,10 @@ import static org.junit.Assert.assertNull;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/test-context.xml")
-public class ParentLearningOpportunityDAOTest {
+public class ParentLearningOpportunitySpecificationDAOTest {
 
     @Autowired
-    private ParentLearningOpportunityDAO parentLearningOpportunityDAO;
+    private ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO;
     @Autowired
     private ApplicationOptionDAO applicationOptionDAO;
     @Autowired
@@ -53,22 +53,22 @@ public class ParentLearningOpportunityDAOTest {
 
     @After
     public void removeTestData() {
-        parentLearningOpportunityDAO.getCollection().drop();
+        parentLearningOpportunitySpecificationDAO.getCollection().drop();
         applicationOptionDAO.getCollection().drop();
         learningOpportunityProviderDAO.getCollection().drop();
     }
 
     @Test
     public void testSave() {
-        assertEquals(0, parentLearningOpportunityDAO.count());
+        assertEquals(0, parentLearningOpportunitySpecificationDAO.count());
         assertEquals(0, applicationOptionDAO.count());
         assertEquals(0, learningOpportunityProviderDAO.count());
-        ParentLearningOpportunityEntity entity = new ParentLearningOpportunityEntity();
+        ParentLearningOpportunitySpecificationEntity entity = new ParentLearningOpportunitySpecificationEntity();
         entity.setId("1.2.3.4.5");
         entity.setName(TestUtil.createI18nTextEntity("parent name fi", "parent name sv", "parent name en"));
         entity.setEducationDegree("degree");
-        List<ChildLearningOpportunityEntity> children = new ArrayList<ChildLearningOpportunityEntity>();
-        ChildLearningOpportunityEntity child = new ChildLearningOpportunityEntity();
+        List<ChildLearningOpportunitySpecificationEntity> children = new ArrayList<ChildLearningOpportunitySpecificationEntity>();
+        ChildLearningOpportunitySpecificationEntity child = new ChildLearningOpportunitySpecificationEntity();
         child.setId("2.2.2");
         child.setName(TestUtil.createI18nTextEntity("child name fi", "child name sv", "child name en"));
 
@@ -97,12 +97,12 @@ public class ParentLearningOpportunityDAOTest {
 
         learningOpportunityProviderDAO.save(provider);
         applicationOptionDAO.save(ao);
-        parentLearningOpportunityDAO.save(entity);
+        parentLearningOpportunitySpecificationDAO.save(entity);
 
         assertEquals(1, applicationOptionDAO.count());
-        assertEquals(1, parentLearningOpportunityDAO.count());
+        assertEquals(1, parentLearningOpportunitySpecificationDAO.count());
         assertEquals(1, learningOpportunityProviderDAO.count());
-        ParentLearningOpportunityEntity fromDB = parentLearningOpportunityDAO.get("1.2.3.4.5");
+        ParentLearningOpportunitySpecificationEntity fromDB = parentLearningOpportunitySpecificationDAO.get("1.2.3.4.5");
         assertNotNull(fromDB);
         assertNotNull(fromDB.getChildren());
         assertNotNull(fromDB.getApplicationOptions());
@@ -123,17 +123,17 @@ public class ParentLearningOpportunityDAOTest {
     @Test
     public void testGetParentLearningOpportunity() {
         String oid = "1.2.3";
-        ParentLearningOpportunityEntity plo = new ParentLearningOpportunityEntity();
+        ParentLearningOpportunitySpecificationEntity plo = new ParentLearningOpportunitySpecificationEntity();
         plo.setId(oid);
-        parentLearningOpportunityDAO.save(plo);
-        ParentLearningOpportunityEntity fromDB = parentLearningOpportunityDAO.get(oid);
+        parentLearningOpportunitySpecificationDAO.save(plo);
+        ParentLearningOpportunitySpecificationEntity fromDB = parentLearningOpportunitySpecificationDAO.get(oid);
         assertNotNull(fromDB);
         assertEquals(oid, fromDB.getId());
     }
 
     @Test
     public void testGetParentLearningOpportunityNotFound() {
-        ParentLearningOpportunityEntity entity = parentLearningOpportunityDAO.get("1.1.1");
+        ParentLearningOpportunitySpecificationEntity entity = parentLearningOpportunitySpecificationDAO.get("1.1.1");
         assertNull(entity);
     }
 }
