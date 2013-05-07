@@ -37,7 +37,7 @@ public class ChildLearningOpportunitySpecificationEntity {
     @Embedded
     private I18nTextEntity degreeTitle;
     @Reference
-    private List<ApplicationOptionEntity> applicationOptions;
+    private List<ChildLearningOpportunityInstanceEntity> childLOIs;
 
     public ChildLearningOpportunitySpecificationEntity() {
     }
@@ -74,11 +74,11 @@ public class ChildLearningOpportunitySpecificationEntity {
         this.degreeTitle = degreeTitle;
     }
 
-    public List<ApplicationOptionEntity> getApplicationOptions() {
-        return applicationOptions;
+    public List<ChildLearningOpportunityInstanceEntity> getChildLOIs() {
+        return childLOIs;
     }
 
-    public void setApplicationOptions(List<ApplicationOptionEntity> applicationOptions) {
-        this.applicationOptions = applicationOptions;
+    public void setChildLOIs(List<ChildLearningOpportunityInstanceEntity> childLOIs) {
+        this.childLOIs = childLOIs;
     }
 }
