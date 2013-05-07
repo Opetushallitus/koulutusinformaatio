@@ -23,7 +23,7 @@ import com.google.code.morphia.annotations.Reference;
 /**
  * @author Mikko Majapuro
  */
-@Entity
+@Entity("childLearningOpportunityInstances")
 public class ChildLearningOpportunityInstanceEntity {
 
     @Id
