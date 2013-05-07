@@ -25,11 +25,11 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
  * @author Hannu Lyytikainen
  */
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
-public class ParentLearningOpportunityDTO {
+public class ParentLearningOpportunitySpecificationDTO {
 
     private String id;
     private String name;
-    private List<ChildLearningOpportunityDTO> children = new ArrayList<ChildLearningOpportunityDTO>();
+    private List<ChildLearningOpportunitySpecificationDTO> children = new ArrayList<ChildLearningOpportunitySpecificationDTO>();
     private List<ApplicationOptionDTO> applicationOptions = new ArrayList<ApplicationOptionDTO>();
     private LearningOpportunityProviderDTO provider;
     private String educationDegree;
@@ -54,11 +54,11 @@ public class ParentLearningOpportunityDTO {
         this.name = name;
     }
 
-    public List<ChildLearningOpportunityDTO> getChildren() {
+    public List<ChildLearningOpportunitySpecificationDTO> getChildren() {
         return children;
     }
 
-    public void setChildren(List<ChildLearningOpportunityDTO> children) {
+    public void setChildren(List<ChildLearningOpportunitySpecificationDTO> children) {
         this.children = children;
     }
 

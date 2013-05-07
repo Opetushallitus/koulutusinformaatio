@@ -24,7 +24,7 @@ import java.util.List;
  * @author Hannu Lyytikainen
  */
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
-public class ChildLearningOpportunityDTO {
+public class ChildLearningOpportunitySpecificationDTO {
 
     private String id;
     private String name;
