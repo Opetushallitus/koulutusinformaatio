@@ -28,7 +28,7 @@ public class ChildLOS {
 
     private String id;
     private I18nText name;
-    private List<ApplicationOption> applicationOptions = new ArrayList<ApplicationOption>();
+    private List<ChildLOI> childLOIs = new ArrayList<ChildLOI>();
     private I18nText qualification;
     private I18nText degreeTitle;
 
@@ -57,12 +57,12 @@ public class ChildLOS {
         this.name = name;
     }
 
-    public List<ApplicationOption> getApplicationOptions() {
-        return applicationOptions;
+    public List<ChildLOI> getChildLOIs() {
+        return childLOIs;
     }
 
-    public void setApplicationOptions(List<ApplicationOption> applicationOptions) {
-        this.applicationOptions = applicationOptions;
+    public void setChildLOIs(List<ChildLOI> childLOIs) {
+        this.childLOIs = childLOIs;
     }
 
     public I18nText getQualification() {

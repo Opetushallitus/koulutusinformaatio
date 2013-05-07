@@ -58,7 +58,7 @@ public class ApplicationOptionResourceImplTest {
         List<I18nText> cloNames = new ArrayList<I18nText>();
         cloNames.add(createI18nText("clo name 1 fi", "clo name 1 sv", "clo name 1 en"));
         cloNames.add(createI18nText("clo name 2 fi", "clo name 2 sv", "clo name 2 en"));
-        ao.setChildLONames(cloNames);
+        ao.setChildLOINames(cloNames);
 
         ApplicationOption ao2 = new ApplicationOption();
         ao2.setId("2.3.2");
