@@ -103,7 +103,6 @@
         <property name="converters">
             <list>
                 <bean class="fi.vm.sade.koulutusinformaatio.converter.KoodiTypeToI18nText" />
-                <bean class="fi.vm.sade.koulutusinformaatio.converter.MonikielinenTekstisDTOToI18nText" />
             </list>
         </property>
     </bean>
@@ -117,10 +116,26 @@
         </jaxrs:providers>
     </jaxrs:client>
 
+    <jaxrs:client id="hakukohdeResource"
+                  address="${tarjonta.api.rest.url}"
+                  serviceClass="fi.vm.sade.tarjonta.service.resources.HakukohdeResource"
+                  inheritHeaders="true">
+        <jaxrs:providers>
+            <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>
+        </jaxrs:providers>
+    </jaxrs:client>
+
+
     <bean id="tarjontaService"
           class="fi.vm.sade.koulutusinformaatio.service.impl.TarjontaServiceImpl">
         <constructor-arg>
             <ref bean="komoResource"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="hakukohdeResource"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="conversionService"/>
         </constructor-arg>
     </bean>
 

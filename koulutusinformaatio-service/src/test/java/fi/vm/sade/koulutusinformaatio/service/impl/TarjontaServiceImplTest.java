@@ -19,6 +19,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.converter.KomoDTOToParentLearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
+import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 import fi.vm.sade.tarjonta.service.resources.HakukohdeResource;
@@ -88,7 +89,7 @@ public class TarjontaServiceImplTest {
     }
 
     @Test
-    public void testFindParentLearningOpportunityByOid() {
+    public void testFindParentLearningOpportunityByOid() throws TarjontaParseException {
         ParentLOS parent = tarjontaService.findParentLearningOpportunity(ID_1);
         assertNotNull(parent);
         assertEquals(ID_1, parent.getId());

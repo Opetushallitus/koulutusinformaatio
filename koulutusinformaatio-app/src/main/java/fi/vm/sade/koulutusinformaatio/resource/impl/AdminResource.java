@@ -16,6 +16,8 @@
 
 package fi.vm.sade.koulutusinformaatio.resource.impl;
 
+import fi.vm.sade.koulutusinformaatio.service.IndexerService;
+import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,6 +35,22 @@ public class AdminResource {
     @Autowired
     UpdateService updateService;
 
+    @Autowired
+    IndexerService indexerService;
+
+    @GET
+    @Path("/drop")
+    public String dropIndexes() {
+        try {
+            indexerService.dropLOPs();
+            indexerService.dropLOs();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "FAIL";
+        }
+        return "indexes dropped";
+    }
+
     @GET
     @Path("/update")
     public String updateEducationData() {
@@ -40,6 +58,7 @@ public class AdminResource {
             updateService.updateAllEducationData();
         } catch (Exception e) {
             e.printStackTrace();
+            return "FAIL";
         }
 
         return "education data updated";

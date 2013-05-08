@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.service;
 
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
+import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 
 import java.util.List;
 
@@ -31,7 +32,7 @@ public interface TarjontaService {
      * @param oid
      * @return
      */
-    public ParentLOS findParentLearningOpportunity(String oid);
+    public ParentLOS findParentLearningOpportunity(String oid) throws TarjontaParseException;
 
     /**
      * Returns a list of all parent learning opportunity oids.

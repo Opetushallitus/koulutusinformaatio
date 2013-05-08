@@ -17,7 +17,10 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
+import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +31,8 @@ import java.util.List;
  */
 @Service
 public class UpdateServiceImpl implements UpdateService {
+
+    public static final Logger LOG = LoggerFactory.getLogger(UpdateServiceImpl.class);
 
     private TarjontaService tarjontaService;
     private IndexerService indexerService;
@@ -47,15 +52,21 @@ public class UpdateServiceImpl implements UpdateService {
         // drop index
 
         List<String> parentOids = tarjontaService.listParentLearnignOpportunityOids();
-        for (String parentOid : parentOids) {
-            ParentLOS parent = tarjontaService.findParentLearningOpportunity(parentOid);
-            this.indexerService.indexParentLearningOpportunity(parent);
 
+        for (String parentOid : parentOids) {
+            ParentLOS parent = null;
+            try {
+                parent = tarjontaService.findParentLearningOpportunity(parentOid);
+            } catch (TarjontaParseException e) {
+                LOG.warn("Exception while updating parent learning opportunity, oid: " + parentOid + ", Message: " + e.getMessage());
+                continue;
+            }
+            this.indexerService.addParentLearningOpportunity(parent);
         }
 
+        this.indexerService.commitLOChnages();
 
-
-
+        LOG.info("indexed: " + parentOids.size());
 
     }
 

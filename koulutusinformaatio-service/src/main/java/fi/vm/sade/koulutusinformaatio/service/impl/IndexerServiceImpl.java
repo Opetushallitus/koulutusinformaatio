@@ -66,28 +66,31 @@ public class IndexerServiceImpl implements IndexerService {
     }
 
     @Override
-    public void indexParentLearningOpportunity(ParentLOS parent) throws Exception {
+    public void addParentLearningOpportunity(ParentLOS parent) throws Exception {
         // TODO: index all languages
         List<SolrInputDocument> docs = Lists.newArrayList();
         SolrInputDocument parentDoc = new SolrInputDocument();
         parentDoc.addField("id", parent.getId());
         parentDoc.addField("name", parent.getName().getTranslations().get("fi"));
-        LearningOpportunityProvider provider = parent.getProvider();
-        parentDoc.addField("lopId", provider.getId());
-        parentDoc.addField("lopName", provider.getName().getTranslations().get("fi"));
+//        LearningOpportunityProvider provider = parent.getProvider();
+//        parentDoc.addField("lopId", provider.getId());
+//        parentDoc.addField("lopName", provider.getName().getTranslations().get("fi"));
         docs.add(parentDoc);
 
-        for (ChildLOS child : parent.getChildren()) {
-            SolrInputDocument childDoc = new SolrInputDocument();
-            childDoc.addField("id", child.getId());
-            childDoc.addField("name", child.getName().getTranslations().get("fi"));
-            childDoc.addField("lopId", provider.getId());
-            childDoc.addField("lopName", provider.getName().getTranslations().get("fi"));
-            docs.add(childDoc);
-        }
+//        for (ChildLOS child : parent.getChildren()) {
+//            SolrInputDocument childDoc = new SolrInputDocument();
+//            childDoc.addField("id", child.getId());
+//            childDoc.addField("name", child.getName().getTranslations().get("fi"));
+//            childDoc.addField("lopId", provider.getId());
+//            childDoc.addField("lopName", provider.getName().getTranslations().get("fi"));
+//            docs.add(childDoc);
+//        }
         loHttpSolrServer.add(docs);
+    }
+
+    @Override
+    public void commitLOChnages() throws Exception {
         loHttpSolrServer.commit();
-        loHttpSolrServer.optimize();
     }
 
 }

@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
+import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.tarjonta.service.resources.HakukohdeResource;
 import fi.vm.sade.tarjonta.service.resources.KomoResource;
@@ -31,7 +32,6 @@ import java.util.List;
 /**
  * @author Hannu Lyytikainen
  */
-@Service
 public class TarjontaServiceImpl implements TarjontaService {
 
     private KomoResource komoResource;
@@ -45,13 +45,24 @@ public class TarjontaServiceImpl implements TarjontaService {
         this.conversionService = conversionService;
     }
 
+
+    private void validateParentKomo(KomoDTO komo) throws TarjontaParseException {
+        if (komo.getNimi() == null) {
+            throw new TarjontaParseException("KomoDTO name is null");
+        }
+    }
+
     @Override
-    public ParentLOS findParentLearningOpportunity(String oid) {
+    public ParentLOS findParentLearningOpportunity(String oid) throws TarjontaParseException {
+
         ParentLOS parentLOS = new ParentLOS();
 
         KomoDTO parentKomo = komoResource.getByOID(oid);
 
+        validateParentKomo(parentKomo);
+
         parentLOS.setId(parentKomo.getOid());
+
         parentLOS.setName(new I18nText(parentKomo.getNimi()));
 //        List<String> childLosIds = parentKomo.getAlaModuulit();
 //        for (String childLosId : childLosIds) {
@@ -59,6 +70,7 @@ public class TarjontaServiceImpl implements TarjontaService {
 
 
         return parentLOS;
+
 
     }
 
