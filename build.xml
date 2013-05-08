@@ -95,7 +95,7 @@
 	<fail message="App did not come up.  Check your log files, fix and try again.  Good Luck :-).">     
 		<condition>
 			<not>
-				<http url="${app-url}" />
+				<http url="${app.url}" />
 			</not>
 		</condition>
 	</fail>
