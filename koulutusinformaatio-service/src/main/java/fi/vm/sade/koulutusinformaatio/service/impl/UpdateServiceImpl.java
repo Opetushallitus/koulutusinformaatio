@@ -62,6 +62,7 @@ public class UpdateServiceImpl implements UpdateService {
                 continue;
             }
             this.indexerService.addParentLearningOpportunity(parent);
+            this.educationDataService.save(parent);
         }
 
         this.indexerService.commitLOChnages();
