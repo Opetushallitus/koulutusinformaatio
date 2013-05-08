@@ -22,6 +22,9 @@
 	shell command:
 	#ant -Dtomcat-host=luokka -Dtomcat-port=8406
 -->
+		<fail message="tomcat-host not defined" unless="tomcat-host" />
+		<fail message="tomcat-port not defined" unless="tomcat-port" />	
+
 		<property name="oph.name" value="koulutusinformaatio"/>
 		<property name="pom.version" value="5.0-SNAPSHOT"/>
 
@@ -78,16 +81,16 @@
                  passphrase="${ssh.keypass}" trust="true" failonerror="false" />
 
 	<echo>Wait for service http-url</echo>
-	<condition property="app-url" value="http://itest-oppija.oph.ware.fi/app/">
+	<condition property="app.url" value="http://itest-oppija.oph.ware.fi/app/">
        		<isset property="integration-test" />
         </condition>
-	<condition property="app-url" value="http://test-oppija.oph.ware.fi/app/">
+	<condition property="app.url" value="http://test-oppija.oph.ware.fi/app/">
        		<isset property="system-test" />
        	</condition>
 
-        <echo message="Trying ${app-url}" />
+        <echo message="Trying ${app.url}" />
 	<waitfor maxwait="3000" checkevery="500" >
-		<http url="${app-url}"/>
+		<http url="${app.url}"/>
 	</waitfor>
 	<fail message="App did not come up.  Check your log files, fix and try again.  Good Luck :-).">     
 		<condition>
