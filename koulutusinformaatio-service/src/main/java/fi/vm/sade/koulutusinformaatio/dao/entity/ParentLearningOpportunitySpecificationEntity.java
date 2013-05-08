@@ -26,7 +26,7 @@ import com.google.code.morphia.annotations.Reference;
 /**
  * @author Mikko Majapuro
  */
-@Entity("learningOpportunities")
+@Entity("parentLearningOpportunitySpecifications")
 public class ParentLearningOpportunitySpecificationEntity {
 
     @Id
@@ -40,7 +40,7 @@ public class ParentLearningOpportunitySpecificationEntity {
     private ClassificationEntity classification;
     @Embedded
     private CreditsEntity credits;
-    @Embedded
+    @Reference(lazy = true)
     private List<ChildLearningOpportunitySpecificationEntity> children;
     @Reference
     private List<ApplicationOptionEntity> applicationOptions;

@@ -18,13 +18,8 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
-import fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO;
-import fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecificationDAO;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunitySpecificationEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunitySpecificationEntity;
+import fi.vm.sade.koulutusinformaatio.dao.*;
+import fi.vm.sade.koulutusinformaatio.dao.entity.*;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
@@ -46,16 +41,21 @@ public class EducationDataServiceImpl implements EducationDataService {
     private ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO;
     private ApplicationOptionDAO applicationOptionDAO;
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
+    private ChildLearningOpportunitySpecificationDAO childLearningOpportunitySpecificationDAO;
+    private ChildLearningOpportunityInstanceDAO childLearningOpportunityInstanceDAO;
     private ModelMapper modelMapper;
 
     @Autowired
     public EducationDataServiceImpl(ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO,
-                                    ApplicationOptionDAO applicationOptionDAO, LearningOpportunityProviderDAO learningOpportunityProviderDAO,
-            ModelMapper modelMapper) {
+            ApplicationOptionDAO applicationOptionDAO, LearningOpportunityProviderDAO learningOpportunityProviderDAO,
+            ModelMapper modelMapper, ChildLearningOpportunitySpecificationDAO childLearningOpportunitySpecificationDAO,
+            ChildLearningOpportunityInstanceDAO childLearningOpportunityInstanceDAO) {
         this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;
         this.learningOpportunityProviderDAO = learningOpportunityProviderDAO;
         this.modelMapper = modelMapper;
+        this.childLearningOpportunitySpecificationDAO = childLearningOpportunitySpecificationDAO;
+        this.childLearningOpportunityInstanceDAO = childLearningOpportunityInstanceDAO;
     }
 
     @Override
@@ -73,9 +73,7 @@ public class EducationDataServiceImpl implements EducationDataService {
             }
             if (plo.getChildren() != null) {
                 for (ChildLearningOpportunitySpecificationEntity clo : plo.getChildren()) {
-                    for (ApplicationOptionEntity ao : clo.getApplicationOptions()) {
-                        aos.put(ao.getId(), ao);
-                    }
+                    save(clo);
                 }
             }
             for (ApplicationOptionEntity ao : aos.values()) {
@@ -85,15 +83,33 @@ public class EducationDataServiceImpl implements EducationDataService {
         }
     }
 
-    @Override
-    public void save(LearningOpportunityProviderEntity learningOpportunityProvider) {
+    private void save(ChildLearningOpportunitySpecificationEntity childLearningOpportunitySpecification) {
+        if (childLearningOpportunitySpecification != null) {
+            if (childLearningOpportunitySpecification.getChildLOIs() != null) {
+               for (ChildLearningOpportunityInstanceEntity childLOI : childLearningOpportunitySpecification.getChildLOIs()) {
+                   save(childLOI);
+               }
+            }
+            childLearningOpportunitySpecificationDAO.save(childLearningOpportunitySpecification);
+        }
+    }
+
+    private void save(ChildLearningOpportunityInstanceEntity childLearningOpportunityInstance) {
+        if (childLearningOpportunityInstance != null) {
+            if (childLearningOpportunityInstance.getApplicationOption() != null) {
+                save(childLearningOpportunityInstance.getApplicationOption());
+            }
+            childLearningOpportunityInstanceDAO.save(childLearningOpportunityInstance);
+        }
+    }
+
+    private void save(LearningOpportunityProviderEntity learningOpportunityProvider) {
         if (learningOpportunityProvider != null) {
             learningOpportunityProviderDAO.save(learningOpportunityProvider);
         }
     }
 
-    @Override
-    public void save(ApplicationOptionEntity applicationOption) {
+    private void save(ApplicationOptionEntity applicationOption) {
         if (applicationOption != null) {
             save(applicationOption.getProvider());
             applicationOptionDAO.save(applicationOption);
@@ -106,6 +122,8 @@ public class EducationDataServiceImpl implements EducationDataService {
         applicationOptionDAO.getCollection().drop();
         parentLearningOpportunitySpecificationDAO.getCollection().drop();
         learningOpportunityProviderDAO.getCollection().drop();
+        childLearningOpportunitySpecificationDAO.getCollection().drop();
+        childLearningOpportunityInstanceDAO.getCollection().drop();
     }
 
     @Override

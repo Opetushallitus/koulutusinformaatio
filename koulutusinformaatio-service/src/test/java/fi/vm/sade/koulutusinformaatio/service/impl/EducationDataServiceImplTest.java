@@ -1,9 +1,7 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.mongodb.DBCollection;
-import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
-import fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO;
-import fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecificationDAO;
+import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunitySpecificationEntity;
@@ -28,9 +26,13 @@ public class EducationDataServiceImplTest {
     private ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO;
     private ApplicationOptionDAO applicationOptionDAO;
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
+    private ChildLearningOpportunityInstanceDAO childLearningOpportunityInstanceDAO;
+    private ChildLearningOpportunitySpecificationDAO childLearningOpportunitySpecificationDAO;
     private DBCollection ploCollection;
     private DBCollection aoCollection;
     private DBCollection lopCollection;
+    private DBCollection cloiCollection;
+    private DBCollection closCollection;
 
     @Before
     public void setUp() {
@@ -54,8 +56,17 @@ public class EducationDataServiceImplTest {
         learningOpportunityProviderDAO = mock(LearningOpportunityProviderDAO.class);
         lopCollection = mock(DBCollection.class);
         when(learningOpportunityProviderDAO.getCollection()).thenReturn(lopCollection);
+
+        cloiCollection = mock(DBCollection.class);
+        childLearningOpportunityInstanceDAO = mock(ChildLearningOpportunityInstanceDAO.class);
+        when(childLearningOpportunityInstanceDAO.getCollection()).thenReturn(cloiCollection);
+
+        closCollection = mock(DBCollection.class);
+        childLearningOpportunitySpecificationDAO = mock(ChildLearningOpportunitySpecificationDAO.class);
+        when(childLearningOpportunitySpecificationDAO.getCollection()).thenReturn(closCollection);
+
         service = new EducationDataServiceImpl(parentLearningOpportunitySpecificationDAO, applicationOptionDAO,
-                learningOpportunityProviderDAO, modelMapper);
+                learningOpportunityProviderDAO, modelMapper, childLearningOpportunitySpecificationDAO, childLearningOpportunityInstanceDAO);
     }
 
     @Test
@@ -73,15 +84,24 @@ public class EducationDataServiceImplTest {
         plo.setApplicationOptions(applicationOptions);
         ChildLOS clo = new ChildLOS();
         clo.setId("2.2.2");
-        clo.setApplicationOptions(applicationOptions);
+
+        ChildLOI cloi = new ChildLOI();
+        cloi.setId("5.7.9");
+        cloi.setApplicationSystemId("1.2.3.4.5");
+        cloi.setApplicationOption(ao);
+
+        List<ChildLOI> childLOIs = new ArrayList<ChildLOI>();
+        childLOIs.add(cloi);
+        clo.setChildLOIs(childLOIs);
+
         List<ChildLOS> children = new ArrayList<ChildLOS>();
         children.add(clo);
         plo.setChildren(children);
 
         service.save(plo);
         verify(parentLearningOpportunitySpecificationDAO, times(1)).save(any(ParentLearningOpportunitySpecificationEntity.class));
-        verify(applicationOptionDAO, times(1)).save(any(ApplicationOptionEntity.class));
-        verify(learningOpportunityProviderDAO, times(2)).save(any(LearningOpportunityProviderEntity.class));
+        verify(applicationOptionDAO, times(2)).save(any(ApplicationOptionEntity.class));
+        verify(learningOpportunityProviderDAO, times(3)).save(any(LearningOpportunityProviderEntity.class));
     }
 
     @Test
@@ -90,6 +110,8 @@ public class EducationDataServiceImplTest {
         verify(ploCollection, times(1)).drop();
         verify(aoCollection, times(1)).drop();
         verify(lopCollection, times(1)).drop();
+        verify(closCollection, times(1)).drop();
+        verify(cloiCollection, times(1)).drop();
     }
 
     @Test
