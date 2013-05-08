@@ -1,19 +1,10 @@
 <section class="grid16-10 no-left-gutter" id="wide-column">
     <h1 class="margin-top-0">{{childLO.degreeTitle}}</h1>
-    <h3>Koulutuksen tavoite</h3>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur viverra massa nec massa rutrum et viverra urna adipiscing. Maecenas ullamcorper quam vitae odio venenatis gravida. Maecenas convallis blandit nunc, nec vestibulum est viverra ac. Aenean id nulla eu turpis facilisis auctor. Sed est elit, ultrices id cursus in, hendrerit eu ipsum. Curabitur vel aliquet odio. Phasellus est neque, lacinia id ultrices at, fringilla ut lacus. Curabitur nisi elit, feugiat eget accumsan luctus, pellentesque tincidunt lacus.</p>
-
-    <h3>Opintojen rakenne</h3>
-    {{parentLO.description.structureDiagram}}
-
-    <h3>Sijoittuminen työelämään</h3>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur viverra massa nec massa rutrum et viverra urna adipiscing. Maecenas ullamcorper quam vitae odio venenatis gravida. Maecenas convallis blandit nunc, nec vestibulum est viverra ac. Aenean id nulla eu turpis facilisis auctor. Sed est elit, ultrices id cursus in, hendrerit eu ipsum. Curabitur vel aliquet odio. Phasellus est neque, lacinia id ultrices at, fringilla ut lacus. Curabitur nisi elit, feugiat eget accumsan luctus, pellentesque tincidunt lacus.</p>
-
-    <h3>Ammattinimikkeet</h3>
-    {{childLO.qualification}}
-
-    <h3>Kansainvälistyminen</h3>
-    <p>In eget accumsan nunc. Vivamus a velit nisl, eget bibendum diam. Nullam luctus luctus sagittis. Aliquam enim tortor, eleifend eu placerat ut, blandit nec nulla. Praesent orci tellus, tristique vitae sagittis nec, porta porta mi. Integer consequat justo quis arcu pretium eget commodo justo consequat. Nunc ligula dui, blandit quis bibendum nec, venenatis in felis. Fusce euismod erat id metus volutpat dignissim. Maecenas sollicitudin lacinia leo a bibendum. Nulla elementum magna ut leo aliquet varius.</p>
+    <div render-text-block data-title="Koulutuksen tavoite" data-content="{{lorem}}"></div>
+    <div render-text-block data-title="Opintojen rakenne" data-content="{{parentLO.description.structureDiagram}}"></div>
+    <div render-text-block data-title="Sijoittuminen työelämään" data-content="{{lorem}}"></div>
+    <div render-text-block data-title="Ammattinimikkeet" data-content="{{childLO.qualification}}"></div>
+    <div render-text-block data-title="Kansainvälistyminen" data-content="{{lorem}}"></div>
 </section>
 <aside class="grid16-6 no-right-gutter">
     <div class="sideitem margin-bottom-3 infobox">
