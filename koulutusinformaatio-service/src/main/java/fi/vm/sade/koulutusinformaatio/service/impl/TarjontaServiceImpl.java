@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.tarjonta.service.resources.HakukohdeResource;
@@ -46,8 +47,19 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     @Override
     public ParentLOS findParentLearningOpportunity(String oid) {
+        ParentLOS parentLOS = new ParentLOS();
+
         KomoDTO parentKomo = komoResource.getByOID(oid);
-        return conversionService.convert(parentKomo, ParentLOS.class);
+
+        parentLOS.setId(parentKomo.getOid());
+        parentLOS.setName(new I18nText(parentKomo.getNimi()));
+//        List<String> childLosIds = parentKomo.getAlaModuulit();
+//        for (String childLosId : childLosIds) {
+//        }
+
+
+        return parentLOS;
+
     }
 
     @Override
