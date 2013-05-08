@@ -36,20 +36,6 @@ public interface EducationDataService {
      */
     void save(final ParentLOS parentLOS);
 
-    /**
-     * Saves the learning opportunity provider
-     * Updates previously stored if exists
-     * @param learningOpportunityProvider
-     */
-    void save(final LearningOpportunityProviderEntity learningOpportunityProvider);
-
-    /**
-     * Saves the application option
-     * Updates previously stored if exists
-     * @param applicationOption
-     */
-    void save(final ApplicationOptionEntity applicationOption);
-
     void dropAllData();
 
     /**

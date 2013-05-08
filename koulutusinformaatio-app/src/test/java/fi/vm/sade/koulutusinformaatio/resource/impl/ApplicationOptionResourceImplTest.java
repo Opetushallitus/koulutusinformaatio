@@ -79,9 +79,6 @@ public class ApplicationOptionResourceImplTest {
         assertEquals(2, result.size());
         assertEquals("1.1.2", result.get(0).getId());
         assertEquals("2.3.2", result.get(1).getId());
-
-        assertNotNull(result.get(0).getChildLONames());
-        assertEquals(2, result.get(0).getChildLONames().size());
     }
 
     private I18nText createI18nText(String fi, String sv, String en) {
