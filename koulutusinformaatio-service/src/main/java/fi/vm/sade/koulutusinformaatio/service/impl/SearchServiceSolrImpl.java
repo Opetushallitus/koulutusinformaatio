@@ -108,16 +108,9 @@ public class SearchServiceSolrImpl implements SearchService {
 
             for (SolrDocument doc : response.getResults()) {
                 String parentId = doc.get("parentId") != null ? doc.get("parentId").toString() : null;
-
-                // TODO: i18n handling
-                Map<String, String> nameTexts = Maps.newHashMap();
-                nameTexts.put("fi", doc.get("name").toString());
-                Map<String, String> lopNameTexts = Maps.newHashMap();
-                lopNameTexts.put("fi", doc.get("lopName").toString());
-
                 LOSearchResult lo = new LOSearchResult(
-                        doc.get("id").toString(), new I18nText(nameTexts),
-                        doc.get("lopId").toString(), new I18nText(lopNameTexts), parentId);
+                        doc.get("id").toString(), doc.get("name").toString(),
+                        doc.get("lopId").toString(), doc.get("lopName").toString(), parentId);
                 learningOpportunities.add(lo);
             }
         }

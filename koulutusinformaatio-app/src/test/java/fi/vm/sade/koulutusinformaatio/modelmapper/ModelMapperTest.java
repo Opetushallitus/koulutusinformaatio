@@ -44,19 +44,7 @@ public class ModelMapperTest {
 
     @Test
     public void testMapLearningOpportunityResultToDTO() {
-        Map<String, String> nameMap = Maps.newHashMap();
-        nameMap.put("fi", "lo name fi");
-        nameMap.put("sv", "lo name sv");
-        nameMap.put("en", "lo name en");
-        I18nText name = new I18nText(nameMap);
-
-        Map<String, String> lopNameMap = Maps.newHashMap();
-        lopNameMap.put("fi", "lop name fi");
-        lopNameMap.put("sv" , "lop name sv");
-        lopNameMap.put("en", "lop name en");
-
-        I18nText lopName = new I18nText(lopNameMap);
-        LOSearchResult result = new LOSearchResult("loid", name, "lopid", lopName, "parentId");
+        LOSearchResult result = new LOSearchResult("loid", "name", "lopid", "lop name", "parentId");
 
         LearningOpportunitySearchResultDTO dto = modelMapper.map(result, LearningOpportunitySearchResultDTO.class);
 
