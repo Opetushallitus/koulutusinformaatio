@@ -52,10 +52,17 @@
                  host="${tomcat-host}" username="tomcat" keyfile="${ssh.keyfile}"
                  passphrase="${ssh.keypass}" trust="true" failonerror="false" />
 
-        <echo>Copy files to ${tomcat-host}</echo>
+	 <echo>Copy files to ${tomcat-host}</echo>
+                <condition property="war.dir" value="koulutusinformaatio-app/target">
+                     <isset property="integration-test" />
+                </condition>
+                <condition property="war.dir" value="target">
+                     <isset property="system-test" />
+                </condition>
+
 		<scp todir="tomcat@${tomcat-host}:${tomcat.home}/webapps/"
                keyfile="${ssh.keyfile}" passphrase="${ssh.keypass}" >
-			<fileset dir="koulutusinformaatio-app/target">
+	       <fileset dir="${war.dir}">
 				<include name="koulutusinformaatio-app*.war"/>
 			</fileset>
 			
