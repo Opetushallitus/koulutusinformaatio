@@ -2,25 +2,39 @@
 
  angular.module('kiApp.directives', []).
 
+ directive('kiLanguageRibbon', ['$location', function($location) {
+    return {
+        restrict: 'E,A',
+        templateUrl: 'partials/languageRibbon.html',
+        
+        link: function(scope, element, attrs) {
+            scope.changeDescriptionLanguage = function(languageCode) {
+                console.log(languageCode);
+                var curPath = $location.search('lang', languageCode);
+            };
+        }
+    };
+ }]).
+
 /**
  *  Creates and controls the link "ribbon" of sibling LOs in child view
  */
  directive('kiSiblingRibbon', function() {
     return function(scope, element, attrs) {
         var result = "";
-        scope.$watch('parentLO', function(parentData) {
-            if (parentData) {
-
+        scope.$watch('childLO', function(childData) {
+            if (childData) {
+                console.log(childData);
                 // if parentLO has only 1 (or less) child, do not show ribbon
-                if (parentData.children && parentData.children.length <= 1) {
+                if (childData.related && childData.related.length <= 1) {
                     return;
                 } 
 
-                for(var index in parentData.children) {
-                    var child = parentData.children[index];
-                    var isCurrentSelection = child.id == scope.childLO.id ? true : false;
+                for(var index in childData.related) {
+                    var child = childData.related[index]; //parentData.children[index];
+                    var isCurrentSelection = child.losId == scope.childLO.losId ? true : false;
                     var clazz = isCurrentSelection ? 'disabled' : '';
-                    result += '<a href="#/info/' + parentData.id + '/' + child.id + '" class="' + clazz + '">' + child.degreeTitle + '</a>';
+                    result += '<a href="#/info/' + scope.parentLO.id + '/' + child.losId + '/' + child.loiId + '" class="' + clazz + '">' + child.name + '</a>';
                 }
 
                 element.html(result);
@@ -47,7 +61,7 @@
                 update();
             }, true);
 
-            scope.$watch('childLO.degreeTitle', function(data) {
+            scope.$watch('childLO.name', function(data) {
                 child = data;
                 update();
             }, true);

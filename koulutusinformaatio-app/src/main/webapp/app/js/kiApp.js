@@ -14,7 +14,7 @@ kiApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $l
     	templateUrl: 'partials/ylataso.html', 
     	controller: InfoCtrl
     });
-    $routeProvider.when('/info/:parentId/:childId', {
+    $routeProvider.when('/info/:parentId/:closId/:cloiId', {
     	templateUrl: 'partials/alataso.html', 
     	controller: InfoCtrl
     });

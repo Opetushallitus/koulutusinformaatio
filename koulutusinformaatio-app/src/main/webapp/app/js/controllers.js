@@ -3,11 +3,10 @@
 function LanguageCtrl($scope, $location, LanguageService) {
     $scope.changeLanguage = function(code) {
        LanguageService.setLanguage(code);
-       console.log(i18n);
+       //console.log(i18n);
        i18n.setLng(code);
        document.location.reload(true);
     }
-
 };
 
 /**
@@ -25,12 +24,12 @@ function LanguageCtrl($scope, $location, LanguageService) {
 /**
  *  Controller for search functionality 
  */
- function SearchCtrl($scope, $routeParams, SearchLearningOpportunity, SearchService, TitleService, $location) {
+ function SearchCtrl($scope, $routeParams, SearchLearningOpportunityService, SearchService, TitleService, $location) {
     $scope.queryString = SearchService.getTerm();
     TitleService.setTitle('Hakutulokset');
 
     if ($routeParams.queryString) {
-        SearchLearningOpportunity.query({queryString: $routeParams.queryString}).then(function(result) {
+        SearchLearningOpportunityService.query({queryString: $routeParams.queryString}).then(function(result) {
             $scope.loResult = result;
         });
         $scope.queryString = $routeParams.queryString;
@@ -61,7 +60,7 @@ function LanguageCtrl($scope, $location, LanguageService) {
 /**
  *  Controller for info views (parent and child)
  */
- function InfoCtrl($scope, $routeParams, ParentLearningOpportunity, SearchService, LODataService, TitleService) {
+ function InfoCtrl($scope, $routeParams, ParentLearningOpportunityService, ChildLearningOpportunityService, SearchService, ParentLODataService, TitleService) {
     $scope.queryString = SearchService.getTerm();
 
     var setTitle = function(parent, child) {
@@ -72,26 +71,23 @@ function LanguageCtrl($scope, $location, LanguageService) {
         }
     };
 
-    // fetch data for parent and its children LOs
+    // fetch data for parent and/or its child LO
     if ($routeParams) {
         $scope.parentId = $routeParams.parentId;
-        if (!LODataService.dataExists($scope.parentId)) {
-            /*
-            $scope.parentLO = ParentLearningOpportunity.query({parentId: $routeParams.parentId}, function(data) {
-                LODataService.setLOData(data);
-                $scope.childLO = LODataService.getChildData($routeParams.childId);
-                setTitle(data, $scope.childLO);
-            }*/
-            ParentLearningOpportunity.query({parentId: $routeParams.parentId}).then(function(result) {
+        if (!ParentLODataService.dataExists($scope.parentId)) {
+            ParentLearningOpportunityService.query({parentId: $routeParams.parentId}).then(function(result) {
                 $scope.parentLO = result;
-                LODataService.setLOData(result);
-                $scope.childLO = LODataService.getChildData($routeParams.childId);
-                setTitle(result, $scope.childLO);
+                ParentLODataService.setParentLOData(result);
             });
         } else {
-            $scope.parentLO = LODataService.getLOData();
-            $scope.childLO = LODataService.getChildData($routeParams.childId);
-            setTitle($scope.parentLO, $scope.childLO);
+            $scope.parentLO = ParentLODataService.getParentLOData();
+        }
+                
+        if ($routeParams.closId && $routeParams.cloiId) {
+            ChildLearningOpportunityService.query({parentId: $routeParams.parentId, closId: $routeParams.closId, cloiId: $routeParams.cloiId}).then(function(result) {
+                $scope.childLO = result;
+                setTitle($scope.parentLO, $scope.childLO);
+            }); 
         }
     }
 

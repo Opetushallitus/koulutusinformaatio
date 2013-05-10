@@ -1,0 +1,34 @@
+{
+	"losId": "123.456.789",
+	"loiId": "123.456.790",
+	"name": "Musiikin koulutusohjelma",
+	"qualification": "Qualification",
+	"degreeTitle": "Degree title",
+	"applicationOption": 
+	{
+		"id": "000.001",
+		"name": "Musiikkialan perustutkinto, pk",
+		"applicationSystemId": "000.000"
+	},
+	"related": [
+	{
+		"losId": "123.456.789",
+		"loiId": "123.456.790",
+		"asId": "000.000",
+		"name": "Musiikin koulutusohjelma"
+	},
+	{
+		"losId": "123.456.791",
+		"loiId": "123.456.792",
+		"asId": "000.000",
+		"name": "Musiikkiteknologian koulutusohjelma"
+	},
+	{
+		"losId": "123.456.793",
+		"loiId": "123.456.794",
+		"asId": "000.000",
+		"name": "Pianonvirityksen koulutusohjelma"
+	}],
+	"translationLanguage": "fi",
+	"availableTranslationLanguages": ["fi", "sv", "en"]
+}

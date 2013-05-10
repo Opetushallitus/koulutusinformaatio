@@ -12,7 +12,7 @@ angular.module('kiApp.services', ['ngResource']).
     });
 }).
 */
-service('SearchLearningOpportunity', ['$http', '$timeout', '$q', function($http, $timeout, $q) {
+service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', function($http, $timeout, $q) {
     return {
         query: function(params) {
             var deferred = $q.defer();
@@ -41,12 +41,35 @@ service('SearchLearningOpportunity', ['$http', '$timeout', '$q', function($http,
 }).
 */
 
-service('ParentLearningOpportunity', ['$http', '$timeout', '$q', function($http, $timeout, $q) {
+service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', function($http, $timeout, $q) {
     return {
         query: function(params) {
             var deferred = $q.defer();
 
-            $http.get('../lo/' + params.parentId).
+            //$http.get('../lo/' + params.parentId).
+            $http.get('mock/parent.json').
+            success(function(result) {
+                deferred.resolve(result);
+            }).
+            error(function(result) {
+                deferred.reject(result);
+            });
+
+            return deferred.promise;
+        }
+    }
+}]).
+
+/**
+ *  
+ */
+service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', function($http, $timeout, $q) {
+    return {
+        query: function(params) {
+            var deferred = $q.defer();
+
+            //$http.get('../lo/' + params.parentId + '/' + params.closId + '/' + params.cloiId).
+            $http.get('mock/child.json').
             success(function(result) {
                 deferred.resolve(result);
             }).
@@ -99,21 +122,34 @@ service('LanguageService', function($cookies) {
 
         setLanguage: function(language) {
             $cookies.language = language;
+        },
+
+        getDescriptionLanguage: function() {
+            if ($cookies.descriptionlanguage) {
+                return $cookies.descriptionlanguage;
+            } else {
+                return defaultLanguage;
+            }
+        },
+
+        setDescriptionLanguage: function(language) {
+            $cookies.descriptionlanguage = language;
         }
     };
 }).
 
 /**
- *  Service for "caching" current selection
+ *  Service for "caching" current parent selection
  */
- service('LODataService', function() {
+ service('ParentLODataService', function() {
     var data;
 
     return {
-        getLOData: function() {
+        getParentLOData: function() {
             return data;
         },
 
+        /*
         getChildData: function(id) {
             var result;
             for (var index in data.children) {
@@ -125,8 +161,9 @@ service('LanguageService', function($cookies) {
 
             return result;
         },
+        */
 
-        setLOData: function(newData) {
+        setParentLOData: function(newData) {
             data = newData;
         },
 
