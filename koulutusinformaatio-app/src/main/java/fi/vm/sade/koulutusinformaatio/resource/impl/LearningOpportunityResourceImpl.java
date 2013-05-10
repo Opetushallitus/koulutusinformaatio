@@ -33,7 +33,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.PathParam;
 import java.util.List;
 
 /**
@@ -70,7 +69,7 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
     }
 
     @Override
-    public ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(String parentId) {
+    public ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(String parentId, String lang) {
         try {
             ParentLO parent = educationDataService.getParentLearningOpportunity(parentId);
             return modelMapper.map(parent, ParentLearningOpportunitySpecificationDTO.class);
@@ -80,8 +79,7 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
     }
 
     @Override
-    public ChildLearningOpportunityDTO getChildLearningOpportunity(@PathParam("parentId") String parentId,
-                                                                   @PathParam("closId") String closId, @PathParam("cloiId") String cloiId) {
+    public ChildLearningOpportunityDTO getChildLearningOpportunity(String parentId, String closId, String cloiId, String lang) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }
