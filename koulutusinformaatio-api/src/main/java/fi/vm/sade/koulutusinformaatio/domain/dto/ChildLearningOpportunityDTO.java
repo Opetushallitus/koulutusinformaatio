@@ -33,7 +33,7 @@ public class ChildLearningOpportunityDTO {
     private String qualification;
     private String degreeTitle;
     private ApplicationOptionDTO applicationOption;
-    private List<ChildLORefDTO> relatedChildLOs = new ArrayList<ChildLORefDTO>();
+    private List<ChildLORefDTO> related = new ArrayList<ChildLORefDTO>();
 
     private String translationLanguage;
     private List<String> availableTranslationLanguages = new ArrayList<String>();
@@ -102,11 +102,11 @@ public class ChildLearningOpportunityDTO {
         this.availableTranslationLanguages = availableTranslationLanguages;
     }
 
-    public List<ChildLORefDTO> getRelatedChildLOs() {
-        return relatedChildLOs;
+    public List<ChildLORefDTO> getRelated() {
+        return related;
     }
 
-    public void setRelatedChildLOs(List<ChildLORefDTO> relatedChildLOs) {
-        this.relatedChildLOs = relatedChildLOs;
+    public void setRelated(List<ChildLORefDTO> related) {
+        this.related = related;
     }
 }

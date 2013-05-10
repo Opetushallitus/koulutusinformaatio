@@ -42,6 +42,8 @@ public class ParentLearningOpportunitySpecificationEntity {
     private CreditsEntity credits;
     @Reference(lazy = true)
     private List<ChildLearningOpportunitySpecificationEntity> children;
+    @Embedded
+    private List<ChildLORefEntity> childRefs;
     @Reference
     private List<ApplicationOptionEntity> applicationOptions;
     @Reference
@@ -80,6 +82,14 @@ public class ParentLearningOpportunitySpecificationEntity {
 
     public void setChildren(List<ChildLearningOpportunitySpecificationEntity> children) {
         this.children = children;
+    }
+
+    public List<ChildLORefEntity> getChildRefs() {
+        return childRefs;
+    }
+
+    public void setChildRefs(List<ChildLORefEntity> childRefs) {
+        this.childRefs = childRefs;
     }
 
     public List<ApplicationOptionEntity> getApplicationOptions() {
