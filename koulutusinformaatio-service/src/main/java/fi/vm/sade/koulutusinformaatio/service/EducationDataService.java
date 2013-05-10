@@ -58,5 +58,5 @@ public interface EducationDataService {
      * @param childLoiId child learning opportunity instance id
      * @return child learning opportunity
      */
-    ChildLO getChildLearningOpportunity(final String childLosId, final String childLoiId);
+    ChildLO getChildLearningOpportunity(final String childLosId, final String childLoiId) throws ResourceNotFoundException;
 }

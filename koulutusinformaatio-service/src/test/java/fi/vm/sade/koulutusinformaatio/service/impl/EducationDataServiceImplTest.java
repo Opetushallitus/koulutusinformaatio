@@ -1,6 +1,7 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.mongodb.DBCollection;
+import fi.vm.sade.koulutusinformaatio.converter.KoulutusinformaatioObjectBuilder;
 import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
@@ -66,8 +67,11 @@ public class EducationDataServiceImplTest {
         childLearningOpportunitySpecificationDAO = mock(ChildLearningOpportunitySpecificationDAO.class);
         when(childLearningOpportunitySpecificationDAO.getCollection()).thenReturn(closCollection);
 
+        KoulutusinformaatioObjectBuilder objectBuilder = new KoulutusinformaatioObjectBuilder(modelMapper);
+
         service = new EducationDataServiceImpl(parentLearningOpportunitySpecificationDAO, applicationOptionDAO,
-                learningOpportunityProviderDAO, modelMapper, childLearningOpportunitySpecificationDAO, childLearningOpportunityInstanceDAO);
+                learningOpportunityProviderDAO, modelMapper, childLearningOpportunitySpecificationDAO, childLearningOpportunityInstanceDAO,
+                objectBuilder);
     }
 
     @Test
