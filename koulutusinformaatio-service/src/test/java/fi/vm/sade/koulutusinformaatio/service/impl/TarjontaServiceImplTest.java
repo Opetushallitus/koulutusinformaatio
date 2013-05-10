@@ -19,7 +19,9 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.converter.KomoDTOToParentLearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
+import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 import fi.vm.sade.tarjonta.service.resources.HakukohdeResource;
@@ -73,6 +75,7 @@ public class TarjontaServiceImplTest {
         hakukohdeResource = mock(HakukohdeResource.class);
         when(hakukohdeResource.search(null, 0, 0, null, null)).thenReturn(IDS);
 
+
         tarjontaService = new TarjontaServiceImpl(komoResource, hakukohdeResource, conversionService);
     }
 
@@ -89,7 +92,7 @@ public class TarjontaServiceImplTest {
     }
 
     @Test
-    public void testFindParentLearningOpportunityByOid() throws TarjontaParseException {
+    public void testFindParentLearningOpportunityByOid() throws TarjontaParseException, KoodistoException {
         ParentLOS parent = tarjontaService.findParentLearningOpportunity(ID_1);
         assertNotNull(parent);
         assertEquals(ID_1, parent.getId());

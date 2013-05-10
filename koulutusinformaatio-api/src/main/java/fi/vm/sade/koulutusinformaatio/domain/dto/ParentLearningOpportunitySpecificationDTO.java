@@ -33,6 +33,7 @@ public class ParentLearningOpportunitySpecificationDTO {
     private List<ApplicationOptionDTO> applicationOptions = new ArrayList<ApplicationOptionDTO>();
     private LearningOpportunityProviderDTO provider;
     private String educationDegree;
+    private String degreeName;
 
     private DescriptionDTO description;
     private ClassificationDTO classification;
@@ -110,4 +111,11 @@ public class ParentLearningOpportunitySpecificationDTO {
         this.classification = classification;
     }
 
+    public String getDegreeName() {
+        return degreeName;
+    }
+
+    public void setDegreeName(String degreeName) {
+        this.degreeName = degreeName;
+    }
 }
