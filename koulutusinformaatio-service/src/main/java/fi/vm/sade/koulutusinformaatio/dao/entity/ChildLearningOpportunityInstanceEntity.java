@@ -16,9 +16,12 @@
 
 package fi.vm.sade.koulutusinformaatio.dao.entity;
 
+import com.google.code.morphia.annotations.Embedded;
 import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Id;
 import com.google.code.morphia.annotations.Reference;
+
+import java.util.List;
 
 /**
  * @author Mikko Majapuro
@@ -31,6 +34,8 @@ public class ChildLearningOpportunityInstanceEntity {
     private String applicationSystemId;
     @Reference
     private ApplicationOptionEntity applicationOption;
+    @Embedded
+    private List<ChildLORefEntity> related;
 
     public ChildLearningOpportunityInstanceEntity() {}
 
@@ -56,5 +61,13 @@ public class ChildLearningOpportunityInstanceEntity {
 
     public void setApplicationOption(ApplicationOptionEntity applicationOption) {
         this.applicationOption = applicationOption;
+    }
+
+    public List<ChildLORefEntity> getRelated() {
+        return related;
+    }
+
+    public void setRelated(List<ChildLORefEntity> related) {
+        this.related = related;
     }
 }
