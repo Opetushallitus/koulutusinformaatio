@@ -16,10 +16,9 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
-import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
+import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 
 import java.util.List;
@@ -43,7 +42,7 @@ public interface EducationDataService {
      * @param oid
      * @return
      */
-    ParentLOS getParentLearningOpportunity(final String oid) throws ResourceNotFoundException;
+    ParentLO getParentLearningOpportunity(final String oid) throws ResourceNotFoundException;
 
     /**
      * Finds application options by the application system and learning opportunity provider
@@ -52,4 +51,12 @@ public interface EducationDataService {
      * @return list of the application options
      */
     List<ApplicationOption> findApplicationOptions(final String asId, final String lopId);
+
+    /**
+     * Gets the child learning opportunity
+     * @param childLosId child learning opportunity specification id
+     * @param childLoiId child learning opportunity instance id
+     * @return child learning opportunity
+     */
+    ChildLO getChildLearningOpportunity(final String childLosId, final String childLoiId);
 }

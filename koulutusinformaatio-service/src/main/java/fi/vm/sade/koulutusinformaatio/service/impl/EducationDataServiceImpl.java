@@ -21,7 +21,9 @@ import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.entity.*;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLO;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataService;
 import org.modelmapper.ModelMapper;
@@ -127,10 +129,10 @@ public class EducationDataServiceImpl implements EducationDataService {
     }
 
     @Override
-    public ParentLOS getParentLearningOpportunity(String oid) throws ResourceNotFoundException {
+    public ParentLO getParentLearningOpportunity(String oid) throws ResourceNotFoundException {
         ParentLearningOpportunitySpecificationEntity entity = parentLearningOpportunitySpecificationDAO.get(oid);
         if (entity != null) {
-            return modelMapper.map(entity, ParentLOS.class);
+            return modelMapper.map(entity, ParentLO.class);
         } else {
             throw new ResourceNotFoundException("Parent learning opportunity not found: " + oid);
         }
@@ -145,5 +147,10 @@ public class EducationDataServiceImpl implements EducationDataService {
                 return modelMapper.map(applicationOptionEntity, ApplicationOption.class);
             }
         });
+    }
+
+    @Override
+    public ChildLO getChildLearningOpportunity(String childLosId, String childLoiId) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }

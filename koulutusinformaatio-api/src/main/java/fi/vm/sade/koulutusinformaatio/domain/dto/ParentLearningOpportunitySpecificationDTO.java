@@ -29,7 +29,7 @@ public class ParentLearningOpportunitySpecificationDTO {
 
     private String id;
     private String name;
-    private List<ChildLearningOpportunitySpecificationDTO> children = new ArrayList<ChildLearningOpportunitySpecificationDTO>();
+    private List<ChildLORefDTO> children = new ArrayList<ChildLORefDTO>();
     private List<ApplicationOptionDTO> applicationOptions = new ArrayList<ApplicationOptionDTO>();
     private LearningOpportunityProviderDTO provider;
     private String educationDegree;
@@ -37,6 +37,9 @@ public class ParentLearningOpportunitySpecificationDTO {
     private DescriptionDTO description;
     private ClassificationDTO classification;
     private CreditsDTO credits;
+
+    private String translationLanguage;
+    private List<String> availableTranslationLanguages = new ArrayList<String>();
 
     public String getId() {
         return id;
@@ -54,11 +57,11 @@ public class ParentLearningOpportunitySpecificationDTO {
         this.name = name;
     }
 
-    public List<ChildLearningOpportunitySpecificationDTO> getChildren() {
+    public List<ChildLORefDTO> getChildren() {
         return children;
     }
 
-    public void setChildren(List<ChildLearningOpportunitySpecificationDTO> children) {
+    public void setChildren(List<ChildLORefDTO> children) {
         this.children = children;
     }
 
@@ -110,4 +113,19 @@ public class ParentLearningOpportunitySpecificationDTO {
         this.classification = classification;
     }
 
+    public String getTranslationLanguage() {
+        return translationLanguage;
+    }
+
+    public void setTranslationLanguage(String translationLanguage) {
+        this.translationLanguage = translationLanguage;
+    }
+
+    public List<String> getAvailableTranslationLanguages() {
+        return availableTranslationLanguages;
+    }
+
+    public void setAvailableTranslationLanguages(List<String> availableTranslationLanguages) {
+        this.availableTranslationLanguages = availableTranslationLanguages;
+    }
 }
