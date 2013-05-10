@@ -30,6 +30,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,6 +66,7 @@ public class EducationDataServiceImpl implements EducationDataService {
         if (parentLOS != null) {
             ParentLearningOpportunitySpecificationEntity plo =
                     modelMapper.map(parentLOS, ParentLearningOpportunitySpecificationEntity.class);
+            plo.setChildRefs(new ArrayList<ChildLORefEntity>());
             Map<String, ApplicationOptionEntity> aos = new HashMap<String, ApplicationOptionEntity>();
             save(plo.getProvider());
 
@@ -75,46 +77,14 @@ public class EducationDataServiceImpl implements EducationDataService {
             }
             if (plo.getChildren() != null) {
                 for (ChildLearningOpportunitySpecificationEntity clo : plo.getChildren()) {
-                    save(clo);
+                    clo.setParent(getParentReference(plo));
+                    plo.getChildRefs().addAll(save(clo));
                 }
             }
             for (ApplicationOptionEntity ao : aos.values()) {
                 save(ao);
             }
             parentLearningOpportunitySpecificationDAO.save(plo);
-        }
-    }
-
-    private void save(ChildLearningOpportunitySpecificationEntity childLearningOpportunitySpecification) {
-        if (childLearningOpportunitySpecification != null) {
-            if (childLearningOpportunitySpecification.getChildLOIs() != null) {
-               for (ChildLearningOpportunityInstanceEntity childLOI : childLearningOpportunitySpecification.getChildLOIs()) {
-                   save(childLOI);
-               }
-            }
-            childLearningOpportunitySpecificationDAO.save(childLearningOpportunitySpecification);
-        }
-    }
-
-    private void save(ChildLearningOpportunityInstanceEntity childLearningOpportunityInstance) {
-        if (childLearningOpportunityInstance != null) {
-            if (childLearningOpportunityInstance.getApplicationOption() != null) {
-                save(childLearningOpportunityInstance.getApplicationOption());
-            }
-            childLearningOpportunityInstanceDAO.save(childLearningOpportunityInstance);
-        }
-    }
-
-    private void save(LearningOpportunityProviderEntity learningOpportunityProvider) {
-        if (learningOpportunityProvider != null) {
-            learningOpportunityProviderDAO.save(learningOpportunityProvider);
-        }
-    }
-
-    private void save(ApplicationOptionEntity applicationOption) {
-        if (applicationOption != null) {
-            save(applicationOption.getProvider());
-            applicationOptionDAO.save(applicationOption);
         }
     }
 
@@ -152,5 +122,78 @@ public class EducationDataServiceImpl implements EducationDataService {
     @Override
     public ChildLO getChildLearningOpportunity(String childLosId, String childLoiId) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    private List<ChildLORefEntity> save(ChildLearningOpportunitySpecificationEntity childLearningOpportunitySpecification) {
+        List<ChildLORefEntity> childLORefs = new ArrayList<ChildLORefEntity>();
+        if (childLearningOpportunitySpecification != null) {
+            if (childLearningOpportunitySpecification.getChildLOIs() != null) {
+               for (ChildLearningOpportunityInstanceEntity childLOI : childLearningOpportunitySpecification.getChildLOIs()) {
+                   ChildLORefEntity childLORef = save(childLOI, childLearningOpportunitySpecification);
+                   if (childLORef != null) {
+                        childLORefs.add(childLORef);
+                   }
+               }
+            }
+
+            childLearningOpportunitySpecificationDAO.save(childLearningOpportunitySpecification);
+        }
+        return childLORefs;
+    }
+
+    private ChildLORefEntity save(ChildLearningOpportunityInstanceEntity childLearningOpportunityInstance,
+                                  ChildLearningOpportunitySpecificationEntity childLearningOpportunitySpecification) {
+        if (childLearningOpportunityInstance != null && childLearningOpportunitySpecification != null) {
+
+            for (ChildLearningOpportunityInstanceEntity clo :childLearningOpportunitySpecification.getChildLOIs()) {
+                if (!clo.getId().equals(childLearningOpportunityInstance.getId()) &&
+                        clo.getApplicationSystemId().equals(childLearningOpportunityInstance.getApplicationSystemId())) {
+                    childLearningOpportunityInstance.getRelated().add(getChildReference(clo, childLearningOpportunitySpecification));
+                }
+            }
+
+            if (childLearningOpportunityInstance.getApplicationOption() != null) {
+                save(childLearningOpportunityInstance.getApplicationOption());
+            }
+            childLearningOpportunityInstanceDAO.save(childLearningOpportunityInstance);
+            return getChildReference(childLearningOpportunityInstance, childLearningOpportunitySpecification);
+        }
+        return null;
+    }
+
+    private void save(LearningOpportunityProviderEntity learningOpportunityProvider) {
+        if (learningOpportunityProvider != null) {
+            learningOpportunityProviderDAO.save(learningOpportunityProvider);
+        }
+    }
+
+    private void save(ApplicationOptionEntity applicationOption) {
+        if (applicationOption != null) {
+            save(applicationOption.getProvider());
+            applicationOptionDAO.save(applicationOption);
+        }
+    }
+
+    private ChildLORefEntity getChildReference(ChildLearningOpportunityInstanceEntity childLearningOpportunityInstance,
+                                          ChildLearningOpportunitySpecificationEntity childLearningOpportunitySpecification) {
+        if (childLearningOpportunityInstance != null) {
+            ChildLORefEntity ref = new ChildLORefEntity();
+            ref.setLosId(childLearningOpportunitySpecification.getId());
+            ref.setName(childLearningOpportunitySpecification.getName());
+            ref.setLoiId(childLearningOpportunityInstance.getId());
+            ref.setAsId(childLearningOpportunityInstance.getApplicationSystemId());
+            return ref;
+        }
+        return null;
+    }
+
+    private ParentLOSRefEntity getParentReference(final ParentLearningOpportunitySpecificationEntity plo) {
+        if (plo != null) {
+            ParentLOSRefEntity ref = new ParentLOSRefEntity();
+            ref.setId(plo.getId());
+            ref.setName(plo.getName());
+            return ref;
+        }
+        return null;
     }
 }

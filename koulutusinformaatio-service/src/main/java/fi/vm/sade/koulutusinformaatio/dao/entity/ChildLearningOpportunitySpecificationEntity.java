@@ -39,6 +39,8 @@ public class ChildLearningOpportunitySpecificationEntity {
     private I18nTextEntity degreeTitle;
     @Reference(lazy = true)
     private List<ChildLearningOpportunityInstanceEntity> childLOIs;
+    @Embedded
+    private ParentLOSRefEntity parent;
 
     public ChildLearningOpportunitySpecificationEntity() {
     }
@@ -81,5 +83,13 @@ public class ChildLearningOpportunitySpecificationEntity {
 
     public void setChildLOIs(List<ChildLearningOpportunityInstanceEntity> childLOIs) {
         this.childLOIs = childLOIs;
+    }
+
+    public ParentLOSRefEntity getParent() {
+        return parent;
+    }
+
+    public void setParent(ParentLOSRefEntity parent) {
+        this.parent = parent;
     }
 }

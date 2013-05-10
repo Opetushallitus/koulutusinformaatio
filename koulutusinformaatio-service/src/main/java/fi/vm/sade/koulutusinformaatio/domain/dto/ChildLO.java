@@ -34,6 +34,7 @@ public class ChildLO {
     private I18nText degreeTitle;
     private ApplicationOption applicationOption;
     private List<ChildLORef> related = new ArrayList<ChildLORef>();
+    private ParentLORef parent;
 
     public String getLosId() {
         return losId;
@@ -89,5 +90,13 @@ public class ChildLO {
 
     public void setRelated(List<ChildLORef> related) {
         this.related = related;
+    }
+
+    public ParentLORef getParent() {
+        return parent;
+    }
+
+    public void setParent(ParentLORef parent) {
+        this.parent = parent;
     }
 }
