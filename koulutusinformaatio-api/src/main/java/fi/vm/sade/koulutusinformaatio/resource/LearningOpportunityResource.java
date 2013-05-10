@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.resource;
 
+import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunityDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
 
@@ -45,7 +46,7 @@ public interface LearningOpportunityResource {
 
     /**
      * Fetches a parent learning opportunity. Contains parent information and
-     * all the child learning opportunities that belong to the parent.
+     * references to all the child learning opportunities that belong to the parent.
      *
      * @param parentId learning opportunity id
      * @return parent learning opportunity dto object
@@ -54,5 +55,18 @@ public interface LearningOpportunityResource {
     @Path("{parentId}")
     @Produces(MediaType.APPLICATION_JSON)
     public ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(@PathParam("parentId") String parentId);
+
+    /**
+     * Fetches a child learning opportunity that belongs to the specified parent.
+     * @param parentId parent learning opportunity id
+     * @param closId child learning opportunity specification id
+     * @param cloiId child learning opportunity instance id
+     * @return child learning opportunity dto object
+     */
+    @GET
+    @Path("{parentId}/{closId}/{cloiId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ChildLearningOpportunityDTO getChildLearningOpportunity(@PathParam("parentId") String parentId, @PathParam("closId") String closId,
+                                                                   @PathParam("cloiId") String cloiId);
 
 }

@@ -19,8 +19,9 @@ package fi.vm.sade.koulutusinformaatio.resource.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.domain.LOSearchResult;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunityDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
@@ -32,6 +33,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.ws.rs.PathParam;
 import java.util.List;
 
 /**
@@ -70,10 +72,16 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
     @Override
     public ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(String parentId) {
         try {
-            ParentLOS parent = educationDataService.getParentLearningOpportunity(parentId);
+            ParentLO parent = educationDataService.getParentLearningOpportunity(parentId);
             return modelMapper.map(parent, ParentLearningOpportunitySpecificationDTO.class);
         } catch (ResourceNotFoundException e) {
             throw KIExceptionHandler.resolveException(e);
         }
+    }
+
+    @Override
+    public ChildLearningOpportunityDTO getChildLearningOpportunity(@PathParam("parentId") String parentId,
+                                                                   @PathParam("closId") String closId, @PathParam("cloiId") String cloiId) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }
