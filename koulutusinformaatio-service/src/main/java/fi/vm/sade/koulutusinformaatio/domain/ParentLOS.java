@@ -38,24 +38,6 @@ public class ParentLOS {
     private Credits credits;
 
 
-    private I18nText koulutusOhjelma;
-    private I18nText tutkintonimike;
-    public I18nText getKoulutusOhjelma() {
-        return koulutusOhjelma;
-    }
-    public void setKoulutusOhjelma(I18nText koulutusOhjelma) {
-        this.koulutusOhjelma = koulutusOhjelma;
-    }
-    public I18nText getTutkintonimike() {
-        return tutkintonimike;
-    }
-    public void setTutkintonimike(I18nText tutkintonimike) {
-        this.tutkintonimike = tutkintonimike;
-    }
-
-
-
-
 
 
 

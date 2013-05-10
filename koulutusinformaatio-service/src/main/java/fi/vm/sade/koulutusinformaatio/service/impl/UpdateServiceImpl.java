@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.*;
 import org.slf4j.Logger;
@@ -39,7 +40,7 @@ public class UpdateServiceImpl implements UpdateService {
     private EducationDataService educationDataService;
 
     @Autowired
-    public UpdateServiceImpl(TarjontaService tarjontaService    ,
+    public UpdateServiceImpl(TarjontaService tarjontaService,
                              IndexerService indexerService, EducationDataService educationDataService) {
         this.tarjontaService = tarjontaService;
         this.indexerService = indexerService;
@@ -55,12 +56,18 @@ public class UpdateServiceImpl implements UpdateService {
 
         for (String parentOid : parentOids) {
             ParentLOS parent = null;
+
             try {
                 parent = tarjontaService.findParentLearningOpportunity(parentOid);
             } catch (TarjontaParseException e) {
                 LOG.warn("Exception while updating parent learning opportunity, oid: " + parentOid + ", Message: " + e.getMessage());
                 continue;
             }
+            catch (KoodistoException e) {
+                LOG.warn("Exception while updating parent learning opportunity, oid: " + parentOid + ", Message: " + e.getMessage());
+                continue;
+            }
+            
             this.indexerService.addParentLearningOpportunity(parent);
             this.educationDataService.save(parent);
         }

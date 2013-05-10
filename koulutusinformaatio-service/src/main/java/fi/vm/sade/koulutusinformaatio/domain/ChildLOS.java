@@ -29,8 +29,10 @@ public class ChildLOS {
     private String id;
     private I18nText name;
     private List<ChildLOI> childLOIs = new ArrayList<ChildLOI>();
-    private I18nText qualification;
+    // koulutusohjelma
     private I18nText degreeTitle;
+    //tutkintonimike
+    private I18nText qualification;
 
     public ChildLOS(String id, I18nText name) {
         this.id = id;
