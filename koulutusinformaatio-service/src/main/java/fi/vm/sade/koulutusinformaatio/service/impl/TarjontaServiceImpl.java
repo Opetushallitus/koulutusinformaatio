@@ -18,16 +18,18 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
+import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.tarjonta.service.resources.HakukohdeResource;
 import fi.vm.sade.tarjonta.service.resources.KomoResource;
+import fi.vm.sade.tarjonta.service.resources.KomotoResource;
+import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
+import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
+import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
@@ -44,6 +46,7 @@ public class TarjontaServiceImpl implements TarjontaService {
     public static final String MODULE_TYPE_CHILD = "TUTKINTO_OHJELMA";
 
     private KomoResource komoResource;
+    private KomotoResource komotoResource;
     private HakukohdeResource hakukohdeResource;
     private ConversionService conversionService;
 
@@ -51,9 +54,10 @@ public class TarjontaServiceImpl implements TarjontaService {
     private KoodistoService koodistoService;
 
     @Autowired
-    public TarjontaServiceImpl(KomoResource komoResource, HakukohdeResource aoResource,
+    public TarjontaServiceImpl(KomoResource komoResource, KomotoResource komotoResource, HakukohdeResource aoResource,
                                ConversionService conversionService) {
         this.komoResource = komoResource;
+        this.komotoResource = komotoResource;
         this.hakukohdeResource = aoResource;
         this.conversionService = conversionService;
     }
@@ -68,7 +72,7 @@ public class TarjontaServiceImpl implements TarjontaService {
         }
     }
 
-    private void validateCihldKomo(KomoDTO komo) throws TarjontaParseException {
+    private void validateChildKomo(KomoDTO komo) throws TarjontaParseException {
         if (komo.getTutkintonimikeUri() == null) {
             throw new TarjontaParseException("KomoDTO tutkinto nimike uri is null");
         }
@@ -85,16 +89,64 @@ public class TarjontaServiceImpl implements TarjontaService {
 
         parentLOS.setId(parentKomo.getOid());
         parentLOS.setName(new I18nText(parentKomo.getNimi()));
+        parentLOS.setStructureDiagram(new I18nText(parentKomo.getKoulutuksenRakenne()));
+        parentLOS.setAccessToFurtherStudies(new I18nText(parentKomo.getJatkoOpintoMahdollisuudet()));
+        parentLOS.setGoals(new I18nText(parentKomo.getTavoitteet()));
+        parentLOS.setEducationDomain(koodistoService.search(parentKomo.getKoulutusAlaUri()).get(0));
+        parentLOS.setStydyDomain(koodistoService.search(parentKomo.getOpintoalaUri()).get(0));
+        parentLOS.setEducationDegree(koodistoService.search(parentKomo.getKoulutusAsteUri()).get(0));
+
+        //Sosiaali-, terveys- ja liikunta-ala
+//                "koulutusAlaUri" : "koulutusalaoph2002_7#1",
+        // Ammatillinen koulutus / 32
+//                "koulutusAsteUri" : "koulutusasteoph2002_32#1",
+        // opintoviikko
+//                "laajuusYksikkoUri" : "opintojenlaajuusyksikko_1#1",
+        // Hammaslääketiede ja muu hammashuolto
+//                "opintoalaUri" : "opintoalaoph2002_704#1",
 
         List<String> childKomoOids = parentKomo.getAlaModuulit();
         List<ChildLOS> childLOSs = Lists.newArrayList();
 
         for (String childKomoOid : childKomoOids) {
+            // los
             ChildLOS childLOS = new ChildLOS();
             KomoDTO childKomo = komoResource.getByOID(childKomoOid);
+            validateChildKomo(childKomo);
+
+            childLOS.setId(childKomo.getOid());
             childLOS.setName(new I18nText(childKomo.getNimi()));
             childLOS.setQualification(koodistoService.search(childKomo.getTutkintonimikeUri()).get(0));
             childLOS.setDegreeTitle(koodistoService.search(childKomo.getKoulutusOhjelmaKoodiUri()).get(0));
+
+            // loi
+            List<ChildLOI> childLOIs = Lists.newArrayList();
+            List<String> childKomotoOids = komoResource.getKomotosByKomoOID(childKomoOid, 0, 0);
+            for (String childKomotoOid : childKomotoOids) {
+                ChildLOI childLOI = new ChildLOI();
+                KomotoDTO komotoDTO = komotoResource.getByOID(childKomotoOid);
+                childLOI.setId(komotoDTO.getOid());
+
+                // how to get the name?
+                //childLOI.setName(new I18nText(komotoDTO.getNimi()));
+                childLOI.setName(childLOS.getName());
+
+                String aoId = this.loiAoMap.get(komotoDTO.getOid());
+                if (aoId == null) continue;
+                HakukohdeDTO hakukohdeDTO = hakukohdeResource.getByOID(aoId);
+                ApplicationOption ao = new ApplicationOption();
+                ao.setId(hakukohdeDTO.getOid());
+                ao.setName(koodistoService.search(hakukohdeDTO.getHakukohdeNimiUri()).get(0));
+                HakuDTO hakuDTO = hakukohdeResource.getHakuByHakukohdeOID(aoId);
+                childLOI.setApplicationSystemId(hakuDTO.getOid());
+
+                ao.setApplicationSystemId(hakuDTO.getOid());
+                childLOI.setApplicationOption(ao);
+
+                childLOIs.add(childLOI);
+            }
+            childLOS.setChildLOIs(childLOIs);
+
             childLOSs.add(childLOS);
         }
         parentLOS.setChildren(childLOSs);
@@ -120,5 +172,25 @@ public class TarjontaServiceImpl implements TarjontaService {
     public List<String> listApplicationOptionOids() {
         return hakukohdeResource.search(null, 0, 0, null, null);
     }
+
+
+
+
+    // temp data structures to simulate better tarjonta api
+    private Map<String, String> loiAoMap;
+
+    @Override
+    public void updateTempData() {
+        loiAoMap = Maps.newHashMap();
+        List<String> aos = hakukohdeResource.search(null, 0, 0, null, null);
+
+        for (String ao : aos) {
+            List<String> komotosByHakukohdeOID = hakukohdeResource.getKomotosByHakukohdeOID(ao);
+            for (String komotooid : komotosByHakukohdeOID) {
+                loiAoMap.put(komotooid, ao);
+            }
+        }
+    }
+
 
 }

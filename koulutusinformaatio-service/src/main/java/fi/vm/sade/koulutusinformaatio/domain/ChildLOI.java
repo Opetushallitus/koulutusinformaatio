@@ -8,6 +8,7 @@ package fi.vm.sade.koulutusinformaatio.domain;
 public class ChildLOI {
 
     private String id;
+    private I18nText name;
     private ApplicationOption applicationOption;
     private String applicationSystemId;
 
@@ -17,6 +18,14 @@ public class ChildLOI {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public I18nText getName() {
+        return name;
+    }
+
+    public void setName(I18nText name) {
+        this.name = name;
     }
 
     public ApplicationOption getApplicationOption() {

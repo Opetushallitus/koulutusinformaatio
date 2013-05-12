@@ -136,6 +136,15 @@
         </jaxrs:providers>
     </jaxrs:client>
 
+    <jaxrs:client id="komotoResource"
+                  address="${tarjonta.api.rest.url}"
+                  serviceClass="fi.vm.sade.tarjonta.service.resources.KomotoResource"
+                  inheritHeaders="true">
+        <jaxrs:providers>
+            <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>
+        </jaxrs:providers>
+    </jaxrs:client>
+
     <jaxrs:client id="hakukohdeResource"
                   address="${tarjonta.api.rest.url}"
                   serviceClass="fi.vm.sade.tarjonta.service.resources.HakukohdeResource"
@@ -150,6 +159,9 @@
           class="fi.vm.sade.koulutusinformaatio.service.impl.TarjontaServiceImpl">
         <constructor-arg>
             <ref bean="komoResource"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="komotoResource"/>
         </constructor-arg>
         <constructor-arg>
             <ref bean="hakukohdeResource"/>

@@ -31,24 +31,24 @@ public class ParentLOS {
     private List<ChildLOS> children = new ArrayList<ChildLOS>();
     private List<ApplicationOption> applicationOptions = new ArrayList<ApplicationOption>();
     private LearningOpportunityProvider provider;
-    private String educationDegree;
+    // rakenne
+    private I18nText structureDiagram;
+    // jatko-opintomahdollisuudet
+    private I18nText accessToFurtherStudies;
+    // tavoitteet
+    private I18nText goals;
+    //koulutusala, Sosiaali-, terveys- ja liikunta-ala
+    private I18nText educationDomain;
+    //opintoala, Hammaslääketiede ja muu hammashuolto
+    private I18nText stydyDomain;
+    // koulutusaste, Ammatillinen koulutus
+    private I18nText educationDegree;
+
+    // laajuus
+    private Credits credits;
 
     private Description description;
     private Classification classification;
-    private Credits credits;
-
-
-
-
-
-
-    public String getEducationDegree() {
-        return educationDegree;
-    }
-
-    public void setEducationDegree(String educationDegree) {
-        this.educationDegree = educationDegree;
-    }
 
     public List<ApplicationOption> getApplicationOptions() {
         return applicationOptions;
@@ -114,4 +114,51 @@ public class ParentLOS {
         this.classification = classification;
     }
 
+    public I18nText getStructureDiagram() {
+        return structureDiagram;
+    }
+
+    public void setStructureDiagram(I18nText structureDiagram) {
+        this.structureDiagram = structureDiagram;
+    }
+
+    public I18nText getAccessToFurtherStudies() {
+        return accessToFurtherStudies;
+    }
+
+    public void setAccessToFurtherStudies(I18nText accessToFurtherStudies) {
+        this.accessToFurtherStudies = accessToFurtherStudies;
+    }
+
+    public I18nText getGoals() {
+        return goals;
+    }
+
+    public void setGoals(I18nText goals) {
+        this.goals = goals;
+    }
+
+    public I18nText getEducationDomain() {
+        return educationDomain;
+    }
+
+    public void setEducationDomain(I18nText educationDomain) {
+        this.educationDomain = educationDomain;
+    }
+
+    public I18nText getStydyDomain() {
+        return stydyDomain;
+    }
+
+    public void setStydyDomain(I18nText stydyDomain) {
+        this.stydyDomain = stydyDomain;
+    }
+
+    public I18nText getEducationDegree() {
+        return educationDegree;
+    }
+
+    public void setEducationDegree(I18nText educationDegree) {
+        this.educationDegree = educationDegree;
+    }
 }

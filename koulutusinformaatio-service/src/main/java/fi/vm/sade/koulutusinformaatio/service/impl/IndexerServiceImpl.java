@@ -79,14 +79,20 @@ public class IndexerServiceImpl implements IndexerService {
         parentDoc.addField("lopName", "lop_name");
         docs.add(parentDoc);
 
-//        for (ChildLOS child : parent.getChildren()) {
-//            SolrInputDocument childDoc = new SolrInputDocument();
-//            childDoc.addField("id", child.getId());
-//            childDoc.addField("name", child.getName().getTranslations().get("fi"));
-//            childDoc.addField("lopId", provider.getId());
-//            childDoc.addField("lopName", provider.getName().getTranslations().get("fi"));
-//            docs.add(childDoc);
-//        }
+        for (ChildLOS child : parent.getChildren()) {
+            for (ChildLOI loi : child.getChildLOIs()) {
+                SolrInputDocument childLOIDoc = new SolrInputDocument();
+                childLOIDoc.addField("id", loi.getId());
+                childLOIDoc.addField("name", loi.getName().getTranslations().get("fi"));
+//                childLOIDoc.addField("lopId", provider.getId());
+                childLOIDoc.addField("lopId", "lop_id");
+//                childLOIDoc.addField("lopName", provider.getName().getTranslations().get("fi"));
+                childLOIDoc.addField("lopName", "lop_name");
+
+                docs.add(childLOIDoc);
+            }
+        }
+
         loHttpSolrServer.add(docs);
     }
 

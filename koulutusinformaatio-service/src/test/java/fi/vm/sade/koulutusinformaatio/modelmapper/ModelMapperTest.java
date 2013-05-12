@@ -47,7 +47,6 @@ public class ModelMapperTest {
         ParentLOS parent = new ParentLOS();
         parent.setId("123");
         parent.setName(TestUtil.createI18nText("parent name fi", "parent name sv", "parent name en"));
-        parent.setEducationDegree("degree");
 
         List<ApplicationOption> applicationOptions = new ArrayList<ApplicationOption>();
         ApplicationOption ao = new ApplicationOption();

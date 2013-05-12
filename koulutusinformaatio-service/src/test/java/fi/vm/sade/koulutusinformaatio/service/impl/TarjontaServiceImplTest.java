@@ -21,11 +21,11 @@ import fi.vm.sade.koulutusinformaatio.converter.KomoDTOToParentLearningOpportuni
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
-import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 import fi.vm.sade.tarjonta.service.resources.HakukohdeResource;
 import fi.vm.sade.tarjonta.service.resources.KomoResource;
+import fi.vm.sade.tarjonta.service.resources.KomotoResource;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,6 +51,7 @@ public class TarjontaServiceImplTest {
     ConversionService conversionService;
     KomoResource komoResource;
     HakukohdeResource hakukohdeResource;
+    KomotoResource komotoResource;
 
     final String ID_1 = "1.2.3";
     final String ID_2 = "1.2.4";
@@ -75,8 +76,9 @@ public class TarjontaServiceImplTest {
         hakukohdeResource = mock(HakukohdeResource.class);
         when(hakukohdeResource.search(null, 0, 0, null, null)).thenReturn(IDS);
 
+        komotoResource = mock(KomotoResource.class);
 
-        tarjontaService = new TarjontaServiceImpl(komoResource, hakukohdeResource, conversionService);
+        tarjontaService = new TarjontaServiceImpl(komoResource, komotoResource, hakukohdeResource, conversionService);
     }
 
     @Test

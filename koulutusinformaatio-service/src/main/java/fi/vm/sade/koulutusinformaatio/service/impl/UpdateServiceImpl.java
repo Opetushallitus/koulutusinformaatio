@@ -52,6 +52,9 @@ public class UpdateServiceImpl implements UpdateService {
         // drop db
         // drop index
 
+        // temp: update loi ao map
+        tarjontaService.updateTempData();
+
         List<String> parentOids = tarjontaService.listParentLearnignOpportunityOids();
 
         for (String parentOid : parentOids) {
@@ -67,7 +70,7 @@ public class UpdateServiceImpl implements UpdateService {
                 LOG.warn("Exception while updating parent learning opportunity, oid: " + parentOid + ", Message: " + e.getMessage());
                 continue;
             }
-            
+
             this.indexerService.addParentLearningOpportunity(parent);
             this.educationDataService.save(parent);
         }
