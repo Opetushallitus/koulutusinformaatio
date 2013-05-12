@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import fi.vm.sade.koulutusinformaatio.converter.KoulutusinformaatioObjectBuilder;
 import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.entity.*;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
@@ -47,18 +48,21 @@ public class EducationDataServiceImpl implements EducationDataService {
     private ChildLearningOpportunitySpecificationDAO childLearningOpportunitySpecificationDAO;
     private ChildLearningOpportunityInstanceDAO childLearningOpportunityInstanceDAO;
     private ModelMapper modelMapper;
+    private KoulutusinformaatioObjectBuilder koulutusinformaatioObjectBuilder;
 
     @Autowired
     public EducationDataServiceImpl(ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO,
             ApplicationOptionDAO applicationOptionDAO, LearningOpportunityProviderDAO learningOpportunityProviderDAO,
             ModelMapper modelMapper, ChildLearningOpportunitySpecificationDAO childLearningOpportunitySpecificationDAO,
-            ChildLearningOpportunityInstanceDAO childLearningOpportunityInstanceDAO) {
+            ChildLearningOpportunityInstanceDAO childLearningOpportunityInstanceDAO,
+            KoulutusinformaatioObjectBuilder koulutusinformaatioObjectBuilder) {
         this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;
         this.learningOpportunityProviderDAO = learningOpportunityProviderDAO;
         this.modelMapper = modelMapper;
         this.childLearningOpportunitySpecificationDAO = childLearningOpportunitySpecificationDAO;
         this.childLearningOpportunityInstanceDAO = childLearningOpportunityInstanceDAO;
+        this.koulutusinformaatioObjectBuilder = koulutusinformaatioObjectBuilder;
     }
 
     @Override
@@ -77,7 +81,7 @@ public class EducationDataServiceImpl implements EducationDataService {
             }
             if (plo.getChildren() != null) {
                 for (ChildLearningOpportunitySpecificationEntity clo : plo.getChildren()) {
-                    clo.setParent(getParentReference(plo));
+                    clo.setParent(modelMapper.map(plo, ParentLOSRefEntity.class));
                     plo.getChildRefs().addAll(save(clo));
                 }
             }
@@ -120,11 +124,29 @@ public class EducationDataServiceImpl implements EducationDataService {
     }
 
     @Override
-    public ChildLO getChildLearningOpportunity(String childLosId, String childLoiId) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public ChildLO getChildLearningOpportunity(String childLosId, String childLoiId) throws ResourceNotFoundException {
+        ChildLearningOpportunitySpecificationEntity childLOS = getChildLOS(childLosId);
+        ChildLearningOpportunityInstanceEntity childLOI = getChildLOI(childLoiId);
+        return koulutusinformaatioObjectBuilder.buildChildLO(childLOS, childLOI);
     }
 
-    private List<ChildLORefEntity> save(ChildLearningOpportunitySpecificationEntity childLearningOpportunitySpecification) {
+    private ChildLearningOpportunitySpecificationEntity getChildLOS(String childLosId) throws ResourceNotFoundException {
+        ChildLearningOpportunitySpecificationEntity clos = childLearningOpportunitySpecificationDAO.get(childLosId);
+        if (clos == null) {
+            throw new ResourceNotFoundException("Child learning opportunity specification not found: " + childLosId);
+        }
+        return clos;
+    }
+
+    private ChildLearningOpportunityInstanceEntity getChildLOI(String childLoiId) throws ResourceNotFoundException {
+        ChildLearningOpportunityInstanceEntity cloi = childLearningOpportunityInstanceDAO.get(childLoiId);
+        if (cloi == null) {
+            throw new ResourceNotFoundException("Child learning opportunity instance not found: " + childLoiId);
+        }
+        return cloi;
+    }
+
+    private List<ChildLORefEntity> save(final ChildLearningOpportunitySpecificationEntity childLearningOpportunitySpecification) {
         List<ChildLORefEntity> childLORefs = new ArrayList<ChildLORefEntity>();
         if (childLearningOpportunitySpecification != null) {
             if (childLearningOpportunitySpecification.getChildLOIs() != null) {
@@ -141,14 +163,14 @@ public class EducationDataServiceImpl implements EducationDataService {
         return childLORefs;
     }
 
-    private ChildLORefEntity save(ChildLearningOpportunityInstanceEntity childLearningOpportunityInstance,
-                                  ChildLearningOpportunitySpecificationEntity childLearningOpportunitySpecification) {
+    private ChildLORefEntity save(final ChildLearningOpportunityInstanceEntity childLearningOpportunityInstance,
+                                  final ChildLearningOpportunitySpecificationEntity childLearningOpportunitySpecification) {
         if (childLearningOpportunityInstance != null && childLearningOpportunitySpecification != null) {
 
             for (ChildLearningOpportunityInstanceEntity clo :childLearningOpportunitySpecification.getChildLOIs()) {
                 if (!clo.getId().equals(childLearningOpportunityInstance.getId()) &&
                         clo.getApplicationSystemId().equals(childLearningOpportunityInstance.getApplicationSystemId())) {
-                    childLearningOpportunityInstance.getRelated().add(getChildReference(clo, childLearningOpportunitySpecification));
+                    childLearningOpportunityInstance.getRelated().add(koulutusinformaatioObjectBuilder.buildChildLORef(childLearningOpportunitySpecification, clo));
                 }
             }
 
@@ -156,44 +178,23 @@ public class EducationDataServiceImpl implements EducationDataService {
                 save(childLearningOpportunityInstance.getApplicationOption());
             }
             childLearningOpportunityInstanceDAO.save(childLearningOpportunityInstance);
-            return getChildReference(childLearningOpportunityInstance, childLearningOpportunitySpecification);
+            return koulutusinformaatioObjectBuilder.buildChildLORef(childLearningOpportunitySpecification, childLearningOpportunityInstance);
         }
         return null;
     }
 
-    private void save(LearningOpportunityProviderEntity learningOpportunityProvider) {
+    private void save(final LearningOpportunityProviderEntity learningOpportunityProvider) {
         if (learningOpportunityProvider != null) {
             learningOpportunityProviderDAO.save(learningOpportunityProvider);
         }
     }
 
-    private void save(ApplicationOptionEntity applicationOption) {
+    private void save(final ApplicationOptionEntity applicationOption) {
         if (applicationOption != null) {
             save(applicationOption.getProvider());
             applicationOptionDAO.save(applicationOption);
         }
     }
 
-    private ChildLORefEntity getChildReference(ChildLearningOpportunityInstanceEntity childLearningOpportunityInstance,
-                                          ChildLearningOpportunitySpecificationEntity childLearningOpportunitySpecification) {
-        if (childLearningOpportunityInstance != null) {
-            ChildLORefEntity ref = new ChildLORefEntity();
-            ref.setLosId(childLearningOpportunitySpecification.getId());
-            ref.setName(childLearningOpportunitySpecification.getName());
-            ref.setLoiId(childLearningOpportunityInstance.getId());
-            ref.setAsId(childLearningOpportunityInstance.getApplicationSystemId());
-            return ref;
-        }
-        return null;
-    }
 
-    private ParentLOSRefEntity getParentReference(final ParentLearningOpportunitySpecificationEntity plo) {
-        if (plo != null) {
-            ParentLOSRefEntity ref = new ParentLOSRefEntity();
-            ref.setId(plo.getId());
-            ref.setName(plo.getName());
-            return ref;
-        }
-        return null;
-    }
 }
