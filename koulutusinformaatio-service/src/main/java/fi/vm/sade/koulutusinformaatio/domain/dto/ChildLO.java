@@ -17,10 +17,13 @@
 package fi.vm.sade.koulutusinformaatio.domain.dto;
 
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Mikko Majapuro
@@ -35,6 +38,14 @@ public class ChildLO {
     private ApplicationOption applicationOption;
     private List<ChildLORef> related = new ArrayList<ChildLORef>();
     private ParentLORef parent;
+    private List<Code> teachingLanguages = new ArrayList<Code>();
+    private List<I18nText> formOfEducation;
+    private Map<String, String> webLinks;
+    private List<I18nText> formOfTeaching;
+    private I18nText prerequisite;
+
+    private Date startDate;
+
 
     public String getLosId() {
         return losId;
@@ -98,5 +109,53 @@ public class ChildLO {
 
     public void setParent(ParentLORef parent) {
         this.parent = parent;
+    }
+
+    public List<Code> getTeachingLanguages() {
+        return teachingLanguages;
+    }
+
+    public void setTeachingLanguages(List<Code> teachingLanguages) {
+        this.teachingLanguages = teachingLanguages;
+    }
+
+    public List<I18nText> getFormOfEducation() {
+        return formOfEducation;
+    }
+
+    public void setFormOfEducation(List<I18nText> formOfEducation) {
+        this.formOfEducation = formOfEducation;
+    }
+
+    public Map<String, String> getWebLinks() {
+        return webLinks;
+    }
+
+    public void setWebLinks(Map<String, String> webLinks) {
+        this.webLinks = webLinks;
+    }
+
+    public List<I18nText> getFormOfTeaching() {
+        return formOfTeaching;
+    }
+
+    public void setFormOfTeaching(List<I18nText> formOfTeaching) {
+        this.formOfTeaching = formOfTeaching;
+    }
+
+    public I18nText getPrerequisite() {
+        return prerequisite;
+    }
+
+    public void setPrerequisite(I18nText prerequisite) {
+        this.prerequisite = prerequisite;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 }

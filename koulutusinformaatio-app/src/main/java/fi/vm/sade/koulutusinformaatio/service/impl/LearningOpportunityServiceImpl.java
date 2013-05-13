@@ -16,17 +16,20 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunityDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataService;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Mikko Majapuro
@@ -74,13 +77,40 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
         ParentLearningOpportunitySpecificationDTO parent = modelMapper.map(parentLO, ParentLearningOpportunitySpecificationDTO.class);
         parent.setName(getTextByLanguage(parentLO.getName(), lang));
         parent.setEducationDegree(getTextByLanguage(parentLO.getEducationDegree(), lang));
+        parent.setAvailableTranslationLanguages(getAvailableTranslationLanguages(parentLO.getName()));
         return parent;
     }
 
     private ChildLearningOpportunityDTO convert(final ChildLO childLO, final String lang) {
         ChildLearningOpportunityDTO child = modelMapper.map(childLO, ChildLearningOpportunityDTO.class);
         child.setName(getTextByLanguage(childLO.getName(), lang));
+        child.setDegreeTitle(getTextByLanguage(childLO.getDegreeTitle(), lang));
+        child.setQualification(getTextByLanguage(childLO.getQualification(), lang));
+        child.setAvailableTranslationLanguages(getAvailableTranslationLanguages(childLO.getName()));
+        child.setApplicationOption(convert(childLO.getApplicationOption(), lang));
+        child.setStartDate(childLO.getStartDate());
+        if (childLO.getTeachingLanguages() != null) {
+            child.getTeachingLanguages().clear();
+            for (Code code : childLO.getTeachingLanguages()) {
+                child.getTeachingLanguages().add(code.getValue());
+            }
+        }
+        child.setFormOfTeaching(getTextsByLanguage(childLO.getFormOfTeaching(), lang));
+        child.setWebLinks(childLO.getWebLinks());
+        child.setFormOfEducation(getTextsByLanguage(childLO.getFormOfEducation(), lang));
+        child.setPrerequisite(getTextByLanguage(childLO.getPrerequisite(), lang));
         return child;
+    }
+
+    private ApplicationOptionDTO convert(final ApplicationOption applicationOption, final String lang) {
+        if (applicationOption != null) {
+            ApplicationOptionDTO ao = new ApplicationOptionDTO();
+            ao.setId(applicationOption.getId());
+            ao.setApplicationSystemId(applicationOption.getApplicationSystemId());
+            ao.setName(getTextByLanguage(applicationOption.getName(), lang));
+            return ao;
+        }
+        return null;
     }
 
     private String resolveDefaultLanguage(final ParentLO parentLO) {
@@ -92,17 +122,42 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     }
 
     private String resolveDefaultLanguage(final ChildLO childLO) {
-        //TODO should resolve education lang
-        if (childLO.getName() == null || childLO.getName().getTranslations() == null || childLO.getName().getTranslations().containsKey(LANG_FI)) {
+        if (childLO.getTeachingLanguages() == null || childLO.getTeachingLanguages().isEmpty()) {
             return LANG_FI;
         } else {
-            return childLO.getName().getTranslations().keySet().iterator().next();
+            for (Code code : childLO.getTeachingLanguages()) {
+                 if (code.getValue().equalsIgnoreCase(LANG_FI)) {
+                     return LANG_FI;
+                 }
+            }
+            return childLO.getTeachingLanguages().get(0).getValue().toLowerCase();
         }
+    }
+
+    private List<String> getTextsByLanguage(final List<I18nText> list, final String lang) {
+        List<String> texts = new ArrayList<String>();
+        if (list != null) {
+            for (I18nText text : list) {
+                String value = getTextByLanguage(text, lang);
+                if (value != null) {
+                    texts.add(value);
+                }
+            }
+        }
+        return texts;
     }
 
     private String getTextByLanguage(final I18nText text, final String lang) {
         if (text != null && text.getTranslations() != null && text.getTranslations().containsKey(lang)) {
             return text.getTranslations().get(lang);
+        } else {
+            return null;
+        }
+    }
+
+    private Set<String> getAvailableTranslationLanguages(final I18nText text) {
+        if (text != null && text.getTranslations() != null) {
+            return text.getTranslations().keySet();
         } else {
             return null;
         }

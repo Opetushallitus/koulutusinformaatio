@@ -83,7 +83,10 @@ public class EducationDataServiceImpl implements EducationDataService {
             if (plo.getChildren() != null) {
                 for (ChildLearningOpportunitySpecificationEntity clo : plo.getChildren()) {
                     clo.setParent(modelMapper.map(plo, ParentLOSRefEntity.class));
-                    plo.getChildRefs().addAll(save(clo));
+                    List<ChildLORefEntity> childRefs = save(clo);
+                    if (childRefs != null && !childRefs.isEmpty()) {
+                        plo.getChildRefs().addAll(childRefs);
+                    }
                 }
             }
             for (ApplicationOptionEntity ao : aos.values()) {
@@ -171,7 +174,10 @@ public class EducationDataServiceImpl implements EducationDataService {
             for (ChildLearningOpportunityInstanceEntity clo :childLearningOpportunitySpecification.getChildLOIs()) {
                 if (!clo.getId().equals(childLearningOpportunityInstance.getId()) &&
                         Objects.equal(clo.getApplicationSystemId(), childLearningOpportunityInstance.getApplicationSystemId())) {
-                    childLearningOpportunityInstance.getRelated().add(koulutusinformaatioObjectBuilder.buildChildLORef(childLearningOpportunitySpecification, clo));
+                    ChildLORefEntity cRef = koulutusinformaatioObjectBuilder.buildChildLORef(childLearningOpportunitySpecification, clo);
+                    if (cRef != null) {
+                        childLearningOpportunityInstance.getRelated().add(cRef);
+                    }
                 }
             }
 

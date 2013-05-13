@@ -27,6 +27,8 @@ public class Code {
     private String value;
     private I18nText description;
 
+    public Code() {}
+
     public Code(String value, I18nText description) {
         this.value = value;
         this.description = description;

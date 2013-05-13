@@ -22,44 +22,27 @@ import com.google.code.morphia.annotations.Embedded;
  * @author Mikko Majapuro
  */
 @Embedded
-public class ChildLORefEntity {
+public class CodeEntity {
 
-    private String losId;
-    private String loiId;
-    private String asId;
-    private String name;
+    private String value;
+    @Embedded
+    private I18nTextEntity description;
 
-    public ChildLORefEntity() {}
+    public CodeEntity() {}
 
-    public String getLosId() {
-        return losId;
+    public String getValue() {
+        return value;
     }
 
-    public void setLosId(String losId) {
-        this.losId = losId;
+    public void setValue(String value) {
+        this.value = value;
     }
 
-    public String getLoiId() {
-        return loiId;
+    public I18nTextEntity getDescription() {
+        return description;
     }
 
-    public void setLoiId(String loiId) {
-        this.loiId = loiId;
-    }
-
-    public String getAsId() {
-        return asId;
-    }
-
-    public void setAsId(String asId) {
-        this.asId = asId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setDescription(I18nTextEntity description) {
+        this.description = description;
     }
 }

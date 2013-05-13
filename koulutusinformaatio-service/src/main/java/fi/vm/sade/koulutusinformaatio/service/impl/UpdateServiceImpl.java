@@ -51,7 +51,7 @@ public class UpdateServiceImpl implements UpdateService {
     public void updateAllEducationData() throws Exception {
         // drop db
         // drop index
-
+        this.educationDataService.dropAllData();
         // temp: update loi ao map
         tarjontaService.updateTempData();
 
