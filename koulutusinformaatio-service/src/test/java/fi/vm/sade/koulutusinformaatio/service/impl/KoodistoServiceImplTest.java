@@ -22,7 +22,9 @@ import fi.vm.sade.koodisto.service.types.SearchKoodisCriteriaType;
 import fi.vm.sade.koodisto.service.types.common.KieliType;
 import fi.vm.sade.koodisto.service.types.common.KoodiMetadataType;
 import fi.vm.sade.koodisto.service.types.common.KoodiType;
+import fi.vm.sade.koulutusinformaatio.converter.KoodiTypeToCode;
 import fi.vm.sade.koulutusinformaatio.converter.KoodiTypeToI18nText;
+import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
@@ -70,6 +72,8 @@ public class KoodistoServiceImplTest {
         conversionService = mock(ConversionService.class);
         KoodiTypeToI18nText converter = new KoodiTypeToI18nText();
         when(conversionService.convert(any(KoodiType.class), eq(I18nText.class))).thenReturn(converter.convert(koodi));
+        KoodiTypeToCode koodiTypeToCode = new KoodiTypeToCode();
+        when(conversionService.convert(any(KoodiType.class), eq(Code.class))).thenReturn(koodiTypeToCode.convert(koodi));
         koodistoService = new KoodistoServiceImpl(koodiService, conversionService);
     }
 
@@ -146,4 +150,56 @@ public class KoodistoServiceImplTest {
         assertEquals("nimi_fi", result.get(1).getTranslations().get("fi"));
         assertEquals("nimi_sv", result.get(1).getTranslations().get("sv"));
     }
+
+    @Test
+    public void testSearchCodes() throws KoodistoException {
+        List<Code> result = koodistoService.searchCodes("test_1234#1");
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertEquals("1234", result.get(0).getValue());
+        assertNotNull(result.get(0).getDescription().getTranslations());
+        assertEquals("nimi_fi", result.get(0).getDescription().getTranslations().get("fi"));
+        assertEquals("nimi_sv", result.get(0).getDescription().getTranslations().get("sv"));
+    }
+
+    @Test
+    public void testSearchCodesWithNoVersion() throws KoodistoException {
+        List<Code> result = koodistoService.searchCodes("test_1234");
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertEquals("1234", result.get(0).getValue());
+        assertNotNull(result.get(0).getDescription().getTranslations());
+        assertEquals("nimi_fi", result.get(0).getDescription().getTranslations().get("fi"));
+        assertEquals("nimi_sv", result.get(0).getDescription().getTranslations().get("sv"));
+    }
+
+    @Test(expected = KoodistoException.class)
+    public void testSearchCodesWithEmptyUri() throws KoodistoException {
+        koodistoService.searchCodes("");
+    }
+
+    @Test(expected = KoodistoException.class)
+    public void testSearchCodesWithNullUri() throws KoodistoException {
+        koodistoService.searchCodes(null);
+    }
+
+    @Test
+    public void testSearchCodesMultiple() throws KoodistoException {
+        List<String> uris = Lists.newArrayList("test_1234", "test_1234");
+        List<Code> result = koodistoService.searchCodesMultiple(uris);
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertNotNull(result.get(0).getValue());
+        assertEquals("1234", result.get(0).getValue());
+        assertNotNull(result.get(1).getValue());
+        assertEquals("1234", result.get(1).getValue());
+        assertNotNull(result.get(0).getDescription().getTranslations());
+        assertEquals("nimi_fi", result.get(0).getDescription().getTranslations().get("fi"));
+        assertEquals("nimi_sv", result.get(0).getDescription().getTranslations().get("sv"));
+        assertNotNull(result.get(1).getDescription().getTranslations());
+        assertEquals("nimi_fi", result.get(1).getDescription().getTranslations().get("fi"));
+        assertEquals("nimi_sv", result.get(1).getDescription().getTranslations().get("sv"));
+    }
+
+
 }

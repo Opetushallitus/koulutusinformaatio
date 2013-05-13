@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
+import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 
@@ -49,4 +50,22 @@ public interface KoodistoService {
      * @throws KoodistoException
      */
     I18nText searchFirst(final String koodiUri) throws KoodistoException;
+
+    /**
+     * Search codes from koodisto service by given uri.
+     * @param koodiUri koodi uri
+     * @return list of Code objects
+     * @throws KoodistoException
+     */
+    List<Code> searchCodes(final String koodiUri) throws KoodistoException;
+
+    /**
+     * Search codes from koodisto service by given uris.
+     * @param koodiUri list of koodi uris
+     * @return list of Code objects
+     * @throws KoodistoException
+     */
+    List<Code> searchCodesMultiple(final List<String> koodiUri) throws KoodistoException;
+
+
 }

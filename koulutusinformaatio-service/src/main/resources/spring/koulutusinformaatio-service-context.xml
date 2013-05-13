@@ -122,7 +122,8 @@
         <!-- Converters that need access to ConversionService are registered in KoulutusinformaatioConversionServiceFactoryBean -->
         <property name="converters">
             <list>
-                <bean class="fi.vm.sade.koulutusinformaatio.converter.KoodiTypeToI18nText" />
+                <bean class="fi.vm.sade.koulutusinformaatio.converter.KoodiTypeToI18nText"/>
+                <bean class="fi.vm.sade.koulutusinformaatio.converter.KoodiTypeToCode"/>
             </list>
         </property>
     </bean>

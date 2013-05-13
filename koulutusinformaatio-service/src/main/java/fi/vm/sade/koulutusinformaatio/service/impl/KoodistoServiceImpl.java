@@ -24,6 +24,7 @@ import fi.vm.sade.koodisto.service.KoodiService;
 import fi.vm.sade.koodisto.service.types.SearchKoodisCriteriaType;
 import fi.vm.sade.koodisto.service.types.common.KoodiType;
 import fi.vm.sade.koodisto.util.KoodiServiceSearchCriteriaBuilder;
+import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
@@ -59,16 +60,7 @@ public class KoodistoServiceImpl implements KoodistoService {
     @Cacheable(cacheName = "koodiCache")
     public List<I18nText> search(String koodiUri) throws KoodistoException {
         LOGGER.debug("search koodi: " + koodiUri);
-        if (koodiUri != null && pattern.matcher(koodiUri).matches()) {
-            String[] splitted = koodiUri.split("#");
-            String uri = splitted[0];
-            Integer version = Integer.parseInt(splitted[1]);
-            return convert(getKoodiTypes(uri, version));
-        } else if (koodiUri != null && !koodiUri.isEmpty()) {
-             return convert(getKoodiTypes(koodiUri));
-        } else {
-            throw new KoodistoException("Illegal arguments: " + koodiUri);
-        }
+        return convert(searchKoodiTypes(koodiUri), I18nText.class);
     }
 
     @Override
@@ -84,6 +76,35 @@ public class KoodistoServiceImpl implements KoodistoService {
     public I18nText searchFirst(String koodiUri) throws KoodistoException {
         LOGGER.debug("search first koodi: " + koodiUri);
         return search(koodiUri).get(0);
+    }
+
+    @Override
+    public List<Code> searchCodes(String koodiUri) throws KoodistoException {
+        LOGGER.debug("search koodi: " + koodiUri);
+        return convert(searchKoodiTypes(koodiUri), Code.class);
+    }
+
+    @Override
+    public List<Code> searchCodesMultiple(List<String> koodiUris) throws KoodistoException {
+        List<Code> results = Lists.newArrayList();
+        for (String koodiUri : koodiUris) {
+            results.addAll(searchCodes(koodiUri));
+        }
+        return results;
+    }
+
+    private List<KoodiType> searchKoodiTypes(String koodiUri) throws KoodistoException {
+        if (koodiUri != null && pattern.matcher(koodiUri).matches()) {
+            String[] splitted = koodiUri.split("#");
+            String uri = splitted[0];
+            Integer version = Integer.parseInt(splitted[1]);
+            return getKoodiTypes(uri, version);
+        } else if (koodiUri != null && !koodiUri.isEmpty()) {
+            return getKoodiTypes(koodiUri);
+        } else {
+            throw new KoodistoException("Illegal arguments: " + koodiUri);
+        }
+
     }
 
     private List<KoodiType> getKoodiTypes(final String koodiUri, int version) throws KoodistoException {
@@ -105,11 +126,11 @@ public class KoodistoServiceImpl implements KoodistoService {
         }
     }
 
-    private List<I18nText> convert(final List<KoodiType> codes) {
-        return Lists.transform(codes, new Function<KoodiType, I18nText>() {
+    private <T> List<T> convert(final List<KoodiType> codes, final Class<T> type) {
+        return Lists.transform(codes, new Function<KoodiType, T>() {
             @Override
-            public I18nText apply(fi.vm.sade.koodisto.service.types.common.KoodiType koodiType) {
-                return conversionService.convert(koodiType, I18nText.class);
+            public T apply(fi.vm.sade.koodisto.service.types.common.KoodiType koodiType) {
+                return conversionService.convert(koodiType, type);
             }
         });
     }
