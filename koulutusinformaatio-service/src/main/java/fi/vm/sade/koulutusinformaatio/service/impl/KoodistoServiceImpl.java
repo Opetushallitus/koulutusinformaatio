@@ -72,6 +72,15 @@ public class KoodistoServiceImpl implements KoodistoService {
     }
 
     @Override
+    public List<I18nText> searchMultiple(List<String> koodiUris) throws KoodistoException {
+        List<I18nText> results = Lists.newArrayList();
+        for (String koodiUri : koodiUris) {
+            results.addAll(search(koodiUri));
+        }
+        return results;
+    }
+
+    @Override
     public I18nText searchFirst(String koodiUri) throws KoodistoException {
         LOGGER.debug("search first koodi: " + koodiUri);
         return search(koodiUri).get(0);

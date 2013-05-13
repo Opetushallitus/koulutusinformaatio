@@ -35,6 +35,14 @@ public interface KoodistoService {
     List<I18nText> search(final String koodiUri) throws KoodistoException;
 
     /**
+     * Search localized texts by given koodi uris
+     * @param koodiUris koodi uris with specified versions e.g. "tutkintonimikkeet_10129#1" or the latest version "tutkintonimikkeet_10129"
+     * @return list of I18nText objects
+     * @throws KoodistoException
+     */
+    List<I18nText> searchMultiple(final List<String> koodiUris) throws KoodistoException;
+
+    /**
      * Search localized texts by given koodi uri, returns the first search result
      * @param koodiUri koodi uri with specified version e.g. "tutkintonimikkeet_10129#1" or the latest version "tutkintonimikkeet_10129"
      * @return I18nText object

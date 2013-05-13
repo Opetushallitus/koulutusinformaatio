@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import com.google.common.collect.Lists;
 import fi.vm.sade.koodisto.service.KoodiService;
 import fi.vm.sade.koodisto.service.types.SearchKoodisCriteriaType;
 import fi.vm.sade.koodisto.service.types.common.KieliType;
@@ -130,5 +131,19 @@ public class KoodistoServiceImplTest {
     @Test(expected = KoodistoException.class)
     public void testSearchFirstWithNullUri() throws KoodistoException {
         koodistoService.searchFirst(null);
+    }
+
+    @Test
+    public void testSearchMultiple() throws KoodistoException {
+        List<String> uris = Lists.newArrayList("test_1234", "test_1234");
+        List<I18nText> result = koodistoService.searchMultiple(uris);
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertNotNull(result.get(0).getTranslations());
+        assertEquals("nimi_fi", result.get(0).getTranslations().get("fi"));
+        assertEquals("nimi_sv", result.get(0).getTranslations().get("sv"));
+        assertNotNull(result.get(1).getTranslations());
+        assertEquals("nimi_fi", result.get(1).getTranslations().get("fi"));
+        assertEquals("nimi_sv", result.get(1).getTranslations().get("sv"));
     }
 }
