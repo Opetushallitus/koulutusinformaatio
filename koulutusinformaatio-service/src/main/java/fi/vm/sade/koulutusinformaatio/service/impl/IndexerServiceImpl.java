@@ -88,6 +88,8 @@ public class IndexerServiceImpl implements IndexerService {
                 childLOIDoc.addField("lopId", "lop_id");
 //                childLOIDoc.addField("lopName", provider.getName().getTranslations().get("fi"));
                 childLOIDoc.addField("lopName", "lop_name");
+                childLOIDoc.addField("parentId", parent.getId());
+                childLOIDoc.addField("losId", child.getId());
 
                 docs.add(childLOIDoc);
             }

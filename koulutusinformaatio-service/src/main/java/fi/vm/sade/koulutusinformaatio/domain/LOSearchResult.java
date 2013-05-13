@@ -28,13 +28,15 @@ public class LOSearchResult {
     private String lopId;
     private String lopName;
     private String parentId;
+    private String losId;
 
-    public LOSearchResult(String id, String name, String lopId, String lopName, String parentId) {
+    public LOSearchResult(String id, String name, String lopId, String lopName, String parentId, String losId) {
         this.id = id;
         this.name = name;
         this.lopId = lopId;
         this.lopName = lopName;
         this.parentId = parentId;
+        this.losId = losId;
     }
 
     public String getId() {
@@ -71,5 +73,9 @@ public class LOSearchResult {
 
     public String getParentId() {
         return parentId;
+    }
+
+    public String getLosId() {
+        return losId;
     }
 }
