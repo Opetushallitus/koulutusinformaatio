@@ -20,7 +20,7 @@
 <h3>Peruskoulupohjaisena järjestettävä koulutus</h3>
 <ul>
     <li ng-repeat="child in parentLO.children">
-        <a href="#/info/{{parentLO.id}}/{{child.losId}}/{{child.loiId}}">{{child.name}}</a>
+        <a ng-click="gotoChild(child)">{{child.name}}</a>
     </li>
 </ul>
 <div render-text-block data-title="Jatko-opintomahdollisuudet" data-content="{{parentLO.description.accessToFurtherStudies}}"></div>

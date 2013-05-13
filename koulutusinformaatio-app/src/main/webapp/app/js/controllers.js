@@ -60,7 +60,7 @@ function LanguageCtrl($scope, $location, LanguageService) {
 /**
  *  Controller for info views (parent and child)
  */
- function InfoCtrl($scope, $routeParams, ParentLearningOpportunityService, ChildLearningOpportunityService, SearchService, ParentLODataService, TitleService) {
+ function InfoCtrl($scope, $routeParams, ParentLearningOpportunityService, ChildLearningOpportunityService, SearchService, ParentLODataService, TitleService, $location) {
     $scope.queryString = SearchService.getTerm();
 
     var setTitle = function(parent, child) {
@@ -91,6 +91,12 @@ function LanguageCtrl($scope, $location, LanguageService) {
         }
     }
 
+    // redirect to child page
+    $scope.gotoChild = function(child) {
+        $location.path('/info/' + $scope.parentLO.id + '/' + child.losId + '/' + child.loiId);
+    }
+
+    // scrolls to an anchor on page
     $scope.scrollToAnchor = function(id) {
         $('html, body').scrollTop($('#' + id).offset().top);
     };

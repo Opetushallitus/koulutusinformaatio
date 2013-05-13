@@ -9,7 +9,6 @@
         
         link: function(scope, element, attrs) {
             scope.changeDescriptionLanguage = function(languageCode) {
-                console.log(languageCode);
                 var curPath = $location.search('lang', languageCode);
             };
         }
@@ -19,30 +18,27 @@
 /**
  *  Creates and controls the link "ribbon" of sibling LOs in child view
  */
- directive('kiSiblingRibbon', function() {
-    return function(scope, element, attrs) {
-        var result = "";
-        scope.$watch('childLO', function(childData) {
-            if (childData) {
-                console.log(childData);
-                // if parentLO has only 1 (or less) child, do not show ribbon
-                if (childData.related && childData.related.length <= 1) {
-                    return;
-                } 
+  directive('kiSiblingRibbon', ['$location', '$routeParams', function($location, $routeParams) {
+    return {
+        restrict: 'E,A',
+        template: '<a ng-repeat="relatedChild in childLO.related" ng-click="changeChild(relatedChild)" ng-class="siblingClass(relatedChild)">{{relatedChild.name}}</a>',
+        link: function(scope, element, attrs) {
 
-                for(var index in childData.related) {
-                    var child = childData.related[index]; //parentData.children[index];
-                    var isCurrentSelection = child.losId == scope.childLO.losId ? true : false;
-                    var clazz = isCurrentSelection ? 'disabled' : '';
-                    result += '<a href="#/info/' + scope.parentLO.id + '/' + child.losId + '/' + child.loiId + '" class="' + clazz + '">' + child.name + '</a>';
+            scope.siblingClass = function(sibling) {
+                if (sibling.losId == $routeParams.closId && sibling.loiId == $routeParams.cloiId) {
+                    return 'disabled';
+                } else {
+                    return '';
                 }
-
-                element.html(result);
             }
-        }, true);
-        
+
+            scope.changeChild = function(sibling) {
+                $location.path('/info/' + scope.parentLO.id + '/' + sibling.losId + '/' + sibling.loiId);
+            }
+        }
     }
-}).
+}]).
+
 
 /**
  *  Creates and controls the breadcrumb 
