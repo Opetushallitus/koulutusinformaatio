@@ -71,6 +71,12 @@ public class KoodistoServiceImpl implements KoodistoService {
         }
     }
 
+    @Override
+    public I18nText searchFirst(String koodiUri) throws KoodistoException {
+        LOGGER.debug("search first koodi: " + koodiUri);
+        return search(koodiUri).get(0);
+    }
+
     private List<KoodiType> getKoodiTypes(final String koodiUri, int version) throws KoodistoException {
         SearchKoodisCriteriaType criteria = KoodiServiceSearchCriteriaBuilder.koodiByUriAndVersion(koodiUri, version);
         return searchKoodis(criteria);

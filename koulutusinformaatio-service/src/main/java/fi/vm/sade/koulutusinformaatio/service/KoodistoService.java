@@ -33,4 +33,12 @@ public interface KoodistoService {
      * @throws KoodistoException
      */
     List<I18nText> search(final String koodiUri) throws KoodistoException;
+
+    /**
+     * Search localized texts by given koodi uri, returns the first search result
+     * @param koodiUri koodi uri with specified version e.g. "tutkintonimikkeet_10129#1" or the latest version "tutkintonimikkeet_10129"
+     * @return I18nText object
+     * @throws KoodistoException
+     */
+    I18nText searchFirst(final String koodiUri) throws KoodistoException;
 }

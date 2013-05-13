@@ -101,4 +101,34 @@ public class KoodistoServiceImplTest {
     public void testSearchWithNullUri() throws KoodistoException {
         koodistoService.search(null);
     }
+
+    @Test
+    public void testSearchFirst() throws KoodistoException {
+        I18nText result = koodistoService.searchFirst("test_1234#1");
+        assertNotNull(result);
+        assertNotNull(result);
+        assertNotNull(result.getTranslations());
+        assertEquals("nimi_fi", result.getTranslations().get("fi"));
+        assertEquals("nimi_sv", result.getTranslations().get("sv"));
+    }
+
+    @Test
+    public void testSearchFirstWithNoVersion() throws KoodistoException {
+        I18nText result = koodistoService.searchFirst("test_1234");
+        assertNotNull(result);
+        assertNotNull(result);
+        assertNotNull(result.getTranslations());
+        assertEquals("nimi_fi", result.getTranslations().get("fi"));
+        assertEquals("nimi_sv", result.getTranslations().get("sv"));
+    }
+
+    @Test(expected = KoodistoException.class)
+    public void testSearchFirstWithEmptyUri() throws KoodistoException {
+        koodistoService.searchFirst("");
+    }
+
+    @Test(expected = KoodistoException.class)
+    public void testSearchFirstWithNullUri() throws KoodistoException {
+        koodistoService.searchFirst(null);
+    }
 }
