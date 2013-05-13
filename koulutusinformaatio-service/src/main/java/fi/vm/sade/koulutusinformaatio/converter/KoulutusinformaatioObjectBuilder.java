@@ -27,6 +27,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -82,7 +83,9 @@ public class KoulutusinformaatioObjectBuilder {
                     clo.getTeachingLanguages().add(modelMapper.map(code, Code.class));
                 }
             }
-
+            clo.setFormOfEducation(convert(childLOI.getFormOfEducation()));
+            clo.setPrerequisite(convert(childLOI.getPrerequisite()));
+            clo.setFormOfTeaching(convert(childLOI.getFormOfTeaching()));
             return clo;
         }
         return null;
@@ -102,6 +105,16 @@ public class KoulutusinformaatioObjectBuilder {
             }
         }
         return null;
+    }
+
+    private List<I18nText> convert(final List<I18nTextEntity> texts) {
+        List<I18nText> list = new ArrayList<I18nText>();
+        if (texts != null) {
+            for (I18nTextEntity t: texts) {
+                list.add(convert(t));
+            }
+        }
+        return list;
     }
 
     private I18nText convert(final I18nTextEntity i18nText) {

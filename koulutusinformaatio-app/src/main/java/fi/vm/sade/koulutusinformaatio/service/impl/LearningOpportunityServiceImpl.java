@@ -90,6 +90,7 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
         child.setApplicationOption(convert(childLO.getApplicationOption(), lang));
         child.setStartDate(childLO.getStartDate());
         if (childLO.getTeachingLanguages() != null) {
+            child.getTeachingLanguages().clear();
             for (Code code : childLO.getTeachingLanguages()) {
                 child.getTeachingLanguages().add(code.getValue());
             }
