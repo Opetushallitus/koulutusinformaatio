@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.base.Function;
+import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.converter.KoulutusinformaatioObjectBuilder;
 import fi.vm.sade.koulutusinformaatio.dao.*;
@@ -166,10 +167,10 @@ public class EducationDataServiceImpl implements EducationDataService {
     private ChildLORefEntity save(final ChildLearningOpportunityInstanceEntity childLearningOpportunityInstance,
                                   final ChildLearningOpportunitySpecificationEntity childLearningOpportunitySpecification) {
         if (childLearningOpportunityInstance != null && childLearningOpportunitySpecification != null) {
-
+            childLearningOpportunityInstance.setRelated(new ArrayList<ChildLORefEntity>());
             for (ChildLearningOpportunityInstanceEntity clo :childLearningOpportunitySpecification.getChildLOIs()) {
                 if (!clo.getId().equals(childLearningOpportunityInstance.getId()) &&
-                        clo.getApplicationSystemId().equals(childLearningOpportunityInstance.getApplicationSystemId())) {
+                        Objects.equal(clo.getApplicationSystemId(), childLearningOpportunityInstance.getApplicationSystemId())) {
                     childLearningOpportunityInstance.getRelated().add(koulutusinformaatioObjectBuilder.buildChildLORef(childLearningOpportunitySpecification, clo));
                 }
             }
