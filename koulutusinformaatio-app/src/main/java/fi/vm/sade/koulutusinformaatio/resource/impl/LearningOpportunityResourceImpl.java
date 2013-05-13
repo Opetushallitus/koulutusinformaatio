@@ -74,7 +74,7 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
             if (Strings.isNullOrEmpty(lang)) {
                 return learningOpportunityService.getParentLearningOpportunity(parentId);
             } else {
-                return learningOpportunityService.getParentLearningOpportunity(parentId, lang);
+                return learningOpportunityService.getParentLearningOpportunity(parentId, lang.toLowerCase());
             }
         } catch (ResourceNotFoundException e) {
             throw KIExceptionHandler.resolveException(e);
@@ -87,7 +87,7 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
             if (Strings.isNullOrEmpty(lang)) {
                 return learningOpportunityService.getChildLearningOpportunity(parentId, closId, cloiId);
             } else {
-                return learningOpportunityService.getChildLearningOpportunity(parentId, closId, cloiId, lang);
+                return learningOpportunityService.getChildLearningOpportunity(parentId, closId, cloiId, lang.toLowerCase());
             }
         } catch (ResourceNotFoundException e) {
             throw KIExceptionHandler.resolveException(e);

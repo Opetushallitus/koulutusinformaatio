@@ -17,7 +17,9 @@
 package fi.vm.sade.koulutusinformaatio.domain.dto;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
@@ -40,7 +42,7 @@ public class ParentLearningOpportunitySpecificationDTO {
     private CreditsDTO credits;
 
     private String translationLanguage;
-    private List<String> availableTranslationLanguages = new ArrayList<String>();
+    private Set<String> availableTranslationLanguages = new HashSet<String>();
 
     public String getId() {
         return id;
@@ -122,11 +124,19 @@ public class ParentLearningOpportunitySpecificationDTO {
         this.translationLanguage = translationLanguage;
     }
 
-    public List<String> getAvailableTranslationLanguages() {
+    public String getDegreeName() {
+        return degreeName;
+    }
+
+    public void setDegreeName(String degreeName) {
+        this.degreeName = degreeName;
+    }
+
+    public Set<String> getAvailableTranslationLanguages() {
         return availableTranslationLanguages;
     }
 
-    public void setAvailableTranslationLanguages(List<String> availableTranslationLanguages) {
+    public void setAvailableTranslationLanguages(Set<String> availableTranslationLanguages) {
         this.availableTranslationLanguages = availableTranslationLanguages;
     }
 }

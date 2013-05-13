@@ -36,6 +36,8 @@ public class ChildLearningOpportunityInstanceEntity {
     private ApplicationOptionEntity applicationOption;
     @Embedded
     private List<ChildLORefEntity> related;
+    @Embedded
+    private List<CodeEntity> teachingLanguages;
 
     public ChildLearningOpportunityInstanceEntity() {}
 
@@ -69,5 +71,13 @@ public class ChildLearningOpportunityInstanceEntity {
 
     public void setRelated(List<ChildLORefEntity> related) {
         this.related = related;
+    }
+
+    public List<CodeEntity> getTeachingLanguages() {
+        return teachingLanguages;
+    }
+
+    public void setTeachingLanguages(List<CodeEntity> teachingLanguages) {
+        this.teachingLanguages = teachingLanguages;
     }
 }

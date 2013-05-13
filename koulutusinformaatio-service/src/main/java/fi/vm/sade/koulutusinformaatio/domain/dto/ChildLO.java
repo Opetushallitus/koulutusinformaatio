@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.domain.dto;
 
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public class ChildLO {
     private ApplicationOption applicationOption;
     private List<ChildLORef> related = new ArrayList<ChildLORef>();
     private ParentLORef parent;
+    private List<Code> teachingLanguages;
 
     public String getLosId() {
         return losId;
@@ -98,5 +100,13 @@ public class ChildLO {
 
     public void setParent(ParentLORef parent) {
         this.parent = parent;
+    }
+
+    public List<Code> getTeachingLanguages() {
+        return teachingLanguages;
+    }
+
+    public void setTeachingLanguages(List<Code> teachingLanguages) {
+        this.teachingLanguages = teachingLanguages;
     }
 }

@@ -19,7 +19,9 @@ package fi.vm.sade.koulutusinformaatio.domain.dto;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Hannu Lyytikainen
@@ -36,7 +38,7 @@ public class ChildLearningOpportunityDTO {
     private List<ChildLORefDTO> related = new ArrayList<ChildLORefDTO>();
 
     private String translationLanguage;
-    private List<String> availableTranslationLanguages = new ArrayList<String>();
+    private Set<String> availableTranslationLanguages = new HashSet<String>();
 
     public String getLosId() {
         return losId;
@@ -94,11 +96,11 @@ public class ChildLearningOpportunityDTO {
         this.translationLanguage = translationLanguage;
     }
 
-    public List<String> getAvailableTranslationLanguages() {
+    public Set<String> getAvailableTranslationLanguages() {
         return availableTranslationLanguages;
     }
 
-    public void setAvailableTranslationLanguages(List<String> availableTranslationLanguages) {
+    public void setAvailableTranslationLanguages(Set<String> availableTranslationLanguages) {
         this.availableTranslationLanguages = availableTranslationLanguages;
     }
 
