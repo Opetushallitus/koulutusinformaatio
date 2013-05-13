@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
+import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunityDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 
@@ -27,4 +28,8 @@ public interface LearningOpportunityService {
     ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(String parentId) throws ResourceNotFoundException;
 
     ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(String parentId, String lang) throws ResourceNotFoundException;
+
+    ChildLearningOpportunityDTO getChildLearningOpportunity(String parentId, String closId, String cloiId) throws ResourceNotFoundException;
+
+    ChildLearningOpportunityDTO getChildLearningOpportunity(String parentId, String closId, String cloiId, String lang) throws ResourceNotFoundException;
 }

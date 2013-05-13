@@ -83,6 +83,14 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
 
     @Override
     public ChildLearningOpportunityDTO getChildLearningOpportunity(String parentId, String closId, String cloiId, String lang) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        try {
+            if (Strings.isNullOrEmpty(lang)) {
+                return learningOpportunityService.getChildLearningOpportunity(parentId, closId, cloiId);
+            } else {
+                return learningOpportunityService.getChildLearningOpportunity(parentId, closId, cloiId, lang);
+            }
+        } catch (ResourceNotFoundException e) {
+            throw KIExceptionHandler.resolveException(e);
+        }
     }
 }

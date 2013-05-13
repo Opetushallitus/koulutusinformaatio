@@ -75,6 +75,7 @@ public class KoulutusinformaatioObjectBuilder {
             clo.setName(convert(childLOS.getName()));
             clo.setDegreeTitle(convert(childLOS.getDegreeTitle()));
             clo.setQualification(convert(childLOS.getQualification()));
+            return clo;
         }
         return null;
     }
