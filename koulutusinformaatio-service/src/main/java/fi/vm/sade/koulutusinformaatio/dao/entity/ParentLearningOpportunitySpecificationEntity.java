@@ -33,7 +33,8 @@ public class ParentLearningOpportunitySpecificationEntity {
     private String id;
     @Embedded
     private I18nTextEntity name;
-    private String educationDegree;
+    @Embedded
+    private I18nTextEntity educationDegree;
     @Embedded
     private DescriptionEntity description;
     @Embedded
@@ -68,11 +69,11 @@ public class ParentLearningOpportunitySpecificationEntity {
         this.name = name;
     }
 
-    public String getEducationDegree() {
+    public I18nTextEntity getEducationDegree() {
         return educationDegree;
     }
 
-    public void setEducationDegree(String educationDegree) {
+    public void setEducationDegree(I18nTextEntity educationDegree) {
         this.educationDegree = educationDegree;
     }
 

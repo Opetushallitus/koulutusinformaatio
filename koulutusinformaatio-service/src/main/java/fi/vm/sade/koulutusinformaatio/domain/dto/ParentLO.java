@@ -30,7 +30,7 @@ public class ParentLO {
     private I18nText name;
     private List<ApplicationOption> applicationOptions = new ArrayList<ApplicationOption>();
     private LearningOpportunityProvider provider;
-    private String educationDegree;
+    private I18nText educationDegree;
     private List<ChildLORef> children = new ArrayList<ChildLORef>();
 
     private Description description;
@@ -69,11 +69,11 @@ public class ParentLO {
         this.provider = provider;
     }
 
-    public String getEducationDegree() {
+    public I18nText getEducationDegree() {
         return educationDegree;
     }
 
-    public void setEducationDegree(String educationDegree) {
+    public void setEducationDegree(I18nText educationDegree) {
         this.educationDegree = educationDegree;
     }
 
