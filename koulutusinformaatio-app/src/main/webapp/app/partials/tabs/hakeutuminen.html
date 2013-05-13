@@ -16,32 +16,6 @@
         </section>
     </div>
 </section>
-<aside class="grid16-6 no-right-gutter">
-    <div class="sideitem margin-bottom-3 hidden">
-        <span>Suoraan haettavissa olevat koulutusohjelmat:</span>
-        <ul>
-            <li><a href="#">Ensihoidon koulutusohjelma</a></li>
-        </ul>
-    </div>
-    <div class="sideitem margin-bottom-3">
-        <span>Haku</span>
-        <span class="bold">Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku, kevät 2014</span>
-    </div>
-    <div class="sideitem margin-bottom-3">
-        <span>Hakuaika</span>
-        <span class="bold">3.4.2013 - 31.5.2013</span>
-    </div>
-    <form name="level-selection-form" action="/haku-app/lomake/1.2.246.562.5.50476818906/yhteishaku">
-        <ul class="margin-bottom-2">
-            <li>
-                <input type="radio" name="input1" id="input1" /><label for="input1">Peruskoulupohjainen koulutus</label>
-            </li>
-            <li>
-                <input type="radio" name="input1" id="input2" /><label for="input2">Lukiopohjainen koulutus</label>
-            </li>
-        </ul>
-        <button type="submit" class="primary"><span><span>Hae koulutukseen</span></span></button>
-    </form>
-</aside>
+<div ng-include src="'partials/tabs/haku.html'"></div>
 <div class="clear"></div>
 </div>
