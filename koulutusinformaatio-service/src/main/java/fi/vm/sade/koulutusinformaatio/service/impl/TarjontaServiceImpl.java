@@ -101,9 +101,9 @@ public class TarjontaServiceImpl implements TarjontaService {
         parentLOS.setStructureDiagram(new I18nText(parentKomo.getKoulutuksenRakenne()));
         parentLOS.setAccessToFurtherStudies(new I18nText(parentKomo.getJatkoOpintoMahdollisuudet()));
         parentLOS.setGoals(new I18nText(parentKomo.getTavoitteet()));
-        parentLOS.setEducationDomain(koodistoService.search(parentKomo.getKoulutusAlaUri()).get(0));
-        parentLOS.setStydyDomain(koodistoService.search(parentKomo.getOpintoalaUri()).get(0));
-        parentLOS.setEducationDegree(koodistoService.search(parentKomo.getKoulutusAsteUri()).get(0));
+        parentLOS.setEducationDomain(koodistoService.searchFirst(parentKomo.getKoulutusAlaUri()));
+        parentLOS.setStydyDomain(koodistoService.searchFirst(parentKomo.getOpintoalaUri()));
+        parentLOS.setEducationDegree(koodistoService.searchFirst(parentKomo.getKoulutusAsteUri()));
 
         //Sosiaali-, terveys- ja liikunta-ala
 //                "koulutusAlaUri" : "koulutusalaoph2002_7#1",
@@ -130,8 +130,8 @@ public class TarjontaServiceImpl implements TarjontaService {
 
             childLOS.setId(childKomo.getOid());
             childLOS.setName(new I18nText(childKomo.getNimi()));
-            childLOS.setQualification(koodistoService.search(childKomo.getTutkintonimikeUri()).get(0));
-            childLOS.setDegreeTitle(koodistoService.search(childKomo.getKoulutusOhjelmaKoodiUri()).get(0));
+            childLOS.setQualification(koodistoService.searchFirst(childKomo.getTutkintonimikeUri()));
+            childLOS.setDegreeTitle(koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri()));
 
             // loi
             List<ChildLOI> childLOIs = Lists.newArrayList();
@@ -144,17 +144,21 @@ public class TarjontaServiceImpl implements TarjontaService {
                 // how to get the name?
                 //childLOI.setName(new I18nText(komotoDTO.getNimi()));
                 childLOI.setName(childLOS.getName());
+                childLOI.setStartDate(komotoDTO.getKoulutuksenAlkamisDate());
+                childLOI.setFormOfEducation(koodistoService.searchMultiple(komotoDTO.getKoulutuslajiUris()));
+                childLOI.setWebLinks(komotoDTO.getWebLinkkis());
+                childLOI.setTeachingLanguages(koodistoService.searchCodesMultiple(komotoDTO.getOpetuskieletUris()));
+                childLOI.setFormOfTeaching(koodistoService.searchMultiple(komotoDTO.getOpetusmuodotUris()));
+                childLOI.setPrerequisite(koodistoService.searchFirst(komotoDTO.getPohjakoulutusVaatimusUri()));
 
                 String aoId = this.loiAoMap.get(komotoDTO.getOid());
                 if (aoId == null) continue;
-                System.out.println("adding loi: " + childLOI.getId());
                 HakukohdeDTO hakukohdeDTO = hakukohdeResource.getByOID(aoId);
                 ApplicationOption ao = new ApplicationOption();
                 ao.setId(hakukohdeDTO.getOid());
                 ao.setName(koodistoService.search(hakukohdeDTO.getHakukohdeNimiUri()).get(0));
                 HakuDTO hakuDTO = hakukohdeResource.getHakuByHakukohdeOID(aoId);
                 childLOI.setApplicationSystemId(hakuDTO.getOid());
-
                 ao.setApplicationSystemId(hakuDTO.getOid());
                 childLOI.setApplicationOption(ao);
 
