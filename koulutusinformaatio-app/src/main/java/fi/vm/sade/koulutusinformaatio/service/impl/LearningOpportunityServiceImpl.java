@@ -16,12 +16,10 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunityDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataService;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
@@ -29,6 +27,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -87,7 +87,29 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
         child.setDegreeTitle(getTextByLanguage(childLO.getDegreeTitle(), lang));
         child.setQualification(getTextByLanguage(childLO.getQualification(), lang));
         child.setAvailableTranslationLanguages(getAvailableTranslationLanguages(childLO.getName()));
+        child.setApplicationOption(convert(childLO.getApplicationOption(), lang));
+        child.setStartDate(childLO.getStartDate());
+        if (childLO.getTeachingLanguages() != null) {
+            for (Code code : childLO.getTeachingLanguages()) {
+                child.getTeachingLanguages().add(code.getValue());
+            }
+        }
+        child.setFormOfTeaching(getTextsByLanguage(childLO.getFormOfTeaching(), lang));
+        child.setWebLinks(childLO.getWebLinks());
+        child.setFormOfEducation(getTextsByLanguage(childLO.getFormOfEducation(), lang));
+        child.setPrerequisite(getTextByLanguage(childLO.getPrerequisite(), lang));
         return child;
+    }
+
+    private ApplicationOptionDTO convert(final ApplicationOption applicationOption, final String lang) {
+        if (applicationOption != null) {
+            ApplicationOptionDTO ao = new ApplicationOptionDTO();
+            ao.setId(applicationOption.getId());
+            ao.setApplicationSystemId(applicationOption.getApplicationSystemId());
+            ao.setName(getTextByLanguage(applicationOption.getName(), lang));
+            return ao;
+        }
+        return null;
     }
 
     private String resolveDefaultLanguage(final ParentLO parentLO) {
@@ -109,6 +131,19 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
             }
             return childLO.getTeachingLanguages().get(0).getValue().toLowerCase();
         }
+    }
+
+    private List<String> getTextsByLanguage(final List<I18nText> list, final String lang) {
+        List<String> texts = new ArrayList<String>();
+        if (list != null) {
+            for (I18nText text : list) {
+                String value = getTextByLanguage(text, lang);
+                if (value != null) {
+                    texts.add(value);
+                }
+            }
+        }
+        return texts;
     }
 
     private String getTextByLanguage(final I18nText text, final String lang) {

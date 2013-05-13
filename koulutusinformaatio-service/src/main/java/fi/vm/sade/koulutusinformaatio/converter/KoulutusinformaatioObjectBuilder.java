@@ -16,11 +16,9 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLORefEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunityInstanceEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunitySpecificationEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.I18nTextEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.*;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLORef;
@@ -29,6 +27,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * @author Mikko Majapuro
  */
@@ -36,6 +36,7 @@ import org.springframework.stereotype.Component;
 public class KoulutusinformaatioObjectBuilder {
 
     private ModelMapper modelMapper;
+    private static final String LANG_FI = "fi";
 
     @Autowired
     public KoulutusinformaatioObjectBuilder(ModelMapper modelMapper) {
@@ -46,8 +47,7 @@ public class KoulutusinformaatioObjectBuilder {
         if (childLOI != null && childLOS != null) {
             ChildLORefEntity ref = new ChildLORefEntity();
             ref.setLosId(childLOS.getId());
-            //TODO set correct name
-            ref.setName("foo");
+            ref.setName(getTextByEducationLanguage(childLOS.getName(), childLOI.getTeachingLanguages()));
             ref.setLoiId(childLOI.getId());
             ref.setAsId(childLOI.getApplicationSystemId());
             return ref;
@@ -76,7 +76,30 @@ public class KoulutusinformaatioObjectBuilder {
             clo.setName(convert(childLOS.getName()));
             clo.setDegreeTitle(convert(childLOS.getDegreeTitle()));
             clo.setQualification(convert(childLOS.getQualification()));
+            clo.setStartDate(childLOI.getStartDate());
+            if (childLOI.getTeachingLanguages() != null) {
+                for (CodeEntity code : childLOI.getTeachingLanguages()) {
+                    clo.getTeachingLanguages().add(modelMapper.map(code, Code.class));
+                }
+            }
+
             return clo;
+        }
+        return null;
+    }
+
+    private String getTextByEducationLanguage(final I18nTextEntity text, List<CodeEntity> languages) {
+        if (text != null && text.getTranslations() != null && !text.getTranslations().isEmpty()) {
+            if (languages != null && !languages.isEmpty()) {
+                for (CodeEntity code : languages) {
+                    if (code.getValue().equalsIgnoreCase(LANG_FI)) {
+                        return text.getTranslations().get(LANG_FI);
+                    }
+                }
+                return text.getTranslations().get(languages.get(0).getValue().toLowerCase());
+            } else {
+                return text.getTranslations().values().iterator().next();
+            }
         }
         return null;
     }

@@ -18,10 +18,7 @@ package fi.vm.sade.koulutusinformaatio.domain.dto;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Hannu Lyytikainen
@@ -37,8 +34,15 @@ public class ChildLearningOpportunityDTO {
     private ApplicationOptionDTO applicationOption;
     private List<ChildLORefDTO> related = new ArrayList<ChildLORefDTO>();
 
+    private Date startDate;
+    private List<String> formOfEducation = new ArrayList<String>();
+    private Map<String, String> webLinks;
+    private List<String> formOfTeaching = new ArrayList<String>();
+    private String prerequisite;
+
     private String translationLanguage;
     private Set<String> availableTranslationLanguages = new HashSet<String>();
+    private Set<String> teachingLanguages = new HashSet<String>();
 
     public String getLosId() {
         return losId;
@@ -88,8 +92,49 @@ public class ChildLearningOpportunityDTO {
         this.degreeTitle = degreeTitle;
     }
 
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public List<String> getFormOfEducation() {
+        return formOfEducation;
+    }
+
+    public void setFormOfEducation(List<String> formOfEducation) {
+        this.formOfEducation = formOfEducation;
+    }
+
+    public Map<String, String> getWebLinks() {
+        return webLinks;
+    }
+
+    public void setWebLinks(Map<String, String> webLinks) {
+        this.webLinks = webLinks;
+    }
+
+    public List<String> getFormOfTeaching() {
+        return formOfTeaching;
+    }
+
+    public void setFormOfTeaching(List<String> formOfTeaching) {
+        this.formOfTeaching = formOfTeaching;
+    }
+
+    public String getPrerequisite() {
+        return prerequisite;
+    }
+
+    public void setPrerequisite(String prerequisite) {
+        this.prerequisite = prerequisite;
+    }
+
     public String getTranslationLanguage() {
         return translationLanguage;
+
     }
 
     public void setTranslationLanguage(String translationLanguage) {
@@ -108,7 +153,16 @@ public class ChildLearningOpportunityDTO {
         return related;
     }
 
+    public Set<String> getTeachingLanguages() {
+        return teachingLanguages;
+    }
+
+    public void setTeachingLanguages(Set<String> teachingLanguages) {
+        this.teachingLanguages = teachingLanguages;
+    }
+
     public void setRelated(List<ChildLORefDTO> related) {
         this.related = related;
+
     }
 }

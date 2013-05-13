@@ -21,7 +21,9 @@ import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Id;
 import com.google.code.morphia.annotations.Reference;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Mikko Majapuro
@@ -38,6 +40,15 @@ public class ChildLearningOpportunityInstanceEntity {
     private List<ChildLORefEntity> related;
     @Embedded
     private List<CodeEntity> teachingLanguages;
+    private Date startDate;
+    @Embedded
+    private List<I18nTextEntity> formOfEducation;
+    @Embedded
+    private Map<String, String> webLinks;
+    @Embedded
+    private List<I18nTextEntity> formOfTeaching;
+    @Embedded
+    private I18nTextEntity prerequisite;
 
     public ChildLearningOpportunityInstanceEntity() {}
 
@@ -79,5 +90,45 @@ public class ChildLearningOpportunityInstanceEntity {
 
     public void setTeachingLanguages(List<CodeEntity> teachingLanguages) {
         this.teachingLanguages = teachingLanguages;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public List<I18nTextEntity> getFormOfEducation() {
+        return formOfEducation;
+    }
+
+    public void setFormOfEducation(List<I18nTextEntity> formOfEducation) {
+        this.formOfEducation = formOfEducation;
+    }
+
+    public Map<String, String> getWebLinks() {
+        return webLinks;
+    }
+
+    public void setWebLinks(Map<String, String> webLinks) {
+        this.webLinks = webLinks;
+    }
+
+    public List<I18nTextEntity> getFormOfTeaching() {
+        return formOfTeaching;
+    }
+
+    public void setFormOfTeaching(List<I18nTextEntity> formOfTeaching) {
+        this.formOfTeaching = formOfTeaching;
+    }
+
+    public I18nTextEntity getPrerequisite() {
+        return prerequisite;
+    }
+
+    public void setPrerequisite(I18nTextEntity prerequisite) {
+        this.prerequisite = prerequisite;
     }
 }
