@@ -41,13 +41,18 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', function
 }).
 */
 
-service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', function($http, $timeout, $q) {
+service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', 'LanguageService', function($http, $timeout, $q, LanguageService) {
     return {
         query: function(params) {
             var deferred = $q.defer();
+            var descriptionLanguage = LanguageService.getDescriptionLanguage();
 
-            //$http.get('../lo/' + params.parentId).
-            $http.get('mock/parent.json').
+            $http.get('../lo/' + params.parentId, {
+            //$http.get('mock/parent-' + descriptionLanguage + '.json', {
+                params: {
+                    lang: descriptionLanguage
+                }
+            }).
             success(function(result) {
                 deferred.resolve(result);
             }).
@@ -63,13 +68,18 @@ service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', function
 /**
  *  
  */
-service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', function($http, $timeout, $q) {
+service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'LanguageService', function($http, $timeout, $q, LanguageService) {
     return {
         query: function(params) {
             var deferred = $q.defer();
+            var descriptionLanguage = LanguageService.getDescriptionLanguage();
 
-            //$http.get('../lo/' + params.parentId + '/' + params.closId + '/' + params.cloiId).
-            $http.get('mock/child.json').
+            $http.get('../lo/' + params.parentId + '/' + params.closId + '/' + params.cloiId, {
+            //$http.get('mock/child-' + descriptionLanguage + '.json', {
+                params: {
+                    lang: descriptionLanguage
+                }
+            }).
             success(function(result) {
                 deferred.resolve(result);
             }).
@@ -81,17 +91,6 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', function(
         }
     }
 }]).
-
-/**
- *  Resource for requesting AO data
- */
- /* currently not in use
- factory('ApplicationOption', function($resource) {
-    return $resource('../ao/search/:asId/:lopId', {}, {
-        query: {method:'GET', isArray:true}
-    });
-}).
-*/
 
 /**
  *  Service taking care of search term saving
@@ -149,20 +148,6 @@ service('LanguageService', function($cookies) {
             return data;
         },
 
-        /*
-        getChildData: function(id) {
-            var result;
-            for (var index in data.children) {
-                if (data.children[index].id == id) {
-                    result = data.children[index];
-                    break;
-                }
-            }
-
-            return result;
-        },
-        */
-
         setParentLOData: function(newData) {
             data = newData;
         },
@@ -193,12 +178,12 @@ service('LanguageService', function($cookies) {
     }
 }).
 
-service('TranslationService', ['$http', '$timeout', '$q', function($http, $timeout, $q) {
-    var language;
-
+service('TranslationService', function() {
     return {
         getTranslation: function(key) {
-            return i18n.t(key);
+            if (key) {
+                return i18n.t(key);
+            }
         }
     }
-}]);
+});

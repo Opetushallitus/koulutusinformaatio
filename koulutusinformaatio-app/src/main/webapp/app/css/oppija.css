@@ -1595,10 +1595,19 @@ hr {
     vertical-align: bottom;
     margin: 0px; }
     #siteheader .actions ul li {
-      list-style: none; }
+      list-style: none;
+      float: left;
+      border-right-style: solid;
+      border-right-width: 1px;
+      border-right-color: #FFFFFF; }
       #siteheader .actions ul li a {
-        color: #3e3e3e;
-        text-decoration: none; }
+        color: #FFFFFF;
+        text-decoration: none;
+        margin: 0 1em; }
+      #siteheader .actions ul li:first-child a {
+        margin: 0 1em 0 0; }
+      #siteheader .actions ul li:last-child {
+        border: none; }
 #siteheader .sitelogo {
   float: left; }
 
@@ -2542,14 +2551,14 @@ ul.unstyled {
 /*** Popover window/dialog
 ************************************************/
 .popover-wrapper {
-  display: block;
+  display: none;
   position: absolute;
   left: 0px;
   top: 0px;
   width: 100%;
   height: 100%;
   margin: 0px;
-  z-index: 10; }
+  z-index: 1000; }
   .popover-wrapper.inactive {
     opacity: 0.5; }
   .popover-wrapper > .popover-close {
@@ -2570,33 +2579,29 @@ ul.unstyled {
     width: auto;
     max-width: 960px !important;
     min-width: 460px !important;
-    height: auto; }
+    height: auto;
+    padding: 0 20px 20px;
+    border: 10px solid #FFFFFF; }
     .popover-wrapper .popover > .popover-close {
       display: block;
       position: absolute;
-      top: 12px;
-      right: 21px;
+      top: 10px;
+      right: 10px;
       width: 16px;
       height: 17px;
       background-image: url(../img/popup-close-icon.png);
       background-repeat: no-repeat;
       background-position: center center;
-      cursor: pointer; }
+      cursor: pointer;
+      color: transparent; }
     .popover-wrapper .popover > .popover-header {
       font-size: 14px;
       font-weight: bold;
       width: auto;
-      min-height: 17px;
-      border-radius: 3px 3px 0px 0px;
-      padding: 12px 45px 12px 20px;
-      border-bottom: 1px solid #149ecb;
-      background-color: #eff1f2;
-      background-image: url(../img/texture-45dg-lines-e5e7e8.gif);
-      box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.15) inset;
       color: #333333; }
     .popover-wrapper .popover > .popover-content {
       display: inline-block;
-      margin: 20px; }
+      width: 33%; }
 
 /*** compare
 ************************************************/
@@ -2921,7 +2926,7 @@ button {
 /*** Main navigation
 **************************************************************/
 .main-navigation {
-  background-color: #05526b;
+  background-color: #06526b;
   height: 3.077em; }
   .main-navigation .navigation {
     margin: 0;

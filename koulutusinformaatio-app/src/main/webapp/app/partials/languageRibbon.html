@@ -1,1 +1,1 @@
-<a data-ng-repeat="lng in parentLO.availableTranslationLanguages" ng-click="changeDescriptionLanguage(lng)">{{lng}}</a>
+<a data-ng-repeat="lng in parentLO.availableTranslationLanguages" data-ng-click="changeDescriptionLanguage(lng)" data-ng-class="descriptionLanguageClass(lng)" data-ki-i18n="language-{{lng}}"></a>

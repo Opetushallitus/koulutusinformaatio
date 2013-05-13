@@ -3,7 +3,6 @@
 function LanguageCtrl($scope, $location, LanguageService) {
     $scope.changeLanguage = function(code) {
        LanguageService.setLanguage(code);
-       //console.log(i18n);
        i18n.setLng(code);
        document.location.reload(true);
     }
@@ -13,7 +12,8 @@ function LanguageCtrl($scope, $location, LanguageService) {
  *  Controller for index view
  */
  function IndexCtrl($scope, TitleService) {
-    TitleService.setTitle('Etusivu');
+    var title = i18n.t('title-front-page');
+    TitleService.setTitle(title);
 
     // launch navigation script
     $scope.initNavigation = function() {
@@ -24,9 +24,11 @@ function LanguageCtrl($scope, $location, LanguageService) {
 /**
  *  Controller for search functionality 
  */
- function SearchCtrl($scope, $routeParams, SearchLearningOpportunityService, SearchService, TitleService, $location) {
+ function SearchCtrl($scope, $routeParams, $location, SearchLearningOpportunityService, SearchService, TitleService) {
     $scope.queryString = SearchService.getTerm();
-    TitleService.setTitle('Hakutulokset');
+
+    var title = i18n.t('title-search-results');
+    TitleService.setTitle(title);
 
     if ($routeParams.queryString) {
         SearchLearningOpportunityService.query({queryString: $routeParams.queryString}).then(function(result) {
@@ -65,7 +67,7 @@ function LanguageCtrl($scope, $location, LanguageService) {
 
     var setTitle = function(parent, child) {
         if (child) {
-            TitleService.setTitle(child.degreeTitle);
+            TitleService.setTitle(child.name);
         } else {
             TitleService.setTitle(parent.name);
         }
@@ -78,9 +80,11 @@ function LanguageCtrl($scope, $location, LanguageService) {
             ParentLearningOpportunityService.query({parentId: $routeParams.parentId}).then(function(result) {
                 $scope.parentLO = result;
                 ParentLODataService.setParentLOData(result);
+                setTitle($scope.parentLO, $scope.childLO);
             });
         } else {
             $scope.parentLO = ParentLODataService.getParentLOData();
+            setTitle($scope.parentLO, $scope.childLO);
         }
                 
         if ($routeParams.closId && $routeParams.cloiId) {
@@ -96,6 +100,10 @@ function LanguageCtrl($scope, $location, LanguageService) {
         $location.path('/info/' + $scope.parentLO.id + '/' + child.losId + '/' + child.loiId);
     }
 
+    $scope.gotoParent = function() {
+        $location.path('/info/' + $scope.parentLO.id);
+    }
+
     // scrolls to an anchor on page
     $scope.scrollToAnchor = function(id) {
         $('html, body').scrollTop($('#' + id).offset().top);
@@ -106,6 +114,14 @@ function LanguageCtrl($scope, $location, LanguageService) {
     // TODO: remove these after we get some real data (references in templates as well)
     $scope.lorem = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla posuere, nisl eu gravida elementum, risus risus varius quam, eu rutrum lectus purus quis arcu. Donec euismod porta mi, sed imperdiet ligula sagittis et. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed ut felis sit amet ipsum eleifend rhoncus. Donec sed viverra velit. Morbi mollis pellentesque mollis.';
     $scope.loremshort = 'Etiam sit amet urna justo, vitae luctus eros. In hac habitasse platea dictumst. Suspendisse ut ultricies enim. Etiam quis ante massa, sit amet interdum nulla. Donec ultrices velit nec turpis ullamcorper pharetra.';
+
+    
+    /* TODO: tabs accessible vie url?
+    var tabIdFromRoute = $routeParams.tabId;
+    var initkitabs = function() {
+        tabsMenu.build(tabIdFromRoute);
+    }
+    */
 
     // trigger once content is loaded
     $scope.$on('$viewContentLoaded', tabsMenu.build);

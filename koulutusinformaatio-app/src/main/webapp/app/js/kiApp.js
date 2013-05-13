@@ -18,6 +18,11 @@ kiApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $l
     	templateUrl: 'partials/alataso.html', 
     	controller: InfoCtrl
     });
+    /*
+    $routeProvider.when('/info/:parentId', {
+        redirectTo: '/info/:parentId/kuvaus'
+    });
+    */
     $routeProvider.otherwise({
     	redirectTo: '/index/'
     });

@@ -1,4 +1,7 @@
 {
+    "title-front-page": "Etusivu",
+    "title-search-results": "Hakutulokset",
+    
     "breadcrumb-search-results": "Hakutulokset",
 
     "lo-description": "Koulutuksen kuvaus",
@@ -43,5 +46,9 @@
     "application-period": "Hakuaika",
     "apply-button-label": "Hae koulutukseen",
 
-    "apply-as-part-of-degree-program": "Tähän koulutukseen haetaan osana tutkintoa"
+    "apply-as-part-of-degree-program": "Tähän koulutukseen haetaan osana tutkintoa",
+
+    "language-fi": "Suomeksi",
+    "language-sv": "På svenska",
+    "language-en": "In English"
 }

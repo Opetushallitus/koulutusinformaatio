@@ -2,14 +2,24 @@
 
  angular.module('kiApp.directives', []).
 
- directive('kiLanguageRibbon', ['$location', function($location) {
+ directive('kiLanguageRibbon', ['$location', 'LanguageService', 'ParentLearningOpportunityService', 'ParentLODataService', function($location, LanguageService, ParentLearningOpportunityService, ParentLODataService) {
     return {
         restrict: 'E,A',
         templateUrl: 'partials/languageRibbon.html',
         
         link: function(scope, element, attrs) {
+            scope.descriptionLanguageClass = function(languageCode) {
+                if (LanguageService.getDescriptionLanguage() == languageCode) {
+                    return 'disabled';
+                } else {
+                    return '';
+                }
+            };
+
             scope.changeDescriptionLanguage = function(languageCode) {
-                var curPath = $location.search('lang', languageCode);
+                LanguageService.setDescriptionLanguage(languageCode);
+                //var curPath = $location.search('lang', languageCode);
+                document.location.reload(true);
             };
         }
     };
@@ -96,7 +106,7 @@ directive('renderTextBlock', function() {
             var content;
 
             attrs.$observe('title', function(value) {
-                title = value;
+                title = i18n.t(value); //value;
                 update();
             });
 
@@ -120,10 +130,11 @@ directive('renderTextBlock', function() {
             }
 
             var createTitleElement = function(text, anchortag, level) {
+                var idAttr = anchortag ? 'id="' + anchortag + '"' : '';
                 if (level) {
-                    return $('<h' + level + ' id="' + anchortag + '">' + text + '</h' + level + '>');
+                    return $('<h' + level + ' ' + idAttr + '>' + text + '</h' + level + '>');
                 } else {
-                    return $('<h3 id="' + anchortag + '">' + text + '</h3>');
+                    return $('<h3 ' + idAttr + '>' + text + '</h3>');
                 }
             }
         }
@@ -144,6 +155,8 @@ directive('kiAppTitle', ['TitleService', function(TitleService) {
 
 directive('kiI18n', ['TranslationService', function(TranslationService) {
     return function(scope, element, attrs) {
-        element.append(TranslationService.getTranslation(attrs.kiI18n));
+        attrs.$observe('kiI18n', function(value) {
+            element.append(TranslationService.getTranslation(value));
+        });
     }    
 }]);
