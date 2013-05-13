@@ -81,9 +81,10 @@ public class EducationDataServiceImpl implements EducationDataService {
                 }
             }
             if (plo.getChildren() != null) {
+                ParentLOSRefEntity parentRef = modelMapper.map(plo, ParentLOSRefEntity.class);
                 for (ChildLearningOpportunitySpecificationEntity clo : plo.getChildren()) {
-                    clo.setParent(modelMapper.map(plo, ParentLOSRefEntity.class));
-                    List<ChildLORefEntity> childRefs = save(clo);
+                    clo.setParent(parentRef);
+                    List<ChildLORefEntity> childRefs = save(clo, plo);
                     if (childRefs != null && !childRefs.isEmpty()) {
                         plo.getChildRefs().addAll(childRefs);
                     }
@@ -150,12 +151,13 @@ public class EducationDataServiceImpl implements EducationDataService {
         return cloi;
     }
 
-    private List<ChildLORefEntity> save(final ChildLearningOpportunitySpecificationEntity childLearningOpportunitySpecification) {
+    private List<ChildLORefEntity> save(final ChildLearningOpportunitySpecificationEntity childLearningOpportunitySpecification,
+                                        final ParentLearningOpportunitySpecificationEntity parentLOS) {
         List<ChildLORefEntity> childLORefs = new ArrayList<ChildLORefEntity>();
         if (childLearningOpportunitySpecification != null) {
             if (childLearningOpportunitySpecification.getChildLOIs() != null) {
                for (ChildLearningOpportunityInstanceEntity childLOI : childLearningOpportunitySpecification.getChildLOIs()) {
-                   ChildLORefEntity childLORef = save(childLOI, childLearningOpportunitySpecification);
+                   ChildLORefEntity childLORef = save(childLOI, childLearningOpportunitySpecification, parentLOS);
                    if (childLORef != null) {
                         childLORefs.add(childLORef);
                    }
@@ -168,15 +170,18 @@ public class EducationDataServiceImpl implements EducationDataService {
     }
 
     private ChildLORefEntity save(final ChildLearningOpportunityInstanceEntity childLearningOpportunityInstance,
-                                  final ChildLearningOpportunitySpecificationEntity childLearningOpportunitySpecification) {
-        if (childLearningOpportunityInstance != null && childLearningOpportunitySpecification != null) {
+                                  final ChildLearningOpportunitySpecificationEntity childLearningOpportunitySpecification,
+                                  final ParentLearningOpportunitySpecificationEntity parentLOS) {
+        if (childLearningOpportunityInstance != null && parentLOS != null) {
             childLearningOpportunityInstance.setRelated(new ArrayList<ChildLORefEntity>());
-            for (ChildLearningOpportunityInstanceEntity clo :childLearningOpportunitySpecification.getChildLOIs()) {
-                if (!clo.getId().equals(childLearningOpportunityInstance.getId()) &&
-                        Objects.equal(clo.getApplicationSystemId(), childLearningOpportunityInstance.getApplicationSystemId())) {
-                    ChildLORefEntity cRef = koulutusinformaatioObjectBuilder.buildChildLORef(childLearningOpportunitySpecification, clo);
-                    if (cRef != null) {
-                        childLearningOpportunityInstance.getRelated().add(cRef);
+            for (ChildLearningOpportunitySpecificationEntity childLOS : parentLOS.getChildren()) {
+                for (ChildLearningOpportunityInstanceEntity clo : childLOS.getChildLOIs()) {
+                    if (!clo.getId().equals(childLearningOpportunityInstance.getId()) &&
+                            Objects.equal(clo.getApplicationSystemId(), childLearningOpportunityInstance.getApplicationSystemId())) {
+                        ChildLORefEntity cRef = koulutusinformaatioObjectBuilder.buildChildLORef(childLOS, clo);
+                        if (cRef != null) {
+                            childLearningOpportunityInstance.getRelated().add(cRef);
+                        }
                     }
                 }
             }
