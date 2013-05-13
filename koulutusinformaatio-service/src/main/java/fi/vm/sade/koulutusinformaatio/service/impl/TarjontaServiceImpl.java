@@ -73,11 +73,14 @@ public class TarjontaServiceImpl implements TarjontaService {
     }
 
     private void validateChildKomo(KomoDTO komo) throws TarjontaParseException {
+        if (komo.getNimi() == null) {
+            throw new TarjontaParseException("Child KomoDTO nimi is null");
+        }
         if (komo.getTutkintonimikeUri() == null) {
-            throw new TarjontaParseException("KomoDTO tutkinto nimike uri is null");
+            throw new TarjontaParseException("Child KomoDTO tutkinto nimike uri is null");
         }
         if (komo.getKoulutusOhjelmaKoodiUri() == null) {
-            throw new TarjontaParseException("KomoDTO koulutusohjelma koodi uri is null");
+            throw new TarjontaParseException("Child KomoDTO koulutusohjelma koodi uri is null");
         }
     }
 
@@ -85,6 +88,12 @@ public class TarjontaServiceImpl implements TarjontaService {
     public ParentLOS findParentLearningOpportunity(String oid) throws TarjontaParseException, KoodistoException {
         ParentLOS parentLOS = new ParentLOS();
         KomoDTO parentKomo = komoResource.getByOID(oid);
+
+        // tmp parent check
+        if (!komoResource.getByOID(oid).getModuuliTyyppi().equals(MODULE_TYPE_PARENT)) {
+            throw new TarjontaParseException("LOS not of type " + MODULE_TYPE_PARENT);
+        }
+
         validateParentKomo(parentKomo);
 
         parentLOS.setId(parentKomo.getOid());
@@ -112,7 +121,12 @@ public class TarjontaServiceImpl implements TarjontaService {
             // los
             ChildLOS childLOS = new ChildLOS();
             KomoDTO childKomo = komoResource.getByOID(childKomoOid);
-            validateChildKomo(childKomo);
+
+            try {
+                validateChildKomo(childKomo);
+            } catch (TarjontaParseException e) {
+                continue;
+            }
 
             childLOS.setId(childKomo.getOid());
             childLOS.setName(new I18nText(childKomo.getNimi()));
@@ -132,16 +146,18 @@ public class TarjontaServiceImpl implements TarjontaService {
                 childLOI.setName(childLOS.getName());
 
                 String aoId = this.loiAoMap.get(komotoDTO.getOid());
-                if (aoId != null) {
-                    HakukohdeDTO hakukohdeDTO = hakukohdeResource.getByOID(aoId);
-                    ApplicationOption ao = new ApplicationOption();
-                    ao.setId(hakukohdeDTO.getOid());
-                    ao.setName(koodistoService.search(hakukohdeDTO.getHakukohdeNimiUri()).get(0));
-                    HakuDTO hakuDTO = hakukohdeResource.getHakuByHakukohdeOID(aoId);
-                    childLOI.setApplicationSystemId(hakuDTO.getOid());
-                    ao.setApplicationSystemId(hakuDTO.getOid());
-                    childLOI.setApplicationOption(ao);
-                }
+                if (aoId == null) continue;
+                System.out.println("adding loi: " + childLOI.getId());
+                HakukohdeDTO hakukohdeDTO = hakukohdeResource.getByOID(aoId);
+                ApplicationOption ao = new ApplicationOption();
+                ao.setId(hakukohdeDTO.getOid());
+                ao.setName(koodistoService.search(hakukohdeDTO.getHakukohdeNimiUri()).get(0));
+                HakuDTO hakuDTO = hakukohdeResource.getHakuByHakukohdeOID(aoId);
+                childLOI.setApplicationSystemId(hakuDTO.getOid());
+
+                ao.setApplicationSystemId(hakuDTO.getOid());
+                childLOI.setApplicationOption(ao);
+
                 childLOIs.add(childLOI);
             }
             childLOS.setChildLOIs(childLOIs);
@@ -155,23 +171,13 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     @Override
     public List<String> listParentLearnignOpportunityOids() {
-        List<String> oids = komoResource.search(null, 0, 0, null, null);
-        List<String> returnVal = Lists.newArrayList();
-
-        for (String oid : oids) {
-            if (komoResource.getByOID(oid).getModuuliTyyppi().equals(MODULE_TYPE_PARENT)) {
-                returnVal.add(oid);
-            }
-        }
-
-        return returnVal;
+        return komoResource.search(null, 0, 0, null, null);
     }
 
     @Override
     public List<String> listApplicationOptionOids() {
         return hakukohdeResource.search(null, 0, 0, null, null);
     }
-
 
     // temp data structures to simulate better tarjonta api
     private Map<String, String> loiAoMap;
