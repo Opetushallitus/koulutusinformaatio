@@ -132,17 +132,16 @@ public class TarjontaServiceImpl implements TarjontaService {
                 childLOI.setName(childLOS.getName());
 
                 String aoId = this.loiAoMap.get(komotoDTO.getOid());
-                if (aoId == null) continue;
-                HakukohdeDTO hakukohdeDTO = hakukohdeResource.getByOID(aoId);
-                ApplicationOption ao = new ApplicationOption();
-                ao.setId(hakukohdeDTO.getOid());
-                ao.setName(koodistoService.search(hakukohdeDTO.getHakukohdeNimiUri()).get(0));
-                HakuDTO hakuDTO = hakukohdeResource.getHakuByHakukohdeOID(aoId);
-                childLOI.setApplicationSystemId(hakuDTO.getOid());
-
-                ao.setApplicationSystemId(hakuDTO.getOid());
-                childLOI.setApplicationOption(ao);
-
+                if (aoId != null) {
+                    HakukohdeDTO hakukohdeDTO = hakukohdeResource.getByOID(aoId);
+                    ApplicationOption ao = new ApplicationOption();
+                    ao.setId(hakukohdeDTO.getOid());
+                    ao.setName(koodistoService.search(hakukohdeDTO.getHakukohdeNimiUri()).get(0));
+                    HakuDTO hakuDTO = hakukohdeResource.getHakuByHakukohdeOID(aoId);
+                    childLOI.setApplicationSystemId(hakuDTO.getOid());
+                    ao.setApplicationSystemId(hakuDTO.getOid());
+                    childLOI.setApplicationOption(ao);
+                }
                 childLOIs.add(childLOI);
             }
             childLOS.setChildLOIs(childLOIs);
@@ -172,8 +171,6 @@ public class TarjontaServiceImpl implements TarjontaService {
     public List<String> listApplicationOptionOids() {
         return hakukohdeResource.search(null, 0, 0, null, null);
     }
-
-
 
 
     // temp data structures to simulate better tarjonta api

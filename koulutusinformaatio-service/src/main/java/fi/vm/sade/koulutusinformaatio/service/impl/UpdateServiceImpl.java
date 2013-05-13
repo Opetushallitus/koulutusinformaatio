@@ -77,8 +77,5 @@ public class UpdateServiceImpl implements UpdateService {
 
         this.indexerService.commitLOChnages();
 
-        LOG.info("indexed: " + parentOids.size());
-
     }
-
 }
