@@ -27,7 +27,7 @@ public class ChildLORefEntity {
     private String losId;
     private String loiId;
     private String asId;
-    private I18nTextEntity name;
+    private String name;
 
     public ChildLORefEntity() {}
 
@@ -55,11 +55,11 @@ public class ChildLORefEntity {
         this.asId = asId;
     }
 
-    public I18nTextEntity getName() {
+    public String getName() {
         return name;
     }
 
-    public void setName(I18nTextEntity name) {
+    public void setName(String name) {
         this.name = name;
     }
 }

@@ -43,10 +43,11 @@ public class KoulutusinformaatioObjectBuilder {
     }
 
     public ChildLORefEntity buildChildLORef(final ChildLearningOpportunitySpecificationEntity childLOS, final ChildLearningOpportunityInstanceEntity childLOI) {
-        if (childLOI != null) {
+        if (childLOI != null && childLOS != null) {
             ChildLORefEntity ref = new ChildLORefEntity();
             ref.setLosId(childLOS.getId());
-            ref.setName(childLOS.getName());
+            //TODO set correct name
+            ref.setName("foo");
             ref.setLoiId(childLOI.getId());
             ref.setAsId(childLOI.getApplicationSystemId());
             return ref;

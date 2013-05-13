@@ -80,6 +80,8 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     private ChildLearningOpportunityDTO convert(final ChildLO childLO, final String lang) {
         ChildLearningOpportunityDTO child = modelMapper.map(childLO, ChildLearningOpportunityDTO.class);
         child.setName(getTextByLanguage(childLO.getName(), lang));
+        child.setDegreeTitle(getTextByLanguage(childLO.getDegreeTitle(), lang));
+        child.setQualification(getTextByLanguage(childLO.getQualification(), lang));
         return child;
     }
 
