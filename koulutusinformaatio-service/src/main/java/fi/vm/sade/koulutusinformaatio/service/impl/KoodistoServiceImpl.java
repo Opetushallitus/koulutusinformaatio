@@ -57,7 +57,6 @@ public class KoodistoServiceImpl implements KoodistoService {
     }
 
     @Override
-    @Cacheable(cacheName = "koodiCache")
     public List<I18nText> search(String koodiUri) throws KoodistoException {
         LOGGER.debug("search koodi: " + koodiUri);
         return convert(searchKoodiTypes(koodiUri), I18nText.class);
@@ -93,6 +92,7 @@ public class KoodistoServiceImpl implements KoodistoService {
         return results;
     }
 
+    @Cacheable(cacheName = "koodiCache")
     private List<KoodiType> searchKoodiTypes(String koodiUri) throws KoodistoException {
         if (koodiUri != null && pattern.matcher(koodiUri).matches()) {
             String[] splitted = koodiUri.split("#");
