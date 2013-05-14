@@ -32,10 +32,11 @@ public class ParentLO {
     private LearningOpportunityProvider provider;
     private I18nText educationDegree;
     private List<ChildLORef> children = new ArrayList<ChildLORef>();
-
-    private Description description;
-    private Classification classification;
-    private Credits credits;
+    private I18nText structureDiagram;
+    private I18nText accessToFurtherStudies;
+    private I18nText goals;
+    private I18nText educationDomain;
+    private I18nText stydyDomain;
 
     public String getId() {
         return id;
@@ -85,27 +86,43 @@ public class ParentLO {
         this.children = children;
     }
 
-    public Description getDescription() {
-        return description;
+    public I18nText getStructureDiagram() {
+        return structureDiagram;
     }
 
-    public void setDescription(Description description) {
-        this.description = description;
+    public void setStructureDiagram(I18nText structureDiagram) {
+        this.structureDiagram = structureDiagram;
     }
 
-    public Classification getClassification() {
-        return classification;
+    public I18nText getAccessToFurtherStudies() {
+        return accessToFurtherStudies;
     }
 
-    public void setClassification(Classification classification) {
-        this.classification = classification;
+    public void setAccessToFurtherStudies(I18nText accessToFurtherStudies) {
+        this.accessToFurtherStudies = accessToFurtherStudies;
     }
 
-    public Credits getCredits() {
-        return credits;
+    public I18nText getGoals() {
+        return goals;
     }
 
-    public void setCredits(Credits credits) {
-        this.credits = credits;
+    public void setGoals(I18nText goals) {
+        this.goals = goals;
+    }
+
+    public I18nText getEducationDomain() {
+        return educationDomain;
+    }
+
+    public void setEducationDomain(I18nText educationDomain) {
+        this.educationDomain = educationDomain;
+    }
+
+    public I18nText getStydyDomain() {
+        return stydyDomain;
+    }
+
+    public void setStydyDomain(I18nText stydyDomain) {
+        this.stydyDomain = stydyDomain;
     }
 }

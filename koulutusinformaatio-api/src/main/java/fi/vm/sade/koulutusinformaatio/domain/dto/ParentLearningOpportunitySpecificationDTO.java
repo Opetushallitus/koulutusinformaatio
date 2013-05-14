@@ -35,11 +35,11 @@ public class ParentLearningOpportunitySpecificationDTO {
     private List<ApplicationOptionDTO> applicationOptions = new ArrayList<ApplicationOptionDTO>();
     private LearningOpportunityProviderDTO provider;
     private String educationDegree;
-    private String degreeName;
-
-    private DescriptionDTO description;
-    private ClassificationDTO classification;
-    private CreditsDTO credits;
+    private String structureDiagram;
+    private String accessToFurtherStudies;
+    private String goals;
+    private String educationDomain;
+    private String stydyDomain;
 
     private String translationLanguage;
     private Set<String> availableTranslationLanguages = new HashSet<String>();
@@ -92,30 +92,6 @@ public class ParentLearningOpportunitySpecificationDTO {
         this.educationDegree = educationDegree;
     }
 
-    public CreditsDTO getCredits() {
-        return credits;
-    }
-
-    public void setCredits(CreditsDTO credits) {
-        this.credits = credits;
-    }
-
-    public DescriptionDTO getDescription() {
-        return description;
-    }
-
-    public void setDescription(DescriptionDTO description) {
-        this.description = description;
-    }
-
-    public ClassificationDTO getClassification() {
-        return classification;
-    }
-
-    public void setClassification(ClassificationDTO classification) {
-        this.classification = classification;
-    }
-
     public String getTranslationLanguage() {
         return translationLanguage;
     }
@@ -124,19 +100,51 @@ public class ParentLearningOpportunitySpecificationDTO {
         this.translationLanguage = translationLanguage;
     }
 
-    public String getDegreeName() {
-        return degreeName;
-    }
-
-    public void setDegreeName(String degreeName) {
-        this.degreeName = degreeName;
-    }
-
     public Set<String> getAvailableTranslationLanguages() {
         return availableTranslationLanguages;
     }
 
     public void setAvailableTranslationLanguages(Set<String> availableTranslationLanguages) {
         this.availableTranslationLanguages = availableTranslationLanguages;
+    }
+
+    public String getStructureDiagram() {
+        return structureDiagram;
+    }
+
+    public void setStructureDiagram(String structureDiagram) {
+        this.structureDiagram = structureDiagram;
+    }
+
+    public String getAccessToFurtherStudies() {
+        return accessToFurtherStudies;
+    }
+
+    public void setAccessToFurtherStudies(String accessToFurtherStudies) {
+        this.accessToFurtherStudies = accessToFurtherStudies;
+    }
+
+    public String getGoals() {
+        return goals;
+    }
+
+    public void setGoals(String goals) {
+        this.goals = goals;
+    }
+
+    public String getEducationDomain() {
+        return educationDomain;
+    }
+
+    public void setEducationDomain(String educationDomain) {
+        this.educationDomain = educationDomain;
+    }
+
+    public String getStydyDomain() {
+        return stydyDomain;
+    }
+
+    public void setStydyDomain(String stydyDomain) {
+        this.stydyDomain = stydyDomain;
     }
 }

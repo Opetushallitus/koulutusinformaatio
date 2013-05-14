@@ -35,12 +35,6 @@ public class ParentLearningOpportunitySpecificationEntity {
     private I18nTextEntity name;
     @Embedded
     private I18nTextEntity educationDegree;
-    @Embedded
-    private DescriptionEntity description;
-    @Embedded
-    private ClassificationEntity classification;
-    @Embedded
-    private CreditsEntity credits;
     @Reference(lazy = true)
     private List<ChildLearningOpportunitySpecificationEntity> children;
     @Embedded
@@ -49,6 +43,17 @@ public class ParentLearningOpportunitySpecificationEntity {
     private List<ApplicationOptionEntity> applicationOptions;
     @Reference
     private LearningOpportunityProviderEntity provider;
+    @Embedded
+    private I18nTextEntity structureDiagram;
+    @Embedded
+    private I18nTextEntity accessToFurtherStudies;
+    @Embedded
+    private I18nTextEntity goals;
+    @Embedded
+    private I18nTextEntity educationDomain;
+    @Embedded
+    private I18nTextEntity stydyDomain;
+
 
     public ParentLearningOpportunitySpecificationEntity() {
     }
@@ -109,27 +114,43 @@ public class ParentLearningOpportunitySpecificationEntity {
         this.provider = provider;
     }
 
-    public CreditsEntity getCredits() {
-        return credits;
+    public I18nTextEntity getStructureDiagram() {
+        return structureDiagram;
     }
 
-    public void setCredits(CreditsEntity credits) {
-        this.credits = credits;
+    public void setStructureDiagram(I18nTextEntity structureDiagram) {
+        this.structureDiagram = structureDiagram;
     }
 
-    public DescriptionEntity getDescription() {
-        return description;
+    public I18nTextEntity getAccessToFurtherStudies() {
+        return accessToFurtherStudies;
     }
 
-    public void setDescription(DescriptionEntity description) {
-        this.description = description;
+    public void setAccessToFurtherStudies(I18nTextEntity accessToFurtherStudies) {
+        this.accessToFurtherStudies = accessToFurtherStudies;
     }
 
-    public ClassificationEntity getClassification() {
-        return classification;
+    public I18nTextEntity getGoals() {
+        return goals;
     }
 
-    public void setClassification(ClassificationEntity classification) {
-        this.classification = classification;
+    public void setGoals(I18nTextEntity goals) {
+        this.goals = goals;
+    }
+
+    public I18nTextEntity getEducationDomain() {
+        return educationDomain;
+    }
+
+    public void setEducationDomain(I18nTextEntity educationDomain) {
+        this.educationDomain = educationDomain;
+    }
+
+    public I18nTextEntity getStydyDomain() {
+        return stydyDomain;
+    }
+
+    public void setStydyDomain(I18nTextEntity stydyDomain) {
+        this.stydyDomain = stydyDomain;
     }
 }

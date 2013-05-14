@@ -14,36 +14,32 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.koulutusinformaatio.dao.entity;
+package fi.vm.sade.koulutusinformaatio.domain.dto;
 
-import com.google.code.morphia.annotations.Embedded;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 /**
  * @author Mikko Majapuro
  */
-@Embedded
-public class CreditsEntity {
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
+public class ParentLOSRefDTO {
 
-    @Embedded
-    private I18nTextEntity creditValue;
-    @Embedded
-    private I18nTextEntity creditUnit;
+    private String id;
+    private String name;
 
-    public CreditsEntity() {}
-
-    public I18nTextEntity getCreditValue() {
-        return creditValue;
+    public String getId() {
+        return id;
     }
 
-    public void setCreditValue(I18nTextEntity creditValue) {
-        this.creditValue = creditValue;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public I18nTextEntity getCreditUnit() {
-        return creditUnit;
+    public String getName() {
+        return name;
     }
 
-    public void setCreditUnit(I18nTextEntity creditUnit) {
-        this.creditUnit = creditUnit;
+    public void setName(String name) {
+        this.name = name;
     }
 }
