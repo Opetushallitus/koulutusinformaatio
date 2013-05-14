@@ -18,7 +18,7 @@ package fi.vm.sade.koulutusinformaatio.resource.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityProvider;
+import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResult;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
@@ -47,12 +47,12 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
 
     @Override
     public List<ProviderSearchResult> searchProviders(String term, String asId, String prerequisite, boolean vocational) {
-        List<LearningOpportunityProvider> learningOpportunityProviders = null;
+        List<Provider> learningOpportunityProviders = null;
         try {
             learningOpportunityProviders = searchService.searchLearningOpportunityProviders(term, asId, prerequisite, vocational);
-            return Lists.transform(learningOpportunityProviders, new Function<LearningOpportunityProvider, ProviderSearchResult>() {
+            return Lists.transform(learningOpportunityProviders, new Function<Provider, ProviderSearchResult>() {
                 @Override
-                public ProviderSearchResult apply(LearningOpportunityProvider lop) {
+                public ProviderSearchResult apply(Provider lop) {
                     return modelMapper.map(lop, ProviderSearchResult.class);
                 }
             });

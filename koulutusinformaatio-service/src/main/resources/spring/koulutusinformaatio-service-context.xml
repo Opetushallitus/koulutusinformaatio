@@ -124,6 +124,7 @@
             <list>
                 <bean class="fi.vm.sade.koulutusinformaatio.converter.KoodiTypeToI18nText"/>
                 <bean class="fi.vm.sade.koulutusinformaatio.converter.KoodiTypeToCode"/>
+                <bean class="fi.vm.sade.koulutusinformaatio.converter.OrganisaatioRDTOToProvider"/>
             </list>
         </property>
     </bean>
@@ -155,6 +156,23 @@
         </jaxrs:providers>
     </jaxrs:client>
 
+    <jaxrs:client id="organisaatioResource"
+                  address="${organisaatio.api.rest.url}"
+                  serviceClass="fi.vm.sade.organisaatio.resource.OrganisaatioResource"
+                  inheritHeaders="true">
+        <jaxrs:providers>
+            <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>
+        </jaxrs:providers>
+    </jaxrs:client>
+
+    <bean id="organisaatioService" class="fi.vm.sade.koulutusinformaatio.service.impl.OrganisaatioServiceImpl">
+        <constructor-arg>
+            <ref bean="organisaatioResource"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="conversionService"/>
+        </constructor-arg>
+    </bean>
 
     <bean id="tarjontaService"
           class="fi.vm.sade.koulutusinformaatio.service.impl.TarjontaServiceImpl">

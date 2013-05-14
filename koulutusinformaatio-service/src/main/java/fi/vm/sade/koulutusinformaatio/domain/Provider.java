@@ -20,20 +20,22 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * Learning opportunity provider ie. organization that provides certain education.
+ *
  * @author Hannu Lyytikainen
  */
-public class LearningOpportunityProvider {
+public class Provider {
 
     private String id;
     private I18nText name;
     private Set<String> applicationSystemIDs = new HashSet<String>();
 
-    public LearningOpportunityProvider(String id, I18nText name) {
+    public Provider(String id, I18nText name) {
         this.id = id;
         this.name = name;
     }
 
-    public LearningOpportunityProvider() {}
+    public Provider() {}
 
     public String getId() {
         return id;
