@@ -17,17 +17,16 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:ehcache="http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring"
        xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+       xmlns:ehcache="http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring
+        http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring/ehcache-spring-1.1.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd
         http://cxf.apache.org/jaxrs
-        http://cxf.apache.org/schemas/jaxrs.xsd
-        http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring
-        http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring/ehcache-spring-1.1.xsd
-        ">
+        http://cxf.apache.org/schemas/jaxrs.xsd">
 
     <context:property-placeholder
             location="classpath:koulutusinformaatio.properties, file:///${user.home:''}/oph-configuration/koulutusinformaatio.properties"
@@ -130,12 +129,6 @@
         </property>
     </bean>
 
-    <ehcache:annotation-driven cache-manager="ehCacheManager" />
-
-    <bean id="ehCacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
-        <property name="configLocation"  value="/WEB-INF/ehcache.xml"/>
-    </bean>
-
     <jaxrs:client id="komoResource"
                   address="${tarjonta.api.rest.url}"
                   serviceClass="fi.vm.sade.tarjonta.service.resources.KomoResource"
@@ -200,4 +193,9 @@
         </constructor-arg>
     </bean>
 
+    <ehcache:annotation-driven cache-manager="ehCacheManager" />
+
+    <bean id="ehCacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        <property name="configLocation"  value="/WEB-INF/ehcache.xml"/>
+    </bean>
 </beans>
