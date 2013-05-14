@@ -2,7 +2,7 @@
 
  angular.module('kiApp.directives', []).
 
- directive('kiLanguageRibbon', ['$location', 'LanguageService', 'ParentLearningOpportunityService', 'ParentLODataService', function($location, LanguageService, ParentLearningOpportunityService, ParentLODataService) {
+ directive('kiLanguageRibbon', ['$location', 'LanguageService', 'ParentLearningOpportunityService', function($location, LanguageService, ParentLearningOpportunityService) {
     return {
         restrict: 'E,A',
         templateUrl: 'partials/languageRibbon.html',

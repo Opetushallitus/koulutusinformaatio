@@ -1,15 +1,15 @@
 <section class="grid16-10 no-left-gutter" id="wide-column">
     <h1 class="margin-top-0">{{childLO.degreeTitle}}</h1>
-    <div render-text-block data-title="Koulutuksen tavoite" data-content="{{lorem}}"></div>
-    <div render-text-block data-title="Opintojen rakenne" data-content="{{parentLO.description.structureDiagram}}"></div>
-    <div render-text-block data-title="Sijoittuminen työelämään" data-content="{{lorem}}"></div>
-    <div render-text-block data-title="Ammattinimikkeet" data-content="{{childLO.qualification}}"></div>
-    <div render-text-block data-title="Kansainvälistyminen" data-content="{{lorem}}"></div>
+    <div render-text-block data-title="goals-of-education" data-content="{{lorem}}"></div>
+    <div render-text-block data-title="structure-of-studies" data-content="{{parentLO.description.structureDiagram}}"></div>
+    <div render-text-block data-title="getting-to-work" data-content="{{lorem}}"></div>
+    <div render-text-block data-title="profession-title" data-content="{{childLO.qualification}}"></div>
+    <div render-text-block data-title="internationalization" data-content="{{lorem}}"></div>
 </section>
 <aside class="grid16-6 no-right-gutter">
     <div class="sideitem margin-bottom-3 infobox">
         <h2 class="margin-top-0">
-            <span class="block">Tähän koulutukseen haetaan osana tutkintoa:</span>
+            <span class="block" data-ki-i18n="apply-as-part-of-degree-program"></span>
             <span class="block">{{parentLO.provider.name}}</span>
             <a ng-click="gotoParent()">{{parentLO.name}}</a>
         </h2>

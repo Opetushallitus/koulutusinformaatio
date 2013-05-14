@@ -7,8 +7,12 @@
     "lo-description": "Koulutuksen kuvaus (sv)",
     "lo-application": "Koulutukseen hakeutuminen (sv)",
 
-    "elementary-based": "Perukoulupohjainen koulutus (sv)",
+    "elementary-based": "Peruskoulupohjainen koulutus (sv)",
+    "elementary-graduate-selection": "Peruskoulun päättäneiden valinta (sv)",
     "secondary-school-based": "Lukiopohjainen koulutus (sv)",
+
+    "no-search-results": "Ei hakutuloksia (sv)",
+    "no-search-results-info": "Hakusanallasi ei löytynyt yhtään hakutulosta. Ole hyvä ja yritä toisella hakusanalla. (sv)",
 
     "education-starts": "Koulutus alkaa (sv)",
     "language-of-instruction": "Opetuskieli (sv)",
@@ -36,6 +40,8 @@
     "living-expenses": "Tietoa elämisen kustannuksista (sv)",
     "student-dining": "Opiskelijaruokailu (sv)",
     "health-care-services": "Terveydenhuoltopalvelut (sv)",
+    "contact-information": "Yhteystiedot (sv)",
+    "see-also": "Katso myös muu koulutus (sv):",
 
     "structure-of-studies": "Opintojen rakenne (sv)",
     "getting-to-work": "Sijoittuminen työelämään (sv)",
@@ -46,7 +52,9 @@
     "application-period": "Hakuaika (sv)",
     "apply-button-label": "Hae koulutukseen (sv)",
 
-    "apply-as-part-of-degree-program": "Tähän koulutukseen haetaan osana tutkintoa (sv)",
+    "directly-applicable": "Suoraan haettavissa olevat koulutusohjelmat (sv):",
+
+    "apply-as-part-of-degree-program": "Tähän koulutukseen haetaan osana tutkintoa (sv):",
 
     "language-fi": "Suomeksi",
     "language-sv": "På svenska",

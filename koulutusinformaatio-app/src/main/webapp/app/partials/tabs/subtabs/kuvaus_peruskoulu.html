@@ -15,12 +15,12 @@
         </li>
     </ul>
 </div>
-<div render-text-block data-title="Tavoite" data-content="{{parentLO.description.educationAndProfessionalGoals}}"></div>
-<div render-text-block data-title="Koulutusohjelman valinta" data-content="{{parentLO.description.selectionOfDegreeProgram}}"></div>
+<div render-text-block data-title="goals-of-education" data-content="{{parentLO.description.educationAndProfessionalGoals}}"></div>
+<div render-text-block data-title="selection-of-degree-program" data-content="{{parentLO.description.selectionOfDegreeProgram}}"></div>
 <h3 data-ki-i18n="elementary-based-education"></h3>
 <ul>
     <li ng-repeat="child in parentLO.children">
         <a ng-click="gotoChild(child)">{{child.name}}</a>
     </li>
 </ul>
-<div render-text-block data-title="Jatko-opintomahdollisuudet" data-content="{{parentLO.description.accessToFurtherStudies}}"></div>
+<div render-text-block data-title="access-to-further-studies" data-content="{{parentLO.description.accessToFurtherStudies}}"></div>
