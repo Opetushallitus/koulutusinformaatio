@@ -53,6 +53,8 @@ public class UpdateServiceImpl implements UpdateService {
         // drop db
         // drop index
         this.educationDataService.dropAllData();
+        this.indexerService.dropLOPs();
+        this.indexerService.dropLOs();
 
         List<String> parentOids = tarjontaService.listParentLearnignOpportunityOids();
 
