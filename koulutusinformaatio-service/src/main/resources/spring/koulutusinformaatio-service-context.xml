@@ -186,6 +186,9 @@
             <ref bean="hakukohdeResource"/>
         </constructor-arg>
         <constructor-arg>
+            <ref bean="organisaatioService"/>
+        </constructor-arg>
+        <constructor-arg>
             <ref bean="conversionService"/>
         </constructor-arg>
     </bean>
