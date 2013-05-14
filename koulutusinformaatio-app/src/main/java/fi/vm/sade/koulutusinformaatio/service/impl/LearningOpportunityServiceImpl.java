@@ -19,7 +19,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityProvider;
+import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.dto.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataService;
@@ -156,7 +156,7 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
         return childs;
     }
 
-    private LearningOpportunityProviderDTO convert(final LearningOpportunityProvider provider, final String lang) {
+    private LearningOpportunityProviderDTO convert(final Provider provider, final String lang) {
         if (provider != null) {
             LearningOpportunityProviderDTO p = new LearningOpportunityProviderDTO();
             p.setId(provider.getId());

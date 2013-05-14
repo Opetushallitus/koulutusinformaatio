@@ -3,8 +3,6 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
-import fi.vm.sade.tarjonta.publication.types.*;
-import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.common.SolrInputDocument;
 import org.slf4j.Logger;
@@ -13,14 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.transform.Source;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -72,11 +62,9 @@ public class IndexerServiceImpl implements IndexerService {
         SolrInputDocument parentDoc = new SolrInputDocument();
         parentDoc.addField("id", parent.getId());
         parentDoc.addField("name", parent.getName().getTranslations().get("fi"));
-        LearningOpportunityProvider provider = parent.getProvider();
-//        parentDoc.addField("lopId", provider.getId());
-        parentDoc.addField("lopId", "lop_id");
-//        parentDoc.addField("lopName", provider.getName().getTranslations().get("fi"));
-        parentDoc.addField("lopName", "lop_name");
+        Provider provider = parent.getProvider();
+        parentDoc.addField("lopId", provider.getId());
+        parentDoc.addField("lopName", provider.getName().getTranslations().get("fi"));
         docs.add(parentDoc);
 
         for (ChildLOS child : parent.getChildren()) {

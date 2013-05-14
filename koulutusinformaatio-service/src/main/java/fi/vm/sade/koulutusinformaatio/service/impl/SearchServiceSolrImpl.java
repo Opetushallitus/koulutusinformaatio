@@ -20,7 +20,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.LOSearchResult;
-import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityProvider;
+import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.MapToSolrQueryTransformer;
@@ -56,10 +56,10 @@ public class SearchServiceSolrImpl implements SearchService {
     }
 
     @Override
-    public List<LearningOpportunityProvider> searchLearningOpportunityProviders(
+    public List<Provider> searchLearningOpportunityProviders(
             String term, String asId, String prerequisite, boolean vocational) throws SearchException {
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>(3);
-        Set<LearningOpportunityProvider> providers = new HashSet<LearningOpportunityProvider>();
+        Set<Provider> providers = new HashSet<Provider>();
         String startswith = term.trim();
         if (!startswith.isEmpty()) {
             parameters.put("name", createParameter(term + "*"));
@@ -75,7 +75,7 @@ public class SearchServiceSolrImpl implements SearchService {
             }
 
             for (SolrDocument result : queryResponse.getResults()) {
-                LearningOpportunityProvider provider = new LearningOpportunityProvider();
+                Provider provider = new Provider();
                 provider.setId(result.get("id").toString());
 
                 // TODO: i18n handling
@@ -87,7 +87,7 @@ public class SearchServiceSolrImpl implements SearchService {
             }
 
         }
-        return new ArrayList<LearningOpportunityProvider>(providers);
+        return new ArrayList<Provider>(providers);
     }
 
     @Override

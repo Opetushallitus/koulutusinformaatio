@@ -16,17 +16,14 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
-import fi.vm.sade.koulutusinformaatio.domain.LOSearchResult;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 
-import java.util.List;
+/**
+ * Hides integration to the Organisaatio service.
+ *
+ * @author Hannu Lyytikainen
+ */
+public interface OrganisaatioService {
 
-public interface SearchService {
-
-    List<Provider> searchLearningOpportunityProviders(
-            final String term, final String asId, final String prerequisite, final boolean vocational) throws SearchException;
-
-    List<LOSearchResult> searchLearningOpportunities(final String term) throws SearchException;
-
+    public Provider getByOID(String oid);
 }

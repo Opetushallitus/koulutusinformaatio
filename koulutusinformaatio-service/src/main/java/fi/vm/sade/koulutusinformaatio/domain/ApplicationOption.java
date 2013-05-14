@@ -30,7 +30,7 @@ public class ApplicationOption {
     private String applicationSystemId;
     private String educationDegree;
     private List<I18nText> childLOINames = new ArrayList<I18nText>();
-    private LearningOpportunityProvider provider;
+    private Provider provider;
     // "aloituspaikatLkm" : 10,
     private Integer startingQuota;
     // "alinValintaPistemaara" : 0,
@@ -82,11 +82,11 @@ public class ApplicationOption {
         this.childLOINames = childLOINames;
     }
 
-    public LearningOpportunityProvider getProvider() {
+    public Provider getProvider() {
         return provider;
     }
 
-    public void setProvider(LearningOpportunityProvider provider) {
+    public void setProvider(Provider provider) {
         this.provider = provider;
     }
 

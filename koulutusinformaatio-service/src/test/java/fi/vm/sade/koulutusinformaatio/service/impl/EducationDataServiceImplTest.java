@@ -77,7 +77,7 @@ public class EducationDataServiceImplTest {
     @Test
     public void testSaveParentLearningOpportunity() {
         List<ApplicationOption> applicationOptions = new ArrayList<ApplicationOption>();
-        LearningOpportunityProvider lop = new LearningOpportunityProvider();
+        Provider lop = new Provider();
         lop.setId("6.7.8");
         ApplicationOption ao = new ApplicationOption();
         ao.setId("3.3.3");

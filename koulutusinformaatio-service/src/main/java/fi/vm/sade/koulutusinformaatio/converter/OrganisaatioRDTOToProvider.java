@@ -14,19 +14,22 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.koulutusinformaatio.service;
+package fi.vm.sade.koulutusinformaatio.converter;
 
-import fi.vm.sade.koulutusinformaatio.domain.LOSearchResult;
+import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
+import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
+import org.springframework.core.convert.converter.Converter;
 
-import java.util.List;
-
-public interface SearchService {
-
-    List<Provider> searchLearningOpportunityProviders(
-            final String term, final String asId, final String prerequisite, final boolean vocational) throws SearchException;
-
-    List<LOSearchResult> searchLearningOpportunities(final String term) throws SearchException;
-
+/**
+ * @author Hannu Lyytikainen
+ */
+public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, Provider> {
+    @Override
+    public Provider convert(OrganisaatioRDTO o) {
+        Provider p = new Provider();
+        p.setId(o.getOid());
+        p.setName(new I18nText(o.getNimi()));
+        return p;
+    }
 }

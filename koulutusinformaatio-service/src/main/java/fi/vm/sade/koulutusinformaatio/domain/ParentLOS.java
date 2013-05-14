@@ -30,7 +30,7 @@ public class ParentLOS {
     private I18nText name;
     private List<ChildLOS> children = new ArrayList<ChildLOS>();
     private List<ApplicationOption> applicationOptions = new ArrayList<ApplicationOption>();
-    private LearningOpportunityProvider provider;
+    private Provider provider;
     // rakenne
     private I18nText structureDiagram;
     // jatko-opintomahdollisuudet
@@ -76,11 +76,11 @@ public class ParentLOS {
         this.children = children;
     }
 
-    public LearningOpportunityProvider getProvider() {
+    public Provider getProvider() {
         return provider;
     }
 
-    public void setProvider(LearningOpportunityProvider provider) {
+    public void setProvider(Provider provider) {
         this.provider = provider;
     }
 

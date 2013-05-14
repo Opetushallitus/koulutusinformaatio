@@ -17,7 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import fi.vm.sade.koulutusinformaatio.domain.LOSearchResult;
-import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityProvider;
+import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -76,14 +76,14 @@ public class SearchServiceSolrImplTest {
 
     @Test
     public void testSearchProviders() throws SearchException {
-        List<LearningOpportunityProvider> lops = service.searchLearningOpportunityProviders(
+        List<Provider> lops = service.searchLearningOpportunityProviders(
                 "query", "1.2.3.4", null, Boolean.parseBoolean(null));
         assertEquals(1, lops.size());
     }
 
     @Test
     public void testSearchProvidersEmptyTerm() throws SearchException {
-        List<LearningOpportunityProvider> lops = service.searchLearningOpportunityProviders(
+        List<Provider> lops = service.searchLearningOpportunityProviders(
                 "", "1.2.3.4", null, Boolean.parseBoolean(null));
         assertEquals(0, lops.size());
     }

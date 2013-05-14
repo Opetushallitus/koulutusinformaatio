@@ -22,6 +22,7 @@ import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
+import fi.vm.sade.koulutusinformaatio.service.OrganisaatioService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.tarjonta.service.resources.HakukohdeResource;
 import fi.vm.sade.tarjonta.service.resources.KomoResource;
@@ -49,6 +50,7 @@ public class TarjontaServiceImpl implements TarjontaService {
     private KomoResource komoResource;
     private KomotoResource komotoResource;
     private HakukohdeResource hakukohdeResource;
+    private OrganisaatioService organisaatioService;
     private ConversionService conversionService;
 
     @Autowired
@@ -56,10 +58,11 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     @Autowired
     public TarjontaServiceImpl(KomoResource komoResource, KomotoResource komotoResource, HakukohdeResource aoResource,
-                               ConversionService conversionService) {
+                               OrganisaatioService organisaatioService, ConversionService conversionService) {
         this.komoResource = komoResource;
         this.komotoResource = komotoResource;
         this.hakukohdeResource = aoResource;
+        this.organisaatioService = organisaatioService;
         this.conversionService = conversionService;
     }
 
@@ -106,14 +109,18 @@ public class TarjontaServiceImpl implements TarjontaService {
         parentLOS.setStydyDomain(koodistoService.searchFirst(parentKomo.getOpintoalaUri()));
         parentLOS.setEducationDegree(koodistoService.searchFirst(parentKomo.getKoulutusAsteUri()));
 
-        //Sosiaali-, terveys- ja liikunta-ala
-//                "koulutusAlaUri" : "koulutusalaoph2002_7#1",
-        // Ammatillinen koulutus / 32
-//                "koulutusAsteUri" : "koulutusasteoph2002_32#1",
-        // opintoviikko
-//                "laajuusYksikkoUri" : "opintojenlaajuusyksikko_1#1",
-        // Hammaslääketiede ja muu hammashuolto
-//                "opintoalaUri" : "opintoalaoph2002_704#1",
+        List<String> parentKomotoOids = komoResource.getKomotosByKomoOID(parentKomo.getOid(), 0, 0);
+        for (String parentKomotoOid : parentKomotoOids) {
+            KomotoDTO parentKomoto = komotoResource.getByOID(parentKomotoOid);
+            if (parentKomoto.getTarjoajaOid() != null) {
+                parentLOS.setProvider(organisaatioService.getByOID(parentKomoto.getTarjoajaOid()));
+            }
+        }
+        if (parentLOS.getProvider() == null) {
+            Map<String, String> langs = Maps.newHashMap();
+            langs.put("fi", "dummy name");
+            parentLOS.setProvider(new Provider("dummyid", new I18nText(langs)));
+        }
 
         List<String> childKomoOids = parentKomo.getAlaModuulit();
         List<ChildLOS> childLOSs = Lists.newArrayList();
