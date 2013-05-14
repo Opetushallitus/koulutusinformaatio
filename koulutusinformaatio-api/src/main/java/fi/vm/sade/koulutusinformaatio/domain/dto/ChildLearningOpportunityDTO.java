@@ -44,6 +44,8 @@ public class ChildLearningOpportunityDTO {
     private Set<String> availableTranslationLanguages = new HashSet<String>();
     private Set<String> teachingLanguages = new HashSet<String>();
 
+    private ParentLOSRefDTO parent;
+
     public String getLosId() {
         return losId;
     }
@@ -164,5 +166,13 @@ public class ChildLearningOpportunityDTO {
     public void setRelated(List<ChildLORefDTO> related) {
         this.related = related;
 
+    }
+
+    public ParentLOSRefDTO getParent() {
+        return parent;
+    }
+
+    public void setParent(ParentLOSRefDTO parent) {
+        this.parent = parent;
     }
 }

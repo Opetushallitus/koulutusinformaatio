@@ -82,7 +82,9 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     }
 
     private ChildLearningOpportunityDTO convert(final ChildLO childLO, final String lang) {
-        ChildLearningOpportunityDTO child = modelMapper.map(childLO, ChildLearningOpportunityDTO.class);
+        ChildLearningOpportunityDTO child = new ChildLearningOpportunityDTO();
+        child.setLosId(childLO.getLosId());
+        child.setLoiId(childLO.getLoiId());
         child.setName(getTextByLanguage(childLO.getName(), lang));
         child.setDegreeTitle(getTextByLanguage(childLO.getDegreeTitle(), lang));
         child.setQualification(getTextByLanguage(childLO.getQualification(), lang));
@@ -90,15 +92,31 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
         child.setApplicationOption(convert(childLO.getApplicationOption(), lang));
         child.setStartDate(childLO.getStartDate());
         if (childLO.getTeachingLanguages() != null) {
-            child.getTeachingLanguages().clear();
             for (Code code : childLO.getTeachingLanguages()) {
                 child.getTeachingLanguages().add(code.getValue());
             }
+        }
+        if (childLO.getRelated() != null) {
+            for (ChildLORef related : childLO.getRelated()) {
+                ChildLORefDTO rel = new ChildLORefDTO();
+                rel.setLosId(related.getLosId());
+                rel.setLoiId(related.getLoiId());
+                rel.setAsId(related.getAsId());
+                rel.setName(getTextByLanguage(related.getName(), lang));
+                child.getRelated().add(rel);
+            }
+        }
+        if (childLO.getParent() != null) {
+            ParentLOSRefDTO parent = new ParentLOSRefDTO();
+            parent.setId(childLO.getParent().getId());
+            parent.setName(getTextByLanguage(childLO.getParent().getName(), lang));
+            child.setParent(parent);
         }
         child.setFormOfTeaching(getTextsByLanguage(childLO.getFormOfTeaching(), lang));
         child.setWebLinks(childLO.getWebLinks());
         child.setFormOfEducation(getTextsByLanguage(childLO.getFormOfEducation(), lang));
         child.setPrerequisite(getTextByLanguage(childLO.getPrerequisite(), lang));
+        child.setTranslationLanguage(lang);
         return child;
     }
 
