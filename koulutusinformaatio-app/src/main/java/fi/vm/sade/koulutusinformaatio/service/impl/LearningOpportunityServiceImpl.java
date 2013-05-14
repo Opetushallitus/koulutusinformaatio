@@ -131,6 +131,11 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
             ao.setId(applicationOption.getId());
             ao.setApplicationSystemId(applicationOption.getApplicationSystemId());
             ao.setName(getTextByLanguage(applicationOption.getName(), lang));
+            ao.setAttachmentDeliveryDeadline(applicationOption.getAttachmentDeliveryDeadline());
+            ao.setLastYearApplicantCount(applicationOption.getLastYearApplicantCount());
+            ao.setLowestAcceptedAverage(applicationOption.getLowestAcceptedAverage());
+            ao.setLowestAcceptedScore(applicationOption.getLowestAcceptedScore());
+            ao.setStartingQuota(applicationOption.getStartingQuota());
             return ao;
         }
         return null;

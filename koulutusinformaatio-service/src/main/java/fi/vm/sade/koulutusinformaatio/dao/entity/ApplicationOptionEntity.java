@@ -22,6 +22,7 @@ import com.google.code.morphia.annotations.Id;
 import com.google.code.morphia.annotations.Reference;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -39,6 +40,11 @@ public class ApplicationOptionEntity {
     @Reference
     private LearningOpportunityProviderEntity provider;
     private List<I18nTextEntity> childLONames = new ArrayList<I18nTextEntity>();
+    private Integer startingQuota;
+    private Integer lowestAcceptedScore;
+    private Double lowestAcceptedAverage;
+    private Date attachmentDeliveryDeadline;
+    private Integer lastYearApplicantCount;
 
     public ApplicationOptionEntity() {
 
@@ -90,5 +96,45 @@ public class ApplicationOptionEntity {
 
     public void setChildLONames(List<I18nTextEntity> childLONames) {
         this.childLONames = childLONames;
+    }
+
+    public Integer getStartingQuota() {
+        return startingQuota;
+    }
+
+    public void setStartingQuota(Integer startingQuota) {
+        this.startingQuota = startingQuota;
+    }
+
+    public Integer getLowestAcceptedScore() {
+        return lowestAcceptedScore;
+    }
+
+    public void setLowestAcceptedScore(Integer lowestAcceptedScore) {
+        this.lowestAcceptedScore = lowestAcceptedScore;
+    }
+
+    public Double getLowestAcceptedAverage() {
+        return lowestAcceptedAverage;
+    }
+
+    public void setLowestAcceptedAverage(Double lowestAcceptedAverage) {
+        this.lowestAcceptedAverage = lowestAcceptedAverage;
+    }
+
+    public Date getAttachmentDeliveryDeadline() {
+        return attachmentDeliveryDeadline;
+    }
+
+    public void setAttachmentDeliveryDeadline(Date attachmentDeliveryDeadline) {
+        this.attachmentDeliveryDeadline = attachmentDeliveryDeadline;
+    }
+
+    public Integer getLastYearApplicantCount() {
+        return lastYearApplicantCount;
+    }
+
+    public void setLastYearApplicantCount(Integer lastYearApplicantCount) {
+        this.lastYearApplicantCount = lastYearApplicantCount;
     }
 }
