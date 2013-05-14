@@ -49,10 +49,4 @@ public interface TarjontaService {
      */
     public List<String> listApplicationOptionOids();
 
-
-    /**
-     * Temp method to simulate better tarjonta api
-     */
-    public void updateTempData();
-
 }

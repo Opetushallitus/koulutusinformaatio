@@ -136,33 +136,39 @@ public class TarjontaServiceImpl implements TarjontaService {
             // loi
             List<ChildLOI> childLOIs = Lists.newArrayList();
             List<String> childKomotoOids = komoResource.getKomotosByKomoOID(childKomoOid, 0, 0);
+
             for (String childKomotoOid : childKomotoOids) {
-                ChildLOI childLOI = new ChildLOI();
-                KomotoDTO komotoDTO = komotoResource.getByOID(childKomotoOid);
-                childLOI.setId(komotoDTO.getOid());
 
-                // how to get the name?
-                //childLOI.setName(new I18nText(komotoDTO.getNimi()));
-                childLOI.setName(childLOS.getName());
-                childLOI.setStartDate(komotoDTO.getKoulutuksenAlkamisDate());
-                childLOI.setFormOfEducation(koodistoService.searchMultiple(komotoDTO.getKoulutuslajiUris()));
-                childLOI.setWebLinks(komotoDTO.getWebLinkkis());
-                childLOI.setTeachingLanguages(koodistoService.searchCodesMultiple(komotoDTO.getOpetuskieletUris()));
-                childLOI.setFormOfTeaching(koodistoService.searchMultiple(komotoDTO.getOpetusmuodotUris()));
-                childLOI.setPrerequisite(koodistoService.searchFirst(komotoDTO.getPohjakoulutusVaatimusUri()));
+                List<String> aoIds = komotoResource.getHakukohdesByKomotoOID(childKomotoOid);
 
-                String aoId = this.loiAoMap.get(komotoDTO.getOid());
-                if (aoId == null) continue;
-                HakukohdeDTO hakukohdeDTO = hakukohdeResource.getByOID(aoId);
-                ApplicationOption ao = new ApplicationOption();
-                ao.setId(hakukohdeDTO.getOid());
-                ao.setName(koodistoService.search(hakukohdeDTO.getHakukohdeNimiUri()).get(0));
-                HakuDTO hakuDTO = hakukohdeResource.getHakuByHakukohdeOID(aoId);
-                childLOI.setApplicationSystemId(hakuDTO.getOid());
-                ao.setApplicationSystemId(hakuDTO.getOid());
-                childLOI.setApplicationOption(ao);
+                if (aoIds != null && aoIds.size() > 0) {
+                    ChildLOI childLOI = new ChildLOI();
 
-                childLOIs.add(childLOI);
+                    String aoId = aoIds.get(0);
+                    HakukohdeDTO hakukohdeDTO = hakukohdeResource.getByOID(aoId);
+                    ApplicationOption ao = new ApplicationOption();
+                    ao.setId(hakukohdeDTO.getOid());
+                    ao.setName(koodistoService.search(hakukohdeDTO.getHakukohdeNimiUri()).get(0));
+                    HakuDTO hakuDTO = hakukohdeResource.getHakuByHakukohdeOID(aoId);
+                    childLOI.setApplicationSystemId(hakuDTO.getOid());
+                    ao.setApplicationSystemId(hakuDTO.getOid());
+                    childLOI.setApplicationOption(ao);
+
+                    KomotoDTO komotoDTO = komotoResource.getByOID(childKomotoOid);
+                    childLOI.setId(komotoDTO.getOid());
+
+                    // how to get the name?
+                    //childLOI.setName(new I18nText(komotoDTO.getNimi()));
+                    childLOI.setName(childLOS.getName());
+                    childLOI.setStartDate(komotoDTO.getKoulutuksenAlkamisDate());
+                    childLOI.setFormOfEducation(koodistoService.searchMultiple(komotoDTO.getKoulutuslajiUris()));
+                    childLOI.setWebLinks(komotoDTO.getWebLinkkis());
+                    childLOI.setTeachingLanguages(koodistoService.searchCodesMultiple(komotoDTO.getOpetuskieletUris()));
+                    childLOI.setFormOfTeaching(koodistoService.searchMultiple(komotoDTO.getOpetusmuodotUris()));
+                    childLOI.setPrerequisite(koodistoService.searchFirst(komotoDTO.getPohjakoulutusVaatimusUri()));
+
+                    childLOIs.add(childLOI);
+                }
             }
             childLOS.setChildLOIs(childLOIs);
 
@@ -182,22 +188,4 @@ public class TarjontaServiceImpl implements TarjontaService {
     public List<String> listApplicationOptionOids() {
         return hakukohdeResource.search(null, 0, 0, null, null);
     }
-
-    // temp data structures to simulate better tarjonta api
-    private Map<String, String> loiAoMap;
-
-    @Override
-    public void updateTempData() {
-        loiAoMap = Maps.newHashMap();
-        List<String> aos = hakukohdeResource.search(null, 0, 0, null, null);
-
-        for (String ao : aos) {
-            List<String> komotosByHakukohdeOID = hakukohdeResource.getKomotosByHakukohdeOID(ao);
-            for (String komotooid : komotosByHakukohdeOID) {
-                loiAoMap.put(komotooid, ao);
-            }
-        }
-    }
-
-
 }

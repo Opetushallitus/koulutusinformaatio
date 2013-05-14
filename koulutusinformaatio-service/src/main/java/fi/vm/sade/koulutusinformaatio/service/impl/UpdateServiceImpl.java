@@ -52,8 +52,6 @@ public class UpdateServiceImpl implements UpdateService {
         // drop db
         // drop index
         this.educationDataService.dropAllData();
-        // temp: update loi ao map
-        tarjontaService.updateTempData();
 
         List<String> parentOids = tarjontaService.listParentLearnignOpportunityOids();
 
