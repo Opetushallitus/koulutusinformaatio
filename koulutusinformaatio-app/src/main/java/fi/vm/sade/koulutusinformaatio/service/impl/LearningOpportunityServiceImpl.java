@@ -77,7 +77,7 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
         parent.setName(getTextByLanguage(parentLO.getName(), lang));
         parent.setEducationDegree(getTextByLanguage(parentLO.getEducationDegree(), lang));
         parent.setAvailableTranslationLanguages(getAvailableTranslationLanguages(parentLO.getName()));
-        parent.setChildren(convert(parentLO.getChildren()));
+        parent.setChildren(convert(parentLO.getChildRefs()));
         parent.setProvider(convert(parentLO.getProvider(), lang));
         parent.setStructureDiagram(getTextByLanguage(parentLO.getStructureDiagram(), lang));
         parent.setAccessToFurtherStudies(getTextByLanguage(parentLO.getAccessToFurtherStudies(), lang));
@@ -149,7 +149,7 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
                 child.setLosId(ref.getLosId());
                 child.setLoiId(ref.getLoiId());
                 child.setAsId(ref.getAsId());
-                child.setName(getTextByLanguage(ref.getName(), "fi"));
+                child.setName(ref.getName());
                 childs.add(child);
             }
         }

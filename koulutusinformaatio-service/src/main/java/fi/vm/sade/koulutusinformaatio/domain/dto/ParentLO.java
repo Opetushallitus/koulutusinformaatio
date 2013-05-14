@@ -31,7 +31,7 @@ public class ParentLO {
     private List<ApplicationOption> applicationOptions = new ArrayList<ApplicationOption>();
     private LearningOpportunityProvider provider;
     private I18nText educationDegree;
-    private List<ChildLORef> children = new ArrayList<ChildLORef>();
+    private List<ChildLORef> childRefs = new ArrayList<ChildLORef>();
     private I18nText structureDiagram;
     private I18nText accessToFurtherStudies;
     private I18nText goals;
@@ -78,12 +78,12 @@ public class ParentLO {
         this.educationDegree = educationDegree;
     }
 
-    public List<ChildLORef> getChildren() {
-        return children;
+    public List<ChildLORef> getChildRefs() {
+        return childRefs;
     }
 
-    public void setChildren(List<ChildLORef> children) {
-        this.children = children;
+    public void setChildRefs(List<ChildLORef> childRefs) {
+        this.childRefs = childRefs;
     }
 
     public I18nText getStructureDiagram() {
