@@ -130,12 +130,6 @@
         </property>
     </bean>
 
-    <ehcache:annotation-driven cache-manager="ehCacheManager" />
-
-    <bean id="ehCacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
-        <property name="configLocation"  value="/WEB-INF/ehcache.xml"/>
-    </bean>
-
     <jaxrs:client id="komoResource"
                   address="${tarjonta.api.rest.url}"
                   serviceClass="fi.vm.sade.tarjonta.service.resources.KomoResource"
@@ -200,4 +194,9 @@
         </constructor-arg>
     </bean>
 
+    <ehcache:annotation-driven cache-manager="ehCacheManager" />
+
+    <bean id="ehCacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        <property name="configLocation"  value="/WEB-INF/ehcache.xml"/>
+    </bean>
 </beans>

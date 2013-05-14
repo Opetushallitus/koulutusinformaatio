@@ -147,5 +147,4 @@ public class ParentLearningOpportunitySpecificationDTO {
     public void setStydyDomain(String stydyDomain) {
         this.stydyDomain = stydyDomain;
     }
-
 }

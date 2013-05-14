@@ -162,6 +162,7 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
             p.setId(provider.getId());
             p.setName(getTextByLanguage(provider.getName(), lang));
             p.setApplicationSystemIds(provider.getApplicationSystemIDs());
+            return p;
         }
         return null;
     }

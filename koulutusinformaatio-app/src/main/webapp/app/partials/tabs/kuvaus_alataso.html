@@ -2,13 +2,13 @@
     <div class="notification info">
     <!--<h3>Tähän syksyllä 2013 alkavaan koulutukseen alkaa haku 3.4.2013!</h3>-->
         <ul>
-            <li><span data-ki-i18n="education-starts"></span>{{childLO.startDate}}</li>
-            <li><span data-ki-i18n="language-of-instruction"></span>{{childLO.teachingLanguages}}</li>
-            <li><span data-ki-i18n="form-of-education"></span>{{childLO.formOfEducation}}</li>
-            <li><span data-ki-i18n="duration"></span></li>
+            <li><span data-ki-i18n="education-starts" class="margin-right-2"></span><span class="bold">{{childLO.startDate}}</span></li>
+            <li><span data-ki-i18n="language-of-instruction" class="margin-right-2"></span><span class="bold">{{childLO.teachingLanguage}}</span></li>
+            <li><span data-ki-i18n="form-of-education" class="margin-right-2"></span><span class="bold">{{childLO.formOfEducation}}</span></li>
+            <li><span data-ki-i18n="duration" class="margin-right-2"></span><span class="bold"></span></li>
         </ul>
     </div>
-    <h1 class="margin-top-0">{{childLO.degreeTitle}}</h1>
+    <h1>{{childLO.degreeTitle}}</h1>
     <div render-text-block data-title="goals-of-education" data-content="{{lorem}}"></div>
     <div render-text-block data-title="structure-of-studies" data-content="{{parentLO.structureDiagram}}"></div>
     <div render-text-block data-title="getting-to-work" data-content="{{lorem}}"></div>
