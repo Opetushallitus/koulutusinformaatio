@@ -148,11 +148,4 @@ public class ParentLearningOpportunitySpecificationDTO {
         this.stydyDomain = stydyDomain;
     }
 
-    public String getDegreeName() {
-        return degreeName;
-    }
-
-    public void setDegreeName(String degreeName) {
-        this.degreeName = degreeName;
-    }
 }
