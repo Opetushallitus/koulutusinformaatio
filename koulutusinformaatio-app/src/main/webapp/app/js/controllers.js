@@ -96,6 +96,10 @@ function LanguageCtrl($scope, $location, LanguageService) {
         if ($routeParams.closId && $routeParams.cloiId) {
             ChildLearningOpportunityService.query({parentId: $routeParams.parentId, closId: $routeParams.closId, cloiId: $routeParams.cloiId}).then(function(result) {
                 $scope.childLO = result;
+                var startDate = new Date(result.startDate);
+                $scope.childLO.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
+                $scope.childLO.teachingLanguage = result.teachingLanguages[0] ? result.teachingLanguages[0] : '';
+                $scope.childLO.formOfEducation = result.formOfEducation[0] ? result.formOfEducation[0] : '';
                 setTitle($scope.parentLO, $scope.childLO);
             }); 
         }

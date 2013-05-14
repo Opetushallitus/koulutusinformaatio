@@ -2066,6 +2066,8 @@ label, .label {
     background: -moz-linear-gradient(top, whitesmoke, #c6c6c6);
     background: -ms-linear-gradient(top, whitesmoke, #c6c6c6);
     background: -o-linear-gradient(top, whitesmoke, #c6c6c6); }
+    .tabs.main .tab span:after {
+      content: "\00a0"; }
   .tabs.main .tab:hover span {
     background: #c6c6c6;
     background: whitesmoke;
