@@ -59,6 +59,8 @@ public class IndexerServiceImpl implements IndexerService {
     public void addParentLearningOpportunity(ParentLOS parent) throws Exception {
         // TODO: index all languages
         List<SolrInputDocument> docs = Lists.newArrayList();
+        List<SolrInputDocument> providerDocs = Lists.newArrayList();
+
         SolrInputDocument parentDoc = new SolrInputDocument();
         parentDoc.addField("id", parent.getId());
         parentDoc.addField("name", parent.getName().getTranslations().get("fi"));
@@ -66,6 +68,11 @@ public class IndexerServiceImpl implements IndexerService {
         parentDoc.addField("lopId", provider.getId());
         parentDoc.addField("lopName", provider.getName().getTranslations().get("fi"));
         docs.add(parentDoc);
+
+        SolrInputDocument providerDoc = new SolrInputDocument();
+        providerDoc.addField("id", provider.getId());
+        providerDoc.addField("name", provider.getName().getTranslations().get("fi"));
+
 
         for (ChildLOS child : parent.getChildren()) {
             for (ChildLOI loi : child.getChildLOIs()) {
@@ -79,16 +86,22 @@ public class IndexerServiceImpl implements IndexerService {
                 childLOIDoc.addField("parentId", parent.getId());
                 childLOIDoc.addField("losId", child.getId());
 
+                if (loi.getApplicationSystemId() != null) {
+                    providerDoc.addField("asId", loi.getApplicationSystemId());
+                }
+
                 docs.add(childLOIDoc);
             }
         }
-
+        providerDocs.add(providerDoc);
+        lopHttpSolrServer.add(providerDocs);
         loHttpSolrServer.add(docs);
     }
 
     @Override
     public void commitLOChnages() throws Exception {
         loHttpSolrServer.commit();
+        lopHttpSolrServer.commit();
     }
 
 }
