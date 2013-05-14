@@ -99,10 +99,12 @@ public class KoulutusinformaatioObjectBuilder {
                         return text.getTranslations().get(LANG_FI);
                     }
                 }
-                return text.getTranslations().get(languages.get(0).getValue().toLowerCase());
-            } else {
-                return text.getTranslations().values().iterator().next();
+                String val = text.getTranslations().get(languages.get(0).getValue().toLowerCase());
+                if (val != null) {
+                    return val;
+                }
             }
+            return text.getTranslations().values().iterator().next();
         }
         return null;
     }
