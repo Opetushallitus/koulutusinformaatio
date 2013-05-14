@@ -19,11 +19,11 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
+import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunityProvider;
 import fi.vm.sade.koulutusinformaatio.domain.dto.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataService;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,13 +38,11 @@ import java.util.Set;
 public class LearningOpportunityServiceImpl implements LearningOpportunityService {
 
     private EducationDataService educationDataService;
-    private ModelMapper modelMapper;
     private static final String LANG_FI = "fi";
 
     @Autowired
-    public LearningOpportunityServiceImpl(EducationDataService educationDataService, ModelMapper modelMapper) {
+    public LearningOpportunityServiceImpl(EducationDataService educationDataService) {
         this.educationDataService = educationDataService;
-        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -74,10 +72,26 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     }
 
     private ParentLearningOpportunitySpecificationDTO convert(final ParentLO parentLO, final String lang) {
-        ParentLearningOpportunitySpecificationDTO parent = modelMapper.map(parentLO, ParentLearningOpportunitySpecificationDTO.class);
+        ParentLearningOpportunitySpecificationDTO parent = new ParentLearningOpportunitySpecificationDTO();
+        parent.setId(parentLO.getId());
         parent.setName(getTextByLanguage(parentLO.getName(), lang));
         parent.setEducationDegree(getTextByLanguage(parentLO.getEducationDegree(), lang));
         parent.setAvailableTranslationLanguages(getAvailableTranslationLanguages(parentLO.getName()));
+        parent.setChildren(convert(parentLO.getChildren()));
+        parent.setProvider(convert(parentLO.getProvider(), lang));
+        parent.setStructureDiagram(getTextByLanguage(parentLO.getStructureDiagram(), lang));
+        parent.setAccessToFurtherStudies(getTextByLanguage(parentLO.getAccessToFurtherStudies(), lang));
+        parent.setGoals(getTextByLanguage(parentLO.getGoals(), lang));
+        parent.setEducationDomain(getTextByLanguage(parentLO.getEducationDomain(), lang));
+        parent.setStydyDomain(getTextByLanguage(parentLO.getStydyDomain(), lang));
+        parent.setTranslationLanguage(lang);
+        parent.setAvailableTranslationLanguages(getAvailableTranslationLanguages(parentLO.getName()));
+
+        if (parentLO.getApplicationOptions() != null) {
+            for (ApplicationOption ao : parentLO.getApplicationOptions()) {
+                parent.getApplicationOptions().add(convert(ao, lang));
+            }
+        }
         return parent;
     }
 
@@ -96,16 +110,7 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
                 child.getTeachingLanguages().add(code.getValue());
             }
         }
-        if (childLO.getRelated() != null) {
-            for (ChildLORef related : childLO.getRelated()) {
-                ChildLORefDTO rel = new ChildLORefDTO();
-                rel.setLosId(related.getLosId());
-                rel.setLoiId(related.getLoiId());
-                rel.setAsId(related.getAsId());
-                rel.setName(getTextByLanguage(related.getName(), lang));
-                child.getRelated().add(rel);
-            }
-        }
+        child.setRelated(convert(childLO.getRelated()));
         if (childLO.getParent() != null) {
             ParentLOSRefDTO parent = new ParentLOSRefDTO();
             parent.setId(childLO.getParent().getId());
@@ -127,6 +132,31 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
             ao.setApplicationSystemId(applicationOption.getApplicationSystemId());
             ao.setName(getTextByLanguage(applicationOption.getName(), lang));
             return ao;
+        }
+        return null;
+    }
+
+    private List<ChildLORefDTO> convert(final List<ChildLORef> refs) {
+        List<ChildLORefDTO> childs = new ArrayList<ChildLORefDTO>();
+        if (refs != null) {
+            for (ChildLORef ref : refs) {
+                ChildLORefDTO child = new ChildLORefDTO();
+                child.setLosId(ref.getLosId());
+                child.setLoiId(ref.getLoiId());
+                child.setAsId(ref.getAsId());
+                child.setName(getTextByLanguage(ref.getName(), "fi"));
+                childs.add(child);
+            }
+        }
+        return childs;
+    }
+
+    private LearningOpportunityProviderDTO convert(final LearningOpportunityProvider provider, final String lang) {
+        if (provider != null) {
+            LearningOpportunityProviderDTO p = new LearningOpportunityProviderDTO();
+            p.setId(provider.getId());
+            p.setName(getTextByLanguage(provider.getName(), lang));
+            p.setApplicationSystemIds(provider.getApplicationSystemIDs());
         }
         return null;
     }

@@ -49,6 +49,17 @@ public class ParentLearningOpportunitySpecificationEntity {
     private List<ApplicationOptionEntity> applicationOptions;
     @Reference
     private LearningOpportunityProviderEntity provider;
+    @Embedded
+    private I18nTextEntity structureDiagram;
+    @Embedded
+    private I18nTextEntity accessToFurtherStudies;
+    @Embedded
+    private I18nTextEntity goals;
+    @Embedded
+    private I18nTextEntity educationDomain;
+    @Embedded
+    private I18nTextEntity stydyDomain;
+
 
     public ParentLearningOpportunitySpecificationEntity() {
     }
@@ -131,5 +142,45 @@ public class ParentLearningOpportunitySpecificationEntity {
 
     public void setClassification(ClassificationEntity classification) {
         this.classification = classification;
+    }
+
+    public I18nTextEntity getStructureDiagram() {
+        return structureDiagram;
+    }
+
+    public void setStructureDiagram(I18nTextEntity structureDiagram) {
+        this.structureDiagram = structureDiagram;
+    }
+
+    public I18nTextEntity getAccessToFurtherStudies() {
+        return accessToFurtherStudies;
+    }
+
+    public void setAccessToFurtherStudies(I18nTextEntity accessToFurtherStudies) {
+        this.accessToFurtherStudies = accessToFurtherStudies;
+    }
+
+    public I18nTextEntity getGoals() {
+        return goals;
+    }
+
+    public void setGoals(I18nTextEntity goals) {
+        this.goals = goals;
+    }
+
+    public I18nTextEntity getEducationDomain() {
+        return educationDomain;
+    }
+
+    public void setEducationDomain(I18nTextEntity educationDomain) {
+        this.educationDomain = educationDomain;
+    }
+
+    public I18nTextEntity getStydyDomain() {
+        return stydyDomain;
+    }
+
+    public void setStydyDomain(I18nTextEntity stydyDomain) {
+        this.stydyDomain = stydyDomain;
     }
 }
