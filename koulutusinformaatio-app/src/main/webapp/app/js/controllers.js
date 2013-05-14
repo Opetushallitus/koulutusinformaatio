@@ -105,6 +105,11 @@ function LanguageCtrl($scope, $location, LanguageService) {
         }
     }
 
+    $scope.hasChildren = function() {
+        console.log($scope.parentLO.children.length);
+        return $scope.parentLO.children.length > 0;
+    }
+
     // redirect to child page
     $scope.gotoChild = function(child) {
         $location.path('/info/' + $scope.parentLO.id + '/' + child.losId + '/' + child.loiId);

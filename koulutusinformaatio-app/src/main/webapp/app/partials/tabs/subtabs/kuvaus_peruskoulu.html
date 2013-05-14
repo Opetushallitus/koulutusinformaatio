@@ -19,10 +19,16 @@
 -->
 <div render-text-block data-title="goals-of-education" data-content="{{parentLO.goals}}"></div>
 <div render-text-block data-title="selection-of-degree-program" data-content="{{parentLO.selectionOfDegreeProgram}}"></div>
-<h3 data-ki-i18n="elementary-based-education"></h3>
-<ul>
-    <li ng-repeat="child in parentLO.children">
-        <a ng-click="gotoChild(child)">{{child.name}}</a>
-    </li>
-</ul>
+
+<div ng-switch="hasChildren()">
+    <div ng-switch-when="true">
+        <h3 data-ki-i18n="elementary-based-education"></h3>
+            <ul>
+                <li ng-repeat="child in parentLO.children">
+                    <a ng-click="gotoChild(child)">{{child.name}}</a>
+                </li>
+            </ul>
+    </div>
+</div>
+
 <div render-text-block data-title="access-to-further-studies" data-content="{{parentLO.accessToFurtherStudies}}"></div>
