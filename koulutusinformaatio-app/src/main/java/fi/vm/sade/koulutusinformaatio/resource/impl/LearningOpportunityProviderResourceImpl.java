@@ -53,7 +53,10 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
             return Lists.transform(learningOpportunityProviders, new Function<Provider, ProviderSearchResult>() {
                 @Override
                 public ProviderSearchResult apply(Provider lop) {
-                    return modelMapper.map(lop, ProviderSearchResult.class);
+                    ProviderSearchResult result = new ProviderSearchResult();
+                    result.setId(lop.getId());
+                    result.setName(lop.getName().getTranslations().get("fi"));
+                    return result;
                 }
             });
         } catch (SearchException e) {
