@@ -63,10 +63,8 @@ public class IndexerServiceImpl implements IndexerService {
         parentDoc.addField("id", parent.getId());
         parentDoc.addField("name", parent.getName().getTranslations().get("fi"));
         Provider provider = parent.getProvider();
-//        parentDoc.addField("lopId", provider.getId());
-        parentDoc.addField("lopId", "lop_id");
-//        parentDoc.addField("lopName", provider.getName().getTranslations().get("fi"));
-        parentDoc.addField("lopName", "lop_name");
+        parentDoc.addField("lopId", provider.getId());
+        parentDoc.addField("lopName", provider.getName().getTranslations().get("fi"));
         docs.add(parentDoc);
 
         for (ChildLOS child : parent.getChildren()) {

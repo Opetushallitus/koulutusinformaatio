@@ -116,6 +116,11 @@ public class TarjontaServiceImpl implements TarjontaService {
                 parentLOS.setProvider(organisaatioService.getByOID(parentKomoto.getTarjoajaOid()));
             }
         }
+        if (parentLOS.getProvider() == null) {
+            Map<String, String> langs = Maps.newHashMap();
+            langs.put("fi", "dummy name");
+            parentLOS.setProvider(new Provider("dummyid", new I18nText(langs)));
+        }
 
         List<String> childKomoOids = parentKomo.getAlaModuulit();
         List<ChildLOS> childLOSs = Lists.newArrayList();
