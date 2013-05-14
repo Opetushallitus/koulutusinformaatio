@@ -48,8 +48,14 @@ function LanguageCtrl($scope, $location, LanguageService) {
     };
 
     // Forward to parent learning opportunity info page
-    $scope.selectLO = function(parentLOId, LOId) {
-        var path = parentLOId ? parentLOId + '/' + LOId : LOId;
+    $scope.selectLO = function(lo) {
+        var path;
+        if (lo.parentId) {
+            path = lo.parentId + '/' + lo.losId + '/' + lo.id;
+        } else {
+            path = lo.id;
+        }
+        //var path = parentLOId ? parentLOId + '/' + LOId : LOId;
         $location.path('/info/' + path);
     };
 
