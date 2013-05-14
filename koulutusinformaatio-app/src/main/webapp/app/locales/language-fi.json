@@ -14,10 +14,10 @@
     "no-search-results": "Ei hakutuloksia",
     "no-search-results-info": "Hakusanallasi ei löytynyt yhtään hakutulosta. Ole hyvä ja yritä toisella hakusanalla.",
 
-    "education-starts": "Koulutus alkaa",
-    "language-of-instruction": "Opetuskieli",
-    "form-of-education": "Opetusmuoto",
-    "duration": "Koulutuksen laajuus",
+    "education-starts": "Koulutus alkaa:",
+    "language-of-instruction": "Opetuskieli:",
+    "form-of-education": "Opetusmuoto:",
+    "duration": "Koulutuksen laajuus:",
 
     "goals-of-education": "Tavoite",
     "selection-of-degree-program": "Koulutusohjelman valinta",

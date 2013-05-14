@@ -13,14 +13,14 @@
 <section id="main-info">
     <h2>
     <span class="block"><span class="bold"></span>{{parentLO.provider.name}}</span>
-    <span class="block">{{parentLO.classification.educationDomain}}<span class="hidden">, lähihoitaja (tutkintonimike)</span></span>
+    <span class="block">{{parentLO.educationDomain}}<span class="hidden">, lähihoitaja (tutkintonimike)</span></span>
 </h2>
     <h1>{{parentLO.name}}, {{parentLO.credits.creditValue}} {{parentLO.credits.creditUnit}}</h1>
 </section>
 <div class="tabs main">
     <a class="tab current" data-tabs-group="koulutus" data-tabs-id="kuvaus"><span data-ki-i18n="lo-description"></span></a>
     <a class="tab" data-tabs-group="koulutus" data-tabs-id="hakeutuminen"><span data-ki-i18n="lo-application"></span></a>
-    <a class="tab" data-tabs-group="koulutus" data-tabs-id="oppilaitos"><span>{{parentLO.provider.name}}</span></a>
+    <a class="tab" data-tabs-group="koulutus" data-tabs-id="oppilaitos"><span>{{parentLO.provider.name}} </span></a>
 </div>
 <div class="tabsheets">
     <section class="tabsheet" style="display: block;" data-tabs-group="koulutus" data-tabs-id="kuvaus">

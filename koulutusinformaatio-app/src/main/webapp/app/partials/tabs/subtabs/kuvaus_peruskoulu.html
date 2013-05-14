@@ -1,3 +1,4 @@
+<!--
 <div class="notification info">
     <h3>Tähän syksyllä 2013 alkavaan koulutukseen alkaa haku 3.4.2013!</h3>
     <ul>
@@ -15,12 +16,13 @@
         </li>
     </ul>
 </div>
-<div render-text-block data-title="goals-of-education" data-content="{{parentLO.description.educationAndProfessionalGoals}}"></div>
-<div render-text-block data-title="selection-of-degree-program" data-content="{{parentLO.description.selectionOfDegreeProgram}}"></div>
+-->
+<div render-text-block data-title="goals-of-education" data-content="{{parentLO.goals}}"></div>
+<div render-text-block data-title="selection-of-degree-program" data-content="{{parentLO.selectionOfDegreeProgram}}"></div>
 <h3 data-ki-i18n="elementary-based-education"></h3>
 <ul>
     <li ng-repeat="child in parentLO.children">
         <a ng-click="gotoChild(child)">{{child.name}}</a>
     </li>
 </ul>
-<div render-text-block data-title="access-to-further-studies" data-content="{{parentLO.description.accessToFurtherStudies}}"></div>
+<div render-text-block data-title="access-to-further-studies" data-content="{{parentLO.accessToFurtherStudies}}"></div>
