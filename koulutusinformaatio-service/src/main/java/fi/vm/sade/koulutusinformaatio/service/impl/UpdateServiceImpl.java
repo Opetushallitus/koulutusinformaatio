@@ -49,6 +49,7 @@ public class UpdateServiceImpl implements UpdateService {
 
     @Override
     public void updateAllEducationData() throws Exception {
+        LOG.info("Starting full education data update");
         // drop db
         // drop index
         this.educationDataService.dropAllData();
@@ -75,5 +76,6 @@ public class UpdateServiceImpl implements UpdateService {
 
         this.indexerService.commitLOChnages();
 
+        LOG.info("Education data update successfully finished");
     }
 }
