@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.domain;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,11 +26,21 @@ import java.util.List;
 public class ApplicationOption {
 
     private String id;
-    private String name;
+    private I18nText name;
     private String applicationSystemId;
     private String educationDegree;
-    private List<String> childLONames = new ArrayList<String>();
-    private LearningOpportunityProvider provider;
+    private List<I18nText> childLOINames = new ArrayList<I18nText>();
+    private Provider provider;
+    // "aloituspaikatLkm" : 10,
+    private Integer startingQuota;
+    // "alinValintaPistemaara" : 0,
+    private Integer lowestAcceptedScore;
+    // "alinHyvaksyttavaKeskiarvo" : 0.0,
+    private Double lowestAcceptedAverage;
+    // "liitteidenToimitusPvm" : 1367874000000,
+    private Date attachmentDeliveryDeadline;
+    // edellisenVuodenHakijatLkm
+    private Integer lastYearApplicantCount;
 
     public String getId() {
         return id;
@@ -39,11 +50,11 @@ public class ApplicationOption {
         this.id = id;
     }
 
-    public String getName() {
+    public I18nText getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(I18nText name) {
         this.name = name;
     }
 
@@ -63,19 +74,59 @@ public class ApplicationOption {
         this.educationDegree = educationDegree;
     }
 
-    public List<String> getChildLONames() {
-        return childLONames;
+    public List<I18nText> getChildLOINames() {
+        return childLOINames;
     }
 
-    public void setChildLONames(List<String> childLONames) {
-        this.childLONames = childLONames;
+    public void setChildLOINames(List<I18nText> childLOINames) {
+        this.childLOINames = childLOINames;
     }
 
-    public LearningOpportunityProvider getProvider() {
+    public Provider getProvider() {
         return provider;
     }
 
-    public void setProvider(LearningOpportunityProvider provider) {
+    public void setProvider(Provider provider) {
         this.provider = provider;
+    }
+
+    public Integer getStartingQuota() {
+        return startingQuota;
+    }
+
+    public void setStartingQuota(Integer startingQuota) {
+        this.startingQuota = startingQuota;
+    }
+
+    public Integer getLowestAcceptedScore() {
+        return lowestAcceptedScore;
+    }
+
+    public void setLowestAcceptedScore(Integer lowestAcceptedScore) {
+        this.lowestAcceptedScore = lowestAcceptedScore;
+    }
+
+    public Double getLowestAcceptedAverage() {
+        return lowestAcceptedAverage;
+    }
+
+    public void setLowestAcceptedAverage(Double lowestAcceptedAverage) {
+        this.lowestAcceptedAverage = lowestAcceptedAverage;
+    }
+
+    public Date getAttachmentDeliveryDeadline() {
+        return attachmentDeliveryDeadline;
+    }
+
+    public void setAttachmentDeliveryDeadline(Date attachmentDeliveryDeadline) {
+        this.attachmentDeliveryDeadline = attachmentDeliveryDeadline;
+    }
+
+    public Integer getLastYearApplicantCount() {
+        return lastYearApplicantCount;
+    }
+
+    public void setLastYearApplicantCount(Integer lastYearApplicantCount) {
+        this.lastYearApplicantCount = lastYearApplicantCount;
     }
 }

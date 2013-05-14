@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.dao.entity;
 
 import java.util.Set;
 
+import com.google.code.morphia.annotations.Embedded;
 import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Id;
 
@@ -29,7 +30,8 @@ public class LearningOpportunityProviderEntity {
 
     @Id
     private String id;
-    private String name;
+    @Embedded
+    private I18nTextEntity name;
     private Set<String> applicationSystemIds;
 
     public LearningOpportunityProviderEntity() {
@@ -43,11 +45,11 @@ public class LearningOpportunityProviderEntity {
         this.id = id;
     }
 
-    public String getName() {
+    public I18nTextEntity getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(I18nTextEntity name) {
         this.name = name;
     }
 

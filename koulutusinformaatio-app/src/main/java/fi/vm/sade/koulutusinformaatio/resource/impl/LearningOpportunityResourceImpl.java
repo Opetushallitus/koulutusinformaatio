@@ -17,15 +17,17 @@
 package fi.vm.sade.koulutusinformaatio.resource.impl;
 
 import com.google.common.base.Function;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import fi.vm.sade.koulutusinformaatio.domain.LearningOpportunitySearchResult;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.domain.LOSearchResult;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunityDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunityDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
 import fi.vm.sade.koulutusinformaatio.resource.LearningOpportunityResource;
-import fi.vm.sade.koulutusinformaatio.service.EducationDataService;
+import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,23 +43,23 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
 
     private SearchService searchService;
     private ModelMapper modelMapper;
-    private EducationDataService educationDataService;
+    private LearningOpportunityService learningOpportunityService;
 
     @Autowired
     public LearningOpportunityResourceImpl(SearchService searchService, ModelMapper modelMapper,
-                                           EducationDataService educationDataService) {
+                                           LearningOpportunityService learningOpportunityService) {
         this.searchService = searchService;
         this.modelMapper = modelMapper;
-        this.educationDataService = educationDataService;
+        this.learningOpportunityService = learningOpportunityService;
     }
 
     @Override
     public List<LearningOpportunitySearchResultDTO> searchLearningOpportunities(String text) {
         try {
-            List<LearningOpportunitySearchResult> learningOpportunities = searchService.searchLearningOpportunities(text);
-            return Lists.transform(learningOpportunities, new Function<LearningOpportunitySearchResult, LearningOpportunitySearchResultDTO>() {
+            List<LOSearchResult> learningOpportunities = searchService.searchLearningOpportunities(text);
+            return Lists.transform(learningOpportunities, new Function<LOSearchResult, LearningOpportunitySearchResultDTO>() {
                 @Override
-                public LearningOpportunitySearchResultDTO apply(LearningOpportunitySearchResult input) {
+                public LearningOpportunitySearchResultDTO apply(LOSearchResult input) {
                     return modelMapper.map(input, LearningOpportunitySearchResultDTO.class);
                 }
             });
@@ -67,8 +69,28 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
     }
 
     @Override
-    public ParentLearningOpportunityDTO getParentLearningOpportunity(String parentId) {
-        ParentLearningOpportunity parent = educationDataService.getParentLearningOpportunity(parentId);
-        return modelMapper.map(parent, ParentLearningOpportunityDTO.class);
+    public ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(String parentId, String lang) {
+        try {
+            if (Strings.isNullOrEmpty(lang)) {
+                return learningOpportunityService.getParentLearningOpportunity(parentId);
+            } else {
+                return learningOpportunityService.getParentLearningOpportunity(parentId, lang.toLowerCase());
+            }
+        } catch (ResourceNotFoundException e) {
+            throw KIExceptionHandler.resolveException(e);
+        }
+    }
+
+    @Override
+    public ChildLearningOpportunityDTO getChildLearningOpportunity(String parentId, String closId, String cloiId, String lang) {
+        try {
+            if (Strings.isNullOrEmpty(lang)) {
+                return learningOpportunityService.getChildLearningOpportunity(parentId, closId, cloiId);
+            } else {
+                return learningOpportunityService.getChildLearningOpportunity(parentId, closId, cloiId, lang.toLowerCase());
+            }
+        } catch (ResourceNotFoundException e) {
+            throw KIExceptionHandler.resolveException(e);
+        }
     }
 }

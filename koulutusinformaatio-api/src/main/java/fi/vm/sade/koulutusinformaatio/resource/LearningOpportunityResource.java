@@ -16,13 +16,11 @@
 
 package fi.vm.sade.koulutusinformaatio.resource;
 
-import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunityDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunityDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
@@ -45,14 +43,37 @@ public interface LearningOpportunityResource {
 
     /**
      * Fetches a parent learning opportunity. Contains parent information and
-     * all the child learning opportunities that belong to the parent.
+     * references to all the child learning opportunities that belong to the parent.
+     *
+     * Parent lo texts are translated to language corresponding given lang parameter.
+     * If the given language is not found or the parameter is null it will try to fall back to default 'fi' or other
+     * language found
      *
      * @param parentId learning opportunity id
+     * @param lang translation language (optional)
      * @return parent learning opportunity dto object
      */
     @GET
     @Path("{parentId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ParentLearningOpportunityDTO getParentLearningOpportunity(@PathParam("parentId") String parentId);
+    public ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(@PathParam("parentId") String parentId,
+                                                                                  @QueryParam("lang") String lang);
+
+    /**
+     * Fetches a child learning opportunity that belongs to the specified parent.
+     * Child lo texts are translated to language corresponding given lang parameter.
+     * If the given language is not found or the parameter is null it fall back to default (education) language.
+     *
+     * @param parentId parent learning opportunity id
+     * @param closId child learning opportunity specification id
+     * @param cloiId child learning opportunity instance id
+     * @param lang translation language (optional)
+     * @return child learning opportunity dto object
+     */
+    @GET
+    @Path("{parentId}/{closId}/{cloiId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ChildLearningOpportunityDTO getChildLearningOpportunity(@PathParam("parentId") String parentId, @PathParam("closId") String closId,
+                                                                   @PathParam("cloiId") String cloiId, @QueryParam("lang") String lang);
 
 }

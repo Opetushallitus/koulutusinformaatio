@@ -36,7 +36,7 @@
 
     <bean id="morphia" class="com.google.code.morphia.Morphia" />
 
-    <bean id="parentLearningOpportunityDAO" class="fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunityDAO">
+    <bean id="parentLearningOpportunitySpecificationDAO" class="fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecificationDAO">
         <constructor-arg>
             <ref bean="mongo"/>
         </constructor-arg>
@@ -57,6 +57,26 @@
     </bean>
 
     <bean id="learningOpportunityProviderDAO" class="fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO">
+        <constructor-arg>
+            <ref bean="mongo"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="morphia"/>
+        </constructor-arg>
+        <constructor-arg value="${mongo.test-db.name}"/>
+    </bean>
+
+    <bean id="childLearningOpportunitySpecificationDAO" class="fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunitySpecificationDAO">
+        <constructor-arg>
+            <ref bean="mongo"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="morphia"/>
+        </constructor-arg>
+        <constructor-arg value="${mongo.test-db.name}"/>
+    </bean>
+
+    <bean id="childLearningOpportunityInstanceDAO" class="fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityInstanceDAO">
         <constructor-arg>
             <ref bean="mongo"/>
         </constructor-arg>

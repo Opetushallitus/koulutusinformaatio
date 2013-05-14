@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.exception;
 
 import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 
 import javax.ws.rs.WebApplicationException;
@@ -37,6 +38,10 @@ public class KIExceptionHandler {
         if (e instanceof KIException) {
             if(e instanceof SearchException) {
                 webException = new HTTPException(Response.Status.INTERNAL_SERVER_ERROR, "Error occurred while searching");
+            } else if (e instanceof ResourceNotFoundException) {
+                webException = new HTTPException(Response.Status.NOT_FOUND, e.getMessage());
+            } else {
+                webException = new HTTPException(Response.Status.INTERNAL_SERVER_ERROR, "Internal error occurred");
             }
         }
         else {
