@@ -26,7 +26,7 @@ public class ChildLORef {
     private String losId;
     private String loiId;
     private String asId;
-    private I18nText name;
+    private String name;
 
     public String getLosId() {
         return losId;
@@ -52,11 +52,11 @@ public class ChildLORef {
         this.asId = asId;
     }
 
-    public I18nText getName() {
+    public String getName() {
         return name;
     }
 
-    public void setName(I18nText name) {
+    public void setName(String name) {
         this.name = name;
     }
 }

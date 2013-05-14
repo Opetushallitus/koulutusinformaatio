@@ -18,6 +18,8 @@ package fi.vm.sade.koulutusinformaatio.domain.dto;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
+import java.util.Date;
+
 /**
  * @author Hannu Lyytikainen
  */
@@ -27,6 +29,11 @@ public class ApplicationOptionDTO {
     private String id;
     private String name;
     private String applicationSystemId;
+    private Integer startingQuota;
+    private Integer lowestAcceptedScore;
+    private Double lowestAcceptedAverage;
+    private Date attachmentDeliveryDeadline;
+    private Integer lastYearApplicantCount;
 
     public String getId() {
         return id;
@@ -50,5 +57,45 @@ public class ApplicationOptionDTO {
 
     public void setApplicationSystemId(String applicationSystemId) {
         this.applicationSystemId = applicationSystemId;
+    }
+
+    public Integer getStartingQuota() {
+        return startingQuota;
+    }
+
+    public void setStartingQuota(Integer startingQuota) {
+        this.startingQuota = startingQuota;
+    }
+
+    public Integer getLowestAcceptedScore() {
+        return lowestAcceptedScore;
+    }
+
+    public void setLowestAcceptedScore(Integer lowestAcceptedScore) {
+        this.lowestAcceptedScore = lowestAcceptedScore;
+    }
+
+    public Double getLowestAcceptedAverage() {
+        return lowestAcceptedAverage;
+    }
+
+    public void setLowestAcceptedAverage(Double lowestAcceptedAverage) {
+        this.lowestAcceptedAverage = lowestAcceptedAverage;
+    }
+
+    public Date getAttachmentDeliveryDeadline() {
+        return attachmentDeliveryDeadline;
+    }
+
+    public void setAttachmentDeliveryDeadline(Date attachmentDeliveryDeadline) {
+        this.attachmentDeliveryDeadline = attachmentDeliveryDeadline;
+    }
+
+    public Integer getLastYearApplicantCount() {
+        return lastYearApplicantCount;
+    }
+
+    public void setLastYearApplicantCount(Integer lastYearApplicantCount) {
+        this.lastYearApplicantCount = lastYearApplicantCount;
     }
 }
