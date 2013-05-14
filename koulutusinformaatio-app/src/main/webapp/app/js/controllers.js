@@ -100,6 +100,7 @@ function LanguageCtrl($scope, $location, LanguageService) {
                 $scope.childLO.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
                 $scope.childLO.teachingLanguage = result.teachingLanguages[0] ? result.teachingLanguages[0] : '';
                 $scope.childLO.formOfEducation = result.formOfEducation[0] ? result.formOfEducation[0] : '';
+
                 setTitle($scope.parentLO, $scope.childLO);
             }); 
         }
