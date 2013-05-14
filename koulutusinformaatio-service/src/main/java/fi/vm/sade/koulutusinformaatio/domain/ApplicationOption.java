@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.domain;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,6 +31,16 @@ public class ApplicationOption {
     private String educationDegree;
     private List<I18nText> childLOINames = new ArrayList<I18nText>();
     private LearningOpportunityProvider provider;
+    // "aloituspaikatLkm" : 10,
+    private Integer startingQuota;
+    // "alinValintaPistemaara" : 0,
+    private Integer lowestAcceptedScore;
+    // "alinHyvaksyttavaKeskiarvo" : 0.0,
+    private Double lowestAcceptedAverage;
+    // "liitteidenToimitusPvm" : 1367874000000,
+    private Date attachmentDeliveryDeadline;
+    // edellisenVuodenHakijatLkm
+    private Integer lastYearApplicantCount;
 
     public String getId() {
         return id;
@@ -77,5 +88,45 @@ public class ApplicationOption {
 
     public void setProvider(LearningOpportunityProvider provider) {
         this.provider = provider;
+    }
+
+    public Integer getStartingQuota() {
+        return startingQuota;
+    }
+
+    public void setStartingQuota(Integer startingQuota) {
+        this.startingQuota = startingQuota;
+    }
+
+    public Integer getLowestAcceptedScore() {
+        return lowestAcceptedScore;
+    }
+
+    public void setLowestAcceptedScore(Integer lowestAcceptedScore) {
+        this.lowestAcceptedScore = lowestAcceptedScore;
+    }
+
+    public Double getLowestAcceptedAverage() {
+        return lowestAcceptedAverage;
+    }
+
+    public void setLowestAcceptedAverage(Double lowestAcceptedAverage) {
+        this.lowestAcceptedAverage = lowestAcceptedAverage;
+    }
+
+    public Date getAttachmentDeliveryDeadline() {
+        return attachmentDeliveryDeadline;
+    }
+
+    public void setAttachmentDeliveryDeadline(Date attachmentDeliveryDeadline) {
+        this.attachmentDeliveryDeadline = attachmentDeliveryDeadline;
+    }
+
+    public Integer getLastYearApplicantCount() {
+        return lastYearApplicantCount;
+    }
+
+    public void setLastYearApplicantCount(Integer lastYearApplicantCount) {
+        this.lastYearApplicantCount = lastYearApplicantCount;
     }
 }

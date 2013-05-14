@@ -34,6 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -149,14 +150,22 @@ public class TarjontaServiceImpl implements TarjontaService {
                     ApplicationOption ao = new ApplicationOption();
                     ao.setId(hakukohdeDTO.getOid());
                     ao.setName(koodistoService.search(hakukohdeDTO.getHakukohdeNimiUri()).get(0));
+                    ao.setStartingQuota(hakukohdeDTO.getAloituspaikatLkm());
+                    ao.setLowestAcceptedScore(hakukohdeDTO.getAlinValintaPistemaara());
+                    ao.setLowestAcceptedAverage(hakukohdeDTO.getAlinHyvaksyttavaKeskiarvo());
+                    ao.setAttachmentDeliveryDeadline(hakukohdeDTO.getLiitteidenToimitusPvm());
+                    ao.setLastYearApplicantCount(hakukohdeDTO.getEdellisenVuodenHakijatLkm());
+
                     HakuDTO hakuDTO = hakukohdeResource.getHakuByHakukohdeOID(aoId);
                     childLOI.setApplicationSystemId(hakuDTO.getOid());
                     ao.setApplicationSystemId(hakuDTO.getOid());
                     childLOI.setApplicationOption(ao);
 
                     KomotoDTO komotoDTO = komotoResource.getByOID(childKomotoOid);
-                    childLOI.setId(komotoDTO.getOid());
 
+                    // komotoDTO.getTarjoajaOid
+
+                    childLOI.setId(komotoDTO.getOid());
                     // how to get the name?
                     //childLOI.setName(new I18nText(komotoDTO.getNimi()));
                     childLOI.setName(childLOS.getName());
