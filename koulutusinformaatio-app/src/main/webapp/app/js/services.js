@@ -98,11 +98,11 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
  service('SearchService', function($cookies) {
     return {
         getTerm: function() {
-            return $cookies.searchTerm;
+            return $.cookie('searchTerm');
         },
 
         setTerm: function(newTerm) {
-            $cookies.searchTerm = newTerm;
+            $.cookie('searchTerm', newTerm);
         }
     };
 }).
@@ -112,27 +112,27 @@ service('LanguageService', function($cookies) {
 
     return {
         getLanguage: function() {
-            if ($cookies.language) {
-                return $cookies.language;
+            if ($.cookie('language')) {
+                return $.cookie('language');
             } else {
                 return defaultLanguage;
             }
         },
 
         setLanguage: function(language) {
-            $cookies.language = language;
+            $.cookie('language', language);
         },
 
         getDescriptionLanguage: function() {
             if ($cookies.descriptionlanguage) {
-                return $cookies.descriptionlanguage;
+                return $.cookie('descriptionlanguage');
             } else {
                 return defaultLanguage;
             }
         },
 
         setDescriptionLanguage: function(language) {
-            $cookies.descriptionlanguage = language;
+            $.cookie('descriptionlanguage', language);
         }
     };
 }).
