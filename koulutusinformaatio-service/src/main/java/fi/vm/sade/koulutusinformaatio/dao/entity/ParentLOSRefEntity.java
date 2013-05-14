@@ -25,7 +25,6 @@ import com.google.code.morphia.annotations.Id;
 @Embedded
 public class ParentLOSRefEntity {
 
-    @Id
     private String id;
     @Embedded
     private I18nTextEntity name;
