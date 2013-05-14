@@ -35,12 +35,6 @@ public class ParentLearningOpportunitySpecificationEntity {
     private I18nTextEntity name;
     @Embedded
     private I18nTextEntity educationDegree;
-    @Embedded
-    private DescriptionEntity description;
-    @Embedded
-    private ClassificationEntity classification;
-    @Embedded
-    private CreditsEntity credits;
     @Reference(lazy = true)
     private List<ChildLearningOpportunitySpecificationEntity> children;
     @Embedded
@@ -118,30 +112,6 @@ public class ParentLearningOpportunitySpecificationEntity {
 
     public void setProvider(LearningOpportunityProviderEntity provider) {
         this.provider = provider;
-    }
-
-    public CreditsEntity getCredits() {
-        return credits;
-    }
-
-    public void setCredits(CreditsEntity credits) {
-        this.credits = credits;
-    }
-
-    public DescriptionEntity getDescription() {
-        return description;
-    }
-
-    public void setDescription(DescriptionEntity description) {
-        this.description = description;
-    }
-
-    public ClassificationEntity getClassification() {
-        return classification;
-    }
-
-    public void setClassification(ClassificationEntity classification) {
-        this.classification = classification;
     }
 
     public I18nTextEntity getStructureDiagram() {

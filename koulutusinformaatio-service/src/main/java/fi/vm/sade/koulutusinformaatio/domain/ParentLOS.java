@@ -44,12 +44,6 @@ public class ParentLOS {
     // koulutusaste, Ammatillinen koulutus
     private I18nText educationDegree;
 
-    // laajuus
-    private Credits credits;
-
-    private Description description;
-    private Classification classification;
-
     public List<ApplicationOption> getApplicationOptions() {
         return applicationOptions;
     }
@@ -88,30 +82,6 @@ public class ParentLOS {
 
     public void setProvider(LearningOpportunityProvider provider) {
         this.provider = provider;
-    }
-
-    public Credits getCredits() {
-        return credits;
-    }
-
-    public void setCredits(Credits credits) {
-        this.credits = credits;
-    }
-
-    public Description getDescription() {
-        return description;
-    }
-
-    public void setDescription(Description description) {
-        this.description = description;
-    }
-
-    public Classification getClassification() {
-        return classification;
-    }
-
-    public void setClassification(Classification classification) {
-        this.classification = classification;
     }
 
     public I18nText getStructureDiagram() {

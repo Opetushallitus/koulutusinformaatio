@@ -32,11 +32,6 @@ public class ParentLO {
     private LearningOpportunityProvider provider;
     private I18nText educationDegree;
     private List<ChildLORef> children = new ArrayList<ChildLORef>();
-
-    private Description description;
-    private Classification classification;
-    private Credits credits;
-
     private I18nText structureDiagram;
     private I18nText accessToFurtherStudies;
     private I18nText goals;
@@ -89,30 +84,6 @@ public class ParentLO {
 
     public void setChildren(List<ChildLORef> children) {
         this.children = children;
-    }
-
-    public Description getDescription() {
-        return description;
-    }
-
-    public void setDescription(Description description) {
-        this.description = description;
-    }
-
-    public Classification getClassification() {
-        return classification;
-    }
-
-    public void setClassification(Classification classification) {
-        this.classification = classification;
-    }
-
-    public Credits getCredits() {
-        return credits;
-    }
-
-    public void setCredits(Credits credits) {
-        this.credits = credits;
     }
 
     public I18nText getStructureDiagram() {
