@@ -107,8 +107,11 @@ function LanguageCtrl($scope, $location, LanguageService) {
     }
 
     $scope.hasChildren = function() {
-        console.log($scope.parentLO.children.length);
-        return $scope.parentLO.children.length > 0;
+        if ($scope.parentLO && $scope.parentLO.children) {
+            return $scope.parentLO.children.length > 0;
+        } else {
+            return false;
+        }
     }
 
     // redirect to child page
