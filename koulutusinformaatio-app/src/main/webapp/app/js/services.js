@@ -95,7 +95,7 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
 /**
  *  Service taking care of search term saving
  */
- service('SearchService', function($cookies) {
+ service('SearchService', function() {
     return {
         getTerm: function() {
             return $.cookie('searchTerm');
@@ -107,7 +107,7 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
     };
 }).
 
-service('LanguageService', function($cookies) {
+service('LanguageService', function() {
     var defaultLanguage = 'fi';
 
     return {
@@ -124,7 +124,7 @@ service('LanguageService', function($cookies) {
         },
 
         getDescriptionLanguage: function() {
-            if ($cookies.descriptionlanguage) {
+            if ($.cookie('descriptionlanguage')) {
                 return $.cookie('descriptionlanguage');
             } else {
                 return defaultLanguage;

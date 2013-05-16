@@ -120,6 +120,9 @@ directive('renderTextBlock', function() {
                     $(element).empty();
                     var titleElement = createTitleElement(title, attrs.anchor, attrs.level);
                     element.append(titleElement);
+
+                    // replace line feed with <br>
+                    //content = content.replace(/(\r\n|\n|\r)/g,"<br />");
                     element.append(content);
                     //var contentElement = $('<p></p>');
                     //contentElement.append(content);
