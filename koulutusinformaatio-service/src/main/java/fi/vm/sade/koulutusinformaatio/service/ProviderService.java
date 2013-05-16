@@ -16,30 +16,14 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
-
-import java.util.List;
+import fi.vm.sade.koulutusinformaatio.domain.Provider;
 
 /**
+ * Hides integration to the Organisaatio service.
+ *
  * @author Hannu Lyytikainen
  */
-public interface TarjontaService {
+public interface ProviderService {
 
-    /**
-     * Finds a parent learning opportunity by oid.
-     *
-     * @param oid
-     * @return
-     */
-    public ParentLOS findParentLearningOpportunity(String oid) throws TarjontaParseException, KoodistoException;
-
-    /**
-     * Returns a list of all parent learning opportunity oids.
-     *
-     * @return list of oids
-     */
-    public List<String> listParentLearnignOpportunityOids();
-
+    public Provider getByOID(String oid);
 }

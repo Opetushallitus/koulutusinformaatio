@@ -16,13 +16,9 @@
 
 package fi.vm.sade.koulutusinformaatio.resource.impl;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionSearchResultDTO;
 import fi.vm.sade.koulutusinformaatio.resource.ApplicationOptionResource;
-import fi.vm.sade.koulutusinformaatio.service.EducationDataService;
-import org.modelmapper.ModelMapper;
+import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -34,23 +30,15 @@ import java.util.List;
 @Component
 public class ApplicationOptionResourceImpl implements ApplicationOptionResource {
 
-    private final EducationDataService educationDataService;
-    private final ModelMapper modelMapper;
+    private LearningOpportunityService learningOpportunityService;
 
     @Autowired
-    public ApplicationOptionResourceImpl(EducationDataService educationDataService, ModelMapper modelMapper) {
-        this.educationDataService = educationDataService;
-        this.modelMapper = modelMapper;
+    public ApplicationOptionResourceImpl(LearningOpportunityService learningOpportunityService) {
+        this.learningOpportunityService = learningOpportunityService;
     }
 
     @Override
     public List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, String lopId) {
-        List<ApplicationOption> applicationOptions = educationDataService.findApplicationOptions(asId, lopId);
-        return Lists.transform(applicationOptions, new Function<ApplicationOption, ApplicationOptionSearchResultDTO>() {
-            @Override
-            public ApplicationOptionSearchResultDTO apply(ApplicationOption applicationOption) {
-                return modelMapper.map(applicationOption, ApplicationOptionSearchResultDTO.class);
-            }
-        });
+        return learningOpportunityService.searchApplicationOptions(asId, lopId);
     }
 }

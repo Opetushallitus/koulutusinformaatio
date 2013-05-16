@@ -14,16 +14,31 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.koulutusinformaatio.service;
-
-import fi.vm.sade.koulutusinformaatio.domain.Provider;
+package fi.vm.sade.koulutusinformaatio.domain;
 
 /**
- * Hides integration to the Organisaatio service.
+ * Instance of a parent level learning opportunity specification.
  *
  * @author Hannu Lyytikainen
  */
-public interface OrganisaatioService {
+public class ParentLOI {
 
-    public Provider getByOID(String oid);
+    private String id;
+    private I18nText prerequisite;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public I18nText getPrerequisite() {
+        return prerequisite;
+    }
+
+    public void setPrerequisite(I18nText prerequisite) {
+        this.prerequisite = prerequisite;
+    }
 }
