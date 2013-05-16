@@ -83,6 +83,7 @@ public class KoulutusinformaatioObjectBuilder {
                     clo.getTeachingLanguages().add(modelMapper.map(code, Code.class));
                 }
             }
+            clo.setWebLinks(childLOI.getWebLinks());
             clo.setFormOfEducation(convert(childLOI.getFormOfEducation()));
             clo.setPrerequisite(convert(childLOI.getPrerequisite()));
             clo.setFormOfTeaching(convert(childLOI.getFormOfTeaching()));
