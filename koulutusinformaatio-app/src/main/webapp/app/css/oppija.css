@@ -1597,17 +1597,17 @@ hr {
     #siteheader .actions ul li {
       list-style: none;
       float: left;
-      border-right-style: solid;
-      border-right-width: 1px;
-      border-right-color: #FFFFFF; }
+      border-left-style: solid;
+      border-left-width: 1px;
+      border-left-color: #FFFFFF; }
       #siteheader .actions ul li a {
         color: #FFFFFF;
         text-decoration: none;
         margin: 0 1em; }
-      #siteheader .actions ul li:first-child a {
-        margin: 0 1em 0 0; }
-      #siteheader .actions ul li:last-child {
+      #siteheader .actions ul li:first-child {
         border: none; }
+        #siteheader .actions ul li:first-child a {
+          margin: 0 1em 0 0; }
 #siteheader .sitelogo {
   float: left; }
 
@@ -2095,13 +2095,13 @@ label, .label {
 .tabs.sub {
   padding: 1em 0; }
   .tabs.sub .tab {
-    border-right-width: 1px;
-    border-right-style: solid;
-    border-right-color: #3e3e3e; }
-    .tabs.sub .tab:last-child {
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-left-color: #3e3e3e; }
+    .tabs.sub .tab:first-child {
       border: none; }
-    .tabs.sub .tab:first-child span {
-      margin: 0 1em 0 0; }
+      .tabs.sub .tab:first-child span {
+        margin: 0 1em 0 0; }
     .tabs.sub .tab span {
       margin: 0 1em; }
   .tabs.sub .tab.current {
@@ -3058,19 +3058,20 @@ input {
 .ribbon {
   margin: 1em 0 1em 0;
   /*.list-separator {margin: 0 0.5em;}*/ }
-  .ribbon a {
-    border-right-width: 1px;
-    border-right-style: solid;
-    border-right-color: #3e3e3e;
-    padding: 0 1em; }
-    .ribbon a:last-child {
-      border: none; }
-    .ribbon a:first-child {
-      padding: 0 1em 0 0; }
-    .ribbon a.disabled {
-      cursor: default;
-      text-decoration: none;
-      color: #3e3e3e; }
+  .ribbon .ribbon-content {
+    display: inline; }
+    .ribbon .ribbon-content a {
+      border-left-width: 1px;
+      border-left-style: solid;
+      border-left-color: #3e3e3e;
+      padding: 0 1em; }
+      .ribbon .ribbon-content a:first-child {
+        border: none;
+        padding: 0 1em 0 0; }
+      .ribbon .ribbon-content a.disabled {
+        cursor: default;
+        text-decoration: none;
+        color: #3e3e3e; }
 
 p {
   max-width: 80em; }

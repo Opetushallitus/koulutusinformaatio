@@ -2,28 +2,16 @@
 
  angular.module('kiApp.directives', []).
 
- directive('kiLanguageRibbon', ['$location', 'LanguageService', 'ParentLearningOpportunityService', function($location, LanguageService, ParentLearningOpportunityService) {
+ directive('kiLanguageRibbon', function() {
     return {
         restrict: 'E,A',
         templateUrl: 'partials/languageRibbon.html',
-        
-        link: function(scope, element, attrs) {
-            scope.descriptionLanguageClass = function(languageCode) {
-                if (LanguageService.getDescriptionLanguage() == languageCode) {
-                    return 'disabled';
-                } else {
-                    return '';
-                }
-            };
 
-            scope.changeDescriptionLanguage = function(languageCode) {
-                LanguageService.setDescriptionLanguage(languageCode);
-                //var curPath = $location.search('lang', languageCode);
-                document.location.reload(true);
-            };
+        link: function(scope, element, attrs) {
+            scope.label = i18n.t('description-language-selection');
         }
     };
- }]).
+ }).
 
 /**
  *  Creates and controls the link "ribbon" of sibling LOs in child view
@@ -51,7 +39,7 @@
 
 
 /**
- *  Creates and controls the breadcrumb 
+ *  Creates and controls the breadcrumb
  */
  directive('kiBreadcrumb', ['$location', 'SearchService', function($location, SearchService) {
     return {

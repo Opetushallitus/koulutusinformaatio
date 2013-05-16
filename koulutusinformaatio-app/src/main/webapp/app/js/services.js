@@ -42,18 +42,23 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', function
 */
 
 service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', 'LanguageService', function($http, $timeout, $q, LanguageService) {
-    return {
-        query: function(params) {
-            var deferred = $q.defer();
-            var descriptionLanguage = LanguageService.getDescriptionLanguage();
+    var transformData = function(result) {
+        var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
+        result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
+    };
 
-            $http.get('../lo/' + params.parentId, {
+    return {
+        query: function(options) {
+            var deferred = $q.defer();
+
+            $http.get('../lo/' + options.parentId, {
             //$http.get('mock/parent-' + descriptionLanguage + '.json', {
                 params: {
-                    lang: descriptionLanguage
+                    lang: options.language
                 }
             }).
             success(function(result) {
+                transformData(result);
                 deferred.resolve(result);
             }).
             error(function(result) {
@@ -69,18 +74,30 @@ service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', 'Languag
  *  
  */
 service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'LanguageService', function($http, $timeout, $q, LanguageService) {
-    return {
-        query: function(params) {
-            var deferred = $q.defer();
-            var descriptionLanguage = LanguageService.getDescriptionLanguage();
 
-            $http.get('../lo/' + params.parentId + '/' + params.closId + '/' + params.cloiId, {
+    // TODO: could we automate data transformation somehow?
+    var transformData = function(result) {
+        var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
+        result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
+
+        var startDate = new Date(result.startDate);
+        result.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
+        result.teachingLanguage = result.teachingLanguages[0] ? result.teachingLanguages[0] : '';
+        result.formOfEducation = result.formOfEducation[0] ? result.formOfEducation[0] : '';
+    };
+
+    return {
+        query: function(options) {
+            var deferred = $q.defer();
+
+            $http.get('../lo/' + options.parentId + '/' + options.closId + '/' + options.cloiId, {
             //$http.get('mock/child-' + descriptionLanguage + '.json', {
                 params: {
-                    lang: descriptionLanguage
+                    lang: options.language
                 }
             }).
             success(function(result) {
+                transformData(result);
                 deferred.resolve(result);
             }).
             error(function(result) {
@@ -112,27 +129,11 @@ service('LanguageService', function() {
 
     return {
         getLanguage: function() {
-            if ($.cookie('language')) {
-                return $.cookie('language');
-            } else {
-                return defaultLanguage;
-            }
+            return $.cookie('language') || defaultLanguage;
         },
 
         setLanguage: function(language) {
             $.cookie('language', language);
-        },
-
-        getDescriptionLanguage: function() {
-            if ($.cookie('descriptionlanguage')) {
-                return $.cookie('descriptionlanguage');
-            } else {
-                return defaultLanguage;
-            }
-        },
-
-        setDescriptionLanguage: function(language) {
-            $.cookie('descriptionlanguage', language);
         }
     };
 }).

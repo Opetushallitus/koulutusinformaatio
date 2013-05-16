@@ -5,7 +5,7 @@ function LanguageCtrl($scope, $location, LanguageService) {
        LanguageService.setLanguage(code);
        i18n.setLng(code);
        document.location.reload(true);
-    }
+   }
 };
 
 /**
@@ -68,8 +68,9 @@ function LanguageCtrl($scope, $location, LanguageService) {
 /**
  *  Controller for info views (parent and child)
  */
- function InfoCtrl($scope, $routeParams, ParentLearningOpportunityService, ChildLearningOpportunityService, SearchService, ParentLODataService, TitleService, $location) {
+ function InfoCtrl($scope, $routeParams, $location, ParentLearningOpportunityService, ChildLearningOpportunityService, SearchService, ParentLODataService, TitleService) {
     $scope.queryString = SearchService.getTerm();
+    $scope.descriptionLanguage = 'fi';
 
     var setTitle = function(parent, child) {
         if (child) {
@@ -83,7 +84,9 @@ function LanguageCtrl($scope, $location, LanguageService) {
     if ($routeParams) {
         $scope.parentId = $routeParams.parentId;
         if (!ParentLODataService.dataExists($scope.parentId)) {
-            ParentLearningOpportunityService.query({parentId: $routeParams.parentId}).then(function(result) {
+            ParentLearningOpportunityService.query({parentId: $routeParams.parentId, language: $scope.descriptionLanguage}).then(function(result) {
+                //var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
+                //result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
                 $scope.parentLO = result;
                 ParentLODataService.setParentLOData(result);
                 setTitle($scope.parentLO, $scope.childLO);
@@ -92,19 +95,31 @@ function LanguageCtrl($scope, $location, LanguageService) {
             $scope.parentLO = ParentLODataService.getParentLOData();
             setTitle($scope.parentLO, $scope.childLO);
         }
-                
+
         if ($routeParams.closId && $routeParams.cloiId) {
-            ChildLearningOpportunityService.query({parentId: $routeParams.parentId, closId: $routeParams.closId, cloiId: $routeParams.cloiId}).then(function(result) {
+            ChildLearningOpportunityService.query({parentId: $routeParams.parentId, closId: $routeParams.closId, cloiId: $routeParams.cloiId, language: $scope.descriptionLanguage}).then(function(result) {
+                //var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
+                //result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
                 $scope.childLO = result;
-                var startDate = new Date(result.startDate);
-                $scope.childLO.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
-                $scope.childLO.teachingLanguage = result.teachingLanguages[0] ? result.teachingLanguages[0] : '';
-                $scope.childLO.formOfEducation = result.formOfEducation[0] ? result.formOfEducation[0] : '';
+                //var startDate = new Date(result.startDate);
+                //$scope.childLO.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
+                //$scope.childLO.teachingLanguage = result.teachingLanguages[0] ? result.teachingLanguages[0] : '';
+                //$scope.childLO.formOfEducation = result.formOfEducation[0] ? result.formOfEducation[0] : '';
 
                 setTitle($scope.parentLO, $scope.childLO);
             }); 
         }
     }
+
+    $scope.changeDescriptionLanguage = function(languageCode) {
+        $scope.descriptionLanguage = languageCode;
+
+        ParentLearningOpportunityService.query({parentId: $scope.parentId, language: languageCode}).then(function(result) {
+            var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
+            result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
+            $scope.parentLO = result;
+        });
+    };
 
     $scope.hasChildren = function() {
         if ($scope.parentLO && $scope.parentLO.children) {

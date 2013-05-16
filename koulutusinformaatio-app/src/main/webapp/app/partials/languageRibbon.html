@@ -1,1 +1,4 @@
-<a data-ng-repeat="lng in parentLO.availableTranslationLanguages" data-ng-click="changeDescriptionLanguage(lng)" data-ng-class="descriptionLanguageClass(lng)" data-ki-i18n="language-{{lng}}"></a>
+<span class="ribbon-label">{{label}}</span>
+<div class="ribbon-content">
+	<a data-ng-repeat="lng in parentLO.availableTranslationLanguages" data-ng-click="changeDescriptionLanguage(lng)" data-ki-i18n="language-{{lng}}"></a>
+</div>
