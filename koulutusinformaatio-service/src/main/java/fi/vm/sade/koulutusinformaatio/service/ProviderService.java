@@ -23,7 +23,7 @@ import fi.vm.sade.koulutusinformaatio.domain.Provider;
  *
  * @author Hannu Lyytikainen
  */
-public interface OrganisaatioService {
+public interface ProviderService {
 
     public Provider getByOID(String oid);
 }

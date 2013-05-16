@@ -22,7 +22,7 @@ import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
-import fi.vm.sade.koulutusinformaatio.service.OrganisaatioService;
+import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.tarjonta.service.resources.HakukohdeResource;
 import fi.vm.sade.tarjonta.service.resources.KomoResource;
@@ -33,9 +33,7 @@ import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -50,7 +48,7 @@ public class TarjontaServiceImpl implements TarjontaService {
     private KomoResource komoResource;
     private KomotoResource komotoResource;
     private HakukohdeResource hakukohdeResource;
-    private OrganisaatioService organisaatioService;
+    private ProviderService providerService;
     private ConversionService conversionService;
 
     @Autowired
@@ -58,11 +56,11 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     @Autowired
     public TarjontaServiceImpl(KomoResource komoResource, KomotoResource komotoResource, HakukohdeResource aoResource,
-                               OrganisaatioService organisaatioService, ConversionService conversionService) {
+                               ProviderService providerService, ConversionService conversionService) {
         this.komoResource = komoResource;
         this.komotoResource = komotoResource;
         this.hakukohdeResource = aoResource;
-        this.organisaatioService = organisaatioService;
+        this.providerService = providerService;
         this.conversionService = conversionService;
     }
 
@@ -113,7 +111,7 @@ public class TarjontaServiceImpl implements TarjontaService {
         for (String parentKomotoOid : parentKomotoOids) {
             KomotoDTO parentKomoto = komotoResource.getByOID(parentKomotoOid);
             if (parentKomoto.getTarjoajaOid() != null) {
-                parentLOS.setProvider(organisaatioService.getByOID(parentKomoto.getTarjoajaOid()));
+                parentLOS.setProvider(providerService.getByOID(parentKomoto.getTarjoajaOid()));
             }
         }
         if (parentLOS.getProvider() == null) {
