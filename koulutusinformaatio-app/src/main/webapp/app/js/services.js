@@ -113,27 +113,36 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
  *  Service taking care of search term saving
  */
  service('SearchService', function() {
+    var key = 'searchTerm';
     return {
         getTerm: function() {
-            return $.cookie('searchTerm');
+            return $.jStorage.get(key);
+            //return $.cookie('searchTerm');
         },
 
         setTerm: function(newTerm) {
-            $.cookie('searchTerm', newTerm);
+            //console.log(newTerm);
+            $.jStorage.set(key, newTerm);
+            //$.cookie('searchTerm', newTerm);
         }
     };
 }).
 
 service('LanguageService', function() {
     var defaultLanguage = 'fi';
+    var key = 'language';
+
+    //console.log($);
 
     return {
         getLanguage: function() {
-            return $.cookie('language') || defaultLanguage;
+            return $.jStorage.get(key) || defaultLanguage;
+            //return $.cookie('language') || defaultLanguage;
         },
 
         setLanguage: function(language) {
-            $.cookie('language', language);
+            $.jStorage.set(key, language);
+            //$.cookie('language', language);
         }
     };
 }).

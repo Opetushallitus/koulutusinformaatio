@@ -14,6 +14,20 @@
     "no-search-results": "Ei hakutuloksia",
     "no-search-results-info": "Hakusanallasi ei löytynyt yhtään hakutulosta. Ole hyvä ja yritä toisella hakusanalla.",
 
+    "filter-search-title": "Pohjakoulutus",
+    "filter-search-subtitle": "Valitse ylin suorittamasai koulutus",
+    "filter-search-elementary": "Perusopetus (peruskoulu)",
+    "filter-search-elementary-individualized": "Yksilöllistetty oppimäärä",
+    "filter-search-upper-secondary": "Lukio / Ylioppilas",
+    "filter-search-vocational": "Ammatillinen perustutkinto (120 ov)",
+    "filter-search-vocational-specialized": "Ammatti- tai erikoisammattitutkinto",
+    "filter-search-institute": "Kouluasteen, opistoasteen tai ammatillisen korkea-asteen tutkinto",
+    "filter-search-university-applied": "Ammattikorkeakoulututkinto",
+    "filter-search-university": "Yliopistotutkinto",
+    "filter-search-location-title": "Haettavan koulutuksen sijainti",
+    "filter-search-location-add": "Lisää sijainti",
+    "filter-search-location-remove": "Poista",
+
     "description-language-selection": "Koulutuksen opetuskieli on suomi, kuvaus saatavilla myös:",
 
     "education-starts": "Koulutus alkaa:",

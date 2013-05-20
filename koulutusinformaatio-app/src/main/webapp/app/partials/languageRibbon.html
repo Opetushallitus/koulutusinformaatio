@@ -1,4 +1,13 @@
-<span class="ribbon-label">{{label}}</span>
-<div class="ribbon-content">
-	<a data-ng-repeat="lng in parentLO.availableTranslationLanguages" data-ng-click="changeDescriptionLanguage(lng)" data-ki-i18n="language-{{lng}}"></a>
+<div ng-show="hasMultipleTranslations">
+	<span class="ribbon-label">{{label}}</span>
+	<div class="ribbon-content">
+		<span data-ng-switch="isChild">
+			<span data-ng-switch-when="true">
+				<a data-ng-repeat="lng in childLO.availableTranslationLanguages" data-ng-click="changeDescriptionLanguage(lng)" data-ki-i18n="language-{{lng}}"></a>
+			</span>
+			<span data-ng-switch-when="false">
+				<a data-ng-repeat="lng in parentLO.availableTranslationLanguages" data-ng-click="changeDescriptionLanguage(lng)" data-ki-i18n="language-{{lng}}"></a>
+			</span>
+		</span>
+	</div>
 </div>

@@ -57,6 +57,7 @@ var tabsMenu = {
     */
 };
 
+/*
 var dropDownMenu = {
     // initiate dropDownMenus
     build: function() {
@@ -100,6 +101,7 @@ var dropDownMenu = {
         }
     }
 };
+*/
 
 // load json polyfill if not present
 Modernizr.load([
