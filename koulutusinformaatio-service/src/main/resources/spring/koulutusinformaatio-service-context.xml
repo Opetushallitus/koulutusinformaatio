@@ -174,8 +174,8 @@
         </constructor-arg>
     </bean>
 
-    <bean id="tarjontaService"
-          class="fi.vm.sade.koulutusinformaatio.service.impl.TarjontaServiceImpl">
+    <bean id="loBuilder"
+          class="fi.vm.sade.koulutusinformaatio.service.impl.builder.LOBuilder">
         <constructor-arg>
             <ref bean="komoResource"/>
         </constructor-arg>

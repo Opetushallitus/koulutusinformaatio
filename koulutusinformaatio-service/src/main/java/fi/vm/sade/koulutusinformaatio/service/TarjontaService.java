@@ -42,11 +42,4 @@ public interface TarjontaService {
      */
     public List<String> listParentLearnignOpportunityOids();
 
-    /**
-     * Returns the list of oids of all application options
-     *
-     * @return list of oids
-     */
-    public List<String> listApplicationOptionOids();
-
 }
