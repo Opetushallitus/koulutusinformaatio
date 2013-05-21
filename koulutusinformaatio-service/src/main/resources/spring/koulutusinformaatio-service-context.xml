@@ -165,7 +165,7 @@
         </jaxrs:providers>
     </jaxrs:client>
 
-    <bean id="organisaatioService" class="fi.vm.sade.koulutusinformaatio.service.impl.OrganisaatioServiceImpl">
+    <bean id="providerService" class="fi.vm.sade.koulutusinformaatio.service.impl.ProviderServiceImpl">
         <constructor-arg>
             <ref bean="organisaatioResource"/>
         </constructor-arg>
@@ -174,8 +174,8 @@
         </constructor-arg>
     </bean>
 
-    <bean id="tarjontaService"
-          class="fi.vm.sade.koulutusinformaatio.service.impl.TarjontaServiceImpl">
+    <bean id="loBuilder"
+          class="fi.vm.sade.koulutusinformaatio.service.impl.builder.LOBuilder">
         <constructor-arg>
             <ref bean="komoResource"/>
         </constructor-arg>
@@ -186,7 +186,7 @@
             <ref bean="hakukohdeResource"/>
         </constructor-arg>
         <constructor-arg>
-            <ref bean="organisaatioService"/>
+            <ref bean="providerService"/>
         </constructor-arg>
         <constructor-arg>
             <ref bean="conversionService"/>
