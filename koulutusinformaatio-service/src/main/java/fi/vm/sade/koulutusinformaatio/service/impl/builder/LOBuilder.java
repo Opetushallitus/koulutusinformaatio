@@ -78,6 +78,7 @@ public class LOBuilder {
 
         validateParentKomo(parentKomo);
 
+        // parent info
         parentLOS.setId(parentKomo.getOid());
         parentLOS.setName(new I18nText(parentKomo.getNimi()));
         parentLOS.setStructureDiagram(new I18nText(parentKomo.getKoulutuksenRakenne()));
@@ -88,24 +89,34 @@ public class LOBuilder {
         parentLOS.setEducationDegree(koodistoService.searchFirst(parentKomo.getKoulutusAsteUri()));
 
         List<String> parentKomotoOids = komoResource.getKomotosByKomoOID(parentKomo.getOid(), 0, 0);
-
-        // pick first parent loi and resolve provider
-        if (parentKomotoOids != null && parentKomotoOids.size() > 0) {
-            KomotoDTO parentKomoto = komotoResource.getByOID(parentKomotoOids.get(0));
-            parentLOS.setProvider(providerService.getByOID(parentKomoto.getTarjoajaOid()));
+        if (parentKomotoOids == null || parentKomotoOids.size() == 0) {
+            throw new TarjontaParseException("No instances found in parent LOS " +  parentKomo.getOid());
         }
 
+
+        // parent loi + provider
+        List<ParentLOI> parentLOIs = Lists.newArrayList();
+        for (String parentKomotoOid : parentKomotoOids) {
+            ParentLOI parentLOI = new ParentLOI();
+            KomotoDTO parentKomoto = komotoResource.getByOID(parentKomotoOid);
+            parentLOI.setId(parentKomoto.getOid());
+            parentLOI.setPrerequisite(koodistoService.searchFirst(parentKomoto.getPohjakoulutusVaatimusUri()));
+            parentLOIs.add(parentLOI);
+
+            if (parentLOS.getProvider() == null) {
+                parentLOS.setProvider(providerService.getByOID(parentKomoto.getTarjoajaOid()));
+            }
+        }
+        parentLOS.setLois(parentLOIs);
         if (parentLOS.getProvider() == null) {
-            Map<String, String> langs = Maps.newHashMap();
-            langs.put("fi", "dummy name");
-            parentLOS.setProvider(new Provider("dummyid", new I18nText(langs)));
+            throw new TarjontaParseException("No provider found for parent LOS " + parentKomo.getOid());
         }
 
+
+        // children
         List<String> childKomoOids = parentKomo.getAlaModuulit();
         List<ChildLOS> childLOSs = Lists.newArrayList();
-
         Set<String> parentAoIds  = Sets.newHashSet();
-
         for (String childKomoOid : childKomoOids) {
             // los
             ChildLOS childLOS = new ChildLOS();
@@ -149,11 +160,10 @@ public class LOBuilder {
                     ao.setApplicationSystemId(hakuDTO.getOid());
                     childLOI.setApplicationOption(ao);
 
+                    // asid to provider
+                    parentLOS.getProvider().getApplicationSystemIDs().add(hakuDTO.getOid());
 
                     KomotoDTO komotoDTO = komotoResource.getByOID(childKomotoOid);
-
-                    // provider
-
                     // basic loi info
                     childLOI.setId(komotoDTO.getOid());
                     // how to get the name?
@@ -178,14 +188,7 @@ public class LOBuilder {
         }
         parentLOS.setChildren(childLOSs);
 
-        for (String parentAoId : parentAoIds) {
-
-
-            System.out.println();
-        }
-
         return parentLOS;
-
     }
 
     private void validateParentKomo(KomoDTO komo) throws TarjontaParseException {
