@@ -3214,10 +3214,10 @@ input {
       border-left-width: 1px;
       border-left-style: solid;
       border-left-color: #3e3e3e;
-      padding: 0 1em; }
+      padding: 0 0.75em; }
       .ribbon .ribbon-content a:first-child {
         border: none;
-        padding: 0 1em 0 0; }
+        padding: 0 0.75em 0 0; }
       .ribbon .ribbon-content a.disabled {
         cursor: default;
         text-decoration: none;

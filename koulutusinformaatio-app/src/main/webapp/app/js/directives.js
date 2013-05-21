@@ -39,7 +39,14 @@
         link: function(scope, element, attrs) {
             scope.label = i18n.t('description-language-selection');
             scope.isChild = ($routeParams.closId && $routeParams.cloiId) ? true : false;
-            scope.hasMultipleTranslations = scope.isChild ? scope.childLO.availableTranslationLanguages.length >= 1 : scope.parentLO.availableTranslationLanguages.length >= 1;
+            
+            scope.$watch('childLO', function(data) {
+                scope.hasMultipleTranslations = scope.childLO && scope.childLO.availableTranslationLanguages.length >= 1;    
+            });
+
+            scope.$watch('parentLO', function(data) {
+                scope.hasMultipleTranslations = scope.parentLO && scope.parentLO.availableTranslationLanguages.length >= 1;    
+            });
         }
     };
  }]).
