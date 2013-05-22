@@ -16,18 +16,21 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+import fi.vm.sade.koulutusinformaatio.converter.ApplicationOptionToSearchResultDTO;
 import fi.vm.sade.koulutusinformaatio.converter.ChildLOToDTO;
 import fi.vm.sade.koulutusinformaatio.converter.ParentLOToDTO;
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunityDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataService;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author Mikko Majapuro
@@ -69,6 +72,16 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
         return ChildLOToDTO.convert(childLO, lang);
     }
 
+    @Override
+    public List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, String lopId) {
+        List<ApplicationOption> applicationOptions = educationDataService.findApplicationOptions(asId, lopId);
+        return Lists.transform(applicationOptions, new Function<ApplicationOption, ApplicationOptionSearchResultDTO>() {
+            @Override
+            public ApplicationOptionSearchResultDTO apply(ApplicationOption applicationOption) {
+                return ApplicationOptionToSearchResultDTO.convert(applicationOption, LANG_FI);
+            }
+        });
+    }
 
 
     private String resolveDefaultLanguage(final ParentLO parentLO) {
