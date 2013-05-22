@@ -6,7 +6,7 @@ var tabsMenu = {
 
     load:function() {
         if(window.location.hash) {
-            
+
             hash = window.location.hash.substr(1);
             key = "tabsheet";
             hashparams = hash.split(':');
@@ -57,56 +57,41 @@ var tabsMenu = {
     */
 };
 
-/*
 var dropDownMenu = {
-    // initiate dropDownMenus
-    build: function() {
-        dropDownMenu.load();
-        dropDownMenu.setTriggers();
-    },
-    // hide (display: none) ul dropdown navigations
-    load: function() {
-        $('.navigation > li > ul').hide();
-        $('.sub-dropdown > ul').hide();
-    },
-    
-    // set listener for dropdown navigations
-    setTriggers: function() {
+        // initiate dropDownMenus
+        build: function() {
+            dropDownMenu.setTriggers();
+        },
+        
+        // set listener for dropdown navigations
+        setTriggers: function() {
 
-        $('.navigation > li').hover(navigationMouseOver, navigationMouseOut);
-        $('.sub-dropdown').hover(dropdownMouseOver, dropdownMouseOut);
+            $('.navigation > li').hover(navigationMouseOver, navigationMouseOut);
 
-        // bring dropdown navigation visible on mouseover
-        function navigationMouseOver() {
-            if( $(this).children().filter('ul').length !== 0 ) {
-                $(this).children().filter('ul').fadeIn(200);
+            // bring dropdown navigation visible on mouseover
+            function navigationMouseOver() {
+                $(this).css('background-color', 'white');
+                $(this).children().filter('span').css('color', '#333');
+                $(this).children().filter('a').css('color', '#333');
+                $(this).children().filter('ul').fadeIn(100);
+            }
+
+            // hide dropdown navigation on mouseout
+            function navigationMouseOut() {
+                $(this).css('background-color', '#06526b');
+                $(this).children().filter('span').css('color', 'white');
+                $(this).children().filter('a').css('color', 'white');
+                $(this).children().filter('ul').fadeOut(100);
             }
         }
+    };
 
-        // hide dropdown navigation on mouseout
-        function navigationMouseOut() {
-            if( $(this).children().filter('ul').length !== 0 ) {
-                $(this).children().filter('ul').fadeOut(200);
-            }
-        }
-
-        //bring sub-dropdown navigation visible on mouseover
-        function dropdownMouseOver() {
-            $(this).children().filter('ul').fadeIn(200);
-        }
-
-        //hide sub-dropdown navigation on mouseout
-        function dropdownMouseOut() {
-            $(this).children().filter('ul').fadeOut(200);
-        }
-    }
-};
-*/
+    //dropDownMenu.build();
 
 // load json polyfill if not present
 Modernizr.load([
-    {
-        test: window.JSON,
-        nope: 'lib/modernizr/json3.min.js'
-    }
+{
+    test: window.JSON,
+    nope: 'lib/modernizr/json3.min.js'
+}
 ]);
