@@ -18,7 +18,6 @@ package fi.vm.sade.koulutusinformaatio.service.impl.builder;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
@@ -33,11 +32,9 @@ import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Builds learning opportunity instances.
@@ -116,7 +113,6 @@ public class LOBuilder {
         // children
         List<String> childKomoOids = parentKomo.getAlaModuulit();
         List<ChildLOS> childLOSs = Lists.newArrayList();
-        Set<String> parentAoIds  = Sets.newHashSet();
         for (String childKomoOid : childKomoOids) {
             // los
             ChildLOS childLOS = new ChildLOS();
@@ -163,6 +159,13 @@ public class LOBuilder {
                     // provider to ao
                     ao.setProvider(parentLOS.getProvider());
 
+                    // set child loi names to application option
+                    List<String> komotosByHakukohdeOID = hakukohdeResource.getKomotosByHakukohdeOID(aoId);
+                    for (String s : komotosByHakukohdeOID) {
+                        KomoDTO komoByKomotoOID = komotoResource.getKomoByKomotoOID(s);
+                        ao.getChildLONames().add(new I18nText(komoByKomotoOID.getNimi()));
+                    }
+
                     // asid to provider
                     parentLOS.getProvider().getApplicationSystemIDs().add(hakuDTO.getOid());
 
@@ -181,8 +184,6 @@ public class LOBuilder {
 
                     childLOIs.add(childLOI);
 
-
-                    parentAoIds.addAll(aoIds);
                 }
             }
             childLOS.setChildLOIs(childLOIs);
