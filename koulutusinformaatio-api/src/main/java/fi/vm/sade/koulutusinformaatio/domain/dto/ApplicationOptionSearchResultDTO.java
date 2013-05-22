@@ -30,7 +30,7 @@ public class ApplicationOptionSearchResultDTO {
     private String id;
     private String name;
     private String educationDegree;
-    private List<String> childLOINames = new ArrayList<String>();
+    private List<String> childLONames = new ArrayList<String>();
 
     public String getId() {
         return id;
@@ -56,11 +56,11 @@ public class ApplicationOptionSearchResultDTO {
         this.educationDegree = educationDegree;
     }
 
-    public List<String> getChildLOINames() {
-        return childLOINames;
+    public List<String> getChildLONames() {
+        return childLONames;
     }
 
-    public void setChildLOINames(List<String> childLOINames) {
-        this.childLOINames = childLOINames;
+    public void setChildLONames(List<String> childLONames) {
+        this.childLONames = childLONames;
     }
 }

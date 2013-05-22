@@ -52,7 +52,7 @@ public class ApplicationOptionResourceImplTest {
         List<String> cloNames = new ArrayList<String>();
         cloNames.add("clo name 1 fi");
         cloNames.add("clo name 2 fi");
-        ao.setChildLOINames(cloNames);
+        ao.setChildLONames(cloNames);
 
         ApplicationOptionSearchResultDTO ao2 = new ApplicationOptionSearchResultDTO();
         ao2.setId("2.3.2");
