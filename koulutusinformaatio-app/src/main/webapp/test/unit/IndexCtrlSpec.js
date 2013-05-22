@@ -22,7 +22,7 @@ describe('IndexController', function() {
                 TitleService: TitleService_
             });
 
-            expect(TitleService_.getTitle()).toContain('Etusivu');
+            expect(TitleService_.getTitle()).toContain('title-front-page');
         });
     });
 });

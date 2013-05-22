@@ -8,19 +8,21 @@ describe('InfoController', function() {
     describe('when LearningOpportunity is selected', function() {
         var $httpBackend_;
         var $controller_;
-        var ParentLearningOpportunity_;
+        var ParentLearningOpportunityService_;
+        var ChildLearningOpportunityService_;
         var SearchService_;
-        var LODataService_;
+        var ParentLODataService_;
         var TitleService_;
         var $location_;
 
-        beforeEach(inject(function($httpBackend, $rootScope, $controller, ParentLearningOpportunity, 
-                SearchService, LODataService, TitleService) {
+        beforeEach(inject(function($httpBackend, $rootScope, $controller, ParentLearningOpportunityService, 
+                ChildLearningOpportunityService, SearchService, ParentLODataService, TitleService) {
             $httpBackend_ = $httpBackend;
             $controller_ = $controller;
-            ParentLearningOpportunity_ = ParentLearningOpportunity;
+            ParentLearningOpportunityService_ = ParentLearningOpportunityService;
+            ChildLearningOpportunityService_ = ChildLearningOpportunityService;
             SearchService_ = SearchService;
-            LODataService_ = LODataService;
+            ParentLODataService_ = ParentLODataService;
             TitleService_ = TitleService;
             scope = $rootScope.$new();
 
@@ -34,13 +36,14 @@ describe('InfoController', function() {
         it('should fetch parent data', function() {
             var parentId = '123456';
 
-            $httpBackend_.when('GET', '../lo/123456').respond(200, {"id": parentId, "name": "parent name"});
+            $httpBackend_.when('GET', '../lo/123456?lang=fi').respond(200, {"id": parentId, "name": "parent name", "availableTranslationLanguages": ["fi"]});
             ctrl = $controller_(InfoCtrl, {
                 $scope: scope, 
                 $routeParams: {parentId: '123456'}, 
-                ParentLearningOpportunity: ParentLearningOpportunity_,
+                ParentLearningOpportunityService: ParentLearningOpportunityService_,
+                ChildLearningOpportunityService: ChildLearningOpportunityService_,
                 SearchService: SearchService_,
-                LODataService: LODataService_,
+                ParentLODataService: ParentLODataService_,
                 TitleService: TitleService_
             });
             $httpBackend_.flush();
@@ -52,15 +55,18 @@ describe('InfoController', function() {
 
         it('should fetch parent and child data', function() {
             var parentId = '123456';
-            var childId = parentId + '_2';
+            var closId = parentId + '_3';
+            var cloiId = parentId + '_4';
 
-            $httpBackend_.when('GET', '../lo/123456').respond(200, {"id": parentId, "name": "parent name", "children": [{"id": "123456_1"}, {"id": childId}]});
+            $httpBackend_.when('GET', '../lo/123456?lang=fi').respond(200, {"id": parentId, "name": "parent name", "availableTranslationLanguages": ["fi"], "children": [{"closId": "123456_1", "cloiId": "123456_2"}, {"closId": "123456_3", "cloiId": "123456_3"}]});
+            $httpBackend_.when('GET', '../lo/123456/123456_3/123456_4?lang=fi').respond(200, {"id": parentId, "closId": closId, "cloiId": cloiId, "name": "parent name", "availableTranslationLanguages": ["fi"]});
             ctrl = $controller_(InfoCtrl, {
                 $scope: scope, 
-                $routeParams: {parentId: '123456', childId: '123456_2'}, 
-                ParentLearningOpportunity: ParentLearningOpportunity_,
+                $routeParams: {parentId: '123456', closId: '123456_3', cloiId: '123456_4'}, 
+                ParentLearningOpportunityService: ParentLearningOpportunityService_,
+                ChildLearningOpportunityService: ChildLearningOpportunityService_,
                 SearchService: SearchService_,
-                LODataService: LODataService_,
+                ParentLODataService: ParentLODataService_,
                 TitleService: TitleService_
             });
             $httpBackend_.flush();
@@ -68,7 +74,8 @@ describe('InfoController', function() {
             expect(scope.parentLO).not.toBeUndefined();
             expect(scope.childLO).not.toBeUndefined();
             expect(scope.parentLO.id).toMatch(parentId);
-            expect(scope.childLO.id).toMatch(childId);
+            expect(scope.childLO.closId).toMatch(closId);
+            expect(scope.childLO.cloiId).toMatch(cloiId);
         });
     });
 });

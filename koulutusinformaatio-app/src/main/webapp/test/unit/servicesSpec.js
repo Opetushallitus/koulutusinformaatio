@@ -36,7 +36,7 @@ describe('TitleService', function() {
     });
 });
 
-describe('LODataService', function() {
+describe('ParentLODataService', function() {
     var parentId = '123456';
     var childId = parentId + '_2';
 
@@ -44,8 +44,8 @@ describe('LODataService', function() {
 
     var LODataService_;
 
-    beforeEach(inject(function(LODataService) {
-        LODataService_ = LODataService;
+    beforeEach(inject(function(ParentLODataService) {
+        LODataService_ = ParentLODataService;
     }));
 
     it('should have no data set', function() {
@@ -53,18 +53,15 @@ describe('LODataService', function() {
     });
 
     it('should have parent data set', function() {
-        LODataService_.setLOData({"id": parentId, "name": "parent name"});
+        LODataService_.setParentLOData({"id": parentId, "name": "parent name"});
         expect(LODataService_.dataExists(parentId)).toBeTruthy();
-        expect(LODataService_.getLOData(parentId).id).toEqual(parentId);
-        expect(LODataService_.getChildData(childId)).toBeUndefined();
+        expect(LODataService_.getParentLOData(parentId).id).toEqual(parentId);
     });
 
     it('should have parent and child data set', function() {
-        LODataService_.setLOData({"id": parentId, "name": "parent name", children: [{"id": "123456_1"}, {"id": childId}]});
+        LODataService_.setParentLOData({"id": parentId, "name": "parent name", children: [{"id": "123456_1"}, {"id": childId}]});
         expect(LODataService_.dataExists(parentId)).toBeTruthy();
-        expect(LODataService_.getLOData(parentId).id).toEqual(parentId);
-        expect(LODataService_.getChildData(childId)).not.toBeUndefined();
-        expect(LODataService_.getChildData(childId).id).toEqual(childId);
+        expect(LODataService_.getParentLOData(parentId).id).toEqual(parentId);
     });
 
 

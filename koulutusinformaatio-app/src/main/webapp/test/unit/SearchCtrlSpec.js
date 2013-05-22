@@ -12,102 +12,99 @@ describe('SearchController', function() {
     beforeEach(module('kiApp'));
 
     describe('when initial query string is given in path', function() {
-        var $httpBackend_;
-        var $controller_ ;
-        var SearchLearningOpportunity_;
-        var ParentLearningOpportunity_;
-        var SearchService_;
-        var $location_;
 
-        beforeEach(inject(function($httpBackend, $rootScope, $controller, SearchLearningOpportunity, 
-                ParentLearningOpportunity, SearchService, $location) {
-            $httpBackend_ = $httpBackend;
-            $controller_ = $controller;
-            SearchLearningOpportunity_ = SearchLearningOpportunity;
-            ParentLearningOpportunity_ = ParentLearningOpportunity;
-            SearchService_ = SearchService;
-            $location_ = $location;
-            scope = $rootScope.$new();
+        beforeEach(inject(function($httpBackend, $rootScope, $controller, SearchLearningOpportunityService, 
+            SearchService, TitleService, $location) {
+
+            this.httpBackend = $httpBackend;
+            this.controller = $controller;
+            this.SearchLearningOpportunityService = SearchLearningOpportunityService;
+            this.SearchService = SearchService;
+            this.TitleService = TitleService;
+            this.location = $location;
+            this.scope = $rootScope.$new();
+
         }));
 
+
         afterEach(function() {
-            $httpBackend_.verifyNoOutstandingExpectation();
-            $httpBackend_.verifyNoOutstandingRequest();
+            this.httpBackend.verifyNoOutstandingExpectation();
+            this.httpBackend.verifyNoOutstandingRequest();
         });
 
         it('should have scope variables set when an empty query string is given', function() {
-            spyOn(SearchLearningOpportunity_, 'query').andCallThrough();
+            spyOn(this.SearchLearningOpportunityService, 'query').andCallThrough();
             
-            ctrl = $controller_(SearchCtrl, {
-                $scope: scope, 
+            ctrl = this.controller(SearchCtrl, {
+                $scope: this.scope, 
                 $routeParams: {}, 
-                SearchLearningOpportunity: SearchLearningOpportunity_,
-                ParentLearningOpportunity: ParentLearningOpportunity_,
-                SearchService: SearchService_,
-                $location: $location_
+                SearchLearningOpportunityService: this.SearchLearningOpportunityService,
+                SearchService: this.SearchService,
+                TitleService: this.TitleService,
+                $location: this.location
             });
 
-            expect(SearchLearningOpportunity_.query).not.toHaveBeenCalled();
-            expect(scope.queryString).toBeUndefined();
-            expect(scope.loResult).toBeUndefined();
+            expect(this.SearchLearningOpportunityService.query).not.toHaveBeenCalled();
+            expect(this.scope.queryString).toBe(null);
+            expect(this.scope.loResult).toBeUndefined();
         });
 
         it('should have scope variables set when a proper query string is given', function() {
-            spyOn(SearchLearningOpportunity_, 'query').andCallThrough();
+            spyOn(this.SearchLearningOpportunityService, 'query').andCallThrough();
 
-            $httpBackend_.when('GET', '../lo/search/' + searchterms.kasityo).respond(200, '[]');
-            ctrl = $controller_(SearchCtrl, {
-                $scope: scope, 
+            this.httpBackend.when('GET', '../lo/search/' + searchterms.kasityo).respond(200, '[]');
+            ctrl = this.controller(SearchCtrl, {
+                $scope: this.scope, 
                 $routeParams: {queryString: searchterms.kasityo}, 
-                SearchLearningOpportunity: SearchLearningOpportunity_,
-                ParentLearningOpportunity: ParentLearningOpportunity_,
-                SearchService: SearchService_,
-                $location: $location_
+                SearchLearningOpportunityService: this.SearchLearningOpportunityService,
+                SearchService: this.SearchService,
+                TitleService: this.TitleService,
+                $location: this.location
             });
-            $httpBackend_.flush();
+            this.httpBackend.flush();
 
-            expect(SearchLearningOpportunity_.query).toHaveBeenCalled();
-            expect(SearchLearningOpportunity_.query.calls.length).toEqual(1);
-            expect(scope.queryString).toEqual(searchterms.kasityo);
-            expect(scope.loResult.length).toEqual(0);
+            expect(this.SearchLearningOpportunityService.query).toHaveBeenCalled();
+            expect(this.SearchLearningOpportunityService.query.calls.length).toEqual(1);
+            expect(this.scope.queryString).toEqual(searchterms.kasityo);
+            expect(this.scope.loResult.length).toEqual(0);
         });
 
         it('should return correct result for manual search with valid query string', function() {
-            ctrl = $controller_(SearchCtrl, {
-                $scope: scope, 
+            ctrl = this.controller(SearchCtrl, {
+                $scope: this.scope, 
                 $routeParams: {}, 
-                SearchLearningOpportunity: SearchLearningOpportunity_,
-                ParentLearningOpportunity: ParentLearningOpportunity_,
-                SearchService: SearchService_,
-                $location: $location_
+                SearchLearningOpportunityService: this.SearchLearningOpportunityService,
+                TitleService: this.TitleService,
+                SearchService: this.SearchService,
+                $location: this.location
             });
 
-            scope.queryString = searchterms.musiikki;
-            scope.search();
+            this.scope.queryString = searchterms.musiikki;
+            this.scope.search();
 
-            expect(SearchService_.getTerm()).toMatch(searchterms.musiikki);
-            expect($location_.path()).toMatch('/haku/' + searchterms.musiikki);
+            expect(this.SearchService.getTerm()).toMatch(searchterms.musiikki);
+            expect(this.location.path()).toMatch('/haku/' + searchterms.musiikki);
         });
 
         it('should return correct result for manual search with an empty query string', function() {
-            ctrl = $controller_(SearchCtrl, {
-                $scope: scope, 
+            ctrl = this.controller(SearchCtrl, {
+                $scope: this.scope, 
                 $routeParams: {}, 
-                SearchLearningOpportunity: SearchLearningOpportunity_,
-                ParentLearningOpportunity: ParentLearningOpportunity_,
-                SearchService: SearchService_,
-                $location: $location_
+                SearchLearningOpportunityService: this.SearchLearningOpportunityService,
+                TitleService: this.TitleService,
+                SearchService: this.SearchService,
+                $location: this.location
             });
 
-            var locationPrev = $location_.path();
-            var searchTermPrev = SearchService_.getTerm();
+            var locationPrev = this.location.path();
+            var searchTermPrev = this.SearchService.getTerm();
 
-            scope.queryString = searchterms.empty;
-            scope.search();
+            this.scope.queryString = searchterms.empty;
+            this.scope.search();
             
-            // location and serach term should not be updated when searching with an empty string
-            expect($location_.path()).toMatch(locationPrev);
-            expect(SearchService_.getTerm).toMatch(searchTermPrev);
+            // location and search term should not be updated when searching with an empty string
+            expect(this.location.path()).toMatch(locationPrev);
+            expect(this.SearchService.getTerm()).toMatch(searchTermPrev);
         });
     });
 });
