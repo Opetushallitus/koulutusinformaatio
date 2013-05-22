@@ -4,17 +4,15 @@ describe('SearchService', function() {
 
     beforeEach(module('kiApp'));
 
-    var SearchService_;
-
     beforeEach(inject(function(SearchService) {
-        SearchService_ = SearchService;
+        this.SearchService = SearchService;
     }));
 
     it('should save the search term', function() {
         var searchterm = 'musiikki';
-        SearchService_.setTerm(searchterm);
+        this.SearchService.setTerm(searchterm);
 
-        expect(SearchService_.getTerm()).toMatch(searchterm);
+        expect(this.SearchService.getTerm()).toMatch(searchterm);
     });
 });
 
@@ -22,17 +20,15 @@ describe('TitleService', function() {
 
     beforeEach(module('kiApp'));
 
-    var TitleService_;
-
     beforeEach(inject(function(TitleService) {
-        TitleService_ = TitleService;
+        this.TitleService = TitleService;
     }));
 
     it('should save the given title set', function() {
         var title = 'Etusivu';
-        TitleService_.setTitle(title);
+        this.TitleService.setTitle(title);
 
-        expect(TitleService_.getTitle()).toMatch(title + ' - Opintopolku.fi');
+        expect(this.TitleService.getTitle()).toMatch(title + ' - Opintopolku.fi');
     });
 });
 
@@ -42,27 +38,47 @@ describe('ParentLODataService', function() {
 
     beforeEach(module('kiApp'));
 
-    var LODataService_;
-
     beforeEach(inject(function(ParentLODataService) {
-        LODataService_ = ParentLODataService;
+        this.ParentLODataService = ParentLODataService;
     }));
 
     it('should have no data set', function() {
-        expect(LODataService_.dataExists(parentId)).toBeFalsy();
+        expect(this.ParentLODataService.dataExists(parentId)).toBeFalsy();
     });
 
     it('should have parent data set', function() {
-        LODataService_.setParentLOData({"id": parentId, "name": "parent name"});
-        expect(LODataService_.dataExists(parentId)).toBeTruthy();
-        expect(LODataService_.getParentLOData(parentId).id).toEqual(parentId);
+        this.ParentLODataService.setParentLOData({"id": parentId, "name": "parent name"});
+        expect(this.ParentLODataService.dataExists(parentId)).toBeTruthy();
+        expect(this.ParentLODataService.getParentLOData(parentId).id).toEqual(parentId);
     });
 
     it('should have parent and child data set', function() {
-        LODataService_.setParentLOData({"id": parentId, "name": "parent name", children: [{"id": "123456_1"}, {"id": childId}]});
-        expect(LODataService_.dataExists(parentId)).toBeTruthy();
-        expect(LODataService_.getParentLOData(parentId).id).toEqual(parentId);
+        this.ParentLODataService.setParentLOData({"id": parentId, "name": "parent name", children: [{"id": "123456_1"}, {"id": childId}]});
+        expect(this.ParentLODataService.dataExists(parentId)).toBeTruthy();
+        expect(this.ParentLODataService.getParentLOData(parentId).id).toEqual(parentId);
     });
 
 
 });
+
+describe('TranslationService', function() {
+    
+    beforeEach(module('kiApp'));
+
+    beforeEach(inject(function(TranslationService) {
+        this.TranslationService = TranslationService;
+    }));
+
+    it('should return a value for existing key', function() {
+        var key = 'existing-key';
+        var value = this.TranslationService.getTranslation(key);
+        expect(value).toMatch('translation value');
+    });
+
+    it('should return key for non-existing key', function() {
+        var key = 'non-existing-key';
+        var value = this.TranslationService.getTranslation(key);
+        expect(value).toMatch(key);
+    });
+
+})

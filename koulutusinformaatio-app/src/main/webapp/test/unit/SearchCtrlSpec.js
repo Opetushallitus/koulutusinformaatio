@@ -1,7 +1,7 @@
 'use strict';
 
 describe('SearchController', function() {
-    var ctrl, scope;
+    var ctrl;
 
     var searchterms = {
         kasityo: 'Kasityo',
