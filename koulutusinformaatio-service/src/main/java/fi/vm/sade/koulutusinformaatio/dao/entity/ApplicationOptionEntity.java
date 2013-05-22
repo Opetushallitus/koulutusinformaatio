@@ -39,7 +39,7 @@ public class ApplicationOptionEntity {
     private String educationDegree;
     @Reference
     private LearningOpportunityProviderEntity provider;
-    private List<I18nTextEntity> childLOINames = new ArrayList<I18nTextEntity>();
+    private List<I18nTextEntity> childLONames = new ArrayList<I18nTextEntity>();
     private Integer startingQuota;
     private Integer lowestAcceptedScore;
     private Double lowestAcceptedAverage;
@@ -90,12 +90,12 @@ public class ApplicationOptionEntity {
         this.provider = provider;
     }
 
-    public List<I18nTextEntity> getChildLOINames() {
-        return childLOINames;
+    public List<I18nTextEntity> getChildLONames() {
+        return childLONames;
     }
 
-    public void setChildLOINames(List<I18nTextEntity> childLOINames) {
-        this.childLOINames = childLOINames;
+    public void setChildLONames(List<I18nTextEntity> childLONames) {
+        this.childLONames = childLONames;
     }
 
     public Integer getStartingQuota() {

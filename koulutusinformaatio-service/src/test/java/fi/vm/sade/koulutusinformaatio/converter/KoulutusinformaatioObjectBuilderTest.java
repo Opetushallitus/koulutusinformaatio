@@ -100,7 +100,7 @@ public class KoulutusinformaatioObjectBuilderTest {
         ao.setLowestAcceptedAverage(66.7);
         ao.setLowestAcceptedScore(78);
         ao.setStartingQuota(98);
-        ao.setChildLOINames(Lists.newArrayList(TestUtil.createI18nTextEntity("c1 fi", "c1 sv", "c1 en"),
+        ao.setChildLONames(Lists.newArrayList(TestUtil.createI18nTextEntity("c1 fi", "c1 sv", "c1 en"),
                 TestUtil.createI18nTextEntity("c2 fi", "c2 sv", "c2 en")));
 
         provider = new LearningOpportunityProviderEntity();

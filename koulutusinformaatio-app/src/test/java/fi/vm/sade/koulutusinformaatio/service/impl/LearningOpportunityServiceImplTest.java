@@ -206,7 +206,7 @@ public class LearningOpportunityServiceImplTest {
         ao.setLowestAcceptedAverage(lowestAcceptedAverage);
         ao.setLowestAcceptedScore(lowestAcceptedScore);
         ao.setStartingQuota(startingQuota);
-        ao.setChildLOINames(childLONames);
+        ao.setChildLONames(childLONames);
         ao.setEducationDegree(educationDegree);
         return ao;
     }

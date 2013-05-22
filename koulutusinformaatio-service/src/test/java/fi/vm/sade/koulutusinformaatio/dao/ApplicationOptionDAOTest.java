@@ -62,7 +62,7 @@ public class ApplicationOptionDAOTest {
         List<I18nTextEntity> childLoNames = new ArrayList<I18nTextEntity>();
         childLoNames.add(TestUtil.createI18nTextEntity("clo name fi", "clo name sv", "clo name en"));
         childLoNames.add(TestUtil.createI18nTextEntity("clo name 2 fi", "clo name 2 sv", "clo name 2 en"));
-        entity.setChildLOINames(childLoNames);
+        entity.setChildLONames(childLoNames);
 
         LearningOpportunityProviderEntity lop = new LearningOpportunityProviderEntity();
         lop.setId("3.3.3");
@@ -80,8 +80,8 @@ public class ApplicationOptionDAOTest {
         assertEquals(entity.getEducationDegree(), fromDB.getEducationDegree());
         assertNotNull(entity.getProvider());
         assertEquals(lop.getId(), entity.getProvider().getId());
-        assertNotNull(entity.getChildLOINames());
-        assertEquals(2, entity.getChildLOINames().size());
+        assertNotNull(entity.getChildLONames());
+        assertEquals(2, entity.getChildLONames().size());
     }
 
     @Test
