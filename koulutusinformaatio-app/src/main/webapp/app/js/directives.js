@@ -21,6 +21,7 @@
             scope.add = function() {
                 if (scope.location && scope.locations.indexOf(scope.location) < 0) {
                     scope.locations.push(scope.location);
+                    scope.location = '';
                     scope.change();
                 }
             }
