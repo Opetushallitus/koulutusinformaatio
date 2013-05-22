@@ -29,7 +29,7 @@ public class ApplicationOptionToSearchResultDTO {
             ApplicationOptionSearchResultDTO dto = new ApplicationOptionSearchResultDTO();
             dto.setId(applicationOption.getId());
             dto.setName(ConverterUtil.getTextByLanguage(applicationOption.getName(), lang));
-            dto.setChildLONames(ConverterUtil.getTextsByLanguage(applicationOption.getChildLOINames(), lang));
+            dto.setChildLOINames(ConverterUtil.getTextsByLanguage(applicationOption.getChildLOINames(), lang));
             dto.setEducationDegree(applicationOption.getEducationDegree());
             return dto;
         }
