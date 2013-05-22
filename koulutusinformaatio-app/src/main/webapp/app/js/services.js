@@ -42,18 +42,23 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', function
 */
 
 service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', 'LanguageService', function($http, $timeout, $q, LanguageService) {
-    return {
-        query: function(params) {
-            var deferred = $q.defer();
-            var descriptionLanguage = LanguageService.getDescriptionLanguage();
+    var transformData = function(result) {
+        var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
+        result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
+    };
 
-            $http.get('../lo/' + params.parentId, {
+    return {
+        query: function(options) {
+            var deferred = $q.defer();
+
+            $http.get('../lo/' + options.parentId, {
             //$http.get('mock/parent-' + descriptionLanguage + '.json', {
                 params: {
-                    lang: descriptionLanguage
+                    lang: options.language
                 }
             }).
             success(function(result) {
+                transformData(result);
                 deferred.resolve(result);
             }).
             error(function(result) {
@@ -69,18 +74,30 @@ service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', 'Languag
  *  
  */
 service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'LanguageService', function($http, $timeout, $q, LanguageService) {
-    return {
-        query: function(params) {
-            var deferred = $q.defer();
-            var descriptionLanguage = LanguageService.getDescriptionLanguage();
 
-            $http.get('../lo/' + params.parentId + '/' + params.closId + '/' + params.cloiId, {
+    // TODO: could we automate data transformation somehow?
+    var transformData = function(result) {
+        var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
+        result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
+
+        var startDate = new Date(result.startDate);
+        result.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
+        result.teachingLanguage = result.teachingLanguages[0] ? result.teachingLanguages[0] : '';
+        result.formOfEducation = result.formOfEducation[0] ? result.formOfEducation[0] : '';
+    };
+
+    return {
+        query: function(options) {
+            var deferred = $q.defer();
+
+            $http.get('../lo/' + options.parentId + '/' + options.closId + '/' + options.cloiId, {
             //$http.get('mock/child-' + descriptionLanguage + '.json', {
                 params: {
-                    lang: descriptionLanguage
+                    lang: options.language
                 }
             }).
             success(function(result) {
+                transformData(result);
                 deferred.resolve(result);
             }).
             error(function(result) {
@@ -95,44 +112,37 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
 /**
  *  Service taking care of search term saving
  */
- service('SearchService', function($cookies) {
+ service('SearchService', function() {
+    var key = 'searchTerm';
     return {
         getTerm: function() {
-            return $.cookie('searchTerm');
+            return $.jStorage.get(key);
+            //return $.cookie('searchTerm');
         },
 
         setTerm: function(newTerm) {
-            $.cookie('searchTerm', newTerm);
+            //console.log(newTerm);
+            $.jStorage.set(key, newTerm);
+            //$.cookie('searchTerm', newTerm);
         }
     };
 }).
 
-service('LanguageService', function($cookies) {
+service('LanguageService', function() {
     var defaultLanguage = 'fi';
+    var key = 'language';
+
+    //console.log($);
 
     return {
         getLanguage: function() {
-            if ($.cookie('language')) {
-                return $.cookie('language');
-            } else {
-                return defaultLanguage;
-            }
+            return $.jStorage.get(key) || defaultLanguage;
+            //return $.cookie('language') || defaultLanguage;
         },
 
         setLanguage: function(language) {
-            $.cookie('language', language);
-        },
-
-        getDescriptionLanguage: function() {
-            if ($cookies.descriptionlanguage) {
-                return $.cookie('descriptionlanguage');
-            } else {
-                return defaultLanguage;
-            }
-        },
-
-        setDescriptionLanguage: function(language) {
-            $.cookie('descriptionlanguage', language);
+            $.jStorage.set(key, language);
+            //$.cookie('language', language);
         }
     };
 }).

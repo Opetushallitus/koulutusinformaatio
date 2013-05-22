@@ -63,29 +63,18 @@ public class KoulutusinformaatioObjectBuilder {
             ChildLO clo = new ChildLO();
             clo.setLoiId(childLOI.getId());
             clo.setLosId(childLOS.getId());
-            if (childLOI.getApplicationOption() != null) {
-                clo.setApplicationOption(modelMapper.map(childLOI.getApplicationOption(), ApplicationOption.class));
-            }
-            if (childLOS.getParent() != null) {
-                clo.setParent(modelMapper.map(childLOS.getParent(), ParentLORef.class));
-            }
-            if (childLOI.getRelated() != null) {
-                for (ChildLORefEntity ref : childLOI.getRelated()) {
-                   clo.getRelated().add(modelMapper.map(ref, ChildLORef.class));
-                }
-            }
-            clo.setName(convert(childLOS.getName()));
-            clo.setDegreeTitle(convert(childLOS.getDegreeTitle()));
-            clo.setQualification(convert(childLOS.getQualification()));
+            clo.setApplicationOption(convert(childLOI.getApplicationOption(), ApplicationOption.class));
+            clo.setParent(convert(childLOS.getParent(), ParentLORef.class));
+            clo.setRelated(convert(childLOI.getRelated(), ChildLORef.class));
+            clo.setName(convert(childLOS.getName(), I18nText.class));
+            clo.setDegreeTitle(convert(childLOS.getDegreeTitle(), I18nText.class));
+            clo.setQualification(convert(childLOS.getQualification(), I18nText.class));
             clo.setStartDate(childLOI.getStartDate());
-            if (childLOI.getTeachingLanguages() != null) {
-                for (CodeEntity code : childLOI.getTeachingLanguages()) {
-                    clo.getTeachingLanguages().add(modelMapper.map(code, Code.class));
-                }
-            }
-            clo.setFormOfEducation(convert(childLOI.getFormOfEducation()));
-            clo.setPrerequisite(convert(childLOI.getPrerequisite()));
-            clo.setFormOfTeaching(convert(childLOI.getFormOfTeaching()));
+            clo.setTeachingLanguages(convert(childLOI.getTeachingLanguages(), Code.class));
+            clo.setWebLinks(childLOI.getWebLinks());
+            clo.setFormOfEducation(convert(childLOI.getFormOfEducation(), I18nText.class));
+            clo.setPrerequisite(convert(childLOI.getPrerequisite(), I18nText.class));
+            clo.setFormOfTeaching(convert(childLOI.getFormOfTeaching(), I18nText.class));
             return clo;
         }
         return null;
@@ -109,20 +98,23 @@ public class KoulutusinformaatioObjectBuilder {
         return null;
     }
 
-    private List<I18nText> convert(final List<I18nTextEntity> texts) {
-        List<I18nText> list = new ArrayList<I18nText>();
-        if (texts != null) {
-            for (I18nTextEntity t: texts) {
-                list.add(convert(t));
+    private <E> List<E> convert(List<?> objects, Class<E> eClass) {
+        if (objects != null) {
+            List<E> list = new ArrayList<E>();
+            for (Object obj : objects) {
+                list.add(convert(obj, eClass));
             }
+            return list;
+        } else {
+            return null;
         }
-        return list;
     }
 
-    private I18nText convert(final I18nTextEntity i18nText) {
-        if (i18nText != null) {
-            return modelMapper.map(i18nText, I18nText.class);
+    private <E> E convert(Object obj, Class<E> eClass) {
+        if (obj != null) {
+           return modelMapper.map(obj, eClass);
+        } else {
+            return null;
         }
-        return null;
     }
 }

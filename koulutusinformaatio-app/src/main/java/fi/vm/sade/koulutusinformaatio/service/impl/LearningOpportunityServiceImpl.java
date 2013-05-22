@@ -16,10 +16,13 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+import fi.vm.sade.koulutusinformaatio.converter.ApplicationOptionToSearchResultDTO;
+import fi.vm.sade.koulutusinformaatio.converter.ChildLOToDTO;
+import fi.vm.sade.koulutusinformaatio.converter.ParentLOToDTO;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.dto.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataService;
@@ -27,9 +30,7 @@ import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Mikko Majapuro
@@ -49,123 +50,39 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     public ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(String parentId) throws ResourceNotFoundException {
         ParentLO parentLO = educationDataService.getParentLearningOpportunity(parentId);
         String lang = resolveDefaultLanguage(parentLO);
-        return convert(parentLO, lang);
+        return ParentLOToDTO.convert(parentLO, lang);
     }
 
     @Override
     public ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(String parentId, String lang) throws ResourceNotFoundException {
         ParentLO parentLO = educationDataService.getParentLearningOpportunity(parentId);
-        return convert(parentLO, lang);
+        return ParentLOToDTO.convert(parentLO, lang);
     }
 
     @Override
     public ChildLearningOpportunityDTO getChildLearningOpportunity(String parentId, String closId, String cloiId) throws ResourceNotFoundException {
         ChildLO childLO = educationDataService.getChildLearningOpportunity(closId, cloiId);
         String lang = resolveDefaultLanguage(childLO);
-        return convert(childLO, lang);
+        return ChildLOToDTO.convert(childLO, lang);
     }
 
     @Override
     public ChildLearningOpportunityDTO getChildLearningOpportunity(String parentId, String closId, String cloiId, String lang) throws ResourceNotFoundException {
         ChildLO childLO = educationDataService.getChildLearningOpportunity(closId, cloiId);
-        return convert(childLO, lang);
+        return ChildLOToDTO.convert(childLO, lang);
     }
 
-    private ParentLearningOpportunitySpecificationDTO convert(final ParentLO parentLO, final String lang) {
-        ParentLearningOpportunitySpecificationDTO parent = new ParentLearningOpportunitySpecificationDTO();
-        parent.setId(parentLO.getId());
-        parent.setName(getTextByLanguage(parentLO.getName(), lang));
-        parent.setEducationDegree(getTextByLanguage(parentLO.getEducationDegree(), lang));
-        parent.setAvailableTranslationLanguages(getAvailableTranslationLanguages(parentLO.getName()));
-        parent.setChildren(convert(parentLO.getChildRefs()));
-        parent.setProvider(convert(parentLO.getProvider(), lang));
-        parent.setStructureDiagram(getTextByLanguage(parentLO.getStructureDiagram(), lang));
-        parent.setAccessToFurtherStudies(getTextByLanguage(parentLO.getAccessToFurtherStudies(), lang));
-        parent.setGoals(getTextByLanguage(parentLO.getGoals(), lang));
-        parent.setEducationDomain(getTextByLanguage(parentLO.getEducationDomain(), lang));
-        parent.setStydyDomain(getTextByLanguage(parentLO.getStydyDomain(), lang));
-        parent.setTranslationLanguage(lang);
-        parent.setAvailableTranslationLanguages(getAvailableTranslationLanguages(parentLO.getName()));
-
-        if (parentLO.getApplicationOptions() != null) {
-            for (ApplicationOption ao : parentLO.getApplicationOptions()) {
-                parent.getApplicationOptions().add(convert(ao, lang));
+    @Override
+    public List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, String lopId) {
+        List<ApplicationOption> applicationOptions = educationDataService.findApplicationOptions(asId, lopId);
+        return Lists.transform(applicationOptions, new Function<ApplicationOption, ApplicationOptionSearchResultDTO>() {
+            @Override
+            public ApplicationOptionSearchResultDTO apply(ApplicationOption applicationOption) {
+                return ApplicationOptionToSearchResultDTO.convert(applicationOption, LANG_FI);
             }
-        }
-        return parent;
+        });
     }
 
-    private ChildLearningOpportunityDTO convert(final ChildLO childLO, final String lang) {
-        ChildLearningOpportunityDTO child = new ChildLearningOpportunityDTO();
-        child.setLosId(childLO.getLosId());
-        child.setLoiId(childLO.getLoiId());
-        child.setName(getTextByLanguage(childLO.getName(), lang));
-        child.setDegreeTitle(getTextByLanguage(childLO.getDegreeTitle(), lang));
-        child.setQualification(getTextByLanguage(childLO.getQualification(), lang));
-        child.setAvailableTranslationLanguages(getAvailableTranslationLanguages(childLO.getName()));
-        child.setApplicationOption(convert(childLO.getApplicationOption(), lang));
-        child.setStartDate(childLO.getStartDate());
-        if (childLO.getTeachingLanguages() != null) {
-            for (Code code : childLO.getTeachingLanguages()) {
-                child.getTeachingLanguages().add(code.getValue());
-            }
-        }
-        child.setRelated(convert(childLO.getRelated()));
-        if (childLO.getParent() != null) {
-            ParentLOSRefDTO parent = new ParentLOSRefDTO();
-            parent.setId(childLO.getParent().getId());
-            parent.setName(getTextByLanguage(childLO.getParent().getName(), lang));
-            child.setParent(parent);
-        }
-        child.setFormOfTeaching(getTextsByLanguage(childLO.getFormOfTeaching(), lang));
-        child.setWebLinks(childLO.getWebLinks());
-        child.setFormOfEducation(getTextsByLanguage(childLO.getFormOfEducation(), lang));
-        child.setPrerequisite(getTextByLanguage(childLO.getPrerequisite(), lang));
-        child.setTranslationLanguage(lang);
-        return child;
-    }
-
-    private ApplicationOptionDTO convert(final ApplicationOption applicationOption, final String lang) {
-        if (applicationOption != null) {
-            ApplicationOptionDTO ao = new ApplicationOptionDTO();
-            ao.setId(applicationOption.getId());
-            ao.setApplicationSystemId(applicationOption.getApplicationSystemId());
-            ao.setName(getTextByLanguage(applicationOption.getName(), lang));
-            ao.setAttachmentDeliveryDeadline(applicationOption.getAttachmentDeliveryDeadline());
-            ao.setLastYearApplicantCount(applicationOption.getLastYearApplicantCount());
-            ao.setLowestAcceptedAverage(applicationOption.getLowestAcceptedAverage());
-            ao.setLowestAcceptedScore(applicationOption.getLowestAcceptedScore());
-            ao.setStartingQuota(applicationOption.getStartingQuota());
-            return ao;
-        }
-        return null;
-    }
-
-    private List<ChildLORefDTO> convert(final List<ChildLORef> refs) {
-        List<ChildLORefDTO> childs = new ArrayList<ChildLORefDTO>();
-        if (refs != null) {
-            for (ChildLORef ref : refs) {
-                ChildLORefDTO child = new ChildLORefDTO();
-                child.setLosId(ref.getLosId());
-                child.setLoiId(ref.getLoiId());
-                child.setAsId(ref.getAsId());
-                child.setName(ref.getName());
-                childs.add(child);
-            }
-        }
-        return childs;
-    }
-
-    private LearningOpportunityProviderDTO convert(final Provider provider, final String lang) {
-        if (provider != null) {
-            LearningOpportunityProviderDTO p = new LearningOpportunityProviderDTO();
-            p.setId(provider.getId());
-            p.setName(getTextByLanguage(provider.getName(), lang));
-            p.setApplicationSystemIds(provider.getApplicationSystemIDs());
-            return p;
-        }
-        return null;
-    }
 
     private String resolveDefaultLanguage(final ParentLO parentLO) {
         if (parentLO.getName() == null || parentLO.getName().getTranslations() == null || parentLO.getName().getTranslations().containsKey(LANG_FI)) {
@@ -185,35 +102,6 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
                  }
             }
             return childLO.getTeachingLanguages().get(0).getValue().toLowerCase();
-        }
-    }
-
-    private List<String> getTextsByLanguage(final List<I18nText> list, final String lang) {
-        List<String> texts = new ArrayList<String>();
-        if (list != null) {
-            for (I18nText text : list) {
-                String value = getTextByLanguage(text, lang);
-                if (value != null) {
-                    texts.add(value);
-                }
-            }
-        }
-        return texts;
-    }
-
-    private String getTextByLanguage(final I18nText text, final String lang) {
-        if (text != null && text.getTranslations() != null && text.getTranslations().containsKey(lang)) {
-            return text.getTranslations().get(lang);
-        } else {
-            return null;
-        }
-    }
-
-    private Set<String> getAvailableTranslationLanguages(final I18nText text) {
-        if (text != null && text.getTranslations() != null) {
-            return text.getTranslations().keySet();
-        } else {
-            return null;
         }
     }
 }

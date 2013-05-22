@@ -5,7 +5,7 @@ function LanguageCtrl($scope, $location, LanguageService) {
        LanguageService.setLanguage(code);
        i18n.setLng(code);
        document.location.reload(true);
-    }
+   }
 };
 
 /**
@@ -18,6 +18,23 @@ function LanguageCtrl($scope, $location, LanguageService) {
     // launch navigation script
     $scope.initNavigation = function() {
         OPH.Common.initDropdownMenu();
+    }
+};
+
+function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService) {
+    $scope.individualizedActive = $scope.pohjakoulutus != 1;
+
+    $scope.change = function() {
+        $scope.individualizedActive = $scope.baseeducation != 1;
+
+        SearchLearningOpportunityService.query({
+            queryString: $scope.queryString,
+            locations: $scope.locations,
+            baseEducation: $scope.baseeducation,
+            individualized: $scope.individualized
+        }).then(function(result) {
+            $scope.loResult = result;
+        });
     }
 };
 
@@ -68,8 +85,9 @@ function LanguageCtrl($scope, $location, LanguageService) {
 /**
  *  Controller for info views (parent and child)
  */
- function InfoCtrl($scope, $routeParams, ParentLearningOpportunityService, ChildLearningOpportunityService, SearchService, ParentLODataService, TitleService, $location) {
+ function InfoCtrl($scope, $routeParams, $location, ParentLearningOpportunityService, ChildLearningOpportunityService, SearchService, ParentLODataService, TitleService) {
     $scope.queryString = SearchService.getTerm();
+    $scope.descriptionLanguage = 'fi';
 
     var setTitle = function(parent, child) {
         if (child) {
@@ -79,11 +97,15 @@ function LanguageCtrl($scope, $location, LanguageService) {
         }
     };
 
+    var isChild = function() {
+        return ($routeParams.closId && $routeParams.cloiId);
+    }
+
     // fetch data for parent and/or its child LO
     if ($routeParams) {
         $scope.parentId = $routeParams.parentId;
         if (!ParentLODataService.dataExists($scope.parentId)) {
-            ParentLearningOpportunityService.query({parentId: $routeParams.parentId}).then(function(result) {
+            ParentLearningOpportunityService.query({parentId: $routeParams.parentId, language: $scope.descriptionLanguage}).then(function(result) {
                 $scope.parentLO = result;
                 ParentLODataService.setParentLOData(result);
                 setTitle($scope.parentLO, $scope.childLO);
@@ -92,19 +114,32 @@ function LanguageCtrl($scope, $location, LanguageService) {
             $scope.parentLO = ParentLODataService.getParentLOData();
             setTitle($scope.parentLO, $scope.childLO);
         }
-                
-        if ($routeParams.closId && $routeParams.cloiId) {
-            ChildLearningOpportunityService.query({parentId: $routeParams.parentId, closId: $routeParams.closId, cloiId: $routeParams.cloiId}).then(function(result) {
-                $scope.childLO = result;
-                var startDate = new Date(result.startDate);
-                $scope.childLO.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
-                $scope.childLO.teachingLanguage = result.teachingLanguages[0] ? result.teachingLanguages[0] : '';
-                $scope.childLO.formOfEducation = result.formOfEducation[0] ? result.formOfEducation[0] : '';
 
+        if (isChild()) {
+            ChildLearningOpportunityService.query({parentId: $routeParams.parentId, closId: $routeParams.closId, cloiId: $routeParams.cloiId, language: $scope.descriptionLanguage}).then(function(result) {
+                $scope.childLO = result;
                 setTitle($scope.parentLO, $scope.childLO);
             }); 
         }
     }
+
+    // change description language and re-load LO data with the specified language
+    $scope.changeDescriptionLanguage = function(languageCode) {
+        $scope.descriptionLanguage = languageCode;
+
+        // parent data has to be updated every time since child views contain parent data too
+        ParentLearningOpportunityService.query({parentId: $routeParams.parentId, language: languageCode}).then(function(result) {
+            $scope.parentLO = result;
+            if (isChild()) {
+                ChildLearningOpportunityService.query({parentId: $routeParams.parentId, closId: $routeParams.closId, cloiId: $routeParams.cloiId, language: $scope.descriptionLanguage}).then(function(result) {
+                    $scope.childLO = result;
+                    setTitle($scope.parentLO, $scope.childLO);
+                });
+            } else {
+                setTitle($scope.parentLO, $scope.childLO);
+            }
+        });
+    };
 
     $scope.hasChildren = function() {
         if ($scope.parentLO && $scope.parentLO.children) {
@@ -119,6 +154,7 @@ function LanguageCtrl($scope, $location, LanguageService) {
         $location.path('/info/' + $scope.parentLO.id + '/' + child.losId + '/' + child.loiId);
     }
 
+    // redirect to parent page
     $scope.gotoParent = function() {
         $location.path('/info/' + $scope.parentLO.id);
     }
