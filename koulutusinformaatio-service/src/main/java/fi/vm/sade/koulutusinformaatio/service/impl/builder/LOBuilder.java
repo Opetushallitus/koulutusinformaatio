@@ -160,6 +160,9 @@ public class LOBuilder {
                     ao.setApplicationSystemId(hakuDTO.getOid());
                     childLOI.setApplicationOption(ao);
 
+                    // provider to ao
+                    ao.setProvider(parentLOS.getProvider());
+
                     // asid to provider
                     parentLOS.getProvider().getApplicationSystemIDs().add(hakuDTO.getOid());
 
