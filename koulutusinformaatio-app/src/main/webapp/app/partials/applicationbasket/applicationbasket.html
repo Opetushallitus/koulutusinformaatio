@@ -1,0 +1,49 @@
+<section class="content-container margin-bottom-2">
+	<div class="grid16-16">
+		
+		<div ki-breadcrumb id="breadcrumb"></div>
+		<h1 class="float-left margin-top-0">{{title}}</h1>
+		<a class="float-right" href="#" data-ki-i18n="application-basket-back"></a>
+		<div class="clear"></div>
+		<p>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla posuere, nisl eu gravida elementum, risus risus varius quam, eu rutrum lectus purus quis arcu. Donec euismod porta mi, sed imperdiet ligula sagittis et. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed ut felis sit amet ipsum eleifend rhoncus. Donec sed viverra velit. Morbi mollis pellentesque mollis.
+		</p>
+
+		<div class="application-basket">
+			<table class="margin-bottom-2">
+				<caption class="align-left"><h3>table caption</h3></caption>
+				<thead></thead>
+				<tbody>
+					<tr ng-repeat="item in memoitems">
+						<td>
+							<ul>
+								<li><span>Stadin ammattiopisto, Helsinki</span></li>
+								<li><a href="#">Sosiaali- ja terveysalan perustutkinto</a></li>
+								<li><span>Lähihoitaja</span></li>
+							</ul>
+						</td>
+						<td>
+							<ul>
+								<li ng-repeat="child in item.children"><a href="#">Kuntoutus</a></li>
+							</ul>
+						</td>
+						<td class="align-right">
+							<ul>
+								<li>Valintakokeet <span class="bold">20.10.2013</span></li>
+								<li>Kielikokeet <span class="bold">21.10.2013</span></li>
+							</ul>
+						</td>
+						<td class="basket-remove"><a class="remove" href="#"><span>Poista</span></a></td>
+					</tr>
+				</tbody>
+				<tfoot>
+				</tfoot>
+			</table>
+			<span class="float-right margin-bottom-2">Tässä haussa voit hakea enintään 5 koulutukseen</span>
+			<form>
+				<button class="primary float-right clear" type="submit"><span><span>Täytä hakulomake</span></span></button>
+			</form>
+		</div>
+	</div>
+	<div class="clear"></div>
+</section>

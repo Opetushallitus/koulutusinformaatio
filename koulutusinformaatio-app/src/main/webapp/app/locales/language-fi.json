@@ -1,6 +1,7 @@
 {
     "title-front-page": "Etusivu",
     "title-search-results": "Hakutulokset",
+    "title-application-basket": "Muistilista",
     
     "breadcrumb-search-results": "Hakutulokset",
 
@@ -74,5 +75,8 @@
 
     "language-fi": "Suomeksi",
     "language-sv": "På svenska",
-    "language-en": "In English"
+    "language-en": "In English",
+
+    "title-application-basket-content": "Muistilista (__count__)",
+    "application-basket-back": "Siirry koulutustarjonnan selailuun"
 }

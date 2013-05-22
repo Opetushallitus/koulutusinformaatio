@@ -18,6 +18,10 @@ kiApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $l
     	templateUrl: 'partials/alataso.html', 
     	controller: InfoCtrl
     });
+    $routeProvider.when('/muistilista', {
+        templateUrl: 'partials/applicationbasket/applicationbasket.html',
+        controller: ApplicationBasketCtrl
+    });
     /*
     $routeProvider.when('/info/:parentId', {
         redirectTo: '/info/:parentId/kuvaus'

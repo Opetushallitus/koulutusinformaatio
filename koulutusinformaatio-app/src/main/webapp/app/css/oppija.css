@@ -2373,16 +2373,7 @@ ul.unstyled {
 /*** Application-basket
 ************************************************/
 .application-basket {
-  background-color: #ececec;
-  margin: 0.5em;
-  position: relative;
-  overflow: hidden;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -o-border-radius: 5px;
-  -ms-border-radius: 5px;
-  border-radius: 5px;
-  display: none; }
+  position: relative; }
   .application-basket .table-container {
     margin-right: -4px;
     position: relative; }
@@ -2393,10 +2384,7 @@ ul.unstyled {
   .application-basket table {
     width: 100%;
     border-spacing: 2px 0px;
-    margin: 0px -10px 0px 0px;
-    border: none;
-    position: relative;
-    left: -2px; }
+    border: none; }
   .application-basket thead tr th,
   .application-basket thead tr td,
   .application-basket tbody tr td {
@@ -2431,6 +2419,9 @@ ul.unstyled {
   .application-basket thead tr td:last-child,
   .application-basket tbody tr td:last-child {
     box-shadow: inset -8px 0px 4px -8px #a9a9a9; }
+  .application-basket thead tr td.basket-remove,
+  .application-basket tbody tr td.basket-remove {
+    width: 1px; }
   .application-basket tfoot tr td {
     border: none;
     vertical-align: top;

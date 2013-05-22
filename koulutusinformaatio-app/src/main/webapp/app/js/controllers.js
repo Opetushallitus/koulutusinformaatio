@@ -38,6 +38,14 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
     }
 };
 
+function ApplicationBasketCtrl($scope, $routeParams, TitleService) {
+    var title = i18n.t('title-application-basket');
+    TitleService.setTitle(title);
+
+    $scope.memoitems = [{name: 'name1', children: [{name: 'cname1'}, {name: 'cname2'}]}, {name: 'name2'}];
+    $scope.title = i18n.t('title-application-basket-content', {count: 3});
+};
+
 /**
  *  Controller for search functionality 
  */
