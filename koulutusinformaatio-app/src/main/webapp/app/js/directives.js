@@ -40,7 +40,7 @@
         link: function(scope, element, attrs) {
             scope.label = i18n.t('description-language-selection');
             scope.isChild = ($routeParams.closId && $routeParams.cloiId) ? true : false;
-            
+
             scope.$watch('childLO', function(data) {
                 scope.hasMultipleTranslations = scope.childLO && scope.childLO.availableTranslationLanguages.length >= 1;    
             });
