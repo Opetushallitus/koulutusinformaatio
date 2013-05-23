@@ -34,6 +34,7 @@ public class ApplicationOptionDTO {
     private Double lowestAcceptedAverage;
     private Date attachmentDeliveryDeadline;
     private Integer lastYearApplicantCount;
+    private boolean sora;
 
     public String getId() {
         return id;
@@ -97,5 +98,13 @@ public class ApplicationOptionDTO {
 
     public void setLastYearApplicantCount(Integer lastYearApplicantCount) {
         this.lastYearApplicantCount = lastYearApplicantCount;
+    }
+
+    public boolean isSora() {
+        return sora;
+    }
+
+    public void setSora(boolean sora) {
+        this.sora = sora;
     }
 }

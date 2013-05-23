@@ -31,6 +31,8 @@ public class ApplicationOptionSearchResultDTO {
     private String name;
     private String educationDegree;
     private List<String> childLONames = new ArrayList<String>();
+    private boolean sora = false;
+    private String educationLanguage;
 
     public String getId() {
         return id;
@@ -62,5 +64,21 @@ public class ApplicationOptionSearchResultDTO {
 
     public void setChildLONames(List<String> childLONames) {
         this.childLONames = childLONames;
+    }
+
+    public boolean isSora() {
+        return sora;
+    }
+
+    public void setSora(boolean sora) {
+        this.sora = sora;
+    }
+
+    public String getEducationLanguage() {
+        return educationLanguage;
+    }
+
+    public void setEducationLanguage(String educationLanguage) {
+        this.educationLanguage = educationLanguage;
     }
 }

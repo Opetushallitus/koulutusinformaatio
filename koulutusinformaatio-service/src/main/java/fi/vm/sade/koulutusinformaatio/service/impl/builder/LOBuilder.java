@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl.builder;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import fi.vm.sade.koulutusinformaatio.domain.*;
@@ -154,6 +155,10 @@ public class LOBuilder {
                     HakuDTO hakuDTO = hakukohdeResource.getHakuByHakukohdeOID(aoId);
                     childLOI.setApplicationSystemId(hakuDTO.getOid());
                     ao.setApplicationSystemId(hakuDTO.getOid());
+
+                    if (!Strings.isNullOrEmpty(hakukohdeDTO.getSoraKuvausKoodiUri())) {
+                        ao.setSora(true);
+                    }
                     childLOI.setApplicationOption(ao);
 
                     // provider to ao

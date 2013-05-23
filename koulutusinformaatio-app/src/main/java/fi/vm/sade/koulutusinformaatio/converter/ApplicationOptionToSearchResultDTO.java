@@ -31,6 +31,7 @@ public class ApplicationOptionToSearchResultDTO {
             dto.setName(ConverterUtil.getTextByLanguage(applicationOption.getName(), lang));
             dto.setChildLONames(ConverterUtil.getTextsByLanguage(applicationOption.getChildLONames(), lang));
             dto.setEducationDegree(applicationOption.getEducationDegree());
+            dto.setSora(applicationOption.isSora());
             return dto;
         }
         return null;

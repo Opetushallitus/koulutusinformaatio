@@ -41,6 +41,8 @@ public class ApplicationOption {
     private Date attachmentDeliveryDeadline;
     // edellisenVuodenHakijatLkm
     private Integer lastYearApplicantCount;
+    // onko soravaatimuksia
+    private boolean sora;
 
     public String getId() {
         return id;
@@ -128,5 +130,13 @@ public class ApplicationOption {
 
     public void setLastYearApplicantCount(Integer lastYearApplicantCount) {
         this.lastYearApplicantCount = lastYearApplicantCount;
+    }
+
+    public boolean isSora() {
+        return sora;
+    }
+
+    public void setSora(boolean sora) {
+        this.sora = sora;
     }
 }
