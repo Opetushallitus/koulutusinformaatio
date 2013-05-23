@@ -92,6 +92,17 @@ public class KoodistoServiceImpl implements KoodistoService {
         return results;
     }
 
+    @Override
+    public Code searchFirstCode(String koodiUri) throws KoodistoException {
+        LOGGER.debug("search first code: " + koodiUri);
+        return searchCodes(koodiUri).get(0);
+    }
+
+    @Override
+    public String searchFirstCodeValue(String koodiUri) throws KoodistoException {
+        return searchFirstCode(koodiUri).getValue();
+    }
+
     @Cacheable(cacheName = "koodiCache")
     private List<KoodiType> searchKoodiTypes(String koodiUri) throws KoodistoException {
         if (koodiUri != null && pattern.matcher(koodiUri).matches()) {

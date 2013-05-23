@@ -36,6 +36,7 @@ public class ApplicationOptionToDTO {
             ao.setLowestAcceptedScore(applicationOption.getLowestAcceptedScore());
             ao.setStartingQuota(applicationOption.getStartingQuota());
             ao.setSora(applicationOption.isSora());
+            ao.setEducationDegree(applicationOption.getEducationDegree());
             return ao;
         }
         return null;

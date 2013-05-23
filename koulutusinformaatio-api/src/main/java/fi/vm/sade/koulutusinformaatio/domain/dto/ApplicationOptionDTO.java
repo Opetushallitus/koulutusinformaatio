@@ -35,6 +35,7 @@ public class ApplicationOptionDTO {
     private Date attachmentDeliveryDeadline;
     private Integer lastYearApplicantCount;
     private boolean sora;
+    private String educationDegree;
 
     public String getId() {
         return id;
@@ -106,5 +107,13 @@ public class ApplicationOptionDTO {
 
     public void setSora(boolean sora) {
         this.sora = sora;
+    }
+
+    public String getEducationDegree() {
+        return educationDegree;
+    }
+
+    public void setEducationDegree(String educationDegree) {
+        this.educationDegree = educationDegree;
     }
 }

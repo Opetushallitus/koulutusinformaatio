@@ -67,5 +67,19 @@ public interface KoodistoService {
      */
     List<Code> searchCodesMultiple(final List<String> koodiUri) throws KoodistoException;
 
+    /**
+     * Search codes from koodisto service by given uri, returns the first search result
+     * @param koodiUri koodi uri
+     * @return Code object
+     * @throws KoodistoException
+     */
+    Code searchFirstCode(final String koodiUri) throws KoodistoException;
 
+    /**
+     * Search codes from koodisto service by given uri, returns the first search result value
+     * @param koodiUri
+     * @return
+     * @throws KoodistoException
+     */
+    String searchFirstCodeValue(final String koodiUri) throws KoodistoException;
 }
