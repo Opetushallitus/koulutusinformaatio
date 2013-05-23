@@ -1,6 +1,6 @@
 /*  Application module */
 
-var kiApp = angular.module('kiApp', ['kiApp.services', 'kiApp.directives', 'ngCookies']);
+var kiApp = angular.module('kiApp', ['kiApp.services', 'kiApp.directives']);
 kiApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
 	$routeProvider.when('/index/', {
 		templateUrl: 'partials/etusivu.html', 
@@ -57,6 +57,6 @@ var OPH = OPH || {};
 
 OPH.Common = {
     initDropdownMenu: function() {
-        dropDownMenu.build();
+        //dropDownMenu.build();
     }
 };

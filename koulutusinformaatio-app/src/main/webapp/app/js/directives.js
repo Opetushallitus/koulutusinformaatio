@@ -2,25 +2,44 @@
 
  angular.module('kiApp.directives', []).
 
- directive('kiLanguageRibbon', ['$location', 'LanguageService', 'ParentLearningOpportunityService', function($location, LanguageService, ParentLearningOpportunityService) {
+/**
+ *  Creates and controls the location filter element
+ */
+ directive('kiLocationFilter', function() {
+    return {
+        restrict: 'E,A',
+        templateUrl: 'partials/locationFilter.html',
+
+        link: function(scope, element, attrs) {
+            scope.locations = [];
+
+            scope.remove = function(element) {
+                scope.locations.splice(scope.locations.indexOf(element), 1);
+                scope.change();
+            }
+
+            scope.add = function() {
+                if (scope.location && scope.locations.indexOf(scope.location) < 0) {
+                    scope.locations.push(scope.location);
+                    scope.change();
+                }
+            }
+        }
+    };
+ }).
+
+/**
+ *  Creates and controls language selector for description language
+ */
+ directive('kiLanguageRibbon', ['$routeParams', function($routeParams) {
     return {
         restrict: 'E,A',
         templateUrl: 'partials/languageRibbon.html',
-        
-        link: function(scope, element, attrs) {
-            scope.descriptionLanguageClass = function(languageCode) {
-                if (LanguageService.getDescriptionLanguage() == languageCode) {
-                    return 'disabled';
-                } else {
-                    return '';
-                }
-            };
 
-            scope.changeDescriptionLanguage = function(languageCode) {
-                LanguageService.setDescriptionLanguage(languageCode);
-                //var curPath = $location.search('lang', languageCode);
-                document.location.reload(true);
-            };
+        link: function(scope, element, attrs) {
+            scope.label = i18n.t('description-language-selection');
+            scope.isChild = ($routeParams.closId && $routeParams.cloiId) ? true : false;
+            scope.hasMultipleTranslations = scope.isChild ? scope.childLO.availableTranslationLanguages.length >= 1 : scope.parentLO.availableTranslationLanguages.length >= 1;
         }
     };
  }]).
@@ -31,7 +50,7 @@
   directive('kiSiblingRibbon', ['$location', '$routeParams', function($location, $routeParams) {
     return {
         restrict: 'E,A',
-        template: '<a ng-repeat="relatedChild in childLO.related" ng-click="changeChild(relatedChild)" ng-class="siblingClass(relatedChild)">{{relatedChild.name}}</a>',
+        template: '<div class"ribbon-content"><a ng-repeat="relatedChild in childLO.related" ng-click="changeChild(relatedChild)" ng-class="siblingClass(relatedChild)">{{relatedChild.name}}</a></div>',
         link: function(scope, element, attrs) {
 
             scope.siblingClass = function(sibling) {
@@ -51,7 +70,7 @@
 
 
 /**
- *  Creates and controls the breadcrumb 
+ *  Creates and controls the breadcrumb
  */
  directive('kiBreadcrumb', ['$location', 'SearchService', function($location, SearchService) {
     return {
@@ -120,6 +139,9 @@ directive('renderTextBlock', function() {
                     $(element).empty();
                     var titleElement = createTitleElement(title, attrs.anchor, attrs.level);
                     element.append(titleElement);
+
+                    // replace line feed with <br>
+                    //content = content.replace(/(\r\n|\n|\r)/g,"<br />");
                     element.append(content);
                     //var contentElement = $('<p></p>');
                     //contentElement.append(content);

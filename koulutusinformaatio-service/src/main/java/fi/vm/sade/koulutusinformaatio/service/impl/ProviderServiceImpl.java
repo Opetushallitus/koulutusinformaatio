@@ -17,19 +17,19 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.service.OrganisaatioService;
+import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.organisaatio.resource.OrganisaatioResource;
 import org.springframework.core.convert.ConversionService;
 
 /**
  * @author Hannu Lyytikainen
  */
-public class OrganisaatioServiceImpl implements OrganisaatioService {
+public class ProviderServiceImpl implements ProviderService {
 
     private OrganisaatioResource organisaatioResource;
     private ConversionService conversionService;
 
-    public OrganisaatioServiceImpl(OrganisaatioResource organisaatioResource, ConversionService conversionService) {
+    public ProviderServiceImpl(OrganisaatioResource organisaatioResource, ConversionService conversionService) {
         this.organisaatioResource = organisaatioResource;
         this.conversionService = conversionService;
     }

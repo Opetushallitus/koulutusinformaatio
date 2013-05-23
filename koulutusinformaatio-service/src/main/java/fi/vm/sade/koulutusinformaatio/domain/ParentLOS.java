@@ -16,8 +16,11 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
+import com.google.common.collect.Sets;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Parent level learning opportunity specification.
@@ -28,8 +31,9 @@ public class ParentLOS {
 
     private String id;
     private I18nText name;
+    private List<ParentLOI> lois;
     private List<ChildLOS> children = new ArrayList<ChildLOS>();
-    private List<ApplicationOption> applicationOptions = new ArrayList<ApplicationOption>();
+    private Set<ApplicationOption> applicationOptions = Sets.newHashSet();
     private Provider provider;
     // rakenne
     private I18nText structureDiagram;
@@ -44,11 +48,11 @@ public class ParentLOS {
     // koulutusaste, Ammatillinen koulutus
     private I18nText educationDegree;
 
-    public List<ApplicationOption> getApplicationOptions() {
+    public Set<ApplicationOption> getApplicationOptions() {
         return applicationOptions;
     }
 
-    public void setApplicationOptions(List<ApplicationOption> applicationOptions) {
+    public void setApplicationOptions(Set<ApplicationOption> applicationOptions) {
         this.applicationOptions = applicationOptions;
     }
 
@@ -66,6 +70,14 @@ public class ParentLOS {
 
     public void setName(I18nText name) {
         this.name = name;
+    }
+
+    public List<ParentLOI> getLois() {
+        return lois;
+    }
+
+    public void setLois(List<ParentLOI> lois) {
+        this.lois = lois;
     }
 
     public List<ChildLOS> getChildren() {
