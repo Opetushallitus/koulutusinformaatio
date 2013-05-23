@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl.builder;
 
+import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -27,10 +28,7 @@ import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.tarjonta.service.resources.HakukohdeResource;
 import fi.vm.sade.tarjonta.service.resources.KomoResource;
 import fi.vm.sade.tarjonta.service.resources.KomotoResource;
-import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
-import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
-import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
-import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
+import fi.vm.sade.tarjonta.service.resources.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 
@@ -86,7 +84,13 @@ public class LOBuilder {
         parentLOS.setStydyDomain(koodistoService.searchFirst(parentKomo.getOpintoalaUri()));
         parentLOS.setEducationDegree(koodistoService.searchFirst(parentKomo.getKoulutusAsteUri()));
 
-        List<String> parentKomotoOids = komoResource.getKomotosByKomoOID(parentKomo.getOid(), 0, 0);
+        List<String> parentKomotoOids = Lists.transform(komoResource.getKomotosByKomoOID(parentKomo.getOid(), Integer.MAX_VALUE, 0),
+                new Function<OidRDTO, String>() {
+                    @Override
+                    public String apply(fi.vm.sade.tarjonta.service.resources.dto.OidRDTO oidRDTO) {
+                        return oidRDTO.getOid();
+                    }
+                });
         if (parentKomotoOids == null || parentKomotoOids.size() == 0) {
             throw new TarjontaParseException("No instances found in parent LOS " +  parentKomo.getOid());
         }
@@ -132,11 +136,23 @@ public class LOBuilder {
 
             // loi
             List<ChildLOI> childLOIs = Lists.newArrayList();
-            List<String> childKomotoOids = komoResource.getKomotosByKomoOID(childKomoOid, 0, 0);
+            List<String> childKomotoOids = Lists.transform(komoResource.getKomotosByKomoOID(childKomoOid, Integer.MAX_VALUE, 0),
+                    new Function<OidRDTO, String>() {
+                        @Override
+                        public String apply(fi.vm.sade.tarjonta.service.resources.dto.OidRDTO oidRDTO) {
+                            return oidRDTO.getOid();
+                        }
+                    });
 
             for (String childKomotoOid : childKomotoOids) {
 
-                List<String> aoIds = komotoResource.getHakukohdesByKomotoOID(childKomotoOid);
+                List<String> aoIds = Lists.transform(komotoResource.getHakukohdesByKomotoOID(childKomotoOid),
+                        new Function<OidRDTO, String>() {
+                            @Override
+                            public String apply(fi.vm.sade.tarjonta.service.resources.dto.OidRDTO oidRDTO) {
+                                return oidRDTO.getOid();
+                            }
+                        });
 
                 if (aoIds != null && aoIds.size() > 0) {
                     ChildLOI childLOI = new ChildLOI();
@@ -165,7 +181,13 @@ public class LOBuilder {
                     ao.setProvider(parentLOS.getProvider());
 
                     // set child loi names to application option
-                    List<String> komotosByHakukohdeOID = hakukohdeResource.getKomotosByHakukohdeOID(aoId);
+                    List<String> komotosByHakukohdeOID = Lists.transform(hakukohdeResource.getKomotosByHakukohdeOID(aoId), new Function<OidRDTO, String>() {
+                        @Override
+                        public String apply(fi.vm.sade.tarjonta.service.resources.dto.OidRDTO oidRDTO) {
+                            return oidRDTO.getOid();
+                        }
+                    });
+
                     for (String s : komotosByHakukohdeOID) {
                         KomoDTO komoByKomotoOID = komotoResource.getKomoByKomotoOID(s);
                         ao.getChildLONames().add(new I18nText(komoByKomotoOID.getNimi()));

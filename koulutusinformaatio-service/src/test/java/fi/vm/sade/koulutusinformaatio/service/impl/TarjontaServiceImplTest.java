@@ -72,12 +72,12 @@ public class TarjontaServiceImplTest {
         when(conversionService.convert(any(KomoDTO.class), eq(ParentLOS.class))).thenReturn(converter.convert(komoDTO));
 
         komoResource = mock(KomoResource.class);
-        when(komoResource.search(null, 0, 0, null, null)).thenReturn(IDS);
+        //when(komoResource.search(null, 0, 0, null, null)).thenReturn(IDS);
 
         when(komoResource.getByOID(ID_1)).thenReturn(komoDTO);
 
         hakukohdeResource = mock(HakukohdeResource.class);
-        when(hakukohdeResource.search(null, 0, 0, null, null)).thenReturn(IDS);
+        //when(hakukohdeResource.search(null, 0, 0, null, null)).thenReturn(IDS);
 
         komotoResource = mock(KomotoResource.class);
 

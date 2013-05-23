@@ -16,12 +16,15 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.koulutusinformaatio.service.impl.builder.LOBuilder;
 import fi.vm.sade.tarjonta.service.resources.KomoResource;
+import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,6 +52,11 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     @Override
     public List<String> listParentLearnignOpportunityOids() {
-        return komoResource.search(null, 0, 0, null, null);
+        return Lists.transform(komoResource.search(null, Integer.MAX_VALUE, 0, null, null), new Function<OidRDTO, String>() {
+            @Override
+            public String apply(fi.vm.sade.tarjonta.service.resources.dto.OidRDTO oidRDTO) {
+                return oidRDTO.getOid();
+            }
+        });
     }
 }
