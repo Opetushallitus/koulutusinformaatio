@@ -175,6 +175,7 @@ public class LOBuilder {
                     if (!Strings.isNullOrEmpty(hakukohdeDTO.getSoraKuvausKoodiUri())) {
                         ao.setSora(true);
                     }
+
                     childLOI.setApplicationOption(ao);
 
                     // provider to ao
