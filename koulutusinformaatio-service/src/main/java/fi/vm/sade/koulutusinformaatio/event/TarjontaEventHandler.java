@@ -33,7 +33,9 @@ public class TarjontaEventHandler implements EventHandler {
         event.getCategory() + "\n" +
         event.toString());
         try {
-            this.updateService.updateAllEducationData();
+            //TODO how to update education data when event received?
+            //update functionality disabled to prevent the full data update on every event
+            //this.updateService.updateAllEducationData();
         } catch (Exception e) {
             LOGGER.error("Data update failed: " + e.getMessage());
         }
