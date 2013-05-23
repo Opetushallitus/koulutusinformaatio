@@ -43,6 +43,8 @@ public class ApplicationOption {
     private Integer lastYearApplicantCount;
     // onko soravaatimuksia
     private boolean sora;
+    // opetuskielikoodit : [FI, SV]
+    private List<String> teachingLanguages;
 
     public String getId() {
         return id;
@@ -138,5 +140,13 @@ public class ApplicationOption {
 
     public void setSora(boolean sora) {
         this.sora = sora;
+    }
+
+    public List<String> getTeachingLanguages() {
+        return teachingLanguages;
+    }
+
+    public void setTeachingLanguages(List<String> teachingLanguages) {
+        this.teachingLanguages = teachingLanguages;
     }
 }

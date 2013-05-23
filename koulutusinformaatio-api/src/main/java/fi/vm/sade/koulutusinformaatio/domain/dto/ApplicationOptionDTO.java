@@ -19,6 +19,7 @@ package fi.vm.sade.koulutusinformaatio.domain.dto;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Hannu Lyytikainen
@@ -36,6 +37,7 @@ public class ApplicationOptionDTO {
     private Integer lastYearApplicantCount;
     private boolean sora;
     private String educationDegree;
+    private List<String> teachingLanguages;
 
     public String getId() {
         return id;
@@ -115,5 +117,13 @@ public class ApplicationOptionDTO {
 
     public void setEducationDegree(String educationDegree) {
         this.educationDegree = educationDegree;
+    }
+
+    public List<String> getTeachingLanguages() {
+        return teachingLanguages;
+    }
+
+    public void setTeachingLanguages(List<String> teachingLanguages) {
+        this.teachingLanguages = teachingLanguages;
     }
 }

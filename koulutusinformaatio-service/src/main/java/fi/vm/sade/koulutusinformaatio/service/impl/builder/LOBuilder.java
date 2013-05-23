@@ -179,6 +179,8 @@ public class LOBuilder {
                     childLOI.setId(komotoDTO.getOid());
                     //education degree code value
                     ao.setEducationDegree(koodistoService.searchFirstCodeValue(komotoDTO.getKoulutusAsteUri()));
+                    //set teaching language codes
+                    ao.setTeachingLanguages(koodistoService.searchCodeValuesMultiple(komotoDTO.getOpetuskieletUris()));
                     // how to get the name?
                     //childLOI.setName(new I18nText(komotoDTO.getNimi()));
                     childLOI.setName(childLOS.getName());

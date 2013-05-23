@@ -103,6 +103,17 @@ public class KoodistoServiceImpl implements KoodistoService {
         return searchFirstCode(koodiUri).getValue();
     }
 
+    @Override
+    public List<String> searchCodeValuesMultiple(List<String> koodiUri) throws KoodistoException {
+        List<Code> results = searchCodesMultiple(koodiUri);
+        return Lists.transform(results, new Function<Code, String>() {
+            @Override
+            public String apply(fi.vm.sade.koulutusinformaatio.domain.Code code) {
+                return code.getValue();
+            }
+        });
+    }
+
     @Cacheable(cacheName = "koodiCache")
     private List<KoodiType> searchKoodiTypes(String koodiUri) throws KoodistoException {
         if (koodiUri != null && pattern.matcher(koodiUri).matches()) {

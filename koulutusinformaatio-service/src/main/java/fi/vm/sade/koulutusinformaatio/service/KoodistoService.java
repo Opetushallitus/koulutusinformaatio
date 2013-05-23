@@ -82,4 +82,6 @@ public interface KoodistoService {
      * @throws KoodistoException
      */
     String searchFirstCodeValue(final String koodiUri) throws KoodistoException;
+
+    List<String> searchCodeValuesMultiple(final List<String> koodiUri) throws KoodistoException;
 }

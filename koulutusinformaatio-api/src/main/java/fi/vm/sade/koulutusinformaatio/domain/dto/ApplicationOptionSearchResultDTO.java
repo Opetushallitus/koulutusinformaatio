@@ -32,7 +32,7 @@ public class ApplicationOptionSearchResultDTO {
     private String educationDegree;
     private List<String> childLONames = new ArrayList<String>();
     private boolean sora = false;
-    private String educationLanguage;
+    private List<String> teachingLanguages;
 
     public String getId() {
         return id;
@@ -74,11 +74,11 @@ public class ApplicationOptionSearchResultDTO {
         this.sora = sora;
     }
 
-    public String getEducationLanguage() {
-        return educationLanguage;
+    public List<String> getTeachingLanguages() {
+        return teachingLanguages;
     }
 
-    public void setEducationLanguage(String educationLanguage) {
-        this.educationLanguage = educationLanguage;
+    public void setTeachingLanguages(List<String> teachingLanguages) {
+        this.teachingLanguages = teachingLanguages;
     }
 }

@@ -46,6 +46,7 @@ public class ApplicationOptionEntity {
     private Date attachmentDeliveryDeadline;
     private Integer lastYearApplicantCount;
     private boolean sora;
+    private List<String> teachingLanguages;
 
     public ApplicationOptionEntity() {
 
@@ -145,5 +146,13 @@ public class ApplicationOptionEntity {
 
     public void setSora(boolean sora) {
         this.sora = sora;
+    }
+
+    public List<String> getTeachingLanguages() {
+        return teachingLanguages;
+    }
+
+    public void setTeachingLanguages(List<String> teachingLanguages) {
+        this.teachingLanguages = teachingLanguages;
     }
 }

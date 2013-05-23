@@ -37,6 +37,7 @@ public class ApplicationOptionToDTO {
             ao.setStartingQuota(applicationOption.getStartingQuota());
             ao.setSora(applicationOption.isSora());
             ao.setEducationDegree(applicationOption.getEducationDegree());
+            ao.setTeachingLanguages(applicationOption.getTeachingLanguages());
             return ao;
         }
         return null;
