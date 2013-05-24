@@ -28,6 +28,7 @@ import fi.vm.sade.tarjonta.service.resources.HakukohdeResource;
 import fi.vm.sade.tarjonta.service.resources.KomoResource;
 import fi.vm.sade.tarjonta.service.resources.KomotoResource;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
+import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -88,7 +89,7 @@ public class TarjontaServiceImplTest {
 
     @Test
     public void testListParentLOOids() {
-        List<String> oids = tarjontaService.listParentLearnignOpportunityOids();
+        List<OidRDTO> oids = tarjontaService.listParentLearnignOpportunityOids();
         assertEquals(3, oids.size());
     }
 
