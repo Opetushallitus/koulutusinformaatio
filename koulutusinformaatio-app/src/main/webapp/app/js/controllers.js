@@ -35,15 +35,53 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
         }).then(function(result) {
             $scope.loResult = result;
         });
-    }
+    };
 };
 
-function ApplicationBasketCtrl($scope, $routeParams, TitleService) {
+function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, ApplicationBasketService) {
     var title = i18n.t('title-application-basket');
     TitleService.setTitle(title);
 
-    $scope.memoitems = [{name: 'name1', children: [{name: 'cname1'}, {name: 'cname2'}]}, {name: 'name2'}];
+    ApplicationBasketService.query().then(function(result) {
+        $scope.applicationItems = result;
+    });
+
     $scope.title = i18n.t('title-application-basket-content', {count: 3});
+
+    $scope.removeItem = function(aoId) {
+        ApplicationBasketService.removeItem(aoId);
+
+        var items = $scope.applicationItems;
+
+        for (var i = 0; i < items.length; i++) {
+            var item = items[i];
+            for (var j = 0; j < item.applicationOptions.length; j++) {
+                var ao = item.applicationOptions[j];
+                if (ao.id == aoId) {
+                    item.applicationOptions.splice(j, 1);
+                    break;
+                }
+            }
+
+            if (item.applicationOptions.length <= 0) {
+                items.splice(i, 1);
+            }
+        }
+    };
+
+    $scope.gotoParent = function(id) {
+        $location.path('/info/' + id);
+    };
+
+    $scope.gotoChild = function(parentId, losId, loiId) {
+        $location.path('/info/' + parentId + '/' + losId + '/' + loiId);
+    }
+};
+
+function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
+    $scope.addToBasket = function(aoId) {
+        ApplicationBasketService.addItem(aoId);
+    }
 };
 
 /**
