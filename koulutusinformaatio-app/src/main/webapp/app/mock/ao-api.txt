@@ -1,0 +1,46 @@
+[
+	{
+		"applicationsSystemId": "", 		// haun id
+		"applicationSystemName": "", 		// haun nimi
+		"applicationMaxCount": "",			// haussa haettavien kohteiden maksimimäärä
+		"applicationStartDate": "", 		// haun alkamispäivä (saadaanko tämä jostain?)
+		"applicationEndDate": "", 			// haun päättymispäivä (saadaanko tämä jostain?)
+
+		"applicationOptions": [
+			{
+				"id": "",							// hakukohteen id
+				"mame": "",							// hakukohteen nimi
+				"educationDegree": "",
+				"providerName": "", 				// koulutuksen tarjoajan nimi
+				"providerId": "",					// koulutuksen tarjoajan id
+
+
+				"providerLocation": "", 			// koulutuksen tarjoajan sijainti
+				"id": "", 							// tutkinnon id (vai tarvitaanko los & loi)
+				"name": "",							// tutkinnon nimi
+				"children" : [
+					{
+						"losId": "", 				// koulutusmoduulin id
+						"loiId": "", 				// koulutusmoduulin toteutuksen id
+						"name": "", 				// koulutusmoduulin nimi
+					},
+					.
+					.
+					.
+				],
+				"qualification": "", 				// ammattinimike
+				"baseEducationRequirement": "", 	// pohjakoulutusvaatimus
+
+				"deadlines": [						// hakuun liittyvät päivämäärät ja takarajat (kielikoe, liitteet, pääsykoe)
+					{
+						"name": "",					// esim. kielikoe
+						"date": "" 					// kielikokeen pvm
+					},
+					.
+					.
+					.
+				]
+			}
+		]
+	}
+]
