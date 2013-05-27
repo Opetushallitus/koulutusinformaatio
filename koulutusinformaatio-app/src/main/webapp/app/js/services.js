@@ -124,13 +124,15 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
     var key = 'searchTerm';
     return {
         getTerm: function() {
-            return $.jStorage.get(key);
+            return $.cookie(key);
+            //return $.jStorage.get(key);
             //return $.cookie('searchTerm');
         },
 
         setTerm: function(newTerm) {
+            $.cookie(key, newTerm, {useLocalStorage: false});
             //console.log(newTerm);
-            $.jStorage.set(key, newTerm);
+            //$.jStorage.set(key, newTerm);
             //$.cookie('searchTerm', newTerm);
         }
     };
@@ -144,12 +146,14 @@ service('LanguageService', function() {
 
     return {
         getLanguage: function() {
-            return $.jStorage.get(key) || defaultLanguage;
+            return $.cookie(key) || defaultLanguage;
+            //return $.jStorage.get(key) || defaultLanguage;
             //return $.cookie('language') || defaultLanguage;
         },
 
         setLanguage: function(language) {
-            $.jStorage.set(key, language);
+            $.cookie(key, language, {useLocalStorage: false});
+            //$.jStorage.set(key, language);
             //$.cookie('language', language);
         }
     };
@@ -204,4 +208,53 @@ service('TranslationService', function() {
             }
         }
     }
-});
+})
+
+.service('ApplicationBasketService', ['$http', '$q', function($http, $q) {
+    var key = 'basket';
+    return {
+        addItem: function(aoId) {
+
+            var current = $.cookie(key);
+
+            if (current) {
+                current = JSON.parse(current);
+                current.push(aoId);
+            } else {
+                current = [];
+                current.push(aoId);
+            }
+
+            $.cookie(key, JSON.stringify(current), {useLocalStorage: false, maxChunkSize: 2000, maxNumberOfCookies: 20});
+        },
+
+        removeItem: function(aoId) {
+            var value = $.cookie(key);
+            value = JSON.parse(value);
+
+            var index = value.indexOf(aoId);
+            value.splice(index, 1);
+
+            $.cookie(key, JSON.stringify(value), {useLocalStorage: false, maxChunkSize: 2000, maxNumberOfCookies: 20});
+        },
+
+        getItems: function() {
+            return JSON.parse($.cookie(key));
+        },
+
+        query: function(params) {
+            var deferred = $q.defer();
+
+            //$http.get('../lo/search/'  params.queryString).
+            $http.get('mock/ao.json').
+            success(function(result) {
+                deferred.resolve(result);
+            }).
+            error(function(result) {
+                deferred.reject(result);
+            });
+
+            return deferred.promise;
+        }
+    }
+}]);
