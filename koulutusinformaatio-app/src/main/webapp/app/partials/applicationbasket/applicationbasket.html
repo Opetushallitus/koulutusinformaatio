@@ -9,45 +9,37 @@
 			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla posuere, nisl eu gravida elementum, risus risus varius quam, eu rutrum lectus purus quis arcu. Donec euismod porta mi, sed imperdiet ligula sagittis et. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed ut felis sit amet ipsum eleifend rhoncus. Donec sed viverra velit. Morbi mollis pellentesque mollis.
 		</p>
 
-		<div class="application-basket" ng-repeat="as in applicationItems">
+		<div class="application-basket">
 			<table class="margin-bottom-2">
-				<colgroup>
-					<col style="width: 33%;"></col>
-					<col style="width: 47%;"></col>
-				</colgroup>
-				<caption class="align-left"><h3>{{as.applicationSystemName}} <span data-ki-timestamp="{{as.applicationStartDate}}"></span> - <span data-ki-timestamp="{{as.applicationEndDate}}"></span></h3></caption>
+				<caption class="align-left"><h3>table caption</h3></caption>
 				<thead></thead>
 				<tbody>
-					<tr ng-repeat="item in as.applicationOptions">
+					<tr ng-repeat="item in memoitems">
 						<td>
 							<ul>
-								<li>
-									<h3 class="margin-top-0">
-										<span class="block">{{item.providerName}}, {{item.providerLocation}}</span>
-										<a ng-click="gotoParent(item.id)">{{item.name}}</a>
-									</h3>
-								</li>
-								<li><span>{{item.qualification}}</span></li>
-								<li><span>{{item.baseEducationRequirement}}</span></li>
+								<li><span>Stadin ammattiopisto, Helsinki</span></li>
+								<li><a href="#">Sosiaali- ja terveysalan perustutkinto</a></li>
+								<li><span>Lähihoitaja</span></li>
 							</ul>
 						</td>
 						<td>
 							<ul>
-								<li ng-repeat="child in item.children"><a ng-click="gotoChild(item.id, child.losId, child.loiId)">{{child.name}}</a></li>
+								<li ng-repeat="child in item.children"><a href="#">Kuntoutus</a></li>
 							</ul>
 						</td>
 						<td class="align-right">
 							<ul>
-								<li ng-repeat="dl in item.deadlines">{{dl.name}}<span class="bold margin-left-2">{{dl.date}}</span></li>
+								<li>Valintakokeet <span class="bold">20.10.2013</span></li>
+								<li>Kielikokeet <span class="bold">21.10.2013</span></li>
 							</ul>
 						</td>
-						<td class="basket-remove"><a class="remove" ng-click="removeItem(item.id)"><span>Poista</span></a></td>
+						<td class="basket-remove"><a class="remove" href="#"><span>Poista</span></a></td>
 					</tr>
 				</tbody>
 				<tfoot>
 				</tfoot>
 			</table>
-			<span class="float-right margin-bottom-2">Tässä haussa voit hakea enintään {{as.applicationMaxCount}} koulutukseen</span>
+			<span class="float-right margin-bottom-2">Tässä haussa voit hakea enintään 5 koulutukseen</span>
 			<form>
 				<button class="primary float-right clear" type="submit"><span><span>Täytä hakulomake</span></span></button>
 			</form>
