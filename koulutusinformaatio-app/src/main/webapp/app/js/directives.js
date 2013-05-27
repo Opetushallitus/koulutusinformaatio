@@ -182,17 +182,6 @@ directive('kiAppTitle', ['TitleService', function(TitleService) {
     };
 }]).
 
-directive('kiTimestamp', function() {
-    return function(scope, element, attrs) {
-        //console.log(attrs);
-        attrs.$observe('kiTimestamp', function(value) {
-            value = parseInt(value);
-            var date = new Date(value);
-            element.append(date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear());
-        });
-    }
-}).
-
 
 directive('kiI18n', ['TranslationService', function(TranslationService) {
     return function(scope, element, attrs) {
