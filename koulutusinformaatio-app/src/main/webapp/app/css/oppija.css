@@ -3159,6 +3159,15 @@ ul {
   list-style-type: none;
   margin: 0;
   padding: 0; }
+  ul.dash {
+    list-style: none;
+    margin-left: 0;
+    padding-left: 1em; }
+    ul.dash li:before {
+      display: inline-block;
+      content: "\2014";
+      width: 13px;
+      margin-left: -16px; }
 
 input {
   margin: 0 0.5em 0 0; }
