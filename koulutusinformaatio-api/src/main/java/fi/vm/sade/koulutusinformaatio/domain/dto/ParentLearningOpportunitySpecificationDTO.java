@@ -40,6 +40,7 @@ public class ParentLearningOpportunitySpecificationDTO {
     private String goals;
     private String educationDomain;
     private String stydyDomain;
+    private List<ParentLearningOpportunityInstanceDTO> lois = new ArrayList<ParentLearningOpportunityInstanceDTO>();
 
     private String translationLanguage;
     private Set<String> availableTranslationLanguages = new HashSet<String>();
@@ -146,5 +147,13 @@ public class ParentLearningOpportunitySpecificationDTO {
 
     public void setStydyDomain(String stydyDomain) {
         this.stydyDomain = stydyDomain;
+    }
+
+    public List<ParentLearningOpportunityInstanceDTO> getLois() {
+        return lois;
+    }
+
+    public void setLois(List<ParentLearningOpportunityInstanceDTO> lois) {
+        this.lois = lois;
     }
 }

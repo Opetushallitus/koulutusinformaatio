@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.converter;
 
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.ParentLOI;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
 
@@ -44,6 +45,11 @@ public class ParentLOToDTO {
         if (parentLO.getApplicationOptions() != null) {
             for (ApplicationOption ao : parentLO.getApplicationOptions()) {
                 parent.getApplicationOptions().add(ApplicationOptionToDTO.convert(ao, lang));
+            }
+        }
+        if (parentLO.getLois() != null) {
+            for (ParentLOI loi : parentLO.getLois()) {
+                parent.getLois().add(ParentLOIToDTO.convert(loi, lang));
             }
         }
         return parent;

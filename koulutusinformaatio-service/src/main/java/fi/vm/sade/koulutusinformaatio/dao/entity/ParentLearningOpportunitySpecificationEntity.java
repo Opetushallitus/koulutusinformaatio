@@ -53,6 +53,8 @@ public class ParentLearningOpportunitySpecificationEntity {
     private I18nTextEntity educationDomain;
     @Embedded
     private I18nTextEntity stydyDomain;
+    @Embedded
+    private List<ParentLearningOpportunityInstanceEntity> lois;
 
 
     public ParentLearningOpportunitySpecificationEntity() {
@@ -152,5 +154,13 @@ public class ParentLearningOpportunitySpecificationEntity {
 
     public void setStydyDomain(I18nTextEntity stydyDomain) {
         this.stydyDomain = stydyDomain;
+    }
+
+    public List<ParentLearningOpportunityInstanceEntity> getLois() {
+        return lois;
+    }
+
+    public void setLois(List<ParentLearningOpportunityInstanceEntity> lois) {
+        this.lois = lois;
     }
 }
