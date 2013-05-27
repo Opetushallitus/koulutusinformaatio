@@ -19,6 +19,7 @@ package fi.vm.sade.koulutusinformaatio.service;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
+import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 
 import java.util.List;
 
@@ -40,6 +41,13 @@ public interface TarjontaService {
      *
      * @return list of oids
      */
-    public List<String> listParentLearnignOpportunityOids();
+    public List<OidRDTO> listParentLearnignOpportunityOids();
 
+    /**
+     * Returns a list of parent learning opportunity oids
+     * @param count maximum count of results
+     * @param startIndex start index of results
+     * @return list of oids
+     */
+    public List<OidRDTO> listParentLearnignOpportunityOids(int count, int startIndex);
 }

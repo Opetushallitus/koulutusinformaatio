@@ -37,6 +37,7 @@ import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -97,14 +98,14 @@ public class KoodistoServiceImplTest {
         assertEquals("nimi_sv", result.get(0).getTranslations().get("sv"));
     }
 
-    @Test(expected = KoodistoException.class)
+    @Test
     public void testSearchWithEmptyUri() throws KoodistoException {
-        koodistoService.search("");
+        assertNull(koodistoService.search(""));
     }
 
-    @Test(expected = KoodistoException.class)
+    @Test
     public void testSearchWithNullUri() throws KoodistoException {
-        koodistoService.search(null);
+        assertNull(koodistoService.search(null));
     }
 
     @Test
@@ -127,14 +128,14 @@ public class KoodistoServiceImplTest {
         assertEquals("nimi_sv", result.getTranslations().get("sv"));
     }
 
-    @Test(expected = KoodistoException.class)
+    @Test
     public void testSearchFirstWithEmptyUri() throws KoodistoException {
-        koodistoService.searchFirst("");
+        assertNull(koodistoService.searchFirst(""));
     }
 
-    @Test(expected = KoodistoException.class)
+    @Test
     public void testSearchFirstWithNullUri() throws KoodistoException {
-        koodistoService.searchFirst(null);
+        assertNull(koodistoService.searchFirst(null));
     }
 
     @Test
@@ -173,14 +174,14 @@ public class KoodistoServiceImplTest {
         assertEquals("nimi_sv", result.get(0).getDescription().getTranslations().get("sv"));
     }
 
-    @Test(expected = KoodistoException.class)
+    @Test
     public void testSearchCodesWithEmptyUri() throws KoodistoException {
-        koodistoService.searchCodes("");
+        assertNull(koodistoService.searchCodes(""));
     }
 
-    @Test(expected = KoodistoException.class)
+    @Test
     public void testSearchCodesWithNullUri() throws KoodistoException {
-        koodistoService.searchCodes(null);
+        assertNull(koodistoService.searchCodes(null));
     }
 
     @Test

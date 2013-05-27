@@ -16,7 +16,6 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl.builder;
 
-import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -84,13 +83,7 @@ public class LOBuilder {
         parentLOS.setStydyDomain(koodistoService.searchFirst(parentKomo.getOpintoalaUri()));
         parentLOS.setEducationDegree(koodistoService.searchFirst(parentKomo.getKoulutusAsteUri()));
 
-        List<String> parentKomotoOids = Lists.transform(komoResource.getKomotosByKomoOID(parentKomo.getOid(), Integer.MAX_VALUE, 0),
-                new Function<OidRDTO, String>() {
-                    @Override
-                    public String apply(fi.vm.sade.tarjonta.service.resources.dto.OidRDTO oidRDTO) {
-                        return oidRDTO.getOid();
-                    }
-                });
+        List<OidRDTO> parentKomotoOids = komoResource.getKomotosByKomoOID(parentKomo.getOid(), Integer.MAX_VALUE, 0);
         if (parentKomotoOids == null || parentKomotoOids.size() == 0) {
             throw new TarjontaParseException("No instances found in parent LOS " +  parentKomo.getOid());
         }
@@ -98,9 +91,9 @@ public class LOBuilder {
 
         // parent loi + provider
         List<ParentLOI> parentLOIs = Lists.newArrayList();
-        for (String parentKomotoOid : parentKomotoOids) {
+        for (OidRDTO parentKomotoOid : parentKomotoOids) {
             ParentLOI parentLOI = new ParentLOI();
-            KomotoDTO parentKomoto = komotoResource.getByOID(parentKomotoOid);
+            KomotoDTO parentKomoto = komotoResource.getByOID(parentKomotoOid.getOid());
             parentLOI.setId(parentKomoto.getOid());
             parentLOI.setPrerequisite(koodistoService.searchFirst(parentKomoto.getPohjakoulutusVaatimusUri()));
             parentLOIs.add(parentLOI);
@@ -136,33 +129,21 @@ public class LOBuilder {
 
             // loi
             List<ChildLOI> childLOIs = Lists.newArrayList();
-            List<String> childKomotoOids = Lists.transform(komoResource.getKomotosByKomoOID(childKomoOid, Integer.MAX_VALUE, 0),
-                    new Function<OidRDTO, String>() {
-                        @Override
-                        public String apply(fi.vm.sade.tarjonta.service.resources.dto.OidRDTO oidRDTO) {
-                            return oidRDTO.getOid();
-                        }
-                    });
+            List<OidRDTO> childKomotoOids = komoResource.getKomotosByKomoOID(childKomoOid, Integer.MAX_VALUE, 0);
 
-            for (String childKomotoOid : childKomotoOids) {
+            for (OidRDTO childKomotoOid : childKomotoOids) {
 
-                List<String> aoIds = Lists.transform(komotoResource.getHakukohdesByKomotoOID(childKomotoOid),
-                        new Function<OidRDTO, String>() {
-                            @Override
-                            public String apply(fi.vm.sade.tarjonta.service.resources.dto.OidRDTO oidRDTO) {
-                                return oidRDTO.getOid();
-                            }
-                        });
+                List<OidRDTO> aoIds = komotoResource.getHakukohdesByKomotoOID(childKomotoOid.getOid());
 
                 if (aoIds != null && aoIds.size() > 0) {
                     ChildLOI childLOI = new ChildLOI();
 
                     // application option
-                    String aoId = aoIds.get(0);
+                    String aoId = aoIds.get(0).getOid();
                     HakukohdeDTO hakukohdeDTO = hakukohdeResource.getByOID(aoId);
                     ApplicationOption ao = new ApplicationOption();
                     ao.setId(hakukohdeDTO.getOid());
-                    ao.setName(koodistoService.search(hakukohdeDTO.getHakukohdeNimiUri()).get(0));
+                    ao.setName(koodistoService.searchFirst(hakukohdeDTO.getHakukohdeNimiUri()));
                     ao.setStartingQuota(hakukohdeDTO.getAloituspaikatLkm());
                     ao.setLowestAcceptedScore(hakukohdeDTO.getAlinValintaPistemaara());
                     ao.setLowestAcceptedAverage(hakukohdeDTO.getAlinHyvaksyttavaKeskiarvo());
@@ -182,22 +163,17 @@ public class LOBuilder {
                     ao.setProvider(parentLOS.getProvider());
 
                     // set child loi names to application option
-                    List<String> komotosByHakukohdeOID = Lists.transform(hakukohdeResource.getKomotosByHakukohdeOID(aoId), new Function<OidRDTO, String>() {
-                        @Override
-                        public String apply(fi.vm.sade.tarjonta.service.resources.dto.OidRDTO oidRDTO) {
-                            return oidRDTO.getOid();
-                        }
-                    });
+                    List<OidRDTO> komotosByHakukohdeOID = hakukohdeResource.getKomotosByHakukohdeOID(aoId);
 
-                    for (String s : komotosByHakukohdeOID) {
-                        KomoDTO komoByKomotoOID = komotoResource.getKomoByKomotoOID(s);
+                    for (OidRDTO s : komotosByHakukohdeOID) {
+                        KomoDTO komoByKomotoOID = komotoResource.getKomoByKomotoOID(s.getOid());
                         ao.getChildLONames().add(new I18nText(komoByKomotoOID.getNimi()));
                     }
 
                     // asid to provider
                     parentLOS.getProvider().getApplicationSystemIDs().add(hakuDTO.getOid());
 
-                    KomotoDTO komotoDTO = komotoResource.getByOID(childKomotoOid);
+                    KomotoDTO komotoDTO = komotoResource.getByOID(childKomotoOid.getOid());
                     // basic loi info
                     childLOI.setId(komotoDTO.getOid());
                     //education degree code value

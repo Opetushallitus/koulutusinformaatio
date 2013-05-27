@@ -51,12 +51,12 @@ public class TarjontaServiceImpl implements TarjontaService {
     }
 
     @Override
-    public List<String> listParentLearnignOpportunityOids() {
-        return Lists.transform(komoResource.search(null, Integer.MAX_VALUE, 0, null, null), new Function<OidRDTO, String>() {
-            @Override
-            public String apply(fi.vm.sade.tarjonta.service.resources.dto.OidRDTO oidRDTO) {
-                return oidRDTO.getOid();
-            }
-        });
+    public List<OidRDTO> listParentLearnignOpportunityOids() {
+        return komoResource.search(null, Integer.MAX_VALUE, 0, null, null);
+    }
+
+    @Override
+    public List<OidRDTO> listParentLearnignOpportunityOids(int count, int startIndex) {
+        return komoResource.search(null, count, startIndex, null, null);
     }
 }
