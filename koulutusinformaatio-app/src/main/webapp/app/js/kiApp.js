@@ -62,5 +62,7 @@ var OPH = OPH || {};
 OPH.Common = {
     initDropdownMenu: function() {
         dropDownMenu.build();
+        popover.build();
+        ApplicationBasket.load();
     }
 };

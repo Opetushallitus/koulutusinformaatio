@@ -130,7 +130,7 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
         },
 
         setTerm: function(newTerm) {
-            $.cookie(key, newTerm, {useLocalStorage: false});
+            $.cookie(key, newTerm, {useLocalStorage: false, path: '/'});
             //console.log(newTerm);
             //$.jStorage.set(key, newTerm);
             //$.cookie('searchTerm', newTerm);
@@ -152,7 +152,7 @@ service('LanguageService', function() {
         },
 
         setLanguage: function(language) {
-            $.cookie(key, language, {useLocalStorage: false});
+            $.cookie(key, language, {useLocalStorage: false, path: '/'});
             //$.jStorage.set(key, language);
             //$.cookie('language', language);
         }
@@ -225,7 +225,7 @@ service('TranslationService', function() {
                 current.push(aoId);
             }
 
-            $.cookie(key, JSON.stringify(current), {useLocalStorage: false, maxChunkSize: 2000, maxNumberOfCookies: 20});
+            $.cookie(key, JSON.stringify(current), {useLocalStorage: false, maxChunkSize: 2000, maxNumberOfCookies: 20, path: '/'});
         },
 
         removeItem: function(aoId) {
@@ -235,11 +235,15 @@ service('TranslationService', function() {
             var index = value.indexOf(aoId);
             value.splice(index, 1);
 
-            $.cookie(key, JSON.stringify(value), {useLocalStorage: false, maxChunkSize: 2000, maxNumberOfCookies: 20});
+            $.cookie(key, JSON.stringify(value), {useLocalStorage: false, maxChunkSize: 2000, maxNumberOfCookies: 20, path: '/'});
         },
 
         getItems: function() {
             return JSON.parse($.cookie(key));
+        },
+
+        getItemCount: function() {
+            return $.cookie(key) ? JSON.parse($.cookie(key)).length : 0;
         },
 
         query: function(params) {
