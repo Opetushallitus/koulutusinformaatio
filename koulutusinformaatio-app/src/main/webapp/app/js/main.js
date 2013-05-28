@@ -1,7 +1,9 @@
 var ApplicationBasket = {
     data: {},
+    baseUrl: '',
 
-    load: function() {
+    load: function(baseUrl) {
+        this.baseUrl = baseUrl;
         this.build();
         //setTriggers();
     },
@@ -18,10 +20,6 @@ var ApplicationBasket = {
     setTriggers: function() {
         $('#application-basket-link').on('click', function(event) {
             ApplicationBasket.Popup.open();
-        });
-
-        $('.popover-continue').on('click', function(event) {
-            ApplicationBasket.Popup.Form.submit();
         });
     },
 
@@ -44,6 +42,12 @@ ApplicationBasket.Popup = {
 
     },
 
+    setTriggers: function() {
+        $('.popover-continue').on('click', function(event) {
+            ApplicationBasket.Popup.Form.submit();
+        });
+    },
+
     open: function() {
         var basketCookie = ApplicationBasket.CookieService.get();
         var asId = ApplicationBasket.getAsId();
@@ -53,28 +57,84 @@ ApplicationBasket.Popup = {
         } else if (basketCookie.length > this.maxApplications) {
             popover.show('appbasket-overflow-popup');
         } else {
-            popover.show('appbasket-popup');
+            //popover.show('appbasket-popup');
+            popover.add('Title', this.generateContent());
         }
 
+        this.setTriggers();
         //popover.add('title', 'content');
+    },
+
+    generateContent: function() {
+        var pElem = $('<p>');
+        pElem.html('Etiam sit amet urna justo, vitae luctus eros. In hac habitasse platea dictumst. Suspendisse ut ultricies enim.</p>');
+
+        var formElem = $('<form>', {
+            'name': 'appbasket-popup-form',
+            'id': 'appbasket-popup-form'
+        });
+
+        var list = $('<ul>');
+
+        var createRadio = function(value, label) {
+            var inputElem = $('<input>', {
+                'type': 'radio',
+                'name': 'appbasket-popup-radio',
+                'id': 'appbasket-popup-' + value,
+                'value': value
+            });
+
+            var labelElem = $('<label>', {
+                'for': 'appbasket-popup-' + value
+            });
+            labelElem.html(label);
+
+            var listElem = $('<li>');
+            listElem.append(inputElem);
+            listElem.append(labelElem);
+
+            list.append(listElem);
+        };
+
+        var createButton = function(clazz, label) {
+            var button = $('<button>', {
+                'type': 'button',
+                'class': clazz
+            });
+
+            button.html('<span><span>' + label + '</span></span>');
+
+            return button;
+        };
+
+        createRadio('transfer', 'Siirrä muistilistan koulutukset hakulomakkeelle');
+        createRadio('ignore', 'Älä huomioi muistilistaa, vaan aloita tyhjän hakulomakkeen täyttäminen');
+        createRadio('toappbasket', 'Siirry muistilistalle');
+
+        formElem.append(list);
+        formElem.append(createButton('popover-close', 'Sulje'));
+        formElem.append(createButton('primary float-right popover-continue popover-close', 'Jatka'));
+
+        return formElem[0].outerHTML;
     }
 };
 
 ApplicationBasket.Popup.Form = {
 
     submit: function() {
-        var value = $('#application-basket-popup-form').serializeArray();
+        console.log('here');
+        var value = $('#appbasket-popup-form').serializeArray();
         var asId = ApplicationBasket.getAsId();
 
         for (var i = 0; i < value.length; i++) {
             if (value.hasOwnProperty(i)) {
                 if (value[i].name == 'appbasket-popup-radio') {
-                    if (value[i].value == 'goto') {
+                    if (value[i].value == 'toappbasket') {
                         window.location = '#/muistilista';
                         popover.hide('appbasket-popup');
                     } else if (value[i].value == 'ignore') {
                         window.location = '/haku-app/lomake/' + asId + '/yhteishaku';
-                    } else if (value[i].value == 'pick') {
+                    } else if (value[i].value == 'transfer') {
                         this.gotoApplicationForm();
                     }
                 }
@@ -135,7 +195,7 @@ ApplicationBasket.Popup.Form = {
             }
         }
 
-        $('body').append(form);
+        //$('body').append(form);
         form.submit();
     }
 
@@ -287,7 +347,7 @@ var dropDownMenu = {
             html +=     '<div class="popover">';
             html +=         popover_close;
             html +=         '<div class="popover-header">';
-            html +=             title;
+            html +=             '<h3>' + title; '</h3>';
             html +=         '</div>';
             html +=         '<div class="popover-content">';
             html +=             content;
@@ -297,6 +357,7 @@ var dropDownMenu = {
         
             $('#overlay').append(html);
         
+            $('#' + id).show();
             popover.handlers.openPopovers++;
             popover.set.overlay();
             popover.set.size($('#'+id+' .popover'));
