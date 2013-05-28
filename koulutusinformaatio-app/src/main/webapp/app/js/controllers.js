@@ -46,7 +46,7 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
         $scope.applicationItems = result;
     });
 
-    $scope.title = i18n.t('title-application-basket-content', {count: 3});
+    $scope.title = i18n.t('title-application-basket-content');
 
     $scope.removeItem = function(aoId) {
         ApplicationBasketService.removeItem(aoId);
@@ -69,6 +69,8 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
         }
     };
 
+    $scope.itemCount = ApplicationBasketService.getItemCount();
+
     $scope.gotoParent = function(id) {
         $location.path('/info/' + id);
     };
@@ -79,8 +81,8 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
 };
 
 function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
-    $scope.addToBasket = function(aoId) {
-        ApplicationBasketService.addItem(aoId);
+    $scope.addToBasket = function(asId, aoId) {
+        ApplicationBasketService.addItem(asId, aoId);
     }
 };
 
