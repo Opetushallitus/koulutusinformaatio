@@ -28,6 +28,7 @@ import fi.vm.sade.tarjonta.service.resources.HakukohdeResource;
 import fi.vm.sade.tarjonta.service.resources.KomoResource;
 import fi.vm.sade.tarjonta.service.resources.KomotoResource;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
+import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -72,12 +73,12 @@ public class TarjontaServiceImplTest {
         when(conversionService.convert(any(KomoDTO.class), eq(ParentLOS.class))).thenReturn(converter.convert(komoDTO));
 
         komoResource = mock(KomoResource.class);
-        when(komoResource.search(null, 0, 0, null, null)).thenReturn(IDS);
+        //when(komoResource.search(null, 0, 0, null, null)).thenReturn(IDS);
 
         when(komoResource.getByOID(ID_1)).thenReturn(komoDTO);
 
         hakukohdeResource = mock(HakukohdeResource.class);
-        when(hakukohdeResource.search(null, 0, 0, null, null)).thenReturn(IDS);
+        //when(hakukohdeResource.search(null, 0, 0, null, null)).thenReturn(IDS);
 
         komotoResource = mock(KomotoResource.class);
 
@@ -88,7 +89,7 @@ public class TarjontaServiceImplTest {
 
     @Test
     public void testListParentLOOids() {
-        List<String> oids = tarjontaService.listParentLearnignOpportunityOids();
+        List<OidRDTO> oids = tarjontaService.listParentLearnignOpportunityOids();
         assertEquals(3, oids.size());
     }
 

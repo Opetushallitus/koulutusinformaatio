@@ -82,8 +82,16 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
 
         var startDate = new Date(result.startDate);
         result.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
-        result.teachingLanguage = result.teachingLanguages[0] ? result.teachingLanguages[0] : '';
-        result.formOfEducation = result.formOfEducation[0] ? result.formOfEducation[0] : '';
+        result.teachingLanguage = getFirstItemInList(result.teachingLanguages); // ? result.teachingLanguages[0] : '';
+        result.formOfEducation = getFirstItemInList(result.formOfEducation); // ? result.formOfEducation[0] : '';
+    };
+
+    var getFirstItemInList = function(list) {
+        if (list && list[0]) {
+            return list[0];
+        } else {
+            return '';
+        }
     };
 
     return {

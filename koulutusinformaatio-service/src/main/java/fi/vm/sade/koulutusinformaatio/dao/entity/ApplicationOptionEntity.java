@@ -45,6 +45,8 @@ public class ApplicationOptionEntity {
     private Double lowestAcceptedAverage;
     private Date attachmentDeliveryDeadline;
     private Integer lastYearApplicantCount;
+    private boolean sora;
+    private List<String> teachingLanguages;
 
     public ApplicationOptionEntity() {
 
@@ -136,5 +138,21 @@ public class ApplicationOptionEntity {
 
     public void setLastYearApplicantCount(Integer lastYearApplicantCount) {
         this.lastYearApplicantCount = lastYearApplicantCount;
+    }
+
+    public boolean isSora() {
+        return sora;
+    }
+
+    public void setSora(boolean sora) {
+        this.sora = sora;
+    }
+
+    public List<String> getTeachingLanguages() {
+        return teachingLanguages;
+    }
+
+    public void setTeachingLanguages(List<String> teachingLanguages) {
+        this.teachingLanguages = teachingLanguages;
     }
 }

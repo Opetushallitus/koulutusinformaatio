@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.base.Function;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.googlecode.ehcache.annotations.Cacheable;
 import fi.vm.sade.koodisto.service.GenericFault;
@@ -58,38 +59,88 @@ public class KoodistoServiceImpl implements KoodistoService {
 
     @Override
     public List<I18nText> search(String koodiUri) throws KoodistoException {
-        LOGGER.debug("search koodi: " + koodiUri);
-        return convert(searchKoodiTypes(koodiUri), I18nText.class);
+        if (Strings.isNullOrEmpty(koodiUri)) {
+            return null;
+        } else {
+            LOGGER.debug("search koodi: " + koodiUri);
+            return convert(searchKoodiTypes(koodiUri), I18nText.class);
+        }
     }
 
     @Override
     public List<I18nText> searchMultiple(List<String> koodiUris) throws KoodistoException {
-        List<I18nText> results = Lists.newArrayList();
-        for (String koodiUri : koodiUris) {
-            results.addAll(search(koodiUri));
+        if (koodiUris == null || koodiUris.isEmpty()) {
+            return null;
+        } else {
+            List<I18nText> results = Lists.newArrayList();
+            for (String koodiUri : koodiUris) {
+                results.addAll(search(koodiUri));
+            }
+            return results;
         }
-        return results;
     }
 
     @Override
     public I18nText searchFirst(String koodiUri) throws KoodistoException {
-        LOGGER.debug("search first koodi: " + koodiUri);
-        return search(koodiUri).get(0);
+        if (Strings.isNullOrEmpty(koodiUri)) {
+            return null;
+        } else {
+            LOGGER.debug("search first koodi: " + koodiUri);
+            return search(koodiUri).get(0);
+        }
     }
 
     @Override
     public List<Code> searchCodes(String koodiUri) throws KoodistoException {
-        LOGGER.debug("search koodi: " + koodiUri);
-        return convert(searchKoodiTypes(koodiUri), Code.class);
+        if (Strings.isNullOrEmpty(koodiUri)) {
+            return null;
+        } else {
+            LOGGER.debug("search koodi: " + koodiUri);
+            return convert(searchKoodiTypes(koodiUri), Code.class);
+        }
     }
 
     @Override
     public List<Code> searchCodesMultiple(List<String> koodiUris) throws KoodistoException {
-        List<Code> results = Lists.newArrayList();
-        for (String koodiUri : koodiUris) {
-            results.addAll(searchCodes(koodiUri));
+        if (koodiUris == null || koodiUris.isEmpty()) {
+            return null;
+        } else {
+            List<Code> results = Lists.newArrayList();
+            for (String koodiUri : koodiUris) {
+                results.addAll(searchCodes(koodiUri));
+            }
+            return results;
         }
-        return results;
+    }
+
+    @Override
+    public Code searchFirstCode(String koodiUri) throws KoodistoException {
+        if (Strings.isNullOrEmpty(koodiUri)) {
+            return null;
+        } else {
+            LOGGER.debug("search first code: " + koodiUri);
+            return searchCodes(koodiUri).get(0);
+        }
+    }
+
+    @Override
+    public String searchFirstCodeValue(String koodiUri) throws KoodistoException {
+        if (Strings.isNullOrEmpty(koodiUri)) {
+            return null;
+        } else {
+            return searchFirstCode(koodiUri).getValue();
+        }
+    }
+
+    @Override
+    public List<String> searchCodeValuesMultiple(List<String> koodiUri) throws KoodistoException {
+        List<Code> results = searchCodesMultiple(koodiUri);
+        return Lists.transform(results, new Function<Code, String>() {
+            @Override
+            public String apply(fi.vm.sade.koulutusinformaatio.domain.Code code) {
+                return code.getValue();
+            }
+        });
     }
 
     @Cacheable(cacheName = "koodiCache")

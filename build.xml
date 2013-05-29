@@ -35,7 +35,7 @@
 		<property name="ssh.keypass" value=""/>
 
         <echo>Stop Tomcat</echo>
-        <sshexec command="/etc/init.d/${tomcat.name} stop"
+        <sshexec command="/data00/oph/tomcat/ctltomcat ${oph.name} stop"
                  host="${tomcat-host}" username="tomcat" keyfile="${ssh.keyfile}"
                  passphrase="${ssh.keypass}" trust="true" failonerror="false" />
 
@@ -83,7 +83,7 @@
                  passphrase="${ssh.keypass}" trust="true" failonerror="false" />
 				 
         <echo>Start Tomcat</echo>
-        <sshexec command="/etc/init.d/${tomcat.name} start"
+        <sshexec command="/data00/oph/tomcat/ctltomcat ${oph.name} start"
                  host="${tomcat-host}" username="tomcat" keyfile="${ssh.keyfile}"
                  passphrase="${ssh.keypass}" trust="true" failonerror="false" />
 

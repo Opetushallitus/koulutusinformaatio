@@ -35,6 +35,10 @@ public class ApplicationOptionToDTO {
             ao.setLowestAcceptedAverage(applicationOption.getLowestAcceptedAverage());
             ao.setLowestAcceptedScore(applicationOption.getLowestAcceptedScore());
             ao.setStartingQuota(applicationOption.getStartingQuota());
+            ao.setSora(applicationOption.isSora());
+            ao.setEducationDegree(applicationOption.getEducationDegree());
+            ao.setTeachingLanguages(applicationOption.getTeachingLanguages());
+
             return ao;
         }
         return null;

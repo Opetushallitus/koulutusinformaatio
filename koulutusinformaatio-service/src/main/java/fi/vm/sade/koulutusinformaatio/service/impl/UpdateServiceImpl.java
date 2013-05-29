@@ -20,6 +20,7 @@ import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.*;
+import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,8 @@ public class UpdateServiceImpl implements UpdateService {
     private TarjontaService tarjontaService;
     private IndexerService indexerService;
     private EducationDataService educationDataService;
+    private static final int MAX_RESULTS = 100;
+
 
     @Autowired
     public UpdateServiceImpl(TarjontaService tarjontaService,
@@ -56,24 +59,32 @@ public class UpdateServiceImpl implements UpdateService {
         this.indexerService.dropLOPs();
         this.indexerService.dropLOs();
 
-        List<String> parentOids = tarjontaService.listParentLearnignOpportunityOids();
+        int count = MAX_RESULTS;
+        int index = 0;
 
-        for (String parentOid : parentOids) {
-            ParentLOS parent = null;
+        while(count >= MAX_RESULTS) {
+            LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
+            List<OidRDTO> parentOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
+            count = parentOids.size();
+            index += count;
 
-            try {
-                parent = tarjontaService.findParentLearningOpportunity(parentOid);
-            } catch (TarjontaParseException e) {
-                LOG.warn("Exception while updating parent learning opportunity, oid: " + parentOid + ", Message: " + e.getMessage());
-                continue;
+            for (OidRDTO parentOid : parentOids) {
+                ParentLOS parent = null;
+
+                try {
+                    parent = tarjontaService.findParentLearningOpportunity(parentOid.getOid());
+                } catch (TarjontaParseException e) {
+                    LOG.warn("Exception while updating parent learning opportunity, oid: " + parentOid + ", Message: " + e.getMessage());
+                    continue;
+                }
+                catch (KoodistoException e) {
+                    LOG.warn("Exception while updating parent learning opportunity, oid: " + parentOid + ", Message: " + e.getMessage());
+                    continue;
+                }
+
+                this.indexerService.addParentLearningOpportunity(parent);
+                this.educationDataService.save(parent);
             }
-            catch (KoodistoException e) {
-                LOG.warn("Exception while updating parent learning opportunity, oid: " + parentOid + ", Message: " + e.getMessage());
-                continue;
-            }
-
-            this.indexerService.addParentLearningOpportunity(parent);
-            this.educationDataService.save(parent);
         }
 
         this.indexerService.commitLOChnages();
