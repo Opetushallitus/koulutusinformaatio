@@ -48,6 +48,9 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
     var title = i18n.t('title-application-basket');
     TitleService.setTitle(title);
 
+    var basketLimit = 5; // TODO: get this from application data?
+    $scope.notificationText = i18n.t('application-basket-fill-form-notification', {count: basketLimit});
+
     ApplicationBasketService.query().then(function(result) {
         $scope.applicationItems = result;
     });
@@ -83,6 +86,15 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
 
     $scope.gotoChild = function(parentId, losId, loiId) {
         $location.path('/info/' + parentId + '/' + losId + '/' + loiId);
+    }
+
+    $scope.applyButtonIsDisabled = function() {
+        var itemsInBasket = ApplicationBasketService.getItemCount();
+        if (itemsInBasket > basketLimit) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     $scope.$on('$viewContentLoaded', function() {
