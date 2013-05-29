@@ -60,8 +60,8 @@ kiApp.run(['$location', '$rootScope', function($location, $rootScope) {
 var OPH = OPH || {};
 
 OPH.Common = {
-    initDropdownMenu: function() {
-        dropDownMenu.build();
+    initHeader: function() {
+        //dropDownMenu.build();
         popover.build();
         ApplicationBasket.load();
     }

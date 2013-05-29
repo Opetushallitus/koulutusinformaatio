@@ -1577,45 +1577,44 @@ hr {
 
 /*** Siteheader
 **************************************************************/
-#siteheader .header-container {
-  padding: 0 1em;
-  background-repeat: repeat-x;
-  background-attachment: scroll;
-  background-position: left bottom;
-  background-color: #149ecb;
-  padding: 10px 0;
-  height: 38px;
-  position: relative;
-  color: #fff; }
-#siteheader .actions {
-  float: right;
-  padding: 1.5em 1em 0px; }
-  #siteheader .actions ul {
-    display: inline-block;
-    vertical-align: bottom;
-    margin: 0px; }
-    #siteheader .actions ul li {
-      list-style: none;
+#siteheader {
+  /*
+  .sitelogo {
       float: left;
-      border-left-style: solid;
-      border-left-width: 1px;
-      border-left-color: #FFFFFF; }
-      #siteheader .actions ul li a {
-        color: #FFFFFF;
-        text-decoration: none;
-        margin: 0 1em; }
-      #siteheader .actions ul li:first-child {
-        border: none; }
-        #siteheader .actions ul li:first-child a {
-          margin: 0 1em 0 0; }
-#siteheader .sitelogo {
-  float: left; }
+  }
+  */ }
+  #siteheader .header-container {
+    padding: 0 1em;
+    background-repeat: repeat-x;
+    background-attachment: scroll;
+    background-position: left bottom;
+    background-color: #18a1cc;
+    padding: 10px 0;
+    height: 90px;
+    position: relative;
+    color: #fff; }
+  #siteheader .actions {
+    float: right;
+    line-height: 90px; }
+    #siteheader .actions ul {
+      display: inline-block;
+      vertical-align: bottom;
+      margin: 0px;
+      line-height: 1.5em;
+      margin: 0 40px 0 0; }
+      #siteheader .actions ul li {
+        list-style: none; }
+        #siteheader .actions ul li a {
+          color: #333333;
+          text-decoration: none; }
+  #siteheader figure {
+    margin-top: 16px; }
 
 /*** Overlay
 ************************************************/
 #overlay {
   display: none;
-  position: absolute;
+  position: fixed;
   top: 0px;
   left: 0px;
   width: 100%;
@@ -3160,9 +3159,13 @@ button {
         }
     }
     */
-header ul {
-  padding: 0 0 0 40px; }
-
+/*
+header {
+    ul {
+        padding: 0 0 0 40px;
+    }
+}
+*/
 ul {
   list-style-type: none;
   margin: 0;
