@@ -293,23 +293,6 @@ var tabsMenu = {
             $('.tabsheet[data-tabs-group="'+group+'"][data-tabs-id="'+id+'"]').show();
         });
     }
-
-    /*
-    setTriggers:function(){
-        $('.tabs .tab').click(function(event) {
-            event.preventDefault();
-            group = $(this).attr('data-tabs-group');
-            id = $(this).attr('data-tabs-id');
-
-            $('.tabs .tab[data-tabs-group="'+group+'"]').removeClass('current');
-            $(this).addClass('current');
-
-            $('.tabsheet[data-tabs-group="'+group+'"]').hide();
-
-            $('.tabsheet[data-tabs-group="'+group+'"][data-tabs-id="'+id+'"]').show();
-        });
-    }
-    */
 };
 
 /*
@@ -540,8 +523,6 @@ var dropDownMenu = {
             }
         }
     }
-    
-    //popover.build();
 
 // load json polyfill if not present
 Modernizr.load([

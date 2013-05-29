@@ -27,6 +27,9 @@ function LanguageCtrl($scope, $location, LanguageService) {
     });
 };
 
+/**
+ *  Controller for search filters
+ */
 function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService) {
     $scope.individualizedActive = $scope.pohjakoulutus != 1;
 
@@ -44,6 +47,9 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
     }
 };
 
+/**
+ *  Controller for application basket
+ */
 function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, ApplicationBasketService) {
     var title = i18n.t('title-application-basket');
     TitleService.setTitle(title);
@@ -102,6 +108,9 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
     });
 };
 
+/**
+ *  Controller for adding applications to application basket
+ */
 function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
     $scope.addToBasket = function(asId, aoId) {
         ApplicationBasketService.addItem(asId, aoId);

@@ -182,6 +182,9 @@ directive('kiAppTitle', ['TitleService', function(TitleService) {
     };
 }]).
 
+/**
+ *  Creates a human readable date from timestamp
+ */
 directive('kiTimestamp', function() {
     return function(scope, element, attrs) {
         //console.log(attrs);
@@ -194,7 +197,9 @@ directive('kiTimestamp', function() {
 }).
 
 
-
+/**
+ *  Fetches a trasnlation with the given key and inserts it inside the element
+ */
 directive('kiI18n', ['TranslationService', function(TranslationService) {
     return function(scope, element, attrs) {
         attrs.$observe('kiI18n', function(value) {
