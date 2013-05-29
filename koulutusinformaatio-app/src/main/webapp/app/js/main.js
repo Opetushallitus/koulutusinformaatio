@@ -28,7 +28,6 @@ var ApplicationBasket = {
         $('#appbasket-link').on('basketupdate', function(event) {
             $(this).find('span').html('(' + event.count + ')');
         });
-
     },
 
     getAsId: function() {
@@ -80,8 +79,6 @@ ApplicationBasket.Popup = {
         this.setTriggers();
     },
 
-
-
     generateContent: function(content) {
         var container = $('<div>');
 
@@ -93,7 +90,9 @@ ApplicationBasket.Popup = {
             'id': 'appbasket-popup-form'
         });
 
-        var list = $('<ul>');
+        var list = $('<ul>', {
+            'class': 'margin-bottom-2'
+        });
 
         for (var index in content.radios) {
             if (content.radios.hasOwnProperty(index)) {
@@ -313,34 +312,36 @@ var tabsMenu = {
     */
 };
 
+/*
 var dropDownMenu = {
-        // initiate dropDownMenus
-        build: function() {
-            dropDownMenu.setTriggers();
-        },
+    // initiate dropDownMenus
+    build: function() {
+        dropDownMenu.setTriggers();
+    },
         
-        // set listener for dropdown navigations
-        setTriggers: function() {
+    // set listener for dropdown navigations
+    setTriggers: function() {
 
-            $('.navigation > li').hover(navigationMouseOver, navigationMouseOut);
+        $('.navigation > li').hover(navigationMouseOver, navigationMouseOut);
 
-            // bring dropdown navigation visible on mouseover
-            function navigationMouseOver() {
-                $(this).css('background-color', 'white');
-                $(this).children().filter('span').css('color', '#333');
-                $(this).children().filter('a').css('color', '#333');
-                $(this).children().filter('ul').fadeIn(100);
-            }
-
-            // hide dropdown navigation on mouseout
-            function navigationMouseOut() {
-                $(this).css('background-color', '#06526b');
-                $(this).children().filter('span').css('color', 'white');
-                $(this).children().filter('a').css('color', 'white');
-                $(this).children().filter('ul').fadeOut(100);
-            }
+        // bring dropdown navigation visible on mouseover
+        function navigationMouseOver() {
+            $(this).css('background-color', 'white');
+            $(this).children().filter('span').css('color', '#333');
+            $(this).children().filter('a').css('color', '#333');
+            $(this).children().filter('ul').fadeIn(100);
         }
-    };
+
+        // hide dropdown navigation on mouseout
+        function navigationMouseOut() {
+            $(this).css('background-color', '#06526b');
+            $(this).children().filter('span').css('color', 'white');
+            $(this).children().filter('a').css('color', 'white');
+            $(this).children().filter('ul').fadeOut(100);
+        }
+    }
+};
+*/
 
     //dropDownMenu.build();
 

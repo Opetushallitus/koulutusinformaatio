@@ -16,9 +16,15 @@ function LanguageCtrl($scope, $location, LanguageService) {
     TitleService.setTitle(title);
 
     // launch navigation script
+    /*
     $scope.initNavigation = function() {
         OPH.Common.initDropdownMenu();
     }
+    */
+
+    $scope.$on('$viewContentLoaded', function() {
+        OPH.Common.initHeader();
+    });
 };
 
 function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService) {
@@ -78,6 +84,10 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
     $scope.gotoChild = function(parentId, losId, loiId) {
         $location.path('/info/' + parentId + '/' + losId + '/' + loiId);
     }
+
+    $scope.$on('$viewContentLoaded', function() {
+        OPH.Common.initHeader();
+    });
 };
 
 function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
@@ -125,9 +135,15 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
     };
 
     // launch navigation script
+    /*
     $scope.initNavigation = function() {
         OPH.Common.initDropdownMenu();
     };
+    */
+
+    $scope.$on('$viewContentLoaded', function() {
+        OPH.Common.initHeader();
+    });
 };
 
 /**
@@ -227,5 +243,8 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
     */
 
     // trigger once content is loaded
-    $scope.$on('$viewContentLoaded', tabsMenu.build);
+    $scope.$on('$viewContentLoaded', function() {
+        tabsMenu.build();
+        OPH.Common.initHeader();
+    });
 };
