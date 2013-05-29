@@ -75,7 +75,7 @@ public class LOBuilder {
 
         // parent info
         parentLOS.setId(parentKomo.getOid());
-        parentLOS.setName(new I18nText(parentKomo.getNimi()));
+        parentLOS.setName(koodistoService.searchFirst(parentKomo.getKoulutusKoodiUri()));
         parentLOS.setStructureDiagram(new I18nText(parentKomo.getKoulutuksenRakenne()));
         parentLOS.setAccessToFurtherStudies(new I18nText(parentKomo.getJatkoOpintoMahdollisuudet()));
         parentLOS.setGoals(new I18nText(parentKomo.getTavoitteet()));
