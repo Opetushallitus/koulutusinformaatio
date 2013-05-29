@@ -22,16 +22,9 @@ kiApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $l
         templateUrl: 'partials/applicationbasket/applicationbasket.html',
         controller: ApplicationBasketCtrl
     });
-    /*
-    $routeProvider.when('/info/:parentId', {
-        redirectTo: '/info/:parentId/kuvaus'
-    });
-    */
     $routeProvider.otherwise({
     	redirectTo: '/index/'
     });
-
-    //$locationProvider.html5Mode(true);
 }]);
 
 // initialize i18n library
