@@ -212,6 +212,14 @@ service('TranslationService', function() {
 
 .service('ApplicationBasketService', ['$http', '$q', function($http, $q) {
     var key = 'basket';
+
+    // used to update item count in basket
+    var updateBasket = function(count) {
+        var event = $.Event('basketupdate');
+        event.count = count;
+        $('#appbasket-link').trigger(event);
+    };
+
     return {
         addItem: function(aoId) {
 
@@ -226,6 +234,8 @@ service('TranslationService', function() {
             }
 
             $.cookie(key, JSON.stringify(current), {useLocalStorage: false, maxChunkSize: 2000, maxNumberOfCookies: 20, path: '/'});
+
+            updateBasket(this.getItemCount());
         },
 
         removeItem: function(aoId) {
@@ -236,6 +246,8 @@ service('TranslationService', function() {
             value.splice(index, 1);
 
             $.cookie(key, JSON.stringify(value), {useLocalStorage: false, maxChunkSize: 2000, maxNumberOfCookies: 20, path: '/'});
+
+            updateBasket(this.getItemCount());
         },
 
         getItems: function() {

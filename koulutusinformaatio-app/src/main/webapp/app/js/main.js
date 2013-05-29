@@ -15,12 +15,20 @@ var ApplicationBasket = {
             ApplicationBasket.data = data;
             ApplicationBasket.setTriggers();
         });
+
+        var basketCount = ApplicationBasket.CookieService.getCount();
+        $('#appbasket-link').find('span').html('(' + basketCount + ')');
     },
 
     setTriggers: function() {
-        $('#application-basket-link').on('click', function(event) {
+        $('#apply-link').on('click', function(event) {
             ApplicationBasket.Popup.open();
         });
+
+        $('#appbasket-link').on('basketupdate', function(event) {
+            $(this).find('span').html('(' + event.count + ')');
+        });
+
     },
 
     getAsId: function() {
@@ -33,14 +41,6 @@ var ApplicationBasket = {
 
 ApplicationBasket.Popup = {
     maxApplications: 5,
-
-    load: function() {
-
-    },
-
-    build: function() {
-
-    },
 
     setTriggers: function() {
         $('.popover-continue').on('click', function(event) {
@@ -55,19 +55,38 @@ ApplicationBasket.Popup = {
         if (basketCookie.length <= 0) {
             window.location = '/haku-app/lomake/' + asId + '/yhteishaku';
         } else if (basketCookie.length > this.maxApplications) {
-            popover.show('appbasket-overflow-popup');
+            var popupContent = {
+                description: i18n.t('application-basket-popup-description-overflow'),
+                radios: [
+                    {'value': 'toappbasket', 'label': i18n.t('application-basket-popup-go-to-basket')},
+                    {'value': 'ignore', 'label': i18n.t('application-basket-popup-ignore')}
+                ]
+            };
+
+            popover.add(i18n.t('application-basket-popup-title'), this.generateContent(popupContent));
         } else {
-            //popover.show('appbasket-popup');
-            popover.add('Title', this.generateContent());
+            var popupContent = {
+                description: i18n.t('application-basket-popup-description'),
+                radios: [
+                    {'value': 'transfer', 'label': i18n.t('application-basket-popup-transfer')},
+                    {'value': 'ignore', 'label': i18n.t('application-basket-popup-ignore')},
+                    {'value': 'toappbasket', 'label': i18n.t('application-basket-popup-go-to-basket')},
+                ]
+            };
+
+            popover.add(i18n.t('application-basket-popup-title'), this.generateContent(popupContent));
         }
 
         this.setTriggers();
-        //popover.add('title', 'content');
     },
 
-    generateContent: function() {
+
+
+    generateContent: function(content) {
+        var container = $('<div>');
+
         var pElem = $('<p>');
-        pElem.html('Etiam sit amet urna justo, vitae luctus eros. In hac habitasse platea dictumst. Suspendisse ut ultricies enim.</p>');
+        pElem.html(content.description);
 
         var formElem = $('<form>', {
             'name': 'appbasket-popup-form',
@@ -76,46 +95,53 @@ ApplicationBasket.Popup = {
 
         var list = $('<ul>');
 
-        var createRadio = function(value, label) {
-            var inputElem = $('<input>', {
-                'type': 'radio',
-                'name': 'appbasket-popup-radio',
-                'id': 'appbasket-popup-' + value,
-                'value': value
-            });
-
-            var labelElem = $('<label>', {
-                'for': 'appbasket-popup-' + value
-            });
-            labelElem.html(label);
-
-            var listElem = $('<li>');
-            listElem.append(inputElem);
-            listElem.append(labelElem);
-
-            list.append(listElem);
-        };
-
-        var createButton = function(clazz, label) {
-            var button = $('<button>', {
-                'type': 'button',
-                'class': clazz
-            });
-
-            button.html('<span><span>' + label + '</span></span>');
-
-            return button;
-        };
-
-        createRadio('transfer', 'Siirrä muistilistan koulutukset hakulomakkeelle');
-        createRadio('ignore', 'Älä huomioi muistilistaa, vaan aloita tyhjän hakulomakkeen täyttäminen');
-        createRadio('toappbasket', 'Siirry muistilistalle');
+        for (var index in content.radios) {
+            if (content.radios.hasOwnProperty(index)) {
+                var radio = content.radios[index];
+                list.append( this.createRadio(radio.value, radio.label) );
+            }
+        }
 
         formElem.append(list);
-        formElem.append(createButton('popover-close', 'Sulje'));
-        formElem.append(createButton('primary float-right popover-continue popover-close', 'Jatka'));
+        formElem.append(this.createButton('popover-close', i18n.t('popup-close')));
+        formElem.append(this.createButton('primary float-right popover-continue popover-close', i18n.t('popup-continue')));
 
-        return formElem[0].outerHTML;
+        container.append(pElem);
+        container.append(formElem);
+
+        return container.html();
+    },
+
+    createRadio: function(value, label) {
+        var inputElem = $('<input>', {
+            'type': 'radio',
+            'name': 'appbasket-popup-radio',
+            'id': 'appbasket-popup-' + value,
+            'value': value
+        });
+
+        var labelElem = $('<label>', {
+            'for': 'appbasket-popup-' + value
+        });
+        labelElem.html(label);
+
+        var listElem = $('<li>');
+        listElem.append(inputElem);
+        listElem.append(labelElem);
+
+        return listElem;
+        //list.append(listElem); 
+    },
+
+    createButton: function(clazz, label) {
+        var button = $('<button>', {
+            'type': 'button',
+            'class': clazz
+        });
+
+        button.html('<span><span>' + label + '</span></span>');
+
+        return button;
     }
 };
 
@@ -220,6 +246,10 @@ ApplicationBasket.CookieService = {
     set: function(value) {
         value = JSON.stringify(value);
         $.cookie(this.key, value, {useLocalStorage: false, path: '/'});
+    },
+
+    getCount: function() {
+        return $.cookie(this.key) ? JSON.parse($.cookie(this.key)).length : 0;
     }
 };
 
@@ -347,7 +377,7 @@ var dropDownMenu = {
             html +=     '<div class="popover">';
             html +=         popover_close;
             html +=         '<div class="popover-header">';
-            html +=             '<h3>' + title; '</h3>';
+            html +=             '<h3>' + title + '</h3>';
             html +=         '</div>';
             html +=         '<div class="popover-content">';
             html +=             content;
@@ -355,6 +385,7 @@ var dropDownMenu = {
             html +=     '</div>';
             html += '</div>';
         
+            console.log(html);
             $('#overlay').append(html);
         
             $('#' + id).show();
