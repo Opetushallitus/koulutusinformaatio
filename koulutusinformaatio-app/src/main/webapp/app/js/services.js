@@ -227,7 +227,11 @@ service('TranslationService', function() {
 
             if (current) {
                 current = JSON.parse(current);
-                current.push(aoId);
+
+                // do not add same ao twice
+                if (current.indexOf(aoId) < 0) {
+                    current.push(aoId);
+                }
             } else {
                 current = [];
                 current.push(aoId);
