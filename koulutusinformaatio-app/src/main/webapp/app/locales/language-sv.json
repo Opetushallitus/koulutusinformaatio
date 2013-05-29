@@ -79,6 +79,8 @@
 
     "title-application-basket-content": "Muistilista (sv)",
     "application-basket-back": "Siirry koulutustarjonnan selailuun (sv)",
+    "application-basket-fill-form": "Täytä hakulomake (sv)",
+    "application-basket-fill-form-notification": "Tässä haussa voit hakea enintään __count__ koulutukseen (sv)",
 
     "application-basket-popup-title": "Täytä hakulomake (sv)",
     "application-basket-popup-description": "Infoteksti (sv)",

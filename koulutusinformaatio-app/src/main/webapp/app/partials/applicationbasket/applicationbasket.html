@@ -49,7 +49,7 @@
                 <tfoot>
                 </tfoot>
             </table>
-            <span class="float-right margin-bottom-2">Tässä haussa voit hakea enintään {{as.applicationMaxCount}} koulutukseen</span>
+            <span class="float-right margin-bottom-2">{{notificationText}}</span>
             <form action="/haku-app/lomake/{{as.applicationSystemId}}/yhteishaku" method="post">
                 <span ng-repeat="item in as.applicationOptions">
                     <input type="hidden" name="preference{{$index + 1}}-Opetuspiste" value="{{item.providerName}}"/>
@@ -58,7 +58,14 @@
                     <input type="hidden" name="preference{{$index + 1}}-Koulutus-id" value="{{item.id}}"/>
                     <input type="hidden" name="preference{{$index + 1}}-Koulutus-educationDegree" value="{{item.educationDegree}}"/>
                 </span>
-                <button class="primary float-right clear" type="submit"><span><span>Täytä hakulomake</span></span></button>
+                <div data-ng-switch="applyButtonIsDisabled()">
+                    <div data-ng-switch-when="true">
+                        <button class="primary float-right clear" disabled="disabled" type="submit"><span><span data-ki-i18n="application-basket-fill-form"></span></span></button>
+                    </div>
+                    <div data-ng-switch-when="false">
+                        <button class="primary float-right clear" type="submit"><span><span data-ki-i18n="application-basket-fill-form"></span></span></button>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
