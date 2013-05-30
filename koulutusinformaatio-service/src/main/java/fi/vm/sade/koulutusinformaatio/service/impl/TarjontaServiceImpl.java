@@ -28,6 +28,7 @@ import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.ws.rs.WebApplicationException;
 import java.util.List;
 
 /**
@@ -46,7 +47,12 @@ public class TarjontaServiceImpl implements TarjontaService {
         try {
             return loBuilder.buildParentLOS(oid);
         } catch (KoodistoException e) {
-            throw new TarjontaParseException("An error occurred with koodisto: " + e.getMessage());
+            throw new TarjontaParseException("An error occurred while building parent LOS " + oid + " with koodisto: " + e.getMessage());
+        }
+        catch (WebApplicationException e) {
+            throw new TarjontaParseException("An error occurred while building parent LOS " + oid
+                    + " accessing remote resource: HTTP response code: "
+                    + e.getResponse().getStatus() + ",  error message: " + e.getMessage());
         }
     }
 

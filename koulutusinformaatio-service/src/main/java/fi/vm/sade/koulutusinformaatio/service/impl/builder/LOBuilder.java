@@ -31,6 +31,7 @@ import fi.vm.sade.tarjonta.service.resources.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 
+import javax.ws.rs.WebApplicationException;
 import java.util.List;
 import java.util.Map;
 
@@ -62,7 +63,7 @@ public class LOBuilder {
         this.conversionService = conversionService;
     }
 
-    public ParentLOS buildParentLOS(String oid) throws TarjontaParseException, KoodistoException {
+    public ParentLOS buildParentLOS(String oid) throws TarjontaParseException, KoodistoException, WebApplicationException {
         ParentLOS parentLOS = new ParentLOS();
         KomoDTO parentKomo = komoResource.getByOID(oid);
 
