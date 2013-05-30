@@ -16,9 +16,13 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import fi.vm.sade.koulutusinformaatio.domain.Address;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
+import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.organisaatio.resource.OrganisaatioResource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 
 /**
@@ -28,6 +32,8 @@ public class ProviderServiceImpl implements ProviderService {
 
     private OrganisaatioResource organisaatioResource;
     private ConversionService conversionService;
+    @Autowired
+    private KoodistoService koodistoService;
 
     public ProviderServiceImpl(OrganisaatioResource organisaatioResource, ConversionService conversionService) {
         this.organisaatioResource = organisaatioResource;
@@ -35,8 +41,22 @@ public class ProviderServiceImpl implements ProviderService {
     }
 
     @Override
-    public Provider getByOID(String oid) {
-        return conversionService.convert(organisaatioResource.getOrganisaatioByOID(oid),
-                Provider.class);
+    public Provider getByOID(String oid) throws KoodistoException {
+        Provider provider = conversionService.convert(organisaatioResource.getOrganisaatioByOID(oid), Provider.class);
+        return updateCodeValues(provider);
+    }
+
+    private Provider updateCodeValues(final Provider provider) throws KoodistoException {
+        if (provider != null) {
+            updateAddressCodeValues(provider.getPostalAddress());
+            updateAddressCodeValues(provider.getVisitingAddress());
+        }
+        return provider;
+    }
+
+    private void updateAddressCodeValues(final Address addrs) throws KoodistoException {
+        if (addrs != null) {
+            addrs.setPostalCode(koodistoService.searchFirstCodeValue(addrs.getPostalCode()));
+        }
     }
 }

@@ -17,10 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-import fi.vm.sade.koulutusinformaatio.domain.Provider;
+import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.dto.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataService;
@@ -199,7 +196,9 @@ public class LearningOpportunityServiceImplTest {
         ApplicationOption ao = new ApplicationOption();
         ao.setId(id);
         ao.setName(name);
-        ao.setApplicationSystemId(asId);
+        ApplicationSystem as = new ApplicationSystem();
+        as.setId(asId);
+        ao.setApplicationSystem(as);
         ao.setProvider(provider);
         ao.setAttachmentDeliveryDeadline(attDeadline);
         ao.setLastYearApplicantCount(lastYearApplicantCount);

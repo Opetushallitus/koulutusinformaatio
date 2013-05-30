@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
+ * Copyright (c) 2013 The Finnish Board of Education - Opetushallitus
  *
  * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
  * soon as they will be approved by the European Commission - subsequent versions
@@ -14,17 +14,29 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.koulutusinformaatio.service;
-
-import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
+package fi.vm.sade.koulutusinformaatio.domain;
 
 /**
- * Hides integration to the Organisaatio service.
- *
- * @author Hannu Lyytikainen
+ * @author Mikko Majapuro
  */
-public interface ProviderService {
+public class ApplicationSystem {
 
-    public Provider getByOID(String oid) throws KoodistoException;
+    private String id;
+    private I18nText name;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public I18nText getName() {
+        return name;
+    }
+
+    public void setName(I18nText name) {
+        this.name = name;
+    }
 }

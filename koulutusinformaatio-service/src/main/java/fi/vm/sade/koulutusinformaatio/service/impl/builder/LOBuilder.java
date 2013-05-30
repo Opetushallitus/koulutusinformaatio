@@ -77,9 +77,9 @@ public class LOBuilder {
         // parent info
         parentLOS.setId(parentKomo.getOid());
         parentLOS.setName(koodistoService.searchFirst(parentKomo.getKoulutusKoodiUri()));
-        parentLOS.setStructureDiagram(new I18nText(parentKomo.getKoulutuksenRakenne()));
-        parentLOS.setAccessToFurtherStudies(new I18nText(parentKomo.getJatkoOpintoMahdollisuudet()));
-        parentLOS.setGoals(new I18nText(parentKomo.getTavoitteet()));
+        parentLOS.setStructureDiagram(getI18nText(parentKomo.getKoulutuksenRakenne()));
+        parentLOS.setAccessToFurtherStudies(getI18nText(parentKomo.getJatkoOpintoMahdollisuudet()));
+        parentLOS.setGoals(getI18nText(parentKomo.getTavoitteet()));
         parentLOS.setEducationDomain(koodistoService.searchFirst(parentKomo.getKoulutusAlaUri()));
         parentLOS.setStydyDomain(koodistoService.searchFirst(parentKomo.getOpintoalaUri()));
         parentLOS.setEducationDegree(koodistoService.searchFirst(parentKomo.getKoulutusAsteUri()));
@@ -124,7 +124,7 @@ public class LOBuilder {
             }
 
             childLOS.setId(childKomo.getOid());
-            childLOS.setName(new I18nText(childKomo.getNimi()));
+            childLOS.setName(getI18nText(childKomo.getNimi()));
             childLOS.setQualification(koodistoService.searchFirst(childKomo.getTutkintonimikeUri()));
             childLOS.setDegreeTitle(koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri()));
 
@@ -151,8 +151,11 @@ public class LOBuilder {
                     ao.setAttachmentDeliveryDeadline(hakukohdeDTO.getLiitteidenToimitusPvm());
                     ao.setLastYearApplicantCount(hakukohdeDTO.getEdellisenVuodenHakijatLkm());
                     HakuDTO hakuDTO = hakukohdeResource.getHakuByHakukohdeOID(aoId);
+                    ApplicationSystem as = new ApplicationSystem();
+                    as.setId(hakuDTO.getOid());
+                    as.setName(getI18nText(hakuDTO.getNimi()));
                     childLOI.setApplicationSystemId(hakuDTO.getOid());
-                    ao.setApplicationSystemId(hakuDTO.getOid());
+                    ao.setApplicationSystem(as);
 
                     if (!Strings.isNullOrEmpty(hakukohdeDTO.getSoraKuvausKoodiUri())) {
                         ao.setSora(true);
@@ -168,7 +171,7 @@ public class LOBuilder {
 
                     for (OidRDTO s : komotosByHakukohdeOID) {
                         KomoDTO komoByKomotoOID = komotoResource.getKomoByKomotoOID(s.getOid());
-                        ao.getChildLONames().add(new I18nText(komoByKomotoOID.getNimi()));
+                        ao.getChildLONames().add(getI18nText(komoByKomotoOID.getNimi()));
                     }
 
                     // asid to provider
@@ -202,6 +205,13 @@ public class LOBuilder {
         parentLOS.setChildren(childLOSs);
 
         return parentLOS;
+    }
+
+    private I18nText getI18nText(final Map<String, String> texts) {
+        if (texts != null) {
+            return new I18nText(texts);
+        }
+        return null;
     }
 
     private void validateParentKomo(KomoDTO komo) throws TarjontaParseException {

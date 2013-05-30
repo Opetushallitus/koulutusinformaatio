@@ -29,6 +29,8 @@ public class Provider {
     private String id;
     private I18nText name;
     private Set<String> applicationSystemIDs = new HashSet<String>();
+    private Address postalAddress;
+    private Address visitingAddress;
 
     public Provider(String id, I18nText name) {
         this.id = id;
@@ -59,5 +61,21 @@ public class Provider {
 
     public void setApplicationSystemIDs(Set<String> applicationSystemIDs) {
         this.applicationSystemIDs = applicationSystemIDs;
+    }
+
+    public Address getPostalAddress() {
+        return postalAddress;
+    }
+
+    public void setPostalAddress(Address postalAddress) {
+        this.postalAddress = postalAddress;
+    }
+
+    public Address getVisitingAddress() {
+        return visitingAddress;
+    }
+
+    public void setVisitingAddress(Address visitingAddress) {
+        this.visitingAddress = visitingAddress;
     }
 }

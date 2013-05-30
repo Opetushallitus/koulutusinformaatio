@@ -129,6 +129,17 @@ public class EducationDataServiceImpl implements EducationDataService {
     }
 
     @Override
+    public List<ApplicationOption> getApplicationOptions(List<String> aoIds) {
+        List<ApplicationOptionEntity> applicationOptions = applicationOptionDAO.find(aoIds);
+        return Lists.transform(applicationOptions, new Function<ApplicationOptionEntity, ApplicationOption>() {
+            @Override
+            public ApplicationOption apply(ApplicationOptionEntity applicationOptionEntity) {
+                return modelMapper.map(applicationOptionEntity, ApplicationOption.class);
+            }
+        });
+    }
+
+    @Override
     public ChildLO getChildLearningOpportunity(String childLosId, String childLoiId) throws ResourceNotFoundException {
         ChildLearningOpportunitySpecificationEntity childLOS = getChildLOS(childLosId);
         ChildLearningOpportunityInstanceEntity childLOI = getChildLOI(childLoiId);

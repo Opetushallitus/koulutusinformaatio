@@ -93,7 +93,9 @@ public class KoulutusinformaatioObjectBuilderTest {
         ao = new ApplicationOptionEntity();
         ao.setId("ao123");
         ao.setName(TestUtil.createI18nTextEntity("ao fi", "ao sv", "ao en"));
-        ao.setApplicationSystemId("as123");
+        ApplicationSystemEntity as = new ApplicationSystemEntity();
+        as.setId("as123");
+        ao.setApplicationSystem(as);
         ao.setAttachmentDeliveryDeadline(new Date());
         ao.setEducationDegree("23");
         ao.setLastYearApplicantCount(100);

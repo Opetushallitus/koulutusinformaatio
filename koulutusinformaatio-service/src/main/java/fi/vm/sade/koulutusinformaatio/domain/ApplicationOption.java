@@ -27,7 +27,7 @@ public class ApplicationOption {
 
     private String id;
     private I18nText name;
-    private String applicationSystemId;
+    private ApplicationSystem applicationSystem;
     private String educationDegree;
     private List<I18nText> childLONames = new ArrayList<I18nText>();
     private Provider provider;
@@ -62,12 +62,12 @@ public class ApplicationOption {
         this.name = name;
     }
 
-    public String getApplicationSystemId() {
-        return applicationSystemId;
+    public ApplicationSystem getApplicationSystem() {
+        return applicationSystem;
     }
 
-    public void setApplicationSystemId(String applicationSystemId) {
-        this.applicationSystemId = applicationSystemId;
+    public void setApplicationSystem(ApplicationSystem applicationSystem) {
+        this.applicationSystem = applicationSystem;
     }
 
     public String getEducationDegree() {

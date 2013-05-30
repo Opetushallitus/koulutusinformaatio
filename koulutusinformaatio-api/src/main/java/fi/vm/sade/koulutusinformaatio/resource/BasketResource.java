@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
+ * Copyright (c) 2013 The Finnish Board of Education - Opetushallitus
  *
  * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
  * soon as they will be approved by the European Commission - subsequent versions
@@ -14,17 +14,22 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.koulutusinformaatio.service;
+package fi.vm.sade.koulutusinformaatio.resource;
 
-import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
+import fi.vm.sade.koulutusinformaatio.domain.dto.BasketItemDTO;
+
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import java.util.List;
 
 /**
- * Hides integration to the Organisaatio service.
- *
- * @author Hannu Lyytikainen
+ * @author Mikko Majapuro
  */
-public interface ProviderService {
+@Path("/basket")
+public interface BasketResource {
 
-    public Provider getByOID(String oid) throws KoodistoException;
+    @GET
+    @Path("items")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    List<BasketItemDTO> getBasketItems(@QueryParam("aoId") List<String> aoId, @DefaultValue("fi") @QueryParam("lang") String lang);
 }

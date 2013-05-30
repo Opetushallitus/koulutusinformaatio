@@ -16,30 +16,19 @@
 
 package fi.vm.sade.koulutusinformaatio.dao.entity;
 
-import java.util.Set;
-
 import com.google.code.morphia.annotations.Embedded;
-import com.google.code.morphia.annotations.Entity;
-import com.google.code.morphia.annotations.Id;
 
 /**
  * @author Mikko Majapuro
  */
-@Entity("learningOpportunityProviders")
-public class LearningOpportunityProviderEntity {
+@Embedded
+public class ApplicationSystemEntity {
 
-    @Id
     private String id;
     @Embedded
     private I18nTextEntity name;
-    private Set<String> applicationSystemIds;
-    @Embedded
-    private AddressEntity postalAddress;
-    @Embedded
-    private AddressEntity visitingAddress;
 
-    public LearningOpportunityProviderEntity() {
-    }
+    public ApplicationSystemEntity() {}
 
     public String getId() {
         return id;
@@ -55,29 +44,5 @@ public class LearningOpportunityProviderEntity {
 
     public void setName(I18nTextEntity name) {
         this.name = name;
-    }
-
-    public Set<String> getApplicationSystemIds() {
-        return applicationSystemIds;
-    }
-
-    public void setApplicationSystemIds(Set<String> applicationSystemIds) {
-        this.applicationSystemIds = applicationSystemIds;
-    }
-
-    public AddressEntity getPostalAddress() {
-        return postalAddress;
-    }
-
-    public void setPostalAddress(AddressEntity postalAddress) {
-        this.postalAddress = postalAddress;
-    }
-
-    public AddressEntity getVisitingAddress() {
-        return visitingAddress;
-    }
-
-    public void setVisitingAddress(AddressEntity visitingAddress) {
-        this.visitingAddress = visitingAddress;
     }
 }

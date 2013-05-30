@@ -52,6 +52,8 @@ public interface EducationDataService {
      */
     List<ApplicationOption> findApplicationOptions(final String asId, final String lopId);
 
+    List<ApplicationOption> getApplicationOptions(final List<String> aoIds);
+
     /**
      * Gets the child learning opportunity
      * @param childLosId child learning opportunity specification id
@@ -59,4 +61,6 @@ public interface EducationDataService {
      * @return child learning opportunity
      */
     ChildLO getChildLearningOpportunity(final String childLosId, final String childLoiId) throws ResourceNotFoundException;
+
+
 }
