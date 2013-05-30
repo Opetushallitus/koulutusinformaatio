@@ -16,11 +16,20 @@ function LanguageCtrl($scope, $location, LanguageService) {
     TitleService.setTitle(title);
 
     // launch navigation script
+    /*
     $scope.initNavigation = function() {
         OPH.Common.initDropdownMenu();
     }
+    */
+
+    $scope.$on('$viewContentLoaded', function() {
+        OPH.Common.initHeader();
+    });
 };
 
+/**
+ *  Controller for search filters
+ */
 function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService) {
     $scope.individualizedActive = $scope.pohjakoulutus != 1;
 
@@ -38,9 +47,15 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
     }
 };
 
+/**
+ *  Controller for application basket
+ */
 function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, ApplicationBasketService) {
     var title = i18n.t('title-application-basket');
     TitleService.setTitle(title);
+
+    var basketLimit = 5; // TODO: get this from application data?
+    $scope.notificationText = i18n.t('application-basket-fill-form-notification', {count: basketLimit});
 
     ApplicationBasketService.query().then(function(result) {
         $scope.applicationItems = result;
@@ -78,8 +93,24 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
     $scope.gotoChild = function(parentId, losId, loiId) {
         $location.path('/info/' + parentId + '/' + losId + '/' + loiId);
     }
+
+    $scope.applyButtonIsDisabled = function() {
+        var itemsInBasket = ApplicationBasketService.getItemCount();
+        if (itemsInBasket > basketLimit) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    $scope.$on('$viewContentLoaded', function() {
+        OPH.Common.initHeader();
+    });
 };
 
+/**
+ *  Controller for adding applications to application basket
+ */
 function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
     $scope.addToBasket = function(asId, aoId) {
         ApplicationBasketService.addItem(asId, aoId);
@@ -125,9 +156,15 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
     };
 
     // launch navigation script
+    /*
     $scope.initNavigation = function() {
         OPH.Common.initDropdownMenu();
     };
+    */
+
+    $scope.$on('$viewContentLoaded', function() {
+        OPH.Common.initHeader();
+    });
 };
 
 /**
@@ -227,5 +264,8 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
     */
 
     // trigger once content is loaded
-    $scope.$on('$viewContentLoaded', tabsMenu.build);
+    $scope.$on('$viewContentLoaded', function() {
+        tabsMenu.build();
+        OPH.Common.initHeader();
+    });
 };

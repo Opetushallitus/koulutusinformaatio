@@ -22,16 +22,9 @@ kiApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $l
         templateUrl: 'partials/applicationbasket/applicationbasket.html',
         controller: ApplicationBasketCtrl
     });
-    /*
-    $routeProvider.when('/info/:parentId', {
-        redirectTo: '/info/:parentId/kuvaus'
-    });
-    */
     $routeProvider.otherwise({
     	redirectTo: '/index/'
     });
-
-    //$locationProvider.html5Mode(true);
 }]);
 
 // initialize i18n library
@@ -60,8 +53,8 @@ kiApp.run(['$location', '$rootScope', function($location, $rootScope) {
 var OPH = OPH || {};
 
 OPH.Common = {
-    initDropdownMenu: function() {
-        dropDownMenu.build();
+    initHeader: function() {
+        //dropDownMenu.build();
         popover.build();
         ApplicationBasket.load();
     }

@@ -31,16 +31,8 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', function
 }]).
 
 /**
- *  Resource for requesting LO data (parent and its children)
+ *  Resource for requesting parent LO data
  */
- /*
- factory('ParentLearningOpportunity', function($resource) {
-    return $resource('../lo/:parentId', {}, {
-        query: {method:'GET', isArray:false}
-    });
-}).
-*/
-
 service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', 'LanguageService', function($http, $timeout, $q, LanguageService) {
     var transformData = function(result) {
         var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
@@ -71,7 +63,7 @@ service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', 'Languag
 }]).
 
 /**
- *  
+ *  Resource for requesting child LO data
  */
 service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'LanguageService', function($http, $timeout, $q, LanguageService) {
 
@@ -125,36 +117,28 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
     return {
         getTerm: function() {
             return $.cookie(key);
-            //return $.jStorage.get(key);
-            //return $.cookie('searchTerm');
         },
 
         setTerm: function(newTerm) {
             $.cookie(key, newTerm, {useLocalStorage: false, path: '/'});
-            //console.log(newTerm);
-            //$.jStorage.set(key, newTerm);
-            //$.cookie('searchTerm', newTerm);
         }
     };
 }).
 
+/**
+ *  Service keeping track of the current language selection
+ */
 service('LanguageService', function() {
     var defaultLanguage = 'fi';
     var key = 'language';
 
-    //console.log($);
-
     return {
         getLanguage: function() {
             return $.cookie(key) || defaultLanguage;
-            //return $.jStorage.get(key) || defaultLanguage;
-            //return $.cookie('language') || defaultLanguage;
         },
 
         setLanguage: function(language) {
             $.cookie(key, language, {useLocalStorage: false, path: '/'});
-            //$.jStorage.set(key, language);
-            //$.cookie('language', language);
         }
     };
 }).
@@ -200,6 +184,9 @@ service('LanguageService', function() {
     }
 }).
 
+/**
+ *  Service for retrieving translated values for text
+ */
 service('TranslationService', function() {
     return {
         getTranslation: function(key) {
@@ -210,6 +197,9 @@ service('TranslationService', function() {
     }
 })
 
+/**
+ *  Service for maintaining application basket state
+ */
 .service('ApplicationBasketService', ['$http', '$q', function($http, $q) {
     var key = 'basket';
 
@@ -227,7 +217,11 @@ service('TranslationService', function() {
 
             if (current) {
                 current = JSON.parse(current);
-                current.push(aoId);
+
+                // do not add same ao twice
+                if (current.indexOf(aoId) < 0) {
+                    current.push(aoId);
+                }
             } else {
                 current = [];
                 current.push(aoId);
