@@ -90,7 +90,9 @@ public class ParentLearningOpportunitySpecificationDAOTest {
         List<ApplicationOptionEntity> aos = new ArrayList<ApplicationOptionEntity>();
         ApplicationOptionEntity ao = new ApplicationOptionEntity();
         ao.setId("7.7.7");
-        ao.setApplicationSystemId("sysId");
+        ApplicationSystemEntity as = new ApplicationSystemEntity();
+        as.setId("sysId");
+        ao.setApplicationSystem(as);
         ao.setEducationDegree("degree");
         ao.setName(TestUtil.createI18nTextEntity("ao name fi", "ao name sv", "ao name en"));
         ao.setProvider(provider);

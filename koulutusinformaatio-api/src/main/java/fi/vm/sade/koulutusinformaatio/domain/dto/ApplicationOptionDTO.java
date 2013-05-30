@@ -29,7 +29,7 @@ public class ApplicationOptionDTO {
 
     private String id;
     private String name;
-    private String applicationSystemId;
+    private ApplicationSystemDTO applicationSystem;
     private Integer startingQuota;
     private Integer lowestAcceptedScore;
     private Double lowestAcceptedAverage;
@@ -55,12 +55,12 @@ public class ApplicationOptionDTO {
         this.name = name;
     }
 
-    public String getApplicationSystemId() {
-        return applicationSystemId;
+    public ApplicationSystemDTO getApplicationSystem() {
+        return applicationSystem;
     }
 
-    public void setApplicationSystemId(String applicationSystemId) {
-        this.applicationSystemId = applicationSystemId;
+    public void setApplicationSystem(ApplicationSystemDTO applicationSystem) {
+        this.applicationSystem = applicationSystem;
     }
 
     public Integer getStartingQuota() {

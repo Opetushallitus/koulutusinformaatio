@@ -16,9 +16,10 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
-import com.google.common.collect.ImmutableMap;
+import com.google.common.base.Strings;
+import com.google.common.collect.Maps;
 
-import javax.validation.constraints.NotNull;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -32,7 +33,14 @@ public class I18nText {
     public I18nText() {}
 
     public I18nText(final Map<String, String> translations) {
-        this.translations = ImmutableMap.copyOf(translations);
+        this.translations = Maps.newHashMap();
+        Iterator<Map.Entry<String, String>> i  = translations.entrySet().iterator();
+        while (i.hasNext()) {
+            Map.Entry<String, String> entry = i.next();
+            if (!Strings.isNullOrEmpty(entry.getKey()) && !Strings.isNullOrEmpty(entry.getValue())) {
+                this.translations.put(entry.getKey().toLowerCase(), entry.getValue());
+            }
+        }
     }
 
     public Map<String, String> getTranslations() {

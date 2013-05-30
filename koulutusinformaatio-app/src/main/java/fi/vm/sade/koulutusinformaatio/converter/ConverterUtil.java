@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
+import com.google.common.base.Strings;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 
 import java.util.ArrayList;
@@ -27,12 +28,26 @@ import java.util.Set;
  */
 public class ConverterUtil {
 
-    public static String getTextByLanguage(final I18nText text, final String lang) {
+    public static String getTextByLanguage(final I18nText text, String lang) {
+        lang = lang.toLowerCase();
         if (text != null && text.getTranslations() != null && text.getTranslations().containsKey(lang)) {
             return text.getTranslations().get(lang);
         } else {
             return null;
         }
+    }
+
+    public static String getTextByLanguageUseFallbackLang(final I18nText text, String lang) {
+        String val = getTextByLanguage(text, lang);
+        if (Strings.isNullOrEmpty(val) && text != null && text.getTranslations() != null &&
+                !text.getTranslations().isEmpty()) {
+            val = getTextByLanguage(text, "fi");
+            if (Strings.isNullOrEmpty(val)) {
+                val = text.getTranslations().values().iterator().next();
+            }
+        }
+        return val;
+
     }
 
     public static Set<String> getAvailableTranslationLanguages(final I18nText text) {
@@ -43,7 +58,8 @@ public class ConverterUtil {
         }
     }
 
-    public static List<String> getTextsByLanguage(final List<I18nText> list, final String lang) {
+    public static List<String> getTextsByLanguage(final List<I18nText> list, String lang) {
+        lang = lang.toLowerCase();
         List<String> texts = new ArrayList<String>();
         if (list != null) {
             for (I18nText text : list) {

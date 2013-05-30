@@ -17,14 +17,8 @@
 package fi.vm.sade.koulutusinformaatio.modelmapper;
 
 import com.google.common.collect.Sets;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunityInstanceEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunitySpecificationEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunitySpecificationEntity;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
+import fi.vm.sade.koulutusinformaatio.dao.entity.*;
+import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 import org.junit.Test;
 import org.modelmapper.ModelMapper;
@@ -52,7 +46,9 @@ public class ModelMapperTest {
         Set<ApplicationOption> applicationOptions = Sets.newHashSet();
         ApplicationOption ao = new ApplicationOption();
         ao.setId("8.8.8");
-        ao.setApplicationSystemId("3.4.3");
+        ApplicationSystem as = new ApplicationSystem();
+        as.setId("3.4.3");
+        ao.setApplicationSystem(as);
         ao.setEducationDegree("e degree");
         ao.setName(TestUtil.createI18nText("ao name", "ao name", "ao name"));
         applicationOptions.add(ao);
@@ -105,7 +101,9 @@ public class ModelMapperTest {
         ApplicationOptionEntity ao = new ApplicationOptionEntity();
         ao.setId("900");
         ao.setName(TestUtil.createI18nTextEntity("ao name", "ao name", "ao name"));
-        ao.setApplicationSystemId("54543");
+        ApplicationSystemEntity as = new ApplicationSystemEntity();
+        as.setId("54543");
+        ao.setApplicationSystem(as);
         ao.setEducationDegree("degree");
         aos.add(ao);
         entity.setApplicationOptions(aos);

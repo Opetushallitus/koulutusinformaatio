@@ -35,7 +35,8 @@ public class ApplicationOptionEntity {
     private String id;
     @Embedded
     private I18nTextEntity name;
-    private String applicationSystemId;
+    @Embedded
+    private ApplicationSystemEntity applicationSystem;
     private String educationDegree;
     @Reference
     private LearningOpportunityProviderEntity provider;
@@ -68,12 +69,12 @@ public class ApplicationOptionEntity {
         this.name = name;
     }
 
-    public String getApplicationSystemId() {
-        return applicationSystemId;
+    public ApplicationSystemEntity getApplicationSystem() {
+        return applicationSystem;
     }
 
-    public void setApplicationSystemId(String applicationSystemId) {
-        this.applicationSystemId = applicationSystemId;
+    public void setApplicationSystem(ApplicationSystemEntity applicationSystem) {
+        this.applicationSystem = applicationSystem;
     }
 
     public String getEducationDegree() {
