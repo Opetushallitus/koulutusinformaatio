@@ -114,6 +114,11 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
 function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
     $scope.addToBasket = function(asId, aoId) {
         ApplicationBasketService.addItem(asId, aoId);
+
+        /*
+        $('#addToBasket').popover({title: 'Title', content: 'Content', placement: 'bottom'});
+        $('#addToBasket').popover('show');
+        */
     }
 };
 
@@ -133,6 +138,8 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
         $scope.queryString = $routeParams.queryString;
         $scope.showFilters = $scope.queryString ? true : false;
         SearchService.setTerm($routeParams.queryString);
+
+        console.log($scope.queryString);
     }
 
     // Perform search using LearningOpportunity service

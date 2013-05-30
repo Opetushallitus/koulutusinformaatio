@@ -1588,12 +1588,12 @@ hr {
     background-position: left bottom;
     background-color: #18a1cc;
     padding: 10px 0;
-    height: 90px;
+    height: 70px;
     position: relative;
     color: #fff; }
   #siteheader .actions {
     float: right;
-    line-height: 90px; }
+    line-height: 70px; }
     #siteheader .actions ul {
       display: inline-block;
       vertical-align: bottom;
@@ -1606,7 +1606,7 @@ hr {
           color: #333333;
           text-decoration: none; }
   #siteheader figure {
-    margin-top: 16px; }
+    margin-top: 8px; }
 
 /*** Overlay
 ************************************************/
