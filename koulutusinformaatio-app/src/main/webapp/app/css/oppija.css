@@ -1618,7 +1618,7 @@ hr {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 100; }
+  z-index: 1000; }
   #overlay > a.close {
     display: block;
     position: absolute;
@@ -2548,7 +2548,7 @@ ul.unstyled {
 
 /*** Popover window/dialog
 ************************************************/
-.popover-wrapper {
+.popup-dialog-wrapper {
   color: #3e3e3e;
   display: none;
   position: absolute;
@@ -2559,16 +2559,16 @@ ul.unstyled {
   margin: 0px;
   z-index: 1000;
   background-color: rgba(0, 0, 0, 0.1); }
-  .popover-wrapper.inactive {
+  .popup-dialog-wrapper.inactive {
     opacity: 0.5; }
-  .popover-wrapper > .popover-close {
+  .popup-dialog-wrapper > .popup-dialog-close {
     display: block;
     position: absolute;
     left: 0px;
     top: 0px;
     width: 100%;
     min-height: 100%; }
-  .popover-wrapper .popover {
+  .popup-dialog-wrapper .popup-dialog {
     display: block;
     margin: 2em auto;
     background: #ffffff;
@@ -2582,7 +2582,7 @@ ul.unstyled {
     height: auto;
     padding: 0 20px 20px;
     border: 10px solid #FFFFFF; }
-    .popover-wrapper .popover > .popover-close {
+    .popup-dialog-wrapper .popup-dialog > .popup-dialog-close {
       display: block;
       position: absolute;
       top: 10px;
@@ -2594,12 +2594,12 @@ ul.unstyled {
       background-position: center center;
       cursor: pointer;
       color: transparent; }
-    .popover-wrapper .popover > .popover-header {
+    .popup-dialog-wrapper .popup-dialog > .popup-dialog-header {
       font-size: 14px;
       font-weight: bold;
       width: auto;
       color: #333333; }
-    .popover-wrapper .popover > .popover-content {
+    .popup-dialog-wrapper .popup-dialog > .popup-dialog-content {
       display: inline-block;
       width: 33%; }
 

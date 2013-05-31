@@ -57,11 +57,17 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
     var basketLimit = 5; // TODO: get this from application data?
     $scope.notificationText = i18n.t('application-basket-fill-form-notification', {count: basketLimit});
 
-    ApplicationBasketService.query().then(function(result) {
-        $scope.applicationItems = result;
-    });
+    $scope.basketIsEmpty = ApplicationBasketService.isEmpty();
+
+    if (!$scope.basketIsEmpty) {
+        ApplicationBasketService.query().then(function(result) {
+            $scope.applicationItems = result;
+        });
+    }
 
     $scope.title = i18n.t('title-application-basket-content');
+
+    $scope.itemCount = ApplicationBasketService.getItemCount();
 
     $scope.removeItem = function(aoId) {
         ApplicationBasketService.removeItem(aoId);
@@ -83,8 +89,6 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
             }
         }
     };
-
-    $scope.itemCount = ApplicationBasketService.getItemCount();
 
     $scope.gotoParent = function(id) {
         $location.path('/info/' + id);
@@ -112,14 +116,18 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
  *  Controller for adding applications to application basket
  */
 function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
-    $scope.addToBasket = function(asId, aoId) {
-        ApplicationBasketService.addItem(asId, aoId);
-
+    $scope.addToBasket = function(aoId) {
+        ApplicationBasketService.addItem(aoId);
         /*
-        $('#addToBasket').popover({title: 'Title', content: 'Content', placement: 'bottom'});
+        $('#addToBasket').popover({
+            trigger: 'click', 
+            html: true,
+            title: '<span>Koulutus lisätty muistilistalle</span> <span class="popover-close"></span>', 
+            content: '<a href="#/muistilista">Katso muistilista</a>', 
+            placement: 'bottom'});
         $('#addToBasket').popover('show');
         */
-    }
+    }        
 };
 
 /**
@@ -138,8 +146,6 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
         $scope.queryString = $routeParams.queryString;
         $scope.showFilters = $scope.queryString ? true : false;
         SearchService.setTerm($routeParams.queryString);
-
-        console.log($scope.queryString);
     }
 
     // Perform search using LearningOpportunity service
