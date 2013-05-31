@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.service;
 
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 
 /**
  * Hides integration to the Organisaatio service.
@@ -25,5 +26,5 @@ import fi.vm.sade.koulutusinformaatio.domain.Provider;
  */
 public interface ProviderService {
 
-    public Provider getByOID(String oid);
+    public Provider getByOID(String oid) throws KoodistoException;
 }

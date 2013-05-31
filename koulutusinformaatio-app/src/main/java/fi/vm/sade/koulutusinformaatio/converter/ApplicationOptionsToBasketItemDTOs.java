@@ -20,6 +20,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
+import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.dto.BasketApplicationOptionDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.BasketItemDTO;
 
@@ -39,7 +40,14 @@ public class ApplicationOptionsToBasketItemDTOs {
                 BasketApplicationOptionDTO aoDTO = new BasketApplicationOptionDTO();
                 aoDTO.setId(ao.getId());
                 aoDTO.setEducationDegree(ao.getEducationDegree());
-
+                Provider provider = ao.getProvider();
+                if (provider != null) {
+                    aoDTO.setProviderId(provider.getId());
+                    aoDTO.setProviderName(ConverterUtil.getTextByLanguageUseFallbackLang(provider.getName(), lang));
+                    if (provider.getVisitingAddress() != null) {
+                        aoDTO.setProviderLocation(provider.getVisitingAddress().getPostOffice());
+                    }
+                }
 
                 ApplicationSystem as = ao.getApplicationSystem();
                 if (as != null && items.containsKey(as.getId())) {

@@ -19,6 +19,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 import com.google.common.collect.Maps;
 import fi.vm.sade.koulutusinformaatio.converter.OrganisaatioRDTOToProvider;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.organisaatio.resource.OrganisaatioResource;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
@@ -58,7 +59,7 @@ public class ProviderServiceImplTest {
     }
 
     @Test
-    public void testGetByOid() {
+    public void testGetByOid() throws KoodistoException {
         Provider p = providerService.getByOID(ORGANISAATIO_OID);
         assertNotNull(p);
         assertEquals(p.getId(), ORGANISAATIO_OID);
