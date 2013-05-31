@@ -29,6 +29,8 @@ public class LearningOpportunityProviderDTO {
     private String id;
     private String name;
     private Set<String> applicationSystemIds;
+    private AddressDTO postalAddress;
+    private AddressDTO visitingAddress;
 
     public String getId() {
         return id;
@@ -52,5 +54,21 @@ public class LearningOpportunityProviderDTO {
 
     public void setApplicationSystemIds(Set<String> applicationSystemIds) {
         this.applicationSystemIds = applicationSystemIds;
+    }
+
+    public AddressDTO getPostalAddress() {
+        return postalAddress;
+    }
+
+    public void setPostalAddress(AddressDTO postalAddress) {
+        this.postalAddress = postalAddress;
+    }
+
+    public AddressDTO getVisitingAddress() {
+        return visitingAddress;
+    }
+
+    public void setVisitingAddress(AddressDTO visitingAddress) {
+        this.visitingAddress = visitingAddress;
     }
 }
