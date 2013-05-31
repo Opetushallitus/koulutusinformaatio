@@ -27,7 +27,13 @@ public class ChildLORefEntity {
     private String losId;
     private String loiId;
     private String asId;
-    private String name;
+    @Embedded
+    private I18nTextEntity name;
+    private String nameByTeachingLang;
+    @Embedded
+    private I18nTextEntity qualification;
+    @Embedded
+    private I18nTextEntity prerequisite;
 
     public ChildLORefEntity() {}
 
@@ -55,11 +61,35 @@ public class ChildLORefEntity {
         this.asId = asId;
     }
 
-    public String getName() {
+    public I18nTextEntity getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(I18nTextEntity name) {
         this.name = name;
+    }
+
+    public String getNameByTeachingLang() {
+        return nameByTeachingLang;
+    }
+
+    public void setNameByTeachingLang(String nameByTeachingLang) {
+        this.nameByTeachingLang = nameByTeachingLang;
+    }
+
+    public I18nTextEntity getQualification() {
+        return qualification;
+    }
+
+    public void setQualification(I18nTextEntity qualification) {
+        this.qualification = qualification;
+    }
+
+    public I18nTextEntity getPrerequisite() {
+        return prerequisite;
+    }
+
+    public void setPrerequisite(I18nTextEntity prerequisite) {
+        this.prerequisite = prerequisite;
     }
 }

@@ -14,7 +14,7 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.koulutusinformaatio.domain.dto;
+package fi.vm.sade.koulutusinformaatio.domain;
 
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 

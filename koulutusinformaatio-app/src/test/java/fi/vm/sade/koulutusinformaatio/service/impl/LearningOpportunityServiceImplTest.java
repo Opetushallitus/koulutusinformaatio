@@ -57,20 +57,16 @@ public class LearningOpportunityServiceImplTest {
         parentLO.setEducationDomain(createI18Text("EducationDomain"));
         parentLO.setStydyDomain(createI18Text("StudyDomain"));
         List<ChildLORef> childLORefs = new ArrayList<ChildLORef>();
-        childLORefs.add(createChildLORef("c1", "as123", "loi123", "los123"));
-        childLORefs.add(createChildLORef("c2", "as123", "loi124", "los124"));
-        childLORefs.add(createChildLORef("c3", "as124", "loi125", "los123"));
+        childLORefs.add(createChildLORef(createI18Text("c1"), "c1 fi", "as123", "loi123", "los123"));
+        childLORefs.add(createChildLORef(createI18Text("c2"), "c2 fi", "as123", "loi124", "los124"));
+        childLORefs.add(createChildLORef(createI18Text("c3"), "c3 fi", "as124", "loi125", "los123"));
         parentLO.setChildRefs(childLORefs);
         Set<String> asIds = new HashSet<String>();
         asIds.add("as123");
         asIds.add("as124");
         parentLO.setProvider(createProvider("p1234", createI18Text("provider1"), asIds));
         List<ApplicationOption> aos = new ArrayList<ApplicationOption>();
-        List<I18nText> childNames = new ArrayList<I18nText>();
-        childNames.add(createI18Text("child 1"));
-        childNames.add(createI18Text("child 2"));
-        childNames.add(createI18Text("child 3"));
-        aos.add(createApplicationOption("ao123", createI18Text("ao name"), "as123", parentLO.getProvider(), new Date(), 100, 25,6, 77, childNames, "32"));
+        aos.add(createApplicationOption("ao123 fi", createI18Text("ao name"), "as123", parentLO.getProvider(), new Date(), 100, 25,6, 77, childLORefs, "32"));
         parentLO.setApplicationOptions(aos);
 
         childLO = new ChildLO();
@@ -172,9 +168,10 @@ public class LearningOpportunityServiceImplTest {
         return new I18nText(translations);
     }
 
-    private ChildLORef createChildLORef(String name, String asId, String loiId, String losId) {
+    private ChildLORef createChildLORef(I18nText name, String nameByTeachingLang, String asId, String loiId, String losId) {
         ChildLORef ref = new ChildLORef();
         ref.setName(name);
+        ref.setNameByTeachingLang(nameByTeachingLang);
         ref.setAsId(asId);
         ref.setLoiId(loiId);
         ref.setLosId(losId);
@@ -191,7 +188,7 @@ public class LearningOpportunityServiceImplTest {
 
     private ApplicationOption createApplicationOption(String id, I18nText name, String asId, Provider provider, Date attDeadline,
                                                       int lastYearApplicantCount, double lowestAcceptedAverage,
-                                                      int lowestAcceptedScore, int startingQuota, List<I18nText> childLONames,
+                                                      int lowestAcceptedScore, int startingQuota, List<ChildLORef> childLORefs,
                                                       String educationDegree) {
         ApplicationOption ao = new ApplicationOption();
         ao.setId(id);
@@ -205,7 +202,7 @@ public class LearningOpportunityServiceImplTest {
         ao.setLowestAcceptedAverage(lowestAcceptedAverage);
         ao.setLowestAcceptedScore(lowestAcceptedScore);
         ao.setStartingQuota(startingQuota);
-        ao.setChildLONames(childLONames);
+        ao.setChildLORefs(childLORefs);
         ao.setEducationDegree(educationDegree);
         return ao;
     }

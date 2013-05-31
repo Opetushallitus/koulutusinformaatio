@@ -32,7 +32,7 @@ public class ParentLOToDTO {
         parent.setName(ConverterUtil.getTextByLanguage(parentLO.getName(), lang));
         parent.setEducationDegree(ConverterUtil.getTextByLanguage(parentLO.getEducationDegree(), lang));
         parent.setAvailableTranslationLanguages(ConverterUtil.getAvailableTranslationLanguages(parentLO.getName()));
-        parent.setChildren(ChildLORefToDTO.convert(parentLO.getChildRefs()));
+        parent.setChildren(ChildLORefToDTO.convert(parentLO.getChildRefs(), lang));
         parent.setProvider(ProviderToDTO.convert(parentLO.getProvider(), lang));
         parent.setStructureDiagram(ConverterUtil.getTextByLanguage(parentLO.getStructureDiagram(), lang));
         parent.setAccessToFurtherStudies(ConverterUtil.getTextByLanguage(parentLO.getAccessToFurtherStudies(), lang));

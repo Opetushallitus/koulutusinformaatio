@@ -16,11 +16,9 @@
 
 package fi.vm.sade.koulutusinformaatio.dao;
 
-import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationSystemEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.I18nTextEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.*;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLORef;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 import org.junit.After;
 import org.junit.Test;
@@ -63,10 +61,10 @@ public class ApplicationOptionDAOTest {
         as.setId("123");
         entity.setApplicationSystem(as);
         entity.setEducationDegree("degree");
-        List<I18nTextEntity> childLoNames = new ArrayList<I18nTextEntity>();
-        childLoNames.add(TestUtil.createI18nTextEntity("clo name fi", "clo name sv", "clo name en"));
-        childLoNames.add(TestUtil.createI18nTextEntity("clo name 2 fi", "clo name 2 sv", "clo name 2 en"));
-        entity.setChildLONames(childLoNames);
+        List<ChildLORefEntity> childLoRefs = new ArrayList<ChildLORefEntity>();
+        childLoRefs.add(TestUtil.createChildLORef("clo 1", as.getId(), "112", "333"));
+        childLoRefs.add(TestUtil.createChildLORef("clo 2", as.getId(), "112", "444"));
+        entity.setChildLORefs(childLoRefs);
 
         LearningOpportunityProviderEntity lop = new LearningOpportunityProviderEntity();
         lop.setId("3.3.3");
@@ -84,8 +82,8 @@ public class ApplicationOptionDAOTest {
         assertEquals(entity.getEducationDegree(), fromDB.getEducationDegree());
         assertNotNull(entity.getProvider());
         assertEquals(lop.getId(), entity.getProvider().getId());
-        assertNotNull(entity.getChildLONames());
-        assertEquals(2, entity.getChildLONames().size());
+        assertNotNull(entity.getChildLORefs());
+        assertEquals(2, entity.getChildLORefs().size());
     }
 
     @Test

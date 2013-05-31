@@ -41,13 +41,8 @@ public class ChildLOToDTO {
                 child.getTeachingLanguages().add(code.getValue());
             }
         }
-        child.setRelated(ChildLORefToDTO.convert(childLO.getRelated()));
-        if (childLO.getParent() != null) {
-            ParentLOSRefDTO parent = new ParentLOSRefDTO();
-            parent.setId(childLO.getParent().getId());
-            parent.setName(ConverterUtil.getTextByLanguage(childLO.getParent().getName(), lang));
-            child.setParent(parent);
-        }
+        child.setRelated(ChildLORefToDTO.convert(childLO.getRelated(), lang));
+        child.setParent(ParentLOSRefToDTO.convert(childLO.getParent(), lang));
         child.setFormOfTeaching(ConverterUtil.getTextsByLanguage(childLO.getFormOfTeaching(), lang));
         child.setWebLinks(childLO.getWebLinks());
         child.setFormOfEducation(ConverterUtil.getTextsByLanguage(childLO.getFormOfEducation(), lang));

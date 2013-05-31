@@ -128,6 +128,10 @@ public class LOBuilder {
             childLOS.setQualification(koodistoService.searchFirst(childKomo.getTutkintonimikeUri()));
             childLOS.setDegreeTitle(koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri()));
 
+            ParentLORef parentRef = new ParentLORef();
+            parentRef.setId(parentLOS.getId());
+            parentRef.setName(parentLOS.getName());
+
             // loi
             List<ChildLOI> childLOIs = Lists.newArrayList();
             List<OidRDTO> childKomotoOids = komoResource.getKomotosByKomoOID(childKomoOid, Integer.MAX_VALUE, 0);
@@ -143,6 +147,7 @@ public class LOBuilder {
                     String aoId = aoIds.get(0).getOid();
                     HakukohdeDTO hakukohdeDTO = hakukohdeResource.getByOID(aoId);
                     ApplicationOption ao = new ApplicationOption();
+                    ao.setParent(parentRef);
                     ao.setId(hakukohdeDTO.getOid());
                     ao.setName(koodistoService.searchFirst(hakukohdeDTO.getHakukohdeNimiUri()));
                     ao.setStartingQuota(hakukohdeDTO.getAloituspaikatLkm());
@@ -166,14 +171,6 @@ public class LOBuilder {
                     // provider to ao
                     ao.setProvider(parentLOS.getProvider());
 
-                    // set child loi names to application option
-                    List<OidRDTO> komotosByHakukohdeOID = hakukohdeResource.getKomotosByHakukohdeOID(aoId);
-
-                    for (OidRDTO s : komotosByHakukohdeOID) {
-                        KomoDTO komoByKomotoOID = komotoResource.getKomoByKomotoOID(s.getOid());
-                        ao.getChildLONames().add(getI18nText(komoByKomotoOID.getNimi()));
-                    }
-
                     // asid to provider
                     parentLOS.getProvider().getApplicationSystemIDs().add(hakuDTO.getOid());
 
@@ -194,8 +191,20 @@ public class LOBuilder {
                     childLOI.setFormOfTeaching(koodistoService.searchMultiple(komotoDTO.getOpetusmuodotUris()));
                     childLOI.setPrerequisite(koodistoService.searchFirst(komotoDTO.getPohjakoulutusVaatimusUri()));
 
-                    childLOIs.add(childLOI);
+                    // set child loi names to application option
+                    List<OidRDTO> komotosByHakukohdeOID = hakukohdeResource.getKomotosByHakukohdeOID(aoId);
 
+                    for (OidRDTO s : komotosByHakukohdeOID) {
+                        KomoDTO komoByKomotoOID = komotoResource.getKomoByKomotoOID(s.getOid());
+                        ChildLORef cRef = new ChildLORef();
+                        cRef.setLoiId(s.getOid());
+                        cRef.setLosId(komoByKomotoOID.getOid());
+                        cRef.setName(getI18nText(komoByKomotoOID.getNimi()));
+                        cRef.setQualification(koodistoService.searchFirst(komoByKomotoOID.getTutkintonimikeUri()));
+                        cRef.setPrerequisite(childLOI.getPrerequisite());
+                        ao.getChildLORefs().add(cRef);
+                    }
+                    childLOIs.add(childLOI);
                 }
             }
             childLOS.setChildLOIs(childLOIs);

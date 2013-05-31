@@ -30,7 +30,6 @@ public class BasketItemDTO {
 
     private String applicationSystemId;
     private String applicationSystemName;
-    private int applicationMaxCount;
     private Date applicationStartDate;
     private Date applicationEndDate;
     private List<BasketApplicationOptionDTO> applicationOptions = new ArrayList<BasketApplicationOptionDTO>();
@@ -49,14 +48,6 @@ public class BasketItemDTO {
 
     public void setApplicationSystemName(String applicationSystemName) {
         this.applicationSystemName = applicationSystemName;
-    }
-
-    public int getApplicationMaxCount() {
-        return applicationMaxCount;
-    }
-
-    public void setApplicationMaxCount(int applicationMaxCount) {
-        this.applicationMaxCount = applicationMaxCount;
     }
 
     public Date getApplicationStartDate() {

@@ -16,7 +16,11 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLORef;
+import com.google.common.base.Function;
+import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLORef;
+import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLORefDTO;
 
 import java.util.ArrayList;
@@ -27,23 +31,42 @@ import java.util.List;
  */
 public class ChildLORefToDTO {
 
-    public static List<ChildLORefDTO> convert(final List<ChildLORef> refs) {
+    public static List<ChildLORefDTO> convert(final List<ChildLORef> refs, final String lang) {
         List<ChildLORefDTO> children = new ArrayList<ChildLORefDTO>();
         if (refs != null) {
             for (ChildLORef ref : refs) {
-                ChildLORefDTO child = convert(ref);
+                ChildLORefDTO child = convert(ref, lang);
                 children.add(child);
             }
         }
         return children;
     }
 
-    public static ChildLORefDTO convert(final ChildLORef ref) {
+    public static ChildLORefDTO convert(final ChildLORef ref, final String lang) {
         ChildLORefDTO child = new ChildLORefDTO();
         child.setLosId(ref.getLosId());
         child.setLoiId(ref.getLoiId());
         child.setAsId(ref.getAsId());
-        child.setName(ref.getName());
+        child.setPrerequisite(ConverterUtil.getTextByLanguageUseFallbackLang(ref.getPrerequisite(), lang));
+        child.setQualification(ConverterUtil.getTextByLanguageUseFallbackLang(ref.getQualification(), lang));
+        if (!Strings.isNullOrEmpty(ref.getNameByTeachingLang())) {
+            child.setName(ref.getNameByTeachingLang());
+        } else {
+            child.setName(ConverterUtil.getTextByLanguageUseFallbackLang(ref.getName(), lang));
+        }
         return child;
+    }
+
+    public static List<I18nText> convert(final List<ChildLORef> refs) {
+        if (refs != null) {
+            return Lists.transform(refs, new Function<ChildLORef, I18nText>() {
+                @Override
+                public I18nText apply(ChildLORef childLORef) {
+                    return childLORef.getName();
+                }
+            });
+        } else {
+            return null;
+        }
     }
 }

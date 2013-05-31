@@ -40,6 +40,8 @@ public class ApplicationOptionsToBasketItemDTOs {
                 BasketApplicationOptionDTO aoDTO = new BasketApplicationOptionDTO();
                 aoDTO.setId(ao.getId());
                 aoDTO.setEducationDegree(ao.getEducationDegree());
+                aoDTO.setParent(ParentLOSRefToDTO.convert(ao.getParent(), lang));
+                aoDTO.setChildren(ChildLORefToDTO.convert(ao.getChildLORefs(), lang));
                 Provider provider = ao.getProvider();
                 if (provider != null) {
                     aoDTO.setProviderId(provider.getId());
@@ -48,7 +50,6 @@ public class ApplicationOptionsToBasketItemDTOs {
                         aoDTO.setProviderLocation(provider.getVisitingAddress().getPostOffice());
                     }
                 }
-
                 ApplicationSystem as = ao.getApplicationSystem();
                 if (as != null && items.containsKey(as.getId())) {
                     items.get(as.getId()).getApplicationOptions().add(aoDTO);
