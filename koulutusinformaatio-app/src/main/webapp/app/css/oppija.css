@@ -2051,7 +2051,8 @@ label, .label {
   text-decoration: none;
   text-shadow: 0 1px 0 #FFFFFF;
   position: relative;
-  top: 1px; }
+  top: 1px;
+  margin: 0 0.5em 0 0; }
   .tabs.main .tab span {
     display: block;
     padding: 0px 20px;
@@ -2095,16 +2096,16 @@ label, .label {
 .tabs.sub {
   padding: 1em 0; }
   .tabs.sub .tab {
-    border-left-width: 1px;
-    border-left-style: solid;
-    border-left-color: #3e3e3e; }
-    .tabs.sub .tab:first-child {
-      border: none; }
-      .tabs.sub .tab:first-child span {
-        margin: 0 1em 0 0; }
-    .tabs.sub .tab span {
-      margin: 0 1em; }
-  .tabs.sub .tab.current {
+    display: inline; }
+    .tabs.sub .tab:before {
+      content: "|"; }
+    .tabs.sub .tab:first-child:before {
+      content: ""; }
+    .tabs.sub .tab:first-child a {
+      padding: 0 0.5em 0 0; }
+    .tabs.sub .tab a {
+      padding: 0 0.5em; }
+  .tabs.sub .tab.current a {
     color: #3e3e3e;
     cursor: default;
     text-decoration: none; }
@@ -3350,14 +3351,22 @@ input[type="radio"] {
   /*.list-separator {margin: 0 0.5em;}*/ }
   .ribbon .ribbon-content {
     display: inline; }
+    .ribbon .ribbon-content li {
+      display: inline; }
+      .ribbon .ribbon-content li:before {
+        content: "|"; }
+      .ribbon .ribbon-content li:first-child:before {
+        content: ""; }
+      .ribbon .ribbon-content li:first-child a {
+        padding: 0 0.5em 0 0; }
     .ribbon .ribbon-content a {
-      border-left-width: 1px;
-      border-left-style: solid;
-      border-left-color: #3e3e3e;
-      padding: 0 0.75em; }
-      .ribbon .ribbon-content a:first-child {
-        border: none;
-        padding: 0 0.75em 0 0; }
+      padding: 0 0.5em;
+      /*
+      &:first-child {
+          border: none;
+          padding: 0 0.75em 0 0;
+      }
+      */ }
       .ribbon .ribbon-content a.disabled {
         cursor: default;
         text-decoration: none;

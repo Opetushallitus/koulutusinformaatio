@@ -58,7 +58,7 @@
   directive('kiSiblingRibbon', ['$location', '$routeParams', function($location, $routeParams) {
     return {
         restrict: 'E,A',
-        template: '<div class="ribbon-content"><a ng-repeat="relatedChild in childLO.related" ng-click="changeChild(relatedChild)" ng-class="siblingClass(relatedChild)">{{relatedChild.name}}</a></div>',
+        template: '<ul class="ribbon-content"><li ng-repeat="relatedChild in childLO.related" ><a ng-click="changeChild(relatedChild)" ng-class="siblingClass(relatedChild)">{{relatedChild.name}}</a></li></ul>',
         link: function(scope, element, attrs) {
 
             scope.siblingClass = function(sibling) {
