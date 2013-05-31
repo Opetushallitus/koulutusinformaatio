@@ -42,7 +42,7 @@ ApplicationBasket.Popup = {
     maxApplications: 5,
 
     setTriggers: function() {
-        $('.popover-continue').on('click', function(event) {
+        $('.popup-dialog-continue').on('click', function(event) {
             ApplicationBasket.Popup.Form.submit();
         });
     },
@@ -102,8 +102,8 @@ ApplicationBasket.Popup = {
         }
 
         formElem.append(list);
-        formElem.append(this.createButton('popover-close', i18n.t('popup-close')));
-        formElem.append(this.createButton('primary float-right popover-continue popover-close', i18n.t('popup-continue')));
+        formElem.append(this.createButton('popup-dialog-close', i18n.t('popup-close')));
+        formElem.append(this.createButton('primary float-right popup-dialog-continue popup-dialog-close', i18n.t('popup-continue')));
 
         container.append(pElem);
         container.append(formElem);
@@ -156,7 +156,7 @@ ApplicationBasket.Popup.Form = {
                 if (value[i].name == 'appbasket-popup-radio') {
                     if (value[i].value == 'toappbasket') {
                         window.location = '#/muistilista';
-                        popover.hide('appbasket-popup');
+                        popup-dialog.hide('appbasket-popup');
                     } else if (value[i].value == 'ignore') {
                         window.location = '/haku-app/lomake/' + asId + '/yhteishaku';
                     } else if (value[i].value == 'transfer') {
@@ -340,43 +340,29 @@ var dropDownMenu = {
             // Popover auto-generated id
             id = 'poag'+popover.handlers.autoGenCount; 
             popover.handlers.autoGenCount++;
-        
-            popover_close = '<span class="popover-close">&#8203;</span>';
-            
-            
-            /* @todo: Handle "alert" type, where popover must be closed via dedicated button/link with possible callback.
-            if (params.type == 'alert')
-            {
-                if (params.close == false)
-                {
-                    popover_close = '';
-                }
-            }
-            */
-            //content = 'test <a class="popovertest" data-po-add="new" href="#">Test</a>';
-            //title = 'Laatikon otsikko';
-        
-            html =  '<div class="popover-wrapper generated" id="'+id+'" style="z-index:'+(popover.handlers.autoGenCount*100)+';">';
+
+            popover_close = '<span class="popup-dialog-close">&#8203;</span>';
+
+            html =  '<div class="popup-dialog-wrapper generated" id="'+id+'" style="z-index:'+(popover.handlers.autoGenCount+1000)+';">';
             html +=     popover_close;
-            html +=     '<div class="popover">';
+            html +=     '<div class="popup-dialog">';
             html +=         popover_close;
-            html +=         '<div class="popover-header">';
+            html +=         '<div class="popup-dialog-header">';
             html +=             '<h3>' + title + '</h3>';
             html +=         '</div>';
-            html +=         '<div class="popover-content">';
+            html +=         '<div class="popup-dialog-content">';
             html +=             content;
             html +=         '</div>';
             html +=     '</div>';
             html += '</div>';
         
-            console.log(html);
             $('#overlay').append(html);
         
             $('#' + id).show();
             popover.handlers.openPopovers++;
             popover.set.overlay();
-            popover.set.size($('#'+id+' .popover'));
-            popover.set.position($('#'+id+' .popover'));
+            popover.set.size($('#'+id+' .popup-dialog'));
+            popover.set.position($('#'+id+' .popup-dialog'));
         },
         hide:function(id){
             if($('#'+id).length != 0)
@@ -389,7 +375,7 @@ var dropDownMenu = {
         remove:function(target){
             if(target.length != 0 && $(target).length != 0)
             {
-                $(target).closest('.popover-wrapper').remove(); // Alternatively .detach()
+                $(target).closest('.popup-dialog-wrapper').remove(); // Alternatively .detach()
                 popover.handlers.openPopovers--;
                 popover.set.overlay();
             }
@@ -400,13 +386,13 @@ var dropDownMenu = {
                 $('#'+id).show();
                 popover.handlers.openPopovers++;
                 popover.set.overlay();
-                popover.set.size($('#'+id+' .popover'));
-                popover.set.position($('#'+id+' .popover'));
+                popover.set.size($('#'+id+' .popup-dialog'));
+                popover.set.position($('#'+id+' .popup-dialog'));
             }
         },
         set : {
             active:function(){
-                $('#overlay .popover-wrapper').addClass('inactive').last().removeClass('inactive');
+                $('#overlay .popup-dialog-wrapper').addClass('inactive').last().removeClass('inactive');
             },
             overlay:function(){
             
@@ -426,9 +412,9 @@ var dropDownMenu = {
             position:function(target){
             
                 // Target the actual popover-window
-                if($(target).hasClass('.popover-wrapper'))
+                if($(target).hasClass('.popup-dialog-wrapper'))
                 {
-                    target = $(target).find('.popover');
+                    target = $(target).find('.popup-dialog');
                 }
             
                 // Get window height and position from top
@@ -458,13 +444,13 @@ var dropDownMenu = {
             size:function(target){
                 
                 // Target the actual popover-window
-                if($(target).hasClass('.popover-wrapper'))
+                if($(target).hasClass('.popup-dialog-wrapper'))
                 {
-                    target = $(target).find('.popover');
+                    target = $(target).find('.popup-dialog');
                 }
                 
-                content_width = $(target).find('.popover-content').width();
-                content_outerwidth = $(target).find('.popover-content').outerWidth(true);
+                content_width = $(target).find('.popup-dialog-content').width();
+                content_outerwidth = $(target).find('.popup-dialog-content').outerWidth(true);
                 content_padding = content_outerwidth-content_width;
 
                 // Content area has minimum width
@@ -475,26 +461,24 @@ var dropDownMenu = {
                 
                 popover_width = content_width-content_padding;
                 
-                console.log(content_width);
-                
-                $(target).find('.popover-content').css({'width':content_width+'px'});
+                $(target).find('.popup-dialog-content').css({'width':content_width+'px'});
                 $(target).css({'width':popover_width+'px'});
                 
             },
             triggers:function(){
             
                 // Remove or hide popover from closing links
-                $('body').on('click', '.popover-wrapper .popover-close', function(){
+                $('body').on('click', '.popup-dialog-wrapper .popup-dialog-close', function(){
                     
                     // If window was generated dynamically remove, else just hide
-                    if($(this).closest('.popover-wrapper').hasClass('generated'))
+                    if($(this).closest('.popup-dialog-wrapper').hasClass('generated'))
                     {
-                        target = $(this).closest('.popover-wrapper').find('.popover');
+                        target = $(this).closest('.popup-dialog-wrapper').find('.popup-dialog');
                         popover.remove(target);
                     }
                     else
                     {
-                        id = $(this).closest('.popover-wrapper').attr('id');
+                        id = $(this).closest('.popup-dialog-wrapper').attr('id');
                         popover.hide(id);
                     }
                 });
