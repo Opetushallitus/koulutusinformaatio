@@ -252,10 +252,27 @@ service('TranslationService', function() {
             return $.cookie(key) ? JSON.parse($.cookie(key)).length : 0;
         },
 
+        isEmpty: function() {
+            return this.getItemCount() <= 0;
+        },
+
         query: function(params) {
             var deferred = $q.defer();
+            var basketItems = this.getItems();
 
-            //$http.get('../lo/search/'  params.queryString).
+            var qParams = '';
+
+            
+            for (var index in basketItems) {
+                if (basketItems.hasOwnProperty(index)) {
+                    qParams += '&aoId=' + basketItems[index];
+                }
+            }
+
+            qParams = qParams.substring(1, qParams.length);
+            
+
+            //$http.get('../basket/items?' + qParams).
             $http.get('mock/ao.json').
             success(function(result) {
                 deferred.resolve(result);
