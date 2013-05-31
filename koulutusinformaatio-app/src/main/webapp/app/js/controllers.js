@@ -107,6 +107,10 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
         }
     }
 
+    $scope.rowClass = function(isLast) {
+        return isLast ? 'last' : '';
+    }
+
     $scope.$on('$viewContentLoaded', function() {
         OPH.Common.initHeader();
     });

@@ -1737,7 +1737,8 @@ hr {
         background-position: left center;
         width: 19px;
         height: 17px;
-        display: block; }
+        display: block;
+        color: transparent; }
 
 /*** Form generic
 ************************************************/
@@ -2371,75 +2372,184 @@ ul.unstyled {
 
 /*** Application-basket
 ************************************************/
-.application-basket {
-  position: relative; }
-  .application-basket .table-container {
-    margin-right: -4px;
-    position: relative; }
-  .application-basket .close {
-    position: absolute;
-    right: 4px;
-    bottom: 0px; }
-  .application-basket table {
-    width: 100%;
-    border-spacing: 2px 0px;
-    border: none;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    -o-border-radius: 5px;
-    -ms-border-radius: 5px;
-    border-radius: 5px; }
-  .application-basket caption {
-    margin-bottom: 0.5em; }
-  .application-basket thead tr th,
-  .application-basket thead tr td,
-  .application-basket tbody tr td {
-    border: none;
-    vertical-align: top;
-    padding: 0.5em 1.5em;
-    background-color: #f5f5f5; }
-  .application-basket thead tr th {
-    background-color: #ececec;
-    background-image: url("../img/texture-angled-lines.gif");
-    background-repeat: repeat;
-    background-position: top left;
-    font-size: 1.385em;
-    line-height: 1.5em;
-    text-shadow: 0px 1px 1px #ffffff;
-    -webkit-border-radius: 5px 5px 0px 0px;
-    -moz-border-radius: 5px 5px 0px 0px;
-    -o-border-radius: 5px 5px 0px 0px;
-    -ms-border-radius: 5px 5px 0px 0px;
-    border-radius: 5px 5px 0px 0px; }
-    .application-basket thead tr th:first-child {
-      box-shadow: inset 8px 0px 4px -8px #a9a9a9, inset 0px 8px 4px -8px #a9a9a9, inset -8px 0px 4px -8px #a9a9a9; }
-  .application-basket thead tr td {
-    background-color: #dcdcdc;
-    text-transform: uppercase; }
-  .application-basket tbody tr:nth-child(even) td {
-    background-color: #ececec; }
+.application-basket-container h1 {
+  background-image: url(../img/muistilista_ikoni.png);
+  background-repeat: no-repeat;
+  height: 52px;
+  line-height: 78px;
+  padding: 0 0 0 52px; }
+
+.application-basket table {
+  width: 100%;
+  border: none;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -o-border-radius: 5px;
+  -ms-border-radius: 5px;
+  border-radius: 5px;
+  border-collapse: separate;
+  border-spacing: 0; }
+.application-basket thead tr th {
+  background-image: url("../img/texture-angled-lines.gif");
+  background-repeat: repeat;
+  background-position: top left;
+  -webkit-border-radius: 5px 5px 0px 0px;
+  -moz-border-radius: 5px 5px 0px 0px;
+  -o-border-radius: 5px 5px 0px 0px;
+  -ms-border-radius: 5px 5px 0px 0px;
+  border-radius: 5px 5px 0px 0px;
+  text-align: left; }
+  .application-basket thead tr th:first-child {
+    border-top: 1px solid #e1e1e1;
+    border-left: 1px solid #e1e1e1;
+    border-right: 1px solid #e1e1e1; }
+.application-basket thead tr th,
+.application-basket thead tr td,
+.application-basket tbody tr td {
+  border: none;
+  vertical-align: top;
+  padding: 1em 1em;
+  background-color: #fcfcfc; }
+.application-basket thead tr td,
+.application-basket tbody tr td {
+  border-right: 2px solid #f6f6f6; }
   .application-basket thead tr td:first-child,
   .application-basket tbody tr td:first-child {
-    box-shadow: inset 8px 0px 4px -8px #a9a9a9; }
-  .application-basket thead tr td:last-child,
-  .application-basket tbody tr td:last-child {
-    box-shadow: inset -8px 0px 4px -8px #a9a9a9; }
+    border-left: 1px solid #e1e1e1; }
+  .application-basket thead tr td.last,
+  .application-basket tbody tr td.last {
+    border-right: 1px solid #e1e1e1; }
   .application-basket thead tr td.basket-remove,
   .application-basket tbody tr td.basket-remove {
     width: 1px; }
-  .application-basket tfoot tr td {
-    border: none;
-    vertical-align: top;
-    padding: 0.5em 1.5em;
-    background-color: #ececec;
-    -webkit-border-radius: 0px 0px 5px 5px;
-    -moz-border-radius: 0px 0px 5px 5px;
-    -o-border-radius: 0px 0px 5px 5px;
-    -ms-border-radius: 0px 0px 5px 5px;
-    border-radius: 0px 0px 5px 5px; }
-    .application-basket tfoot tr td:first-child {
-      box-shadow: inset 8px 0px 4px -8px #a9a9a9, inset 0px -8px 4px -8px #a9a9a9, inset -8px 0px 4px -8px #a9a9a9; }
+.application-basket tbody tr.last td {
+  border-bottom: 1px solid #e1e1e1; }
+  .application-basket tbody tr.last td:first-child {
+    border-left: 1px solid #e1e1e1;
+    -moz-border-bottom-left-radius: 5px;
+    -webkit-border-bottom-left-radius: 5px;
+    -o-border-bottom-left-radius: 5px;
+    -ms-border-bottom-left-radius: 5px;
+    border-bottom-left-radius: 5px; }
+  .application-basket tbody tr.last td.last {
+    border-right: 1px solid #e1e1e1;
+    -moz-border-bottom-right-radius: 5px;
+    -webkit-border-bottom-right-radius: 5px;
+    -o-border-bottom-right-radius: 5px;
+    -ms-border-bottom-right-radius: 5px;
+    border-bottom-right-radius: 5px; }
 
+/*
+.application-basket
+{
+    background-color:#ececec;
+    margin:0.5em;
+    position:relative;
+    //overflow:hidden;
+	
+    //display:none;
+
+	.table-container
+	{
+		margin-right:-4px;
+		position:relative;
+	}
+
+	.close
+	{
+		position:absolute;
+		right:4px;
+		bottom:0px;
+	}
+
+	table
+	{
+		width:100%;
+		border-spacing:2px 0px;
+		margin:0px -10px 0px 0px;
+		border:none;
+		position:relative;
+		left:-2px;
+        @include rounded-corners(5px);
+	}
+
+    caption {
+        margin-bottom: 0.5em;
+    }
+
+	thead tr th,
+	thead tr td,
+	tbody tr td
+	{
+		border:none;
+		vertical-align:top;
+		padding:0.5em 1.5em;
+		//line-height:2em;
+		background-color:#f5f5f5;
+	}
+
+	thead tr th
+	{
+		background-color:#ececec;
+		background-image:url('../img/texture-angled-lines.gif');
+		background-repeat:repeat;
+		background-position:top left;
+		font-size:1.385em;
+		line-height:1.5em;
+		text-shadow:0px 1px 1px #ffffff;
+		@include rounded-corners(5px 5px 0px 0px);
+		
+		&:first-child
+		{
+			box-shadow:inset 8px 0px 4px -8px #a9a9a9, inset 0px 8px 4px -8px #a9a9a9, inset -8px 0px 4px -8px #a9a9a9;
+		}
+	}
+
+
+	thead tr td
+	{
+		background-color:#dcdcdc;
+		text-transform:uppercase;
+	}
+
+	tbody tr:nth-child(even) td
+	{
+		background-color:#ececec;
+	}
+
+	thead tr td,
+	tbody tr td	
+	{
+		&:first-child
+		{
+			box-shadow:inset 8px 0px 4px -8px #a9a9a9;
+		}
+		
+		&:last-child
+		{
+			box-shadow:inset -8px 0px 4px -8px #a9a9a9;
+		}
+
+        &.basket-remove {
+            width: 1px;
+        }
+	}
+
+	tfoot tr td
+	{
+		border:none;
+		vertical-align:top;
+		padding:0.5em 1.5em;
+		background-color:#ececec;
+		@include rounded-corners(0px 0px 5px 5px);
+		
+		&:first-child
+		{
+			box-shadow:inset 8px 0px 4px -8px #a9a9a9, inset 0px -8px 4px -8px #a9a9a9, inset -8px 0px 4px -8px #a9a9a9;
+		}
+	}
+}
+*/
 /*** Application-options
 **************************************************************/
 .application-options {

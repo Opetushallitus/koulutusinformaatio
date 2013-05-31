@@ -85,7 +85,8 @@
         restrict: 'E,A',
         templateUrl: 'partials/breadcrumb.html',
         link: function(scope, element, attrs) {
-            var home = i18n.t('breadcrumb-search-results');
+            var home = 'home';
+            var search = i18n.t('breadcrumb-search-results');
             var parent;
             var child;
 
@@ -101,7 +102,8 @@
 
             var update = function() {
                 scope.breadcrumbItems = [];
-                pushItem({name: home, callback: scope.search});
+                pushItem({name: home, callback: scope.gohome});
+                pushItem({name: search, callback: scope.search});
                 pushItem({name: parent, callback: scope.goto});
                 pushItem({name: child, callback: scope.goto});
             };
@@ -114,11 +116,15 @@
 
             scope.search = function() {
                 $location.path('/haku/' + SearchService.getTerm());
-            }
+            };
 
             scope.goto = function() {
                 $location.path('/info/' + scope.parentLO.id );
-            }
+            };
+
+            scope.gohome = function() {
+                $location.path('#');
+            };
         }
     };
 }]).
