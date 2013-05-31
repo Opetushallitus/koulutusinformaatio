@@ -1,12 +1,16 @@
 <section class="grid16-10 no-left-gutter" id="wide-column">
-    <div class="tabs sub">
-        <a class="tab current" data-tabs-group="koulutukseenhakeutuminen" data-tabs-id="koulutukseenhakeutuminen_peruskoulu">
-            <span data-ki-i18n="elementary-graduate-selection"></span>
-        </a>
-        <a class="tab" data-tabs-group="koulutukseenhakeutuminen" data-tabs-id="koulutukseenhakeutuminen_lukio">
-            <span data-ki-i18n="secondary-school-based"></span>
-        </a>
-    </div>
+    <ul class="tabs sub">
+        <li class="tab current" data-tabs-group="koulutukseenhakeutuminen" data-tabs-id="koulutukseenhakeutuminen_peruskoulu">
+            <a href="#">
+                <span data-ki-i18n="elementary-graduate-selection"></span>
+            </a>
+        </li>
+        <li class="tab" data-tabs-group="koulutukseenhakeutuminen" data-tabs-id="koulutukseenhakeutuminen_lukio">
+            <a href="#">
+                <span data-ki-i18n="secondary-school-based"></span>
+            </a>
+        </li>
+    </ul>
     <div class="tabsheets sub">
         <section class="tabsheet" style="display: block;" data-tabs-group="koulutukseenhakeutuminen" data-tabs-id="koulutukseenhakeutuminen_peruskoulu">
             <div ng-include src="'partials/tabs/subtabs/hakeutuminen_peruskoulu.html'"></div>

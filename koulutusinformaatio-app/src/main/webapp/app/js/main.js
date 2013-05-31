@@ -280,6 +280,10 @@ var tabsMenu = {
             }
         }
 
+        $('.tabs .tab a').click(function(event) {
+            event.preventDefault();
+        });
+
         $('.tabs .tab').click(function(event) {
             event.preventDefault();
             group = $(this).attr('data-tabs-group');

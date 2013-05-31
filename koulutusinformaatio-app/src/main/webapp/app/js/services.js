@@ -212,18 +212,20 @@ service('TranslationService', function() {
 
     // TODO: could we automate data transformation somehow?
     var transformData = function(result) {
-        if (result.length > 0) {
-            var applicationDates = result[0].applicationDates;
-            if (applicationDates.length > 0) {
-                result[0].applicationDates = applicationDates[0];
-            }
+        for (var asIndex in result) {
+            if (result.hasOwnProperty(asIndex)) {
+                var applicationDates = result[asIndex].applicationDates;
+                if (applicationDates.length > 0) {
+                    result[asIndex].applicationDates = applicationDates[0];
+                }
 
-            var applicationOptions = result[0].applicationOptions;
-            for (var i in applicationOptions) {
-                if (applicationOptions.hasOwnProperty(i)) {
-                    if (applicationOptions[i].children.length > 0) {
-                        result[0].applicationOptions[i].qualification = applicationOptions[i].children[0].qualification;
-                        result[0].applicationOptions[i].prerequisite = applicationOptions[i].children[0].prerequisite;
+                var applicationOptions = result[asIndex].applicationOptions;
+                for (var i in applicationOptions) {
+                    if (applicationOptions.hasOwnProperty(i)) {
+                        if (applicationOptions[i].children.length > 0) {
+                            result[asIndex].applicationOptions[i].qualification = applicationOptions[i].children[0].qualification;
+                            result[asIndex].applicationOptions[i].prerequisite = applicationOptions[i].children[0].prerequisite;
+                        }
                     }
                 }
             }
