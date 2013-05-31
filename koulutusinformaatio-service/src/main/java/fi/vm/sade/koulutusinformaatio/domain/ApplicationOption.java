@@ -29,7 +29,7 @@ public class ApplicationOption {
     private I18nText name;
     private ApplicationSystem applicationSystem;
     private String educationDegree;
-    private List<I18nText> childLONames = new ArrayList<I18nText>();
+    private List<ChildLORef> childLORefs = new ArrayList<ChildLORef>();
     private Provider provider;
     // "aloituspaikatLkm" : 10,
     private Integer startingQuota;
@@ -80,12 +80,12 @@ public class ApplicationOption {
         this.educationDegree = educationDegree;
     }
 
-    public List<I18nText> getChildLONames() {
-        return childLONames;
+    public List<ChildLORef> getChildLORefs() {
+        return childLORefs;
     }
 
-    public void setChildLONames(List<I18nText> childLONames) {
-        this.childLONames = childLONames;
+    public void setChildLORefs(List<ChildLORef> childLORefs) {
+        this.childLORefs = childLORefs;
     }
 
     public Provider getProvider() {

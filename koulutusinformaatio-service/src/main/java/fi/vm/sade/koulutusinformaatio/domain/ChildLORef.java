@@ -14,7 +14,7 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.koulutusinformaatio.domain.dto;
+package fi.vm.sade.koulutusinformaatio.domain;
 
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 
@@ -26,7 +26,10 @@ public class ChildLORef {
     private String losId;
     private String loiId;
     private String asId;
-    private String name;
+    private I18nText name;
+    private String nameByTeachingLang;
+    private I18nText qualification;
+    private I18nText prerequisite;
 
     public String getLosId() {
         return losId;
@@ -52,11 +55,35 @@ public class ChildLORef {
         this.asId = asId;
     }
 
-    public String getName() {
+    public I18nText getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(I18nText name) {
         this.name = name;
+    }
+
+    public String getNameByTeachingLang() {
+        return nameByTeachingLang;
+    }
+
+    public void setNameByTeachingLang(String nameByTeachingLang) {
+        this.nameByTeachingLang = nameByTeachingLang;
+    }
+
+    public I18nText getQualification() {
+        return qualification;
+    }
+
+    public void setQualification(I18nText qualification) {
+        this.qualification = qualification;
+    }
+
+    public I18nText getPrerequisite() {
+        return prerequisite;
+    }
+
+    public void setPrerequisite(I18nText prerequisite) {
+        this.prerequisite = prerequisite;
     }
 }

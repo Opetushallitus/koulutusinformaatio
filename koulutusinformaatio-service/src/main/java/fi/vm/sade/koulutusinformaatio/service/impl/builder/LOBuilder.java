@@ -171,14 +171,6 @@ public class LOBuilder {
                     // provider to ao
                     ao.setProvider(parentLOS.getProvider());
 
-                    // set child loi names to application option
-                    List<OidRDTO> komotosByHakukohdeOID = hakukohdeResource.getKomotosByHakukohdeOID(aoId);
-
-                    for (OidRDTO s : komotosByHakukohdeOID) {
-                        KomoDTO komoByKomotoOID = komotoResource.getKomoByKomotoOID(s.getOid());
-                        ao.getChildLONames().add(getI18nText(komoByKomotoOID.getNimi()));
-                    }
-
                     // asid to provider
                     parentLOS.getProvider().getApplicationSystemIDs().add(hakuDTO.getOid());
 
@@ -199,8 +191,20 @@ public class LOBuilder {
                     childLOI.setFormOfTeaching(koodistoService.searchMultiple(komotoDTO.getOpetusmuodotUris()));
                     childLOI.setPrerequisite(koodistoService.searchFirst(komotoDTO.getPohjakoulutusVaatimusUri()));
 
-                    childLOIs.add(childLOI);
+                    // set child loi names to application option
+                    List<OidRDTO> komotosByHakukohdeOID = hakukohdeResource.getKomotosByHakukohdeOID(aoId);
 
+                    for (OidRDTO s : komotosByHakukohdeOID) {
+                        KomoDTO komoByKomotoOID = komotoResource.getKomoByKomotoOID(s.getOid());
+                        ChildLORef cRef = new ChildLORef();
+                        cRef.setLoiId(s.getOid());
+                        cRef.setLosId(komoByKomotoOID.getOid());
+                        cRef.setName(getI18nText(komoByKomotoOID.getNimi()));
+                        cRef.setQualification(koodistoService.searchFirst(komoByKomotoOID.getTutkintonimikeUri()));
+                        cRef.setPrerequisite(childLOI.getPrerequisite());
+                        ao.getChildLORefs().add(cRef);
+                    }
+                    childLOIs.add(childLOI);
                 }
             }
             childLOS.setChildLOIs(childLOIs);

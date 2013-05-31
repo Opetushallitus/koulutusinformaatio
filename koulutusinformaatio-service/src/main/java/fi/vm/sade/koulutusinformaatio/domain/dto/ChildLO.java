@@ -16,10 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.domain.dto;
 
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLORef;
+import fi.vm.sade.koulutusinformaatio.domain.*;
 
 import java.util.ArrayList;
 import java.util.Date;

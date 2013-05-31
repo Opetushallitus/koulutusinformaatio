@@ -21,7 +21,7 @@ import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLORef;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLORef;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLORef;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +48,8 @@ public class KoulutusinformaatioObjectBuilder {
         if (childLOI != null && childLOS != null) {
             ChildLORefEntity ref = new ChildLORefEntity();
             ref.setLosId(childLOS.getId());
-            ref.setName(getTextByEducationLanguage(childLOS.getName(), childLOI.getTeachingLanguages()));
+            ref.setName(childLOS.getName());
+            ref.setNameByTeachingLang(getTextByEducationLanguage(childLOS.getName(), childLOI.getTeachingLanguages()));
             ref.setLoiId(childLOI.getId());
             ref.setAsId(childLOI.getApplicationSystemId());
             return ref;
