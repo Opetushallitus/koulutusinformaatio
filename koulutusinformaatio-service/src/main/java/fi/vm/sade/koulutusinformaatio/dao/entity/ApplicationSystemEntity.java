@@ -18,6 +18,9 @@ package fi.vm.sade.koulutusinformaatio.dao.entity;
 
 import com.google.code.morphia.annotations.Embedded;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Mikko Majapuro
  */
@@ -27,6 +30,8 @@ public class ApplicationSystemEntity {
     private String id;
     @Embedded
     private I18nTextEntity name;
+    @Embedded
+    private List<DateRangeEntity> applicationDates = new ArrayList<DateRangeEntity>();
 
     public ApplicationSystemEntity() {}
 
@@ -44,5 +49,13 @@ public class ApplicationSystemEntity {
 
     public void setName(I18nTextEntity name) {
         this.name = name;
+    }
+
+    public List<DateRangeEntity> getApplicationDates() {
+        return applicationDates;
+    }
+
+    public void setApplicationDates(List<DateRangeEntity> applicationDates) {
+        this.applicationDates = applicationDates;
     }
 }

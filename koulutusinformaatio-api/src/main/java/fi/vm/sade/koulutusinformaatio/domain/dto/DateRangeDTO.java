@@ -18,40 +18,30 @@ package fi.vm.sade.koulutusinformaatio.domain.dto;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 /**
  * @author Mikko Majapuro
  */
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
-public class ApplicationSystemDTO {
+public class DateRangeDTO {
 
-    private String id;
-    private String name;
-    private List<DateRangeDTO> applicationDates = new ArrayList<DateRangeDTO>();
+    private Date startDate;
+    private Date endDate;
 
-    public String getId() {
-        return id;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
-    public String getName() {
-        return name;
+    public Date getEndDate() {
+        return endDate;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<DateRangeDTO> getApplicationDates() {
-        return applicationDates;
-    }
-
-    public void setApplicationDates(List<DateRangeDTO> applicationDates) {
-        this.applicationDates = applicationDates;
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 }

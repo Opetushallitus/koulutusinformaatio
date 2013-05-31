@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.domain.dto;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,6 +37,7 @@ public class BasketApplicationOptionDTO {
     private String baseEducationRequirement;
     private ParentLOSRefDTO parent;
     private List<ChildLORefDTO> children;
+    private Date attachmentDeliveryDeadline;
 
     public String getId() {
         return id;
@@ -115,5 +117,13 @@ public class BasketApplicationOptionDTO {
 
     public void setChildren(List<ChildLORefDTO> children) {
         this.children = children;
+    }
+
+    public Date getAttachmentDeliveryDeadline() {
+        return attachmentDeliveryDeadline;
+    }
+
+    public void setAttachmentDeliveryDeadline(Date attachmentDeliveryDeadline) {
+        this.attachmentDeliveryDeadline = attachmentDeliveryDeadline;
     }
 }
