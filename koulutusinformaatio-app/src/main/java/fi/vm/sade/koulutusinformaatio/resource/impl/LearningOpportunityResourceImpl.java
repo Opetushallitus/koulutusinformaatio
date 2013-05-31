@@ -33,6 +33,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.List;
 
 /**
@@ -55,8 +57,14 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
 
     @Override
     public List<LearningOpportunitySearchResultDTO> searchLearningOpportunities(String text) {
+        String key = null;
         try {
-            List<LOSearchResult> learningOpportunities = searchService.searchLearningOpportunities(text);
+            key = URLDecoder.decode(text, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            key = text;
+        }
+        try {
+            List<LOSearchResult> learningOpportunities = searchService.searchLearningOpportunities(key);
             return Lists.transform(learningOpportunities, new Function<LOSearchResult, LearningOpportunitySearchResultDTO>() {
                 @Override
                 public LearningOpportunitySearchResultDTO apply(LOSearchResult input) {
