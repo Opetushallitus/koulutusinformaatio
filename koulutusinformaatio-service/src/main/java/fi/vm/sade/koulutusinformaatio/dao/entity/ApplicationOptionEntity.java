@@ -48,6 +48,8 @@ public class ApplicationOptionEntity {
     private Integer lastYearApplicantCount;
     private boolean sora;
     private List<String> teachingLanguages;
+    @Embedded
+    private ParentLOSRefEntity parent;
 
     public ApplicationOptionEntity() {
 
@@ -155,5 +157,13 @@ public class ApplicationOptionEntity {
 
     public void setTeachingLanguages(List<String> teachingLanguages) {
         this.teachingLanguages = teachingLanguages;
+    }
+
+    public ParentLOSRefEntity getParent() {
+        return parent;
+    }
+
+    public void setParent(ParentLOSRefEntity parent) {
+        this.parent = parent;
     }
 }

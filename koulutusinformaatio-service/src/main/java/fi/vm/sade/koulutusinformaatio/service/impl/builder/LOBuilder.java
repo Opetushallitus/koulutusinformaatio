@@ -128,6 +128,10 @@ public class LOBuilder {
             childLOS.setQualification(koodistoService.searchFirst(childKomo.getTutkintonimikeUri()));
             childLOS.setDegreeTitle(koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri()));
 
+            ParentLORef parentRef = new ParentLORef();
+            parentRef.setId(parentLOS.getId());
+            parentRef.setName(parentLOS.getName());
+
             // loi
             List<ChildLOI> childLOIs = Lists.newArrayList();
             List<OidRDTO> childKomotoOids = komoResource.getKomotosByKomoOID(childKomoOid, Integer.MAX_VALUE, 0);
@@ -143,6 +147,7 @@ public class LOBuilder {
                     String aoId = aoIds.get(0).getOid();
                     HakukohdeDTO hakukohdeDTO = hakukohdeResource.getByOID(aoId);
                     ApplicationOption ao = new ApplicationOption();
+                    ao.setParent(parentRef);
                     ao.setId(hakukohdeDTO.getOid());
                     ao.setName(koodistoService.searchFirst(hakukohdeDTO.getHakukohdeNimiUri()));
                     ao.setStartingQuota(hakukohdeDTO.getAloituspaikatLkm());

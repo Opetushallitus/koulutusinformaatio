@@ -45,6 +45,8 @@ public class ApplicationOption {
     private boolean sora;
     // opetuskielikoodit : [FI, SV]
     private List<String> teachingLanguages;
+    // tutkinnon viite
+    private ParentLORef parent;
 
     public String getId() {
         return id;
@@ -148,5 +150,13 @@ public class ApplicationOption {
 
     public void setTeachingLanguages(List<String> teachingLanguages) {
         this.teachingLanguages = teachingLanguages;
+    }
+
+    public ParentLORef getParent() {
+        return parent;
+    }
+
+    public void setParent(ParentLORef parent) {
+        this.parent = parent;
     }
 }

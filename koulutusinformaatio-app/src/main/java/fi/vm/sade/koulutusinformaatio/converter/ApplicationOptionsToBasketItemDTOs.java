@@ -40,6 +40,7 @@ public class ApplicationOptionsToBasketItemDTOs {
                 BasketApplicationOptionDTO aoDTO = new BasketApplicationOptionDTO();
                 aoDTO.setId(ao.getId());
                 aoDTO.setEducationDegree(ao.getEducationDegree());
+                aoDTO.setParent(ParentLOSRefToDTO.convert(ao.getParent(), lang));
                 Provider provider = ao.getProvider();
                 if (provider != null) {
                     aoDTO.setProviderId(provider.getId());

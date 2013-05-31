@@ -22,7 +22,7 @@ import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLORef;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLORef;
+import fi.vm.sade.koulutusinformaatio.domain.ParentLORef;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
