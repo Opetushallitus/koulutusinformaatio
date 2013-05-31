@@ -19,7 +19,6 @@ package fi.vm.sade.koulutusinformaatio.domain.dto;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,8 +29,7 @@ public class BasketItemDTO {
 
     private String applicationSystemId;
     private String applicationSystemName;
-    private Date applicationStartDate;
-    private Date applicationEndDate;
+    private List<DateRangeDTO> applicationDates = new ArrayList<DateRangeDTO>();
     private List<BasketApplicationOptionDTO> applicationOptions = new ArrayList<BasketApplicationOptionDTO>();
 
     public String getApplicationSystemId() {
@@ -50,20 +48,12 @@ public class BasketItemDTO {
         this.applicationSystemName = applicationSystemName;
     }
 
-    public Date getApplicationStartDate() {
-        return applicationStartDate;
+    public List<DateRangeDTO> getApplicationDates() {
+        return applicationDates;
     }
 
-    public void setApplicationStartDate(Date applicationStartDate) {
-        this.applicationStartDate = applicationStartDate;
-    }
-
-    public Date getApplicationEndDate() {
-        return applicationEndDate;
-    }
-
-    public void setApplicationEndDate(Date applicationEndDate) {
-        this.applicationEndDate = applicationEndDate;
+    public void setApplicationDates(List<DateRangeDTO> applicationDates) {
+        this.applicationDates = applicationDates;
     }
 
     public List<BasketApplicationOptionDTO> getApplicationOptions() {

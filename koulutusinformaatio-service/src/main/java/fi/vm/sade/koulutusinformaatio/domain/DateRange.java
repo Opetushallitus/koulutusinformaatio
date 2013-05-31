@@ -16,39 +16,29 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 /**
  * @author Mikko Majapuro
  */
-public class ApplicationSystem {
+public class DateRange {
 
-    private String id;
-    private I18nText name;
-    private List<DateRange> applicationDates = new ArrayList<DateRange>();
+    private Date startDate;
+    private Date endDate;
 
-    public String getId() {
-        return id;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
-    public I18nText getName() {
-        return name;
+    public Date getEndDate() {
+        return endDate;
     }
 
-    public void setName(I18nText name) {
-        this.name = name;
-    }
-
-    public List<DateRange> getApplicationDates() {
-        return applicationDates;
-    }
-
-    public void setApplicationDates(List<DateRange> applicationDates) {
-        this.applicationDates = applicationDates;
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 }

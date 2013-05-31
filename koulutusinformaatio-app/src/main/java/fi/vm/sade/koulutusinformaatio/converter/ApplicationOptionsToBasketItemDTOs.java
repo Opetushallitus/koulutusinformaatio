@@ -42,6 +42,7 @@ public class ApplicationOptionsToBasketItemDTOs {
                 aoDTO.setEducationDegree(ao.getEducationDegree());
                 aoDTO.setParent(ParentLOSRefToDTO.convert(ao.getParent(), lang));
                 aoDTO.setChildren(ChildLORefToDTO.convert(ao.getChildLORefs(), lang));
+                aoDTO.setAttachmentDeliveryDeadline(ao.getAttachmentDeliveryDeadline());
                 Provider provider = ao.getProvider();
                 if (provider != null) {
                     aoDTO.setProviderId(provider.getId());
@@ -58,6 +59,7 @@ public class ApplicationOptionsToBasketItemDTOs {
                     basketItem.setApplicationSystemId(as.getId());
                     basketItem.getApplicationOptions().add(aoDTO);
                     basketItem.setApplicationSystemName(ConverterUtil.getTextByLanguageUseFallbackLang(as.getName(), lang));
+                    basketItem.setApplicationDates(DateRangeToDTO.convert(as.getApplicationDates()));
                     items.put(as.getId(), basketItem);
                 }
             }

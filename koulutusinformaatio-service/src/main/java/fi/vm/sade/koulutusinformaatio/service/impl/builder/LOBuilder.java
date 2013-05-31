@@ -155,12 +155,22 @@ public class LOBuilder {
                     ao.setLowestAcceptedAverage(hakukohdeDTO.getAlinHyvaksyttavaKeskiarvo());
                     ao.setAttachmentDeliveryDeadline(hakukohdeDTO.getLiitteidenToimitusPvm());
                     ao.setLastYearApplicantCount(hakukohdeDTO.getEdellisenVuodenHakijatLkm());
+
                     HakuDTO hakuDTO = hakukohdeResource.getHakuByHakukohdeOID(aoId);
                     ApplicationSystem as = new ApplicationSystem();
                     as.setId(hakuDTO.getOid());
                     as.setName(getI18nText(hakuDTO.getNimi()));
+                    if (hakuDTO.getHakuaikas() != null) {
+                        for (HakuaikaRDTO ha : hakuDTO.getHakuaikas()) {
+                            DateRange range = new DateRange();
+                            range.setStartDate(ha.getAlkuPvm());
+                            range.setEndDate(ha.getLoppuPvm());
+                            as.getApplicationDates().add(range);
+                        }
+                    }
                     childLOI.setApplicationSystemId(hakuDTO.getOid());
                     ao.setApplicationSystem(as);
+
 
                     if (!Strings.isNullOrEmpty(hakukohdeDTO.getSoraKuvausKoodiUri())) {
                         ao.setSora(true);

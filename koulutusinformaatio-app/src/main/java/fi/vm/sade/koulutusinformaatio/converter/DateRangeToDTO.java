@@ -16,23 +16,35 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
+import fi.vm.sade.koulutusinformaatio.domain.DateRange;
+import fi.vm.sade.koulutusinformaatio.domain.dto.DateRangeDTO;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Mikko Majapuro
  */
-public class ApplicationSystemToDTO {
+public class DateRangeToDTO {
 
-    public static ApplicationSystemDTO convert(final ApplicationSystem applicationSystem, final String lang) {
-        if (applicationSystem != null) {
-            ApplicationSystemDTO ao = new ApplicationSystemDTO();
-            ao.setId(applicationSystem.getId());
-            ao.setName(ConverterUtil.getTextByLanguageUseFallbackLang(applicationSystem.getName(), lang));
-            ao.setApplicationDates(DateRangeToDTO.convert(applicationSystem.getApplicationDates()));
-            return ao;
+    public static DateRangeDTO convert(final DateRange dateRange) {
+        if (dateRange != null) {
+            DateRangeDTO r = new DateRangeDTO();
+            r.setStartDate(dateRange.getStartDate());
+            r.setEndDate(dateRange.getEndDate());
+            return r;
         } else {
             return null;
         }
+    }
+
+    public static List<DateRangeDTO> convert(final List<DateRange> dateRanges) {
+        List<DateRangeDTO> ranges = new ArrayList<DateRangeDTO>();
+        if (dateRanges != null) {
+            for (DateRange dr : dateRanges) {
+                ranges.add(convert(dr));
+            }
+        }
+        return ranges;
     }
 }
