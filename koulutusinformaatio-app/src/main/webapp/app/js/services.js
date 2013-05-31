@@ -210,6 +210,28 @@ service('TranslationService', function() {
         $('#appbasket-link').trigger(event);
     };
 
+    // TODO: could we automate data transformation somehow?
+    var transformData = function(result) {
+        if (result.length > 0) {
+            var applicationDates = result[0].applicationDates;
+            if (applicationDates.length > 0) {
+                result[0].applicationDates = applicationDates[0];
+            }
+
+            var applicationOptions = result[0].applicationOptions;
+            for (var i in applicationOptions) {
+                if (applicationOptions.hasOwnProperty(i)) {
+                    if (applicationOptions[i].children.length > 0) {
+                        result[0].applicationOptions[i].qualification = applicationOptions[i].children[0].qualification;
+                        result[0].applicationOptions[i].prerequisite = applicationOptions[i].children[0].prerequisite;
+                    }
+                }
+            }
+        }
+
+        return result;
+    };
+
     return {
         addItem: function(aoId) {
 
@@ -272,9 +294,10 @@ service('TranslationService', function() {
             qParams = qParams.substring(1, qParams.length);
             
 
-            //$http.get('../basket/items?' + qParams).
-            $http.get('mock/ao.json').
+            $http.get('../basket/items?' + qParams).
+            //$http.get('mock/ao.json').
             success(function(result) {
+                result = transformData(result);
                 deferred.resolve(result);
             }).
             error(function(result) {
