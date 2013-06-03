@@ -1,6 +1,6 @@
 /*  Application module */
 
-var kiApp = angular.module('kiApp', ['kiApp.services', 'kiApp.directives']);
+var kiApp = angular.module('kiApp', ['kiApp.services', 'kiApp.directives', 'ui.bootstrap']);
 kiApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
 	$routeProvider.when('/index/', {
 		templateUrl: 'partials/etusivu.html', 

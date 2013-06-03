@@ -155,7 +155,7 @@ directive('renderTextBlock', function() {
                     element.append(titleElement);
 
                     // replace line feed with <br>
-                    //content = content.replace(/(\r\n|\n|\r)/g,"<br />");
+                    content = content.replace(/(\r\n|\n|\r)/g,"<br />");
                     element.append(content);
                     //var contentElement = $('<p></p>');
                     //contentElement.append(content);
