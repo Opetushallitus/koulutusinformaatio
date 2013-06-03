@@ -9,7 +9,7 @@
         "applicationOptions": [
         	{
                 "id": "",                           // hakukohteen id
-                "mame": "",                         // hakukohteen nimi
+                "name": "",                         // hakukohteen nimi
                 "educationDegree": "",
                 "providerName": "",                 // koulutuksen tarjoajan nimi
                 "providerId": "",                   // koulutuksen tarjoajan id
