@@ -122,15 +122,6 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
 function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
     $scope.addToBasket = function(aoId) {
         ApplicationBasketService.addItem(aoId);
-        /*
-        $('#addToBasket').popover({
-            trigger: 'click', 
-            html: true,
-            title: '<span>Koulutus lisätty muistilistalle</span> <span class="popover-close"></span>', 
-            content: '<a href="#/muistilista">Katso muistilista</a>', 
-            placement: 'bottom'});
-        $('#addToBasket').popover('show');
-        */
     }        
 };
 
@@ -274,6 +265,9 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
     $scope.scrollToAnchor = function(id) {
         $('html, body').scrollTop($('#' + id).offset().top);
     };
+
+    $scope.popoverTitle = i18n.t('popover-title');
+    $scope.popoverContent = "<a href='#/muistilista'>" + i18n.t('popover-content') + "</a>";
 
     $scope.initTabs = tabsMenu.build;
 

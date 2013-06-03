@@ -68,6 +68,7 @@
     "application-title": "Haku (sv)",
     "application-period": "Hakuaika (sv)",
     "apply-button-label": "Hae koulutukseen (sv)",
+    "add-to-basket-label": "Lisää muistilistalle (sv)",
 
     "directly-applicable": "Suoraan haettavissa olevat koulutusohjelmat (sv):",
 
@@ -89,5 +90,8 @@
     "application-basket-popup-ignore": "Älä huomioi muistilistaa, vaan aloita tyhjän hakulomakkeen täyttäminen (sv)",
     "application-basket-popup-transfer": "Siirrä muistilistan koulutukset hakulomakkeelle (sv)",
     "popup-close": "Sulje (sv)",
-    "popup-continue": "Jatka (sv)"
+    "popup-continue": "Jatka (sv)",
+
+    "popover-title": "Koulutus lisätty muistilistalle (sv)",
+    "popover-content": "Katso muistilista (sv)"
 }
