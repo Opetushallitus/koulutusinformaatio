@@ -202,7 +202,6 @@ directive('kiTimestamp', function() {
     }
 }).
 
-
 /**
  *  Fetches a trasnlation with the given key and inserts it inside the element
  */
