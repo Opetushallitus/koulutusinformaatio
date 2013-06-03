@@ -16,7 +16,7 @@
         <dependency>
             <groupId>fi.vm.sade.koulutusinformaatio</groupId>
             <artifactId>koulutusinformaatio-api</artifactId>
-	    <version>${project.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>fi.vm.sade.koulutusinformaatio</groupId>
@@ -117,15 +117,6 @@
             </exclusions>
         </dependency>
 
-        <!-- embedded solr -->
-        <dependency>
-            <groupId>org.apache.solr</groupId>
-            <artifactId>solr</artifactId>
-            <version>${solr.version}</version>
-            <type>war</type>
-            <scope>tomcat</scope>
-        </dependency>
-
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -138,11 +129,20 @@
             <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
+
+    <!-- embedded solr -->
+        <!--<dependency>-->
+            <!--<groupId>org.apache.solr</groupId>-->
+            <!--<artifactId>solr</artifactId>-->
+            <!--<version>${solr.version}</version>-->
+            <!--<type>war</type>-->
+            <!--<scope>tomcat</scope>-->
+        <!--</dependency>-->
     </dependencies>
     <build>
-    
-    	<finalName>koulutusinformaatio-app</finalName>
-    
+
+        <finalName>koulutusinformaatio-app</finalName>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -154,18 +154,36 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>tomcat-maven-plugin</artifactId>
-                <version>1.1</version>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat6-maven-plugin</artifactId>
+                <version>2.1</version>
                 <configuration>
                     <charset>UTF-8</charset>
                     <uriEncoding>UTF-8</uriEncoding>
-                    <addContextWarDependencies>true</addContextWarDependencies>
-                    <systemProperties>
-                        <solr.solr.home>${project.build.directory}/classes/solr</solr.solr.home>
-                    </systemProperties>
+                    <!--<addContextWarDependencies>true</addContextWarDependencies>-->
+                    <!--<systemProperties>-->
+                        <!--<solr.solr.home>${project.build.directory}/classes/solr</solr.solr.home>-->
+                    <!--</systemProperties>-->
                 </configuration>
+                <!--<dependencies>-->
+                    <!--<dependency>-->
+                        <!--<groupId>net.java.dev.jna</groupId>-->
+                        <!--<artifactId>jna</artifactId>-->
+                        <!--<version>3.5.2</version>-->
+                    <!--</dependency>-->
+                    <!--<dependency>-->
+                        <!--<groupId>org.puimula</groupId>-->
+                        <!--<artifactId>libvoikko</artifactId>-->
+                        <!--<version>3.2</version>-->
+                    <!--</dependency>-->
+                    <!--<dependency>-->
+                        <!--<groupId>fi.nationallibrary.ndl</groupId>-->
+                        <!--<artifactId>solrvoikko</artifactId>-->
+                        <!--<version>0.0.2-SNAPSHOT</version>-->
+                    <!--</dependency>-->
+                <!--</dependencies>-->
             </plugin>
         </plugins>
     </build>
 </project>
+
