@@ -84,12 +84,12 @@
 				rm -rf ${tomcat.home}/webapps/koulutusinformaatio-app*.war;
 				unzip -qo -d${tomcat.home}/webapps/solr ${tomcat.home}/webapps/solr*.war;
 				rm -rf ${tomcat.home}/webapps/solr*.war;
-				mv ${tomcat.home}/webapps/jna*.jar ${tomcat.home}/webapps/solr/WEB-INF/lib/jna.jar
-				rm -rf ${tomcat.home}/webapps/jna*.jar
-				mv ${tomcat.home}/webapps/libvoikko*.jar ${tomcat.home}/webapps/solr/WEB-INF/lib/libvoikko.jar
-				rm -rf ${tomcat.home}/webapps/libvoikko*.jar
-				mv ${tomcat.home}/webapps/solrvoikko*.jar ${tomcat.home}/webapps/solr/WEB-INF/lib/solrvoikko.jar
-				rm -rf ${tomcat.home}/webapps/solrvoikko*.jar
+				mv ${tomcat.home}/webapps/jna*.jar ${tomcat.home}/webapps/solr/WEB-INF/lib/;
+				rm -rf ${tomcat.home}/webapps/jna*.jar;
+				mv ${tomcat.home}/webapps/libvoikko*.jar ${tomcat.home}/webapps/solr/WEB-INF/lib/;
+				rm -rf ${tomcat.home}/webapps/libvoikko*.jar;
+				mv ${tomcat.home}/webapps/solrvoikko*.jar ${tomcat.home}/webapps/solr/WEB-INF/lib/;
+				rm -rf ${tomcat.home}/webapps/solrvoikko*.jar;
 				"
                  host="${tomcat-host}" username="tomcat" keyfile="${ssh.keyfile}"
                  passphrase="${ssh.keypass}" trust="true" failonerror="false" />
