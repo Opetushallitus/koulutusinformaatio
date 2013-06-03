@@ -147,7 +147,6 @@ ApplicationBasket.Popup = {
 ApplicationBasket.Popup.Form = {
 
     submit: function() {
-        console.log('here');
         var value = $('#appbasket-popup-form').serializeArray();
         var asId = ApplicationBasket.getAsId();
 
@@ -156,7 +155,7 @@ ApplicationBasket.Popup.Form = {
                 if (value[i].name == 'appbasket-popup-radio') {
                     if (value[i].value == 'toappbasket') {
                         window.location = '#/muistilista';
-                        popup-dialog.hide('appbasket-popup');
+                        popover.hide('appbasket-popup');
                     } else if (value[i].value == 'ignore') {
                         window.location = '/haku-app/lomake/' + asId + '/yhteishaku';
                     } else if (value[i].value == 'transfer') {
