@@ -72,7 +72,7 @@
             </fileset>
 
             <fileset dir="${maven.repo}/fi/nationallibrary/ndl/solrvoikko/0.0.2-SNAPSHOT">
-                <include name="*.jar"/>
+                <include name="solrvoikko-0.0.2-SNAPSHOT.jar"/>
             </fileset>
 		</scp>
 
@@ -82,11 +82,14 @@
 				mkdir ${tomcat.home}/webapps/ROOT;
 				unzip -qo -d${tomcat.home}/webapps/ROOT ${tomcat.home}/webapps/koulutusinformaatio-app*.war;
 				rm -rf ${tomcat.home}/webapps/koulutusinformaatio-app*.war;
-				mv ${tomcat.home}/webapps/solr*.war ${tomcat.home}/webapps/solr.war;
-				unzip -qo ${tomcat.home}/webapps/solr.war;
-				mv ${tomcat.home}/webapps/jna*.jar ${tomcat.home}/webapps/solr/WEB-INF/lib/
-				mv ${tomcat.home}/webapps/libvoikko*.jar ${tomcat.home}/webapps/solr/WEB-INF/lib/
-				mv ${tomcat.home}/webapps/solrvoikko*.jar ${tomcat.home}/webapps/solr/WEB-INF/lib/
+				unzip -qo -d${tomcat.home}/webapps/solr ${tomcat.home}/webapps/solr*.war;
+				rm -rf ${tomcat.home}/webapps/solr*.war;
+				mv ${tomcat.home}/webapps/jna*.jar ${tomcat.home}/webapps/solr/WEB-INF/lib/jna.jar
+				rm -rf ${tomcat.home}/webapps/jna*.jar
+				mv ${tomcat.home}/webapps/libvoikko*.jar ${tomcat.home}/webapps/solr/WEB-INF/lib/libvoikko.jar
+				rm -rf ${tomcat.home}/webapps/libvoikko*.jar
+				mv ${tomcat.home}/webapps/solrvoikko*.jar ${tomcat.home}/webapps/solr/WEB-INF/lib/solrvoikko.jar
+				rm -rf ${tomcat.home}/webapps/solrvoikko*.jar
 				"
                  host="${tomcat-host}" username="tomcat" keyfile="${ssh.keyfile}"
                  passphrase="${ssh.keypass}" trust="true" failonerror="false" />
