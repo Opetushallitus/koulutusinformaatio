@@ -39,6 +39,7 @@ public class ApplicationOptionsToBasketItemDTOs {
             for (ApplicationOption ao : aos) {
                 BasketApplicationOptionDTO aoDTO = new BasketApplicationOptionDTO();
                 aoDTO.setId(ao.getId());
+                aoDTO.setName(ConverterUtil.getTextByLanguageUseFallbackLang(ao.getName(), lang));
                 aoDTO.setEducationDegree(ao.getEducationDegree());
                 aoDTO.setParent(ParentLOSRefToDTO.convert(ao.getParent(), lang));
                 aoDTO.setChildren(ChildLORefToDTO.convert(ao.getChildLORefs(), lang));
