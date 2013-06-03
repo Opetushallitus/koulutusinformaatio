@@ -16,11 +16,20 @@ function LanguageCtrl($scope, $location, LanguageService) {
     TitleService.setTitle(title);
 
     // launch navigation script
+    /*
     $scope.initNavigation = function() {
         OPH.Common.initDropdownMenu();
     }
+    */
+
+    $scope.$on('$viewContentLoaded', function() {
+        OPH.Common.initHeader();
+    });
 };
 
+/**
+ *  Controller for search filters
+ */
 function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService) {
     $scope.individualizedActive = $scope.pohjakoulutus != 1;
 
@@ -38,12 +47,74 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
     }
 };
 
-function ApplicationBasketCtrl($scope, $routeParams, TitleService) {
+/**
+ *  Controller for application basket
+ */
+function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, ApplicationBasketService) {
     var title = i18n.t('title-application-basket');
     TitleService.setTitle(title);
 
-    $scope.memoitems = [{name: 'name1', children: [{name: 'cname1'}, {name: 'cname2'}]}, {name: 'name2'}];
-    $scope.title = i18n.t('title-application-basket-content', {count: 3});
+    var basketLimit = 5; // TODO: get this from application data?
+    $scope.notificationText = i18n.t('application-basket-fill-form-notification', {count: basketLimit});
+
+    ApplicationBasketService.query().then(function(result) {
+        $scope.applicationItems = result;
+    });
+
+    $scope.title = i18n.t('title-application-basket-content');
+
+    $scope.removeItem = function(aoId) {
+        ApplicationBasketService.removeItem(aoId);
+
+        var items = $scope.applicationItems;
+
+        for (var i = 0; i < items.length; i++) {
+            var item = items[i];
+            for (var j = 0; j < item.applicationOptions.length; j++) {
+                var ao = item.applicationOptions[j];
+                if (ao.id == aoId) {
+                    item.applicationOptions.splice(j, 1);
+                    break;
+                }
+            }
+
+            if (item.applicationOptions.length <= 0) {
+                items.splice(i, 1);
+            }
+        }
+    };
+
+    $scope.itemCount = ApplicationBasketService.getItemCount();
+
+    $scope.gotoParent = function(id) {
+        $location.path('/info/' + id);
+    };
+
+    $scope.gotoChild = function(parentId, losId, loiId) {
+        $location.path('/info/' + parentId + '/' + losId + '/' + loiId);
+    }
+
+    $scope.applyButtonIsDisabled = function() {
+        var itemsInBasket = ApplicationBasketService.getItemCount();
+        if (itemsInBasket > basketLimit) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    $scope.$on('$viewContentLoaded', function() {
+        OPH.Common.initHeader();
+    });
+};
+
+/**
+ *  Controller for adding applications to application basket
+ */
+function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
+    $scope.addToBasket = function(asId, aoId) {
+        ApplicationBasketService.addItem(asId, aoId);
+    }
 };
 
 /**
@@ -85,9 +156,15 @@ function ApplicationBasketCtrl($scope, $routeParams, TitleService) {
     };
 
     // launch navigation script
+    /*
     $scope.initNavigation = function() {
         OPH.Common.initDropdownMenu();
     };
+    */
+
+    $scope.$on('$viewContentLoaded', function() {
+        OPH.Common.initHeader();
+    });
 };
 
 /**
@@ -187,5 +264,8 @@ function ApplicationBasketCtrl($scope, $routeParams, TitleService) {
     */
 
     // trigger once content is loaded
-    $scope.$on('$viewContentLoaded', tabsMenu.build);
+    $scope.$on('$viewContentLoaded', function() {
+        tabsMenu.build();
+        OPH.Common.initHeader();
+    });
 };

@@ -58,7 +58,7 @@
   directive('kiSiblingRibbon', ['$location', '$routeParams', function($location, $routeParams) {
     return {
         restrict: 'E,A',
-        template: '<div class"ribbon-content"><a ng-repeat="relatedChild in childLO.related" ng-click="changeChild(relatedChild)" ng-class="siblingClass(relatedChild)">{{relatedChild.name}}</a></div>',
+        template: '<div class="ribbon-content"><a ng-repeat="relatedChild in childLO.related" ng-click="changeChild(relatedChild)" ng-class="siblingClass(relatedChild)">{{relatedChild.name}}</a></div>',
         link: function(scope, element, attrs) {
 
             scope.siblingClass = function(sibling) {
@@ -182,7 +182,24 @@ directive('kiAppTitle', ['TitleService', function(TitleService) {
     };
 }]).
 
+/**
+ *  Creates a human readable date from timestamp
+ */
+directive('kiTimestamp', function() {
+    return function(scope, element, attrs) {
+        //console.log(attrs);
+        attrs.$observe('kiTimestamp', function(value) {
+            value = parseInt(value);
+            var date = new Date(value);
+            element.append(date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear());
+        });
+    }
+}).
 
+
+/**
+ *  Fetches a trasnlation with the given key and inserts it inside the element
+ */
 directive('kiI18n', ['TranslationService', function(TranslationService) {
     return function(scope, element, attrs) {
         attrs.$observe('kiI18n', function(value) {

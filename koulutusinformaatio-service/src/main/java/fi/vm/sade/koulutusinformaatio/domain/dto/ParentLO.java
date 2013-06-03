@@ -37,6 +37,7 @@ public class ParentLO {
     private I18nText goals;
     private I18nText educationDomain;
     private I18nText stydyDomain;
+    private List<ParentLOI> lois = new ArrayList<ParentLOI>();
 
     public String getId() {
         return id;
@@ -124,5 +125,13 @@ public class ParentLO {
 
     public void setStydyDomain(I18nText stydyDomain) {
         this.stydyDomain = stydyDomain;
+    }
+
+    public List<ParentLOI> getLois() {
+        return lois;
+    }
+
+    public void setLois(List<ParentLOI> lois) {
+        this.lois = lois;
     }
 }

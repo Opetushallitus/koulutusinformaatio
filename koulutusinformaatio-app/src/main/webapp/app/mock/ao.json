@@ -1,0 +1,83 @@
+[
+    {
+        "applicationSystemId": "1.2.246.562.5.741585101110",
+        "applicationSystemName": "Yhteishaku 2013",
+        "applicationMaxCount": "5",
+        "applicationStartDate": "1367971200000",
+        "applicationEndDate": "1369583341000",
+
+        "applicationOptions": [
+            {
+                "id": "1.2.246.562.14.11950062056",
+                "name": "Hammastekniikan perustutkinto, yo",
+                "educationDegree": "32",
+                "providerName": "Vantaan kaupunki",
+                "providerId": "1.2.246.562.10.86819294843",
+                "providerLocation": "Vantaa",
+                "id": "1.2.246.562.5.34512471011",
+                "name": "Hammastekniikan perustutkinto",
+                "children": [
+                    {
+                        "losId": "1.2.246.562.5.96778783231",
+                        "loiId": "1.2.246.562.5.81754280774",
+                        "name": "Hammastekniikan perustutkinto: hammaslaborantti, Hammastekniikan koulutusohjelma, Hammaslaborantti"
+                    }
+                ],
+                "qualification": "Hammaslaborantti",
+                "baseEducationRequirement": "Peruskoulupohjainen koulutus",
+                "deadlines": [
+                    {
+                        "name": "Kielikoe",
+                        "date": "20.11.2013"
+                    },
+                    {
+                        "name": "Liitteet",
+                        "date": "15.10.2013"
+                    },
+                    {
+                        "name": "Pääsykoe",
+                        "date": "21.11.2013"
+                    }
+                ]
+            },
+            {
+                "id": "1.2.246.562.14.11950062057",
+                "name": "Hammastekniikan perustutkinto, yo",
+                "educationDegree": "32",
+                "providerName": "Vantaan kaupunki",
+                "providerId": "1.2.246.562.10.86819294843",
+                "providerLocation": "Vantaa",
+                "id": "1.2.246.562.5.34512471011",
+                "name": "Hammastekniikan perustutkinto",
+                "children": [
+                    {
+                        "losId": "1.2.246.562.5.96778783231",
+                        "loiId": "1.2.246.562.5.81754280774",
+                        "name": "Hammastekniikan perustutkinto: hammaslaborantti, Hammastekniikan koulutusohjelma, Hammaslaborantti"
+                    },
+                    {
+                        "losId": "1.2.246.562.5.96778783231",
+                        "loiId": "1.2.246.562.5.81754280774",
+                        "name": "Hammastekniikan perustutkinto: hammaslaborantti, Hammastekniikan koulutusohjelma, Hammaslaborantti"
+                    }
+                ],
+                "qualification": "Hammaslaborantti",
+                "baseEducationRequirement": "Peruskoulupohjainen koulutus",
+                "deadlines": [
+                    {
+                        "name": "Kielikoe",
+                        "date": "20.11.2013"
+                    },
+                    {
+                        "name": "Liitteet",
+                        "date": "15.10.2013"
+                    },
+                    {
+                        "name": "Pääsykoe",
+                        "date": "21.11.2013"
+                    }
+                ]
+            }
+        ]
+    }
+]

@@ -77,6 +77,19 @@
     "language-sv": "På svenska",
     "language-en": "In English",
 
-    "title-application-basket-content": "Muistilista (__count__)",
-    "application-basket-back": "Siirry koulutustarjonnan selailuun"
+    "title-application-basket-content": "Muistilista",
+    "application-basket-back": "Siirry koulutustarjonnan selailuun",
+    "application-basket-fill-form": "Täytä hakulomake",
+    "application-basket-fill-form-notification": "Tässä haussa voit hakea enintään __count__ koulutukseen",
+
+    "application-basket-popup-title": "Täytä hakulomake",
+    "application-basket-popup-description": "Infoteksti",
+    "application-basket-popup-description-overflow": "Infoteksti",
+    "application-basket-popup-go-to-basket": "Siirry muistilistalle",
+    "application-basket-popup-ignore": "Älä huomioi muistilistaa, vaan aloita tyhjän hakulomakkeen täyttäminen",
+    "application-basket-popup-transfer": "Siirrä muistilistan koulutukset hakulomakkeelle",
+    "popup-close": "Sulje",
+    "popup-continue": "Jatka"
+
+
 }

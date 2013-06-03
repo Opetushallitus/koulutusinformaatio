@@ -1,14 +1,14 @@
 <header id="siteheader">
-    <div class="header-container grid16-16">
+    <div class="header-container">
         <figure class="float-left margin-left-2">
-            <img src="img/opintopolkufi.png" alt="Opintopolku.fi palvelun logo" />
+            <img src="img/opintopolkufi_large.png" alt="Opintopolku.fi palvelun logo" />
         </figure>
         <!--
         <div class="sitelogo">
             <a href="">Sivuston logo</a>
             <a href="/test/addPerson">/test/addPerson</a>
         </div>
-        -->
+    -->
         <!--
         <div class="actions primarylinks">
             <ul>
@@ -32,19 +32,65 @@
             </ul>
             <div class="clear"></div>
         </div>
-        -->
-        <div class="actions float-right">
+    -->
+    <div class="actions float-right">
             <!--
             <ul>
                 <li><a href="#" data-popup-action="open">Kirjaudu sisään</a></li>
             </ul>
         -->
-            <ul ng-controller="LanguageCtrl">
-                <li><a ng-click="changeLanguage('fi')" data-ki-i18n="language-fi"></a></li>
-                <li><a ng-click="changeLanguage('sv')" data-ki-i18n="language-sv"></a></li>
-                <li><a ng-click="changeLanguage('en')" data-ki-i18n="language-en"></a></li>
-                <!--<li><a href="#">Tekstiversion</a></li>-->
-            </ul>
+        <ul ng-controller="LanguageCtrl">
+            <li><a ng-click="changeLanguage('fi')" data-ki-i18n="language-fi"></a></li>
+            <li><a ng-click="changeLanguage('sv')" data-ki-i18n="language-sv"></a></li>
+            <li><a ng-click="changeLanguage('en')" data-ki-i18n="language-en"></a></li>
+            <!--<li><a href="#">Tekstiversion</a></li>-->
+        </ul>
+    </div>
+    <div class="actions primarylinks">
+        <ul>
+            <li><a id="appbasket-link" href="#/muistilista">Muistilista<span>()</span></a></li>
+            <li><a id="apply-link">Täytä hakulomake</a></li>
+        </ul>
+    </div>
+
+</div>
+</header>
+
+<!--
+<div class="popover-wrapper" id="appbasket-popup">
+    <span class="popover-close">Sulje</span>
+    <div class="popover">
+        <span class="popover-close">Sulje</span>
+        <div class="popover-header">
+            <h3>
+                Siirry muistilistalle
+            </h3>
+        </div>
+        <div class="popover-content">
+            <p>Etiam sit amet urna justo, vitae luctus eros. In hac habitasse platea dictumst. Suspendisse ut ultricies enim. Etiam quis ante massa, sit amet interdum nulla. Donec ultrices velit nec turpis ullamcorper pharetra.</p>
+            <form name="application-basket-popup-form" id="application-basket-popup-form">
+                <ul>
+                    <li>
+                        <input type="radio" name="appbasket-popup-radio" id="appbasket-popup-pick" checked="checked" value="pick"/>
+                        <label for="appbasket-popup-pick">Siirrä muistilistan koulutukset hakulomakkeelle</label>
+                    </li>
+                    <li>
+                        <input type="radio" name="appbasket-popup-radio" id="appbasket-popup-ignore" checked="checked" value="ignore"/>
+                        <label for="appbasket-popup-ignore">Älä huomioi muistilistaa, vaan aloita tyhjän hakulomakkeen täyttäminen</label>
+                    </li>
+                    <li>
+                        <input type="radio" name="appbasket-popup-radio" id="appbasket-popup-goto" value="goto"/>
+                        <label for="appbasket-popup-goto">Siirry muistilistalle</label>
+                    </li>
+                </ul>
+            </form>
+            <button type="button" class="popover-close">
+                <span><span>Sulje</span></span>
+            </button>
+            <button type="button" class="primary float-right popover-continue">
+                <span><span>Jatka</span></span>
+            </button>
         </div>
     </div>
-</header>
+</div>
+-->
