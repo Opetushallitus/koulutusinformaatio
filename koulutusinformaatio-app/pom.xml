@@ -130,14 +130,35 @@
             <scope>test</scope>
         </dependency>
 
-    <!-- embedded solr -->
+        <!-- embedded solr -->
         <!--<dependency>-->
-            <!--<groupId>org.apache.solr</groupId>-->
-            <!--<artifactId>solr</artifactId>-->
-            <!--<version>${solr.version}</version>-->
-            <!--<type>war</type>-->
-            <!--<scope>tomcat</scope>-->
+        <!--<groupId>org.apache.solr</groupId>-->
+        <!--<artifactId>solr</artifactId>-->
+        <!--<version>${solr.version}</version>-->
+        <!--<type>war</type>-->
+        <!--<scope>tomcat</scope>-->
         <!--</dependency>-->
+
+
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna</artifactId>
+            <version>3.5.2</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.puimula</groupId>
+            <artifactId>libvoikko</artifactId>
+            <version>3.2</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>fi.nationallibrary.ndl</groupId>
+            <artifactId>solrvoikko</artifactId>
+            <version>0.0.2-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
     </dependencies>
     <build>
 
@@ -162,25 +183,25 @@
                     <uriEncoding>UTF-8</uriEncoding>
                     <!--<addContextWarDependencies>true</addContextWarDependencies>-->
                     <!--<systemProperties>-->
-                        <!--<solr.solr.home>${project.build.directory}/classes/solr</solr.solr.home>-->
+                    <!--<solr.solr.home>${project.build.directory}/classes/solr</solr.solr.home>-->
                     <!--</systemProperties>-->
                 </configuration>
                 <!--<dependencies>-->
-                    <!--<dependency>-->
-                        <!--<groupId>net.java.dev.jna</groupId>-->
-                        <!--<artifactId>jna</artifactId>-->
-                        <!--<version>3.5.2</version>-->
-                    <!--</dependency>-->
-                    <!--<dependency>-->
-                        <!--<groupId>org.puimula</groupId>-->
-                        <!--<artifactId>libvoikko</artifactId>-->
-                        <!--<version>3.2</version>-->
-                    <!--</dependency>-->
-                    <!--<dependency>-->
-                        <!--<groupId>fi.nationallibrary.ndl</groupId>-->
-                        <!--<artifactId>solrvoikko</artifactId>-->
-                        <!--<version>0.0.2-SNAPSHOT</version>-->
-                    <!--</dependency>-->
+                <!--<dependency>-->
+                <!--<groupId>net.java.dev.jna</groupId>-->
+                <!--<artifactId>jna</artifactId>-->
+                <!--<version>3.5.2</version>-->
+                <!--</dependency>-->
+                <!--<dependency>-->
+                <!--<groupId>org.puimula</groupId>-->
+                <!--<artifactId>libvoikko</artifactId>-->
+                <!--<version>3.2</version>-->
+                <!--</dependency>-->
+                <!--<dependency>-->
+                <!--<groupId>fi.nationallibrary.ndl</groupId>-->
+                <!--<artifactId>solrvoikko</artifactId>-->
+                <!--<version>0.0.2-SNAPSHOT</version>-->
+                <!--</dependency>-->
                 <!--</dependencies>-->
             </plugin>
         </plugins>
