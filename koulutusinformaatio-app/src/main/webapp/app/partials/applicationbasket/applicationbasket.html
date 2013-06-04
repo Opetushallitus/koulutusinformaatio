@@ -47,7 +47,7 @@
                                 </td>
                                 <td>
                                     <ul class="dash">
-                                        <li ng-repeat="child in item.children"><a ng-click="gotoChild(item.id, child.losId, child.loiId)">{{child.name}}</a></li>
+                                        <li ng-repeat="child in item.children"><a ng-click="gotoChild(item.parent.id, child.losId, child.loiId)">{{child.name}}</a></li>
                                     </ul>
                                 </td>
                                 <td class="align-right">
@@ -63,7 +63,7 @@
                         </tfoot>
                     </table>
                     <span class="float-right margin-bottom-2">{{notificationText}}</span>
-                    <form action="/haku-app/lomake/{{asId}}/yhteishaku" method="post">
+                    <form action="/haku-app/lomake/{{as.applicationSystemId}}/yhteishaku" method="post">
                         <span ng-repeat="item in as.applicationOptions">
                             <input type="hidden" name="preference{{$index + 1}}-Opetuspiste" value="{{item.providerName}}"/>
                             <input type="hidden" name="preference{{$index + 1}}-Opetuspiste-id" value="{{item.providerId}}"/>
