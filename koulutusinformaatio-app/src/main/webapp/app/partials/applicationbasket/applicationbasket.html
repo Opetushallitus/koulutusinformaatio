@@ -47,7 +47,7 @@
                                 </td>
                                 <td>
                                     <ul class="dash">
-                                        <li ng-repeat="child in item.children"><a ng-click="gotoChild(item.id, child.losId, child.loiId)">{{child.name}}</a></li>
+                                        <li ng-repeat="child in item.children"><a ng-click="gotoChild(item.parent.id, child.losId, child.loiId)">{{child.name}}</a></li>
                                     </ul>
                                 </td>
                                 <td class="align-right">
