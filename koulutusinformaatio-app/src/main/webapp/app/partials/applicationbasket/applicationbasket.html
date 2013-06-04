@@ -1,6 +1,6 @@
 <section class="content-container margin-bottom-2">
     <div class="grid16-16 application-basket-container">
-        <div id="breadcrumb">
+        <div id="breadcrumb" class="float-left">
             <ul>
                 <li class="breadcrumb-item home">
                     <a href="#"></a>
@@ -8,8 +8,9 @@
                 <li class="breadcrumb-item" data-ki-i18n="title-application-basket-content"></li>
             </ul>
         </div>
+        <a class="float-right" href="#/haku/{{queryString}}" data-ki-i18n="application-basket-back"></a>
+        <div class="clear"></clear>
         <h1 class="float-left margin-top-0">{{title}} ({{itemCount}})</h1>
-        <!--<a class="float-right" href="#" data-ki-i18n="application-basket-back"></a>-->
         <div class="clear"></div>
         <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla posuere, nisl eu gravida elementum, risus risus varius quam, eu rutrum lectus purus quis arcu. Donec euismod porta mi, sed imperdiet ligula sagittis et. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed ut felis sit amet ipsum eleifend rhoncus. Donec sed viverra velit. Morbi mollis pellentesque mollis.
@@ -25,11 +26,6 @@
                             <col style="width: 33%;"></col>
                             <col style="width: 47%;"></col>
                         </colgroup>
-                        <!--
-                        <caption class="align-left">
-                            <h3>{{as.applicationSystemName}} <span data-ki-timestamp="{{as.applicationStartDate}}"></span> - <span data-ki-timestamp="{{as.applicationEndDate}}"></span></h3>
-                        </caption>
-                        -->
                         <thead>
                             <tr>
                                 <th colspan="4"><h3 class="margin-0">{{as.applicationSystemName}} <span data-ki-timestamp="{{as.applicationDates.startDate}}"></span> - <span data-ki-timestamp="{{as.applicationDates.endDate}}"></span></h3></th>
