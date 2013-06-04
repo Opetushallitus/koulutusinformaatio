@@ -29,7 +29,7 @@ public class ApplicationOptionDTO {
 
     private String id;
     private String name;
-    private String applicationSystemId;
+    private ApplicationSystemDTO applicationSystem;
     private Integer startingQuota;
     private Integer lowestAcceptedScore;
     private Double lowestAcceptedAverage;
@@ -38,6 +38,7 @@ public class ApplicationOptionDTO {
     private boolean sora;
     private String educationDegree;
     private List<String> teachingLanguages;
+    private String selectionCriteria;
 
     public String getId() {
         return id;
@@ -55,12 +56,12 @@ public class ApplicationOptionDTO {
         this.name = name;
     }
 
-    public String getApplicationSystemId() {
-        return applicationSystemId;
+    public ApplicationSystemDTO getApplicationSystem() {
+        return applicationSystem;
     }
 
-    public void setApplicationSystemId(String applicationSystemId) {
-        this.applicationSystemId = applicationSystemId;
+    public void setApplicationSystem(ApplicationSystemDTO applicationSystem) {
+        this.applicationSystem = applicationSystem;
     }
 
     public Integer getStartingQuota() {
@@ -125,5 +126,13 @@ public class ApplicationOptionDTO {
 
     public void setTeachingLanguages(List<String> teachingLanguages) {
         this.teachingLanguages = teachingLanguages;
+    }
+
+    public String getSelectionCriteria() {
+        return selectionCriteria;
+    }
+
+    public void setSelectionCriteria(String selectionCriteria) {
+        this.selectionCriteria = selectionCriteria;
     }
 }

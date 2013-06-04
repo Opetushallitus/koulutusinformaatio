@@ -35,11 +35,13 @@ public class ApplicationOptionEntity {
     private String id;
     @Embedded
     private I18nTextEntity name;
-    private String applicationSystemId;
+    @Embedded
+    private ApplicationSystemEntity applicationSystem;
     private String educationDegree;
     @Reference
     private LearningOpportunityProviderEntity provider;
-    private List<I18nTextEntity> childLONames = new ArrayList<I18nTextEntity>();
+    @Embedded
+    private List<ChildLORefEntity> childLORefs = new ArrayList<ChildLORefEntity>();
     private Integer startingQuota;
     private Integer lowestAcceptedScore;
     private Double lowestAcceptedAverage;
@@ -47,6 +49,9 @@ public class ApplicationOptionEntity {
     private Integer lastYearApplicantCount;
     private boolean sora;
     private List<String> teachingLanguages;
+    @Embedded
+    private ParentLOSRefEntity parent;
+    private I18nTextEntity selectionCriteria;
 
     public ApplicationOptionEntity() {
 
@@ -68,12 +73,12 @@ public class ApplicationOptionEntity {
         this.name = name;
     }
 
-    public String getApplicationSystemId() {
-        return applicationSystemId;
+    public ApplicationSystemEntity getApplicationSystem() {
+        return applicationSystem;
     }
 
-    public void setApplicationSystemId(String applicationSystemId) {
-        this.applicationSystemId = applicationSystemId;
+    public void setApplicationSystem(ApplicationSystemEntity applicationSystem) {
+        this.applicationSystem = applicationSystem;
     }
 
     public String getEducationDegree() {
@@ -92,12 +97,12 @@ public class ApplicationOptionEntity {
         this.provider = provider;
     }
 
-    public List<I18nTextEntity> getChildLONames() {
-        return childLONames;
+    public List<ChildLORefEntity> getChildLORefs() {
+        return childLORefs;
     }
 
-    public void setChildLONames(List<I18nTextEntity> childLONames) {
-        this.childLONames = childLONames;
+    public void setChildLORefs(List<ChildLORefEntity> childLORefs) {
+        this.childLORefs = childLORefs;
     }
 
     public Integer getStartingQuota() {
@@ -154,5 +159,21 @@ public class ApplicationOptionEntity {
 
     public void setTeachingLanguages(List<String> teachingLanguages) {
         this.teachingLanguages = teachingLanguages;
+    }
+
+    public ParentLOSRefEntity getParent() {
+        return parent;
+    }
+
+    public void setParent(ParentLOSRefEntity parent) {
+        this.parent = parent;
+    }
+
+    public I18nTextEntity getSelectionCriteria() {
+        return selectionCriteria;
+    }
+
+    public void setSelectionCriteria(I18nTextEntity selectionCriteria) {
+        this.selectionCriteria = selectionCriteria;
     }
 }

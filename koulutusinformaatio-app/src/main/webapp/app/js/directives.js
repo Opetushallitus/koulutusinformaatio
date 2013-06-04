@@ -58,7 +58,7 @@
   directive('kiSiblingRibbon', ['$location', '$routeParams', function($location, $routeParams) {
     return {
         restrict: 'E,A',
-        template: '<div class="ribbon-content"><a ng-repeat="relatedChild in childLO.related" ng-click="changeChild(relatedChild)" ng-class="siblingClass(relatedChild)">{{relatedChild.name}}</a></div>',
+        template: '<ul class="ribbon-content"><li ng-repeat="relatedChild in childLO.related" ><a ng-click="changeChild(relatedChild)" ng-class="siblingClass(relatedChild)">{{relatedChild.name}}</a></li></ul>',
         link: function(scope, element, attrs) {
 
             scope.siblingClass = function(sibling) {
@@ -85,7 +85,8 @@
         restrict: 'E,A',
         templateUrl: 'partials/breadcrumb.html',
         link: function(scope, element, attrs) {
-            var home = i18n.t('breadcrumb-search-results');
+            var home = 'home';
+            var search = i18n.t('breadcrumb-search-results');
             var parent;
             var child;
 
@@ -101,7 +102,8 @@
 
             var update = function() {
                 scope.breadcrumbItems = [];
-                pushItem({name: home, callback: scope.search});
+                pushItem({name: home, callback: scope.gohome});
+                pushItem({name: search, callback: scope.search});
                 pushItem({name: parent, callback: scope.goto});
                 pushItem({name: child, callback: scope.goto});
             };
@@ -114,11 +116,15 @@
 
             scope.search = function() {
                 $location.path('/haku/' + SearchService.getTerm());
-            }
+            };
 
             scope.goto = function() {
                 $location.path('/info/' + scope.parentLO.id );
-            }
+            };
+
+            scope.gohome = function() {
+                $location.path('#');
+            };
         }
     };
 }]).
@@ -149,7 +155,7 @@ directive('renderTextBlock', function() {
                     element.append(titleElement);
 
                     // replace line feed with <br>
-                    //content = content.replace(/(\r\n|\n|\r)/g,"<br />");
+                    content = content.replace(/(\r\n|\n|\r)/g,"<br />");
                     element.append(content);
                     //var contentElement = $('<p></p>');
                     //contentElement.append(content);
@@ -195,7 +201,6 @@ directive('kiTimestamp', function() {
         });
     }
 }).
-
 
 /**
  *  Fetches a trasnlation with the given key and inserts it inside the element

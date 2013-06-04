@@ -33,6 +33,14 @@ public class LearningOpportunityProviderEntity {
     @Embedded
     private I18nTextEntity name;
     private Set<String> applicationSystemIds;
+    @Embedded
+    private AddressEntity postalAddress;
+    @Embedded
+    private AddressEntity visitingAddress;
+    private String webPage;
+    private String email;
+    private String fax;
+    private String phone;
 
     public LearningOpportunityProviderEntity() {
     }
@@ -59,5 +67,53 @@ public class LearningOpportunityProviderEntity {
 
     public void setApplicationSystemIds(Set<String> applicationSystemIds) {
         this.applicationSystemIds = applicationSystemIds;
+    }
+
+    public AddressEntity getPostalAddress() {
+        return postalAddress;
+    }
+
+    public void setPostalAddress(AddressEntity postalAddress) {
+        this.postalAddress = postalAddress;
+    }
+
+    public AddressEntity getVisitingAddress() {
+        return visitingAddress;
+    }
+
+    public void setVisitingAddress(AddressEntity visitingAddress) {
+        this.visitingAddress = visitingAddress;
+    }
+
+    public String getWebPage() {
+        return webPage;
+    }
+
+    public void setWebPage(String webPage) {
+        this.webPage = webPage;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getFax() {
+        return fax;
+    }
+
+    public void setFax(String fax) {
+        this.fax = fax;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

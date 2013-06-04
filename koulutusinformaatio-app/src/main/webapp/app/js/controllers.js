@@ -57,11 +57,17 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
     var basketLimit = 5; // TODO: get this from application data?
     $scope.notificationText = i18n.t('application-basket-fill-form-notification', {count: basketLimit});
 
-    ApplicationBasketService.query().then(function(result) {
-        $scope.applicationItems = result;
-    });
+    $scope.basketIsEmpty = ApplicationBasketService.isEmpty();
+
+    if (!$scope.basketIsEmpty) {
+        ApplicationBasketService.query().then(function(result) {
+            $scope.applicationItems = result;
+        });
+    }
 
     $scope.title = i18n.t('title-application-basket-content');
+
+    $scope.itemCount = ApplicationBasketService.getItemCount();
 
     $scope.removeItem = function(aoId) {
         ApplicationBasketService.removeItem(aoId);
@@ -84,8 +90,6 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
         }
     };
 
-    $scope.itemCount = ApplicationBasketService.getItemCount();
-
     $scope.gotoParent = function(id) {
         $location.path('/info/' + id);
     };
@@ -103,6 +107,10 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
         }
     }
 
+    $scope.rowClass = function(isLast) {
+        return isLast ? 'last' : '';
+    }
+
     $scope.$on('$viewContentLoaded', function() {
         OPH.Common.initHeader();
     });
@@ -112,9 +120,9 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
  *  Controller for adding applications to application basket
  */
 function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
-    $scope.addToBasket = function(asId, aoId) {
-        ApplicationBasketService.addItem(asId, aoId);
-    }
+    $scope.addToBasket = function(aoId) {
+        ApplicationBasketService.addItem(aoId);
+    }        
 };
 
 /**
@@ -194,6 +202,15 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
                 $scope.parentLO = result;
                 ParentLODataService.setParentLOData(result);
                 setTitle($scope.parentLO, $scope.childLO);
+
+                // TODO: temporary solution to get application option id
+                if (result.children && result.children.length > 0) {
+                    var firstChild = result.children[0];
+                    ChildLearningOpportunityService.query({parentId: result.id, closId: firstChild.losId, cloiId: firstChild.loiId, language: $scope.descriptionLanguage}).then(function(cresult) {
+                        $scope.aoId = cresult.applicationOption.id;
+                    });
+                }
+
             });
         } else {
             $scope.parentLO = ParentLODataService.getParentLOData();
@@ -248,6 +265,9 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
     $scope.scrollToAnchor = function(id) {
         $('html, body').scrollTop($('#' + id).offset().top);
     };
+
+    $scope.popoverTitle = i18n.t('popover-title');
+    $scope.popoverContent = "<a href='#/muistilista'>" + i18n.t('popover-content') + "</a>";
 
     $scope.initTabs = tabsMenu.build;
 

@@ -16,9 +16,11 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 
-import javax.validation.constraints.NotNull;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -27,7 +29,6 @@ import java.util.Map;
 public class I18nText {
 
     private Map<String, String> translations;
-
 
     public I18nText() {}
 

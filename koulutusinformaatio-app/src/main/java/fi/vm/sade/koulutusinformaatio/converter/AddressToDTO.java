@@ -14,31 +14,25 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.koulutusinformaatio.domain.dto;
+package fi.vm.sade.koulutusinformaatio.converter;
 
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
+import fi.vm.sade.koulutusinformaatio.domain.Address;
+import fi.vm.sade.koulutusinformaatio.domain.dto.AddressDTO;
 
 /**
  * @author Mikko Majapuro
  */
-public class ParentLORef {
+public class AddressToDTO {
 
-    private String id;
-    private I18nText name;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public I18nText getName() {
-        return name;
-    }
-
-    public void setName(I18nText name) {
-        this.name = name;
+    public static AddressDTO convert(final Address address) {
+        if (address != null) {
+            AddressDTO addrs = new AddressDTO();
+            addrs.setStreetAddress(address.getStreetAddress());
+            addrs.setPostalCode(address.getPostalCode());
+            addrs.setPostOffice(address.getPostOffice());
+            return addrs;
+        } else {
+            return null;
+        }
     }
 }

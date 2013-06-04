@@ -27,9 +27,9 @@ public class ApplicationOption {
 
     private String id;
     private I18nText name;
-    private String applicationSystemId;
+    private ApplicationSystem applicationSystem;
     private String educationDegree;
-    private List<I18nText> childLONames = new ArrayList<I18nText>();
+    private List<ChildLORef> childLORefs = new ArrayList<ChildLORef>();
     private Provider provider;
     // "aloituspaikatLkm" : 10,
     private Integer startingQuota;
@@ -45,6 +45,10 @@ public class ApplicationOption {
     private boolean sora;
     // opetuskielikoodit : [FI, SV]
     private List<String> teachingLanguages;
+    // tutkinnon viite
+    private ParentLORef parent;
+    // valintaperustekuvaus
+    private I18nText selectionCriteria;
 
     public String getId() {
         return id;
@@ -62,12 +66,12 @@ public class ApplicationOption {
         this.name = name;
     }
 
-    public String getApplicationSystemId() {
-        return applicationSystemId;
+    public ApplicationSystem getApplicationSystem() {
+        return applicationSystem;
     }
 
-    public void setApplicationSystemId(String applicationSystemId) {
-        this.applicationSystemId = applicationSystemId;
+    public void setApplicationSystem(ApplicationSystem applicationSystem) {
+        this.applicationSystem = applicationSystem;
     }
 
     public String getEducationDegree() {
@@ -78,12 +82,12 @@ public class ApplicationOption {
         this.educationDegree = educationDegree;
     }
 
-    public List<I18nText> getChildLONames() {
-        return childLONames;
+    public List<ChildLORef> getChildLORefs() {
+        return childLORefs;
     }
 
-    public void setChildLONames(List<I18nText> childLONames) {
-        this.childLONames = childLONames;
+    public void setChildLORefs(List<ChildLORef> childLORefs) {
+        this.childLORefs = childLORefs;
     }
 
     public Provider getProvider() {
@@ -148,5 +152,21 @@ public class ApplicationOption {
 
     public void setTeachingLanguages(List<String> teachingLanguages) {
         this.teachingLanguages = teachingLanguages;
+    }
+
+    public ParentLORef getParent() {
+        return parent;
+    }
+
+    public void setParent(ParentLORef parent) {
+        this.parent = parent;
+    }
+
+    public I18nText getSelectionCriteria() {
+        return selectionCriteria;
+    }
+
+    public void setSelectionCriteria(I18nText selectionCriteria) {
+        this.selectionCriteria = selectionCriteria;
     }
 }

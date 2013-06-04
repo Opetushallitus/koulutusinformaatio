@@ -29,6 +29,12 @@ public class LearningOpportunityProviderDTO {
     private String id;
     private String name;
     private Set<String> applicationSystemIds;
+    private AddressDTO postalAddress;
+    private AddressDTO visitingAddress;
+    private String webPage;
+    private String email;
+    private String fax;
+    private String phone;
 
     public String getId() {
         return id;
@@ -52,5 +58,53 @@ public class LearningOpportunityProviderDTO {
 
     public void setApplicationSystemIds(Set<String> applicationSystemIds) {
         this.applicationSystemIds = applicationSystemIds;
+    }
+
+    public AddressDTO getPostalAddress() {
+        return postalAddress;
+    }
+
+    public void setPostalAddress(AddressDTO postalAddress) {
+        this.postalAddress = postalAddress;
+    }
+
+    public AddressDTO getVisitingAddress() {
+        return visitingAddress;
+    }
+
+    public void setVisitingAddress(AddressDTO visitingAddress) {
+        this.visitingAddress = visitingAddress;
+    }
+
+    public String getWebPage() {
+        return webPage;
+    }
+
+    public void setWebPage(String webPage) {
+        this.webPage = webPage;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getFax() {
+        return fax;
+    }
+
+    public void setFax(String fax) {
+        this.fax = fax;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

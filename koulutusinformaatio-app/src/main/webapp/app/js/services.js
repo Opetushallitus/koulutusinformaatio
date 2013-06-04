@@ -210,6 +210,41 @@ service('TranslationService', function() {
         $('#appbasket-link').trigger(event);
     };
 
+    // TODO: could we automate data transformation somehow?
+    var transformData = function(result) {
+        for (var asIndex in result) {
+            if (result.hasOwnProperty(asIndex)) {
+                var applicationDates = result[asIndex].applicationDates;
+                if (applicationDates.length > 0) {
+                    result[asIndex].applicationDates = applicationDates[0];
+                }
+
+                var applicationOptions = result[asIndex].applicationOptions;
+                for (var i in applicationOptions) {
+                    if (applicationOptions.hasOwnProperty(i)) {
+                        if (applicationOptions[i].children.length > 0) {
+                            result[asIndex].applicationOptions[i].qualification = applicationOptions[i].children[0].qualification;
+                            result[asIndex].applicationOptions[i].prerequisite = applicationOptions[i].children[0].prerequisite;
+                        }
+
+                        if (!result[asIndex].applicationOptions[i].deadlines) {
+                            result[asIndex].applicationOptions[i].deadlines = [];
+                        }
+
+                        if (result[asIndex].applicationOptions[i].attachmentDeliveryDeadline) {
+                            result[asIndex].applicationOptions[i].deadlines.push({
+                                name: 'Liitteet',
+                                value: result[asIndex].applicationOptions[i].attachmentDeliveryDeadline
+                            });
+                        }
+                    }
+                }
+            }
+        }
+
+        return result;
+    };
+
     return {
         addItem: function(aoId) {
 
@@ -252,12 +287,30 @@ service('TranslationService', function() {
             return $.cookie(key) ? JSON.parse($.cookie(key)).length : 0;
         },
 
+        isEmpty: function() {
+            return this.getItemCount() <= 0;
+        },
+
         query: function(params) {
             var deferred = $q.defer();
+            var basketItems = this.getItems();
 
-            //$http.get('../lo/search/'  params.queryString).
-            $http.get('mock/ao.json').
+            var qParams = '';
+
+            
+            for (var index in basketItems) {
+                if (basketItems.hasOwnProperty(index)) {
+                    qParams += '&aoId=' + basketItems[index];
+                }
+            }
+
+            qParams = qParams.substring(1, qParams.length);
+            
+
+            $http.get('../basket/items?' + qParams).
+            //$http.get('mock/ao.json').
             success(function(result) {
+                result = transformData(result);
                 deferred.resolve(result);
             }).
             error(function(result) {

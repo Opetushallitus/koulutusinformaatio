@@ -28,6 +28,8 @@ public class ChildLORefDTO {
     private String loiId;
     private String asId;
     private String name;
+    private String qualification;
+    private String prerequisite;
 
     public String getLosId() {
         return losId;
@@ -59,5 +61,21 @@ public class ChildLORefDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getQualification() {
+        return qualification;
+    }
+
+    public void setQualification(String qualification) {
+        this.qualification = qualification;
+    }
+
+    public String getPrerequisite() {
+        return prerequisite;
+    }
+
+    public void setPrerequisite(String prerequisite) {
+        this.prerequisite = prerequisite;
     }
 }

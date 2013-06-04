@@ -1,73 +1,93 @@
 <section class="content-container margin-bottom-2">
-    <div class="grid16-16">
-        
-        <div ki-breadcrumb id="breadcrumb"></div>
+    <div class="grid16-16 application-basket-container">
+        <div id="breadcrumb">
+            <ul>
+                <li class="breadcrumb-item home">
+                    <a href="#"></a>
+                </li>
+                <li class="breadcrumb-item" data-ki-i18n="title-application-basket-content"></li>
+            </ul>
+        </div>
         <h1 class="float-left margin-top-0">{{title}} ({{itemCount}})</h1>
-        <a class="float-right" href="#" data-ki-i18n="application-basket-back"></a>
+        <!--<a class="float-right" href="#" data-ki-i18n="application-basket-back"></a>-->
         <div class="clear"></div>
         <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla posuere, nisl eu gravida elementum, risus risus varius quam, eu rutrum lectus purus quis arcu. Donec euismod porta mi, sed imperdiet ligula sagittis et. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed ut felis sit amet ipsum eleifend rhoncus. Donec sed viverra velit. Morbi mollis pellentesque mollis.
         </p>
-
-        <div class="application-basket" ng-repeat="as in applicationItems">
-            <table class="margin-bottom-2">
-                <colgroup>
-                    <col style="width: 33%;"></col>
-                    <col style="width: 47%;"></col>
-                </colgroup>
-                <caption class="align-left">
-                    <h3>{{as.applicationSystemName}} <span data-ki-timestamp="{{as.applicationStartDate}}"></span> - <span data-ki-timestamp="{{as.applicationEndDate}}"></span></h3>
-                </caption>
-                <thead></thead>
-                <tbody>
-                    <tr ng-repeat="item in as.applicationOptions">
-                        <td>
-                            <ul>
-                                <li>
-                                    <h3 class="margin-top-0">
-                                        <span class="block">{{item.providerName}}, {{item.providerLocation}}</span>
-                                        <a ng-click="gotoParent(item.id)">{{item.name}}</a>
-                                    </h3>
-                                </li>
-                                <li><span>{{item.qualification}}</span></li>
-                                <li><span>{{item.baseEducationRequirement}}</span></li>
-                            </ul>
-                        </td>
-                        <td>
-                            <ul class="dash">
-                                <li ng-repeat="child in item.children"><a ng-click="gotoChild(item.id, child.losId, child.loiId)">{{child.name}}</a></li>
-                            </ul>
-                        </td>
-                        <td class="align-right">
-                            <ul>
-                                <li ng-repeat="dl in item.deadlines">{{dl.name}}<span class="bold margin-left-2">{{dl.date}}</span></li>
-                            </ul>
-                        </td>
-                        <td class="basket-remove"><a class="remove" ng-click="removeItem(item.id)"><span>Poista</span></a></td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                </tfoot>
-            </table>
-            <span class="float-right margin-bottom-2">{{notificationText}}</span>
-            <form action="/haku-app/lomake/{{as.applicationSystemId}}/yhteishaku" method="post">
-                <span ng-repeat="item in as.applicationOptions">
-                    <input type="hidden" name="preference{{$index + 1}}-Opetuspiste" value="{{item.providerName}}"/>
-                    <input type="hidden" name="preference{{$index + 1}}-Opetuspiste-id" value="{{item.providerId}}"/>
-                    <input type="hidden" name="preference{{$index + 1}}-Koulutus" value="{{item.name}}"/>
-                    <input type="hidden" name="preference{{$index + 1}}-Koulutus-id" value="{{item.id}}"/>
-                    <input type="hidden" name="preference{{$index + 1}}-Koulutus-educationDegree" value="{{item.educationDegree}}"/>
-                </span>
-                <div data-ng-switch="applyButtonIsDisabled()">
-                    <div data-ng-switch-when="true">
-                        <button class="primary float-right clear" disabled="disabled" type="submit"><span><span data-ki-i18n="application-basket-fill-form"></span></span></button>
-                    </div>
-                    <div data-ng-switch-when="false">
-                        <button class="primary float-right clear" type="submit"><span><span data-ki-i18n="application-basket-fill-form"></span></span></button>
-                    </div>
+        <div data-ng-switch="basketIsEmpty">
+            <div data-ng-switch-when="true">
+                <p>Muistilista on tyhjä. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla posuere, nisl eu gravida elementum, risus risus varius quam, eu rutrum lectus purus quis arcu. </p>
+            </div>
+            <div data-ng-switch="false">
+                <div class="application-basket" data-ng-repeat="as in applicationItems">
+                    <table class="margin-bottom-2">
+                        <colgroup>
+                            <col style="width: 33%;"></col>
+                            <col style="width: 47%;"></col>
+                        </colgroup>
+                        <!--
+                        <caption class="align-left">
+                            <h3>{{as.applicationSystemName}} <span data-ki-timestamp="{{as.applicationStartDate}}"></span> - <span data-ki-timestamp="{{as.applicationEndDate}}"></span></h3>
+                        </caption>
+                        -->
+                        <thead>
+                            <tr>
+                                <th colspan="4"><h3 class="margin-0">{{as.applicationSystemName}} <span data-ki-timestamp="{{as.applicationDates.startDate}}"></span> - <span data-ki-timestamp="{{as.applicationDates.endDate}}"></span></h3></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in as.applicationOptions" ng-class="rowClass($last)">
+                                <td>
+                                    <ul>
+                                        <li>
+                                            <h3 class="margin-top-0">
+                                                <span class="block">{{item.providerName}}, {{item.providerLocation}}</span>
+                                                <a ng-click="gotoParent(item.parent.id)">{{item.parent.name}}</a>
+                                            </h3>
+                                        </li>
+                                        <li><span>{{item.qualification}}</span></li>
+                                        <li><span>{{item.prerequisite}}</span></li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul class="dash">
+                                        <li ng-repeat="child in item.children"><a ng-click="gotoChild(item.id, child.losId, child.loiId)">{{child.name}}</a></li>
+                                    </ul>
+                                </td>
+                                <td class="align-right">
+                                    <ul>
+                                        <li ng-repeat="dl in item.deadlines">{{dl.name}}<span class="bold margin-left-2">{{dl.value}}</span></li>
+                                        <!--<li>Liitteet<span class="bold margin-left-2" data-ki-timestamp="{{item.attachmentDeliveryDeadline}}"></span></li>-->
+                                    </ul>
+                                </td>
+                                <td class="basket-remove last"><a class="remove" ng-click="removeItem(item.id)"><span>Poista</span></a></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+                    <span class="float-right margin-bottom-2">{{notificationText}}</span>
+                    <form action="/haku-app/lomake/{{as.applicationSystemId}}/yhteishaku" method="post">
+                        <span ng-repeat="item in as.applicationOptions">
+                            <input type="hidden" name="preference{{$index + 1}}-Opetuspiste" value="{{item.providerName}}"/>
+                            <input type="hidden" name="preference{{$index + 1}}-Opetuspiste-id" value="{{item.providerId}}"/>
+                            <input type="hidden" name="preference{{$index + 1}}-Koulutus" value="{{item.name}}"/>
+                            <input type="hidden" name="preference{{$index + 1}}-Koulutus-id" value="{{item.id}}"/>
+                            <input type="hidden" name="preference{{$index + 1}}-Koulutus-educationDegree" value="{{item.educationDegree}}"/>
+                        </span>
+                        <div data-ng-switch="applyButtonIsDisabled()">
+                            <div data-ng-switch-when="true">
+                                <button class="primary float-right clear" disabled="disabled" type="submit"><span><span data-ki-i18n="application-basket-fill-form"></span></span></button>
+                            </div>
+                            <div data-ng-switch-when="false">
+                                <button class="primary float-right clear" type="submit"><span><span data-ki-i18n="application-basket-fill-form"></span></span></button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="clear"></div>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
-    <div class="clear"></div>
+<div class="clear"></div>
 </section>

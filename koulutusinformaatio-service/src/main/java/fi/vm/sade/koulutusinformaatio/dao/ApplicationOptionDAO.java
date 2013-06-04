@@ -37,8 +37,13 @@ public class ApplicationOptionDAO extends BasicDAO<ApplicationOptionEntity, Stri
 
     public List<ApplicationOptionEntity> find(final String asId, final String lopId) {
         Query<ApplicationOptionEntity> query = createQuery();
-        query.field("applicationSystemId").equal(asId);
+        query.field("applicationSystem.id").equal(asId);
         query.field("provider").equal(new Key(LearningOpportunityProviderEntity.class, lopId));
+        return find(query).asList();
+    }
+
+    public List<ApplicationOptionEntity> find(final List<String> aoIds) {
+        Query<ApplicationOptionEntity> query = getDatastore().get(ApplicationOptionEntity.class, aoIds);
         return find(query).asList();
     }
 }

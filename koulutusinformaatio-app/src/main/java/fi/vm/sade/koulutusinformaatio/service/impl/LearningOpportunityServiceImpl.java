@@ -19,6 +19,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.converter.ApplicationOptionToSearchResultDTO;
+import fi.vm.sade.koulutusinformaatio.converter.ApplicationOptionsToBasketItemDTOs;
 import fi.vm.sade.koulutusinformaatio.converter.ChildLOToDTO;
 import fi.vm.sade.koulutusinformaatio.converter.ParentLOToDTO;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
@@ -81,6 +82,12 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
                 return ApplicationOptionToSearchResultDTO.convert(applicationOption, LANG_FI);
             }
         });
+    }
+
+    @Override
+    public List<BasketItemDTO> getBasketItems(List<String> aoId, String lang) {
+        List<ApplicationOption> applicationOptions = educationDataService.getApplicationOptions(aoId);
+        return ApplicationOptionsToBasketItemDTOs.convert(applicationOptions, lang);
     }
 
 

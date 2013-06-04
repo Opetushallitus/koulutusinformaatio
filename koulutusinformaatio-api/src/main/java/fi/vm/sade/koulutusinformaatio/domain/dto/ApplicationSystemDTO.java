@@ -16,40 +16,27 @@
 
 package fi.vm.sade.koulutusinformaatio.domain.dto;
 
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Mikko Majapuro
  */
-public class ChildLORef {
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
+public class ApplicationSystemDTO {
 
-    private String losId;
-    private String loiId;
-    private String asId;
+    private String id;
     private String name;
+    private List<DateRangeDTO> applicationDates = new ArrayList<DateRangeDTO>();
 
-    public String getLosId() {
-        return losId;
+    public String getId() {
+        return id;
     }
 
-    public void setLosId(String losId) {
-        this.losId = losId;
-    }
-
-    public String getLoiId() {
-        return loiId;
-    }
-
-    public void setLoiId(String loiId) {
-        this.loiId = loiId;
-    }
-
-    public String getAsId() {
-        return asId;
-    }
-
-    public void setAsId(String asId) {
-        this.asId = asId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -58,5 +45,13 @@ public class ChildLORef {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<DateRangeDTO> getApplicationDates() {
+        return applicationDates;
+    }
+
+    public void setApplicationDates(List<DateRangeDTO> applicationDates) {
+        this.applicationDates = applicationDates;
     }
 }

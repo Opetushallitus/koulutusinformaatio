@@ -29,9 +29,10 @@ import fi.vm.sade.tarjonta.service.resources.KomoResource;
 import fi.vm.sade.tarjonta.service.resources.KomotoResource;
 import fi.vm.sade.tarjonta.service.resources.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
 
 import javax.ws.rs.WebApplicationException;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -49,18 +50,17 @@ public class LOBuilder {
     private KomotoResource komotoResource;
     private HakukohdeResource hakukohdeResource;
     private ProviderService providerService;
-    private ConversionService conversionService;
+    //private ConversionService conversionService;
 
     @Autowired
     private KoodistoService koodistoService;
 
     public LOBuilder(KomoResource komoResource, KomotoResource komotoResource, HakukohdeResource hakukohdeResource,
-                     ProviderService providerService, ConversionService conversionService) {
+                     ProviderService providerService) {
         this.komoResource = komoResource;
         this.komotoResource = komotoResource;
         this.hakukohdeResource = hakukohdeResource;
         this.providerService = providerService;
-        this.conversionService = conversionService;
     }
 
     public ParentLOS buildParentLOS(String oid) throws TarjontaParseException, KoodistoException, WebApplicationException {
@@ -77,9 +77,9 @@ public class LOBuilder {
         // parent info
         parentLOS.setId(parentKomo.getOid());
         parentLOS.setName(koodistoService.searchFirst(parentKomo.getKoulutusKoodiUri()));
-        parentLOS.setStructureDiagram(new I18nText(parentKomo.getKoulutuksenRakenne()));
-        parentLOS.setAccessToFurtherStudies(new I18nText(parentKomo.getJatkoOpintoMahdollisuudet()));
-        parentLOS.setGoals(new I18nText(parentKomo.getTavoitteet()));
+        parentLOS.setStructureDiagram(getI18nText(parentKomo.getKoulutuksenRakenne()));
+        parentLOS.setAccessToFurtherStudies(getI18nText(parentKomo.getJatkoOpintoMahdollisuudet()));
+        parentLOS.setGoals(getI18nText(parentKomo.getTavoitteet()));
         parentLOS.setEducationDomain(koodistoService.searchFirst(parentKomo.getKoulutusAlaUri()));
         parentLOS.setStydyDomain(koodistoService.searchFirst(parentKomo.getOpintoalaUri()));
         parentLOS.setEducationDegree(koodistoService.searchFirst(parentKomo.getKoulutusAsteUri()));
@@ -124,9 +124,13 @@ public class LOBuilder {
             }
 
             childLOS.setId(childKomo.getOid());
-            childLOS.setName(new I18nText(childKomo.getNimi()));
+            childLOS.setName(getI18nText(childKomo.getNimi()));
             childLOS.setQualification(koodistoService.searchFirst(childKomo.getTutkintonimikeUri()));
             childLOS.setDegreeTitle(koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri()));
+
+            ParentLORef parentRef = new ParentLORef();
+            parentRef.setId(parentLOS.getId());
+            parentRef.setName(parentLOS.getName());
 
             // loi
             List<ChildLOI> childLOIs = Lists.newArrayList();
@@ -143,6 +147,7 @@ public class LOBuilder {
                     String aoId = aoIds.get(0).getOid();
                     HakukohdeDTO hakukohdeDTO = hakukohdeResource.getByOID(aoId);
                     ApplicationOption ao = new ApplicationOption();
+                    ao.setParent(parentRef);
                     ao.setId(hakukohdeDTO.getOid());
                     ao.setName(koodistoService.searchFirst(hakukohdeDTO.getHakukohdeNimiUri()));
                     ao.setStartingQuota(hakukohdeDTO.getAloituspaikatLkm());
@@ -150,9 +155,23 @@ public class LOBuilder {
                     ao.setLowestAcceptedAverage(hakukohdeDTO.getAlinHyvaksyttavaKeskiarvo());
                     ao.setAttachmentDeliveryDeadline(hakukohdeDTO.getLiitteidenToimitusPvm());
                     ao.setLastYearApplicantCount(hakukohdeDTO.getEdellisenVuodenHakijatLkm());
+                    ao.setSelectionCriteria(new I18nText(hakukohdeDTO.getValintaperustekuvaus()));
+
                     HakuDTO hakuDTO = hakukohdeResource.getHakuByHakukohdeOID(aoId);
+                    ApplicationSystem as = new ApplicationSystem();
+                    as.setId(hakuDTO.getOid());
+                    as.setName(getI18nText(hakuDTO.getNimi()));
+                    if (hakuDTO.getHakuaikas() != null) {
+                        for (HakuaikaRDTO ha : hakuDTO.getHakuaikas()) {
+                            DateRange range = new DateRange();
+                            range.setStartDate(ha.getAlkuPvm());
+                            range.setEndDate(ha.getLoppuPvm());
+                            as.getApplicationDates().add(range);
+                        }
+                    }
                     childLOI.setApplicationSystemId(hakuDTO.getOid());
-                    ao.setApplicationSystemId(hakuDTO.getOid());
+                    ao.setApplicationSystem(as);
+
 
                     if (!Strings.isNullOrEmpty(hakukohdeDTO.getSoraKuvausKoodiUri())) {
                         ao.setSora(true);
@@ -162,14 +181,6 @@ public class LOBuilder {
 
                     // provider to ao
                     ao.setProvider(parentLOS.getProvider());
-
-                    // set child loi names to application option
-                    List<OidRDTO> komotosByHakukohdeOID = hakukohdeResource.getKomotosByHakukohdeOID(aoId);
-
-                    for (OidRDTO s : komotosByHakukohdeOID) {
-                        KomoDTO komoByKomotoOID = komotoResource.getKomoByKomotoOID(s.getOid());
-                        ao.getChildLONames().add(new I18nText(komoByKomotoOID.getNimi()));
-                    }
 
                     // asid to provider
                     parentLOS.getProvider().getApplicationSystemIDs().add(hakuDTO.getOid());
@@ -191,8 +202,20 @@ public class LOBuilder {
                     childLOI.setFormOfTeaching(koodistoService.searchMultiple(komotoDTO.getOpetusmuodotUris()));
                     childLOI.setPrerequisite(koodistoService.searchFirst(komotoDTO.getPohjakoulutusVaatimusUri()));
 
-                    childLOIs.add(childLOI);
+                    // set child loi names to application option
+                    List<OidRDTO> komotosByHakukohdeOID = hakukohdeResource.getKomotosByHakukohdeOID(aoId);
 
+                    for (OidRDTO s : komotosByHakukohdeOID) {
+                        KomoDTO komoByKomotoOID = komotoResource.getKomoByKomotoOID(s.getOid());
+                        ChildLORef cRef = new ChildLORef();
+                        cRef.setLoiId(s.getOid());
+                        cRef.setLosId(komoByKomotoOID.getOid());
+                        cRef.setName(getI18nText(komoByKomotoOID.getNimi()));
+                        cRef.setQualification(koodistoService.searchFirst(komoByKomotoOID.getTutkintonimikeUri()));
+                        cRef.setPrerequisite(childLOI.getPrerequisite());
+                        ao.getChildLORefs().add(cRef);
+                    }
+                    childLOIs.add(childLOI);
                 }
             }
             childLOS.setChildLOIs(childLOIs);
@@ -202,6 +225,24 @@ public class LOBuilder {
         parentLOS.setChildren(childLOSs);
 
         return parentLOS;
+    }
+
+    private I18nText getI18nText(final Map<String, String> texts) throws KoodistoException {
+        if (texts != null) {
+            Map<String, String> translations = new HashMap<String, String>();
+            Iterator<Map.Entry<String, String>> i  = texts.entrySet().iterator();
+            while (i.hasNext()) {
+                Map.Entry<String, String> entry = i.next();
+                if (!Strings.isNullOrEmpty(entry.getKey()) && !Strings.isNullOrEmpty(entry.getValue())) {
+                    String key = koodistoService.searchFirstCodeValue(entry.getKey());
+                    translations.put(key.toLowerCase(), entry.getValue());
+                }
+            }
+            I18nText i18nText = new I18nText();
+            i18nText.setTranslations(translations);
+            return i18nText;
+        }
+        return null;
     }
 
     private void validateParentKomo(KomoDTO komo) throws TarjontaParseException {

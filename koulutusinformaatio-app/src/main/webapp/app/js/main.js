@@ -1,26 +1,20 @@
 var ApplicationBasket = {
-    data: {},
+    data: [],
     baseUrl: '',
 
     load: function(baseUrl) {
         this.baseUrl = baseUrl;
         this.build();
-        //setTriggers();
     },
 
     build: function() {
-        var baseUrl = '';
-        var serviceUrl = 'mock/ao.json';
-        ApplicationBasket.DataService.getLOData(baseUrl + serviceUrl, function(data) {
-            ApplicationBasket.data = data;
-            ApplicationBasket.setTriggers();
-        });
-
+        ApplicationBasket.setTriggers();
         var basketCount = ApplicationBasket.CookieService.getCount();
         $('#appbasket-link').find('span').html('(' + basketCount + ')');
     },
 
     setTriggers: function() {
+        $('#apply-link').off('click');
         $('#apply-link').on('click', function(event) {
             ApplicationBasket.Popup.open();
         });
@@ -40,10 +34,12 @@ var ApplicationBasket = {
 
 ApplicationBasket.Popup = {
     maxApplications: 5,
+    popupId: 0,
 
     setTriggers: function() {
-        $('.popover-continue').on('click', function(event) {
+        $('.popup-dialog-continue').on('click', function(event) {
             ApplicationBasket.Popup.Form.submit();
+
         });
     },
 
@@ -62,7 +58,7 @@ ApplicationBasket.Popup = {
                 ]
             };
 
-            popover.add(i18n.t('application-basket-popup-title'), this.generateContent(popupContent));
+            this.popupId = popover.add(i18n.t('application-basket-popup-title'), this.generateContent(popupContent));
         } else {
             var popupContent = {
                 description: i18n.t('application-basket-popup-description'),
@@ -73,7 +69,7 @@ ApplicationBasket.Popup = {
                 ]
             };
 
-            popover.add(i18n.t('application-basket-popup-title'), this.generateContent(popupContent));
+            this.popupId = popover.add(i18n.t('application-basket-popup-title'), this.generateContent(popupContent));
         }
 
         this.setTriggers();
@@ -102,8 +98,8 @@ ApplicationBasket.Popup = {
         }
 
         formElem.append(list);
-        formElem.append(this.createButton('popover-close', i18n.t('popup-close')));
-        formElem.append(this.createButton('primary float-right popover-continue popover-close', i18n.t('popup-continue')));
+        formElem.append(this.createButton('popup-dialog-close', i18n.t('popup-close')));
+        formElem.append(this.createButton('primary float-right popup-dialog-continue popup-dialog-close', i18n.t('popup-continue')));
 
         container.append(pElem);
         container.append(formElem);
@@ -129,7 +125,6 @@ ApplicationBasket.Popup = {
         listElem.append(labelElem);
 
         return listElem;
-        //list.append(listElem); 
     },
 
     createButton: function(clazz, label) {
@@ -147,39 +142,39 @@ ApplicationBasket.Popup = {
 ApplicationBasket.Popup.Form = {
 
     submit: function() {
-        console.log('here');
         var value = $('#appbasket-popup-form').serializeArray();
         var asId = ApplicationBasket.getAsId();
 
         for (var i = 0; i < value.length; i++) {
-            if (value.hasOwnProperty(i)) {
-                if (value[i].name == 'appbasket-popup-radio') {
-                    if (value[i].value == 'toappbasket') {
-                        window.location = '#/muistilista';
-                        popover.hide('appbasket-popup');
-                    } else if (value[i].value == 'ignore') {
-                        window.location = '/haku-app/lomake/' + asId + '/yhteishaku';
-                    } else if (value[i].value == 'transfer') {
-                        this.gotoApplicationForm();
-                    }
+            if (value.hasOwnProperty(i) && value[i].name == 'appbasket-popup-radio') {
+                if (value[i].value == 'toappbasket') {
+                    window.location = '#/muistilista';
+                    popover.hide('appbasket-popup');
+                } else if (value[i].value == 'ignore') {
+                    window.location = '/haku-app/lomake/' + asId + '/yhteishaku';
+                } else if (value[i].value == 'transfer') {
+                    ApplicationBasket.DataService.getLOData(function(data) {
+                        ApplicationBasket.Popup.Form.gotoApplicationForm(data);
+                    });
+                        
                 }
             }
         }
     },
 
-    gotoApplicationForm: function() {
+    gotoApplicationForm: function(data) {
         var inputProviderName, inputProviderId, inputEducationName, inputEducationId, inputEducationDegree;
         var form = $('<form>', {
             'method': 'post'
         });
+        form.css('display', 'none');
 
-        var appData = ApplicationBasket.data;
-        for (var i = 0; i < appData.length; i++) {
-            form.attr('action', '/haku-app/lomake/' + appData[i].applicationSystemId + '/yhteishaku');
+        for (var i = 0; i < data.length; i++) {
+            form.attr('action', '/haku-app/lomake/' + data[i].applicationSystemId + '/yhteishaku');
 
 
-            for (var j = 0; j < appData[i].applicationOptions.length; j++) {
-                var ao = appData[i].applicationOptions[j];
+            for (var j = 0; j < data[i].applicationOptions.length; j++) {
+                var ao = data[i].applicationOptions[j];
                 
 
                 inputProviderName = $('<input>', {
@@ -220,15 +215,27 @@ ApplicationBasket.Popup.Form = {
             }
         }
 
-        //$('body').append(form);
+        $('body').append(form);
         form.submit();
     }
 
 };
 
 ApplicationBasket.DataService = {
-    getLOData: function(url, callback) {
-        $.getJSON(url, function(data) {
+    getLOData: function(callback) {
+        var baseUrl = '';
+        var serviceUrl = '../basket/items?';
+        var aoIds = ApplicationBasket.CookieService.get();
+
+        if (aoIds && aoIds.length > 0) {
+            for (var index in aoIds) {
+                if (aoIds.hasOwnProperty(index)) {
+                    serviceUrl += '&aoId=' + aoIds[index];
+                }
+            }
+        }
+
+        $.getJSON(baseUrl + serviceUrl, function(data) {
             callback(data);
         });
     }
@@ -238,7 +245,6 @@ ApplicationBasket.CookieService = {
     key: 'basket',
 
     get: function() {
-        //console.log($.cookie(this.key));
         return $.cookie(this.key) ? JSON.parse($.cookie(this.key)) : [];
     },
 
@@ -279,6 +285,10 @@ var tabsMenu = {
                 });
             }
         }
+
+        $('.tabs .tab a').click(function(event) {
+            event.preventDefault();
+        });
 
         $('.tabs .tab').click(function(event) {
             event.preventDefault();
@@ -340,43 +350,30 @@ var dropDownMenu = {
             // Popover auto-generated id
             id = 'poag'+popover.handlers.autoGenCount; 
             popover.handlers.autoGenCount++;
-        
-            popover_close = '<span class="popover-close">&#8203;</span>';
-            
-            
-            /* @todo: Handle "alert" type, where popover must be closed via dedicated button/link with possible callback.
-            if (params.type == 'alert')
-            {
-                if (params.close == false)
-                {
-                    popover_close = '';
-                }
-            }
-            */
-            //content = 'test <a class="popovertest" data-po-add="new" href="#">Test</a>';
-            //title = 'Laatikon otsikko';
-        
-            html =  '<div class="popover-wrapper generated" id="'+id+'" style="z-index:'+(popover.handlers.autoGenCount*100)+';">';
+
+            popover_close = '<span class="popup-dialog-close">&#8203;</span>';
+
+            html =  '<div class="popup-dialog-wrapper generated" id="'+id+'" style="z-index:'+(popover.handlers.autoGenCount+1000)+';">';
             html +=     popover_close;
-            html +=     '<div class="popover">';
+            html +=     '<div class="popup-dialog">';
             html +=         popover_close;
-            html +=         '<div class="popover-header">';
+            html +=         '<div class="popup-dialog-header">';
             html +=             '<h3>' + title + '</h3>';
             html +=         '</div>';
-            html +=         '<div class="popover-content">';
+            html +=         '<div class="popup-dialog-content">';
             html +=             content;
             html +=         '</div>';
             html +=     '</div>';
             html += '</div>';
         
-            console.log(html);
             $('#overlay').append(html);
         
             $('#' + id).show();
             popover.handlers.openPopovers++;
             popover.set.overlay();
-            popover.set.size($('#'+id+' .popover'));
-            popover.set.position($('#'+id+' .popover'));
+            popover.set.size($('#'+id+' .popup-dialog'));
+            popover.set.position($('#'+id+' .popup-dialog'));
+            return id;
         },
         hide:function(id){
             if($('#'+id).length != 0)
@@ -386,13 +383,17 @@ var dropDownMenu = {
                 popover.set.overlay();
             }
         },
-        remove:function(target){
+        remove:function(id){
+            /*
             if(target.length != 0 && $(target).length != 0)
             {
-                $(target).closest('.popover-wrapper').remove(); // Alternatively .detach()
+                $(target).closest('.popup-dialog-wrapper').remove(); // Alternatively .detach()
                 popover.handlers.openPopovers--;
                 popover.set.overlay();
-            }
+            }*/
+            $('#' + id).remove();
+            popover.handlers.openPopovers--;
+            popover.set.overlay();
         },
         show:function(id){
             if($('#'+id).length != 0)
@@ -400,13 +401,13 @@ var dropDownMenu = {
                 $('#'+id).show();
                 popover.handlers.openPopovers++;
                 popover.set.overlay();
-                popover.set.size($('#'+id+' .popover'));
-                popover.set.position($('#'+id+' .popover'));
+                popover.set.size($('#'+id+' .popup-dialog'));
+                popover.set.position($('#'+id+' .popup-dialog'));
             }
         },
         set : {
             active:function(){
-                $('#overlay .popover-wrapper').addClass('inactive').last().removeClass('inactive');
+                $('#overlay .popup-dialog-wrapper').addClass('inactive').last().removeClass('inactive');
             },
             overlay:function(){
             
@@ -426,9 +427,9 @@ var dropDownMenu = {
             position:function(target){
             
                 // Target the actual popover-window
-                if($(target).hasClass('.popover-wrapper'))
+                if($(target).hasClass('.popup-dialog-wrapper'))
                 {
-                    target = $(target).find('.popover');
+                    target = $(target).find('.popup-dialog');
                 }
             
                 // Get window height and position from top
@@ -458,13 +459,13 @@ var dropDownMenu = {
             size:function(target){
                 
                 // Target the actual popover-window
-                if($(target).hasClass('.popover-wrapper'))
+                if($(target).hasClass('.popup-dialog-wrapper'))
                 {
-                    target = $(target).find('.popover');
+                    target = $(target).find('.popup-dialog');
                 }
                 
-                content_width = $(target).find('.popover-content').width();
-                content_outerwidth = $(target).find('.popover-content').outerWidth(true);
+                content_width = $(target).find('.popup-dialog-content').width();
+                content_outerwidth = $(target).find('.popup-dialog-content').outerWidth(true);
                 content_padding = content_outerwidth-content_width;
 
                 // Content area has minimum width
@@ -475,28 +476,17 @@ var dropDownMenu = {
                 
                 popover_width = content_width-content_padding;
                 
-                console.log(content_width);
-                
-                $(target).find('.popover-content').css({'width':content_width+'px'});
+                $(target).find('.popup-dialog-content').css({'width':content_width+'px'});
                 $(target).css({'width':popover_width+'px'});
                 
             },
             triggers:function(){
             
                 // Remove or hide popover from closing links
-                $('body').on('click', '.popover-wrapper .popover-close', function(){
-                    
-                    // If window was generated dynamically remove, else just hide
-                    if($(this).closest('.popover-wrapper').hasClass('generated'))
-                    {
-                        target = $(this).closest('.popover-wrapper').find('.popover');
-                        popover.remove(target);
-                    }
-                    else
-                    {
-                        id = $(this).closest('.popover-wrapper').attr('id');
-                        popover.hide(id);
-                    }
+                $('body').on('click', '.popup-dialog-wrapper .popup-dialog-close', function(){
+                    id = $(this).closest('.popup-dialog-wrapper').attr('id');
+                    popover.hide(id);
+                    target = $(this).closest('.popup-dialog-wrapper').remove(); //.find('.popup-dialog');
                 });
                 
                 // Generate new popover
@@ -508,7 +498,6 @@ var dropDownMenu = {
                 
                 // Show already existing popover with id
                 $('body').on('click', '[data-po-show]', function(event){
-                    //console.log($(this).attr('data-po-show'));
                     event.preventDefault();
                     id = $(this).attr('data-po-show');
                     popover.show(id);

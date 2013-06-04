@@ -63,12 +63,12 @@ public class KoulutusinformaatioObjectBuilderTest {
         childLOI.setId("childLOI123");
 
         ChildLORefEntity ref1 = new ChildLORefEntity();
-        ref1.setName("ref1");
+        ref1.setNameByTeachingLang("ref1");
         ref1.setAsId("as123");
         ref1.setLosId("childLOS123");
         ref1.setLoiId("childLOI124");
         ChildLORefEntity ref2 = new ChildLORefEntity();
-        ref2.setName("ref2");
+        ref2.setNameByTeachingLang("ref2");
         ref2.setAsId("as123");
         ref2.setLosId("childLOS123");
         ref2.setLoiId("childLOI125");
@@ -93,15 +93,17 @@ public class KoulutusinformaatioObjectBuilderTest {
         ao = new ApplicationOptionEntity();
         ao.setId("ao123");
         ao.setName(TestUtil.createI18nTextEntity("ao fi", "ao sv", "ao en"));
-        ao.setApplicationSystemId("as123");
+        ApplicationSystemEntity as = new ApplicationSystemEntity();
+        as.setId("as123");
+        ao.setApplicationSystem(as);
         ao.setAttachmentDeliveryDeadline(new Date());
         ao.setEducationDegree("23");
         ao.setLastYearApplicantCount(100);
         ao.setLowestAcceptedAverage(66.7);
         ao.setLowestAcceptedScore(78);
         ao.setStartingQuota(98);
-        ao.setChildLONames(Lists.newArrayList(TestUtil.createI18nTextEntity("c1 fi", "c1 sv", "c1 en"),
-                TestUtil.createI18nTextEntity("c2 fi", "c2 sv", "c2 en")));
+        ao.setChildLORefs(Lists.newArrayList(TestUtil.createChildLORef("c1", as.getId(), childLOS.getId(), childLOI.getId()),
+                TestUtil.createChildLORef("c2", as.getId(), childLOS.getId(), childLOI.getId())));
 
         provider = new LearningOpportunityProviderEntity();
         provider.setId("provider123");
@@ -121,7 +123,7 @@ public class KoulutusinformaatioObjectBuilderTest {
         assertEquals(childLOI.getApplicationSystemId(), ref.getAsId());
         assertEquals(childLOI.getId(), ref.getLoiId());
         assertEquals(childLOS.getId(), ref.getLosId());
-        assertEquals(childLOS.getName().getTranslations().get("fi"), ref.getName());
+        assertEquals(childLOS.getName().getTranslations().get("fi"), ref.getNameByTeachingLang());
     }
 
     @Test
@@ -139,7 +141,7 @@ public class KoulutusinformaatioObjectBuilderTest {
         assertEquals(childLOI.getStartDate(), childLO.getStartDate());
         assertEquals(childLOS.getQualification().getTranslations().get("fi"), childLO.getQualification().getTranslations().get("fi"));
         assertEquals(childLOI.getPrerequisite().getTranslations().get("fi"), childLO.getPrerequisite().getTranslations().get("fi"));
-        assertEquals(childLOI.getRelated().get(0).getName(), childLO.getRelated().get(0).getName());
+        assertEquals(childLOI.getRelated().get(0).getNameByTeachingLang(), childLO.getRelated().get(0).getNameByTeachingLang());
         assertEquals("link1", childLO.getWebLinks().get("link1"));
         assertEquals(childLOI.getTeachingLanguages().get(0).getValue(), childLO.getTeachingLanguages().get(0).getValue());
     }
