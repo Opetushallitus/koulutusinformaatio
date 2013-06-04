@@ -51,6 +51,10 @@
             <id>oph-sade-artifactory-releases</id>
             <url>http://penaali.hard.ware.fi/artifactory/oph-sade-release-local</url>
         </repository>
+        <repository>
+            <id>oph-sade-artifactory-3rd-party</id>
+            <url>http://penaali.hard.ware.fi/artifactory/libs-3rd-party</url>
+        </repository>
     </repositories>
 
     <distributionManagement>
