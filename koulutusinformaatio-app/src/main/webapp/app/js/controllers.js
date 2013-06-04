@@ -204,7 +204,7 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
                 setTitle($scope.parentLO, $scope.childLO);
 
                 // TODO: temporary solution to get application option id
-                if (result.children.length > 0) {
+                if (result.children && result.children.length > 0) {
                     var firstChild = result.children[0];
                     ChildLearningOpportunityService.query({parentId: result.id, closId: firstChild.losId, cloiId: firstChild.loiId, language: $scope.descriptionLanguage}).then(function(cresult) {
                         $scope.aoId = cresult.applicationOption.id;

@@ -227,13 +227,16 @@ service('TranslationService', function() {
                             result[asIndex].applicationOptions[i].prerequisite = applicationOptions[i].children[0].prerequisite;
                         }
 
-                        if (result[asIndex].applicationOptions[i].deadlines) {
+                        if (!result[asIndex].applicationOptions[i].deadlines) {
+                            !result[asIndex].applicationOptions[i].deadlines = [];
+                        }
+
+                        if (result[asIndex].applicationOptions[i].attachmentDeliveryDeadline) {
                             result[asIndex].applicationOptions[i].deadlines.push({
                                 name: 'Liitteet',
                                 value: result[asIndex].applicationOptions[i].attachmentDeliveryDeadline
                             });
                         }
-                        result[asIndex].applicationOptions[i].deadlines
                     }
                 }
             }
