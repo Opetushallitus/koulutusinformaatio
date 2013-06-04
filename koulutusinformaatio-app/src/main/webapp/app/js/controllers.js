@@ -50,13 +50,14 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
 /**
  *  Controller for application basket
  */
-function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, ApplicationBasketService) {
+function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, ApplicationBasketService, SearchService) {
     var title = i18n.t('title-application-basket');
     TitleService.setTitle(title);
 
     var basketLimit = 5; // TODO: get this from application data?
-    $scope.notificationText = i18n.t('application-basket-fill-form-notification', {count: basketLimit});
 
+    $scope.queryString = SearchService.getTerm();
+    $scope.notificationText = i18n.t('application-basket-fill-form-notification', {count: basketLimit});
     $scope.basketIsEmpty = ApplicationBasketService.isEmpty();
 
     if (!$scope.basketIsEmpty) {
@@ -66,7 +67,6 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
     }
 
     $scope.title = i18n.t('title-application-basket-content');
-
     $scope.itemCount = ApplicationBasketService.getItemCount();
 
     $scope.removeItem = function(aoId) {

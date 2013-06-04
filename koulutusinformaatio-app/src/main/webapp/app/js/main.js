@@ -156,7 +156,6 @@ ApplicationBasket.Popup.Form = {
                     ApplicationBasket.DataService.getLOData(function(data) {
                         ApplicationBasket.Popup.Form.gotoApplicationForm(data);
                     });
-                        
                 }
             }
         }
