@@ -228,7 +228,7 @@ service('TranslationService', function() {
                         }
 
                         if (!result[asIndex].applicationOptions[i].deadlines) {
-                            !result[asIndex].applicationOptions[i].deadlines = [];
+                            result[asIndex].applicationOptions[i].deadlines = [];
                         }
 
                         if (result[asIndex].applicationOptions[i].attachmentDeliveryDeadline) {
