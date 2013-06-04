@@ -29,9 +29,10 @@ import fi.vm.sade.tarjonta.service.resources.KomoResource;
 import fi.vm.sade.tarjonta.service.resources.KomotoResource;
 import fi.vm.sade.tarjonta.service.resources.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
 
 import javax.ws.rs.WebApplicationException;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -49,18 +50,17 @@ public class LOBuilder {
     private KomotoResource komotoResource;
     private HakukohdeResource hakukohdeResource;
     private ProviderService providerService;
-    private ConversionService conversionService;
+    //private ConversionService conversionService;
 
     @Autowired
     private KoodistoService koodistoService;
 
     public LOBuilder(KomoResource komoResource, KomotoResource komotoResource, HakukohdeResource hakukohdeResource,
-                     ProviderService providerService, ConversionService conversionService) {
+                     ProviderService providerService) {
         this.komoResource = komoResource;
         this.komotoResource = komotoResource;
         this.hakukohdeResource = hakukohdeResource;
         this.providerService = providerService;
-        this.conversionService = conversionService;
     }
 
     public ParentLOS buildParentLOS(String oid) throws TarjontaParseException, KoodistoException, WebApplicationException {
@@ -226,9 +226,20 @@ public class LOBuilder {
         return parentLOS;
     }
 
-    private I18nText getI18nText(final Map<String, String> texts) {
+    private I18nText getI18nText(final Map<String, String> texts) throws KoodistoException {
         if (texts != null) {
-            return new I18nText(texts);
+            Map<String, String> translations = new HashMap<String, String>();
+            Iterator<Map.Entry<String, String>> i  = texts.entrySet().iterator();
+            while (i.hasNext()) {
+                Map.Entry<String, String> entry = i.next();
+                if (!Strings.isNullOrEmpty(entry.getKey()) && !Strings.isNullOrEmpty(entry.getValue())) {
+                    String key = koodistoService.searchFirstCodeValue(entry.getKey());
+                    translations.put(key.toLowerCase(), entry.getValue());
+                }
+            }
+            I18nText i18nText = new I18nText();
+            i18nText.setTranslations(translations);
+            return i18nText;
         }
         return null;
     }

@@ -40,6 +40,10 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
         p.setName(new I18nText(o.getNimi()));
         p.setPostalAddress(getAddress(o.getPostiosoite()));
         p.setVisitingAddress(getAddress(o.getKayntiosoite()));
+        p.setEmail(o.getEmailOsoite());
+        p.setFax(o.getFaksinumero());
+        p.setPhone(o.getPuhelinnumero());
+        p.setWebPage(o.getWwwOsoite());
         return p;
     }
 

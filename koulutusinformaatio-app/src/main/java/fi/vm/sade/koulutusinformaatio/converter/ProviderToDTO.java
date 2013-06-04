@@ -32,6 +32,10 @@ public class ProviderToDTO {
             p.setApplicationSystemIds(provider.getApplicationSystemIDs());
             p.setPostalAddress(AddressToDTO.convert(provider.getPostalAddress()));
             p.setVisitingAddress(AddressToDTO.convert(provider.getVisitingAddress()));
+            p.setEmail(provider.getEmail());
+            p.setWebPage(provider.getWebPage());
+            p.setPhone(provider.getPhone());
+            p.setFax(provider.getFax());
             return p;
         }
         return null;

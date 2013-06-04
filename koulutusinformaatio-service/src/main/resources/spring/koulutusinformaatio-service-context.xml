@@ -188,9 +188,6 @@
         <constructor-arg>
             <ref bean="providerService"/>
         </constructor-arg>
-        <constructor-arg>
-            <ref bean="conversionService"/>
-        </constructor-arg>
     </bean>
 
     <ehcache:annotation-driven cache-manager="ehCacheManager" />
