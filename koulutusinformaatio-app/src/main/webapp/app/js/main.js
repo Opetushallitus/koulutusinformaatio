@@ -373,7 +373,6 @@ var dropDownMenu = {
             popover.set.overlay();
             popover.set.size($('#'+id+' .popup-dialog'));
             popover.set.position($('#'+id+' .popup-dialog'));
-
             return id;
         },
         hide:function(id){

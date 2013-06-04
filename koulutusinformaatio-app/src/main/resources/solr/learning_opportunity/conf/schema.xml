@@ -27,7 +27,7 @@
         <field name="parentId" type="text_general" indexed="false" stored="true" multiValued="false"/>
         <field name="losId" type="text_general" indexed="false" stored="true" multiValued="false"/>
 
-        <field name="text" type="text_general" indexed="true" stored="false" multiValued="true"/>
+        <field name="text" type="text_fi" indexed="true" stored="false" multiValued="true"/>
     </fields>
 
 
@@ -453,13 +453,15 @@ but may be good for SKUs.  Can insert dashes in the wrong place and still match.
 
         <!-- Finnish -->
         <fieldType name="text_fi" class="solr.TextField" positionIncrementGap="100">
-            <analyzer>
+            <analyzer type="index">
                 <tokenizer class="solr.StandardTokenizerFactory"/>
                 <filter class="solr.LowerCaseFilterFactory"/>
-                <filter class="solr.StopFilterFactory" ignoreCase="true" words="lang/stopwords_fi.txt" format="snowball"
-                        enablePositionIncrements="true"/>
-                <filter class="solr.SnowballPorterFilterFactory" language="Finnish"/>
-                <!-- less aggressive: <filter class="solr.FinnishLightStemFilterFactory"/> -->
+                <filter class="fi.nationallibrary.ndl.solrvoikko.VoikkoFilterFactory" expandCompounds="true" separateTokens="true"/>
+            </analyzer>
+            <analyzer type="query">
+                <tokenizer class="solr.StandardTokenizerFactory"/>
+                <filter class="solr.LowerCaseFilterFactory"/>
+                <filter class="fi.nationallibrary.ndl.solrvoikko.VoikkoFilterFactory" expandCompounds="true" separateTokens="false"/>
             </analyzer>
         </fieldType>
 

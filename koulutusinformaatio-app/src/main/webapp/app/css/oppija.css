@@ -1577,7 +1577,10 @@ hr {
 /*** Siteheader
 **************************************************************/
 #siteheader {
+<<<<<<< HEAD
 
+=======
+>>>>>>> devel
   background-color: #18a1cc;
   margin-bottom: 2em;
   /*
@@ -2464,6 +2467,7 @@ ul.unstyled {
       -o-border-bottom-right-radius: 5px;
       -ms-border-bottom-right-radius: 5px;
       border-bottom-right-radius: 5px; }
+<<<<<<< HEAD
 
 /*
 .application-basket
@@ -2503,6 +2507,47 @@ ul.unstyled {
         margin-bottom: 0.5em;
     }
 
+=======
+
+/*
+.application-basket
+{
+    background-color:#ececec;
+    margin:0.5em;
+    position:relative;
+    //overflow:hidden;
+	
+    //display:none;
+
+	.table-container
+	{
+		margin-right:-4px;
+		position:relative;
+	}
+
+	.close
+	{
+		position:absolute;
+		right:4px;
+		bottom:0px;
+	}
+
+	table
+	{
+		width:100%;
+		border-spacing:2px 0px;
+		margin:0px -10px 0px 0px;
+		border:none;
+		position:relative;
+		left:-2px;
+        @include rounded-corners(5px);
+	}
+
+    caption {
+        margin-bottom: 0.5em;
+    }
+
+>>>>>>> devel
 	thead tr th,
 	thead tr td,
 	tbody tr td

@@ -62,6 +62,7 @@ public class SearchServiceSolrImpl implements SearchService {
         Set<Provider> providers = new HashSet<Provider>();
         String startswith = term.trim();
         if (!startswith.isEmpty()) {
+            // key word params
             parameters.put("name", createParameter(term + "*"));
             parameters.put("asId", createParameter(asId));
             //parameters = addPrerequisite(parameters, prerequisite, vocational);
@@ -97,6 +98,9 @@ public class SearchServiceSolrImpl implements SearchService {
         if (!trimmed.isEmpty()) {
             MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>(1);
             parameters.put("text", Lists.newArrayList(term));
+
+            parameters.put("start", createParameter("0"));
+            parameters.put("rows", createParameter("100"));
             SolrQuery query = mapToSolrQueryTransformer.transform(parameters.entrySet());
 
             QueryResponse response = null;
