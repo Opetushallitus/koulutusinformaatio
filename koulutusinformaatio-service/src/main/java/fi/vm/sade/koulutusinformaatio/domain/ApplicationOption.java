@@ -47,6 +47,8 @@ public class ApplicationOption {
     private List<String> teachingLanguages;
     // tutkinnon viite
     private ParentLORef parent;
+    // valintaperustekuvaus
+    private I18nText selectionCriteria;
 
     public String getId() {
         return id;
@@ -158,5 +160,13 @@ public class ApplicationOption {
 
     public void setParent(ParentLORef parent) {
         this.parent = parent;
+    }
+
+    public I18nText getSelectionCriteria() {
+        return selectionCriteria;
+    }
+
+    public void setSelectionCriteria(I18nText selectionCriteria) {
+        this.selectionCriteria = selectionCriteria;
     }
 }

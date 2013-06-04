@@ -38,6 +38,7 @@ public class ApplicationOptionDTO {
     private boolean sora;
     private String educationDegree;
     private List<String> teachingLanguages;
+    private String selectionCriteria;
 
     public String getId() {
         return id;
@@ -125,5 +126,13 @@ public class ApplicationOptionDTO {
 
     public void setTeachingLanguages(List<String> teachingLanguages) {
         this.teachingLanguages = teachingLanguages;
+    }
+
+    public String getSelectionCriteria() {
+        return selectionCriteria;
+    }
+
+    public void setSelectionCriteria(String selectionCriteria) {
+        this.selectionCriteria = selectionCriteria;
     }
 }

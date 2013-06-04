@@ -155,6 +155,7 @@ public class LOBuilder {
                     ao.setLowestAcceptedAverage(hakukohdeDTO.getAlinHyvaksyttavaKeskiarvo());
                     ao.setAttachmentDeliveryDeadline(hakukohdeDTO.getLiitteidenToimitusPvm());
                     ao.setLastYearApplicantCount(hakukohdeDTO.getEdellisenVuodenHakijatLkm());
+                    ao.setSelectionCriteria(new I18nText(hakukohdeDTO.getValintaperustekuvaus()));
 
                     HakuDTO hakuDTO = hakukohdeResource.getHakuByHakukohdeOID(aoId);
                     ApplicationSystem as = new ApplicationSystem();

@@ -38,6 +38,7 @@ public class ApplicationOptionToDTO {
             ao.setSora(applicationOption.isSora());
             ao.setEducationDegree(applicationOption.getEducationDegree());
             ao.setTeachingLanguages(applicationOption.getTeachingLanguages());
+            ao.setSelectionCriteria(ConverterUtil.getTextByLanguage(applicationOption.getSelectionCriteria(), lang));
 
             return ao;
         }

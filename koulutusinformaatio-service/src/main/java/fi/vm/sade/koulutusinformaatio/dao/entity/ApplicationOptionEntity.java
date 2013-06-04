@@ -51,6 +51,7 @@ public class ApplicationOptionEntity {
     private List<String> teachingLanguages;
     @Embedded
     private ParentLOSRefEntity parent;
+    private I18nTextEntity selectionCriteria;
 
     public ApplicationOptionEntity() {
 
@@ -166,5 +167,13 @@ public class ApplicationOptionEntity {
 
     public void setParent(ParentLOSRefEntity parent) {
         this.parent = parent;
+    }
+
+    public I18nTextEntity getSelectionCriteria() {
+        return selectionCriteria;
+    }
+
+    public void setSelectionCriteria(I18nTextEntity selectionCriteria) {
+        this.selectionCriteria = selectionCriteria;
     }
 }
