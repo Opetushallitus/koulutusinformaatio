@@ -207,7 +207,14 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
                 if (result.children && result.children.length > 0) {
                     var firstChild = result.children[0];
                     ChildLearningOpportunityService.query({parentId: result.id, closId: firstChild.losId, cloiId: firstChild.loiId, language: $scope.descriptionLanguage}).then(function(cresult) {
-                        $scope.aoId = cresult.applicationOption.id;
+                        
+                        if (cresult.applicationOption) {
+                            $scope.aoId = cresult.applicationOption.id;
+
+                            if (cresult.applicationOption.applicationSystem) {
+                                $scope.asId = cresult.applicationOption.applicationSystem.id
+                            }
+                        }
                     });
                 }
 
