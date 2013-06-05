@@ -49,6 +49,7 @@ public class ApplicationOption {
     private ParentLORef parent;
     // valintaperustekuvaus
     private I18nText selectionCriteria;
+    private I18nText prerequisite;
 
     public String getId() {
         return id;
@@ -168,6 +169,14 @@ public class ApplicationOption {
 
     public void setSelectionCriteria(I18nText selectionCriteria) {
         this.selectionCriteria = selectionCriteria;
+    }
+
+    public I18nText getPrerequisite() {
+        return prerequisite;
+    }
+
+    public void setPrerequisite(I18nText prerequisite) {
+        this.prerequisite = prerequisite;
     }
 
     @Override
