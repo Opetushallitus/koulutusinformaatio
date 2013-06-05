@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.dao.entity;
 
 import java.util.List;
+import java.util.Set;
 
 import com.google.code.morphia.annotations.Embedded;
 import com.google.code.morphia.annotations.Entity;
@@ -40,7 +41,7 @@ public class ParentLearningOpportunitySpecificationEntity {
     @Embedded
     private List<ChildLORefEntity> childRefs;
     @Reference
-    private List<ApplicationOptionEntity> applicationOptions;
+    private Set<ApplicationOptionEntity> applicationOptions;
     @Reference
     private LearningOpportunityProviderEntity provider;
     @Embedded
@@ -100,11 +101,11 @@ public class ParentLearningOpportunitySpecificationEntity {
         this.childRefs = childRefs;
     }
 
-    public List<ApplicationOptionEntity> getApplicationOptions() {
+    public Set<ApplicationOptionEntity> getApplicationOptions() {
         return applicationOptions;
     }
 
-    public void setApplicationOptions(List<ApplicationOptionEntity> applicationOptions) {
+    public void setApplicationOptions(Set<ApplicationOptionEntity> applicationOptions) {
         this.applicationOptions = applicationOptions;
     }
 

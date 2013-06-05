@@ -65,7 +65,7 @@ public class LearningOpportunityServiceImplTest {
         asIds.add("as123");
         asIds.add("as124");
         parentLO.setProvider(createProvider("p1234", createI18Text("provider1"), asIds));
-        List<ApplicationOption> aos = new ArrayList<ApplicationOption>();
+        Set<ApplicationOption> aos = new HashSet<ApplicationOption>();
         aos.add(createApplicationOption("ao123 fi", createI18Text("ao name"), "as123", parentLO.getProvider(), new Date(), 100, 25,6, 77, childLORefs, "32"));
         parentLO.setApplicationOptions(aos);
 
@@ -75,7 +75,7 @@ public class LearningOpportunityServiceImplTest {
         childLO.setName(createI18Text("child 1"));
         childLO.setStartDate(new Date());
         childLO.setDegreeTitle(createI18Text("degree"));
-        childLO.setApplicationOption(aos.get(0));
+        childLO.setApplicationOption(aos.iterator().next());
         childLO.setFormOfEducation(Lists.newArrayList(createI18Text("FormOfEducation"), createI18Text("FormOfEducation2")));
         childLO.setFormOfTeaching(Lists.newArrayList(createI18Text("FormOfTeaching"), createI18Text("FormOfTeaching2")));
         childLO.setPrerequisite(createI18Text("Prerequisite"));
@@ -136,7 +136,8 @@ public class LearningOpportunityServiceImplTest {
         assertEquals(parentLO.getStydyDomain().getTranslations().get(lang), result.getStydyDomain());
         assertEquals(parentLO.getProvider().getId(), result.getProvider().getId());
         assertEquals(parentLO.getProvider().getName().getTranslations().get(lang), result.getProvider().getName());
-        assertEquals(parentLO.getApplicationOptions().get(0).getName().getTranslations().get(lang), result.getApplicationOptions().get(0).getName());
+        assertEquals(parentLO.getApplicationOptions().iterator().next().getName().getTranslations().get(lang),
+                result.getApplicationOptions().iterator().next().getName());
         assertEquals(3, result.getAvailableTranslationLanguages().size());
         assertEquals(lang, result.getTranslationLanguage());
     }
