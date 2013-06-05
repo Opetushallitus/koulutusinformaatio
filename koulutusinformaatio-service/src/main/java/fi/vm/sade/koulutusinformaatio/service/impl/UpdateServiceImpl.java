@@ -77,10 +77,6 @@ public class UpdateServiceImpl implements UpdateService {
                     LOG.warn("Exception while updating parent learning opportunity, oid: " + parentOid + ", Message: " + e.getMessage());
                     continue;
                 }
-                catch (KoodistoException e) {
-                    LOG.warn("Exception while updating parent learning opportunity, oid: " + parentOid + ", Message: " + e.getMessage());
-                    continue;
-                }
 
                 this.indexerService.addParentLearningOpportunity(parent);
                 this.educationDataService.save(parent);
