@@ -152,7 +152,7 @@ public class LOBuilder {
                     ao.setLowestAcceptedAverage(hakukohdeDTO.getAlinHyvaksyttavaKeskiarvo());
                     ao.setAttachmentDeliveryDeadline(hakukohdeDTO.getLiitteidenToimitusPvm());
                     ao.setLastYearApplicantCount(hakukohdeDTO.getEdellisenVuodenHakijatLkm());
-                    ao.setSelectionCriteria(new I18nText(hakukohdeDTO.getValintaperustekuvaus()));
+                    ao.setSelectionCriteria(getI18nText(hakukohdeDTO.getValintaperustekuvaus()));
 
                     HakuDTO hakuDTO = hakukohdeResource.getHakuByHakukohdeOID(aoId);
                     ApplicationSystem as = new ApplicationSystem();
@@ -229,7 +229,7 @@ public class LOBuilder {
     }
 
     private I18nText getI18nText(final Map<String, String> texts) throws KoodistoException {
-        if (texts != null) {
+        if (texts != null && !texts.isEmpty()) {
             Map<String, String> translations = new HashMap<String, String>();
             Iterator<Map.Entry<String, String>> i  = texts.entrySet().iterator();
             while (i.hasNext()) {
