@@ -11,7 +11,6 @@
     <artifactId>koulutusinformaatio-app</artifactId>
     <packaging>war</packaging>
     <name>Koulutusinformaatio :: APP</name>
-
     <dependencies>
         <dependency>
             <groupId>fi.vm.sade.koulutusinformaatio</groupId>
@@ -158,12 +157,10 @@
             <version>0.0.2-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
-
     </dependencies>
+
     <build>
-
         <finalName>koulutusinformaatio-app</finalName>
-
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -183,7 +180,7 @@
                     <uriEncoding>UTF-8</uriEncoding>
                     <!--<addContextWarDependencies>true</addContextWarDependencies>-->
                     <!--<systemProperties>-->
-                    <!--<solr.solr.home>${project.build.directory}/classes/solr</solr.solr.home>-->
+                        <!--<solr.solr.home>${project.build.directory}/classes/solr</solr.solr.home>-->
                     <!--</systemProperties>-->
                 </configuration>
                 <!--<dependencies>-->
