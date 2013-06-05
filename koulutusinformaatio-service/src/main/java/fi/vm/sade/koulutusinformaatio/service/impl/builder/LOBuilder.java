@@ -45,6 +45,7 @@ public class LOBuilder {
 
     public static final String MODULE_TYPE_PARENT = "TUTKINTO";
     public static final String MODULE_TYPE_CHILD = "TUTKINTO_OHJELMA";
+    public static final String STATE_PUBLISHED = "JULKAISTU";
 
     private KomoResource komoResource;
     private KomotoResource komotoResource;
@@ -67,10 +68,6 @@ public class LOBuilder {
         ParentLOS parentLOS = new ParentLOS();
         KomoDTO parentKomo = komoResource.getByOID(oid);
 
-        // tmp parent check
-        if (!komoResource.getByOID(oid).getModuuliTyyppi().equals(MODULE_TYPE_PARENT)) {
-            throw new TarjontaParseException("LOS not of type " + MODULE_TYPE_PARENT);
-        }
 
         validateParentKomo(parentKomo);
 
@@ -177,8 +174,6 @@ public class LOBuilder {
                         ao.setSora(true);
                     }
 
-                    childLOI.setApplicationOption(ao);
-
                     // provider to ao
                     ao.setProvider(parentLOS.getProvider());
 
@@ -192,6 +187,10 @@ public class LOBuilder {
                     ao.setEducationDegree(koodistoService.searchFirstCodeValue(komotoDTO.getKoulutusAsteUri()));
                     //set teaching language codes
                     ao.setTeachingLanguages(koodistoService.searchCodeValuesMultiple(komotoDTO.getOpetuskieletUris()));
+
+                    // add to parent
+                    parentLOS.getApplicationOptions().add(ao);
+
                     // how to get the name?
                     //childLOI.setName(new I18nText(komotoDTO.getNimi()));
                     childLOI.setName(childLOS.getName());
@@ -201,6 +200,8 @@ public class LOBuilder {
                     childLOI.setTeachingLanguages(koodistoService.searchCodesMultiple(komotoDTO.getOpetuskieletUris()));
                     childLOI.setFormOfTeaching(koodistoService.searchMultiple(komotoDTO.getOpetusmuodotUris()));
                     childLOI.setPrerequisite(koodistoService.searchFirst(komotoDTO.getPohjakoulutusVaatimusUri()));
+                    ao.setPrerequisite(childLOI.getPrerequisite());
+                    childLOI.setApplicationOption(ao);
 
                     // set child loi names to application option
                     List<OidRDTO> komotosByHakukohdeOID = hakukohdeResource.getKomotosByHakukohdeOID(aoId);
@@ -246,6 +247,17 @@ public class LOBuilder {
     }
 
     private void validateParentKomo(KomoDTO komo) throws TarjontaParseException {
+
+        // tmp parent check
+        if (!komo.getModuuliTyyppi().equals(MODULE_TYPE_PARENT)) {
+            throw new TarjontaParseException("LOS not of type " + MODULE_TYPE_PARENT);
+        }
+
+        // published
+        if (!komo.getTila().equals(STATE_PUBLISHED)) {
+            throw new TarjontaParseException("LOS state not " + STATE_PUBLISHED);
+        }
+
         if (komo.getNimi() == null) {
             //throw new TarjontaParseException("KomoDTO name is null");
             Map<String, String> name = Maps.newHashMap();

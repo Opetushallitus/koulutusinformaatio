@@ -49,6 +49,7 @@ public class ApplicationOption {
     private ParentLORef parent;
     // valintaperustekuvaus
     private I18nText selectionCriteria;
+    private I18nText prerequisite;
 
     public String getId() {
         return id;
@@ -168,5 +169,30 @@ public class ApplicationOption {
 
     public void setSelectionCriteria(I18nText selectionCriteria) {
         this.selectionCriteria = selectionCriteria;
+    }
+
+    public I18nText getPrerequisite() {
+        return prerequisite;
+    }
+
+    public void setPrerequisite(I18nText prerequisite) {
+        this.prerequisite = prerequisite;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ApplicationOption that = (ApplicationOption) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 }

@@ -39,6 +39,8 @@ public class ApplicationOptionDTO {
     private String educationDegree;
     private List<String> teachingLanguages;
     private String selectionCriteria;
+    private String prerequisite;
+
 
     public String getId() {
         return id;
@@ -134,5 +136,13 @@ public class ApplicationOptionDTO {
 
     public void setSelectionCriteria(String selectionCriteria) {
         this.selectionCriteria = selectionCriteria;
+    }
+
+    public String getPrerequisite() {
+        return prerequisite;
+    }
+
+    public void setPrerequisite(String prerequisite) {
+        this.prerequisite = prerequisite;
     }
 }

@@ -32,7 +32,7 @@ public class ParentLearningOpportunitySpecificationDTO {
     private String id;
     private String name;
     private List<ChildLORefDTO> children = new ArrayList<ChildLORefDTO>();
-    private List<ApplicationOptionDTO> applicationOptions = new ArrayList<ApplicationOptionDTO>();
+    private Set<ApplicationOptionDTO> applicationOptions = new HashSet<ApplicationOptionDTO>();
     private LearningOpportunityProviderDTO provider;
     private String educationDegree;
     private String structureDiagram;
@@ -69,11 +69,11 @@ public class ParentLearningOpportunitySpecificationDTO {
         this.children = children;
     }
 
-    public List<ApplicationOptionDTO> getApplicationOptions() {
+    public Set<ApplicationOptionDTO> getApplicationOptions() {
         return applicationOptions;
     }
 
-    public void setApplicationOptions(List<ApplicationOptionDTO> applicationOptions) {
+    public void setApplicationOptions(Set<ApplicationOptionDTO> applicationOptions) {
         this.applicationOptions = applicationOptions;
     }
 

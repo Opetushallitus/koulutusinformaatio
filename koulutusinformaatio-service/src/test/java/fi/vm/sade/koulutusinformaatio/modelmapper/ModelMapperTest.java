@@ -24,6 +24,7 @@ import org.junit.Test;
 import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -86,7 +87,7 @@ public class ModelMapperTest {
         assertEquals(childLOS2.getName().getTranslations().get("fi"), entity.getChildren().get(1).getName().getTranslations().get("fi"));
         assertNotNull(entity.getApplicationOptions());
         assertEquals(1, entity.getApplicationOptions().size());
-        assertEquals(ao.getId(), entity.getApplicationOptions().get(0).getId());
+        assertEquals(ao.getId(), entity.getApplicationOptions().iterator().next().getId());
         assertEquals(ao.getId(), entity.getChildren().get(0).getChildLOIs().get(0).getApplicationOption().getId());
         assertEquals(ao.getId(), entity.getChildren().get(1).getChildLOIs().get(0).getApplicationOption().getId());
     }
@@ -97,7 +98,7 @@ public class ModelMapperTest {
         entity.setId("999");
         entity.setName(TestUtil.createI18nTextEntity("entityName", "entityName", "entityName"));
 
-        List<ApplicationOptionEntity> aos = new ArrayList<ApplicationOptionEntity>();
+        Set<ApplicationOptionEntity> aos = new HashSet<ApplicationOptionEntity>();
         ApplicationOptionEntity ao = new ApplicationOptionEntity();
         ao.setId("900");
         ao.setName(TestUtil.createI18nTextEntity("ao name", "ao name", "ao name"));

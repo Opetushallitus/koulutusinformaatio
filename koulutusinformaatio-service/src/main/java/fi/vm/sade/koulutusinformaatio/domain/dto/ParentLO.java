@@ -19,7 +19,9 @@ package fi.vm.sade.koulutusinformaatio.domain.dto;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Mikko Majapuro
@@ -28,7 +30,7 @@ public class ParentLO {
 
     private String id;
     private I18nText name;
-    private List<ApplicationOption> applicationOptions = new ArrayList<ApplicationOption>();
+    private Set<ApplicationOption> applicationOptions = new HashSet<ApplicationOption>();
     private Provider provider;
     private I18nText educationDegree;
     private List<ChildLORef> childRefs = new ArrayList<ChildLORef>();
@@ -55,11 +57,11 @@ public class ParentLO {
         this.name = name;
     }
 
-    public List<ApplicationOption> getApplicationOptions() {
+    public Set<ApplicationOption> getApplicationOptions() {
         return applicationOptions;
     }
 
-    public void setApplicationOptions(List<ApplicationOption> applicationOptions) {
+    public void setApplicationOptions(Set<ApplicationOption> applicationOptions) {
         this.applicationOptions = applicationOptions;
     }
 

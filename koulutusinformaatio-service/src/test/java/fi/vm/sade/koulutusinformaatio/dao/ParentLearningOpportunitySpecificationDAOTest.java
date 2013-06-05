@@ -87,7 +87,7 @@ public class ParentLearningOpportunitySpecificationDAOTest {
         aoIds.add("4.7.9.3");
         provider.setApplicationSystemIds(aoIds);
 
-        List<ApplicationOptionEntity> aos = new ArrayList<ApplicationOptionEntity>();
+        Set<ApplicationOptionEntity> aos = new HashSet<ApplicationOptionEntity>();
         ApplicationOptionEntity ao = new ApplicationOptionEntity();
         ao.setId("7.7.7");
         ApplicationSystemEntity as = new ApplicationSystemEntity();
@@ -129,12 +129,13 @@ public class ParentLearningOpportunitySpecificationDAOTest {
         assertNotNull(fromDB.getApplicationOptions());
         assertEquals(1, fromDB.getChildren().size());
         assertEquals(1, fromDB.getApplicationOptions().size());
-        assertEquals(ao.getId(), fromDB.getApplicationOptions().get(0).getId());
+        assertEquals(ao.getId(), fromDB.getApplicationOptions().iterator().next().getId());
         assertNotNull(fromDB.getChildren().get(0).getChildLOIs());
         assertEquals(ao.getId(), fromDB.getChildren().get(0).getChildLOIs().get(0).getApplicationOption().getId());
         assertEquals(entity.getId(), fromDB.getId());
         assertEquals(entity.getChildren().get(0).getId(), fromDB.getChildren().get(0).getId());
-        assertEquals(entity.getApplicationOptions().get(0).getId(), fromDB.getApplicationOptions().get(0).getId());
+        assertEquals(entity.getApplicationOptions().iterator().next().getId(),
+                fromDB.getApplicationOptions().iterator().next().getId());
         assertNotNull(fromDB.getProvider());
         assertEquals(provider.getId(), fromDB.getProvider().getId());
     }

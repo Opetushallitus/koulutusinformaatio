@@ -120,9 +120,17 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
  *  Controller for adding applications to application basket
  */
 function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
+    //$scope.applyButtonIsDisabled = 'disabled';
+
     $scope.addToBasket = function(aoId) {
         ApplicationBasketService.addItem(aoId);
-    }        
+    }
+
+    $scope.changeValue = function(aoName) {
+        $scope.applicationOptionName = aoName;
+        //$scope.applicationOptionId = aoId;
+        //$scope.applyButtonIsDisabled = $scope.levelSelectionForm['preference1-Koulutus-id'].$viewValue ? '' : 'disabled';
+    }    
 };
 
 /**
@@ -192,7 +200,28 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
 
     var isChild = function() {
         return ($routeParams.closId && $routeParams.cloiId);
-    }
+    };
+
+    var getChildData = function(parent) {
+        // TODO: temporary solution to get application option id
+        if (parent.children && parent.children.length > 0) {
+            var firstChild = parent.children[0];
+            ChildLearningOpportunityService.query({
+                parentId: parent.id, closId: 
+                firstChild.losId, cloiId: firstChild.loiId, 
+                language: $scope.descriptionLanguage}).then(function(cresult) {
+
+                    if (cresult.applicationOption) {
+                        $scope.aoId = cresult.applicationOption.id;
+                        $scope.aoName = cresult.applicationOption.name;
+
+                        if (cresult.applicationOption.applicationSystem) {
+                            $scope.asId = cresult.applicationOption.applicationSystem.id
+                        }
+                    }
+                });
+        }
+    };
 
     // fetch data for parent and/or its child LO
     if ($routeParams) {
@@ -203,25 +232,15 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
                 ParentLODataService.setParentLOData(result);
                 setTitle($scope.parentLO, $scope.childLO);
 
-                // TODO: temporary solution to get application option id
-                if (result.children && result.children.length > 0) {
-                    var firstChild = result.children[0];
-                    ChildLearningOpportunityService.query({parentId: result.id, closId: firstChild.losId, cloiId: firstChild.loiId, language: $scope.descriptionLanguage}).then(function(cresult) {
-                        
-                        if (cresult.applicationOption) {
-                            $scope.aoId = cresult.applicationOption.id;
-
-                            if (cresult.applicationOption.applicationSystem) {
-                                $scope.asId = cresult.applicationOption.applicationSystem.id
-                            }
-                        }
-                    });
-                }
+                getChildData(result);
+                
 
             });
         } else {
             $scope.parentLO = ParentLODataService.getParentLOData();
             setTitle($scope.parentLO, $scope.childLO);
+
+            getChildData(ParentLODataService.getParentLOData());
         }
 
         if (isChild()) {
