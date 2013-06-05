@@ -120,9 +120,17 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
  *  Controller for adding applications to application basket
  */
 function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
+    //$scope.applyButtonIsDisabled = 'disabled';
+
     $scope.addToBasket = function(aoId) {
         ApplicationBasketService.addItem(aoId);
-    }        
+    }
+
+    $scope.changeValue = function(aoName) {
+        $scope.applicationOptionName = aoName;
+        //$scope.applicationOptionId = aoId;
+        //$scope.applyButtonIsDisabled = $scope.levelSelectionForm['preference1-Koulutus-id'].$viewValue ? '' : 'disabled';
+    }    
 };
 
 /**

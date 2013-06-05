@@ -14,22 +14,26 @@
         <span class="bold">3.4.2013 - 31.5.2013</span>
     </div>
     <form name="levelSelectionForm" action="/haku-app/lomake/{{asId}}/yhteishaku" method="POST" ng-controller="ApplicationCtrl">
-        <form name="level-selection-form" action="" method="POST">
         <ul class="margin-bottom-2">
-            <li>
-                <input type="radio" name="input1" id="input1" checked="checked"/><label for="input1" data-ki-i18n="elementary-based"></label>
-            </li>
-            <li>
-                <input type="radio" name="input1" id="input2" /><label for="input2" data-ki-i18n="secondary-school-based"></label>
+            <li data-ng-repeat="ao in parentLO.applicationOptions">
+                <input type="radio" name="preference1-Koulutus-id" id="input{{$index}}" value="{{ao.id}}" ng-change="changeValue(ao.name)" ng-model="applicationOptionId"/>
+                <label for="input{{$index}}">{{ao.prerequisite}}</label>
             </li>
         </ul>
         <input type="hidden" name="preference1-Opetuspiste" value="{{parentLO.provider.name}}"/>
         <input type="hidden" name="preference1-Opetuspiste-id" value="{{parentLO.provider.id}}"/>
-        <input type="hidden" name="preference1-Koulutus" value="{{aoName}}"/>
-        <input type="hidden" name="preference1-Koulutus-id" value="{{aoId}}"/>
+        <input type="hidden" name="preference1-Koulutus" value="{{applicationOptionName}}" ng-model="applicationOptionName"/>
+        <!--<input type="hidden" name="preference1-Koulutus-id" value="{{aoId}}"/>-->
         <input type="hidden" name="preference1-Koulutus-educationDegree" value="{{parentLO.educationDegree}}"/>
         <!--<input type="hidden" name="enabling-submit"/>-->
         <button type="submit" class="primary"><span><span data-ki-i18n="apply-button-label"></span></span></button>
-        <div class="inline" ng-click="addToBasket(aoId)"><button type="button" id="addToBasket" popover-placement="bottom" popover-html-unsafe="<a href='#/muistilista'>Katso muistilista</a>" popover-title="Koulutus lisätty muistilistalle" popover-trigger="click"><span><span data-ki-i18n="add-to-basket-label"></span></span></button></div>
+
+        <div class="inline" ng-click="addToBasket(aoId)">
+            <button type="button" id="addToBasket" popover-placement="bottom" popover-html-unsafe="<a href='#/muistilista'>Katso muistilista</a>" popover-title="Koulutus lisätty muistilistalle" popover-trigger="click">
+                <span>
+                    <span data-ki-i18n="add-to-basket-label"></span>
+                </span>
+            </button>
+        </div>
     </form>
 </aside>
