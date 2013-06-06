@@ -5,6 +5,7 @@ import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.common.SolrInputDocument;
+import org.apache.solr.common.SolrInputField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +68,7 @@ public class IndexerServiceImpl implements IndexerService {
         Provider provider = parent.getProvider();
         parentDoc.addField("lopId", provider.getId());
         parentDoc.addField("lopName", provider.getName().getTranslations().get("fi"));
+        parentDoc.addField("lopAddress", provider.getVisitingAddress().getPostOffice());
         docs.add(parentDoc);
 
         SolrInputDocument providerDoc = new SolrInputDocument();
@@ -79,8 +81,12 @@ public class IndexerServiceImpl implements IndexerService {
                 SolrInputDocument childLOIDoc = new SolrInputDocument();
                 childLOIDoc.addField("id", loi.getId());
                 childLOIDoc.addField("name", loi.getName().getTranslations().get("fi"));
+                for (I18nText i18n : loi.getProfessionalTitles()) {
+                    childLOIDoc.addField("professionalTitles", i18n.getTranslations().get("fi"));
+                }
                 childLOIDoc.addField("lopId", provider.getId());
                 childLOIDoc.addField("lopName", provider.getName().getTranslations().get("fi"));
+                childLOIDoc.addField("lopAddress", provider.getVisitingAddress().getPostOffice());
                 childLOIDoc.addField("parentId", parent.getId());
                 childLOIDoc.addField("losId", child.getId());
 
