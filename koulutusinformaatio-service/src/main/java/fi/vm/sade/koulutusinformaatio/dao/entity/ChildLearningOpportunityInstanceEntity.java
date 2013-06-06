@@ -49,6 +49,8 @@ public class ChildLearningOpportunityInstanceEntity {
     private List<I18nTextEntity> formOfTeaching;
     @Embedded
     private I18nTextEntity prerequisite;
+    @Embedded
+    private List<I18nTextEntity> professionalTitles;
 
     public ChildLearningOpportunityInstanceEntity() {}
 
@@ -130,5 +132,13 @@ public class ChildLearningOpportunityInstanceEntity {
 
     public void setPrerequisite(I18nTextEntity prerequisite) {
         this.prerequisite = prerequisite;
+    }
+
+    public List<I18nTextEntity> getProfessionalTitles() {
+        return professionalTitles;
+    }
+
+    public void setProfessionalTitles(List<I18nTextEntity> professionalTitles) {
+        this.professionalTitles = professionalTitles;
     }
 }

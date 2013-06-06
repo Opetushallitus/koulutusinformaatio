@@ -43,6 +43,7 @@ public class ChildLearningOpportunityDTO {
     private String translationLanguage;
     private Set<String> availableTranslationLanguages = new HashSet<String>();
     private Set<String> teachingLanguages = new HashSet<String>();
+    private List<String> professionalTitles;
 
     private ParentLOSRefDTO parent;
 
@@ -174,5 +175,13 @@ public class ChildLearningOpportunityDTO {
 
     public void setParent(ParentLOSRefDTO parent) {
         this.parent = parent;
+    }
+
+    public List<String> getProfessionalTitles() {
+        return professionalTitles;
+    }
+
+    public void setProfessionalTitles(List<String> professionalTitles) {
+        this.professionalTitles = professionalTitles;
     }
 }

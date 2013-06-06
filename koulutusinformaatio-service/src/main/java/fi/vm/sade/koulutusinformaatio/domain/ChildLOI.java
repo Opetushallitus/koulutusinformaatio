@@ -23,6 +23,7 @@ public class ChildLOI {
     // opetusmuoto -> lähiopetus
     private List<I18nText> formOfTeaching;
     private I18nText prerequisite;
+    private List<I18nText> professionalTitles;
 
     public String getId() {
         return id;
@@ -102,5 +103,13 @@ public class ChildLOI {
 
     public void setPrerequisite(I18nText prerequisite) {
         this.prerequisite = prerequisite;
+    }
+
+    public List<I18nText> getProfessionalTitles() {
+        return professionalTitles;
+    }
+
+    public void setProfessionalTitles(List<I18nText> professionalTitles) {
+        this.professionalTitles = professionalTitles;
     }
 }
