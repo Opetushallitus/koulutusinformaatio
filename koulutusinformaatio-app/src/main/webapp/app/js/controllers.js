@@ -120,12 +120,9 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
  *  Controller for adding applications to application basket
  */
 function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
-    //$scope.applyButtonIsDisabled = 'disabled';
-
     $scope.buttonsAreDisabled = $scope.applicationOptionId && $scope.applicationOptionName ? false : true;
 
     $scope.addToBasket = function(aoId) {
-        //ApplicationBasketService.addItem(aoId);
         if ($scope.applicationOptionId) {
             ApplicationBasketService.addItem($scope.applicationOptionId);
         }
@@ -172,7 +169,7 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
         } else {
             path = lo.id;
         }
-        //var path = parentLOId ? parentLOId + '/' + LOId : LOId;
+
         $location.path('/info/' + path);
     };
 
@@ -210,27 +207,6 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
 
     var isChild = function() {
         return ($routeParams.closId && $routeParams.cloiId);
-    };
-
-    var getChildData = function(parent) {
-        // TODO: temporary solution to get application option id
-        if (parent.children && parent.children.length > 0) {
-            var firstChild = parent.children[0];
-            ChildLearningOpportunityService.query({
-                parentId: parent.id, closId: 
-                firstChild.losId, cloiId: firstChild.loiId, 
-                language: $scope.descriptionLanguage}).then(function(cresult) {
-
-                    if (cresult.applicationOption) {
-                        $scope.aoId = cresult.applicationOption.id;
-                        $scope.aoName = cresult.applicationOption.name;
-
-                        if (cresult.applicationOption.applicationSystem) {
-                            $scope.asId = cresult.applicationOption.applicationSystem.id
-                        }
-                    }
-                });
-        }
     };
 
     var getApplicationSystemId = function(aos) {
@@ -334,12 +310,6 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
             $scope.applyFormClass = 'hidden';
         }
     }
-
-    /*
-    $scope.tabAsideClass= function() {
-        $scope.selectedTab = tabName;
-    }
-    */
 
     $scope.popoverTitle = i18n.t('popover-title');
     $scope.popoverContent = "<a href='#/muistilista'>" + i18n.t('popover-content') + "</a>";
