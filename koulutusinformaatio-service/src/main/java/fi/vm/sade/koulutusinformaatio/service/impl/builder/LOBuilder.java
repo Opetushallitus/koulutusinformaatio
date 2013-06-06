@@ -28,6 +28,8 @@ import fi.vm.sade.tarjonta.service.resources.HakukohdeResource;
 import fi.vm.sade.tarjonta.service.resources.KomoResource;
 import fi.vm.sade.tarjonta.service.resources.KomotoResource;
 import fi.vm.sade.tarjonta.service.resources.dto.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.WebApplicationException;
@@ -42,6 +44,8 @@ import java.util.Map;
  * @author Hannu Lyytikainen
  */
 public class LOBuilder {
+
+    public static final Logger LOG = LoggerFactory.getLogger(LOBuilder.class);
 
     public static final String MODULE_TYPE_PARENT = "TUTKINTO";
     public static final String MODULE_TYPE_CHILD = "TUTKINTO_OHJELMA";
@@ -135,6 +139,13 @@ public class LOBuilder {
 
             for (OidRDTO childKomotoOid : childKomotoOids) {
 
+                KomotoDTO komotoDTO = komotoResource.getByOID(childKomotoOid.getOid());
+                try {
+                    validateChildKomoto(komotoDTO);
+                } catch (TarjontaParseException e) {
+                    continue;
+                }
+
                 List<OidRDTO> aoIds = komotoResource.getHakukohdesByKomotoOID(childKomotoOid.getOid());
 
                 if (aoIds != null && aoIds.size() > 0) {
@@ -180,7 +191,6 @@ public class LOBuilder {
                     // asid to provider
                     parentLOS.getProvider().getApplicationSystemIDs().add(hakuDTO.getOid());
 
-                    KomotoDTO komotoDTO = komotoResource.getByOID(childKomotoOid.getOid());
                     // basic loi info
                     childLOI.setId(komotoDTO.getOid());
                     //education degree code value
@@ -269,6 +279,9 @@ public class LOBuilder {
     }
 
     private void validateChildKomo(KomoDTO komo) throws TarjontaParseException {
+        if (!komo.getTila().equals(STATE_PUBLISHED)) {
+            throw new TarjontaParseException("LOS " + komo.getOid() + " not of type " + MODULE_TYPE_PARENT);
+        }
         if (komo.getNimi() == null) {
             throw new TarjontaParseException("Child KomoDTO nimi is null");
         }
@@ -278,6 +291,13 @@ public class LOBuilder {
         if (komo.getKoulutusOhjelmaKoodiUri() == null) {
             throw new TarjontaParseException("Child KomoDTO koulutusohjelma koodi uri is null");
         }
+    }
+
+    private void validateChildKomoto(KomotoDTO komoto) throws TarjontaParseException {
+        if (!komoto.getTila().equals(STATE_PUBLISHED)) {
+            throw new TarjontaParseException("LOI " + komoto.getOid() + " not of type " + MODULE_TYPE_PARENT);
+        }
+
     }
 
 
