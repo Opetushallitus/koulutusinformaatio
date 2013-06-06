@@ -1,34 +1,28 @@
 <!--<div ng-include src="'partials/pageheader.html'"></div> -->
 <section class="content-container margin-bottom-2 grid16-16">
     <div ki-breadcrumb id="breadcrumb"></div>
-    <!--
-   <section class="margin-bottom-4">
-    <button class="left">
-        <span>
-            <span ng-click="back()">Takaisin hakutuloksiin</span>
-        </span>
-    </button>
-</section>
--->
-<section id="main-info">
-    <span class="block"><span class="bold">{{parentLO.provider.name}}</span></span>
-    <span class="block">{{parentLO.educationDomain}}<span class="hidden">, lähihoitaja (tutkintonimike)</span></span>
-    <h1>{{parentLO.name}} {{parentLO.credits.creditValue}} {{parentLO.credits.creditUnit}}</h1>
-</section>
-<div class="tabs main">
-    <a class="tab current" data-tabs-group="koulutus" data-tabs-id="kuvaus"><span class="h3" data-ki-i18n="lo-description"></span></a>
-    <a class="tab" data-tabs-group="koulutus" data-tabs-id="hakeutuminen"><span class="h3" data-ki-i18n="lo-application"></span></a>
-    <a class="tab" data-tabs-group="koulutus" data-tabs-id="oppilaitos"><span class="h3">{{parentLO.provider.name}}</span></a>
-</div>
-<div class="tabsheets">
-    <section class="tabsheet" style="display: block;" data-tabs-group="koulutus" data-tabs-id="kuvaus">
-        <div ng-include src="'partials/tabs/kuvaus_ylataso.html'"></div>
+    <section id="main-info">
+        <span class="block"><span class="bold">{{parentLO.provider.name}}</span></span>
+        <span class="block">{{parentLO.educationDomain}}<span class="hidden">, lähihoitaja (tutkintonimike)</span></span>
+        <h1>{{parentLO.name}} {{parentLO.credits.creditValue}} {{parentLO.credits.creditUnit}}</h1>
     </section>
-    <section class="tabsheet" data-tabs-group="koulutus"  data-tabs-id="hakeutuminen">
-        <div ng-include src="'partials/tabs/hakeutuminen.html'" onload="initTabs()"></div>
-    </section>
-    <section class="tabsheet" data-tabs-group="koulutus"  data-tabs-id="oppilaitos">
-        <div ng-include src="'partials/tabs/oppilaitos.html'"></div>
-    </section>
-</div>
+    <div class="tabs main">
+        <a class="tab current" data-tabs-group="koulutus" data-tabs-id="kuvaus" ng-click="changeMainTab('kuvaus')"><span class="h3" data-ki-i18n="lo-description"></span></a>
+        <a class="tab" data-tabs-group="koulutus" data-tabs-id="hakeutuminen" ng-click="changeMainTab('hakeutuminen')"><span class="h3" data-ki-i18n="lo-application"></span></a>
+        <a class="tab" data-tabs-group="koulutus" data-tabs-id="oppilaitos" ng-click="changeMainTab('oppilaitos')"><span class="h3">{{parentLO.provider.name}}</span></a>
+    </div>
+    <div class="tabsheets">
+        <section class="tabsheet" style="display: block;" data-tabs-group="koulutus" data-tabs-id="kuvaus">
+            <div ng-include src="'partials/tabs/kuvaus_ylataso.html'"></div>
+        </section>
+        <section class="tabsheet" data-tabs-group="koulutus"  data-tabs-id="hakeutuminen">
+            <div ng-include src="'partials/tabs/hakeutuminen.html'" onload="initTabs()"></div>
+        </section>
+        <section class="tabsheet" data-tabs-group="koulutus"  data-tabs-id="oppilaitos">
+            <div ng-include src="'partials/tabs/oppilaitos.html'"></div>
+        </section>
+        <div ng-class="providerAsideClass" ng-include src="'partials/tabs/oppilaitos-aside.html'"></div>
+        <div ng-class="applyFormClass" ng-include src="'partials/tabs/haku.html'"></div>
+        <div class="clear"></div>
+    </div>
 </section>

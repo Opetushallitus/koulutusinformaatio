@@ -122,14 +122,19 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
 function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
     //$scope.applyButtonIsDisabled = 'disabled';
 
+    $scope.buttonsAreDisabled = $scope.applicationOptionId && $scope.applicationOptionName ? false : true;
+
     $scope.addToBasket = function(aoId) {
-        ApplicationBasketService.addItem(aoId);
+        //ApplicationBasketService.addItem(aoId);
+        if ($scope.applicationOptionId) {
+            ApplicationBasketService.addItem($scope.applicationOptionId);
+        }
     }
 
-    $scope.changeValue = function(aoName) {
+    $scope.changeValue = function(aoId, aoName) {
         $scope.applicationOptionName = aoName;
-        //$scope.applicationOptionId = aoId;
-        //$scope.applyButtonIsDisabled = $scope.levelSelectionForm['preference1-Koulutus-id'].$viewValue ? '' : 'disabled';
+        $scope.applicationOptionId = aoId;
+        $scope.buttonsAreDisabled = false;
     }    
 };
 
@@ -190,6 +195,11 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
     $scope.queryString = SearchService.getTerm();
     $scope.descriptionLanguage = 'fi';
 
+    // how to avoid this?
+    $scope.selectedTab = 'kuvaus';
+    $scope.providerAsideClass = 'hidden';
+    $scope.applyFormClass = '';
+
     var setTitle = function(parent, child) {
         if (child) {
             TitleService.setTitle(child.name);
@@ -223,6 +233,23 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
         }
     };
 
+    var getApplicationSystemId = function(aos) {
+        if (hasApplicationOptions()) {
+            var ao = $scope.parentLO.applicationOptions[0];
+            if (ao && ao.applicationSystem) {
+                return ao.applicationSystem.id;
+            }
+        }
+    }
+
+    var hasApplicationOptions = function() {
+        if ($scope.parentLO && $scope.parentLO.applicationOptions) {
+            return $scope.parentLO.applicationOptions.length > 0;
+        } else {
+            return false;
+        } 
+    };
+
     // fetch data for parent and/or its child LO
     if ($routeParams) {
         $scope.parentId = $routeParams.parentId;
@@ -231,16 +258,18 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
                 $scope.parentLO = result;
                 ParentLODataService.setParentLOData(result);
                 setTitle($scope.parentLO, $scope.childLO);
+                $scope.hasApplicationOptions = hasApplicationOptions();
 
-                getChildData(result);
+                $scope.asId = getApplicationSystemId();
                 
 
             });
         } else {
             $scope.parentLO = ParentLODataService.getParentLOData();
             setTitle($scope.parentLO, $scope.childLO);
+            $scope.hasApplicationOptions = hasApplicationOptions();
 
-            getChildData(ParentLODataService.getParentLOData());
+            $scope.asId = getApplicationSystemId();
         }
 
         if (isChild()) {
@@ -275,7 +304,9 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
         } else {
             return false;
         }
-    }
+    };
+
+
 
     // redirect to child page
     $scope.gotoChild = function(child) {
@@ -291,6 +322,24 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
     $scope.scrollToAnchor = function(id) {
         $('html, body').scrollTop($('#' + id).offset().top);
     };
+
+    $scope.changeMainTab = function(tabName) {
+        $scope.selectedTab = tabName;
+
+        if (tabName == 'kuvaus' || tabName == 'hakeutuminen') {
+            $scope.providerAsideClass = 'hidden';
+            $scope.applyFormClass = '';
+        } else {
+            $scope.providerAsideClass = '';
+            $scope.applyFormClass = 'hidden';
+        }
+    }
+
+    /*
+    $scope.tabAsideClass= function() {
+        $scope.selectedTab = tabName;
+    }
+    */
 
     $scope.popoverTitle = i18n.t('popover-title');
     $scope.popoverContent = "<a href='#/muistilista'>" + i18n.t('popover-content') + "</a>";
