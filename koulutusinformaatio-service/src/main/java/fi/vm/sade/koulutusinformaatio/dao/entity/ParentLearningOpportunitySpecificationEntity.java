@@ -35,7 +35,7 @@ public class ParentLearningOpportunitySpecificationEntity {
     @Embedded
     private I18nTextEntity name;
     @Embedded
-    private I18nTextEntity educationDegree;
+    private String educationDegree;
     @Reference(lazy = true)
     private List<ChildLearningOpportunitySpecificationEntity> children;
     @Embedded
@@ -77,11 +77,11 @@ public class ParentLearningOpportunitySpecificationEntity {
         this.name = name;
     }
 
-    public I18nTextEntity getEducationDegree() {
+    public String getEducationDegree() {
         return educationDegree;
     }
 
-    public void setEducationDegree(I18nTextEntity educationDegree) {
+    public void setEducationDegree(String educationDegree) {
         this.educationDegree = educationDegree;
     }
 
