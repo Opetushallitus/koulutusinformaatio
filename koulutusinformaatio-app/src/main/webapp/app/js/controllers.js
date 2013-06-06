@@ -120,16 +120,18 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
  *  Controller for adding applications to application basket
  */
 function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
-    //$scope.applyButtonIsDisabled = 'disabled';
+    $scope.buttonsAreDisabled = $scope.applicationOptionId && $scope.applicationOptionName ? false : true;
 
     $scope.addToBasket = function(aoId) {
-        ApplicationBasketService.addItem(aoId);
+        if ($scope.applicationOptionId) {
+            ApplicationBasketService.addItem($scope.applicationOptionId);
+        }
     }
 
-    $scope.changeValue = function(aoName) {
+    $scope.changeValue = function(aoId, aoName) {
         $scope.applicationOptionName = aoName;
-        //$scope.applicationOptionId = aoId;
-        //$scope.applyButtonIsDisabled = $scope.levelSelectionForm['preference1-Koulutus-id'].$viewValue ? '' : 'disabled';
+        $scope.applicationOptionId = aoId;
+        $scope.buttonsAreDisabled = false;
     }    
 };
 
@@ -167,7 +169,7 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
         } else {
             path = lo.id;
         }
-        //var path = parentLOId ? parentLOId + '/' + LOId : LOId;
+
         $location.path('/info/' + path);
     };
 
@@ -190,6 +192,11 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
     $scope.queryString = SearchService.getTerm();
     $scope.descriptionLanguage = 'fi';
 
+    // how to avoid this?
+    $scope.selectedTab = 'kuvaus';
+    $scope.providerAsideClass = 'hidden';
+    $scope.applyFormClass = '';
+
     var setTitle = function(parent, child) {
         if (child) {
             TitleService.setTitle(child.name);
@@ -202,25 +209,21 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
         return ($routeParams.closId && $routeParams.cloiId);
     };
 
-    var getChildData = function(parent) {
-        // TODO: temporary solution to get application option id
-        if (parent.children && parent.children.length > 0) {
-            var firstChild = parent.children[0];
-            ChildLearningOpportunityService.query({
-                parentId: parent.id, closId: 
-                firstChild.losId, cloiId: firstChild.loiId, 
-                language: $scope.descriptionLanguage}).then(function(cresult) {
-
-                    if (cresult.applicationOption) {
-                        $scope.aoId = cresult.applicationOption.id;
-                        $scope.aoName = cresult.applicationOption.name;
-
-                        if (cresult.applicationOption.applicationSystem) {
-                            $scope.asId = cresult.applicationOption.applicationSystem.id
-                        }
-                    }
-                });
+    var getApplicationSystemId = function(aos) {
+        if (hasApplicationOptions()) {
+            var ao = $scope.parentLO.applicationOptions[0];
+            if (ao && ao.applicationSystem) {
+                return ao.applicationSystem.id;
+            }
         }
+    }
+
+    var hasApplicationOptions = function() {
+        if ($scope.parentLO && $scope.parentLO.applicationOptions) {
+            return $scope.parentLO.applicationOptions.length > 0;
+        } else {
+            return false;
+        } 
     };
 
     // fetch data for parent and/or its child LO
@@ -231,16 +234,18 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
                 $scope.parentLO = result;
                 ParentLODataService.setParentLOData(result);
                 setTitle($scope.parentLO, $scope.childLO);
+                $scope.hasApplicationOptions = hasApplicationOptions();
 
-                getChildData(result);
+                $scope.asId = getApplicationSystemId();
                 
 
             });
         } else {
             $scope.parentLO = ParentLODataService.getParentLOData();
             setTitle($scope.parentLO, $scope.childLO);
+            $scope.hasApplicationOptions = hasApplicationOptions();
 
-            getChildData(ParentLODataService.getParentLOData());
+            $scope.asId = getApplicationSystemId();
         }
 
         if (isChild()) {
@@ -275,7 +280,9 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
         } else {
             return false;
         }
-    }
+    };
+
+
 
     // redirect to child page
     $scope.gotoChild = function(child) {
@@ -291,6 +298,18 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
     $scope.scrollToAnchor = function(id) {
         $('html, body').scrollTop($('#' + id).offset().top);
     };
+
+    $scope.changeMainTab = function(tabName) {
+        $scope.selectedTab = tabName;
+
+        if (tabName == 'kuvaus' || tabName == 'hakeutuminen') {
+            $scope.providerAsideClass = 'hidden';
+            $scope.applyFormClass = '';
+        } else {
+            $scope.providerAsideClass = '';
+            $scope.applyFormClass = 'hidden';
+        }
+    }
 
     $scope.popoverTitle = i18n.t('popover-title');
     $scope.popoverContent = "<a href='#/muistilista'>" + i18n.t('popover-content') + "</a>";
