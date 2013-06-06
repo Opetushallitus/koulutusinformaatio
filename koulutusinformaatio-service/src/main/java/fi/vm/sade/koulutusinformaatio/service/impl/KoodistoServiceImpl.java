@@ -69,9 +69,13 @@ public class KoodistoServiceImpl implements KoodistoService {
 
     @Override
     public List<I18nText> searchMultiple(List<String> koodiUris) throws KoodistoException {
-        if (koodiUris == null || koodiUris.isEmpty()) {
+        if (koodiUris == null) {
             return null;
-        } else {
+        }
+        else if (koodiUris.isEmpty()) {
+            return Lists.newArrayList();
+        }
+        else {
             List<I18nText> results = Lists.newArrayList();
             for (String koodiUri : koodiUris) {
                 results.addAll(search(koodiUri));
@@ -102,9 +106,13 @@ public class KoodistoServiceImpl implements KoodistoService {
 
     @Override
     public List<Code> searchCodesMultiple(List<String> koodiUris) throws KoodistoException {
-        if (koodiUris == null || koodiUris.isEmpty()) {
+        if (koodiUris == null) {
             return null;
-        } else {
+        }
+        else if (koodiUris.isEmpty()) {
+            return Lists.newArrayList();
+        }
+        else {
             List<Code> results = Lists.newArrayList();
             for (String koodiUri : koodiUris) {
                 results.addAll(searchCodes(koodiUri));

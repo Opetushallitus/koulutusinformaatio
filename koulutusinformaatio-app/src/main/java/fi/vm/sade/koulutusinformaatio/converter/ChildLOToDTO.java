@@ -48,6 +48,7 @@ public class ChildLOToDTO {
         child.setFormOfEducation(ConverterUtil.getTextsByLanguage(childLO.getFormOfEducation(), lang));
         child.setPrerequisite(ConverterUtil.getTextByLanguage(childLO.getPrerequisite(), lang));
         child.setTranslationLanguage(lang);
+        child.setProfessionalTitles(ConverterUtil.getTextsByLanguage(childLO.getProfessionalTitles(), lang));
         return child;
     }
 

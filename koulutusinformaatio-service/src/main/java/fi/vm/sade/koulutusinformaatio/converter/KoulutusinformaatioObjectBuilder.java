@@ -76,6 +76,7 @@ public class KoulutusinformaatioObjectBuilder {
             clo.setFormOfEducation(convert(childLOI.getFormOfEducation(), I18nText.class));
             clo.setPrerequisite(convert(childLOI.getPrerequisite(), I18nText.class));
             clo.setFormOfTeaching(convert(childLOI.getFormOfTeaching(), I18nText.class));
+            clo.setProfessionalTitles(convert(childLOI.getProfessionalTitles(), I18nText.class));
             return clo;
         }
         return null;

@@ -79,7 +79,7 @@ public class LOBuilder {
         parentLOS.setGoals(getI18nText(parentKomo.getTavoitteet()));
         parentLOS.setEducationDomain(koodistoService.searchFirst(parentKomo.getKoulutusAlaUri()));
         parentLOS.setStydyDomain(koodistoService.searchFirst(parentKomo.getOpintoalaUri()));
-        parentLOS.setEducationDegree(koodistoService.searchFirst(parentKomo.getKoulutusAsteUri()));
+        parentLOS.setEducationDegree(koodistoService.searchFirstCodeValue(parentKomo.getKoulutusAsteUri()));
 
         List<OidRDTO> parentKomotoOids = komoResource.getKomotosByKomoOID(parentKomo.getOid(), Integer.MAX_VALUE, 0);
         if (parentKomotoOids == null || parentKomotoOids.size() == 0) {
@@ -200,6 +200,7 @@ public class LOBuilder {
                     childLOI.setTeachingLanguages(koodistoService.searchCodesMultiple(komotoDTO.getOpetuskieletUris()));
                     childLOI.setFormOfTeaching(koodistoService.searchMultiple(komotoDTO.getOpetusmuodotUris()));
                     childLOI.setPrerequisite(koodistoService.searchFirst(komotoDTO.getPohjakoulutusVaatimusUri()));
+                    childLOI.setProfessionalTitles(koodistoService.searchMultiple(komotoDTO.getAmmattinimikeUris()));
                     ao.setPrerequisite(childLOI.getPrerequisite());
                     childLOI.setApplicationOption(ao);
 

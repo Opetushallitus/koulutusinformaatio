@@ -41,6 +41,7 @@ public class ChildLO {
     private Map<String, String> webLinks;
     private List<I18nText> formOfTeaching;
     private I18nText prerequisite;
+    private List<I18nText> professionalTitles;
 
     private Date startDate;
 
@@ -155,5 +156,13 @@ public class ChildLO {
 
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
+    }
+
+    public List<I18nText> getProfessionalTitles() {
+        return professionalTitles;
+    }
+
+    public void setProfessionalTitles(List<I18nText> professionalTitles) {
+        this.professionalTitles = professionalTitles;
     }
 }

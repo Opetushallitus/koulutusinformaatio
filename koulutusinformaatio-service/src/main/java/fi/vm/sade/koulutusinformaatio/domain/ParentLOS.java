@@ -45,8 +45,8 @@ public class ParentLOS {
     private I18nText educationDomain;
     //opintoala, Hammaslääketiede ja muu hammashuolto
     private I18nText stydyDomain;
-    // koulutusaste, Ammatillinen koulutus
-    private I18nText educationDegree;
+    // koulutusaste, 32
+    private String educationDegree;
 
     public Set<ApplicationOption> getApplicationOptions() {
         return applicationOptions;
@@ -136,11 +136,11 @@ public class ParentLOS {
         this.stydyDomain = stydyDomain;
     }
 
-    public I18nText getEducationDegree() {
+    public String getEducationDegree() {
         return educationDegree;
     }
 
-    public void setEducationDegree(I18nText educationDegree) {
+    public void setEducationDegree(String educationDegree) {
         this.educationDegree = educationDegree;
     }
 }
