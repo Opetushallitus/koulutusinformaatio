@@ -30,7 +30,7 @@ public class ParentLOToDTO {
         ParentLearningOpportunitySpecificationDTO parent = new ParentLearningOpportunitySpecificationDTO();
         parent.setId(parentLO.getId());
         parent.setName(ConverterUtil.getTextByLanguage(parentLO.getName(), lang));
-        parent.setEducationDegree(ConverterUtil.getTextByLanguage(parentLO.getEducationDegree(), lang));
+        parent.setEducationDegree(parentLO.getEducationDegree());
         parent.setAvailableTranslationLanguages(ConverterUtil.getAvailableTranslationLanguages(parentLO.getName()));
         parent.setChildren(ChildLORefToDTO.convert(parentLO.getChildRefs(), lang));
         parent.setProvider(ProviderToDTO.convert(parentLO.getProvider(), lang));

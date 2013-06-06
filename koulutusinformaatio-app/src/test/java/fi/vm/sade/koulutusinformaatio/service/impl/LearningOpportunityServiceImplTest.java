@@ -50,7 +50,7 @@ public class LearningOpportunityServiceImplTest {
         parentLO = new ParentLO();
         parentLO.setId("1234");
         parentLO.setAccessToFurtherStudies(createI18Text("AccessToFurtherStudies"));
-        parentLO.setEducationDegree(createI18Text("degree"));
+        parentLO.setEducationDegree("32");
         parentLO.setName(createI18Text("name"));
         parentLO.setGoals(createI18Text("goals"));
         parentLO.setStructureDiagram(createI18Text("StructureDiagram"));
@@ -129,7 +129,7 @@ public class LearningOpportunityServiceImplTest {
         assertEquals(parentLO.getId(), result.getId());
         assertEquals(parentLO.getName().getTranslations().get(lang), result.getName());
         assertEquals(parentLO.getAccessToFurtherStudies().getTranslations().get(lang), result.getAccessToFurtherStudies());
-        assertEquals(parentLO.getEducationDegree().getTranslations().get(lang), result.getEducationDegree());
+        assertEquals(parentLO.getEducationDegree(), result.getEducationDegree());
         assertEquals(parentLO.getGoals().getTranslations().get(lang), result.getGoals());
         assertEquals(parentLO.getEducationDomain().getTranslations().get(lang), result.getEducationDomain());
         assertEquals(parentLO.getStructureDiagram().getTranslations().get(lang), result.getStructureDiagram());
