@@ -128,9 +128,11 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
         }
     }
 
-    $scope.changeValue = function(aoId, aoName) {
+    $scope.changeValue = function(aoId, aoName, aoSora, aoTeachLang) {
         $scope.applicationOptionName = aoName;
         $scope.applicationOptionId = aoId;
+        $scope.aoSora = aoSora;
+        $scope.aoTeachLang = aoTeachLang;
         $scope.buttonsAreDisabled = false;
     }    
 };
