@@ -72,7 +72,7 @@ public class ParentLearningOpportunitySpecificationDAOTest {
         ParentLearningOpportunitySpecificationEntity entity = new ParentLearningOpportunitySpecificationEntity();
         entity.setId("1.2.3.4.5");
         entity.setName(TestUtil.createI18nTextEntity("parent name fi", "parent name sv", "parent name en"));
-        entity.setEducationDegree(TestUtil.createI18nTextEntity("degree fi", "degree sv", "degree en"));
+        entity.setEducationDegree("32");
         List<ChildLearningOpportunitySpecificationEntity> children = new ArrayList<ChildLearningOpportunitySpecificationEntity>();
 
         ChildLearningOpportunitySpecificationEntity childLOS = new ChildLearningOpportunitySpecificationEntity();

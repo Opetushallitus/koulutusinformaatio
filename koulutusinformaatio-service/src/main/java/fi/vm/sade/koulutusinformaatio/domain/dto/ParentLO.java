@@ -32,7 +32,7 @@ public class ParentLO {
     private I18nText name;
     private Set<ApplicationOption> applicationOptions = new HashSet<ApplicationOption>();
     private Provider provider;
-    private I18nText educationDegree;
+    private String educationDegree;
     private List<ChildLORef> childRefs = new ArrayList<ChildLORef>();
     private I18nText structureDiagram;
     private I18nText accessToFurtherStudies;
@@ -73,11 +73,11 @@ public class ParentLO {
         this.provider = provider;
     }
 
-    public I18nText getEducationDegree() {
+    public String getEducationDegree() {
         return educationDegree;
     }
 
-    public void setEducationDegree(I18nText educationDegree) {
+    public void setEducationDegree(String educationDegree) {
         this.educationDegree = educationDegree;
     }
 
