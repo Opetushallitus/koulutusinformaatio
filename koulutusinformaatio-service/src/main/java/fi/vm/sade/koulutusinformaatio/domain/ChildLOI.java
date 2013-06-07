@@ -25,6 +25,19 @@ public class ChildLOI {
     private I18nText prerequisite;
     private List<I18nText> professionalTitles;
 
+    ///// parent loi fix
+    private String parentLOI;
+
+    public String getParentLOI() {
+        return parentLOI;
+    }
+
+    public void setParentLOI(String parentLOI) {
+        this.parentLOI = parentLOI;
+    }
+    /////
+
+
     public String getId() {
         return id;
     }
