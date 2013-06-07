@@ -195,6 +195,7 @@ directive('kiTimestamp', function() {
     return function(scope, element, attrs) {
         //console.log(attrs);
         attrs.$observe('kiTimestamp', function(value) {
+            console.log(value);
             value = parseInt(value);
             var date = new Date(value);
             element.append(date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear());
