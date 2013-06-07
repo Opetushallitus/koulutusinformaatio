@@ -38,6 +38,19 @@ service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', 'Languag
         var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
         result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
 
+        var applicationSystems = [];
+
+        for (var index in result.applicationOptions) {
+            if (result.applicationOptions.hasOwnProperty(index)) {
+                var ao = result.applicationOptions[index];
+                if (ao.applicationSystem && ao.applicationSystem.applicationDates && ao.applicationSystem.applicationDates.length > 0) {
+                    ao.applicationSystem.applicationDates = ao.applicationSystem.applicationDates[0];
+                }
+                result.applicationSystem = ao.applicationSystem;
+            }
+        }
+
+        // set teaching languge as the first language in array
         for (var index in result.applicationOptions) {
             if (result.applicationOptions.hasOwnProperty(index)) {
                 var ao = result.applicationOptions[index];
