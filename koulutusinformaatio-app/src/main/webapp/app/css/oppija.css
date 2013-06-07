@@ -1578,17 +1578,7 @@ hr {
 **************************************************************/
 #siteheader {
   background-color: #18a1cc;
-  margin-bottom: 2em;
-  /*
-  figure {
-      margin-top: 8px;
-  }
-  */
-  /*
-  .sitelogo {
-      float: left;
-  }
-  */ }
+  margin-bottom: 2em; }
   #siteheader .header-container {
     padding: 0 1em;
     padding: 19px 0;
@@ -1614,7 +1604,7 @@ hr {
 ************************************************/
 #overlay {
   display: none;
-  position: fixed;
+  position: absolute;
   top: 0px;
   left: 0px;
   width: 100%;
@@ -1697,12 +1687,7 @@ hr {
   #breadcrumb ul {
     list-style-type: none;
     padding: 0;
-    margin: 0;
-    /*
-    .current a {
-        color: #3e3e3e;
-    }
-    */ }
+    margin: 0; }
     #breadcrumb ul a {
       display: block;
       text-decoration: none; }
@@ -1715,13 +1700,7 @@ hr {
       background-image: url(../img/breadcrumb-arrow.png);
       background-color: transparent;
       background-repeat: no-repeat;
-      background-position: left center;
-      /*
-      a:hover,
-      a:active {
-          text-shadow: 0 0 3px #ccc;
-      }
-      */ }
+      background-position: left center; }
       #breadcrumb ul li.breadcrumb-item:last-child a {
         color: #3e3e3e;
         cursor: default; }
@@ -1762,7 +1741,7 @@ hr {
   border-radius: 6px; }
 
 small {
-  color: #8d8d8d; }
+  color: #575757; }
 
 input, input:focus,
 select, select:focus, select:active {
@@ -1777,7 +1756,9 @@ fieldset {
   fieldset legend {
     padding: 0; }
   fieldset small {
-    display: block; }
+    display: block;
+    font-size: 100%;
+    font-style: italic; }
   fieldset hr {
     margin: 0.5em 0; }
 
@@ -2331,21 +2312,6 @@ a.btn-remove {
     height: 41px;
     width: 460px; }
     #searchfield-wrapper #searchfield input {
-      /*
-          width: 100%;
-          background-color: #FFFFFF;
-          background-image: none;
-          border: none;
-          box-shadow: 0 1px 1px #bfbfbf inset, 0 -1px 4px rgba(0, 0, 0, 0.07) inset;
-          color: #333333;
-          padding: 6px 10px 6px 10px;
-          border-radius: 3px 3px 3px 3px;
-          font-size: 13px;
-          //font-size: 1.3rem;
-          line-height: 18px;
-          //line-height: 1.8rem;
-          vertical-align: middle;
-          */
       background-color: #FFFFFF;
       background-image: none;
       border: none;
@@ -2382,8 +2348,7 @@ ul.unstyled {
 ************************************************/
 .hider-button {
   padding-left: 15px;
-  background: transparent url("../img/arrow-right.png") no-repeat left top;
-  /*background: transparent url('../img/arrow-right.png') no-repeat left top;*/ }
+  background: transparent url("../img/arrow-right.png") no-repeat left top; }
 
 .hidden {
   display: none; }
@@ -2464,117 +2429,6 @@ ul.unstyled {
       -ms-border-bottom-right-radius: 5px;
       border-bottom-right-radius: 5px; }
 
-/*
-.application-basket
-{
-    background-color:#ececec;
-    margin:0.5em;
-    position:relative;
-    //overflow:hidden;
-	
-    //display:none;
-
-	.table-container
-	{
-		margin-right:-4px;
-		position:relative;
-	}
-
-	.close
-	{
-		position:absolute;
-		right:4px;
-		bottom:0px;
-	}
-
-	table
-	{
-		width:100%;
-		border-spacing:2px 0px;
-		margin:0px -10px 0px 0px;
-		border:none;
-		position:relative;
-		left:-2px;
-        @include rounded-corners(5px);
-	}
-
-    caption {
-        margin-bottom: 0.5em;
-    }
-
-	thead tr th,
-	thead tr td,
-	tbody tr td
-	{
-		border:none;
-		vertical-align:top;
-		padding:0.5em 1.5em;
-		//line-height:2em;
-		background-color:#f5f5f5;
-	}
-
-	thead tr th
-	{
-		background-color:#ececec;
-		background-image:url('../img/texture-angled-lines.gif');
-		background-repeat:repeat;
-		background-position:top left;
-		font-size:1.385em;
-		line-height:1.5em;
-		text-shadow:0px 1px 1px #ffffff;
-		@include rounded-corners(5px 5px 0px 0px);
-		
-		&:first-child
-		{
-			box-shadow:inset 8px 0px 4px -8px #a9a9a9, inset 0px 8px 4px -8px #a9a9a9, inset -8px 0px 4px -8px #a9a9a9;
-		}
-	}
-
-
-	thead tr td
-	{
-		background-color:#dcdcdc;
-		text-transform:uppercase;
-	}
-
-	tbody tr:nth-child(even) td
-	{
-		background-color:#ececec;
-	}
-
-	thead tr td,
-	tbody tr td	
-	{
-		&:first-child
-		{
-			box-shadow:inset 8px 0px 4px -8px #a9a9a9;
-		}
-		
-		&:last-child
-		{
-			box-shadow:inset -8px 0px 4px -8px #a9a9a9;
-		}
-
-        &.basket-remove {
-            width: 1px;
-        }
-	}
-
-	tfoot tr td
-	{
-		border:none;
-		vertical-align:top;
-		padding:0.5em 1.5em;
-		background-color:#ececec;
-		@include rounded-corners(0px 0px 5px 5px);
-		
-		&:first-child
-		{
-			box-shadow:inset 8px 0px 4px -8px #a9a9a9, inset 0px -8px 4px -8px #a9a9a9, inset -8px 0px 4px -8px #a9a9a9;
-		}
-	}
-}
-*/
 /*** Application-options
 **************************************************************/
 .application-options {
@@ -2735,8 +2589,7 @@ ul.unstyled {
       width: auto;
       color: #333333; }
     .popup-dialog-wrapper .popup-dialog > .popup-dialog-content {
-      display: inline-block;
-      width: 33%; }
+      display: inline-block; }
 
 /*** compare
 ************************************************/
@@ -3426,13 +3279,6 @@ button {
         }
     }
     */
-/*
-header {
-    ul {
-        padding: 0 0 0 40px;
-    }
-}
-*/
 ul {
   list-style-type: none;
   margin: 0;
@@ -3450,7 +3296,7 @@ ul {
 input {
   margin: 0 0.5em 0 0; }
 
-/*
+/* custom radio buttons (not IE8 compatible)
 input[type="radio"] {
     visibility: hidden;
     width: 0;
@@ -3503,8 +3349,7 @@ input[type="radio"] {
         content: ""; }
 
 .ribbon {
-  margin: 1em 0 1em 0;
-  /*.list-separator {margin: 0 0.5em;}*/ }
+  margin: 1em 0 1em 0; }
   .ribbon .ribbon-content {
     display: inline; }
     .ribbon .ribbon-content li {
@@ -3533,14 +3378,14 @@ p {
 
 #main-info {
   margin: 0 0 2.5em 0; }
-  #main-info span {
-    /*display: block;*/ }
-    #main-info span .bold {
-      display: inline;
-      font-weight: bold; }
+  #main-info span .bold {
+    display: inline;
+    font-weight: bold; }
 
 .sideitem span {
   display: block; }
+  .sideitem span span {
+    display: inline; }
 
 .grid16-10.no-left-gutter {
   margin-left: 0;
