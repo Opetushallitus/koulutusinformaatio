@@ -2,6 +2,24 @@
 
  angular.module('kiApp.directives', []).
 
+directive('kiRenderContactInfo', function() {
+    return {
+        restrict: 'E,A',
+        templateUrl: 'templates/contactInfo.html',
+    }
+}).
+
+directive('kiEmail', function() {
+    return {
+        restrict: 'E,A',
+        link: function(scope, element, attrs) {
+            attrs.$observe('kiEmail', function(data) {
+                element.html(data.replace('@', '(at)'));
+            });
+        }
+    }
+}).
+
 /**
  *  Creates and controls the location filter element
  */
