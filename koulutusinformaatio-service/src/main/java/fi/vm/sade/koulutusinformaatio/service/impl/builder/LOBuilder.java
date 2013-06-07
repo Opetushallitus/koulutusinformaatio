@@ -28,6 +28,7 @@ import fi.vm.sade.tarjonta.service.resources.HakukohdeResource;
 import fi.vm.sade.tarjonta.service.resources.KomoResource;
 import fi.vm.sade.tarjonta.service.resources.KomotoResource;
 import fi.vm.sade.tarjonta.service.resources.dto.*;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,7 @@ public class LOBuilder {
     public static final String MODULE_TYPE_PARENT = "TUTKINTO";
     public static final String MODULE_TYPE_CHILD = "TUTKINTO_OHJELMA";
     public static final String STATE_PUBLISHED = "JULKAISTU";
+    public static final String STATE_READY = "VALMIS";
 
     private KomoResource komoResource;
     private KomotoResource komotoResource;
@@ -87,30 +89,40 @@ public class LOBuilder {
 
         List<OidRDTO> parentKomotoOids = komoResource.getKomotosByKomoOID(parentKomo.getOid(), Integer.MAX_VALUE, 0);
         if (parentKomotoOids == null || parentKomotoOids.size() == 0) {
-            throw new TarjontaParseException("No instances found in parent LOS " +  parentKomo.getOid());
+            throw new TarjontaParseException("No instances found in parent LOS " + parentKomo.getOid());
         }
-
 
         // parent loi + provider
         List<ParentLOI> parentLOIs = Lists.newArrayList();
         for (OidRDTO parentKomotoOid : parentKomotoOids) {
-            ParentLOI parentLOI = new ParentLOI();
-            KomotoDTO parentKomoto = komotoResource.getByOID(parentKomotoOid.getOid());
-            parentLOI.setId(parentKomoto.getOid());
-            parentLOI.setPrerequisite(koodistoService.searchFirst(parentKomoto.getPohjakoulutusVaatimusUri()));
-            parentLOIs.add(parentLOI);
 
-            if (parentLOS.getProvider() == null) {
-                parentLOS.setProvider(providerService.getByOID(parentKomoto.getTarjoajaOid()));
+            KomotoDTO parentKomoto = komotoResource.getByOID(parentKomotoOid.getOid());
+            try {
+                validateParentKomoto(parentKomoto);
+            } catch (TarjontaParseException e) {
+                continue;
             }
+
+            ParentLOI parentLOI = new ParentLOI();
+            Provider provider = providerService.getByOID(parentKomoto.getTarjoajaOid());
+
+            if (provider != null) {
+                parentLOI.setProvider(provider);
+                parentLOI.setId(parentKomoto.getOid());
+                parentLOI.setPrerequisite(koodistoService.searchFirst(parentKomoto.getPohjakoulutusVaatimusUri()));
+                parentLOIs.add(parentLOI);
+            }
+
+
         }
         parentLOS.setLois(parentLOIs);
-        if (parentLOS.getProvider() == null) {
-            throw new TarjontaParseException("No provider found for parent LOS " + parentKomo.getOid());
-        }
+//        if (parentLOS.getProvider() == null) {
+//            throw new TarjontaParseException("No provider found for parent LOS " + parentKomo.getOid());
+//        }
 
-
-        // children
+        /////////////////////
+        // CHILD LOS
+        ////////////////////
         List<String> childKomoOids = parentKomo.getAlaModuulit();
         List<ChildLOS> childLOSs = Lists.newArrayList();
         for (String childKomoOid : childKomoOids) {
@@ -137,6 +149,10 @@ public class LOBuilder {
             List<ChildLOI> childLOIs = Lists.newArrayList();
             List<OidRDTO> childKomotoOids = komoResource.getKomotosByKomoOID(childKomoOid, Integer.MAX_VALUE, 0);
 
+
+            //////////////////
+            // CHILD LOI
+            /////////////////
             for (OidRDTO childKomotoOid : childKomotoOids) {
 
                 KomotoDTO komotoDTO = komotoResource.getByOID(childKomotoOid.getOid());
@@ -189,7 +205,7 @@ public class LOBuilder {
                     ao.setProvider(parentLOS.getProvider());
 
                     // asid to provider
-                    parentLOS.getProvider().getApplicationSystemIDs().add(hakuDTO.getOid());
+                    //parentLOS.getProvider().getApplicationSystemIDs().add(hakuDTO.getOid());
 
                     // basic loi info
                     childLOI.setId(komotoDTO.getOid());
@@ -211,6 +227,7 @@ public class LOBuilder {
                     childLOI.setFormOfTeaching(koodistoService.searchMultiple(komotoDTO.getOpetusmuodotUris()));
                     childLOI.setPrerequisite(koodistoService.searchFirst(komotoDTO.getPohjakoulutusVaatimusUri()));
                     childLOI.setProfessionalTitles(koodistoService.searchMultiple(komotoDTO.getAmmattinimikeUris()));
+                    childLOI.setParentLOI(komotoDTO.getParentKomotoOid());
                     ao.setPrerequisite(childLOI.getPrerequisite());
                     childLOI.setApplicationOption(ao);
 
@@ -242,7 +259,7 @@ public class LOBuilder {
     private I18nText getI18nText(final Map<String, String> texts) throws KoodistoException {
         if (texts != null && !texts.isEmpty()) {
             Map<String, String> translations = new HashMap<String, String>();
-            Iterator<Map.Entry<String, String>> i  = texts.entrySet().iterator();
+            Iterator<Map.Entry<String, String>> i = texts.entrySet().iterator();
             while (i.hasNext()) {
                 Map.Entry<String, String> entry = i.next();
                 if (!Strings.isNullOrEmpty(entry.getKey()) && !Strings.isNullOrEmpty(entry.getValue())) {
@@ -278,6 +295,13 @@ public class LOBuilder {
         }
     }
 
+    private void validateParentKomoto(KomotoDTO komoto) throws TarjontaParseException {
+//        if (!komoto.getTila().equals(STATE_PUBLISHED) && !komoto.getTila().equals(STATE_READY)) {
+//            throw new TarjontaParseException("LOI " + komoto.getOid() + " not of type " + MODULE_TYPE_PARENT);
+//        }
+
+    }
+
     private void validateChildKomo(KomoDTO komo) throws TarjontaParseException {
         if (!komo.getTila().equals(STATE_PUBLISHED)) {
             throw new TarjontaParseException("LOS " + komo.getOid() + " not of type " + MODULE_TYPE_PARENT);
@@ -298,6 +322,76 @@ public class LOBuilder {
             throw new TarjontaParseException("LOI " + komoto.getOid() + " not of type " + MODULE_TYPE_PARENT);
         }
 
+    }
+
+    ////////////////////////////////////////////////
+    // parent loi fix
+
+    public List<ParentLOS> postProcess(ParentLOS p) {
+
+        List<ParentLOS> nParents = Lists.newArrayList();
+
+        // parent loi id -> childlos
+        Map<String, List<ChildLOS>> childMap = Maps.newHashMap();
+
+        for (ChildLOS clos : p.getChildren()) {
+            for (ChildLOI cloi : clos.getChildLOIs()) {
+
+                ChildLOS nclos = new ChildLOS();
+                nclos.setId(clos.getId() + "_" + cloi.getId());
+                nclos.setName(clos.getName());
+                nclos.setDegreeTitle(clos.getDegreeTitle());
+                nclos.setQualification(clos.getQualification());
+
+                nclos.setChildLOIs(Lists.newArrayList(cloi));
+
+                List<ChildLOS> l = childMap.get(cloi.getParentLOI());
+                if (l == null) {
+                    l = Lists.newArrayList(nclos);
+                } else {
+                    l.add(nclos);
+                }
+
+                childMap.put(cloi.getParentLOI(), l);
+
+            }
+        }
+
+
+        for (ParentLOI loi : p.getLois()) {
+            ParentLOS np = new ParentLOS();
+            np.setId(loi.getId());
+            np.setName(p.getName());
+            np.setStructureDiagram(p.getStructureDiagram());
+            np.setAccessToFurtherStudies(p.getAccessToFurtherStudies());
+            np.setGoals(p.getGoals());
+            np.setEducationDomain(p.getEducationDomain());
+            np.setStydyDomain(p.getStydyDomain());
+            np.setEducationDegree(p.getEducationDegree());
+
+            Provider provider = loi.getProvider();
+            List<ChildLOS> children = childMap.get(loi.getId());
+
+            if (children != null) {
+                np.setChildren(children);
+
+                // asid to provider
+                // ao to parent
+                for (ChildLOS childLOS : children) {
+                    for (ChildLOI childLOI : childLOS.getChildLOIs()) {
+                        provider.getApplicationSystemIDs().add(childLOI.getApplicationSystemId());
+                        np.getApplicationOptions().add(childLOI.getApplicationOption());
+                    }
+                }
+            }
+
+            np.setProvider(provider);
+            np.setLois(Lists.newArrayList(loi));
+
+            nParents.add(np);
+        }
+
+        return nParents;
     }
 
 

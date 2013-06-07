@@ -69,17 +69,19 @@ public class UpdateServiceImpl implements UpdateService {
             index += count;
 
             for (OidRDTO parentOid : parentOids) {
-                ParentLOS parent = null;
+                List<ParentLOS> parents = null;
 
                 try {
-                    parent = tarjontaService.findParentLearningOpportunity(parentOid.getOid());
+                    parents = tarjontaService.findParentLearningOpportunity(parentOid.getOid());
                 } catch (TarjontaParseException e) {
                     LOG.warn("Exception while updating parent learning opportunity, oid: " + parentOid + ", Message: " + e.getMessage());
                     continue;
                 }
+                for (ParentLOS parent : parents) {
+                    this.indexerService.addParentLearningOpportunity(parent);
+                    this.educationDataService.save(parent);
+                }
 
-                this.indexerService.addParentLearningOpportunity(parent);
-                this.educationDataService.save(parent);
             }
         }
 
