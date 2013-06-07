@@ -73,7 +73,6 @@ service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', 'Languag
             }).
             success(function(result) {
                 transformData(result);
-                console.log(result);
                 deferred.resolve(result);
             }).
             error(function(result) {
