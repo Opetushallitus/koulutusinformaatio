@@ -380,7 +380,15 @@ public class LOBuilder {
                 for (ChildLOS childLOS : children) {
                     for (ChildLOI childLOI : childLOS.getChildLOIs()) {
                         provider.getApplicationSystemIDs().add(childLOI.getApplicationSystemId());
+
+
                         np.getApplicationOptions().add(childLOI.getApplicationOption());
+
+                        for (ApplicationOption ao : np.getApplicationOptions()) {
+                            ao.setProvider(provider);
+                        }
+
+
                     }
                 }
             }
