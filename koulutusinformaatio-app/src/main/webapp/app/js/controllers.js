@@ -313,6 +313,14 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
         }
     }
 
+    $scope.subtabClass = function(isFirst) {
+        return isFirst ? 'tab current' : 'tab';
+    }
+
+    $scope.subtabContentStyle = function(isFirst) {
+        return isFirst ? {'display': 'block'} : {}; 
+    }
+
     $scope.popoverTitle = i18n.t('popover-title');
     $scope.popoverContent = "<a href='#/muistilista'>" + i18n.t('popover-content') + "</a>";
 
@@ -332,7 +340,7 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
 
     // trigger once content is loaded
     $scope.$on('$viewContentLoaded', function() {
-        tabsMenu.build();
+        //tabsMenu.build();
         OPH.Common.initHeader();
     });
 };
