@@ -52,7 +52,7 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
  */
 function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, ApplicationBasketService, SearchService) {
     var title = i18n.t('title-application-basket');
-    TitleService.setTitle(title);
+    //TitleService.setTitle(title);
 
     var basketLimit = 5; // TODO: get this from application data?
 
@@ -63,6 +63,7 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
     if (!$scope.basketIsEmpty) {
         ApplicationBasketService.query().then(function(result) {
             $scope.applicationItems = result;
+            TitleService.setTitle(title);
         });
     }
 
@@ -97,6 +98,12 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
     $scope.gotoChild = function(parentId, losId, loiId) {
         $location.path('/info/' + parentId + '/' + losId + '/' + loiId);
     }
+
+    $scope.emptyApplicationBasket = function() {
+        ApplicationBasketService.empty();
+        $scope.applicationItems = [];
+        $scope.basketIsEmpty = true;
+    } 
 
     $scope.applyButtonIsDisabled = function() {
         var itemsInBasket = ApplicationBasketService.getItemCount();

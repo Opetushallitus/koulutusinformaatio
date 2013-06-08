@@ -2428,6 +2428,10 @@ ul.unstyled {
       -o-border-bottom-right-radius: 5px;
       -ms-border-bottom-right-radius: 5px;
       border-bottom-right-radius: 5px; }
+  .application-basket .action-area {
+    line-height: 2em; }
+    .application-basket .action-area a {
+      margin: 0 2em 0 0; }
 
 /*** Application-options
 **************************************************************/

@@ -301,6 +301,13 @@ service('TranslationService', function() {
             updateBasket(this.getItemCount());
         },
 
+        empty: function() {
+            console.log('empty basket');
+            $.cookie(key, null, {useLocalStorage: false, maxChunkSize: 2000, maxNumberOfCookies: 20, path: '/'});
+            //$.cookie(key, null, {useLocalStorage: false, maxChunkSize: 2000, maxNumberOfCookies: 20, path: '/'});
+            updateBasket(this.getItemCount());
+        },
+
         getItems: function() {
             return JSON.parse($.cookie(key));
         },
