@@ -27,6 +27,7 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.organisaatio.resource.OrganisaatioResource;
+import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 
@@ -49,8 +50,12 @@ public class ProviderServiceImpl implements ProviderService {
 
     @Override
     public Provider getByOID(String oid) throws KoodistoException {
-        Provider provider = conversionService.convert(organisaatioResource.getOrganisaatioByOID(oid), Provider.class);
-        return updateCodeValues(provider);
+        OrganisaatioRDTO organisaatioRDTO = organisaatioResource.getOrganisaatioByOID(oid);
+        if (organisaatioRDTO != null) {
+            Provider provider = conversionService.convert(organisaatioRDTO, Provider.class);
+            return updateCodeValues(provider);
+        }
+        return null;
     }
 
     private Provider updateCodeValues(final Provider provider) throws KoodistoException {
