@@ -26,6 +26,25 @@ public class ParentLOI {
     private String id;
     private I18nText prerequisite;
 
+
+
+    //////////////
+    // parent loi fix
+    private Provider provider;
+
+    public Provider getProvider() {
+        return provider;
+    }
+
+    public void setProvider(Provider provider) {
+        this.provider = provider;
+    }
+    ///////////
+
+
+
+
+
     public String getId() {
         return id;
     }
