@@ -72,7 +72,6 @@ public class LOBuilder {
         ParentLOS parentLOS = new ParentLOS();
         KomoDTO parentKomo = komoResource.getByOID(oid);
 
-
         validateParentKomo(parentKomo);
 
         // parent info
@@ -102,6 +101,8 @@ public class LOBuilder {
 
             if (parentLOS.getProvider() == null) {
                 parentLOS.setProvider(providerService.getByOID(parentKomoto.getTarjoajaOid()));
+                //Provider p = providerService.getByOID(parentKomoto.getTarjoajaOid());
+                //p.setDescription(getI18nText(p.));
             }
         }
         parentLOS.setLois(parentLOIs);

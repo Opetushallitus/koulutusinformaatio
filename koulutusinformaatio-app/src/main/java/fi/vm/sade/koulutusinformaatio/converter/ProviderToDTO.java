@@ -36,6 +36,12 @@ public class ProviderToDTO {
             p.setWebPage(provider.getWebPage());
             p.setPhone(provider.getPhone());
             p.setFax(provider.getFax());
+            p.setDescription(ConverterUtil.getTextByLanguage(provider.getDescription(), lang));
+            p.setAccessibility(ConverterUtil.getTextByLanguage(provider.getAccessibility(), lang));
+            p.setLearningEnvironment(ConverterUtil.getTextByLanguage(provider.getLearningEnvironment(), lang));
+            p.setLivingExpenses(ConverterUtil.getTextByLanguage(provider.getLivingExpenses(), lang));
+            p.setDining(ConverterUtil.getTextByLanguage(provider.getDining(), lang));
+            p.setHealthcare(ConverterUtil.getTextByLanguage(provider.getHealthcare(), lang));
             return p;
         }
         return null;
