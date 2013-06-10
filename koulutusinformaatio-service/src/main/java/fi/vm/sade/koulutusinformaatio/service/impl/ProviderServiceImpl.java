@@ -87,7 +87,9 @@ public class ProviderServiceImpl implements ProviderService {
                 Map.Entry<String, String> entry = i.next();
                 if (!Strings.isNullOrEmpty(entry.getKey()) && !Strings.isNullOrEmpty(entry.getValue())) {
                     String key = koodistoService.searchFirstCodeValue(entry.getKey());
-                    translations.put(key.toLowerCase(), entry.getValue());
+                    if (!Strings.isNullOrEmpty(key)) {
+                        translations.put(key.toLowerCase(), entry.getValue());
+                    }
                 }
             }
             I18nText i18nText = new I18nText();
