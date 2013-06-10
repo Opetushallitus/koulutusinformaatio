@@ -28,7 +28,7 @@
                         </colgroup>
                         <thead>
                             <tr>
-                                <th colspan="4"><h3 class="margin-0">{{as.applicationSystemName}} <span data-ki-timestamp="{{as.applicationDates.startDate}}"></span> - <span data-ki-timestamp="{{as.applicationDates.endDate}}"></span></h3></th>
+                                <th colspan="4"><h2 class="margin-0">{{as.applicationSystemName}} <span data-ki-timestamp="{{as.applicationDates.startDate}}"></span> - <span data-ki-timestamp="{{as.applicationDates.endDate}}"></span></h2></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -36,10 +36,10 @@
                                 <td>
                                     <ul>
                                         <li>
-                                            <h3 class="margin-top-0">
+                                            <h4 class="margin-top-0">
                                                 <span class="block">{{item.providerName}}, {{item.providerLocation}}</span>
                                                 <a ng-click="gotoParent(item.parent.id)">{{item.parent.name}}</a>
-                                            </h3>
+                                            </h4>
                                         </li>
                                         <li><span>{{item.qualification}}</span></li>
                                         <li><span>{{item.prerequisite}}</span></li>
@@ -74,6 +74,8 @@
                             <input type="hidden" name="preference{{$index + 1}}-Koulutus" value="{{item.name}}"/>
                             <input type="hidden" name="preference{{$index + 1}}-Koulutus-id" value="{{item.id}}"/>
                             <input type="hidden" name="preference{{$index + 1}}-Koulutus-educationDegree" value="{{item.educationDegree}}"/>
+                            <input type="hidden" name="preference{{$index + 1}}-Koulutus-id-sora" value="{{item.sora}}" />
+                            <input type="hidden" name="preference{{$index + 1}}-Koulutus-id-lang" value="{{item.teachLang}}" />
                         </span>
                         <div class="action-area">
                             <div data-ng-switch="applyButtonIsDisabled()" class="clear float-right">

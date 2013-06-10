@@ -170,7 +170,7 @@ directive('renderTextBlock', function() {
                 if (level) {
                     return $('<h' + level + ' ' + idAttr + '>' + text + '</h' + level + '>');
                 } else {
-                    return $('<h3 ' + idAttr + '>' + text + '</h3>');
+                    return $('<h2 ' + idAttr + '>' + text + '</h2>');
                 }
             }
         }

@@ -259,6 +259,13 @@ service('TranslationService', function() {
                                 value: result[asIndex].applicationOptions[i].attachmentDeliveryDeadline
                             });
                         }
+
+                        // set teaching languge as the first language in array
+
+                        var ao = applicationOptions[i];
+                        if (ao.teachingLanguages && ao.teachingLanguages.length > 0) {
+                            ao.teachLang = ao.teachingLanguages[0];
+                        }
                     }
                 }
             }
