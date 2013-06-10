@@ -52,7 +52,7 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
  */
 function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, ApplicationBasketService, SearchService) {
     var title = i18n.t('title-application-basket');
-    TitleService.setTitle(title);
+    //TitleService.setTitle(title);
 
     var basketLimit = 5; // TODO: get this from application data?
 
@@ -63,6 +63,7 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
     if (!$scope.basketIsEmpty) {
         ApplicationBasketService.query().then(function(result) {
             $scope.applicationItems = result;
+            TitleService.setTitle(title);
         });
     }
 
@@ -97,6 +98,12 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
     $scope.gotoChild = function(parentId, losId, loiId) {
         $location.path('/info/' + parentId + '/' + losId + '/' + loiId);
     }
+
+    $scope.emptyApplicationBasket = function() {
+        ApplicationBasketService.empty();
+        $scope.applicationItems = [];
+        $scope.basketIsEmpty = true;
+    } 
 
     $scope.applyButtonIsDisabled = function() {
         var itemsInBasket = ApplicationBasketService.getItemCount();
@@ -313,6 +320,14 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
         }
     }
 
+    $scope.subtabClass = function(isFirst) {
+        return isFirst ? 'tab current' : 'tab';
+    }
+
+    $scope.subtabContentStyle = function(isFirst) {
+        return isFirst ? {'display': 'block'} : {}; 
+    }
+
     $scope.popoverTitle = i18n.t('popover-title');
     $scope.popoverContent = "<a href='#/muistilista'>" + i18n.t('popover-content') + "</a>";
 
@@ -332,7 +347,7 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
 
     // trigger once content is loaded
     $scope.$on('$viewContentLoaded', function() {
-        tabsMenu.build();
+        //tabsMenu.build();
         OPH.Common.initHeader();
     });
 };

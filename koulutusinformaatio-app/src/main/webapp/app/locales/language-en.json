@@ -65,6 +65,8 @@
     "profession-title": "Ammattinimikkeet (en)",
     "internationalization": "Kansainvälistyminen (en)",
 
+    "provider-web-page": "Oppilaitoksen omat sivut (en)",
+
     "application-title": "Haku (en)",
     "application-period": "Hakuaika (en)",
     "apply-button-label": "Hae koulutukseen (en)",
@@ -82,6 +84,7 @@
     "application-basket-back": "Takaisin hakutuloksiin (en)",
     "application-basket-fill-form": "Täytä hakulomake (en)",
     "application-basket-fill-form-notification": "Tässä haussa voit hakea enintään __count__ koulutukseen (en)",
+    "application-basket-empty": "Tyhjennä muistilista (en)",
 
     "application-basket-popup-title": "Täytä hakulomake (en)",
     "application-basket-popup-description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. (en)",

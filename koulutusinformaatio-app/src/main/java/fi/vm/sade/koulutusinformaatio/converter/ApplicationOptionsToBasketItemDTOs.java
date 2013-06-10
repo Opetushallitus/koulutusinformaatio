@@ -41,6 +41,8 @@ public class ApplicationOptionsToBasketItemDTOs {
                 aoDTO.setId(ao.getId());
                 aoDTO.setName(ConverterUtil.getTextByLanguageUseFallbackLang(ao.getName(), lang));
                 aoDTO.setEducationDegree(ao.getEducationDegree());
+                aoDTO.setSora(ao.isSora());
+                aoDTO.setTeachingLanguages(ao.getTeachingLanguages());
                 aoDTO.setParent(ParentLOSRefToDTO.convert(ao.getParent(), lang));
                 aoDTO.setChildren(ChildLORefToDTO.convert(ao.getChildLORefs(), lang));
                 aoDTO.setAttachmentDeliveryDeadline(ao.getAttachmentDeliveryDeadline());

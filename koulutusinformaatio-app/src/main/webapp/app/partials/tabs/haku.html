@@ -1,19 +1,23 @@
 <div data-ng-switch="hasApplicationOptions">
     <div data-ng-switch-when="true">
         <aside class="grid16-6 no-right-gutter margin-top-2">
+            <!--
             <div class="sideitem margin-bottom-3 hidden">
                 <span data-ki-i18n="directly-applicable"></span>
                 <ul>
                     <li><a href="#">Ensihoidon koulutusohjelma</a></li>
                 </ul>
             </div>
+            -->
             <div class="sideitem margin-bottom-3">
                 <span data-ki-i18n="application-title"></span>
-                <span class="bold">Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku, kevät 2014</span>
+                <span class="bold">{{parentLO.applicationSystem.name}}</span>
             </div>
             <div class="sideitem margin-bottom-3">
                 <span data-ki-i18n="application-period"></span>
-                <span class="bold">3.4.2013 - 31.5.2013</span>
+                <span class="bold">
+                    <span data-ki-timestamp="{{parentLO.applicationSystem.applicationDates.startDate}}"></span> - <span data-ki-timestamp="{{parentLO.applicationSystem.applicationDates.endDate}}"></span>
+                </span>
             </div>
             <form name="levelSelectionForm" action="/haku-app/lomake/{{asId}}/yhteishaku" method="POST" ng-controller="ApplicationCtrl">
                 <ul class="margin-bottom-2">

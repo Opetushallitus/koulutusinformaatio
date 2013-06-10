@@ -2,6 +2,29 @@
 
  angular.module('kiApp.directives', []).
 
+directive('kiRenderContactInfo', function() {
+    return {
+        restrict: 'E,A',
+        templateUrl: 'templates/contactInfo.html',
+        link: function(scope, element, attrs) {
+            scope.anchor = attrs.anchor;
+        }
+    }
+}).
+
+directive('kiEmail', function() {
+    return {
+        restrict: 'E,A',
+        link: function(scope, element, attrs) {
+            attrs.$observe('kiEmail', function(data) {
+                if (data) {
+                    element.html(data.replace('@', '(at)'));
+                }
+            });
+        }
+    }
+}).
+
 /**
  *  Creates and controls the location filter element
  */
@@ -149,13 +172,13 @@ directive('renderTextBlock', function() {
             });
 
             var update = function() {
-                if (content) {
+                if (content || attrs.force) {
                     $(element).empty();
                     var titleElement = createTitleElement(title, attrs.anchor, attrs.level);
                     element.append(titleElement);
 
                     // replace line feed with <br>
-                    content = content.replace(/(\r\n|\n|\r)/g,"<br />");
+                    //content = content.replace(/(\r\n|\n|\r)/g,"<br />");
                     element.append(content);
                     //var contentElement = $('<p></p>');
                     //contentElement.append(content);
@@ -170,7 +193,7 @@ directive('renderTextBlock', function() {
                 if (level) {
                     return $('<h' + level + ' ' + idAttr + '>' + text + '</h' + level + '>');
                 } else {
-                    return $('<h3 ' + idAttr + '>' + text + '</h3>');
+                    return $('<h2 ' + idAttr + '>' + text + '</h2>');
                 }
             }
         }
@@ -193,7 +216,6 @@ directive('kiAppTitle', ['TitleService', function(TitleService) {
  */
 directive('kiTimestamp', function() {
     return function(scope, element, attrs) {
-        //console.log(attrs);
         attrs.$observe('kiTimestamp', function(value) {
             value = parseInt(value);
             var date = new Date(value);

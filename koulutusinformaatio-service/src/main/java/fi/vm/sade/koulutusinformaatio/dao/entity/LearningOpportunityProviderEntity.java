@@ -41,6 +41,13 @@ public class LearningOpportunityProviderEntity {
     private String email;
     private String fax;
     private String phone;
+    private I18nTextEntity description;
+    private I18nTextEntity healthcare;
+    private I18nTextEntity accessibility;
+    private I18nTextEntity learningEnvironment;
+    private I18nTextEntity dining;
+    private I18nTextEntity livingExpenses;
+    
 
     public LearningOpportunityProviderEntity() {
     }
@@ -115,5 +122,53 @@ public class LearningOpportunityProviderEntity {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public I18nTextEntity getDescription() {
+        return description;
+    }
+
+    public void setDescription(I18nTextEntity description) {
+        this.description = description;
+    }
+
+    public I18nTextEntity getHealthcare() {
+        return healthcare;
+    }
+
+    public void setHealthcare(I18nTextEntity healthcare) {
+        this.healthcare = healthcare;
+    }
+
+    public I18nTextEntity getAccessibility() {
+        return accessibility;
+    }
+
+    public void setAccessibility(I18nTextEntity accessibility) {
+        this.accessibility = accessibility;
+    }
+
+    public I18nTextEntity getLearningEnvironment() {
+        return learningEnvironment;
+    }
+
+    public void setLearningEnvironment(I18nTextEntity learningEnvironment) {
+        this.learningEnvironment = learningEnvironment;
+    }
+
+    public I18nTextEntity getDining() {
+        return dining;
+    }
+
+    public void setDining(I18nTextEntity dining) {
+        this.dining = dining;
+    }
+
+    public I18nTextEntity getLivingExpenses() {
+        return livingExpenses;
+    }
+
+    public void setLivingExpenses(I18nTextEntity livingExpenses) {
+        this.livingExpenses = livingExpenses;
     }
 }
