@@ -74,8 +74,16 @@ public class LOSearchResult {
     public String getParentId() {
         return parentId;
     }
+    
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+    }
 
     public String getLosId() {
         return losId;
+    }
+
+    public void setLosId(String losId) {
+        this.losId = losId;
     }
 }
