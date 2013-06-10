@@ -2449,6 +2449,8 @@ ul.unstyled {
     vertical-align: top;
     padding: 1em 1em;
     background-color: #fcfcfc; }
+  .application-basket tbody tr:nth-child(even) td {
+    background-color: #ffffff; }
   .application-basket thead tr td,
   .application-basket tbody tr td {
     border-right: 2px solid #f6f6f6; }
