@@ -135,11 +135,13 @@ public class KoodistoServiceImpl implements KoodistoService {
 
     @Override
     public String searchFirstCodeValue(String koodiUri) throws KoodistoException {
-        if (Strings.isNullOrEmpty(koodiUri)) {
-            return null;
-        } else {
-            return searchFirstCode(koodiUri).getValue();
+        if (!Strings.isNullOrEmpty(koodiUri)) {
+            Code code = searchFirstCode(koodiUri);
+            if (code != null) {
+                return code.getValue();
+            }
         }
+        return null;
     }
 
     @Override
