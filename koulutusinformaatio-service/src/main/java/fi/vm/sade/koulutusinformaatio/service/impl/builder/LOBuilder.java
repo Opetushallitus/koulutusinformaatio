@@ -74,7 +74,6 @@ public class LOBuilder {
         ParentLOS parentLOS = new ParentLOS();
         KomoDTO parentKomo = komoResource.getByOID(oid);
 
-
         validateParentKomo(parentKomo);
 
         // parent info

@@ -7,16 +7,16 @@
         <h1>{{parentLO.name}} {{parentLO.credits.creditValue}} {{parentLO.credits.creditUnit}}</h1>
     </section>
     <div class="tabs main">
-        <a class="tab current" data-tabs-group="koulutus" data-tabs-id="kuvaus" ng-click="changeMainTab('kuvaus')"><span class="h3" data-ki-i18n="lo-description"></span></a>
-        <a class="tab" data-tabs-group="koulutus" data-tabs-id="hakeutuminen" ng-click="changeMainTab('hakeutuminen')"><span class="h3" data-ki-i18n="lo-application"></span></a>
-        <a class="tab" data-tabs-group="koulutus" data-tabs-id="oppilaitos" ng-click="changeMainTab('oppilaitos')"><span class="h3">{{parentLO.provider.name}}</span></a>
+        <a class="tab current" data-tabs-group="koulutus" data-tabs-id="kuvaus" ng-click="changeMainTab('kuvaus')"><span class="h2" data-ki-i18n="lo-description"></span></a>
+        <a class="tab" data-tabs-group="koulutus" data-tabs-id="hakeutuminen" ng-click="changeMainTab('hakeutuminen')"><span class="h2" data-ki-i18n="lo-application"></span></a>
+        <a class="tab" data-tabs-group="koulutus" data-tabs-id="oppilaitos" ng-click="changeMainTab('oppilaitos')"><span class="h2">{{parentLO.provider.name}}</span></a>
     </div>
     <div class="tabsheets">
         <section class="tabsheet" style="display: block;" data-tabs-group="koulutus" data-tabs-id="kuvaus">
             <div ng-include src="'partials/tabs/kuvaus_ylataso.html'"></div>
         </section>
         <section class="tabsheet" data-tabs-group="koulutus"  data-tabs-id="hakeutuminen">
-            <div ng-include src="'partials/tabs/hakeutuminen.html'" onload="initTabs()"></div>
+            <div ng-include src="'partials/tabs/hakeutuminen.html'"></div>
         </section>
         <section class="tabsheet" data-tabs-group="koulutus"  data-tabs-id="oppilaitos">
             <div ng-include src="'partials/tabs/oppilaitos.html'"></div>

@@ -451,7 +451,7 @@ this.options = function( value ) {
     "  <div class=\"arrow\"></div>" +
     "" +
     "  <div class=\"popover-inner\">" +
-    "      <h3 class=\"popover-title\" ng-bind=\"title\" ng-show=\"title\"></h3>" +
+    "      <h4 class=\"popover-title\" ng-bind=\"title\" ng-show=\"title\"></h4>" +
     "      <div class=\"popover-content\" ng-bind=\"content\"></div>" +
     "  </div>" +
     "</div>" +
@@ -465,7 +465,7 @@ this.options = function( value ) {
     "" +
     "  <div class=\"popover-inner\">" +
     "<span class=\"popover-close\" ng-click=\"close()\">Sulje</span>" +
-    "      <h3 class=\"popover-title\" ng-bind-html-unsafe=\"title\" ng-show=\"title\"></h3>" +
+    "      <h4 class=\"popover-title\" ng-bind-html-unsafe=\"title\" ng-show=\"title\"></h4>" +
     "      <div class=\"popover-content\" ng-bind-html-unsafe=\"content\"></div>" +
     "  </div>" +
     "</div>" +

@@ -1,3 +1,4 @@
+@import url(http://fonts.googleapis.com/css?family=PT+Sans+Narrow:700);
 /* normalize.css v2.0.1 | MIT License | git.io/normalize */
 /* ==========================================================================
    HTML5 display definitions
@@ -1569,6 +1570,54 @@ hr {
     margin-left: 0.625%;
     margin-right: 0.625%;
     width: 98.75%; } }
+body {
+  font-family: helvetica, arial, sans-serif;
+  font-size: 0.813em;
+  color: #333333;
+  line-height: 1.538em; }
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  display: block;
+  font-weight: bold;
+  color: #333333; }
+
+h1, .h1 {
+  font-family: 'PT Sans Narrow', 'Helvetica Neue', helvetica, arial, sans-serif;
+  font-size: 1.692em;
+  line-height: 1.3em; }
+
+h2, .h2 {
+  font-family: 'PT Sans Narrow', 'Helvetica Neue', helvetica, arial, sans-serif;
+  font-size: 1.385em;
+  line-height: 1.3em; }
+
+h3, .h3 {
+  font-family: 'Helvetica Neue', helvetica, arial, sans-serif;
+  font-size: 0.923em;
+  line-height: 1.538em;
+  font-weight: normal;
+  text-transform: uppercase;
+  letter-spacing: 0.12em; }
+
+h4, .h4 {
+  font-family: 'Helvetica Neue', helvetica, arial, sans-serif;
+  font-size: 1em;
+  line-height: 1.538em;
+  text-transform: none; }
+
+h5, .h5 {
+  font-family: 'Helvetica Neue', helvetica, arial, sans-serif;
+  font-size: 1em;
+  line-height: 1.538em;
+  font-weight: normal;
+  font-style: italic; }
+
+h6, .h6 {
+  font-family: 'Helvetica Neue', helvetica, arial, sans-serif;
+  font-size: 0.923em;
+  line-height: 1.538em; }
+
 #viewport {
   position: relative;
   padding-top: 1px;
@@ -2064,7 +2113,7 @@ label, .label {
   border-right-width: 2px;
   border-left-width: 2px;
   border-bottom-width: 0px;
-  padding-bottom: 2px;
+  padding-bottom: 3px;
   position: relative;
   top: 2px; }
   .tabs.main .tab.current span {
@@ -2400,6 +2449,8 @@ ul.unstyled {
     vertical-align: top;
     padding: 1em 1em;
     background-color: #fcfcfc; }
+  .application-basket tbody tr:nth-child(even) td {
+    background-color: #ffffff; }
   .application-basket thead tr td,
   .application-basket tbody tr td {
     border-right: 2px solid #f6f6f6; }
@@ -2428,6 +2479,10 @@ ul.unstyled {
       -o-border-bottom-right-radius: 5px;
       -ms-border-bottom-right-radius: 5px;
       border-bottom-right-radius: 5px; }
+  .application-basket .action-area {
+    line-height: 2em; }
+    .application-basket .action-area a {
+      margin: 0 2em 0 0; }
 
 /*** Application-options
 **************************************************************/

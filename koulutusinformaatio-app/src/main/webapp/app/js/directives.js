@@ -172,13 +172,13 @@ directive('renderTextBlock', function() {
             });
 
             var update = function() {
-                if (content) {
+                if (content || attrs.force) {
                     $(element).empty();
                     var titleElement = createTitleElement(title, attrs.anchor, attrs.level);
                     element.append(titleElement);
 
                     // replace line feed with <br>
-                    content = content.replace(/(\r\n|\n|\r)/g,"<br />");
+                    //content = content.replace(/(\r\n|\n|\r)/g,"<br />");
                     element.append(content);
                     //var contentElement = $('<p></p>');
                     //contentElement.append(content);
@@ -193,7 +193,7 @@ directive('renderTextBlock', function() {
                 if (level) {
                     return $('<h' + level + ' ' + idAttr + '>' + text + '</h' + level + '>');
                 } else {
-                    return $('<h3 ' + idAttr + '>' + text + '</h3>');
+                    return $('<h2 ' + idAttr + '>' + text + '</h2>');
                 }
             }
         }

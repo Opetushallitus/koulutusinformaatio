@@ -11,14 +11,27 @@
         <img src="img/content/bulevardi31.png" alt="Oppilaitos" />
     </figure>
     <div data-ki-language-ribbon class="ribbon"></div>
-    <div data-render-text-block data-title="{{parentLO.provider.name}} {{parentLO.educationDomain}}" data-content="{{lorem}}" data-anchor="oppilaitos-anchor"></div>
-    <div data-render-text-block data-title="learning-environment-info" data-content="{{loremshort}}" data-level="4"></div>
-    <div data-render-text-block data-title="accessibility-and-learning-support" data-content="{{loremshort}}" data-level="4"></div>
-    <div data-render-text-block data-title="student-benefits" data-content="{{lorem}}" data-anchor="edut-anchor"></div>
-    <div data-render-text-block data-title="living-expenses" data-content="{{loremshort}}" data-level="4"></div>
-    <div data-render-text-block data-title="student-dining" data-content="{{loremshort}}" data-level="4"></div>
-    <div data-render-text-block data-title="health-care-services" data-content="{{loremshort}}" data-level="4"></div>
-    <div data-render-text-block data-title="contact-information" data-content="{{lorem}}" data-anchor="yhteystiedot-anchor"></div>
+    <div render-text-block data-title="{{parentLO.provider.name}} {{parentLO.educationDomain}}" data-content="{{parentLO.provider.description}}" data-anchor="oppilaitos-anchor"></div>
+    <div render-text-block data-title="learning-environment-info" data-content="{{parentLO.provider.learningEnvironment}}" data-level="3"></div>
+    <div render-text-block data-title="accessibility-and-learning-support" data-content="{{parentLO.provider.accessibility}}" data-level="3"></div>
+    <div render-text-block data-title="student-benefits" data-anchor="edut-anchor" data-force="true"></div>
+    <div render-text-block data-title="living-expenses" data-content="{{parentLO.provider.livingExpenses}}" data-level="3"></div>
+    <div render-text-block data-title="student-dining" data-content="{{parentLO.provider.dining}}" data-level="3"></div>
+    <div render-text-block data-title="health-care-services" data-content="{{parentLO.provider.healthcare}}" data-level="3"></div>
+    <div render-text-block data-title="contact-information" data-content="{{lorem}}" data-anchor="yhteystiedot-anchor"></div>
+    
+    <!--
+    <p><a href="{{parentLO.provider.webPage}}">Oppilaitoksen omat sivut</a></p>
+    <p>
+        Hakutoimisto<br/>
+        {{parentLO.provider.visitingAddress.streetAddress}}, {{parentLO.provider.visitingAddress.postalCode}} {{parentLO.provider.visitingAddress.postOffice}}<br/>
+        {{parentLO.provider.postalAddress.streetAddress}}, {{parentLO.provider.postalAddress.postalCode}} {{parentLO.provider.postalAddress.postOffice}}<br/>
+        {{parentLO.provider.name}}<br/>
+        {{parentLO.provider.email}}<br/>
+        puh. {{parentLO.provider.phone}}<br />
+        fax. {{parentLO.provider.fax}}
+    </p>
+-->
 
     <div data-ki-render-contact-info="parentLO.provider" data-anchor="yhteystiedot-anchor"></div>
 </section>

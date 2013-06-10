@@ -259,6 +259,13 @@ service('TranslationService', function() {
                                 value: result[asIndex].applicationOptions[i].attachmentDeliveryDeadline
                             });
                         }
+
+                        // set teaching languge as the first language in array
+
+                        var ao = applicationOptions[i];
+                        if (ao.teachingLanguages && ao.teachingLanguages.length > 0) {
+                            ao.teachLang = ao.teachingLanguages[0];
+                        }
                     }
                 }
             }
@@ -298,6 +305,13 @@ service('TranslationService', function() {
 
             $.cookie(key, JSON.stringify(value), {useLocalStorage: false, maxChunkSize: 2000, maxNumberOfCookies: 20, path: '/'});
 
+            updateBasket(this.getItemCount());
+        },
+
+        empty: function() {
+            console.log('empty basket');
+            $.cookie(key, null, {useLocalStorage: false, maxChunkSize: 2000, maxNumberOfCookies: 20, path: '/'});
+            //$.cookie(key, null, {useLocalStorage: false, maxChunkSize: 2000, maxNumberOfCookies: 20, path: '/'});
             updateBasket(this.getItemCount());
         },
 
