@@ -6,6 +6,9 @@ directive('kiRenderContactInfo', function() {
     return {
         restrict: 'E,A',
         templateUrl: 'templates/contactInfo.html',
+        link: function(scope, element, attrs) {
+            scope.anchor = attrs.anchor;
+        }
     }
 }).
 
@@ -14,7 +17,9 @@ directive('kiEmail', function() {
         restrict: 'E,A',
         link: function(scope, element, attrs) {
             attrs.$observe('kiEmail', function(data) {
-                element.html(data.replace('@', '(at)'));
+                if (data) {
+                    element.html(data.replace('@', '(at)'));
+                }
             });
         }
     }
