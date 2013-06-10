@@ -76,7 +76,7 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
     private I18nText getMetadataValue(OrganisaatioMetaDataRDTO metadata, String key) {
         if (metadata != null) {
             Map<String, Map<String, String>> data = metadata.getData();
-            if (data != null) {
+            if (data != null && data.containsKey(key)) {
                 return new I18nText(data.get(key));
             }
         }
