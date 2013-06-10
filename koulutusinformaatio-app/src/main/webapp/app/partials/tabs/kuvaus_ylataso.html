@@ -1,15 +1,24 @@
 <section class="grid16-10 no-left-gutter" id="wide-column">
-    <ul class="tabs sub">
-        <li data-ng-repeat="ao in parentLO.applicationOptions" ng-class="subtabClass($first)" data-tabs-group="koulutuksenkuvaus" data-tabs-id="{{ao.id}}">
-            <a href="" ng-click="testlog()">
-                <span>{{ao.prerequisite}}</span>
-            </a>
-        </li>
-    </ul>
-    <div class="tabsheets sub">
-        <section data-ng-repeat="ao in parentLO.applicationOptions" class="tabsheet" ng-style="subtabContentStyle($first)" data-tabs-group="koulutuksenkuvaus" data-tabs-id="{{ao.id}}">
-            <div ng-include src="'partials/tabs/subtabs/kuvaus_peruskoulu.html'" onload="initTabs()"></div>
-        </section>
+    <div data-ng-switch="hasApplicationOptions">
+        <div data-ng-switch-when="true">
+            <ul class="tabs sub">
+                <li data-ng-repeat="ao in parentLO.applicationOptions" ng-class="subtabClass($first)" data-tabs-group="koulutuksenkuvaus" data-tabs-id="{{ao.id}}">
+                    <a href="" ng-click="testlog()">
+                        <span>{{ao.prerequisite}}</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="tabsheets sub">
+                <section data-ng-repeat="ao in parentLO.applicationOptions" class="tabsheet" ng-style="subtabContentStyle($first)" data-tabs-group="koulutuksenkuvaus" data-tabs-id="{{ao.id}}">
+                    <div ng-include src="'partials/tabs/subtabs/kuvaus_peruskoulu.html'" onload="initTabs()"></div>
+                </section>
+            </div>
+        </div>
+        <div data-ng-switch-when="false">
+            <section>
+                <div ng-include src="'partials/tabs/subtabs/kuvaus_peruskoulu.html'" onload="initTabs()"></div>
+            </section>
+        </div>
     </div>
 </section>
 </div>

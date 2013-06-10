@@ -291,6 +291,15 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
         }
     };
 
+/*
+    $scope.hasApplicationOptions = function() {
+        if ($scope.parentLO && $scope.parentLO.applicationOptions) {
+            return $scope.parentLO.applicationOptions.length > 0;
+        } else {
+            return false;
+        }
+    }
+    */
 
 
     // redirect to child page
