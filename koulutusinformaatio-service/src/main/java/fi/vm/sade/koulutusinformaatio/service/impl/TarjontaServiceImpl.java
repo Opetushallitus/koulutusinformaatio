@@ -43,9 +43,10 @@ public class TarjontaServiceImpl implements TarjontaService {
     private KomoResource komoResource;
 
     @Override
-    public ParentLOS findParentLearningOpportunity(String oid) throws TarjontaParseException {
+    public List<ParentLOS> findParentLearningOpportunity(String oid) throws TarjontaParseException {
         try {
-            return loBuilder.buildParentLOS(oid);
+            ParentLOS p1 = loBuilder.buildParentLOS(oid);
+            return loBuilder.postProcess(p1);
         } catch (KoodistoException e) {
             throw new TarjontaParseException("An error occurred while building parent LOS " + oid + " with koodisto: " + e.getMessage());
         }

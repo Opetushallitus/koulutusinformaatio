@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 /**
  * @author Hannu Lyytikainen
  */
-@Component
+//@Component
 public class TarjontaEventHandler implements EventHandler {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(TarjontaEventHandler.class);
