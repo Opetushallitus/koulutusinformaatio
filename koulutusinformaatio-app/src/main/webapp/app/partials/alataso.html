@@ -1,31 +1,12 @@
 <!--<div ng-include src="'partials/pageheader.html'"></div> -->
 <section class="content-container margin-bottom-2 grid16-16">
     <div ki-breadcrumb element="crumb in breadcrumbItems" id="breadcrumb"></div>
-    <!--
-    <section class="margin-bottom-4">
-        <button class="left">
-            <span>
-                <span ng-click="back()">Takaisin hakutuloksiin</span>
-            </span>
-        </button>
-    </section>
--->
     <section id="main-info">
         <h2>
             <span class="block">{{parentLO.provider.name}}</span>
             <a ng-click="gotoParent()" class="block">{{parentLO.name}}</a>
         </h2>
         <div ki-sibling-ribbon class="ribbon"></div>
-        <!--
-        <div class="ribbon">
-            <div>{{viewLO.children}}</div>
-            <span ng-repeat="sibling in parentLO.children">
-                <a href="#/info/{{parentId}}/{{sibling.id}}">{{sibling.name}}</a>
-                <span ng-switch="$index < parentLO.children.length-1">
-                    <span ng-switch-when="true" class="list-separator">|</span>
-                </span>
-            </span>
-        </div> -->
     </section>
     <div ng-include src="'partials/tabs/kuvaus_alataso.html'" class="tabsheets"></div>
 </section>
