@@ -19,6 +19,7 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:jaxrs="http://cxf.apache.org/jaxrs"
        xmlns:ehcache="http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring"
+       xmlns:task="http://www.springframework.org/schema/task"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
         http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring
@@ -26,7 +27,9 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd
         http://cxf.apache.org/jaxrs
-        http://cxf.apache.org/schemas/jaxrs.xsd">
+        http://cxf.apache.org/schemas/jaxrs.xsd
+        http://www.springframework.org/schema/task
+        http://www.springframework.org/schema/task/spring-task-3.0.xsd" >
 
     <context:property-placeholder
             location="classpath:koulutusinformaatio.properties, file:///${user.home:''}/oph-configuration/koulutusinformaatio.properties"
@@ -195,4 +198,7 @@
     <bean id="ehCacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
         <property name="configLocation"  value="/WEB-INF/ehcache.xml"/>
     </bean>
+
+    <task:annotation-driven scheduler="taskScheduler"/>
+    <task:scheduler id="taskScheduler" pool-size="2"/>
 </beans>
