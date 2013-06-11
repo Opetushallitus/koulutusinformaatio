@@ -1,17 +1,84 @@
 /* Directives */
 
- angular.module('kiApp.directives', []).
+angular.module('kiApp.directives', []).
 
+/**
+ * Render contact info block
+ */
 directive('kiRenderContactInfo', function() {
     return {
         restrict: 'E,A',
         templateUrl: 'templates/contactInfo.html',
+        scope: true,
         link: function(scope, element, attrs) {
             scope.anchor = attrs.anchor;
+
+            scope.$watch('parentLO.provider', function(data) {
+                if (data) {
+                    scope.showContact = (data.visitingAddress ||
+                        data.postalAddress ||
+                        data.name ||
+                        data.email ||
+                        data.phone ||
+                        data.fax ||
+                        data.webPage) ? true : false;
+                }
+
+                scope.provider = data;
+            });
         }
     }
 }).
 
+/**
+ *  Render student benefits block
+ */
+directive('kiRenderStudentBenefits', function() {
+    return {
+        restrict: 'E,A',
+        templateUrl: 'templates/studentBenefits.html',
+        scope: true,
+        link: function(scope, element, attrs) {
+            scope.anchor = attrs.anchor;
+
+            scope.$watch('parentLO.provider', function(data) {
+                if (data) {
+                    scope.showStudentBenefits = (data.livingExpenses ||
+                        data.dining ||
+                        data.healthcare) ? true : false;
+                }
+
+                scope.provider = data;
+            });
+        }
+    }
+}).
+
+/**
+ *  Render general organization information block
+ */
+directive('kiRenderOrganization', function() {
+    return {
+        restrict: 'E,A',
+        templateUrl: 'templates/organization.html',
+        link: function(scope, element, attrs) {
+            scope.anchor = attrs.anchor;
+
+            scope.$watch('parentLO', function(data) {
+                if (data && data.provider) {
+                    scope.showOrganization = (data.provider.learningEnvironment ||
+                        data.provider.accessibility) ? true : false;
+                }
+
+                scope.provider = data.provider;
+            });
+        }
+    }
+}).
+
+/**
+ *  Render email (@ replaced with (at))
+ */
 directive('kiEmail', function() {
     return {
         restrict: 'E,A',
@@ -198,20 +265,6 @@ directive('renderTextBlock', function() {
             }
         }
 }).
-
-/*
-directive('kiRenderStudentBenefits', function() {
-    return {
-        restrict: 'E,A',
-        templateUrl: 'templates/studentBenefits.html',
-        link: function(scope, element, attrs) {
-            scope.containsData = scope.$parent.parentLO.provider.livingExpenses 
-            || scope.$parent.parentLO.provider.dining 
-            || scope.$parent.parentLO.provider.healthcare ? true : false;
-        }
-    };
-}).
-*/
 
 /**
  *  Updates the title element of the page.

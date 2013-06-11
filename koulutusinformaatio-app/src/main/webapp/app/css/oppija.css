@@ -2099,8 +2099,9 @@ label, .label {
   text-decoration: none;
   text-shadow: 0 1px 0 #FFFFFF;
   position: relative;
-  top: 1px;
-  margin: 0 0.5em 0 0; }
+  top: 2px;
+  margin: 0 0.5em 0 0;
+  float: left; }
   .tabs.main .tab span {
     display: block;
     padding: 0px 20px;
@@ -2116,6 +2117,11 @@ label, .label {
     background: -o-linear-gradient(top, whitesmoke, #c6c6c6); }
     .tabs.main .tab span:after {
       content: "\00a0"; }
+    .tabs.main .tab span.fluid {
+      max-width: 450px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap; }
   .tabs.main .tab:hover span {
     background: #c6c6c6;
     background: whitesmoke;

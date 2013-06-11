@@ -58,7 +58,7 @@ service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', 'Languag
                     ao.teachLang = ao.teachingLanguages[0];
                 }
             }
-        }
+        }    
     };
 
     return {

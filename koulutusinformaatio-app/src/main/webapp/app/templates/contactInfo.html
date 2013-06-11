@@ -1,24 +1,26 @@
+<div data-ng-show="showContact">
 <h2 data-ki-i18n="contact-information" id="{{anchor}}"></h2>
-<p data-ng-show="parentLO.provider.webPage">
-    <a href="{{parentLO.provider.webPage}}" data-ki-i18n="provider-web-page"></a>
+<p data-ng-show="provider.webPage">
+    <a href="{{provider.webPage}}" data-ki-i18n="provider-web-page"></a>
 </p>
 <p>
-    <span data-ng-show="parentLO.provider.visitingAddress">
-    {{parentLO.provider.visitingAddress.streetAddress}}, {{parentLO.provider.visitingAddress.postalCode}} {{parentLO.provider.visitingAddress.postOffice}}<br/>
+    <span data-ng-show="provider.visitingAddress">
+    {{provider.visitingAddress.streetAddress}}, {{provider.visitingAddress.postalCode}} {{provider.visitingAddress.postOffice}}<br/>
     </span>
-    <span data-ng-show="parentLO.provider.postalAddress">
-    {{parentLO.provider.postalAddress.streetAddress}}, {{parentLO.provider.postalAddress.postalCode}} {{parentLO.provider.postalAddress.postOffice}}<br/>
+    <span data-ng-show="provider.postalAddress">
+    {{provider.postalAddress.streetAddress}}, {{provider.postalAddress.postalCode}} {{provider.postalAddress.postOffice}}<br/>
     </span>
-    <span data-ng-show="parentLO.provider.name">
-    {{parentLO.provider.name}}<br/>
+    <span data-ng-show="provider.name">
+    {{provider.name}}<br/>
     </span>
-    <span data-ng-show="parentLO.provider.email">
-    <span data-ki-email="{{parentLO.provider.email}}"></span><br/>
+    <span data-ng-show="provider.email">
+    <span data-ki-email="{{provider.email}}"></span><br/>
     </span>
-    <span data-ng-show="parentLO.provider.phone">
-    puh. {{parentLO.provider.phone}}<br />
+    <span data-ng-show="provider.phone">
+    puh. {{provider.phone}}<br />
     </span>
-    <span data-ng-show="parentLO.provider.fax">
-    fax. {{parentLO.provider.fax}}
+    <span data-ng-show="provider.fax">
+    fax. {{provider.fax}}
     </span>
 </p>
+</div>
