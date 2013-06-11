@@ -199,6 +199,20 @@ directive('renderTextBlock', function() {
         }
 }).
 
+/*
+directive('kiRenderStudentBenefits', function() {
+    return {
+        restrict: 'E,A',
+        templateUrl: 'templates/studentBenefits.html',
+        link: function(scope, element, attrs) {
+            scope.containsData = scope.$parent.parentLO.provider.livingExpenses 
+            || scope.$parent.parentLO.provider.dining 
+            || scope.$parent.parentLO.provider.healthcare ? true : false;
+        }
+    };
+}).
+*/
+
 /**
  *  Updates the title element of the page.
  */
