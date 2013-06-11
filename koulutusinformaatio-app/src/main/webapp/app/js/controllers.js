@@ -8,6 +8,12 @@ function LanguageCtrl($scope, $location, LanguageService) {
    }
 };
 
+function HeaderCtrl($scope, $location, ApplicationBasketService) {
+    $scope.appBasketItemCount = function() {
+        return ApplicationBasketService.getItemCount();
+    }
+};
+
 /**
  *  Controller for index view
  */
@@ -89,6 +95,16 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
                 items.splice(i, 1);
             }
         }
+
+        $scope.itemCount = ApplicationBasketService.getItemCount();
+        $scope.basketIsEmpty = ApplicationBasketService.isEmpty();
+    };
+
+    $scope.emptyApplicationBasket = function() {
+        ApplicationBasketService.empty();
+        $scope.applicationItems = [];
+        $scope.basketIsEmpty = true;
+        $scope.itemCount = ApplicationBasketService.getItemCount();
     };
 
     $scope.gotoParent = function(id) {
@@ -97,13 +113,7 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
 
     $scope.gotoChild = function(parentId, losId, loiId) {
         $location.path('/info/' + parentId + '/' + losId + '/' + loiId);
-    }
-
-    $scope.emptyApplicationBasket = function() {
-        ApplicationBasketService.empty();
-        $scope.applicationItems = [];
-        $scope.basketIsEmpty = true;
-    } 
+    };
 
     $scope.applyButtonIsDisabled = function() {
         var itemsInBasket = ApplicationBasketService.getItemCount();
