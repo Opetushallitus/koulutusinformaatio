@@ -76,6 +76,25 @@ directive('kiRenderOrganization', function() {
     }
 }).
 
+directive('kiSocialLinks', function() {
+    return {
+        restrict: 'E,A',
+        templateUrl: 'templates/socialLinks.html',
+        link: function(scope, element, attrs) {
+            scope.anchor = attrs.anchor;
+
+            scope.$watch('parentLO', function(data) {
+                if (data && data.provider) {
+                    scope.showOrganization = (data.provider.learningEnvironment ||
+                        data.provider.accessibility) ? true : false;
+
+                    scope.provider = data.provider;
+                }
+            });
+        }
+    }
+}).
+
 /**
  *  Render email (@ replaced with (at))
  */
@@ -194,7 +213,7 @@ directive('kiEmail', function() {
                 if (scope.parentLO) {
                     pushItem({name: parent, linkHref: '#/info/' + scope.parentLO.id });
                 }
-                
+
                 pushItem({name: child});
             };
 
