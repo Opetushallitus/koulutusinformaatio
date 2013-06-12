@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.domain.dto;
 
+import java.util.List;
 import java.util.Set;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
@@ -41,6 +42,7 @@ public class LearningOpportunityProviderDTO {
     private String learningEnvironment;
     private String dining;
     private String livingExpenses;
+    private List<SocialDTO> social;
 
     public String getId() {
         return id;
@@ -160,5 +162,13 @@ public class LearningOpportunityProviderDTO {
 
     public void setLivingExpenses(String livingExpenses) {
         this.livingExpenses = livingExpenses;
+    }
+
+    public List<SocialDTO> getSocial() {
+        return social;
+    }
+
+    public void setSocial(List<SocialDTO> social) {
+        this.social = social;
     }
 }

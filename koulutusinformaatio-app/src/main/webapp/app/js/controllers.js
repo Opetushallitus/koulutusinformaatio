@@ -109,6 +109,7 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
         $scope.itemCount = ApplicationBasketService.getItemCount();
     };
 
+    /*
     $scope.gotoParent = function(id) {
         $location.path('/info/' + id);
     };
@@ -116,6 +117,7 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
     $scope.gotoChild = function(parentId, losId, loiId) {
         $location.path('/info/' + parentId + '/' + losId + '/' + loiId);
     };
+    */
 
     $scope.applyButtonIsDisabled = function() {
         var itemsInBasket = ApplicationBasketService.getItemCount();

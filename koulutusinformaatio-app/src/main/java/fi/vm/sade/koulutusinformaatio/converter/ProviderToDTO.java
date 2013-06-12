@@ -42,6 +42,7 @@ public class ProviderToDTO {
             p.setLivingExpenses(ConverterUtil.getTextByLanguage(provider.getLivingExpenses(), lang));
             p.setDining(ConverterUtil.getTextByLanguage(provider.getDining(), lang));
             p.setHealthcare(ConverterUtil.getTextByLanguage(provider.getHealthcare(), lang));
+            p.setSocial(SocialToDTO.convert(provider.getSocial()));
             return p;
         }
         return null;
