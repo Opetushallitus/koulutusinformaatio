@@ -13,12 +13,26 @@ angular.module('kiApp.services', ['ngResource']).
 }).
 */
 service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', function($http, $timeout, $q) {
+    var transformData = function(result) {
+        for (var index in result) {
+            if (result.hasOwnProperty(index)) {
+                var resItem = result[index];
+                if (resItem.parentId) {
+                    resItem.linkHref = '#/info/' + resItem.parentId + '/' + resItem.losId + '/' + resItem.id;
+                } else {
+                    resItem.linkHref = '#/info/' + resItem.id
+                }
+            }
+        }
+    };
+
     return {
         query: function(params) {
             var deferred = $q.defer();
 
             $http.get('../lo/search/' + params.queryString).
             success(function(result) {
+                transformData(result);
                 deferred.resolve(result);
             }).
             error(function(result) {
@@ -96,8 +110,8 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
 
         var startDate = new Date(result.startDate);
         result.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
-        result.teachingLanguage = getFirstItemInList(result.teachingLanguages); // ? result.teachingLanguages[0] : '';
-        result.formOfEducation = getFirstItemInList(result.formOfEducation); // ? result.formOfEducation[0] : '';
+        result.teachingLanguage = getFirstItemInList(result.teachingLanguages);
+        result.formOfEducation = getFirstItemInList(result.formOfEducation);
     };
 
     var getFirstItemInList = function(list) {

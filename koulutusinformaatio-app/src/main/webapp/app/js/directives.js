@@ -68,9 +68,9 @@ directive('kiRenderOrganization', function() {
                 if (data && data.provider) {
                     scope.showOrganization = (data.provider.learningEnvironment ||
                         data.provider.accessibility) ? true : false;
-                }
 
-                scope.provider = data.provider;
+                    scope.provider = data.provider;
+                }
             });
         }
     }
