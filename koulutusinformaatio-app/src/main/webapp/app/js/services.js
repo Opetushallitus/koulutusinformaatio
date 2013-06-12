@@ -72,7 +72,16 @@ service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', 'Languag
                     ao.teachLang = ao.teachingLanguages[0];
                 }
             }
-        }    
+        }
+
+        /*
+        result.provider.social = {
+            facebook: 'http://www.facebook.com',
+            linkedin: 'http://www.linkedin.com',
+            twitter: 'http://www.twitter.com',
+            googleplus: 'http://plus.google.com'
+        };
+        */
     };
 
     return {

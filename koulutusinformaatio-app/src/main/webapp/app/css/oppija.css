@@ -2690,6 +2690,25 @@ ul.unstyled {
     .popup-dialog-wrapper .popup-dialog > .popup-dialog-content {
       display: inline-block; }
 
+/* Social links */
+#social {
+  float: right; }
+  #social li {
+    display: inline-block; }
+    #social li a {
+      display: inline-block;
+      height: 32px;
+      width: 32px;
+      color: transparent; }
+      #social li a.facebook {
+        background: transparent url("../img/social/facebook.png") no-repeat scroll 0 0; }
+      #social li a.linkedin {
+        background: transparent url("../img/social/linkedin.png") no-repeat scroll 0 0; }
+      #social li a.twitter {
+        background: transparent url("../img/social/twitter.png") no-repeat scroll 0 0; }
+      #social li a.googleplus {
+        background: transparent url("../img/social/google.png") no-repeat scroll 0 0; }
+
 /*** compare
 ************************************************/
 /*
