@@ -21,7 +21,8 @@
         <h2 class="margin-top-0">
             <span class="block" data-ki-i18n="apply-as-part-of-degree-program"></span>
             <span class="block">{{parentLO.provider.name}}</span>
-            <a ng-click="gotoParent()">{{parentLO.name}}</a>
+            <!--<a ng-click="gotoParent()">{{parentLO.name}}</a>-->
+            <a href="#/info/{{parentLO.id}}">{{parentLO.name}}</a>
         </h2>
     </div>
 </aside>

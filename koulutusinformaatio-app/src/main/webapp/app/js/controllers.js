@@ -318,14 +318,18 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
 
 
     // redirect to child page
+    /*
     $scope.gotoChild = function(child) {
         $location.path('/info/' + $scope.parentLO.id + '/' + child.losId + '/' + child.loiId);
     }
+    */
 
     // redirect to parent page
+    /*
     $scope.gotoParent = function() {
         $location.path('/info/' + $scope.parentLO.id);
     }
+    */
 
     // scrolls to an anchor on page
     $scope.scrollToAnchor = function(id) {

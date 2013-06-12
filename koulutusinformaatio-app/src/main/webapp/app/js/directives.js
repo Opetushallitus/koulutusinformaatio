@@ -148,7 +148,7 @@ directive('kiEmail', function() {
   directive('kiSiblingRibbon', ['$location', '$routeParams', function($location, $routeParams) {
     return {
         restrict: 'E,A',
-        template: '<ul class="ribbon-content"><li ng-repeat="relatedChild in childLO.related" ><a ng-click="changeChild(relatedChild)" ng-class="siblingClass(relatedChild)">{{relatedChild.name}}</a></li></ul>',
+        templateUrl: 'templates/siblings.html',
         link: function(scope, element, attrs) {
 
             scope.siblingClass = function(sibling) {
@@ -157,10 +157,6 @@ directive('kiEmail', function() {
                 } else {
                     return '';
                 }
-            }
-
-            scope.changeChild = function(sibling) {
-                $location.path('/info/' + scope.parentLO.id + '/' + sibling.losId + '/' + sibling.loiId);
             }
         }
     }
@@ -192,28 +188,20 @@ directive('kiEmail', function() {
 
             var update = function() {
                 scope.breadcrumbItems = [];
-                pushItem({name: home, callback: scope.gohome});
-                pushItem({name: search, callback: scope.search});
-                pushItem({name: parent, callback: scope.goto});
-                pushItem({name: child, callback: scope.goto});
+                pushItem({name: home, linkHref: '#/' });
+                pushItem({name: search, linkHref: '#/haku/' + SearchService.getTerm() });
+
+                if (scope.parentLO) {
+                    pushItem({name: parent, linkHref: '#/info/' + scope.parentLO.id });
+                }
+                
+                pushItem({name: child});
             };
 
             var pushItem = function(item) {
                 if (item.name) {
                     scope.breadcrumbItems.push(item);
                 }
-            };
-
-            scope.search = function() {
-                $location.path('/haku/' + SearchService.getTerm());
-            };
-
-            scope.goto = function() {
-                $location.path('/info/' + scope.parentLO.id );
-            };
-
-            scope.gohome = function() {
-                $location.path('#');
             };
         }
     };
