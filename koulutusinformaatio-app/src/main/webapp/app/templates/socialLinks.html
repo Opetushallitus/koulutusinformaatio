@@ -1,6 +1,6 @@
 <ul id="social">
-	<li data-ng-repeat="(key, value) in parentLO.provider.social">
-		<a href="{{value}}" class="{{key}}" target="_blank"><span>{{key}}</span></a>
+	<li data-ng-repeat="socialItem in parentLO.provider.social">
+		<a href="{{socialItem.url}}" class="{{socialItem.name}}" target="_blank"><span>{{socialItem.name}}</span></a>
 	</li>
 </ul>
 <div class="clear"></div>

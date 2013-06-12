@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.dao.entity;
 
+import java.util.List;
 import java.util.Set;
 
 import com.google.code.morphia.annotations.Embedded;
@@ -47,6 +48,8 @@ public class LearningOpportunityProviderEntity {
     private I18nTextEntity learningEnvironment;
     private I18nTextEntity dining;
     private I18nTextEntity livingExpenses;
+    @Embedded
+    private List<SocialEntity> social;
     
 
     public LearningOpportunityProviderEntity() {
@@ -170,5 +173,13 @@ public class LearningOpportunityProviderEntity {
 
     public void setLivingExpenses(I18nTextEntity livingExpenses) {
         this.livingExpenses = livingExpenses;
+    }
+
+    public List<SocialEntity> getSocial() {
+        return social;
+    }
+
+    public void setSocial(List<SocialEntity> social) {
+        this.social = social;
     }
 }
