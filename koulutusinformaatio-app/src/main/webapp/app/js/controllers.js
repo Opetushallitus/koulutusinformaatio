@@ -28,9 +28,11 @@ function HeaderCtrl($scope, $location, ApplicationBasketService) {
     }
     */
 
+    /*
     $scope.$on('$viewContentLoaded', function() {
         OPH.Common.initHeader();
     });
+    */
 };
 
 /**
@@ -181,6 +183,7 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
     };
 
     // Forward to parent learning opportunity info page
+    /*
     $scope.selectLO = function(lo) {
         var path;
         if (lo.parentId) {
@@ -189,8 +192,10 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
             path = lo.id;
         }
 
-        $location.path('/info/' + path);
+        return '#/info/' + path;
+        //$location.path('/info/' + path);
     };
+    */
 
     // launch navigation script
     /*
@@ -313,14 +318,18 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
 
 
     // redirect to child page
+    /*
     $scope.gotoChild = function(child) {
         $location.path('/info/' + $scope.parentLO.id + '/' + child.losId + '/' + child.loiId);
     }
+    */
 
     // redirect to parent page
+    /*
     $scope.gotoParent = function() {
         $location.path('/info/' + $scope.parentLO.id);
     }
+    */
 
     // scrolls to an anchor on page
     $scope.scrollToAnchor = function(id) {

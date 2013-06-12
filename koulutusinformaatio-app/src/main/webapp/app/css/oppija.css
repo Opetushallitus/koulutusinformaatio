@@ -1403,10 +1403,14 @@ b, strong, .bold {
 /*** Links
 ************************************************/
 a {
-  text-decoration: none;
-  color: #149dca; }
-  a:hover {
-    color: #200772; }
+  /*
+  &:hover {
+  	color: $link-color-hover !important;
+  }
+  */ }
+  a:link {
+    text-decoration: none;
+    color: #149dca; }
   a:active {
     color: #100062; }
   a:visited {
@@ -2117,8 +2121,8 @@ label, .label {
   text-decoration: none;
   text-shadow: 0 1px 0 #FFFFFF;
   position: relative;
-  top: 2px;
-  margin: 0 0.5em 0 0;
+  top: 3px;
+  margin: 0 0.625em 0 0;
   float: left; }
   .tabs.main .tab span {
     display: block;

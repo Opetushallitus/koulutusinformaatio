@@ -26,7 +26,7 @@
         <h2 data-ki-i18n="elementary-based-education"></h2>
             <ul class="dash">
                 <li ng-repeat="child in parentLO.children">
-                    <a ng-click="gotoChild(child)">{{child.name}}</a>
+                    <a href="#/info/{{parentLO.id}}/{{child.losId}}/{{child.loiId}}">{{child.name}}</a>
                 </li>
             </ul>
     </div>
