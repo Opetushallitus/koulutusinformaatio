@@ -22,6 +22,8 @@ import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import java.util.List;
 
 /**
@@ -38,7 +40,10 @@ public class ApplicationOptionResourceImpl implements ApplicationOptionResource 
     }
 
     @Override
-    public List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, String lopId) {
+    public List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId,
+                                                                           String lopId,
+                                                                           String prerequisite,
+                                                                           boolean vocational) {
         return learningOpportunityService.searchApplicationOptions(asId, lopId);
     }
 }
