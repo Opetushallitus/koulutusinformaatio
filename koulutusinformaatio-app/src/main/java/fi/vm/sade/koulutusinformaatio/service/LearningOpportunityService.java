@@ -22,6 +22,7 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunityDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -40,4 +41,6 @@ public interface LearningOpportunityService {
     List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, String lopId);
 
     List<BasketItemDTO> getBasketItems(List<String> aoId, String lang);
+
+    Date getLastDataUpdated();
 }
