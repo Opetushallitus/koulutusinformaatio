@@ -16,8 +16,8 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.*;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
@@ -38,55 +38,60 @@ public class UpdateServiceImpl implements UpdateService {
 
     private TarjontaService tarjontaService;
     private IndexerService indexerService;
-    private EducationDataService educationDataService;
+    private EducationDataUpdateService educationDataUpdateService;
+    private TransactionManager transactionManager;
     private static final int MAX_RESULTS = 100;
 
 
     @Autowired
     public UpdateServiceImpl(TarjontaService tarjontaService,
-                             IndexerService indexerService, EducationDataService educationDataService) {
+                             IndexerService indexerService, EducationDataUpdateService educationDataUpdateService,
+                             TransactionManager transactionManager) {
         this.tarjontaService = tarjontaService;
         this.indexerService = indexerService;
-        this.educationDataService = educationDataService;
+        this.educationDataUpdateService = educationDataUpdateService;
+        this.transactionManager = transactionManager;
     }
 
     @Override
     public void updateAllEducationData() throws Exception {
         LOG.info("Starting full education data update");
-        // drop db
-        // drop index
-        this.educationDataService.dropAllData();
-        this.indexerService.dropLOPs();
-        this.indexerService.dropLOs();
+        try {
+            this.transactionManager.beginTransaction();
+            // drop index
+            this.indexerService.dropLOPs();
+            this.indexerService.dropLOs();
 
-        int count = MAX_RESULTS;
-        int index = 0;
+            int count = MAX_RESULTS;
+            int index = 0;
 
-        while(count >= MAX_RESULTS) {
-            LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
-            List<OidRDTO> parentOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
-            count = parentOids.size();
-            index += count;
+            while(count >= MAX_RESULTS) {
+                LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
+                List<OidRDTO> parentOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
+                count = parentOids.size();
+                index += count;
 
-            for (OidRDTO parentOid : parentOids) {
-                List<ParentLOS> parents = null;
-
-                try {
-                    parents = tarjontaService.findParentLearningOpportunity(parentOid.getOid());
-                } catch (TarjontaParseException e) {
-                    LOG.warn("Exception while updating parent learning opportunity, oid: " + parentOid + ", Message: " + e.getMessage());
-                    continue;
+                for (OidRDTO parentOid : parentOids) {
+                    List<ParentLOS> parents = null;
+                    try {
+                        parents = tarjontaService.findParentLearningOpportunity(parentOid.getOid());
+                    } catch (TarjontaParseException e) {
+                        LOG.warn("Exception while updating parent learning opportunity, oid: " + parentOid + ", Message: " + e.getMessage());
+                        continue;
+                    }
+                    for (ParentLOS parent : parents) {
+                        this.indexerService.addParentLearningOpportunity(parent);
+                        this.educationDataUpdateService.save(parent);
+                    }
                 }
-                for (ParentLOS parent : parents) {
-                    this.indexerService.addParentLearningOpportunity(parent);
-                    this.educationDataService.save(parent);
-                }
-
             }
+            this.indexerService.commitLOChnages();
+            this.transactionManager.commit();
+            LOG.info("Education data update successfully finished");
+        } catch (Exception e) {
+            LOG.error("Education data update failed");
+            e.printStackTrace();
+            this.transactionManager.rollBack();
         }
-
-        this.indexerService.commitLOChnages();
-
-        LOG.info("Education data update successfully finished");
     }
 }

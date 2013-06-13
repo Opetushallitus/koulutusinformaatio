@@ -37,7 +37,7 @@ public class ChildLearningOpportunitySpecificationEntity {
     private I18nTextEntity qualification;
     @Embedded
     private I18nTextEntity degreeTitle;
-    @Reference(lazy = true)
+    @Reference
     private List<ChildLearningOpportunityInstanceEntity> childLOIs;
     @Embedded
     private ParentLOSRefEntity parent;

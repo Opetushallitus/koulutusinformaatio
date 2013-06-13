@@ -24,9 +24,9 @@ import static org.mockito.Mockito.*;
 /**
  * @author Mikko Majapuro
  */
-public class EducationDataServiceImplTest {
+public class EducationDataUpdateServiceImplTest {
 
-    private EducationDataServiceImpl service;
+    private EducationDataUpdateServiceImpl service;
     private ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO;
     private ApplicationOptionDAO applicationOptionDAO;
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
@@ -71,8 +71,8 @@ public class EducationDataServiceImplTest {
 
         KoulutusinformaatioObjectBuilder objectBuilder = new KoulutusinformaatioObjectBuilder(modelMapper);
 
-        service = new EducationDataServiceImpl(parentLearningOpportunitySpecificationDAO, applicationOptionDAO,
-                learningOpportunityProviderDAO, modelMapper, childLearningOpportunitySpecificationDAO, childLearningOpportunityInstanceDAO,
+        service = new EducationDataUpdateServiceImpl( modelMapper, parentLearningOpportunitySpecificationDAO,
+               applicationOptionDAO, learningOpportunityProviderDAO, childLearningOpportunitySpecificationDAO, childLearningOpportunityInstanceDAO,
                 objectBuilder);
     }
 
@@ -109,35 +109,5 @@ public class EducationDataServiceImplTest {
         verify(parentLearningOpportunitySpecificationDAO, times(1)).save(any(ParentLearningOpportunitySpecificationEntity.class));
         verify(applicationOptionDAO, times(2)).save(any(ApplicationOptionEntity.class));
         verify(learningOpportunityProviderDAO, times(3)).save(any(LearningOpportunityProviderEntity.class));
-    }
-
-    @Test
-    public void testDropAll() {
-        service.dropAllData();
-        verify(ploCollection, times(1)).drop();
-        verify(aoCollection, times(1)).drop();
-        verify(lopCollection, times(1)).drop();
-        verify(closCollection, times(1)).drop();
-        verify(cloiCollection, times(1)).drop();
-    }
-
-    @Test
-    public void testGetParentLearningOpportunity() throws ResourceNotFoundException {
-        ParentLO plo = service.getParentLearningOpportunity("1.2.3");
-        assertNotNull(plo);
-        assertEquals("1.2.3", plo.getId());
-    }
-
-    @Test(expected = ResourceNotFoundException.class)
-    public void testGetParentLearningOpportunityNotExists() throws ResourceNotFoundException {
-        ParentLO plo = service.getParentLearningOpportunity("1.1.1");
-    }
-
-    @Test
-    public void testFindApplicationOptions() {
-        List<ApplicationOption> result = service.findApplicationOptions("1.1.1", "9.9.9");
-        assertNotNull(result);
-        assertEquals(1, result.size());
-        assertEquals("8.9.0", result.get(0).getId());
     }
 }

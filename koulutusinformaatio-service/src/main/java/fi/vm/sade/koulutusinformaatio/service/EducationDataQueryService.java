@@ -26,16 +26,7 @@ import java.util.List;
 /**
  * @author Hannu Lyytikainen
  */
-public interface EducationDataService {
-
-    /**
-     *  Saves the parent learning opportunity data.
-     *  Updates previously stored if exists
-     * @param parentLOS
-     */
-    void save(final ParentLOS parentLOS);
-
-    void dropAllData();
+public interface EducationDataQueryService {
 
     /**
      * Gets the parent learning opportunity by oid

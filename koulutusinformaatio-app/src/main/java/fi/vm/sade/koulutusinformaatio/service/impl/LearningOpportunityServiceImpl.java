@@ -26,7 +26,7 @@ import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.dto.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.koulutusinformaatio.service.EducationDataService;
+import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,43 +39,43 @@ import java.util.List;
 @Service
 public class LearningOpportunityServiceImpl implements LearningOpportunityService {
 
-    private EducationDataService educationDataService;
+    private EducationDataQueryService educationDataQueryService;
     private static final String LANG_FI = "fi";
 
     @Autowired
-    public LearningOpportunityServiceImpl(EducationDataService educationDataService) {
-        this.educationDataService = educationDataService;
+    public LearningOpportunityServiceImpl(EducationDataQueryService educationDataQueryService) {
+        this.educationDataQueryService = educationDataQueryService;
     }
 
     @Override
     public ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(String parentId) throws ResourceNotFoundException {
-        ParentLO parentLO = educationDataService.getParentLearningOpportunity(parentId);
+        ParentLO parentLO = educationDataQueryService.getParentLearningOpportunity(parentId);
         String lang = resolveDefaultLanguage(parentLO);
         return ParentLOToDTO.convert(parentLO, lang);
     }
 
     @Override
     public ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(String parentId, String lang) throws ResourceNotFoundException {
-        ParentLO parentLO = educationDataService.getParentLearningOpportunity(parentId);
+        ParentLO parentLO = educationDataQueryService.getParentLearningOpportunity(parentId);
         return ParentLOToDTO.convert(parentLO, lang);
     }
 
     @Override
     public ChildLearningOpportunityDTO getChildLearningOpportunity(String parentId, String closId, String cloiId) throws ResourceNotFoundException {
-        ChildLO childLO = educationDataService.getChildLearningOpportunity(closId, cloiId);
+        ChildLO childLO = educationDataQueryService.getChildLearningOpportunity(closId, cloiId);
         String lang = resolveDefaultLanguage(childLO);
         return ChildLOToDTO.convert(childLO, lang);
     }
 
     @Override
     public ChildLearningOpportunityDTO getChildLearningOpportunity(String parentId, String closId, String cloiId, String lang) throws ResourceNotFoundException {
-        ChildLO childLO = educationDataService.getChildLearningOpportunity(closId, cloiId);
+        ChildLO childLO = educationDataQueryService.getChildLearningOpportunity(closId, cloiId);
         return ChildLOToDTO.convert(childLO, lang);
     }
 
     @Override
     public List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, String lopId) {
-        List<ApplicationOption> applicationOptions = educationDataService.findApplicationOptions(asId, lopId);
+        List<ApplicationOption> applicationOptions = educationDataQueryService.findApplicationOptions(asId, lopId);
         return Lists.transform(applicationOptions, new Function<ApplicationOption, ApplicationOptionSearchResultDTO>() {
             @Override
             public ApplicationOptionSearchResultDTO apply(ApplicationOption applicationOption) {
@@ -86,7 +86,7 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
 
     @Override
     public List<BasketItemDTO> getBasketItems(List<String> aoId, String lang) {
-        List<ApplicationOption> applicationOptions = educationDataService.getApplicationOptions(aoId);
+        List<ApplicationOption> applicationOptions = educationDataQueryService.getApplicationOptions(aoId);
         return ApplicationOptionsToBasketItemDTOs.convert(applicationOptions, lang);
     }
 
