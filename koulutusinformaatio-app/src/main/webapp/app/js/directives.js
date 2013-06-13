@@ -112,6 +112,26 @@ directive('kiEmail', function() {
 }).
 
 /**
+ *  Render email (@ replaced with (at))
+ */
+directive('kiAbsoluteLink', function() {
+    return {
+        restrict: 'E,A',
+        link: function(scope, element, attrs) {
+            attrs.$observe('kiAbsoluteLink', function(data) {
+                console.log(data);
+                console.log(data.search(':\/\/'));
+                if (data.search(':\/\/') > -1) {
+                    element.attr('href', data);
+                } else {
+                    element.attr('href', 'http://' + data);
+                }
+            });
+        }
+    }
+}).
+
+/**
  *  Creates and controls the location filter element
  */
  directive('kiLocationFilter', function() {
