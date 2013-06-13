@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.resource.impl;
 
+import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionSearchResultDTO;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import org.junit.Before;
@@ -39,9 +40,7 @@ public class ApplicationOptionResourceImplTest {
     private LearningOpportunityService learningOpportunityService;
     private final String asId = "1.2.3.4";
     private final String lopId = "5.6.7.8";
-    private final String prerequisite = "PK";
-    private final boolean vocational = false;
-
+    private final List<String> prerequisite = Lists.newArrayList("PK");
 
     @Before
     public void setUp() {
@@ -71,7 +70,7 @@ public class ApplicationOptionResourceImplTest {
 
     @Test
     public void testSearchApplicationOptions() {
-        List<ApplicationOptionSearchResultDTO> result = applicationOptionResource.searchApplicationOptions(asId, lopId, prerequisite, vocational);
+        List<ApplicationOptionSearchResultDTO> result = applicationOptionResource.searchApplicationOptions(asId, lopId, prerequisite);
         assertNotNull(result);
         assertEquals(2, result.size());
         assertEquals("1.1.2", result.get(0).getId());

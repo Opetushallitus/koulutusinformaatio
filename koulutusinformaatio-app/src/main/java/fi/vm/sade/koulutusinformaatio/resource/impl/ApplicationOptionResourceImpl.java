@@ -42,8 +42,7 @@ public class ApplicationOptionResourceImpl implements ApplicationOptionResource 
     @Override
     public List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId,
                                                                            String lopId,
-                                                                           String prerequisite,
-                                                                           boolean vocational) {
+                                                                           List<String> prerequisite) {
         return learningOpportunityService.searchApplicationOptions(asId, lopId);
     }
 }
