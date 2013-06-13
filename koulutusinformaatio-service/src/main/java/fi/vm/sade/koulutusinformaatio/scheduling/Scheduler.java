@@ -20,6 +20,7 @@ import fi.vm.sade.koulutusinformaatio.service.UpdateService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -33,19 +34,23 @@ public class Scheduler {
 
     public static final Logger LOG = LoggerFactory.getLogger(Scheduler.class);
     private UpdateService updateService;
+    private boolean enabled;
 
     @Autowired
-    public Scheduler(final UpdateService updateService) {
+    public Scheduler(final UpdateService updateService, @Value("${scheduling.enabled}") boolean enabled) {
         this.updateService = updateService;
+        this.enabled = enabled;
     }
 
     @Scheduled(cron = "${scheduling.cron}")
     public void doTask() {
-        LOG.info("Starting scheduled data update {}", new Date());
-        try {
-            updateService.updateAllEducationData();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (enabled) {
+            LOG.info("Starting scheduled data update {}", new Date());
+            try {
+                updateService.updateAllEducationData();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

@@ -36,7 +36,7 @@ public class ParentLearningOpportunitySpecificationEntity {
     private I18nTextEntity name;
     @Embedded
     private String educationDegree;
-    @Reference(lazy = true)
+    @Reference
     private List<ChildLearningOpportunitySpecificationEntity> children;
     @Embedded
     private List<ChildLORefEntity> childRefs;
