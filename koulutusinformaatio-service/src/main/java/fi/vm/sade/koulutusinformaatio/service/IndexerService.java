@@ -24,16 +24,6 @@ import java.io.IOException;
 public interface IndexerService {
 
     /**
-     *
-     */
-    void dropLOs() throws Exception;
-
-    /**
-     *
-     */
-    void dropLOPs()  throws Exception;
-
-    /**
      * Adds an learning opportunity parent and it's children into solar.
      * The data is not committed to index.
      */
@@ -42,5 +32,5 @@ public interface IndexerService {
     /**
      * Commits learning opportunities from memory to index.
      */
-    void commitLOChnages() throws Exception;
+    void commitLOChanges() throws Exception;
 }

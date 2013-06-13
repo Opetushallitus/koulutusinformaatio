@@ -16,12 +16,16 @@
 
 package fi.vm.sade.koulutusinformaatio.dao.transaction;
 
+import org.apache.solr.client.solrj.SolrServerException;
+
+import java.io.IOException;
+
 /**
  * @author Mikko Majapuro
  */
 public interface TransactionManager {
 
-    void beginTransaction();
-    void rollBack();
-    void commit();
+    void beginTransaction() throws IOException, SolrServerException;
+    void rollBack() throws IOException, SolrServerException;
+    void commit() throws IOException, SolrServerException;
 }

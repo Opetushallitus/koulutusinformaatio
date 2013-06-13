@@ -19,7 +19,10 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
-import fi.vm.sade.koulutusinformaatio.service.*;
+import fi.vm.sade.koulutusinformaatio.service.EducationDataUpdateService;
+import fi.vm.sade.koulutusinformaatio.service.IndexerService;
+import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
+import fi.vm.sade.koulutusinformaatio.service.UpdateService;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,9 +65,6 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.info("Starting full education data update");
             running = true;
             this.transactionManager.beginTransaction();
-            // drop index
-            this.indexerService.dropLOPs();
-            this.indexerService.dropLOs();
 
             int count = MAX_RESULTS;
             int index = 0;
@@ -89,7 +89,7 @@ public class UpdateServiceImpl implements UpdateService {
                     }
                 }
             }
-            this.indexerService.commitLOChnages();
+            this.indexerService.commitLOChanges();
             this.transactionManager.commit();
             LOG.info("Education data update successfully finished");
         } catch (Exception e) {
