@@ -19,7 +19,7 @@
                     <span data-ki-timestamp="{{parentLO.applicationSystem.applicationDates.startDate}}"></span> - <span data-ki-timestamp="{{parentLO.applicationSystem.applicationDates.endDate}}"></span>
                 </span>
             </div>
-            <form name="levelSelectionForm" action="/haku-app/lomake/{{asId}}/yhteishaku" method="POST" ng-controller="ApplicationCtrl">
+            <form name="levelSelectionForm" action="/haku-app/lomake/{{asId}}/yhteishaku" method="POST">
                 <ul class="margin-bottom-2">
                     <li data-ng-repeat="ao in parentLO.applicationOptions">
                         <input type="radio" name="preference1-Koulutus-id" id="input{{$index}}" value="{{ao.id}}" ng-change="changeValue(ao.id, ao.name, ao.sora, ao.teachLang)" ng-model="applicationOptionId"/>

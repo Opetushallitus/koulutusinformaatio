@@ -3,7 +3,7 @@
         <div data-ng-switch-when="true">
             <ul class="tabs sub">
                 <li data-ng-repeat="ao in parentLO.applicationOptions" ng-class="subtabClass($first)" data-tabs-group="koulutuksenkuvaus" data-tabs-id="{{ao.id}}">
-                    <a href="" ng-click="testlog()">
+                    <a href="" ng-click="changeValue(ao.id, ao.name, ao.sora, ao.teachLang)">
                         <span>{{ao.prerequisite}}</span>
                     </a>
                 </li>

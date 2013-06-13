@@ -182,21 +182,6 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
         }
     };
 
-    // Forward to parent learning opportunity info page
-    /*
-    $scope.selectLO = function(lo) {
-        var path;
-        if (lo.parentId) {
-            path = lo.parentId + '/' + lo.losId + '/' + lo.id;
-        } else {
-            path = lo.id;
-        }
-
-        return '#/info/' + path;
-        //$location.path('/info/' + path);
-    };
-    */
-
     // launch navigation script
     /*
     $scope.initNavigation = function() {
@@ -298,6 +283,11 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
         });
     };
 
+    $scope.changeApplicationOptionValue = function() {
+        console.log('change ao value');
+        console.log($scope);
+    };
+
     $scope.hasChildren = function() {
         if ($scope.parentLO && $scope.parentLO.children) {
             return $scope.parentLO.children.length > 0;
@@ -305,31 +295,6 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
             return false;
         }
     };
-
-/*
-    $scope.hasApplicationOptions = function() {
-        if ($scope.parentLO && $scope.parentLO.applicationOptions) {
-            return $scope.parentLO.applicationOptions.length > 0;
-        } else {
-            return false;
-        }
-    }
-    */
-
-
-    // redirect to child page
-    /*
-    $scope.gotoChild = function(child) {
-        $location.path('/info/' + $scope.parentLO.id + '/' + child.losId + '/' + child.loiId);
-    }
-    */
-
-    // redirect to parent page
-    /*
-    $scope.gotoParent = function() {
-        $location.path('/info/' + $scope.parentLO.id);
-    }
-    */
 
     // scrolls to an anchor on page
     $scope.scrollToAnchor = function(id) {
