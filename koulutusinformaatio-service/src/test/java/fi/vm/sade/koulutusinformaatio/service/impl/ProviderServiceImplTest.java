@@ -22,6 +22,7 @@ import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.organisaatio.resource.OrganisaatioResource;
+import fi.vm.sade.organisaatio.resource.dto.OrganisaatioMetaDataRDTO;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,6 +51,13 @@ public class ProviderServiceImplTest {
         name.put("fi", "o_name_fi");
         name.put("sv", "o_name_sv");
         o.setNimi(name);
+        OrganisaatioMetaDataRDTO ometa = new OrganisaatioMetaDataRDTO();
+        Map<String, Map<String, String>> data = Maps.newHashMap();
+        Map<String, String> social = Maps.newHashMap();
+        social.put("0", "facebooklink");
+        data.put("FACEBOOK", social);
+        ometa.setData(data);
+        o.setMetadata(ometa);
         ConversionService cs = mock(ConversionService.class);
         OrganisaatioRDTOToProvider converter = new OrganisaatioRDTOToProvider();
         when(cs.convert(eq(o), eq(Provider.class))).thenReturn(converter.convert(o));
@@ -65,5 +73,8 @@ public class ProviderServiceImplTest {
         assertEquals(p.getId(), ORGANISAATIO_OID);
         assertEquals("o_name_fi", p.getName().getTranslations().get("fi"));
         assertEquals("o_name_sv", p.getName().getTranslations().get("sv"));
+        assertEquals(1, p.getSocial().size());
+        assertEquals("facebooklink", p.getSocial().get(0).getUrl());
+        assertEquals("facebook", p.getSocial().get(0).getName());
     }
 }

@@ -22,7 +22,6 @@ import java.util.Map;
 import org.springframework.core.convert.converter.Converter;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 import fi.vm.sade.koulutusinformaatio.domain.Address;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
@@ -51,7 +50,8 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
     private static final String METADATA_SOCIAL_LINKEDIN = "LINKED_IN";
     private static final String METADATA_SOCIAL_TWITTER = "TWITTER";
     private static final String METADATA_SOCIAL_GOOGLEPLUS = "GOOGLE_PLUS";
-    private static final String[] SOCIAL_LINKS = {METADATA_SOCIAL_FACEBOOK, METADATA_SOCIAL_LINKEDIN, METADATA_SOCIAL_TWITTER, METADATA_SOCIAL_GOOGLEPLUS};
+    private static final String METADATA_SOCIAL_OTHER = "MUU";
+    private static final String[] SOCIAL_LINKS = {METADATA_SOCIAL_FACEBOOK, METADATA_SOCIAL_LINKEDIN, METADATA_SOCIAL_TWITTER, METADATA_SOCIAL_GOOGLEPLUS, METADATA_SOCIAL_OTHER};
 
     @Override
     public Provider convert(OrganisaatioRDTO o) {
@@ -84,6 +84,17 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
         }
         return null;
     }
+
+    private I18nText getMetadataValue(OrganisaatioMetaDataRDTO metadata, String key) {
+        if (metadata != null) {
+            Map<String, Map<String, String>> data = metadata.getData();
+            if (data != null && data.containsKey(key)) {
+                return new I18nText(data.get(key));
+            }
+        }
+
+        return new I18nText();
+    }
     
     private List<Social> getSocialLinks(final OrganisaatioMetaDataRDTO metadata, String... keys) {
         List<Social> social = Lists.newArrayList();
@@ -95,17 +106,6 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
         }
         
         return social;
-    }
-    
-    private I18nText getMetadataValue(OrganisaatioMetaDataRDTO metadata, String key) {
-        if (metadata != null) {
-            Map<String, Map<String, String>> data = metadata.getData();
-            if (data != null && data.containsKey(key)) {
-                return new I18nText(data.get(key));
-            }
-        }
-
-        return new I18nText();
     }
     
     private Social getSocial(final OrganisaatioMetaDataRDTO metadata, String key) {
