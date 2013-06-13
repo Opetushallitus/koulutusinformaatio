@@ -31,6 +31,7 @@ import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -88,6 +89,11 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     public List<BasketItemDTO> getBasketItems(List<String> aoId, String lang) {
         List<ApplicationOption> applicationOptions = educationDataQueryService.getApplicationOptions(aoId);
         return ApplicationOptionsToBasketItemDTOs.convert(applicationOptions, lang);
+    }
+
+    @Override
+    public Date getLastDataUpdated() {
+        return educationDataQueryService.getLastUpdated();
     }
 
 

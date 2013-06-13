@@ -20,6 +20,8 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.CommandResult;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
+import fi.vm.sade.koulutusinformaatio.dao.DataStatusDAO;
+import fi.vm.sade.koulutusinformaatio.dao.entity.DataStatusEntity;
 import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,13 +36,15 @@ public class TransactionManagerImpl implements TransactionManager {
     private Mongo mongo;
     private final String transactionDbName;
     private final String dbName;
+    private DataStatusDAO dataStatusTransactionDAO;
 
     @Autowired
     public TransactionManagerImpl(Mongo mongo, @Value("${mongo.transaction-db.name}") String transactionDbName,
-                                  @Value("${mongo.db.name}") String dbName) {
+                                  @Value("${mongo.db.name}") String dbName, DataStatusDAO dataStatusTransactionDAO) {
         this.mongo = mongo;
         this.transactionDbName = transactionDbName;
         this.dbName = dbName;
+        this.dataStatusTransactionDAO = dataStatusTransactionDAO;
     }
 
     @Override
@@ -55,6 +59,7 @@ public class TransactionManagerImpl implements TransactionManager {
 
     @Override
     public void commit() {
+        dataStatusTransactionDAO.save(new DataStatusEntity());
         DBObject cmd = new BasicDBObject("copydb", 1).append("fromdb", transactionDbName).append("todb", dbName);
         mongo.dropDatabase(dbName);
         CommandResult result = mongo.getDB("admin").command(cmd);

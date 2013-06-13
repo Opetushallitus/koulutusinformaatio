@@ -24,6 +24,7 @@ import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,6 +42,7 @@ public class UpdateServiceImpl implements UpdateService {
     private EducationDataUpdateService educationDataUpdateService;
     private TransactionManager transactionManager;
     private static final int MAX_RESULTS = 100;
+    private boolean running = false;
 
 
     @Autowired
@@ -54,9 +56,11 @@ public class UpdateServiceImpl implements UpdateService {
     }
 
     @Override
-    public void updateAllEducationData() throws Exception {
-        LOG.info("Starting full education data update");
+    @Async
+    public synchronized void updateAllEducationData() throws Exception {
         try {
+            LOG.info("Starting full education data update");
+            running = true;
             this.transactionManager.beginTransaction();
             // drop index
             this.indexerService.dropLOPs();
@@ -92,6 +96,13 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.error("Education data update failed");
             e.printStackTrace();
             this.transactionManager.rollBack();
+        } finally {
+            running = false;
         }
+    }
+
+    @Override
+    public boolean isRunning() {
+        return running;
     }
 }

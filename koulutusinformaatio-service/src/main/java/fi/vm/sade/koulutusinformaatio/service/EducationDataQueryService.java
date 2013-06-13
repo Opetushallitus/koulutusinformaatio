@@ -21,6 +21,7 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -53,5 +54,5 @@ public interface EducationDataQueryService {
      */
     ChildLO getChildLearningOpportunity(final String childLosId, final String childLoiId) throws ResourceNotFoundException;
 
-
+    Date getLastUpdated();
 }

@@ -32,10 +32,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Mikko Majapuro
@@ -47,6 +44,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     private ApplicationOptionDAO applicationOptionDAO;
     private ChildLearningOpportunitySpecificationDAO childLearningOpportunitySpecificationDAO;
     private ChildLearningOpportunityInstanceDAO childLearningOpportunityInstanceDAO;
+    private DataStatusDAO dataStatusDAO;
     private ModelMapper modelMapper;
     private KoulutusinformaatioObjectBuilder koulutusinformaatioObjectBuilder;
 
@@ -55,13 +53,15 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
                                          ApplicationOptionDAO applicationOptionDAO, ModelMapper modelMapper,
                                          ChildLearningOpportunitySpecificationDAO childLearningOpportunitySpecificationDAO,
                                          ChildLearningOpportunityInstanceDAO childLearningOpportunityInstanceDAO,
-                                         KoulutusinformaatioObjectBuilder koulutusinformaatioObjectBuilder) {
+                                         KoulutusinformaatioObjectBuilder koulutusinformaatioObjectBuilder,
+                                         DataStatusDAO dataStatusDAO) {
         this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;
         this.modelMapper = modelMapper;
         this.childLearningOpportunitySpecificationDAO = childLearningOpportunitySpecificationDAO;
         this.childLearningOpportunityInstanceDAO = childLearningOpportunityInstanceDAO;
         this.koulutusinformaatioObjectBuilder = koulutusinformaatioObjectBuilder;
+        this.dataStatusDAO = dataStatusDAO;
     }
 
     @Override
@@ -101,6 +101,16 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
         ChildLearningOpportunitySpecificationEntity childLOS = getChildLOS(childLosId);
         ChildLearningOpportunityInstanceEntity childLOI = getChildLOI(childLoiId);
         return koulutusinformaatioObjectBuilder.buildChildLO(childLOS, childLOI);
+    }
+
+    @Override
+    public Date getLastUpdated() {
+        DataStatusEntity status = dataStatusDAO.getLatest();
+        if (status != null) {
+            return status.getLastUpdated();
+        } else {
+            return null;
+        }
     }
 
     private ChildLearningOpportunitySpecificationEntity getChildLOS(String childLosId) throws ResourceNotFoundException {

@@ -29,5 +29,5 @@ public interface UpdateService {
      */
     public void updateAllEducationData() throws Exception;
 
-
+    public boolean isRunning();
 }
