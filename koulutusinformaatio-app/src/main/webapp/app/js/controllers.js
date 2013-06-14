@@ -153,7 +153,18 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
         $scope.aoSora = aoSora;
         $scope.aoTeachLang = aoTeachLang;
         $scope.buttonsAreDisabled = false;
-    }    
+    }
+
+    $scope.subtabClass = function(isFirst) {
+        return isFirst ? 'tab current' : 'tab';
+    }
+
+    $scope.subtabContentStyle = function(isFirst) {
+        return isFirst ? {'display': 'block'} : {}; 
+    }
+
+    $scope.popoverTitle = i18n.t('popover-title');
+    $scope.popoverContent = "<a href='#/muistilista'>" + i18n.t('popover-content') + "</a>";
 };
 
 /**
@@ -227,6 +238,15 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
         }
     }
 
+    var getFirstApplicationOptionId = function() {
+        if (hasApplicationOptions()) {
+            var ao = $scope.parentLO.applicationOptions[0];
+            if (ao && ao.id) {
+                return ao.id;
+            }
+        }
+    }
+
     var hasApplicationOptions = function() {
         if ($scope.parentLO && $scope.parentLO.applicationOptions) {
             return $scope.parentLO.applicationOptions.length > 0;
@@ -246,6 +266,7 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
                 $scope.hasApplicationOptions = hasApplicationOptions();
 
                 $scope.asId = getApplicationSystemId();
+                //$scope.applicationOptionId = getFirstApplicationOptionId();
                 
 
             });
@@ -255,6 +276,7 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
             $scope.hasApplicationOptions = hasApplicationOptions();
 
             $scope.asId = getApplicationSystemId();
+            //$scope.applicationOptionId = getFirstApplicationOptionId();
         }
 
         if (isChild()) {
@@ -283,11 +305,6 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
         });
     };
 
-    $scope.changeApplicationOptionValue = function() {
-        console.log('change ao value');
-        console.log($scope);
-    };
-
     $scope.hasChildren = function() {
         if ($scope.parentLO && $scope.parentLO.children) {
             return $scope.parentLO.children.length > 0;
@@ -312,17 +329,6 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
             $scope.applyFormClass = 'hidden';
         }
     }
-
-    $scope.subtabClass = function(isFirst) {
-        return isFirst ? 'tab current' : 'tab';
-    }
-
-    $scope.subtabContentStyle = function(isFirst) {
-        return isFirst ? {'display': 'block'} : {}; 
-    }
-
-    $scope.popoverTitle = i18n.t('popover-title');
-    $scope.popoverContent = "<a href='#/muistilista'>" + i18n.t('popover-content') + "</a>";
 
     $scope.initTabs = tabsMenu.build;
 
