@@ -76,6 +76,22 @@ directive('kiRenderOrganization', function() {
     }
 }).
 
+directive('kiRenderProfessionalTitles', function() {
+    return {
+        restrict: 'E,A',
+        templateUrl: 'templates/professionalTitles.html',
+        scope: true,
+        link: function(scope, element, attrs) {
+            scope.anchor = attrs.anchor;
+
+            scope.$watch('childLO', function(data) {
+                scope.showProfessionalTitles = data.professionalTitles ? true : false;
+
+            });
+        }
+    }
+}).
+
 directive('kiSocialLinks', function() {
     return {
         restrict: 'E,A',

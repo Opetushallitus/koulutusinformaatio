@@ -109,16 +109,6 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
         $scope.itemCount = ApplicationBasketService.getItemCount();
     };
 
-    /*
-    $scope.gotoParent = function(id) {
-        $location.path('/info/' + id);
-    };
-
-    $scope.gotoChild = function(parentId, losId, loiId) {
-        $location.path('/info/' + parentId + '/' + losId + '/' + loiId);
-    };
-    */
-
     $scope.applyButtonIsDisabled = function() {
         var itemsInBasket = ApplicationBasketService.getItemCount();
         if (itemsInBasket > basketLimit) {
@@ -155,7 +145,18 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
         $scope.aoSora = aoSora;
         $scope.aoTeachLang = aoTeachLang;
         $scope.buttonsAreDisabled = false;
-    }    
+    }
+
+    $scope.subtabClass = function(isFirst) {
+        return isFirst ? 'tab current' : 'tab';
+    }
+
+    $scope.subtabContentStyle = function(isFirst) {
+        return isFirst ? {'display': 'block'} : {}; 
+    }
+
+    $scope.popoverTitle = i18n.t('popover-title');
+    $scope.popoverContent = "<a href='#/muistilista'>" + i18n.t('popover-content') + "</a>";
 };
 
 /**
@@ -183,21 +184,6 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
             $location.path('/haku/' + $scope.queryString);
         }
     };
-
-    // Forward to parent learning opportunity info page
-    /*
-    $scope.selectLO = function(lo) {
-        var path;
-        if (lo.parentId) {
-            path = lo.parentId + '/' + lo.losId + '/' + lo.id;
-        } else {
-            path = lo.id;
-        }
-
-        return '#/info/' + path;
-        //$location.path('/info/' + path);
-    };
-    */
 
     // launch navigation script
     /*
@@ -244,6 +230,15 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
         }
     }
 
+    var getFirstApplicationOptionId = function() {
+        if (hasApplicationOptions()) {
+            var ao = $scope.parentLO.applicationOptions[0];
+            if (ao && ao.id) {
+                return ao.id;
+            }
+        }
+    }
+
     var hasApplicationOptions = function() {
         if ($scope.parentLO && $scope.parentLO.applicationOptions) {
             return $scope.parentLO.applicationOptions.length > 0;
@@ -263,6 +258,7 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
                 $scope.hasApplicationOptions = hasApplicationOptions();
 
                 $scope.asId = getApplicationSystemId();
+                //$scope.applicationOptionId = getFirstApplicationOptionId();
                 
 
             });
@@ -272,6 +268,7 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
             $scope.hasApplicationOptions = hasApplicationOptions();
 
             $scope.asId = getApplicationSystemId();
+            //$scope.applicationOptionId = getFirstApplicationOptionId();
         }
 
         if (isChild()) {
@@ -308,31 +305,6 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
         }
     };
 
-/*
-    $scope.hasApplicationOptions = function() {
-        if ($scope.parentLO && $scope.parentLO.applicationOptions) {
-            return $scope.parentLO.applicationOptions.length > 0;
-        } else {
-            return false;
-        }
-    }
-    */
-
-
-    // redirect to child page
-    /*
-    $scope.gotoChild = function(child) {
-        $location.path('/info/' + $scope.parentLO.id + '/' + child.losId + '/' + child.loiId);
-    }
-    */
-
-    // redirect to parent page
-    /*
-    $scope.gotoParent = function() {
-        $location.path('/info/' + $scope.parentLO.id);
-    }
-    */
-
     // scrolls to an anchor on page
     $scope.scrollToAnchor = function(id) {
         $('html, body').scrollTop($('#' + id).offset().top);
@@ -349,17 +321,6 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
             $scope.applyFormClass = 'hidden';
         }
     }
-
-    $scope.subtabClass = function(isFirst) {
-        return isFirst ? 'tab current' : 'tab';
-    }
-
-    $scope.subtabContentStyle = function(isFirst) {
-        return isFirst ? {'display': 'block'} : {}; 
-    }
-
-    $scope.popoverTitle = i18n.t('popover-title');
-    $scope.popoverContent = "<a href='#/muistilista'>" + i18n.t('popover-content') + "</a>";
 
     $scope.initTabs = tabsMenu.build;
 

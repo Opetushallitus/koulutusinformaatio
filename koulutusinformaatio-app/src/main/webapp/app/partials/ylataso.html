@@ -11,7 +11,7 @@
         <a class="tab" data-tabs-group="koulutus" data-tabs-id="hakeutuminen" ng-click="changeMainTab('hakeutuminen')"><span class="h2" data-ki-i18n="lo-application"></span></a>
         <a class="tab" data-tabs-group="koulutus" data-tabs-id="oppilaitos" ng-click="changeMainTab('oppilaitos')"><span class="h2 fluid" title="{{parentLO.provider.name}}">{{parentLO.provider.name}}</span></a>
     </div>
-    <div class="tabsheets">
+    <div class="tabsheets" ng-controller="ApplicationCtrl">
         <section class="tabsheet" style="display: block;" data-tabs-group="koulutus" data-tabs-id="kuvaus">
             <div ng-include src="'partials/tabs/kuvaus_ylataso.html'"></div>
         </section>
