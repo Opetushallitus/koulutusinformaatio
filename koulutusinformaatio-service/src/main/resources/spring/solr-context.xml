@@ -27,7 +27,7 @@
     <bean id="loUpdateHttpSolrServer"
           class="org.apache.solr.client.solrj.impl.HttpSolrServer">
         <constructor-arg>
-            <value>${solr.base.url}learning_opportunity_update/</value>
+            <value>${solr.base.url}${solr.learningopportunity.update.url}</value>
         </constructor-arg>
     </bean>
 
@@ -40,7 +40,7 @@
     <bean id="lopUpdateHttpSolrServer"
           class="org.apache.solr.client.solrj.impl.HttpSolrServer">
         <constructor-arg>
-            <value>${solr.base.url}provider_update/</value>
+            <value>${solr.base.url}${solr.provider.update.url}</value>
         </constructor-arg>
     </bean>
     <bean id="adminHttpSolrServer"

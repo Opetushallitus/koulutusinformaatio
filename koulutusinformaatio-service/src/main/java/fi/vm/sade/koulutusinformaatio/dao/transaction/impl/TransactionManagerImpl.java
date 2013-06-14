@@ -26,7 +26,6 @@ import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.request.CoreAdminRequest;
-import org.apache.solr.client.solrj.response.CoreAdminResponse;
 import org.apache.solr.common.params.CoreAdminParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -44,6 +43,10 @@ public class TransactionManagerImpl implements TransactionManager {
     private Mongo mongo;
     private final String transactionDbName;
     private final String dbName;
+    private final String providerUpdateCoreName;
+    private final String providerCoreName;
+    private final String learningopportunityUpdateCoreName;
+    private final String learningopportunityCoreName;
     private DataStatusDAO dataStatusTransactionDAO;
     private HttpSolrServer loUpdateHttpSolrServer;
     private HttpSolrServer lopUpdateHttpSolrServer;
@@ -54,10 +57,18 @@ public class TransactionManagerImpl implements TransactionManager {
                                   @Value("${mongo.db.name}") String dbName, DataStatusDAO dataStatusTransactionDAO,
                                   @Qualifier("loUpdateHttpSolrServer") HttpSolrServer loUpdateHttpSolrServer,
                                   @Qualifier("lopUpdateHttpSolrServer") HttpSolrServer lopUpdateHttpSolrServer,
-                                  @Qualifier("adminHttpSolrServer") HttpSolrServer adminHttpSolrServer) {
+                                  @Qualifier("adminHttpSolrServer") HttpSolrServer adminHttpSolrServer,
+                                  @Value("${solr.provider.url}") String providerCoreName,
+                                  @Value("${solr.provider.update.url}") String providerUpdateCoreName,
+                                  @Value("${solr.learningopportunity.url}") String learningopportunityCoreName,
+                                  @Value("${solr.learningopportunity.update.url}") String learningopportunityUpdateCoreName) {
         this.mongo = mongo;
         this.transactionDbName = transactionDbName;
         this.dbName = dbName;
+        this.providerCoreName = providerCoreName;
+        this.providerUpdateCoreName = providerUpdateCoreName;
+        this.learningopportunityUpdateCoreName = learningopportunityUpdateCoreName;
+        this.learningopportunityCoreName = learningopportunityCoreName;
         this.dataStatusTransactionDAO = dataStatusTransactionDAO;
         this.loUpdateHttpSolrServer = loUpdateHttpSolrServer;
         this.lopUpdateHttpSolrServer = lopUpdateHttpSolrServer;
@@ -80,22 +91,16 @@ public class TransactionManagerImpl implements TransactionManager {
 
     @Override
     public void commit() throws IOException, SolrServerException {
-        CoreAdminRequest lopCar = new CoreAdminRequest();
-        lopCar.setCoreName("provider_update");
-        lopCar.setOtherCoreName("provider");
-        lopCar.setAction(CoreAdminParams.CoreAdminAction.SWAP);
-        CoreAdminResponse lopResp = lopCar.process(adminHttpSolrServer);
+        CoreAdminRequest lopCar = getCoreSwapRequest(providerUpdateCoreName, providerCoreName);
+        lopCar.process(adminHttpSolrServer);
 
-        CoreAdminRequest loCar = new CoreAdminRequest();
-        loCar.setCoreName("learning_opportunity_update");
-        loCar.setOtherCoreName("learning_opportunity");
-        loCar.setAction(CoreAdminParams.CoreAdminAction.SWAP);
-        CoreAdminResponse loResp = loCar.process(adminHttpSolrServer);
+        CoreAdminRequest loCar = getCoreSwapRequest(learningopportunityUpdateCoreName, learningopportunityCoreName);
+        loCar.process(adminHttpSolrServer);
 
         dataStatusTransactionDAO.save(new DataStatusEntity());
         DBObject cmd = new BasicDBObject("copydb", 1).append("fromdb", transactionDbName).append("todb", dbName);
         mongo.dropDatabase(dbName);
-        CommandResult result = mongo.getDB("admin").command(cmd);
+        mongo.getDB("admin").command(cmd);
         mongo.dropDatabase(transactionDbName);
     }
 
@@ -107,5 +112,13 @@ public class TransactionManagerImpl implements TransactionManager {
         lopUpdateHttpSolrServer.deleteByQuery("*:*");
         lopUpdateHttpSolrServer.commit();
         lopUpdateHttpSolrServer.optimize();
+    }
+
+    private CoreAdminRequest getCoreSwapRequest(final String fromCore, final String toCore) {
+        CoreAdminRequest car = new CoreAdminRequest();
+        car.setCoreName(fromCore);
+        car.setOtherCoreName(toCore);
+        car.setAction(CoreAdminParams.CoreAdminAction.SWAP);
+        return car;
     }
 }
