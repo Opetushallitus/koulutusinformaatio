@@ -55,4 +55,6 @@ public interface EducationDataQueryService {
     ChildLO getChildLearningOpportunity(final String childLosId, final String childLoiId) throws ResourceNotFoundException;
 
     Date getLastUpdated();
+
+    Picture getPicture(final String id) throws ResourceNotFoundException;
 }

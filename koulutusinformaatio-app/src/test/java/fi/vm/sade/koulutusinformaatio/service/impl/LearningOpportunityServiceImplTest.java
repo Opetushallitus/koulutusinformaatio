@@ -24,6 +24,7 @@ import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import org.junit.Before;
 import org.junit.Test;
+import org.modelmapper.ModelMapper;
 
 import java.util.*;
 
@@ -94,7 +95,8 @@ public class LearningOpportunityServiceImplTest {
         links.put("link2", "link2");
         childLO.setWebLinks(links);
 
-        learningOpportunityService = new LearningOpportunityServiceImpl(educationDataQueryService);
+        ModelMapper modelMapper = new ModelMapper();
+        learningOpportunityService = new LearningOpportunityServiceImpl(educationDataQueryService, modelMapper);
 
         when(educationDataQueryService.getParentLearningOpportunity(eq("1234"))).thenReturn(parentLO);
         when(educationDataQueryService.getChildLearningOpportunity(eq("los123"), eq("loi123"))).thenReturn(childLO);

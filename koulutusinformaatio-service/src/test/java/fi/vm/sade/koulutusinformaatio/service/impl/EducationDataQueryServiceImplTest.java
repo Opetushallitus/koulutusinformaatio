@@ -48,6 +48,7 @@ public class EducationDataQueryServiceImplTest {
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
     private ChildLearningOpportunityInstanceDAO childLearningOpportunityInstanceDAO;
     private ChildLearningOpportunitySpecificationDAO childLearningOpportunitySpecificationDAO;
+    private PictureDAO pictureDAO;
     private DataStatusDAO dataStatusDAO;
     private DBCollection ploCollection;
     private DBCollection aoCollection;
@@ -89,10 +90,11 @@ public class EducationDataQueryServiceImplTest {
         KoulutusinformaatioObjectBuilder objectBuilder = new KoulutusinformaatioObjectBuilder(modelMapper);
 
         dataStatusDAO = mock(DataStatusDAO.class);
+        pictureDAO = mock(PictureDAO.class);
 
         service = new EducationDataQueryServiceImpl(parentLearningOpportunitySpecificationDAO,
                 applicationOptionDAO, modelMapper, childLearningOpportunitySpecificationDAO, childLearningOpportunityInstanceDAO,
-                objectBuilder, dataStatusDAO);
+                objectBuilder, dataStatusDAO, pictureDAO);
     }
 
     @Test

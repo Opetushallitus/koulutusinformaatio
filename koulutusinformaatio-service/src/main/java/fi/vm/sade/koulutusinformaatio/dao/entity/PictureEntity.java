@@ -18,41 +18,32 @@ package fi.vm.sade.koulutusinformaatio.dao.entity;
 
 import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Id;
-import com.google.code.morphia.annotations.PrePersist;
-import org.bson.types.ObjectId;
-
-import java.util.Date;
 
 /**
  * @author Mikko Majapuro
  */
-@Entity("dataStatus")
-public class DataStatusEntity {
+@Entity("pictures")
+public class PictureEntity {
 
     @Id
-    private org.bson.types.ObjectId id;
-    Date lastUpdated = new Date();
+    private String id;
+    private String pictureEncoded;
 
-    public DataStatusEntity() {}
+    public PictureEntity() {}
 
-    @PrePersist
-    void prePersist() {
-        lastUpdated = new Date();
-    }
-
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(ObjectId id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public Date getLastUpdated() {
-        return lastUpdated;
+    public String getPictureEncoded() {
+        return pictureEncoded;
     }
 
-    public void setLastUpdated(Date lastUpdated) {
-        this.lastUpdated = lastUpdated;
+    public void setPictureEncoded(String pictureEncoded) {
+        this.pictureEncoded = pictureEncoded;
     }
 }

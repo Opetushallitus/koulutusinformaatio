@@ -44,6 +44,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
     private ChildLearningOpportunitySpecificationDAO childLOSTransactionDAO;
     private ChildLearningOpportunityInstanceDAO childLOITransactionDAO;
     private KoulutusinformaatioObjectBuilder koulutusinformaatioObjectBuilder;
+    private PictureDAO pictureTransactionDAO;
 
     @Autowired
     public EducationDataUpdateServiceImpl(ModelMapper modelMapper, ParentLearningOpportunitySpecificationDAO parentLOSTransactionDAO,
@@ -51,7 +52,8 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
                                           LearningOpportunityProviderDAO learningOpportunityProviderTransactionDAO,
                                           ChildLearningOpportunitySpecificationDAO childLOSTransactionDAO,
                                           ChildLearningOpportunityInstanceDAO childLOITransactionDAO,
-                                          KoulutusinformaatioObjectBuilder koulutusinformaatioObjectBuilder) {
+                                          KoulutusinformaatioObjectBuilder koulutusinformaatioObjectBuilder,
+                                          PictureDAO pictureTransactionDAO) {
         this.modelMapper = modelMapper;
         this.parentLOSTransactionDAO = parentLOSTransactionDAO;
         this.applicationOptionTransactionDAO = applicationOptionTransactionDAO;
@@ -59,6 +61,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
         this.childLOSTransactionDAO = childLOSTransactionDAO;
         this.childLOITransactionDAO = childLOITransactionDAO;
         this.koulutusinformaatioObjectBuilder = koulutusinformaatioObjectBuilder;
+        this.pictureTransactionDAO = pictureTransactionDAO;
     }
 
     @Override
@@ -138,6 +141,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
 
     private void save(final LearningOpportunityProviderEntity learningOpportunityProvider) {
         if (learningOpportunityProvider != null) {
+            save(learningOpportunityProvider.getPicture());
             learningOpportunityProviderTransactionDAO.save(learningOpportunityProvider);
         }
     }
@@ -146,6 +150,12 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
         if (applicationOption != null) {
             save(applicationOption.getProvider());
             applicationOptionTransactionDAO.save(applicationOption);
+        }
+    }
+
+    private void save(final PictureEntity picture) {
+        if (picture != null) {
+            pictureTransactionDAO.save(picture);
         }
     }
 }

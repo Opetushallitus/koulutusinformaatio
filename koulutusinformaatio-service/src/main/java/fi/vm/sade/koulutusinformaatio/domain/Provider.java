@@ -44,6 +44,7 @@ public class Provider {
     private I18nText dining;
     private I18nText livingExpenses;
     private List<Social> social;
+    private Picture picture;
 
 
     public Provider(String id, I18nText name) {
@@ -179,5 +180,13 @@ public class Provider {
 
     public void setSocial(List<Social> social) {
         this.social = social;
+    }
+
+    public Picture getPicture() {
+        return picture;
+    }
+
+    public void setPicture(Picture picture) {
+        this.picture = picture;
     }
 }
