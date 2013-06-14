@@ -81,6 +81,7 @@ public class LOBuilder {
         parentLOS.setName(koodistoService.searchFirst(parentKomo.getKoulutusKoodiUri()));
         parentLOS.setStructureDiagram(getI18nText(parentKomo.getKoulutuksenRakenne()));
         parentLOS.setAccessToFurtherStudies(getI18nText(parentKomo.getJatkoOpintoMahdollisuudet()));
+        //parentLOS.setAccessToFurtherStudies(getI18nText(parentKomo.getK));
         parentLOS.setGoals(getI18nText(parentKomo.getTavoitteet()));
         parentLOS.setEducationDomain(koodistoService.searchFirst(parentKomo.getKoulutusAlaUri()));
         parentLOS.setStydyDomain(koodistoService.searchFirst(parentKomo.getOpintoalaUri()));
@@ -139,6 +140,7 @@ public class LOBuilder {
             childLOS.setName(getI18nText(childKomo.getNimi()));
             childLOS.setQualification(koodistoService.searchFirst(childKomo.getTutkintonimikeUri()));
             childLOS.setDegreeTitle(koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri()));
+            childLOS.setDegreeGoal(getI18nText(childKomo.getTavoitteet()));
 
             ParentLORef parentRef = new ParentLORef();
             parentRef.setId(parentLOS.getId());
@@ -226,6 +228,9 @@ public class LOBuilder {
                     childLOI.setFormOfTeaching(koodistoService.searchMultiple(komotoDTO.getOpetusmuodotUris()));
                     childLOI.setPrerequisite(koodistoService.searchFirst(komotoDTO.getPohjakoulutusVaatimusUri()));
                     childLOI.setProfessionalTitles(koodistoService.searchMultiple(komotoDTO.getAmmattinimikeUris()));
+                    childLOI.setWorkingLifePlacement(getI18nText(komotoDTO.getSijoittuminenTyoelamaan()));
+                    childLOI.setInternationalization(getI18nText(komotoDTO.getKansainvalistyminen()));
+                    childLOI.setCooperation(getI18nText(komotoDTO.getYhteistyoMuidenToimijoidenKanssa()));
                     childLOI.setParentLOI(komotoDTO.getParentKomotoOid());
                     ao.setPrerequisite(childLOI.getPrerequisite());
                     childLOI.setApplicationOption(ao);
@@ -341,7 +346,8 @@ public class LOBuilder {
                 nclos.setName(clos.getName());
                 nclos.setDegreeTitle(clos.getDegreeTitle());
                 nclos.setQualification(clos.getQualification());
-
+                nclos.setDegreeGoal(clos.getDegreeGoal());
+                
                 nclos.setChildLOIs(Lists.newArrayList(cloi));
 
                 List<ChildLOS> l = childMap.get(cloi.getParentLOI());
@@ -363,6 +369,7 @@ public class LOBuilder {
             np.setName(p.getName());
             np.setStructureDiagram(p.getStructureDiagram());
             np.setAccessToFurtherStudies(p.getAccessToFurtherStudies());
+            //np.setDegreeProgramSelection(p.getDegreeProgramSelection());
             np.setGoals(p.getGoals());
             np.setEducationDomain(p.getEducationDomain());
             np.setStydyDomain(p.getStydyDomain());

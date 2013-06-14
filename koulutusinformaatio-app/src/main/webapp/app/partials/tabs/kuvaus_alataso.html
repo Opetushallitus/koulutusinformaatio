@@ -10,11 +10,12 @@
         </ul>
     </div>
     <div data-ki-language-ribbon class="ribbon"></div>
-    <div render-text-block data-title="goals-of-education" data-content="{{lorem}}"></div>
-    <div render-text-block data-title="structure-of-studies" data-content="{{parentLO.structureDiagram}}"></div>
-    <div render-text-block data-title="getting-to-work" data-content="{{lorem}}"></div>
+    <div render-text-block data-title="goals-of-education" data-content="{{childLO.degreeGoal}}"></div>
+    <div render-text-block data-title="structure-of-studies" data-content="{{parentLO.structureDiagram}}" data-level="2"></div>
+    <div render-text-block data-title="working-life-placement" data-content="{{childLO.workingLifePlacement}}"></div>
     <div data-ki-render-professional-titles></div>
-    <div render-text-block data-title="internationalization" data-content="{{lorem}}"></div>
+    <div render-text-block data-title="internationalization" data-content="{{childLO.internationalization}}"></div>
+    <div render-text-block data-title="cooperation" data-content="{{childLO.cooperation}}"></div>
 </section>
 <aside class="grid16-6 no-right-gutter">
     <div class="sideitem margin-bottom-3 infobox">

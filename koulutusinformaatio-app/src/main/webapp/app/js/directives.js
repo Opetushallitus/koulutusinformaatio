@@ -84,8 +84,8 @@ directive('kiRenderProfessionalTitles', function() {
         link: function(scope, element, attrs) {
             scope.anchor = attrs.anchor;
 
-            scope.$watch('childLO', function(data) {
-                scope.showProfessionalTitles = data.professionalTitles ? true : false;
+            scope.$watch('childLO.professionalTitles', function(data) {
+                scope.showProfessionalTitles = data ? true : false;
 
             });
         }
@@ -135,8 +135,6 @@ directive('kiAbsoluteLink', function() {
         restrict: 'E,A',
         link: function(scope, element, attrs) {
             attrs.$observe('kiAbsoluteLink', function(data) {
-                console.log(data);
-                console.log(data.search(':\/\/'));
                 if (data.search(':\/\/') > -1) {
                     element.attr('href', data);
                 } else {
@@ -265,6 +263,7 @@ directive('kiAbsoluteLink', function() {
 /**
  *  Renders a text block with title. If no content exists the whole text block gets removed. 
  */
+
 directive('renderTextBlock', function() {
     return function(scope, element, attrs) {
 
@@ -272,7 +271,7 @@ directive('renderTextBlock', function() {
             var content;
 
             attrs.$observe('title', function(value) {
-                title = i18n.t(value); //value;
+                title = i18n.t(value);
                 update();
             });
 
@@ -282,21 +281,16 @@ directive('renderTextBlock', function() {
             });
 
             var update = function() {
-                if (content || attrs.force) {
-                    $(element).empty();
+                $(element).empty();
+                if (content) {
                     var titleElement = createTitleElement(title, attrs.anchor, attrs.level);
                     element.append(titleElement);
 
                     // replace line feed with <br>
                     //content = content.replace(/(\r\n|\n|\r)/g,"<br />");
                     element.append(content);
-                    //var contentElement = $('<p></p>');
-                    //contentElement.append(content);
-                    //element.replaceWith(titleElement);
-
-                    //contentElement.insertAfter(titleElement);
                 }
-            }
+            };
 
             var createTitleElement = function(text, anchortag, level) {
                 var idAttr = anchortag ? 'id="' + anchortag + '"' : '';
@@ -305,8 +299,8 @@ directive('renderTextBlock', function() {
                 } else {
                     return $('<h2 ' + idAttr + '>' + text + '</h2>');
                 }
-            }
-        }
+            };
+        };
 }).
 
 /**
