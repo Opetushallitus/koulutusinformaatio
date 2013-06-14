@@ -24,8 +24,11 @@ import fi.vm.sade.koodisto.service.GenericFault;
 import fi.vm.sade.koodisto.service.KoodiService;
 import fi.vm.sade.koodisto.service.types.SearchKoodisCriteriaType;
 import fi.vm.sade.koodisto.service.types.common.KoodiType;
+import fi.vm.sade.koodisto.service.types.common.KoodiUriAndVersioType;
+import fi.vm.sade.koodisto.service.types.common.SuhteenTyyppiType;
 import fi.vm.sade.koodisto.util.KoodiServiceSearchCriteriaBuilder;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
+import fi.vm.sade.koulutusinformaatio.domain.CodeUriAndVersion;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
@@ -155,28 +158,47 @@ public class KoodistoServiceImpl implements KoodistoService {
         });
     }
 
+    @Override
+    public List<Code> searchSubCodes(String koodiURI) throws KoodistoException {
+        return convert(searchSubKoodiTypes(koodiURI), Code.class);
+    }
+
+    private List<KoodiType> searchSubKoodiTypes(String koodiUri) throws KoodistoException {
+        CodeUriAndVersion codeUriAndVersion = resolveKoodiUriAndVersion(koodiUri);
+        KoodiUriAndVersioType koodiUriAndVersion = conversionService.convert(codeUriAndVersion, KoodiUriAndVersioType.class);
+        return koodiService.listKoodiByRelation(koodiUriAndVersion, false, SuhteenTyyppiType.SISALTYY);
+    }
+
     @Cacheable(cacheName = "koodiCache")
     private List<KoodiType> searchKoodiTypes(String koodiUri) throws KoodistoException {
+        CodeUriAndVersion codeUriAndVersion = resolveKoodiUriAndVersion(koodiUri);
+        return getKoodiTypes(codeUriAndVersion);
+    }
+
+    private CodeUriAndVersion resolveKoodiUriAndVersion(String koodiUri) throws KoodistoException {
         if (koodiUri != null && pattern.matcher(koodiUri).matches()) {
             String[] splitted = koodiUri.split("#");
             String uri = splitted[0];
             Integer version = Integer.parseInt(splitted[1]);
-            return getKoodiTypes(uri, version);
-        } else if (koodiUri != null && !koodiUri.isEmpty()) {
-            return getKoodiTypes(koodiUri);
-        } else {
+            return new CodeUriAndVersion(uri, version);
+        }
+        else if (koodiUri != null && !koodiUri.isEmpty()) {
+            return new CodeUriAndVersion(koodiUri);
+        }
+        else {
             throw new KoodistoException("Illegal arguments: " + koodiUri);
         }
-
     }
 
-    private List<KoodiType> getKoodiTypes(final String koodiUri, int version) throws KoodistoException {
-        SearchKoodisCriteriaType criteria = KoodiServiceSearchCriteriaBuilder.koodiByUriAndVersion(koodiUri, version);
-        return searchKoodis(criteria);
-    }
-
-    private List<KoodiType> getKoodiTypes(final String koodiUri) throws KoodistoException {
-        SearchKoodisCriteriaType criteria = KoodiServiceSearchCriteriaBuilder.latestKoodisByUris(koodiUri);
+    private List<KoodiType> getKoodiTypes(final CodeUriAndVersion codeUriAndVersion) throws KoodistoException {
+        SearchKoodisCriteriaType criteria = null;
+        if (codeUriAndVersion.getVersion() == null) {
+            criteria = KoodiServiceSearchCriteriaBuilder.latestKoodisByUris(codeUriAndVersion.getUri());
+        }
+        else {
+            criteria = KoodiServiceSearchCriteriaBuilder.koodiByUriAndVersion(codeUriAndVersion.getUri(),
+                    codeUriAndVersion.getVersion());
+        }
         return searchKoodis(criteria);
     }
 

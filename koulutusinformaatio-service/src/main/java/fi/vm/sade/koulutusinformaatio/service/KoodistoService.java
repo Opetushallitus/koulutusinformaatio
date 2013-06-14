@@ -84,4 +84,13 @@ public interface KoodistoService {
     String searchFirstCodeValue(final String koodiUri) throws KoodistoException;
 
     List<String> searchCodeValuesMultiple(final List<String> koodiUri) throws KoodistoException;
+
+    /**
+     * Searches for codes that are included in the code that corresponds to the uri and version
+     * given as parameter
+     *
+     * @param koodiURI  koodi URI of the parent code, includes version info
+     * @return List of codes.
+     */
+    List<Code> searchSubCodes(final String koodiURI) throws KoodistoException;
 }
