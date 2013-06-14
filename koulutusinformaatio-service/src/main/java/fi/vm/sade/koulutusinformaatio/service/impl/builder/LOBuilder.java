@@ -173,6 +173,7 @@ public class LOBuilder {
                     ao.setParent(parentRef);
                     ao.setId(hakukohdeDTO.getOid());
                     ao.setName(koodistoService.searchFirst(hakukohdeDTO.getHakukohdeNimiUri()));
+                    ao.setAoIdentifier(koodistoService.searchFirstCodeValue(hakukohdeDTO.getHakukohdeNimiUri()));
                     ao.setStartingQuota(hakukohdeDTO.getAloituspaikatLkm());
                     ao.setLowestAcceptedScore(hakukohdeDTO.getAlinValintaPistemaara());
                     ao.setLowestAcceptedAverage(hakukohdeDTO.getAlinHyvaksyttavaKeskiarvo());

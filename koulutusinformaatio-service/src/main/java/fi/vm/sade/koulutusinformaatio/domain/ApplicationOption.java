@@ -27,6 +27,7 @@ public class ApplicationOption {
 
     private String id;
     private I18nText name;
+    private String aoIdentifier;
     private ApplicationSystem applicationSystem;
     private String educationDegree;
     private List<ChildLORef> childLORefs = new ArrayList<ChildLORef>();
@@ -61,6 +62,14 @@ public class ApplicationOption {
 
     public I18nText getName() {
         return name;
+    }
+
+    public String getAoIdentifier() {
+        return aoIdentifier;
+    }
+
+    public void setAoIdentifier(String aoIdentifier) {
+        this.aoIdentifier = aoIdentifier;
     }
 
     public void setName(I18nText name) {

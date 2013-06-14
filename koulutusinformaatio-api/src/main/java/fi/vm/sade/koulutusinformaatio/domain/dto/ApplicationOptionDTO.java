@@ -29,6 +29,7 @@ public class ApplicationOptionDTO {
 
     private String id;
     private String name;
+    private String aoIdentifier;
     private ApplicationSystemDTO applicationSystem;
     private Integer startingQuota;
     private Integer lowestAcceptedScore;
@@ -56,6 +57,14 @@ public class ApplicationOptionDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getAoIdentifier() {
+        return aoIdentifier;
+    }
+
+    public void setAoIdentifier(String aoIdentifier) {
+        this.aoIdentifier = aoIdentifier;
     }
 
     public ApplicationSystemDTO getApplicationSystem() {
