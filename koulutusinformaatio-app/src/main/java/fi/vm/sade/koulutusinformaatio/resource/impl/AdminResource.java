@@ -48,19 +48,6 @@ public class AdminResource {
     private LearningOpportunityService learningOpportunityService;
 
     @GET
-    @Path("/drop")
-    public String dropIndexes() {
-        try {
-            indexerService.dropLOPs();
-            indexerService.dropLOs();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "FAIL";
-        }
-        return "indexes dropped";
-    }
-
-    @GET
     @Path("/update")
     public Response updateEducationData() throws URISyntaxException {
         try {
