@@ -17,7 +17,9 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.googlecode.ehcache.annotations.Cacheable;
 import fi.vm.sade.koodisto.service.GenericFault;
@@ -38,6 +40,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -159,14 +162,29 @@ public class KoodistoServiceImpl implements KoodistoService {
     }
 
     @Override
-    public List<Code> searchSubCodes(String koodiURI) throws KoodistoException {
-        return convert(searchSubKoodiTypes(koodiURI), Code.class);
+    public List<Code> searchSubCodes(String koodiURIAndVersion, String koodistoURI) throws KoodistoException {
+        if (koodistoURI != null && !koodistoURI.isEmpty()) {
+            return convert(searchSubKoodiTypes(koodiURIAndVersion, koodistoURI), Code.class);
+        }
+        else {
+            return convert(searchSubKoodiTypes(koodiURIAndVersion), Code.class);
+        }
     }
 
-    private List<KoodiType> searchSubKoodiTypes(String koodiUri) throws KoodistoException {
-        CodeUriAndVersion codeUriAndVersion = resolveKoodiUriAndVersion(koodiUri);
-        KoodiUriAndVersioType koodiUriAndVersion = conversionService.convert(codeUriAndVersion, KoodiUriAndVersioType.class);
-        return koodiService.listKoodiByRelation(koodiUriAndVersion, false, SuhteenTyyppiType.SISALTYY);
+    @Cacheable(cacheName = "subKoodiCache")
+    private List<KoodiType> searchSubKoodiTypes(final String koodiUriAndVersion, final String koodistoURI) throws KoodistoException {
+        return Lists.newArrayList(Collections2.filter(searchSubKoodiTypes(koodiUriAndVersion), new Predicate<KoodiType>() {
+            @Override
+            public boolean apply(KoodiType koodiType) {
+                return koodiType.getKoodisto().getKoodistoUri().equals(koodistoURI);
+            }
+        }));
+    }
+
+    private List<KoodiType> searchSubKoodiTypes(String koodiUriAndVersion) throws KoodistoException {
+        CodeUriAndVersion codeUriAndVersion = resolveKoodiUriAndVersion(koodiUriAndVersion);
+        KoodiUriAndVersioType koodiUriAndVersionType = conversionService.convert(codeUriAndVersion, KoodiUriAndVersioType.class);
+        return koodiService.listKoodiByRelation(koodiUriAndVersionType, false, SuhteenTyyppiType.SISALTYY);
     }
 
     @Cacheable(cacheName = "koodiCache")
