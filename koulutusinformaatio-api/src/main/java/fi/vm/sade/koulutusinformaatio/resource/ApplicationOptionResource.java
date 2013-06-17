@@ -33,5 +33,5 @@ public interface ApplicationOptionResource {
     @Produces(MediaType.APPLICATION_JSON)
     public List<ApplicationOptionSearchResultDTO> searchApplicationOptions(
             @PathParam("asId") final String asId, @PathParam("lopId") final String lopId,
-            @QueryParam("prerequisite") final List<String> prerequisite);
+            @QueryParam("baseEducation") final String baseEducation);
 }
