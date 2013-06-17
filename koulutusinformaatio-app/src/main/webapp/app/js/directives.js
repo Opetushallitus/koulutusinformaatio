@@ -76,6 +76,24 @@ directive('kiRenderOrganization', function() {
     }
 }).
 
+directive('kiRenderOrganizationImage', function() {
+    return function(scope, element, attrs) {
+        scope.$watch('providerImage', function(data) {
+            if (data && data.pictureEncoded) {
+                var imgElem = $('<img>', {
+                    src: 'data:image/jpeg;base64,' + data.pictureEncoded,
+                    'class': 'width-100',
+                    alt: 'Oppilaitoksen kuva'
+                });
+
+                $(element).empty();
+                element.append(imgElem);
+            }
+        });
+    }
+
+}).
+
 directive('kiRenderProfessionalTitles', function() {
     return {
         restrict: 'E,A',

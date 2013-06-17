@@ -32,6 +32,7 @@ public class ApplicationOptionToSearchResultDTO {
             ApplicationOptionSearchResultDTO dto = new ApplicationOptionSearchResultDTO();
             dto.setId(applicationOption.getId());
             dto.setName(ConverterUtil.getTextByLanguage(applicationOption.getName(), lang));
+            dto.setAoIdentifier(applicationOption.getAoIdentifier());
             dto.setChildLONames(ConverterUtil.getTextsByLanguage(ChildLORefToDTO.convert(applicationOption.getChildLORefs()), lang));
             dto.setEducationDegree(applicationOption.getEducationDegree());
             dto.setSora(applicationOption.isSora());

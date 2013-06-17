@@ -22,6 +22,7 @@ import java.util.Set;
 import com.google.code.morphia.annotations.Embedded;
 import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Id;
+import com.google.code.morphia.annotations.Reference;
 
 /**
  * @author Mikko Majapuro
@@ -50,6 +51,8 @@ public class LearningOpportunityProviderEntity {
     private I18nTextEntity livingExpenses;
     @Embedded
     private List<SocialEntity> social;
+    @Reference
+    private PictureEntity picture;
     
 
     public LearningOpportunityProviderEntity() {
@@ -181,5 +184,13 @@ public class LearningOpportunityProviderEntity {
 
     public void setSocial(List<SocialEntity> social) {
         this.social = social;
+    }
+
+    public PictureEntity getPicture() {
+        return picture;
+    }
+
+    public void setPicture(PictureEntity picture) {
+        this.picture = picture;
     }
 }

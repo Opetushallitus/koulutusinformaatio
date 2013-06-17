@@ -14,45 +14,32 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.koulutusinformaatio.dao.entity;
+package fi.vm.sade.koulutusinformaatio.domain.dto;
 
-import com.google.code.morphia.annotations.Entity;
-import com.google.code.morphia.annotations.Id;
-import com.google.code.morphia.annotations.PrePersist;
-import org.bson.types.ObjectId;
-
-import java.util.Date;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 /**
  * @author Mikko Majapuro
  */
-@Entity("dataStatus")
-public class DataStatusEntity {
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
+public class PictureDTO {
 
-    @Id
-    private org.bson.types.ObjectId id;
-    Date lastUpdated = new Date();
+    private String id;
+    private String pictureEncoded;
 
-    public DataStatusEntity() {}
-
-    @PrePersist
-    void prePersist() {
-        lastUpdated = new Date();
-    }
-
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(ObjectId id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public Date getLastUpdated() {
-        return lastUpdated;
+    public String getPictureEncoded() {
+        return pictureEncoded;
     }
 
-    public void setLastUpdated(Date lastUpdated) {
-        this.lastUpdated = lastUpdated;
+    public void setPictureEncoded(String pictureEncoded) {
+        this.pictureEncoded = pictureEncoded;
     }
 }

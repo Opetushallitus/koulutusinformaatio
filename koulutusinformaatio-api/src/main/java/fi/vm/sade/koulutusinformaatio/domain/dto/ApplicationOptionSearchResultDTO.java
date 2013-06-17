@@ -29,6 +29,7 @@ public class ApplicationOptionSearchResultDTO {
 
     private String id;
     private String name;
+    private String aoIdentifier;
     private String educationDegree;
     private List<String> childLONames = new ArrayList<String>();
     private boolean sora = false;
@@ -48,6 +49,14 @@ public class ApplicationOptionSearchResultDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getAoIdentifier() {
+        return aoIdentifier;
+    }
+
+    public void setAoIdentifier(String aoIdentifier) {
+        this.aoIdentifier = aoIdentifier;
     }
 
     public String getEducationDegree() {

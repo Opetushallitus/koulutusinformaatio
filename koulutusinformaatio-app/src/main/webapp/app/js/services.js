@@ -170,6 +170,24 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
     }
 }]).
 
+service('LearningOpportunityProviderPictureService', ['$http', '$timeout', '$q', function($http, $timeout, $q) {
+    return  {
+        query: function(options) {
+            var deferred = $q.defer();
+
+            $http.get('../lop/' + options.providerId + '/picture').
+            success(function(result) {
+                deferred.resolve(result);
+            }).
+            error(function(result) {
+                deferred.reject(result);
+            });
+
+            return deferred.promise;
+        }
+    }
+}]).
+
 /**
  *  Service taking care of search term saving
  */

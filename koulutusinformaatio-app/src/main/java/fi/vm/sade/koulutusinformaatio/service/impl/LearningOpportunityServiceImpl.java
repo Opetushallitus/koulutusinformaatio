@@ -24,10 +24,12 @@ import fi.vm.sade.koulutusinformaatio.converter.ChildLOToDTO;
 import fi.vm.sade.koulutusinformaatio.converter.ParentLOToDTO;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
+import fi.vm.sade.koulutusinformaatio.domain.Picture;
 import fi.vm.sade.koulutusinformaatio.domain.dto.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,11 +43,13 @@ import java.util.List;
 public class LearningOpportunityServiceImpl implements LearningOpportunityService {
 
     private EducationDataQueryService educationDataQueryService;
+    private ModelMapper modelMapper;
     private static final String LANG_FI = "fi";
 
     @Autowired
-    public LearningOpportunityServiceImpl(EducationDataQueryService educationDataQueryService) {
+    public LearningOpportunityServiceImpl(EducationDataQueryService educationDataQueryService, ModelMapper modelMapper) {
         this.educationDataQueryService = educationDataQueryService;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -94,6 +98,12 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     @Override
     public Date getLastDataUpdated() {
         return educationDataQueryService.getLastUpdated();
+    }
+
+    @Override
+    public PictureDTO getPicture(String id) throws ResourceNotFoundException {
+        Picture pic = educationDataQueryService.getPicture(id);
+        return modelMapper.map(pic, PictureDTO.class);
     }
 
 

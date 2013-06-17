@@ -19,14 +19,12 @@ package fi.vm.sade.koulutusinformaatio.converter;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.base.Strings;
+import fi.vm.sade.koulutusinformaatio.domain.*;
 import org.springframework.core.convert.converter.Converter;
 
 import com.google.common.collect.Lists;
 
-import fi.vm.sade.koulutusinformaatio.domain.Address;
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.Social;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioMetaDataRDTO;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
 
@@ -71,6 +69,7 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
         p.setLearningEnvironment(getMetadataValue(o.getMetadata(), METADATA_OPPIMISYMPARISTO));
         p.setDining(getMetadataValue(o.getMetadata(), METADATA_OPISKELIJARUOKAILU));
         p.setSocial(getSocialLinks(o.getMetadata(), SOCIAL_LINKS));
+        p.setPicture(getPicture(o));
         return p;
     }
 
@@ -122,6 +121,17 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
             }
         }
         
+        return null;
+    }
+
+    private Picture getPicture(final OrganisaatioRDTO o) {
+        OrganisaatioMetaDataRDTO metadata = o.getMetadata();
+        if (metadata != null && !Strings.isNullOrEmpty(metadata.getKuvaEncoded())) {
+            Picture pic = new Picture();
+            pic.setId(o.getOid());
+            pic.setPictureEncoded(metadata.getKuvaEncoded());
+            return pic;
+        }
         return null;
     }
 }

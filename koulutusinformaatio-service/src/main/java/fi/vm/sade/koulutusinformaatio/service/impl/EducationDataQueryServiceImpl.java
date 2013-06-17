@@ -23,6 +23,7 @@ import fi.vm.sade.koulutusinformaatio.converter.KoulutusinformaatioObjectBuilder
 import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.entity.*;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.Picture;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLO;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLO;
@@ -47,6 +48,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     private DataStatusDAO dataStatusDAO;
     private ModelMapper modelMapper;
     private KoulutusinformaatioObjectBuilder koulutusinformaatioObjectBuilder;
+    private PictureDAO pictureDAO;
 
     @Autowired
     public EducationDataQueryServiceImpl(ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO,
@@ -54,7 +56,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
                                          ChildLearningOpportunitySpecificationDAO childLearningOpportunitySpecificationDAO,
                                          ChildLearningOpportunityInstanceDAO childLearningOpportunityInstanceDAO,
                                          KoulutusinformaatioObjectBuilder koulutusinformaatioObjectBuilder,
-                                         DataStatusDAO dataStatusDAO) {
+                                         DataStatusDAO dataStatusDAO, PictureDAO pictureDAO) {
         this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;
         this.modelMapper = modelMapper;
@@ -62,6 +64,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
         this.childLearningOpportunityInstanceDAO = childLearningOpportunityInstanceDAO;
         this.koulutusinformaatioObjectBuilder = koulutusinformaatioObjectBuilder;
         this.dataStatusDAO = dataStatusDAO;
+        this.pictureDAO = pictureDAO;
     }
 
     @Override
@@ -110,6 +113,16 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
             return status.getLastUpdated();
         } else {
             return null;
+        }
+    }
+
+    @Override
+    public Picture getPicture(String id) throws ResourceNotFoundException {
+        PictureEntity picture = pictureDAO.get(id);
+        if (picture != null) {
+            return modelMapper.map(picture, Picture.class);
+        } else {
+            throw new ResourceNotFoundException("Picture not found: " + id);
         }
     }
 
