@@ -85,10 +85,9 @@ directive('kiRenderOrganizationImage', function() {
                     'class': 'width-100',
                     alt: 'Oppilaitoksen kuva'
                 });
-                console.log(imgElem);
+
+                $(element).empty();
                 element.append(imgElem);
-                //$(element).find('img').attr('src', 'data:image/jpeg;base64,' + data.pictureEncoded);
-                //element.attr('src', 'data:image/jpeg;base64,' + data.pictureEncoded);
             }
         });
     }
