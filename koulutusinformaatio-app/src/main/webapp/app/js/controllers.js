@@ -200,7 +200,7 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
 /**
  *  Controller for info views (parent and child)
  */
- function InfoCtrl($scope, $routeParams, $location, ParentLearningOpportunityService, ChildLearningOpportunityService, SearchService, ParentLODataService, TitleService) {
+ function InfoCtrl($scope, $routeParams, $location, ParentLearningOpportunityService, ChildLearningOpportunityService, SearchService, ParentLODataService, TitleService, LearningOpportunityProviderPictureService) {
     $scope.queryString = SearchService.getTerm();
     $scope.descriptionLanguage = 'fi';
 
@@ -246,6 +246,14 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
             return false;
         } 
     };
+
+    $scope.$watch('parentLO.provider', function(data) {
+        if (data) {
+            LearningOpportunityProviderPictureService.query({providerId: data.id}).then(function(result) {
+                $scope.providerImage = result;
+            });
+        }
+    });
 
     // fetch data for parent and/or its child LO
     if ($routeParams) {
