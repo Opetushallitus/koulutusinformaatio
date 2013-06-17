@@ -78,8 +78,8 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     }
 
     @Override
-    public List<ApplicationOption> findApplicationOptions(String asId, String lopId) {
-        List<ApplicationOptionEntity> applicationOptions = applicationOptionDAO.find(asId, lopId);
+    public List<ApplicationOption> findApplicationOptions(String asId, String lopId, String baseEducation) {
+        List<ApplicationOptionEntity> applicationOptions = applicationOptionDAO.find(asId, lopId, baseEducation);
         return Lists.transform(applicationOptions, new Function<ApplicationOptionEntity, ApplicationOption>() {
             @Override
             public ApplicationOption apply(ApplicationOptionEntity applicationOptionEntity) {
