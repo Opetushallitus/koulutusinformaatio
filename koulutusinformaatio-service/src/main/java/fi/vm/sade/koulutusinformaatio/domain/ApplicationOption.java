@@ -52,7 +52,7 @@ public class ApplicationOption {
     private I18nText selectionCriteria;
     private I18nText prerequisite;
     // base educations, one of these is required to be able to apply to this application option
-    private List<String> baseEducations;
+    private List<String> requiredBaseEducations;
 
     public String getId() {
         return id;
@@ -190,12 +190,12 @@ public class ApplicationOption {
         this.prerequisite = prerequisite;
     }
 
-    public List<String> getBaseEducations() {
-        return baseEducations;
+    public List<String> getRequiredBaseEducations() {
+        return requiredBaseEducations;
     }
 
-    public void setBaseEducations(List<String> baseEducations) {
-        this.baseEducations = baseEducations;
+    public void setRequiredBaseEducations(List<String> requiredBaseEducations) {
+        this.requiredBaseEducations = requiredBaseEducations;
     }
 
     @Override
