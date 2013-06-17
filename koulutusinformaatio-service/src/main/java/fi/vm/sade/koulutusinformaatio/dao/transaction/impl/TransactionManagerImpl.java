@@ -76,17 +76,13 @@ public class TransactionManagerImpl implements TransactionManager {
     }
 
     @Override
-    public void beginTransaction() throws IOException, SolrServerException {
+    public void beginTransaction() {
         dropUpdateData();
     }
 
     @Override
     public void rollBack() {
-        try {
-            dropUpdateData();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        dropUpdateData();
     }
 
     @Override
@@ -104,14 +100,18 @@ public class TransactionManagerImpl implements TransactionManager {
         mongo.dropDatabase(transactionDbName);
     }
 
-    private void dropUpdateData() throws IOException, SolrServerException {
-        mongo.dropDatabase(transactionDbName);
-        loUpdateHttpSolrServer.deleteByQuery("*:*");
-        loUpdateHttpSolrServer.commit();
-        loUpdateHttpSolrServer.optimize();
-        lopUpdateHttpSolrServer.deleteByQuery("*:*");
-        lopUpdateHttpSolrServer.commit();
-        lopUpdateHttpSolrServer.optimize();
+    private void dropUpdateData() {
+        try {
+            mongo.dropDatabase(transactionDbName);
+            loUpdateHttpSolrServer.deleteByQuery("*:*");
+            loUpdateHttpSolrServer.commit();
+            loUpdateHttpSolrServer.optimize();
+            lopUpdateHttpSolrServer.deleteByQuery("*:*");
+            lopUpdateHttpSolrServer.commit();
+            lopUpdateHttpSolrServer.optimize();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private CoreAdminRequest getCoreSwapRequest(final String fromCore, final String toCore) {
