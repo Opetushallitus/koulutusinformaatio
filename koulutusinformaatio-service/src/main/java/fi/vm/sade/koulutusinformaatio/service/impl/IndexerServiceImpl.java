@@ -83,9 +83,7 @@ public class IndexerServiceImpl implements IndexerService {
     @Override
     public void commitLOChanges() throws Exception {
         loUpdateHttpSolrServer.commit();
-        loUpdateHttpSolrServer.optimize();
         lopUpdateHttpSolrServer.commit();
-        lopUpdateHttpSolrServer.optimize();
     }
 
 }

@@ -129,8 +129,8 @@
      <filter class="solr.LimitTokenCountFilterFactory" maxTokenCount="10000"/>
     -->
     <!-- Maximum time to wait for a write lock (ms) for an IndexWriter. Default: 1000 -->
-    <!-- <writeLockTimeout>1000</writeLockTimeout>  -->
-
+      <writeLockTimeout>20000</writeLockTimeout>
+      <commitLockTimeout>10000</commitLockTimeout>
     <!-- Expert: Enabling compound file will use less files for the index, 
          using fewer file descriptors on the expense of performance decrease. 
          Default in Lucene is "true". Default in Solr is "false" (since 3.6) -->
@@ -200,7 +200,7 @@
          More details on the nuances of each LockFactory...
          http://wiki.apache.org/lucene-java/AvailableLockFactories
     -->
-    <!-- <lockType>native</lockType> -->
+    <lockType>none</lockType>
 
     <!-- Unlock On Startup
 
@@ -211,9 +211,9 @@
 
          This is not needed if lock type is 'none' or 'single'
      -->
-    <!--
-    <unlockOnStartup>false</unlockOnStartup>
-      -->
+
+    <unlockOnStartup>true</unlockOnStartup>
+
     
     <!-- Expert: Controls how often Lucene loads terms into memory
          Default is 128 and is likely good for most everyone.
