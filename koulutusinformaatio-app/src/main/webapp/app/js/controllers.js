@@ -130,16 +130,22 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
 /**
  *  Controller for adding applications to application basket
  */
-function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
+function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, UtilityService) {
     $scope.buttonsAreDisabled = $scope.applicationOptionId && $scope.applicationOptionName ? false : true;
 
-    $scope.addToBasket = function(aoId) {
+    $scope.addToBasket = function() {
         if ($scope.applicationOptionId) {
             ApplicationBasketService.addItem($scope.applicationOptionId);
         }
     }
 
     $scope.changeValue = function(aoId, aoName, aoSora, aoTeachLang) {
+        /*
+        console.log('change value');
+        $scope.selectedAo = UtilityService.getApplicationOptionById(aoId, $scope.parentLO.applicationOptions);
+        console.log($scope.selectedAo);
+        */
+        
         $scope.applicationOptionName = aoName;
         $scope.applicationOptionId = aoId;
         $scope.aoSora = aoSora;
@@ -153,6 +159,18 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
 
     $scope.subtabContentStyle = function(isFirst) {
         return isFirst ? {'display': 'block'} : {}; 
+    }
+
+    $scope.applicationSystemIsActive = function() {
+        if ($scope.parentLO && $scope.parentLO.applicationSystem && $scope.parentLO.applicationSystem.applicationDates) {
+            var start = $scope.parentLO.applicationSystem.applicationDates.startDate;
+            var end = $scope.parentLO.applicationSystem.applicationDates.endDate;
+            var current = new Date().getTime();
+
+            return (current >= start && current <= end);
+        }
+
+        return false;
     }
 
     $scope.popoverTitle = i18n.t('popover-title');
@@ -200,7 +218,7 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
 /**
  *  Controller for info views (parent and child)
  */
- function InfoCtrl($scope, $routeParams, $location, ParentLearningOpportunityService, ChildLearningOpportunityService, SearchService, ParentLODataService, TitleService, LearningOpportunityProviderPictureService) {
+ function InfoCtrl($scope, $routeParams, $location, ParentLearningOpportunityService, ChildLearningOpportunityService, SearchService, ParentLODataService, TitleService, LearningOpportunityProviderPictureService, UtilityService) {
     $scope.queryString = SearchService.getTerm();
     $scope.descriptionLanguage = 'fi';
 
@@ -230,14 +248,27 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
         }
     }
 
-    var getFirstApplicationOptionId = function() {
+    var getFirstApplicationOption = function() {
         if (hasApplicationOptions()) {
             var ao = $scope.parentLO.applicationOptions[0];
-            if (ao && ao.id) {
-                return ao.id;
+            return ao;
+        }
+    };
+
+/*
+    var getApplicationOptionById = function(aoId) {
+        if (hasApplicationOptions()) {
+            var aos = $scope.parentLO.applicationOptions;
+            for (var index in aos) {
+                if (aos.hasOwnProperty(index)) {
+                    if (aos[index].id == aoId) {
+                        return aos[index];
+                    }
+                }
             }
         }
-    }
+    };
+*/
 
     var hasApplicationOptions = function() {
         if ($scope.parentLO && $scope.parentLO.applicationOptions) {
@@ -245,6 +276,23 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
         } else {
             return false;
         } 
+    };
+
+    var initializeParent = function() {
+        setTitle($scope.parentLO, $scope.childLO);
+        $scope.hasApplicationOptions = hasApplicationOptions();
+
+        $scope.asId = getApplicationSystemId();
+
+        // select first ao in list
+        var firstAoInList = getFirstApplicationOption();
+        $scope.selectedAo = firstAoInList;
+        if (firstAoInList) {
+            $scope.applicationOptionId = firstAoInList.id;
+            $scope.applicationOptionName = firstAoInList.name;
+            $scope.aoSora = firstAoInList.sora;
+            $scope.aoTeachLang = firstAoInList.teachLang;
+        }
     };
 
     $scope.$watch('parentLO.provider', function(data) {
@@ -262,21 +310,11 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
             ParentLearningOpportunityService.query({parentId: $routeParams.parentId, language: $scope.descriptionLanguage}).then(function(result) {
                 $scope.parentLO = result;
                 ParentLODataService.setParentLOData(result);
-                setTitle($scope.parentLO, $scope.childLO);
-                $scope.hasApplicationOptions = hasApplicationOptions();
-
-                $scope.asId = getApplicationSystemId();
-                //$scope.applicationOptionId = getFirstApplicationOptionId();
-                
-
+                initializeParent();
             });
         } else {
             $scope.parentLO = ParentLODataService.getParentLOData();
-            setTitle($scope.parentLO, $scope.childLO);
-            $scope.hasApplicationOptions = hasApplicationOptions();
-
-            $scope.asId = getApplicationSystemId();
-            //$scope.applicationOptionId = getFirstApplicationOptionId();
+            initializeParent();
         }
 
         if (isChild()) {

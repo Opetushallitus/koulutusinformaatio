@@ -22,26 +22,68 @@
             <form name="levelSelectionForm" action="/haku-app/lomake/{{asId}}/yhteishaku" method="POST">
                 <ul class="margin-bottom-2">
                     <li data-ng-repeat="ao in parentLO.applicationOptions">
-                        <input type="radio" name="preference1-Koulutus-id" id="input{{$index}}" value="{{ao.id}}" ng-change="changeValue(ao.id, ao.name, ao.sora, ao.teachLang)" ng-model="applicationOptionId"/>
+                        <input 
+                            type="radio" 
+                            name="preference1-Koulutus-id" 
+                            id="input{{$index}}" 
+                            value="{{ao.id}}" 
+                            ng-change="changeValue(ao.id, ao.name, ao.sora, ao.teachLang)" 
+                            ng-model="applicationOptionId" />
                         <label for="input{{$index}}">{{ao.prerequisite}}</label>
                     </li>
                 </ul>
-                <input type="hidden" name="preference1-Opetuspiste" value="{{parentLO.provider.name}}"/>
-                <input type="hidden" name="preference1-Opetuspiste-id" value="{{parentLO.provider.id}}"/>
-                <input type="hidden" name="preference1-Koulutus" value="{{applicationOptionName}}" ng-model="applicationOptionName"/>
-                <input type="hidden" name="preference1-Koulutus-educationDegree" value="{{parentLO.educationDegree}}"/>
-                <input type="hidden" name="preference1-Koulutus-id-sora" value="{{aoSora}}" ng-model="applicationOptionSora"/>
-                <input type="hidden" name="preference1-Koulutus-id-lang" value="{{aoTeachLang}}" ng-model="applicationOptionLang"/>
+                <input 
+                    type="hidden" 
+                    name="preference1-Opetuspiste" 
+                    value="{{parentLO.provider.name}}" />
+                <input 
+                    type="hidden" 
+                    name="preference1-Opetuspiste-id" 
+                    value="{{parentLO.provider.id}}" />
+                <input 
+                    type="hidden" 
+                    name="preference1-Koulutus" 
+                    value="{{applicationOptionName}}" 
+                    ng-model="applicationOptionName" />
+                <input 
+                    type="hidden" 
+                    name="preference1-Koulutus-educationDegree" 
+                    value="{{parentLO.educationDegree}}" />
+                <input 
+                    type="hidden" 
+                    name="preference1-Koulutus-id-sora" 
+                    value="{{aoSora}}" 
+                    ng-model="applicationOptionSora" />
+                <input 
+                    type="hidden" 
+                    name="preference1-Koulutus-id-lang" 
+                    value="{{aoTeachLang}}" 
+                    ng-model="applicationOptionLang" />
                 <!--<input type="hidden" name="enabling-submit"/>-->
-                <button type="submit" class="primary" ng-disabled="buttonsAreDisabled"><span><span data-ki-i18n="apply-button-label"></span></span></button>
+                <button type="submit" ng-disabled="!applicationSystemIsActive()">
+                    <span>
+                        <span data-ki-i18n="apply-button-label"></span>
+                    </span>
+                </button>
 
                 <div class="inline" ng-click="addToBasket(aoId)">
-                    <button type="button" id="addToBasket" ng-disabled="buttonsAreDisabled" popover-placement="bottom" popover-html-unsafe="<a href='#/muistilista'>Katso muistilista</a>" popover-title="Koulutus lisätty muistilistalle" popover-trigger="click">
+                    <button 
+                        type="button" 
+                        id="addToBasket" 
+                        class="primary" 
+                        popover-placement="bottom" 
+                        popover-html-unsafe="<a href='#/muistilista'>Katso muistilista</a>" 
+                        popover-title="Koulutus lisätty muistilistalle" 
+                        popover-trigger="click">
                         <span>
                             <span data-ki-i18n="add-to-basket-label"></span>
                         </span>
                     </button>
                 </div>
+                <div class="margin-top-2"
+                    data-ki-render-application-system-active 
+                    data-start-date="{{parentLO.applicationSystem.applicationDates.startDate}}"
+                    data-end-date="{{parentLO.applicationSystem.applicationDates.endDate}}"></div>
             </form>
         </aside>
     </div>

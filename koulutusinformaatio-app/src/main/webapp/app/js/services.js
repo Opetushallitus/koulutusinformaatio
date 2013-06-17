@@ -59,6 +59,8 @@ service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', 'Languag
                 var ao = result.applicationOptions[index];
                 if (ao.applicationSystem && ao.applicationSystem.applicationDates && ao.applicationSystem.applicationDates.length > 0) {
                     ao.applicationSystem.applicationDates = ao.applicationSystem.applicationDates[0];
+                    ao.applicationSystem.applicationDates.startDate = "1369958400000";
+                    ao.applicationSystem.applicationDates.endDate = "1372636800000";
                 }
                 result.applicationSystem = ao.applicationSystem;
             }
@@ -281,6 +283,7 @@ service('TranslationService', function() {
  */
 .service('ApplicationBasketService', ['$http', '$q', function($http, $q) {
     var key = 'basket';
+    var cookieConfig = {useLocalStorage: false, maxChunkSize: 2000, maxNumberOfCookies: 20, path: '/'};
 
     // used to update item count in basket
     var updateBasket = function(count) {
@@ -348,7 +351,7 @@ service('TranslationService', function() {
                 current.push(aoId);
             }
 
-            $.cookie(key, JSON.stringify(current), {useLocalStorage: false, maxChunkSize: 2000, maxNumberOfCookies: 20, path: '/'});
+            $.cookie(key, JSON.stringify(current), cookieConfig);
 
             updateBasket(this.getItemCount());
         },
@@ -360,14 +363,13 @@ service('TranslationService', function() {
             var index = value.indexOf(aoId);
             value.splice(index, 1);
 
-            $.cookie(key, JSON.stringify(value), {useLocalStorage: false, maxChunkSize: 2000, maxNumberOfCookies: 20, path: '/'});
+            $.cookie(key, JSON.stringify(value), cookieConfig);
 
             updateBasket(this.getItemCount());
         },
 
         empty: function() {
-            $.cookie(key, null, {useLocalStorage: false, maxChunkSize: 2000, maxNumberOfCookies: 20, path: '/'});
-            //$.cookie(key, null, {useLocalStorage: false, maxChunkSize: 2000, maxNumberOfCookies: 20, path: '/'});
+            $.cookie(key, null, cookieConfig);
             updateBasket(this.getItemCount());
         },
 
@@ -398,9 +400,7 @@ service('TranslationService', function() {
 
             qParams = qParams.substring(1, qParams.length);
             
-
             $http.get('../basket/items?' + qParams).
-            //$http.get('mock/ao.json').
             success(function(result) {
                 result = transformData(result);
                 deferred.resolve(result);
@@ -412,4 +412,23 @@ service('TranslationService', function() {
             return deferred.promise;
         }
     }
-}]);
+}]).
+
+/**
+ *  Service for retrieving translated values for text
+ */
+service('UtilityService', function() {
+    return {
+        getApplicationOptionById: function(aoId, aos) {
+            if (aos && aos.length > 0) {
+                for (var index in aos) {
+                    if (aos.hasOwnProperty(index)) {
+                        if (aos[index].id == aoId) {
+                            return aos[index];
+                        }
+                    }
+                }
+            }
+        }
+    };
+});
