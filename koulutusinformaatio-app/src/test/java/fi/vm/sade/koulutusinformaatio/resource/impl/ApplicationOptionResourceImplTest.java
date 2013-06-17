@@ -40,7 +40,7 @@ public class ApplicationOptionResourceImplTest {
     private LearningOpportunityService learningOpportunityService;
     private final String asId = "1.2.3.4";
     private final String lopId = "5.6.7.8";
-    private final List<String> prerequisite = Lists.newArrayList("PK");
+    private final String baseEducation = "1";
 
     @Before
     public void setUp() {
@@ -64,13 +64,13 @@ public class ApplicationOptionResourceImplTest {
         aos.add(ao);
         aos.add(ao2);
 
-        when(learningOpportunityService.searchApplicationOptions(eq(asId), eq(lopId))).thenReturn(aos);
+        when(learningOpportunityService.searchApplicationOptions(eq(asId), eq(lopId), eq(baseEducation))).thenReturn(aos);
         applicationOptionResource = new ApplicationOptionResourceImpl(learningOpportunityService);
     }
 
     @Test
     public void testSearchApplicationOptions() {
-        List<ApplicationOptionSearchResultDTO> result = applicationOptionResource.searchApplicationOptions(asId, lopId, prerequisite);
+        List<ApplicationOptionSearchResultDTO> result = applicationOptionResource.searchApplicationOptions(asId, lopId, baseEducation);
         assertNotNull(result);
         assertEquals(2, result.size());
         assertEquals("1.1.2", result.get(0).getId());

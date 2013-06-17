@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.dao;
 
+import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.dao.entity.*;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLORef;
@@ -90,9 +91,13 @@ public class ApplicationOptionDAOTest {
     public void testFind() {
         String asId = "123";
         String lopId = "3.3.3";
+        String baseEducation = "1";
 
         LearningOpportunityProviderEntity lop = new LearningOpportunityProviderEntity();
         lop.setId(lopId);
+
+        List<String> baseEducations = Lists.newArrayList(baseEducation);
+        List<String> baseEducations2 = Lists.newArrayList("2");
 
         ApplicationOptionEntity entity = new ApplicationOptionEntity();
         entity.setId("1.2.3");
@@ -101,12 +106,14 @@ public class ApplicationOptionDAOTest {
         as.setId(asId);
         entity.setApplicationSystem(as);
         entity.setProvider(lop);
+        entity.setRequiredBaseEducations(baseEducations);
 
         ApplicationOptionEntity entity2 = new ApplicationOptionEntity();
         entity2.setId("1.2.4");
         entity2.setName(TestUtil.createI18nTextEntity("ao2 name fi", "ao2 name sv", "ao2 name en"));
         entity2.setApplicationSystem(as);
         entity2.setProvider(lop);
+        entity2.setRequiredBaseEducations(baseEducations);
 
         ApplicationOptionEntity entity3 = new ApplicationOptionEntity();
         entity3.setId("1.2.5");
@@ -115,13 +122,22 @@ public class ApplicationOptionDAOTest {
         as2.setId("4.4.4");
         entity3.setApplicationSystem(as2);
         entity3.setProvider(lop);
+        entity3.setRequiredBaseEducations(baseEducations);
+
+        ApplicationOptionEntity entity4 = new ApplicationOptionEntity();
+        entity4.setId("1.2.6");
+        entity4.setName(TestUtil.createI18nTextEntity("ao4 name fi", "ao4 name sv", "ao4 name en"));
+        entity4.setApplicationSystem(as);
+        entity4.setProvider(lop);
+        entity4.setRequiredBaseEducations(baseEducations2);
 
         learningOpportunityProviderDAO.save(lop);
         applicationOptionDAO.save(entity);
         applicationOptionDAO.save(entity2);
         applicationOptionDAO.save(entity3);
+        applicationOptionDAO.save(entity4);
 
-        List<ApplicationOptionEntity> result = applicationOptionDAO.find(asId, lopId);
+        List<ApplicationOptionEntity> result = applicationOptionDAO.find(asId, lopId, baseEducation);
         assertNotNull(result);
         assertEquals(2, result.size());
         assertNotNull(result.get(0));

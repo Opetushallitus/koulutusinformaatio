@@ -35,7 +35,7 @@ public interface LearningOpportunityService {
 
     ChildLearningOpportunityDTO getChildLearningOpportunity(String parentId, String closId, String cloiId, String lang) throws ResourceNotFoundException;
 
-    List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, String lopId);
+    List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, String lopId, String baseEducation);
 
     List<BasketItemDTO> getBasketItems(List<String> aoId, String lang);
 

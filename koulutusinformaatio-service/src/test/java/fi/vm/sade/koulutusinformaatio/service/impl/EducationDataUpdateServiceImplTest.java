@@ -57,7 +57,7 @@ public class EducationDataUpdateServiceImplTest {
         ApplicationOptionEntity ao = new ApplicationOptionEntity();
         ao.setId("8.9.0");
         aos.add(ao);
-        when(applicationOptionDAO.find(eq("1.1.1"), eq("9.9.9"))).thenReturn(aos);
+        when(applicationOptionDAO.find(eq("1.1.1"), eq("9.9.9"), eq("1"))).thenReturn(aos);
         learningOpportunityProviderDAO = mock(LearningOpportunityProviderDAO.class);
         lopCollection = mock(DBCollection.class);
         when(learningOpportunityProviderDAO.getCollection()).thenReturn(lopCollection);

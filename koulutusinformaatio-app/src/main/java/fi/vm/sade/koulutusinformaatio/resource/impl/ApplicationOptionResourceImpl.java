@@ -43,6 +43,6 @@ public class ApplicationOptionResourceImpl implements ApplicationOptionResource 
     public List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId,
                                                                            String lopId,
                                                                            String baseEducation) {
-        return learningOpportunityService.searchApplicationOptions(asId, lopId);
+        return learningOpportunityService.searchApplicationOptions(asId, lopId, baseEducation);
     }
 }
