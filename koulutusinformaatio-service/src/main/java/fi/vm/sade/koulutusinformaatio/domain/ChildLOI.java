@@ -4,6 +4,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.google.code.morphia.annotations.Embedded;
+
+import fi.vm.sade.koulutusinformaatio.dao.entity.I18nTextEntity;
+
 /**
  * Child learning opportunity instance.
  *
@@ -24,6 +28,9 @@ public class ChildLOI {
     private List<I18nText> formOfTeaching;
     private I18nText prerequisite;
     private List<I18nText> professionalTitles;
+    private I18nText workingLifePlacement;
+    private I18nText internationalization;
+    private I18nText cooperation;
 
     ///// parent loi fix
     private String parentLOI;
@@ -124,5 +131,29 @@ public class ChildLOI {
 
     public void setProfessionalTitles(List<I18nText> professionalTitles) {
         this.professionalTitles = professionalTitles;
+    }
+
+    public I18nText getWorkingLifePlacement() {
+        return workingLifePlacement;
+    }
+
+    public void setWorkingLifePlacement(I18nText workingLifePlacement) {
+        this.workingLifePlacement = workingLifePlacement;
+    }
+
+    public I18nText getInternationalization() {
+        return internationalization;
+    }
+
+    public void setInternationalization(I18nText internationalization) {
+        this.internationalization = internationalization;
+    }
+
+    public I18nText getCooperation() {
+        return cooperation;
+    }
+
+    public void setCooperation(I18nText cooperation) {
+        this.cooperation = cooperation;
     }
 }

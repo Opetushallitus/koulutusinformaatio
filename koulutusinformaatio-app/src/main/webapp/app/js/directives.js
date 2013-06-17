@@ -1,17 +1,137 @@
 /* Directives */
 
- angular.module('kiApp.directives', []).
+angular.module('kiApp.directives', []).
 
+/**
+ * Render contact info block
+ */
 directive('kiRenderContactInfo', function() {
     return {
         restrict: 'E,A',
         templateUrl: 'templates/contactInfo.html',
+        scope: true,
         link: function(scope, element, attrs) {
             scope.anchor = attrs.anchor;
+
+            scope.$watch('parentLO.provider', function(data) {
+                if (data) {
+                    scope.showContact = (data.visitingAddress ||
+                        data.postalAddress ||
+                        data.name ||
+                        data.email ||
+                        data.phone ||
+                        data.fax ||
+                        data.webPage) ? true : false;
+                }
+
+                scope.provider = data;
+            });
         }
     }
 }).
 
+/**
+ *  Render student benefits block
+ */
+directive('kiRenderStudentBenefits', function() {
+    return {
+        restrict: 'E,A',
+        templateUrl: 'templates/studentBenefits.html',
+        scope: true,
+        link: function(scope, element, attrs) {
+            scope.anchor = attrs.anchor;
+
+            scope.$watch('parentLO.provider', function(data) {
+                if (data) {
+                    scope.showStudentBenefits = (data.livingExpenses ||
+                        data.dining ||
+                        data.healthcare) ? true : false;
+                }
+
+                scope.provider = data;
+            });
+        }
+    }
+}).
+
+/**
+ *  Render general organization information block
+ */
+directive('kiRenderOrganization', function() {
+    return {
+        restrict: 'E,A',
+        templateUrl: 'templates/organization.html',
+        link: function(scope, element, attrs) {
+            scope.anchor = attrs.anchor;
+
+            scope.$watch('parentLO', function(data) {
+                if (data && data.provider) {
+                    scope.showOrganization = (data.provider.learningEnvironment ||
+                        data.provider.accessibility) ? true : false;
+
+                    scope.provider = data.provider;
+                }
+            });
+        }
+    }
+}).
+
+directive('kiRenderOrganizationImage', function() {
+    return function(scope, element, attrs) {
+        scope.$watch('providerImage', function(data) {
+            if (data && data.pictureEncoded) {
+                var imgElem = $('<img>', {
+                    src: 'data:image/jpeg;base64,' + data.pictureEncoded,
+                    'class': 'width-100',
+                    alt: 'Oppilaitoksen kuva'
+                });
+
+                $(element).empty();
+                element.append(imgElem);
+            }
+        });
+    }
+
+}).
+
+directive('kiRenderProfessionalTitles', function() {
+    return {
+        restrict: 'E,A',
+        templateUrl: 'templates/professionalTitles.html',
+        scope: true,
+        link: function(scope, element, attrs) {
+            scope.anchor = attrs.anchor;
+
+            scope.$watch('childLO.professionalTitles', function(data) {
+                scope.showProfessionalTitles = data ? true : false;
+
+            });
+        }
+    }
+}).
+
+directive('kiSocialLinks', function() {
+    return {
+        restrict: 'E,A',
+        templateUrl: 'templates/socialLinks.html',
+        link: function(scope, element, attrs) {
+            scope.anchor = attrs.anchor;
+
+            scope.$watch('parentLO', function(data) {
+                if (data && data.provider) {
+                    scope.showOrganization = (data.provider.learningEnvironment ||
+                        data.provider.accessibility) ? true : false;
+
+                    scope.provider = data.provider;
+                }
+            });
+        }
+    }
+}).
+
+/**
+ *  Render email (@ replaced with (at))
+ */
 directive('kiEmail', function() {
     return {
         restrict: 'E,A',
@@ -19,6 +139,24 @@ directive('kiEmail', function() {
             attrs.$observe('kiEmail', function(data) {
                 if (data) {
                     element.html(data.replace('@', '(at)'));
+                }
+            });
+        }
+    }
+}).
+
+/**
+ *  Render email (@ replaced with (at))
+ */
+directive('kiAbsoluteLink', function() {
+    return {
+        restrict: 'E,A',
+        link: function(scope, element, attrs) {
+            attrs.$observe('kiAbsoluteLink', function(data) {
+                if (data.search(':\/\/') > -1) {
+                    element.attr('href', data);
+                } else {
+                    element.attr('href', 'http://' + data);
                 }
             });
         }
@@ -81,7 +219,7 @@ directive('kiEmail', function() {
   directive('kiSiblingRibbon', ['$location', '$routeParams', function($location, $routeParams) {
     return {
         restrict: 'E,A',
-        template: '<ul class="ribbon-content"><li ng-repeat="relatedChild in childLO.related" ><a ng-click="changeChild(relatedChild)" ng-class="siblingClass(relatedChild)">{{relatedChild.name}}</a></li></ul>',
+        templateUrl: 'templates/siblings.html',
         link: function(scope, element, attrs) {
 
             scope.siblingClass = function(sibling) {
@@ -90,10 +228,6 @@ directive('kiEmail', function() {
                 } else {
                     return '';
                 }
-            }
-
-            scope.changeChild = function(sibling) {
-                $location.path('/info/' + scope.parentLO.id + '/' + sibling.losId + '/' + sibling.loiId);
             }
         }
     }
@@ -125,28 +259,20 @@ directive('kiEmail', function() {
 
             var update = function() {
                 scope.breadcrumbItems = [];
-                pushItem({name: home, callback: scope.gohome});
-                pushItem({name: search, callback: scope.search});
-                pushItem({name: parent, callback: scope.goto});
-                pushItem({name: child, callback: scope.goto});
+                pushItem({name: home, linkHref: '#/' });
+                pushItem({name: search, linkHref: '#/haku/' + SearchService.getTerm() });
+
+                if (scope.parentLO) {
+                    pushItem({name: parent, linkHref: '#/info/' + scope.parentLO.id });
+                }
+
+                pushItem({name: child});
             };
 
             var pushItem = function(item) {
                 if (item.name) {
                     scope.breadcrumbItems.push(item);
                 }
-            };
-
-            scope.search = function() {
-                $location.path('/haku/' + SearchService.getTerm());
-            };
-
-            scope.goto = function() {
-                $location.path('/info/' + scope.parentLO.id );
-            };
-
-            scope.gohome = function() {
-                $location.path('#');
             };
         }
     };
@@ -155,6 +281,7 @@ directive('kiEmail', function() {
 /**
  *  Renders a text block with title. If no content exists the whole text block gets removed. 
  */
+
 directive('renderTextBlock', function() {
     return function(scope, element, attrs) {
 
@@ -162,7 +289,7 @@ directive('renderTextBlock', function() {
             var content;
 
             attrs.$observe('title', function(value) {
-                title = i18n.t(value); //value;
+                title = i18n.t(value);
                 update();
             });
 
@@ -172,21 +299,16 @@ directive('renderTextBlock', function() {
             });
 
             var update = function() {
-                if (content || attrs.force) {
-                    $(element).empty();
+                $(element).empty();
+                if (content) {
                     var titleElement = createTitleElement(title, attrs.anchor, attrs.level);
                     element.append(titleElement);
 
                     // replace line feed with <br>
                     //content = content.replace(/(\r\n|\n|\r)/g,"<br />");
                     element.append(content);
-                    //var contentElement = $('<p></p>');
-                    //contentElement.append(content);
-                    //element.replaceWith(titleElement);
-
-                    //contentElement.insertAfter(titleElement);
                 }
-            }
+            };
 
             var createTitleElement = function(text, anchortag, level) {
                 var idAttr = anchortag ? 'id="' + anchortag + '"' : '';
@@ -195,8 +317,8 @@ directive('renderTextBlock', function() {
                 } else {
                     return $('<h2 ' + idAttr + '>' + text + '</h2>');
                 }
-            }
-        }
+            };
+        };
 }).
 
 /**

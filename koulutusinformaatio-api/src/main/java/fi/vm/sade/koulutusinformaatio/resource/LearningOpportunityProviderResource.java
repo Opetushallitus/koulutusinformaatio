@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.resource;
 
+import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResult;
 
 import javax.ws.rs.*;
@@ -56,5 +57,10 @@ public interface LearningOpportunityProviderResource {
                                                  @QueryParam(ASID) final String asId,
                                                  @QueryParam(PREREQUISITE) final String prerequisite,
                                                  @QueryParam(VOCATIONAL) final boolean vocational);
+
+    @GET
+    @Path("{lopId}/picture")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    public PictureDTO getProviderPicture(@PathParam("lopId") final String lopId);
 
 }

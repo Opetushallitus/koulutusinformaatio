@@ -19,15 +19,18 @@ package fi.vm.sade.koulutusinformaatio.resource.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
+import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResult;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
 import fi.vm.sade.koulutusinformaatio.resource.LearningOpportunityProviderResource;
+import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.ws.rs.PathParam;
 import java.util.List;
 
 /**
@@ -38,11 +41,14 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
 
     private SearchService searchService;
     private ModelMapper modelMapper;
+    private LearningOpportunityService learningOpportunityService;
 
     @Autowired
-    public LearningOpportunityProviderResourceImpl(SearchService searchService, ModelMapper modelMapper) {
+    public LearningOpportunityProviderResourceImpl(SearchService searchService, ModelMapper modelMapper,
+                                                   LearningOpportunityService learningOpportunityService) {
         this.searchService = searchService;
         this.modelMapper = modelMapper;
+        this.learningOpportunityService = learningOpportunityService;
     }
 
     @Override
@@ -63,5 +69,14 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
             throw KIExceptionHandler.resolveException(e);
         }
 
+    }
+
+    @Override
+    public PictureDTO getProviderPicture(String lopId) {
+        try {
+            return learningOpportunityService.getPicture(lopId);
+        } catch (Exception e) {
+            throw KIExceptionHandler.resolveException(e);
+        }
     }
 }

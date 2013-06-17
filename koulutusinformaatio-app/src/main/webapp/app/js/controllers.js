@@ -8,6 +8,12 @@ function LanguageCtrl($scope, $location, LanguageService) {
    }
 };
 
+function HeaderCtrl($scope, $location, ApplicationBasketService) {
+    $scope.appBasketItemCount = function() {
+        return ApplicationBasketService.getItemCount();
+    }
+};
+
 /**
  *  Controller for index view
  */
@@ -22,9 +28,11 @@ function LanguageCtrl($scope, $location, LanguageService) {
     }
     */
 
+    /*
     $scope.$on('$viewContentLoaded', function() {
         OPH.Common.initHeader();
     });
+    */
 };
 
 /**
@@ -89,21 +97,17 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
                 items.splice(i, 1);
             }
         }
-    };
 
-    $scope.gotoParent = function(id) {
-        $location.path('/info/' + id);
+        $scope.itemCount = ApplicationBasketService.getItemCount();
+        $scope.basketIsEmpty = ApplicationBasketService.isEmpty();
     };
-
-    $scope.gotoChild = function(parentId, losId, loiId) {
-        $location.path('/info/' + parentId + '/' + losId + '/' + loiId);
-    }
 
     $scope.emptyApplicationBasket = function() {
         ApplicationBasketService.empty();
         $scope.applicationItems = [];
         $scope.basketIsEmpty = true;
-    } 
+        $scope.itemCount = ApplicationBasketService.getItemCount();
+    };
 
     $scope.applyButtonIsDisabled = function() {
         var itemsInBasket = ApplicationBasketService.getItemCount();
@@ -141,7 +145,18 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
         $scope.aoSora = aoSora;
         $scope.aoTeachLang = aoTeachLang;
         $scope.buttonsAreDisabled = false;
-    }    
+    }
+
+    $scope.subtabClass = function(isFirst) {
+        return isFirst ? 'tab current' : 'tab';
+    }
+
+    $scope.subtabContentStyle = function(isFirst) {
+        return isFirst ? {'display': 'block'} : {}; 
+    }
+
+    $scope.popoverTitle = i18n.t('popover-title');
+    $scope.popoverContent = "<a href='#/muistilista'>" + i18n.t('popover-content') + "</a>";
 };
 
 /**
@@ -170,18 +185,6 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
         }
     };
 
-    // Forward to parent learning opportunity info page
-    $scope.selectLO = function(lo) {
-        var path;
-        if (lo.parentId) {
-            path = lo.parentId + '/' + lo.losId + '/' + lo.id;
-        } else {
-            path = lo.id;
-        }
-
-        $location.path('/info/' + path);
-    };
-
     // launch navigation script
     /*
     $scope.initNavigation = function() {
@@ -197,7 +200,7 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
 /**
  *  Controller for info views (parent and child)
  */
- function InfoCtrl($scope, $routeParams, $location, ParentLearningOpportunityService, ChildLearningOpportunityService, SearchService, ParentLODataService, TitleService) {
+ function InfoCtrl($scope, $routeParams, $location, ParentLearningOpportunityService, ChildLearningOpportunityService, SearchService, ParentLODataService, TitleService, LearningOpportunityProviderPictureService) {
     $scope.queryString = SearchService.getTerm();
     $scope.descriptionLanguage = 'fi';
 
@@ -227,6 +230,15 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
         }
     }
 
+    var getFirstApplicationOptionId = function() {
+        if (hasApplicationOptions()) {
+            var ao = $scope.parentLO.applicationOptions[0];
+            if (ao && ao.id) {
+                return ao.id;
+            }
+        }
+    }
+
     var hasApplicationOptions = function() {
         if ($scope.parentLO && $scope.parentLO.applicationOptions) {
             return $scope.parentLO.applicationOptions.length > 0;
@@ -234,6 +246,14 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
             return false;
         } 
     };
+
+    $scope.$watch('parentLO.provider', function(data) {
+        if (data) {
+            LearningOpportunityProviderPictureService.query({providerId: data.id}).then(function(result) {
+                $scope.providerImage = result;
+            });
+        }
+    });
 
     // fetch data for parent and/or its child LO
     if ($routeParams) {
@@ -246,6 +266,7 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
                 $scope.hasApplicationOptions = hasApplicationOptions();
 
                 $scope.asId = getApplicationSystemId();
+                //$scope.applicationOptionId = getFirstApplicationOptionId();
                 
 
             });
@@ -255,6 +276,7 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
             $scope.hasApplicationOptions = hasApplicationOptions();
 
             $scope.asId = getApplicationSystemId();
+            //$scope.applicationOptionId = getFirstApplicationOptionId();
         }
 
         if (isChild()) {
@@ -291,27 +313,6 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
         }
     };
 
-/*
-    $scope.hasApplicationOptions = function() {
-        if ($scope.parentLO && $scope.parentLO.applicationOptions) {
-            return $scope.parentLO.applicationOptions.length > 0;
-        } else {
-            return false;
-        }
-    }
-    */
-
-
-    // redirect to child page
-    $scope.gotoChild = function(child) {
-        $location.path('/info/' + $scope.parentLO.id + '/' + child.losId + '/' + child.loiId);
-    }
-
-    // redirect to parent page
-    $scope.gotoParent = function() {
-        $location.path('/info/' + $scope.parentLO.id);
-    }
-
     // scrolls to an anchor on page
     $scope.scrollToAnchor = function(id) {
         $('html, body').scrollTop($('#' + id).offset().top);
@@ -328,17 +329,6 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
             $scope.applyFormClass = 'hidden';
         }
     }
-
-    $scope.subtabClass = function(isFirst) {
-        return isFirst ? 'tab current' : 'tab';
-    }
-
-    $scope.subtabContentStyle = function(isFirst) {
-        return isFirst ? {'display': 'block'} : {}; 
-    }
-
-    $scope.popoverTitle = i18n.t('popover-title');
-    $scope.popoverContent = "<a href='#/muistilista'>" + i18n.t('popover-content') + "</a>";
 
     $scope.initTabs = tabsMenu.build;
 

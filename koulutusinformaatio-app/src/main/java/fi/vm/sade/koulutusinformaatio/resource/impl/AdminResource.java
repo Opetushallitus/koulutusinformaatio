@@ -16,7 +16,9 @@
 
 package fi.vm.sade.koulutusinformaatio.resource.impl;
 
+import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
+import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,10 @@ import org.springframework.stereotype.Component;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.core.Response;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Date;
 
 /**
  * @author Hannu Lyytikainen
@@ -38,30 +44,30 @@ public class AdminResource {
     @Autowired
     IndexerService indexerService;
 
-    @GET
-    @Path("/drop")
-    public String dropIndexes() {
-        try {
-            indexerService.dropLOPs();
-            indexerService.dropLOs();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "FAIL";
-        }
-        return "indexes dropped";
-    }
+    @Autowired
+    private LearningOpportunityService learningOpportunityService;
 
     @GET
     @Path("/update")
-    public String updateEducationData() {
+    public Response updateEducationData() throws URISyntaxException {
         try {
-            updateService.updateAllEducationData();
+            if (!updateService.isRunning()) {
+                updateService.updateAllEducationData();
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            return "FAIL";
+            throw KIExceptionHandler.resolveException(e);
         }
 
-        return "education data updated";
+        return Response.seeOther(new URI("status")).build();
+    }
+
+    @GET
+    @Path("/status")
+    public String dataStatus() {
+        Date lastUpdate = learningOpportunityService.getLastDataUpdated();
+        String msg = updateService.isRunning() ? "Data update is running... Last data update " : "Last data update ";
+        return msg + lastUpdate;
     }
 
 }

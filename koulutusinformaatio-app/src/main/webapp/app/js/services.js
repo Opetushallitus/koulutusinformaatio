@@ -13,12 +13,26 @@ angular.module('kiApp.services', ['ngResource']).
 }).
 */
 service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', function($http, $timeout, $q) {
+    var transformData = function(result) {
+        for (var index in result) {
+            if (result.hasOwnProperty(index)) {
+                var resItem = result[index];
+                if (resItem.parentId) {
+                    resItem.linkHref = '#/info/' + resItem.parentId + '/' + resItem.losId + '/' + resItem.id;
+                } else {
+                    resItem.linkHref = '#/info/' + resItem.id
+                }
+            }
+        }
+    };
+
     return {
         query: function(params) {
             var deferred = $q.defer();
 
             $http.get('../lo/search/' + params.queryString).
             success(function(result) {
+                transformData(result);
                 deferred.resolve(result);
             }).
             error(function(result) {
@@ -59,6 +73,15 @@ service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', 'Languag
                 }
             }
         }
+
+        /*
+        result.provider.social = {
+            facebook: 'http://www.facebook.com',
+            linkedin: 'http://www.linkedin.com',
+            twitter: 'http://www.twitter.com',
+            googleplus: 'http://plus.google.com'
+        };
+        */
     };
 
     return {
@@ -96,8 +119,24 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
 
         var startDate = new Date(result.startDate);
         result.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
-        result.teachingLanguage = getFirstItemInList(result.teachingLanguages); // ? result.teachingLanguages[0] : '';
-        result.formOfEducation = getFirstItemInList(result.formOfEducation); // ? result.formOfEducation[0] : '';
+        result.teachingLanguage = getFirstItemInList(result.teachingLanguages);
+        result.formOfEducation = getFirstItemInList(result.formOfEducation);
+
+        // add current child to sibligs
+        if (result.related) {
+            result.related.push({
+                loiId: result.loiId, 
+                losId: result.losId,
+                name: result.name
+            });
+
+            // sort siblings alphabetically
+            result.related = result.related.sort(function(a, b) {
+                if (a.name > b.name) return 1;
+                else if (a.name < b.name) return -1;
+                else return a.loiId > b.loiId ? 1 : -1;
+            });
+        }
     };
 
     var getFirstItemInList = function(list) {
@@ -120,6 +159,24 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
             }).
             success(function(result) {
                 transformData(result);
+                deferred.resolve(result);
+            }).
+            error(function(result) {
+                deferred.reject(result);
+            });
+
+            return deferred.promise;
+        }
+    }
+}]).
+
+service('LearningOpportunityProviderPictureService', ['$http', '$timeout', '$q', function($http, $timeout, $q) {
+    return  {
+        query: function(options) {
+            var deferred = $q.defer();
+
+            $http.get('../lop/' + options.providerId + '/picture').
+            success(function(result) {
                 deferred.resolve(result);
             }).
             error(function(result) {
@@ -309,7 +366,6 @@ service('TranslationService', function() {
         },
 
         empty: function() {
-            console.log('empty basket');
             $.cookie(key, null, {useLocalStorage: false, maxChunkSize: 2000, maxNumberOfCookies: 20, path: '/'});
             //$.cookie(key, null, {useLocalStorage: false, maxChunkSize: 2000, maxNumberOfCookies: 20, path: '/'});
             updateBasket(this.getItemCount());

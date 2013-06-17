@@ -20,10 +20,11 @@ import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.dto.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.koulutusinformaatio.service.EducationDataService;
+import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import org.junit.Before;
 import org.junit.Test;
+import org.modelmapper.ModelMapper;
 
 import java.util.*;
 
@@ -39,13 +40,13 @@ import static org.mockito.Mockito.when;
 public class LearningOpportunityServiceImplTest {
 
     private LearningOpportunityService learningOpportunityService;
-    private EducationDataService educationDataService;
+    private EducationDataQueryService educationDataQueryService;
     private ParentLO parentLO;
     private ChildLO childLO;
 
     @Before
     public void setUp() throws ResourceNotFoundException {
-        educationDataService = mock(EducationDataService.class);
+        educationDataQueryService = mock(EducationDataQueryService.class);
 
         parentLO = new ParentLO();
         parentLO.setId("1234");
@@ -94,10 +95,11 @@ public class LearningOpportunityServiceImplTest {
         links.put("link2", "link2");
         childLO.setWebLinks(links);
 
-        learningOpportunityService = new LearningOpportunityServiceImpl(educationDataService);
+        ModelMapper modelMapper = new ModelMapper();
+        learningOpportunityService = new LearningOpportunityServiceImpl(educationDataQueryService, modelMapper);
 
-        when(educationDataService.getParentLearningOpportunity(eq("1234"))).thenReturn(parentLO);
-        when(educationDataService.getChildLearningOpportunity(eq("los123"), eq("loi123"))).thenReturn(childLO);
+        when(educationDataQueryService.getParentLearningOpportunity(eq("1234"))).thenReturn(parentLO);
+        when(educationDataQueryService.getChildLearningOpportunity(eq("los123"), eq("loi123"))).thenReturn(childLO);
     }
 
     @Test

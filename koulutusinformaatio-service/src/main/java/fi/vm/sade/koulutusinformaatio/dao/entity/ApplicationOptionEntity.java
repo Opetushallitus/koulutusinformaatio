@@ -35,6 +35,7 @@ public class ApplicationOptionEntity {
     private String id;
     @Embedded
     private I18nTextEntity name;
+    private String aoIdentifier;
     @Embedded
     private ApplicationSystemEntity applicationSystem;
     private String educationDegree;
@@ -73,6 +74,14 @@ public class ApplicationOptionEntity {
 
     public void setName(I18nTextEntity name) {
         this.name = name;
+    }
+
+    public String getAoIdentifier() {
+        return aoIdentifier;
+    }
+
+    public void setAoIdentifier(String aoIdentifier) {
+        this.aoIdentifier = aoIdentifier;
     }
 
     public ApplicationSystemEntity getApplicationSystem() {

@@ -21,21 +21,13 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 
+import java.util.Date;
 import java.util.List;
 
 /**
  * @author Hannu Lyytikainen
  */
-public interface EducationDataService {
-
-    /**
-     *  Saves the parent learning opportunity data.
-     *  Updates previously stored if exists
-     * @param parentLOS
-     */
-    void save(final ParentLOS parentLOS);
-
-    void dropAllData();
+public interface EducationDataQueryService {
 
     /**
      * Gets the parent learning opportunity by oid
@@ -62,5 +54,7 @@ public interface EducationDataService {
      */
     ChildLO getChildLearningOpportunity(final String childLosId, final String childLoiId) throws ResourceNotFoundException;
 
+    Date getLastUpdated();
 
+    Picture getPicture(final String id) throws ResourceNotFoundException;
 }

@@ -16,19 +16,24 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import fi.vm.sade.koulutusinformaatio.dao.entity.*;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLO;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLORef;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLORef;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLORefEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunityInstanceEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunitySpecificationEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.CodeEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.I18nTextEntity;
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLORef;
+import fi.vm.sade.koulutusinformaatio.domain.Code;
+import fi.vm.sade.koulutusinformaatio.domain.I18nText;
+import fi.vm.sade.koulutusinformaatio.domain.ParentLORef;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLO;
 
 /**
  * @author Mikko Majapuro
@@ -77,6 +82,10 @@ public class KoulutusinformaatioObjectBuilder {
             clo.setPrerequisite(convert(childLOI.getPrerequisite(), I18nText.class));
             clo.setFormOfTeaching(convert(childLOI.getFormOfTeaching(), I18nText.class));
             clo.setProfessionalTitles(convert(childLOI.getProfessionalTitles(), I18nText.class));
+            clo.setWorkingLifePlacement(convert(childLOI.getWorkingLifePlacement(), I18nText.class));
+            clo.setInternationalization(convert(childLOI.getInternationalization(), I18nText.class));
+            clo.setCooperation(convert(childLOI.getCooperation(), I18nText.class));
+            clo.setDegreeGoal(convert(childLOS.getDegreeGoal(), I18nText.class));
             return clo;
         }
         return null;

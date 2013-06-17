@@ -1,11 +1,12 @@
 <ul>
 	<li ng-repeat="crumb in breadcrumbItems" class="breadcrumb-item {{crumb.name}}">
 		<span data-ng-switch="$last">
-			<span data-ng-switch-when="true">
+			<span data-ng-switch-when="true" title="{{crumb.name}}">
 				{{crumb.name}}
 			</span>
 			<span data-ng-switch-when="false">
-				<a ng-click="crumb.callback()">{{crumb.name}}</a>
+				<!--<a ng-click="crumb.callback()" title="{{crumb.name}}">{{crumb.name}}</a>-->
+				<a href="{{crumb.linkHref}}" title="{{crumb.name}}">{{crumb.name}}</a>
 			</span>
 		</span>
 	</li>

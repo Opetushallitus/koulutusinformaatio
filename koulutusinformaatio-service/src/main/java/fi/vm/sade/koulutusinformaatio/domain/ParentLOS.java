@@ -18,6 +18,8 @@ package fi.vm.sade.koulutusinformaatio.domain;
 
 import com.google.common.collect.Sets;
 
+import fi.vm.sade.koulutusinformaatio.dao.entity.I18nTextEntity;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -39,6 +41,7 @@ public class ParentLOS {
     private I18nText structureDiagram;
     // jatko-opintomahdollisuudet
     private I18nText accessToFurtherStudies;
+    private I18nText degreeProgramSelection;
     // tavoitteet
     private I18nText goals;
     //koulutusala, Sosiaali-, terveys- ja liikunta-ala
@@ -110,6 +113,14 @@ public class ParentLOS {
 
     public void setAccessToFurtherStudies(I18nText accessToFurtherStudies) {
         this.accessToFurtherStudies = accessToFurtherStudies;
+    }
+
+    public I18nText getDegreeProgramSelection() {
+        return degreeProgramSelection;
+    }
+
+    public void setDegreeProgramSelection(I18nText degreeProgramSelection) {
+        this.degreeProgramSelection = degreeProgramSelection;
     }
 
     public I18nText getGoals() {
