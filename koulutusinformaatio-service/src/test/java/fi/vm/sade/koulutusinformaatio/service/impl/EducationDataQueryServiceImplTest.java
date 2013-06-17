@@ -74,7 +74,7 @@ public class EducationDataQueryServiceImplTest {
         ApplicationOptionEntity ao = new ApplicationOptionEntity();
         ao.setId("8.9.0");
         aos.add(ao);
-        when(applicationOptionDAO.find(eq("1.1.1"), eq("9.9.9"))).thenReturn(aos);
+        when(applicationOptionDAO.find(eq("1.1.1"), eq("9.9.9"), eq("1"))).thenReturn(aos);
         learningOpportunityProviderDAO = mock(LearningOpportunityProviderDAO.class);
         lopCollection = mock(DBCollection.class);
         when(learningOpportunityProviderDAO.getCollection()).thenReturn(lopCollection);
@@ -111,7 +111,7 @@ public class EducationDataQueryServiceImplTest {
 
     @Test
     public void testFindApplicationOptions() {
-        List<ApplicationOption> result = service.findApplicationOptions("1.1.1", "9.9.9");
+        List<ApplicationOption> result = service.findApplicationOptions("1.1.1", "9.9.9", "1");
         assertNotNull(result);
         assertEquals(1, result.size());
         assertEquals("8.9.0", result.get(0).getId());
