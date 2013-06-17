@@ -33,6 +33,8 @@ public class ChildLOS {
     private I18nText degreeTitle;
     //tutkintonimike
     private I18nText qualification;
+    //tavoite
+    private I18nText degreeGoal;
 
     public ChildLOS(String id, I18nText name) {
         this.id = id;
@@ -81,5 +83,13 @@ public class ChildLOS {
 
     public void setDegreeTitle(I18nText degreeTitle) {
         this.degreeTitle = degreeTitle;
+    }
+
+    public I18nText getDegreeGoal() {
+        return degreeGoal;
+    }
+
+    public void setDegreeGoal(I18nText degreeGoal) {
+        this.degreeGoal = degreeGoal;
     }
 }

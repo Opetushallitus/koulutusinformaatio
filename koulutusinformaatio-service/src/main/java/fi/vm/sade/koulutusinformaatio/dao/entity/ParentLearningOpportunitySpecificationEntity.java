@@ -47,6 +47,8 @@ public class ParentLearningOpportunitySpecificationEntity {
     @Embedded
     private I18nTextEntity structureDiagram;
     @Embedded
+    private I18nTextEntity degreeProgramSelection;
+    @Embedded
     private I18nTextEntity accessToFurtherStudies;
     @Embedded
     private I18nTextEntity goals;
@@ -123,6 +125,14 @@ public class ParentLearningOpportunitySpecificationEntity {
 
     public void setStructureDiagram(I18nTextEntity structureDiagram) {
         this.structureDiagram = structureDiagram;
+    }
+
+    public I18nTextEntity getDegreeProgramSelection() {
+        return degreeProgramSelection;
+    }
+
+    public void setDegreeProgramSelection(I18nTextEntity degreeProgramSelection) {
+        this.degreeProgramSelection = degreeProgramSelection;
     }
 
     public I18nTextEntity getAccessToFurtherStudies() {

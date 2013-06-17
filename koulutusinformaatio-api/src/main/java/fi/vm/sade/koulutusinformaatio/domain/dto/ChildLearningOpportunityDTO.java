@@ -16,9 +16,14 @@
 
 package fi.vm.sade.koulutusinformaatio.domain.dto;
 
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import java.util.*;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 /**
  * @author Hannu Lyytikainen
@@ -44,6 +49,10 @@ public class ChildLearningOpportunityDTO {
     private Set<String> availableTranslationLanguages = new HashSet<String>();
     private Set<String> teachingLanguages = new HashSet<String>();
     private List<String> professionalTitles;
+    private String workingLifePlacement;
+    private String internationalization;
+    private String cooperation;
+    private String degreeGoal;
 
     private ParentLOSRefDTO parent;
 
@@ -183,5 +192,37 @@ public class ChildLearningOpportunityDTO {
 
     public void setProfessionalTitles(List<String> professionalTitles) {
         this.professionalTitles = professionalTitles;
+    }
+
+    public String getWorkingLifePlacement() {
+        return workingLifePlacement;
+    }
+
+    public void setWorkingLifePlacement(String workingLifePlacement) {
+        this.workingLifePlacement = workingLifePlacement;
+    }
+
+    public String getInternationalization() {
+        return internationalization;
+    }
+
+    public void setInternationalization(String internationalization) {
+        this.internationalization = internationalization;
+    }
+
+    public String getCooperation() {
+        return cooperation;
+    }
+
+    public void setCooperation(String cooperation) {
+        this.cooperation = cooperation;
+    }
+
+    public String getDegreeGoal() {
+        return degreeGoal;
+    }
+
+    public void setDegreeGoal(String degreeGoal) {
+        this.degreeGoal = degreeGoal;
     }
 }

@@ -42,6 +42,10 @@ public class ChildLO {
     private List<I18nText> formOfTeaching;
     private I18nText prerequisite;
     private List<I18nText> professionalTitles;
+    private I18nText workingLifePlacement;
+    private I18nText internationalization;
+    private I18nText cooperation;
+    private I18nText degreeGoal;
 
     private Date startDate;
 
@@ -164,5 +168,37 @@ public class ChildLO {
 
     public void setProfessionalTitles(List<I18nText> professionalTitles) {
         this.professionalTitles = professionalTitles;
+    }
+
+    public I18nText getWorkingLifePlacement() {
+        return workingLifePlacement;
+    }
+
+    public void setWorkingLifePlacement(I18nText workingLifePlacement) {
+        this.workingLifePlacement = workingLifePlacement;
+    }
+
+    public I18nText getInternationalization() {
+        return internationalization;
+    }
+
+    public void setInternationalization(I18nText internationalization) {
+        this.internationalization = internationalization;
+    }
+
+    public I18nText getCooperation() {
+        return cooperation;
+    }
+
+    public void setCooperation(I18nText cooperation) {
+        this.cooperation = cooperation;
+    }
+
+    public I18nText getDegreeGoal() {
+        return degreeGoal;
+    }
+
+    public void setDegreeGoal(I18nText degreeGoal) {
+        this.degreeGoal = degreeGoal;
     }
 }

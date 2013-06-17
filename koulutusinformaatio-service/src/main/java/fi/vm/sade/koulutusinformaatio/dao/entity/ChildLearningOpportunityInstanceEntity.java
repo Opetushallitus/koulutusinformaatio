@@ -51,6 +51,12 @@ public class ChildLearningOpportunityInstanceEntity {
     private I18nTextEntity prerequisite;
     @Embedded
     private List<I18nTextEntity> professionalTitles;
+    @Embedded
+    private I18nTextEntity workingLifePlacement;
+    @Embedded
+    private I18nTextEntity internationalization;
+    @Embedded
+    private I18nTextEntity cooperation;
 
     public ChildLearningOpportunityInstanceEntity() {}
 
@@ -140,5 +146,29 @@ public class ChildLearningOpportunityInstanceEntity {
 
     public void setProfessionalTitles(List<I18nTextEntity> professionalTitles) {
         this.professionalTitles = professionalTitles;
+    }
+
+    public I18nTextEntity getWorkingLifePlacement() {
+        return workingLifePlacement;
+    }
+
+    public void setWorkingLifePlacement(I18nTextEntity workingLifePlacement) {
+        this.workingLifePlacement = workingLifePlacement;
+    }
+
+    public I18nTextEntity getInternationalization() {
+        return internationalization;
+    }
+
+    public void setInternationalization(I18nTextEntity internationalization) {
+        this.internationalization = internationalization;
+    }
+
+    public I18nTextEntity getCooperation() {
+        return cooperation;
+    }
+
+    public void setCooperation(I18nTextEntity cooperation) {
+        this.cooperation = cooperation;
     }
 }

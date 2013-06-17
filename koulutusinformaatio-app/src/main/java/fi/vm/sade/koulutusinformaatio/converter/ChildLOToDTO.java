@@ -19,7 +19,6 @@ package fi.vm.sade.koulutusinformaatio.converter;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunityDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLOSRefDTO;
 
 /**
  * @author Mikko Majapuro
@@ -49,6 +48,11 @@ public class ChildLOToDTO {
         child.setPrerequisite(ConverterUtil.getTextByLanguage(childLO.getPrerequisite(), lang));
         child.setTranslationLanguage(lang);
         child.setProfessionalTitles(ConverterUtil.getTextsByLanguage(childLO.getProfessionalTitles(), lang));
+        child.setWorkingLifePlacement(ConverterUtil.getTextByLanguage(childLO.getWorkingLifePlacement(), lang));
+        child.setInternationalization(ConverterUtil.getTextByLanguage(childLO.getInternationalization(), lang));
+        child.setCooperation(ConverterUtil.getTextByLanguage(childLO.getCooperation(), lang));
+        child.setDegreeGoal(ConverterUtil.getTextByLanguage(childLO.getDegreeGoal(), lang));
+
         return child;
     }
 
