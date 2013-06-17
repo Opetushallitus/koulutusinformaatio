@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.domain.dto;
 
+import fi.vm.sade.koulutusinformaatio.dao.entity.I18nTextEntity;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public class ParentLO {
     private List<ChildLORef> childRefs = new ArrayList<ChildLORef>();
     private I18nText structureDiagram;
     private I18nText accessToFurtherStudies;
+    private I18nText degreeProgramSelection;
     private I18nText goals;
     private I18nText educationDomain;
     private I18nText stydyDomain;
@@ -103,6 +105,14 @@ public class ParentLO {
 
     public void setAccessToFurtherStudies(I18nText accessToFurtherStudies) {
         this.accessToFurtherStudies = accessToFurtherStudies;
+    }
+
+    public I18nText getDegreeProgramSelection() {
+        return degreeProgramSelection;
+    }
+
+    public void setDegreeProgramSelection(I18nText degreeProgramSelection) {
+        this.degreeProgramSelection = degreeProgramSelection;
     }
 
     public I18nText getGoals() {

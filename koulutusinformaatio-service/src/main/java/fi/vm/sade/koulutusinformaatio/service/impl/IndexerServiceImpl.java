@@ -23,37 +23,15 @@ public class IndexerServiceImpl implements IndexerService {
     public static final Logger LOGGER = LoggerFactory.getLogger(IndexerServiceImpl.class);
 
     // solr client for learning opportunity index
-    private final HttpSolrServer loHttpSolrServer;
+    private final HttpSolrServer loUpdateHttpSolrServer;
     // solr client for learning opportunity provider index
-    private final HttpSolrServer lopHttpSolrServer;
+    private final HttpSolrServer lopUpdateHttpSolrServer;
 
     @Autowired
-    public IndexerServiceImpl(@Qualifier("loHttpSolrServer") HttpSolrServer loHttpSolrServer,
-                              @Qualifier("lopHttpSolrServer") HttpSolrServer lopHttpSolrServer) {
-        this.loHttpSolrServer = loHttpSolrServer;
-        this.lopHttpSolrServer = lopHttpSolrServer;
-    }
-
-    @Override
-    public void dropLOs() throws Exception {
-        try {
-            loHttpSolrServer.deleteByQuery("*:*");
-            loHttpSolrServer.commit();
-            loHttpSolrServer.optimize();
-        } catch (Exception e) {
-            throw e;
-        }
-    }
-
-    @Override
-    public void dropLOPs() throws Exception {
-        try {
-            lopHttpSolrServer.deleteByQuery("*:*");
-            lopHttpSolrServer.commit();
-            lopHttpSolrServer.optimize();
-        } catch (Exception e) {
-            throw e;
-        }
+    public IndexerServiceImpl(@Qualifier("loUpdateHttpSolrServer") HttpSolrServer loUpdateHttpSolrServer,
+                              @Qualifier("lopUpdateHttpSolrServer") HttpSolrServer lopUpdateHttpSolrServer) {
+        this.loUpdateHttpSolrServer = loUpdateHttpSolrServer;
+        this.lopUpdateHttpSolrServer = lopUpdateHttpSolrServer;
     }
 
     @Override
@@ -98,14 +76,14 @@ public class IndexerServiceImpl implements IndexerService {
             }
         }
         providerDocs.add(providerDoc);
-        lopHttpSolrServer.add(providerDocs);
-        loHttpSolrServer.add(docs);
+        lopUpdateHttpSolrServer.add(providerDocs);
+        loUpdateHttpSolrServer.add(docs);
     }
 
     @Override
-    public void commitLOChnages() throws Exception {
-        loHttpSolrServer.commit();
-        lopHttpSolrServer.commit();
+    public void commitLOChanges() throws Exception {
+        loUpdateHttpSolrServer.commit();
+        lopUpdateHttpSolrServer.commit();
     }
 
 }

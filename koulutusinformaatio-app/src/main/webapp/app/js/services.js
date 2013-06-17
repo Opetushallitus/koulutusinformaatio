@@ -121,6 +121,22 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
         result.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
         result.teachingLanguage = getFirstItemInList(result.teachingLanguages);
         result.formOfEducation = getFirstItemInList(result.formOfEducation);
+
+        // add current child to sibligs
+        if (result.related) {
+            result.related.push({
+                loiId: result.loiId, 
+                losId: result.losId,
+                name: result.name
+            });
+
+            // sort siblings alphabetically
+            result.related = result.related.sort(function(a, b) {
+                if (a.name > b.name) return 1;
+                else if (a.name < b.name) return -1;
+                else return a.loiId > b.loiId ? 1 : -1;
+            });
+        }
     };
 
     var getFirstItemInList = function(list) {

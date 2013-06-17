@@ -36,7 +36,7 @@ public class ParentLearningOpportunitySpecificationEntity {
     private I18nTextEntity name;
     @Embedded
     private String educationDegree;
-    @Reference(lazy = true)
+    @Reference
     private List<ChildLearningOpportunitySpecificationEntity> children;
     @Embedded
     private List<ChildLORefEntity> childRefs;
@@ -46,6 +46,8 @@ public class ParentLearningOpportunitySpecificationEntity {
     private LearningOpportunityProviderEntity provider;
     @Embedded
     private I18nTextEntity structureDiagram;
+    @Embedded
+    private I18nTextEntity degreeProgramSelection;
     @Embedded
     private I18nTextEntity accessToFurtherStudies;
     @Embedded
@@ -123,6 +125,14 @@ public class ParentLearningOpportunitySpecificationEntity {
 
     public void setStructureDiagram(I18nTextEntity structureDiagram) {
         this.structureDiagram = structureDiagram;
+    }
+
+    public I18nTextEntity getDegreeProgramSelection() {
+        return degreeProgramSelection;
+    }
+
+    public void setDegreeProgramSelection(I18nTextEntity degreeProgramSelection) {
+        this.degreeProgramSelection = degreeProgramSelection;
     }
 
     public I18nTextEntity getAccessToFurtherStudies() {
