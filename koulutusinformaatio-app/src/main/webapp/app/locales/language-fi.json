@@ -72,6 +72,9 @@
     "application-period": "Hakuaika",
     "apply-button-label": "Hae koulutukseen",
     "add-to-basket-label": "Lisää muistilistalle",
+    "application-system-active-future": "Hakuaika alkaa",
+    "application-system-active-past": "Haku päättynyt",
+    "application-system-active-present": "Haku käynnissä",
 
     "directly-applicable": "Suoraan haettavissa olevat koulutusohjelmat:",
 
