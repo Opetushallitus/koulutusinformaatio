@@ -59,8 +59,8 @@ service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', 'Languag
                 var ao = result.applicationOptions[index];
                 if (ao.applicationSystem && ao.applicationSystem.applicationDates && ao.applicationSystem.applicationDates.length > 0) {
                     ao.applicationSystem.applicationDates = ao.applicationSystem.applicationDates[0];
-                    ao.applicationSystem.applicationDates.startDate = "1369958400000";
-                    ao.applicationSystem.applicationDates.endDate = "1372636800000";
+                    //ao.applicationSystem.applicationDates.startDate = "1369958400000";
+                    //ao.applicationSystem.applicationDates.endDate = "1372636800000";
                 }
                 result.applicationSystem = ao.applicationSystem;
             }
@@ -299,6 +299,8 @@ service('TranslationService', function() {
                 var applicationDates = result[asIndex].applicationDates;
                 if (applicationDates.length > 0) {
                     result[asIndex].applicationDates = applicationDates[0];
+                    //result[asIndex].applicationDates.startDate = "1369958400000";
+                    //result[asIndex].applicationDates.endDate = "1372636800000";
                 }
 
                 var applicationOptions = result[asIndex].applicationOptions;
@@ -400,7 +402,7 @@ service('TranslationService', function() {
             var qParams = '';
 
             
-            for (var index in basketItems) {
+            for (var index = 1; index < basketItems.length; index++) {
                 if (basketItems.hasOwnProperty(index)) {
                     qParams += '&aoId=' + basketItems[index];
                 }

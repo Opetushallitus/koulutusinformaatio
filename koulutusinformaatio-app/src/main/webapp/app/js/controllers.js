@@ -78,6 +78,25 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
     $scope.title = i18n.t('title-application-basket-content');
     $scope.itemCount = ApplicationBasketService.getItemCount();
 
+    
+    var applicationSystemIsActive = function(asId) {
+        var items = $scope.applicationItems;
+
+        for (var i = 0; i < items.length; i++) {
+            var item = items[i];
+
+            if (item.applicationSystemId == asId && item.applicationDates) {
+                var start = item.applicationDates.startDate;
+                var end = item.applicationDates.endDate;
+                var current = new Date().getTime();
+
+                return (current >= start && current <= end);
+            }
+        }
+
+        return false;
+    };
+
     $scope.removeItem = function(aoId) {
         ApplicationBasketService.removeItem(aoId);
 
@@ -112,9 +131,9 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
         }
     };
 
-    $scope.applyButtonIsDisabled = function() {
+    $scope.applyButtonIsDisabled = function(asId) {
         var itemsInBasket = ApplicationBasketService.getItemCount();
-        if (itemsInBasket > basketLimit) {
+        if (itemsInBasket > basketLimit || !applicationSystemIsActive(asId)) {
             return true;
         } else {
             return false;
