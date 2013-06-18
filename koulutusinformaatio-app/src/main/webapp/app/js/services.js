@@ -335,7 +335,7 @@ service('TranslationService', function() {
     };
 
     return {
-        addItem: function(aoId) {
+        addItem: function(aoId, itemType) {
 
             var current = $.cookie(key);
 
@@ -344,10 +344,11 @@ service('TranslationService', function() {
 
                 // do not add same ao twice
                 if (current.indexOf(aoId) < 0) {
-                    current.push(aoId);
+                        current.push(aoId);
                 }
             } else {
                 current = [];
+                current.push(itemType);
                 current.push(aoId);
             }
 
@@ -378,11 +379,18 @@ service('TranslationService', function() {
         },
 
         getItemCount: function() {
-            return $.cookie(key) ? JSON.parse($.cookie(key)).length : 0;
+            return $.cookie(key) ? JSON.parse($.cookie(key)).length - 1 : 0;
         },
 
         isEmpty: function() {
             return this.getItemCount() <= 0;
+        },
+
+        getType: function() {
+            if (!this.isEmpty()) {
+                var basket = this.getItems();
+                return basket[0];
+            }
         },
 
         query: function(params) {

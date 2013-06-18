@@ -27,8 +27,8 @@
                             name="preference1-Koulutus-id" 
                             id="input{{$index}}" 
                             value="{{ao.id}}" 
-                            ng-change="changeValue(ao.id, ao.name, ao.sora, ao.teachLang)" 
-                            ng-model="applicationOptionId" />
+                            ng-change="changeValue(ao.id)" 
+                            ng-model="selectedAo.id" />
                         <label for="input{{$index}}">{{ao.prerequisite}}</label>
                     </li>
                 </ul>
@@ -43,8 +43,8 @@
                 <input 
                     type="hidden" 
                     name="preference1-Koulutus" 
-                    value="{{applicationOptionName}}" 
-                    ng-model="applicationOptionName" />
+                    value="{{selectedAo.name}}" 
+                    ng-model="selectedAo.name" />
                 <input 
                     type="hidden" 
                     name="preference1-Koulutus-educationDegree" 
@@ -52,13 +52,13 @@
                 <input 
                     type="hidden" 
                     name="preference1-Koulutus-id-sora" 
-                    value="{{aoSora}}" 
-                    ng-model="applicationOptionSora" />
+                    value="{{selectedAo.sora}}" 
+                    ng-model="selectedAo.sora" />
                 <input 
                     type="hidden" 
                     name="preference1-Koulutus-id-lang" 
-                    value="{{aoTeachLang}}" 
-                    ng-model="applicationOptionLang" />
+                    value="{{selectedAo.teachLang}}" 
+                    ng-model="selectedAo.teachLang" />
                 <!--<input type="hidden" name="enabling-submit"/>-->
                 <button type="submit" ng-disabled="!applicationSystemIsActive()">
                     <span>
@@ -72,8 +72,8 @@
                         id="addToBasket" 
                         class="primary" 
                         popover-placement="bottom" 
-                        popover-html-unsafe="<a href='#/muistilista'>Katso muistilista</a>" 
-                        popover-title="Koulutus lisätty muistilistalle" 
+                        popover-html-unsafe="{{popoverContent}}" 
+                        popover-title="{{popoverTitle}}" 
                         popover-trigger="click">
                         <span>
                             <span data-ki-i18n="add-to-basket-label"></span>

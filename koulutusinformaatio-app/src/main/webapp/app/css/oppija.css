@@ -2691,23 +2691,21 @@ ul.unstyled {
       display: inline-block; }
 
 /* Social links */
-#social {
-  float: right; }
-  #social li {
-    display: inline-block; }
-    #social li a {
-      display: inline-block;
-      height: 32px;
-      width: 32px;
-      color: transparent; }
-      #social li a.facebook {
-        background: transparent url("../img/social/facebook.png") no-repeat scroll 0 0; }
-      #social li a.linked_in {
-        background: transparent url("../img/social/linkedin.png") no-repeat scroll 0 0; }
-      #social li a.twitter {
-        background: transparent url("../img/social/twitter.png") no-repeat scroll 0 0; }
-      #social li a.google_plus {
-        background: transparent url("../img/social/google.png") no-repeat scroll 0 0; }
+#social li {
+  display: inline-block; }
+  #social li a {
+    display: inline-block;
+    height: 32px;
+    width: 32px;
+    color: transparent; }
+    #social li a.facebook {
+      background: transparent url("../img/social/facebook.png") no-repeat scroll 0 0; }
+    #social li a.linked_in {
+      background: transparent url("../img/social/linkedin.png") no-repeat scroll 0 0; }
+    #social li a.twitter {
+      background: transparent url("../img/social/twitter.png") no-repeat scroll 0 0; }
+    #social li a.google_plus {
+      background: transparent url("../img/social/google.png") no-repeat scroll 0 0; }
 
 /*** compare
 ************************************************/
@@ -3082,7 +3080,8 @@ button {
   display: none; }
 
 .popover-content {
-  padding: 9px 14px; }
+  padding: 9px 14px;
+  width: 260px; }
 
 .popover .arrow,
 .popover .arrow:after {
