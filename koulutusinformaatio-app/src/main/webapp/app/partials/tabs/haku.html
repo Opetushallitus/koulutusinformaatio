@@ -59,27 +59,25 @@
                     name="preference1-Koulutus-id-lang" 
                     value="{{selectedAo.teachLang}}" 
                     ng-model="selectedAo.teachLang" />
-                <!--<input type="hidden" name="enabling-submit"/>-->
                 <button type="submit" ng-disabled="!applicationSystemIsActive()">
                     <span>
                         <span data-ki-i18n="apply-button-label"></span>
                     </span>
                 </button>
 
-                <div class="inline" ng-click="addToBasket(aoId)">
-                    <button 
-                        type="button" 
-                        id="addToBasket" 
-                        class="primary" 
-                        popover-placement="bottom" 
-                        popover-html-unsafe="{{popoverContent}}" 
-                        popover-title="{{popoverTitle}}" 
-                        popover-trigger="click">
-                        <span>
-                            <span data-ki-i18n="add-to-basket-label"></span>
-                        </span>
-                    </button>
-                </div>
+                <button 
+                    type="button" 
+                    id="addToBasket" 
+                    class="primary" 
+                    popover-placement="bottom" 
+                    popover-html-unsafe="{{popoverContent}}" 
+                    popover-title="{{popoverTitle}}" 
+                    popover-trigger="click"
+                    ng-click="addToBasket(aoId)">
+                    <span>
+                        <span data-ki-i18n="add-to-basket-label"></span>
+                    </span>
+                </button>
                 <div class="margin-top-2"
                     data-ki-render-application-system-active 
                     data-start-date="{{parentLO.applicationSystem.applicationDates.startDate}}"

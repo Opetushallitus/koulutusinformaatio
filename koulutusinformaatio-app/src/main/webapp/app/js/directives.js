@@ -222,6 +222,12 @@ directive('kiAbsoluteLink', function() {
         templateUrl: 'templates/siblings.html',
         link: function(scope, element, attrs) {
 
+            scope.$watch('childLO', function(data) {
+                if (data && !data.related) {
+                    $(element).remove();
+                }
+            });
+
             scope.siblingClass = function(sibling) {
                 if (sibling.losId == $routeParams.closId && sibling.loiId == $routeParams.cloiId) {
                     return 'disabled';

@@ -1406,15 +1406,18 @@ a {
   /*
   &:hover {
   	color: $link-color-hover !important;
+  	text-decoration: underline;
   }
   */ }
   a:link {
-    text-decoration: none;
-    color: #149dca; }
+    color: #2b4560;
+    text-decoration: underline; }
   a:active {
-    color: #100062; }
+    color: #149ecb;
+    text-decoration: underline; }
   a:visited {
-    color: #149dca; }
+    color: #06526b;
+    text-decoration: underline; }
 
 /*** input 
 ************************************************/
@@ -1646,14 +1649,18 @@ h6, .h6 {
 /*** Siteheader
 **************************************************************/
 #siteheader {
-  background-color: #18a1cc;
+  background-color: #149ecb;
   margin-bottom: 2em; }
   #siteheader .header-container {
     padding: 0 1em;
     padding: 19px 0;
     height: 50px;
     position: relative;
-    color: #fff; }
+    -webkit-box-shadow: inset 0px -1px 0px 0px #30a9d1;
+    -moz-box-shadow: inset 0px -1px 0px 0px #30a9d1;
+    -o-box-shadow: inset 0px -1px 0px 0px #30a9d1;
+    -ms-box-shadow: inset 0px -1px 0px 0px #30a9d1;
+    box-shadow: inset 0px -1px 0px 0px #30a9d1; }
   #siteheader .actions {
     float: right;
     line-height: 57px; }
@@ -1752,7 +1759,7 @@ h6, .h6 {
 /*** Breadcrumb
 **************************************************************/
 #breadcrumb {
-  margin-bottom: 2em; }
+  margin-bottom: 1.5em; }
   #breadcrumb ul {
     list-style-type: none;
     padding: 0;
@@ -1783,7 +1790,7 @@ h6, .h6 {
       vertical-align: middle;
       padding-right: 10px; }
     #breadcrumb ul li.breadcrumb-item {
-      padding-left: 25px;
+      padding-left: 15px;
       background-image: url(../img/breadcrumb-arrow.png);
       background-color: transparent;
       background-repeat: no-repeat;
@@ -2343,6 +2350,8 @@ a.btn-remove {
   padding: 10px;
   margin-bottom: 20px;
   border: 1px solid #bdbdbd; }
+  .infobox.banner {
+    background: #feedbd; }
   .infobox .emphasized {
     font-weight: bold; }
   .infobox .heading {
@@ -3400,15 +3409,18 @@ ul {
   list-style-type: none;
   margin: 0;
   padding: 0; }
-  ul.dash {
-    list-style: none;
-    margin-left: 0;
-    padding-left: 1em; }
-    ul.dash li:before {
-      display: inline-block;
-      content: "\2013";
-      width: 1em;
-      margin-left: -1em; }
+  ul.disc {
+    list-style-type: disc;
+    list-style-position: outside;
+    margin: 0 0 0 16px;
+    /*
+    li:before {
+        display: inline-block;
+        content: "\2013";
+        width: 1em;
+        margin-left: -1em;
+    }
+    */ }
 
 input {
   margin: 0 0.5em 0 0; }
@@ -3465,36 +3477,28 @@ input[type="radio"] {
       #search-results ul aside:before {
         content: ""; }
 
-.ribbon {
-  margin: 1em 0 1em 0; }
-  .ribbon .ribbon-content {
+.ribbon .ribbon-content {
+  display: inline; }
+  .ribbon .ribbon-content li {
     display: inline; }
-    .ribbon .ribbon-content li {
-      display: inline; }
-      .ribbon .ribbon-content li:before {
-        content: "|"; }
-      .ribbon .ribbon-content li:first-child:before {
-        content: ""; }
-      .ribbon .ribbon-content li:first-child a {
-        padding: 0 0.5em 0 0; }
-    .ribbon .ribbon-content a {
-      padding: 0 0.5em;
-      /*
-      &:first-child {
-          border: none;
-          padding: 0 0.75em 0 0;
-      }
-      */ }
-      .ribbon .ribbon-content a.disabled {
-        cursor: default;
-        text-decoration: none;
-        color: #3e3e3e; }
+    .ribbon .ribbon-content li:before {
+      content: "|"; }
+    .ribbon .ribbon-content li:first-child:before {
+      content: ""; }
+    .ribbon .ribbon-content li:first-child a {
+      padding: 0 4px 0 0; }
+  .ribbon .ribbon-content a {
+    padding: 0 4px; }
+    .ribbon .ribbon-content a.disabled {
+      cursor: default;
+      text-decoration: none;
+      color: #3e3e3e; }
 
 p {
   max-width: 80em; }
 
 #main-info {
-  margin: 0 0 2.5em 0; }
+  margin: 0 0 1em 0; }
   #main-info span .bold {
     display: inline;
     font-weight: bold; }
