@@ -18,10 +18,7 @@ package fi.vm.sade.koulutusinformaatio.resource;
 
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionSearchResultDTO;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
@@ -34,5 +31,7 @@ public interface ApplicationOptionResource {
     @GET
     @Path("/search/{asId}/{lopId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<ApplicationOptionSearchResultDTO> searchApplicationOptions(@PathParam("asId") final String asId, @PathParam("lopId") final String lopId);
+    public List<ApplicationOptionSearchResultDTO> searchApplicationOptions(
+            @PathParam("asId") final String asId, @PathParam("lopId") final String lopId,
+            @QueryParam("baseEducation") final String baseEducation);
 }

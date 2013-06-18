@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl.builder;
 
+import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -28,7 +29,6 @@ import fi.vm.sade.tarjonta.service.resources.HakukohdeResource;
 import fi.vm.sade.tarjonta.service.resources.KomoResource;
 import fi.vm.sade.tarjonta.service.resources.KomotoResource;
 import fi.vm.sade.tarjonta.service.resources.dto.*;
-import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +52,8 @@ public class LOBuilder {
     public static final String MODULE_TYPE_CHILD = "TUTKINTO_OHJELMA";
     public static final String STATE_PUBLISHED = "JULKAISTU";
     public static final String STATE_READY = "VALMIS";
+    public static final String BASE_EDUCATION_KOODISTO_URI = "pohjakoulutustoinenaste";
+
 
     private KomoResource komoResource;
     private KomotoResource komotoResource;
@@ -182,6 +184,16 @@ public class LOBuilder {
                     ao.setAttachmentDeliveryDeadline(hakukohdeDTO.getLiitteidenToimitusPvm());
                     ao.setLastYearApplicantCount(hakukohdeDTO.getEdellisenVuodenHakijatLkm());
                     ao.setSelectionCriteria(getI18nText(hakukohdeDTO.getValintaperustekuvaus()));
+
+                    List<Code> subCodes = koodistoService.searchSubCodes(komotoDTO.getPohjakoulutusVaatimusUri(),
+                            BASE_EDUCATION_KOODISTO_URI);
+                    List<String> baseEducations = Lists.transform(subCodes, new Function<Code, String>() {
+                        @Override
+                        public String apply(Code code) {
+                            return code.getValue();
+                        }
+                    });
+                    ao.setRequiredBaseEducations(baseEducations);
 
                     HakuDTO hakuDTO = hakukohdeResource.getHakuByHakukohdeOID(aoId);
                     ApplicationSystem as = new ApplicationSystem();

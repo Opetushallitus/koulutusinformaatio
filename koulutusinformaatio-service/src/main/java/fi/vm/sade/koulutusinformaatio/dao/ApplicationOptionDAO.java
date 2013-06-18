@@ -35,10 +35,11 @@ public class ApplicationOptionDAO extends BasicDAO<ApplicationOptionEntity, Stri
         super(mongo, morphia, dbName);
     }
 
-    public List<ApplicationOptionEntity> find(final String asId, final String lopId) {
+    public List<ApplicationOptionEntity> find(final String asId, final String lopId, final String baseEducation) {
         Query<ApplicationOptionEntity> query = createQuery();
         query.field("applicationSystem.id").equal(asId);
         query.field("provider").equal(new Key(LearningOpportunityProviderEntity.class, lopId));
+        query.field("requiredBaseEducations").contains(baseEducation);
         return find(query).asList();
     }
 

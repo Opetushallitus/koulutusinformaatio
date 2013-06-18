@@ -59,6 +59,7 @@
                 <bean class="fi.vm.sade.koulutusinformaatio.converter.KoodiTypeToI18nText"/>
                 <bean class="fi.vm.sade.koulutusinformaatio.converter.KoodiTypeToCode"/>
                 <bean class="fi.vm.sade.koulutusinformaatio.converter.OrganisaatioRDTOToProvider"/>
+                <bean class="fi.vm.sade.koulutusinformaatio.converter.CodeUriAndVersionToKoodiUriAndVersionType"/>
             </list>
         </property>
     </bean>

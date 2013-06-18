@@ -51,6 +51,8 @@ public class ApplicationOption {
     // valintaperustekuvaus
     private I18nText selectionCriteria;
     private I18nText prerequisite;
+    // base educations, one of these is required to be able to apply to this application option
+    private List<String> requiredBaseEducations;
 
     public String getId() {
         return id;
@@ -186,6 +188,14 @@ public class ApplicationOption {
 
     public void setPrerequisite(I18nText prerequisite) {
         this.prerequisite = prerequisite;
+    }
+
+    public List<String> getRequiredBaseEducations() {
+        return requiredBaseEducations;
+    }
+
+    public void setRequiredBaseEducations(List<String> requiredBaseEducations) {
+        this.requiredBaseEducations = requiredBaseEducations;
     }
 
     @Override

@@ -54,7 +54,7 @@ public class ApplicationOptionEntity {
     private ParentLOSRefEntity parent;
     private I18nTextEntity selectionCriteria;
     private I18nTextEntity prerequisite;
-
+    private List<String> requiredBaseEducations;
 
     public ApplicationOptionEntity() {
 
@@ -194,5 +194,13 @@ public class ApplicationOptionEntity {
 
     public void setPrerequisite(I18nTextEntity prerequisite) {
         this.prerequisite = prerequisite;
+    }
+
+    public List<String> getRequiredBaseEducations() {
+        return requiredBaseEducations;
+    }
+
+    public void setRequiredBaseEducations(List<String> requiredBaseEducations) {
+        this.requiredBaseEducations = requiredBaseEducations;
     }
 }
