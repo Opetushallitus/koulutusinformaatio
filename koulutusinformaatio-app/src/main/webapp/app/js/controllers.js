@@ -156,7 +156,6 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
             sora: ao.sora,
             teachLang: ao.teachLang,
             prerequisite: ao.prerequisite
-            //buttonsAreDisabled: false
         };
     };
 
@@ -178,6 +177,10 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
         }
 
         return false;
+    };
+
+    $scope.testlog = function() {
+        console.log('test');
     };
 
     $scope.popoverTitle = i18n.t('popover-title');
@@ -285,9 +288,13 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
                 sora: firstAoInList.sora,
                 teachLang: firstAoInList.teachLang,
                 prerequisite: firstAoInList.prerequisite
-                //buttonsAreDisabled: false
             };
         }
+    };
+
+
+    $scope.testlog = function() {
+        console.log('test');
     };
 
     $scope.$watch('parentLO.provider', function(data) {

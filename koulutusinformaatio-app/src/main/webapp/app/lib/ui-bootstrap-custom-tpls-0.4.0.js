@@ -347,8 +347,8 @@ this.options = function( value ) {
         });
 
            attrs.$observe( prefix+'Trigger', function ( val ) {
-            element.unbind( triggers.show );
-            element.unbind( triggers.hide );
+            //element.unbind( triggers.show );
+            //element.unbind( triggers.hide );
 
             triggers = setTriggers( val );
 
