@@ -72,6 +72,9 @@
     "application-period": "Hakuaika (sv)",
     "apply-button-label": "Hae koulutukseen (sv)",
     "add-to-basket-label": "Lisää muistilistalle (sv)",
+    "application-system-active-future": "Hakuaika alkaa (sv)",
+    "application-system-active-past": "Haku päättynyt (sv)",
+    "application-system-active-present": "Haku käynnissä (sv)",
 
     "directly-applicable": "Suoraan haettavissa olevat koulutusohjelmat (sv):",
 
@@ -86,6 +89,7 @@
     "application-basket-fill-form": "Täytä hakulomake (sv)",
     "application-basket-fill-form-notification": "Tässä haussa voit hakea enintään __count__ koulutukseen (sv)",
     "application-basket-empty": "Tyhjennä muistilista (sv)",
+    "application-basket-empty-confirm": "Haluatko varmasti tyhjentää koko muistilistan? (sv)",
 
     "application-basket-popup-title": "Täytä hakulomake (sv)",
     "application-basket-popup-description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. (sv)",
@@ -96,6 +100,8 @@
     "popup-close": "Sulje (sv)",
     "popup-continue": "Jatka (sv)",
 
-    "popover-title": "Koulutus lisätty muistilistalle (sv)",
-    "popover-content": "Katso muistilista (sv)"
+    "popover-title-success": "Koulutus lisätty muistilistalle (sv)",
+    "popover-title-error": "Muistilistalle lisääminen epäonnistui (sv)",
+    "popover-content-error": "Huomioi, että muistilistalle voi lisätä hakukohteita vain yhdellä pohjakoulutuksella. (sv)",
+    "popover-content-link-to-application-basket": "Katso muistilista (sv)"
 }

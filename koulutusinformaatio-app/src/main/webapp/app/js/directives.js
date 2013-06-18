@@ -222,6 +222,12 @@ directive('kiAbsoluteLink', function() {
         templateUrl: 'templates/siblings.html',
         link: function(scope, element, attrs) {
 
+            scope.$watch('childLO', function(data) {
+                if (data && !data.related) {
+                    $(element).remove();
+                }
+            });
+
             scope.siblingClass = function(sibling) {
                 if (sibling.losId == $routeParams.closId && sibling.loiId == $routeParams.cloiId) {
                     return 'disabled';
@@ -343,6 +349,44 @@ directive('kiTimestamp', function() {
             var date = new Date(value);
             element.append(date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear());
         });
+    }
+}).
+
+directive('kiRenderApplicationSystemActive', function() {
+    return {
+        restrict: 'E,A',
+        template: '<span data-ng-switch="active">' +
+                    '<span data-ng-switch-when="future"><span data-ki-i18n="application-system-active-future"></span> <span data-ki-timestamp="{{timestamp}}"></span></span>' +
+                    '<span data-ng-switch-when="past" data-ki-i18n="application-system-active-past"></span>' +
+                    '<span data-ng-switch-when="present"data-ki-i18n="application-system-active-present"></span>' +
+                '</span>',
+        link: function(scope, element, attrs) {
+            var start;
+            var end;
+            attrs.$observe('startDate', function(value) {
+                start = value;
+                update();
+            });
+
+            attrs.$observe('endDate', function(value) {
+                end = value;
+                update();
+            });
+
+            var update = function() {
+                if (start && end) {
+                    var current = new Date().getTime();
+                    if (current < start) {
+                        scope.active = "future";
+                        scope.timestamp = start;
+                    } else if (current > end) {
+                        scope.active = "past";
+                    } else {
+                        scope.active = "present";
+                    }
+                }
+            };
+        }
     }
 }).
 

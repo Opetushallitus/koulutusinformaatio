@@ -103,10 +103,13 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
     };
 
     $scope.emptyApplicationBasket = function() {
-        ApplicationBasketService.empty();
-        $scope.applicationItems = [];
-        $scope.basketIsEmpty = true;
-        $scope.itemCount = ApplicationBasketService.getItemCount();
+        var areyousure = confirm(i18n.t('application-basket-empty-confirm'));
+        if (areyousure) {
+            ApplicationBasketService.empty();
+            $scope.applicationItems = [];
+            $scope.basketIsEmpty = true;
+            $scope.itemCount = ApplicationBasketService.getItemCount();
+        }
     };
 
     $scope.applyButtonIsDisabled = function() {
@@ -130,30 +133,55 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
 /**
  *  Controller for adding applications to application basket
  */
-function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
-    $scope.buttonsAreDisabled = $scope.applicationOptionId && $scope.applicationOptionName ? false : true;
+function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, UtilityService) {
+    //$scope.buttonsAreDisabled = $scope.applicationOptionId && $scope.applicationOptionName ? false : true;
 
-    $scope.addToBasket = function(aoId) {
-        if ($scope.applicationOptionId) {
-            ApplicationBasketService.addItem($scope.applicationOptionId);
+    $scope.addToBasket = function() {
+        var basketType = ApplicationBasketService.getType();
+        if (!basketType || $scope.selectedAo.prerequisite == basketType) {
+            ApplicationBasketService.addItem($scope.selectedAo.id, $scope.selectedAo.prerequisite);
+            $scope.popoverTitle = i18n.t('popover-title-success');
+            $scope.popoverContent = "<a href='#/muistilista'>" + i18n.t('popover-content-link-to-application-basket') + "</a>";
+        } else {
+            $scope.popoverTitle = i18n.t('popover-title-error');
+            $scope.popoverContent = "<div>" + i18n.t('popover-content-error') + "</div><a href='#/muistilista'>" + i18n.t('popover-content-link-to-application-basket') + "</a>";
         }
-    }
+    };
 
     $scope.changeValue = function(aoId, aoName, aoSora, aoTeachLang) {
-        $scope.applicationOptionName = aoName;
-        $scope.applicationOptionId = aoId;
-        $scope.aoSora = aoSora;
-        $scope.aoTeachLang = aoTeachLang;
-        $scope.buttonsAreDisabled = false;
-    }
+        var ao = UtilityService.getApplicationOptionById(aoId, $scope.parentLO.applicationOptions);
+        $scope.selectedAo = {
+            name: ao.name,
+            id: ao.id,
+            sora: ao.sora,
+            teachLang: ao.teachLang,
+            prerequisite: ao.prerequisite
+        };
+    };
 
     $scope.subtabClass = function(isFirst) {
         return isFirst ? 'tab current' : 'tab';
-    }
+    };
 
     $scope.subtabContentStyle = function(isFirst) {
         return isFirst ? {'display': 'block'} : {}; 
-    }
+    };
+
+    $scope.applicationSystemIsActive = function() {
+        if ($scope.parentLO && $scope.parentLO.applicationSystem && $scope.parentLO.applicationSystem.applicationDates) {
+            var start = $scope.parentLO.applicationSystem.applicationDates.startDate;
+            var end = $scope.parentLO.applicationSystem.applicationDates.endDate;
+            var current = new Date().getTime();
+
+            return (current >= start && current <= end);
+        }
+
+        return false;
+    };
+
+    $scope.testlog = function() {
+        console.log('test');
+    };
 
     $scope.popoverTitle = i18n.t('popover-title');
     $scope.popoverContent = "<a href='#/muistilista'>" + i18n.t('popover-content') + "</a>";
@@ -200,7 +228,7 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
 /**
  *  Controller for info views (parent and child)
  */
- function InfoCtrl($scope, $routeParams, $location, ParentLearningOpportunityService, ChildLearningOpportunityService, SearchService, ParentLODataService, TitleService, LearningOpportunityProviderPictureService) {
+ function InfoCtrl($scope, $routeParams, $location, ParentLearningOpportunityService, ChildLearningOpportunityService, SearchService, ParentLODataService, TitleService, LearningOpportunityProviderPictureService, UtilityService) {
     $scope.queryString = SearchService.getTerm();
     $scope.descriptionLanguage = 'fi';
 
@@ -228,16 +256,14 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
                 return ao.applicationSystem.id;
             }
         }
-    }
+    };
 
-    var getFirstApplicationOptionId = function() {
+    var getFirstApplicationOption = function() {
         if (hasApplicationOptions()) {
             var ao = $scope.parentLO.applicationOptions[0];
-            if (ao && ao.id) {
-                return ao.id;
-            }
+            return ao;
         }
-    }
+    };
 
     var hasApplicationOptions = function() {
         if ($scope.parentLO && $scope.parentLO.applicationOptions) {
@@ -245,6 +271,30 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
         } else {
             return false;
         } 
+    };
+
+    var initializeParent = function() {
+        setTitle($scope.parentLO, $scope.childLO);
+        $scope.hasApplicationOptions = hasApplicationOptions();
+
+        $scope.asId = getApplicationSystemId();
+
+        // select first ao in list
+        var firstAoInList = getFirstApplicationOption();
+        if (firstAoInList) {
+            $scope.selectedAo = {
+                name: firstAoInList.name,
+                id: firstAoInList.id,
+                sora: firstAoInList.sora,
+                teachLang: firstAoInList.teachLang,
+                prerequisite: firstAoInList.prerequisite
+            };
+        }
+    };
+
+
+    $scope.testlog = function() {
+        console.log('test');
     };
 
     $scope.$watch('parentLO.provider', function(data) {
@@ -262,21 +312,11 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService) {
             ParentLearningOpportunityService.query({parentId: $routeParams.parentId, language: $scope.descriptionLanguage}).then(function(result) {
                 $scope.parentLO = result;
                 ParentLODataService.setParentLOData(result);
-                setTitle($scope.parentLO, $scope.childLO);
-                $scope.hasApplicationOptions = hasApplicationOptions();
-
-                $scope.asId = getApplicationSystemId();
-                //$scope.applicationOptionId = getFirstApplicationOptionId();
-                
-
+                initializeParent();
             });
         } else {
             $scope.parentLO = ParentLODataService.getParentLOData();
-            setTitle($scope.parentLO, $scope.childLO);
-            $scope.hasApplicationOptions = hasApplicationOptions();
-
-            $scope.asId = getApplicationSystemId();
-            //$scope.applicationOptionId = getFirstApplicationOptionId();
+            initializeParent();
         }
 
         if (isChild()) {

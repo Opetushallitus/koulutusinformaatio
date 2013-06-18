@@ -2,9 +2,11 @@
 <section class="content-container margin-bottom-2 grid16-16">
     <div ki-breadcrumb id="breadcrumb"></div>
     <section id="main-info">
-        <span class="block"><span class="bold">{{parentLO.provider.name}}</span></span>
-        <span class="block">{{parentLO.educationDomain}}<span class="hidden">, lähihoitaja (tutkintonimike)</span></span>
-        <h1>{{parentLO.name}} {{parentLO.credits.creditValue}} {{parentLO.credits.creditUnit}}</h1>
+        <div class="margin-bottom-3">
+            <h4 class="margin-0">{{parentLO.provider.name}}</h4>
+            <span class="block">{{parentLO.educationDomain}}<span class="hidden">, lähihoitaja (tutkintonimike)</span></span>
+        </div>
+        <h1 class="margin-top-3">{{parentLO.name}} {{parentLO.credits.creditValue}} {{parentLO.credits.creditUnit}}</h1>
     </section>
     <div class="tabs main clear">
         <a class="tab current" data-tabs-group="koulutus" data-tabs-id="kuvaus" ng-click="changeMainTab('kuvaus')"><span class="h2" data-ki-i18n="lo-description"></span></a>
