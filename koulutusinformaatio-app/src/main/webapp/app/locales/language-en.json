@@ -89,6 +89,7 @@
     "application-basket-fill-form": "Täytä hakulomake (en)",
     "application-basket-fill-form-notification": "Tässä haussa voit hakea enintään __count__ koulutukseen (en)",
     "application-basket-empty": "Tyhjennä muistilista (en)",
+    "application-basket-empty-confirm": "Haluatko varmasti tyhjentää koko muistilistan? (en)",
 
     "application-basket-popup-title": "Täytä hakulomake (en)",
     "application-basket-popup-description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. (en)",
@@ -99,6 +100,8 @@
     "popup-close": "Sulje (en)",
     "popup-continue": "Jatka (en)",
 
-    "popover-title": "Koulutus lisätty muistilistalle (en)",
-    "popover-content": "Katso muistilista (en)"
+    "popover-title-success": "Koulutus lisätty muistilistalle (en)",
+    "popover-title-error": "Muistilistalle lisääminen epäonnistui (en)",
+    "popover-content-error": "Huomioi, että muistilistalle voi lisätä hakukohteita vain yhdellä pohjakoulutuksella. (en)",
+    "popover-content-link-to-application-basket": "Katso muistilista (en)"
 }

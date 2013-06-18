@@ -103,10 +103,13 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
     };
 
     $scope.emptyApplicationBasket = function() {
-        ApplicationBasketService.empty();
-        $scope.applicationItems = [];
-        $scope.basketIsEmpty = true;
-        $scope.itemCount = ApplicationBasketService.getItemCount();
+        var areyousure = confirm(i18n.t('application-basket-empty-confirm'));
+        if (areyousure) {
+            ApplicationBasketService.empty();
+            $scope.applicationItems = [];
+            $scope.basketIsEmpty = true;
+            $scope.itemCount = ApplicationBasketService.getItemCount();
+        }
     };
 
     $scope.applyButtonIsDisabled = function() {
@@ -131,35 +134,39 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
  *  Controller for adding applications to application basket
  */
 function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, UtilityService) {
-    $scope.buttonsAreDisabled = $scope.applicationOptionId && $scope.applicationOptionName ? false : true;
+    //$scope.buttonsAreDisabled = $scope.applicationOptionId && $scope.applicationOptionName ? false : true;
 
     $scope.addToBasket = function() {
-        if ($scope.applicationOptionId) {
-            ApplicationBasketService.addItem($scope.applicationOptionId);
+        var basketType = ApplicationBasketService.getType();
+        if (!basketType || $scope.selectedAo.prerequisite == basketType) {
+            ApplicationBasketService.addItem($scope.selectedAo.id, $scope.selectedAo.prerequisite);
+            $scope.popoverTitle = i18n.t('popover-title-success');
+            $scope.popoverContent = "<a href='#/muistilista'>" + i18n.t('popover-content-link-to-application-basket') + "</a>";
+        } else {
+            $scope.popoverTitle = i18n.t('popover-title-error');
+            $scope.popoverContent = "<div>" + i18n.t('popover-content-error') + "</div><a href='#/muistilista'>" + i18n.t('popover-content-link-to-application-basket') + "</a>";
         }
-    }
+    };
 
     $scope.changeValue = function(aoId, aoName, aoSora, aoTeachLang) {
-        /*
-        console.log('change value');
-        $scope.selectedAo = UtilityService.getApplicationOptionById(aoId, $scope.parentLO.applicationOptions);
-        console.log($scope.selectedAo);
-        */
-        
-        $scope.applicationOptionName = aoName;
-        $scope.applicationOptionId = aoId;
-        $scope.aoSora = aoSora;
-        $scope.aoTeachLang = aoTeachLang;
-        $scope.buttonsAreDisabled = false;
-    }
+        var ao = UtilityService.getApplicationOptionById(aoId, $scope.parentLO.applicationOptions);
+        $scope.selectedAo = {
+            name: ao.name,
+            id: ao.id,
+            sora: ao.sora,
+            teachLang: ao.teachLang,
+            prerequisite: ao.prerequisite
+            //buttonsAreDisabled: false
+        };
+    };
 
     $scope.subtabClass = function(isFirst) {
         return isFirst ? 'tab current' : 'tab';
-    }
+    };
 
     $scope.subtabContentStyle = function(isFirst) {
         return isFirst ? {'display': 'block'} : {}; 
-    }
+    };
 
     $scope.applicationSystemIsActive = function() {
         if ($scope.parentLO && $scope.parentLO.applicationSystem && $scope.parentLO.applicationSystem.applicationDates) {
@@ -171,7 +178,7 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
         }
 
         return false;
-    }
+    };
 
     $scope.popoverTitle = i18n.t('popover-title');
     $scope.popoverContent = "<a href='#/muistilista'>" + i18n.t('popover-content') + "</a>";
@@ -246,7 +253,7 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
                 return ao.applicationSystem.id;
             }
         }
-    }
+    };
 
     var getFirstApplicationOption = function() {
         if (hasApplicationOptions()) {
@@ -254,21 +261,6 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
             return ao;
         }
     };
-
-/*
-    var getApplicationOptionById = function(aoId) {
-        if (hasApplicationOptions()) {
-            var aos = $scope.parentLO.applicationOptions;
-            for (var index in aos) {
-                if (aos.hasOwnProperty(index)) {
-                    if (aos[index].id == aoId) {
-                        return aos[index];
-                    }
-                }
-            }
-        }
-    };
-*/
 
     var hasApplicationOptions = function() {
         if ($scope.parentLO && $scope.parentLO.applicationOptions) {
@@ -286,12 +278,15 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
 
         // select first ao in list
         var firstAoInList = getFirstApplicationOption();
-        $scope.selectedAo = firstAoInList;
         if (firstAoInList) {
-            $scope.applicationOptionId = firstAoInList.id;
-            $scope.applicationOptionName = firstAoInList.name;
-            $scope.aoSora = firstAoInList.sora;
-            $scope.aoTeachLang = firstAoInList.teachLang;
+            $scope.selectedAo = {
+                name: firstAoInList.name,
+                id: firstAoInList.id,
+                sora: firstAoInList.sora,
+                teachLang: firstAoInList.teachLang,
+                prerequisite: firstAoInList.prerequisite
+                //buttonsAreDisabled: false
+            };
         }
     };
 
