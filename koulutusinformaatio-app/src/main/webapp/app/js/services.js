@@ -14,9 +14,9 @@ angular.module('kiApp.services', ['ngResource']).
 */
 service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', function($http, $timeout, $q) {
     var transformData = function(result) {
-        for (var index in result) {
-            if (result.hasOwnProperty(index)) {
-                var resItem = result[index];
+        for (var index in result.results) {
+            if (result.results.hasOwnProperty(index)) {
+                var resItem = result.results[index];
                 if (resItem.parentId) {
                     resItem.linkHref = '#/info/' + resItem.parentId + '/' + resItem.losId + '/' + resItem.id;
                 } else {
@@ -30,7 +30,12 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', function
         query: function(params) {
             var deferred = $q.defer();
 
-            $http.get('../lo/search/' + params.queryString).
+            $http.get('../lo/search/' + params.queryString, {
+                params: {
+                    start: params.start,
+                    rows: params.rows
+                }
+            }).
             success(function(result) {
                 transformData(result);
                 deferred.resolve(result);

@@ -1,7 +1,7 @@
 <!-- <div ng-include src="'partials/pageheader.html'"></div> -->
 <section class="content-container margin-bottom-2">
     <div class="grid16-11" id="search-results" >
-        <div ng-switch="loResult.length">
+        <div ng-switch="loResult.totalCount">
             <div ng-switch-when="0">
                 <div class="notification info">
                     <h3 data-ki-i18n="no-search-results"></h3>
@@ -10,7 +10,7 @@
             </div>
             <div ng-switch-default>
                 <ul>
-                    <li ng-repeat="lo in loResult">
+                    <li ng-repeat="lo in loResult.results">
                         <div>
                             <div class="result-content">
                                 <a href="{{lo.linkHref}}">{{lo.name}}</a><br />
@@ -22,6 +22,18 @@
                         <!--<div class="clear"></div>-->
                     </li>
                 </ul>
+                <div data-ng-show="showPagination">
+                    <div data-pagination
+                        data-on-select-page="changePage(page)" 
+                        data-num-pages="maxPages" 
+                        data-current-page="currentPage" 
+                        data-max-size="10"
+                        data-first-text="<<"
+                        data-next-text=">"
+                        data-previous-text="<"
+                        data-last-text=">>">
+                    </div>
+                </div>
             </div>
         </div>
     </div>

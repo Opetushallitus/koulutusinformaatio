@@ -40,6 +40,12 @@ kiApp.run(['LanguageService', function(LanguageService) {
     });
 }]);
 
+kiApp.constant('kiAppConstants', {
+    searchResultsPerPage: 30,
+    searchResultsStartPage: 1,
+    applicationBasketLimit: 5
+});
+
 /*
 kiApp.run(['$location', '$rootScope', function($location, $rootScope) {
     $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {

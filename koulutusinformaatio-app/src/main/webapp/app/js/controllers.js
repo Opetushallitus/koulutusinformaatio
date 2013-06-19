@@ -58,11 +58,11 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
 /**
  *  Controller for application basket
  */
-function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, ApplicationBasketService, SearchService) {
+function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, ApplicationBasketService, SearchService, kiAppConstants) {
     var title = i18n.t('title-application-basket');
     //TitleService.setTitle(title);
 
-    var basketLimit = 5; // TODO: get this from application data?
+    var basketLimit = kiAppConstants.applcationBasketLimit; // TODO: get this from application data?
 
     $scope.queryString = SearchService.getTerm();
     $scope.notificationText = i18n.t('application-basket-fill-form-notification', {count: basketLimit});
@@ -205,20 +205,13 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
 /**
  *  Controller for search functionality 
  */
- function SearchCtrl($scope, $routeParams, $location, SearchLearningOpportunityService, SearchService, TitleService) {
+ function SearchCtrl($scope, $routeParams, $location, SearchLearningOpportunityService, SearchService, TitleService, kiAppConstants) {
     $scope.queryString = SearchService.getTerm();
+    var resultsPerPage = kiAppConstants.searchResultsPerPage;
+    $scope.currentPage = kiAppConstants.searchResultsStartPage;
 
     var title = i18n.t('title-search-results');
     TitleService.setTitle(title);
-
-    if ($routeParams.queryString) {
-        SearchLearningOpportunityService.query({queryString: $routeParams.queryString}).then(function(result) {
-            $scope.loResult = result;
-        });
-        $scope.queryString = $routeParams.queryString;
-        $scope.showFilters = $scope.queryString ? true : false;
-        SearchService.setTerm($routeParams.queryString);
-    }
 
     // Perform search using LearningOpportunity service
     $scope.search = function() {
@@ -228,12 +221,27 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
         }
     };
 
-    // launch navigation script
-    /*
-    $scope.initNavigation = function() {
-        OPH.Common.initDropdownMenu();
+    $scope.changePage = function(page) {
+        $scope.currentPage = page;
+        $('html, body').scrollTop($('#search-results').offset().top); // scroll to top of list
     };
-    */
+
+    $scope.$watch('currentPage', function(value) {
+        if ($routeParams.queryString) {
+            SearchLearningOpportunityService.query({
+                queryString: $routeParams.queryString,
+                start: (value-1) * resultsPerPage,
+                rows: resultsPerPage}).then(function(result) {
+                    $scope.loResult = result;
+                    $scope.maxPages = Math.ceil(result.totalCount / resultsPerPage);
+                    $scope.showPagination = $scope.maxPages > 1;
+            });
+
+            $scope.queryString = $routeParams.queryString;
+            $scope.showFilters = $scope.queryString ? true : false;
+            SearchService.setTerm($routeParams.queryString);
+        }
+    });
 
     $scope.$on('$viewContentLoaded', function() {
         OPH.Common.initHeader();

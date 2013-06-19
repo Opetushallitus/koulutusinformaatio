@@ -14,6 +14,10 @@
 
     "no-search-results": "Ei hakutuloksia",
     "no-search-results-info": "Hakusanallasi ei löytynyt yhtään hakutulosta. Ole hyvä ja yritä toisella hakusanalla.",
+    "search-pagination-first": "Ensimmäinen",
+    "search-pagination-last": "Viimeinen",
+    "search-pagination-next": "Seuraava",
+    "search-pagination-previous": "Edellinen",
 
     "filter-search-title": "Pohjakoulutus",
     "filter-search-subtitle": "Valitse ylin suorittamasi koulutus",
