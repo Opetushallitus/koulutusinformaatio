@@ -24,9 +24,9 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunityEntity;
 /**
  * @author Mikko Majapuro
  */
-public class ChildLearningOpportunityInstanceDAO extends BasicDAO<ChildLearningOpportunityEntity, String> {
+public class ChildLearningOpportunityDAO extends BasicDAO<ChildLearningOpportunityEntity, String> {
 
-    public ChildLearningOpportunityInstanceDAO(Mongo mongo, Morphia morphia, String dbName) {
+    public ChildLearningOpportunityDAO(Mongo mongo, Morphia morphia, String dbName) {
         super(mongo, morphia, dbName);
     }
 }

@@ -9,8 +9,6 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunitySpecificationEntity;
 import fi.vm.sade.koulutusinformaatio.domain.*;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLO;
-import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 /**
@@ -32,7 +29,7 @@ public class EducationDataUpdateServiceImplTest {
     private ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO;
     private ApplicationOptionDAO applicationOptionDAO;
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
-    private ChildLearningOpportunityInstanceDAO childLearningOpportunityInstanceDAO;
+    private ChildLearningOpportunityDAO childLearningOpportunityDAO;
     private ChildLearningOpportunitySpecificationDAO childLearningOpportunitySpecificationDAO;
     private PictureDAO pictureDAO;
     private DBCollection ploCollection;
@@ -65,8 +62,8 @@ public class EducationDataUpdateServiceImplTest {
         when(learningOpportunityProviderDAO.getCollection()).thenReturn(lopCollection);
 
         cloiCollection = mock(DBCollection.class);
-        childLearningOpportunityInstanceDAO = mock(ChildLearningOpportunityInstanceDAO.class);
-        when(childLearningOpportunityInstanceDAO.getCollection()).thenReturn(cloiCollection);
+        childLearningOpportunityDAO = mock(ChildLearningOpportunityDAO.class);
+        when(childLearningOpportunityDAO.getCollection()).thenReturn(cloiCollection);
 
         closCollection = mock(DBCollection.class);
         childLearningOpportunitySpecificationDAO = mock(ChildLearningOpportunitySpecificationDAO.class);
@@ -77,7 +74,7 @@ public class EducationDataUpdateServiceImplTest {
         pictureDAO = mock(PictureDAO.class);
 
         service = new EducationDataUpdateServiceImpl( modelMapper, parentLearningOpportunitySpecificationDAO,
-               applicationOptionDAO, learningOpportunityProviderDAO, childLearningOpportunitySpecificationDAO, childLearningOpportunityInstanceDAO,
+               applicationOptionDAO, learningOpportunityProviderDAO, childLearningOpportunitySpecificationDAO, childLearningOpportunityDAO,
                 objectBuilder, pictureDAO);
     }
 

@@ -50,14 +50,14 @@ public class ParentLearningOpportunitySpecificationDAOTest {
     @Autowired
     private ChildLearningOpportunitySpecificationDAO childLearningOpportunitySpecificationDAO;
     @Autowired
-    private ChildLearningOpportunityInstanceDAO childLearningOpportunityInstanceDAO;
+    private ChildLearningOpportunityDAO childLearningOpportunityDAO;
 
     @After
     public void removeTestData() {
         parentLearningOpportunitySpecificationDAO.getCollection().drop();
         applicationOptionDAO.getCollection().drop();
         learningOpportunityProviderDAO.getCollection().drop();
-        childLearningOpportunityInstanceDAO.getCollection().drop();
+        childLearningOpportunityDAO.getCollection().drop();
         childLearningOpportunitySpecificationDAO.getCollection().drop();
     }
 
@@ -66,7 +66,7 @@ public class ParentLearningOpportunitySpecificationDAOTest {
         assertEquals(0, parentLearningOpportunitySpecificationDAO.count());
         assertEquals(0, applicationOptionDAO.count());
         assertEquals(0, learningOpportunityProviderDAO.count());
-        assertEquals(0, childLearningOpportunityInstanceDAO.count());
+        assertEquals(0, childLearningOpportunityDAO.count());
         assertEquals(0, childLearningOpportunitySpecificationDAO.count());
 
         ParentLearningOpportunitySpecificationEntity entity = new ParentLearningOpportunitySpecificationEntity();
@@ -116,7 +116,7 @@ public class ParentLearningOpportunitySpecificationDAOTest {
         learningOpportunityProviderDAO.save(provider);
         applicationOptionDAO.save(ao);
 
-        childLearningOpportunityInstanceDAO.save(childLOI);
+        childLearningOpportunityDAO.save(childLOI);
         childLearningOpportunitySpecificationDAO.save(childLOS);
         parentLearningOpportunitySpecificationDAO.save(entity);
 

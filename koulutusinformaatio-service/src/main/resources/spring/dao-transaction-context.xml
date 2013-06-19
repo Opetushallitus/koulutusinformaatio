@@ -60,7 +60,7 @@
         <constructor-arg value="${mongo.transaction-db.name}"/>
     </bean>
 
-    <bean id="childLOITransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityInstanceDAO">
+    <bean id="childLOITransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityDAO">
         <constructor-arg>
             <ref bean="mongo"/>
         </constructor-arg>

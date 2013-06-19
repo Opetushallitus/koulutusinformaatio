@@ -41,8 +41,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
     private ParentLearningOpportunitySpecificationDAO parentLOSTransactionDAO;
     private ApplicationOptionDAO applicationOptionTransactionDAO;
     private LearningOpportunityProviderDAO learningOpportunityProviderTransactionDAO;
-    private ChildLearningOpportunitySpecificationDAO childLOSTransactionDAO;
-    private ChildLearningOpportunityInstanceDAO childLOITransactionDAO;
+    private ChildLearningOpportunityDAO childLOITransactionDAO;
     private KoulutusinformaatioObjectBuilder koulutusinformaatioObjectBuilder;
     private PictureDAO pictureTransactionDAO;
 
@@ -50,15 +49,13 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
     public EducationDataUpdateServiceImpl(ModelMapper modelMapper, ParentLearningOpportunitySpecificationDAO parentLOSTransactionDAO,
                                           ApplicationOptionDAO applicationOptionTransactionDAO,
                                           LearningOpportunityProviderDAO learningOpportunityProviderTransactionDAO,
-                                          ChildLearningOpportunitySpecificationDAO childLOSTransactionDAO,
-                                          ChildLearningOpportunityInstanceDAO childLOITransactionDAO,
+                                          ChildLearningOpportunityDAO childLOITransactionDAO,
                                           KoulutusinformaatioObjectBuilder koulutusinformaatioObjectBuilder,
                                           PictureDAO pictureTransactionDAO) {
         this.modelMapper = modelMapper;
         this.parentLOSTransactionDAO = parentLOSTransactionDAO;
         this.applicationOptionTransactionDAO = applicationOptionTransactionDAO;
         this.learningOpportunityProviderTransactionDAO = learningOpportunityProviderTransactionDAO;
-        this.childLOSTransactionDAO = childLOSTransactionDAO;
         this.childLOITransactionDAO = childLOITransactionDAO;
         this.koulutusinformaatioObjectBuilder = koulutusinformaatioObjectBuilder;
         this.pictureTransactionDAO = pictureTransactionDAO;

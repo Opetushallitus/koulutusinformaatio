@@ -46,7 +46,7 @@ public class EducationDataQueryServiceImplTest {
     private ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO;
     private ApplicationOptionDAO applicationOptionDAO;
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
-    private ChildLearningOpportunityInstanceDAO childLearningOpportunityInstanceDAO;
+    private ChildLearningOpportunityDAO childLearningOpportunityDAO;
     private ChildLearningOpportunitySpecificationDAO childLearningOpportunitySpecificationDAO;
     private PictureDAO pictureDAO;
     private DataStatusDAO dataStatusDAO;
@@ -80,8 +80,8 @@ public class EducationDataQueryServiceImplTest {
         when(learningOpportunityProviderDAO.getCollection()).thenReturn(lopCollection);
 
         cloiCollection = mock(DBCollection.class);
-        childLearningOpportunityInstanceDAO = mock(ChildLearningOpportunityInstanceDAO.class);
-        when(childLearningOpportunityInstanceDAO.getCollection()).thenReturn(cloiCollection);
+        childLearningOpportunityDAO = mock(ChildLearningOpportunityDAO.class);
+        when(childLearningOpportunityDAO.getCollection()).thenReturn(cloiCollection);
 
         closCollection = mock(DBCollection.class);
         childLearningOpportunitySpecificationDAO = mock(ChildLearningOpportunitySpecificationDAO.class);
@@ -93,7 +93,7 @@ public class EducationDataQueryServiceImplTest {
         pictureDAO = mock(PictureDAO.class);
 
         service = new EducationDataQueryServiceImpl(parentLearningOpportunitySpecificationDAO,
-                applicationOptionDAO, modelMapper, childLearningOpportunitySpecificationDAO, childLearningOpportunityInstanceDAO,
+                applicationOptionDAO, modelMapper, childLearningOpportunitySpecificationDAO, childLearningOpportunityDAO,
                 objectBuilder, dataStatusDAO, pictureDAO);
     }
 

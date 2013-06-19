@@ -42,7 +42,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     private ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO;
     private ApplicationOptionDAO applicationOptionDAO;
     private ChildLearningOpportunitySpecificationDAO childLearningOpportunitySpecificationDAO;
-    private ChildLearningOpportunityInstanceDAO childLearningOpportunityInstanceDAO;
+    private ChildLearningOpportunityDAO childLearningOpportunityDAO;
     private DataStatusDAO dataStatusDAO;
     private ModelMapper modelMapper;
     private KoulutusinformaatioObjectBuilder koulutusinformaatioObjectBuilder;
@@ -52,14 +52,14 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     public EducationDataQueryServiceImpl(ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO,
                                          ApplicationOptionDAO applicationOptionDAO, ModelMapper modelMapper,
                                          ChildLearningOpportunitySpecificationDAO childLearningOpportunitySpecificationDAO,
-                                         ChildLearningOpportunityInstanceDAO childLearningOpportunityInstanceDAO,
+                                         ChildLearningOpportunityDAO childLearningOpportunityDAO,
                                          KoulutusinformaatioObjectBuilder koulutusinformaatioObjectBuilder,
                                          DataStatusDAO dataStatusDAO, PictureDAO pictureDAO) {
         this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;
         this.modelMapper = modelMapper;
         this.childLearningOpportunitySpecificationDAO = childLearningOpportunitySpecificationDAO;
-        this.childLearningOpportunityInstanceDAO = childLearningOpportunityInstanceDAO;
+        this.childLearningOpportunityDAO = childLearningOpportunityDAO;
         this.koulutusinformaatioObjectBuilder = koulutusinformaatioObjectBuilder;
         this.dataStatusDAO = dataStatusDAO;
         this.pictureDAO = pictureDAO;
@@ -133,7 +133,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     }
 
     private ChildLearningOpportunityEntity getChildLOI(String childLoiId) throws ResourceNotFoundException {
-        ChildLearningOpportunityEntity cloi = childLearningOpportunityInstanceDAO.get(childLoiId);
+        ChildLearningOpportunityEntity cloi = childLearningOpportunityDAO.get(childLoiId);
         if (cloi == null) {
             throw new ResourceNotFoundException("Child learning opportunity instance not found: " + childLoiId);
         }

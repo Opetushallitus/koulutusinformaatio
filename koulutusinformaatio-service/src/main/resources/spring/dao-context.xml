@@ -70,7 +70,7 @@
         <constructor-arg value="${mongo.db.name}"/>
     </bean>
 
-    <bean id="childLearningOpportunityInstanceDAO" class="fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityInstanceDAO">
+    <bean id="childLearningOpportunityDAO" class="fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityDAO">
         <constructor-arg>
             <ref bean="mongo"/>
         </constructor-arg>
