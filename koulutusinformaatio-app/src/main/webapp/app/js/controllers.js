@@ -288,9 +288,18 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
         } 
     };
 
+    var showApplicationRadioSelection = function() {
+        if (hasApplicationOptions()) {
+            return $scope.parentLO.applicationOptions.length == 1 ? false : true;
+        }
+
+        return true;
+    }
+
     var initializeParent = function() {
         setTitle($scope.parentLO, $scope.childLO);
         $scope.hasApplicationOptions = hasApplicationOptions();
+        $scope.showApplicationRadioSelection = showApplicationRadioSelection() ? '' : 'hidden';
 
         $scope.asId = getApplicationSystemId();
 

@@ -2179,6 +2179,7 @@ label, .label {
     background: -ms-linear-gradient(top, whitesmoke, white);
     background: -o-linear-gradient(top, whitesmoke, white); }
 .tabs.sub {
+  display: inline-block;
   padding: 1em 0; }
   .tabs.sub .tab {
     display: inline; }
