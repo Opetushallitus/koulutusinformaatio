@@ -53,29 +53,28 @@ public class IndexerServiceImpl implements IndexerService {
         providerDoc.addField("id", provider.getId());
         providerDoc.addField("name", provider.getName().getTranslations().get("fi"));
 
-
-        for (ChildLOS child : parent.getChildren()) {
-            for (ChildLOI loi : child.getChildLOIs()) {
-                SolrInputDocument childLOIDoc = new SolrInputDocument();
-                childLOIDoc.addField("id", loi.getId());
-                String loiName = loi.getName() != null ? loi.getName().getTranslations().get("fi") : "Ei nimeä";
-                childLOIDoc.addField("name", loiName);
-                for (I18nText i18n : loi.getProfessionalTitles()) {
-                    childLOIDoc.addField("professionalTitles", i18n.getTranslations().get("fi"));
+        List<ParentLOI> lois = parent.getLois();
+        for (ParentLOI loi : lois) {
+            for (ChildLearningOpportunity childLO : loi.getChildren()) {
+                SolrInputDocument childLODoc = new SolrInputDocument();
+                childLODoc.addField("id", childLO.getName());
+                childLODoc.addField("name", childLO.getName());
+                for (I18nText i18n : childLO.getProfessionalTitles()) {
+                    childLODoc.addField("professionalTitles", i18n.getTranslations().get("fi"));
                 }
-                childLOIDoc.addField("lopId", provider.getId());
-                childLOIDoc.addField("lopName", provider.getName().getTranslations().get("fi"));
-                childLOIDoc.addField("lopAddress", provider.getVisitingAddress().getPostOffice());
-                childLOIDoc.addField("parentId", parent.getId());
-                childLOIDoc.addField("losId", child.getId());
-
-                if (loi.getApplicationSystemId() != null) {
-                    providerDoc.addField("asId", loi.getApplicationSystemId());
+                childLODoc.addField("lopId", provider.getId());
+                childLODoc.addField("lopName", provider.getName().getTranslations().get("fi"));
+                childLODoc.addField("lopAddress", provider.getVisitingAddress().getPostOffice());
+                childLODoc.addField("parentId", parent.getId());
+                if (childLO.getApplicationSystemIds() != null) {
+                    for (String asId : childLO.getApplicationSystemIds()) {
+                        providerDoc.addField("asId", asId);
+                    }
                 }
-
-                docs.add(childLOIDoc);
+                docs.add(childLODoc);
             }
         }
+
         providerDocs.add(providerDoc);
         lopUpdateHttpSolrServer.add(providerDocs);
         loUpdateHttpSolrServer.add(docs);

@@ -1,5 +1,6 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.mongodb.DBCollection;
 import fi.vm.sade.koulutusinformaatio.converter.KoulutusinformaatioObjectBuilder;
@@ -10,6 +11,7 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunitySpecif
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.modelmapper.ModelMapper;
@@ -92,21 +94,19 @@ public class EducationDataUpdateServiceImplTest {
         plo.setProvider(lop);
         plo.setId("1.2.3");
         plo.setApplicationOptions(applicationOptions);
-        ChildLOS clo = new ChildLOS();
-        clo.setId("2.2.2");
 
-        ChildLOI cloi = new ChildLOI();
-        cloi.setId("5.7.9");
-        cloi.setApplicationSystemId("1.2.3.4.5");
-        cloi.setApplicationOption(ao);
+        ParentLOI parentLOI = new ParentLOI();
+        parentLOI.setId("2345");
+        parentLOI.setPrerequisite(TestUtil.createI18nText("Peruskoulu", "Peruskoulu", "Peruskoulu"));
 
-        List<ChildLOI> childLOIs = new ArrayList<ChildLOI>();
-        childLOIs.add(cloi);
-        clo.setChildLOIs(childLOIs);
+        ChildLearningOpportunity clo = new ChildLearningOpportunity();
+        clo.setId("5.7.9");
+        clo.setApplicationSystemIds(Lists.newArrayList("1.2.3.4.5"));
+        clo.setApplicationOptions(Lists.newArrayList(ao));
 
-        List<ChildLOS> children = new ArrayList<ChildLOS>();
-        children.add(clo);
-        plo.setChildren(children);
+        parentLOI.setChildren(Lists.newArrayList(clo));
+
+        plo.setLois(Lists.newArrayList(parentLOI));
 
         service.save(plo);
         verify(parentLearningOpportunitySpecificationDAO, times(1)).save(any(ParentLearningOpportunitySpecificationEntity.class));
