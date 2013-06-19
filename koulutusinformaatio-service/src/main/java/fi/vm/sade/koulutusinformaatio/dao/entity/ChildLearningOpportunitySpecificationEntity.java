@@ -19,7 +19,6 @@ package fi.vm.sade.koulutusinformaatio.dao.entity;
 import com.google.code.morphia.annotations.Embedded;
 import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Id;
-import com.google.code.morphia.annotations.Reference;
 
 import java.util.List;
 
@@ -33,16 +32,6 @@ public class ChildLearningOpportunitySpecificationEntity {
     private String id;
     @Embedded
     private I18nTextEntity name;
-    @Embedded
-    private I18nTextEntity qualification;
-    @Embedded
-    private I18nTextEntity degreeTitle;
-    @Embedded
-    private I18nTextEntity degreeGoal;
-    @Reference
-    private List<ChildLearningOpportunityInstanceEntity> childLOIs;
-    @Embedded
-    private ParentLOSRefEntity parent;
 
     public ChildLearningOpportunitySpecificationEntity() {
     }
@@ -87,11 +76,11 @@ public class ChildLearningOpportunitySpecificationEntity {
         this.degreeGoal = degreeGoal;
     }
 
-    public List<ChildLearningOpportunityInstanceEntity> getChildLOIs() {
+    public List<ChildLearningOpportunityEntity> getChildLOIs() {
         return childLOIs;
     }
 
-    public void setChildLOIs(List<ChildLearningOpportunityInstanceEntity> childLOIs) {
+    public void setChildLOIs(List<ChildLearningOpportunityEntity> childLOIs) {
         this.childLOIs = childLOIs;
     }
 

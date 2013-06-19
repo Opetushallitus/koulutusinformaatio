@@ -98,12 +98,12 @@ public class ParentLearningOpportunitySpecificationDAOTest {
         ao.setProvider(provider);
         aos.add(ao);
 
-        ChildLearningOpportunityInstanceEntity childLOI = new ChildLearningOpportunityInstanceEntity();
+        ChildLearningOpportunityEntity childLOI = new ChildLearningOpportunityEntity();
         childLOI.setId("34345");
         childLOI.setApplicationSystemId("1.2.3.4.5");
         childLOI.setApplicationOption(ao);
 
-        List<ChildLearningOpportunityInstanceEntity> childLOIs = new ArrayList<ChildLearningOpportunityInstanceEntity>();
+        List<ChildLearningOpportunityEntity> childLOIs = new ArrayList<ChildLearningOpportunityEntity>();
         childLOIs.add(childLOI);
         childLOS.setChildLOIs(childLOIs);
 

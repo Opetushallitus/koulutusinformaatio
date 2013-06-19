@@ -40,7 +40,7 @@ public class KoulutusinformaatioObjectBuilderTest {
     private KoulutusinformaatioObjectBuilder koulutusinformaatioObjectBuilder;
     private ModelMapper modelMapper;
     private ChildLearningOpportunitySpecificationEntity childLOS;
-    private ChildLearningOpportunityInstanceEntity childLOI;
+    private ChildLearningOpportunityEntity childLOI;
     private ApplicationOptionEntity ao;
     private LearningOpportunityProviderEntity provider;
 
@@ -59,7 +59,7 @@ public class KoulutusinformaatioObjectBuilderTest {
         p.setName(TestUtil.createI18nTextEntity("p fi", "p sv", "p en"));
         childLOS.setParent(p);
 
-        childLOI = new ChildLearningOpportunityInstanceEntity();
+        childLOI = new ChildLearningOpportunityEntity();
         childLOI.setId("childLOI123");
 
         ChildLORefEntity ref1 = new ChildLORefEntity();

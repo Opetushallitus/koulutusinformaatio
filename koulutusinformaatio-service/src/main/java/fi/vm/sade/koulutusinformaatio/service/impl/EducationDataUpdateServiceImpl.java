@@ -100,7 +100,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
         List<ChildLORefEntity> childLORefs = new ArrayList<ChildLORefEntity>();
         if (childLearningOpportunitySpecification != null) {
             if (childLearningOpportunitySpecification.getChildLOIs() != null) {
-                for (ChildLearningOpportunityInstanceEntity childLOI : childLearningOpportunitySpecification.getChildLOIs()) {
+                for (ChildLearningOpportunityEntity childLOI : childLearningOpportunitySpecification.getChildLOIs()) {
                     ChildLORefEntity childLORef = save(childLOI, childLearningOpportunitySpecification, parentLOS);
                     if (childLORef != null) {
                         childLORefs.add(childLORef);
@@ -113,13 +113,13 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
         return childLORefs;
     }
 
-    private ChildLORefEntity save(final ChildLearningOpportunityInstanceEntity childLearningOpportunityInstance,
+    private ChildLORefEntity save(final ChildLearningOpportunityEntity childLearningOpportunityInstance,
                                   final ChildLearningOpportunitySpecificationEntity childLearningOpportunitySpecification,
                                   final ParentLearningOpportunitySpecificationEntity parentLOS) {
         if (childLearningOpportunityInstance != null && parentLOS != null) {
             childLearningOpportunityInstance.setRelated(new ArrayList<ChildLORefEntity>());
             for (ChildLearningOpportunitySpecificationEntity childLOS : parentLOS.getChildren()) {
-                for (ChildLearningOpportunityInstanceEntity clo : childLOS.getChildLOIs()) {
+                for (ChildLearningOpportunityEntity clo : childLOS.getChildLOIs()) {
                     if (!clo.getId().equals(childLearningOpportunityInstance.getId()) &&
                             Objects.equal(clo.getApplicationSystemId(), childLearningOpportunityInstance.getApplicationSystemId())) {
                         ChildLORefEntity cRef = koulutusinformaatioObjectBuilder.buildChildLORef(childLOS, clo);

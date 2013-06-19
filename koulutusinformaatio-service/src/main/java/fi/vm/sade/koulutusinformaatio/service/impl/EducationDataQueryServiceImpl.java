@@ -17,7 +17,6 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.base.Function;
-import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.converter.KoulutusinformaatioObjectBuilder;
 import fi.vm.sade.koulutusinformaatio.dao.*;
@@ -25,7 +24,6 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.*;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.Picture;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLO;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
@@ -102,7 +100,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     @Override
     public ChildLO getChildLearningOpportunity(String childLosId, String childLoiId) throws ResourceNotFoundException {
         ChildLearningOpportunitySpecificationEntity childLOS = getChildLOS(childLosId);
-        ChildLearningOpportunityInstanceEntity childLOI = getChildLOI(childLoiId);
+        ChildLearningOpportunityEntity childLOI = getChildLOI(childLoiId);
         return koulutusinformaatioObjectBuilder.buildChildLO(childLOS, childLOI);
     }
 
@@ -134,8 +132,8 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
         return clos;
     }
 
-    private ChildLearningOpportunityInstanceEntity getChildLOI(String childLoiId) throws ResourceNotFoundException {
-        ChildLearningOpportunityInstanceEntity cloi = childLearningOpportunityInstanceDAO.get(childLoiId);
+    private ChildLearningOpportunityEntity getChildLOI(String childLoiId) throws ResourceNotFoundException {
+        ChildLearningOpportunityEntity cloi = childLearningOpportunityInstanceDAO.get(childLoiId);
         if (cloi == null) {
             throw new ResourceNotFoundException("Child learning opportunity instance not found: " + childLoiId);
         }

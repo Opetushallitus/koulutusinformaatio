@@ -28,8 +28,8 @@ import java.util.Map;
 /**
  * @author Mikko Majapuro
  */
-@Entity("childLearningOpportunityInstances")
-public class ChildLearningOpportunityInstanceEntity {
+@Entity("childLearningOpportunities")
+public class ChildLearningOpportunityEntity {
 
     @Id
     private String id;
@@ -57,8 +57,17 @@ public class ChildLearningOpportunityInstanceEntity {
     private I18nTextEntity internationalization;
     @Embedded
     private I18nTextEntity cooperation;
+    @Embedded
+    private I18nTextEntity qualification;
+    @Embedded
+    private I18nTextEntity degreeTitle;
+    @Embedded
+    private I18nTextEntity degreeGoal;
+    @Embedded
+    private ParentLOSRefEntity parent;
 
-    public ChildLearningOpportunityInstanceEntity() {}
+
+    public ChildLearningOpportunityEntity() {}
 
     public String getId() {
         return id;
@@ -170,5 +179,37 @@ public class ChildLearningOpportunityInstanceEntity {
 
     public void setCooperation(I18nTextEntity cooperation) {
         this.cooperation = cooperation;
+    }
+
+    public I18nTextEntity getQualification() {
+        return qualification;
+    }
+
+    public void setQualification(I18nTextEntity qualification) {
+        this.qualification = qualification;
+    }
+
+    public I18nTextEntity getDegreeTitle() {
+        return degreeTitle;
+    }
+
+    public void setDegreeTitle(I18nTextEntity degreeTitle) {
+        this.degreeTitle = degreeTitle;
+    }
+
+    public I18nTextEntity getDegreeGoal() {
+        return degreeGoal;
+    }
+
+    public void setDegreeGoal(I18nTextEntity degreeGoal) {
+        this.degreeGoal = degreeGoal;
+    }
+
+    public ParentLOSRefEntity getParent() {
+        return parent;
+    }
+
+    public void setParent(ParentLOSRefEntity parent) {
+        this.parent = parent;
     }
 }

@@ -19,15 +19,12 @@ package fi.vm.sade.koulutusinformaatio.converter;
 import java.util.ArrayList;
 import java.util.List;
 
+import fi.vm.sade.koulutusinformaatio.dao.entity.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLORefEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunityInstanceEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunitySpecificationEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.CodeEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.I18nTextEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunityEntity;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLORef;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
@@ -49,7 +46,7 @@ public class KoulutusinformaatioObjectBuilder {
         this.modelMapper = modelMapper;
     }
 
-    public ChildLORefEntity buildChildLORef(final ChildLearningOpportunitySpecificationEntity childLOS, final ChildLearningOpportunityInstanceEntity childLOI) {
+    public ChildLORefEntity buildChildLORef(final ChildLearningOpportunitySpecificationEntity childLOS, final ChildLearningOpportunityEntity childLOI) {
         if (childLOI != null && childLOS != null) {
             ChildLORefEntity ref = new ChildLORefEntity();
             ref.setLosId(childLOS.getId());
@@ -64,7 +61,7 @@ public class KoulutusinformaatioObjectBuilder {
 
 
     public ChildLO buildChildLO(final ChildLearningOpportunitySpecificationEntity childLOS,
-                                  final ChildLearningOpportunityInstanceEntity childLOI) {
+                                  final ChildLearningOpportunityEntity childLOI) {
         if (childLOI != null && childLOS != null) {
             ChildLO clo = new ChildLO();
             clo.setLoiId(childLOI.getId());

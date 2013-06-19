@@ -113,8 +113,8 @@ public class ModelMapperTest {
         childLOS.setId("444");
         childLOS.setName(TestUtil.createI18nTextEntity("child1EntityName", "child1EntityName", "child1EntityName"));
 
-        List<ChildLearningOpportunityInstanceEntity> childLOIs = new ArrayList<ChildLearningOpportunityInstanceEntity>();
-        ChildLearningOpportunityInstanceEntity childLOI = new ChildLearningOpportunityInstanceEntity();
+        List<ChildLearningOpportunityEntity> childLOIs = new ArrayList<ChildLearningOpportunityEntity>();
+        ChildLearningOpportunityEntity childLOI = new ChildLearningOpportunityEntity();
         childLOI.setId("9898989");
         childLOI.setApplicationSystemId("1.2.3.4.5");
         childLOI.setApplicationOption(ao);
@@ -127,8 +127,8 @@ public class ModelMapperTest {
         childLOS2.setId("555");
         childLOS2.setName(TestUtil.createI18nTextEntity("child2EntityName", "child2EntityName", "child2EntityName"));
 
-        List<ChildLearningOpportunityInstanceEntity> childLOIs2 = new ArrayList<ChildLearningOpportunityInstanceEntity>();
-        ChildLearningOpportunityInstanceEntity childLOI2 = new ChildLearningOpportunityInstanceEntity();
+        List<ChildLearningOpportunityEntity> childLOIs2 = new ArrayList<ChildLearningOpportunityEntity>();
+        ChildLearningOpportunityEntity childLOI2 = new ChildLearningOpportunityEntity();
         childLOI2.setId("567567567");
         childLOI2.setApplicationSystemId("1.2.3.4.5");
         childLOI2.setApplicationOption(ao);
