@@ -20,6 +20,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.LOSearchResult;
+import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
@@ -92,20 +93,21 @@ public class SearchServiceSolrImpl implements SearchService {
     }
 
     @Override
-    public List<LOSearchResult> searchLearningOpportunities(String term) throws SearchException {
-        List<LOSearchResult> learningOpportunities = new ArrayList<LOSearchResult>();
+    public LOSearchResultList searchLearningOpportunities(String term, int start, int rows) throws SearchException {
+        LOSearchResultList searchResultList = new LOSearchResultList();
         String trimmed = term.trim();
         if (!trimmed.isEmpty()) {
             MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>(1);
             parameters.put("text", Lists.newArrayList(term));
 
-            parameters.put("start", createParameter("0"));
-            parameters.put("rows", createParameter("100"));
+            parameters.put("start", createParameter(String.valueOf(start)));
+            parameters.put("rows", createParameter(String.valueOf(rows)));
             SolrQuery query = mapToSolrQueryTransformer.transform(parameters.entrySet());
 
             QueryResponse response = null;
             try {
                 response = loHttpSolrServer.query(query);
+                searchResultList.setTotalCount(response.getResults().getNumFound());
             } catch (SolrServerException e) {
                 throw new SearchException("Solr search error occured.");
             }
@@ -123,12 +125,11 @@ public class SearchServiceSolrImpl implements SearchService {
                 } catch (Exception e) {
                     continue;
                 }
-
-                learningOpportunities.add(lo);
+                searchResultList.getResults().add(lo);
             }
         }
 
-        return learningOpportunities;
+        return searchResultList;
     }
 
     private MultiValueMap<String, String> addPrerequisite(MultiValueMap<String, String> parameters, String prerequisite, boolean vocational) {
