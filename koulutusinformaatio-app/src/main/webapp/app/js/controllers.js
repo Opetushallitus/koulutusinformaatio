@@ -198,10 +198,6 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
         return false;
     };
 
-    $scope.testlog = function() {
-        console.log('test');
-    };
-
     $scope.popoverTitle = i18n.t('popover-title');
     $scope.popoverContent = "<a href='#/muistilista'>" + i18n.t('popover-content') + "</a>";
 };
@@ -311,11 +307,6 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
         }
     };
 
-
-    $scope.testlog = function() {
-        console.log('test');
-    };
-
     $scope.$watch('parentLO.provider', function(data) {
         if (data) {
             LearningOpportunityProviderPictureService.query({providerId: data.id}).then(function(result) {
@@ -328,21 +319,27 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
     if ($routeParams) {
         $scope.parentId = $routeParams.parentId;
         if (!ParentLODataService.dataExists($scope.parentId)) {
-            ParentLearningOpportunityService.query({parentId: $routeParams.parentId, language: $scope.descriptionLanguage}).then(function(result) {
-                $scope.parentLO = result;
-                ParentLODataService.setParentLOData(result);
-                initializeParent();
-            });
+            ParentLearningOpportunityService.query({
+                parentId: $routeParams.parentId, 
+                language: $scope.descriptionLanguage}).then(function(result) {
+                    $scope.parentLO = result;
+                    ParentLODataService.setParentLOData(result);
+                    initializeParent();
+                });
         } else {
             $scope.parentLO = ParentLODataService.getParentLOData();
             initializeParent();
         }
 
         if (isChild()) {
-            ChildLearningOpportunityService.query({parentId: $routeParams.parentId, closId: $routeParams.closId, cloiId: $routeParams.cloiId, language: $scope.descriptionLanguage}).then(function(result) {
-                $scope.childLO = result;
-                setTitle($scope.parentLO, $scope.childLO);
-            }); 
+            ChildLearningOpportunityService.query({
+                parentId: $routeParams.parentId, 
+                closId: $routeParams.closId, 
+                cloiId: $routeParams.cloiId, 
+                language: $scope.descriptionLanguage}).then(function(result) {
+                    $scope.childLO = result;
+                    setTitle($scope.parentLO, $scope.childLO);
+                }); 
         }
     }
 
@@ -351,16 +348,22 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
         $scope.descriptionLanguage = languageCode;
 
         // parent data has to be updated every time since child views contain parent data too
-        ParentLearningOpportunityService.query({parentId: $routeParams.parentId, language: languageCode}).then(function(result) {
-            $scope.parentLO = result;
-            if (isChild()) {
-                ChildLearningOpportunityService.query({parentId: $routeParams.parentId, closId: $routeParams.closId, cloiId: $routeParams.cloiId, language: $scope.descriptionLanguage}).then(function(result) {
-                    $scope.childLO = result;
+        ParentLearningOpportunityService.query({
+            parentId: $routeParams.parentId, 
+            language: languageCode}).then(function(result) {
+                $scope.parentLO = result;
+                if (isChild()) {
+                    ChildLearningOpportunityService.query({
+                        parentId: $routeParams.parentId, 
+                        closId: $routeParams.closId, 
+                        cloiId: $routeParams.cloiId, 
+                        language: $scope.descriptionLanguage}).then(function(result) {
+                            $scope.childLO = result;
+                            setTitle($scope.parentLO, $scope.childLO);
+                        });
+                } else {
                     setTitle($scope.parentLO, $scope.childLO);
-                });
-            } else {
-                setTitle($scope.parentLO, $scope.childLO);
-            }
+                }
         });
     };
 

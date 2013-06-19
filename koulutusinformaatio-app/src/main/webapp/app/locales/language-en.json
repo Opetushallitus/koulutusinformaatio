@@ -103,5 +103,9 @@
     "popover-title-success": "Koulutus lisätty muistilistalle (en)",
     "popover-title-error": "Muistilistalle lisääminen epäonnistui (en)",
     "popover-content-error": "Huomioi, että muistilistalle voi lisätä hakukohteita vain yhdellä pohjakoulutuksella. (en)",
-    "popover-content-link-to-application-basket": "Katso muistilista (en)"
+    "popover-content-link-to-application-basket": "Katso muistilista (en)",
+
+    "footer-note": "Tiedot on saatu koulutuksen järjestäjien, ammattikorkeakoulujen ja yliopistojen tallentamana tietona Opetushallituksen oppilaitostietojärjestelmästä.<br/>Tietojen oikeellisuuden voit tarkistaa kyseisestä oppilaitoksesta. (en)",
+    "footer-copyright": "Copyright © 2013 Opetushallitus (en)",
+    "footer-privacy-policy": "Rekisteriseloste (en)"
 }

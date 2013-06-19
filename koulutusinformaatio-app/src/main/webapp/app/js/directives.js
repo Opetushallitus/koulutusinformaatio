@@ -76,6 +76,9 @@ directive('kiRenderOrganization', function() {
     }
 }).
 
+/**
+ *  Render organization image
+ */
 directive('kiRenderOrganizationImage', function() {
     return function(scope, element, attrs) {
         scope.$watch('providerImage', function(data) {
@@ -94,6 +97,9 @@ directive('kiRenderOrganizationImage', function() {
 
 }).
 
+/**
+ *  Render professional titles
+ */
 directive('kiRenderProfessionalTitles', function() {
     return {
         restrict: 'E,A',
@@ -110,6 +116,9 @@ directive('kiRenderProfessionalTitles', function() {
     }
 }).
 
+/**
+ *  Render organization social links
+ */
 directive('kiSocialLinks', function() {
     return {
         restrict: 'E,A',
@@ -146,7 +155,7 @@ directive('kiEmail', function() {
 }).
 
 /**
- *  Render email (@ replaced with (at))
+ *  Change relative link to absolute link
  */
 directive('kiAbsoluteLink', function() {
     return {
@@ -352,6 +361,9 @@ directive('kiTimestamp', function() {
     }
 }).
 
+/**
+ *  Render application system status
+ */
 directive('kiRenderApplicationSystemActive', function() {
     return {
         restrict: 'E,A',

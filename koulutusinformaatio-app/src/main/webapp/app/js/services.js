@@ -172,6 +172,9 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
     }
 }]).
 
+/**
+ *  Resource for requesting LO provider picture
+ */
 service('LearningOpportunityProviderPictureService', ['$http', '$timeout', '$q', function($http, $timeout, $q) {
     return  {
         query: function(options) {

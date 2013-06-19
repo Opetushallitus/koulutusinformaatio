@@ -1565,7 +1565,8 @@ footer {
     clear: none !important;
     margin: 0; }
   footer .small {
-    text-align: center; }
+    text-align: center;
+    color: #575757; }
 
 /*
 #sitefooter .footer-container
