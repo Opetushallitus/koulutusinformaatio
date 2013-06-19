@@ -33,9 +33,9 @@ public class ChildLearningOpportunityEntity {
 
     @Id
     private String id;
-    private String applicationSystemId;
+    private List<String> applicationSystemIds;
     @Reference
-    private ApplicationOptionEntity applicationOption;
+    private List<ApplicationOptionEntity> applicationOptions;
     @Embedded
     private List<ChildLORefEntity> related;
     @Embedded
@@ -77,20 +77,20 @@ public class ChildLearningOpportunityEntity {
         this.id = id;
     }
 
-    public String getApplicationSystemId() {
-        return applicationSystemId;
+    public List<String> getApplicationSystemIds() {
+        return applicationSystemIds;
     }
 
-    public void setApplicationSystemId(String applicationSystemId) {
-        this.applicationSystemId = applicationSystemId;
+    public void setApplicationSystemIds(List<String> applicationSystemIds) {
+        this.applicationSystemIds = applicationSystemIds;
     }
 
-    public ApplicationOptionEntity getApplicationOption() {
-        return applicationOption;
+    public List<ApplicationOptionEntity> getApplicationOptions() {
+        return applicationOptions;
     }
 
-    public void setApplicationOption(ApplicationOptionEntity applicationOption) {
-        this.applicationOption = applicationOption;
+    public void setApplicationOptions(List<ApplicationOptionEntity> applicationOptions) {
+        this.applicationOptions = applicationOptions;
     }
 
     public List<ChildLORefEntity> getRelated() {
