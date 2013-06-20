@@ -96,8 +96,8 @@ public class KoulutusinformaatioObjectBuilderTest {
         ao.setLowestAcceptedAverage(66.7);
         ao.setLowestAcceptedScore(78);
         ao.setStartingQuota(98);
-        ao.setChildLORefs(Lists.newArrayList(TestUtil.createChildLORef("c1", as.getId(), childLearningOpportunity.getId(), childLearningOpportunity.getId()),
-                TestUtil.createChildLORef("c2", as.getId(), childLearningOpportunity.getId(), childLearningOpportunity.getId())));
+        ao.setChildLORefs(Lists.newArrayList(TestUtil.createChildLORef("c1", as.getId(), childLearningOpportunity.getId()),
+                TestUtil.createChildLORef("c2", as.getId(), childLearningOpportunity.getId())));
 
         provider = new LearningOpportunityProviderEntity();
         provider.setId("provider123");
