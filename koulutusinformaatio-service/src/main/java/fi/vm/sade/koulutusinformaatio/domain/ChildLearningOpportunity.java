@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 The Finnish Board of Education - Opetushallitus
+ * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
  *
  * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
  * soon as they will be approved by the European Commission - subsequent versions
@@ -14,9 +14,7 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.koulutusinformaatio.domain.dto;
-
-import fi.vm.sade.koulutusinformaatio.domain.*;
+package fi.vm.sade.koulutusinformaatio.domain;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,30 +22,44 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author Mikko Majapuro
+ * Child level learning opportunity.
+ *
+ * @author Hannu Lyytikainen
  */
-public class ChildLO {
+public class ChildLearningOpportunity {
 
     private String id;
     private I18nText name;
-    private I18nText qualification;
+    // koulutusohjelma
     private I18nText degreeTitle;
+    //tutkintonimike
+    private I18nText qualification;
+    //tavoite
+    private I18nText degreeGoal;
     private List<ApplicationOption> applicationOptions;
-    private List<ChildLORef> related = new ArrayList<ChildLORef>();
-    private ParentLORef parent;
-    private List<Code> teachingLanguages = new ArrayList<Code>();
+    private List<String> applicationSystemIds;
+    private Date startDate;
+    // koulutuslaji -> nuorten koulutus
     private List<I18nText> formOfEducation;
     private Map<String, String> webLinks;
+    private List<Code> teachingLanguages;
+    // opetusmuoto -> lähiopetus
     private List<I18nText> formOfTeaching;
     private I18nText prerequisite;
     private List<I18nText> professionalTitles;
     private I18nText workingLifePlacement;
     private I18nText internationalization;
     private I18nText cooperation;
-    private I18nText degreeGoal;
 
-    private Date startDate;
 
+    public ChildLearningOpportunity(String id, I18nText name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public ChildLearningOpportunity() {
+
+    }
 
     public String getId() {
         return id;
@@ -81,6 +93,14 @@ public class ChildLO {
         this.degreeTitle = degreeTitle;
     }
 
+    public I18nText getDegreeGoal() {
+        return degreeGoal;
+    }
+
+    public void setDegreeGoal(I18nText degreeGoal) {
+        this.degreeGoal = degreeGoal;
+    }
+
     public List<ApplicationOption> getApplicationOptions() {
         return applicationOptions;
     }
@@ -89,28 +109,20 @@ public class ChildLO {
         this.applicationOptions = applicationOptions;
     }
 
-    public List<ChildLORef> getRelated() {
-        return related;
+    public List<String> getApplicationSystemIds() {
+        return applicationSystemIds;
     }
 
-    public void setRelated(List<ChildLORef> related) {
-        this.related = related;
+    public void setApplicationSystemIds(List<String> applicationSystemIds) {
+        this.applicationSystemIds = applicationSystemIds;
     }
 
-    public ParentLORef getParent() {
-        return parent;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setParent(ParentLORef parent) {
-        this.parent = parent;
-    }
-
-    public List<Code> getTeachingLanguages() {
-        return teachingLanguages;
-    }
-
-    public void setTeachingLanguages(List<Code> teachingLanguages) {
-        this.teachingLanguages = teachingLanguages;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
     public List<I18nText> getFormOfEducation() {
@@ -129,6 +141,14 @@ public class ChildLO {
         this.webLinks = webLinks;
     }
 
+    public List<Code> getTeachingLanguages() {
+        return teachingLanguages;
+    }
+
+    public void setTeachingLanguages(List<Code> teachingLanguages) {
+        this.teachingLanguages = teachingLanguages;
+    }
+
     public List<I18nText> getFormOfTeaching() {
         return formOfTeaching;
     }
@@ -143,14 +163,6 @@ public class ChildLO {
 
     public void setPrerequisite(I18nText prerequisite) {
         this.prerequisite = prerequisite;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
     }
 
     public List<I18nText> getProfessionalTitles() {
@@ -185,11 +197,4 @@ public class ChildLO {
         this.cooperation = cooperation;
     }
 
-    public I18nText getDegreeGoal() {
-        return degreeGoal;
-    }
-
-    public void setDegreeGoal(I18nText degreeGoal) {
-        this.degreeGoal = degreeGoal;
-    }
 }

@@ -34,7 +34,6 @@ public class ParentLOS {
     private String id;
     private I18nText name;
     private List<ParentLOI> lois;
-    private List<ChildLOS> children = new ArrayList<ChildLOS>();
     private Set<ApplicationOption> applicationOptions = Sets.newHashSet();
     private Provider provider;
     // rakenne
@@ -81,14 +80,6 @@ public class ParentLOS {
 
     public void setLois(List<ParentLOI> lois) {
         this.lois = lois;
-    }
-
-    public List<ChildLOS> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<ChildLOS> children) {
-        this.children = children;
     }
 
     public Provider getProvider() {

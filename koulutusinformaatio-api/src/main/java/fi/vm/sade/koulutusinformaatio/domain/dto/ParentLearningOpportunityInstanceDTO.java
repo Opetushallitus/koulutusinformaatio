@@ -18,6 +18,9 @@ package fi.vm.sade.koulutusinformaatio.domain.dto;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Mikko Majapuro
  */
@@ -26,6 +29,7 @@ public class ParentLearningOpportunityInstanceDTO {
 
     private String id;
     private String prerequisite;
+    private List<ChildLORefDTO> children = new ArrayList<ChildLORefDTO>();
 
     public String getId() {
         return id;
@@ -41,5 +45,13 @@ public class ParentLearningOpportunityInstanceDTO {
 
     public void setPrerequisite(String prerequisite) {
         this.prerequisite = prerequisite;
+    }
+
+    public List<ChildLORefDTO> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<ChildLORefDTO> children) {
+        this.children = children;
     }
 }

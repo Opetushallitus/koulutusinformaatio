@@ -58,10 +58,14 @@ public class LearningOpportunityServiceImplTest {
         parentLO.setEducationDomain(createI18Text("EducationDomain"));
         parentLO.setStydyDomain(createI18Text("StudyDomain"));
         List<ChildLORef> childLORefs = new ArrayList<ChildLORef>();
-        childLORefs.add(createChildLORef(createI18Text("c1"), "c1 fi", "as123", "loi123", "los123"));
-        childLORefs.add(createChildLORef(createI18Text("c2"), "c2 fi", "as123", "loi124", "los124"));
-        childLORefs.add(createChildLORef(createI18Text("c3"), "c3 fi", "as124", "loi125", "los123"));
-        parentLO.setChildRefs(childLORefs);
+        childLORefs.add(createChildLORef(createI18Text("c1"), "c1 fi", "as123", "lo123"));
+        childLORefs.add(createChildLORef(createI18Text("c2"), "c2 fi", "as123", "lo124"));
+        childLORefs.add(createChildLORef(createI18Text("c3"), "c3 fi", "as124", "lo125"));
+
+        ParentLOI parentLOI = new ParentLOI();
+        parentLOI.setId("123.123");
+        parentLOI.setChildRefs(childLORefs);
+        parentLO.setLois(Lists.newArrayList(parentLOI));
         Set<String> asIds = new HashSet<String>();
         asIds.add("as123");
         asIds.add("as124");
@@ -71,12 +75,11 @@ public class LearningOpportunityServiceImplTest {
         parentLO.setApplicationOptions(aos);
 
         childLO = new ChildLO();
-        childLO.setLosId("los123");
-        childLO.setLoiId("loi123");
+        childLO.setId("lo123");
         childLO.setName(createI18Text("child 1"));
         childLO.setStartDate(new Date());
         childLO.setDegreeTitle(createI18Text("degree"));
-        childLO.setApplicationOption(aos.iterator().next());
+        childLO.setApplicationOptions(Lists.newArrayList(aos));
         childLO.setFormOfEducation(Lists.newArrayList(createI18Text("FormOfEducation"), createI18Text("FormOfEducation2")));
         childLO.setFormOfTeaching(Lists.newArrayList(createI18Text("FormOfTeaching"), createI18Text("FormOfTeaching2")));
         childLO.setPrerequisite(createI18Text("Prerequisite"));
@@ -99,7 +102,7 @@ public class LearningOpportunityServiceImplTest {
         learningOpportunityService = new LearningOpportunityServiceImpl(educationDataQueryService, modelMapper);
 
         when(educationDataQueryService.getParentLearningOpportunity(eq("1234"))).thenReturn(parentLO);
-        when(educationDataQueryService.getChildLearningOpportunity(eq("los123"), eq("loi123"))).thenReturn(childLO);
+        when(educationDataQueryService.getChildLearningOpportunity(eq("clo123"))).thenReturn(childLO);
     }
 
     @Test
@@ -116,13 +119,13 @@ public class LearningOpportunityServiceImplTest {
 
     @Test
     public void testGetChildLearningOpportunity() throws ResourceNotFoundException {
-        ChildLearningOpportunityDTO result = learningOpportunityService.getChildLearningOpportunity("1234", "los123", "loi123");
+        ChildLearningOpportunityDTO result = learningOpportunityService.getChildLearningOpportunity("clo123");
         checkResult("fi", result);
     }
 
     @Test
     public void testGetChildLearningOpportunityEn() throws ResourceNotFoundException {
-        ChildLearningOpportunityDTO result = learningOpportunityService.getChildLearningOpportunity("1234", "los123", "loi123", "en");
+        ChildLearningOpportunityDTO result = learningOpportunityService.getChildLearningOpportunity("clo123", "en");
         checkResult("en", result);
     }
 
@@ -146,11 +149,10 @@ public class LearningOpportunityServiceImplTest {
 
     private void checkResult(String lang, ChildLearningOpportunityDTO result) {
         assertNotNull(result);
-        assertEquals(childLO.getLosId(), result.getLosId());
-        assertEquals(childLO.getLoiId(), result.getLoiId());
+        assertEquals(childLO.getId(), result.getId());
         assertEquals(childLO.getName().getTranslations().get(lang), result.getName());
-        assertEquals(childLO.getApplicationOption().getId(), result.getApplicationOption().getId());
-        assertEquals(childLO.getApplicationOption().getName().getTranslations().get(lang), result.getApplicationOption().getName());
+        assertEquals(childLO.getApplicationOptions().get(0).getId(), result.getApplicationOptions().get(0).getId());
+        assertEquals(childLO.getApplicationOptions().get(0).getName().getTranslations().get(lang), result.getApplicationOptions().get(0).getName());
         assertEquals(childLO.getDegreeTitle().getTranslations().get(lang), result.getDegreeTitle());
         assertEquals(childLO.getPrerequisite().getTranslations().get(lang), result.getPrerequisite());
         assertEquals(childLO.getQualification().getTranslations().get(lang), result.getQualification());
@@ -171,13 +173,12 @@ public class LearningOpportunityServiceImplTest {
         return new I18nText(translations);
     }
 
-    private ChildLORef createChildLORef(I18nText name, String nameByTeachingLang, String asId, String loiId, String losId) {
+    private ChildLORef createChildLORef(I18nText name, String nameByTeachingLang, String asId, String loId) {
         ChildLORef ref = new ChildLORef();
         ref.setName(name);
         ref.setNameByTeachingLang(nameByTeachingLang);
-        ref.setAsId(asId);
-        ref.setLoiId(loiId);
-        ref.setLosId(losId);
+        ref.setAsIds(Lists.newArrayList(asId));
+        ref.setChildLOId(loId);
         return ref;
     }
 

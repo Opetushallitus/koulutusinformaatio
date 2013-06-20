@@ -87,12 +87,12 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
     }
 
     @Override
-    public ChildLearningOpportunityDTO getChildLearningOpportunity(String parentId, String closId, String cloiId, String lang) {
+    public ChildLearningOpportunityDTO getChildLearningOpportunity(String cloId, String lang) {
         try {
             if (Strings.isNullOrEmpty(lang)) {
-                return learningOpportunityService.getChildLearningOpportunity(parentId, closId, cloiId);
+                return learningOpportunityService.getChildLearningOpportunity(cloId);
             } else {
-                return learningOpportunityService.getChildLearningOpportunity(parentId, closId, cloiId, lang.toLowerCase());
+                return learningOpportunityService.getChildLearningOpportunity(cloId, lang.toLowerCase());
             }
         } catch (ResourceNotFoundException e) {
             throw KIExceptionHandler.resolveException(e);

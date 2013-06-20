@@ -64,16 +64,13 @@ public interface LearningOpportunityResource {
      * Child lo texts are translated to language corresponding given lang parameter.
      * If the given language is not found or the parameter is null it fall back to default (education) language.
      *
-     * @param parentId parent learning opportunity id
-     * @param closId child learning opportunity specification id
-     * @param cloiId child learning opportunity instance id
+     * @param cloId child learning opportunity id
      * @param lang translation language (optional)
      * @return child learning opportunity dto object
      */
     @GET
-    @Path("{parentId}/{closId}/{cloiId}")
+    @Path("{parentId}/{cloId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ChildLearningOpportunityDTO getChildLearningOpportunity(@PathParam("parentId") String parentId, @PathParam("closId") String closId,
-                                                                   @PathParam("cloiId") String cloiId, @QueryParam("lang") String lang);
+    public ChildLearningOpportunityDTO getChildLearningOpportunity(@PathParam("cloId") String cloId, @QueryParam("lang") String lang);
 
 }

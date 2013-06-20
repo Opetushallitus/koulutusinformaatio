@@ -16,6 +16,9 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Instance of a parent level learning opportunity specification.
  *
@@ -25,25 +28,8 @@ public class ParentLOI {
 
     private String id;
     private I18nText prerequisite;
-
-
-
-    //////////////
-    // parent loi fix
-    private Provider provider;
-
-    public Provider getProvider() {
-        return provider;
-    }
-
-    public void setProvider(Provider provider) {
-        this.provider = provider;
-    }
-    ///////////
-
-
-
-
+    private List<ChildLearningOpportunity> children;
+    private List<ChildLORef> childRefs = new ArrayList<ChildLORef>();
 
     public String getId() {
         return id;
@@ -59,5 +45,21 @@ public class ParentLOI {
 
     public void setPrerequisite(I18nText prerequisite) {
         this.prerequisite = prerequisite;
+    }
+
+    public List<ChildLearningOpportunity> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<ChildLearningOpportunity> children) {
+        this.children = children;
+    }
+
+    public List<ChildLORef> getChildRefs() {
+        return childRefs;
+    }
+
+    public void setChildRefs(List<ChildLORef> childRefs) {
+        this.childRefs = childRefs;
     }
 }

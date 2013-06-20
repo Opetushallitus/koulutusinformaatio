@@ -49,11 +49,10 @@ public interface EducationDataQueryService {
 
     /**
      * Gets the child learning opportunity
-     * @param childLosId child learning opportunity specification id
-     * @param childLoiId child learning opportunity instance id
+     * @param childLoId child learning opportunity id
      * @return child learning opportunity
      */
-    ChildLO getChildLearningOpportunity(final String childLosId, final String childLoiId) throws ResourceNotFoundException;
+    ChildLO getChildLearningOpportunity(final String childLoid) throws ResourceNotFoundException;
 
     Date getLastUpdated();
 

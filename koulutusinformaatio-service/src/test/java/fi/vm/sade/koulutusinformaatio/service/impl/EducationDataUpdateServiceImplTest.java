@@ -1,5 +1,6 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.mongodb.DBCollection;
 import fi.vm.sade.koulutusinformaatio.converter.KoulutusinformaatioObjectBuilder;
@@ -8,8 +9,7 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunitySpecificationEntity;
 import fi.vm.sade.koulutusinformaatio.domain.*;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLO;
-import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.modelmapper.ModelMapper;
@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 /**
@@ -30,8 +29,7 @@ public class EducationDataUpdateServiceImplTest {
     private ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO;
     private ApplicationOptionDAO applicationOptionDAO;
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
-    private ChildLearningOpportunityInstanceDAO childLearningOpportunityInstanceDAO;
-    private ChildLearningOpportunitySpecificationDAO childLearningOpportunitySpecificationDAO;
+    private ChildLearningOpportunityDAO childLearningOpportunityDAO;
     private PictureDAO pictureDAO;
     private DBCollection ploCollection;
     private DBCollection aoCollection;
@@ -63,19 +61,17 @@ public class EducationDataUpdateServiceImplTest {
         when(learningOpportunityProviderDAO.getCollection()).thenReturn(lopCollection);
 
         cloiCollection = mock(DBCollection.class);
-        childLearningOpportunityInstanceDAO = mock(ChildLearningOpportunityInstanceDAO.class);
-        when(childLearningOpportunityInstanceDAO.getCollection()).thenReturn(cloiCollection);
+        childLearningOpportunityDAO = mock(ChildLearningOpportunityDAO.class);
+        when(childLearningOpportunityDAO.getCollection()).thenReturn(cloiCollection);
 
         closCollection = mock(DBCollection.class);
-        childLearningOpportunitySpecificationDAO = mock(ChildLearningOpportunitySpecificationDAO.class);
-        when(childLearningOpportunitySpecificationDAO.getCollection()).thenReturn(closCollection);
 
         KoulutusinformaatioObjectBuilder objectBuilder = new KoulutusinformaatioObjectBuilder(modelMapper);
 
         pictureDAO = mock(PictureDAO.class);
 
         service = new EducationDataUpdateServiceImpl( modelMapper, parentLearningOpportunitySpecificationDAO,
-               applicationOptionDAO, learningOpportunityProviderDAO, childLearningOpportunitySpecificationDAO, childLearningOpportunityInstanceDAO,
+               applicationOptionDAO, learningOpportunityProviderDAO, childLearningOpportunityDAO,
                 objectBuilder, pictureDAO);
     }
 
@@ -92,21 +88,19 @@ public class EducationDataUpdateServiceImplTest {
         plo.setProvider(lop);
         plo.setId("1.2.3");
         plo.setApplicationOptions(applicationOptions);
-        ChildLOS clo = new ChildLOS();
-        clo.setId("2.2.2");
 
-        ChildLOI cloi = new ChildLOI();
-        cloi.setId("5.7.9");
-        cloi.setApplicationSystemId("1.2.3.4.5");
-        cloi.setApplicationOption(ao);
+        ParentLOI parentLOI = new ParentLOI();
+        parentLOI.setId("2345");
+        parentLOI.setPrerequisite(TestUtil.createI18nText("Peruskoulu", "Peruskoulu", "Peruskoulu"));
 
-        List<ChildLOI> childLOIs = new ArrayList<ChildLOI>();
-        childLOIs.add(cloi);
-        clo.setChildLOIs(childLOIs);
+        ChildLearningOpportunity clo = new ChildLearningOpportunity();
+        clo.setId("5.7.9");
+        clo.setApplicationSystemIds(Lists.newArrayList("1.2.3.4.5"));
+        clo.setApplicationOptions(Lists.newArrayList(ao));
 
-        List<ChildLOS> children = new ArrayList<ChildLOS>();
-        children.add(clo);
-        plo.setChildren(children);
+        parentLOI.setChildren(Lists.newArrayList(clo));
+
+        plo.setLois(Lists.newArrayList(parentLOI));
 
         service.save(plo);
         verify(parentLearningOpportunitySpecificationDAO, times(1)).save(any(ParentLearningOpportunitySpecificationEntity.class));

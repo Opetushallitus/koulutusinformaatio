@@ -28,6 +28,7 @@ public class ParentLOIToDTO {
         ParentLearningOpportunityInstanceDTO loi = new ParentLearningOpportunityInstanceDTO();
         loi.setId(parentLOI.getId());
         loi.setPrerequisite(ConverterUtil.getTextByLanguage(parentLOI.getPrerequisite(), lang));
+        loi.setChildren(ChildLORefToDTO.convert(parentLOI.getChildRefs(), lang));
         return loi;
     }
 }

@@ -20,6 +20,7 @@ import com.google.code.morphia.Key;
 import com.google.code.morphia.Morphia;
 import com.google.code.morphia.dao.BasicDAO;
 import com.google.code.morphia.query.Query;
+import com.google.common.base.Strings;
 import com.mongodb.Mongo;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
@@ -39,7 +40,9 @@ public class ApplicationOptionDAO extends BasicDAO<ApplicationOptionEntity, Stri
         Query<ApplicationOptionEntity> query = createQuery();
         query.field("applicationSystem.id").equal(asId);
         query.field("provider").equal(new Key(LearningOpportunityProviderEntity.class, lopId));
-        query.field("requiredBaseEducations").contains(baseEducation);
+        if (!Strings.isNullOrEmpty(baseEducation)) {
+            query.field("requiredBaseEducations").contains(baseEducation);
+        }
         return find(query).asList();
     }
 

@@ -31,12 +31,11 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 public class ChildLearningOpportunityDTO {
 
-    private String losId;
-    private String loiId;
+    private String id;
     private String name;
     private String qualification;
     private String degreeTitle;
-    private ApplicationOptionDTO applicationOption;
+    private List<ApplicationOptionDTO> applicationOptions;
     private List<ChildLORefDTO> related = new ArrayList<ChildLORefDTO>();
 
     private Date startDate;
@@ -56,20 +55,12 @@ public class ChildLearningOpportunityDTO {
 
     private ParentLOSRefDTO parent;
 
-    public String getLosId() {
-        return losId;
+    public String getId() {
+        return id;
     }
 
-    public void setLosId(String losId) {
-        this.losId = losId;
-    }
-
-    public String getLoiId() {
-        return loiId;
-    }
-
-    public void setLoiId(String loiId) {
-        this.loiId = loiId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -80,12 +71,12 @@ public class ChildLearningOpportunityDTO {
         this.name = name;
     }
 
-    public ApplicationOptionDTO getApplicationOption() {
-        return applicationOption;
+    public List<ApplicationOptionDTO> getApplicationOptions() {
+        return applicationOptions;
     }
 
-    public void setApplicationOption(ApplicationOptionDTO applicationOption) {
-        this.applicationOption = applicationOption;
+    public void setApplicationOptions(List<ApplicationOptionDTO> applicationOptions) {
+        this.applicationOptions = applicationOptions;
     }
 
     public String getQualification() {

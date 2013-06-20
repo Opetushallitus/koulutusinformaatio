@@ -17,7 +17,6 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.base.Function;
-import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.converter.KoulutusinformaatioObjectBuilder;
 import fi.vm.sade.koulutusinformaatio.dao.*;
@@ -25,7 +24,6 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.*;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.Picture;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLO;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
@@ -43,8 +41,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
 
     private ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO;
     private ApplicationOptionDAO applicationOptionDAO;
-    private ChildLearningOpportunitySpecificationDAO childLearningOpportunitySpecificationDAO;
-    private ChildLearningOpportunityInstanceDAO childLearningOpportunityInstanceDAO;
+    private ChildLearningOpportunityDAO childLearningOpportunityDAO;
     private DataStatusDAO dataStatusDAO;
     private ModelMapper modelMapper;
     private KoulutusinformaatioObjectBuilder koulutusinformaatioObjectBuilder;
@@ -53,15 +50,13 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     @Autowired
     public EducationDataQueryServiceImpl(ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO,
                                          ApplicationOptionDAO applicationOptionDAO, ModelMapper modelMapper,
-                                         ChildLearningOpportunitySpecificationDAO childLearningOpportunitySpecificationDAO,
-                                         ChildLearningOpportunityInstanceDAO childLearningOpportunityInstanceDAO,
+                                         ChildLearningOpportunityDAO childLearningOpportunityDAO,
                                          KoulutusinformaatioObjectBuilder koulutusinformaatioObjectBuilder,
                                          DataStatusDAO dataStatusDAO, PictureDAO pictureDAO) {
         this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;
         this.modelMapper = modelMapper;
-        this.childLearningOpportunitySpecificationDAO = childLearningOpportunitySpecificationDAO;
-        this.childLearningOpportunityInstanceDAO = childLearningOpportunityInstanceDAO;
+        this.childLearningOpportunityDAO = childLearningOpportunityDAO;
         this.koulutusinformaatioObjectBuilder = koulutusinformaatioObjectBuilder;
         this.dataStatusDAO = dataStatusDAO;
         this.pictureDAO = pictureDAO;
@@ -100,10 +95,9 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     }
 
     @Override
-    public ChildLO getChildLearningOpportunity(String childLosId, String childLoiId) throws ResourceNotFoundException {
-        ChildLearningOpportunitySpecificationEntity childLOS = getChildLOS(childLosId);
-        ChildLearningOpportunityInstanceEntity childLOI = getChildLOI(childLoiId);
-        return koulutusinformaatioObjectBuilder.buildChildLO(childLOS, childLOI);
+    public ChildLO getChildLearningOpportunity(String childLoId) throws ResourceNotFoundException {
+        ChildLearningOpportunityEntity childLO = getChildLO(childLoId);
+        return koulutusinformaatioObjectBuilder.buildChildLO(childLO);
     }
 
     @Override
@@ -126,19 +120,11 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
         }
     }
 
-    private ChildLearningOpportunitySpecificationEntity getChildLOS(String childLosId) throws ResourceNotFoundException {
-        ChildLearningOpportunitySpecificationEntity clos = childLearningOpportunitySpecificationDAO.get(childLosId);
-        if (clos == null) {
-            throw new ResourceNotFoundException("Child learning opportunity specification not found: " + childLosId);
+    private ChildLearningOpportunityEntity getChildLO(String childLoId) throws ResourceNotFoundException {
+        ChildLearningOpportunityEntity clo = childLearningOpportunityDAO.get(childLoId);
+        if (clo == null) {
+            throw new ResourceNotFoundException("Child learning opportunity instance not found: " + childLoId);
         }
-        return clos;
-    }
-
-    private ChildLearningOpportunityInstanceEntity getChildLOI(String childLoiId) throws ResourceNotFoundException {
-        ChildLearningOpportunityInstanceEntity cloi = childLearningOpportunityInstanceDAO.get(childLoiId);
-        if (cloi == null) {
-            throw new ResourceNotFoundException("Child learning opportunity instance not found: " + childLoiId);
-        }
-        return cloi;
+        return clo;
     }
 }

@@ -37,10 +37,6 @@ public class ParentLearningOpportunitySpecificationEntity {
     @Embedded
     private String educationDegree;
     @Reference
-    private List<ChildLearningOpportunitySpecificationEntity> children;
-    @Embedded
-    private List<ChildLORefEntity> childRefs;
-    @Reference
     private Set<ApplicationOptionEntity> applicationOptions;
     @Reference
     private LearningOpportunityProviderEntity provider;
@@ -85,22 +81,6 @@ public class ParentLearningOpportunitySpecificationEntity {
 
     public void setEducationDegree(String educationDegree) {
         this.educationDegree = educationDegree;
-    }
-
-    public List<ChildLearningOpportunitySpecificationEntity> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<ChildLearningOpportunitySpecificationEntity> children) {
-        this.children = children;
-    }
-
-    public List<ChildLORefEntity> getChildRefs() {
-        return childRefs;
-    }
-
-    public void setChildRefs(List<ChildLORefEntity> childRefs) {
-        this.childRefs = childRefs;
     }
 
     public Set<ApplicationOptionEntity> getApplicationOptions() {
