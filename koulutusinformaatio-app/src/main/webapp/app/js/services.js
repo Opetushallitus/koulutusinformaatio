@@ -18,9 +18,9 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', function
             if (result.results.hasOwnProperty(index)) {
                 var resItem = result.results[index];
                 if (resItem.parentId) {
-                    resItem.linkHref = '#/info/' + resItem.parentId + '/' + resItem.losId + '/' + resItem.id;
+                    resItem.linkHref = '#/koulutusohjelma/' + resItem.id;
                 } else {
-                    resItem.linkHref = '#/info/' + resItem.id
+                    resItem.linkHref = '#/tutkinto/' + resItem.id
                 }
             }
         }
@@ -95,7 +95,7 @@ service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', 'Languag
         query: function(options) {
             var deferred = $q.defer();
 
-            $http.get('../lo/' + options.parentId, {
+            $http.get('../lo/parent/' + options.parentId, {
             //$http.get('mock/parent-' + descriptionLanguage + '.json', {
                 params: {
                     lang: options.language
@@ -132,8 +132,8 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
         // add current child to sibligs
         if (result.related) {
             result.related.push({
-                loiId: result.loiId, 
-                losId: result.losId,
+                childLOId: result.id, 
+                //losId: result.losId,
                 name: result.name
             });
 
@@ -141,7 +141,7 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
             result.related = result.related.sort(function(a, b) {
                 if (a.name > b.name) return 1;
                 else if (a.name < b.name) return -1;
-                else return a.loiId > b.loiId ? 1 : -1;
+                else return a.childLOId > b.childLOId ? 1 : -1;
             });
         }
     };
@@ -158,7 +158,7 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
         query: function(options) {
             var deferred = $q.defer();
 
-            $http.get('../lo/' + options.parentId + '/' + options.closId + '/' + options.cloiId, {
+            $http.get('../lo/child/' + options.childId, {
             //$http.get('mock/child-' + descriptionLanguage + '.json', {
                 params: {
                     lang: options.language

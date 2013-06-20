@@ -25,8 +25,8 @@
     <div ng-switch-when="true">
         <h2 data-ki-i18n="elementary-based-education"></h2>
             <ul class="disc">
-                <li ng-repeat="child in parentLO.children">
-                    <a href="#/info/{{parentLO.id}}/{{child.losId}}/{{child.loiId}}">{{child.name}}</a>
+                <li ng-repeat="child in selectedParentLOI.children">
+                    <a href="#/koulutusohjelma/{{child.childLOId}}">{{child.name}}</a>
                 </li>
             </ul>
     </div>

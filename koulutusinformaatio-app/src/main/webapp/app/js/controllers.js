@@ -269,7 +269,7 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
     };
 
     var isChild = function() {
-        return ($routeParams.closId && $routeParams.cloiId);
+        return ($routeParams.childId);
     };
 
     var getApplicationSystemId = function(aos) {
@@ -283,10 +283,15 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
 
     var getFirstApplicationOption = function() {
         if (hasApplicationOptions()) {
-            var ao = $scope.parentLO.applicationOptions[0];
-            return ao;
+            return $scope.parentLO.applicationOptions[0];
         }
     };
+
+    var getFirstParentLOI = function() {
+        if (hasParentLOIs()) {
+            return $scope.parentLO.lois[0];
+        }
+    }
 
     var hasApplicationOptions = function() {
         if ($scope.parentLO && $scope.parentLO.applicationOptions) {
@@ -295,6 +300,14 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
             return false;
         } 
     };
+
+    var hasParentLOIs = function() {
+        if ($scope.parentLO && $scope.parentLO.lois) {
+            return $scope.parentLO.lois.length > 0;
+        } else {
+            return false;
+        }
+    }
 
     var showApplicationRadioSelection = function() {
         if (hasApplicationOptions()) {
@@ -322,6 +335,11 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
                 prerequisite: firstAoInList.prerequisite
             };
         }
+
+        var firstParentLOIInList = getFirstParentLOI();
+        if (firstParentLOIInList) {
+            $scope.selectedParentLOI = firstParentLOIInList;
+        }
     };
 
     $scope.$watch('parentLO.provider', function(data) {
@@ -333,6 +351,7 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
     });
 
     // fetch data for parent and/or its child LO
+    /*
     if ($routeParams) {
         $scope.parentId = $routeParams.parentId;
         if (!ParentLODataService.dataExists($scope.parentId)) {
@@ -351,12 +370,50 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
         if (isChild()) {
             ChildLearningOpportunityService.query({
                 parentId: $routeParams.parentId, 
-                closId: $routeParams.closId, 
-                cloiId: $routeParams.cloiId, 
+                childId: $routeParams.childId,
+                //cloiId: $routeParams.cloiId, 
                 language: $scope.descriptionLanguage}).then(function(result) {
                     $scope.childLO = result;
                     setTitle($scope.parentLO, $scope.childLO);
                 }); 
+        }
+    }
+    */
+
+    if (isChild()) {
+        ChildLearningOpportunityService.query({
+            //parentId: $routeParams.parentId, 
+            childId: $routeParams.childId,
+            language: $scope.descriptionLanguage}).then(function(childResult) {
+                $scope.childLO = childResult;
+
+                if (!ParentLODataService.dataExists(childResult.parent.id)) {
+                    ParentLearningOpportunityService.query({
+                        parentId: childResult.parent.id, 
+                        language: $scope.descriptionLanguage}).then(function(parentResult) {
+                            $scope.parentLO = parentResult;
+                            ParentLODataService.setParentLOData(parentResult);
+                            initializeParent();
+                            setTitle($scope.parentLO, $scope.childLO);
+                        });
+                } else {
+                    $scope.parentLO = ParentLODataService.getParentLOData();
+                    initializeParent();
+                    setTitle($scope.parentLO, $scope.childLO);
+                }
+            }); 
+    } else {
+        if (!ParentLODataService.dataExists($routeParams.parentId)) {
+            ParentLearningOpportunityService.query({
+                parentId: $routeParams.parentId, 
+                language: $scope.descriptionLanguage}).then(function(result) {
+                    $scope.parentLO = result;
+                    ParentLODataService.setParentLOData(result);
+                    initializeParent();
+                });
+        } else {
+            $scope.parentLO = ParentLODataService.getParentLOData();
+            initializeParent();
         }
     }
 
@@ -372,8 +429,7 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
                 if (isChild()) {
                     ChildLearningOpportunityService.query({
                         parentId: $routeParams.parentId, 
-                        closId: $routeParams.closId, 
-                        cloiId: $routeParams.cloiId, 
+                        childId: $routeParams.childId,
                         language: $scope.descriptionLanguage}).then(function(result) {
                             $scope.childLO = result;
                             setTitle($scope.parentLO, $scope.childLO);
@@ -385,8 +441,8 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
     };
 
     $scope.hasChildren = function() {
-        if ($scope.parentLO && $scope.parentLO.children) {
-            return $scope.parentLO.children.length > 0;
+        if ($scope.selectedParentLOI ) {
+            return $scope.selectedParentLOI.children.length > 0;
         } else {
             return false;
         }

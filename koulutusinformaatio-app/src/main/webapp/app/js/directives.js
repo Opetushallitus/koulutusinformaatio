@@ -238,7 +238,7 @@ directive('kiAbsoluteLink', function() {
             });
 
             scope.siblingClass = function(sibling) {
-                if (sibling.losId == $routeParams.closId && sibling.loiId == $routeParams.cloiId) {
+                if (sibling.childLOId == $routeParams.childId) {
                     return 'disabled';
                 } else {
                     return '';
@@ -278,7 +278,7 @@ directive('kiAbsoluteLink', function() {
                 pushItem({name: search, linkHref: '#/haku/' + SearchService.getTerm() });
 
                 if (scope.parentLO) {
-                    pushItem({name: parent, linkHref: '#/info/' + scope.parentLO.id });
+                    pushItem({name: parent, linkHref: '#/tutkinto/' + scope.parentLO.id });
                 }
 
                 pushItem({name: child});

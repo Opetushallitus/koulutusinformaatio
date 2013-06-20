@@ -38,7 +38,7 @@
                                         <li>
                                             <h4 class="margin-top-0">
                                                 <span class="block">{{item.providerName}}, {{item.providerLocation}}</span>
-                                                <a href="#/info/{{item.parent.id}}">{{item.parent.name}}</a>
+                                                <a href="#/tutkinto/{{item.parent.id}}">{{item.parent.name}}</a>
                                             </h4>
                                         </li>
                                         <li><span>{{item.qualification}}</span></li>
@@ -47,7 +47,7 @@
                                 </td>
                                 <td>
                                     <ul class="disc">
-                                        <li ng-repeat="child in item.children"><a href="#/info/{{item.parent.id}}/{{child.losId}}/{{child.loiId}}">{{child.name}}</a></li>
+                                        <li ng-repeat="child in item.children"><a href="#/koulutusohjelma/{{item.parent.id}}/{{child.losId}}/{{child.loiId}}">{{child.name}}</a></li>
                                     </ul>
                                 </td>
                                 <td class="align-right">
