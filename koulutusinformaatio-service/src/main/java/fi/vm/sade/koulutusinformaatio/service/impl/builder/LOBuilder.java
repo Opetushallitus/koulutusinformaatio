@@ -209,7 +209,7 @@ public class LOBuilder {
                         KomoDTO komoByKomotoOID = komotoResource.getKomoByKomotoOID(s.getOid());
                         ChildLORef cRef = new ChildLORef();
                         cRef.setChildLOId(s.getOid());
-                        cRef.setName(getI18nText(komoByKomotoOID.getNimi()));
+                        cRef.setName(koodistoService.searchFirst(komoByKomotoOID.getKoulutusOhjelmaKoodiUri()));
                         cRef.setQualification(koodistoService.searchFirst(komoByKomotoOID.getTutkintonimikeUri()));
                         cRef.setPrerequisite(childLO.getPrerequisite());
                         ao.getChildLORefs().add(cRef);
