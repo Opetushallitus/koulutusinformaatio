@@ -26,6 +26,8 @@ public class ParentLORef {
     private String id;
     private I18nText name;
 
+    public ParentLORef() {}
+
     public ParentLORef(String id, I18nText name) {
         this.id = id;
         this.name = name;
