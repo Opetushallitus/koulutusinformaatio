@@ -54,7 +54,7 @@ public interface LearningOpportunityResource {
      * @return parent learning opportunity dto object
      */
     @GET
-    @Path("{parentId}")
+    @Path("parent/{parentId}")
     @Produces(MediaType.APPLICATION_JSON)
     public ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(@PathParam("parentId") String parentId,
                                                                                   @QueryParam("lang") String lang);
@@ -69,7 +69,7 @@ public interface LearningOpportunityResource {
      * @return child learning opportunity dto object
      */
     @GET
-    @Path("{parentId}/{cloId}")
+    @Path("child/{cloId}")
     @Produces(MediaType.APPLICATION_JSON)
     public ChildLearningOpportunityDTO getChildLearningOpportunity(@PathParam("cloId") String cloId, @QueryParam("lang") String lang);
 
