@@ -69,7 +69,7 @@ public interface LearningOpportunityResource {
      * @return child learning opportunity dto object
      */
     @GET
-    @Path("{parentId}/{closId}/{cloiId}")
+    @Path("{parentId}/{cloId}")
     @Produces(MediaType.APPLICATION_JSON)
     public ChildLearningOpportunityDTO getChildLearningOpportunity(@PathParam("cloId") String cloId, @QueryParam("lang") String lang);
 
