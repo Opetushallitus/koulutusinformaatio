@@ -79,17 +79,17 @@ public class ModelMapperTest {
         assertNotNull(entity);
         assertEquals(parent.getId(), entity.getId());
         assertEquals(parent.getName().getTranslations().get("fi"), entity.getName().getTranslations().get("fi"));
-        assertNotNull(entity.getChildren());
-        assertEquals(2, entity.getChildren().size());
-        assertEquals(childLO.getId(), entity.getChildren().get(0).getId());
-        assertEquals(childLO.getName().getTranslations().get("fi"), entity.getChildren().get(0).getName().getTranslations().get("fi"));
-        assertEquals(childLO2.getId(), entity.getChildren().get(1).getId());
-        assertEquals(childLO2.getName().getTranslations().get("fi"), entity.getChildren().get(1).getName().getTranslations().get("fi"));
+        assertNotNull(entity.getLois().get(0).getChildren());
+        assertEquals(2, entity.getLois().get(0).getChildren().size());
+        assertEquals(childLO.getId(), entity.getLois().get(0).getChildren().get(0).getId());
+        assertEquals(childLO.getName().getTranslations().get("fi"), entity.getLois().get(0).getChildren().get(0).getName().getTranslations().get("fi"));
+        assertEquals(childLO2.getId(), entity.getLois().get(0).getChildren().get(1).getId());
+        assertEquals(childLO2.getName().getTranslations().get("fi"), entity.getLois().get(0).getChildren().get(1).getName().getTranslations().get("fi"));
         assertNotNull(entity.getApplicationOptions());
         assertEquals(1, entity.getApplicationOptions().size());
         assertEquals(ao.getId(), entity.getApplicationOptions().iterator().next().getId());
-        assertEquals(ao.getId(), entity.getChildren().get(0).getChildLOIs().get(0).getApplicationOption().getId());
-        assertEquals(ao.getId(), entity.getChildren().get(1).getChildLOIs().get(0).getApplicationOption().getId());
+        assertEquals(ao.getId(), entity.getLois().get(0).getChildren().get(0).getApplicationOptions().get(0).getId());
+        assertEquals(ao.getId(), entity.getLois().get(0).getChildren().get(1).getApplicationOptions().get(0).getId());
     }
 
     @Test
@@ -97,6 +97,9 @@ public class ModelMapperTest {
         ParentLearningOpportunitySpecificationEntity entity = new ParentLearningOpportunitySpecificationEntity();
         entity.setId("999");
         entity.setName(TestUtil.createI18nTextEntity("entityName", "entityName", "entityName"));
+        ParentLearningOpportunityInstanceEntity parenLOIEntity = new ParentLearningOpportunityInstanceEntity();
+        parenLOIEntity.setId("112");
+        entity.setLois(Lists.newArrayList(parenLOIEntity));
 
         Set<ApplicationOptionEntity> aos = new HashSet<ApplicationOptionEntity>();
         ApplicationOptionEntity ao = new ApplicationOptionEntity();
@@ -108,36 +111,26 @@ public class ModelMapperTest {
         ao.setEducationDegree("degree");
         aos.add(ao);
         entity.setApplicationOptions(aos);
-        List<ChildLearningOpportunitySpecificationEntity> children = new ArrayList<ChildLearningOpportunitySpecificationEntity>();
-        ChildLearningOpportunitySpecificationEntity childLOS = new ChildLearningOpportunitySpecificationEntity();
-        childLOS.setId("444");
-        childLOS.setName(TestUtil.createI18nTextEntity("child1EntityName", "child1EntityName", "child1EntityName"));
+        List<ChildLearningOpportunityEntity> children = new ArrayList<ChildLearningOpportunityEntity>();
+        ChildLearningOpportunityEntity childLO = new ChildLearningOpportunityEntity();
+        childLO.setId("444");
+        childLO.setName(TestUtil.createI18nTextEntity("child1EntityName", "child1EntityName", "child1EntityName"));
 
-        List<ChildLearningOpportunityEntity> childLOIs = new ArrayList<ChildLearningOpportunityEntity>();
+
         ChildLearningOpportunityEntity childLOI = new ChildLearningOpportunityEntity();
         childLOI.setId("9898989");
-        childLOI.setApplicationSystemId("1.2.3.4.5");
-        childLOI.setApplicationOption(ao);
-        childLOIs.add(childLOI);
-        childLOS.setChildLOIs(childLOIs);
+        childLO.setApplicationSystemIds(Lists.newArrayList("1.2.3.4.5"));
+        childLO.setApplicationOptions(Lists.newArrayList(ao));
+        children.add(childLO);
 
-        children.add(childLOS);
+        ChildLearningOpportunityEntity childLO2 = new ChildLearningOpportunityEntity();
+        childLO2.setId("555");
+        childLO2.setName(TestUtil.createI18nTextEntity("child2EntityName", "child2EntityName", "child2EntityName"));
+        childLO2.setApplicationSystemIds(Lists.newArrayList("1.2.3.4.5"));
+        childLO2.setApplicationOptions(Lists.newArrayList(ao));
+        children.add(childLO2);
 
-        ChildLearningOpportunitySpecificationEntity childLOS2 = new ChildLearningOpportunitySpecificationEntity();
-        childLOS2.setId("555");
-        childLOS2.setName(TestUtil.createI18nTextEntity("child2EntityName", "child2EntityName", "child2EntityName"));
-
-        List<ChildLearningOpportunityEntity> childLOIs2 = new ArrayList<ChildLearningOpportunityEntity>();
-        ChildLearningOpportunityEntity childLOI2 = new ChildLearningOpportunityEntity();
-        childLOI2.setId("567567567");
-        childLOI2.setApplicationSystemId("1.2.3.4.5");
-        childLOI2.setApplicationOption(ao);
-        childLOIs2.add(childLOI2);
-        childLOS2.setChildLOIs(childLOIs2);
-
-        children.add(childLOS2);
-
-        entity.setChildren(children);
+        parenLOIEntity.setChildren(children);
 
         ParentLOS domain = modelMapper.map(entity, ParentLOS.class);
         assertNotNull(domain);
@@ -145,10 +138,10 @@ public class ModelMapperTest {
         assertEquals(entity.getName().getTranslations().get("fi"), domain.getName().getTranslations().get("fi"));
         assertNotNull(domain.getLois().get(0).getChildren());
         assertEquals(2, domain.getLois().get(0).getChildren().size());
-        assertEquals(childLOS.getId(), domain.getLois().get(0).getChildren().get(0).getId());
-        assertEquals(childLOS.getName().getTranslations().get("fi"), domain.getLois().get(0).getChildren().get(0).getName().getTranslations().get("fi"));
-        assertEquals(childLOS2.getId(), domain.getLois().get(0).getChildren().get(1).getId());
-        assertEquals(childLOS2.getName().getTranslations().get("fi"), domain.getLois().get(0).getChildren().get(1).getName().getTranslations().get("fi"));
+        assertEquals(childLO.getId(), domain.getLois().get(0).getChildren().get(0).getId());
+        assertEquals(childLO.getName().getTranslations().get("fi"), domain.getLois().get(0).getChildren().get(0).getName().getTranslations().get("fi"));
+        assertEquals(childLO2.getId(), domain.getLois().get(0).getChildren().get(1).getId());
+        assertEquals(childLO2.getName().getTranslations().get("fi"), domain.getLois().get(0).getChildren().get(1).getName().getTranslations().get("fi"));
         assertNotNull(domain.getApplicationOptions());
         assertEquals(1, domain.getApplicationOptions().size());
         //assertEquals(ao.getId(), domain.getApplicationOptions().get(0).getId());
