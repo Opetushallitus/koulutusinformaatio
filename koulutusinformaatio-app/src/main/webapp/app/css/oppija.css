@@ -2717,6 +2717,8 @@ ul.unstyled {
       background: transparent url("../img/social/twitter.png") no-repeat scroll 0 0; }
     #social li a.google_plus {
       background: transparent url("../img/social/googleplus.png") no-repeat scroll 0 0; }
+    #social li a.muu {
+      background: transparent url("../img/social/other.png") no-repeat scroll 0 0; }
     #social li a:hover {
       background-position: -26px 0px; }
     #social li a:active {
