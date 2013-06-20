@@ -221,8 +221,7 @@ public class LOBuilder {
                     for (OidRDTO s : komotosByHakukohdeOID) {
                         KomoDTO komoByKomotoOID = komotoResource.getKomoByKomotoOID(s.getOid());
                         ChildLORef cRef = new ChildLORef();
-                        cRef.setLoiId(s.getOid());
-                        cRef.setLosId(komoByKomotoOID.getOid());
+                        cRef.setChildLOId(s.getOid());
                         cRef.setName(getI18nText(komoByKomotoOID.getNimi()));
                         cRef.setQualification(koodistoService.searchFirst(komoByKomotoOID.getTutkintonimikeUri()));
                         cRef.setPrerequisite(childLO.getPrerequisite());
