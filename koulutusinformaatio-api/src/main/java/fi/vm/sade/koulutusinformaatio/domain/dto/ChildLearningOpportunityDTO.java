@@ -36,7 +36,7 @@ public class ChildLearningOpportunityDTO {
     private String name;
     private String qualification;
     private String degreeTitle;
-    private ApplicationOptionDTO applicationOption;
+    private List<ApplicationOptionDTO> applicationOptions;
     private List<ChildLORefDTO> related = new ArrayList<ChildLORefDTO>();
 
     private Date startDate;
@@ -80,12 +80,12 @@ public class ChildLearningOpportunityDTO {
         this.name = name;
     }
 
-    public ApplicationOptionDTO getApplicationOption() {
-        return applicationOption;
+    public List<ApplicationOptionDTO> getApplicationOptions() {
+        return applicationOptions;
     }
 
-    public void setApplicationOption(ApplicationOptionDTO applicationOption) {
-        this.applicationOption = applicationOption;
+    public void setApplicationOptions(List<ApplicationOptionDTO> applicationOptions) {
+        this.applicationOptions = applicationOptions;
     }
 
     public String getQualification() {
