@@ -41,7 +41,6 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
 
     private ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO;
     private ApplicationOptionDAO applicationOptionDAO;
-    private ChildLearningOpportunitySpecificationDAO childLearningOpportunitySpecificationDAO;
     private ChildLearningOpportunityDAO childLearningOpportunityDAO;
     private DataStatusDAO dataStatusDAO;
     private ModelMapper modelMapper;
@@ -51,14 +50,12 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     @Autowired
     public EducationDataQueryServiceImpl(ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO,
                                          ApplicationOptionDAO applicationOptionDAO, ModelMapper modelMapper,
-                                         ChildLearningOpportunitySpecificationDAO childLearningOpportunitySpecificationDAO,
                                          ChildLearningOpportunityDAO childLearningOpportunityDAO,
                                          KoulutusinformaatioObjectBuilder koulutusinformaatioObjectBuilder,
                                          DataStatusDAO dataStatusDAO, PictureDAO pictureDAO) {
         this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;
         this.modelMapper = modelMapper;
-        this.childLearningOpportunitySpecificationDAO = childLearningOpportunitySpecificationDAO;
         this.childLearningOpportunityDAO = childLearningOpportunityDAO;
         this.koulutusinformaatioObjectBuilder = koulutusinformaatioObjectBuilder;
         this.dataStatusDAO = dataStatusDAO;
@@ -98,10 +95,9 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     }
 
     @Override
-    public ChildLO getChildLearningOpportunity(String childLosId, String childLoiId) throws ResourceNotFoundException {
-        ChildLearningOpportunitySpecificationEntity childLOS = getChildLOS(childLosId);
-        ChildLearningOpportunityEntity childLOI = getChildLOI(childLoiId);
-        return koulutusinformaatioObjectBuilder.buildChildLO(childLOS, childLOI);
+    public ChildLO getChildLearningOpportunity(String childLoId) throws ResourceNotFoundException {
+        ChildLearningOpportunityEntity childLO = getChildLO(childLoId);
+        return koulutusinformaatioObjectBuilder.buildChildLO(childLO);
     }
 
     @Override
@@ -124,19 +120,11 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
         }
     }
 
-    private ChildLearningOpportunitySpecificationEntity getChildLOS(String childLosId) throws ResourceNotFoundException {
-        ChildLearningOpportunitySpecificationEntity clos = childLearningOpportunitySpecificationDAO.get(childLosId);
-        if (clos == null) {
-            throw new ResourceNotFoundException("Child learning opportunity specification not found: " + childLosId);
+    private ChildLearningOpportunityEntity getChildLO(String childLoId) throws ResourceNotFoundException {
+        ChildLearningOpportunityEntity clo = childLearningOpportunityDAO.get(childLoId);
+        if (clo == null) {
+            throw new ResourceNotFoundException("Child learning opportunity instance not found: " + childLoId);
         }
-        return clos;
-    }
-
-    private ChildLearningOpportunityEntity getChildLOI(String childLoiId) throws ResourceNotFoundException {
-        ChildLearningOpportunityEntity cloi = childLearningOpportunityDAO.get(childLoiId);
-        if (cloi == null) {
-            throw new ResourceNotFoundException("Child learning opportunity instance not found: " + childLoiId);
-        }
-        return cloi;
+        return clo;
     }
 }
