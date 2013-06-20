@@ -31,8 +31,7 @@ public class ChildLOToDTO {
 
     public static ChildLearningOpportunityDTO convert(final ChildLO childLO, final String lang) {
         ChildLearningOpportunityDTO child = new ChildLearningOpportunityDTO();
-        child.setLosId(childLO.getLosId());
-        child.setLoiId(childLO.getLoiId());
+        child.setId(childLO.getId());
         child.setName(ConverterUtil.getTextByLanguage(childLO.getName(), lang));
         child.setDegreeTitle(ConverterUtil.getTextByLanguage(childLO.getDegreeTitle(), lang));
         child.setQualification(ConverterUtil.getTextByLanguage(childLO.getQualification(), lang));

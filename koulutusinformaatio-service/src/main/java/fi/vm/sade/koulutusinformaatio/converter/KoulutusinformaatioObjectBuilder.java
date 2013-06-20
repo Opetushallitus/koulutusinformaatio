@@ -63,7 +63,7 @@ public class KoulutusinformaatioObjectBuilder {
     public ChildLO buildChildLO(final ChildLearningOpportunityEntity childLO) {
         if (childLO != null) {
             ChildLO clo = new ChildLO();
-            clo.setLoiId(childLO.getId());
+            clo.setId(childLO.getId());
             clo.setApplicationOptions(convert(childLO.getApplicationOptions(), ApplicationOption.class));
             clo.setParent(convert(childLO.getParent(), ParentLORef.class));
             clo.setRelated(convert(childLO.getRelated(), ChildLORef.class));

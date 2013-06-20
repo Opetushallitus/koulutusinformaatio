@@ -103,6 +103,7 @@ public class KoulutusinformaatioObjectBuilderTest {
         provider.setId("provider123");
         provider.setName(TestUtil.createI18nTextEntity("pr fi", "pr sv", "pr en"));
         provider.setApplicationSystemIds(Sets.newHashSet("as123", "as124"));
+        childLearningOpportunity.setApplicationSystemIds(Lists.newArrayList("as123", "as124"));
         ao.setProvider(provider);
 
         childLearningOpportunity.setApplicationOptions(Lists.newArrayList(ao));
@@ -122,8 +123,7 @@ public class KoulutusinformaatioObjectBuilderTest {
     public void testBuildChildLO() throws Exception {
         ChildLO childLO = koulutusinformaatioObjectBuilder.buildChildLO(childLearningOpportunity);
         assertNotNull(childLO);
-        assertEquals(childLearningOpportunity.getId(), childLO.getLosId());
-        assertEquals(childLearningOpportunity.getId(), childLO.getLoiId());
+        assertEquals(childLearningOpportunity.getId(), childLO.getId());
         assertEquals(childLearningOpportunity.getName().getTranslations().get("fi"), childLO.getName().getTranslations().get("fi"));
         assertEquals(childLearningOpportunity.getApplicationOptions().get(0).getId(), childLO.getApplicationOptions().get(0).getId());
         assertEquals(childLearningOpportunity.getDegreeTitle().getTranslations().get("fi"), childLO.getDegreeTitle().getTranslations().get("fi"));

@@ -28,8 +28,7 @@ import java.util.Map;
  */
 public class ChildLO {
 
-    private String losId;
-    private String loiId;
+    private String id;
     private I18nText name;
     private I18nText qualification;
     private I18nText degreeTitle;
@@ -50,20 +49,12 @@ public class ChildLO {
     private Date startDate;
 
 
-    public String getLosId() {
-        return losId;
+    public String getId() {
+        return id;
     }
 
-    public void setLosId(String losId) {
-        this.losId = losId;
-    }
-
-    public String getLoiId() {
-        return loiId;
-    }
-
-    public void setLoiId(String loiId) {
-        this.loiId = loiId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public I18nText getName() {

@@ -75,8 +75,7 @@ public class LearningOpportunityServiceImplTest {
         parentLO.setApplicationOptions(aos);
 
         childLO = new ChildLO();
-        childLO.setLosId("los123");
-        childLO.setLoiId("loi123");
+        childLO.setId("lo123");
         childLO.setName(createI18Text("child 1"));
         childLO.setStartDate(new Date());
         childLO.setDegreeTitle(createI18Text("degree"));
@@ -150,8 +149,7 @@ public class LearningOpportunityServiceImplTest {
 
     private void checkResult(String lang, ChildLearningOpportunityDTO result) {
         assertNotNull(result);
-        assertEquals(childLO.getLosId(), result.getLosId());
-        assertEquals(childLO.getLoiId(), result.getLoiId());
+        assertEquals(childLO.getId(), result.getId());
         assertEquals(childLO.getName().getTranslations().get(lang), result.getName());
         assertEquals(childLO.getApplicationOptions().get(0).getId(), result.getApplicationOptions().get(0).getId());
         assertEquals(childLO.getApplicationOptions().get(0).getName().getTranslations().get(lang), result.getApplicationOptions().get(0).getName());
