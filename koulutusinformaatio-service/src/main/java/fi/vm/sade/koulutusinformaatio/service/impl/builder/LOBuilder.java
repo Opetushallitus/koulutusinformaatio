@@ -104,7 +104,7 @@ public class LOBuilder {
         // children
 
         // parent loi id -> List<ChildLearningOpportunity>
-        ArrayListMultimap childLOsByParentLOIId = ArrayListMultimap.create();
+        ArrayListMultimap<String, ChildLearningOpportunity> childLOsByParentLOIId = ArrayListMultimap.create();
 
         List<String> childKomoIds = parentKomo.getAlaModuulit();
         for (String childKomoId : childKomoIds) {
@@ -203,11 +203,6 @@ public class LOBuilder {
                         ao.setSora(true);
                     }
 
-                    // provider to ao
-                    // ao.setProvider(parentLOS.getProvider());
-                    // asid to provider
-                    //parentLOS.getProvider().getApplicationSystemIDs().add(hakuDTO.getOid());
-
                     //education degree code value
                     ao.setEducationDegree(koodistoService.searchFirstCodeValue(childKomoto.getKoulutusAsteUri()));
                     //set teaching language codes
@@ -238,14 +233,25 @@ public class LOBuilder {
             }
         }
 
+        // parent loss
         for (ParentLOS parentLOS : parentLOSs) {
+            // parent lois
             for (ParentLOI parentLOI : parentLOS.getLois()) {
-                parentLOI.setChildren(childLOsByParentLOIId.get(parentLOI.getId()));
+                // add children to parent loi
+                List<ChildLearningOpportunity> children = childLOsByParentLOIId.get(parentLOI.getId());
+                for (ChildLearningOpportunity child : children) {
+                    // add provider to ao + as id to provider
+                    for (ApplicationOption ao : child.getApplicationOptions()) {
+                        ao.setProvider(parentLOS.getProvider());
+                        parentLOS.getProvider().getApplicationSystemIDs().add(ao.getApplicationSystem().getId());
+                    }
+                    parentLOS.getApplicationOptions().addAll(child.getApplicationOptions());
+                }
+                parentLOI.setChildren(children);
             }
         }
 
         return parentLOSs;
-
     }
 
     private ParentLOS constructParentLOS(KomoDTO parentKomo, String providerId, List<KomotoDTO> parentKomotos) throws KoodistoException {
