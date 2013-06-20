@@ -33,7 +33,7 @@ public class ChildLO {
     private I18nText name;
     private I18nText qualification;
     private I18nText degreeTitle;
-    private ApplicationOption applicationOption;
+    private List<ApplicationOption> applicationOptions;
     private List<ChildLORef> related = new ArrayList<ChildLORef>();
     private ParentLORef parent;
     private List<Code> teachingLanguages = new ArrayList<Code>();
@@ -90,12 +90,12 @@ public class ChildLO {
         this.degreeTitle = degreeTitle;
     }
 
-    public ApplicationOption getApplicationOption() {
-        return applicationOption;
+    public List<ApplicationOption> getApplicationOptions() {
+        return applicationOptions;
     }
 
-    public void setApplicationOption(ApplicationOption applicationOption) {
-        this.applicationOption = applicationOption;
+    public void setApplicationOptions(List<ApplicationOption> applicationOptions) {
+        this.applicationOptions = applicationOptions;
     }
 
     public List<ChildLORef> getRelated() {

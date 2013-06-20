@@ -33,6 +33,8 @@ public class ChildLearningOpportunityEntity {
 
     @Id
     private String id;
+    @Embedded
+    private I18nTextEntity name;
     private List<String> applicationSystemIds;
     @Reference
     private List<ApplicationOptionEntity> applicationOptions;
@@ -75,6 +77,14 @@ public class ChildLearningOpportunityEntity {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public I18nTextEntity getName() {
+        return name;
+    }
+
+    public void setName(I18nTextEntity name) {
+        this.name = name;
     }
 
     public List<String> getApplicationSystemIds() {
