@@ -16,7 +16,6 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import com.google.common.base.Objects;
 import fi.vm.sade.koulutusinformaatio.converter.KoulutusinformaatioObjectBuilder;
 import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.entity.*;
@@ -27,9 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Mikko Majapuro
@@ -41,7 +37,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
     private ParentLearningOpportunitySpecificationDAO parentLOSTransactionDAO;
     private ApplicationOptionDAO applicationOptionTransactionDAO;
     private LearningOpportunityProviderDAO learningOpportunityProviderTransactionDAO;
-    private ChildLearningOpportunityDAO childLOITransactionDAO;
+    private ChildLearningOpportunityDAO childLOTransactionDAO;
     private KoulutusinformaatioObjectBuilder koulutusinformaatioObjectBuilder;
     private PictureDAO pictureTransactionDAO;
 
@@ -49,14 +45,14 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
     public EducationDataUpdateServiceImpl(ModelMapper modelMapper, ParentLearningOpportunitySpecificationDAO parentLOSTransactionDAO,
                                           ApplicationOptionDAO applicationOptionTransactionDAO,
                                           LearningOpportunityProviderDAO learningOpportunityProviderTransactionDAO,
-                                          ChildLearningOpportunityDAO childLOITransactionDAO,
+                                          ChildLearningOpportunityDAO childLOTransactionDAO,
                                           KoulutusinformaatioObjectBuilder koulutusinformaatioObjectBuilder,
                                           PictureDAO pictureTransactionDAO) {
         this.modelMapper = modelMapper;
         this.parentLOSTransactionDAO = parentLOSTransactionDAO;
         this.applicationOptionTransactionDAO = applicationOptionTransactionDAO;
         this.learningOpportunityProviderTransactionDAO = learningOpportunityProviderTransactionDAO;
-        this.childLOITransactionDAO = childLOITransactionDAO;
+        this.childLOTransactionDAO = childLOTransactionDAO;
         this.koulutusinformaatioObjectBuilder = koulutusinformaatioObjectBuilder;
         this.pictureTransactionDAO = pictureTransactionDAO;
     }
@@ -64,74 +60,52 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
     @Override
     public void save(final ParentLOS parentLOS) {
         if (parentLOS != null) {
-            ParentLearningOpportunitySpecificationEntity plo =
+            ParentLearningOpportunitySpecificationEntity plos =
                     modelMapper.map(parentLOS, ParentLearningOpportunitySpecificationEntity.class);
-            plo.setChildRefs(new ArrayList<ChildLORefEntity>());
-            Map<String, ApplicationOptionEntity> aos = new HashMap<String, ApplicationOptionEntity>();
-            save(plo.getProvider());
+            save(plos.getProvider());
 
-            if (plo.getApplicationOptions() != null) {
-                for (ApplicationOptionEntity ao : plo.getApplicationOptions()) {
-                    aos.put(ao.getId(), ao);
-                }
-            }
-            if (plo.getChildren() != null) {
-                ParentLOSRefEntity parentRef = modelMapper.map(plo, ParentLOSRefEntity.class);
-                for (ChildLearningOpportunitySpecificationEntity clo : plo.getChildren()) {
-                    clo.setParent(parentRef);
-                    List<ChildLORefEntity> childRefs = save(clo, plo);
-                    if (childRefs != null && !childRefs.isEmpty()) {
-                        plo.getChildRefs().addAll(childRefs);
-                    }
-                }
-            }
-            for (ApplicationOptionEntity ao : aos.values()) {
-                save(ao);
-            }
-            parentLOSTransactionDAO.save(plo);
-        }
-    }
-
-    private List<ChildLORefEntity> save(final ChildLearningOpportunitySpecificationEntity childLearningOpportunitySpecification,
-                                        final ParentLearningOpportunitySpecificationEntity parentLOS) {
-        List<ChildLORefEntity> childLORefs = new ArrayList<ChildLORefEntity>();
-        if (childLearningOpportunitySpecification != null) {
-            if (childLearningOpportunitySpecification.getChildLOIs() != null) {
-                for (ChildLearningOpportunityEntity childLOI : childLearningOpportunitySpecification.getChildLOIs()) {
-                    ChildLORefEntity childLORef = save(childLOI, childLearningOpportunitySpecification, parentLOS);
-                    if (childLORef != null) {
-                        childLORefs.add(childLORef);
-                    }
+            if (plos.getApplicationOptions() != null) {
+                for (ApplicationOptionEntity ao : plos.getApplicationOptions()) {
+                    save(ao);
                 }
             }
 
-            childLOSTransactionDAO.save(childLearningOpportunitySpecification);
-        }
-        return childLORefs;
-    }
-
-    private ChildLORefEntity save(final ChildLearningOpportunityEntity childLearningOpportunityInstance,
-                                  final ChildLearningOpportunitySpecificationEntity childLearningOpportunitySpecification,
-                                  final ParentLearningOpportunitySpecificationEntity parentLOS) {
-        if (childLearningOpportunityInstance != null && parentLOS != null) {
-            childLearningOpportunityInstance.setRelated(new ArrayList<ChildLORefEntity>());
-            for (ChildLearningOpportunitySpecificationEntity childLOS : parentLOS.getChildren()) {
-                for (ChildLearningOpportunityEntity clo : childLOS.getChildLOIs()) {
-                    if (!clo.getId().equals(childLearningOpportunityInstance.getId()) &&
-                            Objects.equal(clo.getApplicationSystemId(), childLearningOpportunityInstance.getApplicationSystemId())) {
-                        ChildLORefEntity cRef = koulutusinformaatioObjectBuilder.buildChildLORef(childLOS, clo);
-                        if (cRef != null) {
-                            childLearningOpportunityInstance.getRelated().add(cRef);
+            if (plos.getLois() != null) {
+                ParentLOSRefEntity parentRef = modelMapper.map(plos, ParentLOSRefEntity.class);
+                for (ParentLearningOpportunityInstanceEntity ploi : plos.getLois()) {
+                    if (ploi.getChildren() != null) {
+                        for (ChildLearningOpportunityEntity cLO : ploi.getChildren()) {
+                            cLO.setParent(parentRef);
+                            ChildLORefEntity childRef = save(cLO, ploi);
+                            ploi.getChildRefs().add(childRef);
                         }
                     }
                 }
             }
 
-            if (childLearningOpportunityInstance.getApplicationOption() != null) {
-                save(childLearningOpportunityInstance.getApplicationOption());
+            parentLOSTransactionDAO.save(plos);
+        }
+    }
+
+    private ChildLORefEntity save(final ChildLearningOpportunityEntity childLearningOpportunity,
+                                        final ParentLearningOpportunityInstanceEntity parentLOI) {
+        if (childLearningOpportunity != null && parentLOI != null) {
+            childLearningOpportunity.setRelated(new ArrayList<ChildLORefEntity>());
+            for (ChildLearningOpportunityEntity childLO : parentLOI.getChildren()) {
+                if (!childLearningOpportunity.getId().equals(childLO.getId())) {
+                    ChildLORefEntity cRef = koulutusinformaatioObjectBuilder.buildChildLORef(childLO);
+                    if (cRef != null) {
+                        childLearningOpportunity.getRelated().add(cRef);
+                    }
+                }
             }
-            childLOITransactionDAO.save(childLearningOpportunityInstance);
-            return koulutusinformaatioObjectBuilder.buildChildLORef(childLearningOpportunitySpecification, childLearningOpportunityInstance);
+            if (childLearningOpportunity.getApplicationOptions() != null) {
+                for (ApplicationOptionEntity ao : childLearningOpportunity.getApplicationOptions()) {
+                    save(ao);
+                }
+            }
+            childLOTransactionDAO.save(childLearningOpportunity);
+            return koulutusinformaatioObjectBuilder.buildChildLORef(childLearningOpportunity);
         }
         return null;
     }
