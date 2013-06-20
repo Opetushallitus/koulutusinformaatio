@@ -129,11 +129,10 @@ public class LOBuilder {
 
                 ChildLearningOpportunity childLO = new ChildLearningOpportunity();
                 childLO.setId(childKomo.getOid());
-                childLO.setName(getI18nText(childKomo.getNimi()));
+                childLO.setName(koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri()));
                 childLO.setQualification(koodistoService.searchFirst(childKomo.getTutkintonimikeUri()));
                 childLO.setDegreeTitle(koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri()));
                 childLO.setDegreeGoal(getI18nText(childKomo.getTavoitteet()));
-
                 childLO.setStartDate(childKomoto.getKoulutuksenAlkamisDate());
                 childLO.setFormOfEducation(koodistoService.searchMultiple(childKomoto.getKoulutuslajiUris()));
                 childLO.setWebLinks(childKomoto.getWebLinkkis());
