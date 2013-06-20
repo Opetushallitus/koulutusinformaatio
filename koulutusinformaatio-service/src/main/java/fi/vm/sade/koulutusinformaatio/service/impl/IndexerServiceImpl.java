@@ -58,7 +58,7 @@ public class IndexerServiceImpl implements IndexerService {
             for (ChildLearningOpportunity childLO : loi.getChildren()) {
                 SolrInputDocument childLODoc = new SolrInputDocument();
                 childLODoc.addField("id", childLO.getId());
-                childLODoc.addField("name", childLO.getName());
+                childLODoc.addField("name", childLO.getName().getTranslations().get("fi"));
                 for (I18nText i18n : childLO.getProfessionalTitles()) {
                     childLODoc.addField("professionalTitles", i18n.getTranslations().get("fi"));
                 }
