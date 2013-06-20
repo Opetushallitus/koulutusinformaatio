@@ -2702,11 +2702,12 @@ ul.unstyled {
 
 /* Social links */
 #social li {
-  display: inline-block; }
+  display: inline-block;
+  margin: 0 6px 0 0; }
   #social li a {
     display: inline-block;
-    height: 32px;
-    width: 32px;
+    height: 26px;
+    width: 26px;
     color: transparent; }
     #social li a.facebook {
       background: transparent url("../img/social/facebook.png") no-repeat scroll 0 0; }
@@ -2715,7 +2716,11 @@ ul.unstyled {
     #social li a.twitter {
       background: transparent url("../img/social/twitter.png") no-repeat scroll 0 0; }
     #social li a.google_plus {
-      background: transparent url("../img/social/google.png") no-repeat scroll 0 0; }
+      background: transparent url("../img/social/googleplus.png") no-repeat scroll 0 0; }
+    #social li a:hover {
+      background-position: -26px 0px; }
+    #social li a:active {
+      background-position: -52px 0px; }
 
 /*** compare
 ************************************************/

@@ -368,13 +368,17 @@ service('TranslationService', function() {
         },
 
         removeItem: function(aoId) {
-            var value = $.cookie(key);
-            value = JSON.parse(value);
+            if (this.getItemCount() > 1) {
+                var value = $.cookie(key);
+                value = JSON.parse(value);
 
-            var index = value.indexOf(aoId);
-            value.splice(index, 1);
+                var index = value.indexOf(aoId);
+                value.splice(index, 1);
 
-            $.cookie(key, JSON.stringify(value), cookieConfig);
+                $.cookie(key, JSON.stringify(value), cookieConfig);
+            } else {
+                this.empty();
+            }
 
             updateBasket(this.getItemCount());
         },
