@@ -144,13 +144,6 @@ public class LOBuilder {
                 childLO.setInternationalization(getI18nText(childKomoto.getKansainvalistyminen()));
                 childLO.setCooperation(getI18nText(childKomoto.getYhteistyoMuidenToimijoidenKanssa()));
 
-
-
-//                ParentLORef parentRef = new ParentLORef();
-//                parentRef.setId(parentLOS.getId());
-//                parentRef.setName(parentLOS.getName());
-
-
                 List<ApplicationOption> applicationOptions = Lists.newArrayList();
                 List<String> applicationSystemIds = Lists.newArrayList();
                 List<OidRDTO> aoIdDTOs = komotoResource.getHakukohdesByKomotoOID(childKomotoOId.getOid());
@@ -243,6 +236,7 @@ public class LOBuilder {
                     // add provider to ao + as id to provider
                     for (ApplicationOption ao : child.getApplicationOptions()) {
                         ao.setProvider(parentLOS.getProvider());
+                        ao.setParent(new ParentLORef(parentLOS.getId(), parentLOS.getName()));
                         parentLOS.getProvider().getApplicationSystemIDs().add(ao.getApplicationSystem().getId());
                     }
                     parentLOS.getApplicationOptions().addAll(child.getApplicationOptions());
