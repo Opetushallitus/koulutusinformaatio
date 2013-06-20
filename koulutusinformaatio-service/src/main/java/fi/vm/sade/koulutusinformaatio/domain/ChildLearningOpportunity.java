@@ -30,7 +30,6 @@ public class ChildLearningOpportunity {
 
     private String id;
     private I18nText name;
-    private List<ChildLOI> childLOIs = new ArrayList<ChildLOI>();
     // koulutusohjelma
     private I18nText degreeTitle;
     //tutkintonimike
@@ -76,14 +75,6 @@ public class ChildLearningOpportunity {
 
     public void setName(I18nText name) {
         this.name = name;
-    }
-
-    public List<ChildLOI> getChildLOIs() {
-        return childLOIs;
-    }
-
-    public void setChildLOIs(List<ChildLOI> childLOIs) {
-        this.childLOIs = childLOIs;
     }
 
     public I18nText getQualification() {
