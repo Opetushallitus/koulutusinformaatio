@@ -34,7 +34,6 @@ public class ParentLO {
     private Set<ApplicationOption> applicationOptions = new HashSet<ApplicationOption>();
     private Provider provider;
     private String educationDegree;
-    private List<ChildLORef> childRefs = new ArrayList<ChildLORef>();
     private I18nText structureDiagram;
     private I18nText accessToFurtherStudies;
     private I18nText degreeProgramSelection;
@@ -81,14 +80,6 @@ public class ParentLO {
 
     public void setEducationDegree(String educationDegree) {
         this.educationDegree = educationDegree;
-    }
-
-    public List<ChildLORef> getChildRefs() {
-        return childRefs;
-    }
-
-    public void setChildRefs(List<ChildLORef> childRefs) {
-        this.childRefs = childRefs;
     }
 
     public I18nText getStructureDiagram() {

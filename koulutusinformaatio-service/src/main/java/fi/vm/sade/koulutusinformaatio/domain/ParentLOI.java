@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,6 +29,7 @@ public class ParentLOI {
     private String id;
     private I18nText prerequisite;
     private List<ChildLearningOpportunity> children;
+    private List<ChildLORef> childRefs = new ArrayList<ChildLORef>();
 
     public String getId() {
         return id;
@@ -51,5 +53,13 @@ public class ParentLOI {
 
     public void setChildren(List<ChildLearningOpportunity> children) {
         this.children = children;
+    }
+
+    public List<ChildLORef> getChildRefs() {
+        return childRefs;
+    }
+
+    public void setChildRefs(List<ChildLORef> childRefs) {
+        this.childRefs = childRefs;
     }
 }

@@ -66,15 +66,15 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     }
 
     @Override
-    public ChildLearningOpportunityDTO getChildLearningOpportunity(String parentId, String closId, String cloiId) throws ResourceNotFoundException {
-        ChildLO childLO = educationDataQueryService.getChildLearningOpportunity(closId, cloiId);
+    public ChildLearningOpportunityDTO getChildLearningOpportunity(String cloId) throws ResourceNotFoundException {
+        ChildLO childLO = educationDataQueryService.getChildLearningOpportunity(cloId);
         String lang = resolveDefaultLanguage(childLO);
         return ChildLOToDTO.convert(childLO, lang);
     }
 
     @Override
-    public ChildLearningOpportunityDTO getChildLearningOpportunity(String parentId, String closId, String cloiId, String lang) throws ResourceNotFoundException {
-        ChildLO childLO = educationDataQueryService.getChildLearningOpportunity(closId, cloiId);
+    public ChildLearningOpportunityDTO getChildLearningOpportunity(String cloId, String lang) throws ResourceNotFoundException {
+        ChildLO childLO = educationDataQueryService.getChildLearningOpportunity(cloId);
         return ChildLOToDTO.convert(childLO, lang);
     }
 
