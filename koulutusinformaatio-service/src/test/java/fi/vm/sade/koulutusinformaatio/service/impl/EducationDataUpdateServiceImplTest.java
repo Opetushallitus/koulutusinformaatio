@@ -30,7 +30,6 @@ public class EducationDataUpdateServiceImplTest {
     private ApplicationOptionDAO applicationOptionDAO;
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
     private ChildLearningOpportunityDAO childLearningOpportunityDAO;
-    private ChildLearningOpportunitySpecificationDAO childLearningOpportunitySpecificationDAO;
     private PictureDAO pictureDAO;
     private DBCollection ploCollection;
     private DBCollection aoCollection;
@@ -66,15 +65,13 @@ public class EducationDataUpdateServiceImplTest {
         when(childLearningOpportunityDAO.getCollection()).thenReturn(cloiCollection);
 
         closCollection = mock(DBCollection.class);
-        childLearningOpportunitySpecificationDAO = mock(ChildLearningOpportunitySpecificationDAO.class);
-        when(childLearningOpportunitySpecificationDAO.getCollection()).thenReturn(closCollection);
 
         KoulutusinformaatioObjectBuilder objectBuilder = new KoulutusinformaatioObjectBuilder(modelMapper);
 
         pictureDAO = mock(PictureDAO.class);
 
         service = new EducationDataUpdateServiceImpl( modelMapper, parentLearningOpportunitySpecificationDAO,
-               applicationOptionDAO, learningOpportunityProviderDAO, childLearningOpportunitySpecificationDAO, childLearningOpportunityDAO,
+               applicationOptionDAO, learningOpportunityProviderDAO, childLearningOpportunityDAO,
                 objectBuilder, pictureDAO);
     }
 
