@@ -128,7 +128,7 @@ public class LOBuilder {
                 }
 
                 ChildLearningOpportunity childLO = new ChildLearningOpportunity();
-                childLO.setId(childKomo.getOid());
+                childLO.setId(childKomoto.getOid());
                 childLO.setName(koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri()));
                 childLO.setQualification(koodistoService.searchFirst(childKomo.getTutkintonimikeUri()));
                 childLO.setDegreeTitle(koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri()));
