@@ -96,7 +96,12 @@ public class KoodistoServiceImpl implements KoodistoService {
             return null;
         } else {
             LOGGER.debug("search first koodi: " + koodiUri);
-            return search(koodiUri).get(0);
+            List<I18nText> koodis = search(koodiUri);
+            if (koodis.size() < 1) {
+                LOGGER.warn("No koodis found with uri: " + koodiUri);
+                return null;
+            }
+            return koodis.get(0);
         }
     }
 

@@ -41,7 +41,7 @@ public class ApplicationOptionToDTO {
             ao.setTeachingLanguages(applicationOption.getTeachingLanguages());
             ao.setSelectionCriteria(ConverterUtil.getTextByLanguage(applicationOption.getSelectionCriteria(), lang));
             ao.setPrerequisite(CodeToDTO.convert(applicationOption.getPrerequisite(), lang));
-
+            ao.setExams(ExamToDTO.convertAll(applicationOption.getExams(), lang));
             return ao;
         }
         return null;
