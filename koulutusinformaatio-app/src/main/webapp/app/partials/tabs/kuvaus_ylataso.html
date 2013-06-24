@@ -4,7 +4,7 @@
         <ul class="ribbon-content">
             <li data-ng-repeat="loi in parentLO.lois">
                 <a data-ng-click="changePrerequisiteSelection(loi.prerequisite)" ng-class="loiClass(loi.prerequisite)">
-                    <span>{{loi.prerequisite}}</span>
+                    <span>{{loi.prerequisite.description}}</span>
                 </a>
             </li>
         </ul>

@@ -42,8 +42,8 @@
 
     "goals-of-education": "Tavoite",
     "selection-of-degree-program": "Koulutusohjelman valinta",
-    "pk-based-education": "Peruskoulupohjaisena järjestettävä koulutus",
-    "yo-based-education": "Lukiopohjaisena järjestettävä koulutus",
+    "base-education-PK": "Peruskoulupohjaisena järjestettävä koulutus",
+    "base-education-YO": "Lukiopohjaisena järjestettävä koulutus",
     "access-to-further-studies": "Jatko-opintomahdollisuudet",
 
     "general-selection-criteria": "Yleiset valintaperusteet",

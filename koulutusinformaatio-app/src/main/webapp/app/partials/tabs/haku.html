@@ -31,7 +31,7 @@
                             ng-change="changePrerequisiteSelection(ao.prerequisite)" 
                             ng-model="selectedAo.id"
                             ng-class="showApplicationRadioSelection" />
-                        <label for="input{{$index}}">{{ao.prerequisite}}</label>
+                        <label for="input{{$index}}">{{ao.prerequisite.description}}</label>
                     </li>
                 </ul>
                 <input 
