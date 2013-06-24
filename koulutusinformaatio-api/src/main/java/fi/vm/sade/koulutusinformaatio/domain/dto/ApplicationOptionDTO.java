@@ -40,7 +40,7 @@ public class ApplicationOptionDTO {
     private String educationDegree;
     private List<String> teachingLanguages;
     private String selectionCriteria;
-    private String prerequisite;
+    private CodeDTO prerequisite;
 
 
     public String getId() {
@@ -147,11 +147,11 @@ public class ApplicationOptionDTO {
         this.selectionCriteria = selectionCriteria;
     }
 
-    public String getPrerequisite() {
+    public CodeDTO getPrerequisite() {
         return prerequisite;
     }
 
-    public void setPrerequisite(String prerequisite) {
+    public void setPrerequisite(CodeDTO prerequisite) {
         this.prerequisite = prerequisite;
     }
 }

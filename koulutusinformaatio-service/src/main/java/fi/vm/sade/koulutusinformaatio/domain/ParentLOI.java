@@ -27,8 +27,8 @@ import java.util.List;
 public class ParentLOI {
 
     private String id;
-    private I18nText prerequisite;
     private I18nText selectingEducation;
+    private Code prerequisite;
     private List<ChildLearningOpportunity> children;
     private List<ChildLORef> childRefs = new ArrayList<ChildLORef>();
 
@@ -40,11 +40,11 @@ public class ParentLOI {
         this.id = id;
     }
 
-    public I18nText getPrerequisite() {
+    public Code getPrerequisite() {
         return prerequisite;
     }
 
-    public void setPrerequisite(I18nText prerequisite) {
+    public void setPrerequisite(Code prerequisite) {
         this.prerequisite = prerequisite;
     }
 

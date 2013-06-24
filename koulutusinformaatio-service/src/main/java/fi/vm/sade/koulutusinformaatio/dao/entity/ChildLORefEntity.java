@@ -34,7 +34,7 @@ public class ChildLORefEntity {
     @Embedded
     private I18nTextEntity qualification;
     @Embedded
-    private I18nTextEntity prerequisite;
+    private CodeEntity prerequisite;
 
     public ChildLORefEntity() {}
 
@@ -78,11 +78,11 @@ public class ChildLORefEntity {
         this.qualification = qualification;
     }
 
-    public I18nTextEntity getPrerequisite() {
+    public CodeEntity getPrerequisite() {
         return prerequisite;
     }
 
-    public void setPrerequisite(I18nTextEntity prerequisite) {
+    public void setPrerequisite(CodeEntity prerequisite) {
         this.prerequisite = prerequisite;
     }
 }

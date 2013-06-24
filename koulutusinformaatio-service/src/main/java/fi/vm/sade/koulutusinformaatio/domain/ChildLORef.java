@@ -30,7 +30,7 @@ public class ChildLORef {
     private I18nText name;
     private String nameByTeachingLang;
     private I18nText qualification;
-    private I18nText prerequisite;
+    private Code prerequisite;
 
     public String getChildLOId() {
         return childLOId;
@@ -72,11 +72,11 @@ public class ChildLORef {
         this.qualification = qualification;
     }
 
-    public I18nText getPrerequisite() {
+    public Code getPrerequisite() {
         return prerequisite;
     }
 
-    public void setPrerequisite(I18nText prerequisite) {
+    public void setPrerequisite(Code prerequisite) {
         this.prerequisite = prerequisite;
     }
 }

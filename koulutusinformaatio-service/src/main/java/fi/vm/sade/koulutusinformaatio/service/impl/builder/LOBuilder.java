@@ -138,7 +138,7 @@ public class LOBuilder {
                 childLO.setWebLinks(childKomoto.getWebLinkkis());
                 childLO.setTeachingLanguages(koodistoService.searchCodesMultiple(childKomoto.getOpetuskieletUris()));
                 childLO.setFormOfTeaching(koodistoService.searchMultiple(childKomoto.getOpetusmuodotUris()));
-                childLO.setPrerequisite(koodistoService.searchFirst(childKomoto.getPohjakoulutusVaatimusUri()));
+                childLO.setPrerequisite(koodistoService.searchFirstCode(childKomoto.getPohjakoulutusVaatimusUri()));
                 childLO.setProfessionalTitles(koodistoService.searchMultiple(childKomoto.getAmmattinimikeUris()));
                 childLO.setWorkingLifePlacement(getI18nText(childKomoto.getSijoittuminenTyoelamaan()));
                 childLO.setInternationalization(getI18nText(childKomoto.getKansainvalistyminen()));
@@ -271,8 +271,8 @@ public class LOBuilder {
         for (KomotoDTO komoto : parentKomotos) {
             ParentLOI loi = new ParentLOI();
             loi.setId(komoto.getOid());
-            loi.setPrerequisite(koodistoService.searchFirst(komoto.getPohjakoulutusVaatimusUri()));
             loi.setSelectingEducation(getI18nText(komoto.getKoulutusohjelmanValinta()));
+            loi.setPrerequisite(koodistoService.searchFirstCode(komoto.getPohjakoulutusVaatimusUri()));
             lois.add(loi);
         }
         parentLOS.setLois(lois);

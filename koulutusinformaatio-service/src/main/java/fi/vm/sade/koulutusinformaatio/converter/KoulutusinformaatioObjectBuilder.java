@@ -55,6 +55,7 @@ public class KoulutusinformaatioObjectBuilder {
             ref.setName(childLO.getName());
             ref.setNameByTeachingLang(getTextByEducationLanguage(childLO.getName(), childLO.getTeachingLanguages()));
             ref.setAsIds(childLO.getApplicationSystemIds());
+            ref.setPrerequisite(childLO.getPrerequisite());
             return ref;
         }
         return null;
@@ -74,7 +75,7 @@ public class KoulutusinformaatioObjectBuilder {
             clo.setTeachingLanguages(convert(childLO.getTeachingLanguages(), Code.class));
             clo.setWebLinks(childLO.getWebLinks());
             clo.setFormOfEducation(convert(childLO.getFormOfEducation(), I18nText.class));
-            clo.setPrerequisite(convert(childLO.getPrerequisite(), I18nText.class));
+            clo.setPrerequisite(convert(childLO.getPrerequisite(), Code.class));
             clo.setFormOfTeaching(convert(childLO.getFormOfTeaching(), I18nText.class));
             clo.setProfessionalTitles(convert(childLO.getProfessionalTitles(), I18nText.class));
             clo.setWorkingLifePlacement(convert(childLO.getWorkingLifePlacement(), I18nText.class));

@@ -72,7 +72,10 @@ public class KoulutusinformaatioObjectBuilderTest {
                 TestUtil.createI18nTextEntity("FormOfEducation2 fi", "FormOfEducation2 sv", "FormOfEducation2 en")));
         childLearningOpportunity.setFormOfTeaching(Lists.newArrayList(TestUtil.createI18nTextEntity("FormOfTeaching fi", "FormOfTeaching sv", "FormOfTeaching en"),
                 TestUtil.createI18nTextEntity("FormOfTeaching2 fi", "FormOfTeaching2 sv", "FormOfTeaching2 en")));
-        childLearningOpportunity.setPrerequisite(TestUtil.createI18nTextEntity("Prerequisite fi", "Prerequisite sv", "Prerequisite en"));
+        CodeEntity prerequisite = new CodeEntity();
+        prerequisite.setValue("PK");
+        prerequisite.setDescription(TestUtil.createI18nTextEntity("Prerequisite fi", "Prerequisite sv", "Prerequisite en"));
+        childLearningOpportunity.setPrerequisite(prerequisite);
         childLearningOpportunity.setStartDate(new Date());
         CodeEntity c = new CodeEntity();
         c.setValue("fi");
@@ -132,7 +135,8 @@ public class KoulutusinformaatioObjectBuilderTest {
         assertEquals(childLearningOpportunity.getParent().getId(), childLO.getParent().getId());
         assertEquals(childLearningOpportunity.getStartDate(), childLO.getStartDate());
         assertEquals(childLearningOpportunity.getQualification().getTranslations().get("fi"), childLO.getQualification().getTranslations().get("fi"));
-        assertEquals(childLearningOpportunity.getPrerequisite().getTranslations().get("fi"), childLO.getPrerequisite().getTranslations().get("fi"));
+        assertEquals(childLearningOpportunity.getPrerequisite().getDescription()
+                .getTranslations().get("fi"), childLO.getPrerequisite().getDescription().getTranslations().get("fi"));
         assertEquals(childLearningOpportunity.getRelated().get(0).getNameByTeachingLang(), childLO.getRelated().get(0).getNameByTeachingLang());
         assertEquals("link1", childLO.getWebLinks().get("link1"));
         assertEquals(childLearningOpportunity.getTeachingLanguages().get(0).getValue(), childLO.getTeachingLanguages().get(0).getValue());

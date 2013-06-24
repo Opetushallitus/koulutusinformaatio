@@ -53,7 +53,7 @@ public class ApplicationOptionEntity {
     @Embedded
     private ParentLOSRefEntity parent;
     private I18nTextEntity selectionCriteria;
-    private I18nTextEntity prerequisite;
+    private CodeEntity prerequisite;
     private List<String> requiredBaseEducations;
 
     public ApplicationOptionEntity() {
@@ -188,11 +188,11 @@ public class ApplicationOptionEntity {
         this.selectionCriteria = selectionCriteria;
     }
 
-    public I18nTextEntity getPrerequisite() {
+    public CodeEntity getPrerequisite() {
         return prerequisite;
     }
 
-    public void setPrerequisite(I18nTextEntity prerequisite) {
+    public void setPrerequisite(CodeEntity prerequisite) {
         this.prerequisite = prerequisite;
     }
 

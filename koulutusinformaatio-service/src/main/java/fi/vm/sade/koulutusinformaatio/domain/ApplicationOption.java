@@ -50,7 +50,7 @@ public class ApplicationOption {
     private ParentLORef parent;
     // valintaperustekuvaus
     private I18nText selectionCriteria;
-    private I18nText prerequisite;
+    private Code prerequisite;
     // base educations, one of these is required to be able to apply to this application option
     private List<String> requiredBaseEducations;
 
@@ -182,11 +182,11 @@ public class ApplicationOption {
         this.selectionCriteria = selectionCriteria;
     }
 
-    public I18nText getPrerequisite() {
+    public Code getPrerequisite() {
         return prerequisite;
     }
 
-    public void setPrerequisite(I18nText prerequisite) {
+    public void setPrerequisite(Code prerequisite) {
         this.prerequisite = prerequisite;
     }
 

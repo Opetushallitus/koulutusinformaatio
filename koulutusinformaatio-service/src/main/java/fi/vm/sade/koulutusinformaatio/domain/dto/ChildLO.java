@@ -39,7 +39,7 @@ public class ChildLO {
     private List<I18nText> formOfEducation;
     private Map<String, String> webLinks;
     private List<I18nText> formOfTeaching;
-    private I18nText prerequisite;
+    private Code prerequisite;
     private List<I18nText> professionalTitles;
     private I18nText workingLifePlacement;
     private I18nText internationalization;
@@ -137,11 +137,11 @@ public class ChildLO {
         this.formOfTeaching = formOfTeaching;
     }
 
-    public I18nText getPrerequisite() {
+    public Code getPrerequisite() {
         return prerequisite;
     }
 
-    public void setPrerequisite(I18nText prerequisite) {
+    public void setPrerequisite(Code prerequisite) {
         this.prerequisite = prerequisite;
     }
 

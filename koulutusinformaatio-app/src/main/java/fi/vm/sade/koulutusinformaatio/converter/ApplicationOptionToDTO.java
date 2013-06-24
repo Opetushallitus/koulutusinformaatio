@@ -40,7 +40,7 @@ public class ApplicationOptionToDTO {
             ao.setEducationDegree(applicationOption.getEducationDegree());
             ao.setTeachingLanguages(applicationOption.getTeachingLanguages());
             ao.setSelectionCriteria(ConverterUtil.getTextByLanguage(applicationOption.getSelectionCriteria(), lang));
-            ao.setPrerequisite(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getPrerequisite(), lang));
+            ao.setPrerequisite(CodeToDTO.convert(applicationOption.getPrerequisite(), lang));
 
             return ao;
         }

@@ -28,8 +28,8 @@ import java.util.List;
 public class ParentLearningOpportunityInstanceDTO {
 
     private String id;
-    private String prerequisite;
     private String selectingEducation;
+    private CodeDTO prerequisite;
     private List<ChildLORefDTO> children = new ArrayList<ChildLORefDTO>();
 
     public String getId() {
@@ -40,11 +40,11 @@ public class ParentLearningOpportunityInstanceDTO {
         this.id = id;
     }
 
-    public String getPrerequisite() {
+    public CodeDTO getPrerequisite() {
         return prerequisite;
     }
 
-    public void setPrerequisite(String prerequisite) {
+    public void setPrerequisite(CodeDTO prerequisite) {
         this.prerequisite = prerequisite;
     }
 
