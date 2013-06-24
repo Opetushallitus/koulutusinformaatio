@@ -40,6 +40,8 @@ public class ParentLOToDTO {
         parent.setStydyDomain(ConverterUtil.getTextByLanguage(parentLO.getStydyDomain(), lang));
         parent.setTranslationLanguage(lang);
         parent.setAvailableTranslationLanguages(ConverterUtil.getAvailableTranslationLanguages(parentLO.getName()));
+        parent.setCreditValue(parentLO.getCreditValue());
+        parent.setCreditUnit(ConverterUtil.getTextByLanguage(parentLO.getCreditUnit(), lang));
 
         if (parentLO.getApplicationOptions() != null) {
             for (ApplicationOption ao : parentLO.getApplicationOptions()) {

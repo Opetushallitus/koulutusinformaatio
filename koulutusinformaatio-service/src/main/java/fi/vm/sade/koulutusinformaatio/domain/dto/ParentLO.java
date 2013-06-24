@@ -40,6 +40,8 @@ public class ParentLO {
     private I18nText goals;
     private I18nText educationDomain;
     private I18nText stydyDomain;
+    private String creditValue;
+    private I18nText creditUnit;
     private List<ParentLOI> lois = new ArrayList<ParentLOI>();
 
     public String getId() {
@@ -136,5 +138,21 @@ public class ParentLO {
 
     public void setLois(List<ParentLOI> lois) {
         this.lois = lois;
+    }
+
+    public String getCreditValue() {
+        return creditValue;
+    }
+
+    public void setCreditValue(String creditValue) {
+        this.creditValue = creditValue;
+    }
+
+    public I18nText getCreditUnit() {
+        return creditUnit;
+    }
+
+    public void setCreditUnit(I18nText creditUnit) {
+        this.creditUnit = creditUnit;
     }
 }
