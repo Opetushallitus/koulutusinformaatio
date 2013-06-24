@@ -178,7 +178,7 @@ directive('kiAbsoluteLink', function() {
  directive('kiLocationFilter', function() {
     return {
         restrict: 'E,A',
-        templateUrl: 'partials/locationFilter.html',
+        templateUrl: 'templates/locationFilter.html',
 
         link: function(scope, element, attrs) {
             scope.locations = [];
@@ -205,7 +205,7 @@ directive('kiAbsoluteLink', function() {
  directive('kiLanguageRibbon', ['$routeParams', function($routeParams) {
     return {
         restrict: 'E,A',
-        templateUrl: 'partials/languageRibbon.html',
+        templateUrl: 'templates/languageRibbon.html',
 
         link: function(scope, element, attrs) {
             scope.label = i18n.t('description-language-selection');
@@ -255,7 +255,7 @@ directive('kiAbsoluteLink', function() {
  directive('kiBreadcrumb', ['$location', 'SearchService', function($location, SearchService) {
     return {
         restrict: 'E,A',
-        templateUrl: 'partials/breadcrumb.html',
+        templateUrl: 'templates/breadcrumb.html',
         link: function(scope, element, attrs) {
             var home = 'home';
             var search = i18n.t('breadcrumb-search-results');
