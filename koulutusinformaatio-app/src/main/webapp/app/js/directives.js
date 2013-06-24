@@ -209,7 +209,7 @@ directive('kiAbsoluteLink', function() {
 
         link: function(scope, element, attrs) {
             scope.label = i18n.t('description-language-selection');
-            scope.isChild = ($routeParams.closId && $routeParams.cloiId) ? true : false;
+            scope.isChild = ($routeParams.childId) ? true : false;
 
             scope.$watch('childLO', function(data) {
                 scope.hasMultipleTranslations = scope.childLO && scope.childLO.availableTranslationLanguages.length >= 1;    
@@ -304,20 +304,26 @@ directive('renderTextBlock', function() {
             var content;
 
             attrs.$observe('title', function(value) {
-                title = i18n.t(value);
-                update();
+                if (value) {
+                    title = i18n.t(value);
+                    update();
+                }
             });
 
             attrs.$observe('content', function(value) {
-                content = value;
-                update();
+                if (value) {
+                    content = value;
+                    update();
+                }
             });
 
             var update = function() {
                 $(element).empty();
                 if (content) {
-                    var titleElement = createTitleElement(title, attrs.anchor, attrs.level);
-                    element.append(titleElement);
+                    if (title) {
+                        var titleElement = createTitleElement(title, attrs.anchor, attrs.level);
+                        element.append(titleElement);
+                    }
 
                     // replace line feed with <br>
                     //content = content.replace(/(\r\n|\n|\r)/g,"<br />");
@@ -408,6 +414,7 @@ directive('kiRenderApplicationSystemActive', function() {
 directive('kiI18n', ['TranslationService', function(TranslationService) {
     return function(scope, element, attrs) {
         attrs.$observe('kiI18n', function(value) {
+            $(element).empty();
             element.append(TranslationService.getTranslation(value));
         });
     }    
