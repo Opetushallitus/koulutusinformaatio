@@ -262,6 +262,8 @@ public class LOBuilder {
         parentLOS.setEducationDomain(koodistoService.searchFirst(parentKomo.getKoulutusAlaUri()));
         parentLOS.setStydyDomain(koodistoService.searchFirst(parentKomo.getOpintoalaUri()));
         parentLOS.setEducationDegree(koodistoService.searchFirstCodeValue(parentKomo.getKoulutusAsteUri()));
+        parentLOS.setCreditValue(parentKomo.getLaajuusArvo());
+        parentLOS.setCreditUnit(koodistoService.searchFirst(parentKomo.getLaajuusYksikkoUri()));
 
         Provider provider = providerService.getByOID(providerId);
         parentLOS.setProvider(provider);

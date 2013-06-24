@@ -49,6 +49,10 @@ public class ParentLOS {
     private I18nText stydyDomain;
     // koulutusaste, 32
     private String educationDegree;
+    //laajuus arvo, 120
+    private String creditValue;
+    //laajuus yksikkö opintoviikko
+    private I18nText creditUnit;
 
     public Set<ApplicationOption> getApplicationOptions() {
         return applicationOptions;
@@ -144,5 +148,21 @@ public class ParentLOS {
 
     public void setEducationDegree(String educationDegree) {
         this.educationDegree = educationDegree;
+    }
+
+    public String getCreditValue() {
+        return creditValue;
+    }
+
+    public void setCreditValue(String creditValue) {
+        this.creditValue = creditValue;
+    }
+
+    public I18nText getCreditUnit() {
+        return creditUnit;
+    }
+
+    public void setCreditUnit(I18nText creditUnit) {
+        this.creditUnit = creditUnit;
     }
 }
