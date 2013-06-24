@@ -52,9 +52,13 @@ public class ApplicationOptionEntity {
     private List<String> teachingLanguages;
     @Embedded
     private ParentLOSRefEntity parent;
+    @Embedded
     private I18nTextEntity selectionCriteria;
+    @Embedded
     private CodeEntity prerequisite;
     private List<String> requiredBaseEducations;
+    @Embedded
+    private List<ExamEntity> exams;
 
     public ApplicationOptionEntity() {
 
@@ -202,5 +206,13 @@ public class ApplicationOptionEntity {
 
     public void setRequiredBaseEducations(List<String> requiredBaseEducations) {
         this.requiredBaseEducations = requiredBaseEducations;
+    }
+
+    public List<ExamEntity> getExams() {
+        return exams;
+    }
+
+    public void setExams(List<ExamEntity> exams) {
+        this.exams = exams;
     }
 }
