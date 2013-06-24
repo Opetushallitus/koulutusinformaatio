@@ -64,12 +64,12 @@ directive('kiRenderOrganization', function() {
         link: function(scope, element, attrs) {
             scope.anchor = attrs.anchor;
 
-            scope.$watch('parentLO', function(data) {
-                if (data && data.provider) {
-                    scope.showOrganization = (data.provider.learningEnvironment ||
-                        data.provider.accessibility) ? true : false;
+            scope.$watch('parentLO.provider', function(data) {
+                if (data) {
+                    scope.showOrganization = (data.learningEnvironment ||
+                        data.accessibility) ? true : false;
 
-                    scope.provider = data.provider;
+                    scope.provider = data;
                 }
             });
         }
@@ -306,15 +306,13 @@ directive('renderTextBlock', function() {
             attrs.$observe('title', function(value) {
                 if (value) {
                     title = i18n.t(value);
-                    update();
                 }
+                update();
             });
 
             attrs.$observe('content', function(value) {
-                if (value) {
-                    content = value;
-                    update();
-                }
+                content = value;
+                update();
             });
 
             var update = function() {
