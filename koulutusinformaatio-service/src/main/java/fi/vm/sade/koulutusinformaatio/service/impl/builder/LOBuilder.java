@@ -272,6 +272,7 @@ public class LOBuilder {
             ParentLOI loi = new ParentLOI();
             loi.setId(komoto.getOid());
             loi.setPrerequisite(koodistoService.searchFirst(komoto.getPohjakoulutusVaatimusUri()));
+            loi.setSelectingEducation(getI18nText(komoto.getKoulutusohjelmanValinta()));
             lois.add(loi);
         }
         parentLOS.setLois(lois);

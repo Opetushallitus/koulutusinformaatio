@@ -28,6 +28,7 @@ public class ParentLOI {
 
     private String id;
     private I18nText prerequisite;
+    private I18nText selectingEducation;
     private List<ChildLearningOpportunity> children;
     private List<ChildLORef> childRefs = new ArrayList<ChildLORef>();
 
@@ -45,6 +46,14 @@ public class ParentLOI {
 
     public void setPrerequisite(I18nText prerequisite) {
         this.prerequisite = prerequisite;
+    }
+
+    public I18nText getSelectingEducation() {
+        return selectingEducation;
+    }
+
+    public void setSelectingEducation(I18nText selectingEducation) {
+        this.selectingEducation = selectingEducation;
     }
 
     public List<ChildLearningOpportunity> getChildren() {
