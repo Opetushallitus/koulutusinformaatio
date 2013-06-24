@@ -84,8 +84,17 @@ service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', 'Languag
         // sort AOs based on prerequisite
         if (result.applicationOptions) {
             result.applicationOptions.sort(function(a, b) {
-                if (a.prerequisite > b.prerequisite) return 1;
-                else if (a.prerequisite < b.prerequisite) return -1;
+                if (a.prerequisite.description > b.prerequisite.description) return 1;
+                else if (a.prerequisite.description < b.prerequisite.description) return -1;
+                else return a.id > b.id ? 1 : -1;
+            });
+        }
+
+        // sort LOIs based on prerequisite
+        if (result.lois) {
+            result.lois.sort(function(a, b) {
+                if (a.prerequisite.description > b.prerequisite.description) return 1;
+                else if (a.prerequisite.description < b.prerequisite.description) return -1;
                 else return a.id > b.id ? 1 : -1;
             });
         }
@@ -448,14 +457,6 @@ service('UtilityService', function() {
                         }
                     }
                 }
-            }
-        },
-
-        getPrerequisiteCode: function(prerequisite) {
-            if (prerequisite.indexOf('Peruskoulu') >= 0) {
-                return 'pk';
-            } else {
-                return 'yo';
             }
         }
     };

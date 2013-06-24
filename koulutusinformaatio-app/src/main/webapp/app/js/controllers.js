@@ -157,8 +157,8 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
 
     $scope.addToBasket = function() {
         var basketType = ApplicationBasketService.getType();
-        if (!basketType || $scope.selectedAo.prerequisite == basketType) {
-            ApplicationBasketService.addItem($scope.selectedAo.id, $scope.selectedAo.prerequisite);
+        if (!basketType || $scope.selectedAo.prerequisite.value == basketType) {
+            ApplicationBasketService.addItem($scope.selectedAo.id, $scope.selectedAo.prerequisite.value);
             $scope.popoverTitle = i18n.t('popover-title-success');
             $scope.popoverContent = "<a href='#/muistilista'>" + i18n.t('popover-content-link-to-application-basket') + "</a>";
         } else {
@@ -244,16 +244,15 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
     $scope.changePrerequisiteSelection = function(prerequisite) {
         for (var loi in $scope.parentLO.lois) {
             if ($scope.parentLO.lois.hasOwnProperty(loi)) {
-                if ($scope.parentLO.lois[loi].prerequisite == prerequisite) {
+                if ($scope.parentLO.lois[loi].prerequisite.value == prerequisite.value) {
                     $scope.selectedParentLOI = $scope.parentLO.lois[loi];
-                    $scope.prerequisiteCode = UtilityService.getPrerequisiteCode($scope.selectedParentLOI.prerequisite);
                 }
             }
         }
 
         for (var ao in $scope.parentLO.applicationOptions) {
             if ($scope.parentLO.applicationOptions.hasOwnProperty(ao)) {
-                if ($scope.parentLO.applicationOptions[ao].prerequisite == prerequisite) {
+                if ($scope.parentLO.applicationOptions[ao].prerequisite.value == prerequisite.value) {
                     $scope.selectedAo = angular.copy($scope.parentLO.applicationOptions[ao]);
                 }
             }
@@ -261,7 +260,7 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
     }
 
     $scope.loiClass = function(prerequisite) {
-        return ($scope.selectedParentLOI.prerequisite == prerequisite) ? 'disabled': '';
+        return ($scope.selectedParentLOI.prerequisite.value == prerequisite.value) ? 'disabled': '';
     }
 
     var setTitle = function(parent, child) {
@@ -402,10 +401,13 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
                         childId: $routeParams.childId,
                         language: $scope.descriptionLanguage}).then(function(result) {
                             $scope.childLO = result;
+                            $scope.changePrerequisiteSelection($scope.selectedParentLOI.prerequisite);
                             setTitle($scope.parentLO, $scope.childLO);
                         });
                 } else {
+                    $scope.changePrerequisiteSelection($scope.selectedParentLOI.prerequisite);
                     setTitle($scope.parentLO, $scope.childLO);
+                    
                 }
         });
     };
