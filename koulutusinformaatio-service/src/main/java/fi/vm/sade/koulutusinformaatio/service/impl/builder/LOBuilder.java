@@ -128,7 +128,7 @@ public class LOBuilder {
                 }
 
                 ChildLearningOpportunity childLO = new ChildLearningOpportunity();
-                childLO.setId(childKomo.getOid());
+                childLO.setId(childKomoto.getOid());
                 childLO.setName(koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri()));
                 childLO.setQualification(koodistoService.searchFirst(childKomo.getTutkintonimikeUri()));
                 childLO.setDegreeTitle(koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri()));
@@ -272,6 +272,7 @@ public class LOBuilder {
             ParentLOI loi = new ParentLOI();
             loi.setId(komoto.getOid());
             loi.setPrerequisite(koodistoService.searchFirst(komoto.getPohjakoulutusVaatimusUri()));
+            loi.setSelectingEducation(getI18nText(komoto.getKoulutusohjelmanValinta()));
             lois.add(loi);
         }
         parentLOS.setLois(lois);

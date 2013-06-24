@@ -34,6 +34,8 @@ public class ParentLearningOpportunityInstanceEntity {
     private List<ChildLORefEntity> childRefs;
     @Embedded
     private I18nTextEntity prerequisite;
+    @Embedded
+    private I18nTextEntity selectingEducation;
 
     public String getId() {
         return id;
@@ -65,5 +67,13 @@ public class ParentLearningOpportunityInstanceEntity {
 
     public void setChildRefs(List<ChildLORefEntity> childRefs) {
         this.childRefs = childRefs;
+    }
+
+    public I18nTextEntity getSelectingEducation() {
+        return selectingEducation;
+    }
+
+    public void setSelectingEducation(I18nTextEntity selectingEducation) {
+        this.selectingEducation = selectingEducation;
     }
 }

@@ -29,6 +29,7 @@ public class ParentLearningOpportunityInstanceDTO {
 
     private String id;
     private String prerequisite;
+    private String selectingEducation;
     private List<ChildLORefDTO> children = new ArrayList<ChildLORefDTO>();
 
     public String getId() {
@@ -45,6 +46,14 @@ public class ParentLearningOpportunityInstanceDTO {
 
     public void setPrerequisite(String prerequisite) {
         this.prerequisite = prerequisite;
+    }
+
+    public String getSelectingEducation() {
+        return selectingEducation;
+    }
+
+    public void setSelectingEducation(String selectingEducation) {
+        this.selectingEducation = selectingEducation;
     }
 
     public List<ChildLORefDTO> getChildren() {
