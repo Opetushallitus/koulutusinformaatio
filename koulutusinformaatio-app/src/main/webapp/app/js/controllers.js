@@ -167,25 +167,6 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
         }
     };
 
-    $scope.changeValue = function(aoId, aoName, aoSora, aoTeachLang) {
-        var ao = UtilityService.getApplicationOptionById(aoId, $scope.parentLO.applicationOptions);
-        $scope.selectedAo = {
-            name: ao.name,
-            id: ao.id,
-            sora: ao.sora,
-            teachLang: ao.teachLang,
-            prerequisite: ao.prerequisite
-        };
-    };
-
-    $scope.subtabClass = function(isFirst) {
-        return isFirst ? 'tab current' : 'tab';
-    };
-
-    $scope.subtabContentStyle = function(isFirst) {
-        return isFirst ? {'display': 'block'} : {}; 
-    };
-
     $scope.applicationSystemIsActive = function() {
         if ($scope.parentLO && $scope.parentLO.applicationSystem && $scope.parentLO.applicationSystem.applicationDates) {
             var start = $scope.parentLO.applicationSystem.applicationDates.startDate;
@@ -260,6 +241,29 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
     $scope.providerAsideClass = 'hidden';
     $scope.applyFormClass = '';
 
+    $scope.changePrerequisiteSelection = function(prerequisite) {
+        for (var loi in $scope.parentLO.lois) {
+            if ($scope.parentLO.lois.hasOwnProperty(loi)) {
+                if ($scope.parentLO.lois[loi].prerequisite == prerequisite) {
+                    $scope.selectedParentLOI = $scope.parentLO.lois[loi];
+                    $scope.prerequisiteCode = UtilityService.getPrerequisiteCode($scope.selectedParentLOI.prerequisite);
+                }
+            }
+        }
+
+        for (var ao in $scope.parentLO.applicationOptions) {
+            if ($scope.parentLO.applicationOptions.hasOwnProperty(ao)) {
+                if ($scope.parentLO.applicationOptions[ao].prerequisite == prerequisite) {
+                    $scope.selectedAo = angular.copy($scope.parentLO.applicationOptions[ao]);
+                }
+            }
+        }
+    }
+
+    $scope.loiClass = function(prerequisite) {
+        return ($scope.selectedParentLOI.prerequisite == prerequisite) ? 'disabled': '';
+    }
+
     var setTitle = function(parent, child) {
         if (child) {
             TitleService.setTitle(child.name);
@@ -327,23 +331,17 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
         // select first ao in list
         var firstAoInList = getFirstApplicationOption();
         if (firstAoInList) {
-            $scope.selectedAo = {
-                name: firstAoInList.name,
-                id: firstAoInList.id,
-                sora: firstAoInList.sora,
-                teachLang: firstAoInList.teachLang,
-                prerequisite: firstAoInList.prerequisite
-            };
+            $scope.selectedAo = angular.copy(firstAoInList);
         }
 
         var firstParentLOIInList = getFirstParentLOI();
         if (firstParentLOIInList) {
-            $scope.selectedParentLOI = firstParentLOIInList;
+            $scope.changePrerequisiteSelection(firstParentLOIInList.prerequisite);
         }
     };
 
     $scope.$watch('parentLO.provider', function(data) {
-        if (data) {
+        if (data && data.pictureFound) {
             LearningOpportunityProviderPictureService.query({providerId: data.id}).then(function(result) {
                 $scope.providerImage = result;
             });
@@ -351,38 +349,9 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
     });
 
     // fetch data for parent and/or its child LO
-    /*
-    if ($routeParams) {
-        $scope.parentId = $routeParams.parentId;
-        if (!ParentLODataService.dataExists($scope.parentId)) {
-            ParentLearningOpportunityService.query({
-                parentId: $routeParams.parentId, 
-                language: $scope.descriptionLanguage}).then(function(result) {
-                    $scope.parentLO = result;
-                    ParentLODataService.setParentLOData(result);
-                    initializeParent();
-                });
-        } else {
-            $scope.parentLO = ParentLODataService.getParentLOData();
-            initializeParent();
-        }
-
-        if (isChild()) {
-            ChildLearningOpportunityService.query({
-                parentId: $routeParams.parentId, 
-                childId: $routeParams.childId,
-                //cloiId: $routeParams.cloiId, 
-                language: $scope.descriptionLanguage}).then(function(result) {
-                    $scope.childLO = result;
-                    setTitle($scope.parentLO, $scope.childLO);
-                }); 
-        }
-    }
-    */
-
+    // TODO: could this logic be hidden in service?
     if (isChild()) {
         ChildLearningOpportunityService.query({
-            //parentId: $routeParams.parentId, 
             childId: $routeParams.childId,
             language: $scope.descriptionLanguage}).then(function(childResult) {
                 $scope.childLO = childResult;
@@ -421,14 +390,15 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
     $scope.changeDescriptionLanguage = function(languageCode) {
         $scope.descriptionLanguage = languageCode;
 
+        var parentId = isChild() ? $scope.childLO.parent.id : $routeParams.parentId;
+
         // parent data has to be updated every time since child views contain parent data too
         ParentLearningOpportunityService.query({
-            parentId: $routeParams.parentId, 
+            parentId: parentId, 
             language: languageCode}).then(function(result) {
                 $scope.parentLO = result;
                 if (isChild()) {
                     ChildLearningOpportunityService.query({
-                        parentId: $routeParams.parentId, 
                         childId: $routeParams.childId,
                         language: $scope.descriptionLanguage}).then(function(result) {
                             $scope.childLO = result;
@@ -441,7 +411,7 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
     };
 
     $scope.hasChildren = function() {
-        if ($scope.selectedParentLOI ) {
+        if ($scope.selectedParentLOI && $scope.selectedParentLOI.children) {
             return $scope.selectedParentLOI.children.length > 0;
         } else {
             return false;

@@ -451,6 +451,14 @@ service('UtilityService', function() {
                     }
                 }
             }
+        },
+
+        getPrerequisiteCode: function(prerequisite) {
+            if (prerequisite.indexOf('Peruskoulu') >= 0) {
+                return 'pk';
+            } else {
+                return 'yo';
+            }
         }
     };
 });
