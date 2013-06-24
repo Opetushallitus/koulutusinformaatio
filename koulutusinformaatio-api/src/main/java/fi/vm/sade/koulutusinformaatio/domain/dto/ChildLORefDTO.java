@@ -30,7 +30,7 @@ public class ChildLORefDTO {
     private List<String> asIds;
     private String name;
     private String qualification;
-    private String prerequisite;
+    private CodeDTO prerequisite;
 
     public String getChildLOId() {
         return childLOId;
@@ -64,11 +64,11 @@ public class ChildLORefDTO {
         this.qualification = qualification;
     }
 
-    public String getPrerequisite() {
+    public CodeDTO getPrerequisite() {
         return prerequisite;
     }
 
-    public void setPrerequisite(String prerequisite) {
+    public void setPrerequisite(CodeDTO prerequisite) {
         this.prerequisite = prerequisite;
     }
 }

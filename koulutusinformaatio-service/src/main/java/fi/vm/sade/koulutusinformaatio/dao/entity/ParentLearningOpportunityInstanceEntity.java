@@ -33,7 +33,7 @@ public class ParentLearningOpportunityInstanceEntity {
     @Embedded
     private List<ChildLORefEntity> childRefs;
     @Embedded
-    private I18nTextEntity prerequisite;
+    private CodeEntity prerequisite;
     @Embedded
     private I18nTextEntity selectingEducation;
 
@@ -53,11 +53,11 @@ public class ParentLearningOpportunityInstanceEntity {
         this.children = children;
     }
 
-    public I18nTextEntity getPrerequisite() {
+    public CodeEntity getPrerequisite() {
         return prerequisite;
     }
 
-    public void setPrerequisite(I18nTextEntity prerequisite) {
+    public void setPrerequisite(CodeEntity prerequisite) {
         this.prerequisite = prerequisite;
     }
 

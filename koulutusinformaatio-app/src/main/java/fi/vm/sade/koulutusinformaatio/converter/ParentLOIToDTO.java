@@ -27,7 +27,7 @@ public class ParentLOIToDTO {
     public static ParentLearningOpportunityInstanceDTO convert(final ParentLOI parentLOI, final String lang) {
         ParentLearningOpportunityInstanceDTO loi = new ParentLearningOpportunityInstanceDTO();
         loi.setId(parentLOI.getId());
-        loi.setPrerequisite(ConverterUtil.getTextByLanguage(parentLOI.getPrerequisite(), lang));
+        loi.setPrerequisite(CodeToDTO.convert(parentLOI.getPrerequisite(), lang));
         loi.setSelectingEducation(ConverterUtil.getTextByLanguage(parentLOI.getSelectingEducation(), lang));
         loi.setChildren(ChildLORefToDTO.convert(parentLOI.getChildRefs(), lang));
         return loi;

@@ -50,7 +50,7 @@ public class ChildLearningOpportunityEntity {
     @Embedded
     private List<I18nTextEntity> formOfTeaching;
     @Embedded
-    private I18nTextEntity prerequisite;
+    private CodeEntity prerequisite;
     @Embedded
     private List<I18nTextEntity> professionalTitles;
     @Embedded
@@ -151,11 +151,11 @@ public class ChildLearningOpportunityEntity {
         this.formOfTeaching = formOfTeaching;
     }
 
-    public I18nTextEntity getPrerequisite() {
+    public CodeEntity getPrerequisite() {
         return prerequisite;
     }
 
-    public void setPrerequisite(I18nTextEntity prerequisite) {
+    public void setPrerequisite(CodeEntity prerequisite) {
         this.prerequisite = prerequisite;
     }
 

@@ -53,7 +53,7 @@ public class ChildLOToDTO {
         child.setFormOfTeaching(ConverterUtil.getTextsByLanguage(childLO.getFormOfTeaching(), lang));
         child.setWebLinks(childLO.getWebLinks());
         child.setFormOfEducation(ConverterUtil.getTextsByLanguage(childLO.getFormOfEducation(), lang));
-        child.setPrerequisite(ConverterUtil.getTextByLanguage(childLO.getPrerequisite(), lang));
+        child.setPrerequisite(CodeToDTO.convert(childLO.getPrerequisite(), lang));
         child.setTranslationLanguage(lang);
         child.setProfessionalTitles(ConverterUtil.getTextsByLanguage(childLO.getProfessionalTitles(), lang));
         child.setWorkingLifePlacement(ConverterUtil.getTextByLanguage(childLO.getWorkingLifePlacement(), lang));

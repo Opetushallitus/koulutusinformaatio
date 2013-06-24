@@ -45,7 +45,7 @@ public class ChildLearningOpportunity {
     private List<Code> teachingLanguages;
     // opetusmuoto -> lähiopetus
     private List<I18nText> formOfTeaching;
-    private I18nText prerequisite;
+    private Code prerequisite;
     private List<I18nText> professionalTitles;
     private I18nText workingLifePlacement;
     private I18nText internationalization;
@@ -157,11 +157,11 @@ public class ChildLearningOpportunity {
         this.formOfTeaching = formOfTeaching;
     }
 
-    public I18nText getPrerequisite() {
+    public Code getPrerequisite() {
         return prerequisite;
     }
 
-    public void setPrerequisite(I18nText prerequisite) {
+    public void setPrerequisite(Code prerequisite) {
         this.prerequisite = prerequisite;
     }
 

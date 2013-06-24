@@ -42,7 +42,7 @@ public class ChildLearningOpportunityDTO {
     private List<String> formOfEducation = new ArrayList<String>();
     private Map<String, String> webLinks;
     private List<String> formOfTeaching = new ArrayList<String>();
-    private String prerequisite;
+    private CodeDTO prerequisite;
 
     private String translationLanguage;
     private Set<String> availableTranslationLanguages = new HashSet<String>();
@@ -127,11 +127,11 @@ public class ChildLearningOpportunityDTO {
         this.formOfTeaching = formOfTeaching;
     }
 
-    public String getPrerequisite() {
+    public CodeDTO getPrerequisite() {
         return prerequisite;
     }
 
-    public void setPrerequisite(String prerequisite) {
+    public void setPrerequisite(CodeDTO prerequisite) {
         this.prerequisite = prerequisite;
     }
 

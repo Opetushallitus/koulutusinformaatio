@@ -47,7 +47,7 @@ public class ModelMapperTest {
 
         ParentLOI parentLOI = new ParentLOI();
         parentLOI.setId("9.8.7.6");
-        parentLOI.setPrerequisite(TestUtil.createI18nText("Peruskoulu", "Peruskoulu", "Peruskoulu"));
+        parentLOI.setPrerequisite(new Code("PK", TestUtil.createI18nText("Peruskoulu", "Peruskoulu", "Peruskoulu")));
 
         Set<ApplicationOption> applicationOptions = Sets.newHashSet();
         ApplicationOption ao = new ApplicationOption();

@@ -1,6 +1,7 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Hannu Lyytikainen
@@ -53,6 +55,8 @@ public class IndexerServiceImpl implements IndexerService {
         providerDoc.addField("id", provider.getId());
         providerDoc.addField("name", provider.getName().getTranslations().get("fi"));
 
+        Set<String> providerAsIds = Sets.newHashSet();
+
         List<ParentLOI> lois = parent.getLois();
         for (ParentLOI loi : lois) {
             for (ChildLearningOpportunity childLO : loi.getChildren()) {
@@ -68,11 +72,15 @@ public class IndexerServiceImpl implements IndexerService {
                 childLODoc.addField("parentId", parent.getId());
                 if (childLO.getApplicationSystemIds() != null) {
                     for (String asId : childLO.getApplicationSystemIds()) {
-                        providerDoc.addField("asId", asId);
+                        providerAsIds.add(asId);
                     }
                 }
                 docs.add(childLODoc);
             }
+        }
+
+        for (String asId : providerAsIds) {
+            providerDoc.addField("asId", asId);
         }
 
         providerDocs.add(providerDoc);
