@@ -81,14 +81,14 @@ service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', 'Languag
             }
         }
 
-        /*
-        result.provider.social = {
-            facebook: 'http://www.facebook.com',
-            linkedin: 'http://www.linkedin.com',
-            twitter: 'http://www.twitter.com',
-            googleplus: 'http://plus.google.com'
-        };
-        */
+        // sort AOs based on prerequisite
+        if (result.applicationOptions) {
+            result.applicationOptions.sort(function(a, b) {
+                if (a.prerequisite > b.prerequisite) return 1;
+                else if (a.prerequisite < b.prerequisite) return -1;
+                else return a.id > b.id ? 1 : -1;
+            });
+        }
     };
 
     return {
@@ -96,7 +96,6 @@ service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', 'Languag
             var deferred = $q.defer();
 
             $http.get('../lo/parent/' + options.parentId, {
-            //$http.get('mock/parent-' + descriptionLanguage + '.json', {
                 params: {
                     lang: options.language
                 }
@@ -159,7 +158,6 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
             var deferred = $q.defer();
 
             $http.get('../lo/child/' + options.childId, {
-            //$http.get('mock/child-' + descriptionLanguage + '.json', {
                 params: {
                     lang: options.language
                 }
