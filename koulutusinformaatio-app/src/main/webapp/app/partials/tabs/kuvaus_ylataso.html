@@ -1,38 +1,14 @@
 <section class="grid16-10 no-left-gutter" id="wide-column">
-    <!--<div data-ng-switch="hasApplicationOptions">
-        <div data-ng-switch-when="true" class="ribbon">-->
-        <div class="ribbon margin-bottom-2">
-            <span class="bold" data-ki-i18n="application-prerequisite"></span>
-            <!--
-            <ul class="tabs sub">
-                <li data-ng-repeat="ao in parentLO.applicationOptions" ng-class="subtabClass($first)" data-tabs-group="koulutuksenkuvaus" data-tabs-id="{{ao.id}}">
-                    <a href="">
-                        <span>{{ao.prerequisite}}</span>
-                    </a>
-                </li>
-            </ul>
-            <div class="tabsheets sub">
-                <section data-ng-repeat="ao in parentLO.applicationOptions" class="tabsheet" ng-style="subtabContentStyle($first)" data-tabs-group="koulutuksenkuvaus" data-tabs-id="{{ao.id}}">
-                    <div ng-include src="'partials/tabs/subtabs/kuvaus_peruskoulu.html'" onload="initTabs()"></div>
-                </section>
-            </div>
-            -->
-            <ul class="ribbon-content">
-                <li data-ng-repeat="loi in parentLO.lois">
-                    <a data-ng-click="changePrerequisiteSelection(loi.prerequisite)" ng-class="loiClass(loi.prerequisite)">
-                        <span>{{loi.prerequisite}}</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <div ng-include src="'partials/tabs/subtabs/kuvaus_peruskoulu.html'" onload="initTabs()"></div>
-        <!--
-        <div data-ng-switch-when="false">
-            <section>
-                <div ng-include src="'partials/tabs/subtabs/kuvaus_peruskoulu.html'" onload="initTabs()"></div>
-            </section>
-        </div>
-        </div>-->
-
+    <div class="ribbon margin-bottom-2">
+        <span class="bold" data-ki-i18n="application-prerequisite"></span>
+        <ul class="ribbon-content">
+            <li data-ng-repeat="loi in parentLO.lois">
+                <a data-ng-click="changePrerequisiteSelection(loi.prerequisite)" ng-class="loiClass(loi.prerequisite)">
+                    <span>{{loi.prerequisite}}</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div ng-include src="'partials/tabs/subtabs/kuvaus.html'" onload="initTabs()"></div>
 </section>
 </div>
