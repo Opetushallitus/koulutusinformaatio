@@ -79,7 +79,6 @@ public class SearchServiceSolrImpl implements SearchService {
             for (SolrDocument result : queryResponse.getResults()) {
                 Provider provider = new Provider();
                 provider.setId(result.get("id").toString());
-                provider.setAthleteEducation(Boolean.parseBoolean(result.get("athleteEducation").toString()));
 
                 // TODO: i18n handling
                 Map<String, String> texts = Maps.newHashMap();

@@ -37,6 +37,9 @@ public class ApplicationOptionToSearchResultDTO {
             dto.setEducationDegree(applicationOption.getEducationDegree());
             dto.setSora(applicationOption.isSora());
             dto.setTeachingLanguages(applicationOption.getTeachingLanguages());
+            if (applicationOption.getProvider() != null) {
+                dto.setAthleteEducation(applicationOption.getProvider().isAthleteEducation());
+            }
             return dto;
         }
         return null;
