@@ -362,8 +362,8 @@ public class LOBuilder {
         if (!komo.getTila().equals(STATE_PUBLISHED)) {
             throw new TarjontaParseException("LOS " + komo.getOid() + " not of type " + MODULE_TYPE_PARENT);
         }
-        if (komo.getNimi() == null) {
-            throw new TarjontaParseException("Child KomoDTO nimi is null");
+        if (komo.getKoulutusOhjelmaKoodiUri() == null) {
+            throw new TarjontaParseException("Child KomoDTO koulutusOhjelmaKoodiUri (name) is null");
         }
         if (komo.getTutkintonimikeUri() == null) {
             throw new TarjontaParseException("Child KomoDTO tutkinto nimike uri is null");
