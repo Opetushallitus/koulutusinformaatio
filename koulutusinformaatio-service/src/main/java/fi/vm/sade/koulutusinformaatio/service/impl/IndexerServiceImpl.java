@@ -48,7 +48,17 @@ public class IndexerServiceImpl implements IndexerService {
         parentDoc.addField("lopId", provider.getId());
         parentDoc.addField("lopName", provider.getName().getTranslations().get("fi"));
         parentDoc.addField("lopAddress", provider.getVisitingAddress().getPostOffice());
-        docs.add(parentDoc);
+
+        int parentApplicationDateRangeIndex = 0;
+        for (ApplicationOption ao : parent.getApplicationOptions()) {
+            for (DateRange dr : ao.getApplicationSystem().getApplicationDates()) {
+                parentDoc.addField(new StringBuilder().append("asStart").append("_").
+                        append(String.valueOf(parentApplicationDateRangeIndex)).toString(), dr.getStartDate());
+                parentDoc.addField(new StringBuilder().append("asEnd").append("_").
+                        append(String.valueOf(parentApplicationDateRangeIndex)).toString(), dr.getEndDate());
+                parentApplicationDateRangeIndex++;
+            }
+        }
 
         SolrInputDocument providerDoc = new SolrInputDocument();
         providerDoc.addField("id", provider.getId());
@@ -82,6 +92,8 @@ public class IndexerServiceImpl implements IndexerService {
                 docs.add(childLODoc);
             }
         }
+
+        docs.add(parentDoc);
 
         for (String asId : providerAsIds) {
             providerDoc.addField("asId", asId);
