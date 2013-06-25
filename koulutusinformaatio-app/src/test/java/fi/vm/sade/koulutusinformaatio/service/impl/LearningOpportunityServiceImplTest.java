@@ -216,6 +216,20 @@ public class LearningOpportunityServiceImplTest {
         ao.setChildLORefs(childLORefs);
         ao.setEducationDegree(educationDegree);
         ao.setPrerequisite(prerequisite);
+        Exam exam = new Exam();
+        exam.setDescription(createI18Text("exam description"));
+        exam.setType(createI18Text("exam type"));
+        ExamEvent event = new ExamEvent();
+        event.setDescription("event description");
+        event.setStart(new Date());
+        event.setEnd(new Date());
+        Address address = new Address();
+        address.setPostalCode("00100");
+        address.setPostOffice("Helsinki");
+        address.setStreetAddress("street address");
+        event.setAddress(address);
+        exam.setExamEvents(Lists.newArrayList(event));
+        ao.setExams(Lists.newArrayList(exam));
         return ao;
     }
 }
