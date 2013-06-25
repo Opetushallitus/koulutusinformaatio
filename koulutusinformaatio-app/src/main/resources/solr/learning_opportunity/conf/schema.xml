@@ -31,7 +31,7 @@
         <field name="parentId" type="text_general" indexed="false" stored="true" multiValued="false"/>
         <field name="losId" type="text_general" indexed="false" stored="true" multiValued="false"/>
 
-        <field name="prerequisites" type="text_general" indexed="true" stored="false" multiValued="true"/>
+        <field name="prerequisites" type="text_general" indexed="true" stored="true" multiValued="true"/>
 
         <field name="text" type="text_fi" indexed="true" stored="false" multiValued="true"/>
     </fields>
