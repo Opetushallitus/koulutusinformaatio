@@ -429,30 +429,30 @@ this.options = function( value ) {
 
  angular.module("template/tooltip/tooltip-html-unsafe-popup.html", []).run(["$templateCache", function($templateCache){
   $templateCache.put("template/tooltip/tooltip-html-unsafe-popup.html",
-    "<div class=\"tooltip {{placement}}\" ng-class=\"{ in: isOpen(), fade: animation() }\">" +
+    "<div class=\"tooltip {{placement}}\" data-ng-class=\"{ in: isOpen(), fade: animation() }\">" +
     "  <div class=\"tooltip-arrow\"></div>" +
-    "  <div class=\"tooltip-inner\" ng-bind-html-unsafe=\"content\"></div>" +
+    "  <div class=\"tooltip-inner\" data-ng-bind-html-unsafe=\"content\"></div>" +
     "</div>" +
     "");
 }]);
 
  angular.module("template/tooltip/tooltip-popup.html", []).run(["$templateCache", function($templateCache){
   $templateCache.put("template/tooltip/tooltip-popup.html",
-    "<div class=\"tooltip {{placement}}\" ng-class=\"{ in: isOpen(), fade: animation() }\">" +
+    "<div class=\"tooltip {{placement}}\" data-ng-class=\"{ in: isOpen(), fade: animation() }\">" +
     "  <div class=\"tooltip-arrow\"></div>" +
-    "  <div class=\"tooltip-inner\" ng-bind=\"content\"></div>" +
+    "  <div class=\"tooltip-inner\" data-ng-bind=\"content\"></div>" +
     "</div>" +
     "");
 }]);
 
  angular.module("template/popover/popover.html", []).run(["$templateCache", function($templateCache){
   $templateCache.put("template/popover/popover.html",
-    "<div class=\"popover {{placement}}\" ng-class=\"{ in: isOpen(), fade: animation() }\">" +
+    "<div class=\"popover {{placement}}\" data-ng-class=\"{ in: isOpen(), fade: animation() }\">" +
     "  <div class=\"arrow\"></div>" +
     "" +
     "  <div class=\"popover-inner\">" +
-    "      <h4 class=\"popover-title\" ng-bind=\"title\" ng-show=\"title\"></h4>" +
-    "      <div class=\"popover-content\" ng-bind=\"content\"></div>" +
+    "      <h4 class=\"popover-title\" data-ng-bind=\"title\" data-ng-show=\"title\"></h4>" +
+    "      <div class=\"popover-content\" data-ng-bind=\"content\"></div>" +
     "  </div>" +
     "</div>" +
     "");
@@ -460,13 +460,13 @@ this.options = function( value ) {
 
  angular.module("template/popover/popover-html-unsafe-popup.html", []).run(["$templateCache", function($templateCache){
   $templateCache.put("template/popover/popover-html-unsafe-popup.html",
-    "<div class=\"popover {{placement}}\" ng-class=\"{ in: isOpen(), fade: animation() }\">" +
+    "<div class=\"popover {{placement}}\" data-ng-class=\"{ in: isOpen(), fade: animation() }\">" +
     "  <div class=\"arrow\"></div>" +
     "" +
     "  <div class=\"popover-inner\">" +
-    "<span class=\"popover-close\" ng-click=\"close()\">Sulje</span>" +
-    "      <h4 class=\"popover-title\" ng-bind-html-unsafe=\"title\" ng-show=\"title\"></h4>" +
-    "      <div class=\"popover-content\" ng-bind-html-unsafe=\"content\"></div>" +
+    "<span class=\"popover-close\" data-ng-click=\"close()\">Sulje</span>" +
+    "      <h4 class=\"popover-title\" data-ng-bind-html-unsafe=\"title\" data-ng-show=\"title\"></h4>" +
+    "      <div class=\"popover-content\" data-ng-bind-html-unsafe=\"content\"></div>" +
     "  </div>" +
     "</div>" +
     "");
@@ -584,7 +584,7 @@ angular.module('ui.bootstrap.pagination', [])
 angular.module("template/pagination/pagination.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("template/pagination/pagination.html",
     "<div class=\"pagination\"><ul>\n" +
-    "  <li ng-repeat=\"page in pages\" ng-class=\"{active: page.active, disabled: page.disabled}\"><a ng-click=\"selectPage(page.number)\">{{page.text}}</a></li>\n" +
+    "  <li data-ng-repeat=\"page in pages\" data-ng-class=\"{active: page.active, disabled: page.disabled}\"><a data-ng-click=\"selectPage(page.number)\">{{page.text}}</a></li>\n" +
     "  </ul>\n" +
     "</div>\n" +
     "");

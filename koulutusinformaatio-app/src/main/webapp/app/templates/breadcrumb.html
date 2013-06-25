@@ -1,5 +1,5 @@
 <ul>
-	<li ng-repeat="crumb in breadcrumbItems" class="breadcrumb-item {{crumb.name}}">
+	<li data-ng-repeat="crumb in breadcrumbItems" class="breadcrumb-item {{crumb.name}}">
 		<span data-ng-switch="$last">
 			<span data-ng-switch-when="true" title="{{crumb.name}}">
 				{{crumb.name}}

@@ -25,14 +25,16 @@
                         <colgroup>
                             <col style="width: 33%;"></col>
                             <col style="width: 47%;"></col>
+                            <col></col>
+                            <col></col>
                         </colgroup>
                         <thead>
                             <tr>
-                                <th colspan="4"><h2 class="margin-0">{{as.applicationSystemName}} <span data-ki-timestamp="{{as.applicationDates.startDate}}"></span> - <span data-ki-timestamp="{{as.applicationDates.endDate}}"></span></h2></th>
+                                <th colspan="4"><span class="margin-0 block h2">{{as.applicationSystemName}} <span data-ki-timestamp="{{as.applicationDates.startDate}}"></span> - <span data-ki-timestamp="{{as.applicationDates.endDate}}"></span></span></th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="item in as.applicationOptions" ng-class="rowClass($last)">
+                            <tr data-ng-repeat="item in as.applicationOptions" data-ng-class="rowClass($last)">
                                 <td>
                                     <ul>
                                         <li>
@@ -47,17 +49,17 @@
                                 </td>
                                 <td>
                                     <ul class="disc">
-                                        <li ng-repeat="child in item.children"><a href="#/koulutusohjelma/{{child.childLOId}}">{{child.name}}</a></li>
+                                        <li data-ng-repeat="child in item.children"><a href="#/koulutusohjelma/{{child.childLOId}}">{{child.name}}</a></li>
                                     </ul>
                                 </td>
                                 <td class="align-right">
                                     <ul>
-                                        <li ng-repeat="dl in item.deadlines">{{dl.name}}<span class="bold margin-left-2" data-ki-timestamp="{{item.attachmentDeliveryDeadline}}"></span></li>
+                                        <li data-ng-repeat="dl in item.deadlines">{{dl.name}}<span class="bold margin-left-2" data-ki-timestamp="{{item.attachmentDeliveryDeadline}}"></span></li>
                                         <!--<li>Liitteet<span class="bold margin-left-2" data-ki-timestamp="{{item.attachmentDeliveryDeadline}}"></span></li>-->
                                     </ul>
                                 </td>
                                 <td class="basket-remove last">
-                                    <a class="remove" ng-click="removeItem(item.id)">
+                                    <a class="remove" data-ng-click="removeItem(item.id)">
                                         <span>Poista</span>
                                     </a>
                                 </td>
@@ -68,7 +70,7 @@
                     </table>
                     <span class="float-right margin-bottom-2">{{notificationText}}</span>
                     <form action="/haku-app/lomake/{{as.applicationSystemId}}/yhteishaku" method="post">
-                        <span ng-repeat="item in as.applicationOptions">
+                        <span data-ng-repeat="item in as.applicationOptions">
                             <input type="hidden" name="preference{{$index + 1}}-Opetuspiste" value="{{item.providerName}}"/>
                             <input type="hidden" name="preference{{$index + 1}}-Opetuspiste-id" value="{{item.providerId}}"/>
                             <input type="hidden" name="preference{{$index + 1}}-Koulutus" value="{{item.name}}"/>

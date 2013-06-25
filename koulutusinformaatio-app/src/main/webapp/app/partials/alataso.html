@@ -1,14 +1,14 @@
 <!--<div ng-include src="'partials/pageheader.html'"></div> -->
 <section class="content-container grid16-16">
-    <div ki-breadcrumb element="crumb in breadcrumbItems" id="breadcrumb"></div>
+    <div data-ki-breadcrumb id="breadcrumb"></div>
     <section id="main-info">
         <div class="margin-bottom-3">
             <h4 class="margin-0">{{parentLO.provider.name}}</h4>
             <a href="#/tutkinto/{{parentLO.id}}" class="block">{{parentLO.name}}</a>
         </div>
-        <div ki-sibling-ribbon class="ribbon"></div>
+        <div data-ki-sibling-ribbon class="ribbon"></div>
         <h1 class="margin-top-3">{{childLO.degreeTitle}}</h1>
         <div data-ki-language-ribbon class="ribbon"></div>
     </section>
-    <div ng-include src="'partials/tabs/kuvaus_alataso.html'"></div>
+    <div data-ng-include data-src="'partials/tabs/kuvaus_alataso.html'"></div>
 </section>
