@@ -23,16 +23,14 @@
         <field name="id" type="text_general" indexed="true" stored="true" multiValued="false"/>
         <field name="name" type="text_general" indexed="true" stored="true" multiValued="false"/>
         <field name="professionalTitles" type="text_general" indexed="true" stored="true" multiValued="true"/>
-
         <field name="lopId" type="text_general" indexed="true" stored="true" multiValued="false"/>
         <field name="lopName" type="text_general" indexed="true" stored="true" multiValued="false"/>
         <field name="lopAddress" type="text_general" indexed="true" stored="true" multiValued="false"/>
-
         <field name="parentId" type="text_general" indexed="false" stored="true" multiValued="false"/>
         <field name="losId" type="text_general" indexed="false" stored="true" multiValued="false"/>
-
         <field name="prerequisites" type="text_general" indexed="true" stored="true" multiValued="true"/>
-
+        <dynamicField name="asStart_*"  type="date"  indexed="false"  stored="true"/>
+        <dynamicField name="asEnd_*"  type="date"  indexed="false"  stored="true"/>
         <field name="text" type="text_fi" indexed="true" stored="false" multiValued="true"/>
     </fields>
 
