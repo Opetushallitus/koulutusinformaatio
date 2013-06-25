@@ -44,10 +44,13 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
     $scope.change = function() {
         $scope.individualizedActive = $scope.baseeducation != 1;
 
+        console.log($scope.baseeducation);
+        console.log($scope.queryString);
+
         SearchLearningOpportunityService.query({
             queryString: $scope.queryString,
             locations: $scope.locations,
-            baseEducation: $scope.baseeducation,
+            prerequisite: $scope.baseeducation,
             individualized: $scope.individualized
         }).then(function(result) {
             $scope.loResult = result;

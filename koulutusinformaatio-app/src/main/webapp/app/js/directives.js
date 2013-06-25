@@ -116,6 +116,19 @@ directive('kiRenderProfessionalTitles', function() {
     }
 }).
 
+directive('kiRenderExams', function() {
+    return {
+        restrict: 'E,A',
+        templateUrl: 'templates/exams.html',
+        scope: true,
+        link: function(scope, element, attrs) {
+            scope.$watch('selectedAo.exams', function(data) {
+                scope.exams = data;
+            });
+        }
+    }
+}).
+
 /**
  *  Render organization social links
  */
@@ -356,13 +369,27 @@ directive('kiAppTitle', ['TitleService', function(TitleService) {
  *  Creates a human readable date from timestamp
  */
 directive('kiTimestamp', function() {
+    var padWithZero = function(number) {
+        number = number.toString();
+        if (number.length <= 1) {
+            return "0" + number;
+        } else {
+            return number;
+        }
+    }
+
     return function(scope, element, attrs) {
         attrs.$observe('kiTimestamp', function(value) {
             value = parseInt(value);
             var date = new Date(value);
             element.append(date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear());
+            if (attrs.precise) {
+                element.append(' ' + padWithZero(date.getHours()) + ':' + padWithZero(date.getMinutes()));
+            }
         });
     }
+
+
 }).
 
 /**
