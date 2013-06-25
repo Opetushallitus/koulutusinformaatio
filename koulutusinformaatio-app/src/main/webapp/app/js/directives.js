@@ -116,6 +116,19 @@ directive('kiRenderProfessionalTitles', function() {
     }
 }).
 
+directive('kiRenderExams', function() {
+    return {
+        restrict: 'E,A',
+        templateUrl: 'templates/exams.html',
+        scope: true,
+        link: function(scope, element, attrs) {
+            scope.$watch('selectedAo.exams', function(data) {
+                scope.exams = data;
+            });
+        }
+    }
+}).
+
 /**
  *  Render organization social links
  */

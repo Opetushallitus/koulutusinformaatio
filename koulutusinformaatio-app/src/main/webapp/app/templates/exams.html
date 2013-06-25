@@ -1,0 +1,10 @@
+<div data-ng-repeat="exam in exams">
+	<h2>{{exam.type}}</h2>
+	<p>{{exam.description}}</p>
+	<div data-ng-repeat="event in exam.examEvents">
+		<span data-ki-timestamp="{{event.start}}"></span> - <span data-ki-timestamp="{{event.end}}"></span>
+		<p>{{event.description}}</p>
+		<span>{{event.address.streetAddress}}</span><br />
+		<span>{{event.address.postalCode}}</span> <span>{{event.address.postOffice}}</span>
+	</div>
+</div>
