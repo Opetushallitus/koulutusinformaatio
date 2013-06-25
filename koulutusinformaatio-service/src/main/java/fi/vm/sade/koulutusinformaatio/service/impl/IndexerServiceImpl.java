@@ -54,12 +54,12 @@ public class IndexerServiceImpl implements IndexerService {
         SolrInputDocument providerDoc = new SolrInputDocument();
         providerDoc.addField("id", provider.getId());
         providerDoc.addField("name", provider.getName().getTranslations().get("fi"));
+        providerDoc.addField("athleteEducation", provider.isAthleteEducation());
 
         Set<String> providerAsIds = Sets.newHashSet();
 
         List<ParentLOI> lois = parent.getLois();
         for (ParentLOI loi : lois) {
-            parentDoc.addField("prerequisites", loi.getPrerequisite().getValue());
             for (ChildLearningOpportunity childLO : loi.getChildren()) {
                 SolrInputDocument childLODoc = new SolrInputDocument();
                 childLODoc.addField("id", childLO.getId());
@@ -71,7 +71,6 @@ public class IndexerServiceImpl implements IndexerService {
                 childLODoc.addField("lopName", provider.getName().getTranslations().get("fi"));
                 childLODoc.addField("lopAddress", provider.getVisitingAddress().getPostOffice());
                 childLODoc.addField("parentId", parent.getId());
-                childLODoc.addField("prerequisites", childLO.getPrerequisite().getValue());
                 if (childLO.getApplicationSystemIds() != null) {
                     for (String asId : childLO.getApplicationSystemIds()) {
                         providerAsIds.add(asId);

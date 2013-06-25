@@ -53,6 +53,7 @@ public class LearningOpportunityProviderEntity {
     private List<SocialEntity> social;
     @Reference
     private PictureEntity picture;
+    private boolean athleteEducation;
     
 
     public LearningOpportunityProviderEntity() {
@@ -192,5 +193,13 @@ public class LearningOpportunityProviderEntity {
 
     public void setPicture(PictureEntity picture) {
         this.picture = picture;
+    }
+
+    public boolean isAthleteEducation() {
+        return athleteEducation;
+    }
+
+    public void setAthleteEducation(boolean athleteEducation) {
+        this.athleteEducation = athleteEducation;
     }
 }
