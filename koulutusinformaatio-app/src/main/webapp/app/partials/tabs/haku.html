@@ -28,7 +28,7 @@
                             name="preference1-Koulutus-id" 
                             id="input{{$index}}" 
                             value="{{ao.id}}" 
-                            data-ng-change="changePrerequisiteSelection(ao.prerequisite)" 
+                            data-ng-change="changePrerequisiteSelection(ao.prerequisite, ao.id)" 
                             data-ng-model="selectedAo.id"
                             data-ng-class="showApplicationRadioSelection" />
                         <label for="input{{$index}}">{{ao.prerequisite.description}}</label>

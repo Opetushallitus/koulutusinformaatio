@@ -1,6 +1,6 @@
 <!-- <div ng-include src="'partials/pageheader.html'"></div> -->
 <section class="content-container margin-bottom-2">
-    <div class="grid16-11" id="search-results" >
+    <div class="grid16-11">
         <div data-ng-switch="loResult.totalCount">
             <div data-ng-switch-when="0">
                 <div class="notification info">
@@ -8,15 +8,15 @@
                     <span data-ki-i18n="no-search-results-info"></span>
                 </div>
             </div>
-            <div data-ng-switch-default>
-                <ul>
+            <div data-ng-switch-default class="margin-left-3">
+                <ul id="search-results">
                     <li data-ng-repeat="lo in loResult.results">
                         <div>
                             <div class="result-content">
                                 <a href="{{lo.linkHref}}">{{lo.name}}</a><br />
                                 <span>{{lo.lopName}}</span>
                             </div>
-                            <aside>&nbsp;</aside>
+                            <small data-ki-as-state>&nbsp;</small>
                             <div class="clear"></div>
                         </div>
                         <!--<div class="clear"></div>-->

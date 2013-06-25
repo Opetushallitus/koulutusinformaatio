@@ -26,11 +26,11 @@ function HeaderCtrl($scope, $location, ApplicationBasketService) {
  *  Controller for search filters
  */
 function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService, kiAppConstants) {
-    $scope.individualizedActive = $scope.pohjakoulutus != 1;
+    $scope.individualizedActive = $scope.pohjakoulutus != 'PK';
     var resultsPerPage = kiAppConstants.searchResultsPerPage;
 
     $scope.change = function() {
-        $scope.individualizedActive = $scope.baseeducation != 1;
+        $scope.individualizedActive = $scope.baseeducation != 'PK';
 
         SearchLearningOpportunityService.query({
             queryString: $scope.queryString,
@@ -42,8 +42,6 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
         }).then(function(result) {
             $scope.$parent.loResult = result;
         });
-
-        console.log($scope.$parent);
     }
 };
 
@@ -151,6 +149,8 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
     $scope.addToBasket = function() {
         var basketType = ApplicationBasketService.getType();
         if (!basketType || $scope.selectedAo.prerequisite.value == basketType) {
+            console.log($scope.selectedAo.id);
+            console.log($scope.selectedAo.prerequisite.value);
             ApplicationBasketService.addItem($scope.selectedAo.id, $scope.selectedAo.prerequisite.value);
             $scope.popoverTitle = i18n.t('popover-title-success');
             $scope.popoverContent = "<a href='#/muistilista'>" + i18n.t('popover-content-link-to-application-basket') + "</a>";
@@ -241,7 +241,7 @@ function SearchFieldCtrl($scope, $routeParams, $location, SearchService) {
     $scope.providerAsideClass = 'hidden';
     $scope.applyFormClass = '';
 
-    $scope.changePrerequisiteSelection = function(prerequisite) {
+    $scope.changePrerequisiteSelection = function(prerequisite, aoId) {
         for (var loi in $scope.parentLO.lois) {
             if ($scope.parentLO.lois.hasOwnProperty(loi)) {
                 if ($scope.parentLO.lois[loi].prerequisite.value == prerequisite.value) {
@@ -252,9 +252,20 @@ function SearchFieldCtrl($scope, $routeParams, $location, SearchService) {
 
         for (var ao in $scope.parentLO.applicationOptions) {
             if ($scope.parentLO.applicationOptions.hasOwnProperty(ao)) {
-                if ($scope.parentLO.applicationOptions[ao].prerequisite.value == prerequisite.value) {
+                if (aoId) {
+                    if ($scope.parentLO.applicationOptions[ao].id == aoId) {
+                        $scope.selectedAo = angular.copy($scope.parentLO.applicationOptions[ao]);
+                    }
+                } else if ($scope.parentLO.applicationOptions[ao].prerequisite.value == prerequisite.value) {
                     $scope.selectedAo = angular.copy($scope.parentLO.applicationOptions[ao]);
                 }
+
+                /*
+                if ($scope.parentLO.applicationOptions[ao].prerequisite.value == prerequisite.value &&
+                    $scope.parentLO.applicationOptions[ao].id == aoId) {
+                    $scope.selectedAo = angular.copy($scope.parentLO.applicationOptions[ao]);
+                }
+                */
             }
         }
     }
