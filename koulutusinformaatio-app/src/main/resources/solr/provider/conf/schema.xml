@@ -24,7 +24,6 @@
         <field name="name" type="text_general" indexed="true" stored="true" multiValued="false"/>
         <field name="asId" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <field name="text" type="text_general" indexed="true" stored="false" multiValued="true"/>
-        <field name="athleteEducation" type="boolean" indexed="true" stored="true" multiValued="false"/>
     </fields>
 
     <uniqueKey>id</uniqueKey>

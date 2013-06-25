@@ -62,7 +62,6 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
                     ProviderSearchResult result = new ProviderSearchResult();
                     result.setId(lop.getId());
                     result.setName(lop.getName().getTranslations().get("fi"));
-                    result.setAthleteEducation(lop.isAthleteEducation());
                     return result;
                 }
             });

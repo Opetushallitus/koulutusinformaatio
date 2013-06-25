@@ -53,7 +53,6 @@ public class IndexerServiceImpl implements IndexerService {
         SolrInputDocument providerDoc = new SolrInputDocument();
         providerDoc.addField("id", provider.getId());
         providerDoc.addField("name", provider.getName().getTranslations().get("fi"));
-        providerDoc.addField("athleteEducation", provider.isAthleteEducation());
 
         Set<String> providerAsIds = Sets.newHashSet();
 
