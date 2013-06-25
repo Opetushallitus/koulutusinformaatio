@@ -33,12 +33,16 @@ public interface LearningOpportunityResource {
      * Searches learning opportunities.
      *
      * @param text search key
+     * @param prerequisite base education prerequisite (pohjakoulutusvaatimus) filter
+     *                     if none is provided, no filtering is used
      * @return list of search results
      */
     @GET
     @Path("search/{text}")
     @Produces(MediaType.APPLICATION_JSON)
-    public LOSearchResultListDTO searchLearningOpportunities(@PathParam("text") String text, @DefaultValue(value = "0") @QueryParam("start") int start,
+    public LOSearchResultListDTO searchLearningOpportunities(@PathParam("text") String text,
+                                                             @QueryParam("prerequisite") String prerequisite,
+                                                             @DefaultValue(value = "0") @QueryParam("start") int start,
                                                              @DefaultValue(value = "100") @QueryParam("rows") int rows);
 
     /**

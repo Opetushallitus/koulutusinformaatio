@@ -91,13 +91,13 @@ public class SearchServiceSolrImplTest {
 
     @Test
     public void testSearchLearningOpportunities() throws SearchException {
-        LOSearchResultList results = service.searchLearningOpportunities("query", 0, 100);
+        LOSearchResultList results = service.searchLearningOpportunities("query", "PK", 0, 100);
         assertEquals(1, results.getResults().size());
     }
 
     @Test
     public void testSearchLearningOpportunitiesEmptyTerm() throws SearchException {
-        LOSearchResultList results = service.searchLearningOpportunities("", 0, 100);
+        LOSearchResultList results = service.searchLearningOpportunities("", "PK", 0, 100);
         assertEquals(0, results.getResults().size());
     }
 
