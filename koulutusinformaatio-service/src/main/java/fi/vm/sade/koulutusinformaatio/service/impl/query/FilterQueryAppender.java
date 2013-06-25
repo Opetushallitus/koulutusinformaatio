@@ -14,19 +14,20 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.koulutusinformaatio.service;
+package fi.vm.sade.koulutusinformaatio.service.impl.query;
 
-import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
-import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
+import org.apache.solr.client.solrj.SolrQuery;
 
 import java.util.List;
+import java.util.Map;
 
-public interface SearchService {
-
-    List<Provider> searchLearningOpportunityProviders(
-            final String term, final String asId, final String prerequisite, final boolean vocational) throws SearchException;
-
-    LOSearchResultList searchLearningOpportunities(final String term, final String prerequisite, int start, int rows) throws SearchException;
-
+/**
+ * @author Hannu Lyytikainen
+ */
+public class FilterQueryAppender implements SolrQueryAppender {
+    @Override
+    public void append(SolrQuery solrQuery, Map.Entry<String, List<String>> entry) {
+        String filterQuery = new StringBuilder().append(entry.getValue().get(0)).append(":").append(entry.getValue().get(1)).toString();
+        solrQuery.addFilterQuery(filterQuery);
+    }
 }

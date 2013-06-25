@@ -38,7 +38,9 @@ public interface LearningOpportunityResource {
     @GET
     @Path("search/{text}")
     @Produces(MediaType.APPLICATION_JSON)
-    public LOSearchResultListDTO searchLearningOpportunities(@PathParam("text") String text, @DefaultValue(value = "0") @QueryParam("start") int start,
+    public LOSearchResultListDTO searchLearningOpportunities(@PathParam("text") String text,
+                                                             @QueryParam("prerequisite") String prerequisite,
+                                                             @DefaultValue(value = "0") @QueryParam("start") int start,
                                                              @DefaultValue(value = "100") @QueryParam("rows") int rows);
 
     /**
