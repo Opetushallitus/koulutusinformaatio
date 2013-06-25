@@ -38,25 +38,29 @@ function HeaderCtrl($scope, $location, ApplicationBasketService) {
 /**
  *  Controller for search filters
  */
-function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService) {
+ 
+function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService, kiAppConstants) {
     $scope.individualizedActive = $scope.pohjakoulutus != 1;
+    var resultsPerPage = kiAppConstants.searchResultsPerPage;
 
     $scope.change = function() {
         $scope.individualizedActive = $scope.baseeducation != 1;
 
-        console.log($scope.baseeducation);
-        console.log($scope.queryString);
-
         SearchLearningOpportunityService.query({
             queryString: $scope.queryString,
-            locations: $scope.locations,
             prerequisite: $scope.baseeducation,
-            individualized: $scope.individualized
+            start: 0,
+            rows: resultsPerPage
+            //locations: $scope.locations,
+            //individualized: $scope.individualized
         }).then(function(result) {
-            $scope.loResult = result;
+            $scope.$parent.loResult = result;
         });
+
+        console.log($scope.$parent);
     }
 };
+
 
 /**
  *  Controller for application basket
@@ -186,16 +190,8 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
     $scope.popoverContent = "<a href='#/muistilista'>" + i18n.t('popover-content') + "</a>";
 };
 
-/**
- *  Controller for search functionality 
- */
- function SearchCtrl($scope, $routeParams, $location, SearchLearningOpportunityService, SearchService, TitleService, kiAppConstants) {
+function SearchFieldCtrl($scope, $routeParams, $location, SearchService) {
     $scope.queryString = SearchService.getTerm();
-    var resultsPerPage = kiAppConstants.searchResultsPerPage;
-    $scope.currentPage = kiAppConstants.searchResultsStartPage;
-
-    var title = i18n.t('title-search-results');
-    TitleService.setTitle(title);
 
     // Perform search using LearningOpportunity service
     $scope.search = function() {
@@ -204,11 +200,53 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
             $location.path('/haku/' + $scope.queryString);
         }
     };
+};
+
+/**
+ *  Controller for search functionality 
+ */
+ function SearchCtrl($scope, $routeParams, $location, SearchLearningOpportunityService, SearchService, TitleService, kiAppConstants) {
+    //$scope.queryString = SearchService.getTerm();
+    var resultsPerPage = kiAppConstants.searchResultsPerPage;
+    $scope.currentPage = kiAppConstants.searchResultsStartPage;
+
+    var title = i18n.t('title-search-results');
+    TitleService.setTitle(title);
+
+    // Perform search using LearningOpportunity service
+    /*
+    $scope.search = function() {
+        if ($scope.queryString) {
+            SearchService.setTerm($scope.queryString);
+            $location.path('/haku/' + $scope.queryString);
+        }
+    };
+    */
 
     $scope.changePage = function(page) {
         $scope.currentPage = page;
         $('html, body').scrollTop($('#search-results').offset().top); // scroll to top of list
     };
+
+    /*
+    $scope.change = function() {
+        console.log($scope.filters);
+        $scope.individualizedActive = $scope.baseeducation != 1;
+
+        console.log($scope.baseeducation);
+        console.log($scope.queryString);
+
+        SearchLearningOpportunityService.query({
+            queryString: $scope.queryString,
+            locations: $scope.locations,
+            prerequisite: $scope.baseeducation,
+            individualized: $scope.individualized
+        }).then(function(result) {
+            $scope.loResult = result;
+        });
+    }
+    */
+    
 
     $scope.$watch('currentPage', function(value) {
         if ($routeParams.queryString) {
