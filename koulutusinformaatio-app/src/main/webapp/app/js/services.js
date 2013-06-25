@@ -33,7 +33,8 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', function
             $http.get('../lo/search/' + params.queryString, {
                 params: {
                     start: params.start,
-                    rows: params.rows
+                    rows: params.rows,
+                    prerequisite: params.prerequisite
                 }
             }).
             success(function(result) {
