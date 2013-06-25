@@ -125,6 +125,18 @@ directive('kiRenderExams', function() {
             scope.$watch('selectedAo.exams', function(data) {
                 scope.exams = data;
             });
+
+            scope.rowClass = function(isFirst, isLast) {
+                if (isFirst && isLast) {
+                    return 'first last';
+                } else if (isFirst) {
+                    return 'first';
+                } else if (isLast) {
+                    return 'last';
+                } else {
+                    return '';
+                }
+            } 
         }
     }
 }).

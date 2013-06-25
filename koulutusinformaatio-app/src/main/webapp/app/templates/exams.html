@@ -1,23 +1,21 @@
-<div data-ng-repeat="exam in exams">
+<div data-ng-repeat="exam in exams" class="exams">
 	<h2>{{exam.type}}</h2>
 	<div data-render-text-block data-content="{{exam.description}}"></div>
-	
-	<div data-ng-repeat="event in exam.examEvents">
-		<span data-ki-timestamp="{{event.start}}" data-precise="true" class="bold"></span> - <span data-ki-timestamp="{{event.end}}" data-precise="true" class="bold"></span>
-		<p>{{event.description}}</p>
-		<span>{{event.address.streetAddress}}</span><br />
-		<span>{{event.address.postalCode}}</span> <span>{{event.address.postOffice}}</span>
-	</div>
-	<!--
-	<table>
-		<thead></thead>
+	<table class="margin-bottom-2 margin-top-2">
+		<colgroup>
+            <col style="width: 34%;"></col>
+            <col></col>
+            <col style="width: 33%;"></col>
+        </colgroup>
+		<thead>
+		</thead>
 		<tbody>
-			<tr data-ng-repeat="event in exam.examEvents">
+			<tr data-ng-repeat="event in exam.examEvents" data-ng-class="rowClass($first, $last)">
 				<td>{{event.description}}</td>
 				<td>
 					<span data-ki-timestamp="{{event.start}}" data-precise="true" class="bold"></span> - <span data-ki-timestamp="{{event.end}}" data-precise="true" class="bold"></span>
 				</td>
-				<td>
+				<td class="last">
 					<span>{{event.address.streetAddress}}</span><br />
 					<span>{{event.address.postalCode}}</span> <span>{{event.address.postOffice}}</span>
 				</td>
@@ -25,5 +23,5 @@
 		</tbody>
 		<tfoot></tfoot>
 	</table>
-	-->
+	
 </div>
