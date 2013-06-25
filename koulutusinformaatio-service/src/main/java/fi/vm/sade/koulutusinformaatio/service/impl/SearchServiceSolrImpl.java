@@ -79,6 +79,7 @@ public class SearchServiceSolrImpl implements SearchService {
             for (SolrDocument result : queryResponse.getResults()) {
                 Provider provider = new Provider();
                 provider.setId(result.get("id").toString());
+                provider.setAthleteEducation(Boolean.parseBoolean(result.get("athleteEducation").toString()));
 
                 // TODO: i18n handling
                 Map<String, String> texts = Maps.newHashMap();
@@ -93,12 +94,16 @@ public class SearchServiceSolrImpl implements SearchService {
     }
 
     @Override
-    public LOSearchResultList searchLearningOpportunities(String term, int start, int rows) throws SearchException {
+    public LOSearchResultList searchLearningOpportunities(String term, String prerequisite, int start, int rows) throws SearchException {
         LOSearchResultList searchResultList = new LOSearchResultList();
         String trimmed = term.trim();
         if (!trimmed.isEmpty()) {
             MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>(1);
             parameters.put("text", Lists.newArrayList(term));
+
+            if (prerequisite != null && !prerequisite.isEmpty()) {
+                parameters.put("fq", Lists.newArrayList("prerequisites", prerequisite));
+            }
 
             parameters.put("start", createParameter(String.valueOf(start)));
             parameters.put("rows", createParameter(String.valueOf(rows)));

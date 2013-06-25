@@ -26,6 +26,7 @@ public class ProviderSearchResult {
 
     private String id;
     private String name;
+    private boolean athleteEducation;
 
     public String getId() {
         return id;
@@ -41,5 +42,13 @@ public class ProviderSearchResult {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isAthleteEducation() {
+        return athleteEducation;
+    }
+
+    public void setAthleteEducation(boolean athleteEducation) {
+        this.athleteEducation = athleteEducation;
     }
 }

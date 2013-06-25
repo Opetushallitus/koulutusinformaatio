@@ -6,7 +6,6 @@ import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.common.SolrInputDocument;
-import org.apache.solr.common.SolrInputField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +53,7 @@ public class IndexerServiceImpl implements IndexerService {
         SolrInputDocument providerDoc = new SolrInputDocument();
         providerDoc.addField("id", provider.getId());
         providerDoc.addField("name", provider.getName().getTranslations().get("fi"));
+        providerDoc.addField("athleteEducation", provider.isAthleteEducation());
 
         Set<String> providerAsIds = Sets.newHashSet();
 

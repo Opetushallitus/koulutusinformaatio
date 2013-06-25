@@ -80,7 +80,7 @@ public class UpdateServiceImpl implements UpdateService {
                     try {
                         parents = tarjontaService.findParentLearningOpportunity(parentOid.getOid());
                     } catch (TarjontaParseException e) {
-                        LOG.warn("Exception while updating parent learning opportunity, oid: " + parentOid + ", Message: " + e.getMessage());
+                        LOG.warn("Exception while updating parent learning opportunity, oid: " + parentOid.getOid() + ", Message: " + e.getMessage());
                         continue;
                     }
                     for (ParentLOS parent : parents) {

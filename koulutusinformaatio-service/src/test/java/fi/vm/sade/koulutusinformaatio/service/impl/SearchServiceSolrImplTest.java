@@ -16,7 +16,6 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import fi.vm.sade.koulutusinformaatio.domain.LOSearchResult;
 import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
@@ -54,6 +53,7 @@ public class SearchServiceSolrImplTest {
         SolrDocument lop1 = new SolrDocument();
         lop1.put("id", "1.2.3.4.5");
         lop1.put("name", "LOP NAME");
+        lop1.put("athleteEducation", false);
         lopDocs.add(lop1);
         QueryResponse lopQueryResponse = mock(QueryResponse.class);
         when(lopQueryResponse.getResults()).thenReturn(lopDocs);
@@ -91,13 +91,13 @@ public class SearchServiceSolrImplTest {
 
     @Test
     public void testSearchLearningOpportunities() throws SearchException {
-        LOSearchResultList results = service.searchLearningOpportunities("query", 0, 100);
+        LOSearchResultList results = service.searchLearningOpportunities("query", "PK", 0, 100);
         assertEquals(1, results.getResults().size());
     }
 
     @Test
     public void testSearchLearningOpportunitiesEmptyTerm() throws SearchException {
-        LOSearchResultList results = service.searchLearningOpportunities("", 0, 100);
+        LOSearchResultList results = service.searchLearningOpportunities("", "PK", 0, 100);
         assertEquals(0, results.getResults().size());
     }
 

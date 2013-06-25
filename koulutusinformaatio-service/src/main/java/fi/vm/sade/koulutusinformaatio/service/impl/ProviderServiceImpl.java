@@ -69,6 +69,9 @@ public class ProviderServiceImpl implements ProviderService {
             provider.setLivingExpenses( getI18nText(provider.getLivingExpenses().getTranslations()) );
             provider.setLearningEnvironment( getI18nText(provider.getLearningEnvironment().getTranslations()) );
             provider.setDining( getI18nText(provider.getDining().getTranslations()) );
+
+            //TODO check athlete education from koodisto
+            provider.setAthleteEducation(false);
         }
         return provider;
     }
