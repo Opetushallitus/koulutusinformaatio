@@ -33,6 +33,8 @@ public interface LearningOpportunityResource {
      * Searches learning opportunities.
      *
      * @param text search key
+     * @param prerequisite base education prerequisite (pohjakoulutusvaatimus) filter
+     *                     if none is provided, no filtering is used
      * @return list of search results
      */
     @GET
