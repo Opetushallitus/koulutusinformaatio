@@ -1,7 +1,7 @@
 <div class="margin-bottom-2">
-	<input type="text" name="sijainti" id="sijainti" ng-model="location"/>
-	<button type="button" class="plus btn-search-location" id="btn-search-location" ng-click="add()"><span><span data-ki-i18n="filter-search-location-add"></span></span></button>
+	<input type="text" name="sijainti" id="sijainti" data-ng-model="location"/>
+	<button type="button" class="plus btn-search-location" id="btn-search-location" data-ng-click="add()"><span><span data-ki-i18n="filter-search-location-add"></span></span></button>
 </div>
 <ul>
-	<li ng-repeat="location in locations"><a class="remove" ng-click="remove(location)"><span data-ki-i18n="filter-search-location-remove"></span></a>{{location}}</li>
+	<li data-ng-repeat="location in locations"><a class="remove" data-ng-click="remove(location)"><span data-ki-i18n="filter-search-location-remove"></span></a>{{location}}</li>
 </ul>

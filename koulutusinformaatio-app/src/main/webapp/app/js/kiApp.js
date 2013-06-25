@@ -27,6 +27,11 @@ kiApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $l
     });
 }]);
 
+
+kiApp.filter('escape', function() {
+  return window.escape;
+});
+
 // initialize i18n library
 kiApp.run(['LanguageService', function(LanguageService) {
     i18n.init({

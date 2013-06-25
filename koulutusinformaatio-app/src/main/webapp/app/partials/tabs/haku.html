@@ -28,9 +28,9 @@
                             name="preference1-Koulutus-id" 
                             id="input{{$index}}" 
                             value="{{ao.id}}" 
-                            ng-change="changePrerequisiteSelection(ao.prerequisite)" 
-                            ng-model="selectedAo.id"
-                            ng-class="showApplicationRadioSelection" />
+                            data-ng-change="changePrerequisiteSelection(ao.prerequisite)" 
+                            data-ng-model="selectedAo.id"
+                            data-ng-class="showApplicationRadioSelection" />
                         <label for="input{{$index}}">{{ao.prerequisite.description}}</label>
                     </li>
                 </ul>
@@ -46,7 +46,7 @@
                     type="hidden" 
                     name="preference1-Koulutus" 
                     value="{{selectedAo.name}}" 
-                    ng-model="selectedAo.name" />
+                    data-ng-model="selectedAo.name" />
                 <input 
                     type="hidden" 
                     name="preference1-Koulutus-educationDegree" 
@@ -55,13 +55,13 @@
                     type="hidden" 
                     name="preference1-Koulutus-id-sora" 
                     value="{{selectedAo.sora}}" 
-                    ng-model="selectedAo.sora" />
+                    data-ng-model="selectedAo.sora" />
                 <input 
                     type="hidden" 
                     name="preference1-Koulutus-id-lang" 
                     value="{{selectedAo.teachLang}}" 
-                    ng-model="selectedAo.teachLang" />
-                <button type="submit" ng-disabled="!applicationSystemIsActive()">
+                    data-ng-model="selectedAo.teachLang" />
+                <button type="submit" data-ng-disabled="!applicationSystemIsActive()">
                     <span>
                         <span data-ki-i18n="apply-button-label"></span>
                     </span>
@@ -71,11 +71,11 @@
                     type="button" 
                     id="addToBasket" 
                     class="primary" 
-                    popover-placement="bottom" 
-                    popover-html-unsafe="{{popoverContent}}" 
-                    popover-title="{{popoverTitle}}" 
-                    popover-trigger="click"
-                    ng-click="addToBasket(aoId)">
+                    data-popover-placement="bottom" 
+                    data-popover-html-unsafe="{{popoverContent}}" 
+                    data-popover-title="{{popoverTitle}}" 
+                    data-popover-trigger="click"
+                    data-ng-click="addToBasket(aoId)">
                     <span>
                         <span data-ki-i18n="add-to-basket-label"></span>
                     </span>
