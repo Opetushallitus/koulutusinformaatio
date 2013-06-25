@@ -49,16 +49,7 @@ public class IndexerServiceImpl implements IndexerService {
         parentDoc.addField("lopName", provider.getName().getTranslations().get("fi"));
         parentDoc.addField("lopAddress", provider.getVisitingAddress().getPostOffice());
 
-        int parentApplicationDateRangeIndex = 0;
-        for (ApplicationOption ao : parent.getApplicationOptions()) {
-            for (DateRange dr : ao.getApplicationSystem().getApplicationDates()) {
-                parentDoc.addField(new StringBuilder().append("asStart").append("_").
-                        append(String.valueOf(parentApplicationDateRangeIndex)).toString(), dr.getStartDate());
-                parentDoc.addField(new StringBuilder().append("asEnd").append("_").
-                        append(String.valueOf(parentApplicationDateRangeIndex)).toString(), dr.getEndDate());
-                parentApplicationDateRangeIndex++;
-            }
-        }
+        addApplicationSystemDates(parentDoc, Lists.newArrayList(parent.getApplicationOptions()));
 
         SolrInputDocument providerDoc = new SolrInputDocument();
         providerDoc.addField("id", provider.getId());
@@ -84,6 +75,7 @@ public class IndexerServiceImpl implements IndexerService {
                 childLODoc.addField("lopAddress", provider.getVisitingAddress().getPostOffice());
                 childLODoc.addField("parentId", parent.getId());
                 childLODoc.addField("prerequisites", childLO.getPrerequisite().getValue());
+                addApplicationSystemDates(childLODoc, childLO.getApplicationOptions());
                 if (childLO.getApplicationSystemIds() != null) {
                     for (String asId : childLO.getApplicationSystemIds()) {
                         providerAsIds.add(asId);
@@ -102,6 +94,21 @@ public class IndexerServiceImpl implements IndexerService {
         providerDocs.add(providerDoc);
         lopUpdateHttpSolrServer.add(providerDocs);
         loUpdateHttpSolrServer.add(docs);
+    }
+
+    private void addApplicationSystemDates(SolrInputDocument doc, List<ApplicationOption> aos) {
+
+        int parentApplicationDateRangeIndex = 0;
+        for (ApplicationOption ao : aos) {
+            for (DateRange dr : ao.getApplicationSystem().getApplicationDates()) {
+                doc.addField(new StringBuilder().append("asStart").append("_").
+                        append(String.valueOf(parentApplicationDateRangeIndex)).toString(), dr.getStartDate());
+                doc.addField(new StringBuilder().append("asEnd").append("_").
+                        append(String.valueOf(parentApplicationDateRangeIndex)).toString(), dr.getEndDate());
+                parentApplicationDateRangeIndex++;
+            }
+        }
+
     }
 
     @Override
