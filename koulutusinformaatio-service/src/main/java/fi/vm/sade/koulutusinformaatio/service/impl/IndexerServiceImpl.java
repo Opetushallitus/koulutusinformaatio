@@ -59,7 +59,10 @@ public class IndexerServiceImpl implements IndexerService {
 
         List<ParentLOI> lois = parent.getLois();
         for (ParentLOI loi : lois) {
-            parentDoc.addField("prerequisites", loi.getPrerequisite().getValue());
+            if (loi.getPrerequisite() != null) {
+                // null in parent 1.2.246.562.5.2013060313060064137085
+                parentDoc.addField("prerequisites", loi.getPrerequisite().getValue());
+            }
             for (ChildLearningOpportunity childLO : loi.getChildren()) {
                 SolrInputDocument childLODoc = new SolrInputDocument();
                 childLODoc.addField("id", childLO.getId());
