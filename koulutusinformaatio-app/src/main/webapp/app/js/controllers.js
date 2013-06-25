@@ -20,25 +20,11 @@ function HeaderCtrl($scope, $location, ApplicationBasketService) {
  function IndexCtrl($scope, TitleService) {
     var title = i18n.t('title-front-page');
     TitleService.setTitle(title);
-
-    // launch navigation script
-    /*
-    $scope.initNavigation = function() {
-        OPH.Common.initDropdownMenu();
-    }
-    */
-
-    /*
-    $scope.$on('$viewContentLoaded', function() {
-        OPH.Common.initHeader();
-    });
-    */
 };
 
 /**
  *  Controller for search filters
  */
- 
 function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService, kiAppConstants) {
     $scope.individualizedActive = $scope.pohjakoulutus != 1;
     var resultsPerPage = kiAppConstants.searchResultsPerPage;
@@ -190,6 +176,9 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
     $scope.popoverContent = "<a href='#/muistilista'>" + i18n.t('popover-content') + "</a>";
 };
 
+/**
+ *  Controller for search field in header
+ */
 function SearchFieldCtrl($scope, $routeParams, $location, SearchService) {
     $scope.queryString = SearchService.getTerm();
 
@@ -213,40 +202,10 @@ function SearchFieldCtrl($scope, $routeParams, $location, SearchService) {
     var title = i18n.t('title-search-results');
     TitleService.setTitle(title);
 
-    // Perform search using LearningOpportunity service
-    /*
-    $scope.search = function() {
-        if ($scope.queryString) {
-            SearchService.setTerm($scope.queryString);
-            $location.path('/haku/' + $scope.queryString);
-        }
-    };
-    */
-
     $scope.changePage = function(page) {
         $scope.currentPage = page;
         $('html, body').scrollTop($('#search-results').offset().top); // scroll to top of list
     };
-
-    /*
-    $scope.change = function() {
-        console.log($scope.filters);
-        $scope.individualizedActive = $scope.baseeducation != 1;
-
-        console.log($scope.baseeducation);
-        console.log($scope.queryString);
-
-        SearchLearningOpportunityService.query({
-            queryString: $scope.queryString,
-            locations: $scope.locations,
-            prerequisite: $scope.baseeducation,
-            individualized: $scope.individualized
-        }).then(function(result) {
-            $scope.loResult = result;
-        });
-    }
-    */
-    
 
     $scope.$watch('currentPage', function(value) {
         if ($routeParams.queryString) {

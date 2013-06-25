@@ -65,8 +65,6 @@ service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', 'Languag
                 var ao = result.applicationOptions[index];
                 if (ao.applicationSystem && ao.applicationSystem.applicationDates && ao.applicationSystem.applicationDates.length > 0) {
                     ao.applicationSystem.applicationDates = ao.applicationSystem.applicationDates[0];
-                    //ao.applicationSystem.applicationDates.startDate = "1369958400000";
-                    //ao.applicationSystem.applicationDates.endDate = "1372636800000";
                 }
                 result.applicationSystem = ao.applicationSystem;
             }
@@ -78,6 +76,22 @@ service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', 'Languag
                 var ao = result.applicationOptions[index];
                 if (ao.teachingLanguages && ao.teachingLanguages.length > 0) {
                     ao.teachLang = ao.teachingLanguages[0];
+                }
+            }
+        }
+
+        // set teaching languge as the first language in array
+        for (var index in result.applicationOptions) {
+            if (result.applicationOptions.hasOwnProperty(index)) {
+                var ao = result.applicationOptions[index];
+                for (var exam in ao.exams) {
+                    if (ao.exams.hasOwnProperty(exam)) {
+                        if (ao.exams[exam].examEvents) {
+                            ao.exams[exam].examEvents.sort(function(a, b) {
+                                return a.start - b.start;
+                            });
+                        }
+                    }
                 }
             }
         }
@@ -142,7 +156,6 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
         if (result.related) {
             result.related.push({
                 childLOId: result.id, 
-                //losId: result.losId,
                 name: result.name
             });
 
@@ -315,8 +328,6 @@ service('TranslationService', function() {
                 var applicationDates = result[asIndex].applicationDates;
                 if (applicationDates.length > 0) {
                     result[asIndex].applicationDates = applicationDates[0];
-                    //result[asIndex].applicationDates.startDate = "1369958400000";
-                    //result[asIndex].applicationDates.endDate = "1372636800000";
                 }
 
                 var applicationOptions = result[asIndex].applicationOptions;
