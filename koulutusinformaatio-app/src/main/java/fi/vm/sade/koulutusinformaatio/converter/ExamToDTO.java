@@ -37,11 +37,16 @@ public class ExamToDTO {
     }
 
     public static List<ExamDTO> convertAll(final List<Exam> exams, final String lang) {
-        return Lists.transform(exams, new Function<Exam, ExamDTO>() {
+        if (exams == null) {
+            return null;
+        }
+        else {
+            return Lists.transform(exams, new Function<Exam, ExamDTO>() {
             @Override
             public ExamDTO apply(Exam input) {
                 return convert(input, lang);
             }
         });
+        }
     }
 }
