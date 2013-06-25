@@ -53,6 +53,7 @@ public class ApplicationOption {
     private Code prerequisite;
     // base educations, one of these is required to be able to apply to this application option
     private List<String> requiredBaseEducations;
+    private List<Exam> exams;
 
     public String getId() {
         return id;
@@ -196,6 +197,14 @@ public class ApplicationOption {
 
     public void setRequiredBaseEducations(List<String> requiredBaseEducations) {
         this.requiredBaseEducations = requiredBaseEducations;
+    }
+
+    public List<Exam> getExams() {
+        return exams;
+    }
+
+    public void setExams(List<Exam> exams) {
+        this.exams = exams;
     }
 
     @Override

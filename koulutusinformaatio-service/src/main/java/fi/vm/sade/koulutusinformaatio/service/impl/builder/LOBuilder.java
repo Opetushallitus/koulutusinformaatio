@@ -167,6 +167,37 @@ public class LOBuilder {
                     ao.setLastYearApplicantCount(hakukohdeDTO.getEdellisenVuodenHakijatLkm());
                     ao.setSelectionCriteria(getI18nText(hakukohdeDTO.getValintaperustekuvaus()));
 
+                    List<Exam> exams = Lists.newArrayList();
+                    if (hakukohdeDTO.getValintakoes() != null) {
+                        for (ValintakoeRDTO valintakoe : hakukohdeDTO.getValintakoes()) {
+                            if (valintakoe.getKuvaus() != null && valintakoe.getTyyppiUri() != null
+                                    && valintakoe.getValintakoeAjankohtas() != null
+                                    && !valintakoe.getValintakoeAjankohtas().isEmpty()) {
+                            Exam exam = new Exam();
+                            exam.setType(koodistoService.searchFirst(valintakoe.getTyyppiUri()));
+                            exam.setDescription(new I18nText(valintakoe.getKuvaus()));
+                            List<ExamEvent> examEvents = Lists.newArrayList();
+
+                            for (ValintakoeAjankohtaRDTO valintakoeAjankohta : valintakoe.getValintakoeAjankohtas()) {
+                                ExamEvent examEvent = new ExamEvent();
+                                Address address = new Address();
+                                address.setPostalCode(koodistoService.searchFirstCodeValue(valintakoeAjankohta.getOsoite().getPostinumero()));
+                                address.setPostOffice(valintakoeAjankohta.getOsoite().getPostitoimipaikka());
+                                address.setStreetAddress(valintakoeAjankohta.getOsoite().getOsoiterivi1());
+                                examEvent.setAddress(address);
+                                examEvent.setDescription(valintakoeAjankohta.getLisatiedot());
+                                examEvent.setStart(valintakoeAjankohta.getAlkaa());
+                                examEvent.setEnd(valintakoeAjankohta.getLoppuu());
+                                examEvents.add(examEvent);
+                            }
+                            exam.setExamEvents(examEvents);
+                            exams.add(exam);
+                            }
+                        }
+                    }
+                    ao.setExams(exams);
+
+
                     List<Code> subCodes = koodistoService.searchSubCodes(childKomoto.getPohjakoulutusVaatimusUri(),
                             BASE_EDUCATION_KOODISTO_URI);
                     List<String> baseEducations = Lists.transform(subCodes, new Function<Code, String>() {

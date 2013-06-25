@@ -41,6 +41,7 @@ public class ApplicationOptionDTO {
     private List<String> teachingLanguages;
     private String selectionCriteria;
     private CodeDTO prerequisite;
+    private List<ExamDTO> exams;
 
 
     public String getId() {
@@ -153,5 +154,13 @@ public class ApplicationOptionDTO {
 
     public void setPrerequisite(CodeDTO prerequisite) {
         this.prerequisite = prerequisite;
+    }
+
+    public List<ExamDTO> getExams() {
+        return exams;
+    }
+
+    public void setExams(List<ExamDTO> exams) {
+        this.exams = exams;
     }
 }

@@ -24,10 +24,7 @@ import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 import org.junit.Test;
 import org.modelmapper.ModelMapper;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -49,7 +46,6 @@ public class ModelMapperTest {
         parentLOI.setId("9.8.7.6");
         parentLOI.setPrerequisite(new Code("PK", TestUtil.createI18nText("Peruskoulu", "Peruskoulu", "Peruskoulu")));
 
-        Set<ApplicationOption> applicationOptions = Sets.newHashSet();
         ApplicationOption ao = new ApplicationOption();
         ao.setId("8.8.8");
         ApplicationSystem as = new ApplicationSystem();
@@ -57,8 +53,21 @@ public class ModelMapperTest {
         ao.setApplicationSystem(as);
         ao.setEducationDegree("e degree");
         ao.setName(TestUtil.createI18nText("ao name", "ao name", "ao name"));
-        applicationOptions.add(ao);
-        parent.setApplicationOptions(applicationOptions);
+        Exam exam = new Exam();
+        exam.setDescription(TestUtil.createI18nText("Entrance exam fi", "Entrance exam sv", "Entrance exam en"));
+        exam.setType(TestUtil.createI18nText("EXAM TYPE fi", "EXAM TYPE sv", "EXAM TYPE en"));
+        ExamEvent examEvent = new ExamEvent();
+        Address address = new Address();
+        address.setPostalCode("00100");
+        address.setPostOffice("Helsinki");
+        address.setStreetAddress("Exam street address");
+        examEvent.setAddress(address);
+        examEvent.setDescription("Exam event description");
+        examEvent.setStart(new Date());
+        examEvent.setEnd(new Date());
+        exam.setExamEvents(Lists.newArrayList(examEvent));
+        ao.setExams(Lists.newArrayList(exam));
+        parent.setApplicationOptions(Sets.newHashSet(ao));
 
         ChildLearningOpportunity childLO = new ChildLearningOpportunity("111", TestUtil.createI18nText("child1Name", "child1Name", "child1Name"));
         childLO.setId("7789");
@@ -87,9 +96,15 @@ public class ModelMapperTest {
         assertEquals(childLO2.getName().getTranslations().get("fi"), entity.getLois().get(0).getChildren().get(1).getName().getTranslations().get("fi"));
         assertNotNull(entity.getApplicationOptions());
         assertEquals(1, entity.getApplicationOptions().size());
-        assertEquals(ao.getId(), entity.getApplicationOptions().iterator().next().getId());
+        ApplicationOptionEntity aoe = entity.getApplicationOptions().iterator().next();
+
+        assertEquals(ao.getId(), aoe.getId());
         assertEquals(ao.getId(), entity.getLois().get(0).getChildren().get(0).getApplicationOptions().get(0).getId());
         assertEquals(ao.getId(), entity.getLois().get(0).getChildren().get(1).getApplicationOptions().get(0).getId());
+        assertEquals(ao.getExams().size(), aoe.getExams().size());
+        assertEquals(ao.getExams().get(0).getExamEvents().size(), aoe.getExams().get(0).getExamEvents().size());
+        assertEquals(ao.getExams().get(0).getType().getTranslations().get("fi"), aoe.getExams().get(0).getType().getTranslations().get("fi"));
+        assertEquals(ao.getExams().get(0).getDescription().getTranslations().get("fi"), aoe.getExams().get(0).getDescription().getTranslations().get("fi"));
     }
 
     @Test
