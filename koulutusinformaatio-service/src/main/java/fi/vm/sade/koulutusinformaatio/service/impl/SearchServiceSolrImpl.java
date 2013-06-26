@@ -109,7 +109,21 @@ public class SearchServiceSolrImpl implements SearchService {
             parameters.put("rows", createParameter(String.valueOf(rows)));
             SolrQuery query = mapToSolrQueryTransformer.transform(parameters.entrySet());
 
+            if (cities != null && !cities.isEmpty()) {
 
+                StringBuilder fq = new StringBuilder("lopCity:(");
+
+                for (int i = 0; i < cities.size(); i++) {
+                    if (i < cities.size() -1) {
+                        fq.append(cities.get(i)).append(" OR ");
+                    }
+                    else {
+                        fq.append(cities.get(i));
+                    }
+                }
+                fq.append(")");
+                query.addFilterQuery(fq.toString());
+            }
 
             QueryResponse response = null;
             try {

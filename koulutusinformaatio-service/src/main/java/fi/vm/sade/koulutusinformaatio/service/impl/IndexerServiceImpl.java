@@ -99,6 +99,7 @@ public class IndexerServiceImpl implements IndexerService {
         doc.addField("lopId", provider.getId());
         doc.addField("lopName", provider.getName().getTranslations().get("fi"));
         doc.addField("lopAddress", provider.getVisitingAddress().getPostOffice());
+        doc.addField("lopCity", provider.getVisitingAddress().getPostOffice());
 
         try {
         doc.addField("lopDescription", provider.getDescription().getTranslations().get("fi"));
@@ -120,6 +121,7 @@ public class IndexerServiceImpl implements IndexerService {
         doc.addField("prerequisites", childLO.getPrerequisite().getValue());
         doc.addField("lopName", provider.getName().getTranslations().get("fi"));
         doc.addField("lopAddress", provider.getVisitingAddress().getPostOffice());
+        doc.addField("lopCity", provider.getVisitingAddress().getPostOffice());
 
         try {
             doc.addField("lopDescription", provider.getDescription().getTranslations().get("fi"));
