@@ -22,6 +22,7 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecif
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.List;
 
 /**
  * @author Mikko Majapuro
@@ -42,6 +43,7 @@ public interface LearningOpportunityResource {
     @Produces(MediaType.APPLICATION_JSON)
     public LOSearchResultListDTO searchLearningOpportunities(@PathParam("text") String text,
                                                              @QueryParam("prerequisite") String prerequisite,
+                                                             @QueryParam("city") List<String> cities,
                                                              @DefaultValue(value = "0") @QueryParam("start") int start,
                                                              @DefaultValue(value = "100") @QueryParam("rows") int rows);
 

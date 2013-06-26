@@ -58,7 +58,8 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
     }
 
     @Override
-    public LOSearchResultListDTO searchLearningOpportunities(String text, String prerequisite, int start, int rows) {
+    public LOSearchResultListDTO searchLearningOpportunities(String text, String prerequisite,
+                                                             List<String> cities, int start, int rows) {
         String key = null;
         try {
             key = URLDecoder.decode(text, "UTF-8");
@@ -66,7 +67,8 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
             key = text;
         }
         try {
-            LOSearchResultList learningOpportunities = searchService.searchLearningOpportunities(key, prerequisite, start, rows);
+            LOSearchResultList learningOpportunities = searchService.searchLearningOpportunities(key, prerequisite,
+                    cities, start, rows);
             return modelMapper.map(learningOpportunities, LOSearchResultListDTO.class);
         } catch (SearchException e) {
             throw KIExceptionHandler.resolveException(e);
