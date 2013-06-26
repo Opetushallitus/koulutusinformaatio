@@ -477,6 +477,27 @@ service('TranslationService', function() {
 }]).
 
 /**
+ *  Service for maintaining search filter state
+ */
+service('FilterService', function() {
+    var prerequisite;
+    var locations = [];
+    return {
+        set: function(newPrerequisiteValue, newLocationsValue) {
+            prerequisite = newPrerequisiteValue;
+            locations = newLocationsValue;
+        },
+
+        get: function() {
+            return {
+                'prerequisite': prerequisite,
+                'locations': locations 
+            };
+        }
+    };
+}).
+
+/**
  *  Service for retrieving translated values for text
  */
 service('UtilityService', function() {

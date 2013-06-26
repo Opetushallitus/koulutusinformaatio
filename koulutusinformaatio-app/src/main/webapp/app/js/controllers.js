@@ -172,16 +172,20 @@ function SearchFieldCtrl($scope, $routeParams, $location, SearchService) {
 /**
  *  Controller for search filters
  */
-function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService, kiAppConstants) {
-    $scope.individualizedActive = $scope.pohjakoulutus != 'PK';
+function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService, kiAppConstants, FilterService) {
+    $scope.individualizedActive = $scope.prerequisite != 'PK';
     var resultsPerPage = kiAppConstants.searchResultsPerPage;
+    var filters = FilterService.get();
+    $scope.prerequisite = filters.prerequisite;
+    $scope.locations = filters.locations;
 
     $scope.change = function() {
-        $scope.individualizedActive = $scope.baseeducation != 'PK';
+        $scope.individualizedActive = $scope.prerequisite!= 'PK';
+        FilterService.set($scope.prerequisite, $scope.locations);
 
         SearchLearningOpportunityService.query({
             queryString: $scope.queryString,
-            prerequisite: $scope.baseeducation,
+            prerequisite: $scope.prerequisite,
             start: 0,
             rows: resultsPerPage,
             locations: $scope.locations
@@ -189,6 +193,7 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
             $scope.$parent.loResult = result;
             $scope.$parent.maxPages = Math.ceil(result.totalCount / resultsPerPage);
             $scope.$parent.showPagination = $scope.$parent.maxPages > 1;
+            $scope.$parent.currentPage = 1;
         });
     }
 };
@@ -196,8 +201,7 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
 /**
  *  Controller for search functionality 
  */
- function SearchCtrl($scope, $routeParams, $location, SearchLearningOpportunityService, SearchService, TitleService, kiAppConstants) {
-    //$scope.queryString = SearchService.getTerm();
+ function SearchCtrl($scope, $routeParams, $location, SearchLearningOpportunityService, SearchService, TitleService, kiAppConstants, FilterService) {
     var resultsPerPage = kiAppConstants.searchResultsPerPage;
     $scope.currentPage = kiAppConstants.searchResultsStartPage;
 
@@ -206,15 +210,18 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
 
     $scope.changePage = function(page) {
         $scope.currentPage = page;
-        $('html, body').scrollTop($('#search-results').offset().top); // scroll to top of list
+        $('html, body').scrollTop($('body').offset().top); // scroll to top of list
     };
 
     $scope.$watch('currentPage', function(value) {
         if ($routeParams.queryString) {
+            var filters = FilterService.get();
             SearchLearningOpportunityService.query({
                 queryString: $routeParams.queryString,
                 start: (value-1) * resultsPerPage,
-                rows: resultsPerPage}).then(function(result) {
+                rows: resultsPerPage,
+                prerequisite: filters.prerequisite,
+                locations: filters.locations }).then(function(result) {
                     $scope.loResult = result;
                     $scope.maxPages = Math.ceil(result.totalCount / resultsPerPage);
                     $scope.showPagination = $scope.maxPages > 1;
@@ -252,6 +259,7 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
             }
         }
 
+        // select ao based on aoId if defined, otherwise do selection based on prerequisite
         for (var ao in $scope.parentLO.applicationOptions) {
             if ($scope.parentLO.applicationOptions.hasOwnProperty(ao)) {
                 if (aoId) {
@@ -261,13 +269,6 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
                 } else if ($scope.parentLO.applicationOptions[ao].prerequisite.value == prerequisite.value) {
                     $scope.selectedAo = angular.copy($scope.parentLO.applicationOptions[ao]);
                 }
-
-                /*
-                if ($scope.parentLO.applicationOptions[ao].prerequisite.value == prerequisite.value &&
-                    $scope.parentLO.applicationOptions[ao].id == aoId) {
-                    $scope.selectedAo = angular.copy($scope.parentLO.applicationOptions[ao]);
-                }
-                */
             }
         }
     }

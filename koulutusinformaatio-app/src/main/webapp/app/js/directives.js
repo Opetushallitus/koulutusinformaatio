@@ -206,7 +206,7 @@ directive('kiAbsoluteLink', function() {
         templateUrl: 'templates/locationFilter.html',
 
         link: function(scope, element, attrs) {
-            scope.locations = [];
+            //scope.locations = [];
 
             scope.remove = function(element) {
                 scope.locations.splice(scope.locations.indexOf(element), 1);
