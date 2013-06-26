@@ -93,7 +93,8 @@ public class SearchServiceSolrImpl implements SearchService {
     }
 
     @Override
-    public LOSearchResultList searchLearningOpportunities(String term, String prerequisite, int start, int rows) throws SearchException {
+    public LOSearchResultList searchLearningOpportunities(String term, String prerequisite,
+                                                          List<String> cities, int start, int rows) throws SearchException {
         LOSearchResultList searchResultList = new LOSearchResultList();
         String trimmed = term.trim();
         if (!trimmed.isEmpty()) {
@@ -107,6 +108,8 @@ public class SearchServiceSolrImpl implements SearchService {
             parameters.put("start", createParameter(String.valueOf(start)));
             parameters.put("rows", createParameter(String.valueOf(rows)));
             SolrQuery query = mapToSolrQueryTransformer.transform(parameters.entrySet());
+
+
 
             QueryResponse response = null;
             try {

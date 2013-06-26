@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
@@ -91,13 +92,13 @@ public class SearchServiceSolrImplTest {
 
     @Test
     public void testSearchLearningOpportunities() throws SearchException {
-        LOSearchResultList results = service.searchLearningOpportunities("query", "PK", 0, 100);
+        LOSearchResultList results = service.searchLearningOpportunities("query", "PK", Lists.newArrayList("HELSINKI"), 0, 100);
         assertEquals(1, results.getResults().size());
     }
 
     @Test
     public void testSearchLearningOpportunitiesEmptyTerm() throws SearchException {
-        LOSearchResultList results = service.searchLearningOpportunities("", "PK", 0, 100);
+        LOSearchResultList results = service.searchLearningOpportunities("", "PK", Lists.newArrayList("HELSINKI"), 0, 100);
         assertEquals(0, results.getResults().size());
     }
 
