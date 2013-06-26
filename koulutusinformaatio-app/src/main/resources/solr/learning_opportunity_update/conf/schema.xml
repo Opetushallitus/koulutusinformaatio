@@ -19,26 +19,46 @@
 <schema name="tarjontatiedot" version="0.1">
 
     <fields>
-        <!-- in use -->
         <field name="id" type="text_general" indexed="true" stored="true" multiValued="false"/>
-        <field name="name" type="text_general" indexed="true" stored="true" multiValued="false"/>
-        <field name="professionalTitles" type="text_general" indexed="true" stored="true" multiValued="true"/>
-        <field name="lopId" type="text_general" indexed="true" stored="true" multiValued="false"/>
-        <field name="lopName" type="text_general" indexed="true" stored="true" multiValued="false"/>
-        <field name="lopAddress" type="text_general" indexed="true" stored="true" multiValued="false"/>
+        <!-- koulutusmoduuli -->
+        <field name="name" type="text_general" indexed="false" stored="true" multiValued="false"/>
+        <!-- koulutuksen toteutuksen kuvaus ??? -->
+
+        <!-- hakukohde -->
+        <field name="aoName" type="text_general" indexed="false" stored="false" multiValued="false"/>
+        <!-- tutkintonimike -->
+        <field name="qualification" type="text_general" indexed="false" stored="false" multiValued="false"/>
+        <!-- koulutuksen sisältö (opintojen rakenne)-->
+        <field name="structure" type="text_general" indexed="false" stored="false" multiValued="false"/>
+        <!-- koulutukselliset ja ammatilliset tavoitteet -->
+        <field name="goals" type="text_general" indexed="false" stored="false" multiValued="false"/>
+        <!-- ammattinimike -->
+        <field name="professionalTitles" type="text_general" indexed="false" stored="false" multiValued="true"/>
+        <field name="lopId" type="text_general" indexed="false" stored="true" multiValued="false"/>
+        <field name="lopName" type="text_general" indexed="false" stored="true" multiValued="false"/>
+        <!-- oppilaitoksen kuvaus -->
+        <field name="lopDescription" type="text_general" indexed="false" stored="false" multiValued="false"/>
+        <!-- oppilaitoksen yhteystiedot -->
+        <field name="lopAddress" type="text_general" indexed="false" stored="false" multiValued="false"/>
         <field name="parentId" type="text_general" indexed="false" stored="true" multiValued="false"/>
+        <!-- remove? -->
         <field name="losId" type="text_general" indexed="false" stored="true" multiValued="false"/>
         <field name="prerequisites" type="text_general" indexed="true" stored="true" multiValued="true"/>
         <dynamicField name="asStart_*"  type="date"  indexed="false"  stored="true"/>
         <dynamicField name="asEnd_*"  type="date"  indexed="false"  stored="true"/>
-        <field name="text" type="text_fi" indexed="true" stored="false" multiValued="true"/>
+        <field name="text" type="text_fi" indexed="true" stored="true" multiValued="true"/>
     </fields>
 
     <uniqueKey>id</uniqueKey>
 
     <copyField source="name" dest="text"/>
+    <copyField source="aoName" dest="text"/>
+    <copyField source="qualification" dest="text"/>
+    <copyField source="structure" dest="text"/>
+    <copyField source="goals" dest="text"/>
     <copyField source="professionalTitles" dest="text"/>
     <copyField source="lopName" dest="text"/>
+    <copyField source="lopDescription" dest="text"/>
     <copyField source="lopAddress" dest="text"/>
 
     <types>

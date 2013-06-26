@@ -41,15 +41,35 @@ public class IndexerServiceImpl implements IndexerService {
         List<SolrInputDocument> docs = Lists.newArrayList();
         List<SolrInputDocument> providerDocs = Lists.newArrayList();
 
+
+//        <copyField source="name" dest="text"/>  - both
+//        <copyField source="aoName" dest="text"/> - child
+//        <copyField source="qualification" dest="text"/> - child
+//        <copyField source="structure" dest="text"/> - parent
+//        <copyField source="goals" dest="text"/> - both
+//        <copyField source="professionalTitles" dest="text"/> - child
+//        <copyField source="lopName" dest="text"/> - both
+//        <copyField source="lopDescription" dest="text"/> - both
+//        <copyField source="lopAddress" dest="text"/> - both
+
+
         SolrInputDocument parentDoc = new SolrInputDocument();
         parentDoc.addField("id", parent.getId());
         parentDoc.addField("name", parent.getName().getTranslations().get("fi"));
+        parentDoc.addField("structure", parent.getStructureDiagram().getTranslations().get("fi"));
+        parentDoc.addField("goals", parent.getGoals().getTranslations().get("fi"));
+
+
         Provider provider = parent.getProvider();
         parentDoc.addField("lopId", provider.getId());
         parentDoc.addField("lopName", provider.getName().getTranslations().get("fi"));
         parentDoc.addField("lopAddress", provider.getVisitingAddress().getPostOffice());
+        if (provider.getDescription() != null) {
+            parentDoc.addField("lopDescription", provider.getDescription().getTranslations().get("fi"));
+        }
 
         addApplicationSystemDates(parentDoc, Lists.newArrayList(parent.getApplicationOptions()));
+
 
         SolrInputDocument providerDoc = new SolrInputDocument();
         providerDoc.addField("id", provider.getId());
@@ -59,11 +79,14 @@ public class IndexerServiceImpl implements IndexerService {
 
         List<ParentLOI> lois = parent.getLois();
         for (ParentLOI loi : lois) {
+
             if (loi.getPrerequisite() != null) {
                 // null in parent 1.2.246.562.5.2013060313060064137085
                 parentDoc.addField("prerequisites", loi.getPrerequisite().getValue());
             }
+
             for (ChildLearningOpportunity childLO : loi.getChildren()) {
+
                 SolrInputDocument childLODoc = new SolrInputDocument();
                 childLODoc.addField("id", childLO.getId());
                 childLODoc.addField("name", childLO.getName().getTranslations().get("fi"));
@@ -71,16 +94,27 @@ public class IndexerServiceImpl implements IndexerService {
                     childLODoc.addField("professionalTitles", i18n.getTranslations().get("fi"));
                 }
                 childLODoc.addField("lopId", provider.getId());
+
                 childLODoc.addField("lopName", provider.getName().getTranslations().get("fi"));
                 childLODoc.addField("lopAddress", provider.getVisitingAddress().getPostOffice());
+                if (provider.getDescription() != null) {
+                    childLODoc.addField("lopDescription", provider.getDescription().getTranslations().get("fi"));
+                }
+
                 childLODoc.addField("parentId", parent.getId());
                 childLODoc.addField("prerequisites", childLO.getPrerequisite().getValue());
+                childLODoc.addField("qualification", childLO.getQualification().getTranslations().get("fi"));
+                childLODoc.addField("goals", childLO.getDegreeGoal().getTranslations().get("fi"));
+
+
                 addApplicationSystemDates(childLODoc, childLO.getApplicationOptions());
+
                 if (childLO.getApplicationSystemIds() != null) {
                     for (String asId : childLO.getApplicationSystemIds()) {
                         providerAsIds.add(asId);
                     }
                 }
+
                 docs.add(childLODoc);
             }
         }
