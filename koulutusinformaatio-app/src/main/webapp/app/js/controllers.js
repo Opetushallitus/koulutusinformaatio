@@ -28,7 +28,6 @@ function HeaderCtrl($scope, $location, ApplicationBasketService) {
     TitleService.setTitle(title);
 };
 
-
 /**
  *  Controller for application basket
  */
