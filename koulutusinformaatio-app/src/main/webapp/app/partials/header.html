@@ -1,22 +1,22 @@
-<header id="siteheader" ng-controller="HeaderCtrl">
+<header id="siteheader" data-ng-controller="HeaderCtrl">
     <div class="header-container">
         <figure class="float-left">
             <a href="#"><img src="img/opintopolkufi_large.png" alt="Opintopolku.fi palvelun logo" /></a>
         </figure>
         <div class="actions float-right">
-            <ul ng-controller="LanguageCtrl">
-                <li><a ng-click="changeLanguage('fi')" data-ki-i18n="language-fi"></a></li>
-                <li><a ng-click="changeLanguage('sv')" data-ki-i18n="language-sv"></a></li>
-                <li><a ng-click="changeLanguage('en')" data-ki-i18n="language-en"></a></li>
+            <ul data-ng-controller="LanguageCtrl">
+                <li><a data-ng-click="changeLanguage('fi')" data-ki-i18n="language-fi"></a></li>
+                <li><a data-ng-click="changeLanguage('sv')" data-ki-i18n="language-sv"></a></li>
+                <li><a data-ng-click="changeLanguage('en')" data-ki-i18n="language-en"></a></li>
                 <!--<li><a href="#">Tekstiversion</a></li>-->
             </ul>
         </div>
         <div class="actions primarylinks">
             <ul>
-                <li><a id="appbasket-link" href="#/muistilista">Muistilista <span>({{appBasketItemCount()}})</span></a></li>
+                <li><a id="appbasket-link" href="#/muistilista"><span data-ki-i18n="title-application-basket-content"></span> <span>({{appBasketItemCount()}})</span></a></li>
                 <!--<li><a id="apply-link">Täytä hakulomake</a></li>-->
             </ul>
         </div>
     </div>
-<div ng-include src="'partials/pageheader.html'"></div>
+<div data-ng-include data-src="'partials/pageheader.html'"></div>
 </header>

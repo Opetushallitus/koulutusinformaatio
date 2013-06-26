@@ -34,13 +34,14 @@ public class ParentLO {
     private Set<ApplicationOption> applicationOptions = new HashSet<ApplicationOption>();
     private Provider provider;
     private String educationDegree;
-    private List<ChildLORef> childRefs = new ArrayList<ChildLORef>();
     private I18nText structureDiagram;
     private I18nText accessToFurtherStudies;
     private I18nText degreeProgramSelection;
     private I18nText goals;
     private I18nText educationDomain;
     private I18nText stydyDomain;
+    private String creditValue;
+    private I18nText creditUnit;
     private List<ParentLOI> lois = new ArrayList<ParentLOI>();
 
     public String getId() {
@@ -81,14 +82,6 @@ public class ParentLO {
 
     public void setEducationDegree(String educationDegree) {
         this.educationDegree = educationDegree;
-    }
-
-    public List<ChildLORef> getChildRefs() {
-        return childRefs;
-    }
-
-    public void setChildRefs(List<ChildLORef> childRefs) {
-        this.childRefs = childRefs;
     }
 
     public I18nText getStructureDiagram() {
@@ -145,5 +138,21 @@ public class ParentLO {
 
     public void setLois(List<ParentLOI> lois) {
         this.lois = lois;
+    }
+
+    public String getCreditValue() {
+        return creditValue;
+    }
+
+    public void setCreditValue(String creditValue) {
+        this.creditValue = creditValue;
+    }
+
+    public I18nText getCreditUnit() {
+        return creditUnit;
+    }
+
+    public void setCreditUnit(I18nText creditUnit) {
+        this.creditUnit = creditUnit;
     }
 }

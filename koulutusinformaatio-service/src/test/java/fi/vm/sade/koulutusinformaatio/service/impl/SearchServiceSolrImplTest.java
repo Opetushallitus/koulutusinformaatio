@@ -16,7 +16,8 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import fi.vm.sade.koulutusinformaatio.domain.LOSearchResult;
+import com.google.common.collect.Lists;
+import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -53,6 +54,7 @@ public class SearchServiceSolrImplTest {
         SolrDocument lop1 = new SolrDocument();
         lop1.put("id", "1.2.3.4.5");
         lop1.put("name", "LOP NAME");
+        lop1.put("athleteEducation", false);
         lopDocs.add(lop1);
         QueryResponse lopQueryResponse = mock(QueryResponse.class);
         when(lopQueryResponse.getResults()).thenReturn(lopDocs);
@@ -90,14 +92,14 @@ public class SearchServiceSolrImplTest {
 
     @Test
     public void testSearchLearningOpportunities() throws SearchException {
-        List<LOSearchResult> results = service.searchLearningOpportunities("query");
-        assertEquals(1, results.size());
+        LOSearchResultList results = service.searchLearningOpportunities("query", "PK", Lists.newArrayList("HELSINKI"), 0, 100);
+        assertEquals(1, results.getResults().size());
     }
 
     @Test
     public void testSearchLearningOpportunitiesEmptyTerm() throws SearchException {
-        List<LOSearchResult> results = service.searchLearningOpportunities("");
-        assertEquals(0, results.size());
+        LOSearchResultList results = service.searchLearningOpportunities("", "PK", Lists.newArrayList("HELSINKI"), 0, 100);
+        assertEquals(0, results.getResults().size());
     }
 
 }

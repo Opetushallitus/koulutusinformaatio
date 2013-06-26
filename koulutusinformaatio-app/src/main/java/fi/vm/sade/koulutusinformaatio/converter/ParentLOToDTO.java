@@ -32,7 +32,6 @@ public class ParentLOToDTO {
         parent.setName(ConverterUtil.getTextByLanguage(parentLO.getName(), lang));
         parent.setEducationDegree(parentLO.getEducationDegree());
         parent.setAvailableTranslationLanguages(ConverterUtil.getAvailableTranslationLanguages(parentLO.getName()));
-        parent.setChildren(ChildLORefToDTO.convert(parentLO.getChildRefs(), lang));
         parent.setProvider(ProviderToDTO.convert(parentLO.getProvider(), lang));
         parent.setStructureDiagram(ConverterUtil.getTextByLanguage(parentLO.getStructureDiagram(), lang));
         parent.setAccessToFurtherStudies(ConverterUtil.getTextByLanguage(parentLO.getAccessToFurtherStudies(), lang));
@@ -41,6 +40,8 @@ public class ParentLOToDTO {
         parent.setStydyDomain(ConverterUtil.getTextByLanguage(parentLO.getStydyDomain(), lang));
         parent.setTranslationLanguage(lang);
         parent.setAvailableTranslationLanguages(ConverterUtil.getAvailableTranslationLanguages(parentLO.getName()));
+        parent.setCreditValue(parentLO.getCreditValue());
+        parent.setCreditUnit(ConverterUtil.getTextByLanguage(parentLO.getCreditUnit(), lang));
 
         if (parentLO.getApplicationOptions() != null) {
             for (ApplicationOption ao : parentLO.getApplicationOptions()) {

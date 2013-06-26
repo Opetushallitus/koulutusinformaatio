@@ -50,7 +50,10 @@ public class ApplicationOption {
     private ParentLORef parent;
     // valintaperustekuvaus
     private I18nText selectionCriteria;
-    private I18nText prerequisite;
+    private Code prerequisite;
+    // base educations, one of these is required to be able to apply to this application option
+    private List<String> requiredBaseEducations;
+    private List<Exam> exams;
 
     public String getId() {
         return id;
@@ -180,12 +183,28 @@ public class ApplicationOption {
         this.selectionCriteria = selectionCriteria;
     }
 
-    public I18nText getPrerequisite() {
+    public Code getPrerequisite() {
         return prerequisite;
     }
 
-    public void setPrerequisite(I18nText prerequisite) {
+    public void setPrerequisite(Code prerequisite) {
         this.prerequisite = prerequisite;
+    }
+
+    public List<String> getRequiredBaseEducations() {
+        return requiredBaseEducations;
+    }
+
+    public void setRequiredBaseEducations(List<String> requiredBaseEducations) {
+        this.requiredBaseEducations = requiredBaseEducations;
+    }
+
+    public List<Exam> getExams() {
+        return exams;
+    }
+
+    public void setExams(List<Exam> exams) {
+        this.exams = exams;
     }
 
     @Override

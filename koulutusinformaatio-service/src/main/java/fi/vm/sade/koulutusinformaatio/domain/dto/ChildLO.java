@@ -28,19 +28,18 @@ import java.util.Map;
  */
 public class ChildLO {
 
-    private String losId;
-    private String loiId;
+    private String id;
     private I18nText name;
     private I18nText qualification;
     private I18nText degreeTitle;
-    private ApplicationOption applicationOption;
+    private List<ApplicationOption> applicationOptions;
     private List<ChildLORef> related = new ArrayList<ChildLORef>();
     private ParentLORef parent;
     private List<Code> teachingLanguages = new ArrayList<Code>();
     private List<I18nText> formOfEducation;
     private Map<String, String> webLinks;
     private List<I18nText> formOfTeaching;
-    private I18nText prerequisite;
+    private Code prerequisite;
     private List<I18nText> professionalTitles;
     private I18nText workingLifePlacement;
     private I18nText internationalization;
@@ -50,20 +49,12 @@ public class ChildLO {
     private Date startDate;
 
 
-    public String getLosId() {
-        return losId;
+    public String getId() {
+        return id;
     }
 
-    public void setLosId(String losId) {
-        this.losId = losId;
-    }
-
-    public String getLoiId() {
-        return loiId;
-    }
-
-    public void setLoiId(String loiId) {
-        this.loiId = loiId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public I18nText getName() {
@@ -90,12 +81,12 @@ public class ChildLO {
         this.degreeTitle = degreeTitle;
     }
 
-    public ApplicationOption getApplicationOption() {
-        return applicationOption;
+    public List<ApplicationOption> getApplicationOptions() {
+        return applicationOptions;
     }
 
-    public void setApplicationOption(ApplicationOption applicationOption) {
-        this.applicationOption = applicationOption;
+    public void setApplicationOptions(List<ApplicationOption> applicationOptions) {
+        this.applicationOptions = applicationOptions;
     }
 
     public List<ChildLORef> getRelated() {
@@ -146,11 +137,11 @@ public class ChildLO {
         this.formOfTeaching = formOfTeaching;
     }
 
-    public I18nText getPrerequisite() {
+    public Code getPrerequisite() {
         return prerequisite;
     }
 
-    public void setPrerequisite(I18nText prerequisite) {
+    public void setPrerequisite(Code prerequisite) {
         this.prerequisite = prerequisite;
     }
 

@@ -31,11 +31,11 @@ public interface LearningOpportunityService {
 
     ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(String parentId, String lang) throws ResourceNotFoundException;
 
-    ChildLearningOpportunityDTO getChildLearningOpportunity(String parentId, String closId, String cloiId) throws ResourceNotFoundException;
+    ChildLearningOpportunityDTO getChildLearningOpportunity(String cloId) throws ResourceNotFoundException;
 
-    ChildLearningOpportunityDTO getChildLearningOpportunity(String parentId, String closId, String cloiId, String lang) throws ResourceNotFoundException;
+    ChildLearningOpportunityDTO getChildLearningOpportunity(String cloId, String lang) throws ResourceNotFoundException;
 
-    List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, String lopId);
+    List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, String lopId, String baseEducation);
 
     List<BasketItemDTO> getBasketItems(List<String> aoId, String lang);
 

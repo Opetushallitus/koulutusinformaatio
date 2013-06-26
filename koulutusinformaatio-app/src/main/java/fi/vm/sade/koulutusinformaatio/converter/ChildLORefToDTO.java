@@ -44,10 +44,9 @@ public class ChildLORefToDTO {
 
     public static ChildLORefDTO convert(final ChildLORef ref, final String lang) {
         ChildLORefDTO child = new ChildLORefDTO();
-        child.setLosId(ref.getLosId());
-        child.setLoiId(ref.getLoiId());
-        child.setAsId(ref.getAsId());
-        child.setPrerequisite(ConverterUtil.getTextByLanguageUseFallbackLang(ref.getPrerequisite(), lang));
+        child.setChildLOId(ref.getChildLOId());
+        child.setAsIds(ref.getAsIds());
+        child.setPrerequisite(CodeToDTO.convert(ref.getPrerequisite(), lang));
         child.setQualification(ConverterUtil.getTextByLanguageUseFallbackLang(ref.getQualification(), lang));
         if (!Strings.isNullOrEmpty(ref.getNameByTeachingLang())) {
             child.setName(ref.getNameByTeachingLang());

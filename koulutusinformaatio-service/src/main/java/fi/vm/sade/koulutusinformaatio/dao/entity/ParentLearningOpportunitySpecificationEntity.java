@@ -37,10 +37,6 @@ public class ParentLearningOpportunitySpecificationEntity {
     @Embedded
     private String educationDegree;
     @Reference
-    private List<ChildLearningOpportunitySpecificationEntity> children;
-    @Embedded
-    private List<ChildLORefEntity> childRefs;
-    @Reference
     private Set<ApplicationOptionEntity> applicationOptions;
     @Reference
     private LearningOpportunityProviderEntity provider;
@@ -56,6 +52,9 @@ public class ParentLearningOpportunitySpecificationEntity {
     private I18nTextEntity educationDomain;
     @Embedded
     private I18nTextEntity stydyDomain;
+    private String creditValue;
+    @Embedded
+    private I18nTextEntity creditUnit;
     @Embedded
     private List<ParentLearningOpportunityInstanceEntity> lois;
 
@@ -85,22 +84,6 @@ public class ParentLearningOpportunitySpecificationEntity {
 
     public void setEducationDegree(String educationDegree) {
         this.educationDegree = educationDegree;
-    }
-
-    public List<ChildLearningOpportunitySpecificationEntity> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<ChildLearningOpportunitySpecificationEntity> children) {
-        this.children = children;
-    }
-
-    public List<ChildLORefEntity> getChildRefs() {
-        return childRefs;
-    }
-
-    public void setChildRefs(List<ChildLORefEntity> childRefs) {
-        this.childRefs = childRefs;
     }
 
     public Set<ApplicationOptionEntity> getApplicationOptions() {
@@ -173,5 +156,21 @@ public class ParentLearningOpportunitySpecificationEntity {
 
     public void setLois(List<ParentLearningOpportunityInstanceEntity> lois) {
         this.lois = lois;
+    }
+
+    public String getCreditValue() {
+        return creditValue;
+    }
+
+    public void setCreditValue(String creditValue) {
+        this.creditValue = creditValue;
+    }
+
+    public I18nTextEntity getCreditUnit() {
+        return creditUnit;
+    }
+
+    public void setCreditUnit(I18nTextEntity creditUnit) {
+        this.creditUnit = creditUnit;
     }
 }

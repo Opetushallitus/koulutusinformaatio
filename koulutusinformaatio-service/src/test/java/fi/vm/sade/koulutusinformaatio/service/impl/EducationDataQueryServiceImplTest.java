@@ -46,15 +46,13 @@ public class EducationDataQueryServiceImplTest {
     private ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO;
     private ApplicationOptionDAO applicationOptionDAO;
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
-    private ChildLearningOpportunityInstanceDAO childLearningOpportunityInstanceDAO;
-    private ChildLearningOpportunitySpecificationDAO childLearningOpportunitySpecificationDAO;
+    private ChildLearningOpportunityDAO childLearningOpportunityDAO;
     private PictureDAO pictureDAO;
     private DataStatusDAO dataStatusDAO;
     private DBCollection ploCollection;
     private DBCollection aoCollection;
     private DBCollection lopCollection;
-    private DBCollection cloiCollection;
-    private DBCollection closCollection;
+    private DBCollection cloCollection;
 
     @Before
     public void setUp() {
@@ -74,18 +72,14 @@ public class EducationDataQueryServiceImplTest {
         ApplicationOptionEntity ao = new ApplicationOptionEntity();
         ao.setId("8.9.0");
         aos.add(ao);
-        when(applicationOptionDAO.find(eq("1.1.1"), eq("9.9.9"))).thenReturn(aos);
+        when(applicationOptionDAO.find(eq("1.1.1"), eq("9.9.9"), eq("1"))).thenReturn(aos);
         learningOpportunityProviderDAO = mock(LearningOpportunityProviderDAO.class);
         lopCollection = mock(DBCollection.class);
         when(learningOpportunityProviderDAO.getCollection()).thenReturn(lopCollection);
 
-        cloiCollection = mock(DBCollection.class);
-        childLearningOpportunityInstanceDAO = mock(ChildLearningOpportunityInstanceDAO.class);
-        when(childLearningOpportunityInstanceDAO.getCollection()).thenReturn(cloiCollection);
-
-        closCollection = mock(DBCollection.class);
-        childLearningOpportunitySpecificationDAO = mock(ChildLearningOpportunitySpecificationDAO.class);
-        when(childLearningOpportunitySpecificationDAO.getCollection()).thenReturn(closCollection);
+        cloCollection = mock(DBCollection.class);
+        childLearningOpportunityDAO = mock(ChildLearningOpportunityDAO.class);
+        when(childLearningOpportunityDAO.getCollection()).thenReturn(cloCollection);
 
         KoulutusinformaatioObjectBuilder objectBuilder = new KoulutusinformaatioObjectBuilder(modelMapper);
 
@@ -93,7 +87,7 @@ public class EducationDataQueryServiceImplTest {
         pictureDAO = mock(PictureDAO.class);
 
         service = new EducationDataQueryServiceImpl(parentLearningOpportunitySpecificationDAO,
-                applicationOptionDAO, modelMapper, childLearningOpportunitySpecificationDAO, childLearningOpportunityInstanceDAO,
+                applicationOptionDAO, modelMapper, childLearningOpportunityDAO,
                 objectBuilder, dataStatusDAO, pictureDAO);
     }
 
@@ -111,7 +105,7 @@ public class EducationDataQueryServiceImplTest {
 
     @Test
     public void testFindApplicationOptions() {
-        List<ApplicationOption> result = service.findApplicationOptions("1.1.1", "9.9.9");
+        List<ApplicationOption> result = service.findApplicationOptions("1.1.1", "9.9.9", "1");
         assertNotNull(result);
         assertEquals(1, result.size());
         assertEquals("8.9.0", result.get(0).getId());

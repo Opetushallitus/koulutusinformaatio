@@ -50,17 +50,7 @@
         <constructor-arg value="${mongo.transaction-db.name}"/>
     </bean>
 
-    <bean id="childLOSTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunitySpecificationDAO">
-        <constructor-arg>
-            <ref bean="mongo"/>
-        </constructor-arg>
-        <constructor-arg>
-            <ref bean="morphia"/>
-        </constructor-arg>
-        <constructor-arg value="${mongo.transaction-db.name}"/>
-    </bean>
-
-    <bean id="childLOITransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityInstanceDAO">
+    <bean id="childLOTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityDAO">
         <constructor-arg>
             <ref bean="mongo"/>
         </constructor-arg>

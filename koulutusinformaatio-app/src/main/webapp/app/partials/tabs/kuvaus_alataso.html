@@ -1,30 +1,25 @@
-<section class="grid16-10 no-left-gutter" id="wide-column">
-    <h1 class="margin-top-0">{{childLO.degreeTitle}}</h1>
+<section class="grid16-10 no-left-gutter wide-column">
     <div class="infobox">
-    <!--<h3>Tähän syksyllä 2013 alkavaan koulutukseen alkaa haku 3.4.2013!</h3>-->
+        <!--<h4 class="margin-top-0">Tähän syksyllä 2013 alkavaan koulutukseen alkaa haku 3.4.2013!</h4>-->
         <ul>
-            <li><span data-ki-i18n="education-starts" class="margin-right-2"></span><span class="bold">{{childLO.startDate}}</span></li>
-            <li><span data-ki-i18n="language-of-instruction" class="margin-right-2"></span><span class="bold">{{childLO.teachingLanguage}}</span></li>
-            <li><span data-ki-i18n="form-of-education" class="margin-right-2"></span><span class="bold">{{childLO.formOfEducation}}</span></li>
-            <li><span data-ki-i18n="duration" class="margin-right-2"></span><span class="bold"></span></li>
+            <li><span data-ki-i18n="education-starts" class="margin-right-1"></span><span class="bold">{{childLO.startDate}}</span></li>
+            <li><span data-ki-i18n="language-of-instruction" class="margin-right-1"></span><span class="bold">{{childLO.teachingLanguage}}</span></li>
+            <li><span data-ki-i18n="form-of-education" class="margin-right-1"></span><span class="bold">{{childLO.formOfEducation}}</span></li>
+            <li><span data-ki-i18n="duration" class="margin-right-1"></span><span class="bold">{{parentLO.creditValue}} {{parentLO.creditUnit}}</span></li>
         </ul>
     </div>
-    <div data-ki-language-ribbon class="ribbon"></div>
-    <div render-text-block data-title="goals-of-education" data-content="{{childLO.degreeGoal}}"></div>
-    <div render-text-block data-title="structure-of-studies" data-content="{{parentLO.structureDiagram}}" data-level="2"></div>
-    <div render-text-block data-title="working-life-placement" data-content="{{childLO.workingLifePlacement}}"></div>
+    <div data-render-text-block data-title="goals-of-education" data-content="{{childLO.degreeGoal}}"></div>
+    <div data-render-text-block data-title="structure-of-studies" data-content="{{parentLO.structureDiagram}}" data-level="2"></div>
+    <div data-render-text-block data-title="working-life-placement" data-content="{{childLO.workingLifePlacement}}"></div>
     <div data-ki-render-professional-titles></div>
-    <div render-text-block data-title="internationalization" data-content="{{childLO.internationalization}}"></div>
-    <div render-text-block data-title="cooperation" data-content="{{childLO.cooperation}}"></div>
+    <div data-render-text-block data-title="internationalization" data-content="{{childLO.internationalization}}"></div>
+    <div data-render-text-block data-title="cooperation" data-content="{{childLO.cooperation}}"></div>
 </section>
 <aside class="grid16-6 no-right-gutter">
-    <div class="sideitem margin-bottom-3 infobox">
-        <h2 class="margin-top-0">
-            <span class="block" data-ki-i18n="apply-as-part-of-degree-program"></span>
-            <span class="block">{{parentLO.provider.name}}</span>
-            <!--<a ng-click="gotoParent()">{{parentLO.name}}</a>-->
-            <a href="#/info/{{parentLO.id}}">{{parentLO.name}}</a>
-        </h2>
+    <div class="sideitem margin-bottom-3 infobox banner">
+        <h4 class="margin-top-0" data-ki-i18n="apply-as-part-of-degree-program"></h4>
+        <span class="block">{{parentLO.provider.name}},
+        <a href="#/tutkinto/{{parentLO.id}}">{{parentLO.name}}</a></span>
     </div>
 </aside>
 <div class="clear"></div>

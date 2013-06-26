@@ -10,11 +10,11 @@ kiApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $l
     	templateUrl: 'partials/hakutulokset.html', 
     	controller: SearchCtrl
     });
-    $routeProvider.when('/info/:parentId', {
+    $routeProvider.when('/tutkinto/:parentId', {
     	templateUrl: 'partials/ylataso.html', 
     	controller: InfoCtrl
     });
-    $routeProvider.when('/info/:parentId/:closId/:cloiId', {
+    $routeProvider.when('/koulutusohjelma/:childId', {
     	templateUrl: 'partials/alataso.html', 
     	controller: InfoCtrl
     });
@@ -26,6 +26,11 @@ kiApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $l
     	redirectTo: '/index/'
     });
 }]);
+
+
+kiApp.filter('escape', function() {
+  return window.escape;
+});
 
 // initialize i18n library
 kiApp.run(['LanguageService', function(LanguageService) {
@@ -40,15 +45,11 @@ kiApp.run(['LanguageService', function(LanguageService) {
     });
 }]);
 
-/*
-kiApp.run(['$location', '$rootScope', function($location, $rootScope) {
-    $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
-    	console.log($rootScope);
-        $rootScope.title = current.$route.title;
-    });
-}]);
-*/
-
+kiApp.constant('kiAppConstants', {
+    searchResultsPerPage: 30,
+    searchResultsStartPage: 1,
+    applicationBasketLimit: 5
+});
 
 var OPH = OPH || {};
 

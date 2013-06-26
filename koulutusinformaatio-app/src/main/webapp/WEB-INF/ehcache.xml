@@ -18,4 +18,5 @@
 <ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd">
     <defaultCache eternal="true" maxElementsInMemory="1000" overflowToDisk="false" />
     <cache name="koodiCache" maxElementsInMemory="1000" eternal="true" overflowToDisk="false" />
+    <cache name="subKoodiCache" maxElementsInMemory="1000" eternal="true" overflowToDisk="false" />
 </ehcache>

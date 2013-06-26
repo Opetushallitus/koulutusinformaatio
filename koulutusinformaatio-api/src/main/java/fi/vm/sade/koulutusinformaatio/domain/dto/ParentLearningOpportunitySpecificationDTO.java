@@ -31,7 +31,6 @@ public class ParentLearningOpportunitySpecificationDTO {
 
     private String id;
     private String name;
-    private List<ChildLORefDTO> children = new ArrayList<ChildLORefDTO>();
     private Set<ApplicationOptionDTO> applicationOptions = new HashSet<ApplicationOptionDTO>();
     private LearningOpportunityProviderDTO provider;
     private String educationDegree;
@@ -41,6 +40,8 @@ public class ParentLearningOpportunitySpecificationDTO {
     private String educationDomain;
     private String stydyDomain;
     private List<ParentLearningOpportunityInstanceDTO> lois = new ArrayList<ParentLearningOpportunityInstanceDTO>();
+    private String creditValue;
+    private String creditUnit;
 
     private String translationLanguage;
     private Set<String> availableTranslationLanguages = new HashSet<String>();
@@ -59,14 +60,6 @@ public class ParentLearningOpportunitySpecificationDTO {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<ChildLORefDTO> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<ChildLORefDTO> children) {
-        this.children = children;
     }
 
     public Set<ApplicationOptionDTO> getApplicationOptions() {
@@ -155,5 +148,21 @@ public class ParentLearningOpportunitySpecificationDTO {
 
     public void setLois(List<ParentLearningOpportunityInstanceDTO> lois) {
         this.lois = lois;
+    }
+
+    public String getCreditValue() {
+        return creditValue;
+    }
+
+    public void setCreditValue(String creditValue) {
+        this.creditValue = creditValue;
+    }
+
+    public String getCreditUnit() {
+        return creditUnit;
+    }
+
+    public void setCreditUnit(String creditUnit) {
+        this.creditUnit = creditUnit;
     }
 }

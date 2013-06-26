@@ -19,15 +19,14 @@ package fi.vm.sade.koulutusinformaatio.converter;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+import fi.vm.sade.koulutusinformaatio.dao.entity.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLORefEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunityInstanceEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunitySpecificationEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.CodeEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.I18nTextEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunityEntity;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLORef;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
@@ -49,43 +48,40 @@ public class KoulutusinformaatioObjectBuilder {
         this.modelMapper = modelMapper;
     }
 
-    public ChildLORefEntity buildChildLORef(final ChildLearningOpportunitySpecificationEntity childLOS, final ChildLearningOpportunityInstanceEntity childLOI) {
-        if (childLOI != null && childLOS != null) {
+    public ChildLORefEntity buildChildLORef(final ChildLearningOpportunityEntity childLO) {
+        if (childLO != null) {
             ChildLORefEntity ref = new ChildLORefEntity();
-            ref.setLosId(childLOS.getId());
-            ref.setName(childLOS.getName());
-            ref.setNameByTeachingLang(getTextByEducationLanguage(childLOS.getName(), childLOI.getTeachingLanguages()));
-            ref.setLoiId(childLOI.getId());
-            ref.setAsId(childLOI.getApplicationSystemId());
+            ref.setChildLOId(childLO.getId());
+            ref.setName(childLO.getName());
+            ref.setNameByTeachingLang(getTextByEducationLanguage(childLO.getName(), childLO.getTeachingLanguages()));
+            ref.setAsIds(childLO.getApplicationSystemIds());
+            ref.setPrerequisite(childLO.getPrerequisite());
             return ref;
         }
         return null;
     }
 
-
-    public ChildLO buildChildLO(final ChildLearningOpportunitySpecificationEntity childLOS,
-                                  final ChildLearningOpportunityInstanceEntity childLOI) {
-        if (childLOI != null && childLOS != null) {
+    public ChildLO buildChildLO(final ChildLearningOpportunityEntity childLO) {
+        if (childLO != null) {
             ChildLO clo = new ChildLO();
-            clo.setLoiId(childLOI.getId());
-            clo.setLosId(childLOS.getId());
-            clo.setApplicationOption(convert(childLOI.getApplicationOption(), ApplicationOption.class));
-            clo.setParent(convert(childLOS.getParent(), ParentLORef.class));
-            clo.setRelated(convert(childLOI.getRelated(), ChildLORef.class));
-            clo.setName(convert(childLOS.getName(), I18nText.class));
-            clo.setDegreeTitle(convert(childLOS.getDegreeTitle(), I18nText.class));
-            clo.setQualification(convert(childLOS.getQualification(), I18nText.class));
-            clo.setStartDate(childLOI.getStartDate());
-            clo.setTeachingLanguages(convert(childLOI.getTeachingLanguages(), Code.class));
-            clo.setWebLinks(childLOI.getWebLinks());
-            clo.setFormOfEducation(convert(childLOI.getFormOfEducation(), I18nText.class));
-            clo.setPrerequisite(convert(childLOI.getPrerequisite(), I18nText.class));
-            clo.setFormOfTeaching(convert(childLOI.getFormOfTeaching(), I18nText.class));
-            clo.setProfessionalTitles(convert(childLOI.getProfessionalTitles(), I18nText.class));
-            clo.setWorkingLifePlacement(convert(childLOI.getWorkingLifePlacement(), I18nText.class));
-            clo.setInternationalization(convert(childLOI.getInternationalization(), I18nText.class));
-            clo.setCooperation(convert(childLOI.getCooperation(), I18nText.class));
-            clo.setDegreeGoal(convert(childLOS.getDegreeGoal(), I18nText.class));
+            clo.setId(childLO.getId());
+            clo.setApplicationOptions(convert(childLO.getApplicationOptions(), ApplicationOption.class));
+            clo.setParent(convert(childLO.getParent(), ParentLORef.class));
+            clo.setRelated(convert(childLO.getRelated(), ChildLORef.class));
+            clo.setName(convert(childLO.getName(), I18nText.class));
+            clo.setDegreeTitle(convert(childLO.getDegreeTitle(), I18nText.class));
+            clo.setQualification(convert(childLO.getQualification(), I18nText.class));
+            clo.setStartDate(childLO.getStartDate());
+            clo.setTeachingLanguages(convert(childLO.getTeachingLanguages(), Code.class));
+            clo.setWebLinks(childLO.getWebLinks());
+            clo.setFormOfEducation(convert(childLO.getFormOfEducation(), I18nText.class));
+            clo.setPrerequisite(convert(childLO.getPrerequisite(), Code.class));
+            clo.setFormOfTeaching(convert(childLO.getFormOfTeaching(), I18nText.class));
+            clo.setProfessionalTitles(convert(childLO.getProfessionalTitles(), I18nText.class));
+            clo.setWorkingLifePlacement(convert(childLO.getWorkingLifePlacement(), I18nText.class));
+            clo.setInternationalization(convert(childLO.getInternationalization(), I18nText.class));
+            clo.setCooperation(convert(childLO.getCooperation(), I18nText.class));
+            clo.setDegreeGoal(convert(childLO.getDegreeGoal(), I18nText.class));
             return clo;
         }
         return null;

@@ -18,41 +18,34 @@ package fi.vm.sade.koulutusinformaatio.domain.dto;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
+import java.util.List;
+
 /**
  * @author Mikko Majapuro
  */
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 public class ChildLORefDTO {
 
-    private String losId;
-    private String loiId;
-    private String asId;
+    private String childLOId;
+    private List<String> asIds;
     private String name;
     private String qualification;
-    private String prerequisite;
+    private CodeDTO prerequisite;
 
-    public String getLosId() {
-        return losId;
+    public String getChildLOId() {
+        return childLOId;
     }
 
-    public void setLosId(String losId) {
-        this.losId = losId;
+    public void setChildLOId(String childLOId) {
+        this.childLOId = childLOId;
     }
 
-    public String getLoiId() {
-        return loiId;
+    public List<String> getAsIds() {
+        return asIds;
     }
 
-    public void setLoiId(String loiId) {
-        this.loiId = loiId;
-    }
-
-    public String getAsId() {
-        return asId;
-    }
-
-    public void setAsId(String asId) {
-        this.asId = asId;
+    public void setAsIds(List<String> asId) {
+        this.asIds = asIds;
     }
 
     public String getName() {
@@ -71,11 +64,11 @@ public class ChildLORefDTO {
         this.qualification = qualification;
     }
 
-    public String getPrerequisite() {
+    public CodeDTO getPrerequisite() {
         return prerequisite;
     }
 
-    public void setPrerequisite(String prerequisite) {
+    public void setPrerequisite(CodeDTO prerequisite) {
         this.prerequisite = prerequisite;
     }
 }

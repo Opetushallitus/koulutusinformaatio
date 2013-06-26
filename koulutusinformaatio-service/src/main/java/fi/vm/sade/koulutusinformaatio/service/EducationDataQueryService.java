@@ -37,22 +37,22 @@ public interface EducationDataQueryService {
     ParentLO getParentLearningOpportunity(final String oid) throws ResourceNotFoundException;
 
     /**
-     * Finds application options by the application system and learning opportunity provider
+     * Finds application options by the application system, learning opportunity provider and base education.
      * @param asId application system id
      * @param lopId learning opportunity provider id
+     * @param baseEducation base education identifier from koodisto
      * @return list of the application options
      */
-    List<ApplicationOption> findApplicationOptions(final String asId, final String lopId);
+    List<ApplicationOption> findApplicationOptions(final String asId, final String lopId, final String baseEducation);
 
     List<ApplicationOption> getApplicationOptions(final List<String> aoIds);
 
     /**
      * Gets the child learning opportunity
-     * @param childLosId child learning opportunity specification id
-     * @param childLoiId child learning opportunity instance id
+     * @param childLoId child learning opportunity id
      * @return child learning opportunity
      */
-    ChildLO getChildLearningOpportunity(final String childLosId, final String childLoiId) throws ResourceNotFoundException;
+    ChildLO getChildLearningOpportunity(final String childLoid) throws ResourceNotFoundException;
 
     Date getLastUpdated();
 

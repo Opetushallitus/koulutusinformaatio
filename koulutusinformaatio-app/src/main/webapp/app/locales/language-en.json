@@ -14,6 +14,12 @@
 
     "no-search-results": "Ei hakutuloksia (en)",
     "no-search-results-info": "Hakusanallasi ei löytynyt yhtään hakutulosta. Ole hyvä ja yritä toisella hakusanalla. (en)",
+    "search-pagination-first": "Ensimmäinen (en)",
+    "search-pagination-last": "Viimeinen (en)",
+    "search-pagination-next": "Seuraava (en)",
+    "search-pagination-previous": "Edellinen (en)",
+    "search-as-ongoing": "Haku käynnissä! (en)",
+    "search-as-next": "Tulossa hakuun (en)",
 
     "filter-search-title": "Pohjakoulutus (en)",
     "filter-search-subtitle": "Valitse ylin suorittamasi koulutus (en)",
@@ -38,7 +44,8 @@
 
     "goals-of-education": "Tavoite (en)",
     "selection-of-degree-program": "Koulutusohjelman valinta (en)",
-    "elementary-based-education": "Peruskoulupohjaisena järjestettävä koulutus (en)",
+    "base-education-PK": "Peruskoulupohjaisena järjestettävä koulutus (en)",
+    "base-education-YO": "Lukiopohjaisena järjestettävä koulutus (en)",
     "access-to-further-studies": "Jatko-opintomahdollisuudet (en)",
 
     "general-selection-criteria": "Yleiset valintaperusteet (en)",
@@ -72,6 +79,10 @@
     "application-period": "Hakuaika (en)",
     "apply-button-label": "Hae koulutukseen (en)",
     "add-to-basket-label": "Lisää muistilistalle (en)",
+    "application-system-active-future": "Hakuaika alkaa (en)",
+    "application-system-active-past": "Haku päättynyt (en)",
+    "application-system-active-present": "Haku käynnissä (en)",
+    "application-prerequisite": "Pohjakoulutus (en):",
 
     "directly-applicable": "Suoraan haettavissa olevat koulutusohjelmat (en):",
 
@@ -86,6 +97,7 @@
     "application-basket-fill-form": "Täytä hakulomake (en)",
     "application-basket-fill-form-notification": "Tässä haussa voit hakea enintään __count__ koulutukseen (en)",
     "application-basket-empty": "Tyhjennä muistilista (en)",
+    "application-basket-empty-confirm": "Haluatko varmasti tyhjentää koko muistilistan? (en)",
 
     "application-basket-popup-title": "Täytä hakulomake (en)",
     "application-basket-popup-description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. (en)",
@@ -96,6 +108,12 @@
     "popup-close": "Sulje (en)",
     "popup-continue": "Jatka (en)",
 
-    "popover-title": "Koulutus lisätty muistilistalle (en)",
-    "popover-content": "Katso muistilista (en)"
+    "popover-title-success": "Koulutus lisätty muistilistalle (en)",
+    "popover-title-error": "Muistilistalle lisääminen epäonnistui (en)",
+    "popover-content-error": "Huomioi, että muistilistalle voi lisätä hakukohteita vain yhdellä pohjakoulutuksella. (en)",
+    "popover-content-link-to-application-basket": "Katso muistilista (en)",
+
+    "footer-note": "Tiedot on saatu koulutuksen järjestäjien, ammattikorkeakoulujen ja yliopistojen tallentamana tietona Opetushallituksen oppilaitostietojärjestelmästä.<br/>Tietojen oikeellisuuden voit tarkistaa kyseisestä oppilaitoksesta. (en)",
+    "footer-copyright": "Copyright © 2013 Opetushallitus (en)",
+    "footer-privacy-policy": "Rekisteriseloste (en)"
 }

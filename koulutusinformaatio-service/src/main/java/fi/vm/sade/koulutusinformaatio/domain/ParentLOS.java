@@ -34,7 +34,6 @@ public class ParentLOS {
     private String id;
     private I18nText name;
     private List<ParentLOI> lois;
-    private List<ChildLOS> children = new ArrayList<ChildLOS>();
     private Set<ApplicationOption> applicationOptions = Sets.newHashSet();
     private Provider provider;
     // rakenne
@@ -50,6 +49,10 @@ public class ParentLOS {
     private I18nText stydyDomain;
     // koulutusaste, 32
     private String educationDegree;
+    //laajuus arvo, 120
+    private String creditValue;
+    //laajuus yksikkö opintoviikko
+    private I18nText creditUnit;
 
     public Set<ApplicationOption> getApplicationOptions() {
         return applicationOptions;
@@ -81,14 +84,6 @@ public class ParentLOS {
 
     public void setLois(List<ParentLOI> lois) {
         this.lois = lois;
-    }
-
-    public List<ChildLOS> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<ChildLOS> children) {
-        this.children = children;
     }
 
     public Provider getProvider() {
@@ -153,5 +148,21 @@ public class ParentLOS {
 
     public void setEducationDegree(String educationDegree) {
         this.educationDegree = educationDegree;
+    }
+
+    public String getCreditValue() {
+        return creditValue;
+    }
+
+    public void setCreditValue(String creditValue) {
+        this.creditValue = creditValue;
+    }
+
+    public I18nText getCreditUnit() {
+        return creditUnit;
+    }
+
+    public void setCreditUnit(I18nText creditUnit) {
+        this.creditUnit = creditUnit;
     }
 }

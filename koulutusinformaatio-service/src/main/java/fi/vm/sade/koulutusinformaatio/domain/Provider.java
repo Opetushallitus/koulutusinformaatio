@@ -45,6 +45,7 @@ public class Provider {
     private I18nText livingExpenses;
     private List<Social> social;
     private Picture picture;
+    private boolean athleteEducation;
 
 
     public Provider(String id, I18nText name) {
@@ -188,5 +189,13 @@ public class Provider {
 
     public void setPicture(Picture picture) {
         this.picture = picture;
+    }
+
+    public boolean isAthleteEducation() {
+        return athleteEducation;
+    }
+
+    public void setAthleteEducation(boolean athleteEducation) {
+        this.athleteEducation = athleteEducation;
     }
 }

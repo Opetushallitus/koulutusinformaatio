@@ -1,5 +1,5 @@
-angular.module("ui.bootstrap", ["ui.bootstrap.tpls", "ui.bootstrap.position","ui.bootstrap.tooltip","ui.bootstrap.popover"]);
-angular.module("ui.bootstrap.tpls", ["template/tooltip/tooltip-html-unsafe-popup.html","template/tooltip/tooltip-popup.html","template/popover/popover.html","template/popover/popover-html-unsafe-popup.html"]);
+angular.module("ui.bootstrap", ["ui.bootstrap.tpls", "ui.bootstrap.position","ui.bootstrap.tooltip","ui.bootstrap.popover", "ui.bootstrap.pagination"]);
+angular.module("ui.bootstrap.tpls", ["template/tooltip/tooltip-html-unsafe-popup.html","template/tooltip/tooltip-popup.html","template/popover/popover.html","template/popover/popover-html-unsafe-popup.html", "template/pagination/pagination.html"]);
 angular.module('ui.bootstrap.position', [])
 
 /**
@@ -347,8 +347,8 @@ this.options = function( value ) {
         });
 
            attrs.$observe( prefix+'Trigger', function ( val ) {
-            element.unbind( triggers.show );
-            element.unbind( triggers.hide );
+            //element.unbind( triggers.show );
+            //element.unbind( triggers.hide );
 
             triggers = setTriggers( val );
 
@@ -429,30 +429,30 @@ this.options = function( value ) {
 
  angular.module("template/tooltip/tooltip-html-unsafe-popup.html", []).run(["$templateCache", function($templateCache){
   $templateCache.put("template/tooltip/tooltip-html-unsafe-popup.html",
-    "<div class=\"tooltip {{placement}}\" ng-class=\"{ in: isOpen(), fade: animation() }\">" +
+    "<div class=\"tooltip {{placement}}\" data-ng-class=\"{ in: isOpen(), fade: animation() }\">" +
     "  <div class=\"tooltip-arrow\"></div>" +
-    "  <div class=\"tooltip-inner\" ng-bind-html-unsafe=\"content\"></div>" +
+    "  <div class=\"tooltip-inner\" data-ng-bind-html-unsafe=\"content\"></div>" +
     "</div>" +
     "");
 }]);
 
  angular.module("template/tooltip/tooltip-popup.html", []).run(["$templateCache", function($templateCache){
   $templateCache.put("template/tooltip/tooltip-popup.html",
-    "<div class=\"tooltip {{placement}}\" ng-class=\"{ in: isOpen(), fade: animation() }\">" +
+    "<div class=\"tooltip {{placement}}\" data-ng-class=\"{ in: isOpen(), fade: animation() }\">" +
     "  <div class=\"tooltip-arrow\"></div>" +
-    "  <div class=\"tooltip-inner\" ng-bind=\"content\"></div>" +
+    "  <div class=\"tooltip-inner\" data-ng-bind=\"content\"></div>" +
     "</div>" +
     "");
 }]);
 
  angular.module("template/popover/popover.html", []).run(["$templateCache", function($templateCache){
   $templateCache.put("template/popover/popover.html",
-    "<div class=\"popover {{placement}}\" ng-class=\"{ in: isOpen(), fade: animation() }\">" +
+    "<div class=\"popover {{placement}}\" data-ng-class=\"{ in: isOpen(), fade: animation() }\">" +
     "  <div class=\"arrow\"></div>" +
     "" +
     "  <div class=\"popover-inner\">" +
-    "      <h4 class=\"popover-title\" ng-bind=\"title\" ng-show=\"title\"></h4>" +
-    "      <div class=\"popover-content\" ng-bind=\"content\"></div>" +
+    "      <h4 class=\"popover-title\" data-ng-bind=\"title\" data-ng-show=\"title\"></h4>" +
+    "      <div class=\"popover-content\" data-ng-bind=\"content\"></div>" +
     "  </div>" +
     "</div>" +
     "");
@@ -460,14 +460,133 @@ this.options = function( value ) {
 
  angular.module("template/popover/popover-html-unsafe-popup.html", []).run(["$templateCache", function($templateCache){
   $templateCache.put("template/popover/popover-html-unsafe-popup.html",
-    "<div class=\"popover {{placement}}\" ng-class=\"{ in: isOpen(), fade: animation() }\">" +
+    "<div class=\"popover {{placement}}\" data-ng-class=\"{ in: isOpen(), fade: animation() }\">" +
     "  <div class=\"arrow\"></div>" +
     "" +
     "  <div class=\"popover-inner\">" +
-    "<span class=\"popover-close\" ng-click=\"close()\">Sulje</span>" +
-    "      <h4 class=\"popover-title\" ng-bind-html-unsafe=\"title\" ng-show=\"title\"></h4>" +
-    "      <div class=\"popover-content\" ng-bind-html-unsafe=\"content\"></div>" +
+    "<span class=\"popover-close\" data-ng-click=\"close()\">Sulje</span>" +
+    "      <h4 class=\"popover-title\" data-ng-bind-html-unsafe=\"title\" data-ng-show=\"title\"></h4>" +
+    "      <div class=\"popover-content\" data-ng-bind-html-unsafe=\"content\"></div>" +
     "  </div>" +
     "</div>" +
     "");
 }]);
+
+
+angular.module('ui.bootstrap.pagination', [])
+
+.constant('paginationConfig', {
+  boundaryLinks: false,
+  directionLinks: true,
+  firstText: 'First',
+  previousText: 'Previous',
+  nextText: 'Next',
+  lastText: 'Last'
+})
+
+.directive('pagination', ['paginationConfig', function(paginationConfig) {
+  return {
+    restrict: 'EA',
+    scope: {
+      numPages: '=',
+      currentPage: '=',
+      maxSize: '=',
+      onSelectPage: '&'
+    },
+    templateUrl: 'template/pagination/pagination.html',
+    replace: true,
+    link: function(scope, element, attrs) {
+
+      // Setup configuration parameters
+      var boundaryLinks = angular.isDefined(attrs.boundaryLinks) ? scope.$eval(attrs.boundaryLinks) : paginationConfig.boundaryLinks;
+      var directionLinks = angular.isDefined(attrs.directionLinks) ? scope.$eval(attrs.directionLinks) : paginationConfig.directionLinks;
+      var firstText = angular.isDefined(attrs.firstText) ? attrs.firstText : paginationConfig.firstText;
+      var previousText = angular.isDefined(attrs.previousText) ? attrs.previousText : paginationConfig.previousText;
+      var nextText = angular.isDefined(attrs.nextText) ? attrs.nextText : paginationConfig.nextText;
+      var lastText = angular.isDefined(attrs.lastText) ? attrs.lastText : paginationConfig.lastText;
+
+      // Create page object used in template
+      function makePage(number, text, isActive, isDisabled) {
+        return {
+          number: number,
+          text: text,
+          active: isActive,
+          disabled: isDisabled
+        };
+      }
+
+      scope.$watch('numPages + currentPage + maxSize', function() {
+        scope.pages = [];
+        
+        // Default page limits
+        var startPage = 1, endPage = scope.numPages;
+
+        // recompute if maxSize
+        if ( scope.maxSize && scope.maxSize < scope.numPages ) {
+          startPage = Math.max(scope.currentPage - Math.floor(scope.maxSize/2), 1);
+          endPage   = startPage + scope.maxSize - 1;
+
+          // Adjust if limit is exceeded
+          if (endPage > scope.numPages) {
+            endPage   = scope.numPages;
+            startPage = endPage - scope.maxSize + 1;
+          }
+        }
+
+        // Add page number links
+        for (var number = startPage; number <= endPage; number++) {
+          var page = makePage(number, number, scope.isActive(number), false);
+          scope.pages.push(page);
+        }
+
+        // Add previous & next links
+        if (directionLinks) {
+          var previousPage = makePage(scope.currentPage - 1, previousText, false, scope.noPrevious());
+          scope.pages.unshift(previousPage);
+
+          var nextPage = makePage(scope.currentPage + 1, nextText, false, scope.noNext());
+          scope.pages.push(nextPage);
+        }
+
+        // Add first & last links
+        if (boundaryLinks) {
+          var firstPage = makePage(1, firstText, false, scope.noPrevious());
+          scope.pages.unshift(firstPage);
+
+          var lastPage = makePage(scope.numPages, lastText, false, scope.noNext());
+          scope.pages.push(lastPage);
+        }
+
+
+        if ( scope.currentPage > scope.numPages ) {
+          scope.selectPage(scope.numPages);
+        }
+      });
+      scope.noPrevious = function() {
+        return scope.currentPage === 1;
+      };
+      scope.noNext = function() {
+        return scope.currentPage === scope.numPages;
+      };
+      scope.isActive = function(page) {
+        return scope.currentPage === page;
+      };
+
+      scope.selectPage = function(page) {
+        if ( ! scope.isActive(page) && page > 0 && page <= scope.numPages) {
+          scope.currentPage = page;
+          scope.onSelectPage({ page: page });
+        }
+      };
+    }
+  };
+}]);
+angular.module("template/pagination/pagination.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("template/pagination/pagination.html",
+    "<div class=\"pagination\"><ul>\n" +
+    "  <li data-ng-repeat=\"page in pages\" data-ng-class=\"{active: page.active, disabled: page.disabled}\"><a data-ng-click=\"selectPage(page.number)\">{{page.text}}</a></li>\n" +
+    "  </ul>\n" +
+    "</div>\n" +
+    "");
+}]);
+

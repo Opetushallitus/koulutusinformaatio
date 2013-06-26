@@ -29,8 +29,12 @@ public class LOSearchResult {
     private String lopName;
     private String parentId;
     private String losId;
+    private boolean asOngoing;
+    private DateRange nextAs;
 
-    public LOSearchResult(String id, String name, String lopId, String lopName, String parentId, String losId) {
+
+    public LOSearchResult(String id, String name, String lopId, String lopName,
+                          String parentId, String losId) {
         this.id = id;
         this.name = name;
         this.lopId = lopId;
@@ -85,5 +89,21 @@ public class LOSearchResult {
 
     public void setLosId(String losId) {
         this.losId = losId;
+    }
+
+    public boolean isAsOngoing() {
+        return asOngoing;
+    }
+
+    public void setAsOngoing(boolean asOngoing) {
+        this.asOngoing = asOngoing;
+    }
+
+    public DateRange getNextAs() {
+        return nextAs;
+    }
+
+    public void setNextAs(DateRange nextAs) {
+        this.nextAs = nextAs;
     }
 }
