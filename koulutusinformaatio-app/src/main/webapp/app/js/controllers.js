@@ -1,5 +1,8 @@
 /* Controllers */
 
+/**
+ *  Controls the selected user interface language
+ */
 function LanguageCtrl($scope, $location, LanguageService) {
     $scope.changeLanguage = function(code) {
        LanguageService.setLanguage(code);
@@ -8,6 +11,9 @@ function LanguageCtrl($scope, $location, LanguageService) {
    }
 };
 
+/**
+ *  Controls header actions
+ */
 function HeaderCtrl($scope, $location, ApplicationBasketService) {
     $scope.appBasketItemCount = function() {
         return ApplicationBasketService.getItemCount();
@@ -22,37 +28,12 @@ function HeaderCtrl($scope, $location, ApplicationBasketService) {
     TitleService.setTitle(title);
 };
 
-/**
- *  Controller for search filters
- */
-function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService, kiAppConstants) {
-    $scope.individualizedActive = $scope.pohjakoulutus != 'PK';
-    var resultsPerPage = kiAppConstants.searchResultsPerPage;
-
-    $scope.change = function() {
-        $scope.individualizedActive = $scope.baseeducation != 'PK';
-
-        SearchLearningOpportunityService.query({
-            queryString: $scope.queryString,
-            prerequisite: $scope.baseeducation,
-            start: 0,
-            rows: resultsPerPage
-            //locations: $scope.locations,
-            //individualized: $scope.individualized
-        }).then(function(result) {
-            $scope.$parent.loResult = result;
-        });
-    }
-};
-
 
 /**
  *  Controller for application basket
  */
 function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, ApplicationBasketService, SearchService, kiAppConstants) {
     var title = i18n.t('title-application-basket');
-    //TitleService.setTitle(title);
-
     var basketLimit = kiAppConstants.applicationBasketLimit; // TODO: get this from application data?
 
     $scope.queryString = SearchService.getTerm();
@@ -144,13 +125,10 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
  *  Controller for adding applications to application basket
  */
 function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, UtilityService) {
-    //$scope.buttonsAreDisabled = $scope.applicationOptionId && $scope.applicationOptionName ? false : true;
 
     $scope.addToBasket = function() {
         var basketType = ApplicationBasketService.getType();
         if (!basketType || $scope.selectedAo.prerequisite.value == basketType) {
-            console.log($scope.selectedAo.id);
-            console.log($scope.selectedAo.prerequisite.value);
             ApplicationBasketService.addItem($scope.selectedAo.id, $scope.selectedAo.prerequisite.value);
             $scope.popoverTitle = i18n.t('popover-title-success');
             $scope.popoverContent = "<a href='#/muistilista'>" + i18n.t('popover-content-link-to-application-basket') + "</a>";
@@ -189,6 +167,30 @@ function SearchFieldCtrl($scope, $routeParams, $location, SearchService) {
             $location.path('/haku/' + $scope.queryString);
         }
     };
+};
+
+/**
+ *  Controller for search filters
+ */
+function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService, kiAppConstants) {
+    $scope.individualizedActive = $scope.pohjakoulutus != 'PK';
+    var resultsPerPage = kiAppConstants.searchResultsPerPage;
+
+    $scope.change = function() {
+        $scope.individualizedActive = $scope.baseeducation != 'PK';
+
+        SearchLearningOpportunityService.query({
+            queryString: $scope.queryString,
+            prerequisite: $scope.baseeducation,
+            start: 0,
+            rows: resultsPerPage,
+            locations: $scope.locations
+        }).then(function(result) {
+            $scope.$parent.loResult = result;
+            $scope.$parent.maxPages = Math.ceil(result.totalCount / resultsPerPage);
+            $scope.$parent.showPagination = $scope.$parent.maxPages > 1;
+        });
+    }
 };
 
 /**
@@ -449,18 +451,6 @@ function SearchFieldCtrl($scope, $routeParams, $location, SearchService) {
     }
 
     $scope.initTabs = tabsMenu.build;
-
-    // TODO: remove these after we get some real data (references in templates as well)
-    $scope.lorem;// = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla posuere, nisl eu gravida elementum, risus risus varius quam, eu rutrum lectus purus quis arcu. Donec euismod porta mi, sed imperdiet ligula sagittis et. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed ut felis sit amet ipsum eleifend rhoncus. Donec sed viverra velit. Morbi mollis pellentesque mollis.';
-    $scope.loremshort;// = 'Etiam sit amet urna justo, vitae luctus eros. In hac habitasse platea dictumst. Suspendisse ut ultricies enim. Etiam quis ante massa, sit amet interdum nulla. Donec ultrices velit nec turpis ullamcorper pharetra.';
-
-    
-    /* TODO: tabs accessible vie url?
-    var tabIdFromRoute = $routeParams.tabId;
-    var initkitabs = function() {
-        tabsMenu.build(tabIdFromRoute);
-    }
-    */
 
     // trigger once content is loaded
     $scope.$on('$viewContentLoaded', function() {
