@@ -1,5 +1,8 @@
 /* Controllers */
 
+/**
+ *  Controls the selected user interface language
+ */
 function LanguageCtrl($scope, $location, LanguageService) {
     $scope.changeLanguage = function(code) {
        LanguageService.setLanguage(code);
@@ -8,6 +11,9 @@ function LanguageCtrl($scope, $location, LanguageService) {
    }
 };
 
+/**
+ *  Controls header actions
+ */
 function HeaderCtrl($scope, $location, ApplicationBasketService) {
     $scope.appBasketItemCount = function() {
         return ApplicationBasketService.getItemCount();
@@ -22,37 +28,12 @@ function HeaderCtrl($scope, $location, ApplicationBasketService) {
     TitleService.setTitle(title);
 };
 
-/**
- *  Controller for search filters
- */
-function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService, kiAppConstants) {
-    $scope.individualizedActive = $scope.pohjakoulutus != 'PK';
-    var resultsPerPage = kiAppConstants.searchResultsPerPage;
-
-    $scope.change = function() {
-        $scope.individualizedActive = $scope.baseeducation != 'PK';
-
-        SearchLearningOpportunityService.query({
-            queryString: $scope.queryString,
-            prerequisite: $scope.baseeducation,
-            start: 0,
-            rows: resultsPerPage,
-            locations: $scope.locations
-            //individualized: $scope.individualized
-        }).then(function(result) {
-            $scope.$parent.loResult = result;
-        });
-    }
-};
-
 
 /**
  *  Controller for application basket
  */
 function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, ApplicationBasketService, SearchService, kiAppConstants) {
     var title = i18n.t('title-application-basket');
-    //TitleService.setTitle(title);
-
     var basketLimit = kiAppConstants.applicationBasketLimit; // TODO: get this from application data?
 
     $scope.queryString = SearchService.getTerm();
@@ -186,6 +167,30 @@ function SearchFieldCtrl($scope, $routeParams, $location, SearchService) {
             $location.path('/haku/' + $scope.queryString);
         }
     };
+};
+
+/**
+ *  Controller for search filters
+ */
+function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService, kiAppConstants) {
+    $scope.individualizedActive = $scope.pohjakoulutus != 'PK';
+    var resultsPerPage = kiAppConstants.searchResultsPerPage;
+
+    $scope.change = function() {
+        $scope.individualizedActive = $scope.baseeducation != 'PK';
+
+        SearchLearningOpportunityService.query({
+            queryString: $scope.queryString,
+            prerequisite: $scope.baseeducation,
+            start: 0,
+            rows: resultsPerPage,
+            locations: $scope.locations
+        }).then(function(result) {
+            $scope.$parent.loResult = result;
+            $scope.$parent.maxPages = Math.ceil(result.totalCount / resultsPerPage);
+            $scope.$parent.showPagination = $scope.$parent.maxPages > 1;
+        });
+    }
 };
 
 /**
