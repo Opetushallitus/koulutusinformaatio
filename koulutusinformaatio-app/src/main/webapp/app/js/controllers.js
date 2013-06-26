@@ -36,8 +36,8 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
             queryString: $scope.queryString,
             prerequisite: $scope.baseeducation,
             start: 0,
-            rows: resultsPerPage
-            //locations: $scope.locations,
+            rows: resultsPerPage,
+            locations: $scope.locations
             //individualized: $scope.individualized
         }).then(function(result) {
             $scope.$parent.loResult = result;
@@ -144,13 +144,10 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
  *  Controller for adding applications to application basket
  */
 function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, UtilityService) {
-    //$scope.buttonsAreDisabled = $scope.applicationOptionId && $scope.applicationOptionName ? false : true;
 
     $scope.addToBasket = function() {
         var basketType = ApplicationBasketService.getType();
         if (!basketType || $scope.selectedAo.prerequisite.value == basketType) {
-            console.log($scope.selectedAo.id);
-            console.log($scope.selectedAo.prerequisite.value);
             ApplicationBasketService.addItem($scope.selectedAo.id, $scope.selectedAo.prerequisite.value);
             $scope.popoverTitle = i18n.t('popover-title-success');
             $scope.popoverContent = "<a href='#/muistilista'>" + i18n.t('popover-content-link-to-application-basket') + "</a>";
@@ -449,18 +446,6 @@ function SearchFieldCtrl($scope, $routeParams, $location, SearchService) {
     }
 
     $scope.initTabs = tabsMenu.build;
-
-    // TODO: remove these after we get some real data (references in templates as well)
-    $scope.lorem;// = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla posuere, nisl eu gravida elementum, risus risus varius quam, eu rutrum lectus purus quis arcu. Donec euismod porta mi, sed imperdiet ligula sagittis et. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed ut felis sit amet ipsum eleifend rhoncus. Donec sed viverra velit. Morbi mollis pellentesque mollis.';
-    $scope.loremshort;// = 'Etiam sit amet urna justo, vitae luctus eros. In hac habitasse platea dictumst. Suspendisse ut ultricies enim. Etiam quis ante massa, sit amet interdum nulla. Donec ultrices velit nec turpis ullamcorper pharetra.';
-
-    
-    /* TODO: tabs accessible vie url?
-    var tabIdFromRoute = $routeParams.tabId;
-    var initkitabs = function() {
-        tabsMenu.build(tabIdFromRoute);
-    }
-    */
 
     // trigger once content is loaded
     $scope.$on('$viewContentLoaded', function() {

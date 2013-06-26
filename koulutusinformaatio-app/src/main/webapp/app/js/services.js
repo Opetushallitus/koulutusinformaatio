@@ -29,13 +29,34 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', function
     return {
         query: function(params) {
             var deferred = $q.defer();
+            var cities = '';
+            
+            if (params.locations) {
+                for (var index = 0; index < params.locations.length; index++) {
+                    if (params.locations.hasOwnProperty(index)) {
+                        cities += '&city=' + params.locations[index];
+                    }
+                }
 
-            $http.get('../lo/search/' + params.queryString, {
+                cities = cities.substring(1, cities.length);
+            }
+
+            var qParams = '?';
+
+            qParams += (params.start != undefined) ? ('start=' + params.start) : '';
+            qParams += (params.rows != undefined) ? ('&rows=' + params.rows) : '';
+            qParams += (params.prerequisite != undefined) ? ('&prerequisite=' + params.prerequisite) : '';
+            qParams += (params.locations != undefined && params.locations.length > 0) ? ('&' + cities) : '';
+
+            $http.get('../lo/search/' + params.queryString + qParams, {
+                /*
                 params: {
                     start: params.start,
                     rows: params.rows,
-                    prerequisite: params.prerequisite
+                    prerequisite: params.prerequisite,
+                    city: cities
                 }
+                */
             }).
             success(function(result) {
                 transformData(result);
