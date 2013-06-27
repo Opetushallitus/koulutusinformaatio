@@ -94,11 +94,6 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
         parentKomotosByProviderId = ArrayListMultimap.create();
         for (OidRDTO parentKomotoOid : parentKomotoOids) {
             KomotoDTO parentKomoto = komotoResource.getByOID(parentKomotoOid.getOid());
-            try {
-                validateParentKomoto(parentKomoto);
-            } catch (TarjontaParseException e) {
-                continue;
-            }
             parentKomotosByProviderId.put(parentKomoto.getTarjoajaOid(), parentKomoto);
         }
 
