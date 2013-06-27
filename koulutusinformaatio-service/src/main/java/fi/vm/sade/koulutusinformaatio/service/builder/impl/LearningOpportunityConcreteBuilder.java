@@ -14,79 +14,85 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.koulutusinformaatio.service.impl.builder;
+package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
-import com.google.common.collect.*;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
+import fi.vm.sade.koulutusinformaatio.service.builder.LearningOpportunityBuilder;
 import fi.vm.sade.tarjonta.service.resources.HakukohdeResource;
 import fi.vm.sade.tarjonta.service.resources.KomoResource;
 import fi.vm.sade.tarjonta.service.resources.KomotoResource;
 import fi.vm.sade.tarjonta.service.resources.dto.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.WebApplicationException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
- * Builds learning opportunity instances.
- *
  * @author Hannu Lyytikainen
  */
-public class LOBuilder {
+public class LearningOpportunityConcreteBuilder implements LearningOpportunityBuilder {
 
-    public static final Logger LOG = LoggerFactory.getLogger(LOBuilder.class);
-
-    public static final String MODULE_TYPE_PARENT = "TUTKINTO";
-    public static final String MODULE_TYPE_CHILD = "TUTKINTO_OHJELMA";
-    public static final String STATE_PUBLISHED = "JULKAISTU";
-    public static final String STATE_READY = "VALMIS";
-    public static final String BASE_EDUCATION_KOODISTO_URI = "pohjakoulutustoinenaste";
-
-
+    // external resources
     private KomoResource komoResource;
     private KomotoResource komotoResource;
     private HakukohdeResource hakukohdeResource;
     private ProviderService providerService;
-    //private ConversionService conversionService;
-
-    @Autowired
     private KoodistoService koodistoService;
 
-    public LOBuilder(KomoResource komoResource, KomotoResource komotoResource, HakukohdeResource hakukohdeResource,
-                     ProviderService providerService) {
+    // variables
+
+    // oid of the parent komo object that is the pase for all the ParentLOS objects constructed by this builder
+    private String oid;
+
+    // Parent komo KomoDTO object that corresponds to the oid
+    private KomoDTO parentKomo;
+
+    // List of ParentLOS objects that are returned when the build() method is invoked
+    private List<ParentLOS> parentLOSs;
+
+    // A helper data structure that groups parent komoto KomotoDTO objects by their provider
+    ArrayListMultimap<String, KomotoDTO> parentKomotosByProviderId;
+
+    // A helper data structure that groups ChildLO objects by their ParentLOI id
+    ArrayListMultimap<String, ChildLearningOpportunity> childLOsByParentLOIId;
+
+    public LearningOpportunityConcreteBuilder(KomoResource komoResource, KomotoResource komotoResource,
+                                              HakukohdeResource hakukohdeResource, ProviderService providerService,
+                                              KoodistoService koodistoService, String oid) {
         this.komoResource = komoResource;
         this.komotoResource = komotoResource;
         this.hakukohdeResource = hakukohdeResource;
         this.providerService = providerService;
+        this.koodistoService = koodistoService;
+        this.oid = oid;
+        parentKomotosByProviderId = ArrayListMultimap.create();
+        childLOsByParentLOIId = ArrayListMultimap.create();
+        parentLOSs = Lists.newArrayList();
     }
 
-    public List<ParentLOS> buildParentLOSs(String oid) throws TarjontaParseException, KoodistoException, WebApplicationException {
-        // parents
 
-        List<ParentLOS> parentLOSs = Lists.newArrayList();
 
-        KomoDTO parentKomo = komoResource.getByOID(oid);
-
+    @Override
+    public LearningOpportunityBuilder resolveParentLOSs() throws TarjontaParseException, KoodistoException, WebApplicationException {
+        parentKomo = komoResource.getByOID(oid);
         validateParentKomo(parentKomo);
-
         List<OidRDTO> parentKomotoOids = komoResource.getKomotosByKomoOID(parentKomo.getOid(), Integer.MAX_VALUE, 0);
-
         if (parentKomotoOids == null || parentKomotoOids.size() == 0) {
             throw new TarjontaParseException("No instances found in parent LOS " + parentKomo.getOid());
         }
-
-        ArrayListMultimap<String, KomotoDTO> parentKomotosByProviderId = ArrayListMultimap.create();
-
+        parentKomotosByProviderId = ArrayListMultimap.create();
         for (OidRDTO parentKomotoOid : parentKomotoOids) {
-
             KomotoDTO parentKomoto = komotoResource.getByOID(parentKomotoOid.getOid());
             try {
                 validateParentKomoto(parentKomoto);
@@ -97,15 +103,15 @@ public class LOBuilder {
         }
 
         for (String key : parentKomotosByProviderId.keySet()) {
-            parentLOSs.add(constructParentLOS(parentKomo, key, parentKomotosByProviderId.get(key)));
+            parentLOSs.add(createParentLOS(parentKomo, key, parentKomotosByProviderId.get(key)));
         }
+        return this;
+    }
 
 
-        // children
 
-        // parent loi id -> List<ChildLearningOpportunity>
-        ArrayListMultimap<String, ChildLearningOpportunity> childLOsByParentLOIId = ArrayListMultimap.create();
-
+    @Override
+    public LearningOpportunityBuilder resolveChildLOSs() throws TarjontaParseException, KoodistoException, WebApplicationException {
         List<String> childKomoIds = parentKomo.getAlaModuulit();
         for (String childKomoId : childKomoIds) {
             KomoDTO childKomo = komoResource.getByOID(childKomoId);
@@ -115,7 +121,6 @@ public class LOBuilder {
             } catch (TarjontaParseException e) {
                 continue;
             }
-
 
             List<OidRDTO> childKomotoOIds = komoResource.getKomotosByKomoOID(childKomoId, Integer.MAX_VALUE, 0);
             for (OidRDTO childKomotoOId : childKomotoOIds) {
@@ -147,15 +152,12 @@ public class LOBuilder {
                 List<ApplicationOption> applicationOptions = Lists.newArrayList();
                 List<String> applicationSystemIds = Lists.newArrayList();
                 List<OidRDTO> aoIdDTOs = komotoResource.getHakukohdesByKomotoOID(childKomotoOId.getOid());
-
                 for (OidRDTO aoIdDTO : aoIdDTOs) {
 
                     // application option
                     String aoId = aoIdDTO.getOid();
                     HakukohdeDTO hakukohdeDTO = hakukohdeResource.getByOID(aoId);
                     ApplicationOption ao = new ApplicationOption();
-
-                    //ao.setParent(parentRef);
 
                     ao.setId(hakukohdeDTO.getOid());
                     ao.setName(koodistoService.searchFirst(hakukohdeDTO.getHakukohdeNimiUri()));
@@ -166,40 +168,9 @@ public class LOBuilder {
                     ao.setAttachmentDeliveryDeadline(hakukohdeDTO.getLiitteidenToimitusPvm());
                     ao.setLastYearApplicantCount(hakukohdeDTO.getEdellisenVuodenHakijatLkm());
                     ao.setSelectionCriteria(getI18nText(hakukohdeDTO.getValintaperustekuvaus()));
-
-                    List<Exam> exams = Lists.newArrayList();
-                    if (hakukohdeDTO.getValintakoes() != null) {
-                        for (ValintakoeRDTO valintakoe : hakukohdeDTO.getValintakoes()) {
-                            if (valintakoe.getKuvaus() != null && valintakoe.getTyyppiUri() != null
-                                    && valintakoe.getValintakoeAjankohtas() != null
-                                    && !valintakoe.getValintakoeAjankohtas().isEmpty()) {
-                            Exam exam = new Exam();
-                            exam.setType(koodistoService.searchFirst(valintakoe.getTyyppiUri()));
-                            exam.setDescription(new I18nText(valintakoe.getKuvaus()));
-                            List<ExamEvent> examEvents = Lists.newArrayList();
-
-                            for (ValintakoeAjankohtaRDTO valintakoeAjankohta : valintakoe.getValintakoeAjankohtas()) {
-                                ExamEvent examEvent = new ExamEvent();
-                                Address address = new Address();
-                                address.setPostalCode(koodistoService.searchFirstCodeValue(valintakoeAjankohta.getOsoite().getPostinumero()));
-                                address.setPostOffice(valintakoeAjankohta.getOsoite().getPostitoimipaikka());
-                                address.setStreetAddress(valintakoeAjankohta.getOsoite().getOsoiterivi1());
-                                examEvent.setAddress(address);
-                                examEvent.setDescription(valintakoeAjankohta.getLisatiedot());
-                                examEvent.setStart(valintakoeAjankohta.getAlkaa());
-                                examEvent.setEnd(valintakoeAjankohta.getLoppuu());
-                                examEvents.add(examEvent);
-                            }
-                            exam.setExamEvents(examEvents);
-                            exams.add(exam);
-                            }
-                        }
-                    }
-                    ao.setExams(exams);
-
-
+                    ao.setExams(createExams(hakukohdeDTO.getValintakoes()));
                     List<Code> subCodes = koodistoService.searchSubCodes(childKomoto.getPohjakoulutusVaatimusUri(),
-                            BASE_EDUCATION_KOODISTO_URI);
+                            LearningOpportunityBuilder.BASE_EDUCATION_KOODISTO_URI);
                     List<String> baseEducations = Lists.transform(subCodes, new Function<Code, String>() {
                         @Override
                         public String apply(Code code) {
@@ -220,22 +191,16 @@ public class LOBuilder {
                             as.getApplicationDates().add(range);
                         }
                     }
-
                     ao.setApplicationSystem(as);
-
                     if (!Strings.isNullOrEmpty(hakukohdeDTO.getSoraKuvausKoodiUri())) {
                         ao.setSora(true);
                     }
-
-                    //education degree code value
                     ao.setEducationDegree(koodistoService.searchFirstCodeValue(childKomoto.getKoulutusAsteUri()));
-                    //set teaching language codes
                     ao.setTeachingLanguages(koodistoService.searchCodeValuesMultiple(childKomoto.getOpetuskieletUris()));
                     ao.setPrerequisite(childLO.getPrerequisite());
 
                     // set child loi names to application option
                     List<OidRDTO> komotosByHakukohdeOID = hakukohdeResource.getKomotosByHakukohdeOID(aoId);
-
                     for (OidRDTO s : komotosByHakukohdeOID) {
                         KomoDTO komoByKomotoOID = komotoResource.getKomoByKomotoOID(s.getOid());
                         ChildLORef cRef = new ChildLORef();
@@ -245,11 +210,9 @@ public class LOBuilder {
                         cRef.setPrerequisite(childLO.getPrerequisite());
                         ao.getChildLORefs().add(cRef);
                     }
-
                     applicationOptions.add(ao);
                     applicationSystemIds.add(hakuDTO.getOid());
                 }
-
                 childLO.setApplicationOptions(applicationOptions);
                 childLO.setApplicationSystemIds(applicationSystemIds);
 
@@ -257,7 +220,11 @@ public class LOBuilder {
             }
         }
 
-        // parent loss
+        return this;
+    }
+
+    @Override
+    public LearningOpportunityBuilder reassemble() throws TarjontaParseException, KoodistoException, WebApplicationException {
         for (ParentLOS parentLOS : parentLOSs) {
             // parent lois
             for (ParentLOI parentLOI : parentLOS.getLois()) {
@@ -276,10 +243,47 @@ public class LOBuilder {
             }
         }
 
+        return this;
+    }
+
+    @Override
+    public List<ParentLOS> build() {
         return parentLOSs;
     }
 
-    private ParentLOS constructParentLOS(KomoDTO parentKomo, String providerId, List<KomotoDTO> parentKomotos) throws KoodistoException {
+    private List<Exam> createExams(List<ValintakoeRDTO> valintakoes) throws KoodistoException {
+        List<Exam> exams = Lists.newArrayList();
+        if (valintakoes != null) {
+            for (ValintakoeRDTO valintakoe : valintakoes) {
+                if (valintakoe.getKuvaus() != null && valintakoe.getTyyppiUri() != null
+                        && valintakoe.getValintakoeAjankohtas() != null
+                        && !valintakoe.getValintakoeAjankohtas().isEmpty()) {
+                    Exam exam = new Exam();
+                    exam.setType(koodistoService.searchFirst(valintakoe.getTyyppiUri()));
+                    exam.setDescription(new I18nText(valintakoe.getKuvaus()));
+                    List<ExamEvent> examEvents = Lists.newArrayList();
+
+                    for (ValintakoeAjankohtaRDTO valintakoeAjankohta : valintakoe.getValintakoeAjankohtas()) {
+                        ExamEvent examEvent = new ExamEvent();
+                        Address address = new Address();
+                        address.setPostalCode(koodistoService.searchFirstCodeValue(valintakoeAjankohta.getOsoite().getPostinumero()));
+                        address.setPostOffice(valintakoeAjankohta.getOsoite().getPostitoimipaikka());
+                        address.setStreetAddress(valintakoeAjankohta.getOsoite().getOsoiterivi1());
+                        examEvent.setAddress(address);
+                        examEvent.setDescription(valintakoeAjankohta.getLisatiedot());
+                        examEvent.setStart(valintakoeAjankohta.getAlkaa());
+                        examEvent.setEnd(valintakoeAjankohta.getLoppuu());
+                        examEvents.add(examEvent);
+                    }
+                    exam.setExamEvents(examEvents);
+                    exams.add(exam);
+                }
+            }
+        }
+        return exams;
+    }
+
+    private ParentLOS createParentLOS(KomoDTO parentKomo, String providerId, List<KomotoDTO> parentKomotos) throws KoodistoException {
 
         ParentLOS parentLOS = new ParentLOS();
 
@@ -333,13 +337,13 @@ public class LOBuilder {
     private void validateParentKomo(KomoDTO komo) throws TarjontaParseException {
 
         // tmp parent check
-        if (!komo.getModuuliTyyppi().equals(MODULE_TYPE_PARENT)) {
-            throw new TarjontaParseException("LOS not of type " + MODULE_TYPE_PARENT);
+        if (!komo.getModuuliTyyppi().equals(LearningOpportunityBuilder.MODULE_TYPE_PARENT)) {
+            throw new TarjontaParseException("LOS not of type " + LearningOpportunityBuilder.MODULE_TYPE_PARENT);
         }
 
         // published
-        if (!komo.getTila().equals(STATE_PUBLISHED)) {
-            throw new TarjontaParseException("LOS state not " + STATE_PUBLISHED);
+        if (!komo.getTila().equals(LearningOpportunityBuilder.STATE_PUBLISHED)) {
+            throw new TarjontaParseException("LOS state not " + LearningOpportunityBuilder.STATE_PUBLISHED);
         }
 
         if (komo.getNimi() == null) {
@@ -351,16 +355,9 @@ public class LOBuilder {
         }
     }
 
-    private void validateParentKomoto(KomotoDTO komoto) throws TarjontaParseException {
-//        if (!komoto.getTila().equals(STATE_PUBLISHED) && !komoto.getTila().equals(STATE_READY)) {
-//            throw new TarjontaParseException("LOI " + komoto.getOid() + " not of type " + MODULE_TYPE_PARENT);
-//        }
-
-    }
-
     private void validateChildKomo(KomoDTO komo) throws TarjontaParseException {
-        if (!komo.getTila().equals(STATE_PUBLISHED)) {
-            throw new TarjontaParseException("LOS " + komo.getOid() + " not of type " + MODULE_TYPE_PARENT);
+        if (!komo.getTila().equals(LearningOpportunityBuilder.STATE_PUBLISHED)) {
+            throw new TarjontaParseException("LOS " + komo.getOid() + " not of type " + LearningOpportunityBuilder.MODULE_TYPE_PARENT);
         }
         if (komo.getKoulutusOhjelmaKoodiUri() == null) {
             throw new TarjontaParseException("Child KomoDTO koulutusOhjelmaKoodiUri (name) is null");
@@ -374,92 +371,11 @@ public class LOBuilder {
     }
 
     private void validateChildKomoto(KomotoDTO komoto) throws TarjontaParseException {
-        if (!komoto.getTila().equals(STATE_PUBLISHED)) {
-            throw new TarjontaParseException("LOI " + komoto.getOid() + " not of type " + MODULE_TYPE_PARENT);
+        if (!komoto.getTila().equals(LearningOpportunityBuilder.STATE_PUBLISHED)) {
+            throw new TarjontaParseException("LOI " + komoto.getOid() + " not of type " + LearningOpportunityBuilder.MODULE_TYPE_PARENT);
         }
 
     }
-
-
-    ////////////////////////////////////////////////
-    // parent loi fix
-
-//    public List<ParentLOS> postProcess(ParentLOS p) {
-//
-//        List<ParentLOS> nParents = Lists.newArrayList();
-//
-//        // parent loi id -> childlos
-//        Map<String, List<ChildLOS>> childMap = Maps.newHashMap();
-//
-//        for (ChildLOS clos : p.getChildren()) {
-//            for (ChildLOI cloi : clos.getChildLOIs()) {
-//
-//                ChildLOS nclos = new ChildLOS();
-//                nclos.setId(clos.getId() + "_" + cloi.getId());
-//                nclos.setName(clos.getName());
-//                nclos.setDegreeTitle(clos.getDegreeTitle());
-//                nclos.setQualification(clos.getQualification());
-//                nclos.setDegreeGoal(clos.getDegreeGoal());
-//
-//                nclos.setChildLOIs(Lists.newArrayList(cloi));
-//
-//                List<ChildLOS> l = childMap.get(cloi.getParentLOI());
-//                if (l == null) {
-//                    l = Lists.newArrayList(nclos);
-//                } else {
-//                    l.add(nclos);
-//                }
-//
-//                childMap.put(cloi.getParentLOI(), l);
-//
-//            }
-//        }
-//
-//
-//        for (ParentLOI loi : p.getLois()) {
-//            ParentLOS np = new ParentLOS();
-//            np.setId(loi.getId());
-//            np.setName(p.getName());
-//            np.setStructureDiagram(p.getStructureDiagram());
-//            np.setAccessToFurtherStudies(p.getAccessToFurtherStudies());
-//            //np.setDegreeProgramSelection(p.getDegreeProgramSelection());
-//            np.setGoals(p.getGoals());
-//            np.setEducationDomain(p.getEducationDomain());
-//            np.setStydyDomain(p.getStydyDomain());
-//            np.setEducationDegree(p.getEducationDegree());
-//
-//            Provider provider = loi.getProvider();
-//            List<ChildLOS> children = childMap.get(loi.getId());
-//
-//            if (children != null) {
-//                np.setChildren(children);
-//
-//                // asid to provider
-//                // ao to parent
-//                for (ChildLOS childLOS : children) {
-//                    for (ChildLOI childLOI : childLOS.getChildLOIs()) {
-//                        provider.getApplicationSystemIDs().add(childLOI.getApplicationSystemId());
-//
-//
-//                        np.getApplicationOptions().add(childLOI.getApplicationOption());
-//
-//                        for (ApplicationOption ao : np.getApplicationOptions()) {
-//                            ao.setProvider(provider);
-//                        }
-//
-//
-//                    }
-//                }
-//            }
-//
-//            np.setProvider(provider);
-//            np.setLois(Lists.newArrayList(loi));
-//
-//            nParents.add(np);
-//        }
-//
-//        return nParents;
-//    }
 
 
 }

@@ -16,17 +16,20 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
+import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
+import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
-import fi.vm.sade.koulutusinformaatio.service.impl.builder.LOBuilder;
+import fi.vm.sade.koulutusinformaatio.service.builder.LearningOpportunityBuilder;
+import fi.vm.sade.koulutusinformaatio.service.builder.impl.LearningOpportunityConcreteBuilder;
+import fi.vm.sade.koulutusinformaatio.service.builder.impl.LearningOpportunityDirector;
+import fi.vm.sade.tarjonta.service.resources.HakukohdeResource;
 import fi.vm.sade.tarjonta.service.resources.KomoResource;
+import fi.vm.sade.tarjonta.service.resources.KomotoResource;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import javax.ws.rs.WebApplicationException;
 import java.util.List;
@@ -34,18 +37,38 @@ import java.util.List;
 /**
  * @author Hannu Lyytikainen
  */
-@Service
+
 public class TarjontaServiceImpl implements TarjontaService {
 
-    @Autowired
-    private LOBuilder loBuilder;
-    @Autowired
     private KomoResource komoResource;
+    private KomotoResource komotoResource;
+    private HakukohdeResource hakukohdeResource;
+    private ProviderService providerService;
+
+    @Autowired
+    private KoodistoService koodistoService;
+    @Autowired
+    private LearningOpportunityDirector loDirector;
+
+    public TarjontaServiceImpl(KomoResource komoResource, KomotoResource komotoResource,
+                               HakukohdeResource hakukohdeResource, ProviderService providerService) {
+        this.komoResource = komoResource;
+        this.komotoResource = komotoResource;
+        this.hakukohdeResource = hakukohdeResource;
+        this.providerService = providerService;
+    }
+
+    public TarjontaServiceImpl() {
+    }
 
     @Override
     public List<ParentLOS> findParentLearningOpportunity(String oid) throws TarjontaParseException {
         try {
-            return loBuilder.buildParentLOSs(oid);
+            LearningOpportunityBuilder builder = new LearningOpportunityConcreteBuilder(komoResource,
+                    komotoResource, hakukohdeResource, providerService, koodistoService, oid);
+
+            return loDirector.constructLearningOpportunities(builder);
+
         } catch (KoodistoException e) {
             throw new TarjontaParseException("An error occurred while building parent LOS " + oid + " with koodisto: " + e.getMessage());
         }
