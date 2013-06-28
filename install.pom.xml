@@ -55,6 +55,7 @@
             </plugin>
         </plugins>
     </build>
+    <profiles>
 <profile>
 		<id>deploy.remote</id>
 		<build>
@@ -95,6 +96,7 @@
 			
 		</build>
 	</profile>
+	</profiles>
     <distributionManagement>
         <repository>
             <id>oph-sade-artifactory</id>
