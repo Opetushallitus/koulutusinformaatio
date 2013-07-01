@@ -25,9 +25,13 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.CodeDTO;
 public class CodeToDTO {
 
     public static CodeDTO convert(Code code, String lang) {
-        CodeDTO dto = new CodeDTO();
-        dto.setValue(code.getValue());
-        dto.setDescription(ConverterUtil.getTextByLanguageUseFallbackLang(code.getDescription(), lang));
-        return dto;
+        if (code != null) {
+            CodeDTO dto = new CodeDTO();
+            dto.setValue(code.getValue());
+            dto.setDescription(ConverterUtil.getTextByLanguageUseFallbackLang(code.getDescription(), lang));
+            return dto;
+        } else {
+            return null;
+        }
     }
 }
