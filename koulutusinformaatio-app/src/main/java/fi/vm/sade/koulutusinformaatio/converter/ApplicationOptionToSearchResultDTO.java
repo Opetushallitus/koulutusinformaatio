@@ -20,6 +20,7 @@ import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionSearchResultDTO;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -33,7 +34,8 @@ public class ApplicationOptionToSearchResultDTO {
             dto.setId(applicationOption.getId());
             dto.setName(ConverterUtil.getTextByLanguage(applicationOption.getName(), lang));
             dto.setAoIdentifier(applicationOption.getAoIdentifier());
-            dto.setChildLONames(ConverterUtil.getTextsByLanguage(ChildLORefToDTO.convert(applicationOption.getChildLORefs()), lang));
+            dto.setChildLONames(ConverterUtil.getShortNameTextsByLanguage(ChildLORefToDTO.convert(applicationOption.getChildLORefs()), lang));
+            Collections.sort(dto.getChildLONames());
             dto.setEducationDegree(applicationOption.getEducationDegree());
             dto.setSora(applicationOption.isSora());
             dto.setTeachingLanguages(applicationOption.getTeachingLanguages());

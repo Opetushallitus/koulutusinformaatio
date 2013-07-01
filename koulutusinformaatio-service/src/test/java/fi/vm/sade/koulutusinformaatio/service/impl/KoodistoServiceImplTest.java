@@ -61,10 +61,12 @@ public class KoodistoServiceImplTest {
         koodi.setVersio(1);
         KoodiMetadataType metaFi = new KoodiMetadataType();
         metaFi.setNimi("nimi_fi");
+        metaFi.setLyhytNimi("nimi_lyhyt_fi");
         metaFi.setKieli(KieliType.FI);
         koodi.getMetadata().add(metaFi);
         KoodiMetadataType metaSv = new KoodiMetadataType();
         metaSv.setNimi("nimi_sv");
+        metaSv.setLyhytNimi("nimi_lyhyt_sv");
         metaSv.setKieli(KieliType.SV);
         koodi.getMetadata().add(metaSv);
         List<KoodiType> koodit = new ArrayList<KoodiType>();
