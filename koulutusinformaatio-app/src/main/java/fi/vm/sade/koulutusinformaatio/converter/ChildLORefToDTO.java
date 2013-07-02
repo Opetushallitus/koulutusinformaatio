@@ -24,6 +24,7 @@ import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLORefDTO;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -39,6 +40,7 @@ public class ChildLORefToDTO {
                 children.add(child);
             }
         }
+        Collections.sort(children);
         return children;
     }
 
