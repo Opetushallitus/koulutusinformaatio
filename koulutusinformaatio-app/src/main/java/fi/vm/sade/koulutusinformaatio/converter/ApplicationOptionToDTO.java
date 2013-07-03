@@ -32,6 +32,7 @@ public class ApplicationOptionToDTO {
             ao.setName(ConverterUtil.getTextByLanguage(applicationOption.getName(), lang));
             ao.setAoIdentifier(applicationOption.getAoIdentifier());
             ao.setAttachmentDeliveryDeadline(applicationOption.getAttachmentDeliveryDeadline());
+            ao.setAttachmentDeliveryAddress(AddressToDTO.convert(applicationOption.getAttachmentDeliveryAddress()));
             ao.setLastYearApplicantCount(applicationOption.getLastYearApplicantCount());
             ao.setLowestAcceptedAverage(applicationOption.getLowestAcceptedAverage());
             ao.setLowestAcceptedScore(applicationOption.getLowestAcceptedScore());

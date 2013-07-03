@@ -47,6 +47,8 @@ public class ApplicationOptionEntity {
     private Integer lowestAcceptedScore;
     private Double lowestAcceptedAverage;
     private Date attachmentDeliveryDeadline;
+    @Embedded
+    private AddressEntity attachmentDeliveryAddress;
     private Integer lastYearApplicantCount;
     private boolean sora;
     private List<String> teachingLanguages;
@@ -150,6 +152,14 @@ public class ApplicationOptionEntity {
 
     public void setAttachmentDeliveryDeadline(Date attachmentDeliveryDeadline) {
         this.attachmentDeliveryDeadline = attachmentDeliveryDeadline;
+    }
+
+    public AddressEntity getAttachmentDeliveryAddress() {
+        return attachmentDeliveryAddress;
+    }
+
+    public void setAttachmentDeliveryAddress(AddressEntity attachmentDeliveryAddress) {
+        this.attachmentDeliveryAddress = attachmentDeliveryAddress;
     }
 
     public Integer getLastYearApplicantCount() {

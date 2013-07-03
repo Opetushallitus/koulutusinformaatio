@@ -194,6 +194,16 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
                     ao.setTeachingLanguages(koodistoService.searchCodeValuesMultiple(childKomoto.getOpetuskieletUris()));
                     ao.setPrerequisite(childLO.getPrerequisite());
 
+                    if (hakukohdeDTO.getLiitteidenToimitusosoite() != null) {
+                        OsoiteRDTO addressDTO = hakukohdeDTO.getLiitteidenToimitusosoite();
+                        Address attachmentDeliveryAddress = new Address();
+                        attachmentDeliveryAddress.setStreetAddress(addressDTO.getOsoiterivi1());
+                        attachmentDeliveryAddress.setStreetAddress2(addressDTO.getOsoiterivi2());
+                        attachmentDeliveryAddress.setPostalCode(koodistoService.searchFirstCodeValue(addressDTO.getPostinumero()));
+                        attachmentDeliveryAddress.setPostOffice(addressDTO.getPostitoimipaikka());
+                        ao.setAttachmentDeliveryAddress(attachmentDeliveryAddress);
+                    }
+
                     // set child loi names to application option
                     List<OidRDTO> komotosByHakukohdeOID = hakukohdeResource.getKomotosByHakukohdeOID(aoId);
                     for (OidRDTO s : komotosByHakukohdeOID) {

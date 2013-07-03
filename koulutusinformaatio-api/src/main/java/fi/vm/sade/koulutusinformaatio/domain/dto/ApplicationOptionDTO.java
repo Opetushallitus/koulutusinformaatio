@@ -35,6 +35,7 @@ public class ApplicationOptionDTO {
     private Integer lowestAcceptedScore;
     private Double lowestAcceptedAverage;
     private Date attachmentDeliveryDeadline;
+    private AddressDTO attachmentDeliveryAddress;
     private Integer lastYearApplicantCount;
     private boolean sora;
     private String educationDegree;
@@ -106,6 +107,14 @@ public class ApplicationOptionDTO {
 
     public void setAttachmentDeliveryDeadline(Date attachmentDeliveryDeadline) {
         this.attachmentDeliveryDeadline = attachmentDeliveryDeadline;
+    }
+
+    public AddressDTO getAttachmentDeliveryAddress() {
+        return attachmentDeliveryAddress;
+    }
+
+    public void setAttachmentDeliveryAddress(AddressDTO attachmentDeliveryAddress) {
+        this.attachmentDeliveryAddress = attachmentDeliveryAddress;
     }
 
     public Integer getLastYearApplicantCount() {
