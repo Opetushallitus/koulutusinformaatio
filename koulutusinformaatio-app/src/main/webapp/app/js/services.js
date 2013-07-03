@@ -48,7 +48,7 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', function
             qParams += (params.prerequisite != undefined) ? ('&prerequisite=' + params.prerequisite) : '';
             qParams += (params.locations != undefined && params.locations.length > 0) ? ('&' + cities) : '';
 
-            $http.get('../lo/search/' + params.queryString + qParams, {
+            $http.get('../lo/search/' + encodeURI(params.queryString) + qParams, {
                 /*
                 params: {
                     start: params.start,
