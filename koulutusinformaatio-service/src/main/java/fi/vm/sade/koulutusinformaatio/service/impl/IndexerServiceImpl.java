@@ -98,9 +98,10 @@ public class IndexerServiceImpl implements IndexerService {
         Provider provider = parent.getProvider();
         doc.addField("lopId", provider.getId());
         doc.addField("lopName", provider.getName().getTranslations().get("fi"));
-        doc.addField("lopAddress", provider.getVisitingAddress().getPostOffice());
-        doc.addField("lopCity", provider.getVisitingAddress().getPostOffice());
-
+        if (provider.getVisitingAddress() != null) {
+            doc.addField("lopAddress", provider.getVisitingAddress().getPostOffice());
+            doc.addField("lopCity", provider.getVisitingAddress().getPostOffice());
+        }
         try {
         doc.addField("lopDescription", provider.getDescription().getTranslations().get("fi"));
         doc.addField("structure", parent.getStructureDiagram().getTranslations().get("fi"));
@@ -120,9 +121,10 @@ public class IndexerServiceImpl implements IndexerService {
         doc.addField("parentId", parent.getId());
         doc.addField("prerequisites", childLO.getPrerequisite().getValue());
         doc.addField("lopName", provider.getName().getTranslations().get("fi"));
-        doc.addField("lopAddress", provider.getVisitingAddress().getPostOffice());
-        doc.addField("lopCity", provider.getVisitingAddress().getPostOffice());
-
+        if (provider.getVisitingAddress() != null) {
+            doc.addField("lopAddress", provider.getVisitingAddress().getPostOffice());
+            doc.addField("lopCity", provider.getVisitingAddress().getPostOffice());
+        }
         try {
             doc.addField("lopDescription", provider.getDescription().getTranslations().get("fi"));
             for (I18nText i18n : childLO.getProfessionalTitles()) {

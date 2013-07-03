@@ -24,7 +24,7 @@ import java.util.List;
  * @author Mikko Majapuro
  */
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
-public class ChildLORefDTO {
+public class ChildLORefDTO implements Comparable<ChildLORefDTO> {
 
     private String childLOId;
     private List<String> asIds;
@@ -70,5 +70,13 @@ public class ChildLORefDTO {
 
     public void setPrerequisite(CodeDTO prerequisite) {
         this.prerequisite = prerequisite;
+    }
+
+    @Override
+    public int compareTo(ChildLORefDTO childLORefDTO) {
+        if (this == childLORefDTO) {
+            return 0;
+        }
+        return this.name.compareTo(childLORefDTO.name);
     }
 }

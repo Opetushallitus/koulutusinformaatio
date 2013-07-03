@@ -37,6 +37,15 @@ public class ConverterUtil {
         }
     }
 
+    public static String getShortNameTextByLanguage(final I18nText text, String lang) {
+        lang = lang.toLowerCase();
+        if (text != null && text.getTranslationsShortName() != null && text.getTranslationsShortName().containsKey(lang)) {
+            return text.getTranslationsShortName().get(lang);
+        } else {
+            return null;
+        }
+    }
+
     public static String getTextByLanguageUseFallbackLang(final I18nText text, String lang) {
         String val = getTextByLanguage(text, lang);
         if (Strings.isNullOrEmpty(val) && text != null && text.getTranslations() != null &&
@@ -64,6 +73,20 @@ public class ConverterUtil {
         if (list != null) {
             for (I18nText text : list) {
                 String value = getTextByLanguage(text, lang);
+                if (value != null) {
+                    texts.add(value);
+                }
+            }
+        }
+        return texts;
+    }
+
+    public static List<String> getShortNameTextsByLanguage(final List<I18nText> list, String lang) {
+        lang = lang.toLowerCase();
+        List<String> texts = new ArrayList<String>();
+        if (list != null) {
+            for (I18nText text : list) {
+                String value = getShortNameTextByLanguage(text, lang);
                 if (value != null) {
                     texts.add(value);
                 }

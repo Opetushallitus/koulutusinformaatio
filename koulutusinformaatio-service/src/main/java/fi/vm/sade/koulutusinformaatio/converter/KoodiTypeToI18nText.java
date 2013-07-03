@@ -34,9 +34,11 @@ public class KoodiTypeToI18nText implements Converter<KoodiType, I18nText> {
     public I18nText convert(KoodiType koodiType) {
         List<KoodiMetadataType> metadata = koodiType.getMetadata();
         Map<String, String> translations = new HashMap<String, String>();
+        Map<String, String> translationsShortName = new HashMap<String, String>();
         for (KoodiMetadataType koodiMetadataType : metadata) {
             translations.put(koodiMetadataType.getKieli().value().toLowerCase(), koodiMetadataType.getNimi());
+            translationsShortName.put(koodiMetadataType.getKieli().value().toLowerCase(), koodiMetadataType.getLyhytNimi());
         }
-        return new I18nText(translations);
+        return new I18nText(translations, translationsShortName);
     }
 }
