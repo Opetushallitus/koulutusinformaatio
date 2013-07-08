@@ -43,7 +43,7 @@ public class ApplicationOptionDTO {
     private String selectionCriteria;
     private CodeDTO prerequisite;
     private List<ExamDTO> exams;
-
+    private LearningOpportunityProviderDTO provider;
 
     public String getId() {
         return id;
@@ -171,5 +171,13 @@ public class ApplicationOptionDTO {
 
     public void setExams(List<ExamDTO> exams) {
         this.exams = exams;
+    }
+
+    public LearningOpportunityProviderDTO getProvider() {
+        return provider;
+    }
+
+    public void setProvider(LearningOpportunityProviderDTO provider) {
+        this.provider = provider;
     }
 }
