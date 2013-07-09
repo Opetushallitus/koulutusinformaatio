@@ -49,6 +49,7 @@ public class ApplicationOptionsToBasketItemDTOs {
                 Provider provider = ao.getProvider();
                 if (provider != null) {
                     aoDTO.setProviderId(provider.getId());
+                    aoDTO.setAthleteEducation(provider.isAthleteEducation());
                     aoDTO.setProviderName(ConverterUtil.getTextByLanguageUseFallbackLang(provider.getName(), lang));
                     if (provider.getVisitingAddress() != null) {
                         aoDTO.setProviderLocation(provider.getVisitingAddress().getPostOffice());

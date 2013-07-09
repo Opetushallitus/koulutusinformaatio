@@ -44,6 +44,7 @@ public class ProviderToDTO {
             p.setHealthcare(ConverterUtil.getTextByLanguage(provider.getHealthcare(), lang));
             p.setSocial(SocialToDTO.convert(provider.getSocial()));
             p.setPictureFound(provider.getPicture() != null);
+            p.setAthleteEducation(provider.isAthleteEducation());
             return p;
         }
         return null;

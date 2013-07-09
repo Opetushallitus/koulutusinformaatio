@@ -44,6 +44,7 @@ public class LearningOpportunityProviderDTO {
     private String livingExpenses;
     private List<SocialDTO> social;
     private boolean pictureFound = false;
+    private boolean athleteEducation;
 
     public String getId() {
         return id;
@@ -179,5 +180,13 @@ public class LearningOpportunityProviderDTO {
 
     public void setPictureFound(boolean pictureFound) {
         this.pictureFound = pictureFound;
+    }
+
+    public boolean isAthleteEducation() {
+        return athleteEducation;
+    }
+
+    public void setAthleteEducation(boolean athleteEducation) {
+        this.athleteEducation = athleteEducation;
     }
 }
