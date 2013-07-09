@@ -41,6 +41,8 @@ import com.google.common.base.Strings;
  */
 public class ProviderServiceImpl implements ProviderService {
 
+    private static final String ATHLETE_EDUCATION_KOODISTO_URI = "urheilijankoulutus_1#1";
+    private static final String PLACE_OF_BUSINESS_KOODISTO_URI = "opetuspisteet";
     private OrganisaatioResource organisaatioResource;
     private ConversionService conversionService;
     @Autowired
@@ -72,8 +74,6 @@ public class ProviderServiceImpl implements ProviderService {
             provider.setLivingExpenses( getI18nText(provider.getLivingExpenses().getTranslations()) );
             provider.setLearningEnvironment( getI18nText(provider.getLearningEnvironment().getTranslations()) );
             provider.setDining( getI18nText(provider.getDining().getTranslations()) );
-
-            //TODO check athlete education from koodisto
             provider.setAthleteEducation(isAthleteEducation(provider.getPlaceOfBusinessCode()));
         }
         return provider;
@@ -107,7 +107,8 @@ public class ProviderServiceImpl implements ProviderService {
 
     private boolean isAthleteEducation(final String placeOfBusinessCode) throws KoodistoException {
         if (!Strings.isNullOrEmpty(placeOfBusinessCode)) {
-            List<Code> superCodes = koodistoService.searchSuperCodes("urheilijankoulutus_1#1", "opetuspisteet");
+            List<Code> superCodes = koodistoService.searchSuperCodes(ATHLETE_EDUCATION_KOODISTO_URI,
+                    PLACE_OF_BUSINESS_KOODISTO_URI);
             if (superCodes != null) {
                 for (Code code : superCodes) {
                     if (placeOfBusinessCode.equals(code.getValue())) {
