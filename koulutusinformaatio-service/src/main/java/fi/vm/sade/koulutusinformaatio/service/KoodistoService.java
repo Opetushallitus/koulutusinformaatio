@@ -95,4 +95,13 @@ public interface KoodistoService {
      * @return List of codes.
      */
     List<Code> searchSubCodes(final String koodiURIAndVersion, final String koodistoURI) throws KoodistoException;
+
+    /**
+     *
+     * @param koodiURIAndVersion
+     * @param koodistoURI
+     * @return
+     * @throws KoodistoException
+     */
+    List<Code> searchSuperCodes(final String koodiURIAndVersion, final String koodistoURI) throws KoodistoException;
 }

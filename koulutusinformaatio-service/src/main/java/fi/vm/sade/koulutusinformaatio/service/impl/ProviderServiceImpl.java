@@ -18,14 +18,17 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import fi.vm.sade.koulutusinformaatio.domain.Address;
+import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
+import fi.vm.sade.koulutusinformaatio.service.builder.LearningOpportunityBuilder;
 import fi.vm.sade.organisaatio.resource.OrganisaatioResource;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,7 +74,7 @@ public class ProviderServiceImpl implements ProviderService {
             provider.setDining( getI18nText(provider.getDining().getTranslations()) );
 
             //TODO check athlete education from koodisto
-            provider.setAthleteEducation(false);
+            provider.setAthleteEducation(isAthleteEducation(provider.getPlaceOfBusinessCode()));
         }
         return provider;
     }
@@ -100,5 +103,19 @@ public class ProviderServiceImpl implements ProviderService {
             return i18nText;
         }
         return null;
+    }
+
+    private boolean isAthleteEducation(final String placeOfBusinessCode) throws KoodistoException {
+        if (!Strings.isNullOrEmpty(placeOfBusinessCode)) {
+            List<Code> superCodes = koodistoService.searchSuperCodes("urheilijankoulutus_1#1", "opetuspisteet");
+            if (superCodes != null) {
+                for (Code code : superCodes) {
+                    if (placeOfBusinessCode.equals(code.getValue())) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }

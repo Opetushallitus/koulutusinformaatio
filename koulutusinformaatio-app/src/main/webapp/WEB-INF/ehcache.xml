@@ -19,4 +19,5 @@
     <defaultCache eternal="true" maxElementsInMemory="1000" overflowToDisk="false" />
     <cache name="koodiCache" maxElementsInMemory="1000" eternal="true" overflowToDisk="false" />
     <cache name="subKoodiCache" maxElementsInMemory="1000" eternal="true" overflowToDisk="false" />
+    <cache name="superKoodiCache" maxElementsInMemory="1000" eternal="true" overflowToDisk="false" />
 </ehcache>

@@ -176,6 +176,16 @@ public class KoodistoServiceImpl implements KoodistoService {
         }
     }
 
+    @Override
+    public List<Code> searchSuperCodes(String koodiURIAndVersion, String koodistoURI) throws KoodistoException {
+        if (koodistoURI != null && !koodistoURI.isEmpty()) {
+            return convert(searchSuperKoodiTypes(koodiURIAndVersion, koodistoURI), Code.class);
+        }
+        else {
+            return convert(searchSuperKoodiTypes(koodiURIAndVersion), Code.class);
+        }
+    }
+
     @Cacheable(cacheName = "subKoodiCache")
     private List<KoodiType> searchSubKoodiTypes(final String koodiUriAndVersion, final String koodistoURI) throws KoodistoException {
         return Lists.newArrayList(Collections2.filter(searchSubKoodiTypes(koodiUriAndVersion), new Predicate<KoodiType>() {
@@ -190,6 +200,22 @@ public class KoodistoServiceImpl implements KoodistoService {
         CodeUriAndVersion codeUriAndVersion = resolveKoodiUriAndVersion(koodiUriAndVersion);
         KoodiUriAndVersioType koodiUriAndVersionType = conversionService.convert(codeUriAndVersion, KoodiUriAndVersioType.class);
         return koodiService.listKoodiByRelation(koodiUriAndVersionType, false, SuhteenTyyppiType.SISALTYY);
+    }
+
+    @Cacheable(cacheName = "superKoodiCache")
+    private List<KoodiType> searchSuperKoodiTypes(final String koodiUriAndVersion, final String koodistoURI) throws KoodistoException {
+        return Lists.newArrayList(Collections2.filter(searchSuperKoodiTypes(koodiUriAndVersion), new Predicate<KoodiType>() {
+            @Override
+            public boolean apply(KoodiType koodiType) {
+                return koodiType.getKoodisto().getKoodistoUri().equals(koodistoURI);
+            }
+        }));
+    }
+
+    private List<KoodiType> searchSuperKoodiTypes(String koodiUriAndVersion) throws KoodistoException {
+        CodeUriAndVersion codeUriAndVersion = resolveKoodiUriAndVersion(koodiUriAndVersion);
+        KoodiUriAndVersioType koodiUriAndVersionType = conversionService.convert(codeUriAndVersion, KoodiUriAndVersioType.class);
+        return koodiService.listKoodiByRelation(koodiUriAndVersionType, true, SuhteenTyyppiType.SISALTYY);
     }
 
     @Cacheable(cacheName = "koodiCache")

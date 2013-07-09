@@ -70,6 +70,7 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
         p.setDining(getMetadataValue(o.getMetadata(), METADATA_OPISKELIJARUOKAILU));
         p.setSocial(getSocialLinks(o.getMetadata(), SOCIAL_LINKS));
         p.setPicture(getPicture(o));
+        p.setPlaceOfBusinessCode(o.getToimipistekoodi());
         return p;
     }
 
