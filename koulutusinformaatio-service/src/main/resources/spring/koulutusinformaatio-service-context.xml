@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~ Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
   ~
@@ -19,6 +20,7 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:jaxrs="http://cxf.apache.org/jaxrs"
        xmlns:ehcache="http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring"
+       xmlns:task="http://www.springframework.org/schema/task"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
         http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring
@@ -26,7 +28,9 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd
         http://cxf.apache.org/jaxrs
-        http://cxf.apache.org/schemas/jaxrs.xsd">
+        http://cxf.apache.org/schemas/jaxrs.xsd
+        http://www.springframework.org/schema/task
+        http://www.springframework.org/schema/task/spring-task-3.0.xsd" >
 
     <context:property-placeholder
             location="classpath:koulutusinformaatio.properties, file:///${user.home:''}/oph-configuration/koulutusinformaatio.properties"
@@ -34,87 +38,17 @@
 
     <context:component-scan base-package="fi.vm.sade.koulutusinformaatio"/>
 
-    <bean id="eventsMessageContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
-        <property name="connectionFactory" ref="eventsJmsFactory"/>
-        <property name="destination" ref="eventsDestination"/>
-        <property name="messageListener" ref="eventsMessageListener"/>
-    </bean>
+    <!--<bean id="eventsMessageContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">-->
+        <!--<property name="connectionFactory" ref="eventsJmsFactory"/>-->
+        <!--<property name="destination" ref="eventsDestination"/>-->
+        <!--<property name="messageListener" ref="eventsMessageListener"/>-->
+    <!--</bean>-->
 
-    <import resource="classpath:META-INF/spring/events-context.xml" />
+    <!--<import resource="classpath:META-INF/spring/events-context.xml" />-->
 
-    <bean id="loHttpSolrServer"
-          class="org.apache.solr.client.solrj.impl.HttpSolrServer">
-        <constructor-arg>
-            <value>${solr.base.url}${solr.learningopportunity.url}</value>
-        </constructor-arg>
-    </bean>
-
-    <bean id="lopHttpSolrServer"
-          class="org.apache.solr.client.solrj.impl.HttpSolrServer">
-        <constructor-arg>
-            <value>${solr.base.url}${solr.provider.url}</value>
-        </constructor-arg>
-    </bean>
-
-    <bean id="mongo" class="com.mongodb.Mongo">
-        <constructor-arg>
-            <bean class="com.mongodb.MongoURI">
-                <constructor-arg value="${mongodb.url}"/>
-            </bean>
-        </constructor-arg>
-    </bean>
-
-    <bean id="morphia" class="com.google.code.morphia.Morphia" />
-
-    <bean id="parentLearningOpportunitySpecificationDAO" class="fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecificationDAO">
-        <constructor-arg>
-            <ref bean="mongo"/>
-        </constructor-arg>
-        <constructor-arg>
-            <ref bean="morphia"/>
-        </constructor-arg>
-        <constructor-arg value="${mongo.db.name}"/>
-    </bean>
-
-    <bean id="applicationOptionDAO" class="fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO">
-        <constructor-arg>
-            <ref bean="mongo"/>
-        </constructor-arg>
-        <constructor-arg>
-            <ref bean="morphia"/>
-        </constructor-arg>
-        <constructor-arg value="${mongo.db.name}"/>
-    </bean>
-
-    <bean id="learningOpportunityProviderDAO" class="fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO">
-        <constructor-arg>
-            <ref bean="mongo"/>
-        </constructor-arg>
-        <constructor-arg>
-            <ref bean="morphia"/>
-        </constructor-arg>
-        <constructor-arg value="${mongo.db.name}"/>
-    </bean>
-
-    <bean id="childLearningOpportunitySpecificationDAO" class="fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunitySpecificationDAO">
-        <constructor-arg>
-            <ref bean="mongo"/>
-        </constructor-arg>
-        <constructor-arg>
-            <ref bean="morphia"/>
-        </constructor-arg>
-        <constructor-arg value="${mongo.db.name}"/>
-    </bean>
-
-    <bean id="childLearningOpportunityInstanceDAO" class="fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityInstanceDAO">
-        <constructor-arg>
-            <ref bean="mongo"/>
-        </constructor-arg>
-        <constructor-arg>
-            <ref bean="morphia"/>
-        </constructor-arg>
-        <constructor-arg value="${mongo.db.name}"/>
-    </bean>
+    <import resource="dao-context.xml"/>
+    <import resource="dao-transaction-context.xml"/>
+    <import resource="solr-context.xml"/>
 
     <bean id="modelMapper" class="org.modelmapper.ModelMapper"/>
 
@@ -125,6 +59,7 @@
                 <bean class="fi.vm.sade.koulutusinformaatio.converter.KoodiTypeToI18nText"/>
                 <bean class="fi.vm.sade.koulutusinformaatio.converter.KoodiTypeToCode"/>
                 <bean class="fi.vm.sade.koulutusinformaatio.converter.OrganisaatioRDTOToProvider"/>
+                <bean class="fi.vm.sade.koulutusinformaatio.converter.CodeUriAndVersionToKoodiUriAndVersionType"/>
             </list>
         </property>
     </bean>
@@ -174,8 +109,8 @@
         </constructor-arg>
     </bean>
 
-    <bean id="loBuilder"
-          class="fi.vm.sade.koulutusinformaatio.service.impl.builder.LOBuilder">
+    <bean id="TarjontaServiceImpl"
+          class="fi.vm.sade.koulutusinformaatio.service.impl.TarjontaServiceImpl">
         <constructor-arg>
             <ref bean="komoResource"/>
         </constructor-arg>
@@ -195,4 +130,7 @@
     <bean id="ehCacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
         <property name="configLocation"  value="/WEB-INF/ehcache.xml"/>
     </bean>
+
+    <task:annotation-driven scheduler="taskScheduler"/>
+    <task:scheduler id="taskScheduler" pool-size="2"/>
 </beans>

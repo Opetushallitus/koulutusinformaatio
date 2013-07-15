@@ -31,8 +31,7 @@ public class ParentLearningOpportunitySpecificationDTO {
 
     private String id;
     private String name;
-    private List<ChildLORefDTO> children = new ArrayList<ChildLORefDTO>();
-    private List<ApplicationOptionDTO> applicationOptions = new ArrayList<ApplicationOptionDTO>();
+    private Set<ApplicationOptionDTO> applicationOptions = new HashSet<ApplicationOptionDTO>();
     private LearningOpportunityProviderDTO provider;
     private String educationDegree;
     private String structureDiagram;
@@ -41,6 +40,8 @@ public class ParentLearningOpportunitySpecificationDTO {
     private String educationDomain;
     private String stydyDomain;
     private List<ParentLearningOpportunityInstanceDTO> lois = new ArrayList<ParentLearningOpportunityInstanceDTO>();
+    private String creditValue;
+    private String creditUnit;
 
     private String translationLanguage;
     private Set<String> availableTranslationLanguages = new HashSet<String>();
@@ -61,19 +62,11 @@ public class ParentLearningOpportunitySpecificationDTO {
         this.name = name;
     }
 
-    public List<ChildLORefDTO> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<ChildLORefDTO> children) {
-        this.children = children;
-    }
-
-    public List<ApplicationOptionDTO> getApplicationOptions() {
+    public Set<ApplicationOptionDTO> getApplicationOptions() {
         return applicationOptions;
     }
 
-    public void setApplicationOptions(List<ApplicationOptionDTO> applicationOptions) {
+    public void setApplicationOptions(Set<ApplicationOptionDTO> applicationOptions) {
         this.applicationOptions = applicationOptions;
     }
 
@@ -155,5 +148,21 @@ public class ParentLearningOpportunitySpecificationDTO {
 
     public void setLois(List<ParentLearningOpportunityInstanceDTO> lois) {
         this.lois = lois;
+    }
+
+    public String getCreditValue() {
+        return creditValue;
+    }
+
+    public void setCreditValue(String creditValue) {
+        this.creditValue = creditValue;
+    }
+
+    public String getCreditUnit() {
+        return creditUnit;
+    }
+
+    public void setCreditUnit(String creditUnit) {
+        this.creditUnit = creditUnit;
     }
 }

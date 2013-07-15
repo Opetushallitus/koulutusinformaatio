@@ -17,6 +17,9 @@
 package fi.vm.sade.koulutusinformaatio.dao.entity;
 
 import com.google.code.morphia.annotations.Embedded;
+import com.google.code.morphia.annotations.Reference;
+
+import java.util.List;
 
 /**
  * @author Mikko Majapuro
@@ -25,8 +28,14 @@ import com.google.code.morphia.annotations.Embedded;
 public class ParentLearningOpportunityInstanceEntity {
 
     private String id;
+    @Reference
+    private List<ChildLearningOpportunityEntity> children;
     @Embedded
-    private I18nTextEntity prerequisite;
+    private List<ChildLORefEntity> childRefs;
+    @Embedded
+    private CodeEntity prerequisite;
+    @Embedded
+    private I18nTextEntity selectingEducation;
 
     public String getId() {
         return id;
@@ -36,11 +45,35 @@ public class ParentLearningOpportunityInstanceEntity {
         this.id = id;
     }
 
-    public I18nTextEntity getPrerequisite() {
+    public List<ChildLearningOpportunityEntity> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<ChildLearningOpportunityEntity> children) {
+        this.children = children;
+    }
+
+    public CodeEntity getPrerequisite() {
         return prerequisite;
     }
 
-    public void setPrerequisite(I18nTextEntity prerequisite) {
+    public void setPrerequisite(CodeEntity prerequisite) {
         this.prerequisite = prerequisite;
+    }
+
+    public List<ChildLORefEntity> getChildRefs() {
+        return childRefs;
+    }
+
+    public void setChildRefs(List<ChildLORefEntity> childRefs) {
+        this.childRefs = childRefs;
+    }
+
+    public I18nTextEntity getSelectingEducation() {
+        return selectingEducation;
+    }
+
+    public void setSelectingEducation(I18nTextEntity selectingEducation) {
+        this.selectingEducation = selectingEducation;
     }
 }

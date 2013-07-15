@@ -30,6 +30,8 @@ public class BasketApplicationOptionDTO {
     private String id;
     private String name;
     private String educationDegree;
+    private boolean sora;
+    private List<String> teachingLanguages;
     private String providerName;
     private String providerId;
     private String providerLocation;
@@ -38,6 +40,7 @@ public class BasketApplicationOptionDTO {
     private ParentLOSRefDTO parent;
     private List<ChildLORefDTO> children;
     private Date attachmentDeliveryDeadline;
+    private boolean athleteEducation;
 
     public String getId() {
         return id;
@@ -61,6 +64,22 @@ public class BasketApplicationOptionDTO {
 
     public void setEducationDegree(String educationDegree) {
         this.educationDegree = educationDegree;
+    }
+
+    public boolean isSora() {
+        return sora;
+    }
+
+    public void setSora(boolean sora) {
+        this.sora = sora;
+    }
+
+    public List<String> getTeachingLanguages() {
+        return teachingLanguages;
+    }
+
+    public void setTeachingLanguages(List<String> teachingLanguages) {
+        this.teachingLanguages = teachingLanguages;
     }
 
     public String getProviderName() {
@@ -125,5 +144,13 @@ public class BasketApplicationOptionDTO {
 
     public void setAttachmentDeliveryDeadline(Date attachmentDeliveryDeadline) {
         this.attachmentDeliveryDeadline = attachmentDeliveryDeadline;
+    }
+
+    public boolean isAthleteEducation() {
+        return athleteEducation;
+    }
+
+    public void setAthleteEducation(boolean athleteEducation) {
+        this.athleteEducation = athleteEducation;
     }
 }

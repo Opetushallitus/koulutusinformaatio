@@ -47,8 +47,11 @@
   All of the attributes in cores after defaultCoreName only apply when running in SolrCloud mode.
   You can read more about SolrCloud mode at http://wiki.apache.org/solr/SolrCloud
   -->
+
   <cores adminPath="/admin/cores">
-    <core name="learning_opportunity" instanceDir="learning_opportunity" />
-    <core name="provider" instanceDir="provider" />
+      <core name="learning_opportunity" instanceDir="learning_opportunity" />
+      <core name="learning_opportunity_update" instanceDir="learning_opportunity_update" />
+      <core name="provider" instanceDir="provider" />
+      <core name="provider_update" instanceDir="provider_update" />
   </cores>
 </solr>

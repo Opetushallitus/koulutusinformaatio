@@ -16,9 +16,14 @@
 
 package fi.vm.sade.koulutusinformaatio.domain.dto;
 
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import java.util.*;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 /**
  * @author Hannu Lyytikainen
@@ -26,40 +31,36 @@ import java.util.*;
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 public class ChildLearningOpportunityDTO {
 
-    private String losId;
-    private String loiId;
+    private String id;
     private String name;
     private String qualification;
     private String degreeTitle;
-    private ApplicationOptionDTO applicationOption;
+    private List<ApplicationOptionDTO> applicationOptions;
     private List<ChildLORefDTO> related = new ArrayList<ChildLORefDTO>();
 
     private Date startDate;
     private List<String> formOfEducation = new ArrayList<String>();
     private Map<String, String> webLinks;
     private List<String> formOfTeaching = new ArrayList<String>();
-    private String prerequisite;
+    private CodeDTO prerequisite;
 
     private String translationLanguage;
     private Set<String> availableTranslationLanguages = new HashSet<String>();
     private Set<String> teachingLanguages = new HashSet<String>();
+    private List<String> professionalTitles;
+    private String workingLifePlacement;
+    private String internationalization;
+    private String cooperation;
+    private String degreeGoal;
 
     private ParentLOSRefDTO parent;
 
-    public String getLosId() {
-        return losId;
+    public String getId() {
+        return id;
     }
 
-    public void setLosId(String losId) {
-        this.losId = losId;
-    }
-
-    public String getLoiId() {
-        return loiId;
-    }
-
-    public void setLoiId(String loiId) {
-        this.loiId = loiId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -70,12 +71,12 @@ public class ChildLearningOpportunityDTO {
         this.name = name;
     }
 
-    public ApplicationOptionDTO getApplicationOption() {
-        return applicationOption;
+    public List<ApplicationOptionDTO> getApplicationOptions() {
+        return applicationOptions;
     }
 
-    public void setApplicationOption(ApplicationOptionDTO applicationOption) {
-        this.applicationOption = applicationOption;
+    public void setApplicationOptions(List<ApplicationOptionDTO> applicationOptions) {
+        this.applicationOptions = applicationOptions;
     }
 
     public String getQualification() {
@@ -126,11 +127,11 @@ public class ChildLearningOpportunityDTO {
         this.formOfTeaching = formOfTeaching;
     }
 
-    public String getPrerequisite() {
+    public CodeDTO getPrerequisite() {
         return prerequisite;
     }
 
-    public void setPrerequisite(String prerequisite) {
+    public void setPrerequisite(CodeDTO prerequisite) {
         this.prerequisite = prerequisite;
     }
 
@@ -174,5 +175,45 @@ public class ChildLearningOpportunityDTO {
 
     public void setParent(ParentLOSRefDTO parent) {
         this.parent = parent;
+    }
+
+    public List<String> getProfessionalTitles() {
+        return professionalTitles;
+    }
+
+    public void setProfessionalTitles(List<String> professionalTitles) {
+        this.professionalTitles = professionalTitles;
+    }
+
+    public String getWorkingLifePlacement() {
+        return workingLifePlacement;
+    }
+
+    public void setWorkingLifePlacement(String workingLifePlacement) {
+        this.workingLifePlacement = workingLifePlacement;
+    }
+
+    public String getInternationalization() {
+        return internationalization;
+    }
+
+    public void setInternationalization(String internationalization) {
+        this.internationalization = internationalization;
+    }
+
+    public String getCooperation() {
+        return cooperation;
+    }
+
+    public void setCooperation(String cooperation) {
+        this.cooperation = cooperation;
+    }
+
+    public String getDegreeGoal() {
+        return degreeGoal;
+    }
+
+    public void setDegreeGoal(String degreeGoal) {
+        this.degreeGoal = degreeGoal;
     }
 }

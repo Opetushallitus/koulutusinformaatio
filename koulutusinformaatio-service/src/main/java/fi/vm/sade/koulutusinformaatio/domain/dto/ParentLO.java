@@ -16,10 +16,13 @@
 
 package fi.vm.sade.koulutusinformaatio.domain.dto;
 
+import fi.vm.sade.koulutusinformaatio.dao.entity.I18nTextEntity;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Mikko Majapuro
@@ -28,15 +31,17 @@ public class ParentLO {
 
     private String id;
     private I18nText name;
-    private List<ApplicationOption> applicationOptions = new ArrayList<ApplicationOption>();
+    private Set<ApplicationOption> applicationOptions = new HashSet<ApplicationOption>();
     private Provider provider;
-    private I18nText educationDegree;
-    private List<ChildLORef> childRefs = new ArrayList<ChildLORef>();
+    private String educationDegree;
     private I18nText structureDiagram;
     private I18nText accessToFurtherStudies;
+    private I18nText degreeProgramSelection;
     private I18nText goals;
     private I18nText educationDomain;
     private I18nText stydyDomain;
+    private String creditValue;
+    private I18nText creditUnit;
     private List<ParentLOI> lois = new ArrayList<ParentLOI>();
 
     public String getId() {
@@ -55,11 +60,11 @@ public class ParentLO {
         this.name = name;
     }
 
-    public List<ApplicationOption> getApplicationOptions() {
+    public Set<ApplicationOption> getApplicationOptions() {
         return applicationOptions;
     }
 
-    public void setApplicationOptions(List<ApplicationOption> applicationOptions) {
+    public void setApplicationOptions(Set<ApplicationOption> applicationOptions) {
         this.applicationOptions = applicationOptions;
     }
 
@@ -71,20 +76,12 @@ public class ParentLO {
         this.provider = provider;
     }
 
-    public I18nText getEducationDegree() {
+    public String getEducationDegree() {
         return educationDegree;
     }
 
-    public void setEducationDegree(I18nText educationDegree) {
+    public void setEducationDegree(String educationDegree) {
         this.educationDegree = educationDegree;
-    }
-
-    public List<ChildLORef> getChildRefs() {
-        return childRefs;
-    }
-
-    public void setChildRefs(List<ChildLORef> childRefs) {
-        this.childRefs = childRefs;
     }
 
     public I18nText getStructureDiagram() {
@@ -101,6 +98,14 @@ public class ParentLO {
 
     public void setAccessToFurtherStudies(I18nText accessToFurtherStudies) {
         this.accessToFurtherStudies = accessToFurtherStudies;
+    }
+
+    public I18nText getDegreeProgramSelection() {
+        return degreeProgramSelection;
+    }
+
+    public void setDegreeProgramSelection(I18nText degreeProgramSelection) {
+        this.degreeProgramSelection = degreeProgramSelection;
     }
 
     public I18nText getGoals() {
@@ -133,5 +138,21 @@ public class ParentLO {
 
     public void setLois(List<ParentLOI> lois) {
         this.lois = lois;
+    }
+
+    public String getCreditValue() {
+        return creditValue;
+    }
+
+    public void setCreditValue(String creditValue) {
+        this.creditValue = creditValue;
+    }
+
+    public I18nText getCreditUnit() {
+        return creditUnit;
+    }
+
+    public void setCreditUnit(I18nText creditUnit) {
+        this.creditUnit = creditUnit;
     }
 }

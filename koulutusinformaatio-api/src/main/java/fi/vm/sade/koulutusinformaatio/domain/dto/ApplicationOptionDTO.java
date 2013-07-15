@@ -29,16 +29,21 @@ public class ApplicationOptionDTO {
 
     private String id;
     private String name;
+    private String aoIdentifier;
     private ApplicationSystemDTO applicationSystem;
     private Integer startingQuota;
     private Integer lowestAcceptedScore;
     private Double lowestAcceptedAverage;
     private Date attachmentDeliveryDeadline;
+    private AddressDTO attachmentDeliveryAddress;
     private Integer lastYearApplicantCount;
     private boolean sora;
     private String educationDegree;
     private List<String> teachingLanguages;
     private String selectionCriteria;
+    private CodeDTO prerequisite;
+    private List<ExamDTO> exams;
+    private LearningOpportunityProviderDTO provider;
 
     public String getId() {
         return id;
@@ -54,6 +59,14 @@ public class ApplicationOptionDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getAoIdentifier() {
+        return aoIdentifier;
+    }
+
+    public void setAoIdentifier(String aoIdentifier) {
+        this.aoIdentifier = aoIdentifier;
     }
 
     public ApplicationSystemDTO getApplicationSystem() {
@@ -96,6 +109,14 @@ public class ApplicationOptionDTO {
         this.attachmentDeliveryDeadline = attachmentDeliveryDeadline;
     }
 
+    public AddressDTO getAttachmentDeliveryAddress() {
+        return attachmentDeliveryAddress;
+    }
+
+    public void setAttachmentDeliveryAddress(AddressDTO attachmentDeliveryAddress) {
+        this.attachmentDeliveryAddress = attachmentDeliveryAddress;
+    }
+
     public Integer getLastYearApplicantCount() {
         return lastYearApplicantCount;
     }
@@ -134,5 +155,29 @@ public class ApplicationOptionDTO {
 
     public void setSelectionCriteria(String selectionCriteria) {
         this.selectionCriteria = selectionCriteria;
+    }
+
+    public CodeDTO getPrerequisite() {
+        return prerequisite;
+    }
+
+    public void setPrerequisite(CodeDTO prerequisite) {
+        this.prerequisite = prerequisite;
+    }
+
+    public List<ExamDTO> getExams() {
+        return exams;
+    }
+
+    public void setExams(List<ExamDTO> exams) {
+        this.exams = exams;
+    }
+
+    public LearningOpportunityProviderDTO getProvider() {
+        return provider;
+    }
+
+    public void setProvider(LearningOpportunityProviderDTO provider) {
+        this.provider = provider;
     }
 }

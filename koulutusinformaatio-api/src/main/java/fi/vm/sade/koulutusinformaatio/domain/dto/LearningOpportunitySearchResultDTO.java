@@ -32,6 +32,8 @@ public class LearningOpportunitySearchResultDTO {
     private String lopName;
     private String parentId;
     private String losId;
+    private boolean asOngoing;
+    private DateRangeDTO nextAs;
 
     public String getId() {
         return id;
@@ -79,5 +81,21 @@ public class LearningOpportunitySearchResultDTO {
 
     public void setLosId(String losId) {
         this.losId = losId;
+    }
+
+    public boolean isAsOngoing() {
+        return asOngoing;
+    }
+
+    public void setAsOngoing(boolean asOngoing) {
+        this.asOngoing = asOngoing;
+    }
+
+    public DateRangeDTO getNextAs() {
+        return nextAs;
+    }
+
+    public void setNextAs(DateRangeDTO nextAs) {
+        this.nextAs = nextAs;
     }
 }

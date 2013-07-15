@@ -17,6 +17,8 @@
 package fi.vm.sade.koulutusinformaatio.domain;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -35,6 +37,16 @@ public class Provider {
     private String email;
     private String fax;
     private String phone;
+    private I18nText description;
+    private I18nText healthcare;
+    private I18nText accessibility;
+    private I18nText learningEnvironment;
+    private I18nText dining;
+    private I18nText livingExpenses;
+    private List<Social> social;
+    private Picture picture;
+    private boolean athleteEducation;
+    private String placeOfBusinessCode;
 
 
     public Provider(String id, I18nText name) {
@@ -114,5 +126,85 @@ public class Provider {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public I18nText getDescription() {
+        return description;
+    }
+
+    public void setDescription(I18nText description) {
+        this.description = description;
+    }
+
+    public I18nText getHealthcare() {
+        return healthcare;
+    }
+
+    public void setHealthcare(I18nText healthcare) {
+        this.healthcare = healthcare;
+    }
+
+    public I18nText getAccessibility() {
+        return accessibility;
+    }
+
+    public void setAccessibility(I18nText accessibility) {
+        this.accessibility = accessibility;
+    }
+
+    public I18nText getLearningEnvironment() {
+        return learningEnvironment;
+    }
+
+    public void setLearningEnvironment(I18nText learningEnvironment) {
+        this.learningEnvironment = learningEnvironment;
+    }
+
+    public I18nText getDining() {
+        return dining;
+    }
+
+    public void setDining(I18nText dining) {
+        this.dining = dining;
+    }
+
+    public I18nText getLivingExpenses() {
+        return livingExpenses;
+    }
+
+    public void setLivingExpenses(I18nText livingExpenses) {
+        this.livingExpenses = livingExpenses;
+    }
+
+    public List<Social> getSocial() {
+        return social;
+    }
+
+    public void setSocial(List<Social> social) {
+        this.social = social;
+    }
+
+    public Picture getPicture() {
+        return picture;
+    }
+
+    public void setPicture(Picture picture) {
+        this.picture = picture;
+    }
+
+    public boolean isAthleteEducation() {
+        return athleteEducation;
+    }
+
+    public void setAthleteEducation(boolean athleteEducation) {
+        this.athleteEducation = athleteEducation;
+    }
+
+    public String getPlaceOfBusinessCode() {
+        return placeOfBusinessCode;
+    }
+
+    public void setPlaceOfBusinessCode(String placeOfBusinessCode) {
+        this.placeOfBusinessCode = placeOfBusinessCode;
     }
 }

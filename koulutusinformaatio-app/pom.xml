@@ -5,7 +5,7 @@
     <parent>
         <artifactId>koulutusinformaatio</artifactId>
         <groupId>fi.vm.sade.koulutusinformaatio</groupId>
-        <version>5.0-SNAPSHOT</version>
+        <version>5.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>koulutusinformaatio-app</artifactId>
@@ -113,6 +113,10 @@
                     <groupId>org.springframework</groupId>
                     <artifactId>spring-context</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-aop</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
@@ -183,23 +187,6 @@
                         <!--<solr.solr.home>${project.build.directory}/classes/solr</solr.solr.home>-->
                     <!--</systemProperties>-->
                 </configuration>
-                <!--<dependencies>-->
-                <!--<dependency>-->
-                <!--<groupId>net.java.dev.jna</groupId>-->
-                <!--<artifactId>jna</artifactId>-->
-                <!--<version>3.5.2</version>-->
-                <!--</dependency>-->
-                <!--<dependency>-->
-                <!--<groupId>org.puimula</groupId>-->
-                <!--<artifactId>libvoikko</artifactId>-->
-                <!--<version>3.2</version>-->
-                <!--</dependency>-->
-                <!--<dependency>-->
-                <!--<groupId>fi.nationallibrary.ndl</groupId>-->
-                <!--<artifactId>solrvoikko</artifactId>-->
-                <!--<version>0.0.2-SNAPSHOT</version>-->
-                <!--</dependency>-->
-                <!--</dependencies>-->
             </plugin>
         </plugins>
     </build>

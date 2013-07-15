@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.dao.entity;
 
 import java.util.List;
+import java.util.Set;
 
 import com.google.code.morphia.annotations.Embedded;
 import com.google.code.morphia.annotations.Entity;
@@ -34,17 +35,15 @@ public class ParentLearningOpportunitySpecificationEntity {
     @Embedded
     private I18nTextEntity name;
     @Embedded
-    private I18nTextEntity educationDegree;
-    @Reference(lazy = true)
-    private List<ChildLearningOpportunitySpecificationEntity> children;
-    @Embedded
-    private List<ChildLORefEntity> childRefs;
+    private String educationDegree;
     @Reference
-    private List<ApplicationOptionEntity> applicationOptions;
+    private Set<ApplicationOptionEntity> applicationOptions;
     @Reference
     private LearningOpportunityProviderEntity provider;
     @Embedded
     private I18nTextEntity structureDiagram;
+    @Embedded
+    private I18nTextEntity degreeProgramSelection;
     @Embedded
     private I18nTextEntity accessToFurtherStudies;
     @Embedded
@@ -53,6 +52,9 @@ public class ParentLearningOpportunitySpecificationEntity {
     private I18nTextEntity educationDomain;
     @Embedded
     private I18nTextEntity stydyDomain;
+    private String creditValue;
+    @Embedded
+    private I18nTextEntity creditUnit;
     @Embedded
     private List<ParentLearningOpportunityInstanceEntity> lois;
 
@@ -76,35 +78,19 @@ public class ParentLearningOpportunitySpecificationEntity {
         this.name = name;
     }
 
-    public I18nTextEntity getEducationDegree() {
+    public String getEducationDegree() {
         return educationDegree;
     }
 
-    public void setEducationDegree(I18nTextEntity educationDegree) {
+    public void setEducationDegree(String educationDegree) {
         this.educationDegree = educationDegree;
     }
 
-    public List<ChildLearningOpportunitySpecificationEntity> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<ChildLearningOpportunitySpecificationEntity> children) {
-        this.children = children;
-    }
-
-    public List<ChildLORefEntity> getChildRefs() {
-        return childRefs;
-    }
-
-    public void setChildRefs(List<ChildLORefEntity> childRefs) {
-        this.childRefs = childRefs;
-    }
-
-    public List<ApplicationOptionEntity> getApplicationOptions() {
+    public Set<ApplicationOptionEntity> getApplicationOptions() {
         return applicationOptions;
     }
 
-    public void setApplicationOptions(List<ApplicationOptionEntity> applicationOptions) {
+    public void setApplicationOptions(Set<ApplicationOptionEntity> applicationOptions) {
         this.applicationOptions = applicationOptions;
     }
 
@@ -122,6 +108,14 @@ public class ParentLearningOpportunitySpecificationEntity {
 
     public void setStructureDiagram(I18nTextEntity structureDiagram) {
         this.structureDiagram = structureDiagram;
+    }
+
+    public I18nTextEntity getDegreeProgramSelection() {
+        return degreeProgramSelection;
+    }
+
+    public void setDegreeProgramSelection(I18nTextEntity degreeProgramSelection) {
+        this.degreeProgramSelection = degreeProgramSelection;
     }
 
     public I18nTextEntity getAccessToFurtherStudies() {
@@ -162,5 +156,21 @@ public class ParentLearningOpportunitySpecificationEntity {
 
     public void setLois(List<ParentLearningOpportunityInstanceEntity> lois) {
         this.lois = lois;
+    }
+
+    public String getCreditValue() {
+        return creditValue;
+    }
+
+    public void setCreditValue(String creditValue) {
+        this.creditValue = creditValue;
+    }
+
+    public I18nTextEntity getCreditUnit() {
+        return creditUnit;
+    }
+
+    public void setCreditUnit(I18nTextEntity creditUnit) {
+        this.creditUnit = creditUnit;
     }
 }

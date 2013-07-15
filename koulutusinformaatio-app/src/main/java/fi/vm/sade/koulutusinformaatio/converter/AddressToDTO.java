@@ -28,6 +28,7 @@ public class AddressToDTO {
         if (address != null) {
             AddressDTO addrs = new AddressDTO();
             addrs.setStreetAddress(address.getStreetAddress());
+            addrs.setStreetAddress2(address.getStreetAddress2());
             addrs.setPostalCode(address.getPostalCode());
             addrs.setPostOffice(address.getPostOffice());
             return addrs;

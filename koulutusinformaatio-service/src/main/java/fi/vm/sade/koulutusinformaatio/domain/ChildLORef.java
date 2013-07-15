@@ -18,41 +18,34 @@ package fi.vm.sade.koulutusinformaatio.domain;
 
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 
+import java.util.List;
+
 /**
  * @author Mikko Majapuro
  */
 public class ChildLORef {
 
-    private String losId;
-    private String loiId;
-    private String asId;
+    private String childLOId;
+    private List<String> asIds;
     private I18nText name;
     private String nameByTeachingLang;
     private I18nText qualification;
-    private I18nText prerequisite;
+    private Code prerequisite;
 
-    public String getLosId() {
-        return losId;
+    public String getChildLOId() {
+        return childLOId;
     }
 
-    public void setLosId(String losId) {
-        this.losId = losId;
+    public void setChildLOId(String childLOId) {
+        this.childLOId = childLOId;
     }
 
-    public String getLoiId() {
-        return loiId;
+    public List<String> getAsIds() {
+        return asIds;
     }
 
-    public void setLoiId(String loiId) {
-        this.loiId = loiId;
-    }
-
-    public String getAsId() {
-        return asId;
-    }
-
-    public void setAsId(String asId) {
-        this.asId = asId;
+    public void setAsIds(List<String> asIds) {
+        this.asIds = asIds;
     }
 
     public I18nText getName() {
@@ -79,11 +72,11 @@ public class ChildLORef {
         this.qualification = qualification;
     }
 
-    public I18nText getPrerequisite() {
+    public Code getPrerequisite() {
         return prerequisite;
     }
 
-    public void setPrerequisite(I18nText prerequisite) {
+    public void setPrerequisite(Code prerequisite) {
         this.prerequisite = prerequisite;
     }
 }

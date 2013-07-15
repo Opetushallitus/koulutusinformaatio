@@ -27,6 +27,7 @@ public class ApplicationOption {
 
     private String id;
     private I18nText name;
+    private String aoIdentifier;
     private ApplicationSystem applicationSystem;
     private String educationDegree;
     private List<ChildLORef> childLORefs = new ArrayList<ChildLORef>();
@@ -39,6 +40,7 @@ public class ApplicationOption {
     private Double lowestAcceptedAverage;
     // "liitteidenToimitusPvm" : 1367874000000,
     private Date attachmentDeliveryDeadline;
+    private Address attachmentDeliveryAddress;
     // edellisenVuodenHakijatLkm
     private Integer lastYearApplicantCount;
     // onko soravaatimuksia
@@ -49,6 +51,10 @@ public class ApplicationOption {
     private ParentLORef parent;
     // valintaperustekuvaus
     private I18nText selectionCriteria;
+    private Code prerequisite;
+    // base educations, one of these is required to be able to apply to this application option
+    private List<String> requiredBaseEducations;
+    private List<Exam> exams;
 
     public String getId() {
         return id;
@@ -60,6 +66,14 @@ public class ApplicationOption {
 
     public I18nText getName() {
         return name;
+    }
+
+    public String getAoIdentifier() {
+        return aoIdentifier;
+    }
+
+    public void setAoIdentifier(String aoIdentifier) {
+        this.aoIdentifier = aoIdentifier;
     }
 
     public void setName(I18nText name) {
@@ -130,6 +144,14 @@ public class ApplicationOption {
         this.attachmentDeliveryDeadline = attachmentDeliveryDeadline;
     }
 
+    public Address getAttachmentDeliveryAddress() {
+        return attachmentDeliveryAddress;
+    }
+
+    public void setAttachmentDeliveryAddress(Address attachmentDeliveryAddress) {
+        this.attachmentDeliveryAddress = attachmentDeliveryAddress;
+    }
+
     public Integer getLastYearApplicantCount() {
         return lastYearApplicantCount;
     }
@@ -168,5 +190,46 @@ public class ApplicationOption {
 
     public void setSelectionCriteria(I18nText selectionCriteria) {
         this.selectionCriteria = selectionCriteria;
+    }
+
+    public Code getPrerequisite() {
+        return prerequisite;
+    }
+
+    public void setPrerequisite(Code prerequisite) {
+        this.prerequisite = prerequisite;
+    }
+
+    public List<String> getRequiredBaseEducations() {
+        return requiredBaseEducations;
+    }
+
+    public void setRequiredBaseEducations(List<String> requiredBaseEducations) {
+        this.requiredBaseEducations = requiredBaseEducations;
+    }
+
+    public List<Exam> getExams() {
+        return exams;
+    }
+
+    public void setExams(List<Exam> exams) {
+        this.exams = exams;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ApplicationOption that = (ApplicationOption) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 }

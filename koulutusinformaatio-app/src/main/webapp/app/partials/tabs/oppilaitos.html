@@ -1,40 +1,20 @@
-<section class="grid16-10 no-left-gutter" id="wide-column">
+<section class="grid16-10 no-left-gutter wide-column">
 
-    <div class="ribbon">
+    <div class="ribbon margin-bottom-2">
         <ul class="ribbon-content">
-            <li><a ng-click="scrollToAnchor('oppilaitos-anchor')" data-ki-i18n="academy-description"></a></li>
-            <li><a ng-click="scrollToAnchor('edut-anchor')"data-ki-i18n="accessibility-and-benefits"></a></li>
-            <li><a ng-click="scrollToAnchor('yhteystiedot-anchor')" data-ki-i18n="contact-information"></a></li>
+            <li><a data-ng-click="scrollToAnchor('oppilaitos-anchor')" data-ki-i18n="academy-description"></a></li>
+            <li><a data-ng-click="scrollToAnchor('edut-anchor')" data-ki-i18n="accessibility-and-benefits"></a></li>
+            <li><a data-ng-click="scrollToAnchor('yhteystiedot-anchor')" data-ki-i18n="contact-information"></a></li>
         </ul>
     </div>
-    <figure>
-        <img src="img/content/bulevardi31.png" alt="Oppilaitos" />
+    <div data-ki-language-ribbon class="ribbon margin-bottom-2"></div>
+    <figure data-ki-render-organization-image>
     </figure>
-    <div data-ki-language-ribbon class="ribbon"></div>
-    <div render-text-block data-title="{{parentLO.provider.name}} {{parentLO.educationDomain}}" data-content="{{lorem}}" data-anchor="oppilaitos-anchor"></div>
-    <div render-text-block data-title="learning-environment-info" data-content="{{loremshort}}" data-level="4"></div>
-    <div render-text-block data-title="accessibility-and-learning-support" data-content="{{loremshort}}" data-level="4"></div>
-    <div render-text-block data-title="student-benefits" data-content="{{lorem}}" data-anchor="edut-anchor"></div>
-    <div render-text-block data-title="living-expenses" data-content="{{loremshort}}" data-level="4"></div>
-    <div render-text-block data-title="student-dining" data-content="{{loremshort}}" data-level="4"></div>
-    <div render-text-block data-title="health-care-services" data-content="{{loremshort}}" data-level="4"></div>
-    <div render-text-block data-title="contact-information" data-content="{{lorem}}" data-anchor="yhteystiedot-anchor"></div>
-    <!--
-    <p><a href="#">Oppilaitoksen omat sivut</a></p>
-    <p>
-        Hakutoimisto<br/>
-        Latokartanontie 16, 00700 Helsinki<br/>
-        PL 3925, 00099 Helsingin kaupunki<br/>
-        Opintosihteeri Anja Telin<br/>
-        anja.telin(at)edu.hel.fi<br/>
-        puh. 310 81321
-    </p>
-    -->
+    <div data-ki-social-links></div>
+
+    <div data-ki-render-organization="parentLO.provider" data-anchor="oppilaitos-anchor"></div>
+    <div data-ki-render-student-benefits="parentLO.provider" data-anchor="edut-anchor"></div>
+    <div data-ki-render-contact-info="parentLO.provider" data-anchor="yhteystiedot-anchor"></div>
 </section>
-<aside class="grid16-6 no-right-gutter">
-    <div class="sideitem margin-bottom-3 margin-top-2">
-        <span data-ki-i18n="see-also"></span><a href="#/haku/{{parentLO.provider.name}}">{{parentLO.provider.name}}</a>
-    </div>
-</aside>
-<div class="clear"></div>
+<!-- <div class="clear"></div> -->
 </div>

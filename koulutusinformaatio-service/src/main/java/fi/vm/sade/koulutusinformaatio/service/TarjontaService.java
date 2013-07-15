@@ -34,7 +34,7 @@ public interface TarjontaService {
      * @param oid
      * @return
      */
-    public ParentLOS findParentLearningOpportunity(String oid) throws TarjontaParseException, KoodistoException;
+    public List<ParentLOS> findParentLearningOpportunity(String oid) throws TarjontaParseException, KoodistoException;
 
     /**
      * Returns a list of all parent learning opportunity oids.

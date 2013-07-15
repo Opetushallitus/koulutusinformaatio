@@ -35,6 +35,7 @@ public class ApplicationOptionEntity {
     private String id;
     @Embedded
     private I18nTextEntity name;
+    private String aoIdentifier;
     @Embedded
     private ApplicationSystemEntity applicationSystem;
     private String educationDegree;
@@ -46,12 +47,20 @@ public class ApplicationOptionEntity {
     private Integer lowestAcceptedScore;
     private Double lowestAcceptedAverage;
     private Date attachmentDeliveryDeadline;
+    @Embedded
+    private AddressEntity attachmentDeliveryAddress;
     private Integer lastYearApplicantCount;
     private boolean sora;
     private List<String> teachingLanguages;
     @Embedded
     private ParentLOSRefEntity parent;
+    @Embedded
     private I18nTextEntity selectionCriteria;
+    @Embedded
+    private CodeEntity prerequisite;
+    private List<String> requiredBaseEducations;
+    @Embedded
+    private List<ExamEntity> exams;
 
     public ApplicationOptionEntity() {
 
@@ -71,6 +80,14 @@ public class ApplicationOptionEntity {
 
     public void setName(I18nTextEntity name) {
         this.name = name;
+    }
+
+    public String getAoIdentifier() {
+        return aoIdentifier;
+    }
+
+    public void setAoIdentifier(String aoIdentifier) {
+        this.aoIdentifier = aoIdentifier;
     }
 
     public ApplicationSystemEntity getApplicationSystem() {
@@ -137,6 +154,14 @@ public class ApplicationOptionEntity {
         this.attachmentDeliveryDeadline = attachmentDeliveryDeadline;
     }
 
+    public AddressEntity getAttachmentDeliveryAddress() {
+        return attachmentDeliveryAddress;
+    }
+
+    public void setAttachmentDeliveryAddress(AddressEntity attachmentDeliveryAddress) {
+        this.attachmentDeliveryAddress = attachmentDeliveryAddress;
+    }
+
     public Integer getLastYearApplicantCount() {
         return lastYearApplicantCount;
     }
@@ -175,5 +200,29 @@ public class ApplicationOptionEntity {
 
     public void setSelectionCriteria(I18nTextEntity selectionCriteria) {
         this.selectionCriteria = selectionCriteria;
+    }
+
+    public CodeEntity getPrerequisite() {
+        return prerequisite;
+    }
+
+    public void setPrerequisite(CodeEntity prerequisite) {
+        this.prerequisite = prerequisite;
+    }
+
+    public List<String> getRequiredBaseEducations() {
+        return requiredBaseEducations;
+    }
+
+    public void setRequiredBaseEducations(List<String> requiredBaseEducations) {
+        this.requiredBaseEducations = requiredBaseEducations;
+    }
+
+    public List<ExamEntity> getExams() {
+        return exams;
+    }
+
+    public void setExams(List<ExamEntity> exams) {
+        this.exams = exams;
     }
 }

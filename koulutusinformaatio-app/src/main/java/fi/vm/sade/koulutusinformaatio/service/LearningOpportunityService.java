@@ -16,12 +16,10 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
-import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionSearchResultDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.BasketItemDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunityDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,11 +31,18 @@ public interface LearningOpportunityService {
 
     ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(String parentId, String lang) throws ResourceNotFoundException;
 
-    ChildLearningOpportunityDTO getChildLearningOpportunity(String parentId, String closId, String cloiId) throws ResourceNotFoundException;
+    ChildLearningOpportunityDTO getChildLearningOpportunity(String cloId) throws ResourceNotFoundException;
 
-    ChildLearningOpportunityDTO getChildLearningOpportunity(String parentId, String closId, String cloiId, String lang) throws ResourceNotFoundException;
+    ChildLearningOpportunityDTO getChildLearningOpportunity(String cloId, String lang) throws ResourceNotFoundException;
 
-    List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, String lopId);
+    List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, String lopId, String baseEducation);
+
+    ApplicationOptionDTO getApplicationOption(String aoId, String lang) throws ResourceNotFoundException;
+    List<ApplicationOptionDTO> getApplicationOptions(List<String> aoId, String lang);
 
     List<BasketItemDTO> getBasketItems(List<String> aoId, String lang);
+
+    Date getLastDataUpdated();
+
+    PictureDTO getPicture(final String id) throws ResourceNotFoundException;
 }

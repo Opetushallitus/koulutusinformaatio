@@ -22,6 +22,7 @@ package fi.vm.sade.koulutusinformaatio.domain;
 public class Address {
 
     private String streetAddress;
+    private String streetAddress2;
     private String postalCode;
     private String postOffice;
 
@@ -31,6 +32,14 @@ public class Address {
 
     public void setStreetAddress(String streetAddress) {
         this.streetAddress = streetAddress;
+    }
+
+    public String getStreetAddress2() {
+        return streetAddress2;
+    }
+
+    public void setStreetAddress2(String streetAddress2) {
+        this.streetAddress2 = streetAddress2;
     }
 
     public String getPostalCode() {

@@ -1,35 +1,94 @@
-<aside class="grid16-6 no-right-gutter margin-top-2">
-    <div class="sideitem margin-bottom-3 hidden">
-        <span data-ki-i18n="directly-applicable"></span>
-        <ul>
-            <li><a href="#">Ensihoidon koulutusohjelma</a></li>
-        </ul>
+<div data-ng-switch="hasApplicationOptions">
+    <div data-ng-switch-when="true">
+        <aside class="grid16-6 no-right-gutter margin-top-2">
+            <!--
+            <div class="sideitem margin-bottom-3 hidden">
+                <span data-ki-i18n="directly-applicable"></span>
+                <ul>
+                    <li><a href="#">Ensihoidon koulutusohjelma</a></li>
+                </ul>
+            </div>
+            -->
+            <div class="sideitem margin-bottom-3">
+                <span data-ki-i18n="application-title"></span>
+                <span class="bold">{{parentLO.applicationSystem.name}}</span>
+            </div>
+            <div class="sideitem margin-bottom-3">
+                <span data-ki-i18n="application-period"></span>
+                <span class="bold">
+                    <span data-ki-timestamp="{{parentLO.applicationSystem.applicationDates.startDate}}"></span> - <span data-ki-timestamp="{{parentLO.applicationSystem.applicationDates.endDate}}"></span>
+                </span>
+            </div>
+            <form name="levelSelectionForm" action="/haku-app/lomake/{{asId}}/yhteishaku" method="POST">
+                <h4 class="margin-bottom-0" data-ki-i18n="application-prerequisite"></h4>
+                <ul class="margin-bottom-2">
+                    <li data-ng-repeat="ao in parentLO.applicationOptions">
+                        <input 
+                            type="radio" 
+                            name="preference1-Koulutus-id" 
+                            id="input{{$index}}" 
+                            value="{{ao.id}}" 
+                            data-ng-change="changePrerequisiteSelection(ao.prerequisite, ao.id)" 
+                            data-ng-model="selectedAo.id"
+                            data-ng-class="showApplicationRadioSelection" />
+                        <label for="input{{$index}}">{{ao.prerequisite.description}}</label>
+                    </li>
+                </ul>
+                <input 
+                    type="hidden" 
+                    name="preference1-Opetuspiste" 
+                    value="{{parentLO.provider.name}}" />
+                <input 
+                    type="hidden" 
+                    name="preference1-Opetuspiste-id" 
+                    value="{{parentLO.provider.id}}" />
+                <input 
+                    type="hidden" 
+                    name="preference1-Koulutus" 
+                    value="{{selectedAo.name}}" 
+                    data-ng-model="selectedAo.name" />
+                <input 
+                    type="hidden" 
+                    name="preference1-Koulutus-educationDegree" 
+                    value="{{parentLO.educationDegree}}" />
+                <input 
+                    type="hidden" 
+                    name="preference1-Koulutus-id-sora" 
+                    value="{{selectedAo.sora}}" 
+                    data-ng-model="selectedAo.sora" />
+                <input 
+                    type="hidden" 
+                    name="preference1-Koulutus-id-lang" 
+                    value="{{selectedAo.teachLang}}" 
+                    data-ng-model="selectedAo.teachLang" />
+                <input
+                    type="hidden"
+                    name="preference1-Koulutus-id-athlete"
+                    value="{{parentLO.provider.athleteEducation}}" />
+                <button type="submit" data-ng-disabled="!applicationSystemIsActive()">
+                    <span>
+                        <span data-ki-i18n="apply-button-label"></span>
+                    </span>
+                </button>
+
+                <button 
+                    type="button" 
+                    id="addToBasket" 
+                    class="primary" 
+                    data-popover-placement="bottom" 
+                    data-popover-html-unsafe="{{popoverContent}}" 
+                    data-popover-title="{{popoverTitle}}" 
+                    data-popover-trigger="click"
+                    data-ng-click="addToBasket(aoId)">
+                    <span>
+                        <span data-ki-i18n="add-to-basket-label"></span>
+                    </span>
+                </button>
+                <div class="margin-top-2"
+                    data-ki-render-application-system-active 
+                    data-start-date="{{parentLO.applicationSystem.applicationDates.startDate}}"
+                    data-end-date="{{parentLO.applicationSystem.applicationDates.endDate}}"></div>
+            </form>
+        </aside>
     </div>
-    <div class="sideitem margin-bottom-3">
-        <span data-ki-i18n="application-title"></span>
-        <span class="bold">Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku, kevät 2014</span>
-    </div>
-    <div class="sideitem margin-bottom-3">
-        <span data-ki-i18n="application-period"></span>
-        <span class="bold">3.4.2013 - 31.5.2013</span>
-    </div>
-    <form name="level-selection-form" action="/haku-app/lomake/{{asId}}/yhteishaku" method="POST" ng-controller="ApplicationCtrl">
-        <form name="level-selection-form" action="" method="POST">
-        <ul class="margin-bottom-2">
-            <li>
-                <input type="radio" name="input1" id="input1" /><label for="input1" data-ki-i18n="elementary-based"></label>
-            </li>
-            <li>
-                <input type="radio" name="input1" id="input2" /><label for="input2" data-ki-i18n="secondary-school-based"></label>
-            </li>
-        </ul>
-        <input type="hidden" name="preference1-Opetuspiste" value="{{parentLO.provider.name}}"/>
-        <input type="hidden" name="preference1-Opetuspiste-id" value="{{parentLO.provider.id}}"/>
-        <input type="hidden" name="preference1-Koulutus" value="{{parentLO.applicationOptions[0].name}}"/>
-        <input type="hidden" name="preference1-Koulutus-id" value="{{parentLO.applicationOptions[0].id}}"/>
-        <input type="hidden" name="preference1-Koulutus-educationDegree" value="{{parentLO.educationDegree}}"/>
-        <!--<input type="hidden" name="enabling-submit"/>-->
-        <button type="submit" class="primary"><span><span data-ki-i18n="apply-button-label"></span></span></button>
-        <div class="inline" ng-click="addToBasket(aoId)"><button type="button" id="addToBasket" popover-placement="bottom" popover-html-unsafe="<a href='#/muistilista'>Katso muistilista</a>" popover-title="Koulutus lisätty muistilistalle" popover-trigger="click"><span><span data-ki-i18n="add-to-basket-label"></span></span></button></div>
-    </form>
-</aside>
+</div>

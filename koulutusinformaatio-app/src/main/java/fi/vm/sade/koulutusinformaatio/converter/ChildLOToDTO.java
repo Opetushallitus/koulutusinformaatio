@@ -16,10 +16,13 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunityDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLOSRefDTO;
 
 /**
  * @author Mikko Majapuro
@@ -28,13 +31,17 @@ public class ChildLOToDTO {
 
     public static ChildLearningOpportunityDTO convert(final ChildLO childLO, final String lang) {
         ChildLearningOpportunityDTO child = new ChildLearningOpportunityDTO();
-        child.setLosId(childLO.getLosId());
-        child.setLoiId(childLO.getLoiId());
+        child.setId(childLO.getId());
         child.setName(ConverterUtil.getTextByLanguage(childLO.getName(), lang));
         child.setDegreeTitle(ConverterUtil.getTextByLanguage(childLO.getDegreeTitle(), lang));
         child.setQualification(ConverterUtil.getTextByLanguage(childLO.getQualification(), lang));
         child.setAvailableTranslationLanguages(ConverterUtil.getAvailableTranslationLanguages(childLO.getName()));
-        child.setApplicationOption(ApplicationOptionToDTO.convert(childLO.getApplicationOption(), lang));
+        child.setApplicationOptions(Lists.transform(childLO.getApplicationOptions(), new Function<ApplicationOption, ApplicationOptionDTO>() {
+            @Override
+            public ApplicationOptionDTO apply(fi.vm.sade.koulutusinformaatio.domain.ApplicationOption input) {
+                return ApplicationOptionToDTO.convert(input, lang);
+            }
+        }));
         child.setStartDate(childLO.getStartDate());
         if (childLO.getTeachingLanguages() != null) {
             for (Code code : childLO.getTeachingLanguages()) {
@@ -46,8 +53,14 @@ public class ChildLOToDTO {
         child.setFormOfTeaching(ConverterUtil.getTextsByLanguage(childLO.getFormOfTeaching(), lang));
         child.setWebLinks(childLO.getWebLinks());
         child.setFormOfEducation(ConverterUtil.getTextsByLanguage(childLO.getFormOfEducation(), lang));
-        child.setPrerequisite(ConverterUtil.getTextByLanguage(childLO.getPrerequisite(), lang));
+        child.setPrerequisite(CodeToDTO.convert(childLO.getPrerequisite(), lang));
         child.setTranslationLanguage(lang);
+        child.setProfessionalTitles(ConverterUtil.getTextsByLanguage(childLO.getProfessionalTitles(), lang));
+        child.setWorkingLifePlacement(ConverterUtil.getTextByLanguage(childLO.getWorkingLifePlacement(), lang));
+        child.setInternationalization(ConverterUtil.getTextByLanguage(childLO.getInternationalization(), lang));
+        child.setCooperation(ConverterUtil.getTextByLanguage(childLO.getCooperation(), lang));
+        child.setDegreeGoal(ConverterUtil.getTextByLanguage(childLO.getDegreeGoal(), lang));
+
         return child;
     }
 

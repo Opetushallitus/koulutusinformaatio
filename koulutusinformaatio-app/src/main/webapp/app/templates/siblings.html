@@ -1,0 +1,6 @@
+<ul class="ribbon-content">
+	<li data-ng-repeat="sibling in childLO.related" >
+		<a href="#/koulutusohjelma/{{sibling.childLOId}}" ng-class="siblingClass(sibling)">{{sibling.name}}</a>
+	</li>
+</ul>
+        

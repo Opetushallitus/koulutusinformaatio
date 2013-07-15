@@ -24,6 +24,7 @@ import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLORefDTO;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -39,15 +40,15 @@ public class ChildLORefToDTO {
                 children.add(child);
             }
         }
+        Collections.sort(children);
         return children;
     }
 
     public static ChildLORefDTO convert(final ChildLORef ref, final String lang) {
         ChildLORefDTO child = new ChildLORefDTO();
-        child.setLosId(ref.getLosId());
-        child.setLoiId(ref.getLoiId());
-        child.setAsId(ref.getAsId());
-        child.setPrerequisite(ConverterUtil.getTextByLanguageUseFallbackLang(ref.getPrerequisite(), lang));
+        child.setChildLOId(ref.getChildLOId());
+        child.setAsIds(ref.getAsIds());
+        child.setPrerequisite(CodeToDTO.convert(ref.getPrerequisite(), lang));
         child.setQualification(ConverterUtil.getTextByLanguageUseFallbackLang(ref.getQualification(), lang));
         if (!Strings.isNullOrEmpty(ref.getNameByTeachingLang())) {
             child.setName(ref.getNameByTeachingLang());

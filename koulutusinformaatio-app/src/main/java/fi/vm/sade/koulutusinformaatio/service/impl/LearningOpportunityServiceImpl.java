@@ -18,19 +18,19 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import fi.vm.sade.koulutusinformaatio.converter.ApplicationOptionToSearchResultDTO;
-import fi.vm.sade.koulutusinformaatio.converter.ApplicationOptionsToBasketItemDTOs;
-import fi.vm.sade.koulutusinformaatio.converter.ChildLOToDTO;
-import fi.vm.sade.koulutusinformaatio.converter.ParentLOToDTO;
+import fi.vm.sade.koulutusinformaatio.converter.*;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
+import fi.vm.sade.koulutusinformaatio.domain.Picture;
 import fi.vm.sade.koulutusinformaatio.domain.dto.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.koulutusinformaatio.service.EducationDataService;
+import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -39,43 +39,45 @@ import java.util.List;
 @Service
 public class LearningOpportunityServiceImpl implements LearningOpportunityService {
 
-    private EducationDataService educationDataService;
+    private EducationDataQueryService educationDataQueryService;
+    private ModelMapper modelMapper;
     private static final String LANG_FI = "fi";
 
     @Autowired
-    public LearningOpportunityServiceImpl(EducationDataService educationDataService) {
-        this.educationDataService = educationDataService;
+    public LearningOpportunityServiceImpl(EducationDataQueryService educationDataQueryService, ModelMapper modelMapper) {
+        this.educationDataQueryService = educationDataQueryService;
+        this.modelMapper = modelMapper;
     }
 
     @Override
     public ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(String parentId) throws ResourceNotFoundException {
-        ParentLO parentLO = educationDataService.getParentLearningOpportunity(parentId);
+        ParentLO parentLO = educationDataQueryService.getParentLearningOpportunity(parentId);
         String lang = resolveDefaultLanguage(parentLO);
         return ParentLOToDTO.convert(parentLO, lang);
     }
 
     @Override
     public ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(String parentId, String lang) throws ResourceNotFoundException {
-        ParentLO parentLO = educationDataService.getParentLearningOpportunity(parentId);
+        ParentLO parentLO = educationDataQueryService.getParentLearningOpportunity(parentId);
         return ParentLOToDTO.convert(parentLO, lang);
     }
 
     @Override
-    public ChildLearningOpportunityDTO getChildLearningOpportunity(String parentId, String closId, String cloiId) throws ResourceNotFoundException {
-        ChildLO childLO = educationDataService.getChildLearningOpportunity(closId, cloiId);
+    public ChildLearningOpportunityDTO getChildLearningOpportunity(String cloId) throws ResourceNotFoundException {
+        ChildLO childLO = educationDataQueryService.getChildLearningOpportunity(cloId);
         String lang = resolveDefaultLanguage(childLO);
         return ChildLOToDTO.convert(childLO, lang);
     }
 
     @Override
-    public ChildLearningOpportunityDTO getChildLearningOpportunity(String parentId, String closId, String cloiId, String lang) throws ResourceNotFoundException {
-        ChildLO childLO = educationDataService.getChildLearningOpportunity(closId, cloiId);
+    public ChildLearningOpportunityDTO getChildLearningOpportunity(String cloId, String lang) throws ResourceNotFoundException {
+        ChildLO childLO = educationDataQueryService.getChildLearningOpportunity(cloId);
         return ChildLOToDTO.convert(childLO, lang);
     }
 
     @Override
-    public List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, String lopId) {
-        List<ApplicationOption> applicationOptions = educationDataService.findApplicationOptions(asId, lopId);
+    public List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, String lopId, String baseEducation) {
+        List<ApplicationOption> applicationOptions = educationDataQueryService.findApplicationOptions(asId, lopId, baseEducation);
         return Lists.transform(applicationOptions, new Function<ApplicationOption, ApplicationOptionSearchResultDTO>() {
             @Override
             public ApplicationOptionSearchResultDTO apply(ApplicationOption applicationOption) {
@@ -85,9 +87,37 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     }
 
     @Override
+    public ApplicationOptionDTO getApplicationOption(String aoId, String lang) throws ResourceNotFoundException {
+        ApplicationOption ao = educationDataQueryService.getApplicationOption(aoId);
+        return ApplicationOptionToDTO.convert(ao, lang);
+    }
+
+    @Override
+    public List<ApplicationOptionDTO> getApplicationOptions(List<String> aoId, final String lang) {
+        List<ApplicationOption> applicationOptions = educationDataQueryService.getApplicationOptions(aoId);
+        return Lists.transform(applicationOptions, new Function<ApplicationOption, ApplicationOptionDTO>() {
+            @Override
+            public ApplicationOptionDTO apply(ApplicationOption applicationOption) {
+                return ApplicationOptionToDTO.convert(applicationOption, lang);
+            }
+        });
+    }
+
+    @Override
     public List<BasketItemDTO> getBasketItems(List<String> aoId, String lang) {
-        List<ApplicationOption> applicationOptions = educationDataService.getApplicationOptions(aoId);
+        List<ApplicationOption> applicationOptions = educationDataQueryService.getApplicationOptions(aoId);
         return ApplicationOptionsToBasketItemDTOs.convert(applicationOptions, lang);
+    }
+
+    @Override
+    public Date getLastDataUpdated() {
+        return educationDataQueryService.getLastUpdated();
+    }
+
+    @Override
+    public PictureDTO getPicture(String id) throws ResourceNotFoundException {
+        Picture pic = educationDataQueryService.getPicture(id);
+        return modelMapper.map(pic, PictureDTO.class);
     }
 
 

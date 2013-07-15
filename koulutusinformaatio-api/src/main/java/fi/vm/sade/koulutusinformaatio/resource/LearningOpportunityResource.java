@@ -17,8 +17,8 @@
 package fi.vm.sade.koulutusinformaatio.resource;
 
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunityDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.LOSearchResultListDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -34,12 +34,18 @@ public interface LearningOpportunityResource {
      * Searches learning opportunities.
      *
      * @param text search key
+     * @param prerequisite base education prerequisite (pohjakoulutusvaatimus) filter
+     *                     if none is provided, no filtering is used
      * @return list of search results
      */
     @GET
     @Path("search/{text}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<LearningOpportunitySearchResultDTO> searchLearningOpportunities(@PathParam("text") String text);
+    public LOSearchResultListDTO searchLearningOpportunities(@PathParam("text") String text,
+                                                             @QueryParam("prerequisite") String prerequisite,
+                                                             @QueryParam("city") List<String> cities,
+                                                             @DefaultValue(value = "0") @QueryParam("start") int start,
+                                                             @DefaultValue(value = "100") @QueryParam("rows") int rows);
 
     /**
      * Fetches a parent learning opportunity. Contains parent information and
@@ -54,7 +60,7 @@ public interface LearningOpportunityResource {
      * @return parent learning opportunity dto object
      */
     @GET
-    @Path("{parentId}")
+    @Path("parent/{parentId}")
     @Produces(MediaType.APPLICATION_JSON)
     public ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(@PathParam("parentId") String parentId,
                                                                                   @QueryParam("lang") String lang);
@@ -64,16 +70,13 @@ public interface LearningOpportunityResource {
      * Child lo texts are translated to language corresponding given lang parameter.
      * If the given language is not found or the parameter is null it fall back to default (education) language.
      *
-     * @param parentId parent learning opportunity id
-     * @param closId child learning opportunity specification id
-     * @param cloiId child learning opportunity instance id
+     * @param cloId child learning opportunity id
      * @param lang translation language (optional)
      * @return child learning opportunity dto object
      */
     @GET
-    @Path("{parentId}/{closId}/{cloiId}")
+    @Path("child/{cloId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ChildLearningOpportunityDTO getChildLearningOpportunity(@PathParam("parentId") String parentId, @PathParam("closId") String closId,
-                                                                   @PathParam("cloiId") String cloiId, @QueryParam("lang") String lang);
+    public ChildLearningOpportunityDTO getChildLearningOpportunity(@PathParam("cloId") String cloId, @QueryParam("lang") String lang);
 
 }

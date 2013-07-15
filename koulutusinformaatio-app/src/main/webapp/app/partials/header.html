@@ -1,58 +1,22 @@
-<header id="siteheader">
+<header id="siteheader" data-ng-controller="HeaderCtrl">
     <div class="header-container">
         <figure class="float-left">
             <a href="#"><img src="img/opintopolkufi_large.png" alt="Opintopolku.fi palvelun logo" /></a>
         </figure>
-        <!--
-        <div class="sitelogo">
-            <a href="">Sivuston logo</a>
-            <a href="/test/addPerson">/test/addPerson</a>
+        <div class="actions float-right">
+            <ul data-ng-controller="LanguageCtrl">
+                <li><a data-ng-click="changeLanguage('fi')" data-ki-i18n="language-fi"></a></li>
+                <li><a data-ng-click="changeLanguage('sv')" data-ki-i18n="language-sv"></a></li>
+                <li><a data-ng-click="changeLanguage('en')" data-ki-i18n="language-en"></a></li>
+                <!--<li><a href="#">Tekstiversion</a></li>-->
+            </ul>
         </div>
-    -->
-        <!--
         <div class="actions primarylinks">
             <ul>
-                <li><a href="#" data-popup-action="open">Kirjaudu sisään</a></li>
-                <li><a href="/user/postLogin?redirect=https://test-oppija.oph.ware.fi/WEB-INF/jsp/tarjonta/tarjontatiedot.jsp">CAS Login</a></li>
+                <li><a id="appbasket-link" href="#/muistilista"><span data-ki-i18n="title-application-basket-content"></span> <span>({{appBasketItemCount()}})</span></a></li>
+                <!--<li><a id="apply-link">Täytä hakulomake</a></li>-->
             </ul>
-            <ul>
-                <li><a href="http://www.sanasto.fi/">Sanasto</a></li>
-                <li><a href="http://google.fi">Kysy neuvoa</a></li>
-                <li><a href="http://www.koulutusnetti.fi/?path=hakuajat">Hakuajat</a></li>
-            </ul>
-
-            <ul>
-                <li><a href="?lang=fi">Suomeksi</a></li>
-                <li><a href="?lang=sv">På svenska</a></li>
-                <li><a href="?lang=en">in English</a></li>
-                <li><a href="#">Mobiili</a></li>
-                <li><a href="#">Tekstiversion</a></li>
-            </ul>
-            <ul>
-            </ul>
-            <div class="clear"></div>
         </div>
-    -->
-    <div class="actions float-right">
-            <!--
-            <ul>
-                <li><a href="#" data-popup-action="open">Kirjaudu sisään</a></li>
-            </ul>
-        -->
-        <ul ng-controller="LanguageCtrl">
-            <li><a ng-click="changeLanguage('fi')" data-ki-i18n="language-fi"></a></li>
-            <li><a ng-click="changeLanguage('sv')" data-ki-i18n="language-sv"></a></li>
-            <li><a ng-click="changeLanguage('en')" data-ki-i18n="language-en"></a></li>
-            <!--<li><a href="#">Tekstiversion</a></li>-->
-        </ul>
     </div>
-    <div class="actions primarylinks">
-        <ul>
-            <li><a id="appbasket-link" href="#/muistilista">Muistilista <span>()</span></a></li>
-            <li><a id="apply-link">Täytä hakulomake</a></li>
-        </ul>
-    </div>
-
-</div>
-<div ng-include src="'partials/pageheader.html'"></div>
+<div data-ng-include data-src="'partials/pageheader.html'"></div>
 </header>

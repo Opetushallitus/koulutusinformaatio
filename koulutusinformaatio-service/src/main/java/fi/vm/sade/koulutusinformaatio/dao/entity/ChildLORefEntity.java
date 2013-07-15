@@ -18,47 +18,40 @@ package fi.vm.sade.koulutusinformaatio.dao.entity;
 
 import com.google.code.morphia.annotations.Embedded;
 
+import java.util.List;
+
 /**
  * @author Mikko Majapuro
  */
 @Embedded
 public class ChildLORefEntity {
 
-    private String losId;
-    private String loiId;
-    private String asId;
+    private String childLOId;
+    private List<String> asIds;
     @Embedded
     private I18nTextEntity name;
     private String nameByTeachingLang;
     @Embedded
     private I18nTextEntity qualification;
     @Embedded
-    private I18nTextEntity prerequisite;
+    private CodeEntity prerequisite;
 
     public ChildLORefEntity() {}
 
-    public String getLosId() {
-        return losId;
+    public String getChildLOId() {
+        return childLOId;
     }
 
-    public void setLosId(String losId) {
-        this.losId = losId;
+    public void setChildLOId(String childLOId) {
+        this.childLOId = childLOId;
     }
 
-    public String getLoiId() {
-        return loiId;
+    public List<String> getAsIds() {
+        return asIds;
     }
 
-    public void setLoiId(String loiId) {
-        this.loiId = loiId;
-    }
-
-    public String getAsId() {
-        return asId;
-    }
-
-    public void setAsId(String asId) {
-        this.asId = asId;
+    public void setAsIds(List<String> asIds) {
+        this.asIds = asIds;
     }
 
     public I18nTextEntity getName() {
@@ -85,11 +78,11 @@ public class ChildLORefEntity {
         this.qualification = qualification;
     }
 
-    public I18nTextEntity getPrerequisite() {
+    public CodeEntity getPrerequisite() {
         return prerequisite;
     }
 
-    public void setPrerequisite(I18nTextEntity prerequisite) {
+    public void setPrerequisite(CodeEntity prerequisite) {
         this.prerequisite = prerequisite;
     }
 }

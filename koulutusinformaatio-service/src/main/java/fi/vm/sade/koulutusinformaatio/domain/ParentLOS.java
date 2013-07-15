@@ -18,6 +18,8 @@ package fi.vm.sade.koulutusinformaatio.domain;
 
 import com.google.common.collect.Sets;
 
+import fi.vm.sade.koulutusinformaatio.dao.entity.I18nTextEntity;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -32,21 +34,25 @@ public class ParentLOS {
     private String id;
     private I18nText name;
     private List<ParentLOI> lois;
-    private List<ChildLOS> children = new ArrayList<ChildLOS>();
     private Set<ApplicationOption> applicationOptions = Sets.newHashSet();
     private Provider provider;
     // rakenne
     private I18nText structureDiagram;
     // jatko-opintomahdollisuudet
     private I18nText accessToFurtherStudies;
+    private I18nText degreeProgramSelection;
     // tavoitteet
     private I18nText goals;
     //koulutusala, Sosiaali-, terveys- ja liikunta-ala
     private I18nText educationDomain;
     //opintoala, Hammaslääketiede ja muu hammashuolto
     private I18nText stydyDomain;
-    // koulutusaste, Ammatillinen koulutus
-    private I18nText educationDegree;
+    // koulutusaste, 32
+    private String educationDegree;
+    //laajuus arvo, 120
+    private String creditValue;
+    //laajuus yksikkö opintoviikko
+    private I18nText creditUnit;
 
     public Set<ApplicationOption> getApplicationOptions() {
         return applicationOptions;
@@ -80,14 +86,6 @@ public class ParentLOS {
         this.lois = lois;
     }
 
-    public List<ChildLOS> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<ChildLOS> children) {
-        this.children = children;
-    }
-
     public Provider getProvider() {
         return provider;
     }
@@ -110,6 +108,14 @@ public class ParentLOS {
 
     public void setAccessToFurtherStudies(I18nText accessToFurtherStudies) {
         this.accessToFurtherStudies = accessToFurtherStudies;
+    }
+
+    public I18nText getDegreeProgramSelection() {
+        return degreeProgramSelection;
+    }
+
+    public void setDegreeProgramSelection(I18nText degreeProgramSelection) {
+        this.degreeProgramSelection = degreeProgramSelection;
     }
 
     public I18nText getGoals() {
@@ -136,11 +142,27 @@ public class ParentLOS {
         this.stydyDomain = stydyDomain;
     }
 
-    public I18nText getEducationDegree() {
+    public String getEducationDegree() {
         return educationDegree;
     }
 
-    public void setEducationDegree(I18nText educationDegree) {
+    public void setEducationDegree(String educationDegree) {
         this.educationDegree = educationDegree;
+    }
+
+    public String getCreditValue() {
+        return creditValue;
+    }
+
+    public void setCreditValue(String creditValue) {
+        this.creditValue = creditValue;
+    }
+
+    public I18nText getCreditUnit() {
+        return creditUnit;
+    }
+
+    public void setCreditUnit(I18nText creditUnit) {
+        this.creditUnit = creditUnit;
     }
 }

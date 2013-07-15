@@ -16,6 +16,9 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Instance of a parent level learning opportunity specification.
  *
@@ -24,7 +27,10 @@ package fi.vm.sade.koulutusinformaatio.domain;
 public class ParentLOI {
 
     private String id;
-    private I18nText prerequisite;
+    private I18nText selectingEducation;
+    private Code prerequisite;
+    private List<ChildLearningOpportunity> children;
+    private List<ChildLORef> childRefs = new ArrayList<ChildLORef>();
 
     public String getId() {
         return id;
@@ -34,11 +40,35 @@ public class ParentLOI {
         this.id = id;
     }
 
-    public I18nText getPrerequisite() {
+    public Code getPrerequisite() {
         return prerequisite;
     }
 
-    public void setPrerequisite(I18nText prerequisite) {
+    public void setPrerequisite(Code prerequisite) {
         this.prerequisite = prerequisite;
+    }
+
+    public I18nText getSelectingEducation() {
+        return selectingEducation;
+    }
+
+    public void setSelectingEducation(I18nText selectingEducation) {
+        this.selectingEducation = selectingEducation;
+    }
+
+    public List<ChildLearningOpportunity> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<ChildLearningOpportunity> children) {
+        this.children = children;
+    }
+
+    public List<ChildLORef> getChildRefs() {
+        return childRefs;
+    }
+
+    public void setChildRefs(List<ChildLORef> childRefs) {
+        this.childRefs = childRefs;
     }
 }

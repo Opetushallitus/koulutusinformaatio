@@ -16,9 +16,10 @@
 
 package fi.vm.sade.koulutusinformaatio.domain.dto;
 
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-
+import java.util.List;
 import java.util.Set;
+
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 /**
  * @author Hannu Lyytikainen
@@ -35,6 +36,15 @@ public class LearningOpportunityProviderDTO {
     private String email;
     private String fax;
     private String phone;
+    private String description;
+    private String healthcare;
+    private String accessibility;
+    private String learningEnvironment;
+    private String dining;
+    private String livingExpenses;
+    private List<SocialDTO> social;
+    private boolean pictureFound = false;
+    private boolean athleteEducation;
 
     public String getId() {
         return id;
@@ -106,5 +116,77 @@ public class LearningOpportunityProviderDTO {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getHealthcare() {
+        return healthcare;
+    }
+
+    public void setHealthcare(String healthcare) {
+        this.healthcare = healthcare;
+    }
+
+    public String getAccessibility() {
+        return accessibility;
+    }
+
+    public void setAccessibility(String accessibility) {
+        this.accessibility = accessibility;
+    }
+
+    public String getLearningEnvironment() {
+        return learningEnvironment;
+    }
+
+    public void setLearningEnvironment(String learningEnvironment) {
+        this.learningEnvironment = learningEnvironment;
+    }
+
+    public String getDining() {
+        return dining;
+    }
+
+    public void setDining(String dining) {
+        this.dining = dining;
+    }
+
+    public String getLivingExpenses() {
+        return livingExpenses;
+    }
+
+    public void setLivingExpenses(String livingExpenses) {
+        this.livingExpenses = livingExpenses;
+    }
+
+    public List<SocialDTO> getSocial() {
+        return social;
+    }
+
+    public void setSocial(List<SocialDTO> social) {
+        this.social = social;
+    }
+
+    public boolean isPictureFound() {
+        return pictureFound;
+    }
+
+    public void setPictureFound(boolean pictureFound) {
+        this.pictureFound = pictureFound;
+    }
+
+    public boolean isAthleteEducation() {
+        return athleteEducation;
+    }
+
+    public void setAthleteEducation(boolean athleteEducation) {
+        this.athleteEducation = athleteEducation;
     }
 }

@@ -41,12 +41,15 @@ public class ApplicationOptionsToBasketItemDTOs {
                 aoDTO.setId(ao.getId());
                 aoDTO.setName(ConverterUtil.getTextByLanguageUseFallbackLang(ao.getName(), lang));
                 aoDTO.setEducationDegree(ao.getEducationDegree());
+                aoDTO.setSora(ao.isSora());
+                aoDTO.setTeachingLanguages(ao.getTeachingLanguages());
                 aoDTO.setParent(ParentLOSRefToDTO.convert(ao.getParent(), lang));
                 aoDTO.setChildren(ChildLORefToDTO.convert(ao.getChildLORefs(), lang));
                 aoDTO.setAttachmentDeliveryDeadline(ao.getAttachmentDeliveryDeadline());
                 Provider provider = ao.getProvider();
                 if (provider != null) {
                     aoDTO.setProviderId(provider.getId());
+                    aoDTO.setAthleteEducation(provider.isAthleteEducation());
                     aoDTO.setProviderName(ConverterUtil.getTextByLanguageUseFallbackLang(provider.getName(), lang));
                     if (provider.getVisitingAddress() != null) {
                         aoDTO.setProviderLocation(provider.getVisitingAddress().getPostOffice());

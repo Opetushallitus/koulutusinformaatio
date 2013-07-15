@@ -18,9 +18,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-import fi.vm.sade.koulutusinformaatio.domain.LOSearchResult;
-import fi.vm.sade.koulutusinformaatio.domain.Provider;
+import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.MapToSolrQueryTransformer;
@@ -36,11 +34,14 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import java.util.*;
+import java.util.regex.Pattern;
 
 @Component
 public class SearchServiceSolrImpl implements SearchService {
 
     public static final String ID = "AOId";
+    public static final String AS_START_DATE_PREFIX = "asStart_";
+    public static final String AS_END_DATE_PREFIX = "asEnd_";
 
     private HttpSolrServer httpSolrServer;
 
@@ -92,20 +93,42 @@ public class SearchServiceSolrImpl implements SearchService {
     }
 
     @Override
-    public List<LOSearchResult> searchLearningOpportunities(String term) throws SearchException {
-        List<LOSearchResult> learningOpportunities = new ArrayList<LOSearchResult>();
+    public LOSearchResultList searchLearningOpportunities(String term, String prerequisite,
+                                                          List<String> cities, int start, int rows) throws SearchException {
+        LOSearchResultList searchResultList = new LOSearchResultList();
         String trimmed = term.trim();
         if (!trimmed.isEmpty()) {
             MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>(1);
             parameters.put("text", Lists.newArrayList(term));
 
-            parameters.put("start", createParameter("0"));
-            parameters.put("rows", createParameter("100"));
+            if (prerequisite != null && !prerequisite.isEmpty()) {
+                parameters.put("fq", Lists.newArrayList("prerequisites", prerequisite));
+            }
+
+            parameters.put("start", createParameter(String.valueOf(start)));
+            parameters.put("rows", createParameter(String.valueOf(rows)));
             SolrQuery query = mapToSolrQueryTransformer.transform(parameters.entrySet());
+
+            if (cities != null && !cities.isEmpty()) {
+
+                StringBuilder fq = new StringBuilder("lopCity:(");
+
+                for (int i = 0; i < cities.size(); i++) {
+                    if (i < cities.size() -1) {
+                        fq.append(cities.get(i)).append(" OR ");
+                    }
+                    else {
+                        fq.append(cities.get(i));
+                    }
+                }
+                fq.append(")");
+                query.addFilterQuery(fq.toString());
+            }
 
             QueryResponse response = null;
             try {
                 response = loHttpSolrServer.query(query);
+                searchResultList.setTotalCount(response.getResults().getNumFound());
             } catch (SolrServerException e) {
                 throw new SearchException("Solr search error occured.");
             }
@@ -113,14 +136,54 @@ public class SearchServiceSolrImpl implements SearchService {
             for (SolrDocument doc : response.getResults()) {
                 String parentId = doc.get("parentId") != null ? doc.get("parentId").toString() : null;
                 String losId = doc.get("losId") != null ? doc.get("losId").toString() : null;
-                LOSearchResult lo = new LOSearchResult(
-                        doc.get("id").toString(), doc.get("name").toString(),
-                        doc.get("lopId").toString(), doc.get("lopName").toString(), parentId, losId);
-                learningOpportunities.add(lo);
+
+
+                LOSearchResult lo = null;
+                try {
+                    lo = new LOSearchResult(
+                            doc.get("id").toString(), doc.get("name").toString(),
+                            doc.get("lopId").toString(), doc.get("lopName").toString(), parentId, losId);
+
+                    updateAsStatus(lo, doc);
+                } catch (Exception e) {
+                    continue;
+                }
+                searchResultList.getResults().add(lo);
             }
         }
 
-        return learningOpportunities;
+        return searchResultList;
+    }
+
+    private void updateAsStatus(LOSearchResult lo, SolrDocument doc) {
+        lo.setAsOngoing(false);
+        Date now = new Date();
+        Date nextStarts = null;
+        Date nextEnds = null;
+
+        for (String startKey : doc.keySet()) {
+            if (startKey.startsWith(AS_START_DATE_PREFIX)) {
+                String endKey = new StringBuilder().append(AS_END_DATE_PREFIX)
+                        .append(startKey.split("_")[1]).toString();
+
+                Date start = ((List<Date>) doc.get(startKey)).get(0);
+                Date end = ((List<Date>) doc.get(endKey)).get(0);
+
+                if (start.before(now) && now.before(end)) {
+                    lo.setAsOngoing(true);
+                    return;
+                }
+
+                if (nextStarts == null || (start.after(now) && start.before(nextStarts))) {
+                    nextStarts = start;
+                    nextEnds = end;
+                }
+
+            }
+        }
+
+        lo.setNextAs(new DateRange(nextStarts, nextEnds));
+
     }
 
     private MultiValueMap<String, String> addPrerequisite(MultiValueMap<String, String> parameters, String prerequisite, boolean vocational) {

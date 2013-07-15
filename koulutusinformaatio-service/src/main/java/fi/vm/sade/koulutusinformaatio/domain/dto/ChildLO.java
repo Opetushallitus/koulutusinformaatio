@@ -28,37 +28,33 @@ import java.util.Map;
  */
 public class ChildLO {
 
-    private String losId;
-    private String loiId;
+    private String id;
     private I18nText name;
     private I18nText qualification;
     private I18nText degreeTitle;
-    private ApplicationOption applicationOption;
+    private List<ApplicationOption> applicationOptions;
     private List<ChildLORef> related = new ArrayList<ChildLORef>();
     private ParentLORef parent;
     private List<Code> teachingLanguages = new ArrayList<Code>();
     private List<I18nText> formOfEducation;
     private Map<String, String> webLinks;
     private List<I18nText> formOfTeaching;
-    private I18nText prerequisite;
+    private Code prerequisite;
+    private List<I18nText> professionalTitles;
+    private I18nText workingLifePlacement;
+    private I18nText internationalization;
+    private I18nText cooperation;
+    private I18nText degreeGoal;
 
     private Date startDate;
 
 
-    public String getLosId() {
-        return losId;
+    public String getId() {
+        return id;
     }
 
-    public void setLosId(String losId) {
-        this.losId = losId;
-    }
-
-    public String getLoiId() {
-        return loiId;
-    }
-
-    public void setLoiId(String loiId) {
-        this.loiId = loiId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public I18nText getName() {
@@ -85,12 +81,12 @@ public class ChildLO {
         this.degreeTitle = degreeTitle;
     }
 
-    public ApplicationOption getApplicationOption() {
-        return applicationOption;
+    public List<ApplicationOption> getApplicationOptions() {
+        return applicationOptions;
     }
 
-    public void setApplicationOption(ApplicationOption applicationOption) {
-        this.applicationOption = applicationOption;
+    public void setApplicationOptions(List<ApplicationOption> applicationOptions) {
+        this.applicationOptions = applicationOptions;
     }
 
     public List<ChildLORef> getRelated() {
@@ -141,11 +137,11 @@ public class ChildLO {
         this.formOfTeaching = formOfTeaching;
     }
 
-    public I18nText getPrerequisite() {
+    public Code getPrerequisite() {
         return prerequisite;
     }
 
-    public void setPrerequisite(I18nText prerequisite) {
+    public void setPrerequisite(Code prerequisite) {
         this.prerequisite = prerequisite;
     }
 
@@ -155,5 +151,45 @@ public class ChildLO {
 
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
+    }
+
+    public List<I18nText> getProfessionalTitles() {
+        return professionalTitles;
+    }
+
+    public void setProfessionalTitles(List<I18nText> professionalTitles) {
+        this.professionalTitles = professionalTitles;
+    }
+
+    public I18nText getWorkingLifePlacement() {
+        return workingLifePlacement;
+    }
+
+    public void setWorkingLifePlacement(I18nText workingLifePlacement) {
+        this.workingLifePlacement = workingLifePlacement;
+    }
+
+    public I18nText getInternationalization() {
+        return internationalization;
+    }
+
+    public void setInternationalization(I18nText internationalization) {
+        this.internationalization = internationalization;
+    }
+
+    public I18nText getCooperation() {
+        return cooperation;
+    }
+
+    public void setCooperation(I18nText cooperation) {
+        this.cooperation = cooperation;
+    }
+
+    public I18nText getDegreeGoal() {
+        return degreeGoal;
+    }
+
+    public void setDegreeGoal(I18nText degreeGoal) {
+        this.degreeGoal = degreeGoal;
     }
 }
