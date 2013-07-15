@@ -21,6 +21,7 @@ import com.google.common.collect.Maps;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
+import fi.vm.sade.koulutusinformaatio.service.impl.query.LearningOpportunityQuery;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.MapToSolrQueryTransformer;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -35,6 +36,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -129,7 +132,19 @@ public class SearchServiceSolrImpl implements SearchService {
                 query.addFilterQuery(fq.toString());
             }
 
-            LOG.debug(new StringBuilder().append("Searching learning opportunities with query string: ").append(query.toString()).toString());
+            SolrQuery q = new LearningOpportunityQuery(term, prerequisite, cities, start, rows);
+
+            try {
+                LOG.debug(
+                        URLDecoder.decode(
+                                new StringBuilder().append("Searching learning opportunities with query string: ").append(query.toString()).toString(), "utf-8"));
+
+                LOG.debug(
+                        URLDecoder.decode(
+                                new StringBuilder().append("Learning opportunity query: ").append(q.toString()).toString(), "utf-8"));
+            } catch (UnsupportedEncodingException e) {
+                LOG.debug("Could not log search query");
+            }
 
             QueryResponse response = null;
             try {
