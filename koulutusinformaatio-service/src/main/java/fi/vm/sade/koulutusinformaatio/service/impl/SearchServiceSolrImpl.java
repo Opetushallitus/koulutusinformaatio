@@ -27,6 +27,8 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -38,6 +40,8 @@ import java.util.regex.Pattern;
 
 @Component
 public class SearchServiceSolrImpl implements SearchService {
+
+    public static final Logger LOG = LoggerFactory.getLogger(SearchServiceSolrImpl.class);
 
     public static final String ID = "AOId";
     public static final String AS_START_DATE_PREFIX = "asStart_";
@@ -124,6 +128,8 @@ public class SearchServiceSolrImpl implements SearchService {
                 fq.append(")");
                 query.addFilterQuery(fq.toString());
             }
+
+            LOG.debug(new StringBuilder().append("Searching learning opportunities with query string: ").append(query.getQuery()).toString());
 
             QueryResponse response = null;
             try {
