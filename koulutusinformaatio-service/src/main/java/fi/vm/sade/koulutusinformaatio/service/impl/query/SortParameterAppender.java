@@ -22,6 +22,7 @@ import org.apache.solr.client.solrj.SolrQuery;
 import java.util.List;
 import java.util.Map;
 
+@Deprecated
 public class SortParameterAppender implements SolrQueryAppender {
     @Override
     public void append(SolrQuery solrQuery, Map.Entry<String, List<String>> entry) {

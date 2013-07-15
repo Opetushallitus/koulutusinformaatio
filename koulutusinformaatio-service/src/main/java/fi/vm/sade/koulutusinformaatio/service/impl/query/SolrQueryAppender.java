@@ -21,6 +21,7 @@ import org.apache.solr.client.solrj.SolrQuery;
 import java.util.List;
 import java.util.Map;
 
+@Deprecated
 public interface SolrQueryAppender {
     void append(final SolrQuery solrQuery, final Map.Entry<String, List<String>> value);
 }

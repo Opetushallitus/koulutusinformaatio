@@ -129,7 +129,7 @@ public class SearchServiceSolrImpl implements SearchService {
                 query.addFilterQuery(fq.toString());
             }
 
-            LOG.debug(new StringBuilder().append("Searching learning opportunities with query string: ").append(query.getQuery()).toString());
+            LOG.debug(new StringBuilder().append("Searching learning opportunities with query string: ").append(query.toString()).toString());
 
             QueryResponse response = null;
             try {
