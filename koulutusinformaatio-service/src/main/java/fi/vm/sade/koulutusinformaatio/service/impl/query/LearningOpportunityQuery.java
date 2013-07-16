@@ -15,7 +15,9 @@ public class LearningOpportunityQuery extends SolrQuery {
     public LearningOpportunityQuery(String term, String prerequisite,
                                     List<String> cities, int start, int rows) {
         super(new StringBuilder().append('+').append(TEXT).append(":(").append(term).append(")").toString());
+        if (prerequisite != null) {
         this.addFilterQuery("prerequisites" + ":" + prerequisite);
+        }
         this.setStart(start);
         this.setRows(rows);
         if (cities != null && !cities.isEmpty()) {

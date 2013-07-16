@@ -105,43 +105,12 @@ public class SearchServiceSolrImpl implements SearchService {
         LOSearchResultList searchResultList = new LOSearchResultList();
         String trimmed = term.trim();
         if (!trimmed.isEmpty()) {
-            MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>(1);
-            parameters.put("text", Lists.newArrayList(term));
-
-            if (prerequisite != null && !prerequisite.isEmpty()) {
-                parameters.put("fq", Lists.newArrayList("prerequisites", prerequisite));
-            }
-
-            parameters.put("start", createParameter(String.valueOf(start)));
-            parameters.put("rows", createParameter(String.valueOf(rows)));
-            SolrQuery query = mapToSolrQueryTransformer.transform(parameters.entrySet());
-
-            if (cities != null && !cities.isEmpty()) {
-
-                StringBuilder fq = new StringBuilder("lopCity:(");
-
-                for (int i = 0; i < cities.size(); i++) {
-                    if (i < cities.size() -1) {
-                        fq.append(cities.get(i)).append(" OR ");
-                    }
-                    else {
-                        fq.append(cities.get(i));
-                    }
-                }
-                fq.append(")");
-                query.addFilterQuery(fq.toString());
-            }
-
-            SolrQuery q = new LearningOpportunityQuery(term, prerequisite, cities, start, rows);
+            SolrQuery query = new LearningOpportunityQuery(term, prerequisite, cities, start, rows);
 
             try {
                 LOG.debug(
                         URLDecoder.decode(
                                 new StringBuilder().append("Searching learning opportunities with query string: ").append(query.toString()).toString(), "utf-8"));
-
-                LOG.debug(
-                        URLDecoder.decode(
-                                new StringBuilder().append("Learning opportunity query: ").append(q.toString()).toString(), "utf-8"));
             } catch (UnsupportedEncodingException e) {
                 LOG.debug("Could not log search query");
             }
