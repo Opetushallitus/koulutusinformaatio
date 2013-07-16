@@ -45,7 +45,11 @@
         <field name="losId" type="text_general" indexed="false" stored="true" multiValued="false"/>
         <dynamicField name="asStart_*"  type="date"  indexed="false"  stored="true"/>
         <dynamicField name="asEnd_*"  type="date"  indexed="false"  stored="true"/>
+
+        <!-- copy field for normal keywords -->
         <field name="text" type="text_fi" indexed="true" stored="true" multiValued="true"/>
+        <!-- copy field for keywords with increased relevancy value -->
+        <field name="textBoost" type="text_fi" indexed="true" stored="true" multiValued="true"/>
 
         <!-- for filtering -->
         <field name="prerequisites" type="text_general" indexed="true" stored="true" multiValued="true"/>
@@ -54,15 +58,16 @@
 
     <uniqueKey>id</uniqueKey>
 
-    <copyField source="name" dest="text"/>
     <copyField source="aoName" dest="text"/>
-    <copyField source="qualification" dest="text"/>
-    <copyField source="structure" dest="text"/>
-    <copyField source="goals" dest="text"/>
-    <copyField source="professionalTitles" dest="text"/>
     <copyField source="lopName" dest="text"/>
     <copyField source="lopDescription" dest="text"/>
     <copyField source="lopAddress" dest="text"/>
+
+    <copyField source="name" dest="textBoost"/>
+    <copyField source="structure" dest="textBoost"/>
+    <copyField source="goals" dest="textBoost"/>
+    <copyField source="qualification" dest="textBoost"/>
+    <copyField source="professionalTitles" dest="textBoost"/>
 
     <types>
         <!-- Byte -->
