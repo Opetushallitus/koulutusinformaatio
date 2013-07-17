@@ -47,7 +47,9 @@ public class Scheduler {
         if (enabled) {
             LOG.info("Starting scheduled data update {}", new Date());
             try {
-                updateService.updateAllEducationData();
+                if (!updateService.isRunning()) {
+                    updateService.updateAllEducationData();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
