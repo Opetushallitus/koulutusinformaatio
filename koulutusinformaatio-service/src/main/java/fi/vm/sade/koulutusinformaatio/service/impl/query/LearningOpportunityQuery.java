@@ -1,6 +1,7 @@
 package fi.vm.sade.koulutusinformaatio.service.impl.query;
 
 import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.common.params.DisMaxParams;
 
 import java.util.List;
 
@@ -10,13 +11,18 @@ import java.util.List;
 public class LearningOpportunityQuery extends SolrQuery {
 
     private final static String TEXT  = "text";
+    private final static String TEXT_BOOST  = "textBoost";
     private final static String LOP_CITY  = "lopCity";
+    private final static String PREREQUISITES  = "prerequisites";
+    private final static String DISMAX = new StringBuilder(TEXT).append(" ").append(TEXT_BOOST).append("^5").toString();
 
     public LearningOpportunityQuery(String term, String prerequisite,
                                     List<String> cities, int start, int rows) {
-        super(new StringBuilder().append('+').append(TEXT).append(":(").append(term).append(")").toString());
+        super(new StringBuilder().append(TEXT).append(":(").append(term).append(")").append(" OR ")
+                .append(TEXT_BOOST).append(":(").append(term).append(")").toString());
+
         if (prerequisite != null) {
-        this.addFilterQuery("prerequisites" + ":" + prerequisite);
+        this.addFilterQuery(new StringBuilder(PREREQUISITES).append(":").append(prerequisite).toString());
         }
         this.setStart(start);
         this.setRows(rows);
@@ -35,7 +41,7 @@ public class LearningOpportunityQuery extends SolrQuery {
             fq.append(")");
             this.addFilterQuery(fq.toString());
         }
-
-
+        this.setParam("defType", "edismax");
+        this.setParam(DisMaxParams.QF, DISMAX);
     }
 }
