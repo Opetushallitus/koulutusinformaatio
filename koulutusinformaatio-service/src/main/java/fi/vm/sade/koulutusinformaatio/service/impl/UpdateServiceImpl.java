@@ -93,8 +93,7 @@ public class UpdateServiceImpl implements UpdateService {
             this.transactionManager.commit();
             LOG.info("Education data update successfully finished");
         } catch (Exception e) {
-            LOG.error("Education data update failed");
-            e.printStackTrace();
+            LOG.error("Education data update failed ", e);
             this.transactionManager.rollBack();
         } finally {
             running = false;
