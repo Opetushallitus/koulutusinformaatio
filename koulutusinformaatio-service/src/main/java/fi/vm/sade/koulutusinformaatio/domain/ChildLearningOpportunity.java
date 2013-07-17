@@ -50,6 +50,7 @@ public class ChildLearningOpportunity {
     private I18nText workingLifePlacement;
     private I18nText internationalization;
     private I18nText cooperation;
+    private I18nText content;
 
 
     public ChildLearningOpportunity(String id, I18nText name) {
@@ -197,4 +198,11 @@ public class ChildLearningOpportunity {
         this.cooperation = cooperation;
     }
 
+    public I18nText getContent() {
+        return content;
+    }
+
+    public void setContent(I18nText content) {
+        this.content = content;
+    }
 }

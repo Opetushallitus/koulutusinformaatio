@@ -143,6 +143,7 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
                 childLO.setWorkingLifePlacement(getI18nText(childKomoto.getSijoittuminenTyoelamaan()));
                 childLO.setInternationalization(getI18nText(childKomoto.getKansainvalistyminen()));
                 childLO.setCooperation(getI18nText(childKomoto.getYhteistyoMuidenToimijoidenKanssa()));
+                childLO.setContent(getI18nText(childKomoto.getSisalto()));
 
                 List<ApplicationOption> applicationOptions = Lists.newArrayList();
                 List<String> applicationSystemIds = Lists.newArrayList();

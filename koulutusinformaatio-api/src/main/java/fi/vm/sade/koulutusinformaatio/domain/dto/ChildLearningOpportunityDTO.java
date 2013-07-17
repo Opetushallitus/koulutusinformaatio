@@ -51,6 +51,7 @@ public class ChildLearningOpportunityDTO {
     private String workingLifePlacement;
     private String internationalization;
     private String cooperation;
+    private String content;
     private String degreeGoal;
 
     private ParentLOSRefDTO parent;
@@ -215,5 +216,13 @@ public class ChildLearningOpportunityDTO {
 
     public void setDegreeGoal(String degreeGoal) {
         this.degreeGoal = degreeGoal;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

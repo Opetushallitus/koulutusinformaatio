@@ -44,6 +44,7 @@ public class ChildLO {
     private I18nText workingLifePlacement;
     private I18nText internationalization;
     private I18nText cooperation;
+    private I18nText content;
     private I18nText degreeGoal;
 
     private Date startDate;
@@ -191,5 +192,13 @@ public class ChildLO {
 
     public void setDegreeGoal(I18nText degreeGoal) {
         this.degreeGoal = degreeGoal;
+    }
+
+    public I18nText getContent() {
+        return content;
+    }
+
+    public void setContent(I18nText content) {
+        this.content = content;
     }
 }
