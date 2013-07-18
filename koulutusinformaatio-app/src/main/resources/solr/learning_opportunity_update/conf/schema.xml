@@ -32,6 +32,8 @@
         <field name="structure" type="text_general" indexed="false" stored="false" multiValued="false"/>
         <!-- koulutukselliset ja ammatilliset tavoitteet -->
         <field name="goals" type="text_general" indexed="false" stored="false" multiValued="false"/>
+        <!-- koulutuksen sisältö -->
+        <field name="content" type="text_general" indexed="false" stored="false" multiValued="false"/>
         <!-- ammattinimike -->
         <field name="professionalTitles" type="text_general" indexed="false" stored="false" multiValued="true"/>
         <field name="lopId" type="text_general" indexed="false" stored="true" multiValued="false"/>
@@ -47,12 +49,12 @@
         <dynamicField name="asEnd_*"  type="date"  indexed="false"  stored="true"/>
 
         <!-- copy field for normal keywords -->
-        <field name="text" type="text_fi" indexed="true" stored="true" multiValued="true"/>
+        <field name="text" type="text_fi" indexed="true" stored="false" multiValued="true"/>
         <!-- copy field for keywords with increased relevancy value -->
-        <field name="textBoost" type="text_fi" indexed="true" stored="true" multiValued="true"/>
+        <field name="textBoost" type="text_fi" indexed="true" stored="false" multiValued="true"/>
 
         <!-- for filtering -->
-        <field name="prerequisites" type="text_general" indexed="true" stored="true" multiValued="true"/>
+        <field name="prerequisites" type="text_general" indexed="true" stored="false" multiValued="true"/>
         <field name="lopCity" type="text_general" indexed="true" stored="false" multiValued="false"/>
     </fields>
 
@@ -68,6 +70,7 @@
     <copyField source="goals" dest="textBoost"/>
     <copyField source="qualification" dest="textBoost"/>
     <copyField source="professionalTitles" dest="textBoost"/>
+    <copyField source="content" dest="textBoost"/>
 
     <types>
         <!-- Byte -->
