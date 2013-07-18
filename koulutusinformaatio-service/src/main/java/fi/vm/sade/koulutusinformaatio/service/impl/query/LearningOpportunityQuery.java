@@ -1,5 +1,6 @@
 package fi.vm.sade.koulutusinformaatio.service.impl.query;
 
+import com.google.common.base.Joiner;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.common.params.DisMaxParams;
 
@@ -14,13 +15,11 @@ public class LearningOpportunityQuery extends SolrQuery {
     private final static String TEXT_BOOST  = "textBoost";
     private final static String LOP_CITY  = "lopCity";
     private final static String PREREQUISITES  = "prerequisites";
-    private final static String DISMAX = new StringBuilder(TEXT).append(" ").append(TEXT_BOOST).append("^5").toString();
+    private final static String DISMAX = new StringBuilder(TEXT).append(" ").append(TEXT_BOOST).append("^10.0").toString();
 
     public LearningOpportunityQuery(String term, String prerequisite,
                                     List<String> cities, int start, int rows) {
-        super(new StringBuilder().append(TEXT).append(":(").append(term).append(")").append(" OR ")
-                .append(TEXT_BOOST).append(":(").append(term).append(")").toString());
-
+        super(term);
         if (prerequisite != null) {
         this.addFilterQuery(new StringBuilder(PREREQUISITES).append(":").append(prerequisite).toString());
         }
