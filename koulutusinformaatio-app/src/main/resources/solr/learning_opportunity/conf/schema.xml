@@ -49,9 +49,9 @@
         <dynamicField name="asEnd_*"  type="date"  indexed="false"  stored="true"/>
 
         <!-- copy field for normal keywords -->
-        <field name="text" type="text_fi" indexed="true" stored="false" multiValued="true"/>
+        <field name="text" type="text_fi" indexed="true" stored="true" multiValued="true"/>
         <!-- copy field for keywords with increased relevancy value -->
-        <field name="textBoost" type="text_fi" indexed="true" stored="false" multiValued="true"/>
+        <field name="textBoost" type="text_fi" indexed="true" stored="true" multiValued="true"/>
 
         <!-- for filtering -->
         <field name="prerequisites" type="text_general" indexed="true" stored="false" multiValued="true"/>
@@ -86,7 +86,7 @@
         <fieldType name="int" class="solr.TrieIntField" precisionStep="0" positionIncrementGap="0"/>
         <fieldType name="float" class="solr.TrieFloatField" precisionStep="0" positionIncrementGap="0"/>
         <fieldType name="long" class="solr.TrieLongField" precisionStep="0" positionIncrementGap="0"/>
-        <fieldType name="double" class="solr.TrieDoubleField" precisionStep="0" positionIncrementGap="0"/>
+        2<fieldType name="double" class="solr.TrieDoubleField" precisionStep="0" positionIncrementGap="0"/>
 
         <!--
          Numeric field types that index each value at various levels of precision
@@ -492,6 +492,7 @@ but may be good for SKUs.  Can insert dashes in the wrong place and still match.
                 <tokenizer class="solr.StandardTokenizerFactory"/>
                 <filter class="solr.LowerCaseFilterFactory"/>
                 <filter class="fi.nationallibrary.ndl.solrvoikko.VoikkoFilterFactory" expandCompounds="true" separateTokens="true"/>
+                <filter class="solr.EdgeNGramFilterFactory" minGramSize="3" maxGramSize="30" side="front"/>
             </analyzer>
             <analyzer type="query">
                 <tokenizer class="solr.StandardTokenizerFactory"/>
