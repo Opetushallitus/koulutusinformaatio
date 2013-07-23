@@ -109,7 +109,7 @@
         </constructor-arg>
     </bean>
 
-    <bean id="TarjontaServiceImpl"
+    <bean id="tarjontaServiceImpl"
           class="fi.vm.sade.koulutusinformaatio.service.impl.TarjontaServiceImpl">
         <constructor-arg>
             <ref bean="komoResource"/>
