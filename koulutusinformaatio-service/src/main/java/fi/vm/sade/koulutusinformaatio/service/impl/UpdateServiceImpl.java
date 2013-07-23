@@ -50,7 +50,7 @@ public class UpdateServiceImpl implements UpdateService {
 
 
     @Autowired
-    public UpdateServiceImpl(@Qualifier("tarjontaServiceImpl") TarjontaService tarjontaService,
+    public UpdateServiceImpl(TarjontaService tarjontaService,
                              IndexerService indexerService, EducationDataUpdateService educationDataUpdateService,
                              TransactionManager transactionManager) {
         this.tarjontaService = tarjontaService;

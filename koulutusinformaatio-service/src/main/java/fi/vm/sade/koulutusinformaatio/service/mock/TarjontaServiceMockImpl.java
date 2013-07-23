@@ -8,6 +8,7 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -16,6 +17,7 @@ import java.util.*;
  * @author Hannu Lyytikainen
  */
 @Service
+@Profile("dev")
 public class TarjontaServiceMockImpl implements TarjontaService {
 
     private static final String PARENT_KOMO_OID = "1.2.3.4.5";
