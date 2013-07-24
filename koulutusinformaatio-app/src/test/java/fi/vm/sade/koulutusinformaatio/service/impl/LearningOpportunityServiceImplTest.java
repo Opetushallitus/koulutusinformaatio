@@ -41,15 +41,15 @@ public class LearningOpportunityServiceImplTest {
 
     private LearningOpportunityService learningOpportunityService;
     private EducationDataQueryService educationDataQueryService;
-    private ParentLO parentLO;
-    private ChildLO childLO;
+    private ParentLOS parentLO;
+    private ChildLearningOpportunity childLO;
 
     @Before
     public void setUp() throws ResourceNotFoundException {
         educationDataQueryService = mock(EducationDataQueryService.class);
 
         Code prerequisite = new Code("PK", createI18Text("Peruskoulu"));
-        parentLO = new ParentLO();
+        parentLO = new ParentLOS();
         parentLO.setId("1234");
         parentLO.setAccessToFurtherStudies(createI18Text("AccessToFurtherStudies"));
         parentLO.setEducationDegree("32");
@@ -78,7 +78,7 @@ public class LearningOpportunityServiceImplTest {
                 prerequisite));
         parentLO.setApplicationOptions(aos);
 
-        childLO = new ChildLO();
+        childLO = new ChildLearningOpportunity();
         childLO.setId("lo123");
         childLO.setName(createI18Text("child 1"));
         childLO.setStartDate(new Date());
@@ -89,7 +89,7 @@ public class LearningOpportunityServiceImplTest {
         childLO.setPrerequisite(new Code("PK", createI18Text("Prerequisite")));
         childLO.setQualification(createI18Text("Qualification"));
         childLO.setPrerequisite(prerequisite);
-        ParentLORef parent = new ParentLORef();
+        ParentLOSRef parent = new ParentLOSRef();
         parent.setId("1234");
         parent.setName(parentLO.getName());
         childLO.setParent(parent);

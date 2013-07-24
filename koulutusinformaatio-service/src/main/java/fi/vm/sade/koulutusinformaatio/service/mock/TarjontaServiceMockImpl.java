@@ -155,8 +155,8 @@ public class TarjontaServiceMockImpl implements TarjontaService {
         return ao;
     }
 
-    private ParentLORef createParentLORef() {
-        ParentLORef parentLORef = new ParentLORef();
+    private ParentLOSRef createParentLORef() {
+        ParentLOSRef parentLORef = new ParentLOSRef();
         parentLORef.setId(PARENT_LOS_ID);
         parentLORef.setName(createI18nText("Audiovisuaalisen viestinnän perustutkinto", "Audiovis. viestinnän perustutk."));
         return parentLORef;

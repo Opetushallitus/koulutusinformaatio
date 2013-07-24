@@ -19,11 +19,9 @@ package fi.vm.sade.koulutusinformaatio.converter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import fi.vm.sade.koulutusinformaatio.dao.entity.*;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLO;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
-import org.modelmapper.ModelMapper;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -37,17 +35,12 @@ import static org.junit.Assert.assertNotNull;
  */
 public class KoulutusinformaatioObjectBuilderTest {
 
-    private KoulutusinformaatioObjectBuilder koulutusinformaatioObjectBuilder;
-    private ModelMapper modelMapper;
     private ChildLearningOpportunityEntity childLearningOpportunity;
     private ApplicationOptionEntity ao;
     private LearningOpportunityProviderEntity provider;
 
     @Before
     public void setUp() {
-        modelMapper = new ModelMapper();
-        koulutusinformaatioObjectBuilder = new KoulutusinformaatioObjectBuilder(modelMapper);
-
         childLearningOpportunity = new ChildLearningOpportunityEntity();
         childLearningOpportunity.setId("childLOS123");
         childLearningOpportunity.setName(TestUtil.createI18nTextEntity("child los fi", "child los sv", "child los en"));
@@ -114,7 +107,7 @@ public class KoulutusinformaatioObjectBuilderTest {
 
     @Test
     public void testBuildChildLORef() throws Exception {
-        ChildLORefEntity ref = koulutusinformaatioObjectBuilder.buildChildLORef(childLearningOpportunity);
+        ChildLORefEntity ref = KoulutusinformaatioObjectBuilder.buildChildLORef(childLearningOpportunity);
         assertNotNull(ref);
         assertEquals(childLearningOpportunity.getApplicationSystemIds().get(0), ref.getAsIds().get(0));
         assertEquals(childLearningOpportunity.getId(), ref.getChildLOId());
@@ -122,23 +115,4 @@ public class KoulutusinformaatioObjectBuilderTest {
         assertEquals(childLearningOpportunity.getName().getTranslations().get("fi"), ref.getNameByTeachingLang());
     }
 
-    @Test
-    public void testBuildChildLO() throws Exception {
-        ChildLO childLO = koulutusinformaatioObjectBuilder.buildChildLO(childLearningOpportunity);
-        assertNotNull(childLO);
-        assertEquals(childLearningOpportunity.getId(), childLO.getId());
-        assertEquals(childLearningOpportunity.getName().getTranslations().get("fi"), childLO.getName().getTranslations().get("fi"));
-        assertEquals(childLearningOpportunity.getApplicationOptions().get(0).getId(), childLO.getApplicationOptions().get(0).getId());
-        assertEquals(childLearningOpportunity.getDegreeTitle().getTranslations().get("fi"), childLO.getDegreeTitle().getTranslations().get("fi"));
-        assertEquals(childLearningOpportunity.getFormOfTeaching().get(0).getTranslations().get("fi"), childLO.getFormOfTeaching().get(0).getTranslations().get("fi"));
-        assertEquals(childLearningOpportunity.getFormOfEducation().get(0).getTranslations().get("fi"), childLO.getFormOfEducation().get(0).getTranslations().get("fi"));
-        assertEquals(childLearningOpportunity.getParent().getId(), childLO.getParent().getId());
-        assertEquals(childLearningOpportunity.getStartDate(), childLO.getStartDate());
-        assertEquals(childLearningOpportunity.getQualification().getTranslations().get("fi"), childLO.getQualification().getTranslations().get("fi"));
-        assertEquals(childLearningOpportunity.getPrerequisite().getDescription()
-                .getTranslations().get("fi"), childLO.getPrerequisite().getDescription().getTranslations().get("fi"));
-        assertEquals(childLearningOpportunity.getRelated().get(0).getNameByTeachingLang(), childLO.getRelated().get(0).getNameByTeachingLang());
-        assertEquals("link1", childLO.getWebLinks().get("link1"));
-        assertEquals(childLearningOpportunity.getTeachingLanguages().get(0).getValue(), childLO.getTeachingLanguages().get(0).getValue());
-    }
 }

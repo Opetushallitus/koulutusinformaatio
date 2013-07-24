@@ -34,15 +34,14 @@ import fi.vm.sade.tarjonta.service.resources.KomotoResource;
 import fi.vm.sade.tarjonta.service.resources.dto.*;
 
 import javax.ws.rs.WebApplicationException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Hannu Lyytikainen
  */
 public class LearningOpportunityConcreteBuilder implements LearningOpportunityBuilder {
+
+    private static final String LANG_FI = "fi";
 
     // external resources
     private KomoResource komoResource;
@@ -83,7 +82,6 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
     }
 
 
-
     @Override
     public LearningOpportunityBuilder resolveParentLOSs() throws TarjontaParseException, KoodistoException, WebApplicationException {
         LOG.debug(Joiner.on(" ").join("Resolving parent LOSs for komo oid: ", oid));
@@ -104,7 +102,6 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
         }
         return this;
     }
-
 
 
     @Override
@@ -242,13 +239,27 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
                 // add children to parent loi
                 List<ChildLearningOpportunity> children = childLOsByParentLOIId.get(parentLOI.getId());
                 for (ChildLearningOpportunity child : children) {
+                    // set parent ref
+                    child.setParent(new ParentLOSRef(parentLOS.getId(), parentLOS.getName()));
+
                     // add provider to ao + as id to provider
                     for (ApplicationOption ao : child.getApplicationOptions()) {
                         ao.setProvider(parentLOS.getProvider());
-                        ao.setParent(new ParentLORef(parentLOS.getId(), parentLOS.getName()));
+                        ao.setParent(new ParentLOSRef(parentLOS.getId(), parentLOS.getName()));
                         parentLOS.getProvider().getApplicationSystemIDs().add(ao.getApplicationSystem().getId());
                     }
                     parentLOS.getApplicationOptions().addAll(child.getApplicationOptions());
+
+                    // add related child refs to child
+                    child.setRelated(new ArrayList<ChildLORef>());
+                    for (ChildLearningOpportunity ref : children) {
+                        if (!child.getId().equals(ref.getId())) {
+                            ChildLORef cRef = buildChildLORef(ref);
+                            if (cRef != null) {
+                                child.getRelated().add(cRef);
+                            }
+                        }
+                    }
                 }
                 parentLOI.setChildren(children);
             }
@@ -261,6 +272,38 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
     public List<ParentLOS> build() {
         return parentLOSs;
     }
+
+    private ChildLORef buildChildLORef(final ChildLearningOpportunity childLO) {
+        if (childLO != null) {
+            ChildLORef ref = new ChildLORef();
+            ref.setChildLOId(childLO.getId());
+            ref.setName(childLO.getName());
+            ref.setNameByTeachingLang(getTextByEducationLanguage(childLO.getName(), childLO.getTeachingLanguages()));
+            ref.setAsIds(childLO.getApplicationSystemIds());
+            ref.setPrerequisite(childLO.getPrerequisite());
+            return ref;
+        }
+        return null;
+    }
+
+    private String getTextByEducationLanguage(final I18nText text, List<Code> languages) {
+        if (text != null && text.getTranslations() != null && !text.getTranslations().isEmpty()) {
+            if (languages != null && !languages.isEmpty()) {
+                for (Code code : languages) {
+                    if (code.getValue().equalsIgnoreCase(LANG_FI)) {
+                        return text.getTranslations().get(LANG_FI);
+                    }
+                }
+                String val = text.getTranslations().get(languages.get(0).getValue().toLowerCase());
+                if (val != null) {
+                    return val;
+                }
+            }
+            return text.getTranslations().values().iterator().next();
+        }
+        return null;
+    }
+
 
     private List<Exam> createExams(List<ValintakoeRDTO> valintakoes) throws KoodistoException {
         List<Exam> exams = Lists.newArrayList();

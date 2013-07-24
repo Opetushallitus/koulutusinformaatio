@@ -25,8 +25,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-
 /**
  * @author Mikko Majapuro
  */
@@ -38,7 +36,6 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
     private ApplicationOptionDAO applicationOptionTransactionDAO;
     private LearningOpportunityProviderDAO learningOpportunityProviderTransactionDAO;
     private ChildLearningOpportunityDAO childLOTransactionDAO;
-    private KoulutusinformaatioObjectBuilder koulutusinformaatioObjectBuilder;
     private PictureDAO pictureTransactionDAO;
 
     @Autowired
@@ -46,14 +43,12 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
                                           ApplicationOptionDAO applicationOptionTransactionDAO,
                                           LearningOpportunityProviderDAO learningOpportunityProviderTransactionDAO,
                                           ChildLearningOpportunityDAO childLOTransactionDAO,
-                                          KoulutusinformaatioObjectBuilder koulutusinformaatioObjectBuilder,
                                           PictureDAO pictureTransactionDAO) {
         this.modelMapper = modelMapper;
         this.parentLOSTransactionDAO = parentLOSTransactionDAO;
         this.applicationOptionTransactionDAO = applicationOptionTransactionDAO;
         this.learningOpportunityProviderTransactionDAO = learningOpportunityProviderTransactionDAO;
         this.childLOTransactionDAO = childLOTransactionDAO;
-        this.koulutusinformaatioObjectBuilder = koulutusinformaatioObjectBuilder;
         this.pictureTransactionDAO = pictureTransactionDAO;
     }
 
@@ -71,12 +66,10 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
             }
 
             if (plos.getLois() != null) {
-                ParentLOSRefEntity parentRef = modelMapper.map(plos, ParentLOSRefEntity.class);
                 for (ParentLearningOpportunityInstanceEntity ploi : plos.getLois()) {
                     if (ploi.getChildren() != null) {
                         for (ChildLearningOpportunityEntity cLO : ploi.getChildren()) {
-                            cLO.setParent(parentRef);
-                            ChildLORefEntity childRef = save(cLO, ploi);
+                            ChildLORefEntity childRef = save(cLO);
                             ploi.getChildRefs().add(childRef);
                         }
                     }
@@ -87,25 +80,15 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
         }
     }
 
-    private ChildLORefEntity save(final ChildLearningOpportunityEntity childLearningOpportunity,
-                                        final ParentLearningOpportunityInstanceEntity parentLOI) {
-        if (childLearningOpportunity != null && parentLOI != null) {
-            childLearningOpportunity.setRelated(new ArrayList<ChildLORefEntity>());
-            for (ChildLearningOpportunityEntity childLO : parentLOI.getChildren()) {
-                if (!childLearningOpportunity.getId().equals(childLO.getId())) {
-                    ChildLORefEntity cRef = koulutusinformaatioObjectBuilder.buildChildLORef(childLO);
-                    if (cRef != null) {
-                        childLearningOpportunity.getRelated().add(cRef);
-                    }
-                }
-            }
+    private ChildLORefEntity save(final ChildLearningOpportunityEntity childLearningOpportunity) {
+        if (childLearningOpportunity != null) {
             if (childLearningOpportunity.getApplicationOptions() != null) {
                 for (ApplicationOptionEntity ao : childLearningOpportunity.getApplicationOptions()) {
                     save(ao);
                 }
             }
             childLOTransactionDAO.save(childLearningOpportunity);
-            return koulutusinformaatioObjectBuilder.buildChildLORef(childLearningOpportunity);
+            return KoulutusinformaatioObjectBuilder.buildChildLORef(childLearningOpportunity);
         }
         return null;
     }

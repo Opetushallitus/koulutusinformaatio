@@ -19,9 +19,9 @@ package fi.vm.sade.koulutusinformaatio.converter;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunityDTO;
 
 /**
@@ -29,7 +29,7 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunityDTO;
  */
 public class ChildLOToDTO {
 
-    public static ChildLearningOpportunityDTO convert(final ChildLO childLO, final String lang) {
+    public static ChildLearningOpportunityDTO convert(final ChildLearningOpportunity childLO, final String lang) {
         ChildLearningOpportunityDTO child = new ChildLearningOpportunityDTO();
         child.setId(childLO.getId());
         child.setName(ConverterUtil.getTextByLanguage(childLO.getName(), lang));
