@@ -18,8 +18,6 @@ package fi.vm.sade.koulutusinformaatio.dao;
 
 import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.dao.entity.*;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLORef;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 import org.junit.After;
 import org.junit.Test;
@@ -63,8 +61,8 @@ public class ApplicationOptionDAOTest {
         entity.setApplicationSystem(as);
         entity.setEducationDegree("degree");
         List<ChildLORefEntity> childLoRefs = new ArrayList<ChildLORefEntity>();
-        childLoRefs.add(TestUtil.createChildLORef("clo 1", as.getId(), "333"));
-        childLoRefs.add(TestUtil.createChildLORef("clo 2", as.getId(), "444"));
+        childLoRefs.add(TestUtil.createChildLORefEntity("clo 1", as.getId(), "333"));
+        childLoRefs.add(TestUtil.createChildLORefEntity("clo 2", as.getId(), "444"));
         entity.setChildLORefs(childLoRefs);
 
         LearningOpportunityProviderEntity lop = new LearningOpportunityProviderEntity();

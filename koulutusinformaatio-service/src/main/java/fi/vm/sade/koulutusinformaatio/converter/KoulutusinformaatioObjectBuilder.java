@@ -16,10 +16,10 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLORefEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunityEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.CodeEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.I18nTextEntity;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLORef;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.domain.Code;
+import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 
 import java.util.List;
 
@@ -30,9 +30,9 @@ public class KoulutusinformaatioObjectBuilder {
 
     private static final String LANG_FI = "fi";
 
-    public static ChildLORefEntity buildChildLORef(final ChildLearningOpportunityEntity childLO) {
+    public static ChildLORef buildChildLORef(final ChildLearningOpportunity childLO) {
         if (childLO != null) {
-            ChildLORefEntity ref = new ChildLORefEntity();
+            ChildLORef ref = new ChildLORef();
             ref.setChildLOId(childLO.getId());
             ref.setName(childLO.getName());
             ref.setNameByTeachingLang(getTextByEducationLanguage(childLO.getName(), childLO.getTeachingLanguages()));
@@ -43,10 +43,10 @@ public class KoulutusinformaatioObjectBuilder {
         return null;
     }
 
-    private static String getTextByEducationLanguage(final I18nTextEntity text, List<CodeEntity> languages) {
+    private static String getTextByEducationLanguage(final I18nText text, List<Code> languages) {
         if (text != null && text.getTranslations() != null && !text.getTranslations().isEmpty()) {
             if (languages != null && !languages.isEmpty()) {
-                for (CodeEntity code : languages) {
+                for (Code code : languages) {
                     if (code.getValue().equalsIgnoreCase(LANG_FI)) {
                         return text.getTranslations().get(LANG_FI);
                     }

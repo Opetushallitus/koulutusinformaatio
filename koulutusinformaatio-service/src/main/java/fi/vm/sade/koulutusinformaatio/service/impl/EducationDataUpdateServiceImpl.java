@@ -16,7 +16,6 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import fi.vm.sade.koulutusinformaatio.converter.KoulutusinformaatioObjectBuilder;
 import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.entity.*;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
@@ -69,8 +68,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
                 for (ParentLearningOpportunityInstanceEntity ploi : plos.getLois()) {
                     if (ploi.getChildren() != null) {
                         for (ChildLearningOpportunityEntity cLO : ploi.getChildren()) {
-                            ChildLORefEntity childRef = save(cLO);
-                            ploi.getChildRefs().add(childRef);
+                            save(cLO);
                         }
                     }
                 }
@@ -80,7 +78,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
         }
     }
 
-    private ChildLORefEntity save(final ChildLearningOpportunityEntity childLearningOpportunity) {
+    private void save(final ChildLearningOpportunityEntity childLearningOpportunity) {
         if (childLearningOpportunity != null) {
             if (childLearningOpportunity.getApplicationOptions() != null) {
                 for (ApplicationOptionEntity ao : childLearningOpportunity.getApplicationOptions()) {
@@ -88,9 +86,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
                 }
             }
             childLOTransactionDAO.save(childLearningOpportunity);
-            return KoulutusinformaatioObjectBuilder.buildChildLORef(childLearningOpportunity);
         }
-        return null;
     }
 
     private void save(final LearningOpportunityProviderEntity learningOpportunityProvider) {

@@ -22,6 +22,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import fi.vm.sade.koulutusinformaatio.converter.KoulutusinformaatioObjectBuilder;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
@@ -40,8 +41,6 @@ import java.util.*;
  * @author Hannu Lyytikainen
  */
 public class LearningOpportunityConcreteBuilder implements LearningOpportunityBuilder {
-
-    private static final String LANG_FI = "fi";
 
     // external resources
     private KomoResource komoResource;
@@ -242,6 +241,9 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
                     // set parent ref
                     child.setParent(new ParentLOSRef(parentLOS.getId(), parentLOS.getName()));
 
+                    // add child ref to parent loi
+                    parentLOI.getChildRefs().add(KoulutusinformaatioObjectBuilder.buildChildLORef(child));
+
                     // add provider to ao + as id to provider
                     for (ApplicationOption ao : child.getApplicationOptions()) {
                         ao.setProvider(parentLOS.getProvider());
@@ -254,7 +256,7 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
                     child.setRelated(new ArrayList<ChildLORef>());
                     for (ChildLearningOpportunity ref : children) {
                         if (!child.getId().equals(ref.getId())) {
-                            ChildLORef cRef = buildChildLORef(ref);
+                            ChildLORef cRef = KoulutusinformaatioObjectBuilder.buildChildLORef(ref);
                             if (cRef != null) {
                                 child.getRelated().add(cRef);
                             }
@@ -272,38 +274,6 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
     public List<ParentLOS> build() {
         return parentLOSs;
     }
-
-    private ChildLORef buildChildLORef(final ChildLearningOpportunity childLO) {
-        if (childLO != null) {
-            ChildLORef ref = new ChildLORef();
-            ref.setChildLOId(childLO.getId());
-            ref.setName(childLO.getName());
-            ref.setNameByTeachingLang(getTextByEducationLanguage(childLO.getName(), childLO.getTeachingLanguages()));
-            ref.setAsIds(childLO.getApplicationSystemIds());
-            ref.setPrerequisite(childLO.getPrerequisite());
-            return ref;
-        }
-        return null;
-    }
-
-    private String getTextByEducationLanguage(final I18nText text, List<Code> languages) {
-        if (text != null && text.getTranslations() != null && !text.getTranslations().isEmpty()) {
-            if (languages != null && !languages.isEmpty()) {
-                for (Code code : languages) {
-                    if (code.getValue().equalsIgnoreCase(LANG_FI)) {
-                        return text.getTranslations().get(LANG_FI);
-                    }
-                }
-                String val = text.getTranslations().get(languages.get(0).getValue().toLowerCase());
-                if (val != null) {
-                    return val;
-                }
-            }
-            return text.getTranslations().values().iterator().next();
-        }
-        return null;
-    }
-
 
     private List<Exam> createExams(List<ValintakoeRDTO> valintakoes) throws KoodistoException {
         List<Exam> exams = Lists.newArrayList();
