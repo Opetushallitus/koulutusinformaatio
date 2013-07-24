@@ -102,15 +102,15 @@ public class IndexerServiceImpl implements IndexerService {
             doc.addField("lopAddress", provider.getVisitingAddress().getPostOffice());
             doc.addField("lopCity", provider.getVisitingAddress().getPostOffice());
         }
-        try {
-        doc.addField("lopDescription", provider.getDescription().getTranslations().get("fi"));
-        doc.addField("structure", parent.getStructureDiagram().getTranslations().get("fi"));
-        doc.addField("goals", parent.getGoals().getTranslations().get("fi"));
+        if (provider.getDescription() != null) {
+            doc.addField("lopDescription", provider.getDescription().getTranslations().get("fi"));
         }
-        catch (NullPointerException npe) {
-            // does not matter if this info is null
+        if (parent.getStructureDiagram() != null) {
+            doc.addField("structure", parent.getStructureDiagram().getTranslations().get("fi"));
         }
-
+        if (parent.getGoals() != null) {
+            doc.addField("goals", parent.getGoals().getTranslations().get("fi"));
+        }
     }
 
     private void resolveChildDocument(SolrInputDocument doc, ChildLearningOpportunity childLO, ParentLOS parent) {
@@ -125,15 +125,22 @@ public class IndexerServiceImpl implements IndexerService {
             doc.addField("lopAddress", provider.getVisitingAddress().getPostOffice());
             doc.addField("lopCity", provider.getVisitingAddress().getPostOffice());
         }
-        try {
+        if (provider.getDescription() != null) {
             doc.addField("lopDescription", provider.getDescription().getTranslations().get("fi"));
+        }
+        if (childLO.getProfessionalTitles() != null) {
             for (I18nText i18n : childLO.getProfessionalTitles()) {
                 doc.addField("professionalTitles", i18n.getTranslations().get("fi"));
             }
+        }
+        if (childLO.getQualification() != null) {
             doc.addField("qualification", childLO.getQualification().getTranslations().get("fi"));
+        }
+        if (childLO.getDegreeGoal() != null) {
             doc.addField("goals", childLO.getDegreeGoal().getTranslations().get("fi"));
-        } catch (NullPointerException npe) {
-            // does not matter if this info is null
+        }
+        if (childLO.getContent() != null) {
+            doc.addField("content", childLO.getContent().getTranslations().get("fi"));
         }
     }
 

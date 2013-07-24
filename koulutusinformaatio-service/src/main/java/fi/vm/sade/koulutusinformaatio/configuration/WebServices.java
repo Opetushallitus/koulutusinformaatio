@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.configuration;
 
 import fi.vm.sade.koodisto.service.KoodiService;
+import fi.vm.sade.koodisto.util.CachingKoodistoClient;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +28,11 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class WebServices {
+
+    @Bean(name="cachingKoodistoClient")
+    public CachingKoodistoClient getCachingKoodistoClient() {
+        return new CachingKoodistoClient();
+    }
 
     @Bean(name="koodiPublicService")
     public KoodiService getKoodiService(@Value("${koodi.service.url}") String url) {

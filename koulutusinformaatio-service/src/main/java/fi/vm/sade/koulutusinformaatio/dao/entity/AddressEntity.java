@@ -25,6 +25,7 @@ import com.google.code.morphia.annotations.Embedded;
 public class AddressEntity {
 
     private String streetAddress;
+    private String streetAddress2;
     private String postalCode;
     private String postOffice;
 
@@ -36,6 +37,14 @@ public class AddressEntity {
 
     public void setStreetAddress(String streetAddress) {
         this.streetAddress = streetAddress;
+    }
+
+    public String getStreetAddress2() {
+        return streetAddress2;
+    }
+
+    public void setStreetAddress2(String streetAddress2) {
+        this.streetAddress2 = streetAddress2;
     }
 
     public String getPostalCode() {

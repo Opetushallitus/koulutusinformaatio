@@ -40,6 +40,7 @@ public class ApplicationOption {
     private Double lowestAcceptedAverage;
     // "liitteidenToimitusPvm" : 1367874000000,
     private Date attachmentDeliveryDeadline;
+    private Address attachmentDeliveryAddress;
     // edellisenVuodenHakijatLkm
     private Integer lastYearApplicantCount;
     // onko soravaatimuksia
@@ -141,6 +142,14 @@ public class ApplicationOption {
 
     public void setAttachmentDeliveryDeadline(Date attachmentDeliveryDeadline) {
         this.attachmentDeliveryDeadline = attachmentDeliveryDeadline;
+    }
+
+    public Address getAttachmentDeliveryAddress() {
+        return attachmentDeliveryAddress;
+    }
+
+    public void setAttachmentDeliveryAddress(Address attachmentDeliveryAddress) {
+        this.attachmentDeliveryAddress = attachmentDeliveryAddress;
     }
 
     public Integer getLastYearApplicantCount() {

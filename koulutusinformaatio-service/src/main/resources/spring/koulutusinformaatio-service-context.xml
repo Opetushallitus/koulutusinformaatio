@@ -19,18 +19,15 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:jaxrs="http://cxf.apache.org/jaxrs"
-       xmlns:ehcache="http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring"
        xmlns:task="http://www.springframework.org/schema/task"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
-        http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring
-        http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring/ehcache-spring-1.1.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd
         http://cxf.apache.org/jaxrs
         http://cxf.apache.org/schemas/jaxrs.xsd
         http://www.springframework.org/schema/task
-        http://www.springframework.org/schema/task/spring-task-3.0.xsd" >
+        http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 
     <context:property-placeholder
             location="classpath:koulutusinformaatio.properties, file:///${user.home:''}/oph-configuration/koulutusinformaatio.properties"
@@ -39,9 +36,9 @@
     <context:component-scan base-package="fi.vm.sade.koulutusinformaatio"/>
 
     <!--<bean id="eventsMessageContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">-->
-        <!--<property name="connectionFactory" ref="eventsJmsFactory"/>-->
-        <!--<property name="destination" ref="eventsDestination"/>-->
-        <!--<property name="messageListener" ref="eventsMessageListener"/>-->
+    <!--<property name="connectionFactory" ref="eventsJmsFactory"/>-->
+    <!--<property name="destination" ref="eventsDestination"/>-->
+    <!--<property name="messageListener" ref="eventsMessageListener"/>-->
     <!--</bean>-->
 
     <!--<import resource="classpath:META-INF/spring/events-context.xml" />-->
@@ -52,7 +49,8 @@
 
     <bean id="modelMapper" class="org.modelmapper.ModelMapper"/>
 
-    <bean id="conversionService" class="fi.vm.sade.koulutusinformaatio.converter.KoulutusinformaatioConversionServiceFactoryBean">
+    <bean id="conversionService"
+          class="fi.vm.sade.koulutusinformaatio.converter.KoulutusinformaatioConversionServiceFactoryBean">
         <!-- Converters that need access to ConversionService are registered in KoulutusinformaatioConversionServiceFactoryBean -->
         <property name="converters">
             <list>
@@ -64,73 +62,69 @@
         </property>
     </bean>
 
-    <jaxrs:client id="komoResource"
-                  address="${tarjonta.api.rest.url}"
-                  serviceClass="fi.vm.sade.tarjonta.service.resources.KomoResource"
-                  inheritHeaders="true">
-        <jaxrs:providers>
-            <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>
-        </jaxrs:providers>
-    </jaxrs:client>
-
-    <jaxrs:client id="komotoResource"
-                  address="${tarjonta.api.rest.url}"
-                  serviceClass="fi.vm.sade.tarjonta.service.resources.KomotoResource"
-                  inheritHeaders="true">
-        <jaxrs:providers>
-            <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>
-        </jaxrs:providers>
-    </jaxrs:client>
-
-    <jaxrs:client id="hakukohdeResource"
-                  address="${tarjonta.api.rest.url}"
-                  serviceClass="fi.vm.sade.tarjonta.service.resources.HakukohdeResource"
-                  inheritHeaders="true">
-        <jaxrs:providers>
-            <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>
-        </jaxrs:providers>
-    </jaxrs:client>
-
-    <jaxrs:client id="organisaatioResource"
-                  address="${organisaatio.api.rest.url}"
-                  serviceClass="fi.vm.sade.organisaatio.resource.OrganisaatioResource"
-                  inheritHeaders="true">
-        <jaxrs:providers>
-            <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>
-        </jaxrs:providers>
-    </jaxrs:client>
-
-    <bean id="providerService" class="fi.vm.sade.koulutusinformaatio.service.impl.ProviderServiceImpl">
-        <constructor-arg>
-            <ref bean="organisaatioResource"/>
-        </constructor-arg>
-        <constructor-arg>
-            <ref bean="conversionService"/>
-        </constructor-arg>
-    </bean>
-
-    <bean id="TarjontaServiceImpl"
-          class="fi.vm.sade.koulutusinformaatio.service.impl.TarjontaServiceImpl">
-        <constructor-arg>
-            <ref bean="komoResource"/>
-        </constructor-arg>
-        <constructor-arg>
-            <ref bean="komotoResource"/>
-        </constructor-arg>
-        <constructor-arg>
-            <ref bean="hakukohdeResource"/>
-        </constructor-arg>
-        <constructor-arg>
-            <ref bean="providerService"/>
-        </constructor-arg>
-    </bean>
-
-    <ehcache:annotation-driven cache-manager="ehCacheManager" />
-
-    <bean id="ehCacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
-        <property name="configLocation"  value="/WEB-INF/ehcache.xml"/>
-    </bean>
-
     <task:annotation-driven scheduler="taskScheduler"/>
     <task:scheduler id="taskScheduler" pool-size="2"/>
+
+    <beans profile="default">
+        <jaxrs:client id="komoResource"
+                      address="${tarjonta.api.rest.url}"
+                      serviceClass="fi.vm.sade.tarjonta.service.resources.KomoResource"
+                      inheritHeaders="true">
+            <jaxrs:providers>
+                <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>
+            </jaxrs:providers>
+        </jaxrs:client>
+
+        <jaxrs:client id="komotoResource"
+                      address="${tarjonta.api.rest.url}"
+                      serviceClass="fi.vm.sade.tarjonta.service.resources.KomotoResource"
+                      inheritHeaders="true">
+            <jaxrs:providers>
+                <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>
+            </jaxrs:providers>
+        </jaxrs:client>
+
+        <jaxrs:client id="hakukohdeResource"
+                      address="${tarjonta.api.rest.url}"
+                      serviceClass="fi.vm.sade.tarjonta.service.resources.HakukohdeResource"
+                      inheritHeaders="true">
+            <jaxrs:providers>
+                <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>
+            </jaxrs:providers>
+        </jaxrs:client>
+
+        <jaxrs:client id="organisaatioResource"
+                      address="${organisaatio.api.rest.url}"
+                      serviceClass="fi.vm.sade.organisaatio.resource.OrganisaatioResource"
+                      inheritHeaders="true">
+            <jaxrs:providers>
+                <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>
+            </jaxrs:providers>
+        </jaxrs:client>
+
+        <bean id="providerService" class="fi.vm.sade.koulutusinformaatio.service.impl.ProviderServiceImpl">
+            <constructor-arg>
+                <ref bean="organisaatioResource"/>
+            </constructor-arg>
+            <constructor-arg>
+                <ref bean="conversionService"/>
+            </constructor-arg>
+        </bean>
+
+        <bean id="tarjontaServiceImpl"
+              class="fi.vm.sade.koulutusinformaatio.service.impl.TarjontaServiceImpl">
+            <constructor-arg>
+                <ref bean="komoResource"/>
+            </constructor-arg>
+            <constructor-arg>
+                <ref bean="komotoResource"/>
+            </constructor-arg>
+            <constructor-arg>
+                <ref bean="hakukohdeResource"/>
+            </constructor-arg>
+            <constructor-arg>
+                <ref bean="providerService"/>
+            </constructor-arg>
+        </bean>
+    </beans>
 </beans>

@@ -60,6 +60,7 @@ public class ChildLOToDTO {
         child.setInternationalization(ConverterUtil.getTextByLanguage(childLO.getInternationalization(), lang));
         child.setCooperation(ConverterUtil.getTextByLanguage(childLO.getCooperation(), lang));
         child.setDegreeGoal(ConverterUtil.getTextByLanguage(childLO.getDegreeGoal(), lang));
+        child.setContent(ConverterUtil.getTextByLanguage(childLO.getContent(), lang));
 
         return child;
     }

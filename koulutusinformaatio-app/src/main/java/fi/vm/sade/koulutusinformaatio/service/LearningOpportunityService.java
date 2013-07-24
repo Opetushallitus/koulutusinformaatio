@@ -37,6 +37,9 @@ public interface LearningOpportunityService {
 
     List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, String lopId, String baseEducation);
 
+    ApplicationOptionDTO getApplicationOption(String aoId, String lang) throws ResourceNotFoundException;
+    List<ApplicationOptionDTO> getApplicationOptions(List<String> aoId, String lang);
+
     List<BasketItemDTO> getBasketItems(List<String> aoId, String lang);
 
     Date getLastDataUpdated();

@@ -21,23 +21,30 @@ import com.google.common.collect.Maps;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
+import fi.vm.sade.koulutusinformaatio.service.impl.query.LearningOpportunityQuery;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.MapToSolrQueryTransformer;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.*;
 import java.util.regex.Pattern;
 
 @Component
 public class SearchServiceSolrImpl implements SearchService {
+
+    public static final Logger LOG = LoggerFactory.getLogger(SearchServiceSolrImpl.class);
 
     public static final String ID = "AOId";
     public static final String AS_START_DATE_PREFIX = "asStart_";
@@ -98,31 +105,14 @@ public class SearchServiceSolrImpl implements SearchService {
         LOSearchResultList searchResultList = new LOSearchResultList();
         String trimmed = term.trim();
         if (!trimmed.isEmpty()) {
-            MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>(1);
-            parameters.put("text", Lists.newArrayList(term));
+            SolrQuery query = new LearningOpportunityQuery(term, prerequisite, cities, start, rows);
 
-            if (prerequisite != null && !prerequisite.isEmpty()) {
-                parameters.put("fq", Lists.newArrayList("prerequisites", prerequisite));
-            }
-
-            parameters.put("start", createParameter(String.valueOf(start)));
-            parameters.put("rows", createParameter(String.valueOf(rows)));
-            SolrQuery query = mapToSolrQueryTransformer.transform(parameters.entrySet());
-
-            if (cities != null && !cities.isEmpty()) {
-
-                StringBuilder fq = new StringBuilder("lopCity:(");
-
-                for (int i = 0; i < cities.size(); i++) {
-                    if (i < cities.size() -1) {
-                        fq.append(cities.get(i)).append(" OR ");
-                    }
-                    else {
-                        fq.append(cities.get(i));
-                    }
-                }
-                fq.append(")");
-                query.addFilterQuery(fq.toString());
+            try {
+                LOG.debug(
+                        URLDecoder.decode(
+                                new StringBuilder().append("Searching learning opportunities with query string: ").append(query.toString()).toString(), "utf-8"));
+            } catch (UnsupportedEncodingException e) {
+                LOG.debug("Could not log search query");
             }
 
             QueryResponse response = null;
@@ -212,73 +202,5 @@ public class SearchServiceSolrImpl implements SearchService {
         return parameters;
 
     }
-
-
-//
-//    public SearchResult search(final Set<Map.Entry<String, List<String>>> parameters) throws SearchException {
-//        final SolrQuery solrQuery = mapToSolrQueryTransformer.transform(parameters);
-//        return query(solrQuery);
-//    }
-//
-//
-//    public SearchResult query(final SolrQuery query) {
-//        List<Map<String, Collection<Object>>> results = new ArrayList<Map<String, Collection<Object>>>();
-//        try {
-//            QueryResponse rsp = httpSolrServer.query(query);
-//            for (SolrDocument doc : rsp.getResults()) {
-//                final Map<String, Collection<Object>> fieldValuesMap = doc.getFieldValuesMap();
-//                results.add(fieldValuesMap);
-//            }
-//        } catch (SolrServerException e) {
-//            throw new SearchException("Error running query", e);
-//        }
-//        return new SearchResult(results);
-//    }
-
-//
-//    public Map<String, Object> searchById(final String id) {
-//        SolrQuery query = new SolrQuery();
-//        query.setQuery(ID + ":" + id);
-//        SearchResult searchResult = query(query);
-//        Map<String, Object> itemFromResult = getItemFromResult(searchResult);
-//        if (itemFromResult.isEmpty()) {
-//            throw new SearchException("Koulutuskuvausta " + id + " ei löytynyt: ");
-//        }
-//        return itemFromResult;
-//    }
-//
-//    private Collection<String> getUniqValuesByField(final String field) {
-//        SolrQuery query = new SolrQuery();
-//        query.setFacet(true);
-//        query.addFacetField(field);
-//        Set<String> uniqNames = new HashSet<String>();
-//        try {
-//            QueryResponse rsp = httpSolrServer.query(query);
-//            List<FacetField> facetFields = rsp.getFacetFields();
-//            for (FacetField facetField : facetFields) {
-//                List<FacetField.Count> values = facetField.getValues();
-//                for (FacetField.Count value : values) {
-//                    uniqNames.add(value.getName());
-//                }
-//            }
-//        } catch (SolrServerException e) {
-//            throw new SearchException("Error running query", e);
-//        }
-//        return uniqNames;
-//
-//    }
-//
-
-//
-//    private Map<String, Object> getItemFromResult(final SearchResult searchResult) {
-//        List<Map<String, Object>> items = searchResult.getItems();
-//        if (items.size() == 0) {
-//            return Collections.<String, Object>emptyMap();
-//        } else if (items.size() == 1) {
-//            return items.get(0);
-//        } else {
-//            throw new SearchException("Multiple hits");
-//        }
-//    }
 
 }

@@ -54,6 +54,7 @@ public class LearningOpportunityProviderEntity {
     @Reference
     private PictureEntity picture;
     private boolean athleteEducation;
+    private String placeOfBusinessCode;
     
 
     public LearningOpportunityProviderEntity() {
@@ -201,5 +202,13 @@ public class LearningOpportunityProviderEntity {
 
     public void setAthleteEducation(boolean athleteEducation) {
         this.athleteEducation = athleteEducation;
+    }
+
+    public String getPlaceOfBusinessCode() {
+        return placeOfBusinessCode;
+    }
+
+    public void setPlaceOfBusinessCode(String placeOfBusinessCode) {
+        this.placeOfBusinessCode = placeOfBusinessCode;
     }
 }

@@ -73,6 +73,7 @@
                         <span data-ng-repeat="item in as.applicationOptions">
                             <input type="hidden" name="preference{{$index + 1}}-Opetuspiste" value="{{item.providerName}}"/>
                             <input type="hidden" name="preference{{$index + 1}}-Opetuspiste-id" value="{{item.providerId}}"/>
+                            <input type="hidden" name="preference{{$index + 1}}-Koulutus-id-athlete" value="{{item.athleteEducation}}"/>
                             <input type="hidden" name="preference{{$index + 1}}-Koulutus" value="{{item.name}}"/>
                             <input type="hidden" name="preference{{$index + 1}}-Koulutus-id" value="{{item.id}}"/>
                             <input type="hidden" name="preference{{$index + 1}}-Koulutus-educationDegree" value="{{item.educationDegree}}"/>

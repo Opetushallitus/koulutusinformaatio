@@ -61,6 +61,10 @@
                     name="preference1-Koulutus-id-lang" 
                     value="{{selectedAo.teachLang}}" 
                     data-ng-model="selectedAo.teachLang" />
+                <input
+                    type="hidden"
+                    name="preference1-Koulutus-id-athlete"
+                    value="{{parentLO.provider.athleteEducation}}" />
                 <button type="submit" data-ng-disabled="!applicationSystemIsActive()">
                     <span>
                         <span data-ki-i18n="apply-button-label"></span>

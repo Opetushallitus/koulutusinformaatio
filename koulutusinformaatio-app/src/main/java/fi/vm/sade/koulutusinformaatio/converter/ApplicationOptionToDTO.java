@@ -32,6 +32,7 @@ public class ApplicationOptionToDTO {
             ao.setName(ConverterUtil.getTextByLanguage(applicationOption.getName(), lang));
             ao.setAoIdentifier(applicationOption.getAoIdentifier());
             ao.setAttachmentDeliveryDeadline(applicationOption.getAttachmentDeliveryDeadline());
+            ao.setAttachmentDeliveryAddress(AddressToDTO.convert(applicationOption.getAttachmentDeliveryAddress()));
             ao.setLastYearApplicantCount(applicationOption.getLastYearApplicantCount());
             ao.setLowestAcceptedAverage(applicationOption.getLowestAcceptedAverage());
             ao.setLowestAcceptedScore(applicationOption.getLowestAcceptedScore());
@@ -42,6 +43,7 @@ public class ApplicationOptionToDTO {
             ao.setSelectionCriteria(ConverterUtil.getTextByLanguage(applicationOption.getSelectionCriteria(), lang));
             ao.setPrerequisite(CodeToDTO.convert(applicationOption.getPrerequisite(), lang));
             ao.setExams(ExamToDTO.convertAll(applicationOption.getExams(), lang));
+            ao.setProvider(ProviderToDTO.convert(applicationOption.getProvider(), lang));
             return ao;
         }
         return null;

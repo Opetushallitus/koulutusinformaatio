@@ -81,6 +81,7 @@ public class KoulutusinformaatioObjectBuilder {
             clo.setWorkingLifePlacement(convert(childLO.getWorkingLifePlacement(), I18nText.class));
             clo.setInternationalization(convert(childLO.getInternationalization(), I18nText.class));
             clo.setCooperation(convert(childLO.getCooperation(), I18nText.class));
+            clo.setContent(convert(childLO.getContent(), I18nText.class));
             clo.setDegreeGoal(convert(childLO.getDegreeGoal(), I18nText.class));
             return clo;
         }

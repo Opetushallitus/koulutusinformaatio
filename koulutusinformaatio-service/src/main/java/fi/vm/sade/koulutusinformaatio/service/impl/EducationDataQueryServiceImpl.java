@@ -95,6 +95,16 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     }
 
     @Override
+    public ApplicationOption getApplicationOption(String aoId) throws ResourceNotFoundException {
+        ApplicationOptionEntity ao = applicationOptionDAO.get(aoId);
+        if (ao != null) {
+            return modelMapper.map(ao, ApplicationOption.class);
+        } else {
+            throw new ResourceNotFoundException("Application option not found: " + aoId);
+        }
+    }
+
+    @Override
     public ChildLO getChildLearningOpportunity(String childLoId) throws ResourceNotFoundException {
         ChildLearningOpportunityEntity childLO = getChildLO(childLoId);
         return koulutusinformaatioObjectBuilder.buildChildLO(childLO);

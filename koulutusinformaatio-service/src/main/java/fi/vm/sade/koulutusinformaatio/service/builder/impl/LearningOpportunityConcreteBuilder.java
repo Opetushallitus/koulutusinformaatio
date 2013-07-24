@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
 import com.google.common.base.Function;
+import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
@@ -85,6 +86,7 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
 
     @Override
     public LearningOpportunityBuilder resolveParentLOSs() throws TarjontaParseException, KoodistoException, WebApplicationException {
+        LOG.debug(Joiner.on(" ").join("Resolving parent LOSs for komo oid: ", oid));
         parentKomo = komoResource.getByOID(oid);
         validateParentKomo(parentKomo);
         List<OidRDTO> parentKomotoOids = komoResource.getKomotosByKomoOID(parentKomo.getOid(), Integer.MAX_VALUE, 0);
@@ -119,6 +121,7 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
 
             List<OidRDTO> childKomotoOIds = komoResource.getKomotosByKomoOID(childKomoId, Integer.MAX_VALUE, 0);
             for (OidRDTO childKomotoOId : childKomotoOIds) {
+                LOG.debug(Joiner.on(" ").join("Resolving child learning opportunity: ", childKomotoOId.getOid()));
                 KomotoDTO childKomoto = komotoResource.getByOID(childKomotoOId.getOid());
 
                 try {
@@ -143,11 +146,14 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
                 childLO.setWorkingLifePlacement(getI18nText(childKomoto.getSijoittuminenTyoelamaan()));
                 childLO.setInternationalization(getI18nText(childKomoto.getKansainvalistyminen()));
                 childLO.setCooperation(getI18nText(childKomoto.getYhteistyoMuidenToimijoidenKanssa()));
+                childLO.setContent(getI18nText(childKomoto.getSisalto()));
 
                 List<ApplicationOption> applicationOptions = Lists.newArrayList();
                 List<String> applicationSystemIds = Lists.newArrayList();
                 List<OidRDTO> aoIdDTOs = komotoResource.getHakukohdesByKomotoOID(childKomotoOId.getOid());
                 for (OidRDTO aoIdDTO : aoIdDTOs) {
+                    LOG.debug(Joiner.on(" ").join("Adding application options (",
+                            aoIdDTOs.size(), ") to child learning opportunity"));
 
                     // application option
                     String aoId = aoIdDTO.getOid();
@@ -193,6 +199,16 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
                     ao.setEducationDegree(koodistoService.searchFirstCodeValue(childKomoto.getKoulutusAsteUri()));
                     ao.setTeachingLanguages(koodistoService.searchCodeValuesMultiple(childKomoto.getOpetuskieletUris()));
                     ao.setPrerequisite(childLO.getPrerequisite());
+
+                    if (hakukohdeDTO.getLiitteidenToimitusosoite() != null) {
+                        OsoiteRDTO addressDTO = hakukohdeDTO.getLiitteidenToimitusosoite();
+                        Address attachmentDeliveryAddress = new Address();
+                        attachmentDeliveryAddress.setStreetAddress(addressDTO.getOsoiterivi1());
+                        attachmentDeliveryAddress.setStreetAddress2(addressDTO.getOsoiterivi2());
+                        attachmentDeliveryAddress.setPostalCode(koodistoService.searchFirstCodeValue(addressDTO.getPostinumero()));
+                        attachmentDeliveryAddress.setPostOffice(addressDTO.getPostitoimipaikka());
+                        ao.setAttachmentDeliveryAddress(attachmentDeliveryAddress);
+                    }
 
                     // set child loi names to application option
                     List<OidRDTO> komotosByHakukohdeOID = hakukohdeResource.getKomotosByHakukohdeOID(aoId);
@@ -279,6 +295,7 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
     }
 
     private ParentLOS createParentLOS(KomoDTO parentKomo, String providerId, List<KomotoDTO> parentKomotos) throws KoodistoException {
+        LOG.debug(Joiner.on(" ").join("Creating provider specific parent LOS from komo: ", parentKomo.getOid()));
 
         ParentLOS parentLOS = new ParentLOS();
 

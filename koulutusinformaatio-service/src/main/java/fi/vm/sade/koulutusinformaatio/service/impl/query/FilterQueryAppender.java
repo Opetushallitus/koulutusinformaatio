@@ -24,6 +24,7 @@ import java.util.Map;
 /**
  * @author Hannu Lyytikainen
  */
+@Deprecated
 public class FilterQueryAppender implements SolrQueryAppender {
     @Override
     public void append(SolrQuery solrQuery, Map.Entry<String, List<String>> entry) {

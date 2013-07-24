@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.resource;
 
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionSearchResultDTO;
 
 import javax.ws.rs.*;
@@ -34,4 +35,13 @@ public interface ApplicationOptionResource {
     public List<ApplicationOptionSearchResultDTO> searchApplicationOptions(
             @PathParam("asId") final String asId, @PathParam("lopId") final String lopId,
             @QueryParam("baseEducation") final String baseEducation);
+
+    @GET
+    @Path("/{aoId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ApplicationOptionDTO getApplicationOption(@PathParam("aoId") final String aoId, @DefaultValue("fi") @QueryParam("lang") String lang);
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    public List<ApplicationOptionDTO> getApplicationOptions(@QueryParam("aoId") List<String> aoId, @DefaultValue("fi") @QueryParam("lang") String lang);
 }

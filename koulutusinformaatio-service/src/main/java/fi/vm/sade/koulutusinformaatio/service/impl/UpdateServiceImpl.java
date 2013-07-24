@@ -27,6 +27,7 @@ import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -93,8 +94,7 @@ public class UpdateServiceImpl implements UpdateService {
             this.transactionManager.commit();
             LOG.info("Education data update successfully finished");
         } catch (Exception e) {
-            LOG.error("Education data update failed");
-            e.printStackTrace();
+            LOG.error("Education data update failed ", e);
             this.transactionManager.rollBack();
         } finally {
             running = false;

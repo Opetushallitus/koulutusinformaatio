@@ -67,6 +67,8 @@ public class ChildLearningOpportunityEntity {
     private I18nTextEntity degreeGoal;
     @Embedded
     private ParentLOSRefEntity parent;
+    @Embedded
+    private I18nTextEntity content;
 
 
     public ChildLearningOpportunityEntity() {}
@@ -221,5 +223,13 @@ public class ChildLearningOpportunityEntity {
 
     public void setParent(ParentLOSRefEntity parent) {
         this.parent = parent;
+    }
+
+    public I18nTextEntity getContent() {
+        return content;
+    }
+
+    public void setContent(I18nTextEntity content) {
+        this.content = content;
     }
 }

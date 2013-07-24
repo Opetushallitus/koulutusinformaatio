@@ -35,6 +35,7 @@ public class ApplicationOptionDTO {
     private Integer lowestAcceptedScore;
     private Double lowestAcceptedAverage;
     private Date attachmentDeliveryDeadline;
+    private AddressDTO attachmentDeliveryAddress;
     private Integer lastYearApplicantCount;
     private boolean sora;
     private String educationDegree;
@@ -42,7 +43,7 @@ public class ApplicationOptionDTO {
     private String selectionCriteria;
     private CodeDTO prerequisite;
     private List<ExamDTO> exams;
-
+    private LearningOpportunityProviderDTO provider;
 
     public String getId() {
         return id;
@@ -108,6 +109,14 @@ public class ApplicationOptionDTO {
         this.attachmentDeliveryDeadline = attachmentDeliveryDeadline;
     }
 
+    public AddressDTO getAttachmentDeliveryAddress() {
+        return attachmentDeliveryAddress;
+    }
+
+    public void setAttachmentDeliveryAddress(AddressDTO attachmentDeliveryAddress) {
+        this.attachmentDeliveryAddress = attachmentDeliveryAddress;
+    }
+
     public Integer getLastYearApplicantCount() {
         return lastYearApplicantCount;
     }
@@ -162,5 +171,13 @@ public class ApplicationOptionDTO {
 
     public void setExams(List<ExamDTO> exams) {
         this.exams = exams;
+    }
+
+    public LearningOpportunityProviderDTO getProvider() {
+        return provider;
+    }
+
+    public void setProvider(LearningOpportunityProviderDTO provider) {
+        this.provider = provider;
     }
 }

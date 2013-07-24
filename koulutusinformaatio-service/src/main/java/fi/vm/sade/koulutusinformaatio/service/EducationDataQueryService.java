@@ -46,6 +46,7 @@ public interface EducationDataQueryService {
     List<ApplicationOption> findApplicationOptions(final String asId, final String lopId, final String baseEducation);
 
     List<ApplicationOption> getApplicationOptions(final List<String> aoIds);
+    ApplicationOption getApplicationOption(final String aoId) throws ResourceNotFoundException;
 
     /**
      * Gets the child learning opportunity

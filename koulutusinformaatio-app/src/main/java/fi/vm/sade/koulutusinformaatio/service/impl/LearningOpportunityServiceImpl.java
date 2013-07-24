@@ -18,10 +18,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import fi.vm.sade.koulutusinformaatio.converter.ApplicationOptionToSearchResultDTO;
-import fi.vm.sade.koulutusinformaatio.converter.ApplicationOptionsToBasketItemDTOs;
-import fi.vm.sade.koulutusinformaatio.converter.ChildLOToDTO;
-import fi.vm.sade.koulutusinformaatio.converter.ParentLOToDTO;
+import fi.vm.sade.koulutusinformaatio.converter.*;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.Picture;
@@ -85,6 +82,23 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
             @Override
             public ApplicationOptionSearchResultDTO apply(ApplicationOption applicationOption) {
                 return ApplicationOptionToSearchResultDTO.convert(applicationOption, LANG_FI);
+            }
+        });
+    }
+
+    @Override
+    public ApplicationOptionDTO getApplicationOption(String aoId, String lang) throws ResourceNotFoundException {
+        ApplicationOption ao = educationDataQueryService.getApplicationOption(aoId);
+        return ApplicationOptionToDTO.convert(ao, lang);
+    }
+
+    @Override
+    public List<ApplicationOptionDTO> getApplicationOptions(List<String> aoId, final String lang) {
+        List<ApplicationOption> applicationOptions = educationDataQueryService.getApplicationOptions(aoId);
+        return Lists.transform(applicationOptions, new Function<ApplicationOption, ApplicationOptionDTO>() {
+            @Override
+            public ApplicationOptionDTO apply(ApplicationOption applicationOption) {
+                return ApplicationOptionToDTO.convert(applicationOption, lang);
             }
         });
     }
