@@ -19,6 +19,14 @@
 <schema name="tarjontatiedot" version="0.1">
 
     <fields>
+
+        <!-- copy field for normal keywords -->
+        <field name="text" type="text_fi" indexed="true" stored="true" multiValued="true"/>
+        <!-- copy field for keywords with increased relevancy value -->
+        <field name="textBoost" type="text_fi" indexed="true" stored="true" multiValued="true"/>
+
+
+
         <field name="id" type="text_general" indexed="true" stored="true" multiValued="false"/>
         <!-- koulutusmoduuli -->
         <field name="name" type="text_general" indexed="false" stored="true" multiValued="false"/>
@@ -48,10 +56,8 @@
         <dynamicField name="asStart_*"  type="date"  indexed="false"  stored="true"/>
         <dynamicField name="asEnd_*"  type="date"  indexed="false"  stored="true"/>
 
-        <!-- copy field for normal keywords -->
-        <field name="text" type="text_fi" indexed="true" stored="true" multiValued="true"/>
-        <!-- copy field for keywords with increased relevancy value -->
-        <field name="textBoost" type="text_fi" indexed="true" stored="true" multiValued="true"/>
+
+
 
         <!-- for filtering -->
         <field name="prerequisites" type="text_general" indexed="true" stored="false" multiValued="true"/>
@@ -73,6 +79,39 @@
     <copyField source="content" dest="textBoost"/>
 
     <types>
+
+        <!-- Finnish -->
+        <fieldType name="text_fi" class="solr.TextField" positionIncrementGap="100">
+            <analyzer type="index">
+                <charFilter class="solr.HTMLStripCharFilterFactory"/>
+                <tokenizer class="solr.StandardTokenizerFactory"/>
+                <filter class="solr.LowerCaseFilterFactory"/>
+                <filter class="solr.StopFilterFactory" ignoreCase="true" words="lang/stopwords_fi.txt" format="snowball"
+                        enablePositionIncrements="true"/>
+                <filter class="fi.nationallibrary.ndl.solrvoikko.VoikkoFilterFactory" expandCompounds="true" separateTokens="true" allAnalysis="true"/>
+                <filter class="solr.EdgeNGramFilterFactory" minGramSize="3" maxGramSize="40" side="front"/>
+            </analyzer>
+            <analyzer type="query">
+                <tokenizer class="solr.StandardTokenizerFactory"/>
+                <filter class="solr.LowerCaseFilterFactory"/>
+                <filter class="fi.nationallibrary.ndl.solrvoikko.VoikkoFilterFactory" expandCompounds="true" separateTokens="false"/>
+            </analyzer>
+        </fieldType>
+
+        <!-- Swedish -->
+        <fieldType name="text_sv" class="solr.TextField" positionIncrementGap="100">
+            <analyzer>
+                <charFilter class="solr.HTMLStripCharFilterFactory"/>
+                <tokenizer class="solr.StandardTokenizerFactory"/>
+                <filter class="solr.LowerCaseFilterFactory"/>
+                <filter class="solr.StopFilterFactory" ignoreCase="true" words="lang/stopwords_sv.txt" format="snowball"
+                        enablePositionIncrements="true"/>
+                <filter class="solr.SnowballPorterFilterFactory" language="Swedish"/>
+                <!-- less aggressive: <filter class="solr.SwedishLightStemFilterFactory"/> -->
+            </analyzer>
+        </fieldType>
+
+
         <!-- Byte -->
         <fieldtype name="byte" class="solr.ByteField"/>
 
@@ -472,46 +511,6 @@ but may be good for SKUs.  Can insert dashes in the wrong place and still match.
         -->
         <fieldtype name="geohash" class="solr.GeoHashField"/>
 
-        <!-- Money/currency field type. See http://wiki.apache.org/solr/MoneyFieldType
-             Parameters:
-               defaultCurrency: Specifies the default currency if none specified. Defaults to "USD"
-               precisionStep:   Specifies the precisionStep for the TrieLong field used for the amount
-               providerClass:   Lets you plug in other exchange provider backend:
-                                solr.FileExchangeRateProvider is the default and takes one parameter:
-                                  currencyConfig: name of an xml file holding exhange rates
-                                solr.OpenExchangeRatesOrgProvider uses rates from openexchangerates.org:
-                                  ratesFileLocation: URL or path to rates JSON file (default latest.json on the web)
-                                  refreshInterval: Number of minutes between each rates fetch (default: 1440, min: 60)
-        -->
-        <!--<fieldType name="currency" class="solr.CurrencyField" precisionStep="8" defaultCurrency="USD"
-                   currencyConfig="currency.xml"/>-->
-
-        <!-- Finnish -->
-        <fieldType name="text_fi" class="solr.TextField" positionIncrementGap="100">
-            <analyzer type="index">
-                <tokenizer class="solr.StandardTokenizerFactory"/>
-                <filter class="solr.LowerCaseFilterFactory"/>
-                <filter class="fi.nationallibrary.ndl.solrvoikko.VoikkoFilterFactory" expandCompounds="true" separateTokens="true" allAnalysis="true"/>
-                <filter class="solr.EdgeNGramFilterFactory" minGramSize="3" maxGramSize="40" side="front"/>
-            </analyzer>
-            <analyzer type="query">
-                <tokenizer class="solr.StandardTokenizerFactory"/>
-                <filter class="solr.LowerCaseFilterFactory"/>
-                <filter class="fi.nationallibrary.ndl.solrvoikko.VoikkoFilterFactory" expandCompounds="true" separateTokens="false"/>
-            </analyzer>
-        </fieldType>
-
-        <!-- Swedish -->
-        <fieldType name="text_sv" class="solr.TextField" positionIncrementGap="100">
-            <analyzer>
-                <tokenizer class="solr.StandardTokenizerFactory"/>
-                <filter class="solr.LowerCaseFilterFactory"/>
-                <filter class="solr.StopFilterFactory" ignoreCase="true" words="lang/stopwords_sv.txt" format="snowball"
-                        enablePositionIncrements="true"/>
-                <filter class="solr.SnowballPorterFilterFactory" language="Swedish"/>
-                <!-- less aggressive: <filter class="solr.SwedishLightStemFilterFactory"/> -->
-            </analyzer>
-        </fieldType>
 
     </types>
 
