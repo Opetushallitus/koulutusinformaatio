@@ -16,7 +16,6 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
@@ -39,7 +38,6 @@ import org.springframework.util.MultiValueMap;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.*;
-import java.util.regex.Pattern;
 
 @Component
 public class SearchServiceSolrImpl implements SearchService {
@@ -127,12 +125,11 @@ public class SearchServiceSolrImpl implements SearchService {
                 String parentId = doc.get("parentId") != null ? doc.get("parentId").toString() : null;
                 String losId = doc.get("losId") != null ? doc.get("losId").toString() : null;
 
-
                 LOSearchResult lo = null;
                 try {
                     lo = new LOSearchResult(
-                            doc.get("id").toString(), doc.get("name").toString(),
-                            doc.get("lopId").toString(), doc.get("lopName").toString(), parentId, losId);
+                            doc.get("id").toString(), doc.get("name_fi").toString(),
+                            doc.get("lopId").toString(), doc.get("lopName_fi").toString(), parentId, losId);
 
                     updateAsStatus(lo, doc);
                 } catch (Exception e) {
