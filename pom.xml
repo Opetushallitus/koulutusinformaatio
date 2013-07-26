@@ -239,13 +239,4 @@
             </dependencies>
         </profile>
 
-        <profile>
-            <id>deploy</id>
-            <properties>
-                <springProfileActive>default</springProfileActive>
-                <log4jConfigLocation>file:///data00/oph/koulutusinformaatio/oph-configuration/log4j.properties</log4jConfigLocation>
-            </properties>
-        </profile>
-	</profiles>
-	
 </project>
