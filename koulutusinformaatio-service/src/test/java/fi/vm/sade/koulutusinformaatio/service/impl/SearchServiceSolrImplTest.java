@@ -64,9 +64,9 @@ public class SearchServiceSolrImplTest {
         SolrDocumentList loDocs = new SolrDocumentList();
         SolrDocument lo1 = new SolrDocument();
         lo1.put("id", "1.2.3.4.5");
-        lo1.put("name", "test learning opportunity");
+        lo1.put("name_fi", "test learning opportunity");
         lo1.put("lopId", "6.7.8.9");
-        lo1.put("lopName", "LOP NAME");
+        lo1.put("lopName_fi", "LOP NAME");
         loDocs.add(lo1);
         QueryResponse loQueryResponse = mock(QueryResponse.class);
         when(loQueryResponse.getResults()).thenReturn(loDocs);
