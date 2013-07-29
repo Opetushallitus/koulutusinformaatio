@@ -239,4 +239,6 @@
             </dependencies>
         </profile>
 
+    </profiles>
+
 </project>
