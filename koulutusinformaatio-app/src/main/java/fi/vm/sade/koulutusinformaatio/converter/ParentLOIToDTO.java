@@ -16,8 +16,16 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOI;
+import com.google.common.base.Function;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
+import com.google.common.collect.Maps;
+import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunityInstanceDTO;
+
+import java.util.Map;
 
 /**
  * @author Mikko Majapuro
@@ -29,7 +37,38 @@ public class ParentLOIToDTO {
         loi.setId(parentLOI.getId());
         loi.setPrerequisite(CodeToDTO.convert(parentLOI.getPrerequisite(), lang));
         loi.setSelectingEducation(ConverterUtil.getTextByLanguage(parentLOI.getSelectingEducation(), lang));
-        loi.setChildren(ChildLORefToDTO.convert(parentLOI.getChildRefs(), lang));
+
+        // group by application system for UI
+        ListMultimap<ApplicationOption, ChildLearningOpportunity> childByAo = ArrayListMultimap.create();
+        ListMultimap<ApplicationSystem, ApplicationOption> aoByAs = ArrayListMultimap.create();
+        Map<String, ChildLORef> childLORefs = Maps.uniqueIndex(parentLOI.getChildRefs(), new Function<ChildLORef, String>() {
+            @Override
+            public String apply(ChildLORef input) {
+                return input.getChildLOId();
+            }
+        });
+        for (ChildLearningOpportunity childLO : parentLOI.getChildren()) {
+            for (ApplicationOption ao : childLO.getApplicationOptions()) {
+                childByAo.put(ao, childLO);
+                aoByAs.put(ao.getApplicationSystem(), ao);
+            }
+        }
+
+        for (ApplicationSystem as : aoByAs.keySet()) {
+            ApplicationSystemDTO asDTO = ApplicationSystemToDTO.convert(as, lang);
+            for (ApplicationOption ao : aoByAs.get(as)) {
+                ApplicationOptionDTO aoDTO = ApplicationOptionToDTO.convert(ao, lang);
+                // convert children to ao
+                for (ChildLearningOpportunity childLO : childByAo.get(ao)) {
+                    aoDTO.getChildRefs().add(ChildLORefToDTO.convert(childLORefs.get(childLO.getId()), lang));
+                }
+                asDTO.getApplicationOptions().add(aoDTO);
+            }
+            loi.getApplicationSystems().add(asDTO);
+        }
+
+
+        //loi.setChildren(ChildLORefToDTO.convert(parentLOI.getChildRefs(), lang));
         return loi;
     }
 }

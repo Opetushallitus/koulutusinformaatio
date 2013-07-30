@@ -30,6 +30,7 @@ public class ApplicationSystemDTO {
     private String id;
     private String name;
     private List<DateRangeDTO> applicationDates = new ArrayList<DateRangeDTO>();
+    private List<ApplicationOptionDTO> applicationOptions = new ArrayList<ApplicationOptionDTO>();
 
     public String getId() {
         return id;
@@ -53,5 +54,13 @@ public class ApplicationSystemDTO {
 
     public void setApplicationDates(List<DateRangeDTO> applicationDates) {
         this.applicationDates = applicationDates;
+    }
+
+    public List<ApplicationOptionDTO> getApplicationOptions() {
+        return applicationOptions;
+    }
+
+    public void setApplicationOptions(List<ApplicationOptionDTO> applicationOptions) {
+        this.applicationOptions = applicationOptions;
     }
 }

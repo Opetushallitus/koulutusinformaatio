@@ -63,11 +63,6 @@ public class LearningOpportunityServiceImplTest {
         childLORefs.add(createChildLORef(createI18Text("c2"), "c2 fi", "as123", "lo124", prerequisite));
         childLORefs.add(createChildLORef(createI18Text("c3"), "c3 fi", "as124", "lo125", prerequisite));
 
-        ParentLOI parentLOI = new ParentLOI();
-        parentLOI.setId("123.123");
-        parentLOI.setChildRefs(childLORefs);
-        parentLOI.setPrerequisite(prerequisite);
-        parentLO.setLois(Lists.newArrayList(parentLOI));
         Set<String> asIds = new HashSet<String>();
         asIds.add("as123");
         asIds.add("as124");
@@ -102,6 +97,13 @@ public class LearningOpportunityServiceImplTest {
         links.put("link1", "link1");
         links.put("link2", "link2");
         childLO.setWebLinks(links);
+
+        ParentLOI parentLOI = new ParentLOI();
+        parentLOI.setId("123.123");
+        parentLOI.setChildRefs(childLORefs);
+        parentLOI.setPrerequisite(prerequisite);
+        parentLOI.setChildren(Lists.newArrayList(childLO));
+        parentLO.setLois(Lists.newArrayList(parentLOI));
 
         ModelMapper modelMapper = new ModelMapper();
         learningOpportunityService = new LearningOpportunityServiceImpl(educationDataQueryService, modelMapper);
@@ -147,7 +149,8 @@ public class LearningOpportunityServiceImplTest {
         assertEquals(parentLO.getProvider().getId(), result.getProvider().getId());
         assertEquals(parentLO.getProvider().getName().getTranslations().get(lang), result.getProvider().getName());
         assertEquals(parentLO.getApplicationOptions().iterator().next().getName().getTranslations().get(lang),
-                result.getApplicationOptions().iterator().next().getName());
+                result.getLois().iterator().next().getApplicationSystems().iterator().next().
+                        getApplicationOptions().iterator().next().getName());
         assertEquals(3, result.getAvailableTranslationLanguages().size());
         assertEquals(lang, result.getTranslationLanguage());
     }

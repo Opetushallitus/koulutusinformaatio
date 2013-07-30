@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.domain.dto;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,7 +31,6 @@ public class ApplicationOptionDTO {
     private String id;
     private String name;
     private String aoIdentifier;
-    private ApplicationSystemDTO applicationSystem;
     private Integer startingQuota;
     private Integer lowestAcceptedScore;
     private Double lowestAcceptedAverage;
@@ -43,7 +43,9 @@ public class ApplicationOptionDTO {
     private String selectionCriteria;
     private CodeDTO prerequisite;
     private List<ExamDTO> exams;
+    private List<ChildLORefDTO> childRefs = new ArrayList<ChildLORefDTO>();
     private LearningOpportunityProviderDTO provider;
+
 
     public String getId() {
         return id;
@@ -67,14 +69,6 @@ public class ApplicationOptionDTO {
 
     public void setAoIdentifier(String aoIdentifier) {
         this.aoIdentifier = aoIdentifier;
-    }
-
-    public ApplicationSystemDTO getApplicationSystem() {
-        return applicationSystem;
-    }
-
-    public void setApplicationSystem(ApplicationSystemDTO applicationSystem) {
-        this.applicationSystem = applicationSystem;
     }
 
     public Integer getStartingQuota() {
@@ -171,6 +165,14 @@ public class ApplicationOptionDTO {
 
     public void setExams(List<ExamDTO> exams) {
         this.exams = exams;
+    }
+
+    public List<ChildLORefDTO> getChildRefs() {
+        return childRefs;
+    }
+
+    public void setChildRefs(List<ChildLORefDTO> childRefs) {
+        this.childRefs = childRefs;
     }
 
     public LearningOpportunityProviderDTO getProvider() {

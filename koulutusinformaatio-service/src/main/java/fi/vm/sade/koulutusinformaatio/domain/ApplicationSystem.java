@@ -51,4 +51,21 @@ public class ApplicationSystem {
     public void setApplicationDates(List<DateRange> applicationDates) {
         this.applicationDates = applicationDates;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ApplicationSystem)) return false;
+
+        ApplicationSystem that = (ApplicationSystem) o;
+
+        if (!id.equals(that.id)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
 }
