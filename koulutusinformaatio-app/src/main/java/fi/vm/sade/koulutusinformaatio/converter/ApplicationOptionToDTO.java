@@ -28,7 +28,7 @@ public class ApplicationOptionToDTO {
         if (applicationOption != null) {
             ApplicationOptionDTO ao = new ApplicationOptionDTO();
             ao.setId(applicationOption.getId());
-            ao.setApplicationSystem(ApplicationSystemToDTO.convert(applicationOption.getApplicationSystem(), lang));
+            //ao.setApplicationSystem(ApplicationSystemToDTO.convert(applicationOption.getApplicationSystem(), lang));
             ao.setName(ConverterUtil.getTextByLanguage(applicationOption.getName(), lang));
             ao.setAoIdentifier(applicationOption.getAoIdentifier());
             ao.setAttachmentDeliveryDeadline(applicationOption.getAttachmentDeliveryDeadline());
