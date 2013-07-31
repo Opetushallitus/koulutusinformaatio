@@ -16,12 +16,13 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.SetMultimap;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunityDTO;
 
 /**
@@ -36,12 +37,6 @@ public class ChildLOToDTO {
         child.setDegreeTitle(ConverterUtil.getTextByLanguage(childLO.getDegreeTitle(), lang));
         child.setQualification(ConverterUtil.getTextByLanguage(childLO.getQualification(), lang));
         child.setAvailableTranslationLanguages(ConverterUtil.getAvailableTranslationLanguages(childLO.getName()));
-        child.setApplicationOptions(Lists.transform(childLO.getApplicationOptions(), new Function<ApplicationOption, ApplicationOptionDTO>() {
-            @Override
-            public ApplicationOptionDTO apply(fi.vm.sade.koulutusinformaatio.domain.ApplicationOption input) {
-                return ApplicationOptionToDTO.convert(input, lang);
-            }
-        }));
         child.setStartDate(childLO.getStartDate());
         if (childLO.getTeachingLanguages() != null) {
             for (Code code : childLO.getTeachingLanguages()) {
@@ -61,6 +56,27 @@ public class ChildLOToDTO {
         child.setCooperation(ConverterUtil.getTextByLanguage(childLO.getCooperation(), lang));
         child.setDegreeGoal(ConverterUtil.getTextByLanguage(childLO.getDegreeGoal(), lang));
         child.setContent(ConverterUtil.getTextByLanguage(childLO.getContent(), lang));
+
+        // as based approach for UI
+        SetMultimap<ApplicationSystem, ApplicationOption> aoByAs = HashMultimap.create();
+        for (ApplicationOption ao : childLO.getApplicationOptions()) {
+            aoByAs.put(ao.getApplicationSystem(), ao);
+        }
+
+        for (ApplicationSystem as : aoByAs.keySet()) {
+            ApplicationSystemDTO asDTO = ApplicationSystemToDTO.convert(as, lang);
+            for (ApplicationOption ao : aoByAs.get(as)) {
+                asDTO.getApplicationOptions().add(ApplicationOptionToDTO.convert(ao, lang));
+            }
+            child.getApplicationSystems().add(asDTO);
+        }
+
+//        child.setApplicationOptions(Lists.transform(childLO.getApplicationOptions(), new Function<ApplicationOption, ApplicationOptionDTO>() {
+//            @Override
+//            public ApplicationOptionDTO apply(fi.vm.sade.koulutusinformaatio.domain.ApplicationOption input) {
+//                return ApplicationOptionToDTO.convert(input, lang);
+//            }
+//        }));
 
         return child;
     }
