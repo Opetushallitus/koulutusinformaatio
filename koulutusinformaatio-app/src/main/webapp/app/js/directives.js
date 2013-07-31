@@ -273,6 +273,33 @@ directive('kiAbsoluteLink', function() {
     }
 }]).
 
+/**
+ *  Creates and controls the link "ribbon" of sibling LOs in child view
+ */
+  directive('kiChildRibbon', ['$location', '$routeParams', function($location, $routeParams) {
+    return {
+        restrict: 'E,A',
+        templateUrl: 'templates/children.html',
+        link: function(scope, element, attrs) {
+
+            console.log(scope);
+            scope.$watch('selectedParentLOI', function(data) {
+                if (data && !data.children) {
+                    $(element).remove();
+                }
+            });
+
+            scope.siblingClass = function(sibling) {
+                if (sibling.childLOId == $routeParams.childId) {
+                    return 'disabled';
+                } else {
+                    return '';
+                }
+            }
+        }
+    }
+}]).
+
 
 /**
  *  Creates and controls the breadcrumb
