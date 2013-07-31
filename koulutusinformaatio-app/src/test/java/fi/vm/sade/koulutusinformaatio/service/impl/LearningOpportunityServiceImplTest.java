@@ -159,8 +159,10 @@ public class LearningOpportunityServiceImplTest {
         assertNotNull(result);
         assertEquals(childLO.getId(), result.getId());
         assertEquals(childLO.getName().getTranslations().get(lang), result.getName());
-        assertEquals(childLO.getApplicationOptions().get(0).getId(), result.getApplicationOptions().get(0).getId());
-        assertEquals(childLO.getApplicationOptions().get(0).getName().getTranslations().get(lang), result.getApplicationOptions().get(0).getName());
+        assertEquals(childLO.getApplicationOptions().get(0).getId(),
+                result.getApplicationSystems().iterator().next().getApplicationOptions().iterator().next().getId());
+        assertEquals(childLO.getApplicationOptions().get(0).getName().getTranslations().get(lang),
+                result.getApplicationSystems().iterator().next().getApplicationOptions().iterator().next().getName());
         assertEquals(childLO.getDegreeTitle().getTranslations().get(lang), result.getDegreeTitle());
         assertEquals(childLO.getPrerequisite().getDescription().getTranslations().get(lang),
                 result.getPrerequisite().getDescription());
