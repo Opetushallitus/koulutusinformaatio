@@ -120,9 +120,9 @@ directive('kiRenderExams', function() {
     return {
         restrict: 'E,A',
         templateUrl: 'templates/exams.html',
-        scope: true,
+        //scope: true,
         link: function(scope, element, attrs) {
-            scope.$watch('selectedAo.exams', function(data) {
+            scope.$watch('ao.exams', function(data) {
                 scope.exams = data;
             });
 
@@ -282,7 +282,6 @@ directive('kiAbsoluteLink', function() {
         templateUrl: 'templates/children.html',
         link: function(scope, element, attrs) {
 
-            console.log(scope);
             scope.$watch('selectedParentLOI', function(data) {
                 if (data && !data.children) {
                     $(element).remove();
@@ -457,28 +456,32 @@ directive('kiRenderApplicationSystemActive', function() {
                     '<span data-ng-switch-when="present"data-ki-i18n="application-system-active-present"></span>' +
                 '</span>',
         link: function(scope, element, attrs) {
-            var start;
-            var end;
-            attrs.$observe('startDate', function(value) {
-                start = value;
-                update();
-            });
-
-            attrs.$observe('endDate', function(value) {
-                end = value;
+            var dates;
+            attrs.$observe('dates', function(value) {
+                dates = value;
                 update();
             });
 
             var update = function() {
-                if (start && end) {
-                    var current = new Date().getTime();
-                    if (current < start) {
-                        scope.active = "future";
-                        scope.timestamp = start;
-                    } else if (current > end) {
-                        scope.active = "past";
-                    } else {
-                        scope.active = "present";
+                if (dates) {
+                    for (var i in dates) {
+                        if (dates.hasOwnProperty(i)) {
+                            var start = dates[i].startDate;
+                            var end = dates[i].endDate;
+                            var current = new Date().getTime();
+
+                            // use only the first date in list
+                            if (current < start) {
+                                scope.active = "future";
+                                scope.timestamp = start;
+                            } else if (current > end) {
+                                scope.active = "past";
+                            } else {
+                                scope.active = "present";
+                            }
+
+                            break;
+                        }
                     }
                 }
             };
