@@ -80,7 +80,8 @@ public class TarjontaServiceMockImpl implements TarjontaService {
         ChildLearningOpportunity childLO = new ChildLearningOpportunity();
         childLO.setId(CHILD_LO_ID);
         childLO.setName(createI18nText("Audiovisuaalisen viestinnän koulutusohjelma, media-assistentti",
-                "Utbildningsprogrammet för audiovisuell kommunikation, medieassistent", "Audio visual communication study program, media assistant"));
+                "Utbildningsprogrammet för audiovisuell kommunikation, medieassistent", "Audio visual communication study program, media assistant",
+                "audiovisuaalinen, assistentti", "audiovisuaalinen, assistentti", "audiovisuaalinen, assistentti"));
         childLO.setDegreeTitle(createI18nText("Audiovisuaalisen viestinnän koulutusohjelma, media-assistentti",
                 "Utbildningsprogrammet för audiovisuell kommunikation, medieassistent", "Audio visual communication study program, media assistant"));
         childLO.setQualification(createI18nText("Media-assistentti", "Medieassistent", "Media assistant"));
@@ -113,7 +114,8 @@ public class TarjontaServiceMockImpl implements TarjontaService {
         childLORef.setChildLOId(CHILD_LO_ID);
         childLORef.setAsIds(Lists.newArrayList(APPLICATION_SYSTEM_ID));
         childLORef.setName(createI18nText("Audiovisuaalisen viestinnän koulutusohjelma, media-assistentti",
-                "Utbildningsprogrammet för audiovisuell kommunikation, medieassistent", "Audio visual communication study program, media assistant"));
+                "Utbildningsprogrammet för audiovisuell kommunikation, medieassistent", "Audio visual communication study program, media assistant",
+                "audiovisuaalinen, assistentti", "audiovisuaalinen, assistentti", "audiovisuaalinen, assistentti"));
         childLORef.setNameByTeachingLang("Audiovisuaalisen viestinnän koulutusohjelma, media-assistentti");
         childLORef.setQualification(createI18nText("Media-assistentti"));
         childLORef.setPrerequisite(new Code("PK", createI18nText("Peruskoulu")));
@@ -207,12 +209,21 @@ public class TarjontaServiceMockImpl implements TarjontaService {
     private I18nText createI18nText(String fi) {
         return createI18nText(fi, fi, fi);
     }
+
     private I18nText createI18nText(String fi, String sv, String en) {
+        return createI18nText(fi, sv, en, fi, sv, en);
+    }
+
+    private I18nText createI18nText(String fi, String sv, String en, String short_fi, String short_sv, String short_en) {
         Map<String, String> values = Maps.newHashMap();
         values.put("fi", fi);
         values.put("sv", sv);
         values.put("en", en);
-        return new I18nText(values, values);
+        Map<String, String> shortValues = Maps.newHashMap();
+        shortValues.put("fi", short_fi);
+        shortValues.put("sv", short_sv);
+        shortValues.put("en", short_en);
+        return new I18nText(values, shortValues);
     }
 
 }
