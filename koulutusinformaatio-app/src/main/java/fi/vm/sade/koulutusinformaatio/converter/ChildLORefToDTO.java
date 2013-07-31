@@ -53,7 +53,7 @@ public class ChildLORefToDTO {
         if (!Strings.isNullOrEmpty(ref.getNameByTeachingLang())) {
             child.setName(ref.getNameByTeachingLang());
         } else {
-            child.setName(ConverterUtil.getTextByLanguageUseFallbackLang(ref.getName(), lang));
+            child.setName(ConverterUtil.getShortNameTextByLanguageUseFallbackLang(ref.getName(), lang));
         }
         return child;
     }

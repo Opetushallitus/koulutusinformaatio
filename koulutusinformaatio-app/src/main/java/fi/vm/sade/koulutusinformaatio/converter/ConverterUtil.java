@@ -28,6 +28,8 @@ import java.util.Set;
  */
 public class ConverterUtil {
 
+    private static String FALLBACK_LANG = "fi";
+
     public static String getTextByLanguage(final I18nText text, String lang) {
         lang = lang.toLowerCase();
         if (text != null && text.getTranslations() != null && text.getTranslations().containsKey(lang)) {
@@ -35,6 +37,18 @@ public class ConverterUtil {
         } else {
             return null;
         }
+    }
+
+    public static String getTextByLanguageUseFallbackLang(final I18nText text, String lang) {
+        String val = getTextByLanguage(text, lang);
+        if (Strings.isNullOrEmpty(val) && text != null && text.getTranslations() != null &&
+                !text.getTranslations().isEmpty()) {
+            val = getTextByLanguage(text, FALLBACK_LANG);
+            if (Strings.isNullOrEmpty(val)) {
+                val = text.getTranslations().values().iterator().next();
+            }
+        }
+        return val;
     }
 
     public static String getShortNameTextByLanguage(final I18nText text, String lang) {
@@ -46,17 +60,16 @@ public class ConverterUtil {
         }
     }
 
-    public static String getTextByLanguageUseFallbackLang(final I18nText text, String lang) {
-        String val = getTextByLanguage(text, lang);
-        if (Strings.isNullOrEmpty(val) && text != null && text.getTranslations() != null &&
-                !text.getTranslations().isEmpty()) {
-            val = getTextByLanguage(text, "fi");
+    public static String getShortNameTextByLanguageUseFallbackLang(final I18nText text, String lang) {
+        String val = getShortNameTextByLanguage(text, lang);
+        if (Strings.isNullOrEmpty(val) && text != null && text.getTranslationsShortName() != null &&
+                !text.getTranslationsShortName().isEmpty()) {
+            val = getShortNameTextByLanguage(text, FALLBACK_LANG);
             if (Strings.isNullOrEmpty(val)) {
-                val = text.getTranslations().values().iterator().next();
+                val = text.getTranslationsShortName().values().iterator().next();
             }
         }
         return val;
-
     }
 
     public static Set<String> getAvailableTranslationLanguages(final I18nText text) {

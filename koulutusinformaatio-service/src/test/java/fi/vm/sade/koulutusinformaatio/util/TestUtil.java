@@ -35,7 +35,7 @@ public class TestUtil {
         values.put("fi", fi);
         values.put("sv", sv);
         values.put("en", en);
-        return new I18nText(values);
+        return new I18nText(values, values);
     }
 
     public static I18nTextEntity createI18nTextEntity(String fi, String sv, String en) {
