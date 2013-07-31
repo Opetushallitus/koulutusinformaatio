@@ -44,19 +44,19 @@ public class KoulutusinformaatioObjectBuilder {
     }
 
     private static String getTextByEducationLanguage(final I18nText text, List<Code> languages) {
-        if (text != null && text.getTranslations() != null && !text.getTranslations().isEmpty()) {
+        if (text != null && text.getTranslationsShortName() != null && !text.getTranslationsShortName().isEmpty()) {
             if (languages != null && !languages.isEmpty()) {
                 for (Code code : languages) {
                     if (code.getValue().equalsIgnoreCase(LANG_FI)) {
-                        return text.getTranslations().get(LANG_FI);
+                        return text.getTranslationsShortName().get(LANG_FI);
                     }
                 }
-                String val = text.getTranslations().get(languages.get(0).getValue().toLowerCase());
+                String val = text.getTranslationsShortName().get(languages.get(0).getValue().toLowerCase());
                 if (val != null) {
                     return val;
                 }
             }
-            return text.getTranslations().values().iterator().next();
+            return text.getTranslationsShortName().values().iterator().next();
         }
         return null;
     }
