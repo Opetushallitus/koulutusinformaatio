@@ -17,9 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.converter;
 
 import com.google.common.base.Function;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ListMultimap;
-import com.google.common.collect.Maps;
+import com.google.common.collect.*;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
@@ -40,7 +38,7 @@ public class ParentLOIToDTO {
 
         // group by application system for UI
         ListMultimap<ApplicationOption, ChildLearningOpportunity> childByAo = ArrayListMultimap.create();
-        ListMultimap<ApplicationSystem, ApplicationOption> aoByAs = ArrayListMultimap.create();
+        SetMultimap<ApplicationSystem, ApplicationOption> aoByAs = HashMultimap.create();
         Map<String, ChildLORef> childLORefs = Maps.uniqueIndex(parentLOI.getChildRefs(), new Function<ChildLORef, String>() {
             @Override
             public String apply(ChildLORef input) {

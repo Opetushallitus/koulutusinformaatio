@@ -250,6 +250,19 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
     $scope.providerAsideClass = 'hidden';
     $scope.applyFormClass = '';
 
+
+    $scope.changeLOISelection = function(loiId) {
+        for (var loi in $scope.parentLO.lois) {
+            if ($scope.parentLO.lois.hasOwnProperty(loi)) {
+                if ($scope.parentLO.lois[loi].id == loiId) {
+                    $scope.selectedLOI = angular.copy($scope.parentLO.lois[loi]);
+                }
+            }
+        }
+
+        console.log($scope.selectedLOI);
+    }
+
     $scope.changePrerequisiteSelection = function(prerequisite, aoId) {
         for (var loi in $scope.parentLO.lois) {
             if ($scope.parentLO.lois.hasOwnProperty(loi)) {
@@ -350,6 +363,7 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
         var firstParentLOIInList = getFirstParentLOI();
         if (firstParentLOIInList) {
             $scope.changePrerequisiteSelection(firstParentLOIInList.prerequisite);
+            $scope.changeLOISelection(firstParentLOIInList.id);
         }
     };
 

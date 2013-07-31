@@ -1,14 +1,107 @@
-<div data-ng-switch="hasApplicationOptions">
-    <div data-ng-switch-when="true">
+<!--<div data-ng-switch="hasApplicationOptions">
+    <div data-ng-switch-when="true">-->
         <aside class="grid16-6 no-right-gutter margin-top-2">
-            <!--
-            <div class="sideitem margin-bottom-3 hidden">
-                <span data-ki-i18n="directly-applicable"></span>
-                <ul>
-                    <li><a href="#">Ensihoidon koulutusohjelma</a></li>
+
+                <h4 class="margin-bottom-0" data-ki-i18n="application-prerequisite"></h4>
+                <form>
+                <ul class="margin-bottom-2">
+                    <li data-ng-repeat="loi in parentLO.lois">
+                        <input 
+                            type="radio" 
+                            name="prerequisiteSelection" 
+                            id="input{{$index}}" 
+                            value="{{loi.id}}" 
+                            data-ng-change="changeLOISelection(loi.id)"
+                            data-ng-model="selectedLOI.id"
+                            data-ng-class="showApplicationRadioSelection" />
+                        <label for="input{{$index}}">{{loi.prerequisite.description}}</label>
+                    </li>
                 </ul>
-            </div>
-            -->
+                </form>
+
+                <div data-ng-repeat="as in selectedLOI.applicationSystems">
+                    <div class="sideitem margin-bottom-3">
+                        <span data-ki-i18n="application-title"></span>
+                        <span class="bold">{{as.name}}</span>
+                    </div>
+                    <div class="sideitem margin-bottom-3">
+                        <span data-ki-i18n="application-period"></span>
+                        <span class="bold" data-ng-repeat="dates in as.applicationDates">
+                            <span data-ki-timestamp="{{dates.startDate}}"></span> - <span data-ki-timestamp="{{dates.endDate}}"></span><br/>
+                        </span>
+                    </div>
+
+                    <div data-ng-repeat="ao in as.applicationOptions">
+                        <span class="bold">{{ao.name}}</span>
+                        <ul>
+                            <li data-ng-repeat="child in ao.childRefs">
+                                <a href="#/koulutusohjelma/{{child.id}}">{{child.name}}</a>
+                            </li>
+                        </ul>
+
+                        <form name="levelSelectionForm" action="/haku-app/lomake/{{as.id}}/yhteishaku" method="POST">
+                            <input 
+                            type="hidden" 
+                            name="preference1-Opetuspiste" 
+                            value="{{parentLO.provider.name}}" />
+                        <input 
+                            type="hidden" 
+                            name="preference1-Opetuspiste-id" 
+                            value="{{parentLO.provider.id}}" />
+                        <input 
+                            type="hidden" 
+                            name="preference1-Koulutus" 
+                            value="{{ao.name}}" />
+                        <input 
+                            type="hidden" 
+                            name="preference1-Koulutus-id" 
+                            value="{{ao.id}}" />
+                        <input 
+                            type="hidden" 
+                            name="preference1-Koulutus-educationDegree" 
+                            value="{{parentLO.educationDegree}}" />
+                        <input 
+                            type="hidden" 
+                            name="preference1-Koulutus-id-sora" 
+                            value="{{ao.sora}}" />
+                        <input 
+                            type="hidden" 
+                            name="preference1-Koulutus-id-lang" 
+                            value="{{ao.teachLang}}" />
+                        <input
+                            type="hidden"
+                            name="preference1-Koulutus-id-athlete"
+                            value="{{parentLO.provider.athleteEducation}}" />
+                            <button type="submit" data-ng-disabled="!applicationSystemIsActive()">
+                                <span>
+                                    <span data-ki-i18n="apply-button-label"></span>
+                                </span>
+                            </button>
+
+                            <button 
+                                type="button" 
+                                id="addToBasket" 
+                                class="primary" 
+                                data-popover-placement="bottom" 
+                                data-popover-html-unsafe="{{popoverContent}}" 
+                                data-popover-title="{{popoverTitle}}" 
+                                data-popover-trigger="click"
+                                data-ng-click="addToBasket(ao.id)">
+                                <span>
+                                    <span data-ki-i18n="add-to-basket-label"></span>
+                                </span>
+                            </button>
+                        </form>
+
+                        <div class="margin-top-2"
+                            data-ki-render-application-system-active 
+                            data-start-date="{{parentLO.applicationSystem.applicationDates.startDate}}"
+                            data-end-date="{{parentLO.applicationSystem.applicationDates.endDate}}"></div>
+                        </div>
+                </div>
+
+        </aside>
+            <!--
             <div class="sideitem margin-bottom-3">
                 <span data-ki-i18n="application-title"></span>
                 <span class="bold">{{parentLO.applicationSystem.name}}</span>
@@ -92,3 +185,4 @@
         </aside>
     </div>
 </div>
+-->

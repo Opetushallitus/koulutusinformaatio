@@ -92,6 +92,27 @@ service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', 'Languag
         }
 
         // set teaching languge as the first language in array
+        for (var index in result.lois) {
+            if (result.lois.hasOwnProperty(index)) {
+                var loi = result.lois[index];
+                for (var asIndex in loi.applicationSystems) {
+                    if (loi.applicationSystems.hasOwnProperty(asIndex)) {
+                        var as = loi.applicationSystems[asIndex];
+                        for (var aoIndex in as.applicationOptions) {
+                            if (as.applicationOptions.hasOwnProperty(aoIndex)) {
+                                var ao = as.applicationOptions[aoIndex];
+
+                                if (ao.teachingLanguages && ao.teachingLanguages.length > 0) {
+                                    ao.teachLang = ao.teachingLanguages[0];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        /*
         for (var index in result.applicationOptions) {
             if (result.applicationOptions.hasOwnProperty(index)) {
                 var ao = result.applicationOptions[index];
@@ -100,6 +121,7 @@ service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', 'Languag
                 }
             }
         }
+        */
 
         // set teaching languge as the first language in array
         for (var index in result.applicationOptions) {
