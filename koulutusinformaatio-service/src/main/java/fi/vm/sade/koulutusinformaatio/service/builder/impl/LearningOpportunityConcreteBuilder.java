@@ -154,6 +154,21 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
                     // application option
                     String aoId = aoIdDTO.getOid();
                     HakukohdeDTO hakukohdeDTO = hakukohdeResource.getByOID(aoId);
+                    HakuDTO hakuDTO = hakukohdeResource.getHakuByHakukohdeOID(aoId);
+
+                    try {
+                        validateHakukohde(hakukohdeDTO);
+                    } catch (TarjontaParseException e) {
+                        LOG.debug("Application option skipped, " + e.getMessage());
+                        continue;
+                    }
+                    try {
+                        validateHaku(hakuDTO);
+                    } catch (TarjontaParseException e) {
+                        LOG.debug("Application option skipped, " + e.getMessage());
+                        continue;
+                    }
+
                     ApplicationOption ao = new ApplicationOption();
 
                     ao.setId(hakukohdeDTO.getOid());
@@ -176,7 +191,6 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
                     });
                     ao.setRequiredBaseEducations(baseEducations);
 
-                    HakuDTO hakuDTO = hakukohdeResource.getHakuByHakukohdeOID(aoId);
                     ApplicationSystem as = new ApplicationSystem();
                     as.setId(hakuDTO.getOid());
                     as.setName(getI18nText(hakuDTO.getNimi()));
@@ -382,7 +396,7 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
 
     private void validateChildKomo(KomoDTO komo) throws TarjontaParseException {
         if (!komo.getTila().equals(LearningOpportunityBuilder.STATE_PUBLISHED)) {
-            throw new TarjontaParseException("LOS " + komo.getOid() + " not of type " + LearningOpportunityBuilder.MODULE_TYPE_PARENT);
+            throw new TarjontaParseException("LOS " + komo.getOid() + " not in state " + LearningOpportunityBuilder.STATE_PUBLISHED);
         }
         if (komo.getKoulutusOhjelmaKoodiUri() == null) {
             throw new TarjontaParseException("Child KomoDTO koulutusOhjelmaKoodiUri (name) is null");
@@ -400,6 +414,18 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
             throw new TarjontaParseException("LOI " + komoto.getOid() + " not of type " + LearningOpportunityBuilder.MODULE_TYPE_PARENT);
         }
 
+    }
+
+    private void validateHakukohde(HakukohdeDTO hakukohde) throws TarjontaParseException {
+        if (!hakukohde.getTila().equals(LearningOpportunityBuilder.STATE_PUBLISHED)) {
+            throw new TarjontaParseException("Application option " + hakukohde.getOid() + " not in state " + LearningOpportunityBuilder.STATE_PUBLISHED);
+        }
+    }
+
+    private void validateHaku(HakuDTO haku) throws TarjontaParseException {
+        if (!haku.getTila().equals(LearningOpportunityBuilder.STATE_PUBLISHED)) {
+            throw new TarjontaParseException("Application system " + haku.getOid() + " not in state " + LearningOpportunityBuilder.STATE_PUBLISHED);
+        }
     }
 
 
