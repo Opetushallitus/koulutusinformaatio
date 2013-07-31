@@ -81,7 +81,7 @@ public class TarjontaServiceMockImpl implements TarjontaService {
         childLO.setId(CHILD_LO_ID);
         childLO.setName(createI18nText("Audiovisuaalisen viestinnän koulutusohjelma, media-assistentti",
                 "Utbildningsprogrammet för audiovisuell kommunikation, medieassistent", "Audio visual communication study program, media assistant",
-                "audiovisual", "audiovisual", "audiovisual"));
+                "audiovisuaalinen, assistentti", "audiovisuaalinen, assistentti", "audiovisuaalinen, assistentti"));
         childLO.setDegreeTitle(createI18nText("Audiovisuaalisen viestinnän koulutusohjelma, media-assistentti",
                 "Utbildningsprogrammet för audiovisuell kommunikation, medieassistent", "Audio visual communication study program, media assistant"));
         childLO.setQualification(createI18nText("Media-assistentti", "Medieassistent", "Media assistant"));
@@ -114,7 +114,8 @@ public class TarjontaServiceMockImpl implements TarjontaService {
         childLORef.setChildLOId(CHILD_LO_ID);
         childLORef.setAsIds(Lists.newArrayList(APPLICATION_SYSTEM_ID));
         childLORef.setName(createI18nText("Audiovisuaalisen viestinnän koulutusohjelma, media-assistentti",
-                "Utbildningsprogrammet för audiovisuell kommunikation, medieassistent", "Audio visual communication study program, media assistant"));
+                "Utbildningsprogrammet för audiovisuell kommunikation, medieassistent", "Audio visual communication study program, media assistant",
+                "audiovisuaalinen, assistentti", "audiovisuaalinen, assistentti", "audiovisuaalinen, assistentti"));
         childLORef.setNameByTeachingLang("Audiovisuaalisen viestinnän koulutusohjelma, media-assistentti");
         childLORef.setQualification(createI18nText("Media-assistentti"));
         childLORef.setPrerequisite(new Code("PK", createI18nText("Peruskoulu")));
@@ -219,9 +220,9 @@ public class TarjontaServiceMockImpl implements TarjontaService {
         values.put("sv", sv);
         values.put("en", en);
         Map<String, String> shortValues = Maps.newHashMap();
-        values.put("fi", short_fi);
-        values.put("sv", short_sv);
-        values.put("en", short_en);
+        shortValues.put("fi", short_fi);
+        shortValues.put("sv", short_sv);
+        shortValues.put("en", short_en);
         return new I18nText(values, shortValues);
     }
 
