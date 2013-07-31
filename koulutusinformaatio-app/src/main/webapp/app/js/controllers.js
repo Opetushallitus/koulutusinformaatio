@@ -126,10 +126,10 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
  */
 function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, UtilityService) {
 
-    $scope.addToBasket = function() {
+    $scope.addToBasket = function(aoId) {
         var basketType = ApplicationBasketService.getType();
-        if (!basketType || $scope.selectedAo.prerequisite.value == basketType) {
-            ApplicationBasketService.addItem($scope.selectedAo.id, $scope.selectedAo.prerequisite.value);
+        if (!basketType || $scope.selectedLOI.prerequisite.value == basketType) {
+            ApplicationBasketService.addItem(aoId, $scope.selectedLOI.prerequisite.value);
             $scope.popoverTitle = i18n.t('popover-title-success');
             $scope.popoverContent = "<a href='#/muistilista'>" + i18n.t('popover-content-link-to-application-basket') + "</a>";
         } else {
@@ -138,13 +138,17 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
         }
     };
 
-    $scope.applicationSystemIsActive = function() {
-        if ($scope.parentLO && $scope.parentLO.applicationSystem && $scope.parentLO.applicationSystem.applicationDates) {
-            var start = $scope.parentLO.applicationSystem.applicationDates.startDate;
-            var end = $scope.parentLO.applicationSystem.applicationDates.endDate;
-            var current = new Date().getTime();
+    $scope.applicationSystemIsActive = function(as) {
+        for (var i in as.applicationDates) {
+            if (as.applicationDates.hasOwnProperty(i)) {
+                var start = as.applicationDates[i].startDate;
+                var end = as.applicationDates[i].endDate;
+                var current = new Date().getTime();
 
-            return (current >= start && current <= end);
+                if (current >= start && current <= end) {
+                    return true;
+                }
+            }
         }
 
         return false;
@@ -252,42 +256,39 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
 
 
     $scope.changeLOISelection = function(loiId) {
+        var aggregateChildren = function(loi) {
+            var children = [];
+            if (loi.applicationSystems && loi.applicationSystems.length > 0) {
+                var as = loi.applicationSystems[0];
+                for (var i in as.applicationOptions) {
+                    if (as.applicationOptions.hasOwnProperty(i)) {
+                        var ao = as.applicationOptions[i];
+                        if (ao.childRefs) {
+                            children = children.concat(ao.childRefs);
+                        }
+                    }
+                }
+
+                $scope.selectedAs = as;
+            }
+
+            if ($scope.selectedAs) {
+                $scope.selectedAs.children = children;
+            }
+        }
+
         for (var loi in $scope.parentLO.lois) {
             if ($scope.parentLO.lois.hasOwnProperty(loi)) {
                 if ($scope.parentLO.lois[loi].id == loiId) {
                     $scope.selectedLOI = angular.copy($scope.parentLO.lois[loi]);
-                }
-            }
-        }
-
-        console.log($scope.selectedLOI);
-    }
-
-    $scope.changePrerequisiteSelection = function(prerequisite, aoId) {
-        for (var loi in $scope.parentLO.lois) {
-            if ($scope.parentLO.lois.hasOwnProperty(loi)) {
-                if ($scope.parentLO.lois[loi].prerequisite.value == prerequisite.value) {
-                    $scope.selectedParentLOI = $scope.parentLO.lois[loi];
-                }
-            }
-        }
-
-        // select ao based on aoId if defined, otherwise do selection based on prerequisite
-        for (var ao in $scope.parentLO.applicationOptions) {
-            if ($scope.parentLO.applicationOptions.hasOwnProperty(ao)) {
-                if (aoId) {
-                    if ($scope.parentLO.applicationOptions[ao].id == aoId) {
-                        $scope.selectedAo = angular.copy($scope.parentLO.applicationOptions[ao]);
-                    }
-                } else if ($scope.parentLO.applicationOptions[ao].prerequisite.value == prerequisite.value) {
-                    $scope.selectedAo = angular.copy($scope.parentLO.applicationOptions[ao]);
+                    aggregateChildren($scope.selectedLOI);
                 }
             }
         }
     }
 
     $scope.loiClass = function(prerequisite) {
-        return ($scope.selectedParentLOI.prerequisite.value == prerequisite.value) ? 'disabled': '';
+        return ($scope.selectedLOI.prerequisite.value == prerequisite.value) ? 'disabled': '';
     }
 
     var setTitle = function(parent, child) {
@@ -302,67 +303,42 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
         return ($routeParams.childId);
     };
 
-    var getApplicationSystemId = function(aos) {
-        if (hasApplicationOptions()) {
-            var ao = $scope.parentLO.applicationOptions[0];
-            if (ao && ao.applicationSystem) {
-                return ao.applicationSystem.id;
-            }
-        }
-    };
-
-    var getFirstApplicationOption = function() {
-        if (hasApplicationOptions()) {
-            return $scope.parentLO.applicationOptions[0];
-        }
-    };
-
     var getFirstParentLOI = function() {
-        if (hasParentLOIs()) {
+        if (hasLOIs()) {
             return $scope.parentLO.lois[0];
         }
     }
 
-    var hasApplicationOptions = function() {
-        if ($scope.parentLO && $scope.parentLO.applicationOptions) {
-            return $scope.parentLO.applicationOptions.length > 0;
-        } else {
-            return false;
-        } 
-    };
-
-    var hasParentLOIs = function() {
+    var hasLOIs = function() {
         if ($scope.parentLO && $scope.parentLO.lois) {
             return $scope.parentLO.lois.length > 0;
         } else {
             return false;
-        }
+        } 
     }
 
     var showApplicationRadioSelection = function() {
-        if (hasApplicationOptions()) {
-            return $scope.parentLO.applicationOptions.length == 1 ? false : true;
+        if (hasLOIs()) {
+            return $scope.parentLO.lois.length == 1 ? false : true;
         }
 
         return true;
     }
 
+    $scope.hasChildren = function() {
+        if ($scope.selectedAs && $scope.selectedAs.children) {
+            return $scope.selectedAs.children.length > 0;
+        } else {
+            return false;
+        }
+    };
+
     var initializeParent = function() {
         setTitle($scope.parentLO, $scope.childLO);
-        $scope.hasApplicationOptions = hasApplicationOptions();
         $scope.showApplicationRadioSelection = showApplicationRadioSelection() ? '' : 'hidden';
-
-        $scope.asId = getApplicationSystemId();
-
-        // select first ao in list
-        var firstAoInList = getFirstApplicationOption();
-        if (firstAoInList) {
-            $scope.selectedAo = angular.copy(firstAoInList);
-        }
 
         var firstParentLOIInList = getFirstParentLOI();
         if (firstParentLOIInList) {
-            $scope.changePrerequisiteSelection(firstParentLOIInList.prerequisite);
             $scope.changeLOISelection(firstParentLOIInList.id);
         }
     };
@@ -429,23 +405,13 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
                         childId: $routeParams.childId,
                         language: $scope.descriptionLanguage}).then(function(result) {
                             $scope.childLO = result;
-                            $scope.changePrerequisiteSelection($scope.selectedParentLOI.prerequisite);
                             setTitle($scope.parentLO, $scope.childLO);
                         });
                 } else {
-                    $scope.changePrerequisiteSelection($scope.selectedParentLOI.prerequisite);
                     setTitle($scope.parentLO, $scope.childLO);
-                    
+                    $scope.changeLOISelection($scope.selectedLOI.id);
                 }
         });
-    };
-
-    $scope.hasChildren = function() {
-        if ($scope.selectedParentLOI && $scope.selectedParentLOI.children) {
-            return $scope.selectedParentLOI.children.length > 0;
-        } else {
-            return false;
-        }
     };
 
     // scrolls to an anchor on page

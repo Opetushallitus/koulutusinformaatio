@@ -1,3 +1,5 @@
 <div data-ki-language-ribbon class="ribbon"></div>
-<div data-render-text-block data-content="{{selectedAo.selectionCriteria}}"></div>
-<div data-ki-render-exams></div>
+<div data-ng-repeat="ao in selectedAs.applicationOptions">
+	<div data-render-text-block data-content="{{ao.selectionCriteria}}"></div>
+	<div data-ki-render-exams></div>
+</div>
