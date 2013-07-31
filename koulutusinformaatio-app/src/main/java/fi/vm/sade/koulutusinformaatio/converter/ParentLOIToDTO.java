@@ -37,7 +37,6 @@ public class ParentLOIToDTO {
         loi.setSelectingEducation(ConverterUtil.getTextByLanguage(parentLOI.getSelectingEducation(), lang));
 
         // group by application system for UI
-        ListMultimap<ApplicationOption, ChildLearningOpportunity> childByAo = ArrayListMultimap.create();
         SetMultimap<ApplicationSystem, ApplicationOption> aoByAs = HashMultimap.create();
         Map<String, ChildLORef> childLORefs = Maps.uniqueIndex(parentLOI.getChildRefs(), new Function<ChildLORef, String>() {
             @Override
@@ -47,7 +46,6 @@ public class ParentLOIToDTO {
         });
         for (ChildLearningOpportunity childLO : parentLOI.getChildren()) {
             for (ApplicationOption ao : childLO.getApplicationOptions()) {
-                childByAo.put(ao, childLO);
                 aoByAs.put(ao.getApplicationSystem(), ao);
             }
         }
@@ -56,15 +54,10 @@ public class ParentLOIToDTO {
             ApplicationSystemDTO asDTO = ApplicationSystemToDTO.convert(as, lang);
             for (ApplicationOption ao : aoByAs.get(as)) {
                 ApplicationOptionDTO aoDTO = ApplicationOptionToDTO.convert(ao, lang);
-                // convert children to ao
-                for (ChildLearningOpportunity childLO : childByAo.get(ao)) {
-                    aoDTO.getChildRefs().add(ChildLORefToDTO.convert(childLORefs.get(childLO.getId()), lang));
-                }
                 asDTO.getApplicationOptions().add(aoDTO);
             }
             loi.getApplicationSystems().add(asDTO);
         }
-
 
         //loi.setChildren(ChildLORefToDTO.convert(parentLOI.getChildRefs(), lang));
         return loi;
