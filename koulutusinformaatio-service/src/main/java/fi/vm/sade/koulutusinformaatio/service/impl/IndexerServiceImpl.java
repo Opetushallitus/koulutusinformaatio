@@ -68,7 +68,7 @@ public class IndexerServiceImpl implements IndexerService {
                 // null in parent 1.2.246.562.5.2013060313060064137085
                 parentDoc.addField("prerequisites", loi.getPrerequisite().getValue());
             }
-            for (ChildLearningOpportunity childLO : loi.getChildren()) {
+            for (ChildLOS childLO : loi.getChildren()) {
                 SolrInputDocument childLODoc = new SolrInputDocument();
                 resolveChildDocument(childLODoc, childLO, parent);
                 addApplicationSystemDates(childLODoc, childLO.getApplicationOptions());
@@ -125,7 +125,7 @@ public class IndexerServiceImpl implements IndexerService {
         }
     }
 
-    private void resolveChildDocument(SolrInputDocument doc, ChildLearningOpportunity childLO, ParentLOS parent) {
+    private void resolveChildDocument(SolrInputDocument doc, ChildLOS childLO, ParentLOS parent) {
         Provider provider = parent.getProvider();
         doc.addField("id", childLO.getId());
         doc.addField("lopId", provider.getId());

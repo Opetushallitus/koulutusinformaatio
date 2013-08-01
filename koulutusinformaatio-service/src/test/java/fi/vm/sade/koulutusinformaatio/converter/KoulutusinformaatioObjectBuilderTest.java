@@ -35,13 +35,13 @@ import static org.junit.Assert.assertNotNull;
  */
 public class KoulutusinformaatioObjectBuilderTest {
 
-    private ChildLearningOpportunity childLearningOpportunity;
+    private ChildLOS childLearningOpportunity;
     private ApplicationOption ao;
     private Provider provider;
 
     @Before
     public void setUp() {
-        childLearningOpportunity = new ChildLearningOpportunity();
+        childLearningOpportunity = new ChildLOS();
         childLearningOpportunity.setId("childLOS123");
         childLearningOpportunity.setName(TestUtil.createI18nText("child los fi", "child los sv", "child los en"));
         childLearningOpportunity.setDegreeTitle(TestUtil.createI18nText("DegreeTitle fi", "DegreeTitle sv", "DegreeTitle en"));

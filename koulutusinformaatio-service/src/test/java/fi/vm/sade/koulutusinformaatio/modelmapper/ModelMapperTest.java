@@ -69,17 +69,17 @@ public class ModelMapperTest {
         ao.setExams(Lists.newArrayList(exam));
         parent.setApplicationOptions(Sets.newHashSet(ao));
 
-        ChildLearningOpportunity childLO = new ChildLearningOpportunity("111", TestUtil.createI18nText("child1Name", "child1Name", "child1Name"));
+        ChildLOS childLO = new ChildLOS("111", TestUtil.createI18nText("child1Name", "child1Name", "child1Name"));
         childLO.setId("7789");
         childLO.setApplicationOptions(Lists.newArrayList(ao));
         childLO.setApplicationSystemIds(Lists.newArrayList("1.2.3.4.5"));
 
-        ChildLearningOpportunity childLO2 = new ChildLearningOpportunity("222", TestUtil.createI18nText("child2Name", "child2Name", "child2Name"));
+        ChildLOS childLO2 = new ChildLOS("222", TestUtil.createI18nText("child2Name", "child2Name", "child2Name"));
         childLO2.setId("7733");
         childLO2.setApplicationOptions(Lists.newArrayList(ao));
         childLO2.setApplicationSystemIds(Lists.newArrayList("1.2.3.4.5"));
 
-        List<ChildLearningOpportunity> children = Lists.newArrayList(childLO, childLO2);
+        List<ChildLOS> children = Lists.newArrayList(childLO, childLO2);
         parentLOI.setChildren(children);
         parent.setLois(Lists.newArrayList(parentLOI));
 

@@ -29,7 +29,7 @@ public class ParentLOI {
     private String id;
     private I18nText selectingEducation;
     private Code prerequisite;
-    private List<ChildLearningOpportunity> children;
+    private List<ChildLOS> children;
     private List<ChildLORef> childRefs = new ArrayList<ChildLORef>();
 
     public String getId() {
@@ -56,11 +56,11 @@ public class ParentLOI {
         this.selectingEducation = selectingEducation;
     }
 
-    public List<ChildLearningOpportunity> getChildren() {
+    public List<ChildLOS> getChildren() {
         return children;
     }
 
-    public void setChildren(List<ChildLearningOpportunity> children) {
+    public void setChildren(List<ChildLOS> children) {
         this.children = children;
     }
 

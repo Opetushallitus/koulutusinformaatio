@@ -20,7 +20,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunityDTO;
@@ -30,7 +30,7 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunityDTO;
  */
 public class ChildLOToDTO {
 
-    public static ChildLearningOpportunityDTO convert(final ChildLearningOpportunity childLO, final String lang) {
+    public static ChildLearningOpportunityDTO convert(final ChildLOS childLO, final String lang) {
         ChildLearningOpportunityDTO child = new ChildLearningOpportunityDTO();
         child.setId(childLO.getId());
         child.setName(ConverterUtil.getTextByLanguage(childLO.getName(), lang));

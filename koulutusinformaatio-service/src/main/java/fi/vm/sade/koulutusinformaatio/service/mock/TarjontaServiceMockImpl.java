@@ -76,8 +76,8 @@ public class TarjontaServiceMockImpl implements TarjontaService {
         return parentLOI;
     }
 
-    private ChildLearningOpportunity createChildLO() {
-        ChildLearningOpportunity childLO = new ChildLearningOpportunity();
+    private ChildLOS createChildLO() {
+        ChildLOS childLO = new ChildLOS();
         childLO.setId(CHILD_LO_ID);
         childLO.setName(createI18nText("Audiovisuaalisen viestinnän koulutusohjelma, media-assistentti",
                 "Utbildningsprogrammet för audiovisuell kommunikation, medieassistent", "Audio visual communication study program, media assistant",

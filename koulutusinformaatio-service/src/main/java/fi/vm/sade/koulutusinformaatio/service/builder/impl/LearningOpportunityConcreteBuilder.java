@@ -64,7 +64,7 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
     ArrayListMultimap<String, KomotoDTO> parentKomotosByProviderId;
 
     // A helper data structure that groups ChildLO objects by their ParentLOI id
-    ArrayListMultimap<String, ChildLearningOpportunity> childLOsByParentLOIId;
+    ArrayListMultimap<String, ChildLOS> childLOsByParentLOIId;
 
     public LearningOpportunityConcreteBuilder(KomoResource komoResource, KomotoResource komotoResource,
                                               HakukohdeResource hakukohdeResource, ProviderService providerService,
@@ -126,7 +126,7 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
                     continue;
                 }
 
-                ChildLearningOpportunity childLO = new ChildLearningOpportunity();
+                ChildLOS childLO = new ChildLOS();
                 childLO.setId(childKomoto.getOid());
                 childLO.setName(koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri()));
                 childLO.setQualification(koodistoService.searchFirst(childKomo.getTutkintonimikeUri()));
@@ -250,8 +250,8 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
             // parent lois
             for (ParentLOI parentLOI : parentLOS.getLois()) {
                 // add children to parent loi
-                List<ChildLearningOpportunity> children = childLOsByParentLOIId.get(parentLOI.getId());
-                for (ChildLearningOpportunity child : children) {
+                List<ChildLOS> children = childLOsByParentLOIId.get(parentLOI.getId());
+                for (ChildLOS child : children) {
                     // set parent ref
                     child.setParent(new ParentLOSRef(parentLOS.getId(), parentLOS.getName()));
 
@@ -268,7 +268,7 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
 
                     // add related child refs to child
                     child.setRelated(new ArrayList<ChildLORef>());
-                    for (ChildLearningOpportunity ref : children) {
+                    for (ChildLOS ref : children) {
                         if (!child.getId().equals(ref.getId())) {
                             ChildLORef cRef = KoulutusinformaatioObjectBuilder.buildChildLORef(ref);
                             if (cRef != null) {

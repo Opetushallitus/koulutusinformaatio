@@ -21,7 +21,7 @@ import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.entity.*;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Picture;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
@@ -102,9 +102,9 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     }
 
     @Override
-    public ChildLearningOpportunity getChildLearningOpportunity(String childLoId) throws ResourceNotFoundException {
+    public ChildLOS getChildLearningOpportunity(String childLoId) throws ResourceNotFoundException {
         ChildLearningOpportunityEntity childLO = getChildLO(childLoId);
-        return modelMapper.map(childLO, ChildLearningOpportunity.class);
+        return modelMapper.map(childLO, ChildLOS.class);
     }
 
     @Override

@@ -17,10 +17,12 @@
 package fi.vm.sade.koulutusinformaatio.domain;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
- * Child level learning opportunity specification.
+ * Child level learning opportunity.
  *
  * @author Hannu Lyytikainen
  */
@@ -28,13 +30,30 @@ public class ChildLOS {
 
     private String id;
     private I18nText name;
-    private List<ChildLOI> childLOIs = new ArrayList<ChildLOI>();
     // koulutusohjelma
     private I18nText degreeTitle;
     //tutkintonimike
     private I18nText qualification;
     //tavoite
     private I18nText degreeGoal;
+    private List<ApplicationOption> applicationOptions;
+    private List<ChildLORef> related = new ArrayList<ChildLORef>();
+    private ParentLOSRef parent;
+    private List<String> applicationSystemIds;
+    private Date startDate;
+    // koulutuslaji -> nuorten koulutus
+    private List<I18nText> formOfEducation;
+    private Map<String, String> webLinks;
+    private List<Code> teachingLanguages;
+    // opetusmuoto -> lähiopetus
+    private List<I18nText> formOfTeaching;
+    private Code prerequisite;
+    private List<I18nText> professionalTitles;
+    private I18nText workingLifePlacement;
+    private I18nText internationalization;
+    private I18nText cooperation;
+    private I18nText content;
+
 
     public ChildLOS(String id, I18nText name) {
         this.id = id;
@@ -61,14 +80,6 @@ public class ChildLOS {
         this.name = name;
     }
 
-    public List<ChildLOI> getChildLOIs() {
-        return childLOIs;
-    }
-
-    public void setChildLOIs(List<ChildLOI> childLOIs) {
-        this.childLOIs = childLOIs;
-    }
-
     public I18nText getQualification() {
         return qualification;
     }
@@ -91,5 +102,125 @@ public class ChildLOS {
 
     public void setDegreeGoal(I18nText degreeGoal) {
         this.degreeGoal = degreeGoal;
+    }
+
+    public List<ApplicationOption> getApplicationOptions() {
+        return applicationOptions;
+    }
+
+    public void setApplicationOptions(List<ApplicationOption> applicationOptions) {
+        this.applicationOptions = applicationOptions;
+    }
+
+    public List<ChildLORef> getRelated() {
+        return related;
+    }
+
+    public void setRelated(List<ChildLORef> related) {
+        this.related = related;
+    }
+
+    public ParentLOSRef getParent() {
+        return parent;
+    }
+
+    public void setParent(ParentLOSRef parent) {
+        this.parent = parent;
+    }
+
+    public List<String> getApplicationSystemIds() {
+        return applicationSystemIds;
+    }
+
+    public void setApplicationSystemIds(List<String> applicationSystemIds) {
+        this.applicationSystemIds = applicationSystemIds;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public List<I18nText> getFormOfEducation() {
+        return formOfEducation;
+    }
+
+    public void setFormOfEducation(List<I18nText> formOfEducation) {
+        this.formOfEducation = formOfEducation;
+    }
+
+    public Map<String, String> getWebLinks() {
+        return webLinks;
+    }
+
+    public void setWebLinks(Map<String, String> webLinks) {
+        this.webLinks = webLinks;
+    }
+
+    public List<Code> getTeachingLanguages() {
+        return teachingLanguages;
+    }
+
+    public void setTeachingLanguages(List<Code> teachingLanguages) {
+        this.teachingLanguages = teachingLanguages;
+    }
+
+    public List<I18nText> getFormOfTeaching() {
+        return formOfTeaching;
+    }
+
+    public void setFormOfTeaching(List<I18nText> formOfTeaching) {
+        this.formOfTeaching = formOfTeaching;
+    }
+
+    public Code getPrerequisite() {
+        return prerequisite;
+    }
+
+    public void setPrerequisite(Code prerequisite) {
+        this.prerequisite = prerequisite;
+    }
+
+    public List<I18nText> getProfessionalTitles() {
+        return professionalTitles;
+    }
+
+    public void setProfessionalTitles(List<I18nText> professionalTitles) {
+        this.professionalTitles = professionalTitles;
+    }
+
+    public I18nText getWorkingLifePlacement() {
+        return workingLifePlacement;
+    }
+
+    public void setWorkingLifePlacement(I18nText workingLifePlacement) {
+        this.workingLifePlacement = workingLifePlacement;
+    }
+
+    public I18nText getInternationalization() {
+        return internationalization;
+    }
+
+    public void setInternationalization(I18nText internationalization) {
+        this.internationalization = internationalization;
+    }
+
+    public I18nText getCooperation() {
+        return cooperation;
+    }
+
+    public void setCooperation(I18nText cooperation) {
+        this.cooperation = cooperation;
+    }
+
+    public I18nText getContent() {
+        return content;
+    }
+
+    public void setContent(I18nText content) {
+        this.content = content;
     }
 }

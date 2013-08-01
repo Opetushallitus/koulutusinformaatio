@@ -17,7 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.converter;
 
 import fi.vm.sade.koulutusinformaatio.domain.ChildLORef;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 
@@ -30,7 +30,7 @@ public class KoulutusinformaatioObjectBuilder {
 
     private static final String LANG_FI = "fi";
 
-    public static ChildLORef buildChildLORef(final ChildLearningOpportunity childLO) {
+    public static ChildLORef buildChildLORef(final ChildLOS childLO) {
         if (childLO != null) {
             ChildLORef ref = new ChildLORef();
             ref.setChildLOId(childLO.getId());

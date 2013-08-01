@@ -42,7 +42,7 @@ public class LearningOpportunityServiceImplTest {
     private LearningOpportunityService learningOpportunityService;
     private EducationDataQueryService educationDataQueryService;
     private ParentLOS parentLO;
-    private ChildLearningOpportunity childLO;
+    private ChildLOS childLO;
 
     @Before
     public void setUp() throws ResourceNotFoundException {
@@ -73,7 +73,7 @@ public class LearningOpportunityServiceImplTest {
                 prerequisite));
         parentLO.setApplicationOptions(aos);
 
-        childLO = new ChildLearningOpportunity();
+        childLO = new ChildLOS();
         childLO.setId("lo123");
         childLO.setName(createI18Text("child 1"));
         childLO.setStartDate(new Date());

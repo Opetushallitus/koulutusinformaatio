@@ -44,7 +44,7 @@ public class ParentLOIToDTO {
                 return input.getChildLOId();
             }
         });
-        for (ChildLearningOpportunity childLO : parentLOI.getChildren()) {
+        for (ChildLOS childLO : parentLOI.getChildren()) {
             for (ApplicationOption ao : childLO.getApplicationOptions()) {
                 aoByAs.put(ao.getApplicationSystem(), ao);
             }

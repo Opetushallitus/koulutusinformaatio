@@ -90,7 +90,7 @@ public class EducationDataUpdateServiceImplTest {
         parentLOI.setId("2345");
         parentLOI.setPrerequisite(new Code("PK", TestUtil.createI18nText("Peruskoulu", "Peruskoulu", "Peruskoulu")));
 
-        ChildLearningOpportunity clo = new ChildLearningOpportunity();
+        ChildLOS clo = new ChildLOS();
         clo.setId("5.7.9");
         clo.setApplicationSystemIds(Lists.newArrayList("1.2.3.4.5"));
         clo.setApplicationOptions(Lists.newArrayList(ao));
