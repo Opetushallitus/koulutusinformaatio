@@ -223,6 +223,15 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
             }
         }
 
+        // get starting quota from application option
+        if (result.applicationSystems && result.applicationSystems.length > 0) {
+            var as = result.applicationSystems[0];
+            if (as.applicationOptions && as.applicationOptions.length > 0) {
+                var ao = as.applicationOptions[0];
+                result.startingQuota = ao.startingQuota;
+            }
+        }
+
         // add current child to sibligs
         if (result.related) {
             result.related.push({
