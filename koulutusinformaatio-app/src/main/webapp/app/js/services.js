@@ -112,40 +112,30 @@ service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', 'Languag
             }
         }
 
-        /*
-        for (var index in result.applicationOptions) {
-            if (result.applicationOptions.hasOwnProperty(index)) {
-                var ao = result.applicationOptions[index];
-                if (ao.teachingLanguages && ao.teachingLanguages.length > 0) {
-                    ao.teachLang = ao.teachingLanguages[0];
-                }
-            }
-        }
-        */
-
-        // set teaching languge as the first language in array
-        for (var index in result.applicationOptions) {
-            if (result.applicationOptions.hasOwnProperty(index)) {
-                var ao = result.applicationOptions[index];
-                for (var exam in ao.exams) {
-                    if (ao.exams.hasOwnProperty(exam)) {
-                        if (ao.exams[exam].examEvents) {
-                            ao.exams[exam].examEvents.sort(function(a, b) {
-                                return a.start - b.start;
-                            });
+        // sort exams based on start time
+        for (var index in result.lois) {
+            if (result.lois.hasOwnProperty(index)) {
+                var loi = result.lois[index];
+                for (var asIndex in loi.applicationSystems) {
+                    if (loi.applicationSystems.hasOwnProperty(asIndex)) {
+                        var as = loi.applicationSystems[asIndex];
+                        for (var aoIndex in as.applicationOptions) {
+                            if (as.applicationOptions.hasOwnProperty(aoIndex)) {
+                                var ao = as.applicationOptions[aoIndex];
+                                for (var exam in ao.exams) {
+                                    if (ao.exams.hasOwnProperty(exam)) {
+                                        if (ao.exams[exam].examEvents) {
+                                            ao.exams[exam].examEvents.sort(function(a, b) {
+                                                return a.start - b.start;
+                                            });
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
-        }
-
-        // sort AOs based on prerequisite
-        if (result.applicationOptions) {
-            result.applicationOptions.sort(function(a, b) {
-                if (a.prerequisite.description > b.prerequisite.description) return 1;
-                else if (a.prerequisite.description < b.prerequisite.description) return -1;
-                else return a.id > b.id ? 1 : -1;
-            });
         }
 
         // sort LOIs based on prerequisite
@@ -194,6 +184,44 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
         result.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
         result.teachingLanguage = getFirstItemInList(result.teachingLanguages);
         result.formOfEducation = getFirstItemInList(result.formOfEducation);
+
+
+        // set teaching languge as the first language in array
+        for (var asIndex in result.applicationSystems) {
+            if (result.applicationSystems.hasOwnProperty(asIndex)) {
+                var as = result.applicationSystems[asIndex];
+                for (var aoIndex in as.applicationOptions) {
+                    if (as.applicationOptions.hasOwnProperty(aoIndex)) {
+                        var ao = as.applicationOptions[aoIndex];
+
+                        if (ao.teachingLanguages && ao.teachingLanguages.length > 0) {
+                            ao.teachLang = ao.teachingLanguages[0];
+                        }
+                    }
+                }
+            }
+        }
+
+        // sort exams based on start time
+        for (var asIndex in result.applicationSystems) {
+            if (result.applicationSystems.hasOwnProperty(asIndex)) {
+                var as = result.applicationSystems[asIndex];
+                for (var aoIndex in as.applicationOptions) {
+                    if (as.applicationOptions.hasOwnProperty(aoIndex)) {
+                        var ao = as.applicationOptions[aoIndex];
+                        for (var exam in ao.exams) {
+                            if (ao.exams.hasOwnProperty(exam)) {
+                                if (ao.exams[exam].examEvents) {
+                                    ao.exams[exam].examEvents.sort(function(a, b) {
+                                        return a.start - b.start;
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         // add current child to sibligs
         if (result.related) {
