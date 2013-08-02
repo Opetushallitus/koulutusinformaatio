@@ -20,7 +20,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLORefEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.I18nTextEntity;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLORef;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLOIRef;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 
 import java.util.Map;
@@ -57,8 +57,8 @@ public class TestUtil {
         return ref;
     }
 
-    public static ChildLORef createChildLORef(String name, String asId, String loId) {
-        ChildLORef ref = new ChildLORef();
+    public static ChildLOIRef createChildLORef(String name, String asId, String loId) {
+        ChildLOIRef ref = new ChildLOIRef();
         ref.setNameByTeachingLang(name + " fi");
         ref.setName(createI18nText(name + " fi", name + " sv", name + " en"));
         ref.setAsIds(Lists.newArrayList(asId));

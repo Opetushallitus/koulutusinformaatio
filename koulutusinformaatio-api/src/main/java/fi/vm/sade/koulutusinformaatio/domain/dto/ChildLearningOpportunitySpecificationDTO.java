@@ -14,36 +14,26 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.koulutusinformaatio.domain;
+package fi.vm.sade.koulutusinformaatio.domain.dto;
 
-import java.util.List;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
+import java.util.*;
 
 /**
- * Child level learning opportunity.
- *
  * @author Hannu Lyytikainen
  */
-public class ChildLOS {
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
+public class ChildLearningOpportunitySpecificationDTO {
 
     private String id;
-    private I18nText name;
-    // koulutusohjelma
-    private I18nText degreeTitle;
-    //tutkintonimike
-    private I18nText qualification;
-    //tavoite
-    private I18nText degreeGoal;
-    private ParentLOSRef parent;
-    private List<ChildLOI> lois;
+    private String name;
+    private String qualification;
+    private String degreeTitle;
+    private ParentLOSRefDTO parent;
+    private String degreeGoal;
+    private List<ChildLearningOpportunityInstanceDTO> lois;
 
-    public ChildLOS(String id, I18nText name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public ChildLOS() {
-
-    }
 
     public String getId() {
         return id;
@@ -53,51 +43,51 @@ public class ChildLOS {
         this.id = id;
     }
 
-    public I18nText getName() {
+    public String getName() {
         return name;
     }
 
-    public void setName(I18nText name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public I18nText getQualification() {
+    public String getQualification() {
         return qualification;
     }
 
-    public void setQualification(I18nText qualification) {
+    public void setQualification(String qualification) {
         this.qualification = qualification;
     }
 
-    public I18nText getDegreeTitle() {
+    public String getDegreeTitle() {
         return degreeTitle;
     }
 
-    public void setDegreeTitle(I18nText degreeTitle) {
+    public void setDegreeTitle(String degreeTitle) {
         this.degreeTitle = degreeTitle;
     }
 
-    public I18nText getDegreeGoal() {
-        return degreeGoal;
-    }
-
-    public void setDegreeGoal(I18nText degreeGoal) {
-        this.degreeGoal = degreeGoal;
-    }
-
-    public ParentLOSRef getParent() {
+    public ParentLOSRefDTO getParent() {
         return parent;
     }
 
-    public void setParent(ParentLOSRef parent) {
+    public void setParent(ParentLOSRefDTO parent) {
         this.parent = parent;
     }
 
-    public List<ChildLOI> getLois() {
+    public String getDegreeGoal() {
+        return degreeGoal;
+    }
+
+    public void setDegreeGoal(String degreeGoal) {
+        this.degreeGoal = degreeGoal;
+    }
+
+    public List<ChildLearningOpportunityInstanceDTO> getLois() {
         return lois;
     }
 
-    public void setLois(List<ChildLOI> lois) {
+    public void setLois(List<ChildLearningOpportunityInstanceDTO> lois) {
         this.lois = lois;
     }
 }

@@ -19,7 +19,7 @@ package fi.vm.sade.koulutusinformaatio.converter;
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLORef;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLOIRef;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLORefDTO;
 
@@ -32,10 +32,10 @@ import java.util.List;
  */
 public class ChildLORefToDTO {
 
-    public static List<ChildLORefDTO> convert(final List<ChildLORef> refs, final String lang) {
+    public static List<ChildLORefDTO> convert(final List<ChildLOIRef> refs, final String lang) {
         List<ChildLORefDTO> children = new ArrayList<ChildLORefDTO>();
         if (refs != null) {
-            for (ChildLORef ref : refs) {
+            for (ChildLOIRef ref : refs) {
                 ChildLORefDTO child = convert(ref, lang);
                 children.add(child);
             }
@@ -44,7 +44,7 @@ public class ChildLORefToDTO {
         return children;
     }
 
-    public static ChildLORefDTO convert(final ChildLORef ref, final String lang) {
+    public static ChildLORefDTO convert(final ChildLOIRef ref, final String lang) {
         ChildLORefDTO child = new ChildLORefDTO();
         child.setChildLOId(ref.getChildLOId());
         child.setAsIds(ref.getAsIds());
@@ -58,12 +58,12 @@ public class ChildLORefToDTO {
         return child;
     }
 
-    public static List<I18nText> convert(final List<ChildLORef> refs) {
+    public static List<I18nText> convert(final List<ChildLOIRef> refs) {
         if (refs != null) {
-            return Lists.transform(refs, new Function<ChildLORef, I18nText>() {
+            return Lists.transform(refs, new Function<ChildLOIRef, I18nText>() {
                 @Override
-                public I18nText apply(ChildLORef childLORef) {
-                    return childLORef.getName();
+                public I18nText apply(ChildLOIRef childLOIRef) {
+                    return childLOIRef.getName();
                 }
             });
         } else {

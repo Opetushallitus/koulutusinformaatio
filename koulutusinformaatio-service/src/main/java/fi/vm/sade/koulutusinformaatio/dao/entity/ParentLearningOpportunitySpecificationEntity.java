@@ -16,13 +16,13 @@
 
 package fi.vm.sade.koulutusinformaatio.dao.entity;
 
-import java.util.List;
-import java.util.Set;
-
 import com.google.code.morphia.annotations.Embedded;
 import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Id;
 import com.google.code.morphia.annotations.Reference;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Mikko Majapuro
@@ -57,6 +57,8 @@ public class ParentLearningOpportunitySpecificationEntity {
     private I18nTextEntity creditUnit;
     @Embedded
     private List<ParentLearningOpportunityInstanceEntity> lois;
+    @Reference
+    private List<ChildLearningOpportunityEntity> children;
 
 
     public ParentLearningOpportunitySpecificationEntity() {
@@ -172,5 +174,13 @@ public class ParentLearningOpportunitySpecificationEntity {
 
     public void setCreditUnit(I18nTextEntity creditUnit) {
         this.creditUnit = creditUnit;
+    }
+
+    public List<ChildLearningOpportunityEntity> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<ChildLearningOpportunityEntity> children) {
+        this.children = children;
     }
 }

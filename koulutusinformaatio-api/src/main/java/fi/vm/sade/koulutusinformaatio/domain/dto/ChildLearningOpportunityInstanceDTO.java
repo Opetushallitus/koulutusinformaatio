@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
- *
- * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
- * soon as they will be approved by the European Commission - subsequent versions
- * of the EUPL (the "Licence");
- *
- * You may not use this work except in compliance with the Licence.
- * You may obtain a copy of the Licence at: http://www.osor.eu/eupl/
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * European Union Public Licence for more details.
- */
-
 package fi.vm.sade.koulutusinformaatio.domain.dto;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
@@ -23,22 +7,18 @@ import java.util.*;
 /**
  * @author Hannu Lyytikainen
  */
+
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
-public class ChildLearningOpportunityDTO {
+public class ChildLearningOpportunityInstanceDTO {
 
     private String id;
-    private String name;
-    private String qualification;
-    private String degreeTitle;
     private List<ApplicationSystemDTO> applicationSystems = new ArrayList<ApplicationSystemDTO>();
     private List<ChildLORefDTO> related = new ArrayList<ChildLORefDTO>();
-
     private Date startDate;
     private List<String> formOfEducation = new ArrayList<String>();
     private Map<String, String> webLinks;
     private List<String> formOfTeaching = new ArrayList<String>();
     private CodeDTO prerequisite;
-
     private String translationLanguage;
     private Set<String> availableTranslationLanguages = new HashSet<String>();
     private Set<String> teachingLanguages = new HashSet<String>();
@@ -47,9 +27,6 @@ public class ChildLearningOpportunityDTO {
     private String internationalization;
     private String cooperation;
     private String content;
-    private String degreeGoal;
-
-    private ParentLOSRefDTO parent;
 
     public String getId() {
         return id;
@@ -57,14 +34,6 @@ public class ChildLearningOpportunityDTO {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public List<ApplicationSystemDTO> getApplicationSystems() {
@@ -75,20 +44,12 @@ public class ChildLearningOpportunityDTO {
         this.applicationSystems = applicationSystems;
     }
 
-    public String getQualification() {
-        return qualification;
+    public List<ChildLORefDTO> getRelated() {
+        return related;
     }
 
-    public void setQualification(String qualification) {
-        this.qualification = qualification;
-    }
-
-    public String getDegreeTitle() {
-        return degreeTitle;
-    }
-
-    public void setDegreeTitle(String degreeTitle) {
-        this.degreeTitle = degreeTitle;
+    public void setRelated(List<ChildLORefDTO> related) {
+        this.related = related;
     }
 
     public Date getStartDate() {
@@ -133,7 +94,6 @@ public class ChildLearningOpportunityDTO {
 
     public String getTranslationLanguage() {
         return translationLanguage;
-
     }
 
     public void setTranslationLanguage(String translationLanguage) {
@@ -148,29 +108,12 @@ public class ChildLearningOpportunityDTO {
         this.availableTranslationLanguages = availableTranslationLanguages;
     }
 
-    public List<ChildLORefDTO> getRelated() {
-        return related;
-    }
-
     public Set<String> getTeachingLanguages() {
         return teachingLanguages;
     }
 
     public void setTeachingLanguages(Set<String> teachingLanguages) {
         this.teachingLanguages = teachingLanguages;
-    }
-
-    public void setRelated(List<ChildLORefDTO> related) {
-        this.related = related;
-
-    }
-
-    public ParentLOSRefDTO getParent() {
-        return parent;
-    }
-
-    public void setParent(ParentLOSRefDTO parent) {
-        this.parent = parent;
     }
 
     public List<String> getProfessionalTitles() {
@@ -203,14 +146,6 @@ public class ChildLearningOpportunityDTO {
 
     public void setCooperation(String cooperation) {
         this.cooperation = cooperation;
-    }
-
-    public String getDegreeGoal() {
-        return degreeGoal;
-    }
-
-    public void setDegreeGoal(String degreeGoal) {
-        this.degreeGoal = degreeGoal;
     }
 
     public String getContent() {

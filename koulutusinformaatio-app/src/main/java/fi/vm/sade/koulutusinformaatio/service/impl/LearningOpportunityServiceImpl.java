@@ -61,16 +61,16 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     }
 
     @Override
-    public ChildLearningOpportunityDTO getChildLearningOpportunity(String cloId) throws ResourceNotFoundException {
-        ChildLOS childLO = educationDataQueryService.getChildLearningOpportunity(cloId);
-        String lang = resolveDefaultLanguage(childLO);
-        return ChildLOToDTO.convert(childLO, lang);
+    public ChildLearningOpportunitySpecificationDTO getChildLearningOpportunity(String cloId) throws ResourceNotFoundException {
+        ChildLOS childLOS = educationDataQueryService.getChildLearningOpportunity(cloId);
+        String lang = resolveDefaultLanguage(childLOS.getLois().get(0));
+        return ChildLOSToDTO.convert(childLOS, lang);
     }
 
     @Override
-    public ChildLearningOpportunityDTO getChildLearningOpportunity(String cloId, String lang) throws ResourceNotFoundException {
+    public ChildLearningOpportunitySpecificationDTO getChildLearningOpportunity(String cloId, String lang) throws ResourceNotFoundException {
         ChildLOS childLO = educationDataQueryService.getChildLearningOpportunity(cloId);
-        return ChildLOToDTO.convert(childLO, lang);
+        return ChildLOSToDTO.convert(childLO, lang);
     }
 
     @Override
@@ -127,16 +127,16 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
         }
     }
 
-    private String resolveDefaultLanguage(final ChildLOS childLO) {
-        if (childLO.getTeachingLanguages() == null || childLO.getTeachingLanguages().isEmpty()) {
+    private String resolveDefaultLanguage(final ChildLOI childLOI) {
+        if (childLOI.getTeachingLanguages() == null || childLOI.getTeachingLanguages().isEmpty()) {
             return LANG_FI;
         } else {
-            for (Code code : childLO.getTeachingLanguages()) {
+            for (Code code : childLOI.getTeachingLanguages()) {
                  if (code.getValue().equalsIgnoreCase(LANG_FI)) {
                      return LANG_FI;
                  }
             }
-            return childLO.getTeachingLanguages().get(0).getValue().toLowerCase();
+            return childLOI.getTeachingLanguages().get(0).getValue().toLowerCase();
         }
     }
 }

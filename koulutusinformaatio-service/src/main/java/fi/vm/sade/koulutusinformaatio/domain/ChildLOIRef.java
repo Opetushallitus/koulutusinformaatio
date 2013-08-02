@@ -16,14 +16,12 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-
 import java.util.List;
 
 /**
  * @author Mikko Majapuro
  */
-public class ChildLORef {
+public class ChildLOIRef {
 
     private String childLOId;
     private List<String> asIds;

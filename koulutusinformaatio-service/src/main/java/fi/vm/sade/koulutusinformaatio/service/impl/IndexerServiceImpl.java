@@ -54,7 +54,12 @@ public class IndexerServiceImpl implements IndexerService {
 
         SolrInputDocument parentDoc = new SolrInputDocument();
         resolveParentDocument(parentDoc, parent);
-        addApplicationSystemDates(parentDoc, Lists.newArrayList(parent.getApplicationOptions()));
+
+        List<ApplicationOption> applicationOptions = Lists.newArrayList();
+        for (ParentLOI parentLOI : parent.getLois()) {
+            applicationOptions.addAll(parentLOI.getApplicationOptions());
+        }
+        addApplicationSystemDates(parentDoc, applicationOptions);
 
         Provider provider = parent.getProvider();
         SolrInputDocument providerDoc = new SolrInputDocument();
@@ -63,23 +68,21 @@ public class IndexerServiceImpl implements IndexerService {
         Set<String> providerAsIds = Sets.newHashSet();
 
         List<ParentLOI> lois = parent.getLois();
-        for (ParentLOI loi : lois) {
-            if (loi.getPrerequisite() != null) {
-                // null in parent 1.2.246.562.5.2013060313060064137085
-                parentDoc.addField("prerequisites", loi.getPrerequisite().getValue());
-            }
-            for (ChildLOS childLO : loi.getChildren()) {
+
+        for (ChildLOS childLOS : parent.getChildren()) {
+            for (ChildLOI childLOI : childLOS.getLois()) {
                 SolrInputDocument childLODoc = new SolrInputDocument();
-                resolveChildDocument(childLODoc, childLO, parent);
-                addApplicationSystemDates(childLODoc, childLO.getApplicationOptions());
-                if (childLO.getApplicationSystemIds() != null) {
-                    for (String asId : childLO.getApplicationSystemIds()) {
+                resolveChildDocument(childLODoc, childLOS,  childLOI, parent);
+                addApplicationSystemDates(childLODoc, childLOI.getApplicationOptions());
+                if (childLOI.getApplicationSystemIds() != null) {
+                    for (String asId : childLOI.getApplicationSystemIds()) {
                         providerAsIds.add(asId);
                     }
                 }
                 docs.add(childLODoc);
             }
         }
+
         docs.add(parentDoc);
 
         for (String asId : providerAsIds) {
@@ -125,16 +128,16 @@ public class IndexerServiceImpl implements IndexerService {
         }
     }
 
-    private void resolveChildDocument(SolrInputDocument doc, ChildLOS childLO, ParentLOS parent) {
+    private void resolveChildDocument(SolrInputDocument doc, ChildLOS childLOS, ChildLOI childLOI, ParentLOS parent) {
         Provider provider = parent.getProvider();
-        doc.addField("id", childLO.getId());
+        doc.addField("id", childLOS.getId());
         doc.addField("lopId", provider.getId());
         doc.addField("parentId", parent.getId());
-        doc.addField("prerequisites", childLO.getPrerequisite().getValue());
+        doc.addField("prerequisites", childLOI.getPrerequisite().getValue());
 
-        doc.addField("name_fi", childLO.getName().getTranslations().get("fi"));
-        doc.addField("name_sv", childLO.getName().getTranslations().get("sv"));
-        doc.addField("name_en", childLO.getName().getTranslations().get("en"));
+        doc.addField("name_fi", childLOS.getName().getTranslations().get("fi"));
+        doc.addField("name_sv", childLOS.getName().getTranslations().get("sv"));
+        doc.addField("name_en", childLOS.getName().getTranslations().get("en"));
 
         doc.addField("lopName_fi", provider.getName().getTranslations().get("fi"));
         doc.addField("lopName_sv", provider.getName().getTranslations().get("sv"));
@@ -149,34 +152,35 @@ public class IndexerServiceImpl implements IndexerService {
             doc.addField("lopDescription_sv", provider.getDescription().getTranslations().get("sv"));
             doc.addField("lopDescription_en", provider.getDescription().getTranslations().get("en"));
         }
-        if (childLO.getProfessionalTitles() != null) {
-            for (I18nText i18n : childLO.getProfessionalTitles()) {
+        if (childLOI.getProfessionalTitles() != null) {
+            for (I18nText i18n : childLOI.getProfessionalTitles()) {
                 doc.addField("professionalTitles_fi", i18n.getTranslations().get("fi"));
                 doc.addField("professionalTitles_sv", i18n.getTranslations().get("sv"));
                 doc.addField("professionalTitles_en", i18n.getTranslations().get("en"));
             }
         }
-        if (childLO.getQualification() != null) {
-            doc.addField("qualification_fi", childLO.getQualification().getTranslations().get("fi"));
-            doc.addField("qualification_sv", childLO.getQualification().getTranslations().get("sv"));
-            doc.addField("qualification_en", childLO.getQualification().getTranslations().get("en"));
+        if (childLOS.getQualification() != null) {
+            doc.addField("qualification_fi", childLOS.getQualification().getTranslations().get("fi"));
+            doc.addField("qualification_sv", childLOS.getQualification().getTranslations().get("sv"));
+            doc.addField("qualification_en", childLOS.getQualification().getTranslations().get("en"));
         }
-        if (childLO.getDegreeGoal() != null) {
-            doc.addField("goals_fi", childLO.getDegreeGoal().getTranslations().get("fi"));
-            doc.addField("goals_sv", childLO.getDegreeGoal().getTranslations().get("sv"));
-            doc.addField("goals_en", childLO.getDegreeGoal().getTranslations().get("en"));
+        if (childLOS.getDegreeGoal() != null) {
+            doc.addField("goals_fi", childLOS.getDegreeGoal().getTranslations().get("fi"));
+            doc.addField("goals_sv", childLOS.getDegreeGoal().getTranslations().get("sv"));
+            doc.addField("goals_en", childLOS.getDegreeGoal().getTranslations().get("en"));
         }
-        if (childLO.getContent() != null) {
-            doc.addField("content_fi", childLO.getContent().getTranslations().get("fi"));
-            doc.addField("content_sv", childLO.getContent().getTranslations().get("sv"));
-            doc.addField("content_en", childLO.getContent().getTranslations().get("en"));
+        if (childLOI.getContent() != null) {
+            doc.addField("content_fi", childLOI.getContent().getTranslations().get("fi"));
+            doc.addField("content_sv", childLOI.getContent().getTranslations().get("sv"));
+            doc.addField("content_en", childLOI.getContent().getTranslations().get("en"));
         }
     }
 
-    private void addApplicationSystemDates(SolrInputDocument doc, List<ApplicationOption> aos) {
 
+
+    private void addApplicationSystemDates(SolrInputDocument doc, List<ApplicationOption> applicationOptions) {
         int parentApplicationDateRangeIndex = 0;
-        for (ApplicationOption ao : aos) {
+        for (ApplicationOption ao : applicationOptions) {
             for (DateRange dr : ao.getApplicationSystem().getApplicationDates()) {
                 doc.addField(new StringBuilder().append("asStart").append("_").
                         append(String.valueOf(parentApplicationDateRangeIndex)).toString(), dr.getStartDate());

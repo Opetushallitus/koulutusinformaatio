@@ -84,18 +84,20 @@ public class EducationDataUpdateServiceImplTest {
         ParentLOS plo = new ParentLOS();
         plo.setProvider(lop);
         plo.setId("1.2.3");
-        plo.setApplicationOptions(applicationOptions);
 
         ParentLOI parentLOI = new ParentLOI();
         parentLOI.setId("2345");
         parentLOI.setPrerequisite(new Code("PK", TestUtil.createI18nText("Peruskoulu", "Peruskoulu", "Peruskoulu")));
+        parentLOI.setApplicationOptions(applicationOptions);
 
         ChildLOS clo = new ChildLOS();
         clo.setId("5.7.9");
-        clo.setApplicationSystemIds(Lists.newArrayList("1.2.3.4.5"));
-        clo.setApplicationOptions(Lists.newArrayList(ao));
+        ChildLOI cloi = new ChildLOI();
+        cloi.setId("9.8.7");
+        cloi.setApplicationSystemIds(Lists.newArrayList("1.2.3.4.5"));
+        cloi.setApplicationOptions(Lists.newArrayList(ao));
 
-        parentLOI.setChildren(Lists.newArrayList(clo));
+        plo.setChildren(Lists.newArrayList(clo));
 
         plo.setLois(Lists.newArrayList(parentLOI));
 

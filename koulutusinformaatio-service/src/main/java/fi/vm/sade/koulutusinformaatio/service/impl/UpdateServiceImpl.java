@@ -27,7 +27,6 @@ import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +44,7 @@ public class UpdateServiceImpl implements UpdateService {
     private IndexerService indexerService;
     private EducationDataUpdateService educationDataUpdateService;
     private TransactionManager transactionManager;
-    private static final int MAX_RESULTS = 100;
+    private static final int MAX_RESULTS = 10;
     private boolean running = false;
 
 
@@ -70,7 +69,7 @@ public class UpdateServiceImpl implements UpdateService {
             int count = MAX_RESULTS;
             int index = 0;
 
-            while(count >= MAX_RESULTS) {
+            //while(count >= MAX_RESULTS) {
                 LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
                 List<OidRDTO> parentOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
                 count = parentOids.size();
@@ -89,7 +88,7 @@ public class UpdateServiceImpl implements UpdateService {
                         this.educationDataUpdateService.save(parent);
                     }
                 }
-            }
+            //}
             this.indexerService.commitLOChanges();
             this.transactionManager.commit();
             LOG.info("Education data update successfully finished");
