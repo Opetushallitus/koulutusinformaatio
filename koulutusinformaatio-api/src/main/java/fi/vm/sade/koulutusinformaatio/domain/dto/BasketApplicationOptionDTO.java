@@ -38,7 +38,7 @@ public class BasketApplicationOptionDTO {
     private String qualification;
     private String baseEducationRequirement;
     private ParentLOSRefDTO parent;
-    private List<ChildLORefDTO> children;
+    private List<ChildLOIRefDTO> children;
     private Date attachmentDeliveryDeadline;
     private boolean athleteEducation;
 
@@ -130,11 +130,11 @@ public class BasketApplicationOptionDTO {
         this.parent = parent;
     }
 
-    public List<ChildLORefDTO> getChildren() {
+    public List<ChildLOIRefDTO> getChildren() {
         return children;
     }
 
-    public void setChildren(List<ChildLORefDTO> children) {
+    public void setChildren(List<ChildLOIRefDTO> children) {
         this.children = children;
     }
 

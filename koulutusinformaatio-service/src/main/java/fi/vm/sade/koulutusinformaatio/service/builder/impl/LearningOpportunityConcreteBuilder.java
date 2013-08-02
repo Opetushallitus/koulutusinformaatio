@@ -246,6 +246,7 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
 
             ChildLOI childLOI = new ChildLOI();
             childLOI.setId(childKomoto.getOid());
+            childLOI.setLosId(childLOS.getId());
             childLOI.setParentLOIId(childKomoto.getParentKomotoOid());
             childLOI.setStartDate(childKomoto.getKoulutuksenAlkamisDate());
             childLOI.setFormOfEducation(koodistoService.searchMultiple(childKomoto.getKoulutuslajiUris()));
@@ -340,7 +341,8 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
                 for (OidRDTO s : komotosByHakukohdeOID) {
                     KomoDTO komoByKomotoOID = komotoResource.getKomoByKomotoOID(s.getOid());
                     ChildLOIRef cRef = new ChildLOIRef();
-                    cRef.setChildLOId(s.getOid());
+                    cRef.setId(s.getOid());
+                    cRef.setLosId(getLOSId(komoByKomotoOID.getOid(), childKomoto.getTarjoajaOid()));
                     cRef.setName(koodistoService.searchFirst(komoByKomotoOID.getKoulutusOhjelmaKoodiUri()));
                     cRef.setQualification(koodistoService.searchFirst(komoByKomotoOID.getTutkintonimikeUri()));
                     cRef.setPrerequisite(childLOI.getPrerequisite());

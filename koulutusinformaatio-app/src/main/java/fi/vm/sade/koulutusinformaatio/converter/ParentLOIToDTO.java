@@ -52,7 +52,7 @@ public class ParentLOIToDTO {
             loi.getApplicationSystems().add(asDTO);
         }
 
-        //loi.setChildren(ChildLORefToDTO.convert(parentLOI.getChildRefs(), lang));
+        //loi.setChildren(ChildLOIRefToDTO.convert(parentLOI.getChildRefs(), lang));
         return loi;
     }
 }

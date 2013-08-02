@@ -32,7 +32,7 @@ public class ApplicationOptionToSearchResultDTO {
             dto.setId(applicationOption.getId());
             dto.setName(ConverterUtil.getTextByLanguage(applicationOption.getName(), lang));
             dto.setAoIdentifier(applicationOption.getAoIdentifier());
-            dto.setChildLONames(ConverterUtil.getShortNameTextsByLanguage(ChildLORefToDTO.convert(applicationOption.getChildLOIRefs()), lang));
+            dto.setChildLONames(ConverterUtil.getShortNameTextsByLanguage(ChildLOIRefToDTO.convert(applicationOption.getChildLOIRefs()), lang));
             Collections.sort(dto.getChildLONames());
             dto.setEducationDegree(applicationOption.getEducationDegree());
             dto.setSora(applicationOption.isSora());

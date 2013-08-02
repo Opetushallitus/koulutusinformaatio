@@ -13,6 +13,7 @@ import java.util.Map;
 public class ChildLOI {
 
     private String id;
+    private String losId;
     private I18nText name;
     private String parentLOIId;
     private List<I18nText> professionalTitles;
@@ -39,6 +40,14 @@ public class ChildLOI {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getLosId() {
+        return losId;
+    }
+
+    public void setLosId(String losId) {
+        this.losId = losId;
     }
 
     public I18nText getName() {

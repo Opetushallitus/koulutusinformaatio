@@ -120,7 +120,8 @@ public class TarjontaServiceMockImpl implements TarjontaService {
 
     private ChildLOIRef createChildLORef() {
         ChildLOIRef childLOIRef = new ChildLOIRef();
-        childLOIRef.setChildLOId(CHILD_LO_ID);
+        childLOIRef.setId(CHILD_LO_ID);
+        childLOIRef.setLosId(CHILD_LO_ID);
         childLOIRef.setAsIds(Lists.newArrayList(APPLICATION_SYSTEM_ID));
         childLOIRef.setName(createI18nText("Audiovisuaalisen viestinnän koulutusohjelma, media-assistentti",
                 "Utbildningsprogrammet för audiovisuell kommunikation, medieassistent", "Audio visual communication study program, media assistant",

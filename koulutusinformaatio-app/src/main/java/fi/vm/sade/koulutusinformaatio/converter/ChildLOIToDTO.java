@@ -28,7 +28,7 @@ public class ChildLOIToDTO {
                 dto.getTeachingLanguages().add(code.getValue());
             }
         }
-        dto.setRelated(ChildLORefToDTO.convert(childLOI.getRelated(), lang));
+        dto.setRelated(ChildLOIRefToDTO.convert(childLOI.getRelated(), lang));
         dto.setFormOfTeaching(ConverterUtil.getTextsByLanguage(childLOI.getFormOfTeaching(), lang));
         dto.setWebLinks(childLOI.getWebLinks());
         dto.setFormOfEducation(ConverterUtil.getTextsByLanguage(childLOI.getFormOfEducation(), lang));

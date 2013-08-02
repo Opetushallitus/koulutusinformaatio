@@ -19,7 +19,7 @@ public class ChildLearningOpportunityInstanceEntity {
     @Reference
     private List<ApplicationOptionEntity> applicationOptions;
     @Embedded
-    private List<ChildLORefEntity> related;
+    private List<ChildLOIRefEntity> related;
     @Embedded
     private List<CodeEntity> teachingLanguages;
     private Date startDate;
@@ -66,11 +66,11 @@ public class ChildLearningOpportunityInstanceEntity {
         this.applicationOptions = applicationOptions;
     }
 
-    public List<ChildLORefEntity> getRelated() {
+    public List<ChildLOIRefEntity> getRelated() {
         return related;
     }
 
-    public void setRelated(List<ChildLORefEntity> related) {
+    public void setRelated(List<ChildLOIRefEntity> related) {
         this.related = related;
     }
 

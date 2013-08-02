@@ -60,7 +60,7 @@ public class ApplicationOptionDAOTest {
         as.setId("123");
         entity.setApplicationSystem(as);
         entity.setEducationDegree("degree");
-        List<ChildLORefEntity> childLoRefs = new ArrayList<ChildLORefEntity>();
+        List<ChildLOIRefEntity> childLoRefs = new ArrayList<ChildLOIRefEntity>();
         childLoRefs.add(TestUtil.createChildLORefEntity("clo 1", as.getId(), "333"));
         childLoRefs.add(TestUtil.createChildLORefEntity("clo 2", as.getId(), "444"));
         entity.setChildLOIRefs(childLoRefs);

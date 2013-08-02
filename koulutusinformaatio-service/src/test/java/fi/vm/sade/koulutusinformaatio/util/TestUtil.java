@@ -18,7 +18,7 @@ package fi.vm.sade.koulutusinformaatio.util;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLORefEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLOIRefEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.I18nTextEntity;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOIRef;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
@@ -48,12 +48,12 @@ public class TestUtil {
         return entity;
     }
 
-    public static ChildLORefEntity createChildLORefEntity(String name, String asId, String loId) {
-        ChildLORefEntity ref = new ChildLORefEntity();
+    public static ChildLOIRefEntity createChildLORefEntity(String name, String asId, String loId) {
+        ChildLOIRefEntity ref = new ChildLOIRefEntity();
         ref.setNameByTeachingLang(name + " fi");
         ref.setName(createI18nTextEntity(name + " fi", name + " sv", name + " en"));
         ref.setAsIds(Lists.newArrayList(asId));
-        ref.setChildLOId(loId);
+        ref.setId(loId);
         return ref;
     }
 
@@ -62,7 +62,7 @@ public class TestUtil {
         ref.setNameByTeachingLang(name + " fi");
         ref.setName(createI18nText(name + " fi", name + " sv", name + " en"));
         ref.setAsIds(Lists.newArrayList(asId));
-        ref.setChildLOId(loId);
+        ref.setId(loId);
         return ref;
     }
 }

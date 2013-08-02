@@ -13,7 +13,7 @@ public class ChildLearningOpportunityInstanceDTO {
 
     private String id;
     private List<ApplicationSystemDTO> applicationSystems = new ArrayList<ApplicationSystemDTO>();
-    private List<ChildLORefDTO> related = new ArrayList<ChildLORefDTO>();
+    private List<ChildLOIRefDTO> related = new ArrayList<ChildLOIRefDTO>();
     private Date startDate;
     private List<String> formOfEducation = new ArrayList<String>();
     private Map<String, String> webLinks;
@@ -44,11 +44,11 @@ public class ChildLearningOpportunityInstanceDTO {
         this.applicationSystems = applicationSystems;
     }
 
-    public List<ChildLORefDTO> getRelated() {
+    public List<ChildLOIRefDTO> getRelated() {
         return related;
     }
 
-    public void setRelated(List<ChildLORefDTO> related) {
+    public void setRelated(List<ChildLOIRefDTO> related) {
         this.related = related;
     }
 

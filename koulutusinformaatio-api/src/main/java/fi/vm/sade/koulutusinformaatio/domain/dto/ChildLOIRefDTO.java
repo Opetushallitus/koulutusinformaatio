@@ -24,20 +24,29 @@ import java.util.List;
  * @author Mikko Majapuro
  */
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
-public class ChildLORefDTO implements Comparable<ChildLORefDTO> {
+public class ChildLOIRefDTO implements Comparable<ChildLOIRefDTO> {
 
-    private String childLOId;
+    private String id;
+    private String losId;
     private List<String> asIds;
     private String name;
     private String qualification;
     private CodeDTO prerequisite;
 
-    public String getChildLOId() {
-        return childLOId;
+    public String getId() {
+        return id;
     }
 
-    public void setChildLOId(String childLOId) {
-        this.childLOId = childLOId;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getLosId() {
+        return losId;
+    }
+
+    public void setLosId(String losId) {
+        this.losId = losId;
     }
 
     public List<String> getAsIds() {
@@ -73,10 +82,10 @@ public class ChildLORefDTO implements Comparable<ChildLORefDTO> {
     }
 
     @Override
-    public int compareTo(ChildLORefDTO childLORefDTO) {
-        if (this == childLORefDTO) {
+    public int compareTo(ChildLOIRefDTO childLOIRefDTO) {
+        if (this == childLOIRefDTO) {
             return 0;
         }
-        return this.name.compareTo(childLORefDTO.name);
+        return this.name.compareTo(childLOIRefDTO.name);
     }
 }
