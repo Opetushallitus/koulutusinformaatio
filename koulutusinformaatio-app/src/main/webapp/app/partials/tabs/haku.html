@@ -1,11 +1,11 @@
 
 <aside class="grid16-6 no-right-gutter margin-top-2">
-    <div data-ng-switch="isChild">
-        <div data-ng-switch-when="false">
+    <!--<div data-ng-switch="isChild">
+        <div data-ng-switch-when="false"> -->
             <h4 class="margin-bottom-0" data-ki-i18n="application-prerequisite"></h4>
             <form>
                 <ul class="margin-bottom-2">
-                    <li data-ng-repeat="loi in parentLO.lois">
+                    <li data-ng-repeat="loi in lois">
                         <input 
                         type="radio" 
                         name="prerequisiteSelection" 
@@ -18,8 +18,8 @@
                     </li>
                 </ul>
             </form>
-        </div>
-    </div>
+        <!--</div>
+    </div>-->
 
     <div data-ng-repeat="as in selectedLOI.applicationSystems" class="infobox">
         <div class="sideitem margin-bottom-3">
@@ -37,7 +37,7 @@
             <span class="bold">{{ao.name}}</span>
             <ul class="disc">
                 <li data-ng-repeat="child in ao.childRefs">
-                    <a href="#/koulutusohjelma/{{child.childLOId}}">{{child.name}}</a>
+                    <a href="#/koulutusohjelma/{{child.losId}}">{{child.name}}</a>
                 </li>
             </ul>
 

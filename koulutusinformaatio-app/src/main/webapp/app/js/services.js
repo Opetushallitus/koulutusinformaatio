@@ -177,8 +177,8 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
 
     // TODO: could we automate data transformation somehow?
     var transformData = function(result) {
-        var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
-        result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
+        //var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
+        //result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
 
         var startDate = new Date(result.startDate);
         result.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();

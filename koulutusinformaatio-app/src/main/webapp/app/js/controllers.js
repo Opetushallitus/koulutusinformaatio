@@ -286,16 +286,18 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
             }
         }
 
+        /*
         if (isChild()) {
             $scope.selectedLOI = {};
             $scope.selectedLOI.applicationSystems = $scope.childLO.applicationSystems;
             $scope.selectedLOI.prerequisite = getPrerequisite($scope.selectedLOI);
             $scope.selectedAs = $scope.childLO.applicationSystems[0];
         } else {
-            for (var loi in $scope.parentLO.lois) {
-                if ($scope.parentLO.lois.hasOwnProperty(loi)) {
-                    if ($scope.parentLO.lois[loi].id == loiId) {
-                        $scope.selectedLOI = angular.copy($scope.parentLO.lois[loi]);
+        */
+            for (var loi in $scope.lois) {
+                if ($scope.lois.hasOwnProperty(loi)) {
+                    if ($scope.lois[loi].id == loiId) {
+                        $scope.selectedLOI = angular.copy($scope.lois[loi]);
                         var children = aggregateChildren($scope.selectedLOI);
                         var as = getFirstApplicationSystem($scope.selectedLOI);
                         $scope.selectedAs = as;
@@ -306,11 +308,11 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
                     }
                 }
             }
-        }
+        //}
     }
 
     $scope.loiClass = function(prerequisite) {
-        if ($scope.selectedLOI.prerequisite) {
+        if ($scope.selectedLOI && $scope.selectedLOI.prerequisite) {
             return ($scope.selectedLOI.prerequisite.value == prerequisite.value) ? 'disabled': '';
         } else {
             return '';
@@ -331,13 +333,13 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
 
     var getFirstParentLOI = function() {
         if (hasLOIs()) {
-            return $scope.parentLO.lois[0];
+            return $scope.lois[0];
         }
     }
 
     var hasLOIs = function() {
-        if ($scope.parentLO && $scope.parentLO.lois) {
-            return $scope.parentLO.lois.length > 0;
+        if ($scope.lois) {
+            return $scope.lois.length > 0;
         } else {
             return false;
         } 
@@ -345,7 +347,7 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
 
     var showApplicationRadioSelection = function() {
         if (hasLOIs()) {
-            return $scope.parentLO.lois.length == 1 ? false : true;
+            return $scope.lois.length == 1 ? false : true;
         }
 
         return true;
@@ -386,6 +388,7 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
             childId: $routeParams.childId,
             language: $scope.descriptionLanguage}).then(function(childResult) {
                 $scope.childLO = childResult;
+                $scope.lois = childResult.lois;
 
                 if (!ParentLODataService.dataExists(childResult.parent.id)) {
                     ParentLearningOpportunityService.query({
@@ -406,11 +409,13 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
                 parentId: $routeParams.parentId, 
                 language: $scope.descriptionLanguage}).then(function(result) {
                     $scope.parentLO = result;
+                    $scope.lois = result.lois;
                     ParentLODataService.setParentLOData(result);
                     initializeParent();
                 });
         } else {
             $scope.parentLO = ParentLODataService.getParentLOData();
+            $scope.lois = $scope.parentLO.lois;
             initializeParent();
         }
     }
