@@ -1,21 +1,25 @@
 
 <aside class="grid16-6 no-right-gutter margin-top-2">
-    <h4 class="margin-bottom-0" data-ki-i18n="application-prerequisite"></h4>
-    <form>
-        <ul class="margin-bottom-2">
-            <li data-ng-repeat="loi in parentLO.lois">
-                <input 
-                type="radio" 
-                name="prerequisiteSelection" 
-                id="input{{$index}}" 
-                value="{{loi.id}}" 
-                data-ng-change="changeLOISelection(loi.id)"
-                data-ng-model="selectedLOI.id"
-                data-ng-class="showApplicationRadioSelection" />
-                <label for="input{{$index}}">{{loi.prerequisite.description}}</label>
-            </li>
-        </ul>
-    </form>
+    <div data-ng-switch="isChild">
+        <div data-ng-switch-when="false">
+            <h4 class="margin-bottom-0" data-ki-i18n="application-prerequisite"></h4>
+            <form>
+                <ul class="margin-bottom-2">
+                    <li data-ng-repeat="loi in parentLO.lois">
+                        <input 
+                        type="radio" 
+                        name="prerequisiteSelection" 
+                        id="input{{$index}}" 
+                        value="{{loi.id}}" 
+                        data-ng-change="changeLOISelection(loi.id)"
+                        data-ng-model="selectedLOI.id"
+                        data-ng-class="showApplicationRadioSelection" />
+                        <label for="input{{$index}}">{{loi.prerequisite.description}}</label>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
 
     <div data-ng-repeat="as in selectedLOI.applicationSystems" class="infobox">
         <div class="sideitem margin-bottom-3">

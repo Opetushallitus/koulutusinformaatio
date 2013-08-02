@@ -268,27 +268,53 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
                         }
                     }
                 }
-
-                $scope.selectedAs = as;
             }
 
-            if ($scope.selectedAs) {
-                $scope.selectedAs.children = children;
+            return children;
+        };
+
+        var getFirstApplicationSystem = function(loi) {
+            if (loi.applicationSystems && loi.applicationSystems.length > 0) {
+                return loi.applicationSystems[0];
+            }
+        };
+
+        var getPrerequisite = function(loi) {
+            var as = getFirstApplicationSystem(loi);
+            if (as && as.applicationOptions && as.applicationOptions.length > 0) {
+                return as.applicationOptions[0].prerequisite;
             }
         }
 
-        for (var loi in $scope.parentLO.lois) {
-            if ($scope.parentLO.lois.hasOwnProperty(loi)) {
-                if ($scope.parentLO.lois[loi].id == loiId) {
-                    $scope.selectedLOI = angular.copy($scope.parentLO.lois[loi]);
-                    aggregateChildren($scope.selectedLOI);
+        if (isChild()) {
+            $scope.selectedLOI = {};
+            $scope.selectedLOI.applicationSystems = $scope.childLO.applicationSystems;
+            $scope.selectedLOI.prerequisite = getPrerequisite($scope.selectedLOI);
+            $scope.selectedAs = $scope.childLO.applicationSystems[0];
+        } else {
+            for (var loi in $scope.parentLO.lois) {
+                if ($scope.parentLO.lois.hasOwnProperty(loi)) {
+                    if ($scope.parentLO.lois[loi].id == loiId) {
+                        $scope.selectedLOI = angular.copy($scope.parentLO.lois[loi]);
+                        var children = aggregateChildren($scope.selectedLOI);
+                        var as = getFirstApplicationSystem($scope.selectedLOI);
+                        $scope.selectedAs = as;
+
+                        if ($scope.selectedAs) {
+                            $scope.selectedAs.children = children;
+                        }
+                    }
                 }
             }
         }
     }
 
     $scope.loiClass = function(prerequisite) {
-        return ($scope.selectedLOI.prerequisite.value == prerequisite.value) ? 'disabled': '';
+        if ($scope.selectedLOI.prerequisite) {
+            return ($scope.selectedLOI.prerequisite.value == prerequisite.value) ? 'disabled': '';
+        } else {
+            return '';
+        }
     }
 
     var setTitle = function(parent, child) {
@@ -300,7 +326,7 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
     };
 
     var isChild = function() {
-        return ($routeParams.childId);
+        return $routeParams.childId ? true : false;
     };
 
     var getFirstParentLOI = function() {
@@ -351,6 +377,8 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
         }
     });
 
+    $scope.isChild = isChild();
+
     // fetch data for parent and/or its child LO
     // TODO: could this logic be hidden in service?
     if (isChild()) {
@@ -366,12 +394,10 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
                             $scope.parentLO = parentResult;
                             ParentLODataService.setParentLOData(parentResult);
                             initializeParent();
-                            setTitle($scope.parentLO, $scope.childLO);
                         });
                 } else {
                     $scope.parentLO = ParentLODataService.getParentLOData();
                     initializeParent();
-                    setTitle($scope.parentLO, $scope.childLO);
                 }
             }); 
     } else {
@@ -406,6 +432,7 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
                         language: $scope.descriptionLanguage}).then(function(result) {
                             $scope.childLO = result;
                             setTitle($scope.parentLO, $scope.childLO);
+                            $scope.changeLOISelection();
                         });
                 } else {
                     setTitle($scope.parentLO, $scope.childLO);
