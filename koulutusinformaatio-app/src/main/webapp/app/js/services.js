@@ -241,8 +241,8 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
 
             // sort siblings alphabetically
             result.related = result.related.sort(function(a, b) {
-                if (a.name > b.name) return 1;
-                else if (a.name < b.name) return -1;
+                if (a.childLOId > b.childLOId) return 1;
+                else if (a.childLOId < b.childLOId) return -1;
                 else return a.childLOId > b.childLOId ? 1 : -1;
             });
         }
