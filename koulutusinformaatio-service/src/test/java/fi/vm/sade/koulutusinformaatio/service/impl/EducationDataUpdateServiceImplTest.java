@@ -3,7 +3,6 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.mongodb.DBCollection;
-import fi.vm.sade.koulutusinformaatio.converter.KoulutusinformaatioObjectBuilder;
 import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
@@ -66,13 +65,11 @@ public class EducationDataUpdateServiceImplTest {
 
         closCollection = mock(DBCollection.class);
 
-        KoulutusinformaatioObjectBuilder objectBuilder = new KoulutusinformaatioObjectBuilder(modelMapper);
-
         pictureDAO = mock(PictureDAO.class);
 
         service = new EducationDataUpdateServiceImpl( modelMapper, parentLearningOpportunitySpecificationDAO,
                applicationOptionDAO, learningOpportunityProviderDAO, childLearningOpportunityDAO,
-                objectBuilder, pictureDAO);
+                pictureDAO);
     }
 
     @Test

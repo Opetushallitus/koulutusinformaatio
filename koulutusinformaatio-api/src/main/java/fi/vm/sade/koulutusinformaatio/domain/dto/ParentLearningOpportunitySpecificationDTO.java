@@ -16,12 +16,12 @@
 
 package fi.vm.sade.koulutusinformaatio.domain.dto;
 
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 /**
  * @author Hannu Lyytikainen
@@ -31,7 +31,6 @@ public class ParentLearningOpportunitySpecificationDTO {
 
     private String id;
     private String name;
-    private Set<ApplicationOptionDTO> applicationOptions = new HashSet<ApplicationOptionDTO>();
     private LearningOpportunityProviderDTO provider;
     private String educationDegree;
     private String structureDiagram;
@@ -60,14 +59,6 @@ public class ParentLearningOpportunitySpecificationDTO {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Set<ApplicationOptionDTO> getApplicationOptions() {
-        return applicationOptions;
-    }
-
-    public void setApplicationOptions(Set<ApplicationOptionDTO> applicationOptions) {
-        this.applicationOptions = applicationOptions;
     }
 
     public LearningOpportunityProviderDTO getProvider() {

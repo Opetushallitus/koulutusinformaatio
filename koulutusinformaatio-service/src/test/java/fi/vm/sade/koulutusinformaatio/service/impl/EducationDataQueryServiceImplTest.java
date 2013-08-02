@@ -17,12 +17,11 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.mongodb.DBCollection;
-import fi.vm.sade.koulutusinformaatio.converter.KoulutusinformaatioObjectBuilder;
 import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunitySpecificationEntity;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLO;
+import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
@@ -81,26 +80,24 @@ public class EducationDataQueryServiceImplTest {
         childLearningOpportunityDAO = mock(ChildLearningOpportunityDAO.class);
         when(childLearningOpportunityDAO.getCollection()).thenReturn(cloCollection);
 
-        KoulutusinformaatioObjectBuilder objectBuilder = new KoulutusinformaatioObjectBuilder(modelMapper);
-
         dataStatusDAO = mock(DataStatusDAO.class);
         pictureDAO = mock(PictureDAO.class);
 
         service = new EducationDataQueryServiceImpl(parentLearningOpportunitySpecificationDAO,
                 applicationOptionDAO, modelMapper, childLearningOpportunityDAO,
-                objectBuilder, dataStatusDAO, pictureDAO);
+                dataStatusDAO, pictureDAO);
     }
 
     @Test
     public void testGetParentLearningOpportunity() throws ResourceNotFoundException {
-        ParentLO plo = service.getParentLearningOpportunity("1.2.3");
+        ParentLOS plo = service.getParentLearningOpportunity("1.2.3");
         assertNotNull(plo);
         assertEquals("1.2.3", plo.getId());
     }
 
     @Test(expected = ResourceNotFoundException.class)
     public void testGetParentLearningOpportunityNotExists() throws ResourceNotFoundException {
-        ParentLO plo = service.getParentLearningOpportunity("1.1.1");
+        ParentLOS plo = service.getParentLearningOpportunity("1.1.1");
     }
 
     @Test

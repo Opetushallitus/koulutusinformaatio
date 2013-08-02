@@ -16,7 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import fi.vm.sade.koulutusinformaatio.domain.ParentLORef;
+import fi.vm.sade.koulutusinformaatio.domain.ParentLOSRef;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLOSRefDTO;
 
 /**
@@ -24,7 +24,7 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLOSRefDTO;
  */
 public class ParentLOSRefToDTO {
 
-    public static ParentLOSRefDTO convert(final ParentLORef parentRef, final String lang) {
+    public static ParentLOSRefDTO convert(final ParentLOSRef parentRef, final String lang) {
         if (parentRef != null) {
             ParentLOSRefDTO ref = new ParentLOSRefDTO();
             ref.setId(parentRef.getId());

@@ -48,7 +48,7 @@ public class ApplicationOption {
     // opetuskielikoodit : [FI, SV]
     private List<String> teachingLanguages;
     // tutkinnon viite
-    private ParentLORef parent;
+    private ParentLOSRef parent;
     // valintaperustekuvaus
     private I18nText selectionCriteria;
     private Code prerequisite;
@@ -176,11 +176,11 @@ public class ApplicationOption {
         this.teachingLanguages = teachingLanguages;
     }
 
-    public ParentLORef getParent() {
+    public ParentLOSRef getParent() {
         return parent;
     }
 
-    public void setParent(ParentLORef parent) {
+    public void setParent(ParentLOSRef parent) {
         this.parent = parent;
     }
 

@@ -37,7 +37,6 @@ public class IndexerServiceImpl implements IndexerService {
 
     @Override
     public void addParentLearningOpportunity(ParentLOS parent) throws Exception {
-        // TODO: index all languages
         List<SolrInputDocument> docs = Lists.newArrayList();
         List<SolrInputDocument> providerDocs = Lists.newArrayList();
 
@@ -93,54 +92,84 @@ public class IndexerServiceImpl implements IndexerService {
     }
 
     private void resolveParentDocument(SolrInputDocument doc, ParentLOS parent) {
-        doc.addField("id", parent.getId());
-        doc.addField("name", parent.getName().getTranslations().get("fi"));
         Provider provider = parent.getProvider();
+        doc.addField("id", parent.getId());
         doc.addField("lopId", provider.getId());
-        doc.addField("lopName", provider.getName().getTranslations().get("fi"));
+
+        doc.addField("name_fi", parent.getName().getTranslations().get("fi"));
+        doc.addField("name_sv", parent.getName().getTranslations().get("sv"));
+        doc.addField("name_en", parent.getName().getTranslations().get("en"));
+
+        doc.addField("lopName_fi", provider.getName().getTranslations().get("fi"));
+        doc.addField("lopName_sv", provider.getName().getTranslations().get("sv"));
+        doc.addField("lopName_en", provider.getName().getTranslations().get("en"));
+
         if (provider.getVisitingAddress() != null) {
-            doc.addField("lopAddress", provider.getVisitingAddress().getPostOffice());
+            doc.addField("lopAddress_fi", provider.getVisitingAddress().getPostOffice());
             doc.addField("lopCity", provider.getVisitingAddress().getPostOffice());
         }
         if (provider.getDescription() != null) {
-            doc.addField("lopDescription", provider.getDescription().getTranslations().get("fi"));
+            doc.addField("lopDescription_fi", provider.getDescription().getTranslations().get("fi"));
+            doc.addField("lopDescription_sv", provider.getDescription().getTranslations().get("sv"));
+            doc.addField("lopDescription_en", provider.getDescription().getTranslations().get("en"));
         }
         if (parent.getStructureDiagram() != null) {
-            doc.addField("structure", parent.getStructureDiagram().getTranslations().get("fi"));
+            doc.addField("structure_fi", parent.getStructureDiagram().getTranslations().get("fi"));
+            doc.addField("structure_sv", parent.getStructureDiagram().getTranslations().get("sv"));
+            doc.addField("structure_en", parent.getStructureDiagram().getTranslations().get("en"));
         }
         if (parent.getGoals() != null) {
-            doc.addField("goals", parent.getGoals().getTranslations().get("fi"));
+            doc.addField("goals_fi", parent.getGoals().getTranslations().get("fi"));
+            doc.addField("goals_sv", parent.getGoals().getTranslations().get("sv"));
+            doc.addField("goals_en", parent.getGoals().getTranslations().get("en"));
         }
     }
 
     private void resolveChildDocument(SolrInputDocument doc, ChildLearningOpportunity childLO, ParentLOS parent) {
         Provider provider = parent.getProvider();
         doc.addField("id", childLO.getId());
-        doc.addField("name", childLO.getName().getTranslations().get("fi"));
         doc.addField("lopId", provider.getId());
         doc.addField("parentId", parent.getId());
         doc.addField("prerequisites", childLO.getPrerequisite().getValue());
-        doc.addField("lopName", provider.getName().getTranslations().get("fi"));
+
+        doc.addField("name_fi", childLO.getName().getTranslations().get("fi"));
+        doc.addField("name_sv", childLO.getName().getTranslations().get("sv"));
+        doc.addField("name_en", childLO.getName().getTranslations().get("en"));
+
+        doc.addField("lopName_fi", provider.getName().getTranslations().get("fi"));
+        doc.addField("lopName_sv", provider.getName().getTranslations().get("sv"));
+        doc.addField("lopName_en", provider.getName().getTranslations().get("fi"));
+
         if (provider.getVisitingAddress() != null) {
-            doc.addField("lopAddress", provider.getVisitingAddress().getPostOffice());
+            doc.addField("lopAddress_fi", provider.getVisitingAddress().getPostOffice());
             doc.addField("lopCity", provider.getVisitingAddress().getPostOffice());
         }
         if (provider.getDescription() != null) {
-            doc.addField("lopDescription", provider.getDescription().getTranslations().get("fi"));
+            doc.addField("lopDescription_fi", provider.getDescription().getTranslations().get("fi"));
+            doc.addField("lopDescription_sv", provider.getDescription().getTranslations().get("sv"));
+            doc.addField("lopDescription_en", provider.getDescription().getTranslations().get("en"));
         }
         if (childLO.getProfessionalTitles() != null) {
             for (I18nText i18n : childLO.getProfessionalTitles()) {
-                doc.addField("professionalTitles", i18n.getTranslations().get("fi"));
+                doc.addField("professionalTitles_fi", i18n.getTranslations().get("fi"));
+                doc.addField("professionalTitles_sv", i18n.getTranslations().get("sv"));
+                doc.addField("professionalTitles_en", i18n.getTranslations().get("en"));
             }
         }
         if (childLO.getQualification() != null) {
-            doc.addField("qualification", childLO.getQualification().getTranslations().get("fi"));
+            doc.addField("qualification_fi", childLO.getQualification().getTranslations().get("fi"));
+            doc.addField("qualification_sv", childLO.getQualification().getTranslations().get("sv"));
+            doc.addField("qualification_en", childLO.getQualification().getTranslations().get("en"));
         }
         if (childLO.getDegreeGoal() != null) {
-            doc.addField("goals", childLO.getDegreeGoal().getTranslations().get("fi"));
+            doc.addField("goals_fi", childLO.getDegreeGoal().getTranslations().get("fi"));
+            doc.addField("goals_sv", childLO.getDegreeGoal().getTranslations().get("sv"));
+            doc.addField("goals_en", childLO.getDegreeGoal().getTranslations().get("en"));
         }
         if (childLO.getContent() != null) {
-            doc.addField("content", childLO.getContent().getTranslations().get("fi"));
+            doc.addField("content_fi", childLO.getContent().getTranslations().get("fi"));
+            doc.addField("content_sv", childLO.getContent().getTranslations().get("sv"));
+            doc.addField("content_en", childLO.getContent().getTranslations().get("en"));
         }
     }
 

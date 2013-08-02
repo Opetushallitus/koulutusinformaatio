@@ -20,6 +20,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLORefEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.I18nTextEntity;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLORef;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 
 import java.util.Map;
@@ -34,7 +35,7 @@ public class TestUtil {
         values.put("fi", fi);
         values.put("sv", sv);
         values.put("en", en);
-        return new I18nText(values);
+        return new I18nText(values, values);
     }
 
     public static I18nTextEntity createI18nTextEntity(String fi, String sv, String en) {
@@ -47,10 +48,19 @@ public class TestUtil {
         return entity;
     }
 
-    public static ChildLORefEntity createChildLORef(String name, String asId, String loId) {
+    public static ChildLORefEntity createChildLORefEntity(String name, String asId, String loId) {
         ChildLORefEntity ref = new ChildLORefEntity();
         ref.setNameByTeachingLang(name + " fi");
         ref.setName(createI18nTextEntity(name + " fi", name + " sv", name + " en"));
+        ref.setAsIds(Lists.newArrayList(asId));
+        ref.setChildLOId(loId);
+        return ref;
+    }
+
+    public static ChildLORef createChildLORef(String name, String asId, String loId) {
+        ChildLORef ref = new ChildLORef();
+        ref.setNameByTeachingLang(name + " fi");
+        ref.setName(createI18nText(name + " fi", name + " sv", name + " en"));
         ref.setAsIds(Lists.newArrayList(asId));
         ref.setChildLOId(loId);
         return ref;

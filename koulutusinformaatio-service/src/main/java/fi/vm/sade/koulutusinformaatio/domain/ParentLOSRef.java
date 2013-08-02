@@ -21,14 +21,14 @@ import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 /**
  * @author Mikko Majapuro
  */
-public class ParentLORef {
+public class ParentLOSRef {
 
     private String id;
     private I18nText name;
 
-    public ParentLORef() {}
+    public ParentLOSRef() {}
 
-    public ParentLORef(String id, I18nText name) {
+    public ParentLOSRef(String id, I18nText name) {
         this.id = id;
         this.name = name;
     }

@@ -19,60 +19,194 @@
 <schema name="tarjontatiedot" version="0.1">
 
     <fields>
-        <field name="id" type="text_general" indexed="true" stored="true" multiValued="false"/>
-        <!-- koulutusmoduuli -->
-        <field name="name" type="text_general" indexed="false" stored="true" multiValued="false"/>
-        <!-- koulutuksen toteutuksen kuvaus ??? -->
+        <!-- non-translated information -->
 
-        <!-- hakukohde -->
-        <field name="aoName" type="text_general" indexed="false" stored="false" multiValued="false"/>
-        <!-- tutkintonimike -->
-        <field name="qualification" type="text_general" indexed="false" stored="false" multiValued="false"/>
-        <!-- koulutuksen sisältö (opintojen rakenne)-->
-        <field name="structure" type="text_general" indexed="false" stored="false" multiValued="false"/>
-        <!-- koulutukselliset ja ammatilliset tavoitteet -->
-        <field name="goals" type="text_general" indexed="false" stored="false" multiValued="false"/>
-        <!-- koulutuksen sisältö -->
-        <field name="content" type="text_general" indexed="false" stored="false" multiValued="false"/>
-        <!-- ammattinimike -->
-        <field name="professionalTitles" type="text_general" indexed="false" stored="false" multiValued="true"/>
-        <field name="lopId" type="text_general" indexed="false" stored="true" multiValued="false"/>
-        <field name="lopName" type="text_general" indexed="false" stored="true" multiValued="false"/>
-        <!-- oppilaitoksen kuvaus -->
-        <field name="lopDescription" type="text_general" indexed="false" stored="false" multiValued="false"/>
-        <!-- oppilaitoksen yhteystiedot -->
-        <field name="lopAddress" type="text_general" indexed="false" stored="false" multiValued="false"/>
-        <field name="parentId" type="text_general" indexed="false" stored="true" multiValued="false"/>
+        <field name="id" type="string" indexed="true" stored="true" multiValued="false"/>
+        <field name="lopId" type="string" indexed="false" stored="true" multiValued="false"/>
+        <field name="parentId" type="string" indexed="false" stored="true" multiValued="false"/>
         <!-- remove? -->
-        <field name="losId" type="text_general" indexed="false" stored="true" multiValued="false"/>
+        <field name="losId" type="string" indexed="false" stored="true" multiValued="false"/>
+
         <dynamicField name="asStart_*"  type="date"  indexed="false"  stored="true"/>
         <dynamicField name="asEnd_*"  type="date"  indexed="false"  stored="true"/>
 
-        <!-- copy field for normal keywords -->
-        <field name="text" type="text_fi" indexed="true" stored="true" multiValued="true"/>
-        <!-- copy field for keywords with increased relevancy value -->
-        <field name="textBoost" type="text_fi" indexed="true" stored="true" multiValued="true"/>
-
         <!-- for filtering -->
-        <field name="prerequisites" type="text_general" indexed="true" stored="false" multiValued="true"/>
-        <field name="lopCity" type="text_general" indexed="true" stored="false" multiValued="false"/>
+        <field name="prerequisites" type="lowercase" indexed="true" stored="false" multiValued="true"/>
+        <field name="lopCity" type="lowercase" indexed="true" stored="false" multiValued="false"/>
+
+        <!-- translated texts -->
+
+        <!-- copy field for normal keywords -->
+        <field name="text_fi" type="text_fi" indexed="true" stored="true" multiValued="true"/>
+        <!-- copy field for keywords with increased relevancy value -->
+        <field name="textBoost_fi" type="text_fi" indexed="true" stored="true" multiValued="true"/>
+        <field name="text_sv" type="text_sv" indexed="true" stored="true" multiValued="true"/>
+        <field name="textBoost_sv" type="text_sv" indexed="true" stored="true" multiValued="true"/>
+        <field name="text_en" type="text_en" indexed="true" stored="true" multiValued="true"/>
+        <field name="textBoost_en" type="text_en" indexed="true" stored="true" multiValued="true"/>
+
+        <!-- koulutusmoduuli -->
+        <field name="name_fi" type="string" indexed="false" stored="true" multiValued="false"/>
+        <!-- koulutuksen toteutuksen kuvaus ??? -->
+        <!-- hakukohde -->
+        <field name="aoName_fi" type="string" indexed="false" stored="false" multiValued="false"/>
+        <!-- tutkintonimike -->
+        <field name="qualification_fi" type="string" indexed="false" stored="false" multiValued="false"/>
+        <!-- koulutuksen sisältö (opintojen rakenne)-->
+        <field name="structure_fi" type="string" indexed="false" stored="false" multiValued="false"/>
+        <!-- koulutukselliset ja ammatilliset tavoitteet -->
+        <field name="goals_fi" type="string" indexed="false" stored="false" multiValued="false"/>
+        <!-- koulutuksen sisältö -->
+        <field name="content_fi" type="string" indexed="false" stored="false" multiValued="false"/>
+        <!-- ammattinimike -->
+        <field name="professionalTitles_fi" type="string" indexed="false" stored="false" multiValued="true"/>
+        <field name="lopName_fi" type="string" indexed="false" stored="true" multiValued="false"/>
+        <!-- oppilaitoksen kuvaus -->
+        <field name="lopDescription_fi" type="string" indexed="false" stored="false" multiValued="false"/>
+        <!-- oppilaitoksen yhteystiedot -->
+        <field name="lopAddress_fi" type="string" indexed="false" stored="false" multiValued="false"/>
+
+        <field name="name_sv" type="string" indexed="false" stored="true" multiValued="false"/>
+        <field name="aoName_sv" type="string" indexed="false" stored="false" multiValued="false"/>
+        <field name="qualification_sv" type="string" indexed="false" stored="false" multiValued="false"/>
+        <field name="structure_sv" type="string" indexed="false" stored="false" multiValued="false"/>
+        <field name="goals_sv" type="string" indexed="false" stored="false" multiValued="false"/>
+        <field name="content_sv" type="string" indexed="false" stored="false" multiValued="false"/>
+        <field name="professionalTitles_sv" type="string" indexed="false" stored="false" multiValued="true"/>
+        <field name="lopName_sv" type="string" indexed="false" stored="true" multiValued="false"/>
+        <field name="lopDescription_sv" type="string" indexed="false" stored="false" multiValued="false"/>
+        <field name="lopAddress_sv" type="string" indexed="false" stored="false" multiValued="false"/>
+
+        <field name="name_en" type="string" indexed="false" stored="true" multiValued="false"/>
+        <field name="aoName_en" type="string" indexed="false" stored="false" multiValued="false"/>
+        <field name="qualification_en" type="string" indexed="false" stored="false" multiValued="false"/>
+        <field name="structure_en" type="string" indexed="false" stored="false" multiValued="false"/>
+        <field name="goals_en" type="string" indexed="false" stored="false" multiValued="false"/>
+        <field name="content_en" type="string" indexed="false" stored="false" multiValued="false"/>
+        <field name="professionalTitles_en" type="string" indexed="false" stored="false" multiValued="true"/>
+        <field name="lopName_en" type="string" indexed="false" stored="true" multiValued="false"/>
+        <field name="lopDescription_en" type="string" indexed="false" stored="false" multiValued="false"/>
+        <field name="lopAddress_en" type="string" indexed="false" stored="false" multiValued="false"/>
+
     </fields>
 
     <uniqueKey>id</uniqueKey>
 
-    <copyField source="aoName" dest="text"/>
-    <copyField source="lopName" dest="text"/>
-    <copyField source="lopDescription" dest="text"/>
-    <copyField source="lopAddress" dest="text"/>
+    <copyField source="aoName_fi" dest="text_fi"/>
+    <copyField source="lopName_fi" dest="text_fi"/>
+    <copyField source="lopDescription_fi" dest="text_fi"/>
+    <copyField source="lopAddress_fi" dest="text_fi"/>
+    <copyField source="name_fi" dest="textBoost_fi"/>
+    <copyField source="structure_fi" dest="textBoost_fi"/>
+    <copyField source="goals_fi" dest="textBoost_fi"/>
+    <copyField source="qualification_fi" dest="textBoost_fi"/>
+    <copyField source="professionalTitles_fi" dest="textBoost_fi"/>
+    <copyField source="content_fi" dest="textBoost_fi"/>
 
-    <copyField source="name" dest="textBoost"/>
-    <copyField source="structure" dest="textBoost"/>
-    <copyField source="goals" dest="textBoost"/>
-    <copyField source="qualification" dest="textBoost"/>
-    <copyField source="professionalTitles" dest="textBoost"/>
-    <copyField source="content" dest="textBoost"/>
+    <copyField source="aoName_sv" dest="text_sv"/>
+    <copyField source="lopName_sv" dest="text_sv"/>
+    <copyField source="lopDescription_sv" dest="text_sv"/>
+    <copyField source="lopAddress_sv" dest="text_sv"/>
+    <copyField source="name_sv" dest="textBoost_sv"/>
+    <copyField source="structure_sv" dest="textBoost_sv"/>
+    <copyField source="goals_sv" dest="textBoost_sv"/>
+    <copyField source="qualification_sv" dest="textBoost_sv"/>
+    <copyField source="professionalTitles_sv" dest="textBoost_sv"/>
+    <copyField source="content_sv" dest="textBoost_sv"/>
+
+    <copyField source="aoName_en" dest="text_en"/>
+    <copyField source="lopName_en" dest="text_en"/>
+    <copyField source="lopDescription_en" dest="text_en"/>
+    <copyField source="lopAddress_en" dest="text_en"/>
+    <copyField source="name_en" dest="textBoost_en"/>
+    <copyField source="structure_en" dest="textBoost_en"/>
+    <copyField source="goals_en" dest="textBoost_en"/>
+    <copyField source="qualification_en" dest="textBoost_en"/>
+    <copyField source="professionalTitles_en" dest="textBoost_en"/>
+    <copyField source="content_en" dest="textBoost_en"/>
 
     <types>
+
+        <!-- Finnish -->
+        <fieldType name="text_fi" class="solr.TextField" positionIncrementGap="100">
+            <analyzer type="index">
+                <charFilter class="solr.HTMLStripCharFilterFactory"/>
+                <tokenizer class="solr.StandardTokenizerFactory"/>
+                <filter class="solr.LowerCaseFilterFactory"/>
+                <filter class="solr.StopFilterFactory" ignoreCase="true" words="lang/stopwords_fi.txt" format="snowball"
+                        enablePositionIncrements="true"/>
+                <filter class="fi.nationallibrary.ndl.solrvoikko.VoikkoFilterFactory" expandCompounds="true" separateTokens="true" allAnalysis="true"/>
+                <filter class="solr.EdgeNGramFilterFactory" minGramSize="3" maxGramSize="40" side="front"/>
+            </analyzer>
+            <analyzer type="query">
+                <tokenizer class="solr.StandardTokenizerFactory"/>
+                <filter class="solr.LowerCaseFilterFactory"/>
+                <filter class="fi.nationallibrary.ndl.solrvoikko.VoikkoFilterFactory" expandCompounds="true" separateTokens="false"/>
+            </analyzer>
+        </fieldType>
+
+        <!-- Swedish -->
+        <fieldType name="text_sv" class="solr.TextField" positionIncrementGap="100">
+            <analyzer>
+                <charFilter class="solr.HTMLStripCharFilterFactory"/>
+                <tokenizer class="solr.StandardTokenizerFactory"/>
+                <filter class="solr.LowerCaseFilterFactory"/>
+                <filter class="solr.StopFilterFactory" ignoreCase="true" words="lang/stopwords_sv.txt" format="snowball"
+                        enablePositionIncrements="true"/>
+                <filter class="solr.SnowballPorterFilterFactory" language="Swedish"/>
+                <!-- less aggressive: <filter class="solr.SwedishLightStemFilterFactory"/> -->
+            </analyzer>
+        </fieldType>
+
+        <!-- A text field with defaults appropriate for English: it
+tokenizes with StandardTokenizer, removes English stop words
+(lang/stopwords_en.txt), down cases, protects words from protwords.txt, and
+finally applies Porter's stemming.  The query time analyzer
+also applies synonyms from synonyms.txt. -->
+        <fieldType name="text_en" class="solr.TextField" positionIncrementGap="100">
+            <analyzer type="index">
+                <tokenizer class="solr.StandardTokenizerFactory"/>
+                <!-- in this example, we will only use synonyms at query time
+                <filter class="solr.SynonymFilterFactory" synonyms="index_synonyms.txt" ignoreCase="true" expand="false"/>
+                -->
+                <!-- Case insensitive stop word removal.
+                  add enablePositionIncrements=true in both the index and query
+                  analyzers to leave a 'gap' for more accurate phrase queries.
+                -->
+                <filter class="solr.StopFilterFactory"
+                        ignoreCase="true"
+                        words="lang/stopwords_en.txt"
+                        enablePositionIncrements="true"
+                        />
+                <filter class="solr.LowerCaseFilterFactory"/>
+                <filter class="solr.EnglishPossessiveFilterFactory"/>
+                <!--<filter class="solr.KeywordMarkerFilterFactory" protected="protwords.txt"/>-->
+                <!-- Optionally you may want to use this less aggressive stemmer instead of PorterStemFilterFactory:
+            <filter class="solr.EnglishMinimalStemFilterFactory"/>
+        -->
+                <filter class="solr.PorterStemFilterFactory"/>
+            </analyzer>
+            <analyzer type="query">
+                <tokenizer class="solr.StandardTokenizerFactory"/>
+                <filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
+                <filter class="solr.StopFilterFactory"
+                        ignoreCase="true"
+                        words="lang/stopwords_en.txt"
+                        enablePositionIncrements="true"
+                        />
+                <filter class="solr.LowerCaseFilterFactory"/>
+                <filter class="solr.EnglishPossessiveFilterFactory"/>
+                <!--<filter class="solr.KeywordMarkerFilterFactory" protected="protwords.txt"/>-->
+                <!-- Optionally you may want to use this less aggressive stemmer instead of PorterStemFilterFactory:
+            <filter class="solr.EnglishMinimalStemFilterFactory"/>
+        -->
+                <filter class="solr.PorterStemFilterFactory"/>
+            </analyzer>
+        </fieldType>
+
+
+
+
         <!-- Byte -->
         <fieldtype name="byte" class="solr.ByteField"/>
 
@@ -213,51 +347,6 @@
             </analyzer>
         </fieldType>
 
-        <!-- A text field with defaults appropriate for English: it
-   tokenizes with StandardTokenizer, removes English stop words
-   (lang/stopwords_en.txt), down cases, protects words from protwords.txt, and
-   finally applies Porter's stemming.  The query time analyzer
-   also applies synonyms from synonyms.txt. -->
-        <fieldType name="text_en" class="solr.TextField" positionIncrementGap="100">
-            <analyzer type="index">
-                <tokenizer class="solr.StandardTokenizerFactory"/>
-                <!-- in this example, we will only use synonyms at query time
-                <filter class="solr.SynonymFilterFactory" synonyms="index_synonyms.txt" ignoreCase="true" expand="false"/>
-                -->
-                <!-- Case insensitive stop word removal.
-                  add enablePositionIncrements=true in both the index and query
-                  analyzers to leave a 'gap' for more accurate phrase queries.
-                -->
-                <filter class="solr.StopFilterFactory"
-                        ignoreCase="true"
-                        words="lang/stopwords_en.txt"
-                        enablePositionIncrements="true"
-                        />
-                <filter class="solr.LowerCaseFilterFactory"/>
-                <filter class="solr.EnglishPossessiveFilterFactory"/>
-                <filter class="solr.KeywordMarkerFilterFactory" protected="protwords.txt"/>
-                <!-- Optionally you may want to use this less aggressive stemmer instead of PorterStemFilterFactory:
-            <filter class="solr.EnglishMinimalStemFilterFactory"/>
-        -->
-                <filter class="solr.PorterStemFilterFactory"/>
-            </analyzer>
-            <analyzer type="query">
-                <tokenizer class="solr.StandardTokenizerFactory"/>
-                <filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
-                <filter class="solr.StopFilterFactory"
-                        ignoreCase="true"
-                        words="lang/stopwords_en.txt"
-                        enablePositionIncrements="true"
-                        />
-                <filter class="solr.LowerCaseFilterFactory"/>
-                <filter class="solr.EnglishPossessiveFilterFactory"/>
-                <filter class="solr.KeywordMarkerFilterFactory" protected="protwords.txt"/>
-                <!-- Optionally you may want to use this less aggressive stemmer instead of PorterStemFilterFactory:
-            <filter class="solr.EnglishMinimalStemFilterFactory"/>
-        -->
-                <filter class="solr.PorterStemFilterFactory"/>
-            </analyzer>
-        </fieldType>
 
         <!-- A text field with defaults appropriate for English, plus
      aggressive word-splitting and autophrase features enabled.
@@ -471,47 +560,6 @@ but may be good for SKUs.  Can insert dashes in the wrong place and still match.
          See http://wiki.apache.org/solr/SpatialSearch
         -->
         <fieldtype name="geohash" class="solr.GeoHashField"/>
-
-        <!-- Money/currency field type. See http://wiki.apache.org/solr/MoneyFieldType
-             Parameters:
-               defaultCurrency: Specifies the default currency if none specified. Defaults to "USD"
-               precisionStep:   Specifies the precisionStep for the TrieLong field used for the amount
-               providerClass:   Lets you plug in other exchange provider backend:
-                                solr.FileExchangeRateProvider is the default and takes one parameter:
-                                  currencyConfig: name of an xml file holding exhange rates
-                                solr.OpenExchangeRatesOrgProvider uses rates from openexchangerates.org:
-                                  ratesFileLocation: URL or path to rates JSON file (default latest.json on the web)
-                                  refreshInterval: Number of minutes between each rates fetch (default: 1440, min: 60)
-        -->
-        <!--<fieldType name="currency" class="solr.CurrencyField" precisionStep="8" defaultCurrency="USD"
-                   currencyConfig="currency.xml"/>-->
-
-        <!-- Finnish -->
-        <fieldType name="text_fi" class="solr.TextField" positionIncrementGap="100">
-            <analyzer type="index">
-                <tokenizer class="solr.StandardTokenizerFactory"/>
-                <filter class="solr.LowerCaseFilterFactory"/>
-                <filter class="fi.nationallibrary.ndl.solrvoikko.VoikkoFilterFactory" expandCompounds="true" separateTokens="true" allAnalysis="true"/>
-                <filter class="solr.EdgeNGramFilterFactory" minGramSize="3" maxGramSize="30" side="front"/>
-            </analyzer>
-            <analyzer type="query">
-                <tokenizer class="solr.StandardTokenizerFactory"/>
-                <filter class="solr.LowerCaseFilterFactory"/>
-                <filter class="fi.nationallibrary.ndl.solrvoikko.VoikkoFilterFactory" expandCompounds="true" separateTokens="false"/>
-            </analyzer>
-        </fieldType>
-
-        <!-- Swedish -->
-        <fieldType name="text_sv" class="solr.TextField" positionIncrementGap="100">
-            <analyzer>
-                <tokenizer class="solr.StandardTokenizerFactory"/>
-                <filter class="solr.LowerCaseFilterFactory"/>
-                <filter class="solr.StopFilterFactory" ignoreCase="true" words="lang/stopwords_sv.txt" format="snowball"
-                        enablePositionIncrements="true"/>
-                <filter class="solr.SnowballPorterFilterFactory" language="Swedish"/>
-                <!-- less aggressive: <filter class="solr.SwedishLightStemFilterFactory"/> -->
-            </analyzer>
-        </fieldType>
 
     </types>
 

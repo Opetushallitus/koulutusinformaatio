@@ -20,6 +20,7 @@
     "search-pagination-previous": "Edellinen (en)",
     "search-as-ongoing": "Haku käynnissä! (en)",
     "search-as-next": "Tulossa hakuun (en)",
+    "search-field-placeholder": "Hae koulutuksia tästä (en)",
 
     "filter-search-title": "Pohjakoulutus (en)",
     "filter-search-subtitle": "Valitse ylin suorittamasi koulutus (en)",
@@ -95,17 +96,13 @@
 
     "title-application-basket-content": "Muistilista (en)",
     "application-basket-back": "Takaisin hakutuloksiin (en)",
+    "application-basket-description": "Muistilistalle voit kerätä koulutuksia ja siirtää niiden tiedot hakulomakkeelle. Huomioi, että muistilista on istuntokohtainen ja sille voi lisätä koulutuksia vain yhdellä pohjakoulutuksella. (en)",
+    "application-basket-no-content": "Muistilista on tyhjä. (en)",
     "application-basket-fill-form": "Täytä hakulomake (en)",
     "application-basket-fill-form-notification": "Tässä haussa voit hakea enintään __count__ koulutukseen (en)",
     "application-basket-empty": "Tyhjennä muistilista (en)",
     "application-basket-empty-confirm": "Haluatko varmasti tyhjentää koko muistilistan? (en)",
 
-    "application-basket-popup-title": "Täytä hakulomake (en)",
-    "application-basket-popup-description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. (en)",
-    "application-basket-popup-description-overflow": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. (en)",
-    "application-basket-popup-go-to-basket": "Siirry muistilistalle (en)",
-    "application-basket-popup-ignore": "Älä huomioi muistilistaa, vaan aloita tyhjän hakulomakkeen täyttäminen (en)",
-    "application-basket-popup-transfer": "Siirrä muistilistan koulutukset hakulomakkeelle (en)",
     "popup-close": "Sulje (en)",
     "popup-continue": "Jatka (en)",
 

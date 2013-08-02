@@ -37,6 +37,8 @@ public class ChildLearningOpportunity {
     //tavoite
     private I18nText degreeGoal;
     private List<ApplicationOption> applicationOptions;
+    private List<ChildLORef> related = new ArrayList<ChildLORef>();
+    private ParentLOSRef parent;
     private List<String> applicationSystemIds;
     private Date startDate;
     // koulutuslaji -> nuorten koulutus
@@ -108,6 +110,22 @@ public class ChildLearningOpportunity {
 
     public void setApplicationOptions(List<ApplicationOption> applicationOptions) {
         this.applicationOptions = applicationOptions;
+    }
+
+    public List<ChildLORef> getRelated() {
+        return related;
+    }
+
+    public void setRelated(List<ChildLORef> related) {
+        this.related = related;
+    }
+
+    public ParentLOSRef getParent() {
+        return parent;
+    }
+
+    public void setParent(ParentLOSRef parent) {
+        this.parent = parent;
     }
 
     public List<String> getApplicationSystemIds() {

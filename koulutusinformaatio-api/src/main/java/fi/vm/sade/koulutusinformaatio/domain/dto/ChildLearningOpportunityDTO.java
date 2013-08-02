@@ -16,14 +16,9 @@
 
 package fi.vm.sade.koulutusinformaatio.domain.dto;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+
+import java.util.*;
 
 /**
  * @author Hannu Lyytikainen
@@ -35,7 +30,7 @@ public class ChildLearningOpportunityDTO {
     private String name;
     private String qualification;
     private String degreeTitle;
-    private List<ApplicationOptionDTO> applicationOptions;
+    private List<ApplicationSystemDTO> applicationSystems = new ArrayList<ApplicationSystemDTO>();
     private List<ChildLORefDTO> related = new ArrayList<ChildLORefDTO>();
 
     private Date startDate;
@@ -72,12 +67,12 @@ public class ChildLearningOpportunityDTO {
         this.name = name;
     }
 
-    public List<ApplicationOptionDTO> getApplicationOptions() {
-        return applicationOptions;
+    public List<ApplicationSystemDTO> getApplicationSystems() {
+        return applicationSystems;
     }
 
-    public void setApplicationOptions(List<ApplicationOptionDTO> applicationOptions) {
-        this.applicationOptions = applicationOptions;
+    public void setApplicationSystems(List<ApplicationSystemDTO> applicationSystems) {
+        this.applicationSystems = applicationSystems;
     }
 
     public String getQualification() {

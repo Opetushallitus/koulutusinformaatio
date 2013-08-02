@@ -18,20 +18,20 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import fi.vm.sade.koulutusinformaatio.converter.KoulutusinformaatioObjectBuilder;
 import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.entity.*;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Picture;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Mikko Majapuro
@@ -44,29 +44,26 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     private ChildLearningOpportunityDAO childLearningOpportunityDAO;
     private DataStatusDAO dataStatusDAO;
     private ModelMapper modelMapper;
-    private KoulutusinformaatioObjectBuilder koulutusinformaatioObjectBuilder;
     private PictureDAO pictureDAO;
 
     @Autowired
     public EducationDataQueryServiceImpl(ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO,
                                          ApplicationOptionDAO applicationOptionDAO, ModelMapper modelMapper,
                                          ChildLearningOpportunityDAO childLearningOpportunityDAO,
-                                         KoulutusinformaatioObjectBuilder koulutusinformaatioObjectBuilder,
                                          DataStatusDAO dataStatusDAO, PictureDAO pictureDAO) {
         this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;
         this.modelMapper = modelMapper;
         this.childLearningOpportunityDAO = childLearningOpportunityDAO;
-        this.koulutusinformaatioObjectBuilder = koulutusinformaatioObjectBuilder;
         this.dataStatusDAO = dataStatusDAO;
         this.pictureDAO = pictureDAO;
     }
 
     @Override
-    public ParentLO getParentLearningOpportunity(String oid) throws ResourceNotFoundException {
+    public ParentLOS getParentLearningOpportunity(String oid) throws ResourceNotFoundException {
         ParentLearningOpportunitySpecificationEntity entity = parentLearningOpportunitySpecificationDAO.get(oid);
         if (entity != null) {
-            return modelMapper.map(entity, ParentLO.class);
+            return modelMapper.map(entity, ParentLOS.class);
         } else {
             throw new ResourceNotFoundException("Parent learning opportunity not found: " + oid);
         }
@@ -105,9 +102,9 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     }
 
     @Override
-    public ChildLO getChildLearningOpportunity(String childLoId) throws ResourceNotFoundException {
+    public ChildLearningOpportunity getChildLearningOpportunity(String childLoId) throws ResourceNotFoundException {
         ChildLearningOpportunityEntity childLO = getChildLO(childLoId);
-        return koulutusinformaatioObjectBuilder.buildChildLO(childLO);
+        return modelMapper.map(childLO, ChildLearningOpportunity.class);
     }
 
     @Override

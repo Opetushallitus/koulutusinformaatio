@@ -1,6 +1,7 @@
 package fi.vm.sade.koulutusinformaatio.service.impl.query;
 
 import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.common.params.DisMaxParams;
 
@@ -11,17 +12,29 @@ import java.util.List;
  */
 public class LearningOpportunityQuery extends SolrQuery {
 
-    private final static String TEXT  = "text";
-    private final static String TEXT_BOOST  = "textBoost";
-    private final static String LOP_CITY  = "lopCity";
-    private final static String PREREQUISITES  = "prerequisites";
-    private final static String DISMAX = new StringBuilder(TEXT).append(" ").append(TEXT_BOOST).append("^10.0").toString();
+//    private final static String TEXT_FI = "text_fi";
+//    private final static String TEXT_SV = "text_sv";
+//    private final static String TEXT_EN = "text_en";
+//    private final static String TEXT_BOOST_FI = "textBoost_fi^10.0";
+//    private final static String TEXT_BOOST_SV = "textBoost_sv^10.0";
+//    private final static String TEXT_BOOST_EN = "textBoost_en^10.0";
+
+    private final static List<String> FIELDS = Lists.newArrayList(
+            "text_fi",
+            "text_sv",
+            "text_en",
+            "textBoost_fi^10.0",
+            "textBoost_sv^10.0",
+            "textBoost_en^10.0"
+    );
+    private final static String LOP_CITY = "lopCity";
+    private final static String PREREQUISITES = "prerequisites";
 
     public LearningOpportunityQuery(String term, String prerequisite,
                                     List<String> cities, int start, int rows) {
         super(term);
         if (prerequisite != null) {
-        this.addFilterQuery(new StringBuilder(PREREQUISITES).append(":").append(prerequisite).toString());
+            this.addFilterQuery(new StringBuilder(PREREQUISITES).append(":").append(prerequisite).toString());
         }
         this.setStart(start);
         this.setRows(rows);
@@ -30,10 +43,9 @@ public class LearningOpportunityQuery extends SolrQuery {
             StringBuilder fq = new StringBuilder(LOP_CITY).append(":(");
 
             for (int i = 0; i < cities.size(); i++) {
-                if (i < cities.size() -1) {
+                if (i < cities.size() - 1) {
                     fq.append(cities.get(i)).append(" OR ");
-                }
-                else {
+                } else {
                     fq.append(cities.get(i));
                 }
             }
@@ -41,6 +53,6 @@ public class LearningOpportunityQuery extends SolrQuery {
             this.addFilterQuery(fq.toString());
         }
         this.setParam("defType", "edismax");
-        this.setParam(DisMaxParams.QF, DISMAX);
+        this.setParam(DisMaxParams.QF, Joiner.on(" ").join(FIELDS));
     }
 }

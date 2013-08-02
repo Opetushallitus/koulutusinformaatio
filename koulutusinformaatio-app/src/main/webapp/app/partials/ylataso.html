@@ -1,12 +1,13 @@
 <!--<div ng-include src="'partials/pageheader.html'"></div> -->
-<section class="content-container grid16-16">
+<section class="content-container grid16-16 ng-cloak">
     <div data-ki-breadcrumb id="breadcrumb"></div>
     <section id="main-info">
         <div class="margin-bottom-3">
             <h4 class="margin-0">{{parentLO.provider.name}}</h4>
             <span class="block">{{parentLO.educationDomain}}<span class="hidden">, lähihoitaja (tutkintonimike)</span></span>
         </div>
-        <h1 class="margin-top-3">{{parentLO.name}} {{parentLO.credits.creditValue}} {{parentLO.credits.creditUnit}}</h1>
+        <h1 class="">{{parentLO.name}} {{parentLO.credits.creditValue}} {{parentLO.credits.creditUnit}}</h1>
+        <div data-ki-child-ribbon class="ribbon margin-bottom-4"></div>
     </section>
     <div class="tabs main clear">
         <a class="tab current" data-tabs-group="koulutus" data-tabs-id="kuvaus" data-ng-click="changeMainTab('kuvaus')"><span class="h2" data-ki-i18n="lo-description"></span></a>

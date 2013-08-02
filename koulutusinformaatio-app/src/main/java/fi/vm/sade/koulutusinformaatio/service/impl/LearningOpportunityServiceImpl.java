@@ -19,9 +19,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.converter.*;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.Picture;
+import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.dto.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
@@ -51,27 +49,27 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
 
     @Override
     public ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(String parentId) throws ResourceNotFoundException {
-        ParentLO parentLO = educationDataQueryService.getParentLearningOpportunity(parentId);
-        String lang = resolveDefaultLanguage(parentLO);
-        return ParentLOToDTO.convert(parentLO, lang);
+        ParentLOS parentLOS = educationDataQueryService.getParentLearningOpportunity(parentId);
+        String lang = resolveDefaultLanguage(parentLOS);
+        return ParentLOSToDTO.convert(parentLOS, lang);
     }
 
     @Override
     public ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(String parentId, String lang) throws ResourceNotFoundException {
-        ParentLO parentLO = educationDataQueryService.getParentLearningOpportunity(parentId);
-        return ParentLOToDTO.convert(parentLO, lang);
+        ParentLOS parentLOS = educationDataQueryService.getParentLearningOpportunity(parentId);
+        return ParentLOSToDTO.convert(parentLOS, lang);
     }
 
     @Override
     public ChildLearningOpportunityDTO getChildLearningOpportunity(String cloId) throws ResourceNotFoundException {
-        ChildLO childLO = educationDataQueryService.getChildLearningOpportunity(cloId);
+        ChildLearningOpportunity childLO = educationDataQueryService.getChildLearningOpportunity(cloId);
         String lang = resolveDefaultLanguage(childLO);
         return ChildLOToDTO.convert(childLO, lang);
     }
 
     @Override
     public ChildLearningOpportunityDTO getChildLearningOpportunity(String cloId, String lang) throws ResourceNotFoundException {
-        ChildLO childLO = educationDataQueryService.getChildLearningOpportunity(cloId);
+        ChildLearningOpportunity childLO = educationDataQueryService.getChildLearningOpportunity(cloId);
         return ChildLOToDTO.convert(childLO, lang);
     }
 
@@ -121,7 +119,7 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     }
 
 
-    private String resolveDefaultLanguage(final ParentLO parentLO) {
+    private String resolveDefaultLanguage(final ParentLOS parentLO) {
         if (parentLO.getName() == null || parentLO.getName().getTranslations() == null || parentLO.getName().getTranslations().containsKey(LANG_FI)) {
             return LANG_FI;
         } else {
@@ -129,7 +127,7 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
         }
     }
 
-    private String resolveDefaultLanguage(final ChildLO childLO) {
+    private String resolveDefaultLanguage(final ChildLearningOpportunity childLO) {
         if (childLO.getTeachingLanguages() == null || childLO.getTeachingLanguages().isEmpty()) {
             return LANG_FI;
         } else {
