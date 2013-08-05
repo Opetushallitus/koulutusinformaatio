@@ -30,7 +30,7 @@ public class ApplicationOption {
     private String aoIdentifier;
     private ApplicationSystem applicationSystem;
     private String educationDegree;
-    private List<ChildLORef> childLORefs = new ArrayList<ChildLORef>();
+    private List<ChildLOIRef> childLOIRefs = new ArrayList<ChildLOIRef>();
     private Provider provider;
     // "aloituspaikatLkm" : 10,
     private Integer startingQuota;
@@ -96,12 +96,12 @@ public class ApplicationOption {
         this.educationDegree = educationDegree;
     }
 
-    public List<ChildLORef> getChildLORefs() {
-        return childLORefs;
+    public List<ChildLOIRef> getChildLOIRefs() {
+        return childLOIRefs;
     }
 
-    public void setChildLORefs(List<ChildLORef> childLORefs) {
-        this.childLORefs = childLORefs;
+    public void setChildLOIRefs(List<ChildLOIRef> childLOIRefs) {
+        this.childLOIRefs = childLOIRefs;
     }
 
     public Provider getProvider() {

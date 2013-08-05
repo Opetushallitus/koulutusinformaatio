@@ -237,11 +237,11 @@ directive('kiAbsoluteLink', function() {
             scope.isChild = ($routeParams.childId) ? true : false;
 
             scope.$watch('childLO', function(data) {
-                scope.hasMultipleTranslations = scope.childLO && scope.childLO.availableTranslationLanguages.length >= 1;    
+                scope.hasMultipleTranslations = scope.childLO && scope.childLO.availableTranslationLanguages && scope.childLO.availableTranslationLanguages.length >= 1;    
             });
 
             scope.$watch('parentLO', function(data) {
-                scope.hasMultipleTranslations = scope.parentLO && scope.parentLO.availableTranslationLanguages.length >= 1;    
+                scope.hasMultipleTranslations = scope.parentLO && scope.parentLO.availableTranslationLanguages && scope.parentLO.availableTranslationLanguages.length >= 1;    
             });
         }
     };

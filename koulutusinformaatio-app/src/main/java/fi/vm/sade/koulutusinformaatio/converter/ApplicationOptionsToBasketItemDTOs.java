@@ -44,7 +44,7 @@ public class ApplicationOptionsToBasketItemDTOs {
                 aoDTO.setSora(ao.isSora());
                 aoDTO.setTeachingLanguages(ao.getTeachingLanguages());
                 aoDTO.setParent(ParentLOSRefToDTO.convert(ao.getParent(), lang));
-                aoDTO.setChildren(ChildLORefToDTO.convert(ao.getChildLORefs(), lang));
+                aoDTO.setChildren(ChildLOIRefToDTO.convert(ao.getChildLOIRefs(), lang));
                 aoDTO.setAttachmentDeliveryDeadline(ao.getAttachmentDeliveryDeadline());
                 Provider provider = ao.getProvider();
                 if (provider != null) {

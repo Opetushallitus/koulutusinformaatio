@@ -16,7 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.resource;
 
-import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunityDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LOSearchResultListDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
 
@@ -77,6 +77,6 @@ public interface LearningOpportunityResource {
     @GET
     @Path("child/{cloId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ChildLearningOpportunityDTO getChildLearningOpportunity(@PathParam("cloId") String cloId, @QueryParam("lang") String lang);
+    public ChildLearningOpportunitySpecificationDTO getChildLearningOpportunity(@PathParam("cloId") String cloId, @QueryParam("lang") String lang);
 
 }

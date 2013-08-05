@@ -60,10 +60,10 @@ public class ApplicationOptionDAOTest {
         as.setId("123");
         entity.setApplicationSystem(as);
         entity.setEducationDegree("degree");
-        List<ChildLORefEntity> childLoRefs = new ArrayList<ChildLORefEntity>();
+        List<ChildLOIRefEntity> childLoRefs = new ArrayList<ChildLOIRefEntity>();
         childLoRefs.add(TestUtil.createChildLORefEntity("clo 1", as.getId(), "333"));
         childLoRefs.add(TestUtil.createChildLORefEntity("clo 2", as.getId(), "444"));
-        entity.setChildLORefs(childLoRefs);
+        entity.setChildLOIRefs(childLoRefs);
 
         LearningOpportunityProviderEntity lop = new LearningOpportunityProviderEntity();
         lop.setId("3.3.3");
@@ -81,8 +81,8 @@ public class ApplicationOptionDAOTest {
         assertEquals(entity.getEducationDegree(), fromDB.getEducationDegree());
         assertNotNull(entity.getProvider());
         assertEquals(lop.getId(), entity.getProvider().getId());
-        assertNotNull(entity.getChildLORefs());
-        assertEquals(2, entity.getChildLORefs().size());
+        assertNotNull(entity.getChildLOIRefs());
+        assertEquals(2, entity.getChildLOIRefs().size());
     }
 
     @Test

@@ -16,8 +16,8 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import fi.vm.sade.koulutusinformaatio.domain.ChildLORef;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLOIRef;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 
@@ -30,14 +30,15 @@ public class KoulutusinformaatioObjectBuilder {
 
     private static final String LANG_FI = "fi";
 
-    public static ChildLORef buildChildLORef(final ChildLearningOpportunity childLO) {
-        if (childLO != null) {
-            ChildLORef ref = new ChildLORef();
-            ref.setChildLOId(childLO.getId());
-            ref.setName(childLO.getName());
-            ref.setNameByTeachingLang(getTextByEducationLanguage(childLO.getName(), childLO.getTeachingLanguages()));
-            ref.setAsIds(childLO.getApplicationSystemIds());
-            ref.setPrerequisite(childLO.getPrerequisite());
+    public static ChildLOIRef buildChildLOIRef(final ChildLOI childLOI) {
+        if (childLOI != null) {
+            ChildLOIRef ref = new ChildLOIRef();
+            ref.setId(childLOI.getId());
+            ref.setLosId(childLOI.getLosId());
+            ref.setName(childLOI.getName());
+            ref.setNameByTeachingLang(getTextByEducationLanguage(childLOI.getName(), childLOI.getTeachingLanguages()));
+            ref.setAsIds(childLOI.getApplicationSystemIds());
+            ref.setPrerequisite(childLOI.getPrerequisite());
             return ref;
         }
         return null;

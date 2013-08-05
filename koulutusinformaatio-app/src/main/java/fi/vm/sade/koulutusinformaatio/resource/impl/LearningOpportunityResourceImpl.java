@@ -16,14 +16,10 @@
 
 package fi.vm.sade.koulutusinformaatio.resource.impl;
 
-import com.google.common.base.Function;
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
-import fi.vm.sade.koulutusinformaatio.domain.LOSearchResult;
 import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunityDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LOSearchResultListDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
@@ -89,7 +85,7 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
     }
 
     @Override
-    public ChildLearningOpportunityDTO getChildLearningOpportunity(String cloId, String lang) {
+    public ChildLearningOpportunitySpecificationDTO getChildLearningOpportunity(String cloId, String lang) {
         try {
             if (Strings.isNullOrEmpty(lang)) {
                 return learningOpportunityService.getChildLearningOpportunity(cloId);

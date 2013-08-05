@@ -17,9 +17,11 @@
 package fi.vm.sade.koulutusinformaatio.dao.entity;
 
 import com.google.code.morphia.annotations.Embedded;
-import com.google.code.morphia.annotations.Reference;
+import com.google.common.collect.Sets;
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Mikko Majapuro
@@ -28,14 +30,15 @@ import java.util.List;
 public class ParentLearningOpportunityInstanceEntity {
 
     private String id;
-    @Reference
-    private List<ChildLearningOpportunityEntity> children;
     @Embedded
-    private List<ChildLORefEntity> childRefs;
+    private List<ChildLOIRefEntity> childRefs;
     @Embedded
     private CodeEntity prerequisite;
     @Embedded
     private I18nTextEntity selectingEducation;
+    @Embedded
+    private Set<ApplicationOption> applicationOptions = Sets.newHashSet();
+
 
     public String getId() {
         return id;
@@ -43,14 +46,6 @@ public class ParentLearningOpportunityInstanceEntity {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public List<ChildLearningOpportunityEntity> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<ChildLearningOpportunityEntity> children) {
-        this.children = children;
     }
 
     public CodeEntity getPrerequisite() {
@@ -61,11 +56,11 @@ public class ParentLearningOpportunityInstanceEntity {
         this.prerequisite = prerequisite;
     }
 
-    public List<ChildLORefEntity> getChildRefs() {
+    public List<ChildLOIRefEntity> getChildRefs() {
         return childRefs;
     }
 
-    public void setChildRefs(List<ChildLORefEntity> childRefs) {
+    public void setChildRefs(List<ChildLOIRefEntity> childRefs) {
         this.childRefs = childRefs;
     }
 
@@ -75,5 +70,13 @@ public class ParentLearningOpportunityInstanceEntity {
 
     public void setSelectingEducation(I18nTextEntity selectingEducation) {
         this.selectingEducation = selectingEducation;
+    }
+
+    public Set<ApplicationOption> getApplicationOptions() {
+        return applicationOptions;
+    }
+
+    public void setApplicationOptions(Set<ApplicationOption> applicationOptions) {
+        this.applicationOptions = applicationOptions;
     }
 }

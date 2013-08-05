@@ -17,7 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.service;
 
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Picture;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
@@ -54,7 +54,7 @@ public interface EducationDataQueryService {
      * @param childLoId child learning opportunity id
      * @return child learning opportunity
      */
-    ChildLearningOpportunity getChildLearningOpportunity(final String childLoId) throws ResourceNotFoundException;
+    ChildLOS getChildLearningOpportunity(final String childLoId) throws ResourceNotFoundException;
 
     Date getLastUpdated();
 

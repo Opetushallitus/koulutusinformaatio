@@ -19,11 +19,8 @@ package fi.vm.sade.koulutusinformaatio.dao.entity;
 import com.google.code.morphia.annotations.Embedded;
 import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Id;
-import com.google.code.morphia.annotations.Reference;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Mikko Majapuro
@@ -35,41 +32,16 @@ public class ChildLearningOpportunityEntity {
     private String id;
     @Embedded
     private I18nTextEntity name;
-    private List<String> applicationSystemIds;
-    @Reference
-    private List<ApplicationOptionEntity> applicationOptions;
-    @Embedded
-    private List<ChildLORefEntity> related;
-    @Embedded
-    private List<CodeEntity> teachingLanguages;
-    private Date startDate;
-    @Embedded
-    private List<I18nTextEntity> formOfEducation;
-    @Embedded
-    private Map<String, String> webLinks;
-    @Embedded
-    private List<I18nTextEntity> formOfTeaching;
-    @Embedded
-    private CodeEntity prerequisite;
-    @Embedded
-    private List<I18nTextEntity> professionalTitles;
-    @Embedded
-    private I18nTextEntity workingLifePlacement;
-    @Embedded
-    private I18nTextEntity internationalization;
-    @Embedded
-    private I18nTextEntity cooperation;
-    @Embedded
-    private I18nTextEntity qualification;
     @Embedded
     private I18nTextEntity degreeTitle;
     @Embedded
     private I18nTextEntity degreeGoal;
     @Embedded
+    private I18nTextEntity qualification;
+    @Embedded
     private ParentLOSRefEntity parent;
     @Embedded
-    private I18nTextEntity content;
-
+    private List<ChildLearningOpportunityInstanceEntity> lois;
 
     public ChildLearningOpportunityEntity() {}
 
@@ -87,110 +59,6 @@ public class ChildLearningOpportunityEntity {
 
     public void setName(I18nTextEntity name) {
         this.name = name;
-    }
-
-    public List<String> getApplicationSystemIds() {
-        return applicationSystemIds;
-    }
-
-    public void setApplicationSystemIds(List<String> applicationSystemIds) {
-        this.applicationSystemIds = applicationSystemIds;
-    }
-
-    public List<ApplicationOptionEntity> getApplicationOptions() {
-        return applicationOptions;
-    }
-
-    public void setApplicationOptions(List<ApplicationOptionEntity> applicationOptions) {
-        this.applicationOptions = applicationOptions;
-    }
-
-    public List<ChildLORefEntity> getRelated() {
-        return related;
-    }
-
-    public void setRelated(List<ChildLORefEntity> related) {
-        this.related = related;
-    }
-
-    public List<CodeEntity> getTeachingLanguages() {
-        return teachingLanguages;
-    }
-
-    public void setTeachingLanguages(List<CodeEntity> teachingLanguages) {
-        this.teachingLanguages = teachingLanguages;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public List<I18nTextEntity> getFormOfEducation() {
-        return formOfEducation;
-    }
-
-    public void setFormOfEducation(List<I18nTextEntity> formOfEducation) {
-        this.formOfEducation = formOfEducation;
-    }
-
-    public Map<String, String> getWebLinks() {
-        return webLinks;
-    }
-
-    public void setWebLinks(Map<String, String> webLinks) {
-        this.webLinks = webLinks;
-    }
-
-    public List<I18nTextEntity> getFormOfTeaching() {
-        return formOfTeaching;
-    }
-
-    public void setFormOfTeaching(List<I18nTextEntity> formOfTeaching) {
-        this.formOfTeaching = formOfTeaching;
-    }
-
-    public CodeEntity getPrerequisite() {
-        return prerequisite;
-    }
-
-    public void setPrerequisite(CodeEntity prerequisite) {
-        this.prerequisite = prerequisite;
-    }
-
-    public List<I18nTextEntity> getProfessionalTitles() {
-        return professionalTitles;
-    }
-
-    public void setProfessionalTitles(List<I18nTextEntity> professionalTitles) {
-        this.professionalTitles = professionalTitles;
-    }
-
-    public I18nTextEntity getWorkingLifePlacement() {
-        return workingLifePlacement;
-    }
-
-    public void setWorkingLifePlacement(I18nTextEntity workingLifePlacement) {
-        this.workingLifePlacement = workingLifePlacement;
-    }
-
-    public I18nTextEntity getInternationalization() {
-        return internationalization;
-    }
-
-    public void setInternationalization(I18nTextEntity internationalization) {
-        this.internationalization = internationalization;
-    }
-
-    public I18nTextEntity getCooperation() {
-        return cooperation;
-    }
-
-    public void setCooperation(I18nTextEntity cooperation) {
-        this.cooperation = cooperation;
     }
 
     public I18nTextEntity getQualification() {
@@ -225,11 +93,11 @@ public class ChildLearningOpportunityEntity {
         this.parent = parent;
     }
 
-    public I18nTextEntity getContent() {
-        return content;
+    public List<ChildLearningOpportunityInstanceEntity> getLois() {
+        return lois;
     }
 
-    public void setContent(I18nTextEntity content) {
-        this.content = content;
+    public void setLois(List<ChildLearningOpportunityInstanceEntity> lois) {
+        this.lois = lois;
     }
 }

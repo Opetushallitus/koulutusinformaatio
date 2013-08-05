@@ -16,8 +16,11 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
+import com.google.common.collect.Sets;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Instance of a parent level learning opportunity specification.
@@ -27,10 +30,10 @@ import java.util.List;
 public class ParentLOI {
 
     private String id;
+    private Set<ApplicationOption> applicationOptions = Sets.newHashSet();
     private I18nText selectingEducation;
     private Code prerequisite;
-    private List<ChildLearningOpportunity> children;
-    private List<ChildLORef> childRefs = new ArrayList<ChildLORef>();
+    private List<ChildLOIRef> childRefs = new ArrayList<ChildLOIRef>();
 
     public String getId() {
         return id;
@@ -38,6 +41,14 @@ public class ParentLOI {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Set<ApplicationOption> getApplicationOptions() {
+        return applicationOptions;
+    }
+
+    public void setApplicationOptions(Set<ApplicationOption> applicationOptions) {
+        this.applicationOptions = applicationOptions;
     }
 
     public Code getPrerequisite() {
@@ -56,19 +67,11 @@ public class ParentLOI {
         this.selectingEducation = selectingEducation;
     }
 
-    public List<ChildLearningOpportunity> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<ChildLearningOpportunity> children) {
-        this.children = children;
-    }
-
-    public List<ChildLORef> getChildRefs() {
+    public List<ChildLOIRef> getChildRefs() {
         return childRefs;
     }
 
-    public void setChildRefs(List<ChildLORef> childRefs) {
+    public void setChildRefs(List<ChildLOIRef> childRefs) {
         this.childRefs = childRefs;
     }
 }

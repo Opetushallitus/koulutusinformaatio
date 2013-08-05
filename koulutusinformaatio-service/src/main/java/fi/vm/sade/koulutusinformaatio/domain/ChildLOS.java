@@ -16,11 +16,10 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Child level learning opportunity specification.
+ * Child level learning opportunity.
  *
  * @author Hannu Lyytikainen
  */
@@ -28,13 +27,14 @@ public class ChildLOS {
 
     private String id;
     private I18nText name;
-    private List<ChildLOI> childLOIs = new ArrayList<ChildLOI>();
     // koulutusohjelma
     private I18nText degreeTitle;
     //tutkintonimike
     private I18nText qualification;
     //tavoite
     private I18nText degreeGoal;
+    private ParentLOSRef parent;
+    private List<ChildLOI> lois;
 
     public ChildLOS(String id, I18nText name) {
         this.id = id;
@@ -61,14 +61,6 @@ public class ChildLOS {
         this.name = name;
     }
 
-    public List<ChildLOI> getChildLOIs() {
-        return childLOIs;
-    }
-
-    public void setChildLOIs(List<ChildLOI> childLOIs) {
-        this.childLOIs = childLOIs;
-    }
-
     public I18nText getQualification() {
         return qualification;
     }
@@ -91,5 +83,21 @@ public class ChildLOS {
 
     public void setDegreeGoal(I18nText degreeGoal) {
         this.degreeGoal = degreeGoal;
+    }
+
+    public ParentLOSRef getParent() {
+        return parent;
+    }
+
+    public void setParent(ParentLOSRef parent) {
+        this.parent = parent;
+    }
+
+    public List<ChildLOI> getLois() {
+        return lois;
+    }
+
+    public void setLois(List<ChildLOI> lois) {
+        this.lois = lois;
     }
 }

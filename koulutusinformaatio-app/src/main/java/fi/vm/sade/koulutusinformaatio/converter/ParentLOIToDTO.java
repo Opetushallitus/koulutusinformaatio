@@ -20,7 +20,6 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOI;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
@@ -39,10 +38,8 @@ public class ParentLOIToDTO {
 
         // group by application system for UI
         SetMultimap<ApplicationSystem, ApplicationOption> aoByAs = HashMultimap.create();
-        for (ChildLearningOpportunity childLO : parentLOI.getChildren()) {
-            for (ApplicationOption ao : childLO.getApplicationOptions()) {
-                aoByAs.put(ao.getApplicationSystem(), ao);
-            }
+        for (ApplicationOption ao : parentLOI.getApplicationOptions()) {
+            aoByAs.put(ao.getApplicationSystem(), ao);
         }
 
         for (ApplicationSystem as : aoByAs.keySet()) {
@@ -54,7 +51,7 @@ public class ParentLOIToDTO {
             loi.getApplicationSystems().add(asDTO);
         }
 
-        //loi.setChildren(ChildLORefToDTO.convert(parentLOI.getChildRefs(), lang));
+        //loi.setChildren(ChildLOIRefToDTO.convert(parentLOI.getChildRefs(), lang));
         return loi;
     }
 }
