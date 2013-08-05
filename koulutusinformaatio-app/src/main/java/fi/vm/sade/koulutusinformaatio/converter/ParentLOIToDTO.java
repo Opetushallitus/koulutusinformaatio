@@ -20,6 +20,10 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
+<<<<<<< HEAD
+=======
+import fi.vm.sade.koulutusinformaatio.domain.ChildLearningOpportunity;
+>>>>>>> d32db74... OVT-4979: DTO conversio npe fixed
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOI;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
@@ -38,7 +42,6 @@ public class ParentLOIToDTO {
 
         // group by application system for UI
         SetMultimap<ApplicationSystem, ApplicationOption> aoByAs = HashMultimap.create();
-
         for (ApplicationOption ao : parentLOI.getApplicationOptions()) {
             aoByAs.put(ao.getApplicationSystem(), ao);
         }
