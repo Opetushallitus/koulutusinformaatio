@@ -48,7 +48,7 @@ ApplicationBasket.Popup = {
         var asId = ApplicationBasket.getAsId();
 
         if (basketCookie.length <= 0) {
-            window.location = '/haku-app/lomake/' + asId + '/yhteishaku';
+            window.location = '/haku-app/lomake/' + asId;
         } else if (basketCookie.length > this.maxApplications) {
             var popupContent = {
                 description: i18n.t('application-basket-popup-description-overflow'),
@@ -151,7 +151,7 @@ ApplicationBasket.Popup.Form = {
                     window.location = '#/muistilista';
                     popover.hide('appbasket-popup');
                 } else if (value[i].value == 'ignore') {
-                    window.location = '/haku-app/lomake/' + asId + '/yhteishaku';
+                    window.location = '/haku-app/lomake/' + asId;
                 } else if (value[i].value == 'transfer') {
                     ApplicationBasket.DataService.getLOData(function(data) {
                         ApplicationBasket.Popup.Form.gotoApplicationForm(data);
@@ -169,7 +169,7 @@ ApplicationBasket.Popup.Form = {
         form.css('display', 'none');
 
         for (var i = 0; i < data.length; i++) {
-            form.attr('action', '/haku-app/lomake/' + data[i].applicationSystemId + '/yhteishaku');
+            form.attr('action', '/haku-app/lomake/' + data[i].applicationSystemId);
 
 
             for (var j = 0; j < data[i].applicationOptions.length; j++) {
