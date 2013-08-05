@@ -16,14 +16,15 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import com.google.common.base.Function;
-import com.google.common.collect.*;
-import fi.vm.sade.koulutusinformaatio.domain.*;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.SetMultimap;
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.domain.ParentLOI;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunityInstanceDTO;
-
-import java.util.Map;
 
 /**
  * @author Mikko Majapuro
@@ -38,12 +39,6 @@ public class ParentLOIToDTO {
 
         // group by application system for UI
         SetMultimap<ApplicationSystem, ApplicationOption> aoByAs = HashMultimap.create();
-        Map<String, ChildLORef> childLORefs = Maps.uniqueIndex(parentLOI.getChildRefs(), new Function<ChildLORef, String>() {
-            @Override
-            public String apply(ChildLORef input) {
-                return input.getChildLOId();
-            }
-        });
         for (ChildLearningOpportunity childLO : parentLOI.getChildren()) {
             for (ApplicationOption ao : childLO.getApplicationOptions()) {
                 aoByAs.put(ao.getApplicationSystem(), ao);
