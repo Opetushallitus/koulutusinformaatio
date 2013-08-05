@@ -109,10 +109,16 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
     @Override
     public LearningOpportunityBuilder resolveChildLOSs() throws TarjontaParseException, KoodistoException, WebApplicationException {
         List<String> childKomoIds = parentKomo.getAlaModuulit();
-
-        //
+        
         for (String childKomoId : childKomoIds) {
             KomoDTO childKomo = komoResource.getByOID(childKomoId);
+
+            try {
+                validateChildKomo(childKomo);
+            } catch (TarjontaParseException e) {
+                continue;
+            }
+
             List<OidRDTO> childKomotoOids = komoResource.getKomotosByKomoOID(childKomoId, Integer.MAX_VALUE, 0);
 
             for (OidRDTO childKomotoOid : childKomotoOids) {
@@ -217,13 +223,6 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
     }
 
     private ChildLOS createChildLOS(KomoDTO childKomo, String providerId, List<KomotoDTO> childKomotos) throws KoodistoException {
-
-        try {
-            validateChildKomo(childKomo);
-        } catch (TarjontaParseException e) {
-            // throw smthng?
-            //continue;
-        }
 
         ChildLOS childLOS = new ChildLOS();
         childLOS.setId(getLOSId(childKomo.getOid(), providerId));
