@@ -20,7 +20,7 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', function
                 if (resItem.parentId) {
                     resItem.linkHref = '#/koulutusohjelma/' + resItem.id;
                 } else {
-                    resItem.linkHref = '#/tutkinto/' + resItem.id
+                    resItem.linkHref = '#/tutkinto/' + resItem.id;
                 }
             }
         }
@@ -185,17 +185,32 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
         result.teachingLanguage = getFirstItemInList(result.teachingLanguages);
         result.formOfEducation = getFirstItemInList(result.formOfEducation);
 
+        for (var loiIndex in result.lois) {
+            if (result.lois.hasOwnProperty(loiIndex)) {
+                var loi = result.lois[loiIndex];
+
+                var startDate = new Date(loi.startDate);
+                loi.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
+                loi.teachingLanguage = getFirstItemInList(loi.teachingLanguages);
+                loi.formOfEducation = getFirstItemInList(loi.formOfEducation);
+            }
+        }
 
         // set teaching languge as the first language in array
-        for (var asIndex in result.applicationSystems) {
-            if (result.applicationSystems.hasOwnProperty(asIndex)) {
-                var as = result.applicationSystems[asIndex];
-                for (var aoIndex in as.applicationOptions) {
-                    if (as.applicationOptions.hasOwnProperty(aoIndex)) {
-                        var ao = as.applicationOptions[aoIndex];
+        for (var index in result.lois) {
+            if (result.lois.hasOwnProperty(index)) {
+                var loi = result.lois[index];
+                for (var asIndex in loi.applicationSystems) {
+                    if (loi.applicationSystems.hasOwnProperty(asIndex)) {
+                        var as = loi.applicationSystems[asIndex];
+                        for (var aoIndex in as.applicationOptions) {
+                            if (as.applicationOptions.hasOwnProperty(aoIndex)) {
+                                var ao = as.applicationOptions[aoIndex];
 
-                        if (ao.teachingLanguages && ao.teachingLanguages.length > 0) {
-                            ao.teachLang = ao.teachingLanguages[0];
+                                if (ao.teachingLanguages && ao.teachingLanguages.length > 0) {
+                                    ao.teachLang = ao.teachingLanguages[0];
+                                }
+                            }
                         }
                     }
                 }
@@ -203,24 +218,68 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
         }
 
         // sort exams based on start time
-        for (var asIndex in result.applicationSystems) {
-            if (result.applicationSystems.hasOwnProperty(asIndex)) {
-                var as = result.applicationSystems[asIndex];
-                for (var aoIndex in as.applicationOptions) {
-                    if (as.applicationOptions.hasOwnProperty(aoIndex)) {
-                        var ao = as.applicationOptions[aoIndex];
-                        for (var exam in ao.exams) {
-                            if (ao.exams.hasOwnProperty(exam)) {
-                                if (ao.exams[exam].examEvents) {
-                                    ao.exams[exam].examEvents.sort(function(a, b) {
-                                        return a.start - b.start;
-                                    });
+        for (var loiIndex in result.lois) {
+            if (result.lois.hasOwnProperty(loiIndex)) {
+                var loi = result.lois[loiIndex];
+                for (var asIndex in loi.applicationSystems) {
+                    if (loi.applicationSystems.hasOwnProperty(asIndex)) {
+                        var as = loi.applicationSystems[asIndex];
+                        for (var aoIndex in as.applicationOptions) {
+                            if (as.applicationOptions.hasOwnProperty(aoIndex)) {
+                                var ao = as.applicationOptions[aoIndex];
+                                for (var exam in ao.exams) {
+                                    if (ao.exams.hasOwnProperty(exam)) {
+                                        if (ao.exams[exam].examEvents) {
+                                            ao.exams[exam].examEvents.sort(function(a, b) {
+                                                return a.start - b.start;
+                                            });
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
+        }
+
+        var lois = [];
+        for (var loiIndex in result.lois) {
+            if (result.lois.hasOwnProperty(loiIndex)) {
+                var loi = result.lois[loiIndex];
+
+
+                var loiFound;
+                for (var i in lois) {
+                    if (lois.hasOwnProperty(i)) {
+                        if (lois[i].prerequisite.value == loi.prerequisite.value) {
+                            loiFound = lois[i];
+                            break;
+                        } 
+                    }
+                }
+
+                if (loiFound) {
+                    for (var i in loi.applicationSystems) {
+                        if (loi.applicationSystems.hasOwnProperty(i)) {
+                            var as = loi.applicationSystems[i];
+                            loiFound.applicationSystems.push(as);
+                        }
+                    }
+                } else {
+                    lois.push(loi);
+                }
+            }
+        }
+        result.lois = lois;
+
+        // sort LOIs based on prerequisite
+        if (result.lois) {
+            result.lois.sort(function(a, b) {
+                if (a.prerequisite.description > b.prerequisite.description) return 1;
+                else if (a.prerequisite.description < b.prerequisite.description) return -1;
+                else return a.id > b.id ? 1 : -1;
+            });
         }
 
         // get starting quota from application option
