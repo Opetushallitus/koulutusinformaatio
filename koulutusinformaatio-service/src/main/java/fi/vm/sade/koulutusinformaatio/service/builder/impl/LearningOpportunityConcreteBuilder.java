@@ -244,6 +244,7 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
             }
 
             ChildLOI childLOI = new ChildLOI();
+            childLOI.setName(childLOS.getName());
             childLOI.setId(childKomoto.getOid());
             childLOI.setLosId(childLOS.getId());
             childLOI.setParentLOIId(childKomoto.getParentKomotoOid());
