@@ -161,8 +161,8 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
 /**
  *  Controller for search field in header
  */
-function SearchFieldCtrl($scope, $routeParams, $location, SearchService) {
-    $scope.queryString = SearchService.getTerm();
+function SearchFieldCtrl($scope, $routeParams, $location, SearchService, $route) {
+    $scope.queryString = SearchService.getTerm();    
 
     // Perform search using LearningOpportunity service
     $scope.search = function() {
@@ -245,16 +245,14 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
 /**
  *  Controller for info views (parent and child)
  */
- function InfoCtrl($scope, $routeParams, $location, ParentLearningOpportunityService, ChildLearningOpportunityService, SearchService, ParentLODataService, TitleService, LearningOpportunityProviderPictureService, UtilityService) {
+ function InfoCtrl($scope, $routeParams, $location, ParentLearningOpportunityService, ChildLearningOpportunityService, SearchService, ParentLODataService, ChildLODataService, TitleService, LearningOpportunityProviderPictureService, UtilityService, TabService) {
     $scope.queryString = SearchService.getTerm();
     $scope.descriptionLanguage = 'fi';
 
     // how to avoid this?
-    $scope.selectedTab = 'kuvaus';
+    //$scope.selectedTab = TabService.getCurrentTab();
     $scope.providerAsideClass = 'hidden';
     $scope.applyFormClass = '';
-
-    $scope.prerequisite = $routeParams.prerequisite;
 
     var setTitle = function(parent, child) {
         if (child) {
@@ -271,6 +269,18 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
     var getFirstLOI = function() {
         if (hasLOIs()) {
             return $scope.lois[0];
+        }
+    };
+
+    var getLOIByPrerequisite = function(prerequisite) {
+        for (var loiIndex in $scope.lois) {
+            if ($scope.lois.hasOwnProperty(loiIndex)) {
+                var loi = $scope.lois[loiIndex];
+
+                if (loi.prerequisite.value == prerequisite) {
+                    return loi;
+                }
+            }
         }
     }
 
@@ -293,14 +303,17 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
     var initializeParent = function() {
         setTitle($scope.parentLO, $scope.childLO);
         $scope.showApplicationRadioSelection = showApplicationRadioSelection() ? '' : 'hidden';
-
-        var firstLOIInList = getFirstLOI();
-        if (firstLOIInList) {
-            $scope.changeLOISelection(firstLOIInList.id);
+        var loi = getLOIByPrerequisite($location.hash());
+        if (loi) {
+            changeLOISelection(loi);
+        } else {
+            loi = getFirstLOI();
+            changeLOISelection(loi);
         }
     };
 
-    $scope.changeLOISelection = function(loiId) {
+    var changeLOISelection = function(loi) {
+
         var aggregateChildren = function(loi) {
             var children = [];
             if (loi.applicationSystems && loi.applicationSystems.length > 0) {
@@ -331,10 +344,11 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
             }
         }
 
-        for (var loi in $scope.lois) {
-            if ($scope.lois.hasOwnProperty(loi)) {
-                if ($scope.lois[loi].id == loiId) {
-                    $scope.selectedLOI = angular.copy($scope.lois[loi]);
+        for (var loiIndex in $scope.lois) {
+            if ($scope.lois.hasOwnProperty(loiIndex)) {
+                if ($scope.lois[loiIndex].prerequisite.value == loi.prerequisite.value) {
+                    $scope.selectedLOI = angular.copy($scope.lois[loiIndex]);
+                    $scope.prerequisite = angular.copy($scope.selectedLOI.prerequisite);
                     var children = aggregateChildren($scope.selectedLOI);
                     var as = getFirstApplicationSystem($scope.selectedLOI);
                     $scope.selectedAs = as;
@@ -350,6 +364,10 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
             }
         }
     };
+
+    $scope.changePrerequisiteSelection = function(prerequisite) {
+        $location.hash(prerequisite);
+    }
 
     $scope.loiClass = function(prerequisite) {
         if ($scope.selectedLOI && $scope.selectedLOI.prerequisite) {
@@ -380,27 +398,35 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
     // fetch data for parent and/or its child LO
     // TODO: could this logic be hidden in service?
     if (isChild()) {
-        ChildLearningOpportunityService.query({
-            childId: $routeParams.childId,
-            language: $scope.descriptionLanguage
-        }).then(function(childResult) {
-            $scope.childLO = childResult;
-            $scope.lois = childResult.lois;
+        if (!ChildLODataService.dataExists($routeParams.childId)) {
+            ChildLearningOpportunityService.query({
+                childId: $routeParams.childId,
+                language: $scope.descriptionLanguage
+            }).then(function(childResult) {
+                $scope.childLO = childResult;
+                $scope.lois = childResult.lois;
+                ChildLODataService.setChildLOData(childResult);
 
-            if (!ParentLODataService.dataExists(childResult.parent.id)) {
-                ParentLearningOpportunityService.query({
-                    parentId: childResult.parent.id, 
-                    language: $scope.descriptionLanguage
-                }).then(function(parentResult) {
-                    $scope.parentLO = parentResult;
-                    ParentLODataService.setParentLOData(parentResult);
+                if (!ParentLODataService.dataExists(childResult.parent.id)) {
+                    ParentLearningOpportunityService.query({
+                        parentId: childResult.parent.id, 
+                        language: $scope.descriptionLanguage
+                    }).then(function(parentResult) {
+                        $scope.parentLO = parentResult;
+                        ParentLODataService.setParentLOData(parentResult);
+                        initializeParent();
+                    });
+                } else {
+                    $scope.parentLO = ParentLODataService.getParentLOData();
                     initializeParent();
-                });
-            } else {
-                $scope.parentLO = ParentLODataService.getParentLOData();
-                initializeParent();
-            }
-        }); 
+                }
+            });
+        } else {
+            $scope.childLO = ChildLODataService.getChildLOData();
+            $scope.parentLO = ParentLODataService.getParentLOData();
+            $scope.lois = $scope.childLO.lois;
+            initializeParent();
+        }
     } else {
         if (!ParentLODataService.dataExists($routeParams.parentId)) {
             ParentLearningOpportunityService.query({
@@ -442,7 +468,7 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
                 } else {
                     setTitle($scope.parentLO, $scope.childLO);
                     $scope.lois = result.lois;
-                    $scope.changeLOISelection($scope.selectedLOI.id);
+                    $scope.changeLOISelection($scope.selectedLOI);
                 }
         });
     };
@@ -453,7 +479,7 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
     };
 
     $scope.changeMainTab = function(tabName) {
-        $scope.selectedTab = tabName;
+        TabService.setCurrentTab(tabName);
 
         if (tabName == 'kuvaus' || tabName == 'hakeutuminen') {
             $scope.providerAsideClass = 'hidden';
@@ -464,7 +490,7 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
         }
     }
 
-    $scope.initTabs = tabsMenu.build;
+    $scope.initTabs = tabsMenu.build( TabService.getCurrentTab() );
 
     // trigger once content is loaded
     $scope.$on('$viewContentLoaded', function() {

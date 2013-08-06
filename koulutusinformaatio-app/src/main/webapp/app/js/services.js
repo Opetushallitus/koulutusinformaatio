@@ -18,9 +18,9 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', function
             if (result.results.hasOwnProperty(index)) {
                 var resItem = result.results[index];
                 if (resItem.parentId) {
-                    resItem.linkHref = '#/koulutusohjelma/' + resItem.id;
+                    resItem.linkHref = '#/koulutusohjelma/' + resItem.id + '#YO';
                 } else {
-                    resItem.linkHref = '#/tutkinto/' + resItem.id;
+                    resItem.linkHref = '#/tutkinto/' + resItem.id + '#YO';
                 }
             }
         }
@@ -414,6 +414,27 @@ service('LanguageService', function() {
 }).
 
 /**
+ *  Service for "caching" current child selection
+ */
+ service('ChildLODataService', function() {
+    var data;
+
+    return {
+        getChildLOData: function() {
+            return data;
+        },
+
+        setChildLOData: function(newData) {
+            data = newData;
+        },
+
+        dataExists: function(id) {
+            return data && data.id == id; 
+        }
+    };
+}).
+
+/**
  *  Service handling page titles
  */
  service('TitleService', function() {
@@ -444,12 +465,33 @@ service('TranslationService', function() {
             }
         }
     }
-})
+}).
+
+/**
+ *  Service for retrieving translated values for text
+ */
+service('TabService', function() {
+    var currentTab;
+
+    return {
+        setCurrentTab: function(tab) {
+            currentTab = tab;
+        },
+
+        getCurrentTab: function() {
+            if (currentTab) {
+                return currentTab;
+            } else {
+                return 'kuvaus';
+            }
+        }
+    }
+}).
 
 /**
  *  Service for maintaining application basket state
  */
-.service('ApplicationBasketService', ['$http', '$q', function($http, $q) {
+service('ApplicationBasketService', ['$http', '$q', function($http, $q) {
     var key = 'basket';
     var cookieConfig = {useLocalStorage: false, maxChunkSize: 2000, maxNumberOfCookies: 20, path: '/'};
 
