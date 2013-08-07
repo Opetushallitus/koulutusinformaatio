@@ -48,16 +48,7 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', function
             qParams += (params.prerequisite != undefined) ? ('&prerequisite=' + params.prerequisite) : '';
             qParams += (params.locations != undefined && params.locations.length > 0) ? ('&' + cities) : '';
 
-            $http.get('../lo/search/' + encodeURI(params.queryString) + qParams, {
-                /*
-                params: {
-                    start: params.start,
-                    rows: params.rows,
-                    prerequisite: params.prerequisite,
-                    city: cities
-                }
-                */
-            }).
+            $http.get('../lo/search/' + encodeURI(params.queryString) + qParams, {}).
             success(function(result) {
                 transformData(result);
                 deferred.resolve(result);
@@ -180,11 +171,6 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
         //var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
         //result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
 
-        var startDate = new Date(result.startDate);
-        result.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
-        result.teachingLanguage = getFirstItemInList(result.teachingLanguages);
-        result.formOfEducation = getFirstItemInList(result.formOfEducation);
-
         for (var loiIndex in result.lois) {
             if (result.lois.hasOwnProperty(loiIndex)) {
                 var loi = result.lois[loiIndex];
@@ -243,6 +229,7 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
             }
         }
 
+        // group LOIs with prerequisite
         var lois = [];
         for (var loiIndex in result.lois) {
             if (result.lois.hasOwnProperty(loiIndex)) {
@@ -263,7 +250,31 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
                     for (var i in loi.applicationSystems) {
                         if (loi.applicationSystems.hasOwnProperty(i)) {
                             var as = loi.applicationSystems[i];
+
+                            if (!loiFound.applicationSystems) {
+                                loiFound.applicationSystems = [];
+                            }
+
                             loiFound.applicationSystems.push(as);
+                            /*
+                            var existingAs;
+                            for (var asIndex in loiFound.applicationSystems) {
+                                if (loiFound.applicationSystems.hasOwnProperty(asIndex)) {
+                                    var loiFoundAs = loiFound.applicationSystems[asIndex];
+
+                                    if (as.id == loiFoundAs.id) {
+                                        existingAs = loiFoundAs;
+                                    }
+
+                                }
+                            }
+
+                            if (existingAs) {
+
+                            } else {
+                                loiFound.applicationSystems.push(as);
+                            }
+                            */
                         }
                     }
                 } else {
@@ -283,6 +294,7 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
         }
 
         // get starting quota from application option
+        /*
         if (result.applicationSystems && result.applicationSystems.length > 0) {
             var as = result.applicationSystems[0];
             if (as.applicationOptions && as.applicationOptions.length > 0) {
@@ -290,6 +302,29 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
                 result.startingQuota = ao.startingQuota;
             }
         }
+        */
+
+        /*
+        for (var loiIndex in result.lois) {
+            if (result.lois.hasOwnProperty(loiIndex)) {
+                var loi = result.lois[loiIndex];
+
+                if (loi.applicationSystems && loi.applicationSystems.length > 0) {
+                    var as = loi.applicationSystems[0];
+                    as.related = [];
+
+                    for (var aoIndex in as.applicationOptions) {
+                        if (as.applicationOptions.hasOwnProperty(aoIndex)) {
+                            var ao = as.applicationOptions[aoIndex];
+                            as.related = as.related.concat(ao.childRefs);
+                        }
+                    }
+
+                    console.log(as.related);
+                }
+            }
+        }
+        */
 
         // add current child to sibligs
         if (result.related) {
@@ -414,6 +449,27 @@ service('LanguageService', function() {
 }).
 
 /**
+ *  Service for "caching" current child selection
+ */
+ service('ChildLODataService', function() {
+    var data;
+
+    return {
+        getChildLOData: function() {
+            return data;
+        },
+
+        setChildLOData: function(newData) {
+            data = newData;
+        },
+
+        dataExists: function(id) {
+            return data && data.id == id; 
+        }
+    };
+}).
+
+/**
  *  Service handling page titles
  */
  service('TitleService', function() {
@@ -444,12 +500,33 @@ service('TranslationService', function() {
             }
         }
     }
-})
+}).
+
+/**
+ *  Service for retrieving translated values for text
+ */
+service('TabService', function() {
+    var currentTab;
+
+    return {
+        setCurrentTab: function(tab) {
+            currentTab = tab;
+        },
+
+        getCurrentTab: function() {
+            if (currentTab) {
+                return currentTab;
+            } else {
+                return 'kuvaus';
+            }
+        }
+    }
+}).
 
 /**
  *  Service for maintaining application basket state
  */
-.service('ApplicationBasketService', ['$http', '$q', function($http, $q) {
+service('ApplicationBasketService', ['$http', '$q', function($http, $q) {
     var key = 'basket';
     var cookieConfig = {useLocalStorage: false, maxChunkSize: 2000, maxNumberOfCookies: 20, path: '/'};
 

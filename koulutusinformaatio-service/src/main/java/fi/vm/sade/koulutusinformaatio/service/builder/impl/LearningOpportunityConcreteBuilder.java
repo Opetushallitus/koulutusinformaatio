@@ -64,9 +64,6 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
     // A helper data structure that groups parent komoto KomotoDTO objects by their provider
     ArrayListMultimap<String, KomotoDTO> parentKomotosByProviderId;
 
-    // A helper data structure that groups child komoto KomotoDTO objects by their provider
-    ArrayListMultimap<String, KomotoDTO> childKomotosByProviderId;
-
     // A helper data structure that groups ChildLO objects by their ParentLOS id
     ArrayListMultimap<String, ChildLOS> childLOSsByParentLOSId;
 
@@ -80,7 +77,6 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
         this.koodistoService = koodistoService;
         this.oid = oid;
         parentKomotosByProviderId = ArrayListMultimap.create();
-        childKomotosByProviderId = ArrayListMultimap.create();
         childLOSsByParentLOSId = ArrayListMultimap.create();
         parentLOSs = Lists.newArrayList();
     }
@@ -109,9 +105,12 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
     @Override
     public LearningOpportunityBuilder resolveChildLOSs() throws TarjontaParseException, KoodistoException, WebApplicationException {
         List<String> childKomoIds = parentKomo.getAlaModuulit();
-        
+
         for (String childKomoId : childKomoIds) {
             KomoDTO childKomo = komoResource.getByOID(childKomoId);
+
+            // A helper data structure that groups child komoto KomotoDTO objects by their provider and komo (ChildLOS id = komo oid + provider oid)
+            ArrayListMultimap<String, KomotoDTO> childKomotosByChildLOSId = ArrayListMultimap.create();
 
             try {
                 validateChildKomo(childKomo);
@@ -123,17 +122,14 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
 
             for (OidRDTO childKomotoOid : childKomotoOids) {
                 KomotoDTO childKomoto = komotoResource.getByOID(childKomotoOid.getOid());
-                childKomotosByProviderId.put(childKomoto.getTarjoajaOid(), childKomoto);
+                childKomotosByChildLOSId.put(getLOSId(childKomoId, childKomoto.getTarjoajaOid()), childKomoto);
             }
 
-            for (String providerId : childKomotosByProviderId.keySet()) {
-                childLOSsByParentLOSId.put(getLOSId(parentKomo.getOid(), providerId), createChildLOS(childKomo, providerId, childKomotosByProviderId.get(providerId)));
+            for (String childLOSId : childKomotosByChildLOSId.keySet()) {
+                childLOSsByParentLOSId.put(getLOSId(parentKomo.getOid(), resolveProviderId(childLOSId)),
+                        createChildLOS(childKomo, childLOSId, childKomotosByChildLOSId.get(childLOSId)));
             }
-
         }
-        //
-
-
         return this;
     }
 
@@ -222,10 +218,10 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
         return exams;
     }
 
-    private ChildLOS createChildLOS(KomoDTO childKomo, String providerId, List<KomotoDTO> childKomotos) throws KoodistoException {
+    private ChildLOS createChildLOS(KomoDTO childKomo, String childLOSId, List<KomotoDTO> childKomotos) throws KoodistoException {
 
         ChildLOS childLOS = new ChildLOS();
-        childLOS.setId(getLOSId(childKomo.getOid(), providerId));
+        childLOS.setId(childLOSId);
         childLOS.setName(koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri()));
         childLOS.setQualification(koodistoService.searchFirst(childKomo.getTutkintonimikeUri()));
         childLOS.setDegreeTitle(koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri()));
@@ -244,6 +240,7 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
             }
 
             ChildLOI childLOI = new ChildLOI();
+            childLOI.setName(childLOS.getName());
             childLOI.setId(childKomoto.getOid());
             childLOI.setLosId(childLOS.getId());
             childLOI.setParentLOIId(childKomoto.getParentKomotoOid());
@@ -395,6 +392,10 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
 
     private String getLOSId(String komoId, String providerId) {
         return Joiner.on("_").join(komoId, providerId);
+    }
+
+    private String resolveProviderId(String losId) {
+        return losId.split("_")[1];
     }
 
     private I18nText getI18nText(final Map<String, String> texts) throws KoodistoException {
