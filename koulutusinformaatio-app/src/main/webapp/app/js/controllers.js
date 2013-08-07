@@ -393,7 +393,35 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
         }
     });
 
-    //$scope.isChild = isChild();
+    var childLOSuccess = function(childResult) {
+        $scope.childLO = childResult;
+        $scope.lois = childResult.lois;
+        ChildLODataService.setChildLOData(childResult);
+
+        if (!ParentLODataService.dataExists(childResult.parent.id)) {
+            ParentLearningOpportunityService.query({
+                parentId: childResult.parent.id, 
+                language: $scope.descriptionLanguage
+            }).then(function(parentResult) {
+                $scope.parentLO = parentResult;
+                ParentLODataService.setParentLOData(parentResult);
+                initializeParent();
+            });
+        } else {
+            $scope.parentLO = ParentLODataService.getParentLOData();
+            initializeParent();
+        }
+    };
+
+    var parentLOSuccess = function(result) {
+        $scope.parentLO = result;
+        $scope.lois = result.lois;
+        ParentLODataService.setParentLOData(result);
+        initializeParent();
+    };
+
+    var loError = function(result) {
+    };
 
     // fetch data for parent and/or its child LO
     // TODO: could this logic be hidden in service?
@@ -402,25 +430,7 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
             ChildLearningOpportunityService.query({
                 childId: $routeParams.childId,
                 language: $scope.descriptionLanguage
-            }).then(function(childResult) {
-                $scope.childLO = childResult;
-                $scope.lois = childResult.lois;
-                ChildLODataService.setChildLOData(childResult);
-
-                if (!ParentLODataService.dataExists(childResult.parent.id)) {
-                    ParentLearningOpportunityService.query({
-                        parentId: childResult.parent.id, 
-                        language: $scope.descriptionLanguage
-                    }).then(function(parentResult) {
-                        $scope.parentLO = parentResult;
-                        ParentLODataService.setParentLOData(parentResult);
-                        initializeParent();
-                    });
-                } else {
-                    $scope.parentLO = ParentLODataService.getParentLOData();
-                    initializeParent();
-                }
-            });
+            }).then(childLOSuccess, loError);
         } else {
             $scope.childLO = ChildLODataService.getChildLOData();
             $scope.parentLO = ParentLODataService.getParentLOData();
@@ -432,12 +442,7 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
             ParentLearningOpportunityService.query({
                 parentId: $routeParams.parentId, 
                 language: $scope.descriptionLanguage
-            }).then(function(result) {
-                $scope.parentLO = result;
-                $scope.lois = result.lois;
-                ParentLODataService.setParentLOData(result);
-                initializeParent();
-            });
+            }).then(parentLOSuccess, loError);
         } else {
             $scope.parentLO = ParentLODataService.getParentLOData();
             $scope.lois = $scope.parentLO.lois;

@@ -40,7 +40,7 @@
                                         <li>
                                             <h4 class="margin-top-0">
                                                 <span class="block">{{item.providerName}}, {{item.providerLocation}}</span>
-                                                <a href="#/tutkinto/{{item.parent.id}}">{{item.parent.name}}</a>
+                                                <a href="#/tutkinto/{{item.parent.id}}#{{item.prerequisite.value}}">{{item.parent.name}}</a>
                                             </h4>
                                         </li>
                                         <li><span>{{item.qualification}}</span></li>
@@ -49,7 +49,7 @@
                                 </td>
                                 <td>
                                     <ul class="disc">
-                                        <li data-ng-repeat="child in item.children"><a href="#/koulutusohjelma/{{child.childLOId}}">{{child.name}}</a></li>
+                                        <li data-ng-repeat="child in item.children"><a href="#/koulutusohjelma/{{child.losId}}#{{item.prerequisite.value}}">{{child.name}}</a></li>
                                     </ul>
                                 </td>
                                 <td class="align-right">

@@ -256,14 +256,14 @@ directive('kiAbsoluteLink', function() {
         templateUrl: 'templates/siblings.html',
         link: function(scope, element, attrs) {
 
-            scope.$watch('childLO', function(data) {
-                if (data && !data.related) {
+            scope.$watch('selectedAs.children', function(data) {
+                if (data && data.length <= 1) {
                     $(element).remove();
                 }
             });
 
             scope.siblingClass = function(sibling) {
-                if (sibling.childLOId == $routeParams.childId) {
+                if (sibling.losId == $routeParams.childId) {
                     return 'disabled';
                 } else {
                     return '';
