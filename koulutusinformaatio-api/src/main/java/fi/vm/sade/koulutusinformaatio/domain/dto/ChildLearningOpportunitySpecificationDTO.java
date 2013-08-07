@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 The Finnish Board of Education - Opetushallitus
+ * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
  *
  * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
  * soon as they will be approved by the European Commission - subsequent versions
@@ -18,34 +18,29 @@ package fi.vm.sade.koulutusinformaatio.domain.dto;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
-import java.util.List;
+import java.util.*;
 
 /**
- * @author Mikko Majapuro
+ * @author Hannu Lyytikainen
  */
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
-public class ChildLORefDTO implements Comparable<ChildLORefDTO> {
+public class ChildLearningOpportunitySpecificationDTO {
 
-    private String childLOId;
-    private List<String> asIds;
+    private String id;
     private String name;
     private String qualification;
-    private CodeDTO prerequisite;
+    private String degreeTitle;
+    private ParentLOSRefDTO parent;
+    private String degreeGoal;
+    private List<ChildLearningOpportunityInstanceDTO> lois;
 
-    public String getChildLOId() {
-        return childLOId;
+
+    public String getId() {
+        return id;
     }
 
-    public void setChildLOId(String childLOId) {
-        this.childLOId = childLOId;
-    }
-
-    public List<String> getAsIds() {
-        return asIds;
-    }
-
-    public void setAsIds(List<String> asId) {
-        this.asIds = asIds;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -64,19 +59,35 @@ public class ChildLORefDTO implements Comparable<ChildLORefDTO> {
         this.qualification = qualification;
     }
 
-    public CodeDTO getPrerequisite() {
-        return prerequisite;
+    public String getDegreeTitle() {
+        return degreeTitle;
     }
 
-    public void setPrerequisite(CodeDTO prerequisite) {
-        this.prerequisite = prerequisite;
+    public void setDegreeTitle(String degreeTitle) {
+        this.degreeTitle = degreeTitle;
     }
 
-    @Override
-    public int compareTo(ChildLORefDTO childLORefDTO) {
-        if (this == childLORefDTO) {
-            return 0;
-        }
-        return this.name.compareTo(childLORefDTO.name);
+    public ParentLOSRefDTO getParent() {
+        return parent;
+    }
+
+    public void setParent(ParentLOSRefDTO parent) {
+        this.parent = parent;
+    }
+
+    public String getDegreeGoal() {
+        return degreeGoal;
+    }
+
+    public void setDegreeGoal(String degreeGoal) {
+        this.degreeGoal = degreeGoal;
+    }
+
+    public List<ChildLearningOpportunityInstanceDTO> getLois() {
+        return lois;
+    }
+
+    public void setLois(List<ChildLearningOpportunityInstanceDTO> lois) {
+        this.lois = lois;
     }
 }

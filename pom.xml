@@ -238,7 +238,38 @@
                 </dependency>
             </dependencies>
         </profile>
-		
+		<profile>
+            <id>buildversion.txt</id>		
+			<build>
+			<plugins>
+			<plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+                <executions>
+                    <execution>
+                        <id>write buildversion.txt</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <echo file="target/${project.build.finalName}/buildversion.txt">
+									artifactId=${artifactId}
+									version=${project.version}
+									buildNumber=${build}
+									branchName=${branch}
+									vcsRevision=${revision}
+									buildTtime=${maven.build.timestamp}
+                                </echo>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+			</plugins>
+            </build>
+		</profile>
     </profiles>
 
 </project>

@@ -42,7 +42,7 @@ public class ApplicationOptionEntity {
     @Reference
     private LearningOpportunityProviderEntity provider;
     @Embedded
-    private List<ChildLORefEntity> childLORefs = new ArrayList<ChildLORefEntity>();
+    private List<ChildLOIRefEntity> childLOIRefs = new ArrayList<ChildLOIRefEntity>();
     private Integer startingQuota;
     private Integer lowestAcceptedScore;
     private Double lowestAcceptedAverage;
@@ -114,12 +114,12 @@ public class ApplicationOptionEntity {
         this.provider = provider;
     }
 
-    public List<ChildLORefEntity> getChildLORefs() {
-        return childLORefs;
+    public List<ChildLOIRefEntity> getChildLOIRefs() {
+        return childLOIRefs;
     }
 
-    public void setChildLORefs(List<ChildLORefEntity> childLORefs) {
-        this.childLORefs = childLORefs;
+    public void setChildLOIRefs(List<ChildLOIRefEntity> childLOIRefs) {
+        this.childLOIRefs = childLOIRefs;
     }
 
     public Integer getStartingQuota() {

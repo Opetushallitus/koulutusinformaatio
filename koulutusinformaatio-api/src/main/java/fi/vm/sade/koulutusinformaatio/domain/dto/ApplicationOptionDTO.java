@@ -43,7 +43,7 @@ public class ApplicationOptionDTO {
     private String selectionCriteria;
     private CodeDTO prerequisite;
     private List<ExamDTO> exams;
-    private List<ChildLORefDTO> childRefs = new ArrayList<ChildLORefDTO>();
+    private List<ChildLOIRefDTO> childRefs = new ArrayList<ChildLOIRefDTO>();
     private LearningOpportunityProviderDTO provider;
 
 
@@ -167,11 +167,11 @@ public class ApplicationOptionDTO {
         this.exams = exams;
     }
 
-    public List<ChildLORefDTO> getChildRefs() {
+    public List<ChildLOIRefDTO> getChildRefs() {
         return childRefs;
     }
 
-    public void setChildRefs(List<ChildLORefDTO> childRefs) {
+    public void setChildRefs(List<ChildLOIRefDTO> childRefs) {
         this.childRefs = childRefs;
     }
 

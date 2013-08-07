@@ -7,7 +7,7 @@
         <h2 data-ki-i18n="base-education-{{selectedLOI.prerequisite.value}}"></h2>
             <ul class="disc">
                 <li data-ng-repeat="child in selectedAs.children">
-                	<a href="#/koulutusohjelma/{{child.childLOId}}">{{child.name}}</a>
+                	<a href="#/koulutusohjelma/{{child.losId}}#{{prerequisite.value}}">{{child.name}}</a>
                 </li>
             </ul>
     </div>

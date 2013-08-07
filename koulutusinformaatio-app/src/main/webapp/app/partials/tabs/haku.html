@@ -1,25 +1,25 @@
 
 <aside class="grid16-6 no-right-gutter margin-top-2">
-    <div data-ng-switch="isChild">
-        <div data-ng-switch-when="false">
+    <!--<div data-ng-switch="isChild">
+        <div data-ng-switch-when="false"> -->
             <h4 class="margin-bottom-0" data-ki-i18n="application-prerequisite"></h4>
             <form>
                 <ul class="margin-bottom-2">
-                    <li data-ng-repeat="loi in parentLO.lois">
+                    <li data-ng-repeat="loi in lois">
                         <input 
                         type="radio" 
                         name="prerequisiteSelection" 
                         id="input{{$index}}" 
-                        value="{{loi.id}}" 
-                        data-ng-change="changeLOISelection(loi.id)"
-                        data-ng-model="selectedLOI.id"
+                        value="{{loi.prerequisite.value}}" 
+                        data-ng-change="changePrerequisiteSelection(loi.prerequisite.value)"
+                        data-ng-model="prerequisite.value"
                         data-ng-class="showApplicationRadioSelection" />
                         <label for="input{{$index}}">{{loi.prerequisite.description}}</label>
                     </li>
                 </ul>
             </form>
-        </div>
-    </div>
+        <!--</div>
+    </div>-->
 
     <div data-ng-repeat="as in selectedLOI.applicationSystems" class="infobox">
         <div class="sideitem margin-bottom-3">
@@ -37,11 +37,11 @@
             <span class="bold">{{ao.name}}</span>
             <ul class="disc">
                 <li data-ng-repeat="child in ao.childRefs">
-                    <a href="#/koulutusohjelma/{{child.childLOId}}">{{child.name}}</a>
+                    <a href="#/koulutusohjelma/{{child.losId}}#{{prerequisite.value}}">{{child.name}}</a>
                 </li>
             </ul>
 
-            <form name="levelSelectionForm" action="/haku-app/lomake/{{as.id}}/yhteishaku" method="POST" class="margin-top-2">
+            <form name="levelSelectionForm" action="/haku-app/lomake/{{as.id}}" method="POST" class="margin-top-2">
                 <input 
                 type="hidden" 
                 name="preference1-Opetuspiste" 

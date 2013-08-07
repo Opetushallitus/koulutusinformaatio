@@ -16,28 +16,35 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-
 import java.util.List;
 
 /**
  * @author Mikko Majapuro
  */
-public class ChildLORef {
+public class ChildLOIRef {
 
-    private String childLOId;
+    private String id;
+    private String losId;
     private List<String> asIds;
     private I18nText name;
     private String nameByTeachingLang;
     private I18nText qualification;
     private Code prerequisite;
 
-    public String getChildLOId() {
-        return childLOId;
+    public String getId() {
+        return id;
     }
 
-    public void setChildLOId(String childLOId) {
-        this.childLOId = childLOId;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getLosId() {
+        return losId;
+    }
+
+    public void setLosId(String losId) {
+        this.losId = losId;
     }
 
     public List<String> getAsIds() {

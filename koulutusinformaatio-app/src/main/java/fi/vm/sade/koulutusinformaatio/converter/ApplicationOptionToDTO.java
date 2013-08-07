@@ -44,7 +44,7 @@ public class ApplicationOptionToDTO {
             ao.setPrerequisite(CodeToDTO.convert(applicationOption.getPrerequisite(), lang));
             ao.setExams(ExamToDTO.convertAll(applicationOption.getExams(), lang));
             ao.setProvider(ProviderToDTO.convert(applicationOption.getProvider(), lang));
-            ao.setChildRefs(ChildLORefToDTO.convert(applicationOption.getChildLORefs(), lang));
+            ao.setChildRefs(ChildLOIRefToDTO.convert(applicationOption.getChildLOIRefs(), lang));
             return ao;
         }
         return null;

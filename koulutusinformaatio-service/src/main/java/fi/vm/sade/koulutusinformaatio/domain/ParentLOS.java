@@ -16,13 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
-import com.google.common.collect.Sets;
-
-import fi.vm.sade.koulutusinformaatio.dao.entity.I18nTextEntity;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Parent level learning opportunity specification.
@@ -34,7 +28,7 @@ public class ParentLOS {
     private String id;
     private I18nText name;
     private List<ParentLOI> lois;
-    private Set<ApplicationOption> applicationOptions = Sets.newHashSet();
+    private List<ChildLOS> children;
     private Provider provider;
     // rakenne
     private I18nText structureDiagram;
@@ -53,14 +47,6 @@ public class ParentLOS {
     private String creditValue;
     //laajuus yksikkö opintoviikko
     private I18nText creditUnit;
-
-    public Set<ApplicationOption> getApplicationOptions() {
-        return applicationOptions;
-    }
-
-    public void setApplicationOptions(Set<ApplicationOption> applicationOptions) {
-        this.applicationOptions = applicationOptions;
-    }
 
     public String getId() {
         return id;
@@ -84,6 +70,14 @@ public class ParentLOS {
 
     public void setLois(List<ParentLOI> lois) {
         this.lois = lois;
+    }
+
+    public List<ChildLOS> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<ChildLOS> children) {
+        this.children = children;
     }
 
     public Provider getProvider() {
