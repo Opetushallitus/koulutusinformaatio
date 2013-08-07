@@ -24,7 +24,6 @@
         <field name="id" type="string" indexed="true" stored="true" multiValued="false"/>
         <field name="lopId" type="string" indexed="false" stored="true" multiValued="false"/>
         <field name="parentId" type="string" indexed="false" stored="true" multiValued="false"/>
-        <!-- remove? -->
         <field name="losId" type="string" indexed="false" stored="true" multiValued="false"/>
 
         <dynamicField name="asStart_*"  type="date"  indexed="false"  stored="true"/>

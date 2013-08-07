@@ -24,7 +24,6 @@
         <field name="id" type="string" indexed="true" stored="true" multiValued="false"/>
         <field name="lopId" type="string" indexed="false" stored="true" multiValued="false"/>
         <field name="parentId" type="string" indexed="false" stored="true" multiValued="false"/>
-        <!-- remove? -->
         <field name="losId" type="string" indexed="false" stored="true" multiValued="false"/>
 
         <dynamicField name="asStart_*"  type="date"  indexed="false"  stored="true"/>
@@ -159,10 +158,10 @@
         </fieldType>
 
         <!-- A text field with defaults appropriate for English: it
-             tokenizes with StandardTokenizer, removes English stop words
-            (lang/stopwords_en.txt), down cases, protects words from protwords.txt, and
-            finally applies Porter's stemming.  The query time analyzer
-            also applies synonyms from synonyms.txt. -->
+tokenizes with StandardTokenizer, removes English stop words
+(lang/stopwords_en.txt), down cases, protects words from protwords.txt, and
+finally applies Porter's stemming.  The query time analyzer
+also applies synonyms from synonyms.txt. -->
         <fieldType name="text_en" class="solr.TextField" positionIncrementGap="100">
             <analyzer type="index">
                 <tokenizer class="solr.StandardTokenizerFactory"/>
