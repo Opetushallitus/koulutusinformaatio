@@ -459,6 +459,11 @@ table {
   list-style-type: none;
   padding-left: 0; }
 
+/*** Border
+************************************************/
+.default-border {
+  border: 1px solid #eeeeee; }
+
 /*** Grids
 ************************************************/
 /* grid16 classes with gutter*/
@@ -2785,6 +2790,27 @@ ul.unstyled {
       background-position: -26px 0px; }
     #social li a:active {
       background-position: -52px 0px; }
+
+/* Applciation system */
+.application-system {
+  margin-top: 4em;
+    /*
+    border: #C3C3C3 1px dotted;
+    border-style: dashed none none none;
+
+    &:first-child {
+        border: none;
+    }
+    */ }
+  .application-system:first-child {
+    margin: 0; }
+  .application-system .application-option {
+    border: #C3C3C3 1px dotted;
+    border-style: dashed none none none;
+    padding: 1em 0; }
+    .application-system .application-option:first-child {
+      border: none;
+      padding: 0 0 1em 0; }
 
 /*** compare
 ************************************************/

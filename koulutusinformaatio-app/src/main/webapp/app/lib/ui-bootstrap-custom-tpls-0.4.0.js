@@ -418,7 +418,7 @@ this.options = function( value ) {
     restrict: 'EA',
     replace: true,
     scope: { title: '@', content: '@', placement: '@', close: '&', animation: '&', isOpen: '&' },
-    templateUrl: 'template/popover/popover-html-unsafe-popup.html',
+    templateUrl: 'template/popover/popover-html-unsafe-popup.html'
 };
 })
 
