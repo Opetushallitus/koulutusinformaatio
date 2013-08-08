@@ -12,6 +12,8 @@
     "elementary-graduate-selection": "Antagning av grundskolgångna",
     "secondary-school-based": "Gymnasiebaserad utbildning",
 
+    "search-result-title": "Tulokset haulle (sv)",
+    "search-result-count-unit": "kpl (sv)",
     "no-search-results": "Inga sökresultat",
     "no-search-results-info": "Sökordet gav inget resultat. Försök med annat sökord.",
     "search-pagination-first": "Första",

@@ -459,6 +459,11 @@ table {
   list-style-type: none;
   padding-left: 0; }
 
+/*** Border
+************************************************/
+.default-border {
+  border: 1px solid #eeeeee; }
+
 /*** Grids
 ************************************************/
 /* grid16 classes with gutter*/
@@ -1646,6 +1651,8 @@ h6, .h6 {
 small {
   font-size: 100%;
   color: #575757; }
+  small.cursive {
+    font-style: italic; }
 
 #viewport {
   position: relative;
@@ -2786,6 +2793,27 @@ ul.unstyled {
     #social li a:active {
       background-position: -52px 0px; }
 
+/* Applciation system */
+.application-system {
+  margin-top: 4em;
+    /*
+    border: #C3C3C3 1px dotted;
+    border-style: dashed none none none;
+
+    &:first-child {
+        border: none;
+    }
+    */ }
+  .application-system:first-child {
+    margin: 0; }
+  .application-system .application-option {
+    border: #C3C3C3 1px dotted;
+    border-style: dashed none none none;
+    padding: 1em 0; }
+    .application-system .application-option:first-child {
+      border: none;
+      padding: 0 0 1em 0; }
+
 /*** compare
 ************************************************/
 /*
@@ -3627,22 +3655,23 @@ button {
         }
     }
     */
-ul {
+ul.nobullet {
   list-style-type: none;
   margin: 0;
   padding: 0; }
-  ul.disc {
-    list-style-type: disc;
-    list-style-position: outside;
-    margin: 0 0 0 16px;
-    /*
-    li:before {
-        display: inline-block;
-        content: "\2013";
-        width: 1em;
-        margin-left: -1em;
-    }
-    */ }
+ul.disc {
+  list-style-type: disc;
+  list-style-position: outside;
+  margin: 0 0 0 16px;
+  padding: 0;
+  /*
+  li:before {
+      display: inline-block;
+      content: "\2013";
+      width: 1em;
+      margin-left: -1em;
+  }
+  */ }
 
 input {
   margin: 0 0.5em 0 0; }
@@ -3680,7 +3709,8 @@ input[type="radio"] {
 */
 #search-results {
   min-height: 1px;
-  margin: 0 0 3em 0; }
+  margin: 0 0 3em 1.3em;
+  padding: 0; }
   #search-results li {
     margin: 0 0 1.5em 0;
     list-style-type: disc;

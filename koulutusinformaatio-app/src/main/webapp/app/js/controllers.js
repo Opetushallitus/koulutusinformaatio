@@ -177,19 +177,21 @@ function SearchFieldCtrl($scope, $routeParams, $location, SearchService, $route)
  *  Controller for search filters
  */
 function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService, kiAppConstants, FilterService) {
-    $scope.individualizedActive = $scope.prerequisite != 'PK';
     var resultsPerPage = kiAppConstants.searchResultsPerPage;
     var filters = FilterService.get();
     $scope.prerequisite = filters.prerequisite;
+    $scope.individualized = filters.individualized;
     $scope.locations = filters.locations;
+    $scope.individualizedDisabled = $scope.prerequisite != 'PK';
 
     $scope.change = function() {
-        $scope.individualizedActive = $scope.prerequisite!= 'PK';
-        FilterService.set($scope.prerequisite, $scope.locations);
+        $scope.individualizedDisabled = $scope.prerequisite != 'PK';
+        FilterService.set($scope.prerequisite, $scope.individualized, $scope.locations);
 
         SearchLearningOpportunityService.query({
             queryString: $scope.queryString,
             prerequisite: $scope.prerequisite,
+            individualized: $scope.individualized,
             start: 0,
             rows: resultsPerPage,
             locations: $scope.locations
@@ -220,20 +222,24 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
     $scope.$watch('currentPage', function(value) {
         if ($routeParams.queryString) {
             var filters = FilterService.get();
+
             SearchLearningOpportunityService.query({
                 queryString: $routeParams.queryString,
                 start: (value-1) * resultsPerPage,
                 rows: resultsPerPage,
                 prerequisite: filters.prerequisite,
+                individualized: filters.individualized,
                 locations: filters.locations }).then(function(result) {
                     $scope.loResult = result;
                     $scope.maxPages = Math.ceil(result.totalCount / resultsPerPage);
                     $scope.showPagination = $scope.maxPages > 1;
-            });
+                });
 
             $scope.queryString = $routeParams.queryString;
             $scope.showFilters = $scope.queryString ? true : false;
             SearchService.setTerm($routeParams.queryString);
+        } else {
+            $scope.loResult = {totalCount : 0};
         }
     });
 

@@ -236,13 +236,15 @@ directive('kiAbsoluteLink', function() {
             scope.label = i18n.t('description-language-selection');
             scope.isChild = ($routeParams.childId) ? true : false;
 
-            scope.$watch('childLO', function(data) {
-                scope.hasMultipleTranslations = scope.childLO && scope.childLO.availableTranslationLanguages && scope.childLO.availableTranslationLanguages.length >= 1;    
-            });
-
-            scope.$watch('parentLO', function(data) {
-                scope.hasMultipleTranslations = scope.parentLO && scope.parentLO.availableTranslationLanguages && scope.parentLO.availableTranslationLanguages.length >= 1;    
-            });
+            if (scope.isChild) {
+                scope.$watch('childLO', function(data) {
+                    scope.hasMultipleTranslations = (scope.childLO && scope.childLO.availableTranslationLanguages && scope.childLO.availableTranslationLanguages.length >= 1) ? true : false;
+                });
+            } else {
+                scope.$watch('parentLO', function(data) {
+                    scope.hasMultipleTranslations = (scope.parentLO && scope.parentLO.availableTranslationLanguages && scope.parentLO.availableTranslationLanguages.length >= 1) ? true : false;
+                });
+            }
         }
     };
  }]).
