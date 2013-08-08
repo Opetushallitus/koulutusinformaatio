@@ -40,7 +40,6 @@ public class IndexerServiceImpl implements IndexerService {
         List<SolrInputDocument> docs = Lists.newArrayList();
         List<SolrInputDocument> providerDocs = Lists.newArrayList();
 
-
 //        <copyField source="name" dest="text"/>  - both
 //        <copyField source="aoName" dest="text"/> - child
 //        <copyField source="qualification" dest="text"/> - child
@@ -51,15 +50,8 @@ public class IndexerServiceImpl implements IndexerService {
 //        <copyField source="lopDescription" dest="text"/> - both
 //        <copyField source="lopAddress" dest="text"/> - both
 
-
         SolrInputDocument parentDoc = new SolrInputDocument();
         resolveParentDocument(parentDoc, parent);
-
-        List<ApplicationOption> applicationOptions = Lists.newArrayList();
-        for (ParentLOI parentLOI : parent.getLois()) {
-            applicationOptions.addAll(parentLOI.getApplicationOptions());
-        }
-        addApplicationSystemDates(parentDoc, applicationOptions);
 
         Provider provider = parent.getProvider();
         SolrInputDocument providerDoc = new SolrInputDocument();
@@ -70,8 +62,7 @@ public class IndexerServiceImpl implements IndexerService {
         for (ChildLOS childLOS : parent.getChildren()) {
             for (ChildLOI childLOI : childLOS.getLois()) {
                 SolrInputDocument childLODoc = new SolrInputDocument();
-                resolveChildDocument(childLODoc, childLOS,  childLOI, parent);
-                addApplicationSystemDates(childLODoc, childLOI.getApplicationOptions());
+                resolveChildDocument(childLODoc, childLOS, childLOI, parent);
                 if (childLOI.getApplicationSystemIds() != null) {
                     for (String asId : childLOI.getApplicationSystemIds()) {
                         providerAsIds.add(asId);
@@ -125,6 +116,20 @@ public class IndexerServiceImpl implements IndexerService {
             doc.addField("goals_sv", parent.getGoals().getTranslations().get("sv"));
             doc.addField("goals_en", parent.getGoals().getTranslations().get("en"));
         }
+
+        List<ApplicationOption> applicationOptions = Lists.newArrayList();
+        for (ParentLOI parentLOI : parent.getLois()) {
+            applicationOptions.addAll(parentLOI.getApplicationOptions());
+            for (ApplicationOption ao : parentLOI.getApplicationOptions()) {
+                if (ao.getApplicationSystem() != null) {
+                    doc.addField("asName_fi", ao.getApplicationSystem().getName().getTranslations().get("fi"));
+                    doc.addField("asName_sv", ao.getApplicationSystem().getName().getTranslations().get("sv"));
+                    doc.addField("asName_en", ao.getApplicationSystem().getName().getTranslations().get("en"));
+                }
+            }
+
+        }
+        addApplicationSystemDates(doc, applicationOptions);
     }
 
     private void resolveChildDocument(SolrInputDocument doc, ChildLOS childLOS, ChildLOI childLOI, ParentLOS parent) {
@@ -174,8 +179,17 @@ public class IndexerServiceImpl implements IndexerService {
             doc.addField("content_sv", childLOI.getContent().getTranslations().get("sv"));
             doc.addField("content_en", childLOI.getContent().getTranslations().get("en"));
         }
-    }
 
+        for (ApplicationOption ao : childLOI.getApplicationOptions()) {
+            if (ao.getApplicationSystem() != null) {
+                doc.addField("asName_fi", ao.getApplicationSystem().getName().getTranslations().get("fi"));
+                doc.addField("asName_sv", ao.getApplicationSystem().getName().getTranslations().get("sv"));
+                doc.addField("asName_en", ao.getApplicationSystem().getName().getTranslations().get("en"));
+            }
+        }
+
+        addApplicationSystemDates(doc, childLOI.getApplicationOptions());
+    }
 
 
     private void addApplicationSystemDates(SolrInputDocument doc, List<ApplicationOption> applicationOptions) {

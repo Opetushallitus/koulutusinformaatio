@@ -135,7 +135,7 @@ public class TarjontaServiceMockImpl implements TarjontaService {
     private ApplicationSystem createApplicationSystem() {
         ApplicationSystem as = new ApplicationSystem();
         as.setId(APPLICATION_SYSTEM_ID);
-        as.setName(createI18nText("Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku"));
+        as.setName(createI18nText("Yhteishaku 2013"));
         Calendar start = new GregorianCalendar();
         start.set(Calendar.YEAR, 2013);
         start.set(Calendar.MONTH, Calendar.JUNE);

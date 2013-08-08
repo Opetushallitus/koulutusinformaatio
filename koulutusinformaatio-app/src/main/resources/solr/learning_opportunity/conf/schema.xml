@@ -44,6 +44,9 @@
         <field name="text_en" type="text_en" indexed="true" stored="true" multiValued="true"/>
         <field name="textBoost_en" type="text_en" indexed="true" stored="true" multiValued="true"/>
 
+        <!-- hakujen nimet, kaikki kielet, tarkoitettu haun nimellä hakemiseen -->
+        <field name="asNames" type="string" indexed="true" stored="false" multiValued="true"/>
+
         <!-- koulutusmoduuli -->
         <field name="name_fi" type="string" indexed="false" stored="true" multiValued="false"/>
         <!-- koulutuksen toteutuksen kuvaus ??? -->
@@ -64,6 +67,9 @@
         <field name="lopDescription_fi" type="string" indexed="false" stored="false" multiValued="false"/>
         <!-- oppilaitoksen yhteystiedot -->
         <field name="lopAddress_fi" type="string" indexed="false" stored="false" multiValued="false"/>
+        <!-- haun nimi -->
+        <field name="asName_fi" type="string" indexed="false" stored="false" multiValued="true"/>
+
 
         <field name="name_sv" type="string" indexed="false" stored="true" multiValued="false"/>
         <field name="aoName_sv" type="string" indexed="false" stored="false" multiValued="false"/>
@@ -75,6 +81,7 @@
         <field name="lopName_sv" type="string" indexed="false" stored="true" multiValued="false"/>
         <field name="lopDescription_sv" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="lopAddress_sv" type="string" indexed="false" stored="false" multiValued="false"/>
+        <field name="asName_sv" type="string" indexed="false" stored="false" multiValued="true"/>
 
         <field name="name_en" type="string" indexed="false" stored="true" multiValued="false"/>
         <field name="aoName_en" type="string" indexed="false" stored="false" multiValued="false"/>
@@ -86,6 +93,7 @@
         <field name="lopName_en" type="string" indexed="false" stored="true" multiValued="false"/>
         <field name="lopDescription_en" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="lopAddress_en" type="string" indexed="false" stored="false" multiValued="false"/>
+        <field name="asName_en" type="string" indexed="false" stored="false" multiValued="true"/>
 
     </fields>
 
@@ -122,8 +130,10 @@
     <copyField source="goals_en" dest="textBoost_en"/>
     <copyField source="qualification_en" dest="textBoost_en"/>
     <copyField source="professionalTitles_en" dest="textBoost_en"/>
-    <copyField source="content_en" dest="textBoost_en"/>
 
+    <copyField source="asName_fi" dest="asNames"/>
+    <copyField source="asName_sv" dest="asNames"/>
+    <copyField source="asName_en" dest="asNames"/>
     <types>
 
         <!-- Finnish -->
@@ -203,7 +213,13 @@ also applies synonyms from synonyms.txt. -->
             </analyzer>
         </fieldType>
 
-
+        <!-- lowercases the entire field value, keeping it as a single token.  -->
+        <fieldType name="lowercase" class="solr.TextField" positionIncrementGap="100">
+            <analyzer>
+                <tokenizer class="solr.KeywordTokenizerFactory"/>
+                <filter class="solr.LowerCaseFilterFactory"/>
+            </analyzer>
+        </fieldType>
 
 
         <!-- Byte -->
@@ -501,13 +517,6 @@ but may be good for SKUs.  Can insert dashes in the wrong place and still match.
             </analyzer>
         </fieldtype>
 
-        <!-- lowercases the entire field value, keeping it as a single token.  -->
-        <fieldType name="lowercase" class="solr.TextField" positionIncrementGap="100">
-            <analyzer>
-                <tokenizer class="solr.KeywordTokenizerFactory"/>
-                <filter class="solr.LowerCaseFilterFactory"/>
-            </analyzer>
-        </fieldType>
 
         <!--
           Example of using PathHierarchyTokenizerFactory at index time, so
