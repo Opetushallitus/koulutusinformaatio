@@ -1,5 +1,9 @@
 <!-- <div ng-include src="'partials/pageheader.html'"></div> -->
 <section class="content-container margin-bottom-2">
+    <div data-ki-breadcrumb id="breadcrumb"></div>
+    <div class="grid16-16">
+        <h1 class="inline-block"><span data-ki-i18n="search-result-title"></span> "{{queryString}}"</h1><h2 class="inline-block margin-left-2">({{loResult.totalCount}} <span data-ki-i18n="search-result-count-unit"></span>)</h2>
+    </div>
     <div class="grid16-11">
         <div data-ng-switch="loResult.totalCount">
             <div data-ng-switch-when="0">
@@ -8,7 +12,7 @@
                     <span data-ki-i18n="no-search-results-info"></span>
                 </div>
             </div>
-            <div data-ng-switch-default class="margin-left-3">
+            <div data-ng-switch-default>
                 <ul id="search-results">
                     <li data-ng-repeat="lo in loResult.results">
                         <div>
@@ -40,9 +44,8 @@
     <aside class="grid16-5" id="column-narrow">
     <!--<div data-ng-switch="showFilters">
         <div data-ng-switch-when="true">-->
-            <div class="infobox">
                 <h4 class="margin-top-0 margin-bottom-0" data-ki-i18n="filter-search-title"></h4>
-                <small class="margin-bottom-2 block" data-ki-i18n="filter-search-subtitle"></small>
+                <small class="margin-bottom-2 block cursive" data-ki-i18n="filter-search-subtitle"></small>
                 <form name="searchResultFilters" novalidate data-ng-controller="SearchFilterCtrl">
                     <ul>
                         <li>
@@ -83,7 +86,6 @@
                     <h4 data-ki-i18n="filter-search-location-title"></h4>
                     <div data-ki-location-filter></div>
                 </form>
-            </div>
         <!--</div>
     </div>-->
 </aside>

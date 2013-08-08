@@ -1651,6 +1651,8 @@ h6, .h6 {
 small {
   font-size: 100%;
   color: #575757; }
+  small.cursive {
+    font-style: italic; }
 
 #viewport {
   position: relative;
@@ -3706,7 +3708,7 @@ input[type="radio"] {
 */
 #search-results {
   min-height: 1px;
-  margin: 0 0 3em 0; }
+  margin: 0 0 3em 1.3em; }
   #search-results li {
     margin: 0 0 1.5em 0;
     list-style-type: disc;

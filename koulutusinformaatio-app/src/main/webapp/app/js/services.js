@@ -404,7 +404,9 @@ service('LearningOpportunityProviderPictureService', ['$http', '$timeout', '$q',
         },
 
         setTerm: function(newTerm) {
-            $.cookie(key, newTerm, {useLocalStorage: false, path: '/'});
+            if (newTerm) {
+                $.cookie(key, newTerm, {useLocalStorage: false, path: '/'});
+            }
         }
     };
 }).

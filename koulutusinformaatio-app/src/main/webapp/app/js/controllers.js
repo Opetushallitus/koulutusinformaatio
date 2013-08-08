@@ -229,11 +229,13 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
                     $scope.loResult = result;
                     $scope.maxPages = Math.ceil(result.totalCount / resultsPerPage);
                     $scope.showPagination = $scope.maxPages > 1;
-            });
+                });
 
             $scope.queryString = $routeParams.queryString;
             $scope.showFilters = $scope.queryString ? true : false;
             SearchService.setTerm($routeParams.queryString);
+        } else {
+            $scope.loResult = {totalCount : 0};
         }
     });
 

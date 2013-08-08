@@ -12,6 +12,8 @@
     "elementary-graduate-selection": "Peruskoulun päättäneiden valinta (sv)",
     "secondary-school-based": "Lukiopohjainen koulutus (sv)",
 
+    "search-result-title": "Tulokset haulle (sv)",
+    "search-result-count-unit": "kpl (sv)",
     "no-search-results": "Ei hakutuloksia (sv)",
     "no-search-results-info": "Hakusanallasi ei löytynyt yhtään hakutulosta. Ole hyvä ja yritä toisella hakusanalla. (sv)",
     "search-pagination-first": "Ensimmäinen (sv)",
