@@ -103,7 +103,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
 
     @Override
     public ChildLOS getChildLearningOpportunity(String childLoId) throws ResourceNotFoundException {
-        ChildLearningOpportunityEntity childLO = getChildLO(childLoId);
+        ChildLearningOpportunitySpecificationEntity childLO = getChildLO(childLoId);
         return modelMapper.map(childLO, ChildLOS.class);
     }
 
@@ -127,8 +127,8 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
         }
     }
 
-    private ChildLearningOpportunityEntity getChildLO(String childLoId) throws ResourceNotFoundException {
-        ChildLearningOpportunityEntity clo = childLearningOpportunityDAO.get(childLoId);
+    private ChildLearningOpportunitySpecificationEntity getChildLO(String childLoId) throws ResourceNotFoundException {
+        ChildLearningOpportunitySpecificationEntity clo = childLearningOpportunityDAO.get(childLoId);
         if (clo == null) {
             throw new ResourceNotFoundException("Child learning opportunity specification not found: " + childLoId);
         }

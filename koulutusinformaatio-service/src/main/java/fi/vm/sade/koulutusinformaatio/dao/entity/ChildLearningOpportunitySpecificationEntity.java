@@ -26,7 +26,7 @@ import java.util.List;
  * @author Mikko Majapuro
  */
 @Entity("childLearningOpportunities")
-public class ChildLearningOpportunityEntity {
+public class ChildLearningOpportunitySpecificationEntity {
 
     @Id
     private String id;
@@ -43,7 +43,7 @@ public class ChildLearningOpportunityEntity {
     @Embedded
     private List<ChildLearningOpportunityInstanceEntity> lois;
 
-    public ChildLearningOpportunityEntity() {}
+    public ChildLearningOpportunitySpecificationEntity() {}
 
     public String getId() {
         return id;

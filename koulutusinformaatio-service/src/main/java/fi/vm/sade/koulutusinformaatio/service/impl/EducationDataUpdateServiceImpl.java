@@ -65,7 +65,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
             }
 
             if (plos.getChildren() != null) {
-                for (ChildLearningOpportunityEntity cLO : plos.getChildren()) {
+                for (ChildLearningOpportunitySpecificationEntity cLO : plos.getChildren()) {
                     save(cLO);
                 }
             }
@@ -74,7 +74,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
         }
     }
 
-    private void save(final ChildLearningOpportunityEntity childLearningOpportunity) {
+    private void save(final ChildLearningOpportunitySpecificationEntity childLearningOpportunity) {
         if (childLearningOpportunity != null) {
             for (ChildLearningOpportunityInstanceEntity childLearningOpportunityInstance : childLearningOpportunity.getLois()) {
                 if (childLearningOpportunityInstance.getApplicationOptions() != null) {
