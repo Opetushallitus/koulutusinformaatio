@@ -130,7 +130,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     private ChildLearningOpportunityEntity getChildLO(String childLoId) throws ResourceNotFoundException {
         ChildLearningOpportunityEntity clo = childLearningOpportunityDAO.get(childLoId);
         if (clo == null) {
-            throw new ResourceNotFoundException("Child learning opportunity instance not found: " + childLoId);
+            throw new ResourceNotFoundException("Child learning opportunity specification not found: " + childLoId);
         }
         return clo;
     }
