@@ -3655,22 +3655,23 @@ button {
         }
     }
     */
-ul {
+ul.nobullet {
   list-style-type: none;
   margin: 0;
   padding: 0; }
-  ul.disc {
-    list-style-type: disc;
-    list-style-position: outside;
-    margin: 0 0 0 16px;
-    /*
-    li:before {
-        display: inline-block;
-        content: "\2013";
-        width: 1em;
-        margin-left: -1em;
-    }
-    */ }
+ul.disc {
+  list-style-type: disc;
+  list-style-position: outside;
+  margin: 0 0 0 16px;
+  padding: 0;
+  /*
+  li:before {
+      display: inline-block;
+      content: "\2013";
+      width: 1em;
+      margin-left: -1em;
+  }
+  */ }
 
 input {
   margin: 0 0.5em 0 0; }
@@ -3708,7 +3709,8 @@ input[type="radio"] {
 */
 #search-results {
   min-height: 1px;
-  margin: 0 0 3em 1.3em; }
+  margin: 0 0 3em 1.3em;
+  padding: 0; }
   #search-results li {
     margin: 0 0 1.5em 0;
     list-style-type: disc;
