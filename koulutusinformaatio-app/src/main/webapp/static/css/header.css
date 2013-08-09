@@ -1,0 +1,25 @@
+#home-link {
+	float: left;
+}
+
+.actions {
+	float: right;
+	line-height: 57px;
+}
+
+.actions a {
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.actions a:active {
+	color: #000000;
+}
+
+.actions ul {
+	display: inline-block;
+	list-style-type: none;
+	line-height: 1.5em;
+	margin: 0 40px 0 0;
+	vertical-align: bottom;
+}

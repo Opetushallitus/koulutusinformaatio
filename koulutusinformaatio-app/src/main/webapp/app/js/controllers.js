@@ -168,7 +168,9 @@ function SearchFieldCtrl($scope, $routeParams, $location, SearchService, $route)
     $scope.search = function() {
         if ($scope.queryString) {
             SearchService.setTerm($scope.queryString);
-            $location.path('/haku/' + $scope.queryString);
+            var queryString = $scope.queryString;
+            $scope.queryString = '';
+            $location.path('/haku/' + queryString);
         }
     };
 };

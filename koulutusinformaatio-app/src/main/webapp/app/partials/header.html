@@ -1,4 +1,5 @@
 <header id="siteheader" data-ng-controller="HeaderCtrl">
+    <!--
     <div class="header-container">
         <figure class="float-left">
             <a href="#"><img src="img/opintopolkufi_large.png" alt="Opintopolku.fi palvelun logo" /></a>
@@ -7,16 +8,42 @@
             <ul data-ng-controller="LanguageCtrl">
                 <li><a data-ng-click="changeLanguage('fi')" data-ki-i18n="language-fi"></a></li>
                 <li><a data-ng-click="changeLanguage('sv')" data-ki-i18n="language-sv"></a></li>
-                <li><a data-ng-click="changeLanguage('en')" data-ki-i18n="language-en"></a></li>
-                <!--<li><a href="#">Tekstiversion</a></li>-->
             </ul>
         </div>
         <div class="actions primarylinks">
             <ul>
                 <li><a id="appbasket-link" href="#/muistilista"><span data-ki-i18n="title-application-basket-content"></span> <span>({{appBasketItemCount()}})</span></a></li>
-                <!--<li><a id="apply-link">Täytä hakulomake</a></li>-->
+                
             </ul>
         </div>
+    </div> -->
+    <div class="logo-bg">
+        <div class="container">
+            <a id="home-link" href="/koulutusinformaatio-app"><img src="img/opintopolkufi_large.png" alt="Opintopolku.fi"/></a>
+                
+            <div class="actions float-right">
+                <ul data-ng-controller="LanguageCtrl">
+                    <li><a data-ng-click="changeLanguage('fi')" data-ki-i18n="language-fi"></a></li>
+                    <li><a data-ng-click="changeLanguage('sv')" data-ki-i18n="language-sv"></a></li>
+                </ul>
+            </div>
+            <div class="actions primarylinks">
+                <ul>
+                    <li><a id="appbasket-link" href="#/muistilista"><span data-ki-i18n="title-application-basket-content"></span> <span>({{appBasketItemCount()}})</span></a></li>
+                    <!--<li><a id="apply-link">Täytä hakulomake</a></li>-->
+                </ul>
+            </div>
+        </div>
     </div>
+    <div class="search" data-ng-controller="SearchFieldCtrl">
+            <form method="get" data-ng-submit="search()" novalidate>
+                <fieldset class="search-container">
+                    <input class="search-field" name="search-field" placeholder="Hae koulutuksia tästä" value="" data-ng-model="queryString"/>
+                    <input class="infield-button magnifier" type="submit" />
+                </fieldset>
+            </form>
+        </div>
+<!--
 <div data-ng-include data-src="'partials/pageheader.html'"></div>
+-->
 </header>

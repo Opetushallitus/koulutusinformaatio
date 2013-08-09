@@ -49,7 +49,8 @@ kiApp.run(['LanguageService', function(LanguageService) {
 kiApp.constant('kiAppConstants', {
     searchResultsPerPage: 30,
     searchResultsStartPage: 1,
-    applicationBasketLimit: 5
+    applicationBasketLimit: 5,
+    contextRoot: '/koulutusinformaatio-app'
 });
 
 var OPH = OPH || {};
