@@ -429,6 +429,10 @@ service('LanguageService', function() {
 
         setLanguage: function(language) {
             $.cookie(key, language, {useLocalStorage: false, path: '/'});
+        },
+
+        getDefaultLanguage: function() {
+            return defaultLanguage;
         }
     };
 }).

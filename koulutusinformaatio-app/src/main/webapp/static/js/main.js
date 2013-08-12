@@ -6,7 +6,11 @@ $(document).ready(function() {
 		event.preventDefault();
 		var searchWord = $('input[name="search-field"]').val();
 		var lang = $('input[name="lang"]').val();
-		window.location.href = '/koulutusinformaatio-app/app/#/haku/' + searchWord + '?lang=' + lang;
+		if (lang == 'fi') {
+			window.location.href = '../app/#/haku/' + searchWord + '?lang=' + lang;
+		} else {
+			window.location.href = '../../app/#/haku/' + searchWord + '?lang=' + lang;
+		}
 	});
 
 	$('.appbasket-count').html(basketCount);
