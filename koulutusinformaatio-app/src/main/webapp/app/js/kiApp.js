@@ -59,7 +59,7 @@ kiApp.constant('kiAppConstants', {
     searchResultsPerPage: 30,
     searchResultsStartPage: 1,
     applicationBasketLimit: 5,
-    contextRoot: '/koulutusinformaatio-app'
+    contextRoot: '../static/'
 });
 
 var OPH = OPH || {};
