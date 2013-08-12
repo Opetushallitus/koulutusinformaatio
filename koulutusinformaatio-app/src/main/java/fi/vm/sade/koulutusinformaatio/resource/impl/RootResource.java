@@ -33,6 +33,6 @@ public class RootResource {
 
     @GET
     public Response getRoot() throws URISyntaxException {
-        return Response.seeOther(new URI("app")).build();
+        return Response.seeOther(new URI("static")).build();
     }
 }

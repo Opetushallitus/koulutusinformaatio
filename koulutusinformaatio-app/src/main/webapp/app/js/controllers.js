@@ -14,10 +14,12 @@ function LanguageCtrl($scope, $location, LanguageService) {
 /**
  *  Controls header actions
  */
-function HeaderCtrl($scope, $location, ApplicationBasketService) {
+function HeaderCtrl($scope, $location, ApplicationBasketService, LanguageService) {
     $scope.appBasketItemCount = function() {
         return ApplicationBasketService.getItemCount();
     }
+
+    $scope.lang = LanguageService.getLanguage();
 };
 
 /**
@@ -162,13 +164,16 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
  *  Controller for search field in header
  */
 function SearchFieldCtrl($scope, $routeParams, $location, SearchService, $route) {
-    $scope.queryString = SearchService.getTerm();    
+    //$scope.queryString = SearchService.getTerm();
+    $scope.searchFieldPlaceholder = i18n.t('search-field-placeholder'); 
 
     // Perform search using LearningOpportunity service
     $scope.search = function() {
         if ($scope.queryString) {
             SearchService.setTerm($scope.queryString);
-            $location.path('/haku/' + $scope.queryString);
+            var queryString = $scope.queryString;
+            $scope.queryString = '';
+            $location.path('/haku/' + queryString);
         }
     };
 };

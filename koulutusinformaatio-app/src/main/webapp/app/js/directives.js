@@ -305,7 +305,7 @@ directive('kiAbsoluteLink', function() {
 /**
  *  Creates and controls the breadcrumb
  */
- directive('kiBreadcrumb', ['$location', 'SearchService', function($location, SearchService) {
+ directive('kiBreadcrumb', ['$location', 'SearchService', 'kiAppConstants', function($location, SearchService, kiAppConstants) {
     return {
         restrict: 'E,A',
         templateUrl: 'templates/breadcrumb.html',
@@ -327,7 +327,7 @@ directive('kiAbsoluteLink', function() {
 
             var update = function() {
                 scope.breadcrumbItems = [];
-                pushItem({name: home, linkHref: '#/' });
+                pushItem({name: home, linkHref: kiAppConstants.contextRoot });
                 pushItem({name: search, linkHref: '#/haku/' + SearchService.getTerm() });
 
                 if (scope.parentLO) {

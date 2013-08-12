@@ -445,6 +445,11 @@ table {
 .clear {
   clear: both; }
 
+/*** Overflow
+************************************************/
+.overflow-x-scroll {
+  overflow-x: scroll; }
+
 /*** Table
 ************************************************/
 .white-space-nowrap {
@@ -1664,16 +1669,39 @@ small {
 #siteheader {
   background-color: #149ecb;
   margin-bottom: 2em; }
-  #siteheader .header-container {
-    padding: 0 1em;
-    padding: 19px 0;
-    height: 50px;
-    position: relative;
-    -webkit-box-shadow: inset 0px -1px 0px 0px #30a9d1;
-    -moz-box-shadow: inset 0px -1px 0px 0px #30a9d1;
-    -o-box-shadow: inset 0px -1px 0px 0px #30a9d1;
-    -ms-box-shadow: inset 0px -1px 0px 0px #30a9d1;
-    box-shadow: inset 0px -1px 0px 0px #30a9d1; }
+  #siteheader .logo-bg {
+    padding: 19px 10px; }
+    #siteheader .logo-bg .container {
+      width: 100%;
+      max-width: 1170px;
+      overflow: hidden;
+      margin: 0 auto; }
+  #siteheader .search {
+    background: #bfbfbf url("../img/searchbarpat.png") repeat-x bottom left;
+    padding: 5px; }
+    #siteheader .search .search-container {
+      max-width: 600px;
+      margin: 0 auto; }
+    #siteheader .search .search-field {
+      width: 100%;
+      background-color: #fffffff;
+      background-image: none;
+      border: none;
+      box-shadow: 0 1px 1px #bfbfbf inset, 0 -1px 4px rgba(0, 0, 0, 0.07) inset;
+      color: #333333;
+      padding: 6px 10px 6px 10px;
+      border-radius: 3px 3px 3px 3px;
+      vertical-align: middle;
+      line-height: 18px; }
+    #siteheader .search .magnifier {
+      background: url("../img/suurennuslasi_icon.png") no-repeat center right;
+      position: absolute;
+      right: 10px;
+      top: 8px;
+      font-size: 0;
+      width: 15px;
+      height: 16px;
+      border: 0; }
   #siteheader .actions {
     float: right;
     line-height: 57px; }
@@ -1682,12 +1710,14 @@ small {
       vertical-align: bottom;
       margin: 0px;
       line-height: 1.5em;
-      margin: 0 40px 0 0; }
+      margin: 0 0 0 1em; }
       #siteheader .actions ul li {
         list-style: none; }
         #siteheader .actions ul li a {
-          color: #333333;
+          color: #2b4560;
           text-decoration: none; }
+          #siteheader .actions ul li a:hover, #siteheader .actions ul li a:active {
+            color: #000000; }
 
 /*** Overlay
 ************************************************/
@@ -2434,42 +2464,6 @@ a.btn-remove {
 
 #sidemenu .hierarchy-list ul {
   margin-left: 0; }
-
-/*** Search field
-**************************************************************/
-#searchfield-wrapper {
-  background: url("../img/searchbarpat.png") repeat-x scroll left bottom transparent; }
-  #searchfield-wrapper #searchfield {
-    display: block;
-    margin: 0 auto;
-    position: relative;
-    line-height: 40px;
-    height: 41px;
-    width: 460px; }
-    #searchfield-wrapper #searchfield input {
-      background-color: #FFFFFF;
-      background-image: none;
-      border: none;
-      box-shadow: 0 1px 1px #bfbfbf inset, 0 -1px 4px rgba(0, 0, 0, 0.07) inset;
-      color: #333333;
-      padding: 2px 2px 2px 10px;
-      border-radius: 3px 3px 3px 3px;
-      font-size: 13px;
-      height: 26px;
-      line-height: 18px;
-      vertical-align: middle;
-      margin: 5px;
-      width: 100%; }
-    #searchfield-wrapper #searchfield .btn-search {
-      position: absolute;
-      top: 13px;
-      right: 10px;
-      background: transparent url("../img/suurennuslasi_icon.png") no-repeat left top;
-      width: 16px;
-      height: 17px; }
-      #searchfield-wrapper #searchfield .btn-search span {
-        background: none;
-        display: block; }
 
 /*** Unstyled list
 **************************************************************/
@@ -3655,6 +3649,19 @@ button {
         }
     }
     */
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box; }
+
+fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  position: relative; }
+
 ul.nobullet {
   list-style-type: none;
   margin: 0;
