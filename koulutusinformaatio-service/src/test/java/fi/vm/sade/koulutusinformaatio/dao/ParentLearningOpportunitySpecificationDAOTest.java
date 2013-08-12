@@ -70,7 +70,7 @@ public class ParentLearningOpportunitySpecificationDAOTest {
         entity.setId("1.2.3.4.5");
         entity.setName(TestUtil.createI18nTextEntity("parent name fi", "parent name sv", "parent name en"));
         entity.setEducationDegree("32");
-        List<ChildLearningOpportunityEntity> children = new ArrayList<ChildLearningOpportunityEntity>();
+        List<ChildLearningOpportunitySpecificationEntity> children = new ArrayList<ChildLearningOpportunitySpecificationEntity>();
 
         LearningOpportunityProviderEntity provider = new LearningOpportunityProviderEntity();
         provider.setId("5.5.5");
@@ -91,7 +91,7 @@ public class ParentLearningOpportunitySpecificationDAOTest {
         ao.setProvider(provider);
         aos.add(ao);
 
-        ChildLearningOpportunityEntity childLO = new ChildLearningOpportunityEntity();
+        ChildLearningOpportunitySpecificationEntity childLO = new ChildLearningOpportunitySpecificationEntity();
         childLO.setId("2.2.2");
         childLO.setName(TestUtil.createI18nTextEntity("child name fi", "child name sv", "child name en"));
         childLO.setId("34345");

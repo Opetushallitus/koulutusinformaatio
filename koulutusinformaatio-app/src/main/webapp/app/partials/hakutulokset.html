@@ -1,6 +1,25 @@
 <!-- <div ng-include src="'partials/pageheader.html'"></div> -->
 <section class="content-container margin-bottom-2">
+    <div data-ki-breadcrumb id="breadcrumb"></div>
+    <div class="grid16-16">
+        <h1 class="inline-block"><span data-ki-i18n="search-result-title"></span> "{{queryString}}"</h1>
+        <h2 class="inline-block margin-left-2">({{loResult.totalCount}} <span data-ki-i18n="search-result-count-unit"></span>)</h2>
+    </div>
     <div class="grid16-11">
+        <!--
+        <div data-ng-show="showPagination">
+            <div data-pagination
+                data-on-select-page="changePage(page)" 
+                data-num-pages="maxPages" 
+                data-current-page="currentPage" 
+                data-max-size="10"
+                data-first-text="<<"
+                data-next-text=">"
+                data-previous-text="<"
+                data-last-text=">>">
+            </div>
+        </div>
+        -->
         <div data-ng-switch="loResult.totalCount">
             <div data-ng-switch-when="0">
                 <div class="notification info">
@@ -8,7 +27,7 @@
                     <span data-ki-i18n="no-search-results-info"></span>
                 </div>
             </div>
-            <div data-ng-switch-default class="margin-left-3">
+            <div data-ng-switch-default>
                 <ul id="search-results">
                     <li data-ng-repeat="lo in loResult.results">
                         <div>
@@ -40,17 +59,16 @@
     <aside class="grid16-5" id="column-narrow">
     <!--<div data-ng-switch="showFilters">
         <div data-ng-switch-when="true">-->
-            <div class="infobox">
                 <h4 class="margin-top-0 margin-bottom-0" data-ki-i18n="filter-search-title"></h4>
-                <small class="margin-bottom-2 block" data-ki-i18n="filter-search-subtitle"></small>
+                <small class="margin-bottom-2 block cursive" data-ki-i18n="filter-search-subtitle"></small>
                 <form name="searchResultFilters" novalidate data-ng-controller="SearchFilterCtrl">
-                    <ul>
+                    <ul class="nobullet">
                         <li>
                             <input type="radio" name="pohjakoulutus" id="radio1" value="PK" data-ng-model="prerequisite" data-ng-change="change()"/>
                             <label for="radio1" data-ki-i18n="filter-search-elementary"></label>
                         </li>
                         <li class="margin-left-2">
-                            <input type="checkbox" name="yksilollistetty" id="yksilollistetty" data-ng-model="individualized" data-ng-change="change()" data-ng-disabled="individualizedActive">
+                            <input type="checkbox" name="yksilollistetty" id="yksilollistetty" data-ng-true-value="ER" data-ng-model="individualized" data-ng-change="change()" data-ng-disabled="individualizedDisabled">
                             <label for="yksilollistetty" data-ki-i18n="filter-search-elementary-individualized"></label>
                         </li>
                         <li>    
@@ -83,7 +101,6 @@
                     <h4 data-ki-i18n="filter-search-location-title"></h4>
                     <div data-ki-location-filter></div>
                 </form>
-            </div>
         <!--</div>
     </div>-->
 </aside>

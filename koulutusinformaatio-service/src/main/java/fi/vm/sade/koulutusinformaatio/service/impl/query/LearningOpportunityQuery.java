@@ -12,20 +12,14 @@ import java.util.List;
  */
 public class LearningOpportunityQuery extends SolrQuery {
 
-//    private final static String TEXT_FI = "text_fi";
-//    private final static String TEXT_SV = "text_sv";
-//    private final static String TEXT_EN = "text_en";
-//    private final static String TEXT_BOOST_FI = "textBoost_fi^10.0";
-//    private final static String TEXT_BOOST_SV = "textBoost_sv^10.0";
-//    private final static String TEXT_BOOST_EN = "textBoost_en^10.0";
-
     private final static List<String> FIELDS = Lists.newArrayList(
             "text_fi",
             "text_sv",
             "text_en",
             "textBoost_fi^10.0",
             "textBoost_sv^10.0",
-            "textBoost_en^10.0"
+            "textBoost_en^10.0",
+            "asNames"
     );
     private final static String LOP_CITY = "lopCity";
     private final static String PREREQUISITES = "prerequisites";

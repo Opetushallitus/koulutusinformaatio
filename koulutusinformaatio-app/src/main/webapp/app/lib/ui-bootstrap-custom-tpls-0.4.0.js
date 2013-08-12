@@ -418,7 +418,7 @@ this.options = function( value ) {
     restrict: 'EA',
     replace: true,
     scope: { title: '@', content: '@', placement: '@', close: '&', animation: '&', isOpen: '&' },
-    templateUrl: 'template/popover/popover-html-unsafe-popup.html',
+    templateUrl: 'template/popover/popover-html-unsafe-popup.html'
 };
 })
 
@@ -583,7 +583,7 @@ angular.module('ui.bootstrap.pagination', [])
 }]);
 angular.module("template/pagination/pagination.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("template/pagination/pagination.html",
-    "<div class=\"pagination\"><ul>\n" +
+    "<div class=\"pagination\"><ul class=\"nobullet\">\n" +
     "  <li data-ng-repeat=\"page in pages\" data-ng-class=\"{active: page.active, disabled: page.disabled}\"><a data-ng-click=\"selectPage(page.number)\">{{page.text}}</a></li>\n" +
     "  </ul>\n" +
     "</div>\n" +

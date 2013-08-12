@@ -126,19 +126,19 @@
 //        ao.setEducationDegree("degree");
 //        aos.add(ao);
 //        entity.setApplicationOptions(aos);
-//        List<ChildLearningOpportunityEntity> children = new ArrayList<ChildLearningOpportunityEntity>();
-//        ChildLearningOpportunityEntity childLO = new ChildLearningOpportunityEntity();
+//        List<ChildLearningOpportunitySpecificationEntity> children = new ArrayList<ChildLearningOpportunitySpecificationEntity>();
+//        ChildLearningOpportunitySpecificationEntity childLO = new ChildLearningOpportunitySpecificationEntity();
 //        childLO.setId("444");
 //        childLO.setName(TestUtil.createI18nTextEntity("child1EntityName", "child1EntityName", "child1EntityName"));
 //
 //
-//        ChildLearningOpportunityEntity childLOI = new ChildLearningOpportunityEntity();
+//        ChildLearningOpportunitySpecificationEntity childLOI = new ChildLearningOpportunitySpecificationEntity();
 //        childLOI.setId("9898989");
 //        childLO.setApplicationSystemIds(Lists.newArrayList("1.2.3.4.5"));
 //        childLO.setApplicationOptions(Lists.newArrayList(ao));
 //        children.add(childLO);
 //
-//        ChildLearningOpportunityEntity childLO2 = new ChildLearningOpportunityEntity();
+//        ChildLearningOpportunitySpecificationEntity childLO2 = new ChildLearningOpportunitySpecificationEntity();
 //        childLO2.setId("555");
 //        childLO2.setName(TestUtil.createI18nTextEntity("child2EntityName", "child2EntityName", "child2EntityName"));
 //        childLO2.setApplicationSystemIds(Lists.newArrayList("1.2.3.4.5"));

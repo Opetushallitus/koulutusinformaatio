@@ -58,7 +58,7 @@ public class ParentLearningOpportunitySpecificationEntity {
     @Embedded
     private List<ParentLearningOpportunityInstanceEntity> lois;
     @Reference
-    private List<ChildLearningOpportunityEntity> children;
+    private List<ChildLearningOpportunitySpecificationEntity> children;
 
 
     public ParentLearningOpportunitySpecificationEntity() {
@@ -176,11 +176,11 @@ public class ParentLearningOpportunitySpecificationEntity {
         this.creditUnit = creditUnit;
     }
 
-    public List<ChildLearningOpportunityEntity> getChildren() {
+    public List<ChildLearningOpportunitySpecificationEntity> getChildren() {
         return children;
     }
 
-    public void setChildren(List<ChildLearningOpportunityEntity> children) {
+    public void setChildren(List<ChildLearningOpportunitySpecificationEntity> children) {
         this.children = children;
     }
 }

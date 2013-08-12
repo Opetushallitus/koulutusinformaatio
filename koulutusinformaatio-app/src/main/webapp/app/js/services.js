@@ -41,6 +41,10 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', function
                 cities = cities.substring(1, cities.length);
             }
 
+            if (params.prerequisite == 'PK' && params.individualized) {
+                params.prerequisite = params.individualized;
+            }
+
             var qParams = '?';
 
             qParams += (params.start != undefined) ? ('start=' + params.start) : '';
@@ -404,7 +408,9 @@ service('LearningOpportunityProviderPictureService', ['$http', '$timeout', '$q',
         },
 
         setTerm: function(newTerm) {
-            $.cookie(key, newTerm, {useLocalStorage: false, path: '/'});
+            if (newTerm) {
+                $.cookie(key, newTerm, {useLocalStorage: false, path: '/'});
+            }
         }
     };
 }).
@@ -423,6 +429,10 @@ service('LanguageService', function() {
 
         setLanguage: function(language) {
             $.cookie(key, language, {useLocalStorage: false, path: '/'});
+        },
+
+        getDefaultLanguage: function() {
+            return defaultLanguage;
         }
     };
 }).
@@ -676,16 +686,19 @@ service('ApplicationBasketService', ['$http', '$q', function($http, $q) {
  */
 service('FilterService', function() {
     var prerequisite;
+    var individualized;
     var locations = [];
     return {
-        set: function(newPrerequisiteValue, newLocationsValue) {
+        set: function(newPrerequisiteValue, newIndividualizedValue, newLocationsValue) {
             prerequisite = newPrerequisiteValue;
+            individualized = newIndividualizedValue;
             locations = newLocationsValue;
         },
 
         get: function() {
             return {
                 'prerequisite': prerequisite,
+                'individualized': individualized,
                 'locations': locations 
             };
         }
