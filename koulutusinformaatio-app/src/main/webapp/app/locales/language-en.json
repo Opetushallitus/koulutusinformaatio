@@ -14,6 +14,7 @@
 
     "search-result-title": "Tulokset haulle (en)",
     "search-result-count-unit": "kpl (en)",
+    "search-field-placeholder": "Hae koulutusta tästä (en)",
     "no-search-results": "Ei hakutuloksia (en)",
     "no-search-results-info": "Hakusanallasi ei löytynyt yhtään hakutulosta. Ole hyvä ja yritä toisella hakusanalla. (en)",
     "search-pagination-first": "Ensimmäinen (en)",
@@ -44,6 +45,7 @@
     "language-of-instruction": "Opetuskieli (en):",
     "form-of-education": "Opetusmuoto (en):",
     "duration": "Koulutuksen laajuus (en):",
+    "starting-quota": "Aloituspaikkojen lukumäärä (en):",
 
     "goals-of-education": "Tavoite (en)",
     "selection-of-degree-program": "Koulutusohjelman valinta (en)",

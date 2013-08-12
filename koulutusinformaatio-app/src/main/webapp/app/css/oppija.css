@@ -1710,7 +1710,7 @@ small {
       vertical-align: bottom;
       margin: 0px;
       line-height: 1.5em;
-      margin: 0 40px 0 0; }
+      margin: 0 0 0 1em; }
       #siteheader .actions ul li {
         list-style: none; }
         #siteheader .actions ul li a {

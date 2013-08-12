@@ -41,18 +41,15 @@
 	<link rel="stylesheet" href="./css/all.css">
 	<link rel="stylesheet" href="./css/header.css">
 
+
 	<!-- selectivizr needs *.css files instead of *.less -->
 	<!--[if lt IE 9]>
-
 	<script src="./js/vendor/matchmedia.js"></script>
 	<script src="./js/vendor/respond.min.js"></script>
 
-	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-	<script src="./js/selectivizr.min.js"></script>
+	<script src="./js/vendor/html5shiv.js"></script>
+	<script src="./js/vendor/selectivizr-min.js"></script>
 	<![endif]-->
-	<script src="../app/lib/jquery/jquery-1.8.0.min.js" type="text/javascript"></script>
-	<script src="../app/lib/jquery.enhanced.cookie.js" type="text/javascript"></script>
-	<script src="js/main.js" type="text/javascript"></script>
 </head>
 
  
@@ -64,7 +61,7 @@
 				
 				<div class="actions float-right">
 		            <ul>
-		                <li><a>Suomeksi</a></li>
+		                <li><a href="./">Suomeksi</a></li>
 		                <li><a href="sv/">På svenska</a></li>
 		            </ul>
 		        </div>
@@ -80,6 +77,7 @@
 			<form action="#">
 				<fieldset class="search-container">
 					<input class="search-field" name="search-field" placeholder="Hae koulutuksia tästä" value="" />
+					<input type="hidden" name="lang" value="fi" />
 					<input class="infield-button magnifier" type="submit" />
 				</fieldset>
 			</form>
@@ -244,6 +242,8 @@
 	
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+	<script src="../app/lib/jquery.enhanced.cookie.js" type="text/javascript"></script>
+	<script src="js/main.js" type="text/javascript"></script>
 
 	</body>
 </html>
