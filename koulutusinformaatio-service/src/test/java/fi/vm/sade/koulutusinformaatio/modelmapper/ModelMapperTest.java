@@ -123,7 +123,6 @@ public class ModelMapperTest {
         parenLOIEntity.setId("112");
         entity.setLois(Lists.newArrayList(parenLOIEntity));
 
-        Set<ApplicationOptionEntity> aos = new HashSet<ApplicationOptionEntity>();
         ApplicationOptionEntity ao = new ApplicationOptionEntity();
         ao.setId("900");
         ao.setName(TestUtil.createI18nTextEntity("ao name", "ao name", "ao name"));
@@ -131,8 +130,6 @@ public class ModelMapperTest {
         as.setId("54543");
         ao.setApplicationSystem(as);
         ao.setEducationDegree("degree");
-        aos.add(ao);
-        entity.setApplicationOptions(aos);
 
         List<ChildLearningOpportunitySpecificationEntity> children = new ArrayList<ChildLearningOpportunitySpecificationEntity>();
         ChildLearningOpportunitySpecificationEntity childLOS = new ChildLearningOpportunitySpecificationEntity();

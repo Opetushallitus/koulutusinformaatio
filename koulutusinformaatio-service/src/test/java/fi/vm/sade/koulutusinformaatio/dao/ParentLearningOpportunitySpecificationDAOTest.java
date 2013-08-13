@@ -103,7 +103,6 @@ public class ParentLearningOpportunitySpecificationDAOTest {
 
         childLO.setLois(Lists.newArrayList(childLOI));
 
-        entity.setApplicationOptions(aos);
         children.add(childLO);
         entity.setChildren(children);
 
@@ -125,16 +124,11 @@ public class ParentLearningOpportunitySpecificationDAOTest {
         ParentLearningOpportunitySpecificationEntity fromDB = parentLearningOpportunitySpecificationDAO.get("1.2.3.4.5");
         assertNotNull(fromDB);
         assertNotNull(fromDB.getChildren());
-        assertNotNull(fromDB.getApplicationOptions());
         assertEquals(1, fromDB.getChildren().size());
-        assertEquals(1, fromDB.getApplicationOptions().size());
-        assertEquals(ao.getId(), fromDB.getApplicationOptions().iterator().next().getId());
         assertNotNull(fromDB.getChildren().get(0));
         assertEquals(ao.getId(), fromDB.getChildren().get(0).getLois().get(0).getApplicationOptions().get(0).getId());
         assertEquals(entity.getId(), fromDB.getId());
         assertEquals(entity.getChildren().get(0).getId(), fromDB.getChildren().get(0).getId());
-        assertEquals(entity.getApplicationOptions().iterator().next().getId(),
-                fromDB.getApplicationOptions().iterator().next().getId());
         assertNotNull(fromDB.getProvider());
         assertEquals(provider.getId(), fromDB.getProvider().getId());
     }
