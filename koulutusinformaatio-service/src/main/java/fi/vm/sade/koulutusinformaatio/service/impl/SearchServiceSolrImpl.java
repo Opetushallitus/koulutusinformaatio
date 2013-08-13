@@ -100,6 +100,9 @@ public class SearchServiceSolrImpl implements SearchService {
     @Override
     public LOSearchResultList searchLearningOpportunities(String term, String prerequisite,
                                                           List<String> cities, int start, int rows) throws SearchException {
+
+        System.out.println("LOGGER IMPL DEBUG: " + LOG.getClass().toString());
+
         LOSearchResultList searchResultList = new LOSearchResultList();
         String trimmed = term.trim();
         if (!trimmed.isEmpty()) {
