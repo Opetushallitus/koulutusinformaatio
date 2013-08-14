@@ -71,7 +71,7 @@ public class TarjontaServiceMockImpl implements TarjontaService {
         ParentLOI parentLOI = new ParentLOI();
         parentLOI.setId(PARENT_LOI_ID);
         parentLOI.setSelectingEducation(createI18nText("<p>Opintojen valinta teksti</p>"));
-        parentLOI.setPrerequisite(new Code("PK", createI18nText("Peruskoulu")));
+        parentLOI.setPrerequisite(new Code("PK", createI18nText("Peruskoulu"), createI18nText("Peruskoulu")));
         parentLOI.setChildRefs(Lists.newArrayList(createChildLORef()));
         parentLOI.setApplicationOptions(Sets.newHashSet(createApplicationOption()));
         return parentLOI;
@@ -104,9 +104,9 @@ public class TarjontaServiceMockImpl implements TarjontaService {
         cal.set(Calendar.DATE, 1);
         childLOI.setStartDate(cal.getTime());
         childLOI.setFormOfEducation(Lists.newArrayList(createI18nText("Nuorten koulutus", "Utbildning för unga", "Education and training for young")));
-        childLOI.setTeachingLanguages(Lists.newArrayList(new Code("FI", createI18nText("suomi"))));
+        childLOI.setTeachingLanguages(Lists.newArrayList(new Code("FI", createI18nText("suomi"), createI18nText("suomi"))));
         childLOI.setFormOfTeaching(Lists.newArrayList(createI18nText("Lähiopetus")));
-        childLOI.setPrerequisite(new Code("PK", createI18nText("Peruskoulu")));
+        childLOI.setPrerequisite(new Code("PK", createI18nText("Peruskoulu"), createI18nText("Peruskoulu")));
         childLOI.setProfessionalTitles(Lists.newArrayList(createI18nText("Graafikko")));
 
 //        childLOI.setWebLinks();
@@ -128,7 +128,7 @@ public class TarjontaServiceMockImpl implements TarjontaService {
                 "audiovisuaalinen, assistentti", "audiovisuaalinen, assistentti", "audiovisuaalinen, assistentti"));
         childLOIRef.setNameByTeachingLang("Audiovisuaalisen viestinnän koulutusohjelma, media-assistentti");
         childLOIRef.setQualification(createI18nText("Media-assistentti"));
-        childLOIRef.setPrerequisite(new Code("PK", createI18nText("Peruskoulu")));
+        childLOIRef.setPrerequisite(new Code("PK", createI18nText("Peruskoulu"), createI18nText("Peruskoulu")));
         return childLOIRef;
     }
 
@@ -167,7 +167,7 @@ public class TarjontaServiceMockImpl implements TarjontaService {
         ao.setTeachingLanguages(Lists.newArrayList("FI", "EN"));
         ao.setParent(createParentLORef());
         ao.setSelectionCriteria(createI18nText("<p>Valintaperustekuvaus</p>"));
-        ao.setPrerequisite(new Code("PK", createI18nText("Peruskoulu")));
+        ao.setPrerequisite(new Code("PK", createI18nText("Peruskoulu"), createI18nText("Peruskoulu")));
         ao.setRequiredBaseEducations(Lists.newArrayList("6", "2", "7", "0", "1", "3"));
         //ao.setExams();
         return ao;

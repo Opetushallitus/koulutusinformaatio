@@ -16,13 +16,13 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
+import com.google.common.collect.Maps;
 import fi.vm.sade.koodisto.service.types.common.KoodiMetadataType;
 import fi.vm.sade.koodisto.service.types.common.KoodiType;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import org.springframework.core.convert.converter.Converter;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,10 +33,15 @@ public class KoodiTypeToCode implements Converter<KoodiType, Code> {
     @Override
     public Code convert(KoodiType koodiType) {
         List<KoodiMetadataType> metadata = koodiType.getMetadata();
-        Map<String, String> translations = new HashMap<String, String>();
+        Map<String, String> name = Maps.newHashMap();
+        Map<String, String> shortName = Maps.newHashMap();
+        Map<String, String> description = Maps.newHashMap();
         for (KoodiMetadataType koodiMetadataType : metadata) {
-            translations.put(koodiMetadataType.getKieli().value().toLowerCase(), koodiMetadataType.getNimi());
+            String lang = koodiMetadataType.getKieli().value().toLowerCase();
+            name.put(lang, koodiMetadataType.getNimi());
+            shortName.put(lang, koodiMetadataType.getLyhytNimi());
+            description.put(lang, koodiMetadataType.getKuvaus());
         }
-        return new Code(koodiType.getKoodiArvo(), new I18nText(translations));
+        return new Code(koodiType.getKoodiArvo(), new I18nText(name, shortName), new I18nText(description));
     }
 }

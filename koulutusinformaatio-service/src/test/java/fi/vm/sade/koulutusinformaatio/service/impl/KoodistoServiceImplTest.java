@@ -17,7 +17,6 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
-import fi.vm.sade.koodisto.service.KoodiService;
 import fi.vm.sade.koodisto.service.types.SearchKoodisCriteriaType;
 import fi.vm.sade.koodisto.service.types.common.KieliType;
 import fi.vm.sade.koodisto.service.types.common.KoodiMetadataType;
@@ -36,9 +35,7 @@ import org.springframework.core.convert.ConversionService;
 import java.util.ArrayList;
 import java.util.List;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -63,11 +60,13 @@ public class KoodistoServiceImplTest {
         KoodiMetadataType metaFi = new KoodiMetadataType();
         metaFi.setNimi("nimi_fi");
         metaFi.setLyhytNimi("nimi_lyhyt_fi");
+        metaFi.setKuvaus("kuvaus_fi");
         metaFi.setKieli(KieliType.FI);
         koodi.getMetadata().add(metaFi);
         KoodiMetadataType metaSv = new KoodiMetadataType();
         metaSv.setNimi("nimi_sv");
         metaSv.setLyhytNimi("nimi_lyhyt_sv");
+        metaSv.setKuvaus("kuvaus_sv");
         metaSv.setKieli(KieliType.SV);
         koodi.getMetadata().add(metaSv);
         List<KoodiType> koodit = new ArrayList<KoodiType>();
@@ -162,8 +161,12 @@ public class KoodistoServiceImplTest {
         assertEquals(1, result.size());
         assertEquals("1234", result.get(0).getValue());
         assertNotNull(result.get(0).getDescription().getTranslations());
-        assertEquals("nimi_fi", result.get(0).getDescription().getTranslations().get("fi"));
-        assertEquals("nimi_sv", result.get(0).getDescription().getTranslations().get("sv"));
+        assertEquals("nimi_fi", result.get(0).getName().getTranslations().get("fi"));
+        assertEquals("nimi_sv", result.get(0).getName().getTranslations().get("sv"));
+        assertEquals("nimi_lyhyt_fi", result.get(0).getName().getTranslationsShortName().get("fi"));
+        assertEquals("nimi_lyhyt_sv", result.get(0).getName().getTranslationsShortName().get("sv"));
+        assertEquals("kuvaus_fi", result.get(0).getDescription().getTranslations().get("fi"));
+        assertEquals("kuvaus_sv", result.get(0).getDescription().getTranslations().get("sv"));
     }
 
     @Test
@@ -173,8 +176,12 @@ public class KoodistoServiceImplTest {
         assertEquals(1, result.size());
         assertEquals("1234", result.get(0).getValue());
         assertNotNull(result.get(0).getDescription().getTranslations());
-        assertEquals("nimi_fi", result.get(0).getDescription().getTranslations().get("fi"));
-        assertEquals("nimi_sv", result.get(0).getDescription().getTranslations().get("sv"));
+        assertEquals("nimi_fi", result.get(0).getName().getTranslations().get("fi"));
+        assertEquals("nimi_sv", result.get(0).getName().getTranslations().get("sv"));
+        assertEquals("nimi_lyhyt_fi", result.get(0).getName().getTranslationsShortName().get("fi"));
+        assertEquals("nimi_lyhyt_sv", result.get(0).getName().getTranslationsShortName().get("sv"));
+        assertEquals("kuvaus_fi", result.get(0).getDescription().getTranslations().get("fi"));
+        assertEquals("kuvaus_sv", result.get(0).getDescription().getTranslations().get("sv"));
     }
 
     @Test
@@ -198,11 +205,19 @@ public class KoodistoServiceImplTest {
         assertNotNull(result.get(1).getValue());
         assertEquals("1234", result.get(1).getValue());
         assertNotNull(result.get(0).getDescription().getTranslations());
-        assertEquals("nimi_fi", result.get(0).getDescription().getTranslations().get("fi"));
-        assertEquals("nimi_sv", result.get(0).getDescription().getTranslations().get("sv"));
+        assertEquals("nimi_fi", result.get(0).getName().getTranslations().get("fi"));
+        assertEquals("nimi_sv", result.get(0).getName().getTranslations().get("sv"));
+        assertEquals("nimi_lyhyt_fi", result.get(0).getName().getTranslationsShortName().get("fi"));
+        assertEquals("nimi_lyhyt_sv", result.get(0).getName().getTranslationsShortName().get("sv"));
+        assertEquals("kuvaus_fi", result.get(0).getDescription().getTranslations().get("fi"));
+        assertEquals("kuvaus_sv", result.get(0).getDescription().getTranslations().get("sv"));
         assertNotNull(result.get(1).getDescription().getTranslations());
-        assertEquals("nimi_fi", result.get(1).getDescription().getTranslations().get("fi"));
-        assertEquals("nimi_sv", result.get(1).getDescription().getTranslations().get("sv"));
+        assertEquals("nimi_fi", result.get(1).getName().getTranslations().get("fi"));
+        assertEquals("nimi_sv", result.get(1).getName().getTranslations().get("sv"));
+        assertEquals("nimi_lyhyt_fi", result.get(1).getName().getTranslationsShortName().get("fi"));
+        assertEquals("nimi_lyhyt_sv", result.get(1).getName().getTranslationsShortName().get("sv"));
+        assertEquals("kuvaus_fi", result.get(1).getDescription().getTranslations().get("fi"));
+        assertEquals("kuvaus_sv", result.get(1).getDescription().getTranslations().get("sv"));
     }
 
 

@@ -87,7 +87,8 @@ public class EducationDataUpdateServiceImplTest {
 
         ParentLOI parentLOI = new ParentLOI();
         parentLOI.setId("2345");
-        parentLOI.setPrerequisite(new Code("PK", TestUtil.createI18nText("Peruskoulu", "Peruskoulu", "Peruskoulu")));
+        parentLOI.setPrerequisite(new Code("PK", TestUtil.createI18nText("Peruskoulu", "Peruskoulu", "Peruskoulu"),
+                TestUtil.createI18nText("Peruskoulu", "Peruskoulu", "Peruskoulu")));
         parentLOI.setApplicationOptions(applicationOptions);
 
         ChildLOS clo = new ChildLOS();
