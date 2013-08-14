@@ -328,7 +328,25 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
                     if (as.applicationOptions.hasOwnProperty(i)) {
                         var ao = as.applicationOptions[i];
                         if (ao.childRefs) {
-                            children = children.concat(ao.childRefs);
+                            //children = children.concat(ao.childRefs);
+                            for (var childIndex in ao.childRefs) {
+                                if (ao.childRefs.hasOwnProperty(childIndex)) {
+                                    var child = ao.childRefs[childIndex];
+
+                                    var childFound = false;
+                                    for (var j in children) {
+                                        if (children.hasOwnProperty(j)) {
+                                            if (child.losId == children[j].losId) {
+                                                childFound = true;
+                                            }
+                                        }
+                                    }
+
+                                    if (!childFound) {
+                                        children.push(child);
+                                    }
+                                }
+                            }
                         }
                     }
                 }
