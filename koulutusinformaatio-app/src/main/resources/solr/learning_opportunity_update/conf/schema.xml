@@ -36,6 +36,7 @@
         <!-- stored values that are stored in teaching language and returned -->
         <field name="name" type="string" indexed="false" stored="true" multiValued="false"/>
         <field name="lopName" type="string" indexed="false" stored="true" multiValued="false"/>
+        <field name="prerequisite" type="string" indexed="false" stored="true" multiValued="false"/>
 
         <!-- translated texts -->
         <!-- copy field for normal keywords -->

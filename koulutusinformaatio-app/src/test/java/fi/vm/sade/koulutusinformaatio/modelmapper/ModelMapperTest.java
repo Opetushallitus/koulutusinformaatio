@@ -37,7 +37,7 @@ public class ModelMapperTest {
 
     @Test
     public void testMapLearningOpportunityResultToDTO() {
-        LOSearchResult result = new LOSearchResult("loid", "name", "lopid", "lop name", "parentId", "losId");
+        LOSearchResult result = new LOSearchResult("loid", "name", "lopid", "lop name", "PK", "parentId", "losId");
 
         LearningOpportunitySearchResultDTO dto = modelMapper.map(result, LearningOpportunitySearchResultDTO.class);
 
@@ -45,6 +45,7 @@ public class ModelMapperTest {
         assertEquals(result.getName(), dto.getName());
         assertEquals(result.getLopId(), dto.getLopId());
         assertEquals(result.getLopName(), dto.getLopName());
+        assertEquals(result.getPrerequisite(), dto.getPrerequisite());
         assertEquals(result.getParentId(), dto.getParentId());
         assertEquals(result.getLosId(), dto.getLosId());
 
