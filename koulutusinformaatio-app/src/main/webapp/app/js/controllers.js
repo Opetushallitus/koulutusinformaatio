@@ -23,6 +23,36 @@ function HeaderCtrl($scope, $location, ApplicationBasketService, LanguageService
 };
 
 /**
+ *  Controls footer actions
+ */
+function FooterCtrl($scope, LanguageService, kiAppConstants) {
+    $scope.locales = {
+        opetushallitus: i18n.t('opetushallitus-address-line-1'),
+        opetusministerio: i18n.t('opetusministerio-address-line-1')
+    };
+    
+    if (LanguageService.getLanguage() == LanguageService.getDefaultLanguage()) {
+        $scope.images = {
+            opetushallitus: 'img/OPH_logo.png',
+            opetusministerio: 'img/OKM_logo.png'
+        }
+
+        $scope.links = {
+            rekisteriseloste: kiAppConstants.contextRoot + 'rekisteriseloste.html'
+        }
+    } else {
+        $scope.images = {
+            opetushallitus: 'img/OPH_logo-sv.png',
+            opetusministerio: 'img/OKM_logo-sv.png'
+        }
+
+        $scope.links = {
+            rekisteriseloste: kiAppConstants.contextRoot + 'sv/rekisteriseloste.html'
+        }
+    }
+};
+
+/**
  *  Controller for index view
  */
  function IndexCtrl($scope, TitleService) {
@@ -37,6 +67,7 @@ function HeaderCtrl($scope, $location, ApplicationBasketService, LanguageService
 function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, ApplicationBasketService, SearchService, kiAppConstants) {
     var title = i18n.t('title-application-basket');
     var basketLimit = kiAppConstants.applicationBasketLimit; // TODO: get this from application data?
+    TitleService.setTitle(title);
 
     $scope.queryString = SearchService.getTerm();
     $scope.notificationText = i18n.t('application-basket-fill-form-notification', {count: basketLimit});
@@ -45,7 +76,6 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
     if (!$scope.basketIsEmpty) {
         ApplicationBasketService.query().then(function(result) {
             $scope.applicationItems = result;
-            TitleService.setTitle(title);
         });
     }
 
@@ -497,12 +527,12 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
                             $scope.childLO = result;
                             $scope.lois = result.lois;
                             setTitle($scope.parentLO, $scope.childLO);
-                            $scope.changeLOISelection();
+                            initializeParent()
                         });
                 } else {
                     setTitle($scope.parentLO, $scope.childLO);
                     $scope.lois = result.lois;
-                    $scope.changeLOISelection($scope.selectedLOI);
+                    initializeParent();
                 }
         });
     };

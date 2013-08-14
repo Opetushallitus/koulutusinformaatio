@@ -2810,17 +2810,9 @@ ul.unstyled {
 
 /* Applciation system */
 .application-system {
-  margin-top: 4em;
-    /*
-    border: #C3C3C3 1px dotted;
-    border-style: dashed none none none;
-
-    &:first-child {
-        border: none;
-    }
-    */ }
+  margin-top: 4em; }
   .application-system:first-child {
-    margin: 0; }
+    margin: 2em 0 0 0; }
   .application-system .application-option {
     border: #C3C3C3 1px dotted;
     border-style: dashed none none none;
