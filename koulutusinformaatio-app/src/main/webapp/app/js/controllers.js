@@ -23,6 +23,28 @@ function HeaderCtrl($scope, $location, ApplicationBasketService, LanguageService
 };
 
 /**
+ *  Controls footer actions
+ */
+function FooterCtrl($scope, $location, LanguageService) {
+    $scope.locales = {
+        opetushallitus: i18n.t('opetushallitus-address-line-1'),
+        opetusministerio: i18n.t('opetusministerio-address-line-1')
+    };
+    
+    if (LanguageService.getLanguage() == LanguageService.getDefaultLanguage()) {
+        $scope.images = {
+            opetushallitus: 'img/OPH_logo.png',
+            opetusministerio: 'img/OKM_logo.png'
+        }
+    } else {
+        $scope.images = {
+            opetushallitus: 'img/OPH_logo-sv.png',
+            opetusministerio: 'img/OKM_logo-sv.png'
+        }
+    }
+};
+
+/**
  *  Controller for index view
  */
  function IndexCtrl($scope, TitleService) {

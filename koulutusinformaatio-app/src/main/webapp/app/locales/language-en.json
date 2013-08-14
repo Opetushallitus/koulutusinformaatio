@@ -117,5 +117,14 @@
 
     "footer-note": "Tiedot on saatu koulutuksen järjestäjien, ammattikorkeakoulujen ja yliopistojen tallentamana tietona Opetushallituksen oppilaitostietojärjestelmästä.<br/>Tietojen oikeellisuuden voit tarkistaa kyseisestä oppilaitoksesta. (en)",
     "footer-copyright": "Copyright © 2013 Opetushallitus (en)",
-    "footer-privacy-policy": "Rekisteriseloste (en)"
+    "footer-privacy-policy": "Rekisteriseloste (en)",
+
+    "opetushallitus-address-line-1": "Opetushallitus (en)",
+    "opetushallitus-address-line-2": "Hakaniemenranta 6 (en)",
+    "opetushallitus-address-line-3": "PL 380, 00531 Helsinki (en)",
+    "opetushallitus-address-line-4": "puhelin 029 533 1000 (en)",
+
+    "opetusministerio-address-line-1": "Opetus- ja kulttuuriministeriö (en)",
+    "opetusministerio-address-line-2": "PL 29, 00023 Valtioneuvosto (en)",
+    "opetusministerio-address-line-3": "puhelin 0295 3 30004 (en)"
 }
