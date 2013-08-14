@@ -38,6 +38,8 @@ function FooterCtrl($scope, LanguageService, kiAppConstants) {
         }
 
         $scope.links = {
+            opetushallitus: 'http://www.oph.fi/etusivu',
+            opetusministerio: 'http://www.minedu.fi/OPM/',
             rekisteriseloste: kiAppConstants.contextRoot + 'rekisteriseloste.html'
         }
     } else {
@@ -47,6 +49,8 @@ function FooterCtrl($scope, LanguageService, kiAppConstants) {
         }
 
         $scope.links = {
+            opetushallitus: 'http://www.oph.fi/startsidan',
+            opetusministerio: 'http://www.minedu.fi/OPM/?lang=sv',
             rekisteriseloste: kiAppConstants.contextRoot + 'sv/rekisteriseloste.html'
         }
     }
