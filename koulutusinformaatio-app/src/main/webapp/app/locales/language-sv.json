@@ -103,7 +103,7 @@
     "application-basket-description": "Du kan samla utbildningar i minneslistan och överföra dem till ansökningsblanketten. Märk att minneslistan är aktiv endast då webbplatsen är öppen och att du kan lägga till utbildningar utgående från endast en grundutbildning.",
     "application-basket-no-content": "Minneslistan är tom.",
     "application-basket-fill-form": "Fyll i ansökningsblanketten",
-    "application-basket-fill-form-notification": "I denna ansökan kan du söka till högst__count__ utbildningar",
+    "application-basket-fill-form-notification": "I denna ansökan kan du söka till högst __count__ utbildningar",
     "application-basket-empty": "Töm minneslistan",
     "application-basket-empty-confirm": "Är du säker på att du vill tömma minneslistan?",
 

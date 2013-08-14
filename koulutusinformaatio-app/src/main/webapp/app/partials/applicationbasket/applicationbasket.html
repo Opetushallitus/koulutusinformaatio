@@ -1,13 +1,6 @@
 <section class="content-container margin-bottom-2">
     <div class="grid16-16 application-basket-container">
-        <div id="breadcrumb" class="float-left">
-            <ul>
-                <li class="breadcrumb-item home">
-                    <a href="/koulutusinformaatio-app"></a>
-                </li>
-                <li class="breadcrumb-item" data-ki-i18n="title-application-basket-content"></li>
-            </ul>
-        </div>
+        <div data-ki-breadcrumb="title-application-basket-content" id="breadcrumb" class="float-left"></div>
         <a class="float-right" href="#/haku/{{queryString}}" data-ki-i18n="application-basket-back"></a>
         <div class="clear"></clear>
         <h1 class="float-left margin-top-0">{{title}} ({{itemCount}})</h1>
@@ -34,7 +27,7 @@
                         <tbody>
                             <tr data-ng-repeat="item in as.applicationOptions" data-ng-class="rowClass($last)">
                                 <td>
-                                    <ul>
+                                    <ul class="nobullet">
                                         <li>
                                             <h4 class="margin-top-0">
                                                 <span class="block">{{item.providerName}}, {{item.providerLocation}}</span>
