@@ -58,12 +58,6 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
                     modelMapper.map(parentLOS, ParentLearningOpportunitySpecificationEntity.class);
             save(plos.getProvider());
 
-            if (plos.getApplicationOptions() != null) {
-                for (ApplicationOptionEntity ao : plos.getApplicationOptions()) {
-                    save(ao);
-                }
-            }
-
             if (plos.getChildren() != null) {
                 for (ChildLearningOpportunitySpecificationEntity cLO : plos.getChildren()) {
                     save(cLO);

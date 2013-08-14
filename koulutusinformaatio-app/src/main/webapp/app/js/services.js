@@ -172,6 +172,7 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
 
     // TODO: could we automate data transformation somehow?
     var transformData = function(result) {
+        //console.log(result);
         //var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
         //result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
 
@@ -239,8 +240,7 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
             if (result.lois.hasOwnProperty(loiIndex)) {
                 var loi = result.lois[loiIndex];
 
-
-                var loiFound;
+                var loiFound = undefined;
                 for (var i in lois) {
                     if (lois.hasOwnProperty(i)) {
                         if (lois[i].prerequisite.value == loi.prerequisite.value) {
@@ -258,27 +258,43 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
                             if (!loiFound.applicationSystems) {
                                 loiFound.applicationSystems = [];
                             }
-
-                            loiFound.applicationSystems.push(as);
-                            /*
-                            var existingAs;
+                            
+                            // group application systems
+                            var existingAs = undefined;
                             for (var asIndex in loiFound.applicationSystems) {
                                 if (loiFound.applicationSystems.hasOwnProperty(asIndex)) {
                                     var loiFoundAs = loiFound.applicationSystems[asIndex];
-
                                     if (as.id == loiFoundAs.id) {
                                         existingAs = loiFoundAs;
                                     }
-
                                 }
                             }
 
                             if (existingAs) {
+                                for (var aoIndex in as.applicationOptions) {
+                                    if (as.applicationOptions.hasOwnProperty(aoIndex)) {
+                                        var ao = as.applicationOptions[aoIndex];
 
+                                        // group application options
+                                        var aoFound = false;
+                                        for (var j in existingAs.applicationOptions) {
+                                            if (existingAs.applicationOptions.hasOwnProperty(j)) {
+                                                if (ao.id == existingAs.applicationOptions[j].id) {
+                                                    aoFound = true
+                                                    break;
+                                                }
+                                            }
+                                        }
+
+                                        if (!aoFound) {
+                                            existingAs.applicationOptions.push(ao);
+                                        }
+                                    }
+                                }
                             } else {
                                 loiFound.applicationSystems.push(as);
                             }
-                            */
+                            
                         }
                     }
                 } else {

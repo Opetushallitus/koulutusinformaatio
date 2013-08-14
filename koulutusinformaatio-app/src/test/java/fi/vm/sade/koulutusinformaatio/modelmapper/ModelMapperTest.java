@@ -18,7 +18,6 @@ package fi.vm.sade.koulutusinformaatio.modelmapper;
 
 import fi.vm.sade.koulutusinformaatio.domain.LOSearchResult;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.modelmapper.ModelMapper;
 
@@ -27,8 +26,6 @@ import static org.junit.Assert.assertEquals;
 /**
  * @author Hannu Lyytikainen
  */
-// ignore until language issues have been sorted out
-@Ignore
 public class ModelMapperTest {
 
     ModelMapper modelMapper = new ModelMapper();
