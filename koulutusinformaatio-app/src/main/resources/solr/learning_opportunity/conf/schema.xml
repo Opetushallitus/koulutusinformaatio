@@ -33,8 +33,11 @@
         <field name="prerequisites" type="lowercase" indexed="true" stored="false" multiValued="true"/>
         <field name="lopCity" type="lowercase" indexed="true" stored="false" multiValued="false"/>
 
-        <!-- translated texts -->
+        <!-- stored values that are stored in teaching language and returned -->
+        <field name="name" type="string" indexed="false" stored="true" multiValued="false"/>
+        <field name="lopName" type="string" indexed="false" stored="true" multiValued="false"/>
 
+        <!-- translated texts -->
         <!-- copy field for normal keywords -->
         <field name="text_fi" type="text_fi" indexed="true" stored="true" multiValued="true"/>
         <!-- copy field for keywords with increased relevancy value -->
@@ -48,7 +51,7 @@
         <field name="asNames" type="string" indexed="true" stored="false" multiValued="true"/>
 
         <!-- koulutusmoduuli -->
-        <field name="name_fi" type="string" indexed="false" stored="true" multiValued="false"/>
+        <field name="name_fi" type="string" indexed="false" stored="false" multiValued="false"/>
         <!-- koulutuksen toteutuksen kuvaus ??? -->
         <!-- hakukohde -->
         <field name="aoName_fi" type="string" indexed="false" stored="false" multiValued="false"/>
@@ -62,7 +65,7 @@
         <field name="content_fi" type="string" indexed="false" stored="false" multiValued="false"/>
         <!-- ammattinimike -->
         <field name="professionalTitles_fi" type="string" indexed="false" stored="false" multiValued="true"/>
-        <field name="lopName_fi" type="string" indexed="false" stored="true" multiValued="false"/>
+        <field name="lopName_fi" type="string" indexed="false" stored="false" multiValued="false"/>
         <!-- oppilaitoksen kuvaus -->
         <field name="lopDescription_fi" type="string" indexed="false" stored="false" multiValued="false"/>
         <!-- oppilaitoksen yhteystiedot -->
@@ -71,26 +74,26 @@
         <field name="asName_fi" type="string" indexed="false" stored="false" multiValued="true"/>
 
 
-        <field name="name_sv" type="string" indexed="false" stored="true" multiValued="false"/>
+        <field name="name_sv" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="aoName_sv" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="qualification_sv" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="structure_sv" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="goals_sv" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="content_sv" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="professionalTitles_sv" type="string" indexed="false" stored="false" multiValued="true"/>
-        <field name="lopName_sv" type="string" indexed="false" stored="true" multiValued="false"/>
+        <field name="lopName_sv" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="lopDescription_sv" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="lopAddress_sv" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="asName_sv" type="string" indexed="false" stored="false" multiValued="true"/>
 
-        <field name="name_en" type="string" indexed="false" stored="true" multiValued="false"/>
+        <field name="name_en" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="aoName_en" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="qualification_en" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="structure_en" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="goals_en" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="content_en" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="professionalTitles_en" type="string" indexed="false" stored="false" multiValued="true"/>
-        <field name="lopName_en" type="string" indexed="false" stored="true" multiValued="false"/>
+        <field name="lopName_en" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="lopDescription_en" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="lopAddress_en" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="asName_en" type="string" indexed="false" stored="false" multiValued="true"/>

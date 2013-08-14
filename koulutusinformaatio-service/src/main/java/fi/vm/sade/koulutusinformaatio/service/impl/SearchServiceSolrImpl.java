@@ -129,8 +129,8 @@ public class SearchServiceSolrImpl implements SearchService {
                 LOSearchResult lo = null;
                 try {
                     lo = new LOSearchResult(
-                            id, doc.get("name_fi").toString(),
-                            doc.get("lopId").toString(), doc.get("lopName_fi").toString(), parentId, losId);
+                            id, doc.get("name").toString(),
+                            doc.get("lopId").toString(), doc.get("lopName").toString(), parentId, losId);
 
                     updateAsStatus(lo, doc);
                 } catch (Exception e) {
@@ -172,26 +172,6 @@ public class SearchServiceSolrImpl implements SearchService {
 
         lo.setNextAs(new DateRange(nextStarts, nextEnds));
 
-    }
-
-    private MultiValueMap<String, String> addPrerequisite(MultiValueMap<String, String> parameters, String prerequisite, boolean vocational) {
-        String realPrerequisite = prerequisite;
-        if (realPrerequisite.equals("KESKEYTYNYT") || realPrerequisite.equals("ULKOMAINEN_TUTKINTO")) {
-            return parameters; // Ei suodatusta
-        }
-        if (realPrerequisite.equals("YLIOPPILAS")) {
-            parameters.put("LOIPrerequisite", createParameter("(5 OR 9)"));
-        } else if (realPrerequisite.equals("PERUSKOULU")) {
-            parameters.put("LOIPrerequisite", createParameter("(1 OR 2 OR 4 OR 5)"));
-        } else if (realPrerequisite.equals("OSITTAIN_YKSILOLLISTETTY")
-                || realPrerequisite.equals("ERITYISOPETUKSEN_YKSILOLLISTETTY")
-                || realPrerequisite.equals("YKSILOLLISTETTY")) {
-            parameters.put("LOIPrerequisite", createParameter("(1 OR 2 OR 4 OR 5 OR 6)"));
-        }
-        if (vocational) {
-            parameters.put("AOEducationDegree", createParameter("(NOT 32)"));
-        }
-        return parameters;
     }
 
     private List<String> createParameter(String value) {

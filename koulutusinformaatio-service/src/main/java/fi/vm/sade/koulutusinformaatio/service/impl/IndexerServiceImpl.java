@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -21,7 +22,9 @@ import java.util.Set;
 @Service
 public class IndexerServiceImpl implements IndexerService {
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(IndexerServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(IndexerServiceImpl.class);
+
+    private static final String FALLBACK_LANG = "fi";
 
     // solr client for learning opportunity index
     private final HttpSolrServer loUpdateHttpSolrServer;
@@ -89,10 +92,12 @@ public class IndexerServiceImpl implements IndexerService {
         doc.addField("id", parent.getId());
         doc.addField("lopId", provider.getId());
 
+        doc.setField("name", parent.getName().getTranslations().get("fi"));
         doc.addField("name_fi", parent.getName().getTranslations().get("fi"));
         doc.addField("name_sv", parent.getName().getTranslations().get("sv"));
         doc.addField("name_en", parent.getName().getTranslations().get("en"));
 
+        doc.setField("lopName", provider.getName().getTranslations().get("fi"));
         doc.addField("lopName_fi", provider.getName().getTranslations().get("fi"));
         doc.addField("lopName_sv", provider.getName().getTranslations().get("sv"));
         doc.addField("lopName_en", provider.getName().getTranslations().get("en"));
@@ -140,13 +145,17 @@ public class IndexerServiceImpl implements IndexerService {
         doc.addField("parentId", parent.getId());
         doc.addField("prerequisites", childLOI.getPrerequisite().getValue());
 
+        doc.setField("name", resolveTranslationInTeachingLangUseFallback(
+                childLOI.getTeachingLanguages(), childLOS.getName().getTranslationsShortName()));
         doc.addField("name_fi", childLOS.getName().getTranslations().get("fi"));
         doc.addField("name_sv", childLOS.getName().getTranslations().get("sv"));
         doc.addField("name_en", childLOS.getName().getTranslations().get("en"));
 
+        doc.setField("lopName", resolveTranslationInTeachingLangUseFallback(
+                childLOI.getTeachingLanguages(), provider.getName().getTranslations()));
         doc.addField("lopName_fi", provider.getName().getTranslations().get("fi"));
         doc.addField("lopName_sv", provider.getName().getTranslations().get("sv"));
-        doc.addField("lopName_en", provider.getName().getTranslations().get("fi"));
+        doc.addField("lopName_en", provider.getName().getTranslations().get("en"));
 
         if (provider.getVisitingAddress() != null) {
             doc.addField("lopAddress_fi", provider.getVisitingAddress().getPostOffice());
@@ -191,6 +200,24 @@ public class IndexerServiceImpl implements IndexerService {
         addApplicationSystemDates(doc, childLOI.getApplicationOptions());
     }
 
+    private String resolveTranslationInTeachingLangUseFallback(List<Code> teachingLanguages, Map<String, String> translations) {
+        String translation = null;
+        for (Code teachingLanguage : teachingLanguages) {
+            for (String key : translations.keySet()) {
+                if (teachingLanguage.getValue().equalsIgnoreCase(key)) {
+                    translation = translations.get(key);
+                }
+            }
+        }
+        if (translation == null) {
+            translation = translations.get(FALLBACK_LANG);
+        }
+        if (translation == null) {
+            translation = translations.values().iterator().next();
+        }
+
+        return translation;
+    }
 
     private void addApplicationSystemDates(SolrInputDocument doc, List<ApplicationOption> applicationOptions) {
         int parentApplicationDateRangeIndex = 0;
