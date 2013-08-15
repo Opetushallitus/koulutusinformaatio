@@ -390,7 +390,7 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
     };
 
     $scope.changePrerequisiteSelection = function(prerequisite) {
-        $location.hash(prerequisite);
+        $location.hash(prerequisite).replace();
     }
 
     $scope.loiClass = function(prerequisite) {

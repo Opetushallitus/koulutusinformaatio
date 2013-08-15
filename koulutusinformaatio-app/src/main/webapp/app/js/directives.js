@@ -108,7 +108,7 @@ directive('kiRenderProfessionalTitles', function() {
         link: function(scope, element, attrs) {
             scope.anchor = attrs.anchor;
 
-            scope.$watch('childLO.professionalTitles', function(data) {
+            scope.$watch('selectedLOI.professionalTitles', function(data) {
                 scope.showProfessionalTitles = data ? true : false;
 
             });
