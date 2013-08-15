@@ -94,11 +94,7 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
             var item = items[i];
 
             if (item.applicationSystemId == asId && item.applicationDates) {
-                var start = item.applicationDates.startDate;
-                var end = item.applicationDates.endDate;
-                var current = new Date().getTime();
-
-                return (current >= start && current <= end);
+                return item.asOngoing ? true : false;
             }
         }
 
@@ -177,7 +173,7 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
     $scope.applicationSystemIsActive = function(as) {
         for (var i in as.applicationDates) {
             if (as.applicationDates.hasOwnProperty(i)) {
-                return as.asOngoing;
+                return as.asOngoing ? true : false;
             }
         }
 

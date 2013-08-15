@@ -468,16 +468,8 @@ directive('kiRenderApplicationSystemActive', function() {
                     '<span data-ng-switch-when="past" data-ki-i18n="application-system-active-past"></span>' +
                     '<span data-ng-switch-when="present"data-ki-i18n="application-system-active-present"></span>' +
                 '</span>',
-        //scope: false,
         link: function(scope, element, attrs) {
-            console.log(scope);
             var as;
-            /*
-            attrs.$observe('dates', function(value) {
-                dates = value;
-                update();
-            });
-            */
             scope.$watch('as', function(data) {
                 as = data;
                 update();
@@ -487,29 +479,11 @@ directive('kiRenderApplicationSystemActive', function() {
                 if (as) {
                     if (as.asOngoing) {
                         scope.active = "present";
+                    } else if (as.nextApplicationPeriodStarts) {
+                        scope.active = "future";
+                        scope.timestamp = as.nextApplicationPeriodStarts;
                     } else {
-                        scope.active = "present";
-                        /*
-                        for (var i in as.applicationDates) {
-                            if (as.applicationDates.hasOwnProperty(i)) {
-                                var start = as.applicationDates[i].startDate;
-                                var end = as.applicationDates[i].endDate;
-                                var current = new Date().getTime();
-
-                                // use only the first date in list
-                                if (current < start) {
-                                    scope.active = "future";
-                                    scope.timestamp = start;
-                                } else if (current > end) {
-                                    scope.active = "past";
-                                } else {
-                                    scope.active = "present";
-                                }
-
-                                break;
-                            }
-                        }
-                        */
+                        scope.active = "past";
                     }
                 }
             };
