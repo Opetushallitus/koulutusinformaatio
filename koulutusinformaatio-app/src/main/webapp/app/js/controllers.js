@@ -177,13 +177,7 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
     $scope.applicationSystemIsActive = function(as) {
         for (var i in as.applicationDates) {
             if (as.applicationDates.hasOwnProperty(i)) {
-                var start = as.applicationDates[i].startDate;
-                var end = as.applicationDates[i].endDate;
-                var current = new Date().getTime();
-
-                if (current >= start && current <= end) {
-                    return true;
-                }
+                return as.asOngoing;
             }
         }
 
@@ -198,7 +192,6 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
  *  Controller for search field in header
  */
 function SearchFieldCtrl($scope, $routeParams, $location, SearchService, $route) {
-    //$scope.queryString = SearchService.getTerm();
     $scope.searchFieldPlaceholder = i18n.t('search-field-placeholder'); 
 
     // Perform search using LearningOpportunity service
@@ -295,7 +288,6 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
     $scope.descriptionLanguage = 'fi';
 
     // how to avoid this?
-    //$scope.selectedTab = TabService.getCurrentTab();
     $scope.providerAsideClass = 'hidden';
     $scope.applyFormClass = '';
 

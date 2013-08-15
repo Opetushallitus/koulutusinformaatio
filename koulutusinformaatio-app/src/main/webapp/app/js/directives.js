@@ -468,33 +468,48 @@ directive('kiRenderApplicationSystemActive', function() {
                     '<span data-ng-switch-when="past" data-ki-i18n="application-system-active-past"></span>' +
                     '<span data-ng-switch-when="present"data-ki-i18n="application-system-active-present"></span>' +
                 '</span>',
+        //scope: false,
         link: function(scope, element, attrs) {
-            var dates;
+            console.log(scope);
+            var as;
+            /*
             attrs.$observe('dates', function(value) {
                 dates = value;
                 update();
             });
+            */
+            scope.$watch('as', function(data) {
+                as = data;
+                update();
+            });
 
             var update = function() {
-                if (dates) {
-                    for (var i in dates) {
-                        if (dates.hasOwnProperty(i)) {
-                            var start = dates[i].startDate;
-                            var end = dates[i].endDate;
-                            var current = new Date().getTime();
+                if (as) {
+                    if (as.asOngoing) {
+                        scope.active = "present";
+                    } else {
+                        scope.active = "present";
+                        /*
+                        for (var i in as.applicationDates) {
+                            if (as.applicationDates.hasOwnProperty(i)) {
+                                var start = as.applicationDates[i].startDate;
+                                var end = as.applicationDates[i].endDate;
+                                var current = new Date().getTime();
 
-                            // use only the first date in list
-                            if (current < start) {
-                                scope.active = "future";
-                                scope.timestamp = start;
-                            } else if (current > end) {
-                                scope.active = "past";
-                            } else {
-                                scope.active = "present";
+                                // use only the first date in list
+                                if (current < start) {
+                                    scope.active = "future";
+                                    scope.timestamp = start;
+                                } else if (current > end) {
+                                    scope.active = "past";
+                                } else {
+                                    scope.active = "present";
+                                }
+
+                                break;
                             }
-
-                            break;
                         }
+                        */
                     }
                 }
             };
