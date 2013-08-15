@@ -31,6 +31,7 @@ public class BasketItemDTO {
     private String applicationSystemName;
     private List<DateRangeDTO> applicationDates = new ArrayList<DateRangeDTO>();
     private List<BasketApplicationOptionDTO> applicationOptions = new ArrayList<BasketApplicationOptionDTO>();
+    private boolean asOngoing;
 
     public String getApplicationSystemId() {
         return applicationSystemId;
@@ -62,5 +63,13 @@ public class BasketItemDTO {
 
     public void setApplicationOptions(List<BasketApplicationOptionDTO> applicationOptions) {
         this.applicationOptions = applicationOptions;
+    }
+
+    public boolean isAsOngoing() {
+        return asOngoing;
+    }
+
+    public void setAsOngoing(boolean asOngoing) {
+        this.asOngoing = asOngoing;
     }
 }
