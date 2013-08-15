@@ -163,7 +163,7 @@ public class SearchServiceSolrImpl implements SearchService {
                     return;
                 }
 
-                if (nextStarts == null || (start.after(now) && start.before(nextStarts))) {
+                if ((nextStarts == null && start.after(now)) || (start.after(now) && start.before(nextStarts))) {
                     nextStarts = start;
                     nextEnds = end;
                 }
