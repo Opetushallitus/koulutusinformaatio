@@ -103,7 +103,7 @@
     "application-basket-description": "Du kan samla utbildningar i minneslistan och överföra dem till ansökningsblanketten. Märk att minneslistan är aktiv endast då webbplatsen är öppen och att du kan lägga till utbildningar utgående från endast en grundutbildning.",
     "application-basket-no-content": "Minneslistan är tom.",
     "application-basket-fill-form": "Fyll i ansökningsblanketten",
-    "application-basket-fill-form-notification": "I denna ansökan kan du söka till högst__count__ utbildningar",
+    "application-basket-fill-form-notification": "I denna ansökan kan du söka till högst __count__ utbildningar",
     "application-basket-empty": "Töm minneslistan",
     "application-basket-empty-confirm": "Är du säker på att du vill tömma minneslistan?",
 
@@ -117,5 +117,14 @@
 
     "footer-note": "Uppgifterna härstammar från Utbildningsstyrelsens läroanstaltsdatasystem, som uppdateras av utbildningsanordnare, yrkeshögskolor och universitet. <br/>Du kan kontrollera att uppgifterna är riktiga av läroanstalten.",
     "footer-copyright": "Copyright © 2013 Utbildningsstyrelsen",
-    "footer-privacy-policy": "Registerbeskrivning"
+    "footer-privacy-policy": "Registerbeskrivning",
+
+    "opetushallitus-address-line-1": "Utbildningsstyrelsen",
+    "opetushallitus-address-line-2": "Hagnäskajen 6",
+    "opetushallitus-address-line-3": "PB 380, 00531 Helsingfors",
+    "opetushallitus-address-line-4": "telefon 029 533 1000",
+
+    "opetusministerio-address-line-1": "Undervisnings- och kulturministeriet",
+    "opetusministerio-address-line-2": "PB 29, 00023 Statsrådet",
+    "opetusministerio-address-line-3": "telefon 0295 3 30004"
 }

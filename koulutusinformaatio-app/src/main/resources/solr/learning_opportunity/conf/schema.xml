@@ -33,8 +33,12 @@
         <field name="prerequisites" type="lowercase" indexed="true" stored="false" multiValued="true"/>
         <field name="lopCity" type="lowercase" indexed="true" stored="false" multiValued="false"/>
 
-        <!-- translated texts -->
+        <!-- stored values that are stored in teaching language and returned -->
+        <field name="name" type="string" indexed="false" stored="true" multiValued="false"/>
+        <field name="lopName" type="string" indexed="false" stored="true" multiValued="false"/>
+        <field name="prerequisite" type="string" indexed="false" stored="true" multiValued="false"/>
 
+        <!-- translated texts -->
         <!-- copy field for normal keywords -->
         <field name="text_fi" type="text_fi" indexed="true" stored="true" multiValued="true"/>
         <!-- copy field for keywords with increased relevancy value -->
@@ -48,7 +52,7 @@
         <field name="asNames" type="string" indexed="true" stored="false" multiValued="true"/>
 
         <!-- koulutusmoduuli -->
-        <field name="name_fi" type="string" indexed="false" stored="true" multiValued="false"/>
+        <field name="name_fi" type="string" indexed="false" stored="false" multiValued="false"/>
         <!-- koulutuksen toteutuksen kuvaus ??? -->
         <!-- hakukohde -->
         <field name="aoName_fi" type="string" indexed="false" stored="false" multiValued="false"/>
@@ -62,7 +66,7 @@
         <field name="content_fi" type="string" indexed="false" stored="false" multiValued="false"/>
         <!-- ammattinimike -->
         <field name="professionalTitles_fi" type="string" indexed="false" stored="false" multiValued="true"/>
-        <field name="lopName_fi" type="string" indexed="false" stored="true" multiValued="false"/>
+        <field name="lopName_fi" type="string" indexed="false" stored="false" multiValued="false"/>
         <!-- oppilaitoksen kuvaus -->
         <field name="lopDescription_fi" type="string" indexed="false" stored="false" multiValued="false"/>
         <!-- oppilaitoksen yhteystiedot -->
@@ -71,26 +75,26 @@
         <field name="asName_fi" type="string" indexed="false" stored="false" multiValued="true"/>
 
 
-        <field name="name_sv" type="string" indexed="false" stored="true" multiValued="false"/>
+        <field name="name_sv" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="aoName_sv" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="qualification_sv" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="structure_sv" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="goals_sv" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="content_sv" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="professionalTitles_sv" type="string" indexed="false" stored="false" multiValued="true"/>
-        <field name="lopName_sv" type="string" indexed="false" stored="true" multiValued="false"/>
+        <field name="lopName_sv" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="lopDescription_sv" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="lopAddress_sv" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="asName_sv" type="string" indexed="false" stored="false" multiValued="true"/>
 
-        <field name="name_en" type="string" indexed="false" stored="true" multiValued="false"/>
+        <field name="name_en" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="aoName_en" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="qualification_en" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="structure_en" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="goals_en" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="content_en" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="professionalTitles_en" type="string" indexed="false" stored="false" multiValued="true"/>
-        <field name="lopName_en" type="string" indexed="false" stored="true" multiValued="false"/>
+        <field name="lopName_en" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="lopDescription_en" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="lopAddress_en" type="string" indexed="false" stored="false" multiValued="false"/>
         <field name="asName_en" type="string" indexed="false" stored="false" multiValued="true"/>
@@ -156,14 +160,19 @@
 
         <!-- Swedish -->
         <fieldType name="text_sv" class="solr.TextField" positionIncrementGap="100">
-            <analyzer>
+            <analyzer type="index">
                 <charFilter class="solr.HTMLStripCharFilterFactory"/>
                 <tokenizer class="solr.StandardTokenizerFactory"/>
                 <filter class="solr.LowerCaseFilterFactory"/>
                 <filter class="solr.StopFilterFactory" ignoreCase="true" words="lang/stopwords_sv.txt" format="snowball"
                         enablePositionIncrements="true"/>
                 <filter class="solr.SnowballPorterFilterFactory" language="Swedish"/>
-                <!-- less aggressive: <filter class="solr.SwedishLightStemFilterFactory"/> -->
+                <filter class="solr.EdgeNGramFilterFactory" minGramSize="3" maxGramSize="40" side="front"/>
+            </analyzer>
+            <analyzer type="query">
+                <tokenizer class="solr.StandardTokenizerFactory"/>
+                <filter class="solr.LowerCaseFilterFactory"/>
+                <filter class="solr.SnowballPorterFilterFactory" language="Swedish"/>
             </analyzer>
         </fieldType>
 
@@ -190,10 +199,11 @@ also applies synonyms from synonyms.txt. -->
                 <filter class="solr.LowerCaseFilterFactory"/>
                 <filter class="solr.EnglishPossessiveFilterFactory"/>
                 <!--<filter class="solr.KeywordMarkerFilterFactory" protected="protwords.txt"/>-->
-                <!-- Optionally you may want to use this less aggressive stemmer instead of PorterStemFilterFactory:
-            <filter class="solr.EnglishMinimalStemFilterFactory"/>
-        -->
-                <filter class="solr.PorterStemFilterFactory"/>
+                <!-- Optionally you may want to use this less aggressive stemmer instead of PorterStemFilterFactory: -->
+
+                <filter class="solr.EnglishMinimalStemFilterFactory"/>
+                <!--<filter class="solr.PorterStemFilterFactory"/>-->
+                <filter class="solr.EdgeNGramFilterFactory" minGramSize="3" maxGramSize="40" side="front"/>
             </analyzer>
             <analyzer type="query">
                 <tokenizer class="solr.StandardTokenizerFactory"/>
@@ -206,10 +216,9 @@ also applies synonyms from synonyms.txt. -->
                 <filter class="solr.LowerCaseFilterFactory"/>
                 <filter class="solr.EnglishPossessiveFilterFactory"/>
                 <!--<filter class="solr.KeywordMarkerFilterFactory" protected="protwords.txt"/>-->
-                <!-- Optionally you may want to use this less aggressive stemmer instead of PorterStemFilterFactory:
-            <filter class="solr.EnglishMinimalStemFilterFactory"/>
-        -->
-                <filter class="solr.PorterStemFilterFactory"/>
+                <!-- Optionally you may want to use this less aggressive stemmer instead of PorterStemFilterFactory: -->
+                <filter class="solr.EnglishMinimalStemFilterFactory"/>
+                <!--<filter class="solr.PorterStemFilterFactory"/>-->
             </analyzer>
         </fieldType>
 
@@ -235,7 +244,7 @@ also applies synonyms from synonyms.txt. -->
         <fieldType name="int" class="solr.TrieIntField" precisionStep="0" positionIncrementGap="0"/>
         <fieldType name="float" class="solr.TrieFloatField" precisionStep="0" positionIncrementGap="0"/>
         <fieldType name="long" class="solr.TrieLongField" precisionStep="0" positionIncrementGap="0"/>
-        2<fieldType name="double" class="solr.TrieDoubleField" precisionStep="0" positionIncrementGap="0"/>
+        <fieldType name="double" class="solr.TrieDoubleField" precisionStep="0" positionIncrementGap="0"/>
 
         <!--
          Numeric field types that index each value at various levels of precision

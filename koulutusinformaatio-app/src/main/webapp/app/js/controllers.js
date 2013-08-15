@@ -23,6 +23,40 @@ function HeaderCtrl($scope, $location, ApplicationBasketService, LanguageService
 };
 
 /**
+ *  Controls footer actions
+ */
+function FooterCtrl($scope, LanguageService, kiAppConstants) {
+    $scope.locales = {
+        opetushallitus: i18n.t('opetushallitus-address-line-1'),
+        opetusministerio: i18n.t('opetusministerio-address-line-1')
+    };
+    
+    if (LanguageService.getLanguage() == LanguageService.getDefaultLanguage()) {
+        $scope.images = {
+            opetushallitus: 'img/OPH_logo.png',
+            opetusministerio: 'img/OKM_logo.png'
+        }
+
+        $scope.links = {
+            opetushallitus: 'http://www.oph.fi/etusivu',
+            opetusministerio: 'http://www.minedu.fi/OPM/',
+            rekisteriseloste: kiAppConstants.contextRoot + 'rekisteriseloste.html'
+        }
+    } else {
+        $scope.images = {
+            opetushallitus: 'img/OPH_logo-sv.png',
+            opetusministerio: 'img/OKM_logo-sv.png'
+        }
+
+        $scope.links = {
+            opetushallitus: 'http://www.oph.fi/startsidan',
+            opetusministerio: 'http://www.minedu.fi/OPM/?lang=sv',
+            rekisteriseloste: kiAppConstants.contextRoot + 'sv/rekisteriseloste.html'
+        }
+    }
+};
+
+/**
  *  Controller for index view
  */
  function IndexCtrl($scope, TitleService) {
@@ -37,6 +71,7 @@ function HeaderCtrl($scope, $location, ApplicationBasketService, LanguageService
 function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, ApplicationBasketService, SearchService, kiAppConstants) {
     var title = i18n.t('title-application-basket');
     var basketLimit = kiAppConstants.applicationBasketLimit; // TODO: get this from application data?
+    TitleService.setTitle(title);
 
     $scope.queryString = SearchService.getTerm();
     $scope.notificationText = i18n.t('application-basket-fill-form-notification', {count: basketLimit});
@@ -45,7 +80,6 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
     if (!$scope.basketIsEmpty) {
         ApplicationBasketService.query().then(function(result) {
             $scope.applicationItems = result;
-            TitleService.setTitle(title);
         });
     }
 
@@ -60,11 +94,7 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
             var item = items[i];
 
             if (item.applicationSystemId == asId && item.applicationDates) {
-                var start = item.applicationDates.startDate;
-                var end = item.applicationDates.endDate;
-                var current = new Date().getTime();
-
-                return (current >= start && current <= end);
+                return item.asOngoing ? true : false;
             }
         }
 
@@ -143,13 +173,7 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
     $scope.applicationSystemIsActive = function(as) {
         for (var i in as.applicationDates) {
             if (as.applicationDates.hasOwnProperty(i)) {
-                var start = as.applicationDates[i].startDate;
-                var end = as.applicationDates[i].endDate;
-                var current = new Date().getTime();
-
-                if (current >= start && current <= end) {
-                    return true;
-                }
+                return as.asOngoing ? true : false;
             }
         }
 
@@ -164,7 +188,6 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
  *  Controller for search field in header
  */
 function SearchFieldCtrl($scope, $routeParams, $location, SearchService, $route) {
-    //$scope.queryString = SearchService.getTerm();
     $scope.searchFieldPlaceholder = i18n.t('search-field-placeholder'); 
 
     // Perform search using LearningOpportunity service
@@ -261,7 +284,6 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
     $scope.descriptionLanguage = 'fi';
 
     // how to avoid this?
-    //$scope.selectedTab = TabService.getCurrentTab();
     $scope.providerAsideClass = 'hidden';
     $scope.applyFormClass = '';
 
@@ -333,7 +355,25 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
                     if (as.applicationOptions.hasOwnProperty(i)) {
                         var ao = as.applicationOptions[i];
                         if (ao.childRefs) {
-                            children = children.concat(ao.childRefs);
+                            //children = children.concat(ao.childRefs);
+                            for (var childIndex in ao.childRefs) {
+                                if (ao.childRefs.hasOwnProperty(childIndex)) {
+                                    var child = ao.childRefs[childIndex];
+
+                                    var childFound = false;
+                                    for (var j in children) {
+                                        if (children.hasOwnProperty(j)) {
+                                            if (child.losId == children[j].losId) {
+                                                childFound = true;
+                                            }
+                                        }
+                                    }
+
+                                    if (!childFound) {
+                                        children.push(child);
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -377,7 +417,7 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
     };
 
     $scope.changePrerequisiteSelection = function(prerequisite) {
-        $location.hash(prerequisite);
+        $location.hash(prerequisite).replace();
     }
 
     $scope.loiClass = function(prerequisite) {
@@ -479,12 +519,12 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
                             $scope.childLO = result;
                             $scope.lois = result.lois;
                             setTitle($scope.parentLO, $scope.childLO);
-                            $scope.changeLOISelection();
+                            initializeParent()
                         });
                 } else {
                     setTitle($scope.parentLO, $scope.childLO);
                     $scope.lois = result.lois;
-                    $scope.changeLOISelection($scope.selectedLOI);
+                    initializeParent();
                 }
         });
     };

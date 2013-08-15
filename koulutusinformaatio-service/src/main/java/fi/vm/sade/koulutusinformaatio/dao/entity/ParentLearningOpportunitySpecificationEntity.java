@@ -22,7 +22,6 @@ import com.google.code.morphia.annotations.Id;
 import com.google.code.morphia.annotations.Reference;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Mikko Majapuro
@@ -36,8 +35,6 @@ public class ParentLearningOpportunitySpecificationEntity {
     private I18nTextEntity name;
     @Embedded
     private String educationDegree;
-    @Reference
-    private Set<ApplicationOptionEntity> applicationOptions;
     @Reference
     private LearningOpportunityProviderEntity provider;
     @Embedded
@@ -86,14 +83,6 @@ public class ParentLearningOpportunitySpecificationEntity {
 
     public void setEducationDegree(String educationDegree) {
         this.educationDegree = educationDegree;
-    }
-
-    public Set<ApplicationOptionEntity> getApplicationOptions() {
-        return applicationOptions;
-    }
-
-    public void setApplicationOptions(Set<ApplicationOptionEntity> applicationOptions) {
-        this.applicationOptions = applicationOptions;
     }
 
     public LearningOpportunityProviderEntity getProvider() {

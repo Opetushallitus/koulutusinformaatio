@@ -10,7 +10,6 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunitySpecif
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.modelmapper.ModelMapper;
 
@@ -23,7 +22,6 @@ import static org.mockito.Mockito.*;
 /**
  * @author Mikko Majapuro
  */
-@Ignore
 public class EducationDataUpdateServiceImplTest {
 
     private EducationDataUpdateServiceImpl service;
@@ -89,7 +87,8 @@ public class EducationDataUpdateServiceImplTest {
 
         ParentLOI parentLOI = new ParentLOI();
         parentLOI.setId("2345");
-        parentLOI.setPrerequisite(new Code("PK", TestUtil.createI18nText("Peruskoulu", "Peruskoulu", "Peruskoulu")));
+        parentLOI.setPrerequisite(new Code("PK", TestUtil.createI18nText("Peruskoulu", "Peruskoulu", "Peruskoulu"),
+                TestUtil.createI18nText("Peruskoulu", "Peruskoulu", "Peruskoulu")));
         parentLOI.setApplicationOptions(applicationOptions);
 
         ChildLOS clo = new ChildLOS();
@@ -106,7 +105,7 @@ public class EducationDataUpdateServiceImplTest {
 
         service.save(plo);
         verify(parentLearningOpportunitySpecificationDAO, times(1)).save(any(ParentLearningOpportunitySpecificationEntity.class));
-        verify(applicationOptionDAO, times(2)).save(any(ApplicationOptionEntity.class));
-        verify(learningOpportunityProviderDAO, times(3)).save(any(LearningOpportunityProviderEntity.class));
+        verify(applicationOptionDAO, times(1)).save(any(ApplicationOptionEntity.class));
+        verify(learningOpportunityProviderDAO, times(2)).save(any(LearningOpportunityProviderEntity.class));
     }
 }

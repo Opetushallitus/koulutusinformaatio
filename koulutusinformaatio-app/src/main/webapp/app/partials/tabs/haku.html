@@ -4,7 +4,7 @@
         <div data-ng-switch-when="false"> -->
             <h4 class="margin-bottom-0" data-ki-i18n="application-prerequisite"></h4>
             <form>
-                <ul class="margin-bottom-2 nobullet">
+                <ul class="nobullet">
                     <li data-ng-repeat="loi in lois">
                         <input 
                         type="radio" 
@@ -42,7 +42,7 @@
                             <a href="#/koulutusohjelma/{{child.losId}}#{{prerequisite.value}}">{{child.name}}</a>
                         </li>
                     </ul>
-                    <form name="levelSelectionForm" action="/haku-app/lomake/{{as.id}}/yhteishaku" method="POST" class="margin-top-2">
+                    <form name="levelSelectionForm" action="/haku-app/lomake/{{as.id}}" method="POST" class="margin-top-2">
                         <input 
                         type="hidden" 
                         name="preference1-Opetuspiste" 
@@ -97,10 +97,7 @@
                     </button>
                 </form>
 
-                <div class="margin-top-2"
-                    data-ki-render-application-system-active 
-                    data-dates="{{as.applicationDates}}">
-                </div>
+                <div class="margin-top-2" data-ki-render-application-system-active></div>
             </div>
         </div>
     </div>

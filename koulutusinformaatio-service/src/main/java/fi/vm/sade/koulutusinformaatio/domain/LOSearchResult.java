@@ -16,6 +16,8 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
+import java.util.Date;
+
 /**
  * Learning opportunity result. Can be a specification (LOS) or an instance (LOI).
  *
@@ -27,18 +29,20 @@ public class LOSearchResult {
     private String name;
     private String lopId;
     private String lopName;
+    private String prerequisite;
     private String parentId;
     private String losId;
     private boolean asOngoing;
-    private DateRange nextAs;
+    private Date nextApplicationPeriodStarts;
 
 
     public LOSearchResult(String id, String name, String lopId, String lopName,
-                          String parentId, String losId) {
+                          String prerequisite, String parentId, String losId) {
         this.id = id;
         this.name = name;
         this.lopId = lopId;
         this.lopName = lopName;
+        this.prerequisite = prerequisite;
         this.parentId = parentId;
         this.losId = losId;
     }
@@ -75,6 +79,14 @@ public class LOSearchResult {
         this.lopName = lopName;
     }
 
+    public String getPrerequisite() {
+        return prerequisite;
+    }
+
+    public void setPrerequisite(String prerequisite) {
+        this.prerequisite = prerequisite;
+    }
+
     public String getParentId() {
         return parentId;
     }
@@ -99,11 +111,11 @@ public class LOSearchResult {
         this.asOngoing = asOngoing;
     }
 
-    public DateRange getNextAs() {
-        return nextAs;
+    public Date getNextApplicationPeriodStarts() {
+        return nextApplicationPeriodStarts;
     }
 
-    public void setNextAs(DateRange nextAs) {
-        this.nextAs = nextAs;
+    public void setNextApplicationPeriodStarts(Date nextApplicationPeriodStarts) {
+        this.nextApplicationPeriodStarts = nextApplicationPeriodStarts;
     }
 }

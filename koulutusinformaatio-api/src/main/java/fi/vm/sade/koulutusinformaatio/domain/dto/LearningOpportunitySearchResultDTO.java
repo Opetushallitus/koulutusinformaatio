@@ -18,6 +18,8 @@ package fi.vm.sade.koulutusinformaatio.domain.dto;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
+import java.util.Date;
+
 /**
  * Free word education search result.
  *
@@ -30,10 +32,11 @@ public class LearningOpportunitySearchResultDTO {
     private String name;
     private String lopId;
     private String lopName;
+    private String prerequisite;
     private String parentId;
     private String losId;
     private boolean asOngoing;
-    private DateRangeDTO nextAs;
+    private Date nextApplicationPeriodStarts;
 
     public String getId() {
         return id;
@@ -67,6 +70,14 @@ public class LearningOpportunitySearchResultDTO {
         this.lopName = lopName;
     }
 
+    public String getPrerequisite() {
+        return prerequisite;
+    }
+
+    public void setPrerequisite(String prerequisite) {
+        this.prerequisite = prerequisite;
+    }
+
     public String getParentId() {
         return parentId;
     }
@@ -91,11 +102,11 @@ public class LearningOpportunitySearchResultDTO {
         this.asOngoing = asOngoing;
     }
 
-    public DateRangeDTO getNextAs() {
-        return nextAs;
+    public Date getNextApplicationPeriodStarts() {
+        return nextApplicationPeriodStarts;
     }
 
-    public void setNextAs(DateRangeDTO nextAs) {
-        this.nextAs = nextAs;
+    public void setNextApplicationPeriodStarts(Date nextApplicationPeriodStarts) {
+        this.nextApplicationPeriodStarts = nextApplicationPeriodStarts;
     }
 }

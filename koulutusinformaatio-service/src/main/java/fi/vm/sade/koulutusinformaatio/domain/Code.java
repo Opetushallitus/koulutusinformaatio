@@ -25,12 +25,14 @@ package fi.vm.sade.koulutusinformaatio.domain;
 public class Code {
 
     private String value;
+    private I18nText name;
     private I18nText description;
 
     public Code() {}
 
-    public Code(String value, I18nText description) {
+    public Code(String value, I18nText name, I18nText description) {
         this.value = value;
+        this.name = name;
         this.description = description;
     }
 
@@ -40,6 +42,14 @@ public class Code {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public I18nText getName() {
+        return name;
+    }
+
+    public void setName(I18nText name) {
+        this.name = name;
     }
 
     public I18nText getDescription() {

@@ -64,6 +64,8 @@ public class ApplicationOptionsToBasketItemDTOs {
                     basketItem.getApplicationOptions().add(aoDTO);
                     basketItem.setApplicationSystemName(ConverterUtil.getTextByLanguageUseFallbackLang(as.getName(), lang));
                     basketItem.setApplicationDates(DateRangeToDTO.convert(as.getApplicationDates()));
+                    basketItem.setAsOngoing(ConverterUtil.isOngoing(as.getApplicationDates()));
+                    basketItem.setNextApplicationPeriodStarts(ConverterUtil.resolveNextDateRangeStart(as.getApplicationDates()));
                     items.put(as.getId(), basketItem);
                 }
             }

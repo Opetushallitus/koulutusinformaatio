@@ -108,7 +108,7 @@ directive('kiRenderProfessionalTitles', function() {
         link: function(scope, element, attrs) {
             scope.anchor = attrs.anchor;
 
-            scope.$watch('childLO.professionalTitles', function(data) {
+            scope.$watch('selectedLOI.professionalTitles', function(data) {
                 scope.showProfessionalTitles = data ? true : false;
 
             });
@@ -311,7 +311,7 @@ directive('kiAbsoluteLink', function() {
         templateUrl: 'templates/breadcrumb.html',
         link: function(scope, element, attrs) {
             var home = 'home';
-            var search = i18n.t('breadcrumb-search-results');
+            var root = i18n.t('breadcrumb-search-results');
             var parent;
             var child;
 
@@ -325,6 +325,11 @@ directive('kiAbsoluteLink', function() {
                 update();
             }, true);
 
+            attrs.$observe('kiBreadcrumb', function(data) {
+                root = i18n.t(data);
+                update();
+            });
+
             var update = function() {
                 scope.breadcrumbItems = [];
 
@@ -334,7 +339,7 @@ directive('kiAbsoluteLink', function() {
                     pushItem({name: home, linkHref: kiAppConstants.contextRoot + LanguageService.getLanguage() });
                 }
                 
-                pushItem({name: search, linkHref: '#/haku/' + SearchService.getTerm() });
+                pushItem({name: root, linkHref: '#/haku/' + SearchService.getTerm() });
 
                 if (scope.parentLO) {
                     pushItem({name: parent, linkHref: '#/tutkinto/' + scope.parentLO.id });
@@ -443,8 +448,8 @@ directive('kiAsState', function() {
     return function(scope, element, attrs) {
         if (scope.lo.asOngoing) {
             element.html(i18n.t('search-as-ongoing'));
-        } else if (scope.lo.nextAs) {
-            var ts = new Date(scope.lo.nextAs.startDate);
+        } else if (scope.lo.nextApplicationPeriodStarts) {
+            var ts = new Date(scope.lo.nextApplicationPeriodStarts);
             element.html(i18n.t('search-as-next') + ' ' + ts.getDate() + '.' + (ts.getMonth() + 1) + '.' + ts.getFullYear());
         }
     }
@@ -464,32 +469,21 @@ directive('kiRenderApplicationSystemActive', function() {
                     '<span data-ng-switch-when="present"data-ki-i18n="application-system-active-present"></span>' +
                 '</span>',
         link: function(scope, element, attrs) {
-            var dates;
-            attrs.$observe('dates', function(value) {
-                dates = value;
+            var as;
+            scope.$watch('as', function(data) {
+                as = data;
                 update();
             });
 
             var update = function() {
-                if (dates) {
-                    for (var i in dates) {
-                        if (dates.hasOwnProperty(i)) {
-                            var start = dates[i].startDate;
-                            var end = dates[i].endDate;
-                            var current = new Date().getTime();
-
-                            // use only the first date in list
-                            if (current < start) {
-                                scope.active = "future";
-                                scope.timestamp = start;
-                            } else if (current > end) {
-                                scope.active = "past";
-                            } else {
-                                scope.active = "present";
-                            }
-
-                            break;
-                        }
+                if (as) {
+                    if (as.asOngoing) {
+                        scope.active = "present";
+                    } else if (as.nextApplicationPeriodStarts) {
+                        scope.active = "future";
+                        scope.timestamp = as.nextApplicationPeriodStarts;
+                    } else {
+                        scope.active = "past";
                     }
                 }
             };
