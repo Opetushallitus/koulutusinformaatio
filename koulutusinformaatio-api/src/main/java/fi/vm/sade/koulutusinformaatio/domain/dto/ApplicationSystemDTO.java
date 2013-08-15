@@ -31,6 +31,7 @@ public class ApplicationSystemDTO {
     private String name;
     private List<DateRangeDTO> applicationDates = new ArrayList<DateRangeDTO>();
     private List<ApplicationOptionDTO> applicationOptions = new ArrayList<ApplicationOptionDTO>();
+    private boolean asOngoing;
 
     public String getId() {
         return id;
@@ -62,5 +63,13 @@ public class ApplicationSystemDTO {
 
     public void setApplicationOptions(List<ApplicationOptionDTO> applicationOptions) {
         this.applicationOptions = applicationOptions;
+    }
+
+    public boolean isAsOngoing() {
+        return asOngoing;
+    }
+
+    public void setAsOngoing(boolean asOngoing) {
+        this.asOngoing = asOngoing;
     }
 }

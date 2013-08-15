@@ -17,7 +17,10 @@
 package fi.vm.sade.koulutusinformaatio.converter;
 
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
+import fi.vm.sade.koulutusinformaatio.domain.DateRange;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
+
+import java.util.Date;
 
 /**
  * @author Mikko Majapuro
@@ -30,6 +33,14 @@ public class ApplicationSystemToDTO {
             ao.setId(applicationSystem.getId());
             ao.setName(ConverterUtil.getTextByLanguageUseFallbackLang(applicationSystem.getName(), lang));
             ao.setApplicationDates(DateRangeToDTO.convert(applicationSystem.getApplicationDates()));
+            Date now = new Date();
+            ao.setAsOngoing(false);
+            for (DateRange dr : applicationSystem.getApplicationDates()) {
+                if (dr.getStartDate().before(now) && now.before(dr.getEndDate())) {
+                    ao.setAsOngoing(true);
+                    break;
+                }
+            }
             return ao;
         } else {
             return null;
