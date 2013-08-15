@@ -28,7 +28,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 /**
  * @author Hannu Lyytikainen
@@ -55,7 +55,8 @@ public class ApplicationSystemToDTOTest {
         ApplicationSystemDTO dto = ApplicationSystemToDTO.convert(as, "fi");
         assertEquals(as.getId(), dto.getId());
         assertEquals(as.getName().getTranslations().get("fi"), dto.getName());
-        assertEquals(true, dto.isAsOngoing());
+        assertTrue(dto.isAsOngoing());
+        assertNull(dto.getNextApplicationPeriodStarts());
     }
 
     @Test
@@ -78,6 +79,35 @@ public class ApplicationSystemToDTOTest {
         ApplicationSystemDTO dto = ApplicationSystemToDTO.convert(as, "fi");
         assertEquals(as.getId(), dto.getId());
         assertEquals(as.getName().getTranslations().get("fi"), dto.getName());
-        assertEquals(false, dto.isAsOngoing());
+        assertFalse(dto.isAsOngoing());
+        assertNull(dto.getNextApplicationPeriodStarts());
     }
+
+    @Test
+    public void testUpcoming() {
+        ApplicationSystem as = new ApplicationSystem();
+        as.setId("1234");
+        Map<String, String> translations = Maps.newHashMap();
+        translations.put("fi", "Yhteishaku");
+        as.setName(new I18nText(translations));
+        Calendar calStart = new GregorianCalendar();
+        calStart.set(Calendar.YEAR, 2030);
+        calStart.set(Calendar.MONTH, Calendar.JANUARY);
+        calStart.set(Calendar.DATE, 1);
+        Calendar calEnd = new GregorianCalendar();
+        calEnd.set(Calendar.YEAR, 2031);
+        calEnd.set(Calendar.MONTH, Calendar.JANUARY);
+        calEnd.set(Calendar.DATE, 1);
+        DateRange dr = new DateRange(calStart.getTime(), calEnd.getTime());
+        as.setApplicationDates(Lists.newArrayList(dr));
+        ApplicationSystemDTO dto = ApplicationSystemToDTO.convert(as, "fi");
+        assertEquals(as.getId(), dto.getId());
+        assertEquals(as.getName().getTranslations().get("fi"), dto.getName());
+        assertFalse(dto.isAsOngoing());
+        assertNotNull(dto.getNextApplicationPeriodStarts());
+        assertEquals(calStart.getTime(), dto.getNextApplicationPeriodStarts());
+
+
+    }
+
 }
