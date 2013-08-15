@@ -448,8 +448,8 @@ directive('kiAsState', function() {
     return function(scope, element, attrs) {
         if (scope.lo.asOngoing) {
             element.html(i18n.t('search-as-ongoing'));
-        } else if (scope.lo.nextAs) {
-            var ts = new Date(scope.lo.nextAs.startDate);
+        } else if (scope.lo.nextApplicationPeriodStarts) {
+            var ts = new Date(scope.lo.nextApplicationPeriodStarts);
             element.html(i18n.t('search-as-next') + ' ' + ts.getDate() + '.' + (ts.getMonth() + 1) + '.' + ts.getFullYear());
         }
     }

@@ -119,4 +119,16 @@ public class ConverterUtil {
         }
         return false;
     }
+
+    public static Date resolveNextDateRangeStart(List<DateRange> dateRanges) {
+        Date nextStarts = null;
+        Date now = new Date();
+        for (DateRange dateRange : dateRanges) {
+            if ((nextStarts == null && dateRange.getStartDate().after(now)) ||
+                    (dateRange.getStartDate().after(now) && dateRange.getStartDate().before(nextStarts))) {
+                nextStarts = dateRange.getStartDate();
+            }
+        }
+        return nextStarts;
+    }
 }

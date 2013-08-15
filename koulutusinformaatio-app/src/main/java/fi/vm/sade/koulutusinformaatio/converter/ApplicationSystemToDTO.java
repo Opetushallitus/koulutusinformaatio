@@ -31,6 +31,7 @@ public class ApplicationSystemToDTO {
             ao.setName(ConverterUtil.getTextByLanguageUseFallbackLang(applicationSystem.getName(), lang));
             ao.setApplicationDates(DateRangeToDTO.convert(applicationSystem.getApplicationDates()));
             ao.setAsOngoing(ConverterUtil.isOngoing(applicationSystem.getApplicationDates()));
+            ao.setNextApplicationPeriodStarts(ConverterUtil.resolveNextDateRangeStart(applicationSystem.getApplicationDates()));
             return ao;
         } else {
             return null;
