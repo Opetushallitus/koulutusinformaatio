@@ -141,9 +141,10 @@ public class TarjontaServiceMockImpl implements TarjontaService {
         start.set(Calendar.MONTH, Calendar.JUNE);
         start.set(Calendar.DATE, 1);
         Calendar end = new GregorianCalendar();
-        start.set(Calendar.YEAR, 2014);
-        start.set(Calendar.MONTH, Calendar.JUNE);
-        start.set(Calendar.DATE, 1);
+        end.set(Calendar.YEAR, 2014);
+        end.set(Calendar.MONTH, Calendar.AUGUST);
+        end.set(Calendar.DATE, 15);
+        end.set(Calendar.HOUR_OF_DAY, 23);
         as.setApplicationDates(Lists.newArrayList(new DateRange(start.getTime(), end.getTime())));
         return as;
     }

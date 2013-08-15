@@ -14,9 +14,45 @@ function LanguageCtrl($scope, $location, LanguageService) {
 /**
  *  Controls header actions
  */
-function HeaderCtrl($scope, $location, ApplicationBasketService) {
+function HeaderCtrl($scope, $location, ApplicationBasketService, LanguageService) {
     $scope.appBasketItemCount = function() {
         return ApplicationBasketService.getItemCount();
+    }
+
+    $scope.lang = LanguageService.getLanguage();
+};
+
+/**
+ *  Controls footer actions
+ */
+function FooterCtrl($scope, LanguageService, kiAppConstants) {
+    $scope.locales = {
+        opetushallitus: i18n.t('opetushallitus-address-line-1'),
+        opetusministerio: i18n.t('opetusministerio-address-line-1')
+    };
+    
+    if (LanguageService.getLanguage() == LanguageService.getDefaultLanguage()) {
+        $scope.images = {
+            opetushallitus: 'img/OPH_logo.png',
+            opetusministerio: 'img/OKM_logo.png'
+        }
+
+        $scope.links = {
+            opetushallitus: 'http://www.oph.fi/etusivu',
+            opetusministerio: 'http://www.minedu.fi/OPM/',
+            rekisteriseloste: kiAppConstants.contextRoot + 'rekisteriseloste.html'
+        }
+    } else {
+        $scope.images = {
+            opetushallitus: 'img/OPH_logo-sv.png',
+            opetusministerio: 'img/OKM_logo-sv.png'
+        }
+
+        $scope.links = {
+            opetushallitus: 'http://www.oph.fi/startsidan',
+            opetusministerio: 'http://www.minedu.fi/OPM/?lang=sv',
+            rekisteriseloste: kiAppConstants.contextRoot + 'sv/rekisteriseloste.html'
+        }
     }
 };
 
@@ -35,6 +71,7 @@ function HeaderCtrl($scope, $location, ApplicationBasketService) {
 function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, ApplicationBasketService, SearchService, kiAppConstants) {
     var title = i18n.t('title-application-basket');
     var basketLimit = kiAppConstants.applicationBasketLimit; // TODO: get this from application data?
+    TitleService.setTitle(title);
 
     $scope.queryString = SearchService.getTerm();
     $scope.notificationText = i18n.t('application-basket-fill-form-notification', {count: basketLimit});
@@ -43,7 +80,6 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
     if (!$scope.basketIsEmpty) {
         ApplicationBasketService.query().then(function(result) {
             $scope.applicationItems = result;
-            TitleService.setTitle(title);
         });
     }
 
@@ -162,13 +198,16 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
  *  Controller for search field in header
  */
 function SearchFieldCtrl($scope, $routeParams, $location, SearchService, $route) {
-    $scope.queryString = SearchService.getTerm();    
+    //$scope.queryString = SearchService.getTerm();
+    $scope.searchFieldPlaceholder = i18n.t('search-field-placeholder'); 
 
     // Perform search using LearningOpportunity service
     $scope.search = function() {
         if ($scope.queryString) {
             SearchService.setTerm($scope.queryString);
-            $location.path('/haku/' + $scope.queryString);
+            var queryString = $scope.queryString;
+            $scope.queryString = '';
+            $location.path('/haku/' + queryString);
         }
     };
 };
@@ -492,12 +531,12 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
                             $scope.childLO = result;
                             $scope.lois = result.lois;
                             setTitle($scope.parentLO, $scope.childLO);
-                            $scope.changeLOISelection();
+                            initializeParent()
                         });
                 } else {
                     setTitle($scope.parentLO, $scope.childLO);
                     $scope.lois = result.lois;
-                    $scope.changeLOISelection($scope.selectedLOI);
+                    initializeParent();
                 }
         });
     };

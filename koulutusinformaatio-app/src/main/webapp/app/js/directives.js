@@ -305,13 +305,13 @@ directive('kiAbsoluteLink', function() {
 /**
  *  Creates and controls the breadcrumb
  */
- directive('kiBreadcrumb', ['$location', 'SearchService', function($location, SearchService) {
+ directive('kiBreadcrumb', ['$location', 'SearchService', 'kiAppConstants', 'LanguageService', function($location, SearchService, kiAppConstants, LanguageService) {
     return {
         restrict: 'E,A',
         templateUrl: 'templates/breadcrumb.html',
         link: function(scope, element, attrs) {
             var home = 'home';
-            var search = i18n.t('breadcrumb-search-results');
+            var root = i18n.t('breadcrumb-search-results');
             var parent;
             var child;
 
@@ -325,10 +325,21 @@ directive('kiAbsoluteLink', function() {
                 update();
             }, true);
 
+            attrs.$observe('kiBreadcrumb', function(data) {
+                root = i18n.t(data);
+                update();
+            });
+
             var update = function() {
                 scope.breadcrumbItems = [];
-                pushItem({name: home, linkHref: '#/' });
-                pushItem({name: search, linkHref: '#/haku/' + SearchService.getTerm() });
+
+                if (LanguageService.getLanguage() == LanguageService.getDefaultLanguage()) {
+                    pushItem({name: home, linkHref: kiAppConstants.contextRoot });
+                } else {
+                    pushItem({name: home, linkHref: kiAppConstants.contextRoot + LanguageService.getLanguage() });
+                }
+                
+                pushItem({name: root, linkHref: '#/haku/' + SearchService.getTerm() });
 
                 if (scope.parentLO) {
                     pushItem({name: parent, linkHref: '#/tutkinto/' + scope.parentLO.id });

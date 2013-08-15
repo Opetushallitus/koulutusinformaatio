@@ -3,10 +3,6 @@
 var kiApp = angular.module('kiApp', ['kiApp.services', 'kiApp.directives', 'ui.bootstrap']);
 kiApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     //$locationProvider.hashPrefix('!');
-	$routeProvider.when('/index/', {
-		templateUrl: 'partials/etusivu.html', 
-		controller: IndexCtrl
-	});
     $routeProvider.when('/haku/:queryString', {
     	templateUrl: 'partials/hakutulokset.html', 
     	controller: SearchCtrl
@@ -24,7 +20,7 @@ kiApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $l
         controller: ApplicationBasketCtrl
     });
     $routeProvider.otherwise({
-    	redirectTo: '/index/'
+    	redirectTo: '/haku/'
     });
 }]);
 
@@ -49,7 +45,8 @@ kiApp.run(['LanguageService', function(LanguageService) {
 kiApp.constant('kiAppConstants', {
     searchResultsPerPage: 30,
     searchResultsStartPage: 1,
-    applicationBasketLimit: 5
+    applicationBasketLimit: 5,
+    contextRoot: '../static/'
 });
 
 var OPH = OPH || {};
