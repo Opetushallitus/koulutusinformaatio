@@ -134,6 +134,7 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
     @Override
     public LearningOpportunityBuilder reassemble() throws TarjontaParseException, KoodistoException, WebApplicationException {
         for (ParentLOS parentLOS : parentLOSs) {
+
             HashMultimap<String, ApplicationOption> applicationOptionsByParentLOIId = HashMultimap.create();
 
             // add children to parent los
@@ -142,27 +143,15 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
                     Collections2.filter(childLOSsByParentLOSId.get(parentLOS.getId()), new Predicate<ChildLOS>() {
                         @Override
                         public boolean apply(fi.vm.sade.koulutusinformaatio.domain.ChildLOS input) {
-                            if (input.getLois() == null || input.getLois().isEmpty()) {
-                                return false;
-                            } else {
-                                return true;
-                            }
+                            return isChildLOSValid(input);
                         }
                     })
             );
 
             for (ChildLOS childLOS : children) {
 
-                // drop out children without lois
-                if (childLOS.getLois() == null || childLOS.getLois().isEmpty()) {
-                    continue;
-                }
-
                 // set parent ref
                 childLOS.setParent(new ParentLOSRef(parentLOS.getId(), parentLOS.getName()));
-
-                // add child ref to parent loi
-//                    parentLOI.getChildRefs().add(KoulutusinformaatioObjectBuilder.buildChildLORef(child));
 
                 for (ChildLOI childLOI : childLOS.getLois()) {
 
@@ -201,11 +190,7 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
                 Collections2.filter(this.parentLOSs, new Predicate<ParentLOS>() {
                     @Override
                     public boolean apply(fi.vm.sade.koulutusinformaatio.domain.ParentLOS input) {
-                        if (input.getChildren() == null || input.getChildren().isEmpty()) {
-                            return false;
-                        } else {
-                            return true;
-                        }
+                        return isParentLOSValid(input);
                     }
                 })
         );
@@ -420,6 +405,26 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
         }
         parentLOS.setLois(lois);
         return parentLOS;
+    }
+
+    private boolean isParentLOSValid(ParentLOS parentLOS) {
+        if (parentLOS.getChildren() == null || parentLOS.getChildren().isEmpty()) {
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
+    private boolean isChildLOSValid(ChildLOS childLOS) {
+        if (childLOS.getLois() != null) {
+            for (ChildLOI childLOI : childLOS.getLois()) {
+                if (childLOI.getApplicationOptions() != null && childLOI.getApplicationOptions().size() > 0) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private String getLOSId(String komoId, String providerId) {
