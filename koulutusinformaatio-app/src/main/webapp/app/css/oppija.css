@@ -3669,29 +3669,34 @@ button {
   -ms-box-sizing: border-box;
   box-sizing: border-box; }
 
+[ng-cloak] {
+  display: none; }
+
 fieldset {
   margin: 0;
   padding: 0;
   border: 0;
   position: relative; }
 
-ul.nobullet {
-  list-style-type: none;
-  margin: 0;
-  padding: 0; }
-ul.disc {
-  list-style-type: disc;
-  list-style-position: outside;
-  margin: 0 0 0 16px;
-  padding: 0;
-  /*
-  li:before {
-      display: inline-block;
-      content: "\2013";
-      width: 1em;
-      margin-left: -1em;
-  }
-  */ }
+ul {
+  padding: 0 0 0 1.518em; }
+  ul.nobullet {
+    list-style-type: none;
+    margin: 0;
+    padding: 0; }
+  ul.disc {
+    list-style-type: disc;
+    list-style-position: outside;
+    margin: 0 0 0 16px;
+    padding: 0;
+    /*
+    li:before {
+        display: inline-block;
+        content: "\2013";
+        width: 1em;
+        margin-left: -1em;
+    }
+    */ }
 
 input {
   margin: 0 0.5em 0 0; }
