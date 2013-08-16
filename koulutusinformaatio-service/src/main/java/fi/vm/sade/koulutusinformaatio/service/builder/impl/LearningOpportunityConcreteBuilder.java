@@ -18,11 +18,9 @@ package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
+import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import com.google.common.collect.*;
 import fi.vm.sade.koulutusinformaatio.converter.KoulutusinformaatioObjectBuilder;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
@@ -139,8 +137,27 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
             HashMultimap<String, ApplicationOption> applicationOptionsByParentLOIId = HashMultimap.create();
 
             // add children to parent los
-            List<ChildLOS> children = childLOSsByParentLOSId.get(parentLOS.getId());
+            // filter out children without lois
+            List<ChildLOS> children = Lists.newArrayList(
+                    Collections2.filter(childLOSsByParentLOSId.get(parentLOS.getId()), new Predicate<ChildLOS>() {
+                        @Override
+                        public boolean apply(fi.vm.sade.koulutusinformaatio.domain.ChildLOS input) {
+                            if (input.getLois() == null || input.getLois().isEmpty()) {
+                                return false;
+                            } else {
+                                return true;
+                            }
+                        }
+                    })
+            );
+
             for (ChildLOS childLOS : children) {
+
+                // drop out children without lois
+                if (childLOS.getLois() == null || childLOS.getLois().isEmpty()) {
+                    continue;
+                }
+
                 // set parent ref
                 childLOS.setParent(new ParentLOSRef(parentLOS.getId(), parentLOS.getName()));
 
@@ -177,6 +194,21 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
             }
             parentLOS.setChildren(children);
         }
+
+        // filter out empty parent LOSs
+
+        this.parentLOSs = Lists.newArrayList(
+                Collections2.filter(this.parentLOSs, new Predicate<ParentLOS>() {
+                    @Override
+                    public boolean apply(fi.vm.sade.koulutusinformaatio.domain.ParentLOS input) {
+                        if (input.getChildren() == null || input.getChildren().isEmpty()) {
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    }
+                })
+        );
 
         return this;
     }
