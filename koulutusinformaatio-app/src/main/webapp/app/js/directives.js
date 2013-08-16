@@ -108,7 +108,7 @@ directive('kiRenderProfessionalTitles', function() {
         link: function(scope, element, attrs) {
             scope.anchor = attrs.anchor;
 
-            scope.$watch('childLO.professionalTitles', function(data) {
+            scope.$watch('selectedLOI.professionalTitles', function(data) {
                 scope.showProfessionalTitles = data ? true : false;
 
             });
@@ -448,8 +448,8 @@ directive('kiAsState', function() {
     return function(scope, element, attrs) {
         if (scope.lo.asOngoing) {
             element.html(i18n.t('search-as-ongoing'));
-        } else if (scope.lo.nextAs) {
-            var ts = new Date(scope.lo.nextAs.startDate);
+        } else if (scope.lo.nextApplicationPeriodStarts) {
+            var ts = new Date(scope.lo.nextApplicationPeriodStarts);
             element.html(i18n.t('search-as-next') + ' ' + ts.getDate() + '.' + (ts.getMonth() + 1) + '.' + ts.getFullYear());
         }
     }
@@ -469,32 +469,21 @@ directive('kiRenderApplicationSystemActive', function() {
                     '<span data-ng-switch-when="present"data-ki-i18n="application-system-active-present"></span>' +
                 '</span>',
         link: function(scope, element, attrs) {
-            var dates;
-            attrs.$observe('dates', function(value) {
-                dates = value;
+            var as;
+            scope.$watch('as', function(data) {
+                as = data;
                 update();
             });
 
             var update = function() {
-                if (dates) {
-                    for (var i in dates) {
-                        if (dates.hasOwnProperty(i)) {
-                            var start = dates[i].startDate;
-                            var end = dates[i].endDate;
-                            var current = new Date().getTime();
-
-                            // use only the first date in list
-                            if (current < start) {
-                                scope.active = "future";
-                                scope.timestamp = start;
-                            } else if (current > end) {
-                                scope.active = "past";
-                            } else {
-                                scope.active = "present";
-                            }
-
-                            break;
-                        }
+                if (as) {
+                    if (as.asOngoing) {
+                        scope.active = "present";
+                    } else if (as.nextApplicationPeriodStarts) {
+                        scope.active = "future";
+                        scope.timestamp = as.nextApplicationPeriodStarts;
+                    } else {
+                        scope.active = "past";
                     }
                 }
             };

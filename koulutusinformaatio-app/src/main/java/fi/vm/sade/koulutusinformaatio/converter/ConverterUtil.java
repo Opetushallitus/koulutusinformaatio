@@ -17,9 +17,11 @@
 package fi.vm.sade.koulutusinformaatio.converter;
 
 import com.google.common.base.Strings;
+import fi.vm.sade.koulutusinformaatio.domain.DateRange;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -106,5 +108,27 @@ public class ConverterUtil {
             }
         }
         return texts;
+    }
+
+    public static boolean isOngoing(List<DateRange> dateRanges) {
+        Date now = new Date();
+        for (DateRange dr : dateRanges) {
+            if (dr.getStartDate().before(now) && now.before(dr.getEndDate())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static Date resolveNextDateRangeStart(List<DateRange> dateRanges) {
+        Date nextStarts = null;
+        Date now = new Date();
+        for (DateRange dateRange : dateRanges) {
+            if ((nextStarts == null && dateRange.getStartDate().after(now)) ||
+                    (dateRange.getStartDate().after(now) && dateRange.getStartDate().before(nextStarts))) {
+                nextStarts = dateRange.getStartDate();
+            }
+        }
+        return nextStarts;
     }
 }

@@ -148,7 +148,6 @@ public class SearchServiceSolrImpl implements SearchService {
         lo.setAsOngoing(false);
         Date now = new Date();
         Date nextStarts = null;
-        Date nextEnds = null;
 
         for (String startKey : doc.keySet()) {
             if (startKey.startsWith(AS_START_DATE_PREFIX)) {
@@ -165,13 +164,12 @@ public class SearchServiceSolrImpl implements SearchService {
 
                 if ((nextStarts == null && start.after(now)) || (start.after(now) && start.before(nextStarts))) {
                     nextStarts = start;
-                    nextEnds = end;
                 }
 
             }
         }
 
-        lo.setNextAs(new DateRange(nextStarts, nextEnds));
+        lo.setNextApplicationPeriodStarts(nextStarts);
 
     }
 

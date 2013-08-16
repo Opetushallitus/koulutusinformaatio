@@ -44,9 +44,8 @@
                                     </ul>
                                 </td>
                                 <td class="align-right">
-                                    <ul>
+                                    <ul class="nobullet">
                                         <li data-ng-repeat="dl in item.deadlines">{{dl.name}}<span class="bold margin-left-2" data-ki-timestamp="{{item.attachmentDeliveryDeadline}}"></span></li>
-                                        <!--<li>Liitteet<span class="bold margin-left-2" data-ki-timestamp="{{item.attachmentDeliveryDeadline}}"></span></li>-->
                                     </ul>
                                 </td>
                                 <td class="basket-remove last">
@@ -89,6 +88,7 @@
                                 </div>
                             </div>
                             <a data-ng-click="emptyApplicationBasket()" data-ki-i18n="application-basket-empty" class="float-right block"></a>
+                            <div class="margin-top-2 float-right clear" data-ki-render-application-system-active></div>
                         </div>
                     </form>
                     <div class="clear"></div>
