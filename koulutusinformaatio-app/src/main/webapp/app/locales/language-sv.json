@@ -12,8 +12,8 @@
     "elementary-graduate-selection": "Antagning av grundskolgångna",
     "secondary-school-based": "Gymnasiebaserad utbildning",
 
-    "search-result-title": "Tulokset haulle (sv)",
-    "search-result-count-unit": "kpl (sv)",
+    "search-result-title": "Sökträffar",
+    "search-result-count-unit": "st",
     "search-field-placeholder": "Sök utbildningar här",
     "no-search-results": "Inga sökresultat",
     "no-search-results-info": "Sökordet gav inget resultat. Försök med annat sökord.",
@@ -45,7 +45,7 @@
     "language-of-instruction": "Undervisningsspråk:",
     "form-of-education": "Undervisningsform:",
     "duration": "Utbildningens omfattning:",
-    "starting-quota": "Aloituspaikkojen lukumäärä (sv):",
+    "starting-quota": "Antal nybörjarplatser:",
 
     "goals-of-education": "Mål",
     "selection-of-degree-program": "Val av utbildningsprogram",
@@ -107,7 +107,7 @@
     "application-basket-empty": "Töm minneslistan",
     "application-basket-empty-confirm": "Är du säker på att du vill tömma minneslistan?",
 
-    "popup-close": "Stäng)",
+    "popup-close": "Stäng",
     "popup-continue": "Fortsätt",
 
     "popover-title-success": "Utbildningen har lagts till i minneslistan",
