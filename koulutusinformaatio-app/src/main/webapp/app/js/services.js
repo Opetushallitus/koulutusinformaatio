@@ -2,16 +2,6 @@
 
 angular.module('kiApp.services', ['ngResource']).
 
-/**
- *  Resource for making string based search
- */
- /*
- factory('SearchLearningOpportunity', function($resource) {
-    return $resource('../lo/search/:queryString', {}, {
-        query: {method:'GET', isArray:true}
-    });
-}).
-*/
 service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', function($http, $timeout, $q) {
     var transformData = function(result) {
         for (var index in result.results) {
@@ -318,39 +308,6 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
                 else return a.id > b.id ? 1 : -1;
             });
         }
-
-        // get starting quota from application option
-        /*
-        if (result.applicationSystems && result.applicationSystems.length > 0) {
-            var as = result.applicationSystems[0];
-            if (as.applicationOptions && as.applicationOptions.length > 0) {
-                var ao = as.applicationOptions[0];
-                result.startingQuota = ao.startingQuota;
-            }
-        }
-        */
-
-        /*
-        for (var loiIndex in result.lois) {
-            if (result.lois.hasOwnProperty(loiIndex)) {
-                var loi = result.lois[loiIndex];
-
-                if (loi.applicationSystems && loi.applicationSystems.length > 0) {
-                    var as = loi.applicationSystems[0];
-                    as.related = [];
-
-                    for (var aoIndex in as.applicationOptions) {
-                        if (as.applicationOptions.hasOwnProperty(aoIndex)) {
-                            var ao = as.applicationOptions[aoIndex];
-                            as.related = as.related.concat(ao.childRefs);
-                        }
-                    }
-
-                    console.log(as.related);
-                }
-            }
-        }
-        */
 
         // add current child to sibligs
         if (result.related) {

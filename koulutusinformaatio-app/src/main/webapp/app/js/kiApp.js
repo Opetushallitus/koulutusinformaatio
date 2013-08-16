@@ -52,9 +52,5 @@ kiApp.constant('kiAppConstants', {
 var OPH = OPH || {};
 
 OPH.Common = {
-    initHeader: function() {
-        //dropDownMenu.build();
-        //popover.build();
-        //ApplicationBasket.load();
-    }
+    initHeader: function() {}
 };

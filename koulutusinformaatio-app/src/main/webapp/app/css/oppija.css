@@ -3669,6 +3669,9 @@ button {
   -ms-box-sizing: border-box;
   box-sizing: border-box; }
 
+[ng-cloak] {
+  display: none; }
+
 fieldset {
   margin: 0;
   padding: 0;
