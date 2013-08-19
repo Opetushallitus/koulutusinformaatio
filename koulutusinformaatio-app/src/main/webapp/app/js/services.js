@@ -399,7 +399,7 @@ service('LearningOpportunityProviderPictureService', ['$http', '$timeout', '$q',
  */
 service('LanguageService', function() {
     var defaultLanguage = 'fi';
-    var key = 'language';
+    var key = 'i18next';
 
     return {
         getLanguage: function() {
