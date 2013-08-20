@@ -24,8 +24,6 @@ if ("localStorage" in window) {
     }
 }
 
-//console.log(arguments.length);
-//console.log(value);
 // Check if the user wants to create or delete a cookie.
 if (arguments.length > 1 && String(value) !== "[object Object]") 
 {
@@ -53,7 +51,6 @@ if(options.useLocalStorage == undefined)
 // Check if the user tries to delete the cookie
 if(value === null || value === undefined)
 {
-    console.log(value);
 // If the localStorage is available, and if the user requested its usage, then we first
 // try to delete it from that place
 if(options.useLocalStorage && isStorageAvailable != false)
