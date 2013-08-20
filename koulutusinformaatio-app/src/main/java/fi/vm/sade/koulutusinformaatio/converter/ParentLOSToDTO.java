@@ -42,11 +42,6 @@ public class ParentLOSToDTO {
         parent.setCreditValue(parentLOS.getCreditValue());
         parent.setCreditUnit(ConverterUtil.getTextByLanguage(parentLOS.getCreditUnit(), lang));
 
-//        if (parentLOS.getApplicationOptions() != null) {
-//            for (ApplicationOption ao : parentLOS.getApplicationOptions()) {
-//                parent.getApplicationOptions().add(ApplicationOptionToDTO.convert(ao, lang));
-//            }
-//        }
         if (parentLOS.getLois() != null) {
             for (ParentLOI loi : parentLOS.getLois()) {
                 parent.getLois().add(ParentLOIToDTO.convert(loi, lang));
