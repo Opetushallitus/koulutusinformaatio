@@ -53,7 +53,7 @@ public class ChildLOIRefDTO implements Comparable<ChildLOIRefDTO> {
         return asIds;
     }
 
-    public void setAsIds(List<String> asId) {
+    public void setAsIds(List<String> asIds) {
         this.asIds = asIds;
     }
 

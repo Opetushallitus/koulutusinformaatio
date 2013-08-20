@@ -24,7 +24,6 @@ import com.google.common.collect.Lists;
 import fi.vm.sade.koodisto.service.GenericFault;
 import fi.vm.sade.koodisto.service.types.SearchKoodisCriteriaType;
 import fi.vm.sade.koodisto.service.types.common.KoodiType;
-import fi.vm.sade.koodisto.service.types.common.KoodiUriAndVersioType;
 import fi.vm.sade.koodisto.util.CachingKoodistoClient;
 import fi.vm.sade.koodisto.util.KoodiServiceSearchCriteriaBuilder;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
@@ -194,7 +193,6 @@ public class KoodistoServiceImpl implements KoodistoService {
 
     private List<KoodiType> searchSubKoodiTypes(String koodiUriAndVersion) throws KoodistoException {
         CodeUriAndVersion codeUriAndVersion = resolveKoodiUriAndVersion(koodiUriAndVersion);
-        KoodiUriAndVersioType koodiUriAndVersionType = conversionService.convert(codeUriAndVersion, KoodiUriAndVersioType.class);
         return koodiService.getAlakoodis(codeUriAndVersion.getUri());
     }
 
@@ -209,7 +207,6 @@ public class KoodistoServiceImpl implements KoodistoService {
 
     private List<KoodiType> searchSuperKoodiTypes(String koodiUriAndVersion) throws KoodistoException {
         CodeUriAndVersion codeUriAndVersion = resolveKoodiUriAndVersion(koodiUriAndVersion);
-        KoodiUriAndVersioType koodiUriAndVersionType = conversionService.convert(codeUriAndVersion, KoodiUriAndVersioType.class);
         return koodiService.getYlakoodis(codeUriAndVersion.getUri());
     }
 
