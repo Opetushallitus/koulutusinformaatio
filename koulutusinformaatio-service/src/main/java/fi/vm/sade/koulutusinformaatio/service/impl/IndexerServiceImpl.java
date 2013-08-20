@@ -135,6 +135,14 @@ public class IndexerServiceImpl implements IndexerService {
 
         }
         addApplicationSystemDates(doc, applicationOptions);
+
+        Set<String> prerequisites = Sets.newHashSet();
+        for (ChildLOS childLOS : parent.getChildren()) {
+            for (ChildLOI childLOI : childLOS.getLois()) {
+                prerequisites.add(childLOI.getPrerequisite().getValue());
+            }
+        }
+        doc.setField("prerequisites", prerequisites);
     }
 
     private void resolveChildDocument(SolrInputDocument doc, ChildLOS childLOS, ChildLOI childLOI, ParentLOS parent) {
