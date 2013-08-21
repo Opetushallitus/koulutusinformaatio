@@ -17,11 +17,15 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Maps;
-import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.I18nText;
+import fi.vm.sade.koulutusinformaatio.domain.LOSearchResult;
+import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
+import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.LearningOpportunityQuery;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.MapToSolrQueryTransformer;
+import fi.vm.sade.koulutusinformaatio.service.impl.query.ProviderQuery;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -32,8 +36,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -64,15 +66,11 @@ public class SearchServiceSolrImpl implements SearchService {
     @Override
     public List<Provider> searchLearningOpportunityProviders(
             String term, String asId, String prerequisite, boolean vocational) throws SearchException {
-        MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>(3);
         Set<Provider> providers = new HashSet<Provider>();
         String startswith = term.trim();
         if (!startswith.isEmpty()) {
-            // key word params
-            parameters.put("name", createParameter(term + "*"));
-            parameters.put("asId", createParameter(asId));
-            //parameters = addPrerequisite(parameters, prerequisite, vocational);
-            SolrQuery query = mapToSolrQueryTransformer.transform(parameters.entrySet());
+
+            SolrQuery query = new ProviderQuery(term + "*", asId, prerequisite);
 
             QueryResponse queryResponse = null;
             try {
