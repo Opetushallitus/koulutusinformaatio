@@ -97,7 +97,6 @@ public class TarjontaServiceMockImpl implements TarjontaService {
         ChildLOI childLOI = new ChildLOI();
         childLOI.setId(CHILD_LOI_ID);
         childLOI.setApplicationOptions(Lists.newArrayList(createApplicationOption()));
-        childLOI.setApplicationSystemIds(Lists.newArrayList(APPLICATION_SYSTEM_ID));
         Calendar cal = new GregorianCalendar();
         cal.set(Calendar.YEAR, 2014);
         cal.set(Calendar.MONTH, 8);

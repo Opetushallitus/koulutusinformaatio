@@ -14,8 +14,6 @@ import java.util.Map;
 public class ChildLearningOpportunityInstanceEntity {
 
     private String id;
-    @Embedded
-    private List<String> applicationSystemIds;
     @Reference
     private List<ApplicationOptionEntity> applicationOptions;
     @Embedded
@@ -48,14 +46,6 @@ public class ChildLearningOpportunityInstanceEntity {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public List<String> getApplicationSystemIds() {
-        return applicationSystemIds;
-    }
-
-    public void setApplicationSystemIds(List<String> applicationSystemIds) {
-        this.applicationSystemIds = applicationSystemIds;
     }
 
     public List<ApplicationOptionEntity> getApplicationOptions() {

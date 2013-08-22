@@ -365,7 +365,6 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
                 applicationSystemIds.add(hakuDTO.getOid());
             }
             childLOI.setApplicationOptions(applicationOptions);
-            childLOI.setApplicationSystemIds(applicationSystemIds);
             childLOIs.add(childLOI);
         }
         childLOS.setLois(childLOIs);

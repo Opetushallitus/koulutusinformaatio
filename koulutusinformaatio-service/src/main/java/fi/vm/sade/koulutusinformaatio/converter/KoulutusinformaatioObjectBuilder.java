@@ -37,7 +37,6 @@ public class KoulutusinformaatioObjectBuilder {
             ref.setLosId(childLOI.getLosId());
             ref.setName(childLOI.getName());
             ref.setNameByTeachingLang(getTextByEducationLanguage(childLOI.getName(), childLOI.getTeachingLanguages()));
-            ref.setAsIds(childLOI.getApplicationSystemIds());
             ref.setPrerequisite(childLOI.getPrerequisite());
             return ref;
         }
