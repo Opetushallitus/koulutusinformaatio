@@ -65,12 +65,12 @@ public class SearchServiceSolrImpl implements SearchService {
 
     @Override
     public List<Provider> searchLearningOpportunityProviders(
-            String term, String asId, String prerequisite, boolean vocational) throws SearchException {
+            String term, String asId, String baseEducation, boolean vocational) throws SearchException {
         Set<Provider> providers = new HashSet<Provider>();
         String startswith = term.trim();
         if (!startswith.isEmpty()) {
 
-            SolrQuery query = new ProviderQuery(term + "*", asId, prerequisite);
+            SolrQuery query = new ProviderQuery(term + "*", asId, baseEducation);
 
             QueryResponse queryResponse = null;
             try {

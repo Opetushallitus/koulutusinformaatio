@@ -12,14 +12,14 @@ public class ProviderQueryTest {
 
     private final String TERM = "term";
     private final String AS_ID = "asId";
-    private final String PREREQUISITE = "prerequisite";
+    private final String BASE_EDUCATION = "base_education";
 
     @Test
     public void testProviderQuery() {
-        ProviderQuery pq = new ProviderQuery(TERM, AS_ID, PREREQUISITE);
+        ProviderQuery pq = new ProviderQuery(TERM, AS_ID, BASE_EDUCATION);
         assertEquals("name:" + TERM, pq.getQuery());
         assertEquals(2, pq.getFilterQueries().length);
-        assertEquals("asId:" + AS_ID, pq.getFilterQueries()[0]);
-        assertEquals("prerequisites:" + PREREQUISITE, pq.getFilterQueries()[1]);
+        assertEquals("asIds:" + AS_ID, pq.getFilterQueries()[0]);
+        assertEquals("requiredBaseEducations:" + BASE_EDUCATION, pq.getFilterQueries()[1]);
     }
 }

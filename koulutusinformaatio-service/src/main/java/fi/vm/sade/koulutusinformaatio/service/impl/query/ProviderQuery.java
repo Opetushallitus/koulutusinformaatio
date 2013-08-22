@@ -26,13 +26,17 @@ import org.apache.solr.client.solrj.SolrQuery;
  */
 public class ProviderQuery extends SolrQuery {
 
-    private final static String PREREQUISITES = "prerequisites";
-    private final static String AS_ID = "asId";
+    private final static String BASE_EDUCATIONS = "requiredBaseEducations";
+    private final static String AS_IDS = "asIds";
     private final static String NAME = "name";
 
-    public ProviderQuery(String q, String asId, String prerequisite) {
+    public ProviderQuery(String q, String asId, String baseEducation) {
         super(Joiner.on(":").join(NAME, q));
-        this.addFilterQuery(Joiner.on(":").join(AS_ID, asId));
-        this.addFilterQuery(Joiner.on(":").join(PREREQUISITES, prerequisite));
+        if (asId != null) {
+            this.addFilterQuery(Joiner.on(":").join(AS_IDS, asId));
+        }
+        if (baseEducation != null) {
+            this.addFilterQuery(Joiner.on(":").join(BASE_EDUCATIONS, baseEducation));
+        }
     }
 }

@@ -72,6 +72,7 @@ public class IndexerServiceImplTest {
         ao1.setPrerequisite(new Code("PK",
                 TestUtil.createI18nText("Peruskoulu fi", "Peruskoulu sv", "Peruskoulu en"),
                 TestUtil.createI18nText("Peruskoulu fi", "Peruskoulu sv", "Peruskoulu en")));
+        ao1.setRequiredBaseEducations(Lists.newArrayList("1"));
         ApplicationSystem as1 = new ApplicationSystem();
         as1.setId("AS1_id");
         as1.setName(TestUtil.createI18nText("AS name fi", "AS name sv", "AS name en"));
