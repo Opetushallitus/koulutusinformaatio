@@ -68,14 +68,9 @@ public class IndexerServiceImpl implements IndexerService {
                 SolrInputDocument childLODoc = new SolrInputDocument();
                 resolveChildDocument(childLODoc, childLOS, childLOI, parent);
                 providerPrerequisites.add(childLOI.getPrerequisite().getValue());
-
-                // as ids to provider
-//                if (childLOI.getApplicationSystemIds() != null) {
-//                    for (String asId : childLOI.getApplicationSystemIds()) {
-//                        providerAsIds.add(asId);
-//                    }
-//                }
-
+                for (ApplicationOption ao : childLOI.getApplicationOptions()) {
+                    providerAsIds.add(ao.getApplicationSystem().getId());
+                }
                 docs.add(childLODoc);
             }
         }
