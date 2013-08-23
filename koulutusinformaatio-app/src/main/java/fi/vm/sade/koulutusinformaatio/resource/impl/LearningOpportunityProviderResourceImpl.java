@@ -30,7 +30,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.PathParam;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.List;
@@ -54,7 +53,7 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
     }
 
     @Override
-    public List<ProviderSearchResult> searchProviders(String term, String asId, String prerequisite, boolean vocational) {
+    public List<ProviderSearchResult> searchProviders(String term, String asId, String baseEducation, boolean vocational) {
         List<Provider> learningOpportunityProviders = null;
         try {
             String key = null;
@@ -63,7 +62,7 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
             } catch (UnsupportedEncodingException e) {
                 key = term;
             }
-            learningOpportunityProviders = searchService.searchLearningOpportunityProviders(key, asId, prerequisite, vocational);
+            learningOpportunityProviders = searchService.searchLearningOpportunityProviders(key, asId, baseEducation, vocational);
             return Lists.transform(learningOpportunityProviders, new Function<Provider, ProviderSearchResult>() {
                 @Override
                 public ProviderSearchResult apply(Provider lop) {

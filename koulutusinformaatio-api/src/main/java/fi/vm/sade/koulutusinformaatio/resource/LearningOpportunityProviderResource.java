@@ -31,7 +31,7 @@ import java.util.List;
 @Path("/lop")
 public interface LearningOpportunityProviderResource {
 
-    public static final String PREREQUISITE = "prerequisite";
+    public static final String BASE_EDUCATION = "baseEducation";
     public static final String VOCATIONAL = "vocational";
     public static final String ASID = "asId";
     public static final String TERM = "term";
@@ -44,8 +44,8 @@ public interface LearningOpportunityProviderResource {
      * @param term search term ()
      * @param asId application system id, limits providers to the ones that
      *             are related to this application system
-     * @param prerequisite limits the providers by related learning opportunity instances' prerequisites
-     *                     (backgraound education of the user)
+     * @param baseEducation limits the providers by the base education that is
+     *                      required for education provided by given provider
      * @param vocational limits providers to those related to vocational studies
      *                   (user has vocational degree (true|false))
      * @return list of providers
@@ -55,7 +55,7 @@ public interface LearningOpportunityProviderResource {
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public List<ProviderSearchResult> searchProviders(@PathParam(TERM) final String term,
                                                  @QueryParam(ASID) final String asId,
-                                                 @QueryParam(PREREQUISITE) final String prerequisite,
+                                                 @QueryParam(BASE_EDUCATION) final String baseEducation,
                                                  @QueryParam(VOCATIONAL) final boolean vocational);
 
     @GET

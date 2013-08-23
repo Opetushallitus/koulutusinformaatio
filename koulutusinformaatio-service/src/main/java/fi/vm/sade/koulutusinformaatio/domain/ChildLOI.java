@@ -25,7 +25,6 @@ public class ChildLOI {
     // koulutuslaji -> nuorten koulutus
     private List<I18nText> formOfEducation;
     private Date startDate;
-    private List<String> applicationSystemIds;
     private List<ChildLOIRef> related = new ArrayList<ChildLOIRef>();
     private List<ApplicationOption> applicationOptions;
     private I18nText workingLifePlacement;
@@ -120,14 +119,6 @@ public class ChildLOI {
 
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
-    }
-
-    public List<String> getApplicationSystemIds() {
-        return applicationSystemIds;
-    }
-
-    public void setApplicationSystemIds(List<String> applicationSystemIds) {
-        this.applicationSystemIds = applicationSystemIds;
     }
 
     public List<ChildLOIRef> getRelated() {

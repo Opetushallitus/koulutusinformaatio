@@ -2,7 +2,7 @@ var key = 'basket';
 var basketCount = $.cookie(key) ? JSON.parse($.cookie(key)).length - 1 : 0;
 
 var LanguageCookie = (function() {
-	var key = 'language';
+	var key = 'i18next';
 
     return {
         setLanguage: function(language) {

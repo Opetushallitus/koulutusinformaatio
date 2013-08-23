@@ -98,7 +98,6 @@ public class ParentLearningOpportunitySpecificationDAOTest {
 
         ChildLearningOpportunityInstanceEntity childLOI  = new ChildLearningOpportunityInstanceEntity();
         childLOI.setId("3.3.3.3");
-        childLOI.setApplicationSystemIds(Lists.newArrayList("1.2.3.4.5"));
         childLOI.setApplicationOptions(Lists.newArrayList(ao));
 
         childLO.setLois(Lists.newArrayList(childLOI));

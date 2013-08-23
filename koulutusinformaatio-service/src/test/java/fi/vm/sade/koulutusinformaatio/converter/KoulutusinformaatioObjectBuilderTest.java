@@ -59,7 +59,6 @@ public class KoulutusinformaatioObjectBuilderTest {
         as.setId("as123");
         ao.setChildLOIRefs(Lists.newArrayList(TestUtil.createChildLORef("c1", as.getId(), childLearningOpportunityInstance.getId()),
                 TestUtil.createChildLORef("c2", as.getId(), childLearningOpportunityInstance.getId())));
-        childLearningOpportunityInstance.setApplicationSystemIds(Lists.newArrayList("as123", "as124"));
         childLearningOpportunityInstance.setApplicationOptions(Lists.newArrayList(ao));
     }
 
@@ -70,7 +69,6 @@ public class KoulutusinformaatioObjectBuilderTest {
         assertNotNull(ref);
         assertEquals(childLearningOpportunityInstance.getId(), ref.getId());
         assertEquals(childLearningOpportunityInstance.getLosId(), ref.getLosId());
-        assertEquals(childLearningOpportunityInstance.getApplicationSystemIds().get(0), ref.getAsIds().get(0));
         assertEquals(childLearningOpportunityInstance.getName().getTranslations().get("fi"),
                 ref.getName().getTranslations().get("fi"));
         assertEquals(childLearningOpportunityInstance.getName().getTranslations().get("fi"), ref.getNameByTeachingLang());

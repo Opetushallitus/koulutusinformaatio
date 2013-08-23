@@ -61,15 +61,15 @@ public class IndexerServiceImpl implements IndexerService {
         providerDoc.addField("id", provider.getId());
         providerDoc.addField("name", provider.getName().getTranslations().get("fi"));
         Set<String> providerAsIds = Sets.newHashSet();
+        Set<String> requiredBaseEducations = Sets.newHashSet();
 
         for (ChildLOS childLOS : parent.getChildren()) {
             for (ChildLOI childLOI : childLOS.getLois()) {
                 SolrInputDocument childLODoc = new SolrInputDocument();
                 resolveChildDocument(childLODoc, childLOS, childLOI, parent);
-                if (childLOI.getApplicationSystemIds() != null) {
-                    for (String asId : childLOI.getApplicationSystemIds()) {
-                        providerAsIds.add(asId);
-                    }
+                for (ApplicationOption ao : childLOI.getApplicationOptions()) {
+                    providerAsIds.add(ao.getApplicationSystem().getId());
+                    requiredBaseEducations.addAll(ao.getRequiredBaseEducations());
                 }
                 docs.add(childLODoc);
             }
@@ -77,9 +77,8 @@ public class IndexerServiceImpl implements IndexerService {
 
         docs.add(parentDoc);
 
-        for (String asId : providerAsIds) {
-            providerDoc.addField("asId", asId);
-        }
+        providerDoc.setField("asIds", providerAsIds);
+        providerDoc.setField("requiredBaseEducations", requiredBaseEducations);
 
         providerDocs.add(providerDoc);
         lopUpdateHttpSolrServer.add(providerDocs);
@@ -135,6 +134,14 @@ public class IndexerServiceImpl implements IndexerService {
 
         }
         addApplicationSystemDates(doc, applicationOptions);
+
+        Set<String> prerequisites = Sets.newHashSet();
+        for (ChildLOS childLOS : parent.getChildren()) {
+            for (ChildLOI childLOI : childLOS.getLois()) {
+                prerequisites.add(childLOI.getPrerequisite().getValue());
+            }
+        }
+        doc.setField("prerequisites", prerequisites);
     }
 
     private void resolveChildDocument(SolrInputDocument doc, ChildLOS childLOS, ChildLOI childLOI, ParentLOS parent) {
