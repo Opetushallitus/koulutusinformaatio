@@ -35,7 +35,7 @@
 		<property name="ssh.keypass" value=""/>
 
         <echo>Stop Tomcat</echo>
-        <sshexec command="/data00/oph/tomcat/ctltomcat ${oph.name} stop"
+        <sshexec command="/data00/oph/tomcat/ophtomcat ${oph.name} stop"
                  host="${tomcat-host}" username="tomcat" keyfile="${ssh.keyfile}"
                  passphrase="${ssh.keypass}" trust="true" failonerror="false" />
 
@@ -94,10 +94,15 @@
                  host="${tomcat-host}" username="tomcat" keyfile="${ssh.keyfile}"
                  passphrase="${ssh.keypass}" trust="true" failonerror="false" />
 				 
-        <echo>Start Tomcat</echo>
-        <sshexec command="/data00/oph/tomcat/ctltomcat ${oph.name} start"
+	<echo>Remove extra log4j config-files</echo>
+	<sshexec command="find ${tomcat.home} -name 'log4j.properties' -exec rm -rf {} \;"
                  host="${tomcat-host}" username="tomcat" keyfile="${ssh.keyfile}"
                  passphrase="${ssh.keypass}" trust="true" failonerror="false" />
+				 
+	<echo>Start Tomcat</echo>
+	<sshexec command="/data00/oph/tomcat/ophtomcat ${oph.name} start"
+			 host="${tomcat-host}" username="tomcat" keyfile="${ssh.keyfile}"
+			 passphrase="${ssh.keypass}" trust="true" failonerror="false" />
 
 	<echo>Wait for service http-url</echo>
 	<condition property="app.url" value="http://itest-oppija.oph.ware.fi/app/">
