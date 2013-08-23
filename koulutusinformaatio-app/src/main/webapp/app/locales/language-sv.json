@@ -6,7 +6,7 @@
     "breadcrumb-search-results": "Sökresultat ",
 
     "lo-description": "Beskrivning av utbildningen ",
-    "lo-application": "Ansökan till utbildning",
+    "lo-application": "Antagningsgrunder och inträdesprov",
 
     "elementary-based": "Grundskolbaserad utbildning",
     "elementary-graduate-selection": "Antagning av grundskolgångna",
@@ -23,7 +23,9 @@
     "search-pagination-previous": "Föregående",
     "search-as-ongoing": "Ansökan pågår!",
     "search-as-next": "Kommer att ingå i ansökan",
-    "search-field-placeholder": "Sök utbildningar här",
+    "search-field-label": "Sök utbildningar här",
+    "search-field-placeholder": "Skriv här t.ex. examen, yrke eller läroanstaltens namn",
+    "search-button": "Sök",
 
     "filter-search-title": "Grundutbildning",
     "filter-search-subtitle": "Välj din högsta utbildning",
@@ -89,6 +91,8 @@
     "application-system-active-past": "Ansökan har avslutats",
     "application-system-active-present": "Ansökan pågår",
     "application-prerequisite": "Grundutbildning:",
+    "label-as-ongoing": "Ansökan pågår",
+    "label-as-not-ongoing": "Ingår inte i ansökan",
 
     "directly-applicable": "Utbildningsprogram med direkt ansökan:",
 
@@ -100,12 +104,14 @@
 
     "title-application-basket-content": "Minneslista",
     "application-basket-back": "Tillbaka till sökresultaten",
-    "application-basket-description": "Du kan samla utbildningar i minneslistan och överföra dem till ansökningsblanketten. Märk att minneslistan är aktiv endast då webbplatsen är öppen och att du kan lägga till utbildningar utgående från endast en grundutbildning.",
-    "application-basket-no-content": "Minneslistan är tom.",
+    "application-basket-description": "I minneslistan kan du samla utbildningar och överföra uppgifterna till ansökningsblanketten. Utbildningarna sparas i minneslistan så länge webbläsaren är öppen. Du kan lägga till enbart utbildningar med samma grundutbildningskrav – exempelvis bara grundskolbaserade eller bara gymnasiebaserade, men inte båda.",
+    "application-basket-no-content": "Du har inga utbildningar i minneslistan. Hämta utbildningar som du vill söka till via sökmotorn, samla dem i minneslistan och överför dem till ansökningsblanketten. I gemensam ansökan kan du söka till fem olika utbildningar.",
     "application-basket-fill-form": "Fyll i ansökningsblanketten",
     "application-basket-fill-form-notification": "I denna ansökan kan du söka till högst __count__ utbildningar",
     "application-basket-empty": "Töm minneslistan",
     "application-basket-empty-confirm": "Är du säker på att du vill tömma minneslistan?",
+    "application-basket-overflow-warning": "I gemensam ansökan kan du söka till fem (5) olika utbildningar, stryk de som är överlopps",
+    "attachment-delivery-deadline": "Bilagor ska skickas in senast",
 
     "popup-close": "Stäng",
     "popup-continue": "Fortsätt",

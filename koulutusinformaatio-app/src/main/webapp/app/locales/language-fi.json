@@ -6,7 +6,7 @@
     "breadcrumb-search-results": "Hakutulokset",
 
     "lo-description": "Koulutuksen kuvaus",
-    "lo-application": "Koulutukseen hakeutuminen",
+    "lo-application": "Valintaperusteet ja pääsykokeet",
 
     "elementary-based": "Peruskoulupohjainen koulutus",
     "elementary-graduate-selection": "Peruskoulun päättäneiden valinta",
@@ -23,7 +23,9 @@
     "search-pagination-previous": "Edellinen",
     "search-as-ongoing": "Haku käynnissä!",
     "search-as-next": "Tulossa hakuun",
-    "search-field-placeholder": "Hae koulutuksia tästä",
+    "search-field-label": "Etsi koulutuksia tästä",
+    "search-field-placeholder": "Kirjoita tähän esim. tutkinto, ammatti tai oppilaitoksen nimi",
+    "search-button": "Hae",
 
     "filter-search-title": "Pohjakoulutus",
     "filter-search-subtitle": "Valitse ylin suorittamasi koulutus",
@@ -89,6 +91,8 @@
     "application-system-active-past": "Haku päättynyt",
     "application-system-active-present": "Haku käynnissä",
     "application-prerequisite": "Pohjakoulutus:",
+    "label-as-ongoing": "Haku käynnissä",
+    "label-as-not-ongoing": "Ei nyt haettavissa",
 
     "directly-applicable": "Suoraan haettavissa olevat koulutusohjelmat:",
 
@@ -100,12 +104,14 @@
 
     "title-application-basket-content": "Muistilista",
     "application-basket-back": "Takaisin hakutuloksiin",
-    "application-basket-description": "Muistilistalle voit kerätä koulutuksia ja siirtää niiden tiedot hakulomakkeelle. Huomioi, että muistilista on istuntokohtainen ja sille voi lisätä koulutuksia vain yhdellä pohjakoulutuksella.",
-    "application-basket-no-content": "Muistilista on tyhjä.",
+    "application-basket-description": "Muistilistalle voit kerätä koulutuksia ja siirtää niiden tiedot hakulomakkeelle. Koulutukset säilyvät muistilistalla selaimen sulkemiseen asti. Voit lisätä muistilistalle vain koulutuksia, joilla on sama pohjakoulutusvaatimus – esimerkiksi vain peruskoulupohjaisia tai vain lukiopohjaisia, et molempia.",
+    "application-basket-no-content": "Sinulla ei ole muistilistalla vielä yhtään hakukohdetta. Etsi hakukoneella koulutukset, joihin haluat hakea, kerää ne muistilistalle ja siirrä hakulomakkeelle. Voit hakea yhteishaussa viiteen eri koulutukseen.",
     "application-basket-fill-form": "Täytä hakulomake",
     "application-basket-fill-form-notification": "Tässä haussa voit hakea enintään __count__ koulutukseen",
     "application-basket-empty": "Tyhjennä muistilista",
     "application-basket-empty-confirm": "Haluatko varmasti tyhjentää koko muistilistan?",
+    "application-basket-overflow-warning": "Voit hakea yhteishaussa viiteen (5) eri koulutukseen, poista ylimääräiset",
+    "attachment-delivery-deadline": "Liitteet toimitettava viimeistään",
 
     "popup-close": "Sulje",
     "popup-continue": "Jatka",

@@ -63,18 +63,23 @@
 		            </ul>
 		        </div>
 		        <div class="actions primarylinks">
-		            <ul>
-		                <li><a href="../app/#/muistilista?lang=fi"><span>Muistilista (<span class="appbasket-count"></span>)</span></a></li>
-		            </ul>
-		        </div>
+					<ul>
+						<li class="icon basket">
+							<a href="../app/#/muistilista">
+								<span>Muistilista (<span class="appbasket-count"></span>)</span>
+							</a>
+						</li>
+					</ul>
+				</div>
 			</div>
 		</div>
 		
 		<div class="search">
 			<form action="#">
 				<fieldset class="search-container">
-					<input class="search-field" name="search-field" placeholder="Hae koulutuksia tästä" value="" />
-					<input class="infield-button magnifier" type="submit" />
+					<label for="search-field" class="h2">Etsi koulutuksia tästä</label>
+					<input tabindex="0" class="search-field" id="search-field" name="search-field" placeholder="Kirjoita tähän esim. tutkinto, ammatti tai oppilaitoksen nimi" value="" />
+					<button class="button primary magnifier" type="submit"><span><span class="h2">Hae</span></span></button>
 				</fieldset>
 			</form>
 		</div>
@@ -133,24 +138,9 @@
 			<div class="footer-item">
 				<a href="http://www.oph.fi/" title="Opetushallitus"><img src="img/oph_footer_logo.png" alt="Opetushallitus" /></a>
 			</div>
-			<div class="footer-item">
-				<p>
-					Opetushallitus
-					<br/>Hakaniemenranta 6
-					<br/>PL 380, 00531 Helsinki
-					<br/>puhelin 029 533 1000
-				</p>
-			</div>
 	
 			<div class="footer-item">
 				<a href="http://www.minedu.fi/OPM/" title="Opetus- ja kulttuuriministeriö"><img src="img/okm_footer_logo.png" alt="Opetus- ja kulttuuriministeriö"/></a>
-			</div>
-			<div class="footer-item">
-				<p>
-					Opetus- ja kulttuuriministeriö
-					<br/>PL 29, 00023 Valtioneuvosto
-					<br/>puhelin 0295 3 30004
-				</p>
 			</div>
 		</div>
 

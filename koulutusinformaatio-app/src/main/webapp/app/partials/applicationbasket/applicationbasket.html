@@ -71,6 +71,7 @@
                             <input type="hidden" name="preference{{$index + 1}}-Koulutus-id-lang" value="{{item.teachLang}}" />
                         </span>
                         <div class="action-area">
+                            <div data-ng-show="applyButtonIsDisabled(as.applicationSystemId)" data-ki-i18n="application-basket-overflow-warning" class="notification warning clear float-right margin-bottom-2"></div>
                             <div data-ng-switch="applyButtonIsDisabled(as.applicationSystemId)" class="clear float-right">
                                 <div data-ng-switch-when="true">
                                     <button class="primary" disabled="disabled" type="submit">

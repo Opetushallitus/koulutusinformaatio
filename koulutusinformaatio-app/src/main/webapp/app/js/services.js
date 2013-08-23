@@ -558,7 +558,7 @@ service('ApplicationBasketService', ['$http', '$q', function($http, $q) {
 
                         if (result[asIndex].applicationOptions[i].attachmentDeliveryDeadline) {
                             result[asIndex].applicationOptions[i].deadlines.push({
-                                name: 'Liitteet',
+                                name: i18n.t('attachment-delivery-deadline'),
                                 value: result[asIndex].applicationOptions[i].attachmentDeliveryDeadline
                             });
                         }

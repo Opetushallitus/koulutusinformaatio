@@ -444,6 +444,40 @@ directive('kiTimestamp', function() {
 
 }).
 
+/**
+ *  Render application system state as label
+ */
+directive('kiAsStateLabel', function() {
+    return function(scope, element, attrs) {
+        scope.$watch('loi', function(data) {
+            var asOngoing = false;
+
+            if (data && data.applicationSystems) {
+                for (var asIndex in data.applicationSystems) {
+                    if (data.applicationSystems.hasOwnProperty(asIndex)) {
+                        var as = data.applicationSystems[asIndex];
+                        if (as.asOngoing) {
+                            asOngoing = as.asOngoing;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (asOngoing) {
+                element.addClass('label vih');
+                element.html(i18n.t('label-as-ongoing'));
+            } else {
+                element.addClass('label har');
+                element.html(i18n.t('label-as-not-ongoing'));
+            }
+        })
+    }
+}).
+
+/**
+ *  Render applicayion system state
+ */
 directive('kiAsState', function() {
     return function(scope, element, attrs) {
         if (scope.lo.asOngoing) {
