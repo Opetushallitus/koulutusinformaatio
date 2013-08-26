@@ -24,6 +24,7 @@ import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Picture;
+import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
 import org.modelmapper.ModelMapper;
@@ -81,7 +82,10 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     }
 
     @Override
-    public List<ApplicationOption> getApplicationOptions(List<String> aoIds) {
+    public List<ApplicationOption> getApplicationOptions(List<String> aoIds) throws InvalidParametersException {
+        if (aoIds == null || aoIds.isEmpty()) {
+            throw new InvalidParametersException("Application option IDs required");
+        }
         List<ApplicationOptionEntity> applicationOptions = applicationOptionDAO.find(aoIds);
         return Lists.transform(applicationOptions, new Function<ApplicationOptionEntity, ApplicationOption>() {
             @Override

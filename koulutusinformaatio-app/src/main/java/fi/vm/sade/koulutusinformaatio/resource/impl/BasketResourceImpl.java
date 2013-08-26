@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.resource.impl;
 
 import fi.vm.sade.koulutusinformaatio.domain.dto.BasketItemDTO;
+import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
 import fi.vm.sade.koulutusinformaatio.resource.BasketResource;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,10 @@ public class BasketResourceImpl implements BasketResource {
 
     @Override
     public List<BasketItemDTO> getBasketItems(List<String> aoId, String lang) {
-        return learningOpportunityService.getBasketItems(aoId, lang);
+        try {
+            return learningOpportunityService.getBasketItems(aoId, lang);
+        } catch (Exception e) {
+            throw KIExceptionHandler.resolveException(e);
+        }
     }
 }

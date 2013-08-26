@@ -16,12 +16,14 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import com.google.common.collect.Lists;
 import com.mongodb.DBCollection;
 import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunitySpecificationEntity;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
+import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
@@ -72,6 +74,7 @@ public class EducationDataQueryServiceImplTest {
         ao.setId("8.9.0");
         aos.add(ao);
         when(applicationOptionDAO.find(eq("1.1.1"), eq("9.9.9"), eq("1"))).thenReturn(aos);
+        when(applicationOptionDAO.find(eq(Lists.newArrayList("8.9.0")))).thenReturn(aos);
         learningOpportunityProviderDAO = mock(LearningOpportunityProviderDAO.class);
         lopCollection = mock(DBCollection.class);
         when(learningOpportunityProviderDAO.getCollection()).thenReturn(lopCollection);
@@ -106,5 +109,22 @@ public class EducationDataQueryServiceImplTest {
         assertNotNull(result);
         assertEquals(1, result.size());
         assertEquals("8.9.0", result.get(0).getId());
+    }
+
+    @Test
+    public void testGetApplicationOptions() throws Exception {
+        List<ApplicationOption> result = service.getApplicationOptions(Lists.newArrayList("8.9.0"));
+        assertNotNull(result);
+        assertEquals(1, result.size());
+    }
+
+    @Test(expected = InvalidParametersException.class)
+    public void testGetApplicationsInvalidNullParams() throws InvalidParametersException {
+        service.getApplicationOptions(null);
+    }
+
+    @Test(expected = InvalidParametersException.class)
+    public void testGetApplicationsInvalidEmptyParams() throws InvalidParametersException {
+        service.getApplicationOptions(new ArrayList<String>());
     }
 }
