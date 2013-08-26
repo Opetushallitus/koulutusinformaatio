@@ -16,11 +16,11 @@
 
 package fi.vm.sade.koulutusinformaatio.exception;
 
+import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
 /**
@@ -40,6 +40,8 @@ public class KIExceptionHandler {
                 webException = new HTTPException(Response.Status.INTERNAL_SERVER_ERROR, "Error occurred while searching");
             } else if (e instanceof ResourceNotFoundException) {
                 webException = new HTTPException(Response.Status.NOT_FOUND, e.getMessage());
+            } else if (e instanceof InvalidParametersException) {
+                webException = new HTTPException(Response.Status.BAD_REQUEST, e.getMessage());
             } else {
                 webException = new HTTPException(Response.Status.INTERNAL_SERVER_ERROR, "Internal error occurred");
             }

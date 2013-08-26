@@ -21,6 +21,7 @@ import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.converter.*;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.dto.*;
+import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
@@ -91,7 +92,7 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     }
 
     @Override
-    public List<ApplicationOptionDTO> getApplicationOptions(List<String> aoId, final String lang) {
+    public List<ApplicationOptionDTO> getApplicationOptions(List<String> aoId, final String lang) throws InvalidParametersException {
         List<ApplicationOption> applicationOptions = educationDataQueryService.getApplicationOptions(aoId);
         return Lists.transform(applicationOptions, new Function<ApplicationOption, ApplicationOptionDTO>() {
             @Override
@@ -102,7 +103,7 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     }
 
     @Override
-    public List<BasketItemDTO> getBasketItems(List<String> aoId, String lang) {
+    public List<BasketItemDTO> getBasketItems(List<String> aoId, String lang) throws InvalidParametersException {
         List<ApplicationOption> applicationOptions = educationDataQueryService.getApplicationOptions(aoId);
         return ApplicationOptionsToBasketItemDTOs.convert(applicationOptions, lang);
     }

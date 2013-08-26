@@ -18,15 +18,13 @@ package fi.vm.sade.koulutusinformaatio.resource.impl;
 
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionSearchResultDTO;
+import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
 import fi.vm.sade.koulutusinformaatio.resource.ApplicationOptionResource;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.QueryParam;
 import java.util.List;
 
 /**
@@ -60,6 +58,10 @@ public class ApplicationOptionResourceImpl implements ApplicationOptionResource 
 
     @Override
     public List<ApplicationOptionDTO> getApplicationOptions(List<String> aoId, String lang) {
-        return learningOpportunityService.getApplicationOptions(aoId, lang);
+        try {
+            return learningOpportunityService.getApplicationOptions(aoId, lang);
+        } catch (InvalidParametersException e) {
+            throw KIExceptionHandler.resolveException(e);
+        }
     }
 }

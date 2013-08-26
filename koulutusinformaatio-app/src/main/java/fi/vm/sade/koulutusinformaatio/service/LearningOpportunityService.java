@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.service;
 
 import fi.vm.sade.koulutusinformaatio.domain.dto.*;
+import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 
 import java.util.Date;
@@ -38,9 +39,10 @@ public interface LearningOpportunityService {
     List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, String lopId, String baseEducation);
 
     ApplicationOptionDTO getApplicationOption(String aoId, String lang) throws ResourceNotFoundException;
-    List<ApplicationOptionDTO> getApplicationOptions(List<String> aoId, String lang);
 
-    List<BasketItemDTO> getBasketItems(List<String> aoId, String lang);
+    List<ApplicationOptionDTO> getApplicationOptions(List<String> aoId, String lang) throws InvalidParametersException;
+
+    List<BasketItemDTO> getBasketItems(List<String> aoId, String lang) throws InvalidParametersException;
 
     Date getLastDataUpdated();
 

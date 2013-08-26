@@ -20,6 +20,7 @@ import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Picture;
+import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 
 import java.util.Date;
@@ -46,7 +47,8 @@ public interface EducationDataQueryService {
      */
     List<ApplicationOption> findApplicationOptions(final String asId, final String lopId, final String baseEducation);
 
-    List<ApplicationOption> getApplicationOptions(final List<String> aoIds);
+    List<ApplicationOption> getApplicationOptions(final List<String> aoIds) throws InvalidParametersException;
+
     ApplicationOption getApplicationOption(final String aoId) throws ResourceNotFoundException;
 
     /**
