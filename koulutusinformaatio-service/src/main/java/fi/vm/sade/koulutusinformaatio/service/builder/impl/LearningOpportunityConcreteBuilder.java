@@ -178,14 +178,38 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
                     }
                 }
             }
+
             for (ParentLOI parentLOI : parentLOS.getLois()) {
                 parentLOI.setApplicationOptions(applicationOptionsByParentLOIId.get(parentLOI.getId()));
             }
             parentLOS.setChildren(children);
         }
 
-        // filter out empty parent LOSs
 
+        return this;
+    }
+
+    @Override
+    public LearningOpportunityBuilder filter() {
+
+        // filter out empty parent lois
+        Set<String> parentLOIIdsInUse = Sets.newHashSet();
+        for (ParentLOS parentLOS : this.parentLOSs) {
+            for (ChildLOS childLOS : parentLOS.getChildren()) {
+                for (ChildLOI childLOI : childLOS.getLois()) {
+                    parentLOIIdsInUse.add(childLOI.getParentLOIId());
+                }
+            }
+            List<ParentLOI> parentLOIsInUse = Lists.newArrayList();
+            for (ParentLOI parentLOI : parentLOS.getLois()) {
+                if (parentLOIIdsInUse.contains(parentLOI.getId())) {
+                    parentLOIsInUse.add(parentLOI);
+                }
+            }
+            parentLOS.setLois(parentLOIsInUse);
+        }
+
+        // filter out empty parent LOSs
         this.parentLOSs = Lists.newArrayList(
                 Collections2.filter(this.parentLOSs, new Predicate<ParentLOS>() {
                     @Override
@@ -194,13 +218,24 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
                     }
                 })
         );
-
         return this;
     }
 
     @Override
     public List<ParentLOS> build() {
         return parentLOSs;
+    }
+
+    private List<ChildLOI> resolveChildLOIsByParentLOIId(ParentLOS parentLOS, String parentLOIId) {
+        List<ChildLOI> childLOIs = Lists.newArrayList();
+        for (ChildLOS childLOS : parentLOS.getChildren()) {
+            for (ChildLOI childLOI : childLOS.getLois()) {
+                if (childLOI.getParentLOIId().equals(parentLOIId)) {
+                    childLOIs.add(childLOI);
+                }
+            }
+        }
+        return childLOIs;
     }
 
     private List<Exam> createExams(List<ValintakoeRDTO> valintakoes) throws KoodistoException {

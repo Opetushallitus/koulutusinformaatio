@@ -19,13 +19,7 @@ package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
-import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
-import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.service.builder.LearningOpportunityBuilder;
-import fi.vm.sade.tarjonta.service.resources.HakukohdeResource;
-import fi.vm.sade.tarjonta.service.resources.KomoResource;
-import fi.vm.sade.tarjonta.service.resources.KomotoResource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -37,7 +31,7 @@ import java.util.List;
 public class LearningOpportunityDirector {
 
     public List<ParentLOS> constructLearningOpportunities(LearningOpportunityBuilder builder) throws TarjontaParseException, KoodistoException {
-        return builder.resolveParentLOSs().resolveChildLOSs().reassemble().build();
+        return builder.resolveParentLOSs().resolveChildLOSs().reassemble().filter().build();
     }
 
 }

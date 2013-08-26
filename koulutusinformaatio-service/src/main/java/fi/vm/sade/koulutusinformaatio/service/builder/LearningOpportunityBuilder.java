@@ -43,6 +43,7 @@ public interface LearningOpportunityBuilder {
     public LearningOpportunityBuilder resolveParentLOSs() throws TarjontaParseException, KoodistoException, WebApplicationException;
     public LearningOpportunityBuilder resolveChildLOSs() throws TarjontaParseException, KoodistoException, WebApplicationException;
     public LearningOpportunityBuilder reassemble() throws TarjontaParseException, KoodistoException, WebApplicationException;
+    public LearningOpportunityBuilder filter();
     public List<ParentLOS> build();
 
 }
