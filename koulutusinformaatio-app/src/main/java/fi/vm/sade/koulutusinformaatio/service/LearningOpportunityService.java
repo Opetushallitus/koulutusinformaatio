@@ -30,17 +30,17 @@ public interface LearningOpportunityService {
 
     ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(String parentId) throws ResourceNotFoundException;
 
-    ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(String parentId, String lang) throws ResourceNotFoundException;
+    ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(String parentId, String lang, String uiLang) throws ResourceNotFoundException;
 
     ChildLearningOpportunitySpecificationDTO getChildLearningOpportunity(String cloId) throws ResourceNotFoundException;
 
-    ChildLearningOpportunitySpecificationDTO getChildLearningOpportunity(String cloId, String lang) throws ResourceNotFoundException;
+    ChildLearningOpportunitySpecificationDTO getChildLearningOpportunity(String cloId, String lang, String uiLang) throws ResourceNotFoundException;
 
     List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, String lopId, String baseEducation);
 
-    ApplicationOptionDTO getApplicationOption(String aoId, String lang) throws ResourceNotFoundException;
+    ApplicationOptionDTO getApplicationOption(String aoId, String lang, String uiLang) throws ResourceNotFoundException;
 
-    List<ApplicationOptionDTO> getApplicationOptions(List<String> aoId, String lang) throws InvalidParametersException;
+    List<ApplicationOptionDTO> getApplicationOptions(List<String> aoId, String lang, String uiLang) throws InvalidParametersException;
 
     List<BasketItemDTO> getBasketItems(List<String> aoId, String lang) throws InvalidParametersException;
 

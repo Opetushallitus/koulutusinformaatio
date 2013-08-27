@@ -25,7 +25,7 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecif
  */
 public class ParentLOSToDTO {
 
-    public static ParentLearningOpportunitySpecificationDTO convert(final ParentLOS parentLOS, final String lang) {
+    public static ParentLearningOpportunitySpecificationDTO convert(final ParentLOS parentLOS, final String lang, final String uiLang) {
         ParentLearningOpportunitySpecificationDTO parent = new ParentLearningOpportunitySpecificationDTO();
         parent.setId(parentLOS.getId());
         parent.setName(ConverterUtil.getTextByLanguage(parentLOS.getName(), lang));
@@ -39,11 +39,11 @@ public class ParentLOSToDTO {
         parent.setStydyDomain(ConverterUtil.getTextByLanguage(parentLOS.getStydyDomain(), lang));
         parent.setTranslationLanguage(lang);
         parent.setCreditValue(parentLOS.getCreditValue());
-        parent.setCreditUnit(ConverterUtil.getTextByLanguage(parentLOS.getCreditUnit(), lang));
+        parent.setCreditUnit(ConverterUtil.getTextByLanguage(parentLOS.getCreditUnit(), uiLang));
 
         if (parentLOS.getLois() != null) {
             for (ParentLOI loi : parentLOS.getLois()) {
-                parent.getLois().add(ParentLOIToDTO.convert(loi, lang));
+                parent.getLois().add(ParentLOIToDTO.convert(loi, lang, uiLang));
             }
         }
         return parent;

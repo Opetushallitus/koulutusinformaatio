@@ -52,26 +52,26 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     public ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(String parentId) throws ResourceNotFoundException {
         ParentLOS parentLOS = educationDataQueryService.getParentLearningOpportunity(parentId);
         String lang = resolveDefaultLanguage(parentLOS);
-        return ParentLOSToDTO.convert(parentLOS, lang);
+        return ParentLOSToDTO.convert(parentLOS, lang, lang);
     }
 
     @Override
-    public ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(String parentId, String lang) throws ResourceNotFoundException {
+    public ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(String parentId, String lang, String uiLang) throws ResourceNotFoundException {
         ParentLOS parentLOS = educationDataQueryService.getParentLearningOpportunity(parentId);
-        return ParentLOSToDTO.convert(parentLOS, lang);
+        return ParentLOSToDTO.convert(parentLOS, lang, uiLang);
     }
 
     @Override
     public ChildLearningOpportunitySpecificationDTO getChildLearningOpportunity(String cloId) throws ResourceNotFoundException {
         ChildLOS childLOS = educationDataQueryService.getChildLearningOpportunity(cloId);
         String lang = resolveDefaultLanguage(childLOS.getLois().get(0));
-        return ChildLOSToDTO.convert(childLOS, lang);
+        return ChildLOSToDTO.convert(childLOS, lang, lang);
     }
 
     @Override
-    public ChildLearningOpportunitySpecificationDTO getChildLearningOpportunity(String cloId, String lang) throws ResourceNotFoundException {
+    public ChildLearningOpportunitySpecificationDTO getChildLearningOpportunity(String cloId, String lang, String uiLang) throws ResourceNotFoundException {
         ChildLOS childLO = educationDataQueryService.getChildLearningOpportunity(cloId);
-        return ChildLOSToDTO.convert(childLO, lang);
+        return ChildLOSToDTO.convert(childLO, lang, uiLang);
     }
 
     @Override
@@ -86,18 +86,18 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     }
 
     @Override
-    public ApplicationOptionDTO getApplicationOption(String aoId, String lang) throws ResourceNotFoundException {
+    public ApplicationOptionDTO getApplicationOption(String aoId, String lang, String uiLang) throws ResourceNotFoundException {
         ApplicationOption ao = educationDataQueryService.getApplicationOption(aoId);
-        return ApplicationOptionToDTO.convert(ao, lang);
+        return ApplicationOptionToDTO.convert(ao, lang, uiLang);
     }
 
     @Override
-    public List<ApplicationOptionDTO> getApplicationOptions(List<String> aoId, final String lang) throws InvalidParametersException {
+    public List<ApplicationOptionDTO> getApplicationOptions(List<String> aoId, final String lang, final String uiLang) throws InvalidParametersException {
         List<ApplicationOption> applicationOptions = educationDataQueryService.getApplicationOptions(aoId);
         return Lists.transform(applicationOptions, new Function<ApplicationOption, ApplicationOptionDTO>() {
             @Override
             public ApplicationOptionDTO apply(ApplicationOption applicationOption) {
-                return ApplicationOptionToDTO.convert(applicationOption, lang);
+                return ApplicationOptionToDTO.convert(applicationOption, lang, uiLang);
             }
         });
     }

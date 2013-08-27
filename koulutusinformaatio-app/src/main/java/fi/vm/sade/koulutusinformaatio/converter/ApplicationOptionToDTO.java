@@ -24,11 +24,10 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
  */
 public class ApplicationOptionToDTO {
 
-    public static ApplicationOptionDTO convert(final ApplicationOption applicationOption, final String lang) {
+    public static ApplicationOptionDTO convert(final ApplicationOption applicationOption, final String lang, final String uiLang) {
         if (applicationOption != null) {
             ApplicationOptionDTO ao = new ApplicationOptionDTO();
             ao.setId(applicationOption.getId());
-            //ao.setApplicationSystem(ApplicationSystemToDTO.convert(applicationOption.getApplicationSystem(), lang));
             ao.setName(ConverterUtil.getTextByLanguage(applicationOption.getName(), lang));
             ao.setAoIdentifier(applicationOption.getAoIdentifier());
             ao.setAttachmentDeliveryDeadline(applicationOption.getAttachmentDeliveryDeadline());
@@ -40,7 +39,7 @@ public class ApplicationOptionToDTO {
             ao.setSora(applicationOption.isSora());
             ao.setEducationDegree(applicationOption.getEducationDegree());
             ao.setTeachingLanguages(applicationOption.getTeachingLanguages());
-            ao.setSelectionCriteria(ConverterUtil.getTextByLanguage(applicationOption.getSelectionCriteria(), lang));
+            ao.setSelectionCriteria(ConverterUtil.getTextByLanguage(applicationOption.getSelectionCriteria(), uiLang));
             ao.setPrerequisite(CodeToDTO.convert(applicationOption.getPrerequisite(), lang));
             ao.setExams(ExamToDTO.convertAll(applicationOption.getExams(), lang));
             ao.setProvider(ProviderToDTO.convert(applicationOption.getProvider(), lang));
