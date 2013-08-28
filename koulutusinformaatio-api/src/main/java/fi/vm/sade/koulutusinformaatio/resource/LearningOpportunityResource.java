@@ -57,13 +57,15 @@ public interface LearningOpportunityResource {
      *
      * @param parentId learning opportunity id
      * @param lang translation language (optional)
+     * @param uiLang user interface language, used to translate some information
      * @return parent learning opportunity dto object
      */
     @GET
     @Path("parent/{parentId}")
     @Produces(MediaType.APPLICATION_JSON)
     public ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(@PathParam("parentId") String parentId,
-                                                                                  @QueryParam("lang") String lang);
+                                                                                  @QueryParam("lang") String lang,
+                                                                                  @QueryParam("uiLang") String uiLang);
 
     /**
      * Fetches a child learning opportunity that belongs to the specified parent.
@@ -72,11 +74,14 @@ public interface LearningOpportunityResource {
      *
      * @param cloId child learning opportunity id
      * @param lang translation language (optional)
+     * @param uiLang user interface language, used to translate some information
      * @return child learning opportunity dto object
      */
     @GET
     @Path("child/{cloId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ChildLearningOpportunitySpecificationDTO getChildLearningOpportunity(@PathParam("cloId") String cloId, @QueryParam("lang") String lang);
+    public ChildLearningOpportunitySpecificationDTO getChildLearningOpportunity(@PathParam("cloId") String cloId,
+                                                                                @QueryParam("lang") String lang,
+                                                                                @QueryParam("uiLang") String uiLang);
 
 }

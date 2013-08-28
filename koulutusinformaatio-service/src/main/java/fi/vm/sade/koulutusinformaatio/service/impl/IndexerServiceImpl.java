@@ -153,7 +153,7 @@ public class IndexerServiceImpl implements IndexerService {
         doc.addField("prerequisites", childLOI.getPrerequisite().getValue());
 
         doc.setField("prerequisite", resolveTranslationInTeachingLangUseFallback(
-                childLOI.getTeachingLanguages(), childLOI.getPrerequisite().getName().getTranslationsShortName()));
+                childLOI.getTeachingLanguages(), childLOI.getPrerequisite().getName().getTranslations()));
 
         doc.setField("name", resolveTranslationInTeachingLangUseFallback(
                 childLOI.getTeachingLanguages(), childLOS.getName().getTranslationsShortName()));

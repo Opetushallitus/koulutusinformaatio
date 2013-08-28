@@ -24,13 +24,13 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunitySpecifi
  */
 public class ChildLOSToDTO {
 
-    public static ChildLearningOpportunitySpecificationDTO convert(final ChildLOS childLOS, final String lang) {
+    public static ChildLearningOpportunitySpecificationDTO convert(final ChildLOS childLOS, final String lang, final String uiLang) {
         ChildLearningOpportunitySpecificationDTO child = new ChildLearningOpportunitySpecificationDTO();
         child.setId(childLOS.getId());
         child.setName(ConverterUtil.getTextByLanguage(childLOS.getName(), lang));
         child.setDegreeTitle(ConverterUtil.getTextByLanguage(childLOS.getDegreeTitle(), lang));
         child.setQualification(ConverterUtil.getTextByLanguage(childLOS.getQualification(), lang));
-        child.setLois(ChildLOIToDTO.convert(childLOS.getLois(), lang));
+        child.setLois(ChildLOIToDTO.convert(childLOS.getLois(), lang, uiLang));
         child.setParent(ParentLOSRefToDTO.convert(childLOS.getParent(), lang));
         child.setDegreeGoal(ConverterUtil.getTextByLanguage(childLOS.getDegreeGoal(), lang));
         return child;

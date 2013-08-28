@@ -145,7 +145,8 @@ service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', 'Languag
 
             $http.get('../lo/parent/' + options.parentId, {
                 params: {
-                    lang: options.language
+                    lang: options.language,
+                    uiLang: LanguageService.getLanguage()
                 }
             }).
             success(function(result) {
@@ -339,7 +340,8 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
 
             $http.get('../lo/child/' + options.childId, {
                 params: {
-                    lang: options.language
+                    lang: options.language,
+                    uiLang: LanguageService.getLanguage()
                 }
             }).
             success(function(result) {

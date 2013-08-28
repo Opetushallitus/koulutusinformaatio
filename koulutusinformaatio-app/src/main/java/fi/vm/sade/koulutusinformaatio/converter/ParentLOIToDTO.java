@@ -30,10 +30,10 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunityInstan
  */
 public class ParentLOIToDTO {
 
-    public static ParentLearningOpportunityInstanceDTO convert(final ParentLOI parentLOI, final String lang) {
+    public static ParentLearningOpportunityInstanceDTO convert(final ParentLOI parentLOI, final String lang, String uiLang) {
         ParentLearningOpportunityInstanceDTO loi = new ParentLearningOpportunityInstanceDTO();
         loi.setId(parentLOI.getId());
-        loi.setPrerequisite(CodeToDTO.convert(parentLOI.getPrerequisite(), lang));
+        loi.setPrerequisite(CodeToDTO.convert(parentLOI.getPrerequisite(), uiLang));
         loi.setSelectingEducation(ConverterUtil.getTextByLanguage(parentLOI.getSelectingEducation(), lang));
 
         // group by application system for UI
@@ -43,15 +43,14 @@ public class ParentLOIToDTO {
         }
 
         for (ApplicationSystem as : aoByAs.keySet()) {
-            ApplicationSystemDTO asDTO = ApplicationSystemToDTO.convert(as, lang);
+            ApplicationSystemDTO asDTO = ApplicationSystemToDTO.convert(as, uiLang);
             for (ApplicationOption ao : aoByAs.get(as)) {
-                ApplicationOptionDTO aoDTO = ApplicationOptionToDTO.convert(ao, lang);
+                ApplicationOptionDTO aoDTO = ApplicationOptionToDTO.convert(ao, lang, uiLang);
                 asDTO.getApplicationOptions().add(aoDTO);
             }
             loi.getApplicationSystems().add(asDTO);
         }
 
-        //loi.setChildren(ChildLOIRefToDTO.convert(parentLOI.getChildRefs(), lang));
         return loi;
     }
 }

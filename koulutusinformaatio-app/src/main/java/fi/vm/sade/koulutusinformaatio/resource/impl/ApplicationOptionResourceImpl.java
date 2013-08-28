@@ -48,18 +48,18 @@ public class ApplicationOptionResourceImpl implements ApplicationOptionResource 
     }
 
     @Override
-    public ApplicationOptionDTO getApplicationOption(String aoId, String lang) {
+    public ApplicationOptionDTO getApplicationOption(String aoId, String lang, String uiLang) {
         try {
-            return learningOpportunityService.getApplicationOption(aoId, lang);
+            return learningOpportunityService.getApplicationOption(aoId, lang, uiLang);
         } catch (Exception e) {
             throw KIExceptionHandler.resolveException(e);
         }
     }
 
     @Override
-    public List<ApplicationOptionDTO> getApplicationOptions(List<String> aoId, String lang) {
+    public List<ApplicationOptionDTO> getApplicationOptions(List<String> aoId, String lang, String uiLang) {
         try {
-            return learningOpportunityService.getApplicationOptions(aoId, lang);
+            return learningOpportunityService.getApplicationOptions(aoId, lang, uiLang);
         } catch (InvalidParametersException e) {
             throw KIExceptionHandler.resolveException(e);
         }

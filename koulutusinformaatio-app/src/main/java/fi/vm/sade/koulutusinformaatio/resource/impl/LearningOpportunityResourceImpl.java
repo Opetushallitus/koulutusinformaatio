@@ -72,12 +72,16 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
     }
 
     @Override
-    public ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(String parentId, String lang) {
+    public ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(String parentId, String lang, String uiLang) {
         try {
-            if (Strings.isNullOrEmpty(lang)) {
+            if (Strings.isNullOrEmpty(lang) && Strings.isNullOrEmpty(uiLang)) {
                 return learningOpportunityService.getParentLearningOpportunity(parentId);
-            } else {
-                return learningOpportunityService.getParentLearningOpportunity(parentId, lang.toLowerCase());
+            }
+            else if (Strings.isNullOrEmpty(lang)) {
+                return learningOpportunityService.getParentLearningOpportunity(parentId, uiLang.toLowerCase());
+            }
+            else {
+                return learningOpportunityService.getParentLearningOpportunity(parentId, lang.toLowerCase(), uiLang.toLowerCase());
             }
         } catch (ResourceNotFoundException e) {
             throw KIExceptionHandler.resolveException(e);
@@ -85,12 +89,16 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
     }
 
     @Override
-    public ChildLearningOpportunitySpecificationDTO getChildLearningOpportunity(String cloId, String lang) {
+    public ChildLearningOpportunitySpecificationDTO getChildLearningOpportunity(String cloId, String lang, String uiLang) {
         try {
-            if (Strings.isNullOrEmpty(lang)) {
+            if (Strings.isNullOrEmpty(lang) && Strings.isNullOrEmpty(uiLang)) {
                 return learningOpportunityService.getChildLearningOpportunity(cloId);
-            } else {
-                return learningOpportunityService.getChildLearningOpportunity(cloId, lang.toLowerCase());
+            }
+            else if (Strings.isNullOrEmpty(lang)) {
+                return learningOpportunityService.getChildLearningOpportunity(cloId, uiLang.toLowerCase());
+            }
+            else {
+                return learningOpportunityService.getChildLearningOpportunity(cloId, lang.toLowerCase(), uiLang.toLowerCase());
             }
         } catch (ResourceNotFoundException e) {
             throw KIExceptionHandler.resolveException(e);
