@@ -65,19 +65,24 @@
 		                <li><a href="sv/">På svenska</a></li>
 		            </ul>
 		        </div>
-		        <div class="actions primarylinks">
-		            <ul>
-		                <li><a href="../app/#/muistilista?lang=fi"><span>Muistilista (<span class="appbasket-count"></span>)</span></a></li>
-		            </ul>
-		        </div>
+				<div class="actions primarylinks">
+					<ul>
+						<li class="icon basket">
+							<a href="../app/#/muistilista">
+								<span>Muistilista (<span class="appbasket-count"></span>)</span>
+							</a>
+						</li>
+					</ul>
+				</div>
 			</div>
 		</div>
 		
 		<div class="search">
 			<form action="#">
 				<fieldset class="search-container">
-					<input class="search-field" name="search-field" placeholder="Hae koulutuksia tästä" value="" />
-					<input class="infield-button magnifier" type="submit" />
+					<label for="search-field" class="h2">Etsi koulutuksia tästä</label>
+					<input tabindex="0" class="search-field" id="search-field-frontpage" name="search-field" placeholder="Kirjoita tähän esim. tutkinto, ammatti tai oppilaitoksen nimi" value="" />
+					<button class="button primary magnifier" type="submit"><span><span class="h2">Hae</span></span></button>
 				</fieldset>
 			</form>
 		</div>
@@ -85,23 +90,40 @@
 	
 	<div class="content container">		
 		<article class="main">
-			<h1>Ammatillisen koulutuksen yhteishaku 25.9.-4.10.2013</h1>
+			<h1>Ammatillisen koulutuksen yhteishaku 25.9.&ndash;4.10.2013</h1>
 			<p>
 				Opintopolusta löydät nyt syksyn ammatillisen koulutuksen yhteishaussa mukana olevat koulutukset. Voit etsiä hakukoneella kiinnostavia koulutuksia ja hakea niihin. Kannattaa perehtyä myös hakuohjeisiin ja valintaperusteisiin.
 			</p>
+			<h2>Hae näin:</h2>
+			<ul>
+				<li>Voit hakea enintään viiteen koulutukseen.</li>
+				<li>Etsi koulutukset hakukoneella.</li>
+				<li>Kerää muistilistalle ne, joihin haluat hakea.</li>
+				<li>Paina muistilistan Täytä hakulomake – painiketta: koulutukset siirtyvät hakulomakkeelle.</li>
+				<li>Järjestä koulutukset hakulomakkeella mieluisuusjärjestykseen, mieluisin ensimmäiseksi. Saat ensimmäisestä hakutoiveesta kaksi lisäpistettä.</li>
+				<li>Täytä hakulomake ja lähetä se.</li>
+			</ul>
+			<!--
+			<h2>Opintopolku kehittyy 2013&ndash;2014</h2>
+			<p style="font-style: normal; font-size: 13px;">
+				Luvassa on helppokäyttöinen palveluportaali, josta jatkossa löydät kaiken tutkintoon johtavan koulutuksen ja tietoa muista opiskelumahdollisuuksista. Voit tutustua vaihtoehtoihin ja hakea koulutukseen Opintopolun kautta.
+			</p>
+			<h2>Uutta lokakuussa 2013</h2>
+			<ul style="margin: 0; padding: 0; list-style-type: disc;">
+				<li>Syksyllä 2014 alkava ammatillinen koulutus ja lukiokoulutus</li>
+			</ul>
+		-->
 		</article>
 		
 		<aside>
 			<section>
-				<h2>Koulutukseen hakeminen</h2>
-				<p>Ammatillisen koulutuksen yhteishaku</p>
-				<p class="h2">
-					 <b>25.9.&ndash;4.10.2013</b>
-				</p>
+				<h2>Näin haet syksyn yhteishaussa</h2>
+				<p>Kysyttävää hakemisesta?</p>
 				<p>
-					<a href="/hakulomake_yh_s2013?lang=fi" target="hakulomake">Hakulomake</a>
+					<a href="01-nain-haet.html">Lue ohjeet ja vinkit</a> siitä, miten löydät koulutukset ja haet niihin.
 				</p>
 			</section>
+			
 			
 			<section>
 				<h2>Valintaperusteet uudistuvat</h2>
@@ -114,9 +136,10 @@
 			</section>	
 
 			<section>
-				<h2>Miten haen syksyn yhteishaussa?</h2>
+				<h2>Koulutukseen hakeminen</h2>
+				<p>Etsi koulutukset hakukoneella ja kerää ne muistilistalle.</p>
 				<p>
-					<a href="01-nain-haet.html">Lue ohjeet ja vinkit</a> siitä, miten löydät koulutukset ja haet niihin.
+					<a href="../app/#/muistilista">Muistilista</a>
 				</p>
 			</section>
 			
@@ -129,62 +152,33 @@
 			</section>
 			
 			<section>
-				<p>
-					<a href="http://www.amkhaku.fi"><img src="img/Amkyh_banneri_2013S.gif" alt="AMKhaku.fi -palveluun" /></a>
-				</p>
+				<h2>Ammattikorkeakoulujen yhteishaku syksyllä</h2>
+				<p class="h2">16.9.&ndash;1.10.2013</p>
+				<p>Ammattikorkeakouluihin haetaan palvelussa <a href="http://www.amkhaku.fi" title="AMKhaku.fi -palveluun" target="_blank">Amkhaku.fi</a></p>
 			</section>
 			
 			<section>
-				<p>
-					<a href="http://www.yliopistohaku.fi"><img src="img/YSHJ_Banneri_S2013.gif" alt="Ylopistohaku.fi -palveluun" /></a>
-				</p>
+				<h2>Syksyn yliopistohaku</h2>
+				<p class="h2">16.9.&ndash;1.10.2013</p>
+				<p>Hae opiskelemaan <a href="http://www.yliopistohaku.fi" title="Ylopistohaku.fi -palveluun" target="_blank">Yliopistohaku.fi</a> –palvelussa.</p>
 			</section>	
 			
 		</aside>
 		
-		<article class="teaser">
-			<div class="teaser-text">
-				<h2>Opintopolku kehittyy 2013&ndash;2014</h2>
-				<h2>
-				Luvassa on helppokäyttöinen palveluportaali, 
-	josta jatkossa löydät kaiken tutkintoon johtavan koulutuksen 
-	ja tietoa muista opiskelumahdollisuuksista. Voit tutustua 
-	vaihtoehtoihin ja hakea koulutukseen Opintopolun kautta.
-				</h2>
-			</div>
-			
-			<div class="arrow-wrapper">
-				<section class="arrow">
-					<div class="arrow-content">
-						<h3>Uutta lokakuussa 2013</h3>
-						<ul>
-							<li>Syksyllä 2014 alkava ammatillinen koulutus ja lukiokoulutus</li>
-							<li>Tietoa ja tarinoita opiskelumahdollisuuksista</li>
-						</ul>
-					</div>
-				</section>
-	
-				<section class="arrow">
-					<div class="arrow-content">
-						<h3>Uutta tammikuussa 2014</h3>
-						<ul>
-							<li>Muu peruskoulun jälkeinen koulutus, esimerkiksi kymppiluokat ja ammattistartit</li>
-						</ul>
-					</div>
-				</section>
-						
-				<section class="arrow">
-					<div class="arrow-content">
-						<h3>Uutta helmikuussa 2014</h3>
+		<article class="teaser">			
+			<div class="item-wrapper">			
+				<section class="item">
+					<div class="item-content">
+						<h2>Uutta helmikuussa 2014</h2>
 						<ul>
 							<li>Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku</li>
 						</ul>
 					</div>
 				</section>
 				
-				<section class="arrow">
-					<div class="arrow-content">
-						<h3>Uutta kesäkuussa 2014</h3>
+				<section class="item">
+					<div class="item-content">
+						<h2>Uutta kesäkuussa 2014</h2>
 						<ul>
 							<li>Korkeakoulujen koulutus, johon haetaan syksyllä 2014</li>
 							<li>Haku muuhun peruskoulun jälkeiseen koulutukseen</li>
@@ -192,9 +186,9 @@
 					</div>
 				</section>
 				
-				<section class="arrow">
-					<div class="arrow-content">
-						<h3>Uutta syyskuussa 2014</h3>
+				<section class="item">
+					<div class="item-content">
+						<h2>Uutta syyskuussa 2014</h2>
 						<ul>
 							<li>Korkeakouluhaku</li>
 							<li>Aikuiskoulutus Opintopolussa</li>
@@ -203,7 +197,6 @@
 				</section>
 			</div>
 		</article>
-
 	<footer>
 		
 		<div class="footer-wrapper">
@@ -211,23 +204,7 @@
 				<a href="http://www.oph.fi/" title="Opetushallitus"><img src="img/oph_footer_logo.png" alt="Opetushallitus" /></a>
 			</div>
 			<div class="footer-item">
-				<p>
-					Opetushallitus
-					<br/>Hakaniemenranta 6
-					<br/>PL 380, 00531 Helsinki
-					<br/>puhelin 029 533 1000
-				</p>
-			</div>
-	
-			<div class="footer-item">
 				<a href="http://www.minedu.fi/OPM/" title="Opetus- ja kulttuuriministeriö"><img src="img/okm_footer_logo.png" alt="Opetus- ja kulttuuriministeriö"/></a>
-			</div>
-			<div class="footer-item">
-				<p>
-					Opetus- ja kulttuuriministeriö
-					<br/>PL 29, 00023 Valtioneuvosto
-					<br/>puhelin 0295 3 30004
-				</p>
 			</div>
 		</div>
 
@@ -242,6 +219,8 @@
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
 	<script src="../app/lib/jquery.enhanced.cookie.js" type="text/javascript"></script>
+	<script src="js/vendor/jquery.html5-placeholder-shim.js" type="text/javascript"></script>
+	
 	<script src="js/main.js" type="text/javascript"></script>
 
 	</body>

@@ -27,4 +27,5 @@ $(document).ready(function() {
 	});
 
 	$('.appbasket-count').html(basketCount);
+	$('#search-field-frontpage').focus();
 });

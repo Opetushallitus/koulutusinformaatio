@@ -46,7 +46,7 @@ public interface LearningOpportunityService {
 
     List<ApplicationOptionDTO> getApplicationOptions(List<String> aoId, String lang, String uiLang) throws InvalidParametersException;
 
-    List<BasketItemDTO> getBasketItems(List<String> aoId, String lang) throws InvalidParametersException;
+    List<BasketItemDTO> getBasketItems(List<String> aoId, String uiLang) throws InvalidParametersException;
 
     Date getLastDataUpdated();
 

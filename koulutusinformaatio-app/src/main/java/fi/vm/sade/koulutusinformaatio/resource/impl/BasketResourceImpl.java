@@ -39,9 +39,9 @@ public class BasketResourceImpl implements BasketResource {
     }
 
     @Override
-    public List<BasketItemDTO> getBasketItems(List<String> aoId, String lang) {
+    public List<BasketItemDTO> getBasketItems(List<String> aoId, String uiLang) {
         try {
-            return learningOpportunityService.getBasketItems(aoId, lang);
+            return learningOpportunityService.getBasketItems(aoId, uiLang);
         } catch (Exception e) {
             throw KIExceptionHandler.resolveException(e);
         }

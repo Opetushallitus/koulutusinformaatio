@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
@@ -32,11 +33,24 @@ import java.util.Map;
  */
 public class ApplicationOptionsToBasketItemDTOs {
 
-    public static List<BasketItemDTO> convert(final List<ApplicationOption> aos, String lang) {
+    private final static String FALLBACK_LANG = "fi";
+
+    public static List<BasketItemDTO> convert(final List<ApplicationOption> aos, String uiLang) {
         if (aos != null) {
-            lang = lang.toLowerCase();
+
             Map<String, BasketItemDTO> items = Maps.newHashMap();
             for (ApplicationOption ao : aos) {
+
+                String lang = null;
+                try {
+                    lang = ao.getTeachingLanguages().get(0).toLowerCase();
+                } catch (Exception e) {
+                    lang = FALLBACK_LANG;
+                }
+                if (Strings.isNullOrEmpty(lang)) {
+                    lang = FALLBACK_LANG;
+                }
+
                 BasketApplicationOptionDTO aoDTO = new BasketApplicationOptionDTO();
                 aoDTO.setId(ao.getId());
                 aoDTO.setName(ConverterUtil.getTextByLanguageUseFallbackLang(ao.getName(), lang));
@@ -62,7 +76,7 @@ public class ApplicationOptionsToBasketItemDTOs {
                     BasketItemDTO basketItem = new BasketItemDTO();
                     basketItem.setApplicationSystemId(as.getId());
                     basketItem.getApplicationOptions().add(aoDTO);
-                    basketItem.setApplicationSystemName(ConverterUtil.getTextByLanguageUseFallbackLang(as.getName(), lang));
+                    basketItem.setApplicationSystemName(ConverterUtil.getTextByLanguageUseFallbackLang(as.getName(), uiLang));
                     basketItem.setApplicationDates(DateRangeToDTO.convert(as.getApplicationDates()));
                     basketItem.setAsOngoing(ConverterUtil.isOngoing(as.getApplicationDates()));
                     basketItem.setNextApplicationPeriodStarts(ConverterUtil.resolveNextDateRangeStart(as.getApplicationDates()));

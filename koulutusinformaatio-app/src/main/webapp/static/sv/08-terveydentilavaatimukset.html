@@ -35,7 +35,7 @@ pathimg/share.jpg" />
 	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
 	<meta name="apple-mobile-web-app-title" content="Opintopolku.fi" />
 
-	<title>Opintopolku.fi </title>
+	<title>Studieinfo.fi</title>
 
 	<!-- "Typewriter" Font -->
 	<link href='https://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400italic' rel='stylesheet' type='text/css'>
@@ -65,18 +65,23 @@ pathimg/share.jpg" />
 		            </ul>
 		        </div>
 		        <div class="actions primarylinks">
-		            <ul>
-		                <li><a href="../../app/#/muistilista?lang=sv"><span>Minneslista (<span class="appbasket-count"></span>)</span></a></li>
-		            </ul>
-		        </div>
+					<ul>
+						<li class="icon basket">
+							<a href="../../app/#/muistilista">
+								<span>Minneslista (<span class="appbasket-count"></span>)</span>
+							</a>
+						</li>
+					</ul>
+				</div>
 			</div>
 		</div>
 		
 		<div class="search">
 			<form action="#">
 				<fieldset class="search-container">
-					<input class="search-field" name="search-field" placeholder="Sök utbildningar här" value="" />
-					<input class="infield-button magnifier" type="submit" />
+					<label for="search-field" class="h2">Sök utbildningar här</label>
+					<input tabindex="0" class="search-field" id="search-field" name="search-field" placeholder="Skriv här t.ex. examen, yrke eller läroanstaltens namn" value="" />
+					<button class="button primary magnifier" type="submit"><span><span class="h2">Sök</span></span></button>
 				</fieldset>
 			</form>
 		</div>
@@ -195,24 +200,9 @@ pathimg/share.jpg" />
 			<div class="footer-item">
 				<a href="http://www.oph.fi/startsidan" title="Utbildningsstyrelsen"><img src="../img/oph_se_pysty.png" alt="Utbildningsstyrelsen" /></a>
 			</div>
-			<div class="footer-item">
-				<p>
-					Utbildningsstyrelsen
-					<br/>Hagnäskajen 6
-					<br/>PB 380, 00531 Helsingfors
-					<br/>telefon 029 533 1000
-				</p>
-			</div>
 	
 			<div class="footer-item">
 				<a href="http://www.minedu.fi/OPM/?lang=sv" title="Opetus- ja kulttuuriministeriö"><img src="../img/OKM_Sve_logo.png" alt="Undervisnings- och kulturministeriet"/></a>
-			</div>
-			<div class="footer-item">
-				<p>
-					Undervisnings- och kulturministeriet
-					<br/>PB 29, 00023 Statsrådet
-					<br/>telefon 0295 3 30004
-				</p>
 			</div>
 		</div>
 

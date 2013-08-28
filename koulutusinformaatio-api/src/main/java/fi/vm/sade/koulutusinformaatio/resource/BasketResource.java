@@ -31,5 +31,5 @@ public interface BasketResource {
     @GET
     @Path("items")
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
-    List<BasketItemDTO> getBasketItems(@QueryParam("aoId") List<String> aoId, @DefaultValue("fi") @QueryParam("lang") String lang);
+    List<BasketItemDTO> getBasketItems(@QueryParam("aoId") List<String> aoId, @DefaultValue("fi") @QueryParam("uiLang") String uiLang);
 }

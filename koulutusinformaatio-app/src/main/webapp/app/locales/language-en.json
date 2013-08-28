@@ -6,7 +6,7 @@
     "breadcrumb-search-results": "Hakutulokset (en)",
 
     "lo-description": "Koulutuksen kuvaus (en)",
-    "lo-application": "Koulutukseen hakeutuminen (en)",
+    "lo-application": "Valintaperusteet ja pääsykokeet (en)",
 
     "elementary-based": "Peruskoulupohjainen koulutus (en)",
     "elementary-graduate-selection": "Peruskoulun päättäneiden valinta (en)",
@@ -23,7 +23,9 @@
     "search-pagination-previous": "Edellinen (en)",
     "search-as-ongoing": "Haku käynnissä! (en)",
     "search-as-next": "Tulossa hakuun (en)",
-    "search-field-placeholder": "Hae koulutuksia tästä (en)",
+    "search-field-label": "Hae koulutuksia tästä (en)",
+    "search-field-placeholder": "Kirjoita tähän esim. tutkinto, ammatti tai oppilaitoksen nimi (en)",
+    "search-button": "Hae (en)",
 
     "filter-search-title": "Pohjakoulutus (en)",
     "filter-search-subtitle": "Valitse ylin suorittamasi koulutus (en)",
@@ -89,6 +91,8 @@
     "application-system-active-past": "Haku päättynyt (en)",
     "application-system-active-present": "Haku käynnissä (en)",
     "application-prerequisite": "Pohjakoulutus (en):",
+    "label-as-ongoing": "Haku käynnissä (en)",
+    "label-as-not-ongoing": "Ei nyt haettavissa (en)",
 
     "directly-applicable": "Suoraan haettavissa olevat koulutusohjelmat (en):",
 
@@ -101,11 +105,13 @@
     "title-application-basket-content": "Muistilista (en)",
     "application-basket-back": "Takaisin hakutuloksiin (en)",
     "application-basket-description": "Muistilistalle voit kerätä koulutuksia ja siirtää niiden tiedot hakulomakkeelle. Huomioi, että muistilista on istuntokohtainen ja sille voi lisätä koulutuksia vain yhdellä pohjakoulutuksella. (en)",
-    "application-basket-no-content": "Muistilista on tyhjä. (en)",
+    "application-basket-no-content": "Sinulla ei ole muistilistalla vielä yhtään hakukohdetta. Etsi hakukoneella koulutukset, joihin haluat hakea, kerää ne muistilistalle ja siirrä hakulomakkeelle. Voit hakea yhteishaussa viiteen eri koulutukseen. (en)",
     "application-basket-fill-form": "Täytä hakulomake (en)",
     "application-basket-fill-form-notification": "Tässä haussa voit hakea enintään __count__ koulutukseen (en)",
     "application-basket-empty": "Tyhjennä muistilista (en)",
     "application-basket-empty-confirm": "Haluatko varmasti tyhjentää koko muistilistan? (en)",
+    "application-basket-overflow-warning": "Voit hakea yhteishaussa viiteen (5) eri koulutukseen, poista ylimääräiset (en)",
+    "attachment-delivery-deadline": "Liitteet toimitettava viimeistään (en)",
 
     "popup-close": "Sulje (en)",
     "popup-continue": "Jatka (en)",

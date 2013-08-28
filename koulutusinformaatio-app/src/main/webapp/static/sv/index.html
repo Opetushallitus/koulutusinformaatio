@@ -35,7 +35,7 @@ pathimg/share.jpg" />
 	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
 	<meta name="apple-mobile-web-app-title" content="Opintopolku.fi" />
 
-	<title>Opintopolku.fi </title>
+	<title>Studieinfo.fi</title>
 
 	<!-- "Typewriter" Font -->
 	<link href='https://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|PT+Serif:400italic' rel='stylesheet' type='text/css'>
@@ -68,18 +68,23 @@ pathimg/share.jpg" />
 		            </ul>
 		        </div>
 		        <div class="actions primarylinks">
-		            <ul>
-		                <li><a href="../../app/#/muistilista?lang=sv"><span>Minneslista (<span class="appbasket-count"></span>)</span></a></li>
-		            </ul>
-		        </div>
+					<ul>
+						<li class="icon basket">
+							<a href="../../app/#/muistilista">
+								<span>Minneslista (<span class="appbasket-count"></span>)</span>
+							</a>
+						</li>
+					</ul>
+				</div>
 			</div>
 		</div>
 		
 		<div class="search">
 			<form action="#">
 				<fieldset class="search-container">
-					<input class="search-field" name="search-field" placeholder="Sök utbildningar här" value="" />
-					<input class="infield-button magnifier" type="submit" />
+					<label for="search-field" class="h2">Sök utbildningar här</label>
+					<input tabindex="0" class="search-field" id="search-field-frontpage" name="search-field" placeholder="Skriv här t.ex. examen, yrke eller läroanstaltens namn" value="" />
+					<button class="button primary magnifier" type="submit"><span><span class="h2">Sök</span></span></button>
 				</fieldset>
 			</form>
 		</div>
@@ -87,106 +92,86 @@ pathimg/share.jpg" />
 	
 	<div class="content container">		
 		<article class="main">
-			<h1>Gemensam ansökan till yrkesutbildning 25.9.-4.10.2013</h1>
+			<h1>Gemensam ansökan till yrkesutbildning 25.9.&ndash;4.10.2013</h1>
 			<p>
-Du hittar nu i Studieinfo de yrkesutbildningar som ingår i gemensam ansökan på hösten. Du kan via sökmotorn hitta intressanta utbildningar och söka till dem. Bekanta dig också med ansökningsanvisningarna och antagningsgrunderna. 
+				I höstens gemensamma ansökan ingår inte svenskspråkig utbildning. I Opintopolku.fi hittar du dock finskspråkiga utbildningar som ingår i gemensam ansökan på hösten. Via sökmotorn kan du hämta intressanta utbildningar och söka till dem. Bekanta dig också med ansökningsanvisningar och antagningsgrunder.
 			</p>
+			<h2>Gör din ansökan så här:</h2>
+			<ul>
+				<li>Du kan söka till högst fem utbildningar.</li>
+				<li>Hämta utbildningar via sökmotorn.</li>
+				<li>Samla i minneslistan de utbildningar du vill söka till.</li>
+				<li>Klicka i minneslistan på knappen Fyll i ansökningsblanketten: utbildningarna överförs till ansökningsblanketten.</li>
+				<li>Ordna utbildningarna i önskad ordning, ditt högsta önskemål först. Du får två tilläggspoäng för ditt första önskemål.</li>
+				<li>Fyll i ansökningsblanketten och skicka den.</li>
+			</ul>
 		</article>
 		
 		<aside>
 			<section>
-				<h3>Att söka till utbildning</h3>
-				<p>Gemensam ansökan till yrkesutbildning</p>
-				<p class="h2">
-					 25.9&ndash;4.10.2013
-				</p>
-				<p>
-					<a href="/hakulomake_yh_s2013?lang=sv" target="hakulomake">Ansökningsblankett</a>
-				</p>
-			</section>
-			
-			<section>
-				<h3>Nya antagningsgrunder till yrkesutbildning</h3>
-				<p>
-					De nya antagningsgrunderna tas i bruk i gemensam ansökan på hösten. Personer med en tidigare yrkesinriktad examen eller högskolexamen kan exempelvis nu inte delta i gemensam ansökan.
-				</p>
-				<p>
-					<a href="02-uudet-valintaperusteet-kayttoon.html">Läs mer</a> om de nya antagningsgrunderna.
-				</p>
-			</section>	
-
-			<section>
-				<h3>Så här söker du i gemensam ansökan på hösten</h3>
+				<h2>Så här söker du i höstens ansökan</h2>
+				<p>Frågor om ansökan?</p>
 				<p>
 					<a href="01-nain-haet.html">Läs anvisningar och vinkar</a> om hur du hittar utbildningar och söker till dem. 
 				</p>
 			</section>
 			
+			
+			<section>
+				<h2>Nya antagningsgrunder</h2>
+				<p>
+					Nya antagningsgrunder för yrkesutbildningen iakttas i gemensam ansökan på hösten. I gemensam ansökan kan endast de söka som inte har en tidigare yrkesinriktad examen eller högskolexamen. <a href="02-uudet-valintaperusteet-kayttoon.html">Läs mera</a> om de förnyade antagningsgrunderna. 
+				</p>
+			</section>	
+
+			<section>
+				<h2>Att söka till utbildning</h2>
+				<p>Hämta utbildningar via sökmotorn och samla dem i minneslistan.</p>
+				<p>
+					<a href="../app/#/muistilista">Minneslistan</a>
+				</p>
+			</section>
+			
 					
 			<section>
-				<h3>Hälsa och utbildningsval</h3>
+				<h2>Hälsa och utbildningsval</h2>
 				<p>
 					<a href="08-terveydentilavaatimukset.html">Läs mera</a> om de examensspecifika kraven på hälsa.
 				</p>
 			</section>
 			
 			<section>
+				<h2>Gemensam ansökan till yrkeshögskolor på hösten</h2>
+				<p class="h2">16.9.&ndash;1.10.2013</p>
 				<p>
-					<a href="http://www.yhansokan.fi"><img src="../img/Yhansokan_banner_H2013.gif" alt="YHAnsokan.fi" /></a>
+					Sök till yrkeshögskolor i tjänsten <a href="http://www.yhansokan.fi" title="YHAnsokan.fi" target="_blank">yhansokan.fi</a>
 				</p>
 			</section>
 			
 			<section>
+				<h2>Ansökan till universitet på hösten</h2>
+				<p class="h2">16.9.&ndash;1.10.2013</p>
 				<p>
-					<a href="http://www.universitetansokan.fi"><img src="../img/Uniansokan_Banner_H2013.gif" alt="universitetsansokan.fi" /></a>
+					Sök till studier via <a href="http://www.universitetsansokan.fi" title="universitetsansokan.fi" target="_blank">universitetsansokan.fi</a>
 				</p>
 			</section>	
 			
 		</aside>
 		
 		<article class="teaser">
-			<div class="teaser-text">
-				<h2>Studieinfo utvecklas 2013&ndash;2014</h2>
-				<h2>
-	Studieinfo blir en tjänsteportal som ska vara lätt att använda och där 
-	du i fortsättningen hittar all utbildning som leder till examen och 
-	information om annan utbildning. Du kan bekanta dig med olika alternativ 
-	och söka till utbildning via Studieinfo. 
-				</h2>
-			</div>
-			
-			<div class="arrow-wrapper">		
-				<section class="arrow">
-					<div class="arrow-content">
-						<h4>Nytt i oktober 2013</h4>
-						<ul>
-							<li>Yrkes- och gymnasieutbildning som inleds hösten 2014 </li>
-							<li>Information och berättelser om studiemöjligheter</li>
-						</ul>
-					</div>
-				</section>
-	
-				<section class="arrow">
-					<div class="arrow-content">
-						<h4>Nytt i januari 2014</h4>
-						<ul>
-							<li>Annan utbildning efter grundskolan, t.ex. tionde klassen och yrkesstarten.</li>
-						</ul>
-					</div>
-				</section>
-						
-				<section class="arrow">
-					<div class="arrow-content">
-						<h4>Nytt i februari 2014</h4>
+			<div class="item-wrapper">			
+				<section class="item">
+					<div class="item-content">
+						<h2>Nytt i februari 2014</h2>
 						<ul>
 							<li>Gemensam ansökan till yrkes- och gymnasieutbildning</li>
 						</ul>
 					</div>
 				</section>
 				
-				<section class="arrow">
-					<div class="arrow-content">
-						<h4>Nytt i juni 2014</h4>
+				<section class="item">
+					<div class="item-content">
+						<h2>Nytt i juni 2014</h2>
 						<ul>
 							<li>Högskolornas utbildningar, till vilka man söker hösten 2014</li>
 							<li>Ansökan till annan utbildning efter grundskolan</li>
@@ -194,45 +179,26 @@ Du hittar nu i Studieinfo de yrkesutbildningar som ingår i gemensam ansökan p�
 					</div>
 				</section>
 				
-				<section class="arrow">
-					<div class="arrow-content">
-						<h4>Nytt i september 2014</h4>
+				<section class="item">
+					<div class="item-content">
+						<h2>Nytt i september 2014</h2>
 						<ul>
 							<li>Ansökan till högskolor</li>
 							<li> Vuxenutbildningen</li>
 						</ul>
 					</div>
 				</section>
-
-				
-				
 			</div>
 		</article>
-
 	<footer>
 		
 		<div class="footer-wrapper">
 			<div class="footer-item">
 				<a href="http://www.oph.fi/startsidan" title="Utbildningsstyrelsen"><img src="../img/oph_se_pysty.png" alt="Utbildningsstyrelsen" /></a>
 			</div>
-			<div class="footer-item">
-				<p>
-					Utbildningsstyrelsen
-					<br/>Hagnäskajen 6
-					<br/>PB 380, 00531 Helsingfors
-					<br/>telefon 029 533 1000
-				</p>
-			</div>
 	
 			<div class="footer-item">
 				<a href="http://www.minedu.fi/OPM/?lang=sv" title="Opetus- ja kulttuuriministeriö"><img src="../img/OKM_Sve_logo.png" alt="Undervisnings- och kulturministeriet"/></a>
-			</div>
-			<div class="footer-item">
-				<p>
-					Undervisnings- och kulturministeriet
-					<br/>PB 29, 00023 Statsrådet
-					<br/>telefon 0295 3 30004
-				</p>
 			</div>
 		</div>
 

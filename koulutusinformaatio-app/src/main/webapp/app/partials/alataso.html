@@ -1,23 +1,13 @@
-<!--<div ng-include src="'partials/pageheader.html'"></div> -->
 <section class="content-container grid16-16">
-    <!--<div data-ng-switch="error">
-        <div data-ng-switch-when="true">
-            <div class="notification info">
-                <h3 data-ki-i18n="no-search-results"></h3>
-                <span data-ki-i18n="no-search-results-info"></span>
-            </div>
-        </div>
-        <div data-ng-switch-when="false"> -->
             <div data-ki-breadcrumb="breadcrumb-search-results" id="breadcrumb"></div>
             <section id="main-info">
                 <div class="margin-bottom-3">
                     <h4 class="margin-0">{{parentLO.provider.name}}</h4>
-                    <span class="block">{{parentLO.educationDomain}}<span class="hidden">, lähihoitaja (tutkintonimike)</span></span>
+                    <span class="block">{{parentLO.educationDomain}}<span class="hidden"></span></span>
                     <a href="#/tutkinto/{{parentLO.id}}#{{prerequisite.value}}" class="block">{{parentLO.name}}</a>
                 </div>
                 <h1>{{childLO.degreeTitle}}</h1>
                 <div data-ki-sibling-ribbon class="ribbon margin-bottom-4"></div>
-                <!--<div data-ki-language-ribbon class="ribbon"></div>-->
             </section>
             <div class="tabs main clear">
                 <a class="tab current" data-tabs-group="koulutus" data-tabs-id="kuvaus" data-ng-click="changeMainTab('kuvaus')"><span data-ki-i18n="lo-description"></span></a>
@@ -38,9 +28,4 @@
                 <div data-ng-class="applyFormClass" data-ng-include data-src="'partials/tabs/haku.html'"></div>
                 <div class="clear"></div>
             </div>
-            <!--
-
-            <div data-ng-include data-src="'partials/tabs/kuvaus_alataso.html'"></div> -->
-        <!-- </div>
-    </div> -->
 </section>
