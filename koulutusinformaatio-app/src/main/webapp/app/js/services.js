@@ -524,7 +524,7 @@ service('TabService', function() {
 /**
  *  Service for maintaining application basket state
  */
-service('ApplicationBasketService', ['$http', '$q', function($http, $q) {
+service('ApplicationBasketService', ['$http', '$q', 'LanguageService', function($http, $q, LanguageService) {
     var key = 'basket';
     var cookieConfig = {useLocalStorage: false, maxChunkSize: 2000, maxNumberOfCookies: 20, path: '/'};
 
@@ -644,7 +644,7 @@ service('ApplicationBasketService', ['$http', '$q', function($http, $q) {
             var deferred = $q.defer();
             var basketItems = this.getItems();
 
-            var qParams = '';
+            var qParams = 'uiLang=' + LanguageService.getLanguage();
 
             
             for (var index = 1; index < basketItems.length; index++) {
@@ -653,7 +653,7 @@ service('ApplicationBasketService', ['$http', '$q', function($http, $q) {
                 }
             }
 
-            qParams = qParams.substring(1, qParams.length);
+            //qParams = qParams.substring(1, qParams.length);
             
             $http.get('../basket/items?' + qParams).
             success(function(result) {
