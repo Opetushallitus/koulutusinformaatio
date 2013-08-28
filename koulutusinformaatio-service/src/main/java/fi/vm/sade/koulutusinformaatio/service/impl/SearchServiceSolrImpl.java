@@ -124,12 +124,14 @@ public class SearchServiceSolrImpl implements SearchService {
                 String losId = doc.get("losId") != null ? doc.get("losId").toString() : null;
                 String id = doc.get("losId") != null ? doc.get("losId").toString() : doc.get("id").toString();
                 String prerequisiteText = doc.get("prerequisite") != null ? doc.get("prerequisite").toString() : null;
+                String prerequisiteCodeText = doc.get("prerequisiteCode") != null ? doc.get("prerequisiteCode").toString() : null;
 
                 LOSearchResult lo = null;
                 try {
                     lo = new LOSearchResult(
                             id, doc.get("name").toString(),
-                            doc.get("lopId").toString(), doc.get("lopName").toString(), prerequisiteText, parentId, losId);
+                            doc.get("lopId").toString(), doc.get("lopName").toString(), prerequisiteText,
+                            prerequisiteCodeText, parentId, losId);
 
                     updateAsStatus(lo, doc);
                 } catch (Exception e) {

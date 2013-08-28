@@ -30,6 +30,7 @@ public class LOSearchResult {
     private String lopId;
     private String lopName;
     private String prerequisite;
+    private String prerequisiteCode;
     private String parentId;
     private String losId;
     private boolean asOngoing;
@@ -37,12 +38,13 @@ public class LOSearchResult {
 
 
     public LOSearchResult(String id, String name, String lopId, String lopName,
-                          String prerequisite, String parentId, String losId) {
+                          String prerequisite, String prerequisiteCode, String parentId, String losId) {
         this.id = id;
         this.name = name;
         this.lopId = lopId;
         this.lopName = lopName;
         this.prerequisite = prerequisite;
+        this.prerequisiteCode = prerequisiteCode;
         this.parentId = parentId;
         this.losId = losId;
     }
@@ -85,6 +87,14 @@ public class LOSearchResult {
 
     public void setPrerequisite(String prerequisite) {
         this.prerequisite = prerequisite;
+    }
+
+    public String getPrerequisiteCode() {
+        return prerequisiteCode;
+    }
+
+    public void setPrerequisiteCode(String prerequisiteCode) {
+        this.prerequisiteCode = prerequisiteCode;
     }
 
     public String getParentId() {
