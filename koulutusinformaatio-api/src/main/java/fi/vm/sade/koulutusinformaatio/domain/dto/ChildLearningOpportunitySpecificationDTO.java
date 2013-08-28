@@ -33,6 +33,7 @@ public class ChildLearningOpportunitySpecificationDTO {
     private ParentLOSRefDTO parent;
     private String degreeGoal;
     private List<ChildLearningOpportunityInstanceDTO> lois;
+    private Set<String> availableTranslationLanguages = new HashSet<String>();
 
 
     public String getId() {
@@ -89,5 +90,13 @@ public class ChildLearningOpportunitySpecificationDTO {
 
     public void setLois(List<ChildLearningOpportunityInstanceDTO> lois) {
         this.lois = lois;
+    }
+
+    public Set<String> getAvailableTranslationLanguages() {
+        return availableTranslationLanguages;
+    }
+
+    public void setAvailableTranslationLanguages(Set<String> availableTranslationLanguages) {
+        this.availableTranslationLanguages = availableTranslationLanguages;
     }
 }
