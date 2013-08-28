@@ -13,9 +13,9 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', function
                     resItem.linkHref = '#/tutkinto/' + resItem.id;
                 }
 
-                var prerequisite = resItem.prerequisite;
+                var prerequisite = resItem.prerequisiteCode;
                 if (prerequisite) {
-                    //resItem.linkHref += '#' + prerequisite;
+                    resItem.linkHref += '#' + prerequisite;
                 }
             }
         }
