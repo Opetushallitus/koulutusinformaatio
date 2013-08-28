@@ -15,8 +15,7 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', function
 
                 var prerequisite = resItem.prerequisite;
                 if (prerequisite) {
-                    resItem.linkHref += '#' + prerequisite;
-                    resItem.name += ', ' + prerequisite.toLowerCase();
+                    //resItem.linkHref += '#' + prerequisite;
                 }
             }
         }
