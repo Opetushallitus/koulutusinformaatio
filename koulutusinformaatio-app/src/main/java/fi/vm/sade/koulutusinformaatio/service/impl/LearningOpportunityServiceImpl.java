@@ -117,9 +117,9 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     }
 
     @Override
-    public List<BasketItemDTO> getBasketItems(List<String> aoId, String lang) throws InvalidParametersException {
+    public List<BasketItemDTO> getBasketItems(List<String> aoId, String uiLang) throws InvalidParametersException {
         List<ApplicationOption> applicationOptions = educationDataQueryService.getApplicationOptions(aoId);
-        return ApplicationOptionsToBasketItemDTOs.convert(applicationOptions, lang);
+        return ApplicationOptionsToBasketItemDTOs.convert(applicationOptions, uiLang);
     }
 
     @Override
