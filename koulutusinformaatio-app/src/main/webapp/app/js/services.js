@@ -142,12 +142,16 @@ service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', 'Languag
     return {
         query: function(options) {
             var deferred = $q.defer();
+            var queryParams = {
+                uiLang: LanguageService.getLanguage()
+            }
+
+            if (options.language) {
+                queryParams.lang = options.language
+            }
 
             $http.get('../lo/parent/' + options.parentId, {
-                params: {
-                    lang: options.language,
-                    uiLang: LanguageService.getLanguage()
-                }
+                params: queryParams
             }).
             success(function(result) {
                 transformData(result);
@@ -337,12 +341,16 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
     return {
         query: function(options) {
             var deferred = $q.defer();
+            var queryParams = {
+                uiLang: LanguageService.getLanguage()
+            }
+
+            if (options.language) {
+                queryParams.lang = options.language
+            }
 
             $http.get('../lo/child/' + options.childId, {
-                params: {
-                    lang: options.language,
-                    uiLang: LanguageService.getLanguage()
-                }
+                params: queryParams
             }).
             success(function(result) {
                 transformData(result);
