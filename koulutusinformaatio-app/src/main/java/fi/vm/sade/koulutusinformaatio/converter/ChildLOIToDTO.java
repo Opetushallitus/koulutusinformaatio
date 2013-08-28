@@ -29,9 +29,9 @@ public class ChildLOIToDTO {
             }
         }
         dto.setRelated(ChildLOIRefToDTO.convert(childLOI.getRelated(), lang));
-        dto.setFormOfTeaching(ConverterUtil.getTextsByLanguage(childLOI.getFormOfTeaching(), uiLang));
+        dto.setFormOfTeaching(ConverterUtil.getTextsByLanguage(childLOI.getFormOfTeaching(), lang));
         dto.setWebLinks(childLOI.getWebLinks());
-        dto.setFormOfEducation(ConverterUtil.getTextsByLanguage(childLOI.getFormOfEducation(), lang));
+        dto.setFormOfEducation(ConverterUtil.getTextsByLanguage(childLOI.getFormOfEducation(), uiLang));
         dto.setPrerequisite(CodeToDTO.convert(childLOI.getPrerequisite(), uiLang));
         dto.setTranslationLanguage(lang);
         dto.setProfessionalTitles(ConverterUtil.getTextsByLanguage(childLOI.getProfessionalTitles(), lang));

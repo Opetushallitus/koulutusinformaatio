@@ -451,8 +451,8 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
 
         if (!ParentLODataService.dataExists(childResult.parent.id)) {
             ParentLearningOpportunityService.query({
-                parentId: childResult.parent.id, 
-                language: $scope.descriptionLanguage
+                parentId: childResult.parent.id
+                //language: $scope.descriptionLanguage
             }).then(function(parentResult) {
                 $scope.parentLO = parentResult;
                 ParentLODataService.setParentLOData(parentResult);
@@ -479,8 +479,8 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
     if (isChild()) {
         if (!ChildLODataService.dataExists($routeParams.childId)) {
             ChildLearningOpportunityService.query({
-                childId: $routeParams.childId,
-                language: $scope.descriptionLanguage
+                childId: $routeParams.childId
+                //language: $scope.descriptionLanguage
             }).then(childLOSuccess, loError);
         } else {
             $scope.childLO = ChildLODataService.getChildLOData();
@@ -491,8 +491,8 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
     } else {
         if (!ParentLODataService.dataExists($routeParams.parentId)) {
             ParentLearningOpportunityService.query({
-                parentId: $routeParams.parentId, 
-                language: $scope.descriptionLanguage
+                parentId: $routeParams.parentId
+                //language: $scope.descriptionLanguage
             }).then(parentLOSuccess, loError);
         } else {
             $scope.parentLO = ParentLODataService.getParentLOData();

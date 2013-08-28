@@ -33,6 +33,7 @@ public class LearningOpportunitySearchResultDTO {
     private String lopId;
     private String lopName;
     private String prerequisite;
+    private String prerequisiteCode;
     private String parentId;
     private String losId;
     private boolean asOngoing;
@@ -76,6 +77,14 @@ public class LearningOpportunitySearchResultDTO {
 
     public void setPrerequisite(String prerequisite) {
         this.prerequisite = prerequisite;
+    }
+
+    public String getPrerequisiteCode() {
+        return prerequisiteCode;
+    }
+
+    public void setPrerequisiteCode(String prerequisiteCode) {
+        this.prerequisiteCode = prerequisiteCode;
     }
 
     public String getParentId() {
