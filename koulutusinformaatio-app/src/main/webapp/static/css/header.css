@@ -5,8 +5,14 @@
   float: left; }
 
 .actions {
-  float: right;
-  line-height: 57px; }
+  float: left;
+  clear: left;
+  line-height: 47px; }
+  @media only screen and (min-width: 519px) {
+    .actions {
+      float: right;
+      clear: none;
+      line-height: 57px; } }
   .actions a {
     color: #FFFFFF;
     text-decoration: none;
@@ -16,9 +22,13 @@
     display: inline-block;
     list-style-type: none;
     line-height: 1.5em;
-    margin: 0 0 0 1em;
-    padding: 0 0 0 1.518em;
+    margin: 0;
+    padding: 0 0 0 4px;
     vertical-align: bottom; }
+    @media only screen and (min-width: 519px) {
+      .actions ul {
+        margin: 0 0 0 1em;
+        padding: 0 0 0 1.518em; } }
     .actions ul li.icon {
       padding: 0 0 0 22px; }
     .actions ul li.basket {
@@ -54,26 +64,28 @@ header {
     color: #333333; }
   header .search {
     margin: 50px auto 90px;
-    max-width: 1170px;
+    max-width: 960px;
     background: none;
     padding: 0; }
     header .search .search-field {
       padding: 0 10px;
-      margin: 0 10px 0 0;
+      margin: 0 1% 0 0;
       width: 80%;
       height: 40px;
       border-radius: 0;
       outline: none;
       vertical-align: baseline;
+      -webkit-box-shadow: 0 1px 1px #bfbfbf inset, 0 -1px 4px rgba(0, 0, 0, 0.07) inset;
+      -moz-box-shadow: 0 1px 1px #bfbfbf inset, 0 -1px 4px rgba(0, 0, 0, 0.07) inset;
+      -o-box-shadow: 0 1px 1px #bfbfbf inset, 0 -1px 4px rgba(0, 0, 0, 0.07) inset;
+      -ms-box-shadow: 0 1px 1px #bfbfbf inset, 0 -1px 4px rgba(0, 0, 0, 0.07) inset;
+      box-shadow: 0 1px 1px #bfbfbf inset, 0 -1px 4px rgba(0, 0, 0, 0.07) inset;
       -webkit-border-radius: 3px;
       -moz-border-radius: 3px;
       -o-border-radius: 3px;
       -ms-border-radius: 3px;
       border-radius: 3px; }
-      @media only screen and (min-width: 759px) {
-        header .search .search-field {
-          width: 80%; } }
-      @media only screen and (min-width: 959px) {
+      @media only screen and (min-width: 519px) {
         header .search .search-field {
           width: 60%; } }
       header .search .search-field:focus {
@@ -90,18 +102,16 @@ header {
         header .search .search-container {
           padding: 10px 0; } }
     header .search label {
-      padding: 10px 20px 10px 0;
+      padding: 10px 1% 10px 0;
       margin: 0;
       width: 100%;
-      display: inline-block;
-      text-align: left; }
+      display: inline-block; }
       @media only screen and (min-width: 759px) {
         header .search label {
-          text-align: left; } }
+          width: 21%; } }
       @media only screen and (min-width: 959px) {
         header .search label {
-          width: 25%;
-          text-align: right; } }
+          width: 17%; } }
       header .search label.placeholder {
         background: none; }
       header .search label.h2 {
@@ -131,12 +141,6 @@ header {
       -o-box-shadow: inset 0px 1px 1px 0px rgba(255, 230, 162, 0.7);
       -ms-box-shadow: inset 0px 1px 1px 0px rgba(255, 230, 162, 0.7);
       box-shadow: inset 0px 1px 1px 0px rgba(255, 230, 162, 0.7); }
-      @media only screen and (min-width: 759px) {
-        header .search .magnifier {
-          padding: 0; } }
-      @media only screen and (min-width: 959px) {
-        header .search .magnifier {
-          padding: 0 35px 0 25px; } }
       header .search .magnifier:hover {
         background: #fecf4a;
         background: -webkit-gradient(linear, left top, left bottom, from(#febb04), to(#fecf4a));
@@ -157,10 +161,10 @@ header {
           background: none;
           padding: 0 0 0 8px;
           display: none; }
-          @media only screen and (min-width: 759px) {
+          @media only screen and (min-width: 519px) {
             header .search .magnifier span span {
               display: none; } }
-          @media only screen and (min-width: 959px) {
+          @media only screen and (min-width: 759px) {
             header .search .magnifier span span {
               display: inline; } }
           header .search .magnifier span span.h2 {

@@ -1697,165 +1697,118 @@ header {
   header :-ms-input-placeholder {
     /* Internet Explorer 10+ */
     color: #333333; }
-  header .search {
-    margin: 20px auto;
-    max-width: 1170px;
-    background: none;
-    padding: 0; }
-    header .search .search-field {
-      padding: 0 10px;
-      margin: 0 10px 0 0;
-      width: 80%;
-      height: 40px;
-      border-radius: 0;
-      outline: none;
-      vertical-align: baseline;
-      -webkit-border-radius: 3px;
-      -moz-border-radius: 3px;
-      -o-border-radius: 3px;
-      -ms-border-radius: 3px;
-      border-radius: 3px; }
-      @media only screen and (min-width: 759px) {
-        header .search .search-field {
-          width: 80%; } }
-      @media only screen and (min-width: 959px) {
-        header .search .search-field {
-          width: 60%; } }
-      header .search .search-field:focus {
-        border: #fde7a5 4px solid;
-        height: 48px; }
-    header .search .search-container {
-      max-width: none;
-      text-align: left;
-      padding: 10px 20px; }
-      @media only screen and (min-width: 759px) {
-        header .search .search-container {
-          padding: 10px 20px; } }
-      @media only screen and (min-width: 959px) {
-        header .search .search-container {
-          padding: 10px 0; } }
-    header .search label {
-      padding: 10px 20px 10px 0;
-      margin: 0;
-      width: 100%;
-      display: inline-block;
-      text-align: left; }
-      @media only screen and (min-width: 759px) {
-        header .search label {
-          text-align: left; } }
-      @media only screen and (min-width: 959px) {
-        header .search label {
-          width: 25%;
-          text-align: right; } }
-      header .search label.placeholder {
-        background: none; }
-      header .search label.h2 {
-        color: #333333; }
-    header .search .magnifier {
+  header .search-container {
+    max-width: 960px;
+    margin: 20px auto; }
+    header .search-container .search {
       background: none;
-      line-height: inherit;
-      border: 1px solid #dba000;
-      color: #333333;
-      padding: 0;
-      width: auto;
-      height: 40px;
-      position: static;
-      width: 10%;
-      background-color: #fecf4c;
-      background-color: rgba(254, 186, 0, 0.7);
-      border-color: rgba(219, 160, 0, 0.7);
-      border-width: 1px;
-      border-style: solid;
-      vertical-align: baseline;
-      -webkit-box-sizing: border-box;
-      -moz-box-sizing: border-box;
-      -o-box-sizing: border-box;
-      -ms-box-sizing: border-box;
-      box-sizing: border-box;
-      -webkit-border-radius: 3px;
-      -moz-border-radius: 3px;
-      -o-border-radius: 3px;
-      -ms-border-radius: 3px;
-      border-radius: 3px;
-      -webkit-box-shadow: inset 0px 1px 1px 0px rgba(255, 230, 162, 0.7);
-      -moz-box-shadow: inset 0px 1px 1px 0px rgba(255, 230, 162, 0.7);
-      -o-box-shadow: inset 0px 1px 1px 0px rgba(255, 230, 162, 0.7);
-      -ms-box-shadow: inset 0px 1px 1px 0px rgba(255, 230, 162, 0.7);
-      box-shadow: inset 0px 1px 1px 0px rgba(255, 230, 162, 0.7); }
-      @media only screen and (min-width: 759px) {
-        header .search .magnifier {
-          padding: 0; } }
-      @media only screen and (min-width: 959px) {
-        header .search .magnifier {
-          padding: 0 35px 0 25px; } }
-      header .search .magnifier:hover {
-        background: #fecf4a;
-        background: -webkit-gradient(linear, left top, left bottom, from(#febb04), to(#fecf4a));
-        background: -webkit-linear-gradient(top, #febb04, #fecf4a);
-        background: -moz-linear-gradient(top, #febb04, #fecf4a);
-        background: -ms-linear-gradient(top, #febb04, #fecf4a);
-        background: -o-linear-gradient(top, #febb04, #fecf4a); }
-      header .search .magnifier:active {
-        -webkit-box-shadow: inset 0px 1px 1px 0px #bb8b07;
-        -moz-box-shadow: inset 0px 1px 1px 0px #bb8b07;
-        -o-box-shadow: inset 0px 1px 1px 0px #bb8b07;
-        -ms-box-shadow: inset 0px 1px 1px 0px #bb8b07;
-        box-shadow: inset 0px 1px 1px 0px #bb8b07; }
-      header .search .magnifier span {
-        background: transparent url("../img/suurennuslasi_icon_dark.png") scroll no-repeat;
-        padding: 0 0 0 16px;
-        height: 17px;
-        line-height: inherit; }
-        header .search .magnifier span span {
-          background: none;
-          padding: 0 0 0 8px;
-          display: none; }
-          @media only screen and (min-width: 759px) {
-            header .search .magnifier span span {
-              display: none; } }
-          @media only screen and (min-width: 959px) {
-            header .search .magnifier span span {
-              display: inline; } }
-          header .search .magnifier span span.h2 {
-            color: #333333; }
+      padding: 0; }
+      header .search-container .search .search-field {
+        padding: 0 10px;
+        margin: 0 1% 0 0;
+        width: 80%;
+        height: 40px;
+        border-radius: 0;
+        border: none;
+        outline: none;
+        vertical-align: baseline;
+        -webkit-box-shadow: 0 1px 1px #bfbfbf inset, 0 -1px 4px rgba(0, 0, 0, 0.07) inset;
+        -moz-box-shadow: 0 1px 1px #bfbfbf inset, 0 -1px 4px rgba(0, 0, 0, 0.07) inset;
+        -o-box-shadow: 0 1px 1px #bfbfbf inset, 0 -1px 4px rgba(0, 0, 0, 0.07) inset;
+        -ms-box-shadow: 0 1px 1px #bfbfbf inset, 0 -1px 4px rgba(0, 0, 0, 0.07) inset;
+        box-shadow: 0 1px 1px #bfbfbf inset, 0 -1px 4px rgba(0, 0, 0, 0.07) inset;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        -o-border-radius: 3px;
+        -ms-border-radius: 3px;
+        border-radius: 3px; }
+        @media only screen and (min-width: 519px) {
+          header .search-container .search .search-field {
+            width: 60%; } }
+        header .search-container .search .search-field:focus {
+          border: #fde7a5 4px solid;
+          height: 48px; }
+      header .search-container .search .search-container {
+        max-width: none;
+        text-align: left; }
+      header .search-container .search label {
+        padding: 10px 1% 10px 0;
+        margin: 0;
+        width: 100%;
+        display: inline-block;
+        text-align: left; }
+        @media only screen and (min-width: 759px) {
+          header .search-container .search label {
+            width: 21%; } }
+        @media only screen and (min-width: 959px) {
+          header .search-container .search label {
+            width: 17%; } }
+        header .search-container .search label.h2 {
+          color: #333333; }
+      header .search-container .search .magnifier {
+        background: none;
+        line-height: inherit;
+        border: 1px solid #dba000;
+        color: #333333;
+        padding: 0;
+        width: auto;
+        height: 40px;
+        position: static;
+        width: 10%;
+        background-color: #fecf4c;
+        background-color: rgba(254, 186, 0, 0.7);
+        border-color: rgba(219, 160, 0, 0.7);
+        border-width: 1px;
+        border-style: solid;
+        vertical-align: baseline;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -o-box-sizing: border-box;
+        -ms-box-sizing: border-box;
+        box-sizing: border-box;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        -o-border-radius: 3px;
+        -ms-border-radius: 3px;
+        border-radius: 3px;
+        -webkit-box-shadow: inset 0px 1px 1px 0px rgba(255, 230, 162, 0.7);
+        -moz-box-shadow: inset 0px 1px 1px 0px rgba(255, 230, 162, 0.7);
+        -o-box-shadow: inset 0px 1px 1px 0px rgba(255, 230, 162, 0.7);
+        -ms-box-shadow: inset 0px 1px 1px 0px rgba(255, 230, 162, 0.7);
+        box-shadow: inset 0px 1px 1px 0px rgba(255, 230, 162, 0.7); }
+        header .search-container .search .magnifier:hover {
+          background: #fecf4a;
+          background: -webkit-gradient(linear, left top, left bottom, from(#febb04), to(#fecf4a));
+          background: -webkit-linear-gradient(top, #febb04, #fecf4a);
+          background: -moz-linear-gradient(top, #febb04, #fecf4a);
+          background: -ms-linear-gradient(top, #febb04, #fecf4a);
+          background: -o-linear-gradient(top, #febb04, #fecf4a); }
+        header .search-container .search .magnifier:active {
+          -webkit-box-shadow: inset 0px 1px 1px 0px #bb8b07;
+          -moz-box-shadow: inset 0px 1px 1px 0px #bb8b07;
+          -o-box-shadow: inset 0px 1px 1px 0px #bb8b07;
+          -ms-box-shadow: inset 0px 1px 1px 0px #bb8b07;
+          box-shadow: inset 0px 1px 1px 0px #bb8b07; }
+        header .search-container .search .magnifier span {
+          background: transparent url("../img/suurennuslasi_icon_dark.png") scroll no-repeat;
+          padding: 0 0 0 16px;
+          height: 17px;
+          line-height: inherit; }
+          header .search-container .search .magnifier span span {
+            background: none;
+            padding: 0 0 0 8px;
+            display: none; }
+            @media only screen and (min-width: 519px) {
+              header .search-container .search .magnifier span span {
+                display: none; } }
+            @media only screen and (min-width: 759px) {
+              header .search-container .search .magnifier span span {
+                display: inline; } }
+            header .search-container .search .magnifier span span.h2 {
+              color: #333333; }
 
 #siteheader {
-  margin-bottom: 2em;
-    /*
-    .search {
-        background: #bfbfbf url('../img/searchbarpat.png') repeat-x bottom left;
-        padding: 5px;
-
-        .search-container {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .search-field {
-            width: 100%;
-            background-color: #fffffff;
-            background-image: none;
-            border: none;
-            box-shadow: 0 1px 1px #bfbfbf inset, 0 -1px 4px rgba(0, 0, 0, 0.07) inset;
-            color: #333333;
-            padding: 6px 10px 6px 10px;
-            border-radius: 3px 3px 3px 3px;
-            vertical-align: middle;
-            line-height: 18px;
-        }
-
-        .magnifier {
-            background: url('../img/suurennuslasi_icon.png') no-repeat center right;
-            position: absolute;
-            right: 10px;
-            top: 8px;
-            font-size: 0;
-            width: 15px;
-            height: 16px;
-            border: 0;
-        }
-    }
-    */ }
+  margin-bottom: 2em; }
   #siteheader .logo-bg {
     background-color: #149ecb;
     padding: 19px 10px; }
@@ -1864,9 +1817,17 @@ header {
       max-width: 1170px;
       overflow: hidden;
       margin: 0 auto; }
+    #siteheader .logo-bg #home-link {
+      float: left; }
   #siteheader .actions {
-    float: right;
-    line-height: 57px; }
+    float: left;
+    clear: left;
+    line-height: 47px; }
+    @media only screen and (min-width: 519px) {
+      #siteheader .actions {
+        float: right;
+        clear: none;
+        line-height: 57px; } }
     #siteheader .actions a {
       color: #FFFFFF;
       text-decoration: none;
@@ -1876,9 +1837,13 @@ header {
       display: inline-block;
       list-style-type: none;
       line-height: 1.5em;
-      margin: 0 0 0 1em;
-      padding: 0 0 0 1.518em;
+      margin: 0;
+      padding: 0 0 0 4px;
       vertical-align: bottom; }
+      @media only screen and (min-width: 519px) {
+        #siteheader .actions ul {
+          margin: 0 0 0 1em;
+          padding: 0 0 0 1.518em; } }
       #siteheader .actions ul li.icon {
         padding: 0 0 0 22px; }
       #siteheader .actions ul li.basket {

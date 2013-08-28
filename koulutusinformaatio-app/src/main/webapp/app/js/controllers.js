@@ -452,15 +452,16 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
         if (!ParentLODataService.dataExists(childResult.parent.id)) {
             ParentLearningOpportunityService.query({
                 parentId: childResult.parent.id
-                //language: $scope.descriptionLanguage
             }).then(function(parentResult) {
                 $scope.parentLO = parentResult;
                 ParentLODataService.setParentLOData(parentResult);
                 initializeParent();
+                initializeTranslationLanguage(childResult);
             });
         } else {
             $scope.parentLO = ParentLODataService.getParentLOData();
             initializeParent();
+            initializeTranslationLanguage(childResult);
         }
     };
 
@@ -471,6 +472,13 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
         initializeParent();
     };
 
+    var initializeTranslationLanguage = function(result) {
+        if (result && result.availableTranslationLanguages && result.availableTranslationLanguages.length > 1) {
+            var translationLanguageIndex = result.availableTranslationLanguages.indexOf($scope.selectedLOI.translationLanguage);
+            result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
+        }
+    }
+
     var loError = function(result) {
     };
 
@@ -480,7 +488,6 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
         if (!ChildLODataService.dataExists($routeParams.childId)) {
             ChildLearningOpportunityService.query({
                 childId: $routeParams.childId
-                //language: $scope.descriptionLanguage
             }).then(childLOSuccess, loError);
         } else {
             $scope.childLO = ChildLODataService.getChildLOData();
@@ -492,7 +499,6 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
         if (!ParentLODataService.dataExists($routeParams.parentId)) {
             ParentLearningOpportunityService.query({
                 parentId: $routeParams.parentId
-                //language: $scope.descriptionLanguage
             }).then(parentLOSuccess, loError);
         } else {
             $scope.parentLO = ParentLODataService.getParentLOData();
@@ -519,7 +525,8 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
                             $scope.childLO = result;
                             $scope.lois = result.lois;
                             setTitle($scope.parentLO, $scope.childLO);
-                            initializeParent()
+                            initializeParent();
+                            initializeTranslationLanguage(result);
                         });
                 } else {
                     setTitle($scope.parentLO, $scope.childLO);

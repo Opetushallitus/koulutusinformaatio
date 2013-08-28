@@ -9,7 +9,7 @@
                     <a id="home-link" href="../static/sv/"><img src="img/Studieinfo.png" alt="Opintopolku.fi"/></a>
                 </span>
             </span> 
-            <div class="actions float-right">
+            <div class="actions">
                 <ul data-ng-controller="LanguageCtrl">
                     <li><a data-ng-click="changeLanguage('fi')" data-ki-i18n="language-fi"></a></li>
                     <li><a data-ng-click="changeLanguage('sv')" data-ki-i18n="language-sv"></a></li>
@@ -26,14 +26,17 @@
             </div>
         </div>
     </div>
-    <div class="search" data-ng-controller="SearchFieldCtrl">
-        <form method="get" data-ng-submit="search()" novalidate>
-            <fieldset class="search-container">
-                <label for="search-field" class="h2" data-ki-i18n="search-field-label"></label>
-                <input class="search-field" id="search-field" name="search-field" placeholder="{{searchFieldPlaceholder}}" value="" data-ng-model="queryString"/>
-                <button class="button primary magnifier" type="submit"><span><span class="h2" data-ki-i18n="search-button"></span></span></button>
-            </fieldset>
-        </form>
+    <div class="search-container">
+        <div class="search grid16-16" data-ng-controller="SearchFieldCtrl">
+            <form method="get" data-ng-submit="search()" novalidate>
+                <fieldset class="search-container">
+                    <label for="search-field" class="h2" data-ki-i18n="search-field-label"></label>
+                    <input class="search-field" id="search-field" name="search-field" placeholder="{{searchFieldPlaceholder}}" value="" data-ng-model="queryString"/>
+                    <button class="button primary magnifier" type="submit"><span><span class="h2" data-ki-i18n="search-button"></span></span></button>
+                </fieldset>
+            </form>
+        </div>
+        <div class="clear"></div>
     </div>
 </header>
 
