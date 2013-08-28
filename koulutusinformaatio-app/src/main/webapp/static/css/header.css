@@ -5,8 +5,14 @@
   float: left; }
 
 .actions {
-  float: right;
-  line-height: 57px; }
+  float: left;
+  clear: left;
+  line-height: 47px; }
+  @media only screen and (min-width: 519px) {
+    .actions {
+      float: right;
+      clear: none;
+      line-height: 57px; } }
   .actions a {
     color: #FFFFFF;
     text-decoration: none;
@@ -16,9 +22,13 @@
     display: inline-block;
     list-style-type: none;
     line-height: 1.5em;
-    margin: 0 0 0 1em;
-    padding: 0 0 0 1.518em;
+    margin: 0;
+    padding: 0 0 0 4px;
     vertical-align: bottom; }
+    @media only screen and (min-width: 519px) {
+      .actions ul {
+        margin: 0 0 0 1em;
+        padding: 0 0 0 1.518em; } }
     .actions ul li.icon {
       padding: 0 0 0 22px; }
     .actions ul li.basket {
@@ -65,6 +75,11 @@ header {
       border-radius: 0;
       outline: none;
       vertical-align: baseline;
+      -webkit-box-shadow: 0 1px 1px #bfbfbf inset, 0 -1px 4px rgba(0, 0, 0, 0.07) inset;
+      -moz-box-shadow: 0 1px 1px #bfbfbf inset, 0 -1px 4px rgba(0, 0, 0, 0.07) inset;
+      -o-box-shadow: 0 1px 1px #bfbfbf inset, 0 -1px 4px rgba(0, 0, 0, 0.07) inset;
+      -ms-box-shadow: 0 1px 1px #bfbfbf inset, 0 -1px 4px rgba(0, 0, 0, 0.07) inset;
+      box-shadow: 0 1px 1px #bfbfbf inset, 0 -1px 4px rgba(0, 0, 0, 0.07) inset;
       -webkit-border-radius: 3px;
       -moz-border-radius: 3px;
       -o-border-radius: 3px;

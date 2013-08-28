@@ -1708,8 +1708,14 @@ header {
       width: 80%;
       height: 40px;
       border-radius: 0;
+      border: none;
       outline: none;
       vertical-align: baseline;
+      -webkit-box-shadow: 0 1px 1px #bfbfbf inset, 0 -1px 4px rgba(0, 0, 0, 0.07) inset;
+      -moz-box-shadow: 0 1px 1px #bfbfbf inset, 0 -1px 4px rgba(0, 0, 0, 0.07) inset;
+      -o-box-shadow: 0 1px 1px #bfbfbf inset, 0 -1px 4px rgba(0, 0, 0, 0.07) inset;
+      -ms-box-shadow: 0 1px 1px #bfbfbf inset, 0 -1px 4px rgba(0, 0, 0, 0.07) inset;
+      box-shadow: 0 1px 1px #bfbfbf inset, 0 -1px 4px rgba(0, 0, 0, 0.07) inset;
       -webkit-border-radius: 3px;
       -moz-border-radius: 3px;
       -o-border-radius: 3px;
@@ -1820,42 +1826,7 @@ header {
             color: #333333; }
 
 #siteheader {
-  margin-bottom: 2em;
-    /*
-    .search {
-        background: #bfbfbf url('../img/searchbarpat.png') repeat-x bottom left;
-        padding: 5px;
-
-        .search-container {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .search-field {
-            width: 100%;
-            background-color: #fffffff;
-            background-image: none;
-            border: none;
-            box-shadow: 0 1px 1px #bfbfbf inset, 0 -1px 4px rgba(0, 0, 0, 0.07) inset;
-            color: #333333;
-            padding: 6px 10px 6px 10px;
-            border-radius: 3px 3px 3px 3px;
-            vertical-align: middle;
-            line-height: 18px;
-        }
-
-        .magnifier {
-            background: url('../img/suurennuslasi_icon.png') no-repeat center right;
-            position: absolute;
-            right: 10px;
-            top: 8px;
-            font-size: 0;
-            width: 15px;
-            height: 16px;
-            border: 0;
-        }
-    }
-    */ }
+  margin-bottom: 2em; }
   #siteheader .logo-bg {
     background-color: #149ecb;
     padding: 19px 10px; }
@@ -1864,9 +1835,17 @@ header {
       max-width: 1170px;
       overflow: hidden;
       margin: 0 auto; }
+    #siteheader .logo-bg #home-link {
+      float: left; }
   #siteheader .actions {
-    float: right;
-    line-height: 57px; }
+    float: left;
+    clear: left;
+    line-height: 47px; }
+    @media only screen and (min-width: 519px) {
+      #siteheader .actions {
+        float: right;
+        clear: none;
+        line-height: 57px; } }
     #siteheader .actions a {
       color: #FFFFFF;
       text-decoration: none;
@@ -1876,9 +1855,13 @@ header {
       display: inline-block;
       list-style-type: none;
       line-height: 1.5em;
-      margin: 0 0 0 1em;
-      padding: 0 0 0 1.518em;
+      margin: 0;
+      padding: 0 0 0 4px;
       vertical-align: bottom; }
+      @media only screen and (min-width: 519px) {
+        #siteheader .actions ul {
+          margin: 0 0 0 1em;
+          padding: 0 0 0 1.518em; } }
       #siteheader .actions ul li.icon {
         padding: 0 0 0 22px; }
       #siteheader .actions ul li.basket {

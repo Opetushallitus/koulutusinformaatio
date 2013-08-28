@@ -172,9 +172,10 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
 
     // TODO: could we automate data transformation somehow?
     var transformData = function(result) {
-        //console.log(result);
-        //var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
-        //result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
+        /*
+        var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
+        result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
+        */
 
         for (var loiIndex in result.lois) {
             if (result.lois.hasOwnProperty(loiIndex)) {
@@ -652,8 +653,6 @@ service('ApplicationBasketService', ['$http', '$q', 'LanguageService', function(
                     qParams += '&aoId=' + basketItems[index];
                 }
             }
-
-            //qParams = qParams.substring(1, qParams.length);
             
             $http.get('../basket/items?' + qParams).
             success(function(result) {
