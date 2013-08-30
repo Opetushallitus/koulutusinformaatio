@@ -184,7 +184,7 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
                 var startDate = new Date(loi.startDate);
                 loi.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
                 loi.teachingLanguage = getFirstItemInList(loi.teachingLanguages);
-                loi.formOfEducation = getFirstItemInList(loi.formOfEducation);
+                loi.formOfTeaching = getFirstItemInList(loi.formOfTeaching);
             }
         }
 
