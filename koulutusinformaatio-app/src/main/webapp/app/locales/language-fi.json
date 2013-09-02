@@ -105,7 +105,7 @@
     "title-application-basket-content": "Muistilista",
     "application-basket-back": "Takaisin hakutuloksiin",
     "application-basket-description": "Muistilistalle voit kerätä koulutuksia ja siirtää niiden tiedot hakulomakkeelle. Koulutukset säilyvät muistilistalla selaimen sulkemiseen asti. Voit lisätä muistilistalle vain koulutuksia, joilla on sama pohjakoulutusvaatimus – esimerkiksi vain peruskoulupohjaisia tai vain lukiopohjaisia, et molempia.",
-    "application-basket-no-content": "Sinulla ei ole muistilistalla vielä yhtään hakukohdetta. Etsi hakukoneella koulutukset, joihin haluat hakea, kerää ne muistilistalle ja siirrä hakulomakkeelle. Voit hakea yhteishaussa viiteen eri koulutukseen.",
+    "application-basket-no-content": "Sinulla ei ole muistilistalla vielä yhtään hakukohdetta. Etsi hakukoneella koulutukset, joihin haluat hakea, kerää ne muistilistalle ja siirrä hakulomakkeelle. Voit hakea yhteishaussa enintään viiteen eri koulutukseen.",
     "application-basket-fill-form": "Täytä hakulomake",
     "application-basket-fill-form-notification": "Tässä haussa voit hakea enintään __count__ koulutukseen",
     "application-basket-empty": "Tyhjennä muistilista",

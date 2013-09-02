@@ -105,7 +105,7 @@
     "title-application-basket-content": "Minneslista",
     "application-basket-back": "Tillbaka till sökresultaten",
     "application-basket-description": "I minneslistan kan du samla utbildningar och överföra uppgifterna till ansökningsblanketten. Utbildningarna sparas i minneslistan så länge webbläsaren är öppen. Du kan lägga till enbart utbildningar med samma grundutbildningskrav – exempelvis bara grundskolbaserade eller bara gymnasiebaserade, men inte båda.",
-    "application-basket-no-content": "Du har inga utbildningar i minneslistan. Hämta utbildningar som du vill söka till via sökmotorn, samla dem i minneslistan och överför dem till ansökningsblanketten. I gemensam ansökan kan du söka till fem olika utbildningar.",
+    "application-basket-no-content": "Du har inga utbildningar i minneslistan. Hämta utbildningar som du vill söka till via sökmotorn, samla dem i minneslistan och överför dem till ansökningsblanketten. I gemensam ansökan kan du söka till högst fem olika utbildningar.",
     "application-basket-fill-form": "Fyll i ansökningsblanketten",
     "application-basket-fill-form-notification": "I denna ansökan kan du söka till högst __count__ utbildningar",
     "application-basket-empty": "Töm minneslistan",
