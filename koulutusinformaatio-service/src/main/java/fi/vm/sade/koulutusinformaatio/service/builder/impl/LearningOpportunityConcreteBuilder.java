@@ -388,6 +388,20 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
                 List<OidRDTO> komotosByHakukohdeOID = hakukohdeResource.getKomotosByHakukohdeOID(aoId);
                 for (OidRDTO s : komotosByHakukohdeOID) {
                     KomoDTO komoByKomotoOID = komotoResource.getKomoByKomotoOID(s.getOid());
+
+                    try {
+                        validateChildKomo(komoByKomotoOID);
+                    } catch (TarjontaParseException e) {
+                        continue;
+                    }
+
+                    KomotoDTO k = komotoResource.getByOID(s.getOid());
+                    try {
+                        validateChildKomoto(k);
+                    } catch (TarjontaParseException e) {
+                        continue;
+                    }
+
                     ChildLOIRef cRef = new ChildLOIRef();
                     cRef.setId(s.getOid());
                     cRef.setLosId(getLOSId(komoByKomotoOID.getOid(), childKomoto.getTarjoajaOid()));
