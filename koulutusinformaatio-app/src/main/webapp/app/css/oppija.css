@@ -2286,9 +2286,9 @@ label, .label {
 /*** Tabsheet
 ************************************************/
 .tabsheets {
-  background-color: #ffffff;
+  background-color: #FFFFFF;
   border: solid 2px #bdbdbd;
-  padding: 10px; }
+  padding: 20px 10px; }
   .tabsheets.sub {
     border: none;
     padding: 0; }
