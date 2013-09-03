@@ -271,7 +271,6 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
     }
 
     private ChildLOS createChildLOS(KomoDTO childKomo, String childLOSId, List<KomotoDTO> childKomotos) throws KoodistoException {
-
         ChildLOS childLOS = new ChildLOS();
         childLOS.setId(childLOSId);
         childLOS.setName(koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri()));
@@ -388,6 +387,20 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
                 List<OidRDTO> komotosByHakukohdeOID = hakukohdeResource.getKomotosByHakukohdeOID(aoId);
                 for (OidRDTO s : komotosByHakukohdeOID) {
                     KomoDTO komoByKomotoOID = komotoResource.getKomoByKomotoOID(s.getOid());
+
+                    try {
+                        validateChildKomo(komoByKomotoOID);
+                    } catch (TarjontaParseException e) {
+                        continue;
+                    }
+
+                    KomotoDTO k = komotoResource.getByOID(s.getOid());
+                    try {
+                        validateChildKomoto(k);
+                    } catch (TarjontaParseException e) {
+                        continue;
+                    }
+
                     ChildLOIRef cRef = new ChildLOIRef();
                     cRef.setId(s.getOid());
                     cRef.setLosId(getLOSId(komoByKomotoOID.getOid(), childKomoto.getTarjoajaOid()));
@@ -400,7 +413,10 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
                 applicationSystemIds.add(hakuDTO.getOid());
             }
             childLOI.setApplicationOptions(applicationOptions);
-            childLOIs.add(childLOI);
+
+            if (!childLOI.getApplicationOptions().isEmpty()) {
+                childLOIs.add(childLOI);
+            }
         }
         childLOS.setLois(childLOIs);
         return childLOS;
