@@ -271,11 +271,6 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
     }
 
     private ChildLOS createChildLOS(KomoDTO childKomo, String childLOSId, List<KomotoDTO> childKomotos) throws KoodistoException {
-
-        if (childLOSId.equals("1.2.246.562.5.2013061010184614873316_1.2.246.562.10.74355268397")) {
-            System.out.println("");
-        }
-
         ChildLOS childLOS = new ChildLOS();
         childLOS.setId(childLOSId);
         childLOS.setName(koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri()));
