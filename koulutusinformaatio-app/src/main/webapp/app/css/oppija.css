@@ -2296,100 +2296,64 @@ label, .label {
 .tabsheet {
   display: none; }
 
-.tabs {
-    /*
-    &.sub {
-        
-        display: inline-block;
-        padding: 1em 0;
-
-        .tab {
-
-            display: inline;
-            &:before {
-                content: "|";
-            }
-
-            &:first-child {
-                &:before {
-                    content: "";
-                }
-
-                a {
-                    padding: 0 0.5em 0 0;
-                }
-            }
-
-            a {
-                padding: 0 0.5em;
-            }
-        }
-
-        .tab.current a {
-            color: #3e3e3e;
-            cursor: default;
-            text-decoration: none;
-        }
-    }
-    */ }
-  .tabs.main .tab {
-    color: #3E3E3E;
-    background-color: #ffffff;
-    display: inline-block;
-    border: solid 1px #bdbdbd;
-    padding: 1px;
-    text-decoration: none;
-    text-shadow: 0 1px 0 #FFFFFF;
-    position: relative;
-    top: 3px;
-    margin: 0 0.625em 0 0;
-    float: left;
-    max-width: 390px; }
-    .tabs.main .tab span {
-      display: block;
-      padding: 0px 20px;
-      height: 36px;
-      line-height: 36px;
-      font-weight: normal;
-      background: #f6f6f6;
-      background: #c6c6c6;
-      background: -webkit-gradient(linear, left top, left bottom, from(whitesmoke), to(#c6c6c6));
-      background: -webkit-linear-gradient(top, whitesmoke, #c6c6c6);
-      background: -moz-linear-gradient(top, whitesmoke, #c6c6c6);
-      background: -ms-linear-gradient(top, whitesmoke, #c6c6c6);
-      background: -o-linear-gradient(top, whitesmoke, #c6c6c6); }
-      .tabs.main .tab span:after {
-        content: "\00a0"; }
-      .tabs.main .tab span.fluid {
-        max-width: 390px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap; }
-    .tabs.main .tab:hover span {
-      background: #c6c6c6;
-      background: whitesmoke;
-      background: -webkit-gradient(linear, left top, left bottom, from(#c6c6c6), to(whitesmoke));
-      background: -webkit-linear-gradient(top, #c6c6c6, whitesmoke);
-      background: -moz-linear-gradient(top, #c6c6c6, whitesmoke);
-      background: -ms-linear-gradient(top, #c6c6c6, whitesmoke);
-      background: -o-linear-gradient(top, #c6c6c6, whitesmoke); }
-  .tabs.main .tab.current {
-    border-top-width: 2px;
-    border-right-width: 2px;
-    border-left-width: 2px;
-    border-bottom-width: 0px;
-    padding-bottom: 3px;
-    position: relative;
-    top: 2px; }
-    .tabs.main .tab.current span {
-      font-weight: bold;
-      background: white;
-      background: white;
-      background: -webkit-gradient(linear, left top, left bottom, from(whitesmoke), to(white));
-      background: -webkit-linear-gradient(top, whitesmoke, white);
-      background: -moz-linear-gradient(top, whitesmoke, white);
-      background: -ms-linear-gradient(top, whitesmoke, white);
-      background: -o-linear-gradient(top, whitesmoke, white); }
+.tabs.main .tab {
+  color: #3E3E3E;
+  background-color: #ffffff;
+  display: inline-block;
+  border: solid 1px #bdbdbd;
+  padding: 1px;
+  text-decoration: none;
+  text-shadow: 0 1px 0 #FFFFFF;
+  position: relative;
+  top: 3px;
+  margin: 0 10px 0 0;
+  float: left;
+  max-width: 390px; }
+  .tabs.main .tab span {
+    display: block;
+    padding: 0px 10px;
+    height: 36px;
+    line-height: 36px;
+    font-weight: normal;
+    background: #f6f6f6;
+    background: #c6c6c6;
+    background: -webkit-gradient(linear, left top, left bottom, from(whitesmoke), to(#c6c6c6));
+    background: -webkit-linear-gradient(top, whitesmoke, #c6c6c6);
+    background: -moz-linear-gradient(top, whitesmoke, #c6c6c6);
+    background: -ms-linear-gradient(top, whitesmoke, #c6c6c6);
+    background: -o-linear-gradient(top, whitesmoke, #c6c6c6); }
+    .tabs.main .tab span:after {
+      content: "\00a0"; }
+    .tabs.main .tab span.fluid {
+      max-width: 390px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap; }
+  .tabs.main .tab:hover span {
+    background: #c6c6c6;
+    background: whitesmoke;
+    background: -webkit-gradient(linear, left top, left bottom, from(#c6c6c6), to(whitesmoke));
+    background: -webkit-linear-gradient(top, #c6c6c6, whitesmoke);
+    background: -moz-linear-gradient(top, #c6c6c6, whitesmoke);
+    background: -ms-linear-gradient(top, #c6c6c6, whitesmoke);
+    background: -o-linear-gradient(top, #c6c6c6, whitesmoke); }
+.tabs.main .tab.current {
+  border-top-width: 2px;
+  border-right-width: 2px;
+  border-left-width: 2px;
+  border-bottom-width: 0px;
+  padding-bottom: 3px;
+  position: relative;
+  top: 2px; }
+  .tabs.main .tab.current span {
+    font-weight: bold;
+    background: white;
+    background: white;
+    background: -webkit-gradient(linear, left top, left bottom, from(whitesmoke), to(white));
+    background: -webkit-linear-gradient(top, whitesmoke, white);
+    background: -moz-linear-gradient(top, whitesmoke, white);
+    background: -ms-linear-gradient(top, whitesmoke, white);
+    background: -o-linear-gradient(top, whitesmoke, white); }
 
 /*** Image figure, Video Figure
 ************************************************/

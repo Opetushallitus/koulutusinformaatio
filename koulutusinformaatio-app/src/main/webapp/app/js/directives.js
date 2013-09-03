@@ -211,6 +211,7 @@ directive('kiAbsoluteLink', function() {
             scope.remove = function(element) {
                 scope.locations.splice(scope.locations.indexOf(element), 1);
                 scope.change();
+                return false;
             }
 
             scope.add = function() {
@@ -218,6 +219,7 @@ directive('kiAbsoluteLink', function() {
                     scope.locations.push(scope.location);
                     scope.location = '';
                     scope.change();
+                    return false;
                 }
             }
         }
@@ -246,6 +248,16 @@ directive('kiAbsoluteLink', function() {
                 });
             }
         }
+    };
+ }]).
+
+ /**
+ *  Creates and controls language selector for description language
+ */
+ directive('kiPrerequisiteSelectionRibbon', ['$routeParams', function($routeParams) {
+    return {
+        restrict: 'E,A',
+        templateUrl: 'templates/prerequisiteRibbon.html',
     };
  }]).
 
@@ -530,9 +542,20 @@ directive('kiRenderApplicationSystemActive', function() {
  */
 directive('kiI18n', ['TranslationService', function(TranslationService) {
     return function(scope, element, attrs) {
+        /*
+        attrs.$observe('showColon', function(data) {
+            console.log(data);
+        })
+*/
+
         attrs.$observe('kiI18n', function(value) {
             $(element).empty();
-            element.append(TranslationService.getTranslation(value));
+            var translation = TranslationService.getTranslation(value);
+            if (attrs.showColon) {
+                translation += ':';
+            }
+
+            element.append(translation);
         });
     }    
 }]);

@@ -555,11 +555,14 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
                     initializeParent();
                 }
         });
+
+            return false;
     };
 
     // scrolls to an anchor on page
     $scope.scrollToAnchor = function(id) {
         $('html, body').scrollTop($('#' + id).offset().top);
+        return false;
     };
 
     $scope.changeMainTab = function(tabName) {

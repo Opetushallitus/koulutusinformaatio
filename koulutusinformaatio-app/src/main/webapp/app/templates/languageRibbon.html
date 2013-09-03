@@ -4,14 +4,14 @@
 		<div data-ng-switch-when="true" class="inline">
 			<ul class="ribbon-content nobullet">
 				<li data-ng-repeat="lng in childLO.availableTranslationLanguages">
-					<a data-ng-click="changeDescriptionLanguage(lng)" data-ki-i18n="language-{{lng}}"></a>
+					<a href="javascript:void(0)" data-ng-click="changeDescriptionLanguage(lng)" data-ki-i18n="language-{{lng}}"></a>
 				</li>
 			</ul>
 		</div>
 		<div data-ng-switch-when="false" class="inline">
 			<ul class="ribbon-content nobullet">
 				<li data-ng-repeat="lng in parentLO.availableTranslationLanguages">
-					<a data-ng-click="changeDescriptionLanguage(lng)" data-ki-i18n="language-{{lng}}"></a>
+					<a href="javascript:void(0)" data-ng-click="changeDescriptionLanguage(lng)" data-ki-i18n="language-{{lng}}"></a>
 				</li>
 			</ul>
 		</div>
