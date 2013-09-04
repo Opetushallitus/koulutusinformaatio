@@ -85,7 +85,6 @@ directive('kiRenderOrganizationImage', function() {
             if (data && data.pictureEncoded) {
                 var imgElem = $('<img>', {
                     src: 'data:image/jpeg;base64,' + data.pictureEncoded,
-                    'class': 'width-100',
                     alt: 'Oppilaitoksen kuva'
                 });
 
@@ -235,7 +234,6 @@ directive('kiAbsoluteLink', function() {
         templateUrl: 'templates/languageRibbon.html',
 
         link: function(scope, element, attrs) {
-            scope.label = i18n.t('description-language-selection');
             scope.isChild = ($routeParams.childId) ? true : false;
 
             if (scope.isChild) {
@@ -252,7 +250,7 @@ directive('kiAbsoluteLink', function() {
  }]).
 
  /**
- *  Creates and controls language selector for description language
+ *  Creates and controls prerequisite selection
  */
  directive('kiPrerequisiteSelectionRibbon', ['$routeParams', function($routeParams) {
     return {

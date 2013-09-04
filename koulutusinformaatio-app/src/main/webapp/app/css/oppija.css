@@ -2890,7 +2890,7 @@ ul.unstyled {
 .application-system {
   margin-top: 4em; }
   .application-system:first-child {
-    margin: 2em 0 0 0; }
+    margin: 1.5em 0 0 0; }
   .application-system .application-option {
     border: #C3C3C3 1px dotted;
     border-style: dashed none none none;
@@ -3886,13 +3886,8 @@ p {
   .sideitem span span {
     display: inline; }
 
-.grid16-10.no-left-gutter {
-  margin-left: 0;
-  margin-right: 1.25%; }
-
-.grid16-6.no-right-gutter {
-  margin-right: 0;
-  margin-left: 1.25%; }
+.grid16-9.no-left-gutter {
+  margin-left: 0; }
 
 /*** Siteheader
 ************************************************/
