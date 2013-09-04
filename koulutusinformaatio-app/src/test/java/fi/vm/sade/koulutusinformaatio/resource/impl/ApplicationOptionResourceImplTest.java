@@ -19,17 +19,21 @@ package fi.vm.sade.koulutusinformaatio.resource.impl;
 import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionSearchResultDTO;
+import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.koulutusinformaatio.exception.ErrorPayload;
+import fi.vm.sade.koulutusinformaatio.exception.HTTPException;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentMatcher;
 
+import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.Matchers.anyListOf;
-import static org.mockito.Matchers.eq;
+import static org.junit.Assert.*;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -45,6 +49,11 @@ public class ApplicationOptionResourceImplTest {
     private final String baseEducation = "1";
     private final String aoId = "1.1.2";
     private final List<String> aoIds = Lists.newArrayList(aoId);
+    private final String invalidAoId = "INVALID";
+    private final ResourceNotFoundException notFoundException = new ResourceNotFoundException("Not found");
+    private final InvalidParametersException invalidParametersException =
+            new InvalidParametersException("Invalid parameters");
+
 
     @Before
     public void setUp() throws Exception {
@@ -75,9 +84,12 @@ public class ApplicationOptionResourceImplTest {
         aos.add(ao);
         aos.add(ao2);
 
+
         when(learningOpportunityService.searchApplicationOptions(eq(asId), eq(lopId), eq(baseEducation))).thenReturn(aos);
         when(learningOpportunityService.getApplicationOption(eq(aoId), eq("fi"), eq("fi"))).thenReturn(aoDTO);
-        when(learningOpportunityService.getApplicationOptions(anyListOf(String.class), eq("fi"), eq("fi"))).thenReturn(aoDTOs);
+        when(learningOpportunityService.getApplicationOption(eq(invalidAoId), eq("fi"), eq("fi"))).thenThrow(notFoundException);
+        when(learningOpportunityService.getApplicationOptions(argThat(new IsValidAoIdList()), eq("fi"), eq("fi"))).thenReturn(aoDTOs);
+        when(learningOpportunityService.getApplicationOptions(argThat(new IsEmptyList()), eq("fi"), eq("fi"))).thenThrow(invalidParametersException);
         applicationOptionResource = new ApplicationOptionResourceImpl(learningOpportunityService);
     }
 
@@ -98,10 +110,52 @@ public class ApplicationOptionResourceImplTest {
     }
 
     @Test
+    public void testGetApplicationOptionNotFound() {
+        try {
+            ApplicationOptionDTO result = applicationOptionResource.getApplicationOption(invalidAoId, "fi", "fi");
+            fail();
+        } catch (HTTPException e) {
+            assertEquals(Response.Status.NOT_FOUND.getStatusCode(), e.getResponse().getStatus());
+            assertEquals(notFoundException.getMessage(), ((ErrorPayload)e.getResponse().getEntity()).getMessage());
+        }
+    }
+
+    @Test
     public void testGetApplicationOptions() {
-        List<ApplicationOptionDTO> result  = applicationOptionResource.getApplicationOptions(aoIds, "fi", "fi");
+        List<ApplicationOptionDTO> result = applicationOptionResource.getApplicationOptions(aoIds, "fi", "fi");
         assertNotNull(result);
         assertEquals(1, result.size());
         assertEquals(aoId, result.iterator().next().getId());
     }
+
+    @Test
+    public void testGetApplicationsInvalidParameters() {
+        List<String> params = Lists.newArrayList();
+        try {
+            List<ApplicationOptionDTO> result = applicationOptionResource.getApplicationOptions(params, "fi", "fi");
+            fail();
+        } catch (HTTPException e) {
+            assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), e.getResponse().getStatus());
+            assertEquals(invalidParametersException.getMessage(),
+                    ((ErrorPayload)e.getResponse().getEntity()).getMessage());
+        }
+    }
+
+    class IsValidAoIdList extends ArgumentMatcher<List> {
+        @Override
+        public boolean matches(Object list) {
+
+            return list != null && !((List)list).isEmpty() && ((List) list).get(0).equals(aoId);
+        }
+    }
+
+    class IsEmptyList extends ArgumentMatcher<List> {
+        @Override
+        public boolean matches(Object list) {
+            return ((List) list).size() == 0;
+        }
+    }
+
+
+
 }
