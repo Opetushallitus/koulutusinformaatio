@@ -55,6 +55,8 @@ public class ApplicationOption {
     // base educations, one of these is required to be able to apply to this application option
     private List<String> requiredBaseEducations;
     private List<Exam> exams;
+    private Date applicationStartDate;
+    private Date applicationEndDate;
 
     public String getId() {
         return id;
@@ -214,6 +216,22 @@ public class ApplicationOption {
 
     public void setExams(List<Exam> exams) {
         this.exams = exams;
+    }
+
+    public Date getApplicationStartDate() {
+        return applicationStartDate;
+    }
+
+    public void setApplicationStartDate(Date applicationStartDate) {
+        this.applicationStartDate = applicationStartDate;
+    }
+
+    public Date getApplicationEndDate() {
+        return applicationEndDate;
+    }
+
+    public void setApplicationEndDate(Date applicationEndDate) {
+        this.applicationEndDate = applicationEndDate;
     }
 
     @Override

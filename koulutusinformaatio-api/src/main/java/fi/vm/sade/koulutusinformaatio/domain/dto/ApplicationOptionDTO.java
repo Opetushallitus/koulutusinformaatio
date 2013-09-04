@@ -45,6 +45,8 @@ public class ApplicationOptionDTO {
     private List<ExamDTO> exams;
     private List<ChildLOIRefDTO> childRefs = new ArrayList<ChildLOIRefDTO>();
     private LearningOpportunityProviderDTO provider;
+    private Date applicationStartDate;
+    private Date applicationEndDate;
 
 
     public String getId() {
@@ -181,5 +183,21 @@ public class ApplicationOptionDTO {
 
     public void setProvider(LearningOpportunityProviderDTO provider) {
         this.provider = provider;
+    }
+
+    public Date getApplicationStartDate() {
+        return applicationStartDate;
+    }
+
+    public void setApplicationStartDate(Date applicationStartDate) {
+        this.applicationStartDate = applicationStartDate;
+    }
+
+    public Date getApplicationEndDate() {
+        return applicationEndDate;
+    }
+
+    public void setApplicationEndDate(Date applicationEndDate) {
+        this.applicationEndDate = applicationEndDate;
     }
 }
