@@ -40,10 +40,10 @@ public interface ApplicationOptionResource {
     @Path("/{aoId}")
     @Produces(MediaType.APPLICATION_JSON)
     public ApplicationOptionDTO getApplicationOption(@PathParam("aoId") final String aoId, @DefaultValue("fi") @QueryParam("lang") String lang,
-                                                     @QueryParam("uiLang") String uiLang);
+                                                     @DefaultValue("fi") @QueryParam("uiLang") String uiLang);
 
     @GET
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public List<ApplicationOptionDTO> getApplicationOptions(@QueryParam("aoId") List<String> aoId, @DefaultValue("fi") @QueryParam("lang") String lang,
-                                                            @QueryParam("uiLang") String uiLang);
+                                                            @DefaultValue("fi") @QueryParam("uiLang") String uiLang);
 }
