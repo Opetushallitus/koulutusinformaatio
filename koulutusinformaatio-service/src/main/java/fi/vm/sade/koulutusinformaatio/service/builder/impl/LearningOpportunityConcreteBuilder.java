@@ -372,6 +372,8 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
                 ao.setEducationDegree(koodistoService.searchFirstCodeValue(childKomoto.getKoulutusAsteUri()));
                 ao.setTeachingLanguages(koodistoService.searchCodeValuesMultiple(childKomoto.getOpetuskieletUris()));
                 ao.setPrerequisite(childLOI.getPrerequisite());
+                ao.setApplicationStartDate(hakukohdeDTO.getHakuaikaAlkuPvm());
+                ao.setApplicationEndDate(hakukohdeDTO.getHakuaikaLoppuPvm());
 
                 if (hakukohdeDTO.getLiitteidenToimitusosoite() != null) {
                     OsoiteRDTO addressDTO = hakukohdeDTO.getLiitteidenToimitusosoite();
