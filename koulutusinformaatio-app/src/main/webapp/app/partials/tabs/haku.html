@@ -1,4 +1,4 @@
-<aside class="grid16-6 no-right-gutter">
+<aside class="grid16-6">
     <h4 class="margin-top-0 margin-bottom-0" data-ki-i18n="application-prerequisite"></h4>
     <form>
         <ul class="nobullet">
@@ -33,11 +33,14 @@
 
             <div class="application-options-container">
                 <div data-ng-repeat="ao in as.applicationOptions" class="application-option">
-                    <span class="bold">{{ao.name}}</span>
-                    <ul class="disc">
-                        <li data-ng-repeat="child in ao.childRefs">
-                            <a href="#/koulutusohjelma/{{child.losId}}#{{prerequisite.value}}">{{child.name}}</a>
-                        </li>
+                    <ul class="nobullet">
+                        <li><span class="bold">{{ao.name}}</span></li>
+                        <li class="italic"><span data-ki-i18n="starting-quota" data-show-colon="true" class="margin-right-1"></span><span>{{ao.startingQuota}}</span></li>
+                        <ul class="disc">
+                            <li data-ng-repeat="child in ao.childRefs">
+                                <a href="#/koulutusohjelma/{{child.losId}}#{{prerequisite.value}}">{{child.name}}</a>
+                            </li>
+                        </ul>
                     </ul>
                     <form name="levelSelectionForm" id="application-form-{{as.id}}" action="/haku-app/lomake/{{as.id}}" method="POST" class="margin-top-2" target="hakulomake">
                         <input 
@@ -93,7 +96,6 @@
                         </span>
                     </button>
                 </form>
-
                 <div class="margin-top-2" data-ki-render-application-system-active></div>
             </div>
         </div>

@@ -41,13 +41,13 @@
     "filter-search-location-add": "Lisää sijainti",
     "filter-search-location-remove": "Poista",
 
-    "description-language-selection": "Kuvaus saatavilla myös:",
+    "description-language-selection": "Kuvaus saatavilla myös",
 
-    "education-starts": "Koulutus alkaa:",
-    "language-of-instruction": "Opetuskieli:",
-    "form-of-education": "Opetusmuoto:",
-    "duration": "Koulutuksen laajuus:",
-    "starting-quota": "Aloituspaikkojen lukumäärä:",
+    "education-starts": "Koulutus alkaa",
+    "language-of-instruction": "Opetuskieli",
+    "form-of-education": "Opetusmuoto",
+    "duration": "Koulutuksen laajuus",
+    "starting-quota": "Aloituspaikat",
 
     "goals-of-education": "Tavoite",
     "selection-of-degree-program": "Koulutusohjelman valinta",
