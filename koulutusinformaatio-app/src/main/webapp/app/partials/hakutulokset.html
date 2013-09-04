@@ -32,62 +32,40 @@
                 </ul>
                 <div data-ng-show="showPagination">
                     <div data-pagination
-                        data-on-select-page="changePage(page)" 
-                        data-num-pages="maxPages" 
-                        data-current-page="currentPage" 
-                        data-max-size="10"
-                        data-first-text="<<"
-                        data-next-text=">"
-                        data-previous-text="<"
-                        data-last-text=">>">
-                    </div>
+                    data-on-select-page="changePage(page)" 
+                    data-num-pages="maxPages" 
+                    data-current-page="currentPage" 
+                    data-max-size="10"
+                    data-first-text="<<"
+                    data-next-text=">"
+                    data-previous-text="<"
+                    data-last-text=">>">
                 </div>
             </div>
         </div>
     </div>
-    <aside class="grid16-5" id="column-narrow">
-                <h4 class="margin-top-0 margin-bottom-0" data-ki-i18n="filter-search-title"></h4>
-                <small class="margin-bottom-2 block cursive" data-ki-i18n="filter-search-subtitle"></small>
-                <form name="searchResultFilters" novalidate data-ng-controller="SearchFilterCtrl">
-                    <ul class="nobullet">
-                        <li>
-                            <input type="radio" name="pohjakoulutus" id="radio1" value="PK" data-ng-model="prerequisite" data-ng-change="change()"/>
-                            <label for="radio1" data-ki-i18n="filter-search-elementary"></label>
-                        </li>
-                        <li class="margin-left-2">
-                            <input type="checkbox" name="yksilollistetty" id="yksilollistetty" data-ng-true-value="ER" data-ng-model="individualized" data-ng-change="change()" data-ng-disabled="individualizedDisabled">
-                            <label for="yksilollistetty" data-ki-i18n="filter-search-elementary-individualized"></label>
-                        </li>
-                        <li>    
-                            <input type="radio" name="pohjakoulutus" id="radio2" value="YO" data-ng-model="prerequisite" data-ng-change="change()"/>
-                            <label for="radio2" data-ki-i18n="filter-search-upper-secondary"></label>
-                        </li>
-                        <!--
-                        <li>    
-                            <input type="radio" name="pohjakoulutus" id="radio3" value="3" data-ng-model="baseeducation" data-ng-change="change()"/>
-                            <label for="radio3" data-ki-i18n="filter-search-vocational"></label>
-                        </li>
-                        <li>    
-                            <input type="radio" name="pohjakoulutus" id="radio4" value="4" data-ng-model="baseeducation" data-ng-change="change()"/>
-                            <label for="radio4" data-ki-i18n="filter-search-vocational-specialized"></label>
-                        </li>
-                        <li>    
-                            <input type="radio" name="pohjakoulutus" id="radio5" value="5" data-ng-model="baseeducation" data-ng-change="change()"/>
-                            <label for="radio5" data-ki-i18n="filter-search-institute"></label>
-                        </li>
-                        <li>
-                            <input type="radio" name="pohjakoulutus" id="radio6" value="6" data-ng-model="baseeducation" data-ng-change="change()"/>
-                            <label for="radio6" data-ki-i18n="filter-search-university-applied"></label>
-                        </li>
-                        <li>    
-                            <input type="radio" name="pohjakoulutus" id="radio7" value="7" data-ng-model="baseeducation" data-ng-change="change()"/>
-                            <label for="radio7" data-ki-i18n="filter-search-university"></label>
-                        </li>
-                    -->
-                    </ul>
-                    <h4 data-ki-i18n="filter-search-location-title"></h4>
-                    <div data-ki-location-filter></div>
-                </form>
+</div>
+<aside class="grid16-5" id="column-narrow">
+    <h4 class="margin-top-0 margin-bottom-0" data-ki-i18n="filter-search-title"></h4>
+    <small class="margin-bottom-2 block cursive" data-ki-i18n="filter-search-subtitle"></small>
+    <form name="searchResultFilters" novalidate data-ng-controller="SearchFilterCtrl">
+        <ul class="nobullet">
+            <li>
+                <input type="radio" name="pohjakoulutus" id="radio1" value="PK" data-ng-model="prerequisite" data-ng-change="change()"/>
+                <label for="radio1" data-ki-i18n="filter-search-elementary"></label>
+            </li>
+            <li class="margin-left-2">
+                <input type="checkbox" name="yksilollistetty" id="yksilollistetty" data-ng-true-value="ER" data-ng-model="individualized" data-ng-change="change()" data-ng-disabled="individualizedDisabled">
+                <label for="yksilollistetty" data-ki-i18n="filter-search-elementary-individualized"></label>
+            </li>
+            <li>    
+                <input type="radio" name="pohjakoulutus" id="radio2" value="YO" data-ng-model="prerequisite" data-ng-change="change()"/>
+                <label for="radio2" data-ki-i18n="filter-search-upper-secondary"></label>
+            </li>
+        </ul>
+        <h4 data-ki-i18n="filter-search-location-title"></h4>
+        <div data-ki-location-filter></div>
+    </form>
 </aside>
 <div class="clear"></div>
 </section>

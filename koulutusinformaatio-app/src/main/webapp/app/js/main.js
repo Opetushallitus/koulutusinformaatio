@@ -18,6 +18,7 @@ var tabsMenu = {
 
         $('.tabs .tab a').click(function(event) {
             event.preventDefault();
+            return false;
         });
 
         $('.tabs .tab').click(function(event) {
@@ -31,6 +32,7 @@ var tabsMenu = {
             $('.tabsheet[data-tabs-group="'+group+'"]').hide();
 
             $('.tabsheet[data-tabs-group="'+group+'"][data-tabs-id="'+id+'"]').show();
+            return false;
         });
     }
 };

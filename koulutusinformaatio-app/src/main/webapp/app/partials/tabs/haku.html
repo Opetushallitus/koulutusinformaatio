@@ -1,36 +1,32 @@
+<aside class="grid16-6 no-right-gutter">
+    <h4 class="margin-top-0 margin-bottom-0" data-ki-i18n="application-prerequisite"></h4>
+    <form>
+        <ul class="nobullet">
+            <li data-ng-repeat="loi in lois">
+                <input 
+                type="radio" 
+                name="prerequisiteSelection" 
+                id="input{{$index}}" 
+                value="{{loi.prerequisite.value}}" 
+                data-ng-change="changePrerequisiteSelection(loi.prerequisite.value)"
+                data-ng-model="prerequisite.value"
+                data-ng-class="showApplicationRadioSelection" />
+                <label for="input{{$index}}">{{loi.prerequisite.description}}</label>
+                <span data-ki-as-state-label class="margin-left-1"></span>
+            </li>
+        </ul>
+    </form>
 
-<aside class="grid16-6 no-right-gutter margin-top-2">
-    <!--<div data-ng-switch="isChild">
-        <div data-ng-switch-when="false"> -->
-            <h4 class="margin-bottom-0" data-ki-i18n="application-prerequisite"></h4>
-            <form>
-                <ul class="nobullet">
-                    <li data-ng-repeat="loi in lois">
-                        <input 
-                        type="radio" 
-                        name="prerequisiteSelection" 
-                        id="input{{$index}}" 
-                        value="{{loi.prerequisite.value}}" 
-                        data-ng-change="changePrerequisiteSelection(loi.prerequisite.value)"
-                        data-ng-model="prerequisite.value"
-                        data-ng-class="showApplicationRadioSelection" />
-                        <label for="input{{$index}}">{{loi.prerequisite.description}}</label>
-                        <span data-ki-as-state-label class="margin-left-1"></span>
-                    </li>
-                </ul>
-            </form>
-        <!--</div>
-    </div>-->
 
     <div id="application-system-container">
         <div data-ng-repeat="as in selectedLOI.applicationSystems" class="application-system">
             <div class="sideitem margin-bottom-3">
-                <span data-ki-i18n="application-title"></span>
-                <span class="bold">{{as.name}}</span>
+                <span data-ki-i18n="application-title" class="bold"></span>
+                <span>{{as.name}}</span>
             </div>
             <div class="sideitem margin-bottom-3">
-                <span data-ki-i18n="application-period"></span>
-                <span class="bold" data-ng-repeat="dates in as.applicationDates">
+                <span data-ki-i18n="application-period" class="bold"></span>
+                <span data-ng-repeat="dates in as.applicationDates">
                     <span data-ki-timestamp="{{dates.startDate}}"></span> - <span data-ki-timestamp="{{dates.endDate}}"></span><br/>
                 </span>
             </div>

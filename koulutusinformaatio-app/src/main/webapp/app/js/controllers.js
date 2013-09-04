@@ -136,8 +136,29 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
     };
 
     $scope.applyButtonIsDisabled = function(asId) {
-        var itemsInBasket = ApplicationBasketService.getItemCount();
-        if (itemsInBasket > basketLimit || !applicationSystemIsActive(asId)) {
+        var isOverflowing = $scope.applicationBasketIsOverflowing(asId);
+        if (isOverflowing || !applicationSystemIsActive(asId)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    $scope.applicationBasketIsOverflowing = function(asId) {
+        var items = $scope.applicationItems;
+        var itemsInBasket = 0;
+
+        for (var i in items) {
+            if (items.hasOwnProperty(i)) {
+                var item = items[i];
+                if (item && item.applicationSystemId == asId && item.applicationOptions) {
+                    itemsInBasket = item.applicationOptions.length;
+                    break;
+                }
+            }
+        }
+  
+        if (itemsInBasket > basketLimit) {
             return true;
         } else {
             return false;
@@ -534,11 +555,14 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
                     initializeParent();
                 }
         });
+
+            return false;
     };
 
     // scrolls to an anchor on page
     $scope.scrollToAnchor = function(id) {
         $('html, body').scrollTop($('#' + id).offset().top);
+        return false;
     };
 
     $scope.changeMainTab = function(tabName) {

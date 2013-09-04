@@ -2,7 +2,6 @@
 
 var kiApp = angular.module('kiApp', ['kiApp.services', 'kiApp.directives', 'ui.bootstrap']);
 kiApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
-    //$locationProvider.hashPrefix('!');
     $routeProvider.when('/haku/:queryString', {
     	templateUrl: 'partials/hakutulokset.html', 
     	controller: SearchCtrl

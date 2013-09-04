@@ -3,10 +3,14 @@
         <div class="container">
             <span data-ng-switch="lang">
                 <span data-ng-switch-when="fi">
-                    <a id="home-link" href="../static/"><img src="img/opintopolkufi_large.png" alt="Opintopolku.fi"/></a>
+                    <a id="home-link" href="../static/">
+                        <img src="img/opintopolkufi_large.png" alt="Opintopolku.fi"/>
+                    </a>
                 </span>
                 <span data-ng-switch-when="sv">
-                    <a id="home-link" href="../static/sv/"><img src="img/Studieinfo.png" alt="Opintopolku.fi"/></a>
+                    <a id="home-link" href="../static/sv/">
+                        <img src="img/Studieinfo.png" alt="Opintopolku.fi"/>
+                    </a>
                 </span>
             </span> 
             <div class="actions">
@@ -32,16 +36,14 @@
                 <fieldset class="search-container">
                     <label for="search-field" class="h2" data-ki-i18n="search-field-label"></label>
                     <input class="search-field" id="search-field" name="search-field" placeholder="{{searchFieldPlaceholder}}" value="" data-ng-model="queryString"/>
-                    <button class="button primary magnifier" type="submit"><span><span class="h2" data-ki-i18n="search-button"></span></span></button>
+                    <button class="button primary magnifier" type="submit">
+                        <span>
+                            <span class="h2" data-ki-i18n="search-button"></span>
+                        </span>
+                    </button>
                 </fieldset>
             </form>
         </div>
         <div class="clear"></div>
     </div>
 </header>
-
-<!--
-<label for="search-field" class="h2">Etsi koulutuksia tästä</label>
-                    <input tabindex="0" class="search-field" id="search-field" name="search-field" placeholder="Kirjoita tähän esim. tutkinto, ammatti tai oppilaitoksen nimi" value="" />
-                    <button class="button primary magnifier" type="submit"><span><span class="h2">Hae</span></span></button>
--->

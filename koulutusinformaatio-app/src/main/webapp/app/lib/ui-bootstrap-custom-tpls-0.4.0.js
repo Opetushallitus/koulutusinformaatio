@@ -584,7 +584,7 @@ angular.module('ui.bootstrap.pagination', [])
 angular.module("template/pagination/pagination.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("template/pagination/pagination.html",
     "<div class=\"pagination\"><ul class=\"nobullet\">\n" +
-    "  <li data-ng-repeat=\"page in pages\" data-ng-class=\"{active: page.active, disabled: page.disabled}\"><a data-ng-click=\"selectPage(page.number)\">{{page.text}}</a></li>\n" +
+    "  <li data-ng-repeat=\"page in pages\" data-ng-class=\"{active: page.active, disabled: page.disabled}\"><a href=\"javascript:void(0)\" data-ng-click=\"selectPage(page.number)\">{{page.text}}</a></li>\n" +
     "  </ul>\n" +
     "</div>\n" +
     "");
