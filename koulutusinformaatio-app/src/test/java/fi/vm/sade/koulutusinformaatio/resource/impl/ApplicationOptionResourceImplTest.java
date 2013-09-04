@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.resource.impl;
 
 import com.google.common.collect.Lists;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionSearchResultDTO;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import org.junit.Before;
@@ -27,6 +28,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -41,14 +43,16 @@ public class ApplicationOptionResourceImplTest {
     private final String asId = "1.2.3.4";
     private final String lopId = "5.6.7.8";
     private final String baseEducation = "1";
+    private final String aoId = "1.1.2";
+    private final List<String> aoIds = Lists.newArrayList(aoId);
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         learningOpportunityService = mock(LearningOpportunityService.class);
         List<ApplicationOptionSearchResultDTO> aos = new ArrayList<ApplicationOptionSearchResultDTO>();
 
         ApplicationOptionSearchResultDTO ao = new ApplicationOptionSearchResultDTO();
-        ao.setId("1.1.2");
+        ao.setId(aoId);
         ao.setName("ao 1 fi");
         ao.setEducationDegree("degree 1");
         List<String> cloNames = new ArrayList<String>();
@@ -61,10 +65,19 @@ public class ApplicationOptionResourceImplTest {
         ao2.setName("ao 2 fi");
         ao2.setEducationDegree("degree 2");
 
+        ApplicationOptionDTO aoDTO = new ApplicationOptionDTO();
+        aoDTO.setId(aoId);
+        aoDTO.setName("ao 1 fi");
+        aoDTO.setEducationDegree("degree1");
+
+        List<ApplicationOptionDTO> aoDTOs = Lists.newArrayList(aoDTO);
+
         aos.add(ao);
         aos.add(ao2);
 
         when(learningOpportunityService.searchApplicationOptions(eq(asId), eq(lopId), eq(baseEducation))).thenReturn(aos);
+        when(learningOpportunityService.getApplicationOption(eq(aoId), eq("fi"), eq("fi"))).thenReturn(aoDTO);
+        when(learningOpportunityService.getApplicationOptions(anyListOf(String.class), eq("fi"), eq("fi"))).thenReturn(aoDTOs);
         applicationOptionResource = new ApplicationOptionResourceImpl(learningOpportunityService);
     }
 
@@ -75,5 +88,20 @@ public class ApplicationOptionResourceImplTest {
         assertEquals(2, result.size());
         assertEquals("1.1.2", result.get(0).getId());
         assertEquals("2.3.2", result.get(1).getId());
+    }
+
+    @Test
+    public void testGetApplicationOption() {
+        ApplicationOptionDTO result = applicationOptionResource.getApplicationOption(aoId, "fi", "fi");
+        assertNotNull(result);
+        assertEquals(aoId, result.getId());
+    }
+
+    @Test
+    public void testGetApplicationOptions() {
+        List<ApplicationOptionDTO> result  = applicationOptionResource.getApplicationOptions(aoIds, "fi", "fi");
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertEquals(aoId, result.iterator().next().getId());
     }
 }
