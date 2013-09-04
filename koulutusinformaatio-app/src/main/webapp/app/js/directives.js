@@ -171,7 +171,7 @@ directive('kiEmail', function() {
         link: function(scope, element, attrs) {
             attrs.$observe('kiEmail', function(data) {
                 if (data) {
-                    element.html(data.replace('@', '(at)'));
+                    element.text(data.replace('@', '(at)'));
                 }
             });
         }
@@ -420,9 +420,8 @@ directive('renderTextBlock', function() {
 directive('kiAppTitle', ['TitleService', function(TitleService) {
     return function(scope, element, attrs) {
         $(element).on('updatetitle', function(e, param) {
-            element.html(param);
+            element.text(param);
         });
-        //element.html(TitleService.getTitle());
     };
 }]).
 
@@ -476,10 +475,10 @@ directive('kiAsStateLabel', function() {
 
             if (asOngoing) {
                 element.addClass('label vih');
-                element.html(i18n.t('label-as-ongoing'));
+                element.text(i18n.t('label-as-ongoing'));
             } else {
                 element.addClass('label har');
-                element.html(i18n.t('label-as-not-ongoing'));
+                element.text(i18n.t('label-as-not-ongoing'));
             }
         })
     }
@@ -491,10 +490,10 @@ directive('kiAsStateLabel', function() {
 directive('kiAsState', function() {
     return function(scope, element, attrs) {
         if (scope.lo.asOngoing) {
-            element.html(i18n.t('search-as-ongoing'));
+            element.text(i18n.t('search-as-ongoing'));
         } else if (scope.lo.nextApplicationPeriodStarts) {
             var ts = new Date(scope.lo.nextApplicationPeriodStarts);
-            element.html(i18n.t('search-as-next') + ' ' + ts.getDate() + '.' + (ts.getMonth() + 1) + '.' + ts.getFullYear());
+            element.text(i18n.t('search-as-next') + ' ' + ts.getDate() + '.' + (ts.getMonth() + 1) + '.' + ts.getFullYear());
         }
     }
 
