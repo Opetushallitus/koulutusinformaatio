@@ -55,6 +55,8 @@ public class ApplicationOption {
     // base educations, one of these is required to be able to apply to this application option
     private List<String> requiredBaseEducations;
     private List<Exam> exams;
+    // application option specific application dates or application system dates
+    private boolean specificApplicationDates;
     private Date applicationStartDate;
     private Date applicationEndDate;
 
@@ -216,6 +218,14 @@ public class ApplicationOption {
 
     public void setExams(List<Exam> exams) {
         this.exams = exams;
+    }
+
+    public boolean isSpecificApplicationDates() {
+        return specificApplicationDates;
+    }
+
+    public void setSpecificApplicationDates(boolean specificApplicationDates) {
+        this.specificApplicationDates = specificApplicationDates;
     }
 
     public Date getApplicationStartDate() {
