@@ -535,16 +535,44 @@ directive('kiRenderApplicationSystemActive', function() {
 }).
 
 /**
+ *  Render application option status
+ */
+directive('kiRenderApplicationOptionActive', function() {
+    return {
+        restrict: 'E,A',
+        template: '<span data-ng-switch="active">' +
+                    '<span data-ng-switch-when="future"><span data-ki-i18n="application-system-active-future"></span> <span data-ki-timestamp="{{timestamp}}"></span></span>' +
+                    '<span data-ng-switch-when="past" data-ki-i18n="application-system-active-past"></span>' +
+                    '<span data-ng-switch-when="present"data-ki-i18n="application-system-active-present"></span>' +
+                '</span>',
+        link: function(scope, element, attrs) {
+            var ao;
+            scope.$watch('ao', function(data) {
+                ao = data;
+                update();
+            });
+
+            var update = function() {
+                if (ao) {
+                    if (ao.canBeApplied) {
+                        scope.active = "present";
+                    } else if (ao.nextApplicationPeriodStarts) {
+                        scope.active = "future";
+                        scope.timestamp = ao.nextApplicationPeriodStarts;
+                    } else {
+                        scope.active = "past";
+                    }
+                }
+            };
+        }
+    }
+}).
+
+/**
  *  Fetches a trasnlation with the given key and inserts it inside the element
  */
 directive('kiI18n', ['TranslationService', function(TranslationService) {
     return function(scope, element, attrs) {
-        /*
-        attrs.$observe('showColon', function(data) {
-            console.log(data);
-        })
-*/
-
         attrs.$observe('kiI18n', function(value) {
             $(element).empty();
             var translation = TranslationService.getTranslation(value);
