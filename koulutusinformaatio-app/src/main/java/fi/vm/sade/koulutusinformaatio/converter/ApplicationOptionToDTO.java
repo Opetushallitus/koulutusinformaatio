@@ -44,6 +44,9 @@ public class ApplicationOptionToDTO {
             ao.setExams(ExamToDTO.convertAll(applicationOption.getExams(), lang));
             ao.setProvider(ProviderToDTO.convert(applicationOption.getProvider(), lang));
             ao.setChildRefs(ChildLOIRefToDTO.convert(applicationOption.getChildLOIRefs(), lang));
+            ao.setSpecificApplicationDates(applicationOption.isSpecificApplicationDates());
+            ao.setApplicationStartDate(applicationOption.getApplicationStartDate());
+            ao.setApplicationEndDate(applicationOption.getApplicationEndDate());
             return ao;
         }
         return null;

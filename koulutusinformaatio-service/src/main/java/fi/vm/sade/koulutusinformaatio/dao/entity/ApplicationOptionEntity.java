@@ -61,6 +61,9 @@ public class ApplicationOptionEntity {
     private List<String> requiredBaseEducations;
     @Embedded
     private List<ExamEntity> exams;
+    private boolean specificApplicationDates;
+    private Date applicationStartDate;
+    private Date applicationEndDate;
 
     public ApplicationOptionEntity() {
 
@@ -224,5 +227,29 @@ public class ApplicationOptionEntity {
 
     public void setExams(List<ExamEntity> exams) {
         this.exams = exams;
+    }
+
+    public boolean isSpecificApplicationDates() {
+        return specificApplicationDates;
+    }
+
+    public void setSpecificApplicationDates(boolean specificApplicationDates) {
+        this.specificApplicationDates = specificApplicationDates;
+    }
+
+    public Date getApplicationStartDate() {
+        return applicationStartDate;
+    }
+
+    public void setApplicationStartDate(Date applicationStartDate) {
+        this.applicationStartDate = applicationStartDate;
+    }
+
+    public Date getApplicationEndDate() {
+        return applicationEndDate;
+    }
+
+    public void setApplicationEndDate(Date applicationEndDate) {
+        this.applicationEndDate = applicationEndDate;
     }
 }
