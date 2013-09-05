@@ -17,7 +17,10 @@
 package fi.vm.sade.koulutusinformaatio.converter;
 
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.DateRange;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
+
+import java.util.Date;
 
 /**
  * @author Mikko Majapuro
@@ -47,6 +50,13 @@ public class ApplicationOptionToDTO {
             ao.setSpecificApplicationDates(applicationOption.isSpecificApplicationDates());
             ao.setApplicationStartDate(applicationOption.getApplicationStartDate());
             ao.setApplicationEndDate(applicationOption.getApplicationEndDate());
+            if (applicationOption.isSpecificApplicationDates()) {
+                ao.setCanBeApplied(ConverterUtil.isOngoing(new DateRange(applicationOption.getApplicationStartDate(),
+                        applicationOption.getApplicationEndDate())));
+                if (applicationOption.getApplicationStartDate().after(new Date())) {
+                    ao.setNextApplicationPeriodStarts(applicationOption.getApplicationStartDate());
+                }
+            }
             return ao;
         }
         return null;

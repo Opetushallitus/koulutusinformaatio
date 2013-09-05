@@ -111,13 +111,21 @@ public class ConverterUtil {
     }
 
     public static boolean isOngoing(List<DateRange> dateRanges) {
-        Date now = new Date();
         for (DateRange dr : dateRanges) {
-            if (dr.getStartDate().before(now) && now.before(dr.getEndDate())) {
+            if (isOngoing(dr)) {
                 return true;
             }
         }
         return false;
+    }
+
+    public static boolean isOngoing(DateRange dateRange) {
+        Date now = new Date();
+        if (dateRange.getStartDate().before(now) && now.before(dateRange.getEndDate())) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public static Date resolveNextDateRangeStart(List<DateRange> dateRanges) {
