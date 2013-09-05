@@ -45,6 +45,7 @@ public class ApplicationOptionDTO {
     private List<ExamDTO> exams;
     private List<ChildLOIRefDTO> childRefs = new ArrayList<ChildLOIRefDTO>();
     private LearningOpportunityProviderDTO provider;
+    private boolean specificApplicationDates;
     private Date applicationStartDate;
     private Date applicationEndDate;
 
@@ -183,6 +184,14 @@ public class ApplicationOptionDTO {
 
     public void setProvider(LearningOpportunityProviderDTO provider) {
         this.provider = provider;
+    }
+
+    public boolean isSpecificApplicationDates() {
+        return specificApplicationDates;
+    }
+
+    public void setSpecificApplicationDates(boolean specificApplicationDates) {
+        this.specificApplicationDates = specificApplicationDates;
     }
 
     public Date getApplicationStartDate() {
