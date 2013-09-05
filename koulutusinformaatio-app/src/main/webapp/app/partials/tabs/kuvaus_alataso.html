@@ -1,26 +1,22 @@
-<section class="grid16-10 no-left-gutter wide-column">
+<section class="grid16-9 offset-right-16-1 no-left-gutter wide-column">
     <div data-ki-prerequisite-selection-ribbon></div>
     <div class="infobox">
         <ul class="nobullet">
             <li>
-                <span data-ki-i18n="education-starts" class="margin-right-1"></span>
+                <span data-ki-i18n="education-starts" data-show-colon="true" class="margin-right-1"></span>
                 <span class="bold">{{selectedLOI.startDate}}</span>
             </li>
             <li>
-                <span data-ki-i18n="language-of-instruction" class="margin-right-1"></span>
+                <span data-ki-i18n="language-of-instruction" data-show-colon="true" class="margin-right-1"></span>
                 <span class="bold">{{selectedLOI.teachingLanguage}}</span>
             </li>
             <li>
-                <span data-ki-i18n="form-of-education" class="margin-right-1"></span>
+                <span data-ki-i18n="form-of-education" data-show-colon="true" class="margin-right-1"></span>
                 <span class="bold">{{selectedLOI.formOfTeaching}}</span>
             </li>
             <li>
-                <span data-ki-i18n="duration" class="margin-right-1"></span>
+                <span data-ki-i18n="duration" data-show-colon="true" class="margin-right-1"></span>
                 <span class="bold">{{parentLO.creditValue}} {{parentLO.creditUnit}}</span>
-            </li>
-            <li>
-                <span data-ki-i18n="starting-quota" class="margin-right-1"></span>
-                <span class="bold">{{applicationOption.startingQuota}}</span>
             </li>
         </ul>
     </div>
