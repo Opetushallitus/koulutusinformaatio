@@ -48,6 +48,9 @@ public class ApplicationOptionDTO {
     private boolean specificApplicationDates;
     private Date applicationStartDate;
     private Date applicationEndDate;
+    // if has specific application dates are present, indicates if can be applied at a given moment
+    private boolean canBeApplied;
+    private Date nextApplicationPeriodStarts;
 
 
     public String getId() {
@@ -208,5 +211,21 @@ public class ApplicationOptionDTO {
 
     public void setApplicationEndDate(Date applicationEndDate) {
         this.applicationEndDate = applicationEndDate;
+    }
+
+    public boolean isCanBeApplied() {
+        return canBeApplied;
+    }
+
+    public void setCanBeApplied(boolean canBeApplied) {
+        this.canBeApplied = canBeApplied;
+    }
+
+    public Date getNextApplicationPeriodStarts() {
+        return nextApplicationPeriodStarts;
+    }
+
+    public void setNextApplicationPeriodStarts(Date nextApplicationPeriodStarts) {
+        this.nextApplicationPeriodStarts = nextApplicationPeriodStarts;
     }
 }
