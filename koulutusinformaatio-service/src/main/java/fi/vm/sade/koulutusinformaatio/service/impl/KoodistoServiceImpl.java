@@ -21,8 +21,10 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import fi.vm.sade.koodisto.service.GenericFault;
 import fi.vm.sade.koodisto.service.types.SearchKoodisCriteriaType;
+import fi.vm.sade.koodisto.service.types.common.KoodiMetadataType;
 import fi.vm.sade.koodisto.service.types.common.KoodiType;
 import fi.vm.sade.koodisto.util.CachingKoodistoClient;
 import fi.vm.sade.koodisto.util.KoodiServiceSearchCriteriaBuilder;
@@ -34,10 +36,11 @@ import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -47,15 +50,13 @@ import java.util.regex.Pattern;
 public class KoodistoServiceImpl implements KoodistoService {
 
     private final CachingKoodistoClient koodiService;
-    private final ConversionService conversionService;
     private final Pattern pattern;
     private static final String KOODI_URI_WITH_VERSION_PATTERN = "^[^#]+#\\d+$";
     public static final Logger LOGGER = LoggerFactory.getLogger(KoodistoServiceImpl.class);
 
     @Autowired
-    public KoodistoServiceImpl(final CachingKoodistoClient koodiService, final ConversionService conversionService) {
+    public KoodistoServiceImpl(final CachingKoodistoClient koodiService) {
         this.koodiService = koodiService;
-        this.conversionService = conversionService;
         this.pattern = Pattern.compile(KOODI_URI_WITH_VERSION_PATTERN);
     }
 
@@ -65,7 +66,7 @@ public class KoodistoServiceImpl implements KoodistoService {
             return null;
         } else {
             LOGGER.debug("search koodi: " + koodiUri);
-            return convert(searchKoodiTypes(koodiUri), I18nText.class);
+            return convertAllToI18nText(searchKoodiTypes(koodiUri));
         }
     }
 
@@ -73,11 +74,9 @@ public class KoodistoServiceImpl implements KoodistoService {
     public List<I18nText> searchMultiple(List<String> koodiUris) throws KoodistoException {
         if (koodiUris == null) {
             return null;
-        }
-        else if (koodiUris.isEmpty()) {
+        } else if (koodiUris.isEmpty()) {
             return Lists.newArrayList();
-        }
-        else {
+        } else {
             List<I18nText> results = Lists.newArrayList();
             for (String koodiUri : koodiUris) {
                 results.addAll(search(koodiUri));
@@ -107,7 +106,7 @@ public class KoodistoServiceImpl implements KoodistoService {
             return null;
         } else {
             LOGGER.debug("search koodi: " + koodiUri);
-            return convert(searchKoodiTypes(koodiUri), Code.class);
+            return convertAllToCode(searchKoodiTypes(koodiUri));
         }
     }
 
@@ -115,11 +114,9 @@ public class KoodistoServiceImpl implements KoodistoService {
     public List<Code> searchCodesMultiple(List<String> koodiUris) throws KoodistoException {
         if (koodiUris == null) {
             return null;
-        }
-        else if (koodiUris.isEmpty()) {
+        } else if (koodiUris.isEmpty()) {
             return Lists.newArrayList();
-        }
-        else {
+        } else {
             List<Code> results = Lists.newArrayList();
             for (String koodiUri : koodiUris) {
                 results.addAll(searchCodes(koodiUri));
@@ -165,20 +162,18 @@ public class KoodistoServiceImpl implements KoodistoService {
     @Override
     public List<Code> searchSubCodes(String koodiURIAndVersion, String koodistoURI) throws KoodistoException {
         if (koodistoURI != null && !koodistoURI.isEmpty()) {
-            return convert(searchSubKoodiTypes(koodiURIAndVersion, koodistoURI), Code.class);
-        }
-        else {
-            return convert(searchSubKoodiTypes(koodiURIAndVersion), Code.class);
+            return convertAllToCode(searchSubKoodiTypes(koodiURIAndVersion, koodistoURI));
+        } else {
+            return convertAllToCode(searchSubKoodiTypes(koodiURIAndVersion));
         }
     }
 
     @Override
     public List<Code> searchSuperCodes(String koodiURIAndVersion, String koodistoURI) throws KoodistoException {
         if (koodistoURI != null && !koodistoURI.isEmpty()) {
-            return convert(searchSuperKoodiTypes(koodiURIAndVersion, koodistoURI), Code.class);
-        }
-        else {
-            return convert(searchSuperKoodiTypes(koodiURIAndVersion), Code.class);
+            return convertAllToCode(searchSuperKoodiTypes(koodiURIAndVersion, koodistoURI));
+        } else {
+            return convertAllToCode(searchSuperKoodiTypes(koodiURIAndVersion));
         }
     }
 
@@ -221,11 +216,9 @@ public class KoodistoServiceImpl implements KoodistoService {
             String uri = splitted[0];
             Integer version = Integer.parseInt(splitted[1]);
             return new CodeUriAndVersion(uri, version);
-        }
-        else if (koodiUri != null && !koodiUri.isEmpty()) {
+        } else if (koodiUri != null && !koodiUri.isEmpty()) {
             return new CodeUriAndVersion(koodiUri);
-        }
-        else {
+        } else {
             throw new KoodistoException("Illegal arguments: " + koodiUri);
         }
     }
@@ -234,8 +227,7 @@ public class KoodistoServiceImpl implements KoodistoService {
         SearchKoodisCriteriaType criteria = null;
         if (codeUriAndVersion.getVersion() == null) {
             criteria = KoodiServiceSearchCriteriaBuilder.latestKoodisByUris(codeUriAndVersion.getUri());
-        }
-        else {
+        } else {
             criteria = KoodiServiceSearchCriteriaBuilder.koodiByUriAndVersion(codeUriAndVersion.getUri(),
                     codeUriAndVersion.getVersion());
         }
@@ -251,12 +243,52 @@ public class KoodistoServiceImpl implements KoodistoService {
         }
     }
 
-    private <T> List<T> convert(final List<KoodiType> codes, final Class<T> type) {
-        return Lists.transform(codes, new Function<KoodiType, T>() {
+    private List<I18nText> convertAllToI18nText(final List<KoodiType> codes) {
+        return Lists.transform(codes, new Function<KoodiType, I18nText>() {
             @Override
-            public T apply(fi.vm.sade.koodisto.service.types.common.KoodiType koodiType) {
-                return conversionService.convert(koodiType, type);
+            public I18nText apply(fi.vm.sade.koodisto.service.types.common.KoodiType koodiType) {
+                return convertToI18nText(koodiType);
             }
         });
     }
+
+
+    public I18nText convertToI18nText(KoodiType koodiType) {
+        List<KoodiMetadataType> metadata = koodiType.getMetadata();
+        Map<String, String> translations = new HashMap<String, String>();
+        Map<String, String> translationsShortName = new HashMap<String, String>();
+        for (KoodiMetadataType koodiMetadataType : metadata) {
+            translations.put(koodiMetadataType.getKieli().value().toLowerCase(), koodiMetadataType.getNimi());
+            translationsShortName.put(koodiMetadataType.getKieli().value().toLowerCase(), koodiMetadataType.getLyhytNimi());
+        }
+        return new I18nText(translations, translationsShortName);
+    }
+
+
+    private List<Code> convertAllToCode(final List<KoodiType> codes) {
+        return Lists.transform(codes, new Function<KoodiType, Code>() {
+            @Override
+            public Code apply(fi.vm.sade.koodisto.service.types.common.KoodiType koodiType) {
+                return convertToCode(koodiType);
+            }
+        });
+    }
+
+    private Code convertToCode(KoodiType koodiType) {
+        List<KoodiMetadataType> metadata = koodiType.getMetadata();
+        Map<String, String> name = Maps.newHashMap();
+        Map<String, String> shortName = Maps.newHashMap();
+        Map<String, String> description = Maps.newHashMap();
+        for (KoodiMetadataType koodiMetadataType : metadata) {
+            String lang = koodiMetadataType.getKieli().value().toLowerCase();
+            name.put(lang, koodiMetadataType.getNimi());
+            shortName.put(lang, koodiMetadataType.getLyhytNimi());
+            description.put(lang, koodiMetadataType.getKuvaus());
+        }
+        return new Code(koodiType.getKoodiArvo(), new I18nText(name, shortName), new I18nText(description));
+    }
+
+
+
+
 }

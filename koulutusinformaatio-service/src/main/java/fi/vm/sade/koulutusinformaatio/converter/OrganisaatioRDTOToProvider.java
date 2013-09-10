@@ -16,17 +16,16 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import java.util.List;
-import java.util.Map;
-
 import com.google.common.base.Strings;
-import fi.vm.sade.koulutusinformaatio.domain.*;
-import org.springframework.core.convert.converter.Converter;
-
 import com.google.common.collect.Lists;
-
+import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioMetaDataRDTO;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
+import org.springframework.core.convert.converter.Converter;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Hannu Lyytikainen
@@ -50,6 +49,12 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
     private static final String METADATA_SOCIAL_GOOGLEPLUS = "GOOGLE_PLUS";
     private static final String METADATA_SOCIAL_OTHER = "MUU";
     private static final String[] SOCIAL_LINKS = {METADATA_SOCIAL_FACEBOOK, METADATA_SOCIAL_LINKEDIN, METADATA_SOCIAL_TWITTER, METADATA_SOCIAL_GOOGLEPLUS, METADATA_SOCIAL_OTHER};
+
+    KoodistoService koodistoService;
+
+    public OrganisaatioRDTOToProvider(KoodistoService koodistoService) {
+        this.koodistoService = koodistoService;
+    }
 
     @Override
     public Provider convert(OrganisaatioRDTO o) {

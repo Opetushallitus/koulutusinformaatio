@@ -49,18 +49,18 @@
 
     <bean id="modelMapper" class="org.modelmapper.ModelMapper"/>
 
-    <bean id="conversionService"
-          class="fi.vm.sade.koulutusinformaatio.converter.KoulutusinformaatioConversionServiceFactoryBean">
-        <!-- Converters that need access to ConversionService are registered in KoulutusinformaatioConversionServiceFactoryBean -->
-        <property name="converters">
-            <list>
-                <bean class="fi.vm.sade.koulutusinformaatio.converter.KoodiTypeToI18nText"/>
-                <bean class="fi.vm.sade.koulutusinformaatio.converter.KoodiTypeToCode"/>
-                <bean class="fi.vm.sade.koulutusinformaatio.converter.OrganisaatioRDTOToProvider"/>
-                <bean class="fi.vm.sade.koulutusinformaatio.converter.CodeUriAndVersionToKoodiUriAndVersionType"/>
-            </list>
-        </property>
-    </bean>
+    <!--<bean id="conversionService"-->
+          <!--class="fi.vm.sade.koulutusinformaatio.converter.KoulutusinformaatioConversionServiceFactoryBean">-->
+        <!--&lt;!&ndash; Converters that need access to ConversionService are registered in KoulutusinformaatioConversionServiceFactoryBean &ndash;&gt;-->
+        <!--<property name="converters">-->
+            <!--<list>-->
+                <!--<bean class="fi.vm.sade.koulutusinformaatio.converter.KoodiTypeToI18nText"/>-->
+                <!--<bean class="fi.vm.sade.koulutusinformaatio.converter.KoodiTypeToCode"/>-->
+                <!--<bean class="fi.vm.sade.koulutusinformaatio.converter.OrganisaatioRDTOToProvider"/>-->
+                <!--<bean class="fi.vm.sade.koulutusinformaatio.converter.CodeUriAndVersionToKoodiUriAndVersionType"/>-->
+            <!--</list>-->
+        <!--</property>-->
+    <!--</bean>-->
 
     <task:annotation-driven scheduler="taskScheduler"/>
     <task:scheduler id="taskScheduler" pool-size="2"/>
@@ -105,9 +105,6 @@
         <bean id="providerService" class="fi.vm.sade.koulutusinformaatio.service.impl.ProviderServiceImpl">
             <constructor-arg>
                 <ref bean="organisaatioResource"/>
-            </constructor-arg>
-            <constructor-arg>
-                <ref bean="conversionService"/>
             </constructor-arg>
         </bean>
 

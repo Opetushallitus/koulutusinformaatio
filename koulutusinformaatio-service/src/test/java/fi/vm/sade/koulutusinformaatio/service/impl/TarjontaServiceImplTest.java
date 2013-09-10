@@ -17,8 +17,6 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
-import fi.vm.sade.koulutusinformaatio.converter.KomoDTOToParentLearningOpportunity;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
@@ -37,10 +35,6 @@ import org.springframework.core.convert.ConversionService;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -69,8 +63,6 @@ public class TarjontaServiceImplTest {
         komoDTO.setOid(ID_1);
         komoDTO.setNimi(TestUtil.createI18nText("parent_fi", "parent_sv", "parent_en").getTranslations());
 
-        KomoDTOToParentLearningOpportunity converter = new KomoDTOToParentLearningOpportunity(conversionService);
-        when(conversionService.convert(any(KomoDTO.class), eq(ParentLOS.class))).thenReturn(converter.convert(komoDTO));
 
         komoResource = mock(KomoResource.class);
         //when(komoResource.search(null, 0, 0, null, null)).thenReturn(IDS);

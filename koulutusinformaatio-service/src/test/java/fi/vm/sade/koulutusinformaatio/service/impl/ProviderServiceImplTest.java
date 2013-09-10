@@ -20,12 +20,14 @@ import com.google.common.collect.Maps;
 import fi.vm.sade.koulutusinformaatio.converter.OrganisaatioRDTOToProvider;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
+import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.organisaatio.resource.OrganisaatioResource;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioMetaDataRDTO;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.MockitoAnnotations.Mock;
 import org.springframework.core.convert.ConversionService;
 
 import java.util.Map;
@@ -40,6 +42,7 @@ import static org.mockito.Mockito.*;
 public class ProviderServiceImplTest {
 
     ProviderService providerService;
+    @Mock KoodistoService koodistoService;
 
     public static final String ORGANISAATIO_OID = "1.2.3.4.5";
 
@@ -59,7 +62,7 @@ public class ProviderServiceImplTest {
         ometa.setData(data);
         o.setMetadata(ometa);
         ConversionService cs = mock(ConversionService.class);
-        OrganisaatioRDTOToProvider converter = new OrganisaatioRDTOToProvider();
+        OrganisaatioRDTOToProvider converter = new OrganisaatioRDTOToProvider(koodistoService);
         when(cs.convert(eq(o), eq(Provider.class))).thenReturn(converter.convert(o));
         OrganisaatioResource or = mock(OrganisaatioResource.class);
         when(or.getOrganisaatioByOID(ORGANISAATIO_OID)).thenReturn(o);

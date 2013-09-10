@@ -16,21 +16,30 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
+import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.converter.ConverterRegistry;
+import org.springframework.stereotype.Service;
 
 /**
  * @author Hannu Lyytikainen
  */
+@Service("conversionService")
 public class KoulutusinformaatioConversionServiceFactoryBean extends ConversionServiceFactoryBean {
+
+    @Autowired
+    KoodistoService koodistoService;
 
     @Override
     public void afterPropertiesSet() {
         super.afterPropertiesSet();
         ConversionService conversionService = getObject();
         ConverterRegistry registry = (ConverterRegistry) conversionService;
-        // register converters that need access to ConversionService
-        registry.addConverter(new KomoDTOToParentLearningOpportunity(conversionService));
+        registry.addConverter(new OrganisaatioRDTOToProvider(koodistoService));
+        registry.addConverter(new KoodiTypeToI18nText());
+        registry.addConverter(new KoodiTypeToCode());
+        registry.addConverter(new CodeUriAndVersionToKoodiUriAndVersionType());
     }
 }
