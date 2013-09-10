@@ -188,13 +188,32 @@
                 <configuration>
                     <charset>UTF-8</charset>
                     <uriEncoding>UTF-8</uriEncoding>
-                    <!--<addContextWarDependencies>true</addContextWarDependencies>-->
-                    <!--<systemProperties>-->
-                        <!--<solr.solr.home>${project.build.directory}/classes/solr</solr.solr.home>-->
-                    <!--</systemProperties>-->
                 </configuration>
             </plugin>
         </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <log4jConfigLocation>/WEB-INF/classes/log4j.properties</log4jConfigLocation>
+            </properties>
+            <build>
+            <resources>
+                <resource>
+                    <directory>config/dev</directory>
+                </resource>
+                <resource>
+                    <directory>src/main/resources</directory>
+                </resource>
+            </resources>
+            </build>
+
+        </profile>
+    </profiles>
+
 </project>
 
