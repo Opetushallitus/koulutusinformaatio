@@ -229,18 +229,14 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
     var resultsPerPage = kiAppConstants.searchResultsPerPage;
     var filters = FilterService.get();
     $scope.prerequisite = filters.prerequisite;
-    $scope.individualized = filters.individualized;
     $scope.locations = filters.locations;
-    $scope.individualizedDisabled = $scope.prerequisite != 'PK';
 
     $scope.change = function() {
-        $scope.individualizedDisabled = $scope.prerequisite != 'PK';
-        FilterService.set($scope.prerequisite, $scope.individualized, $scope.locations);
+        FilterService.set($scope.prerequisite, $scope.locations);
 
         SearchLearningOpportunityService.query({
             queryString: $scope.queryString,
             prerequisite: $scope.prerequisite,
-            individualized: $scope.individualized,
             start: 0,
             rows: resultsPerPage,
             locations: $scope.locations
