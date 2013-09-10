@@ -19,6 +19,8 @@ package fi.vm.sade.koulutusinformaatio.converter;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KIConversionException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioMetaDataRDTO;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
@@ -85,9 +87,18 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
             address.setStreetAddress(addrs.get(STREET_ADDRESS));
             address.setPostOffice(addrs.get(POST_OFFICE));
             address.setPostalCode(addrs.get(POSTAL_CODE));
+            address.setPostalCode(resolveCodeValue(addrs.get(POSTAL_CODE)));
             return address;
         }
         return null;
+    }
+
+    private String resolveCodeValue(String koodiUri) {
+        try {
+            return koodistoService.searchFirstCodeValue(koodiUri);
+        } catch (KoodistoException e) {
+            throw new KIConversionException("Conversion failed - " + e.getMessage());
+        }
     }
 
     private I18nText getMetadataValue(OrganisaatioMetaDataRDTO metadata, String key) {
