@@ -3205,7 +3205,7 @@ button {
         display: none; }
     button.plus:hover span {
       background-position: -22px center; }
-    button.plus:focus span, button.plus:active span {
+    button.plus:active span {
       background-position: -44px center; }
     button.plus:disabled span {
       background-position: -66px center; }
@@ -3874,72 +3874,6 @@ p {
 .grid16-9.no-left-gutter {
   margin-left: 0; }
 
-/*** Siteheader
-************************************************/
-/* siteheader styles already described in structure.scss
-#siteheader {
-
-    .header-container {
-        padding: 0 1em;
-        background-repeat: repeat-x;
-        background-attachment: scroll;
-        background-position: left bottom;
-        background-color: #149ecb;
-        padding: 10px 0;
-        height:38px;
-        position:relative;
-        color: #fff;
-    }
-
-     .primarylinks {
-        @include font-size-px-to-em(15);
-        position:absolute;
-        bottom:18px;
-        left:18px;
-        
-        a {
-            color:#000000;
-            text-decoration:none;
-
-            &:hover {
-                text-decoration: underline;
-            }
-        }
-    }
-
-    .secondarylinks {
-    
-        @include font-size-px-to-em(13);
-        position:absolute;
-        bottom:18px;
-        right:18px;
-
-        a {
-            text-decoration:none;
-
-            &:hover {
-                text-decoration: underline;
-            }
-        }
-    }
-
-    .language-selection {
-        height: 37px;
-        div {
-            
-            vertical-align: middle;
-            display: table-cell;
-
-            a,span {
-                color: #fff;
-                height: 32px;
-                display: table-cell;
-                vertical-align: middle;
-            }
-        }
-    }
-}
-*/
 .clear {
   *zoom: 1; }
   .clear:before, .clear:after {
@@ -3969,3 +3903,8 @@ p {
     background-color: black; }
   .label.har {
     background-color: #888888; }
+
+.btn-search-location {
+  position: absolute;
+  right: 87px;
+  top: 2px; }

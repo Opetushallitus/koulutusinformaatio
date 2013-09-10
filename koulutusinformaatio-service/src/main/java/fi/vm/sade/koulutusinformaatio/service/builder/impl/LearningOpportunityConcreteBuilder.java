@@ -32,6 +32,7 @@ import fi.vm.sade.tarjonta.service.resources.HakukohdeResource;
 import fi.vm.sade.tarjonta.service.resources.KomoResource;
 import fi.vm.sade.tarjonta.service.resources.KomotoResource;
 import fi.vm.sade.tarjonta.service.resources.dto.*;
+import fi.vm.sade.tarjonta.shared.types.TarjontaTila;
 
 import javax.ws.rs.WebApplicationException;
 import java.util.*;
@@ -113,6 +114,7 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
             try {
                 validateChildKomo(childKomo);
             } catch (TarjontaParseException e) {
+                LOG.debug("Invalid child komo " + childKomo.getOid() + ": " + e.getMessage());
                 continue;
             }
 
@@ -287,6 +289,7 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
             try {
                 validateChildKomoto(childKomoto);
             } catch (TarjontaParseException e) {
+                LOG.debug("Skipping child komoto " + e.getMessage());
                 continue;
             }
 
@@ -509,29 +512,20 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
     }
 
     private void validateParentKomo(KomoDTO komo) throws TarjontaParseException {
-
-        // tmp parent check
+        // parent check
         if (!komo.getModuuliTyyppi().equals(LearningOpportunityBuilder.MODULE_TYPE_PARENT)) {
-            throw new TarjontaParseException("LOS not of type " + LearningOpportunityBuilder.MODULE_TYPE_PARENT);
+            throw new TarjontaParseException("Komo not of type " + LearningOpportunityBuilder.MODULE_TYPE_PARENT);
         }
 
         // published
-        if (!komo.getTila().equals(LearningOpportunityBuilder.STATE_PUBLISHED)) {
-            throw new TarjontaParseException("LOS state not " + LearningOpportunityBuilder.STATE_PUBLISHED);
-        }
-
-        if (komo.getNimi() == null) {
-            //throw new TarjontaParseException("KomoDTO name is null");
-            Map<String, String> name = Maps.newHashMap();
-            name.put("fi", "fi dummy name");
-            name.put("sv", "sv dummy name");
-            komo.setNimi(name);
+        if (!komo.getTila().equals(TarjontaTila.JULKAISTU)) {
+            throw new TarjontaParseException("Parent komo state not " + TarjontaTila.JULKAISTU.toString());
         }
     }
 
     private void validateChildKomo(KomoDTO komo) throws TarjontaParseException {
-        if (!komo.getTila().equals(LearningOpportunityBuilder.STATE_PUBLISHED)) {
-            throw new TarjontaParseException("LOS " + komo.getOid() + " not in state " + LearningOpportunityBuilder.STATE_PUBLISHED);
+        if (!komo.getTila().equals(TarjontaTila.JULKAISTU)) {
+            throw new TarjontaParseException("Child komo " + komo.getOid() + " not in state " + TarjontaTila.JULKAISTU.toString());
         }
         if (komo.getKoulutusOhjelmaKoodiUri() == null) {
             throw new TarjontaParseException("Child KomoDTO koulutusOhjelmaKoodiUri (name) is null");
@@ -539,14 +533,11 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
         if (komo.getTutkintonimikeUri() == null) {
             throw new TarjontaParseException("Child KomoDTO tutkinto nimike uri is null");
         }
-        if (komo.getKoulutusOhjelmaKoodiUri() == null) {
-            throw new TarjontaParseException("Child KomoDTO koulutusohjelma koodi uri is null");
-        }
     }
 
     private void validateChildKomoto(KomotoDTO komoto) throws TarjontaParseException {
-        if (!komoto.getTila().equals(LearningOpportunityBuilder.STATE_PUBLISHED)) {
-            throw new TarjontaParseException("LOI " + komoto.getOid() + " not of type " + LearningOpportunityBuilder.MODULE_TYPE_PARENT);
+        if (!komoto.getTila().equals(TarjontaTila.JULKAISTU)) {
+            throw new TarjontaParseException("Child komoto " + komoto.getOid() + " not in state " + TarjontaTila.JULKAISTU.toString());
         }
 
     }
