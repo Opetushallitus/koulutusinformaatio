@@ -36,8 +36,6 @@ public interface LearningOpportunityBuilder {
 
     public static final String MODULE_TYPE_PARENT = "TUTKINTO";
     public static final String MODULE_TYPE_CHILD = "TUTKINTO_OHJELMA";
-    public static final String STATE_PUBLISHED = "JULKAISTU";
-    public static final String STATE_READY = "VALMIS";
     public static final String BASE_EDUCATION_KOODISTO_URI = "pohjakoulutustoinenaste";
 
     public LearningOpportunityBuilder resolveParentLOSs() throws TarjontaParseException, KoodistoException, WebApplicationException;
