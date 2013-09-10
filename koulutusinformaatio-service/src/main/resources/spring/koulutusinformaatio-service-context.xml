@@ -102,12 +102,6 @@
             </jaxrs:providers>
         </jaxrs:client>
 
-        <bean id="providerService" class="fi.vm.sade.koulutusinformaatio.service.impl.ProviderServiceImpl">
-            <constructor-arg>
-                <ref bean="organisaatioResource"/>
-            </constructor-arg>
-        </bean>
-
         <bean id="tarjontaServiceImpl"
               class="fi.vm.sade.koulutusinformaatio.service.impl.TarjontaServiceImpl">
             <constructor-arg>
@@ -118,9 +112,6 @@
             </constructor-arg>
             <constructor-arg>
                 <ref bean="hakukohdeResource"/>
-            </constructor-arg>
-            <constructor-arg>
-                <ref bean="providerService"/>
             </constructor-arg>
         </bean>
     </beans>

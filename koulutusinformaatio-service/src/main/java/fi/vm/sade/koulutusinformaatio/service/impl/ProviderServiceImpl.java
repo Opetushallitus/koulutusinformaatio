@@ -17,6 +17,11 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.base.Strings;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.GenericType;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
 import fi.vm.sade.koulutusinformaatio.domain.Address;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
@@ -24,11 +29,14 @@ import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
-import fi.vm.sade.organisaatio.resource.OrganisaatioResource;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
+import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.stereotype.Service;
 
+import javax.ws.rs.core.MediaType;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -37,24 +45,34 @@ import java.util.Map;
 /**
  * @author Hannu Lyytikainen
  */
+@Service
 public class ProviderServiceImpl implements ProviderService {
 
     private static final String ATHLETE_EDUCATION_KOODISTO_URI = "urheilijankoulutus_1#1";
     private static final String PLACE_OF_BUSINESS_KOODISTO_URI = "opetuspisteet";
-    private OrganisaatioResource organisaatioResource;
 
-    @Autowired
+    private WebResource webResource;
     private KoodistoService koodistoService;
-    @Autowired
     private ConversionService conversionService;
 
-    public ProviderServiceImpl(OrganisaatioResource organisaatioResource) {
-        this.organisaatioResource = organisaatioResource;
+    @Autowired
+    public ProviderServiceImpl(@Value("${organisaatio.api.rest.url}") final String organisaatioResourceUrl,
+                               KoodistoService koodistoService, ConversionService conversionService) {
+        this.koodistoService = koodistoService;
+        this.conversionService = conversionService;
+        ClientConfig cc = new DefaultClientConfig();
+        cc.getClasses().add(JacksonJsonProvider.class);
+        Client clientWithJacksonSerializer = Client.create(cc);
+        webResource = clientWithJacksonSerializer.resource(organisaatioResourceUrl);
     }
 
     @Override
     public Provider getByOID(String oid) throws KoodistoException {
-        OrganisaatioRDTO organisaatioRDTO = organisaatioResource.getOrganisaatioByOID(oid);
+        WebResource oidResource = webResource.path(oid);
+        OrganisaatioRDTO organisaatioRDTO = oidResource.accept(MediaType.APPLICATION_JSON + ";charset=UTF-8")
+                .get(new GenericType<OrganisaatioRDTO>() {
+                });
+
         if (organisaatioRDTO != null) {
             Provider provider = conversionService.convert(organisaatioRDTO, Provider.class);
             return updateCodeValues(provider);

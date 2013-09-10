@@ -194,6 +194,13 @@
             <artifactId>cxf-common-utilities</artifactId>
             <version>${cxf-common-utilities.version}</version>
         </dependency>
+
+        <!-- Jersey -->
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>${jersey.version}</version>
+        </dependency>
     </dependencies>
 
     <profiles>

@@ -45,6 +45,7 @@ public class ProviderServiceImplTest {
 
     ProviderService providerService;
     @Mock KoodistoService koodistoService;
+    @Mock ConversionService conversionService;
 
     public static final String ORGANISAATIO_OID = "1.2.3.4.5";
 
@@ -68,7 +69,7 @@ public class ProviderServiceImplTest {
         when(cs.convert(eq(o), eq(Provider.class))).thenReturn(converter.convert(o));
         OrganisaatioResource or = mock(OrganisaatioResource.class);
         when(or.getOrganisaatioByOID(ORGANISAATIO_OID)).thenReturn(o);
-        providerService = new ProviderServiceImpl(or);
+        providerService = new ProviderServiceImpl("url", koodistoService, conversionService);
     }
 
     @Test

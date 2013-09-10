@@ -43,19 +43,19 @@ public class TarjontaServiceImpl implements TarjontaService {
     private KomoResource komoResource;
     private KomotoResource komotoResource;
     private HakukohdeResource hakukohdeResource;
-    private ProviderService providerService;
 
     @Autowired
     private KoodistoService koodistoService;
     @Autowired
     private LearningOpportunityDirector loDirector;
+    @Autowired
+    private ProviderService providerService;
 
     public TarjontaServiceImpl(KomoResource komoResource, KomotoResource komotoResource,
-                               HakukohdeResource hakukohdeResource, ProviderService providerService) {
+                               HakukohdeResource hakukohdeResource) {
         this.komoResource = komoResource;
         this.komotoResource = komotoResource;
         this.hakukohdeResource = hakukohdeResource;
-        this.providerService = providerService;
     }
 
     public TarjontaServiceImpl() {
