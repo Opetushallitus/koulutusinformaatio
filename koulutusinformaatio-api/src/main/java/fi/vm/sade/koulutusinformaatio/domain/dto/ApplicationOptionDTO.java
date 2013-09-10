@@ -51,7 +51,7 @@ public class ApplicationOptionDTO {
     // if has specific application dates are present, indicates if can be applied at a given moment
     private boolean canBeApplied;
     private Date nextApplicationPeriodStarts;
-
+    private List<String> requiredBaseEducations;
 
     public String getId() {
         return id;
@@ -227,5 +227,13 @@ public class ApplicationOptionDTO {
 
     public void setNextApplicationPeriodStarts(Date nextApplicationPeriodStarts) {
         this.nextApplicationPeriodStarts = nextApplicationPeriodStarts;
+    }
+
+    public List<String> getRequiredBaseEducations() {
+        return requiredBaseEducations;
+    }
+
+    public void setRequiredBaseEducations(List<String> requiredBaseEducations) {
+        this.requiredBaseEducations = requiredBaseEducations;
     }
 }

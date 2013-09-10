@@ -32,6 +32,7 @@ import fi.vm.sade.tarjonta.service.resources.HakukohdeResource;
 import fi.vm.sade.tarjonta.service.resources.KomoResource;
 import fi.vm.sade.tarjonta.service.resources.KomotoResource;
 import fi.vm.sade.tarjonta.service.resources.dto.*;
+import fi.vm.sade.tarjonta.shared.types.TarjontaTila;
 
 import javax.ws.rs.WebApplicationException;
 import java.util.*;
@@ -516,8 +517,8 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
         }
 
         // published
-        if (!komo.getTila().equals(LearningOpportunityBuilder.STATE_PUBLISHED)) {
-            throw new TarjontaParseException("LOS state not " + LearningOpportunityBuilder.STATE_PUBLISHED);
+        if (!komo.getTila().equals(TarjontaTila.JULKAISTU)) {
+            throw new TarjontaParseException("LOS state not " + TarjontaTila.JULKAISTU.toString());
         }
 
         if (komo.getNimi() == null) {
@@ -530,8 +531,8 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
     }
 
     private void validateChildKomo(KomoDTO komo) throws TarjontaParseException {
-        if (!komo.getTila().equals(LearningOpportunityBuilder.STATE_PUBLISHED)) {
-            throw new TarjontaParseException("LOS " + komo.getOid() + " not in state " + LearningOpportunityBuilder.STATE_PUBLISHED);
+        if (!komo.getTila().equals(TarjontaTila.JULKAISTU)) {
+            throw new TarjontaParseException("LOS " + komo.getOid() + " not in state " + TarjontaTila.JULKAISTU.toString());
         }
         if (komo.getKoulutusOhjelmaKoodiUri() == null) {
             throw new TarjontaParseException("Child KomoDTO koulutusOhjelmaKoodiUri (name) is null");
@@ -545,21 +546,21 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
     }
 
     private void validateChildKomoto(KomotoDTO komoto) throws TarjontaParseException {
-        if (!komoto.getTila().equals(LearningOpportunityBuilder.STATE_PUBLISHED)) {
-            throw new TarjontaParseException("LOI " + komoto.getOid() + " not of type " + LearningOpportunityBuilder.MODULE_TYPE_PARENT);
+        if (!komoto.getTila().equals(TarjontaTila.JULKAISTU)) {
+            throw new TarjontaParseException("LOI " + komoto.getOid() + " not in state " + TarjontaTila.JULKAISTU.toString());
         }
 
     }
 
     private void validateHakukohde(HakukohdeDTO hakukohde) throws TarjontaParseException {
-        if (!hakukohde.getTila().equals(LearningOpportunityBuilder.STATE_PUBLISHED)) {
-            throw new TarjontaParseException("Application option " + hakukohde.getOid() + " not in state " + LearningOpportunityBuilder.STATE_PUBLISHED);
+        if (!hakukohde.getTila().equals(TarjontaTila.JULKAISTU)) {
+            throw new TarjontaParseException("Application option " + hakukohde.getOid() + " not in state " + TarjontaTila.JULKAISTU.toString());
         }
     }
 
     private void validateHaku(HakuDTO haku) throws TarjontaParseException {
-        if (!haku.getTila().equals(LearningOpportunityBuilder.STATE_PUBLISHED)) {
-            throw new TarjontaParseException("Application system " + haku.getOid() + " not in state " + LearningOpportunityBuilder.STATE_PUBLISHED);
+        if (!haku.getTila().equals(TarjontaTila.JULKAISTU)) {
+            throw new TarjontaParseException("Application system " + haku.getOid() + " not in state " + TarjontaTila.JULKAISTU.toString());
         }
     }
 

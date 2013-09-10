@@ -3205,7 +3205,7 @@ button {
         display: none; }
     button.plus:hover span {
       background-position: -22px center; }
-    button.plus:focus span, button.plus:active span {
+    button.plus:active span {
       background-position: -44px center; }
     button.plus:disabled span {
       background-position: -66px center; }
@@ -3873,6 +3873,7 @@ p {
 
 .grid16-9.no-left-gutter {
   margin-left: 0; }
+<<<<<<< HEAD
 
 /*** Siteheader
 ************************************************/
@@ -3922,24 +3923,9 @@ p {
             }
         }
     }
+=======
+>>>>>>> devel
 
-    .language-selection {
-        height: 37px;
-        div {
-            
-            vertical-align: middle;
-            display: table-cell;
-
-            a,span {
-                color: #fff;
-                height: 32px;
-                display: table-cell;
-                vertical-align: middle;
-            }
-        }
-    }
-}
-*/
 .clear {
   *zoom: 1; }
   .clear:before, .clear:after {
@@ -3969,3 +3955,8 @@ p {
     background-color: black; }
   .label.har {
     background-color: #888888; }
+
+.btn-search-location {
+  position: absolute;
+  right: 87px;
+  top: 2px; }
