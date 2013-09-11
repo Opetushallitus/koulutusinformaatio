@@ -69,7 +69,7 @@ public class ProviderServiceImplTest {
         when(cs.convert(eq(o), eq(Provider.class))).thenReturn(converter.convert(o));
         OrganisaatioResource or = mock(OrganisaatioResource.class);
         when(or.getOrganisaatioByOID(ORGANISAATIO_OID)).thenReturn(o);
-        providerService = new ProviderServiceImpl("url", koodistoService, conversionService);
+        providerService = new ProviderServiceImpl("url", conversionService);
     }
 
     @Test
