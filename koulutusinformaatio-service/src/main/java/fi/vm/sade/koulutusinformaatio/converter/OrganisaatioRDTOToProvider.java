@@ -150,7 +150,7 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
                 return getI18nText(data.get(key));
             }
         }
-        return new I18nText();
+        return null;
     }
 
     private List<Social> getSocialLinks(final OrganisaatioMetaDataRDTO metadata, String... keys) {
