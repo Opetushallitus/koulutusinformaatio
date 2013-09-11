@@ -16,17 +16,20 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import java.util.List;
-import java.util.Map;
-
 import com.google.common.base.Strings;
-import fi.vm.sade.koulutusinformaatio.domain.*;
-import org.springframework.core.convert.converter.Converter;
-
 import com.google.common.collect.Lists;
-
+import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KIConversionException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
+import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioMetaDataRDTO;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
+import org.springframework.core.convert.converter.Converter;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Hannu Lyytikainen
@@ -36,14 +39,14 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
     private static final String STREET_ADDRESS = "osoite";
     private static final String POST_OFFICE = "postitoimipaikka";
     private static final String POSTAL_CODE = "postinumeroUri";
-    
+
     private static final String METADATA_YLEISKUVAUS = "YLEISKUVAUS";
     private static final String METADATA_TERVEYDENHUOLTOPALVELUT = "TERVEYDENHUOLTOPALVELUT";
     private static final String METADATA_ESTEETTOMYYS = "ESTEETOMYYS";
     private static final String METADATA_KUSTANNUKSET = "KUSTANNUKSET";
     private static final String METADATA_OPPIMISYMPARISTO = "OPPIMISYMPARISTO";
     private static final String METADATA_OPISKELIJARUOKAILU = "OPISKELIJARUOKAILU";
-    
+
     private static final String METADATA_SOCIAL_FACEBOOK = "FACEBOOK";
     private static final String METADATA_SOCIAL_LINKEDIN = "LINKED_IN";
     private static final String METADATA_SOCIAL_TWITTER = "TWITTER";
@@ -51,63 +54,117 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
     private static final String METADATA_SOCIAL_OTHER = "MUU";
     private static final String[] SOCIAL_LINKS = {METADATA_SOCIAL_FACEBOOK, METADATA_SOCIAL_LINKEDIN, METADATA_SOCIAL_TWITTER, METADATA_SOCIAL_GOOGLEPLUS, METADATA_SOCIAL_OTHER};
 
+    private static final String ATHLETE_EDUCATION_KOODISTO_URI = "urheilijankoulutus_1#1";
+    private static final String PLACE_OF_BUSINESS_KOODISTO_URI = "opetuspisteet";
+
+    KoodistoService koodistoService;
+
+    public OrganisaatioRDTOToProvider(KoodistoService koodistoService) {
+        this.koodistoService = koodistoService;
+    }
+
     @Override
     public Provider convert(OrganisaatioRDTO o) {
-        Provider p = new Provider();
-        p.setId(o.getOid());
-        p.setName(new I18nText(o.getNimi()));
-        p.setPostalAddress(getAddress(o.getPostiosoite()));
-        p.setVisitingAddress(getAddress(o.getKayntiosoite()));
-        p.setEmail(o.getEmailOsoite());
-        p.setFax(o.getFaksinumero());
-        p.setPhone(o.getPuhelinnumero());
-        p.setWebPage(o.getWwwOsoite());
-        p.setDescription(getMetadataValue(o.getMetadata(), METADATA_YLEISKUVAUS));
-        p.setHealthcare(getMetadataValue(o.getMetadata(), METADATA_TERVEYDENHUOLTOPALVELUT));
-        p.setAccessibility(getMetadataValue(o.getMetadata(), METADATA_ESTEETTOMYYS));
-        p.setLivingExpenses(getMetadataValue(o.getMetadata(), METADATA_KUSTANNUKSET));
-        p.setLearningEnvironment(getMetadataValue(o.getMetadata(), METADATA_OPPIMISYMPARISTO));
-        p.setDining(getMetadataValue(o.getMetadata(), METADATA_OPISKELIJARUOKAILU));
-        p.setSocial(getSocialLinks(o.getMetadata(), SOCIAL_LINKS));
-        p.setPicture(getPicture(o));
-        p.setPlaceOfBusinessCode(o.getToimipistekoodi());
+        Provider p = null;
+        try {
+            p = new Provider();
+            p.setId(o.getOid());
+            p.setName(new I18nText(o.getNimi()));
+            p.setPostalAddress(getAddress(o.getPostiosoite()));
+            p.setVisitingAddress(getAddress(o.getKayntiosoite()));
+            p.setEmail(o.getEmailOsoite());
+            p.setFax(o.getFaksinumero());
+            p.setPhone(o.getPuhelinnumero());
+            p.setWebPage(o.getWwwOsoite());
+            p.setDescription(getMetadataValue(o.getMetadata(), METADATA_YLEISKUVAUS));
+            p.setHealthcare(getMetadataValue(o.getMetadata(), METADATA_TERVEYDENHUOLTOPALVELUT));
+            p.setAccessibility(getMetadataValue(o.getMetadata(), METADATA_ESTEETTOMYYS));
+            p.setLivingExpenses(getMetadataValue(o.getMetadata(), METADATA_KUSTANNUKSET));
+            p.setLearningEnvironment(getMetadataValue(o.getMetadata(), METADATA_OPPIMISYMPARISTO));
+            p.setDining(getMetadataValue(o.getMetadata(), METADATA_OPISKELIJARUOKAILU));
+            p.setSocial(getSocialLinks(o.getMetadata(), SOCIAL_LINKS));
+            p.setPicture(getPicture(o));
+            p.setAthleteEducation(isAthleteEducation(o.getToimipistekoodi()));
+
+        } catch (KoodistoException e) {
+            throw new KIConversionException("Conversion failed - " + e.getMessage());
+        }
         return p;
     }
 
-    private Address getAddress(final Map<String, String> addrs) {
+    private Address getAddress(final Map<String, String> addrs) throws KoodistoException {
         if (addrs != null && !addrs.isEmpty()) {
             Address address = new Address();
             address.setStreetAddress(addrs.get(STREET_ADDRESS));
             address.setPostOffice(addrs.get(POST_OFFICE));
-            address.setPostalCode(addrs.get(POSTAL_CODE));
+            address.setPostalCode(koodistoService.searchFirstCodeValue(addrs.get(POSTAL_CODE)));
             return address;
         }
         return null;
     }
 
-    private I18nText getMetadataValue(OrganisaatioMetaDataRDTO metadata, String key) {
+    private boolean isAthleteEducation(final String placeOfBusinessCode) {
+        if (!Strings.isNullOrEmpty(placeOfBusinessCode)) {
+            List<Code> superCodes = null;
+            try {
+                superCodes = koodistoService.searchSuperCodes(ATHLETE_EDUCATION_KOODISTO_URI,
+                        PLACE_OF_BUSINESS_KOODISTO_URI);
+            } catch (KoodistoException e) {
+                throw new KIConversionException("Conversion failed - " + e.getMessage());
+            }
+            if (superCodes != null) {
+                for (Code code : superCodes) {
+                    if (placeOfBusinessCode.equals(code.getValue())) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private I18nText getI18nText(final Map<String, String> texts) throws KoodistoException {
+        if (texts != null && !texts.isEmpty()) {
+            Map<String, String> translations = new HashMap<String, String>();
+            Iterator<Map.Entry<String, String>> i = texts.entrySet().iterator();
+            while (i.hasNext()) {
+                Map.Entry<String, String> entry = i.next();
+                if (!Strings.isNullOrEmpty(entry.getKey()) && !Strings.isNullOrEmpty(entry.getValue())) {
+                    String key = koodistoService.searchFirstCodeValue(entry.getKey());
+                    if (!Strings.isNullOrEmpty(key)) {
+                        translations.put(key.toLowerCase(), entry.getValue());
+                    }
+                }
+            }
+            I18nText i18nText = new I18nText();
+            i18nText.setTranslations(translations);
+            return i18nText;
+        }
+        return null;
+    }
+
+    private I18nText getMetadataValue(OrganisaatioMetaDataRDTO metadata, String key) throws KoodistoException {
         if (metadata != null) {
             Map<String, Map<String, String>> data = metadata.getData();
             if (data != null && data.containsKey(key)) {
-                return new I18nText(data.get(key));
+                return getI18nText(data.get(key));
             }
         }
-
         return new I18nText();
     }
-    
+
     private List<Social> getSocialLinks(final OrganisaatioMetaDataRDTO metadata, String... keys) {
         List<Social> social = Lists.newArrayList();
-        for (String key : keys) { 
+        for (String key : keys) {
             Social socialItem = getSocial(metadata, key);
             if (socialItem != null) {
                 social.add(getSocial(metadata, key));
             }
         }
-        
+
         return social;
     }
-    
+
     private Social getSocial(final OrganisaatioMetaDataRDTO metadata, String key) {
         if (metadata != null) {
             Map<String, Map<String, String>> data = metadata.getData();
@@ -121,7 +178,7 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
                 }
             }
         }
-        
+
         return null;
     }
 
@@ -135,4 +192,6 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
         }
         return null;
     }
+
+
 }

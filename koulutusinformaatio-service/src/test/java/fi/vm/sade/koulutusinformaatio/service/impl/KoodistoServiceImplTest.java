@@ -30,14 +30,12 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.core.convert.ConversionService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.Assert.*;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -48,7 +46,6 @@ public class KoodistoServiceImplTest {
 
     private KoodistoService koodistoService;
     private CachingKoodistoClient koodiService;
-    private ConversionService conversionService;
 
     @Before
     public void setUp() {
@@ -72,12 +69,9 @@ public class KoodistoServiceImplTest {
         List<KoodiType> koodit = new ArrayList<KoodiType>();
         koodit.add(koodi);
         when(koodiService.searchKoodis(any(SearchKoodisCriteriaType.class))).thenReturn(koodit);
-        conversionService = mock(ConversionService.class);
         KoodiTypeToI18nText converter = new KoodiTypeToI18nText();
-        when(conversionService.convert(any(KoodiType.class), eq(I18nText.class))).thenReturn(converter.convert(koodi));
         KoodiTypeToCode koodiTypeToCode = new KoodiTypeToCode();
-        when(conversionService.convert(any(KoodiType.class), eq(Code.class))).thenReturn(koodiTypeToCode.convert(koodi));
-        koodistoService = new KoodistoServiceImpl(koodiService, conversionService);
+        koodistoService = new KoodistoServiceImpl(koodiService);
     }
 
     @Test

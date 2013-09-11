@@ -18,7 +18,6 @@ package fi.vm.sade.koulutusinformaatio.domain;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -47,6 +46,7 @@ public class Provider {
     private Picture picture;
     private boolean athleteEducation;
     private String placeOfBusinessCode;
+    private I18nText homePlace;
 
 
     public Provider(String id, I18nText name) {
@@ -206,5 +206,13 @@ public class Provider {
 
     public void setPlaceOfBusinessCode(String placeOfBusinessCode) {
         this.placeOfBusinessCode = placeOfBusinessCode;
+    }
+
+    public I18nText getHomePlace() {
+        return homePlace;
+    }
+
+    public void setHomePlace(I18nText homePlace) {
+        this.homePlace = homePlace;
     }
 }
