@@ -3873,58 +3873,6 @@ p {
 
 .grid16-9.no-left-gutter {
   margin-left: 0; }
-<<<<<<< HEAD
-
-/*** Siteheader
-************************************************/
-/* siteheader styles already described in structure.scss
-#siteheader {
-
-    .header-container {
-        padding: 0 1em;
-        background-repeat: repeat-x;
-        background-attachment: scroll;
-        background-position: left bottom;
-        background-color: #149ecb;
-        padding: 10px 0;
-        height:38px;
-        position:relative;
-        color: #fff;
-    }
-
-     .primarylinks {
-        @include font-size-px-to-em(15);
-        position:absolute;
-        bottom:18px;
-        left:18px;
-        
-        a {
-            color:#000000;
-            text-decoration:none;
-
-            &:hover {
-                text-decoration: underline;
-            }
-        }
-    }
-
-    .secondarylinks {
-    
-        @include font-size-px-to-em(13);
-        position:absolute;
-        bottom:18px;
-        right:18px;
-
-        a {
-            text-decoration:none;
-
-            &:hover {
-                text-decoration: underline;
-            }
-        }
-    }
-=======
->>>>>>> devel
 
 .clear {
   *zoom: 1; }
