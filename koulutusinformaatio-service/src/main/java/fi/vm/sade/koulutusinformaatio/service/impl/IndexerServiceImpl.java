@@ -101,9 +101,10 @@ public class IndexerServiceImpl implements IndexerService {
         doc.addField("lopName_sv", provider.getName().getTranslations().get("sv"));
         doc.addField("lopName_en", provider.getName().getTranslations().get("en"));
 
+        doc.addField("lopHomeplace", provider.getHomePlace().getTranslations().values());
+
         if (provider.getVisitingAddress() != null) {
             doc.addField("lopAddress_fi", provider.getVisitingAddress().getPostOffice());
-            doc.addField("lopCity", provider.getVisitingAddress().getPostOffice());
         }
         if (provider.getDescription() != null) {
             doc.addField("lopDescription_fi", provider.getDescription().getTranslations().get("fi"));
@@ -168,9 +169,10 @@ public class IndexerServiceImpl implements IndexerService {
         doc.addField("lopName_sv", provider.getName().getTranslations().get("sv"));
         doc.addField("lopName_en", provider.getName().getTranslations().get("en"));
 
+        doc.addField("lopHomeplace", provider.getHomePlace().getTranslations().values());
+
         if (provider.getVisitingAddress() != null) {
             doc.addField("lopAddress_fi", provider.getVisitingAddress().getPostOffice());
-            doc.addField("lopCity", provider.getVisitingAddress().getPostOffice());
         }
         if (provider.getDescription() != null) {
             doc.addField("lopDescription_fi", provider.getDescription().getTranslations().get("fi"));
