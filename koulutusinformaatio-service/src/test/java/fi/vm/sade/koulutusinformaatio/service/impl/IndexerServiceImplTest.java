@@ -62,6 +62,7 @@ public class IndexerServiceImplTest {
         address.setPostOffice("Helsinki");
         provider.setVisitingAddress(address);
         provider.setDescription(TestUtil.createI18nText("LOP description fi", "LOP description sv", "LOP description en"));
+        provider.setHomePlace(TestUtil.createI18nText("homeplace fi", "homeplace sv", "homeplace en"));
         p.setProvider(provider);
         p.setStructureDiagram(TestUtil.createI18nText("Parent LOS structure diagram fi", "Parent LOS structure diagram sv", "Parent LOS structure diagram en"));
         p.setGoals(TestUtil.createI18nText("Parent LOS goals fi", "Parent LOS goals sv", "Parent LOS goals en"));
