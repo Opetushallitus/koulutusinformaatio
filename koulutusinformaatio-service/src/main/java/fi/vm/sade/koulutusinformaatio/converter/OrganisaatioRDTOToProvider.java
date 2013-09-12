@@ -85,7 +85,7 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
             p.setSocial(getSocialLinks(o.getMetadata(), SOCIAL_LINKS));
             p.setPicture(getPicture(o));
             p.setAthleteEducation(isAthleteEducation(o.getToimipistekoodi()));
-
+            p.setHomePlace(koodistoService.searchFirst(o.getKotipaikkaUri()));
         } catch (KoodistoException e) {
             throw new KIConversionException("Conversion failed - " + e.getMessage());
         }
