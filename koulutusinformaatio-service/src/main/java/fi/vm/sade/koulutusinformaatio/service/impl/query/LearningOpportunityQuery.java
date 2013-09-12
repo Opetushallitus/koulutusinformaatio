@@ -21,7 +21,7 @@ public class LearningOpportunityQuery extends SolrQuery {
             "textBoost_en^10.0",
             "asNames"
     );
-    private final static String LOP_CITY = "lopCity";
+    private final static String LOP_HOMEPLACE = "lopHomeplace";
     private final static String PREREQUISITES = "prerequisites";
 
     public LearningOpportunityQuery(String term, String prerequisite,
@@ -34,7 +34,7 @@ public class LearningOpportunityQuery extends SolrQuery {
         this.setRows(rows);
         if (cities != null && !cities.isEmpty()) {
 
-            StringBuilder fq = new StringBuilder(LOP_CITY).append(":(");
+            StringBuilder fq = new StringBuilder(LOP_HOMEPLACE).append(":(");
 
             for (int i = 0; i < cities.size(); i++) {
                 if (i < cities.size() - 1) {
