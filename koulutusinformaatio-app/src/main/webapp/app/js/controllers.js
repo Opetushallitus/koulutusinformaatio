@@ -59,10 +59,12 @@ function FooterCtrl($scope, LanguageService, kiAppConstants) {
 /**
  *  Controller for index view
  */
+ /*
  function IndexCtrl($scope, TitleService) {
     var title = i18n.t('title-front-page');
     TitleService.setTitle(title);
 };
+*/
 
 
 /**
@@ -296,7 +298,8 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
 /**
  *  Controller for info views (parent and child)
  */
- function InfoCtrl($scope, $routeParams, $location, ParentLearningOpportunityService, ChildLearningOpportunityService, SearchService, ParentLODataService, ChildLODataService, TitleService, LearningOpportunityProviderPictureService, UtilityService, TabService) {
+ function InfoCtrl($scope, $routeParams, $location, ParentLearningOpportunityService, ChildLearningOpportunityService, SearchService, ParentLODataService, ChildLODataService, TitleService, LearningOpportunityProviderPictureService, UtilityService, TabService, $analytics) {
+    $analytics.pageTrack(window.location.href);
     $scope.queryString = SearchService.getTerm();
     $scope.descriptionLanguage = 'fi';
 
