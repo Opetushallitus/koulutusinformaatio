@@ -58,7 +58,7 @@ public class LearningOpportunityServiceImplTest {
         parentLOS.setEducationDegree("32");
         parentLOS.setName(createI18Text("name"));
         parentLOS.setGoals(createI18Text("goals"));
-        parentLOS.setStructureDiagram(createI18Text("StructureDiagram"));
+        parentLOS.setStructure(createI18Text("StructureDiagram"));
         parentLOS.setEducationDomain(createI18Text("EducationDomain"));
         parentLOS.setStydyDomain(createI18Text("StudyDomain"));
         List<ChildLOIRef> childLOIRefs = new ArrayList<ChildLOIRef>();
@@ -77,7 +77,7 @@ public class LearningOpportunityServiceImplTest {
         parentLOI = new ParentLOI();
         parentLOI.setId("2345");
         parentLOI.setPrerequisite(prerequisite);
-        parentLOI.setSelectingEducation(createI18Text("Valintaperustekuvaus"));
+        parentLOI.setSelectingDegreeProgram(createI18Text("Valintaperustekuvaus"));
         parentLOI.setApplicationOptions(aos);
         parentLOI.setChildRefs(childLOIRefs);
         parentLOS.setLois(Lists.newArrayList(parentLOI));
@@ -152,7 +152,7 @@ public class LearningOpportunityServiceImplTest {
         assertEquals(parentLOS.getEducationDegree(), result.getEducationDegree());
         assertEquals(parentLOS.getGoals().getTranslations().get(lang), result.getGoals());
         assertEquals(parentLOS.getEducationDomain().getTranslations().get(lang), result.getEducationDomain());
-        assertEquals(parentLOS.getStructureDiagram().getTranslations().get(lang), result.getStructureDiagram());
+        assertEquals(parentLOS.getStructure().getTranslations().get(lang), result.getStructure());
         assertEquals(parentLOS.getStydyDomain().getTranslations().get(lang), result.getStydyDomain());
         assertEquals(parentLOS.getProvider().getId(), result.getProvider().getId());
         assertEquals(parentLOS.getProvider().getName().getTranslations().get(lang), result.getProvider().getName());

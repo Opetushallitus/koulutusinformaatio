@@ -278,7 +278,7 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
         childLOS.setName(koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri()));
         childLOS.setQualification(koodistoService.searchFirst(childKomo.getTutkintonimikeUri()));
         childLOS.setDegreeTitle(koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri()));
-        childLOS.setDegreeGoal(getI18nText(childKomo.getTavoitteet()));
+        childLOS.setGoals(getI18nText(childKomo.getTavoitteet()));
         List<ChildLOI> childLOIs = Lists.newArrayList();
 
         for (KomotoDTO childKomoto : childKomotos) {
@@ -439,7 +439,7 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
         // parent info
         parentLOS.setId(getLOSId(parentKomo.getOid(), providerId));
         parentLOS.setName(koodistoService.searchFirst(parentKomo.getKoulutusKoodiUri()));
-        parentLOS.setStructureDiagram(getI18nText(parentKomo.getKoulutuksenRakenne()));
+        parentLOS.setStructure(getI18nText(parentKomo.getKoulutuksenRakenne()));
         parentLOS.setAccessToFurtherStudies(getI18nText(parentKomo.getJatkoOpintoMahdollisuudet()));
         //parentLOS.setAccessToFurtherStudies(getI18nText(parentKomo.getK));
         parentLOS.setGoals(getI18nText(parentKomo.getTavoitteet()));
@@ -457,7 +457,7 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
         for (KomotoDTO komoto : parentKomotos) {
             ParentLOI loi = new ParentLOI();
             loi.setId(komoto.getOid());
-            loi.setSelectingEducation(getI18nText(komoto.getKoulutusohjelmanValinta()));
+            loi.setSelectingDegreeProgram(getI18nText(komoto.getKoulutusohjelmanValinta()));
             loi.setPrerequisite(koodistoService.searchFirstCode(komoto.getPohjakoulutusVaatimusUri()));
             lois.add(loi);
         }

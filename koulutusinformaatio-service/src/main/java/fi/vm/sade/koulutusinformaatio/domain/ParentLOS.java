@@ -31,10 +31,9 @@ public class ParentLOS {
     private List<ChildLOS> children;
     private Provider provider;
     // rakenne
-    private I18nText structureDiagram;
+    private I18nText structure;
     // jatko-opintomahdollisuudet
     private I18nText accessToFurtherStudies;
-    private I18nText degreeProgramSelection;
     // tavoitteet
     private I18nText goals;
     //koulutusala, Sosiaali-, terveys- ja liikunta-ala
@@ -88,12 +87,12 @@ public class ParentLOS {
         this.provider = provider;
     }
 
-    public I18nText getStructureDiagram() {
-        return structureDiagram;
+    public I18nText getStructure() {
+        return structure;
     }
 
-    public void setStructureDiagram(I18nText structureDiagram) {
-        this.structureDiagram = structureDiagram;
+    public void setStructure(I18nText structure) {
+        this.structure = structure;
     }
 
     public I18nText getAccessToFurtherStudies() {
@@ -102,14 +101,6 @@ public class ParentLOS {
 
     public void setAccessToFurtherStudies(I18nText accessToFurtherStudies) {
         this.accessToFurtherStudies = accessToFurtherStudies;
-    }
-
-    public I18nText getDegreeProgramSelection() {
-        return degreeProgramSelection;
-    }
-
-    public void setDegreeProgramSelection(I18nText degreeProgramSelection) {
-        this.degreeProgramSelection = degreeProgramSelection;
     }
 
     public I18nText getGoals() {

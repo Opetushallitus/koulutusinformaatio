@@ -31,7 +31,7 @@ public class ChildLOI {
     private I18nText internationalization;
     private I18nText cooperation;
     private I18nText content;
-
+    private I18nText selectingDegreeProgram;
 
     public String getId() {
         return id;
@@ -167,5 +167,13 @@ public class ChildLOI {
 
     public void setContent(I18nText content) {
         this.content = content;
+    }
+
+    public I18nText getSelectingDegreeProgram() {
+        return selectingDegreeProgram;
+    }
+
+    public void setSelectingDegreeProgram(I18nText selectingDegreeProgram) {
+        this.selectingDegreeProgram = selectingDegreeProgram;
     }
 }

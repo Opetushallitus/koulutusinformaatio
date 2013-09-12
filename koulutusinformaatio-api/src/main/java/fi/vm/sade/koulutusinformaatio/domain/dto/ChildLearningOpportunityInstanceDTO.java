@@ -27,6 +27,7 @@ public class ChildLearningOpportunityInstanceDTO {
     private String internationalization;
     private String cooperation;
     private String content;
+    private String selectingDegreeProgram;
 
     public String getId() {
         return id;
@@ -154,5 +155,13 @@ public class ChildLearningOpportunityInstanceDTO {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getSelectingDegreeProgram() {
+        return selectingDegreeProgram;
+    }
+
+    public void setSelectingDegreeProgram(String selectingDegreeProgram) {
+        this.selectingDegreeProgram = selectingDegreeProgram;
     }
 }

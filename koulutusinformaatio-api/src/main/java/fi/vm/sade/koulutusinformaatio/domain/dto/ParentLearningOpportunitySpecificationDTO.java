@@ -33,7 +33,7 @@ public class ParentLearningOpportunitySpecificationDTO {
     private String name;
     private LearningOpportunityProviderDTO provider;
     private String educationDegree;
-    private String structureDiagram;
+    private String structure;
     private String accessToFurtherStudies;
     private String goals;
     private String educationDomain;
@@ -93,12 +93,12 @@ public class ParentLearningOpportunitySpecificationDTO {
         this.availableTranslationLanguages = availableTranslationLanguages;
     }
 
-    public String getStructureDiagram() {
-        return structureDiagram;
+    public String getStructure() {
+        return structure;
     }
 
-    public void setStructureDiagram(String structureDiagram) {
-        this.structureDiagram = structureDiagram;
+    public void setStructure(String structure) {
+        this.structure = structure;
     }
 
     public String getAccessToFurtherStudies() {

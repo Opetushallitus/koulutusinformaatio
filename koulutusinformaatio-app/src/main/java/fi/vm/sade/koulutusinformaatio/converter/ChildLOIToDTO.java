@@ -39,6 +39,7 @@ public class ChildLOIToDTO {
         dto.setInternationalization(ConverterUtil.getTextByLanguage(childLOI.getInternationalization(), lang));
         dto.setCooperation(ConverterUtil.getTextByLanguage(childLOI.getCooperation(), lang));
         dto.setContent(ConverterUtil.getTextByLanguage(childLOI.getContent(), lang));
+        dto.setSelectingDegreeProgram(ConverterUtil.getTextByLanguage(childLOI.getSelectingDegreeProgram(), lang));
 
         // as based approach for UI
         SetMultimap<ApplicationSystem, ApplicationOption> aoByAs = HashMultimap.create();
