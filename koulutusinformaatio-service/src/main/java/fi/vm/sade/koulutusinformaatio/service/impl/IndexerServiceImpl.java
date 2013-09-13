@@ -46,7 +46,6 @@ public class IndexerServiceImpl implements IndexerService {
 //        <copyField source="name" dest="text"/>  - both
 //        <copyField source="aoName" dest="text"/> - child
 //        <copyField source="qualification" dest="text"/> - child
-//        <copyField source="structure" dest="text"/> - parent
 //        <copyField source="goals" dest="text"/> - both
 //        <copyField source="professionalTitles" dest="text"/> - child
 //        <copyField source="lopName" dest="text"/> - both
@@ -110,11 +109,6 @@ public class IndexerServiceImpl implements IndexerService {
             doc.addField("lopDescription_fi", provider.getDescription().getTranslations().get("fi"));
             doc.addField("lopDescription_sv", provider.getDescription().getTranslations().get("sv"));
             doc.addField("lopDescription_en", provider.getDescription().getTranslations().get("en"));
-        }
-        if (parent.getStructure() != null) {
-            doc.addField("structure_fi", parent.getStructure().getTranslations().get("fi"));
-            doc.addField("structure_sv", parent.getStructure().getTranslations().get("sv"));
-            doc.addField("structure_en", parent.getStructure().getTranslations().get("en"));
         }
         if (parent.getGoals() != null) {
             doc.addField("goals_fi", parent.getGoals().getTranslations().get("fi"));
