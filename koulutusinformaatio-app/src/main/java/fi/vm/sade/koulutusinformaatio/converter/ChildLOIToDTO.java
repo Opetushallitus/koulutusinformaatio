@@ -48,7 +48,7 @@ public class ChildLOIToDTO {
         }
 
         for (ApplicationSystem as : aoByAs.keySet()) {
-            ApplicationSystemDTO asDTO = ApplicationSystemToDTO.convert(as, lang);
+            ApplicationSystemDTO asDTO = ApplicationSystemToDTO.convert(as, uiLang);
             for (ApplicationOption ao : aoByAs.get(as)) {
                 asDTO.getApplicationOptions().add(ApplicationOptionToDTO.convert(ao, lang, uiLang));
             }
