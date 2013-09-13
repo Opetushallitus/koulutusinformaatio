@@ -31,7 +31,7 @@ public class ParentLOI {
 
     private String id;
     private Set<ApplicationOption> applicationOptions = Sets.newHashSet();
-    private I18nText selectingEducation;
+    private I18nText selectingDegreeProgram;
     private Code prerequisite;
     private List<ChildLOIRef> childRefs = new ArrayList<ChildLOIRef>();
 
@@ -59,12 +59,12 @@ public class ParentLOI {
         this.prerequisite = prerequisite;
     }
 
-    public I18nText getSelectingEducation() {
-        return selectingEducation;
+    public I18nText getSelectingDegreeProgram() {
+        return selectingDegreeProgram;
     }
 
-    public void setSelectingEducation(I18nText selectingEducation) {
-        this.selectingEducation = selectingEducation;
+    public void setSelectingDegreeProgram(I18nText selectingDegreeProgram) {
+        this.selectingDegreeProgram = selectingDegreeProgram;
     }
 
     public List<ChildLOIRef> getChildRefs() {

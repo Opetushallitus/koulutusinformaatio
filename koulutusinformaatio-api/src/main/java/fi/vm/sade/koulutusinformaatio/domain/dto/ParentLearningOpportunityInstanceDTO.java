@@ -28,7 +28,7 @@ import java.util.Set;
 public class ParentLearningOpportunityInstanceDTO {
 
     private String id;
-    private String selectingEducation;
+    private String selectingDegreeProgram;
     private CodeDTO prerequisite;
     private Set<ApplicationSystemDTO> applicationSystems = new HashSet<ApplicationSystemDTO>();
 
@@ -49,12 +49,12 @@ public class ParentLearningOpportunityInstanceDTO {
         this.prerequisite = prerequisite;
     }
 
-    public String getSelectingEducation() {
-        return selectingEducation;
+    public String getSelectingDegreeProgram() {
+        return selectingDegreeProgram;
     }
 
-    public void setSelectingEducation(String selectingEducation) {
-        this.selectingEducation = selectingEducation;
+    public void setSelectingDegreeProgram(String selectingDegreeProgram) {
+        this.selectingDegreeProgram = selectingDegreeProgram;
     }
 
     public Set<ApplicationSystemDTO> getApplicationSystems() {

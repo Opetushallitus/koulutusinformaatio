@@ -35,7 +35,7 @@ public class ChildLearningOpportunitySpecificationEntity {
     @Embedded
     private I18nTextEntity degreeTitle;
     @Embedded
-    private I18nTextEntity degreeGoal;
+    private I18nTextEntity goals;
     @Embedded
     private I18nTextEntity qualification;
     @Embedded
@@ -77,12 +77,12 @@ public class ChildLearningOpportunitySpecificationEntity {
         this.degreeTitle = degreeTitle;
     }
 
-    public I18nTextEntity getDegreeGoal() {
-        return degreeGoal;
+    public I18nTextEntity getGoals() {
+        return goals;
     }
 
-    public void setDegreeGoal(I18nTextEntity degreeGoal) {
-        this.degreeGoal = degreeGoal;
+    public void setGoals(I18nTextEntity goals) {
+        this.goals = goals;
     }
 
     public ParentLOSRefEntity getParent() {

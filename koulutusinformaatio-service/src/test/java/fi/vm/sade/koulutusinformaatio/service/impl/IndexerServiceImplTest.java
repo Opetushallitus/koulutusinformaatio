@@ -64,7 +64,7 @@ public class IndexerServiceImplTest {
         provider.setDescription(TestUtil.createI18nText("LOP description fi", "LOP description sv", "LOP description en"));
         provider.setHomePlace(TestUtil.createI18nText("homeplace fi", "homeplace sv", "homeplace en"));
         p.setProvider(provider);
-        p.setStructureDiagram(TestUtil.createI18nText("Parent LOS structure diagram fi", "Parent LOS structure diagram sv", "Parent LOS structure diagram en"));
+        p.setStructure(TestUtil.createI18nText("Parent LOS structure diagram fi", "Parent LOS structure diagram sv", "Parent LOS structure diagram en"));
         p.setGoals(TestUtil.createI18nText("Parent LOS goals fi", "Parent LOS goals sv", "Parent LOS goals en"));
 
         ParentLOI parentLOI1 = new ParentLOI();
@@ -90,7 +90,7 @@ public class IndexerServiceImplTest {
         childLOS1.setName(TestUtil.createI18nText("child los name fi", "child los name sv", "child los name en",
                 "child los name short fi", "child los name short sv", "child los name short en"));
         childLOS1.setQualification(TestUtil.createI18nText("Qualification fi", "Qualification sv", "Qualification en"));
-        childLOS1.setDegreeGoal(TestUtil.createI18nText("Degree goal fi", "Degree goal sv", "Degree goal en"));
+        childLOS1.setGoals(TestUtil.createI18nText("Degree goal fi", "Degree goal sv", "Degree goal en"));
 
         ChildLOI childLOI1 = new ChildLOI();
         childLOI1.setId("childLOI1_id");

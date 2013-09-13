@@ -32,7 +32,7 @@ public class ChildLOS {
     //tutkintonimike
     private I18nText qualification;
     //tavoite
-    private I18nText degreeGoal;
+    private I18nText goals;
     private ParentLOSRef parent;
     private List<ChildLOI> lois;
 
@@ -77,12 +77,12 @@ public class ChildLOS {
         this.degreeTitle = degreeTitle;
     }
 
-    public I18nText getDegreeGoal() {
-        return degreeGoal;
+    public I18nText getGoals() {
+        return goals;
     }
 
-    public void setDegreeGoal(I18nText degreeGoal) {
-        this.degreeGoal = degreeGoal;
+    public void setGoals(I18nText goals) {
+        this.goals = goals;
     }
 
     public ParentLOSRef getParent() {

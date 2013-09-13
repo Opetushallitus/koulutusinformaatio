@@ -2,6 +2,7 @@ package fi.vm.sade.koulutusinformaatio.dao.entity;
 
 import com.google.code.morphia.annotations.Embedded;
 import com.google.code.morphia.annotations.Reference;
+import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 
 import java.util.Date;
 import java.util.List;
@@ -39,6 +40,9 @@ public class ChildLearningOpportunityInstanceEntity {
     private I18nTextEntity cooperation;
     @Embedded
     private I18nTextEntity content;
+    @Embedded
+    private I18nText selectingDegreeProgram;
+
 
     public String getId() {
         return id;
@@ -150,5 +154,13 @@ public class ChildLearningOpportunityInstanceEntity {
 
     public void setContent(I18nTextEntity content) {
         this.content = content;
+    }
+
+    public I18nText getSelectingDegreeProgram() {
+        return selectingDegreeProgram;
+    }
+
+    public void setSelectingDegreeProgram(I18nText selectingDegreeProgram) {
+        this.selectingDegreeProgram = selectingDegreeProgram;
     }
 }

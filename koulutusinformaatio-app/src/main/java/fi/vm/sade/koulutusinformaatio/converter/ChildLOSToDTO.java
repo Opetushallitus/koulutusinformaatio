@@ -32,8 +32,8 @@ public class ChildLOSToDTO {
         child.setQualification(ConverterUtil.getTextByLanguage(childLOS.getQualification(), lang));
         child.setLois(ChildLOIToDTO.convert(childLOS.getLois(), lang, uiLang));
         child.setParent(ParentLOSRefToDTO.convert(childLOS.getParent(), lang));
-        child.setDegreeGoal(ConverterUtil.getTextByLanguage(childLOS.getDegreeGoal(), lang));
-        child.setAvailableTranslationLanguages(ConverterUtil.getAvailableTranslationLanguages(childLOS.getDegreeGoal()));
+        child.setGoals(ConverterUtil.getTextByLanguage(childLOS.getGoals(), lang));
+        child.setAvailableTranslationLanguages(ConverterUtil.getAvailableTranslationLanguages(childLOS.getGoals()));
         return child;
     }
 

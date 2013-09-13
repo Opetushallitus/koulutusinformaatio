@@ -3244,12 +3244,16 @@ button {
   white-space: normal;
   background-color: #ffffff;
   border: 1px solid #ccc;
+  -webkit-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
+  -o-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
+  -ms-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
+  -o-border-radius: 3px;
+  -ms-border-radius: 3px;
   border-radius: 3px;
-  -webkit-box-shadow: 2px 2px 2px 0 #5F5F5F;
-  -moz-box-shadow: 2px 2px 2px 0 #5F5F5F;
-  box-shadow: 2px 2px 2px 0 #5F5F5F;
   -webkit-background-clip: padding-box;
   -moz-background-clip: padding;
   background-clip: padding-box; }

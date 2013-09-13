@@ -46,7 +46,6 @@ public class IndexerServiceImpl implements IndexerService {
 //        <copyField source="name" dest="text"/>  - both
 //        <copyField source="aoName" dest="text"/> - child
 //        <copyField source="qualification" dest="text"/> - child
-//        <copyField source="structure" dest="text"/> - parent
 //        <copyField source="goals" dest="text"/> - both
 //        <copyField source="professionalTitles" dest="text"/> - child
 //        <copyField source="lopName" dest="text"/> - both
@@ -110,11 +109,6 @@ public class IndexerServiceImpl implements IndexerService {
             doc.addField("lopDescription_fi", provider.getDescription().getTranslations().get("fi"));
             doc.addField("lopDescription_sv", provider.getDescription().getTranslations().get("sv"));
             doc.addField("lopDescription_en", provider.getDescription().getTranslations().get("en"));
-        }
-        if (parent.getStructureDiagram() != null) {
-            doc.addField("structure_fi", parent.getStructureDiagram().getTranslations().get("fi"));
-            doc.addField("structure_sv", parent.getStructureDiagram().getTranslations().get("sv"));
-            doc.addField("structure_en", parent.getStructureDiagram().getTranslations().get("en"));
         }
         if (parent.getGoals() != null) {
             doc.addField("goals_fi", parent.getGoals().getTranslations().get("fi"));
@@ -191,10 +185,10 @@ public class IndexerServiceImpl implements IndexerService {
             doc.addField("qualification_sv", childLOS.getQualification().getTranslations().get("sv"));
             doc.addField("qualification_en", childLOS.getQualification().getTranslations().get("en"));
         }
-        if (childLOS.getDegreeGoal() != null) {
-            doc.addField("goals_fi", childLOS.getDegreeGoal().getTranslations().get("fi"));
-            doc.addField("goals_sv", childLOS.getDegreeGoal().getTranslations().get("sv"));
-            doc.addField("goals_en", childLOS.getDegreeGoal().getTranslations().get("en"));
+        if (childLOS.getGoals() != null) {
+            doc.addField("goals_fi", childLOS.getGoals().getTranslations().get("fi"));
+            doc.addField("goals_sv", childLOS.getGoals().getTranslations().get("sv"));
+            doc.addField("goals_en", childLOS.getGoals().getTranslations().get("en"));
         }
         if (childLOI.getContent() != null) {
             doc.addField("content_fi", childLOI.getContent().getTranslations().get("fi"));

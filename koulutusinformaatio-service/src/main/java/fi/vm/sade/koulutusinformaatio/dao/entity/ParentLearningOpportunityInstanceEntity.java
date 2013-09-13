@@ -35,7 +35,7 @@ public class ParentLearningOpportunityInstanceEntity {
     @Embedded
     private CodeEntity prerequisite;
     @Embedded
-    private I18nTextEntity selectingEducation;
+    private I18nTextEntity selectingDegreeProgram;
     @Embedded
     private Set<ApplicationOption> applicationOptions = Sets.newHashSet();
 
@@ -64,12 +64,12 @@ public class ParentLearningOpportunityInstanceEntity {
         this.childRefs = childRefs;
     }
 
-    public I18nTextEntity getSelectingEducation() {
-        return selectingEducation;
+    public I18nTextEntity getSelectingDegreeProgram() {
+        return selectingDegreeProgram;
     }
 
-    public void setSelectingEducation(I18nTextEntity selectingEducation) {
-        this.selectingEducation = selectingEducation;
+    public void setSelectingDegreeProgram(I18nTextEntity selectingDegreeProgram) {
+        this.selectingDegreeProgram = selectingDegreeProgram;
     }
 
     public Set<ApplicationOption> getApplicationOptions() {

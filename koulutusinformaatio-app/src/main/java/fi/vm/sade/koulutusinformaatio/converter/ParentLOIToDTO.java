@@ -34,7 +34,7 @@ public class ParentLOIToDTO {
         ParentLearningOpportunityInstanceDTO loi = new ParentLearningOpportunityInstanceDTO();
         loi.setId(parentLOI.getId());
         loi.setPrerequisite(CodeToDTO.convert(parentLOI.getPrerequisite(), uiLang));
-        loi.setSelectingEducation(ConverterUtil.getTextByLanguage(parentLOI.getSelectingEducation(), lang));
+        loi.setSelectingDegreeProgram(ConverterUtil.getTextByLanguage(parentLOI.getSelectingDegreeProgram(), lang));
 
         // group by application system for UI
         SetMultimap<ApplicationSystem, ApplicationOption> aoByAs = HashMultimap.create();
