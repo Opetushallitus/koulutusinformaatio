@@ -19,6 +19,9 @@ public class LearningOpportunityQuery extends SolrQuery {
             "textBoost_fi^10.0",
             "textBoost_sv^10.0",
             "textBoost_en^10.0",
+            "textBoost2_fi^15.0",
+            "textBoost2_sv^15.0",
+            "textBoost2_en^15.0",
             "asNames"
     );
     private final static String LOP_HOMEPLACE = "lopHomeplace";
