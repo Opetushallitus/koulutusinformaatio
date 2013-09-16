@@ -29,6 +29,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.ArgumentMatcher;
 import org.springframework.core.convert.ConversionService;
 
 import java.io.IOException;
@@ -37,7 +38,7 @@ import java.util.ArrayList;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.argThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -50,7 +51,8 @@ public class ProviderServiceImplTest {
     ProviderServiceImpl service;
     private static final int PORT = 8800;
     private static final String BASE_URL = "http://localhost:" + PORT;
-    private static final String ORGANISAATIO_OID = "1.2.3.4.5";
+    private static final String CHILD_ORGANISAATIO_OID = "1.2.3.4.5";
+    private static final String PARENT_ORGANISAATIO_OID = "11.22.33.44.55";
     private static final String HOMEPLACE_URI = "homeplaceuri";
     private static final I18nText HOMEPLACE = TestUtil.createI18nText("homeplace fi", "homeplace sv", "homeplace en");
     private static final String POSTNUMBER_URI = "postnumberuri";
@@ -65,11 +67,17 @@ public class ProviderServiceImplTest {
 
     @Before
     public void setup() throws IOException, KoodistoException {
-        stubFor(get(urlEqualTo("/" + ORGANISAATIO_OID))
+        stubFor(get(urlEqualTo("/" + CHILD_ORGANISAATIO_OID))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
-                        .withBody(ORGANISAATIO_JSON))
+                        .withBody(CHILD_ORGANISAATIO_JSON))
+        );
+        stubFor(get(urlEqualTo("/" + PARENT_ORGANISAATIO_OID))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(PARENT_ORGANISAATIO_JSON))
         );
         KoodistoService koodistoService = mock(KoodistoService.class);
         ConversionService conversionService = mock(ConversionService.class);
@@ -79,18 +87,21 @@ public class ProviderServiceImplTest {
                 PLACE_OF_BUSINESS_KOODISTO_URI)).thenReturn(new ArrayList<Code>());
         when(koodistoService.searchFirstCodeValue(eq(LANG_SELECTION_FI))).thenReturn(LANG_FI);
         ObjectMapper objectMapper = new ObjectMapper();
-        OrganisaatioRDTO ordto = objectMapper.readValue(ORGANISAATIO_JSON, OrganisaatioRDTO.class);
         OrganisaatioRDTOToProvider converter = new OrganisaatioRDTOToProvider(koodistoService);
-        Provider provider = converter.convert(ordto);
-        when(conversionService.convert(any(OrganisaatioRDTO.class), eq(Provider.class))).thenReturn(provider);
+        OrganisaatioRDTO childOrganisaatio = objectMapper.readValue(CHILD_ORGANISAATIO_JSON, OrganisaatioRDTO.class);
+        OrganisaatioRDTO parentOrganisaatio = objectMapper.readValue(PARENT_ORGANISAATIO_JSON, OrganisaatioRDTO.class);
+        Provider childProvider = converter.convert(childOrganisaatio);
+        Provider parentProvider = converter.convert(parentOrganisaatio);
+        when(conversionService.convert(argThat(new IsChildOrganisaatio()), eq(Provider.class))).thenReturn(childProvider);
+        when(conversionService.convert(argThat(new IsParentOrganisaatio()), eq(Provider.class))).thenReturn(parentProvider);
         service = new ProviderServiceImpl(BASE_URL, conversionService);
     }
 
     @Test
     public void testGetByOid() throws KoodistoException {
-        Provider p = service.getByOID(ORGANISAATIO_OID);
+        Provider p = service.getByOID(CHILD_ORGANISAATIO_OID);
         assertNotNull(p);
-        assertEquals(p.getId(), ORGANISAATIO_OID);
+        assertEquals(p.getId(), CHILD_ORGANISAATIO_OID);
         assertEquals("Porvoon lukio", p.getName().getTranslations().get("fi"));
         assertEquals("Borgå Gymnasium", p.getName().getTranslations().get("sv"));
         assertEquals("borga.gymnasium@porvoo.fi", p.getEmail());
@@ -102,9 +113,26 @@ public class ProviderServiceImplTest {
         assertEquals(POSTALNUMBER, p.getPostalAddress().getPostalCode());
         assertEquals("yleiskuvaus", p.getDescription().getTranslations().get("fi"));
         assertEquals("terveydenhuolto", p.getHealthcare().getTranslations().get("fi"));
+        assertEquals("ruokailu", p.getDining().getTranslations().get("fi"));
+        assertEquals("kustannukset", p.getLivingExpenses().getTranslations().get("fi"));
     }
 
-    private static final String ORGANISAATIO_JSON = "{\n" +
+    class IsChildOrganisaatio extends ArgumentMatcher<OrganisaatioRDTO> {
+        @Override
+        public boolean matches(Object o) {
+            return o != null && ((OrganisaatioRDTO) o).getOid().equals(CHILD_ORGANISAATIO_OID);
+        }
+    }
+
+    class IsParentOrganisaatio extends ArgumentMatcher<OrganisaatioRDTO> {
+        @Override
+        public boolean matches(Object o) {
+            return o != null && ((OrganisaatioRDTO) o).getOid().equals(PARENT_ORGANISAATIO_OID);
+        }
+    }
+
+
+    private static final String CHILD_ORGANISAATIO_JSON = "{\n" +
             "  \"version\" : 7,\n" +
             "  \"metadata\" : {\n" +
             "    \"data\" : {\n" +
@@ -124,8 +152,8 @@ public class ProviderServiceImplTest {
             "  },\n" +
             "  \"maaUri\" : \"maatjavaltiot1_fin\",\n" +
             "  \"kotipaikkaUri\" : \"" + HOMEPLACE_URI + "\",\n" +
-            "  \"oid\" : \"" + ORGANISAATIO_OID + "\",\n" +
-            "  \"parentOid\" : \"1.2.246.562.10.67094744702\",\n" +
+            "  \"oid\" : \"" + CHILD_ORGANISAATIO_OID + "\",\n" +
+            "  \"parentOid\" : \"" + PARENT_ORGANISAATIO_OID + "\",\n" +
             "  \"oppilaitosKoodi\" : \"00024\",\n" +
             "  \"vuosiluokat\" : [ ],\n" +
             "  \"tyypit\" : [ \"Oppilaitos\" ],\n" +
@@ -170,5 +198,70 @@ public class ProviderServiceImplTest {
             "  \"kuvaus2\" : {\n" +
             "  },\n" +
             "  \"oppilaitosTyyppiUri\" : \"oppilaitostyyppi_15#1\"\n" +
+            "}";
+
+    private static final String PARENT_ORGANISAATIO_JSON = "{\n" +
+            "  \"version\" : 1,\n" +
+            "  \"metadata\" : {\n" +
+            "    \"data\" : {\n" +
+            "      \"OPISKELIJARUOKAILU\" : {\n" +
+            "        \"kielivalikoima_fi\" : \"ruokailu\"\n" +
+            "      },\n" +
+            "      \"KUSTANNUKSET\" : {\n" +
+            "        \"kielivalikoima_fi\" : \"kustannukset\"\n" +
+            "      }\n" +
+            "    },\n" +
+            "    \"nimi\" : {\n" +
+            "    },\n" +
+            "    \"luontiPvm\" : 1377503960887,\n" +
+            "    \"muokkausPvm\" : 1377503960887,\n" +
+            "    \"hakutoimistonNimi\" : {\n" +
+            "    }\n" +
+            "  },\n" +
+            "  \"maaUri\" : \"maatjavaltiot1_fin\",\n" +
+            "  \"kotipaikkaUri\" : \"" + HOMEPLACE_URI + "\",\n" +
+            "  \"oid\" : \"" + PARENT_ORGANISAATIO_OID + "\",\n" +
+            "  \"vuosiluokat\" : [ ],\n" +
+            "  \"tyypit\" : [ \"Koulutustoimija\" ],\n" +
+            "  \"nimi\" : {\n" +
+            "    \"fi\" : \"Porvoon kaupunki\"\n" +
+            "  },\n" +
+            "  \"ytunnus\" : \"1061512-1\",\n" +
+            "  \"alkuPvm\" : \"1990-01-01\",\n" +
+            "  \"parentOidPath\" : \"|1.2.246.562.10.00000000001|\",\n" +
+            "  \"wwwOsoite\" : \"www.porvoo.fi\",\n" +
+            "  \"puhelinnumero\" : \"019  520 211\",\n" +
+            "  \"postiosoite\" : {\n" +
+            "    \"osoiteTyyppi\" : \"posti\",\n" +
+            "    \"yhteystietoOid\" : \"1.2.246.562.5.344428525210\",\n" +
+            "    \"postinumeroUri\" : \"" + POSTNUMBER_URI + "\",\n" +
+            "    \"osoite\" : \"PL 23\",\n" +
+            "    \"postitoimipaikka\" : \"PORVOO\",\n" +
+            "    \"ytjPaivitysPvm\" : \"null\",\n" +
+            "    \"lng\" : null,\n" +
+            "    \"lap\" : null,\n" +
+            "    \"coordinateType\" : null,\n" +
+            "    \"osavaltio\" : null,\n" +
+            "    \"extraRivi\" : null,\n" +
+            "    \"maaUri\" : null\n" +
+            "  },\n" +
+            "  \"kayntiosoite\" : {\n" +
+            "    \"osoiteTyyppi\" : \"kaynti\",\n" +
+            "    \"yhteystietoOid\" : \"1.2.246.562.5.86846741535\",\n" +
+            "    \"postinumeroUri\" : \"" + POSTNUMBER_URI + "\",\n" +
+            "    \"osoite\" : \"Taidetehtaankatu 1\",\n" +
+            "    \"postitoimipaikka\" : \"PORVOO\",\n" +
+            "    \"ytjPaivitysPvm\" : \"null\",\n" +
+            "    \"lng\" : null,\n" +
+            "    \"lap\" : null,\n" +
+            "    \"coordinateType\" : null,\n" +
+            "    \"osavaltio\" : null,\n" +
+            "    \"extraRivi\" : null,\n" +
+            "    \"maaUri\" : null\n" +
+            "  },\n" +
+            "  \"faksinumero\" : \"019  656720\",\n" +
+            "  \"kieletUris\" : [ \"kielivalikoima_fi\" ],\n" +
+            "  \"kuvaus2\" : {\n" +
+            "  }\n" +
             "}";
 }
