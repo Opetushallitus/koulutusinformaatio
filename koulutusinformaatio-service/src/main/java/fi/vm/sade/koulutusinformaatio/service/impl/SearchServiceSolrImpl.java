@@ -24,7 +24,6 @@ import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.LearningOpportunityQuery;
-import fi.vm.sade.koulutusinformaatio.service.impl.query.MapToSolrQueryTransformer;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.ProviderQuery;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -54,7 +53,6 @@ public class SearchServiceSolrImpl implements SearchService {
 
     private final HttpSolrServer lopHttpSolrServer;
     private final HttpSolrServer loHttpSolrServer;
-    private final MapToSolrQueryTransformer mapToSolrQueryTransformer = new MapToSolrQueryTransformer();
 
     @Autowired
     public SearchServiceSolrImpl(@Qualifier("lopHttpSolrServer") final HttpSolrServer lopHttpSolrServer,
