@@ -133,6 +133,22 @@ service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', 'Languag
             }
         }
 
+        // check if application system is of type Lisähaku
+        for (var loiIndex in result.lois) {
+            if (result.lois.hasOwnProperty(loiIndex)) {
+                var loi = result.lois[loiIndex];
+                for (var asIndex in loi.applicationSystems) {
+                    if (loi.applicationSystems.hasOwnProperty(asIndex)) {
+                        var as = loi.applicationSystems[asIndex];
+                        if (as.applicationOptions && as.applicationOptions.length > 0) {
+                            var firstAo = as.applicationOptions[0];
+                            as.aoSpecificApplicationDates = firstAo.specificApplicationDates;
+                        }
+                    }
+                }
+            }
+        }
+
         // sort LOIs based on prerequisite
         if (result.lois) {
             result.lois.sort(function(a, b) {
@@ -309,6 +325,22 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
             }
         }
         result.lois = lois;
+
+        // check if application system is of type Lisähaku
+        for (var loiIndex in result.lois) {
+            if (result.lois.hasOwnProperty(loiIndex)) {
+                var loi = result.lois[loiIndex];
+                for (var asIndex in loi.applicationSystems) {
+                    if (loi.applicationSystems.hasOwnProperty(asIndex)) {
+                        var as = loi.applicationSystems[asIndex];
+                        if (as.applicationOptions && as.applicationOptions.length > 0) {
+                            var firstAo = as.applicationOptions[0];
+                            as.aoSpecificApplicationDates = firstAo.specificApplicationDates;
+                        }
+                    }
+                }
+            }
+        }
 
         // sort LOIs based on prerequisite
         if (result.lois) {

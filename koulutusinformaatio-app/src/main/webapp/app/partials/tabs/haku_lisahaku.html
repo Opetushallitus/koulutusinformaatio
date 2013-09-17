@@ -1,59 +1,61 @@
-<form name="levelSelectionForm" id="application-form-{{as.id}}" action="/haku-app/lomake/{{as.id}}" method="POST" class="margin-top-2" target="hakulomake">
-    <input 
-    type="hidden" 
-    name="preference1-Opetuspiste" 
-    value="{{parentLO.provider.name}}" />
-    <input 
-    type="hidden" 
-    name="preference1-Opetuspiste-id" 
-    value="{{parentLO.provider.id}}" />
-    <input 
-    type="hidden" 
-    name="preference1-Koulutus" 
-    value="{{ao.name}}" />
-    <input 
-    type="hidden" 
-    name="preference1-Koulutus-id" 
-    value="{{ao.id}}" />
-    <input 
-    type="hidden" 
-    name="preference1-Koulutus-educationDegree" 
-    value="{{parentLO.educationDegree}}" />
-    <input 
-    type="hidden" 
-    name="preference1-Koulutus-id-sora" 
-    value="{{ao.sora}}" />
-    <input 
-    type="hidden" 
-    name="preference1-Koulutus-id-lang" 
-    value="{{ao.teachLang}}" />
-    <input
-    type="hidden"
-    name="preference1-Koulutus-id-athlete"
-    value="{{parentLO.provider.athleteEducation}}" />
-    <input
-    type="hidden"
-    name="preference1-Koulutus-id-aoIdentifier"
-    value="{{ao.aoIdentifier}}" />
-    <button type="submit" data-ng-disabled="!ao.canBeApplied">
-        <span>
-            <span data-ki-i18n="apply-button-label"></span>
-        </span>
-    </button>
-
-    <button 
-    type="button" 
-    id="addToBasket" 
-    class="primary" 
-    data-popover-placement="bottom" 
-    data-popover-html-unsafe="{{popoverContent}}" 
-    data-popover-title="{{popoverTitle}}" 
-    data-popover-trigger="click"
-    data-ng-click="addToBasket(ao.id)"
-    data-ng-disabled="ao.specificApplicationDates">
-    <span>
-        <span data-ki-i18n="add-to-basket-label"></span>
+<h4 class="title" data-ki-i18n="application-period-additional"></h4>
+<div class="content">
+    <span data-ng-repeat="dates in as.applicationDates">
+        <span data-ki-timestamp="{{dates.startDate}}"></span> - <span data-ki-timestamp="{{dates.endDate}}"></span><br/>
     </span>
-</button>
-</form>
-<div class="margin-top-2 small" data-ki-render-application-option-active></div>
+</div>
+
+<h4 class="title"><span data-ki-i18n="application-options-additional"></span> ({{as.applicationOptions.length}})</h4>
+<div data-ng-repeat="ao in as.applicationOptions" class="content">
+    <ul class="nobullet">
+        <li><h2 class="margin-bottom-0 margin-top-0">{{ao.name}}</h2></li>
+        <li class="small"><span data-ki-i18n="starting-quota" data-show-colon="true" class="margin-right-1"></span><span>{{ao.startingQuota}}</span></li>
+        <ul class="disc">
+            <li data-ng-repeat="child in ao.childRefs">
+                <a href="#/koulutusohjelma/{{child.losId}}#{{prerequisite.value}}">{{child.name}}</a>
+            </li>
+        </ul>
+    </ul>
+
+    <form name="levelSelectionForm" id="application-form-{{as.id}}" action="/haku-app/lomake/{{as.id}}" method="POST" class="margin-top-2" target="hakulomake">
+        <input 
+        type="hidden" 
+        name="preference1-Opetuspiste" 
+        value="{{parentLO.provider.name}}" />
+        <input 
+        type="hidden" 
+        name="preference1-Opetuspiste-id" 
+        value="{{parentLO.provider.id}}" />
+        <input 
+        type="hidden" 
+        name="preference1-Koulutus" 
+        value="{{ao.name}}" />
+        <input 
+        type="hidden" 
+        name="preference1-Koulutus-id" 
+        value="{{ao.id}}" />
+        <input 
+        type="hidden" 
+        name="preference1-Koulutus-educationDegree" 
+        value="{{parentLO.educationDegree}}" />
+        <input 
+        type="hidden" 
+        name="preference1-Koulutus-id-sora" 
+        value="{{ao.sora}}" />
+        <input 
+        type="hidden" 
+        name="preference1-Koulutus-id-lang" 
+        value="{{ao.teachLang}}" />
+        <input
+        type="hidden"
+        name="preference1-Koulutus-id-athlete"
+        value="{{parentLO.provider.athleteEducation}}" />
+        <button type="submit" data-ng-disabled="!ao.canBeApplied">
+            <span>
+                <span data-ki-i18n="apply-button-label-additional"></span>
+            </span>
+        </button>
+    </form>
+    <div class="margin-top-2 small" data-ki-render-application-option-active></div>
+</div>
+
