@@ -16,13 +16,13 @@
 
 package fi.vm.sade.koulutusinformaatio.dao.entity;
 
-import java.util.List;
-import java.util.Set;
-
 import com.google.code.morphia.annotations.Embedded;
 import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Id;
 import com.google.code.morphia.annotations.Reference;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Mikko Majapuro
@@ -55,7 +55,8 @@ public class LearningOpportunityProviderEntity {
     private PictureEntity picture;
     private boolean athleteEducation;
     private String placeOfBusinessCode;
-    
+    @Embedded
+    private ApplicationOfficeEntity applicationOffice;
 
     public LearningOpportunityProviderEntity() {
     }
@@ -210,5 +211,13 @@ public class LearningOpportunityProviderEntity {
 
     public void setPlaceOfBusinessCode(String placeOfBusinessCode) {
         this.placeOfBusinessCode = placeOfBusinessCode;
+    }
+
+    public ApplicationOfficeEntity getApplicationOffice() {
+        return applicationOffice;
+    }
+
+    public void setApplicationOffice(ApplicationOfficeEntity applicationOffice) {
+        this.applicationOffice = applicationOffice;
     }
 }

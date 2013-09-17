@@ -16,10 +16,10 @@
 
 package fi.vm.sade.koulutusinformaatio.domain.dto;
 
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
 import java.util.List;
 import java.util.Set;
-
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 /**
  * @author Hannu Lyytikainen
@@ -45,6 +45,7 @@ public class LearningOpportunityProviderDTO {
     private List<SocialDTO> social;
     private boolean pictureFound = false;
     private boolean athleteEducation;
+    private ApplicationOfficeDTO applicationOffice;
 
     public String getId() {
         return id;
@@ -188,5 +189,13 @@ public class LearningOpportunityProviderDTO {
 
     public void setAthleteEducation(boolean athleteEducation) {
         this.athleteEducation = athleteEducation;
+    }
+
+    public ApplicationOfficeDTO getApplicationOffice() {
+        return applicationOffice;
+    }
+
+    public void setApplicationOffice(ApplicationOfficeDTO applicationOffice) {
+        this.applicationOffice = applicationOffice;
     }
 }
