@@ -59,10 +59,12 @@ function FooterCtrl($scope, LanguageService, kiAppConstants) {
 /**
  *  Controller for index view
  */
+ /*
  function IndexCtrl($scope, TitleService) {
     var title = i18n.t('title-front-page');
     TitleService.setTitle(title);
 };
+*/
 
 
 /**
