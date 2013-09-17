@@ -298,8 +298,7 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
 /**
  *  Controller for info views (parent and child)
  */
- function InfoCtrl($scope, $routeParams, $location, ParentLearningOpportunityService, ChildLearningOpportunityService, SearchService, ParentLODataService, ChildLODataService, TitleService, LearningOpportunityProviderPictureService, UtilityService, TabService, $analytics) {
-    $analytics.pageTrack(window.location.href);
+ function InfoCtrl($scope, $routeParams, $location, ParentLearningOpportunityService, ChildLearningOpportunityService, SearchService, ParentLODataService, ChildLODataService, TitleService, LearningOpportunityProviderPictureService, UtilityService, TabService) {
     $scope.queryString = SearchService.getTerm();
     $scope.descriptionLanguage = 'fi';
 

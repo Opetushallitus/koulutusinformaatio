@@ -5,8 +5,10 @@
 	.config(['$analyticsProvider', function ($analyticsProvider) {
 
 		$analyticsProvider.registerPageTrack(function (path) {
-			console.log('page tracked: ' + path);
-			if(_paq) _paq.push(['trackPageView', path]);
+			if(_paq) {
+				_paq.push(['setDocumentTitle', document.domain + "/" + document.title]);
+				_paq.push(['trackPageView', path]);
+			}
 		});
 
 		$analyticsProvider.registerSiteSearchTrack(function (keyword, category, resultCount) {
@@ -14,7 +16,7 @@
 		});
 
 		$analyticsProvider.registerEventTrack(function (action, properties) {
-			//if(_paq) _paq.push(['trackPageView', action]);
+			// no event tracking in piwik
 		});
 
 	}]);
