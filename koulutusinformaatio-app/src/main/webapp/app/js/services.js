@@ -197,6 +197,7 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
 
     // TODO: could we automate data transformation somehow?
     var transformData = function(result) {
+        var studyplanKey = "KOULUTUSOHJELMA";
         /*
         var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
         result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
@@ -210,6 +211,10 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
                 loi.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
                 loi.teachingLanguage = getFirstItemInList(loi.teachingLanguages);
                 loi.formOfTeaching = getFirstItemInList(loi.formOfTeaching);
+
+                if (loi.webLinks) {
+                    loi.studyPlan = loi.webLinks[studyplanKey];
+                }
             }
         }
 

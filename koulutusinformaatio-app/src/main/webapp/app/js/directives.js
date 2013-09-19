@@ -422,6 +422,17 @@ directive('renderTextBlock', function() {
 }).
 
 /**
+ *  Renders study plan block
+ */
+directive('renderStudyPlan', function() {
+    return {
+        restrict: 'E,A',
+        templateUrl: 'templates/studyPlan.html',
+        scope: false
+    }
+}).
+
+/**
  *  Updates the title element of the page.
  */
 directive('kiAppTitle', ['TitleService', function(TitleService) {
