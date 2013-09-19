@@ -2,7 +2,7 @@
 
 angular.module('kiApp.services', ['ngResource']).
 
-service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analytics', function($http, $timeout, $q, $analytics) {
+service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analytics', 'FilterService', function($http, $timeout, $q, $analytics, FilterService) {
     var transformData = function(result) {
         for (var index in result.results) {
             if (result.results.hasOwnProperty(index)) {
@@ -13,7 +13,7 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
                     resItem.linkHref = '#/tutkinto/' + resItem.id;
                 }
 
-                var prerequisite = resItem.prerequisiteCode;
+                var prerequisite = resItem.prerequisiteCode || FilterService.getPrerequisite();
                 if (prerequisite) {
                     resItem.linkHref += '#' + prerequisite;
                 }
@@ -722,6 +722,10 @@ service('FilterService', function() {
                 'prerequisite': prerequisite,
                 'locations': locations 
             };
+        },
+
+        getPrerequisite: function() {
+            return prerequisite;
         }
     };
 }).

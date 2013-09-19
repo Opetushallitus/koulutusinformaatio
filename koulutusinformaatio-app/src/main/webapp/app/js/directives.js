@@ -205,6 +205,14 @@ directive('kiAbsoluteLink', function() {
         templateUrl: 'templates/locationFilter.html',
 
         link: function(scope, element, attrs) {
+            element = $(element);
+            if (element.find('input')) {
+                element.find('input').on('keyup', function(event) {
+                    if (event.keyCode === 13) {
+                        scope.add();
+                    }
+                });
+            }
 
             scope.remove = function(element) {
                 scope.locations.splice(scope.locations.indexOf(element), 1);

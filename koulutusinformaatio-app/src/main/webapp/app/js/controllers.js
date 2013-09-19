@@ -303,8 +303,8 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
     $scope.descriptionLanguage = 'fi';
 
     // how to avoid this?
-    $scope.providerAsideClass = 'hidden';
-    $scope.applyFormClass = '';
+    //$scope.providerAsideClass = 'hidden';
+    //$scope.applyFormClass = '';
 
     var setTitle = function(parent, child) {
         if (child) {
@@ -575,7 +575,10 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
         }
     }
 
-    $scope.initTabs = tabsMenu.build( TabService.getCurrentTab() );
+    // initialize tabs
+    tabsMenu.build( TabService.getCurrentTab() );
+    $scope.changeMainTab(TabService.getCurrentTab());
+
 
     // trigger once content is loaded
     $scope.$on('$viewContentLoaded', function() {
