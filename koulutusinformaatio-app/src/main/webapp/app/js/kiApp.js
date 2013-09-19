@@ -29,6 +29,10 @@ kiApp.filter('escape', function() {
   return window.escape;
 });
 
+kiApp.filter('encodeURIComponent', function() {
+    return window.encodeURIComponent;
+});
+
 // initialize i18n library
 kiApp.run(['LanguageService', function(LanguageService) {
     i18n.init({

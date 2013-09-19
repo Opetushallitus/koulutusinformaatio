@@ -302,10 +302,6 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
     $scope.queryString = SearchService.getTerm();
     $scope.descriptionLanguage = 'fi';
 
-    // how to avoid this?
-    //$scope.providerAsideClass = 'hidden';
-    //$scope.applyFormClass = '';
-
     var setTitle = function(parent, child) {
         if (child) {
             TitleService.setTitle(child.name);

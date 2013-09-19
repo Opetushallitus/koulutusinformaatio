@@ -69,10 +69,14 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
 /**
  *  Resource for requesting parent LO data
  */
-service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', 'LanguageService', function($http, $timeout, $q, LanguageService) {
+service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', '$filter', 'LanguageService', function($http, $timeout, $q, $filter, LanguageService) {
     var transformData = function(result) {
         var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
         result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
+
+        if (result && result.provider && result.provider.name) {
+            result.provider.encodedName = $filter('encodeURIComponent')('"' + result.provider.name + '"');
+        }
 
         var applicationSystems = [];
 
