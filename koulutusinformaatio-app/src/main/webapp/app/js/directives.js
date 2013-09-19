@@ -31,6 +31,33 @@ directive('kiRenderContactInfo', function() {
 }).
 
 /**
+ * Render contact info block
+ */
+directive('kiRenderInfoCenterAddress', function() {
+    return {
+        restrict: 'E,A',
+        templateUrl: 'templates/infoCenterAddress.html',
+        scope: false,
+        link: function(scope, element, attrs) {
+
+            scope.$watch('parentLO.provider.applicationOffice', function(data) {
+                if (data) {
+                    scope.showContact = (data.visitingAddress ||
+                        data.postalAddress ||
+                        data.name ||
+                        data.email ||
+                        data.phone ||
+                        data.fax ||
+                        data.webPage) ? true : false;
+                }
+
+                scope.provider = data;
+            });
+        }
+    }
+}).
+
+/**
  *  Render student benefits block
  */
 directive('kiRenderStudentBenefits', function() {
