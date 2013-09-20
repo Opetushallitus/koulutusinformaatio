@@ -35,6 +35,8 @@ public class ContactPerson {
         this.firstNames = firstNames;
     }
 
+    public ContactPerson() {}
+
     public String getPhone() {
         return phone;
     }
