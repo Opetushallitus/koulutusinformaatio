@@ -42,6 +42,8 @@ public class ChildLearningOpportunityInstanceEntity {
     private I18nTextEntity content;
     @Embedded
     private I18nText selectingDegreeProgram;
+    @Embedded
+    private List<ContactPersonEntity> contactPersons;
 
 
     public String getId() {
@@ -162,5 +164,13 @@ public class ChildLearningOpportunityInstanceEntity {
 
     public void setSelectingDegreeProgram(I18nText selectingDegreeProgram) {
         this.selectingDegreeProgram = selectingDegreeProgram;
+    }
+
+    public List<ContactPersonEntity> getContactPersons() {
+        return contactPersons;
+    }
+
+    public void setContactPersons(List<ContactPersonEntity> contactPersons) {
+        this.contactPersons = contactPersons;
     }
 }

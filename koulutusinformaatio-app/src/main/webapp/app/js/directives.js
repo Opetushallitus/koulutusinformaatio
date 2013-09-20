@@ -31,6 +31,53 @@ directive('kiRenderContactInfo', function() {
 }).
 
 /**
+ * Render contact info block
+ */
+directive('kiRenderInfoCenterAddress', function() {
+    return {
+        restrict: 'E,A',
+        templateUrl: 'templates/infoCenterAddress.html',
+        scope: false,
+        link: function(scope, element, attrs) {
+
+            scope.$watch('parentLO.provider.applicationOffice', function(data) {
+                if (data) {
+                    scope.showContact = (data.visitingAddress ||
+                        data.postalAddress ||
+                        data.name ||
+                        data.email ||
+                        data.phone ||
+                        data.www) ? true : false;
+                }
+
+                scope.provider = data;
+            });
+        }
+    }
+}).
+
+/**
+ *  Render contact person info
+ */
+directive('renderContactPersonInfo', function() {
+    return {
+        restrict: 'E,A',
+        templateUrl: 'templates/contactPersonInfo.html',
+        scope: false,
+        link: function(scope, element, attrs) {
+            scope.$watch('selectedLOI.contactPersons', function(data) {
+                if (data && data.length > 0) {
+                    scope.showContactPersonInfo = true;
+                } else {
+                    scope.showContactPersonInfo = false;
+                }
+            });
+        }
+    }
+}).
+
+
+/**
  *  Render student benefits block
  */
 directive('kiRenderStudentBenefits', function() {

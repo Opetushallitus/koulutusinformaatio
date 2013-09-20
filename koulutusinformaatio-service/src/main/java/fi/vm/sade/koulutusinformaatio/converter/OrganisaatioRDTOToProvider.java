@@ -57,6 +57,16 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
     private static final String ATHLETE_EDUCATION_KOODISTO_URI = "urheilijankoulutus_1#1";
     private static final String PLACE_OF_BUSINESS_KOODISTO_URI = "opetuspisteet";
 
+    private static final String ADDRESS_DATA_TYPE = "osoiteTyyppi";
+    private static final String ADDRESS_DATA_TYPE_VISIT = "kaynti";
+    private static final String ADDRESS_DATA_TYPE_POSTAL = "posti";
+
+    private static final String DATA_TYPE = "tyyppi";
+    private static final String DATA_TYPE_PHONE = "puhelin";
+    private static final String DATA_TYPE_PHONE_NUMBER = "numero";
+    private static final String DATA_TYPE_EMAIL = "email";
+    private static final String DATA_TYPE_WWW = "www";
+
     KoodistoService koodistoService;
 
     public OrganisaatioRDTOToProvider(KoodistoService koodistoService) {
@@ -76,20 +86,51 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
             p.setFax(o.getFaksinumero());
             p.setPhone(o.getPuhelinnumero());
             p.setWebPage(o.getWwwOsoite());
-            p.setDescription(getMetadataValue(o.getMetadata(), METADATA_YLEISKUVAUS));
-            p.setHealthcare(getMetadataValue(o.getMetadata(), METADATA_TERVEYDENHUOLTOPALVELUT));
-            p.setAccessibility(getMetadataValue(o.getMetadata(), METADATA_ESTEETTOMYYS));
-            p.setLivingExpenses(getMetadataValue(o.getMetadata(), METADATA_KUSTANNUKSET));
-            p.setLearningEnvironment(getMetadataValue(o.getMetadata(), METADATA_OPPIMISYMPARISTO));
-            p.setDining(getMetadataValue(o.getMetadata(), METADATA_OPISKELIJARUOKAILU));
+            p.setDescription(getDataValue(o.getMetadata(), METADATA_YLEISKUVAUS));
+            p.setHealthcare(getDataValue(o.getMetadata(), METADATA_TERVEYDENHUOLTOPALVELUT));
+            p.setAccessibility(getDataValue(o.getMetadata(), METADATA_ESTEETTOMYYS));
+            p.setLivingExpenses(getDataValue(o.getMetadata(), METADATA_KUSTANNUKSET));
+            p.setLearningEnvironment(getDataValue(o.getMetadata(), METADATA_OPPIMISYMPARISTO));
+            p.setDining(getDataValue(o.getMetadata(), METADATA_OPISKELIJARUOKAILU));
             p.setSocial(getSocialLinks(o.getMetadata(), SOCIAL_LINKS));
             p.setPicture(getPicture(o));
             p.setAthleteEducation(isAthleteEducation(o.getToimipistekoodi()));
             p.setHomePlace(koodistoService.searchFirst(o.getKotipaikkaUri()));
+            p.setApplicationOffice(getApplicationOffice(o.getMetadata()));
         } catch (KoodistoException e) {
             throw new KIConversionException("Conversion failed - " + e.getMessage());
         }
         return p;
+    }
+
+    private ApplicationOffice getApplicationOffice(OrganisaatioMetaDataRDTO metadata) throws KoodistoException {
+        if (metadata == null || metadata.getYhteystiedot() == null) {
+            return null;
+        } else {
+            Address visitingAddress = null;
+            Address postalAddress = null;
+            String phone = null;
+            String email = null;
+            String www = null;
+
+            for (Map<String, String> info : metadata.getYhteystiedot()) {
+                if (info.get(ADDRESS_DATA_TYPE) != null) {
+                    if (info.get(ADDRESS_DATA_TYPE).equals(ADDRESS_DATA_TYPE_VISIT)) {
+                        visitingAddress = getAddress(info);
+                    } else if (info.get(ADDRESS_DATA_TYPE).equals(ADDRESS_DATA_TYPE_POSTAL)) {
+                        postalAddress = getAddress(info);
+                    }
+                } else if (info.get(DATA_TYPE) != null && info.get(DATA_TYPE).equals(DATA_TYPE_PHONE)) {
+                    phone = info.get(DATA_TYPE_PHONE_NUMBER);
+                } else if (info.get(DATA_TYPE_EMAIL) != null) {
+                    email = info.get(DATA_TYPE_EMAIL);
+                } else if (info.get(DATA_TYPE_WWW) != null) {
+                    www = info.get(DATA_TYPE_WWW);
+                }
+            }
+            return new ApplicationOffice(getI18nText(metadata.getHakutoimistonNimi()), phone, email, www,
+                    visitingAddress, postalAddress);
+        }
     }
 
     private Address getAddress(final Map<String, String> addrs) throws KoodistoException {
@@ -143,7 +184,7 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
         return null;
     }
 
-    private I18nText getMetadataValue(OrganisaatioMetaDataRDTO metadata, String key) throws KoodistoException {
+    private I18nText getDataValue(OrganisaatioMetaDataRDTO metadata, String key) throws KoodistoException {
         if (metadata != null) {
             Map<String, Map<String, String>> data = metadata.getData();
             if (data != null && data.containsKey(key)) {

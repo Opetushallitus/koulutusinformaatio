@@ -32,6 +32,7 @@ public class ChildLOI {
     private I18nText cooperation;
     private I18nText content;
     private I18nText selectingDegreeProgram;
+    private List<ContactPerson> contactPersons = new ArrayList<ContactPerson>();
 
     public String getId() {
         return id;
@@ -175,5 +176,13 @@ public class ChildLOI {
 
     public void setSelectingDegreeProgram(I18nText selectingDegreeProgram) {
         this.selectingDegreeProgram = selectingDegreeProgram;
+    }
+
+    public List<ContactPerson> getContactPersons() {
+        return contactPersons;
+    }
+
+    public void setContactPersons(List<ContactPerson> contactPersons) {
+        this.contactPersons = contactPersons;
     }
 }
