@@ -75,12 +75,12 @@ public class UpdateServiceImpl implements UpdateService {
                 count = parentOids.size();
                 index += count;
 
-                for (OidRDTO parentOid : parentOids) {
+               for (OidRDTO parentOid : parentOids) {
                     List<ParentLOS> parents = null;
                     try {
                         parents = tarjontaService.findParentLearningOpportunity(parentOid.getOid());
                     } catch (TarjontaParseException e) {
-                        LOG.warn("Exception while updating parent learning opportunity, oid: " + parentOid.getOid() + ", Message: " + e.getMessage());
+                        LOG.warn("Exception while updating parent learning opportunity, oidMessage: " + e.getMessage());
                         continue;
                     }
                     for (ParentLOS parent : parents) {
@@ -93,7 +93,7 @@ public class UpdateServiceImpl implements UpdateService {
             this.transactionManager.commit();
             LOG.info("Education data update successfully finished");
         } catch (Exception e) {
-            LOG.error("Education data update failed ", e);
+                LOG.error("Education data update failed ", e);
             this.transactionManager.rollBack();
         } finally {
             running = false;

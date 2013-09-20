@@ -47,6 +47,7 @@ public class Provider {
     private boolean athleteEducation;
     private String placeOfBusinessCode;
     private I18nText homePlace;
+    private ApplicationOffice applicationOffice;
 
 
     public Provider(String id, I18nText name) {
@@ -214,5 +215,13 @@ public class Provider {
 
     public void setHomePlace(I18nText homePlace) {
         this.homePlace = homePlace;
+    }
+
+    public ApplicationOffice getApplicationOffice() {
+        return applicationOffice;
+    }
+
+    public void setApplicationOffice(ApplicationOffice applicationOffice) {
+        this.applicationOffice = applicationOffice;
     }
 }

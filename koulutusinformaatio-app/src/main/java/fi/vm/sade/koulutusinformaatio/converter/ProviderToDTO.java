@@ -45,6 +45,7 @@ public class ProviderToDTO {
             p.setSocial(SocialToDTO.convert(provider.getSocial()));
             p.setPictureFound(provider.getPicture() != null);
             p.setAthleteEducation(provider.isAthleteEducation());
+            p.setApplicationOffice(ApplicationOfficeToDTO.convert(provider.getApplicationOffice(), lang));
             return p;
         }
         return null;

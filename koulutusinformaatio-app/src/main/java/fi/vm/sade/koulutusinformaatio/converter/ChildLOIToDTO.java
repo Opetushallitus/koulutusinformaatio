@@ -4,10 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.SetMultimap;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
+import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunityInstanceDTO;
 
@@ -53,6 +50,12 @@ public class ChildLOIToDTO {
                 asDTO.getApplicationOptions().add(ApplicationOptionToDTO.convert(ao, lang, uiLang));
             }
             dto.getApplicationSystems().add(asDTO);
+        }
+
+        if (childLOI.getContactPersons() != null) {
+            for (ContactPerson contactPerson :childLOI.getContactPersons()) {
+                dto.getContactPersons().add(ContactPersonToDTO.convert(contactPerson));
+            }
         }
 
         return dto;

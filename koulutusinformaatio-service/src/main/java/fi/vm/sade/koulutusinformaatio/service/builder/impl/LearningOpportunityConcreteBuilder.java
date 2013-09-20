@@ -310,6 +310,14 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
             childLOI.setCooperation(getI18nText(childKomoto.getYhteistyoMuidenToimijoidenKanssa()));
             childLOI.setContent(getI18nText(childKomoto.getSisalto()));
 
+            if (childKomoto.getYhteyshenkilos() != null) {
+                for (YhteyshenkiloRDTO yhteyshenkiloRDTO : childKomoto.getYhteyshenkilos()) {
+                    ContactPerson contactPerson = new ContactPerson(yhteyshenkiloRDTO.getPuhelin(), yhteyshenkiloRDTO.getTitteli(),
+                            yhteyshenkiloRDTO.getEmail(), yhteyshenkiloRDTO.getSukunimi(), yhteyshenkiloRDTO.getEtunimet());
+                     childLOI.getContactPersons().add(contactPerson);
+                }
+            }
+
             List<ApplicationOption> applicationOptions = Lists.newArrayList();
             List<String> applicationSystemIds = Lists.newArrayList();
             List<OidRDTO> aoIdDTOs = komotoResource.getHakukohdesByKomotoOID(childKomotoOid);

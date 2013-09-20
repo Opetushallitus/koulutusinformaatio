@@ -1,11 +1,11 @@
 <div data-ng-show="showContact">
-<h2 data-ki-i18n="contact-information" id="{{anchor}}"></h2>
-<p data-ng-show="provider.webPage">
-    <a data-ki-absolute-link="{{provider.webPage}}" target="_blank" data-ki-i18n="provider-web-page"></a>
-</p>
+<h2 data-ki-i18n="info-center"></h2>
 <p>
+    <span data-ng-show="provider.name">
+    {{provider.name}}<br/>
+    </span>
     <p data-ng-show="provider.visitingAddress">
-    {{provider.visitingAddress.streetAddress}}<br />
+    {{provider.visitingAddress.streetAddress}}<br/>
     <span data-ng-show="provider.visitingAddress.streetAddress2">{{provider.visitingAddress.streetAddress2}}<br /></span>
     {{provider.visitingAddress.postalCode}} {{provider.visitingAddress.postOffice}}<br />
     </p>
@@ -14,9 +14,6 @@
     <span data-ng-show="provider.postalAddress.streetAddress2">{{provider.postalAddress.streetAddress2}}<br /></span>
     {{provider.postalAddress.postalCode}} {{provider.postalAddress.postOffice}}<br />
     </p>
-    <span data-ng-show="provider.name">
-    {{provider.name}}<br/>
-    </span>
     <span data-ng-show="provider.email">
     <span data-ki-email="{{provider.email}}"></span><br/>
     </span>
@@ -26,5 +23,9 @@
     <span data-ng-show="provider.fax">
     fax. {{provider.fax}}
     </span>
+    <span data-ng-show="provider.www">
+        <a data-ki-absolute-link="{{provider.www}}" target="_blank">{{provider.www}}</a>
+    </span>
 </p>
+
 </div>
