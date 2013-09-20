@@ -28,6 +28,7 @@ public class ChildLearningOpportunityInstanceDTO {
     private String cooperation;
     private String content;
     private String selectingDegreeProgram;
+    private List<ContactPersonDTO> contactPersons = new ArrayList<ContactPersonDTO>();
 
     public String getId() {
         return id;
@@ -163,5 +164,13 @@ public class ChildLearningOpportunityInstanceDTO {
 
     public void setSelectingDegreeProgram(String selectingDegreeProgram) {
         this.selectingDegreeProgram = selectingDegreeProgram;
+    }
+
+    public List<ContactPersonDTO> getContactPersons() {
+        return contactPersons;
+    }
+
+    public void setContactPersons(List<ContactPersonDTO> contactPersons) {
+        this.contactPersons = contactPersons;
     }
 }
