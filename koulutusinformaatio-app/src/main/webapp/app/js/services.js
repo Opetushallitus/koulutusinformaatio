@@ -2,7 +2,7 @@
 
 angular.module('kiApp.services', ['ngResource']).
 
-service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', function($http, $timeout, $q) {
+service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analytics', 'FilterService', function($http, $timeout, $q, $analytics, FilterService) {
     var transformData = function(result) {
         for (var index in result.results) {
             if (result.results.hasOwnProperty(index)) {
@@ -13,7 +13,7 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', function
                     resItem.linkHref = '#/tutkinto/' + resItem.id;
                 }
 
-                var prerequisite = resItem.prerequisiteCode;
+                var prerequisite = resItem.prerequisiteCode || FilterService.getPrerequisite();
                 if (prerequisite) {
                     resItem.linkHref += '#' + prerequisite;
                 }
@@ -45,6 +45,15 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', function
 
             $http.get('../lo/search/' + encodeURI(params.queryString) + qParams, {}).
             success(function(result) {
+                var category;
+                if (params.locations && params.locations.length > 0) {
+                    category = params.locations[0];
+                } else if (params.prerequisite) {
+                    category = params.prerequisite;
+                } else {
+                    category = false;
+                }
+                $analytics.siteSearchTrack(params.queryString, category, result.totalCount);
                 transformData(result);
                 deferred.resolve(result);
             }).
@@ -60,10 +69,14 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', function
 /**
  *  Resource for requesting parent LO data
  */
-service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', 'LanguageService', function($http, $timeout, $q, LanguageService) {
+service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', '$filter', 'LanguageService', function($http, $timeout, $q, $filter, LanguageService) {
     var transformData = function(result) {
         var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
         result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
+
+        if (result && result.provider && result.provider.name) {
+            result.provider.encodedName = $filter('encodeURIComponent')('"' + result.provider.name + '"');
+        }
 
         var applicationSystems = [];
 
@@ -124,6 +137,22 @@ service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', 'Languag
             }
         }
 
+        // check if application system is of type Lisähaku
+        for (var loiIndex in result.lois) {
+            if (result.lois.hasOwnProperty(loiIndex)) {
+                var loi = result.lois[loiIndex];
+                for (var asIndex in loi.applicationSystems) {
+                    if (loi.applicationSystems.hasOwnProperty(asIndex)) {
+                        var as = loi.applicationSystems[asIndex];
+                        if (as.applicationOptions && as.applicationOptions.length > 0) {
+                            var firstAo = as.applicationOptions[0];
+                            as.aoSpecificApplicationDates = firstAo.specificApplicationDates;
+                        }
+                    }
+                }
+            }
+        }
+
         // sort LOIs based on prerequisite
         if (result.lois) {
             result.lois.sort(function(a, b) {
@@ -168,6 +197,7 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
 
     // TODO: could we automate data transformation somehow?
     var transformData = function(result) {
+        var studyplanKey = "KOULUTUSOHJELMA";
         /*
         var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
         result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
@@ -181,6 +211,10 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
                 loi.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
                 loi.teachingLanguage = getFirstItemInList(loi.teachingLanguages);
                 loi.formOfTeaching = getFirstItemInList(loi.formOfTeaching);
+
+                if (loi.webLinks) {
+                    loi.studyPlan = loi.webLinks[studyplanKey];
+                }
             }
         }
 
@@ -300,6 +334,22 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
             }
         }
         result.lois = lois;
+
+        // check if application system is of type Lisähaku
+        for (var loiIndex in result.lois) {
+            if (result.lois.hasOwnProperty(loiIndex)) {
+                var loi = result.lois[loiIndex];
+                for (var asIndex in loi.applicationSystems) {
+                    if (loi.applicationSystems.hasOwnProperty(asIndex)) {
+                        var as = loi.applicationSystems[asIndex];
+                        if (as.applicationOptions && as.applicationOptions.length > 0) {
+                            var firstAo = as.applicationOptions[0];
+                            as.aoSpecificApplicationDates = firstAo.specificApplicationDates;
+                        }
+                    }
+                }
+            }
+        }
 
         // sort LOIs based on prerequisite
         if (result.lois) {
@@ -681,6 +731,10 @@ service('FilterService', function() {
                 'prerequisite': prerequisite,
                 'locations': locations 
             };
+        },
+
+        getPrerequisite: function() {
+            return prerequisite;
         }
     };
 }).

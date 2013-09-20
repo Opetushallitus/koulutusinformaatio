@@ -22,7 +22,9 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLOIRefEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.I18nTextEntity;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOIRef;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
+import org.mockito.ArgumentMatcher;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -77,4 +79,23 @@ public class TestUtil {
         ref.setId(loId);
         return ref;
     }
+
+    public static ArgumentMatcher<List> isListOfOneELement() {
+        return new ArgumentMatcher<List>() {
+            @Override
+            public boolean matches(Object list) {
+                return ((List) list).size() == 1;
+            }
+        };
+    }
+
+    public static ArgumentMatcher<List> isListOfTwoELements() {
+        return new ArgumentMatcher<List>() {
+            @Override
+            public boolean matches(Object list) {
+                return ((List) list).size() == 2;
+            }
+        };
+    }
+
 }

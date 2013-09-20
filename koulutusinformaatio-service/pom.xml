@@ -21,13 +21,8 @@
         </dependency>
         <dependency>
             <groupId>fi.vm.sade.tarjonta</groupId>
-            <artifactId>tarjonta-publication-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>fi.vm.sade.tarjonta</groupId>
             <artifactId>tarjonta-api</artifactId>
-            <version>${project.version}</version>
+            <version>6.1.1</version>
         </dependency>
         <dependency>
             <groupId>fi.vm.sade.koodisto</groupId>
@@ -52,7 +47,7 @@
         <dependency>
             <groupId>fi.vm.sade.organisaatio</groupId>
             <artifactId>organisaatio-api</artifactId>
-            <version>${project.version}</version>
+            <version>6.1.2</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -153,7 +148,6 @@
             <version>${spring.version}</version>
             <scope>test</scope>
         </dependency>
-        <!-- CXF -->
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-api</artifactId>
@@ -194,13 +188,18 @@
             <artifactId>cxf-common-utilities</artifactId>
             <version>${cxf-common-utilities.version}</version>
         </dependency>
-
-        <!-- Jersey -->
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-client</artifactId>
             <version>${jersey.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.tomakehurst</groupId>
+            <artifactId>wiremock</artifactId>
+            <version>${wiremock.version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <profiles>

@@ -80,13 +80,17 @@
     "internationalization": "Kansainvälistyminen (en)",
     "cooperation": "Yhteistyö muiden toimijoiden kanssa (en)",
     "content-of-studies": "Koulutuksen sisältö (en)",
+    "study-plan": "Opetussuunnitelma (en)",
 
     "provider-web-page": "Oppilaitoksen omat sivut (en)",
 
     "application-title": "Haku (en)",
     "application-period": "Hakuaika (en)",
     "application-options": "Hakukohteet (en)",
+    "application-period-additional": "Lisää opiskelijoita otetaan (en)",
+    "application-options-additional": "Hakukohteet, joissa paikkoja vapaana (en)",
     "apply-button-label": "Hae koulutukseen (en)",
+    "apply-button-label-additional": "Hae vapaata paikkaa (en)",
     "add-to-basket-label": "Lisää muistilistalle (en)",
     "application-system-active-future": "Hakuaika alkaa (en)",
     "application-system-active-past": "Haku päättynyt (en)",

@@ -59,10 +59,12 @@ function FooterCtrl($scope, LanguageService, kiAppConstants) {
 /**
  *  Controller for index view
  */
+ /*
  function IndexCtrl($scope, TitleService) {
     var title = i18n.t('title-front-page');
     TitleService.setTitle(title);
 };
+*/
 
 
 /**
@@ -299,10 +301,6 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
  function InfoCtrl($scope, $routeParams, $location, ParentLearningOpportunityService, ChildLearningOpportunityService, SearchService, ParentLODataService, ChildLODataService, TitleService, LearningOpportunityProviderPictureService, UtilityService, TabService) {
     $scope.queryString = SearchService.getTerm();
     $scope.descriptionLanguage = 'fi';
-
-    // how to avoid this?
-    $scope.providerAsideClass = 'hidden';
-    $scope.applyFormClass = '';
 
     var setTitle = function(parent, child) {
         if (child) {
@@ -573,7 +571,10 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
         }
     }
 
-    $scope.initTabs = tabsMenu.build( TabService.getCurrentTab() );
+    // initialize tabs
+    tabsMenu.build( TabService.getCurrentTab() );
+    $scope.changeMainTab(TabService.getCurrentTab());
+
 
     // trigger once content is loaded
     $scope.$on('$viewContentLoaded', function() {

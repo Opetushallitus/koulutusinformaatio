@@ -81,7 +81,6 @@ public class IndexerServiceImpl implements IndexerService {
 
         providerDocs.add(providerDoc);
         lopUpdateHttpSolrServer.add(providerDocs);
-
         loUpdateHttpSolrServer.add(docs);
     }
 
@@ -128,7 +127,7 @@ public class IndexerServiceImpl implements IndexerService {
             }
 
         }
-        addApplicationSystemDates(doc, applicationOptions);
+        addApplicationDates(doc, applicationOptions);
 
         Set<String> prerequisites = Sets.newHashSet();
         for (ChildLOS childLOS : parent.getChildren()) {
@@ -204,7 +203,7 @@ public class IndexerServiceImpl implements IndexerService {
             }
         }
 
-        addApplicationSystemDates(doc, childLOI.getApplicationOptions());
+        addApplicationDates(doc, childLOI.getApplicationOptions());
     }
 
     private String resolveTranslationInTeachingLangUseFallback(List<Code> teachingLanguages, Map<String, String> translations) {
@@ -226,18 +225,25 @@ public class IndexerServiceImpl implements IndexerService {
         return translation;
     }
 
-    private void addApplicationSystemDates(SolrInputDocument doc, List<ApplicationOption> applicationOptions) {
+    private void addApplicationDates(SolrInputDocument doc, List<ApplicationOption> applicationOptions) {
         int parentApplicationDateRangeIndex = 0;
         for (ApplicationOption ao : applicationOptions) {
-            for (DateRange dr : ao.getApplicationSystem().getApplicationDates()) {
+            if (ao.isSpecificApplicationDates()) {
                 doc.addField(new StringBuilder().append("asStart").append("_").
-                        append(String.valueOf(parentApplicationDateRangeIndex)).toString(), dr.getStartDate());
+                        append(String.valueOf(parentApplicationDateRangeIndex)).toString(), ao.getApplicationStartDate());
                 doc.addField(new StringBuilder().append("asEnd").append("_").
-                        append(String.valueOf(parentApplicationDateRangeIndex)).toString(), dr.getEndDate());
+                        append(String.valueOf(parentApplicationDateRangeIndex)).toString(), ao.getApplicationEndDate());
                 parentApplicationDateRangeIndex++;
+            } else {
+                for (DateRange dr : ao.getApplicationSystem().getApplicationDates()) {
+                    doc.addField(new StringBuilder().append("asStart").append("_").
+                            append(String.valueOf(parentApplicationDateRangeIndex)).toString(), dr.getStartDate());
+                    doc.addField(new StringBuilder().append("asEnd").append("_").
+                            append(String.valueOf(parentApplicationDateRangeIndex)).toString(), dr.getEndDate());
+                    parentApplicationDateRangeIndex++;
+                }
             }
         }
-
     }
 
     @Override

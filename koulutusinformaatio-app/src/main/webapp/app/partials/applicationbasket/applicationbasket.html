@@ -29,16 +29,16 @@
                                 <td>
                                     <ul class="nobullet">
                                         <li>
-                                            <h4 class="margin-top-0">
-                                                <span class="block">{{item.providerName}}, {{item.providerLocation}}</span>
-                                                <a href="#/tutkinto/{{item.parent.id}}#{{item.prerequisite.value}}">{{item.parent.name}}</a>
-                                            </h4>
+                                            <h4 class="margin-top-0 margin-bottom-0">{{item.providerName}}, {{item.providerLocation}}</h4>
+                                            <a class="block margin-bottom-2" href="#/tutkinto/{{item.parent.id}}#{{item.prerequisite.value}}">{{item.parent.name}}</a>
+                                            
                                         </li>
                                         <li><span>{{item.qualification}}</span></li>
                                         <li><span>{{item.prerequisite.description}}</span></li>
                                     </ul>
                                 </td>
                                 <td>
+                                    <h4 class="margin-top-0 margin-bottom-1">{{item.name}}</h4>
                                     <ul class="disc">
                                         <li data-ng-repeat="child in item.children"><a href="#/koulutusohjelma/{{child.losId}}#{{item.prerequisite.value}}">{{child.name}}</a></li>
                                     </ul>
@@ -69,6 +69,7 @@
                             <input type="hidden" name="preference{{$index + 1}}-Koulutus-educationDegree" value="{{item.educationDegree}}"/>
                             <input type="hidden" name="preference{{$index + 1}}-Koulutus-id-sora" value="{{item.sora}}" />
                             <input type="hidden" name="preference{{$index + 1}}-Koulutus-id-lang" value="{{item.teachLang}}" />
+                            <input type="hidden" name="preference{{$index + 1}}-Koulutus-id-aoIdentifier" value="{{item.aoIdentifier}}" />
                         </span>
                         <div class="action-area">
                             <div data-ng-show="applicationBasketIsOverflowing(as.applicationSystemId)" data-ki-i18n="application-basket-overflow-warning" class="notification warning clear float-right margin-bottom-2"></div>

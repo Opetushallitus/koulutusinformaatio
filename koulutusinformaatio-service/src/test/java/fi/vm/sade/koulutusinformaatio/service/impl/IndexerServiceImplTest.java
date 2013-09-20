@@ -21,6 +21,7 @@ import com.google.common.collect.Sets;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.apache.solr.common.SolrInputDocument;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,18 +42,75 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 public class IndexerServiceImplTest {
 
-    @Mock private HttpSolrServer loUpdateHttpSolrServer;
-    @Mock private HttpSolrServer lopUpdateHttpSolrServer;
+    @Mock
+    private HttpSolrServer loUpdateHttpSolrServer;
+    @Mock
+    private HttpSolrServer lopUpdateHttpSolrServer;
 
     private IndexerServiceImpl indexerServiceImpl;
 
+    private Date applicationSystemStarts;
+    private Date applicationSystemEnds;
+    private Date applicationOptionApplicationPeriodStarts;
+    private Date applicationOptionApplicationPeriodEnds;
+
     @Before
     public void init() {
+        applicationSystemStarts = new Date();
+        Calendar endCal = Calendar.getInstance();
+        endCal.roll(Calendar.YEAR, 1);
+        applicationSystemEnds = endCal.getTime();
+        Calendar aoStartCal = Calendar.getInstance();
+        aoStartCal.roll(Calendar.MONTH, 1);
+        aoStartCal.set(Calendar.DATE, 10);
+        applicationOptionApplicationPeriodStarts = aoStartCal.getTime();
+        Calendar aoEndCal = Calendar.getInstance();
+        aoEndCal.roll(Calendar.MONTH, 1);
+        aoEndCal.set(Calendar.DATE, 15);
+        applicationOptionApplicationPeriodEnds = aoEndCal.getTime();
+
         indexerServiceImpl = new IndexerServiceImpl(loUpdateHttpSolrServer, lopUpdateHttpSolrServer);
     }
 
     @Test
     public void testAddParentLOS() throws Exception {
+        ParentLOS p = createParentLOS();
+        indexerServiceImpl.addParentLearningOpportunity(p);
+        verify(loUpdateHttpSolrServer).add(argThat(TestUtil.isListOfTwoELements()));
+        verify(lopUpdateHttpSolrServer).add(argThat(TestUtil.isListOfOneELement()));
+    }
+
+    @Test
+    public void testAOSpecificApplicationDates() throws Exception {
+        ParentLOS p = createParentLOSWithApplicationOptionSpecificDates();
+        indexerServiceImpl.addParentLearningOpportunity(p);
+        verify(loUpdateHttpSolrServer).add(argThat(new ArgumentMatcher<List<SolrInputDocument>>() {
+            @Override
+            public boolean matches(Object list) {
+                if (list == null) return false;
+                if (((List) list).size() != 2) return false;
+                for (SolrInputDocument doc : (List<SolrInputDocument>) list) {
+                    if (doc.get("parentId") != null) {
+                        Date start = (Date) doc.get("asStart_0").getValue();
+                        Date end = (Date) doc.get("asEnd_0").getValue();
+                        return start.equals(applicationOptionApplicationPeriodStarts) &&
+                                end.equals(applicationOptionApplicationPeriodEnds);
+                    }
+                }
+                return false;
+            }
+        }));
+        verify(lopUpdateHttpSolrServer).add(argThat(TestUtil.isListOfOneELement()));
+    }
+
+    @Test
+    public void testCommitLOChanges() throws Exception {
+        indexerServiceImpl.commitLOChanges();
+        verify(loUpdateHttpSolrServer).commit();
+        verify(lopUpdateHttpSolrServer).commit();
+    }
+
+    private ParentLOS createParentLOS() {
         ParentLOS p = new ParentLOS();
         p.setId("parent_id");
         p.setName(TestUtil.createI18nText("Parent LOS name fi", "Parent LOS name sv", "Parent LOS name en"));
@@ -79,7 +137,7 @@ public class IndexerServiceImplTest {
         as1.setName(TestUtil.createI18nText("AS name fi", "AS name sv", "AS name en"));
         Calendar endCal = Calendar.getInstance();
         endCal.roll(Calendar.YEAR, 1);
-        DateRange dr = new DateRange(new Date(), endCal.getTime());
+        DateRange dr = new DateRange(applicationSystemStarts, applicationSystemEnds);
         as1.setApplicationDates(Lists.newArrayList(dr));
         ao1.setApplicationSystem(as1);
         parentLOI1.setApplicationOptions(Sets.newHashSet(ao1));
@@ -108,35 +166,16 @@ public class IndexerServiceImplTest {
         childLOS1.setLois(Lists.newArrayList(childLOI1));
 
         p.setChildren(Lists.newArrayList(childLOS1));
-
-        indexerServiceImpl.addParentLearningOpportunity(p);
-
-        verify(loUpdateHttpSolrServer).add(argThat(new IsListOfTwoElements()));
-        verify(lopUpdateHttpSolrServer).add(argThat(new IsListOfOneElement()));
+        return p;
     }
 
-    @Test
-    public void testCommitLOChanges() throws Exception {
-        indexerServiceImpl.commitLOChanges();
-        verify(loUpdateHttpSolrServer).commit();
-        verify(lopUpdateHttpSolrServer).commit();
+    private ParentLOS createParentLOSWithApplicationOptionSpecificDates() {
+        ParentLOS p = createParentLOS();
+        p.getChildren().get(0).getLois().get(0).getApplicationOptions().get(0).setSpecificApplicationDates(true);
+        p.getChildren().get(0).getLois().get(0).getApplicationOptions().get(0).
+                setApplicationStartDate(applicationOptionApplicationPeriodStarts);
+        p.getChildren().get(0).getLois().get(0).getApplicationOptions().get(0).
+                setApplicationEndDate(applicationOptionApplicationPeriodEnds);
+        return p;
     }
-
-    class IsListOfOneElement extends ArgumentMatcher<List> {
-        @Override
-        public boolean matches(Object list) {
-            return ((List) list).size() == 1;
-        }
-    }
-
-    class IsListOfTwoElements extends ArgumentMatcher<List> {
-        @Override
-        public boolean matches(Object list) {
-            return ((List) list).size() == 2;
-        }
-    }
-
-
-
-
 }
