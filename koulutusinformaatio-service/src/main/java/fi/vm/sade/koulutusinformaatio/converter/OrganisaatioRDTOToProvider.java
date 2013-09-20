@@ -61,6 +61,11 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
     private static final String ADDRESS_DATA_TYPE_VISIT = "kaynti";
     private static final String ADDRESS_DATA_TYPE_POSTAL = "posti";
 
+    private static final String DATA_TYPE = "tyyppi";
+    private static final String DATA_TYPE_PHONE = "puhelin";
+    private static final String DATA_TYPE_PHONE_NUMBER = "numero";
+    private static final String DATA_TYPE_EMAIL = "email";
+    private static final String DATA_TYPE_WWW = "www";
 
     KoodistoService koodistoService;
 
@@ -104,6 +109,10 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
         } else {
             Address visitingAddress = null;
             Address postalAddress = null;
+            String phone = null;
+            String email = null;
+            String www = null;
+
             for (Map<String, String> info : metadata.getYhteystiedot()) {
                 if (info.get(ADDRESS_DATA_TYPE) != null) {
                     if (info.get(ADDRESS_DATA_TYPE).equals(ADDRESS_DATA_TYPE_VISIT)) {
@@ -111,9 +120,15 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
                     } else if (info.get(ADDRESS_DATA_TYPE).equals(ADDRESS_DATA_TYPE_POSTAL)) {
                         postalAddress = getAddress(info);
                     }
+                } else if (info.get(DATA_TYPE) != null && info.get(DATA_TYPE).equals(DATA_TYPE_PHONE)) {
+                    phone = info.get(DATA_TYPE_PHONE_NUMBER);
+                } else if (info.get(DATA_TYPE_EMAIL) != null) {
+                    email = info.get(DATA_TYPE_EMAIL);
+                } else if (info.get(DATA_TYPE_WWW) != null) {
+                    www = info.get(DATA_TYPE_WWW);
                 }
             }
-            return new ApplicationOffice(getI18nText(metadata.getHakutoimistonNimi()),
+            return new ApplicationOffice(getI18nText(metadata.getHakutoimistonNimi()), phone, email, www,
                     visitingAddress, postalAddress);
         }
     }

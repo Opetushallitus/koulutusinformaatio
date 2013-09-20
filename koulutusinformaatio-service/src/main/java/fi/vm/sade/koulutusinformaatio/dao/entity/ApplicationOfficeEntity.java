@@ -30,6 +30,9 @@ public class ApplicationOfficeEntity {
     private AddressEntity visitingAddress;
     @Embedded
     private AddressEntity postalAddress;
+    private String phone;
+    private String email;
+    private String www;
 
     public ApplicationOfficeEntity() {
     }
@@ -56,5 +59,29 @@ public class ApplicationOfficeEntity {
 
     public void setPostalAddress(AddressEntity postalAddress) {
         this.postalAddress = postalAddress;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getWww() {
+        return www;
+    }
+
+    public void setWww(String www) {
+        this.www = www;
     }
 }

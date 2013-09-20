@@ -25,6 +25,9 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 public class ApplicationOfficeDTO {
 
     private String name;
+    private String phone;
+    private String email;
+    private String www;
     private AddressDTO visitingAddress;
     private AddressDTO postalAddress;
 
@@ -50,5 +53,29 @@ public class ApplicationOfficeDTO {
 
     public void setPostalAddress(AddressDTO postalAddress) {
         this.postalAddress = postalAddress;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getWww() {
+        return www;
+    }
+
+    public void setWww(String www) {
+        this.www = www;
     }
 }

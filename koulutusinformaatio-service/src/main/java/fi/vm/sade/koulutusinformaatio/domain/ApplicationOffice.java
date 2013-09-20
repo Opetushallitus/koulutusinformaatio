@@ -22,11 +22,17 @@ package fi.vm.sade.koulutusinformaatio.domain;
 public class ApplicationOffice {
 
     private I18nText name;
+    private String phone;
+    private String email;
+    private String www;
     private Address visitingAddress;
     private Address postalAddress;
 
-    public ApplicationOffice(I18nText name, Address visitingAddress, Address postalAddress) {
+    public ApplicationOffice(I18nText name, String phone, String email, String www, Address visitingAddress, Address postalAddress) {
         this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.www = www;
         this.visitingAddress = visitingAddress;
         this.postalAddress = postalAddress;
     }
@@ -55,5 +61,29 @@ public class ApplicationOffice {
 
     public void setPostalAddress(Address postalAddress) {
         this.postalAddress = postalAddress;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getWww() {
+        return www;
+    }
+
+    public void setWww(String www) {
+        this.www = www;
     }
 }

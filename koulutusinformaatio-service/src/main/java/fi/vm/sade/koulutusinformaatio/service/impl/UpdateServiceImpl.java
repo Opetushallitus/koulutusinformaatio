@@ -69,26 +69,26 @@ public class UpdateServiceImpl implements UpdateService {
             int count = MAX_RESULTS;
             int index = 0;
 
-            //while(count >= MAX_RESULTS) {
+            while(count >= MAX_RESULTS) {
                 LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
                 List<OidRDTO> parentOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
                 count = parentOids.size();
                 index += count;
 
-            //    for (OidRDTO parentOid : parentOids) {
+               for (OidRDTO parentOid : parentOids) {
                     List<ParentLOS> parents = null;
                     try {
-                        parents = tarjontaService.findParentLearningOpportunity("1.2.246.562.5.2013060313061086068033");
+                        parents = tarjontaService.findParentLearningOpportunity(parentOid.getOid());
                     } catch (TarjontaParseException e) {
                         LOG.warn("Exception while updating parent learning opportunity, oidMessage: " + e.getMessage());
-              //          continue;
+                        continue;
                     }
                     for (ParentLOS parent : parents) {
                         this.indexerService.addParentLearningOpportunity(parent);
                         this.educationDataUpdateService.save(parent);
                     }
-                //}
-            //}
+                }
+            }
             this.indexerService.commitLOChanges();
             this.transactionManager.commit();
             LOG.info("Education data update successfully finished");

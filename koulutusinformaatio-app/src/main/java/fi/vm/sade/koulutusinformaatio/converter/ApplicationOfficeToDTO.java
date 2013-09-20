@@ -32,6 +32,9 @@ public class ApplicationOfficeToDTO {
             dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOffice.getName(), lang));
             dto.setVisitingAddress(AddressToDTO.convert(applicationOffice.getVisitingAddress()));
             dto.setPostalAddress(AddressToDTO.convert(applicationOffice.getPostalAddress()));
+            dto.setPhone(applicationOffice.getPhone());
+            dto.setEmail(applicationOffice.getEmail());
+            dto.setWww(applicationOffice.getWww());
             return dto;
         }
     }
