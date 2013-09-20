@@ -6,10 +6,12 @@
 <p>
     <p data-ng-show="provider.visitingAddress">
     {{provider.visitingAddress.streetAddress}}<br />
+    <span data-ng-show="provider.visitingAddress.streetAddress2">{{provider.visitingAddress.streetAddress2}}<br /></span>
     {{provider.visitingAddress.postalCode}} {{provider.visitingAddress.postOffice}}<br />
     </p>
     <p data-ng-show="provider.postalAddress">
     {{provider.postalAddress.streetAddress}}<br />
+    <span data-ng-show="provider.postalAddress.streetAddress2">{{provider.postalAddress.streetAddress2}}<br /></span>
     {{provider.postalAddress.postalCode}} {{provider.postalAddress.postOffice}}<br />
     </p>
     <span data-ng-show="provider.name">

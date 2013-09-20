@@ -47,8 +47,7 @@ directive('kiRenderInfoCenterAddress', function() {
                         data.name ||
                         data.email ||
                         data.phone ||
-                        data.fax ||
-                        data.webPage) ? true : false;
+                        data.www) ? true : false;
                 }
 
                 scope.provider = data;
@@ -56,6 +55,27 @@ directive('kiRenderInfoCenterAddress', function() {
         }
     }
 }).
+
+/**
+ *  Render contact person info
+ */
+directive('renderContactPersonInfo', function() {
+    return {
+        restrict: 'E,A',
+        templateUrl: 'templates/contactPersonInfo.html',
+        scope: false,
+        link: function(scope, element, attrs) {
+            scope.$watch('selectedLOI.contactPersons', function(data) {
+                if (data && data.length > 0) {
+                    scope.showContactPersonInfo = true;
+                } else {
+                    scope.showContactPersonInfo = false;
+                }
+            });
+        }
+    }
+}).
+
 
 /**
  *  Render student benefits block
