@@ -3234,38 +3234,53 @@ button {
         margin: 0px;
         background: none; }
 
+/*
 table {
-  border-spacing: 0;
-  width: 100%;
-  border: none; }
-  table td, table th {
-    border: 0;
-    padding: 5px;
-    border-right: 1px solid #FFFFFF; }
+    border-spacing: 0;
+    width: 100%;
+    border: none;
+
+    td, th {
+        border: 0;
+        padding: 5px;
+        border-right: 1px solid #FFFFFF;
+    }
+}
 
 table thead th {
-  font-weight: bold;
-  text-align: left;
-  min-width: 120px;
-  background-color: #dff2f8; }
-  table thead th.down a {
-    background-image: url("../img/arrow-down.png"); }
-  table thead th.up a {
-    background-image: url("../img/arrow-up.png"); }
-  table thead th.nosort a {
-    background-image: url("../img/arrow-sorting.png"); }
-  table thead th a {
-    display: block;
-    width: 100%;
-    height: 24px;
-    background: #dff2f8 none no-repeat scroll center right; }
+    font-weight: bold;
+    text-align: left;
+    min-width: 120px;
+    background-color: #dff2f8;
+
+    &.down a {
+        background-image: url('../img/arrow-down.png');
+    }
+
+    &.up a {
+        background-image: url('../img/arrow-up.png');
+    }
+
+    &.nosort a {
+        background-image: url('../img/arrow-sorting.png');
+    }
+
+    a {
+        display: block;
+        width: 100%;
+        height: 24px;
+        background: #dff2f8 none no-repeat scroll center right;
+    }
+}
 
 table tbody tr:nth-child(even) {
-  background-color: #dff2f8; }
+    background-color: #dff2f8;
+}
 
 table tbody tr:nth-child(odd) {
-  background-color: #FFFFFF; }
-
+    background-color: #FFFFFF;
+}
+*/
 /* Popover styles from twitter bootstrap */
 .popover {
   position: absolute;
