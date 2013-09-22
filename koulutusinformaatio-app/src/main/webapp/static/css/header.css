@@ -74,7 +74,7 @@ header {
       height: 48px;
       border: #FFFFFF 4px solid;
       outline: none;
-      vertical-align: baseline;
+      background: #FFFFFF none;
       -webkit-box-shadow: 0 1px 1px #bfbfbf inset, 0 -1px 4px rgba(0, 0, 0, 0.07) inset;
       -moz-box-shadow: 0 1px 1px #bfbfbf inset, 0 -1px 4px rgba(0, 0, 0, 0.07) inset;
       -o-box-shadow: 0 1px 1px #bfbfbf inset, 0 -1px 4px rgba(0, 0, 0, 0.07) inset;
@@ -85,11 +85,11 @@ header {
       -o-border-radius: 3px;
       -ms-border-radius: 3px;
       border-radius: 3px; }
+      header .search .search-field:focus {
+        border: #fde7a5 4px solid; }
       @media only screen and (min-width: 519px) {
         header .search .search-field {
           width: 60%; } }
-      header .search .search-field:focus {
-        border: #fde7a5 4px solid; }
     header .search .search-container {
       max-width: none;
       text-align: left;
@@ -168,6 +168,9 @@ header {
               display: inline; } }
           header .search .magnifier span span.h2 {
             color: #333333; }
+
+.lt-ie9 header .search .search-field {
+  background-color: #fff5da; }
 
 article.main ul {
   margin: 0;
