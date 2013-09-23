@@ -46,6 +46,7 @@ public class LearningOpportunityServiceImplTest {
     private ParentLOI parentLOI;
     private ChildLOS childLOS;
     private ChildLOI childLOI;
+    private ApplicationOption applicationOption;
 
     @Before
     public void setUp() throws ResourceNotFoundException {
@@ -70,9 +71,10 @@ public class LearningOpportunityServiceImplTest {
         asIds.add("as123");
         asIds.add("as124");
         parentLOS.setProvider(createProvider("p1234", createI18Text("provider1"), asIds));
-        Set<ApplicationOption> aos = Sets.newHashSet(createApplicationOption("ao123 fi", createI18Text("ao name"), "as123",
+        applicationOption = createApplicationOption("ao123", createI18Text("ao name"), "as123",
                 parentLOS.getProvider(), new Date(), 100, 25, 6, 77, childLOIRefs, "32",
-                prerequisite));
+                prerequisite);
+        Set<ApplicationOption> aos = Sets.newHashSet(applicationOption);
 
         parentLOI = new ParentLOI();
         parentLOI.setId("2345");
@@ -110,14 +112,15 @@ public class LearningOpportunityServiceImplTest {
         childLOI.setWebLinks(links);
         childLOI.setRelated(childLOIRefs);
         childLOI.setPrerequisite(prerequisite);
-
         childLOS.setLois(Lists.newArrayList(childLOI));
 
         ModelMapper modelMapper = new ModelMapper();
-        learningOpportunityService = new LearningOpportunityServiceImpl(educationDataQueryService, modelMapper);
 
         when(educationDataQueryService.getParentLearningOpportunity(eq("1234"))).thenReturn(parentLOS);
         when(educationDataQueryService.getChildLearningOpportunity(eq("clo123"))).thenReturn(childLOS);
+        when(educationDataQueryService.getApplicationOption(eq("ao123"))).thenReturn(applicationOption);
+
+        learningOpportunityService = new LearningOpportunityServiceImpl(educationDataQueryService, modelMapper);
     }
 
     @Test
@@ -142,6 +145,35 @@ public class LearningOpportunityServiceImplTest {
     public void testGetChildLearningOpportunityEn() throws ResourceNotFoundException {
         ChildLearningOpportunitySpecificationDTO result = learningOpportunityService.getChildLearningOpportunity("clo123","en", "en");
         checkResult("en", result);
+    }
+
+    @Test
+    public void testGetApplicationOption() throws ResourceNotFoundException {
+        ApplicationOptionDTO result = learningOpportunityService.getApplicationOption(applicationOption.getId(), "fi", "fi");
+        checkResult("fi", result);
+    }
+
+    @Test
+    public void testGetApplicationOptionEn() throws ResourceNotFoundException {
+        ApplicationOptionDTO result = learningOpportunityService.getApplicationOption(applicationOption.getId(), "en", "en");
+        checkResult("en", result);
+    }
+
+
+    private void checkResult(String lang, ApplicationOptionDTO result) {
+        assertNotNull(result);
+        assertEquals(applicationOption.getId(), result.getId());
+        assertEquals(applicationOption.getAoIdentifier(), result.getAoIdentifier());
+        assertEquals(applicationOption.getName().getTranslations().get(lang), result.getName());
+        assertEquals(applicationOption.getEducationDegree(), result.getEducationDegree());
+        assertEquals(applicationOption.getProvider().getId(), result.getProvider().getId());
+        assertEquals(applicationOption.getAttachmentDeliveryDeadline(), result.getAttachmentDeliveryDeadline());
+        assertEquals(applicationOption.getPrerequisite().getValue(), result.getPrerequisite().getValue());
+        assertEquals(applicationOption.getLastYearApplicantCount(), result.getLastYearApplicantCount());
+        assertEquals(applicationOption.getLowestAcceptedAverage(), result.getLowestAcceptedAverage());
+        assertEquals(applicationOption.getLowestAcceptedScore(), result.getLowestAcceptedScore());
+        assertEquals(applicationOption.getStartingQuota(), result.getStartingQuota());
+        assertEquals(applicationOption.getChildLOIRefs().size(), result.getChildRefs().size());
     }
 
     private void checkResult(String lang, ParentLearningOpportunitySpecificationDTO result) {
@@ -203,10 +235,6 @@ public class LearningOpportunityServiceImplTest {
         assertEquals(childLOI.getFormOfTeaching().get(0).getTranslations().get(lang), loi.getFormOfTeaching().get(0));
         assertEquals(1, loi.getTeachingLanguages().size());
         assertEquals(2, loi.getWebLinks().size());
-
-
-
-
     }
 
     private I18nText createI18Text(String text) {
