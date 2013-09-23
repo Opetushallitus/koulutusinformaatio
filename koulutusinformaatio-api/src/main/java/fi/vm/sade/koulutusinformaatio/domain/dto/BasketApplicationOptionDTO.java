@@ -41,6 +41,7 @@ public class BasketApplicationOptionDTO {
     private List<ChildLOIRefDTO> children;
     private Date attachmentDeliveryDeadline;
     private boolean athleteEducation;
+    private String aoIdentifier;
 
     public String getId() {
         return id;
@@ -152,5 +153,13 @@ public class BasketApplicationOptionDTO {
 
     public void setAthleteEducation(boolean athleteEducation) {
         this.athleteEducation = athleteEducation;
+    }
+
+    public String getAoIdentifier() {
+        return aoIdentifier;
+    }
+
+    public void setAoIdentifier(String aoIdentifier) {
+        this.aoIdentifier = aoIdentifier;
     }
 }
