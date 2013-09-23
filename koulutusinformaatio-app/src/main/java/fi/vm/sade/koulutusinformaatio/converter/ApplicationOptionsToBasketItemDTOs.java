@@ -60,6 +60,7 @@ public class ApplicationOptionsToBasketItemDTOs {
                 aoDTO.setParent(ParentLOSRefToDTO.convert(ao.getParent(), lang));
                 aoDTO.setChildren(ChildLOIRefToDTO.convert(ao.getChildLOIRefs(), lang));
                 aoDTO.setAttachmentDeliveryDeadline(ao.getAttachmentDeliveryDeadline());
+                aoDTO.setAoIdentifier(ao.getAoIdentifier());
                 Provider provider = ao.getProvider();
                 if (provider != null) {
                     aoDTO.setProviderId(provider.getId());
