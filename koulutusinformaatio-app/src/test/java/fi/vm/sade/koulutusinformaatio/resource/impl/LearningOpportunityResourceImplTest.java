@@ -8,6 +8,7 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.LOSearchResultListDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
+import fi.vm.sade.koulutusinformaatio.exception.HTTPException;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
 import org.junit.Before;
@@ -17,9 +18,11 @@ import org.mockito.MockitoAnnotations.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.modelmapper.ModelMapper;
 
+import java.util.ArrayList;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.when;
 
 /**
@@ -34,6 +37,8 @@ public class LearningOpportunityResourceImplTest {
 
     private LearningOpportunityResourceImpl resource;
 
+    private static final String INVALID_TERM = "invalidterm";
+
     @Before
     public void init() throws ResourceNotFoundException, SearchException {
         modelMapper = new ModelMapper();
@@ -43,7 +48,7 @@ public class LearningOpportunityResourceImplTest {
         resultList.setResults(Lists.newArrayList(result1));
         resultList.setTotalCount(1);
         when(searchService.searchLearningOpportunities(eq("term"), eq("PK"), eq(Lists.newArrayList("Helsinki")), eq(0), eq(30))).thenReturn(resultList);
-
+        when(searchService.searchLearningOpportunities(eq(INVALID_TERM), anyString(), anyList(), anyInt(), anyInt())).thenThrow(SearchException.class);
 
         ParentLearningOpportunitySpecificationDTO parentDTO = new ParentLearningOpportunitySpecificationDTO();
         parentDTO.setId("parentLOSId");
@@ -92,6 +97,11 @@ public class LearningOpportunityResourceImplTest {
         assertNotNull(dto1);
         ChildLearningOpportunitySpecificationDTO dto2 = resource.getChildLearningOpportunity("childid", null, null);
         assertNotNull(dto2);
+    }
+
+    @Test(expected = HTTPException.class)
+    public void testSearchException() {
+        resource.searchLearningOpportunities(INVALID_TERM, "", new ArrayList<String>(), 0, 0);
     }
 
 }
