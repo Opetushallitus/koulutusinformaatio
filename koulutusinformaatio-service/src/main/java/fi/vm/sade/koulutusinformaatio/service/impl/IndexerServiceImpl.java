@@ -84,13 +84,20 @@ public class IndexerServiceImpl implements IndexerService {
         QueryResponse response = lopUpdateHttpSolrServer.query(query);
         List<SolrDocument> results = response.getResults();
         if (results != null && results.size() > 0) {
+            LOGGER.info("Provider already indexed: " + provider.getId());
             List<String> edus = (List<String>) results.get(0).get("requiredBaseEducations");
             if (edus != null) {
+                LOGGER.info("Previously indexed base educations: " + edus.toString());
+                LOGGER.info("New base educations: " + requiredBaseEducations.toString());
                 requiredBaseEducations.addAll(edus);
+                LOGGER.info("Combined base educations: " + requiredBaseEducations.toString());
             }
             List<String> asids = (List<String>) results.get(0).get("asIds");
             if (asids != null) {
+                LOGGER.info("Previously indexed application systems: " + asids.toString());
+                LOGGER.info("New application systems: " + providerAsIds.toString());
                 providerAsIds.addAll(asids);
+                LOGGER.info("Combined application systems: " + providerAsIds.toString());
             }
         }
 
