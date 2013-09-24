@@ -4,7 +4,10 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
+import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrInputDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,6 +78,17 @@ public class IndexerServiceImpl implements IndexerService {
         }
 
         docs.add(parentDoc);
+
+        // check if provider exists and update base education and as id values
+        SolrQuery query = new SolrQuery("id:" + provider.getId());
+        QueryResponse response = lopUpdateHttpSolrServer.query(query);
+        List<SolrDocument> results = response.getResults();
+        if (results != null && results.size() > 0) {
+            List<String> edus = (List<String>) results.get(0).get("requiredBaseEducations");
+            requiredBaseEducations.addAll(edus);
+            List<String> asids = (List<String>) results.get(0).get("asIds");
+            providerAsIds.addAll(asids);
+        }
 
         providerDoc.setField("asIds", providerAsIds);
         providerDoc.setField("requiredBaseEducations", requiredBaseEducations);
