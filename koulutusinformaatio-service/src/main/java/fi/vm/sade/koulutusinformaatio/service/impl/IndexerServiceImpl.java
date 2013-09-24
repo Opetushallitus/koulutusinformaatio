@@ -85,9 +85,13 @@ public class IndexerServiceImpl implements IndexerService {
         List<SolrDocument> results = response.getResults();
         if (results != null && results.size() > 0) {
             List<String> edus = (List<String>) results.get(0).get("requiredBaseEducations");
-            requiredBaseEducations.addAll(edus);
+            if (edus != null) {
+                requiredBaseEducations.addAll(edus);
+            }
             List<String> asids = (List<String>) results.get(0).get("asIds");
-            providerAsIds.addAll(asids);
+            if (asids != null) {
+                providerAsIds.addAll(asids);
+            }
         }
 
         providerDoc.setField("asIds", providerAsIds);
