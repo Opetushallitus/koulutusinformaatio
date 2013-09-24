@@ -115,6 +115,7 @@ public class IndexerServiceImplTest {
         p.setId("parent_id");
         p.setName(TestUtil.createI18nText("Parent LOS name fi", "Parent LOS name sv", "Parent LOS name en"));
         Provider provider = new Provider();
+        provider.setId("123");
         provider.setName(TestUtil.createI18nText("LOP name fi", "LOP name sv", "LOP name en"));
         Address address = new Address();
         address.setPostOffice("Helsinki");

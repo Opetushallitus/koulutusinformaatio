@@ -88,8 +88,8 @@ public class UpdateServiceImpl implements UpdateService {
                         this.educationDataUpdateService.save(parent);
                     }
                 }
+                this.indexerService.commitLOChanges();
             }
-            this.indexerService.commitLOChanges();
             this.transactionManager.commit();
             LOG.info("Education data update successfully finished");
         } catch (Exception e) {
