@@ -20,7 +20,10 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
+import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,8 +36,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Hannu Lyytikainen
@@ -55,7 +60,7 @@ public class IndexerServiceImplTest {
     private Date applicationOptionApplicationPeriodEnds;
 
     @Before
-    public void init() {
+    public void init() throws SolrServerException {
         applicationSystemStarts = new Date();
         Calendar endCal = Calendar.getInstance();
         endCal.roll(Calendar.YEAR, 1);
@@ -68,6 +73,7 @@ public class IndexerServiceImplTest {
         aoEndCal.roll(Calendar.MONTH, 1);
         aoEndCal.set(Calendar.DATE, 15);
         applicationOptionApplicationPeriodEnds = aoEndCal.getTime();
+        when(lopUpdateHttpSolrServer.query(any(SolrQuery.class))).thenReturn(new QueryResponse());
 
         indexerServiceImpl = new IndexerServiceImpl(loUpdateHttpSolrServer, lopUpdateHttpSolrServer);
     }
