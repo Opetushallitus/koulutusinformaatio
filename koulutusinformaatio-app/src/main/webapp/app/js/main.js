@@ -220,3 +220,5 @@ Modernizr.load([
     nope: 'lib/modernizr/json3.min.js'
 }
 ]);
+
+$.getScript("/static/js/oph-banner.js");
