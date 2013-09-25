@@ -93,15 +93,6 @@
             </jaxrs:providers>
         </jaxrs:client>
 
-        <jaxrs:client id="organisaatioResource"
-                      address="${organisaatio.api.rest.url}"
-                      serviceClass="fi.vm.sade.organisaatio.resource.OrganisaatioResource"
-                      inheritHeaders="true">
-            <jaxrs:providers>
-                <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>
-            </jaxrs:providers>
-        </jaxrs:client>
-
         <bean id="tarjontaServiceImpl"
               class="fi.vm.sade.koulutusinformaatio.service.impl.TarjontaServiceImpl">
             <constructor-arg>
