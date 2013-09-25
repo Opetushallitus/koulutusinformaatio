@@ -29,5 +29,3 @@ $(document).ready(function() {
 	$('.appbasket-count').html(basketCount);
 	$('#search-field-frontpage').focus();
 });
-
-$.getScript("/static/js/oph-banner.js");

@@ -1676,6 +1676,13 @@ small {
   small.cursive {
     font-style: italic; }
 
+.banner-text {
+  padding-left: 20px;
+  color: #ff0000;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 1.231em; }
+
 #viewport {
   position: relative;
   padding-top: 1px;
