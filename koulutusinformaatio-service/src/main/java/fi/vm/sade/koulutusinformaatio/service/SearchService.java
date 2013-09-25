@@ -28,6 +28,6 @@ public interface SearchService {
             final String term, final String asId, final String baseEducation, final boolean vocational) throws SearchException;
 
     LOSearchResultList searchLearningOpportunities(final String term, final String prerequisite,
-                                                   List<String> cities, int start, int rows) throws SearchException;
+                                                   List<String> cities, String applicationSystemId, int start, int rows) throws SearchException;
 
 }

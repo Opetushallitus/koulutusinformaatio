@@ -33,19 +33,22 @@ public class LearningOpportunityQueryTest {
     private static final String TERM = "term";
     private static final String PREREQUISITE = "PK";
     private static final List<String> CITIES = Lists.newArrayList("city1", "city2");
+    private static final String APPLICATION_SYSTEM_ID = "123";
     private static final int START = 0;
     private static final int ROWS = 10;
 
     @Test
     public void testQuery() {
-        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, START, ROWS);
+        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, APPLICATION_SYSTEM_ID, START, ROWS);
         assertNotNull(q);
-        assertEquals(2, q.getFilterQueries().length);
+        assertEquals(3, q.getFilterQueries().length);
         String prerequisiteFQ = new StringBuilder("prerequisites:").append(PREREQUISITE).toString();
         assertEquals(prerequisiteFQ, q.getFilterQueries()[0]);
         String lopHomeplaceFQ = new StringBuilder("lopHomeplace:(")
                 .append(Joiner.on(" OR ").join(CITIES)).append(")").toString();
         assertEquals(lopHomeplaceFQ, q.getFilterQueries()[1]);
+        String applicationSystemFQ = new StringBuilder("applicationSystems:").append(APPLICATION_SYSTEM_ID).toString();
+        assertEquals(applicationSystemFQ, q.getFilterQueries()[2]);
         assertEquals(TERM, q.getQuery().toString());
         assertEquals("edismax", q.getParams("defType")[0]);
     }

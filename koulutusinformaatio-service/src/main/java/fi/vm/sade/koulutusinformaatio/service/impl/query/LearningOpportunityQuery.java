@@ -27,29 +27,25 @@ public class LearningOpportunityQuery extends SolrQuery {
     );
     private final static String LOP_HOMEPLACE = "lopHomeplace";
     private final static String PREREQUISITES = "prerequisites";
+    private final static String APPLICATION_SYSTEMS = "applicationSystems";
 
     public LearningOpportunityQuery(String term, String prerequisite,
-                                    List<String> cities, int start, int rows) {
+                                    List<String> cities, String applicationSystemId, int start, int rows) {
         super(term);
         if (prerequisite != null) {
             this.addFilterQuery(new StringBuilder(PREREQUISITES).append(":").append(prerequisite).toString());
         }
-        this.setStart(start);
-        this.setRows(rows);
         if (cities != null && !cities.isEmpty()) {
-
-            StringBuilder fq = new StringBuilder(LOP_HOMEPLACE).append(":(");
-
-            for (int i = 0; i < cities.size(); i++) {
-                if (i < cities.size() - 1) {
-                    fq.append(cities.get(i)).append(" OR ");
-                } else {
-                    fq.append(cities.get(i));
-                }
-            }
-            fq.append(")");
+            StringBuilder fq = new StringBuilder(LOP_HOMEPLACE).append(":(")
+                    .append(Joiner.on(" OR ").join(cities))
+                    .append(")");;
             this.addFilterQuery(fq.toString());
         }
+        if (applicationSystemId != null) {
+            this.addFilterQuery(new StringBuilder(APPLICATION_SYSTEMS).append(":").append(applicationSystemId).toString());
+        }
+        this.setStart(start);
+        this.setRows(rows);
         this.setParam("defType", "edismax");
         this.setParam(DisMaxParams.QF, Joiner.on(" ").join(FIELDS));
     }

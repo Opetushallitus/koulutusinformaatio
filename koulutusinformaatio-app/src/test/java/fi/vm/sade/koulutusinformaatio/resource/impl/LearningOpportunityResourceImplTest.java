@@ -47,8 +47,8 @@ public class LearningOpportunityResourceImplTest {
         LOSearchResultList resultList = new LOSearchResultList();
         resultList.setResults(Lists.newArrayList(result1));
         resultList.setTotalCount(1);
-        when(searchService.searchLearningOpportunities(eq("term"), eq("PK"), eq(Lists.newArrayList("Helsinki")), eq(0), eq(30))).thenReturn(resultList);
-        when(searchService.searchLearningOpportunities(eq(INVALID_TERM), anyString(), anyList(), anyInt(), anyInt())).thenThrow(SearchException.class);
+        when(searchService.searchLearningOpportunities(eq("term"), eq("PK"), eq(Lists.newArrayList("Helsinki")), eq("asid"), eq(0), eq(30))).thenReturn(resultList);
+        when(searchService.searchLearningOpportunities(eq(INVALID_TERM), anyString(), anyList(), anyString(), anyInt(), anyInt())).thenThrow(SearchException.class);
 
         ParentLearningOpportunitySpecificationDTO parentDTO = new ParentLearningOpportunitySpecificationDTO();
         parentDTO.setId("parentLOSId");
@@ -70,7 +70,7 @@ public class LearningOpportunityResourceImplTest {
 
     @Test
     public void testSearchLearningOpportunities() throws SearchException {
-        LOSearchResultListDTO result = resource.searchLearningOpportunities("term", "PK", Lists.newArrayList("Helsinki"), 0, 30);
+        LOSearchResultListDTO result = resource.searchLearningOpportunities("term", "PK", Lists.newArrayList("Helsinki"), "asid", 0, 30);
         assertNotNull(result);
         assertEquals(1, result.getTotalCount());
         assertEquals("1.2.3", result.getResults().get(0).getId());
@@ -101,7 +101,7 @@ public class LearningOpportunityResourceImplTest {
 
     @Test(expected = HTTPException.class)
     public void testSearchException() {
-        resource.searchLearningOpportunities(INVALID_TERM, "", new ArrayList<String>(), 0, 0);
+        resource.searchLearningOpportunities(INVALID_TERM, "", new ArrayList<String>(), "", 0, 0);
     }
 
 }

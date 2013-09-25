@@ -36,6 +36,8 @@ public interface LearningOpportunityResource {
      * @param text search key
      * @param prerequisite base education prerequisite (pohjakoulutusvaatimus) filter
      *                     if none is provided, no filtering is used
+     * @param cities list of cities to be used as search filter
+     * @param applicationSystemId application system id to be used as search filter
      * @return list of search results
      */
     @GET
@@ -44,6 +46,7 @@ public interface LearningOpportunityResource {
     public LOSearchResultListDTO searchLearningOpportunities(@PathParam("text") String text,
                                                              @QueryParam("prerequisite") String prerequisite,
                                                              @QueryParam("city") List<String> cities,
+                                                             @QueryParam("asId") String applicationSystemId,
                                                              @DefaultValue(value = "0") @QueryParam("start") int start,
                                                              @DefaultValue(value = "100") @QueryParam("rows") int rows);
 
