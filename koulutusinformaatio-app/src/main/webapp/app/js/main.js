@@ -38,15 +38,15 @@ var tabsMenu = {
 };
 
 
-    var popover = {
-        handlers : {
-            openPopovers : 0,
-            autoGenCount : 0
-        },
-        build:function(){
-            popover.set.triggers();
-        },
-        add:function(title, content){
+var popover = {
+    handlers : {
+        openPopovers : 0,
+        autoGenCount : 0
+    },
+    build: function() {
+        popover.set.triggers();
+    },
+    add: function(title, content) {
             // Popover auto-generated id
             id = 'poag'+popover.handlers.autoGenCount; 
             popover.handlers.autoGenCount++;
@@ -65,9 +65,9 @@ var tabsMenu = {
             html +=         '</div>';
             html +=     '</div>';
             html += '</div>';
-        
+
             $('#overlay').append(html);
-        
+
             $('#' + id).show();
             popover.handlers.openPopovers++;
             popover.set.overlay();
@@ -75,7 +75,7 @@ var tabsMenu = {
             popover.set.position($('#'+id+' .popup-dialog'));
             return id;
         },
-        hide:function(id){
+        hide: function(id) {
             if($('#'+id).length != 0)
             {
                 $('#'+id).hide();
@@ -83,7 +83,7 @@ var tabsMenu = {
                 popover.set.overlay();
             }
         },
-        remove:function(id){
+        remove: function(id) {
             /*
             if(target.length != 0 && $(target).length != 0)
             {
@@ -95,7 +95,7 @@ var tabsMenu = {
             popover.handlers.openPopovers--;
             popover.set.overlay();
         },
-        show:function(id){
+        show: function(id) {
             if($('#'+id).length != 0)
             {
                 $('#'+id).show();
@@ -105,12 +105,12 @@ var tabsMenu = {
                 popover.set.position($('#'+id+' .popup-dialog'));
             }
         },
-        set : {
-            active:function(){
+        set: {
+            active: function() {
                 $('#overlay .popup-dialog-wrapper').addClass('inactive').last().removeClass('inactive');
             },
-            overlay:function(){
-            
+            overlay: function() {
+
                 // Show overlay if 1 or more popovers are open/visible
                 // Hide overlay if no popovers are open/visible
                 if(popover.handlers.openPopovers > 0)
@@ -124,14 +124,14 @@ var tabsMenu = {
                     $('#overlay').hide();
                 }
             },
-            position:function(target){
-            
+            position: function(target) {
+
                 // Target the actual popover-window
                 if($(target).hasClass('.popup-dialog-wrapper'))
                 {
                     target = $(target).find('.popup-dialog');
                 }
-            
+
                 // Get window height and position from top
                 //window = $(window);
                 window_top = $(window).scrollTop();
@@ -156,8 +156,8 @@ var tabsMenu = {
                 target.css({'top':popover_position+'px'});
                 
             },
-            size:function(target){
-                
+            size: function(target) {
+
                 // Target the actual popover-window
                 if($(target).hasClass('.popup-dialog-wrapper'))
                 {
@@ -180,31 +180,31 @@ var tabsMenu = {
                 $(target).css({'width':popover_width+'px'});
                 
             },
-            triggers:function(){
-            
+            triggers: function() {
+
                 // Remove or hide popover from closing links
-                $('body').on('click', '.popup-dialog-wrapper .popup-dialog-close', function(){
+                $('body').on('click', '.popup-dialog-wrapper .popup-dialog-close', function() {
                     id = $(this).closest('.popup-dialog-wrapper').attr('id');
                     popover.hide(id);
                     target = $(this).closest('.popup-dialog-wrapper').remove(); //.find('.popup-dialog');
                 });
                 
                 // Generate new popover
-                $('body').on('click', '[data-po-add]', function(event){
+                $('body').on('click', '[data-po-add]', function(event) {
                     event.preventDefault();
                     popover.add();
 
                 });
                 
                 // Show already existing popover with id
-                $('body').on('click', '[data-po-show]', function(event){
+                $('body').on('click', '[data-po-show]', function(event) {
                     event.preventDefault();
                     id = $(this).attr('data-po-show');
                     popover.show(id);
                 });
                 
                 // Hide already existing popover with id
-                $('body').on('click', '[data-po-hide]', function(event){
+                $('body').on('click', '[data-po-hide]', function(event) {
                     event.preventDefault();
                     id = $(this).attr('data-po-hide');
                     popover.hide(id);

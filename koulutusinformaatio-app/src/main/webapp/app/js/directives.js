@@ -634,6 +634,25 @@ directive('kiRenderApplicationOptionActive', function() {
 }).
 
 /**
+ *  Render application option status
+ */
+directive('kiBanner', ['$location', function($location) {
+    return {
+        restrict: 'E,A',
+        template: '<span class="banner-text">{{banner}}</span>',
+        link: function(scope, element, attrs) {
+            var host = $location.host();
+            if (host.indexOf('koulutus') == 0) scope.banner = 'koulutus';
+            else if (host.indexOf('testi') == 0) scope.banner = 'QA';
+            else if (host.indexOf('xtest-') == 0) scope.banner = 'Kielistudio';
+            else if (host.indexOf('test-') == 0) scope.banner = 'Reppu';
+            else if (host.indexOf('itest-') == 0) scope.banner = 'Luokka';
+            else if (host.indexOf('localhost') == 0) scope.banner = host;
+        }
+    }
+}]).
+
+/**
  *  Fetches a trasnlation with the given key and inserts it inside the element
  */
 directive('kiI18n', ['TranslationService', function(TranslationService) {

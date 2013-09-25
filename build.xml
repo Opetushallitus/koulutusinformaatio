@@ -26,7 +26,7 @@
 		<fail message="tomcat-port not defined" unless="tomcat-port" />	
 
 		<property name="oph.name" value="koulutusinformaatio"/>
-		<property name="pom.version" value="6.1-SNAPSHOT"/>
+		<property name="pom.version" value="6.2-SNAPSHOT"/>
 
 		<property name="maven.repo" value="${user.home}/.m2/repository"/>
 		<property name="tomcat.name" value="tomcat_${oph.name}"/>
@@ -65,22 +65,6 @@
 	       <fileset dir="${war.dir}">
 				<include name="koulutusinformaatio-app*.war"/>
 			</fileset>
-			
-			<fileset dir="${maven.repo}/org/apache/solr/solr/4.2.1">
-				<include name="*.war"/>
-			</fileset>
-
-            <fileset dir="${maven.repo}/net/java/dev/jna/jna/3.5.2/">
-                <include name="*.jar"/>
-            </fileset>
-
-            <fileset dir="${maven.repo}/org/puimula/libvoikko/3.2">
-                <include name="*.jar"/>
-            </fileset>
-
-            <fileset dir="${maven.repo}/fi/nationallibrary/ndl/solrvoikko/0.0.2-SNAPSHOT">
-                <include name="solrvoikko-0.0.2-SNAPSHOT.jar"/>
-            </fileset>
 		</scp>
 
 		<!-- eiks koulutusinformaatio-service tuotakkaan warria? -->
@@ -89,14 +73,6 @@
 				mkdir ${tomcat.home}/webapps/ROOT;
 				unzip -qo -d${tomcat.home}/webapps/ROOT ${tomcat.home}/webapps/koulutusinformaatio-app*.war;
 				rm -rf ${tomcat.home}/webapps/koulutusinformaatio-app*.war;
-				unzip -qo -d${tomcat.home}/webapps/solr ${tomcat.home}/webapps/solr*.war;
-				rm -rf ${tomcat.home}/webapps/solr*.war;
-				mv ${tomcat.home}/webapps/jna*.jar ${tomcat.home}/webapps/solr/WEB-INF/lib/;
-				rm -rf ${tomcat.home}/webapps/jna*.jar;
-				mv ${tomcat.home}/webapps/libvoikko*.jar ${tomcat.home}/webapps/solr/WEB-INF/lib/;
-				rm -rf ${tomcat.home}/webapps/libvoikko*.jar;
-				mv ${tomcat.home}/webapps/solrvoikko*.jar ${tomcat.home}/webapps/solr/WEB-INF/lib/;
-				rm -rf ${tomcat.home}/webapps/solrvoikko*.jar;
 				"
                  host="${tomcat-host}" username="tomcat" keyfile="${ssh.keyfile}"
                  passphrase="${ssh.keypass}" trust="true" failonerror="false" />
