@@ -25,11 +25,14 @@ public class LearningOpportunityQuery extends SolrQuery {
             "asNames",
             "lopNames"
     );
+
+    private final static Integer AS_COUNT = 10;
+
     private final static String LOP_HOMEPLACE = "lopHomeplace";
     private final static String PREREQUISITES = "prerequisites";
 
     public LearningOpportunityQuery(String term, String prerequisite,
-                                    List<String> cities, int start, int rows) {
+                                    List<String> cities, boolean ongoing, int start, int rows) {
         super(term);
         if (prerequisite != null) {
             this.addFilterQuery(String.format("%s:%s", PREREQUISITES, prerequisite));
@@ -40,6 +43,16 @@ public class LearningOpportunityQuery extends SolrQuery {
             this.addFilterQuery(
                     String.format("%s:(%s)", LOP_HOMEPLACE, Joiner.on(" OR ").join(cities))
             );
+        }
+        if (ongoing) {
+            StringBuilder ongoingFQ = new StringBuilder();
+            for (int i = 0; i < AS_COUNT; i++) {
+                ongoingFQ.append(String.format("(asStart_%d:[* TO NOW] AND asEnd_%d:[NOW TO *])", i, i));
+                if (i != AS_COUNT-1) {
+                    ongoingFQ.append(" OR ");
+                }
+            }
+            this.addFilterQuery(ongoingFQ.toString());
         }
         this.setParam("defType", "edismax");
         this.setParam(DisMaxParams.QF, Joiner.on(" ").join(FIELDS));

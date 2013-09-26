@@ -33,12 +33,13 @@ public class LearningOpportunityQueryTest {
     private static final String TERM = "term";
     private static final String PREREQUISITE = "PK";
     private static final List<String> CITIES = Lists.newArrayList("city1", "city2");
+    private static final boolean ONGOING = false;
     private static final int START = 0;
     private static final int ROWS = 10;
 
     @Test
     public void testQuery() {
-        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, START, ROWS);
+        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, ONGOING, START, ROWS);
         assertNotNull(q);
         assertEquals(2, q.getFilterQueries().length);
         String prerequisiteFQ = new StringBuilder("prerequisites:").append(PREREQUISITE).toString();
