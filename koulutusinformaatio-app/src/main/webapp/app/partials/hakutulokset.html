@@ -46,19 +46,31 @@
     </div>
 </div>
 <aside class="grid16-5" id="column-narrow">
-    <h4 class="margin-top-0 margin-bottom-0" data-ki-i18n="filter-search-title"></h4>
-    <small class="margin-bottom-2 block cursive" data-ki-i18n="filter-search-subtitle"></small>
     <form name="searchResultFilters" novalidate data-ng-controller="SearchFilterCtrl">
-        <ul class="nobullet">
-            <li>
-                <input type="radio" name="pohjakoulutus" id="radio1" value="PK" data-ng-model="prerequisite" data-ng-change="change()"/>
-                <label for="radio1" data-ki-i18n="filter-search-elementary"></label>
-            </li>
-            <li>    
-                <input type="radio" name="pohjakoulutus" id="radio2" value="YO" data-ng-model="prerequisite" data-ng-change="change()"/>
-                <label for="radio2" data-ki-i18n="filter-search-upper-secondary"></label>
-            </li>
-        </ul>
+        <h2>Rajaa hakutuloksia tästä</h2>
+        <div class="filter margin-bottom-2">
+            <ul class="nobullet">
+                <li>
+                    <input type="checkbox" name="kaynnissa" id="checkbox1" data-ng-model="ongoing" data-ng-change="change()">
+                    <label for="checkbox1" data-ki-i18n="filter-search-as-ongoing"></label>
+                </li>
+            </ul>
+        </div>
+
+        <h4 class="margin-top-0 margin-bottom-0" data-ki-i18n="filter-search-title"></h4>
+        <small class="margin-bottom-2 block cursive" data-ki-i18n="filter-search-subtitle"></small>
+        <div class="filter margin-bottom-2">
+            <ul class="nobullet">
+                <li>
+                    <input type="radio" name="pohjakoulutus" id="radio1" value="PK" data-ng-model="prerequisite" data-ng-change="change()"/>
+                    <label for="radio1" data-ki-i18n="filter-search-elementary"></label>
+                </li>
+                <li>    
+                    <input type="radio" name="pohjakoulutus" id="radio2" value="YO" data-ng-model="prerequisite" data-ng-change="change()"/>
+                    <label for="radio2" data-ki-i18n="filter-search-upper-secondary"></label>
+                </li>
+            </ul>
+        </div>
         <h4 data-ki-i18n="filter-search-location-title"></h4>
         <div data-ki-location-filter></div>
     </form>
