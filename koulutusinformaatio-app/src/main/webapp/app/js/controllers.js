@@ -226,11 +226,13 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     var filters = FilterService.get();
     $scope.prerequisite = filters.prerequisite;
     $scope.locations = filters.locations;
+    $scope.ongoing = filters.ongoing;
 
     $scope.change = function() {
         FilterService.set({
             prerequisite: $scope.prerequisite,
-            locations: $scope.locations
+            locations: $scope.locations,
+            ongoing: $scope.ongoing
         });
 
         // append filters to url
@@ -262,7 +264,8 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
                 start: (value-1) * resultsPerPage,
                 rows: resultsPerPage,
                 prerequisite: filters.prerequisite,
-                locations: filters.locations
+                locations: filters.locations,
+                ongoing: filters.ongoing
             }).then(function(result) {
                 $scope.loResult = result;
                 $scope.maxPages = Math.ceil(result.totalCount / resultsPerPage);

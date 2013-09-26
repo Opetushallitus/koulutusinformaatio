@@ -42,6 +42,7 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
             qParams += (params.rows != undefined) ? ('&rows=' + params.rows) : '';
             qParams += (params.prerequisite != undefined) ? ('&prerequisite=' + params.prerequisite) : '';
             qParams += (params.locations != undefined && params.locations.length > 0) ? ('&' + cities) : '';
+            qParams += (params.ongoing) != undefined ? ('&ongoing=' + params.ongoing) : '';
 
             $http.get('../lo/search/' + encodeURI(params.queryString) + qParams, {}).
             success(function(result) {
@@ -723,6 +724,7 @@ service('FilterService', ['UtilityService', function(UtilityService) {
 
     var filterIsEmpty = function(filter) {
         if (filter == undefined || filter == null) return true;
+        else if (typeof filter == 'boolean' && !filter) return true;
         else if (filter instanceof Array && filter.length <= 0 ) return true;
         else return false;
     }
@@ -742,6 +744,7 @@ service('FilterService', ['UtilityService', function(UtilityService) {
                     }
                 }
             }
+
         },
 
         get: function() {
@@ -757,9 +760,10 @@ service('FilterService', ['UtilityService', function(UtilityService) {
             for (var i in filters) {
                 if (filters.hasOwnProperty(i)) {
                     var filter = filters[i];
-
                     if (filter instanceof Array) {
                         params += '&' + i + '=' + filter.join(',');
+                    } else if (typeof filter == 'boolean') {
+                        params += (filter) ? '&' + i : '';
                     } else {
                         params += '&' + i + '=' + filter;
                     }
