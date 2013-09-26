@@ -3,7 +3,7 @@
 /**
  *  Controls the selected user interface language
  */
-function LanguageCtrl($scope, $location, LanguageService) {
+function LanguageCtrl($scope, LanguageService) {
     $scope.changeLanguage = function(code) {
        LanguageService.setLanguage(code);
        i18n.setLng(code);
@@ -14,7 +14,7 @@ function LanguageCtrl($scope, $location, LanguageService) {
 /**
  *  Controls header actions
  */
-function HeaderCtrl($scope, $location, ApplicationBasketService, LanguageService) {
+function HeaderCtrl($scope, ApplicationBasketService, LanguageService) {
     $scope.appBasketItemCount = function() {
         return ApplicationBasketService.getItemCount();
     }
@@ -57,25 +57,14 @@ function FooterCtrl($scope, LanguageService, kiAppConstants) {
 };
 
 /**
- *  Controller for index view
- */
- /*
- function IndexCtrl($scope, TitleService) {
-    var title = i18n.t('title-front-page');
-    TitleService.setTitle(title);
-};
-*/
-
-
-/**
  *  Controller for application basket
  */
-function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, ApplicationBasketService, SearchService, kiAppConstants) {
+function ApplicationBasketCtrl($scope, $routeParams, TitleService, ApplicationBasketService, SearchService, FilterService, kiAppConstants) {
     var title = i18n.t('title-application-basket');
     var basketLimit = kiAppConstants.applicationBasketLimit; // TODO: get this from application data?
     TitleService.setTitle(title);
 
-    $scope.queryString = SearchService.getTerm();
+    $scope.queryString = SearchService.getTerm() + '?' + FilterService.getParams();
     $scope.notificationText = i18n.t('application-basket-fill-form-notification', {count: basketLimit});
     $scope.basketIsEmpty = ApplicationBasketService.isEmpty();
 
@@ -179,7 +168,7 @@ function ApplicationBasketCtrl($scope, $routeParams, $location, TitleService, Ap
 /**
  *  Controller for adding applications to application basket
  */
-function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, UtilityService) {
+function ApplicationCtrl($scope, ApplicationBasketService, UtilityService) {
 
     $scope.addToBasket = function(aoId) {
         var basketType = ApplicationBasketService.getType();
@@ -210,7 +199,7 @@ function ApplicationCtrl($scope, $routeParams, ApplicationBasketService, Utility
 /**
  *  Controller for search field in header
  */
-function SearchFieldCtrl($scope, $routeParams, $location, SearchService, $route) {
+function SearchFieldCtrl($scope, $location, SearchService, FilterService) {
     $scope.searchFieldPlaceholder = i18n.t('search-field-placeholder'); 
 
     // Perform search using LearningOpportunity service
@@ -219,7 +208,9 @@ function SearchFieldCtrl($scope, $routeParams, $location, SearchService, $route)
             SearchService.setTerm($scope.queryString);
             var queryString = $scope.queryString;
             $scope.queryString = '';
+            $location.hash(null);
             $location.path('/haku/' + queryString);
+            $location.search(FilterService.get());
         }
     };
 };
@@ -227,34 +218,30 @@ function SearchFieldCtrl($scope, $routeParams, $location, SearchService, $route)
 /**
  *  Controller for search filters
  */
-function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService, kiAppConstants, FilterService) {
+function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, kiAppConstants, FilterService) {
+    var queryParams = $location.search();
     var resultsPerPage = kiAppConstants.searchResultsPerPage;
+
+    FilterService.set(queryParams);
     var filters = FilterService.get();
     $scope.prerequisite = filters.prerequisite;
     $scope.locations = filters.locations;
 
     $scope.change = function() {
-        FilterService.set($scope.prerequisite, $scope.locations);
-
-        SearchLearningOpportunityService.query({
-            queryString: $scope.queryString,
+        FilterService.set({
             prerequisite: $scope.prerequisite,
-            start: 0,
-            rows: resultsPerPage,
             locations: $scope.locations
-        }).then(function(result) {
-            $scope.$parent.loResult = result;
-            $scope.$parent.maxPages = Math.ceil(result.totalCount / resultsPerPage);
-            $scope.$parent.showPagination = $scope.$parent.maxPages > 1;
-            $scope.$parent.currentPage = 1;
         });
+
+        // append filters to url
+        $location.search( FilterService.get() );
     }
 };
 
 /**
  *  Controller for search functionality 
  */
- function SearchCtrl($scope, $routeParams, $location, SearchLearningOpportunityService, SearchService, TitleService, kiAppConstants, FilterService) {
+ function SearchCtrl($scope, $routeParams, SearchLearningOpportunityService, SearchService, TitleService, kiAppConstants, FilterService) {
     var resultsPerPage = kiAppConstants.searchResultsPerPage;
     $scope.currentPage = kiAppConstants.searchResultsStartPage;
 
@@ -275,12 +262,12 @@ function SearchFilterCtrl($scope, $routeParams, SearchLearningOpportunityService
                 start: (value-1) * resultsPerPage,
                 rows: resultsPerPage,
                 prerequisite: filters.prerequisite,
-                individualized: filters.individualized,
-                locations: filters.locations }).then(function(result) {
-                    $scope.loResult = result;
-                    $scope.maxPages = Math.ceil(result.totalCount / resultsPerPage);
-                    $scope.showPagination = $scope.maxPages > 1;
-                });
+                locations: filters.locations
+            }).then(function(result) {
+                $scope.loResult = result;
+                $scope.maxPages = Math.ceil(result.totalCount / resultsPerPage);
+                $scope.showPagination = $scope.maxPages > 1;
+            });
 
             $scope.queryString = $routeParams.queryString;
             $scope.showFilters = $scope.queryString ? true : false;

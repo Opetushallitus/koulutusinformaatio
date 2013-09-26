@@ -717,27 +717,60 @@ service('ApplicationBasketService', ['$http', '$q', 'LanguageService', function(
 /**
  *  Service for maintaining search filter state
  */
-service('FilterService', function() {
-    var prerequisite;
-    var locations = [];
+service('FilterService', ['UtilityService', function(UtilityService) {
+    var filters = {};
+    var arrayFilters = ['locations'];
+
+    var filterIsEmpty = function(filter) {
+        if (filter == undefined || filter == null) return true;
+        else if (filter instanceof Array && filter.length <= 0 ) return true;
+        else return false;
+    }
+
     return {
-        set: function(newPrerequisiteValue, newLocationsValue) {
-            prerequisite = newPrerequisiteValue;
-            locations = newLocationsValue;
+        set: function(newFilters) {
+            filters = {};
+            for (var i in newFilters) {
+                if (newFilters.hasOwnProperty(i)) {
+                    var filter = newFilters[i];
+                    if (arrayFilters.indexOf(i) >= 0 && typeof filter == 'string') {
+                        filter = UtilityService.getStringAsArray(filter);
+                    }
+
+                    if (!filterIsEmpty(filter)) {
+                        filters[i] = filter;
+                    }
+                }
+            }
         },
 
         get: function() {
-            return {
-                'prerequisite': prerequisite,
-                'locations': locations 
-            };
+            return filters;
         },
 
         getPrerequisite: function() {
-            return prerequisite;
+            return filters.prerequisite;
+        },
+
+        getParams: function() {
+            var params = '';
+            for (var i in filters) {
+                if (filters.hasOwnProperty(i)) {
+                    var filter = filters[i];
+
+                    if (filter instanceof Array) {
+                        params += '&' + i + '=' + filter.join(',');
+                    } else {
+                        params += '&' + i + '=' + filter;
+                    }
+                }
+            }
+
+            params = params.length > 0 ? params.substring(1, params.length) : '';
+            return params;
         }
     };
-}).
+}]).
 
 /**
  *  Service for retrieving translated values for text
@@ -753,6 +786,12 @@ service('UtilityService', function() {
                         }
                     }
                 }
+            }
+        },
+        getStringAsArray: function(stringToArray) {
+            var delimiter = ',';
+            if (stringToArray) {
+                return stringToArray.split(delimiter);
             }
         }
     };
