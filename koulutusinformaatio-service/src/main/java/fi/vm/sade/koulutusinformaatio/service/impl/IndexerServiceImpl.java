@@ -148,7 +148,6 @@ public class IndexerServiceImpl implements IndexerService {
                     doc.addField("asName_fi", ao.getApplicationSystem().getName().getTranslations().get("fi"));
                     doc.addField("asName_sv", ao.getApplicationSystem().getName().getTranslations().get("sv"));
                     doc.addField("asName_en", ao.getApplicationSystem().getName().getTranslations().get("en"));
-                    doc.addField("applicationSystems", ao.getApplicationSystem().getId());
                 }
             }
 
@@ -226,7 +225,6 @@ public class IndexerServiceImpl implements IndexerService {
                 doc.addField("asName_fi", ao.getApplicationSystem().getName().getTranslations().get("fi"));
                 doc.addField("asName_sv", ao.getApplicationSystem().getName().getTranslations().get("sv"));
                 doc.addField("asName_en", ao.getApplicationSystem().getName().getTranslations().get("en"));
-                doc.addField("applicationSystems", ao.getApplicationSystem().getId());
             }
         }
 
