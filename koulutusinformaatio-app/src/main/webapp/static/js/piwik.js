@@ -18,7 +18,7 @@
   _paq.push(["enableLinkTracking"]);
 
   (function() {
-		var u=(("https:" == document.location.protocol) ? "https" : "http") + "://nat-piwik-poc.oph.ware.fi/analytics/";
+		var u=(("https:" == document.location.protocol) ? "https" : "http") + "://analytiikka.opintopolku.fi/piwik/";
 		_paq.push(["setTrackerUrl", u+"piwik.php"]);
 		_paq.push(["setSiteId", piwikSiteId]);
 		var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";

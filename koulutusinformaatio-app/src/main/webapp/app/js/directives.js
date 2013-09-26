@@ -250,12 +250,11 @@ directive('kiAbsoluteLink', function() {
     return {
         restrict: 'E,A',
         templateUrl: 'templates/locationFilter.html',
-
         link: function(scope, element, attrs) {
             element = $(element);
             if (element.find('input')) {
                 element.find('input').on('keyup', function(event) {
-                    if (event.keyCode === 13) {
+                    if (event.keyCode == 13) {
                         scope.add();
                     }
                 });
@@ -268,10 +267,15 @@ directive('kiAbsoluteLink', function() {
             }
 
             scope.add = function() {
+                if (!scope.locations) {
+                    scope.locations = [];
+                }
+
                 if (scope.location && scope.locations.indexOf(scope.location) < 0) {
                     scope.locations.push(scope.location);
                     scope.location = '';
                     scope.change();
+                    scope.$apply();
                     return false;
                 }
             }
@@ -369,7 +373,7 @@ directive('kiAbsoluteLink', function() {
 /**
  *  Creates and controls the breadcrumb
  */
- directive('kiBreadcrumb', ['$location', 'SearchService', 'kiAppConstants', 'LanguageService', function($location, SearchService, kiAppConstants, LanguageService) {
+ directive('kiBreadcrumb', ['$location', 'SearchService', 'kiAppConstants', 'LanguageService', 'FilterService', function($location, SearchService, kiAppConstants, LanguageService, FilterService) {
     return {
         restrict: 'E,A',
         templateUrl: 'templates/breadcrumb.html',
@@ -403,7 +407,7 @@ directive('kiAbsoluteLink', function() {
                     pushItem({name: home, linkHref: kiAppConstants.contextRoot + LanguageService.getLanguage() });
                 }
                 
-                pushItem({name: root, linkHref: '#/haku/' + SearchService.getTerm() });
+                pushItem({name: root, linkHref: '#/haku/' + SearchService.getTerm() + '?' + FilterService.getParams() });
 
                 if (scope.parentLO) {
                     pushItem({name: parent, linkHref: '#/tutkinto/' + scope.parentLO.id });

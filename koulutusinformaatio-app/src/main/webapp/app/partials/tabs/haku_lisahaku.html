@@ -1,15 +1,9 @@
-<h4 class="title" data-ki-i18n="application-period-additional"></h4>
-<div class="content">
-    <span data-ng-repeat="dates in as.applicationDates">
-        <span data-ki-timestamp="{{dates.startDate}}"></span> - <span data-ki-timestamp="{{dates.endDate}}"></span><br/>
-    </span>
-</div>
-
 <h4 class="title"><span data-ki-i18n="application-options-additional"></span> ({{as.applicationOptions.length}})</h4>
 <div data-ng-repeat="ao in as.applicationOptions" class="content">
     <ul class="nobullet">
         <li><h2 class="margin-bottom-0 margin-top-0">{{ao.name}}</h2></li>
         <li class="small"><span data-ki-i18n="starting-quota" data-show-colon="true" class="margin-right-1"></span><span>{{ao.startingQuota}}</span></li>
+        <li class="small"><span data-ki-i18n="application-system-additional" data-show-colon="true" class="margin-right-1"></span><span data-ki-timestamp="{{ao.applicationStartDate}}"></span>&ndash;<span data-ki-timestamp="{{ao.applicationEndDate}}"></span></li>
         <ul class="disc">
             <li data-ng-repeat="child in ao.childRefs">
                 <a href="#/koulutusohjelma/{{child.losId}}#{{prerequisite.value}}">{{child.name}}</a>
