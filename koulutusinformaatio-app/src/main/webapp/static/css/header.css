@@ -214,3 +214,16 @@ article.main ul {
   -ms-border-radius: 3px;
   border-radius: 3px;
   border: 1px solid #cccccc; }
+
+.notification-banner {
+  display: block;
+  margin: 0 0 1em 0;
+  text-align: center; }
+  .notification-banner div {
+    display: block;
+    padding: 8px 8px;
+    font-size: 12px;
+    line-height: 14px;
+    color: #ffffff;
+    vertical-align: baseline;
+    background-color: #dc143c; }
