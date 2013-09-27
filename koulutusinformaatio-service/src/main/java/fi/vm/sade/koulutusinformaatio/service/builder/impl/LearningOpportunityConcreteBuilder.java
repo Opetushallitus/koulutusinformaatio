@@ -157,10 +157,11 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
 
                 for (ChildLOI childLOI : childLOS.getLois()) {
 
-                    // add provider to ao + as id to provider
+                    // add info to ao
                     for (ApplicationOption ao : childLOI.getApplicationOptions()) {
                         ao.setProvider(parentLOS.getProvider());
                         ao.setParent(new ParentLOSRef(parentLOS.getId(), parentLOS.getName()));
+                        ao.setEducationDegree(parentLOS.getEducationDegree());
                         parentLOS.getProvider().getApplicationSystemIDs().add(ao.getApplicationSystem().getId());
                     }
 
@@ -380,7 +381,7 @@ public class LearningOpportunityConcreteBuilder implements LearningOpportunityBu
                 if (!Strings.isNullOrEmpty(hakukohdeDTO.getSoraKuvausKoodiUri())) {
                     ao.setSora(true);
                 }
-                ao.setEducationDegree(koodistoService.searchFirstCodeValue(childKomoto.getKoulutusAsteUri()));
+
                 ao.setTeachingLanguages(koodistoService.searchCodeValuesMultiple(childKomoto.getOpetuskieletUris()));
                 ao.setPrerequisite(childLOI.getPrerequisite());
                 ao.setSpecificApplicationDates(hakukohdeDTO.isKaytetaanHakukohdekohtaistaHakuaikaa());
