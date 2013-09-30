@@ -16,14 +16,15 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
+import com.google.common.base.Function;
 import com.google.common.base.Strings;
+import com.google.common.collect.Ordering;
 import fi.vm.sade.koulutusinformaatio.domain.DateRange;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.DateRangeDTO;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Mikko Majapuro
@@ -119,7 +120,25 @@ public class ConverterUtil {
         return false;
     }
 
+    public static boolean isOngoingDTO(List<DateRangeDTO> dateRanges) {
+        for (DateRangeDTO dr : dateRanges) {
+            if (isOngoingDTO(dr)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static boolean isOngoing(DateRange dateRange) {
+        Date now = new Date();
+        if (dateRange.getStartDate().before(now) && now.before(dateRange.getEndDate())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean isOngoingDTO(DateRangeDTO dateRange) {
         Date now = new Date();
         if (dateRange.getStartDate().before(now) && now.before(dateRange.getEndDate())) {
             return true;
@@ -138,5 +157,39 @@ public class ConverterUtil {
             }
         }
         return nextStarts;
+    }
+
+    /**
+     * Sort application systems for ui.
+     * <p/>
+     * Algorithm:
+     * <p/>
+     * 1. Ongoing on top.
+     * 3. Sort by date, latest starting first.
+     *
+     * @return new sorted list
+     */
+    public static List<ApplicationSystemDTO> sortApplicationSystems(List<ApplicationSystemDTO> applicationSystems) {
+
+        Ordering<ApplicationSystemDTO> firstOngoingThenStartDate = Ordering.natural().reverse()
+                .onResultOf(new Function<ApplicationSystemDTO, Boolean>() {
+                    @Override
+                    public Boolean apply(ApplicationSystemDTO input) {
+                        return isOngoingDTO(input.getApplicationDates());
+                    }
+                }).compound(
+                        Ordering.natural().reverse()
+                                .onResultOf(
+                                        new Function<ApplicationSystemDTO, Date>() {
+                                            @Override
+                                            public Date apply(ApplicationSystemDTO input) {
+                                                return input.getApplicationDates().get(0).getStartDate();
+                                            }
+                                        }
+                                )
+                );
+
+        Collections.sort(applicationSystems, firstOngoingThenStartDate);
+        return applicationSystems;
     }
 }
