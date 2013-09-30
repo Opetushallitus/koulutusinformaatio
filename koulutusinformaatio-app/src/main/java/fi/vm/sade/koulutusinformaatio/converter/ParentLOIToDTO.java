@@ -51,6 +51,9 @@ public class ParentLOIToDTO {
             loi.getApplicationSystems().add(asDTO);
         }
 
+        // order application systems
+        loi.setApplicationSystems(ConverterUtil.sortApplicationSystems(loi.getApplicationSystems()));
+
         return loi;
     }
 }

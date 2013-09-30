@@ -52,6 +52,9 @@ public class ChildLOIToDTO {
             dto.getApplicationSystems().add(asDTO);
         }
 
+        // order application systems
+        dto.setApplicationSystems(ConverterUtil.sortApplicationSystems(dto.getApplicationSystems()));
+
         if (childLOI.getContactPersons() != null) {
             for (ContactPerson contactPerson :childLOI.getContactPersons()) {
                 dto.getContactPersons().add(ContactPersonToDTO.convert(contactPerson));
