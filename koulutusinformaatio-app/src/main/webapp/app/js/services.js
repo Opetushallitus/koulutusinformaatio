@@ -440,7 +440,12 @@ service('LearningOpportunityProviderPictureService', ['$http', '$timeout', '$q',
     var key = 'searchTerm';
     return {
         getTerm: function() {
-            return $.cookie(key);
+            var term = $.cookie(key);
+            if (term) {
+                return term;
+            } else {
+                return '';
+            }
         },
 
         setTerm: function(newTerm) {
