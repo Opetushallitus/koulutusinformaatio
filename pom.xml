@@ -39,7 +39,7 @@
         <wiremock.version>1.33</wiremock.version>
 
         <oph.organisaatio.version>6.2-SNAPSHOT</oph.organisaatio.version>
-        <oph.koodisto.version>6.1</oph.koodisto.version>
+        <oph.koodisto.version>6.2-SNAPSHOT</oph.koodisto.version>
         <oph.tarjonta.version>6.2-SNAPSHOT</oph.tarjonta.version>
         <oph.generic.version>6.2-SNAPSHOT</oph.generic.version>
     </properties>
