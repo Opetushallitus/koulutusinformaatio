@@ -29,7 +29,7 @@
     <bean id="mongo" class="com.mongodb.Mongo">
         <constructor-arg>
             <bean class="com.mongodb.MongoURI">
-                <constructor-arg value="${mongodb.url}"/>
+                <constructor-arg value="${mongodb.test.url}"/>
             </bean>
         </constructor-arg>
     </bean>

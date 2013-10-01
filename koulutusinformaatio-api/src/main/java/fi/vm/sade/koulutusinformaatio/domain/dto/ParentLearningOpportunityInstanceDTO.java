@@ -18,8 +18,8 @@ package fi.vm.sade.koulutusinformaatio.domain.dto;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Mikko Majapuro
@@ -30,7 +30,7 @@ public class ParentLearningOpportunityInstanceDTO {
     private String id;
     private String selectingDegreeProgram;
     private CodeDTO prerequisite;
-    private Set<ApplicationSystemDTO> applicationSystems = new HashSet<ApplicationSystemDTO>();
+    private List<ApplicationSystemDTO> applicationSystems = new ArrayList<ApplicationSystemDTO>();
 
 
     public String getId() {
@@ -57,11 +57,11 @@ public class ParentLearningOpportunityInstanceDTO {
         this.selectingDegreeProgram = selectingDegreeProgram;
     }
 
-    public Set<ApplicationSystemDTO> getApplicationSystems() {
+    public List<ApplicationSystemDTO> getApplicationSystems() {
         return applicationSystems;
     }
 
-    public void setApplicationSystems(Set<ApplicationSystemDTO> applicationSystems) {
+    public void setApplicationSystems(List<ApplicationSystemDTO> applicationSystems) {
         this.applicationSystems = applicationSystems;
     }
 }

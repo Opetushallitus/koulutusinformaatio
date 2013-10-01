@@ -20,9 +20,17 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
+    <bean id="transactionMongo" class="com.mongodb.Mongo">
+        <constructor-arg>
+            <bean class="com.mongodb.MongoURI">
+                <constructor-arg value="${mongodb.transaction.url}"/>
+            </bean>
+        </constructor-arg>
+    </bean>
+
     <bean id="parentLOSTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecificationDAO">
         <constructor-arg>
-            <ref bean="mongo"/>
+            <ref bean="transactionMongo"/>
         </constructor-arg>
         <constructor-arg>
             <ref bean="morphia"/>
@@ -32,7 +40,7 @@
 
     <bean id="applicationOptionTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO">
         <constructor-arg>
-            <ref bean="mongo"/>
+            <ref bean="transactionMongo"/>
         </constructor-arg>
         <constructor-arg>
             <ref bean="morphia"/>
@@ -42,7 +50,7 @@
 
     <bean id="learningOpportunityProviderTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO">
         <constructor-arg>
-            <ref bean="mongo"/>
+            <ref bean="transactionMongo"/>
         </constructor-arg>
         <constructor-arg>
             <ref bean="morphia"/>
@@ -52,7 +60,7 @@
 
     <bean id="childLOTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityDAO">
         <constructor-arg>
-            <ref bean="mongo"/>
+            <ref bean="transactionMongo"/>
         </constructor-arg>
         <constructor-arg>
             <ref bean="morphia"/>
@@ -62,7 +70,7 @@
 
     <bean id="dataStatusTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.DataStatusDAO">
         <constructor-arg>
-            <ref bean="mongo"/>
+            <ref bean="transactionMongo"/>
         </constructor-arg>
         <constructor-arg>
             <ref bean="morphia"/>
@@ -72,7 +80,7 @@
 
     <bean id="pictureTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.PictureDAO">
         <constructor-arg>
-            <ref bean="mongo"/>
+            <ref bean="transactionMongo"/>
         </constructor-arg>
         <constructor-arg>
             <ref bean="morphia"/>
