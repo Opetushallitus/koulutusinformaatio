@@ -19,7 +19,7 @@ package fi.vm.sade.koulutusinformaatio.service;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
-import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
+import fi.vm.sade.tarjonta.service.resources.dto.*;
 
 import java.util.List;
 
@@ -27,6 +27,24 @@ import java.util.List;
  * @author Hannu Lyytikainen
  */
 public interface TarjontaService {
+
+    public KomoDTO getKomo(String oid);
+
+    public List<OidRDTO> getKomotosByKomo(String oid, int count, int startIndex);
+
+    public KomotoDTO getKomoto(String oid);
+
+    public List<OidRDTO> getHakukohdesByKomoto(String oid);
+
+    public KomoDTO getKomoByKomoto(String oid);
+
+    public HakukohdeDTO getHakukohde(String oid);
+
+    public HakuDTO getHakuByHakukohde(String oid);
+
+    public List<OidRDTO> getKomotosByHakukohde(String oid);
+
+    public HakuDTO getHaku(String oid);
 
     /**
      * Finds a parent learning opportunity by oid.
@@ -41,7 +59,7 @@ public interface TarjontaService {
      *
      * @return list of oids
      */
-    public List<OidRDTO> listParentLearnignOpportunityOids();
+    public List<String> listParentLearnignOpportunityOids();
 
     /**
      * Returns a list of parent learning opportunity oids
@@ -49,5 +67,5 @@ public interface TarjontaService {
      * @param startIndex start index of results
      * @return list of oids
      */
-    public List<OidRDTO> listParentLearnignOpportunityOids(int count, int startIndex);
+    public List<String> listParentLearnignOpportunityOids(int count, int startIndex);
 }

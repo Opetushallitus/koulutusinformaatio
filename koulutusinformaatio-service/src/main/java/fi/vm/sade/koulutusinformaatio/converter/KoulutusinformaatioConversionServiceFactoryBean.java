@@ -41,5 +41,6 @@ public class KoulutusinformaatioConversionServiceFactoryBean extends ConversionS
         registry.addConverter(new KoodiTypeToI18nText());
         registry.addConverter(new KoodiTypeToCode());
         registry.addConverter(new CodeUriAndVersionToKoodiUriAndVersionType());
+        registry.addConverter(new OidRDTOToString());
     }
 }
