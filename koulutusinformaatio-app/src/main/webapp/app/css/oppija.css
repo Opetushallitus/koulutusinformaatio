@@ -2293,78 +2293,6 @@ label, .label {
   .toprow .set-right {
     padding-left: 20px; }
 
-/*** Tabsheet
-************************************************/
-.tabsheets {
-  background-color: #FFFFFF;
-  border: solid 2px #bdbdbd;
-  padding: 20px 10px; }
-  .tabsheets.sub {
-    border: none;
-    padding: 0; }
-
-.tabsheet {
-  display: none; }
-
-.tabs.main .tab {
-  color: #3E3E3E;
-  background-color: #ffffff;
-  display: inline-block;
-  border: solid 1px #bdbdbd;
-  padding: 1px;
-  text-decoration: none;
-  text-shadow: 0 1px 0 #FFFFFF;
-  position: relative;
-  top: 3px;
-  margin: 0 10px 0 0;
-  float: left;
-  max-width: 390px; }
-  .tabs.main .tab span {
-    display: block;
-    padding: 0px 10px;
-    height: 36px;
-    line-height: 36px;
-    font-weight: normal;
-    background: #f6f6f6;
-    background: #c6c6c6;
-    background: -webkit-gradient(linear, left top, left bottom, from(whitesmoke), to(#c6c6c6));
-    background: -webkit-linear-gradient(top, whitesmoke, #c6c6c6);
-    background: -moz-linear-gradient(top, whitesmoke, #c6c6c6);
-    background: -ms-linear-gradient(top, whitesmoke, #c6c6c6);
-    background: -o-linear-gradient(top, whitesmoke, #c6c6c6); }
-    .tabs.main .tab span:after {
-      content: "\00a0"; }
-    .tabs.main .tab span.fluid {
-      max-width: 390px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap; }
-  .tabs.main .tab:hover span {
-    background: #c6c6c6;
-    background: whitesmoke;
-    background: -webkit-gradient(linear, left top, left bottom, from(#c6c6c6), to(whitesmoke));
-    background: -webkit-linear-gradient(top, #c6c6c6, whitesmoke);
-    background: -moz-linear-gradient(top, #c6c6c6, whitesmoke);
-    background: -ms-linear-gradient(top, #c6c6c6, whitesmoke);
-    background: -o-linear-gradient(top, #c6c6c6, whitesmoke); }
-.tabs.main .tab.current {
-  border-top-width: 2px;
-  border-right-width: 2px;
-  border-left-width: 2px;
-  border-bottom-width: 0px;
-  padding-bottom: 3px;
-  position: relative;
-  top: 2px; }
-  .tabs.main .tab.current span {
-    font-weight: bold;
-    background: white;
-    background: white;
-    background: -webkit-gradient(linear, left top, left bottom, from(whitesmoke), to(white));
-    background: -webkit-linear-gradient(top, whitesmoke, white);
-    background: -moz-linear-gradient(top, whitesmoke, white);
-    background: -ms-linear-gradient(top, whitesmoke, white);
-    background: -o-linear-gradient(top, whitesmoke, white); }
-
 /*** Image figure, Video Figure
 ************************************************/
 figure.image {
@@ -3579,6 +3507,118 @@ table tbody tr:nth-child(odd) {
   padding: 0 6px;
   font-size: 10.5px; }
 
+.nav {
+  margin-bottom: 0;
+  padding-left: 0;
+  list-style: none;
+  *zoom: 1; }
+  .nav:before, .nav:after {
+    display: table;
+    content: "";
+    line-height: 0; }
+  .nav:after {
+    clear: both; }
+  .nav li {
+    position: relative;
+    display: block; }
+    .nav li > a {
+      position: relative;
+      display: block;
+      padding: 0 10px;
+      height: 36px;
+      text-decoration: none;
+      color: #333333; }
+      .nav li > a:hover, .nav li > a:focus, .nav li > a:active {
+        text-decoration: none;
+        color: #333333; }
+    .nav li.disabled > a {
+      color: #BDBDBD; }
+      .nav li.disabled > a:hover, .nav li.disabled > a:focus {
+        color: #BDBDBD;
+        text-decoration: none;
+        background-color: transparent;
+        cursor: not-allowed; }
+  .nav > li > a > img {
+    max-width: none; }
+
+.nav-tabs li {
+  color: #3E3E3E;
+  background-color: #ffffff;
+  display: inline-block;
+  border: solid 1px #bdbdbd;
+  padding: 1px;
+  text-decoration: none;
+  text-shadow: 0 1px 0 #FFFFFF;
+  position: relative;
+  top: 3px;
+  margin: 0 10px 0 0;
+  float: left;
+  max-width: 390px; }
+  .nav-tabs li > a {
+    display: block;
+    padding: 0px 10px;
+    height: 36px;
+    line-height: 36px;
+    font-weight: normal;
+    background: #f6f6f6;
+    background: #c6c6c6;
+    background: -webkit-gradient(linear, left top, left bottom, from(whitesmoke), to(#c6c6c6));
+    background: -webkit-linear-gradient(top, whitesmoke, #c6c6c6);
+    background: -moz-linear-gradient(top, whitesmoke, #c6c6c6);
+    background: -ms-linear-gradient(top, whitesmoke, #c6c6c6);
+    background: -o-linear-gradient(top, whitesmoke, #c6c6c6);
+    cursor: pointer; }
+    .nav-tabs li > a:hover {
+      background: #c6c6c6;
+      background: whitesmoke;
+      background: -webkit-gradient(linear, left top, left bottom, from(#c6c6c6), to(whitesmoke));
+      background: -webkit-linear-gradient(top, #c6c6c6, whitesmoke);
+      background: -moz-linear-gradient(top, #c6c6c6, whitesmoke);
+      background: -ms-linear-gradient(top, #c6c6c6, whitesmoke);
+      background: -o-linear-gradient(top, #c6c6c6, whitesmoke); }
+  .nav-tabs li.fluid > a {
+    max-width: 390px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; }
+  .nav-tabs li.active {
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-left-width: 2px;
+    border-bottom-width: 0px;
+    padding-bottom: 3px;
+    position: relative;
+    top: 2px; }
+    .nav-tabs li.active > a {
+      font-weight: bold;
+      background: white;
+      background: white;
+      background: -webkit-gradient(linear, left top, left bottom, from(whitesmoke), to(white));
+      background: -webkit-linear-gradient(top, whitesmoke, white);
+      background: -moz-linear-gradient(top, whitesmoke, white);
+      background: -ms-linear-gradient(top, whitesmoke, white);
+      background: -o-linear-gradient(top, whitesmoke, white); }
+
+.tabbable {
+  *zoom: 1; }
+  .tabbable:before, .tabbable:after {
+    display: table;
+    content: "";
+    line-height: 0; }
+  .tabbable:after {
+    clear: both; }
+
+.tab-content > .tab-pane, .pill-content > .pill-pane {
+  display: none; }
+
+.tab-content .active,
+.pill-content .active {
+  display: block;
+  border: solid 2px #BDBDBD;
+  background-color: #FFFFFF;
+  border: solid 2px #bdbdbd;
+  padding: 20px 10px; }
+
 /*** Main navigation
 **************************************************************/
 .main-navigation {
@@ -3908,7 +3948,7 @@ input[type="radio"] {
     .ribbon .ribbon-content li:before {
       content: "|"; }
     .ribbon .ribbon-content li:first-child:before {
-      content: ""; }
+      content: none; }
     .ribbon .ribbon-content li:first-child a {
       padding: 0 4px 0 0; }
   .ribbon .ribbon-content a {
