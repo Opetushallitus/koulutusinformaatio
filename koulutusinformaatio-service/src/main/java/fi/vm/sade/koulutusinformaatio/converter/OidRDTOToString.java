@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 The Finnish Board of Education - Opetushallitus
+ * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
  *
  * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
  * soon as they will be approved by the European Commission - subsequent versions
@@ -14,20 +14,17 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.koulutusinformaatio.configuration;
+package fi.vm.sade.koulutusinformaatio.converter;
 
-import fi.vm.sade.koodisto.util.CachingKoodistoClient;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
+import org.springframework.core.convert.converter.Converter;
 
 /**
- * @author Mikko Majapuro
+ * @author Hannu Lyytikainen
  */
-@Configuration
-public class WebServices {
-
-    @Bean(name="cachingKoodistoClient")
-    public CachingKoodistoClient getCachingKoodistoClient() {
-        return new CachingKoodistoClient();
+public class OidRDTOToString implements Converter<OidRDTO, String> {
+    @Override
+    public String convert(OidRDTO source) {
+        return source.getOid();
     }
 }

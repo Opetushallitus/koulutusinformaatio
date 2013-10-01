@@ -19,11 +19,10 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
+import fi.vm.sade.koulutusinformaatio.service.EducationAggregatorService;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
-import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
-import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +39,7 @@ public class UpdateServiceImpl implements UpdateService {
 
     public static final Logger LOG = LoggerFactory.getLogger(UpdateServiceImpl.class);
 
-    private TarjontaService tarjontaService;
+    private EducationAggregatorService educationAggregatorService;
     private IndexerService indexerService;
     private EducationDataUpdateService educationDataUpdateService;
     private TransactionManager transactionManager;
@@ -49,10 +48,10 @@ public class UpdateServiceImpl implements UpdateService {
 
 
     @Autowired
-    public UpdateServiceImpl(TarjontaService tarjontaService,
+    public UpdateServiceImpl(EducationAggregatorService educationAggregatorService,
                              IndexerService indexerService, EducationDataUpdateService educationDataUpdateService,
                              TransactionManager transactionManager) {
-        this.tarjontaService = tarjontaService;
+        this.educationAggregatorService = educationAggregatorService;
         this.indexerService = indexerService;
         this.educationDataUpdateService = educationDataUpdateService;
         this.transactionManager = transactionManager;
@@ -71,14 +70,14 @@ public class UpdateServiceImpl implements UpdateService {
 
             while(count >= MAX_RESULTS) {
                 LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
-                List<OidRDTO> parentOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
+                List<String> parentOids = educationAggregatorService.listParentLearnignOpportunityOids(count, index);
                 count = parentOids.size();
                 index += count;
 
-               for (OidRDTO parentOid : parentOids) {
+               for (String parentOid : parentOids) {
                     List<ParentLOS> parents = null;
                     try {
-                        parents = tarjontaService.findParentLearningOpportunity(parentOid.getOid());
+                        parents = educationAggregatorService.findParentLearningOpportunity(parentOid);
                     } catch (TarjontaParseException e) {
                         LOG.warn("Exception while updating parent learning opportunity, oidMessage: " + e.getMessage());
                         continue;
