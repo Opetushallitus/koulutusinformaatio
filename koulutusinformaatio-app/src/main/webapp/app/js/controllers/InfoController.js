@@ -279,3 +279,35 @@
         OPH.Common.initHeader();
     });
 };
+
+
+/**
+ *  Controller for adding applications to application basket
+ */
+function ApplicationCtrl($scope, ApplicationBasketService, UtilityService) {
+
+    $scope.addToBasket = function(aoId) {
+        var basketType = ApplicationBasketService.getType();
+        if (!basketType || $scope.selectedLOI.prerequisite.value == basketType) {
+            ApplicationBasketService.addItem(aoId, $scope.selectedLOI.prerequisite.value);
+            $scope.popoverTitle = i18n.t('popover-title-success');
+            $scope.popoverContent = "<a href='#/muistilista'>" + i18n.t('popover-content-link-to-application-basket') + "</a>";
+        } else {
+            $scope.popoverTitle = i18n.t('popover-title-error');
+            $scope.popoverContent = "<div>" + i18n.t('popover-content-error') + "</div><a href='#/muistilista'>" + i18n.t('popover-content-link-to-application-basket') + "</a>";
+        }
+    };
+
+    $scope.applicationSystemIsActive = function(as) {
+        for (var i in as.applicationDates) {
+            if (as.applicationDates.hasOwnProperty(i)) {
+                return as.asOngoing ? true : false;
+            }
+        }
+
+        return false;
+    };
+
+    $scope.popoverTitle = i18n.t('popover-title');
+    $scope.popoverContent = "<a href='#/muistilista'>" + i18n.t('popover-content') + "</a>";
+};
