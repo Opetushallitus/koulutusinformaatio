@@ -44,7 +44,7 @@ public class SearchServiceSolrImplTest {
     private SearchServiceSolrImpl service;
     private HttpSolrServer loHttpSolrServer;
     private HttpSolrServer lopHttpSolrServer;
-
+    private HttpSolrServer locationHttpSolrServer;
 
 
     @Before
@@ -74,8 +74,9 @@ public class SearchServiceSolrImplTest {
         when(loQueryResponse.getResults()).thenReturn(loDocs);
         loHttpSolrServer = mock(HttpSolrServer.class);
         when(loHttpSolrServer.query((SolrParams)any())).thenReturn(loQueryResponse);
+        locationHttpSolrServer = mock(HttpSolrServer.class);
 
-        service = new SearchServiceSolrImpl(lopHttpSolrServer, loHttpSolrServer);
+        service = new SearchServiceSolrImpl(lopHttpSolrServer, loHttpSolrServer, locationHttpSolrServer);
     }
 
     @Test

@@ -60,6 +60,15 @@ public interface KoodistoService {
     List<Code> searchCodes(final String koodiUri) throws KoodistoException;
 
     /**
+     * Search codes from koodisto by koodisto uri
+     * @param koodistoUri koodisto uri
+     * @param version version number of koodisto
+     * @return list of codes
+     * @throws KoodistoException
+     */
+    List<Code> searchCodesByKoodisto(String koodistoUri, Integer version) throws KoodistoException;
+
+    /**
      * Search codes from koodisto service by given uris.
      * @param koodiUri list of koodi uris
      * @return list of Code objects

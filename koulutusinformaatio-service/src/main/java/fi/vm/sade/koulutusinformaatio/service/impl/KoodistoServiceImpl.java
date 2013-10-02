@@ -111,6 +111,16 @@ public class KoodistoServiceImpl implements KoodistoService {
     }
 
     @Override
+    public List<Code> searchCodesByKoodisto(String koodistoUri, Integer version) throws KoodistoException {
+        try {
+            List<KoodiType> codes = koodiService.getKoodisForKoodisto(koodistoUri, version);
+            return convertAllToCode(codes);
+        } catch (GenericFault e) {
+            throw new KoodistoException(e);
+        }
+    }
+
+    @Override
     public List<Code> searchCodesMultiple(List<String> koodiUris) throws KoodistoException {
         if (koodiUris == null) {
             return null;
@@ -242,6 +252,7 @@ public class KoodistoServiceImpl implements KoodistoService {
             throw new KoodistoException(e);
         }
     }
+
 
     private List<I18nText> convertAllToI18nText(final List<KoodiType> codes) {
         return Lists.transform(codes, new Function<KoodiType, I18nText>() {

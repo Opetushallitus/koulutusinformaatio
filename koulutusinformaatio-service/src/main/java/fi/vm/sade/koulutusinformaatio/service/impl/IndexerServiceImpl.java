@@ -5,6 +5,7 @@ import com.google.common.collect.Sets;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -33,12 +35,15 @@ public class IndexerServiceImpl implements IndexerService {
     private final HttpSolrServer loUpdateHttpSolrServer;
     // solr client for learning opportunity provider index
     private final HttpSolrServer lopUpdateHttpSolrServer;
+    private final HttpSolrServer locationUpdateHttpSolrServer;
 
     @Autowired
     public IndexerServiceImpl(@Qualifier("loUpdateHttpSolrServer") HttpSolrServer loUpdateHttpSolrServer,
-                              @Qualifier("lopUpdateHttpSolrServer") HttpSolrServer lopUpdateHttpSolrServer) {
+                              @Qualifier("lopUpdateHttpSolrServer") HttpSolrServer lopUpdateHttpSolrServer,
+                              @Qualifier("locationUpdateHttpSolrServer") HttpSolrServer locationUpdateHttpSolrServer) {
         this.loUpdateHttpSolrServer = loUpdateHttpSolrServer;
         this.lopUpdateHttpSolrServer = lopUpdateHttpSolrServer;
+        this.locationUpdateHttpSolrServer = locationUpdateHttpSolrServer;
     }
 
     @Override
@@ -107,6 +112,21 @@ public class IndexerServiceImpl implements IndexerService {
         providerDocs.add(providerDoc);
         lopUpdateHttpSolrServer.add(providerDocs);
         loUpdateHttpSolrServer.add(docs);
+    }
+
+    @Override
+    public void addLocations(List<Location> locations) throws IOException, SolrServerException {
+        List<SolrInputDocument> locationDocs = Lists.newArrayList();
+
+        for (Location location : locations) {
+            SolrInputDocument locationDoc = new SolrInputDocument();
+            locationDoc.addField("id", location.getId());
+            locationDoc.addField("name", location.getName());
+            locationDoc.addField("code", location.getCode());
+            locationDoc.addField("lang", location.getLang());
+            locationDocs.add(locationDoc);
+        }
+        locationUpdateHttpSolrServer.add(locationDocs);
     }
 
     private void resolveParentDocument(SolrInputDocument doc, ParentLOS parent) {
@@ -275,6 +295,7 @@ public class IndexerServiceImpl implements IndexerService {
     public void commitLOChanges() throws Exception {
         loUpdateHttpSolrServer.commit();
         lopUpdateHttpSolrServer.commit();
+        locationUpdateHttpSolrServer.commit();
     }
 
 }

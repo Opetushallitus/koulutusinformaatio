@@ -17,12 +17,10 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
+import fi.vm.sade.koulutusinformaatio.domain.Location;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
-import fi.vm.sade.koulutusinformaatio.service.EducationDataUpdateService;
-import fi.vm.sade.koulutusinformaatio.service.IndexerService;
-import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
-import fi.vm.sade.koulutusinformaatio.service.UpdateService;
+import fi.vm.sade.koulutusinformaatio.service.*;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,16 +44,18 @@ public class UpdateServiceImpl implements UpdateService {
     private TransactionManager transactionManager;
     private static final int MAX_RESULTS = 100;
     private boolean running = false;
+    private LocationService locationService;
 
 
     @Autowired
     public UpdateServiceImpl(TarjontaService tarjontaService,
                              IndexerService indexerService, EducationDataUpdateService educationDataUpdateService,
-                             TransactionManager transactionManager) {
+                             TransactionManager transactionManager, LocationService locationService) {
         this.tarjontaService = tarjontaService;
         this.indexerService = indexerService;
         this.educationDataUpdateService = educationDataUpdateService;
         this.transactionManager = transactionManager;
+        this.locationService = locationService;
     }
 
     @Override
@@ -90,6 +90,9 @@ public class UpdateServiceImpl implements UpdateService {
                 }
                 this.indexerService.commitLOChanges();
             }
+            List<Location> locations = locationService.getMunicipalities();
+            indexerService.addLocations(locations);
+            indexerService.commitLOChanges();
             this.transactionManager.commit();
             LOG.info("Education data update successfully finished");
         } catch (Exception e) {

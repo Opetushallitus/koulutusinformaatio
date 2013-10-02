@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.service;
 
 import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
+import fi.vm.sade.koulutusinformaatio.domain.Location;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 
@@ -29,5 +30,7 @@ public interface SearchService {
 
     LOSearchResultList searchLearningOpportunities(final String term, final String prerequisite,
                                                    List<String> cities, boolean ongoing, int start, int rows) throws SearchException;
+
+    List<Location> searchLocations(final String term, final String lang) throws SearchException;
 
 }

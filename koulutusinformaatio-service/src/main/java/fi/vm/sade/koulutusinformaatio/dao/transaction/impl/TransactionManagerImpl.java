@@ -17,7 +17,6 @@
 package fi.vm.sade.koulutusinformaatio.dao.transaction.impl;
 
 import com.mongodb.BasicDBObject;
-import com.mongodb.CommandResult;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 import fi.vm.sade.koulutusinformaatio.dao.DataStatusDAO;
@@ -47,9 +46,13 @@ public class TransactionManagerImpl implements TransactionManager {
     private final String providerCoreName;
     private final String learningopportunityUpdateCoreName;
     private final String learningopportunityCoreName;
+    private final String locationUpdateCoreName;
+    private final String locationCoreName;
     private DataStatusDAO dataStatusTransactionDAO;
     private HttpSolrServer loUpdateHttpSolrServer;
     private HttpSolrServer lopUpdateHttpSolrServer;
+    private HttpSolrServer locationUpdateHttpSolrServer;
+
     private HttpSolrServer adminHttpSolrServer;
 
     @Autowired
@@ -57,11 +60,14 @@ public class TransactionManagerImpl implements TransactionManager {
                                   @Value("${mongo.db.name}") String dbName, DataStatusDAO dataStatusTransactionDAO,
                                   @Qualifier("loUpdateHttpSolrServer") HttpSolrServer loUpdateHttpSolrServer,
                                   @Qualifier("lopUpdateHttpSolrServer") HttpSolrServer lopUpdateHttpSolrServer,
+                                  @Qualifier("locationUpdateHttpSolrServer") HttpSolrServer locationUpdateHttpSolrServer,
                                   @Qualifier("adminHttpSolrServer") HttpSolrServer adminHttpSolrServer,
                                   @Value("${solr.provider.url}") String providerCoreName,
                                   @Value("${solr.provider.update.url}") String providerUpdateCoreName,
                                   @Value("${solr.learningopportunity.url}") String learningopportunityCoreName,
-                                  @Value("${solr.learningopportunity.update.url}") String learningopportunityUpdateCoreName) {
+                                  @Value("${solr.learningopportunity.update.url}") String learningopportunityUpdateCoreName,
+                                  @Value("${solr.location.url}") String locationCoreName,
+                                  @Value("${solr.location.update.url}") String locationUpdateCoreName) {
         this.mongo = mongo;
         this.transactionDbName = transactionDbName;
         this.dbName = dbName;
@@ -69,9 +75,12 @@ public class TransactionManagerImpl implements TransactionManager {
         this.providerUpdateCoreName = providerUpdateCoreName;
         this.learningopportunityUpdateCoreName = learningopportunityUpdateCoreName;
         this.learningopportunityCoreName = learningopportunityCoreName;
+        this.locationCoreName = locationCoreName;
+        this.locationUpdateCoreName = locationUpdateCoreName;
         this.dataStatusTransactionDAO = dataStatusTransactionDAO;
         this.loUpdateHttpSolrServer = loUpdateHttpSolrServer;
         this.lopUpdateHttpSolrServer = lopUpdateHttpSolrServer;
+        this.locationUpdateHttpSolrServer = locationUpdateHttpSolrServer;
         this.adminHttpSolrServer = adminHttpSolrServer;
     }
 
@@ -93,6 +102,9 @@ public class TransactionManagerImpl implements TransactionManager {
         CoreAdminRequest loCar = getCoreSwapRequest(learningopportunityUpdateCoreName, learningopportunityCoreName);
         loCar.process(adminHttpSolrServer);
 
+        CoreAdminRequest locationCar = getCoreSwapRequest(locationUpdateCoreName, locationCoreName);
+        locationCar.process(adminHttpSolrServer);
+
         dataStatusTransactionDAO.save(new DataStatusEntity());
         DBObject cmd = new BasicDBObject("copydb", 1).append("fromdb", transactionDbName).append("todb", dbName);
         mongo.dropDatabase(dbName);
@@ -109,6 +121,9 @@ public class TransactionManagerImpl implements TransactionManager {
             lopUpdateHttpSolrServer.deleteByQuery("*:*");
             lopUpdateHttpSolrServer.commit();
             lopUpdateHttpSolrServer.optimize();
+            locationUpdateHttpSolrServer.deleteByQuery("*:*");
+            locationUpdateHttpSolrServer.commit();
+            locationUpdateHttpSolrServer.optimize();
         } catch (Exception e) {
             e.printStackTrace();
         }

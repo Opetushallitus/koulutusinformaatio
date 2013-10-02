@@ -16,14 +16,13 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-import fi.vm.sade.koulutusinformaatio.domain.LOSearchResult;
-import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
-import fi.vm.sade.koulutusinformaatio.domain.Provider;
+import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.LearningOpportunityQuery;
+import fi.vm.sade.koulutusinformaatio.service.impl.query.LocationQuery;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.ProviderQuery;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -49,16 +48,17 @@ public class SearchServiceSolrImpl implements SearchService {
     public static final String AS_START_DATE_PREFIX = "asStart_";
     public static final String AS_END_DATE_PREFIX = "asEnd_";
 
-    private HttpSolrServer httpSolrServer;
-
     private final HttpSolrServer lopHttpSolrServer;
     private final HttpSolrServer loHttpSolrServer;
+    private final HttpSolrServer locationHttpSolrServer;
 
     @Autowired
     public SearchServiceSolrImpl(@Qualifier("lopHttpSolrServer") final HttpSolrServer lopHttpSolrServer,
-                                 @Qualifier("loHttpSolrServer") final HttpSolrServer loHttpSolrServer) {
+                                 @Qualifier("loHttpSolrServer") final HttpSolrServer loHttpSolrServer,
+                                 @Qualifier("locationHttpSolrServer") final HttpSolrServer locationHttpSolrServer) {
         this.lopHttpSolrServer = lopHttpSolrServer;
         this.loHttpSolrServer = loHttpSolrServer;
+        this.locationHttpSolrServer = locationHttpSolrServer;
     }
 
     @Override
@@ -140,6 +140,31 @@ public class SearchServiceSolrImpl implements SearchService {
         }
 
         return searchResultList;
+    }
+
+    @Override
+    public List<Location> searchLocations(String term, String lang) throws SearchException {
+        List<Location> locations = Lists.newArrayList();
+        String startswith = term.trim();
+
+        if (!startswith.isEmpty()) {
+            SolrQuery query = new LocationQuery(term + "*", lang);
+
+            QueryResponse queryResponse = null;
+            try {
+                queryResponse = locationHttpSolrServer.query(query);
+            } catch (SolrServerException e) {
+                throw new SearchException("Solr search error occured.");
+            }
+
+            for (SolrDocument result : queryResponse.getResults()) {
+                Location location = new Location();
+                location.setName(result.get("name").toString());
+                location.setCode(result.get("code").toString());
+                locations.add(location);
+            }
+        }
+        return locations;
     }
 
     private void updateAsStatus(LOSearchResult lo, SolrDocument doc) {
