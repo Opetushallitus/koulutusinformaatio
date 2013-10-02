@@ -23,7 +23,7 @@
        >
 
     <context:property-placeholder
-            location="classpath:koulutusinformaatio.properties, classpath:generic-events.properties"
+            location="classpath:koulutusinformaatio.properties"
             ignore-resource-not-found="true"/>
 
     <bean id="mongo" class="com.mongodb.Mongo">
