@@ -35,6 +35,8 @@
         <guava.version>14.0.1</guava.version>
         <apache-httpcomponents.version>4.2.3</apache-httpcomponents.version>
         <wiremock.version>1.33</wiremock.version>
+        <flapdoodle.version>1.36</flapdoodle.version>
+        <jackson.version>1.9.12</jackson.version>
 
         <oph.organisaatio.version>6.3-SNAPSHOT</oph.organisaatio.version>
         <oph.koodisto.version>6.2-SNAPSHOT</oph.koodisto.version>
