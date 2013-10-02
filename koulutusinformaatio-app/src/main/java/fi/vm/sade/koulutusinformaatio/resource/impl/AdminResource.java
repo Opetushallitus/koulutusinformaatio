@@ -19,7 +19,6 @@ package fi.vm.sade.koulutusinformaatio.resource.impl;
 import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
-import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -59,7 +58,7 @@ public class AdminResource {
             throw KIExceptionHandler.resolveException(e);
         }
 
-        return Response.seeOther(new URI("status")).build();
+        return Response.seeOther(new URI("admin/status")).build();
     }
 
     @GET

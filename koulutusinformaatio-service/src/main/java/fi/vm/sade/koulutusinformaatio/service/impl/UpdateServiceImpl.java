@@ -17,11 +17,12 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
-import fi.vm.sade.koulutusinformaatio.domain.Location;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
-import fi.vm.sade.koulutusinformaatio.service.*;
-import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
+import fi.vm.sade.koulutusinformaatio.service.EducationAggregatorService;
+import fi.vm.sade.koulutusinformaatio.service.EducationDataUpdateService;
+import fi.vm.sade.koulutusinformaatio.service.IndexerService;
+import fi.vm.sade.koulutusinformaatio.service.UpdateService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,24 +39,22 @@ public class UpdateServiceImpl implements UpdateService {
 
     public static final Logger LOG = LoggerFactory.getLogger(UpdateServiceImpl.class);
 
-    private TarjontaService tarjontaService;
+    private EducationAggregatorService educationAggregatorService;
     private IndexerService indexerService;
     private EducationDataUpdateService educationDataUpdateService;
     private TransactionManager transactionManager;
     private static final int MAX_RESULTS = 100;
     private boolean running = false;
-    private LocationService locationService;
 
 
     @Autowired
-    public UpdateServiceImpl(TarjontaService tarjontaService,
+    public UpdateServiceImpl(EducationAggregatorService educationAggregatorService,
                              IndexerService indexerService, EducationDataUpdateService educationDataUpdateService,
-                             TransactionManager transactionManager, LocationService locationService) {
-        this.tarjontaService = tarjontaService;
+                             TransactionManager transactionManager) {
+        this.educationAggregatorService = educationAggregatorService;
         this.indexerService = indexerService;
         this.educationDataUpdateService = educationDataUpdateService;
         this.transactionManager = transactionManager;
-        this.locationService = locationService;
     }
 
     @Override
@@ -71,14 +70,14 @@ public class UpdateServiceImpl implements UpdateService {
 
             while(count >= MAX_RESULTS) {
                 LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
-                List<OidRDTO> parentOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
+                List<String> parentOids = educationAggregatorService.listParentLearnignOpportunityOids(count, index);
                 count = parentOids.size();
                 index += count;
 
-               for (OidRDTO parentOid : parentOids) {
+               for (String parentOid : parentOids) {
                     List<ParentLOS> parents = null;
                     try {
-                        parents = tarjontaService.findParentLearningOpportunity(parentOid.getOid());
+                        parents = educationAggregatorService.findParentLearningOpportunity(parentOid);
                     } catch (TarjontaParseException e) {
                         LOG.warn("Exception while updating parent learning opportunity, oidMessage: " + e.getMessage());
                         continue;
@@ -90,9 +89,6 @@ public class UpdateServiceImpl implements UpdateService {
                 }
                 this.indexerService.commitLOChanges();
             }
-            List<Location> locations = locationService.getMunicipalities();
-            indexerService.addLocations(locations);
-            indexerService.commitLOChanges();
             this.transactionManager.commit();
             LOG.info("Education data update successfully finished");
         } catch (Exception e) {

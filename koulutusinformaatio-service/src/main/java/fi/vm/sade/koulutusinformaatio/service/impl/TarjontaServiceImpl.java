@@ -16,76 +16,171 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.GenericType;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
-import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
-import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
-import fi.vm.sade.koulutusinformaatio.service.builder.LearningOpportunityBuilder;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.LearningOpportunityConcreteBuilder;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.LearningOpportunityDirector;
-import fi.vm.sade.tarjonta.service.resources.HakukohdeResource;
-import fi.vm.sade.tarjonta.service.resources.KomoResource;
-import fi.vm.sade.tarjonta.service.resources.KomotoResource;
-import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
+import fi.vm.sade.tarjonta.service.resources.dto.*;
+import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
+import org.springframework.core.convert.ConversionService;
+import org.springframework.stereotype.Service;
 
-import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 /**
  * @author Hannu Lyytikainen
  */
-
+@Service
+@Profile("default")
 public class TarjontaServiceImpl implements TarjontaService {
 
-    private KomoResource komoResource;
-    private KomotoResource komotoResource;
-    private HakukohdeResource hakukohdeResource;
+    private WebResource komoResource;
+    private WebResource komotoResource;
+    private WebResource hakuResource;
+    private WebResource hakukohdeResource;
+    private ConversionService conversionService;
 
     @Autowired
-    private KoodistoService koodistoService;
-    @Autowired
-    private LearningOpportunityDirector loDirector;
-    @Autowired
-    private ProviderService providerService;
-
-    public TarjontaServiceImpl(KomoResource komoResource, KomotoResource komotoResource,
-                               HakukohdeResource hakukohdeResource) {
-        this.komoResource = komoResource;
-        this.komotoResource = komotoResource;
-        this.hakukohdeResource = hakukohdeResource;
+    public TarjontaServiceImpl(@Value("${tarjonta.api.rest.url}") final String tarjontaApiUrl,
+                               ConversionService conversionService) {
+        ClientConfig cc = new DefaultClientConfig();
+        cc.getClasses().add(JacksonJsonProvider.class);
+        Client clientWithJacksonSerializer = Client.create(cc);
+        komoResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "komo");
+        komotoResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "komoto");
+        hakuResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "haku");
+        hakukohdeResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "hakukohde");
+        this.conversionService = conversionService;
     }
 
     public TarjontaServiceImpl() {
     }
 
     @Override
-    public List<ParentLOS> findParentLearningOpportunity(String oid) throws TarjontaParseException {
-        try {
-            LearningOpportunityBuilder builder = new LearningOpportunityConcreteBuilder(komoResource,
-                    komotoResource, hakukohdeResource, providerService, koodistoService, oid);
-
-            return loDirector.constructLearningOpportunities(builder);
-
-        } catch (KoodistoException e) {
-            throw new TarjontaParseException("An error occurred while building parent LOS " + oid + " with koodisto: " + e.getMessage());
-        }
-        catch (WebApplicationException e) {
-            throw new TarjontaParseException("An error occurred while building parent LOS " + oid
-                    + " accessing remote resource: HTTP response code: "
-                    + e.getResponse().getStatus() + ",  error message: " + e.getMessage());
-        }
+    public KomoDTO getKomo(String oid) {
+        return komoResource
+                .path(oid)
+                .accept(getMediaType())
+                .get(new GenericType<KomoDTO>() {
+                });
     }
 
     @Override
-    public List<OidRDTO> listParentLearnignOpportunityOids() {
-        return komoResource.search(null, Integer.MAX_VALUE, 0, null, null);
+    public List<OidRDTO> getKomotosByKomo(String oid, int count, int startIndex) {
+        return komoResource
+                .path(oid)
+                .path("komoto")
+                .queryParam("count", String.valueOf(count))
+                .queryParam("startIndex", String.valueOf(startIndex))
+                .accept(getMediaType())
+                .get(new GenericType<List<OidRDTO>>() {
+                });
     }
 
     @Override
-    public List<OidRDTO> listParentLearnignOpportunityOids(int count, int startIndex) {
-        return komoResource.search(null, count, startIndex, null, null);
+    public KomotoDTO getKomoto(String oid) {
+        return komotoResource
+                .path(oid)
+                .accept(getMediaType())
+                .get(new GenericType<KomotoDTO>() {
+                });
     }
+
+    @Override
+    public List<OidRDTO> getHakukohdesByKomoto(String oid) {
+        return komotoResource
+                .path(oid)
+                .path("hakukohde")
+                .accept(getMediaType())
+                .get(new GenericType<List<OidRDTO>>() {
+                });
+    }
+
+    @Override
+    public KomoDTO getKomoByKomoto(String oid) {
+        return komotoResource
+                .path(oid)
+                .path("komo")
+                .accept(getMediaType())
+                .get(new GenericType<KomoDTO>() {});
+
+    }
+
+    @Override
+    public HakukohdeDTO getHakukohde(String oid) {
+        return hakukohdeResource
+                .path(oid)
+                .accept(getMediaType())
+                .get(new GenericType<HakukohdeDTO>() {
+                });
+    }
+
+    @Override
+    public HakuDTO getHakuByHakukohde(String oid) {
+        return hakukohdeResource
+                .path(oid)
+                .path("haku")
+                .accept(getMediaType())
+                .get(new GenericType<HakuDTO>() {});
+    }
+
+    @Override
+    public List<OidRDTO> getKomotosByHakukohde(String oid) {
+        return hakukohdeResource
+                .path(oid)
+                .path("komoto")
+                .accept(getMediaType())
+                .get(new GenericType<List<OidRDTO>>() {});
+    }
+
+    @Override
+    public HakuDTO getHaku(String oid) {
+        return hakuResource
+                .path(oid)
+                .accept(getMediaType())
+                .get(new GenericType<HakuDTO>() {
+                });
+    }
+
+    @Override
+    public List<ParentLOS> findParentLearningOpportunity(String oid) throws TarjontaParseException, KoodistoException {
+        return null;
+    }
+
+    @Override
+    public List<String> listParentLearnignOpportunityOids() {
+        return listParentLearnignOpportunityOids(Integer.MAX_VALUE, 0);
+    }
+
+    @Override
+    public List<String> listParentLearnignOpportunityOids(int count, int startIndex) {
+        List<OidRDTO> oids = komoResource
+                .queryParam("count", String.valueOf(count))
+                .queryParam("startIndex", String.valueOf(startIndex))
+                .accept(getMediaType())
+                .get(new GenericType<List<OidRDTO>>() {
+                });
+        return Lists.transform(oids, new Function<OidRDTO, String>() {
+            @Override
+            public String apply(OidRDTO input) {
+                return conversionService.convert(input, String.class);
+            }
+        });
+    }
+
+    private String getMediaType() {
+        return MediaType.APPLICATION_JSON + ";charset=UTF-8";
+    }
+
 }
