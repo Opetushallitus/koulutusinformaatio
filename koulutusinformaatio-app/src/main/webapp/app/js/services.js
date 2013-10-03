@@ -67,6 +67,25 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
     }
 }]).
 
+service('SearchLocationService', ['$http', '$timeout', '$q', function($http, $timeout, $q) {
+
+    return {
+        query: function(queryParam) {
+            var deferred = $q.defer();
+
+            $http.get('../location/search/' + queryParam, {}).
+            success(function(result) {
+                deferred.resolve(result);
+            }).
+            error(function(result) {
+                deferred.reject(result);
+            });
+
+            return deferred.promise;
+        }
+    }
+}]).
+
 /**
  *  Resource for requesting parent LO data
  */

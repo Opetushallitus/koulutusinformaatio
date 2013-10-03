@@ -24,8 +24,6 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     var queryParams = $location.search();
     var resultsPerPage = kiAppConstants.searchResultsPerPage;
 
-    console.log($scope);
-
     FilterService.set(queryParams);
     var filters = FilterService.get();
     $scope.prerequisite = filters.prerequisite;
@@ -47,7 +45,7 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
 /**
  *  Controller for search functionality 
  */
- function SearchCtrl($scope, $routeParams, SearchLearningOpportunityService, SearchService, TitleService, kiAppConstants, FilterService) {
+ function SearchCtrl($scope, $routeParams, SearchLearningOpportunityService, SearchService, TitleService, kiAppConstants, FilterService, filterFilter) {
     var resultsPerPage = kiAppConstants.searchResultsPerPage;
     $scope.currentPage = kiAppConstants.searchResultsStartPage;
 
