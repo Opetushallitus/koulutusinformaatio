@@ -521,26 +521,6 @@ service('LanguageService', function() {
 }).
 
 /**
- *  Service handling page titles
- */
- service('TitleService', function() {
-    var title;
-    
-    return {
-        setTitle: function(value) {
-            title = value + ' - Opintopolku.fi';
-
-            // TODO: could this be done in angular way?
-            $('title').trigger('updatetitle', [title]);
-        },
-
-        getTitle: function() {
-            return title;
-        }
-    }
-}).
-
-/**
  *  Service for retrieving translated values for text
  */
 service('TranslationService', function() {

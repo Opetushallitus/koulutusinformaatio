@@ -3,6 +3,20 @@
 angular.module('kiApp.directives', []).
 
 /**
+ *  Updates the title element of the page.
+ */
+directive('title', ['$rootScope', function($rootScope) {
+    return {
+        restrict: 'E',
+        link: function(scope, element, attrs) {
+            $rootScope.$watch('title', function(value) {
+                element.text(value);
+            });
+        }
+    }
+}]).
+
+/**
  * Render contact info block
  */
 directive('kiRenderContactInfo', function() {
@@ -482,17 +496,6 @@ directive('renderStudyPlan', function() {
         scope: false
     }
 }).
-
-/**
- *  Updates the title element of the page.
- */
-directive('kiAppTitle', ['TitleService', function(TitleService) {
-    return function(scope, element, attrs) {
-        $(element).on('updatetitle', function(e, param) {
-            element.text(param);
-        });
-    };
-}]).
 
 /**
  *  Creates a human readable date from timestamp

@@ -1,7 +1,7 @@
 /**
  *  Controller for info views (parent and child)
  */
- function InfoCtrl($scope, $routeParams, $location, ParentLearningOpportunityService, ChildLearningOpportunityService, SearchService, ParentLODataService, ChildLODataService, TitleService, LearningOpportunityProviderPictureService, UtilityService, TabService) {
+ function InfoCtrl($scope, $rootScope, $routeParams, $location, ParentLearningOpportunityService, ChildLearningOpportunityService, SearchService, ParentLODataService, ChildLODataService, LearningOpportunityProviderPictureService, UtilityService, TabService) {
     $scope.queryString = SearchService.getTerm();
     $scope.descriptionLanguage = 'fi';
 
@@ -11,10 +11,11 @@
     }
 
     var setTitle = function(parent, child) {
+        var sitename = i18n.t('sitename');
         if (child) {
-            TitleService.setTitle(child.name);
+            $rootScope.title = child.name + ' - ' + sitename;
         } else {
-            TitleService.setTitle(parent.name);
+            $rootScope.title = parent.name + ' - ' + sitename;
         }
     };
 
