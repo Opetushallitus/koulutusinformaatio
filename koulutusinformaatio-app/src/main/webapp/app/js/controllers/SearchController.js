@@ -80,7 +80,7 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
                 $scope.showPagination = $scope.maxPages > 1;
             });
 
-            //$scope.queryString = $routeParams.queryString;
+            $scope.queryString = $routeParams.queryString;
             //$scope.showFilters = $scope.queryString ? true : false;
             SearchService.setTerm($routeParams.queryString);
         } else {
