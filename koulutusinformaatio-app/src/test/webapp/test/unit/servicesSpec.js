@@ -1,5 +1,79 @@
 'use strict';
+describe('FilterService', function() {
+    beforeEach(module('kiApp'));
 
+    beforeEach(inject(function(FilterService) {
+        this.FilterService = FilterService;
+    }));
+
+    it('should set empty filter as empty', function() {
+        this.FilterService.set({});
+
+        expect(this.FilterService.get()).toEqual({});
+    });
+
+    it('should set the filters correctly', function() {
+        var myFilter = {myFilter: 'myFilterValue'};
+        this.FilterService.set(myFilter);
+
+        expect(this.FilterService.get()).toEqual(myFilter);
+    });
+
+    it('should transform locations filter to array', function() {
+        this.FilterService.set({
+            locations: 'Helsinki'
+        });
+
+        expect(this.FilterService.get().locations instanceof Array).toBeTruthy();
+        expect(this.FilterService.get().locations.length).toEqual(1);
+        expect(this.FilterService.get().locations[0]).toMatch('Helsinki');
+    });
+
+    it('should set boolean value only when it is true', function() {
+        this.FilterService.set({
+            myTrueFilter: true,
+            myFalseFilter: false
+        });
+
+        expect(this.FilterService.get().myTrueFilter).toEqual(true);
+        expect(this.FilterService.get().myFalseFilter).toBeUndefined();
+    });
+
+    it('should return empty filter as empty query param string', function() {
+        this.FilterService.set({});
+
+        expect(this.FilterService.getParams()).toMatch('');
+    });
+
+    it('should return array filter as comma separated list', function() {
+        this.FilterService.set({
+            locations: 'Helsinki,Turku,Espoo'
+        });
+
+        expect(this.FilterService.getParams()).toEqual('locations=Helsinki,Turku,Espoo');
+    });
+
+    it('should return boolean filter only when value is true', function() {
+        this.FilterService.set({
+            booleanFilterTrue: true,
+            booleanFilterFalse: false
+        });
+
+        expect(this.FilterService.getParams()).toEqual('booleanFilterTrue');
+    });
+
+    it('should return combination of filters', function() {
+        this.FilterService.set({
+            locations: 'Helsinki,Turku',
+            booleanFilter: true,
+            stringFilter: 'filterstring'
+        });
+
+        expect(this.FilterService.getParams()).toEqual('locations=Helsinki,Turku&booleanFilter&stringFilter=filterstring');
+    });
+
+})
+/*
 describe('SearchService', function() {
 
     beforeEach(module('kiApp'));
@@ -82,3 +156,4 @@ describe('TranslationService', function() {
     });
 
 })
+*/

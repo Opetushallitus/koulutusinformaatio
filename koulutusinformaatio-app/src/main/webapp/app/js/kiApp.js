@@ -1,27 +1,32 @@
 /*  Application module */
 
 var kiApp = angular.module('kiApp', ['kiApp.services', 'kiApp.directives', 'ui.bootstrap', 'angulartics', 'angulartics.piwik']);
-kiApp.config(['$routeProvider', '$locationProvider', '$analyticsProvider', function($routeProvider, $locationProvider, $analyticsProvider, $rootScope) {
+kiApp.config(['$routeProvider', '$analyticsProvider', function($routeProvider, $analyticsProvider) {
     $analyticsProvider.virtualPageviews(false);
     $analyticsProvider.firstPageview(false);
+    
     $routeProvider.when('/haku/:queryString', {
     	templateUrl: 'partials/hakutulokset.html', 
     	controller: SearchCtrl
     });
+    
     $routeProvider.when('/tutkinto/:parentId', {
     	templateUrl: 'partials/ylataso.html', 
     	controller: InfoCtrl,
         reloadOnSearch: false
     });
+    
     $routeProvider.when('/koulutusohjelma/:childId', {
     	templateUrl: 'partials/alataso.html', 
     	controller: InfoCtrl,
         reloadOnSearch: false
     });
+    
     $routeProvider.when('/muistilista', {
         templateUrl: 'partials/applicationbasket/applicationbasket.html',
         controller: ApplicationBasketCtrl
     });
+    
     $routeProvider.otherwise({
     	redirectTo: '/haku/'
     });
