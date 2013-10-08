@@ -14,24 +14,41 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.koulutusinformaatio.service.builder.impl;
+package fi.vm.sade.koulutusinformaatio.service;
 
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
-import fi.vm.sade.koulutusinformaatio.service.builder.LearningOpportunityBuilder;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 /**
  * @author Hannu Lyytikainen
  */
-@Component
-public class LearningOpportunityDirector {
+public interface EducationAggregatorService {
 
-    public List<ParentLOS> constructLearningOpportunities(LearningOpportunityBuilder builder) throws TarjontaParseException, KoodistoException {
-        return builder.resolveParentLOSs().resolveChildLOSs().reassemble().filter().build();
-    }
+    /**
+     * Finds a parent learning opportunity by oid.
+     *
+     * @param oid
+     * @return
+     */
+    public List<ParentLOS> findParentLearningOpportunity(String oid) throws TarjontaParseException, KoodistoException;
+
+    /**
+     * Returns a list of all parent learning opportunity oids.
+     *
+     * @return list of oids
+     */
+    public List<String> listParentLearnignOpportunityOids();
+
+    /**
+     * Returns a list of parent learning opportunity oids
+     *
+     * @param count      maximum count of results
+     * @param startIndex start index of results
+     * @return list of oids
+     */
+    public List<String> listParentLearnignOpportunityOids(int count, int startIndex);
 
 }

@@ -23,16 +23,11 @@
        >
 
     <context:property-placeholder
-            location="classpath:koulutusinformaatio.properties, classpath:generic-events.properties"
+            location="classpath:koulutusinformaatio.properties"
             ignore-resource-not-found="true"/>
 
-    <bean id="mongo" class="com.mongodb.Mongo">
-        <constructor-arg>
-            <bean class="com.mongodb.MongoURI">
-                <constructor-arg value="${mongodb.url}"/>
-            </bean>
-        </constructor-arg>
-    </bean>
+    <bean id="mongodFactory" class="de.flapdoodle.embed.mongo.tests.MongodForTestsFactory" destroy-method="shutdown"/>
+    <bean id="mongo" class="com.mongodb.Mongo" factory-bean="mongodFactory" factory-method="newMongo"/>
 
     <bean id="morphia" class="com.google.code.morphia.Morphia" />
 

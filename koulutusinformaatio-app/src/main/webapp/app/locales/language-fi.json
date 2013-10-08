@@ -1,5 +1,5 @@
 {
-    "title-front-page": "Etusivu",
+    "sitename": "Opintopolku.fi",
     "title-search-results": "Hakutulokset",
     "title-application-basket": "Muistilista",
 
@@ -27,6 +27,7 @@
     "search-field-placeholder": "Kirjoita tähän esim. tutkinto, ammatti tai oppilaitoksen nimi",
     "search-button": "Hae",
 
+    "filter-title": "Rajaa hakutuloksia tästä",
     "filter-search-title": "Pohjakoulutus",
     "filter-search-subtitle": "Valitse ylin suorittamasi koulutus",
     "filter-search-elementary": "Perusopetus (peruskoulu)",

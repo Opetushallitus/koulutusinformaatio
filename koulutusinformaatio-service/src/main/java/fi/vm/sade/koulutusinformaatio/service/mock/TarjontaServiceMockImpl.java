@@ -7,7 +7,7 @@ import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
-import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
+import fi.vm.sade.tarjonta.service.resources.dto.*;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +43,51 @@ public class TarjontaServiceMockImpl implements TarjontaService {
 
 
     @Override
+    public KomoDTO getKomo(String oid) {
+        return null;
+    }
+
+    @Override
+    public List<OidRDTO> getKomotosByKomo(String oid, int count, int startIndex) {
+        return null;
+    }
+
+    @Override
+    public KomotoDTO getKomoto(String oid) {
+        return null;
+    }
+
+    @Override
+    public List<OidRDTO> getHakukohdesByKomoto(String oid) {
+        return null;
+    }
+
+    @Override
+    public KomoDTO getKomoByKomoto(String oid) {
+        return null;
+    }
+
+    @Override
+    public HakukohdeDTO getHakukohde(String oid) {
+        return null;
+    }
+
+    @Override
+    public HakuDTO getHakuByHakukohde(String oid) {
+        return null;
+    }
+
+    @Override
+    public List<OidRDTO> getKomotosByHakukohde(String oid) {
+        return null;
+    }
+
+    @Override
+    public HakuDTO getHaku(String oid) {
+        return null;
+    }
+
+    @Override
     public List<ParentLOS> findParentLearningOpportunity(String oid) throws TarjontaParseException, KoodistoException {
 
         Provider provider = createProvider();
@@ -72,14 +117,12 @@ public class TarjontaServiceMockImpl implements TarjontaService {
     }
 
     @Override
-    public List<OidRDTO> listParentLearnignOpportunityOids() {
-        OidRDTO oid = new OidRDTO();
-        oid.setOid(PARENT_KOMO_OID);
-        return Lists.newArrayList(oid);
+    public List<String> listParentLearnignOpportunityOids() {
+        return Lists.newArrayList(PARENT_KOMO_OID);
     }
 
     @Override
-    public List<OidRDTO> listParentLearnignOpportunityOids(int count, int startIndex) {
+    public List<String> listParentLearnignOpportunityOids(int count, int startIndex) {
         return listParentLearnignOpportunityOids();
     }
 

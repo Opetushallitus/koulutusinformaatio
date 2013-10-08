@@ -1,5 +1,5 @@
 {
-    "title-front-page": "Startsida",
+    "sitename": "Studieinfo.fi",
     "title-search-results": "Sökresultat",
     "title-application-basket": "Minneslista",
 
@@ -27,12 +27,13 @@
     "search-field-placeholder": "Skriv här t.ex. examen, yrke eller läroanstaltens namn",
     "search-button": "Sök",
 
+    "filter-title": "Begränsa sökresultaten",
     "filter-search-title": "Grundutbildning",
     "filter-search-subtitle": "Välj din högsta utbildning",
     "filter-search-elementary": "Grundläggande utbildning (grundskola)",
     "filter-search-elementary-individualized": "Individualiserad lärokurs",
     "filter-search-upper-secondary": "Gymnasium / Student ",
-    "filter-search-as-ongoing": "Haku meneillään juuri nyt (sv)",
+    "filter-search-as-ongoing": "Ansökan pågår som bäst",
     "filter-search-vocational": "Yrkesinriktad grundexamen (120 sv)",
     "filter-search-vocational-specialized": "Yrkes- eller specialyrkesexamen",
     "filter-search-institute": "Examen på skolnivå, institutnivå eller yrkesinriktad högre nivå",
@@ -83,17 +84,17 @@
     "cooperation": "Samarbete med andra aktörer",
     "content-of-studies": "Utbildningens innehåll",
     "study-plan": "Läroplan",
-    "contact-person-title": "Koulutuksen yhteyshenkilö (sv)",
+    "contact-person-title": "Utbildningens kontaktperson",
 
     "provider-web-page": "Läroanstaltens egna sidor",
 
     "application-title": "Ansökan",
     "application-period": "Ansökningstid",
     "application-options": "Ansökningsmålen",
-    "application-options-additional": "Hakukohteet, joissa paikkoja vapaana (sv)",
-    "application-system-additional": "Lisähaku (sv)",
+    "application-options-additional": "Ansökningsmål med lediga studieplatser",
+    "application-system-additional": "Tilläggsansökan",
     "apply-button-label": "Sök till utbildning",
-    "apply-button-label-additional": "Hae vapaata paikkaa (sv)",
+    "apply-button-label-additional": "Sök till ledig studieplats",
     "add-to-basket-label": "Lägg till i minneslistan",
     "application-system-active-future": "Ansökningstiden inleds",
     "application-system-active-past": "Ansökan har avslutats",

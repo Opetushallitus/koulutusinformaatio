@@ -10,11 +10,13 @@ kiApp.config(['$routeProvider', '$locationProvider', '$analyticsProvider', funct
     });
     $routeProvider.when('/tutkinto/:parentId', {
     	templateUrl: 'partials/ylataso.html', 
-    	controller: InfoCtrl
+    	controller: InfoCtrl,
+        reloadOnSearch: false
     });
     $routeProvider.when('/koulutusohjelma/:childId', {
     	templateUrl: 'partials/alataso.html', 
-    	controller: InfoCtrl
+    	controller: InfoCtrl,
+        reloadOnSearch: false
     });
     $routeProvider.when('/muistilista', {
         templateUrl: 'partials/applicationbasket/applicationbasket.html',

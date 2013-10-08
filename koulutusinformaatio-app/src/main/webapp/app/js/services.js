@@ -521,26 +521,6 @@ service('LanguageService', function() {
 }).
 
 /**
- *  Service handling page titles
- */
- service('TitleService', function() {
-    var title;
-    
-    return {
-        setTitle: function(value) {
-            title = value + ' - Opintopolku.fi';
-
-            // TODO: could this be done in angular way?
-            $('title').trigger('updatetitle', [title]);
-        },
-
-        getTitle: function() {
-            return title;
-        }
-    }
-}).
-
-/**
  *  Service for retrieving translated values for text
  */
 service('TranslationService', function() {
@@ -760,6 +740,14 @@ service('FilterService', ['UtilityService', function(UtilityService) {
             return filters.prerequisite;
         },
 
+        setPage: function(value) {
+            if (value && !isNaN(value)) {
+                filters.page = parseInt(value);
+            } else {
+                filters.page = 1;
+            }
+        },
+
         getParams: function() {
             var params = '';
             for (var i in filters) {
@@ -780,6 +768,44 @@ service('FilterService', ['UtilityService', function(UtilityService) {
         }
     };
 }]).
+/*
+service.('kiLocation', ['$location', function($location) {
+    return {
+        search: function() {
+
+        }
+    }
+}]).
+*/
+
+/*
+service('SearchCriteriaService', ['FilterService', 'kiAppConstants', function(FilterService, kiAppConstants) {
+    var criterias = {};
+
+    return {
+
+        getPage: function() {
+            return criterias.page || kiAppConstants.searchResultsStartPage;
+        },
+
+        setPage: function(value) {
+            criterias.page = value;
+        },
+
+        get: function() {
+            var filters = FilterService.get();
+
+            for (var i in filters) {
+                if (filters.hasOwnProperty(i)) {
+                    criterias[i] = filters[i];
+                }
+            }
+
+            return criterias;
+        }
+    }
+}]).
+*/
 
 /**
  *  Service for retrieving translated values for text
