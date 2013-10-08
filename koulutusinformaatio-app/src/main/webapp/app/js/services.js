@@ -67,13 +67,17 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
     }
 }]).
 
-service('SearchLocationService', ['$http', '$timeout', '$q', function($http, $timeout, $q) {
+service('SearchLocationService', ['$http', '$timeout', '$q', 'LanguageService', function($http, $timeout, $q, LanguageService) {
 
     return {
         query: function(queryParam) {
             var deferred = $q.defer();
 
-            $http.get('../location/search/' + queryParam, {}).
+            $http.get('../location/search/' + queryParam, {
+                params: {
+                    lang: LanguageService.getLanguage()
+                }
+            }).
             success(function(result) {
                 deferred.resolve(result);
             }).
