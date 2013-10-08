@@ -43,20 +43,34 @@ public class LocationResourceImpl implements LocationResource {
     }
 
     @Override
-    public List<LocationDTO> searchLocations(String term, String lang) {
+    public List<LocationDTO> getLocations(List<String> code, String lang) {
         try {
-            List<Location> locations = searchService.searchLocations(term, lang);
-            return Lists.transform(locations, new Function<Location, LocationDTO>() {
-                @Override
-                public LocationDTO apply(Location location) {
-                    LocationDTO dto = new LocationDTO();
-                    dto.setName(location.getName());
-                    dto.setCode(location.getCode());
-                    return dto;
-                }
-            });
+            List<Location> locations = searchService.getLocations(code, lang);
+            return Lists.transform(locations, getTransformFunction());
         } catch (SearchException e) {
             throw KIExceptionHandler.resolveException(e);
         }
+    }
+
+    @Override
+    public List<LocationDTO> searchLocations(String term, String lang) {
+        try {
+            List<Location> locations = searchService.searchLocations(term, lang);
+            return Lists.transform(locations, getTransformFunction());
+        } catch (SearchException e) {
+            throw KIExceptionHandler.resolveException(e);
+        }
+    }
+
+    private Function<Location, LocationDTO> getTransformFunction() {
+        return new Function<Location, LocationDTO>() {
+            @Override
+            public LocationDTO apply(Location location) {
+                LocationDTO dto = new LocationDTO();
+                dto.setName(location.getName());
+                dto.setCode(location.getCode());
+                return dto;
+            }
+        };
     }
 }

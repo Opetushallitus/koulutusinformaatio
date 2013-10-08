@@ -19,6 +19,8 @@ package fi.vm.sade.koulutusinformaatio.service.impl.query;
 import com.google.common.base.Joiner;
 import org.apache.solr.client.solrj.SolrQuery;
 
+import java.util.List;
+
 /**
  * @author Mikko Majapuro
  */
@@ -26,9 +28,15 @@ public class LocationQuery extends SolrQuery {
 
     private final static String NAME = "name";
     private final static String LANG = "lang";
+    private final static String CODE = "code";
 
     public LocationQuery(final String q, final String lang) {
         super(Joiner.on(":").join(NAME, q));
+        this.addFilterQuery(Joiner.on(":").join(LANG, lang));
+    }
+
+    public LocationQuery(final List<String> codes, final String lang) {
+        super(String.format("%s:(%s)", CODE, Joiner.on(" OR ").join(codes)));
         this.addFilterQuery(Joiner.on(":").join(LANG, lang));
     }
 }

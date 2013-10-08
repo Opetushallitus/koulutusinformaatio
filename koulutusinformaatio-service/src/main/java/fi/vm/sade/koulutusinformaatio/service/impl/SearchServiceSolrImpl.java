@@ -144,27 +144,23 @@ public class SearchServiceSolrImpl implements SearchService {
 
     @Override
     public List<Location> searchLocations(String term, String lang) throws SearchException {
-        List<Location> locations = Lists.newArrayList();
         String startswith = term.trim();
-
         if (!startswith.isEmpty()) {
             SolrQuery query = new LocationQuery(term + "*", lang);
-
-            QueryResponse queryResponse = null;
-            try {
-                queryResponse = locationHttpSolrServer.query(query);
-            } catch (SolrServerException e) {
-                throw new SearchException("Solr search error occured.");
-            }
-
-            for (SolrDocument result : queryResponse.getResults()) {
-                Location location = new Location();
-                location.setName(result.get("name").toString());
-                location.setCode(result.get("code").toString());
-                locations.add(location);
-            }
+            return executeSolrQuery(query);
+        } else {
+            return Lists.newArrayList();
         }
-        return locations;
+    }
+
+    @Override
+    public List<Location> getLocations(List<String> codes, String lang) throws SearchException {
+        if (codes != null && !codes.isEmpty()) {
+            SolrQuery query = new LocationQuery(codes, lang);
+            return executeSolrQuery(query);
+        } else {
+            return Lists.newArrayList();
+        }
     }
 
     private void updateAsStatus(LOSearchResult lo, SolrDocument doc) {
@@ -201,6 +197,24 @@ public class SearchServiceSolrImpl implements SearchService {
         parameters.add(value);
         return parameters;
 
+    }
+
+    private List<Location> executeSolrQuery(final SolrQuery query) throws SearchException {
+        List<Location> locations = Lists.newArrayList();
+        QueryResponse queryResponse = null;
+        try {
+            queryResponse = locationHttpSolrServer.query(query);
+        } catch (SolrServerException e) {
+            throw new SearchException("Solr search error occured.");
+        }
+
+        for (SolrDocument result : queryResponse.getResults()) {
+            Location location = new Location();
+            location.setName(result.get("name").toString());
+            location.setCode(result.get("code").toString());
+            locations.add(location);
+        }
+        return locations;
     }
 
 }

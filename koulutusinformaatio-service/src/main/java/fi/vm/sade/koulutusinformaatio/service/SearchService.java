@@ -32,5 +32,5 @@ public interface SearchService {
                                                    List<String> cities, boolean ongoing, int start, int rows) throws SearchException;
 
     List<Location> searchLocations(final String term, final String lang) throws SearchException;
-
+    List<Location> getLocations(List<String> codes, final String lang) throws SearchException;
 }
