@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.configuration;
 
 import fi.vm.sade.koodisto.util.CachingKoodistoClient;
+import fi.vm.sade.koodisto.util.KoodistoClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -26,8 +27,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class WebServices {
 
-    @Bean(name="cachingKoodistoClient")
-    public CachingKoodistoClient getCachingKoodistoClient() {
+    @Bean(name="koodistoClient")
+    public KoodistoClient getKoodistoClient() {
         return new CachingKoodistoClient();
     }
 }
