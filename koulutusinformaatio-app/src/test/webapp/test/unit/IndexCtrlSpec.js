@@ -1,3 +1,4 @@
+/*
 'use strict';
 
 describe('IndexController', function() {
@@ -24,3 +25,4 @@ describe('IndexController', function() {
         });
     });
 });
+*/
