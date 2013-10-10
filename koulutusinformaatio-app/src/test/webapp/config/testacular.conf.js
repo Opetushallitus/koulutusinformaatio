@@ -1,25 +1,44 @@
-basePath = '../';
-appPath = '../../main/webapp/';
+var appPath = 'main/webapp/';
+var testPath = 'test/webapp/';
 
-files = [
-  JASMINE,
-  JASMINE_ADAPTER,
-  appPath + 'app/lib/angular/angular.js',
-  appPath + 'app/lib/angular/angular-*.js',
-  'test/lib/angular/angular-mocks.js',
-  appPath + 'app/lib/jquery/jquery-1.8.0.min.js',
-  appPath + 'app/lib/modernizr/modernizr-2.6.2.min.js',
-  appPath + 'app/lib/jstorage.js',
-  appPath + 'app/lib/i18next-1.6.0.js',
-  appPath + 'app/js/**/*.js',
-  'test/unit/**/*.js'
-];
+module.exports = function(config) {
+    config.set({
+        basePath: '../../../',
+        frameworks: ['jasmine'],
+        plugins: [
+            'karma-jasmine', 
+            'karma-ng-html2js-preprocessor',
+            'karma-chrome-launcher',
+            'karma-junit-reporter'
+        ],
+        preprocessors: {
+            'main/webapp/app/templates/*.html': 'ng-html2js'
+        },
+        ngHtml2JsPreprocessor: {
+            stripPrefix: 'main/webapp/app/'
+        },
+        files: [
+            appPath + 'app/lib/angular/1.0.8/angular.min.js',
+            appPath + 'app/lib/angular/1.0.8/angular-resource.min.js',
+            appPath + 'app/lib/angulartics/*.js',
+            appPath + 'app/lib/jquery/jquery-1.8.0.min.js',
+            appPath + 'app/lib/modernizr/modernizr-2.6.2.min.js',
+            appPath + 'app/lib/jquery.enhanced.cookie.js',
+            appPath + 'app/lib/i18next-1.6.0.js',
+            appPath + 'app/lib/ui-bootstrap-custom-tpls-0.4.0.js',
+            appPath + 'app/js/**/*.js',
+            appPath + 'app/templates/*.html',
 
-autoWatch = true;
-
-browsers = ['Chrome'];
-
-junitReporter = {
-  outputFile: 'test_out/unit.xml',
-  suite: 'unit'
+            testPath + 'test/lib/angular/angular-mocks.js',
+            testPath + 'test/unit/**/*.js',
+        ],
+        browsers: ['Chrome'],
+        logLevel: config.LOG_INFO,
+        autoWatch: true,
+        singleRun: false,
+        reporters: ['progress', 'junit'],
+        junitReporter: {
+            outputFile: testPath + 'test_out/unit.xml'
+        },
+    });
 };

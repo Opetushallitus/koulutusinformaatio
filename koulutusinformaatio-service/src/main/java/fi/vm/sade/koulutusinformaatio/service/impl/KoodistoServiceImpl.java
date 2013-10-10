@@ -28,6 +28,7 @@ import fi.vm.sade.koodisto.service.types.common.KoodiMetadataType;
 import fi.vm.sade.koodisto.service.types.common.KoodiType;
 import fi.vm.sade.koodisto.util.CachingKoodistoClient;
 import fi.vm.sade.koodisto.util.KoodiServiceSearchCriteriaBuilder;
+import fi.vm.sade.koodisto.util.KoodistoClient;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.CodeUriAndVersion;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
@@ -49,13 +50,13 @@ import java.util.regex.Pattern;
 @Service
 public class KoodistoServiceImpl implements KoodistoService {
 
-    private final CachingKoodistoClient koodiService;
+    private final KoodistoClient koodiService;
     private final Pattern pattern;
     private static final String KOODI_URI_WITH_VERSION_PATTERN = "^[^#]+#\\d+$";
     public static final Logger LOGGER = LoggerFactory.getLogger(KoodistoServiceImpl.class);
 
     @Autowired
-    public KoodistoServiceImpl(final CachingKoodistoClient koodiService) {
+    public KoodistoServiceImpl(final KoodistoClient koodiService) {
         this.koodiService = koodiService;
         this.pattern = Pattern.compile(KOODI_URI_WITH_VERSION_PATTERN);
     }

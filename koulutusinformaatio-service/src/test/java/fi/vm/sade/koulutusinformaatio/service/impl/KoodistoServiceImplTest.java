@@ -22,6 +22,7 @@ import fi.vm.sade.koodisto.service.types.common.KieliType;
 import fi.vm.sade.koodisto.service.types.common.KoodiMetadataType;
 import fi.vm.sade.koodisto.service.types.common.KoodiType;
 import fi.vm.sade.koodisto.util.CachingKoodistoClient;
+import fi.vm.sade.koodisto.util.KoodistoClient;
 import fi.vm.sade.koulutusinformaatio.converter.KoodiTypeToCode;
 import fi.vm.sade.koulutusinformaatio.converter.KoodiTypeToI18nText;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
@@ -45,11 +46,11 @@ import static org.mockito.Mockito.when;
 public class KoodistoServiceImplTest {
 
     private KoodistoService koodistoService;
-    private CachingKoodistoClient koodiService;
+    private KoodistoClient koodiService;
 
     @Before
     public void setUp() {
-        koodiService = mock(CachingKoodistoClient.class);
+        koodiService = mock(KoodistoClient.class);
         KoodiType koodi = new KoodiType();
         koodi.setKoodiArvo("1234");
         koodi.setKoodiUri("test_1234");

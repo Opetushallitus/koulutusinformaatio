@@ -528,24 +528,40 @@ directive('kiTimestamp', function() {
 /**
  *  Render application system state as label
  */
-directive('kiAsStateLabel', function() {
+directive('kiAsStateLabel', ['UtilityService', function(UtilityService) {
+    
+    var isAsOngoing = function(as) {
+        var result = false;
+        if (UtilityService.isLisahaku(as)) {
+            angular.forEach(as.applicationOptions, function(value, key) {
+                if (value.canBeApplied) {
+                    result = true;
+                }          
+            });
+        } else if (as.asOngoing) {
+            result = true;
+        }
+
+        return result;
+    };
+
     return function(scope, element, attrs) {
         scope.$watch('loi', function(data) {
-            var asOngoing = false;
+            var isOngoing = false;
 
             if (data && data.applicationSystems) {
                 for (var asIndex in data.applicationSystems) {
                     if (data.applicationSystems.hasOwnProperty(asIndex)) {
                         var as = data.applicationSystems[asIndex];
-                        if (as.asOngoing) {
-                            asOngoing = as.asOngoing;
-                            break;
+                        if (isAsOngoing(as)) {
+                            isOngoing = true;
+                            break; 
                         }
                     }
                 }
             }
 
-            if (asOngoing) {
+            if (isOngoing) {
                 element.addClass('label vih');
                 element.text(i18n.t('label-as-ongoing'));
             } else {
@@ -554,10 +570,10 @@ directive('kiAsStateLabel', function() {
             }
         })
     }
-}).
+}]).
 
 /**
- *  Render applicayion system state
+ *  Render application system state for search result view
  */
 directive('kiAsState', function() {
     return function(scope, element, attrs) {

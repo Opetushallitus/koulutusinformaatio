@@ -828,6 +828,9 @@ service('UtilityService', function() {
             if (stringToArray) {
                 return stringToArray.split(delimiter);
             }
+        },
+        isLisahaku: function(as) {
+            return as.aoSpecificApplicationDates;
         }
     };
 });

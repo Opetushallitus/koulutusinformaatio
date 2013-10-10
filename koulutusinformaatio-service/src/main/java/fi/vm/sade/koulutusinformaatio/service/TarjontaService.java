@@ -19,7 +19,6 @@ package fi.vm.sade.koulutusinformaatio.service;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
-import fi.vm.sade.tarjonta.service.resources.dto.*;
 
 import java.util.List;
 
@@ -27,24 +26,6 @@ import java.util.List;
  * @author Hannu Lyytikainen
  */
 public interface TarjontaService {
-
-    public KomoDTO getKomo(String oid);
-
-    public List<OidRDTO> getKomotosByKomo(String oid, int count, int startIndex);
-
-    public KomotoDTO getKomoto(String oid);
-
-    public List<OidRDTO> getHakukohdesByKomoto(String oid);
-
-    public KomoDTO getKomoByKomoto(String oid);
-
-    public HakukohdeDTO getHakukohde(String oid);
-
-    public HakuDTO getHakuByHakukohde(String oid);
-
-    public List<OidRDTO> getKomotosByHakukohde(String oid);
-
-    public HakuDTO getHaku(String oid);
 
     /**
      * Finds a parent learning opportunity by oid.

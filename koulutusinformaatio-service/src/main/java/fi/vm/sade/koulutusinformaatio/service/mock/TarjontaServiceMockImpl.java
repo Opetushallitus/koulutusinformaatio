@@ -7,7 +7,6 @@ import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
-import fi.vm.sade.tarjonta.service.resources.dto.*;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -40,52 +39,6 @@ public class TarjontaServiceMockImpl implements TarjontaService {
     private static final String APPLICATION_OPTION_ID_2 = "2111111.222222.333333.444444.555555";
 
     private static final String PROVIDER_ID = "1111111.2222222.3333333.4444444.5555555";
-
-
-    @Override
-    public KomoDTO getKomo(String oid) {
-        return null;
-    }
-
-    @Override
-    public List<OidRDTO> getKomotosByKomo(String oid, int count, int startIndex) {
-        return null;
-    }
-
-    @Override
-    public KomotoDTO getKomoto(String oid) {
-        return null;
-    }
-
-    @Override
-    public List<OidRDTO> getHakukohdesByKomoto(String oid) {
-        return null;
-    }
-
-    @Override
-    public KomoDTO getKomoByKomoto(String oid) {
-        return null;
-    }
-
-    @Override
-    public HakukohdeDTO getHakukohde(String oid) {
-        return null;
-    }
-
-    @Override
-    public HakuDTO getHakuByHakukohde(String oid) {
-        return null;
-    }
-
-    @Override
-    public List<OidRDTO> getKomotosByHakukohde(String oid) {
-        return null;
-    }
-
-    @Override
-    public HakuDTO getHaku(String oid) {
-        return null;
-    }
 
     @Override
     public List<ParentLOS> findParentLearningOpportunity(String oid) throws TarjontaParseException, KoodistoException {

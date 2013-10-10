@@ -19,10 +19,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
-import fi.vm.sade.koulutusinformaatio.service.EducationAggregatorService;
-import fi.vm.sade.koulutusinformaatio.service.EducationDataUpdateService;
-import fi.vm.sade.koulutusinformaatio.service.IndexerService;
-import fi.vm.sade.koulutusinformaatio.service.UpdateService;
+import fi.vm.sade.koulutusinformaatio.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +36,7 @@ public class UpdateServiceImpl implements UpdateService {
 
     public static final Logger LOG = LoggerFactory.getLogger(UpdateServiceImpl.class);
 
-    private EducationAggregatorService educationAggregatorService;
+    private TarjontaService tarjontaService;
     private IndexerService indexerService;
     private EducationDataUpdateService educationDataUpdateService;
     private TransactionManager transactionManager;
@@ -48,10 +45,10 @@ public class UpdateServiceImpl implements UpdateService {
 
 
     @Autowired
-    public UpdateServiceImpl(EducationAggregatorService educationAggregatorService,
-                             IndexerService indexerService, EducationDataUpdateService educationDataUpdateService,
+    public UpdateServiceImpl(TarjontaService tarjontaService, IndexerService indexerService,
+                             EducationDataUpdateService educationDataUpdateService,
                              TransactionManager transactionManager) {
-        this.educationAggregatorService = educationAggregatorService;
+        this.tarjontaService = tarjontaService;
         this.indexerService = indexerService;
         this.educationDataUpdateService = educationDataUpdateService;
         this.transactionManager = transactionManager;
@@ -70,14 +67,14 @@ public class UpdateServiceImpl implements UpdateService {
 
             while(count >= MAX_RESULTS) {
                 LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
-                List<String> parentOids = educationAggregatorService.listParentLearnignOpportunityOids(count, index);
+                List<String> parentOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
                 count = parentOids.size();
                 index += count;
 
                for (String parentOid : parentOids) {
                     List<ParentLOS> parents = null;
                     try {
-                        parents = educationAggregatorService.findParentLearningOpportunity(parentOid);
+                        parents = tarjontaService.findParentLearningOpportunity(parentOid);
                     } catch (TarjontaParseException e) {
                         LOG.warn("Exception while updating parent learning opportunity, oidMessage: " + e.getMessage());
                         continue;
