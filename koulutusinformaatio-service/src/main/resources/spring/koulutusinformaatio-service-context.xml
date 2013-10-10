@@ -27,8 +27,8 @@
         http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 
     <context:property-placeholder
-            location="classpath:koulutusinformaatio.properties, file:///${user.home:''}/oph-configuration/koulutusinformaatio.properties,
-            file:///${user.home:''}/oph-configuration/common.properties"
+            location="classpath:koulutusinformaatio.properties, file:///${user.home:''}/oph-configuration/common.properties,
+            file:///${user.home:''}/oph-configuration/koulutusinformaatio.properties"
             ignore-resource-not-found="true"/>
 
     <context:component-scan base-package="fi.vm.sade.koulutusinformaatio"/>
