@@ -17,8 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.dao.transaction.impl;
 
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
-import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
 import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.entity.DataStatusEntity;
 import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
@@ -39,7 +38,7 @@ import java.io.IOException;
 @Service
 public class TransactionManagerImpl implements TransactionManager {
 
-    private Mongo mongo;
+    private MongoClient mongo;
     private final String transactionDbName;
     private final String dbName;
     private final String providerUpdateCoreName;
@@ -64,7 +63,7 @@ public class TransactionManagerImpl implements TransactionManager {
     private PictureDAO pictureDAO;
 
     @Autowired
-    public TransactionManagerImpl(Mongo mongo, @Value("${mongo.transaction-db.name}") String transactionDbName,
+    public TransactionManagerImpl(MongoClient mongo, @Value("${mongo.transaction-db.name}") String transactionDbName,
                                   @Value("${mongo.db.name}") String dbName, DataStatusDAO dataStatusTransactionDAO,
                                   @Qualifier("loUpdateHttpSolrServer") HttpSolrServer loUpdateHttpSolrServer,
                                   @Qualifier("lopUpdateHttpSolrServer") HttpSolrServer lopUpdateHttpSolrServer,
@@ -127,7 +126,10 @@ public class TransactionManagerImpl implements TransactionManager {
         loCar.process(adminHttpSolrServer);
 
         dataStatusTransactionDAO.save(new DataStatusEntity());
-        DBObject cmd = new BasicDBObject("copydb", 1).append("fromdb", transactionDbName).append("todb", dbName);
+        BasicDBObject cmd = new BasicDBObject("copydb", 1).append("fromdb", transactionDbName).append("todb", dbName);
+        if (mongo.getCredentialsList() != null && !mongo.getCredentialsList().isEmpty()) {
+            cmd = cmd.append("username", mongo.getCredentialsList().get(0).getUserName()).append("key", mongo.getCredentialsList().get(0).getPassword());
+        }
         dropDbCollections();
         mongo.getDB("admin").command(cmd);
         dropTransactionDbCollections();
