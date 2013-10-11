@@ -17,10 +17,9 @@
 package fi.vm.sade.koulutusinformaatio.dao.transaction.impl;
 
 import com.mongodb.BasicDBObject;
-import com.mongodb.CommandResult;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
-import fi.vm.sade.koulutusinformaatio.dao.DataStatusDAO;
+import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.entity.DataStatusEntity;
 import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -51,6 +50,18 @@ public class TransactionManagerImpl implements TransactionManager {
     private HttpSolrServer loUpdateHttpSolrServer;
     private HttpSolrServer lopUpdateHttpSolrServer;
     private HttpSolrServer adminHttpSolrServer;
+    private ParentLearningOpportunitySpecificationDAO parentLOSTransactionDAO;
+    private ApplicationOptionDAO applicationOptionTransactionDAO;
+    private LearningOpportunityProviderDAO learningOpportunityProviderTransactionDAO;
+    private ChildLearningOpportunityDAO childLOTransactionDAO;
+    private PictureDAO pictureTransactionDAO;
+
+    private ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO;
+    private ApplicationOptionDAO applicationOptionDAO;
+    private ChildLearningOpportunityDAO childLearningOpportunityDAO;
+    private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
+    private DataStatusDAO dataStatusDAO;
+    private PictureDAO pictureDAO;
 
     @Autowired
     public TransactionManagerImpl(Mongo mongo, @Value("${mongo.transaction-db.name}") String transactionDbName,
@@ -61,7 +72,18 @@ public class TransactionManagerImpl implements TransactionManager {
                                   @Value("${solr.provider.url}") String providerCoreName,
                                   @Value("${solr.provider.update.url}") String providerUpdateCoreName,
                                   @Value("${solr.learningopportunity.url}") String learningopportunityCoreName,
-                                  @Value("${solr.learningopportunity.update.url}") String learningopportunityUpdateCoreName) {
+                                  @Value("${solr.learningopportunity.update.url}") String learningopportunityUpdateCoreName,
+                                  ParentLearningOpportunitySpecificationDAO parentLOSTransactionDAO,
+                                  ApplicationOptionDAO applicationOptionTransactionDAO,
+                                  LearningOpportunityProviderDAO learningOpportunityProviderTransactionDAO,
+                                  ChildLearningOpportunityDAO childLOTransactionDAO,
+                                  PictureDAO pictureTransactionDAO,
+                                  ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO,
+                                  ApplicationOptionDAO applicationOptionDAO,
+                                  ChildLearningOpportunityDAO childLearningOpportunityDAO,
+                                  LearningOpportunityProviderDAO learningOpportunityProviderDAO,
+                                  DataStatusDAO dataStatusDAO,
+                                  PictureDAO pictureDAO) {
         this.mongo = mongo;
         this.transactionDbName = transactionDbName;
         this.dbName = dbName;
@@ -69,10 +91,21 @@ public class TransactionManagerImpl implements TransactionManager {
         this.providerUpdateCoreName = providerUpdateCoreName;
         this.learningopportunityUpdateCoreName = learningopportunityUpdateCoreName;
         this.learningopportunityCoreName = learningopportunityCoreName;
-        this.dataStatusTransactionDAO = dataStatusTransactionDAO;
         this.loUpdateHttpSolrServer = loUpdateHttpSolrServer;
         this.lopUpdateHttpSolrServer = lopUpdateHttpSolrServer;
         this.adminHttpSolrServer = adminHttpSolrServer;
+        this.dataStatusTransactionDAO = dataStatusTransactionDAO;
+        this.parentLOSTransactionDAO = parentLOSTransactionDAO;
+        this.applicationOptionTransactionDAO = applicationOptionTransactionDAO;
+        this.learningOpportunityProviderTransactionDAO = learningOpportunityProviderTransactionDAO;
+        this.childLOTransactionDAO = childLOTransactionDAO;
+        this.pictureTransactionDAO = pictureTransactionDAO;
+        this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
+        this.applicationOptionDAO = applicationOptionDAO;
+        this.childLearningOpportunityDAO = childLearningOpportunityDAO;
+        this.learningOpportunityProviderDAO = learningOpportunityProviderDAO;
+        this.dataStatusDAO = dataStatusDAO;
+        this.pictureDAO = pictureDAO;
     }
 
     @Override
@@ -95,14 +128,14 @@ public class TransactionManagerImpl implements TransactionManager {
 
         dataStatusTransactionDAO.save(new DataStatusEntity());
         DBObject cmd = new BasicDBObject("copydb", 1).append("fromdb", transactionDbName).append("todb", dbName);
-        mongo.dropDatabase(dbName);
+        dropDbCollections();
         mongo.getDB("admin").command(cmd);
-        mongo.dropDatabase(transactionDbName);
+        dropTransactionDbCollections();
     }
 
     private void dropUpdateData() {
         try {
-            mongo.dropDatabase(transactionDbName);
+            dropTransactionDbCollections();
             loUpdateHttpSolrServer.deleteByQuery("*:*");
             loUpdateHttpSolrServer.commit();
             loUpdateHttpSolrServer.optimize();
@@ -112,6 +145,23 @@ public class TransactionManagerImpl implements TransactionManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void dropTransactionDbCollections() {
+        parentLOSTransactionDAO.getCollection().drop();
+        applicationOptionTransactionDAO.getCollection().drop();
+        learningOpportunityProviderTransactionDAO.getCollection().drop();
+        childLOTransactionDAO.getCollection().drop();
+        pictureTransactionDAO.getCollection().drop();
+    }
+
+    private void dropDbCollections() {
+        parentLearningOpportunitySpecificationDAO.getCollection().drop();
+        applicationOptionDAO.getCollection().drop();
+        childLearningOpportunityDAO.getCollection().drop();
+        dataStatusDAO.getCollection().drop();
+        pictureDAO.getCollection().drop();
+        learningOpportunityProviderDAO.getCollection().drop();
     }
 
     private CoreAdminRequest getCoreSwapRequest(final String fromCore, final String toCore) {

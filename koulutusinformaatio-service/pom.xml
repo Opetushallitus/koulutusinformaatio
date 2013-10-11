@@ -85,9 +85,9 @@
             <version>${mongo-driver.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.google.code.morphia</groupId>
+            <groupId>org.mongodb.morphia</groupId>
             <artifactId>morphia</artifactId>
-            <version>0.99</version>
+            <version>0.105</version>
         </dependency>
         <dependency>
             <groupId>cglib</groupId>
@@ -171,12 +171,6 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-    <repositories>
-        <repository>
-            <id>morphia</id>
-            <url>http://morphia.googlecode.com/svn/mavenrepo/</url>
-        </repository>
-    </repositories>
     <build>
         <plugins>
             <plugin>

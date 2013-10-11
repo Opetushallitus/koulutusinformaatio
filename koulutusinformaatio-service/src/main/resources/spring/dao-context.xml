@@ -20,15 +20,15 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
-    <bean id="mongo" class="com.mongodb.Mongo">
+    <bean id="mongo" class="com.mongodb.MongoClient">
         <constructor-arg>
-            <bean class="com.mongodb.MongoURI">
+            <bean class="com.mongodb.MongoClientURI">
                 <constructor-arg value="${mongodb.url}"/>
             </bean>
         </constructor-arg>
     </bean>
 
-    <bean id="morphia" class="com.google.code.morphia.Morphia" />
+    <bean id="morphia" class="org.mongodb.morphia.Morphia" />
 
     <bean id="parentLearningOpportunitySpecificationDAO" class="fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecificationDAO">
         <constructor-arg>

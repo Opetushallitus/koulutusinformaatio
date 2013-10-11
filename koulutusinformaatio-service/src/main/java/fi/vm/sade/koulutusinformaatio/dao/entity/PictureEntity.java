@@ -16,8 +16,9 @@
 
 package fi.vm.sade.koulutusinformaatio.dao.entity;
 
-import com.google.code.morphia.annotations.Entity;
-import com.google.code.morphia.annotations.Id;
+
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Id;
 
 /**
  * @author Mikko Majapuro
