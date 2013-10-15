@@ -127,9 +127,6 @@ public class TransactionManagerImpl implements TransactionManager {
 
         dataStatusTransactionDAO.save(new DataStatusEntity());
         BasicDBObject cmd = new BasicDBObject("copydb", 1).append("fromdb", transactionDbName).append("todb", dbName);
-        if (mongo.getCredentialsList() != null && !mongo.getCredentialsList().isEmpty()) {
-            cmd = cmd.append("username", mongo.getCredentialsList().get(0).getUserName()).append("key", mongo.getCredentialsList().get(0).getPassword());
-        }
         dropDbCollections();
         mongo.getDB("admin").command(cmd);
         dropTransactionDbCollections();
