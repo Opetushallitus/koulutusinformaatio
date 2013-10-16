@@ -3,6 +3,16 @@
  */
 function LanguageCtrl($scope, LanguageService) {
     $scope.changeLanguage = function(code) {
+        /*
+        _paq.push(['setCustomVariable', 
+            1, // Index, the number from 1 to 5 where this custom variable name is stored 
+            "Kieli", // Name, the name of the variable, for example: Gender, VisitorType 
+            code, // Value, for example: "Male", "Female" or "new", "engaged", "customer" 
+            "visit" // Scope of the custom variable, "visit" means the custom variable applies to the current visit 
+        ]);
+        _paq.push(['trackPageView']);
+        */
+
        LanguageService.setLanguage(code);
        i18n.setLng(code);
        document.location.reload(true);

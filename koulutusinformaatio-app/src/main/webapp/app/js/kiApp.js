@@ -2,8 +2,12 @@
 
 var kiApp = angular.module('kiApp', ['kiApp.services', 'kiApp.directives', 'ui.bootstrap', 'angulartics', 'angulartics.piwik']);
 kiApp.config(['$routeProvider', '$locationProvider', '$analyticsProvider', function($routeProvider, $locationProvider, $analyticsProvider, $rootScope) {
-    $analyticsProvider.virtualPageviews(false);
+
+    // initialize piwik analytics tool
+    OPH.Common.initPiwik();
+    $analyticsProvider.virtualPageviews(true);
     $analyticsProvider.firstPageview(false);
+
     $routeProvider.when('/haku/:queryString', {
     	templateUrl: 'partials/hakutulokset.html', 
     	controller: SearchCtrl
@@ -25,6 +29,8 @@ kiApp.config(['$routeProvider', '$locationProvider', '$analyticsProvider', funct
     $routeProvider.otherwise({
     	redirectTo: '/haku/'
     });
+
+
 }]);
 
 kiApp.filter('escape', function() {
@@ -46,9 +52,6 @@ kiApp.run(['LanguageService', function(LanguageService) {
         fallbackLng : 'fi',
         debug : false
     });
-
-    // initialize piwik analytics tool
-    OPH.Common.initPiwik();
 }]);
 
 kiApp.constant('kiAppConstants', {
@@ -79,7 +82,6 @@ OPH.Common = {
 
         window._paq = window._paq || [];
         _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
-        //_paq.push(["trackPageView"]);
         _paq.push(["enableLinkTracking"]);
 
         (function() {

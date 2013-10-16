@@ -162,6 +162,16 @@ service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', '$filter
                 else return a.id > b.id ? 1 : -1;
             });
         }
+
+        /*
+        _paq.push(['setCustomVariable', 
+            1, // Index, the number from 1 to 5 where this custom variable name is stored 
+            "Tarjoaja", // Name, the name of the variable, for example: Gender, VisitorType 
+            result.provider.name, // Value, for example: "Male", "Female" or "new", "engaged", "customer" 
+            "page" // Scope of the custom variable, "visit" means the custom variable applies to the current visit 
+        ]);
+        _paq.push(['trackPageView']);
+        */
     };
 
     return {
