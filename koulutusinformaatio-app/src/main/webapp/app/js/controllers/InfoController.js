@@ -68,12 +68,6 @@
             loi = getFirstLOI();
             changeLOISelection(loi);
         }
-
-        /*
-        var loName = $scope.childLO ? $scope.childLO.name : $scope.parentLO.name;
-        var pathParts = [$scope.parentLO.provider.name, loName, $scope.selectedLOI.prerequisite.value];
-        $analytics.pageTrack(pathParts.join('/'));
-        */
     };
 
     var changeLOISelection = function(loi) {
