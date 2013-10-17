@@ -3619,6 +3619,36 @@ table tbody tr:nth-child(odd) {
   border: solid 2px #bdbdbd;
   padding: 20px 10px; }
 
+.typeahead {
+  list-style-type: none;
+  margin: 2px 0 0 0;
+  padding: 0;
+  border: 1px solid #ccc;
+  -webkit-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
+  -o-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
+  -ms-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -o-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px; }
+  .typeahead li {
+    border-top: 1px solid #bfe4f1; }
+    .typeahead li:first-child {
+      border: none; }
+    .typeahead li.active {
+      background-color: #bfe4f1; }
+    .typeahead li a {
+      display: block;
+      padding: 6px 10px;
+      text-decoration: none; }
+      .typeahead li a:hover, .typeahead li a:active {
+        background-color: #bfe4f1;
+        cursor: pointer;
+        text-decoration: none; }
+
 /*** Main navigation
 **************************************************************/
 .main-navigation {

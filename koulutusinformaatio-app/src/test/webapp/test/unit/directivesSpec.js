@@ -10,7 +10,7 @@ describe('Location filter directive', function() {
     beforeEach(function () {
 
         //load the module
-        module('kiApp', 'templates/locationFilter.html');
+        module('kiApp', 'kiApp.directives', 'templates/locationFilter.html');
         
         //set our view html.
         html = '<div data-ki-location-filter></div>';
@@ -57,6 +57,7 @@ describe('Location filter directive', function() {
         $(elem).find('li a').get(0).click();
         expect(elem.find('li').length).toEqual(1);
     });
+
 });
 
 
@@ -228,3 +229,4 @@ describe('Application system state label', function() {
     });
 
 });
+

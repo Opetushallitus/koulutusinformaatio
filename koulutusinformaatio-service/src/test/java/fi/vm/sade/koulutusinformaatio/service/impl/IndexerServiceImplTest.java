@@ -51,6 +51,8 @@ public class IndexerServiceImplTest {
     private HttpSolrServer loUpdateHttpSolrServer;
     @Mock
     private HttpSolrServer lopUpdateHttpSolrServer;
+    @Mock
+    private HttpSolrServer locationUpdateHttpSolrServer;
 
     private IndexerServiceImpl indexerServiceImpl;
 
@@ -74,7 +76,7 @@ public class IndexerServiceImplTest {
         aoEndCal.set(Calendar.DATE, 15);
         applicationOptionApplicationPeriodEnds = aoEndCal.getTime();
         when(lopUpdateHttpSolrServer.query(any(SolrQuery.class))).thenReturn(new QueryResponse());
-        indexerServiceImpl = new IndexerServiceImpl(loUpdateHttpSolrServer, lopUpdateHttpSolrServer);
+        indexerServiceImpl = new IndexerServiceImpl(loUpdateHttpSolrServer, lopUpdateHttpSolrServer, locationUpdateHttpSolrServer);
     }
 
     @Test

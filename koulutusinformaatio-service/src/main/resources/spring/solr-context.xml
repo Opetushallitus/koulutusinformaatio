@@ -43,6 +43,20 @@
             <value>${solr.base.url}${solr.provider.update.url}</value>
         </constructor-arg>
     </bean>
+
+    <bean id="locationHttpSolrServer"
+          class="org.apache.solr.client.solrj.impl.HttpSolrServer">
+        <constructor-arg>
+            <value>${solr.base.url}${solr.location.url}</value>
+        </constructor-arg>
+    </bean>
+    <bean id="locationUpdateHttpSolrServer"
+          class="org.apache.solr.client.solrj.impl.HttpSolrServer">
+        <constructor-arg>
+            <value>${solr.base.url}${solr.location.update.url}</value>
+        </constructor-arg>
+    </bean>
+
     <bean id="adminHttpSolrServer"
           class="org.apache.solr.client.solrj.impl.HttpSolrServer">
         <constructor-arg>

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
+ * Copyright (c) 2013 The Finnish Board of Education - Opetushallitus
  *
  * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
  * soon as they will be approved by the European Commission - subsequent versions
@@ -17,25 +17,14 @@
 package fi.vm.sade.koulutusinformaatio.service;
 
 import fi.vm.sade.koulutusinformaatio.domain.Location;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
-import org.apache.solr.client.solrj.SolrServerException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 
-import java.io.IOException;
 import java.util.List;
 
-public interface IndexerService {
+/**
+ * @author Mikko Majapuro
+ */
+public interface LocationService {
 
-    /**
-     * Adds an learning opportunity parent and it's children into solar.
-     * The data is not committed to index.
-     */
-    void addParentLearningOpportunity(ParentLOS parent) throws Exception;
-
-
-    void addLocations(List<Location> locations) throws IOException, SolrServerException;
-
-    /**
-     * Commits learning opportunities from memory to index.
-     */
-    void commitLOChanges() throws Exception;
+    public List<Location> getMunicipalities() throws KoodistoException;
 }

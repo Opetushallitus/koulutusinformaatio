@@ -16,11 +16,8 @@
 
 package fi.vm.sade.koulutusinformaatio.dao.transaction.impl;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.MongoClient;
-import fi.vm.sade.koulutusinformaatio.dao.*;
-import fi.vm.sade.koulutusinformaatio.dao.entity.DataStatusEntity;
-import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
+import java.io.IOException;
+
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.request.CoreAdminRequest;
@@ -30,7 +27,17 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
+import com.mongodb.BasicDBObject;
+import com.mongodb.MongoClient;
+
+import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
+import fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityDAO;
+import fi.vm.sade.koulutusinformaatio.dao.DataStatusDAO;
+import fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO;
+import fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecificationDAO;
+import fi.vm.sade.koulutusinformaatio.dao.PictureDAO;
+import fi.vm.sade.koulutusinformaatio.dao.entity.DataStatusEntity;
+import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
 
 /**
  * @author Mikko Majapuro
@@ -45,9 +52,13 @@ public class TransactionManagerImpl implements TransactionManager {
     private final String providerCoreName;
     private final String learningopportunityUpdateCoreName;
     private final String learningopportunityCoreName;
+    private final String locationUpdateCoreName;
+    private final String locationCoreName;
     private DataStatusDAO dataStatusTransactionDAO;
     private HttpSolrServer loUpdateHttpSolrServer;
     private HttpSolrServer lopUpdateHttpSolrServer;
+    private HttpSolrServer locationUpdateHttpSolrServer;
+
     private HttpSolrServer adminHttpSolrServer;
     private ParentLearningOpportunitySpecificationDAO parentLOSTransactionDAO;
     private ApplicationOptionDAO applicationOptionTransactionDAO;
@@ -67,11 +78,14 @@ public class TransactionManagerImpl implements TransactionManager {
                                   @Value("${mongo.db.name}") String dbName, DataStatusDAO dataStatusTransactionDAO,
                                   @Qualifier("loUpdateHttpSolrServer") HttpSolrServer loUpdateHttpSolrServer,
                                   @Qualifier("lopUpdateHttpSolrServer") HttpSolrServer lopUpdateHttpSolrServer,
+                                  @Qualifier("locationUpdateHttpSolrServer") HttpSolrServer locationUpdateHttpSolrServer,
                                   @Qualifier("adminHttpSolrServer") HttpSolrServer adminHttpSolrServer,
                                   @Value("${solr.provider.url}") String providerCoreName,
                                   @Value("${solr.provider.update.url}") String providerUpdateCoreName,
                                   @Value("${solr.learningopportunity.url}") String learningopportunityCoreName,
                                   @Value("${solr.learningopportunity.update.url}") String learningopportunityUpdateCoreName,
+                                  @Value("${solr.location.url}") String locationCoreName,
+                                  @Value("${solr.location.update.url}") String locationUpdateCoreName,
                                   ParentLearningOpportunitySpecificationDAO parentLOSTransactionDAO,
                                   ApplicationOptionDAO applicationOptionTransactionDAO,
                                   LearningOpportunityProviderDAO learningOpportunityProviderTransactionDAO,
@@ -83,6 +97,7 @@ public class TransactionManagerImpl implements TransactionManager {
                                   LearningOpportunityProviderDAO learningOpportunityProviderDAO,
                                   DataStatusDAO dataStatusDAO,
                                   PictureDAO pictureDAO) {
+
         this.mongo = mongo;
         this.transactionDbName = transactionDbName;
         this.dbName = dbName;
@@ -90,8 +105,12 @@ public class TransactionManagerImpl implements TransactionManager {
         this.providerUpdateCoreName = providerUpdateCoreName;
         this.learningopportunityUpdateCoreName = learningopportunityUpdateCoreName;
         this.learningopportunityCoreName = learningopportunityCoreName;
+        this.locationCoreName = locationCoreName;
+        this.locationUpdateCoreName = locationUpdateCoreName;
+        this.dataStatusTransactionDAO = dataStatusTransactionDAO;
         this.loUpdateHttpSolrServer = loUpdateHttpSolrServer;
         this.lopUpdateHttpSolrServer = lopUpdateHttpSolrServer;
+        this.locationUpdateHttpSolrServer = locationUpdateHttpSolrServer;
         this.adminHttpSolrServer = adminHttpSolrServer;
         this.dataStatusTransactionDAO = dataStatusTransactionDAO;
         this.parentLOSTransactionDAO = parentLOSTransactionDAO;
@@ -125,6 +144,9 @@ public class TransactionManagerImpl implements TransactionManager {
         CoreAdminRequest loCar = getCoreSwapRequest(learningopportunityUpdateCoreName, learningopportunityCoreName);
         loCar.process(adminHttpSolrServer);
 
+        CoreAdminRequest locationCar = getCoreSwapRequest(locationUpdateCoreName, locationCoreName);
+        locationCar.process(adminHttpSolrServer);
+
         dataStatusTransactionDAO.save(new DataStatusEntity());
         BasicDBObject cmd = new BasicDBObject("copydb", 1).append("fromdb", transactionDbName).append("todb", dbName);
         dropDbCollections();
@@ -141,6 +163,9 @@ public class TransactionManagerImpl implements TransactionManager {
             lopUpdateHttpSolrServer.deleteByQuery("*:*");
             lopUpdateHttpSolrServer.commit();
             lopUpdateHttpSolrServer.optimize();
+            locationUpdateHttpSolrServer.deleteByQuery("*:*");
+            locationUpdateHttpSolrServer.commit();
+            locationUpdateHttpSolrServer.optimize();
         } catch (Exception e) {
             e.printStackTrace();
         }

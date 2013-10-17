@@ -260,26 +260,18 @@ directive('kiAbsoluteLink', function() {
 /**
  *  Creates and controls the location filter element
  */
- directive('kiLocationFilter', function() {
+ directive('kiLocationFilter', ['SearchLocationService', function(SearchLocationService) {
     return {
         restrict: 'E,A',
         templateUrl: 'templates/locationFilter.html',
         link: function(scope, element, attrs) {
-            element = $(element);
-            if (element.find('input')) {
-                element.find('input').on('keyup', function(event) {
-                    if (event.keyCode == 13) {
-                        scope.add();
-                    }
-                });
-            }
 
             scope.remove = function(element) {
                 scope.locations.splice(scope.locations.indexOf(element), 1);
                 scope.change();
                 return false;
             }
-
+    
             scope.add = function() {
                 if (!scope.locations) {
                     scope.locations = [];
@@ -289,13 +281,16 @@ directive('kiAbsoluteLink', function() {
                     scope.locations.push(scope.location);
                     scope.location = '';
                     scope.change();
-                    scope.$apply();
                     return false;
                 }
             }
+
+            scope.getLocations = function($viewValue) {
+                return SearchLocationService.query($viewValue);
+            }
         }
     };
- }).
+ }]).
 
 /**
  *  Creates and controls language selector for description language
@@ -327,7 +322,7 @@ directive('kiAbsoluteLink', function() {
  directive('kiPrerequisiteSelectionRibbon', ['$routeParams', function($routeParams) {
     return {
         restrict: 'E,A',
-        templateUrl: 'templates/prerequisiteRibbon.html',
+        templateUrl: 'templates/prerequisiteRibbon.html'
     };
  }]).
 
