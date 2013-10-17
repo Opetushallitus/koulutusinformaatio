@@ -5,7 +5,7 @@
 		name="sijainti"
 		class="width-70"
 		data-ng-model="location" 
-		data-typeahead="state.name for state in getLocations($viewValue)" 
+		data-typeahead="state as state.name for state in getLocations($viewValue)" 
 		data-typeahead-on-select="add()"
 		data-typeahead-min-length="1"
 		data-typeahead-wait-ms="500"
@@ -16,6 +16,6 @@
 	<li data-ng-repeat="location in locations">
 		<a class="remove" data-ng-click="remove(location)">
 			<span data-ki-i18n="filter-search-location-remove"></span>
-		</a>{{location}}</li>
+		</a>{{location.name}}</li>
 </ul>
 

@@ -96,3 +96,17 @@ OPH.Common = {
         })();
     }
 };
+
+OPH.Common.Filter = (function() {
+    var value;
+
+    return {
+        get: function() {
+            return this.value;
+        },
+
+        set: function(value) {
+            this.value = value;
+        }
+    }
+});

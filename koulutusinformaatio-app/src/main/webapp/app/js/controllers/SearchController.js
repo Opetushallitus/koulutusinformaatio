@@ -9,7 +9,11 @@ function SearchFieldCtrl($scope, $location, SearchService, FilterService) {
         if ($scope.queryString) {
             SearchService.setTerm($scope.queryString);
             var queryString = $scope.queryString;
+            
+            // empty query string
             $scope.queryString = '';
+
+            // update location
             $location.hash(null);
             $location.path('/haku/' + queryString);
             $location.search(FilterService.get());
@@ -22,13 +26,14 @@ function SearchFieldCtrl($scope, $location, SearchService, FilterService) {
  */
 function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, kiAppConstants, FilterService) {
     var queryParams = $location.search();
-    var resultsPerPage = kiAppConstants.searchResultsPerPage;
 
-    FilterService.set(queryParams);
-    var filters = FilterService.get();
-    $scope.prerequisite = filters.prerequisite;
-    $scope.locations = filters.locations;
-    $scope.ongoing = filters.ongoing;
+    FilterService.query(queryParams).then(function() {
+        $scope.prerequisite = FilterService.getPrerequisite();
+        $scope.locations = FilterService.getLocations();
+        $scope.ongoing = FilterService.isOngoing();
+
+        $scope.$parent.currentPage = kiAppConstants.searchResultsStartPage;
+    });
 
     $scope.change = function() {
         FilterService.set({
@@ -37,17 +42,16 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
             ongoing: $scope.ongoing
         });
 
-        // append filters to url
-        $location.search( FilterService.get() );
+        // append filters to url and reload
+        $location.search(FilterService.get());
     }
 };
 
 /**
  *  Controller for search functionality 
  */
- function SearchCtrl($scope, $routeParams, SearchLearningOpportunityService, SearchService, TitleService, kiAppConstants, FilterService, filterFilter) {
+ function SearchCtrl($scope, $routeParams, SearchLearningOpportunityService, SearchService, TitleService, kiAppConstants, FilterService) {
     var resultsPerPage = kiAppConstants.searchResultsPerPage;
-    $scope.currentPage = kiAppConstants.searchResultsStartPage;
 
     var title = i18n.t('title-search-results');
     TitleService.setTitle(title);
@@ -58,16 +62,15 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     };
 
     $scope.$watch('currentPage', function(value) {
-        if ($routeParams.queryString) {
-            var filters = FilterService.get();
+        if ($routeParams.queryString && value) {
 
             SearchLearningOpportunityService.query({
                 queryString: $routeParams.queryString,
                 start: (value-1) * resultsPerPage,
                 rows: resultsPerPage,
-                prerequisite: filters.prerequisite,
-                locations: filters.locations,
-                ongoing: filters.ongoing
+                prerequisite: FilterService.getPrerequisite(),
+                locations: FilterService.getLocationNames(),
+                ongoing: FilterService.isOngoing()
             }).then(function(result) {
                 $scope.loResult = result;
                 $scope.maxPages = Math.ceil(result.totalCount / resultsPerPage);
@@ -77,8 +80,6 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
             $scope.queryString = $routeParams.queryString;
             $scope.showFilters = $scope.queryString ? true : false;
             SearchService.setTerm($routeParams.queryString);
-        } else {
-            $scope.loResult = {totalCount : 0};
         }
     });
 
