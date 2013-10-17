@@ -84,6 +84,12 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
     private void save(final LearningOpportunityProviderEntity learningOpportunityProvider) {
         if (learningOpportunityProvider != null) {
             save(learningOpportunityProvider.getPicture());
+
+            LearningOpportunityProviderEntity old = learningOpportunityProviderTransactionDAO.get(learningOpportunityProvider.getId());
+            if (old != null) {
+                learningOpportunityProvider.getApplicationSystemIds().addAll(old.getApplicationSystemIds());
+            }
+
             learningOpportunityProviderTransactionDAO.save(learningOpportunityProvider);
         }
     }
