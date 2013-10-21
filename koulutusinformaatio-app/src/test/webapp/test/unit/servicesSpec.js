@@ -16,7 +16,7 @@ describe('UtilityService', function() {
     it('should sort application systems by ongoing attribute', function() {
         var data = [
             {
-                asOngoing: false
+                asOngoing: false,
             },
             {
                 asOngoing: true
@@ -32,17 +32,19 @@ describe('UtilityService', function() {
         var data = [
             {
                 asOngoing: false,
+                id: 'a',
                 nextApplicationPeriodStarts: 2
             },
             {
                 asOngoing: false,
+                id: 'b',
                 nextApplicationPeriodStarts: 1
             }
         ];
 
         utility.sortApplicationSystems(data);
-        expect(data[0].nextApplicationPeriodStarts).toEqual(1);
-        expect(data[1].nextApplicationPeriodStarts).toEqual(2);
+        expect(data[0].id).toEqual('b');
+        expect(data[1].id).toEqual('a');
     });
 
     it('should sort application systems by earliest start date', function() {
@@ -76,6 +78,30 @@ describe('UtilityService', function() {
         utility.sortApplicationSystems(data);
         expect(data[0].id).toEqual('b');
         expect(data[1].id).toEqual('a');
+    });
+
+    it('should sort ended applications systems to the bottom', function() {
+        var data = [
+            {
+                asOngoing: false,
+                id: 'a'
+            },
+            {
+                asOngoing: false,
+                id: 'b',
+                nextApplicationPeriodStarts: 1
+            },
+            {
+                asOngoing: false,
+                id: 'c',
+                nextApplicationPeriodStarts: 2
+            }
+        ];
+
+        utility.sortApplicationSystems(data);
+        expect(data[0].id).toEqual('b');
+        expect(data[1].id).toEqual('c');
+        expect(data[2].id).toEqual('a');
     });
 });
 
