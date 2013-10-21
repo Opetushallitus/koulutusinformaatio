@@ -942,39 +942,41 @@ service('UtilityService', function() {
             return as.aoSpecificApplicationDates;
         },
         sortApplicationSystems: function(applicationSystems) {
-            applicationSystems.sort(function(a, b) {
-                var getEarliestStartDate = function(dates) {
-                    var earliest = -1;
-                    angular.forEach(dates, function(value, key){
-                        if (earliest < 0 || value.startDate < earliest) {
-                            earliest = value.startDate;
-                        }
-                    });
+            if (applicationSystems) {
+                applicationSystems.sort(function(a, b) {
+                    var getEarliestStartDate = function(dates) {
+                        var earliest = -1;
+                        angular.forEach(dates, function(value, key){
+                            if (earliest < 0 || value.startDate < earliest) {
+                                earliest = value.startDate;
+                            }
+                        });
 
-                    return earliest;
-                }
-
-                var comp = 0;
-                if (a.asOngoing == b.asOngoing) {
-                    if (a.nextApplicationPeriodStarts && b.nextApplicationPeriodStarts) {
-                        comp = b.nextApplicationPeriodStarts - a.nextApplicationPeriodStarts;
-                    } else if (a.nextApplicationPeriodStarts) {
-                        comp = -1;
-                    } else if (b.nextApplicationPeriodStarts) {
-                        comp = 1;
-                    } else {
-                        var earliestA = getEarliestStartDate(a.applicationDates);
-                        var earliestB = getEarliestStartDate(b.applicationDates);
-                        comp = earliestA > earliestB ? 1 : -1;
+                        return earliest;
                     }
-                } else if (a.asOngoing) {
-                    comp = -1;
-                } else {
-                    comp = 1;
-                }
 
-                return comp;
-            });
+                    var comp = 0;
+                    if (a.asOngoing == b.asOngoing) {
+                        if (a.nextApplicationPeriodStarts && b.nextApplicationPeriodStarts) {
+                            comp = a.nextApplicationPeriodStarts - b.nextApplicationPeriodStarts;
+                        } else if (a.nextApplicationPeriodStarts) {
+                            comp = -1;
+                        } else if (b.nextApplicationPeriodStarts) {
+                            comp = 1;
+                        } else {
+                            var earliestA = getEarliestStartDate(a.applicationDates);
+                            var earliestB = getEarliestStartDate(b.applicationDates);
+                            comp = earliestA > earliestB ? 1 : -1;
+                        }
+                    } else if (a.asOngoing) {
+                        comp = -1;
+                    } else {
+                        comp = 1;
+                    }
+
+                    return comp;
+                });
+            }
         }
     };
 });

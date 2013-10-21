@@ -18,7 +18,7 @@ describe('Location filter directive', function() {
         inject(function($compile, $rootScope, $templateCache) {
             //create a scope (you could just use $rootScope, I suppose)
             scope = $rootScope;
-            scope.locations = ['Helsinki', 'Turku'];
+            scope.locations = [{name: 'Helsinki', code: 091}, {name: 'Turku', code: 092}];
             scope.change = function() {};
 
             //get the jqLite or jQuery element

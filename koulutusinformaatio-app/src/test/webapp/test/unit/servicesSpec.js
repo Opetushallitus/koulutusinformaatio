@@ -1,3 +1,85 @@
+describe('UtilityService', function() {
+    var utility;
+
+    beforeEach(function() {
+        module('kiApp', 'kiApp.services');
+
+        inject(function(UtilityService) {
+            utility = UtilityService;
+        });
+    });
+
+    it('should work for empty input', function() {
+        utility.sortApplicationSystems();
+    });
+
+    it('should sort application systems by ongoing attribute', function() {
+        var data = [
+            {
+                asOngoing: false
+            },
+            {
+                asOngoing: true
+            }
+        ];
+
+        utility.sortApplicationSystems(data);
+        expect(data[0].asOngoing).toBeTruthy();
+        expect(data[1].asOngoing).toBeFalsy();
+    });
+
+    it('should sort application systems by nextApplicationPeriodStarts attribute', function() {
+        var data = [
+            {
+                asOngoing: false,
+                nextApplicationPeriodStarts: 2
+            },
+            {
+                asOngoing: false,
+                nextApplicationPeriodStarts: 1
+            }
+        ];
+
+        utility.sortApplicationSystems(data);
+        expect(data[0].nextApplicationPeriodStarts).toEqual(1);
+        expect(data[1].nextApplicationPeriodStarts).toEqual(2);
+    });
+
+    it('should sort application systems by earliest start date', function() {
+        var data = [
+            {
+                asOngoing: false,
+                id: 'a',
+                applicationDates: [
+                    {
+                        startDate: 5,
+                        endDate: 10
+                    },
+                    {
+                        startDate: 20,
+                        endDate: 30
+                    }
+                ]
+            },
+            {
+                asOngoing: false,
+                id: 'b',
+                applicationDates: [
+                    {
+                        startDate: 4,
+                        endDate: 8
+                    }
+                ]
+            }
+        ];
+
+        utility.sortApplicationSystems(data);
+        expect(data[0].id).toEqual('b');
+        expect(data[1].id).toEqual('a');
+    });
+});
+
+
 /*
 'use strict';
 describe('FilterService', function() {
