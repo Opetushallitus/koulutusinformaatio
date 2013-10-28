@@ -16,10 +16,12 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
+import fi.vm.sade.koulutusinformaatio.domain.Location;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import org.apache.solr.client.solrj.SolrServerException;
 
 import java.io.IOException;
+import java.util.List;
 
 public interface IndexerService {
 
@@ -28,6 +30,9 @@ public interface IndexerService {
      * The data is not committed to index.
      */
     void addParentLearningOpportunity(ParentLOS parent) throws Exception;
+
+
+    void addLocations(List<Location> locations) throws IOException, SolrServerException;
 
     /**
      * Commits learning opportunities from memory to index.

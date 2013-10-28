@@ -14,19 +14,17 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.koulutusinformaatio.dao;
+package fi.vm.sade.koulutusinformaatio.service;
 
-import com.mongodb.Mongo;
-import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
-import org.mongodb.morphia.Morphia;
-import org.mongodb.morphia.dao.BasicDAO;
+import fi.vm.sade.koulutusinformaatio.domain.Location;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
+
+import java.util.List;
 
 /**
  * @author Mikko Majapuro
  */
-public class LearningOpportunityProviderDAO extends BasicDAO<LearningOpportunityProviderEntity, String> {
+public interface LocationService {
 
-    public LearningOpportunityProviderDAO(Mongo mongo, Morphia morphia, String dbName) {
-        super(mongo, morphia, dbName);
-    }
+    public List<Location> getMunicipalities() throws KoodistoException;
 }

@@ -14,23 +14,27 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.koulutusinformaatio.dao.entity;
-
-
-import org.mongodb.morphia.annotations.Entity;
-import org.mongodb.morphia.annotations.Id;
+package fi.vm.sade.koulutusinformaatio.domain;
 
 /**
  * @author Mikko Majapuro
  */
-@Entity("pictures")
-public class PictureEntity {
+public class Location {
 
-    @Id
     private String id;
-    private String pictureEncoded;
+    private String name;
+    private String code;
+    private String lang;
 
-    public PictureEntity() {}
+    public Location() {
+    }
+
+    public Location(String id, String name, String code, String lang) {
+        this.id = id;
+        this.name = name;
+        this.code = code;
+        this.lang = lang;
+    }
 
     public String getId() {
         return id;
@@ -40,11 +44,27 @@ public class PictureEntity {
         this.id = id;
     }
 
-    public String getPictureEncoded() {
-        return pictureEncoded;
+    public String getName() {
+        return name;
     }
 
-    public void setPictureEncoded(String pictureEncoded) {
-        this.pictureEncoded = pictureEncoded;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getLang() {
+        return lang;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
     }
 }

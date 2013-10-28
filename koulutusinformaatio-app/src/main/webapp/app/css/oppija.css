@@ -1670,10 +1670,10 @@ h6, .h6 {
   font-size: 0.923em;
   line-height: 1.538em; }
 
-small {
+small, .small {
   font-size: 1em;
   color: #7f7f7f; }
-  small.cursive {
+  small.cursive, .small.cursive {
     font-style: italic; }
 
 .banner-text {
@@ -1711,10 +1711,11 @@ header {
       background: none;
       padding: 0; }
       header .search-container .search .search-field {
-        padding: 0 10px;
+        padding: 13px 10px;
         margin: 0 1% 0 0;
         width: 80%;
-        height: 48px;
+        height: auto;
+        line-height: 1em;
         border: #FFFFFF 4px solid;
         outline: none;
         background: #FFFFFF none;
@@ -1994,7 +1995,8 @@ header {
         width: 19px;
         height: 17px;
         display: block;
-        color: transparent; }
+        color: transparent;
+        font-size: 0px; }
 
 /*** Form generic
 ************************************************/
@@ -2791,7 +2793,8 @@ ul.unstyled {
       background-repeat: no-repeat;
       background-position: center center;
       cursor: pointer;
-      color: transparent; }
+      color: transparent;
+      font-size: 0px; }
     .popup-dialog-wrapper .popup-dialog > .popup-dialog-header {
       font-size: 14px;
       font-weight: bold;
@@ -3353,7 +3356,8 @@ table tbody tr:nth-child(odd) {
   background-repeat: no-repeat;
   background-position: center center;
   cursor: pointer;
-  color: transparent; }
+  color: transparent;
+  font-size: 0px; }
 
 /* Pagination styles from twitter bootstrap */
 .pagination {
@@ -3618,6 +3622,36 @@ table tbody tr:nth-child(odd) {
   background-color: #FFFFFF;
   border: solid 2px #bdbdbd;
   padding: 20px 10px; }
+
+.typeahead {
+  list-style-type: none;
+  margin: 2px 0 0 0;
+  padding: 0;
+  border: 1px solid #ccc;
+  -webkit-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
+  -o-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
+  -ms-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.5);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -o-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px; }
+  .typeahead li {
+    border-top: 1px solid #bfe4f1; }
+    .typeahead li:first-child {
+      border: none; }
+    .typeahead li.active {
+      background-color: #bfe4f1; }
+    .typeahead li a {
+      display: block;
+      padding: 6px 10px;
+      text-decoration: none; }
+      .typeahead li a:hover, .typeahead li a:active {
+        background-color: #bfe4f1;
+        cursor: pointer;
+        text-decoration: none; }
 
 /*** Main navigation
 **************************************************************/

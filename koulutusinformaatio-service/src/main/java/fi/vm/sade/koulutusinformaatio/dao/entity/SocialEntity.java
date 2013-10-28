@@ -1,6 +1,7 @@
 package fi.vm.sade.koulutusinformaatio.dao.entity;
 
-import com.google.code.morphia.annotations.Embedded;
+
+import org.mongodb.morphia.annotations.Embedded;
 
 @Embedded
 public class SocialEntity {

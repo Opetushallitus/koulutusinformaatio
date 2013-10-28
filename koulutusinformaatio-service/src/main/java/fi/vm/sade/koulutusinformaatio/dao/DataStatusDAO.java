@@ -16,12 +16,12 @@
 
 package fi.vm.sade.koulutusinformaatio.dao;
 
-import com.google.code.morphia.Morphia;
-import com.google.code.morphia.dao.BasicDAO;
-import com.google.code.morphia.query.Query;
 import com.mongodb.Mongo;
 import fi.vm.sade.koulutusinformaatio.dao.entity.DataStatusEntity;
 import org.bson.types.ObjectId;
+import org.mongodb.morphia.Morphia;
+import org.mongodb.morphia.dao.BasicDAO;
+import org.mongodb.morphia.query.Query;
 
 /**
  * @author Mikko Majapuro
@@ -34,7 +34,7 @@ public class DataStatusDAO extends BasicDAO<DataStatusEntity, ObjectId> {
 
     public DataStatusEntity getLatest() {
         Query<DataStatusEntity> query = createQuery();
-        query.order("lastUpdated");
+        query.order("-lastUpdated");
         return find(query).get();
     }
 }

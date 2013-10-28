@@ -2,29 +2,39 @@
 
 var kiApp = angular.module('kiApp', ['kiApp.services', 'kiApp.directives', 'ui.bootstrap', 'angulartics', 'angulartics.piwik']);
 kiApp.config(['$routeProvider', '$locationProvider', '$analyticsProvider', function($routeProvider, $locationProvider, $analyticsProvider, $rootScope) {
-    $analyticsProvider.virtualPageviews(false);
+
+    // initialize piwik analytics tool
+    OPH.Common.initPiwik();
+    $analyticsProvider.virtualPageviews(true);
     $analyticsProvider.firstPageview(false);
+
     $routeProvider.when('/haku/:queryString', {
     	templateUrl: 'partials/hakutulokset.html', 
     	controller: SearchCtrl
     });
+    
     $routeProvider.when('/tutkinto/:parentId', {
     	templateUrl: 'partials/ylataso.html', 
     	controller: InfoCtrl,
         reloadOnSearch: false
     });
+    
     $routeProvider.when('/koulutusohjelma/:childId', {
     	templateUrl: 'partials/alataso.html', 
     	controller: InfoCtrl,
         reloadOnSearch: false
     });
+    
     $routeProvider.when('/muistilista', {
         templateUrl: 'partials/applicationbasket/applicationbasket.html',
         controller: ApplicationBasketCtrl
     });
+    
     $routeProvider.otherwise({
     	redirectTo: '/haku/'
     });
+
+
 }]);
 
 kiApp.filter('escape', function() {
@@ -46,9 +56,6 @@ kiApp.run(['LanguageService', function(LanguageService) {
         fallbackLng : 'fi',
         debug : false
     });
-
-    // initialize piwik analytics tool
-    OPH.Common.initPiwik();
 }]);
 
 kiApp.constant('kiAppConstants', {
@@ -79,7 +86,6 @@ OPH.Common = {
 
         window._paq = window._paq || [];
         _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
-        //_paq.push(["trackPageView"]);
         _paq.push(["enableLinkTracking"]);
 
         (function() {
@@ -91,3 +97,17 @@ OPH.Common = {
         })();
     }
 };
+
+OPH.Common.Filter = (function() {
+    var value;
+
+    return {
+        get: function() {
+            return this.value;
+        },
+
+        set: function(value) {
+            this.value = value;
+        }
+    }
+});

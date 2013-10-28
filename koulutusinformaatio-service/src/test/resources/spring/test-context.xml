@@ -27,9 +27,9 @@
             ignore-resource-not-found="true"/>
 
     <bean id="mongodFactory" class="de.flapdoodle.embed.mongo.tests.MongodForTestsFactory" destroy-method="shutdown"/>
-    <bean id="mongo" class="com.mongodb.Mongo" factory-bean="mongodFactory" factory-method="newMongo"/>
+    <bean id="mongo" class="com.mongodb.MongoClient" factory-bean="mongodFactory" factory-method="newMongo"/>
 
-    <bean id="morphia" class="com.google.code.morphia.Morphia" />
+    <bean id="morphia" class="org.mongodb.morphia.Morphia" />
 
     <bean id="parentLearningOpportunitySpecificationDAO" class="fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecificationDAO">
         <constructor-arg>

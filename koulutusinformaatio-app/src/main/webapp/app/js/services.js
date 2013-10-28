@@ -67,6 +67,29 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
     }
 }]).
 
+service('SearchLocationService', ['$http', '$timeout', '$q', 'LanguageService', function($http, $timeout, $q, LanguageService) {
+
+    return {
+        query: function(queryParam) {
+            var deferred = $q.defer();
+
+            $http.get('../location/search/' + queryParam, {
+                params: {
+                    lang: LanguageService.getLanguage()
+                }
+            }).
+            success(function(result) {
+                deferred.resolve(result);
+            }).
+            error(function(result) {
+                deferred.reject(result);
+            });
+
+            return deferred.promise;
+        }
+    }
+}]).
+
 /**
  *  Resource for requesting parent LO data
  */
@@ -162,6 +185,16 @@ service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', '$filter
                 else return a.id > b.id ? 1 : -1;
             });
         }
+
+        /*
+        _paq.push(['setCustomVariable', 
+            1, // Index, the number from 1 to 5 where this custom variable name is stored 
+            "Tarjoaja", // Name, the name of the variable, for example: Gender, VisitorType 
+            result.provider.name, // Value, for example: "Male", "Female" or "new", "engaged", "customer" 
+            "page" // Scope of the custom variable, "visit" means the custom variable applies to the current visit 
+        ]);
+        _paq.push(['trackPageView']);
+        */
     };
 
     return {
@@ -194,7 +227,7 @@ service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', '$filter
 /**
  *  Resource for requesting child LO data
  */
-service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'LanguageService', function($http, $timeout, $q, LanguageService) {
+service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'LanguageService', 'UtilityService', function($http, $timeout, $q, LanguageService, UtilityService) {
 
     // TODO: could we automate data transformation somehow?
     var transformData = function(result) {
@@ -335,6 +368,11 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
             }
         }
         result.lois = lois;
+
+        // sort application systems
+        angular.forEach(result.lois, function(loi, loikey) {
+            UtilityService.sortApplicationSystems(loi.applicationSystems);
+        });
 
         // check if application system is of type Lisähaku
         for (var loiIndex in result.lois) {
@@ -703,9 +741,8 @@ service('ApplicationBasketService', ['$http', '$q', 'LanguageService', function(
 /**
  *  Service for maintaining search filter state
  */
-service('FilterService', ['UtilityService', function(UtilityService) {
+service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', function($q, $http, UtilityService, LanguageService) {
     var filters = {};
-    var arrayFilters = ['locations'];
 
     var filterIsEmpty = function(filter) {
         if (filter == undefined || filter == null) return true;
@@ -714,30 +751,104 @@ service('FilterService', ['UtilityService', function(UtilityService) {
         else return false;
     }
 
-    return {
-        set: function(newFilters) {
-            filters = {};
-            for (var i in newFilters) {
-                if (newFilters.hasOwnProperty(i)) {
-                    var filter = newFilters[i];
-                    if (arrayFilters.indexOf(i) >= 0 && typeof filter == 'string') {
-                        filter = UtilityService.getStringAsArray(filter);
-                    }
+    var getLocationCodes = function() {
+        var codes = [];
+        angular.forEach(filters.locations, function(value, key) {
+            codes.push(value.code);
+        });
 
-                    if (!filterIsEmpty(filter)) {
-                        filters[i] = filter;
-                    }
+        return codes;
+    }
+
+    var set = function(newFilters) {
+        filters = {};
+        for (var i in newFilters) {
+            if (newFilters.hasOwnProperty(i)) {
+                var filter = newFilters[i];
+
+                if (!filterIsEmpty(filter)) {
+                    filters[i] = filter;
                 }
             }
+        }
+    }
 
+    return {
+        query: function(queryParams) {
+            var deferred = $q.defer();
+
+            var codes = ''
+            var locationCodes = (queryParams.locations && typeof queryParams.locations == 'string') ? UtilityService.getStringAsArray(queryParams.locations) : getLocationCodes();
+
+            angular.forEach(locationCodes, function(value, key){
+                codes += '&code=' + value;
+            });
+
+            var uiLang = LanguageService.getLanguage();
+
+            if (locationCodes.length > 0) {
+                $http.get('../location?lang=' + uiLang + codes, {
+                }).
+                success(function(result) {
+                    queryParams.locations = result;
+                    set(queryParams);
+                    deferred.resolve();
+                }).
+                error(function(result) {
+                    deferred.reject();
+                });
+            } else {
+                queryParams.locations = [];
+                set(queryParams);
+                deferred.resolve();
+            }
+
+            return deferred.promise;
+        },
+
+        set: function(newFilters) {
+            set(newFilters);
         },
 
         get: function() {
-            return filters;
+            var result =  {
+                prerequisite: filters.prerequisite,
+                locations: getLocationCodes(),
+                ongoing: filters.ongoing,
+                page: filters.page
+            };
+
+            angular.forEach(result, function(value, key) {
+                if (value instanceof Array && value.length <= 0 || !value) {
+                    delete result[key];
+                }
+            });
+
+
+            return result;
         },
 
         getPrerequisite: function() {
-            return filters.prerequisite;
+            if (filters.prerequisite) {
+                return filters.prerequisite;
+            }
+        },
+
+        isOngoing: function() {
+            return filters.ongoing;
+        },
+
+        getLocations: function() {
+            return filters.locations;
+        },
+
+        getLocationNames: function() {
+            var locations = [];
+            angular.forEach(filters.locations, function(value, key) {
+                locations.push(value.name);
+            });
+
+            return locations;
         },
 
         setPage: function(value) {
@@ -748,20 +859,18 @@ service('FilterService', ['UtilityService', function(UtilityService) {
             }
         },
 
+        getPage: function() {
+            return filters.page ? filters.page : 1;
+        },
+
+        getLocationCodes: getLocationCodes,
+
         getParams: function() {
             var params = '';
-            for (var i in filters) {
-                if (filters.hasOwnProperty(i)) {
-                    var filter = filters[i];
-                    if (filter instanceof Array) {
-                        params += '&' + i + '=' + filter.join(',');
-                    } else if (typeof filter == 'boolean') {
-                        params += (filter) ? '&' + i : '';
-                    } else {
-                        params += '&' + i + '=' + filter;
-                    }
-                }
-            }
+            params += filters.prerequisite ? '&prerequisite=' + filters.prerequisite : '';
+            params += (filters.locations && filters.locations.length > 0) ? '&locations=' + getLocationCodes().join(',') : '';
+            params += filters.ongoing ? '&ongoing' : '';
+            params += filters.page ? '&page=' + filters.page : '';
 
             params = params.length > 0 ? params.substring(1, params.length) : '';
             return params;
@@ -831,6 +940,43 @@ service('UtilityService', function() {
         },
         isLisahaku: function(as) {
             return as.aoSpecificApplicationDates;
+        },
+        sortApplicationSystems: function(applicationSystems) {
+            if (applicationSystems) {
+                applicationSystems.sort(function(a, b) {
+                    var getEarliestStartDate = function(dates) {
+                        var earliest = -1;
+                        angular.forEach(dates, function(value, key){
+                            if (earliest < 0 || value.startDate < earliest) {
+                                earliest = value.startDate;
+                            }
+                        });
+
+                        return earliest;
+                    }
+
+                    var comp = 0;
+                    if (a.asOngoing == b.asOngoing) {
+                        if (a.nextApplicationPeriodStarts && b.nextApplicationPeriodStarts) {
+                            comp = a.nextApplicationPeriodStarts - b.nextApplicationPeriodStarts;
+                        } else if (a.nextApplicationPeriodStarts) {
+                            comp = -1;
+                        } else if (b.nextApplicationPeriodStarts) {
+                            comp = 1;
+                        } else {
+                            var earliestA = getEarliestStartDate(a.applicationDates);
+                            var earliestB = getEarliestStartDate(b.applicationDates);
+                            comp = earliestA > earliestB ? 1 : -1;
+                        }
+                    } else if (a.asOngoing) {
+                        comp = -1;
+                    } else {
+                        comp = 1;
+                    }
+
+                    return comp;
+                });
+            }
         }
     };
 });

@@ -1,6 +1,6 @@
 /*
 'use strict';
-
+/*
 describe('SearchController', function() {
     var ctrl;
 

@@ -10,7 +10,11 @@ function SearchFieldCtrl($scope, $location, SearchService, kiAppConstants, Filte
             FilterService.setPage(kiAppConstants.searchResultsStartPage);
             SearchService.setTerm($scope.queryString);
             var queryString = $scope.queryString;
+            
+            // empty query string
             $scope.queryString = '';
+
+            // update location
             $location.hash(null);
             $location.path('/haku/' + queryString);
             $location.search(FilterService.get());
@@ -24,22 +28,24 @@ function SearchFieldCtrl($scope, $location, SearchService, kiAppConstants, Filte
 function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, kiAppConstants, FilterService) {
     var queryParams = $location.search();
 
-    FilterService.set(queryParams);
-    var filters = FilterService.get();
-    $scope.prerequisite = filters.prerequisite;
-    $scope.locations = filters.locations;
-    $scope.ongoing = filters.ongoing;
+    FilterService.query(queryParams).then(function() {
+        $scope.prerequisite = FilterService.getPrerequisite();
+        $scope.locations = FilterService.getLocations();
+        $scope.ongoing = FilterService.isOngoing();
+
+        $scope.$parent.currentPage = FilterService.getPage();
+    });
 
     $scope.change = function() {
         FilterService.set({
             prerequisite: $scope.prerequisite,
             locations: $scope.locations,
-            ongoing: $scope.ongoing
+            ongoing: $scope.ongoing,
+            page: kiAppConstants.searchResultsStartPage
         });
-        FilterService.setPage(kiAppConstants.searchResultsStartPage);
 
-        // append filters to url
-        $location.search( FilterService.get() );
+        // append filters to url and reload
+        $location.search(FilterService.get());
     }
 };
 
@@ -48,7 +54,6 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
  */
  function SearchCtrl($scope, $rootScope, $location, $routeParams, SearchLearningOpportunityService, SearchService, kiAppConstants, FilterService) {
     var resultsPerPage = kiAppConstants.searchResultsPerPage;
-    FilterService.setPage($location.search().page);
     
     $rootScope.title = i18n.t('title-search-results') + ' - ' + i18n.t('sitename');
 
@@ -58,34 +63,30 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     };
 
     $scope.$watch('currentPage', function(value) {
-        FilterService.setPage(value);
-        $location.search(FilterService.get());
-        
+        if (value) {
+            FilterService.setPage(value);
+            $location.search(FilterService.get());
+        }    
     });
 
     if ($routeParams.queryString) {
-            var filters = FilterService.get();
-            $scope.currentPage = filters.page;
+        SearchLearningOpportunityService.query({
+            queryString: $routeParams.queryString,
+            start: (FilterService.getPage()-1) * resultsPerPage,
+            rows: resultsPerPage,
+            prerequisite: FilterService.getPrerequisite(),
+            locations: FilterService.getLocationNames(),
+            ongoing: FilterService.isOngoing()
+        }).then(function(result) {
+            $scope.loResult = result;
+            $scope.maxPages = Math.ceil(result.totalCount / resultsPerPage);
+            $scope.showPagination = $scope.maxPages > 1;
+        });
 
-            SearchLearningOpportunityService.query({
-                queryString: $routeParams.queryString,
-                start: (filters.page-1) * resultsPerPage,
-                rows: resultsPerPage,
-                prerequisite: filters.prerequisite,
-                locations: filters.locations,
-                ongoing: filters.ongoing
-            }).then(function(result) {
-                $scope.loResult = result;
-                $scope.maxPages = Math.ceil(result.totalCount / resultsPerPage);
-                $scope.showPagination = $scope.maxPages > 1;
-            });
-
-            $scope.queryString = $routeParams.queryString;
-            //$scope.showFilters = $scope.queryString ? true : false;
-            SearchService.setTerm($routeParams.queryString);
-        } else {
-            $scope.loResult = {totalCount : 0};
-        }
+        $scope.queryString = $routeParams.queryString;
+        //$scope.showFilters = $scope.queryString ? true : false;
+        SearchService.setTerm($routeParams.queryString);
+    }
 
     $scope.$on('$viewContentLoaded', function() {
         OPH.Common.initHeader();

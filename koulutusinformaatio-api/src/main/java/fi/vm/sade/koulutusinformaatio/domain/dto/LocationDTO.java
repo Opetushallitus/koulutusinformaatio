@@ -14,37 +14,32 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.koulutusinformaatio.dao.entity;
+package fi.vm.sade.koulutusinformaatio.domain.dto;
 
-
-import org.mongodb.morphia.annotations.Embedded;
-
-import java.util.Map;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 /**
  * @author Mikko Majapuro
  */
-@Embedded
-public class I18nTextEntity {
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
+public class LocationDTO {
 
-    private Map<String, String> translations;
-    private Map<String, String> translationsShortName;
+    private String name;
+    private String code;
 
-    public I18nTextEntity() {}
-
-    public Map<String, String> getTranslations() {
-        return translations;
+    public String getName() {
+        return name;
     }
 
-    public void setTranslations(Map<String, String> translations) {
-        this.translations = translations;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Map<String, String> getTranslationsShortName() {
-        return translationsShortName;
+    public String getCode() {
+        return code;
     }
 
-    public void setTranslationsShortName(Map<String, String> translationsShortName) {
-        this.translationsShortName = translationsShortName;
+    public void setCode(String code) {
+        this.code = code;
     }
 }

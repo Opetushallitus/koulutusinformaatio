@@ -1,11 +1,21 @@
 <div class="margin-bottom-2 relative">
-	<input type="text" name="sijainti" id="sijainti" data-ng-model="location" class="width-70"/>
-	<button type="button" class="plus btn-search-location" id="btn-search-location" data-ng-click="add()">
-		<span>
-			<span data-ki-i18n="filter-search-location-add"></span>
-		</span>
-	</button>
+	<input 
+		type="text"
+		id="sijainti"
+		name="sijainti"
+		class="width-70"
+		data-ng-model="location" 
+		data-typeahead="state as state.name for state in getLocations($viewValue)" 
+		data-typeahead-on-select="add()"
+		data-typeahead-min-length="1"
+		data-typeahead-wait-ms="500"
+		data-typeahead-editable="false"
+		autocomplete="off" />
 </div>
 <ul class="nobullet">
-	<li data-ng-repeat="location in locations"><a class="remove" data-ng-click="remove(location)"><span data-ki-i18n="filter-search-location-remove"></span></a>{{location}}</li>
+	<li data-ng-repeat="location in locations">
+		<a class="remove" data-ng-click="remove(location)">
+			<span data-ki-i18n="filter-search-location-remove"></span>
+		</a>{{location.name}}</li>
 </ul>
+
