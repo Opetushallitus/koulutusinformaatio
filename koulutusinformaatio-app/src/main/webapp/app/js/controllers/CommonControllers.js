@@ -22,18 +22,19 @@ function LanguageCtrl($scope, LanguageService) {
 /**
  *  Controls header actions
  */
-function HeaderCtrl($scope, ApplicationBasketService, LanguageService) {
+function HeaderCtrl($scope, ApplicationBasketService, LanguageService, appConfig) {
     $scope.appBasketItemCount = function() {
         return ApplicationBasketService.getItemCount();
     }
 
     $scope.lang = LanguageService.getLanguage();
+    $scope.appConfig = appConfig;
 };
 
 /**
  *  Controls footer actions
  */
-function FooterCtrl($scope, LanguageService, kiAppConstants) {
+function FooterCtrl($scope, LanguageService, appConfig) {
     $scope.locales = {
         opetushallitus: i18n.t('opetushallitus-address-line-1'),
         opetusministerio: i18n.t('opetusministerio-address-line-1')
@@ -48,7 +49,7 @@ function FooterCtrl($scope, LanguageService, kiAppConstants) {
         $scope.links = {
             opetushallitus: 'http://www.oph.fi/etusivu',
             opetusministerio: 'http://www.minedu.fi/OPM/',
-            rekisteriseloste: kiAppConstants.contextRoot + 'rekisteriseloste.html'
+            rekisteriseloste: appConfig.rekisteriselosteUrlFi
         }
     } else {
         $scope.images = {
@@ -59,7 +60,7 @@ function FooterCtrl($scope, LanguageService, kiAppConstants) {
         $scope.links = {
             opetushallitus: 'http://www.oph.fi/startsidan',
             opetusministerio: 'http://www.minedu.fi/OPM/?lang=sv',
-            rekisteriseloste: kiAppConstants.contextRoot + 'sv/rekisteriseloste.html'
+            rekisteriseloste: appConfig.rekisteriselosteUrlSv
         }
     }
 };

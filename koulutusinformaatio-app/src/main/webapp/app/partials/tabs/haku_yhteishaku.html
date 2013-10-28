@@ -20,7 +20,7 @@
         </ul>
     </ul>
 
-    <form name="levelSelectionForm-{{$id}}" id="application-form-{{as.id}}-{{$id}}" action="/haku-app/lomake/{{as.id}}" method="POST" class="margin-top-2" target="hakulomake">
+    <form name="levelSelectionForm-{{$id}}" id="application-form-{{as.id}}-{{$id}}" action="{{appConfig.hakulomakeUrl}}lomake/{{as.id}}" method="POST" class="margin-top-2" target="hakulomake">
        <input 
        type="hidden" 
        name="preference1-Opetuspiste" 

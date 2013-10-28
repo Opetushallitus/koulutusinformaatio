@@ -61,9 +61,10 @@ kiApp.run(['LanguageService', function(LanguageService) {
 kiApp.constant('kiAppConstants', {
     searchResultsPerPage: 30,
     searchResultsStartPage: 1,
-    applicationBasketLimit: 5,
-    contextRoot: '../static/'
+    applicationBasketLimit: 5
 });
+
+kiApp.value('appConfig', window.Config.app);
 
 var OPH = OPH || {};
 
@@ -98,6 +99,7 @@ OPH.Common = {
     }
 };
 
+/*
 OPH.Common.Filter = (function() {
     var value;
 
@@ -111,3 +113,4 @@ OPH.Common.Filter = (function() {
         }
     }
 });
+*/

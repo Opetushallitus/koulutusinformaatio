@@ -3,13 +3,13 @@
         <div class="container">
             <span data-ng-switch="lang">
                 <span data-ng-switch-when="fi">
-                    <a id="home-link" href="../static/">
+                    <a id="home-link" href="{{appConfig.frontpageUrlFi}}">
                         <img src="img/opintopolkufi_large.png" alt="Opintopolku.fi"/>
                     </a>
                     <span data-ki-banner></span>
                 </span>
                 <span data-ng-switch-when="sv">
-                    <a id="home-link" href="../static/sv/">
+                    <a id="home-link" href="{{appConfig.frontpageUrlSv}}">
                         <img src="img/Studieinfo.png" alt="Opintopolku.fi"/>
                     </a>
                 </span>

@@ -1,8 +1,9 @@
 /**
  *  Controller for application basket
  */
-function ApplicationBasketCtrl($scope, $rootScope, $routeParams, ApplicationBasketService, SearchService, FilterService, kiAppConstants) {
+function ApplicationBasketCtrl($scope, $rootScope, $routeParams, ApplicationBasketService, SearchService, FilterService, kiAppConstants, appConfig) {
     $rootScope.title = i18n.t('title-application-basket') + ' - ' + i18n.t('sitename');
+    $scope.appConfig = appConfig;
     var basketLimit = kiAppConstants.applicationBasketLimit; // TODO: get this from application data?
 
     $scope.queryString = SearchService.getTerm() + '?' + FilterService.getParams();
