@@ -30,6 +30,12 @@
             <value>${solr.base.url}${solr.learningopportunity.update.url}</value>
         </constructor-arg>
     </bean>
+	<bean id="loAliasSolrServer"
+          class="org.apache.solr.client.solrj.impl.HttpSolrServer">
+        <constructor-arg>
+            <value>${solr.base.url}${solr.learningopportunity.alias.url}</value>
+        </constructor-arg>
+    </bean>
 
     <bean id="lopHttpSolrServer"
           class="org.apache.solr.client.solrj.impl.HttpSolrServer">
@@ -43,6 +49,12 @@
             <value>${solr.base.url}${solr.provider.update.url}</value>
         </constructor-arg>
     </bean>
+    <bean id="lopAliasSolrServer"
+          class="org.apache.solr.client.solrj.impl.HttpSolrServer">
+        <constructor-arg>
+            <value>${solr.base.url}${solr.provider.alias.url}</value>
+        </constructor-arg>
+    </bean>
 
     <bean id="locationHttpSolrServer"
           class="org.apache.solr.client.solrj.impl.HttpSolrServer">
@@ -54,6 +66,12 @@
           class="org.apache.solr.client.solrj.impl.HttpSolrServer">
         <constructor-arg>
             <value>${solr.base.url}${solr.location.update.url}</value>
+        </constructor-arg>
+    </bean>
+	<bean id="locationAliasSolrServer"
+          class="org.apache.solr.client.solrj.impl.HttpSolrServer">
+        <constructor-arg>
+            <value>${solr.base.url}${solr.location.alias.url}</value>
         </constructor-arg>
     </bean>
 
