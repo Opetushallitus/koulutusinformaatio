@@ -1,5 +1,5 @@
 {
-    "sitename": "Opintopolku.fi",
+    "title-front-page": "Etusivu",
     "title-search-results": "Hakutulokset",
     "title-application-basket": "Muistilista",
 
@@ -49,6 +49,10 @@
     "language-of-instruction": "Opetuskieli",
     "form-of-education": "Opetusmuoto",
     "duration": "Koulutuksen laajuus",
+    "planned-duration": "Suunniteltu kesto",
+    "average-limit": "Keskiarvoraja",
+    "lowest-acceptable-average": "alin hyväksyttävä keskiarvo",
+    "lowest-acceptable-average-description": "Oppilaitoksen asettama keskiarvoraja jonka alittaneita hakijoita ei valita koulutukseen. Opiskelijaksi ottamisen keskiarvo vaihtelee vuosittain ja voi olla korkeampi.",
     "starting-quota": "Opiskelupaikkoja",
 
     "goals-of-education": "Tavoite",
@@ -57,10 +61,23 @@
     "base-education-YO": "Lukiopohjaisena järjestettävä koulutus",
     "access-to-further-studies": "Jatko-opintomahdollisuudet",
 
+    "exam-header-time": "Aika",
+    "exam-header-place": "Paikka",
+    "exam-header-description": "Kuvaus",
+
     "general-selection-criteria": "Yleiset valintaperusteet",
+    "emphasized-subjects": "Painotettavat oppiaineet",
+    "emphasized-subjects-description": "Painokerroin tarkoittaa, että painotettavan aineen arvosana lasketaan valinnassa niin monta kertaa kuin painokerroin osoittaa. Esimerkiksi jos liikunnan painokerroin on 2, lasketaan peruskoulun päättötodistuksen liikunnan arvosana kahteen kertaan.",
+    "emphasized-subjects-coefficient-title": "painokerroin",
+    "required-attachments": "Tarvittavat liitteet",
+    "attachment-header-name": "Liite",
+    "attachment-header-address": "Toimitusosoite",
+    "attachment-header-duedate": "Toimitettava viimeistään",
+
     "elementary-graduate-selection": "Perusopetuksen päättäneiden valinta",
     "scoring": "Pisteytys",
     "entrance-exam": "Pääsykoe",
+    "additional-proof": "Lisänäytöt",
     "further-application-info": "Lisätietoa hakemisesta",
     "info-center": "Hakuneuvonta",
 
@@ -78,6 +95,8 @@
     "see-also": "Katso myös muu koulutus:",
 
     "structure-of-studies": "Opintojen rakenne",
+    "language-selection": "Kielivalikoima",
+    "diploma": "Lukiodiplomit",
     "working-life-placement": "Sijoittuminen työelämään",
     "profession-title": "Ammattinimikkeet",
     "internationalization": "Kansainvälistyminen",
@@ -141,5 +160,11 @@
 
     "opetusministerio-address-line-1": "Opetus- ja kulttuuriministeriö",
     "opetusministerio-address-line-2": "PL 29, 00023 Valtioneuvosto",
-    "opetusministerio-address-line-3": "puhelin 0295 3 30004"
+    "opetusministerio-address-line-3": "puhelin 0295 3 30004",
+
+    "A1A2KIELI" : "A1/A2-kieli",
+    "B1KIELI" : "B1-kieli",
+    "B2KIELI" : "B2-kieli",
+    "B3KIELI" : "B3-kieli",
+    "MUUT_KIELET" : "Muu kieli"
 }
