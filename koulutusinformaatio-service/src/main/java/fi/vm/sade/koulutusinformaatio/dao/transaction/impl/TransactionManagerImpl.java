@@ -153,7 +153,7 @@ public class TransactionManagerImpl implements TransactionManager {
     }
 
     	@Override
-        public void commit(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws IOException, SolrServerException {
+        public void commit(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws Exception {
         	
         	if (this.loHttpAliasName.equals(this.loHttpSolrName)) {
         		CoreAdminRequest lopCar = getCoreSwapRequest(providerUpdateCoreName, providerCoreName);
@@ -221,31 +221,28 @@ public class TransactionManagerImpl implements TransactionManager {
         return car;
     }
     
-    private void swapAliases(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) {
-    	
-        try {
+    private void swapAliases(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws Exception {
+            boolean ok = true;
             URL myURL = new URL(adminHttpSolrServer.getBaseURL() + "/admin/collections?action=CREATEALIAS&name=" + this.lopHttpAliasName +"&collections=" + getCollectionName(lopUpdateSolr));
             HttpURLConnection myURLConnection = (HttpURLConnection)(myURL.openConnection());
             myURLConnection.setRequestMethod("GET");
             myURLConnection.connect();
-           
+            ok = ok ? myURLConnection.getResponseCode() < 400 : ok;
+            
             myURL = new URL(adminHttpSolrServer.getBaseURL() + "/admin/collections?action=CREATEALIAS&name=" + this.loHttpAliasName +"&collections=" + getCollectionName(loUpdateSolr));
             myURLConnection = (HttpURLConnection)(myURL.openConnection());
             myURLConnection.setRequestMethod("GET");
             myURLConnection.connect();
+            ok = ok ? myURLConnection.getResponseCode() < 400 : ok;
             
             myURL = new URL(adminHttpSolrServer.getBaseURL() + "/admin/collections?action=CREATEALIAS&name=" + this.locationHttpAliasName +"&collections=" + getCollectionName(locationUpdateSolr));
             myURLConnection = (HttpURLConnection)(myURL.openConnection());
             myURLConnection.setRequestMethod("GET");
             myURLConnection.connect();
-            
-        } 
-        catch (MalformedURLException e) { 
-           e.printStackTrace();
-        } 
-        catch (IOException e) {   
-            e.printStackTrace();
-        }
+            ok = ok ? myURLConnection.getResponseCode() < 400 : ok;
+            if (!ok) {
+                throw new RuntimeException("Alias swap failed");
+            }
 		
 	}
 
