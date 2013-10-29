@@ -33,8 +33,7 @@ kiApp.config(['$routeProvider', '$analyticsProvider', function($routeProvider, $
     $routeProvider.otherwise({
     	redirectTo: '/haku/'
     });
-
-
+    
 }]);
 
 kiApp.constant('kiAppConstants', {
