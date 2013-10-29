@@ -1,5 +1,5 @@
 {
-    "sitename": "Studieinfo.fi",
+    "title-front-page": "Startsida",
     "title-search-results": "Sökresultat",
     "title-application-basket": "Minneslista",
 
@@ -49,6 +49,10 @@
     "language-of-instruction": "Undervisningsspråk",
     "form-of-education": "Undervisningsform",
     "duration": "Utbildningens omfattning",
+    "planned-duration": "Planerad längd",
+    "average-limit": "Medeltalsgräns",
+    "lowest-acceptable-average": "lägsta godkända medeltal",
+    "lowest-acceptable-average-description": "Av läroanstalten fastställd lägsta godkända medeltalsgräns. Sökande med lägre medeltal kan inte bli antagna till utbildningen. Medeltalet för antagning av studerande varierar årligen och kan vara högre.",
     "starting-quota": "Antal nybörjarplatser",
 
     "goals-of-education": "Mål",
@@ -57,10 +61,23 @@
     "base-education-YO": "Gymnasiebaserad utbildning",
     "access-to-further-studies": "Fortsatta studiemöjligheter",
 
+    "exam-header-time": "Tid",
+    "exam-header-place": "Plats",
+    "exam-header-description": "Beskrivning",
+
     "general-selection-criteria": "Allmänna antagningsgrunder",
+    "emphasized-subjects": "Betonade läroämnen",
+    "emphasized-subjects-description": "Med koefficient anges hur många gånger det betonade läroämnets vitsord räknas i antagningen. T.ex. om gymnastik har koefficienten 2, räknas vitsordet i gymnastik på avgångsbetyget från den grundläggande utbildningen två gånger.",
+    "emphasized-subjects-coefficient-title": "koefficient",
+    "required-attachments": "Behövliga bilagor",
+    "attachment-header-name": "Bilaga",
+    "attachment-header-address": "Adress",
+    "attachment-header-duedate": "Skall lämnas in senast",
+
     "elementary-graduate-selection": "Antagning av grundskolgångna ",
     "scoring": "Poängsättning",
     "entrance-exam": "Inträdesprov",
+    "additional-proof": "Tilläggsprestationer",
     "further-application-info": "Tilläggsinformation om ansökan",
     "info-center": "Ansökningsrådgivning",
 
@@ -78,6 +95,8 @@
     "see-also": "Se också annan utbildning:",
 
     "structure-of-studies": "Studiernas uppbyggnad",
+    "language-selection": "Språkutbud",
+    "diploma": "Gymnasiediplom",
     "working-life-placement": "Placering i arbetslivet",
     "profession-title": "Yrkesbenämningar",
     "internationalization": "Internationalisering",
@@ -141,5 +160,14 @@
 
     "opetusministerio-address-line-1": "Undervisnings- och kulturministeriet",
     "opetusministerio-address-line-2": "PB 29, 00023 Statsrådet",
-    "opetusministerio-address-line-3": "telefon 0295 3 30004"
+    "opetusministerio-address-line-3": "telefon 0295 3 30004",
+
+    "A1A2KIELI" : "A1/A2-språk",
+    "B1KIELI" : "B1-språk",
+    "B2KIELI" : "B2-språk",
+    "B3KIELI" : "B3-språk",
+    "MUUT_KIELET" : "Annat språk"
+
+
+
 }

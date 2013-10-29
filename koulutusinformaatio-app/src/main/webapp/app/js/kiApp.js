@@ -1,10 +1,10 @@
 /*  Application module */
 
 var kiApp = angular.module('kiApp', ['kiApp.services', 'kiApp.directives', 'ui.bootstrap', 'angulartics', 'angulartics.piwik']);
-kiApp.config(['$routeProvider', '$locationProvider', '$analyticsProvider', function($routeProvider, $locationProvider, $analyticsProvider, $rootScope) {
+kiApp.config(['$routeProvider', '$analyticsProvider', function($routeProvider, $analyticsProvider) {
 
     // initialize piwik analytics tool
-    OPH.Common.initPiwik();
+    OPH.Common.initPiwik(window.Config.app.piwikUrl);
     $analyticsProvider.virtualPageviews(true);
     $analyticsProvider.firstPageview(false);
 
@@ -33,9 +33,16 @@ kiApp.config(['$routeProvider', '$locationProvider', '$analyticsProvider', funct
     $routeProvider.otherwise({
     	redirectTo: '/haku/'
     });
-
-
+    
 }]);
+
+kiApp.constant('kiAppConstants', {
+    searchResultsPerPage: 30,
+    searchResultsStartPage: 1,
+    applicationBasketLimit: 5
+});
+
+kiApp.value('appConfig', window.Config.app);
 
 kiApp.filter('escape', function() {
   return window.escape;
@@ -58,19 +65,11 @@ kiApp.run(['LanguageService', function(LanguageService) {
     });
 }]);
 
-kiApp.constant('kiAppConstants', {
-    searchResultsPerPage: 30,
-    searchResultsStartPage: 1,
-    applicationBasketLimit: 5
-});
-
-kiApp.value('appConfig', window.Config.app);
-
 var OPH = OPH || {};
 
 OPH.Common = {
     initHeader: function() {},
-    initPiwik: function() {
+    initPiwik: function(piwikUrl) {
         var siteDomain = document.domain;
         var piwikSiteId = 2;
         if(siteDomain=='opintopolku.fi'){
@@ -90,7 +89,7 @@ OPH.Common = {
         _paq.push(["enableLinkTracking"]);
 
         (function() {
-            var u=(("https:" == document.location.protocol) ? "https" : "http") + "://analytiikka.opintopolku.fi/piwik/";
+            var u = piwikUrl;
             _paq.push(["setTrackerUrl", u+"piwik.php"]);
             _paq.push(["setSiteId", piwikSiteId]);
             var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
@@ -98,19 +97,3 @@ OPH.Common = {
         })();
     }
 };
-
-/*
-OPH.Common.Filter = (function() {
-    var value;
-
-    return {
-        get: function() {
-            return this.value;
-        },
-
-        set: function(value) {
-            this.value = value;
-        }
-    }
-});
-*/

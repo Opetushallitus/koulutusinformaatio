@@ -5,5 +5,6 @@ window.Config.app = {
     frontpageUrlSv: 'https://opintopolku.fi/wp/sv/',
     rekisteriselosteUrlFi: 'https://opintopolku.fi/wp/fi/rekisteriseloste/',
     rekisteriselosteUrlSv: 'https://opintopolku.fi/wp/sv/registerbeskrivning/',
-    hakulomakeUrl: '/haku-app/'
+    hakulomakeUrl: '/haku-app/',
+    piwikUrl: 'https://analytiikka.opintopolku.fi/piwik/'
 }
