@@ -16,8 +16,9 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
+import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
@@ -48,17 +49,19 @@ public class SearchServiceSolrImpl implements SearchService {
     public static final String AS_START_DATE_PREFIX = "asStart_";
     public static final String AS_END_DATE_PREFIX = "asEnd_";
 
+    private HttpSolrServer httpSolrServer;
+
     private final HttpSolrServer lopHttpSolrServer;
     private final HttpSolrServer loHttpSolrServer;
     private final HttpSolrServer locationHttpSolrServer;
 
     @Autowired
-    public SearchServiceSolrImpl(@Qualifier("lopHttpSolrServer") final HttpSolrServer lopHttpSolrServer,
-                                 @Qualifier("loHttpSolrServer") final HttpSolrServer loHttpSolrServer,
-                                 @Qualifier("locationHttpSolrServer") final HttpSolrServer locationHttpSolrServer) {
-        this.lopHttpSolrServer = lopHttpSolrServer;
-        this.loHttpSolrServer = loHttpSolrServer;
-        this.locationHttpSolrServer = locationHttpSolrServer;
+    public SearchServiceSolrImpl(@Qualifier("lopAliasSolrServer") final HttpSolrServer lopAliasSolrServer,
+                                 @Qualifier("loAliasSolrServer") final HttpSolrServer loAliasSolrServer,
+                                 @Qualifier("locationAliasSolrServer") final HttpSolrServer locationAliasSolrServer) {
+        this.lopHttpSolrServer = lopAliasSolrServer;
+        this.loHttpSolrServer = loAliasSolrServer;
+        this.locationHttpSolrServer = locationAliasSolrServer;
     }
 
     @Override
@@ -142,27 +145,6 @@ public class SearchServiceSolrImpl implements SearchService {
         return searchResultList;
     }
 
-    @Override
-    public List<Location> searchLocations(String term, String lang) throws SearchException {
-        String startswith = term.trim();
-        if (!startswith.isEmpty()) {
-            SolrQuery query = new LocationQuery(term + "*", lang);
-            return executeSolrQuery(query);
-        } else {
-            return Lists.newArrayList();
-        }
-    }
-
-    @Override
-    public List<Location> getLocations(List<String> codes, String lang) throws SearchException {
-        if (codes != null && !codes.isEmpty()) {
-            SolrQuery query = new LocationQuery(codes, lang);
-            return executeSolrQuery(query);
-        } else {
-            return Lists.newArrayList();
-        }
-    }
-
     private void updateAsStatus(LOSearchResult lo, SolrDocument doc) {
         lo.setAsOngoing(false);
         Date now = new Date();
@@ -199,6 +181,27 @@ public class SearchServiceSolrImpl implements SearchService {
 
     }
 
+    @Override
+    public List<Location> searchLocations(String term, String lang) throws SearchException {
+        String startswith = term.trim();
+        if (!startswith.isEmpty()) {
+            SolrQuery query = new LocationQuery(term + "*", lang);
+            return executeSolrQuery(query);
+        } else {
+            return Lists.newArrayList();
+        }
+    }
+
+    @Override
+    public List<Location> getLocations(List<String> codes, String lang) throws SearchException {
+        if (codes != null && !codes.isEmpty()) {
+            SolrQuery query = new LocationQuery(codes, lang);
+            return executeSolrQuery(query);
+        } else {
+            return Lists.newArrayList();
+        }
+    }
+    
     private List<Location> executeSolrQuery(final SolrQuery query) throws SearchException {
         List<Location> locations = Lists.newArrayList();
         QueryResponse queryResponse = null;
@@ -216,5 +219,6 @@ public class SearchServiceSolrImpl implements SearchService {
         }
         return locations;
     }
+	
 
 }
