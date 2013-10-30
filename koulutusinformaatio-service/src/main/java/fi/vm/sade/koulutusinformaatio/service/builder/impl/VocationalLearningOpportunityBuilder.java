@@ -84,7 +84,7 @@ public class VocationalLearningOpportunityBuilder implements LearningOpportunity
         }
         parentKomotosByProviderId = ArrayListMultimap.create();
         for (OidRDTO parentKomotoOid : parentKomotoOids) {
-            KomotoDTO parentKomoto =   tarjontaRawService.getKomoto(parentKomotoOid.getOid());
+            KomotoDTO parentKomoto = tarjontaRawService.getKomoto(parentKomotoOid.getOid());
             parentKomotosByProviderId.put(parentKomoto.getTarjoajaOid(), parentKomoto);
         }
 
@@ -277,7 +277,6 @@ public class VocationalLearningOpportunityBuilder implements LearningOpportunity
 
         for (KomotoDTO childKomoto : childKomotos) {
             String childKomotoOid = childKomoto.getOid();
-
             LOG.debug(Joiner.on(" ").join("Resolving child learning opportunity:", childKomotoOid));
 
             try {
@@ -287,143 +286,7 @@ public class VocationalLearningOpportunityBuilder implements LearningOpportunity
                 continue;
             }
 
-            ChildLOI childLOI = new ChildLOI();
-            childLOI.setName(childLOS.getName());
-            childLOI.setId(childKomoto.getOid());
-            childLOI.setLosId(childLOS.getId());
-            childLOI.setParentLOIId(childKomoto.getParentKomotoOid());
-            childLOI.setStartDate(childKomoto.getKoulutuksenAlkamisDate());
-            childLOI.setFormOfEducation(koodistoService.searchMultiple(childKomoto.getKoulutuslajiUris()));
-            childLOI.setWebLinks(childKomoto.getWebLinkkis());
-            childLOI.setTeachingLanguages(koodistoService.searchCodesMultiple(childKomoto.getOpetuskieletUris()));
-            childLOI.setFormOfTeaching(koodistoService.searchMultiple(childKomoto.getOpetusmuodotUris()));
-            childLOI.setPrerequisite(koodistoService.searchFirstCode(childKomoto.getPohjakoulutusVaatimusUri()));
-            childLOI.setProfessionalTitles(koodistoService.searchMultiple(childKomoto.getAmmattinimikeUris()));
-            childLOI.setWorkingLifePlacement(getI18nText(childKomoto.getSijoittuminenTyoelamaan()));
-            childLOI.setInternationalization(getI18nText(childKomoto.getKansainvalistyminen()));
-            childLOI.setCooperation(getI18nText(childKomoto.getYhteistyoMuidenToimijoidenKanssa()));
-            childLOI.setContent(getI18nText(childKomoto.getSisalto()));
-
-            if (childKomoto.getYhteyshenkilos() != null) {
-                for (YhteyshenkiloRDTO yhteyshenkiloRDTO : childKomoto.getYhteyshenkilos()) {
-                    ContactPerson contactPerson = new ContactPerson(yhteyshenkiloRDTO.getPuhelin(), yhteyshenkiloRDTO.getTitteli(),
-                            yhteyshenkiloRDTO.getEmail(), yhteyshenkiloRDTO.getSukunimi(), yhteyshenkiloRDTO.getEtunimet());
-                    childLOI.getContactPersons().add(contactPerson);
-                }
-            }
-
-            List<ApplicationOption> applicationOptions = Lists.newArrayList();
-            List<String> applicationSystemIds = Lists.newArrayList();
-            List<OidRDTO> aoIdDTOs = tarjontaRawService.getHakukohdesByKomoto(childKomotoOid);
-            for (OidRDTO aoIdDTO : aoIdDTOs) {
-                LOG.debug(Joiner.on(" ").join("Adding application options (",
-                        aoIdDTOs.size(), ") to child learning opportunity"));
-
-                // application option
-                String aoId = aoIdDTO.getOid();
-                HakukohdeDTO hakukohdeDTO = tarjontaRawService.getHakukohde(aoId);
-                HakuDTO hakuDTO = tarjontaRawService.getHakuByHakukohde(aoId);
-
-                try {
-                    validateHakukohde(hakukohdeDTO);
-                } catch (TarjontaParseException e) {
-                    LOG.debug("Application option skipped, " + e.getMessage());
-                    continue;
-                }
-                try {
-                    validateHaku(hakuDTO);
-                } catch (TarjontaParseException e) {
-                    LOG.debug("Application option skipped, " + e.getMessage());
-                    continue;
-                }
-
-                ApplicationOption ao = new ApplicationOption();
-
-                ao.setId(hakukohdeDTO.getOid());
-                ao.setName(koodistoService.searchFirst(hakukohdeDTO.getHakukohdeNimiUri()));
-                ao.setAoIdentifier(koodistoService.searchFirstCodeValue(hakukohdeDTO.getHakukohdeNimiUri()));
-                ao.setStartingQuota(hakukohdeDTO.getAloituspaikatLkm());
-                ao.setLowestAcceptedScore(hakukohdeDTO.getAlinValintaPistemaara());
-                ao.setLowestAcceptedAverage(hakukohdeDTO.getAlinHyvaksyttavaKeskiarvo());
-                ao.setAttachmentDeliveryDeadline(hakukohdeDTO.getLiitteidenToimitusPvm());
-                ao.setLastYearApplicantCount(hakukohdeDTO.getEdellisenVuodenHakijatLkm());
-                ao.setSelectionCriteria(getI18nText(hakukohdeDTO.getValintaperustekuvaus()));
-                ao.setExams(createExams(hakukohdeDTO.getValintakoes()));
-                List<Code> subCodes = koodistoService.searchSubCodes(childKomoto.getPohjakoulutusVaatimusUri(),
-                        LearningOpportunityBuilder.BASE_EDUCATION_KOODISTO_URI);
-                List<String> baseEducations = Lists.transform(subCodes, new Function<Code, String>() {
-                    @Override
-                    public String apply(Code code) {
-                        return code.getValue();
-                    }
-                });
-                ao.setRequiredBaseEducations(baseEducations);
-
-                ApplicationSystem as = new ApplicationSystem();
-                as.setId(hakuDTO.getOid());
-                as.setName(getI18nText(hakuDTO.getNimi()));
-                if (hakuDTO.getHakuaikas() != null) {
-                    for (HakuaikaRDTO ha : hakuDTO.getHakuaikas()) {
-                        DateRange range = new DateRange();
-                        range.setStartDate(ha.getAlkuPvm());
-                        range.setEndDate(ha.getLoppuPvm());
-                        as.getApplicationDates().add(range);
-                    }
-                }
-                ao.setApplicationSystem(as);
-                if (!Strings.isNullOrEmpty(hakukohdeDTO.getSoraKuvausKoodiUri())) {
-                    ao.setSora(true);
-                }
-
-                ao.setTeachingLanguages(koodistoService.searchCodeValuesMultiple(childKomoto.getOpetuskieletUris()));
-                ao.setPrerequisite(childLOI.getPrerequisite());
-                ao.setSpecificApplicationDates(hakukohdeDTO.isKaytetaanHakukohdekohtaistaHakuaikaa());
-                if (ao.isSpecificApplicationDates()) {
-                    ao.setApplicationStartDate(hakukohdeDTO.getHakuaikaAlkuPvm());
-                    ao.setApplicationEndDate(hakukohdeDTO.getHakuaikaLoppuPvm());
-                }
-
-                if (hakukohdeDTO.getLiitteidenToimitusosoite() != null) {
-                    OsoiteRDTO addressDTO = hakukohdeDTO.getLiitteidenToimitusosoite();
-                    Address attachmentDeliveryAddress = new Address();
-                    attachmentDeliveryAddress.setStreetAddress(addressDTO.getOsoiterivi1());
-                    attachmentDeliveryAddress.setStreetAddress2(addressDTO.getOsoiterivi2());
-                    attachmentDeliveryAddress.setPostalCode(koodistoService.searchFirstCodeValue(addressDTO.getPostinumero()));
-                    attachmentDeliveryAddress.setPostOffice(addressDTO.getPostitoimipaikka());
-                    ao.setAttachmentDeliveryAddress(attachmentDeliveryAddress);
-                }
-
-                // set child loi names to application option
-                List<OidRDTO> komotosByHakukohdeOID = tarjontaRawService.getKomotosByHakukohde(aoId);
-                for (OidRDTO s : komotosByHakukohdeOID) {
-                    KomoDTO komoByKomotoOID = tarjontaRawService.getKomoByKomoto(s.getOid());
-
-                    try {
-                        validateChildKomo(komoByKomotoOID);
-                    } catch (TarjontaParseException e) {
-                        continue;
-                    }
-
-                    KomotoDTO k = tarjontaRawService.getKomoto(s.getOid());
-                    try {
-                        validateChildKomoto(k);
-                    } catch (TarjontaParseException e) {
-                        continue;
-                    }
-
-                    ChildLOIRef cRef = new ChildLOIRef();
-                    cRef.setId(s.getOid());
-                    cRef.setLosId(getLOSId(komoByKomotoOID.getOid(), childKomoto.getTarjoajaOid()));
-                    cRef.setName(koodistoService.searchFirst(komoByKomotoOID.getKoulutusOhjelmaKoodiUri()));
-                    cRef.setQualification(koodistoService.searchFirst(komoByKomotoOID.getTutkintonimikeUri()));
-                    cRef.setPrerequisite(childLOI.getPrerequisite());
-                    ao.getChildLOIRefs().add(cRef);
-                }
-                applicationOptions.add(ao);
-                applicationSystemIds.add(hakuDTO.getOid());
-            }
-            childLOI.setApplicationOptions(applicationOptions);
-
+            ChildLOI childLOI = createChildLOI(childKomoto, childLOS.getId(), childLOS.getName());
             if (!childLOI.getApplicationOptions().isEmpty()) {
                 childLOIs.add(childLOI);
             }
@@ -432,6 +295,151 @@ public class VocationalLearningOpportunityBuilder implements LearningOpportunity
         return childLOS;
     }
 
+    private ChildLOI createChildLOI(KomotoDTO childKomoto, String losId, I18nText losName) throws KoodistoException {
+        ChildLOI childLOI = new ChildLOI();
+        childLOI.setName(losName);
+        childLOI.setId(childKomoto.getOid());
+        childLOI.setLosId(losId);
+        childLOI.setParentLOIId(childKomoto.getParentKomotoOid());
+        childLOI.setStartDate(childKomoto.getKoulutuksenAlkamisDate());
+        childLOI.setFormOfEducation(koodistoService.searchMultiple(childKomoto.getKoulutuslajiUris()));
+        childLOI.setWebLinks(childKomoto.getWebLinkkis());
+        childLOI.setTeachingLanguages(koodistoService.searchCodesMultiple(childKomoto.getOpetuskieletUris()));
+        childLOI.setFormOfTeaching(koodistoService.searchMultiple(childKomoto.getOpetusmuodotUris()));
+        childLOI.setPrerequisite(koodistoService.searchFirstCode(childKomoto.getPohjakoulutusVaatimusUri()));
+        childLOI.setProfessionalTitles(koodistoService.searchMultiple(childKomoto.getAmmattinimikeUris()));
+        childLOI.setWorkingLifePlacement(getI18nText(childKomoto.getSijoittuminenTyoelamaan()));
+        childLOI.setInternationalization(getI18nText(childKomoto.getKansainvalistyminen()));
+        childLOI.setCooperation(getI18nText(childKomoto.getYhteistyoMuidenToimijoidenKanssa()));
+        childLOI.setContent(getI18nText(childKomoto.getSisalto()));
+
+        if (childKomoto.getYhteyshenkilos() != null) {
+            for (YhteyshenkiloRDTO yhteyshenkiloRDTO : childKomoto.getYhteyshenkilos()) {
+                ContactPerson contactPerson = new ContactPerson(yhteyshenkiloRDTO.getPuhelin(), yhteyshenkiloRDTO.getTitteli(),
+                        yhteyshenkiloRDTO.getEmail(), yhteyshenkiloRDTO.getSukunimi(), yhteyshenkiloRDTO.getEtunimet());
+                childLOI.getContactPersons().add(contactPerson);
+            }
+        }
+
+        List<ApplicationOption> applicationOptions = Lists.newArrayList();
+        List<OidRDTO> aoIdDTOs = tarjontaRawService.getHakukohdesByKomoto(childKomoto.getOid());
+        for (OidRDTO aoIdDTO : aoIdDTOs) {
+            LOG.debug(Joiner.on(" ").join("Adding application options (",
+                    aoIdDTOs.size(), ") to child learning opportunity"));
+
+            // application option
+            String aoId = aoIdDTO.getOid();
+            HakukohdeDTO hakukohdeDTO = tarjontaRawService.getHakukohde(aoId);
+            HakuDTO hakuDTO = tarjontaRawService.getHakuByHakukohde(aoId);
+
+            try {
+                validateHakukohde(hakukohdeDTO);
+            } catch (TarjontaParseException e) {
+                LOG.debug("Application option skipped, " + e.getMessage());
+                continue;
+            }
+            try {
+                validateHaku(hakuDTO);
+            } catch (TarjontaParseException e) {
+                LOG.debug("Application option skipped, " + e.getMessage());
+                continue;
+            }
+
+            applicationOptions.add(
+                    createApplicationOption(hakukohdeDTO, hakuDTO, childKomoto, childLOI));
+        }
+
+        childLOI.setApplicationOptions(applicationOptions);
+
+        return childLOI;
+    }
+
+    private ApplicationOption createApplicationOption(HakukohdeDTO hakukohdeDTO, HakuDTO hakuDTO,
+                                                      KomotoDTO childKomoto, ChildLOI childLOI) throws KoodistoException {
+        ApplicationOption ao = new ApplicationOption();
+        ao.setId(hakukohdeDTO.getOid());
+        ao.setName(koodistoService.searchFirst(hakukohdeDTO.getHakukohdeNimiUri()));
+        ao.setAoIdentifier(koodistoService.searchFirstCodeValue(hakukohdeDTO.getHakukohdeNimiUri()));
+        ao.setStartingQuota(hakukohdeDTO.getAloituspaikatLkm());
+        ao.setLowestAcceptedScore(hakukohdeDTO.getAlinValintaPistemaara());
+        ao.setLowestAcceptedAverage(hakukohdeDTO.getAlinHyvaksyttavaKeskiarvo());
+        ao.setAttachmentDeliveryDeadline(hakukohdeDTO.getLiitteidenToimitusPvm());
+        ao.setLastYearApplicantCount(hakukohdeDTO.getEdellisenVuodenHakijatLkm());
+        ao.setSelectionCriteria(getI18nText(hakukohdeDTO.getValintaperustekuvaus()));
+        ao.setExams(createExams(hakukohdeDTO.getValintakoes()));
+        List<Code> subCodes = koodistoService.searchSubCodes(childKomoto.getPohjakoulutusVaatimusUri(),
+                LearningOpportunityBuilder.BASE_EDUCATION_KOODISTO_URI);
+        List<String> baseEducations = Lists.transform(subCodes, new Function<Code, String>() {
+            @Override
+            public String apply(Code code) {
+                return code.getValue();
+            }
+        });
+        ao.setRequiredBaseEducations(baseEducations);
+
+        ApplicationSystem as = new ApplicationSystem();
+        as.setId(hakuDTO.getOid());
+        as.setName(getI18nText(hakuDTO.getNimi()));
+        if (hakuDTO.getHakuaikas() != null) {
+            for (HakuaikaRDTO ha : hakuDTO.getHakuaikas()) {
+                DateRange range = new DateRange();
+                range.setStartDate(ha.getAlkuPvm());
+                range.setEndDate(ha.getLoppuPvm());
+                as.getApplicationDates().add(range);
+            }
+        }
+        ao.setApplicationSystem(as);
+        if (!Strings.isNullOrEmpty(hakukohdeDTO.getSoraKuvausKoodiUri())) {
+            ao.setSora(true);
+        }
+
+        ao.setTeachingLanguages(koodistoService.searchCodeValuesMultiple(childKomoto.getOpetuskieletUris()));
+        ao.setPrerequisite(childLOI.getPrerequisite());
+        ao.setSpecificApplicationDates(hakukohdeDTO.isKaytetaanHakukohdekohtaistaHakuaikaa());
+        if (ao.isSpecificApplicationDates()) {
+            ao.setApplicationStartDate(hakukohdeDTO.getHakuaikaAlkuPvm());
+            ao.setApplicationEndDate(hakukohdeDTO.getHakuaikaLoppuPvm());
+        }
+
+        if (hakukohdeDTO.getLiitteidenToimitusosoite() != null) {
+            OsoiteRDTO addressDTO = hakukohdeDTO.getLiitteidenToimitusosoite();
+            Address attachmentDeliveryAddress = new Address();
+            attachmentDeliveryAddress.setStreetAddress(addressDTO.getOsoiterivi1());
+            attachmentDeliveryAddress.setStreetAddress2(addressDTO.getOsoiterivi2());
+            attachmentDeliveryAddress.setPostalCode(koodistoService.searchFirstCodeValue(addressDTO.getPostinumero()));
+            attachmentDeliveryAddress.setPostOffice(addressDTO.getPostitoimipaikka());
+            ao.setAttachmentDeliveryAddress(attachmentDeliveryAddress);
+        }
+
+        // set child loi names to application option
+        List<OidRDTO> komotosByHakukohdeOID = tarjontaRawService.getKomotosByHakukohde(hakukohdeDTO.getOid());
+        for (OidRDTO s : komotosByHakukohdeOID) {
+            KomoDTO komoByKomotoOID = tarjontaRawService.getKomoByKomoto(s.getOid());
+
+            try {
+                validateChildKomo(komoByKomotoOID);
+            } catch (TarjontaParseException e) {
+                continue;
+            }
+
+            KomotoDTO k = tarjontaRawService.getKomoto(s.getOid());
+            try {
+                validateChildKomoto(k);
+            } catch (TarjontaParseException e) {
+                continue;
+            }
+
+            ChildLOIRef cRef = new ChildLOIRef();
+            cRef.setId(s.getOid());
+            cRef.setLosId(getLOSId(komoByKomotoOID.getOid(), childKomoto.getTarjoajaOid()));
+            cRef.setName(koodistoService.searchFirst(komoByKomotoOID.getKoulutusOhjelmaKoodiUri()));
+            cRef.setQualification(koodistoService.searchFirst(komoByKomotoOID.getTutkintonimikeUri()));
+            cRef.setPrerequisite(childLOI.getPrerequisite());
+            ao.getChildLOIRefs().add(cRef);
+        }
+
+        return ao;
+    }
 
     private ParentLOS createParentLOS(KomoDTO parentKomo, String providerId, List<KomotoDTO> parentKomotos) throws KoodistoException {
         LOG.debug(Joiner.on(" ").join("Creating provider specific parent LOS from komo: ", parentKomo.getOid()));
@@ -555,6 +563,4 @@ public class VocationalLearningOpportunityBuilder implements LearningOpportunity
             throw new TarjontaParseException("Application system " + haku.getOid() + " not in state " + LearningOpportunityBuilder.STATE_PUBLISHED);
         }
     }
-
-
 }
