@@ -1,27 +1,40 @@
-<div data-ng-repeat="exam in exams" class="exams">
-	<h2>{{exam.type}}</h2>
-	<div data-render-text-block data-content="{{exam.description}}"></div>
-	<table class="margin-bottom-2 margin-top-2">
-		<colgroup>
+<div data-ng-repeat="exam in exams">
+	<div data-ng-show="exam.type">
+		<h2>{{exam.type}}</h2>
+	</div>
+	<div data-ng-show="!exam.type">
+		<h2 data-ki-i18n="entrance-exam"></h2>
+	</div>
+    <p data-render-text-block data-content="{{exam.description}}"></p>
+    <table class="striped">
+        <colgroup>
             <col style="width: 34%;"></col>
             <col></col>
             <col style="width: 33%;"></col>
         </colgroup>
-		<thead>
-		</thead>
-		<tbody>
-			<tr data-ng-repeat="event in exam.examEvents" data-ng-class="rowClass($first, $last)">
-				<td>{{event.description}}</td>
-				<td>
-					<span data-ki-timestamp="{{event.start}}" data-precise="true" class="bold"></span> - <span data-ki-timestamp="{{event.end}}" data-precise="true" class="bold"></span>
-				</td>
-				<td class="last">
-					<span>{{event.address.streetAddress}}</span><br />
-					<span>{{event.address.postalCode}}</span> <span>{{event.address.postOffice}}</span>
-				</td>
-			</tr>
-		</tbody>
-		<tfoot></tfoot>
-	</table>
-	
+        <thead>
+            <tr>
+                <th data-ki-i18n="exam-header-time"></th>
+                <th data-ki-i18n="exam-header-place"></th>
+                <th data-ki-i18n="exam-header-description"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-ng-repeat="event in exam.examEvents" data-ng-class="{first: $first, last: $last}">
+                <td>
+                    <span data-ki-timestamp="{{event.start}}" data-precise="true"></span> &ndash; <span data-ki-timestamp="{{event.end}}" data-precise="true"></span>
+                </td>
+                <td>
+                    <span data-ng-show="event.address.streetAddress">{{event.address.streetAddress}}<br /></span>
+                    <span data-ng-show="event.address.streetAddress2">{{event.address.streetAddress2}}<br /></span>
+                    <span data-ng-show="event.address.postalCode">{{event.address.postalCode}}</span>
+                    <span data-ng-show="event.address.postOffice">{{event.address.postOffice}}</span>
+                </td>
+                <td class="last">{{event.description}}</td>
+                
+            </tr>
+        </tbody>
+        <tfoot></tfoot>
+    </table>
+
 </div>

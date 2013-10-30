@@ -1,0 +1,9 @@
+<div data-ng-show="showEmphasizedSubjects">
+    <h2 data-ki-i18n="emphasized-subjects"></h2>
+    <ul class="disc">
+    	<li data-ng-repeat="item in ao.emphasizedSubjects">
+    		<span>{{item.subject}}</span><span data-ng-show="item.value">, <span data-ki-i18n="emphasized-subjects-coefficient-title"></span> {{item.value}}</span>
+    	</li>
+    </ul>
+    <p data-ki-i18n="emphasized-subjects-description"></p>
+</div>

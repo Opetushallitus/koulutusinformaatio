@@ -93,10 +93,12 @@ service('SearchLocationService', ['$http', '$timeout', '$q', 'LanguageService', 
 /**
  *  Resource for requesting parent LO data
  */
-service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', '$filter', 'LanguageService', function($http, $timeout, $q, $filter, LanguageService) {
+service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', '$filter', 'LanguageService', 'UtilityService', function($http, $timeout, $q, $filter, LanguageService, UtilityService) {
     var transformData = function(result) {
-        var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
-        result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
+        if (result && result.availableTranslationLanguages) {
+            var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
+            result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
+        }
 
         if (result && result.provider && result.provider.name) {
             result.provider.encodedName = $filter('encodeURIComponent')('"' + result.provider.name + '"');
@@ -177,6 +179,40 @@ service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', '$filter
             }
         }
 
+        // group application systems by prerequisite
+        var applicationSystemsByPrerequisite = {};
+        angular.forEach(result.lois, function(loi, loikey) {
+            angular.forEach(loi.applicationSystems, function(as, askey) {
+                as.loiId = loi.id;
+                if (applicationSystemsByPrerequisite[loi.prerequisite.value]) {
+                    applicationSystemsByPrerequisite[loi.prerequisite.value].push(as);
+                } else {
+                    applicationSystemsByPrerequisite[loi.prerequisite.value] = [];
+                    applicationSystemsByPrerequisite[loi.prerequisite.value].push(as);
+                }
+
+            });
+        });
+
+        // sort application systems and select active LOI
+        var lois = [];
+        angular.forEach(applicationSystemsByPrerequisite, function(asByPrerequisite, key){
+            UtilityService.sortApplicationSystems(asByPrerequisite);
+            
+            if (asByPrerequisite.length > 0) {
+                var loiId = asByPrerequisite[0].loiId;
+            }
+
+            
+            angular.forEach(result.lois, function(loi, loikey){
+                if (loi.id === loiId) {
+                    loi.applicationSystems = asByPrerequisite;
+                    lois.push(loi);
+                }
+            });
+        });
+        result.lois = lois;
+
         // sort LOIs based on prerequisite
         if (result.lois) {
             result.lois.sort(function(a, b) {
@@ -185,16 +221,6 @@ service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', '$filter
                 else return a.id > b.id ? 1 : -1;
             });
         }
-
-        /*
-        _paq.push(['setCustomVariable', 
-            1, // Index, the number from 1 to 5 where this custom variable name is stored 
-            "Tarjoaja", // Name, the name of the variable, for example: Gender, VisitorType 
-            result.provider.name, // Value, for example: "Male", "Female" or "new", "engaged", "customer" 
-            "page" // Scope of the custom variable, "visit" means the custom variable applies to the current visit 
-        ]);
-        _paq.push(['trackPageView']);
-        */
     };
 
     return {
@@ -299,79 +325,44 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
             }
         }
 
-        // group LOIs with prerequisite
-        var lois = [];
-        for (var loiIndex in result.lois) {
-            if (result.lois.hasOwnProperty(loiIndex)) {
-                var loi = result.lois[loiIndex];
-
-                var loiFound = undefined;
-                for (var i in lois) {
-                    if (lois.hasOwnProperty(i)) {
-                        if (lois[i].prerequisite.value == loi.prerequisite.value) {
-                            loiFound = lois[i];
-                            break;
-                        } 
-                    }
+        // group application systems by prerequisite
+        var applicationSystemsByPrerequisite = {};
+        angular.forEach(result.lois, function(loi, loikey) {
+            angular.forEach(loi.applicationSystems, function(as, askey) {
+                as.loiId = loi.id;
+                if (applicationSystemsByPrerequisite[loi.prerequisite.value]) {
+                    applicationSystemsByPrerequisite[loi.prerequisite.value].push(as);
+                } else {
+                    applicationSystemsByPrerequisite[loi.prerequisite.value] = [];
+                    applicationSystemsByPrerequisite[loi.prerequisite.value].push(as);
                 }
 
-                if (loiFound) {
-                    for (var i in loi.applicationSystems) {
-                        if (loi.applicationSystems.hasOwnProperty(i)) {
-                            var as = loi.applicationSystems[i];
+            });
+        });
 
-                            if (!loiFound.applicationSystems) {
-                                loiFound.applicationSystems = [];
-                            }
-                            
-                            // group application systems
-                            var existingAs = undefined;
-                            for (var asIndex in loiFound.applicationSystems) {
-                                if (loiFound.applicationSystems.hasOwnProperty(asIndex)) {
-                                    var loiFoundAs = loiFound.applicationSystems[asIndex];
-                                    if (as.id == loiFoundAs.id) {
-                                        existingAs = loiFoundAs;
-                                    }
-                                }
-                            }
+        // sort application systems and select active LOI
+        var lois = [];
+        angular.forEach(applicationSystemsByPrerequisite, function(asByPrerequisite, key){
+            UtilityService.sortApplicationSystems(asByPrerequisite);
+            
+            if (asByPrerequisite.length > 0) {
+                var loiId = asByPrerequisite[0].loiId;
+            }
 
-                            if (existingAs) {
-                                for (var aoIndex in as.applicationOptions) {
-                                    if (as.applicationOptions.hasOwnProperty(aoIndex)) {
-                                        var ao = as.applicationOptions[aoIndex];
-
-                                        // group application options
-                                        var aoFound = false;
-                                        for (var j in existingAs.applicationOptions) {
-                                            if (existingAs.applicationOptions.hasOwnProperty(j)) {
-                                                if (ao.id == existingAs.applicationOptions[j].id) {
-                                                    aoFound = true
-                                                    break;
-                                                }
-                                            }
-                                        }
-
-                                        if (!aoFound) {
-                                            existingAs.applicationOptions.push(ao);
-                                        }
-                                    }
-                                }
-                            } else {
-                                loiFound.applicationSystems.push(as);
-                            }
-                            
-                        }
-                    }
-                } else {
+            
+            angular.forEach(result.lois, function(loi, loikey){
+                if (loi.id === loiId) {
+                    loi.applicationSystems = asByPrerequisite;
                     lois.push(loi);
                 }
-            }
-        }
+            });
+        });
+
         result.lois = lois;
 
-        // sort application systems
-        angular.forEach(result.lois, function(loi, loikey) {
-            UtilityService.sortApplicationSystems(loi.applicationSystems);
+        // sort language selection alphabetically
+        angular.forEach(result.lois, function(loi, loikey){
+            UtilityService.sortLanguageSelection(loi.languageSelection);
         });
 
         // check if application system is of type Lisähaku
@@ -595,7 +586,7 @@ service('TabService', function() {
 /**
  *  Service for maintaining application basket state
  */
-service('ApplicationBasketService', ['$http', '$q', 'LanguageService', function($http, $q, LanguageService) {
+service('ApplicationBasketService', ['$http', '$q', 'LanguageService', 'UtilityService', function($http, $q, LanguageService, UtilityService) {
     var key = 'basket';
     var cookieConfig = {useLocalStorage: false, maxChunkSize: 2000, maxNumberOfCookies: 20, path: '/'};
 
@@ -877,44 +868,7 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', fu
         }
     };
 }]).
-/*
-service.('kiLocation', ['$location', function($location) {
-    return {
-        search: function() {
 
-        }
-    }
-}]).
-*/
-
-/*
-service('SearchCriteriaService', ['FilterService', 'kiAppConstants', function(FilterService, kiAppConstants) {
-    var criterias = {};
-
-    return {
-
-        getPage: function() {
-            return criterias.page || kiAppConstants.searchResultsStartPage;
-        },
-
-        setPage: function(value) {
-            criterias.page = value;
-        },
-
-        get: function() {
-            var filters = FilterService.get();
-
-            for (var i in filters) {
-                if (filters.hasOwnProperty(i)) {
-                    criterias[i] = filters[i];
-                }
-            }
-
-            return criterias;
-        }
-    }
-}]).
-*/
 
 /**
  *  Service for retrieving translated values for text
@@ -975,6 +929,15 @@ service('UtilityService', function() {
                     }
 
                     return comp;
+                });
+            }
+        },
+        sortLanguageSelection: function(languageSelection) {
+            if (languageSelection) {
+                languageSelection.sort(function(a, b) {
+                    if(a.subjectCode < b.subjectCode) return -1;
+                    if(a.subjectCode > b.subjectCode) return 1;
+                    return 0;
                 });
             }
         }

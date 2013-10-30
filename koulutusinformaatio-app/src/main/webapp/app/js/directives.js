@@ -176,7 +176,67 @@ directive('kiRenderProfessionalTitles', function() {
     }
 }).
 
-directive('kiRenderExams', function() {
+/**
+ *  Render diplomas
+ */
+directive('kiRenderDiploma', function() {
+    return {
+        restrict: 'A',
+        templateUrl: 'templates/diploma.html',
+        link: function(scope, element, attrs) {
+            scope.$watch('selectedLOI.diploma', function(data) {
+                scope.showDiploma = data ? true : false;
+            });
+        }
+    }
+}).
+
+/**
+ *  Render emphasized subjects
+ */
+directive('kiRenderEmphasizedSubjects', function() {
+    return {
+        restrict: 'A',
+        templateUrl: 'templates/emphasizedSubjects.html',
+        link: function(scope, element, attrs) {
+            scope.$watch('ao.emphasizedSubjects', function(data) {
+                scope.showEmphasizedSubjects = data ? true : false;
+            });
+        }
+    }
+}).
+
+/**
+ *  Render avergae limit
+ */
+directive('kiRenderAverageLimit', function() {
+    return {
+        restrict: 'A',
+        templateUrl: 'templates/averageLimit.html',
+        link: function(scope, element, attrs) {
+            scope.$watch('ao.lowestAcceptedAverage', function(data) {
+                scope.showAverageLimit = data ? true : false;
+            });
+        }
+    }
+}).
+
+/**
+ *  Render emphasized subjects
+ */
+directive('kiRenderLanguageSelection', function() {
+    return {
+        restrict: 'A',
+        templateUrl: 'templates/languageSelection.html',
+        link: function(scope, element, attrs) {
+            scope.$watch('selectedLOI.languageSelection', function(data) {
+                scope.showLanguageSelection = data ? true : false;
+            });
+        }
+    }
+}).
+
+directive('kiRenderExams', ['UtilityService', function(UtilityService) {
     return {
         restrict: 'E,A',
         templateUrl: 'templates/exams.html',
@@ -184,19 +244,21 @@ directive('kiRenderExams', function() {
         link: function(scope, element, attrs) {
             scope.$watch('ao.exams', function(data) {
                 scope.exams = data;
+                //scope.ao.isLukio = UtilityService.isLukio(scope.ao);
             });
+        }
+    }
+}]).
 
-            scope.rowClass = function(isFirst, isLast) {
-                if (isFirst && isLast) {
-                    return 'first last';
-                } else if (isFirst) {
-                    return 'first';
-                } else if (isLast) {
-                    return 'last';
-                } else {
-                    return '';
-                }
-            } 
+directive('kiRenderAttachments', function() {
+    return {
+        restrict: 'A',
+        templateUrl: 'templates/attachments.html',
+        link: function(scope, element, attrs) {
+            scope.$watch('ao.attachments', function(data) {
+                scope.showAttachments = data ? true : false;
+                scope.attachments = data;
+            });
         }
     }
 }).
@@ -490,6 +552,17 @@ directive('renderStudyPlan', function() {
 }).
 
 /**
+ *  Updates the title element of the page.
+ */
+directive('kiAppTitle', ['TitleService', function(TitleService) {
+    return function(scope, element, attrs) {
+        $(element).on('updatetitle', function(e, param) {
+            element.text(param);
+        });
+    };
+}]).
+
+/**
  *  Creates a human readable date from timestamp
  */
 directive('kiTimestamp', function() {
@@ -504,12 +577,14 @@ directive('kiTimestamp', function() {
 
     return function(scope, element, attrs) {
         attrs.$observe('kiTimestamp', function(value) {
-            $(element).empty();
-            value = parseInt(value);
-            var date = new Date(value);
-            element.append(date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear());
-            if (attrs.precise) {
-                element.append(' ' + padWithZero(date.getHours()) + ':' + padWithZero(date.getMinutes()));
+            if (value) {
+                $(element).empty();
+                value = parseInt(value);
+                var date = new Date(value);
+                element.append(date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear());
+                if (attrs.precise) {
+                    element.append(' ' + padWithZero(date.getHours()) + ':' + padWithZero(date.getMinutes()));
+                }
             }
         });
     }
