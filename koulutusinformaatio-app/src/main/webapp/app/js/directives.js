@@ -437,7 +437,6 @@ directive('kiAbsoluteLink', function() {
 /**
  *  Renders a text block with title. If no content exists the whole text block gets removed. 
  */
-
 directive('renderTextBlock', function() {
     return function(scope, element, attrs) {
 
@@ -464,8 +463,6 @@ directive('renderTextBlock', function() {
                         element.append(titleElement);
                     }
 
-                    // replace line feed with <br>
-                    //content = content.replace(/(\r\n|\n|\r)/g,"<br />");
                     element.append(content);
                 }
             };

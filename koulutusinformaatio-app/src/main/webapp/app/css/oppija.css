@@ -1561,9 +1561,7 @@ small, .small {
   small.cursive, .small.cursive {
     font-style: italic; }
 
-b,
-strong,
-.bold {
+b, strong, .bold {
   font-weight: bold; }
 
 .uppercase {
