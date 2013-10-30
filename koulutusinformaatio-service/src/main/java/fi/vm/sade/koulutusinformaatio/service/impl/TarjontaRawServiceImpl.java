@@ -40,6 +40,8 @@ import java.util.List;
 @Service
 public class TarjontaRawServiceImpl implements TarjontaRawService {
 
+    private static final String JSON_UTF8 = MediaType.APPLICATION_JSON + ";charset=UTF-8";
+
     private WebResource komoResource;
     private WebResource komotoResource;
     private WebResource hakuResource;
@@ -71,7 +73,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     public KomoDTO getKomo(String oid) {
         return komoResource
                 .path(oid)
-                .accept(getMediaType())
+                .accept(JSON_UTF8)
                 .get(new GenericType<KomoDTO>() {
                 });
     }
@@ -83,7 +85,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                 .path("komoto")
                 .queryParam("count", String.valueOf(count))
                 .queryParam("startIndex", String.valueOf(startIndex))
-                .accept(getMediaType())
+                .accept(JSON_UTF8)
                 .get(new GenericType<List<OidRDTO>>() {
                 });
     }
@@ -92,7 +94,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     public KomotoDTO getKomoto(String oid) {
         return komotoResource
                 .path(oid)
-                .accept(getMediaType())
+                .accept(JSON_UTF8)
                 .get(new GenericType<KomotoDTO>() {
                 });
     }
@@ -102,7 +104,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
         return komotoResource
                 .path(oid)
                 .path("hakukohde")
-                .accept(getMediaType())
+                .accept(JSON_UTF8)
                 .get(new GenericType<List<OidRDTO>>() {
                 });
     }
@@ -112,7 +114,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
         return komotoResource
                 .path(oid)
                 .path("komo")
-                .accept(getMediaType())
+                .accept(JSON_UTF8)
                 .get(new GenericType<KomoDTO>() {
                 });
 
@@ -122,7 +124,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     public HakukohdeDTO getHakukohde(String oid) {
         return hakukohdeResource
                 .path(oid)
-                .accept(getMediaType())
+                .accept(JSON_UTF8)
                 .get(new GenericType<HakukohdeDTO>() {
                 });
     }
@@ -132,7 +134,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
         return hakukohdeResource
                 .path(oid)
                 .path("haku")
-                .accept(getMediaType())
+                .accept(JSON_UTF8)
                 .get(new GenericType<HakuDTO>() {
                 });
     }
@@ -142,7 +144,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
         return hakukohdeResource
                 .path(oid)
                 .path("komoto")
-                .accept(getMediaType())
+                .accept(JSON_UTF8)
                 .get(new GenericType<List<OidRDTO>>() {
                 });
     }
@@ -151,13 +153,9 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     public HakuDTO getHaku(String oid) {
         return hakuResource
                 .path(oid)
-                .accept(getMediaType())
+                .accept(JSON_UTF8)
                 .get(new GenericType<HakuDTO>() {
                 });
-    }
-
-    private String getMediaType() {
-        return MediaType.APPLICATION_JSON + ";charset=UTF-8";
     }
 
     @Override
@@ -165,7 +163,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
         return komoResource
                 .queryParam("count", String.valueOf(count))
                 .queryParam("startIndex", String.valueOf(startIndex))
-                .accept(getMediaType())
+                .accept(JSON_UTF8)
                 .get(new GenericType<List<OidRDTO>>() {
                 });
     }
