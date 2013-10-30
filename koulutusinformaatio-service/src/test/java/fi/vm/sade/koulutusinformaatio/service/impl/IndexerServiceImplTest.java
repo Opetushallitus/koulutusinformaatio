@@ -53,6 +53,12 @@ public class IndexerServiceImplTest {
     private HttpSolrServer lopUpdateHttpSolrServer;
     @Mock
     private HttpSolrServer locationUpdateHttpSolrServer;
+    @Mock
+    private HttpSolrServer locationHttpSolrServer;
+    @Mock
+    private HttpSolrServer loHttpSolrServer;
+    @Mock
+    private HttpSolrServer lopHttpSolrServer;
 
     private IndexerServiceImpl indexerServiceImpl;
 
@@ -76,13 +82,13 @@ public class IndexerServiceImplTest {
         aoEndCal.set(Calendar.DATE, 15);
         applicationOptionApplicationPeriodEnds = aoEndCal.getTime();
         when(lopUpdateHttpSolrServer.query(any(SolrQuery.class))).thenReturn(new QueryResponse());
-        indexerServiceImpl = new IndexerServiceImpl(loUpdateHttpSolrServer, lopUpdateHttpSolrServer, locationUpdateHttpSolrServer);
+        indexerServiceImpl = new IndexerServiceImpl(loUpdateHttpSolrServer, lopUpdateHttpSolrServer, locationUpdateHttpSolrServer, loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer);
     }
 
     @Test
     public void testAddParentLOS() throws Exception {
         ParentLOS p = createParentLOS();
-        indexerServiceImpl.addParentLearningOpportunity(p);
+        indexerServiceImpl.addParentLearningOpportunity(p, loUpdateHttpSolrServer, lopUpdateHttpSolrServer);
         verify(loUpdateHttpSolrServer).add(argThat(TestUtil.isListOfTwoELements()));
         verify(lopUpdateHttpSolrServer).add(argThat(TestUtil.isListOfOneELement()));
     }
@@ -90,7 +96,7 @@ public class IndexerServiceImplTest {
     @Test
     public void testAOSpecificApplicationDates() throws Exception {
         ParentLOS p = createParentLOSWithApplicationOptionSpecificDates();
-        indexerServiceImpl.addParentLearningOpportunity(p);
+        indexerServiceImpl.addParentLearningOpportunity(p, loUpdateHttpSolrServer, lopUpdateHttpSolrServer);
         verify(loUpdateHttpSolrServer).add(argThat(new ArgumentMatcher<List<SolrInputDocument>>() {
             @Override
             public boolean matches(Object list) {
@@ -112,7 +118,7 @@ public class IndexerServiceImplTest {
 
     @Test
     public void testCommitLOChanges() throws Exception {
-        indexerServiceImpl.commitLOChanges();
+        indexerServiceImpl.commitLOChanges(loUpdateHttpSolrServer, lopUpdateHttpSolrServer, locationUpdateHttpSolrServer);
         verify(loUpdateHttpSolrServer).commit();
         verify(lopUpdateHttpSolrServer).commit();
     }

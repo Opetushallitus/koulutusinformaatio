@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.dao.transaction;
 
 import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.impl.HttpSolrServer;
 
 import java.io.IOException;
 
@@ -25,7 +26,7 @@ import java.io.IOException;
  */
 public interface TransactionManager {
 
-    void beginTransaction() throws IOException, SolrServerException;
-    void rollBack() throws IOException, SolrServerException;
-    void commit() throws IOException, SolrServerException;
+    void beginTransaction(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws IOException, SolrServerException;
+    void rollBack(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws IOException, SolrServerException;
+    void commit(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws Exception;
 }

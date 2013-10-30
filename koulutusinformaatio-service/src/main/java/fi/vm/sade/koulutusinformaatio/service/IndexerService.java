@@ -16,12 +16,15 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
-import fi.vm.sade.koulutusinformaatio.domain.Location;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
-import org.apache.solr.client.solrj.SolrServerException;
-
 import java.io.IOException;
 import java.util.List;
+
+import fi.vm.sade.koulutusinformaatio.domain.Location;
+import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
+
+import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.impl.HttpSolrServer;
+
 
 public interface IndexerService {
 
@@ -29,13 +32,23 @@ public interface IndexerService {
      * Adds an learning opportunity parent and it's children into solar.
      * The data is not committed to index.
      */
-    void addParentLearningOpportunity(ParentLOS parent) throws Exception;
-
-
-    void addLocations(List<Location> locations) throws IOException, SolrServerException;
+    void addParentLearningOpportunity(ParentLOS parent,
+			HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr) throws Exception;
 
     /**
      * Commits learning opportunities from memory to index.
+     * @param lopUpdateSolr 
+     * @param loUpdateSolr 
      */
-    void commitLOChanges() throws Exception;
+    void commitLOChanges(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws Exception;
+    
+    void addLocations(List<Location> locations, HttpSolrServer locationUpdateSolr) throws IOException, SolrServerException;
+    
+    HttpSolrServer getLoCollectionToUpdate();
+
+	HttpSolrServer getLopCollectionToUpdate(HttpSolrServer loUpdateSolr);
+
+	HttpSolrServer getLocationCollectionToUpdate(HttpSolrServer loUpdateSolr);
+    
+    
 }

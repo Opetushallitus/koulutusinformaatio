@@ -21,6 +21,9 @@ import fi.vm.sade.koulutusinformaatio.domain.Location;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.*;
+
+import org.apache.solr.client.solrj.SolrServer;
+import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +47,7 @@ public class UpdateServiceImpl implements UpdateService {
     private static final int MAX_RESULTS = 100;
     private boolean running = false;
     private LocationService locationService;
-
+    
 
     @Autowired
     public UpdateServiceImpl(TarjontaService tarjontaService, IndexerService indexerService,
@@ -60,14 +63,23 @@ public class UpdateServiceImpl implements UpdateService {
     @Override
     @Async
     public synchronized void updateAllEducationData() throws Exception {
+    	
+    	HttpSolrServer loUpdateSolr = this.indexerService.getLoCollectionToUpdate();
+        HttpSolrServer lopUpdateSolr = this.indexerService.getLopCollectionToUpdate(loUpdateSolr);
+        HttpSolrServer locationUpdateSolr = this.indexerService.getLocationCollectionToUpdate(loUpdateSolr);
+        
         try {
+        	
             LOG.info("Starting full education data update");
             running = true;
-            this.transactionManager.beginTransaction();
+                 
+            this.transactionManager.beginTransaction(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
 
+            
+            
             int count = MAX_RESULTS;
             int index = 0;
-
+            
             while(count >= MAX_RESULTS) {
                 LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
                 List<String> parentOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
@@ -83,20 +95,20 @@ public class UpdateServiceImpl implements UpdateService {
                         continue;
                     }
                     for (ParentLOS parent : parents) {
-                        this.indexerService.addParentLearningOpportunity(parent);
+                        this.indexerService.addParentLearningOpportunity(parent, loUpdateSolr, lopUpdateSolr);
                         this.educationDataUpdateService.save(parent);
                     }
                 }
-                this.indexerService.commitLOChanges();
+                this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
             }
             List<Location> locations = locationService.getMunicipalities();
-            indexerService.addLocations(locations);
-            indexerService.commitLOChanges();
-            this.transactionManager.commit();
+            indexerService.addLocations(locations, locationUpdateSolr);
+            indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+            this.transactionManager.commit(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
             LOG.info("Education data update successfully finished");
         } catch (Exception e) {
                 LOG.error("Education data update failed ", e);
-            this.transactionManager.rollBack();
+            this.transactionManager.rollBack(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
         } finally {
             running = false;
         }
