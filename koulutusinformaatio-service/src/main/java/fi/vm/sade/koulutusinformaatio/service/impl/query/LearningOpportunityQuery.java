@@ -16,9 +16,15 @@ public class LearningOpportunityQuery extends SolrQuery {
             "text_fi",
             "text_sv",
             "text_en",
+            "text_fi_whole",
+            "text_sv_whole",
+            "text_en_whole",
             "textBoost_fi^10.0",
             "textBoost_sv^10.0",
             "textBoost_en^10.0",
+            "textBoost_fi_whole^10.0",
+            "textBoost_sv_whole^10.0",
+            "textBoost_en_whole^10.0",
             "asNames",
             "lopNames"
     );
@@ -53,5 +59,6 @@ public class LearningOpportunityQuery extends SolrQuery {
         }
         this.setParam("defType", "edismax");
         this.setParam(DisMaxParams.QF, Joiner.on(" ").join(FIELDS));
+        this.setParam("q.op", "AND");
     }
 }
