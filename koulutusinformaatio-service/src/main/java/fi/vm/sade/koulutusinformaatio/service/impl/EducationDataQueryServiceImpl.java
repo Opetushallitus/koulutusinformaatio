@@ -20,10 +20,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.entity.*;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
-import fi.vm.sade.koulutusinformaatio.domain.Picture;
+import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
@@ -46,18 +43,20 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     private DataStatusDAO dataStatusDAO;
     private ModelMapper modelMapper;
     private PictureDAO pictureDAO;
+    private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO;
 
     @Autowired
     public EducationDataQueryServiceImpl(ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO,
                                          ApplicationOptionDAO applicationOptionDAO, ModelMapper modelMapper,
                                          ChildLearningOpportunityDAO childLearningOpportunityDAO,
-                                         DataStatusDAO dataStatusDAO, PictureDAO pictureDAO) {
+                                         DataStatusDAO dataStatusDAO, PictureDAO pictureDAO, UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO) {
         this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;
         this.modelMapper = modelMapper;
         this.childLearningOpportunityDAO = childLearningOpportunityDAO;
         this.dataStatusDAO = dataStatusDAO;
         this.pictureDAO = pictureDAO;
+        this.upperSecondaryLearningOpportunitySpecificationDAO = upperSecondaryLearningOpportunitySpecificationDAO;
     }
 
     @Override
@@ -128,6 +127,18 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
             return modelMapper.map(picture, Picture.class);
         } else {
             throw new ResourceNotFoundException("Picture not found: " + id);
+        }
+    }
+
+    @Override
+    public UpperSecondaryLOS getUpperSecondaryLearningOpportunity(String id) throws ResourceNotFoundException {
+        UpperSecondaryLearningOpportunitySpecificationEntity entity =
+                upperSecondaryLearningOpportunitySpecificationDAO.get(id);
+        if (entity != null) {
+            return modelMapper.map(entity, UpperSecondaryLOS.class);
+        }
+        else {
+            throw new ResourceNotFoundException(String.format("Upper secondary learning opportunity specifiaction not found: %s", id));
         }
     }
 

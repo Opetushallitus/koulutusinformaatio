@@ -89,6 +89,26 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     }
 
     @Override
+    public UpperSecondaryLearningOpportunitySpecificationDTO getUpperSecondaryLearningOpportunity(String id) throws ResourceNotFoundException {
+        UpperSecondaryLOS upperSecondaryLOS = educationDataQueryService.getUpperSecondaryLearningOpportunity(id);
+        String lang  = resolveDefaultLanguage(upperSecondaryLOS.getLois().get(0));
+        return UpperSecondaryLOSToDTO.convert(upperSecondaryLOS, lang, lang);
+    }
+
+    @Override
+    public UpperSecondaryLearningOpportunitySpecificationDTO getUpperSecondaryLearningOpportunity(String id, String uiLang) throws ResourceNotFoundException {
+        UpperSecondaryLOS upperSecondaryLOS = educationDataQueryService.getUpperSecondaryLearningOpportunity(id);
+        String lang  = resolveDefaultLanguage(upperSecondaryLOS.getLois().get(0));
+        return UpperSecondaryLOSToDTO.convert(upperSecondaryLOS, lang, uiLang);
+    }
+
+    @Override
+    public UpperSecondaryLearningOpportunitySpecificationDTO getUpperSecondaryLearningOpportunity(String id, String lang, String uiLang) throws ResourceNotFoundException {
+        UpperSecondaryLOS upperSecondaryLOS = educationDataQueryService.getUpperSecondaryLearningOpportunity(id);
+        return UpperSecondaryLOSToDTO.convert(upperSecondaryLOS, lang, uiLang);
+    }
+
+    @Override
     public List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, String lopId, String baseEducation) {
         List<ApplicationOption> applicationOptions = educationDataQueryService.findApplicationOptions(asId, lopId, baseEducation);
         return Lists.transform(applicationOptions, new Function<ApplicationOption, ApplicationOptionSearchResultDTO>() {
@@ -133,7 +153,6 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
         return modelMapper.map(pic, PictureDTO.class);
     }
 
-
     private String resolveDefaultLanguage(final ParentLOS parentLO) {
         if (parentLO.getName() == null || parentLO.getName().getTranslations() == null || parentLO.getName().getTranslations().containsKey(LANG_FI)) {
             return LANG_FI;
@@ -154,4 +173,18 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
             return childLOI.getTeachingLanguages().get(0).getValue().toLowerCase();
         }
     }
+
+    private String resolveDefaultLanguage(final UpperSecondaryLOI loi) {
+        if (loi.getTeachingLanguages() == null || loi.getTeachingLanguages().isEmpty()) {
+            return LANG_FI;
+        } else {
+            for (Code code : loi.getTeachingLanguages()) {
+                if (code.getValue().equalsIgnoreCase(LANG_FI)) {
+                    return LANG_FI;
+                }
+            }
+            return loi.getTeachingLanguages().get(0).getValue().toLowerCase();
+        }
+    }
+
 }

@@ -21,6 +21,7 @@ import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LOSearchResultListDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.UpperSecondaryLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
@@ -99,6 +100,24 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
             }
             else {
                 return learningOpportunityService.getChildLearningOpportunity(cloId, lang.toLowerCase(), uiLang.toLowerCase());
+            }
+        } catch (ResourceNotFoundException e) {
+            throw KIExceptionHandler.resolveException(e);
+        }
+    }
+
+    @Override
+    public UpperSecondaryLearningOpportunitySpecificationDTO getUpperSecondaryLearningOpportunity(
+            String id, String lang, String uiLang) {
+        try {
+            if (Strings.isNullOrEmpty(lang) && Strings.isNullOrEmpty(uiLang)) {
+                return learningOpportunityService.getUpperSecondaryLearningOpportunity(id);
+            }
+            else if (Strings.isNullOrEmpty(lang)) {
+                return learningOpportunityService.getUpperSecondaryLearningOpportunity(id, uiLang.toLowerCase());
+            }
+            else {
+                return learningOpportunityService.getUpperSecondaryLearningOpportunity(id, lang.toLowerCase(), uiLang.toLowerCase());
             }
         } catch (ResourceNotFoundException e) {
             throw KIExceptionHandler.resolveException(e);

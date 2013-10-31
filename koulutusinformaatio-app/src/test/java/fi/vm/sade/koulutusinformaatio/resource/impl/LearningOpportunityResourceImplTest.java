@@ -43,7 +43,7 @@ public class LearningOpportunityResourceImplTest {
     public void init() throws ResourceNotFoundException, SearchException {
         modelMapper = new ModelMapper();
 
-        LOSearchResult result1 = new LOSearchResult("1.2.3", "term hakutulos", "2.3.4", "oppilaitos nimi", "peruskoulu", "PK", "3.4.5", "4.5.6");
+        LOSearchResult result1 = new LOSearchResult("1.2.3", "term hakutulos", "2.3.4", "oppilaitos nimi", "peruskoulu", "PK", "3.4.5", "4.5.6", "TUTKINTO");
         LOSearchResultList resultList = new LOSearchResultList();
         resultList.setResults(Lists.newArrayList(result1));
         resultList.setTotalCount(1);

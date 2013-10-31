@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 The Finnish Board of Education - Opetushallitus
+ * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
  *
  * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
  * soon as they will be approved by the European Commission - subsequent versions
@@ -14,14 +14,18 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.koulutusinformaatio.service;
-
-import fi.vm.sade.koulutusinformaatio.domain.LOS;
+package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
 /**
- * @author Mikko Majapuro
+ * @author Hannu Lyytikainen
  */
-public interface EducationDataUpdateService {
+public class LOBuilderUtil {
 
-    void save(final LOS learningOpportunitySpecification);
+
+
+
+
+
+
+
 }

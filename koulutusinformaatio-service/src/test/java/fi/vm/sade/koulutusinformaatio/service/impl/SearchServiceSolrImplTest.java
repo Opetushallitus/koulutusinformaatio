@@ -69,6 +69,7 @@ public class SearchServiceSolrImplTest {
         lo1.put("lopId", "6.7.8.9");
         lo1.put("lopName_fi", "LOP NAME");
         lo1.put("lopName", "LOP NAME");
+        lo1.put("type", "TYPE");
         loDocs.add(lo1);
         QueryResponse loQueryResponse = mock(QueryResponse.class);
         when(loQueryResponse.getResults()).thenReturn(loDocs);

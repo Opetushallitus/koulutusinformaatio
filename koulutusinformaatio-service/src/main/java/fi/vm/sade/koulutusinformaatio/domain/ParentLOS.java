@@ -23,7 +23,7 @@ import java.util.List;
  *
  * @author Hannu Lyytikainen
  */
-public class ParentLOS {
+public class ParentLOS extends LOS {
 
     private String id;
     private I18nText name;
