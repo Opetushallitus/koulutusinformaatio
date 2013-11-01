@@ -52,7 +52,7 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
 /**
  *  Controller for search functionality 
  */
- function SearchCtrl($scope, $rootScope, $location, $routeParams, SearchLearningOpportunityService, SearchService, kiAppConstants, FilterService) {
+ function SearchCtrl($scope, $rootScope, $location, $routeParams, SearchLearningOpportunityService, SearchService, kiAppConstants, FilterService, Config) {
     var resultsPerPage = kiAppConstants.searchResultsPerPage;
     
     $rootScope.title = i18n.t('title-search-results') + ' - ' + i18n.t('sitename');

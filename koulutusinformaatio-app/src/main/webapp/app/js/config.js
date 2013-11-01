@@ -1,10 +1,18 @@
 window.Config = window.Config || {};
 
 window.Config.app = {
-	frontpageUrlFi: 'https://opintopolku.fi/wp/fi/',
-    frontpageUrlSv: 'https://opintopolku.fi/wp/sv/',
-    rekisteriselosteUrlFi: 'https://opintopolku.fi/wp/fi/rekisteriseloste/',
-    rekisteriselosteUrlSv: 'https://opintopolku.fi/wp/sv/registerbeskrivning/',
+	fi: {
+		frontpageUrl: 'https://opintopolku.fi/wp/fi/',
+		rekisteriselosteUrl: 'https://opintopolku.fi/wp/fi/rekisteriseloste/',
+		ophUrl: 'http://www.oph.fi/etusivu',
+		okmUrl: 'http://www.minedu.fi/OPM/'
+	},
+	sv: {
+		frontpageUrl: 'https://opintopolku.fi/wp/sv/',
+    	rekisteriselosteUrl: 'https://opintopolku.fi/wp/sv/registerbeskrivning/',
+    	ophUrl: 'http://www.oph.fi/startsidan',
+    	okmUrl: 'http://www.minedu.fi/OPM/?lang=sv'
+	},
     hakulomakeUrl: '/haku-app/',
     piwikUrl: 'https://analytiikka.opintopolku.fi/piwik/'
 }

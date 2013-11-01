@@ -65,6 +65,19 @@ kiApp.run(['LanguageService', function(LanguageService) {
     });
 }]);
 
+kiApp.factory('Config', function(appConfig, LanguageService) {
+    return {
+        get: function(property) {
+            var lang = LanguageService.getLanguage();
+            if (appConfig[lang][property]) {
+                return appConfig[lang][property];
+            } else {
+                return appConfig[property];
+            }
+        }
+    }
+})
+
 var OPH = OPH || {};
 
 OPH.Common = {

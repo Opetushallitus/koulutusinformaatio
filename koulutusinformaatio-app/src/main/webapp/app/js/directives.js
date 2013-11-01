@@ -552,17 +552,6 @@ directive('renderStudyPlan', function() {
 }).
 
 /**
- *  Updates the title element of the page.
- */
-directive('kiAppTitle', ['TitleService', function(TitleService) {
-    return function(scope, element, attrs) {
-        $(element).on('updatetitle', function(e, param) {
-            element.text(param);
-        });
-    };
-}]).
-
-/**
  *  Creates a human readable date from timestamp
  */
 directive('kiTimestamp', function() {
@@ -588,8 +577,6 @@ directive('kiTimestamp', function() {
             }
         });
     }
-
-
 }).
 
 /**

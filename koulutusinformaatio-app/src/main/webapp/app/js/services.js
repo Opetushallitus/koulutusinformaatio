@@ -104,7 +104,7 @@ service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', '$filter
             result.provider.encodedName = $filter('encodeURIComponent')('"' + result.provider.name + '"');
         }
 
-        var applicationSystems = [];
+        //var applicationSystems = [];
 
         for (var index in result.applicationOptions) {
             if (result.applicationOptions.hasOwnProperty(index)) {
@@ -563,27 +563,6 @@ service('TranslationService', function() {
 }).
 
 /**
- *  Service for retrieving translated values for text
- */
-service('TabService', function() {
-    var currentTab;
-
-    return {
-        setCurrentTab: function(tab) {
-            currentTab = tab;
-        },
-
-        getCurrentTab: function() {
-            if (currentTab) {
-                return currentTab;
-            } else {
-                return 'kuvaus';
-            }
-        }
-    }
-}).
-
-/**
  *  Service for maintaining application basket state
  */
 service('ApplicationBasketService', ['$http', '$q', 'LanguageService', 'UtilityService', function($http, $q, LanguageService, UtilityService) {
@@ -888,7 +867,7 @@ service('UtilityService', function() {
         },
         getStringAsArray: function(stringToArray) {
             var delimiter = ',';
-            if (stringToArray) {
+            if (stringToArray && typeof stringToArray == 'string') {
                 return stringToArray.split(delimiter);
             }
         },

@@ -1,19 +1,10 @@
 <header id="siteheader" data-ng-controller="HeaderCtrl">
     <div class="logo-bg">
         <div class="container">
-            <span data-ng-switch="lang">
-                <span data-ng-switch-when="fi">
-                    <a id="home-link" href="{{appConfig.frontpageUrlFi}}">
-                        <img src="img/opintopolkufi_large.png" alt="Opintopolku.fi"/>
-                    </a>
-                    <span data-ki-banner></span>
-                </span>
-                <span data-ng-switch-when="sv">
-                    <a id="home-link" href="{{appConfig.frontpageUrlSv}}">
-                        <img src="img/Studieinfo.png" alt="Opintopolku.fi"/>
-                    </a>
-                </span>
-            </span> 
+            <a id="home-link" href="{{links.frontpage}}">
+                <img data-ng-src="{{images.logo}}" alt="Opintopolku.fi"/>
+            </a>
+            <span data-ki-banner></span>
             <div class="actions">
                 <ul data-ng-controller="LanguageCtrl">
                     <li><a href="javascript:void(0)" data-ng-click="changeLanguage('fi')" data-ki-i18n="language-fi"></a></li>

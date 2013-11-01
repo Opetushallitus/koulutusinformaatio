@@ -1,10 +1,10 @@
 /**
  *  Controller for info views (parent and child)
  */
- function InfoCtrl($scope, $rootScope, $routeParams, $location, ParentLearningOpportunityService, ChildLearningOpportunityService, SearchService, ParentLODataService, ChildLODataService, LearningOpportunityProviderPictureService, UtilityService, TabService, appConfig) {
+ function InfoCtrl($scope, $rootScope, $routeParams, $location, ParentLearningOpportunityService, ChildLearningOpportunityService, SearchService, ParentLODataService, ChildLODataService, LearningOpportunityProviderPictureService, UtilityService, Config) {
     $scope.queryString = SearchService.getTerm();
     $scope.descriptionLanguage = 'fi';
-    $scope.appConfig = appConfig;
+    $scope.hakuAppUrl = Config.get('hakulomakeUrl');
 
     $scope.tabtitle = {
         koulutus: i18n.t('lo-description'),
