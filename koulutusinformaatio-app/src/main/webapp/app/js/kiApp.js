@@ -42,8 +42,6 @@ kiApp.constant('kiAppConstants', {
     applicationBasketLimit: 5
 });
 
-kiApp.value('appConfig', window.Config.app);
-
 kiApp.filter('escape', function() {
   return window.escape;
 });
@@ -65,6 +63,7 @@ kiApp.run(['LanguageService', function(LanguageService) {
     });
 }]);
 
+kiApp.value('appConfig', window.Config.app);
 kiApp.factory('Config', function(appConfig, LanguageService) {
     return {
         get: function(property) {

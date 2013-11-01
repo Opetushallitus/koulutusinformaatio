@@ -236,9 +236,9 @@ directive('kiRenderLanguageSelection', function() {
     }
 }).
 
-directive('kiRenderExams', ['UtilityService', function(UtilityService) {
+directive('kiRenderExams', function() {
     return {
-        restrict: 'E,A',
+        restrict: 'A',
         templateUrl: 'templates/exams.html',
         //scope: true,
         link: function(scope, element, attrs) {
@@ -248,7 +248,34 @@ directive('kiRenderExams', ['UtilityService', function(UtilityService) {
             });
         }
     }
-}]).
+}).
+
+directive('kiRenderAdditionalProof', function() {
+    return {
+        restrict: 'A',
+        templateUrl: 'templates/additionalProof.html'
+    }
+}).
+
+directive('kiRenderScores', function() {
+    return {
+        restrict: 'A',
+        template: '<p data-ng-show="scores">{{scores}}</p>',
+        scope: {
+            scoreElement: '=scoreElement',
+            typename: '=typename'
+        },
+        link: function(scope, element, attrs) {
+            if (scope.scoreElement) {
+                if (scope.scoreElement.minScore 
+                    || scope.scoreElement.maxScore
+                    || scope.scoreElement.thresholdScore) {
+                    scope.scores = i18n.t(scope.typename + '-scores', {min: scope.scoreElement.minScore, max: scope.scoreElement.maxScore, threshold: scope.scoreElement.thresholdScore});
+                }
+            }
+        }
+    }
+}).
 
 directive('kiRenderAttachments', function() {
     return {

@@ -78,7 +78,9 @@
     "elementary-graduate-selection": "Perusopetuksen päättäneiden valinta",
     "scoring": "Pisteytys",
     "entrance-exam": "Pääsykoe",
+    "exam-scores": "Pääsykokeesta voit saada __min__ – __max__ pistettä. Alin hyväksyttävä pistemäärä on __threshold__.",
     "additional-proof": "Lisänäytöt",
+    "additional-proof-scores": "Lisänäytöistä voit saada __min__ – __max__ pistettä. Alin hyväksyttävä pistemäärä on __threshold__.",
     "further-application-info": "Lisätietoa hakemisesta",
     "info-center": "Hakuneuvonta",
 
