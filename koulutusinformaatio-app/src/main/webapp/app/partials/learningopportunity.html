@@ -1,0 +1,21 @@
+<section class="content-container grid16-16">
+    <div data-ki-breadcrumb="breadcrumb-search-results" id="breadcrumb"></div>
+    <div data-ng-include data-src="'partials/' + loType + '/top.html'"></div>
+    <div data-tabset>
+        <div data-tab data-heading="{{tabtitle.koulutus}}">
+            <section>
+                <div data-ng-include data-src="'partials/' + loType + '/kuvaus.html'"></div>
+            </section>
+        </div>
+        <div data-tab data-heading="{{tabtitle.valintaperusteet}}">
+            <section>
+                <div data-ng-include data-src="'partials/common/hakeutuminen.html'"></div>
+            </section>
+        </div>
+        <div data-tab data-heading="{{parentLO.provider.name}}" class="fluid">
+            <section>
+                <div data-ng-include data-src="'partials/common/oppilaitos.html'"></div>
+            </section>
+        </div>
+    </div>
+</section>

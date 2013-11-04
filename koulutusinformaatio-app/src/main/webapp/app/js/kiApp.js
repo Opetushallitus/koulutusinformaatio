@@ -9,10 +9,11 @@ kiApp.config(['$routeProvider', '$analyticsProvider', function($routeProvider, $
     $analyticsProvider.firstPageview(false);
 
     $routeProvider.when('/haku/:queryString', {
-    	templateUrl: 'partials/hakutulokset.html', 
+    	templateUrl: 'partials/search/searchresults.html', 
     	controller: SearchCtrl
     });
     
+    /*
     $routeProvider.when('/tutkinto/:parentId', {
     	templateUrl: 'partials/ylataso.html', 
     	controller: InfoCtrl,
@@ -24,7 +25,14 @@ kiApp.config(['$routeProvider', '$analyticsProvider', function($routeProvider, $
     	controller: InfoCtrl,
         reloadOnSearch: false
     });
+    */
     
+    $routeProvider.when('/:loType/:id', {
+        templateUrl: 'partials/learningopportunity.html', 
+        controller: InfoCtrl,
+        reloadOnSearch: false
+    });
+
     $routeProvider.when('/muistilista', {
         templateUrl: 'partials/applicationbasket/applicationbasket.html',
         controller: ApplicationBasketCtrl

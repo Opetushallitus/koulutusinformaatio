@@ -2,9 +2,12 @@
  *  Controller for info views (parent and child)
  */
  function InfoCtrl($scope, $rootScope, $routeParams, $location, ParentLearningOpportunityService, ChildLearningOpportunityService, SearchService, ParentLODataService, ChildLODataService, LearningOpportunityProviderPictureService, UtilityService, Config) {
+    $scope.loType = $routeParams.loType;
+
     $scope.queryString = SearchService.getTerm();
     $scope.descriptionLanguage = 'fi';
     $scope.hakuAppUrl = Config.get('hakulomakeUrl');
+
 
     $scope.tabtitle = {
         koulutus: i18n.t('lo-description'),
@@ -21,7 +24,8 @@
     };
 
     var isChild = function() {
-        return $routeParams.childId ? true : false;
+        //return $routeParams.childId ? true : false;
+        return $routeParams.loType == 'koulutusohjelma' || 'lukio' ? true : false;
     };
 
     var getFirstLOI = function() {
@@ -184,9 +188,9 @@
     // TODO: could this logic be hidden in service?
     var initView = function() {
         if (isChild()) {
-            if (!ChildLODataService.dataExists($routeParams.childId)) {
+            if (!ChildLODataService.dataExists($routeParams.id)) {
                 ChildLearningOpportunityService.query({
-                    childId: $routeParams.childId
+                    childId: $routeParams.id
                 }).then(childLOSuccess, loError);
             } else {
                 $scope.childLO = ChildLODataService.getChildLOData();
@@ -195,9 +199,9 @@
                 initializeParent();
             }
         } else {
-            if (!ParentLODataService.dataExists($routeParams.parentId)) {
+            if (!ParentLODataService.dataExists($routeParams.id)) {
                 ParentLearningOpportunityService.query({
-                    parentId: $routeParams.parentId
+                    parentId: $routeParams.id
                 }).then(parentLOSuccess, loError);
             } else {
                 $scope.parentLO = ParentLODataService.getParentLOData();
@@ -240,7 +244,7 @@
     // change description language and re-load LO data with the specified language
     $scope.changeDescriptionLanguage = function(languageCode) {
         $scope.descriptionLanguage = languageCode;
-        var parentId = isChild() ? $scope.childLO.parent.id : $routeParams.parentId;
+        var parentId = isChild() ? $scope.childLO.parent.id : $routeParams.id;
 
         // parent data has to be updated every time since child views contain parent data too
         ParentLearningOpportunityService.query({
@@ -249,7 +253,7 @@
                 $scope.parentLO = result;
                 if (isChild()) {
                     ChildLearningOpportunityService.query({
-                        childId: $routeParams.childId,
+                        childId: $routeParams.id,
                         language: $scope.descriptionLanguage}).then(function(result) {
                             $scope.childLO = result;
                             $scope.lois = result.lois;

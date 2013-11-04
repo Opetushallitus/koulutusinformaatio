@@ -22,10 +22,10 @@
         <div data-ng-repeat="as in selectedLOI.applicationSystems" class="application-system">
             <div data-ng-switch="as.aoSpecificApplicationDates">
                 <div data-ng-switch-when="true">
-                    <div data-ng-include data-src="'partials/tabs/haku_lisahaku.html'"></div>
+                    <div data-ng-include data-src="'partials/common/haku_lisahaku.html'"></div>
                 </div>
                 <div data-ng-switch-default>
-                    <div data-ng-include data-src="'partials/tabs/haku_yhteishaku.html'"></div>
+                    <div data-ng-include data-src="'partials/common/haku_yhteishaku.html'"></div>
                 </div>
             </div>
         </div>
