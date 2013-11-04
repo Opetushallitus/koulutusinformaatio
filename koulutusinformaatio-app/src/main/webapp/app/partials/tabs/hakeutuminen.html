@@ -1,6 +1,19 @@
 <section class="grid16-9 offset-right-16-1 no-left-gutter wide-column">
     <div data-ki-prerequisite-selection-ribbon></div>
-    <div data-ng-include data-src="'partials/tabs/subtabs/hakeutuminen.html'" onload="initTabs()"></div>
+    <div data-ki-language-ribbon class="ribbon"></div>
+	<div data-ng-repeat="as in selectedLOI.applicationSystems">
+		<div data-ng-repeat="ao in as.applicationOptions">
+			<h2>{{ao.name}}</h2>
+			<div data-render-text-block data-content="{{ao.selectionCriteria}}"></div>
+			<div data-ki-render-emphasized-subjects></div>
+			<div data-ki-render-average-limit></div>
+			<div data-ki-render-exams></div>
+			<div data-ki-render-additional-proof></div>
+			<div data-ki-render-attachments></div>
+			<div data-render-text-block data-title="further-application-info" data-content="{{ao.additionalInfo}}"></div>
+		</div>
+	</div>
+	<div data-ki-render-info-center-address></div>
 </section>
 <div data-ng-class="applyFormClass" data-ng-include data-src="'partials/tabs/haku.html'" data-ng-controller="ApplicationCtrl"></div>
 <div class="clear"></div>
