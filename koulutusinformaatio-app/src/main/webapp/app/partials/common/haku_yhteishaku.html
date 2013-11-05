@@ -10,16 +10,7 @@
 
 <h4 class="title"><span data-ki-i18n="application-options"></span> ({{as.applicationOptions.length}})</h4>
 <div data-ng-repeat="ao in as.applicationOptions" class="content">
-    <ul class="nobullet">
-        <li><h2 class="margin-bottom-0 margin-top-0">{{ao.name}}</h2></li>
-        <li class="small"><span data-ki-i18n="starting-quota" data-show-colon="true" class="margin-right-1"></span><span>{{ao.startingQuota}}</span></li>
-        <ul class="disc">
-            <li data-ng-repeat="child in ao.childRefs">
-                <a href="#/koulutusohjelma/{{child.losId}}#{{prerequisite.value}}">{{child.name}}</a>
-            </li>
-        </ul>
-    </ul>
-
+    <div data-ng-include data-src="'partials/' + loType + '/ao_yh.html'"></div>
     <form name="levelSelectionForm-{{$id}}" id="application-form-{{as.id}}-{{$id}}" action="{{hakuAppUrl}}lomake/{{as.id}}" method="POST" class="margin-top-2" target="hakulomake">
        <input 
        type="hidden" 

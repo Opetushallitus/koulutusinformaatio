@@ -476,7 +476,6 @@ directive('kiAbsoluteLink', function() {
         restrict: 'E,A',
         templateUrl: 'templates/breadcrumb.html',
         link: function(scope, element, attrs) {
-            console.log(scope.loType);
             var home = 'home';
             var root = i18n.t('breadcrumb-search-results');
             var parent;
@@ -502,7 +501,7 @@ directive('kiAbsoluteLink', function() {
                 pushItem({name: home, linkHref: Config.get('frontpageUrl') });
                 pushItem({name: root, linkHref: '#/haku/' + SearchService.getTerm() + '?' + FilterService.getParams() });
 
-                if (scope.parentLO) {
+                if (scope.parentLO && scope.loType != 'lukio') { // TODO: do not compare to loType
                     pushItem({name: parent, linkHref: '#/tutkinto/' + scope.parentLO.id });
                 }
 
