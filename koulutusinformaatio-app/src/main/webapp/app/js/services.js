@@ -2,25 +2,7 @@
 
 angular.module('kiApp.services', ['ngResource']).
 
-service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analytics', 'FilterService', function($http, $timeout, $q, $analytics, FilterService) {
-    var transformData = function(result) {
-        for (var index in result.results) {
-            if (result.results.hasOwnProperty(index)) {
-                var resItem = result.results[index];
-                if (resItem.parentId) {
-                    resItem.linkHref = '#/koulutusohjelma/' + resItem.id;
-                } else {
-                    resItem.linkHref = '#/tutkinto/' + resItem.id;
-                }
-
-                var prerequisite = resItem.prerequisiteCode || FilterService.getPrerequisite();
-                if (prerequisite) {
-                    resItem.linkHref += '#' + prerequisite;
-                }
-            }
-        }
-    };
-
+service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analytics', function($http, $timeout, $q, $analytics) {
     return {
         query: function(params) {
             var deferred = $q.defer();
@@ -55,7 +37,7 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
                     category = false;
                 }
                 $analytics.siteSearchTrack(params.queryString, category, result.totalCount);
-                transformData(result);
+                //transformData(result);
                 deferred.resolve(result);
             }).
             error(function(result) {
@@ -830,7 +812,11 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', fu
         },
 
         getPage: function() {
-            return filters.page ? filters.page : 1;
+            if (filters.page) {
+                return typeof filters.page === 'string' ? parseInt(filters.page) : filters.page;
+            } else {
+                return 1;
+            }
         },
 
         getLocationCodes: getLocationCodes,
