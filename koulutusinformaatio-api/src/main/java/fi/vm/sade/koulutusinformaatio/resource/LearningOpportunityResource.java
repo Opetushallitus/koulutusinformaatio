@@ -19,6 +19,7 @@ package fi.vm.sade.koulutusinformaatio.resource;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LOSearchResultListDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.UpperSecondaryLearningOpportunitySpecificationDTO;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -84,5 +85,18 @@ public interface LearningOpportunityResource {
     public ChildLearningOpportunitySpecificationDTO getChildLearningOpportunity(@PathParam("cloId") String cloId,
                                                                                 @QueryParam("lang") String lang,
                                                                                 @QueryParam("uiLang") String uiLang);
-
+    /**
+     * Fetches an upper secondary (lukio) learning opportunity
+     *
+     * @param id learning opportunity identifier
+     * @param lang language
+     * @param uiLang user interface language
+     * @return upper secondary learning opportunity
+     */
+    @GET
+    @Path("upsec/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public UpperSecondaryLearningOpportunitySpecificationDTO getUpperSecondaryLearningOpportunity(@PathParam("id") String id,
+                                                                                                  @QueryParam("lang") String lang,
+                                                                                                  @QueryParam("uiLang") String uiLang);
 }

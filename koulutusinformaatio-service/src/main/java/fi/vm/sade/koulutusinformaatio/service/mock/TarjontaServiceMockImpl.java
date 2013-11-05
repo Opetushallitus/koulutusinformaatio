@@ -41,7 +41,7 @@ public class TarjontaServiceMockImpl implements TarjontaService {
     private static final String PROVIDER_ID = "1111111.2222222.3333333.4444444.5555555";
 
     @Override
-    public List<ParentLOS> findParentLearningOpportunity(String oid) throws TarjontaParseException, KoodistoException {
+    public List<LOS> findParentLearningOpportunity(String oid) throws TarjontaParseException, KoodistoException {
 
         Provider provider = createProvider();
         ApplicationSystem as = createApplicationSystem(APPLICATION_SYSTEM_ID);
@@ -66,7 +66,7 @@ public class TarjontaServiceMockImpl implements TarjontaService {
         ParentLOI parentLOI2 = createParentLOI(PARENT_LOI_ID_2, Lists.newArrayList(childLOIRef2), Sets.newHashSet(ao2));
         ParentLOS parent2 = createParentLOS(PARENT_LOI_ID_2, parent2Name, Lists.newArrayList(parentLOI2), provider, Lists.newArrayList(childLOS2));
 
-        return Lists.newArrayList(parent1, parent2);
+        return new ArrayList<LOS>(Lists.newArrayList(parent1, parent2));
     }
 
     @Override

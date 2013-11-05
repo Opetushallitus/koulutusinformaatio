@@ -16,10 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
-import fi.vm.sade.koulutusinformaatio.domain.Picture;
+import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 
@@ -61,4 +58,13 @@ public interface EducationDataQueryService {
     Date getLastUpdated();
 
     Picture getPicture(final String id) throws ResourceNotFoundException;
+
+    /**
+     * Retrieves an upper secondary learning opportunity specification.
+     *
+     * @param id los id
+     * @return upper secondary los
+     * @throws ResourceNotFoundException
+     */
+    UpperSecondaryLOS getUpperSecondaryLearningOpportunity(final String id) throws ResourceNotFoundException;
 }

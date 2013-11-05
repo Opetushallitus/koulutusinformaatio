@@ -59,6 +59,11 @@ public class ApplicationOption {
     private boolean specificApplicationDates;
     private Date applicationStartDate;
     private Date applicationEndDate;
+    private List<ApplicationOptionAttachment> attachments;
+    private List<EmphasizedSubject> emphasizedSubjects;
+    private I18nText additionalInfo;
+    private I18nText additionalProof;
+
 
     public String getId() {
         return id;
@@ -242,6 +247,38 @@ public class ApplicationOption {
 
     public void setApplicationEndDate(Date applicationEndDate) {
         this.applicationEndDate = applicationEndDate;
+    }
+
+    public List<ApplicationOptionAttachment> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(List<ApplicationOptionAttachment> attachments) {
+        this.attachments = attachments;
+    }
+
+    public List<EmphasizedSubject> getEmphasizedSubjects() {
+        return emphasizedSubjects;
+    }
+
+    public void setEmphasizedSubjects(List<EmphasizedSubject> emphasizedSubjects) {
+        this.emphasizedSubjects = emphasizedSubjects;
+    }
+
+    public I18nText getAdditionalInfo() {
+        return additionalInfo;
+    }
+
+    public void setAdditionalInfo(I18nText additionalInfo) {
+        this.additionalInfo = additionalInfo;
+    }
+
+    public I18nText getAdditionalProof() {
+        return additionalProof;
+    }
+
+    public void setAdditionalProof(I18nText additionalProof) {
+        this.additionalProof = additionalProof;
     }
 
     @Override

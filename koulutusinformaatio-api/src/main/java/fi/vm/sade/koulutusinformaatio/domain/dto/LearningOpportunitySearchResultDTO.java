@@ -38,6 +38,7 @@ public class LearningOpportunitySearchResultDTO {
     private String losId;
     private boolean asOngoing;
     private Date nextApplicationPeriodStarts;
+    private String type;
 
     public String getId() {
         return id;
@@ -117,5 +118,13 @@ public class LearningOpportunitySearchResultDTO {
 
     public void setNextApplicationPeriodStarts(Date nextApplicationPeriodStarts) {
         this.nextApplicationPeriodStarts = nextApplicationPeriodStarts;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

@@ -16,12 +16,11 @@
 
 package fi.vm.sade.koulutusinformaatio.dao.transaction.impl;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import org.apache.solr.client.solrj.SolrServerException;
+import com.mongodb.BasicDBObject;
+import com.mongodb.MongoClient;
+import fi.vm.sade.koulutusinformaatio.dao.*;
+import fi.vm.sade.koulutusinformaatio.dao.entity.DataStatusEntity;
+import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.request.CoreAdminRequest;
 import org.apache.solr.common.params.CoreAdminParams;
@@ -30,17 +29,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.MongoClient;
-
-import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
-import fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityDAO;
-import fi.vm.sade.koulutusinformaatio.dao.DataStatusDAO;
-import fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO;
-import fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecificationDAO;
-import fi.vm.sade.koulutusinformaatio.dao.PictureDAO;
-import fi.vm.sade.koulutusinformaatio.dao.entity.DataStatusEntity;
-import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * @author Mikko Majapuro
@@ -68,6 +58,7 @@ public class TransactionManagerImpl implements TransactionManager {
     private LearningOpportunityProviderDAO learningOpportunityProviderTransactionDAO;
     private ChildLearningOpportunityDAO childLOTransactionDAO;
     private PictureDAO pictureTransactionDAO;
+    private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO;
 
     private ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO;
     private ApplicationOptionDAO applicationOptionDAO;
@@ -75,6 +66,7 @@ public class TransactionManagerImpl implements TransactionManager {
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
     private DataStatusDAO dataStatusDAO;
     private PictureDAO pictureDAO;
+    private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO;
     
     
     @Value("${solr.learningopportunity.alias.url:learning_opportunity}")
@@ -107,12 +99,14 @@ public class TransactionManagerImpl implements TransactionManager {
                                   LearningOpportunityProviderDAO learningOpportunityProviderTransactionDAO,
                                   ChildLearningOpportunityDAO childLOTransactionDAO,
                                   PictureDAO pictureTransactionDAO,
+                                  UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO,
                                   ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO,
                                   ApplicationOptionDAO applicationOptionDAO,
                                   ChildLearningOpportunityDAO childLearningOpportunityDAO,
                                   LearningOpportunityProviderDAO learningOpportunityProviderDAO,
                                   DataStatusDAO dataStatusDAO,
-                                  PictureDAO pictureDAO) {
+                                  PictureDAO pictureDAO,
+                                  UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO) {
 
         this.mongo = mongo;
         this.transactionDbName = transactionDbName;
@@ -134,12 +128,14 @@ public class TransactionManagerImpl implements TransactionManager {
         this.learningOpportunityProviderTransactionDAO = learningOpportunityProviderTransactionDAO;
         this.childLOTransactionDAO = childLOTransactionDAO;
         this.pictureTransactionDAO = pictureTransactionDAO;
+        this.upperSecondaryLOSTransactionDAO = upperSecondaryLOSTransactionDAO;
         this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;
         this.childLearningOpportunityDAO = childLearningOpportunityDAO;
         this.learningOpportunityProviderDAO = learningOpportunityProviderDAO;
         this.dataStatusDAO = dataStatusDAO;
         this.pictureDAO = pictureDAO;
+        this.upperSecondaryLearningOpportunitySpecificationDAO = upperSecondaryLearningOpportunitySpecificationDAO;
     }
 
     @Override
@@ -202,6 +198,7 @@ public class TransactionManagerImpl implements TransactionManager {
         learningOpportunityProviderTransactionDAO.getCollection().drop();
         childLOTransactionDAO.getCollection().drop();
         pictureTransactionDAO.getCollection().drop();
+        upperSecondaryLOSTransactionDAO.getCollection().drop();
     }
 
     private void dropDbCollections() {
@@ -211,6 +208,7 @@ public class TransactionManagerImpl implements TransactionManager {
         dataStatusDAO.getCollection().drop();
         pictureDAO.getCollection().drop();
         learningOpportunityProviderDAO.getCollection().drop();
+        upperSecondaryLearningOpportunitySpecificationDAO.getCollection().drop();
     }
 
     private CoreAdminRequest getCoreSwapRequest(final String fromCore, final String toCore) {

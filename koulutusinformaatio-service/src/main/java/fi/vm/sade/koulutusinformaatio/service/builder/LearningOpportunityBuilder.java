@@ -16,21 +16,27 @@
 
 package fi.vm.sade.koulutusinformaatio.service.builder;
 
-import fi.vm.sade.koulutusinformaatio.domain.*;
+import com.google.common.base.Joiner;
+import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
+import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
+import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
+import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
+import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
+import fi.vm.sade.tarjonta.shared.types.TarjontaTila;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.WebApplicationException;
-import java.util.*;
+import java.util.List;
 
 /**
  * Builds learning opportunity instances.
  *
  * @author Hannu Lyytikainen
  */
-public interface LearningOpportunityBuilder {
+public abstract class LearningOpportunityBuilder<T extends LOS> {
 
     public static final Logger LOG = LoggerFactory.getLogger(LearningOpportunityBuilder.class);
 
@@ -39,10 +45,61 @@ public interface LearningOpportunityBuilder {
     public static final String STATE_PUBLISHED = "JULKAISTU";
     public static final String BASE_EDUCATION_KOODISTO_URI = "pohjakoulutustoinenaste";
 
-    public LearningOpportunityBuilder resolveParentLOSs() throws TarjontaParseException, KoodistoException, WebApplicationException;
-    public LearningOpportunityBuilder resolveChildLOSs() throws TarjontaParseException, KoodistoException, WebApplicationException;
-    public LearningOpportunityBuilder reassemble() throws TarjontaParseException, KoodistoException, WebApplicationException;
-    public LearningOpportunityBuilder filter();
-    public List<ParentLOS> build();
 
+
+
+
+
+    protected String resolveLOSId(String komoId, String providerId) {
+        return Joiner.on("_").join(komoId, providerId);
+    }
+
+    protected void validateParentKomo(KomoDTO komo) throws TarjontaParseException {
+        // parent check
+        if (!komo.getModuuliTyyppi().equals(LearningOpportunityBuilder.MODULE_TYPE_PARENT)) {
+            throw new TarjontaParseException("Komo not of type " + LearningOpportunityBuilder.MODULE_TYPE_PARENT);
+        }
+
+        // published
+        if (!komo.getTila().equals(TarjontaTila.JULKAISTU)) {
+            throw new TarjontaParseException("Parent komo state not " + TarjontaTila.JULKAISTU.toString());
+        }
+    }
+
+    protected void validateChildKomo(KomoDTO komo) throws TarjontaParseException {
+        if (!komo.getTila().equals(TarjontaTila.JULKAISTU)) {
+            throw new TarjontaParseException("Child komo " + komo.getOid() + " not in state " + TarjontaTila.JULKAISTU.toString());
+        }
+        if (komo.getKoulutusOhjelmaKoodiUri() == null) {
+            throw new TarjontaParseException("Child KomoDTO koulutusOhjelmaKoodiUri (name) is null");
+        }
+        if (komo.getTutkintonimikeUri() == null) {
+            throw new TarjontaParseException("Child KomoDTO tutkinto nimike uri is null");
+        }
+    }
+
+    protected void validateChildKomoto(KomotoDTO komoto) throws TarjontaParseException {
+        if (!komoto.getTila().equals(TarjontaTila.JULKAISTU)) {
+            throw new TarjontaParseException("Child komoto " + komoto.getOid() + " not in state " + TarjontaTila.JULKAISTU.toString());
+        }
+
+    }
+
+    protected void validateHakukohde(HakukohdeDTO hakukohde) throws TarjontaParseException {
+        if (!hakukohde.getTila().equals(LearningOpportunityBuilder.STATE_PUBLISHED)) {
+            throw new TarjontaParseException("Application option " + hakukohde.getOid() + " not in state " + LearningOpportunityBuilder.STATE_PUBLISHED);
+        }
+    }
+
+    protected void validateHaku(HakuDTO haku) throws TarjontaParseException {
+        if (!haku.getTila().equals(LearningOpportunityBuilder.STATE_PUBLISHED)) {
+            throw new TarjontaParseException("Application system " + haku.getOid() + " not in state " + LearningOpportunityBuilder.STATE_PUBLISHED);
+        }
+    }
+
+    public abstract LearningOpportunityBuilder resolveParentLOSs() throws TarjontaParseException, KoodistoException, WebApplicationException;
+    public abstract LearningOpportunityBuilder resolveChildLOSs() throws TarjontaParseException, KoodistoException, WebApplicationException;
+    public abstract LearningOpportunityBuilder reassemble() throws TarjontaParseException, KoodistoException, WebApplicationException;
+    public abstract LearningOpportunityBuilder filter();
+    public abstract List<T> build();
 }

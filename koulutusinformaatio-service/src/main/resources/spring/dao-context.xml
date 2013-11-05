@@ -89,4 +89,15 @@
         </constructor-arg>
         <constructor-arg value="${mongo.db.name}"/>
     </bean>
+
+    <bean id="upperSecondaryLearningOpportunitySpecificationDAO" class="fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO">
+        <constructor-arg>
+            <ref bean="mongo"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="morphia"/>
+        </constructor-arg>
+        <constructor-arg value="${mongo.db.name}"/>
+    </bean>
+
 </beans>

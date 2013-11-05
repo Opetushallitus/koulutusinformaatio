@@ -16,8 +16,12 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.domain.ContactPerson;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ContactPersonDTO;
+
+import java.util.List;
 
 /**
  * @author Mikko Majapuro
@@ -36,5 +40,14 @@ public class ContactPersonToDTO {
             cp.setTitle(contactPerson.getTitle());
             return cp;
         }
+    }
+
+    public static List<ContactPersonDTO> convertAll(List<ContactPerson> contactPersonList) {
+        return Lists.transform(contactPersonList, new Function<ContactPerson, ContactPersonDTO>() {
+            @Override
+            public ContactPersonDTO apply(ContactPerson contactPerson) {
+                return convert(contactPerson);
+            }
+        });
     }
 }

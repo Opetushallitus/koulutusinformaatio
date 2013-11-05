@@ -18,7 +18,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
+import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
@@ -27,7 +27,9 @@ import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.koulutusinformaatio.service.builder.LearningOpportunityBuilder;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.LearningOpportunityDirector;
+import fi.vm.sade.koulutusinformaatio.service.builder.impl.UpperSecondaryLearningOpportunityBuilder;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.VocationalLearningOpportunityBuilder;
+import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
@@ -43,6 +45,9 @@ import java.util.List;
 @Service
 @Profile("default")
 public class TarjontaServiceImpl implements TarjontaService {
+
+    private static final String VOCATIONAL_EDUCATION_TYPE = "AmmatillinenPeruskoulutus";
+    private static final String UPPER_SECONDARY_EDUCATION_TYPE = "Lukiokoulutus";
 
     private ConversionService conversionService;
     private KoodistoService koodistoService;
@@ -65,11 +70,10 @@ public class TarjontaServiceImpl implements TarjontaService {
     }
 
     @Override
-    public List<ParentLOS> findParentLearningOpportunity(String oid) throws TarjontaParseException {
+    public List<LOS> findParentLearningOpportunity(String oid) throws TarjontaParseException {
         try {
-            LearningOpportunityBuilder builder = new VocationalLearningOpportunityBuilder(
-                    tarjontaRawService, providerService, koodistoService, oid);
-
+            KomoDTO komo = tarjontaRawService.getKomo(oid);
+            LearningOpportunityBuilder builder = resolveBuilder(komo);
             return loDirector.constructLearningOpportunities(builder);
 
         } catch (KoodistoException e) {
@@ -79,6 +83,24 @@ public class TarjontaServiceImpl implements TarjontaService {
             throw new TarjontaParseException("An error occurred while building parent LOS " + oid
                     + " accessing remote resource: HTTP response code: "
                     + e.getResponse().getStatus() + ",  error message: " + e.getMessage());
+        }
+    }
+
+    private LearningOpportunityBuilder resolveBuilder(KomoDTO komo) throws KoodistoException, TarjontaParseException {
+        String educationType = komo.getKoulutusTyyppiUri();
+        if (educationType.equals(VOCATIONAL_EDUCATION_TYPE) &&
+                komo.getModuuliTyyppi().equals(LearningOpportunityBuilder.MODULE_TYPE_PARENT)) {
+            return new VocationalLearningOpportunityBuilder(
+                    tarjontaRawService, providerService, koodistoService, komo);
+        }
+        else if (educationType.equals(UPPER_SECONDARY_EDUCATION_TYPE) &&
+                komo.getModuuliTyyppi().equals(LearningOpportunityBuilder.MODULE_TYPE_CHILD)) {
+            return new UpperSecondaryLearningOpportunityBuilder(
+                    tarjontaRawService, providerService, koodistoService, komo);
+        }
+        else {
+            throw new TarjontaParseException(String.format("Unknown education degree %s and module type %s incompatible",
+                    educationType, komo.getModuuliTyyppi()));
         }
     }
 

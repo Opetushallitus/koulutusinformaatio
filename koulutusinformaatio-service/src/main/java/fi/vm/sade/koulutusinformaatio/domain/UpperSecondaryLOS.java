@@ -19,31 +19,19 @@ package fi.vm.sade.koulutusinformaatio.domain;
 import java.util.List;
 
 /**
- * Child level learning opportunity.
- *
  * @author Hannu Lyytikainen
  */
-public class ChildLOS extends LOS {
+public class UpperSecondaryLOS extends LOS {
 
     private String id;
     private I18nText name;
-    // koulutusohjelma
     private I18nText degreeTitle;
-    //tutkintonimike
     private I18nText qualification;
-    //tavoite
     private I18nText goals;
-    private ParentLOSRef parent;
-    private List<ChildLOI> lois;
-
-    public ChildLOS(String id, I18nText name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public ChildLOS() {
-
-    }
+    private List<UpperSecondaryLOI> lois;
+    private Provider provider;
+    private I18nText structure;
+    private I18nText accessToFurtherStudies;
 
     public String getId() {
         return id;
@@ -61,20 +49,20 @@ public class ChildLOS extends LOS {
         this.name = name;
     }
 
-    public I18nText getQualification() {
-        return qualification;
-    }
-
-    public void setQualification(I18nText qualification) {
-        this.qualification = qualification;
-    }
-
     public I18nText getDegreeTitle() {
         return degreeTitle;
     }
 
     public void setDegreeTitle(I18nText degreeTitle) {
         this.degreeTitle = degreeTitle;
+    }
+
+    public I18nText getQualification() {
+        return qualification;
+    }
+
+    public void setQualification(I18nText qualification) {
+        this.qualification = qualification;
     }
 
     public I18nText getGoals() {
@@ -85,19 +73,35 @@ public class ChildLOS extends LOS {
         this.goals = goals;
     }
 
-    public ParentLOSRef getParent() {
-        return parent;
-    }
-
-    public void setParent(ParentLOSRef parent) {
-        this.parent = parent;
-    }
-
-    public List<ChildLOI> getLois() {
+    public List<UpperSecondaryLOI> getLois() {
         return lois;
     }
 
-    public void setLois(List<ChildLOI> lois) {
+    public void setLois(List<UpperSecondaryLOI> lois) {
         this.lois = lois;
+    }
+
+    public Provider getProvider() {
+        return provider;
+    }
+
+    public void setProvider(Provider provider) {
+        this.provider = provider;
+    }
+
+    public I18nText getStructure() {
+        return structure;
+    }
+
+    public void setStructure(I18nText structure) {
+        this.structure = structure;
+    }
+
+    public I18nText getAccessToFurtherStudies() {
+        return accessToFurtherStudies;
+    }
+
+    public void setAccessToFurtherStudies(I18nText accessToFurtherStudies) {
+        this.accessToFurtherStudies = accessToFurtherStudies;
     }
 }

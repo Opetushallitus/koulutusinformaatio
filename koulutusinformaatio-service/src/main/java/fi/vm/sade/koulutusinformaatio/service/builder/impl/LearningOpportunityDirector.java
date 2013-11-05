@@ -16,7 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
+import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.builder.LearningOpportunityBuilder;
@@ -30,8 +30,12 @@ import java.util.List;
 @Component
 public class LearningOpportunityDirector {
 
-    public List<ParentLOS> constructLearningOpportunities(LearningOpportunityBuilder builder) throws TarjontaParseException, KoodistoException {
+    public List<LOS> constructLearningOpportunities(LearningOpportunityBuilder builder) throws TarjontaParseException, KoodistoException {
         return builder.resolveParentLOSs().resolveChildLOSs().reassemble().filter().build();
+    }
+
+    public List<LOS> constructUpperSecondaryLearningOpportunities(LearningOpportunityBuilder builder) {
+        return null;
     }
 
 }
