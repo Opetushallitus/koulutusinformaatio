@@ -58,6 +58,20 @@ public class ApplicationOptionToDTO {
                     ao.setNextApplicationPeriodStarts(applicationOption.getApplicationStartDate());
                 }
             }
+
+            if (applicationOption.getAttachments() != null) {
+                ao.setAttachments(ApplicationOptionAttachmentToDTO.convertAll(applicationOption.getAttachments(), uiLang));
+            }
+            if (applicationOption.getEmphasizedSubjects() != null) {
+                ao.setEmphasizedSubjects(EmphasizedSubjectToDTO.convertAll(applicationOption.getEmphasizedSubjects(), uiLang));
+            }
+            if (applicationOption.getAdditionalInfo() != null) {
+                ao.setAdditionalInfo(ConverterUtil.getTextByLanguage(applicationOption.getAdditionalInfo(), uiLang));
+            }
+            if (applicationOption.getAdditionalProof() != null) {
+                ao.setAdditionalProof(ConverterUtil.getTextByLanguage(applicationOption.getAdditionalProof(), lang));
+            }
+
             return ao;
         }
         return null;

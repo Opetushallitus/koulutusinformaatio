@@ -30,6 +30,7 @@ public class UpperSecondaryLOSToDTO {
                 new UpperSecondaryLearningOpportunitySpecificationDTO();
         dto.setId(los.getId());
         dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(los.getName(), lang));
+        dto.setEducationDegree(los.getEducationDegree());
         dto.setDegreeTitle(ConverterUtil.getTextByLanguageUseFallbackLang(los.getDegreeTitle(), lang));
         dto.setQualification(ConverterUtil.getTextByLanguageUseFallbackLang(los.getQualification(), lang));
         dto.setGoals(ConverterUtil.getTextByLanguage(los.getGoals(), lang));

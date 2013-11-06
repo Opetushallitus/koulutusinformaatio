@@ -25,6 +25,7 @@ public class UpperSecondaryLOS extends LOS {
 
     private String id;
     private I18nText name;
+    private String educationDegree;
     private I18nText degreeTitle;
     private I18nText qualification;
     private I18nText goals;
@@ -47,6 +48,14 @@ public class UpperSecondaryLOS extends LOS {
 
     public void setName(I18nText name) {
         this.name = name;
+    }
+
+    public String getEducationDegree() {
+        return educationDegree;
+    }
+
+    public void setEducationDegree(String educationDegree) {
+        this.educationDegree = educationDegree;
     }
 
     public I18nText getDegreeTitle() {

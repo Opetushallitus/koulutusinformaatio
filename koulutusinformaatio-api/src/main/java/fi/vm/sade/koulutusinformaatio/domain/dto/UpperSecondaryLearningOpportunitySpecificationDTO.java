@@ -30,6 +30,7 @@ public class UpperSecondaryLearningOpportunitySpecificationDTO {
 
     private String id;
     private String name;
+    private String educationDegree;
     private String degreeTitle;
     private String qualification;
     private String goals;
@@ -54,6 +55,14 @@ public class UpperSecondaryLearningOpportunitySpecificationDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getEducationDegree() {
+        return educationDegree;
+    }
+
+    public void setEducationDegree(String educationDegree) {
+        this.educationDegree = educationDegree;
     }
 
     public String getDegreeTitle() {
