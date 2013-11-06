@@ -335,9 +335,7 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
         for (OidRDTO s : komotosByHakukohdeOID) {
             KomoDTO komoByKomotoOID = tarjontaRawService.getKomoByKomoto(s.getOid());
 
-            try {
-                validateChildKomo(komoByKomotoOID);
-            } catch (TarjontaParseException e) {
+            if (!komoPublished.apply(komoByKomotoOID)) {
                 continue;
             }
 
