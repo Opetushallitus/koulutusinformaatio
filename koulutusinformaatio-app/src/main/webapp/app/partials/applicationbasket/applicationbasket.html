@@ -25,7 +25,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr data-ng-repeat="item in as.applicationOptions" data-ng-class="rowClass($last)">
+                            <tr data-ng-repeat="item in as.applicationOptions" data-ng-class="{first: $first, last: $last}">
                                 <td>
                                     <ul class="nobullet">
                                         <li>

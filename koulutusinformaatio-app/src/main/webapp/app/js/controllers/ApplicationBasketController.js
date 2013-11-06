@@ -98,10 +98,6 @@ function ApplicationBasketCtrl($scope, $rootScope, $routeParams, ApplicationBask
         }
     }
 
-    $scope.rowClass = function(isLast) {
-        return isLast ? 'last' : '';
-    }
-
     $scope.$on('$viewContentLoaded', function() {
         OPH.Common.initHeader();
     });
