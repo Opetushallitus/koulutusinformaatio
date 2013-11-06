@@ -17,12 +17,10 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
+import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.Location;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.*;
-
-import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,21 +80,21 @@ public class UpdateServiceImpl implements UpdateService {
             
             while(count >= MAX_RESULTS) {
                 LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
-                List<String> parentOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
-                count = parentOids.size();
+                List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
+                count = loOids.size();
                 index += count;
 
-               for (String parentOid : parentOids) {
-                    List<ParentLOS> parents = null;
+               for (String loOid : loOids) {
+                    List<LOS> specifications = null;
                     try {
-                        parents = tarjontaService.findParentLearningOpportunity(parentOid);
+                        specifications = tarjontaService.findParentLearningOpportunity(loOid);
                     } catch (TarjontaParseException e) {
-                        LOG.warn("Exception while updating parent learning opportunity, oidMessage: " + e.getMessage());
+                        LOG.debug("Exception while updating parent learning opportunity, oidMessage: " + e.getMessage());
                         continue;
                     }
-                    for (ParentLOS parent : parents) {
-                        this.indexerService.addParentLearningOpportunity(parent, loUpdateSolr, lopUpdateSolr);
-                        this.educationDataUpdateService.save(parent);
+                    for (LOS spec : specifications) {
+                        this.indexerService.addLearningOpportunitySpecification(spec, loUpdateSolr, lopUpdateSolr);
+                        this.educationDataUpdateService.save(spec);
                     }
                 }
                 this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);

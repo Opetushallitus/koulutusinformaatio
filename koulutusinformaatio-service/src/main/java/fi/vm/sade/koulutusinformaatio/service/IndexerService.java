@@ -16,14 +16,13 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
-import java.io.IOException;
-import java.util.List;
-
+import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.Location;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
-
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
+
+import java.io.IOException;
+import java.util.List;
 
 
 public interface IndexerService {
@@ -32,8 +31,8 @@ public interface IndexerService {
      * Adds an learning opportunity parent and it's children into solar.
      * The data is not committed to index.
      */
-    void addParentLearningOpportunity(ParentLOS parent,
-			HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr) throws Exception;
+    void addLearningOpportunitySpecification(LOS los,
+                                             HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr) throws Exception;
 
     /**
      * Commits learning opportunities from memory to index.

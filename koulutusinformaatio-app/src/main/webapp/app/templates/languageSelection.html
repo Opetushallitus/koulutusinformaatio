@@ -1,0 +1,15 @@
+<div data-ng-show="showLanguageSelection">
+    <h2 data-ki-i18n="language-selection"></h2>
+    <table class="striped">
+        <tbody class="headless">
+            <tr data-ng-repeat="langItem in selectedLOI.languageSelection" data-ng-class="{last: $last, first: $first}">
+                <td data-ki-i18n="{{langItem.subjectCode}}"></td>
+                <td class="last">
+                    <span data-ng-repeat="language in langItem.languages">
+                        {{language}}<span data-ng-hide="$last">,</span>
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

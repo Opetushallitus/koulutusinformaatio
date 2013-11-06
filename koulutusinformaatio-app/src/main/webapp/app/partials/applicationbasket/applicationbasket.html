@@ -25,7 +25,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr data-ng-repeat="item in as.applicationOptions" data-ng-class="rowClass($last)">
+                            <tr data-ng-repeat="item in as.applicationOptions" data-ng-class="{first: $first, last: $last}">
                                 <td>
                                     <ul class="nobullet">
                                         <li>
@@ -59,7 +59,7 @@
                         </tfoot>
                     </table>
                     <span class="float-right margin-bottom-2">{{notificationText}}</span>
-                    <form action="/haku-app/lomake/{{as.applicationSystemId}}" id="application-form-{{as.applicationSystemId}}" method="post" target="hakulomake">
+                    <form action="{{hakuAppUrl}}lomake/{{as.applicationSystemId}}" id="application-form-{{as.applicationSystemId}}" method="post" target="hakulomake">
                         <span data-ng-repeat="item in as.applicationOptions">
                             <input type="hidden" name="preference{{$index + 1}}-Opetuspiste" value="{{item.providerName}}"/>
                             <input type="hidden" name="preference{{$index + 1}}-Opetuspiste-id" value="{{item.providerId}}"/>

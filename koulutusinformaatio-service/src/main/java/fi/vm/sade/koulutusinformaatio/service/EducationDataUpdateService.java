@@ -16,12 +16,12 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
+import fi.vm.sade.koulutusinformaatio.domain.LOS;
 
 /**
  * @author Mikko Majapuro
  */
 public interface EducationDataUpdateService {
 
-    void save(final ParentLOS parentLOS);
+    void save(final LOS learningOpportunitySpecification);
 }

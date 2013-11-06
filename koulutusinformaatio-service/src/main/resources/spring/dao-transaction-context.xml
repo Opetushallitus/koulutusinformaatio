@@ -87,4 +87,15 @@
         </constructor-arg>
         <constructor-arg value="${mongo.transaction-db.name}"/>
     </bean>
+
+    <bean id="upperSecondaryLOSTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO">
+        <constructor-arg>
+            <ref bean="transactionMongo"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="morphia"/>
+        </constructor-arg>
+        <constructor-arg value="${mongo.transaction-db.name}"/>
+    </bean>
+
 </beans>

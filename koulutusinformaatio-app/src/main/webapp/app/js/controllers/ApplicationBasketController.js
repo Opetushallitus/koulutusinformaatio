@@ -1,8 +1,9 @@
 /**
  *  Controller for application basket
  */
-function ApplicationBasketCtrl($scope, $rootScope, $routeParams, ApplicationBasketService, SearchService, FilterService, kiAppConstants) {
+function ApplicationBasketCtrl($scope, $rootScope, $routeParams, ApplicationBasketService, SearchService, FilterService, kiAppConstants, Config) {
     $rootScope.title = i18n.t('title-application-basket') + ' - ' + i18n.t('sitename');
+    $scope.hakuAppUrl = Config.get('hakulomakeUrl');
     var basketLimit = kiAppConstants.applicationBasketLimit; // TODO: get this from application data?
 
     $scope.queryString = SearchService.getTerm() + '?' + FilterService.getParams();
@@ -95,10 +96,6 @@ function ApplicationBasketCtrl($scope, $rootScope, $routeParams, ApplicationBask
         } else {
             return false;
         }
-    }
-
-    $scope.rowClass = function(isLast) {
-        return isLast ? 'last' : '';
     }
 
     $scope.$on('$viewContentLoaded', function() {

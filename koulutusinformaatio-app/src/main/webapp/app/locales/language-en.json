@@ -1,5 +1,6 @@
 {
-    "sitename": "Opintopolku.fi (en)",
+    "sitename": "Studyinfo.fi",
+    "title-front-page": "Etusivu (en)",
     "title-search-results": "Hakutulokset (en)",
     "title-application-basket": "Muistilista (en)",
 
@@ -49,6 +50,10 @@
     "language-of-instruction": "Opetuskieli (en):",
     "form-of-education": "Opetusmuoto (en):",
     "duration": "Koulutuksen laajuus (en):",
+    "planned-duration": "Suunniteltu kesto (en):",
+    "average-limit": "Keskiarvoraja (en)",
+    "lowest-acceptable-average": "alin hyväksyttävä keskiarvo (en)",
+    "lowest-acceptable-average-description": "Oppilaitoksen asettama keskiarvoraja jonka alittaneita hakijoita ei valita koulutukseen. Opiskelijaksi ottamisen keskiarvo vaihtelee vuosittain ja voi olla korkeampi. (en)",
     "starting-quota": "Aloituspaikkojen lukumäärä (en):",
 
     "goals-of-education": "Tavoite (en)",
@@ -57,10 +62,25 @@
     "base-education-YO": "Lukiopohjaisena järjestettävä koulutus (en)",
     "access-to-further-studies": "Jatko-opintomahdollisuudet (en)",
 
+    "exam-header-time": "Aika (en)",
+    "exam-header-place": "Paikka (en)",
+    "exam-header-description": "Kuvaus (en)",
+
     "general-selection-criteria": "Yleiset valintaperusteet (en)",
+    "emphasized-subjects": "Painotettavat oppiaineet (en)",
+    "emphasized-subjects-description": "Painokerroin tarkoittaa, että painotettavan aineen arvosana lasketaan valinnassa niin monta kertaa kuin painokerroin osoittaa. Esimerkiksi jos liikunnan painokerroin on 2, lasketaan peruskoulun päättötodistuksen liikunnan arvosana kahteen kertaan. (en)",
+    "emphasized-subjects-coefficient-title": "painokerroin (en)",
+    "required-attachments": "Tarvittavat liitteet (en)",
+    "attachment-header-name": "Liite (en)",
+    "attachment-header-address": "Toimitusosoite (en)",
+    "attachment-header-duedate": "Toimitettava viimeistään (en)",
+
     "elementary-graduate-selection": "Perusopetuksen päättäneiden valinta (en)",
     "scoring": "Pisteytys (en)",
     "entrance-exam": "Pääsykoe (en)",
+    "exam-scores": "Pääsykokeesta voit saada __max__ – __min__ pistettä. Alin hyväksyttävä pistemäärä on __threshold__. (en)",
+    "additional-proof": "Lisänäytöt (en)",
+    "additional-proof-scores": "Lisänäytöistä voit saada __min__ – __max__ pistettä. Alin hyväksyttävä pistemäärä on __threshold__. (en)",
     "further-application-info": "Lisätietoa hakemisesta (en)",
     "info-center": "Hakuneuvonta (en)",
 
@@ -78,6 +98,8 @@
     "see-also": "Katso myös muu koulutus (en):",
 
     "structure-of-studies": "Opintojen rakenne (en)",
+    "language-selection": "Kielivalikoima (en)",
+    "diploma": "Lukiodiplomit (en)",
     "working-life-placement": "Sijoittuminen työelämään (en)",
     "profession-title": "Ammattinimikkeet (en)",
     "internationalization": "Kansainvälistyminen (en)",
@@ -141,5 +163,12 @@
 
     "opetusministerio-address-line-1": "Opetus- ja kulttuuriministeriö (en)",
     "opetusministerio-address-line-2": "PL 29, 00023 Valtioneuvosto (en)",
-    "opetusministerio-address-line-3": "puhelin 0295 3 30004 (en)"
+    "opetusministerio-address-line-3": "puhelin 0295 3 30004 (en)",
+
+    "A1A2KIELI" : "A1/A2-kieli (en)",
+    "B1KIELI" : "B1-kieli (en)",
+    "B2KIELI" : "B2-kieli (en)",
+    "B3KIELI" : "B3-kieli (en)",
+    "MUUT_KIELET" : "Muu kieli (en)"
+
 }

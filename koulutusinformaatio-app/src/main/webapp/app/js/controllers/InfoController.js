@@ -1,9 +1,13 @@
 /**
  *  Controller for info views (parent and child)
  */
- function InfoCtrl($scope, $rootScope, $routeParams, $location, ParentLearningOpportunityService, ChildLearningOpportunityService, SearchService, ParentLODataService, ChildLODataService, LearningOpportunityProviderPictureService, UtilityService, TabService) {
+ function InfoCtrl($scope, $rootScope, $routeParams, $location, ParentLearningOpportunityService, ChildLearningOpportunityService, SearchService, ParentLODataService, ChildLODataService, LearningOpportunityProviderPictureService, UtilityService, Config) {
+    $scope.loType = $routeParams.loType;
+
     $scope.queryString = SearchService.getTerm();
     $scope.descriptionLanguage = 'fi';
+    $scope.hakuAppUrl = Config.get('hakulomakeUrl');
+
 
     $scope.tabtitle = {
         koulutus: i18n.t('lo-description'),
@@ -20,7 +24,8 @@
     };
 
     var isChild = function() {
-        return $routeParams.childId ? true : false;
+        var type = $routeParams.loType;
+        return (type == 'koulutusohjelma' || type == 'lukio') ? true : false;
     };
 
     var getFirstLOI = function() {
@@ -146,19 +151,26 @@
         $scope.lois = childResult.lois;
         ChildLODataService.setChildLOData(childResult);
 
-        if (!ParentLODataService.dataExists(childResult.parent.id)) {
+        if (childResult.parent && !ParentLODataService.dataExists(childResult.parent.id)) {
             ParentLearningOpportunityService.query({
                 parentId: childResult.parent.id
             }).then(function(parentResult) {
                 $scope.parentLO = parentResult;
                 ParentLODataService.setParentLOData(parentResult);
                 initializeParent();
-                initializeTranslationLanguage(childResult);
+                //initializeTranslationLanguage(childResult);
             });
         } else {
             $scope.parentLO = ParentLODataService.getParentLOData();
+
+            // TODO: for lukio, refactor
+            if (!$scope.parentLO) {
+                $scope.parentLO = {};
+                $scope.parentLO.provider = childResult.provider;
+            }
+
             initializeParent();
-            initializeTranslationLanguage(childResult);
+            //initializeTranslationLanguage(childResult);
         }
     };
 
@@ -169,12 +181,14 @@
         initializeParent();
     };
 
+    /*
     var initializeTranslationLanguage = function(result) {
         if (result && result.availableTranslationLanguages && result.availableTranslationLanguages.length > 1) {
             var translationLanguageIndex = result.availableTranslationLanguages.indexOf($scope.selectedLOI.translationLanguage);
             result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
         }
     }
+    */
 
     var loError = function(result) {
     };
@@ -183,9 +197,10 @@
     // TODO: could this logic be hidden in service?
     var initView = function() {
         if (isChild()) {
-            if (!ChildLODataService.dataExists($routeParams.childId)) {
+            if (!ChildLODataService.dataExists($routeParams.id)) {
                 ChildLearningOpportunityService.query({
-                    childId: $routeParams.childId
+                    childId: $routeParams.id,
+                    type: $scope.loType
                 }).then(childLOSuccess, loError);
             } else {
                 $scope.childLO = ChildLODataService.getChildLOData();
@@ -194,9 +209,9 @@
                 initializeParent();
             }
         } else {
-            if (!ParentLODataService.dataExists($routeParams.parentId)) {
+            if (!ParentLODataService.dataExists($routeParams.id)) {
                 ParentLearningOpportunityService.query({
-                    parentId: $routeParams.parentId
+                    parentId: $routeParams.id
                 }).then(parentLOSuccess, loError);
             } else {
                 $scope.parentLO = ParentLODataService.getParentLOData();
@@ -239,16 +254,54 @@
     // change description language and re-load LO data with the specified language
     $scope.changeDescriptionLanguage = function(languageCode) {
         $scope.descriptionLanguage = languageCode;
-        var parentId = isChild() ? $scope.childLO.parent.id : $routeParams.parentId;
+        //var parentId = isChild() && $scope.childLO.parent ? $scope.childLO.parent.id : $routeParams.id;
+
+        var loadParent = function(parentId) {
+            ParentLearningOpportunityService.query({
+            parentId: parentId, 
+            language: languageCode}).then(function(result) {
+                $scope.parentLO = result;
+                setTitle($scope.parentLO, $scope.childLO);
+                initializeParent();
+            });
+        };
+
+        var loadChild = function() {
+            ChildLearningOpportunityService.query({
+                childId: $routeParams.id,
+                type: $scope.loType,
+                language: $scope.descriptionLanguage}).then(function(result) {
+                    $scope.childLO = result;
+                    $scope.lois = result.lois;
+
+                    if (result.parent) {
+                        loadParent(result.parent.id);
+                    } else {
+                        setTitle($scope.parentLO, $scope.childLO);
+                        initializeParent();
+                    }
+                    //initializeTranslationLanguage(result);
+                });
+        }
+
+        if (isChild()) {
+            loadChild();
+        } else {
+            loadParent($routeParams.id);
+        }
+
+
 
         // parent data has to be updated every time since child views contain parent data too
+        /*
         ParentLearningOpportunityService.query({
             parentId: parentId, 
             language: languageCode}).then(function(result) {
                 $scope.parentLO = result;
                 if (isChild()) {
                     ChildLearningOpportunityService.query({
-                        childId: $routeParams.childId,
+                        childId: $routeParams.id,
+                        type: $scope.loType,
                         language: $scope.descriptionLanguage}).then(function(result) {
                             $scope.childLO = result;
                             $scope.lois = result.lois;
@@ -262,6 +315,7 @@
                     initializeParent();
                 }
         });
+*/
 
         return false;
     };

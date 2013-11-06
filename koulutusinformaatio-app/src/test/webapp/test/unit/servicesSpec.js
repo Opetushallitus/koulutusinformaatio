@@ -9,99 +9,148 @@ describe('UtilityService', function() {
         });
     });
 
-    it('should work for empty input', function() {
-        utility.sortApplicationSystems();
+    describe('sortApplicationSystems', function() {
+
+        it('should work for empty input', function() {
+            utility.sortApplicationSystems();
+        });
+
+        it('should sort application systems by ongoing attribute', function() {
+            var data = [
+                {
+                    asOngoing: false,
+                },
+                {
+                    asOngoing: true
+                }
+            ];
+
+            utility.sortApplicationSystems(data);
+            expect(data[0].asOngoing).toBeTruthy();
+            expect(data[1].asOngoing).toBeFalsy();
+        });
+
+        it('should sort application systems by nextApplicationPeriodStarts attribute', function() {
+            var data = [
+                {
+                    asOngoing: false,
+                    id: 'a',
+                    nextApplicationPeriodStarts: 2
+                },
+                {
+                    asOngoing: false,
+                    id: 'b',
+                    nextApplicationPeriodStarts: 1
+                }
+            ];
+
+            utility.sortApplicationSystems(data);
+            expect(data[0].id).toEqual('b');
+            expect(data[1].id).toEqual('a');
+        });
+
+        it('should sort application systems by earliest start date', function() {
+            var data = [
+                {
+                    asOngoing: false,
+                    id: 'a',
+                    applicationDates: [
+                        {
+                            startDate: 5,
+                            endDate: 10
+                        },
+                        {
+                            startDate: 20,
+                            endDate: 30
+                        }
+                    ]
+                },
+                {
+                    asOngoing: false,
+                    id: 'b',
+                    applicationDates: [
+                        {
+                            startDate: 4,
+                            endDate: 8
+                        }
+                    ]
+                }
+            ];
+
+            utility.sortApplicationSystems(data);
+            expect(data[0].id).toEqual('b');
+            expect(data[1].id).toEqual('a');
+        });
+
+        it('should sort ended applications systems to the bottom', function() {
+            var data = [
+                {
+                    asOngoing: false,
+                    id: 'a'
+                },
+                {
+                    asOngoing: false,
+                    id: 'b',
+                    nextApplicationPeriodStarts: 1
+                },
+                {
+                    asOngoing: false,
+                    id: 'c',
+                    nextApplicationPeriodStarts: 2
+                }
+            ];
+
+            utility.sortApplicationSystems(data);
+            expect(data[0].id).toEqual('b');
+            expect(data[1].id).toEqual('c');
+            expect(data[2].id).toEqual('a');
+        });
     });
 
-    it('should sort application systems by ongoing attribute', function() {
+    describe('sortApplicationSystems', function() {
         var data = [
-            {
-                asOngoing: false,
-            },
-            {
-                asOngoing: true
-            }
+            {id: 1}, {id: 2}
         ];
 
-        utility.sortApplicationSystems(data);
-        expect(data[0].asOngoing).toBeTruthy();
-        expect(data[1].asOngoing).toBeFalsy();
+        it('should return the correct item if it exists', function() {
+            var result = utility.getApplicationOptionById(1, data);
+            expect(result.id).toEqual(1);
+        });
+
+        it('should return undefined if item does not exists', function() {
+            var result = utility.getApplicationOptionById(3, data);
+            expect(result).toBeUndefined();
+        });
+
+        it('should return undefined if item does not exists', function() {
+            var aoId;
+
+            var result = utility.getApplicationOptionById(aoId, data);
+            expect(result).toBeUndefined();
+        });
     });
 
-    it('should sort application systems by nextApplicationPeriodStarts attribute', function() {
-        var data = [
-            {
-                asOngoing: false,
-                id: 'a',
-                nextApplicationPeriodStarts: 2
-            },
-            {
-                asOngoing: false,
-                id: 'b',
-                nextApplicationPeriodStarts: 1
-            }
-        ];
+    describe('getStringAsArray', function() {
 
-        utility.sortApplicationSystems(data);
-        expect(data[0].id).toEqual('b');
-        expect(data[1].id).toEqual('a');
-    });
+        it('should return the comma-separated string as an array', function() {
+            var result = utility.getStringAsArray('abc,def,gef');
+            expect(result.length).toEqual(3);
+        });
 
-    it('should sort application systems by earliest start date', function() {
-        var data = [
-            {
-                asOngoing: false,
-                id: 'a',
-                applicationDates: [
-                    {
-                        startDate: 5,
-                        endDate: 10
-                    },
-                    {
-                        startDate: 20,
-                        endDate: 30
-                    }
-                ]
-            },
-            {
-                asOngoing: false,
-                id: 'b',
-                applicationDates: [
-                    {
-                        startDate: 4,
-                        endDate: 8
-                    }
-                ]
-            }
-        ];
+        it('should return single item array for strings without separator', function() {
+            var result = utility.getStringAsArray('abc');
+            expect(result.length).toEqual(1);
+        });
 
-        utility.sortApplicationSystems(data);
-        expect(data[0].id).toEqual('b');
-        expect(data[1].id).toEqual('a');
-    });
+        it('should return undefined if param not given', function() {
+            var result = utility.getStringAsArray();
+            expect(result).toBeUndefined();
+        });
 
-    it('should sort ended applications systems to the bottom', function() {
-        var data = [
-            {
-                asOngoing: false,
-                id: 'a'
-            },
-            {
-                asOngoing: false,
-                id: 'b',
-                nextApplicationPeriodStarts: 1
-            },
-            {
-                asOngoing: false,
-                id: 'c',
-                nextApplicationPeriodStarts: 2
-            }
-        ];
-
-        utility.sortApplicationSystems(data);
-        expect(data[0].id).toEqual('b');
-        expect(data[1].id).toEqual('c');
-        expect(data[2].id).toEqual('a');
+        it('should return undefined if param not of type string', function() {
+            var result = utility.getStringAsArray(2);
+            expect(result).toBeUndefined();
+        });
     });
 });
 

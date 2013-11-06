@@ -176,27 +176,116 @@ directive('kiRenderProfessionalTitles', function() {
     }
 }).
 
+/**
+ *  Render diplomas
+ */
+directive('kiRenderDiploma', function() {
+    return {
+        restrict: 'A',
+        templateUrl: 'templates/diploma.html',
+        link: function(scope, element, attrs) {
+            scope.$watch('selectedLOI.diploma', function(data) {
+                scope.showDiploma = data ? true : false;
+            });
+        }
+    }
+}).
+
+/**
+ *  Render emphasized subjects
+ */
+directive('kiRenderEmphasizedSubjects', function() {
+    return {
+        restrict: 'A',
+        templateUrl: 'templates/emphasizedSubjects.html',
+        link: function(scope, element, attrs) {
+            scope.$watch('ao.emphasizedSubjects', function(data) {
+                scope.showEmphasizedSubjects = data ? true : false;
+            });
+        }
+    }
+}).
+
+/**
+ *  Render avergae limit
+ */
+directive('kiRenderAverageLimit', function() {
+    return {
+        restrict: 'A',
+        templateUrl: 'templates/averageLimit.html',
+        link: function(scope, element, attrs) {
+            scope.$watch('ao.lowestAcceptedAverage', function(data) {
+                scope.showAverageLimit = data ? true : false;
+            });
+        }
+    }
+}).
+
+/**
+ *  Render emphasized subjects
+ */
+directive('kiRenderLanguageSelection', function() {
+    return {
+        restrict: 'A',
+        templateUrl: 'templates/languageSelection.html',
+        link: function(scope, element, attrs) {
+            scope.$watch('selectedLOI.languageSelection', function(data) {
+                scope.showLanguageSelection = data ? true : false;
+            });
+        }
+    }
+}).
+
 directive('kiRenderExams', function() {
     return {
-        restrict: 'E,A',
+        restrict: 'A',
         templateUrl: 'templates/exams.html',
         //scope: true,
         link: function(scope, element, attrs) {
             scope.$watch('ao.exams', function(data) {
                 scope.exams = data;
+                //scope.ao.isLukio = UtilityService.isLukio(scope.ao);
             });
+        }
+    }
+}).
 
-            scope.rowClass = function(isFirst, isLast) {
-                if (isFirst && isLast) {
-                    return 'first last';
-                } else if (isFirst) {
-                    return 'first';
-                } else if (isLast) {
-                    return 'last';
-                } else {
-                    return '';
+directive('kiRenderAdditionalProof', function() {
+    return {
+        restrict: 'A',
+        templateUrl: 'templates/additionalProof.html'
+    }
+}).
+
+directive('kiRenderScores', function() {
+    return {
+        restrict: 'A',
+        template: '<p data-ng-show="scores">{{scores}}</p>',
+        scope: {
+            scoreElement: '=scoreElement',
+            typename: '=typename'
+        },
+        link: function(scope, element, attrs) {
+            if (scope.scoreElement) {
+                if (scope.scoreElement.minScore 
+                    || scope.scoreElement.maxScore
+                    || scope.scoreElement.thresholdScore) {
+                    scope.scores = i18n.t(scope.typename + '-scores', {min: scope.scoreElement.minScore, max: scope.scoreElement.maxScore, threshold: scope.scoreElement.thresholdScore});
                 }
-            } 
+            }
+        }
+    }
+}).
+
+directive('kiRenderAttachments', function() {
+    return {
+        restrict: 'A',
+        templateUrl: 'templates/attachments.html',
+        link: function(scope, element, attrs) {
+            scope.$watch('ao.attachments', function(data) {
+                scope.showAttachments = data ? true : false;
+                scope.attachments = data;
+            });
         }
     }
 }).
@@ -301,7 +390,8 @@ directive('kiAbsoluteLink', function() {
         templateUrl: 'templates/languageRibbon.html',
 
         link: function(scope, element, attrs) {
-            scope.isChild = ($routeParams.childId) ? true : false;
+            var type = $routeParams.loType;
+            scope.isChild = (type === 'koulutusohjelma' || type == 'lukio') ? true : false; // TODO: do not use loType directly
 
             if (scope.isChild) {
                 scope.$watch('childLO', function(data) {
@@ -342,7 +432,7 @@ directive('kiAbsoluteLink', function() {
             });
 
             scope.siblingClass = function(sibling) {
-                if (sibling.losId == $routeParams.childId) {
+                if (sibling.losId == $routeParams.id) {
                     return 'disabled';
                 } else {
                     return '';
@@ -368,7 +458,7 @@ directive('kiAbsoluteLink', function() {
             });
 
             scope.siblingClass = function(sibling) {
-                if (sibling.childLOId == $routeParams.childId) {
+                if (sibling.childLOId == $routeParams.id) {
                     return 'disabled';
                 } else {
                     return '';
@@ -382,7 +472,7 @@ directive('kiAbsoluteLink', function() {
 /**
  *  Creates and controls the breadcrumb
  */
- directive('kiBreadcrumb', ['$location', 'SearchService', 'kiAppConstants', 'LanguageService', 'FilterService', function($location, SearchService, kiAppConstants, LanguageService, FilterService) {
+ directive('kiBreadcrumb', ['$location', 'SearchService', 'Config', 'LanguageService', 'FilterService', function($location, SearchService, Config, LanguageService, FilterService) {
     return {
         restrict: 'E,A',
         templateUrl: 'templates/breadcrumb.html',
@@ -409,16 +499,10 @@ directive('kiAbsoluteLink', function() {
 
             var update = function() {
                 scope.breadcrumbItems = [];
-
-                if (LanguageService.getLanguage() == LanguageService.getDefaultLanguage()) {
-                    pushItem({name: home, linkHref: kiAppConstants.contextRoot });
-                } else {
-                    pushItem({name: home, linkHref: kiAppConstants.contextRoot + LanguageService.getLanguage() });
-                }
-                
+                pushItem({name: home, linkHref: Config.get('frontpageUrl') });
                 pushItem({name: root, linkHref: '#/haku/' + SearchService.getTerm() + '?' + FilterService.getParams() });
 
-                if (scope.parentLO) {
+                if (scope.parentLO && scope.loType != 'lukio') { // TODO: do not compare to loType
                     pushItem({name: parent, linkHref: '#/tutkinto/' + scope.parentLO.id });
                 }
 
@@ -437,7 +521,6 @@ directive('kiAbsoluteLink', function() {
 /**
  *  Renders a text block with title. If no content exists the whole text block gets removed. 
  */
-
 directive('renderTextBlock', function() {
     return function(scope, element, attrs) {
 
@@ -464,8 +547,6 @@ directive('renderTextBlock', function() {
                         element.append(titleElement);
                     }
 
-                    // replace line feed with <br>
-                    //content = content.replace(/(\r\n|\n|\r)/g,"<br />");
                     element.append(content);
                 }
             };
@@ -507,17 +588,17 @@ directive('kiTimestamp', function() {
 
     return function(scope, element, attrs) {
         attrs.$observe('kiTimestamp', function(value) {
-            $(element).empty();
-            value = parseInt(value);
-            var date = new Date(value);
-            element.append(date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear());
-            if (attrs.precise) {
-                element.append(' ' + padWithZero(date.getHours()) + ':' + padWithZero(date.getMinutes()));
+            if (value) {
+                $(element).empty();
+                value = parseInt(value);
+                var date = new Date(value);
+                element.append(date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear());
+                if (attrs.precise) {
+                    element.append(' ' + padWithZero(date.getHours()) + ':' + padWithZero(date.getMinutes()));
+                }
             }
         });
     }
-
-
 }).
 
 /**

@@ -1,0 +1,68 @@
+<!-- <div ng-include src="'partials/pageheader.html'"></div> -->
+<section class="content-container grid16-16 margin-bottom-2">
+    <div data-ki-breadcrumb="breadcrumb-search-results" id="breadcrumb"></div>
+    <div class="grid16-16">
+        <h1 class="inline-block"><span data-ki-i18n="search-result-title"></span> "{{queryString}}"</h1>
+        <h2 class="inline-block margin-left-2">({{loResult.totalCount}} <span data-ki-i18n="search-result-count-unit"></span>)</h2>
+    </div>
+    <div class="grid16-11">
+        <div data-ng-switch="loResult.totalCount">
+            <div data-ng-switch-when="0">
+                <div class="notification info">
+                    <h3 data-ki-i18n="no-search-results"></h3>
+                    <span data-ki-i18n="no-search-results-info"></span>
+                </div>
+            </div>
+            <div data-ng-switch-default>
+                <ul id="search-results">
+                    <li data-ng-repeat="lo in loResult.results">
+                        <div data-search-result></div>
+                    </li>
+                </ul>
+                <div data-ng-show="showPagination">
+                    <div data-pagination
+                    data-on-select-page="changePage(page)" 
+                    data-num-pages="maxPages" 
+                    data-current-page="currentPage" 
+                    data-max-size="10"
+                    data-first-text="<<"
+                    data-next-text=">"
+                    data-previous-text="<"
+                    data-last-text=">>">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<aside class="grid16-5" id="column-narrow">
+    <form name="searchResultFilters" novalidate data-ng-controller="SearchFilterCtrl">
+        <h2 class="margin-top-0" data-ki-i18n="filter-title"></h2>
+        <div class="filter margin-bottom-2">
+            <ul class="nobullet">
+                <li>
+                    <input type="checkbox" name="kaynnissa" id="checkbox1" data-ng-model="ongoing" data-ng-change="change()">
+                    <label for="checkbox1" data-ki-i18n="filter-search-as-ongoing"></label>
+                </li>
+            </ul>
+        </div>
+
+        <h4 class="margin-top-0 margin-bottom-0" data-ki-i18n="filter-search-title"></h4>
+        <small class="margin-bottom-2 block cursive" data-ki-i18n="filter-search-subtitle"></small>
+        <div class="filter margin-bottom-2">
+            <ul class="nobullet">
+                <li>
+                    <input type="radio" name="pohjakoulutus" id="radio1" value="PK" data-ng-model="prerequisite" data-ng-change="change()"/>
+                    <label for="radio1" data-ki-i18n="filter-search-elementary"></label>
+                </li>
+                <li>    
+                    <input type="radio" name="pohjakoulutus" id="radio2" value="YO" data-ng-model="prerequisite" data-ng-change="change()"/>
+                    <label for="radio2" data-ki-i18n="filter-search-upper-secondary"></label>
+                </li>
+            </ul>
+        </div>
+        <h4 data-ki-i18n="filter-search-location-title"></h4>
+        <div data-ki-location-filter></div>
+    </form>
+</aside>
+<div class="clear"></div>
+</section>

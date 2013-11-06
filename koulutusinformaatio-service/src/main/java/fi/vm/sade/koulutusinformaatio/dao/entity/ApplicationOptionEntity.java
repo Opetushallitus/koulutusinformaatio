@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.dao.entity;
 
+import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
@@ -64,6 +65,11 @@ public class ApplicationOptionEntity {
     private boolean specificApplicationDates;
     private Date applicationStartDate;
     private Date applicationEndDate;
+    private List<ApplicationOptionAttachmentEntity> attachments;
+    private List<EmphasizedSubjectEntity> emphasizedSubjects;
+    private I18nText additionalInfo;
+    private I18nText additionalProof;
+
 
     public ApplicationOptionEntity() {
 
@@ -251,5 +257,37 @@ public class ApplicationOptionEntity {
 
     public void setApplicationEndDate(Date applicationEndDate) {
         this.applicationEndDate = applicationEndDate;
+    }
+
+    public List<ApplicationOptionAttachmentEntity> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(List<ApplicationOptionAttachmentEntity> attachments) {
+        this.attachments = attachments;
+    }
+
+    public List<EmphasizedSubjectEntity> getEmphasizedSubjects() {
+        return emphasizedSubjects;
+    }
+
+    public void setEmphasizedSubjects(List<EmphasizedSubjectEntity> emphasizedSubjects) {
+        this.emphasizedSubjects = emphasizedSubjects;
+    }
+
+    public I18nText getAdditionalInfo() {
+        return additionalInfo;
+    }
+
+    public void setAdditionalInfo(I18nText additionalInfo) {
+        this.additionalInfo = additionalInfo;
+    }
+
+    public I18nText getAdditionalProof() {
+        return additionalProof;
+    }
+
+    public void setAdditionalProof(I18nText additionalProof) {
+        this.additionalProof = additionalProof;
     }
 }

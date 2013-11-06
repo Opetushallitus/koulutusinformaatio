@@ -37,7 +37,7 @@ public class ModelMapperTest {
 
     @Test
     public void testMapLearningOpportunityResultToDTO() {
-        LOSearchResult result = new LOSearchResult("loid", "name", "lopid", "lop name", "Peruskoulu", "PK", "parentId", "losId");
+        LOSearchResult result = new LOSearchResult("loid", "name", "lopid", "lop name", "Peruskoulu", "PK", "parentId", "losId", "TYPE");
 
         LearningOpportunitySearchResultDTO dto = modelMapper.map(result, LearningOpportunitySearchResultDTO.class);
 

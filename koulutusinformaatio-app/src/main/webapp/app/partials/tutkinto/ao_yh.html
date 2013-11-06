@@ -1,0 +1,9 @@
+<ul class="nobullet">
+    <li><h2 class="margin-bottom-0 margin-top-0">{{ao.name}}</h2></li>
+    <li class="small"><span data-ki-i18n="starting-quota" data-show-colon="true" class="margin-right-1"></span><span>{{ao.startingQuota}}</span></li>
+    <ul class="disc">
+        <li data-ng-repeat="child in ao.childRefs">
+            <a href="#/koulutusohjelma/{{child.losId}}#{{prerequisite.value}}">{{child.name}}</a>
+        </li>
+    </ul>
+</ul>
