@@ -52,6 +52,11 @@ public class ApplicationOptionDTO {
     private boolean canBeApplied;
     private Date nextApplicationPeriodStarts;
     private List<String> requiredBaseEducations;
+    private List<ApplicationOptionAttachmentDTO> attachments;
+    private List<EmphasizedSubjectDTO> emphasizedSubjects;
+    private String additionalInfo;
+    private String additionalProof;
+
 
 
     public String getId() {
@@ -236,5 +241,37 @@ public class ApplicationOptionDTO {
 
     public void setRequiredBaseEducations(List<String> requiredBaseEducations) {
         this.requiredBaseEducations = requiredBaseEducations;
+    }
+
+    public List<ApplicationOptionAttachmentDTO> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(List<ApplicationOptionAttachmentDTO> attachments) {
+        this.attachments = attachments;
+    }
+
+    public List<EmphasizedSubjectDTO> getEmphasizedSubjects() {
+        return emphasizedSubjects;
+    }
+
+    public void setEmphasizedSubjects(List<EmphasizedSubjectDTO> emphasizedSubjects) {
+        this.emphasizedSubjects = emphasizedSubjects;
+    }
+
+    public String getAdditionalInfo() {
+        return additionalInfo;
+    }
+
+    public void setAdditionalInfo(String additionalInfo) {
+        this.additionalInfo = additionalInfo;
+    }
+
+    public String getAdditionalProof() {
+        return additionalProof;
+    }
+
+    public void setAdditionalProof(String additionalProof) {
+        this.additionalProof = additionalProof;
     }
 }

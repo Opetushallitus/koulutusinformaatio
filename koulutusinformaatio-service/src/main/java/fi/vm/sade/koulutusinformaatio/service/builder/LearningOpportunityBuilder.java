@@ -45,11 +45,6 @@ public abstract class LearningOpportunityBuilder<T extends LOS> {
     public static final String STATE_PUBLISHED = "JULKAISTU";
     public static final String BASE_EDUCATION_KOODISTO_URI = "pohjakoulutustoinenaste";
 
-
-
-
-
-
     protected String resolveLOSId(String komoId, String providerId) {
         return Joiner.on("_").join(komoId, providerId);
     }
