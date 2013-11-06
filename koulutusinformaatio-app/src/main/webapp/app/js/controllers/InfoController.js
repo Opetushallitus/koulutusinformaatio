@@ -164,7 +164,7 @@
             $scope.parentLO = ParentLODataService.getParentLOData();
 
             // TODO: for lukio, refactor
-            if (!$scope.parentLO) {
+            if (childResult.provider) {
                 $scope.parentLO = {};
                 $scope.parentLO.provider = childResult.provider;
             }
@@ -205,6 +205,13 @@
             } else {
                 $scope.childLO = ChildLODataService.getChildLOData();
                 $scope.parentLO = ParentLODataService.getParentLOData();
+
+                // TODO: for lukio, refactor
+                if ($scope.childLO.provider) {
+                    $scope.parentLO = {};
+                    $scope.parentLO.provider = $scope.childLO.provider;
+                }
+
                 $scope.lois = $scope.childLO.lois;
                 initializeParent();
             }

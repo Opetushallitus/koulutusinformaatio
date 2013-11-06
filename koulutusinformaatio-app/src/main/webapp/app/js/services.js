@@ -573,7 +573,7 @@ service('ApplicationBasketService', ['$http', '$q', 'LanguageService', 'UtilityS
                 var applicationOptions = result[asIndex].applicationOptions;
                 for (var i in applicationOptions) {
                     if (applicationOptions.hasOwnProperty(i)) {
-                        if (applicationOptions[i].children.length > 0) {
+                        if (applicationOptions[i].children && applicationOptions[i].children.length > 0) {
                             result[asIndex].applicationOptions[i].qualification = applicationOptions[i].children[0].qualification;
                             result[asIndex].applicationOptions[i].prerequisite = applicationOptions[i].children[0].prerequisite;
                         }
@@ -590,11 +590,15 @@ service('ApplicationBasketService', ['$http', '$q', 'LanguageService', 'UtilityS
                         }
 
                         // set teaching languge as the first language in array
-
                         var ao = applicationOptions[i];
                         if (ao.teachingLanguages && ao.teachingLanguages.length > 0) {
                             ao.teachLang = ao.teachingLanguages[0];
                         }
+
+                        // set LOS id for lukio
+                        // check if ao is of type lukio
+                        ao.isLukio = UtilityService.isLukio(ao);
+                        ao.losId = (ao.children && ao.children.length > 0) ? ao.children[0].losId : '';
                     }
                 }
             }
@@ -859,6 +863,9 @@ service('UtilityService', function() {
             if (stringToArray && typeof stringToArray == 'string') {
                 return stringToArray.split(delimiter);
             }
+        },
+        isLukio: function(lo) {
+            return lo.educationDegree == 31 ? true : false;
         },
         isLisahaku: function(as) {
             return as.aoSpecificApplicationDates;
