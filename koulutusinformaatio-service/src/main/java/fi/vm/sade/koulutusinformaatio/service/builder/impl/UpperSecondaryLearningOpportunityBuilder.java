@@ -21,6 +21,7 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
@@ -71,14 +72,17 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
     @Override
     public LearningOpportunityBuilder resolveParentLOSs() throws TarjontaParseException, KoodistoException, WebApplicationException {
         parentKomo = tarjontaRawService.getKomo(komo.getYlaModuulit().get(0));
-        if (!komoReleased.apply(parentKomo)) {
-            throw new TarjontaParseException("");
+        if (!komoPublished.apply(parentKomo)) {
+            throw new TarjontaParseException(String.format("Parent komo not published: %s", parentKomo.getOid()));
         }
         return this;
     }
 
     @Override
     public LearningOpportunityBuilder resolveChildLOSs() throws TarjontaParseException, KoodistoException, WebApplicationException {
+        if (!komoPublished.apply(komo)) {
+            throw new TarjontaParseException(String.format("Child komo not published: %s", komo.getOid()));
+        }
         List<OidRDTO> komotoOids = tarjontaRawService.getKomotosByKomo(komo.getOid(), Integer.MAX_VALUE, 0);
         for (OidRDTO komotoOid : komotoOids) {
             KomotoDTO komoto = tarjontaRawService.getKomoto(komotoOid.getOid());
@@ -121,6 +125,7 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
 
     @Override
     public LearningOpportunityBuilder filter() {
+        loses = Lists.newArrayList(Collections2.filter(loses, losValid));
         return this;
     }
 
@@ -149,7 +154,9 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
 
         List<UpperSecondaryLOI> lois = Lists.newArrayList();
         for (KomotoDTO komoto : komotos) {
-            lois.add(createLOI(komoto, losID, los.getName()));
+            if (komotoPublished.apply(komoto)) {
+                lois.add(createLOI(komoto, losID, los.getName()));
+            }
         }
 
         los.setLois(lois);
@@ -425,18 +432,30 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
         return null;
     }
 
-    private static Predicate<KomoDTO> komoReleased = new Predicate<KomoDTO>() {
+    private static Predicate<KomoDTO> komoPublished = new Predicate<KomoDTO>() {
         @Override
         public boolean apply(KomoDTO komo) {
             return komo.getTila().equals(TarjontaTila.JULKAISTU);
         }
     };
-    private static Predicate<KomotoDTO> komotoReleased = new Predicate<KomotoDTO>() {
+    private static Predicate<KomotoDTO> komotoPublished = new Predicate<KomotoDTO>() {
         @Override
         public boolean apply(KomotoDTO komoto) {
             return komoto.getTila().equals(TarjontaTila.JULKAISTU);
         }
     };
-
+    private static Predicate<UpperSecondaryLOS> losValid = new Predicate<UpperSecondaryLOS>() {
+        @Override
+        public boolean apply(UpperSecondaryLOS los) {
+            if (los.getLois() != null) {
+                for (UpperSecondaryLOI loi : los.getLois()) {
+                    if (loi.getApplicationOptions() != null && loi.getApplicationOptions().size() > 0) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+    };
 
 }
