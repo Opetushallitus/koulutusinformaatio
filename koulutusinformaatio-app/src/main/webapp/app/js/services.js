@@ -37,7 +37,6 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
                     category = false;
                 }
                 $analytics.siteSearchTrack(params.queryString, category, result.totalCount);
-                //transformData(result);
                 deferred.resolve(result);
             }).
             error(function(result) {
@@ -240,10 +239,12 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
     // TODO: could we automate data transformation somehow?
     var transformData = function(result) {
         var studyplanKey = "KOULUTUSOHJELMA";
-        /*
-        var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
-        result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
-        */
+
+        if (result && result.availableTranslationLanguages) {
+            var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
+            result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
+        }
+        
 
         for (var loiIndex in result.lois) {
             if (result.lois.hasOwnProperty(loiIndex)) {
@@ -407,7 +408,9 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
                 queryParams.lang = options.language
             }
 
-            $http.get('../lo/child/' + options.childId, {
+            var url = options.type == 'koulutusohjelma' ? '../lo/child/' : '../lo/upsec/';
+
+            $http.get(url + options.childId, {
                 params: queryParams
             }).
             success(function(result) {

@@ -390,7 +390,8 @@ directive('kiAbsoluteLink', function() {
         templateUrl: 'templates/languageRibbon.html',
 
         link: function(scope, element, attrs) {
-            scope.isChild = ($routeParams.childId) ? true : false;
+            var type = $routeParams.loType;
+            scope.isChild = (type === 'koulutusohjelma' || type == 'lukio') ? true : false; // TODO: do not use loType directly
 
             if (scope.isChild) {
                 scope.$watch('childLO', function(data) {
@@ -431,7 +432,7 @@ directive('kiAbsoluteLink', function() {
             });
 
             scope.siblingClass = function(sibling) {
-                if (sibling.losId == $routeParams.childId) {
+                if (sibling.losId == $routeParams.id) {
                     return 'disabled';
                 } else {
                     return '';
@@ -457,7 +458,7 @@ directive('kiAbsoluteLink', function() {
             });
 
             scope.siblingClass = function(sibling) {
-                if (sibling.childLOId == $routeParams.childId) {
+                if (sibling.childLOId == $routeParams.id) {
                     return 'disabled';
                 } else {
                     return '';

@@ -24,8 +24,8 @@
     };
 
     var isChild = function() {
-        //return $routeParams.childId ? true : false;
-        return $routeParams.loType == 'koulutusohjelma' || 'lukio' ? true : false;
+        var type = $routeParams.loType;
+        return (type == 'koulutusohjelma' || type == 'lukio') ? true : false;
     };
 
     var getFirstLOI = function() {
@@ -151,19 +151,26 @@
         $scope.lois = childResult.lois;
         ChildLODataService.setChildLOData(childResult);
 
-        if (!ParentLODataService.dataExists(childResult.parent.id)) {
+        if (childResult.parent && !ParentLODataService.dataExists(childResult.parent.id)) {
             ParentLearningOpportunityService.query({
                 parentId: childResult.parent.id
             }).then(function(parentResult) {
                 $scope.parentLO = parentResult;
                 ParentLODataService.setParentLOData(parentResult);
                 initializeParent();
-                initializeTranslationLanguage(childResult);
+                //initializeTranslationLanguage(childResult);
             });
         } else {
             $scope.parentLO = ParentLODataService.getParentLOData();
+
+            // TODO: for lukio, refactor
+            if (!$scope.parentLO) {
+                $scope.parentLO = {};
+                $scope.parentLO.provider = childResult.provider;
+            }
+
             initializeParent();
-            initializeTranslationLanguage(childResult);
+            //initializeTranslationLanguage(childResult);
         }
     };
 
@@ -174,12 +181,14 @@
         initializeParent();
     };
 
+    /*
     var initializeTranslationLanguage = function(result) {
         if (result && result.availableTranslationLanguages && result.availableTranslationLanguages.length > 1) {
             var translationLanguageIndex = result.availableTranslationLanguages.indexOf($scope.selectedLOI.translationLanguage);
             result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
         }
     }
+    */
 
     var loError = function(result) {
     };
@@ -190,7 +199,8 @@
         if (isChild()) {
             if (!ChildLODataService.dataExists($routeParams.id)) {
                 ChildLearningOpportunityService.query({
-                    childId: $routeParams.id
+                    childId: $routeParams.id,
+                    type: $scope.loType
                 }).then(childLOSuccess, loError);
             } else {
                 $scope.childLO = ChildLODataService.getChildLOData();
@@ -244,9 +254,46 @@
     // change description language and re-load LO data with the specified language
     $scope.changeDescriptionLanguage = function(languageCode) {
         $scope.descriptionLanguage = languageCode;
-        var parentId = isChild() ? $scope.childLO.parent.id : $routeParams.id;
+        //var parentId = isChild() && $scope.childLO.parent ? $scope.childLO.parent.id : $routeParams.id;
+
+        var loadParent = function(parentId) {
+            ParentLearningOpportunityService.query({
+            parentId: parentId, 
+            language: languageCode}).then(function(result) {
+                $scope.parentLO = result;
+                setTitle($scope.parentLO, $scope.childLO);
+                initializeParent();
+            });
+        };
+
+        var loadChild = function() {
+            ChildLearningOpportunityService.query({
+                childId: $routeParams.id,
+                type: $scope.loType,
+                language: $scope.descriptionLanguage}).then(function(result) {
+                    $scope.childLO = result;
+                    $scope.lois = result.lois;
+
+                    if (result.parent) {
+                        loadParent(result.parent.id);
+                    } else {
+                        setTitle($scope.parentLO, $scope.childLO);
+                        initializeParent();
+                    }
+                    //initializeTranslationLanguage(result);
+                });
+        }
+
+        if (isChild()) {
+            loadChild();
+        } else {
+            loadParent($routeParams.id);
+        }
+
+
 
         // parent data has to be updated every time since child views contain parent data too
+        /*
         ParentLearningOpportunityService.query({
             parentId: parentId, 
             language: languageCode}).then(function(result) {
@@ -254,6 +301,7 @@
                 if (isChild()) {
                     ChildLearningOpportunityService.query({
                         childId: $routeParams.id,
+                        type: $scope.loType,
                         language: $scope.descriptionLanguage}).then(function(result) {
                             $scope.childLO = result;
                             $scope.lois = result.lois;
@@ -267,6 +315,7 @@
                     initializeParent();
                 }
         });
+*/
 
         return false;
     };

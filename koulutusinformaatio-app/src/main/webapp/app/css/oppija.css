@@ -1378,6 +1378,11 @@ input, textarea, select, option {
 .hidden {
   display: none; }
 
+.capitalized {
+  text-transform: lowercase; }
+  .capitalized:first-letter {
+    text-transform: uppercase; }
+
 /*** Links
 ************************************************/
 a:link {
@@ -2209,7 +2214,7 @@ table.striped {
 
 /* Application system */
 .application-container .application-system {
-  margin-top: 2em; }
+  margin-bottom: 2em; }
 .application-container .title {
   margin: 0;
   padding: 5px 0 5px 10px;

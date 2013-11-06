@@ -13,20 +13,6 @@ kiApp.config(['$routeProvider', '$analyticsProvider', function($routeProvider, $
     	controller: SearchCtrl
     });
     
-    /*
-    $routeProvider.when('/tutkinto/:parentId', {
-    	templateUrl: 'partials/ylataso.html', 
-    	controller: InfoCtrl,
-        reloadOnSearch: false
-    });
-    
-    $routeProvider.when('/koulutusohjelma/:childId', {
-    	templateUrl: 'partials/alataso.html', 
-    	controller: InfoCtrl,
-        reloadOnSearch: false
-    });
-    */
-    
     $routeProvider.when('/:loType/:id', {
         templateUrl: 'partials/learningopportunity.html', 
         controller: InfoCtrl,
