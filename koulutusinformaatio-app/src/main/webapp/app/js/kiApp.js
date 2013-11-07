@@ -12,11 +12,25 @@ kiApp.config(['$routeProvider', '$analyticsProvider', function($routeProvider, $
     	templateUrl: 'partials/search/searchresults.html', 
     	controller: SearchCtrl
     });
-    
+
     $routeProvider.when('/:loType/:id', {
         templateUrl: 'partials/learningopportunity.html', 
         controller: InfoCtrl,
         reloadOnSearch: false
+        /*,
+        resolve: {
+            subcontroller: function($route) {
+                switch($route.current.params.loType) {
+                    case 'lukio':
+                        return UpSecCtrl;
+                    case 'koulutusohjelma':
+                        return ChildCtrl;
+                    case 'tutkinto':
+                        return ParentCtrl;
+                }
+            }
+        }
+        */
     });
 
     $routeProvider.when('/muistilista', {

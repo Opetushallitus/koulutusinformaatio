@@ -1,3 +1,37 @@
+/*
+function UpSecCtrl($scope) {
+    $scope.testimuuttuja = 'lukio';
+}
+
+function ChildCtrl($scope) {
+    $scope.testimuuttuja = 'child';
+}
+
+function ParentCtrl($scope, $routeParams, ParentLearningOpportunityService, ParentLODataService) {
+    $scope.testimuuttuja = 'parent';
+
+    var loError = function() {};
+
+    var parentLOSuccess = function(result) {
+        $scope.parentLO = result;
+        $scope.lois = result.lois;
+        ParentLODataService.setParentLOData(result);
+        $scope.initializeParent();
+    };
+
+    if (!ParentLODataService.dataExists($routeParams.id)) {
+        ParentLearningOpportunityService.query({
+            parentId: $routeParams.id
+        }).then(parentLOSuccess, loError);
+    } else {
+        $scope.parentLO = ParentLODataService.getParentLOData();
+        $scope.lois = $scope.parentLO.lois;
+        $scope.initializeParent();
+    }
+    
+}
+*/
+
 /**
  *  Controller for info views (parent and child)
  */
@@ -296,33 +330,6 @@
         } else {
             loadParent($routeParams.id);
         }
-
-
-
-        // parent data has to be updated every time since child views contain parent data too
-        /*
-        ParentLearningOpportunityService.query({
-            parentId: parentId, 
-            language: languageCode}).then(function(result) {
-                $scope.parentLO = result;
-                if (isChild()) {
-                    ChildLearningOpportunityService.query({
-                        childId: $routeParams.id,
-                        type: $scope.loType,
-                        language: $scope.descriptionLanguage}).then(function(result) {
-                            $scope.childLO = result;
-                            $scope.lois = result.lois;
-                            setTitle($scope.parentLO, $scope.childLO);
-                            initializeParent();
-                            initializeTranslationLanguage(result);
-                        });
-                } else {
-                    setTitle($scope.parentLO, $scope.childLO);
-                    $scope.lois = result.lois;
-                    initializeParent();
-                }
-        });
-*/
 
         return false;
     };
