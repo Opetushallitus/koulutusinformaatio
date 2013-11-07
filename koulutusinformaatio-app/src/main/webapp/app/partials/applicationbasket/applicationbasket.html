@@ -29,19 +29,25 @@
                                 <td>
                                     <ul class="nobullet">
                                         <li>
-                                            <h4 class="margin-top-0 margin-bottom-0">{{item.providerName}}, {{item.providerLocation}}</h4>
-                                            <a class="block margin-bottom-2" href="#/tutkinto/{{item.parent.id}}#{{item.prerequisite.value}}">{{item.parent.name}}</a>
-                                            
+                                            <h4 class="margin-top-0 margin-bottom-0">{{item.providerName}}, <span class="capitalized">{{item.providerLocation}}</span></h4>
+                                            <a data-ng-hide="item.isLukio" class="block" href="#/tutkinto/{{item.parent.id}}#{{item.prerequisite.value}}">{{item.parent.name}}</a>
                                         </li>
-                                        <li><span>{{item.qualification}}</span></li>
+                                        <li class="margin-top-2"><span>{{item.qualification}}</span></li>
                                         <li><span>{{item.prerequisite.description}}</span></li>
                                     </ul>
                                 </td>
                                 <td>
-                                    <h4 class="margin-top-0 margin-bottom-1">{{item.name}}</h4>
-                                    <ul class="disc">
-                                        <li data-ng-repeat="child in item.children"><a href="#/koulutusohjelma/{{child.losId}}#{{item.prerequisite.value}}">{{child.name}}</a></li>
-                                    </ul>
+                                    <div data-ng-switch="item.isLukio">
+                                        <div data-ng-switch-when="false">
+                                            <h4 class="margin-top-0 margin-bottom-1">{{item.name}}</h4>
+                                            <ul class="disc">
+                                                <li data-ng-repeat="child in item.children"><a href="#/koulutusohjelma/{{child.losId}}#{{item.prerequisite.value}}">{{child.name}}</a></li>
+                                            </ul>
+                                        </div>
+                                        <div data-ng-switch-when="true">
+                                            <a href="#/lukio/{{item.losId}}" class="margin-top-0 margin-bottom-1 block">{{item.providerName}}, {{item.name}}</a>
+                                        </div>
+                                    </div>
                                 </td>
                                 <td class="align-left">
                                     <ul class="nobullet">

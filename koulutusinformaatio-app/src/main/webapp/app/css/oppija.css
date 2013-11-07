@@ -1379,6 +1379,7 @@ input, textarea, select, option {
   display: none; }
 
 .capitalized {
+  display: inline-block;
   text-transform: lowercase; }
   .capitalized:first-letter {
     text-transform: uppercase; }
