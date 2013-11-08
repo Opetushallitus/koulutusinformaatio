@@ -19,7 +19,6 @@ public class ChildLearningOpportunityInstanceDTO {
     private Map<String, String> webLinks;
     private List<String> formOfTeaching = new ArrayList<String>();
     private CodeDTO prerequisite;
-    private String translationLanguage;
     private Set<String> availableTranslationLanguages = new HashSet<String>();
     private Set<String> teachingLanguages = new HashSet<String>();
     private List<String> professionalTitles;
@@ -92,14 +91,6 @@ public class ChildLearningOpportunityInstanceDTO {
 
     public void setPrerequisite(CodeDTO prerequisite) {
         this.prerequisite = prerequisite;
-    }
-
-    public String getTranslationLanguage() {
-        return translationLanguage;
-    }
-
-    public void setTranslationLanguage(String translationLanguage) {
-        this.translationLanguage = translationLanguage;
     }
 
     public Set<String> getAvailableTranslationLanguages() {
