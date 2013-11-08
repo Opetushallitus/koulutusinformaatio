@@ -398,13 +398,22 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
 
         if (hakukohdeDTO.getLiitteidenToimitusosoite() != null) {
             OsoiteRDTO addressDTO = hakukohdeDTO.getLiitteidenToimitusosoite();
-            Address attachmentDeliveryAddress = new Address();
-            attachmentDeliveryAddress.setStreetAddress(addressDTO.getOsoiterivi1());
-            attachmentDeliveryAddress.setStreetAddress2(addressDTO.getOsoiterivi2());
-            attachmentDeliveryAddress.setPostalCode(koodistoService.searchFirstCodeValue(addressDTO.getPostinumero()));
-            attachmentDeliveryAddress.setPostOffice(addressDTO.getPostitoimipaikka());
-            ao.setAttachmentDeliveryAddress(attachmentDeliveryAddress);
+            ao.setAttachmentDeliveryAddress(convertToAddress(addressDTO));
         }
+
+        List<ApplicationOptionAttachment> attachments = Lists.newArrayList();
+        if (hakukohdeDTO.getLiitteet() != null && !hakukohdeDTO.getLiitteet().isEmpty()) {
+            for (HakukohdeLiiteDTO liite : hakukohdeDTO.getLiitteet()) {
+                ApplicationOptionAttachment attach = new ApplicationOptionAttachment();
+                attach.setDueDate(liite.getErapaiva());
+                attach.setType(koodistoService.searchFirst(liite.getLiitteenTyyppiUri()));
+                attach.setDescreption(getI18nText(liite.getKuvaus()));
+                attach.setAddress(convertToAddress(liite.getToimitusosoite()));
+                attachments.add(attach);
+            }
+        }
+        ao.setAttachments(attachments);
+
 
         // set child loi names to application option
         List<OidRDTO> komotosByHakukohdeOID = tarjontaRawService.getKomotosByHakukohde(hakukohdeDTO.getOid());
@@ -434,6 +443,15 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
         }
 
         return ao;
+    }
+
+    private Address convertToAddress(OsoiteRDTO addressDTO) throws KoodistoException {
+        Address attachmentDeliveryAddress = new Address();
+        attachmentDeliveryAddress.setStreetAddress(addressDTO.getOsoiterivi1());
+        attachmentDeliveryAddress.setStreetAddress2(addressDTO.getOsoiterivi2());
+        attachmentDeliveryAddress.setPostalCode(koodistoService.searchFirstCodeValue(addressDTO.getPostinumero()));
+        attachmentDeliveryAddress.setPostOffice(addressDTO.getPostitoimipaikka());
+        return attachmentDeliveryAddress;
     }
 
     private ParentLOS createParentLOS(KomoDTO parentKomo, String providerId, List<KomotoDTO> parentKomotos) throws KoodistoException {

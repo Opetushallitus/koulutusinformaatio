@@ -302,7 +302,6 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
             ao.setAttachmentDeliveryAddress(convertToAddress(addressDTO));
         }
 
-
         ao.setAdditionalProof(createAdditionalProof(hakukohdeDTO.getValintakoes()));
 
         List<ApplicationOptionAttachment> attachments = Lists.newArrayList();
