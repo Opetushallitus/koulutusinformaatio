@@ -1,41 +1,7 @@
-/*
-function UpSecCtrl($scope) {
-    $scope.testimuuttuja = 'lukio';
-}
-
-function ChildCtrl($scope) {
-    $scope.testimuuttuja = 'child';
-}
-
-function ParentCtrl($scope, $routeParams, ParentLearningOpportunityService, ParentLODataService) {
-    $scope.testimuuttuja = 'parent';
-
-    var loError = function() {};
-
-    var parentLOSuccess = function(result) {
-        $scope.parentLO = result;
-        $scope.lois = result.lois;
-        ParentLODataService.setParentLOData(result);
-        $scope.initializeParent();
-    };
-
-    if (!ParentLODataService.dataExists($routeParams.id)) {
-        ParentLearningOpportunityService.query({
-            parentId: $routeParams.id
-        }).then(parentLOSuccess, loError);
-    } else {
-        $scope.parentLO = ParentLODataService.getParentLOData();
-        $scope.lois = $scope.parentLO.lois;
-        $scope.initializeParent();
-    }
-    
-}
-*/
-
 /**
  *  Controller for info views (parent and child)
  */
- function InfoCtrl($scope, $rootScope, $routeParams, $location, ParentLearningOpportunityService, ChildLearningOpportunityService, SearchService, ParentLODataService, ChildLODataService, LearningOpportunityProviderPictureService, UtilityService, Config) {
+ function InfoCtrl($scope, $rootScope, $routeParams, $location, ParentLOService, ChildLOService, SearchService, ParentLODataService, ChildLODataService, LearningOpportunityProviderPictureService, UtilityService, Config, loResource) {
     $scope.loType = $routeParams.loType;
 
     $scope.queryString = SearchService.getTerm();
@@ -96,8 +62,8 @@ function ParentCtrl($scope, $routeParams, ParentLearningOpportunityService, Pare
         return true;
     }
 
-    var initializeParent = function() {
-        setTitle($scope.parentLO, $scope.childLO);
+    var initializeLO = function() {
+        setTitle($scope.parent, $scope.lo);
         $scope.showApplicationRadioSelection = showApplicationRadioSelection() ? '' : 'hidden';
         var loi = getLOIByPrerequisite($location.hash());
         //var loi = getLOIByPrerequisite($location.search().prerequisite);
@@ -180,91 +146,26 @@ function ParentCtrl($scope, $routeParams, ParentLearningOpportunityService, Pare
         }
     };
 
-    var childLOSuccess = function(childResult) {
-        $scope.childLO = childResult;
-        $scope.lois = childResult.lois;
-        ChildLODataService.setChildLOData(childResult);
-
-        if (childResult.parent && !ParentLODataService.dataExists(childResult.parent.id)) {
-            ParentLearningOpportunityService.query({
-                parentId: childResult.parent.id
-            }).then(function(parentResult) {
-                $scope.parentLO = parentResult;
-                ParentLODataService.setParentLOData(parentResult);
-                initializeParent();
-                //initializeTranslationLanguage(childResult);
-            });
-        } else {
-            $scope.parentLO = ParentLODataService.getParentLOData();
-
-            // TODO: for lukio, refactor
-            if (childResult.provider) {
-                $scope.parentLO = {};
-                $scope.parentLO.provider = childResult.provider;
-            }
-
-            initializeParent();
-            //initializeTranslationLanguage(childResult);
-        }
-    };
-
-    var parentLOSuccess = function(result) {
-        $scope.parentLO = result;
-        $scope.lois = result.lois;
-        ParentLODataService.setParentLOData(result);
-        initializeParent();
-    };
-
-    /*
-    var initializeTranslationLanguage = function(result) {
-        if (result && result.availableTranslationLanguages && result.availableTranslationLanguages.length > 1) {
-            var translationLanguageIndex = result.availableTranslationLanguages.indexOf($scope.selectedLOI.translationLanguage);
-            result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
-        }
-    }
-    */
-
     var loError = function(result) {
     };
 
-    // fetch data for parent and/or its child LO
-    // TODO: could this logic be hidden in service?
-    var initView = function() {
-        if (isChild()) {
-            if (!ChildLODataService.dataExists($routeParams.id)) {
-                ChildLearningOpportunityService.query({
-                    childId: $routeParams.id,
-                    type: $scope.loType
-                }).then(childLOSuccess, loError);
-            } else {
-                $scope.childLO = ChildLODataService.getChildLOData();
-                $scope.parentLO = ParentLODataService.getParentLOData();
-
-                // TODO: for lukio, refactor
-                if ($scope.childLO.provider) {
-                    $scope.parentLO = {};
-                    $scope.parentLO.provider = $scope.childLO.provider;
-                }
-
-                $scope.lois = $scope.childLO.lois;
-                initializeParent();
-            }
-        } else {
-            if (!ParentLODataService.dataExists($routeParams.id)) {
-                ParentLearningOpportunityService.query({
-                    parentId: $routeParams.id
-                }).then(parentLOSuccess, loError);
-            } else {
-                $scope.parentLO = ParentLODataService.getParentLOData();
-                $scope.lois = $scope.parentLO.lois;
-                initializeParent();
-            }
-        }
+    // fetch data for LO
+    var loadLo = function(languageCode) {
+        loResource.query({
+            id: $routeParams.id,
+            lang: languageCode
+        }).then(function(loResult) {
+            $scope.lo = loResult.lo;
+            $scope.parent = loResult.parent;
+            $scope.provider = loResult.provider;
+            $scope.lois = loResult.lo.lois;
+            initializeLO();
+        });
     }
 
     $scope.changePrerequisiteSelection = function(prerequisite) {
         $location.hash(prerequisite).replace();
-        initView();
+        loadLo();
         //$location.search({prerequisite: prerequisite}).replace();
     }
 
@@ -284,7 +185,7 @@ function ParentCtrl($scope, $routeParams, ParentLearningOpportunityService, Pare
         }
     };
 
-    $scope.$watch('parentLO.provider', function(data) {
+    $scope.$watch('provider', function(data) {
         if (data && data.pictureFound) {
             LearningOpportunityProviderPictureService.query({providerId: data.id}).then(function(result) {
                 $scope.providerImage = result;
@@ -294,43 +195,7 @@ function ParentCtrl($scope, $routeParams, ParentLearningOpportunityService, Pare
 
     // change description language and re-load LO data with the specified language
     $scope.changeDescriptionLanguage = function(languageCode) {
-        $scope.descriptionLanguage = languageCode;
-        //var parentId = isChild() && $scope.childLO.parent ? $scope.childLO.parent.id : $routeParams.id;
-
-        var loadParent = function(parentId) {
-            ParentLearningOpportunityService.query({
-            parentId: parentId, 
-            language: languageCode}).then(function(result) {
-                $scope.parentLO = result;
-                setTitle($scope.parentLO, $scope.childLO);
-                initializeParent();
-            });
-        };
-
-        var loadChild = function() {
-            ChildLearningOpportunityService.query({
-                childId: $routeParams.id,
-                type: $scope.loType,
-                language: $scope.descriptionLanguage}).then(function(result) {
-                    $scope.childLO = result;
-                    $scope.lois = result.lois;
-
-                    if (result.parent) {
-                        loadParent(result.parent.id);
-                    } else {
-                        setTitle($scope.parentLO, $scope.childLO);
-                        initializeParent();
-                    }
-                    //initializeTranslationLanguage(result);
-                });
-        }
-
-        if (isChild()) {
-            loadChild();
-        } else {
-            loadParent($routeParams.id);
-        }
-
+        loadLo(languageCode);
         return false;
     };
 
@@ -341,7 +206,7 @@ function ParentCtrl($scope, $routeParams, ParentLearningOpportunityService, Pare
     };
 
     // initilize view model
-    initView();
+    loadLo();
 
     // trigger once content is loaded
     $scope.$on('$viewContentLoaded', function() {

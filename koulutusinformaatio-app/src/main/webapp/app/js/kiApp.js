@@ -16,21 +16,19 @@ kiApp.config(['$routeProvider', '$analyticsProvider', function($routeProvider, $
     $routeProvider.when('/:loType/:id', {
         templateUrl: 'partials/learningopportunity.html', 
         controller: InfoCtrl,
-        reloadOnSearch: false
-        /*,
+        reloadOnSearch: false,
         resolve: {
-            subcontroller: function($route) {
+            loResource: function($route, UpperSecondaryLOService, ChildLOService, ParentLOService) {
                 switch($route.current.params.loType) {
                     case 'lukio':
-                        return UpSecCtrl;
+                        return UpperSecondaryLOService;
                     case 'koulutusohjelma':
-                        return ChildCtrl;
+                        return ChildLOService;
                     case 'tutkinto':
-                        return ParentCtrl;
+                        return ParentLOService;
                 }
             }
         }
-        */
     });
 
     $routeProvider.when('/muistilista', {

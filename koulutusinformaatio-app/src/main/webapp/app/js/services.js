@@ -74,136 +74,8 @@ service('SearchLocationService', ['$http', '$timeout', '$q', 'LanguageService', 
 /**
  *  Resource for requesting parent LO data
  */
-service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', '$filter', 'LanguageService', 'UtilityService', function($http, $timeout, $q, $filter, LanguageService, UtilityService) {
-    var transformData = function(result) {
-        if (result && result.availableTranslationLanguages) {
-            var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
-            result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
-        }
-
-        if (result && result.provider && result.provider.name) {
-            result.provider.encodedName = $filter('encodeURIComponent')('"' + result.provider.name + '"');
-        }
-
-        //var applicationSystems = [];
-
-        for (var index in result.applicationOptions) {
-            if (result.applicationOptions.hasOwnProperty(index)) {
-                var ao = result.applicationOptions[index];
-                if (ao.applicationSystem && ao.applicationSystem.applicationDates && ao.applicationSystem.applicationDates.length > 0) {
-                    ao.applicationSystem.applicationDates = ao.applicationSystem.applicationDates[0];
-                }
-                result.applicationSystem = ao.applicationSystem;
-            }
-        }
-
-        // set teaching languge as the first language in array
-        for (var index in result.lois) {
-            if (result.lois.hasOwnProperty(index)) {
-                var loi = result.lois[index];
-                for (var asIndex in loi.applicationSystems) {
-                    if (loi.applicationSystems.hasOwnProperty(asIndex)) {
-                        var as = loi.applicationSystems[asIndex];
-                        for (var aoIndex in as.applicationOptions) {
-                            if (as.applicationOptions.hasOwnProperty(aoIndex)) {
-                                var ao = as.applicationOptions[aoIndex];
-
-                                if (ao.teachingLanguages && ao.teachingLanguages.length > 0) {
-                                    ao.teachLang = ao.teachingLanguages[0];
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        // sort exams based on start time
-        for (var index in result.lois) {
-            if (result.lois.hasOwnProperty(index)) {
-                var loi = result.lois[index];
-                for (var asIndex in loi.applicationSystems) {
-                    if (loi.applicationSystems.hasOwnProperty(asIndex)) {
-                        var as = loi.applicationSystems[asIndex];
-                        for (var aoIndex in as.applicationOptions) {
-                            if (as.applicationOptions.hasOwnProperty(aoIndex)) {
-                                var ao = as.applicationOptions[aoIndex];
-                                for (var exam in ao.exams) {
-                                    if (ao.exams.hasOwnProperty(exam)) {
-                                        if (ao.exams[exam].examEvents) {
-                                            ao.exams[exam].examEvents.sort(function(a, b) {
-                                                return a.start - b.start;
-                                            });
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        // check if application system is of type Lisähaku
-        for (var loiIndex in result.lois) {
-            if (result.lois.hasOwnProperty(loiIndex)) {
-                var loi = result.lois[loiIndex];
-                for (var asIndex in loi.applicationSystems) {
-                    if (loi.applicationSystems.hasOwnProperty(asIndex)) {
-                        var as = loi.applicationSystems[asIndex];
-                        if (as.applicationOptions && as.applicationOptions.length > 0) {
-                            var firstAo = as.applicationOptions[0];
-                            as.aoSpecificApplicationDates = firstAo.specificApplicationDates;
-                        }
-                    }
-                }
-            }
-        }
-
-        // group application systems by prerequisite
-        var applicationSystemsByPrerequisite = {};
-        angular.forEach(result.lois, function(loi, loikey) {
-            angular.forEach(loi.applicationSystems, function(as, askey) {
-                as.loiId = loi.id;
-                if (applicationSystemsByPrerequisite[loi.prerequisite.value]) {
-                    applicationSystemsByPrerequisite[loi.prerequisite.value].push(as);
-                } else {
-                    applicationSystemsByPrerequisite[loi.prerequisite.value] = [];
-                    applicationSystemsByPrerequisite[loi.prerequisite.value].push(as);
-                }
-
-            });
-        });
-
-        // sort application systems and select active LOI
-        var lois = [];
-        angular.forEach(applicationSystemsByPrerequisite, function(asByPrerequisite, key){
-            UtilityService.sortApplicationSystems(asByPrerequisite);
-            
-            if (asByPrerequisite.length > 0) {
-                var loiId = asByPrerequisite[0].loiId;
-            }
-
-            
-            angular.forEach(result.lois, function(loi, loikey){
-                if (loi.id === loiId) {
-                    loi.applicationSystems = asByPrerequisite;
-                    lois.push(loi);
-                }
-            });
-        });
-        result.lois = lois;
-
-        // sort LOIs based on prerequisite
-        if (result.lois) {
-            result.lois.sort(function(a, b) {
-                if (a.prerequisite.description > b.prerequisite.description) return 1;
-                else if (a.prerequisite.description < b.prerequisite.description) return -1;
-                else return a.id > b.id ? 1 : -1;
-            });
-        }
-    };
-
+service('ParentLOService', ['$http', '$timeout', '$q', 'LanguageService', 'ParentLOTransformer', function($http, $timeout, $q, LanguageService, ParentLOTransformer) {
+    
     return {
         query: function(options) {
             var deferred = $q.defer();
@@ -211,16 +83,20 @@ service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', '$filter
                 uiLang: LanguageService.getLanguage()
             }
 
-            if (options.language) {
-                queryParams.lang = options.language
+            if (options.lang) {
+                queryParams.lang = options.lang
             }
 
-            $http.get('../lo/parent/' + options.parentId, {
+            $http.get('../lo/parent/' + options.id, {
                 params: queryParams
             }).
             success(function(result) {
-                transformData(result);
-                deferred.resolve(result);
+                ParentLOTransformer.transform(result);
+                var loResult = {
+                    lo: result,
+                    provider: result.provider
+                }
+                deferred.resolve(loResult);
             }).
             error(function(result) {
                 deferred.reject(result);
@@ -234,70 +110,152 @@ service('ParentLearningOpportunityService', ['$http', '$timeout', '$q', '$filter
 /**
  *  Resource for requesting child LO data
  */
-service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'LanguageService', 'UtilityService', function($http, $timeout, $q, LanguageService, UtilityService) {
+service('ChildLOService', ['$http', '$timeout', '$q', 'LanguageService', 'ChildLOTransformer', 'ParentLOService', function($http, $timeout, $q, LanguageService, ChildLOTransformer, ParentLOService) {
+    return {
+        query: function(options) {
+            var deferred = $q.defer();
+            var queryParams = {
+                uiLang: LanguageService.getLanguage()
+            }
 
-    // TODO: could we automate data transformation somehow?
-    var transformData = function(result) {
-        var studyplanKey = "KOULUTUSOHJELMA";
+            if (options.lang) {
+                queryParams.lang = options.lang
+            }
 
-        if (result && result.availableTranslationLanguages) {
-            var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
-            result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
+            var url = '../lo/child/';
+
+            $http.get(url + options.id, {
+                params: queryParams
+            }).
+            success(function(result) {
+                ChildLOTransformer.transform(result);
+                ParentLOService.query({
+                    id: result.parent.id,
+                    lang: options.lang
+                }).then(function(presult) {
+                    result.educationDegree = presult.lo.educationDegree;
+                    var loResult = {
+                        lo: result,
+                        parent: presult.lo,
+                        provider: presult.provider
+                    }
+                    deferred.resolve(loResult);    
+                }, function(reason) {
+                    deferred.reject(reason);
+                });
+            }).
+            error(function(result) {
+                deferred.reject(result);
+            });
+
+            return deferred.promise;
         }
-        
+    }
+}]).
 
-        for (var loiIndex in result.lois) {
-            if (result.lois.hasOwnProperty(loiIndex)) {
-                var loi = result.lois[loiIndex];
+/**
+ * Resource for requesting Upper Secondary LO data
+ */
+service('UpperSecondaryLOService', ['$http', '$timeout', '$q', 'LanguageService', 'ChildLOTransformer', function($http, $timeout, $q, LanguageService, ChildLOTransformer) {
+    return {
+        query: function(options) {
+            var deferred = $q.defer();
+            var queryParams = {
+                uiLang: LanguageService.getLanguage()
+            }
 
-                var startDate = new Date(loi.startDate);
-                loi.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
-                loi.teachingLanguage = getFirstItemInList(loi.teachingLanguages);
-                loi.formOfTeaching = getFirstItemInList(loi.formOfTeaching);
+            if (options.lang) {
+                queryParams.lang = options.lang
+            }
 
-                if (loi.webLinks) {
-                    loi.studyPlan = loi.webLinks[studyplanKey];
+            var url = '../lo/upsec/';
+
+            $http.get(url + options.id, {
+                params: queryParams
+            }).
+            success(function(result) {
+                ChildLOTransformer.transform(result);
+                var loResult = {
+                    lo: result,
+                    parent: {},
+                    provider: result.provider
+                }
+                deferred.resolve(loResult);
+            }).
+            error(function(result) {
+                deferred.reject(result);
+            });
+
+            return deferred.promise;
+        }
+    }
+}]).
+
+/**
+ * Transformer for parent LO data
+ */
+service('ParentLOTransformer', ['UtilityService', '$filter', function(UtilityService, $filter) {
+    return {
+        transform: function(result) {
+            if (result && result.availableTranslationLanguages) {
+                var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
+                result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
+            }
+
+            if (result && result.provider && result.provider.name) {
+                result.provider.encodedName = $filter('encodeURIComponent')('"' + result.provider.name + '"');
+            }
+
+            //var applicationSystems = [];
+
+            for (var index in result.applicationOptions) {
+                if (result.applicationOptions.hasOwnProperty(index)) {
+                    var ao = result.applicationOptions[index];
+                    if (ao.applicationSystem && ao.applicationSystem.applicationDates && ao.applicationSystem.applicationDates.length > 0) {
+                        ao.applicationSystem.applicationDates = ao.applicationSystem.applicationDates[0];
+                    }
+                    result.applicationSystem = ao.applicationSystem;
                 }
             }
-        }
 
-        // set teaching languge as the first language in array
-        for (var index in result.lois) {
-            if (result.lois.hasOwnProperty(index)) {
-                var loi = result.lois[index];
-                for (var asIndex in loi.applicationSystems) {
-                    if (loi.applicationSystems.hasOwnProperty(asIndex)) {
-                        var as = loi.applicationSystems[asIndex];
-                        for (var aoIndex in as.applicationOptions) {
-                            if (as.applicationOptions.hasOwnProperty(aoIndex)) {
-                                var ao = as.applicationOptions[aoIndex];
+            // set teaching languge as the first language in array
+            for (var index in result.lois) {
+                if (result.lois.hasOwnProperty(index)) {
+                    var loi = result.lois[index];
+                    for (var asIndex in loi.applicationSystems) {
+                        if (loi.applicationSystems.hasOwnProperty(asIndex)) {
+                            var as = loi.applicationSystems[asIndex];
+                            for (var aoIndex in as.applicationOptions) {
+                                if (as.applicationOptions.hasOwnProperty(aoIndex)) {
+                                    var ao = as.applicationOptions[aoIndex];
 
-                                if (ao.teachingLanguages && ao.teachingLanguages.length > 0) {
-                                    ao.teachLang = ao.teachingLanguages[0];
+                                    if (ao.teachingLanguages && ao.teachingLanguages.length > 0) {
+                                        ao.teachLang = ao.teachingLanguages[0];
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
-        }
 
-        // sort exams based on start time
-        for (var loiIndex in result.lois) {
-            if (result.lois.hasOwnProperty(loiIndex)) {
-                var loi = result.lois[loiIndex];
-                for (var asIndex in loi.applicationSystems) {
-                    if (loi.applicationSystems.hasOwnProperty(asIndex)) {
-                        var as = loi.applicationSystems[asIndex];
-                        for (var aoIndex in as.applicationOptions) {
-                            if (as.applicationOptions.hasOwnProperty(aoIndex)) {
-                                var ao = as.applicationOptions[aoIndex];
-                                for (var exam in ao.exams) {
-                                    if (ao.exams.hasOwnProperty(exam)) {
-                                        if (ao.exams[exam].examEvents) {
-                                            ao.exams[exam].examEvents.sort(function(a, b) {
-                                                return a.start - b.start;
-                                            });
+            // sort exams based on start time
+            for (var index in result.lois) {
+                if (result.lois.hasOwnProperty(index)) {
+                    var loi = result.lois[index];
+                    for (var asIndex in loi.applicationSystems) {
+                        if (loi.applicationSystems.hasOwnProperty(asIndex)) {
+                            var as = loi.applicationSystems[asIndex];
+                            for (var aoIndex in as.applicationOptions) {
+                                if (as.applicationOptions.hasOwnProperty(aoIndex)) {
+                                    var ao = as.applicationOptions[aoIndex];
+                                    for (var exam in ao.exams) {
+                                        if (ao.exams.hasOwnProperty(exam)) {
+                                            if (ao.exams[exam].examEvents) {
+                                                ao.exams[exam].examEvents.sort(function(a, b) {
+                                                    return a.start - b.start;
+                                                });
+                                            }
                                         }
                                     }
                                 }
@@ -306,88 +264,73 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
                     }
                 }
             }
-        }
 
-        // group application systems by prerequisite
-        var applicationSystemsByPrerequisite = {};
-        angular.forEach(result.lois, function(loi, loikey) {
-            angular.forEach(loi.applicationSystems, function(as, askey) {
-                as.loiId = loi.id;
-                if (applicationSystemsByPrerequisite[loi.prerequisite.value]) {
-                    applicationSystemsByPrerequisite[loi.prerequisite.value].push(as);
-                } else {
-                    applicationSystemsByPrerequisite[loi.prerequisite.value] = [];
-                    applicationSystemsByPrerequisite[loi.prerequisite.value].push(as);
-                }
-
-            });
-        });
-
-        // sort application systems and select active LOI
-        var lois = [];
-        angular.forEach(applicationSystemsByPrerequisite, function(asByPrerequisite, key){
-            UtilityService.sortApplicationSystems(asByPrerequisite);
-            
-            if (asByPrerequisite.length > 0) {
-                var loiId = asByPrerequisite[0].loiId;
-            }
-
-            
-            angular.forEach(result.lois, function(loi, loikey){
-                if (loi.id === loiId) {
-                    loi.applicationSystems = asByPrerequisite;
-                    lois.push(loi);
-                }
-            });
-        });
-
-        result.lois = lois;
-
-        // sort language selection alphabetically
-        angular.forEach(result.lois, function(loi, loikey){
-            UtilityService.sortLanguageSelection(loi.languageSelection);
-        });
-
-        // check if application system is of type Lisähaku
-        for (var loiIndex in result.lois) {
-            if (result.lois.hasOwnProperty(loiIndex)) {
-                var loi = result.lois[loiIndex];
-                for (var asIndex in loi.applicationSystems) {
-                    if (loi.applicationSystems.hasOwnProperty(asIndex)) {
-                        var as = loi.applicationSystems[asIndex];
-                        if (as.applicationOptions && as.applicationOptions.length > 0) {
-                            var firstAo = as.applicationOptions[0];
-                            as.aoSpecificApplicationDates = firstAo.specificApplicationDates;
+            // check if application system is of type Lisähaku
+            for (var loiIndex in result.lois) {
+                if (result.lois.hasOwnProperty(loiIndex)) {
+                    var loi = result.lois[loiIndex];
+                    for (var asIndex in loi.applicationSystems) {
+                        if (loi.applicationSystems.hasOwnProperty(asIndex)) {
+                            var as = loi.applicationSystems[asIndex];
+                            if (as.applicationOptions && as.applicationOptions.length > 0) {
+                                var firstAo = as.applicationOptions[0];
+                                as.aoSpecificApplicationDates = firstAo.specificApplicationDates;
+                            }
                         }
                     }
                 }
             }
-        }
 
-        // sort LOIs based on prerequisite
-        if (result.lois) {
-            result.lois.sort(function(a, b) {
-                if (a.prerequisite.description > b.prerequisite.description) return 1;
-                else if (a.prerequisite.description < b.prerequisite.description) return -1;
-                else return a.id > b.id ? 1 : -1;
-            });
-        }
+            // group application systems by prerequisite
+            var applicationSystemsByPrerequisite = {};
+            angular.forEach(result.lois, function(loi, loikey) {
+                angular.forEach(loi.applicationSystems, function(as, askey) {
+                    as.loiId = loi.id;
+                    if (applicationSystemsByPrerequisite[loi.prerequisite.value]) {
+                        applicationSystemsByPrerequisite[loi.prerequisite.value].push(as);
+                    } else {
+                        applicationSystemsByPrerequisite[loi.prerequisite.value] = [];
+                        applicationSystemsByPrerequisite[loi.prerequisite.value].push(as);
+                    }
 
-        // add current child to sibligs
-        if (result.related) {
-            result.related.push({
-                childLOId: result.id, 
-                name: result.name
+                });
             });
 
-            // sort siblings alphabetically
-            result.related = result.related.sort(function(a, b) {
-                if (a.childLOId > b.childLOId) return 1;
-                else if (a.childLOId < b.childLOId) return -1;
-                else return a.childLOId > b.childLOId ? 1 : -1;
+            // sort application systems and select active LOI
+            var lois = [];
+            angular.forEach(applicationSystemsByPrerequisite, function(asByPrerequisite, key){
+                UtilityService.sortApplicationSystems(asByPrerequisite);
+                
+                if (asByPrerequisite.length > 0) {
+                    var loiId = asByPrerequisite[0].loiId;
+                }
+
+                
+                angular.forEach(result.lois, function(loi, loikey){
+                    if (loi.id === loiId) {
+                        loi.applicationSystems = asByPrerequisite;
+                        lois.push(loi);
+                    }
+                });
             });
+            result.lois = lois;
+
+            // sort LOIs based on prerequisite
+            if (result.lois) {
+                result.lois.sort(function(a, b) {
+                    if (a.prerequisite.description > b.prerequisite.description) return 1;
+                    else if (a.prerequisite.description < b.prerequisite.description) return -1;
+                    else return a.id > b.id ? 1 : -1;
+                });
+            }
         }
-    };
+    }
+}]).
+
+/**
+ * Transformer for child LO data
+ */
+service('ChildLOTransformer', ['UtilityService', function(UtilityService) {
 
     var getFirstItemInList = function(list) {
         if (list && list[0]) {
@@ -398,30 +341,156 @@ service('ChildLearningOpportunityService', ['$http', '$timeout', '$q', 'Language
     };
 
     return {
-        query: function(options) {
-            var deferred = $q.defer();
-            var queryParams = {
-                uiLang: LanguageService.getLanguage()
+        transform: function(result) {
+            var studyplanKey = "KOULUTUSOHJELMA";
+
+            if (result && result.availableTranslationLanguages) {
+                var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
+                result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
+            }
+            
+
+            for (var loiIndex in result.lois) {
+                if (result.lois.hasOwnProperty(loiIndex)) {
+                    var loi = result.lois[loiIndex];
+
+                    var startDate = new Date(loi.startDate);
+                    loi.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
+                    loi.teachingLanguage = getFirstItemInList(loi.teachingLanguages);
+                    loi.formOfTeaching = getFirstItemInList(loi.formOfTeaching);
+
+                    if (loi.webLinks) {
+                        loi.studyPlan = loi.webLinks[studyplanKey];
+                    }
+                }
             }
 
-            if (options.language) {
-                queryParams.lang = options.language
+            // set teaching languge as the first language in array
+            for (var index in result.lois) {
+                if (result.lois.hasOwnProperty(index)) {
+                    var loi = result.lois[index];
+                    for (var asIndex in loi.applicationSystems) {
+                        if (loi.applicationSystems.hasOwnProperty(asIndex)) {
+                            var as = loi.applicationSystems[asIndex];
+                            for (var aoIndex in as.applicationOptions) {
+                                if (as.applicationOptions.hasOwnProperty(aoIndex)) {
+                                    var ao = as.applicationOptions[aoIndex];
+
+                                    if (ao.teachingLanguages && ao.teachingLanguages.length > 0) {
+                                        ao.teachLang = ao.teachingLanguages[0];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
-            var url = options.type == 'koulutusohjelma' ? '../lo/child/' : '../lo/upsec/';
+            // sort exams based on start time
+            for (var loiIndex in result.lois) {
+                if (result.lois.hasOwnProperty(loiIndex)) {
+                    var loi = result.lois[loiIndex];
+                    for (var asIndex in loi.applicationSystems) {
+                        if (loi.applicationSystems.hasOwnProperty(asIndex)) {
+                            var as = loi.applicationSystems[asIndex];
+                            for (var aoIndex in as.applicationOptions) {
+                                if (as.applicationOptions.hasOwnProperty(aoIndex)) {
+                                    var ao = as.applicationOptions[aoIndex];
+                                    for (var exam in ao.exams) {
+                                        if (ao.exams.hasOwnProperty(exam)) {
+                                            if (ao.exams[exam].examEvents) {
+                                                ao.exams[exam].examEvents.sort(function(a, b) {
+                                                    return a.start - b.start;
+                                                });
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
-            $http.get(url + options.childId, {
-                params: queryParams
-            }).
-            success(function(result) {
-                transformData(result);
-                deferred.resolve(result);
-            }).
-            error(function(result) {
-                deferred.reject(result);
+            // group application systems by prerequisite
+            var applicationSystemsByPrerequisite = {};
+            angular.forEach(result.lois, function(loi, loikey) {
+                angular.forEach(loi.applicationSystems, function(as, askey) {
+                    as.loiId = loi.id;
+                    if (applicationSystemsByPrerequisite[loi.prerequisite.value]) {
+                        applicationSystemsByPrerequisite[loi.prerequisite.value].push(as);
+                    } else {
+                        applicationSystemsByPrerequisite[loi.prerequisite.value] = [];
+                        applicationSystemsByPrerequisite[loi.prerequisite.value].push(as);
+                    }
+
+                });
             });
 
-            return deferred.promise;
+            // sort application systems and select active LOI
+            var lois = [];
+            angular.forEach(applicationSystemsByPrerequisite, function(asByPrerequisite, key){
+                UtilityService.sortApplicationSystems(asByPrerequisite);
+                
+                if (asByPrerequisite.length > 0) {
+                    var loiId = asByPrerequisite[0].loiId;
+                }
+
+                
+                angular.forEach(result.lois, function(loi, loikey){
+                    if (loi.id === loiId) {
+                        loi.applicationSystems = asByPrerequisite;
+                        lois.push(loi);
+                    }
+                });
+            });
+
+            result.lois = lois;
+
+            // sort language selection alphabetically
+            angular.forEach(result.lois, function(loi, loikey){
+                UtilityService.sortLanguageSelection(loi.languageSelection);
+            });
+
+            // check if application system is of type Lisähaku
+            for (var loiIndex in result.lois) {
+                if (result.lois.hasOwnProperty(loiIndex)) {
+                    var loi = result.lois[loiIndex];
+                    for (var asIndex in loi.applicationSystems) {
+                        if (loi.applicationSystems.hasOwnProperty(asIndex)) {
+                            var as = loi.applicationSystems[asIndex];
+                            if (as.applicationOptions && as.applicationOptions.length > 0) {
+                                var firstAo = as.applicationOptions[0];
+                                as.aoSpecificApplicationDates = firstAo.specificApplicationDates;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // sort LOIs based on prerequisite
+            if (result.lois) {
+                result.lois.sort(function(a, b) {
+                    if (a.prerequisite.description > b.prerequisite.description) return 1;
+                    else if (a.prerequisite.description < b.prerequisite.description) return -1;
+                    else return a.id > b.id ? 1 : -1;
+                });
+            }
+
+            // add current child to sibligs
+            if (result.related) {
+                result.related.push({
+                    childLOId: result.id, 
+                    name: result.name
+                });
+
+                // sort siblings alphabetically
+                result.related = result.related.sort(function(a, b) {
+                    if (a.childLOId > b.childLOId) return 1;
+                    else if (a.childLOId < b.childLOId) return -1;
+                    else return a.childLOId > b.childLOId ? 1 : -1;
+                });
+            }
         }
     }
 }]).
