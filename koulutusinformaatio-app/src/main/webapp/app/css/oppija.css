@@ -2197,7 +2197,8 @@ table.striped {
     display: inline-block;
     height: 26px;
     width: 26px;
-    color: transparent; }
+    color: transparent;
+    font-size: 0px; }
     #social li a.facebook {
       background: transparent url("../img/social/facebook.png") no-repeat scroll 0 0; }
     #social li a.linked_in {
