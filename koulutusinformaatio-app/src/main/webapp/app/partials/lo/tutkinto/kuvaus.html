@@ -1,0 +1,19 @@
+<section class="grid16-9 offset-right-16-1 no-left-gutter wide-column">
+    <div data-ki-prerequisite-selection-ribbon></div>
+    <div data-ki-language-ribbon class="ribbon"></div>
+	<div data-render-text-block data-title="goals-of-education" data-content="{{lo.goals}}"></div>
+	<div data-render-text-block data-title="selection-of-degree-program" data-content="{{selectedLOI.selectingDegreeProgram}}"></div>
+	<div data-ng-switch="hasChildren()">
+	    <div data-ng-switch-when="true">
+	        <h2 data-ki-i18n="base-education-{{selectedLOI.prerequisite.value}}"></h2>
+	            <ul class="disc">
+	                <li data-ng-repeat="child in selectedAs.children">
+	                	<a href="#/koulutusohjelma/{{child.losId}}#{{prerequisite.value}}">{{child.name}}</a>
+	                </li>
+	            </ul>
+	    </div>
+	</div>
+	<div data-render-text-block data-title="access-to-further-studies" data-content="{{lo.accessToFurtherStudies}}"></div>
+</section>
+<div data-ng-class="applyFormClass" data-ng-include data-src="partialCommonUrl + 'haku.html'" data-ng-controller="ApplicationCtrl"></div>
+<div class="clear"></div>

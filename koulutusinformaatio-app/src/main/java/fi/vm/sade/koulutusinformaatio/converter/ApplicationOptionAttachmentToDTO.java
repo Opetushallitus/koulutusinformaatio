@@ -29,20 +29,26 @@ import java.util.List;
 public class ApplicationOptionAttachmentToDTO {
 
     public static ApplicationOptionAttachmentDTO convert(final ApplicationOptionAttachment aoa, final String lang) {
-        ApplicationOptionAttachmentDTO dto = new ApplicationOptionAttachmentDTO();
-        dto.setDueDate(aoa.getDueDate());
-        dto.setType(ConverterUtil.getTextByLanguageUseFallbackLang(aoa.getType(), lang));
-        dto.setDescreption(ConverterUtil.getTextByLanguageUseFallbackLang(aoa.getDescreption(), lang));
-        dto.setAddress(AddressToDTO.convert(aoa.getAddress()));
-        return dto;
+        if (aoa != null) {
+            ApplicationOptionAttachmentDTO dto = new ApplicationOptionAttachmentDTO();
+            dto.setDueDate(aoa.getDueDate());
+            dto.setType(ConverterUtil.getTextByLanguageUseFallbackLang(aoa.getType(), lang));
+            dto.setDescreption(ConverterUtil.getTextByLanguageUseFallbackLang(aoa.getDescreption(), lang));
+            dto.setAddress(AddressToDTO.convert(aoa.getAddress()));
+            return dto;
+        }
+        return null;
     }
 
     public static List<ApplicationOptionAttachmentDTO> convertAll(final List<ApplicationOptionAttachment> aoas, final String lang) {
-        return Lists.transform(aoas, new Function<ApplicationOptionAttachment, ApplicationOptionAttachmentDTO>() {
-            @Override
-            public ApplicationOptionAttachmentDTO apply(ApplicationOptionAttachment input) {
-                return convert(input, lang);
-            }
-        });
+        if (aoas != null) {
+            return Lists.transform(aoas, new Function<ApplicationOptionAttachment, ApplicationOptionAttachmentDTO>() {
+                @Override
+                public ApplicationOptionAttachmentDTO apply(ApplicationOptionAttachment input) {
+                    return convert(input, lang);
+                }
+            });
+        }
+        return null;
     }
 }

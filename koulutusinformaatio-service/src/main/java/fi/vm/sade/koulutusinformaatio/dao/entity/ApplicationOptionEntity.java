@@ -16,7 +16,6 @@
 
 package fi.vm.sade.koulutusinformaatio.dao.entity;
 
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
@@ -65,10 +64,16 @@ public class ApplicationOptionEntity {
     private boolean specificApplicationDates;
     private Date applicationStartDate;
     private Date applicationEndDate;
+    @Embedded
     private List<ApplicationOptionAttachmentEntity> attachments;
+    @Embedded
     private List<EmphasizedSubjectEntity> emphasizedSubjects;
-    private I18nText additionalInfo;
-    private I18nText additionalProof;
+    @Embedded
+    private I18nTextEntity additionalInfo;
+    @Embedded
+    private AdditionalProofEntity additionalProof;
+    @Embedded
+    private ScoreLimitEntity overallScoreLimit;
 
 
     public ApplicationOptionEntity() {
@@ -275,19 +280,27 @@ public class ApplicationOptionEntity {
         this.emphasizedSubjects = emphasizedSubjects;
     }
 
-    public I18nText getAdditionalInfo() {
+    public I18nTextEntity getAdditionalInfo() {
         return additionalInfo;
     }
 
-    public void setAdditionalInfo(I18nText additionalInfo) {
+    public void setAdditionalInfo(I18nTextEntity additionalInfo) {
         this.additionalInfo = additionalInfo;
     }
 
-    public I18nText getAdditionalProof() {
+    public AdditionalProofEntity getAdditionalProof() {
         return additionalProof;
     }
 
-    public void setAdditionalProof(I18nText additionalProof) {
+    public void setAdditionalProof(AdditionalProofEntity additionalProof) {
         this.additionalProof = additionalProof;
+    }
+
+    public ScoreLimitEntity getOverallScoreLimit() {
+        return overallScoreLimit;
+    }
+
+    public void setOverallScoreLimit(ScoreLimitEntity overallScoreLimit) {
+        this.overallScoreLimit = overallScoreLimit;
     }
 }

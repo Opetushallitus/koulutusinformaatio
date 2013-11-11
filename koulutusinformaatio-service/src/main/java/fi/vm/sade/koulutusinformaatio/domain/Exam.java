@@ -16,7 +16,6 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,6 +26,7 @@ public class Exam {
     private I18nText type;
     private I18nText description;
     private List<ExamEvent> examEvents;
+    private ScoreLimit scoreLimit;
 
     public I18nText getType() {
         return type;
@@ -50,5 +50,13 @@ public class Exam {
 
     public void setExamEvents(List<ExamEvent> examEvents) {
         this.examEvents = examEvents;
+    }
+
+    public ScoreLimit getScoreLimit() {
+        return scoreLimit;
+    }
+
+    public void setScoreLimit(ScoreLimit scoreLimit) {
+        this.scoreLimit = scoreLimit;
     }
 }

@@ -62,7 +62,8 @@ public class ApplicationOption {
     private List<ApplicationOptionAttachment> attachments;
     private List<EmphasizedSubject> emphasizedSubjects;
     private I18nText additionalInfo;
-    private I18nText additionalProof;
+    private AdditionalProof additionalProof;
+    private ScoreLimit overallScoreLimit;
 
 
     public String getId() {
@@ -273,12 +274,20 @@ public class ApplicationOption {
         this.additionalInfo = additionalInfo;
     }
 
-    public I18nText getAdditionalProof() {
+    public AdditionalProof getAdditionalProof() {
         return additionalProof;
     }
 
-    public void setAdditionalProof(I18nText additionalProof) {
+    public void setAdditionalProof(AdditionalProof additionalProof) {
         this.additionalProof = additionalProof;
+    }
+
+    public ScoreLimit getOverallScoreLimit() {
+        return overallScoreLimit;
+    }
+
+    public void setOverallScoreLimit(ScoreLimit overallScoreLimit) {
+        this.overallScoreLimit = overallScoreLimit;
     }
 
     @Override

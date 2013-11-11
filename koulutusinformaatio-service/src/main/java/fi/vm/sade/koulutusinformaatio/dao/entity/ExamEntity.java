@@ -33,6 +33,8 @@ public class ExamEntity {
     private I18nTextEntity description;
     @Embedded
     private List<ExamEventEntity> examEvents;
+    @Embedded
+    private ScoreLimitEntity scoreLimit;
 
     public ExamEntity() {
     }
@@ -59,5 +61,13 @@ public class ExamEntity {
 
     public void setExamEvents(List<ExamEventEntity> examEvents) {
         this.examEvents = examEvents;
+    }
+
+    public ScoreLimitEntity getScoreLimit() {
+        return scoreLimit;
+    }
+
+    public void setScoreLimit(ScoreLimitEntity scoreLimit) {
+        this.scoreLimit = scoreLimit;
     }
 }

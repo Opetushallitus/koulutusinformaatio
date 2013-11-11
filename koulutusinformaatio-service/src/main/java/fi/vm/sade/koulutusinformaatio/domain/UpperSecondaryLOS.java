@@ -33,6 +33,8 @@ public class UpperSecondaryLOS extends LOS {
     private Provider provider;
     private I18nText structure;
     private I18nText accessToFurtherStudies;
+    private String creditValue;
+    private I18nText creditUnit;
 
     public String getId() {
         return id;
@@ -112,5 +114,21 @@ public class UpperSecondaryLOS extends LOS {
 
     public void setAccessToFurtherStudies(I18nText accessToFurtherStudies) {
         this.accessToFurtherStudies = accessToFurtherStudies;
+    }
+
+    public String getCreditValue() {
+        return creditValue;
+    }
+
+    public void setCreditValue(String creditValue) {
+        this.creditValue = creditValue;
+    }
+
+    public I18nText getCreditUnit() {
+        return creditUnit;
+    }
+
+    public void setCreditUnit(I18nText creditUnit) {
+        this.creditUnit = creditUnit;
     }
 }

@@ -13,18 +13,24 @@ import java.util.List;
 public class EmphasizedSubjectToDTO {
 
     public static EmphasizedSubjectDTO convert(EmphasizedSubject emphasizedSubject, String lang) {
-        EmphasizedSubjectDTO dto = new EmphasizedSubjectDTO();
-        dto.setValue(emphasizedSubject.getValue());
-        dto.setSubject(ConverterUtil.getTextByLanguage(emphasizedSubject.getSubject(), lang));
-        return dto;
+        if (emphasizedSubject != null) {
+            EmphasizedSubjectDTO dto = new EmphasizedSubjectDTO();
+            dto.setValue(emphasizedSubject.getValue());
+            dto.setSubject(ConverterUtil.getTextByLanguage(emphasizedSubject.getSubject(), lang));
+            return dto;
+        }
+        return null;
     }
 
     public static List<EmphasizedSubjectDTO> convertAll(final List<EmphasizedSubject> emphasizedSubjects, final String lang) {
-        return Lists.transform(emphasizedSubjects, new Function<EmphasizedSubject, EmphasizedSubjectDTO>() {
-            @Override
-            public EmphasizedSubjectDTO apply(EmphasizedSubject input) {
-                return convert(input, lang);
-            }
-        });
+        if (emphasizedSubjects != null) {
+            return Lists.transform(emphasizedSubjects, new Function<EmphasizedSubject, EmphasizedSubjectDTO>() {
+                @Override
+                public EmphasizedSubjectDTO apply(EmphasizedSubject input) {
+                    return convert(input, lang);
+                }
+            });
+        }
+        return null;
     }
 }

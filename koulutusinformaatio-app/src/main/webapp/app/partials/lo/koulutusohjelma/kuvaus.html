@@ -1,0 +1,38 @@
+<section class="grid16-9 offset-right-16-1 no-left-gutter wide-column">
+    <div data-ki-prerequisite-selection-ribbon></div>
+    <div class="infobox">
+        <ul class="nobullet">
+            <li>
+                <span data-ki-i18n="education-starts" data-show-colon="true" class="margin-right-1"></span>
+                <span class="bold">{{selectedLOI.startDate}}</span>
+            </li>
+            <li>
+                <span data-ki-i18n="language-of-instruction" data-show-colon="true" class="margin-right-1"></span>
+                <span class="bold">{{selectedLOI.teachingLanguage}}</span>
+            </li>
+            <li>
+                <span data-ki-i18n="form-of-education" data-show-colon="true" class="margin-right-1"></span>
+                <span class="bold">{{selectedLOI.formOfTeaching}}</span>
+            </li>
+            <li>
+                <span data-ki-i18n="duration" data-show-colon="true" class="margin-right-1"></span>
+                <span class="bold">{{parent.creditValue}} {{parent.creditUnit}}</span>
+            </li>
+        </ul>
+    </div>
+    <div data-ki-language-ribbon class="ribbon"></div>
+    <div data-render-text-block data-title="goals-of-education" data-content="{{lo.goals}}"></div>
+    <div data-render-text-block data-title="content-of-studies" data-content="{{selectedLOI.content}}"></div>
+    <div data-render-study-plan></div>
+    <div data-render-text-block data-title="structure-of-studies" data-content="{{parent.structure}}" data-level="2"></div>
+    <div data-ki-render-language-selection></div>
+    <div data-ki-render-diploma></div>
+    <div data-render-text-block data-title="working-life-placement" data-content="{{selectedLOI.workingLifePlacement}}"></div>
+    <div data-ki-render-professional-titles></div>
+    <div data-render-text-block data-title="internationalization" data-content="{{selectedLOI.internationalization}}"></div>
+    <div data-render-text-block data-title="cooperation" data-content="{{selectedLOI.cooperation}}"></div>
+    <div data-render-text-block data-title="access-to-further-studies" data-content="{{lo.accessToFurtherStudies}}"></div>
+    <div data-render-contact-person-info></div>
+</section>
+<div data-ng-class="applyFormClass" data-ng-include data-src="partialCommonUrl + 'haku.html'" data-ng-controller="ApplicationCtrl"></div>
+<div class="clear"></div>

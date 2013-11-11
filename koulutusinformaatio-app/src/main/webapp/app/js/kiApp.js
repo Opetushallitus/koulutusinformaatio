@@ -1,6 +1,15 @@
 /*  Application module */
 
-var kiApp = angular.module('kiApp', ['kiApp.services', 'kiApp.directives', 'SearchResult', 'ui.bootstrap', 'angulartics', 'angulartics.piwik']);
+var kiApp = angular.module('kiApp', 
+    [
+        'kiApp.services', 
+        'kiApp.directives', 
+        'SearchResult', 
+        'ui.bootstrap', 
+        'angulartics', 
+        'angulartics.piwik'
+    ]);
+
 kiApp.config(['$routeProvider', '$analyticsProvider', function($routeProvider, $analyticsProvider) {
 
     // initialize piwik analytics tool
@@ -16,21 +25,23 @@ kiApp.config(['$routeProvider', '$analyticsProvider', function($routeProvider, $
     $routeProvider.when('/:loType/:id', {
         templateUrl: 'partials/learningopportunity.html', 
         controller: InfoCtrl,
-        reloadOnSearch: false
-        /*,
+        reloadOnSearch: false,
         resolve: {
-            subcontroller: function($route) {
+            loResource: function($route, UpperSecondaryLOService, ChildLOService, ParentLOService) {
                 switch($route.current.params.loType) {
                     case 'lukio':
-                        return UpSecCtrl;
+                        return UpperSecondaryLOService;
                     case 'koulutusohjelma':
-                        return ChildCtrl;
+                        return ChildLOService;
                     case 'tutkinto':
-                        return ParentCtrl;
+                        return ParentLOService;
                 }
+            },
+            partialUrl: function($rootScope, $route) {
+                $rootScope.partialUrl = 'partials/lo/' + $route.current.params.loType + '/';
+                $rootScope.partialCommonUrl = 'partials/lo/common/';
             }
         }
-        */
     });
 
     $routeProvider.when('/muistilista', {

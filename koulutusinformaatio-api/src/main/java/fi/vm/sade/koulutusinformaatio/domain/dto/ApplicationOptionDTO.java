@@ -55,8 +55,8 @@ public class ApplicationOptionDTO {
     private List<ApplicationOptionAttachmentDTO> attachments;
     private List<EmphasizedSubjectDTO> emphasizedSubjects;
     private String additionalInfo;
-    private String additionalProof;
-
+    private AdditionalProofDTO additionalProof;
+    private ScoreLimitDTO overallScoreLimit;
 
     public String getId() {
         return id;
@@ -266,11 +266,19 @@ public class ApplicationOptionDTO {
         this.additionalInfo = additionalInfo;
     }
 
-    public String getAdditionalProof() {
+    public AdditionalProofDTO getAdditionalProof() {
         return additionalProof;
     }
 
-    public void setAdditionalProof(String additionalProof) {
+    public void setAdditionalProof(AdditionalProofDTO additionalProof) {
         this.additionalProof = additionalProof;
+    }
+
+    public ScoreLimitDTO getOverallScoreLimit() {
+        return overallScoreLimit;
+    }
+
+    public void setOverallScoreLimit(ScoreLimitDTO overallScoreLimit) {
+        this.overallScoreLimit = overallScoreLimit;
     }
 }

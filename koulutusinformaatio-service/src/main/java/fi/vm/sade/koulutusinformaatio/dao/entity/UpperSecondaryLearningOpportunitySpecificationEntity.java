@@ -48,6 +48,9 @@ public class UpperSecondaryLearningOpportunitySpecificationEntity {
     private I18nTextEntity structure;
     @Embedded
     private I18nTextEntity accessToFurtherStudies;
+    private String creditValue;
+    @Embedded
+    private I18nTextEntity creditUnit;
 
     public UpperSecondaryLearningOpportunitySpecificationEntity() {
     }
@@ -130,5 +133,21 @@ public class UpperSecondaryLearningOpportunitySpecificationEntity {
 
     public void setAccessToFurtherStudies(I18nTextEntity accessToFurtherStudies) {
         this.accessToFurtherStudies = accessToFurtherStudies;
+    }
+
+    public String getCreditValue() {
+        return creditValue;
+    }
+
+    public void setCreditValue(String creditValue) {
+        this.creditValue = creditValue;
+    }
+
+    public I18nTextEntity getCreditUnit() {
+        return creditUnit;
+    }
+
+    public void setCreditUnit(I18nTextEntity creditUnit) {
+        this.creditUnit = creditUnit;
     }
 }

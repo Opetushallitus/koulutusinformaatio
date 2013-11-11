@@ -27,7 +27,7 @@ directive('kiRenderContactInfo', function() {
         link: function(scope, element, attrs) {
             scope.anchor = attrs.anchor;
 
-            scope.$watch('parentLO.provider', function(data) {
+            scope.$watch('provider', function(data) {
                 if (data) {
                     scope.showContact = (data.visitingAddress ||
                         data.postalAddress ||
@@ -37,8 +37,6 @@ directive('kiRenderContactInfo', function() {
                         data.fax ||
                         data.webPage) ? true : false;
                 }
-
-                scope.provider = data;
             });
         }
     }
@@ -54,7 +52,7 @@ directive('kiRenderInfoCenterAddress', function() {
         scope: false,
         link: function(scope, element, attrs) {
 
-            scope.$watch('parentLO.provider.applicationOffice', function(data) {
+            scope.$watch('provider.applicationOffice', function(data) {
                 if (data) {
                     scope.showContact = (data.visitingAddress ||
                         data.postalAddress ||
@@ -63,8 +61,6 @@ directive('kiRenderInfoCenterAddress', function() {
                         data.phone ||
                         data.www) ? true : false;
                 }
-
-                scope.provider = data;
             });
         }
     }
@@ -102,14 +98,12 @@ directive('kiRenderStudentBenefits', function() {
         link: function(scope, element, attrs) {
             scope.anchor = attrs.anchor;
 
-            scope.$watch('parentLO.provider', function(data) {
+            scope.$watch('provider', function(data) {
                 if (data) {
                     scope.showStudentBenefits = (data.livingExpenses ||
                         data.dining ||
                         data.healthcare) ? true : false;
                 }
-
-                scope.provider = data;
             });
         }
     }
@@ -125,12 +119,10 @@ directive('kiRenderOrganization', function() {
         link: function(scope, element, attrs) {
             scope.anchor = attrs.anchor;
 
-            scope.$watch('parentLO.provider', function(data) {
+            scope.$watch('provider', function(data) {
                 if (data) {
                     scope.showOrganization = (data.learningEnvironment ||
                         data.accessibility) ? true : false;
-
-                    scope.provider = data;
                 }
             });
         }
@@ -184,7 +176,7 @@ directive('kiRenderDiploma', function() {
         restrict: 'A',
         templateUrl: 'templates/diploma.html',
         link: function(scope, element, attrs) {
-            scope.$watch('selectedLOI.diploma', function(data) {
+            scope.$watch('selectedLOI.diplomas', function(data) {
                 scope.showDiploma = data ? true : false;
             });
         }
@@ -267,10 +259,10 @@ directive('kiRenderScores', function() {
         },
         link: function(scope, element, attrs) {
             if (scope.scoreElement) {
-                if (scope.scoreElement.minScore 
-                    || scope.scoreElement.maxScore
-                    || scope.scoreElement.thresholdScore) {
-                    scope.scores = i18n.t(scope.typename + '-scores', {min: scope.scoreElement.minScore, max: scope.scoreElement.maxScore, threshold: scope.scoreElement.thresholdScore});
+                if (scope.scoreElement.lowestScore 
+                    || scope.scoreElement.highestScore
+                    || scope.scoreElement.lowestAcceptedScore) {
+                    scope.scores = i18n.t(scope.typename + '-scores', {min: scope.scoreElement.lowestScore, max: scope.scoreElement.highestScore, threshold: scope.scoreElement.lowestAcceptedScore});
                 }
             }
         }
@@ -300,12 +292,10 @@ directive('kiSocialLinks', function() {
         link: function(scope, element, attrs) {
             scope.anchor = attrs.anchor;
 
-            scope.$watch('parentLO', function(data) {
-                if (data && data.provider) {
-                    scope.showOrganization = (data.provider.learningEnvironment ||
-                        data.provider.accessibility) ? true : false;
-
-                    scope.provider = data.provider;
+            scope.$watch('provider', function(data) {
+                if (data) {
+                    scope.showOrganization = (data.learningEnvironment ||
+                        data.accessibility) ? true : false;
                 }
             });
         }
@@ -393,15 +383,9 @@ directive('kiAbsoluteLink', function() {
             var type = $routeParams.loType;
             scope.isChild = (type === 'koulutusohjelma' || type == 'lukio') ? true : false; // TODO: do not use loType directly
 
-            if (scope.isChild) {
-                scope.$watch('childLO', function(data) {
-                    scope.hasMultipleTranslations = (scope.childLO && scope.childLO.availableTranslationLanguages && scope.childLO.availableTranslationLanguages.length >= 1) ? true : false;
-                });
-            } else {
-                scope.$watch('parentLO', function(data) {
-                    scope.hasMultipleTranslations = (scope.parentLO && scope.parentLO.availableTranslationLanguages && scope.parentLO.availableTranslationLanguages.length >= 1) ? true : false;
-                });
-            }
+            scope.$watch('lo', function(data) {
+                scope.hasMultipleTranslations = (data&& data.availableTranslationLanguages && data.availableTranslationLanguages.length >= 1) ? true : false;
+            });
         }
     };
  }]).
@@ -481,14 +465,20 @@ directive('kiAbsoluteLink', function() {
             var root = i18n.t('breadcrumb-search-results');
             var parent;
             var child;
+            var provider;
 
-            scope.$watch('parentLO.name', function(data) {
+            scope.$watch('parent.name', function(data) {
                 parent = data;
                 update();
             }, true);
 
-            scope.$watch('childLO.name', function(data) {
+            scope.$watch('lo.name', function(data) {
                 child = data;
+                update();
+            }, true);
+
+            scope.$watch('provider.name', function(data) {
+                provider = data;
                 update();
             }, true);
 
@@ -502,11 +492,15 @@ directive('kiAbsoluteLink', function() {
                 pushItem({name: home, linkHref: Config.get('frontpageUrl') });
                 pushItem({name: root, linkHref: '#/haku/' + SearchService.getTerm() + '?' + FilterService.getParams() });
 
-                if (scope.parentLO && scope.loType != 'lukio') { // TODO: do not compare to loType
-                    pushItem({name: parent, linkHref: '#/tutkinto/' + scope.parentLO.id });
+                if (scope.parent && scope.loType != 'lukio') { // TODO: do not compare to loType
+                    pushItem({name: parent, linkHref: '#/tutkinto/' + scope.parent.id });
                 }
 
-                pushItem({name: child});
+                if (scope.loType == 'lukio') { // TODO: do not compare to loType
+                    pushItem({name: provider + ', ' + child});
+                } else {
+                    pushItem({name: child});
+                }
             };
 
             var pushItem = function(item) {

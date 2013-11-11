@@ -34,6 +34,7 @@ public class ChildLOSToDTO {
         child.setParent(ParentLOSRefToDTO.convert(childLOS.getParent(), lang));
         child.setGoals(ConverterUtil.getTextByLanguage(childLOS.getGoals(), lang));
         child.setAvailableTranslationLanguages(ConverterUtil.getAvailableTranslationLanguages(childLOS.getGoals()));
+        child.setTranslationLanguage(lang);
         return child;
     }
 

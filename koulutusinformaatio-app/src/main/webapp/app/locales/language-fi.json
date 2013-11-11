@@ -81,6 +81,7 @@
     "exam-scores": "Pääsykokeesta voit saada __min__ – __max__ pistettä. Alin hyväksyttävä pistemäärä on __threshold__.",
     "additional-proof": "Lisänäytöt",
     "additional-proof-scores": "Lisänäytöistä voit saada __min__ – __max__ pistettä. Alin hyväksyttävä pistemäärä on __threshold__.",
+    "overall-scores": "Pääsykokeen ja lisänäyttöjen alin hyväksytty yhteispistemäärä on __threshold__ pistettä.",
     "further-application-info": "Lisätietoa hakemisesta",
     "info-center": "Hakuneuvonta",
 

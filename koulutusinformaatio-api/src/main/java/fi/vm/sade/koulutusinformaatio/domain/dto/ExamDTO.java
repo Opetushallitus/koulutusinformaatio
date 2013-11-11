@@ -29,6 +29,10 @@ public class ExamDTO {
     private String type;
     private String description;
     private List<ExamEventDTO> examEvents;
+    private ScoreLimitDTO scoreLimit;
+
+    public ExamDTO() {
+    }
 
     public String getType() {
         return type;
@@ -52,5 +56,13 @@ public class ExamDTO {
 
     public void setExamEvents(List<ExamEventDTO> examEvents) {
         this.examEvents = examEvents;
+    }
+
+    public ScoreLimitDTO getScoreLimit() {
+        return scoreLimit;
+    }
+
+    public void setScoreLimit(ScoreLimitDTO scoreLimit) {
+        this.scoreLimit = scoreLimit;
     }
 }
