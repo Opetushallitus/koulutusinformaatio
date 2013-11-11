@@ -176,7 +176,7 @@ directive('kiRenderDiploma', function() {
         restrict: 'A',
         templateUrl: 'templates/diploma.html',
         link: function(scope, element, attrs) {
-            scope.$watch('selectedLOI.diploma', function(data) {
+            scope.$watch('selectedLOI.diplomas', function(data) {
                 scope.showDiploma = data ? true : false;
             });
         }
