@@ -80,7 +80,8 @@
     "entrance-exam": "Inträdesprov",
     "exam-scores": "Inträdesprovet kan ge __min__ - __max__ poäng. Lägsta godkända poängantal är __threshold__.",
     "additional-proof": "Tilläggsprestationer",
-    "additional-proof-scores": "Tilläggsprestationer kan ge __min__ - __max__ poäng. Lägsta godkända poängantal är __threshold__s.",
+    "additional-proof-scores": "Tilläggsprestationer kan ge __min__ - __max__ poäng. Lägsta godkända poängantal är __threshold__.",
+    "overall-scores": "Lägsta godkända poängantal för inträdesprov och tilläggsprestationer är __threshold__ poäng.",
     "further-application-info": "Tilläggsinformation om ansökan",
     "info-center": "Ansökningsrådgivning",
 

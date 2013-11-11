@@ -259,10 +259,10 @@ directive('kiRenderScores', function() {
         },
         link: function(scope, element, attrs) {
             if (scope.scoreElement) {
-                if (scope.scoreElement.minScore 
-                    || scope.scoreElement.maxScore
-                    || scope.scoreElement.thresholdScore) {
-                    scope.scores = i18n.t(scope.typename + '-scores', {min: scope.scoreElement.minScore, max: scope.scoreElement.maxScore, threshold: scope.scoreElement.thresholdScore});
+                if (scope.scoreElement.lowestScore 
+                    || scope.scoreElement.highestScore
+                    || scope.scoreElement.lowestAcceptedScore) {
+                    scope.scores = i18n.t(scope.typename + '-scores', {min: scope.scoreElement.lowestScore, max: scope.scoreElement.highestScore, threshold: scope.scoreElement.lowestAcceptedScore});
                 }
             }
         }
