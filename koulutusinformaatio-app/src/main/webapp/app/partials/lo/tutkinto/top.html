@@ -3,6 +3,6 @@
         <h4 class="margin-0">{{provider.name}}</h4>
         <span class="block">{{lo.educationDomain}}<span class="hidden">, lähihoitaja (tutkintonimike)</span></span>
     </div>
-    <h1 class="">{{lo.name}} {{lo.credits.creditValue}} {{lo.credits.creditUnit}}</h1>
+    <h1>{{lo.name}}<span data-ng-show="lo.creditValue">, {{lo.creditValue}} {{lo.creditUnit}}</span></h1>
     <div data-ki-child-ribbon class="ribbon margin-bottom-2"></div>
 </section>
