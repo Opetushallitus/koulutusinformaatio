@@ -1,4 +1,5 @@
 <section class="grid16-9 offset-right-16-1 no-left-gutter wide-column">
+    <div data-ki-prerequisite-selection-ribbon></div>
     <div data-ki-language-ribbon class="ribbon"></div>
     <div data-ng-repeat="as in selectedLOI.applicationSystems">
         <div data-ng-repeat="ao in as.applicationOptions">
@@ -14,5 +15,5 @@
     </div>
     <div data-ki-render-info-center-address></div>
 </section>
-<div data-ng-class="applyFormClass" data-ng-include data-src="'partials/common/haku.html'" data-ng-controller="ApplicationCtrl"></div>
+<div data-ng-class="applyFormClass" data-ng-include data-src="partialCommonUrl + 'haku.html'" data-ng-controller="ApplicationCtrl"></div>
 <div class="clear"></div>

@@ -1,6 +1,6 @@
 <h4 class="title"><span data-ki-i18n="application-options-additional"></span> ({{as.applicationOptions.length}})</h4>
 <div data-ng-repeat="ao in as.applicationOptions" class="content">
-    <div data-ng-include data-src="'partials/' + loType + '/ao_lh.html'"></div>
+    <div data-ng-include data-src="partialUrl + 'ao_lh.html'"></div>
     <form name="levelSelectionForm" id="application-form-{{as.id}}" action="{{hakuAppUrl}}lomake/{{as.id}}" method="POST" class="margin-top-2" target="hakulomake">
         <input 
         type="hidden" 

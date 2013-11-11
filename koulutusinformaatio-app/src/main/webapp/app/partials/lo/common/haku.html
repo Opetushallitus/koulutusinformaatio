@@ -1,13 +1,13 @@
 <aside class="grid16-6 application-container">
-    <div data-ng-include data-src="'partials/' + loType + '/prerequisite-selection.html'"></div>
+    <div data-ng-include data-src="partialUrl + 'prerequisite-selection.html'"></div>
     <div class="application-system-container">
         <div data-ng-repeat="as in selectedLOI.applicationSystems" class="application-system">
             <div data-ng-switch="as.aoSpecificApplicationDates">
                 <div data-ng-switch-when="true">
-                    <div data-ng-include data-src="'partials/common/haku_lisahaku.html'"></div>
+                    <div data-ng-include data-src="partialCommonUrl + 'haku_lisahaku.html'"></div>
                 </div>
                 <div data-ng-switch-default>
-                    <div data-ng-include data-src="'partials/common/haku_yhteishaku.html'"></div>
+                    <div data-ng-include data-src="partialCommonUrl + 'haku_yhteishaku.html'"></div>
                 </div>
             </div>
         </div>

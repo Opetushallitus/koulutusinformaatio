@@ -27,6 +27,10 @@ kiApp.config(['$routeProvider', '$analyticsProvider', function($routeProvider, $
                     case 'tutkinto':
                         return ParentLOService;
                 }
+            },
+            partialUrl: function($rootScope, $route) {
+                $rootScope.partialUrl = 'partials/lo/' + $route.current.params.loType + '/';
+                $rootScope.partialCommonUrl = 'partials/lo/common/';
             }
         }
     });
