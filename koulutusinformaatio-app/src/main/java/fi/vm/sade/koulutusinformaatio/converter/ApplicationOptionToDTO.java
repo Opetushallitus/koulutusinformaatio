@@ -29,50 +29,49 @@ public class ApplicationOptionToDTO {
 
     public static ApplicationOptionDTO convert(final ApplicationOption applicationOption, final String lang, final String uiLang) {
         if (applicationOption != null) {
-            ApplicationOptionDTO ao = new ApplicationOptionDTO();
-            ao.setId(applicationOption.getId());
-            ao.setName(ConverterUtil.getTextByLanguage(applicationOption.getName(), lang));
-            ao.setAoIdentifier(applicationOption.getAoIdentifier());
-            ao.setAttachmentDeliveryDeadline(applicationOption.getAttachmentDeliveryDeadline());
-            ao.setAttachmentDeliveryAddress(AddressToDTO.convert(applicationOption.getAttachmentDeliveryAddress()));
-            ao.setLastYearApplicantCount(applicationOption.getLastYearApplicantCount());
-            ao.setLowestAcceptedAverage(applicationOption.getLowestAcceptedAverage());
-            ao.setLowestAcceptedScore(applicationOption.getLowestAcceptedScore());
-            ao.setStartingQuota(applicationOption.getStartingQuota());
-            ao.setSora(applicationOption.isSora());
-            ao.setEducationDegree(applicationOption.getEducationDegree());
-            ao.setTeachingLanguages(applicationOption.getTeachingLanguages());
-            ao.setSelectionCriteria(ConverterUtil.getTextByLanguage(applicationOption.getSelectionCriteria(), uiLang));
-            ao.setPrerequisite(CodeToDTO.convert(applicationOption.getPrerequisite(), lang));
-            ao.setExams(ExamToDTO.convertAll(applicationOption.getExams(), lang));
-            ao.setProvider(ProviderToDTO.convert(applicationOption.getProvider(), lang));
-            ao.setChildRefs(ChildLOIRefToDTO.convert(applicationOption.getChildLOIRefs(), lang));
-            ao.setSpecificApplicationDates(applicationOption.isSpecificApplicationDates());
-            ao.setApplicationStartDate(applicationOption.getApplicationStartDate());
-            ao.setApplicationEndDate(applicationOption.getApplicationEndDate());
-            ao.setRequiredBaseEducations(applicationOption.getRequiredBaseEducations());
+            ApplicationOptionDTO dto = new ApplicationOptionDTO();
+            dto.setId(applicationOption.getId());
+            dto.setName(ConverterUtil.getTextByLanguage(applicationOption.getName(), lang));
+            dto.setAoIdentifier(applicationOption.getAoIdentifier());
+            dto.setAttachmentDeliveryDeadline(applicationOption.getAttachmentDeliveryDeadline());
+            dto.setAttachmentDeliveryAddress(AddressToDTO.convert(applicationOption.getAttachmentDeliveryAddress()));
+            dto.setLastYearApplicantCount(applicationOption.getLastYearApplicantCount());
+            dto.setLowestAcceptedAverage(applicationOption.getLowestAcceptedAverage());
+            dto.setLowestAcceptedScore(applicationOption.getLowestAcceptedScore());
+            dto.setStartingQuota(applicationOption.getStartingQuota());
+            dto.setSora(applicationOption.isSora());
+            dto.setEducationDegree(applicationOption.getEducationDegree());
+            dto.setTeachingLanguages(applicationOption.getTeachingLanguages());
+            dto.setSelectionCriteria(ConverterUtil.getTextByLanguage(applicationOption.getSelectionCriteria(), uiLang));
+            dto.setPrerequisite(CodeToDTO.convert(applicationOption.getPrerequisite(), lang));
+            dto.setExams(ExamToDTO.convertAll(applicationOption.getExams(), lang));
+            dto.setProvider(ProviderToDTO.convert(applicationOption.getProvider(), lang));
+            dto.setChildRefs(ChildLOIRefToDTO.convert(applicationOption.getChildLOIRefs(), lang));
+            dto.setSpecificApplicationDates(applicationOption.isSpecificApplicationDates());
+            dto.setApplicationStartDate(applicationOption.getApplicationStartDate());
+            dto.setApplicationEndDate(applicationOption.getApplicationEndDate());
+            dto.setRequiredBaseEducations(applicationOption.getRequiredBaseEducations());
             if (applicationOption.isSpecificApplicationDates()) {
-                ao.setCanBeApplied(ConverterUtil.isOngoing(new DateRange(applicationOption.getApplicationStartDate(),
+                dto.setCanBeApplied(ConverterUtil.isOngoing(new DateRange(applicationOption.getApplicationStartDate(),
                         applicationOption.getApplicationEndDate())));
                 if (applicationOption.getApplicationStartDate().after(new Date())) {
-                    ao.setNextApplicationPeriodStarts(applicationOption.getApplicationStartDate());
+                    dto.setNextApplicationPeriodStarts(applicationOption.getApplicationStartDate());
                 }
             }
 
             if (applicationOption.getAttachments() != null) {
-                ao.setAttachments(ApplicationOptionAttachmentToDTO.convertAll(applicationOption.getAttachments(), uiLang));
+                dto.setAttachments(ApplicationOptionAttachmentToDTO.convertAll(applicationOption.getAttachments(), uiLang));
             }
             if (applicationOption.getEmphasizedSubjects() != null) {
-                ao.setEmphasizedSubjects(EmphasizedSubjectToDTO.convertAll(applicationOption.getEmphasizedSubjects(), uiLang));
+                dto.setEmphasizedSubjects(EmphasizedSubjectToDTO.convertAll(applicationOption.getEmphasizedSubjects(), uiLang));
             }
             if (applicationOption.getAdditionalInfo() != null) {
-                ao.setAdditionalInfo(ConverterUtil.getTextByLanguage(applicationOption.getAdditionalInfo(), uiLang));
-            }
-            if (applicationOption.getAdditionalProof() != null) {
-                ao.setAdditionalProof(ConverterUtil.getTextByLanguage(applicationOption.getAdditionalProof(), lang));
+                dto.setAdditionalInfo(ConverterUtil.getTextByLanguage(applicationOption.getAdditionalInfo(), uiLang));
             }
 
-            return ao;
+            dto.setAdditionalProof(AdditionalProofToDTO.convert(applicationOption.getAdditionalProof(), lang));
+            dto.setOverallScoreLimit(ScoreLimitToDTO.convert(applicationOption.getOverallScoreLimit()));
+            return dto;
         }
         return null;
     }

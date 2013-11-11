@@ -238,7 +238,7 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
                         && !valintakoe.getValintakoeAjankohtas().isEmpty()) {
                     Exam exam = new Exam();
                     exam.setType(koodistoService.searchFirst(valintakoe.getTyyppiUri()));
-                    exam.setDescription(new I18nText(valintakoe.getKuvaus()));
+                    exam.setDescription(getI18nText(valintakoe.getKuvaus()));
                     List<ExamEvent> examEvents = Lists.newArrayList();
 
                     for (ValintakoeAjankohtaRDTO valintakoeAjankohta : valintakoe.getValintakoeAjankohtas()) {

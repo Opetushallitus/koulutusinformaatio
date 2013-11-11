@@ -18,44 +18,21 @@ package fi.vm.sade.koulutusinformaatio.domain.dto;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
-import java.util.List;
-
 /**
  * @author Hannu Lyytikainen
  */
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
-public class ExamDTO {
+public class AdditionalProofDTO {
 
-    private String type;
-    private String description;
-    private List<ExamEventDTO> examEvents;
+    private String descreption;
     private ScoreLimitDTO scoreLimit;
 
-    public ExamDTO() {
+    public String getDescreption() {
+        return descreption;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public List<ExamEventDTO> getExamEvents() {
-        return examEvents;
-    }
-
-    public void setExamEvents(List<ExamEventDTO> examEvents) {
-        this.examEvents = examEvents;
+    public void setDescreption(String descreption) {
+        this.descreption = descreption;
     }
 
     public ScoreLimitDTO getScoreLimit() {

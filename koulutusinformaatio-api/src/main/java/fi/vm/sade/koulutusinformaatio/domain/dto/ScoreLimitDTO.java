@@ -18,51 +18,43 @@ package fi.vm.sade.koulutusinformaatio.domain.dto;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
-import java.util.List;
-
 /**
  * @author Hannu Lyytikainen
  */
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
-public class ExamDTO {
+public class ScoreLimitDTO {
 
-    private String type;
-    private String description;
-    private List<ExamEventDTO> examEvents;
-    private ScoreLimitDTO scoreLimit;
+    private double lowestScore;
+    private double lowestAcceptedScore;
+    private double highestScore;
 
-    public ExamDTO() {
+    public ScoreLimitDTO(double lowestScore, double lowestAcceptedScore, double highestScore) {
+        this.lowestScore = lowestScore;
+        this.lowestAcceptedScore = lowestAcceptedScore;
+        this.highestScore = highestScore;
     }
 
-    public String getType() {
-        return type;
+    public double getLowestScore() {
+        return lowestScore;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setLowestScore(double lowestScore) {
+        this.lowestScore = lowestScore;
     }
 
-    public String getDescription() {
-        return description;
+    public double getLowestAcceptedScore() {
+        return lowestAcceptedScore;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setLowestAcceptedScore(double lowestAcceptedScore) {
+        this.lowestAcceptedScore = lowestAcceptedScore;
     }
 
-    public List<ExamEventDTO> getExamEvents() {
-        return examEvents;
+    public double getHighestScore() {
+        return highestScore;
     }
 
-    public void setExamEvents(List<ExamEventDTO> examEvents) {
-        this.examEvents = examEvents;
-    }
-
-    public ScoreLimitDTO getScoreLimit() {
-        return scoreLimit;
-    }
-
-    public void setScoreLimit(ScoreLimitDTO scoreLimit) {
-        this.scoreLimit = scoreLimit;
+    public void setHighestScore(double highestScore) {
+        this.highestScore = highestScore;
     }
 }

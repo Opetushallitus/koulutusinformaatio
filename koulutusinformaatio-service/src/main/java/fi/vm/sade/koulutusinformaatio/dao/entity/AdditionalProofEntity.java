@@ -14,49 +14,35 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.koulutusinformaatio.domain;
+package fi.vm.sade.koulutusinformaatio.dao.entity;
 
-import java.util.List;
+import org.mongodb.morphia.annotations.Embedded;
 
 /**
  * @author Hannu Lyytikainen
  */
-public class Exam {
+@Embedded
+public class AdditionalProofEntity {
 
-    private I18nText type;
-    private I18nText description;
-    private List<ExamEvent> examEvents;
-    private ScoreLimit scoreLimit;
+    private I18nTextEntity descreption;
+    private ScoreLimitEntity scoreLimit;
 
-    public I18nText getType() {
-        return type;
+    public AdditionalProofEntity() {
     }
 
-    public void setType(I18nText type) {
-        this.type = type;
+    public I18nTextEntity getDescreption() {
+        return descreption;
     }
 
-    public I18nText getDescription() {
-        return description;
+    public void setDescreption(I18nTextEntity descreption) {
+        this.descreption = descreption;
     }
 
-    public void setDescription(I18nText description) {
-        this.description = description;
-    }
-
-    public List<ExamEvent> getExamEvents() {
-        return examEvents;
-    }
-
-    public void setExamEvents(List<ExamEvent> examEvents) {
-        this.examEvents = examEvents;
-    }
-
-    public ScoreLimit getScoreLimit() {
+    public ScoreLimitEntity getScoreLimit() {
         return scoreLimit;
     }
 
-    public void setScoreLimit(ScoreLimit scoreLimit) {
+    public void setScoreLimit(ScoreLimitEntity scoreLimit) {
         this.scoreLimit = scoreLimit;
     }
 }

@@ -16,40 +16,20 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
-import java.util.List;
-
 /**
  * @author Hannu Lyytikainen
  */
-public class Exam {
+public class AdditionalProof {
 
-    private I18nText type;
-    private I18nText description;
-    private List<ExamEvent> examEvents;
+    private I18nText descreption;
     private ScoreLimit scoreLimit;
 
-    public I18nText getType() {
-        return type;
+    public I18nText getDescreption() {
+        return descreption;
     }
 
-    public void setType(I18nText type) {
-        this.type = type;
-    }
-
-    public I18nText getDescription() {
-        return description;
-    }
-
-    public void setDescription(I18nText description) {
-        this.description = description;
-    }
-
-    public List<ExamEvent> getExamEvents() {
-        return examEvents;
-    }
-
-    public void setExamEvents(List<ExamEvent> examEvents) {
-        this.examEvents = examEvents;
+    public void setDescreption(I18nText descreption) {
+        this.descreption = descreption;
     }
 
     public ScoreLimit getScoreLimit() {

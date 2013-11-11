@@ -33,6 +33,7 @@ public class ExamToDTO {
         dto.setType(ConverterUtil.getTextByLanguageUseFallbackLang(exam.getType(), lang));
         dto.setDescription(ConverterUtil.getTextByLanguageUseFallbackLang(exam.getDescription(), lang));
         dto.setExamEvents(ExamEventToDTO.convertAll(exam.getExamEvents(), lang));
+        dto.setScoreLimit(ScoreLimitToDTO.convert(exam.getScoreLimit()));
         return dto;
     }
 

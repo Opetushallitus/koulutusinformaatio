@@ -303,6 +303,9 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
         }
 
         ao.setAdditionalProof(createAdditionalProof(hakukohdeDTO.getValintakoes()));
+        for (ValintakoeRDTO valintakoeRDTO : hakukohdeDTO.getValintakoes()) {
+            ao.setOverallScoreLimit(resolvePointLimit(valintakoeRDTO, "Kokonaispisteet"));
+        }
 
         List<ApplicationOptionAttachment> attachments = Lists.newArrayList();
         if (hakukohdeDTO.getLiitteet() != null && !hakukohdeDTO.getLiitteet().isEmpty()) {
@@ -366,7 +369,6 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
         return attachmentDeliveryAddress;
     }
 
-
     private List<Exam> createExams(List<ValintakoeRDTO> valintakoes) throws KoodistoException {
         List<Exam> exams = Lists.newArrayList();
         if (valintakoes != null) {
@@ -375,8 +377,7 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
                         && valintakoe.getValintakoeAjankohtas() != null
                         && !valintakoe.getValintakoeAjankohtas().isEmpty()) {
                     Exam exam = new Exam();
-
-                    exam.setDescription(new I18nText(valintakoe.getKuvaus()));
+                    exam.setDescription(getI18nText(valintakoe.getKuvaus()));
                     List<ExamEvent> examEvents = Lists.newArrayList();
 
                     for (ValintakoeAjankohtaRDTO valintakoeAjankohta : valintakoe.getValintakoeAjankohtas()) {
@@ -392,6 +393,7 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
                         examEvents.add(examEvent);
                     }
                     exam.setExamEvents(examEvents);
+                    exam.setScoreLimit(resolvePointLimit(valintakoe, "Paasykoe"));
                     exams.add(exam);
                 }
             }
@@ -399,12 +401,25 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
         return exams;
     }
 
-    private I18nText createAdditionalProof(List<ValintakoeRDTO> valintakoes) throws KoodistoException {
+    private AdditionalProof createAdditionalProof(List<ValintakoeRDTO> valintakoes) throws KoodistoException {
         if (valintakoes != null) {
+            AdditionalProof additionalProof = new AdditionalProof();
             for (ValintakoeRDTO valintakoe : valintakoes) {
                 if (valintakoe.getLisanaytot() != null) {
-                    return getI18nText(valintakoe.getLisanaytot());
+                    additionalProof.setDescreption(getI18nText(valintakoe.getLisanaytot()));
+                    additionalProof.setScoreLimit(resolvePointLimit(valintakoe, "Lisapisteet"));
+                    return additionalProof;
                 }
+            }
+        }
+        return null;
+    }
+
+    private ScoreLimit resolvePointLimit (ValintakoeRDTO valintakoe, String type) {
+        for (ValintakoePisterajaRDTO valintakoePisteraja : valintakoe.getValintakoePisterajas()) {
+            if (valintakoePisteraja.getTyyppi().equals(type)) {
+                return new ScoreLimit(valintakoePisteraja.getAlinPistemaara(),
+                        valintakoePisteraja.getAlinHyvaksyttyPistemaara(), valintakoePisteraja.getYlinPistemaara());
             }
         }
         return null;
