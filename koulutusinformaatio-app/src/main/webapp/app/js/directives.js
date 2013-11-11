@@ -465,6 +465,7 @@ directive('kiAbsoluteLink', function() {
             var root = i18n.t('breadcrumb-search-results');
             var parent;
             var child;
+            var provider;
 
             scope.$watch('parent.name', function(data) {
                 parent = data;
@@ -473,6 +474,11 @@ directive('kiAbsoluteLink', function() {
 
             scope.$watch('lo.name', function(data) {
                 child = data;
+                update();
+            }, true);
+
+            scope.$watch('provider.name', function(data) {
+                provider = data;
                 update();
             }, true);
 
@@ -490,7 +496,11 @@ directive('kiAbsoluteLink', function() {
                     pushItem({name: parent, linkHref: '#/tutkinto/' + scope.parent.id });
                 }
 
-                pushItem({name: child});
+                if (scope.loType == 'lukio') { // TODO: do not compare to loType
+                    pushItem({name: provider + ', ' + child});
+                } else {
+                    pushItem({name: child});
+                }
             };
 
             var pushItem = function(item) {
