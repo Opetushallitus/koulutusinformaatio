@@ -1,6 +1,15 @@
 /*  Application module */
 
-var kiApp = angular.module('kiApp', ['kiApp.services', 'kiApp.directives', 'SearchResult', 'ui.bootstrap', 'angulartics', 'angulartics.piwik']);
+var kiApp = angular.module('kiApp', 
+    [
+        'kiApp.services', 
+        'kiApp.directives', 
+        'SearchResult', 
+        'ui.bootstrap', 
+        'angulartics', 
+        'angulartics.piwik'
+    ]);
+
 kiApp.config(['$routeProvider', '$analyticsProvider', function($routeProvider, $analyticsProvider) {
 
     // initialize piwik analytics tool

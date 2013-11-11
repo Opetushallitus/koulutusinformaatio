@@ -1,13 +1,12 @@
 /**
  *  Controller for info views (parent and child)
  */
- function InfoCtrl($scope, $rootScope, $routeParams, $location, ParentLOService, ChildLOService, SearchService, ParentLODataService, ChildLODataService, LearningOpportunityProviderPictureService, UtilityService, Config, loResource) {
+ function InfoCtrl($scope, $rootScope, $routeParams, $location, SearchService, LearningOpportunityProviderPictureService, UtilityService, Config, loResource) {
     $scope.loType = $routeParams.loType;
 
     $scope.queryString = SearchService.getTerm();
     $scope.descriptionLanguage = 'fi';
     $scope.hakuAppUrl = Config.get('hakulomakeUrl');
-
 
     $scope.tabtitle = {
         koulutus: i18n.t('lo-description'),
@@ -21,11 +20,6 @@
         } else {
             $rootScope.title = parent.name + ' - ' + sitename;
         }
-    };
-
-    var isChild = function() {
-        var type = $routeParams.loType;
-        return (type == 'koulutusohjelma' || type == 'lukio') ? true : false;
     };
 
     var getFirstLOI = function() {
@@ -169,14 +163,6 @@
         //$location.search({prerequisite: prerequisite}).replace();
     }
 
-    $scope.loiClass = function(prerequisite) {
-        if ($scope.selectedLOI && $scope.selectedLOI.prerequisite) {
-            return ($scope.selectedLOI.prerequisite.value == prerequisite.value) ? 'disabled': '';
-        } else {
-            return '';
-        }
-    };
-
     $scope.hasChildren = function() {
         if ($scope.selectedAs && $scope.selectedAs.children) {
             return $scope.selectedAs.children.length > 0;
@@ -184,14 +170,6 @@
             return false;
         }
     };
-
-    $scope.$watch('provider', function(data) {
-        if (data && data.pictureFound) {
-            LearningOpportunityProviderPictureService.query({providerId: data.id}).then(function(result) {
-                $scope.providerImage = result;
-            });
-        }
-    });
 
     // change description language and re-load LO data with the specified language
     $scope.changeDescriptionLanguage = function(languageCode) {
@@ -205,7 +183,15 @@
         return false;
     };
 
-    // initilize view model
+    $scope.$watch('provider', function(data) {
+        if (data && data.pictureFound) {
+            LearningOpportunityProviderPictureService.query({providerId: data.id}).then(function(result) {
+                $scope.providerImage = result;
+            });
+        }
+    });
+
+    // initialize view model
     loadLo();
 
     // trigger once content is loaded

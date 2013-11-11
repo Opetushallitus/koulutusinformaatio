@@ -2,7 +2,7 @@
 	<span class="bold ribbon-label margin-right-1" data-ki-i18n="application-prerequisite" data-show-colon="true"></span>
 	<ul class="ribbon-content nobullet">
 		<li data-ng-repeat="loi in lois">
-			<a href="javascript:void(0)" data-ng-click="changePrerequisiteSelection(loi.prerequisite.value)" data-ng-class="loiClass(loi.prerequisite)">
+			<a href="javascript:void(0)" data-ng-click="changePrerequisiteSelection(loi.prerequisite.value)" data-ng-class="{disabled: selectedLOI.prerequisite.value == loi.prerequisite.value}">
 				<span>{{loi.prerequisite.description}}</span>
 			</a>
 		</li>
