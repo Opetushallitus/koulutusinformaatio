@@ -58,17 +58,9 @@ public class ApplicationOptionToDTO {
                     dto.setNextApplicationPeriodStarts(applicationOption.getApplicationStartDate());
                 }
             }
-
-            if (applicationOption.getAttachments() != null) {
-                dto.setAttachments(ApplicationOptionAttachmentToDTO.convertAll(applicationOption.getAttachments(), uiLang));
-            }
-            if (applicationOption.getEmphasizedSubjects() != null) {
-                dto.setEmphasizedSubjects(EmphasizedSubjectToDTO.convertAll(applicationOption.getEmphasizedSubjects(), uiLang));
-            }
-            if (applicationOption.getAdditionalInfo() != null) {
-                dto.setAdditionalInfo(ConverterUtil.getTextByLanguage(applicationOption.getAdditionalInfo(), uiLang));
-            }
-
+            dto.setAttachments(ApplicationOptionAttachmentToDTO.convertAll(applicationOption.getAttachments(), uiLang));
+            dto.setEmphasizedSubjects(EmphasizedSubjectToDTO.convertAll(applicationOption.getEmphasizedSubjects(), uiLang));
+            dto.setAdditionalInfo(ConverterUtil.getTextByLanguage(applicationOption.getAdditionalInfo(), uiLang));
             dto.setAdditionalProof(AdditionalProofToDTO.convert(applicationOption.getAdditionalProof(), lang));
             dto.setOverallScoreLimit(ScoreLimitToDTO.convert(applicationOption.getOverallScoreLimit()));
             return dto;
