@@ -145,6 +145,8 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
         los.setStructure(getI18nText(parentKomo.getKoulutuksenRakenne()));
         los.setAccessToFurtherStudies(getI18nText(parentKomo.getJatkoOpintoMahdollisuudet()));
         los.setProvider(provider);
+        los.setCreditValue(parentKomo.getLaajuusArvo());
+        los.setCreditUnit(koodistoService.searchFirst(parentKomo.getLaajuusYksikkoUri()));
 
         if (komo.getTavoitteet() == null) {
             los.setGoals(getI18nText(parentKomo.getTavoitteet()));

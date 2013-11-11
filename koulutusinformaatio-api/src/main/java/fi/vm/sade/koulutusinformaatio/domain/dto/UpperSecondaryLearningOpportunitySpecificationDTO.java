@@ -40,6 +40,8 @@ public class UpperSecondaryLearningOpportunitySpecificationDTO {
     private String accessToFurtherStudies;
     private String translationLanguage;
     private Set<String> availableTranslationLanguages = new HashSet<String>();
+    private String creditValue;
+    private String creditUnit;
 
     public String getId() {
         return id;
@@ -135,5 +137,21 @@ public class UpperSecondaryLearningOpportunitySpecificationDTO {
 
     public void setAvailableTranslationLanguages(Set<String> availableTranslationLanguages) {
         this.availableTranslationLanguages = availableTranslationLanguages;
+    }
+
+    public String getCreditValue() {
+        return creditValue;
+    }
+
+    public void setCreditValue(String creditValue) {
+        this.creditValue = creditValue;
+    }
+
+    public String getCreditUnit() {
+        return creditUnit;
+    }
+
+    public void setCreditUnit(String creditUnit) {
+        this.creditUnit = creditUnit;
     }
 }
