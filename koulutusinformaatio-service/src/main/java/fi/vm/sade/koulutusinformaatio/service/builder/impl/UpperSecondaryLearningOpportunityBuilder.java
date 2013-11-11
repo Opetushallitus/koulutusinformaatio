@@ -209,15 +209,6 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
             loi.setLanguageSelection(languageSelection);
         }
 
-
-        if (komoto.getYhteyshenkilos() != null) {
-            for (YhteyshenkiloRDTO yhteyshenkiloRDTO : komoto.getYhteyshenkilos()) {
-                ContactPerson contactPerson = new ContactPerson(yhteyshenkiloRDTO.getPuhelin(), yhteyshenkiloRDTO.getTitteli(),
-                        yhteyshenkiloRDTO.getEmail(), yhteyshenkiloRDTO.getSukunimi(), yhteyshenkiloRDTO.getEtunimet());
-                loi.getContactPersons().add(contactPerson);
-            }
-        }
-
         List<ApplicationOption> applicationOptions = Lists.newArrayList();
         List<OidRDTO> aoIdDTOs = tarjontaRawService.getHakukohdesByKomoto(komoto.getOid());
         for (OidRDTO aoIdDTO : aoIdDTOs) {
