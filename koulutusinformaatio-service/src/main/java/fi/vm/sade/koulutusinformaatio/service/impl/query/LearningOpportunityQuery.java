@@ -33,6 +33,8 @@ public class LearningOpportunityQuery extends SolrQuery {
 
     private final static String LOP_HOMEPLACE = "lopHomeplace";
     private final static String PREREQUISITES = "prerequisites";
+    private final static String ID = "id";
+    private final static String TIMESTAMP_DOC = "loUpdateTimestampDocument";
 
     public LearningOpportunityQuery(String term, String prerequisite,
                                     List<String> cities, boolean ongoing, int start, int rows) {
@@ -57,6 +59,11 @@ public class LearningOpportunityQuery extends SolrQuery {
             }
             this.addFilterQuery(ongoingFQ.toString());
         }
+        
+        //leaving the stimetamp doc out
+        this.addFilterQuery(String.format("-%s:%s", ID, TIMESTAMP_DOC));
+        
+      
         this.setParam("defType", "edismax");
         this.setParam(DisMaxParams.QF, Joiner.on(" ").join(FIELDS));
         this.setParam("q.op", "AND");

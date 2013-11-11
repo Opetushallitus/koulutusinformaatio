@@ -41,7 +41,7 @@ public class LearningOpportunityQueryTest {
     public void testQuery() {
         LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, ONGOING, START, ROWS);
         assertNotNull(q);
-        assertEquals(2, q.getFilterQueries().length);
+        assertEquals(3, q.getFilterQueries().length);
         String prerequisiteFQ = new StringBuilder("prerequisites:").append(PREREQUISITE).toString();
         assertEquals(prerequisiteFQ, q.getFilterQueries()[0]);
         String lopHomeplaceFQ = new StringBuilder("lopHomeplace:(")
