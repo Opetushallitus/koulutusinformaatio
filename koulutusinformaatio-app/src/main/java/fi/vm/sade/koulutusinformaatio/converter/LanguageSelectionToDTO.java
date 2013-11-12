@@ -29,18 +29,26 @@ import java.util.List;
 public class LanguageSelectionToDTO {
 
     public static LanguageSelectionDTO convert(LanguageSelection ls, String lang) {
-        LanguageSelectionDTO dto = new LanguageSelectionDTO();
-        dto.setSubjectCode(ls.getSubjectCode());
-        dto.setLanguages(ConverterUtil.getTextsByLanguage(ls.getLanguages(), lang));
-        return dto;
+        if (ls != null) {
+            LanguageSelectionDTO dto = new LanguageSelectionDTO();
+            dto.setSubjectCode(ls.getSubjectCode());
+            dto.setLanguages(ConverterUtil.getTextsByLanguage(ls.getLanguages(), lang));
+            return dto;
+        } else {
+            return null;
+        }
     }
 
     public static List<LanguageSelectionDTO> convertAll(final List<LanguageSelection> languageSelections, final String lang) {
-        return Lists.transform(languageSelections, new Function<LanguageSelection, LanguageSelectionDTO>() {
-            @Override
-            public LanguageSelectionDTO apply(LanguageSelection languageSelection) {
-                return convert(languageSelection, lang);
-            }
-        });
+        if (languageSelections != null) {
+            return Lists.transform(languageSelections, new Function<LanguageSelection, LanguageSelectionDTO>() {
+                @Override
+                public LanguageSelectionDTO apply(LanguageSelection languageSelection) {
+                    return convert(languageSelection, lang);
+                }
+            });
+        } else {
+            return null;
+        }
     }
 }

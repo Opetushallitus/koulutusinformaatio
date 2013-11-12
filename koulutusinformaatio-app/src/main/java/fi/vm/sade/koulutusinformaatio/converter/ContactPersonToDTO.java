@@ -43,11 +43,15 @@ public class ContactPersonToDTO {
     }
 
     public static List<ContactPersonDTO> convertAll(List<ContactPerson> contactPersonList) {
-        return Lists.transform(contactPersonList, new Function<ContactPerson, ContactPersonDTO>() {
-            @Override
-            public ContactPersonDTO apply(ContactPerson contactPerson) {
-                return convert(contactPerson);
-            }
-        });
+        if (contactPersonList != null) {
+            return Lists.transform(contactPersonList, new Function<ContactPerson, ContactPersonDTO>() {
+                @Override
+                public ContactPersonDTO apply(ContactPerson contactPerson) {
+                    return convert(contactPerson);
+                }
+            });
+        } else {
+            return null;
+        }
     }
 }
