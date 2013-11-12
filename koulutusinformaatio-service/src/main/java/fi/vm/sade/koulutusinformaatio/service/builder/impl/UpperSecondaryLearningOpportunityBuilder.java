@@ -296,8 +296,10 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
         }
 
         ao.setAdditionalProof(createAdditionalProof(hakukohdeDTO.getValintakoes()));
-        for (ValintakoeRDTO valintakoeRDTO : hakukohdeDTO.getValintakoes()) {
-            ao.setOverallScoreLimit(resolvePointLimit(valintakoeRDTO, "Kokonaispisteet"));
+        if (hakukohdeDTO.getValintakoes() != null) {
+            for (ValintakoeRDTO valintakoeRDTO : hakukohdeDTO.getValintakoes()) {
+                ao.setOverallScoreLimit(resolvePointLimit(valintakoeRDTO, "Kokonaispisteet"));
+            }
         }
 
         List<ApplicationOptionAttachment> attachments = Lists.newArrayList();
@@ -408,7 +410,7 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
         return null;
     }
 
-    private ScoreLimit resolvePointLimit (ValintakoeRDTO valintakoe, String type) {
+    private ScoreLimit resolvePointLimit(ValintakoeRDTO valintakoe, String type) {
         for (ValintakoePisterajaRDTO valintakoePisteraja : valintakoe.getValintakoePisterajas()) {
             if (valintakoePisteraja.getTyyppi().equals(type)) {
                 return new ScoreLimit(valintakoePisteraja.getAlinPistemaara(),
