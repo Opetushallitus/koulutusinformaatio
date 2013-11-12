@@ -440,6 +440,7 @@ service('ChildLOTransformer', ['UtilityService', function(UtilityService) {
                 angular.forEach(result.lois, function(loi, loikey){
                     if (loi.id === loiId) {
                         loi.applicationSystems = asByPrerequisite;
+                        loi.applicationSystems = UtilityService.groupByApplicationSystem(loi.applicationSystems);
                         lois.push(loi);
                     }
                 });
@@ -975,6 +976,28 @@ service('UtilityService', function() {
                     return comp;
                 });
             }
+        },
+        groupByApplicationSystem: function(applicationSystems) {
+            result = [];
+            angular.forEach(applicationSystems, function(as, askey){
+                var found;
+                angular.forEach(result, function(item, itemkey){
+                    if (item.id == as.id) {
+                        found = item;
+                    }
+                });
+
+                if (found) {
+                    // add application options to found item
+                    angular.forEach(as.applicationOptions, function(ao, aokey){
+                        found.applicationOptions.push(ao);
+                    });
+                } else {
+                    result.push(as);
+                }
+            });
+
+            return result;
         },
         sortLanguageSelection: function(languageSelection) {
             if (languageSelection) {
