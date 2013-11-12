@@ -989,8 +989,17 @@ service('UtilityService', function() {
 
                 if (found) {
                     // add application options to found item
-                    angular.forEach(as.applicationOptions, function(ao, aokey){
-                        found.applicationOptions.push(ao);
+                    angular.forEach(as.applicationOptions, function(ao, aokey) {
+                        var aoFound = false;
+                        angular.forEach(found.applicationOptions, function(aoitem, aoitemkey){
+                            if (ao.id == aoitem.id) {
+                                aoFound = true;
+                            }
+                        });
+
+                        if (!aoFound) {
+                            found.applicationOptions.push(ao);
+                        }
                     });
                 } else {
                     result.push(as);
