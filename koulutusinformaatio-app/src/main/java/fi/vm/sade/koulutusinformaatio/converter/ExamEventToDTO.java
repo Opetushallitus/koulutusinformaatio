@@ -29,20 +29,28 @@ import java.util.List;
 public class ExamEventToDTO {
 
     public static ExamEventDTO convert(final ExamEvent event, final String lang) {
-        ExamEventDTO dto = new ExamEventDTO();
-        dto.setAddress(AddressToDTO.convert(event.getAddress()));
-        dto.setDescription(event.getDescription());
-        dto.setStart(event.getStart());
-        dto.setEnd(event.getEnd());
-        return dto;
+        if (event != null) {
+            ExamEventDTO dto = new ExamEventDTO();
+            dto.setAddress(AddressToDTO.convert(event.getAddress()));
+            dto.setDescription(event.getDescription());
+            dto.setStart(event.getStart());
+            dto.setEnd(event.getEnd());
+            return dto;
+        } else {
+            return null;
+        }
     }
 
     public static List<ExamEventDTO> convertAll(final List<ExamEvent> events, final String lang) {
-        return Lists.transform(events, new Function<ExamEvent, ExamEventDTO>() {
-            @Override
-            public ExamEventDTO apply(ExamEvent input) {
-                return convert(input, lang);
-            }
-        });
+        if (events != null) {
+            return Lists.transform(events, new Function<ExamEvent, ExamEventDTO>() {
+                @Override
+                public ExamEventDTO apply(ExamEvent input) {
+                    return convert(input, lang);
+                }
+            });
+        } else {
+            return null;
+        }
     }
 }
