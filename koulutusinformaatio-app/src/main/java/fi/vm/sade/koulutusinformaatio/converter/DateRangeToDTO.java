@@ -39,12 +39,16 @@ public class DateRangeToDTO {
     }
 
     public static List<DateRangeDTO> convert(final List<DateRange> dateRanges) {
-        List<DateRangeDTO> ranges = new ArrayList<DateRangeDTO>();
         if (dateRanges != null) {
-            for (DateRange dr : dateRanges) {
-                ranges.add(convert(dr));
+            List<DateRangeDTO> ranges = new ArrayList<DateRangeDTO>();
+            if (dateRanges != null) {
+                for (DateRange dr : dateRanges) {
+                    ranges.add(convert(dr));
+                }
             }
+            return ranges;
+        } else {
+            return null;
         }
-        return ranges;
     }
 }

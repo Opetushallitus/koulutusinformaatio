@@ -152,6 +152,50 @@ describe('UtilityService', function() {
             expect(result).toBeUndefined();
         });
     });
+
+    describe('groupByApplicationSystems', function() {
+        var data = [
+            {
+                id: '1a',
+                applicationOptions: [
+                    {id: 'ao_id_1a1'}, 
+                    {id: 'ao_id_1a2'}
+                ]
+            },
+            {
+                id: '2b',
+                applicationOptions: [
+                    {id: 'ao_id_2b1'}, 
+                    {id: 'ao_id_2b2'}
+                ]
+            },
+            {
+                id: '1a',
+                applicationOptions: [
+                    {id: 'ao_id_1a3'}, 
+                    {id: 'ao_id_1a4'}
+                ]
+            }
+        ];
+
+        it('should return empty array for undefined input', function() {
+            var input;
+            var result = utility.groupByApplicationSystem(input);
+            expect(result.length).toEqual(0);
+        });
+
+        it('should return empty array for empty input', function() {
+            var result = utility.groupByApplicationSystem([]);
+            expect(result.length).toEqual(0);
+        });
+
+        it('should return the application system array grouped', function() {
+            var result = utility.groupByApplicationSystem(data);
+            expect(result.length).toEqual(2);
+            expect(result[0].id).toEqual('1a');
+            expect(result[0].applicationOptions.length).toEqual(4);
+        });
+    });
 });
 
 

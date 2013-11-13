@@ -16,59 +16,67 @@ import java.util.List;
 public class ChildLOIToDTO {
 
     public static ChildLearningOpportunityInstanceDTO convert(ChildLOI childLOI, String lang, String uiLang) {
-        ChildLearningOpportunityInstanceDTO dto = new ChildLearningOpportunityInstanceDTO();
-        dto.setId(childLOI.getId());
-        dto.setAvailableTranslationLanguages(ConverterUtil.getAvailableTranslationLanguages(childLOI.getName()));
-        dto.setStartDate(childLOI.getStartDate());
-        if (childLOI.getTeachingLanguages() != null) {
-            for (Code code : childLOI.getTeachingLanguages()) {
-                dto.getTeachingLanguages().add(code.getValue());
+        if (childLOI != null) {
+            ChildLearningOpportunityInstanceDTO dto = new ChildLearningOpportunityInstanceDTO();
+            dto.setId(childLOI.getId());
+            dto.setAvailableTranslationLanguages(ConverterUtil.getAvailableTranslationLanguages(childLOI.getName()));
+            dto.setStartDate(childLOI.getStartDate());
+            if (childLOI.getTeachingLanguages() != null) {
+                for (Code code : childLOI.getTeachingLanguages()) {
+                    dto.getTeachingLanguages().add(code.getValue());
+                }
             }
-        }
-        dto.setRelated(ChildLOIRefToDTO.convert(childLOI.getRelated(), lang));
-        dto.setFormOfTeaching(ConverterUtil.getTextsByLanguage(childLOI.getFormOfTeaching(), uiLang));
-        dto.setWebLinks(childLOI.getWebLinks());
-        dto.setFormOfEducation(ConverterUtil.getTextsByLanguage(childLOI.getFormOfEducation(), uiLang));
-        dto.setPrerequisite(CodeToDTO.convert(childLOI.getPrerequisite(), uiLang));
-        dto.setProfessionalTitles(ConverterUtil.getTextsByLanguage(childLOI.getProfessionalTitles(), lang));
-        dto.setWorkingLifePlacement(ConverterUtil.getTextByLanguage(childLOI.getWorkingLifePlacement(), lang));
-        dto.setInternationalization(ConverterUtil.getTextByLanguage(childLOI.getInternationalization(), lang));
-        dto.setCooperation(ConverterUtil.getTextByLanguage(childLOI.getCooperation(), lang));
-        dto.setContent(ConverterUtil.getTextByLanguage(childLOI.getContent(), lang));
-        dto.setSelectingDegreeProgram(ConverterUtil.getTextByLanguage(childLOI.getSelectingDegreeProgram(), lang));
+            dto.setRelated(ChildLOIRefToDTO.convert(childLOI.getRelated(), lang));
+            dto.setFormOfTeaching(ConverterUtil.getTextsByLanguage(childLOI.getFormOfTeaching(), uiLang));
+            dto.setWebLinks(childLOI.getWebLinks());
+            dto.setFormOfEducation(ConverterUtil.getTextsByLanguage(childLOI.getFormOfEducation(), uiLang));
+            dto.setPrerequisite(CodeToDTO.convert(childLOI.getPrerequisite(), uiLang));
+            dto.setProfessionalTitles(ConverterUtil.getTextsByLanguage(childLOI.getProfessionalTitles(), lang));
+            dto.setWorkingLifePlacement(ConverterUtil.getTextByLanguage(childLOI.getWorkingLifePlacement(), lang));
+            dto.setInternationalization(ConverterUtil.getTextByLanguage(childLOI.getInternationalization(), lang));
+            dto.setCooperation(ConverterUtil.getTextByLanguage(childLOI.getCooperation(), lang));
+            dto.setContent(ConverterUtil.getTextByLanguage(childLOI.getContent(), lang));
+            dto.setSelectingDegreeProgram(ConverterUtil.getTextByLanguage(childLOI.getSelectingDegreeProgram(), lang));
 
-        // as based approach for UI
-        SetMultimap<ApplicationSystem, ApplicationOption> aoByAs = HashMultimap.create();
-        for (ApplicationOption ao : childLOI.getApplicationOptions()) {
-            aoByAs.put(ao.getApplicationSystem(), ao);
-        }
-
-        for (ApplicationSystem as : aoByAs.keySet()) {
-            ApplicationSystemDTO asDTO = ApplicationSystemToDTO.convert(as, uiLang);
-            for (ApplicationOption ao : aoByAs.get(as)) {
-                asDTO.getApplicationOptions().add(ApplicationOptionToDTO.convert(ao, lang, uiLang));
+            // as based approach for UI
+            SetMultimap<ApplicationSystem, ApplicationOption> aoByAs = HashMultimap.create();
+            for (ApplicationOption ao : childLOI.getApplicationOptions()) {
+                aoByAs.put(ao.getApplicationSystem(), ao);
             }
-            dto.getApplicationSystems().add(asDTO);
-        }
 
-        if (childLOI.getContactPersons() != null) {
-            for (ContactPerson contactPerson :childLOI.getContactPersons()) {
-                dto.getContactPersons().add(ContactPersonToDTO.convert(contactPerson));
+            for (ApplicationSystem as : aoByAs.keySet()) {
+                ApplicationSystemDTO asDTO = ApplicationSystemToDTO.convert(as, uiLang);
+                for (ApplicationOption ao : aoByAs.get(as)) {
+                    asDTO.getApplicationOptions().add(ApplicationOptionToDTO.convert(ao, lang, uiLang));
+                }
+                dto.getApplicationSystems().add(asDTO);
             }
-        }
 
-        return dto;
+            if (childLOI.getContactPersons() != null) {
+                for (ContactPerson contactPerson : childLOI.getContactPersons()) {
+                    dto.getContactPersons().add(ContactPersonToDTO.convert(contactPerson));
+                }
+            }
+
+            return dto;
+        }
+        else {
+            return null;
+        }
     }
 
     public static List<ChildLearningOpportunityInstanceDTO> convert(final List<ChildLOI> childLOIs, final String lang, final String uiLang) {
-
-        return Lists.transform(childLOIs, new Function<ChildLOI, ChildLearningOpportunityInstanceDTO>() {
-            @Override
-            public ChildLearningOpportunityInstanceDTO apply(fi.vm.sade.koulutusinformaatio.domain.ChildLOI input) {
-                return convert(input, lang, uiLang);
-            }
-        });
-
+        if (childLOIs != null) {
+            return Lists.transform(childLOIs, new Function<ChildLOI, ChildLearningOpportunityInstanceDTO>() {
+                @Override
+                public ChildLearningOpportunityInstanceDTO apply(fi.vm.sade.koulutusinformaatio.domain.ChildLOI input) {
+                    return convert(input, lang, uiLang);
+                }
+            });
+        }
+        else {
+            return null;
+        }
     }
 
 }

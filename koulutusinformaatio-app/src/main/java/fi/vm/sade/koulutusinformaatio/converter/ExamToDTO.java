@@ -29,12 +29,16 @@ import java.util.List;
 public class ExamToDTO {
 
     public static ExamDTO convert(Exam exam, String lang) {
-        ExamDTO dto = new ExamDTO();
-        dto.setType(ConverterUtil.getTextByLanguageUseFallbackLang(exam.getType(), lang));
-        dto.setDescription(ConverterUtil.getTextByLanguageUseFallbackLang(exam.getDescription(), lang));
-        dto.setExamEvents(ExamEventToDTO.convertAll(exam.getExamEvents(), lang));
-        dto.setScoreLimit(ScoreLimitToDTO.convert(exam.getScoreLimit()));
-        return dto;
+        if (exam != null)  {
+            ExamDTO dto = new ExamDTO();
+            dto.setType(ConverterUtil.getTextByLanguageUseFallbackLang(exam.getType(), lang));
+            dto.setDescription(ConverterUtil.getTextByLanguageUseFallbackLang(exam.getDescription(), lang));
+            dto.setExamEvents(ExamEventToDTO.convertAll(exam.getExamEvents(), lang));
+            dto.setScoreLimit(ScoreLimitToDTO.convert(exam.getScoreLimit()));
+            return dto;
+        } else {
+            return null;
+        }
     }
 
     public static List<ExamDTO> convertAll(final List<Exam> exams, final String lang) {
