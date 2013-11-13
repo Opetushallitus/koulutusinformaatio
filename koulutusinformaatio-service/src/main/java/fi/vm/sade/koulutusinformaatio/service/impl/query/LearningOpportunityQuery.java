@@ -2,6 +2,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl.query;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
+
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.common.params.DisMaxParams;
 
@@ -35,9 +36,12 @@ public class LearningOpportunityQuery extends SolrQuery {
     private final static String PREREQUISITES = "prerequisites";
     private final static String ID = "id";
     private final static String TIMESTAMP_DOC = "loUpdateTimestampDocument";
+    private final static String TYPE = "type";
+    private final static String TYPE_FACET = "FASETTI";
+    public final static String TEACHING_LANG = "teachingLangCode_ffm";
 
     public LearningOpportunityQuery(String term, String prerequisite,
-                                    List<String> cities, boolean ongoing, int start, int rows) {
+                                    List<String> cities, List<String> facetFilters, String lang, boolean ongoing, int start, int rows) {
         super(term);
         if (prerequisite != null) {
             this.addFilterQuery(String.format("%s:%s", PREREQUISITES, prerequisite));
@@ -60,12 +64,23 @@ public class LearningOpportunityQuery extends SolrQuery {
             this.addFilterQuery(ongoingFQ.toString());
         }
         
-        //leaving the stimetamp doc out
+        //leaving the facet and timestamp docs out
         this.addFilterQuery(String.format("-%s:%s", ID, TIMESTAMP_DOC));
+        this.addFilterQuery(String.format("-%s:%s", TYPE, TYPE_FACET));
         
+        addFacetsToQuery(lang, facetFilters);
       
         this.setParam("defType", "edismax");
         this.setParam(DisMaxParams.QF, Joiner.on(" ").join(FIELDS));
         this.setParam("q.op", "AND");
+    }
+
+    private void addFacetsToQuery(String lang, List<String> facetFilters) {
+        this.setFacet(true);
+        this.addFacetField(TEACHING_LANG);
+        for (String curFilter : facetFilters) {
+            System.out.println("FILTTERI: " + curFilter);
+            this.addFilterQuery(curFilter);
+        }
     }
 }

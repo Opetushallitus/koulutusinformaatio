@@ -45,6 +45,8 @@ public interface LearningOpportunityResource {
     public LOSearchResultListDTO searchLearningOpportunities(@PathParam("text") String text,
                                                              @QueryParam("prerequisite") String prerequisite,
                                                              @QueryParam("city") List<String> cities,
+                                                             @QueryParam("facetFilters") List<String> facetFilters,
+                                                             @QueryParam("lang") String lang,
                                                              @DefaultValue(value = "false") @QueryParam("ongoing") boolean ongoing,
                                                              @DefaultValue(value = "0") @QueryParam("start") int start,
                                                              @DefaultValue(value = "100") @QueryParam("rows") int rows);

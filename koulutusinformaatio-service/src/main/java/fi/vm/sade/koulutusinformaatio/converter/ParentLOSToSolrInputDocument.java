@@ -18,10 +18,13 @@ package fi.vm.sade.koulutusinformaatio.converter;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+
 import fi.vm.sade.koulutusinformaatio.domain.*;
+
 import org.apache.solr.common.SolrInputDocument;
 import org.springframework.core.convert.converter.Converter;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -33,10 +36,12 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
     private static final String FALLBACK_LANG = "fi";
     private static final String TYPE_PARENT = "TUTKINTO";
     private static final String TYPE_CHILD = "KOULUTUSOHJELMA";
+    private static final String TYPE_FACET = "FASETTI";
 
     public List<SolrInputDocument> convert(ParentLOS parent) {
         List<SolrInputDocument> docs = Lists.newArrayList();
         docs.add(createParentDoc(parent));
+        docs.addAll(createFacetsDocs(parent));
 
         for (ChildLOS childLOS : parent.getChildren()) {
             for (ChildLOI childLOI : childLOS.getLois()) {
@@ -44,6 +49,21 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
             }
         }
 
+        return docs;
+    }
+
+
+    /*
+     * Creates the solr docs needed in facet search.
+     */
+    private List<SolrInputDocument> createFacetsDocs(
+            ParentLOS parent) {
+        List<SolrInputDocument> docs = Lists.newArrayList();
+        for (ChildLOS childLOS : parent.getChildren()) {
+            for (ChildLOI childLOI : childLOS.getLois()) {
+                docs.add(indexTeachingLangFacetDoc(childLOI));
+            }
+        }
         return docs;
     }
 
@@ -102,9 +122,13 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
             }
         }
         doc.setField("prerequisites", prerequisites);
+        
+        indexFacetFields(parent, doc);
 
         return doc;
     }
+
+
 
     private SolrInputDocument createChildDoc(ChildLOS childLOS, ChildLOI childLOI, ParentLOS parent) {
         SolrInputDocument doc = new SolrInputDocument();
@@ -115,6 +139,8 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         doc.addField("lopId", provider.getId());
         doc.addField("parentId", parent.getId());
         doc.addField("prerequisites", childLOI.getPrerequisite().getValue());
+        
+        
 
         doc.setField("prerequisite", resolveTranslationInTeachingLangUseFallback(
                 childLOI.getTeachingLanguages(), childLOI.getPrerequisite().getName().getTranslations()));
@@ -174,7 +200,43 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         }
 
         addApplicationDates(doc, childLOI.getApplicationOptions());
+        
+        indexFacetFields(childLOS, childLOI, parent, doc);
 
+        return doc;
+    }
+    
+
+    /*
+     * Indexes fields used in facet search for ParentLOS learning opportunities
+     */
+    private void indexFacetFields(ParentLOS parent, SolrInputDocument doc) {
+        for (ChildLOS childLOS : parent.getChildren()) {
+            for (ChildLOI childLOI : childLOS.getLois()) {
+                doc.addField("teachingLangCode_ffm", childLOI.getTeachingLanguages().get(0).getValue());
+            }
+        }
+        
+    }
+    
+    /*
+     * Indexes fields used in facet search for ChildLOS
+     */
+    private void indexFacetFields(ChildLOS childLOS, ChildLOI childLOI, ParentLOS parent, SolrInputDocument doc) {
+        doc.addField("teachingLangCode_ffm", childLOI.getTeachingLanguages().get(0).getValue());
+    }
+    
+    
+    /*
+     * Creates an solr document for teaching lang facet.
+     */
+    private SolrInputDocument indexTeachingLangFacetDoc(ChildLOI childLOI) {
+        SolrInputDocument doc = new SolrInputDocument();
+        doc.addField("type", TYPE_FACET);
+        doc.addField("id", childLOI.getTeachingLanguages().get(0).getValue());
+        doc.addField("fi_fname", this.getTranslationUseFallback("fi", childLOI.getTeachingLanguages().get(0).getName().getTranslations()));
+        doc.addField("sv_fname", this.getTranslationUseFallback("sv", childLOI.getTeachingLanguages().get(0).getName().getTranslations()));
+        doc.addField("en_fname", this.getTranslationUseFallback("en", childLOI.getTeachingLanguages().get(0).getName().getTranslations()));
         return doc;
     }
 
@@ -196,6 +258,19 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
 
         return translation;
     }
+    
+    private String getTranslationUseFallback(String lang, Map<String, String> translations) {
+        String translation = null;
+        translation = translations.get(lang);
+        if (translation == null) {
+            translation = translations.get(FALLBACK_LANG);
+        }
+        if (translation == null) {
+            translation = translations.values().iterator().next();
+        }
+
+        return translation;
+    }   
 
 
     private void addApplicationDates(SolrInputDocument doc, List<ApplicationOption> applicationOptions) {

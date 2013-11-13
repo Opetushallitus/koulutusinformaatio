@@ -1,9 +1,28 @@
 <!-- <div ng-include src="'partials/pageheader.html'"></div> -->
 <section class="content-container grid16-16 margin-bottom-2">
     <div data-ki-breadcrumb="breadcrumb-search-results" id="breadcrumb"></div>
+    <div id="facetSelections" class="grid16-16" data-ng-show="(facetSelections != undefined) && (facetSelections.length > 0)" data-ng-controller="SearchFilterCtrl">
+    	<ul>
+    		<li><span data-ki-i18n="valitut-rajaukset"></span>:</li>
+    		<li data-ng-repeat="fs in facetSelections">
+    			<span data-ki-i18n="{{fs.facetField}}"></span>: {{fs.valueName}} <a href ng-click="removeSelection(fs)">x</a>
+    		</li>
+    	</ul>
+    </div>
     <div class="grid16-16">
         <h1 class="inline-block"><span data-ki-i18n="search-result-title"></span> "{{queryString}}"</h1>
         <h2 class="inline-block margin-left-2">({{loResult.totalCount}} <span data-ki-i18n="search-result-count-unit"></span>)</h2>
+    </div>
+    <div class="grid16-3" data-ng-controller="SearchFilterCtrl">
+    	<div>
+    		<h2><span data-ki-i18n="facet-opetuskieli"></span></h2>
+    		<ul>
+    			<li data-ng-repeat="fv in loResult.teachingLangFacet.facetValues">
+    				<span data-ng-show="!isSelected(fv)"><a href ng-click="selectFacetFilter(fv.valueId, fv.facetField)">{{fv.valueName}}</a> ({{fv.count}})</span>
+    				<span data-ng-show="isSelected(fv)">{{fv.valueName}} ({{fv.count}})</span>
+    			</li>
+    		</ul>
+    	</div>
     </div>
     <div class="grid16-11">
         <div data-ng-switch="loResult.totalCount">
@@ -34,7 +53,7 @@
         </div>
     </div>
 </div>
-<aside class="grid16-5" id="column-narrow">
+<!--<aside class="grid16-5" id="column-narrow">
     <form name="searchResultFilters" novalidate data-ng-controller="SearchFilterCtrl">
         <h2 class="margin-top-0" data-ki-i18n="filter-title"></h2>
         <div class="filter margin-bottom-2">
@@ -63,6 +82,6 @@
         <h4 data-ki-i18n="filter-search-location-title"></h4>
         <div data-ki-location-filter></div>
     </form>
-</aside>
+</aside>-->
 <div class="clear"></div>
 </section>

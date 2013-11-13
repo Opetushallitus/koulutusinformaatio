@@ -30,6 +30,7 @@ import java.util.Map;
 public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSecondaryLOS, List<SolrInputDocument>> {
     private static final String FALLBACK_LANG = "fi";
     private static final String TYPE_UPSEC = "LUKIO";
+    private static final String TYPE_FACET = "FASETTI";
 
     @Override
     public List<SolrInputDocument> convert(UpperSecondaryLOS los) {
@@ -37,8 +38,21 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
 
         for (UpperSecondaryLOI loi : los.getLois()) {
             docs.add(createDoc(los, loi));
+            docs.addAll(createFacetDocs(loi));
         }
 
+        return docs;
+    }
+    
+    private List<SolrInputDocument> createFacetDocs(UpperSecondaryLOI loi) {
+        List<SolrInputDocument> docs = Lists.newArrayList();
+        SolrInputDocument doc = new SolrInputDocument();
+        doc.addField("id", loi.getTeachingLanguages().get(0).getValue());
+        doc.addField("type", TYPE_FACET);
+        doc.addField("fi_fname", this.getTranslationUseFallback("fi", loi.getTeachingLanguages().get(0).getName().getTranslations()));
+        doc.addField("sv_fname", this.getTranslationUseFallback("sv", loi.getTeachingLanguages().get(0).getName().getTranslations()));
+        doc.addField("en_fname", this.getTranslationUseFallback("en", loi.getTeachingLanguages().get(0).getName().getTranslations()));
+        docs.add(doc);
         return docs;
     }
 
@@ -54,6 +68,9 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
         doc.setField("prerequisite", resolveTranslationInTeachingLangUseFallback(
                 loi.getTeachingLanguages(), loi.getPrerequisite().getName().getTranslations()));
         doc.addField("prerequisiteCode", loi.getPrerequisite().getValue());
+        
+        
+        doc.addField("teachingLangCode_ffm", loi.getTeachingLanguages().get(0).getValue());
 
         doc.setField("name", resolveTranslationInTeachingLangUseFallback(
                 loi.getTeachingLanguages(), los.getName().getTranslationsShortName()));
@@ -124,6 +141,19 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
 
         return translation;
     }
+    
+    private String getTranslationUseFallback(String lang, Map<String, String> translations) {
+        String translation = null;
+        translation = translations.get(lang);
+        if (translation == null) {
+            translation = translations.get(FALLBACK_LANG);
+        }
+        if (translation == null) {
+            translation = translations.values().iterator().next();
+        }
+
+        return translation;
+    }    
 
 
     private void addApplicationDates(SolrInputDocument doc, List<ApplicationOption> applicationOptions) {

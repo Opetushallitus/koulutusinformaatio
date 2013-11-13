@@ -170,8 +170,12 @@
     "B1KIELI" : "B1-språk",
     "B2KIELI" : "B2-språk",
     "B3KIELI" : "B3-språk",
-    "MUUT_KIELET" : "Annat språk"
+    "MUUT_KIELET" : "Annat språk",
 
+     "valitut-rajaukset": "Utvald begräsningar",
+     "facet-opetuskieli": "Undervisning språk",
+     "teachingLangCode_ffm": "Undervisning språk"
+     
 
 
 }

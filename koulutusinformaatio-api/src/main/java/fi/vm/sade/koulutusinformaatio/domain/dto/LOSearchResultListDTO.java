@@ -29,6 +29,7 @@ public class LOSearchResultListDTO {
 
     private List<LearningOpportunitySearchResultDTO> results = new ArrayList<LearningOpportunitySearchResultDTO>();
     private long totalCount;
+    private FacetDTO  teachingLangFacet;
 
     public List<LearningOpportunitySearchResultDTO> getResults() {
         return results;
@@ -44,5 +45,13 @@ public class LOSearchResultListDTO {
 
     public void setTotalCount(long totalCount) {
         this.totalCount = totalCount;
+    }
+
+    public FacetDTO getTeachingLangFacet() {
+        return teachingLangFacet;
+    }
+
+    public void setTeachingLangFacet(FacetDTO teachingLangFacet) {
+        this.teachingLangFacet = teachingLangFacet;
     }
 }

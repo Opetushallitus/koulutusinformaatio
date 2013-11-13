@@ -17,17 +17,20 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Maps;
-
 import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.LearningOpportunityQuery;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.LocationQuery;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.ProviderQuery;
+
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.apache.solr.client.solrj.response.FacetField;
+import org.apache.solr.client.solrj.response.FacetField.Count;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.slf4j.Logger;
@@ -38,6 +41,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Component
@@ -98,11 +102,11 @@ public class SearchServiceSolrImpl implements SearchService {
 
     @Override
     public LOSearchResultList searchLearningOpportunities(String term, String prerequisite,
-                                                          List<String> cities, boolean ongoing, int start, int rows) throws SearchException {
+                                                          List<String> cities, List<String> facetFilters, String lang, boolean ongoing, int start, int rows) throws SearchException {
         LOSearchResultList searchResultList = new LOSearchResultList();
         String trimmed = term.trim();
         if (!trimmed.isEmpty()) {
-            SolrQuery query = new LearningOpportunityQuery(term, prerequisite, cities, ongoing, start, rows);
+            SolrQuery query = new LearningOpportunityQuery(term, prerequisite, cities, facetFilters, lang, ongoing, start, rows);
 
             try {
                 LOG.debug(
@@ -140,9 +144,56 @@ public class SearchServiceSolrImpl implements SearchService {
                 }
                 searchResultList.getResults().add(lo);
             }
+            
+            addFacetsToResult(searchResultList, response, lang);
         }
 
         return searchResultList;
+    }
+
+    private void addFacetsToResult(LOSearchResultList searchResultList,
+            QueryResponse response, String lang) {
+        System.out.println("Adding facets to result, facet field is: " + LearningOpportunityQuery.TEACHING_LANG);
+        FacetField teachingLangF = response.getFacetField(LearningOpportunityQuery.TEACHING_LANG);
+        
+        Facet teachingLangFacet = new Facet();
+        List<FacetValue> values = new ArrayList<FacetValue>();
+        if (teachingLangF != null) {
+            System.out.println("Value count for facet field: " + teachingLangF.getValueCount());
+            for (Count curC : teachingLangF.getValues()) {
+                System.out.println("Cur facet value: " + curC.getName() + ", count: " + curC.getCount());
+                if (curC.getCount() > 0) {
+                    FacetValue newVal = new FacetValue(LearningOpportunityQuery.TEACHING_LANG,  
+                                                        getLocalizedFacetName(curC.getName(), lang), 
+                                                        curC.getCount(), 
+                                                        curC.getName());
+                    values.add(newVal);
+                }
+            }
+        }
+        teachingLangFacet.setFacetValues(values);
+        searchResultList.setTeachingLangFacet(teachingLangFacet);
+    }
+    
+    /*
+     * Getting the update timestamp for the lo-collection.
+     */
+    private String getLocalizedFacetName(String id, String lang) {
+        SolrQuery query = new SolrQuery();
+        query.setQuery(String.format("id:%s", id));
+        query.setFields("id", String.format("%s_fname", lang));
+        query.setStart(0);
+        query.set("defType", "edismax");
+        try {
+            QueryResponse response = loHttpSolrServer.query(query);
+            for (SolrDocument curDoc : response.getResults()) {
+                System.out.println("Returning as localized facet name: " + String.format("%s", curDoc.getFieldValue(String.format("%s_fname", lang))));
+                return String.format("%s", curDoc.getFieldValue(String.format("%s_fname", lang)));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     private void updateAsStatus(LOSearchResult lo, SolrDocument doc) {
