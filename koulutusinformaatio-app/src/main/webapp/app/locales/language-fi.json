@@ -170,5 +170,11 @@
     "B1KIELI" : "B1-kieli",
     "B2KIELI" : "B2-kieli",
     "B3KIELI" : "B3-kieli",
-    "MUUT_KIELET" : "Muu kieli"
+    "MUUT_KIELET" : "Muu kieli",
+    
+    "valitut-rajaukset": "Valitut rajaukset",
+    "facet-opetuskieli": "Opetuskieli",
+    "teachingLangCode_ffm": "Opetuskieli",
+    "location-rajaus": "Paikka"
+    
 }

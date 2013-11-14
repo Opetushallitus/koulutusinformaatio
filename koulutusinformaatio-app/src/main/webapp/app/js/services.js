@@ -24,7 +24,13 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
             qParams += (params.rows != undefined) ? ('&rows=' + params.rows) : '';
             qParams += (params.prerequisite != undefined) ? ('&prerequisite=' + params.prerequisite) : '';
             qParams += (params.locations != undefined && params.locations.length > 0) ? ('&' + cities) : '';
-            qParams += (params.ongoing) != undefined ? ('&ongoing=' + params.ongoing) : '';
+            qParams += (params.ongoing != undefined) ? ('&ongoing=' + params.ongoing) : '';
+            qParams += (params.lang != undefined) ? ('&lang=' + params.lang) : '';
+            if (params.facetFilters != undefined) {
+            	 angular.forEach(params.facetFilters, function(facetFilter, key) {
+            		 qParams += '&facetFilters=' + facetFilter;
+                 });
+            }
 
             $http.get('../lo/search/' + encodeURI(params.queryString) + qParams, {}).
             success(function(result) {
@@ -844,7 +850,8 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', fu
                 prerequisite: filters.prerequisite,
                 locations: getLocationCodes(),
                 ongoing: filters.ongoing,
-                page: filters.page
+                page: filters.page,
+                facetFilters: filters.facetFilters
             };
 
             angular.forEach(result, function(value, key) {
@@ -904,9 +911,18 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', fu
             params += (filters.locations && filters.locations.length > 0) ? '&locations=' + getLocationCodes().join(',') : '';
             params += filters.ongoing ? '&ongoing' : '';
             params += filters.page ? '&page=' + filters.page : '';
+            params += (filters.facetFilters && filters.facetFilters.length > 0) ? "&facetFilters" + filters.facetFilters.join(',') : '';
 
             params = params.length > 0 ? params.substring(1, params.length) : '';
             return params;
+        },
+        
+        getFacetFilters: function() {
+        	if (filters.facetFilters != undefined && (typeof filters.facetFilters == 'string' || filters.facetFilters instanceof String)) {
+        		filters.facetFilters = filters.facetFilters.split(',');
+        		return filters.facetFilters;
+        	}
+        	return filters.facetFilters;
         }
     };
 }]).

@@ -3444,3 +3444,12 @@ p {
   position: absolute;
   right: 87px;
   top: 2px; }
+  
+ #facetSelections ul li {
+ 	display: inline-block;
+    list-style-type: none;
+    padding-right: 20px; }
+    
+ #facetSelections {
+	border-style:solid;
+	border-width:thin; } 
