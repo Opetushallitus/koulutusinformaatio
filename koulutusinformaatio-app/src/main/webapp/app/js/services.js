@@ -636,7 +636,7 @@ service('ApplicationBasketService', ['$http', '$q', 'LanguageService', 'UtilityS
         for (var asIndex in result) {
             if (result.hasOwnProperty(asIndex)) {
                 var applicationDates = result[asIndex].applicationDates;
-                if (applicationDates.length > 0) {
+                if (applicationDates && applicationDates.length > 0) {
                     result[asIndex].applicationDates = applicationDates[0];
                 }
 
@@ -752,7 +752,7 @@ service('ApplicationBasketService', ['$http', '$q', 'LanguageService', 'UtilityS
                     qParams += '&aoId=' + basketItems[index];
                 }
             }
-            
+
             $http.get('../basket/items?' + qParams).
             success(function(result) {
                 result = transformData(result);

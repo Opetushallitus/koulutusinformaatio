@@ -3,7 +3,8 @@
 var kiApp = angular.module('kiApp', 
     [
         'kiApp.services', 
-        'kiApp.directives', 
+        'kiApp.directives',
+        'ApplicationBasket',
         'SearchResult', 
         'ui.bootstrap', 
         'angulartics', 
@@ -46,7 +47,7 @@ kiApp.config(['$routeProvider', '$analyticsProvider', function($routeProvider, $
 
     $routeProvider.when('/muistilista', {
         templateUrl: 'partials/applicationbasket/applicationbasket.html',
-        controller: ApplicationBasketCtrl
+        controller: 'ApplicationBasketCtrl'
     });
     
     $routeProvider.otherwise({
