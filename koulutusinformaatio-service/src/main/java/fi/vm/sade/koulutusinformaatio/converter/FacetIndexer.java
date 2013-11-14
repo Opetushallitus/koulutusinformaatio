@@ -27,7 +27,8 @@ public class FacetIndexer {
         doc.addField(LearningOpportunity.TYPE, TYPE_FACET);
         doc.addField(LearningOpportunity.FI_FNAME, this.getTranslationUseFallback("fi", loi.getTeachingLanguages().get(0).getName().getTranslations()));
         doc.addField(LearningOpportunity.SV_FNAME, this.getTranslationUseFallback("sv", loi.getTeachingLanguages().get(0).getName().getTranslations()));
-        doc.addField(LearningOpportunity.EN_FNAME, this.getTranslationUseFallback("en", loi.getTeachingLanguages().get(0).getName().getTranslations()));     
+        doc.addField(LearningOpportunity.EN_FNAME, this.getTranslationUseFallback("en", loi.getTeachingLanguages().get(0).getName().getTranslations()));    
+        docs.add(doc);
         return docs;
     }
     
