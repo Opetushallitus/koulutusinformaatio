@@ -17,7 +17,10 @@
 package fi.vm.sade.koulutusinformaatio.converter;
 
 import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LearningOpportunity;
+
 import org.apache.solr.common.SolrInputDocument;
 import org.springframework.core.convert.converter.Converter;
 
@@ -28,93 +31,84 @@ import java.util.Map;
  * @author Hannu Lyytikainen
  */
 public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSecondaryLOS, List<SolrInputDocument>> {
+    
     private static final String FALLBACK_LANG = "fi";
     private static final String TYPE_UPSEC = "LUKIO";
-    private static final String TYPE_FACET = "FASETTI";
 
     @Override
     public List<SolrInputDocument> convert(UpperSecondaryLOS los) {
         List<SolrInputDocument> docs = Lists.newArrayList();
+        FacetIndexer fIndexer = new FacetIndexer();
 
         for (UpperSecondaryLOI loi : los.getLois()) {
             docs.add(createDoc(los, loi));
-            docs.addAll(createFacetDocs(loi));
+            docs.addAll(fIndexer.createFacetDocs(loi));
         }
 
         return docs;
     }
     
-    private List<SolrInputDocument> createFacetDocs(UpperSecondaryLOI loi) {
-        List<SolrInputDocument> docs = Lists.newArrayList();
-        SolrInputDocument doc = new SolrInputDocument();
-        doc.addField("id", loi.getTeachingLanguages().get(0).getValue());
-        doc.addField("type", TYPE_FACET);
-        doc.addField("fi_fname", this.getTranslationUseFallback("fi", loi.getTeachingLanguages().get(0).getName().getTranslations()));
-        doc.addField("sv_fname", this.getTranslationUseFallback("sv", loi.getTeachingLanguages().get(0).getName().getTranslations()));
-        doc.addField("en_fname", this.getTranslationUseFallback("en", loi.getTeachingLanguages().get(0).getName().getTranslations()));
-        docs.add(doc);
-        return docs;
-    }
+
 
     private SolrInputDocument createDoc(UpperSecondaryLOS los, UpperSecondaryLOI loi) {
         SolrInputDocument doc = new SolrInputDocument();
-        doc.addField("type", TYPE_UPSEC);
+        doc.addField(LearningOpportunity.TYPE, TYPE_UPSEC);
         Provider provider = los.getProvider();
-        doc.addField("id", loi.getId());
-        doc.addField("losId", los.getId());
-        doc.addField("lopId", provider.getId());
-        doc.addField("prerequisites", loi.getPrerequisite().getValue());
+        doc.addField(LearningOpportunity.ID, loi.getId());
+        doc.addField(LearningOpportunity.LOS_ID, los.getId());
+        doc.addField(LearningOpportunity.LOP_ID, provider.getId());
+        doc.addField(LearningOpportunity.PREREQUISITES, loi.getPrerequisite().getValue());
 
-        doc.setField("prerequisite", resolveTranslationInTeachingLangUseFallback(
+        doc.setField(LearningOpportunity.PREREQUISITE, resolveTranslationInTeachingLangUseFallback(
                 loi.getTeachingLanguages(), loi.getPrerequisite().getName().getTranslations()));
-        doc.addField("prerequisiteCode", loi.getPrerequisite().getValue());
+        doc.addField(LearningOpportunity.PREREQUISITE_CODE, loi.getPrerequisite().getValue());
         
-        
-        doc.addField("teachingLangCode_ffm", loi.getTeachingLanguages().get(0).getValue());
+        //For faceting
+        doc.addField(LearningOpportunity.TEACHING_LANGUAGE, loi.getTeachingLanguages().get(0).getValue());
 
-        doc.setField("name", resolveTranslationInTeachingLangUseFallback(
+        doc.setField(LearningOpportunity.NAME, resolveTranslationInTeachingLangUseFallback(
                 loi.getTeachingLanguages(), los.getName().getTranslationsShortName()));
-        doc.addField("name_fi", los.getName().getTranslations().get("fi"));
-        doc.addField("name_sv", los.getName().getTranslations().get("sv"));
-        doc.addField("name_en", los.getName().getTranslations().get("en"));
+        doc.addField(LearningOpportunity.NAME_FI, los.getName().getTranslations().get("fi"));
+        doc.addField(LearningOpportunity.NAME_SV, los.getName().getTranslations().get("sv"));
+        doc.addField(LearningOpportunity.NAME_EN, los.getName().getTranslations().get("en"));
 
-        doc.setField("lopName", resolveTranslationInTeachingLangUseFallback(
+        doc.setField(LearningOpportunity.LOP_NAME, resolveTranslationInTeachingLangUseFallback(
                 loi.getTeachingLanguages(), provider.getName().getTranslations()));
-        doc.addField("lopName_fi", provider.getName().getTranslations().get("fi"));
-        doc.addField("lopName_sv", provider.getName().getTranslations().get("sv"));
-        doc.addField("lopName_en", provider.getName().getTranslations().get("en"));
+        doc.addField(LearningOpportunity.LOP_NAME_FI, provider.getName().getTranslations().get("fi"));
+        doc.addField(LearningOpportunity.LOP_NAME_SV, provider.getName().getTranslations().get("sv"));
+        doc.addField(LearningOpportunity.LOP_NAME_EN, provider.getName().getTranslations().get("en"));
 
-        doc.addField("lopHomeplace", provider.getHomePlace().getTranslations().values());
+        doc.addField(LearningOpportunity.LOP_HOMEPLACE, provider.getHomePlace().getTranslations().values());
 
         if (provider.getVisitingAddress() != null) {
-            doc.addField("lopAddress_fi", provider.getVisitingAddress().getPostOffice());
+            doc.addField(LearningOpportunity.LOP_ADDRESS_FI, provider.getVisitingAddress().getPostOffice());
         }
         if (provider.getDescription() != null) {
-            doc.addField("lopDescription_fi", provider.getDescription().getTranslations().get("fi"));
-            doc.addField("lopDescription_sv", provider.getDescription().getTranslations().get("sv"));
-            doc.addField("lopDescription_en", provider.getDescription().getTranslations().get("en"));
+            doc.addField(LearningOpportunity.LOP_DESCRIPTION_FI, provider.getDescription().getTranslations().get("fi"));
+            doc.addField(LearningOpportunity.LOP_DESCRIPTION_SV, provider.getDescription().getTranslations().get("sv"));
+            doc.addField(LearningOpportunity.LOP_DESCRIPTION_EN, provider.getDescription().getTranslations().get("en"));
         }
         if (los.getQualification() != null) {
-            doc.addField("qualification_fi", los.getQualification().getTranslations().get("fi"));
-            doc.addField("qualification_sv", los.getQualification().getTranslations().get("sv"));
-            doc.addField("qualification_en", los.getQualification().getTranslations().get("en"));
+            doc.addField(LearningOpportunity.QUALIFICATION_FI, los.getQualification().getTranslations().get("fi"));
+            doc.addField(LearningOpportunity.QUALIFICATION_SV, los.getQualification().getTranslations().get("sv"));
+            doc.addField(LearningOpportunity.QUALIFICATION_EN, los.getQualification().getTranslations().get("en"));
         }
         if (los.getGoals() != null) {
-            doc.addField("goals_fi", los.getGoals().getTranslations().get("fi"));
-            doc.addField("goals_sv", los.getGoals().getTranslations().get("sv"));
-            doc.addField("goals_en", los.getGoals().getTranslations().get("en"));
+            doc.addField(LearningOpportunity.GOALS_FI, los.getGoals().getTranslations().get("fi"));
+            doc.addField(LearningOpportunity.GOALS_SV, los.getGoals().getTranslations().get("sv"));
+            doc.addField(LearningOpportunity.GOALS_EN, los.getGoals().getTranslations().get("en"));
         }
         if (loi.getContent() != null) {
-            doc.addField("content_fi", loi.getContent().getTranslations().get("fi"));
-            doc.addField("content_sv", loi.getContent().getTranslations().get("sv"));
-            doc.addField("content_en", loi.getContent().getTranslations().get("en"));
+            doc.addField(LearningOpportunity.CONTENT_FI, loi.getContent().getTranslations().get("fi"));
+            doc.addField(LearningOpportunity.CONTENT_SV, loi.getContent().getTranslations().get("sv"));
+            doc.addField(LearningOpportunity.CONTENT_EN, loi.getContent().getTranslations().get("en"));
         }
 
         for (ApplicationOption ao : loi.getApplicationOptions()) {
             if (ao.getApplicationSystem() != null) {
-                doc.addField("asName_fi", ao.getApplicationSystem().getName().getTranslations().get("fi"));
-                doc.addField("asName_sv", ao.getApplicationSystem().getName().getTranslations().get("sv"));
-                doc.addField("asName_en", ao.getApplicationSystem().getName().getTranslations().get("en"));
+                doc.addField(LearningOpportunity.AS_NAME_FI, ao.getApplicationSystem().getName().getTranslations().get("fi"));
+                doc.addField(LearningOpportunity.AS_NAME_SV, ao.getApplicationSystem().getName().getTranslations().get("sv"));
+                doc.addField(LearningOpportunity.AS_NAME_EN, ao.getApplicationSystem().getName().getTranslations().get("en"));
             }
         }
 
@@ -141,20 +135,6 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
 
         return translation;
     }
-    
-    private String getTranslationUseFallback(String lang, Map<String, String> translations) {
-        String translation = null;
-        translation = translations.get(lang);
-        if (translation == null) {
-            translation = translations.get(FALLBACK_LANG);
-        }
-        if (translation == null) {
-            translation = translations.values().iterator().next();
-        }
-
-        return translation;
-    }    
-
 
     private void addApplicationDates(SolrInputDocument doc, List<ApplicationOption> applicationOptions) {
         int parentApplicationDateRangeIndex = 0;
@@ -176,5 +156,4 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
             }
         }
     }
-
 }
