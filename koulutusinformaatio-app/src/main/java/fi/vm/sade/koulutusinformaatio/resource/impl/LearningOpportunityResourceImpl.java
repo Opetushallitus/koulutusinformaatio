@@ -57,10 +57,6 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
     @Override
     public LOSearchResultListDTO searchLearningOpportunities(String text, String prerequisite, 
                                                              List<String> cities, List<String> facetFilters, String lang, boolean ongoing, int start, int rows) {
-        if (facetFilters != null) {
-            System.out.println("Teaching languese queried: " + facetFilters.size());
-            System.out.println(facetFilters);
-        }
         String key = null;
         try {
             key = URLDecoder.decode(text, "UTF-8");

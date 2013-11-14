@@ -79,7 +79,6 @@ public class LearningOpportunityQuery extends SolrQuery {
         this.setFacet(true);
         this.addFacetField(TEACHING_LANG);
         for (String curFilter : facetFilters) {
-            System.out.println("FILTTERI: " + curFilter);
             this.addFilterQuery(curFilter);
         }
     }

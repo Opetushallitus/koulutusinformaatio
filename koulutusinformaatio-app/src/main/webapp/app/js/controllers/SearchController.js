@@ -37,7 +37,6 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     });
 
     $scope.change = function() {
-    	console.log("Change called");
         FilterService.set({
             prerequisite: $scope.prerequisite,
             locations: $scope.locations,
@@ -46,13 +45,14 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
             facetFilters: $scope.facetFilters
         });
 
-        console.log("Filters set");
         // append filters to url and reload
         $location.search(FilterService.get());
     }
     
+    /*
+     * Selecting a facet value for filtering results
+     */
     $scope.selectFacetFilter = function(selection, facetField) {
-    	console.log("Selected: " + facetField +':'+selection);
     	var facetSelection = {facetField: facetField, selection: selection};
     	if ($scope.facetFilters != undefined) {
     		$scope.facetFilters.push(facetField +':'+selection);
@@ -67,6 +67,9 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     	$scope.change();
     }
     
+    /*
+     * Removing a facet selection to broaden search.
+     */
     $scope.removeSelection = function(facetSelection) {
     	var tempSels = [];
     	angular.forEach($scope.facetSelections, function(value, index) {
@@ -90,19 +93,17 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     	$scope.change();
     }
     
+    /*
+     * Is a given facet value selected
+     */
     $scope.isSelected = function(facetValue) {
-    	console.log("Checking");
     	var isSelected = false;
-    	
     	for (var i = 0; i < $scope.facetSelections.length; i++) {
     		if (($scope.facetSelections[i].facetField == facetValue.facetField)
     				&& ($scope.facetSelections[i].valueId == facetValue.valueId)) {
-    			console.log("match");
     			isSelected = true;
     		}
     	}
-    	
-    	console.log("Returning: " + isSelected);
     	return isSelected;
     }
 };
@@ -128,7 +129,6 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     });
 
     if ($routeParams.queryString) {
-    	console.log("Now searching");
         SearchLearningOpportunityService.query({
             queryString: $routeParams.queryString,
             start: (FilterService.getPage()-1) * resultsPerPage,
@@ -149,24 +149,24 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
         $scope.queryString = $routeParams.queryString;
         //$scope.showFilters = $scope.queryString ? true : false;
         SearchService.setTerm($routeParams.queryString);
-        console.log("Searching called");
     }
 
     $scope.$on('$viewContentLoaded', function() {
         OPH.Common.initHeader();
     });
     
+    /*
+     * Populating the facet selections (shown in the UI). Based on
+     * facet filters in the url.
+     */
     $scope.populateFacetSelections = function () {
     	$scope.facetSelections = [];
     	$scope.facetFilters = FilterService.getFacetFilters();
     	angular.forEach($scope.facetFilters, function(fFilter, key) {
     		var curVal = fFilter.split(':')[1];
-    		console.log("Splitted cur val: " + curVal);
     		angular.forEach($scope.loResult.teachingLangFacet.facetValues, function(fVal, key) {
     			console.log(fVal);
-    			console.log("fVal: " + fVal.valueId + ", cur val: " + this);
     			if (this == fVal.valueId) {
-    				console.log("Adding fVal: " + fVal.valueId);
     				$scope.facetSelections.push(fVal);
     			}
     		}, curVal);

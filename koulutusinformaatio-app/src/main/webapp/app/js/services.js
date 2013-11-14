@@ -5,7 +5,6 @@ angular.module('kiApp.services', ['ngResource']).
 service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analytics', function($http, $timeout, $q, $analytics) {
     return {
         query: function(params) {
-        	console.log("Querying now!!!");
             var deferred = $q.defer();
             var cities = '';
             
@@ -797,15 +796,12 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', fu
     }
 
     var set = function(newFilters) {
-    	console.log("Setting filters");
         filters = {};
         for (var i in newFilters) {
-        	console.log("filter name: " + i);
             if (newFilters.hasOwnProperty(i)) {
                 var filter = newFilters[i];
 
                 if (!filterIsEmpty(filter)) {
-                	console.log("setting: " + filter);
                     filters[i] = filter;
                 }
             }
@@ -922,11 +918,8 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', fu
         },
         
         getFacetFilters: function() {
-        	console.log("fetFacetFilters called: ");
-        	console.log(filters.facetFilters);
         	if (filters.facetFilters != undefined && (typeof filters.facetFilters == 'string' || filters.facetFilters instanceof String)) {
         		filters.facetFilters = filters.facetFilters.split(',');
-        		console.log(filters.facetFilters);
         		return filters.facetFilters;
         	}
         	return filters.facetFilters;

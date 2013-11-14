@@ -153,15 +153,12 @@ public class SearchServiceSolrImpl implements SearchService {
 
     private void addFacetsToResult(LOSearchResultList searchResultList,
             QueryResponse response, String lang) {
-        System.out.println("Adding facets to result, facet field is: " + LearningOpportunityQuery.TEACHING_LANG);
         FacetField teachingLangF = response.getFacetField(LearningOpportunityQuery.TEACHING_LANG);
         
         Facet teachingLangFacet = new Facet();
         List<FacetValue> values = new ArrayList<FacetValue>();
         if (teachingLangF != null) {
-            System.out.println("Value count for facet field: " + teachingLangF.getValueCount());
             for (Count curC : teachingLangF.getValues()) {
-                System.out.println("Cur facet value: " + curC.getName() + ", count: " + curC.getCount());
                 if (curC.getCount() > 0) {
                     FacetValue newVal = new FacetValue(LearningOpportunityQuery.TEACHING_LANG,  
                                                         getLocalizedFacetName(curC.getName(), lang), 
@@ -187,7 +184,6 @@ public class SearchServiceSolrImpl implements SearchService {
         try {
             QueryResponse response = loHttpSolrServer.query(query);
             for (SolrDocument curDoc : response.getResults()) {
-                System.out.println("Returning as localized facet name: " + String.format("%s", curDoc.getFieldValue(String.format("%s_fname", lang))));
                 return String.format("%s", curDoc.getFieldValue(String.format("%s_fname", lang)));
             }
         } catch (Exception ex) {
