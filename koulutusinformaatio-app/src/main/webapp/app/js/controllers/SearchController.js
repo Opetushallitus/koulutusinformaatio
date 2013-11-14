@@ -57,7 +57,6 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     	if ($scope.facetFilters != undefined) {
     		$scope.facetFilters.push(facetField +':'+selection);
     		$scope.facetSelections.push(facetSelection);
-    		console.log($scope.facetFilters);
     	} else {
     		$scope.facetFilters = [];
     		$scope.facetFilters.push(facetField +':'+selection);
@@ -106,6 +105,19 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     	}
     	return isSelected;
     }
+    
+    $scope.areThereSelections = function() {
+    	console.log("Locations");
+    	 $scope.locations = FilterService.getLocations();
+    	 console.log($scope.locations);
+    	 return (($scope.facetSelections != undefined) && ($scope.facetSelections.length > 0))
+    	 		|| (($scope.locations != undefined) &&  ($scope.locations.length > 0));
+    }
+   
+    $scope.removeLocation = function(loc) {
+    	$scope.locations.splice($scope.locations.indexOf(loc), 1);
+        $scope.change();
+    }
 };
 
 /**
@@ -139,7 +151,6 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
             facetFilters: FilterService.getFacetFilters(),
             lang: LanguageService.getLanguage()
         }).then(function(result) {
-        	console.log(result);
             $scope.loResult = result;
             $scope.maxPages = Math.ceil(result.totalCount / resultsPerPage);
             $scope.showPagination = $scope.maxPages > 1;
@@ -164,12 +175,19 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     	$scope.facetFilters = FilterService.getFacetFilters();
     	angular.forEach($scope.facetFilters, function(fFilter, key) {
     		var curVal = fFilter.split(':')[1];
+    		var selLength = $scope.facetSelections.length;
     		angular.forEach($scope.loResult.teachingLangFacet.facetValues, function(fVal, key) {
-    			console.log(fVal);
     			if (this == fVal.valueId) {
     				$scope.facetSelections.push(fVal);
     			}
     		}, curVal);
+    		if (selLength == $scope.facetSelections.length) {
+    			angular.forEach($scope.loResult.filterFacet.facetValues, function(fVal, key) {
+        			if (this == fVal.valueId) {
+        				$scope.facetSelections.push(fVal);
+        			}
+        		}, curVal);
+    		} 
     	});
     }
 };

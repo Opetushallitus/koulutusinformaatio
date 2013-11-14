@@ -1,11 +1,14 @@
 <!-- <div ng-include src="'partials/pageheader.html'"></div> -->
 <section class="content-container grid16-16 margin-bottom-2">
     <div data-ki-breadcrumb="breadcrumb-search-results" id="breadcrumb"></div>
-    <div id="facetSelections" class="grid16-16" data-ng-show="(facetSelections != undefined) && (facetSelections.length > 0)" data-ng-controller="SearchFilterCtrl">
+    <div id="facetSelections" class="grid16-16" data-ng-show="areThereSelections()" data-ng-controller="SearchFilterCtrl">
     	<ul>
     		<li><span data-ki-i18n="valitut-rajaukset"></span>:</li>
     		<li data-ng-repeat="fs in facetSelections">
     			<span data-ki-i18n="{{fs.facetField}}"></span>: {{fs.valueName}} <a href ng-click="removeSelection(fs)">x</a>
+    		</li>
+    		<li data-ng-repeat="loc in locations">
+    			<span data-ki-i18n="location-rajaus"></span>: {{loc.name}} <a href ng-click="removeLocation(loc)">x</a>
     		</li>
     	</ul>
     </div>
@@ -15,13 +18,15 @@
     </div>
     <div class="grid16-3" data-ng-controller="SearchFilterCtrl" data-ng-show="loResult.totalCount > 0">
     	<div>
-    		<h2><span data-ki-i18n="facet-opetuskieli"></span></h2>
+    		<h4><span data-ki-i18n="facet-opetuskieli"></span></h4>
     		<ul>
     			<li data-ng-repeat="fv in loResult.teachingLangFacet.facetValues">
     				<span data-ng-show="!isSelected(fv)"><a href ng-click="selectFacetFilter(fv.valueId, fv.facetField)">{{fv.valueName}}</a> ({{fv.count}})</span>
     				<span data-ng-show="isSelected(fv)">{{fv.valueName}} ({{fv.count}})</span>
     			</li>
     		</ul>
+    		<h4 data-ki-i18n="filter-search-location-title"></h4>
+        	<div data-ki-location-filter></div>
     	</div>
     </div>
     <div class="grid16-11">
@@ -79,8 +84,7 @@
                 </li>
             </ul>
         </div>
-        <h4 data-ki-i18n="filter-search-location-title"></h4>
-        <div data-ki-location-filter></div>
+        
     </form>
 </aside>-->
 <div class="clear"></div>

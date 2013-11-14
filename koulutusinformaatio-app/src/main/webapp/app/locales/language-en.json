@@ -174,7 +174,8 @@
     
     "valitut-rajaukset": "Chosen Restrictions",
     "facet-opetuskieli": "Teaching Language",
-    "teachingLangCode_ffm": "Teaching Language"
+    "teachingLangCode_ffm": "Teaching Language",
+    "location-rajaus": "Place"
     
 
 }

@@ -145,16 +145,19 @@ public class SearchServiceSolrImpl implements SearchService {
                 searchResultList.getResults().add(lo);
             }
             
-            addFacetsToResult(searchResultList, response, lang);
+            addFacetsToResult(searchResultList, response, lang, facetFilters);
         }
 
         return searchResultList;
     }
 
     private void addFacetsToResult(LOSearchResultList searchResultList,
-            QueryResponse response, String lang) {
-        FacetField teachingLangF = response.getFacetField(LearningOpportunityQuery.TEACHING_LANG);
+            QueryResponse response, String lang, List<String> facetFilters) {
         
+        /*
+         * Teaching language facet
+         */
+        FacetField teachingLangF = response.getFacetField(LearningOpportunityQuery.TEACHING_LANG);
         Facet teachingLangFacet = new Facet();
         List<FacetValue> values = new ArrayList<FacetValue>();
         if (teachingLangF != null) {
@@ -170,6 +173,26 @@ public class SearchServiceSolrImpl implements SearchService {
         }
         teachingLangFacet.setFacetValues(values);
         searchResultList.setTeachingLangFacet(teachingLangFacet);
+        
+        /*
+         * Facet composed of user's selections.
+         * Used in search ui to display 0-selections.
+         */
+        Facet fFilFacet = new Facet();
+        List<FacetValue> qVals = new ArrayList<FacetValue>();
+        for (String curFacFilter: facetFilters) {
+            int index = curFacFilter.indexOf(':');
+            String facId = curFacFilter.substring(index + 1);
+            String facField = curFacFilter.substring(0, index);
+            SolrDocument facDoc = this.getFacetDoc(facId, lang);
+            String facName = String.format("%s", facDoc.getFieldValue(String.format("%s_fname", lang)));
+            FacetValue newVal = new FacetValue(facField, facName, 0, facId);
+            qVals.add(newVal);
+            
+        }
+        fFilFacet.setFacetValues(qVals);
+        searchResultList.setFilterFacet(fFilFacet);
+        
     }
     
     /*
@@ -185,6 +208,26 @@ public class SearchServiceSolrImpl implements SearchService {
             QueryResponse response = loHttpSolrServer.query(query);
             for (SolrDocument curDoc : response.getResults()) {
                 return String.format("%s", curDoc.getFieldValue(String.format("%s_fname", lang)));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+    
+    /*
+     * Getting the update timestamp for the lo-collection.
+     */
+    private SolrDocument getFacetDoc(String id, String lang) {
+        SolrQuery query = new SolrQuery();
+        query.setQuery(String.format("id:%s", id));
+        query.setFields("id", String.format("%s_fname", lang));
+        query.setStart(0);
+        query.set("defType", "edismax");
+        try {
+            QueryResponse response = loHttpSolrServer.query(query);
+            for (SolrDocument curDoc : response.getResults()) {
+                return curDoc;
             }
         } catch (Exception ex) {
             ex.printStackTrace();
