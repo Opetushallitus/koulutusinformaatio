@@ -851,7 +851,8 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', fu
                 locations: getLocationCodes(),
                 ongoing: filters.ongoing,
                 page: filters.page,
-                facetFilters: filters.facetFilters
+                facetFilters: filters.facetFilters,
+                langCleared: filters.langCleared
             };
 
             angular.forEach(result, function(value, key) {
@@ -911,8 +912,9 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', fu
             params += (filters.locations && filters.locations.length > 0) ? '&locations=' + getLocationCodes().join(',') : '';
             params += filters.ongoing ? '&ongoing' : '';
             params += filters.page ? '&page=' + filters.page : '';
-            params += (filters.facetFilters && filters.facetFilters.length > 0) ? "&facetFilters" + filters.facetFilters.join(',') : '';
-
+            params += (filters.facetFilters && filters.facetFilters.length > 0) ? '&facetFilters=' + filters.facetFilters.join(',') : '';
+            params += filters.langCleared ? '&langCleared=' + filters.langCleared : ''; 
+            
             params = params.length > 0 ? params.substring(1, params.length) : '';
             return params;
         },
@@ -923,6 +925,10 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', fu
         		return filters.facetFilters;
         	}
         	return filters.facetFilters;
+        },
+        
+        getLangCleared: function() {
+        	return filters.langCleared;
         }
     };
 }]).
