@@ -227,7 +227,9 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     			lang: LanguageService.getLanguage()
     		}).then(function(result) {
     			$scope.loResult = result;
+                $scope.totalItems = result.totalCount;
     			$scope.maxPages = Math.ceil(result.totalCount / resultsPerPage);
+                $scope.itemsPerPage = resultsPerPage;
     			$scope.showPagination = $scope.maxPages > 1;
     			$scope.populateFacetSelections();
     		});

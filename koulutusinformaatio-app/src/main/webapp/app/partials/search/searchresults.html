@@ -61,11 +61,12 @@
                     </li>
                 </ul>
                 <div data-ng-show="showPagination">
-                    <div data-pagination
+                <div data-pagination
                     data-on-select-page="changePage(page)" 
-                    data-num-pages="maxPages" 
-                    data-current-page="currentPage" 
-                    data-max-size="10"
+                    data-num-pages="maxPages"
+                    data-total-items="totalItems"
+                    data-items-per-page="itemsPerPage"
+                    data-page="currentPage" 
                     data-first-text="<<"
                     data-next-text=">"
                     data-previous-text="<"
