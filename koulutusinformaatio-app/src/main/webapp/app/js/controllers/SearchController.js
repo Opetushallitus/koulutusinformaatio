@@ -25,7 +25,7 @@ function SearchFieldCtrl($scope, $location, SearchService, kiAppConstants, Filte
 /**
  *  Controller for search filters
  */
-function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, kiAppConstants, FilterService) {
+function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, kiAppConstants, FilterService, LanguageService) {
     var queryParams = $location.search();
 
     FilterService.query(queryParams).then(function() {
@@ -74,7 +74,7 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
      * Removing a facet selection to broaden search.
      */
     $scope.removeSelection = function(facetSelection) {
-    	if ($scope.isFinishTeachLang(facetSelection)) {
+    	if ($scope.isDefaultTeachLang(facetSelection)) {
     		$scope.langCleared = true;
     	} 
     	var tempSels = [];
@@ -100,9 +100,9 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     }
     
     //Is the facet selection a selection of finish teaching language
-    $scope.isFinishTeachLang = function(facetSelection) {
+    $scope.isDefaultTeachLang = function(facetSelection) {
     	return (facetSelection.facetField == 'teachingLangCode_ffm') 
-    			&& (facetSelection.valueId == 'FI');
+    			&& (facetSelection.valueId == $scope.resolveDefLang());
     }
     
     /*
@@ -175,6 +175,8 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
         }    
     });
     
+
+    
     //Getting the query params from the url
     //after which searching is done.
 	FilterService.query(queryParams).then(function() {
@@ -241,13 +243,13 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     				|| (queryParams.facetFilters instanceof String))) {
     			var newFilters = [];
     			newFilters.push(queryParams.facetFilters);
-    			newFilters.push('teachingLangCode_ffm:FI');
+    			newFilters.push('teachingLangCode_ffm:' + $scope.resolveDefLang());
     			facetFiltersArr = newFilters;
     		} else if (queryParams.facetFilters != undefined) {
-    			queryParams.facetFilters.push('teachingLangCode_ffm:FI');
+    			queryParams.facetFilters.push('teachingLangCode_ffm:' + $scope.resolveDefLang());
     			facetFiltersArr = queryParams.facetFilters;
     		} else {
-    			facetFiltersArr.push('teachingLangCode_ffm:FI');
+    			facetFiltersArr.push('teachingLangCode_ffm:' + $scope.resolveDefLang());
     		}
 
     		FilterService.set({
@@ -263,7 +265,6 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     	}
     }
 
-    
     
     $scope.$on('$viewContentLoaded', function() {
         OPH.Common.initHeader();
@@ -301,5 +302,13 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     		}
     	});
     	
+    }
+    
+
+    $scope.resolveDefLang = function() {
+    	if (LanguageService.getLanguage() == 'sv' || LanguageService.getLanguage() == 'SV') {
+    		return 'SV';
+    	}
+    	return 'FI';
     }
 };
