@@ -39,9 +39,12 @@ public class LearningOpportunityQuery extends SolrQuery {
     private final static String TYPE = "type";
     private final static String TYPE_FACET = "FASETTI";
     public final static String TEACHING_LANG = "teachingLangCode_ffm";
+    public final static String APP_STATUS = "appStatus";
+    public final static String APP_STATUS_ONGOING = "ongoing";
+    public final static String APP_STATUS_UPCOMING = "upcoming";
 
     public LearningOpportunityQuery(String term, String prerequisite,
-                                    List<String> cities, List<String> facetFilters, String lang, boolean ongoing, int start, int rows) {
+                                    List<String> cities, List<String> facetFilters, String lang, boolean ongoing, boolean upcoming, int start, int rows) {
         super(term);
         if (prerequisite != null) {
             this.addFilterQuery(String.format("%s:%s", PREREQUISITES, prerequisite));
@@ -64,6 +67,17 @@ public class LearningOpportunityQuery extends SolrQuery {
             this.addFilterQuery(ongoingFQ.toString());
         }
         
+        if (upcoming) {
+            StringBuilder upcomingFQ = new StringBuilder();
+            for (int i = 0; i < AS_COUNT; i++) {
+                upcomingFQ.append(String.format("(asStart_%d:[NOW TO *])", i, i));
+                if (i != AS_COUNT-1) {
+                    upcomingFQ.append(" OR ");
+                }
+            }
+            this.addFilterQuery(upcomingFQ.toString());
+        }
+        
         //leaving the facet and timestamp docs out
         this.addFilterQuery(String.format("-%s:%s", ID, TIMESTAMP_DOC));
         this.addFilterQuery(String.format("-%s:%s", TYPE, TYPE_FACET));
@@ -78,6 +92,8 @@ public class LearningOpportunityQuery extends SolrQuery {
     private void addFacetsToQuery(String lang, List<String> facetFilters) {
         this.setFacet(true);
         this.addFacetField(TEACHING_LANG);
+        this.addFacetQuery("(asStart_0:[* TO NOW] AND asEnd_0:[NOW TO *])");
+        this.addFacetQuery("(asStart_0:[NOW TO *])");
         for (String curFilter : facetFilters) {
             this.addFilterQuery(curFilter);
         }

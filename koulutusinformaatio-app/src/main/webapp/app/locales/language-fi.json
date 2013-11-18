@@ -34,7 +34,7 @@
     "filter-search-elementary": "Perusopetus (peruskoulu)",
     "filter-search-elementary-individualized": "Yksilöllistetty oppimäärä",
     "filter-search-upper-secondary": "Lukio / Ylioppilas",
-    "filter-search-as-ongoing": "Haku meneillään juuri nyt",
+    "filter-search-as-ongoing": "Haku on käynnissä",
     "filter-search-vocational": "Ammatillinen perustutkinto (120 ov)",
     "filter-search-vocational-specialized": "Ammatti- tai erikoisammattitutkinto",
     "filter-search-institute": "Kouluasteen, opistoasteen tai ammatillisen korkea-asteen tutkinto",
@@ -175,6 +175,9 @@
     "valitut-rajaukset": "Valitut rajaukset",
     "facet-opetuskieli": "Opetuskieli",
     "teachingLangCode_ffm": "Opetuskieli",
-    "location-rajaus": "Paikka"
+    "location-rajaus": "Paikka",
+    "filter-search-as-upcoming": "Tulossa hakuun",
+    "haun-tila": "Haun tila",
+    "selaile-koulutuksia": "Selaile koulutuksia"
     
 }

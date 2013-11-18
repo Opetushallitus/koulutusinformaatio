@@ -35,13 +35,14 @@ public class LearningOpportunityQueryTest {
     private static final List<String> CITIES = Lists.newArrayList("city1", "city2");
     private static final List<String> FACET_FILTERS = Lists.newArrayList("teachingLang:suomi", "teachingLang:ruotsi");
     private static final boolean ONGOING = false;
+    private static final boolean UPCOMING = false;
     private static final String LANG = "fi";
     private static final int START = 0;
     private static final int ROWS = 10;
 
     @Test
     public void testQuery() {
-        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FACET_FILTERS, LANG, ONGOING, START, ROWS);
+        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FACET_FILTERS, LANG, ONGOING, UPCOMING, START, ROWS);
         assertNotNull(q);
         assertEquals(6, q.getFilterQueries().length);
         String prerequisiteFQ = new StringBuilder("prerequisites:").append(PREREQUISITE).toString();
