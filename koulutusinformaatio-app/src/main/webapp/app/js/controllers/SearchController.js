@@ -123,7 +123,9 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     $scope.areThereSelections = function() {
     	 $scope.locations = FilterService.getLocations();
     	 return (($scope.facetSelections != undefined) && ($scope.facetSelections.length > 0))
-    	 		|| (($scope.locations != undefined) &&  ($scope.locations.length > 0));
+    	 		|| (($scope.locations != undefined) &&  ($scope.locations.length > 0))
+    	 		|| $scope.ongoing
+    	 		|| $scope.upcoming;
     }
    
     //Removing a location from the facet selections area
