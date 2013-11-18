@@ -48,6 +48,7 @@ public interface LearningOpportunityResource {
                                                              @QueryParam("facetFilters") List<String> facetFilters,
                                                              @QueryParam("lang") String lang,
                                                              @DefaultValue(value = "false") @QueryParam("ongoing") boolean ongoing,
+                                                             @DefaultValue(value = "false") @QueryParam("upcoming") boolean upcoming,
                                                              @DefaultValue(value = "0") @QueryParam("start") int start,
                                                              @DefaultValue(value = "100") @QueryParam("rows") int rows);
 

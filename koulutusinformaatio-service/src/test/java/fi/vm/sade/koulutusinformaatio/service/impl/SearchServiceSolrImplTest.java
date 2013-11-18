@@ -96,13 +96,13 @@ public class SearchServiceSolrImplTest {
 
     @Test
     public void testSearchLearningOpportunities() throws SearchException {
-        LOSearchResultList results = service.searchLearningOpportunities("query", "PK", Lists.newArrayList("HELSINKI"), Lists.newArrayList("teachingLang:suomi"), "fi", false, 0, 100);
+        LOSearchResultList results = service.searchLearningOpportunities("query", "PK", Lists.newArrayList("HELSINKI"), Lists.newArrayList("teachingLang:suomi"), "fi", false, false, 0, 100);
         assertEquals(1, results.getResults().size());
     }
 
     @Test
     public void testSearchLearningOpportunitiesEmptyTerm() throws SearchException {
-        LOSearchResultList results = service.searchLearningOpportunities("", "PK", Lists.newArrayList("HELSINKI"), Lists.newArrayList("teachingLang:suomi"), "fi", false, 0, 100);
+        LOSearchResultList results = service.searchLearningOpportunities("", "PK", Lists.newArrayList("HELSINKI"), Lists.newArrayList("teachingLang:suomi"), "fi", false, false, 0, 100);
         assertEquals(0, results.getResults().size());
     }
 

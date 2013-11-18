@@ -175,7 +175,11 @@
     "valitut-rajaukset": "Chosen Restrictions",
     "facet-opetuskieli": "Teaching Language",
     "teachingLangCode_ffm": "Teaching Language",
-    "location-rajaus": "Place"
+    "location-rajaus": "Place",
+    "filter-search-as-upcoming": "Upcoming applications systems",
+    "haun-tila": "Application system status",
+    "selaile-koulutuksia": "Selaile koulutuksia"
+    
     
 
 }

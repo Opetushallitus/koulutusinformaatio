@@ -4,6 +4,8 @@
     <div id="facetSelections" class="grid16-16" data-ng-show="areThereSelections()" data-ng-controller="SearchFilterCtrl">
     	<ul>
     		<li><span data-ki-i18n="valitut-rajaukset"></span>:</li>
+    		<li data-ng-show="ongoing"><span data-ki-i18n="haun-tila"></span>:  <span data-ki-i18n="filter-search-as-ongoing"></span> <a href ng-click="removeOngoing()">x</a></li>
+    		<li data-ng-show="upcoming"><span data-ki-i18n="haun-tila"></span>:  <span data-ki-i18n="filter-search-as-upcoming"></span> <a href ng-click="removeUpcoming()">x</a></li>
     		<li data-ng-repeat="fs in facetSelections">
     			<span data-ki-i18n="{{fs.facetField}}"></span>: {{fs.valueName}} <a href ng-click="removeSelection(fs)">x</a>
     		</li>
@@ -17,9 +19,22 @@
         <h2 class="inline-block margin-left-2">({{loResult.totalCount}} <span data-ki-i18n="search-result-count-unit"></span>)</h2>
     </div>
     <div class="grid16-3" data-ng-controller="SearchFilterCtrl" data-ng-show="loResult.totalCount > 0">
+    	<h2><span data-ki-i18n="selaile-koulutuksia"></span></h2>
+    	<div class="filter margin-bottom-2">
+            <ul class="nobullet">
+                <li data-ng-show="loResult.ongoingFacet">
+                	<span data-ng-show="!ongoing && loResult.ongoingFacet.count > 0"><a href ng-click="setOngoing()"><span data-ki-i18n="filter-search-as-ongoing"></span></a> {{loResult.ongoingFacet.count}}</span>
+                	<span data-ng-show="ongoing || loResult.ongoingFacet.count < 1"><span data-ki-i18n="filter-search-as-ongoing"></span> {{loResult.ongoingFacet.count}}</span>
+                </li>
+                <li data-ng-show="loResult.upcomingFacet">
+                	<span data-ng-show="!upcoming && loResult.upcomingFacet.count > 0"><a href ng-click="setUpcoming()"><span data-ki-i18n="filter-search-as-upcoming"></span></a> {{loResult.upcomingFacet.count}}</span>
+                	<span data-ng-show="upcoming || loResult.upcomingFacet.count < 1"><span data-ki-i18n="filter-search-as-upcoming"></span> {{loResult.upcomingFacet.count}}</span>
+                </li>
+            </ul>
+        </div>
     	<div>
     		<h4><span data-ki-i18n="facet-opetuskieli"></span></h4>
-    		<ul>
+    		<ul class="nobullet">
     			<li data-ng-repeat="fv in loResult.teachingLangFacet.facetValues">
     				<span data-ng-show="!isSelected(fv)"><a href ng-click="selectFacetFilter(fv.valueId, fv.facetField)">{{fv.valueName}}</a> ({{fv.count}})</span>
     				<span data-ng-show="isSelected(fv)">{{fv.valueName}} ({{fv.count}})</span>

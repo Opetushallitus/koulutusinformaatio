@@ -32,6 +32,7 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
         $scope.prerequisite = FilterService.getPrerequisite();
         $scope.locations = FilterService.getLocations();
         $scope.ongoing = FilterService.isOngoing();
+        $scope.upcoming = FilterService.isUpcoming();
         $scope.$parent.currentPage = FilterService.getPage();
         $scope.facetFilters = FilterService.getFacetFilters();
         $scope.langCleared=FilterService.getLangCleared();
@@ -42,6 +43,7 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
             prerequisite: $scope.prerequisite,
             locations: $scope.locations,
             ongoing: $scope.ongoing,
+            upcoming: $scope.upcoming,
             page: kiAppConstants.searchResultsStartPage,
             facetFilters: $scope.facetFilters,
             langCleared: $scope.langCleared
@@ -129,6 +131,26 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     	$scope.locations.splice($scope.locations.indexOf(loc), 1);
         $scope.change();
     }
+    
+    $scope.setOngoing = function() {
+    	$scope.ongoing = true;
+    	$scope.change();
+    }
+    
+    $scope.removeOngoing = function() {
+    	$scope.ongoing = false;
+    	$scope.change();
+    }
+    
+    $scope.setUpcoming = function() {
+    	$scope.upcoming = true;
+    	$scope.change();
+    }
+    
+    $scope.removeUpcoming = function() {
+    	$scope.upcoming = false;
+    	$scope.change();
+    }
 };
 
 /**
@@ -159,6 +181,7 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
 	     $scope.prerequisite = FilterService.getPrerequisite();
 	     $scope.locations = FilterService.getLocations();
 	     $scope.ongoing = FilterService.isOngoing();
+	     $scope.upcoming = FilterService.isUpcoming();
 	     $scope.facetFilters = FilterService.getFacetFilters();
 	     $scope.langCleared=FilterService.getLangCleared();
 	     $scope.doSearching();
@@ -195,6 +218,7 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     			prerequisite: FilterService.getPrerequisite(),
     			locations: FilterService.getLocationNames(),
     			ongoing: FilterService.isOngoing(),
+    			upcoming: FilterService.isUpcoming(),
     			facetFilters: FilterService.getFacetFilters(),
     			lang: LanguageService.getLanguage()
     		}).then(function(result) {
@@ -230,6 +254,7 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     			prerequisite: $scope.prerequisite,
     			locations: $scope.locations,
     			ongoing: $scope.ongoing,
+    			upcoming: $scope.upcoming,
     			page: kiAppConstants.searchResultsStartPage,
     			facetFilters: facetFiltersArr
     		});
@@ -267,5 +292,14 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
         		}, curVal);
     		} 
     	});
+    	
+    	angular.forEach($scope.loResult.appStatusFacet.facetValues, function(fVal, key) {
+    		if (fVal.valueId == 'ongoing') {
+    			$scope.loResult.ongoingFacet = fVal;
+    		} else if (fVal.valueId == 'upcoming') {
+    			$scope.loResult.upcomingFacet = fVal;
+    		}
+    	});
+    	
     }
 };

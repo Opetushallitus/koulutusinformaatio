@@ -175,5 +175,8 @@
      "valitut-rajaukset": "Utvald begräsningar",
      "facet-opetuskieli": "Undervisning språk",
      "teachingLangCode_ffm": "Undervisning språk",
-     "location-rajaus": "Plats"
+     "location-rajaus": "Plats",
+     "filter-search-as-upcoming": "Tulossa hakuun (sv)",
+     "haun-tila": "Haun tila (sv)",
+     "selaile-koulutuksia": "Selaile koulutuksia (sv)"
 }

@@ -28,6 +28,7 @@ public class LOSearchResultList {
     private long totalCount;
     private Facet teachingLangFacet;
     private Facet filterFacet;
+    private Facet appStatusFacet;
 
     public List<LOSearchResult> getResults() {
         return results;
@@ -59,5 +60,13 @@ public class LOSearchResultList {
 
     public void setFilterFacet(Facet filterFacet) {
         this.filterFacet = filterFacet;
+    }
+
+    public void setAppStatusFacet(Facet haunTila) {
+        this.appStatusFacet = haunTila;
+    }
+    
+    public Facet getAppStatusFacet() {
+        return this.appStatusFacet;
     }
 }

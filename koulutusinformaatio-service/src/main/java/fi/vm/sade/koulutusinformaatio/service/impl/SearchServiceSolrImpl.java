@@ -102,11 +102,11 @@ public class SearchServiceSolrImpl implements SearchService {
 
     @Override
     public LOSearchResultList searchLearningOpportunities(String term, String prerequisite,
-                                                          List<String> cities, List<String> facetFilters, String lang, boolean ongoing, int start, int rows) throws SearchException {
+                                                          List<String> cities, List<String> facetFilters, String lang, boolean ongoing, boolean upcoming, int start, int rows) throws SearchException {
         LOSearchResultList searchResultList = new LOSearchResultList();
         String trimmed = term.trim();
         if (!trimmed.isEmpty()) {
-            SolrQuery query = new LearningOpportunityQuery(term, prerequisite, cities, facetFilters, lang, ongoing, start, rows);
+            SolrQuery query = new LearningOpportunityQuery(term, prerequisite, cities, facetFilters, lang, ongoing, upcoming, start, rows);
 
             try {
                 LOG.debug(
@@ -173,6 +173,26 @@ public class SearchServiceSolrImpl implements SearchService {
         }
         teachingLangFacet.setFacetValues(values);
         searchResultList.setTeachingLangFacet(teachingLangFacet);
+        
+        Facet haunTila = new Facet();
+        List<FacetValue> haunTilaVals = new ArrayList<FacetValue>();
+        for (String curKey : response.getFacetQuery().keySet()) {
+            if (curKey.equals("(asStart_0:[* TO NOW] AND asEnd_0:[NOW TO *])")) {
+                FacetValue facVal = new FacetValue(LearningOpportunityQuery.APP_STATUS, 
+                                                    LearningOpportunityQuery.APP_STATUS_ONGOING, 
+                                                    response.getFacetQuery().get(curKey).longValue(),  
+                                                    LearningOpportunityQuery.APP_STATUS_ONGOING);
+                haunTilaVals.add(facVal);
+            } else if (curKey.equals("(asStart_0:[NOW TO *])")) {
+                FacetValue facVal = new FacetValue(LearningOpportunityQuery.APP_STATUS, 
+                        LearningOpportunityQuery.APP_STATUS_UPCOMING, 
+                        response.getFacetQuery().get(curKey).longValue(), 
+                        LearningOpportunityQuery.APP_STATUS_UPCOMING);
+                haunTilaVals.add(facVal);
+            }
+        }
+        haunTila.setFacetValues(haunTilaVals);
+        searchResultList.setAppStatusFacet(haunTila);
         
         /*
          * Facet composed of user's selections.

@@ -29,8 +29,9 @@ public class LOSearchResultListDTO {
 
     private List<LearningOpportunitySearchResultDTO> results = new ArrayList<LearningOpportunitySearchResultDTO>();
     private long totalCount;
-    private FacetDTO  teachingLangFacet;
-    private FacetDTO  filterFacet;
+    private FacetDTO teachingLangFacet;
+    private FacetDTO filterFacet;
+    private FacetDTO appStatusFacet; 
 
     public List<LearningOpportunitySearchResultDTO> getResults() {
         return results;
@@ -62,5 +63,13 @@ public class LOSearchResultListDTO {
 
     public void setFilterFacet(FacetDTO filterFacet) {
         this.filterFacet = filterFacet;
+    }
+
+    public FacetDTO getAppStatusFacet() {
+        return appStatusFacet;
+    }
+
+    public void setAppStatusFacet(FacetDTO appStatusFacet) {
+        this.appStatusFacet = appStatusFacet;
     }
 }
