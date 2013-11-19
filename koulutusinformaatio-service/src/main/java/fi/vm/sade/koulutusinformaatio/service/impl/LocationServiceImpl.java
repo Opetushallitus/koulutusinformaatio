@@ -37,6 +37,7 @@ import java.util.Map;
 public class LocationServiceImpl implements LocationService {
 
     public static final String CODE_MUNICIPALITY = "kunta";
+    public static final String CODE_DISTRICT = "maakunta";
     private KoodistoService koodistoService;
 
     @Autowired
@@ -50,17 +51,43 @@ public class LocationServiceImpl implements LocationService {
         List<Location> municipalities = Lists.newArrayList();
         if (codes != null) {
             for (Code code : codes) {
+                
+                List<Code> maakuntaCodes = koodistoService.searchSubCodes(String.format("%s_%s#1", CODE_MUNICIPALITY, code.getValue()), CODE_DISTRICT);
+                
+                Code parent =  (maakuntaCodes != null &&!maakuntaCodes.isEmpty()) ? maakuntaCodes.get(0) : null;
+                String parentVal = (parent != null) ? parent.getValue() : null;
+                
+                if (parent != null) {
+                    addDistrict(parent, municipalities);
+                }
+                
+                
                 I18nText name = code.getName();
 
                 Iterator entries = name.getTranslations().entrySet().iterator();
                 while (entries.hasNext()) {
                     Map.Entry<String, String> entry = (Map.Entry) entries.next();
                     Location municipality = new Location(entry.getKey() + code.getValue(), entry.getValue(),
-                            code.getValue(), entry.getKey());
+                            code.getValue(), entry.getKey(), CODE_MUNICIPALITY, parentVal);
                     municipalities.add(municipality);
                 }
+                
+                
             }
         }
         return municipalities;
+    }
+
+    private void addDistrict(Code parent, List<Location> municipalities) {
+        
+        I18nText name = parent.getName();
+
+        Iterator entries = name.getTranslations().entrySet().iterator();
+        while (entries.hasNext()) {
+            Map.Entry<String, String> entry = (Map.Entry) entries.next();
+            Location district = new Location(entry.getKey() + parent.getValue(), entry.getValue(),
+                    parent.getValue(), entry.getKey(), CODE_DISTRICT, null);
+            municipalities.add(district);
+        }
     }
 }

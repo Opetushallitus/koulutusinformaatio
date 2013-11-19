@@ -80,6 +80,61 @@ service('SearchLocationService', ['$http', '$timeout', '$q', 'LanguageService', 
 }]).
 
 /**
+ * Service for retrieving districts (maakunnat). Used in faceted search
+ */
+service('DistrictService', ['$http', '$timeout', '$q', 'LanguageService', function($http, $timeout, $q, LanguageService) {
+
+    return {
+        query: function() {
+            var deferred = $q.defer();
+
+         
+            
+            $http.get('../location/districts', {
+                params: {
+                    lang: LanguageService.getLanguage()
+                }
+            }).
+            success(function(result) {
+                deferred.resolve(result);
+            }).
+            error(function(result) {
+                deferred.reject(result);
+            });
+
+            return deferred.promise;
+        }
+    }
+}]).
+
+/**
+ * Service for retrieving municipalities belonging to a district. Used in faceted search
+ */
+service('ChildLocationsService', ['$http', '$timeout', '$q', 'LanguageService', function($http, $timeout, $q, LanguageService) {
+
+    return {
+        query: function(districtVal) {
+            var deferred = $q.defer();
+
+            var params = '?lang=' + LanguageService.getLanguage();
+            for (var i = 0; i < districtVal.length; i++) {
+            	params += '&districts=' + districtVal[i].code;
+            }
+            
+            $http.get('../location/child-locations' + params, {}).
+            success(function(result) {
+                deferred.resolve(result);
+            }).
+            error(function(result) {
+                deferred.reject(result);
+            });
+
+            return deferred.promise;
+        }
+    }
+}]).
+
+/**
  *  Resource for requesting parent LO data
  */
 service('ParentLOService', ['$http', '$timeout', '$q', 'LanguageService', 'ParentLOTransformer', function($http, $timeout, $q, LanguageService, ParentLOTransformer) {

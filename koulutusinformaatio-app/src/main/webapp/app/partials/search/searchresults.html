@@ -1,5 +1,6 @@
 <!-- <div ng-include src="'partials/pageheader.html'"></div> -->
 <section class="content-container grid16-16 margin-bottom-2">
+
     <div data-ki-breadcrumb="breadcrumb-search-results" id="breadcrumb"></div>
     <div id="facetSelections" class="grid16-16" data-ng-show="areThereSelections()" data-ng-controller="SearchFilterCtrl">
     	<ul>
@@ -36,6 +37,49 @@
     		
     		<h4 data-ki-i18n="filter-search-location-title"></h4>
         	<div data-ki-location-filter></div>
+        	<button type="button" id="selectYourArea" class="primary" 
+     			data-ng-click="openAreaDialog()">
+     			<span>
+        		<span data-ki-i18n="valitse-alue"></span>
+    			</span>
+			</button>
+			
+	<div id="select-location-dialog" ng-show="isAreaVisible()">
+    	<div>
+        	<h3><span data-ki-i18n="select-area"></span> </h3>
+    	</div>
+
+    	<div>
+
+			<h4><span data-ki-i18n="district"></h4>
+      		<select size="10" 
+      				id="districtSelection" 
+      				multiple 
+      				ng-multiple="true" 
+      				ng-model="selectedDistricts" 
+      				ng-options="dist.name for dist in distResult"
+      				style="width:300px; height: 200px"
+      				ng-click="doMunicipalitySearch()"></select> 
+      		<select size="10" 
+      				id="muncipilaitySelection" 
+      				multiple 
+      				ng-multiple="true" 
+      				ng-model="selectedMunicipalities" 
+      				ng-options="mun.name for mun in muniResult"
+      				style="width:300px; height: 200px"></select> 
+      		<select size="10" 
+      				id="muncipilaitySelection" 
+      				multiple 
+      				ng-multiple="true" 
+      				ng-model="selectedMunicipalities" 
+      				ng-options="mun.name for mun in selectedMunicipalities"
+      				style="width:300px; height: 200px"></select> 
+    	</div>
+    	<div>
+        	<button class="btn" ng-click="filterBySelLocations()"><span data-ki-i18n="select-area"></span></button>
+    	</div>
+
+	</div>
         	
     		<h4><span data-ki-i18n="facet-opetuskieli"></span></h4>
     		<ul class="nobullet">
@@ -95,7 +139,11 @@
             </div>
         </div>
     </div>
+    
 </div>
+
+
+
 <!--<aside class="grid16-5" id="column-narrow">
     <form name="searchResultFilters" novalidate data-ng-controller="SearchFilterCtrl">
         <h2 class="margin-top-0" data-ki-i18n="filter-title"></h2>

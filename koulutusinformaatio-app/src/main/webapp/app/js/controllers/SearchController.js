@@ -3,6 +3,7 @@
  */
 function SearchFieldCtrl($scope, $location, SearchService, kiAppConstants, FilterService) {
     $scope.searchFieldPlaceholder = i18n.t('search-field-placeholder'); 
+    
 
     // Perform search using LearningOpportunity service
     $scope.search = function() {
@@ -25,7 +26,7 @@ function SearchFieldCtrl($scope, $location, SearchService, kiAppConstants, Filte
 /**
  *  Controller for search filters
  */
-function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, kiAppConstants, FilterService, LanguageService) {
+function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, kiAppConstants, FilterService, LanguageService, DistrictService, ChildLocationsService) {
     var queryParams = $location.search();
 
     FilterService.query(queryParams).then(function() {
@@ -155,17 +156,42 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     	$scope.upcoming = false;
     	$scope.change();
     }
+    
+    $scope.openAreaDialog = function() {
+    	$scope.selectAreaVisible = true;
+    	DistrictService.query().then(function(result) {
+    		$scope.distResult = result;
+    		$scope.selectAreaVisible = true;
+    	});
+    	
+    }
+    
+    $scope.isAreaVisible = function() {
+    	return $scope.selectAreaVisible;
+    }
+    
+    $scope.doMunicipalitySearch = function() {
+    	ChildLocationsService.query($scope.selectedDistricts).then(function(result) {
+    		$scope.muniResult = result;
+    	});
+    }
+    
+    $scope.filterBySelLocations = function() {
+    	$scope.locations = [];
+    	for (var i = 0; i < $scope.selectedMunicipalities.length; i++) {
+    		$scope.locations.push($scope.selectedMunicipalities[i]);
+    	}
+    	$scope.change();
+    }
+    
 };
 
 /**
  *  Controller for search functionality 
  */
  function SearchCtrl($scope, $rootScope, $location, $routeParams, SearchLearningOpportunityService, SearchService, kiAppConstants, FilterService, Config, LanguageService) {
-	 var queryParams = $location.search();
-
-	 //var resultsPerPage = kiAppConstants.searchResultsPerPage;
-     //console.log(resultsPerPage);
-    
+	var queryParams = $location.search();
+	$scope.selectAreaVisible = false;
     $rootScope.title = i18n.t('title-search-results') + ' - ' + i18n.t('sitename');
 
     $scope.pageSizes = [25, 50, 100];

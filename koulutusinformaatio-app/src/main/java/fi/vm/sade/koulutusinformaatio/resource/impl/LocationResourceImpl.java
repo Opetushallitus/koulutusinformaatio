@@ -18,12 +18,14 @@ package fi.vm.sade.koulutusinformaatio.resource.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.domain.Location;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LocationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
 import fi.vm.sade.koulutusinformaatio.resource.LocationResource;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -72,5 +74,25 @@ public class LocationResourceImpl implements LocationResource {
                 return dto;
             }
         };
+    }
+
+    @Override
+    public List<LocationDTO> getDistricts(String lang) {
+        try {
+            List<Location> locations = searchService.getDistricts(lang);
+            return Lists.transform(locations, getTransformFunction());
+        } catch (SearchException e) {
+            throw KIExceptionHandler.resolveException(e);
+        }
+    }
+
+    @Override
+    public List<LocationDTO> getChildLocations(List<String> districts, String lang) {
+        try {
+            List<Location> locations = searchService.getChildLocations(districts, lang);
+            return Lists.transform(locations, getTransformFunction());
+        } catch (SearchException e) {
+            throw KIExceptionHandler.resolveException(e);
+        }
     }
 }

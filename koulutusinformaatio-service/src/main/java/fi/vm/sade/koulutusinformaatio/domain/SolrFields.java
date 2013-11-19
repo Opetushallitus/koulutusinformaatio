@@ -64,8 +64,14 @@ public class SolrFields {
         public static final String CONTENT_FI = "content_fi";
         public static final String CONTENT_SV = "content_sv";
         public static final String CONTENT_EN = "content_en";
-        
-        
     }
     
+    public static class LocationFields {
+        public static final String TYPE = "type"; //Type of area, i.e. kunta or maakunta
+        public static final String ID = "id";
+        public static final String NAME = "name"; 
+        public static final String LANG = "lang"; 
+        public static final String CODE = "code"; 
+        public static final String PARENT = "parent"; //The parent area of the municipality
+    }
 }
