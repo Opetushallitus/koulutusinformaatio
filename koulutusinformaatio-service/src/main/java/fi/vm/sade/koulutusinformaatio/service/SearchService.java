@@ -33,4 +33,6 @@ public interface SearchService {
 
     List<Location> searchLocations(final String term, final String lang) throws SearchException;
     List<Location> getLocations(List<String> codes, final String lang) throws SearchException;
+    List<Location> getDistricts(final String lang) throws SearchException;
+    List<Location> getChildLocations(List<String> districts, final String lang) throws SearchException;
 }

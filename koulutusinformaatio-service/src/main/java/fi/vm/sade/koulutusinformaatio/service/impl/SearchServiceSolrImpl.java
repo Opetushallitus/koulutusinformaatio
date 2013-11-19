@@ -20,6 +20,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Lists;
 
 import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LocationFields;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.LearningOpportunityQuery;
@@ -52,6 +53,7 @@ public class SearchServiceSolrImpl implements SearchService {
     public static final String ID = "AOId";
     public static final String AS_START_DATE_PREFIX = "asStart_";
     public static final String AS_END_DATE_PREFIX = "asEnd_";
+    private final static String DISTRICT = "maakunta";
 
     private HttpSolrServer httpSolrServer;
 
@@ -328,6 +330,19 @@ public class SearchServiceSolrImpl implements SearchService {
             locations.add(location);
         }
         return locations;
+    }
+
+    @Override
+    public List<Location> getDistricts(String lang) throws SearchException {
+        SolrQuery query = new LocationQuery(LocationFields.TYPE, DISTRICT, lang);
+        return executeSolrQuery(query);
+    }
+
+    @Override
+    public List<Location> getChildLocations(List<String> districts, String lang)
+            throws SearchException {
+        SolrQuery query = new LocationQuery(LocationFields.PARENT, districts, lang);
+        return executeSolrQuery(query);
     }
 	
 
