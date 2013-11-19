@@ -9,15 +9,16 @@ var kiApp = angular.module('kiApp',
         'ui.bootstrap', 
         'angulartics', 
         'angulartics.piwik'
-    ]);
+    ])
 
-kiApp.config(['$routeProvider', '$analyticsProvider', function($routeProvider, $analyticsProvider) {
-
+.config(['$analyticsProvider', function( $analyticsProvider) {
     // initialize piwik analytics tool
     OPH.Common.initPiwik(window.Config.app.piwikUrl);
     $analyticsProvider.virtualPageviews(true);
     $analyticsProvider.firstPageview(false);
+}])
 
+.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/haku/:queryString', {
     	templateUrl: 'partials/search/searchresults.html', 
     	controller: SearchCtrl
@@ -53,25 +54,25 @@ kiApp.config(['$routeProvider', '$analyticsProvider', function($routeProvider, $
     $routeProvider.otherwise({
     	redirectTo: '/haku/'
     });
-    
-}]);
+}])
 
-kiApp.constant('kiAppConstants', {
-    searchResultsPerPage: 30,
+.constant('kiAppConstants', {
+    searchResultsPerPage: 25,
+    defaultSortCriteria: '0',
     searchResultsStartPage: 1,
     applicationBasketLimit: 5
-});
+})
 
-kiApp.filter('escape', function() {
+.filter('escape', function() {
   return window.escape;
-});
+})
 
-kiApp.filter('encodeURIComponent', function() {
+.filter('encodeURIComponent', function() {
     return window.encodeURIComponent;
-});
+})
 
 // initialize i18n library
-kiApp.run(['LanguageService', function(LanguageService) {
+.run(['LanguageService', function(LanguageService) {
     i18n.init({
         resGetPath : 'locales/__ns__-__lng__.json',
         lng : LanguageService.getLanguage(),
@@ -81,10 +82,10 @@ kiApp.run(['LanguageService', function(LanguageService) {
         fallbackLng : 'fi',
         debug : false
     });
-}]);
+}])
 
-kiApp.value('appConfig', window.Config.app);
-kiApp.factory('Config', function(appConfig, LanguageService) {
+.value('appConfig', window.Config.app)
+.factory('Config', function(appConfig, LanguageService) {
     return {
         get: function(property) {
             var lang = LanguageService.getLanguage();

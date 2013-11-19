@@ -44,6 +44,13 @@
     "filter-search-location-add": "Lisää sijainti (en)",
     "filter-search-location-remove": "Poista (en)",
 
+    "sort-criteria-startdate": "Alkamisajankohta (en)",
+    "sort-criteria-alphabetical-desc": "Aakkoset A-Ö (en)",
+    "sort-criteria-alphabetical-asc": "Aakkoset Ö-A (en)",
+    "sort-criteria-extent": "Koulutuksen laajuus (en)",
+    "sort-criteria-items-per-page-label": "Näytä (en)",
+    "sort-criteria-sort-label": "Lajittele (en)",
+
     "description-language-selection": "Kuvaus saatavilla myös (en):",
 
     "education-starts": "Koulutus alkaa (en):",

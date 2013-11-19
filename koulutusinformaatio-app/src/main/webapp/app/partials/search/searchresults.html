@@ -19,7 +19,7 @@
         <h2 class="inline-block margin-left-2">({{loResult.totalCount}} <span data-ki-i18n="search-result-count-unit"></span>)</h2>
     </div>
     <div class="grid16-5" data-ng-controller="SearchFilterCtrl" data-ng-show="loResult.totalCount > 0">
-    	<h2><span data-ki-i18n="selaile-koulutuksia"></span></h2>
+    	<h2 class="margin-top-0"><span data-ki-i18n="selaile-koulutuksia"></span></h2>
     	<div class="filter margin-bottom-2">
             <ul class="nobullet">
                 <li data-ng-show="loResult.ongoingFacet">
@@ -47,6 +47,25 @@
     	</div>
     </div>
     <div class="grid16-11">
+        <div class="sort-area">
+            <div class="sort-item">
+                <label for="itemsPerPage" data-ki-i18n="sort-criteria-sort-label"></label>
+                <select 
+                    data-ng-model="sortCriteria"
+                    data-ng-options="key as value for (key, value) in sortCriterias"
+                    data-ng-change="updateSortCriteria()">
+                </select>
+            </div>
+            <div class="sort-item">
+                <label for="itemsPerPage" data-ki-i18n="sort-criteria-items-per-page-label"></label>
+                <select 
+                    data-ng-model="itemsPerPage"
+                    data-ng-options="value for value in pageSizes"
+                    data-ng-change="updateItemsPerPage()">
+                </select>
+            </div>
+            <div class="clear"></div>
+        </div>
         <div data-ng-switch="loResult.totalCount">
             <div data-ng-switch-when="0">
                 <div class="notification info">
@@ -56,8 +75,7 @@
             </div>
             <div data-ng-switch-default>
                 <ul id="search-results">
-                    <li data-ng-repeat="lo in loResult.results">
-                        <div data-search-result></div>
+                    <li data-ng-repeat="lo in loResult.results" data-search-result>
                     </li>
                 </ul>
                 <div data-ng-show="showPagination">
@@ -66,6 +84,8 @@
                     data-num-pages="maxPages"
                     data-total-items="totalItems"
                     data-items-per-page="itemsPerPage"
+                    data-rotate="false"
+                    data-max-size="5"
                     data-page="currentPage" 
                     data-first-text="<<"
                     data-next-text=">"

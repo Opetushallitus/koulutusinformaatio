@@ -46,7 +46,9 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
             upcoming: $scope.upcoming,
             page: kiAppConstants.searchResultsStartPage,
             facetFilters: $scope.facetFilters,
-            langCleared: $scope.langCleared
+            langCleared: $scope.langCleared,
+            itemsPerPage: $scope.itemsPerPage,
+            sortCriteria: $scope.sortCriteria
         });
 
         // append filters to url and reload
@@ -161,9 +163,18 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
  function SearchCtrl($scope, $rootScope, $location, $routeParams, SearchLearningOpportunityService, SearchService, kiAppConstants, FilterService, Config, LanguageService) {
 	 var queryParams = $location.search();
 
-	 var resultsPerPage = kiAppConstants.searchResultsPerPage;
+	 //var resultsPerPage = kiAppConstants.searchResultsPerPage;
+     //console.log(resultsPerPage);
     
     $rootScope.title = i18n.t('title-search-results') + ' - ' + i18n.t('sitename');
+
+    $scope.pageSizes = [25, 50, 100];
+    $scope.sortCriterias = [
+        i18n.t('sort-criteria-startdate'), 
+        i18n.t('sort-criteria-alphabetical-desc'), 
+        i18n.t('sort-criteria-alphabetical-asc'),
+        i18n.t('sort-criteria-extent')
+    ];
 
     $scope.changePage = function(page) {
         $scope.currentPage = page;
@@ -187,7 +198,9 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
 	     $scope.ongoing = FilterService.isOngoing();
 	     $scope.upcoming = FilterService.isUpcoming();
 	     $scope.facetFilters = FilterService.getFacetFilters();
-	     $scope.langCleared=FilterService.getLangCleared();
+	     $scope.langCleared = FilterService.getLangCleared();
+         $scope.itemsPerPage = FilterService.getItemsPerPage();
+         $scope.sortCriteria = FilterService.getSortCriteria();
 	     $scope.doSearching();
 	 });
     
@@ -217,19 +230,19 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     	if ($routeParams.queryString && $scope.isLangFilterSet()) {
     		SearchLearningOpportunityService.query({
     			queryString: $routeParams.queryString,
-    			start: (FilterService.getPage()-1) * resultsPerPage,
-    			rows: resultsPerPage,
+    			start: (FilterService.getPage()-1) * $scope.itemsPerPage,
+    			rows: $scope.itemsPerPage,
     			prerequisite: FilterService.getPrerequisite(),
     			locations: FilterService.getLocationNames(),
     			ongoing: FilterService.isOngoing(),
     			upcoming: FilterService.isUpcoming(),
     			facetFilters: FilterService.getFacetFilters(),
+                sortCriteria: FilterService.getSortCriteria(),
     			lang: LanguageService.getLanguage()
     		}).then(function(result) {
     			$scope.loResult = result;
                 $scope.totalItems = result.totalCount;
-    			$scope.maxPages = Math.ceil(result.totalCount / resultsPerPage);
-                $scope.itemsPerPage = resultsPerPage;
+    			$scope.maxPages = Math.ceil(result.totalCount / $scope.itemsPerPage);
     			$scope.showPagination = $scope.maxPages > 1;
     			$scope.populateFacetSelections();
     		});
@@ -314,5 +327,15 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     		return 'SV';
     	}
     	return 'FI';
+    }
+
+    $scope.updateItemsPerPage = function() {
+        FilterService.setItemsPerPage($scope.itemsPerPage);
+        $location.search(FilterService.get());
+    }
+
+    $scope.updateSortCriteria = function() {
+        FilterService.setSortCriteria($scope.sortCriteria);
+        $location.search(FilterService.get());
     }
 };

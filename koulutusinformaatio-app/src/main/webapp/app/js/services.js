@@ -32,6 +32,7 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
             		 qParams += '&facetFilters=' + facetFilter;
                  });
             }
+            qParams += (params.sortCriteria != undefined) ? ('&sort=' + params.sortCriteria) : '';
 
             $http.get('../lo/search/' + encodeURI(params.queryString) + qParams, {}).
             success(function(result) {
@@ -777,7 +778,7 @@ service('ApplicationBasketService', ['$http', '$q', 'LanguageService', 'UtilityS
 /**
  *  Service for maintaining search filter state
  */
-service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', function($q, $http, UtilityService, LanguageService) {
+service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'kiAppConstants', function($q, $http, UtilityService, LanguageService, kiAppConstants) {
     var filters = {};
 
     var filterIsEmpty = function(filter) {
@@ -854,7 +855,9 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', fu
                 upcoming: filters.upcoming,
                 page: filters.page,
                 facetFilters: filters.facetFilters,
-                langCleared: filters.langCleared
+                langCleared: filters.langCleared,
+                itemsPerPage: filters.itemsPerPage,
+                sortCriteria: filters.sortCriteria
             };
 
             angular.forEach(result, function(value, key) {
@@ -920,7 +923,9 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', fu
             params += filters.upcoming ? '&upcoming' : '';
             params += filters.page ? '&page=' + filters.page : '';
             params += (filters.facetFilters && filters.facetFilters.length > 0) ? '&facetFilters=' + filters.facetFilters.join(',') : '';
-            params += filters.langCleared ? '&langCleared=' + filters.langCleared : ''; 
+            params += filters.langCleared ? '&langCleared=' + filters.langCleared : '';
+            params += filters.itemsPerPage ? '&itemsPerPage=' + filters.itemsPerPage : '';
+            params += filters.sortCriteria ? '&sortCriteria=' + filters.sortCriteria : '';
             
             params = params.length > 0 ? params.substring(1, params.length) : '';
             return params;
@@ -936,6 +941,38 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', fu
         
         getLangCleared: function() {
         	return filters.langCleared;
+        },
+
+        getItemsPerPage: function() {
+            if (filters.itemsPerPage) {
+                return typeof filters.itemsPerPage === 'string' ? parseInt(filters.itemsPerPage) : filters.itemsPerPage;
+            } else {
+                return kiAppConstants.searchResultsPerPage;
+            }
+        },
+
+        setItemsPerPage: function(value) {
+            if (value && !isNaN(value)) {
+                filters.itemsPerPage = parseInt(value);
+            } else {
+                filters.itemsPerPage = kiAppConstants.searchResultsPerPage;
+            }
+        },
+
+        getSortCriteria: function() {
+            if (filters.sortCriteria) {
+                return filters.sortCriteria;
+            } else {
+                return kiAppConstants.defaultSortCriteria;
+            }
+        },
+
+        setSortCriteria: function(value) {
+            if (value) {
+                filters.sortCriteria = value;
+            } else {
+                filters.sortCriteria = kiAppConstants.defaultSortCriteria;
+            }
         }
     };
 }]).
