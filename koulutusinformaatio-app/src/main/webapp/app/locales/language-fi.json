@@ -185,6 +185,15 @@
     "location-rajaus": "Paikka",
     "filter-search-as-upcoming": "Tulossa hakuun",
     "haun-tila": "Haun tila",
-    "selaile-koulutuksia": "Selaile koulutuksia"
+    "selaile-koulutuksia": "Selaile koulutuksia",
+    "valitse-alue": "Valitse alue, jolta haet koulutuksia",
+    "valitse-alue-link": "Valitse alue",
+    "district": "Maakunta",
+    "municipality": "Kaupunki/kunta",
+    "valitut-alueet": "Valitut alueet",
+    "ok": "Ok",
+    "koko": "Koko",
+    "suomi": "Suomi",
+    "valitse-kaikki": "Valitse kaikki"
     
 }

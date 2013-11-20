@@ -185,7 +185,17 @@
     "location-rajaus": "Place",
     "filter-search-as-upcoming": "Upcoming applications systems",
     "haun-tila": "Application system status",
-    "selaile-koulutuksia": "Selaile koulutuksia"
+    "selaile-koulutuksia": "Selaile koulutuksia",
+    "valitse-alue": "Choose the area from which to search",
+    "valitse-alue-link": "Choose the area",
+    "district": "District",
+    "municipality": "Town/Municipality",
+    "valitut-alueet": "Chosen areas",
+    "ok": "Ok",
+    "koko": "Whole",
+    "suomi": "Finland",
+    "valitse-kaikki": "Select all"
+    
     
     
 

@@ -5,8 +5,12 @@
     <div id="facetSelections" class="grid16-16" data-ng-show="areThereSelections()" data-ng-controller="SearchFilterCtrl">
     	<ul>
     		<li><span data-ki-i18n="valitut-rajaukset"></span>:</li>
-    		<li data-ng-show="ongoing"><span data-ki-i18n="haun-tila"></span>:  <span data-ki-i18n="filter-search-as-ongoing"></span> <a href ng-click="removeOngoing()">x</a></li>
-    		<li data-ng-show="upcoming"><span data-ki-i18n="haun-tila"></span>:  <span data-ki-i18n="filter-search-as-upcoming"></span> <a href ng-click="removeUpcoming()">x</a></li>
+    		<li data-ng-show="ongoing">
+    			<span data-ki-i18n="haun-tila"></span>:  <span data-ki-i18n="filter-search-as-ongoing"></span> <a href ng-click="removeOngoing()">x</a>
+    		</li>
+    		<li data-ng-show="upcoming">
+    			<span data-ki-i18n="haun-tila"></span>:  <span data-ki-i18n="filter-search-as-upcoming"></span> <a href ng-click="removeUpcoming()">x</a>
+    		</li>
     		<li data-ng-repeat="fs in facetSelections">
     			<span data-ki-i18n="{{fs.facetField}}"></span>: {{fs.valueName}} <a href ng-click="removeSelection(fs)">x</a>
     		</li>
@@ -24,12 +28,20 @@
     	<div class="filter margin-bottom-2">
             <ul class="nobullet">
                 <li data-ng-show="loResult.ongoingFacet">
-                	<span data-ng-show="!ongoing && loResult.ongoingFacet.count > 0"><a href ng-click="setOngoing()"><span data-ki-i18n="filter-search-as-ongoing"></span></a> {{loResult.ongoingFacet.count}}</span>
-                	<span data-ng-show="ongoing || loResult.ongoingFacet.count < 1"><span data-ki-i18n="filter-search-as-ongoing"></span> {{loResult.ongoingFacet.count}}</span>
+                	<span data-ng-show="!ongoing && loResult.ongoingFacet.count > 0">
+                		<a href ng-click="setOngoing()"><span data-ki-i18n="filter-search-as-ongoing"></span></a> {{loResult.ongoingFacet.count}}
+                	</span>
+                	<span data-ng-show="ongoing || loResult.ongoingFacet.count < 1">
+             			<span data-ki-i18n="filter-search-as-ongoing"></span> {{loResult.ongoingFacet.count}}
+             		</span>
                 </li>
                 <li data-ng-show="loResult.upcomingFacet">
-                	<span data-ng-show="!upcoming && loResult.upcomingFacet.count > 0"><a href ng-click="setUpcoming()"><span data-ki-i18n="filter-search-as-upcoming"></span></a> {{loResult.upcomingFacet.count}}</span>
-                	<span data-ng-show="upcoming || loResult.upcomingFacet.count < 1"><span data-ki-i18n="filter-search-as-upcoming"></span> {{loResult.upcomingFacet.count}}</span>
+                	<span data-ng-show="!upcoming && loResult.upcomingFacet.count > 0">
+                		<a href ng-click="setUpcoming()"><span data-ki-i18n="filter-search-as-upcoming"></span></a> {{loResult.upcomingFacet.count}}
+                	</span>
+                	<span data-ng-show="upcoming || loResult.upcomingFacet.count < 1">
+                		<span data-ki-i18n="filter-search-as-upcoming"></span> {{loResult.upcomingFacet.count}}
+                	</span>
                 </li>
             </ul>
         </div>
@@ -37,16 +49,13 @@
     		
     		<h4 data-ki-i18n="filter-search-location-title"></h4>
         	<div data-ki-location-filter></div>
-        	<button type="button" id="selectYourArea" class="primary" 
-     			data-ng-click="openAreaDialog()">
-     			<span>
-        		<span data-ki-i18n="valitse-alue"></span>
-    			</span>
-			</button>
+        	<a href id="selectYourArea" class="primary" data-ng-click="openAreaDialog()">
+        	<span data-ki-i18n="valitse-alue-link"></span>
+			</a>
 			
 	<div id="select-location-dialog" ng-show="isAreaVisible()">
     	<div>
-        	<h3><span data-ki-i18n="select-area"></span> </h3>
+        	<span data-ki-i18n="valitse-alue"></span>
     	</div>
 
     	<div>
@@ -58,25 +67,27 @@
       				ng-multiple="true" 
       				ng-model="selectedDistricts" 
       				ng-options="dist.name for dist in distResult"
-      				style="width:300px; height: 200px"
+      				style="width:200px; height: 200px"
       				ng-click="doMunicipalitySearch()"></select> 
+      	    <h4><span data-ki-i18n="municipality"></h4> 
       		<select size="10" 
       				id="muncipilaitySelection" 
       				multiple 
       				ng-multiple="true" 
       				ng-model="selectedMunicipalities" 
       				ng-options="mun.name for mun in muniResult"
-      				style="width:300px; height: 200px"></select> 
+      				style="width:200px; height: 200px"></select> 
+      		<h4><span data-ki-i18n="valitut-alueet"></h4> 
       		<select size="10" 
       				id="muncipilaitySelection" 
       				multiple 
       				ng-multiple="true" 
       				ng-model="selectedMunicipalities" 
       				ng-options="mun.name for mun in selectedMunicipalities"
-      				style="width:300px; height: 200px"></select> 
+      				style="width:200px; height: 200px"></select> 
     	</div>
     	<div>
-        	<button class="btn" ng-click="filterBySelLocations()"><span data-ki-i18n="select-area"></span></button>
+        	<button class="primary" ng-click="filterBySelLocations()"><span data-ki-i18n="ok"></span></button>
     	</div>
 
 	</div>
@@ -84,7 +95,9 @@
     		<h4><span data-ki-i18n="facet-opetuskieli"></span></h4>
     		<ul class="nobullet">
     			<li data-ng-repeat="fv in loResult.teachingLangFacet.facetValues">
-    				<span data-ng-show="!isSelected(fv)"><a href ng-click="selectFacetFilter(fv.valueId, fv.facetField)">{{fv.valueName}}</a> ({{fv.count}})</span>
+    				<span data-ng-show="!isSelected(fv)">
+    					<a href ng-click="selectFacetFilter(fv.valueId, fv.facetField)">{{fv.valueName}}</a> ({{fv.count}})
+    				</span>
     				<span data-ng-show="isSelected(fv)">{{fv.valueName}} ({{fv.count}})</span>
     			</li>
     		</ul>
