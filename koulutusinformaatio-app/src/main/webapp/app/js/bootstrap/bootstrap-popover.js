@@ -102,6 +102,7 @@ angular.module( 'ui.bootstrap.tooltip', [ 'ui.bootstrap.position', 'ui.bootstrap
           'data-placement="'+startSym+'tt_placement'+endSym+'" '+
           'data-animation="tt_animation()" '+
           'data-is-open="tt_isOpen"'+
+          'compile-scope="$parent"'+
           '>'+
         '</div>';
 
@@ -362,8 +363,40 @@ angular.module( 'ui.bootstrap.popover', [ 'ui.bootstrap.tooltip' ] )
 })
 .directive( 'popover', [ '$compile', '$timeout', '$parse', '$window', '$tooltip', function ( $compile, $timeout, $parse, $window, $tooltip ) {
   return $tooltip( 'popover', 'popover', 'click' );
-}]);
+}])
+.directive( 'popoverTemplatePopup', [ '$http', '$templateCache', '$compile', function ( $http, $templateCache, $compile ) {
+  return {
+    restrict: 'EA',
+    replace: true,
+    scope: { title: '@', content: '@', placement: '@', animation: '&', isOpen: '&', compileScope: '&' },
+    templateUrl: 'template/popover/popover-template.html',
+    link: function(scope, iElement, attrs) {
+      var tpl;
 
+      scope.$watch('isOpen()', function(value) {
+        recompile(tpl);
+      });
+
+      scope.$watch( 'content', function( templateUrl ) {
+        tpl = templateUrl;
+        recompile(tpl);
+      });
+
+      var recompile = function(templateUrl) {
+        if ( !templateUrl ) { return; }
+        $http.get( templateUrl, { cache: $templateCache } )
+        .then( function( response ) {
+          var contentEl = angular.element( iElement[0].querySelector( '.popover-content' ) );
+          contentEl.children().remove();
+          contentEl.append( $compile( response.data )( scope.compileScope() ) );
+        });
+      }
+    }
+  };
+}])
+.directive( 'popoverTemplate', [ '$tooltip', function ( $tooltip ) {
+  return $tooltip( 'popoverTemplate', 'popover', 'click' );
+}]);
 
 angular.module("template/tooltip/tooltip-html-unsafe-popup.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("template/tooltip/tooltip-html-unsafe-popup.html",
@@ -390,8 +423,21 @@ angular.module("template/popover/popover.html", []).run(["$templateCache", funct
     "\n" +
     "  <div class=\"popover-inner\">\n" +
     "      <span class=\"popover-close\" data-ng-click=\"close()\">&nbsp;</span>" +
-    "      <h4 class=\"popover-title\" data-ng-bind-html-unsafe=\"title\" data-ng-show=\"title\"></h4>\n" +
+    "      <h2 class=\"popover-title\" data-ng-bind-html-unsafe=\"title\" data-ng-show=\"title\"></h2>\n" +
     "      <div class=\"popover-content\" data-ng-bind-html-unsafe=\"content\"></div>\n" +
+    "  </div>\n" +
+    "</div>\n" +
+    "");
+}]);
+
+angular.module("template/popover/popover-template.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("template/popover/popover-template.html",
+    "<div class=\"popover {{placement}}\" data-ng-class=\"{ in: isOpen(), fade: animation() }\">\n" +
+    "  <div class=\"arrow\"></div>\n" +
+    "\n" +
+    "  <div class=\"popover-inner\">\n" +
+    "      <h2 class=\"popover-title\" data-ng-bind=\"title\" ng-show=\"title\"></h2>\n" +
+    "      <div class=\"popover-content\"></div>\n" +
     "  </div>\n" +
     "</div>\n" +
     "");

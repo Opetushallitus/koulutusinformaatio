@@ -2714,8 +2714,7 @@ button, .button {
   display: none; }
 
 .popover-content {
-  padding: 9px 14px;
-  width: 260px; }
+  padding: 9px 14px; }
 
 .popover .arrow,
 .popover .arrow:after {
@@ -3099,6 +3098,17 @@ button, .button {
         background-color: #bfe4f1;
         cursor: pointer;
         text-decoration: none; }
+
+.collapse {
+  height: 0;
+  -webkit-transition: 0.35s ease;
+  -moz-transition: 0.35s ease;
+  -o-transition: 0.35s ease;
+  -ms-transition: 0.35s ease;
+  transition: 0.35s ease; }
+
+.collapse.in {
+  height: auto; }
 
 /*** Main navigation
 **************************************************************/
