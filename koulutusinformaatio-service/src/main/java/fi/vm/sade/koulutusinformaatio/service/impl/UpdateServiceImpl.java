@@ -100,11 +100,11 @@ public class UpdateServiceImpl implements UpdateService {
                         this.educationDataUpdateService.save(spec);
                     }
                 }
-                this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+                this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
             }
             List<Location> locations = locationService.getMunicipalities();
             indexerService.addLocations(locations, locationUpdateSolr);
-            indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+            indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, true);
             this.transactionManager.commit(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
             LOG.info("Education data update successfully finished");
         } catch (Exception e) {

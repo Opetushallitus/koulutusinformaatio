@@ -39,7 +39,7 @@ public interface IndexerService {
      * @param lopUpdateSolr 
      * @param loUpdateSolr 
      */
-    void commitLOChanges(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws Exception;
+    void commitLOChanges(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr, boolean createTimestamp) throws Exception;
     
     void addLocations(List<Location> locations, HttpSolrServer locationUpdateSolr) throws IOException, SolrServerException;
     

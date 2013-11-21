@@ -132,13 +132,15 @@ public class IndexerServiceImpl implements IndexerService {
     }
 
     @Override
-    public void commitLOChanges(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws Exception {
-        List<SolrInputDocument> timeStampDocs = new ArrayList<SolrInputDocument>();
-        SolrInputDocument timestampDoc = new SolrInputDocument();
-        timestampDoc.addField("id", "loUpdateTimestampDocument");
-        timestampDoc.addField("name", getTimestampStr());
-        timeStampDocs.add(timestampDoc);
-        loUpdateSolr.add(timeStampDocs);//loUpdateHttpSolrServer.add(timeStampDocs);
+    public void commitLOChanges(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr, boolean createTimestamp) throws Exception {
+        if (createTimestamp) {
+        	List<SolrInputDocument> timeStampDocs = new ArrayList<SolrInputDocument>();
+        	SolrInputDocument timestampDoc = new SolrInputDocument();
+        	timestampDoc.addField("id", "loUpdateTimestampDocument");
+        	timestampDoc.addField("name", getTimestampStr());
+        	timeStampDocs.add(timestampDoc);
+        	loUpdateSolr.add(timeStampDocs);//loUpdateHttpSolrServer.add(timeStampDocs);
+        }
         loUpdateSolr.commit();//loUpdateHttpSolrServer.commit();
         lopUpdateSolr.commit();//lopUpdateHttpSolrServer.commit();
         locationUpdateSolr.commit();
