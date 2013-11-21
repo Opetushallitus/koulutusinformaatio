@@ -103,7 +103,6 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
             p.setPlaceOfBusinessCode(o.getToimipistekoodi());
             p.setHomePlace(koodistoService.searchFirst(o.getKotipaikkaUri()));
             String districtUri = getDistrictUri(o.getKotipaikkaUri());
-            System.out.println("\n\nDISTRICT URI IS: " + districtUri + "\n\n");
             if (districtUri != null) { 
                 p.setHomeDistrict(koodistoService.searchFirst(districtUri));
             }
@@ -116,7 +115,6 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
     }
 
     private String getDistrictUri(String kotipaikkaUri) throws KoodistoException {
-        System.out.println("Kotipaikkauri to index: " + kotipaikkaUri); 
         if (kotipaikkaUri == null) {
             return null;
         }

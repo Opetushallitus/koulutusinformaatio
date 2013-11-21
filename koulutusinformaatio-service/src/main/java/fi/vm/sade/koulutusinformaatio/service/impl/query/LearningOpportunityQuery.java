@@ -52,7 +52,6 @@ public class LearningOpportunityQuery extends SolrQuery {
         this.setStart(start);
         this.setRows(rows);
         if (cities != null && !cities.isEmpty()) {
-            System.out.println("Cities 1: " + cities.get(0));
             this.addFilterQuery(
                     String.format("%s:(%s)", LOP_HOMEPLACE, Joiner.on(" OR ").join(cities))
             );

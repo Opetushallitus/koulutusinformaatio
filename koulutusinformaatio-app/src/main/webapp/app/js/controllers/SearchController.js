@@ -172,7 +172,14 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     		queryDistricts = $scope.selectedDistricts;
     	}
     	ChildLocationsService.query(queryDistricts).then(function(result) {
-    		$scope.muniResult = result;
+    		
+    		if (!$scope.isWholeAreaSelected($scope.selectedDistricts)) {
+    			$scope.muniResult = queryDistricts;
+    			$scope.muniResult.push.apply($scope.muniResult, result);
+    		} else {
+    			$scope.muniResult = result;
+    		}
+    		
     	});
     }
     

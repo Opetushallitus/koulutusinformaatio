@@ -43,8 +43,6 @@ public class I18nText {
     }
 
     public Map<String, String> getTranslations() {
-        System.out.println("Translations: " + this.translations.values().size());
-        System.out.println("Translations: " + this.translations.values().iterator().next());
         return translations;
     }
 

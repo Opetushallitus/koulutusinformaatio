@@ -25,6 +25,7 @@ import fi.vm.sade.koulutusinformaatio.domain.SolrFields.*;
 import org.apache.solr.common.SolrInputDocument;
 import org.springframework.core.convert.converter.Converter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -74,7 +75,14 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         doc.addField(LearningOpportunity.LOP_NAME_SV, provider.getName().getTranslations().get("sv"));
         doc.addField(LearningOpportunity.LOP_NAME_EN, provider.getName().getTranslations().get("en"));
 
-        doc.addField(LearningOpportunity.LOP_HOMEPLACE, provider.getHomePlace().getTranslations().values());
+        if (provider.getHomeDistrict() != null) {
+            List<String> locVals = new ArrayList<String>();
+            locVals.addAll(provider.getHomeDistrict().getTranslations().values());
+            locVals.addAll(provider.getHomePlace().getTranslations().values());
+            doc.addField(LearningOpportunity.LOP_HOMEPLACE, locVals);
+        } else {
+            doc.addField(LearningOpportunity.LOP_HOMEPLACE, provider.getHomePlace().getTranslations().values());
+        }
 
         if (provider.getVisitingAddress() != null) {
             doc.addField(LearningOpportunity.LOP_ADDRESS_FI, provider.getVisitingAddress().getPostOffice());
@@ -148,9 +156,10 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         doc.addField(LearningOpportunity.LOP_NAME_EN, provider.getName().getTranslations().get("en"));
         
         if (provider.getHomeDistrict() != null) {
-            provider.getHomeDistrict().getTranslations().values().addAll(provider.getHomePlace().getTranslations().values());
-            System.out.println("Homedistrict values: " + provider.getHomeDistrict().getTranslations().values());
-            doc.addField(LearningOpportunity.LOP_HOMEPLACE, provider.getHomeDistrict().getTranslations().values());
+            List<String> locVals = new ArrayList<String>();
+            locVals.addAll(provider.getHomeDistrict().getTranslations().values());
+            locVals.addAll(provider.getHomePlace().getTranslations().values());
+            doc.addField(LearningOpportunity.LOP_HOMEPLACE, locVals);
         } else {
             doc.addField(LearningOpportunity.LOP_HOMEPLACE, provider.getHomePlace().getTranslations().values());
         }
