@@ -124,7 +124,7 @@ public class IndexerServiceImplTest {
 
     @Test
     public void testCommitLOChanges() throws Exception {
-        indexerServiceImpl.commitLOChanges(loUpdateHttpSolrServer, lopUpdateHttpSolrServer, locationUpdateHttpSolrServer);
+        indexerServiceImpl.commitLOChanges(loUpdateHttpSolrServer, lopUpdateHttpSolrServer, locationUpdateHttpSolrServer, true);
         verify(loUpdateHttpSolrServer).commit();
         verify(lopUpdateHttpSolrServer).commit();
     }
