@@ -18,9 +18,12 @@ package fi.vm.sade.koulutusinformaatio.dao.transaction.impl;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
+
 import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.entity.DataStatusEntity;
 import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
+import fi.vm.sade.koulutusinformaatio.domain.SolrFields.SolrConstants;
+
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.request.CoreAdminRequest;
 import org.apache.solr.common.params.CoreAdminParams;
@@ -151,6 +154,7 @@ public class TransactionManagerImpl implements TransactionManager {
     	@Override
         public void commit(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws Exception {
         	
+    		//If solr is not in cloud mode doing swap using CoreAdminRequest
         	if (this.loHttpAliasName.equals(this.loHttpSolrName)) {
         		CoreAdminRequest lopCar = getCoreSwapRequest(providerUpdateCoreName, providerCoreName);
         		lopCar.process(adminHttpSolrServer);
@@ -161,6 +165,7 @@ public class TransactionManagerImpl implements TransactionManager {
         		CoreAdminRequest locationCar = getCoreSwapRequest(locationUpdateCoreName, locationCoreName);
                 locationCar.process(adminHttpSolrServer);
         		
+                //Otherwise using collections api
         	} else {
         		swapAliases(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);	
         	}
@@ -182,10 +187,9 @@ public class TransactionManagerImpl implements TransactionManager {
                 lopUpdateSolr.deleteByQuery("*:*");
                 lopUpdateSolr.commit();
                 lopUpdateSolr.optimize();
-                
-                locationUpdateHttpSolrServer.deleteByQuery("*:*");
-                locationUpdateHttpSolrServer.commit();
-                locationUpdateHttpSolrServer.optimize();
+                locationUpdateSolr.deleteByQuery("*:*");
+                locationUpdateSolr.commit();
+                locationUpdateSolr.optimize();
                 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -220,29 +224,40 @@ public class TransactionManagerImpl implements TransactionManager {
     }
     
     private void swapAliases(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws Exception {
-            boolean ok = true;
-            URL myURL = new URL(adminHttpSolrServer.getBaseURL() + "/admin/collections?action=CREATEALIAS&name=" + this.lopHttpAliasName +"&collections=" + getCollectionName(lopUpdateSolr));
-            HttpURLConnection myURLConnection = (HttpURLConnection)(myURL.openConnection());
-            myURLConnection.setRequestMethod("GET");
-            myURLConnection.connect();
-            ok = ok ? myURLConnection.getResponseCode() < 400 : ok;
-            
-            myURL = new URL(adminHttpSolrServer.getBaseURL() + "/admin/collections?action=CREATEALIAS&name=" + this.loHttpAliasName +"&collections=" + getCollectionName(loUpdateSolr));
-            myURLConnection = (HttpURLConnection)(myURL.openConnection());
-            myURLConnection.setRequestMethod("GET");
-            myURLConnection.connect();
-            ok = ok ? myURLConnection.getResponseCode() < 400 : ok;
-            
-            myURL = new URL(adminHttpSolrServer.getBaseURL() + "/admin/collections?action=CREATEALIAS&name=" + this.locationHttpAliasName +"&collections=" + getCollectionName(locationUpdateSolr));
-            myURLConnection = (HttpURLConnection)(myURL.openConnection());
-            myURLConnection.setRequestMethod("GET");
-            myURLConnection.connect();
-            ok = ok ? myURLConnection.getResponseCode() < 400 : ok;
+    		boolean ok = swapAlias(getCollectionName(lopUpdateSolr), lopHttpAliasName);
+    		ok = ok ? swapAlias(getCollectionName(loUpdateSolr), loHttpAliasName) : ok;
+    		ok = ok ? swapAlias(getCollectionName(locationUpdateSolr), locationHttpAliasName) : ok;
+    		
             if (!ok) {
+            	//Rollbacking the failed swap
+            	if (getCollectionName(loUpdateSolr).equals(this.learningopportunityCoreName)) {
+            		swapAlias(this.learningopportunityUpdateCoreName, loHttpAliasName);
+            		swapAlias(this.providerUpdateCoreName, lopHttpAliasName);
+            		swapAlias(this.locationUpdateCoreName, locationHttpAliasName);
+            	} else {
+            		swapAlias(this.learningopportunityCoreName, loHttpAliasName);
+            		swapAlias(this.providerCoreName, lopHttpAliasName);
+            		swapAlias(this.locationCoreName, locationHttpAliasName);
+            	}
+            	
                 throw new RuntimeException("Alias swap failed");
             }
-		
 	}
+    
+    private boolean swapAlias(String solrToSwapName, String aliasName) throws Exception {
+        URL myURL = new URL(String.format("%s%s%s%s%s", 
+        									adminHttpSolrServer.getBaseURL(), 
+        									SolrConstants.ALIAS_ACTION,
+        									aliasName, 
+        									SolrConstants.COLLECTIONS, 
+        									solrToSwapName));
+        
+        HttpURLConnection myURLConnection = (HttpURLConnection)(myURL.openConnection());
+        myURLConnection.setRequestMethod(SolrConstants.GET);
+        myURLConnection.connect();
+        return myURLConnection.getResponseCode() < 400;
+        
+    }
 
 	private String getCollectionName (HttpSolrServer solrServer) {
     	return solrServer.getBaseURL().substring(solrServer.getBaseURL().lastIndexOf('/') + 1);
