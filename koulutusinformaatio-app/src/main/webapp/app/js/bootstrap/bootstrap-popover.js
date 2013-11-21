@@ -389,6 +389,9 @@ angular.module( 'ui.bootstrap.popover', [ 'ui.bootstrap.tooltip' ] )
           var contentEl = angular.element( iElement[0].querySelector( '.popover-content' ) );
           contentEl.children().remove();
           contentEl.append( $compile( response.data )( scope.compileScope() ) );
+          iElement.find('.btn-close').click(function() {
+            iElement.prev().click();
+          });
         });
       }
     }
@@ -436,6 +439,7 @@ angular.module("template/popover/popover-template.html", []).run(["$templateCach
     "  <div class=\"arrow\"></div>\n" +
     "\n" +
     "  <div class=\"popover-inner\">\n" +
+    "      <span class=\"popover-close\" data-ng-click=\"close()\">&nbsp;</span>" +
     "      <h2 class=\"popover-title\" data-ng-bind=\"title\" ng-show=\"title\"></h2>\n" +
     "      <div class=\"popover-content\"></div>\n" +
     "  </div>\n" +

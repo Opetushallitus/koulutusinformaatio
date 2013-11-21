@@ -191,7 +191,8 @@
     "district": "District",
     "municipality": "Town/Municipality",
     "valitut-alueet": "Chosen areas",
-    "ok": "Ok",
+    "ok": "OK",
+    "cancel": "Peruuta (en)",
     "koko": "Whole",
     "suomi": "Finland",
     "valitse-kaikki": "Select all"
