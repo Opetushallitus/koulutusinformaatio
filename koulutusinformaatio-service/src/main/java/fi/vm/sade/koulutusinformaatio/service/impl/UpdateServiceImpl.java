@@ -69,8 +69,11 @@ public class UpdateServiceImpl implements UpdateService {
     public synchronized void updateAllEducationData() throws Exception {
     	
     	HttpSolrServer loUpdateSolr = this.indexerService.getLoCollectionToUpdate();
+    	System.out.println("Got losolr: " + loUpdateSolr.getBaseURL());
         HttpSolrServer lopUpdateSolr = this.indexerService.getLopCollectionToUpdate(loUpdateSolr);
+        System.out.println("Got lop solr: " + loUpdateSolr.getBaseURL());
         HttpSolrServer locationUpdateSolr = this.indexerService.getLocationCollectionToUpdate(loUpdateSolr);
+        System.out.println("Got location solr: " + locationUpdateSolr.getBaseURL());
         
         try {
             LOG.info("Starting full education data update");

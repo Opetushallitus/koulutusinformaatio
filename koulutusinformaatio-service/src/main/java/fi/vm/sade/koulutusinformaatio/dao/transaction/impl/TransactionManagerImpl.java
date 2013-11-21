@@ -182,10 +182,9 @@ public class TransactionManagerImpl implements TransactionManager {
                 lopUpdateSolr.deleteByQuery("*:*");
                 lopUpdateSolr.commit();
                 lopUpdateSolr.optimize();
-                
-                locationUpdateHttpSolrServer.deleteByQuery("*:*");
-                locationUpdateHttpSolrServer.commit();
-                locationUpdateHttpSolrServer.optimize();
+                locationUpdateSolr.deleteByQuery("*:*");
+                locationUpdateSolr.commit();
+                locationUpdateSolr.optimize();
                 
             } catch (Exception e) {
                 e.printStackTrace();

@@ -18,12 +18,14 @@ package fi.vm.sade.koulutusinformaatio.converter;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KIConversionException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioMetaDataRDTO;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
+
 import org.springframework.core.convert.converter.Converter;
 
 import java.util.HashMap;
@@ -66,6 +68,9 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
     private static final String DATA_TYPE_PHONE_NUMBER = "numero";
     private static final String DATA_TYPE_EMAIL = "email";
     private static final String DATA_TYPE_WWW = "www";
+    
+    public static final String CODE_MUNICIPALITY = "kunta";
+    public static final String CODE_DISTRICT = "maakunta";
 
     KoodistoService koodistoService;
 
@@ -97,11 +102,28 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
             p.setAthleteEducation(isAthleteEducation(o.getToimipistekoodi()));
             p.setPlaceOfBusinessCode(o.getToimipistekoodi());
             p.setHomePlace(koodistoService.searchFirst(o.getKotipaikkaUri()));
+            String districtUri = getDistrictUri(o.getKotipaikkaUri());
+            System.out.println("\n\nDISTRICT URI IS: " + districtUri + "\n\n");
+            if (districtUri != null) { 
+                p.setHomeDistrict(koodistoService.searchFirst(districtUri));
+            }
+            
             p.setApplicationOffice(getApplicationOffice(o.getMetadata()));
         } catch (KoodistoException e) {
             throw new KIConversionException("Conversion failed - " + e.getMessage());
         }
         return p;
+    }
+
+    private String getDistrictUri(String kotipaikkaUri) throws KoodistoException {
+        System.out.println("Kotipaikkauri to index: " + kotipaikkaUri); 
+        if (kotipaikkaUri == null) {
+            return null;
+        }
+        List<Code> maakuntaCodes = koodistoService.searchSubCodes(kotipaikkaUri, CODE_DISTRICT);
+        
+        String maakuntaVal =  (maakuntaCodes != null &&!maakuntaCodes.isEmpty()) ? maakuntaCodes.get(0).getValue() : null;
+        return (maakuntaVal != null) ? String.format("%s_%s", CODE_DISTRICT, maakuntaVal) : null;
     }
 
     private ApplicationOffice getApplicationOffice(OrganisaatioMetaDataRDTO metadata) throws KoodistoException {
