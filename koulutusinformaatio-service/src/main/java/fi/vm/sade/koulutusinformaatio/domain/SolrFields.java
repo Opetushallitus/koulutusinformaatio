@@ -74,4 +74,11 @@ public class SolrFields {
         public static final String CODE = "code"; 
         public static final String PARENT = "parent"; //The parent area of the municipality
     }
+    
+    public static class SolrConstants {
+    	public static final String ALIAS_ACTION = "/admin/collections?action=CREATEALIAS&name=";
+    	public static final String COLLECTIONS = "&collections=";
+    	public static final String GET = "GET";
+    			
+    }
 }

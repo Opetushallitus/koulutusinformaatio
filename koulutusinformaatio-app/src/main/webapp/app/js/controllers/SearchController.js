@@ -158,18 +158,10 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     }
     
     $scope.openAreaDialog = function() {
-    	$scope.selectAreaVisible = true;
     	DistrictService.query().then(function(result) {
-    		console.log(result[0]);
     		$scope.distResult = result;
     		$scope.distResult.unshift({name: i18n.t('koko') + ' ' + i18n.t('suomi'), code: '-1'});
-    		$scope.selectAreaVisible = true;
     	});
-    	
-    }
-    
-    $scope.isAreaVisible = function() {
-    	return $scope.selectAreaVisible;
     }
     
     $scope.doMunicipalitySearch = function() {
@@ -185,7 +177,16 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     }
     
     $scope.filterBySelLocations = function() {
-    	$scope.locations = $scope.selectedMunicipalities;
+        if (!$scope.locations) {
+            $scope.locations = [];
+        }
+
+        angular.forEach($scope.selectedMunicipalities, function(location, locationkey) {
+            if (location && $scope.locations.indexOf(location) < 0) {
+                $scope.locations.push(location);
+            }
+        });
+        
     	$scope.change();
     }
     
@@ -198,7 +199,13 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     	return false;
     }
 
-    
+    $scope.toggleCollapsed = function(index) {
+        if (!$scope.collapsed) {
+            $scope.collapsed = [];
+        }
+
+        $scope.collapsed[index] = !$scope.collapsed[index];
+    }
 };
 
 /**
@@ -216,6 +223,8 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
         i18n.t('sort-criteria-alphabetical-asc'),
         i18n.t('sort-criteria-extent')
     ];
+
+    $scope.valitseAlueTitle = i18n.t('valitse-alue');
 
     $scope.changePage = function(page) {
         $scope.currentPage = page;

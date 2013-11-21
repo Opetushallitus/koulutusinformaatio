@@ -1,0 +1,44 @@
+<div id="select-location-dialog">
+    <div>
+        <div class="float-left">
+            <h4><span data-ki-i18n="district"></span></h4>
+            <select size="10" 
+            id="districtSelection" 
+            multiple 
+            ng-multiple="true" 
+            ng-model="selectedDistricts" 
+            ng-options="dist.name for dist in distResult | orderBy:'name'"
+            style="width:200px; height: 200px"
+            ng-click="doMunicipalitySearch()"></select>
+            <span style="margin: 10px">&gt;</span>
+        </div>
+
+        <div class="float-left">
+            <h4><span data-ki-i18n="municipality"></span></h4> 
+            <select size="10" 
+            id="muncipilaitySelection" 
+            multiple 
+            ng-multiple="true" 
+            ng-model="selectedMunicipalities" 
+            ng-options="mun.name for mun in muniResult | orderBy:'name'"
+            style="width:200px; height: 200px"></select>
+            <span style="margin: 10px">&gt;</span>
+        </div>
+
+        <div class="float-left">
+            <h4><span data-ki-i18n="valitut-alueet"></span></h4> 
+            <select size="10" 
+            id="muncipilaitySelection" 
+            multiple 
+            ng-multiple="true" 
+            ng-model="selectedMunicipalities" 
+            ng-options="mun.name for mun in selectedMunicipalities | orderBy:'name'"
+            style="width:200px; height: 200px"></select> 
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="margin-top-2">
+        <button class="primary float-right" ng-click="filterBySelLocations()"><span><span data-ki-i18n="ok"></span></span></button>
+    </div>
+    <div class="clear"></div>
+</div>
