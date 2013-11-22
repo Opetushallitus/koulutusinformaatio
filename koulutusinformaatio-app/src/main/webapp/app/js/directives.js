@@ -367,6 +367,8 @@ directive('kiAbsoluteLink', function() {
             scope.getLocations = function($viewValue) {
                 return SearchLocationService.query($viewValue);
             }
+
+            scope.placeholder = i18n.t('location-filter-placeholder');
         }
     };
  }]).

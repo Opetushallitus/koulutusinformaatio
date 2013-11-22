@@ -41,6 +41,7 @@
     "filter-search-university-applied": "Ammattikorkeakoulututkinto",
     "filter-search-university": "Yliopistotutkinto",
     "filter-search-location-title": "Haettavan koulutuksen sijainti",
+    "location-filter-placeholder": "Kirjoita paikkakunta",
     "filter-search-location-add": "Lisää sijainti",
     "filter-search-location-remove": "Poista",
 

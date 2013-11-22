@@ -3,12 +3,13 @@
 		type="text"
 		id="sijainti"
 		name="sijainti"
-		class="width-70"
+		class="width-100"
 		data-ng-model="location" 
 		data-typeahead="state as state.name for state in getLocations($viewValue)" 
 		data-typeahead-on-select="add()"
 		data-typeahead-min-length="1"
 		data-typeahead-wait-ms="500"
 		data-typeahead-editable="false"
-		autocomplete="off" />
+		autocomplete="off"
+		placeholder="{{placeholder}}" />
 </div>

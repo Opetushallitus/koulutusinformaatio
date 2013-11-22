@@ -40,7 +40,8 @@
     "filter-search-institute": "Examen på skolnivå, institutnivå eller yrkesinriktad högre nivå",
     "filter-search-university-applied": "Yrkeshögskolexamen",
     "filter-search-university": "Universitetsexamen",
-    "filter-search-location-title": "Placeringsort för utbildning som söks ",
+    "filter-search-location-title": "Placeringsort för utbildning som söks",
+    "location-filter-placeholder": "Kirjoita paikkakunta (sv)", 
     "filter-search-location-add": "Lägg till ort",
     "filter-search-location-remove": "Avlägsna",
 

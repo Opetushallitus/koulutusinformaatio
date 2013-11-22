@@ -3110,7 +3110,8 @@ button, .button {
     margin: 1em 0 0 0; }
 
 .collapse-content-container .facet-item {
-  padding: 0 0 0 18px; }
+  padding: 0 0 0 18px;
+  margin: 0 0 0 6px; }
 .collapse-content-container .selected {
   background: transparent url("../img/facet-checked.png") scroll no-repeat 0 center;
   font-weight: bold; }
