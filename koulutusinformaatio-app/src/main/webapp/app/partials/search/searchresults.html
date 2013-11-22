@@ -2,6 +2,12 @@
 <section class="content-container grid16-16 margin-bottom-2">
 
     <div data-ki-breadcrumb="breadcrumb-search-results" id="breadcrumb"></div>
+    <div class="grid16-16 align-center margin-bottom-2">
+        <h1 class="margin-bottom-0 margin-top-0">
+            <span data-ki-i18n="search-result-title"></span> &rdquo;{{queryString}}&rdquo; ({{loResult.totalCount}} <span data-ki-i18n="search-result-count-unit"></span>)
+        </h1>
+        <span data-ki-i18n="search-result-title-description"></span>
+    </div>
     <div id="facetSelections" class="grid16-16" data-ng-show="areThereSelections()" data-ng-controller="SearchFilterCtrl">
     	<ul>
     		<li><span data-ki-i18n="valitut-rajaukset"></span>:</li>
@@ -19,13 +25,9 @@
     		</li>
     	</ul>
     </div>
-    <div class="grid16-16">
-        <h1 class="inline-block"><span data-ki-i18n="search-result-title"></span> "{{queryString}}"</h1>
-        <h2 class="inline-block margin-left-2">({{loResult.totalCount}} <span data-ki-i18n="search-result-count-unit"></span>)</h2>
-    </div>
     <div class="grid16-5" data-ng-controller="SearchFilterCtrl" data-ng-show="loResult.totalCount > 0">
         <div class="filter">
-            <h2 class="margin-top-0"><span data-ki-i18n="selaile-koulutuksia"></span></h2>
+            <h2 class="margin-top-0 align-center"><span data-ki-i18n="selaile-koulutuksia"></span></h2>
             <div>
                 <ul class="nobullet collapse-content-container">
                     <li data-ng-show="loResult.ongoingFacet">
@@ -134,25 +136,6 @@
     	</div>
     </div>
     <div class="grid16-11">
-        <div class="sort-area">
-            <div class="sort-item">
-                <label for="itemsPerPage" data-ki-i18n="sort-criteria-sort-label"></label>
-                <select 
-                    data-ng-model="sortCriteria"
-                    data-ng-options="key as value for (key, value) in sortCriterias"
-                    data-ng-change="updateSortCriteria()">
-                </select>
-            </div>
-            <div class="sort-item">
-                <label for="itemsPerPage" data-ki-i18n="sort-criteria-items-per-page-label"></label>
-                <select 
-                    data-ng-model="itemsPerPage"
-                    data-ng-options="value for value in pageSizes"
-                    data-ng-change="updateItemsPerPage()">
-                </select>
-            </div>
-            <div class="clear"></div>
-        </div>
         <div data-ng-switch="loResult.totalCount">
             <div data-ng-switch-when="0">
                 <div class="notification info">
@@ -161,28 +144,49 @@
                 </div>
             </div>
             <div data-ng-switch-default>
+                <div class="sort-area">
+                    <!--
+                    <div class="sort-item">
+                        <label for="itemsPerPage" data-ki-i18n="sort-criteria-sort-label"></label>
+                        <select 
+                            data-ng-model="sortCriteria"
+                            data-ng-options="key as value for (key, value) in sortCriterias"
+                            data-ng-change="updateSortCriteria()">
+                        </select>
+                    </div>
+                    -->
+                    <div class="sort-item">
+                        <label for="itemsPerPage" data-ki-i18n="sort-criteria-items-per-page-label"></label>
+                        <select 
+                            data-ng-model="itemsPerPage"
+                            data-ng-options="value for value in pageSizes"
+                            data-ng-change="updateItemsPerPage()">
+                        </select>
+                    </div>
+                    <div class="clear"></div>
+                </div>
                 <ul id="search-results">
                     <li data-ng-repeat="lo in loResult.results" data-search-result>
                     </li>
                 </ul>
                 <div data-ng-show="showPagination">
-                <div data-pagination
-                    data-on-select-page="changePage(page)" 
-                    data-num-pages="maxPages"
-                    data-total-items="totalItems"
-                    data-items-per-page="itemsPerPage"
-                    data-rotate="false"
-                    data-max-size="5"
-                    data-page="currentPage" 
-                    data-first-text="<<"
-                    data-next-text=">"
-                    data-previous-text="<"
-                    data-last-text=">>">
+                    <div data-pagination
+                        data-on-select-page="changePage(page)" 
+                        data-num-pages="maxPages"
+                        data-total-items="totalItems"
+                        data-items-per-page="itemsPerPage"
+                        data-rotate="false"
+                        data-max-size="5"
+                        data-page="currentPage" 
+                        data-first-text="<<"
+                        data-next-text=">"
+                        data-previous-text="<"
+                        data-last-text=">>">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    
 </div>
 
 

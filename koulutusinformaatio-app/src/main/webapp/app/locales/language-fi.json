@@ -14,6 +14,7 @@
     "secondary-school-based": "Lukiopohjainen koulutus",
 
     "search-result-title": "Tulokset haulle",
+    "search-result-title-description": "Tarkenna hakua rajaamalla hakutuloksia selailutyökalusta vasemmalta",
     "search-result-count-unit": "kpl",
     "search-field-placeholder": "Hae koulutusta tästä",
     "no-search-results": "Ei hakutuloksia",
