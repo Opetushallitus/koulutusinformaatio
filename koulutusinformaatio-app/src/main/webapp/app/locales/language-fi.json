@@ -52,6 +52,10 @@
     "sort-criteria-extent": "Koulutuksen laajuus",
     "sort-criteria-items-per-page-label": "Näytä",
     "sort-criteria-sort-label": "Lajittele",
+    "sort-results-label": "Tulokset",
+
+    "pagination-next": "Seuraava",
+    "pagination-previous": "Edellinen",
 
     "description-language-selection": "Kuvaus saatavilla myös",
 
@@ -193,7 +197,7 @@
     "district": "Maakunta",
     "municipality": "Kaupunki/kunta",
     "valitut-alueet": "Valitut alueet",
-    "ok": "OK",
+    "ok": "Hyväksy",
     "cancel": "Peruuta",
     "koko": "Koko",
     "suomi": "Suomi",

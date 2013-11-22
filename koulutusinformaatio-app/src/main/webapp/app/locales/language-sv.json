@@ -52,6 +52,10 @@
     "sort-criteria-extent": "Koulutuksen laajuus (sv)",
     "sort-criteria-items-per-page-label": "Näytä (sv)",
     "sort-criteria-sort-label": "Lajittele (sv)",
+    "sort-results-label": "Tulokset (sv)",
+
+    "pagination-next": "Seuraava (sv)",
+    "pagination-previous": "Edellinen (sv)",
 
     "description-language-selection": "Beskrivning också på",
 
@@ -193,7 +197,7 @@
      "district": "Maakunta (sv)",
      "municipality": "Kaupunki/kunta (sv)",
      "valitut-alueet": "Valitut alueet (sv)",
-     "ok": "OK",
+     "ok": "Hyväksy (sv)",
      "cancel": "Peruuta (sv)",
      "koko": "Hela",
      "suomi": "Finland",

@@ -52,6 +52,10 @@
     "sort-criteria-extent": "Koulutuksen laajuus (en)",
     "sort-criteria-items-per-page-label": "Näytä (en)",
     "sort-criteria-sort-label": "Lajittele (en)",
+    "sort-results-label": "Tulokset (en)",
+
+    "pagination-next": "Seuraava (en)",
+    "pagination-previous": "Edellinen (en)",
 
     "description-language-selection": "Kuvaus saatavilla myös (en):",
 
@@ -193,7 +197,7 @@
     "district": "District",
     "municipality": "Town/Municipality",
     "valitut-alueet": "Chosen areas",
-    "ok": "OK",
+    "ok": "Hyväksy (en)",
     "cancel": "Peruuta (en)",
     "koko": "Whole",
     "suomi": "Finland",

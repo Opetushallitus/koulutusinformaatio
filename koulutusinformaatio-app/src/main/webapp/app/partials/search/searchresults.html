@@ -2,7 +2,7 @@
 <section class="content-container grid16-16 margin-bottom-2">
 
     <div data-ki-breadcrumb="breadcrumb-search-results" id="breadcrumb"></div>
-    <div class="grid16-16 align-center margin-bottom-2">
+    <div class="grid16-16 align-center margin-bottom-4">
         <h1 class="margin-bottom-0 margin-top-0">
             <span data-ki-i18n="search-result-title"></span> &rdquo;{{queryString}}&rdquo; ({{loResult.totalCount}} <span data-ki-i18n="search-result-count-unit"></span>)
         </h1>
@@ -10,17 +10,17 @@
     </div>
     <div id="facetSelections" class="grid16-16" data-ng-show="areThereSelections()" data-ng-controller="SearchFilterCtrl">
     	<ul>
-    		<li><span data-ki-i18n="valitut-rajaukset"></span>:</li>
-    		<li data-ng-show="ongoing">
-    			<span data-ki-i18n="haun-tila"></span>:  <span data-ki-i18n="filter-search-as-ongoing"></span> <a href ng-click="removeOngoing()">x</a>
+    		<li class="bold"><span data-ki-i18n="valitut-rajaukset"></span>:</li>
+    		<li data-ng-show="ongoing" class="facet-selection">
+    			<span data-ki-i18n="haun-tila"></span>: <span data-ki-i18n="filter-search-as-ongoing"></span> <a href ng-click="removeOngoing()">x</a>
     		</li>
-    		<li data-ng-show="upcoming">
-    			<span data-ki-i18n="haun-tila"></span>:  <span data-ki-i18n="filter-search-as-upcoming"></span> <a href ng-click="removeUpcoming()">x</a>
+            <li data-ng-show="upcoming" class="facet-selection">
+    			<span data-ki-i18n="haun-tila"></span>: <span data-ki-i18n="filter-search-as-upcoming"></span> <a href ng-click="removeUpcoming()">x</a>
     		</li>
-    		<li data-ng-repeat="fs in facetSelections">
+            <li data-ng-repeat="fs in facetSelections" class="facet-selection">
     			<span data-ki-i18n="{{fs.facetField}}"></span>: <span data-ki-i18n="{{fs.valueName}}"></span> <a href ng-click="removeSelection(fs)">x</a>
-    		</li>
-    		<li data-ng-repeat="loc in locations">
+            </li>
+            <li data-ng-repeat="loc in locations" class="facet-selection">
     			<span data-ki-i18n="location-rajaus"></span>: {{loc.name}} <a href ng-click="removeLocation(loc)">x</a>
     		</li>
     	</ul>
@@ -144,7 +144,11 @@
                 </div>
             </div>
             <div data-ng-switch-default>
-                <div class="sort-area">
+                <div class="sort-area" data-ng-controller="SortCtrl">
+                    <div class="sort-item left">
+                        <label data-ki-i18n="sort-results-label" data-show-colon="true"></label>
+                        <span>{{pageMin}} - {{pageMax}} / {{totalItems}}</span>
+                    </div>
                     <!--
                     <div class="sort-item">
                         <label for="itemsPerPage" data-ki-i18n="sort-criteria-sort-label"></label>
@@ -156,7 +160,7 @@
                     </div>
                     -->
                     <div class="sort-item">
-                        <label for="itemsPerPage" data-ki-i18n="sort-criteria-items-per-page-label"></label>
+                        <label for="itemsPerPage" data-ki-i18n="sort-criteria-items-per-page-label" data-show-colon="true"></label>
                         <select 
                             data-ng-model="itemsPerPage"
                             data-ng-options="value for value in pageSizes"
@@ -165,24 +169,35 @@
                     </div>
                     <div class="clear"></div>
                 </div>
-                <ul id="search-results">
-                    <li data-ng-repeat="lo in loResult.results" data-search-result>
-                    </li>
-                </ul>
+
                 <div data-ng-show="showPagination">
-                    <div data-pagination
+                    <div data-pager
                         data-on-select-page="changePage(page)" 
                         data-num-pages="maxPages"
                         data-total-items="totalItems"
                         data-items-per-page="itemsPerPage"
                         data-rotate="false"
-                        data-max-size="5"
                         data-page="currentPage" 
-                        data-first-text="<<"
-                        data-next-text=">"
-                        data-previous-text="<"
-                        data-last-text=">>">
+                        data-next-text="{{paginationNext}}"
+                        data-previous-text="{{paginationPrevious}}">
                     </div>
+                </div>
+                <ul id="search-results">
+                    <li data-ng-repeat="lo in loResult.results" data-search-result>
+                    </li>
+                </ul>
+                <div data-ng-show="showPagination">
+                    <div data-pager
+                        data-on-select-page="changePage(page)" 
+                        data-num-pages="maxPages"
+                        data-total-items="totalItems"
+                        data-items-per-page="itemsPerPage"
+                        data-rotate="false"
+                        data-page="currentPage" 
+                        data-next-text="{{paginationNext}}"
+                        data-previous-text="{{paginationPrevious}}">
+                    </div>
+                    <span class="pager-results">{{pageMin}} - {{pageMax}} / {{totalItems}}</span>
                 </div>
             </div>
         </div>

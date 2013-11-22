@@ -246,6 +246,9 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
         i18n.t('sort-criteria-extent')
     ];
 
+    $scope.paginationNext = i18n.t('pagination-next');
+    $scope.paginationPrevious = i18n.t('pagination-previous');
+
     $scope.valitseAlueTitle = i18n.t('valitse-alue');
 
     $scope.changePage = function(page) {
@@ -316,6 +319,10 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
                 $scope.totalItems = result.totalCount;
     			$scope.maxPages = Math.ceil(result.totalCount / $scope.itemsPerPage);
     			$scope.showPagination = $scope.maxPages > 1;
+                $scope.pageMin = ($scope.currentPage - 1) * $scope.itemsPerPage + 1;
+                $scope.pageMax = $scope.currentPage * $scope.itemsPerPage < $scope.totalItems
+                    ? $scope.currentPage * $scope.itemsPerPage
+                    : $scope.totalItems;
     			$scope.populateFacetSelections();
     		});
 
@@ -404,7 +411,9 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     	}
     	return 'FI';
     }
+};
 
+function SortCtrl($scope, $location, FilterService) {
     $scope.updateItemsPerPage = function() {
         FilterService.setItemsPerPage($scope.itemsPerPage);
         $location.search(FilterService.get());
