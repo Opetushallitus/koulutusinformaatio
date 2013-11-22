@@ -20,6 +20,7 @@ import com.google.common.collect.Lists;
 
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.domain.SolrFields.SolrConstants;
 
 import org.apache.solr.common.SolrInputDocument;
 import org.springframework.core.convert.converter.Converter;
@@ -66,6 +67,7 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
         
         //For faceting
         doc.addField(LearningOpportunity.TEACHING_LANGUAGE, loi.getTeachingLanguages().get(0).getValue());
+        doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_LUKIO);
 
         doc.setField(LearningOpportunity.NAME, resolveTranslationInTeachingLangUseFallback(
                 loi.getTeachingLanguages(), los.getName().getTranslationsShortName()));

@@ -116,6 +116,7 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         for (ChildLOS childLOS : parent.getChildren()) {
             for (ChildLOI childLOI : childLOS.getLois()) {
                 prerequisites.add(childLOI.getPrerequisite().getValue());
+                
             }
         }
         doc.setField(LearningOpportunity.PREREQUISITES, prerequisites);
@@ -218,6 +219,11 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         for (ChildLOS childLOS : parent.getChildren()) {
             for (ChildLOI childLOI : childLOS.getLois()) {
                 doc.addField(LearningOpportunity.TEACHING_LANGUAGE, childLOI.getTeachingLanguages().get(0).getValue());
+                if (childLOI.getPrerequisite().equals(SolrConstants.SPECIAL_EDUCATION)) {
+                    doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMM_ER);
+                } else {
+                    doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMMATILLINEN);
+                }
             }
         }
         
@@ -228,6 +234,11 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
      */
     private void indexFacetFields(ChildLOS childLOS, ChildLOI childLOI, ParentLOS parent, SolrInputDocument doc) {
         doc.addField(LearningOpportunity.TEACHING_LANGUAGE, childLOI.getTeachingLanguages().get(0).getValue());
+        if (childLOI.getPrerequisite().getValue().equals(SolrConstants.SPECIAL_EDUCATION)) {
+            doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMM_ER);
+        } else {
+            doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMMATILLINEN);
+        }
     }
     
     

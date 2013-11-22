@@ -3,6 +3,9 @@ package fi.vm.sade.koulutusinformaatio.service.impl.query;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 
+import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.domain.SolrFields.SolrConstants;
+
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.common.params.DisMaxParams;
 
@@ -31,69 +34,65 @@ public class LearningOpportunityQuery extends SolrQuery {
     );
 
     private final static Integer AS_COUNT = 10;
-
-    private final static String LOP_HOMEPLACE = "lopHomeplace";
-    private final static String PREREQUISITES = "prerequisites";
-    private final static String ID = "id";
-    private final static String TIMESTAMP_DOC = "loUpdateTimestampDocument";
-    private final static String TYPE = "type";
-    private final static String TYPE_FACET = "FASETTI";
-    public final static String TEACHING_LANG = "teachingLangCode_ffm";
     public final static String APP_STATUS = "appStatus";
     public final static String APP_STATUS_ONGOING = "ongoing";
     public final static String APP_STATUS_UPCOMING = "upcoming";
 
     public LearningOpportunityQuery(String term, String prerequisite,
-                                    List<String> cities, List<String> facetFilters, String lang, boolean ongoing, boolean upcoming, int start, int rows) {
+            List<String> cities, List<String> facetFilters, String lang, boolean ongoing, boolean upcoming, int start, int rows) {
         super(term);
         if (prerequisite != null) {
-            this.addFilterQuery(String.format("%s:%s", PREREQUISITES, prerequisite));
+            this.addFilterQuery(String.format("%s:%s", LearningOpportunity.PREREQUISITES, prerequisite));
         }
         this.setStart(start);
         this.setRows(rows);
         if (cities != null && !cities.isEmpty()) {
             this.addFilterQuery(
-                    String.format("%s:(%s)", LOP_HOMEPLACE, Joiner.on(" OR ").join(cities))
-            );
+                    String.format("%s:(%s)", LearningOpportunity.LOP_HOMEPLACE, Joiner.on(" OR ").join(cities))
+                    );
+        }
+        
+        StringBuilder ongoingFQ = new StringBuilder();
+        for (int i = 0; i < AS_COUNT; i++) {
+            ongoingFQ.append(String.format("(asStart_%d:[* TO NOW] AND asEnd_%d:[NOW TO *])", i, i));
+            if (i != AS_COUNT-1) {
+                ongoingFQ.append(" OR ");
+            }
         }
         if (ongoing) {
-            StringBuilder ongoingFQ = new StringBuilder();
-            for (int i = 0; i < AS_COUNT; i++) {
-                ongoingFQ.append(String.format("(asStart_%d:[* TO NOW] AND asEnd_%d:[NOW TO *])", i, i));
-                if (i != AS_COUNT-1) {
-                    ongoingFQ.append(" OR ");
-                }
-            }
             this.addFilterQuery(ongoingFQ.toString());
         }
         
-        if (upcoming) {
-            StringBuilder upcomingFQ = new StringBuilder();
-            for (int i = 0; i < AS_COUNT; i++) {
-                upcomingFQ.append(String.format("(asStart_%d:[NOW TO *])", i, i));
-                if (i != AS_COUNT-1) {
-                    upcomingFQ.append(" OR ");
-                }
+        
+        StringBuilder upcomingFQ = new StringBuilder();
+        for (int i = 0; i < AS_COUNT; i++) {
+            upcomingFQ.append(String.format("(asStart_%d:[NOW TO *])", i, i));
+            if (i != AS_COUNT-1) {
+                upcomingFQ.append(" OR ");
             }
+        }
+        if (upcoming) {
             this.addFilterQuery(upcomingFQ.toString());
         }
         
         //leaving the facet and timestamp docs out
-        this.addFilterQuery(String.format("-%s:%s", ID, TIMESTAMP_DOC));
-        this.addFilterQuery(String.format("-%s:%s", TYPE, TYPE_FACET));
+        this.addFilterQuery(String.format("-%s:%s", LearningOpportunity.ID, SolrConstants.TIMESTAMP_DOC));
+        this.addFilterQuery(String.format("-%s:%s", LearningOpportunity.TYPE, SolrConstants.TYPE_FACET));
         
-        addFacetsToQuery(lang, facetFilters);
-      
+        addFacetsToQuery(lang, facetFilters, ongoingFQ.toString(), upcomingFQ.toString());
+        
         this.setParam("defType", "edismax");
         this.setParam(DisMaxParams.QF, Joiner.on(" ").join(FIELDS));
         this.setParam("q.op", "AND");
     }
 
-    private void addFacetsToQuery(String lang, List<String> facetFilters) {
+    private void addFacetsToQuery(String lang, List<String> facetFilters, String ongoingFQ, String upcomingFQ) {
         this.setFacet(true);
-        this.addFacetField(TEACHING_LANG);
-        this.addFacetQuery("(asStart_0:[* TO NOW] AND asEnd_0:[NOW TO *])");
-        this.addFacetQuery("(asStart_0:[NOW TO *])");
+        this.addFacetField(LearningOpportunity.TEACHING_LANGUAGE);
+        this.addFacetField(LearningOpportunity.EDUCATION_TYPE);
+        
+        this.addFacetQuery(ongoingFQ);
+        this.addFacetQuery(upcomingFQ);
         for (String curFilter : facetFilters) {
             this.addFilterQuery(curFilter);
         }

@@ -195,5 +195,12 @@
      "cancel": "Peruuta (sv)",
      "koko": "Hela",
      "suomi": "Finland",
-     "valitse-kaikki": "Välja alla"
+     "valitse-kaikki": "Välja alla",
+     "haettava-koulutus": "Haettava koulutus (sv)",
+     "educationType_ffm": "Haettava koulutus (sv)",
+   	 "et1": "Lukio (sv)",
+     "et2": "Kaksoistutkinto (sv)",
+     "et3": "Ammatillinen perustutkinto (sv)",
+     "et4": "Ammatillinen perustutkinto erityisopetuksena (sv)",
+     "et5": "Valmentava ja kuntouttava opetus ja ohjaus (sv)"
 }

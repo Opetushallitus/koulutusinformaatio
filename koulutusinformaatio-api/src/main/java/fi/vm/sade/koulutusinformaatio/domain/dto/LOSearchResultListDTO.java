@@ -32,6 +32,8 @@ public class LOSearchResultListDTO {
     private FacetDTO teachingLangFacet;
     private FacetDTO filterFacet;
     private FacetDTO appStatusFacet; 
+    private FacetDTO edTypeFacet;
+
 
     public List<LearningOpportunitySearchResultDTO> getResults() {
         return results;
@@ -71,5 +73,14 @@ public class LOSearchResultListDTO {
 
     public void setAppStatusFacet(FacetDTO appStatusFacet) {
         this.appStatusFacet = appStatusFacet;
+    }
+    
+
+    public FacetDTO getEdTypeFacet() {
+        return edTypeFacet;
+    }
+
+    public void setEdTypeFacet(FacetDTO edTypeFacet) {
+        this.edTypeFacet = edTypeFacet;
     }
 }

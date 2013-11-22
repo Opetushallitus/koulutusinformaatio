@@ -195,7 +195,14 @@
     "cancel": "Peruuta (en)",
     "koko": "Whole",
     "suomi": "Finland",
-    "valitse-kaikki": "Select all"
+    "valitse-kaikki": "Select all",
+    "haettava-koulutus": "Haettava koulutus (en)",
+    "educationType_ffm": "Haettava koulutus (en)",
+   	"et1": "Lukio (en)",
+    "et2": "Kaksoistutkinto (en)",
+    "et3": "Ammatillinen perustutkinto (en)",
+    "et4": "Ammatillinen perustutkinto erityisopetuksena (en)",
+    "et5": "Valmentava ja kuntouttava opetus ja ohjaus (en)"
     
     
     

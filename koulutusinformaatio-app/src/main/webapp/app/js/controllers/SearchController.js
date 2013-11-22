@@ -213,6 +213,21 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
 
         $scope.collapsed[index] = !$scope.collapsed[index];
     }
+    
+    $scope.isEdTypeSelected = function(facetValue) {
+    	if ($scope.facetSelections == undefined || facetValue == undefined) {
+    		return false;
+    	}
+    	var isSelected = false;
+    	for (var i = 0; i < $scope.facetSelections.length; i++) {
+    		if (($scope.facetSelections[i].facetField == facetValue.facetField)
+    				&& ($scope.facetSelections[i].valueId == facetValue.valueId)) {
+    			isSelected = true;
+    		}
+    	}
+    	return isSelected;
+    }
+    
 };
 
 /**
@@ -374,6 +389,10 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     		} else if (fVal.valueId == 'upcoming') {
     			$scope.loResult.upcomingFacet = fVal;
     		}
+    	});
+    	
+    	angular.forEach($scope.loResult.edTypeFacet.facetValues, function(fVal, key) {
+    		$scope.loResult.edTypeFacet[fVal.valueId] = fVal;
     	});
     	
     }

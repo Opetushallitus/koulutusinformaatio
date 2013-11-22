@@ -20,6 +20,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Lists;
 
 import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LocationFields;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
@@ -153,19 +154,53 @@ public class SearchServiceSolrImpl implements SearchService {
         return searchResultList;
     }
 
+    /*
+     * Adding facets to result
+     */
     private void addFacetsToResult(LOSearchResultList searchResultList,
             QueryResponse response, String lang, List<String> facetFilters) {
         
-        /*
-         * Teaching language facet
-         */
-        FacetField teachingLangF = response.getFacetField(LearningOpportunityQuery.TEACHING_LANG);
+        searchResultList.setTeachingLangFacet(getTeachingLangFacet(response, lang));
+        searchResultList.setAppStatusFacet(getHaunTila(response));
+        searchResultList.setEdTypeFacet(getEdTypeFacet(response));
+        searchResultList.setFilterFacet(getFilterFacet(facetFilters, lang));
+        
+    }
+    
+    /*
+     * Education type facet
+     */
+    private Facet getEdTypeFacet(QueryResponse response) {
+        Facet edTypeFacet = new Facet();
+        FacetField edTypeField = response.getFacetField(LearningOpportunity.EDUCATION_TYPE);
+        List<FacetValue> values = new ArrayList<FacetValue>();
+        if (edTypeField != null) {
+            for (Count curC : edTypeField.getValues()) {
+                if (curC.getCount() > 0) {
+                    FacetValue newVal = new FacetValue(LearningOpportunity.EDUCATION_TYPE,  
+                                                        curC.getName(), 
+                                                        curC.getCount(), 
+                                                        curC.getName());
+                    values.add(newVal);
+                }
+            }
+        }
+        edTypeFacet.setFacetValues(values);
+        return edTypeFacet;
+    }
+    
+    /*
+     * Teaching language facet
+     */
+    private Facet getTeachingLangFacet(QueryResponse response, String lang) {
+
+        FacetField teachingLangF = response.getFacetField(LearningOpportunity.TEACHING_LANGUAGE);
         Facet teachingLangFacet = new Facet();
         List<FacetValue> values = new ArrayList<FacetValue>();
         if (teachingLangF != null) {
             for (Count curC : teachingLangF.getValues()) {
                 if (curC.getCount() > 0) {
-                    FacetValue newVal = new FacetValue(LearningOpportunityQuery.TEACHING_LANG,  
+                    FacetValue newVal = new FacetValue(LearningOpportunity.TEACHING_LANGUAGE,  
                                                         getLocalizedFacetName(curC.getName(), lang), 
                                                         curC.getCount(), 
                                                         curC.getName());
@@ -174,18 +209,23 @@ public class SearchServiceSolrImpl implements SearchService {
             }
         }
         teachingLangFacet.setFacetValues(values);
-        searchResultList.setTeachingLangFacet(teachingLangFacet);
-        
+        return teachingLangFacet;
+    }
+    
+    /*
+     * Getting haun tila
+     */
+    private Facet getHaunTila(QueryResponse response) {
         Facet haunTila = new Facet();
         List<FacetValue> haunTilaVals = new ArrayList<FacetValue>();
         for (String curKey : response.getFacetQuery().keySet()) {
-            if (curKey.equals("(asStart_0:[* TO NOW] AND asEnd_0:[NOW TO *])")) {
+            if (curKey.contains("(asStart_0:[* TO NOW] AND asEnd_0:[NOW TO *])")) {
                 FacetValue facVal = new FacetValue(LearningOpportunityQuery.APP_STATUS, 
                                                     LearningOpportunityQuery.APP_STATUS_ONGOING, 
                                                     response.getFacetQuery().get(curKey).longValue(),  
                                                     LearningOpportunityQuery.APP_STATUS_ONGOING);
                 haunTilaVals.add(facVal);
-            } else if (curKey.equals("(asStart_0:[NOW TO *])")) {
+            } else if (curKey.contains("(asStart_0:[NOW TO *])")) {
                 FacetValue facVal = new FacetValue(LearningOpportunityQuery.APP_STATUS, 
                         LearningOpportunityQuery.APP_STATUS_UPCOMING, 
                         response.getFacetQuery().get(curKey).longValue(), 
@@ -194,12 +234,15 @@ public class SearchServiceSolrImpl implements SearchService {
             }
         }
         haunTila.setFacetValues(haunTilaVals);
-        searchResultList.setAppStatusFacet(haunTila);
-        
-        /*
-         * Facet composed of user's selections.
-         * Used in search ui to display 0-selections.
-         */
+        return haunTila;
+    }
+    
+    /*
+     * Facet composed of user's selections.
+     * Used in search ui to display 0-selections.
+     */
+    private Facet getFilterFacet(List<String> facetFilters, String lang) {
+
         Facet fFilFacet = new Facet();
         List<FacetValue> qVals = new ArrayList<FacetValue>();
         for (String curFacFilter: facetFilters) {
@@ -207,14 +250,13 @@ public class SearchServiceSolrImpl implements SearchService {
             String facId = curFacFilter.substring(index + 1);
             String facField = curFacFilter.substring(0, index);
             SolrDocument facDoc = this.getFacetDoc(facId, lang);
-            String facName = String.format("%s", facDoc.getFieldValue(String.format("%s_fname", lang)));
+            String facName = facDoc != null ? String.format("%s", facDoc.getFieldValue(String.format("%s_fname", lang))) : facId;
             FacetValue newVal = new FacetValue(facField, facName, 0, facId);
             qVals.add(newVal);
             
         }
         fFilFacet.setFacetValues(qVals);
-        searchResultList.setFilterFacet(fFilFacet);
-        
+        return fFilFacet;
     }
     
     /*
