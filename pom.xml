@@ -5,7 +5,7 @@
 
     <groupId>fi.vm.sade.koulutusinformaatio</groupId>
     <artifactId>koulutusinformaatio</artifactId>
-    <version>7.0-SNAPSHOT</version>
+    <version>7.0</version>
     <packaging>pom</packaging>
     <name>Koulutusinformaatio :: Parent</name>
 
@@ -38,10 +38,10 @@
         <flapdoodle.version>1.36</flapdoodle.version>
         <jackson.version>1.9.12</jackson.version>
 
-        <oph.organisaatio.version>7.0-SNAPSHOT</oph.organisaatio.version>
-        <oph.koodisto.version>7.0-SNAPSHOT</oph.koodisto.version>
-        <oph.tarjonta.version>7.0-SNAPSHOT</oph.tarjonta.version>
-        <oph.generic.version>7.0-SNAPSHOT</oph.generic.version>
+        <oph.organisaatio.version>7.0</oph.organisaatio.version>
+        <oph.koodisto.version>7.0</oph.koodisto.version>
+        <oph.tarjonta.version>7.0</oph.tarjonta.version>
+        <oph.generic.version>7.0</oph.generic.version>
     </properties>
 
     <repositories>
