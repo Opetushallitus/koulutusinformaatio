@@ -29,6 +29,8 @@ import fi.vm.sade.koulutusinformaatio.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.List;
 
 /**
@@ -56,12 +58,18 @@ public class LocationResourceImpl implements LocationResource {
 
     @Override
     public List<LocationDTO> searchLocations(String term, String lang) {
+        String key = null;
         try {
-            List<Location> locations = searchService.searchLocations(term, lang);
+            key = URLDecoder.decode(term, "UTF-8");
+        } catch (UnsupportedEncodingException e1) {
+            key = term;
+        }
+        try { 
+            List<Location> locations = searchService.searchLocations(key, lang);
             return Lists.transform(locations, getTransformFunction());
         } catch (SearchException e) {
             throw KIExceptionHandler.resolveException(e);
-        }
+        } 
     }
 
     private Function<Location, LocationDTO> getTransformFunction() {
