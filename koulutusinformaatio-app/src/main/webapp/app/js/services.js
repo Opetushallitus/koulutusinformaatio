@@ -24,7 +24,15 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
             qParams += (params.rows != undefined) ? ('&rows=' + params.rows) : '';
             qParams += (params.prerequisite != undefined) ? ('&prerequisite=' + params.prerequisite) : '';
             qParams += (params.locations != undefined && params.locations.length > 0) ? ('&' + cities) : '';
-            qParams += (params.ongoing) != undefined ? ('&ongoing=' + params.ongoing) : '';
+            qParams += (params.ongoing != undefined) ? ('&ongoing=' + params.ongoing) : '';
+            qParams += (params.upcoming != undefined) ? ('&upcoming=' + params.upcoming) : '';
+            qParams += (params.lang != undefined) ? ('&lang=' + params.lang) : '';
+            if (params.facetFilters != undefined) {
+            	 angular.forEach(params.facetFilters, function(facetFilter, key) {
+            		 qParams += '&facetFilters=' + facetFilter;
+                 });
+            }
+            qParams += (params.sortCriteria != undefined) ? ('&sort=' + params.sortCriteria) : '';
 
             $http.get('../lo/search/' + encodeURI(params.queryString) + qParams, {}).
             success(function(result) {
@@ -59,6 +67,61 @@ service('SearchLocationService', ['$http', '$timeout', '$q', 'LanguageService', 
                     lang: LanguageService.getLanguage()
                 }
             }).
+            success(function(result) {
+                deferred.resolve(result);
+            }).
+            error(function(result) {
+                deferred.reject(result);
+            });
+
+            return deferred.promise;
+        }
+    }
+}]).
+
+/**
+ * Service for retrieving districts (maakunnat). Used in faceted search
+ */
+service('DistrictService', ['$http', '$timeout', '$q', 'LanguageService', function($http, $timeout, $q, LanguageService) {
+
+    return {
+        query: function() {
+            var deferred = $q.defer();
+
+         
+            
+            $http.get('../location/districts', {
+                params: {
+                    lang: LanguageService.getLanguage()
+                }
+            }).
+            success(function(result) {
+                deferred.resolve(result);
+            }).
+            error(function(result) {
+                deferred.reject(result);
+            });
+
+            return deferred.promise;
+        }
+    }
+}]).
+
+/**
+ * Service for retrieving municipalities belonging to a district. Used in faceted search
+ */
+service('ChildLocationsService', ['$http', '$timeout', '$q', 'LanguageService', function($http, $timeout, $q, LanguageService) {
+
+    return {
+        query: function(districtVal) {
+            var deferred = $q.defer();
+
+            var params = '?lang=' + LanguageService.getLanguage();
+            for (var i = 0; i < districtVal.length; i++) {
+            	params += '&districts=' + districtVal[i].code;
+            }
+            
+            $http.get('../location/child-locations' + params, {}).
             success(function(result) {
                 deferred.resolve(result);
             }).
@@ -636,7 +699,7 @@ service('ApplicationBasketService', ['$http', '$q', 'LanguageService', 'UtilityS
         for (var asIndex in result) {
             if (result.hasOwnProperty(asIndex)) {
                 var applicationDates = result[asIndex].applicationDates;
-                if (applicationDates.length > 0) {
+                if (applicationDates && applicationDates.length > 0) {
                     result[asIndex].applicationDates = applicationDates[0];
                 }
 
@@ -752,7 +815,7 @@ service('ApplicationBasketService', ['$http', '$q', 'LanguageService', 'UtilityS
                     qParams += '&aoId=' + basketItems[index];
                 }
             }
-            
+
             $http.get('../basket/items?' + qParams).
             success(function(result) {
                 result = transformData(result);
@@ -770,7 +833,7 @@ service('ApplicationBasketService', ['$http', '$q', 'LanguageService', 'UtilityS
 /**
  *  Service for maintaining search filter state
  */
-service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', function($q, $http, UtilityService, LanguageService) {
+service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'kiAppConstants', function($q, $http, UtilityService, LanguageService, kiAppConstants) {
     var filters = {};
 
     var filterIsEmpty = function(filter) {
@@ -844,7 +907,12 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', fu
                 prerequisite: filters.prerequisite,
                 locations: getLocationCodes(),
                 ongoing: filters.ongoing,
-                page: filters.page
+                upcoming: filters.upcoming,
+                page: filters.page,
+                facetFilters: filters.facetFilters,
+                langCleared: filters.langCleared,
+                itemsPerPage: filters.itemsPerPage,
+                sortCriteria: filters.sortCriteria
             };
 
             angular.forEach(result, function(value, key) {
@@ -865,6 +933,10 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', fu
 
         isOngoing: function() {
             return filters.ongoing;
+        },
+        
+        isUpcoming: function() {
+            return filters.upcoming;
         },
 
         getLocations: function() {
@@ -903,10 +975,59 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', fu
             params += filters.prerequisite ? '&prerequisite=' + filters.prerequisite : '';
             params += (filters.locations && filters.locations.length > 0) ? '&locations=' + getLocationCodes().join(',') : '';
             params += filters.ongoing ? '&ongoing' : '';
+            params += filters.upcoming ? '&upcoming' : '';
             params += filters.page ? '&page=' + filters.page : '';
-
+            params += (filters.facetFilters && filters.facetFilters.length > 0) ? '&facetFilters=' + filters.facetFilters.join(',') : '';
+            params += filters.langCleared ? '&langCleared=' + filters.langCleared : '';
+            params += filters.itemsPerPage ? '&itemsPerPage=' + filters.itemsPerPage : '';
+            params += filters.sortCriteria ? '&sortCriteria=' + filters.sortCriteria : '';
+            
             params = params.length > 0 ? params.substring(1, params.length) : '';
             return params;
+        },
+        
+        getFacetFilters: function() {
+        	if (filters.facetFilters != undefined && (typeof filters.facetFilters == 'string' || filters.facetFilters instanceof String)) {
+        		filters.facetFilters = filters.facetFilters.split(',');
+        		return filters.facetFilters;
+        	}
+        	return filters.facetFilters;
+        },
+        
+        getLangCleared: function() {
+        	return filters.langCleared;
+        },
+
+        getItemsPerPage: function() {
+            if (filters.itemsPerPage) {
+                return typeof filters.itemsPerPage === 'string' ? parseInt(filters.itemsPerPage) : filters.itemsPerPage;
+            } else {
+                return kiAppConstants.searchResultsPerPage;
+            }
+        },
+
+        setItemsPerPage: function(value) {
+            if (value && !isNaN(value)) {
+                filters.itemsPerPage = parseInt(value);
+            } else {
+                filters.itemsPerPage = kiAppConstants.searchResultsPerPage;
+            }
+        },
+
+        getSortCriteria: function() {
+            if (filters.sortCriteria) {
+                return filters.sortCriteria;
+            } else {
+                return kiAppConstants.defaultSortCriteria;
+            }
+        },
+
+        setSortCriteria: function(value) {
+            if (value) {
+                filters.sortCriteria = value;
+            } else {
+                filters.sortCriteria = kiAppConstants.defaultSortCriteria;
+            }
         }
     };
 }]).

@@ -16,9 +16,11 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
+import fi.vm.sade.koulutusinformaatio.domain.LOS;
+import fi.vm.sade.koulutusinformaatio.domain.Location;
+import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
+import fi.vm.sade.koulutusinformaatio.service.*;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,15 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
-import fi.vm.sade.koulutusinformaatio.domain.LOS;
-import fi.vm.sade.koulutusinformaatio.domain.Location;
-import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
-import fi.vm.sade.koulutusinformaatio.service.EducationDataUpdateService;
-import fi.vm.sade.koulutusinformaatio.service.IndexerService;
-import fi.vm.sade.koulutusinformaatio.service.LocationService;
-import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
-import fi.vm.sade.koulutusinformaatio.service.UpdateService;
+import java.util.List;
 
 /**
  * @author Hannu Lyytikainen
@@ -51,7 +45,7 @@ public class UpdateServiceImpl implements UpdateService {
     private static final int MAX_RESULTS = 100;
     private boolean running = false;
     private LocationService locationService;
-    
+
 
     @Autowired
     public UpdateServiceImpl(TarjontaService tarjontaService, IndexerService indexerService,
@@ -67,30 +61,29 @@ public class UpdateServiceImpl implements UpdateService {
     @Override
     @Async
     public synchronized void updateAllEducationData() throws Exception {
-    	
-    	HttpSolrServer loUpdateSolr = this.indexerService.getLoCollectionToUpdate();
+
+        HttpSolrServer loUpdateSolr = this.indexerService.getLoCollectionToUpdate();
         HttpSolrServer lopUpdateSolr = this.indexerService.getLopCollectionToUpdate(loUpdateSolr);
         HttpSolrServer locationUpdateSolr = this.indexerService.getLocationCollectionToUpdate(loUpdateSolr);
-        
+
         try {
-        	
+
             LOG.info("Starting full education data update");
             running = true;
-                 
+
             this.transactionManager.beginTransaction(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
 
-            
-            
+
             int count = MAX_RESULTS;
             int index = 0;
-            
-            while(count >= MAX_RESULTS) {
+
+            while (count >= MAX_RESULTS) {
                 LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
                 List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
                 count = loOids.size();
                 index += count;
 
-               for (String loOid : loOids) {
+                for (String loOid : loOids) {
                     List<LOS> specifications = null;
                     try {
                         specifications = tarjontaService.findParentLearningOpportunity(loOid);
@@ -102,8 +95,8 @@ public class UpdateServiceImpl implements UpdateService {
                         this.indexerService.addLearningOpportunitySpecification(spec, loUpdateSolr, lopUpdateSolr);
                         this.educationDataUpdateService.save(spec);
                     }
+                    this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
                 }
-                this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
             }
             List<Location> locations = locationService.getMunicipalities();
             indexerService.addLocations(locations, locationUpdateSolr);
@@ -111,7 +104,7 @@ public class UpdateServiceImpl implements UpdateService {
             this.transactionManager.commit(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
             LOG.info("Education data update successfully finished");
         } catch (Exception e) {
-                LOG.error("Education data update failed ", e);
+            LOG.error("Education data update failed ", e);
             this.transactionManager.rollBack(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
         } finally {
             running = false;

@@ -2,8 +2,11 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+
 import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LocationFields;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
+
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -157,10 +160,14 @@ public class IndexerServiceImpl implements IndexerService {
 
         for (Location location : locations) {
             SolrInputDocument locationDoc = new SolrInputDocument();
-            locationDoc.addField("id", location.getId());
-            locationDoc.addField("name", location.getName());
-            locationDoc.addField("code", location.getCode());
-            locationDoc.addField("lang", location.getLang());
+            locationDoc.addField(LocationFields.ID, location.getId());
+            locationDoc.addField(LocationFields.NAME, location.getName());
+            locationDoc.addField(LocationFields.CODE, location.getCode());
+            locationDoc.addField(LocationFields.LANG, location.getLang());
+            locationDoc.addField(LocationFields.TYPE, location.getType());
+            if (location.getParent() != null) {
+                locationDoc.addField(LocationFields.PARENT, location.getParent());
+            }
             locationDocs.add(locationDoc);
         }
         locationUpdateSolr.add(locationDocs);

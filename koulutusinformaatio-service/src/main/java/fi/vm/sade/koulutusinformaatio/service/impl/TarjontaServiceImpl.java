@@ -48,6 +48,7 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     private static final String VOCATIONAL_EDUCATION_TYPE = "AmmatillinenPeruskoulutus";
     private static final String UPPER_SECONDARY_EDUCATION_TYPE = "Lukiokoulutus";
+    private static final String REHABILITATING_EDUCATION_TYPE = "ValmentavaJaKuntouttavaOpetus";
 
     private ConversionService conversionService;
     private KoodistoService koodistoService;

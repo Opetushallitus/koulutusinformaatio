@@ -14,6 +14,7 @@
     "secondary-school-based": "Lukiopohjainen koulutus",
 
     "search-result-title": "Tulokset haulle",
+    "search-result-title-description": "Tarkenna hakua rajaamalla hakutuloksia selailutyökalusta vasemmalta",
     "search-result-count-unit": "kpl",
     "search-field-placeholder": "Hae koulutusta tästä",
     "no-search-results": "Ei hakutuloksia",
@@ -34,15 +35,23 @@
     "filter-search-elementary": "Perusopetus (peruskoulu)",
     "filter-search-elementary-individualized": "Yksilöllistetty oppimäärä",
     "filter-search-upper-secondary": "Lukio / Ylioppilas",
-    "filter-search-as-ongoing": "Haku meneillään juuri nyt",
+    "filter-search-as-ongoing": "Haku on käynnissä",
     "filter-search-vocational": "Ammatillinen perustutkinto (120 ov)",
     "filter-search-vocational-specialized": "Ammatti- tai erikoisammattitutkinto",
     "filter-search-institute": "Kouluasteen, opistoasteen tai ammatillisen korkea-asteen tutkinto",
     "filter-search-university-applied": "Ammattikorkeakoulututkinto",
     "filter-search-university": "Yliopistotutkinto",
     "filter-search-location-title": "Haettavan koulutuksen sijainti",
+    "location-filter-placeholder": "Kirjoita paikkakunta",
     "filter-search-location-add": "Lisää sijainti",
     "filter-search-location-remove": "Poista",
+
+    "sort-criteria-startdate": "Alkamisajankohta",
+    "sort-criteria-alphabetical-desc": "Aakkoset A-Ö",
+    "sort-criteria-alphabetical-asc": "Aakkoset Ö-A",
+    "sort-criteria-extent": "Koulutuksen laajuus",
+    "sort-criteria-items-per-page-label": "Näytä",
+    "sort-criteria-sort-label": "Lajittele",
 
     "description-language-selection": "Kuvaus saatavilla myös",
 
@@ -86,7 +95,7 @@
     "info-center": "Hakuneuvonta",
 
     "academy-description": "Oppilaitoksen esittely",
-    "accessibility-and-benefits": "Esteettömyys ja opiskelijan edut",
+    "student-benefits-anchor": "Opiskelijan edut",
     "contact-information": "Yhteystiedot",
 
     "learning-environment-info": "Tietoa oppimisympäristöstä",
@@ -170,5 +179,31 @@
     "B1KIELI" : "B1-kieli",
     "B2KIELI" : "B2-kieli",
     "B3KIELI" : "B3-kieli",
-    "MUUT_KIELET" : "Muu kieli"
+    "MUUT_KIELET" : "Muu kieli",
+    
+    "valitut-rajaukset": "Valitut rajaukset",
+    "facet-opetuskieli": "Opetuskieli",
+    "teachingLangCode_ffm": "Opetuskieli",
+    "location-rajaus": "Paikka",
+    "filter-search-as-upcoming": "Tulossa hakuun",
+    "haun-tila": "Haun tila",
+    "selaile-koulutuksia": "Selaile koulutuksia",
+    "valitse-alue": "Valitse alue, jolta haet koulutuksia",
+    "valitse-alue-link": "Valitse alue",
+    "district": "Maakunta",
+    "municipality": "Kaupunki/kunta",
+    "valitut-alueet": "Valitut alueet",
+    "ok": "OK",
+    "cancel": "Peruuta",
+    "koko": "Koko",
+    "suomi": "Suomi",
+    "valitse-kaikki": "Valitse kaikki",
+    "haettava-koulutus": "Haettava koulutus",
+    "educationType_ffm": "Haettava koulutus",
+    "et1": "Lukio",
+    "et2": "Kaksoistutkinto",
+    "et3": "Ammatillinen perustutkinto",
+    "et4": "Ammatillinen perustutkinto erityisopetuksena",
+    "et5": "Valmentava ja kuntouttava opetus ja ohjaus"
+    
 }

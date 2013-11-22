@@ -3,19 +3,13 @@
 		type="text"
 		id="sijainti"
 		name="sijainti"
-		class="width-70"
+		class="width-100"
 		data-ng-model="location" 
 		data-typeahead="state as state.name for state in getLocations($viewValue)" 
 		data-typeahead-on-select="add()"
 		data-typeahead-min-length="1"
 		data-typeahead-wait-ms="500"
 		data-typeahead-editable="false"
-		autocomplete="off" />
+		autocomplete="off"
+		placeholder="{{placeholder}}" />
 </div>
-<ul class="nobullet">
-	<li data-ng-repeat="location in locations">
-		<a class="remove" data-ng-click="remove(location)">
-			<span data-ki-i18n="filter-search-location-remove"></span>
-		</a>{{location.name}}</li>
-</ul>
-
