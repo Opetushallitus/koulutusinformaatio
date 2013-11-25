@@ -166,6 +166,11 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     
     $scope.doMunicipalitySearch = function() {
     	var queryDistricts = [];
+    	if ($scope.muniResult != undefined) {
+    		$scope.muniResult.length = 0;
+    	} else {
+    		$scope.muniResult = [];
+    	}
     	if ($scope.isWholeAreaSelected($scope.selectedDistricts)) {
     		queryDistricts = $scope.distResult;
     	} else {
@@ -174,10 +179,10 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     	ChildLocationsService.query(queryDistricts).then(function(result) {
     		
     		if (!$scope.isWholeAreaSelected($scope.selectedDistricts)) {
-    			$scope.muniResult = queryDistricts;
+    			$scope.muniResult.push.apply($scope.muniResult, queryDistricts);
     			$scope.muniResult.push.apply($scope.muniResult, result);
     		} else {
-    			$scope.muniResult = result;
+    			$scope.muniResult.push.apply($scope.muniResult, result);
     		}
     		
     	});
@@ -240,10 +245,9 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
 
     $scope.pageSizes = [25, 50, 100];
     $scope.sortCriterias = [
-        i18n.t('sort-criteria-startdate'), 
+        '', 
         i18n.t('sort-criteria-alphabetical-desc'), 
-        i18n.t('sort-criteria-alphabetical-asc')//,
-        //i18n.t('sort-criteria-extent')
+        i18n.t('sort-criteria-alphabetical-asc')
     ];
 
     $scope.paginationNext = i18n.t('pagination-next');

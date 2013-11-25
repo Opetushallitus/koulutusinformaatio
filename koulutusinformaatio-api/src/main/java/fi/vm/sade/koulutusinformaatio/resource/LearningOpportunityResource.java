@@ -51,7 +51,7 @@ public interface LearningOpportunityResource {
                                                              @DefaultValue(value = "false") @QueryParam("upcoming") boolean upcoming,
                                                              @DefaultValue(value = "0") @QueryParam("start") int start,
                                                              @DefaultValue(value = "100") @QueryParam("rows") int rows,
-                                                             @DefaultValue(value = "finame_ssort") @QueryParam("sort") String sort, 
+                                                             @QueryParam("sort") String sort, 
                                                              @DefaultValue(value = "asc") @QueryParam("order") String order);
 
     /**
