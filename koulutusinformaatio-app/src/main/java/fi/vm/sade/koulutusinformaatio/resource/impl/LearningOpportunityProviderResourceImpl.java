@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.resource.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import fi.vm.sade.koulutusinformaatio.comparator.ProviderSearchResultComparator;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResult;
@@ -32,6 +33,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -65,7 +67,7 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
             }
             learningOpportunityProviders = searchService.searchLearningOpportunityProviders(key, asId, baseEducation, vocational,
                     start, rows);
-            return Lists.transform(learningOpportunityProviders, new Function<Provider, ProviderSearchResult>() {
+            List<ProviderSearchResult> result = Lists.transform(learningOpportunityProviders, new Function<Provider, ProviderSearchResult>() {
                 @Override
                 public ProviderSearchResult apply(Provider lop) {
                     ProviderSearchResult result = new ProviderSearchResult();
@@ -74,6 +76,8 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
                     return result;
                 }
             });
+            Collections.sort(result, new ProviderSearchResultComparator());
+            return result;
         } catch (SearchException e) {
             throw KIExceptionHandler.resolveException(e);
         }
