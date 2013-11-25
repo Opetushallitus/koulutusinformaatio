@@ -48,6 +48,9 @@ public interface LearningOpportunityProviderResource {
      *                      required for education provided by given provider
      * @param vocational limits providers to those related to vocational studies
      *                   (user has vocational degree (true|false))
+     * @param start start index of the search results (0 is the first result)
+     * @param rows search result max row count to return
+     *
      * @return list of providers
      */
     @GET
@@ -56,7 +59,9 @@ public interface LearningOpportunityProviderResource {
     public List<ProviderSearchResult> searchProviders(@PathParam(TERM) final String term,
                                                  @QueryParam(ASID) final String asId,
                                                  @QueryParam(BASE_EDUCATION) final String baseEducation,
-                                                 @QueryParam(VOCATIONAL) final boolean vocational);
+                                                 @QueryParam(VOCATIONAL) final boolean vocational,
+                                                 @DefaultValue(value = "0") @QueryParam("start") int start,
+                                                 @DefaultValue(value = "50") @QueryParam("rows") int rows);
 
     @GET
     @Path("{lopId}/picture")

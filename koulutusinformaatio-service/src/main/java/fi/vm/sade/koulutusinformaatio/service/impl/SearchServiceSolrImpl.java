@@ -16,9 +16,8 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import com.google.common.collect.Maps;
 import com.google.common.collect.Lists;
-
+import com.google.common.collect.Maps;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LocationFields;
@@ -27,7 +26,6 @@ import fi.vm.sade.koulutusinformaatio.service.SearchService;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.LearningOpportunityQuery;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.LocationQuery;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.ProviderQuery;
-
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -43,7 +41,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Component
@@ -73,12 +70,12 @@ public class SearchServiceSolrImpl implements SearchService {
 
     @Override
     public List<Provider> searchLearningOpportunityProviders(
-            String term, String asId, String baseEducation, boolean vocational) throws SearchException {
+            String term, String asId, String baseEducation, boolean vocational, int start, int rows) throws SearchException {
         Set<Provider> providers = new HashSet<Provider>();
         String startswith = term.trim();
         if (!startswith.isEmpty()) {
 
-            SolrQuery query = new ProviderQuery(term + "*", asId, baseEducation);
+            SolrQuery query = new ProviderQuery(term + "*", asId, baseEducation, start, rows);
 
             QueryResponse queryResponse = null;
             try {

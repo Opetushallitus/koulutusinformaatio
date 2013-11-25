@@ -83,14 +83,14 @@ public class SearchServiceSolrImplTest {
     @Test
     public void testSearchProviders() throws SearchException {
         List<Provider> lops = service.searchLearningOpportunityProviders(
-                "query", "1.2.3.4", "PK", Boolean.parseBoolean(null));
+                "query", "1.2.3.4", "PK", Boolean.parseBoolean(null), 0, 100);
         assertEquals(1, lops.size());
     }
 
     @Test
     public void testSearchProvidersEmptyTerm() throws SearchException {
         List<Provider> lops = service.searchLearningOpportunityProviders(
-                "", "1.2.3.4", "PK", Boolean.parseBoolean(null));
+                "", "1.2.3.4", "PK", Boolean.parseBoolean(null), 0, 100);
         assertEquals(0, lops.size());
     }
 

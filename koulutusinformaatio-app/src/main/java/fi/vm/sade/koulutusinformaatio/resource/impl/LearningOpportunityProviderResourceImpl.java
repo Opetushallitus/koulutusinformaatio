@@ -53,7 +53,8 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
     }
 
     @Override
-    public List<ProviderSearchResult> searchProviders(String term, String asId, String baseEducation, boolean vocational) {
+    public List<ProviderSearchResult> searchProviders(String term, String asId, String baseEducation, boolean vocational,
+                                                      int start, int rows) {
         List<Provider> learningOpportunityProviders = null;
         try {
             String key = null;
@@ -62,7 +63,8 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
             } catch (UnsupportedEncodingException e) {
                 key = term;
             }
-            learningOpportunityProviders = searchService.searchLearningOpportunityProviders(key, asId, baseEducation, vocational);
+            learningOpportunityProviders = searchService.searchLearningOpportunityProviders(key, asId, baseEducation, vocational,
+                    start, rows);
             return Lists.transform(learningOpportunityProviders, new Function<Provider, ProviderSearchResult>() {
                 @Override
                 public ProviderSearchResult apply(Provider lop) {

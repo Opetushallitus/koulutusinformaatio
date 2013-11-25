@@ -30,8 +30,12 @@ public class ProviderQuery extends SolrQuery {
     private final static String AS_IDS = "asIds";
     private final static String NAME = "name";
 
-    public ProviderQuery(String q, String asId, String baseEducation) {
+    public ProviderQuery(String q, String asId, String baseEducation, int start, int rows) {
         super(Joiner.on(":").join(NAME, q));
+
+        this.setStart(start);
+        this.setRows(rows);
+
         if (asId != null) {
             this.addFilterQuery(Joiner.on(":").join(AS_IDS, asId));
         }
