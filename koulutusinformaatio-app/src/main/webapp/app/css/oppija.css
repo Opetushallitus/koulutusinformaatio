@@ -1826,7 +1826,8 @@ b, strong, .bold {
     margin: 0 0 0 2em; }
     .sort-area .sort-item label {
       margin-right: 10px;
-      font-weight: bold; }
+      font-weight: bold;
+      float: left; }
     .sort-area .sort-item.left {
       float: left;
       margin: 0 2em 0 0; }
@@ -1846,18 +1847,53 @@ b, strong, .bold {
     float: left;
     margin: 0 10px 0 0; }
     #facetSelections ul li.facet-selection {
-      background-color: #88cee4;
-      border: 1px solid #4aabc7;
+      background: #8BCFE3;
+      border: 1px solid #51ABC6;
       -webkit-border-radius: 3px;
       -moz-border-radius: 3px;
       -o-border-radius: 3px;
       -ms-border-radius: 3px;
       border-radius: 3px;
-      -webkit-box-shadow: inset 0px 1px 1px 0px #bbe3ee;
-      -moz-box-shadow: inset 0px 1px 1px 0px #bbe3ee;
-      -o-box-shadow: inset 0px 1px 1px 0px #bbe3ee;
-      -ms-box-shadow: inset 0px 1px 1px 0px #bbe3ee;
-      box-shadow: inset 0px 1px 1px 0px #bbe3ee; }
+      -webkit-box-shadow: inset 0px 1px 1px 0px #c1e5f0;
+      -moz-box-shadow: inset 0px 1px 1px 0px #c1e5f0;
+      -o-box-shadow: inset 0px 1px 1px 0px #c1e5f0;
+      -ms-box-shadow: inset 0px 1px 1px 0px #c1e5f0;
+      box-shadow: inset 0px 1px 1px 0px #c1e5f0; }
+      #facetSelections ul li.facet-selection:hover {
+        background: #8bcfe3;
+        background: -webkit-gradient(linear, left top, left bottom, from(#55b9d7), to(#8bcfe3));
+        background: -webkit-linear-gradient(top, #55b9d7, #8bcfe3);
+        background: -moz-linear-gradient(top, #55b9d7, #8bcfe3);
+        background: -ms-linear-gradient(top, #55b9d7, #8bcfe3);
+        background: -o-linear-gradient(top, #55b9d7, #8bcfe3);
+        background: linear-gradient(top, #55b9d7, #8bcfe3);
+        cursor: pointer; }
+        #facetSelections ul li.facet-selection:hover .remove {
+          background: transparent url("../img/selection-close.png") no-repeat scroll right 0; }
+      #facetSelections ul li.facet-selection:active {
+        background: #8bcfe3;
+        background: -webkit-gradient(linear, left top, left bottom, from(#55b9d7), to(#8bcfe3));
+        background: -webkit-linear-gradient(top, #55b9d7, #8bcfe3);
+        background: -moz-linear-gradient(top, #55b9d7, #8bcfe3);
+        background: -ms-linear-gradient(top, #55b9d7, #8bcfe3);
+        background: -o-linear-gradient(top, #55b9d7, #8bcfe3);
+        background: linear-gradient(top, #55b9d7, #8bcfe3);
+        -webkit-box-shadow: inset 0px 1px 1px 0px #3d94ad;
+        -moz-box-shadow: inset 0px 1px 1px 0px #3d94ad;
+        -o-box-shadow: inset 0px 1px 1px 0px #3d94ad;
+        -ms-box-shadow: inset 0px 1px 1px 0px #3d94ad;
+        box-shadow: inset 0px 1px 1px 0px #3d94ad; }
+      #facetSelections ul li.facet-selection .remove {
+        width: 10px;
+        height: 10px;
+        margin: 0 0 0 4px;
+        font-size: 0;
+        background: transparent url("../img/selection-close.png") no-repeat scroll left 0; }
+      #facetSelections ul li.facet-selection a {
+        text-decoration: none;
+        color: #333333; }
+        #facetSelections ul li.facet-selection a:hover, #facetSelections ul li.facet-selection a:active {
+          color: #333333; }
 
 /*** Form generic
 ************************************************/
@@ -2278,7 +2314,6 @@ table.striped {
 
 .remove {
   display: inline-block;
-  vertical-align: middle;
   width: 24px;
   height: 24px;
   margin: 0px;
@@ -3011,22 +3046,50 @@ button, .button {
 .pager li > a,
 .pager li > span {
   display: inline-block;
-  padding: 0 23px;
-  text-decoration: none; }
+  text-decoration: none;
+  font-weight: bold; }
 
 .pager li > a:hover,
 .pager li > a:focus {
-  text-decoration: none; }
+  text-decoration: underline; }
 
 .pager .next > a,
 .pager .next > span {
-  float: right;
-  background: transparent url("../img/pagination-arrow-next.png") no-repeat scroll right 0; }
+  float: right; }
+  .pager .next > a:after,
+  .pager .next > span:after {
+    background: transparent url("../img/pagination-next.png") no-repeat scroll left 0;
+    content: "";
+    display: inline-block;
+    width: 9px;
+    height: 14px;
+    margin: 0 0 0 10px;
+    vertical-align: text-top; }
+  .pager .next > a:hover:after,
+  .pager .next > span:hover:after {
+    background-position: -9px 0; }
+  .pager .next > a:active:after,
+  .pager .next > span:active:after {
+    background-position: -18px 0; }
 
 .pager .previous > a,
 .pager .previous > span {
-  float: left;
-  background: transparent url("../img/pagination-arrow-previous.png") no-repeat scroll left 0; }
+  float: left; }
+  .pager .previous > a:before,
+  .pager .previous > span:before {
+    background: transparent url("../img/pagination-previous.png") no-repeat scroll left 0;
+    content: "";
+    display: inline-block;
+    width: 9px;
+    height: 14px;
+    margin: 0 10px 0 0;
+    vertical-align: text-top; }
+  .pager .previous > a:hover:before,
+  .pager .previous > span:hover:before {
+    background-position: -9px 0; }
+  .pager .previous > a:active:before,
+  .pager .previous > span:active:before {
+    background-position: -18px 0; }
 
 .pager .disabled > a,
 .pager .disabled > a:hover,
@@ -3193,9 +3256,9 @@ button, .button {
 
 .collapse-content-container .facet-item {
   padding: 0 0 0 18px;
-  margin: 0 0 0 6px; }
+  margin: 0 0 0 3px; }
 .collapse-content-container .selected {
-  background: transparent url("../img/facet-checked.png") scroll no-repeat 0 center;
+  background: transparent url("../img/fasetti-check.png") scroll no-repeat 0 center;
   font-weight: bold; }
 
 .collapse.in {
@@ -3203,12 +3266,17 @@ button, .button {
 
 .collapser {
   cursor: pointer;
-  padding: 0 0 0 24px;
+  padding: 0 0 0 0;
   margin: 0 0 0 0; }
-  .collapser.open {
-    background: transparent url("../img/facet-arrow-down.png") scroll no-repeat 0 center; }
-  .collapser.close {
-    background: transparent url("../img/facet-arrow-up.png") scroll no-repeat 0 center; }
+  .collapser .icon {
+    display: inline-block;
+    width: 16px;
+    height: 10px;
+    background: transparent url("../img/facet-open-close.png") scroll no-repeat; }
+  .collapser.open .icon {
+    background-position: left center; }
+  .collapser.close .icon {
+    background-position: right center; }
 
 .filter {
   padding: 10px;

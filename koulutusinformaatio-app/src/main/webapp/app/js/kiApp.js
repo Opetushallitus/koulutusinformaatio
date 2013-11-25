@@ -20,7 +20,7 @@ var kiApp = angular.module('kiApp',
 
 .config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/haku/:queryString', {
-    	templateUrl: 'partials/search/searchresults.html', 
+    	templateUrl: 'partials/search/search.html', 
     	controller: SearchCtrl
     });
 
