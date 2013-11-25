@@ -67,7 +67,7 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
             }
             learningOpportunityProviders = searchService.searchLearningOpportunityProviders(key, asId, baseEducation, vocational,
                     start, rows);
-            List<ProviderSearchResult> result = Lists.transform(learningOpportunityProviders, new Function<Provider, ProviderSearchResult>() {
+            List<ProviderSearchResult> result = Lists.newArrayList(Lists.transform(learningOpportunityProviders, new Function<Provider, ProviderSearchResult>() {
                 @Override
                 public ProviderSearchResult apply(Provider lop) {
                     ProviderSearchResult result = new ProviderSearchResult();
@@ -75,7 +75,7 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
                     result.setName(lop.getName().getTranslations().get("fi"));
                     return result;
                 }
-            });
+            }));
             Collections.sort(result, new ProviderSearchResultComparator());
             return result;
         } catch (SearchException e) {
