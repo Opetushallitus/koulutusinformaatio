@@ -1,0 +1,68 @@
+<div data-ng-switch="loResult.totalCount">
+
+    <div data-ng-switch-when="0">
+        <div class="notification info">
+            <h3 data-ki-i18n="no-search-results"></h3>
+            <span data-ki-i18n="no-search-results-info"></span>
+        </div>
+    </div>
+
+    <div data-ng-switch-default>
+        <div class="sort-area" data-ng-controller="SortCtrl">
+            <div class="sort-item left">
+                <label data-ki-i18n="sort-results-label" data-show-colon="true"></label>
+                <span>{{pageMin}} - {{pageMax}} / {{totalItems}}</span>
+            </div>
+            <div class="sort-item">
+                <label for="itemsPerPage" data-ki-i18n="sort-criteria-sort-label"></label>
+                <select 
+                data-ng-model="sortCriteria"
+                data-ng-options="key as value for (key, value) in sortCriterias"
+                data-ng-change="updateSortCriteria()"
+                data-ng-style="{'width': 'auto'}">
+                </select>
+            </div>
+            <div class="sort-item">
+                <label for="itemsPerPage" data-ki-i18n="sort-criteria-items-per-page-label" data-show-colon="true"></label>
+                <select 
+                data-ng-model="itemsPerPage"
+                data-ng-options="value for value in pageSizes"
+                data-ng-change="updateItemsPerPage()"
+                data-ng-style="{'width': 'auto'}">
+                </select>
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <div data-ng-show="showPagination">
+            <div data-pager
+            data-on-select-page="changePage(page)" 
+            data-num-pages="maxPages"
+            data-total-items="totalItems"
+            data-items-per-page="itemsPerPage"
+            data-rotate="false"
+            data-page="currentPage" 
+            data-next-text="{{paginationNext}}"
+            data-previous-text="{{paginationPrevious}}">
+            </div>
+        </div>
+
+        <ul id="search-results">
+            <li data-ng-repeat="lo in loResult.results" data-search-result></li>
+        </ul>
+
+        <div data-ng-show="showPagination">
+            <div data-pager
+            data-on-select-page="changePage(page)" 
+            data-num-pages="maxPages"
+            data-total-items="totalItems"
+            data-items-per-page="itemsPerPage"
+            data-rotate="false"
+            data-page="currentPage" 
+            data-next-text="{{paginationNext}}"
+            data-previous-text="{{paginationPrevious}}">
+            </div>
+            <span class="pager-results">{{pageMin}} - {{pageMax}} / {{totalItems}}</span>
+        </div>
+    </div>
+</div>
