@@ -64,15 +64,17 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
         doc.setField(LearningOpportunity.PREREQUISITE, resolveTranslationInTeachingLangUseFallback(
                 loi.getTeachingLanguages(), loi.getPrerequisite().getName().getTranslations()));
         doc.addField(LearningOpportunity.PREREQUISITE_CODE, loi.getPrerequisite().getValue());
-        
-        //For faceting
-        doc.addField(LearningOpportunity.TEACHING_LANGUAGE, loi.getTeachingLanguages().get(0).getValue());
-        doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_LUKIO);
+
 
         doc.setField(LearningOpportunity.NAME, resolveTranslationInTeachingLangUseFallback(
                 loi.getTeachingLanguages(), los.getName().getTranslationsShortName()));
         doc.addField(LearningOpportunity.NAME_FI, los.getName().getTranslations().get("fi"));
+        doc.addField(LearningOpportunity.NAME_SORT, String.format("%s, %s",
+                resolveTranslationInTeachingLangUseFallback(loi.getTeachingLanguages(), provider.getName().getTranslations()), 
+                resolveTranslationInTeachingLangUseFallback(loi.getTeachingLanguages(), los.getName().getTranslationsShortName())));
+        
         doc.addField(LearningOpportunity.NAME_SV, los.getName().getTranslations().get("sv"));
+        
         doc.addField(LearningOpportunity.NAME_EN, los.getName().getTranslations().get("en"));
 
         doc.setField(LearningOpportunity.LOP_NAME, resolveTranslationInTeachingLangUseFallback(
@@ -122,8 +124,18 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
                 doc.addField(LearningOpportunity.AS_NAME_EN, ao.getApplicationSystem().getName().getTranslations().get("en"));
             }
         }
+        
+        doc.addField(LearningOpportunity.START_DATE_SORT, loi.getStartDate());
 
         addApplicationDates(doc, loi.getApplicationOptions());
+        
+        
+        //For faceting
+        doc.addField(LearningOpportunity.TEACHING_LANGUAGE, loi.getTeachingLanguages().get(0).getValue());
+        doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_LUKIO);
+        if (loi.isKaksoistutkinto()) {
+            doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_KAKSOIS);
+        }
 
         return doc;
     }

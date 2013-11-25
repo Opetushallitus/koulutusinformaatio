@@ -211,6 +211,7 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
 
         List<ApplicationOption> applicationOptions = Lists.newArrayList();
         List<OidRDTO> aoIdDTOs = tarjontaRawService.getHakukohdesByKomoto(komoto.getOid());
+        boolean kaksoistutkinto = false;
         for (OidRDTO aoIdDTO : aoIdDTOs) {
             LOG.debug(Joiner.on(" ").join("Adding application options (",
                     aoIdDTOs.size(), ") to child learning opportunity"));
@@ -235,10 +236,14 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
 
             applicationOptions.add(
                     createApplicationOption(hakukohdeDTO, hakuDTO, komoto, loi));
+            
+            if (hakukohdeDTO.isKaksoisTutkinto()) {
+                kaksoistutkinto = true;
+            }
         }
 
         loi.setApplicationOptions(applicationOptions);
-
+        loi.setKaksoistutkinto(kaksoistutkinto);
 
         return loi;
     }

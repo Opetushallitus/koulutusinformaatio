@@ -105,11 +105,11 @@ public class SearchServiceSolrImpl implements SearchService {
 
     @Override
     public LOSearchResultList searchLearningOpportunities(String term, String prerequisite,
-                                                          List<String> cities, List<String> facetFilters, String lang, boolean ongoing, boolean upcoming, int start, int rows) throws SearchException {
+                                                          List<String> cities, List<String> facetFilters, String lang, boolean ongoing, boolean upcoming, int start, int rows, String sort, String order) throws SearchException {
         LOSearchResultList searchResultList = new LOSearchResultList();
         String trimmed = term.trim();
         if (!trimmed.isEmpty()) {
-            SolrQuery query = new LearningOpportunityQuery(term, prerequisite, cities, facetFilters, lang, ongoing, upcoming, start, rows);
+            SolrQuery query = new LearningOpportunityQuery(term, prerequisite, cities, facetFilters, lang, ongoing, upcoming, start, rows, sort, order);
 
             try {
                 LOG.debug(

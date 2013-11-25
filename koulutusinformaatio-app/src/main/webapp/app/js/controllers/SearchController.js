@@ -242,8 +242,8 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     $scope.sortCriterias = [
         i18n.t('sort-criteria-startdate'), 
         i18n.t('sort-criteria-alphabetical-desc'), 
-        i18n.t('sort-criteria-alphabetical-asc'),
-        i18n.t('sort-criteria-extent')
+        i18n.t('sort-criteria-alphabetical-asc')//,
+        //i18n.t('sort-criteria-extent')
     ];
 
     $scope.paginationNext = i18n.t('pagination-next');

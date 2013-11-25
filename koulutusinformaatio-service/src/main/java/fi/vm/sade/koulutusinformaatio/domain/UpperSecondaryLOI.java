@@ -41,6 +41,7 @@ public class UpperSecondaryLOI {
     private String plannedDuration;
     private I18nText plannedDurationUnit;
     private List<LanguageSelection> languageSelection;
+    private boolean kaksoistutkinto;
 
     public String getId() {
         return id;
@@ -168,5 +169,13 @@ public class UpperSecondaryLOI {
 
     public void setLanguageSelection(List<LanguageSelection> languageSelection) {
         this.languageSelection = languageSelection;
+    }
+
+    public boolean isKaksoistutkinto() {
+        return kaksoistutkinto;
+    }
+
+    public void setKaksoistutkinto(boolean kaksoistutkinto) {
+        this.kaksoistutkinto = kaksoistutkinto;
     }
 }

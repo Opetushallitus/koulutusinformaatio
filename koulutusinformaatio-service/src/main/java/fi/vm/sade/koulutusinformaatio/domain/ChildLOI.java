@@ -33,6 +33,7 @@ public class ChildLOI {
     private I18nText content;
     private I18nText selectingDegreeProgram;
     private List<ContactPerson> contactPersons = new ArrayList<ContactPerson>();
+    private boolean kaksoistutkinto;
 
     public String getId() {
         return id;
@@ -184,5 +185,13 @@ public class ChildLOI {
 
     public void setContactPersons(List<ContactPerson> contactPersons) {
         this.contactPersons = contactPersons;
+    }
+
+    public boolean isKaksoistutkinto() {
+        return kaksoistutkinto;
+    }
+
+    public void setKaksoistutkinto(boolean kaksoistutkinto) {
+        this.kaksoistutkinto = kaksoistutkinto;
     }
 }
