@@ -39,10 +39,12 @@ public class LearningOpportunityQueryTest {
     private static final String LANG = "fi";
     private static final int START = 0;
     private static final int ROWS = 10;
+    private static final String SORT = "0";
+    private static final String ORDER = "asc";
 
     @Test
     public void testQuery() {
-        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FACET_FILTERS, LANG, ONGOING, UPCOMING, START, ROWS);
+        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FACET_FILTERS, LANG, ONGOING, UPCOMING, START, ROWS, SORT, ORDER);
         assertNotNull(q);
         assertEquals(6, q.getFilterQueries().length);
         String prerequisiteFQ = new StringBuilder("prerequisites:").append(PREREQUISITE).toString();

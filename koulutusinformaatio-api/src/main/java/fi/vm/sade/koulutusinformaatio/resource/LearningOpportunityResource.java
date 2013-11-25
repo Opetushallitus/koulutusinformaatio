@@ -50,7 +50,9 @@ public interface LearningOpportunityResource {
                                                              @DefaultValue(value = "false") @QueryParam("ongoing") boolean ongoing,
                                                              @DefaultValue(value = "false") @QueryParam("upcoming") boolean upcoming,
                                                              @DefaultValue(value = "0") @QueryParam("start") int start,
-                                                             @DefaultValue(value = "100") @QueryParam("rows") int rows);
+                                                             @DefaultValue(value = "100") @QueryParam("rows") int rows,
+                                                             @DefaultValue(value = "finame_ssort") @QueryParam("sort") String sort, 
+                                                             @DefaultValue(value = "asc") @QueryParam("order") String order);
 
     /**
      * Fetches a parent learning opportunity. Contains parent information and

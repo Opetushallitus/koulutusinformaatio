@@ -317,6 +317,7 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
         }
 
         List<ApplicationOption> applicationOptions = Lists.newArrayList();
+        boolean kaksoistutkinto = false;
         List<OidRDTO> aoIdDTOs = tarjontaRawService.getHakukohdesByKomoto(childKomoto.getOid());
         for (OidRDTO aoIdDTO : aoIdDTOs) {
             LOG.debug(Joiner.on(" ").join("Adding application options (",
@@ -342,9 +343,13 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
 
             applicationOptions.add(
                     createApplicationOption(hakukohdeDTO, hakuDTO, childKomoto, childLOI));
+            if (hakukohdeDTO.isKaksoisTutkinto()) {
+                kaksoistutkinto = true;
+            }
         }
-
+        
         childLOI.setApplicationOptions(applicationOptions);
+        childLOI.setKaksoistutkinto(kaksoistutkinto);
 
         return childLOI;
     }

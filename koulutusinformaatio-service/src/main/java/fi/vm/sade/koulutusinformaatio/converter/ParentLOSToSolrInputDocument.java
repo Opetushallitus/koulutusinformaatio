@@ -26,6 +26,7 @@ import org.apache.solr.common.SolrInputDocument;
 import org.springframework.core.convert.converter.Converter;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -66,8 +67,12 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         doc.addField(LearningOpportunity.LOP_ID, provider.getId());
 
         doc.setField(LearningOpportunity.NAME, parent.getName().getTranslations().get("fi"));
+        
         doc.addField(LearningOpportunity.NAME_FI, parent.getName().getTranslations().get("fi"));
+        doc.addField(LearningOpportunity.NAME_SORT, parent.getName().getTranslations().get("fi"));
+        
         doc.addField(LearningOpportunity.NAME_SV, parent.getName().getTranslations().get("sv"));
+        
         doc.addField(LearningOpportunity.NAME_EN, parent.getName().getTranslations().get("en"));
 
         doc.setField(LearningOpportunity.LOP_NAME, provider.getName().getTranslations().get("fi"));
@@ -113,13 +118,17 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         addApplicationDates(doc, applicationOptions);
 
         Set<String> prerequisites = Sets.newHashSet();
+        Date earliest = null;
         for (ChildLOS childLOS : parent.getChildren()) {
             for (ChildLOI childLOI : childLOS.getLois()) {
                 prerequisites.add(childLOI.getPrerequisite().getValue());
-                
+                if (earliest == null || earliest.after(childLOI.getStartDate())) {
+                    earliest = childLOI.getStartDate();
+                }
             }
         }
         doc.setField(LearningOpportunity.PREREQUISITES, prerequisites);
+        doc.setField(LearningOpportunity.START_DATE_SORT, earliest);
         
         indexFacetFields(parent, doc);
 
@@ -147,7 +156,12 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         doc.setField(LearningOpportunity.NAME, resolveTranslationInTeachingLangUseFallback(
                 childLOI.getTeachingLanguages(), childLOS.getName().getTranslationsShortName()));
         doc.addField(LearningOpportunity.NAME_FI, childLOS.getName().getTranslations().get("fi"));
+        
+        doc.addField(LearningOpportunity.NAME_SORT, resolveTranslationInTeachingLangUseFallback(
+                childLOI.getTeachingLanguages(), childLOS.getName().getTranslationsShortName()));
+        
         doc.addField(LearningOpportunity.NAME_SV, childLOS.getName().getTranslations().get("sv"));
+        
         doc.addField(LearningOpportunity.NAME_EN, childLOS.getName().getTranslations().get("en"));
 
         doc.setField(LearningOpportunity.LOP_NAME, resolveTranslationInTeachingLangUseFallback(
@@ -206,6 +220,8 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
 
         addApplicationDates(doc, childLOI.getApplicationOptions());
         
+        doc.addField(LearningOpportunity.START_DATE_SORT, childLOI.getStartDate());
+        
         indexFacetFields(childLOS, childLOI, parent, doc);
 
         return doc;
@@ -224,6 +240,9 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
                 } else {
                     doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMMATILLINEN);
                 }
+                if (childLOI.isKaksoistutkinto()) {
+                    doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_KAKSOIS);
+                }
             }
         }
         
@@ -238,6 +257,9 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMM_ER);
         } else {
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMMATILLINEN);
+        }
+        if (childLOI.isKaksoistutkinto()) {
+            doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_KAKSOIS);
         }
     }
     

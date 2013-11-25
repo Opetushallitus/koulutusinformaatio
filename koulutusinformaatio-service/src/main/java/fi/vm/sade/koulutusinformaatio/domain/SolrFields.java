@@ -65,6 +65,11 @@ public class SolrFields {
         public static final String CONTENT_FI = "content_fi";
         public static final String CONTENT_SV = "content_sv";
         public static final String CONTENT_EN = "content_en";
+        
+        //Fields for sorting
+        public static final String START_DATE_SORT = "startDate_dsort";
+        public static final String NAME_SORT = "name_ssort";
+        
     }
     
     public static class LocationFields {
