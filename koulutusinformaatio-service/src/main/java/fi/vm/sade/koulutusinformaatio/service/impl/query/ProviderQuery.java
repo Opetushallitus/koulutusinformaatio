@@ -35,7 +35,7 @@ public class ProviderQuery extends SolrQuery {
 
         this.setStart(start);
         this.setRows(rows);
-        this.addSort(NAME, ORDER.asc);
+        this.setSort(NAME, ORDER.asc);
 
         if (asId != null) {
             this.addFilterQuery(Joiner.on(":").join(AS_IDS, asId));
