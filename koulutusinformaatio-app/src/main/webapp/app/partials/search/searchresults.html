@@ -34,7 +34,7 @@
                     	<span data-ng-show="!ongoing && loResult.ongoingFacet.count > 0" class="facet-item">
                     		<a href ng-click="setOngoing()"><span data-ki-i18n="filter-search-as-ongoing"></span></a> ({{loResult.ongoingFacet.count}})
                     	</span>
-                    	<span data-ng-show="ongoing || loResult.ongoingFacet.count < 1" class="facet-item selected">
+                    	<span data-ng-show="ongoing && loResult.ongoingFacet.count > 0" class="facet-item selected">
                  			<span data-ki-i18n="filter-search-as-ongoing"></span> ({{loResult.ongoingFacet.count}})
                  		</span>
                     </li>
@@ -42,7 +42,7 @@
                     	<span data-ng-show="!upcoming && loResult.upcomingFacet.count > 0" class="facet-item">
                     		<a href ng-click="setUpcoming()"><span data-ki-i18n="filter-search-as-upcoming"></span></a> ({{loResult.upcomingFacet.count}})
                     	</span>
-                    	<span data-ng-show="upcoming || loResult.upcomingFacet.count < 1" class="facet-item selected">
+                    	<span data-ng-show="upcoming && loResult.upcomingFacet.count > 0" class="facet-item selected">
                     		<span data-ki-i18n="filter-search-as-upcoming"></span> ({{loResult.upcomingFacet.count}})
                     	</span>
                     </li>

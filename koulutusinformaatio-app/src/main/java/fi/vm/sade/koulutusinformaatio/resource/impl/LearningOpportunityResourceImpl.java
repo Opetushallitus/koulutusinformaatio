@@ -64,6 +64,7 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
             key = text;
         }
         try {
+            sort = (sort != null && !sort.isEmpty()) ? sort : null;
             LOSearchResultList learningOpportunities = searchService.searchLearningOpportunities(key, prerequisite,
                     cities, facetFilters, lang, ongoing, upcoming, start, rows, sort, order);
             return modelMapper.map(learningOpportunities, LOSearchResultListDTO.class);
