@@ -166,7 +166,11 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     
     $scope.doMunicipalitySearch = function() {
     	var queryDistricts = [];
-    	$scope.muniResult = [];
+    	if ($scope.muniResult != undefined) {
+    		$scope.muniResult.length = 0;
+    	} else {
+    		$scope.muniResult = [];
+    	}
     	if ($scope.isWholeAreaSelected($scope.selectedDistricts)) {
     		queryDistricts = $scope.distResult;
     	} else {
@@ -175,10 +179,10 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     	ChildLocationsService.query(queryDistricts).then(function(result) {
     		
     		if (!$scope.isWholeAreaSelected($scope.selectedDistricts)) {
-    			$scope.muniResult = queryDistricts;
+    			$scope.muniResult.push.apply($scope.muniResult, queryDistricts);
     			$scope.muniResult.push.apply($scope.muniResult, result);
     		} else {
-    			$scope.muniResult = result;
+    			$scope.muniResult.push.apply($scope.muniResult, result);
     		}
     		
     	});
