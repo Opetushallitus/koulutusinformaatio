@@ -166,6 +166,7 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     
     $scope.doMunicipalitySearch = function() {
     	var queryDistricts = [];
+    	$scope.muniResult = [];
     	if ($scope.isWholeAreaSelected($scope.selectedDistricts)) {
     		queryDistricts = $scope.distResult;
     	} else {
@@ -240,10 +241,9 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
 
     $scope.pageSizes = [25, 50, 100];
     $scope.sortCriterias = [
-        i18n.t('sort-criteria-startdate'), 
+        '', 
         i18n.t('sort-criteria-alphabetical-desc'), 
-        i18n.t('sort-criteria-alphabetical-asc')//,
-        //i18n.t('sort-criteria-extent')
+        i18n.t('sort-criteria-alphabetical-asc')
     ];
 
     $scope.paginationNext = i18n.t('pagination-next');

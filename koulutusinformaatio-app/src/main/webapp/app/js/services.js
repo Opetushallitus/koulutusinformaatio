@@ -32,17 +32,14 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
             		 qParams += '&facetFilters=' + facetFilter;
                  });
             }
-            
             var sortField = '';
             if (params.sortCriteria != undefined) {
-            	if (params.sortCriteria == 0) {
-            		sortField = 'startDate_dsort';
-            	} else if (params.sortCriteria == 1 || params.sortCriteria == 2) {
+            	if (params.sortCriteria == 1 || params.sortCriteria == 2) {
             		sortField = 'name_ssort';
             	} 
             } 
             
-            qParams += (params.sortCriteria != undefined) ? ('&sort=' +sortField) : '';
+            qParams += (sortField.length > 0) ? ('&sort=' +sortField) : '';
             qParams += ((params.sortCriteria != undefined) && (params.sortCriteria == 2)) ? ('&order=desc') : '';
 
             $http.get('../lo/search/' + encodeURI(params.queryString) + qParams, {}).

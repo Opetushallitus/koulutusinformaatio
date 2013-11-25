@@ -84,7 +84,9 @@ public class LearningOpportunityQuery extends SolrQuery {
         this.setParam("defType", "edismax");
         this.setParam(DisMaxParams.QF, Joiner.on(" ").join(FIELDS));
         this.setParam("q.op", "AND");
-        this.addSort(sort, order.equals("asc") ? ORDER.asc : ORDER.desc);
+        if (sort != null) {
+            this.addSort(sort, order.equals("asc") ? ORDER.asc : ORDER.desc);
+        }
     }
 
     private void addFacetsToQuery(String lang, List<String> facetFilters, String ongoingFQ, String upcomingFQ) {
