@@ -1,10 +1,11 @@
+<div data-ng-controller="SearchFilterCtrl" data-ng-show="loResult.totalCount > 0">
 <div class="filter">
     <h2 class="margin-top-0 align-center"><span data-ki-i18n="selaile-koulutuksia"></span></h2>
     <div>
         <ul class="nobullet collapse-content-container">
             <li data-ng-show="loResult.ongoingFacet">
                <span data-ng-show="!ongoing && loResult.ongoingFacet.count > 0" class="facet-item">
-                    <a href data-ng-click="setOngoing()"><span data-ki-i18n="filter-search-as-ongoing"></span></a> ({{loResult.ongoingFacet.count}})
+                    <a href data-ng-click="setOngoing()"><span data-ki-i18n="filter-search-as-ongoing"></span> ({{loResult.ongoingFacet.count}})</a>
                 </span>
                 <span data-ng-show="ongoing && loResult.ongoingFacet.count > 0" class="facet-item selected">
                     <span data-ki-i18n="filter-search-as-ongoing"></span> ({{loResult.ongoingFacet.count}})
@@ -12,7 +13,7 @@
             </li>
             <li data-ng-show="loResult.upcomingFacet">
                 <span data-ng-show="!upcoming && loResult.upcomingFacet.count > 0" class="facet-item">
-                    <a href data-ng-click="setUpcoming()"><span data-ki-i18n="filter-search-as-upcoming"></span></a> ({{loResult.upcomingFacet.count}})
+                    <a href data-ng-click="setUpcoming()"><span data-ki-i18n="filter-search-as-upcoming"></span> ({{loResult.upcomingFacet.count}})</a>
                 </span>
                 <span data-ng-show="upcoming && loResult.upcomingFacet.count > 0" class="facet-item selected">
                     <span data-ki-i18n="filter-search-as-upcoming"></span> ({{loResult.upcomingFacet.count}})
@@ -32,8 +33,7 @@
             <li data-ng-show="loResult != undefined && loResult.edTypeFacet.et1">
                 <span data-ng-show="!isEdTypeSelected(loResult.edTypeFacet.et1)" class="facet-item">
                     <a href data-ng-click="selectFacetFilter(loResult.edTypeFacet.et1.valueId, loResult.edTypeFacet.et1.facetField)">
-                        <span data-ki-i18n="et1"></span>
-                    </a> ({{loResult.edTypeFacet.et1.count}})
+                        <span data-ki-i18n="et1"></span> ({{loResult.edTypeFacet.et1.count}})</a>
                 </span>
                 <span data-ng-show="isEdTypeSelected(loResult.edTypeFacet.et1)" class="facet-item selected">
                     <span><span data-ki-i18n="et1"></span> ({{loResult.edTypeFacet.et1.count}})</span>
@@ -41,7 +41,7 @@
             </li>
             <li data-ng-show="loResult != undefined && loResult.edTypeFacet.et2">
                 <span data-ng-show="!isEdTypeSelected(loResult.edTypeFacet.et2)" class="facet-item">
-                    <a href data-ng-click="selectFacetFilter(loResult.edTypeFacet.et2.valueId, loResult.edTypeFacet.et2.facetField)"><span data-ki-i18n="et2"></span></a> ({{loResult.edTypeFacet.et2.count}})
+                    <a href data-ng-click="selectFacetFilter(loResult.edTypeFacet.et2.valueId, loResult.edTypeFacet.et2.facetField)"><span data-ki-i18n="et2"></span> ({{loResult.edTypeFacet.et2.count}})</a>
                 </span>
                 <span data-ng-show="isEdTypeSelected(loResult.edTypeFacet.et2)" class="facet-item selected">
                     <span><span data-ki-i18n="et2"></span> ({{loResult.edTypeFacet.et2.count}})</span>
@@ -49,7 +49,7 @@
             </li>
             <li data-ng-show="loResult != undefined && loResult.edTypeFacet.et3">
                 <span data-ng-show="!isEdTypeSelected(loResult.edTypeFacet.et3)" class="facet-item">
-                    <a href data-ng-click="selectFacetFilter(loResult.edTypeFacet.et3.valueId, loResult.edTypeFacet.et3.facetField)"><span data-ki-i18n="et3"></span></a> ({{loResult.edTypeFacet.et3.count}})
+                    <a href data-ng-click="selectFacetFilter(loResult.edTypeFacet.et3.valueId, loResult.edTypeFacet.et3.facetField)"><span data-ki-i18n="et3"></span> ({{loResult.edTypeFacet.et3.count}})</a>
                 </span>
                 <span data-ng-show="isEdTypeSelected(loResult.edTypeFacet.et3)" class="facet-item selected">
                     <span><span data-ki-i18n="et3"></span> ({{loResult.edTypeFacet.et3.count}})</span>
@@ -57,7 +57,7 @@
             </li>
             <li data-ng-show="loResult != undefined && loResult.edTypeFacet.et4">
                 <span data-ng-show="!isEdTypeSelected(loResult.edTypeFacet.et4)" class="facet-item">
-                    <a href data-ng-click="selectFacetFilter(loResult.edTypeFacet.et4.valueId, loResult.edTypeFacet.et4.facetField)"><span data-ki-i18n="et4"></span></a> ({{loResult.edTypeFacet.et4.count}})
+                    <a href data-ng-click="selectFacetFilter(loResult.edTypeFacet.et4.valueId, loResult.edTypeFacet.et4.facetField)"><span data-ki-i18n="et4"></span> ({{loResult.edTypeFacet.et4.count}})</a>
                 </span>
                 <span data-ng-show="isEdTypeSelected(loResult.edTypeFacet.et4)" class="facet-item selected">
                     <span><span data-ki-i18n="et4"></span> ({{loResult.edTypeFacet.et4.count}})</span>
@@ -65,7 +65,7 @@
             </li>
             <li data-ng-show="loResult != undefined && loResult.edTypeFacet.et5">
                 <span data-ng-show="!isEdTypeSelected(loResult.edTypeFacet.et5)" class="facet-item">
-                    <a href data-ng-click="selectFacetFilter(loResult.edTypeFacet.et5.valueId, loResult.edTypeFacet.et5.facetField)"><span data-ki-i18n="et5"></span></a> ({{loResult.edTypeFacet.et5.count}})
+                    <a href data-ng-click="selectFacetFilter(loResult.edTypeFacet.et5.valueId, loResult.edTypeFacet.et5.facetField)"><span data-ki-i18n="et5"></span> ({{loResult.edTypeFacet.et5.count}})</a>
                 </span>
                 <span data-ng-show="isEdTypeSelected(loResult.edTypeFacet.et5)" class="facet-item selected">
                     <span><span data-ki-i18n="et5"></span> ({{loResult.edTypeFacet.et5.count}})</span>
@@ -105,7 +105,7 @@
         <ul class="nobullet collapse-content-container">
             <li data-ng-repeat="fv in loResult.teachingLangFacet.facetValues">
                 <span data-ng-show="!isSelected(fv)" class="facet-item">
-                    <a href data-ng-click="selectFacetFilter(fv.valueId, fv.facetField)">{{fv.valueName}}</a> ({{fv.count}})
+                    <a href data-ng-click="selectFacetFilter(fv.valueId, fv.facetField)">{{fv.valueName}} ({{fv.count}})</a>
                 </span>
                 <span data-ng-show="isSelected(fv)" class="facet-item selected">
                     <span>{{fv.valueName}} ({{fv.count}})</span>
@@ -113,4 +113,5 @@
             </li>
         </ul>
     </div>
+</div>
 </div>

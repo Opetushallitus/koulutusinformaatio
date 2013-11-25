@@ -9,31 +9,34 @@
         ng-options="dist.name for dist in distResult | orderBy:'name'"
         style="width:200px; height: 200px"
         ng-click="doMunicipalitySearch()"></select>
-        <span style="margin: 10px">&gt;</span>
+        <span class="facet-location-separator">&gt;</span>
     </div>
 
     <div class="float-left">
         <h4 class="margin-top-0"><span data-ki-i18n="municipality"></span></h4> 
         <select size="10" 
-        id="muncipilaitySelection" 
+        id="municipalitySelection" 
         multiple 
         ng-multiple="true" 
-        ng-model="selectedMunicipalities" 
-        ng-options="mun.name for mun in muniResult | orderBy:'name'"
+        ng-model="selectedMunicipality" 
+        ng-options="mun.name for mun in muniResult"
+        ng-click="selectMunicipality()"
         style="width:200px; height: 200px"></select>
-        <span style="margin: 10px">&gt;</span>
+        <span class="facet-location-separator">&gt;</span>
     </div>
 
     <div class="float-left">
         <h4 class="margin-top-0"><span data-ki-i18n="valitut-alueet"></span></h4> 
-        <select size="10" 
-        id="muncipilaitySelection" 
-        multiple 
-        ng-multiple="true" 
-        ng-model="selectedMunicipalities" 
-        ng-options="mun.name for mun in selectedMunicipalities | orderBy:'name'"
-        style="width:200px; height: 200px"></select> 
+        <ul class="select" style="width:200px; height: 200px">
+            <li data-ng-repeat="mun in selectedMunicipalities | orderBy:'name'">
+                <a href="javascript:void(0)" data-ng-click="removeMunicipality(mun.code)">
+                    <span class="icon remove"></span>
+                    <span>{{mun.name}}</span>
+                </a>
+            </li>
+        </ul>
     </div>
+
     <div class="clear"></div>
     <div class="margin-top-2">
         <button class="float-left btn-close"><span><span data-ki-i18n="cancel"></span></span></button>

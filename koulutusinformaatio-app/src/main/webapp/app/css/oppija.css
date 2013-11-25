@@ -1402,7 +1402,8 @@ a:visited {
 **********************************/
 input[type="text"],
 input[type="password"],
-select {
+select,
+.select {
   background-color: #ebf3f7;
   background-image: none;
   border: none;
@@ -1448,7 +1449,8 @@ select:disabled {
   background-repeat: repeat;
   background-position: top left; }
 
-select {
+select,
+.select {
   line-height: 1.231em;
   padding-top: 0.385em;
   padding-bottom: 0.385em; }
@@ -1826,8 +1828,7 @@ b, strong, .bold {
     margin: 0 0 0 2em; }
     .sort-area .sort-item label {
       margin-right: 10px;
-      font-weight: bold;
-      float: left; }
+      font-weight: bold; }
     .sort-area .sort-item.left {
       float: left;
       margin: 0 2em 0 0; }
@@ -1845,7 +1846,7 @@ b, strong, .bold {
     list-style-type: none;
     padding: 0 10px;
     float: left;
-    margin: 0 10px 0 0; }
+    margin: 10px 10px 0 0; }
     #facetSelections ul li.facet-selection {
       background: #8BCFE3;
       border: 1px solid #51ABC6;
@@ -2311,6 +2312,24 @@ table.striped {
   border-top: none; }
 .application-container .small {
   color: #7f7f7f; }
+
+#select-location-dialog .select {
+  list-style-type: none;
+  overflow-y: auto; }
+  #select-location-dialog .select .icon.remove {
+    background: transparent url("../img/fasetti-location-close.png") no-repeat scroll 0 0;
+    width: 10px;
+    height: 10px; }
+  #select-location-dialog .select a {
+    text-decoration: none;
+    color: #333333; }
+#select-location-dialog .facet-location-separator {
+  background: transparent url("../img/facet-location-separator.png") no-repeat scroll 0 0;
+  display: inline-block;
+  margin: 0 5px;
+  width: 18px;
+  height: 18px;
+  font-size: 0; }
 
 .remove {
   display: inline-block;
@@ -3095,9 +3114,7 @@ button, .button {
 .pager .disabled > a:hover,
 .pager .disabled > a:focus,
 .pager .disabled > span {
-  color: #999999;
-  cursor: default;
-  background-color: #fff; }
+  display: none; }
 
 .nav {
   margin-bottom: 0;
@@ -3257,6 +3274,12 @@ button, .button {
 .collapse-content-container .facet-item {
   padding: 0 0 0 18px;
   margin: 0 0 0 3px; }
+  .collapse-content-container .facet-item:hover {
+    text-decoration: underline;
+    cursor: pointer; }
+  .collapse-content-container .facet-item a {
+    text-decoration: none;
+    color: #333333; }
 .collapse-content-container .selected {
   background: transparent url("../img/fasetti-check.png") scroll no-repeat 0 center;
   font-weight: bold; }

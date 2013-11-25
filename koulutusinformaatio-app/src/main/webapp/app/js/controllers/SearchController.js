@@ -26,7 +26,7 @@ function SearchFieldCtrl($scope, $location, SearchService, kiAppConstants, Filte
 /**
  *  Controller for search filters
  */
-function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, kiAppConstants, FilterService, LanguageService, DistrictService, ChildLocationsService) {
+function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, kiAppConstants, FilterService, LanguageService, DistrictService, ChildLocationsService, UtilityService) {
     var queryParams = $location.search();
 
     FilterService.query(queryParams).then(function() {
@@ -34,7 +34,7 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
         $scope.locations = FilterService.getLocations();
         $scope.ongoing = FilterService.isOngoing();
         $scope.upcoming = FilterService.isUpcoming();
-        $scope.$parent.currentPage = FilterService.getPage();
+        $scope.$parent.$parent.currentPage = FilterService.getPage();
         $scope.facetFilters = FilterService.getFacetFilters();
         $scope.langCleared=FilterService.getLangCleared();
     });
@@ -179,6 +179,7 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     	ChildLocationsService.query(queryDistricts).then(function(result) {
     		
     		if (!$scope.isWholeAreaSelected($scope.selectedDistricts)) {
+                UtilityService.sortLocationsByName(result);
     			$scope.muniResult.push.apply($scope.muniResult, queryDistricts);
     			$scope.muniResult.push.apply($scope.muniResult, result);
     		} else {
@@ -232,7 +233,35 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     	}
     	return isSelected;
     }
-    
+
+    $scope.selectMunicipality = function() {
+        if (!$scope.selectedMunicipalities) {
+            $scope.selectedMunicipalities = [];
+        }
+
+        angular.forEach($scope.selectedMunicipality, function(mun, munkey){
+            
+            var found = false;
+            angular.forEach($scope.selectedMunicipalities, function(value, key){
+                if (value.code == mun.code) {
+                    found = true;
+                }
+            });
+
+            if (!found) {
+                $scope.selectedMunicipalities.push(mun);
+            }
+
+        });
+    }
+
+    $scope.removeMunicipality = function(code) {
+        angular.forEach($scope.selectedMunicipalities, function(mun, key) {
+            if (code == mun.code) {
+                $scope.selectedMunicipalities.splice(key, 1);
+            }
+        });
+    }
 };
 
 /**
