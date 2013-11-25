@@ -71,7 +71,7 @@ public class SearchServiceSolrImpl implements SearchService {
     @Override
     public List<Provider> searchLearningOpportunityProviders(
             String term, String asId, String baseEducation, boolean vocational, int start, int rows) throws SearchException {
-        Set<Provider> providers = new HashSet<Provider>();
+        List<Provider> providers = new ArrayList<Provider>();
         String startswith = term.trim();
         if (!startswith.isEmpty()) {
 
@@ -97,7 +97,7 @@ public class SearchServiceSolrImpl implements SearchService {
             }
 
         }
-        return new ArrayList<Provider>(providers);
+        return providers;
     }
 
     @Override
