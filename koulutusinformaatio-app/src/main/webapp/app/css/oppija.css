@@ -3280,9 +3280,16 @@ button, .button {
   .collapse-content-container .facet-item a {
     text-decoration: none;
     color: #333333; }
+  .collapse-content-container .facet-item .remove {
+    background: transparent url("../img/fasetti-location-close.png") scroll no-repeat 0 0;
+    width: 10px;
+    height: 10px;
+    margin: 0 0 0 3px; }
 .collapse-content-container .selected {
-  background: transparent url("../img/fasetti-check.png") scroll no-repeat 0 center;
   font-weight: bold; }
+  .collapse-content-container .selected:hover {
+    text-decoration: none;
+    cursor: auto; }
 
 .collapse.in {
   height: auto; }

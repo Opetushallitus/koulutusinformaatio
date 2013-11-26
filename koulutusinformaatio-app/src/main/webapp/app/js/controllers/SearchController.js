@@ -27,17 +27,6 @@ function SearchFieldCtrl($scope, $location, SearchService, kiAppConstants, Filte
  *  Controller for search filters
  */
 function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, kiAppConstants, FilterService, LanguageService, DistrictService, ChildLocationsService, UtilityService) {
-    var queryParams = $location.search();
-
-    FilterService.query(queryParams).then(function() {
-        $scope.prerequisite = FilterService.getPrerequisite();
-        $scope.locations = FilterService.getLocations();
-        $scope.ongoing = FilterService.isOngoing();
-        $scope.upcoming = FilterService.isUpcoming();
-        $scope.$parent.$parent.currentPage = FilterService.getPage();
-        $scope.facetFilters = FilterService.getFacetFilters();
-        $scope.langCleared=FilterService.getLangCleared();
-    });
 
     $scope.change = function() {
         FilterService.set({
@@ -284,8 +273,8 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
 
     $scope.paginationNext = i18n.t('pagination-next');
     $scope.paginationPrevious = i18n.t('pagination-previous');
-
     $scope.valitseAlueTitle = i18n.t('valitse-alue');
+    $scope.noSearchResults = i18n.t('no-search-results-info', {searchterm: SearchService.getTerm()});
 
     $scope.changePage = function(page) {
         $scope.currentPage = page;
@@ -299,8 +288,6 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
         }    
     });
     
-
-    
     //Getting the query params from the url
     //after which searching is done.
 	FilterService.query(queryParams).then(function() {
@@ -312,9 +299,10 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
 	     $scope.langCleared = FilterService.getLangCleared();
          $scope.itemsPerPage = FilterService.getItemsPerPage();
          $scope.sortCriteria = FilterService.getSortCriteria();
+         $scope.currentPage = FilterService.getPage();
 	     $scope.doSearching();
 	 });
-    
+
 	//Returns true if the language filter is set
 	//i.e. either a teaching language filter or langCleared (language is explicitely cleared by the user)
     $scope.isLangFilterSet = function() {
