@@ -14,12 +14,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>fi.vm.sade.generic</groupId>
-            <artifactId>generic-events</artifactId>
-            <version>${oph.generic.version}</version>
-            <type>jar</type>
-        </dependency>
-        <dependency>
             <groupId>fi.vm.sade.tarjonta</groupId>
             <artifactId>tarjonta-api</artifactId>
             <version>${oph.tarjonta.version}</version>
