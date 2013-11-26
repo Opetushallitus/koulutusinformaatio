@@ -30,6 +30,7 @@ public class LOSearchResultList {
     private Facet filterFacet;
     private Facet appStatusFacet;
     private Facet edTypeFacet;
+    private Facet prerequisiteFacet;
 
     public List<LOSearchResult> getResults() {
         return results;
@@ -77,5 +78,13 @@ public class LOSearchResultList {
 
     public void setEdTypeFacet(Facet edTypeFacet) {
         this.edTypeFacet = edTypeFacet;
+    }
+
+    public Facet getPrerequisiteFacet() {
+        return prerequisiteFacet;
+    }
+
+    public void setPrerequisiteFacet(Facet prerequisiteFacet) {
+        this.prerequisiteFacet = prerequisiteFacet;
     }
 }

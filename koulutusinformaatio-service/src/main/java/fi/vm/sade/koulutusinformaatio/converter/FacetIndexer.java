@@ -9,6 +9,7 @@ import com.google.common.collect.Lists;
 
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
+import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOI;
 import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LearningOpportunity;
@@ -22,13 +23,12 @@ public class FacetIndexer {
     
     public List<SolrInputDocument> createFacetDocs(UpperSecondaryLOI loi) {
         List<SolrInputDocument> docs = Lists.newArrayList();
-        SolrInputDocument doc = new SolrInputDocument();
-        doc.addField(LearningOpportunity.ID, loi.getTeachingLanguages().get(0).getValue());
-        doc.addField(LearningOpportunity.TYPE, TYPE_FACET);
-        doc.addField(LearningOpportunity.FI_FNAME, this.getTranslationUseFallback("fi", loi.getTeachingLanguages().get(0).getName().getTranslations()));
-        doc.addField(LearningOpportunity.SV_FNAME, this.getTranslationUseFallback("sv", loi.getTeachingLanguages().get(0).getName().getTranslations()));
-        doc.addField(LearningOpportunity.EN_FNAME, this.getTranslationUseFallback("en", loi.getTeachingLanguages().get(0).getName().getTranslations()));    
-        docs.add(doc);
+        
+        //Teaching languages
+        this.indexCodeAsFacetDoc(loi.getTeachingLanguages().get(0), docs);
+        //Prerequisites
+        this.indexCodeAsFacetDoc(loi.getPrerequisite(), docs);
+        
         return docs;
     }
     
@@ -40,7 +40,10 @@ public class FacetIndexer {
         List<SolrInputDocument> docs = Lists.newArrayList();
         for (ChildLOS childLOS : parent.getChildren()) {
             for (ChildLOI childLOI : childLOS.getLois()) {
-                docs.add(indexTeachingLangFacetDoc(childLOI));
+                //Teaching languages
+                this.indexCodeAsFacetDoc(childLOI.getTeachingLanguages().get(0), docs);
+                //Prerequisites
+                this.indexCodeAsFacetDoc(childLOI.getPrerequisite(), docs);
             }
         }
         return docs;
@@ -60,15 +63,15 @@ public class FacetIndexer {
     } 
     
     /*
-     * Creates an solr document for teaching lang facet.
+     * Creates a facet document for the given code, and adds to the list of docs given.
      */
-    private SolrInputDocument indexTeachingLangFacetDoc(ChildLOI childLOI) {
+    private void indexCodeAsFacetDoc(Code code, List<SolrInputDocument> docs) {
         SolrInputDocument doc = new SolrInputDocument();
+        doc.addField(LearningOpportunity.ID, code.getValue());
         doc.addField(LearningOpportunity.TYPE, TYPE_FACET);
-        doc.addField(LearningOpportunity.ID, childLOI.getTeachingLanguages().get(0).getValue());
-        doc.addField(LearningOpportunity.FI_FNAME, this.getTranslationUseFallback("fi", childLOI.getTeachingLanguages().get(0).getName().getTranslations()));
-        doc.addField(LearningOpportunity.SV_FNAME, this.getTranslationUseFallback("sv", childLOI.getTeachingLanguages().get(0).getName().getTranslations()));
-        doc.addField(LearningOpportunity.EN_FNAME, this.getTranslationUseFallback("en", childLOI.getTeachingLanguages().get(0).getName().getTranslations()));
-        return doc;
+        doc.addField(LearningOpportunity.FI_FNAME, this.getTranslationUseFallback("fi", code.getName().getTranslations()));
+        doc.addField(LearningOpportunity.SV_FNAME, this.getTranslationUseFallback("sv", code.getName().getTranslations()));
+        doc.addField(LearningOpportunity.EN_FNAME, this.getTranslationUseFallback("en", code.getName().getTranslations())); 
+        docs.add(doc);
     }
 }
