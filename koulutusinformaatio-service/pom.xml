@@ -28,6 +28,10 @@
                     <artifactId>geronimo-servlet_2.5_spec</artifactId>
                     <groupId>org.apache.geronimo.specs</groupId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.apache.cxf</groupId>
+                    <artifactId>cxf-bundle</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
