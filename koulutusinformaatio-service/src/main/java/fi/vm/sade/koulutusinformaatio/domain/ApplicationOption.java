@@ -64,6 +64,7 @@ public class ApplicationOption {
     private I18nText additionalInfo;
     private AdditionalProof additionalProof;
     private ScoreLimit overallScoreLimit;
+    private boolean kaksoistutkinto;
 
 
     public String getId() {
@@ -288,6 +289,14 @@ public class ApplicationOption {
 
     public void setOverallScoreLimit(ScoreLimit overallScoreLimit) {
         this.overallScoreLimit = overallScoreLimit;
+    }
+
+    public boolean isKaksoistutkinto() {
+        return kaksoistutkinto;
+    }
+
+    public void setKaksoistutkinto(boolean kaksoistutkinto) {
+        this.kaksoistutkinto = kaksoistutkinto;
     }
 
     @Override

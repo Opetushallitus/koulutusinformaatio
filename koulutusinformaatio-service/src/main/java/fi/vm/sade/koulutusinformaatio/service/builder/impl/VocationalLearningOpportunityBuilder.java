@@ -367,6 +367,7 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
         ao.setLastYearApplicantCount(hakukohdeDTO.getEdellisenVuodenHakijatLkm());
         ao.setSelectionCriteria(getI18nText(hakukohdeDTO.getValintaperustekuvaus()));
         ao.setExams(createExams(hakukohdeDTO.getValintakoes()));
+        ao.setKaksoistutkinto(hakukohdeDTO.isKaksoisTutkinto());
         List<Code> subCodes = koodistoService.searchSubCodes(childKomoto.getPohjakoulutusVaatimusUri(),
                 LearningOpportunityBuilder.BASE_EDUCATION_KOODISTO_URI);
         List<String> baseEducations = Lists.transform(subCodes, new Function<Code, String>() {
@@ -446,7 +447,6 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
             cRef.setPrerequisite(childLOI.getPrerequisite());
             ao.getChildLOIRefs().add(cRef);
         }
-
         return ao;
     }
 
