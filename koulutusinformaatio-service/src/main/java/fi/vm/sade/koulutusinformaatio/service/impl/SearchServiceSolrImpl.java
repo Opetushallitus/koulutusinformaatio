@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LocationFields;
@@ -26,6 +27,7 @@ import fi.vm.sade.koulutusinformaatio.service.SearchService;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.LearningOpportunityQuery;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.LocationQuery;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.ProviderQuery;
+
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -161,9 +163,30 @@ public class SearchServiceSolrImpl implements SearchService {
         searchResultList.setAppStatusFacet(getHaunTila(response));
         searchResultList.setEdTypeFacet(getEdTypeFacet(response));
         searchResultList.setFilterFacet(getFilterFacet(facetFilters, lang));
+        searchResultList.setPrerequisiteFacet(getPrerequisiteFacet(response, lang));
         
     }
     
+    private Facet getPrerequisiteFacet(QueryResponse response, String lang) {
+        FacetField prerequisiteF = response.getFacetField(LearningOpportunity.PREREQUISITES);
+        Facet prerequisiteFacet = new Facet();
+        List<FacetValue> values = new ArrayList<FacetValue>();
+        if (prerequisiteF != null) {
+            for (Count curC : prerequisiteF.getValues()) {
+                
+                //if (curC.getCount() > 0) {
+                    FacetValue newVal = new FacetValue(LearningOpportunity.PREREQUISITES,  
+                                                        getLocalizedFacetName(curC.getName().toUpperCase(), lang), 
+                                                        curC.getCount(), 
+                                                        curC.getName());
+                    values.add(newVal);
+                //}
+            }
+        }
+        prerequisiteFacet.setFacetValues(values);
+        return prerequisiteFacet;
+    }
+
     /*
      * Education type facet
      */
@@ -173,13 +196,13 @@ public class SearchServiceSolrImpl implements SearchService {
         List<FacetValue> values = new ArrayList<FacetValue>();
         if (edTypeField != null) {
             for (Count curC : edTypeField.getValues()) {
-                if (curC.getCount() > 0) {
+                //if (curC.getCount() > 0) {
                     FacetValue newVal = new FacetValue(LearningOpportunity.EDUCATION_TYPE,  
                                                         curC.getName(), 
                                                         curC.getCount(), 
                                                         curC.getName());
                     values.add(newVal);
-                }
+                //}
             }
         }
         edTypeFacet.setFacetValues(values);
@@ -196,13 +219,14 @@ public class SearchServiceSolrImpl implements SearchService {
         List<FacetValue> values = new ArrayList<FacetValue>();
         if (teachingLangF != null) {
             for (Count curC : teachingLangF.getValues()) {
-                if (curC.getCount() > 0) {
+                
+                //if (curC.getCount() > 0) {
                     FacetValue newVal = new FacetValue(LearningOpportunity.TEACHING_LANGUAGE,  
                                                         getLocalizedFacetName(curC.getName(), lang), 
                                                         curC.getCount(), 
                                                         curC.getName());
                     values.add(newVal);
-                }
+                //}
             }
         }
         teachingLangFacet.setFacetValues(values);
@@ -257,7 +281,7 @@ public class SearchServiceSolrImpl implements SearchService {
     }
     
     /*
-     * Getting the update timestamp for the lo-collection.
+     * Getting the localized name for the facet value.
      */
     private String getLocalizedFacetName(String id, String lang) {
         SolrQuery query = new SolrQuery();
@@ -277,7 +301,7 @@ public class SearchServiceSolrImpl implements SearchService {
     }
     
     /*
-     * Getting the update timestamp for the lo-collection.
+     * Getting the facet doc.
      */
     private SolrDocument getFacetDoc(String id, String lang) {
         SolrQuery query = new SolrQuery();

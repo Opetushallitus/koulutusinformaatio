@@ -340,6 +340,7 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
                 sortCriteria: FilterService.getSortCriteria(),
     			lang: LanguageService.getLanguage()
     		}).then(function(result) {
+    			console.log(result);
     			$scope.loResult = result;
                 $scope.totalItems = result.totalCount;
     			$scope.maxPages = Math.ceil(result.totalCount / $scope.itemsPerPage);
@@ -406,6 +407,13 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     				$scope.facetSelections.push(fVal);
     			}
     		}, curVal);
+    		if (selLength == $scope.facetSelections.length) {
+    			angular.forEach($scope.loResult.prerequisiteFacet.facetValues, function(fVal, key) {
+        			if (this == fVal.valueId) {
+        				$scope.facetSelections.push(fVal);
+        			}
+        		}, curVal);
+    		}
     		if (selLength == $scope.facetSelections.length) {
     			angular.forEach($scope.loResult.filterFacet.facetValues, function(fVal, key) {
         			if (this == fVal.valueId) {

@@ -33,6 +33,7 @@ public class LOSearchResultListDTO {
     private FacetDTO filterFacet;
     private FacetDTO appStatusFacet; 
     private FacetDTO edTypeFacet;
+    private FacetDTO prerequisiteFacet;
 
 
     public List<LearningOpportunitySearchResultDTO> getResults() {
@@ -82,5 +83,13 @@ public class LOSearchResultListDTO {
 
     public void setEdTypeFacet(FacetDTO edTypeFacet) {
         this.edTypeFacet = edTypeFacet;
+    }
+
+    public FacetDTO getPrerequisiteFacet() {
+        return prerequisiteFacet;
+    }
+
+    public void setPrerequisiteFacet(FacetDTO prerequisiteFacet) {
+        this.prerequisiteFacet = prerequisiteFacet;
     }
 }
