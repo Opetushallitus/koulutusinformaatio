@@ -18,7 +18,7 @@
     "search-result-count-unit": "st",
     "search-field-placeholder": "Sök utbildningar här",
     "no-search-results": "Inga sökresultat",
-    "no-search-results-info": "Sökordet gav inget resultat. Försök med annat sökord.",
+    "no-search-results-info": "Hakusanalla \"__searchterm__\" ei löytynyt yhtään hakutulosta. Järjestelmään ei ehkä vielä ole syötetty kyseistä koulutusta tai tutkintoa. Ole hyvä ja yritä toisella hakusanalla. (sv)",
     "search-pagination-first": "Första",
     "search-pagination-last": "sista ",
     "search-pagination-next": "nästa",

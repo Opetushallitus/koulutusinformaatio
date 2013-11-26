@@ -3287,6 +3287,9 @@ button, .button {
     margin: 0 0 0 3px; }
 .collapse-content-container .selected {
   font-weight: bold; }
+  .collapse-content-container .selected:hover {
+    text-decoration: none;
+    cursor: auto; }
 
 .collapse.in {
   height: auto; }

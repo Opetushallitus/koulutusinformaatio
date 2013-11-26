@@ -271,6 +271,7 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     $scope.paginationNext = i18n.t('pagination-next');
     $scope.paginationPrevious = i18n.t('pagination-previous');
     $scope.valitseAlueTitle = i18n.t('valitse-alue');
+    $scope.noSearchResults = i18n.t('no-search-results-info', {searchterm: SearchService.getTerm()});
 
     $scope.changePage = function(page) {
         $scope.currentPage = page;
