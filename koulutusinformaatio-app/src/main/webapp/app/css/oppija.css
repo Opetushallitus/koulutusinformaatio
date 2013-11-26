@@ -1834,8 +1834,7 @@ b, strong, .bold {
       margin: 0 2em 0 0; }
 
 .pager-results {
-  display: block;
-  text-align: center;
+  display: inline-block;
   position: relative;
   bottom: 34px; }
 

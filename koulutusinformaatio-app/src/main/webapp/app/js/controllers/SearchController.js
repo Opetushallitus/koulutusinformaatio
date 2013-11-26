@@ -262,12 +262,13 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     $rootScope.title = i18n.t('title-search-results') + ' - ' + i18n.t('sitename');
 
     $scope.pageSizes = [25, 50, 100];
+
     $scope.sortCriterias = [
-        '', 
-        i18n.t('sort-criteria-alphabetical-desc'), 
-        i18n.t('sort-criteria-alphabetical-asc'),
-        i18n.t('sort-criteria-duration-asc'),
-        i18n.t('sort-criteria-duration-desc')
+        {value: i18n.t('sort-criteria-default')}, 
+        {value: i18n.t('sort-criteria-alphabetical-desc')}, 
+        {value: i18n.t('sort-criteria-alphabetical-asc')},
+        {value: i18n.t('sort-criteria-duration-asc'), group: i18n.t('sort-criteria-duration-group')},
+        {value: i18n.t('sort-criteria-duration-desc'), group: i18n.t('sort-criteria-duration-group')}
         
     ];
 
