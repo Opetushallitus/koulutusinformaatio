@@ -307,6 +307,9 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
         childLOI.setInternationalization(getI18nText(childKomoto.getKansainvalistyminen()));
         childLOI.setCooperation(getI18nText(childKomoto.getYhteistyoMuidenToimijoidenKanssa()));
         childLOI.setContent(getI18nText(childKomoto.getSisalto()));
+        childLOI.setPlannedDuration(childKomoto.getLaajuusArvo());
+        childLOI.setPlannedDurationUnit(koodistoService.searchFirst(childKomoto.getLaajuusYksikkoUri()));
+        childLOI.setPduCodeUri(childKomoto.getLaajuusYksikkoUri());
 
         if (childKomoto.getYhteyshenkilos() != null) {
             for (YhteyshenkiloRDTO yhteyshenkiloRDTO : childKomoto.getYhteyshenkilos()) {

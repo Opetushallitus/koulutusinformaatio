@@ -119,16 +119,20 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
 
         Set<String> prerequisites = Sets.newHashSet();
         Date earliest = null;
+        int minDuration = Integer.MAX_VALUE;
         for (ChildLOS childLOS : parent.getChildren()) {
             for (ChildLOI childLOI : childLOS.getLois()) {
                 prerequisites.add(childLOI.getPrerequisite().getValue());
                 if (earliest == null || earliest.after(childLOI.getStartDate())) {
                     earliest = childLOI.getStartDate();
                 }
+                int curDuration = this.getDuration(childLOI);
+                minDuration = curDuration < minDuration ? curDuration : minDuration;
             }
         }
         doc.setField(LearningOpportunity.PREREQUISITES, prerequisites);
         doc.setField(LearningOpportunity.START_DATE_SORT, earliest);
+        doc.setField(LearningOpportunity.DURATION_SORT, minDuration);
         
         indexFacetFields(parent, doc);
 
@@ -138,6 +142,8 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
 
 
     private SolrInputDocument createChildDoc(ChildLOS childLOS, ChildLOI childLOI, ParentLOS parent) {
+       
+        
         SolrInputDocument doc = new SolrInputDocument();
         Provider provider = parent.getProvider();
         doc.addField(LearningOpportunity.TYPE, TYPE_CHILD);
@@ -146,7 +152,6 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         doc.addField(LearningOpportunity.LOP_ID, provider.getId());
         doc.addField(LearningOpportunity.PARENT_ID, parent.getId());
         doc.addField(LearningOpportunity.PREREQUISITES, childLOI.getPrerequisite().getValue());
-        
         
 
         doc.setField(LearningOpportunity.PREREQUISITE, resolveTranslationInTeachingLangUseFallback(
@@ -221,12 +226,51 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         addApplicationDates(doc, childLOI.getApplicationOptions());
         
         doc.addField(LearningOpportunity.START_DATE_SORT, childLOI.getStartDate());
+        indexDurationField(childLOI, doc);
         
         indexFacetFields(childLOS, childLOI, parent, doc);
 
         return doc;
     }
     
+
+    /*
+     * Indexes the duration_ssort field, used in sorting
+     * results according to planned duration of the loi
+     */
+    private void indexDurationField(ChildLOI childLOI, SolrInputDocument doc) {
+        int duration = getDuration(childLOI);
+        doc.addField(LearningOpportunity.DURATION_SORT, duration);
+    }
+
+
+    /*
+     * Parses duration from duration string, which may contain
+     * non numerical characters, e.g. 2-5. Takes the min value
+     * of the numerical values. 
+     * Scales values to be counted in months.
+     */
+    private int getDuration(ChildLOI childLOI) {
+        String[] numStrings = childLOI.getPlannedDuration().split("[^0-9]*");
+        int min = Integer.MAX_VALUE;
+        for (String curNumStr : numStrings) {
+            if ((curNumStr != null) && !curNumStr.isEmpty()) {
+                try {
+                    int curInt = Integer.parseInt(curNumStr);
+                    min = curInt < min ? curInt : min;
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        if (childLOI.getPduCodeUri().contains(SolrConstants.KESTOTYYPPI_VUOSI) && min < Integer.MAX_VALUE) {
+            min = min * 12;
+        } 
+        
+        return min < Integer.MAX_VALUE ? min : -1;
+    }
+
+
 
     /*
      * Indexes fields used in facet search for ParentLOS learning opportunities

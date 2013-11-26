@@ -1,6 +1,7 @@
 package fi.vm.sade.koulutusinformaatio.dao.entity;
 
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
+
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Reference;
 
@@ -44,7 +45,10 @@ public class ChildLearningOpportunityInstanceEntity {
     private I18nText selectingDegreeProgram;
     @Embedded
     private List<ContactPersonEntity> contactPersons;
-
+    
+    private String plannedDuration;
+    @Embedded
+    private I18nTextEntity plannedDurationUnit;
 
     public String getId() {
         return id;
@@ -172,5 +176,21 @@ public class ChildLearningOpportunityInstanceEntity {
 
     public void setContactPersons(List<ContactPersonEntity> contactPersons) {
         this.contactPersons = contactPersons;
+    }
+    
+    public String getPlannedDuration() {
+        return plannedDuration;
+    }
+
+    public void setPlannedDuration(String plannedDuration) {
+        this.plannedDuration = plannedDuration;
+    }
+
+    public I18nTextEntity getPlannedDurationUnit() {
+        return plannedDurationUnit;
+    }
+
+    public void setPlannedDurationUnit(I18nTextEntity plannedDurationUnit) {
+        this.plannedDurationUnit = plannedDurationUnit;
     }
 }

@@ -82,7 +82,38 @@
     </div>
 </div>
 
-<div class="filter">
+	<!-- <div class="filter">
+		<h4 data-ng-click="toggleCollapsed(0)" class="collapser"
+			data-ng-class="{open: !collapsed[0], close: collapsed[0]}">
+			<span class="icon"></span> <span data-ki-i18n="pohjakoulutus"></span>
+		</h4>
+		<div collapse="collapsed[0]" class="collapse">
+			<ul class="nobullet collapse-content-container">
+				<li data-ng-show="loResult.ongoingFacet"><span
+					data-ng-show="!ongoing && loResult.ongoingFacet.count > 0"
+					class="facet-item"> <a href data-ng-click="setOngoing()"><span
+							data-ki-i18n="filter-search-as-ongoing"></span>
+							({{loResult.ongoingFacet.count}})</a>
+				</span> <span data-ng-show="ongoing && loResult.ongoingFacet.count > 0"
+					class="facet-item selected"> <span
+						data-ki-i18n="filter-search-as-ongoing"></span>
+						({{loResult.ongoingFacet.count}})
+				</span></li>
+				<li data-ng-show="loResult.upcomingFacet"><span
+					data-ng-show="!upcoming && loResult.upcomingFacet.count > 0"
+					class="facet-item"> <a href data-ng-click="setUpcoming()"><span
+							data-ki-i18n="filter-search-as-upcoming"></span>
+							({{loResult.upcomingFacet.count}})</a>
+				</span> <span data-ng-show="upcoming && loResult.upcomingFacet.count > 0"
+					class="facet-item selected"> <span
+						data-ki-i18n="filter-search-as-upcoming"></span>
+						({{loResult.upcomingFacet.count}})
+				</span></li>
+			</ul>
+		</div>
+	</div>-->
+
+	<div class="filter">
     <h4 data-ng-click="toggleCollapsed(1)" class="collapser" data-ng-class="{open: !collapsed[1], close: collapsed[1]}">
         <span class="icon"></span>
         <span data-ki-i18n="filter-search-location-title"></span>

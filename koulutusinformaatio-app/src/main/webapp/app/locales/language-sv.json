@@ -50,6 +50,8 @@
     "sort-criteria-alphabetical-desc": "Aakkoset A-Ö (sv)",
     "sort-criteria-alphabetical-asc": "Aakkoset Ö-A (sv)",
     "sort-criteria-extent": "Koulutuksen laajuus (sv)",
+    "sort-criteria-duration-asc": "Lyhtykestoiset ensin (sv)",
+    "sort-criteria-duration-desc": "Pitkäkestoiset ensin (sv)",
     "sort-criteria-items-per-page-label": "Näytä (sv)",
     "sort-criteria-sort-label": "Lajittele (sv)",
     "sort-results-label": "Tulokset (sv)",
