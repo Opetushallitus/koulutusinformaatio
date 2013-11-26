@@ -9,7 +9,8 @@ angular.module("ui.bootstrap",
     "ui.bootstrap.tabs",
     "ui.bootstrap.pagination",
     "ui.bootstrap.typeahead",
-    "ui.bootstrap.collapse"
+    "ui.bootstrap.collapse",
+    "ui.bootstrap.modal"
   ]);
 
 angular.module("ui.bootstrap.tpls",
@@ -24,7 +25,9 @@ angular.module("ui.bootstrap.tpls",
     "template/pagination/pagination.html",
     "template/typeahead/typeahead-match.html",
     "template/typeahead/typeahead-popup.html",
-    "template/popover/popover-template.html"
+    "template/popover/popover-template.html",
+    "template/modal/backdrop.html",
+    "template/modal/window.html"
   ]);
 
 angular.module('ui.bootstrap.position', [])

@@ -1,13 +1,14 @@
 <div id="select-location-dialog">
+    <span class="close" data-ng-click="cancel()">&nbsp;</span>
+    <h2 data-ki-i18n="valitse-alue"></h2>
     <div class="float-left">
         <h4 class="margin-top-0"><span data-ki-i18n="district"></span></h4>
         <select size="10" 
         id="districtSelection" 
         multiple 
         ng-multiple="true" 
-        ng-model="selectedDistricts" 
+        ng-model="$parent.selectedDistricts" 
         ng-options="dist.name for dist in distResult | orderBy:'name'"
-        style="width:200px; height: 200px"
         ng-click="doMunicipalitySearch()"></select>
         <span class="facet-location-separator">&gt;</span>
     </div>
@@ -18,16 +19,15 @@
         id="municipalitySelection" 
         multiple 
         ng-multiple="true" 
-        ng-model="selectedMunicipality" 
+        ng-model="$parent.selectedMunicipality" 
         ng-options="mun.name for mun in muniResult"
-        ng-click="selectMunicipality()"
-        style="width:200px; height: 200px"></select>
+        ng-click="selectMunicipality()"></select>
         <span class="facet-location-separator">&gt;</span>
     </div>
 
     <div class="float-left">
         <h4 class="margin-top-0"><span data-ki-i18n="valitut-alueet"></span></h4> 
-        <ul class="select" style="width:200px; height: 200px">
+        <ul class="select">
             <li data-ng-repeat="mun in selectedMunicipalities | orderBy:'name'">
                 <a href="javascript:void(0)" data-ng-click="removeMunicipality(mun.code)">
                     <span class="icon remove"></span>
@@ -39,8 +39,8 @@
 
     <div class="clear"></div>
     <div class="margin-top-2">
-        <button class="float-left btn-close"><span><span data-ki-i18n="cancel"></span></span></button>
-        <button class="primary float-right" data-ng-click="filterBySelLocations()"><span><span data-ki-i18n="ok"></span></span></button>
+        <button class="float-left" data-ng-click="cancel()"><span><span data-ki-i18n="cancel"></span></span></button>
+        <button class="primary float-right" data-ng-disabled="!selectedMunicipalities.length > 0" data-ng-click="filterBySelLocations()"><span><span data-ki-i18n="ok"></span></span></button>
     </div>
     <div class="clear"></div>
 </div>

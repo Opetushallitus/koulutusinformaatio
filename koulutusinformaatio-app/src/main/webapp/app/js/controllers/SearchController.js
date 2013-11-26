@@ -26,7 +26,7 @@ function SearchFieldCtrl($scope, $location, SearchService, kiAppConstants, Filte
 /**
  *  Controller for search filters
  */
-function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, kiAppConstants, FilterService, LanguageService, DistrictService, ChildLocationsService, UtilityService) {
+function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, kiAppConstants, FilterService, LanguageService, DistrictService, ChildLocationsService, UtilityService, $modal) {
 
     $scope.change = function() {
         FilterService.set({
@@ -152,54 +152,6 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     		$scope.distResult.unshift({name: i18n.t('koko') + ' ' + i18n.t('suomi'), code: '-1'});
     	});
     }
-    
-    $scope.doMunicipalitySearch = function() {
-    	var queryDistricts = [];
-    	if ($scope.muniResult != undefined) {
-    		$scope.muniResult.length = 0;
-    	} else {
-    		$scope.muniResult = [];
-    	}
-    	if ($scope.isWholeAreaSelected($scope.selectedDistricts)) {
-    		queryDistricts = $scope.distResult;
-    	} else {
-    		queryDistricts = $scope.selectedDistricts;
-    	}
-    	ChildLocationsService.query(queryDistricts).then(function(result) {
-    		
-    		if (!$scope.isWholeAreaSelected($scope.selectedDistricts)) {
-                UtilityService.sortLocationsByName(result);
-    			$scope.muniResult.push.apply($scope.muniResult, queryDistricts);
-    			$scope.muniResult.push.apply($scope.muniResult, result);
-    		} else {
-    			$scope.muniResult.push.apply($scope.muniResult, result);
-    		}
-    		
-    	});
-    }
-    
-    $scope.filterBySelLocations = function() {
-        if (!$scope.locations) {
-            $scope.locations = [];
-        }
-
-        angular.forEach($scope.selectedMunicipalities, function(location, locationkey) {
-            if (location && $scope.locations.indexOf(location) < 0) {
-                $scope.locations.push(location);
-            }
-        });
-        
-    	$scope.change();
-    }
-    
-    $scope.isWholeAreaSelected = function(areaArray) {
-    	for (var i = 0; i < areaArray.length; i++) {
-    		if (areaArray[i].code == '-1') {
-    			return true;
-    		}
-    	}
-    	return false;
-    }
 
     $scope.toggleCollapsed = function(index) {
         if (!$scope.collapsed) {
@@ -221,6 +173,67 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     		}
     	}
     	return isSelected;
+    }
+
+    $scope.openModal = function() {
+
+        var modalIntance = $modal.open({
+            templateUrl: 'templates/selectArea.html',
+            backdrop: 'static',
+            //scope: $scope,
+            controller: LocationDialogCtrl
+        });
+
+        modalIntance.result.then(function(result) {
+            if (!$scope.locations) {
+                $scope.locations = result;
+            } else {
+                angular.forEach(result, function(value, key){
+                    if ($scope.locations.indexOf(value) < 0) {
+                        $scope.locations.push(value);
+                    }
+                });
+            }
+
+            $scope.change();
+        })
+    }
+};
+
+function LocationDialogCtrl($scope, $modalInstance, ChildLocationsService, UtilityService, DistrictService) {
+
+    DistrictService.query().then(function(result) {
+        $scope.distResult = result;
+        $scope.distResult.unshift({name: i18n.t('koko') + ' ' + i18n.t('suomi'), code: '-1'});
+    });
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    }
+
+    $scope.doMunicipalitySearch = function() {
+        var queryDistricts = [];
+        if ($scope.muniResult != undefined) {
+            $scope.muniResult.length = 0;
+        } else {
+            $scope.muniResult = [];
+        }
+        if ($scope.isWholeAreaSelected($scope.selectedDistricts)) {
+            queryDistricts = $scope.distResult;
+        } else {
+            queryDistricts = $scope.selectedDistricts;
+        }
+        ChildLocationsService.query(queryDistricts).then(function(result) {
+            
+            if (!$scope.isWholeAreaSelected($scope.selectedDistricts)) {
+                UtilityService.sortLocationsByName(result);
+                $scope.muniResult.push.apply($scope.muniResult, queryDistricts);
+                $scope.muniResult.push.apply($scope.muniResult, result);
+            } else {
+                $scope.muniResult.push.apply($scope.muniResult, result);
+            }
+            
+        });
     }
 
     $scope.selectMunicipality = function() {
@@ -251,7 +264,21 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
             }
         });
     }
-};
+
+    $scope.isWholeAreaSelected = function(areaArray) {
+        for (var i = 0; i < areaArray.length; i++) {
+            if (areaArray[i].code == '-1') {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    $scope.filterBySelLocations = function() {
+        $modalInstance.close($scope.selectedMunicipalities);
+    }
+
+}
 
 /**
  *  Controller for search functionality 
@@ -340,7 +367,6 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
                 sortCriteria: FilterService.getSortCriteria(),
     			lang: LanguageService.getLanguage()
     		}).then(function(result) {
-    			console.log(result);
     			$scope.loResult = result;
                 $scope.totalItems = result.totalCount;
     			$scope.maxPages = Math.ceil(result.totalCount / $scope.itemsPerPage);
