@@ -213,5 +213,7 @@
      "et2": "Kaksoistutkinto (sv)",
      "et3": "Ammatillinen perustutkinto (sv)",
      "et4": "Ammatillinen perustutkinto erityisopetuksena (sv)",
-     "et5": "Valmentava ja kuntouttava opetus ja ohjaus (sv)"
+     "et5": "Valmentava ja kuntouttava opetus ja ohjaus (sv)",
+     "pohjakoulutus": "Pohjakoulutus (sv)",
+     "prerequisites": "Pohjakoulutus (sv)"
 }
