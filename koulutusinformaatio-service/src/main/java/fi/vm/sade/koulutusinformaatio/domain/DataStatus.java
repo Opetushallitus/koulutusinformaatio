@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 The Finnish Board of Education - Opetushallitus
+ * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
  *
  * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
  * soon as they will be approved by the European Commission - subsequent versions
@@ -14,39 +14,24 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.koulutusinformaatio.dao.entity;
-
-import org.bson.types.ObjectId;
-import org.mongodb.morphia.annotations.Entity;
-import org.mongodb.morphia.annotations.Id;
-import org.mongodb.morphia.annotations.PrePersist;
+package fi.vm.sade.koulutusinformaatio.domain;
 
 import java.util.Date;
 
 /**
- * @author Mikko Majapuro
+ * @author Hannu Lyytikainen
  */
-@Entity("dataStatus")
-public class DataStatusEntity {
+public class DataStatus {
 
-    @Id
-    private org.bson.types.ObjectId id;
     Date lastUpdated = new Date();
     private long lastUpdateDuration;
 
-    public DataStatusEntity() {}
-
-    @PrePersist
-    void prePersist() {
-        lastUpdated = new Date();
+    public DataStatus(Date lastUpdated, long lastUpdateDuration) {
+        this.lastUpdated = lastUpdated;
+        this.lastUpdateDuration = lastUpdateDuration;
     }
 
-    public ObjectId getId() {
-        return id;
-    }
-
-    public void setId(ObjectId id) {
-        this.id = id;
+    public DataStatus() {
     }
 
     public Date getLastUpdated() {

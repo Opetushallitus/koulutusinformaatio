@@ -111,10 +111,10 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     }
 
     @Override
-    public Date getLastUpdated() {
+    public DataStatus getLatestDataStatus() {
         DataStatusEntity status = dataStatusDAO.getLatest();
         if (status != null) {
-            return status.getLastUpdated();
+            return modelMapper.map(status, DataStatus.class);
         } else {
             return null;
         }

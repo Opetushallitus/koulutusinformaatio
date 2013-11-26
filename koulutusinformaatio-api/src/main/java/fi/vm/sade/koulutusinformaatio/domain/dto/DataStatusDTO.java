@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 The Finnish Board of Education - Opetushallitus
+ * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
  *
  * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
  * soon as they will be approved by the European Commission - subsequent versions
@@ -14,40 +14,23 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.koulutusinformaatio.dao.entity;
+package fi.vm.sade.koulutusinformaatio.domain.dto;
 
-import org.bson.types.ObjectId;
-import org.mongodb.morphia.annotations.Entity;
-import org.mongodb.morphia.annotations.Id;
-import org.mongodb.morphia.annotations.PrePersist;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import java.util.Date;
 
 /**
- * @author Mikko Majapuro
+ * @author Hannu Lyytikainen
  */
-@Entity("dataStatus")
-public class DataStatusEntity {
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
+public class DataStatusDTO {
 
-    @Id
-    private org.bson.types.ObjectId id;
     Date lastUpdated = new Date();
+    String lastUpdatedStr;
     private long lastUpdateDuration;
-
-    public DataStatusEntity() {}
-
-    @PrePersist
-    void prePersist() {
-        lastUpdated = new Date();
-    }
-
-    public ObjectId getId() {
-        return id;
-    }
-
-    public void setId(ObjectId id) {
-        this.id = id;
-    }
+    private String lastUpdateDurationStr;
+    private boolean running;
 
     public Date getLastUpdated() {
         return lastUpdated;
@@ -63,5 +46,29 @@ public class DataStatusEntity {
 
     public void setLastUpdateDuration(long lastUpdateDuration) {
         this.lastUpdateDuration = lastUpdateDuration;
+    }
+
+    public boolean isRunning() {
+        return running;
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
+
+    public String getLastUpdatedStr() {
+        return lastUpdatedStr;
+    }
+
+    public void setLastUpdatedStr(String lastUpdatedStr) {
+        this.lastUpdatedStr = lastUpdatedStr;
+    }
+
+    public String getLastUpdateDurationStr() {
+        return lastUpdateDurationStr;
+    }
+
+    public void setLastUpdateDurationStr(String lastUpdateDurationStr) {
+        this.lastUpdateDurationStr = lastUpdateDurationStr;
     }
 }

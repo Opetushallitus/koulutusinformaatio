@@ -29,7 +29,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -143,8 +142,8 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     }
 
     @Override
-    public Date getLastDataUpdated() {
-        return educationDataQueryService.getLastUpdated();
+    public DataStatus getLastDataStatus() {
+        return educationDataQueryService.getLatestDataStatus();
     }
 
     @Override
