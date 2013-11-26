@@ -36,11 +36,13 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
             if (params.sortCriteria != undefined) {
             	if (params.sortCriteria == 1 || params.sortCriteria == 2) {
             		sortField = 'name_ssort';
-            	} 
+            	} else if (params.sortCriteria == 3 || params.sortCriteria == 4) {
+            		sortField = 'duration_ssort';
+            	}
             } 
             
             qParams += (sortField.length > 0) ? ('&sort=' +sortField) : '';
-            qParams += ((params.sortCriteria != undefined) && (params.sortCriteria == 2)) ? ('&order=desc') : '';
+            qParams += ((params.sortCriteria != undefined) && ((params.sortCriteria == 2) || (params.sortCriteria == 4))) ? ('&order=desc') : '';
 
             $http.get('../lo/search/' + encodeURI(params.queryString) + qParams, {}).
             success(function(result) {

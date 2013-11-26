@@ -181,8 +181,9 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
         loi.setContent(getI18nText(komoto.getSisalto()));
 
         loi.setPlannedDuration(komoto.getLaajuusArvo());
-
         loi.setPlannedDurationUnit(koodistoService.searchFirst(komoto.getLaajuusYksikkoUri()));
+        loi.setPduCodeUri(komoto.getLaajuusYksikkoUri());
+        
         for (String d : komoto.getLukiodiplomitUris()) {
             loi.getDiplomas().add(koodistoService.searchFirst(d));
         }

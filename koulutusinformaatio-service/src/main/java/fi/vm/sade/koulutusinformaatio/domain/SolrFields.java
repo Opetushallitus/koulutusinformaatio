@@ -69,6 +69,7 @@ public class SolrFields {
         //Fields for sorting
         public static final String START_DATE_SORT = "startDate_dsort";
         public static final String NAME_SORT = "name_ssort";
+        public static final String DURATION_SORT = "duration_ssort";
         
     }
     
@@ -96,6 +97,8 @@ public class SolrFields {
     	public static final String SPECIAL_EDUCATION = "ER";
     	public static final String TIMESTAMP_DOC = "loUpdateTimestampDocument";
     	public static final String TYPE_FACET = "FASETTI";
+    	public static final String KESTOTYYPPI_VUOSI = "suunniteltukesto_01";
+    	public static final String KESTOTYYPPI_KK = "suunniteltukesto_02";
     	
     	
     }
