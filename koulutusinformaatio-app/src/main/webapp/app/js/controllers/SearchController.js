@@ -8,6 +8,7 @@ function SearchFieldCtrl($scope, $location, SearchService, kiAppConstants, Filte
     // Perform search using LearningOpportunity service
     $scope.search = function() {
         if ($scope.queryString) {
+            FilterService.clear(); // clear all filters for new search
             FilterService.setPage(kiAppConstants.searchResultsStartPage);
             SearchService.setTerm($scope.queryString);
             var queryString = $scope.queryString;

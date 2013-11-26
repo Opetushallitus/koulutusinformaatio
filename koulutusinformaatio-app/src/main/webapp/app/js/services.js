@@ -935,6 +935,10 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
             return result;
         },
 
+        clear: function() {
+            filters = {};
+        },
+
         getPrerequisite: function() {
             if (filters.prerequisite) {
                 return filters.prerequisite;
