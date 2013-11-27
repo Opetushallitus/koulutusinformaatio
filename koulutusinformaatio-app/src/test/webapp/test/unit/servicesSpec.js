@@ -251,6 +251,38 @@ describe('ApplicationBasketService', function() {
             expect(service.getItems()[1]).toEqual('ao_id_2');
         });
     });
+
+    describe('itemExists', function() {
+
+        var addData = function() {
+            service.addItem('ao_id_1', 'basket_type_1');
+            service.addItem('ao_id_2', 'basket_type_1');
+            service.addItem('ao_id_3', 'basket_type_1');
+            service.addItem('ao_id_4', 'basket_type_1');
+        }
+
+        beforeEach(function() {
+            service.empty();
+        });
+
+        it('should return false for empty basket', function() {
+            var result = service.itemExists('ao_id_1');
+            expect(result).toBeFalsy();
+        });
+
+        it('should return true for existing id', function() {
+            addData();
+            var result = service.itemExists('ao_id_3');
+            expect(result).toBeTruthy();
+        });
+
+        it('should return false for non-existing id', function() {
+            addData();
+            var result = service.itemExists('ao_id_x');
+            expect(result).toBeFalsy();
+        });
+
+    });
 });
 
 

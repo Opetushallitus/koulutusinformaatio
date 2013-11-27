@@ -813,6 +813,17 @@ service('ApplicationBasketService', ['$http', '$q', 'LanguageService', 'UtilityS
             }
         },
 
+        itemExists: function(aoId) {
+            var result = false;
+            angular.forEach(this.getItems(), function(item, key) {
+                if (aoId == item) {
+                    result = true;
+                }
+            });
+
+            return result;
+        },
+
         query: function(params) {
             var deferred = $q.defer();
             var basketItems = this.getItems();

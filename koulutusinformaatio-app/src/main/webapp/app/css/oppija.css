@@ -2296,6 +2296,12 @@ table.striped {
 /* Application system */
 .application-container .application-system {
   margin-bottom: 2em; }
+.application-container button {
+  margin-top: 3px; }
+.application-container .add-to-basket {
+  display: inline-block;
+  vertical-align: top;
+  margin: 0 0 0 10px; }
 .application-container .title {
   margin: 0;
   padding: 5px 0 5px 10px;
