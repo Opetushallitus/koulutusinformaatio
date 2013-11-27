@@ -17,6 +17,10 @@
 package fi.vm.sade.koulutusinformaatio.service.impl.query;
 
 import com.google.common.base.Joiner;
+
+import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LocationFields;
+import fi.vm.sade.koulutusinformaatio.domain.SolrFields.SolrConstants;
+
 import org.apache.solr.client.solrj.SolrQuery;
 
 import java.util.List;
@@ -45,6 +49,9 @@ public class LocationQuery extends SolrQuery {
     public LocationQuery(String field, String value, final String lang) {
         super(String.format("%s:%s", field, value));
         this.addFilterQuery(String.format("%s:%s", LANG, lang));
+        //Filter out the unknown district
+        this.addFilterQuery(String.format("-%s:%s%s", LocationFields.ID, lang, SolrConstants.DISTRICT_UNKNOWN));
+        this.addFilterQuery(String.format("-%s:%s%s", LocationFields.ID, lang, SolrConstants.MUNICIPALITY_UNKNOWN));
         this.setRows(1000);
     }
     
