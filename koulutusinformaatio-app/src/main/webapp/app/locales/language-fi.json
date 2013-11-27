@@ -200,7 +200,7 @@
     "valitse-alue": "Valitse alue, jolta haet koulutuksia",
     "valitse-alue-link": "Valitse alue",
     "district": "Maakunta",
-    "municipality": "Kaupunki/kunta",
+    "municipality": "Kaupunki / kunta",
     "valitut-alueet": "Valitut alueet",
     "ok": "Hyväksy",
     "cancel": "Peruuta",
@@ -218,5 +218,4 @@
     "prerequisites": "Pohjakoulutuksesi",
     "yo": "Lukio ja / tai ylioppilastutkinto",
     "pk": "Peruskoulu"   
-    
 }
