@@ -76,11 +76,10 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         doc.addField(LearningOpportunity.NAME_SV, parent.getName().getTranslations().get("sv"));
         
         doc.addField(LearningOpportunity.NAME_EN, parent.getName().getTranslations().get("en"));
+        
+        indexLopName(doc, provider);
 
-        doc.setField(LearningOpportunity.LOP_NAME, provider.getName().getTranslations().get("fi"));
-        doc.addField(LearningOpportunity.LOP_NAME_FI, provider.getName().getTranslations().get("fi"));
-        doc.addField(LearningOpportunity.LOP_NAME_SV, provider.getName().getTranslations().get("sv"));
-        doc.addField(LearningOpportunity.LOP_NAME_EN, provider.getName().getTranslations().get("en"));
+        
 
         if (provider.getHomeDistrict() != null) {
             List<String> locVals = new ArrayList<String>();
@@ -140,6 +139,27 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
 
         return doc;
     }
+
+
+
+    private void indexLopName(SolrInputDocument doc, Provider provider) {
+        
+        String nameFi = provider.getName().getTranslations().get("fi");
+        String nameSv = provider.getName().getTranslations().get("sv");
+        String nameEn = provider.getName().getTranslations().get("en");
+        
+        //Setting the lop name to be finnish, if no finnish name, fallback to swedish or english
+        String name = nameFi != null ? nameFi : nameSv;
+        name = name == null ? nameEn : name;
+        
+        doc.setField(LearningOpportunity.LOP_NAME, name);
+        doc.addField(LearningOpportunity.LOP_NAME_FI, nameFi);
+        doc.addField(LearningOpportunity.LOP_NAME_SV, nameSv);
+        doc.addField(LearningOpportunity.LOP_NAME_EN, nameEn);
+        
+    }
+
+
 
 
 
