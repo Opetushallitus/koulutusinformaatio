@@ -123,7 +123,7 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         int minDuration = Integer.MAX_VALUE;
         for (ChildLOS childLOS : parent.getChildren()) {
             for (ChildLOI childLOI : childLOS.getLois()) {
-                prerequisites.add(childLOI.getPrerequisite().getValue());
+                addPrerequisite(prerequisites, childLOI);
                 if (earliest == null || earliest.after(childLOI.getStartDate())) {
                     earliest = childLOI.getStartDate();
                 }
@@ -139,6 +139,19 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
 
         return doc;
     }
+    
+    
+
+
+
+    private void addPrerequisite(Set<String> prerequisites, ChildLOI childLOI) {
+        String prereq = SolrConstants.ER.equals(childLOI.getPrerequisite().getValue()) ? SolrConstants.PK : childLOI.getPrerequisite().getValue();
+        if (!prerequisites.contains(prereq)) {
+            prerequisites.add(prereq);
+        }
+    }
+
+
 
 
 
@@ -173,7 +186,8 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         doc.addField(LearningOpportunity.LOS_ID, childLOS.getId());
         doc.addField(LearningOpportunity.LOP_ID, provider.getId());
         doc.addField(LearningOpportunity.PARENT_ID, parent.getId());
-        doc.addField(LearningOpportunity.PREREQUISITES, childLOI.getPrerequisite().getValue());
+        doc.addField(LearningOpportunity.PREREQUISITES, SolrConstants.ER.equals(childLOI.getPrerequisite().getValue()) 
+                                ? SolrConstants.PK : childLOI.getPrerequisite().getValue());
         
         doc.addField(LearningOpportunity.CREDITS, String.format("%s %s", parent.getCreditValue(), 
                 resolveTranslationInTeachingLangUseFallback(childLOI.getTeachingLanguages(), 
