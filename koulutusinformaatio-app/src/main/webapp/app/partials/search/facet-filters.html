@@ -91,10 +91,10 @@
 			<ul class="nobullet collapse-content-container">
 				<li data-ng-repeat="fv in loResult.prerequisiteFacet.facetValues">
                 <span data-ng-show="!isSelected(fv) && (fv.count > 0)" class="facet-item">
-                    <a href="javascript:void(0)" data-ng-click="selectFacetFilter(fv.valueId, fv.facetField)">{{fv.valueName}} ({{fv.count}})</a>
+                    <a href="javascript:void(0)" data-ng-click="selectFacetFilter(fv.valueId, fv.facetField)"><span data-ki-i18n="{{fv.valueName}}"></span> ({{fv.count}})</a>
                 </span>
                 <span data-ng-show="isSelected(fv)" class="facet-item selected">
-                    <span>{{fv.valueName}} ({{fv.count}})</span>
+                    <span><span data-ki-i18n="{{fv.valueName}}"></span> ({{fv.count}})</span>
                     <a href="javascript:void(0)" class="remove" data-ng-click="removeSelection(fv)"></a>
                 </span>
             </li>

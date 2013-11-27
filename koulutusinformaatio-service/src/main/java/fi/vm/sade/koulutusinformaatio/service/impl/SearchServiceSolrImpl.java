@@ -178,7 +178,7 @@ public class SearchServiceSolrImpl implements SearchService {
                 
                 //if (curC.getCount() > 0) {
                     FacetValue newVal = new FacetValue(LearningOpportunity.PREREQUISITES,  
-                                                        getLocalizedFacetName(curC.getName().toUpperCase(), lang), 
+                                                        curC.getName(), 
                                                         curC.getCount(), 
                                                         curC.getName());
                     values.add(newVal);
