@@ -3300,8 +3300,7 @@ button, .button {
   padding: 0 0 0 18px;
   margin: 0 0 0 3px; }
   .collapse-content-container .facet-item:hover {
-    text-decoration: underline;
-    cursor: pointer; }
+    text-decoration: underline; }
   .collapse-content-container .facet-item a {
     text-decoration: none;
     color: #333333; }
@@ -3310,6 +3309,8 @@ button, .button {
     width: 10px;
     height: 10px;
     margin: 0 0 0 3px; }
+  .collapse-content-container .facet-item.inactive {
+    text-decoration: none; }
 .collapse-content-container .selected {
   font-weight: bold; }
   .collapse-content-container .selected:hover {
