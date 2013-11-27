@@ -8,7 +8,7 @@
                     <a href="javascript:void(0)" data-ng-click="setOngoing()"><span data-ki-i18n="filter-search-as-ongoing"></span> ({{loResult.ongoingFacet.count}})</a>
                 </span>
                 <span data-ng-show="ongoing && loResult.ongoingFacet.count > 0" class="facet-item selected">
-                    <span data-ki-i18n="filter-search-as-ongoing"></span> ({{loResult.ongoingFacet.count}})
+                    <span data-ki-i18n="filter-search-as-ongoing"></span> <!--({{loResult.ongoingFacet.count}})-->
                     <a href="javascript:void(0)" class="remove" data-ng-click="removeOngoing()"></a>
                 </span>
             </li>
@@ -38,7 +38,7 @@
                         <span data-ki-i18n="et1"></span> ({{loResult.edTypeFacet.et1.count}})</a>
                 </span>
                 <span data-ng-show="isEdTypeSelected(loResult.edTypeFacet.et1)" class="facet-item selected">
-                    <span><span data-ki-i18n="et1"></span> ({{loResult.edTypeFacet.et1.count}})</span>
+                    <span><span data-ki-i18n="et1"></span></span>
                     <a href="javascript:void(0)" class="remove" data-ng-click="removeSelection(loResult.edTypeFacet.et1)"></a>
                 </span>
             </li>
@@ -47,7 +47,7 @@
                     <a href="javascript:void(0)" data-ng-click="selectFacetFilter(loResult.edTypeFacet.et2.valueId, loResult.edTypeFacet.et2.facetField)"><span data-ki-i18n="et2"></span> ({{loResult.edTypeFacet.et2.count}})</a>
                 </span>
                 <span data-ng-show="isEdTypeSelected(loResult.edTypeFacet.et2)" class="facet-item selected">
-                    <span><span data-ki-i18n="et2"></span> ({{loResult.edTypeFacet.et2.count}})</span>
+                    <span><span data-ki-i18n="et2"></span></span>
                     <a href="javascript:void(0)" class="remove" data-ng-click="removeSelection(loResult.edTypeFacet.et2)"></a>
                 </span>
             </li>
@@ -56,7 +56,7 @@
                     <a href="javascript:void(0)" data-ng-click="selectFacetFilter(loResult.edTypeFacet.et3.valueId, loResult.edTypeFacet.et3.facetField)"><span data-ki-i18n="et3"></span> ({{loResult.edTypeFacet.et3.count}})</a>
                 </span>
                 <span data-ng-show="isEdTypeSelected(loResult.edTypeFacet.et3)" class="facet-item selected">
-                    <span><span data-ki-i18n="et3"></span> ({{loResult.edTypeFacet.et3.count}})</span>
+                    <span><span data-ki-i18n="et3"></span></span>
                     <a href="javascript:void(0)" class="remove" data-ng-click="removeSelection(loResult.edTypeFacet.et3)"></a>
                 </span>
             </li>
@@ -65,7 +65,7 @@
                     <a href="javascript:void(0)" data-ng-click="selectFacetFilter(loResult.edTypeFacet.et4.valueId, loResult.edTypeFacet.et4.facetField)"><span data-ki-i18n="et4"></span> ({{loResult.edTypeFacet.et4.count}})</a>
                 </span>
                 <span data-ng-show="isEdTypeSelected(loResult.edTypeFacet.et4)" class="facet-item selected">
-                    <span><span data-ki-i18n="et4"></span> ({{loResult.edTypeFacet.et4.count}})</span>
+                    <span><span data-ki-i18n="et4"></span></span>
                     <a href="javascript:void(0)" class="remove" data-ng-click="removeSelection(loResult.edTypeFacet.et4)"></a>
                 </span>
             </li>
@@ -74,7 +74,7 @@
                     <a href="javascript:void(0)" data-ng-click="selectFacetFilter(loResult.edTypeFacet.et5.valueId, loResult.edTypeFacet.et5.facetField)"><span data-ki-i18n="et5"></span> ({{loResult.edTypeFacet.et5.count}})</a>
                 </span>
                 <span data-ng-show="isEdTypeSelected(loResult.edTypeFacet.et5)" class="facet-item selected">
-                    <span><span data-ki-i18n="et5"></span> ({{loResult.edTypeFacet.et5.count}})</span>
+                    <span><span data-ki-i18n="et5"></span></span>
                     <a href="javascript:void(0)" class="remove" data-ng-click="removeSelection(loResult.edTypeFacet.et5)"></a>
                 </span>
             </li>
@@ -94,7 +94,7 @@
                     <a href="javascript:void(0)" data-ng-click="selectFacetFilter(fv.valueId, fv.facetField)"><span data-ki-i18n="{{fv.valueName}}"></span> ({{fv.count}})</a>
                 </span>
                 <span data-ng-show="isSelected(fv)" class="facet-item selected">
-                    <span><span data-ki-i18n="{{fv.valueName}}"></span> ({{fv.count}})</span>
+                    <span><span data-ki-i18n="{{fv.valueName}}"></span></span>
                     <a href="javascript:void(0)" class="remove" data-ng-click="removeSelection(fv)"></a>
                 </span>
             </li>
@@ -132,7 +132,7 @@
                     <a href="javascript:void(0)" data-ng-click="selectFacetFilter(fv.valueId, fv.facetField)">{{fv.valueName}} ({{fv.count}})</a>
                 </span>
                 <span data-ng-show="isSelected(fv)" class="facet-item selected">
-                    <span>{{fv.valueName}} ({{fv.count}})</span>
+                    <span>{{fv.valueName}}</span>
                     <a href="javascript:void(0)" class="remove" data-ng-click="removeSelection(fv)"></a>
                 </span>
             </li>
