@@ -65,6 +65,8 @@ public class ApplicationOption {
     private AdditionalProof additionalProof;
     private ScoreLimit overallScoreLimit;
     private boolean kaksoistutkinto;
+    // lukion urheilulinjat jne.
+    private boolean athleteEducation;
 
 
     public String getId() {
@@ -297,6 +299,14 @@ public class ApplicationOption {
 
     public void setKaksoistutkinto(boolean kaksoistutkinto) {
         this.kaksoistutkinto = kaksoistutkinto;
+    }
+
+    public boolean isAthleteEducation() {
+        return athleteEducation;
+    }
+
+    public void setAthleteEducation(boolean athleteEducation) {
+        this.athleteEducation = athleteEducation;
     }
 
     @Override

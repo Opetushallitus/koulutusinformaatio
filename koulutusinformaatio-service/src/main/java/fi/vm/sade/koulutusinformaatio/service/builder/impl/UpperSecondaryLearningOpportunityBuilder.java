@@ -24,6 +24,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KIConversionException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
@@ -43,6 +44,9 @@ import java.util.Map;
  * @author Hannu Lyytikainen
  */
 public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunityBuilder<UpperSecondaryLOS> {
+
+    private static final String ATHLETE_EDUCATION_KOODISTO_URI = "urheilijankoulutus_1#1";
+    private static final String APPLICATION_OPTIONS_KOODISTO_URI = "hakukohteet";
 
     private TarjontaRawService tarjontaRawService;
     private ProviderService providerService;
@@ -255,6 +259,7 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
         ao.setId(hakukohdeDTO.getOid());
         ao.setName(koodistoService.searchFirst(hakukohdeDTO.getHakukohdeNimiUri()));
         ao.setAoIdentifier(koodistoService.searchFirstCodeValue(hakukohdeDTO.getHakukohdeNimiUri()));
+        ao.setAthleteEducation(isAthleteEducation(ao.getAoIdentifier()));
         ao.setStartingQuota(hakukohdeDTO.getAloituspaikatLkm());
         ao.setLowestAcceptedScore(hakukohdeDTO.getAlinValintaPistemaara());
         ao.setLowestAcceptedAverage(hakukohdeDTO.getAlinHyvaksyttavaKeskiarvo());
@@ -444,6 +449,26 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
             return i18nText;
         }
         return null;
+    }
+
+    private boolean isAthleteEducation(final String aoIdentifier) {
+        if (!Strings.isNullOrEmpty(aoIdentifier)) {
+            List<Code> superCodes = null;
+            try {
+                superCodes = koodistoService.searchSuperCodes(ATHLETE_EDUCATION_KOODISTO_URI,
+                        APPLICATION_OPTIONS_KOODISTO_URI);
+            } catch (KoodistoException e) {
+                throw new KIConversionException("Conversion failed - " + e.getMessage());
+            }
+            if (superCodes != null) {
+                for (Code code : superCodes) {
+                    if (aoIdentifier.equals(code.getValue())) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     private static Predicate<KomoDTO> komoPublished = new Predicate<KomoDTO>() {

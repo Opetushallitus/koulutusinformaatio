@@ -39,7 +39,9 @@ public class ApplicationOptionToSearchResultDTO {
             dto.setTeachingLanguages(applicationOption.getTeachingLanguages());
             dto.setKaksoistutkinto(applicationOption.isKaksoistutkinto());
             if (applicationOption.getProvider() != null) {
-                dto.setAthleteEducation(applicationOption.getProvider().isAthleteEducation());
+                dto.setAthleteEducation(applicationOption.getProvider().isAthleteEducation() || applicationOption.isAthleteEducation());
+            } else {
+                dto.setAthleteEducation(applicationOption.isAthleteEducation());
             }
             return dto;
         }
