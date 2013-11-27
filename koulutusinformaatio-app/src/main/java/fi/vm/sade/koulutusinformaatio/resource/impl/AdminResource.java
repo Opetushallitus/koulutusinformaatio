@@ -77,7 +77,7 @@ public class AdminResource {
         dto.setLastUpdatedStr(status.getLastUpdated().toString());
         long millis = status.getLastUpdateDuration();
         dto.setLastUpdateDuration(millis);
-        dto.setLastUpdateDurationStr(String.format("%d hours, %d minutes", millis/(1000*60*60), millis/(1000*60)));
+        dto.setLastUpdateDurationStr(String.format("%d hours, %d minutes", millis / 3600000, millis / 60000 % 60));
         dto.setRunning(updateService.isRunning());
         return dto;
     }
