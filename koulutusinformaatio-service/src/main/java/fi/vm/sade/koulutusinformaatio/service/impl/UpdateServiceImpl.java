@@ -80,7 +80,7 @@ public class UpdateServiceImpl implements UpdateService {
                  
             this.transactionManager.beginTransaction(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
             
-            /*
+            
             int count = MAX_RESULTS;
             int index = 0;
             
@@ -89,10 +89,8 @@ public class UpdateServiceImpl implements UpdateService {
                 List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
                 count = loOids.size();
                 index += count;
-                */
-            List<String> loOids = new ArrayList<String>();
-            loOids.add("1.2.246.562.5.2013061010184627597002");
-            loOids.add("1.2.246.562.5.2013061010185992084511");
+                
+            
 
                for (String loOid : loOids) {
                     List<LOS> specifications = null;
@@ -108,7 +106,7 @@ public class UpdateServiceImpl implements UpdateService {
                     }
                    this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
                }
-            //}
+            }
             List<Location> locations = locationService.getMunicipalities();
             indexerService.addLocations(locations, locationUpdateSolr);
             indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, true);

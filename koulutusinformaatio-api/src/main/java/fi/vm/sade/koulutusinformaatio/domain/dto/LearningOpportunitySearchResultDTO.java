@@ -39,6 +39,7 @@ public class LearningOpportunitySearchResultDTO {
     private boolean asOngoing;
     private Date nextApplicationPeriodStarts;
     private String type;
+    private String credits;
 
     public String getId() {
         return id;
@@ -126,5 +127,13 @@ public class LearningOpportunitySearchResultDTO {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getCredits() {
+        return credits;
+    }
+
+    public void setCredits(String credits) {
+        this.credits = credits;
     }
 }
