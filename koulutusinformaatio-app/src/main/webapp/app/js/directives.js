@@ -121,8 +121,8 @@ directive('kiRenderOrganization', function() {
 
             scope.$watch('provider', function(data) {
                 if (data) {
-                    scope.showOrganization = (data.learningEnvironment ||
-                        data.accessibility) ? true : false;
+                    scope.showOrganization = (data.description ||
+                        data.learningEnvironment || data.accessibility) ? true : false;
                 }
             });
         }
