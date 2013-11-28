@@ -74,7 +74,8 @@ public class ApplicationOptionEntity {
     private AdditionalProofEntity additionalProof;
     @Embedded
     private ScoreLimitEntity overallScoreLimit;
-
+    private boolean kaksoistutkinto;
+    private boolean athleteEducation;
 
     public ApplicationOptionEntity() {
 
@@ -302,5 +303,21 @@ public class ApplicationOptionEntity {
 
     public void setOverallScoreLimit(ScoreLimitEntity overallScoreLimit) {
         this.overallScoreLimit = overallScoreLimit;
+    }
+
+    public boolean isKaksoistutkinto() {
+        return kaksoistutkinto;
+    }
+
+    public void setKaksoistutkinto(boolean kaksoistutkinto) {
+        this.kaksoistutkinto = kaksoistutkinto;
+    }
+
+    public boolean isAthleteEducation() {
+        return athleteEducation;
+    }
+
+    public void setAthleteEducation(boolean athleteEducation) {
+        this.athleteEducation = athleteEducation;
     }
 }

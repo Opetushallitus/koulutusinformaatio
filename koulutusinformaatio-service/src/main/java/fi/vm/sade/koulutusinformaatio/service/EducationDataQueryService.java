@@ -20,7 +20,6 @@ import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -55,7 +54,7 @@ public interface EducationDataQueryService {
      */
     ChildLOS getChildLearningOpportunity(final String childLoId) throws ResourceNotFoundException;
 
-    Date getLastUpdated();
+    DataStatus getLatestDataStatus();
 
     Picture getPicture(final String id) throws ResourceNotFoundException;
 

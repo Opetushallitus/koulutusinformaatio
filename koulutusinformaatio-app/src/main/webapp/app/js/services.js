@@ -32,7 +32,17 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
             		 qParams += '&facetFilters=' + facetFilter;
                  });
             }
-            qParams += (params.sortCriteria != undefined) ? ('&sort=' + params.sortCriteria) : '';
+            var sortField = '';
+            if (params.sortCriteria != undefined) {
+            	if (params.sortCriteria == 1 || params.sortCriteria == 2) {
+            		sortField = 'name_ssort';
+            	} else if (params.sortCriteria == 3 || params.sortCriteria == 4) {
+            		sortField = 'duration_ssort';
+            	}
+            } 
+            
+            qParams += (sortField.length > 0) ? ('&sort=' +sortField) : '';
+            qParams += ((params.sortCriteria != undefined) && ((params.sortCriteria == 2) || (params.sortCriteria == 4))) ? ('&order=desc') : '';
 
             $http.get('../lo/search/' + encodeURI(params.queryString) + qParams, {}).
             success(function(result) {
@@ -803,6 +813,17 @@ service('ApplicationBasketService', ['$http', '$q', 'LanguageService', 'UtilityS
             }
         },
 
+        itemExists: function(aoId) {
+            var result = false;
+            angular.forEach(this.getItems(), function(item, key) {
+                if (aoId == item) {
+                    result = true;
+                }
+            });
+
+            return result;
+        },
+
         query: function(params) {
             var deferred = $q.defer();
             var basketItems = this.getItems();
@@ -923,6 +944,10 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
 
 
             return result;
+        },
+
+        clear: function() {
+            filters = {};
         },
 
         getPrerequisite: function() {
@@ -1137,6 +1162,17 @@ service('UtilityService', function() {
                     return 0;
                 });
             }
+        },
+        sortLocationsByName: function(locations) {
+            locations.sort(function(a, b) {
+                if (a.name > b.name) {
+                    return 1;
+                } else if (a.name < b.name) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            });
         }
     };
 });

@@ -1,0 +1,29 @@
+<div id="facetSelections" class="grid16-16" data-ng-show="areThereSelections()" data-ng-controller="SearchFilterCtrl">
+   <ul>
+        <li class="bold"><span data-ki-i18n="valitut-rajaukset" data-show-colon="true"></span></li>
+        <li data-ng-show="ongoing" class="facet-selection">
+            <a href="javascript:void(0)" data-ng-click="removeOngoing()">
+                <span data-ki-i18n="haun-tila" data-show-colon="true"></span> <span data-ki-i18n="filter-search-as-ongoing"></span>
+                <span class="remove" data-ki-i18n="facet-remove"></span>
+            </a>
+        </li>
+        <li data-ng-show="upcoming" class="facet-selection">
+            <a href="javascript:void(0)" data-ng-click="removeUpcoming()">
+                <span data-ki-i18n="haun-tila"></span>: <span data-ki-i18n="filter-search-as-upcoming"></span>
+                <span class="remove" data-ki-i18n="facet-remove"></span>
+            </a>
+        </li>
+        <li data-ng-repeat="fs in facetSelections" class="facet-selection">
+            <a href="javascript:void(0)" data-ng-click="removeSelection(fs)">
+                <span data-ki-i18n="{{fs.facetField}}" data-show-colon="true"></span> <span data-ki-i18n="{{fs.valueName}}"></span>
+                <span class="remove" data-ki-i18n="facet-remove"></span>
+            </a>
+        </li>
+        <li data-ng-repeat="loc in locations" class="facet-selection">
+            <a href="javascript:void(0)" data-ng-click="removeLocation(loc)">
+                <span data-ki-i18n="location-rajaus" data-show-colon="true"></span> {{loc.name}}
+                <span class="remove" data-ki-i18n="facet-remove"></span>
+            </a>
+        </li>
+    </ul>
+</div>

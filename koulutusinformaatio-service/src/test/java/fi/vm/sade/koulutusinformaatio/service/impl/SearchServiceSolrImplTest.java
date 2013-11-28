@@ -83,26 +83,26 @@ public class SearchServiceSolrImplTest {
     @Test
     public void testSearchProviders() throws SearchException {
         List<Provider> lops = service.searchLearningOpportunityProviders(
-                "query", "1.2.3.4", "PK", Boolean.parseBoolean(null));
+                "query", "1.2.3.4", "PK", Boolean.parseBoolean(null), 0, 100);
         assertEquals(1, lops.size());
     }
 
     @Test
     public void testSearchProvidersEmptyTerm() throws SearchException {
         List<Provider> lops = service.searchLearningOpportunityProviders(
-                "", "1.2.3.4", "PK", Boolean.parseBoolean(null));
+                "", "1.2.3.4", "PK", Boolean.parseBoolean(null), 0, 100);
         assertEquals(0, lops.size());
     }
 
     @Test
     public void testSearchLearningOpportunities() throws SearchException {
-        LOSearchResultList results = service.searchLearningOpportunities("query", "PK", Lists.newArrayList("HELSINKI"), Lists.newArrayList("teachingLang:suomi"), "fi", false, false, 0, 100);
+        LOSearchResultList results = service.searchLearningOpportunities("query", "PK", Lists.newArrayList("HELSINKI"), Lists.newArrayList("teachingLang:suomi"), "fi", false, false, 0, 100, "0", "asc");
         assertEquals(1, results.getResults().size());
     }
 
     @Test
     public void testSearchLearningOpportunitiesEmptyTerm() throws SearchException {
-        LOSearchResultList results = service.searchLearningOpportunities("", "PK", Lists.newArrayList("HELSINKI"), Lists.newArrayList("teachingLang:suomi"), "fi", false, false, 0, 100);
+        LOSearchResultList results = service.searchLearningOpportunities("", "PK", Lists.newArrayList("HELSINKI"), Lists.newArrayList("teachingLang:suomi"), "fi", false, false, 0, 100, "0", "asc");
         assertEquals(0, results.getResults().size());
     }
 

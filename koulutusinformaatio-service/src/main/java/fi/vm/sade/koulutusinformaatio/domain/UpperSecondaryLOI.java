@@ -41,6 +41,10 @@ public class UpperSecondaryLOI {
     private String plannedDuration;
     private I18nText plannedDurationUnit;
     private List<LanguageSelection> languageSelection;
+    private boolean kaksoistutkinto;
+    
+    //planned duration unit code uri (used in indexing for solr)
+    private String pduCodeUri;
 
     public String getId() {
         return id;
@@ -168,5 +172,21 @@ public class UpperSecondaryLOI {
 
     public void setLanguageSelection(List<LanguageSelection> languageSelection) {
         this.languageSelection = languageSelection;
+    }
+
+    public boolean isKaksoistutkinto() {
+        return kaksoistutkinto;
+    }
+
+    public void setKaksoistutkinto(boolean kaksoistutkinto) {
+        this.kaksoistutkinto = kaksoistutkinto;
+    }
+
+    public String getPduCodeUri() {
+        return pduCodeUri;
+    }
+
+    public void setPduCodeUri(String pduCodeUri) {
+        this.pduCodeUri = pduCodeUri;
     }
 }

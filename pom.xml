@@ -41,7 +41,6 @@
         <oph.organisaatio.version>7.0-SNAPSHOT</oph.organisaatio.version>
         <oph.koodisto.version>7.0-SNAPSHOT</oph.koodisto.version>
         <oph.tarjonta.version>8.0-SNAPSHOT</oph.tarjonta.version>
-        <oph.generic.version>8.0-SNAPSHOT</oph.generic.version>
     </properties>
 
     <repositories>

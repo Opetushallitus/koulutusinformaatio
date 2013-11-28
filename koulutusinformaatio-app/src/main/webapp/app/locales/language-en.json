@@ -52,6 +52,12 @@
     "sort-criteria-extent": "Koulutuksen laajuus (en)",
     "sort-criteria-items-per-page-label": "Näytä (en)",
     "sort-criteria-sort-label": "Lajittele (en)",
+    "sort-criteria-duration-asc": "Lyhtykestoiset ensin (en)",
+    "sort-criteria-duration-desc": "Pitkäkestoiset ensin (en)",
+    "sort-results-label": "Tulokset (en)",
+
+    "pagination-next": "Seuraava (en)",
+    "pagination-previous": "Edellinen (en)",
 
     "description-language-selection": "Kuvaus saatavilla myös (en):",
 
@@ -185,6 +191,7 @@
     "facet-opetuskieli": "Teaching Language",
     "teachingLangCode_ffm": "Teaching Language",
     "location-rajaus": "Place",
+    "facet-remove": "Poista (en)",
     "filter-search-as-upcoming": "Upcoming applications systems",
     "haun-tila": "Application system status",
     "selaile-koulutuksia": "Selaile koulutuksia",
@@ -193,7 +200,7 @@
     "district": "District",
     "municipality": "Town/Municipality",
     "valitut-alueet": "Chosen areas",
-    "ok": "OK",
+    "ok": "Hyväksy (en)",
     "cancel": "Peruuta (en)",
     "koko": "Whole",
     "suomi": "Finland",
@@ -204,9 +211,10 @@
     "et2": "Kaksoistutkinto (en)",
     "et3": "Ammatillinen perustutkinto (en)",
     "et4": "Ammatillinen perustutkinto erityisopetuksena (en)",
-    "et5": "Valmentava ja kuntouttava opetus ja ohjaus (en)"
-    
-    
-    
+    "et5": "Valmentava ja kuntouttava opetus ja ohjaus (en)",
+    "pohjakoulutus": " Pohjakoulutuksesi (en)",
+    "prerequisites": "Pohjakoulutuksesi (en)",
+    "yo": "Lukio ja / tai ylioppilastutkinto (en)",
+    "pk": "Peruskoulu (en)"    
 
 }

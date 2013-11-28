@@ -37,6 +37,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
     private ChildLearningOpportunityDAO childLOTransactionDAO;
     private PictureDAO pictureTransactionDAO;
     private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO;
+    private DataStatusDAO dataStatusDAO;
 
     @Autowired
     public EducationDataUpdateServiceImpl(ModelMapper modelMapper, ParentLearningOpportunitySpecificationDAO parentLOSTransactionDAO,
@@ -44,7 +45,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
                                           LearningOpportunityProviderDAO learningOpportunityProviderTransactionDAO,
                                           ChildLearningOpportunityDAO childLOTransactionDAO,
                                           PictureDAO pictureTransactionDAO,
-                                          UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO) {
+                                          UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO, DataStatusDAO dataStatusDAO) {
         this.modelMapper = modelMapper;
         this.parentLOSTransactionDAO = parentLOSTransactionDAO;
         this.applicationOptionTransactionDAO = applicationOptionTransactionDAO;
@@ -52,6 +53,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
         this.childLOTransactionDAO = childLOTransactionDAO;
         this.pictureTransactionDAO = pictureTransactionDAO;
         this.upperSecondaryLOSTransactionDAO = upperSecondaryLOSTransactionDAO;
+        this.dataStatusDAO = dataStatusDAO;
     }
 
     @Override
@@ -61,6 +63,13 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
         }
         else if (learningOpportunitySpecification instanceof UpperSecondaryLOS) {
             save((UpperSecondaryLOS) learningOpportunitySpecification);
+        }
+    }
+
+    @Override
+    public void save(DataStatus dataStatus) {
+        if (dataStatus != null) {
+            dataStatusDAO.save(modelMapper.map(dataStatus, DataStatusEntity.class));
         }
     }
 

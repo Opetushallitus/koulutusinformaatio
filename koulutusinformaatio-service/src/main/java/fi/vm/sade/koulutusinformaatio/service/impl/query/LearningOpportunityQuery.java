@@ -39,7 +39,7 @@ public class LearningOpportunityQuery extends SolrQuery {
     public final static String APP_STATUS_UPCOMING = "upcoming";
 
     public LearningOpportunityQuery(String term, String prerequisite,
-            List<String> cities, List<String> facetFilters, String lang, boolean ongoing, boolean upcoming, int start, int rows) {
+            List<String> cities, List<String> facetFilters, String lang, boolean ongoing, boolean upcoming, int start, int rows, String sort, String order) {
         super(term);
         if (prerequisite != null) {
             this.addFilterQuery(String.format("%s:%s", LearningOpportunity.PREREQUISITES, prerequisite));
@@ -84,12 +84,16 @@ public class LearningOpportunityQuery extends SolrQuery {
         this.setParam("defType", "edismax");
         this.setParam(DisMaxParams.QF, Joiner.on(" ").join(FIELDS));
         this.setParam("q.op", "AND");
+        if (sort != null) {
+            this.addSort(sort, order.equals("asc") ? ORDER.asc : ORDER.desc);
+        }
     }
 
     private void addFacetsToQuery(String lang, List<String> facetFilters, String ongoingFQ, String upcomingFQ) {
         this.setFacet(true);
         this.addFacetField(LearningOpportunity.TEACHING_LANGUAGE);
         this.addFacetField(LearningOpportunity.EDUCATION_TYPE);
+        this.addFacetField(LearningOpportunity.PREREQUISITES);
         
         this.addFacetQuery(ongoingFQ);
         this.addFacetQuery(upcomingFQ);

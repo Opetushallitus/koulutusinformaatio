@@ -16,19 +16,22 @@
 
 package fi.vm.sade.koulutusinformaatio.resource.impl;
 
+import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
+import fi.vm.sade.koulutusinformaatio.domain.dto.DataStatusDTO;
 import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
-import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Date;
 
 /**
  * @author Hannu Lyytikainen
@@ -37,14 +40,18 @@ import java.util.Date;
 @Path("/admin")
 public class AdminResource {
 
-    @Autowired
-    UpdateService updateService;
-
-    @Autowired
-    IndexerService indexerService;
-
-    @Autowired
+    private UpdateService updateService;
     private LearningOpportunityService learningOpportunityService;
+    private ModelMapper modelMapper;
+
+    @Autowired
+    public AdminResource(UpdateService updateService,
+                         LearningOpportunityService learningOpportunityService,
+                         ModelMapper modelMapper) {
+        this.updateService = updateService;
+        this.learningOpportunityService = learningOpportunityService;
+        this.modelMapper = modelMapper;
+    }
 
     @GET
     @Path("/update")
@@ -57,16 +64,22 @@ public class AdminResource {
             e.printStackTrace();
             throw KIExceptionHandler.resolveException(e);
         }
-
         return Response.seeOther(new URI("admin/status")).build();
     }
 
     @GET
     @Path("/status")
-    public String dataStatus() {
-        Date lastUpdate = learningOpportunityService.getLastDataUpdated();
-        String msg = updateService.isRunning() ? "Data update is running... Last data update " : "Last data update ";
-        return msg + lastUpdate;
+    @Produces(MediaType.APPLICATION_JSON)
+    public DataStatusDTO dataStatus() {
+        DataStatus status = learningOpportunityService.getLastDataStatus();
+        DataStatusDTO dto = new DataStatusDTO();
+        dto.setLastUpdated(status.getLastUpdated());
+        dto.setLastUpdatedStr(status.getLastUpdated().toString());
+        long millis = status.getLastUpdateDuration();
+        dto.setLastUpdateDuration(millis);
+        dto.setLastUpdateDurationStr(String.format("%d hours, %d minutes", millis / 3600000, millis / 60000 % 60));
+        dto.setRunning(updateService.isRunning());
+        return dto;
     }
 
 }

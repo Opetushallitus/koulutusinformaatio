@@ -8,6 +8,7 @@ function SearchFieldCtrl($scope, $location, SearchService, kiAppConstants, Filte
     // Perform search using LearningOpportunity service
     $scope.search = function() {
         if ($scope.queryString) {
+            FilterService.clear(); // clear all filters for new search
             FilterService.setPage(kiAppConstants.searchResultsStartPage);
             SearchService.setTerm($scope.queryString);
             var queryString = $scope.queryString;
@@ -26,18 +27,7 @@ function SearchFieldCtrl($scope, $location, SearchService, kiAppConstants, Filte
 /**
  *  Controller for search filters
  */
-function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, kiAppConstants, FilterService, LanguageService, DistrictService, ChildLocationsService) {
-    var queryParams = $location.search();
-
-    FilterService.query(queryParams).then(function() {
-        $scope.prerequisite = FilterService.getPrerequisite();
-        $scope.locations = FilterService.getLocations();
-        $scope.ongoing = FilterService.isOngoing();
-        $scope.upcoming = FilterService.isUpcoming();
-        $scope.$parent.currentPage = FilterService.getPage();
-        $scope.facetFilters = FilterService.getFacetFilters();
-        $scope.langCleared=FilterService.getLangCleared();
-    });
+function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, kiAppConstants, FilterService, LanguageService, DistrictService, ChildLocationsService, UtilityService, $modal) {
 
     $scope.change = function() {
         FilterService.set({
@@ -163,48 +153,6 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     		$scope.distResult.unshift({name: i18n.t('koko') + ' ' + i18n.t('suomi'), code: '-1'});
     	});
     }
-    
-    $scope.doMunicipalitySearch = function() {
-    	var queryDistricts = [];
-    	if ($scope.isWholeAreaSelected($scope.selectedDistricts)) {
-    		queryDistricts = $scope.distResult;
-    	} else {
-    		queryDistricts = $scope.selectedDistricts;
-    	}
-    	ChildLocationsService.query(queryDistricts).then(function(result) {
-    		
-    		if (!$scope.isWholeAreaSelected($scope.selectedDistricts)) {
-    			$scope.muniResult = queryDistricts;
-    			$scope.muniResult.push.apply($scope.muniResult, result);
-    		} else {
-    			$scope.muniResult = result;
-    		}
-    		
-    	});
-    }
-    
-    $scope.filterBySelLocations = function() {
-        if (!$scope.locations) {
-            $scope.locations = [];
-        }
-
-        angular.forEach($scope.selectedMunicipalities, function(location, locationkey) {
-            if (location && $scope.locations.indexOf(location) < 0) {
-                $scope.locations.push(location);
-            }
-        });
-        
-    	$scope.change();
-    }
-    
-    $scope.isWholeAreaSelected = function(areaArray) {
-    	for (var i = 0; i < areaArray.length; i++) {
-    		if (areaArray[i].code == '-1') {
-    			return true;
-    		}
-    	}
-    	return false;
-    }
 
     $scope.toggleCollapsed = function(index) {
         if (!$scope.collapsed) {
@@ -227,8 +175,111 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     	}
     	return isSelected;
     }
-    
+
+    $scope.openModal = function() {
+
+        var modalIntance = $modal.open({
+            templateUrl: 'templates/selectArea.html',
+            backdrop: 'static',
+            //scope: $scope,
+            controller: LocationDialogCtrl
+        });
+
+        modalIntance.result.then(function(result) {
+            if (!$scope.locations) {
+                $scope.locations = result;
+            } else {
+                angular.forEach(result, function(value, key){
+                    if ($scope.locations.indexOf(value) < 0) {
+                        $scope.locations.push(value);
+                    }
+                });
+            }
+
+            $scope.change();
+        })
+    }
 };
+
+function LocationDialogCtrl($scope, $modalInstance, ChildLocationsService, UtilityService, DistrictService) {
+
+    DistrictService.query().then(function(result) {
+        $scope.distResult = result;
+        $scope.distResult.unshift({name: i18n.t('koko') + ' ' + i18n.t('suomi'), code: '-1'});
+    });
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    }
+
+    $scope.doMunicipalitySearch = function() {
+        var queryDistricts = [];
+        if ($scope.muniResult != undefined) {
+            $scope.muniResult.length = 0;
+        } else {
+            $scope.muniResult = [];
+        }
+        if ($scope.isWholeAreaSelected($scope.selectedDistricts)) {
+            queryDistricts = $scope.distResult;
+        } else {
+            queryDistricts = $scope.selectedDistricts;
+        }
+        ChildLocationsService.query(queryDistricts).then(function(result) {
+            
+            if (!$scope.isWholeAreaSelected($scope.selectedDistricts)) {
+                UtilityService.sortLocationsByName(result);
+                $scope.muniResult.push.apply($scope.muniResult, queryDistricts);
+                $scope.muniResult.push.apply($scope.muniResult, result);
+            } else {
+                $scope.muniResult.push.apply($scope.muniResult, result);
+            }
+            
+        });
+    }
+
+    $scope.selectMunicipality = function() {
+        if (!$scope.selectedMunicipalities) {
+            $scope.selectedMunicipalities = [];
+        }
+
+        angular.forEach($scope.selectedMunicipality, function(mun, munkey){
+            
+            var found = false;
+            angular.forEach($scope.selectedMunicipalities, function(value, key){
+                if (value.code == mun.code) {
+                    found = true;
+                }
+            });
+
+            if (!found) {
+                $scope.selectedMunicipalities.push(mun);
+            }
+
+        });
+    }
+
+    $scope.removeMunicipality = function(code) {
+        angular.forEach($scope.selectedMunicipalities, function(mun, key) {
+            if (code == mun.code) {
+                $scope.selectedMunicipalities.splice(key, 1);
+            }
+        });
+    }
+
+    $scope.isWholeAreaSelected = function(areaArray) {
+        for (var i = 0; i < areaArray.length; i++) {
+            if (areaArray[i].code == '-1') {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    $scope.filterBySelLocations = function() {
+        $modalInstance.close($scope.selectedMunicipalities);
+    }
+
+}
 
 /**
  *  Controller for search functionality 
@@ -239,14 +290,20 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     $rootScope.title = i18n.t('title-search-results') + ' - ' + i18n.t('sitename');
 
     $scope.pageSizes = [25, 50, 100];
+
     $scope.sortCriterias = [
-        i18n.t('sort-criteria-startdate'), 
-        i18n.t('sort-criteria-alphabetical-desc'), 
-        i18n.t('sort-criteria-alphabetical-asc'),
-        i18n.t('sort-criteria-extent')
+        {value: i18n.t('sort-criteria-default')}, 
+        {value: i18n.t('sort-criteria-alphabetical-desc')}, 
+        {value: i18n.t('sort-criteria-alphabetical-asc')},
+        {value: i18n.t('sort-criteria-duration-asc'), group: i18n.t('sort-criteria-duration-group')},
+        {value: i18n.t('sort-criteria-duration-desc'), group: i18n.t('sort-criteria-duration-group')}
+        
     ];
 
+    $scope.paginationNext = i18n.t('pagination-next');
+    $scope.paginationPrevious = i18n.t('pagination-previous');
     $scope.valitseAlueTitle = i18n.t('valitse-alue');
+    $scope.noSearchResults = i18n.t('no-search-results-info', {searchterm: SearchService.getTerm()});
 
     $scope.changePage = function(page) {
         $scope.currentPage = page;
@@ -260,8 +317,6 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
         }    
     });
     
-
-    
     //Getting the query params from the url
     //after which searching is done.
 	FilterService.query(queryParams).then(function() {
@@ -273,9 +328,10 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
 	     $scope.langCleared = FilterService.getLangCleared();
          $scope.itemsPerPage = FilterService.getItemsPerPage();
          $scope.sortCriteria = FilterService.getSortCriteria();
+         $scope.currentPage = FilterService.getPage();
 	     $scope.doSearching();
 	 });
-    
+
 	//Returns true if the language filter is set
 	//i.e. either a teaching language filter or langCleared (language is explicitely cleared by the user)
     $scope.isLangFilterSet = function() {
@@ -316,6 +372,10 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
                 $scope.totalItems = result.totalCount;
     			$scope.maxPages = Math.ceil(result.totalCount / $scope.itemsPerPage);
     			$scope.showPagination = $scope.maxPages > 1;
+                $scope.pageMin = ($scope.currentPage - 1) * $scope.itemsPerPage + 1;
+                $scope.pageMax = $scope.currentPage * $scope.itemsPerPage < $scope.totalItems
+                    ? $scope.currentPage * $scope.itemsPerPage
+                    : $scope.totalItems;
     			$scope.populateFacetSelections();
     		});
 
@@ -375,6 +435,13 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     			}
     		}, curVal);
     		if (selLength == $scope.facetSelections.length) {
+    			angular.forEach($scope.loResult.prerequisiteFacet.facetValues, function(fVal, key) {
+        			if (this == fVal.valueId) {
+        				$scope.facetSelections.push(fVal);
+        			}
+        		}, curVal);
+    		}
+    		if (selLength == $scope.facetSelections.length) {
     			angular.forEach($scope.loResult.filterFacet.facetValues, function(fVal, key) {
         			if (this == fVal.valueId) {
         				$scope.facetSelections.push(fVal);
@@ -404,7 +471,9 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     	}
     	return 'FI';
     }
+};
 
+function SortCtrl($scope, $location, FilterService) {
     $scope.updateItemsPerPage = function() {
         FilterService.setItemsPerPage($scope.itemsPerPage);
         $location.search(FilterService.get());

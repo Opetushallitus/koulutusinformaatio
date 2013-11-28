@@ -63,6 +63,8 @@ public class ApplicationOptionToDTO {
             dto.setAdditionalInfo(ConverterUtil.getTextByLanguage(applicationOption.getAdditionalInfo(), uiLang));
             dto.setAdditionalProof(AdditionalProofToDTO.convert(applicationOption.getAdditionalProof(), lang));
             dto.setOverallScoreLimit(ScoreLimitToDTO.convert(applicationOption.getOverallScoreLimit()));
+            dto.setKaksoistutkinto(applicationOption.isKaksoistutkinto());
+            dto.setAthleteEducation(applicationOption.isAthleteEducation());
             return dto;
         }
         return null;

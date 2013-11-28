@@ -16,11 +16,11 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
+import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.dto.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -54,7 +54,7 @@ public interface LearningOpportunityService {
 
     List<BasketItemDTO> getBasketItems(List<String> aoId, String uiLang) throws InvalidParametersException;
 
-    Date getLastDataUpdated();
+    DataStatus getLastDataStatus();
 
     PictureDTO getPicture(final String id) throws ResourceNotFoundException;
 }

@@ -32,6 +32,7 @@ public class DataStatusEntity {
     @Id
     private org.bson.types.ObjectId id;
     Date lastUpdated = new Date();
+    private long lastUpdateDuration;
 
     public DataStatusEntity() {}
 
@@ -54,5 +55,13 @@ public class DataStatusEntity {
 
     public void setLastUpdated(Date lastUpdated) {
         this.lastUpdated = lastUpdated;
+    }
+
+    public long getLastUpdateDuration() {
+        return lastUpdateDuration;
+    }
+
+    public void setLastUpdateDuration(long lastUpdateDuration) {
+        this.lastUpdateDuration = lastUpdateDuration;
     }
 }

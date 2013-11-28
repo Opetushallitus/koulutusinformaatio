@@ -24,6 +24,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KIConversionException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
@@ -43,6 +44,9 @@ import java.util.Map;
  * @author Hannu Lyytikainen
  */
 public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunityBuilder<UpperSecondaryLOS> {
+
+    private static final String ATHLETE_EDUCATION_KOODISTO_URI = "urheilijankoulutus_1#1";
+    private static final String APPLICATION_OPTIONS_KOODISTO_URI = "hakukohteet";
 
     private TarjontaRawService tarjontaRawService;
     private ProviderService providerService;
@@ -181,8 +185,9 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
         loi.setContent(getI18nText(komoto.getSisalto()));
 
         loi.setPlannedDuration(komoto.getLaajuusArvo());
-
         loi.setPlannedDurationUnit(koodistoService.searchFirst(komoto.getLaajuusYksikkoUri()));
+        loi.setPduCodeUri(komoto.getLaajuusYksikkoUri());
+        
         for (String d : komoto.getLukiodiplomitUris()) {
             loi.getDiplomas().add(koodistoService.searchFirst(d));
         }
@@ -211,6 +216,7 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
 
         List<ApplicationOption> applicationOptions = Lists.newArrayList();
         List<OidRDTO> aoIdDTOs = tarjontaRawService.getHakukohdesByKomoto(komoto.getOid());
+        boolean kaksoistutkinto = false;
         for (OidRDTO aoIdDTO : aoIdDTOs) {
             LOG.debug(Joiner.on(" ").join("Adding application options (",
                     aoIdDTOs.size(), ") to child learning opportunity"));
@@ -235,10 +241,14 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
 
             applicationOptions.add(
                     createApplicationOption(hakukohdeDTO, hakuDTO, komoto, loi));
+            
+            if (hakukohdeDTO.isKaksoisTutkinto()) {
+                kaksoistutkinto = true;
+            }
         }
 
         loi.setApplicationOptions(applicationOptions);
-
+        loi.setKaksoistutkinto(kaksoistutkinto);
 
         return loi;
     }
@@ -249,12 +259,14 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
         ao.setId(hakukohdeDTO.getOid());
         ao.setName(koodistoService.searchFirst(hakukohdeDTO.getHakukohdeNimiUri()));
         ao.setAoIdentifier(koodistoService.searchFirstCodeValue(hakukohdeDTO.getHakukohdeNimiUri()));
+        ao.setAthleteEducation(isAthleteEducation(ao.getAoIdentifier()));
         ao.setStartingQuota(hakukohdeDTO.getAloituspaikatLkm());
         ao.setLowestAcceptedScore(hakukohdeDTO.getAlinValintaPistemaara());
         ao.setLowestAcceptedAverage(hakukohdeDTO.getAlinHyvaksyttavaKeskiarvo());
         ao.setAttachmentDeliveryDeadline(hakukohdeDTO.getLiitteidenToimitusPvm());
         ao.setLastYearApplicantCount(hakukohdeDTO.getEdellisenVuodenHakijatLkm());
         ao.setSelectionCriteria(getI18nText(hakukohdeDTO.getValintaperustekuvaus()));
+        ao.setKaksoistutkinto(hakukohdeDTO.isKaksoisTutkinto());
         ao.setExams(createExams(hakukohdeDTO.getValintakoes()));
         List<Code> subCodes = koodistoService.searchSubCodes(komoto.getPohjakoulutusVaatimusUri(),
                 LearningOpportunityBuilder.BASE_EDUCATION_KOODISTO_URI);
@@ -437,6 +449,26 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
             return i18nText;
         }
         return null;
+    }
+
+    private boolean isAthleteEducation(final String aoIdentifier) {
+        if (!Strings.isNullOrEmpty(aoIdentifier)) {
+            List<Code> superCodes = null;
+            try {
+                superCodes = koodistoService.searchSuperCodes(ATHLETE_EDUCATION_KOODISTO_URI,
+                        APPLICATION_OPTIONS_KOODISTO_URI);
+            } catch (KoodistoException e) {
+                throw new KIConversionException("Conversion failed - " + e.getMessage());
+            }
+            if (superCodes != null) {
+                for (Code code : superCodes) {
+                    if (aoIdentifier.equals(code.getValue())) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     private static Predicate<KomoDTO> komoPublished = new Predicate<KomoDTO>() {

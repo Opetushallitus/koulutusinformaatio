@@ -35,6 +35,7 @@ public class ApplicationOptionSearchResultDTO {
     private boolean sora = false;
     private List<String> teachingLanguages;
     private boolean athleteEducation;
+    private boolean kaksoistutkinto;
 
     public String getId() {
         return id;
@@ -98,5 +99,13 @@ public class ApplicationOptionSearchResultDTO {
 
     public void setAthleteEducation(boolean athleteEducation) {
         this.athleteEducation = athleteEducation;
+    }
+
+    public boolean isKaksoistutkinto() {
+        return kaksoistutkinto;
+    }
+
+    public void setKaksoistutkinto(boolean kaksoistutkinto) {
+        this.kaksoistutkinto = kaksoistutkinto;
     }
 }

@@ -16,7 +16,7 @@ public class ProviderQueryTest {
 
     @Test
     public void testProviderQuery() {
-        ProviderQuery pq = new ProviderQuery(TERM, AS_ID, BASE_EDUCATION);
+        ProviderQuery pq = new ProviderQuery(TERM, AS_ID, BASE_EDUCATION, 0, 100);
         assertEquals("name:" + TERM, pq.getQuery());
         assertEquals(2, pq.getFilterQueries().length);
         assertEquals("asIds:" + AS_ID, pq.getFilterQueries()[0]);

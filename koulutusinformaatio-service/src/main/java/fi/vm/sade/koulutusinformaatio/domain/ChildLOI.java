@@ -33,6 +33,12 @@ public class ChildLOI {
     private I18nText content;
     private I18nText selectingDegreeProgram;
     private List<ContactPerson> contactPersons = new ArrayList<ContactPerson>();
+    private boolean kaksoistutkinto;
+    private String plannedDuration;
+    private I18nText plannedDurationUnit;
+    
+    //planned duration unit code uri (used in indexing for solr)
+    private String pduCodeUri;
 
     public String getId() {
         return id;
@@ -184,5 +190,37 @@ public class ChildLOI {
 
     public void setContactPersons(List<ContactPerson> contactPersons) {
         this.contactPersons = contactPersons;
+    }
+
+    public boolean isKaksoistutkinto() {
+        return kaksoistutkinto;
+    }
+
+    public void setKaksoistutkinto(boolean kaksoistutkinto) {
+        this.kaksoistutkinto = kaksoistutkinto;
+    }
+
+    public String getPlannedDuration() {
+        return plannedDuration;
+    }
+
+    public void setPlannedDuration(String plannedDuration) {
+        this.plannedDuration = plannedDuration;
+    }
+
+    public I18nText getPlannedDurationUnit() {
+        return plannedDurationUnit;
+    }
+
+    public void setPlannedDurationUnit(I18nText plannedDurationUnit) {
+        this.plannedDurationUnit = plannedDurationUnit;
+    }
+
+    public String getPduCodeUri() {
+        return pduCodeUri;
+    }
+
+    public void setPduCodeUri(String pduCodeUri) {
+        this.pduCodeUri = pduCodeUri;
     }
 }

@@ -26,6 +26,7 @@ import org.apache.solr.common.SolrInputDocument;
 import org.springframework.core.convert.converter.Converter;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -66,14 +67,19 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         doc.addField(LearningOpportunity.LOP_ID, provider.getId());
 
         doc.setField(LearningOpportunity.NAME, parent.getName().getTranslations().get("fi"));
+        doc.addField(LearningOpportunity.CREDITS, String.format("%s %s", parent.getCreditValue(), 
+                        parent.getCreditUnit().getTranslationsShortName().get("fi")));
+        
         doc.addField(LearningOpportunity.NAME_FI, parent.getName().getTranslations().get("fi"));
+        doc.addField(LearningOpportunity.NAME_SORT, parent.getName().getTranslations().get("fi"));
+        
         doc.addField(LearningOpportunity.NAME_SV, parent.getName().getTranslations().get("sv"));
+        
         doc.addField(LearningOpportunity.NAME_EN, parent.getName().getTranslations().get("en"));
+        
+        indexLopName(doc, provider);
 
-        doc.setField(LearningOpportunity.LOP_NAME, provider.getName().getTranslations().get("fi"));
-        doc.addField(LearningOpportunity.LOP_NAME_FI, provider.getName().getTranslations().get("fi"));
-        doc.addField(LearningOpportunity.LOP_NAME_SV, provider.getName().getTranslations().get("sv"));
-        doc.addField(LearningOpportunity.LOP_NAME_EN, provider.getName().getTranslations().get("en"));
+        
 
         if (provider.getHomeDistrict() != null) {
             List<String> locVals = new ArrayList<String>();
@@ -113,22 +119,66 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         addApplicationDates(doc, applicationOptions);
 
         Set<String> prerequisites = Sets.newHashSet();
+        Date earliest = null;
+        int minDuration = Integer.MAX_VALUE;
         for (ChildLOS childLOS : parent.getChildren()) {
             for (ChildLOI childLOI : childLOS.getLois()) {
-                prerequisites.add(childLOI.getPrerequisite().getValue());
-                
+                addPrerequisite(prerequisites, childLOI);
+                if (earliest == null || earliest.after(childLOI.getStartDate())) {
+                    earliest = childLOI.getStartDate();
+                }
+                int curDuration = this.getDuration(childLOI);
+                minDuration = curDuration < minDuration ? curDuration : minDuration;
             }
         }
         doc.setField(LearningOpportunity.PREREQUISITES, prerequisites);
+        doc.setField(LearningOpportunity.START_DATE_SORT, earliest);
+        doc.setField(LearningOpportunity.DURATION_SORT, minDuration);
         
         indexFacetFields(parent, doc);
 
         return doc;
     }
+    
+    
+
+
+
+    private void addPrerequisite(Set<String> prerequisites, ChildLOI childLOI) {
+        String prereq = SolrConstants.ER.equals(childLOI.getPrerequisite().getValue()) ? SolrConstants.PK : childLOI.getPrerequisite().getValue();
+        if (!prerequisites.contains(prereq)) {
+            prerequisites.add(prereq);
+        }
+    }
+
+
+
+
+
+    private void indexLopName(SolrInputDocument doc, Provider provider) {
+        
+        String nameFi = provider.getName().getTranslations().get("fi");
+        String nameSv = provider.getName().getTranslations().get("sv");
+        String nameEn = provider.getName().getTranslations().get("en");
+        
+        //Setting the lop name to be finnish, if no finnish name, fallback to swedish or english
+        String name = nameFi != null ? nameFi : nameSv;
+        name = name == null ? nameEn : name;
+        
+        doc.setField(LearningOpportunity.LOP_NAME, name);
+        doc.addField(LearningOpportunity.LOP_NAME_FI, nameFi);
+        doc.addField(LearningOpportunity.LOP_NAME_SV, nameSv);
+        doc.addField(LearningOpportunity.LOP_NAME_EN, nameEn);
+        
+    }
+
+
 
 
 
     private SolrInputDocument createChildDoc(ChildLOS childLOS, ChildLOI childLOI, ParentLOS parent) {
+       
+        
         SolrInputDocument doc = new SolrInputDocument();
         Provider provider = parent.getProvider();
         doc.addField(LearningOpportunity.TYPE, TYPE_CHILD);
@@ -136,9 +186,12 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         doc.addField(LearningOpportunity.LOS_ID, childLOS.getId());
         doc.addField(LearningOpportunity.LOP_ID, provider.getId());
         doc.addField(LearningOpportunity.PARENT_ID, parent.getId());
-        doc.addField(LearningOpportunity.PREREQUISITES, childLOI.getPrerequisite().getValue());
+        doc.addField(LearningOpportunity.PREREQUISITES, SolrConstants.ER.equals(childLOI.getPrerequisite().getValue()) 
+                                ? SolrConstants.PK : childLOI.getPrerequisite().getValue());
         
-        
+        doc.addField(LearningOpportunity.CREDITS, String.format("%s %s", parent.getCreditValue(), 
+                resolveTranslationInTeachingLangUseFallback(childLOI.getTeachingLanguages(), 
+                        parent.getCreditUnit().getTranslationsShortName())));
 
         doc.setField(LearningOpportunity.PREREQUISITE, resolveTranslationInTeachingLangUseFallback(
                 childLOI.getTeachingLanguages(), childLOI.getPrerequisite().getName().getTranslations()));
@@ -147,7 +200,12 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         doc.setField(LearningOpportunity.NAME, resolveTranslationInTeachingLangUseFallback(
                 childLOI.getTeachingLanguages(), childLOS.getName().getTranslationsShortName()));
         doc.addField(LearningOpportunity.NAME_FI, childLOS.getName().getTranslations().get("fi"));
+        
+        doc.addField(LearningOpportunity.NAME_SORT, resolveTranslationInTeachingLangUseFallback(
+                childLOI.getTeachingLanguages(), childLOS.getName().getTranslationsShortName()));
+        
         doc.addField(LearningOpportunity.NAME_SV, childLOS.getName().getTranslations().get("sv"));
+        
         doc.addField(LearningOpportunity.NAME_EN, childLOS.getName().getTranslations().get("en"));
 
         doc.setField(LearningOpportunity.LOP_NAME, resolveTranslationInTeachingLangUseFallback(
@@ -206,6 +264,9 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
 
         addApplicationDates(doc, childLOI.getApplicationOptions());
         
+        doc.addField(LearningOpportunity.START_DATE_SORT, childLOI.getStartDate());
+        indexDurationField(childLOI, doc);
+        
         indexFacetFields(childLOS, childLOI, parent, doc);
 
         return doc;
@@ -213,16 +274,66 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
     
 
     /*
+     * Indexes the duration_ssort field, used in sorting
+     * results according to planned duration of the loi
+     */
+    private void indexDurationField(ChildLOI childLOI, SolrInputDocument doc) {
+        int duration = getDuration(childLOI);
+        doc.addField(LearningOpportunity.DURATION_SORT, duration);
+    }
+
+
+    /*
+     * Parses duration from duration string, which may contain
+     * non numerical characters, e.g. 2-5. Takes the min value
+     * of the numerical values. 
+     * Scales values to be counted in months.
+     */
+    private int getDuration(ChildLOI childLOI) {
+        String[] numStrings = childLOI.getPlannedDuration().split("[^0-9]*");
+        int min = Integer.MAX_VALUE;
+        for (String curNumStr : numStrings) {
+            if ((curNumStr != null) && !curNumStr.isEmpty()) {
+                try {
+                    int curInt = Integer.parseInt(curNumStr);
+                    min = curInt < min ? curInt : min;
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        if (childLOI.getPduCodeUri().contains(SolrConstants.KESTOTYYPPI_VUOSI) && min < Integer.MAX_VALUE) {
+            min = min * 12;
+        } 
+        
+        return min < Integer.MAX_VALUE ? min : -1;
+    }
+
+
+
+    /*
      * Indexes fields used in facet search for ParentLOS learning opportunities
      */
     private void indexFacetFields(ParentLOS parent, SolrInputDocument doc) {
+        List<String> usedVals = new ArrayList<String>();
         for (ChildLOS childLOS : parent.getChildren()) {
             for (ChildLOI childLOI : childLOS.getLois()) {
-                doc.addField(LearningOpportunity.TEACHING_LANGUAGE, childLOI.getTeachingLanguages().get(0).getValue());
-                if (childLOI.getPrerequisite().equals(SolrConstants.SPECIAL_EDUCATION)) {
+                String teachingLang = childLOI.getTeachingLanguages().get(0).getValue();
+                if (!usedVals.contains(teachingLang)) {
+                    doc.addField(LearningOpportunity.TEACHING_LANGUAGE, teachingLang);
+                    usedVals.add(teachingLang);
+                }
+                if (childLOI.getPrerequisite().equals(SolrConstants.SPECIAL_EDUCATION) 
+                        && !usedVals.contains(SolrConstants.ED_TYPE_AMM_ER)) {
                     doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMM_ER);
-                } else {
+                    usedVals.add(SolrConstants.ED_TYPE_AMM_ER);
+                } else if (!usedVals.contains(SolrConstants.ED_TYPE_AMMATILLINEN)) {
                     doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMMATILLINEN);
+                    usedVals.add(SolrConstants.ED_TYPE_AMMATILLINEN);
+                }
+                if (childLOI.isKaksoistutkinto() && !usedVals.contains(SolrConstants.ED_TYPE_KAKSOIS)) {
+                    doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_KAKSOIS);
+                    usedVals.add(SolrConstants.ED_TYPE_KAKSOIS);
                 }
             }
         }
@@ -238,6 +349,9 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMM_ER);
         } else {
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMMATILLINEN);
+        }
+        if (childLOI.isKaksoistutkinto()) {
+            doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_KAKSOIS);
         }
     }
     
