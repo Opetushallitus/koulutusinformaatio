@@ -32,7 +32,6 @@ import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.LearningOpportunityBuilder;
 import fi.vm.sade.tarjonta.service.resources.dto.*;
-import fi.vm.sade.tarjonta.shared.types.TarjontaTila;
 
 import javax.ws.rs.WebApplicationException;
 import java.util.HashMap;
@@ -471,18 +470,6 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
         return false;
     }
 
-    private static Predicate<KomoDTO> komoPublished = new Predicate<KomoDTO>() {
-        @Override
-        public boolean apply(KomoDTO komo) {
-            return komo.getTila().equals(TarjontaTila.JULKAISTU);
-        }
-    };
-    private static Predicate<KomotoDTO> komotoPublished = new Predicate<KomotoDTO>() {
-        @Override
-        public boolean apply(KomotoDTO komoto) {
-            return komoto.getTila().equals(TarjontaTila.JULKAISTU);
-        }
-    };
     private static Predicate<UpperSecondaryLOS> losValid = new Predicate<UpperSecondaryLOS>() {
         @Override
         public boolean apply(UpperSecondaryLOS los) {

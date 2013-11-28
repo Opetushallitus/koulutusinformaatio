@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.service.builder;
 
 import com.google.common.base.Joiner;
+import com.google.common.base.Predicate;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
@@ -44,6 +45,7 @@ public abstract class LearningOpportunityBuilder<T extends LOS> {
     public static final String MODULE_TYPE_CHILD = "TUTKINTO_OHJELMA";
     public static final String STATE_PUBLISHED = "JULKAISTU";
     public static final String BASE_EDUCATION_KOODISTO_URI = "pohjakoulutustoinenaste";
+    public static final String LANG_FI = "fi";
 
     protected String resolveLOSId(String komoId, String providerId) {
         return Joiner.on("_").join(komoId, providerId);
@@ -91,6 +93,20 @@ public abstract class LearningOpportunityBuilder<T extends LOS> {
             throw new TarjontaParseException("Application system " + haku.getOid() + " not in state " + LearningOpportunityBuilder.STATE_PUBLISHED);
         }
     }
+
+    public static Predicate<KomoDTO> komoPublished = new Predicate<KomoDTO>() {
+        @Override
+        public boolean apply(KomoDTO komo) {
+            return komo.getTila().equals(TarjontaTila.JULKAISTU);
+        }
+    };
+
+    public static Predicate<KomotoDTO> komotoPublished = new Predicate<KomotoDTO>() {
+        @Override
+        public boolean apply(KomotoDTO komoto) {
+            return komoto.getTila().equals(TarjontaTila.JULKAISTU);
+        }
+    };
 
     public abstract LearningOpportunityBuilder resolveParentLOSs() throws TarjontaParseException, KoodistoException, WebApplicationException;
     public abstract LearningOpportunityBuilder resolveChildLOSs() throws TarjontaParseException, KoodistoException, WebApplicationException;
