@@ -315,16 +315,25 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
      * Indexes fields used in facet search for ParentLOS learning opportunities
      */
     private void indexFacetFields(ParentLOS parent, SolrInputDocument doc) {
+        List<String> usedVals = new ArrayList<String>();
         for (ChildLOS childLOS : parent.getChildren()) {
             for (ChildLOI childLOI : childLOS.getLois()) {
-                doc.addField(LearningOpportunity.TEACHING_LANGUAGE, childLOI.getTeachingLanguages().get(0).getValue());
-                if (childLOI.getPrerequisite().equals(SolrConstants.SPECIAL_EDUCATION)) {
-                    doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMM_ER);
-                } else {
-                    doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMMATILLINEN);
+                String teachingLang = childLOI.getTeachingLanguages().get(0).getValue();
+                if (!usedVals.contains(teachingLang)) {
+                    doc.addField(LearningOpportunity.TEACHING_LANGUAGE, teachingLang);
+                    usedVals.add(teachingLang);
                 }
-                if (childLOI.isKaksoistutkinto()) {
+                if (childLOI.getPrerequisite().equals(SolrConstants.SPECIAL_EDUCATION) 
+                        && !usedVals.contains(SolrConstants.ED_TYPE_AMM_ER)) {
+                    doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMM_ER);
+                    usedVals.add(SolrConstants.ED_TYPE_AMM_ER);
+                } else if (!usedVals.contains(SolrConstants.ED_TYPE_AMMATILLINEN)) {
+                    doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMMATILLINEN);
+                    usedVals.add(SolrConstants.ED_TYPE_AMMATILLINEN);
+                }
+                if (childLOI.isKaksoistutkinto() && !usedVals.contains(SolrConstants.ED_TYPE_KAKSOIS)) {
                     doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_KAKSOIS);
+                    usedVals.add(SolrConstants.ED_TYPE_KAKSOIS);
                 }
             }
         }
