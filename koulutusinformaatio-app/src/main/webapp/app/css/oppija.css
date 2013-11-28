@@ -3298,7 +3298,8 @@ button, .button {
 
 .collapse-content-container .facet-item {
   padding: 0 0 0 18px;
-  margin: 0 0 0 3px; }
+  margin: 0 0 0 3px;
+  display: inline-block; }
   .collapse-content-container .facet-item:hover {
     text-decoration: underline; }
   .collapse-content-container .facet-item a {
