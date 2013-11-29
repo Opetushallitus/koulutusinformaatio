@@ -3091,7 +3091,8 @@ button, .button {
 .pager li > span {
   display: inline-block;
   text-decoration: none;
-  font-weight: bold; }
+  font-weight: bold;
+  color: #333333; }
 
 .pager li > a:hover,
 .pager li > a:focus {
@@ -3102,11 +3103,11 @@ button, .button {
   float: right; }
   .pager .next > a:after,
   .pager .next > span:after {
-    background: transparent url("../img/pagination-next.png") no-repeat scroll left 0;
+    background: transparent url("../img/angle-right.png") no-repeat scroll left 0;
     content: "";
     display: inline-block;
     width: 9px;
-    height: 14px;
+    height: 15px;
     margin: 0 0 0 10px;
     vertical-align: text-top; }
   .pager .next > a:hover:after,
@@ -3121,11 +3122,11 @@ button, .button {
   float: left; }
   .pager .previous > a:before,
   .pager .previous > span:before {
-    background: transparent url("../img/pagination-previous.png") no-repeat scroll left 0;
+    background: transparent url("../img/angle-left.png") no-repeat scroll left 0;
     content: "";
     display: inline-block;
     width: 9px;
-    height: 14px;
+    height: 15px;
     margin: 0 10px 0 0;
     vertical-align: text-top; }
   .pager .previous > a:hover:before,
@@ -3326,14 +3327,23 @@ button, .button {
   padding: 0 0 0 0;
   margin: 0 0 0 0; }
   .collapser .icon {
-    display: inline-block;
-    width: 16px;
-    height: 10px;
-    background: transparent url("../img/facet-open-close.png") scroll no-repeat; }
+    display: inline-block; }
   .collapser.open .icon {
-    background-position: left center; }
+    width: 14px;
+    height: 9px;
+    background: transparent url("../img/triangle-open.png") scroll no-repeat 0 0; }
+  .collapser.open:hover .icon {
+    background-position: -14px 0; }
+  .collapser.open:active .icon {
+    background-position: -28px 0; }
   .collapser.close .icon {
-    background-position: right center; }
+    width: 9px;
+    height: 14px;
+    background: transparent url("../img/triangle-close.png") scroll no-repeat 0 0; }
+  .collapser.close:hover .icon {
+    background-position: -9px 0; }
+  .collapser.close:active .icon {
+    background-position: -18px 0; }
 
 .filter {
   padding: 10px;
