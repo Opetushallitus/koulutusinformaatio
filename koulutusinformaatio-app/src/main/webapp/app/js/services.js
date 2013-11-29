@@ -886,6 +886,12 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
         }
     }
 
+    /*
+    var setLocations = function(locations) {
+        filters.locations = locations;
+    }
+    */
+
     return {
         query: function(queryParams) {
             var deferred = $q.defer();

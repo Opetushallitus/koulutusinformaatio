@@ -1839,61 +1839,65 @@ b, strong, .bold {
   bottom: 34px; }
 
 #facetSelections {
-  margin: 0 0 2em 0; }
-  #facetSelections ul li {
-    display: inline-block;
-    list-style-type: none;
-    padding: 0 10px;
-    float: left;
-    margin: 10px 10px 0 0; }
-    #facetSelections ul li.facet-selection {
-      background: #8BCFE3;
-      border: 1px solid #51ABC6;
-      -webkit-border-radius: 3px;
-      -moz-border-radius: 3px;
-      -o-border-radius: 3px;
-      -ms-border-radius: 3px;
-      border-radius: 3px;
-      -webkit-box-shadow: inset 0px 1px 1px 0px #c1e5f0;
-      -moz-box-shadow: inset 0px 1px 1px 0px #c1e5f0;
-      -o-box-shadow: inset 0px 1px 1px 0px #c1e5f0;
-      -ms-box-shadow: inset 0px 1px 1px 0px #c1e5f0;
-      box-shadow: inset 0px 1px 1px 0px #c1e5f0; }
-      #facetSelections ul li.facet-selection:hover {
-        background: #8bcfe3;
-        background: -webkit-gradient(linear, left top, left bottom, from(#55b9d7), to(#8bcfe3));
-        background: -webkit-linear-gradient(top, #55b9d7, #8bcfe3);
-        background: -moz-linear-gradient(top, #55b9d7, #8bcfe3);
-        background: -ms-linear-gradient(top, #55b9d7, #8bcfe3);
-        background: -o-linear-gradient(top, #55b9d7, #8bcfe3);
-        background: linear-gradient(top, #55b9d7, #8bcfe3);
-        cursor: pointer; }
-        #facetSelections ul li.facet-selection:hover .remove {
-          background: transparent url("../img/selection-close.png") no-repeat scroll right 0; }
-      #facetSelections ul li.facet-selection:active {
-        background: #8bcfe3;
-        background: -webkit-gradient(linear, left top, left bottom, from(#55b9d7), to(#8bcfe3));
-        background: -webkit-linear-gradient(top, #55b9d7, #8bcfe3);
-        background: -moz-linear-gradient(top, #55b9d7, #8bcfe3);
-        background: -ms-linear-gradient(top, #55b9d7, #8bcfe3);
-        background: -o-linear-gradient(top, #55b9d7, #8bcfe3);
-        background: linear-gradient(top, #55b9d7, #8bcfe3);
-        -webkit-box-shadow: inset 0px 1px 1px 0px #3d94ad;
-        -moz-box-shadow: inset 0px 1px 1px 0px #3d94ad;
-        -o-box-shadow: inset 0px 1px 1px 0px #3d94ad;
-        -ms-box-shadow: inset 0px 1px 1px 0px #3d94ad;
-        box-shadow: inset 0px 1px 1px 0px #3d94ad; }
-      #facetSelections ul li.facet-selection .remove {
-        width: 10px;
-        height: 10px;
-        margin: 0 0 0 4px;
-        font-size: 0;
-        background: transparent url("../img/selection-close.png") no-repeat scroll left 0; }
-      #facetSelections ul li.facet-selection a {
-        text-decoration: none;
-        color: #333333; }
-        #facetSelections ul li.facet-selection a:hover, #facetSelections ul li.facet-selection a:active {
+  margin-bottom: 1em; }
+  #facetSelections ul {
+    margin: 0;
+    padding: 0; }
+    #facetSelections ul li {
+      display: inline-block;
+      list-style-type: none;
+      padding: 0 10px;
+      margin: 0 10px 10px 0; }
+      #facetSelections ul li.facet-selection {
+        background: #8BCFE3;
+        border: 1px solid #51ABC6;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        -o-border-radius: 3px;
+        -ms-border-radius: 3px;
+        border-radius: 3px;
+        -webkit-box-shadow: inset 0px 1px 1px 0px #c1e5f0;
+        -moz-box-shadow: inset 0px 1px 1px 0px #c1e5f0;
+        -o-box-shadow: inset 0px 1px 1px 0px #c1e5f0;
+        -ms-box-shadow: inset 0px 1px 1px 0px #c1e5f0;
+        box-shadow: inset 0px 1px 1px 0px #c1e5f0; }
+        #facetSelections ul li.facet-selection:hover {
+          background: #8bcfe3;
+          background: -webkit-gradient(linear, left top, left bottom, from(#55b9d7), to(#8bcfe3));
+          background: -webkit-linear-gradient(top, #55b9d7, #8bcfe3);
+          background: -moz-linear-gradient(top, #55b9d7, #8bcfe3);
+          background: -ms-linear-gradient(top, #55b9d7, #8bcfe3);
+          background: -o-linear-gradient(top, #55b9d7, #8bcfe3);
+          background: linear-gradient(top, #55b9d7, #8bcfe3);
+          cursor: pointer; }
+          #facetSelections ul li.facet-selection:hover .remove {
+            background: transparent url("../img/selection-close.png") no-repeat scroll right 0; }
+        #facetSelections ul li.facet-selection:active {
+          background: #8bcfe3;
+          background: -webkit-gradient(linear, left top, left bottom, from(#55b9d7), to(#8bcfe3));
+          background: -webkit-linear-gradient(top, #55b9d7, #8bcfe3);
+          background: -moz-linear-gradient(top, #55b9d7, #8bcfe3);
+          background: -ms-linear-gradient(top, #55b9d7, #8bcfe3);
+          background: -o-linear-gradient(top, #55b9d7, #8bcfe3);
+          background: linear-gradient(top, #55b9d7, #8bcfe3);
+          -webkit-box-shadow: inset 0px 1px 1px 0px #3d94ad;
+          -moz-box-shadow: inset 0px 1px 1px 0px #3d94ad;
+          -o-box-shadow: inset 0px 1px 1px 0px #3d94ad;
+          -ms-box-shadow: inset 0px 1px 1px 0px #3d94ad;
+          box-shadow: inset 0px 1px 1px 0px #3d94ad; }
+        #facetSelections ul li.facet-selection .remove {
+          width: 10px;
+          height: 10px;
+          margin: 0 0 0 4px;
+          font-size: 0;
+          background: transparent url("../img/selection-close.png") no-repeat scroll left 0; }
+        #facetSelections ul li.facet-selection a {
+          text-decoration: none;
           color: #333333; }
+          #facetSelections ul li.facet-selection a:hover, #facetSelections ul li.facet-selection a:active {
+            color: #333333; }
+      #facetSelections ul li:first-child {
+        padding-left: 0; }
 
 /*** Form generic
 ************************************************/
@@ -3313,11 +3317,9 @@ button, .button {
     margin: 0 0 0 3px; }
   .collapse-content-container .facet-item.inactive {
     text-decoration: none; }
-.collapse-content-container .selected {
-  font-weight: bold; }
-  .collapse-content-container .selected:hover {
-    text-decoration: none;
-    cursor: auto; }
+.collapse-content-container .selected:hover {
+  text-decoration: none;
+  cursor: auto; }
 
 .collapse.in {
   height: auto; }
@@ -3327,7 +3329,8 @@ button, .button {
   padding: 0 0 0 0;
   margin: 0 0 0 0; }
   .collapser .icon {
-    display: inline-block; }
+    display: inline-block;
+    margin: 0 5px 0 0; }
   .collapser.open .icon {
     width: 14px;
     height: 9px;

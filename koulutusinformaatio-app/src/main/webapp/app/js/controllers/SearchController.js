@@ -1,7 +1,7 @@
 /**
  *  Controller for search field in header
  */
-function SearchFieldCtrl($scope, $location, SearchService, kiAppConstants, FilterService) {
+function SearchFieldCtrl($scope, $location, $route, SearchService, kiAppConstants, FilterService) {
     $scope.searchFieldPlaceholder = i18n.t('search-field-placeholder'); 
     
 
@@ -43,7 +43,7 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
         });
 
         // append filters to url and reload
-        $location.search(FilterService.get());
+        $scope.refreshView();
     }
     
     /*
@@ -53,13 +53,11 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     	var facetSelection = {facetField: facetField, selection: selection};
     	if ($scope.facetFilters != undefined) {
     		$scope.facetFilters.push(facetField +':'+selection);
-    		$scope.facetSelections.push(facetSelection);
     	} else {
     		$scope.facetFilters = [];
     		$scope.facetFilters.push(facetField +':'+selection);
-    		$scope.facetSelections = [];
-    		$scope.facetSelections.push(facetSelection);
     	}
+
     	$scope.change();
     }
     
@@ -69,16 +67,8 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     $scope.removeSelection = function(facetSelection) {
     	if ($scope.isDefaultTeachLang(facetSelection)) {
     		$scope.langCleared = true;
-    	} 
-    	var tempSels = [];
-    	angular.forEach($scope.facetSelections, function(value, index) {
-    		if ((value.facetField != facetSelection.facetField) 
-    				|| (value.valueId != facetSelection.valueId)) {
-    			tempSels.push(value);
-    		}
-    	});
-    	$scope.facetSelections = tempSels;
-    	
+    	}
+
     	var tempFilters = [];
     	angular.forEach($scope.facetFilters, function(value, index) {
     		var curVal = value.split(':')[1];
@@ -88,6 +78,7 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     			tempFilters.push(value);
     		}
     	});
+
     	$scope.facetFilters = tempFilters;
     	$scope.change();
     }
@@ -109,6 +100,7 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     			isSelected = true;
     		}
     	}
+
     	return isSelected;
     }
     
@@ -181,7 +173,6 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
         var modalIntance = $modal.open({
             templateUrl: 'templates/selectArea.html',
             backdrop: 'static',
-            //scope: $scope,
             controller: LocationDialogCtrl
         });
 
@@ -285,7 +276,7 @@ function LocationDialogCtrl($scope, $modalInstance, ChildLocationsService, Utili
  *  Controller for search functionality 
  */
  function SearchCtrl($scope, $rootScope, $location, $routeParams, SearchLearningOpportunityService, SearchService, kiAppConstants, FilterService, Config, LanguageService) {
-	var queryParams = $location.search();
+    var queryParams;
 	$scope.selectAreaVisible = false;
     $rootScope.title = i18n.t('title-search-results') + ' - ' + i18n.t('sitename');
 
@@ -313,29 +304,38 @@ function LocationDialogCtrl($scope, $modalInstance, ChildLocationsService, Utili
     $scope.$watch('currentPage', function(value) {
         if (value) {
             FilterService.setPage(value);
-            $location.search(FilterService.get());
+            $scope.refreshView();
         }    
     });
+
+    $scope.refreshView = function() {
+        $location.search(FilterService.get());
+        $scope.initSearch();
+    }
     
     //Getting the query params from the url
     //after which searching is done.
-	FilterService.query(queryParams).then(function() {
-	     $scope.prerequisite = FilterService.getPrerequisite();
-	     $scope.locations = FilterService.getLocations();
-	     $scope.ongoing = FilterService.isOngoing();
-	     $scope.upcoming = FilterService.isUpcoming();
-	     $scope.facetFilters = FilterService.getFacetFilters();
-	     $scope.langCleared = FilterService.getLangCleared();
-         $scope.itemsPerPage = FilterService.getItemsPerPage();
-         $scope.sortCriteria = FilterService.getSortCriteria();
-         $scope.currentPage = FilterService.getPage();
-	     $scope.doSearching();
-	 });
+    $scope.initSearch = function() {
+        queryParams = $location.search();
+    	FilterService.query(queryParams).then(function() {
+    	     $scope.prerequisite = FilterService.getPrerequisite();
+    	     $scope.locations = FilterService.getLocations();
+    	     $scope.ongoing = FilterService.isOngoing();
+    	     $scope.upcoming = FilterService.isUpcoming();
+    	     $scope.facetFilters = FilterService.getFacetFilters();
+    	     $scope.langCleared = FilterService.getLangCleared();
+             $scope.itemsPerPage = FilterService.getItemsPerPage();
+             $scope.sortCriteria = FilterService.getSortCriteria();
+             $scope.currentPage = FilterService.getPage();
+    	     $scope.doSearching();
+    	 });
+    }
+    $scope.initSearch();
+
 
 	//Returns true if the language filter is set
 	//i.e. either a teaching language filter or langCleared (language is explicitely cleared by the user)
     $scope.isLangFilterSet = function() {
-    	
     	if ($scope.langCleared) {
     		return true;
     	}
@@ -353,7 +353,6 @@ function LocationDialogCtrl($scope, $modalInstance, ChildLocationsService, Utili
 
     //Searching solr
     $scope.doSearching = function() {
-
     	//If the language filter is set, the search query is made 
     	if ($routeParams.queryString && $scope.isLangFilterSet()) {
     		SearchLearningOpportunityService.query({
@@ -407,10 +406,10 @@ function LocationDialogCtrl($scope, $modalInstance, ChildLocationsService, Utili
     			ongoing: $scope.ongoing,
     			upcoming: $scope.upcoming,
     			page: kiAppConstants.searchResultsStartPage,
-    			facetFilters: facetFiltersArr
+    			facetFilters: facetFiltersArr.join()
     		});
 
-    		$location.search(FilterService.get());
+    		$scope.refreshView();
     	}
     }
 
@@ -460,8 +459,7 @@ function LocationDialogCtrl($scope, $modalInstance, ChildLocationsService, Utili
     	
     	angular.forEach($scope.loResult.edTypeFacet.facetValues, function(fVal, key) {
     		$scope.loResult.edTypeFacet[fVal.valueId] = fVal;
-    	});
-    	
+    	});	
     }
     
 
@@ -476,11 +474,11 @@ function LocationDialogCtrl($scope, $modalInstance, ChildLocationsService, Utili
 function SortCtrl($scope, $location, FilterService) {
     $scope.updateItemsPerPage = function() {
         FilterService.setItemsPerPage($scope.itemsPerPage);
-        $location.search(FilterService.get());
+        $scope.refreshView();
     }
 
     $scope.updateSortCriteria = function() {
         FilterService.setSortCriteria($scope.sortCriteria);
-        $location.search(FilterService.get());
+        $scope.refreshView();
     }
 };
