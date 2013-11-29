@@ -126,9 +126,12 @@ public class IndexerServiceImpl implements IndexerService {
         providerDoc.setField("asIds", providerAsIds);
         providerDoc.setField("requiredBaseEducations", requiredBaseEducations);
         providerDocs.add(providerDoc);
-
+        
         lopSolr.add(providerDocs);
+        lopSolr.commit();
+        
         loSolr.add(docs);
+        loSolr.commit();
     }
 
     @Override
@@ -168,6 +171,7 @@ public class IndexerServiceImpl implements IndexerService {
             locationDocs.add(locationDoc);
         }
         locationUpdateSolr.add(locationDocs);
+        locationUpdateSolr.commit();
     }
 
     /*
