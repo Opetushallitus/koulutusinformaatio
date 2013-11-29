@@ -145,7 +145,7 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
 
 
     private void addPrerequisite(Set<String> prerequisites, ChildLOI childLOI) {
-        String prereq = SolrConstants.ER.equals(childLOI.getPrerequisite().getValue()) ? SolrConstants.PK : childLOI.getPrerequisite().getValue();
+        String prereq = SolrConstants.SPECIAL_EDUCATION.equalsIgnoreCase(childLOI.getPrerequisite().getValue()) ? SolrConstants.PK : childLOI.getPrerequisite().getValue();
         if (!prerequisites.contains(prereq)) {
             prerequisites.add(prereq);
         }
@@ -186,7 +186,7 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         doc.addField(LearningOpportunity.LOS_ID, childLOS.getId());
         doc.addField(LearningOpportunity.LOP_ID, provider.getId());
         doc.addField(LearningOpportunity.PARENT_ID, parent.getId());
-        doc.addField(LearningOpportunity.PREREQUISITES, SolrConstants.ER.equals(childLOI.getPrerequisite().getValue()) 
+        doc.addField(LearningOpportunity.PREREQUISITES, SolrConstants.SPECIAL_EDUCATION.equalsIgnoreCase(childLOI.getPrerequisite().getValue()) 
                                 ? SolrConstants.PK : childLOI.getPrerequisite().getValue());
         
         doc.addField(LearningOpportunity.CREDITS, String.format("%s %s", parent.getCreditValue(), 
