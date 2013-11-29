@@ -343,6 +343,7 @@ directive('kiAbsoluteLink', function() {
     return {
         restrict: 'E,A',
         templateUrl: 'templates/locationFilter.html',
+        scope: false,
         link: function(scope, element, attrs) {
 
             scope.remove = function(element) {

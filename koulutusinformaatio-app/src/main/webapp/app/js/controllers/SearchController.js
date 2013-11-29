@@ -106,9 +106,9 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     
     //Are there selections to show in the facet selections area
     $scope.areThereSelections = function() {
-    	 $scope.locations = FilterService.getLocations();
+    	 var locations = FilterService.getLocations();
     	 return (($scope.facetSelections != undefined) && ($scope.facetSelections.length > 0))
-    	 		|| (($scope.locations != undefined) &&  ($scope.locations.length > 0))
+    	 		|| ((locations != undefined) &&  (locations.length > 0))
     	 		|| $scope.ongoing
     	 		|| $scope.upcoming;
     }
