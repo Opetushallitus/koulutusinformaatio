@@ -23,24 +23,33 @@ import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
 import fi.vm.sade.koulutusinformaatio.domain.ContactPerson;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
+import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.tarjonta.service.resources.dto.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 /**
  * @author Hannu Lyytikainen
  */
-public class LOIObjectBuilder {
+public class LOIObjectCreator extends ObjectCreator {
+
+    private static final Logger LOG = LoggerFactory.getLogger(LOIObjectCreator.class);
 
     KoodistoService koodistoService;
+    TarjontaRawService tarjontaRawService;
+    ApplicationOptionCreator applicationOptionCreator;
 
-    public LOIObjectBuilder(KoodistoService koodistoService) {
+    public LOIObjectCreator(KoodistoService koodistoService, TarjontaRawService tarjontaRawService) {
+        super(koodistoService);
         this.koodistoService = koodistoService;
+        this.tarjontaRawService = tarjontaRawService;
+        this.applicationOptionCreator = new ApplicationOptionCreator(koodistoService, tarjontaRawService);
     }
 
-    public ChildLOI buildChildLOI(KomotoDTO childKomoto, String losId, I18nText losName) throws KoodistoException {
+    public ChildLOI createChildLOI(KomotoDTO childKomoto, String losId, I18nText losName) throws KoodistoException {
         ChildLOI childLOI = new ChildLOI();
         childLOI.setName(losName);
         childLOI.setId(childKomoto.getOid());
@@ -81,21 +90,19 @@ public class LOIObjectBuilder {
             HakukohdeDTO hakukohdeDTO = tarjontaRawService.getHakukohde(aoId);
             HakuDTO hakuDTO = tarjontaRawService.getHakuByHakukohde(aoId);
 
-            try {
-                validateHakukohde(hakukohdeDTO);
-            } catch (TarjontaParseException e) {
-                LOG.debug("Application option skipped, " + e.getMessage());
+            if (!CreatorUtil.hakukohdePublished.apply(hakukohdeDTO)) {
+                LOG.debug(String.format("Application option %s skipped due to incorrect state", hakukohdeDTO.getOid()));
                 continue;
             }
-            try {
-                validateHaku(hakuDTO);
-            } catch (TarjontaParseException e) {
-                LOG.debug("Application option skipped, " + e.getMessage());
+
+            if (!CreatorUtil.hakuPublished.apply(hakuDTO)) {
+                LOG.debug(String.format("Application option %s skipped due to incorrect state of application system %s",
+                        hakukohdeDTO.getOid(), hakuDTO.getOid()));
                 continue;
             }
 
             applicationOptions.add(
-                    createApplicationOption(hakukohdeDTO, hakuDTO, childKomoto, childLOI));
+                    applicationOptionCreator.createVocationalApplicationOption(hakukohdeDTO, hakuDTO, childKomoto, childLOI));
             if (hakukohdeDTO.isKaksoisTutkinto()) {
                 kaksoistutkinto = true;
             }
@@ -106,6 +113,4 @@ public class LOIObjectBuilder {
 
         return childLOI;
     }
-
-
 }
