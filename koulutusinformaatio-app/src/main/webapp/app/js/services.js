@@ -37,7 +37,7 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
             	if (params.sortCriteria == 1 || params.sortCriteria == 2) {
             		sortField = 'name_ssort';
             	} else if (params.sortCriteria == 3 || params.sortCriteria == 4) {
-            		sortField = 'duration_ssort';
+            		sortField = 'duration_isort';
             	}
             } 
             

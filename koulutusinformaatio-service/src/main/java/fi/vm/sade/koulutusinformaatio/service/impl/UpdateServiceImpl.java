@@ -16,7 +16,6 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
