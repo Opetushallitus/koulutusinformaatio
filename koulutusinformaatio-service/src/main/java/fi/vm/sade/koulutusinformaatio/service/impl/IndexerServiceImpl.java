@@ -126,7 +126,7 @@ public class IndexerServiceImpl implements IndexerService {
         providerDoc.setField("asIds", providerAsIds);
         providerDoc.setField("requiredBaseEducations", requiredBaseEducations);
         providerDocs.add(providerDoc);
-
+        
         lopSolr.add(providerDocs);
         loSolr.add(docs);
     }

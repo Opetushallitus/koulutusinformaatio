@@ -32,7 +32,6 @@ import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.LearningOpportunityBuilder;
 import fi.vm.sade.tarjonta.service.resources.dto.*;
-import fi.vm.sade.tarjonta.shared.types.TarjontaTila;
 
 import javax.ws.rs.WebApplicationException;
 import java.util.HashMap;
@@ -76,7 +75,7 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
     @Override
     public LearningOpportunityBuilder resolveParentLOSs() throws TarjontaParseException, KoodistoException, WebApplicationException {
         parentKomo = tarjontaRawService.getKomo(komo.getYlaModuulit().get(0));
-        if (!komoPublished.apply(parentKomo)) {
+        if (!CreatorUtil.komoPublished.apply(parentKomo)) {
             throw new TarjontaParseException(String.format("Parent komo not published: %s", parentKomo.getOid()));
         }
         return this;
@@ -84,7 +83,7 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
 
     @Override
     public LearningOpportunityBuilder resolveChildLOSs() throws TarjontaParseException, KoodistoException, WebApplicationException {
-        if (!komoPublished.apply(komo)) {
+        if (!CreatorUtil.komoPublished.apply(komo)) {
             throw new TarjontaParseException(String.format("Child komo not published: %s", komo.getOid()));
         }
         List<OidRDTO> komotoOids = tarjontaRawService.getKomotosByKomo(komo.getOid(), Integer.MAX_VALUE, 0);
@@ -160,7 +159,7 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
 
         List<UpperSecondaryLOI> lois = Lists.newArrayList();
         for (KomotoDTO komoto : komotos) {
-            if (komotoPublished.apply(komoto)) {
+            if (CreatorUtil.komotoPublished.apply(komoto)) {
                 lois.add(createLOI(komoto, losID, los.getName()));
             }
         }
@@ -344,7 +343,7 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
         for (OidRDTO s : komotosByHakukohdeOID) {
             KomoDTO komoByKomotoOID = tarjontaRawService.getKomoByKomoto(s.getOid());
 
-            if (!komoPublished.apply(komoByKomotoOID)) {
+            if (!CreatorUtil.komoPublished.apply(komoByKomotoOID)) {
                 continue;
             }
 
@@ -471,18 +470,6 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
         return false;
     }
 
-    private static Predicate<KomoDTO> komoPublished = new Predicate<KomoDTO>() {
-        @Override
-        public boolean apply(KomoDTO komo) {
-            return komo.getTila().equals(TarjontaTila.JULKAISTU);
-        }
-    };
-    private static Predicate<KomotoDTO> komotoPublished = new Predicate<KomotoDTO>() {
-        @Override
-        public boolean apply(KomotoDTO komoto) {
-            return komoto.getTila().equals(TarjontaTila.JULKAISTU);
-        }
-    };
     private static Predicate<UpperSecondaryLOS> losValid = new Predicate<UpperSecondaryLOS>() {
         @Override
         public boolean apply(UpperSecondaryLOS los) {

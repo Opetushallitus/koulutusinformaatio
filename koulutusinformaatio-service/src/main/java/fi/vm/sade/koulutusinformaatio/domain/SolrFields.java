@@ -70,7 +70,7 @@ public class SolrFields {
         //Fields for sorting
         public static final String START_DATE_SORT = "startDate_dsort";
         public static final String NAME_SORT = "name_ssort";
-        public static final String DURATION_SORT = "duration_ssort";
+        public static final String DURATION_SORT = "duration_isort";
         
     }
     
@@ -100,7 +100,6 @@ public class SolrFields {
     	public static final String TYPE_FACET = "FASETTI";
     	public static final String KESTOTYYPPI_VUOSI = "suunniteltukesto_01";
     	public static final String KESTOTYYPPI_KK = "suunniteltukesto_02";
-    	public static final String ER = "er";
     	public static final String PK = "pk";
     	public static final String DISTRICT_UNKNOWN = "99";
     	public static final String MUNICIPALITY_UNKNOWN = "99";
