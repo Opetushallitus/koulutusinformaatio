@@ -100,7 +100,6 @@ public class SolrFields {
     	public static final String TYPE_FACET = "FASETTI";
     	public static final String KESTOTYYPPI_VUOSI = "suunniteltukesto_01";
     	public static final String KESTOTYYPPI_KK = "suunniteltukesto_02";
-    	public static final String ER = "er";
     	public static final String PK = "pk";
     	public static final String DISTRICT_UNKNOWN = "99";
     	public static final String MUNICIPALITY_UNKNOWN = "99";

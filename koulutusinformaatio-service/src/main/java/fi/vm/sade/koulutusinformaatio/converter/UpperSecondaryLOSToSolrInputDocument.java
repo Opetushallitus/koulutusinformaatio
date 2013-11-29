@@ -60,7 +60,7 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
         doc.addField(LearningOpportunity.LOS_ID, los.getId());
         doc.addField(LearningOpportunity.LOP_ID, provider.getId());
         
-        doc.addField(LearningOpportunity.PREREQUISITES, SolrConstants.ER.equals(loi.getPrerequisite().getValue()) 
+        doc.addField(LearningOpportunity.PREREQUISITES, SolrConstants.SPECIAL_EDUCATION.equalsIgnoreCase(loi.getPrerequisite().getValue()) 
                                         ? SolrConstants.PK : loi.getPrerequisite().getValue());
 
         doc.setField(LearningOpportunity.PREREQUISITE, resolveTranslationInTeachingLangUseFallback(
