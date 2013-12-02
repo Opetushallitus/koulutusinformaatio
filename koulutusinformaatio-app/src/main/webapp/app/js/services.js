@@ -89,6 +89,29 @@ service('SearchLocationService', ['$http', '$timeout', '$q', 'LanguageService', 
     }
 }]).
 
+service('AutocompleteService', ['$http', '$timeout', '$q', 'LanguageService', function($http, $timeout, $q, LanguageService) {
+
+    return {
+        query: function(queryParam) {
+            var deferred = $q.defer();
+
+            $http.get('../lo/autocomplete/' + queryParam, {
+                params: {
+                    lang: LanguageService.getLanguage()
+                }
+            }).
+            success(function(result) {
+                deferred.resolve(result);
+            }).
+            error(function(result) {
+                deferred.reject(result);
+            });
+
+            return deferred.promise;
+        }
+    }
+}]).
+
 /**
  * Service for retrieving districts (maakunnat). Used in faceted search
  */

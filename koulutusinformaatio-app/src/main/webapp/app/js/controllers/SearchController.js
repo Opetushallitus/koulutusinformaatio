@@ -1,10 +1,18 @@
 /**
  *  Controller for search field in header
  */
-function SearchFieldCtrl($scope, $location, $route, SearchService, kiAppConstants, FilterService) {
+function SearchFieldCtrl($scope, $location, $route, SearchService, kiAppConstants, FilterService, AutocompleteService) {
     $scope.searchFieldPlaceholder = i18n.t('search-field-placeholder'); 
+    $scope.suggestions = [];
     
-
+    $scope.$watch('queryString', function() {
+    	if ($scope.queryString != undefined && $scope.queryString.length > 0) {
+    	AutocompleteService.query($scope.queryString).then(function(result) {
+    		$scope.suggestions = result.loNames; 
+    	});
+    	}
+    });
+    
     // Perform search using LearningOpportunity service
     $scope.search = function() {
         if ($scope.queryString) {

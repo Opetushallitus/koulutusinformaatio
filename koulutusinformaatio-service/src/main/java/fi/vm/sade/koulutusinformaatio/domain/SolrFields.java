@@ -72,6 +72,9 @@ public class SolrFields {
         public static final String NAME_SORT = "name_ssort";
         public static final String DURATION_SORT = "duration_isort";
         
+        //Fields for autocomplete
+        public static final String NAME_AUTO = "name_auto";
+        
     }
     
     public static class LocationFields {

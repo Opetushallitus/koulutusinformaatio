@@ -19,10 +19,12 @@ package fi.vm.sade.koulutusinformaatio.resource;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LOSearchResultListDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.SuggestedTermsResultDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.UpperSecondaryLearningOpportunitySpecificationDTO;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+
 import java.util.List;
 
 /**
@@ -104,4 +106,18 @@ public interface LearningOpportunityResource {
     public UpperSecondaryLearningOpportunitySpecificationDTO getUpperSecondaryLearningOpportunity(@PathParam("id") String id,
                                                                                                   @QueryParam("lang") String lang,
                                                                                                   @QueryParam("uiLang") String uiLang);
+    
+    /**
+     * Fetches suggested terms to be used in free text search. 
+     * The returned terms match the term given as parameter.
+     *
+     * @param term for which matching terms are searched
+     * @param lang language
+     * @return upper secondary learning opportunity
+     */
+    @GET
+    @Path("autocomplete/{term}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public SuggestedTermsResultDTO getSuggestedTerms(@PathParam("term") String term,
+                                                     @QueryParam("lang") String lang);
 }
