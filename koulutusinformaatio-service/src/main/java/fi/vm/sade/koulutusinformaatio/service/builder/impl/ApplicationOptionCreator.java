@@ -135,7 +135,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
 
             KomotoDTO k = tarjontaRawService.getKomoto(s.getOid());
             if (not(CreatorUtil.komotoPublished).apply(k)) {
-                LOG.debug(String.format("Skipping invalid child komoto s"), k.getOid());
+                LOG.debug(String.format("Skipping invalid child komoto %s", k.getOid()));
                 continue;
             }
 
