@@ -37,6 +37,7 @@ public class EducationObjectCreator extends ObjectCreator {
 
     protected EducationObjectCreator(KoodistoService koodistoService) {
         super(koodistoService);
+        this.koodistoService = koodistoService;
     }
 
     public Exam createVocationalExam(ValintakoeRDTO valintakoe) throws KoodistoException {

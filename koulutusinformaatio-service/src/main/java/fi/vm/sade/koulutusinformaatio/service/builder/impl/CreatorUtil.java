@@ -30,6 +30,8 @@ import fi.vm.sade.tarjonta.shared.types.TarjontaTila;
  */
 public class CreatorUtil {
 
+    public static final String STATE_PUBLISHED = "JULKAISTU";
+
     protected static Predicate<KomoDTO> komoPublished = new Predicate<KomoDTO>() {
         @Override
         public boolean apply(KomoDTO komo) {
@@ -47,14 +49,14 @@ public class CreatorUtil {
     protected static Predicate<HakukohdeDTO> hakukohdePublished = new Predicate<HakukohdeDTO>() {
         @Override
         public boolean apply(HakukohdeDTO hakukohde) {
-            return hakukohde.getTila().equals(TarjontaTila.JULKAISTU);
+            return hakukohde.getTila().equals(STATE_PUBLISHED);
         }
     };
 
     protected static Predicate<HakuDTO> hakuPublished = new Predicate<HakuDTO>() {
         @Override
         public boolean apply(HakuDTO haku) {
-            return haku.getTila().equals(TarjontaTila.JULKAISTU);
+            return haku.getTila().equals(STATE_PUBLISHED);
         }
     };
 

@@ -74,7 +74,6 @@ public class UpdateServiceImpl implements UpdateService {
                  
             this.transactionManager.beginTransaction(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
             
-            
             int count = MAX_RESULTS;
             int index = 0;
             
@@ -84,14 +83,12 @@ public class UpdateServiceImpl implements UpdateService {
                 count = loOids.size();
                 index += count;
                 
-            
-
                for (String loOid : loOids) {
                     List<LOS> specifications = null;
                     try {
                         specifications = tarjontaService.findParentLearningOpportunity(loOid);
                     } catch (TarjontaParseException e) {
-                        LOG.warn("Exception while updating parent learning opportunity, oidMessage: " + e.getMessage());
+                        LOG.warn(String.format("Exception while updating parent learning opportunity %s: %s", loOid, e.getMessage()));
                         continue;
                     }
                     for (LOS spec : specifications) {
