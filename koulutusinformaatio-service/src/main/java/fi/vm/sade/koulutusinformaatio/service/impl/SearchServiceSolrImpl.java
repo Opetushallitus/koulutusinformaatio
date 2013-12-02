@@ -432,6 +432,17 @@ public class SearchServiceSolrImpl implements SearchService {
                 }
                 result.setLoNames(terms);
             }
+            
+            FacetField freeF = response.getFacetField(LearningOpportunity.FREE_AUTO);
+            if (freeF != null) {
+                List<String> terms = new ArrayList<String>();
+                for (Count curC : freeF.getValues()) {
+                    
+                    terms.add(curC.getName());
+                    
+                }
+                result.setKeywords(terms);
+            }
                 
         } catch (SolrServerException e) {
             throw new SearchException("Solr search error occured.");

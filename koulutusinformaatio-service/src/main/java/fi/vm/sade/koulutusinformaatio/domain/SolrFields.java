@@ -74,6 +74,7 @@ public class SolrFields {
         
         //Fields for autocomplete
         public static final String NAME_AUTO = "name_auto";
+        public static final String FREE_AUTO = "free_auto";
         
     }
     
