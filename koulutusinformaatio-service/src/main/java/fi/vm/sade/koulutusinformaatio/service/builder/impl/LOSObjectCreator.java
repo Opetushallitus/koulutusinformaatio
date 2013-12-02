@@ -98,7 +98,7 @@ public class LOSObjectCreator extends ObjectCreator {
             LOG.debug(Joiner.on(" ").join("Resolving child learning opportunity:", childKomotoOid));
 
             if (!CreatorUtil.komotoPublished.apply(childKomoto)) {
-                LOG.debug(String.format("Skipping child non published child komoto %s"), childKomoto.getOid());
+                LOG.debug(String.format("Skipping child non published child komoto %s", childKomoto.getOid()));
                 continue;
             }
 
