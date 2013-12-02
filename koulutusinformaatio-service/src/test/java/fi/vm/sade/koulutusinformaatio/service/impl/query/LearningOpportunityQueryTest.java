@@ -63,6 +63,6 @@ public class LearningOpportunityQueryTest {
         assertNotNull(q);        
         assertEquals(STAR, q.getQuery().toString());
         assertEquals("edismax", q.getParams("defType")[0]);
-        assertEquals(1, q.getFacetFields().length);
+        assertEquals(2, q.getFacetFields().length);
     }
 }

@@ -217,5 +217,8 @@
     "pohjakoulutus": "Pohjakoulutuksesi",
     "prerequisites": "Pohjakoulutuksesi",
     "yo": "Lukio ja / tai ylioppilastutkinto",
-    "pk": "Peruskoulu"   
+    "pk": "Peruskoulu",
+    
+    "autocomplete-keyword": "Hakusanaehdotukset",
+    "autocomplete-loname": "Kurssit ja tutkinnot"
 }

@@ -217,5 +217,8 @@
      "pohjakoulutus": "Din grundutbildning",
      "prerequisites": "Din grundutbildning",
      "yo": "Gymnasium och / eller studentexamen",
-     "pk": "Grundskola"   
+     "pk": "Grundskola",
+    
+    "autocomplete-keyword": "Hakusanaehdotukset (sv)",
+    "autocomplete-loname": "Kurssit ja tutkinnot (sv)"   
 }

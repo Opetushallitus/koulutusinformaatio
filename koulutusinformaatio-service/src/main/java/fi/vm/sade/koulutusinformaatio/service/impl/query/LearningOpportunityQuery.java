@@ -112,6 +112,7 @@ public class LearningOpportunityQuery extends SolrQuery {
         this.setFacet(true);
         this.setFacetPrefix(term);
         this.addFacetField(LearningOpportunity.NAME_AUTO);
+        this.addFacetField(LearningOpportunity.FREE_AUTO);
         this.setFacetMinCount(1);
     }
 

@@ -8,7 +8,19 @@ function SearchFieldCtrl($scope, $location, $route, SearchService, kiAppConstant
     $scope.$watch('queryString', function() {
     	if ($scope.queryString != undefined && $scope.queryString.length > 0) {
     	AutocompleteService.query($scope.queryString).then(function(result) {
-    		$scope.suggestions = result.loNames; 
+    		$scope.suggestions.length = 0;
+    		if (result.keywords != undefined) {
+    			for (var i = 0; i < result.keywords.length; i++) {
+    				$scope.suggestions.push({value: result.keywords[i], group: i18n.t('autocomplete-keyword')});
+    			}
+    		} 
+    		
+    		if (result.loNames != undefined) {
+    			for (var i = 0; i < result.loNames.length; i++) {
+    				$scope.suggestions.push({value: result.loNames[i], group: i18n.t('autocomplete-loname')});
+    			}
+    		}
+    		
     	});
     	}
     });
