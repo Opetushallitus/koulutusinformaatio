@@ -38,7 +38,7 @@ import java.util.Set;
 /**
  * @author Hannu Lyytikainen
  */
-public class VocationalLearningOpportunityBuilder extends LearningOpportunityBuilder<ParentLOS> {
+public class VocationalLearningOpportunityBuilder extends LearningOpportunityBuilder<LOS> {
 
     private TarjontaRawService tarjontaRawService;
     private ProviderService providerService;
@@ -50,6 +50,12 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
 
     // List of ParentLOS objects that are returned when the build() method is invoked
     private List<ParentLOS> parentLOSs;
+
+    // List of special education loses
+    private List<ParentLOS> specialLOSs;
+
+    // full list of
+    private List<LOS> allLOSs;
 
     // A helper data structure that groups parent komoto KomotoDTO objects by their provider
     ArrayListMultimap<String, KomotoDTO> parentKomotosByProviderId;
@@ -68,6 +74,7 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
         parentKomotosByProviderId = ArrayListMultimap.create();
         childLOSsByParentLOSId = ArrayListMultimap.create();
         parentLOSs = Lists.newArrayList();
+        allLOSs = Lists.newArrayList();
     }
 
     @Override
@@ -237,8 +244,9 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
     }
 
     @Override
-    public List<ParentLOS> build() {
-        return parentLOSs;
+    public List<LOS> build() {
+        this.allLOSs.addAll(parentLOSs);
+        return allLOSs;
     }
 
     private boolean isParentLOSValid(ParentLOS parentLOS) {
