@@ -8,6 +8,7 @@
 
     "lo-description": "Beskrivning av utbildningen ",
     "lo-application": "Antagningsgrunder och inträdesprov",
+    "lo-application-er": "Hakeminen (sv)",
 
     "elementary-based": "Grundskolbaserad utbildning",
     "elementary-graduate-selection": "Antagning av grundskolgångna",
@@ -142,10 +143,7 @@
     "application-prerequisite": "Grundutbildning",
     "label-as-ongoing": "Ansökan pågår",
     "label-as-not-ongoing": "Ansökan pågår inte",
-
-    "directly-applicable": "Utbildningsprogram med direkt ansökan:",
-
-    "apply-as-part-of-degree-program": "Sök till utbildning som är del av examen:",
+    "not-applicable": "Huom! Haku koulutukseen ei tapahdu tämän palvelun kautta. Tutustu hakutapaan Hakeminen-välilehdellä. (sv)",
 
     "language-fi": "Suomeksi",
     "language-sv": "På svenska",

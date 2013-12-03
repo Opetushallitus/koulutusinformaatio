@@ -8,6 +8,7 @@
 
     "lo-description": "Koulutuksen kuvaus",
     "lo-application": "Valintaperusteet ja pääsykokeet",
+    "lo-application-er": "Hakeminen",
 
     "elementary-based": "Peruskoulupohjainen koulutus",
     "elementary-graduate-selection": "Peruskoulun päättäneiden valinta",
@@ -142,10 +143,7 @@
     "application-prerequisite": "Pohjakoulutus",
     "label-as-ongoing": "Haku käynnissä",
     "label-as-not-ongoing": "Ei nyt haettavissa",
-
-    "directly-applicable": "Suoraan haettavissa olevat koulutusohjelmat:",
-
-    "apply-as-part-of-degree-program": "Tähän koulutukseen haetaan osana tutkintoa:",
+    "not-applicable": "Huom! Haku koulutukseen ei tapahdu tämän palvelun kautta. Tutustu hakutapaan Hakeminen-välilehdellä.",
 
     "language-fi": "Suomeksi",
     "language-sv": "På svenska",

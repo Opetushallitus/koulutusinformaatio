@@ -249,6 +249,59 @@ service('ChildLOService', ['$http', '$timeout', '$q', 'LanguageService', 'ChildL
     }
 }]).
 
+service('ErityisLOService', ['$http', '$timeout', '$q', 'LanguageService', 'ChildLOTransformer', 'ErityisParentLOService', function($http, $timeout, $q, LanguageService, ChildLOTransformer, ErityisParentLOService) {
+    return {
+        query: function(options) {
+            var deferred = $q.defer();
+
+            $http.get('mocks/er-child.json', {}).
+            success(function(result) {
+                ChildLOTransformer.transform(result);
+                ErityisParentLOService.query({}).then(function(presult) {
+                    result.educationDegree = presult.lo.educationDegree;
+                    var loResult = {
+                        lo: result,
+                        parent: presult.lo,
+                        provider: presult.provider
+                    }
+                    deferred.resolve(loResult);    
+                }, function(reason) {
+                    deferred.reject(reason);
+                });
+            }).
+            error(function(result) {
+                deferred.reject(result);
+            });
+
+            return deferred.promise;
+        }
+    }
+}]).
+
+service('ErityisParentLOService', ['$http', '$timeout', '$q', 'LanguageService', 'ParentLOTransformer', function($http, $timeout, $q, LanguageService, ParentLOTransformer) {
+    
+    return {
+        query: function(options) {
+            var deferred = $q.defer();
+
+            $http.get('mocks/er-parent.json', {}).
+            success(function(result) {
+                ParentLOTransformer.transform(result);
+                var loResult = {
+                    lo: result,
+                    provider: result.provider
+                }
+                deferred.resolve(loResult);
+            }).
+            error(function(result) {
+                deferred.reject(result);
+            });
+
+            return deferred.promise;
+        }
+    }
+}]).
+
 /**
  * Resource for requesting Upper Secondary LO data
  */

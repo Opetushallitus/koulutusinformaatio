@@ -8,10 +8,22 @@
     $scope.descriptionLanguage = 'fi';
     $scope.hakuAppUrl = Config.get('hakulomakeUrl');
 
-    $scope.tabtitle = {
-        koulutus: i18n.t('lo-description'),
-        valintaperusteet: i18n.t('lo-application')
-    }
+    $scope.tabtitle = (function() {
+        var getValintaperusteetTitle = function() {
+            if ($scope.loType == 'erityisopetus') {
+                return i18n.t('lo-application-er');
+            } else {
+                return i18n.t('lo-application');
+            }
+        };
+
+        return {
+            koulutus: i18n.t('lo-description'),
+            valintaperusteet: getValintaperusteetTitle()
+        }
+    }());
+
+    
 
     var setTitle = function(parent, child) {
         var sitename = i18n.t('sitename');
