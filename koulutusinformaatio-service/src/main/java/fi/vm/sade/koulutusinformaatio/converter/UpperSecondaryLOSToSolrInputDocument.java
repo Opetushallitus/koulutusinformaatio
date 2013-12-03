@@ -206,7 +206,7 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
      * Scales values to be counted in months.
      */
     private int getDuration(UpperSecondaryLOI loi) {
-        String[] numStrings = loi.getPlannedDuration().split("[^0-9]*");
+        String[] numStrings = loi.getPlannedDuration().split("[^\\d]+");
         int min = Integer.MAX_VALUE;
         for (String curNumStr : numStrings) {
             if ((curNumStr != null) && !curNumStr.isEmpty()) {

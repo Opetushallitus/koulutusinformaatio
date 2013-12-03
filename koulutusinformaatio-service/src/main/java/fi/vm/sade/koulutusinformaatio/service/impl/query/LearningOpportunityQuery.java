@@ -110,10 +110,13 @@ public class LearningOpportunityQuery extends SolrQuery {
     
     private void addSuggestedTermsFacetToQuery(String term) {
         this.setFacet(true);
-        this.setFacetPrefix(term);
+        if (term != null) {
+            this.setFacetPrefix(term.toLowerCase());
+        }
         this.addFacetField(LearningOpportunity.NAME_AUTO);
         this.addFacetField(LearningOpportunity.FREE_AUTO);
         this.setFacetMinCount(1);
+        this.setFacetLimit(5);
     }
 
     private void addFacetsToQuery(String lang, List<String> facetFilters, String ongoingFQ, String upcomingFQ) {
