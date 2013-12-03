@@ -19,8 +19,10 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 import com.google.common.collect.Lists;
 
 import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
+import fi.vm.sade.koulutusinformaatio.domain.Location;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LocationFields;
 import fi.vm.sade.koulutusinformaatio.domain.SuggestedTermsResult;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 
@@ -90,9 +92,24 @@ public class SearchServiceSolrImplTest {
         when(nameF.getValues()).thenReturn(counts);
         when(loQueryResponse.getFacetField(LearningOpportunity.NAME_AUTO)).thenReturn(nameF);
         
+        SolrDocumentList locDocs = new SolrDocumentList();
+        SolrDocument loc1 = new SolrDocument();
+        loc1.addField(LocationFields.CODE, "code_location");
+        loc1.addField(LocationFields.ID, "id_location");
+        loc1.addField(LocationFields.LANG, "fi");
+        loc1.addField(LocationFields.NAME, "Location");
+        loc1.addField(LocationFields.TYPE, "LocationType");
+        locDocs.add(loc1);
+        
+        QueryResponse locQueryResponse = mock(QueryResponse.class);
+        when(locQueryResponse.getResults()).thenReturn(locDocs);
+        
+        
+        
         loHttpSolrServer = mock(HttpSolrServer.class);
         when(loHttpSolrServer.query((SolrParams)any())).thenReturn(loQueryResponse);
         locationHttpSolrServer = mock(HttpSolrServer.class);
+        when(locationHttpSolrServer.query((SolrParams)any())).thenReturn(locQueryResponse);
 
         service = new SearchServiceSolrImpl(lopHttpSolrServer, loHttpSolrServer, locationHttpSolrServer);
     }
@@ -128,5 +145,19 @@ public class SearchServiceSolrImplTest {
         SuggestedTermsResult res = service.searchSuggestedTerms("te", "fi");
         assertEquals(1, res.getLoNames().size());
     }
+    
+    @Test
+    public void testGetDistricts() throws SearchException {
+        List<Location> locs = service.getDistricts("fi");
+        assertEquals(1, locs.size());
+    }
+    
+    @Test
+    public void testChildLocations() throws SearchException {
+        List<Location> locs = service.getChildLocations(Arrays.asList("uusimaa"), "fi");
+        assertEquals(1, locs.size());
+    }
+    
+    
 
 }

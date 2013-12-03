@@ -40,39 +40,33 @@ public class EducationObjectCreator extends ObjectCreator {
         this.koodistoService = koodistoService;
     }
 
-    public Exam createVocationalExam(ValintakoeRDTO valintakoe) throws KoodistoException {
-        if (valintakoe != null && valintakoe.getKuvaus() != null && valintakoe.getTyyppiUri() != null
-                && valintakoe.getValintakoeAjankohtas() != null
-                && !valintakoe.getValintakoeAjankohtas().isEmpty()) {
-            Exam exam = new Exam();
-            exam.setType(koodistoService.searchFirst(valintakoe.getTyyppiUri()));
-            exam.setDescription(getI18nText(valintakoe.getKuvaus()));
-            List<ExamEvent> examEvents = Lists.newArrayList();
-
-            for (ValintakoeAjankohtaRDTO valintakoeAjankohta : valintakoe.getValintakoeAjankohtas()) {
-                ExamEvent examEvent = new ExamEvent();
-                Address address = new Address();
-                address.setPostalCode(koodistoService.searchFirstCodeValue(valintakoeAjankohta.getOsoite().getPostinumero()));
-                address.setPostOffice(valintakoeAjankohta.getOsoite().getPostitoimipaikka());
-                address.setStreetAddress(valintakoeAjankohta.getOsoite().getOsoiterivi1());
-                examEvent.setAddress(address);
-                examEvent.setDescription(valintakoeAjankohta.getLisatiedot());
-                examEvent.setStart(valintakoeAjankohta.getAlkaa());
-                examEvent.setEnd(valintakoeAjankohta.getLoppuu());
-                examEvents.add(examEvent);
-            }
-            exam.setExamEvents(examEvents);
-            return exam;
-        } else {
-            return null;
-        }
-    }
-
     public List<Exam> createVocationalExams(List<ValintakoeRDTO> valintakoes) throws KoodistoException {
         if (valintakoes != null) {
             List<Exam> exams = Lists.newArrayList();
             for (ValintakoeRDTO valintakoe : valintakoes) {
-                exams.add(createVocationalExam(valintakoe));
+                if (valintakoe != null && valintakoe.getKuvaus() != null && valintakoe.getTyyppiUri() != null
+                        && valintakoe.getValintakoeAjankohtas() != null
+                        && !valintakoe.getValintakoeAjankohtas().isEmpty()) {
+                    Exam exam = new Exam();
+                    exam.setType(koodistoService.searchFirst(valintakoe.getTyyppiUri()));
+                    exam.setDescription(getI18nText(valintakoe.getKuvaus()));
+                    List<ExamEvent> examEvents = Lists.newArrayList();
+
+                    for (ValintakoeAjankohtaRDTO valintakoeAjankohta : valintakoe.getValintakoeAjankohtas()) {
+                        ExamEvent examEvent = new ExamEvent();
+                        Address address = new Address();
+                        address.setPostalCode(koodistoService.searchFirstCodeValue(valintakoeAjankohta.getOsoite().getPostinumero()));
+                        address.setPostOffice(valintakoeAjankohta.getOsoite().getPostitoimipaikka());
+                        address.setStreetAddress(valintakoeAjankohta.getOsoite().getOsoiterivi1());
+                        examEvent.setAddress(address);
+                        examEvent.setDescription(valintakoeAjankohta.getLisatiedot());
+                        examEvent.setStart(valintakoeAjankohta.getAlkaa());
+                        examEvent.setEnd(valintakoeAjankohta.getLoppuu());
+                        examEvents.add(examEvent);
+                    }
+                    exam.setExamEvents(examEvents);
+                    exams.add(exam);
+                }
             }
             return exams;
         } else {
