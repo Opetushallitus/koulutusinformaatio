@@ -315,6 +315,19 @@ angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.position', 'ui.bootstrap
     };
   }])
 
+.directive('typeaheadItem', ['$http', '$templateCache', '$compile', '$parse', function ($http, $templateCache, $compile, $parse) {
+    return {
+      restrict: 'A',
+      replace: true,
+      link: function(scope, element, attrs) {
+        var tplUrl = scope.match.model.group ? 'template/typeahead/typeahead-group.html' : 'template/typeahead/typeahead-item.html';
+        $http.get(tplUrl, {cache: $templateCache}).success(function(tplContent) {
+          element.html($compile(tplContent)(scope));
+        });
+      }
+    };
+  }])
+
   .filter('typeaheadHighlight', function() {
 
     function escapeRegexp(queryToEscape) {
@@ -330,12 +343,22 @@ angular.module("template/typeahead/typeahead-match.html", []).run(["$templateCac
     "<a tabindex=\"-1\" data-bind-html-unsafe=\"match.label | typeaheadHighlight:query\"></a>");
 }]);
 
+angular.module("template/typeahead/typeahead-item.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("template/typeahead/typeahead-item.html",
+    "    <li data-ng-class=\"{active: isActive($index) }\" data-ng-mouseenter=\"selectActive($index)\" data-ng-click=\"selectMatch($index)\">\n" +
+    "        <a data-typeahead-match data-index=\"$index\" data-match=\"match\" data-query=\"query\" data-template-url=\"templateUrl\"></a>\n" +
+    "    </isLoadingSetter>\n");
+}]);
+
+angular.module("template/typeahead/typeahead-group.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("template/typeahead/typeahead-group.html",
+    "    <li class=\"group\">{{match.model.value}}</li>\n");
+}]);
+
 angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("template/typeahead/typeahead-popup.html",
     "<ul class=\"typeahead dropdown-menu\" data-ng-style=\"{display: isOpen()&&'block' || 'none', top: position.top+'px', left: position.left+'px'}\">\n" +
-    "    <li data-ng-repeat=\"match in matches\" data-ng-class=\"{active: isActive($index) }\" data-ng-mouseenter=\"selectActive($index)\" data-ng-click=\"selectMatch($index)\">\n" +
-    "        <a data-typeahead-match data-index=\"$index\" data-match=\"match\" data-query=\"query\" data-template-url=\"templateUrl\"></a>\n" +
-    "    </li>\n" +
+    "    <li data-ng-repeat=\"match in matches\" data-typeahead-item></li>" +
     "</ul>");
 }]);
 

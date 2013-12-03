@@ -27,7 +27,9 @@ angular.module("ui.bootstrap.tpls",
     "template/typeahead/typeahead-popup.html",
     "template/popover/popover-template.html",
     "template/modal/backdrop.html",
-    "template/modal/window.html"
+    "template/modal/window.html",
+    "template/typeahead/typeahead-item.html",
+    "template/typeahead/typeahead-group.html"
   ]);
 
 angular.module('ui.bootstrap.position', [])
