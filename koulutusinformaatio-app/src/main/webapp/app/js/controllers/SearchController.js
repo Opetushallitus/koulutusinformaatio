@@ -20,10 +20,9 @@ function SearchFieldCtrl($scope, $location, $route, SearchService, kiAppConstant
     				$scope.suggestions.push({value: result.loNames[i], group: i18n.t('autocomplete-loname')});
     			}
     		}
-    		
     	});
     	}
-    });
+    }, true);
     
     // Perform search using LearningOpportunity service
     $scope.search = function() {
