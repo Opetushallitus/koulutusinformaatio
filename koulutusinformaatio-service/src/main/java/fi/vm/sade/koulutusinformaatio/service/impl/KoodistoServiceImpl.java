@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.base.Function;
+import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
@@ -26,7 +27,6 @@ import fi.vm.sade.koodisto.service.GenericFault;
 import fi.vm.sade.koodisto.service.types.SearchKoodisCriteriaType;
 import fi.vm.sade.koodisto.service.types.common.KoodiMetadataType;
 import fi.vm.sade.koodisto.service.types.common.KoodiType;
-import fi.vm.sade.koodisto.util.CachingKoodistoClient;
 import fi.vm.sade.koodisto.util.KoodiServiceSearchCriteriaBuilder;
 import fi.vm.sade.koodisto.util.KoodistoClient;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
@@ -115,6 +115,9 @@ public class KoodistoServiceImpl implements KoodistoService {
     public List<Code> searchCodesByKoodisto(String koodistoUri, Integer version) throws KoodistoException {
         try {
             List<KoodiType> codes = koodiService.getKoodisForKoodisto(koodistoUri, version);
+            if (codes == null || codes.isEmpty()) {
+                LOGGER.warn(String.format("No koodis found with koodistoUri %, version %d", koodistoUri, version));
+            }
             return convertAllToCode(codes);
         } catch (GenericFault e) {
             throw new KoodistoException(e);
@@ -199,7 +202,11 @@ public class KoodistoServiceImpl implements KoodistoService {
 
     private List<KoodiType> searchSubKoodiTypes(String koodiUriAndVersion) throws KoodistoException {
         CodeUriAndVersion codeUriAndVersion = resolveKoodiUriAndVersion(koodiUriAndVersion);
-        return koodiService.getAlakoodis(codeUriAndVersion.getUri());
+        List<KoodiType> alakoodis = koodiService.getAlakoodis(codeUriAndVersion.getUri());
+        if (alakoodis == null || alakoodis.isEmpty()) {
+            LOGGER.warn(String.format("No sub koodis found with koodi uri and version %s", koodiUriAndVersion));
+        }
+        return alakoodis;
     }
 
     private List<KoodiType> searchSuperKoodiTypes(final String koodiUriAndVersion, final String koodistoURI) throws KoodistoException {
@@ -213,7 +220,11 @@ public class KoodistoServiceImpl implements KoodistoService {
 
     private List<KoodiType> searchSuperKoodiTypes(String koodiUriAndVersion) throws KoodistoException {
         CodeUriAndVersion codeUriAndVersion = resolveKoodiUriAndVersion(koodiUriAndVersion);
-        return koodiService.getYlakoodis(codeUriAndVersion.getUri());
+        List<KoodiType> ylakoodis = koodiService.getYlakoodis(codeUriAndVersion.getUri());
+        if (ylakoodis == null || ylakoodis.isEmpty()) {
+            LOGGER.warn(String.format("No super koodis found with koodi uri and version %s", koodiUriAndVersion));
+        }
+        return ylakoodis;
     }
 
     private List<KoodiType> searchKoodiTypes(String koodiUri) throws KoodistoException {
@@ -248,10 +259,18 @@ public class KoodistoServiceImpl implements KoodistoService {
     private List<KoodiType> searchKoodis(final SearchKoodisCriteriaType criteria) throws KoodistoException {
         try {
             List<KoodiType> codes = koodiService.searchKoodis(criteria);
+            if (codes == null || codes.isEmpty()) {
+                LOGGER.warn(String.format("No koodis found with search criteria: %s", searchCriteriaToString(criteria)));
+            }
             return codes;
         } catch (GenericFault e) {
             throw new KoodistoException(e);
         }
+    }
+
+    private String searchCriteriaToString(SearchKoodisCriteriaType sc) {
+        return  String.format("URIs: %s Version: %d",
+                Joiner.on(" ").join(sc.getKoodiUris()), sc.getKoodiVersio());
     }
 
 
