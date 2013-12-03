@@ -17,11 +17,17 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
+import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.domain.SuggestedTermsResult;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
+
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.apache.solr.client.solrj.response.FacetField;
+import org.apache.solr.client.solrj.response.FacetField.Count;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
@@ -29,6 +35,7 @@ import org.apache.solr.common.params.SolrParams;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
@@ -73,6 +80,16 @@ public class SearchServiceSolrImplTest {
         loDocs.add(lo1);
         QueryResponse loQueryResponse = mock(QueryResponse.class);
         when(loQueryResponse.getResults()).thenReturn(loDocs);
+        
+        FacetField nameF = mock(FacetField.class);
+        Count count = mock(Count.class);
+        count.setCount(1);
+        count.setName("term1");
+        List<Count> counts = Arrays.asList(count);
+        
+        when(nameF.getValues()).thenReturn(counts);
+        when(loQueryResponse.getFacetField(LearningOpportunity.NAME_AUTO)).thenReturn(nameF);
+        
         loHttpSolrServer = mock(HttpSolrServer.class);
         when(loHttpSolrServer.query((SolrParams)any())).thenReturn(loQueryResponse);
         locationHttpSolrServer = mock(HttpSolrServer.class);
@@ -104,6 +121,12 @@ public class SearchServiceSolrImplTest {
     public void testSearchLearningOpportunitiesEmptyTerm() throws SearchException {
         LOSearchResultList results = service.searchLearningOpportunities("", "PK", Lists.newArrayList("HELSINKI"), Lists.newArrayList("teachingLang:suomi"), "fi", false, false, 0, 100, "0", "asc");
         assertEquals(0, results.getResults().size());
+    }
+    
+    @Test
+    public void testAutucompleteSearch() throws SearchException {
+        SuggestedTermsResult res = service.searchSuggestedTerms("te", "fi");
+        assertEquals(1, res.getLoNames().size());
     }
 
 }

@@ -13,19 +13,30 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * European Union Public Licence for more details.
  */
+package fi.vm.sade.koulutusinformaatio.domain;
 
-package fi.vm.sade.koulutusinformaatio.service.builder.impl;
+import java.util.List;
 
 /**
- * @author Hannu Lyytikainen
+ * 
+ * @author Markus
  */
-public class LOBuilderUtil {
-
-
-
-
-
-
-
-
+public class SuggestedTermsResult {
+    
+    private List<String> loNames;
+    private List<String> keywords;
+    
+    public List<String> getLoNames() {
+        return loNames;
+    }
+    public void setLoNames(List<String> loNames) {
+        this.loNames = loNames;
+    }
+    public List<String> getKeywords() {
+        return keywords;
+    }
+    public void setKeywords(List<String> keywords) {
+        this.keywords = keywords;
+    }
+    
 }

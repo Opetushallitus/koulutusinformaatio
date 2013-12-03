@@ -1839,61 +1839,65 @@ b, strong, .bold {
   bottom: 34px; }
 
 #facetSelections {
-  margin: 0 0 2em 0; }
-  #facetSelections ul li {
-    display: inline-block;
-    list-style-type: none;
-    padding: 0 10px;
-    float: left;
-    margin: 10px 10px 0 0; }
-    #facetSelections ul li.facet-selection {
-      background: #8BCFE3;
-      border: 1px solid #51ABC6;
-      -webkit-border-radius: 3px;
-      -moz-border-radius: 3px;
-      -o-border-radius: 3px;
-      -ms-border-radius: 3px;
-      border-radius: 3px;
-      -webkit-box-shadow: inset 0px 1px 1px 0px #c1e5f0;
-      -moz-box-shadow: inset 0px 1px 1px 0px #c1e5f0;
-      -o-box-shadow: inset 0px 1px 1px 0px #c1e5f0;
-      -ms-box-shadow: inset 0px 1px 1px 0px #c1e5f0;
-      box-shadow: inset 0px 1px 1px 0px #c1e5f0; }
-      #facetSelections ul li.facet-selection:hover {
-        background: #8bcfe3;
-        background: -webkit-gradient(linear, left top, left bottom, from(#55b9d7), to(#8bcfe3));
-        background: -webkit-linear-gradient(top, #55b9d7, #8bcfe3);
-        background: -moz-linear-gradient(top, #55b9d7, #8bcfe3);
-        background: -ms-linear-gradient(top, #55b9d7, #8bcfe3);
-        background: -o-linear-gradient(top, #55b9d7, #8bcfe3);
-        background: linear-gradient(top, #55b9d7, #8bcfe3);
-        cursor: pointer; }
-        #facetSelections ul li.facet-selection:hover .remove {
-          background: transparent url("../img/selection-close.png") no-repeat scroll right 0; }
-      #facetSelections ul li.facet-selection:active {
-        background: #8bcfe3;
-        background: -webkit-gradient(linear, left top, left bottom, from(#55b9d7), to(#8bcfe3));
-        background: -webkit-linear-gradient(top, #55b9d7, #8bcfe3);
-        background: -moz-linear-gradient(top, #55b9d7, #8bcfe3);
-        background: -ms-linear-gradient(top, #55b9d7, #8bcfe3);
-        background: -o-linear-gradient(top, #55b9d7, #8bcfe3);
-        background: linear-gradient(top, #55b9d7, #8bcfe3);
-        -webkit-box-shadow: inset 0px 1px 1px 0px #3d94ad;
-        -moz-box-shadow: inset 0px 1px 1px 0px #3d94ad;
-        -o-box-shadow: inset 0px 1px 1px 0px #3d94ad;
-        -ms-box-shadow: inset 0px 1px 1px 0px #3d94ad;
-        box-shadow: inset 0px 1px 1px 0px #3d94ad; }
-      #facetSelections ul li.facet-selection .remove {
-        width: 10px;
-        height: 10px;
-        margin: 0 0 0 4px;
-        font-size: 0;
-        background: transparent url("../img/selection-close.png") no-repeat scroll left 0; }
-      #facetSelections ul li.facet-selection a {
+  margin-bottom: 1em; }
+  #facetSelections ul {
+    margin: 0;
+    padding: 0; }
+    #facetSelections ul li {
+      list-style-type: none;
+      display: inline-block;
+      margin: 0 10px 10px 0; }
+      #facetSelections ul li a.facet-selection {
+        display: inline-block;
+        padding: 0 10px;
+        background: #8BCFE3;
         text-decoration: none;
-        color: #333333; }
-        #facetSelections ul li.facet-selection a:hover, #facetSelections ul li.facet-selection a:active {
+        color: #333333;
+        border: 1px solid #51ABC6;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        -o-border-radius: 3px;
+        -ms-border-radius: 3px;
+        border-radius: 3px;
+        -webkit-box-shadow: inset 0px 1px 1px 0px #c1e5f0;
+        -moz-box-shadow: inset 0px 1px 1px 0px #c1e5f0;
+        -o-box-shadow: inset 0px 1px 1px 0px #c1e5f0;
+        -ms-box-shadow: inset 0px 1px 1px 0px #c1e5f0;
+        box-shadow: inset 0px 1px 1px 0px #c1e5f0; }
+        #facetSelections ul li a.facet-selection:hover {
+          background: #8bcfe3;
+          background: -webkit-gradient(linear, left top, left bottom, from(#55b9d7), to(#8bcfe3));
+          background: -webkit-linear-gradient(top, #55b9d7, #8bcfe3);
+          background: -moz-linear-gradient(top, #55b9d7, #8bcfe3);
+          background: -ms-linear-gradient(top, #55b9d7, #8bcfe3);
+          background: -o-linear-gradient(top, #55b9d7, #8bcfe3);
+          background: linear-gradient(top, #55b9d7, #8bcfe3);
+          cursor: pointer; }
+          #facetSelections ul li a.facet-selection:hover .remove {
+            background: transparent url("../img/selection-close.png") no-repeat scroll right 0; }
+        #facetSelections ul li a.facet-selection:active {
+          background: #8bcfe3;
+          background: -webkit-gradient(linear, left top, left bottom, from(#55b9d7), to(#8bcfe3));
+          background: -webkit-linear-gradient(top, #55b9d7, #8bcfe3);
+          background: -moz-linear-gradient(top, #55b9d7, #8bcfe3);
+          background: -ms-linear-gradient(top, #55b9d7, #8bcfe3);
+          background: -o-linear-gradient(top, #55b9d7, #8bcfe3);
+          background: linear-gradient(top, #55b9d7, #8bcfe3);
+          -webkit-box-shadow: inset 0px 1px 1px 0px #3d94ad;
+          -moz-box-shadow: inset 0px 1px 1px 0px #3d94ad;
+          -o-box-shadow: inset 0px 1px 1px 0px #3d94ad;
+          -ms-box-shadow: inset 0px 1px 1px 0px #3d94ad;
+          box-shadow: inset 0px 1px 1px 0px #3d94ad; }
+        #facetSelections ul li a.facet-selection .remove {
+          width: 10px;
+          height: 10px;
+          margin: 0 0 0 4px;
+          font-size: 0;
+          background: transparent url("../img/selection-close.png") no-repeat scroll left 0; }
+        #facetSelections ul li a.facet-selection:hover, #facetSelections ul li a.facet-selection:active {
           color: #333333; }
+      #facetSelections ul li:first-child {
+        padding-left: 0; }
 
 /*** Form generic
 ************************************************/
@@ -3091,7 +3095,8 @@ button, .button {
 .pager li > span {
   display: inline-block;
   text-decoration: none;
-  font-weight: bold; }
+  font-weight: bold;
+  color: #333333; }
 
 .pager li > a:hover,
 .pager li > a:focus {
@@ -3102,11 +3107,11 @@ button, .button {
   float: right; }
   .pager .next > a:after,
   .pager .next > span:after {
-    background: transparent url("../img/pagination-next.png") no-repeat scroll left 0;
+    background: transparent url("../img/angle-right.png") no-repeat scroll left 0;
     content: "";
     display: inline-block;
     width: 9px;
-    height: 14px;
+    height: 15px;
     margin: 0 0 0 10px;
     vertical-align: text-top; }
   .pager .next > a:hover:after,
@@ -3121,11 +3126,11 @@ button, .button {
   float: left; }
   .pager .previous > a:before,
   .pager .previous > span:before {
-    background: transparent url("../img/pagination-previous.png") no-repeat scroll left 0;
+    background: transparent url("../img/angle-left.png") no-repeat scroll left 0;
     content: "";
     display: inline-block;
     width: 9px;
-    height: 14px;
+    height: 15px;
     margin: 0 10px 0 0;
     vertical-align: text-top; }
   .pager .previous > a:hover:before,
@@ -3298,7 +3303,8 @@ button, .button {
 
 .collapse-content-container .facet-item {
   padding: 0 0 0 18px;
-  margin: 0 0 0 3px; }
+  margin: 0 0 0 3px;
+  display: inline-block; }
   .collapse-content-container .facet-item:hover {
     text-decoration: underline; }
   .collapse-content-container .facet-item a {
@@ -3311,11 +3317,9 @@ button, .button {
     margin: 0 0 0 3px; }
   .collapse-content-container .facet-item.inactive {
     text-decoration: none; }
-.collapse-content-container .selected {
-  font-weight: bold; }
-  .collapse-content-container .selected:hover {
-    text-decoration: none;
-    cursor: auto; }
+.collapse-content-container .selected:hover {
+  text-decoration: none;
+  cursor: auto; }
 
 .collapse.in {
   height: auto; }
@@ -3326,13 +3330,23 @@ button, .button {
   margin: 0 0 0 0; }
   .collapser .icon {
     display: inline-block;
-    width: 16px;
-    height: 10px;
-    background: transparent url("../img/facet-open-close.png") scroll no-repeat; }
+    margin: 0 5px 0 0; }
   .collapser.open .icon {
-    background-position: left center; }
+    width: 14px;
+    height: 9px;
+    background: transparent url("../img/triangle-open.png") scroll no-repeat 0 0; }
+  .collapser.open:hover .icon {
+    background-position: -14px 0; }
+  .collapser.open:active .icon {
+    background-position: -28px 0; }
   .collapser.close .icon {
-    background-position: right center; }
+    width: 9px;
+    height: 14px;
+    background: transparent url("../img/triangle-close.png") scroll no-repeat 0 0; }
+  .collapser.close:hover .icon {
+    background-position: -9px 0; }
+  .collapser.close:active .icon {
+    background-position: -18px 0; }
 
 .filter {
   padding: 10px;

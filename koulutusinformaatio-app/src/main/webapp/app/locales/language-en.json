@@ -49,10 +49,9 @@
     "sort-criteria-startdate": "Alkamisajankohta (en)",
     "sort-criteria-alphabetical-desc": "Aakkoset A-Ö (en)",
     "sort-criteria-alphabetical-asc": "Aakkoset Ö-A (en)",
-    "sort-criteria-extent": "Koulutuksen laajuus (en)",
     "sort-criteria-items-per-page-label": "Näytä (en)",
     "sort-criteria-sort-label": "Lajittele (en)",
-    "sort-criteria-duration-asc": "Lyhtykestoiset ensin (en)",
+    "sort-criteria-duration-asc": "Lyhytkestoiset ensin (en)",
     "sort-criteria-duration-desc": "Pitkäkestoiset ensin (en)",
     "sort-results-label": "Tulokset (en)",
 
@@ -215,6 +214,10 @@
     "pohjakoulutus": " Pohjakoulutuksesi (en)",
     "prerequisites": "Pohjakoulutuksesi (en)",
     "yo": "Lukio ja / tai ylioppilastutkinto (en)",
-    "pk": "Peruskoulu (en)"    
+    "pk": "Peruskoulu (en)",
+    
+    "autocomplete-keyword": "Hakusanaehdotukset (en)",
+    "autocomplete-loname": "Kurssit ja tutkinnot (en)"
+        
 
 }

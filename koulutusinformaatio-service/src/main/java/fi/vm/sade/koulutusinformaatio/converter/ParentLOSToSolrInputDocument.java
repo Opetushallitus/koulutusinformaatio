@@ -67,8 +67,10 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         doc.addField(LearningOpportunity.LOP_ID, provider.getId());
 
         doc.setField(LearningOpportunity.NAME, parent.getName().getTranslations().get("fi"));
-        doc.addField(LearningOpportunity.CREDITS, String.format("%s %s", parent.getCreditValue(), 
+        if (parent.getCreditValue() != null) {
+            doc.addField(LearningOpportunity.CREDITS, String.format("%s %s", parent.getCreditValue(), 
                         parent.getCreditUnit().getTranslationsShortName().get("fi")));
+        }
         
         doc.addField(LearningOpportunity.NAME_FI, parent.getName().getTranslations().get("fi"));
         doc.addField(LearningOpportunity.NAME_SORT, parent.getName().getTranslations().get("fi"));
@@ -189,9 +191,11 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         doc.addField(LearningOpportunity.PREREQUISITES, SolrConstants.SPECIAL_EDUCATION.equalsIgnoreCase(childLOI.getPrerequisite().getValue()) 
                                 ? SolrConstants.PK : childLOI.getPrerequisite().getValue());
         
-        doc.addField(LearningOpportunity.CREDITS, String.format("%s %s", parent.getCreditValue(), 
+        if (parent.getCreditValue() != null) {
+            doc.addField(LearningOpportunity.CREDITS, String.format("%s %s", parent.getCreditValue(), 
                 resolveTranslationInTeachingLangUseFallback(childLOI.getTeachingLanguages(), 
                         parent.getCreditUnit().getTranslationsShortName())));
+        }
 
         doc.setField(LearningOpportunity.PREREQUISITE, resolveTranslationInTeachingLangUseFallback(
                 childLOI.getTeachingLanguages(), childLOI.getPrerequisite().getName().getTranslations()));

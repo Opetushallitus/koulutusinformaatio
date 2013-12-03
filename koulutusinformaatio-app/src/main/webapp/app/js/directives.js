@@ -121,8 +121,8 @@ directive('kiRenderOrganization', function() {
 
             scope.$watch('provider', function(data) {
                 if (data) {
-                    scope.showOrganization = (data.learningEnvironment ||
-                        data.accessibility) ? true : false;
+                    scope.showOrganization = (data.description ||
+                        data.learningEnvironment || data.accessibility) ? true : false;
                 }
             });
         }
@@ -341,23 +341,18 @@ directive('kiAbsoluteLink', function() {
  */
  directive('kiLocationFilter', ['SearchLocationService', function(SearchLocationService) {
     return {
-        restrict: 'E,A',
+        restrict: 'A',
         templateUrl: 'templates/locationFilter.html',
+        scope: false,
         link: function(scope, element, attrs) {
 
-            scope.remove = function(element) {
-                scope.locations.splice(scope.locations.indexOf(element), 1);
-                scope.change();
-                return false;
-            }
-    
             scope.add = function() {
-                if (!scope.locations) {
-                    scope.locations = [];
+                if (!scope.$parent.locations) {
+                    scope.$parent.locations = [];
                 }
 
-                if (scope.location && scope.locations.indexOf(scope.location) < 0) {
-                    scope.locations.push(scope.location);
+                if (scope.location && scope.$parent.locations.indexOf(scope.location) < 0) {
+                    scope.$parent.locations.push(scope.location);
                     scope.location = '';
                     scope.change();
                     return false;

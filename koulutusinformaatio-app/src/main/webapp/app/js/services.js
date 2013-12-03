@@ -37,7 +37,7 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
             	if (params.sortCriteria == 1 || params.sortCriteria == 2) {
             		sortField = 'name_ssort';
             	} else if (params.sortCriteria == 3 || params.sortCriteria == 4) {
-            		sortField = 'duration_ssort';
+            		sortField = 'duration_isort';
             	}
             } 
             
@@ -73,6 +73,29 @@ service('SearchLocationService', ['$http', '$timeout', '$q', 'LanguageService', 
             var deferred = $q.defer();
 
             $http.get('../location/search/' + queryParam, {
+                params: {
+                    lang: LanguageService.getLanguage()
+                }
+            }).
+            success(function(result) {
+                deferred.resolve(result);
+            }).
+            error(function(result) {
+                deferred.reject(result);
+            });
+
+            return deferred.promise;
+        }
+    }
+}]).
+
+service('AutocompleteService', ['$http', '$timeout', '$q', 'LanguageService', function($http, $timeout, $q, LanguageService) {
+
+    return {
+        query: function(queryParam) {
+            var deferred = $q.defer();
+
+            $http.get('../lo/autocomplete/' + queryParam, {
                 params: {
                     lang: LanguageService.getLanguage()
                 }
@@ -885,6 +908,12 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
             }
         }
     }
+
+    /*
+    var setLocations = function(locations) {
+        filters.locations = locations;
+    }
+    */
 
     return {
         query: function(queryParams) {
