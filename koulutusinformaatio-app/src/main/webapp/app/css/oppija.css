@@ -3297,7 +3297,9 @@ button, .button {
     .typeahead li.group {
       padding: 6px 10px;
       font-weight: bold;
-      background-color: whitesmoke; }
+      background-color: whitesmoke;
+      text-transform: uppercase;
+      font-size: 12px; }
 
 .collapse {
   height: 0;
@@ -3356,7 +3358,7 @@ button, .button {
 
 .filter {
   padding: 10px;
-  border: 1px solid #dddddd;
+  border-bottom: 1px solid #dddddd;
   border-top: none; }
   .filter:first-child {
     border-top: 1px solid #dddddd; }
