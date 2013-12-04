@@ -4,6 +4,22 @@
 	angular.module('angulartics.piwik', ['angulartics'])
 	.config(['$analyticsProvider', function ($analyticsProvider) {
 
+		var addVariables = function(variables) {
+			if (variables) {
+				if (variables.visit) {
+					angular.forEach(variables.visit, function(item, itemkey) {
+						_paq.push(['setCustomVariable', itemkey+1, item.name, item.value, 'visit']);
+					});
+				}
+
+				if (variables.page) {
+					angular.forEach(variables.page, function(item, itemkey) {
+						_paq.push(['setCustomVariable', itemkey+1, item.name, item.value, 'page']);
+					});
+				}
+			}
+		}
+
 		$analyticsProvider.registerPageTrack(function (path, variables) {
 
 			// remove query params from path (piwik does not like queryparams with hashbangs)
@@ -19,26 +35,15 @@
 				_paq.push(['setCustomUrl', path]);
 
 				// add custom variables
-				if (variables) {
-					if (variables.visit) {
-						angular.forEach(variables.visit, function(item, itemkey) {
-							_paq.push(['setCustomVariable', itemkey+1, item.name, item.value, 'visit']);
-						});
-					}
-
-					if (variables.page) {
-						angular.forEach(variables.page, function(item, itemkey) {
-							_paq.push(['setCustomVariable', itemkey+1, item.name, item.value, 'page']);
-						});
-					}
-				}
+				addVariables(variables);
 
 				_paq.push(['trackPageView', documentTitle]);
 			}
 		});
 
-		$analyticsProvider.registerSiteSearchTrack(function (keyword, category, resultCount) {
+		$analyticsProvider.registerSiteSearchTrack(function (keyword, category, resultCount, variables) {
 			if (_paq) {
+				addVariables(variables);
 				_paq.push(['trackSiteSearch', keyword, category, resultCount]);
 			}
 		});

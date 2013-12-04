@@ -2,7 +2,78 @@
 
 angular.module('kiApp.services', ['ngResource']).
 
-service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analytics', function($http, $timeout, $q, $analytics) {
+service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analytics', 'FilterService', function($http, $timeout, $q, $analytics, FilterService) {
+    
+    // gather information for analytics
+    var parseFilterValues = function(params) {
+        var getTilaValue = function(params) {
+            var result = 0;
+            result = params.ongoing ? result + 1 : result;
+            result = params.upcoming ? result + 1 : result;
+
+            return result;
+        }
+
+        var facetitemIsOfType = function(item, filterKey) {
+            if (item && (typeof item == 'string' || item instanceof String)) {
+                var temp = item.split(':');
+                if (temp && temp[0] && temp[0].indexOf(filterKey) >= 0) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        var getTyyppiValue = function(params) {
+            var result = 0;
+            if (params.facetFilters) {
+                angular.forEach(params.facetFilters, function(item, key) {
+                    result = facetitemIsOfType(item, 'educationType') ? result + 1: result;
+                });
+            }
+
+            return result;
+        }
+
+        var getPohjakoulutusValue = function(params) {
+            var result = 0;
+            if (params.facetFilters) {
+                angular.forEach(params.facetFilters, function(item, key) {
+                    result = facetitemIsOfType(item, 'prerequisites') ? result + 1: result;
+                });
+            }
+
+            return result;
+        }
+
+        var getPaikkakuntaValue = function(params) {
+            return params.locations ? params.locations.length : 0;
+        }
+
+        var getOpetuskieliValue = function(params) {
+            var result = 0;
+            if (params.facetFilters) {
+                angular.forEach(params.facetFilters, function(item, key) {
+                    result = facetitemIsOfType(item, 'teachingLangCode') ? result + 1: result;
+                });
+            }
+
+            return result;
+        }
+
+        return {
+            page: [
+                {name: 'Haun tila', value: getTilaValue(params)},
+                {name: 'Koulutuksen tyyppi', value: getTyyppiValue(params)},
+                {name: 'Pohjakoulutus', value: getPohjakoulutusValue(params)},
+                {name: 'Paikkakunta', value: getPaikkakuntaValue(params)},
+                {name: 'Opetuskieli', value: getOpetuskieliValue(params)}
+            ]
+        };
+
+    };
+
     return {
         query: function(params) {
             var deferred = $q.defer();
@@ -46,15 +117,15 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
 
             $http.get('../lo/search/' + encodeURI(params.queryString) + qParams, {}).
             success(function(result) {
+                var variables = parseFilterValues(params);
                 var category;
                 if (params.locations && params.locations.length > 0) {
                     category = params.locations[0];
-                } else if (params.prerequisite) {
-                    category = params.prerequisite;
                 } else {
                     category = false;
                 }
-                $analytics.siteSearchTrack(params.queryString, category, result.totalCount);
+
+                $analytics.siteSearchTrack(params.queryString, category, result.totalCount, variables);
                 deferred.resolve(result);
             }).
             error(function(result) {
