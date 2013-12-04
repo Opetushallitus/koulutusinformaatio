@@ -10,8 +10,9 @@
                     placeholder="{{searchFieldPlaceholder}}" 
                     value="" 
                     data-ng-model="queryString" 
-                	typeahead="suggestion.value for suggestion in suggestions" 
+                	data-typeahead="suggestion.value for suggestion in suggestions" 
                     data-typeahead-wait-ms="500" 
+                    data-typeahead-on-select="search()"
                     autocomplete="off" />
                 <button class="button primary magnifier" type="submit">
                     <span>
