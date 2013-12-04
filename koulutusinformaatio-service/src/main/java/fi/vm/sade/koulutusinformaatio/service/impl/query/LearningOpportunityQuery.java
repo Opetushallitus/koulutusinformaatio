@@ -30,7 +30,8 @@ public class LearningOpportunityQuery extends SolrQuery {
             "textBoost_sv_whole^10.0",
             "textBoost_en_whole^10.0",
             "asNames",
-            "lopNames"
+            "lopNames",
+            "name_auto_fi"
     );
 
     private final static Integer AS_COUNT = 10;
@@ -100,7 +101,7 @@ public class LearningOpportunityQuery extends SolrQuery {
         this.addFilterQuery(String.format("-%s:%s", LearningOpportunity.ID, SolrConstants.TIMESTAMP_DOC));
         this.addFilterQuery(String.format("-%s:%s", LearningOpportunity.TYPE, SolrConstants.TYPE_FACET));
         
-        addSuggestedTermsFacetToQuery(term);
+        addSuggestedTermsFacetToQuery(term, lang);
         
         this.setParam("defType", "edismax");
         this.setParam(DisMaxParams.QF, Joiner.on(" ").join(FIELDS));
@@ -108,13 +109,13 @@ public class LearningOpportunityQuery extends SolrQuery {
         
     }
     
-    private void addSuggestedTermsFacetToQuery(String term) {
+    private void addSuggestedTermsFacetToQuery(String term, String lang) {
         this.setFacet(true);
         if (term != null) {
             this.setFacetPrefix(term.toLowerCase());
         }
         this.addFacetField(LearningOpportunity.NAME_AUTO);
-        this.addFacetField(LearningOpportunity.FREE_AUTO);
+        this.addFacetField(String.format("%s_%s", LearningOpportunity.FREE_AUTO, lang.toLowerCase()));
         this.setFacetMinCount(1);
         this.setFacetLimit(5);
     }

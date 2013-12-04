@@ -433,7 +433,7 @@ public class SearchServiceSolrImpl implements SearchService {
                 result.setLoNames(terms);
             }
             
-            FacetField freeF = response.getFacetField(LearningOpportunity.FREE_AUTO);
+            FacetField freeF = response.getFacetField(String.format("%s_%s", LearningOpportunity.FREE_AUTO, lang.toLowerCase()));
             if (freeF != null) {
                 List<String> terms = new ArrayList<String>();
                 for (Count curC : freeF.getValues()) {
