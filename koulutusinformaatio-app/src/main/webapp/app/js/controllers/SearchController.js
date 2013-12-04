@@ -298,7 +298,7 @@ function LocationDialogCtrl($scope, $modalInstance, ChildLocationsService, Utili
  */
  function SearchCtrl($scope, $rootScope, $location, $routeParams, SearchLearningOpportunityService, SearchService, kiAppConstants, FilterService, Config, LanguageService) {
     var queryParams;
-	$scope.selectAreaVisible = false;
+    $scope.selectAreaVisible = false;
     $rootScope.title = i18n.t('title-search-results') + ' - ' + i18n.t('sitename');
 
     $scope.pageSizes = [25, 50, 100];
@@ -309,7 +309,6 @@ function LocationDialogCtrl($scope, $modalInstance, ChildLocationsService, Utili
         {value: i18n.t('sort-criteria-alphabetical-asc')},
         {value: i18n.t('sort-criteria-duration-asc'), group: i18n.t('sort-criteria-duration-group')},
         {value: i18n.t('sort-criteria-duration-desc'), group: i18n.t('sort-criteria-duration-group')}
-        
     ];
 
     $scope.paginationNext = i18n.t('pagination-next');
@@ -319,15 +318,10 @@ function LocationDialogCtrl($scope, $modalInstance, ChildLocationsService, Utili
 
     $scope.changePage = function(page) {
         $scope.currentPage = page;
+        FilterService.setPage(page);
+        $scope.refreshView();
         $('html, body').scrollTop($('body').offset().top); // scroll to top of list
     };
-
-    $scope.$watch('currentPage', function(value) {
-        if (value) {
-            FilterService.setPage(value);
-            $scope.refreshView();
-        }    
-    });
 
     $scope.refreshView = function() {
         $location.search(FilterService.get());
@@ -338,18 +332,19 @@ function LocationDialogCtrl($scope, $modalInstance, ChildLocationsService, Utili
     //after which searching is done.
     $scope.initSearch = function() {
         queryParams = $location.search();
-    	FilterService.query(queryParams).then(function() {
-    	     $scope.prerequisite = FilterService.getPrerequisite();
-    	     $scope.locations = FilterService.getLocations();
-    	     $scope.ongoing = FilterService.isOngoing();
-    	     $scope.upcoming = FilterService.isUpcoming();
-    	     $scope.facetFilters = FilterService.getFacetFilters();
-    	     $scope.langCleared = FilterService.getLangCleared();
-             $scope.itemsPerPage = FilterService.getItemsPerPage();
-             $scope.sortCriteria = FilterService.getSortCriteria();
-             $scope.currentPage = FilterService.getPage();
-    	     $scope.doSearching();
-    	 });
+    	FilterService.query(queryParams)
+            .then(function() {
+                $scope.prerequisite = FilterService.getPrerequisite();
+                $scope.locations = FilterService.getLocations();
+                $scope.ongoing = FilterService.isOngoing();
+                $scope.upcoming = FilterService.isUpcoming();
+                $scope.facetFilters = FilterService.getFacetFilters();
+                $scope.langCleared = FilterService.getLangCleared();
+                $scope.itemsPerPage = FilterService.getItemsPerPage();
+                $scope.sortCriteria = FilterService.getSortCriteria();
+                $scope.currentPage = FilterService.getPage();
+                $scope.doSearching();
+            });
     }
     $scope.initSearch();
 
@@ -374,7 +369,7 @@ function LocationDialogCtrl($scope, $modalInstance, ChildLocationsService, Utili
 
     //Searching solr
     $scope.doSearching = function() {
-    	//If the language filter is set, the search query is made 
+    	//If the language filter is set, the search query is made
     	if ($routeParams.queryString && $scope.isLangFilterSet()) {
     		SearchLearningOpportunityService.query({
     			queryString: $routeParams.queryString,
