@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * @author Hannu Lyytikainen
  */
-public class ConverterUtil {
+public class SolrUtil {
 
     private static final String FALLBACK_LANG = "fi";
 

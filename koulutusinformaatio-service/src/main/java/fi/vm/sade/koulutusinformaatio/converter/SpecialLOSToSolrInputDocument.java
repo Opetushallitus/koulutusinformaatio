@@ -29,7 +29,7 @@ import java.util.List;
  */
 public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List<SolrInputDocument>> {
 
-    private static final String TYPE_SPECIAL = "ER";
+    private static final String TYPE_SPECIAL = "ERITYISOPETUS";
 
     @Override
     public List<SolrInputDocument> convert(SpecialLOS los) {
@@ -56,26 +56,26 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
 
         if (specialLOS.getCreditValue() != null) {
             doc.addField(SolrFields.LearningOpportunity.CREDITS, String.format("%s %s", specialLOS.getCreditValue(),
-                    ConverterUtil.resolveTranslationInTeachingLangUseFallback(childLOI.getTeachingLanguages(),
+                    SolrUtil.resolveTranslationInTeachingLangUseFallback(childLOI.getTeachingLanguages(),
                             specialLOS.getCreditUnit().getTranslationsShortName())));
         }
 
-        doc.setField(SolrFields.LearningOpportunity.PREREQUISITE, ConverterUtil.resolveTranslationInTeachingLangUseFallback(
+        doc.setField(SolrFields.LearningOpportunity.PREREQUISITE, SolrUtil.resolveTranslationInTeachingLangUseFallback(
                 childLOI.getTeachingLanguages(), childLOI.getPrerequisite().getName().getTranslations()));
         doc.addField(SolrFields.LearningOpportunity.PREREQUISITE_CODE, childLOI.getPrerequisite().getValue());
 
-        doc.setField(SolrFields.LearningOpportunity.NAME, ConverterUtil.resolveTranslationInTeachingLangUseFallback(
+        doc.setField(SolrFields.LearningOpportunity.NAME, SolrUtil.resolveTranslationInTeachingLangUseFallback(
                 childLOI.getTeachingLanguages(), specialLOS.getName().getTranslationsShortName()));
         doc.addField(SolrFields.LearningOpportunity.NAME_FI, specialLOS.getName().getTranslations().get("fi"));
 
-        doc.addField(SolrFields.LearningOpportunity.NAME_SORT, ConverterUtil.resolveTranslationInTeachingLangUseFallback(
+        doc.addField(SolrFields.LearningOpportunity.NAME_SORT, SolrUtil.resolveTranslationInTeachingLangUseFallback(
                 childLOI.getTeachingLanguages(), specialLOS.getName().getTranslationsShortName()));
 
         doc.addField(SolrFields.LearningOpportunity.NAME_SV, specialLOS.getName().getTranslations().get("sv"));
 
         doc.addField(SolrFields.LearningOpportunity.NAME_EN, specialLOS.getName().getTranslations().get("en"));
 
-        doc.setField(SolrFields.LearningOpportunity.LOP_NAME, ConverterUtil.resolveTranslationInTeachingLangUseFallback(
+        doc.setField(SolrFields.LearningOpportunity.LOP_NAME, SolrUtil.resolveTranslationInTeachingLangUseFallback(
                 childLOI.getTeachingLanguages(), provider.getName().getTranslations()));
         doc.addField(SolrFields.LearningOpportunity.LOP_NAME_FI, provider.getName().getTranslations().get("fi"));
         doc.addField(SolrFields.LearningOpportunity.LOP_NAME_SV, provider.getName().getTranslations().get("sv"));
@@ -129,7 +129,7 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
             }
         }
 
-        ConverterUtil.addApplicationDates(doc, childLOI.getApplicationOptions());
+        SolrUtil.addApplicationDates(doc, childLOI.getApplicationOptions());
 
         doc.addField(SolrFields.LearningOpportunity.START_DATE_SORT, childLOI.getStartDate());
         indexDurationField(childLOI, doc);
@@ -144,7 +144,7 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
      * results according to planned duration of the loi
     */
     private void indexDurationField(ChildLOI childLOI, SolrInputDocument doc) {
-        int duration = ConverterUtil.getDuration(childLOI);
+        int duration = SolrUtil.getDuration(childLOI);
         doc.addField(SolrFields.LearningOpportunity.DURATION_SORT, duration);
     }
 

@@ -59,18 +59,18 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
         doc.addField(LearningOpportunity.PREREQUISITES, SolrConstants.SPECIAL_EDUCATION.equalsIgnoreCase(loi.getPrerequisite().getValue()) 
                                         ? SolrConstants.PK : loi.getPrerequisite().getValue());
 
-        doc.setField(LearningOpportunity.PREREQUISITE, ConverterUtil.resolveTranslationInTeachingLangUseFallback(
+        doc.setField(LearningOpportunity.PREREQUISITE, SolrUtil.resolveTranslationInTeachingLangUseFallback(
                 loi.getTeachingLanguages(), loi.getPrerequisite().getName().getTranslations()));
         doc.addField(LearningOpportunity.PREREQUISITE_CODE, loi.getPrerequisite().getValue());
 
         if (los.getCreditValue() != null) {
             doc.addField(LearningOpportunity.CREDITS, String.format("%s %s", los.getCreditValue(),
-                    ConverterUtil.resolveTranslationInTeachingLangUseFallback(loi.getTeachingLanguages(),
-                        los.getCreditUnit().getTranslationsShortName())));
+                    SolrUtil.resolveTranslationInTeachingLangUseFallback(loi.getTeachingLanguages(),
+                            los.getCreditUnit().getTranslationsShortName())));
         }
         
 
-        doc.setField(LearningOpportunity.NAME, ConverterUtil.resolveTranslationInTeachingLangUseFallback(
+        doc.setField(LearningOpportunity.NAME, SolrUtil.resolveTranslationInTeachingLangUseFallback(
                 loi.getTeachingLanguages(), los.getName().getTranslationsShortName()));
         doc.addField(LearningOpportunity.NAME_FI, los.getName().getTranslations().get("fi"));
         
@@ -78,7 +78,7 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
         
         doc.addField(LearningOpportunity.NAME_EN, los.getName().getTranslations().get("en"));
 
-        doc.setField(LearningOpportunity.LOP_NAME, ConverterUtil.resolveTranslationInTeachingLangUseFallback(
+        doc.setField(LearningOpportunity.LOP_NAME, SolrUtil.resolveTranslationInTeachingLangUseFallback(
                 loi.getTeachingLanguages(), provider.getName().getTranslations()));
         doc.addField(LearningOpportunity.LOP_NAME_FI, provider.getName().getTranslations().get("fi"));
         doc.addField(LearningOpportunity.LOP_NAME_SV, provider.getName().getTranslations().get("sv"));
@@ -125,15 +125,15 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
                 doc.addField(LearningOpportunity.AS_NAME_EN, ao.getApplicationSystem().getName().getTranslations().get("en"));
             }
         }
-        
-        ConverterUtil.addApplicationDates(doc, loi.getApplicationOptions());
+
+        SolrUtil.addApplicationDates(doc, loi.getApplicationOptions());
         
         //Fields for sorting
         doc.addField(LearningOpportunity.START_DATE_SORT, loi.getStartDate());
         indexDurationField(loi, doc);
         doc.addField(LearningOpportunity.NAME_SORT, String.format("%s, %s",
-                ConverterUtil.resolveTranslationInTeachingLangUseFallback(loi.getTeachingLanguages(), provider.getName().getTranslations()),
-                ConverterUtil.resolveTranslationInTeachingLangUseFallback(loi.getTeachingLanguages(), los.getName().getTranslationsShortName())));
+                SolrUtil.resolveTranslationInTeachingLangUseFallback(loi.getTeachingLanguages(), provider.getName().getTranslations()),
+                SolrUtil.resolveTranslationInTeachingLangUseFallback(loi.getTeachingLanguages(), los.getName().getTranslationsShortName())));
         
         
         //For faceting

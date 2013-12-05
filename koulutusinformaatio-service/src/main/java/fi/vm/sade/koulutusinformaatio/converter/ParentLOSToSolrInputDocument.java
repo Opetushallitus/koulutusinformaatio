@@ -108,7 +108,7 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
             }
 
         }
-        ConverterUtil.addApplicationDates(doc, applicationOptions);
+        SolrUtil.addApplicationDates(doc, applicationOptions);
 
         Set<String> prerequisites = Sets.newHashSet();
         Date earliest = null;
@@ -119,7 +119,7 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
                 if (earliest == null || earliest.after(childLOI.getStartDate())) {
                     earliest = childLOI.getStartDate();
                 }
-                int curDuration = ConverterUtil.getDuration(childLOI);
+                int curDuration = SolrUtil.getDuration(childLOI);
                 minDuration = curDuration < minDuration ? curDuration : minDuration;
             }
         }
@@ -182,26 +182,26 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         
         if (parent.getCreditValue() != null) {
             doc.addField(LearningOpportunity.CREDITS, String.format("%s %s", parent.getCreditValue(),
-                    ConverterUtil.resolveTranslationInTeachingLangUseFallback(childLOI.getTeachingLanguages(),
-                        parent.getCreditUnit().getTranslationsShortName())));
+                    SolrUtil.resolveTranslationInTeachingLangUseFallback(childLOI.getTeachingLanguages(),
+                            parent.getCreditUnit().getTranslationsShortName())));
         }
 
-        doc.setField(LearningOpportunity.PREREQUISITE, ConverterUtil.resolveTranslationInTeachingLangUseFallback(
+        doc.setField(LearningOpportunity.PREREQUISITE, SolrUtil.resolveTranslationInTeachingLangUseFallback(
                 childLOI.getTeachingLanguages(), childLOI.getPrerequisite().getName().getTranslations()));
         doc.addField(LearningOpportunity.PREREQUISITE_CODE, childLOI.getPrerequisite().getValue());
 
-        doc.setField(LearningOpportunity.NAME, ConverterUtil.resolveTranslationInTeachingLangUseFallback(
+        doc.setField(LearningOpportunity.NAME, SolrUtil.resolveTranslationInTeachingLangUseFallback(
                 childLOI.getTeachingLanguages(), childLOS.getName().getTranslationsShortName()));
         doc.addField(LearningOpportunity.NAME_FI, childLOS.getName().getTranslations().get("fi"));
         
-        doc.addField(LearningOpportunity.NAME_SORT, ConverterUtil.resolveTranslationInTeachingLangUseFallback(
+        doc.addField(LearningOpportunity.NAME_SORT, SolrUtil.resolveTranslationInTeachingLangUseFallback(
                 childLOI.getTeachingLanguages(), childLOS.getName().getTranslationsShortName()));
         
         doc.addField(LearningOpportunity.NAME_SV, childLOS.getName().getTranslations().get("sv"));
         
         doc.addField(LearningOpportunity.NAME_EN, childLOS.getName().getTranslations().get("en"));
 
-        doc.setField(LearningOpportunity.LOP_NAME, ConverterUtil.resolveTranslationInTeachingLangUseFallback(
+        doc.setField(LearningOpportunity.LOP_NAME, SolrUtil.resolveTranslationInTeachingLangUseFallback(
                 childLOI.getTeachingLanguages(), provider.getName().getTranslations()));
         doc.addField(LearningOpportunity.LOP_NAME_FI, provider.getName().getTranslations().get("fi"));
         doc.addField(LearningOpportunity.LOP_NAME_SV, provider.getName().getTranslations().get("sv"));
@@ -255,7 +255,7 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
             }
         }
 
-        ConverterUtil.addApplicationDates(doc, childLOI.getApplicationOptions());
+        SolrUtil.addApplicationDates(doc, childLOI.getApplicationOptions());
         
         doc.addField(LearningOpportunity.START_DATE_SORT, childLOI.getStartDate());
         indexDurationField(childLOI, doc);
@@ -271,7 +271,7 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
      * results according to planned duration of the loi
      */
     private void indexDurationField(ChildLOI childLOI, SolrInputDocument doc) {
-        int duration = ConverterUtil.getDuration(childLOI);
+        int duration = SolrUtil.getDuration(childLOI);
         doc.addField(LearningOpportunity.DURATION_SORT, duration);
     }
 
