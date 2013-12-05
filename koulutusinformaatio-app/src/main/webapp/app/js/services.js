@@ -249,25 +249,28 @@ service('ChildLOService', ['$http', '$timeout', '$q', 'LanguageService', 'ChildL
     }
 }]).
 
-service('ErityisLOService', ['$http', '$timeout', '$q', 'LanguageService', 'ChildLOTransformer', 'ErityisParentLOService', function($http, $timeout, $q, LanguageService, ChildLOTransformer, ErityisParentLOService) {
+service('SpecialLOService', ['$http', '$timeout', '$q', 'LanguageService', 'ChildLOTransformer', function($http, $timeout, $q, LanguageService, ChildLOTransformer) {
     return {
         query: function(options) {
             var deferred = $q.defer();
+            var queryParams = {
+                uiLang: LanguageService.getLanguage()
+            }
 
-            $http.get('mocks/er-child.json', {}).
+            if (options.lang) {
+                queryParams.lang = options.lang
+            }
+
+            $http.get('../lo/special/' + options.id, {
+                params: queryParams
+            }).
             success(function(result) {
                 ChildLOTransformer.transform(result);
-                ErityisParentLOService.query({}).then(function(presult) {
-                    result.educationDegree = presult.lo.educationDegree;
-                    var loResult = {
-                        lo: result,
-                        parent: presult.lo,
-                        provider: presult.provider
-                    }
-                    deferred.resolve(loResult);    
-                }, function(reason) {
-                    deferred.reject(reason);
-                });
+                var loResult = {
+                    lo: result,
+                    provider: result.provider
+                }
+                deferred.resolve(loResult);
             }).
             error(function(result) {
                 deferred.reject(result);
@@ -278,6 +281,7 @@ service('ErityisLOService', ['$http', '$timeout', '$q', 'LanguageService', 'Chil
     }
 }]).
 
+/*
 service('ErityisParentLOService', ['$http', '$timeout', '$q', 'LanguageService', 'ParentLOTransformer', function($http, $timeout, $q, LanguageService, ParentLOTransformer) {
     
     return {
@@ -301,6 +305,7 @@ service('ErityisParentLOService', ['$http', '$timeout', '$q', 'LanguageService',
         }
     }
 }]).
+*/
 
 /**
  * Resource for requesting Upper Secondary LO data
