@@ -3262,6 +3262,9 @@ button, .button {
   padding: 20px 10px; }
 
 .typeahead {
+  position: absolute;
+  z-index: 1051;
+  min-width: 160px;
   list-style-type: none;
   margin: 2px 0 0 0;
   padding: 0;
@@ -3277,7 +3280,8 @@ button, .button {
   -ms-border-radius: 3px;
   border-radius: 3px; }
   .typeahead li {
-    border-top: 1px solid #bfe4f1; }
+    border-top: 1px solid #bfe4f1;
+    background-color: #FFFFFF; }
     .typeahead li:first-child {
       border: none; }
     .typeahead li.active {
@@ -3290,6 +3294,12 @@ button, .button {
         background-color: #bfe4f1;
         cursor: pointer;
         text-decoration: none; }
+    .typeahead li.group {
+      padding: 6px 10px;
+      font-weight: bold;
+      background-color: whitesmoke;
+      text-transform: uppercase;
+      font-size: 12px; }
 
 .collapse {
   height: 0;
@@ -3302,8 +3312,6 @@ button, .button {
     margin: 1em 0 0 0; }
 
 .collapse-content-container .facet-item {
-  padding: 0 0 0 18px;
-  margin: 0 0 0 3px;
   display: inline-block; }
   .collapse-content-container .facet-item:hover {
     text-decoration: underline; }
@@ -3328,6 +3336,8 @@ button, .button {
   cursor: pointer;
   padding: 0 0 0 0;
   margin: 0 0 0 0; }
+  .collapser span {
+    vertical-align: middle; }
   .collapser .icon {
     display: inline-block;
     margin: 0 5px 0 0; }
@@ -3350,7 +3360,7 @@ button, .button {
 
 .filter {
   padding: 10px;
-  border: 1px solid #dddddd;
+  border-bottom: 1px solid #dddddd;
   border-top: none; }
   .filter:first-child {
     border-top: 1px solid #dddddd; }

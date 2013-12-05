@@ -18,7 +18,7 @@
     "search-result-count-unit": "st",
     "search-field-placeholder": "Sök utbildningar här",
     "no-search-results": "Inga sökresultat",
-    "no-search-results-info": "Hakusanalla \"__searchterm__\" ei löytynyt yhtään hakutulosta. Järjestelmään ei ehkä vielä ole syötetty kyseistä koulutusta tai tutkintoa. Ole hyvä ja yritä toisella hakusanalla tai rajauksella. (sv)",
+    "no-search-results-info": "Sökordet \"__searchterm__\" gav inget resultat. Ifrågavarande utbildning eller examen har ev. inte ännu matats in i systemet. Var god och försök med ett annat sökord eller en annan avgränsning. ",
     "search-pagination-first": "Första",
     "search-pagination-last": "sista ",
     "search-pagination-next": "nästa",
@@ -47,7 +47,6 @@
     "filter-search-location-remove": "Avlägsna",
 
     "sort-criteria-default": "-- Välj --",
-    "sort-criteria-startdate": "Alkamisajankohta (sv)",
     "sort-criteria-alphabetical-desc": "I alfabetisk ordning, A-Ö",
     "sort-criteria-alphabetical-asc": "I alfabetisk ordning, Ö-A",
     "sort-criteria-duration-group": "Utbildningens upskattade längd",
@@ -165,7 +164,7 @@
     "popup-close": "Stäng",
     "popup-continue": "Fortsätt",
 
-    "popover-title-success": "Lisätty muistilistalle (sv)",
+    "popover-title-success": "Lagts till i minneslistan",
     "popover-title-error": "Att lägga till i minneslistan misslyckades ",
     "popover-content-error": "Märk att du kan lägga till ansökningsmål utgående från endast en grundutbildning. ",
     "popover-content-link-to-application-basket": "Se i minneslistan",
@@ -195,7 +194,7 @@
      "location-rajaus": "Plats",
      "facet-remove": "Avlägsna",
      "filter-search-as-upcoming": "Ansökningstiden ännu ej påbörjad",
-     "haun-tila": "Haun tila (sv)",
+     "haun-tila": "Ansökans status",
      "selaile-koulutuksia": "Avgränska sökresultatet",
      "valitse-alue": "Välj området från vilken du söker utbildning",
      "valitse-alue-link": "Välj område",
@@ -219,6 +218,6 @@
      "yo": "Gymnasium och / eller studentexamen",
      "pk": "Grundskola",
     
-    "autocomplete-keyword": "Hakusanaehdotukset (sv)",
-    "autocomplete-loname": "Kurssit ja tutkinnot (sv)"   
+    "autocomplete-keyword": "Sökordsförslag",
+    "autocomplete-loname": "Kurser och examen"   
 }

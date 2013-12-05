@@ -130,6 +130,7 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
                     earliest = childLOI.getStartDate();
                 }
                 int curDuration = this.getDuration(childLOI);
+               
                 minDuration = curDuration < minDuration ? curDuration : minDuration;
             }
         }
@@ -294,7 +295,7 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
      * Scales values to be counted in months.
      */
     private int getDuration(ChildLOI childLOI) {
-        String[] numStrings = childLOI.getPlannedDuration().split("[^0-9]*");
+        String[] numStrings = childLOI.getPlannedDuration().split("[^\\d]+");
         int min = Integer.MAX_VALUE;
         for (String curNumStr : numStrings) {
             if ((curNumStr != null) && !curNumStr.isEmpty()) {
@@ -309,7 +310,6 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         if (childLOI.getPduCodeUri().contains(SolrConstants.KESTOTYYPPI_VUOSI) && min < Integer.MAX_VALUE) {
             min = min * 12;
         } 
-        
         return min < Integer.MAX_VALUE ? min : -1;
     }
 
