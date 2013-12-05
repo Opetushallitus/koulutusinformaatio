@@ -42,6 +42,8 @@ public class SpecialLearningOpportunitySpecificationDTO {
     private String creditUnit;
     private Set<String> availableTranslationLanguages = new HashSet<String>();
     private String translationLanguage;
+    private String educationDomain;
+    private ParentLOSRefDTO parent;
 
     public String getId() {
         return id;
@@ -153,5 +155,21 @@ public class SpecialLearningOpportunitySpecificationDTO {
 
     public void setTranslationLanguage(String translationLanguage) {
         this.translationLanguage = translationLanguage;
+    }
+
+    public String getEducationDomain() {
+        return educationDomain;
+    }
+
+    public void setEducationDomain(String educationDomain) {
+        this.educationDomain = educationDomain;
+    }
+
+    public ParentLOSRefDTO getParent() {
+        return parent;
+    }
+
+    public void setParent(ParentLOSRefDTO parent) {
+        this.parent = parent;
     }
 }

@@ -41,6 +41,8 @@ public class SpecialLOSToDTO {
         dto.setAvailableTranslationLanguages(ConverterUtil.getAvailableTranslationLanguages(los.getGoals()));
         dto.setCreditValue(los.getCreditValue());
         dto.setCreditUnit(ConverterUtil.getTextByLanguage(los.getCreditUnit(), uiLang));
+        dto.setEducationDomain(ConverterUtil.getShortNameTextByLanguage(los.getEducationDomain(), lang));
+        dto.setParent(ParentLOSRefToDTO.convert(los.getParent(), lang));
 
         return dto;
     }

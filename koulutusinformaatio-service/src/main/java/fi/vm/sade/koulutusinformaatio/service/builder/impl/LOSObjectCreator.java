@@ -125,6 +125,9 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setProvider(providerService.getByOID(providerOid));
         los.setCreditValue(parentKomo.getLaajuusArvo());
         los.setCreditUnit(koodistoService.searchFirst(parentKomo.getLaajuusYksikkoUri()));
+        los.setEducationDomain(koodistoService.searchFirst(parentKomo.getKoulutusAlaUri()));
+        los.setParent(new ParentLOSRef(CreatorUtil.resolveLOSId(parentKomo.getOid(), providerOid),
+                koodistoService.searchFirst(parentKomo.getKoulutusKoodiUri())));
 
         if (childKomo.getTavoitteet() == null) {
             los.setGoals(getI18nText(parentKomo.getTavoitteet()));

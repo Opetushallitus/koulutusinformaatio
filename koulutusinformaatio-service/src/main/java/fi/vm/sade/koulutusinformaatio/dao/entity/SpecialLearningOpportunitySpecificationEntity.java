@@ -50,6 +50,12 @@ public class SpecialLearningOpportunitySpecificationEntity {
     private String creditValue;
     @Embedded
     private I18nTextEntity creditUnit;
+    @Embedded
+    private I18nTextEntity educationDomain;
+    @Embedded
+    private ParentLOSRefEntity parent;
+
+
 
     public SpecialLearningOpportunitySpecificationEntity() {
     }
@@ -148,5 +154,21 @@ public class SpecialLearningOpportunitySpecificationEntity {
 
     public void setCreditUnit(I18nTextEntity creditUnit) {
         this.creditUnit = creditUnit;
+    }
+
+    public I18nTextEntity getEducationDomain() {
+        return educationDomain;
+    }
+
+    public void setEducationDomain(I18nTextEntity educationDomain) {
+        this.educationDomain = educationDomain;
+    }
+
+    public ParentLOSRefEntity getParent() {
+        return parent;
+    }
+
+    public void setParent(ParentLOSRefEntity parent) {
+        this.parent = parent;
     }
 }

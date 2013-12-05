@@ -37,6 +37,8 @@ public class SpecialLOS extends LOS {
     private I18nText accessToFurtherStudies;
     private String creditValue;
     private I18nText creditUnit;
+    private I18nText educationDomain;
+    private ParentLOSRef parent;
 
     public String getId() {
         return id;
@@ -132,5 +134,21 @@ public class SpecialLOS extends LOS {
 
     public void setCreditUnit(I18nText creditUnit) {
         this.creditUnit = creditUnit;
+    }
+
+    public I18nText getEducationDomain() {
+        return educationDomain;
+    }
+
+    public void setEducationDomain(I18nText educationDomain) {
+        this.educationDomain = educationDomain;
+    }
+
+    public ParentLOSRef getParent() {
+        return parent;
+    }
+
+    public void setParent(ParentLOSRef parent) {
+        this.parent = parent;
     }
 }
