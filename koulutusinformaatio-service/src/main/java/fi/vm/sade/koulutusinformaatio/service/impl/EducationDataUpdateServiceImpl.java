@@ -83,7 +83,14 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
         if (specialLOS != null) {
             SpecialLearningOpportunitySpecificationEntity entity =
                     modelMapper.map(specialLOS, SpecialLearningOpportunitySpecificationEntity.class);
+
             save(entity.getProvider());
+
+            for (ChildLearningOpportunityInstanceEntity loi : entity.getLois()) {
+                for (ApplicationOptionEntity ao : loi.getApplicationOptions()) {
+                    save(ao);
+                }
+            }
             specialLOSTransactionDAO.save(entity);
         }
     }
