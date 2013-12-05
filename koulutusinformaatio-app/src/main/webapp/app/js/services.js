@@ -281,32 +281,6 @@ service('SpecialLOService', ['$http', '$timeout', '$q', 'LanguageService', 'Chil
     }
 }]).
 
-/*
-service('ErityisParentLOService', ['$http', '$timeout', '$q', 'LanguageService', 'ParentLOTransformer', function($http, $timeout, $q, LanguageService, ParentLOTransformer) {
-    
-    return {
-        query: function(options) {
-            var deferred = $q.defer();
-
-            $http.get('mocks/er-parent.json', {}).
-            success(function(result) {
-                ParentLOTransformer.transform(result);
-                var loResult = {
-                    lo: result,
-                    provider: result.provider
-                }
-                deferred.resolve(loResult);
-            }).
-            error(function(result) {
-                deferred.reject(result);
-            });
-
-            return deferred.promise;
-        }
-    }
-}]).
-*/
-
 /**
  * Resource for requesting Upper Secondary LO data
  */
