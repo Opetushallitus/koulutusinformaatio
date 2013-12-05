@@ -52,7 +52,7 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
     private List<ParentLOS> parentLOSs;
 
     // List of special education loses
-    private List<ParentLOS> specialLOSs;
+    private List<SpecialLOS> specialLOSs;
 
     // full list of
     private List<LOS> allLOSs;
@@ -71,10 +71,11 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
         this.koodistoService = koodistoService;
         this.losObjectCreator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService);
         this.parentKomo = parentKomo;
-        parentKomotosByProviderId = ArrayListMultimap.create();
-        childLOSsByParentLOSId = ArrayListMultimap.create();
-        parentLOSs = Lists.newArrayList();
-        allLOSs = Lists.newArrayList();
+        this.parentKomotosByProviderId = ArrayListMultimap.create();
+        this.childLOSsByParentLOSId = ArrayListMultimap.create();
+        this.parentLOSs = Lists.newArrayList();
+        this.allLOSs = Lists.newArrayList();
+        this.specialLOSs = Lists.newArrayList();
     }
 
     @Override
@@ -105,6 +106,9 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
 
             // A helper data structure that groups child komoto KomotoDTO objects by their provider and komo (ChildLOS id = komo oid + provider oid)
             ArrayListMultimap<String, KomotoDTO> childKomotosByChildLOSId = ArrayListMultimap.create();
+            // holds special education child komotos by provider and komo
+            ArrayListMultimap<String, KomotoDTO> specialChildKomotosByChildLOSId = ArrayListMultimap.create();
+
 
             try {
                 validateChildKomo(childKomo);
@@ -115,14 +119,32 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
             List<OidRDTO> childKomotoOids = tarjontaRawService.getKomotosByKomo(childKomoId, Integer.MAX_VALUE, 0);
             for (OidRDTO childKomotoOid : childKomotoOids) {
                 KomotoDTO childKomoto = tarjontaRawService.getKomoto(childKomotoOid.getOid());
-                childKomotosByChildLOSId.put(resolveLOSId(childKomoId, childKomoto.getTarjoajaOid()), childKomoto);
+
+                if (isSpecialEdKomoto(childKomoto)) {
+                    // ER
+                    String id = String.format("%s_er", resolveLOSId(childKomoId, childKomoto.getTarjoajaOid()));
+                    specialChildKomotosByChildLOSId.put(id, childKomoto);
+
+                }
+                else {
+                    // PK & YO
+                    childKomotosByChildLOSId.put(resolveLOSId(childKomoId, childKomoto.getTarjoajaOid()), childKomoto);
+                }
             }
             for (String childLOSId : childKomotosByChildLOSId.keySet()) {
                 childLOSsByParentLOSId.put(resolveLOSId(parentKomo.getOid(), resolveProviderId(childLOSId)),
                         losObjectCreator.createChildLOS(childKomo, childLOSId, childKomotosByChildLOSId.get(childLOSId)));
             }
+            for (String specialChildLOSId : specialChildKomotosByChildLOSId.keySet()) {
+                specialLOSs.add(losObjectCreator.createSpecialLOS(childKomo, parentKomo, specialChildLOSId,
+                        specialChildKomotosByChildLOSId.get(specialChildLOSId), resolveProviderId(specialChildLOSId)));
+            }
         }
         return this;
+    }
+
+    private boolean isSpecialEdKomoto(KomotoDTO komoto) {
+        return komoto.getPohjakoulutusVaatimusUri().equalsIgnoreCase(CreatorUtil.PREREQUISITE_URI_ER);
     }
 
     @Override
@@ -246,6 +268,7 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
     @Override
     public List<LOS> build() {
         this.allLOSs.addAll(parentLOSs);
+        this.allLOSs.addAll(specialLOSs);
         return allLOSs;
     }
 

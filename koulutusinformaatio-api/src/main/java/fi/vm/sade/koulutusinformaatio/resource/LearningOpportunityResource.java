@@ -16,11 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.resource;
 
-import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunitySpecificationDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.LOSearchResultListDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.SuggestedTermsResultDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.UpperSecondaryLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.*;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -106,7 +102,22 @@ public interface LearningOpportunityResource {
     public UpperSecondaryLearningOpportunitySpecificationDTO getUpperSecondaryLearningOpportunity(@PathParam("id") String id,
                                                                                                   @QueryParam("lang") String lang,
                                                                                                   @QueryParam("uiLang") String uiLang);
-    
+
+    /**
+     * Fetches a special learning opportunity specification.
+     *
+     * @param id los id
+     * @param lang translation language
+     * @param uiLang secondary translation language
+     * @return special learning opportunity specification
+     */
+    @GET
+    @Path("special/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public SpecialLearningOpportunitySpecificationDTO getSpecialLearningOpportunity(@PathParam("id") String id,
+                                                                                    @QueryParam("lang") String lang,
+                                                                                    @QueryParam("uiLang") String uiLang);
+
     /**
      * Fetches suggested terms to be used in free text search. 
      * The returned terms match the term given as parameter.

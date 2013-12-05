@@ -38,6 +38,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
     private PictureDAO pictureTransactionDAO;
     private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO;
     private DataStatusDAO dataStatusDAO;
+    private SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO;
 
     @Autowired
     public EducationDataUpdateServiceImpl(ModelMapper modelMapper, ParentLearningOpportunitySpecificationDAO parentLOSTransactionDAO,
@@ -45,7 +46,8 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
                                           LearningOpportunityProviderDAO learningOpportunityProviderTransactionDAO,
                                           ChildLearningOpportunityDAO childLOTransactionDAO,
                                           PictureDAO pictureTransactionDAO,
-                                          UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO, DataStatusDAO dataStatusDAO) {
+                                          UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO,
+                                          DataStatusDAO dataStatusDAO, SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO) {
         this.modelMapper = modelMapper;
         this.parentLOSTransactionDAO = parentLOSTransactionDAO;
         this.applicationOptionTransactionDAO = applicationOptionTransactionDAO;
@@ -54,6 +56,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
         this.pictureTransactionDAO = pictureTransactionDAO;
         this.upperSecondaryLOSTransactionDAO = upperSecondaryLOSTransactionDAO;
         this.dataStatusDAO = dataStatusDAO;
+        this.specialLOSTransactionDAO = specialLOSTransactionDAO;
     }
 
     @Override
@@ -64,12 +67,24 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
         else if (learningOpportunitySpecification instanceof UpperSecondaryLOS) {
             save((UpperSecondaryLOS) learningOpportunitySpecification);
         }
+        else if (learningOpportunitySpecification instanceof SpecialLOS) {
+            save((SpecialLOS) learningOpportunitySpecification);
+        }
     }
 
     @Override
     public void save(DataStatus dataStatus) {
         if (dataStatus != null) {
             dataStatusDAO.save(modelMapper.map(dataStatus, DataStatusEntity.class));
+        }
+    }
+
+    private void save(SpecialLOS specialLOS) {
+        if (specialLOS != null) {
+            SpecialLearningOpportunitySpecificationEntity entity =
+                    modelMapper.map(specialLOS, SpecialLearningOpportunitySpecificationEntity.class);
+            save(entity.getProvider());
+            specialLOSTransactionDAO.save(entity);
         }
     }
 

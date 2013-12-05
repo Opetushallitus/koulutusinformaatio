@@ -37,6 +37,8 @@ public class LOSObjectCreator extends ObjectCreator {
 
     private static final Logger LOG = LoggerFactory.getLogger(LOSObjectCreator.class);
 
+    private static final List<String> INVALID_BASE_EDUCATIONS = Lists.newArrayList("ER");
+
     private KoodistoService koodistoService;
     private ProviderService providerService;
     private LOIObjectCreator loiCreator;
@@ -83,7 +85,6 @@ public class LOSObjectCreator extends ObjectCreator {
         return parentLOS;
     }
 
-
     public ChildLOS createChildLOS(KomoDTO childKomo, String childLOSId, List<KomotoDTO> childKomotos) throws KoodistoException {
         ChildLOS childLOS = new ChildLOS();
         childLOS.setId(childLOSId);
@@ -111,7 +112,37 @@ public class LOSObjectCreator extends ObjectCreator {
         return childLOS;
     }
 
+    public SpecialLOS createSpecialLOS(KomoDTO childKomo, KomoDTO parentKomo, String specialLOSId,
+                                       List<KomotoDTO> childKomotos, String providerOid) throws KoodistoException {
+        SpecialLOS los = new SpecialLOS();
+        los.setId(specialLOSId);
+        los.setName(koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri()));
+        los.setEducationDegree(koodistoService.searchFirstCodeValue(parentKomo.getKoulutusAsteUri()));
+        los.setQualification(koodistoService.searchFirst(childKomo.getTutkintonimikeUri()));
+        los.setDegreeTitle(koodistoService.searchFirst(childKomo.getLukiolinjaUri()));
+        los.setStructure(getI18nText(parentKomo.getKoulutuksenRakenne()));
+        los.setAccessToFurtherStudies(getI18nText(parentKomo.getJatkoOpintoMahdollisuudet()));
+        los.setProvider(providerService.getByOID(providerOid));
+        los.setCreditValue(parentKomo.getLaajuusArvo());
+        los.setCreditUnit(koodistoService.searchFirst(parentKomo.getLaajuusYksikkoUri()));
 
+        if (childKomo.getTavoitteet() == null) {
+            los.setGoals(getI18nText(parentKomo.getTavoitteet()));
+        } else {
+            los.setGoals(getI18nText(childKomo.getTavoitteet()));
+        }
 
+        List<ChildLOI> lois = Lists.newArrayList();
+
+        for (KomotoDTO komoto : childKomotos) {
+            if (CreatorUtil.komotoPublished.apply(komoto)) {
+                ChildLOI loi = loiCreator.createChildLOI(komoto,specialLOSId, los.getName());
+                lois.add(loi);
+            }
+        }
+
+        los.setLois(lois);
+        return los;
+    }
 
 }

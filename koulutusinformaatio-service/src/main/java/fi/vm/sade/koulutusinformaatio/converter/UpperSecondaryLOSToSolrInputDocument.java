@@ -17,24 +17,20 @@
 package fi.vm.sade.koulutusinformaatio.converter;
 
 import com.google.common.collect.Lists;
-
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.SolrFields.SolrConstants;
-
 import org.apache.solr.common.SolrInputDocument;
 import org.springframework.core.convert.converter.Converter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Hannu Lyytikainen
  */
 public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSecondaryLOS, List<SolrInputDocument>> {
     
-    private static final String FALLBACK_LANG = "fi";
     private static final String TYPE_UPSEC = "LUKIO";
 
     @Override
@@ -63,18 +59,18 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
         doc.addField(LearningOpportunity.PREREQUISITES, SolrConstants.SPECIAL_EDUCATION.equalsIgnoreCase(loi.getPrerequisite().getValue()) 
                                         ? SolrConstants.PK : loi.getPrerequisite().getValue());
 
-        doc.setField(LearningOpportunity.PREREQUISITE, resolveTranslationInTeachingLangUseFallback(
+        doc.setField(LearningOpportunity.PREREQUISITE, ConverterUtil.resolveTranslationInTeachingLangUseFallback(
                 loi.getTeachingLanguages(), loi.getPrerequisite().getName().getTranslations()));
         doc.addField(LearningOpportunity.PREREQUISITE_CODE, loi.getPrerequisite().getValue());
 
         if (los.getCreditValue() != null) {
-            doc.addField(LearningOpportunity.CREDITS, String.format("%s %s", los.getCreditValue(), 
-                resolveTranslationInTeachingLangUseFallback(loi.getTeachingLanguages(), 
+            doc.addField(LearningOpportunity.CREDITS, String.format("%s %s", los.getCreditValue(),
+                    ConverterUtil.resolveTranslationInTeachingLangUseFallback(loi.getTeachingLanguages(),
                         los.getCreditUnit().getTranslationsShortName())));
         }
         
 
-        doc.setField(LearningOpportunity.NAME, resolveTranslationInTeachingLangUseFallback(
+        doc.setField(LearningOpportunity.NAME, ConverterUtil.resolveTranslationInTeachingLangUseFallback(
                 loi.getTeachingLanguages(), los.getName().getTranslationsShortName()));
         doc.addField(LearningOpportunity.NAME_FI, los.getName().getTranslations().get("fi"));
         
@@ -82,7 +78,7 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
         
         doc.addField(LearningOpportunity.NAME_EN, los.getName().getTranslations().get("en"));
 
-        doc.setField(LearningOpportunity.LOP_NAME, resolveTranslationInTeachingLangUseFallback(
+        doc.setField(LearningOpportunity.LOP_NAME, ConverterUtil.resolveTranslationInTeachingLangUseFallback(
                 loi.getTeachingLanguages(), provider.getName().getTranslations()));
         doc.addField(LearningOpportunity.LOP_NAME_FI, provider.getName().getTranslations().get("fi"));
         doc.addField(LearningOpportunity.LOP_NAME_SV, provider.getName().getTranslations().get("sv"));
@@ -130,14 +126,14 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
             }
         }
         
-        addApplicationDates(doc, loi.getApplicationOptions());
+        ConverterUtil.addApplicationDates(doc, loi.getApplicationOptions());
         
         //Fields for sorting
         doc.addField(LearningOpportunity.START_DATE_SORT, loi.getStartDate());
         indexDurationField(loi, doc);
         doc.addField(LearningOpportunity.NAME_SORT, String.format("%s, %s",
-                resolveTranslationInTeachingLangUseFallback(loi.getTeachingLanguages(), provider.getName().getTranslations()), 
-                resolveTranslationInTeachingLangUseFallback(loi.getTeachingLanguages(), los.getName().getTranslationsShortName())));
+                ConverterUtil.resolveTranslationInTeachingLangUseFallback(loi.getTeachingLanguages(), provider.getName().getTranslations()),
+                ConverterUtil.resolveTranslationInTeachingLangUseFallback(loi.getTeachingLanguages(), los.getName().getTranslationsShortName())));
         
         
         //For faceting
@@ -150,46 +146,6 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
         return doc;
     }
 
-    private String resolveTranslationInTeachingLangUseFallback(List<Code> teachingLanguages, Map<String, String> translations) {
-        String translation = null;
-        for (Code teachingLanguage : teachingLanguages) {
-            for (String key : translations.keySet()) {
-                if (teachingLanguage.getValue().equalsIgnoreCase(key)) {
-                    translation = translations.get(key);
-                }
-            }
-        }
-        if (translation == null) {
-            translation = translations.get(FALLBACK_LANG);
-        }
-        if (translation == null) {
-            translation = translations.values().iterator().next();
-        }
-
-        return translation;
-    }
-
-    private void addApplicationDates(SolrInputDocument doc, List<ApplicationOption> applicationOptions) {
-        int parentApplicationDateRangeIndex = 0;
-        for (ApplicationOption ao : applicationOptions) {
-            if (ao.isSpecificApplicationDates()) {
-                doc.addField(new StringBuilder().append("asStart").append("_").
-                        append(String.valueOf(parentApplicationDateRangeIndex)).toString(), ao.getApplicationStartDate());
-                doc.addField(new StringBuilder().append("asEnd").append("_").
-                        append(String.valueOf(parentApplicationDateRangeIndex)).toString(), ao.getApplicationEndDate());
-                parentApplicationDateRangeIndex++;
-            } else {
-                for (DateRange dr : ao.getApplicationSystem().getApplicationDates()) {
-                    doc.addField(new StringBuilder().append("asStart").append("_").
-                            append(String.valueOf(parentApplicationDateRangeIndex)).toString(), dr.getStartDate());
-                    doc.addField(new StringBuilder().append("asEnd").append("_").
-                            append(String.valueOf(parentApplicationDateRangeIndex)).toString(), dr.getEndDate());
-                    parentApplicationDateRangeIndex++;
-                }
-            }
-        }
-    }
-    
     /*
      * Indexes the duration_ssort field, used in sorting
      * results according to planned duration of the loi

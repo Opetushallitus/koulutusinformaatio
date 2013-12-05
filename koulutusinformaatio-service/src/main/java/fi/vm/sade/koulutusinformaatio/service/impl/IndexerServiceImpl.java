@@ -100,6 +100,10 @@ public class IndexerServiceImpl implements IndexerService {
                 }
             }
         }
+        else if (los instanceof SpecialLOS) {
+            SpecialLOS special = (SpecialLOS) los;
+            provider  = special.getProvider();
+        }
 
         List<SolrInputDocument> docs = conversionService.convert(los, List.class);
 
