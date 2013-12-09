@@ -103,7 +103,17 @@ angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.position', 'ui.bootstrap
           if (inputValue === modelCtrl.$viewValue) {
             if (matches.length > 0) {
 
-              scope.activeIdx = 0;
+              // select initial match item from selectable items (ignore group items)
+              var firstMatchIndex = 0;
+              for (var index in matches) {
+                var match = matches[index];
+                if (match && !match.group) {
+                  firstMatchIndex = index;
+                  break;
+                }
+              }
+
+              scope.activeIdx = firstMatchIndex;
               scope.matches.length = 0;
 
               //transform labels
