@@ -41,7 +41,8 @@ public interface EducationDataQueryService {
      * @param baseEducation base education identifier from koodisto
      * @return list of the application options
      */
-    List<ApplicationOption> findApplicationOptions(final String asId, final String lopId, final String baseEducation);
+    List<ApplicationOption> findApplicationOptions(final String asId, final String lopId, final String baseEducation,
+                                                   boolean vocational, boolean nonVocational);
 
     List<ApplicationOption> getApplicationOptions(final List<String> aoIds) throws InvalidParametersException;
 

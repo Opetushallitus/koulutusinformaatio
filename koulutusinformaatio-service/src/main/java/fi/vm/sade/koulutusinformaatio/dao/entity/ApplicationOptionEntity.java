@@ -76,6 +76,7 @@ public class ApplicationOptionEntity {
     private ScoreLimitEntity overallScoreLimit;
     private boolean kaksoistutkinto;
     private boolean athleteEducation;
+    private boolean vocational;
 
     public ApplicationOptionEntity() {
 
@@ -319,5 +320,13 @@ public class ApplicationOptionEntity {
 
     public void setAthleteEducation(boolean athleteEducation) {
         this.athleteEducation = athleteEducation;
+    }
+
+    public boolean isVocational() {
+        return vocational;
+    }
+
+    public void setVocational(boolean vocational) {
+        this.vocational = vocational;
     }
 }

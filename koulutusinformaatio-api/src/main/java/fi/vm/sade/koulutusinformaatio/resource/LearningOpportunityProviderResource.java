@@ -33,6 +33,7 @@ public interface LearningOpportunityProviderResource {
 
     public static final String BASE_EDUCATION = "baseEducation";
     public static final String VOCATIONAL = "vocational";
+    public static final String NON_VOCATIONAL = "nonVocational";
     public static final String ASID = "asId";
     public static final String TERM = "term";
 
@@ -46,8 +47,8 @@ public interface LearningOpportunityProviderResource {
      *             are related to this application system
      * @param baseEducation limits the providers by the base education that is
      *                      required for education provided by given provider
-     * @param vocational limits providers to those related to vocational studies
-     *                   (user has vocational degree (true|false))
+     * @param vocational includes vocational providers if true (default value true)
+     * @param nonVocational includes non vocational providers if true (default value true)
      * @param start start index of the search results (0 is the first result)
      * @param rows search result max row count to return
      *
@@ -59,7 +60,8 @@ public interface LearningOpportunityProviderResource {
     public List<ProviderSearchResult> searchProviders(@PathParam(TERM) final String term,
                                                  @QueryParam(ASID) final String asId,
                                                  @QueryParam(BASE_EDUCATION) final String baseEducation,
-                                                 @QueryParam(VOCATIONAL) final boolean vocational,
+                                                 @DefaultValue(value = "true") @QueryParam(VOCATIONAL) final boolean vocational,
+                                                 @DefaultValue(value = "true") @QueryParam(NON_VOCATIONAL) final boolean nonVocational,
                                                  @DefaultValue(value = "0") @QueryParam("start") int start,
                                                  @DefaultValue(value = "50") @QueryParam("rows") int rows);
 

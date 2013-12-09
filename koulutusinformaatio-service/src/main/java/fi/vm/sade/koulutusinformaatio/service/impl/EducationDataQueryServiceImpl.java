@@ -28,7 +28,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -70,8 +69,10 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     }
 
     @Override
-    public List<ApplicationOption> findApplicationOptions(String asId, String lopId, String baseEducation) {
-        List<ApplicationOptionEntity> applicationOptions = applicationOptionDAO.find(asId, lopId, baseEducation);
+    public List<ApplicationOption> findApplicationOptions(String asId, String lopId, String baseEducation,
+                                                          boolean vocational, boolean nonVocational) {
+        List<ApplicationOptionEntity> applicationOptions = applicationOptionDAO.find(asId, lopId, baseEducation,
+                vocational, nonVocational);
         return Lists.transform(applicationOptions, new Function<ApplicationOptionEntity, ApplicationOption>() {
             @Override
             public ApplicationOption apply(ApplicationOptionEntity applicationOptionEntity) {

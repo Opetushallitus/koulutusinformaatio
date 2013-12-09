@@ -51,6 +51,7 @@ public class ApplicationOptionToDTO {
             dto.setApplicationStartDate(applicationOption.getApplicationStartDate());
             dto.setApplicationEndDate(applicationOption.getApplicationEndDate());
             dto.setRequiredBaseEducations(applicationOption.getRequiredBaseEducations());
+            dto.setVocational(applicationOption.isVocational());
             if (applicationOption.isSpecificApplicationDates()) {
                 dto.setCanBeApplied(ConverterUtil.isOngoing(new DateRange(applicationOption.getApplicationStartDate(),
                         applicationOption.getApplicationEndDate())));

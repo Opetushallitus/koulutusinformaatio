@@ -67,7 +67,8 @@ public class ApplicationOption {
     private boolean kaksoistutkinto;
     // lukion urheilulinjat jne.
     private boolean athleteEducation;
-
+    //ammatillinen koulutus
+    private boolean vocational;
 
     public String getId() {
         return id;
@@ -307,6 +308,14 @@ public class ApplicationOption {
 
     public void setAthleteEducation(boolean athleteEducation) {
         this.athleteEducation = athleteEducation;
+    }
+
+    public boolean isVocational() {
+        return vocational;
+    }
+
+    public void setVocational(boolean vocational) {
+        this.vocational = vocational;
     }
 
     @Override

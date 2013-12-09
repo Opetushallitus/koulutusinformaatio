@@ -267,6 +267,7 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
         ao.setSelectionCriteria(getI18nText(hakukohdeDTO.getValintaperustekuvaus()));
         ao.setKaksoistutkinto(hakukohdeDTO.isKaksoisTutkinto());
         ao.setExams(createExams(hakukohdeDTO.getValintakoes()));
+        ao.setVocational(false);
         List<Code> subCodes = koodistoService.searchSubCodes(komoto.getPohjakoulutusVaatimusUri(),
                 LearningOpportunityBuilder.BASE_EDUCATION_KOODISTO_URI);
         List<String> baseEducations = Lists.transform(subCodes, new Function<Code, String>() {

@@ -68,6 +68,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         ao.setSelectionCriteria(getI18nText(hakukohdeDTO.getValintaperustekuvaus()));
         ao.setExams(educationObjectCreator.createVocationalExams(hakukohdeDTO.getValintakoes()));
         ao.setKaksoistutkinto(hakukohdeDTO.isKaksoisTutkinto());
+        ao.setVocational(true);
         List<Code> subCodes = koodistoService.searchSubCodes(childKomoto.getPohjakoulutusVaatimusUri(),
                 LearningOpportunityBuilder.BASE_EDUCATION_KOODISTO_URI);
         List<String> baseEducations = Lists.transform(subCodes, new Function<Code, String>() {

@@ -2,11 +2,9 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LocationFields;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
-
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -24,7 +22,10 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Hannu Lyytikainen
@@ -78,6 +79,8 @@ public class IndexerServiceImpl implements IndexerService {
         Provider provider = null;
         Set<String> providerAsIds = Sets.newHashSet();
         Set<String> requiredBaseEducations = Sets.newHashSet();
+        Set<String> vocationalAsIds = Sets.newHashSet();
+        Set<String> nonVocationalAsIds = Sets.newHashSet();
 
         if (los instanceof ParentLOS) {
             ParentLOS parent = (ParentLOS) los;
@@ -87,6 +90,11 @@ public class IndexerServiceImpl implements IndexerService {
                     for (ApplicationOption ao : childLOI.getApplicationOptions()) {
                         providerAsIds.add(ao.getApplicationSystem().getId());
                         requiredBaseEducations.addAll(ao.getRequiredBaseEducations());
+                        if (ao.isVocational()) {
+                            vocationalAsIds.add(ao.getApplicationSystem().getId());
+                        } else {
+                            nonVocationalAsIds.add(ao.getApplicationSystem().getId());
+                        }
                     }
                 }
             }
@@ -97,6 +105,11 @@ public class IndexerServiceImpl implements IndexerService {
                 for (ApplicationOption ao : loi.getApplicationOptions()) {
                     providerAsIds.add(ao.getApplicationSystem().getId());
                     requiredBaseEducations.addAll(ao.getRequiredBaseEducations());
+                    if (ao.isVocational()) {
+                        vocationalAsIds.add(ao.getApplicationSystem().getId());
+                    } else {
+                        nonVocationalAsIds.add(ao.getApplicationSystem().getId());
+                    }
                 }
             }
         }
@@ -121,10 +134,20 @@ public class IndexerServiceImpl implements IndexerService {
             if (asids != null) {
                 providerAsIds.addAll(asids);
             }
+            List<String> vocational = (List<String>) results.get(0).get("vocationalAsIds");
+            if (vocational != null) {
+                vocationalAsIds.addAll(vocational);
+            }
+            List<String> nonVocational = (List<String>) results.get(0).get("nonVocationalAsIds");
+            if (nonVocational != null) {
+                nonVocationalAsIds.addAll(nonVocational);
+            }
         }
 
         providerDoc.setField("asIds", providerAsIds);
         providerDoc.setField("requiredBaseEducations", requiredBaseEducations);
+        providerDoc.setField("vocationalAsIds", vocationalAsIds);
+        providerDoc.setField("nonVocationalAsIds", nonVocationalAsIds);
         providerDocs.add(providerDoc);
         
         lopSolr.add(providerDocs);

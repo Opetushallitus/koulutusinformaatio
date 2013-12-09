@@ -46,7 +46,8 @@ public interface LearningOpportunityService {
 
     UpperSecondaryLearningOpportunitySpecificationDTO getUpperSecondaryLearningOpportunity(String id, String lang, String uiLang) throws ResourceNotFoundException;
 
-    List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, String lopId, String baseEducation);
+    List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, String lopId, String baseEducation,
+                                                                    boolean vocational, boolean nonVocational);
 
     ApplicationOptionDTO getApplicationOption(String aoId, String lang, String uiLang) throws ResourceNotFoundException;
 

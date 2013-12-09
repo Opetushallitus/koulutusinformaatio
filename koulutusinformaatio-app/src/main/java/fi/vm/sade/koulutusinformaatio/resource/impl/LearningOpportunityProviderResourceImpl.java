@@ -56,7 +56,7 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
 
     @Override
     public List<ProviderSearchResult> searchProviders(String term, String asId, String baseEducation, boolean vocational,
-                                                      int start, int rows) {
+                                                      boolean nonVocational, int start, int rows) {
         List<Provider> learningOpportunityProviders = null;
         try {
             String key = null;
@@ -66,7 +66,7 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
                 key = term;
             }
             learningOpportunityProviders = searchService.searchLearningOpportunityProviders(key, asId, baseEducation, vocational,
-                    start, rows);
+                    nonVocational, start, rows);
             List<ProviderSearchResult> result = Lists.newArrayList(Lists.transform(learningOpportunityProviders, new Function<Provider, ProviderSearchResult>() {
                 @Override
                 public ProviderSearchResult apply(Provider lop) {
