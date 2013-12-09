@@ -236,6 +236,7 @@ angular.module('ui.bootstrap.modal', [])
           }
 
           $modal.open = function (modalOptions) {
+            angular.element('body').addClass('modal-open');
 
             var modalResultDeferred = $q.defer();
             var modalOpenedDeferred = $q.defer();
@@ -245,9 +246,11 @@ angular.module('ui.bootstrap.modal', [])
               result: modalResultDeferred.promise,
               opened: modalOpenedDeferred.promise,
               close: function (result) {
+                angular.element('body').removeClass('modal-open');
                 $modalStack.close(modalInstance, result);
               },
               dismiss: function (reason) {
+                angular.element('body').removeClass('modal-open');
                 $modalStack.dismiss(modalInstance, reason);
               }
             };
