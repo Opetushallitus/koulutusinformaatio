@@ -51,8 +51,7 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
         doc.addField(SolrFields.LearningOpportunity.ID, childLOI.getId());
         doc.addField(SolrFields.LearningOpportunity.LOS_ID, specialLOS.getId());
         doc.addField(SolrFields.LearningOpportunity.LOP_ID, provider.getId());
-        doc.addField(SolrFields.LearningOpportunity.PREREQUISITES, SolrFields.SolrConstants.SPECIAL_EDUCATION.equalsIgnoreCase(childLOI.getPrerequisite().getValue())
-                ? SolrFields.SolrConstants.PK : childLOI.getPrerequisite().getValue());
+        doc.addField(SolrFields.LearningOpportunity.PREREQUISITES, childLOI.getPrerequisite().getValue());
 
         if (specialLOS.getCreditValue() != null) {
             doc.addField(SolrFields.LearningOpportunity.CREDITS, String.format("%s %s", specialLOS.getCreditValue(),
@@ -153,14 +152,7 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
      */
     private void indexFacetFields(ChildLOI childLOI, SolrInputDocument doc) {
         doc.addField(SolrFields.LearningOpportunity.TEACHING_LANGUAGE, childLOI.getTeachingLanguages().get(0).getValue());
-        if (childLOI.getPrerequisite().getValue().equals(SolrFields.SolrConstants.SPECIAL_EDUCATION)) {
-            doc.addField(SolrFields.LearningOpportunity.EDUCATION_TYPE, SolrFields.SolrConstants.ED_TYPE_AMM_ER);
-        } else {
-            doc.addField(SolrFields.LearningOpportunity.EDUCATION_TYPE, SolrFields.SolrConstants.ED_TYPE_AMMATILLINEN);
-        }
-        if (childLOI.isKaksoistutkinto()) {
-            doc.addField(SolrFields.LearningOpportunity.EDUCATION_TYPE, SolrFields.SolrConstants.ED_TYPE_KAKSOIS);
-        }
+        doc.addField(SolrFields.LearningOpportunity.EDUCATION_TYPE, SolrFields.SolrConstants.ED_TYPE_AMM_ER);
     }
 
 
