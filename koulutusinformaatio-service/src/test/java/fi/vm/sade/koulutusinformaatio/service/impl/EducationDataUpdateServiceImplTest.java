@@ -30,6 +30,7 @@ public class EducationDataUpdateServiceImplTest {
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
     private ChildLearningOpportunityDAO childLearningOpportunityDAO;
     private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO;
+    private SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO;
     private DataStatusDAO dataStatusDAO;
     private PictureDAO pictureDAO;
     private DBCollection ploCollection;
@@ -71,11 +72,14 @@ public class EducationDataUpdateServiceImplTest {
 
         upperSecondaryLearningOpportunitySpecificationDAO = mock(UpperSecondaryLearningOpportunitySpecificationDAO.class);
 
+        specialLearningOpportunitySpecificationDAO = mock(SpecialLearningOpportunitySpecificationDAO.class);
+
         dataStatusDAO = mock(DataStatusDAO.class);
 
         service = new EducationDataUpdateServiceImpl( modelMapper, parentLearningOpportunitySpecificationDAO,
                applicationOptionDAO, learningOpportunityProviderDAO, childLearningOpportunityDAO,
-                pictureDAO, upperSecondaryLearningOpportunitySpecificationDAO, dataStatusDAO);
+                pictureDAO, upperSecondaryLearningOpportunitySpecificationDAO, dataStatusDAO,
+                specialLearningOpportunitySpecificationDAO);
     }
 
     @Test

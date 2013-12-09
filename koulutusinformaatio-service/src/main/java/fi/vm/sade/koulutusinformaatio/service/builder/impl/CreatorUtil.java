@@ -31,6 +31,7 @@ import fi.vm.sade.tarjonta.shared.types.TarjontaTila;
 public class CreatorUtil {
 
     public static final String STATE_PUBLISHED = "JULKAISTU";
+    public static final String PREREQUISITE_URI_ER = "pohjakoulutusvaatimustoinenaste_er";
 
     protected static Predicate<KomoDTO> komoPublished = new Predicate<KomoDTO>() {
         @Override

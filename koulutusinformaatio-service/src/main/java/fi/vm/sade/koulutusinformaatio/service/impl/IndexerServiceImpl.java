@@ -2,11 +2,9 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LocationFields;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
-
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -24,7 +22,10 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Hannu Lyytikainen
@@ -99,6 +100,9 @@ public class IndexerServiceImpl implements IndexerService {
                     requiredBaseEducations.addAll(ao.getRequiredBaseEducations());
                 }
             }
+        } else if (los instanceof SpecialLOS) {
+            SpecialLOS special = (SpecialLOS) los;
+            provider = special.getProvider();
         }
 
         List<SolrInputDocument> docs = conversionService.convert(los, List.class);
@@ -126,7 +130,7 @@ public class IndexerServiceImpl implements IndexerService {
         providerDoc.setField("asIds", providerAsIds);
         providerDoc.setField("requiredBaseEducations", requiredBaseEducations);
         providerDocs.add(providerDoc);
-        
+
         lopSolr.add(providerDocs);
         loSolr.add(docs);
     }
@@ -134,12 +138,12 @@ public class IndexerServiceImpl implements IndexerService {
     @Override
     public void commitLOChanges(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr, boolean createTimestamp) throws Exception {
         if (createTimestamp) {
-        	List<SolrInputDocument> timeStampDocs = new ArrayList<SolrInputDocument>();
-        	SolrInputDocument timestampDoc = new SolrInputDocument();
-        	timestampDoc.addField("id", "loUpdateTimestampDocument");
-        	timestampDoc.addField("name", getTimestampStr());
-        	timeStampDocs.add(timestampDoc);
-        	loUpdateSolr.add(timeStampDocs);//loUpdateHttpSolrServer.add(timeStampDocs);
+            List<SolrInputDocument> timeStampDocs = new ArrayList<SolrInputDocument>();
+            SolrInputDocument timestampDoc = new SolrInputDocument();
+            timestampDoc.addField("id", "loUpdateTimestampDocument");
+            timestampDoc.addField("name", getTimestampStr());
+            timeStampDocs.add(timestampDoc);
+            loUpdateSolr.add(timeStampDocs);//loUpdateHttpSolrServer.add(timeStampDocs);
         }
         loUpdateSolr.commit();//loUpdateHttpSolrServer.commit();
         lopUpdateSolr.commit();//lopUpdateHttpSolrServer.commit();

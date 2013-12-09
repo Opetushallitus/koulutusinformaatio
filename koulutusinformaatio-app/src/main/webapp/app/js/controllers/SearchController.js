@@ -10,16 +10,14 @@ function SearchFieldCtrl($scope, $location, $route, SearchService, kiAppConstant
     	AutocompleteService.query($scope.queryString).then(function(result) {
     		$scope.suggestions.length = 0;
     		if (result.keywords != undefined) {
-                $scope.suggestions.push({value: i18n.t('autocomplete-keyword'), group: true});
     			for (var i = 0; i < result.keywords.length; i++) {
-    				$scope.suggestions.push({value: result.keywords[i]});
+    				$scope.suggestions.push({value: result.keywords[i], group: i18n.t('autocomplete-keyword')});
     			}
     		} 
     		
     		if (result.loNames != undefined) {
-                $scope.suggestions.push({value: i18n.t('autocomplete-loname'), group: true});
     			for (var i = 0; i < result.loNames.length; i++) {
-    				$scope.suggestions.push({value: result.loNames[i]});
+    				$scope.suggestions.push({value: result.loNames[i], group: i18n.t('autocomplete-loname')});
     			}
     		}
     	});

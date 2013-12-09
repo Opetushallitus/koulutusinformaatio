@@ -66,4 +66,13 @@ public interface EducationDataQueryService {
      * @throws ResourceNotFoundException
      */
     UpperSecondaryLOS getUpperSecondaryLearningOpportunity(final String id) throws ResourceNotFoundException;
+
+    /**
+     * Retrieves a special learning opportunity specification.
+     *
+     * @param id los id
+     * @return special los
+     * @throws ResourceNotFoundException
+     */
+    SpecialLOS getSpecialLearningOpportunity(final String id) throws ResourceNotFoundException;
 }
