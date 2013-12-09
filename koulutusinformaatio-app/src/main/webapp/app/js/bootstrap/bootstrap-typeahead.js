@@ -105,10 +105,10 @@ angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.position', 'ui.bootstrap
 
               // select initial match item from selectable items (ignore group items)
               var firstMatchIndex = 0;
-              for (var index in matches) {
-                var match = matches[index];
+              for (var i = 0; i < matches.length; i++) {
+                var match = matches[i];
                 if (match && !match.group) {
-                  firstMatchIndex = index;
+                  firstMatchIndex = i;
                   break;
                 }
               }
