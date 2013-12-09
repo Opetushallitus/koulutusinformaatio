@@ -29,8 +29,11 @@ public class ProviderQuery extends SolrQuery {
     private final static String BASE_EDUCATIONS = "requiredBaseEducations";
     private final static String AS_IDS = "asIds";
     private final static String NAME = "name";
+    private final static String NEG_VOCATIONAL = "-vocationalAsIds";
+    private final static String NEG_NON_VOCATIONAL = "-nonVocationalAsIds";
 
-    public ProviderQuery(String q, String asId, String baseEducation, int start, int rows) {
+    public ProviderQuery(String q, String asId, String baseEducation, int start, int rows, boolean vocational,
+                         boolean nonVocational) {
         super(Joiner.on(":").join(NAME, q));
 
         this.setStart(start);
@@ -39,6 +42,13 @@ public class ProviderQuery extends SolrQuery {
 
         if (asId != null) {
             this.addFilterQuery(Joiner.on(":").join(AS_IDS, asId));
+
+            if (!vocational) {
+                this.addFilterQuery(Joiner.on(":").join(NEG_VOCATIONAL, asId));
+            }
+            if (!nonVocational) {
+                this.addFilterQuery(Joiner.on(":").join(NEG_NON_VOCATIONAL, asId));
+            }
         }
         if (baseEducation != null) {
             this.addFilterQuery(Joiner.on(":").join(BASE_EDUCATIONS, baseEducation));

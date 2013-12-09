@@ -1819,7 +1819,7 @@ b, strong, .bold {
         font-size: 0px; }
 
 .sort-area {
-  margin: 0;
+  margin: 0 0 0 0;
   padding: 1em;
   border: 1px solid #dddddd;
   background-color: whitesmoke; }
@@ -1836,7 +1836,7 @@ b, strong, .bold {
 .pager-results {
   display: inline-block;
   position: relative;
-  bottom: 34px; }
+  bottom: 20px; }
 
 #facetSelections {
   margin-bottom: 1em; }
@@ -3067,7 +3067,7 @@ button, .button {
 
 /* Pager */
 .pager {
-  margin: 0 0 1em 0;
+  margin: 7px 0 0 0;
   text-align: center;
   list-style: none;
   *zoom: 1; }
@@ -3474,6 +3474,9 @@ button, .button {
 
 .modal-footer .btn-block + .btn-block {
   margin-left: 0; }
+
+.modal-open {
+  overflow: hidden; }
 
 /*** Main navigation
 **************************************************************/

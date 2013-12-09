@@ -41,7 +41,8 @@ public interface EducationDataQueryService {
      * @param baseEducation base education identifier from koodisto
      * @return list of the application options
      */
-    List<ApplicationOption> findApplicationOptions(final String asId, final String lopId, final String baseEducation);
+    List<ApplicationOption> findApplicationOptions(final String asId, final String lopId, final String baseEducation,
+                                                   boolean vocational, boolean nonVocational);
 
     List<ApplicationOption> getApplicationOptions(final List<String> aoIds) throws InvalidParametersException;
 
@@ -66,4 +67,13 @@ public interface EducationDataQueryService {
      * @throws ResourceNotFoundException
      */
     UpperSecondaryLOS getUpperSecondaryLearningOpportunity(final String id) throws ResourceNotFoundException;
+
+    /**
+     * Retrieves a special learning opportunity specification.
+     *
+     * @param id los id
+     * @return special los
+     * @throws ResourceNotFoundException
+     */
+    SpecialLOS getSpecialLearningOpportunity(final String id) throws ResourceNotFoundException;
 }

@@ -30,6 +30,7 @@ public class EducationDataUpdateServiceImplTest {
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
     private ChildLearningOpportunityDAO childLearningOpportunityDAO;
     private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO;
+    private SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO;
     private DataStatusDAO dataStatusDAO;
     private PictureDAO pictureDAO;
     private DBCollection ploCollection;
@@ -56,7 +57,7 @@ public class EducationDataUpdateServiceImplTest {
         ApplicationOptionEntity ao = new ApplicationOptionEntity();
         ao.setId("8.9.0");
         aos.add(ao);
-        when(applicationOptionDAO.find(eq("1.1.1"), eq("9.9.9"), eq("1"))).thenReturn(aos);
+        when(applicationOptionDAO.find(eq("1.1.1"), eq("9.9.9"), eq("1"), eq(true), eq(true))).thenReturn(aos);
         learningOpportunityProviderDAO = mock(LearningOpportunityProviderDAO.class);
         lopCollection = mock(DBCollection.class);
         when(learningOpportunityProviderDAO.getCollection()).thenReturn(lopCollection);
@@ -71,11 +72,14 @@ public class EducationDataUpdateServiceImplTest {
 
         upperSecondaryLearningOpportunitySpecificationDAO = mock(UpperSecondaryLearningOpportunitySpecificationDAO.class);
 
+        specialLearningOpportunitySpecificationDAO = mock(SpecialLearningOpportunitySpecificationDAO.class);
+
         dataStatusDAO = mock(DataStatusDAO.class);
 
         service = new EducationDataUpdateServiceImpl( modelMapper, parentLearningOpportunitySpecificationDAO,
                applicationOptionDAO, learningOpportunityProviderDAO, childLearningOpportunityDAO,
-                pictureDAO, upperSecondaryLearningOpportunitySpecificationDAO, dataStatusDAO);
+                pictureDAO, upperSecondaryLearningOpportunitySpecificationDAO, dataStatusDAO,
+                specialLearningOpportunitySpecificationDAO);
     }
 
     @Test

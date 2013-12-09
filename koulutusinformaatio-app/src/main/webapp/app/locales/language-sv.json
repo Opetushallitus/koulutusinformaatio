@@ -8,6 +8,7 @@
 
     "lo-description": "Beskrivning av utbildningen ",
     "lo-application": "Antagningsgrunder och inträdesprov",
+    "lo-application-er": "Ansökan",
 
     "elementary-based": "Grundskolbaserad utbildning",
     "elementary-graduate-selection": "Antagning av grundskolgångna",
@@ -122,6 +123,7 @@
     "internationalization": "Internationalisering",
     "cooperation": "Samarbete med andra aktörer",
     "content-of-studies": "Utbildningens innehåll",
+    "emphasis": "Betoningar",
     "study-plan": "Läroplan",
     "contact-person-title": "Utbildningens kontaktperson",
 
@@ -141,10 +143,7 @@
     "application-prerequisite": "Grundutbildning",
     "label-as-ongoing": "Ansökan pågår",
     "label-as-not-ongoing": "Ansökan pågår inte",
-
-    "directly-applicable": "Utbildningsprogram med direkt ansökan:",
-
-    "apply-as-part-of-degree-program": "Sök till utbildning som är del av examen:",
+    "not-applicable": "Obs! Ansökan till utbildning sker inte genom denna tjänst. Bekanta dig med ansökningsförfarandet på mellanbladet Ansökan",
 
     "language-fi": "Suomeksi",
     "language-sv": "På svenska",
@@ -217,7 +216,6 @@
      "prerequisites": "Din grundutbildning",
      "yo": "Gymnasium och / eller studentexamen",
      "pk": "Grundskola",
-    
     "autocomplete-keyword": "Sökordsförslag",
     "autocomplete-loname": "Kurser och examen"   
 }

@@ -1,18 +1,12 @@
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import java.util.List;
-import java.util.Map;
-
+import com.google.common.collect.Lists;
+import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LearningOpportunity;
 import org.apache.solr.common.SolrInputDocument;
 
-import com.google.common.collect.Lists;
-
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
-import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOI;
-import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LearningOpportunity;
+import java.util.List;
+import java.util.Map;
 
 public class FacetIndexer {
     
@@ -40,15 +34,23 @@ public class FacetIndexer {
         List<SolrInputDocument> docs = Lists.newArrayList();
         for (ChildLOS childLOS : parent.getChildren()) {
             for (ChildLOI childLOI : childLOS.getLois()) {
-                //Teaching languages
-                this.indexCodeAsFacetDoc(childLOI.getTeachingLanguages().get(0), docs);
-                //Prerequisites
-                this.indexCodeAsFacetDoc(childLOI.getPrerequisite(), docs);
+                docs.addAll(createFacetDocs(childLOI));
             }
         }
         return docs;
     }
-    
+
+    /*
+     * Creates the solr docs needed in facet search.
+     */
+    public List<SolrInputDocument> createFacetDocs(ChildLOI childLOI) {
+        List<SolrInputDocument> docs = Lists.newArrayList();
+        this.indexCodeAsFacetDoc(childLOI.getTeachingLanguages().get(0), docs);
+        this.indexCodeAsFacetDoc(childLOI.getPrerequisite(), docs);
+        return docs;
+    }
+
+
     private String getTranslationUseFallback(String lang, Map<String, String> translations) {
         String translation = null;
         translation = translations.get(lang);

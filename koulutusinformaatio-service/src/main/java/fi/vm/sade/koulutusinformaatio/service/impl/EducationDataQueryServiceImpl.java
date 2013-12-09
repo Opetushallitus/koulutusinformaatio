@@ -28,7 +28,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -44,12 +43,15 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     private ModelMapper modelMapper;
     private PictureDAO pictureDAO;
     private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO;
+    private SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO;
 
     @Autowired
     public EducationDataQueryServiceImpl(ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO,
                                          ApplicationOptionDAO applicationOptionDAO, ModelMapper modelMapper,
                                          ChildLearningOpportunityDAO childLearningOpportunityDAO,
-                                         DataStatusDAO dataStatusDAO, PictureDAO pictureDAO, UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO) {
+                                         DataStatusDAO dataStatusDAO, PictureDAO pictureDAO,
+                                         UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO,
+                                         SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO) {
         this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;
         this.modelMapper = modelMapper;
@@ -57,6 +59,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
         this.dataStatusDAO = dataStatusDAO;
         this.pictureDAO = pictureDAO;
         this.upperSecondaryLearningOpportunitySpecificationDAO = upperSecondaryLearningOpportunitySpecificationDAO;
+        this.specialLearningOpportunitySpecificationDAO = specialLearningOpportunitySpecificationDAO;
     }
 
     @Override
@@ -70,8 +73,10 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     }
 
     @Override
-    public List<ApplicationOption> findApplicationOptions(String asId, String lopId, String baseEducation) {
-        List<ApplicationOptionEntity> applicationOptions = applicationOptionDAO.find(asId, lopId, baseEducation);
+    public List<ApplicationOption> findApplicationOptions(String asId, String lopId, String baseEducation,
+                                                          boolean vocational, boolean nonVocational) {
+        List<ApplicationOptionEntity> applicationOptions = applicationOptionDAO.find(asId, lopId, baseEducation,
+                vocational, nonVocational);
         return Lists.transform(applicationOptions, new Function<ApplicationOptionEntity, ApplicationOption>() {
             @Override
             public ApplicationOption apply(ApplicationOptionEntity applicationOptionEntity) {
@@ -138,7 +143,19 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
             return modelMapper.map(entity, UpperSecondaryLOS.class);
         }
         else {
-            throw new ResourceNotFoundException(String.format("Upper secondary learning opportunity specifiaction not found: %s", id));
+            throw new ResourceNotFoundException(String.format("Upper secondary learning opportunity specification not found: %s", id));
+        }
+    }
+
+    @Override
+    public SpecialLOS getSpecialLearningOpportunity(String id) throws ResourceNotFoundException {
+        SpecialLearningOpportunitySpecificationEntity entity =
+                specialLearningOpportunitySpecificationDAO.get(id);
+        if (entity != null) {
+            return modelMapper.map(entity, SpecialLOS.class);
+        }
+        else {
+            throw new ResourceNotFoundException(String.format("Special learning opportunity specification not found: %s", id));
         }
     }
 

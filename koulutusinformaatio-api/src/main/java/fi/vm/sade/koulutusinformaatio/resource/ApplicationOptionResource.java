@@ -34,7 +34,9 @@ public interface ApplicationOptionResource {
     @Produces(MediaType.APPLICATION_JSON)
     public List<ApplicationOptionSearchResultDTO> searchApplicationOptions(
             @PathParam("asId") final String asId, @PathParam("lopId") final String lopId,
-            @QueryParam("baseEducation") final String baseEducation);
+            @QueryParam("baseEducation") final String baseEducation,
+            @DefaultValue("true") @QueryParam("vocational") boolean vocational,
+            @DefaultValue("true") @QueryParam("nonVocational") boolean nonVocational);
 
     @GET
     @Path("/{aoId}")

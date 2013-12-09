@@ -320,6 +320,38 @@ service('ChildLOService', ['$http', '$timeout', '$q', 'LanguageService', 'ChildL
     }
 }]).
 
+service('SpecialLOService', ['$http', '$timeout', '$q', 'LanguageService', 'ChildLOTransformer', function($http, $timeout, $q, LanguageService, ChildLOTransformer) {
+    return {
+        query: function(options) {
+            var deferred = $q.defer();
+            var queryParams = {
+                uiLang: LanguageService.getLanguage()
+            }
+
+            if (options.lang) {
+                queryParams.lang = options.lang
+            }
+
+            $http.get('../lo/special/' + options.id, {
+                params: queryParams
+            }).
+            success(function(result) {
+                ChildLOTransformer.transform(result);
+                var loResult = {
+                    lo: result,
+                    provider: result.provider
+                }
+                deferred.resolve(loResult);
+            }).
+            error(function(result) {
+                deferred.reject(result);
+            });
+
+            return deferred.promise;
+        }
+    }
+}]).
+
 /**
  * Resource for requesting Upper Secondary LO data
  */

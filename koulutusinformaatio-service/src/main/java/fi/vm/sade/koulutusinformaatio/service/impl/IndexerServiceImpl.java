@@ -2,11 +2,9 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LocationFields;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
-
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -81,6 +79,8 @@ public class IndexerServiceImpl implements IndexerService {
         Provider provider = null;
         Set<String> providerAsIds = Sets.newHashSet();
         Set<String> requiredBaseEducations = Sets.newHashSet();
+        Set<String> vocationalAsIds = Sets.newHashSet();
+        Set<String> nonVocationalAsIds = Sets.newHashSet();
 
         if (los instanceof ParentLOS) {
             ParentLOS parent = (ParentLOS) los;
@@ -90,6 +90,11 @@ public class IndexerServiceImpl implements IndexerService {
                     for (ApplicationOption ao : childLOI.getApplicationOptions()) {
                         providerAsIds.add(ao.getApplicationSystem().getId());
                         requiredBaseEducations.addAll(ao.getRequiredBaseEducations());
+                        if (ao.isVocational()) {
+                            vocationalAsIds.add(ao.getApplicationSystem().getId());
+                        } else {
+                            nonVocationalAsIds.add(ao.getApplicationSystem().getId());
+                        }
                     }
                 }
             }
@@ -100,8 +105,16 @@ public class IndexerServiceImpl implements IndexerService {
                 for (ApplicationOption ao : loi.getApplicationOptions()) {
                     providerAsIds.add(ao.getApplicationSystem().getId());
                     requiredBaseEducations.addAll(ao.getRequiredBaseEducations());
+                    if (ao.isVocational()) {
+                        vocationalAsIds.add(ao.getApplicationSystem().getId());
+                    } else {
+                        nonVocationalAsIds.add(ao.getApplicationSystem().getId());
+                    }
                 }
             }
+        } else if (los instanceof SpecialLOS) {
+            SpecialLOS special = (SpecialLOS) los;
+            provider = special.getProvider();
         }
 
         List<SolrInputDocument> docs = conversionService.convert(los, List.class);
@@ -124,12 +137,22 @@ public class IndexerServiceImpl implements IndexerService {
             if (asids != null) {
                 providerAsIds.addAll(asids);
             }
+            List<String> vocational = (List<String>) results.get(0).get("vocationalAsIds");
+            if (vocational != null) {
+                vocationalAsIds.addAll(vocational);
+            }
+            List<String> nonVocational = (List<String>) results.get(0).get("nonVocationalAsIds");
+            if (nonVocational != null) {
+                nonVocationalAsIds.addAll(nonVocational);
+            }
         }
 
         providerDoc.setField("asIds", providerAsIds);
         providerDoc.setField("requiredBaseEducations", requiredBaseEducations);
+        providerDoc.setField("vocationalAsIds", vocationalAsIds);
+        providerDoc.setField("nonVocationalAsIds", nonVocationalAsIds);
         providerDocs.add(providerDoc);
-        
+
         lopSolr.add(providerDocs);
         loSolr.add(docs);
     }
@@ -137,12 +160,12 @@ public class IndexerServiceImpl implements IndexerService {
     @Override
     public void commitLOChanges(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr, boolean createTimestamp) throws Exception {
         if (createTimestamp) {
-        	List<SolrInputDocument> timeStampDocs = new ArrayList<SolrInputDocument>();
-        	SolrInputDocument timestampDoc = new SolrInputDocument();
-        	timestampDoc.addField("id", "loUpdateTimestampDocument");
-        	timestampDoc.addField("name", getTimestampStr());
-        	timeStampDocs.add(timestampDoc);
-        	loUpdateSolr.add(timeStampDocs);//loUpdateHttpSolrServer.add(timeStampDocs);
+            List<SolrInputDocument> timeStampDocs = new ArrayList<SolrInputDocument>();
+            SolrInputDocument timestampDoc = new SolrInputDocument();
+            timestampDoc.addField("id", "loUpdateTimestampDocument");
+            timestampDoc.addField("name", getTimestampStr());
+            timeStampDocs.add(timestampDoc);
+            loUpdateSolr.add(timeStampDocs);//loUpdateHttpSolrServer.add(timeStampDocs);
         }
         loUpdateSolr.commit();//loUpdateHttpSolrServer.commit();
         lopUpdateSolr.commit();//lopUpdateHttpSolrServer.commit();
