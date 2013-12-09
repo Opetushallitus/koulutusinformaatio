@@ -46,6 +46,7 @@ public class UpdateServiceImpl implements UpdateService {
     private TransactionManager transactionManager;
     private static final int MAX_RESULTS = 100;
     private boolean running = false;
+    private long runningSince = 0;
     private LocationService locationService;
 
 
@@ -72,6 +73,7 @@ public class UpdateServiceImpl implements UpdateService {
 
             LOG.info("Starting full education data update");
             running = true;
+            runningSince = System.currentTimeMillis();
 
             this.transactionManager.beginTransaction(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
             int count = MAX_RESULTS;
@@ -109,11 +111,17 @@ public class UpdateServiceImpl implements UpdateService {
             this.transactionManager.rollBack(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
         } finally {
             running = false;
+            runningSince = 0;
         }
     }
 
     @Override
     public boolean isRunning() {
         return running;
+    }
+
+    @Override
+    public long getRunningSince() {
+        return runningSince;
     }
 }
