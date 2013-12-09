@@ -108,10 +108,28 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     }
 
     @Override
-    public List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, String lopId, String baseEducation,
-                                                                           boolean vocational, boolean nonVocational) {
-        List<ApplicationOption> applicationOptions = educationDataQueryService.findApplicationOptions(asId, lopId, baseEducation,
-                vocational, nonVocational);
+    public SpecialLearningOpportunitySpecificationDTO getSpecialSecondaryLearningOpportunity(String id) throws ResourceNotFoundException {
+        SpecialLOS los = educationDataQueryService.getSpecialLearningOpportunity(id);
+        String lang = resolveDefaultLanguage(los.getLois().get(0));
+        return SpecialLOSToDTO.convert(los, lang, lang);
+    }
+
+    @Override
+    public SpecialLearningOpportunitySpecificationDTO getSpecialSecondaryLearningOpportunity(String id, String uiLang) throws ResourceNotFoundException {
+        SpecialLOS los = educationDataQueryService.getSpecialLearningOpportunity(id);
+        String lang = resolveDefaultLanguage(los.getLois().get(0));
+        return SpecialLOSToDTO.convert(los, lang, uiLang);
+    }
+
+    @Override
+    public SpecialLearningOpportunitySpecificationDTO getSpecialSecondaryLearningOpportunity(String id, String lang, String uiLang) throws ResourceNotFoundException {
+        SpecialLOS los = educationDataQueryService.getSpecialLearningOpportunity(id);
+        return SpecialLOSToDTO.convert(los, lang, uiLang);
+    }
+
+    @Override
+    public List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, String lopId, String baseEducation) {
+        List<ApplicationOption> applicationOptions = educationDataQueryService.findApplicationOptions(asId, lopId, baseEducation);
         return Lists.transform(applicationOptions, new Function<ApplicationOption, ApplicationOptionSearchResultDTO>() {
             @Override
             public ApplicationOptionSearchResultDTO apply(ApplicationOption applicationOption) {

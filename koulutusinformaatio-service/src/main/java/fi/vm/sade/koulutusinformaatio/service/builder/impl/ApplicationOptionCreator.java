@@ -54,7 +54,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
     }
 
     public ApplicationOption createVocationalApplicationOption(HakukohdeDTO hakukohdeDTO, HakuDTO hakuDTO,
-                                                               KomotoDTO childKomoto, ChildLOI childLOI) throws KoodistoException {
+                                                               KomotoDTO childKomoto, Code prerequisite) throws KoodistoException {
         ApplicationOption ao = new ApplicationOption();
         ao.setId(hakukohdeDTO.getOid());
         ao.setName(koodistoService.searchFirst(hakukohdeDTO.getHakukohdeNimiUri()));
@@ -96,7 +96,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         }
 
         ao.setTeachingLanguages(koodistoService.searchCodeValuesMultiple(childKomoto.getOpetuskieletUris()));
-        ao.setPrerequisite(childLOI.getPrerequisite());
+        ao.setPrerequisite(prerequisite);
         ao.setSpecificApplicationDates(hakukohdeDTO.isKaytetaanHakukohdekohtaistaHakuaikaa());
         if (ao.isSpecificApplicationDates()) {
             ao.setApplicationStartDate(hakukohdeDTO.getHakuaikaAlkuPvm());
@@ -145,7 +145,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
             cRef.setLosId(CreatorUtil.resolveLOSId(komoByKomotoOID.getOid(), childKomoto.getTarjoajaOid()));
             cRef.setName(koodistoService.searchFirst(komoByKomotoOID.getKoulutusOhjelmaKoodiUri()));
             cRef.setQualification(koodistoService.searchFirst(komoByKomotoOID.getTutkintonimikeUri()));
-            cRef.setPrerequisite(childLOI.getPrerequisite());
+            cRef.setPrerequisite(prerequisite);
             ao.getChildLOIRefs().add(cRef);
         }
         return ao;

@@ -489,7 +489,7 @@ directive('kiAbsoluteLink', function() {
                 pushItem({name: home, linkHref: Config.get('frontpageUrl') });
                 pushItem({name: root, linkHref: '#/haku/' + SearchService.getTerm() + '?' + FilterService.getParams() });
 
-                if (scope.parent && scope.loType != 'lukio') { // TODO: do not compare to loType
+                if (scope.parent && (scope.loType != 'lukio' && scope.loType != 'erityisopetus')) { // TODO: do not compare to loType
                     pushItem({name: parent, linkHref: '#/tutkinto/' + scope.parent.id });
                 }
 

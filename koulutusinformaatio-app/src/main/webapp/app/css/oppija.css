@@ -3475,6 +3475,9 @@ button, .button {
 .modal-footer .btn-block + .btn-block {
   margin-left: 0; }
 
+.modal-open {
+  overflow: hidden; }
+
 /*** Main navigation
 **************************************************************/
 .main-navigation {

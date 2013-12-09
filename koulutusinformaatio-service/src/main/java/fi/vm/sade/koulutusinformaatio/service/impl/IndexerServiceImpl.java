@@ -112,6 +112,9 @@ public class IndexerServiceImpl implements IndexerService {
                     }
                 }
             }
+        } else if (los instanceof SpecialLOS) {
+            SpecialLOS special = (SpecialLOS) los;
+            provider = special.getProvider();
         }
 
         List<SolrInputDocument> docs = conversionService.convert(los, List.class);
@@ -149,7 +152,7 @@ public class IndexerServiceImpl implements IndexerService {
         providerDoc.setField("vocationalAsIds", vocationalAsIds);
         providerDoc.setField("nonVocationalAsIds", nonVocationalAsIds);
         providerDocs.add(providerDoc);
-        
+
         lopSolr.add(providerDocs);
         loSolr.add(docs);
     }
@@ -157,12 +160,12 @@ public class IndexerServiceImpl implements IndexerService {
     @Override
     public void commitLOChanges(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr, boolean createTimestamp) throws Exception {
         if (createTimestamp) {
-        	List<SolrInputDocument> timeStampDocs = new ArrayList<SolrInputDocument>();
-        	SolrInputDocument timestampDoc = new SolrInputDocument();
-        	timestampDoc.addField("id", "loUpdateTimestampDocument");
-        	timestampDoc.addField("name", getTimestampStr());
-        	timeStampDocs.add(timestampDoc);
-        	loUpdateSolr.add(timeStampDocs);//loUpdateHttpSolrServer.add(timeStampDocs);
+            List<SolrInputDocument> timeStampDocs = new ArrayList<SolrInputDocument>();
+            SolrInputDocument timestampDoc = new SolrInputDocument();
+            timestampDoc.addField("id", "loUpdateTimestampDocument");
+            timestampDoc.addField("name", getTimestampStr());
+            timeStampDocs.add(timestampDoc);
+            loUpdateSolr.add(timeStampDocs);//loUpdateHttpSolrServer.add(timeStampDocs);
         }
         loUpdateSolr.commit();//loUpdateHttpSolrServer.commit();
         lopUpdateSolr.commit();//lopUpdateHttpSolrServer.commit();

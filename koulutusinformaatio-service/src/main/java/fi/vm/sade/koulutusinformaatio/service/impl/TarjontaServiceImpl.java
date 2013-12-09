@@ -27,6 +27,7 @@ import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.koulutusinformaatio.service.builder.LearningOpportunityBuilder;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.LearningOpportunityDirector;
+import fi.vm.sade.koulutusinformaatio.service.builder.impl.SpecialLearningOpportunityBuilder;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.UpperSecondaryLearningOpportunityBuilder;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.VocationalLearningOpportunityBuilder;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
@@ -49,6 +50,7 @@ public class TarjontaServiceImpl implements TarjontaService {
     private static final String VOCATIONAL_EDUCATION_TYPE = "AmmatillinenPeruskoulutus";
     private static final String UPPER_SECONDARY_EDUCATION_TYPE = "Lukiokoulutus";
     private static final String REHABILITATING_EDUCATION_TYPE = "ValmentavaJaKuntouttavaOpetus";
+
 
     private ConversionService conversionService;
     private KoodistoService koodistoService;
@@ -98,6 +100,10 @@ public class TarjontaServiceImpl implements TarjontaService {
                 komo.getModuuliTyyppi().equals(LearningOpportunityBuilder.MODULE_TYPE_CHILD)) {
             return new UpperSecondaryLearningOpportunityBuilder(
                     tarjontaRawService, providerService, koodistoService, komo);
+        }
+        else if (educationType.equals(REHABILITATING_EDUCATION_TYPE) &&
+                komo.getModuuliTyyppi().equals(LearningOpportunityBuilder.MODULE_TYPE_CHILD)) {
+            return new SpecialLearningOpportunityBuilder(tarjontaRawService, providerService, koodistoService, komo);
         }
         else {
             throw new TarjontaParseException(String.format("Unknown education degree %s and module type %s incompatible",
