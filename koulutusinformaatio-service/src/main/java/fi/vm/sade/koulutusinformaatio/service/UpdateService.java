@@ -16,6 +16,8 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
+import java.util.Date;
+
 /**
  * Receives update notifications and handles the education data update process.
  *
@@ -30,4 +32,6 @@ public interface UpdateService {
     public void updateAllEducationData() throws Exception;
 
     public boolean isRunning();
+
+    public long getRunningSince();
 }

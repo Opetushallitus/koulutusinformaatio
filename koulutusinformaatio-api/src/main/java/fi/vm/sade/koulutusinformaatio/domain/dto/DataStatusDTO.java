@@ -31,6 +31,8 @@ public class DataStatusDTO {
     private long lastUpdateDuration;
     private String lastUpdateDurationStr;
     private boolean running;
+    private Date runningSince;
+    private String runningSinceStr;
 
     public Date getLastUpdated() {
         return lastUpdated;
@@ -70,5 +72,21 @@ public class DataStatusDTO {
 
     public void setLastUpdateDurationStr(String lastUpdateDurationStr) {
         this.lastUpdateDurationStr = lastUpdateDurationStr;
+    }
+
+    public Date getRunningSince() {
+        return runningSince;
+    }
+
+    public void setRunningSince(Date runningSince) {
+        this.runningSince = runningSince;
+    }
+
+    public String getRunningSinceStr() {
+        return runningSinceStr;
+    }
+
+    public void setRunningSinceStr(String runningSinceStr) {
+        this.runningSinceStr = runningSinceStr;
     }
 }

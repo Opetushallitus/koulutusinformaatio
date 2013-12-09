@@ -32,6 +32,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Date;
 
 /**
  * @author Hannu Lyytikainen
@@ -79,7 +80,10 @@ public class AdminResource {
         dto.setLastUpdateDuration(millis);
         dto.setLastUpdateDurationStr(String.format("%d hours, %d minutes", millis / 3600000, millis / 60000 % 60));
         dto.setRunning(updateService.isRunning());
-        return dto;
+        if (dto.isRunning()) {
+            dto.setRunningSince(new Date(updateService.getRunningSince()));
+            dto.setRunningSinceStr(new Date(updateService.getRunningSince()).toString());
+        }
+       return dto;
     }
-
 }
