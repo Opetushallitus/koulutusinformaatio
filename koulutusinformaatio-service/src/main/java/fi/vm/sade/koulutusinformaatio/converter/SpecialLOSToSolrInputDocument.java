@@ -29,7 +29,7 @@ import java.util.List;
  */
 public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List<SolrInputDocument>> {
 
-    private static final String TYPE_SPECIAL = "ERITYISOPETUS";
+
 
     @Override
     public List<SolrInputDocument> convert(SpecialLOS los) {
@@ -47,7 +47,7 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
 
         SolrInputDocument doc = new SolrInputDocument();
         Provider provider = specialLOS.getProvider();
-        doc.addField(SolrFields.LearningOpportunity.TYPE, TYPE_SPECIAL);
+        doc.addField(SolrFields.LearningOpportunity.TYPE, specialLOS.getType());
         doc.addField(SolrFields.LearningOpportunity.ID, childLOI.getId());
         doc.addField(SolrFields.LearningOpportunity.LOS_ID, specialLOS.getId());
         doc.addField(SolrFields.LearningOpportunity.LOP_ID, provider.getId());
