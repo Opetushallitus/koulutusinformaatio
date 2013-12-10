@@ -145,7 +145,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
             save(learningOpportunityProvider.getPicture());
 
             LearningOpportunityProviderEntity old = learningOpportunityProviderTransactionDAO.get(learningOpportunityProvider.getId());
-            if (old != null) {
+            if (old != null && old.getApplicationSystemIds() != null) {
                 learningOpportunityProvider.getApplicationSystemIds().addAll(old.getApplicationSystemIds());
             }
 
