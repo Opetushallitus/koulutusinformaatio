@@ -30,6 +30,7 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
+import fi.vm.sade.koulutusinformaatio.service.builder.BuilderConstants;
 import fi.vm.sade.koulutusinformaatio.service.builder.LearningOpportunityBuilder;
 import fi.vm.sade.tarjonta.service.resources.dto.*;
 
@@ -139,7 +140,7 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
 
     private UpperSecondaryLOS createLOS(KomoDTO komo, KomoDTO parentKomo, List<KomotoDTO> komotos, String losID, Provider provider) throws KoodistoException {
         UpperSecondaryLOS los = new UpperSecondaryLOS();
-
+        los.setType(BuilderConstants.TYPE_UPSEC);
         los.setId(losID);
         los.setName(koodistoService.searchFirst(komo.getLukiolinjaUri()));
         los.setEducationDegree(koodistoService.searchFirstCodeValue(parentKomo.getKoulutusAsteUri()));
@@ -268,7 +269,7 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
         ao.setKaksoistutkinto(hakukohdeDTO.isKaksoisTutkinto());
         ao.setExams(createExams(hakukohdeDTO.getValintakoes()));
         List<Code> subCodes = koodistoService.searchSubCodes(komoto.getPohjakoulutusVaatimusUri(),
-                LearningOpportunityBuilder.BASE_EDUCATION_KOODISTO_URI);
+                BuilderConstants.BASE_EDUCATION_KOODISTO_URI);
         List<String> baseEducations = Lists.transform(subCodes, new Function<Code, String>() {
             @Override
             public String apply(Code code) {

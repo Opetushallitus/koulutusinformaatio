@@ -19,6 +19,7 @@ package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
+import fi.vm.sade.koulutusinformaatio.service.builder.BuilderConstants;
 import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
@@ -30,8 +31,6 @@ import fi.vm.sade.tarjonta.shared.types.TarjontaTila;
  */
 public class CreatorUtil {
 
-    public static final String STATE_PUBLISHED = "JULKAISTU";
-    public static final String PREREQUISITE_URI_ER = "pohjakoulutusvaatimustoinenaste_er";
 
     protected static Predicate<KomoDTO> komoPublished = new Predicate<KomoDTO>() {
         @Override
@@ -50,14 +49,14 @@ public class CreatorUtil {
     protected static Predicate<HakukohdeDTO> hakukohdePublished = new Predicate<HakukohdeDTO>() {
         @Override
         public boolean apply(HakukohdeDTO hakukohde) {
-            return hakukohde.getTila().equals(STATE_PUBLISHED);
+            return hakukohde.getTila().equals(BuilderConstants.STATE_PUBLISHED);
         }
     };
 
     protected static Predicate<HakuDTO> hakuPublished = new Predicate<HakuDTO>() {
         @Override
         public boolean apply(HakuDTO haku) {
-            return haku.getTila().equals(STATE_PUBLISHED);
+            return haku.getTila().equals(BuilderConstants.STATE_PUBLISHED);
         }
     };
 

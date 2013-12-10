@@ -31,8 +31,6 @@ import java.util.List;
  */
 public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSecondaryLOS, List<SolrInputDocument>> {
     
-    private static final String TYPE_UPSEC = "LUKIO";
-
     @Override
     public List<SolrInputDocument> convert(UpperSecondaryLOS los) {
         List<SolrInputDocument> docs = Lists.newArrayList();
@@ -50,7 +48,7 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
 
     private SolrInputDocument createDoc(UpperSecondaryLOS los, UpperSecondaryLOI loi) {
         SolrInputDocument doc = new SolrInputDocument();
-        doc.addField(LearningOpportunity.TYPE, TYPE_UPSEC);
+        doc.addField(LearningOpportunity.TYPE, los.getType());
         Provider provider = los.getProvider();
         doc.addField(LearningOpportunity.ID, loi.getId());
         doc.addField(LearningOpportunity.LOS_ID, los.getId());

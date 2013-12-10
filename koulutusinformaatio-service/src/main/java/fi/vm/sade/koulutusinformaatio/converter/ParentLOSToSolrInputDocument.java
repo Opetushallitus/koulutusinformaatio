@@ -31,8 +31,6 @@ import java.util.*;
  */
 public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<SolrInputDocument>> {
     
-    private static final String TYPE_PARENT = "TUTKINTO";
-    private static final String TYPE_CHILD = "KOULUTUSOHJELMA";
 
     public List<SolrInputDocument> convert(ParentLOS parent) {
         List<SolrInputDocument> docs = Lists.newArrayList();
@@ -52,7 +50,7 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
     private SolrInputDocument createParentDoc(ParentLOS parent) {
         SolrInputDocument doc = new SolrInputDocument();
         Provider provider = parent.getProvider();
-        doc.addField(LearningOpportunity.TYPE, TYPE_PARENT);
+        doc.addField(LearningOpportunity.TYPE, parent.getType());
         doc.addField(LearningOpportunity.ID, parent.getId());
         doc.addField(LearningOpportunity.LOP_ID, provider.getId());
 
@@ -172,7 +170,7 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
 
         SolrInputDocument doc = new SolrInputDocument();
         Provider provider = parent.getProvider();
-        doc.addField(LearningOpportunity.TYPE, TYPE_CHILD);
+        doc.addField(LearningOpportunity.TYPE, childLOS.getType());
         doc.addField(LearningOpportunity.ID, childLOI.getId());
         doc.addField(LearningOpportunity.LOS_ID, childLOS.getId());
         doc.addField(LearningOpportunity.LOP_ID, provider.getId());
