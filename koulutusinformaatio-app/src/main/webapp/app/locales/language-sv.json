@@ -216,6 +216,8 @@
      "prerequisites": "Din grundutbildning",
      "yo": "Gymnasium och / eller studentexamen",
      "pk": "Grundskola",
+     "er": "Individualiserad lärokurs",
+
     "autocomplete-keyword": "Sökordsförslag",
-    "autocomplete-loname": "Kurser och examen"   
+    "autocomplete-loname": "Kurser och examen"
 }
