@@ -116,6 +116,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
             }
         }
         ao.setAttachments(attachments);
+        ao.setAdditionalInfo(getI18nText(hakukohdeDTO.getLisatiedot()));
 
         // set child loi names to application option
         List<OidRDTO> komotosByHakukohdeOID = tarjontaRawService.getKomotosByHakukohde(hakukohdeDTO.getOid());
