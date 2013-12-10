@@ -36,9 +36,10 @@ public class LOSearchResult {
     private boolean asOngoing;
     private Date nextApplicationPeriodStarts;
     private String type;
+    private String credits;
 
     public LOSearchResult(String id, String name, String lopId, String lopName,
-                          String prerequisite, String prerequisiteCode, String parentId, String losId, String type) {
+                          String prerequisite, String prerequisiteCode, String parentId, String losId, String type, String credits) {
         this.id = id;
         this.name = name;
         this.lopId = lopId;
@@ -48,6 +49,7 @@ public class LOSearchResult {
         this.parentId = parentId;
         this.losId = losId;
         this.type = type;
+        this.credits = credits;
     }
 
     public String getId() {
@@ -136,5 +138,13 @@ public class LOSearchResult {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getCredits() {
+        return credits;
+    }
+
+    public void setCredits(String credits) {
+        this.credits = credits;
     }
 }

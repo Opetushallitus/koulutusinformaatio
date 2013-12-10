@@ -8,16 +8,18 @@
 
     "lo-description": "Beskrivning av utbildningen ",
     "lo-application": "Antagningsgrunder och inträdesprov",
+    "lo-application-er": "Ansökan",
 
     "elementary-based": "Grundskolbaserad utbildning",
     "elementary-graduate-selection": "Antagning av grundskolgångna",
     "secondary-school-based": "Gymnasiebaserad utbildning",
 
     "search-result-title": "Sökträffar",
+    "search-result-title-description": "Använd alternativen till vänster för att avgränsa din sökning",
     "search-result-count-unit": "st",
     "search-field-placeholder": "Sök utbildningar här",
     "no-search-results": "Inga sökresultat",
-    "no-search-results-info": "Sökordet gav inget resultat. Försök med annat sökord.",
+    "no-search-results-info": "Sökordet \"__searchterm__\" gav inget resultat. Ifrågavarande utbildning eller examen har ev. inte ännu matats in i systemet. Var god och försök med ett annat sökord eller en annan avgränsning. ",
     "search-pagination-first": "Första",
     "search-pagination-last": "sista ",
     "search-pagination-next": "nästa",
@@ -34,15 +36,29 @@
     "filter-search-elementary": "Grundläggande utbildning (grundskola)",
     "filter-search-elementary-individualized": "Individualiserad lärokurs",
     "filter-search-upper-secondary": "Gymnasium / Student ",
-    "filter-search-as-ongoing": "Ansökan pågår som bäst",
+    "filter-search-as-ongoing": "Ansökningstiden pågår",
     "filter-search-vocational": "Yrkesinriktad grundexamen (120 sv)",
     "filter-search-vocational-specialized": "Yrkes- eller specialyrkesexamen",
     "filter-search-institute": "Examen på skolnivå, institutnivå eller yrkesinriktad högre nivå",
     "filter-search-university-applied": "Yrkeshögskolexamen",
     "filter-search-university": "Universitetsexamen",
-    "filter-search-location-title": "Placeringsort för utbildning som söks ",
+    "filter-search-location-title": "Avgränsa enligt område",
+    "location-filter-placeholder": "Skriv ort eller landskap", 
     "filter-search-location-add": "Lägg till ort",
     "filter-search-location-remove": "Avlägsna",
+
+    "sort-criteria-default": "-- Välj --",
+    "sort-criteria-alphabetical-desc": "I alfabetisk ordning, A-Ö",
+    "sort-criteria-alphabetical-asc": "I alfabetisk ordning, Ö-A",
+    "sort-criteria-duration-group": "Utbildningens upskattade längd",
+    "sort-criteria-duration-asc": "De kortaste först",
+    "sort-criteria-duration-desc": "De längsta först",
+    "sort-criteria-items-per-page-label": "Visa",
+    "sort-criteria-sort-label": "Sortera",
+    "sort-results-label": "Resultaten",
+
+    "pagination-next": "Följande",
+    "pagination-previous": "Föregående",
 
     "description-language-selection": "Beskrivning också på",
 
@@ -86,7 +102,8 @@
     "info-center": "Ansökningsrådgivning",
 
     "academy-description": "Presentation av läroanstalten",
-    "accessibility-and-benefits": "Tillgänglighet och studerandeförmåner",
+    "accessibility-anchor": "Tillgänglighet",
+    "student-benefits-anchor": "Studerandeförmåner",
     "contact-information": "Kontaktinformation",
 
     "learning-environment-info": "Uppgifter om inlärningsmiljön",
@@ -106,6 +123,7 @@
     "internationalization": "Internationalisering",
     "cooperation": "Samarbete med andra aktörer",
     "content-of-studies": "Utbildningens innehåll",
+    "emphasis": "Betoningar",
     "study-plan": "Läroplan",
     "contact-person-title": "Utbildningens kontaktperson",
 
@@ -125,10 +143,7 @@
     "application-prerequisite": "Grundutbildning",
     "label-as-ongoing": "Ansökan pågår",
     "label-as-not-ongoing": "Ansökan pågår inte",
-
-    "directly-applicable": "Utbildningsprogram med direkt ansökan:",
-
-    "apply-as-part-of-degree-program": "Sök till utbildning som är del av examen:",
+    "not-applicable": "Obs! Ansökan till utbildning sker inte genom denna tjänst. Bekanta dig med ansökningsförfarandet på mellanbladet Ansökan",
 
     "language-fi": "Suomeksi",
     "language-sv": "På svenska",
@@ -148,7 +163,7 @@
     "popup-close": "Stäng",
     "popup-continue": "Fortsätt",
 
-    "popover-title-success": "Utbildningen har lagts till i minneslistan",
+    "popover-title-success": "Lagts till i minneslistan",
     "popover-title-error": "Att lägga till i minneslistan misslyckades ",
     "popover-content-error": "Märk att du kan lägga till ansökningsmål utgående från endast en grundutbildning. ",
     "popover-content-link-to-application-basket": "Se i minneslistan",
@@ -170,8 +185,39 @@
     "B1KIELI" : "B1-språk",
     "B2KIELI" : "B2-språk",
     "B3KIELI" : "B3-språk",
-    "MUUT_KIELET" : "Annat språk"
+    "MUUT_KIELET" : "Annat språk",
 
+     "valitut-rajaukset": "Valda avgränsningar",
+     "facet-opetuskieli": "Avgränsa enligt undervisningsspråk",
+     "teachingLangCode_ffm": "Undervisning språk",
+     "location-rajaus": "Plats",
+     "facet-remove": "Avlägsna",
+     "filter-search-as-upcoming": "Ansökningstiden ännu ej påbörjad",
+     "haun-tila": "Ansökans status",
+     "selaile-koulutuksia": "Avgränska sökresultatet",
+     "valitse-alue": "Välj området från vilken du söker utbildning",
+     "valitse-alue-link": "Välj område",
+     "district": "Landskap",
+     "municipality": "Stad / kommun",
+     "valitut-alueet": "Valda områden",
+     "ok": "Godkänn",
+     "cancel": "Avbryt",
+     "koko": "Hela",
+     "suomi": "Finland",
+     "valitse-kaikki": "Välja alla",
+     "haettava-koulutus": "Avgränsa enligt utbildningstyp",
+     "educationType_ffm": "Utbildningstyp",
+   	 "et1": "Gymnasium",
+     "et2": "Dubbelexamen",
+     "et3": "Yrkesinriktad grundexamen",
+     "et4": "Yrkesinriktad specialundervisning",
+     "et5": "Undervisning och handledning i tränings- och rehabiliteringssyfte",
+     "pohjakoulutus": "Din grundutbildning",
+     "prerequisites": "Din grundutbildning",
+     "yo": "Gymnasium och / eller studentexamen",
+     "pk": "Grundskola",
+     "er": "Individualiserad lärokurs",
 
-
+    "autocomplete-keyword": "Sökordsförslag",
+    "autocomplete-loname": "Kurser och examen"
 }

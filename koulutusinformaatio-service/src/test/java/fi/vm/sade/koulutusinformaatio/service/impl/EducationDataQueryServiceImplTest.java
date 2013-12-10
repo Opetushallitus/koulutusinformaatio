@@ -49,6 +49,7 @@ public class EducationDataQueryServiceImplTest {
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
     private ChildLearningOpportunityDAO childLearningOpportunityDAO;
     private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO;
+    private SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO;
     private PictureDAO pictureDAO;
     private DataStatusDAO dataStatusDAO;
     private DBCollection ploCollection;
@@ -74,7 +75,7 @@ public class EducationDataQueryServiceImplTest {
         ApplicationOptionEntity ao = new ApplicationOptionEntity();
         ao.setId("8.9.0");
         aos.add(ao);
-        when(applicationOptionDAO.find(eq("1.1.1"), eq("9.9.9"), eq("1"))).thenReturn(aos);
+        when(applicationOptionDAO.find(eq("1.1.1"), eq("9.9.9"), eq("1"), eq(true), eq(true))).thenReturn(aos);
         when(applicationOptionDAO.find(eq(Lists.newArrayList("8.9.0")))).thenReturn(aos);
         learningOpportunityProviderDAO = mock(LearningOpportunityProviderDAO.class);
         lopCollection = mock(DBCollection.class);
@@ -87,10 +88,11 @@ public class EducationDataQueryServiceImplTest {
         dataStatusDAO = mock(DataStatusDAO.class);
         pictureDAO = mock(PictureDAO.class);
         upperSecondaryLearningOpportunitySpecificationDAO = mock(UpperSecondaryLearningOpportunitySpecificationDAO.class);
+        specialLearningOpportunitySpecificationDAO = mock(SpecialLearningOpportunitySpecificationDAO.class);
 
         service = new EducationDataQueryServiceImpl(parentLearningOpportunitySpecificationDAO,
                 applicationOptionDAO, modelMapper, childLearningOpportunityDAO,
-                dataStatusDAO, pictureDAO, upperSecondaryLearningOpportunitySpecificationDAO);
+                dataStatusDAO, pictureDAO, upperSecondaryLearningOpportunitySpecificationDAO, specialLearningOpportunitySpecificationDAO);
     }
 
     @Test
@@ -107,7 +109,7 @@ public class EducationDataQueryServiceImplTest {
 
     @Test
     public void testFindApplicationOptions() {
-        List<ApplicationOption> result = service.findApplicationOptions("1.1.1", "9.9.9", "1");
+        List<ApplicationOption> result = service.findApplicationOptions("1.1.1", "9.9.9", "1", true, true);
         assertNotNull(result);
         assertEquals(1, result.size());
         assertEquals("8.9.0", result.get(0).getId());

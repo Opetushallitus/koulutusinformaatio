@@ -1,10 +1,10 @@
 <div class="result-content">
-    <a href="{{lo.linkHref}}">{{lo.name}}</a><br />
-    <span data-ng-show="lo.prerequisite" class="italic">
+    <h2><a href="{{lo.linkHref}}">{{lo.name}}, {{lo.credits}}</a></h2>
+    <span class="italic" data-ng-show="lo.prerequisite">
         <span data-ki-i18n="application-prerequisite" data-show-colon="true"></span>
         <span>{{lo.prerequisite}}</span><br />
     </span>
     <span>{{lo.lopName}}</span>
 </div>
-<span data-ki-as-state>&nbsp;</span>
+<span data-ki-as-state class="state-label">&nbsp;</span>
 <div class="clear"></div>

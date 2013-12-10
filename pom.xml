@@ -5,7 +5,7 @@
 
     <groupId>fi.vm.sade.koulutusinformaatio</groupId>
     <artifactId>koulutusinformaatio</artifactId>
-    <version>7.0</version>
+    <version>8.0</version>
     <packaging>pom</packaging>
     <name>Koulutusinformaatio :: Parent</name>
 
@@ -38,10 +38,9 @@
         <flapdoodle.version>1.36</flapdoodle.version>
         <jackson.version>1.9.12</jackson.version>
 
-        <oph.organisaatio.version>7.0</oph.organisaatio.version>
-        <oph.koodisto.version>7.0</oph.koodisto.version>
-        <oph.tarjonta.version>7.0</oph.tarjonta.version>
-        <oph.generic.version>7.0</oph.generic.version>
+        <oph.organisaatio.version>8.0</oph.organisaatio.version>
+        <oph.koodisto.version>8.0</oph.koodisto.version>
+        <oph.tarjonta.version>8.0</oph.tarjonta.version>
     </properties>
 
     <repositories>
@@ -228,7 +227,7 @@
                 <sonar.clover.reportPath>${clover.outputDirectory}/clover.xml</sonar.clover.reportPath>
 
                 <!-- EXAMPLE FOR MYSQL mysqldump -usonar -pDx4k7T23x3ox8yS sonar > sonar.db.bak.sql -->
-                <sonar.jdbc.url>jdbc:mysql://localhost:3306/sonar?useUnicode=true&amp;characterEncoding=utf8
+                <sonar.jdbc.url>jdbc:mysql://pulpetti.hard.ware.fi:3306/sonar?useUnicode=true&amp;characterEncoding=utf8
                 </sonar.jdbc.url>
                 <sonar.jdbc.driverClassName>com.mysql.jdbc.Driver</sonar.jdbc.driverClassName>
                 <sonar.jdbc.username>sonar</sonar.jdbc.username>

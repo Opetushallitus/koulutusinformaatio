@@ -26,6 +26,11 @@ public class LOSearchResultList {
 
     private List<LOSearchResult> results = new ArrayList<LOSearchResult>();
     private long totalCount;
+    private Facet teachingLangFacet;
+    private Facet filterFacet;
+    private Facet appStatusFacet;
+    private Facet edTypeFacet;
+    private Facet prerequisiteFacet;
 
     public List<LOSearchResult> getResults() {
         return results;
@@ -41,5 +46,45 @@ public class LOSearchResultList {
 
     public void setTotalCount(long totalCount) {
         this.totalCount = totalCount;
+    }
+
+    public Facet getTeachingLangFacet() {
+        return teachingLangFacet;
+    }
+
+    public void setTeachingLangFacet(Facet teachingLangFacet) {
+        this.teachingLangFacet = teachingLangFacet;
+    }
+
+    public Facet getFilterFacet() {
+        return filterFacet;
+    }
+
+    public void setFilterFacet(Facet filterFacet) {
+        this.filterFacet = filterFacet;
+    }
+
+    public void setAppStatusFacet(Facet haunTila) {
+        this.appStatusFacet = haunTila;
+    }
+    
+    public Facet getAppStatusFacet() {
+        return this.appStatusFacet;
+    }
+
+    public Facet getEdTypeFacet() {
+        return edTypeFacet;
+    }
+
+    public void setEdTypeFacet(Facet edTypeFacet) {
+        this.edTypeFacet = edTypeFacet;
+    }
+
+    public Facet getPrerequisiteFacet() {
+        return prerequisiteFacet;
+    }
+
+    public void setPrerequisiteFacet(Facet prerequisiteFacet) {
+        this.prerequisiteFacet = prerequisiteFacet;
     }
 }

@@ -135,7 +135,7 @@ public class ApplicationOptionDAOTest {
         applicationOptionDAO.save(entity3);
         applicationOptionDAO.save(entity4);
 
-        List<ApplicationOptionEntity> result = applicationOptionDAO.find(asId, lopId, baseEducation);
+        List<ApplicationOptionEntity> result = applicationOptionDAO.find(asId, lopId, baseEducation, true, true);
         assertNotNull(result);
         assertEquals(2, result.size());
         assertNotNull(result.get(0));

@@ -40,4 +40,15 @@ public interface LocationResource {
     @Path("search/{" + TERM + "}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public List<LocationDTO> searchLocations(@PathParam(TERM) final String term, @DefaultValue(LANG_FI) @QueryParam(LANG) String lang);
+    
+    @GET
+    @Path("districts")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    public List<LocationDTO> getDistricts(@DefaultValue(LANG_FI) @QueryParam(LANG) String lang);
+    
+    @GET
+    @Path("child-locations")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    public List<LocationDTO> getChildLocations(@QueryParam("districts") List<String> districts, @DefaultValue(LANG_FI) @QueryParam(LANG) String lang);
+    
 }

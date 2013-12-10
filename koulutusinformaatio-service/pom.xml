@@ -5,7 +5,7 @@
     <parent>
         <artifactId>koulutusinformaatio</artifactId>
         <groupId>fi.vm.sade.koulutusinformaatio</groupId>
-        <version>7.0</version>
+        <version>8.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>koulutusinformaatio-service</artifactId>
@@ -14,15 +14,19 @@
 
     <dependencies>
         <dependency>
-            <groupId>fi.vm.sade.generic</groupId>
-            <artifactId>generic-events</artifactId>
-            <version>${oph.generic.version}</version>
-            <type>jar</type>
-        </dependency>
-        <dependency>
             <groupId>fi.vm.sade.tarjonta</groupId>
             <artifactId>tarjonta-api</artifactId>
             <version>${oph.tarjonta.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>geronimo-servlet_2.5_spec</artifactId>
+                    <groupId>org.apache.geronimo.specs</groupId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.cxf</groupId>
+                    <artifactId>cxf-bundle</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>fi.vm.sade.koodisto</groupId>

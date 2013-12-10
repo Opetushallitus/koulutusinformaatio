@@ -14,6 +14,7 @@
     "secondary-school-based": "Lukiopohjainen koulutus (en)",
 
     "search-result-title": "Tulokset haulle (en)",
+    "search-result-title-description": "Tarkenna hakua rajaamalla hakutuloksia selailutyökalusta vasemmalta (en)",
     "search-result-count-unit": "kpl (en)",
     "search-field-placeholder": "Hae koulutusta tästä (en)",
     "no-search-results": "Ei hakutuloksia (en)",
@@ -41,8 +42,21 @@
     "filter-search-university-applied": "Ammattikorkeakoulututkinto (en)",
     "filter-search-university": "Yliopistotutkinto (en)",
     "filter-search-location-title": "Haettavan koulutuksen sijainti (en)",
+    "location-filter-placeholder": "Kirjoita paikkakunta (en)",
     "filter-search-location-add": "Lisää sijainti (en)",
     "filter-search-location-remove": "Poista (en)",
+
+    "sort-criteria-startdate": "Alkamisajankohta (en)",
+    "sort-criteria-alphabetical-desc": "Aakkoset A-Ö (en)",
+    "sort-criteria-alphabetical-asc": "Aakkoset Ö-A (en)",
+    "sort-criteria-items-per-page-label": "Näytä (en)",
+    "sort-criteria-sort-label": "Lajittele (en)",
+    "sort-criteria-duration-asc": "Lyhytkestoiset ensin (en)",
+    "sort-criteria-duration-desc": "Pitkäkestoiset ensin (en)",
+    "sort-results-label": "Tulokset (en)",
+
+    "pagination-next": "Seuraava (en)",
+    "pagination-previous": "Edellinen (en)",
 
     "description-language-selection": "Kuvaus saatavilla myös (en):",
 
@@ -86,7 +100,7 @@
     "info-center": "Hakuneuvonta (en)",
 
     "academy-description": "Oppilaitoksen esittely (en)",
-    "accessibility-and-benefits": "Esteettömyys ja opiskelijan edut (en)",
+    "student-benefits-anchor": "Opiskelijan edut (en)",
     "contact-information": "Yhteystiedot (en)",
 
     "learning-environment-info": "Tietoa oppimisympäristöstä (en)",
@@ -170,6 +184,40 @@
     "B1KIELI" : "B1-kieli (en)",
     "B2KIELI" : "B2-kieli (en)",
     "B3KIELI" : "B3-kieli (en)",
-    "MUUT_KIELET" : "Muu kieli (en)"
+    "MUUT_KIELET" : "Muu kieli (en)",
+    
+    "valitut-rajaukset": "Chosen Restrictions",
+    "facet-opetuskieli": "Teaching Language",
+    "teachingLangCode_ffm": "Teaching Language",
+    "location-rajaus": "Place",
+    "facet-remove": "Poista (en)",
+    "filter-search-as-upcoming": "Upcoming applications systems",
+    "haun-tila": "Application system status",
+    "selaile-koulutuksia": "Selaile koulutuksia",
+    "valitse-alue": "Choose the area from which to search",
+    "valitse-alue-link": "Choose the area",
+    "district": "District",
+    "municipality": "Town/Municipality",
+    "valitut-alueet": "Chosen areas",
+    "ok": "Hyväksy (en)",
+    "cancel": "Peruuta (en)",
+    "koko": "Whole",
+    "suomi": "Finland",
+    "valitse-kaikki": "Select all",
+    "haettava-koulutus": "Haettava koulutus (en)",
+    "educationType_ffm": "Haettava koulutus (en)",
+   	"et1": "Lukio (en)",
+    "et2": "Kaksoistutkinto (en)",
+    "et3": "Ammatillinen perustutkinto (en)",
+    "et4": "Ammatillinen perustutkinto erityisopetuksena (en)",
+    "et5": "Valmentava ja kuntouttava opetus ja ohjaus (en)",
+    "pohjakoulutus": " Pohjakoulutuksesi (en)",
+    "prerequisites": "Pohjakoulutuksesi (en)",
+    "yo": "Lukio ja / tai ylioppilastutkinto (en)",
+    "pk": "Peruskoulu (en)",
+    
+    "autocomplete-keyword": "Hakusanaehdotukset (en)",
+    "autocomplete-loname": "Kurssit ja tutkinnot (en)"
+        
 
 }

@@ -30,6 +30,7 @@ public class SolrFields {
         public static final String SV_FNAME = "sv_fname"; //swedish name of a facet value
         public static final String EN_FNAME = "en_fname"; //english name of a facet value
         public static final String TEACHING_LANGUAGE = "teachingLangCode_ffm"; //The teaching language used in the learning opportunity
+        public static final String EDUCATION_TYPE = "educationType_ffm"; //The education type of the learning opportunity
         public static final String LOP_ID = "lopId";
         public static final String NAME = "name";
         public static final String NAME_FI = "name_fi";
@@ -64,6 +65,16 @@ public class SolrFields {
         public static final String CONTENT_FI = "content_fi";
         public static final String CONTENT_SV = "content_sv";
         public static final String CONTENT_EN = "content_en";
+        public static final String CREDITS = "credits_ss";
+        
+        //Fields for sorting
+        public static final String START_DATE_SORT = "startDate_dsort";
+        public static final String NAME_SORT = "name_ssort";
+        public static final String DURATION_SORT = "duration_isort";
+        
+        //Fields for autocomplete
+        public static final String NAME_AUTO = "name_auto_fi";
+        public static final String FREE_AUTO = "free_auto";
     }
     
     public static class LocationFields {
@@ -76,9 +87,24 @@ public class SolrFields {
     }
     
     public static class SolrConstants {
+        //Constants related to core swap
     	public static final String ALIAS_ACTION = "/admin/collections?action=CREATEALIAS&name=";
     	public static final String COLLECTIONS = "&collections=";
     	public static final String GET = "GET";
-    			
+    	
+    	//value constants
+    	public static final String ED_TYPE_LUKIO = "et1"; 
+    	public static final String ED_TYPE_KAKSOIS = "et2";
+    	public static final String ED_TYPE_AMMATILLINEN = "et3";
+    	public static final String ED_TYPE_AMM_ER = "et4";
+    	public static final String ED_TYPE_VALMENTAVA = "et5";
+    	public static final String SPECIAL_EDUCATION = "ER";
+    	public static final String TIMESTAMP_DOC = "loUpdateTimestampDocument";
+    	public static final String TYPE_FACET = "FASETTI";
+    	public static final String KESTOTYYPPI_VUOSI = "suunniteltukesto_01";
+    	public static final String KESTOTYYPPI_KK = "suunniteltukesto_02";
+    	public static final String PK = "pk";
+    	public static final String DISTRICT_UNKNOWN = "99";
+    	public static final String MUNICIPALITY_UNKNOWN = "99";
     }
 }

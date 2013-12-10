@@ -50,7 +50,6 @@ public class TransactionManagerImpl implements TransactionManager {
     private final String learningopportunityCoreName;
     private final String locationUpdateCoreName;
     private final String locationCoreName;
-    private DataStatusDAO dataStatusTransactionDAO;
     private HttpSolrServer loUpdateHttpSolrServer;
     private HttpSolrServer lopUpdateHttpSolrServer;
     private HttpSolrServer locationUpdateHttpSolrServer;
@@ -85,7 +84,7 @@ public class TransactionManagerImpl implements TransactionManager {
 
     @Autowired
     public TransactionManagerImpl(MongoClient mongo, @Value("${mongo.transaction-db.name}") String transactionDbName,
-                                  @Value("${mongo.db.name}") String dbName, DataStatusDAO dataStatusTransactionDAO,
+                                  @Value("${mongo.db.name}") String dbName,
                                   @Qualifier("loUpdateHttpSolrServer") HttpSolrServer loUpdateHttpSolrServer,
                                   @Qualifier("lopUpdateHttpSolrServer") HttpSolrServer lopUpdateHttpSolrServer,
                                   @Qualifier("locationUpdateHttpSolrServer") HttpSolrServer locationUpdateHttpSolrServer,
@@ -119,12 +118,10 @@ public class TransactionManagerImpl implements TransactionManager {
         this.learningopportunityCoreName = learningopportunityCoreName;
         this.locationCoreName = locationCoreName;
         this.locationUpdateCoreName = locationUpdateCoreName;
-        this.dataStatusTransactionDAO = dataStatusTransactionDAO;
         this.loUpdateHttpSolrServer = loUpdateHttpSolrServer;
         this.lopUpdateHttpSolrServer = lopUpdateHttpSolrServer;
         this.locationUpdateHttpSolrServer = locationUpdateHttpSolrServer;
         this.adminHttpSolrServer = adminHttpSolrServer;
-        this.dataStatusTransactionDAO = dataStatusTransactionDAO;
         this.parentLOSTransactionDAO = parentLOSTransactionDAO;
         this.applicationOptionTransactionDAO = applicationOptionTransactionDAO;
         this.learningOpportunityProviderTransactionDAO = learningOpportunityProviderTransactionDAO;
@@ -169,7 +166,6 @@ public class TransactionManagerImpl implements TransactionManager {
         		swapAliases(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);	
         	}
 
-        dataStatusTransactionDAO.save(new DataStatusEntity());
         BasicDBObject cmd = new BasicDBObject("copydb", 1).append("fromdb", transactionDbName).append("todb", dbName);
         dropDbCollections();
         mongo.getDB("admin").command(cmd);

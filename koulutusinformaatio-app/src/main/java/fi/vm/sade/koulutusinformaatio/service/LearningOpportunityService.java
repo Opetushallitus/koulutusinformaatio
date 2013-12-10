@@ -16,11 +16,11 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
+import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.dto.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,7 +46,13 @@ public interface LearningOpportunityService {
 
     UpperSecondaryLearningOpportunitySpecificationDTO getUpperSecondaryLearningOpportunity(String id, String lang, String uiLang) throws ResourceNotFoundException;
 
-    List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, String lopId, String baseEducation);
+    SpecialLearningOpportunitySpecificationDTO getSpecialSecondaryLearningOpportunity(String id) throws ResourceNotFoundException;
+
+    SpecialLearningOpportunitySpecificationDTO getSpecialSecondaryLearningOpportunity(String id, String uiLang) throws ResourceNotFoundException;
+
+    SpecialLearningOpportunitySpecificationDTO getSpecialSecondaryLearningOpportunity(String id, String lang, String uiLang) throws ResourceNotFoundException;
+
+    List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, String lopId, String baseEducation, boolean vocational, boolean nonVocational);
 
     ApplicationOptionDTO getApplicationOption(String aoId, String lang, String uiLang) throws ResourceNotFoundException;
 
@@ -54,7 +60,7 @@ public interface LearningOpportunityService {
 
     List<BasketItemDTO> getBasketItems(List<String> aoId, String uiLang) throws InvalidParametersException;
 
-    Date getLastDataUpdated();
+    DataStatus getLastDataStatus();
 
     PictureDTO getPicture(final String id) throws ResourceNotFoundException;
 }

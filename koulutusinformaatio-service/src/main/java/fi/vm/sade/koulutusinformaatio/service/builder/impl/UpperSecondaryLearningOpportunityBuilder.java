@@ -24,14 +24,15 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KIConversionException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
+import fi.vm.sade.koulutusinformaatio.service.builder.BuilderConstants;
 import fi.vm.sade.koulutusinformaatio.service.builder.LearningOpportunityBuilder;
 import fi.vm.sade.tarjonta.service.resources.dto.*;
-import fi.vm.sade.tarjonta.shared.types.TarjontaTila;
 
 import javax.ws.rs.WebApplicationException;
 import java.util.HashMap;
@@ -43,6 +44,9 @@ import java.util.Map;
  * @author Hannu Lyytikainen
  */
 public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunityBuilder<UpperSecondaryLOS> {
+
+    private static final String ATHLETE_EDUCATION_KOODISTO_URI = "urheilijankoulutus_1#1";
+    private static final String APPLICATION_OPTIONS_KOODISTO_URI = "hakukohteet";
 
     private TarjontaRawService tarjontaRawService;
     private ProviderService providerService;
@@ -72,7 +76,7 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
     @Override
     public LearningOpportunityBuilder resolveParentLOSs() throws TarjontaParseException, KoodistoException, WebApplicationException {
         parentKomo = tarjontaRawService.getKomo(komo.getYlaModuulit().get(0));
-        if (!komoPublished.apply(parentKomo)) {
+        if (!CreatorUtil.komoPublished.apply(parentKomo)) {
             throw new TarjontaParseException(String.format("Parent komo not published: %s", parentKomo.getOid()));
         }
         return this;
@@ -80,7 +84,7 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
 
     @Override
     public LearningOpportunityBuilder resolveChildLOSs() throws TarjontaParseException, KoodistoException, WebApplicationException {
-        if (!komoPublished.apply(komo)) {
+        if (!CreatorUtil.komoPublished.apply(komo)) {
             throw new TarjontaParseException(String.format("Child komo not published: %s", komo.getOid()));
         }
         List<OidRDTO> komotoOids = tarjontaRawService.getKomotosByKomo(komo.getOid(), Integer.MAX_VALUE, 0);
@@ -136,7 +140,7 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
 
     private UpperSecondaryLOS createLOS(KomoDTO komo, KomoDTO parentKomo, List<KomotoDTO> komotos, String losID, Provider provider) throws KoodistoException {
         UpperSecondaryLOS los = new UpperSecondaryLOS();
-
+        los.setType(BuilderConstants.TYPE_UPSEC);
         los.setId(losID);
         los.setName(koodistoService.searchFirst(komo.getLukiolinjaUri()));
         los.setEducationDegree(koodistoService.searchFirstCodeValue(parentKomo.getKoulutusAsteUri()));
@@ -156,7 +160,7 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
 
         List<UpperSecondaryLOI> lois = Lists.newArrayList();
         for (KomotoDTO komoto : komotos) {
-            if (komotoPublished.apply(komoto)) {
+            if (CreatorUtil.komotoPublished.apply(komoto)) {
                 lois.add(createLOI(komoto, losID, los.getName()));
             }
         }
@@ -181,8 +185,9 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
         loi.setContent(getI18nText(komoto.getSisalto()));
 
         loi.setPlannedDuration(komoto.getLaajuusArvo());
-
         loi.setPlannedDurationUnit(koodistoService.searchFirst(komoto.getLaajuusYksikkoUri()));
+        loi.setPduCodeUri(komoto.getLaajuusYksikkoUri());
+        
         for (String d : komoto.getLukiodiplomitUris()) {
             loi.getDiplomas().add(koodistoService.searchFirst(d));
         }
@@ -211,6 +216,7 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
 
         List<ApplicationOption> applicationOptions = Lists.newArrayList();
         List<OidRDTO> aoIdDTOs = tarjontaRawService.getHakukohdesByKomoto(komoto.getOid());
+        boolean kaksoistutkinto = false;
         for (OidRDTO aoIdDTO : aoIdDTOs) {
             LOG.debug(Joiner.on(" ").join("Adding application options (",
                     aoIdDTOs.size(), ") to child learning opportunity"));
@@ -235,10 +241,14 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
 
             applicationOptions.add(
                     createApplicationOption(hakukohdeDTO, hakuDTO, komoto, loi));
+            
+            if (hakukohdeDTO.isKaksoisTutkinto()) {
+                kaksoistutkinto = true;
+            }
         }
 
         loi.setApplicationOptions(applicationOptions);
-
+        loi.setKaksoistutkinto(kaksoistutkinto);
 
         return loi;
     }
@@ -249,15 +259,18 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
         ao.setId(hakukohdeDTO.getOid());
         ao.setName(koodistoService.searchFirst(hakukohdeDTO.getHakukohdeNimiUri()));
         ao.setAoIdentifier(koodistoService.searchFirstCodeValue(hakukohdeDTO.getHakukohdeNimiUri()));
+        ao.setAthleteEducation(isAthleteEducation(ao.getAoIdentifier()));
         ao.setStartingQuota(hakukohdeDTO.getAloituspaikatLkm());
         ao.setLowestAcceptedScore(hakukohdeDTO.getAlinValintaPistemaara());
         ao.setLowestAcceptedAverage(hakukohdeDTO.getAlinHyvaksyttavaKeskiarvo());
         ao.setAttachmentDeliveryDeadline(hakukohdeDTO.getLiitteidenToimitusPvm());
         ao.setLastYearApplicantCount(hakukohdeDTO.getEdellisenVuodenHakijatLkm());
         ao.setSelectionCriteria(getI18nText(hakukohdeDTO.getValintaperustekuvaus()));
+        ao.setKaksoistutkinto(hakukohdeDTO.isKaksoisTutkinto());
         ao.setExams(createExams(hakukohdeDTO.getValintakoes()));
+        ao.setVocational(false);
         List<Code> subCodes = koodistoService.searchSubCodes(komoto.getPohjakoulutusVaatimusUri(),
-                LearningOpportunityBuilder.BASE_EDUCATION_KOODISTO_URI);
+                BuilderConstants.BASE_EDUCATION_KOODISTO_URI);
         List<String> baseEducations = Lists.transform(subCodes, new Function<Code, String>() {
             @Override
             public String apply(Code code) {
@@ -332,7 +345,7 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
         for (OidRDTO s : komotosByHakukohdeOID) {
             KomoDTO komoByKomotoOID = tarjontaRawService.getKomoByKomoto(s.getOid());
 
-            if (!komoPublished.apply(komoByKomotoOID)) {
+            if (!CreatorUtil.komoPublished.apply(komoByKomotoOID)) {
                 continue;
             }
 
@@ -439,18 +452,26 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
         return null;
     }
 
-    private static Predicate<KomoDTO> komoPublished = new Predicate<KomoDTO>() {
-        @Override
-        public boolean apply(KomoDTO komo) {
-            return komo.getTila().equals(TarjontaTila.JULKAISTU);
+    private boolean isAthleteEducation(final String aoIdentifier) {
+        if (!Strings.isNullOrEmpty(aoIdentifier)) {
+            List<Code> superCodes = null;
+            try {
+                superCodes = koodistoService.searchSuperCodes(ATHLETE_EDUCATION_KOODISTO_URI,
+                        APPLICATION_OPTIONS_KOODISTO_URI);
+            } catch (KoodistoException e) {
+                throw new KIConversionException("Conversion failed - " + e.getMessage());
+            }
+            if (superCodes != null) {
+                for (Code code : superCodes) {
+                    if (aoIdentifier.equals(code.getValue())) {
+                        return true;
+                    }
+                }
+            }
         }
-    };
-    private static Predicate<KomotoDTO> komotoPublished = new Predicate<KomotoDTO>() {
-        @Override
-        public boolean apply(KomotoDTO komoto) {
-            return komoto.getTila().equals(TarjontaTila.JULKAISTU);
-        }
-    };
+        return false;
+    }
+
     private static Predicate<UpperSecondaryLOS> losValid = new Predicate<UpperSecondaryLOS>() {
         @Override
         public boolean apply(UpperSecondaryLOS los) {

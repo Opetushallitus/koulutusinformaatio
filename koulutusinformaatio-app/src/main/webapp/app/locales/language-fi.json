@@ -8,16 +8,18 @@
 
     "lo-description": "Koulutuksen kuvaus",
     "lo-application": "Valintaperusteet ja pääsykokeet",
+    "lo-application-er": "Hakeminen",
 
     "elementary-based": "Peruskoulupohjainen koulutus",
     "elementary-graduate-selection": "Peruskoulun päättäneiden valinta",
     "secondary-school-based": "Lukiopohjainen koulutus",
 
     "search-result-title": "Tulokset haulle",
+    "search-result-title-description": "Valitse vasemmalta haluamasi hakutulosrajaukset",
     "search-result-count-unit": "kpl",
     "search-field-placeholder": "Hae koulutusta tästä",
     "no-search-results": "Ei hakutuloksia",
-    "no-search-results-info": "Hakusanallasi ei löytynyt yhtään hakutulosta. Ole hyvä ja yritä toisella hakusanalla.",
+    "no-search-results-info": "Hakusanalla \"__searchterm__\" ei löytynyt yhtään hakutulosta. Järjestelmään ei ehkä vielä ole syötetty kyseistä koulutusta tai tutkintoa. Ole hyvä ja yritä toisella hakusanalla tai rajauksella.",
     "search-pagination-first": "Ensimmäinen",
     "search-pagination-last": "Viimeinen",
     "search-pagination-next": "Seuraava",
@@ -34,15 +36,30 @@
     "filter-search-elementary": "Perusopetus (peruskoulu)",
     "filter-search-elementary-individualized": "Yksilöllistetty oppimäärä",
     "filter-search-upper-secondary": "Lukio / Ylioppilas",
-    "filter-search-as-ongoing": "Haku meneillään juuri nyt",
+    "filter-search-as-ongoing": "Haku on käynnissä",
     "filter-search-vocational": "Ammatillinen perustutkinto (120 ov)",
     "filter-search-vocational-specialized": "Ammatti- tai erikoisammattitutkinto",
     "filter-search-institute": "Kouluasteen, opistoasteen tai ammatillisen korkea-asteen tutkinto",
     "filter-search-university-applied": "Ammattikorkeakoulututkinto",
     "filter-search-university": "Yliopistotutkinto",
-    "filter-search-location-title": "Haettavan koulutuksen sijainti",
+    "filter-search-location-title": "Rajaa sijainnin mukaan",
+    "location-filter-placeholder": "Kirjoita paikkakunta",
     "filter-search-location-add": "Lisää sijainti",
     "filter-search-location-remove": "Poista",
+
+    "sort-criteria-default": "-- Valitse --",
+    "sort-criteria-startdate": "Alkamisajankohta",
+    "sort-criteria-alphabetical-desc": "Aakkoset A-Ö",
+    "sort-criteria-alphabetical-asc": "Aakkoset Ö-A",
+    "sort-criteria-duration-group": "Koulutuksen arvioitu kesto",
+    "sort-criteria-duration-asc": "Lyhytkestoiset ensin",
+    "sort-criteria-duration-desc": "Pitkäkestoiset ensin",
+    "sort-criteria-items-per-page-label": "Näytä",
+    "sort-criteria-sort-label": "Lajittele",
+    "sort-results-label": "Tulokset",
+
+    "pagination-next": "Seuraava",
+    "pagination-previous": "Edellinen",
 
     "description-language-selection": "Kuvaus saatavilla myös",
 
@@ -86,7 +103,8 @@
     "info-center": "Hakuneuvonta",
 
     "academy-description": "Oppilaitoksen esittely",
-    "accessibility-and-benefits": "Esteettömyys ja opiskelijan edut",
+    "accessibility-anchor": "Esteettömyys",
+    "student-benefits-anchor": "Opiskelijan edut",
     "contact-information": "Yhteystiedot",
 
     "learning-environment-info": "Tietoa oppimisympäristöstä",
@@ -106,6 +124,7 @@
     "internationalization": "Kansainvälistyminen",
     "cooperation": "Yhteistyö muiden toimijoiden kanssa",
     "content-of-studies": "Koulutuksen sisältö",
+    "emphasis": "Painotukset",
     "study-plan": "Opetussuunnitelma",
     "contact-person-title": "Koulutuksen yhteyshenkilö",
 
@@ -125,10 +144,7 @@
     "application-prerequisite": "Pohjakoulutus",
     "label-as-ongoing": "Haku käynnissä",
     "label-as-not-ongoing": "Ei nyt haettavissa",
-
-    "directly-applicable": "Suoraan haettavissa olevat koulutusohjelmat:",
-
-    "apply-as-part-of-degree-program": "Tähän koulutukseen haetaan osana tutkintoa:",
+    "not-applicable": "Huom! Haku koulutukseen ei tapahdu tämän palvelun kautta. Tutustu hakutapaan Hakeminen-välilehdellä.",
 
     "language-fi": "Suomeksi",
     "language-sv": "På svenska",
@@ -148,7 +164,7 @@
     "popup-close": "Sulje",
     "popup-continue": "Jatka",
 
-    "popover-title-success": "Koulutus lisätty muistilistalle",
+    "popover-title-success": "Lisätty muistilistalle",
     "popover-title-error": "Muistilistalle lisääminen epäonnistui",
     "popover-content-error": "Huomioi, että muistilistalle voi lisätä hakukohteita vain yhdellä pohjakoulutuksella.",
     "popover-content-link-to-application-basket": "Katso muistilista",
@@ -170,5 +186,39 @@
     "B1KIELI" : "B1-kieli",
     "B2KIELI" : "B2-kieli",
     "B3KIELI" : "B3-kieli",
-    "MUUT_KIELET" : "Muu kieli"
+    "MUUT_KIELET" : "Muu kieli",
+    
+    "valitut-rajaukset": "Valitut rajaukset",
+    "facet-opetuskieli": "Rajaa opetuskielen mukaan",
+    "teachingLangCode_ffm": "Opetuskieli",
+    "location-rajaus": "Paikka",
+    "facet-remove": "Poista",
+    "filter-search-as-upcoming": "Tulossa hakuun",
+    "haun-tila": "Haun tila",
+    "selaile-koulutuksia": "Rajaa hakutuloksia",
+    "valitse-alue": "Valitse alue, jolta haet koulutuksia",
+    "valitse-alue-link": "Valitse alue",
+    "district": "Maakunta",
+    "municipality": "Kaupunki / kunta",
+    "valitut-alueet": "Valitut alueet",
+    "ok": "Hyväksy",
+    "cancel": "Peruuta",
+    "koko": "Koko",
+    "suomi": "Suomi",
+    "valitse-kaikki": "Valitse kaikki",
+    "haettava-koulutus": "Rajaa koulutuksen mukaan",
+    "educationType_ffm": "Haettava koulutus",
+    "et1": "Lukio",
+    "et2": "Kaksoistutkinto",
+    "et3": "Ammatillinen perustutkinto",
+    "et4": "Ammatillinen perustutkinto erityisopetuksena",
+    "et5": "Valmentava ja kuntouttava opetus ja ohjaus",
+    "pohjakoulutus": "Pohjakoulutuksesi",
+    "prerequisites": "Pohjakoulutuksesi",
+    "yo": "Lukio ja / tai ylioppilastutkinto",
+    "pk": "Peruskoulu",
+    "er": "Yksilöllistetty perusopetus",
+    
+    "autocomplete-keyword": "Hakusanaehdotukset",
+    "autocomplete-loname": "Kurssit ja tutkinnot"
 }

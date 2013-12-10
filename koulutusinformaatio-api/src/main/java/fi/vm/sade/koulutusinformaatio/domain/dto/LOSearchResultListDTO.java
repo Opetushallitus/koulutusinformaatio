@@ -29,6 +29,12 @@ public class LOSearchResultListDTO {
 
     private List<LearningOpportunitySearchResultDTO> results = new ArrayList<LearningOpportunitySearchResultDTO>();
     private long totalCount;
+    private FacetDTO teachingLangFacet;
+    private FacetDTO filterFacet;
+    private FacetDTO appStatusFacet; 
+    private FacetDTO edTypeFacet;
+    private FacetDTO prerequisiteFacet;
+
 
     public List<LearningOpportunitySearchResultDTO> getResults() {
         return results;
@@ -44,5 +50,46 @@ public class LOSearchResultListDTO {
 
     public void setTotalCount(long totalCount) {
         this.totalCount = totalCount;
+    }
+
+    public FacetDTO getTeachingLangFacet() {
+        return teachingLangFacet;
+    }
+
+    public void setTeachingLangFacet(FacetDTO teachingLangFacet) {
+        this.teachingLangFacet = teachingLangFacet;
+    }
+
+    public FacetDTO getFilterFacet() {
+        return filterFacet;
+    }
+
+    public void setFilterFacet(FacetDTO filterFacet) {
+        this.filterFacet = filterFacet;
+    }
+
+    public FacetDTO getAppStatusFacet() {
+        return appStatusFacet;
+    }
+
+    public void setAppStatusFacet(FacetDTO appStatusFacet) {
+        this.appStatusFacet = appStatusFacet;
+    }
+    
+
+    public FacetDTO getEdTypeFacet() {
+        return edTypeFacet;
+    }
+
+    public void setEdTypeFacet(FacetDTO edTypeFacet) {
+        this.edTypeFacet = edTypeFacet;
+    }
+
+    public FacetDTO getPrerequisiteFacet() {
+        return prerequisiteFacet;
+    }
+
+    public void setPrerequisiteFacet(FacetDTO prerequisiteFacet) {
+        this.prerequisiteFacet = prerequisiteFacet;
     }
 }

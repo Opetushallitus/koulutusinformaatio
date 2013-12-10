@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.resource.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import fi.vm.sade.koulutusinformaatio.comparator.ProviderSearchResultComparator;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResult;
@@ -32,6 +33,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -53,7 +55,8 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
     }
 
     @Override
-    public List<ProviderSearchResult> searchProviders(String term, String asId, String baseEducation, boolean vocational) {
+    public List<ProviderSearchResult> searchProviders(String term, String asId, String baseEducation, boolean vocational,
+                                                      boolean nonVocational, int start, int rows) {
         List<Provider> learningOpportunityProviders = null;
         try {
             String key = null;
@@ -62,8 +65,9 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
             } catch (UnsupportedEncodingException e) {
                 key = term;
             }
-            learningOpportunityProviders = searchService.searchLearningOpportunityProviders(key, asId, baseEducation, vocational);
-            return Lists.transform(learningOpportunityProviders, new Function<Provider, ProviderSearchResult>() {
+            learningOpportunityProviders = searchService.searchLearningOpportunityProviders(key, asId, baseEducation, vocational,
+                    nonVocational, start, rows);
+            List<ProviderSearchResult> result = Lists.newArrayList(Lists.transform(learningOpportunityProviders, new Function<Provider, ProviderSearchResult>() {
                 @Override
                 public ProviderSearchResult apply(Provider lop) {
                     ProviderSearchResult result = new ProviderSearchResult();
@@ -71,7 +75,9 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
                     result.setName(lop.getName().getTranslations().get("fi"));
                     return result;
                 }
-            });
+            }));
+            Collections.sort(result, new ProviderSearchResultComparator());
+            return result;
         } catch (SearchException e) {
             throw KIExceptionHandler.resolveException(e);
         }

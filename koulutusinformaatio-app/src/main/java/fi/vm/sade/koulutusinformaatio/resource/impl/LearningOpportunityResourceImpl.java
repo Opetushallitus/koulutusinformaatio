@@ -18,10 +18,8 @@ package fi.vm.sade.koulutusinformaatio.resource.impl;
 
 import com.google.common.base.Strings;
 import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunitySpecificationDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.LOSearchResultListDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.UpperSecondaryLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.SuggestedTermsResult;
+import fi.vm.sade.koulutusinformaatio.domain.dto.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
@@ -55,8 +53,8 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
     }
 
     @Override
-    public LOSearchResultListDTO searchLearningOpportunities(String text, String prerequisite,
-                                                             List<String> cities, boolean ongoing, int start, int rows) {
+    public LOSearchResultListDTO searchLearningOpportunities(String text, String prerequisite, 
+                                                             List<String> cities, List<String> facetFilters, String lang, boolean ongoing, boolean upcoming, int start, int rows, String sort, String order) {
         String key = null;
         try {
             key = URLDecoder.decode(text, "UTF-8");
@@ -64,8 +62,9 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
             key = text;
         }
         try {
+            sort = (sort != null && !sort.isEmpty()) ? sort : null;
             LOSearchResultList learningOpportunities = searchService.searchLearningOpportunities(key, prerequisite,
-                    cities, ongoing, start, rows);
+                    cities, facetFilters, lang, ongoing, upcoming, start, rows, sort, order);
             return modelMapper.map(learningOpportunities, LOSearchResultListDTO.class);
         } catch (SearchException e) {
             throw KIExceptionHandler.resolveException(e);
@@ -120,6 +119,39 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
                 return learningOpportunityService.getUpperSecondaryLearningOpportunity(id, lang.toLowerCase(), uiLang.toLowerCase());
             }
         } catch (ResourceNotFoundException e) {
+            throw KIExceptionHandler.resolveException(e);
+        }
+    }
+
+    @Override
+    public SpecialLearningOpportunitySpecificationDTO getSpecialLearningOpportunity(String id, String lang, String uiLang) {
+        try {
+            if (Strings.isNullOrEmpty(lang) && Strings.isNullOrEmpty(uiLang)) {
+                return learningOpportunityService.getSpecialSecondaryLearningOpportunity(id);
+            }
+            else if (Strings.isNullOrEmpty(lang)) {
+                return learningOpportunityService.getSpecialSecondaryLearningOpportunity(id, uiLang.toLowerCase());
+            }
+            else {
+                return learningOpportunityService.getSpecialSecondaryLearningOpportunity(id, lang.toLowerCase(), uiLang.toLowerCase());
+            }
+        } catch (ResourceNotFoundException e) {
+            throw KIExceptionHandler.resolveException(e);
+        }
+    }
+
+    @Override
+    public SuggestedTermsResultDTO getSuggestedTerms(String term, String lang) {
+        String key = null;
+        try {
+            key = URLDecoder.decode(term, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            key = term;
+        }
+        try {
+            SuggestedTermsResult suggestedTerms = this.searchService.searchSuggestedTerms(key, lang);
+            return modelMapper.map(suggestedTerms, SuggestedTermsResultDTO.class);
+        } catch (SearchException e) {
             throw KIExceptionHandler.resolveException(e);
         }
     }

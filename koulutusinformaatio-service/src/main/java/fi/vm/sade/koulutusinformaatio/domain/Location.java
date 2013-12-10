@@ -25,15 +25,19 @@ public class Location {
     private String name;
     private String code;
     private String lang;
+    private String type;
+    private String parent;
 
     public Location() {
     }
 
-    public Location(String id, String name, String code, String lang) {
+    public Location(String id, String name, String code, String lang, String type, String parent) {
         this.id = id;
         this.name = name;
         this.code = code;
         this.lang = lang;
+        this.type = type;
+        this.parent  = parent;
     }
 
     public String getId() {
@@ -66,5 +70,21 @@ public class Location {
 
     public void setLang(String lang) {
         this.lang = lang;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getParent() {
+        return parent;
+    }
+
+    public void setParent(String parent) {
+        this.parent = parent;
     }
 }

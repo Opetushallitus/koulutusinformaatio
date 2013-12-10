@@ -19,6 +19,7 @@ package fi.vm.sade.koulutusinformaatio.service;
 import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
 import fi.vm.sade.koulutusinformaatio.domain.Location;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
+import fi.vm.sade.koulutusinformaatio.domain.SuggestedTermsResult;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 
 import java.util.List;
@@ -26,11 +27,17 @@ import java.util.List;
 public interface SearchService {
 
     List<Provider> searchLearningOpportunityProviders(
-            final String term, final String asId, final String baseEducation, final boolean vocational) throws SearchException;
+            final String term, final String asId, final String baseEducation, final boolean vocational,
+            final boolean nonVocational, int start, int rows) throws SearchException;
 
     LOSearchResultList searchLearningOpportunities(final String term, final String prerequisite,
-                                                   List<String> cities, boolean ongoing, int start, int rows) throws SearchException;
+                                                   List<String> cities, List<String> facetFilters, 
+                                                   String lang, boolean ongoing, boolean upcoming, 
+                                                   int start, int rows, String sort, String order) throws SearchException;
 
     List<Location> searchLocations(final String term, final String lang) throws SearchException;
     List<Location> getLocations(List<String> codes, final String lang) throws SearchException;
+    List<Location> getDistricts(final String lang) throws SearchException;
+    List<Location> getChildLocations(List<String> districts, final String lang) throws SearchException;
+    SuggestedTermsResult searchSuggestedTerms(String term, String lang) throws SearchException;
 }

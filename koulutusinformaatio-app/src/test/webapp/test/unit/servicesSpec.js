@@ -199,6 +199,93 @@ describe('UtilityService', function() {
 });
 
 
+
+describe('ApplicationBasketService', function() {
+    var service;
+
+    beforeEach(function() {
+        module('kiApp', 'kiApp.services');
+
+        inject(function(ApplicationBasketService) {
+            service = ApplicationBasketService;
+        });
+    });
+
+    describe('isEmpty', function() {
+
+        beforeEach(function() {
+            service.empty();
+        });
+        
+
+        it('should return true value for uninitialized basket', function() {
+            var result = service.isEmpty();
+            expect(result).toBeTruthy();
+        });
+
+        it('should successfully add an item with type to an empty basket', function() {
+            service.addItem('ao_id_1', 'basket_type_1');
+            expect(service.getItemCount()).toEqual(1);
+            expect(service.getType()).toEqual('basket_type_1');
+        });
+
+        it('should be able to add an item with the same type', function() {
+            service.addItem('ao_id_1', 'basket_type_1');
+            service.addItem('ao_id_2', 'basket_type_1');
+            expect(service.getItemCount()).toEqual(2);
+        });
+
+        /*
+        it('should not be able to add an item with a different type', function() {
+            service.addItem('ao_id_1', 'basket_type_1');
+            service.addItem('ao_id_2', 'basket_type_2');
+            expect(service.getItemCount()).toEqual(1);
+        });
+        */
+
+        it('should be able to remove an existing item', function() {
+            service.addItem('ao_id_1', 'basket_type_1');
+            service.addItem('ao_id_2', 'basket_type_1');
+            service.removeItem('ao_id_1');
+            expect(service.getItemCount()).toEqual(1);
+            expect(service.getItems()[1]).toEqual('ao_id_2');
+        });
+    });
+
+    describe('itemExists', function() {
+
+        var addData = function() {
+            service.addItem('ao_id_1', 'basket_type_1');
+            service.addItem('ao_id_2', 'basket_type_1');
+            service.addItem('ao_id_3', 'basket_type_1');
+            service.addItem('ao_id_4', 'basket_type_1');
+        }
+
+        beforeEach(function() {
+            service.empty();
+        });
+
+        it('should return false for empty basket', function() {
+            var result = service.itemExists('ao_id_1');
+            expect(result).toBeFalsy();
+        });
+
+        it('should return true for existing id', function() {
+            addData();
+            var result = service.itemExists('ao_id_3');
+            expect(result).toBeTruthy();
+        });
+
+        it('should return false for non-existing id', function() {
+            addData();
+            var result = service.itemExists('ao_id_x');
+            expect(result).toBeFalsy();
+        });
+
+    });
+});
+
+
 /*
 'use strict';
 describe('FilterService', function() {

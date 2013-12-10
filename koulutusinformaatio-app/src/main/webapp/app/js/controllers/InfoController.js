@@ -8,10 +8,22 @@
     $scope.descriptionLanguage = 'fi';
     $scope.hakuAppUrl = Config.get('hakulomakeUrl');
 
-    $scope.tabtitle = {
-        koulutus: i18n.t('lo-description'),
-        valintaperusteet: i18n.t('lo-application')
-    }
+    $scope.tabtitle = (function() {
+        var getValintaperusteetTitle = function() {
+            if ($scope.loType == 'erityisopetus') {
+                return i18n.t('lo-application-er');
+            } else {
+                return i18n.t('lo-application');
+            }
+        };
+
+        return {
+            koulutus: i18n.t('lo-description'),
+            valintaperusteet: getValintaperusteetTitle()
+        }
+    }());
+
+    
 
     var setTitle = function(parent, child) {
         var sitename = i18n.t('sitename');
@@ -210,8 +222,6 @@ function ApplicationCtrl($scope, ApplicationBasketService, UtilityService) {
         var basketType = ApplicationBasketService.getType();
         if (!basketType || $scope.selectedLOI.prerequisite.value == basketType) {
             ApplicationBasketService.addItem(aoId, $scope.selectedLOI.prerequisite.value);
-            $scope.popoverTitle = i18n.t('popover-title-success');
-            $scope.popoverContent = "<a href='#/muistilista'>" + i18n.t('popover-content-link-to-application-basket') + "</a>";
         } else {
             $scope.popoverTitle = i18n.t('popover-title-error');
             $scope.popoverContent = "<div>" + i18n.t('popover-content-error') + "</div><a href='#/muistilista'>" + i18n.t('popover-content-link-to-application-basket') + "</a>";
@@ -228,6 +238,7 @@ function ApplicationCtrl($scope, ApplicationBasketService, UtilityService) {
         return false;
     };
 
-    $scope.popoverTitle = i18n.t('popover-title');
-    $scope.popoverContent = "<a href='#/muistilista'>" + i18n.t('popover-content') + "</a>";
+    $scope.isItemAddedToBasket = function(aoId) {
+        return ApplicationBasketService.itemExists(aoId);
+    }
 };

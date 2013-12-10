@@ -51,6 +51,7 @@ public class ApplicationOptionToDTO {
             dto.setApplicationStartDate(applicationOption.getApplicationStartDate());
             dto.setApplicationEndDate(applicationOption.getApplicationEndDate());
             dto.setRequiredBaseEducations(applicationOption.getRequiredBaseEducations());
+            dto.setVocational(applicationOption.isVocational());
             if (applicationOption.isSpecificApplicationDates()) {
                 dto.setCanBeApplied(ConverterUtil.isOngoing(new DateRange(applicationOption.getApplicationStartDate(),
                         applicationOption.getApplicationEndDate())));
@@ -63,6 +64,8 @@ public class ApplicationOptionToDTO {
             dto.setAdditionalInfo(ConverterUtil.getTextByLanguage(applicationOption.getAdditionalInfo(), uiLang));
             dto.setAdditionalProof(AdditionalProofToDTO.convert(applicationOption.getAdditionalProof(), lang));
             dto.setOverallScoreLimit(ScoreLimitToDTO.convert(applicationOption.getOverallScoreLimit()));
+            dto.setKaksoistutkinto(applicationOption.isKaksoistutkinto());
+            dto.setAthleteEducation(applicationOption.isAthleteEducation());
             return dto;
         }
         return null;

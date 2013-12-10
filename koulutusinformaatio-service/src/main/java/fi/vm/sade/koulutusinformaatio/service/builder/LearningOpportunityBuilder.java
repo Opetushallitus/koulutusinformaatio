@@ -40,10 +40,6 @@ public abstract class LearningOpportunityBuilder<T extends LOS> {
 
     public static final Logger LOG = LoggerFactory.getLogger(LearningOpportunityBuilder.class);
 
-    public static final String MODULE_TYPE_PARENT = "TUTKINTO";
-    public static final String MODULE_TYPE_CHILD = "TUTKINTO_OHJELMA";
-    public static final String STATE_PUBLISHED = "JULKAISTU";
-    public static final String BASE_EDUCATION_KOODISTO_URI = "pohjakoulutustoinenaste";
 
     protected String resolveLOSId(String komoId, String providerId) {
         return Joiner.on("_").join(komoId, providerId);
@@ -51,8 +47,8 @@ public abstract class LearningOpportunityBuilder<T extends LOS> {
 
     protected void validateParentKomo(KomoDTO komo) throws TarjontaParseException {
         // parent check
-        if (!komo.getModuuliTyyppi().equals(LearningOpportunityBuilder.MODULE_TYPE_PARENT)) {
-            throw new TarjontaParseException("Komo not of type " + LearningOpportunityBuilder.MODULE_TYPE_PARENT);
+        if (!komo.getModuuliTyyppi().equals(BuilderConstants.MODULE_TYPE_PARENT)) {
+            throw new TarjontaParseException("Komo not of type " + BuilderConstants.MODULE_TYPE_PARENT);
         }
 
         // published
@@ -81,14 +77,14 @@ public abstract class LearningOpportunityBuilder<T extends LOS> {
     }
 
     protected void validateHakukohde(HakukohdeDTO hakukohde) throws TarjontaParseException {
-        if (!hakukohde.getTila().equals(LearningOpportunityBuilder.STATE_PUBLISHED)) {
-            throw new TarjontaParseException("Application option " + hakukohde.getOid() + " not in state " + LearningOpportunityBuilder.STATE_PUBLISHED);
+        if (!hakukohde.getTila().equals(BuilderConstants.STATE_PUBLISHED)) {
+            throw new TarjontaParseException("Application option " + hakukohde.getOid() + " not in state " + BuilderConstants.STATE_PUBLISHED);
         }
     }
 
     protected void validateHaku(HakuDTO haku) throws TarjontaParseException {
-        if (!haku.getTila().equals(LearningOpportunityBuilder.STATE_PUBLISHED)) {
-            throw new TarjontaParseException("Application system " + haku.getOid() + " not in state " + LearningOpportunityBuilder.STATE_PUBLISHED);
+        if (!haku.getTila().equals(BuilderConstants.STATE_PUBLISHED)) {
+            throw new TarjontaParseException("Application system " + haku.getOid() + " not in state " + BuilderConstants.STATE_PUBLISHED);
         }
     }
 

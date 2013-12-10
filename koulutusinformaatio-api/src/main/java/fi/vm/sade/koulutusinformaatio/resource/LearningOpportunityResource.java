@@ -16,13 +16,11 @@
 
 package fi.vm.sade.koulutusinformaatio.resource;
 
-import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunitySpecificationDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.LOSearchResultListDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.UpperSecondaryLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.*;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+
 import java.util.List;
 
 /**
@@ -45,9 +43,14 @@ public interface LearningOpportunityResource {
     public LOSearchResultListDTO searchLearningOpportunities(@PathParam("text") String text,
                                                              @QueryParam("prerequisite") String prerequisite,
                                                              @QueryParam("city") List<String> cities,
+                                                             @QueryParam("facetFilters") List<String> facetFilters,
+                                                             @QueryParam("lang") String lang,
                                                              @DefaultValue(value = "false") @QueryParam("ongoing") boolean ongoing,
+                                                             @DefaultValue(value = "false") @QueryParam("upcoming") boolean upcoming,
                                                              @DefaultValue(value = "0") @QueryParam("start") int start,
-                                                             @DefaultValue(value = "100") @QueryParam("rows") int rows);
+                                                             @DefaultValue(value = "100") @QueryParam("rows") int rows,
+                                                             @QueryParam("sort") String sort, 
+                                                             @DefaultValue(value = "asc") @QueryParam("order") String order);
 
     /**
      * Fetches a parent learning opportunity. Contains parent information and
@@ -99,4 +102,33 @@ public interface LearningOpportunityResource {
     public UpperSecondaryLearningOpportunitySpecificationDTO getUpperSecondaryLearningOpportunity(@PathParam("id") String id,
                                                                                                   @QueryParam("lang") String lang,
                                                                                                   @QueryParam("uiLang") String uiLang);
+
+    /**
+     * Fetches a special learning opportunity specification.
+     *
+     * @param id los id
+     * @param lang translation language
+     * @param uiLang secondary translation language
+     * @return special learning opportunity specification
+     */
+    @GET
+    @Path("special/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public SpecialLearningOpportunitySpecificationDTO getSpecialLearningOpportunity(@PathParam("id") String id,
+                                                                                    @QueryParam("lang") String lang,
+                                                                                    @QueryParam("uiLang") String uiLang);
+
+    /**
+     * Fetches suggested terms to be used in free text search. 
+     * The returned terms match the term given as parameter.
+     *
+     * @param term for which matching terms are searched
+     * @param lang language
+     * @return upper secondary learning opportunity
+     */
+    @GET
+    @Path("autocomplete/{term}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public SuggestedTermsResultDTO getSuggestedTerms(@PathParam("term") String term,
+                                                     @QueryParam("lang") String lang);
 }

@@ -3,7 +3,17 @@
         <form method="get" data-ng-submit="search()" novalidate>
             <fieldset class="search-container">
                 <label for="search-field" class="h2" data-ki-i18n="search-field-label"></label>
-                <input type="text" class="search-field" id="search-field" name="search-field" placeholder="{{searchFieldPlaceholder}}" value="" data-ng-model="queryString"/>
+                <input type="text"
+                    class="search-field" 
+                    id="search-field" 
+                    name="search-field" 
+                    placeholder="{{searchFieldPlaceholder}}" 
+                    value="" 
+                    data-ng-model="queryString" 
+                	data-typeahead="suggestion.value for suggestion in suggestions" 
+                    data-typeahead-wait-ms="500" 
+                    data-typeahead-on-select="search()"
+                    autocomplete="off" />
                 <button class="button primary magnifier" type="submit">
                     <span>
                         <span class="h2" data-ki-i18n="search-button"></span>

@@ -2,7 +2,78 @@
 
 angular.module('kiApp.services', ['ngResource']).
 
-service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analytics', function($http, $timeout, $q, $analytics) {
+service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analytics', 'FilterService', function($http, $timeout, $q, $analytics, FilterService) {
+    
+    // gather information for analytics
+    var parseFilterValues = function(params) {
+        var getTilaValue = function(params) {
+            var result = 0;
+            result = params.ongoing ? result + 1 : result;
+            result = params.upcoming ? result + 1 : result;
+
+            return result;
+        }
+
+        var facetitemIsOfType = function(item, filterKey) {
+            if (item && (typeof item == 'string' || item instanceof String)) {
+                var temp = item.split(':');
+                if (temp && temp[0] && temp[0].indexOf(filterKey) >= 0) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        var getTyyppiValue = function(params) {
+            var result = 0;
+            if (params.facetFilters) {
+                angular.forEach(params.facetFilters, function(item, key) {
+                    result = facetitemIsOfType(item, 'educationType') ? result + 1: result;
+                });
+            }
+
+            return result;
+        }
+
+        var getPohjakoulutusValue = function(params) {
+            var result = 0;
+            if (params.facetFilters) {
+                angular.forEach(params.facetFilters, function(item, key) {
+                    result = facetitemIsOfType(item, 'prerequisites') ? result + 1: result;
+                });
+            }
+
+            return result;
+        }
+
+        var getPaikkakuntaValue = function(params) {
+            return params.locations ? params.locations.length : 0;
+        }
+
+        var getOpetuskieliValue = function(params) {
+            var result = 0;
+            if (params.facetFilters) {
+                angular.forEach(params.facetFilters, function(item, key) {
+                    result = facetitemIsOfType(item, 'teachingLangCode') ? result + 1: result;
+                });
+            }
+
+            return result;
+        }
+
+        return {
+            page: [
+                {name: 'Haun tila', value: getTilaValue(params)},
+                {name: 'Koulutuksen tyyppi', value: getTyyppiValue(params)},
+                {name: 'Pohjakoulutus', value: getPohjakoulutusValue(params)},
+                {name: 'Paikkakunta', value: getPaikkakuntaValue(params)},
+                {name: 'Opetuskieli', value: getOpetuskieliValue(params)}
+            ]
+        };
+
+    };
+
     return {
         query: function(params) {
             var deferred = $q.defer();
@@ -24,19 +95,37 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
             qParams += (params.rows != undefined) ? ('&rows=' + params.rows) : '';
             qParams += (params.prerequisite != undefined) ? ('&prerequisite=' + params.prerequisite) : '';
             qParams += (params.locations != undefined && params.locations.length > 0) ? ('&' + cities) : '';
-            qParams += (params.ongoing) != undefined ? ('&ongoing=' + params.ongoing) : '';
+            qParams += (params.ongoing != undefined) ? ('&ongoing=' + params.ongoing) : '';
+            qParams += (params.upcoming != undefined) ? ('&upcoming=' + params.upcoming) : '';
+            qParams += (params.lang != undefined) ? ('&lang=' + params.lang) : '';
+            if (params.facetFilters != undefined) {
+            	 angular.forEach(params.facetFilters, function(facetFilter, key) {
+            		 qParams += '&facetFilters=' + facetFilter;
+                 });
+            }
+            var sortField = '';
+            if (params.sortCriteria != undefined) {
+            	if (params.sortCriteria == 1 || params.sortCriteria == 2) {
+            		sortField = 'name_ssort';
+            	} else if (params.sortCriteria == 3 || params.sortCriteria == 4) {
+            		sortField = 'duration_isort';
+            	}
+            } 
+            
+            qParams += (sortField.length > 0) ? ('&sort=' +sortField) : '';
+            qParams += ((params.sortCriteria != undefined) && ((params.sortCriteria == 2) || (params.sortCriteria == 4))) ? ('&order=desc') : '';
 
             $http.get('../lo/search/' + encodeURI(params.queryString) + qParams, {}).
             success(function(result) {
+                var variables = parseFilterValues(params);
                 var category;
                 if (params.locations && params.locations.length > 0) {
                     category = params.locations[0];
-                } else if (params.prerequisite) {
-                    category = params.prerequisite;
                 } else {
                     category = false;
                 }
-                $analytics.siteSearchTrack(params.queryString, category, result.totalCount);
+
+                $analytics.siteSearchTrack(params.queryString, category, result.totalCount, variables);
                 deferred.resolve(result);
             }).
             error(function(result) {
@@ -59,6 +148,84 @@ service('SearchLocationService', ['$http', '$timeout', '$q', 'LanguageService', 
                     lang: LanguageService.getLanguage()
                 }
             }).
+            success(function(result) {
+                deferred.resolve(result);
+            }).
+            error(function(result) {
+                deferred.reject(result);
+            });
+
+            return deferred.promise;
+        }
+    }
+}]).
+
+service('AutocompleteService', ['$http', '$timeout', '$q', 'LanguageService', function($http, $timeout, $q, LanguageService) {
+
+    return {
+        query: function(queryParam) {
+            var deferred = $q.defer();
+
+            $http.get('../lo/autocomplete/' + queryParam, {
+                params: {
+                    lang: LanguageService.getLanguage()
+                }
+            }).
+            success(function(result) {
+                deferred.resolve(result);
+            }).
+            error(function(result) {
+                deferred.reject(result);
+            });
+
+            return deferred.promise;
+        }
+    }
+}]).
+
+/**
+ * Service for retrieving districts (maakunnat). Used in faceted search
+ */
+service('DistrictService', ['$http', '$timeout', '$q', 'LanguageService', function($http, $timeout, $q, LanguageService) {
+
+    return {
+        query: function() {
+            var deferred = $q.defer();
+
+         
+            
+            $http.get('../location/districts', {
+                params: {
+                    lang: LanguageService.getLanguage()
+                }
+            }).
+            success(function(result) {
+                deferred.resolve(result);
+            }).
+            error(function(result) {
+                deferred.reject(result);
+            });
+
+            return deferred.promise;
+        }
+    }
+}]).
+
+/**
+ * Service for retrieving municipalities belonging to a district. Used in faceted search
+ */
+service('ChildLocationsService', ['$http', '$timeout', '$q', 'LanguageService', function($http, $timeout, $q, LanguageService) {
+
+    return {
+        query: function(districtVal) {
+            var deferred = $q.defer();
+
+            var params = '?lang=' + LanguageService.getLanguage();
+            for (var i = 0; i < districtVal.length; i++) {
+            	params += '&districts=' + districtVal[i].code;
+            }
+            
+            $http.get('../location/child-locations' + params, {}).
             success(function(result) {
                 deferred.resolve(result);
             }).
@@ -143,6 +310,38 @@ service('ChildLOService', ['$http', '$timeout', '$q', 'LanguageService', 'ChildL
                 }, function(reason) {
                     deferred.reject(reason);
                 });
+            }).
+            error(function(result) {
+                deferred.reject(result);
+            });
+
+            return deferred.promise;
+        }
+    }
+}]).
+
+service('SpecialLOService', ['$http', '$timeout', '$q', 'LanguageService', 'ChildLOTransformer', function($http, $timeout, $q, LanguageService, ChildLOTransformer) {
+    return {
+        query: function(options) {
+            var deferred = $q.defer();
+            var queryParams = {
+                uiLang: LanguageService.getLanguage()
+            }
+
+            if (options.lang) {
+                queryParams.lang = options.lang
+            }
+
+            $http.get('../lo/special/' + options.id, {
+                params: queryParams
+            }).
+            success(function(result) {
+                ChildLOTransformer.transform(result);
+                var loResult = {
+                    lo: result,
+                    provider: result.provider
+                }
+                deferred.resolve(loResult);
             }).
             error(function(result) {
                 deferred.reject(result);
@@ -636,7 +835,7 @@ service('ApplicationBasketService', ['$http', '$q', 'LanguageService', 'UtilityS
         for (var asIndex in result) {
             if (result.hasOwnProperty(asIndex)) {
                 var applicationDates = result[asIndex].applicationDates;
-                if (applicationDates.length > 0) {
+                if (applicationDates && applicationDates.length > 0) {
                     result[asIndex].applicationDates = applicationDates[0];
                 }
 
@@ -740,6 +939,17 @@ service('ApplicationBasketService', ['$http', '$q', 'LanguageService', 'UtilityS
             }
         },
 
+        itemExists: function(aoId) {
+            var result = false;
+            angular.forEach(this.getItems(), function(item, key) {
+                if (aoId == item) {
+                    result = true;
+                }
+            });
+
+            return result;
+        },
+
         query: function(params) {
             var deferred = $q.defer();
             var basketItems = this.getItems();
@@ -752,7 +962,7 @@ service('ApplicationBasketService', ['$http', '$q', 'LanguageService', 'UtilityS
                     qParams += '&aoId=' + basketItems[index];
                 }
             }
-            
+
             $http.get('../basket/items?' + qParams).
             success(function(result) {
                 result = transformData(result);
@@ -770,7 +980,7 @@ service('ApplicationBasketService', ['$http', '$q', 'LanguageService', 'UtilityS
 /**
  *  Service for maintaining search filter state
  */
-service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', function($q, $http, UtilityService, LanguageService) {
+service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'kiAppConstants', function($q, $http, UtilityService, LanguageService, kiAppConstants) {
     var filters = {};
 
     var filterIsEmpty = function(filter) {
@@ -801,6 +1011,12 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', fu
             }
         }
     }
+
+    /*
+    var setLocations = function(locations) {
+        filters.locations = locations;
+    }
+    */
 
     return {
         query: function(queryParams) {
@@ -844,7 +1060,12 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', fu
                 prerequisite: filters.prerequisite,
                 locations: getLocationCodes(),
                 ongoing: filters.ongoing,
-                page: filters.page
+                upcoming: filters.upcoming,
+                page: filters.page,
+                facetFilters: filters.facetFilters,
+                langCleared: filters.langCleared,
+                itemsPerPage: filters.itemsPerPage,
+                sortCriteria: filters.sortCriteria
             };
 
             angular.forEach(result, function(value, key) {
@@ -857,6 +1078,10 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', fu
             return result;
         },
 
+        clear: function() {
+            filters = {};
+        },
+
         getPrerequisite: function() {
             if (filters.prerequisite) {
                 return filters.prerequisite;
@@ -865,6 +1090,10 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', fu
 
         isOngoing: function() {
             return filters.ongoing;
+        },
+        
+        isUpcoming: function() {
+            return filters.upcoming;
         },
 
         getLocations: function() {
@@ -903,10 +1132,59 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', fu
             params += filters.prerequisite ? '&prerequisite=' + filters.prerequisite : '';
             params += (filters.locations && filters.locations.length > 0) ? '&locations=' + getLocationCodes().join(',') : '';
             params += filters.ongoing ? '&ongoing' : '';
+            params += filters.upcoming ? '&upcoming' : '';
             params += filters.page ? '&page=' + filters.page : '';
-
+            params += (filters.facetFilters && filters.facetFilters.length > 0) ? '&facetFilters=' + filters.facetFilters.join(',') : '';
+            params += filters.langCleared ? '&langCleared=' + filters.langCleared : '';
+            params += filters.itemsPerPage ? '&itemsPerPage=' + filters.itemsPerPage : '';
+            params += filters.sortCriteria ? '&sortCriteria=' + filters.sortCriteria : '';
+            
             params = params.length > 0 ? params.substring(1, params.length) : '';
             return params;
+        },
+        
+        getFacetFilters: function() {
+        	if (filters.facetFilters != undefined && (typeof filters.facetFilters == 'string' || filters.facetFilters instanceof String)) {
+        		filters.facetFilters = filters.facetFilters.split(',');
+        		return filters.facetFilters;
+        	}
+        	return filters.facetFilters;
+        },
+        
+        getLangCleared: function() {
+        	return filters.langCleared;
+        },
+
+        getItemsPerPage: function() {
+            if (filters.itemsPerPage) {
+                return typeof filters.itemsPerPage === 'string' ? parseInt(filters.itemsPerPage) : filters.itemsPerPage;
+            } else {
+                return kiAppConstants.searchResultsPerPage;
+            }
+        },
+
+        setItemsPerPage: function(value) {
+            if (value && !isNaN(value)) {
+                filters.itemsPerPage = parseInt(value);
+            } else {
+                filters.itemsPerPage = kiAppConstants.searchResultsPerPage;
+            }
+        },
+
+        getSortCriteria: function() {
+            if (filters.sortCriteria) {
+                return filters.sortCriteria;
+            } else {
+                return kiAppConstants.defaultSortCriteria;
+            }
+        },
+
+        setSortCriteria: function(value) {
+            if (value) {
+                filters.sortCriteria = value;
+            } else {
+                filters.sortCriteria = kiAppConstants.defaultSortCriteria;
+            }
         }
     };
 }]).
@@ -1016,6 +1294,17 @@ service('UtilityService', function() {
                     return 0;
                 });
             }
+        },
+        sortLocationsByName: function(locations) {
+            locations.sort(function(a, b) {
+                if (a.name > b.name) {
+                    return 1;
+                } else if (a.name < b.name) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            });
         }
     };
 });
