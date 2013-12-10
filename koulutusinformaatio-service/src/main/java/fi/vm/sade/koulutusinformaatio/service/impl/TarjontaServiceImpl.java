@@ -25,6 +25,7 @@ import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
+import fi.vm.sade.koulutusinformaatio.service.builder.BuilderConstants;
 import fi.vm.sade.koulutusinformaatio.service.builder.LearningOpportunityBuilder;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.LearningOpportunityDirector;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.SpecialLearningOpportunityBuilder;
@@ -46,11 +47,6 @@ import java.util.List;
 @Service
 @Profile("default")
 public class TarjontaServiceImpl implements TarjontaService {
-
-    private static final String VOCATIONAL_EDUCATION_TYPE = "AmmatillinenPeruskoulutus";
-    private static final String UPPER_SECONDARY_EDUCATION_TYPE = "Lukiokoulutus";
-    private static final String REHABILITATING_EDUCATION_TYPE = "ValmentavaJaKuntouttavaOpetus";
-
 
     private ConversionService conversionService;
     private KoodistoService koodistoService;
@@ -91,18 +87,18 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     private LearningOpportunityBuilder resolveBuilder(KomoDTO komo) throws KoodistoException, TarjontaParseException {
         String educationType = komo.getKoulutusTyyppiUri();
-        if (educationType.equals(VOCATIONAL_EDUCATION_TYPE) &&
-                komo.getModuuliTyyppi().equals(LearningOpportunityBuilder.MODULE_TYPE_PARENT)) {
+        if (educationType.equals(BuilderConstants.VOCATIONAL_EDUCATION_TYPE) &&
+                komo.getModuuliTyyppi().equals(BuilderConstants.MODULE_TYPE_PARENT)) {
             return new VocationalLearningOpportunityBuilder(
                     tarjontaRawService, providerService, koodistoService, komo);
         }
-        else if (educationType.equals(UPPER_SECONDARY_EDUCATION_TYPE) &&
-                komo.getModuuliTyyppi().equals(LearningOpportunityBuilder.MODULE_TYPE_CHILD)) {
+        else if (educationType.equals(BuilderConstants.UPPER_SECONDARY_EDUCATION_TYPE) &&
+                komo.getModuuliTyyppi().equals(BuilderConstants.MODULE_TYPE_CHILD)) {
             return new UpperSecondaryLearningOpportunityBuilder(
                     tarjontaRawService, providerService, koodistoService, komo);
         }
-        else if (educationType.equals(REHABILITATING_EDUCATION_TYPE) &&
-                komo.getModuuliTyyppi().equals(LearningOpportunityBuilder.MODULE_TYPE_CHILD)) {
+        else if (educationType.equals(BuilderConstants.REHABILITATING_EDUCATION_TYPE) &&
+                komo.getModuuliTyyppi().equals(BuilderConstants.MODULE_TYPE_CHILD)) {
             return new SpecialLearningOpportunityBuilder(tarjontaRawService, providerService, koodistoService, komo);
         }
         else {

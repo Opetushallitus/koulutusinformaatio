@@ -24,7 +24,7 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.KIConversionException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
-import fi.vm.sade.koulutusinformaatio.service.builder.LearningOpportunityBuilder;
+import fi.vm.sade.koulutusinformaatio.service.builder.BuilderConstants;
 import fi.vm.sade.tarjonta.service.resources.dto.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,7 +70,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         ao.setKaksoistutkinto(hakukohdeDTO.isKaksoisTutkinto());
         ao.setVocational(true);
         List<Code> subCodes = koodistoService.searchSubCodes(childKomoto.getPohjakoulutusVaatimusUri(),
-                LearningOpportunityBuilder.BASE_EDUCATION_KOODISTO_URI);
+                BuilderConstants.BASE_EDUCATION_KOODISTO_URI);
         List<String> baseEducations = Lists.transform(subCodes, new Function<Code, String>() {
             @Override
             public String apply(Code code) {
@@ -117,6 +117,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
             }
         }
         ao.setAttachments(attachments);
+        ao.setAdditionalInfo(getI18nText(hakukohdeDTO.getLisatiedot()));
 
         // set child loi names to application option
         List<OidRDTO> komotosByHakukohdeOID = tarjontaRawService.getKomotosByHakukohde(hakukohdeDTO.getOid());
