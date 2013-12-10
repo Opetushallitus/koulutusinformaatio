@@ -23,23 +23,25 @@ import java.util.Date;
  */
 public class DataStatus {
 
-    Date lastUpdated = new Date();
+    private Date lastUpdateFinished;
     private long lastUpdateDuration;
-
-    public DataStatus(Date lastUpdated, long lastUpdateDuration) {
-        this.lastUpdated = lastUpdated;
-        this.lastUpdateDuration = lastUpdateDuration;
-    }
+    private String lastUpdateOutcome;
 
     public DataStatus() {
     }
 
-    public Date getLastUpdated() {
-        return lastUpdated;
+    public DataStatus(Date lastUpdateFinished, long lastUpdateDuration, String lastUpdateOutcome) {
+        this.lastUpdateFinished = lastUpdateFinished;
+        this.lastUpdateDuration = lastUpdateDuration;
+        this.lastUpdateOutcome = lastUpdateOutcome;
     }
 
-    public void setLastUpdated(Date lastUpdated) {
-        this.lastUpdated = lastUpdated;
+    public Date getLastUpdateFinished() {
+        return lastUpdateFinished;
+    }
+
+    public void setLastUpdateFinished(Date lastUpdateFinished) {
+        this.lastUpdateFinished = lastUpdateFinished;
     }
 
     public long getLastUpdateDuration() {
@@ -48,5 +50,13 @@ public class DataStatus {
 
     public void setLastUpdateDuration(long lastUpdateDuration) {
         this.lastUpdateDuration = lastUpdateDuration;
+    }
+
+    public String getLastUpdateOutcome() {
+        return lastUpdateOutcome;
+    }
+
+    public void setLastUpdateOutcome(String lastUpdateOutcome) {
+        this.lastUpdateOutcome = lastUpdateOutcome;
     }
 }

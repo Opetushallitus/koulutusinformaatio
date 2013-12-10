@@ -74,11 +74,12 @@ public class AdminResource {
     public DataStatusDTO dataStatus() {
         DataStatus status = learningOpportunityService.getLastDataStatus();
         DataStatusDTO dto = new DataStatusDTO();
-        dto.setLastUpdated(status.getLastUpdated());
-        dto.setLastUpdatedStr(status.getLastUpdated().toString());
+        dto.setLastUpdateFinished(status.getLastUpdateFinished());
+        dto.setLastUpdateFinishedStr(status.getLastUpdateFinished().toString());
         long millis = status.getLastUpdateDuration();
         dto.setLastUpdateDuration(millis);
         dto.setLastUpdateDurationStr(String.format("%d hours, %d minutes", millis / 3600000, millis / 60000 % 60));
+        dto.setLastUpdateOutcome(status.getLastUpdateOutcome());
         dto.setRunning(updateService.isRunning());
         if (dto.isRunning()) {
             dto.setRunningSince(new Date(updateService.getRunningSince()));
