@@ -30,7 +30,7 @@ var kiApp = angular.module('kiApp',
         controller: InfoCtrl,
         reloadOnSearch: false,
         resolve: {
-            loResource: function($route, UpperSecondaryLOService, ChildLOService, ParentLOService, SpecialLOService) {
+            loResource: function($route, $location, UpperSecondaryLOService, ChildLOService, ParentLOService, SpecialLOService) {
                 switch($route.current.params.loType) {
                     case 'lukio':
                         return UpperSecondaryLOService;
@@ -39,6 +39,8 @@ var kiApp = angular.module('kiApp',
                     case 'tutkinto':
                         return ParentLOService;
                     case 'erityisopetus':
+                        return SpecialLOService;
+                    case 'valmentava':
                         return SpecialLOService;
                 }
             },

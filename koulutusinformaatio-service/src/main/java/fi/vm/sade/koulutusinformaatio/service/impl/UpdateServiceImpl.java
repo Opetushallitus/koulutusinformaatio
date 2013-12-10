@@ -16,10 +16,12 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
+import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
+import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
+import fi.vm.sade.koulutusinformaatio.domain.LOS;
+import fi.vm.sade.koulutusinformaatio.domain.Location;
+import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
+import fi.vm.sade.koulutusinformaatio.service.*;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,16 +29,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
-import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
-import fi.vm.sade.koulutusinformaatio.domain.LOS;
-import fi.vm.sade.koulutusinformaatio.domain.Location;
-import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
-import fi.vm.sade.koulutusinformaatio.service.EducationDataUpdateService;
-import fi.vm.sade.koulutusinformaatio.service.IndexerService;
-import fi.vm.sade.koulutusinformaatio.service.LocationService;
-import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
-import fi.vm.sade.koulutusinformaatio.service.UpdateService;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Hannu Lyytikainen
@@ -82,7 +76,6 @@ public class UpdateServiceImpl implements UpdateService {
 
             this.transactionManager.beginTransaction(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
             
-            /*
             int count = MAX_RESULTS;
             int index = 0;
             
@@ -91,12 +84,6 @@ public class UpdateServiceImpl implements UpdateService {
                 List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
                 count = loOids.size();
                 index += count;
-                */
-            List<String> loOids = new ArrayList<String>();
-            //loOids.add("1.2.246.562.5.2013061010184627597002");
-            //loOids.add("1.2.246.562.5.2013061010185992084511");
-            //loOids.add("1.2.246.562.5.2013061010184317101998");
-            loOids.add("1.2.246.562.5.2013061010190108136320");
                 
                for (String loOid : loOids) {
                     List<LOS> specifications = null;
@@ -112,7 +99,7 @@ public class UpdateServiceImpl implements UpdateService {
                     }
                    this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
                }
-            //}
+            }
             List<Location> locations = locationService.getMunicipalities();
             indexerService.addLocations(locations, locationUpdateSolr);
             indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, true);
