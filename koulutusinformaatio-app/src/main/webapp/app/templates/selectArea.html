@@ -9,7 +9,7 @@
         ng-multiple="true" 
         ng-model="$parent.selectedDistricts" 
         ng-options="dist.name for dist in distResult | orderBy:'name'"
-        ng-click="doMunicipalitySearch()"></select>
+        ></select>
         <span class="facet-location-separator">&gt;</span>
     </div>
 
@@ -21,7 +21,7 @@
         ng-multiple="true" 
         ng-model="$parent.selectedMunicipality" 
         ng-options="mun.name for mun in muniResult"
-        ng-click="selectMunicipality()"></select>
+        ></select>
         <span class="facet-location-separator">&gt;</span>
     </div>
 
