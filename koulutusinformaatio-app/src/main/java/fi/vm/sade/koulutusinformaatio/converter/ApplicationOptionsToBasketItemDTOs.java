@@ -61,6 +61,8 @@ public class ApplicationOptionsToBasketItemDTOs {
                 aoDTO.setChildren(ChildLOIRefToDTO.convert(ao.getChildLOIRefs(), lang));
                 aoDTO.setAttachmentDeliveryDeadline(ao.getAttachmentDeliveryDeadline());
                 aoDTO.setAoIdentifier(ao.getAoIdentifier());
+                aoDTO.setKaksoistutkinto(ao.isKaksoistutkinto());
+                aoDTO.setVocational(ao.isVocational());
                 Provider provider = ao.getProvider();
                 if (provider != null) {
                     aoDTO.setProviderId(provider.getId());
