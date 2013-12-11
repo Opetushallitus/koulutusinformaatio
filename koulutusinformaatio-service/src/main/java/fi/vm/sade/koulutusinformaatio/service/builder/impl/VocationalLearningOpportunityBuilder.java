@@ -263,6 +263,10 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
                     }
                 })
         );
+
+        // filter out special LOSs
+        this.specialLOSs = Lists.newArrayList(
+                Collections2.filter(this.specialLOSs, CreatorUtil.specialLOSValid));
         return this;
     }
 

@@ -31,14 +31,15 @@ public class DataStatusEntity {
 
     @Id
     private org.bson.types.ObjectId id;
-    Date lastUpdated = new Date();
+    private Date lastUpdateFinished = new Date();
     private long lastUpdateDuration;
+    private String lastUpdateOutcome;
 
     public DataStatusEntity() {}
 
     @PrePersist
     void prePersist() {
-        lastUpdated = new Date();
+        lastUpdateFinished = new Date();
     }
 
     public ObjectId getId() {
@@ -49,12 +50,12 @@ public class DataStatusEntity {
         this.id = id;
     }
 
-    public Date getLastUpdated() {
-        return lastUpdated;
+    public Date getLastUpdateFinished() {
+        return lastUpdateFinished;
     }
 
-    public void setLastUpdated(Date lastUpdated) {
-        this.lastUpdated = lastUpdated;
+    public void setLastUpdateFinished(Date lastUpdateFinished) {
+        this.lastUpdateFinished = lastUpdateFinished;
     }
 
     public long getLastUpdateDuration() {
@@ -63,5 +64,13 @@ public class DataStatusEntity {
 
     public void setLastUpdateDuration(long lastUpdateDuration) {
         this.lastUpdateDuration = lastUpdateDuration;
+    }
+
+    public String getLastUpdateOutcome() {
+        return lastUpdateOutcome;
+    }
+
+    public void setLastUpdateOutcome(String lastUpdateOutcome) {
+        this.lastUpdateOutcome = lastUpdateOutcome;
     }
 }
