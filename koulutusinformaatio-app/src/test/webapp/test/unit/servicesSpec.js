@@ -286,6 +286,57 @@ describe('ApplicationBasketService', function() {
 });
 
 
+describe('HostResolver', function() {
+    var service;
+
+    beforeEach(function() {
+        module('kiApp', 'kiApp.HostResolver');
+
+        inject(function(HostResolver) {
+            service = HostResolver;
+        });
+    });
+
+    describe('resolve', function() {
+
+        it('should return undefined value for undefined host', function() {
+            var host;
+            var result = service.resolve(host);
+            expect(result).toBeUndefined();
+        });
+
+        it('should return undefined value for non-existing host', function() {
+            var result = service.resolve('non-existing-host');
+            expect(result).toBeUndefined();
+        });
+
+        it('should return correct value for existing host', function() {
+            var result = service.resolve('testi');
+            expect(result).toEqual('qa');
+        });
+    });
+
+    describe('mapHostToConf', function() {
+
+        it('should return default value (prod) for undefined host', function() {
+            var host;
+            var result = service.mapHostToConf(host);
+            expect(result).toEqual('prod');
+        });
+
+        it('should return default value (prod) for non-existing host', function() {
+            var result = service.mapHostToConf('non-existing-host');
+            expect(result).toEqual('prod');
+        });
+
+        it('should return correct value for existing host', function() {
+            var result = service.mapHostToConf('localhost');
+            expect(result).toEqual('dev');
+        });
+
+    });
+});
+
 /*
 'use strict';
 describe('FilterService', function() {

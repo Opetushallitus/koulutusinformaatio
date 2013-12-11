@@ -104,11 +104,12 @@ public class UpdateServiceImpl implements UpdateService {
             indexerService.addLocations(locations, locationUpdateSolr);
             indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, true);
             this.transactionManager.commit(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
-            educationDataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - t1));
+            educationDataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, "SUCCESS"));
             LOG.info("Education data update successfully finished");
         } catch (Exception e) {
             LOG.error("Education data update failed ", e);
             this.transactionManager.rollBack(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+            educationDataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, String.format("FAIL: %s", e.getMessage())));
         } finally {
             running = false;
             runningSince = 0;
