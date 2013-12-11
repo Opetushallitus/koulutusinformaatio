@@ -18,6 +18,8 @@ package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
+import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.builder.BuilderConstants;
 import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
@@ -71,6 +73,20 @@ public class CreatorUtil {
         @Override
         public boolean apply(KomoDTO komo) {
             return komo.getTutkintonimikeUri() != null;
+        }
+    };
+
+    protected static Predicate<SpecialLOS> specialLOSValid = new Predicate<SpecialLOS>() {
+        @Override
+        public boolean apply(SpecialLOS los) {
+            if (los.getLois() != null) {
+                for (ChildLOI loi : los.getLois()) {
+                    if (loi.getApplicationOptions() != null && loi.getApplicationOptions().size() > 0) {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
     };
 
