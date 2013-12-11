@@ -23,6 +23,7 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
+import fi.vm.sade.koulutusinformaatio.service.builder.BuilderConstants;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import org.slf4j.Logger;
@@ -36,8 +37,6 @@ import java.util.List;
 public class LOSObjectCreator extends ObjectCreator {
 
     private static final Logger LOG = LoggerFactory.getLogger(LOSObjectCreator.class);
-
-    private static final List<String> INVALID_BASE_EDUCATIONS = Lists.newArrayList("ER");
 
     private KoodistoService koodistoService;
     private ProviderService providerService;
@@ -55,6 +54,7 @@ public class LOSObjectCreator extends ObjectCreator {
         LOG.debug(Joiner.on(" ").join("Creating provider specific parent LOS from komo: ", parentKomo.getOid()));
 
         ParentLOS parentLOS = new ParentLOS();
+        parentLOS.setType(BuilderConstants.TYPE_PARENT);
 
         // parent info
         parentLOS.setId(CreatorUtil.resolveLOSId(parentKomo.getOid(), providerId));
@@ -89,6 +89,7 @@ public class LOSObjectCreator extends ObjectCreator {
 
     public ChildLOS createChildLOS(KomoDTO childKomo, String childLOSId, List<KomotoDTO> childKomotos) throws KoodistoException {
         ChildLOS childLOS = new ChildLOS();
+        childLOS.setType(BuilderConstants.TYPE_CHILD);
         childLOS.setId(childLOSId);
         childLOS.setName(koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri()));
         childLOS.setQualification(koodistoService.searchFirst(childKomo.getTutkintonimikeUri()));
@@ -117,6 +118,13 @@ public class LOSObjectCreator extends ObjectCreator {
     public SpecialLOS createSpecialLOS(KomoDTO childKomo, KomoDTO parentKomo, String specialLOSId,
                                        List<KomotoDTO> childKomotos, String providerOid) throws KoodistoException {
         SpecialLOS los = new SpecialLOS();
+        if (childKomo.getKoulutusTyyppiUri().equals(BuilderConstants.REHABILITATING_EDUCATION_TYPE)) {
+            los.setType(BuilderConstants.TYPE_REHAB);
+        }
+        else {
+            los.setType(BuilderConstants.TYPE_SPECIAL);
+        }
+
         los.setId(specialLOSId);
         los.setName(koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri()));
         los.setEducationDegree(koodistoService.searchFirstCodeValue(parentKomo.getKoulutusAsteUri()));

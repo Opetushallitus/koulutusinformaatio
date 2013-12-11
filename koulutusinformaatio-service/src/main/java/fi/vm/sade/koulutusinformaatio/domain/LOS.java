@@ -20,4 +20,12 @@ package fi.vm.sade.koulutusinformaatio.domain;
  * @author Hannu Lyytikainen
  */
 public abstract class LOS {
+    private String type;
+
+    public String getType() {
+        return type;
+    }
+    public void setType(String type) {
+        this.type = type;
+    }
 }
