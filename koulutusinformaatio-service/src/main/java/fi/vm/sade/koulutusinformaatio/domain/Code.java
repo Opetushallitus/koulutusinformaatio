@@ -27,6 +27,7 @@ public class Code {
     private String value;
     private I18nText name;
     private I18nText description;
+    private Code parent;
 
     public Code() {}
 
@@ -58,5 +59,13 @@ public class Code {
 
     public void setDescription(I18nText description) {
         this.description = description;
+    }
+
+    public Code getParent() {
+        return parent;
+    }
+
+    public void setParent(Code parent) {
+        this.parent = parent;
     }
 }

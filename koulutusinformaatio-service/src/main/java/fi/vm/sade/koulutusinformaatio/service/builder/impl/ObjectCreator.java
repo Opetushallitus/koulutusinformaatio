@@ -74,7 +74,11 @@ public abstract class ObjectCreator {
     protected List<Code> getThemes(List<Code> topics) throws KoodistoException {
         Set<Code> set = new HashSet<Code>();
         for (Code curTopic : topics) {
-            set.addAll(koodistoService.searchSuperCodes(curTopic.getValue(), TEEMAT_KOODISTO_URI));
+            List<Code> superCodes = koodistoService.searchSuperCodes(curTopic.getValue(), TEEMAT_KOODISTO_URI);
+            set.addAll(superCodes);
+            if (!superCodes.isEmpty()) {
+                curTopic.setParent(superCodes.get(0));
+            }
         }
         return new ArrayList<Code>(set);
     }
