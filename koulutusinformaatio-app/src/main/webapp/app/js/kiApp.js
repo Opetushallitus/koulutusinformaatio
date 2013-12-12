@@ -2,7 +2,7 @@
 
 var kiApp = angular.module('kiApp', 
     [
-        'kiApp.services', 
+        'kiApp.services',
         'kiApp.directives',
         'ApplicationBasket',
         'SearchResult', 
@@ -13,7 +13,7 @@ var kiApp = angular.module('kiApp',
 
 .config(['$analyticsProvider', function( $analyticsProvider) {
     // initialize piwik analytics tool
-    OPH.Common.initPiwik(window.Config.app.piwikUrl);
+    OPH.Common.initPiwik(window.Config.app.common.piwikUrl);
     $analyticsProvider.virtualPageviews(true);
     $analyticsProvider.firstPageview(false);
 }])
@@ -90,14 +90,18 @@ var kiApp = angular.module('kiApp',
 }])
 
 .value('appConfig', window.Config.app)
-.factory('Config', function(appConfig, LanguageService) {
+.factory('Config', function($location, appConfig, LanguageService, HostResolver) {
     return {
         get: function(property) {
             var lang = LanguageService.getLanguage();
-            if (appConfig[lang][property]) {
-                return appConfig[lang][property];
+            var host = HostResolver.resolve($location.host());
+            var mappedHost = HostResolver.mapHostToConf(host);
+            if (appConfig[mappedHost][lang][property]) {
+                return appConfig[mappedHost][lang][property];
+            } else if (appConfig.common[lang][property]) {
+                return appConfig.common[lang][property];
             } else {
-                return appConfig[property];
+                return appConfig.common[property];
             }
         }
     }

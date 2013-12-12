@@ -26,20 +26,29 @@ import java.util.Date;
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 public class DataStatusDTO {
 
-    Date lastUpdated = new Date();
-    String lastUpdatedStr;
+    private Date lastUpdateFinished;
+    private String lastUpdateFinishedStr;
     private long lastUpdateDuration;
     private String lastUpdateDurationStr;
+    private String lastUpdateOutcome;
     private boolean running;
     private Date runningSince;
     private String runningSinceStr;
 
-    public Date getLastUpdated() {
-        return lastUpdated;
+    public Date getLastUpdateFinished() {
+        return lastUpdateFinished;
     }
 
-    public void setLastUpdated(Date lastUpdated) {
-        this.lastUpdated = lastUpdated;
+    public void setLastUpdateFinished(Date lastUpdateFinished) {
+        this.lastUpdateFinished = lastUpdateFinished;
+    }
+
+    public String getLastUpdateFinishedStr() {
+        return lastUpdateFinishedStr;
+    }
+
+    public void setLastUpdateFinishedStr(String lastUpdateFinishedStr) {
+        this.lastUpdateFinishedStr = lastUpdateFinishedStr;
     }
 
     public long getLastUpdateDuration() {
@@ -50,28 +59,28 @@ public class DataStatusDTO {
         this.lastUpdateDuration = lastUpdateDuration;
     }
 
-    public boolean isRunning() {
-        return running;
-    }
-
-    public void setRunning(boolean running) {
-        this.running = running;
-    }
-
-    public String getLastUpdatedStr() {
-        return lastUpdatedStr;
-    }
-
-    public void setLastUpdatedStr(String lastUpdatedStr) {
-        this.lastUpdatedStr = lastUpdatedStr;
-    }
-
     public String getLastUpdateDurationStr() {
         return lastUpdateDurationStr;
     }
 
     public void setLastUpdateDurationStr(String lastUpdateDurationStr) {
         this.lastUpdateDurationStr = lastUpdateDurationStr;
+    }
+
+    public String getLastUpdateOutcome() {
+        return lastUpdateOutcome;
+    }
+
+    public void setLastUpdateOutcome(String lastUpdateOutcome) {
+        this.lastUpdateOutcome = lastUpdateOutcome;
+    }
+
+    public boolean isRunning() {
+        return running;
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
     }
 
     public Date getRunningSince() {

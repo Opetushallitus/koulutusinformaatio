@@ -16,11 +16,12 @@
 
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
-import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
+import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
@@ -106,7 +107,7 @@ public class SpecialLearningOpportunityBuilder extends LearningOpportunityBuilde
 
     @Override
     public LearningOpportunityBuilder filter() {
-        loses = Lists.newArrayList(Collections2.filter(loses, losValid));
+        loses = Lists.newArrayList(Collections2.filter(loses, CreatorUtil.specialLOSValid));
         return this;
     }
 
@@ -115,19 +116,6 @@ public class SpecialLearningOpportunityBuilder extends LearningOpportunityBuilde
         return this.loses;
     }
 
-    private static Predicate<SpecialLOS> losValid = new Predicate<SpecialLOS>() {
-        @Override
-        public boolean apply(SpecialLOS los) {
-            if (los.getLois() != null) {
-                for (ChildLOI loi : los.getLois()) {
-                    if (loi.getApplicationOptions() != null && loi.getApplicationOptions().size() > 0) {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-    };
 
 
 

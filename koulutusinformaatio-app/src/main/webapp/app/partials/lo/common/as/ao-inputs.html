@@ -29,8 +29,16 @@ value="{{ao.teachLang}}" />
 <input
 type="hidden"
 name="preference1-Koulutus-id-athlete"
-value="{{provider.athleteEducation}}" />
+value="{{provider.athleteEducation || ao.athleteEducation}}" />
 <input
 type="hidden"
 name="preference1-Koulutus-id-aoIdentifier"
 value="{{ao.aoIdentifier}}" />
+<input
+type="hidden"
+name="preference1-Koulutus-id-kaksoistutkinto"
+value="{{ao.kaksoistutkinto}}" />
+<input
+type="hidden"
+name="preference1-Koulutus-id-vocational"
+value="{{ao.vocational}}" />
