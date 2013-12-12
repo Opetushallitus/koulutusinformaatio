@@ -28,6 +28,8 @@ public class ScoreLimitDTO {
     private double lowestAcceptedScore;
     private double highestScore;
 
+    public ScoreLimitDTO() {}
+
     public ScoreLimitDTO(double lowestScore, double lowestAcceptedScore, double highestScore) {
         this.lowestScore = lowestScore;
         this.lowestAcceptedScore = lowestAcceptedScore;
