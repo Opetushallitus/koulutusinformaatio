@@ -157,7 +157,7 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
     private void indexFacetFields(ChildLOI childLOI, SpecialLOS specialLOS, SolrInputDocument doc) {
         doc.addField(SolrFields.LearningOpportunity.TEACHING_LANGUAGE, childLOI.getTeachingLanguages().get(0).getValue());
         
-        if (specialLOS.getType().equals(BuilderConstants.REHABILITATING_EDUCATION_TYPE)) {
+        if (specialLOS.getType().equals(BuilderConstants.TYPE_REHAB)) {
         	doc.addField(SolrFields.LearningOpportunity.EDUCATION_TYPE, SolrFields.SolrConstants.ED_TYPE_VALMENTAVA);
         } else {
         	doc.addField(SolrFields.LearningOpportunity.EDUCATION_TYPE, SolrFields.SolrConstants.ED_TYPE_AMM_ER);
