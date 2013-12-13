@@ -25,7 +25,7 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
-import fi.vm.sade.koulutusinformaatio.service.builder.BuilderConstants;
+import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.koulutusinformaatio.service.builder.LearningOpportunityBuilder;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
@@ -141,7 +141,7 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
     }
 
     private boolean isSpecialEdKomoto(KomotoDTO komoto) {
-        return komoto.getPohjakoulutusVaatimusUri().equalsIgnoreCase(BuilderConstants.PREREQUISITE_URI_ER);
+        return komoto.getPohjakoulutusVaatimusUri().equalsIgnoreCase(TarjontaConstants.PREREQUISITE_URI_ER);
     }
 
     @Override
@@ -216,8 +216,8 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
         if (text != null && text.getTranslationsShortName() != null && !text.getTranslationsShortName().isEmpty()) {
             if (languages != null && !languages.isEmpty()) {
                 for (Code code : languages) {
-                    if (code.getValue().equalsIgnoreCase(BuilderConstants.LANG_FI)) {
-                        return text.getTranslationsShortName().get(BuilderConstants.LANG_FI);
+                    if (code.getValue().equalsIgnoreCase(TarjontaConstants.LANG_FI)) {
+                        return text.getTranslationsShortName().get(TarjontaConstants.LANG_FI);
                     }
                 }
                 String val = text.getTranslationsShortName().get(languages.get(0).getValue().toLowerCase());
