@@ -26,10 +26,12 @@ import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
+import fi.vm.sade.tarjonta.shared.types.KomoTeksti;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Hannu Lyytikainen
@@ -59,9 +61,9 @@ public class LOSObjectCreator extends ObjectCreator {
         // parent info
         parentLOS.setId(CreatorUtil.resolveLOSId(parentKomo.getOid(), providerId));
         parentLOS.setName(koodistoService.searchFirst(parentKomo.getKoulutusKoodiUri()));
-        parentLOS.setStructure(getI18nText(parentKomo.getKoulutuksenRakenne()));
-        parentLOS.setAccessToFurtherStudies(getI18nText(parentKomo.getJatkoOpintoMahdollisuudet()));
-        parentLOS.setGoals(getI18nText(parentKomo.getTavoitteet()));
+        parentLOS.setStructure(getI18nText(parentKomo.getTekstit().get(KomoTeksti.KOULUTUKSEN_RAKENNE)));
+        parentLOS.setAccessToFurtherStudies(getI18nText(parentKomo.getTekstit().get(KomoTeksti.JATKOOPINTO_MAHDOLLISUUDET)));
+        parentLOS.setGoals(getI18nText(parentKomo.getTekstit().get(KomoTeksti.TAVOITTEET)));
         parentLOS.setEducationDomain(koodistoService.searchFirst(parentKomo.getKoulutusAlaUri()));
         parentLOS.setStydyDomain(koodistoService.searchFirst(parentKomo.getOpintoalaUri()));
         parentLOS.setTopics(getTopics(parentKomo.getOpintoalaUri()));
@@ -93,7 +95,7 @@ public class LOSObjectCreator extends ObjectCreator {
         childLOS.setName(koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri()));
         childLOS.setQualification(koodistoService.searchFirst(childKomo.getTutkintonimikeUri()));
         childLOS.setDegreeTitle(koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri()));
-        childLOS.setGoals(getI18nText(childKomo.getTavoitteet()));
+        childLOS.setGoals(getI18nText(childKomo.getTekstit().get(KomoTeksti.TAVOITTEET)));
         List<ChildLOI> childLOIs = Lists.newArrayList();
 
         for (KomotoDTO childKomoto : childKomotos) {
@@ -129,8 +131,8 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setEducationDegree(koodistoService.searchFirstCodeValue(parentKomo.getKoulutusAsteUri()));
         los.setQualification(koodistoService.searchFirst(childKomo.getTutkintonimikeUri()));
         los.setDegreeTitle(koodistoService.searchFirst(childKomo.getLukiolinjaUri()));
-        los.setStructure(getI18nText(parentKomo.getKoulutuksenRakenne()));
-        los.setAccessToFurtherStudies(getI18nText(parentKomo.getJatkoOpintoMahdollisuudet()));
+        los.setStructure(getI18nText(parentKomo.getTekstit().get(KomoTeksti.KOULUTUKSEN_RAKENNE)));
+        los.setAccessToFurtherStudies(getI18nText(parentKomo.getTekstit().get(KomoTeksti.JATKOOPINTO_MAHDOLLISUUDET)));
         los.setProvider(providerService.getByOID(providerOid));
         los.setCreditValue(parentKomo.getLaajuusArvo());
         los.setCreditUnit(koodistoService.searchFirst(parentKomo.getLaajuusYksikkoUri()));
@@ -164,16 +166,17 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setEducationDegree(koodistoService.searchFirstCodeValue(parentKomo.getKoulutusAsteUri()));
         los.setQualification(koodistoService.searchFirst(komo.getTutkintonimikeUri()));
         los.setDegreeTitle(koodistoService.searchFirst(komo.getLukiolinjaUri()));
-        los.setStructure(getI18nText(parentKomo.getKoulutuksenRakenne()));
-        los.setAccessToFurtherStudies(getI18nText(parentKomo.getJatkoOpintoMahdollisuudet()));
+        los.setStructure(getI18nText(parentKomo.getTekstit().get(KomoTeksti.KOULUTUKSEN_RAKENNE)));
+        los.setAccessToFurtherStudies(getI18nText(parentKomo.getTekstit().get(KomoTeksti.JATKOOPINTO_MAHDOLLISUUDET)));
         los.setProvider(provider);
         los.setCreditValue(parentKomo.getLaajuusArvo());
         los.setCreditUnit(koodistoService.searchFirst(parentKomo.getLaajuusYksikkoUri()));
 
-        if (komo.getTavoitteet() == null) {
-            los.setGoals(getI18nText(parentKomo.getTavoitteet()));
+        Map<String,String> komoTavoitteet = komo.getTekstit().get(KomoTeksti.TAVOITTEET);
+        if (komoTavoitteet == null) {
+            los.setGoals(getI18nText(parentKomo.getTekstit().get(KomoTeksti.TAVOITTEET)));
         } else {
-            los.setGoals(getI18nText(komo.getTavoitteet()));
+            los.setGoals(getI18nText(komoTavoitteet));
         }
 
         List<UpperSecondaryLOI> lois = Lists.newArrayList();

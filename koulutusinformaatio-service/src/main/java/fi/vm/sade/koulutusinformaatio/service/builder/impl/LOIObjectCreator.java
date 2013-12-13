@@ -23,6 +23,7 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.tarjonta.service.resources.dto.*;
+import fi.vm.sade.tarjonta.shared.types.KomotoTeksti;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,10 +61,10 @@ public class LOIObjectCreator extends ObjectCreator {
         childLOI.setFormOfTeaching(koodistoService.searchMultiple(childKomoto.getOpetusmuodotUris()));
         childLOI.setPrerequisite(koodistoService.searchFirstCode(childKomoto.getPohjakoulutusVaatimusUri()));
         childLOI.setProfessionalTitles(koodistoService.searchMultiple(childKomoto.getAmmattinimikeUris()));
-        childLOI.setWorkingLifePlacement(getI18nText(childKomoto.getSijoittuminenTyoelamaan()));
-        childLOI.setInternationalization(getI18nText(childKomoto.getKansainvalistyminen()));
-        childLOI.setCooperation(getI18nText(childKomoto.getYhteistyoMuidenToimijoidenKanssa()));
-        childLOI.setContent(getI18nText(childKomoto.getSisalto()));
+        childLOI.setWorkingLifePlacement(getI18nText(childKomoto.getTekstit().get(KomotoTeksti.SIJOITTUMINEN_TYOELAMAAN)));
+        childLOI.setInternationalization(getI18nText(childKomoto.getTekstit().get(KomotoTeksti.KANSAINVALISTYMINEN)));
+        childLOI.setCooperation(getI18nText(childKomoto.getTekstit().get(KomotoTeksti.YHTEISTYO_MUIDEN_TOIMIJOIDEN_KANSSA)));
+        childLOI.setContent(getI18nText(childKomoto.getTekstit().get(KomotoTeksti.SISALTO)));
         childLOI.setPlannedDuration(childKomoto.getLaajuusArvo());
         childLOI.setPlannedDurationUnit(koodistoService.searchFirst(childKomoto.getLaajuusYksikkoUri()));
         childLOI.setPduCodeUri(childKomoto.getLaajuusYksikkoUri());
@@ -122,9 +123,9 @@ public class LOIObjectCreator extends ObjectCreator {
         loi.setTeachingLanguages(koodistoService.searchCodesMultiple(komoto.getOpetuskieletUris()));
         loi.setFormOfTeaching(koodistoService.searchMultiple(komoto.getOpetusmuodotUris()));
         loi.setPrerequisite(koodistoService.searchFirstCode(komoto.getPohjakoulutusVaatimusUri()));
-        loi.setInternationalization(getI18nText(komoto.getKansainvalistyminen()));
-        loi.setCooperation(getI18nText(komoto.getYhteistyoMuidenToimijoidenKanssa()));
-        loi.setContent(getI18nText(komoto.getSisalto()));
+        loi.setInternationalization(getI18nText(komoto.getTekstit().get(KomotoTeksti.KANSAINVALISTYMINEN)));
+        loi.setCooperation(getI18nText(komoto.getTekstit().get(KomotoTeksti.YHTEISTYO_MUIDEN_TOIMIJOIDEN_KANSSA)));
+        loi.setContent(getI18nText(komoto.getTekstit().get(KomotoTeksti.SISALTO)));
 
         loi.setPlannedDuration(komoto.getLaajuusArvo());
         loi.setPlannedDurationUnit(koodistoService.searchFirst(komoto.getLaajuusYksikkoUri()));
