@@ -59,7 +59,7 @@
         </init-param>
         <init-param>
             <param-name>com.sun.jersey.config.property.WebPageContentRegex</param-name>
-            <param-value>(/app/.*)|(/(buildversion|robots)\.txt)</param-value>
+            <param-value>(/etusivu/.*)|(/app/.*)|(/(buildversion|robots)\.txt)</param-value>
         </init-param>
     </filter>
 
