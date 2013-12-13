@@ -31,6 +31,8 @@ public class SolrFields {
         public static final String EN_FNAME = "en_fname"; //english name of a facet value
         public static final String TEACHING_LANGUAGE = "teachingLangCode_ffm"; //The teaching language used in the learning opportunity
         public static final String EDUCATION_TYPE = "educationType_ffm"; //The education type of the learning opportunity
+        public static final String TOPIC = "topic_ffm"; //The topic of the learning opportunity
+        public static final String THEME = "theme_ffm"; //The theme of the learning opportunity
         public static final String LOP_ID = "lopId";
         public static final String NAME = "name";
         public static final String NAME_FI = "name_fi";

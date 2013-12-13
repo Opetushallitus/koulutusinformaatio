@@ -189,6 +189,9 @@
 
      "valitut-rajaukset": "Valda avgränsningar",
      "facet-opetuskieli": "Avgränsa enligt undervisningsspråk",
+     "facet-teemat": "Koulutusteemat (sv)",
+     "topic_ffm": "Aihe (sv)",
+     "theme_ffm": "Teema (sv)",
      "teachingLangCode_ffm": "Undervisning språk",
      "location-rajaus": "Plats",
      "facet-remove": "Avlägsna",

@@ -66,7 +66,7 @@ public class LOSObjectCreator extends ObjectCreator {
         parentLOS.setEducationDomain(koodistoService.searchFirst(parentKomo.getKoulutusAlaUri()));
         parentLOS.setStydyDomain(koodistoService.searchFirst(parentKomo.getOpintoalaUri()));
         parentLOS.setTopics(getTopics(parentKomo.getOpintoalaUri()));
-        parentLOS.setThemes(getThemes(parentLOS.getTopics()));
+        parentLOS.setThemes(getThemes(parentLOS));
         parentLOS.setEducationDegree(koodistoService.searchFirstCodeValue(parentKomo.getKoulutusAsteUri()));
         parentLOS.setCreditValue(parentKomo.getLaajuusArvo());
         parentLOS.setCreditUnit(koodistoService.searchFirst(parentKomo.getLaajuusYksikkoUri()));

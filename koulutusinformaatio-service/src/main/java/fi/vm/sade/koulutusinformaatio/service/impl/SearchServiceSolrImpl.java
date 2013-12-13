@@ -166,9 +166,49 @@ public class SearchServiceSolrImpl implements SearchService {
         searchResultList.setEdTypeFacet(getEdTypeFacet(response));
         searchResultList.setFilterFacet(getFilterFacet(facetFilters, lang));
         searchResultList.setPrerequisiteFacet(getPrerequisiteFacet(response, lang));
+        searchResultList.setTopicFacet(getTopicFacet(response, lang));
+        
         
     }
     
+    private Facet getTopicFacet(QueryResponse response, String lang) {
+        FacetField themeF = response.getFacetField(LearningOpportunity.THEME);
+        FacetField topicF = response.getFacetField(LearningOpportunity.TOPIC);
+        Facet topicFacet = new Facet();
+        List<FacetValue> values = new ArrayList<FacetValue>();
+        if (themeF != null) {
+            for (Count curC : themeF.getValues()) {
+                
+                    FacetValue newVal = new FacetValue(LearningOpportunity.THEME,  
+                                                        getLocalizedFacetName(curC.getName(), lang), 
+                                                        curC.getCount(), 
+                                                        curC.getName());
+                    newVal.setChildValues(getThemeTopics(curC, topicF, lang));
+                    values.add(newVal);
+                
+            }
+        }
+        topicFacet.setFacetValues(values);
+        return topicFacet;
+    }
+
+    private List<FacetValue> getThemeTopics(Count themeC, FacetField topicF, String lang) {
+        if (topicF != null) {
+            List<FacetValue> themeTopics = new ArrayList<FacetValue>();
+            for (Count curC : topicF.getValues()) {
+                if (curC.getName().contains(String.format("%s.", themeC.getName()))) {
+                   FacetValue themeTopic = new FacetValue(LearningOpportunity.TOPIC,
+                           getLocalizedFacetName(curC.getName(), lang),
+                           curC.getCount(), 
+                           curC.getName());
+                   themeTopics.add(themeTopic);
+                }
+            }
+            return themeTopics;
+        }
+        return null;
+    }
+
     private Facet getPrerequisiteFacet(QueryResponse response, String lang) {
         FacetField prerequisiteF = response.getFacetField(LearningOpportunity.PREREQUISITES);
         Facet prerequisiteFacet = new Facet();

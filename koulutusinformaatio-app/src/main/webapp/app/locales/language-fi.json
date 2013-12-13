@@ -190,6 +190,9 @@
     
     "valitut-rajaukset": "Valitut rajaukset",
     "facet-opetuskieli": "Rajaa opetuskielen mukaan",
+    "facet-teemat": "Koulutusteemat",
+    "topic_ffm": "Aihe",
+    "theme_ffm": "Teema",
     "teachingLangCode_ffm": "Opetuskieli",
     "location-rajaus": "Paikka",
     "facet-remove": "Poista",
