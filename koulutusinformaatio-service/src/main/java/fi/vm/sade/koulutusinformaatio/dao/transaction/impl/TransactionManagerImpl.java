@@ -245,8 +245,17 @@ public class TransactionManagerImpl implements TransactionManager {
 	}
     
     private boolean swapAlias(String solrToSwapName, String aliasName) throws Exception {
-        CollectionAdminResponse response = CollectionAdminRequest.createAlias(aliasName, solrToSwapName, adminHttpSolrServer);
-        return response.isSuccess();
+        URL myURL = new URL(String.format("%s%s%s%s%s", 
+                adminHttpSolrServer.getBaseURL(), 
+                SolrConstants.ALIAS_ACTION,
+                aliasName, 
+                SolrConstants.COLLECTIONS, 
+                solrToSwapName));
+
+        HttpURLConnection myURLConnection = (HttpURLConnection)(myURL.openConnection());
+        myURLConnection.setRequestMethod(SolrConstants.GET);
+        myURLConnection.connect();
+        return myURLConnection.getResponseCode() < 400;
     }
 
 	private String getCollectionName (HttpSolrServer solrServer) {
