@@ -12,6 +12,7 @@ directive('searchResult', ['FilterService', function(FilterService) {
         		return 'templates/' + scope.lo.type + '/searchResult.html';
         	}
 
+            scope.lo.type = 'valmentava';
             scope.lo.type = scope.lo.type.toLowerCase();
             scope.lo.linkHref = '#/' + scope.lo.type + '/' + scope.lo.id;
 
