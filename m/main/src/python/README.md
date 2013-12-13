@@ -10,8 +10,8 @@ You need Linux, python and virtualenv
 
 ### Running
 
-make
-
+    % make
+    
 The static output files will be generated in directory "out/".
 
 It will run against reppu (test-oppija.oph.ware.fi) as this is where facet search is working. You can change the environment from data.py. Wordpress queries are done from QA, this is probably OK
@@ -21,13 +21,13 @@ even in production.
 
 Run the commad above, and move the static generated files
 
-  mv out/ koulutusinformaatio-app/src/main/webapp/m/
+    % mv out/ koulutusinformaatio-app/src/main/webapp/m/
 
 Then add these files into git with something like this (not tested):
 
-  find . -type f |xargs git add 
-  git commit -a -m "Erityiskoulutukset ja valmentavat"
-  git push
+    % find . -type f |xargs git add 
+    % git commit -a -m "Erityiskoulutukset ja valmentavat"
+    % git push
 
 ### Background
 
