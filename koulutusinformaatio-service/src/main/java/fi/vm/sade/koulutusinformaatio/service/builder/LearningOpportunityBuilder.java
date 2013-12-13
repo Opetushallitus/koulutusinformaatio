@@ -47,8 +47,8 @@ public abstract class LearningOpportunityBuilder<T extends LOS> {
 
     protected void validateParentKomo(KomoDTO komo) throws TarjontaParseException {
         // parent check
-        if (!komo.getModuuliTyyppi().equals(BuilderConstants.MODULE_TYPE_PARENT)) {
-            throw new TarjontaParseException("Komo not of type " + BuilderConstants.MODULE_TYPE_PARENT);
+        if (!komo.getModuuliTyyppi().equals(TarjontaConstants.MODULE_TYPE_PARENT)) {
+            throw new TarjontaParseException("Komo not of type " + TarjontaConstants.MODULE_TYPE_PARENT);
         }
 
         // published
@@ -77,14 +77,14 @@ public abstract class LearningOpportunityBuilder<T extends LOS> {
     }
 
     protected void validateHakukohde(HakukohdeDTO hakukohde) throws TarjontaParseException {
-        if (!hakukohde.getTila().equals(BuilderConstants.STATE_PUBLISHED)) {
-            throw new TarjontaParseException("Application option " + hakukohde.getOid() + " not in state " + BuilderConstants.STATE_PUBLISHED);
+        if (!hakukohde.getTila().equals(TarjontaConstants.STATE_PUBLISHED)) {
+            throw new TarjontaParseException("Application option " + hakukohde.getOid() + " not in state " + TarjontaConstants.STATE_PUBLISHED);
         }
     }
 
     protected void validateHaku(HakuDTO haku) throws TarjontaParseException {
-        if (!haku.getTila().equals(BuilderConstants.STATE_PUBLISHED)) {
-            throw new TarjontaParseException("Application system " + haku.getOid() + " not in state " + BuilderConstants.STATE_PUBLISHED);
+        if (!haku.getTila().equals(TarjontaConstants.STATE_PUBLISHED)) {
+            throw new TarjontaParseException("Application system " + haku.getOid() + " not in state " + TarjontaConstants.STATE_PUBLISHED);
         }
     }
 

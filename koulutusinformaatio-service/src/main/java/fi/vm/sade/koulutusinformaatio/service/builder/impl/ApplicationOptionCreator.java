@@ -24,7 +24,7 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.KIConversionException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
-import fi.vm.sade.koulutusinformaatio.service.builder.BuilderConstants;
+import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.tarjonta.service.resources.dto.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,7 +70,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         ao.setKaksoistutkinto(hakukohdeDTO.isKaksoisTutkinto());
         ao.setVocational(true);
         List<Code> subCodes = koodistoService.searchSubCodes(childKomoto.getPohjakoulutusVaatimusUri(),
-                BuilderConstants.BASE_EDUCATION_KOODISTO_URI);
+                TarjontaConstants.BASE_EDUCATION_KOODISTO_URI);
         List<String> baseEducations = Lists.transform(subCodes, new Function<Code, String>() {
             @Override
             public String apply(Code code) {
@@ -189,7 +189,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         ao.setExams(educationObjectCreator.createUpperSecondaryExams(hakukohdeDTO.getValintakoes()));
         ao.setVocational(false);
         List<Code> subCodes = koodistoService.searchSubCodes(komoto.getPohjakoulutusVaatimusUri(),
-                BuilderConstants.BASE_EDUCATION_KOODISTO_URI);
+                TarjontaConstants.BASE_EDUCATION_KOODISTO_URI);
         List<String> baseEducations = Lists.transform(subCodes, new Function<Code, String>() {
             @Override
             public String apply(Code code) {

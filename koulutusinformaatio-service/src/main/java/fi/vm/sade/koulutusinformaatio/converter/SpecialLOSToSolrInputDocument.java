@@ -20,7 +20,7 @@ import com.google.common.collect.Lists;
 
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.SolrFields.SolrConstants;
-import fi.vm.sade.koulutusinformaatio.service.builder.BuilderConstants;
+import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 
 import org.apache.solr.common.SolrInputDocument;
 import org.springframework.core.convert.converter.Converter;
@@ -157,7 +157,7 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
     private void indexFacetFields(ChildLOI childLOI, SpecialLOS specialLOS, SolrInputDocument doc) {
         doc.addField(SolrFields.LearningOpportunity.TEACHING_LANGUAGE, childLOI.getTeachingLanguages().get(0).getValue());
         
-        if (specialLOS.getType().equals(BuilderConstants.TYPE_REHAB)) {
+        if (specialLOS.getType().equals(TarjontaConstants.TYPE_REHAB)) {
         	doc.addField(SolrFields.LearningOpportunity.EDUCATION_TYPE, SolrFields.SolrConstants.ED_TYPE_VALMENTAVA);
         } else {
         	doc.addField(SolrFields.LearningOpportunity.EDUCATION_TYPE, SolrFields.SolrConstants.ED_TYPE_AMM_ER);
