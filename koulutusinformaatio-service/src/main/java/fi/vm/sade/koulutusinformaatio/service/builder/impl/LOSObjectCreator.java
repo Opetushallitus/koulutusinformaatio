@@ -153,9 +153,41 @@ public class LOSObjectCreator extends ObjectCreator {
                 lois.add(loi);
             }
         }
-
         los.setLois(lois);
         return los;
     }
+
+    public UpperSecondaryLOS createUpperSecondaryLOS(KomoDTO komo, KomoDTO parentKomo, List<KomotoDTO> komotos, String losID, Provider provider) throws KoodistoException {
+        UpperSecondaryLOS los = new UpperSecondaryLOS();
+        los.setType(BuilderConstants.TYPE_UPSEC);
+        los.setId(losID);
+        los.setName(koodistoService.searchFirst(komo.getLukiolinjaUri()));
+        los.setEducationDegree(koodistoService.searchFirstCodeValue(parentKomo.getKoulutusAsteUri()));
+        los.setQualification(koodistoService.searchFirst(komo.getTutkintonimikeUri()));
+        los.setDegreeTitle(koodistoService.searchFirst(komo.getLukiolinjaUri()));
+        los.setStructure(getI18nText(parentKomo.getKoulutuksenRakenne()));
+        los.setAccessToFurtherStudies(getI18nText(parentKomo.getJatkoOpintoMahdollisuudet()));
+        los.setProvider(provider);
+        los.setCreditValue(parentKomo.getLaajuusArvo());
+        los.setCreditUnit(koodistoService.searchFirst(parentKomo.getLaajuusYksikkoUri()));
+
+        if (komo.getTavoitteet() == null) {
+            los.setGoals(getI18nText(parentKomo.getTavoitteet()));
+        } else {
+            los.setGoals(getI18nText(komo.getTavoitteet()));
+        }
+
+        List<UpperSecondaryLOI> lois = Lists.newArrayList();
+        for (KomotoDTO komoto : komotos) {
+            if (CreatorUtil.komotoPublished.apply(komoto)) {
+                lois.add(loiCreator.createUpperSecondaryLOI(komoto, losID, los.getName()));
+            }
+        }
+
+        los.setLois(lois);
+
+        return los;
+    }
+
 
 }

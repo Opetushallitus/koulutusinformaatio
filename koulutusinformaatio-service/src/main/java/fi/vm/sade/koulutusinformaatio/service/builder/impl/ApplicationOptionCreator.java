@@ -172,4 +172,120 @@ public class ApplicationOptionCreator extends ObjectCreator {
         return false;
     }
 
+    public ApplicationOption createUpperSecondaryApplicationOption(HakukohdeDTO hakukohdeDTO, HakuDTO hakuDTO,
+                                                      KomotoDTO komoto, UpperSecondaryLOI loi) throws KoodistoException {
+        ApplicationOption ao = new ApplicationOption();
+        ao.setId(hakukohdeDTO.getOid());
+        ao.setName(koodistoService.searchFirst(hakukohdeDTO.getHakukohdeNimiUri()));
+        ao.setAoIdentifier(koodistoService.searchFirstCodeValue(hakukohdeDTO.getHakukohdeNimiUri()));
+        ao.setAthleteEducation(isAthleteEducation(ao.getAoIdentifier()));
+        ao.setStartingQuota(hakukohdeDTO.getAloituspaikatLkm());
+        ao.setLowestAcceptedScore(hakukohdeDTO.getAlinValintaPistemaara());
+        ao.setLowestAcceptedAverage(hakukohdeDTO.getAlinHyvaksyttavaKeskiarvo());
+        ao.setAttachmentDeliveryDeadline(hakukohdeDTO.getLiitteidenToimitusPvm());
+        ao.setLastYearApplicantCount(hakukohdeDTO.getEdellisenVuodenHakijatLkm());
+        ao.setSelectionCriteria(getI18nText(hakukohdeDTO.getValintaperustekuvaus()));
+        ao.setKaksoistutkinto(hakukohdeDTO.isKaksoisTutkinto());
+        ao.setExams(educationObjectCreator.createUpperSecondaryExams(hakukohdeDTO.getValintakoes()));
+        ao.setVocational(false);
+        List<Code> subCodes = koodistoService.searchSubCodes(komoto.getPohjakoulutusVaatimusUri(),
+                BuilderConstants.BASE_EDUCATION_KOODISTO_URI);
+        List<String> baseEducations = Lists.transform(subCodes, new Function<Code, String>() {
+            @Override
+            public String apply(Code code) {
+                return code.getValue();
+            }
+        });
+        ao.setRequiredBaseEducations(baseEducations);
+
+        ApplicationSystem as = new ApplicationSystem();
+        as.setId(hakuDTO.getOid());
+        as.setName(getI18nText(hakuDTO.getNimi()));
+        if (hakuDTO.getHakuaikas() != null) {
+            for (HakuaikaRDTO ha : hakuDTO.getHakuaikas()) {
+                DateRange range = new DateRange();
+                range.setStartDate(ha.getAlkuPvm());
+                range.setEndDate(ha.getLoppuPvm());
+                as.getApplicationDates().add(range);
+            }
+        }
+        ao.setApplicationSystem(as);
+        if (!Strings.isNullOrEmpty(hakukohdeDTO.getSoraKuvausKoodiUri())) {
+            ao.setSora(true);
+        }
+
+        ao.setTeachingLanguages(koodistoService.searchCodeValuesMultiple(komoto.getOpetuskieletUris()));
+        ao.setPrerequisite(loi.getPrerequisite());
+        ao.setSpecificApplicationDates(hakukohdeDTO.isKaytetaanHakukohdekohtaistaHakuaikaa());
+        if (ao.isSpecificApplicationDates()) {
+            ao.setApplicationStartDate(hakukohdeDTO.getHakuaikaAlkuPvm());
+            ao.setApplicationEndDate(hakukohdeDTO.getHakuaikaLoppuPvm());
+        }
+
+        if (hakukohdeDTO.getLiitteidenToimitusosoite() != null) {
+            OsoiteRDTO addressDTO = hakukohdeDTO.getLiitteidenToimitusosoite();
+            ao.setAttachmentDeliveryAddress(educationObjectCreator.createAddress(addressDTO));
+        }
+
+        ao.setAdditionalProof(educationObjectCreator.createAdditionalProof(hakukohdeDTO.getValintakoes()));
+        if (hakukohdeDTO.getValintakoes() != null) {
+            for (ValintakoeRDTO valintakoeRDTO : hakukohdeDTO.getValintakoes()) {
+                ao.setOverallScoreLimit(educationObjectCreator.resolvePointLimit(valintakoeRDTO, "Kokonaispisteet"));
+            }
+        }
+
+        List<ApplicationOptionAttachment> attachments = Lists.newArrayList();
+        if (hakukohdeDTO.getLiitteet() != null && !hakukohdeDTO.getLiitteet().isEmpty()) {
+            for (HakukohdeLiiteDTO liite : hakukohdeDTO.getLiitteet()) {
+                ApplicationOptionAttachment attach = new ApplicationOptionAttachment();
+                attach.setDueDate(liite.getErapaiva());
+                attach.setType(koodistoService.searchFirst(liite.getLiitteenTyyppiUri()));
+                attach.setDescreption(getI18nText(liite.getKuvaus()));
+                attach.setAddress(educationObjectCreator.createAddress(liite.getToimitusosoite()));
+                attachments.add(attach);
+            }
+        }
+        ao.setAttachments(attachments);
+
+        if (hakukohdeDTO.getPainotettavatOppiaineet() != null) {
+            List<EmphasizedSubject> emphasizedSubjects = Lists.newArrayList();
+            List<List<String>> painotettavat = hakukohdeDTO.getPainotettavatOppiaineet();
+            for (List<String> painotettava : painotettavat) {
+                emphasizedSubjects.add(
+                        new EmphasizedSubject(koodistoService.searchFirst(painotettava.get(0)), painotettava.get(1)));
+            }
+            ao.setEmphasizedSubjects(emphasizedSubjects);
+        }
+
+        ao.setAdditionalInfo(getI18nText(hakukohdeDTO.getLisatiedot()));
+
+        // set child loi names to application option
+        List<OidRDTO> komotosByHakukohdeOID = tarjontaRawService.getKomotosByHakukohde(hakukohdeDTO.getOid());
+        for (OidRDTO s : komotosByHakukohdeOID) {
+            KomoDTO komoByKomotoOID = tarjontaRawService.getKomoByKomoto(s.getOid());
+
+            if (!CreatorUtil.komoPublished.apply(komoByKomotoOID)) {
+                continue;
+            }
+
+            KomotoDTO k = tarjontaRawService.getKomoto(s.getOid());
+            if (not(CreatorUtil.komotoPublished).apply(k)) {
+                LOG.debug(String.format("Skipping invalid child komoto %s", k.getOid()));
+                continue;
+            }
+
+            ChildLOIRef cRef = new ChildLOIRef();
+            cRef.setId(s.getOid());
+            cRef.setLosId(CreatorUtil.resolveLOSId(komoByKomotoOID.getOid(), komoto.getTarjoajaOid()));
+            cRef.setName(koodistoService.searchFirst(komoByKomotoOID.getKoulutusOhjelmaKoodiUri()));
+            cRef.setQualification(koodistoService.searchFirst(komoByKomotoOID.getTutkintonimikeUri()));
+            cRef.setPrerequisite(loi.getPrerequisite());
+            ao.getChildLOIRefs().add(cRef);
+        }
+
+        return ao;
+    }
+
+
+
 }
