@@ -1,12 +1,33 @@
 #ki text version poc
 
+### Requirements
+
+It will only work with Koulutusinformaatio "facet search"
+
 ### Install
 
 You need Linux, python and virtualenv
 
-### Requirements
+### Running
 
-It will only work with Koulutusinformaatio "facet search"
+make
+
+The static output files will be generated in directory "out/".
+
+It will run against reppu (test-oppija.oph.ware.fi) as this is where facet search is working. You can change the environment from data.py. Wordpress queries are done from QA, this is probably OK
+even in production.
+
+### How to put into production
+
+Run the commad above, and move the static generated files
+
+  mv out/ koulutusinformaatio-app/src/main/webapp/m/
+
+Then add these files into git with something like this (not tested):
+
+  find . -type f |xargs git add 
+  git commit -a -m "Erityiskoulutukset ja valmentavat"
+  git push
 
 ### Background
 
@@ -14,7 +35,7 @@ This is probably the weirdest content generation system you have ever encountere
 
 Each file name is a statement in this language. Statments are evaluated in sorted order of the file names. You can use BASIC style "line numbers" to order your statements if you wish, they are ignored.
 
-Files ending with "=" are assignment operators, variable name is the stuff before the "=". Variable value is the value of the retval variable when the file is evaluated as Python. 
+Files ending with "=" are assignment operators, variable name is the part of the file name before the "=". Variable value is the value of the retval variable when the file is evaluated as Python. 
 These files typically use "data.py" library, which contains powerful operations for fetching data from RESTful APIs etc.
 
 Files and directories ending with "-" are ignored.
