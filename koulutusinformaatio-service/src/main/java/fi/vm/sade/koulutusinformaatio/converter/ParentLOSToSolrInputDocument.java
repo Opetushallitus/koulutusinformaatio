@@ -296,6 +296,14 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
             }
         }
         
+        for (Code curTopic : parent.getTopics()) {
+            doc.addField(LearningOpportunity.TOPIC, curTopic.getUri());
+        }
+        
+        for (Code curTopic : parent.getThemes()) {
+            doc.addField(LearningOpportunity.THEME, curTopic.getUri());
+        }
+        
     }
     
     /*
@@ -306,6 +314,13 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMMATILLINEN);
         if (childLOI.isKaksoistutkinto()) {
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_KAKSOIS);
+        }
+        for (Code curTopic : parent.getTopics()) {
+            doc.addField(LearningOpportunity.TOPIC, curTopic.getUri());
+        }
+        
+        for (Code curTopic : parent.getThemes()) {
+            doc.addField(LearningOpportunity.THEME, curTopic.getUri());
         }
     }
 }

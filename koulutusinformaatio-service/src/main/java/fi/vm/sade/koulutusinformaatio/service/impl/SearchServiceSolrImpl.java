@@ -166,9 +166,58 @@ public class SearchServiceSolrImpl implements SearchService {
         searchResultList.setEdTypeFacet(getEdTypeFacet(response));
         searchResultList.setFilterFacet(getFilterFacet(facetFilters, lang));
         searchResultList.setPrerequisiteFacet(getPrerequisiteFacet(response, lang));
+        searchResultList.setTopicFacet(getTopicFacet(response, lang));
+        
         
     }
     
+    /*
+     * Adding the topic/theme facet to the search result
+     */
+    private Facet getTopicFacet(QueryResponse response, String lang) {
+        FacetField themeF = response.getFacetField(LearningOpportunity.THEME);
+        FacetField topicF = response.getFacetField(LearningOpportunity.TOPIC);
+        Facet topicFacet = new Facet();
+        List<FacetValue> values = new ArrayList<FacetValue>();
+        if (themeF != null) {
+            for (Count curC : themeF.getValues()) {
+                
+                    FacetValue newVal = new FacetValue(LearningOpportunity.THEME,  
+                                                        getLocalizedFacetName(curC.getName(), lang), 
+                                                        curC.getCount(), 
+                                                        curC.getName());
+                    newVal.setChildValues(getThemeTopics(curC, topicF, lang));
+                    values.add(newVal);
+                
+            }
+        }
+        topicFacet.setFacetValues(values);
+        return topicFacet;
+    }
+
+    /*
+     * Adding topics to each theme.
+     */
+    private List<FacetValue> getThemeTopics(Count themeC, FacetField topicF, String lang) {
+        if (topicF != null) {
+            List<FacetValue> themeTopics = new ArrayList<FacetValue>();
+            for (Count curC : topicF.getValues()) {
+                if (curC.getName().contains(String.format("%s.", themeC.getName()))) {
+                   FacetValue themeTopic = new FacetValue(LearningOpportunity.TOPIC,
+                           getLocalizedFacetName(curC.getName(), lang),
+                           curC.getCount(), 
+                           curC.getName());
+                   themeTopics.add(themeTopic);
+                }
+            }
+            return themeTopics;
+        }
+        return null;
+    }
+
+    /*
+     * Adding the prerequisite facet to the search result.
+     */
     private Facet getPrerequisiteFacet(QueryResponse response, String lang) {
         FacetField prerequisiteF = response.getFacetField(LearningOpportunity.PREREQUISITES);
         Facet prerequisiteFacet = new Facet();
@@ -176,13 +225,13 @@ public class SearchServiceSolrImpl implements SearchService {
         if (prerequisiteF != null) {
             for (Count curC : prerequisiteF.getValues()) {
                 
-                //if (curC.getCount() > 0) {
-                    FacetValue newVal = new FacetValue(LearningOpportunity.PREREQUISITES,  
-                                                        curC.getName(), 
-                                                        curC.getCount(), 
-                                                        curC.getName());
-                    values.add(newVal);
-                //}
+                
+                FacetValue newVal = new FacetValue(LearningOpportunity.PREREQUISITES,  
+                        curC.getName(), 
+                        curC.getCount(), 
+                        curC.getName());
+                values.add(newVal);
+                
             }
         }
         prerequisiteFacet.setFacetValues(values);
@@ -198,13 +247,13 @@ public class SearchServiceSolrImpl implements SearchService {
         List<FacetValue> values = new ArrayList<FacetValue>();
         if (edTypeField != null) {
             for (Count curC : edTypeField.getValues()) {
-                //if (curC.getCount() > 0) {
-                    FacetValue newVal = new FacetValue(LearningOpportunity.EDUCATION_TYPE,  
-                                                        curC.getName(), 
-                                                        curC.getCount(), 
-                                                        curC.getName());
-                    values.add(newVal);
-                //}
+                
+                FacetValue newVal = new FacetValue(LearningOpportunity.EDUCATION_TYPE,  
+                        curC.getName(), 
+                        curC.getCount(), 
+                        curC.getName());
+                values.add(newVal);
+                
             }
         }
         edTypeFacet.setFacetValues(values);
@@ -215,20 +264,20 @@ public class SearchServiceSolrImpl implements SearchService {
      * Teaching language facet
      */
     private Facet getTeachingLangFacet(QueryResponse response, String lang) {
-
+        
         FacetField teachingLangF = response.getFacetField(LearningOpportunity.TEACHING_LANGUAGE);
         Facet teachingLangFacet = new Facet();
         List<FacetValue> values = new ArrayList<FacetValue>();
         if (teachingLangF != null) {
             for (Count curC : teachingLangF.getValues()) {
                 
-                //if (curC.getCount() > 0) {
-                    FacetValue newVal = new FacetValue(LearningOpportunity.TEACHING_LANGUAGE,  
-                                                        getLocalizedFacetName(curC.getName(), lang), 
-                                                        curC.getCount(), 
-                                                        curC.getName());
-                    values.add(newVal);
-                //}
+                
+                FacetValue newVal = new FacetValue(LearningOpportunity.TEACHING_LANGUAGE,  
+                        getLocalizedFacetName(curC.getName(), lang), 
+                        curC.getCount(), 
+                        curC.getName());
+                values.add(newVal);
+                
             }
         }
         teachingLangFacet.setFacetValues(values);

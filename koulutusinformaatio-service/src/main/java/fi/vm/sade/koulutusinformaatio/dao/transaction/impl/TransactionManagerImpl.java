@@ -26,6 +26,8 @@ import fi.vm.sade.koulutusinformaatio.domain.SolrFields.SolrConstants;
 
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.request.CoreAdminRequest;
+import org.apache.solr.client.solrj.request.CollectionAdminRequest;
+import org.apache.solr.client.solrj.response.CollectionAdminResponse;
 import org.apache.solr.common.params.CoreAdminParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -150,7 +152,7 @@ public class TransactionManagerImpl implements TransactionManager {
 
     	@Override
         public void commit(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws Exception {
-        	
+        	//CollectionAdminRequest
     		//If solr is not in cloud mode doing swap using CoreAdminRequest
         	if (this.loHttpAliasName.equals(this.loHttpSolrName)) {
         		CoreAdminRequest lopCar = getCoreSwapRequest(providerUpdateCoreName, providerCoreName);
@@ -220,7 +222,9 @@ public class TransactionManagerImpl implements TransactionManager {
     }
     
     private void swapAliases(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws Exception {
-    		boolean ok = swapAlias(getCollectionName(lopUpdateSolr), lopHttpAliasName);
+    		
+            
+            boolean ok = swapAlias(getCollectionName(lopUpdateSolr), lopHttpAliasName);
     		ok = ok ? swapAlias(getCollectionName(loUpdateSolr), loHttpAliasName) : ok;
     		ok = ok ? swapAlias(getCollectionName(locationUpdateSolr), locationHttpAliasName) : ok;
     		
@@ -242,17 +246,16 @@ public class TransactionManagerImpl implements TransactionManager {
     
     private boolean swapAlias(String solrToSwapName, String aliasName) throws Exception {
         URL myURL = new URL(String.format("%s%s%s%s%s", 
-        									adminHttpSolrServer.getBaseURL(), 
-        									SolrConstants.ALIAS_ACTION,
-        									aliasName, 
-        									SolrConstants.COLLECTIONS, 
-        									solrToSwapName));
-        
+                adminHttpSolrServer.getBaseURL(), 
+                SolrConstants.ALIAS_ACTION,
+                aliasName, 
+                SolrConstants.COLLECTIONS, 
+                solrToSwapName));
+
         HttpURLConnection myURLConnection = (HttpURLConnection)(myURL.openConnection());
         myURLConnection.setRequestMethod(SolrConstants.GET);
         myURLConnection.connect();
         return myURLConnection.getResponseCode() < 400;
-        
     }
 
 	private String getCollectionName (HttpSolrServer solrServer) {

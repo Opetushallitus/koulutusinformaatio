@@ -19,9 +19,9 @@ public class FacetIndexer {
         List<SolrInputDocument> docs = Lists.newArrayList();
         
         //Teaching languages
-        this.indexCodeAsFacetDoc(loi.getTeachingLanguages().get(0), docs);
+        this.indexCodeAsFacetDoc(loi.getTeachingLanguages().get(0), docs, true);
         //Prerequisites
-        this.indexCodeAsFacetDoc(loi.getPrerequisite(), docs);
+        this.indexCodeAsFacetDoc(loi.getPrerequisite(), docs, true);
         
         return docs;
     }
@@ -37,6 +37,15 @@ public class FacetIndexer {
                 docs.addAll(createFacetDocs(childLOI));
             }
         }
+        
+        for (Code curCode : parent.getTopics()) {
+            this.indexCodeAsFacetDoc(curCode, docs, false);
+        }
+        
+        for (Code curCode : parent.getThemes()) {
+            this.indexCodeAsFacetDoc(curCode, docs, false);
+        }
+        
         return docs;
     }
 
@@ -45,8 +54,8 @@ public class FacetIndexer {
      */
     public List<SolrInputDocument> createFacetDocs(ChildLOI childLOI) {
         List<SolrInputDocument> docs = Lists.newArrayList();
-        this.indexCodeAsFacetDoc(childLOI.getTeachingLanguages().get(0), docs);
-        this.indexCodeAsFacetDoc(childLOI.getPrerequisite(), docs);
+        this.indexCodeAsFacetDoc(childLOI.getTeachingLanguages().get(0), docs, true);
+        this.indexCodeAsFacetDoc(childLOI.getPrerequisite(), docs, true);
         return docs;
     }
 
@@ -67,9 +76,9 @@ public class FacetIndexer {
     /*
      * Creates a facet document for the given code, and adds to the list of docs given.
      */
-    private void indexCodeAsFacetDoc(Code code, List<SolrInputDocument> docs) {
+    private void indexCodeAsFacetDoc(Code code, List<SolrInputDocument> docs, boolean useValueAsId) {
         SolrInputDocument doc = new SolrInputDocument();
-        doc.addField(LearningOpportunity.ID, code.getValue());
+        doc.addField(LearningOpportunity.ID, useValueAsId ? code.getValue() : code.getUri());
         doc.addField(LearningOpportunity.TYPE, TYPE_FACET);
         doc.addField(LearningOpportunity.FI_FNAME, this.getTranslationUseFallback("fi", code.getName().getTranslations()));
         doc.addField(LearningOpportunity.SV_FNAME, this.getTranslationUseFallback("sv", code.getName().getTranslations()));

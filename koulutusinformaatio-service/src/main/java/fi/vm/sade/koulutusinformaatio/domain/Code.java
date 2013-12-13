@@ -27,6 +27,8 @@ public class Code {
     private String value;
     private I18nText name;
     private I18nText description;
+    private Code parent;
+    private String uri;
 
     public Code() {}
 
@@ -34,6 +36,13 @@ public class Code {
         this.value = value;
         this.name = name;
         this.description = description;
+    }
+    
+    public Code(String value, I18nText name, I18nText description, String uri) {
+        this.value = value;
+        this.name = name;
+        this.description = description;
+        this.uri = uri;
     }
 
     public String getValue() {
@@ -58,5 +67,21 @@ public class Code {
 
     public void setDescription(I18nText description) {
         this.description = description;
+    }
+
+    public Code getParent() {
+        return parent;
+    }
+
+    public void setParent(Code parent) {
+        this.parent = parent;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 }

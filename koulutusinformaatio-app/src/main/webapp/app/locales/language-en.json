@@ -188,6 +188,9 @@
     
     "valitut-rajaukset": "Chosen Restrictions",
     "facet-opetuskieli": "Teaching Language",
+    "facet-teemat": "Koulutusteemat (en)",
+    "topic_ffm": "Aihe (en)",
+    "theme_ffm": "Teema (en)",
     "teachingLangCode_ffm": "Teaching Language",
     "location-rajaus": "Place",
     "facet-remove": "Poista (en)",

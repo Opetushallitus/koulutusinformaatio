@@ -42,8 +42,6 @@ import java.util.Set;
 public class VocationalLearningOpportunityBuilder extends LearningOpportunityBuilder<LOS> {
 
     private TarjontaRawService tarjontaRawService;
-    private ProviderService providerService;
-    private KoodistoService koodistoService;
     private LOSObjectCreator losObjectCreator;
 
     // Parent komo KomoDTO object that corresponds to the oid
@@ -68,8 +66,6 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
                                                 ProviderService providerService,
                                                 KoodistoService koodistoService, KomoDTO parentKomo) {
         this.tarjontaRawService = tarjontaRawService;
-        this.providerService = providerService;
-        this.koodistoService = koodistoService;
         this.losObjectCreator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService);
         this.parentKomo = parentKomo;
         this.parentKomotosByProviderId = ArrayListMultimap.create();

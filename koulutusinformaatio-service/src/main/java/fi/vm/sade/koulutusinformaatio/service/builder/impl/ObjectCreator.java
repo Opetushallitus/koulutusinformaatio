@@ -17,13 +17,20 @@
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
 import com.google.common.base.Strings;
+
+import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
+import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Hannu Lyytikainen
@@ -32,6 +39,10 @@ public abstract class ObjectCreator {
 
     protected static final String ATHLETE_EDUCATION_KOODISTO_URI = "urheilijankoulutus_1#1";
     protected static final String APPLICATION_OPTIONS_KOODISTO_URI = "hakukohteet";
+    protected static final String AIHEET_KOODISTO_URI = "aiheet";
+    protected static final String TEEMAT_KOODISTO_URI = "teemat";
+    
+    
 
     KoodistoService koodistoService;
 
@@ -56,6 +67,33 @@ public abstract class ObjectCreator {
         }
         return null;
     }
+    
+    protected List<Code> getTopics(String opintoalaKoodiUri) throws KoodistoException {
+        return koodistoService.searchSuperCodes(opintoalaKoodiUri, AIHEET_KOODISTO_URI);
+    }
+    
+    protected List<Code> getThemes(ParentLOS parentLOS) throws KoodistoException {
+        Set<Code> set = new HashSet<Code>();
+        List<Code> updatedTopics = new ArrayList<Code>();
+        for (Code curTopic : parentLOS.getTopics()) {
+            List<Code> superCodes = koodistoService.searchSuperCodes(curTopic.getUri(), TEEMAT_KOODISTO_URI);
+            set.addAll(superCodes);
+            if (!superCodes.isEmpty()) {
+                curTopic.setParent(superCodes.get(0));
+                curTopic.setUri(String.format("%s.%s", curTopic.getParent().getUri(), curTopic.getUri()));
+            } 
+            updatedTopics.add(curTopic);
+        }
+        
+        parentLOS.setTopics(updatedTopics);
+        
+        return new ArrayList<Code>(set);
+    }
+    
+    
+    
+    
+    
 
 
 

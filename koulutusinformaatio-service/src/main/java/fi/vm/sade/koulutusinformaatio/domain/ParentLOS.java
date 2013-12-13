@@ -46,6 +46,10 @@ public class ParentLOS extends LOS {
     private String creditValue;
     //laajuus yksikkö opintoviikko
     private I18nText creditUnit;
+    
+    private List<Code> topics;
+    private List<Code> themes;
+    
 
     public String getId() {
         return id;
@@ -150,4 +154,21 @@ public class ParentLOS extends LOS {
     public void setCreditUnit(I18nText creditUnit) {
         this.creditUnit = creditUnit;
     }
+    
+    public List<Code> getTopics() {
+        return topics;
+    }
+
+    public void setTopics(List<Code> topics) {
+        this.topics = topics;
+    }
+
+    public List<Code> getThemes() {
+        return themes;
+    }
+
+    public void setThemes(List<Code> themes) {
+        this.themes = themes;
+    }
+
 }

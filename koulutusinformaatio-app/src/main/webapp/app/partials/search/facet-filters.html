@@ -143,6 +143,44 @@
     </div>
 </div>
 
+
+<div class="filter">
+    <h4 data-ng-click="toggleCollapsed(3)" class="collapser" data-ng-class="{open: !collapsed[3], close: collapsed[3]}">
+        <span class="icon"></span>
+        <span data-ki-i18n="facet-teemat"></span>      
+    </h4>
+    <div collapse="collapsed[3]" class="collapse">
+        <ul class="nobullet collapse-content-container">
+            <li data-ng-repeat="fv in loResult.topicFacet.facetValues">
+                <span data-ng-show="!isSelected(fv) && (fv.count > 0)" class="facet-item">
+                    <a href="javascript:void(0)" data-ng-click="selectFacetFilter(fv.valueId, fv.facetField)">{{fv.valueName}} ({{fv.count}})</a>
+                </span>
+                <span data-ng-show="!isSelected(fv) && (fv.count <= 0)" class="facet-item inactive">
+                    {{fv.valueName}} ({{fv.count}})
+                </span>
+                <span data-ng-show="isSelected(fv)" class="facet-item selected">
+                    <span>{{fv.valueName}}</span>
+                    <a href="javascript:void(0)" class="remove" data-ng-click="removeSelection(fv)"></a>
+                </span>
+                <ul class="nobullet collapse-content-container">
+                	<li data-ng-repeat="childFv in fv.childValues">
+                		<span data-ng-show="!isSelected(childFv) && (childFv.count > 0)" class="facet-item">
+                    		<a href="javascript:void(0)" data-ng-click="selectFacetFilter(childFv.valueId, childFv.facetField)">{{childFv.valueName}} ({{childFv.count}})</a>
+                		</span>
+                		<span data-ng-show="!isSelected(childFv) && (childFv.count <= 0)" class="facet-item inactive">
+                    		{{childFv.valueName}} ({{childFv.count}})
+                		</span>
+                		<span data-ng-show="isSelected(childFv)" class="facet-item selected">
+                    		<span>{{childFv.valueName}}</span>
+                    		<a href="javascript:void(0)" class="remove" data-ng-click="removeSelection(childFv)"></a>
+                		</span>
+                	</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+
 <div class="filter">
     <h4 data-ng-click="toggleCollapsed(3)" class="collapser" data-ng-class="{open: !collapsed[3], close: collapsed[3]}">
         <span class="icon"></span>
