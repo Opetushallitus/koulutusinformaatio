@@ -1,0 +1,30 @@
+{% set loi = ctx.lois[0] %}
+{% set as = loi.applicationSystems[0] %}
+{% set ao = as.applicationOptions[0] %}
+{% extends "base-sv.html" %}
+{% block title %}{{ ctx.provider.name }} - {{ ctx.name }} - Antagningsgrunder och inträdesprov{% endblock %}
+{% block content %}
+
+<h1>{{ ctx.provider.name }} - {{ ctx.name }} - Antagningsgrunder och inträdesprov</h1>
+
+{% if loi.prerequisite.description is defined or ao.selectionCriteria is defined %}
+<h2>Grundutbildning</h2>
+
+{{ loi.prerequisite.description }}
+
+{{ ao.selectionCriteria }}
+{% endif %}
+
+{% if ao.lowestAcceptedAverage is defined %}
+<h2>Medeltalsgräns</h2>
+
+<ul>
+<li>Lägsta godkända medeltal: {{ ao.lowestAcceptedAverage }}</li>
+</ul>
+
+<p>
+Av läroanstalten fastställd lägsta godkända medeltalsgräns. Sökande med lägre medeltal kan inte bli antagna till utbildningen. Medeltalet för antagning av studerande varierar årligen och kan vara högre.
+</p>
+{% endif %}
+
+{% endblock %}

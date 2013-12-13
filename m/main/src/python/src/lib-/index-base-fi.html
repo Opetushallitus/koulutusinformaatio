@@ -1,0 +1,31 @@
+{% extends "base-fi.html" %}
+{% block navi %}
+{% if maxpage > 1 %}
+{% if page != "all" %}
+Sivu {{ page }} / {{ maxpage }}
+{% endif %}
+
+<h2>Navigaatio</h2>
+<ul>
+
+{% if page == "all" %}
+
+    <li><a href="index-1.html">Näytä {{ results_per_page }} kerrallaan</a></li>
+
+{% else %}
+
+{% if prev_page is defined %}
+    <li><a href="index-{{ prev_page }}.html">Edellinen</a></li>
+{% endif %}
+
+{{ index_links|index_links("name", 3, page) }}
+
+{% if page != "all" and next_page is defined %}
+    <li><a href="index-{{ next_page }}.html">Seuraava</a></li>
+{% endif %}
+
+    <li><a href="index-all.html">Näytä kaikki</a></li>
+{% endif %}
+</ul>
+{% endif %}
+{% endblock %}

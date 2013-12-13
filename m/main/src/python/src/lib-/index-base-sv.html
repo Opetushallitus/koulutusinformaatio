@@ -1,0 +1,31 @@
+{% extends "base-sv.html" %}
+{% block navi %}
+{% if maxpage > 1 %}
+{% if page != "all" %}
+Sivu {{ page }} / {{ maxpage }}
+{% endif %}
+
+<h2>Navigation</h2>
+<ul>
+
+{% if page == "all" %}
+
+    <li><a href="index-1.html">Visa {{ results_per_page }} resultat</a></li>
+
+{% else %}
+
+{% if prev_page is defined %}
+    <li><a href="index-{{ prev_page }}.html">Föregående</a></li>
+{% endif %}
+
+{{ index_links|index_links("name", 3, page) }}
+
+{% if page != "all" and next_page is defined %}
+    <li><a href="index-{{ next_page }}.html">Nästa</a></li>
+{% endif %}
+
+    <li><a href="index-all.html">Visa alla</a></li>
+{% endif %}
+</ul>
+{% endif %}
+{% endblock %}

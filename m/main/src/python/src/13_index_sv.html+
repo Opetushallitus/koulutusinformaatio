@@ -1,0 +1,9 @@
+{% extends "base-sv.html" %}
+{% block title %}{{ landing_sv.title }}{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    <h1>{{ landing_sv.title }}</h1>
+    {{ landing_sv.content }}
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "base-fi.html" %}
+{% block title %}{{ landing_fi.title }}{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    <h1>{{ landing_fi.title }}</h1>
+    {{ landing_fi.content }}
+
+{{ title_erityis_oppilaitokset_sv }}
+
+{% endblock %}

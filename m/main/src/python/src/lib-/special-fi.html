@@ -1,0 +1,12 @@
+{% extends "base-fi.html" %}
+{% block title %}{{ ctx.provider.name }} - {{ ctx.name }}{% endblock %}
+{% block content %}
+
+<h1>{{ ctx.provider.name }} - {{ ctx.name }}</h1>
+
+<ul>
+<li><a href="{{ ctx.id }}-koulutus.html">Koulutus</a></li>
+<li><a href="{{ ctx.id }}-valintaperusteet.html">Valintaperusteet</a></li>
+<li><a href="{{ ctx.id }}-oppilaitos.html">Oppilaitos</a></li>
+</ul>
+{% endblock %}

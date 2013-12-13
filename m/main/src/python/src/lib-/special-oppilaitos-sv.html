@@ -1,0 +1,36 @@
+{% set loi = ctx.lois[0] %}
+{% set as = loi.applicationSystems[0] %}
+{% set ao = as.applicationOptions[0] %}
+{% set provider = ctx.provider %}
+{% extends "base-sv.html" %}
+
+{% block title %}{{ ctx.provider.name }} - {{ ctx.name }} - Läroanstalt{% endblock %}
+{% block content %}
+<h1>{{ ctx.provider.name }} - {{ ctx.name }} - Läroanstalt</h1>
+
+<h2>Kontaktuppgifter</h2>
+
+<ul>
+{%if provider.postalAddress.streetAddress is defined %}
+    <li>Postadress:<br/>
+        {{ provider.postalAddress.streetAddress }}<br/>
+        {{ provider.postalAddress.postalCode }} {{ provider.postalAddress.postOffice }}<br/>
+    </li>
+{%endif%}
+{%if provider.visitingAddress.streetAddress is defined or provider.visitingAddress.postalAddress == provider.postalAddress.streetAddress %}
+    <li>Besöksadress:<br/>
+        {{ provider.visitingAddress.streetAddress }}<br/>
+        {{ provider.visitingAddress.postalCode }} {{ provider.visitingAddress.postOffice }}<br/>
+    </li>
+{%endif%}
+{% if provider.webPage is defined %}
+    <li>Www: <a href="{{ provider.webPage }}">{{ provider.webPage }}</a></li>
+{% endif %}
+{%if provider.phone is defined %}
+    <li>Telefon: <a href="tel:{{ provider.phone }}">{{ provider.phone }}</a></li>
+{% endif %}
+{% if provider.fax is defined %}
+    <li>Fax: <a href="fax:{{ provider.fax }}">{{ provider.fax }}</a></li>
+{% endif %}
+
+{% endblock %}

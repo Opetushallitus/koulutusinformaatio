@@ -1,0 +1,12 @@
+{% extends "base-sv.html" %}
+{% block title %}{{ ctx.provider.name }} - {{ ctx.name }}{% endblock %}
+{% block content %}
+
+<h1>{{ ctx.provider.name }} - {{ ctx.name }}</h1>
+
+<ul>
+<li><a href="{{ ctx.id }}-koulutus.html">Beskrivning av utbildningen</a></li>
+<li><a href="{{ ctx.id }}-valintaperusteet.html">Antagningsgrunder och inträdesprov</a></li>
+<li><a href="{{ ctx.id }}-oppilaitos.html">Läroanstalt</a></li>
+</ul>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% set title_erityis_oppilaitokset_sv = "Läroanstalt med yrkesinriktad specialundervisning" %}
+{% set title_erityis_koulutukset_sv = "Yrkesinriktad specialundervisning" %}
+{% set title_valmentavat_oppilaitokset_sv = "Undervisning och handledning i tränings- och rehabiliteringssyfte" %}
+{% set title_valmentavat_koulutukset_sv = "Läroanstalt med undervisning och handledning i tränings- och rehabiliteringssyfte" %}
+{% set title_erityis_oppilaitokset_fi = "Erityisopetusta järjestävät oppilaitokset" %}
+{% set title_erityis_koulutukset_fi = "Erityisopetus" %}
+{% set title_valmentavat_oppilaitokset_fi = "Valmentavaa ja kuntouttavaa koulutusta järjestävt oppilaitokset" %}
+{% set title_valmentavat_koulutukset_fi = "Valmentava ja kuntouttava koulutus" %}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    {% block head %}
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css" />
+    <title>Studieinfo textversion: {% block title %}{% endblock %}</title>
+    {% endblock %}
+</head>
+<body>
+    <div id="navi">{% block navi %}{% endblock %}</div>
+    <div id="content">{% block content %}{% endblock %}</div>
+    <div id="footer">
+        {% block footer %}
+        &copy; Copyright 2013 by <a href="http://www.oph.fi/startsidan">Utbildningsstyrelsen</a>
+        {% endblock %}
+    </div>
+</body>

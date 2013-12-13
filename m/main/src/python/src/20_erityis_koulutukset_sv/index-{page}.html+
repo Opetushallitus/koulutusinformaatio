@@ -1,0 +1,16 @@
+{% extends "index-base-sv.html" %}
+{% block title %}{{ title_erityis_koulutukset_sv }}{% endblock %}
+{% block content %}
+<h1>{{ title_erityis_koulutukset_sv }}</h1>
+
+<h2>Undervisning</h2>
+
+<ul>
+  {% for item in ctx %}
+  <li>
+    <a href="{{ item.id }}.html">{{ item.name }} ({{ item.provider.name}})</a>
+  </li>
+  {% endfor %}
+</ul>
+
+{% endblock %}

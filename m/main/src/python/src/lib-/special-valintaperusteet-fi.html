@@ -1,0 +1,30 @@
+{% set loi = ctx.lois[0] %}
+{% set as = loi.applicationSystems[0] %}
+{% set ao = as.applicationOptions[0] %}
+{% extends "base-fi.html" %}
+{% block title %}{{ ctx.provider.name }} - {{ ctx.name }} - Valintaperusteet{% endblock %}
+{% block content %}
+
+<h1>{{ ctx.provider.name }} - {{ ctx.name }} - Valintaperusteet</h1>
+
+{% if loi.prerequisite.description is defined or ao.selectionCriteria is defined %}
+<h2>Pohjakoulutus</h2>
+
+{{ loi.prerequisite.description }}
+
+{{ ao.selectionCriteria }}
+{% endif %}
+
+{% if ao.lowestAcceptedAverage is defined %}
+<h2>Keskiarvoraja</h2>
+
+<ul>
+<li>Alin hyväksyttävä keskiarvo: {{ ao.lowestAcceptedAverage }}</li>
+</ul>
+
+<p>
+Oppilaitoksen asettama keskiarvoraja jonka alittaneita hakijoita ei valita koulutukseen. Opiskelijaksi ottamisen keskiarvo vaihtelee vuosittain ja voi olla korkeampi.
+</p>
+{% endif %}
+
+{% endblock %}

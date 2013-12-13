@@ -1,0 +1,88 @@
+{% extends "base-fi.html" %}
+{% block title %}{{ ctx.provider.name }} - {{ ctx.name }} - Koulutus{% endblock %}
+{% block content %}
+
+{% set loi = ctx.lois[0] %}
+{% set as = loi.applicationSystems[0] %}
+{% set ao = as.applicationOptions[0] %}
+
+<h1>{{ ctx.provider.name }} - {{ ctx.name }} - Koulutus</h1>
+
+<h2>Perustiedot</h2>
+
+<p>
+<ul>
+    <li>Pohjakoulutus: {{ loi.prerequisite.description }}</li>
+    <li>Koulutus alkaa: {{ loi.startDate|dateformat }}</li>
+    <li>Opetuskieli: {{ ao.teachingLanguages|separated_list }}</li>
+    <li>Opetusmuoto: {{ loi.formOfTeaching|separated_list }}</li>
+    <li>Koulutuksen laajuus: {{ ctx.creditValue }} {{ ctx.creditUnit }}</li>
+    <li>Suunniteltu kesto: {{ loi.plannedDuration }} {{ loi.plannedDurationUnit }}</li>
+</ul>
+</p>
+
+{%if ctx.goals is defined %}
+<h2>Tavoitteet</h2>
+{{ ctx.goals }}
+{% endif %}
+
+{%if ao.webLinks is defined %}
+<h2>Opetussuunnitelma</h2>
+<p>
+{% for wl in ao.webLinks %}
+  {{ wl.KOULUTUSOHJELMA }}
+{% endfor %}
+</p>
+{% endif %}
+
+{%if ctx.structure is defined %}
+<h2>Opintojen rakenne</h2>
+{{ ctx.structure }}
+{% endif %}
+
+{%if loi.languageSelection is defined %}
+<h2>Kielivalikoima</h2>
+<p>
+<ul>
+{% for ls in loi.languageSelection %}
+    <li>{{ ls.subjectCode }}: {{ ls.languages|separated_list }}</li>
+{% endfor %}
+</ul>
+</p>
+{% endif %}
+
+{%if loi.diploma is defined %}
+<h2>Lukiodiplomit</h2>
+<p>
+<ul>
+{% for diploma in loi.diploma %}
+    <li>{{ diploma }}</li>
+{% endfor %}
+</ul>
+</p>
+{% endif %}
+
+{%if ctx.accessToFurtherStudies is defined %}
+<h2>Jatko-opintomahdollisuudet</h2>
+{{ ctx.accessToFurtherStudies }}
+{% endif %}
+
+{%if loi.contactPersons is defined %}
+<h2>Koulutuksen yhteyshenkilöt</h2>
+<p>
+<ul>
+{% for person in loi.contactPersons %}
+    <li>{{person.title}}<br/>
+        {{person.firstNames}} {{ person.lastName }}<br/>
+    {% if person.email is defined %}
+        Sähköposti: <a href="mailto:{{ person.email }}">{{ person.email }}</a><br/>
+    {% endif %}
+    {% if person.phone is defined %}
+        Puhelin: <a href="tel:{{ person.phone }}">{{ person.phone }}</a>
+    {% endif %}
+    </li>
+{% endfor %}
+</ul>
+</p>
+{% endif %}
+{% endblock %}

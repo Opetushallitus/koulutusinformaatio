@@ -1,0 +1,14 @@
+{% extends "index-base-fi.html" %}
+{% block title %}{{ title_erityis_oppilaitokset_fi }}{% endblock %}
+{% block content %}
+<h1>{{ title_erityis_oppilaitokset_fi }}</h1>
+
+<ul>
+  {% for item in ctx %}
+  <li>
+    <a href="{{ item.id }}.html">{{ item.provider.name }}: {{ item.name }}</a>
+  </li>
+  {% endfor %}
+</ul>
+
+{% endblock %}
