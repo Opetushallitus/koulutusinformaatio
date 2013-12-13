@@ -39,7 +39,7 @@
         <jackson.version>1.9.12</jackson.version>
 
         <oph.organisaatio.version>8.0-SNAPSHOT</oph.organisaatio.version>
-        <oph.koodisto.version>8.0-SNAPSHOT</oph.koodisto.version>
+        <oph.koodisto.version>7.0-SNAPSHOT</oph.koodisto.version>
         <oph.tarjonta.version>9.0-SNAPSHOT</oph.tarjonta.version>
     </properties>
 
