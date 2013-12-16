@@ -27,12 +27,12 @@ window.Config.app.prod = {
 
 window.Config.app.koulutus = {
 	fi: {
-		frontpageUrl: '/etusivu/fi/',
-		rekisteriselosteUrl: '/etusivu/fi/',
+		frontpageUrl: '/wp/fi/',
+		rekisteriselosteUrl: '/wp/fi/',
 	},
 	sv: {
-		frontpageUrl: '/etusivu/sv/',
-    	rekisteriselosteUrl: '/etusivu/sv/',
+		frontpageUrl: '/wp/sv/',
+    	rekisteriselosteUrl: '/wp/sv/',
 	},
 };
 
@@ -49,11 +49,11 @@ window.Config.app.qa = {
 
 window.Config.app.dev = {
 	fi: {
-		frontpageUrl: '/etusivu/fi/',
-		rekisteriselosteUrl: '/etusivu/fi/',
+		frontpageUrl: '/wp/fi/',
+		rekisteriselosteUrl: '/wp/fi/',
 	},
 	sv: {
-		frontpageUrl: '/etusivu/sv/',
-    	rekisteriselosteUrl: '/etusivu/sv/',
+		frontpageUrl: '/wp/sv/',
+    	rekisteriselosteUrl: '/wp/sv/',
 	},
 };
