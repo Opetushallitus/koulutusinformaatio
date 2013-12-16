@@ -189,6 +189,8 @@ public class SearchServiceSolrImpl implements SearchService {
     private Facet getTopicFacet(QueryResponse response, String lang) {
         FacetField themeF = response.getFacetField(LearningOpportunity.THEME);
         FacetField topicF = response.getFacetField(LearningOpportunity.TOPIC);
+        Map<String,List<FacetValue>> themeTopicMap = createThemeTopicMap(topicF, lang);
+        
         Facet topicFacet = new Facet();
         List<FacetValue> values = new ArrayList<FacetValue>();
         if (themeF != null) {
@@ -198,7 +200,7 @@ public class SearchServiceSolrImpl implements SearchService {
                                                         getLocalizedFacetName(curC.getName(), lang), 
                                                         curC.getCount(), 
                                                         curC.getName());
-                    newVal.setChildValues(getThemeTopics(curC, topicF, lang));
+                    newVal.setChildValues(themeTopicMap.get(curC.getName()));
                     values.add(newVal);
                 
             }
@@ -207,24 +209,25 @@ public class SearchServiceSolrImpl implements SearchService {
         return topicFacet;
     }
 
-    /*
-     * Adding topics to each theme.
-     */
-    private List<FacetValue> getThemeTopics(Count themeC, FacetField topicF, String lang) {
+    private Map<String, List<FacetValue>> createThemeTopicMap(FacetField topicF, String lang) {
+        Map<String,List<FacetValue>> resMap = new HashMap<String,List<FacetValue>>();
         if (topicF != null) {
-            List<FacetValue> themeTopics = new ArrayList<FacetValue>();
-            for (Count curC : topicF.getValues()) {
-                if (curC.getName().contains(String.format("%s.", themeC.getName()))) {
-                   FacetValue themeTopic = new FacetValue(LearningOpportunity.TOPIC,
-                           getLocalizedFacetName(curC.getName(), lang),
-                           curC.getCount(), 
-                           curC.getName());
-                   themeTopics.add(themeTopic);
+            for(Count curC : topicF.getValues()) {
+                FacetValue topic = new FacetValue(LearningOpportunity.TOPIC,
+                        getLocalizedFacetName(curC.getName(), lang),
+                        curC.getCount(), 
+                        curC.getName());
+                String themeStr =curC.getName().split("\\.")[0];
+                if (resMap.containsKey(themeStr)) {
+                    resMap.get(themeStr).add(topic);
+                } else {
+                    List<FacetValue> topics = new ArrayList<FacetValue>();
+                    topics.add(topic);
+                    resMap.put(themeStr, topics);
                 }
             }
-            return themeTopics;
         }
-        return null;
+        return resMap;
     }
 
     /*
