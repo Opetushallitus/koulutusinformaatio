@@ -40,6 +40,7 @@ public class LearningOpportunitySearchResultDTO {
     private Date nextApplicationPeriodStarts;
     private String type;
     private String credits;
+    private String educationType;
 
     public String getId() {
         return id;
@@ -135,5 +136,13 @@ public class LearningOpportunitySearchResultDTO {
 
     public void setCredits(String credits) {
         this.credits = credits;
+    }
+
+    public String getEducationType() {
+        return educationType;
+    }
+
+    public void setEducationType(String educationType) {
+        this.educationType = educationType;
     }
 }

@@ -22,6 +22,7 @@ import com.google.common.collect.Maps;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LocationFields;
+import fi.vm.sade.koulutusinformaatio.domain.SolrFields.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.LearningOpportunityQuery;
@@ -134,13 +135,14 @@ public class SearchServiceSolrImpl implements SearchService {
                 String prerequisiteCodeText = doc.get("prerequisiteCode") != null ? doc.get("prerequisiteCode").toString() : null;
                 String credits = doc.get(LearningOpportunity.CREDITS) != null ? doc.get(LearningOpportunity.CREDITS).toString() : null;
                 String lopName = doc.get(LearningOpportunity.LOP_NAME) != null ? doc.get(LearningOpportunity.LOP_NAME).toString() : null;
+                String edType = doc.get(LearningOpportunity.EDUCATION_TYPE) != null ? getEdType(doc) : null;
 
                 LOSearchResult lo = null;
                 try {
                     lo = new LOSearchResult(
                             id, doc.get("name").toString(),
                             doc.get("lopId").toString(), lopName, prerequisiteText,
-                            prerequisiteCodeText, parentId, losId, doc.get("type").toString(), credits);
+                            prerequisiteCodeText, parentId, losId, doc.get("type").toString(), credits, edType);
 
                     updateAsStatus(lo, doc);
                 } catch (Exception e) {
@@ -153,6 +155,16 @@ public class SearchServiceSolrImpl implements SearchService {
         }
 
         return searchResultList;
+    }
+
+    private String getEdType(SolrDocument doc) {
+        for (Object valO  : doc.getFieldValues(LearningOpportunity.EDUCATION_TYPE)) {
+            String val = valO.toString();
+            if (!val.equals(SolrConstants.ED_TYPE_KAKSOIS)) {
+                return val;
+            }
+        }
+        return null;
     }
 
     /*
