@@ -35,6 +35,7 @@ public class UpperSecondaryLOS extends LOS {
     private I18nText accessToFurtherStudies;
     private String creditValue;
     private I18nText creditUnit;
+    
 
     public String getId() {
         return id;

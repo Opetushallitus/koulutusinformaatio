@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
@@ -27,6 +28,7 @@ import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import fi.vm.sade.tarjonta.shared.types.KomoTeksti;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -139,6 +141,8 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setEducationDomain(koodistoService.searchFirst(parentKomo.getKoulutusAlaUri()));
         los.setParent(new ParentLOSRef(CreatorUtil.resolveLOSId(parentKomo.getOid(), providerOid),
                 koodistoService.searchFirst(parentKomo.getKoulutusKoodiUri())));
+        los.setTopics(getTopics(parentKomo.getOpintoalaUri()));
+        los.setThemes(getThemes(los));
 
         if (childKomo.getTavoitteet() == null) {
             los.setGoals(getI18nText(parentKomo.getTavoitteet()));
@@ -163,6 +167,8 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setType(TarjontaConstants.TYPE_UPSEC);
         los.setId(losID);
         los.setName(koodistoService.searchFirst(komo.getLukiolinjaUri()));
+        los.setTopics(getTopics(parentKomo.getOpintoalaUri()));
+        los.setThemes(getThemes(los));
         los.setEducationDegree(koodistoService.searchFirstCodeValue(parentKomo.getKoulutusAsteUri()));
         los.setQualification(koodistoService.searchFirst(komo.getTutkintonimikeUri()));
         los.setDegreeTitle(koodistoService.searchFirst(komo.getLukiolinjaUri()));
@@ -190,6 +196,7 @@ public class LOSObjectCreator extends ObjectCreator {
 
         return los;
     }
+
 
 
 }

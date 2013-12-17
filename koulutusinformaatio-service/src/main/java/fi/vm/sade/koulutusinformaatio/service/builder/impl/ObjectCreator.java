@@ -20,7 +20,9 @@ import com.google.common.base.Strings;
 
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
+import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
+import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 
@@ -72,10 +74,10 @@ public abstract class ObjectCreator {
         return koodistoService.searchSuperCodes(opintoalaKoodiUri, AIHEET_KOODISTO_URI);
     }
     
-    protected List<Code> getThemes(ParentLOS parentLOS) throws KoodistoException {
+    protected List<Code> getThemes(LOS los) throws KoodistoException {
         Set<Code> set = new HashSet<Code>();
         List<Code> updatedTopics = new ArrayList<Code>();
-        for (Code curTopic : parentLOS.getTopics()) {
+        for (Code curTopic : los.getTopics()) {
             List<Code> superCodes = koodistoService.searchSuperCodes(curTopic.getUri(), TEEMAT_KOODISTO_URI);
             set.addAll(superCodes);
             if (!superCodes.isEmpty()) {
@@ -85,16 +87,9 @@ public abstract class ObjectCreator {
             updatedTopics.add(curTopic);
         }
         
-        parentLOS.setTopics(updatedTopics);
+        los.setTopics(updatedTopics);
         
         return new ArrayList<Code>(set);
     }
-    
-    
-    
-    
-    
-
-
 
 }
