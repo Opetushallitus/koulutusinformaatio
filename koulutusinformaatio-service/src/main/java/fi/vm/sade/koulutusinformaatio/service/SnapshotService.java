@@ -14,15 +14,14 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.koulutusinformaatio.domain.exception;
+package fi.vm.sade.koulutusinformaatio.service;
 
 /**
- * Super class for all koulutusinformaatio-service exceptions.
- *
  * @author Hannu Lyytikainen
  */
-public class KIException extends Exception {
-    public KIException(String s) {
-        super(s);
-    }
+public interface SnapshotService {
+
+    public void renderSnapshots();
+
+    public boolean isRunning();
 }
