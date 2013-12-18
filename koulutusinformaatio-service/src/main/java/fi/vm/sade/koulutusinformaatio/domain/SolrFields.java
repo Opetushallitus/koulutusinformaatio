@@ -38,6 +38,10 @@ public class SolrFields {
         public static final String NAME_FI = "name_fi";
         public static final String NAME_SV = "name_sv";
         public static final String NAME_EN = "name_en";
+        public static final String CHILD_NAME = "childName";
+        public static final String CHILD_NAME_FI = "childName_fi";
+        public static final String CHILD_NAME_SV = "childName_sv";
+        public static final String CHILD_NAME_EN = "childName_en";
         public static final String LOP_NAME = "lopName";
         public static final String LOP_NAME_FI = "lopName_fi";
         public static final String LOP_NAME_SV = "lopName_sv";

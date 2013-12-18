@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 
 import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.SolrFields.SolrConstants;
+import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.common.params.DisMaxParams;
@@ -78,7 +79,11 @@ public class LearningOpportunityQuery extends SolrQuery {
         
         //leaving the facet and timestamp docs out
         this.addFilterQuery(String.format("-%s:%s", LearningOpportunity.ID, SolrConstants.TIMESTAMP_DOC));
-        this.addFilterQuery(String.format("-%s:%s", LearningOpportunity.TYPE, SolrConstants.TYPE_FACET));
+        this.addFilterQuery(String.format("(%s:%s) OR (%s:%s) OR (%s:%s) OR (%s:%s)", 
+                                            LearningOpportunity.TYPE, TarjontaConstants.TYPE_REHAB, 
+                                            LearningOpportunity.TYPE, TarjontaConstants.TYPE_SPECIAL, 
+                                            LearningOpportunity.TYPE, TarjontaConstants.TYPE_UPSEC, 
+                                            LearningOpportunity.TYPE, TarjontaConstants.TYPE_PARENT));
         
         addFacetsToQuery(lang, facetFilters, ongoingFQ.toString(), upcomingFQ.toString());
         
