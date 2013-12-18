@@ -40,7 +40,7 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
 
         for (UpperSecondaryLOI loi : los.getLois()) {
             docs.add(createDoc(los, loi));
-            docs.addAll(fIndexer.createFacetDocs(loi));
+            docs.addAll(fIndexer.createFacetDocs(loi, los));
         }
 
         return docs;

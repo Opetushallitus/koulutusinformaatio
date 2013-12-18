@@ -16,44 +16,44 @@ window.Config.app.common = {
 
 window.Config.app.prod = {
 	fi: {
-		frontpageUrl: 'https://opintopolku.fi/wp/fi/',
-		rekisteriselosteUrl: 'https://opintopolku.fi/wp/fi/rekisteriseloste/'
+		frontpageUrl: '/wp/fi/',
+		rekisteriselosteUrl: '/wp/fi/rekisteriseloste/'
 	},
 	sv: {
-		frontpageUrl: 'https://opintopolku.fi/wp/sv/',
-    	rekisteriselosteUrl: 'https://opintopolku.fi/wp/sv/registerbeskrivning/'
+		frontpageUrl: '/wp/sv/',
+    	rekisteriselosteUrl: '/wp/sv/registerbeskrivning/'
 	}
 };
 
 window.Config.app.koulutus = {
 	fi: {
 		frontpageUrl: '/wp/fi/',
-		rekisteriselosteUrl: '/wp/fi/',
+		rekisteriselosteUrl: '/wp/fi/'
 	},
 	sv: {
 		frontpageUrl: '/wp/sv/',
-    	rekisteriselosteUrl: '/wp/sv/',
-	},
+    	rekisteriselosteUrl: '/wp/sv/'
+	}
 };
 
 window.Config.app.qa = {
 	fi: {
 		frontpageUrl: '/wp/fi/',
-		rekisteriselosteUrl: '/wp/fi/rekisteriseloste/',
+		rekisteriselosteUrl: '/wp/fi/rekisteriseloste/'
 	},
 	sv: {
 		frontpageUrl: '/wp/sv/',
-    	rekisteriselosteUrl: '/wp/sv/registerbeskrivning/',
-	},
+    	rekisteriselosteUrl: '/wp/sv/registerbeskrivning/'
+	}
 };
 
 window.Config.app.dev = {
 	fi: {
 		frontpageUrl: '/wp/fi/',
-		rekisteriselosteUrl: '/wp/fi/',
+		rekisteriselosteUrl: '/wp/fi/'
 	},
 	sv: {
 		frontpageUrl: '/wp/sv/',
-    	rekisteriselosteUrl: '/wp/sv/',
-	},
+    	rekisteriselosteUrl: '/wp/sv/'
+	}
 };

@@ -409,7 +409,6 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
                 sortCriteria: FilterService.getSortCriteria(),
     			lang: LanguageService.getLanguage()
     		}).then(function(result) {
-    			console.log(result);
     			$scope.loResult = result;
                 $scope.totalItems = result.totalCount;
     			$scope.maxPages = Math.ceil(result.totalCount / $scope.itemsPerPage);

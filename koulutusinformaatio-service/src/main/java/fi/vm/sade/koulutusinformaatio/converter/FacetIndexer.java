@@ -15,13 +15,21 @@ public class FacetIndexer {
     
     
     
-    public List<SolrInputDocument> createFacetDocs(UpperSecondaryLOI loi) {
+    public List<SolrInputDocument> createFacetDocs(UpperSecondaryLOI loi, UpperSecondaryLOS los) {
         List<SolrInputDocument> docs = Lists.newArrayList();
         
         //Teaching languages
         this.indexCodeAsFacetDoc(loi.getTeachingLanguages().get(0), docs, true);
         //Prerequisites
         this.indexCodeAsFacetDoc(loi.getPrerequisite(), docs, true);
+        
+        for (Code curCode : los.getTopics()) {
+            this.indexCodeAsFacetDoc(curCode, docs, false);
+        }
+        
+        for (Code curCode : los.getThemes()) {
+            this.indexCodeAsFacetDoc(curCode, docs, false);
+        }
         
         return docs;
     }
@@ -56,6 +64,28 @@ public class FacetIndexer {
         List<SolrInputDocument> docs = Lists.newArrayList();
         this.indexCodeAsFacetDoc(childLOI.getTeachingLanguages().get(0), docs, true);
         this.indexCodeAsFacetDoc(childLOI.getPrerequisite(), docs, true);
+        
+        
+        
+        return docs;
+    }
+    
+    /*
+     * Creates the solr docs needed in facet search.
+     */
+    public List<SolrInputDocument> createFacetDocs(ChildLOI childLOI, SpecialLOS los) {
+        List<SolrInputDocument> docs = Lists.newArrayList();
+        this.indexCodeAsFacetDoc(childLOI.getTeachingLanguages().get(0), docs, true);
+        this.indexCodeAsFacetDoc(childLOI.getPrerequisite(), docs, true);
+        
+        for (Code curCode : los.getTopics()) {
+            this.indexCodeAsFacetDoc(curCode, docs, false);
+        }
+        
+        for (Code curCode : los.getThemes()) {
+            this.indexCodeAsFacetDoc(curCode, docs, false);
+        }
+        
         return docs;
     }
 
