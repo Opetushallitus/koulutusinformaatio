@@ -322,7 +322,7 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
 /**
  *  Controller for search functionality 
  */
- function SearchCtrl($scope, $rootScope, $location, $routeParams, SearchLearningOpportunityService, SearchService, kiAppConstants, FilterService, Config, LanguageService) {
+ function SearchCtrl($scope, $rootScope, $location, $routeParams, SearchLearningOpportunityService, SearchService, kiAppConstants, FilterService, Config, LanguageService, ChildLearningOpportunitiesService) {
     var queryParams;
     $scope.selectAreaVisible = false;
     $rootScope.title = i18n.t('title-search-results') + ' - ' + i18n.t('sitename');
@@ -510,6 +510,32 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     		return 'SV';
     	}
     	return 'FI';
+    }
+    
+    $scope.kiVocationalResultClicked = function(kiResult) {
+    	if (kiResult.expanded == undefined || !kiResult.expanded) {
+    		kiResult.expanded = true;
+    		ChildLearningOpportunitiesService.query(kiResult.id).then(function(result) {
+    			console.log(result);
+    			kiResult.children = [];
+    			angular.forEach(result.results, function(val, key) {
+    				val.linkHref = '#/koulutusohjelma/' + val.id + '#' + val.prerequisiteCode;
+    				kiResult.children.push(val);
+    			});
+    		});
+    	} else {
+    		kiResult.expanded = false;
+    	}
+    	
+    } 
+    
+    $scope.kiResultClicked = function(kiResult) {
+    	console.log(kiResult);
+    	if (kiResult.expanded == undefined || !kiResult.expanded) {
+    		kiResult.expanded = true;
+    	} else {
+    		kiResult.expanded = false;
+    	}
     }
 };
 

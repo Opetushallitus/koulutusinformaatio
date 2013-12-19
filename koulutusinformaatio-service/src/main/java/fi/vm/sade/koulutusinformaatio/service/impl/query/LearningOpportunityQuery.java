@@ -8,6 +8,7 @@ import fi.vm.sade.koulutusinformaatio.domain.SolrFields.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 
 import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrQuery.ORDER;
 import org.apache.solr.common.params.DisMaxParams;
 
 import java.util.List;
@@ -17,7 +18,12 @@ import java.util.List;
  */
 public class LearningOpportunityQuery extends SolrQuery {
 
-    private final static List<String> FIELDS = Lists.newArrayList(
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1448085789819825810L;
+
+    public final static List<String> FIELDS = Lists.newArrayList(
             "text_fi",
             "text_sv",
             "text_en",
@@ -96,34 +102,15 @@ public class LearningOpportunityQuery extends SolrQuery {
     }
     
     /*
-     * For querying suggested terms (autocomplete)
+     * Searching for learning opportunities by parent ids.
      */
-    public LearningOpportunityQuery(String term, String lang) {
-        super("*");
-        this.setRows(0);
-        
-        //leaving the facet and timestamp docs out
-        this.addFilterQuery(String.format("-%s:%s", LearningOpportunity.ID, SolrConstants.TIMESTAMP_DOC));
-        this.addFilterQuery(String.format("-%s:%s", LearningOpportunity.TYPE, SolrConstants.TYPE_FACET));
-        
-        addSuggestedTermsFacetToQuery(term, lang);
-        
+    public LearningOpportunityQuery(String parentId) {
+        super(String.format("%s:%s", LearningOpportunity.PARENT_ID, parentId));
         this.setParam("defType", "edismax");
-        this.setParam(DisMaxParams.QF, Joiner.on(" ").join(FIELDS));
-        this.setParam("q.op", "AND");
-        
+        //this.addSort(LearningOpportunity.NAME_FI, ORDER.asc);
     }
     
-    private void addSuggestedTermsFacetToQuery(String term, String lang) {
-        this.setFacet(true);
-        if (term != null) {
-            this.setFacetPrefix(term.toLowerCase());
-        }
-        this.addFacetField(LearningOpportunity.NAME_AUTO);
-        this.addFacetField(String.format("%s_%s", LearningOpportunity.FREE_AUTO, lang.toLowerCase()));
-        this.setFacetMinCount(1);
-        this.setFacetLimit(5);
-    }
+    
 
     private void addFacetsToQuery(String lang, List<String> facetFilters, String ongoingFQ, String upcomingFQ) {
         this.setFacet(true);

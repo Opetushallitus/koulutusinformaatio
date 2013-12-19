@@ -73,6 +73,27 @@ public class SolrFields {
         public static final String CONTENT_EN = "content_en";
         public static final String CREDITS = "credits_ss";
         
+        public static final String TEACHING_LANG_FI= "teachingLang_fi";
+        public static final String FORM_OF_TEACHING_FI = "formOfTeaching_fi";
+        public static final String CREDITS_FI = "credits_fi";
+        public static final String DURATION_FI = "duration_fi";
+        
+        public static final String TEACHING_LANG_SV= "teachingLang_sv";
+        public static final String FORM_OF_TEACHING_SV = "formOfTeaching_sv";
+        public static final String CREDITS_SV = "credits_sv";
+        public static final String DURATION_SV = "duration_sv";
+        
+        public static final String TEACHING_LANG_EN = "teachingLang_en";
+        public static final String FORM_OF_TEACHING_EN = "formOfTeaching_en";
+        public static final String CREDITS_EN = "credits_en";
+        public static final String DURATION_EN = "duration_en";
+        
+        public static final String TEACHING_LANG_= "teachingLang_";
+        public static final String FORM_OF_TEACHING_ = "formOfTeaching_";
+        public static final String CREDITS_ = "credits_";
+        public static final String DURATION_ = "duration_";
+        public static final String QUALIFICATION_ = "qualification_";
+        
         //Fields for sorting
         public static final String START_DATE_SORT = "startDate_dsort";
         public static final String NAME_SORT = "name_ssort";

@@ -38,9 +38,29 @@ public class LOSearchResult {
     private String type;
     private String credits;
     private String educationType;
+    private String teachingLang;
+    private String formOfTeaching;
+    private String duration;
+    private String qualification;
+    private String startDate;
+    
 
-    public LOSearchResult(String id, String name, String lopId, String lopName,
-                          String prerequisite, String prerequisiteCode, String parentId, String losId, String type, String credits, String educationType) {
+    public LOSearchResult(String id, 
+                          String name, 
+                          String lopId, 
+                          String lopName,
+                          String prerequisite, 
+                          String prerequisiteCode, 
+                          String parentId, 
+                          String losId, 
+                          String type, 
+                          String credits, 
+                          String educationType,
+                          String teachingLang,
+                          String formOfTeaching,
+                          String duration,
+                          String qualification,
+                          String startDate) {
         this.id = id;
         this.name = name;
         this.lopId = lopId;
@@ -52,6 +72,11 @@ public class LOSearchResult {
         this.type = type;
         this.credits = credits;
         this.educationType = educationType;
+        this.teachingLang = teachingLang;
+        this.formOfTeaching = formOfTeaching;
+        this.duration = duration;
+        this.qualification = qualification;
+        this.startDate = startDate;
     }
 
     public String getId() {
@@ -156,5 +181,45 @@ public class LOSearchResult {
 
     public void setEducationType(String educationType) {
         this.educationType = educationType;
+    }
+    
+    public String getTeachingLang() {
+        return teachingLang;
+    }
+
+    public void setTeachingLang(String teachingLang) {
+        this.teachingLang = teachingLang;
+    }
+
+    public String getFormOfTeaching() {
+        return formOfTeaching;
+    }
+
+    public void setFormOfTeaching(String formOfTeaching) {
+        this.formOfTeaching = formOfTeaching;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
+
+    public String getQualification() {
+        return qualification;
+    }
+
+    public void setQualification(String qualification) {
+        this.qualification = qualification;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
     }
 }

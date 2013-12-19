@@ -31,7 +31,7 @@ import static org.junit.Assert.*;
 public class LearningOpportunityQueryTest {
 
     private static final String TERM = "term";
-    private static final String STAR = "*";
+   
     private static final String PREREQUISITE = "PK";
     private static final List<String> CITIES = Lists.newArrayList("city1", "city2");
     private static final List<String> FACET_FILTERS = Lists.newArrayList("teachingLang:suomi", "teachingLang:ruotsi");
@@ -57,12 +57,5 @@ public class LearningOpportunityQueryTest {
         assertEquals("edismax", q.getParams("defType")[0]);
     }
     
-    @Test
-    public void testAutocompleteQuery() {
-        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, LANG);
-        assertNotNull(q);        
-        assertEquals(STAR, q.getQuery().toString());
-        assertEquals("edismax", q.getParams("defType")[0]);
-        assertEquals(2, q.getFacetFields().length);
-    }
+
 }

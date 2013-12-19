@@ -123,9 +123,16 @@ public class LOSObjectCreator extends ObjectCreator {
         SpecialLOS los = new SpecialLOS();
         if (childKomo.getKoulutusTyyppiUri().equals(TarjontaConstants.REHABILITATING_EDUCATION_TYPE)) {
             los.setType(TarjontaConstants.TYPE_REHAB);
+            KomotoDTO komoto = (childKomotos != null && !childKomotos.isEmpty()) ? childKomotos.get(0) : null;
+            if (komoto != null) {
+                los.setCreditValue(komoto.getLaajuusArvo());
+                los.setCreditUnit(koodistoService.searchFirst(komoto.getLaajuusYksikkoUri()));
+            }
         }
         else {
             los.setType(TarjontaConstants.TYPE_SPECIAL);
+            los.setCreditValue(parentKomo.getLaajuusArvo());
+            los.setCreditUnit(koodistoService.searchFirst(parentKomo.getLaajuusYksikkoUri()));
         }
 
         los.setId(specialLOSId);
@@ -136,8 +143,6 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setStructure(getI18nText(parentKomo.getTekstit().get(KomoTeksti.KOULUTUKSEN_RAKENNE)));
         los.setAccessToFurtherStudies(getI18nText(parentKomo.getTekstit().get(KomoTeksti.JATKOOPINTO_MAHDOLLISUUDET)));
         los.setProvider(providerService.getByOID(providerOid));
-        los.setCreditValue(parentKomo.getLaajuusArvo());
-        los.setCreditUnit(koodistoService.searchFirst(parentKomo.getLaajuusYksikkoUri()));
         los.setEducationDomain(koodistoService.searchFirst(parentKomo.getKoulutusAlaUri()));
         los.setParent(new ParentLOSRef(CreatorUtil.resolveLOSId(parentKomo.getOid(), providerOid),
                 koodistoService.searchFirst(parentKomo.getKoulutusKoodiUri())));

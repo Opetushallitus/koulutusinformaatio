@@ -131,4 +131,17 @@ public interface LearningOpportunityResource {
     @Produces(MediaType.APPLICATION_JSON)
     public SuggestedTermsResultDTO getSuggestedTerms(@PathParam("term") String term,
                                                      @QueryParam("lang") String lang);
+
+    /**
+     * 
+     * Fetches the child learning opportunities of the learning opportunity given as parameter.
+     * 
+     * @param parentId the id of the parent learning opportunity
+     * @param lang language
+     * @return list of child learning opportunities
+     */
+    @GET
+    @Path("children/{parentId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public LOSearchResultListDTO getChildLearningOpportunities(@PathParam("parentId") String parentId);
 }

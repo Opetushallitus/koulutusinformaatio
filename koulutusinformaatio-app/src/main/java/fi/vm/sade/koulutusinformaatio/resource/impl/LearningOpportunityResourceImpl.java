@@ -155,4 +155,14 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
             throw KIExceptionHandler.resolveException(e);
         }
     }
+    
+    @Override
+    public LOSearchResultListDTO getChildLearningOpportunities(String parentId) {
+        try {
+            LOSearchResultList childlearningOpportunities = searchService.getChildLearningOpportunities(parentId);
+            return modelMapper.map(childlearningOpportunities, LOSearchResultListDTO.class);
+        } catch (SearchException e) {
+            throw KIExceptionHandler.resolveException(e);
+        }
+    }
 }

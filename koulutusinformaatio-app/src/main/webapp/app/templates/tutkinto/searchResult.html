@@ -6,6 +6,16 @@
         <span>{{lo.prerequisite}}</span><br />
     </span>
     <span>{{lo.lopName}}</span>
+    <button data-ng-show="!lo.expanded" type="button" data-ng-click=kiVocationalResultClicked(lo)><span data-ki-i18n="avaa"></span></button>
+    <button data-ng-show="lo.expanded" type="button" data-ng-click=kiVocationalResultClicked(lo)><span data-ki-i18n="sulje"></span></button>
 </div>
 <span data-ki-as-state class="state-label">&nbsp;</span>
 <div class="clear"></div>
+<div data-ng-show="lo.expanded">
+	<div>
+		<h2><span data-ki-i18n="koulutusohjelmat"></span></h2>
+		<ul>
+			<li data-ng-repeat="ko in lo.children"><a href="{{ko.linkHref}}">{{ko.name}}</a></li>
+		</ul>
+	</div>
+</div>

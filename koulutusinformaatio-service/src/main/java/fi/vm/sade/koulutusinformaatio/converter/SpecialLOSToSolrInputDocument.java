@@ -19,6 +19,7 @@ package fi.vm.sade.koulutusinformaatio.converter;
 import com.google.common.collect.Lists;
 
 import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.SolrFields.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 
@@ -122,6 +123,35 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
             doc.addField(SolrFields.LearningOpportunity.CONTENT_FI, childLOI.getContent().getTranslations().get("fi"));
             doc.addField(SolrFields.LearningOpportunity.CONTENT_SV, childLOI.getContent().getTranslations().get("sv"));
             doc.addField(SolrFields.LearningOpportunity.CONTENT_EN, childLOI.getContent().getTranslations().get("en"));
+        }
+        
+        if (childLOI.getTeachingLanguages() != null && !childLOI.getTeachingLanguages().isEmpty()) {
+            Code teachLang = childLOI.getTeachingLanguages().get(0);
+            doc.addField(LearningOpportunity.TEACHING_LANG_FI, teachLang.getName().getTranslations().get("fi"));
+            doc.addField(LearningOpportunity.TEACHING_LANG_SV, teachLang.getName().getTranslations().get("sv"));
+            doc.addField(LearningOpportunity.TEACHING_LANG_EN, teachLang.getName().getTranslations().get("en"));
+        }
+        
+        if (childLOI.getFormOfTeaching() != null && !childLOI.getFormOfTeaching().isEmpty()) {
+            I18nText fot = childLOI.getFormOfTeaching().get(0);
+            doc.addField(LearningOpportunity.FORM_OF_TEACHING_FI, fot.getTranslations().get("fi"));
+            doc.addField(LearningOpportunity.FORM_OF_TEACHING_SV, fot.getTranslations().get("sv"));
+            doc.addField(LearningOpportunity.FORM_OF_TEACHING_EN, fot.getTranslations().get("en"));
+        }
+        
+        if (specialLOS.getCreditValue() != null && specialLOS.getCreditUnit() != null) {
+            doc.addField(LearningOpportunity.CREDITS_FI, String.format("%s %s", specialLOS.getCreditValue(), specialLOS.getCreditUnit().getTranslations().get("fi")));
+            doc.addField(LearningOpportunity.CREDITS_SV, String.format("%s %s", specialLOS.getCreditValue(), specialLOS.getCreditUnit().getTranslations().get("sv")));
+            doc.addField(LearningOpportunity.CREDITS_EN, String.format("%s %s", specialLOS.getCreditValue(), specialLOS.getCreditUnit().getTranslations().get("en")));
+        }
+        
+        if (childLOI.getPlannedDuration() != null && childLOI.getPlannedDurationUnit() != null) {
+            doc.addField(LearningOpportunity.DURATION_FI, String.format("%s %s", childLOI.getPlannedDuration(), 
+                                                                                 childLOI.getPlannedDurationUnit().getTranslations().get("fi")));
+            doc.addField(LearningOpportunity.DURATION_SV, String.format("%s %s", childLOI.getPlannedDuration(), 
+                                                                                 childLOI.getPlannedDurationUnit().getTranslations().get("sv")));
+            doc.addField(LearningOpportunity.DURATION_EN, String.format("%s %s", childLOI.getPlannedDuration(), 
+                                                                                 childLOI.getPlannedDurationUnit().getTranslations().get("en")));
         }
 
         for (ApplicationOption ao : childLOI.getApplicationOptions()) {

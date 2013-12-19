@@ -239,6 +239,28 @@ service('ChildLocationsService', ['$http', '$timeout', '$q', 'LanguageService', 
 }]).
 
 /**
+ * Service for retrieving child learning opportunities of a learning opportunity given as a parameter.
+ */
+service('ChildLearningOpportunitiesService', ['$http', '$timeout', '$q', 'LanguageService', function($http, $timeout, $q, LanguageService) {
+
+    return {
+        query: function(parentId) {
+            var deferred = $q.defer();
+            
+            $http.get('../lo/children/' + parentId, {}).
+            success(function(result) {
+                deferred.resolve(result);
+            }).
+            error(function(result) {
+                deferred.reject(result);
+            });
+
+            return deferred.promise;
+        }
+    }
+}]).
+
+/**
  *  Resource for requesting parent LO data
  */
 service('ParentLOService', ['$http', '$timeout', '$q', 'LanguageService', 'ParentLOTransformer', function($http, $timeout, $q, LanguageService, ParentLOTransformer) {
