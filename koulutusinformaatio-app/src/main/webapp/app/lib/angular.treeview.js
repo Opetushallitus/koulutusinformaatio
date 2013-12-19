@@ -180,6 +180,9 @@ angular.module( 'angularTreeview', [] ).
 				} else {
 					cache[treeId] = [];
 				}
+			},
+			clear: function() {
+				cache = [];
 			}
 		}
 	})

@@ -3762,14 +3762,14 @@ div[data-tree-model] li .expanded {
   width: 10px;
   height: 10px;
   margin-right: 5px;
-  background: transparent url("../img/fasetti-open-close.png") no-repeat scroll -11px 0; }
+  background: transparent url("../img/fasetti-miinus.png") no-repeat scroll 0 0; }
 
 div[data-tree-model] li .collapsed {
   display: inline-block;
   width: 10px;
   height: 10px;
   margin-right: 5px;
-  background: transparent url("../img/fasetti-open-close.png") no-repeat scroll 0 0; }
+  background: transparent url("../img/fasetti-plus.png") no-repeat scroll 0 0; }
 
 div[data-tree-model] li i, div[data-tree-model] li span {
   cursor: pointer; }
