@@ -25,7 +25,6 @@ import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LocationFields;
 import fi.vm.sade.koulutusinformaatio.domain.SolrFields.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
-import fi.vm.sade.koulutusinformaatio.service.impl.query.AutocompleteQuery;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.LearningOpportunityQuery;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.LocationQuery;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.ProviderQuery;
@@ -45,9 +44,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Component
@@ -139,20 +135,14 @@ public class SearchServiceSolrImpl implements SearchService {
                 String prerequisiteCodeText = doc.get("prerequisiteCode") != null ? doc.get("prerequisiteCode").toString() : null;
                 String credits = doc.get(LearningOpportunity.CREDITS) != null ? doc.get(LearningOpportunity.CREDITS).toString() : null;
                 String lopName = doc.get(LearningOpportunity.LOP_NAME) != null ? doc.get(LearningOpportunity.LOP_NAME).toString() : null;
-                String edType = doc.get(LearningOpportunity.EDUCATION_TYPE) != null ? getSolrValue(doc, LearningOpportunity.EDUCATION_TYPE) : null;
-                
-                String teachingLang = doc.get(String.format("%s%s", LearningOpportunity.TEACHING_LANG_, lang)) != null ? doc.get(String.format("%s%s", LearningOpportunity.TEACHING_LANG_, lang)).toString() : null;
-                String formOfTeaching = doc.get(String.format("%s%s", LearningOpportunity.FORM_OF_TEACHING_, lang)) != null ? doc.get(String.format("%s%s", LearningOpportunity.FORM_OF_TEACHING_, lang)).toString() : null;
-                String duration = doc.get(String.format("%s%s", LearningOpportunity.DURATION_, lang)) != null ? doc.get(String.format("%s%s", LearningOpportunity.DURATION_, lang)).toString() : null;
-                String qualification = doc.get(String.format("%s%s", LearningOpportunity.QUALIFICATION_, lang)) != null ? getSolrValue(doc, String.format("%s%s", LearningOpportunity.QUALIFICATION_, lang)) : null;
-                String dateStr = doc.get(LearningOpportunity.START_DATE_SORT) != null ? getStartDateStr(doc) : null;
-                
+                String edType = doc.get(LearningOpportunity.EDUCATION_TYPE) != null ? getEdType(doc) : null;
+
                 LOSearchResult lo = null;
                 try {
                     lo = new LOSearchResult(
                             id, doc.get("name").toString(),
                             doc.get("lopId").toString(), lopName, prerequisiteText,
-                            prerequisiteCodeText, parentId, losId, doc.get("type").toString(), credits, edType, teachingLang, formOfTeaching, duration, qualification, dateStr);
+                            prerequisiteCodeText, parentId, losId, doc.get("type").toString(), credits, edType);
 
                     updateAsStatus(lo, doc);
                 } catch (Exception e) {
@@ -167,16 +157,8 @@ public class SearchServiceSolrImpl implements SearchService {
         return searchResultList;
     }
 
-    private String getStartDateStr(SolrDocument doc) {
-        
-            Date date = (Date)(doc.get(LearningOpportunity.START_DATE_SORT));
-            DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
-            return df.format(date);
-           
-    }
-
-    private String getSolrValue(SolrDocument doc, String field) {
-        for (Object valO  : doc.getFieldValues(field)) {
+    private String getEdType(SolrDocument doc) {
+        for (Object valO  : doc.getFieldValues(LearningOpportunity.EDUCATION_TYPE)) {
             String val = valO.toString();
             if (!val.equals(SolrConstants.ED_TYPE_KAKSOIS)) {
                 return val;
@@ -496,7 +478,7 @@ public class SearchServiceSolrImpl implements SearchService {
     public SuggestedTermsResult searchSuggestedTerms(String term, String lang)
             throws SearchException {
         
-        SolrQuery query = new AutocompleteQuery(term, lang);
+        SolrQuery query = new LearningOpportunityQuery(term, lang);
         
         SuggestedTermsResult result = new SuggestedTermsResult();
         
@@ -531,45 +513,6 @@ public class SearchServiceSolrImpl implements SearchService {
         }
         
         return result;
-    }
-
-    @Override
-    public LOSearchResultList getChildLearningOpportunities(String parentId) throws SearchException {
-        LOSearchResultList searchResultList = new LOSearchResultList();
-        SolrQuery query = new LearningOpportunityQuery(parentId);
-        
-        QueryResponse response = null;
-        try {
-            response = loHttpSolrServer.query(query);
-            searchResultList.setTotalCount(response.getResults().getNumFound());
-        } catch (SolrServerException e) {
-            throw new SearchException("Solr search error occured.");
-        }
-
-        for (SolrDocument doc : response.getResults()) {
-            String losId = doc.get("losId") != null ? doc.get("losId").toString() : null;
-            String id = doc.get("losId") != null ? doc.get("losId").toString() : doc.get("id").toString();
-            String prerequisiteText = doc.get("prerequisite") != null ? doc.get("prerequisite").toString() : null;
-            String prerequisiteCodeText = doc.get("prerequisiteCode") != null ? doc.get("prerequisiteCode").toString() : null;
-            String credits = doc.get(LearningOpportunity.CREDITS) != null ? doc.get(LearningOpportunity.CREDITS).toString() : null;
-            String lopName = doc.get(LearningOpportunity.LOP_NAME) != null ? doc.get(LearningOpportunity.LOP_NAME).toString() : null;
-            String edType = doc.get(LearningOpportunity.EDUCATION_TYPE) != null ? getSolrValue(doc, LearningOpportunity.EDUCATION_TYPE) : null;
-
-            LOSearchResult lo = null;
-            try {
-                lo = new LOSearchResult(
-                        id, doc.get("name").toString(),
-                        doc.get("lopId").toString(), lopName, prerequisiteText,
-                        prerequisiteCodeText, parentId, losId, doc.get("type").toString(), credits, edType, null, null, null, null, null);
-
-                updateAsStatus(lo, doc);
-            } catch (Exception e) {
-                continue;
-            }
-            searchResultList.getResults().add(lo);
-        }
-        
-        return searchResultList;
     }
 	
 

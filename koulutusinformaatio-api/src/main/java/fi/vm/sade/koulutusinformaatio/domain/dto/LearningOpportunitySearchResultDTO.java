@@ -41,11 +41,6 @@ public class LearningOpportunitySearchResultDTO {
     private String type;
     private String credits;
     private String educationType;
-    private String teachingLang;
-    private String formOfTeaching;
-    private String duration;
-    private String qualification;
-    private String startDate;
 
     public String getId() {
         return id;
@@ -149,45 +144,5 @@ public class LearningOpportunitySearchResultDTO {
 
     public void setEducationType(String educationType) {
         this.educationType = educationType;
-    }
-    
-    public String getTeachingLang() {
-        return teachingLang;
-    }
-
-    public void setTeachingLang(String teachingLang) {
-        this.teachingLang = teachingLang;
-    }
-
-    public String getFormOfTeaching() {
-        return formOfTeaching;
-    }
-
-    public void setFormOfTeaching(String formOfTeaching) {
-        this.formOfTeaching = formOfTeaching;
-    }
-
-    public String getDuration() {
-        return duration;
-    }
-
-    public void setDuration(String duration) {
-        this.duration = duration;
-    }
-
-    public String getQualification() {
-        return qualification;
-    }
-
-    public void setQualification(String qualification) {
-        this.qualification = qualification;
-    }
-
-    public String getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
     }
 }

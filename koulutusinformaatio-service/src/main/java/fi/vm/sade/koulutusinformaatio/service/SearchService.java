@@ -40,5 +40,4 @@ public interface SearchService {
     List<Location> getDistricts(final String lang) throws SearchException;
     List<Location> getChildLocations(List<String> districts, final String lang) throws SearchException;
     SuggestedTermsResult searchSuggestedTerms(String term, String lang) throws SearchException;
-    LOSearchResultList getChildLearningOpportunities(String parentId) throws SearchException;
 }

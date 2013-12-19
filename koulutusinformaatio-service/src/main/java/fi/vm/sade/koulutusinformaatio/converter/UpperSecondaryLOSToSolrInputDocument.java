@@ -117,35 +117,6 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
             doc.addField(LearningOpportunity.CONTENT_SV, loi.getContent().getTranslations().get("sv"));
             doc.addField(LearningOpportunity.CONTENT_EN, loi.getContent().getTranslations().get("en"));
         }
-        
-        if (loi.getTeachingLanguages() != null && !loi.getTeachingLanguages().isEmpty()) {
-            Code teachLang = loi.getTeachingLanguages().get(0);
-            doc.addField(LearningOpportunity.TEACHING_LANG_FI, teachLang.getName().getTranslations().get("fi"));
-            doc.addField(LearningOpportunity.TEACHING_LANG_SV, teachLang.getName().getTranslations().get("sv"));
-            doc.addField(LearningOpportunity.TEACHING_LANG_EN, teachLang.getName().getTranslations().get("en"));
-        }
-        
-        if (loi.getFormOfTeaching() != null && !loi.getFormOfTeaching().isEmpty()) {
-            I18nText fot = loi.getFormOfTeaching().get(0);
-            doc.addField(LearningOpportunity.FORM_OF_TEACHING_FI, fot.getTranslations().get("fi"));
-            doc.addField(LearningOpportunity.FORM_OF_TEACHING_SV, fot.getTranslations().get("sv"));
-            doc.addField(LearningOpportunity.FORM_OF_TEACHING_EN, fot.getTranslations().get("en"));
-        }
-        
-        if (los.getCreditValue() != null && los.getCreditUnit() != null) {
-            doc.addField(LearningOpportunity.CREDITS_FI, String.format("%s %s", los.getCreditValue(), los.getCreditUnit().getTranslations().get("fi")));
-            doc.addField(LearningOpportunity.CREDITS_SV, String.format("%s %s", los.getCreditValue(), los.getCreditUnit().getTranslations().get("sv")));
-            doc.addField(LearningOpportunity.CREDITS_EN, String.format("%s %s", los.getCreditValue(), los.getCreditUnit().getTranslations().get("en")));
-        }
-        
-        if (loi.getPlannedDuration() != null && loi.getPlannedDurationUnit() != null) {
-            doc.addField(LearningOpportunity.DURATION_FI, String.format("%s %s", loi.getPlannedDuration(), 
-                                                                                 loi.getPlannedDurationUnit().getTranslations().get("fi")));
-            doc.addField(LearningOpportunity.DURATION_SV, String.format("%s %s", loi.getPlannedDuration(), 
-                                                                                 loi.getPlannedDurationUnit().getTranslations().get("sv")));
-            doc.addField(LearningOpportunity.DURATION_EN, String.format("%s %s", loi.getPlannedDuration(), 
-                                                                                 loi.getPlannedDurationUnit().getTranslations().get("en")));
-        }
 
         for (ApplicationOption ao : loi.getApplicationOptions()) {
             if (ao.getApplicationSystem() != null) {

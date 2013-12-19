@@ -6,20 +6,6 @@
         <span>{{lo.prerequisite}}</span><br />
     </span>
     <span>{{lo.lopName}}</span>
-    <button data-ng-show="!lo.expanded" type="button" data-ng-click=kiResultClicked(lo)><span data-ki-i18n="avaa"></span></button>
-    <button data-ng-show="lo.expanded" type="button" data-ng-click=kiResultClicked(lo)><span data-ki-i18n="sulje"></span></button>
 </div>
 <span data-ki-as-state class="state-label">&nbsp;</span>
 <div class="clear"></div>
-<div data-ng-show="lo.expanded">
-	<div>
-		<ul>
-			<li><span data-ki-i18n="koulutus-alkaa"></span>: {{lo.startDate}}</li>
-			<li><span data-ki-i18n="opetuskieli"></span>: {{lo.teachingLang}}</li>
-			<li><span data-ki-i18n="opetusmuoto"></span>: {{lo.formOfTeaching}}</li>
-			<li><span data-ki-i18n="laajuus"></span>: {{lo.credits}}</li>
-			<li><span data-ki-i18n="kesto"></span>: {{lo.duration}}</li>
-			<li><span data-ki-i18n="tutkintonimike"></span>: {{lo.qualification}}</li>
-		</ul>
-	</div>
-</div>
