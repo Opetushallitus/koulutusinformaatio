@@ -17,43 +17,51 @@ window.Config.app.common = {
 window.Config.app.prod = {
 	fi: {
 		frontpageUrl: '/wp/fi/',
-		rekisteriselosteUrl: '/wp/fi/rekisteriseloste/'
+		rekisteriselosteUrl: '/wp/fi/rekisteriseloste/',
+		navigationUrl: '/wp/fi/api/nav/json_nav/'
 	},
 	sv: {
 		frontpageUrl: '/wp/sv/',
-    	rekisteriselosteUrl: '/wp/sv/registerbeskrivning/'
+    	rekisteriselosteUrl: '/wp/sv/registerbeskrivning/',
+    	navigationUrl: '/wp/sv/api/nav/json_nav/'
 	}
 };
 
 window.Config.app.koulutus = {
 	fi: {
 		frontpageUrl: '/wp/fi/',
-		rekisteriselosteUrl: '/wp/fi/'
+		rekisteriselosteUrl: '/wp/fi/',
+		navigationUrl: '/wp/fi/api/nav/json_nav/'
 	},
 	sv: {
 		frontpageUrl: '/wp/sv/',
-    	rekisteriselosteUrl: '/wp/sv/'
+    	rekisteriselosteUrl: '/wp/sv/',
+    	navigationUrl: '/wp/sv/api/nav/json_nav/'
 	}
 };
 
 window.Config.app.qa = {
 	fi: {
 		frontpageUrl: '/wp/fi/',
-		rekisteriselosteUrl: '/wp/fi/rekisteriseloste/'
+		rekisteriselosteUrl: '/wp/fi/rekisteriseloste/',
+		navigationUrl: '/wp/fi/api/nav/json_nav/'
 	},
 	sv: {
 		frontpageUrl: '/wp/sv/',
-    	rekisteriselosteUrl: '/wp/sv/registerbeskrivning/'
+    	rekisteriselosteUrl: '/wp/sv/registerbeskrivning/',
+    	navigationUrl: '/wp/sv/api/nav/json_nav/'
 	}
 };
 
 window.Config.app.dev = {
 	fi: {
 		frontpageUrl: '/wp/fi/',
-		rekisteriselosteUrl: '/wp/fi/'
+		rekisteriselosteUrl: '/wp/fi/',
+		navigationUrl: '/wp/fi/api/nav/json_nav/'
 	},
 	sv: {
 		frontpageUrl: '/wp/sv/',
-    	rekisteriselosteUrl: '/wp/sv/'
+    	rekisteriselosteUrl: '/wp/sv/',
+    	navigationUrl: '/wp/sv/api/nav/json_nav/'
 	}
 };

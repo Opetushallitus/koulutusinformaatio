@@ -9,7 +9,7 @@ directive('kiNavigation', function() {
         template: '<ul data-tree data-val="navigation" data-level="1"></ul>',
         controller: function($scope, NavigationService) {
             NavigationService.query().then(function(result) {
-                $scope.navigation = result;
+                $scope.navigation = result.nav;
             });
         }
     }
@@ -33,11 +33,10 @@ return {
         });
         
         var update = function() {
-            console.log(scope.level);
             var template = '';
 
             if (angular.isArray(scope.val)) {
-                template += '<ul class="level-{{level}}"><li ng-repeat="item in val"><a data-ng-href="item.link">{{item.label}}</a><ul data-tree data-val="item.children" data-level="level + 1"></ul></li></ul>';
+                template += '<ul class="level-{{level}}"><li ng-repeat="item in val"><a data-ng-href="{{item.link}}">{{item.title}}</a><ul data-tree data-val="item.subnav" data-level="level + 1"></ul></li></ul>';
             }
 
             var newElement = angular.element(template);

@@ -1494,10 +1494,14 @@ hr {
 #sitefooter,
 #sitecontent,
 #page,
-.navigation-container,
 footer {
   width: auto;
   max-width: 960px;
+  margin: 0px auto; }
+
+.navigation-container {
+  width: auto;
+  max-width: 1170px;
   margin: 0px auto; }
 
 footer {
@@ -3618,26 +3622,18 @@ nav {
         nav ul li:hover a, nav ul li:hover a:link, nav ul li:hover a:visited {
           color: #333333; }
         nav ul li:hover > ul {
-          visibility: visible;
-          -webkit-transition: all 250ms ease-in-out;
-          -moz-transition: all 250ms ease-in-out;
-          -o-transition: all 250ms ease-in-out;
-          -ms-transition: all 250ms ease-in-out;
-          transition: all 250ms ease-in-out;
-          opacity: 1; }
+          display: block; }
       nav ul li a, nav ul li a:link, nav ul li a:visited {
         display: block;
         padding: 10px;
         color: white;
         text-decoration: none; }
     nav ul ul {
-      visibility: hidden;
       background: #FFFFFF;
       border-radius: 0px;
       padding: 0;
       position: absolute;
-      top: 100%;
-      opacity: 0; }
+      display: none; }
       nav ul ul li {
         float: none;
         position: relative; }
