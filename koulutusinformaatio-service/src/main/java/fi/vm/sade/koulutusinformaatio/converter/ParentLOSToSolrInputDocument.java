@@ -208,7 +208,7 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
             }
         }
 
-        SolrUtil.addApplicationDates(doc, childLOI.getApplicationOptions());
+        //SolrUtil.addApplicationDates(doc, childLOI.getApplicationOptions());
         
         indexFacetFields(childLOS, childLOI, doc);
     }
