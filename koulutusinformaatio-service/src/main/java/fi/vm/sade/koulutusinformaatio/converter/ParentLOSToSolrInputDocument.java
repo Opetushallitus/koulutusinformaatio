@@ -37,12 +37,6 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         FacetIndexer fIndexer = new FacetIndexer();
         docs.add(createParentDoc(parent));
         docs.addAll(fIndexer.createFacetsDocs(parent));
-        
-        /*for (ChildLOS childLOS : parent.getChildren()) {
-            for (ChildLOI childLOI : childLOS.getLois()) {
-                docs.add(createChildDoc(childLOS, childLOI, parent));
-            }
-        }*/
 
         return docs;
     }
