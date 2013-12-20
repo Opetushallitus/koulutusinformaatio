@@ -52,6 +52,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static junit.framework.Assert.assertEquals;
 
+import static junit.framework.Assert.assertEquals;
+
 /**
  * @author Hannu Lyytikainen
  */
