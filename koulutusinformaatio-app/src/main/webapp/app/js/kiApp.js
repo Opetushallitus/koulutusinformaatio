@@ -61,6 +61,11 @@ var kiApp = angular.module('kiApp',
     });
 }])
 
+.config(function($httpProvider){
+    $httpProvider.defaults.useXDomain = true;
+    delete $httpProvider.defaults.headers.common['X-Requested-With'];
+})
+
 .constant('kiAppConstants', {
     searchResultsPerPage: 25,
     defaultSortCriteria: '0',
