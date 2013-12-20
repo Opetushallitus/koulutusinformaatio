@@ -202,7 +202,9 @@ public class IndexerServiceImpl implements IndexerService {
      */
     @Override
     public HttpSolrServer getLoCollectionToUpdate() {
-        if (this.loHttpAliasName.equals(this.loHttpSolrName)) {
+        if ((this.loHttpAliasName != null) 
+                && (this.loHttpSolrName != null) 
+                && this.loHttpAliasName.equals(this.loHttpSolrName)) {
             return this.loUpdateHttpSolrServer;
         }
 
