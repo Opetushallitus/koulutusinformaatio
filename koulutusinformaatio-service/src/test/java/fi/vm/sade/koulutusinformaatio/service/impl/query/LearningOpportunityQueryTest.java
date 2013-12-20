@@ -57,12 +57,5 @@ public class LearningOpportunityQueryTest {
         assertEquals("edismax", q.getParams("defType")[0]);
     }
     
-    @Test
-    public void testAutocompleteQuery() {
-        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, LANG);
-        assertNotNull(q);        
-        assertEquals(STAR, q.getQuery().toString());
-        assertEquals("edismax", q.getParams("defType")[0]);
-        assertEquals(2, q.getFacetFields().length);
-    }
+
 }

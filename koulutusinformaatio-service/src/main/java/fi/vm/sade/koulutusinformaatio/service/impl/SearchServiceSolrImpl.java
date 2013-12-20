@@ -25,6 +25,7 @@ import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LocationFields;
 import fi.vm.sade.koulutusinformaatio.domain.SolrFields.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
+import fi.vm.sade.koulutusinformaatio.service.impl.query.AutocompleteQuery;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.LearningOpportunityQuery;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.LocationQuery;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.ProviderQuery;
@@ -478,7 +479,7 @@ public class SearchServiceSolrImpl implements SearchService {
     public SuggestedTermsResult searchSuggestedTerms(String term, String lang)
             throws SearchException {
         
-        SolrQuery query = new LearningOpportunityQuery(term, lang);
+        SolrQuery query = new AutocompleteQuery(term, lang);
         
         SuggestedTermsResult result = new SuggestedTermsResult();
         
