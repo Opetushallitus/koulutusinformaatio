@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class LearningOpportunityQuery extends SolrQuery {
 
-    private final static List<String> FIELDS = Lists.newArrayList(
+    public final static List<String> FIELDS = Lists.newArrayList(
             "text_fi",
             "text_sv",
             "text_en",
@@ -95,35 +95,7 @@ public class LearningOpportunityQuery extends SolrQuery {
         }
     }
     
-    /*
-     * For querying suggested terms (autocomplete)
-     */
-    public LearningOpportunityQuery(String term, String lang) {
-        super("*");
-        this.setRows(0);
-        
-        //leaving the facet and timestamp docs out
-        this.addFilterQuery(String.format("-%s:%s", LearningOpportunity.ID, SolrConstants.TIMESTAMP_DOC));
-        this.addFilterQuery(String.format("-%s:%s", LearningOpportunity.TYPE, SolrConstants.TYPE_FACET));
-        
-        addSuggestedTermsFacetToQuery(term, lang);
-        
-        this.setParam("defType", "edismax");
-        this.setParam(DisMaxParams.QF, Joiner.on(" ").join(FIELDS));
-        this.setParam("q.op", "AND");
-        
-    }
-    
-    private void addSuggestedTermsFacetToQuery(String term, String lang) {
-        this.setFacet(true);
-        if (term != null) {
-            this.setFacetPrefix(term.toLowerCase());
-        }
-        this.addFacetField(LearningOpportunity.NAME_AUTO);
-        this.addFacetField(String.format("%s_%s", LearningOpportunity.FREE_AUTO, lang.toLowerCase()));
-        this.setFacetMinCount(1);
-        this.setFacetLimit(5);
-    }
+
 
     private void addFacetsToQuery(String lang, List<String> facetFilters, String ongoingFQ, String upcomingFQ) {
         this.setFacet(true);
