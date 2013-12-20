@@ -1499,6 +1499,11 @@ footer {
   max-width: 960px;
   margin: 0px auto; }
 
+.navigation-container {
+  width: auto;
+  max-width: 1170px;
+  margin: 0px auto; }
+
 footer {
   margin-top: 220px;
   margin-bottom: 20px; }
@@ -2280,8 +2285,7 @@ table.striped {
     display: inline-block;
     height: 26px;
     width: 26px;
-    color: transparent;
-    font-size: 0px; }
+    color: transparent; }
     #social li a.facebook {
       background: transparent url("../img/social/facebook.png") no-repeat scroll 0 0; }
     #social li a.linked_in {
@@ -3477,6 +3481,68 @@ button, .button {
 
 .modal-open {
   overflow: hidden; }
+
+nav {
+  background-color: #06526b;
+  font-size: 16px;
+  line-height: 20px;
+  z-index: 1001;
+  position: relative; }
+  nav ul {
+    padding: 0px;
+    margin: 0px;
+    list-style: none;
+    position: relative;
+    display: block;
+    -webkit-box-shadow: 0px 1px 1px 0 rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0px 1px 1px 0 rgba(0, 0, 0, 0.5);
+    -o-box-shadow: 0px 1px 1px 0 rgba(0, 0, 0, 0.5);
+    -ms-box-shadow: 0px 1px 1px 0 rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 1px 1px 0 rgba(0, 0, 0, 0.5); }
+    nav ul.level-1 {
+      box-shadow: none; }
+      nav ul.level-1 > li {
+        max-width: none;
+        width: auto; }
+    nav ul:after {
+      content: "";
+      clear: both;
+      display: block; }
+    nav ul li {
+      float: left;
+      text-align: left;
+      width: 220px;
+      max-width: 300px; }
+      nav ul li:hover {
+        background: #FFFFFF; }
+        nav ul li:hover a, nav ul li:hover a:link, nav ul li:hover a:visited {
+          color: #333333; }
+        nav ul li:hover > ul {
+          display: block; }
+      nav ul li a, nav ul li a:link, nav ul li a:visited {
+        display: block;
+        padding: 10px;
+        color: white;
+        text-decoration: none; }
+    nav ul ul {
+      background: #FFFFFF;
+      border-radius: 0px;
+      padding: 0;
+      position: absolute;
+      display: none; }
+      nav ul ul li {
+        float: none;
+        position: relative; }
+        nav ul ul li a {
+          padding: 10px;
+          color: #fff;
+          font-size: 13px; }
+          nav ul ul li a:hover {
+            background: #feedbd; }
+      nav ul ul ul {
+        position: absolute;
+        left: 100%;
+        top: 0; }
 
 /*** Main navigation
 **************************************************************/

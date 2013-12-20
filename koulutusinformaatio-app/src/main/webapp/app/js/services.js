@@ -1,6 +1,6 @@
 /*  Services */
 
-angular.module('kiApp.services', ['ngResource']).
+angular.module('kiApp.services', ['ngResource', 'kiApp.NavigationService']).
 
 service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analytics', 'FilterService', function($http, $timeout, $q, $analytics, FilterService) {
     

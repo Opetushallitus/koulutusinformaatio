@@ -1,6 +1,6 @@
 /* Directives */
 
-angular.module('kiApp.directives', []).
+angular.module('kiApp.directives', ['kiApp.Navigation']).
 
 /**
  *  Updates the title element of the page.
