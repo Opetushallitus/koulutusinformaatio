@@ -76,30 +76,25 @@ public class SearchServiceSolrImpl implements SearchService {
     public List<Provider> searchLearningOpportunityProviders(
             String term, String asId, String baseEducation, boolean vocational, boolean nonVocational, int start, int rows) throws SearchException {
         List<Provider> providers = new ArrayList<Provider>();
-        String startswith = term.trim();
-        if (!startswith.isEmpty()) {
+        SolrQuery query = new ProviderQuery(term, asId, baseEducation, start, rows, vocational, nonVocational);
 
-            SolrQuery query = new ProviderQuery(term, asId, baseEducation, start, rows, vocational, nonVocational);
+        QueryResponse queryResponse = null;
+        try {
+            queryResponse = lopHttpSolrServer.query(query);
+        } catch (SolrServerException e) {
+            throw new SearchException("Solr search error occured.");
+        }
 
-            QueryResponse queryResponse = null;
-            try {
-                queryResponse = lopHttpSolrServer.query(query);
-            } catch (SolrServerException e) {
-                throw new SearchException("Solr search error occured.");
-            }
+        for (SolrDocument result : queryResponse.getResults()) {
+            Provider provider = new Provider();
+            provider.setId(result.get("id").toString());
 
-            for (SolrDocument result : queryResponse.getResults()) {
-                Provider provider = new Provider();
-                provider.setId(result.get("id").toString());
+            // TODO: i18n handling
+            Map<String, String> texts = Maps.newHashMap();
+            texts.put("fi", result.get("name").toString());
 
-                // TODO: i18n handling
-                Map<String, String> texts = Maps.newHashMap();
-                texts.put("fi", result.get("name").toString());
-
-                provider.setName(new I18nText(texts));
-                providers.add(provider);
-            }
-
+            provider.setName(new I18nText(texts));
+            providers.add(provider);
         }
         return providers;
     }
