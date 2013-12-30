@@ -77,7 +77,7 @@ public class SearchServiceSolrImpl implements SearchService {
         String startswith = term.trim();
         if (!startswith.isEmpty()) {
 
-            SolrQuery query = new ProviderQuery(term + "*", asId, baseEducation, start, rows, vocational, nonVocational);
+            SolrQuery query = new ProviderQuery(term, asId, baseEducation, start, rows, vocational, nonVocational);
 
             QueryResponse queryResponse = null;
             try {
