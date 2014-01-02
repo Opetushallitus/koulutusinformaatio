@@ -31,7 +31,10 @@ import java.util.List;
 /**
  * @author Hannu Lyytikainen
  */
-public class UpperSecondaryLOIToDTO {
+public final class UpperSecondaryLOIToDTO {
+
+    private UpperSecondaryLOIToDTO() {
+    }
 
     public static UpperSecondaryLearningOpportunityInstanceDTO convert(UpperSecondaryLOI loi, String lang, String uiLang) {
         UpperSecondaryLearningOpportunityInstanceDTO dto =

@@ -116,7 +116,7 @@ public class KoodistoServiceImpl implements KoodistoService {
         try {
             List<KoodiType> codes = koodiService.getKoodisForKoodisto(koodistoUri, version);
             if (codes == null || codes.isEmpty()) {
-                LOGGER.warn(String.format("No koodis found with koodistoUri %, version %d", koodistoUri, version));
+                LOGGER.warn(String.format("No koodis found with koodistoUri %s, version %d", koodistoUri, version));
             }
             return convertAllToCode(codes);
         } catch (GenericFault e) {

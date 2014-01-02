@@ -22,7 +22,10 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.UpperSecondaryLearningOpportuni
 /**
  * @author Hannu Lyytikainen
  */
-public class UpperSecondaryLOSToDTO {
+public final class UpperSecondaryLOSToDTO {
+
+    private UpperSecondaryLOSToDTO() {
+    }
 
     public static UpperSecondaryLearningOpportunitySpecificationDTO convert(
             final UpperSecondaryLOS los, final String lang, final String uiLang) {

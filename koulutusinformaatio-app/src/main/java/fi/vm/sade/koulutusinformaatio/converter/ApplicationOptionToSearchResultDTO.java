@@ -24,7 +24,10 @@ import java.util.Collections;
 /**
  * @author Mikko Majapuro
  */
-public class ApplicationOptionToSearchResultDTO {
+public final class ApplicationOptionToSearchResultDTO {
+
+    private ApplicationOptionToSearchResultDTO() {
+    }
 
     public static ApplicationOptionSearchResultDTO convert(final ApplicationOption applicationOption, final String lang) {
         if (applicationOption != null) {

@@ -26,7 +26,10 @@ import java.util.List;
 /**
  * @author Hannu Lyytikainen
  */
-public class ExamToDTO {
+public final class ExamToDTO {
+
+    private ExamToDTO() {
+    }
 
     public static ExamDTO convert(Exam exam, String lang) {
         if (exam != null)  {

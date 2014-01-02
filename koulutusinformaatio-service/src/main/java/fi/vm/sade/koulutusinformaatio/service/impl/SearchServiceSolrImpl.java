@@ -387,28 +387,26 @@ public class SearchServiceSolrImpl implements SearchService {
         Date now = new Date();
         Date nextStarts = null;
 
-        for (String startKey : doc.keySet()) {
-            if (startKey.startsWith(AS_START_DATE_PREFIX)) {
+        for (Map.Entry<String, Object> start : doc.entrySet()) {
+            if (start.getKey().startsWith(AS_START_DATE_PREFIX)) {
                 String endKey = new StringBuilder().append(AS_END_DATE_PREFIX)
-                        .append(startKey.split("_")[1]).toString();
+                        .append(start.getKey().split("_")[1]).toString();
 
-                Date start = ((List<Date>) doc.get(startKey)).get(0);
-                Date end = ((List<Date>) doc.get(endKey)).get(0);
+                Date startDate = ((List<Date>) start.getValue()).get(0);
+                Date endDate = ((List<Date>) doc.get(endKey)).get(0);
 
-                if (start.before(now) && now.before(end)) {
+                if (startDate.before(now) && now.before(endDate)) {
                     lo.setAsOngoing(true);
                     return;
                 }
 
-                if ((nextStarts == null && start.after(now)) || (start.after(now) && start.before(nextStarts))) {
-                    nextStarts = start;
+                if ((nextStarts == null && startDate.after(now)) || (startDate.after(now) && startDate.before(nextStarts))) {
+                    nextStarts = startDate;
                 }
-
             }
         }
 
         lo.setNextApplicationPeriodStarts(nextStarts);
-
     }
 
     private List<String> createParameter(String value) {

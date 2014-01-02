@@ -26,7 +26,10 @@ import java.util.List;
 /**
  * @author Hannu Lyytikainen
  */
-public class ExamEventToDTO {
+public final class ExamEventToDTO {
+
+    private ExamEventToDTO() {
+    }
 
     public static ExamEventDTO convert(final ExamEvent event, final String lang) {
         if (event != null) {

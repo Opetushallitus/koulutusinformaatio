@@ -22,7 +22,10 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.AddressDTO;
 /**
  * @author Mikko Majapuro
  */
-public class AddressToDTO {
+public final class AddressToDTO {
+
+    private AddressToDTO() {
+    }
 
     public static AddressDTO convert(final Address address) {
         if (address != null) {

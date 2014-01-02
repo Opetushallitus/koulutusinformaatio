@@ -38,7 +38,6 @@ public class SearchEngineFilter implements Filter {
 
         if (request.getParameterMap().containsKey(escapedFragment)) {
             HttpServletRequest httpRequest = (HttpServletRequest) request;
-            String url = httpRequest.getRequestURI();
             String newUri = String.format("snapshot/%s.html", httpRequest.getParameter(escapedFragment).split("/")[2]);
             httpRequest.getRequestDispatcher(newUri).forward(request, response);
         }

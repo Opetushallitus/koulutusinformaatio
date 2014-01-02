@@ -147,12 +147,12 @@ public class LOIObjectCreator extends ObjectCreator {
             Map<String, List<String>> kielivalikoimat = komoto.getTarjotutKielet();
             List<LanguageSelection> languageSelection = Lists.newArrayList();
 
-            for (String oppiaine : kielivalikoimat.keySet()) {
+            for (Map.Entry<String, List<String>> oppiaine : kielivalikoimat.entrySet()) {
                 List<I18nText> languages = Lists.newArrayList();
-                for (String kieliKoodi : kielivalikoimat.get(oppiaine)) {
+                for (String kieliKoodi : oppiaine.getValue()) {
                     languages.add(koodistoService.searchFirst(kieliKoodi));
                 }
-                languageSelection.add(new LanguageSelection(oppiaine, languages));
+                languageSelection.add(new LanguageSelection(oppiaine.getKey(), languages));
             }
             loi.setLanguageSelection(languageSelection);
         }

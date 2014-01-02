@@ -13,7 +13,10 @@ import java.util.List;
 /**
  * @author Hannu Lyytikainen
  */
-public class ChildLOIToDTO {
+public final class ChildLOIToDTO {
+
+    private ChildLOIToDTO() {
+    }
 
     public static ChildLearningOpportunityInstanceDTO convert(ChildLOI childLOI, String lang, String uiLang) {
         if (childLOI != null) {

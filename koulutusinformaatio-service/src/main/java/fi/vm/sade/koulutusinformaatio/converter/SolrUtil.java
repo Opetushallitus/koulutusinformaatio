@@ -25,16 +25,19 @@ import java.util.Map;
 /**
  * @author Hannu Lyytikainen
  */
-public class SolrUtil {
+public final class SolrUtil {
+
+    private SolrUtil() {
+    }
 
     private static final String FALLBACK_LANG = "fi";
 
     public static String resolveTranslationInTeachingLangUseFallback(List<Code> teachingLanguages, Map<String, String> translations) {
         String translation = null;
         for (Code teachingLanguage : teachingLanguages) {
-            for (String key : translations.keySet()) {
-                if (teachingLanguage.getValue().equalsIgnoreCase(key)) {
-                    translation = translations.get(key);
+            for (Map.Entry<String, String> availableTranslation : translations.entrySet()) {
+                if (teachingLanguage.getValue().equalsIgnoreCase(availableTranslation.getKey())) {
+                    translation = availableTranslation.getValue();
                 }
             }
         }

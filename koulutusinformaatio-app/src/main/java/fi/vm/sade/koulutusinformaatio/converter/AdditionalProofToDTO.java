@@ -22,7 +22,10 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.AdditionalProofDTO;
 /**
  * @author Hannu Lyytikainen
  */
-public class AdditionalProofToDTO {
+public final class AdditionalProofToDTO {
+
+    private AdditionalProofToDTO() {
+    }
 
     public static AdditionalProofDTO convert(AdditionalProof ap, String lang) {
         if (ap != null) {

@@ -22,7 +22,10 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.SpecialLearningOpportunitySpeci
 /**
  * @author Hannu Lyytikainen
  */
-public class SpecialLOSToDTO {
+public final class SpecialLOSToDTO {
+
+    private SpecialLOSToDTO() {
+    }
 
     public static SpecialLearningOpportunitySpecificationDTO convert(SpecialLOS los, String lang, String uiLang) {
         SpecialLearningOpportunitySpecificationDTO dto = new SpecialLearningOpportunitySpecificationDTO();
