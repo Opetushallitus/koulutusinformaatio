@@ -4,16 +4,13 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.mongodb.DBCollection;
 import fi.vm.sade.koulutusinformaatio.dao.*;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunitySpecificationEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.*;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.modelmapper.ModelMapper;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -22,7 +19,7 @@ import static org.mockito.Mockito.*;
 /**
  * @author Mikko Majapuro
  */
-public class EducationDataUpdateServiceImplTest {
+public class EducationDataUpdateServiceImplTest extends AbstractEducationServiceTest {
 
     private EducationDataUpdateServiceImpl service;
     private ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO;
@@ -42,40 +39,14 @@ public class EducationDataUpdateServiceImplTest {
     @Before
     public void setUp() {
         ModelMapper modelMapper = new ModelMapper();
-        parentLearningOpportunitySpecificationDAO = mock(ParentLearningOpportunitySpecificationDAO.class);
-        ploCollection = mock(DBCollection.class);
-        ParentLearningOpportunitySpecificationEntity plo = new ParentLearningOpportunitySpecificationEntity();
-        String ploOid = "1.2.3";
-        plo.setId(ploOid);
-        when(parentLearningOpportunitySpecificationDAO.getCollection()).thenReturn(ploCollection);
-        when(parentLearningOpportunitySpecificationDAO.get(eq("1.2.3"))).thenReturn(plo);
-        applicationOptionDAO = mock(ApplicationOptionDAO.class);
-        aoCollection = mock(DBCollection.class);
-        when(applicationOptionDAO.getCollection()).thenReturn(aoCollection);
-
-        List<ApplicationOptionEntity> aos = new ArrayList<ApplicationOptionEntity>();
-        ApplicationOptionEntity ao = new ApplicationOptionEntity();
-        ao.setId("8.9.0");
-        aos.add(ao);
-        when(applicationOptionDAO.find(eq("1.1.1"), eq("9.9.9"), eq("1"), eq(true), eq(true))).thenReturn(aos);
-        learningOpportunityProviderDAO = mock(LearningOpportunityProviderDAO.class);
-        lopCollection = mock(DBCollection.class);
-        when(learningOpportunityProviderDAO.getCollection()).thenReturn(lopCollection);
-
-        cloiCollection = mock(DBCollection.class);
-        childLearningOpportunityDAO = mock(ChildLearningOpportunityDAO.class);
-        when(childLearningOpportunityDAO.getCollection()).thenReturn(cloiCollection);
-
-        closCollection = mock(DBCollection.class);
-
-        pictureDAO = mock(PictureDAO.class);
-
-        upperSecondaryLearningOpportunitySpecificationDAO = mock(UpperSecondaryLearningOpportunitySpecificationDAO.class);
-
-        specialLearningOpportunitySpecificationDAO = mock(SpecialLearningOpportunitySpecificationDAO.class);
-
-        dataStatusDAO = mock(DataStatusDAO.class);
-
+        parentLearningOpportunitySpecificationDAO = mockParentDAO();
+        applicationOptionDAO = mockApplicationOptionDAO();
+        learningOpportunityProviderDAO = mockProviderDAO();
+        childLearningOpportunityDAO = mockChildDAO();
+        pictureDAO = mockPictureDAO();
+        upperSecondaryLearningOpportunitySpecificationDAO = mockUpSecDAO();
+        specialLearningOpportunitySpecificationDAO = mockSpecialDAO();
+        dataStatusDAO = mockDataStatudDAO();
         service = new EducationDataUpdateServiceImpl( modelMapper, parentLearningOpportunitySpecificationDAO,
                applicationOptionDAO, learningOpportunityProviderDAO, childLearningOpportunityDAO,
                 pictureDAO, upperSecondaryLearningOpportunitySpecificationDAO, dataStatusDAO,
@@ -116,5 +87,43 @@ public class EducationDataUpdateServiceImplTest {
         verify(parentLearningOpportunitySpecificationDAO, times(1)).save(any(ParentLearningOpportunitySpecificationEntity.class));
         verify(applicationOptionDAO, times(1)).save(any(ApplicationOptionEntity.class));
         verify(learningOpportunityProviderDAO, times(2)).save(any(LearningOpportunityProviderEntity.class));
+    }
+
+    @Test
+    public void testSaveUpperSecondaryLOS() {
+        ApplicationOption ao = new ApplicationOption();
+        ao.setId("aoid");
+        List<ApplicationOption> aos = Lists.newArrayList(ao);
+        Provider p = new Provider("providerid", TestUtil.createI18nText("name", "name", "name"));
+        UpperSecondaryLOS los = new UpperSecondaryLOS();
+        los.setId("losid");
+        UpperSecondaryLOI loi = new UpperSecondaryLOI();
+        loi.setId("loiid");
+        loi.setApplicationOptions(aos);
+        los.setLois(Lists.newArrayList(loi));
+        los.setProvider(p);
+        service.save(los);
+        verify(upperSecondaryLearningOpportunitySpecificationDAO, times(1)).save(any(UpperSecondaryLearningOpportunitySpecificationEntity.class));
+        verify(applicationOptionDAO, times(1)).save(any(ApplicationOptionEntity.class));
+        verify(learningOpportunityProviderDAO, times(1)).save(any(LearningOpportunityProviderEntity.class));
+    }
+
+    @Test
+    public void testSaveSpecialLOS() {
+        ApplicationOption ao = new ApplicationOption();
+        ao.setId("aoid");
+        List<ApplicationOption> aos = Lists.newArrayList(ao);
+        Provider p = new Provider("providerid", TestUtil.createI18nText("name", "name", "name"));
+        ChildLOI loi = new ChildLOI();
+        loi.setId("loiid");
+        SpecialLOS los = new SpecialLOS();
+        los.setId("losid");
+        loi.setApplicationOptions(aos);
+        los.setLois(Lists.newArrayList(loi));
+        los.setProvider(p);
+        service.save(los);
+        verify(specialLearningOpportunitySpecificationDAO, times(1)).save(any(SpecialLearningOpportunitySpecificationEntity.class));
+        verify(applicationOptionDAO, times(1)).save(any(ApplicationOptionEntity.class));
+        verify(learningOpportunityProviderDAO, times(1)).save(any(LearningOpportunityProviderEntity.class));
     }
 }
