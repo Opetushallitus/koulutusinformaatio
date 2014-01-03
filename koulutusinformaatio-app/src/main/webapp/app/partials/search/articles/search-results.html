@@ -1,0 +1,30 @@
+<div data-pager
+    data-on-select-page="changePage(page)" 
+	data-num-pages="maxPages"
+	data-total-items="totalItems"
+	data-items-per-page="itemsPerPage"
+	data-rotate="false"
+	data-page="currentPage" 
+	data-next-text="{{paginationNext}}"
+	data-previous-text="{{paginationPrevious}}">
+</div>
+
+<ul id="search-results">
+	<li data-ng-repeat="article in articles.posts">
+		<h2><a data-ng-href="{{article.url}}">{{article.title}}</a></h2>
+		<img data-ng-src="{{article.attachments[0].url}}" style="max-width: 200px; float: left; margin: 0 20px 20px 0;"/>
+		<span data-ng-bind-html-unsafe="article.excerpt" style=""></span>
+		<div class="clear"></div>
+	</li>
+</ul>
+
+<div data-pager
+    data-on-select-page="changePage(page)" 
+	data-num-pages="maxPages"
+	data-total-items="totalItems"
+	data-items-per-page="itemsPerPage"
+	data-rotate="false"
+	data-page="currentPage" 
+	data-next-text="{{paginationNext}}"
+	data-previous-text="{{paginationPrevious}}">
+</div>

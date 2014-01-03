@@ -396,6 +396,7 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
 
     //Searching solr
     $scope.doSearching = function() {
+        console.log('lo search');
     	//If the language filter is set, the search query is made
     	if ($routeParams.queryString && $scope.isLangFilterSet()) {
     		SearchLearningOpportunityService.query({
@@ -511,6 +512,20 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     		return 'SV';
     	}
     	return 'FI';
+    }
+};
+
+function ArticleSearchCtrl($scope, $routeParams, ArticleContentSearchService) {
+ 
+    $scope.doArticleSearching = function() {
+        console.log('article search');
+        ArticleContentSearchService.query($routeParams.queryString).then(function(result) {
+            $scope.articles = result;
+            $scope.maxPages = result.pages;
+            $scope.totalItems = result.count_total;
+            $scope.itemsPerPage = result.count;
+            $scope.currentPage = 1;
+        });
     }
 };
 

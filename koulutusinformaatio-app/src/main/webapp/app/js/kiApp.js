@@ -65,7 +65,7 @@ var kiApp = angular.module('kiApp',
 .config(function($httpProvider){
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
-    $httpProvider.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+    //$httpProvider.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 })
 
 .constant('kiAppConstants', {
