@@ -14,18 +14,26 @@
                 <div class="application-basket margin-bottom-6" data-ng-repeat="as in applicationItems">
                     <table class="margin-bottom-2">
                         <colgroup>
-                            <col style="width: 33%;"></col>
-                            <col style="width: 47%;"></col>
-                            <col></col>
+                            <col style="width: 25%;"></col>
+                            <col style="width: 30%;"></col>
+                            <col style="width: 21%;"></col>
+                            <col style="width: 21%;"></col>
                             <col></col>
                         </colgroup>
                         <thead>
                             <tr>
-                                <th colspan="4"><span class="margin-0 block h2">{{as.applicationSystemName}} <span data-ki-timestamp="{{as.applicationDates.startDate}}"></span> - <span data-ki-timestamp="{{as.applicationDates.endDate}}"></span></span></th>
+                                <th colspan="5"><span class="margin-0 block h2">{{as.applicationSystemName}} <span data-ki-timestamp="{{as.applicationDates.startDate}}"></span> - <span data-ki-timestamp="{{as.applicationDates.endDate}}"></span></span></th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr data-ng-repeat="item in as.applicationOptions" data-ng-class="{first: $first, last: $last}">
+                            <tr class="first">
+                                <th></th>
+                                <th></th>
+                                <th>Liitteet ja kokeet</th>
+                                <th>Liitteen määräaika tai kokeen ajankohta</th>
+                                <th class="last"></th>
+                            </tr>
+                            <tr data-ng-repeat="item in as.applicationOptions" data-ng-class="{last: $last}">
                                 <td>
                                     <ul class="nobullet">
                                         <li>
@@ -49,10 +57,25 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td class="align-left">
-                                    <ul class="nobullet">
-                                        <li data-ng-repeat="dl in item.deadlines">{{dl.name}}<span class="bold margin-left-2" data-ki-timestamp="{{item.attachmentDeliveryDeadline}}"></span></li>
-                                    </ul>
+                                <td class="align-left table-container" colspan="2">
+                                    <table class="sub">
+                                        <colgroup>
+                                            <col style="width: 50%;"></col>
+                                            <col style="width: 50%;"></col>
+                                        </colgroup>
+                                        <tr data-ng-repeat="attachment in item.attachments | orderBy:'dueDate'">
+                                            <td class="align-right">{{attachment.type}}</td>
+                                            <td class="bold"><span data-ki-timestamp="{{attachment.dueDate}}"></span></td>
+                                        </tr>
+                                        <tr data-ng-repeat="exam in item.exams">
+                                            <td class="align-right">{{exam.type}}</td>
+                                            <td class="bold">
+                                                <span data-ng-repeat="examEvent in exam.examEvents | orderBy:'start'">
+                                                    <span data-ki-time-interval data-exam-event="examEvent"></span><br/>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </td>
                                 <td class="basket-remove last">
                                     <a href="javascript:void(0)" class="remove" data-ng-click="removeItem(item.id)">

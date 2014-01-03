@@ -16,10 +16,10 @@
 
 package fi.vm.sade.koulutusinformaatio.domain.dto;
 
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-
 import java.util.Date;
 import java.util.List;
+
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 /**
  * @author Mikko Majapuro
@@ -40,6 +40,8 @@ public class BasketApplicationOptionDTO {
     private ParentLOSRefDTO parent;
     private List<ChildLOIRefDTO> children;
     private Date attachmentDeliveryDeadline;
+    private List<ApplicationOptionAttachmentDTO> attachments;
+    private List<ExamDTO> exams;
     private boolean athleteEducation;
     private String aoIdentifier;
     private boolean kaksoistutkinto;
@@ -141,12 +143,30 @@ public class BasketApplicationOptionDTO {
         this.children = children;
     }
 
+    
     public Date getAttachmentDeliveryDeadline() {
         return attachmentDeliveryDeadline;
     }
 
     public void setAttachmentDeliveryDeadline(Date attachmentDeliveryDeadline) {
         this.attachmentDeliveryDeadline = attachmentDeliveryDeadline;
+    }
+    
+
+    public List<ApplicationOptionAttachmentDTO> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(List<ApplicationOptionAttachmentDTO> attachments) {
+        this.attachments = attachments;
+    }
+
+    public List<ExamDTO> getExams() {
+        return exams;
+    }
+
+    public void setExams(List<ExamDTO> exams) {
+        this.exams = exams;
     }
 
     public boolean isAthleteEducation() {

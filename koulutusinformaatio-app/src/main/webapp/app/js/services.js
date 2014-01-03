@@ -847,17 +847,6 @@ service('ApplicationBasketService', ['$http', '$q', 'LanguageService', 'UtilityS
                             result[asIndex].applicationOptions[i].prerequisite = applicationOptions[i].children[0].prerequisite;
                         }
 
-                        if (!result[asIndex].applicationOptions[i].deadlines) {
-                            result[asIndex].applicationOptions[i].deadlines = [];
-                        }
-
-                        if (result[asIndex].applicationOptions[i].attachmentDeliveryDeadline) {
-                            result[asIndex].applicationOptions[i].deadlines.push({
-                                name: i18n.t('attachment-delivery-deadline'),
-                                value: result[asIndex].applicationOptions[i].attachmentDeliveryDeadline
-                            });
-                        }
-
                         // set teaching languge as the first language in array
                         var ao = applicationOptions[i];
                         if (ao.teachingLanguages && ao.teachingLanguages.length > 0) {
@@ -1304,6 +1293,14 @@ service('UtilityService', function() {
                     return 0;
                 }
             });
+        },
+        padWithZero: function(number) {
+            number = number.toString();
+            if (number.length <= 1) {
+                return "0" + number;
+            } else {
+                return number;
+            }
         }
     };
 });
