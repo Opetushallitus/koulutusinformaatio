@@ -25,7 +25,10 @@ import java.util.Date;
 /**
  * @author Mikko Majapuro
  */
-public class ApplicationOptionToDTO {
+public final class ApplicationOptionToDTO {
+
+    private ApplicationOptionToDTO() {
+    }
 
     public static ApplicationOptionDTO convert(final ApplicationOption applicationOption, final String lang, final String uiLang) {
         if (applicationOption != null) {

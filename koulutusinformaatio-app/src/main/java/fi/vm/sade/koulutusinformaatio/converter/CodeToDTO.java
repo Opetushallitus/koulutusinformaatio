@@ -22,7 +22,10 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.CodeDTO;
 /**
  * @author Hannu Lyytikainen
  */
-public class CodeToDTO {
+public final class CodeToDTO {
+
+    private CodeToDTO() {
+    }
 
     public static CodeDTO convert(Code code, String lang) {
         if (code != null) {

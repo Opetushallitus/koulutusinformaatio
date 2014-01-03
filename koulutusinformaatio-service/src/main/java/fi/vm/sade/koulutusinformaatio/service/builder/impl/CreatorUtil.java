@@ -30,8 +30,10 @@ import fi.vm.sade.tarjonta.shared.types.TarjontaTila;
 /**
  * @author Hannu Lyytikainen
  */
-public class CreatorUtil {
+public final class CreatorUtil {
 
+    private CreatorUtil() {
+    }
 
     protected static Predicate<KomoDTO> komoPublished = new Predicate<KomoDTO>() {
         @Override

@@ -10,7 +10,10 @@ import java.util.List;
 /**
  * @author Hannu Lyytikainen
  */
-public class EmphasizedSubjectToDTO {
+public final class EmphasizedSubjectToDTO {
+
+    private EmphasizedSubjectToDTO() {
+    }
 
     public static EmphasizedSubjectDTO convert(EmphasizedSubject emphasizedSubject, String lang) {
         if (emphasizedSubject != null) {

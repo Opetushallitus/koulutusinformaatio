@@ -29,7 +29,10 @@ import java.util.*;
 /**
  * @author Mikko Majapuro
  */
-public class ConverterUtil {
+public final class ConverterUtil {
+
+    private ConverterUtil() {
+    }
 
     private static String FALLBACK_LANG = "fi";
 

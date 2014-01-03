@@ -25,7 +25,10 @@ import java.util.List;
 /**
  * @author Mikko Majapuro
  */
-public class DateRangeToDTO {
+public final class DateRangeToDTO {
+
+    private DateRangeToDTO() {
+    }
 
     public static DateRangeDTO convert(final DateRange dateRange) {
         if (dateRange != null) {
@@ -41,10 +44,8 @@ public class DateRangeToDTO {
     public static List<DateRangeDTO> convert(final List<DateRange> dateRanges) {
         if (dateRanges != null) {
             List<DateRangeDTO> ranges = new ArrayList<DateRangeDTO>();
-            if (dateRanges != null) {
-                for (DateRange dr : dateRanges) {
-                    ranges.add(convert(dr));
-                }
+            for (DateRange dr : dateRanges) {
+                ranges.add(convert(dr));
             }
             return ranges;
         } else {

@@ -23,7 +23,10 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecif
 /**
  * @author Mikko Majapuro
  */
-public class ParentLOSToDTO {
+public final class ParentLOSToDTO {
+
+    private ParentLOSToDTO() {
+    }
 
     public static ParentLearningOpportunitySpecificationDTO convert(final ParentLOS parentLOS, final String lang, final String uiLang) {
         ParentLearningOpportunitySpecificationDTO parent = new ParentLearningOpportunitySpecificationDTO();

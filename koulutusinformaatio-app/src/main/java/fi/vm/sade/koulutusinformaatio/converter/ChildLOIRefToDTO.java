@@ -30,7 +30,10 @@ import java.util.List;
 /**
  * @author Mikko Majapuro
  */
-public class ChildLOIRefToDTO {
+public final class ChildLOIRefToDTO {
+
+    private ChildLOIRefToDTO() {
+    }
 
     public static List<ChildLOIRefDTO> convert(final List<ChildLOIRef> refs, final String lang) {
         List<ChildLOIRefDTO> children = new ArrayList<ChildLOIRefDTO>();

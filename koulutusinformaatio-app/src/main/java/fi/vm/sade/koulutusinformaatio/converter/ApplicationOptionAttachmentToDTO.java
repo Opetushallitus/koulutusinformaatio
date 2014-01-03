@@ -26,7 +26,10 @@ import java.util.List;
 /**
  * @author Hannu Lyytikainen
  */
-public class ApplicationOptionAttachmentToDTO {
+public final class ApplicationOptionAttachmentToDTO {
+
+    private ApplicationOptionAttachmentToDTO() {
+    }
 
     public static ApplicationOptionAttachmentDTO convert(final ApplicationOptionAttachment aoa, final String lang) {
         if (aoa != null) {

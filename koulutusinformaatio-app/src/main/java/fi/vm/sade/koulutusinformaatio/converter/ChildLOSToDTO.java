@@ -22,7 +22,10 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunitySpecifi
 /**
  * @author Mikko Majapuro
  */
-public class ChildLOSToDTO {
+public final class ChildLOSToDTO {
+
+    private ChildLOSToDTO() {
+    }
 
     public static ChildLearningOpportunitySpecificationDTO convert(final ChildLOS childLOS, final String lang, final String uiLang) {
         if (childLOS != null) {

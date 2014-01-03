@@ -31,7 +31,10 @@ import java.util.Map;
 /**
  * @author Mikko Majapuro
  */
-public class ApplicationOptionsToBasketItemDTOs {
+public final class ApplicationOptionsToBasketItemDTOs {
+
+    private ApplicationOptionsToBasketItemDTOs() {
+    }
 
     private final static String FALLBACK_LANG = "fi";
 

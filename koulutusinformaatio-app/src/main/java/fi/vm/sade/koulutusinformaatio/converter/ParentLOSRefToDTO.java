@@ -22,7 +22,10 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLOSRefDTO;
 /**
  * @author Mikko Majapuro
  */
-public class ParentLOSRefToDTO {
+public final class ParentLOSRefToDTO {
+
+    private ParentLOSRefToDTO() {
+    }
 
     public static ParentLOSRefDTO convert(final ParentLOSRef parentRef, final String lang) {
         if (parentRef != null) {

@@ -22,7 +22,10 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
 /**
  * @author Mikko Majapuro
  */
-public class ApplicationSystemToDTO {
+public final class ApplicationSystemToDTO {
+
+    private ApplicationSystemToDTO() {
+    }
 
     public static ApplicationSystemDTO convert(final ApplicationSystem applicationSystem, final String lang) {
         if (applicationSystem != null) {
