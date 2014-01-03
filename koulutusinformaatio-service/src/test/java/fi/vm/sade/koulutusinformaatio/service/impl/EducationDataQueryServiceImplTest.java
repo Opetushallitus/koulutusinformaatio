@@ -19,10 +19,8 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 import com.google.common.collect.Lists;
 import com.mongodb.DBCollection;
 import fi.vm.sade.koulutusinformaatio.dao.*;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunitySpecificationEntity;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
+import fi.vm.sade.koulutusinformaatio.dao.entity.*;
+import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import org.junit.Before;
@@ -30,6 +28,7 @@ import org.junit.Test;
 import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -43,56 +42,33 @@ import static org.mockito.Mockito.when;
  */
 public class EducationDataQueryServiceImplTest {
 
+    private final static String NOTFOUND = "notfound";
+
     private EducationDataQueryServiceImpl service;
     private ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO;
     private ApplicationOptionDAO applicationOptionDAO;
-    private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
     private ChildLearningOpportunityDAO childLearningOpportunityDAO;
     private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO;
     private SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO;
     private PictureDAO pictureDAO;
     private DataStatusDAO dataStatusDAO;
-    private DBCollection ploCollection;
-    private DBCollection aoCollection;
-    private DBCollection lopCollection;
-    private DBCollection cloCollection;
+    private Date lastDataUpdate;
 
     @Before
     public void setUp() {
+        lastDataUpdate = new Date();
         ModelMapper modelMapper = new ModelMapper();
-        parentLearningOpportunitySpecificationDAO = mock(ParentLearningOpportunitySpecificationDAO.class);
-        ploCollection = mock(DBCollection.class);
-        ParentLearningOpportunitySpecificationEntity plo = new ParentLearningOpportunitySpecificationEntity();
-        String ploOid = "1.2.3";
-        plo.setId(ploOid);
-        when(parentLearningOpportunitySpecificationDAO.getCollection()).thenReturn(ploCollection);
-        when(parentLearningOpportunitySpecificationDAO.get(eq("1.2.3"))).thenReturn(plo);
-        applicationOptionDAO = mock(ApplicationOptionDAO.class);
-        aoCollection = mock(DBCollection.class);
-        when(applicationOptionDAO.getCollection()).thenReturn(aoCollection);
-
-        List<ApplicationOptionEntity> aos = new ArrayList<ApplicationOptionEntity>();
-        ApplicationOptionEntity ao = new ApplicationOptionEntity();
-        ao.setId("8.9.0");
-        aos.add(ao);
-        when(applicationOptionDAO.find(eq("1.1.1"), eq("9.9.9"), eq("1"), eq(true), eq(true))).thenReturn(aos);
-        when(applicationOptionDAO.find(eq(Lists.newArrayList("8.9.0")))).thenReturn(aos);
-        learningOpportunityProviderDAO = mock(LearningOpportunityProviderDAO.class);
-        lopCollection = mock(DBCollection.class);
-        when(learningOpportunityProviderDAO.getCollection()).thenReturn(lopCollection);
-
-        cloCollection = mock(DBCollection.class);
-        childLearningOpportunityDAO = mock(ChildLearningOpportunityDAO.class);
-        when(childLearningOpportunityDAO.getCollection()).thenReturn(cloCollection);
-
-        dataStatusDAO = mock(DataStatusDAO.class);
-        pictureDAO = mock(PictureDAO.class);
-        upperSecondaryLearningOpportunitySpecificationDAO = mock(UpperSecondaryLearningOpportunitySpecificationDAO.class);
-        specialLearningOpportunitySpecificationDAO = mock(SpecialLearningOpportunitySpecificationDAO.class);
-
+        parentLearningOpportunitySpecificationDAO = mockParentDAO();
+        applicationOptionDAO = mockApplicationOptionDAO();
+        childLearningOpportunityDAO = mockChildDAO();
+        dataStatusDAO = mockDataStatudDAO();
+        pictureDAO = mockPictureDAO();
+        upperSecondaryLearningOpportunitySpecificationDAO = mockUpSecDAO();
+        specialLearningOpportunitySpecificationDAO = mockSpecialDAO();
         service = new EducationDataQueryServiceImpl(parentLearningOpportunitySpecificationDAO,
                 applicationOptionDAO, modelMapper, childLearningOpportunityDAO,
-                dataStatusDAO, pictureDAO, upperSecondaryLearningOpportunitySpecificationDAO, specialLearningOpportunitySpecificationDAO);
+                dataStatusDAO, pictureDAO, upperSecondaryLearningOpportunitySpecificationDAO,
+                specialLearningOpportunitySpecificationDAO);
     }
 
     @Test
@@ -104,7 +80,7 @@ public class EducationDataQueryServiceImplTest {
 
     @Test(expected = ResourceNotFoundException.class)
     public void testGetParentLearningOpportunityNotExists() throws ResourceNotFoundException {
-        ParentLOS plo = service.getParentLearningOpportunity("1.1.1");
+        service.getParentLearningOpportunity("1.1.1");
     }
 
     @Test
@@ -130,5 +106,131 @@ public class EducationDataQueryServiceImplTest {
     @Test(expected = InvalidParametersException.class)
     public void testGetApplicationsInvalidEmptyParams() throws InvalidParametersException {
         service.getApplicationOptions(new ArrayList<String>());
+    }
+
+    @Test
+    public void testGetChildLearningOpportunity() throws ResourceNotFoundException {
+        ChildLOS child = service.getChildLearningOpportunity("childid");
+        assertNotNull(child);
+        assertEquals("childid", child.getId());
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void testGetChildLearningOpportunityNotFound() throws ResourceNotFoundException {
+        service.getChildLearningOpportunity(NOTFOUND);
+    }
+
+    @Test
+    public void testGetLatestDataStatus() {
+        DataStatus latest = service.getLatestDataStatus();
+        assertEquals(lastDataUpdate, latest.getLastUpdateFinished());
+        assertEquals(latest.getLastUpdateDuration(), 1000);
+        assertEquals(latest.getLastUpdateOutcome(), "SUCCESS");
+    }
+
+    @Test
+    public void testPicture() throws ResourceNotFoundException {
+        Picture picture = service.getPicture("pictureid");
+        assertEquals("encoded", picture.getPictureEncoded());
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void testPictureNotFound() throws ResourceNotFoundException {
+        service.getPicture(NOTFOUND);
+    }
+
+    @Test
+    public void testGetUpperSecondaryLearningOpportunity() throws ResourceNotFoundException {
+        UpperSecondaryLOS los  = service.getUpperSecondaryLearningOpportunity("upsecid");
+        assertNotNull(los);
+        assertEquals("upsecid", los.getId());
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void testGetUpperSecondaryLearningOpportunityNotFound() throws ResourceNotFoundException {
+        service.getUpperSecondaryLearningOpportunity(NOTFOUND);
+    }
+
+    @Test
+    public void testGetSpecialLearningOpportunity() throws ResourceNotFoundException {
+        SpecialLOS los = service.getSpecialLearningOpportunity("specialid");
+        assertNotNull(los);
+        assertEquals("specialid", los.getId());
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void testGetSpecialLearningOpportunityNotFound() throws ResourceNotFoundException {
+        service.getSpecialLearningOpportunity(NOTFOUND);
+    }
+
+    private SpecialLearningOpportunitySpecificationDAO mockSpecialDAO() {
+        SpecialLearningOpportunitySpecificationEntity entity = new SpecialLearningOpportunitySpecificationEntity();
+        entity.setId("specialid");
+        SpecialLearningOpportunitySpecificationDAO dao = mock(SpecialLearningOpportunitySpecificationDAO.class);
+        when(dao.get(eq(entity.getId()))).thenReturn(entity);
+        when(dao.get(eq(NOTFOUND))).thenReturn(null);
+        return dao;
+    }
+
+    private UpperSecondaryLearningOpportunitySpecificationDAO mockUpSecDAO() {
+        UpperSecondaryLearningOpportunitySpecificationEntity entity = new UpperSecondaryLearningOpportunitySpecificationEntity();
+        entity.setId("upsecid");
+        UpperSecondaryLearningOpportunitySpecificationDAO dao = mock(UpperSecondaryLearningOpportunitySpecificationDAO.class);
+        when(dao.get(eq(entity.getId()))).thenReturn(entity);
+        when(dao.get(eq(NOTFOUND))).thenReturn(null);
+        return dao;
+    }
+
+    private PictureDAO mockPictureDAO() {
+        PictureEntity entity = new PictureEntity();
+        entity.setId("pictureid");
+        entity.setPictureEncoded("encoded");
+        PictureDAO dao = mock(PictureDAO.class);
+        when(dao.get(eq(entity.getId()))).thenReturn(entity);
+        when(dao.get(eq(NOTFOUND))).thenReturn(null);
+        return dao;
+    }
+
+    private DataStatusDAO mockDataStatudDAO() {
+        DataStatusEntity entity = new DataStatusEntity();
+        entity.setLastUpdateOutcome("SUCCESS");
+        entity.setLastUpdateFinished(lastDataUpdate);
+        entity.setLastUpdateDuration(1000L);
+        DataStatusDAO dao = mock(DataStatusDAO.class);
+        when(dao.getLatest()).thenReturn(entity);
+        return dao;
+    }
+
+    private ChildLearningOpportunityDAO mockChildDAO() {
+        ChildLearningOpportunitySpecificationEntity entity = new ChildLearningOpportunitySpecificationEntity();
+        entity.setId("childid");
+        ChildLearningOpportunityDAO dao = mock(ChildLearningOpportunityDAO.class);
+        when(dao.get(entity.getId())).thenReturn(entity);
+        when(dao.get(NOTFOUND)).thenReturn(null);
+        return dao;
+    }
+
+    private ParentLearningOpportunitySpecificationDAO mockParentDAO() {
+        ParentLearningOpportunitySpecificationDAO parentDAO = mock(ParentLearningOpportunitySpecificationDAO.class);
+        DBCollection ploCollection = mock(DBCollection.class);
+        ParentLearningOpportunitySpecificationEntity plo = new ParentLearningOpportunitySpecificationEntity();
+        String ploOid = "1.2.3";
+        plo.setId(ploOid);
+        when(parentDAO.getCollection()).thenReturn(ploCollection);
+        when(parentDAO.get(eq("1.2.3"))).thenReturn(plo);
+        return parentDAO;
+    }
+
+    private ApplicationOptionDAO mockApplicationOptionDAO() {
+        ApplicationOptionDAO aoDAO = mock(ApplicationOptionDAO.class);
+        DBCollection aoCollection = mock(DBCollection.class);
+        when(aoDAO.getCollection()).thenReturn(aoCollection);
+        List<ApplicationOptionEntity> aos = new ArrayList<ApplicationOptionEntity>();
+        ApplicationOptionEntity ao = new ApplicationOptionEntity();
+        ao.setId("8.9.0");
+        aos.add(ao);
+        when(aoDAO.find(eq("1.1.1"), eq("9.9.9"), eq("1"), eq(true), eq(true))).thenReturn(aos);
+        when(aoDAO.find(eq(Lists.newArrayList("8.9.0")))).thenReturn(aos);
+        return aoDAO;
     }
 }
