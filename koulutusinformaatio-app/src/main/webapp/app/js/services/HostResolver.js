@@ -25,10 +25,11 @@ service('HostResolver', function() {
         mapHostToConf: function(host) {
             if (host) {
                 if (host == hosts.kielistudio ||
-                    host == hosts.reppu ||
                     host == hosts.luokka ||
                     host == hosts.localhost) {
                     return 'dev';
+                } else if (host == hosts.reppu) {
+                    return 'reppu';
                 } else if (host == hosts.qa) {
                     return 'qa';
                 } else if (host == hosts.koulutus) {

@@ -334,6 +334,11 @@ describe('HostResolver', function() {
             expect(result).toEqual('dev');
         });
 
+        it('should return correct value for host "reppu"', function() {
+            var result = service.mapHostToConf('reppu');
+            expect(result).toEqual('reppu');
+        });
+
     });
 });
 

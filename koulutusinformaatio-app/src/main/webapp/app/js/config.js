@@ -57,7 +57,22 @@ window.Config.app.qa = {
 	}
 };
 
-/* Configurations for development (localhost, luokka, reppu, kielistudio) environment */
+/* Configurations for reppu environment */
+window.Config.app.reppu = {
+	fi: {
+		frontpageUrl: '/wp/fi/',
+		rekisteriselosteUrl: '/wp/fi/',
+		navigationUrl: '/wp/fi/api/nav/json_nav/'
+	},
+	sv: {
+		frontpageUrl: '/wp/sv/',
+    	rekisteriselosteUrl: '/wp/sv/',
+    	navigationUrl: '/wp/sv/api/nav/json_nav/'
+	}
+};
+
+/* Configurations for development (localhost, luokka, kielistudio) environment */
+// NOTE: currently Wordpress related data is fetched from QA environment
 window.Config.app.dev = {
 	fi: {
 		frontpageUrl: 'https://testi.opintopolku.fi/wp/fi/',
