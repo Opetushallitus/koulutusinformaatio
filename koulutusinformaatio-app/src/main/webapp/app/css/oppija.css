@@ -4107,6 +4107,10 @@ input {
         font-weight: normal; }
     #search-results li:first-child {
       border-top: 1px solid #dddddd; }
+    #search-results li img {
+      max-width: 200px;
+      float: left;
+      margin: 0 20px 20px 0; }
   #search-results small:before {
     content: ""; }
 

@@ -185,6 +185,7 @@ function($parse, $http, $templateCache, $compile) {
     transclude: true,
     scope: {
       heading: '@',
+      title: '@',
       onSelect: '&select', //This callback is called in contentHeadingTransclude
                           //once it inserts the tab's content into the dom
       onDeselect: '&deselect'
@@ -322,7 +323,7 @@ angular.module("template/tabs/pane.html", []).run(["$templateCache", function($t
 
 angular.module("template/tabs/tab.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("template/tabs/tab.html",
-    "<li data-ng-class=\"{active: active, disabled: disabled}\">\n" +
+    "<li data-ng-class=\"{active: active, disabled: disabled}\" title=\"{{title}}\">\n" +
     "  <a data-ng-click=\"select()\" data-tab-heading-transclude>{{heading}}</a>\n" +
     "</li>\n" +
     "");

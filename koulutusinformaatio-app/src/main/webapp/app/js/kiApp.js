@@ -65,7 +65,7 @@ var kiApp = angular.module('kiApp',
 .config(function($httpProvider){
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
-    $httpProvider.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+    //$httpProvider.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 })
 
 .constant('kiAppConstants', {
@@ -88,7 +88,10 @@ var kiApp = angular.module('kiApp',
     i18n.init({
         resGetPath : 'locales/__ns__-__lng__.json',
         lng : LanguageService.getLanguage(),
-        ns: 'language',
+        ns: {
+            namespaces: ['language', 'tooltip'],
+            defaultNs: 'language'
+        },
         getAsync : false,
         sendMissing : false,
         fallbackLng : 'fi',
