@@ -174,10 +174,10 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     }
 
     private String resolveDefaultLanguage(final ParentLOS parentLO) {
-        if (parentLO.getName() == null || parentLO.getName().getTranslations() == null || parentLO.getName().getTranslations().containsKey(LANG_FI)) {
+        if (parentLO.getTeachingLanguages() == null || parentLO.getTeachingLanguages().isEmpty()) {//parentLO.getName() == null || parentLO.getName().getTranslations() == null || parentLO.getName().getTranslations().containsKey(LANG_FI)) {
             return LANG_FI;
         } else {
-            return parentLO.getName().getTranslations().keySet().iterator().next();
+            return parentLO.getTeachingLanguages().get(0).getValue().toLowerCase();//parentLO.getName().getTranslations().keySet().iterator().next();
         }
     }
 
