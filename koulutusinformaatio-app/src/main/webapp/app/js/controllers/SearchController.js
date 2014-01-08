@@ -343,7 +343,9 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
 
     $scope.tabs = {
         learningOpportunities: i18n.t('search-tab-lo'),
-        articles: i18n.t('search-tab-article')
+        learningOpportunitiesTooltip: i18n.t('tooltip:search-tab-lo-tooltip'),
+        articles: i18n.t('search-tab-article'),
+        articlesTooltip: i18n.t('tooltip:search-tab-article-tooltip')
     };
 
     $scope.paginationNext = i18n.t('pagination-next');

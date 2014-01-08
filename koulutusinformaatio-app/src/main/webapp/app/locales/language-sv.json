@@ -15,7 +15,8 @@
     "secondary-school-based": "Gymnasiebaserad utbildning",
 
     "search-result-title": "Sökträffar",
-    "search-result-title-description": "Använd alternativen till vänster för att avgränsa din sökning",
+    "search-result-title-description": "Rajaa koulutushaun tuloksia vasemmalta haluamillasi kriteereillä. Hakusanan mukaiset muut hakuosumat löydät Tietoa ja tarinoita -välilehdeltä. (sv)",
+    "search-articles-result-title-description": "Hakuehtojen mukaiset koulutushaun osumat löydät Koulutuksia-välilehdeltä. Voit hakea lisää opintoihin ja opiskeluun liittyviä tietoja niihin liittyvillä hakusanoilla. (sv)",
     "search-result-count-unit": "st",
     "search-field-placeholder": "Sök utbildningar här",
     "no-search-results": "Inga sökresultat",
