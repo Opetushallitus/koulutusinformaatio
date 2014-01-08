@@ -361,7 +361,7 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     };
 
     $scope.refreshView = function() {
-        $location.search(FilterService.get());
+        $location.search(FilterService.get()).replace();
         $scope.initSearch();
     }
     
@@ -437,7 +437,7 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
 
                 var qParams = $location.search();
                 delete qParams.tab;
-                $location.search(qParams);
+                $location.search(qParams).replace();
     		});
 
     		$scope.queryString = $routeParams.queryString;
@@ -561,7 +561,7 @@ function ArticleSearchCtrl($scope, $location, $routeParams, ArticleContentSearch
 
         var qParams = $location.search();
         qParams.tab = 'articles';
-        $location.search(qParams);
+        $location.search(qParams).replace();
     }
 };
 
