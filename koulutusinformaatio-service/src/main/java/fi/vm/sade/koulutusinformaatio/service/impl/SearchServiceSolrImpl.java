@@ -480,7 +480,7 @@ public class SearchServiceSolrImpl implements SearchService {
         try {
             response = loHttpSolrServer.query(query);
             
-            FacetField nameF = response.getFacetField(LearningOpportunity.NAME_AUTO);
+            FacetField nameF = response.getFacetField(String.format("%s_%s", LearningOpportunity.NAME_AUTO, lang.toLowerCase()));
             if (nameF != null) {
                 List<String> terms = new ArrayList<String>();
                 for (Count curC : nameF.getValues()) {

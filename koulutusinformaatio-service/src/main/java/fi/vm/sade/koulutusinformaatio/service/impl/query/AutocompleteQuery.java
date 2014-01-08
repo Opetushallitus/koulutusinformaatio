@@ -43,10 +43,23 @@ public class AutocompleteQuery extends SolrQuery {
         this.addFilterQuery(String.format("-%s:%s", LearningOpportunity.ID, SolrConstants.TIMESTAMP_DOC));
         this.addFilterQuery(String.format("-%s:%s", LearningOpportunity.TYPE, SolrConstants.TYPE_FACET));
         
+        this.addFilterQuery(String.format("%s:%s", LearningOpportunity.TEACHING_LANGUAGE, lang.toUpperCase()));
+        
         addSuggestedTermsFacetToQuery(term, lang);
         
         this.setParam("defType", "edismax");
-        this.setParam(DisMaxParams.QF, Joiner.on(" ").join(LearningOpportunityQuery.FIELDS));
+        
+        if ("fi".equalsIgnoreCase(lang)) {
+            this.setParam(DisMaxParams.QF, Joiner.on(" ").join(LearningOpportunityQuery.FIELDS_FI));
+        } else if ("sv".equalsIgnoreCase(lang)) {
+            this.setParam(DisMaxParams.QF, Joiner.on(" ").join(LearningOpportunityQuery.FIELDS_SV));
+        } else if ("en".equalsIgnoreCase(lang)) {
+            this.setParam(DisMaxParams.QF, Joiner.on(" ").join(LearningOpportunityQuery.FIELDS_EN));
+        } else {
+            this.setParam(DisMaxParams.QF, Joiner.on(" ").join(LearningOpportunityQuery.FIELDS));
+        }
+        
+        //this.setParam(DisMaxParams.QF, Joiner.on(" ").join(LearningOpportunityQuery.FIELDS));
         this.setParam("q.op", "AND");
         
     }
@@ -56,7 +69,7 @@ public class AutocompleteQuery extends SolrQuery {
         if (term != null) {
             this.setFacetPrefix(term.toLowerCase());
         }
-        this.addFacetField(LearningOpportunity.NAME_AUTO);
+        this.addFacetField(String.format("%s_%s", LearningOpportunity.NAME_AUTO, lang.toLowerCase()));
         this.addFacetField(String.format("%s_%s", LearningOpportunity.FREE_AUTO, lang.toLowerCase()));
         this.setFacetMinCount(1);
         this.setFacetLimit(5);

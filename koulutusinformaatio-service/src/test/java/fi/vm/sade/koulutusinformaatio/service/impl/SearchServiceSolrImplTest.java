@@ -90,7 +90,7 @@ public class SearchServiceSolrImplTest {
         List<Count> counts = Arrays.asList(count);
         
         when(nameF.getValues()).thenReturn(counts);
-        when(loQueryResponse.getFacetField(LearningOpportunity.NAME_AUTO)).thenReturn(nameF);
+        when(loQueryResponse.getFacetField(LearningOpportunity.NAME_AUTO + "_fi")).thenReturn(nameF);
         
         SolrDocumentList locDocs = new SolrDocumentList();
         SolrDocument loc1 = new SolrDocument();

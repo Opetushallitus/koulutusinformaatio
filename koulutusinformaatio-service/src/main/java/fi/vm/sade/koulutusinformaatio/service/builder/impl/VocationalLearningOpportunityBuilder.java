@@ -189,7 +189,12 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
                             }
                         }
                     }
+                    
+                    List<Code> teachingLangs = parentLOS.getTeachingLanguages() != null ? parentLOS.getTeachingLanguages() : new ArrayList<Code>();
+                    teachingLangs.addAll(childLOI.getTeachingLanguages());
+                    parentLOS.setTeachingLanguages(teachingLangs);
                 }
+                
             }
             for (ParentLOI parentLOI : parentLOS.getLois()) {
                 parentLOI.setApplicationOptions(applicationOptionsByParentLOIId.get(parentLOI.getId()));

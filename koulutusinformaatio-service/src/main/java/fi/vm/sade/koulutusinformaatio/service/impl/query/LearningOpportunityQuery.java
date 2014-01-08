@@ -10,6 +10,7 @@ import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.common.params.DisMaxParams;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,7 +33,63 @@ public class LearningOpportunityQuery extends SolrQuery {
             "textBoost_en_whole^10.0",
             "asNames",
             "lopNames",
+            "name_auto_fi",
+            "name_auto_sv",
+            "name_auto_en"
+    );
+    
+    public final static List<String> FIELDS_FI = Lists.newArrayList(
+            "text_fi",
+            //"text_sv",
+            //"text_en",
+            "text_fi_whole",
+            //"text_sv_whole",
+            //"text_en_whole",
+            "textBoost_fi^10.0",
+            //"textBoost_sv^10.0",
+            //"textBoost_en^10.0",
+            "textBoost_fi_whole^10.0",
+            //"textBoost_sv_whole^10.0",
+            //"textBoost_en_whole^10.0",
+            "asNames",
+            "lopNames",
             "name_auto_fi"
+    );
+    
+    public final static List<String> FIELDS_SV = Lists.newArrayList(
+            //"text_fi",
+            "text_sv",
+            //"text_en",
+            //"text_fi_whole",
+            "text_sv_whole",
+            //"text_en_whole",
+            //"textBoost_fi^10.0",
+            "textBoost_sv^10.0",
+            //"textBoost_en^10.0",
+            //"textBoost_fi_whole^10.0",
+            "textBoost_sv_whole^10.0",
+            //"textBoost_en_whole^10.0",
+            "asNames",
+            "lopNames",
+            "name_auto_sv"
+    );
+    
+    public final static List<String> FIELDS_EN = Lists.newArrayList(
+            //"text_fi",
+            //"text_sv",
+            "text_en",
+            //"text_fi_whole",
+            //"text_sv_whole",
+            "text_en_whole",
+            //"textBoost_fi^10.0",
+            //"textBoost_sv^10.0",
+            "textBoost_en^10.0",
+            //"textBoost_fi_whole^10.0",
+            //"textBoost_sv_whole^10.0",
+            "textBoost_en_whole^10.0",
+            "asNames",
+            "lopNames",
+            "name_auto_en"
     );
 
     private final static Integer AS_COUNT = 10;
@@ -88,13 +145,59 @@ public class LearningOpportunityQuery extends SolrQuery {
         addFacetsToQuery(lang, facetFilters, ongoingFQ.toString(), upcomingFQ.toString());
         
         this.setParam("defType", "edismax");
-        this.setParam(DisMaxParams.QF, Joiner.on(" ").join(FIELDS));
+        
+        setSearchFields(facetFilters);
+        
         this.setParam("q.op", "AND");
         if (sort != null) {
             this.addSort(sort, order.equals("asc") ? ORDER.asc : ORDER.desc);
         }
     }
     
+
+
+    private void setSearchFields(List<String> facetFilters) {
+        
+        List<String> teachingLangs = getTeachingLangs(facetFilters);
+        
+        List<String> searchFields = new ArrayList<String>();
+        
+        if (teachingLangs.contains("fi")) {
+            //this.setParam(DisMaxParams.QF, Joiner.on(" ").join(FIELDS_FI));
+            searchFields.addAll(FIELDS_FI);
+        } 
+        
+        if (teachingLangs.contains("sv")) {
+            //this.setParam(DisMaxParams.QF, Joiner.on(" ").join(FIELDS_SV));
+            searchFields.addAll(FIELDS_SV);
+        } 
+        
+        if (teachingLangs.contains("en")) {
+            //this.setParam(DisMaxParams.QF, Joiner.on(" ").join(FIELDS_EN));
+            searchFields.addAll(FIELDS_EN);
+        } 
+        
+        if (searchFields.isEmpty()){
+            this.setParam(DisMaxParams.QF, Joiner.on(" ").join(FIELDS));
+        } else {
+            this.setParam(DisMaxParams.QF, Joiner.on(" ").join(searchFields));
+        }
+        
+    }
+
+
+
+    private List<String> getTeachingLangs(List<String> facetFilters) {
+        List<String> teachinglangs = new ArrayList<String>();
+        for (String curFilt : facetFilters) {
+            if (curFilt.startsWith(LearningOpportunity.TEACHING_LANGUAGE)) {
+                String theLang = curFilt.substring(curFilt.length() - 2).toLowerCase();
+                teachinglangs.add(theLang);
+            }
+        }
+        return teachinglangs;
+    }
+
 
 
     private void addFacetsToQuery(String lang, List<String> facetFilters, String ongoingFQ, String upcomingFQ) {

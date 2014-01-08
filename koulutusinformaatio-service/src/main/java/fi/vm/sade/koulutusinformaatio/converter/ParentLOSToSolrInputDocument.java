@@ -18,9 +18,11 @@ package fi.vm.sade.koulutusinformaatio.converter;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.SolrFields.SolrConstants;
+
 import org.apache.solr.common.SolrInputDocument;
 import org.springframework.core.convert.converter.Converter;
 
@@ -48,7 +50,11 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         doc.addField(LearningOpportunity.ID, parent.getId());
         doc.addField(LearningOpportunity.LOP_ID, provider.getId());
 
-        doc.setField(LearningOpportunity.NAME, parent.getName().getTranslations().get("fi"));
+        //doc.setField(LearningOpportunity.NAME, parent.getName().getTranslations().get("fi"));
+        
+        doc.setField(LearningOpportunity.NAME, SolrUtil.resolveTranslationInTeachingLangUseFallback(
+                parent.getTeachingLanguages(), parent.getName().getTranslations()));
+        
         if (parent.getCreditValue() != null) {
             doc.addField(LearningOpportunity.CREDITS, String.format("%s %s", parent.getCreditValue(), 
                         parent.getCreditUnit().getTranslationsShortName().get("fi")));
@@ -130,10 +136,6 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
 
         return doc;
     }
-    
-    
-
-
 
     private void addPrerequisite(Set<String> prerequisites, ChildLOI childLOI) {
         String prereq = SolrConstants.SPECIAL_EDUCATION.equalsIgnoreCase(childLOI.getPrerequisite().getValue()) ? SolrConstants.PK : childLOI.getPrerequisite().getValue();
@@ -141,10 +143,6 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
             prerequisites.add(prereq);
         }
     }
-
-
-
-
 
     private void indexLopName(SolrInputDocument doc, Provider provider) {
         
@@ -210,7 +208,7 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
 
         //SolrUtil.addApplicationDates(doc, childLOI.getApplicationOptions());
         
-        indexFacetFields(childLOS, childLOI, doc);
+        //indexFacetFields(childLOS, childLOI, doc);
     }
 
     /*
@@ -246,14 +244,4 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         
     }
     
-    /*
-     * Indexes fields used in facet search for ChildLOS
-     */
-    private void indexFacetFields(ChildLOS childLOS, ChildLOI childLOI, SolrInputDocument doc) {
-        doc.addField(LearningOpportunity.TEACHING_LANGUAGE, childLOI.getTeachingLanguages().get(0).getValue());
-        doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMMATILLINEN);
-        if (childLOI.isKaksoistutkinto()) {
-            doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_KAKSOIS);
-        }
-    }
 }
