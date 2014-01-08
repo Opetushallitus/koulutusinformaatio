@@ -29,6 +29,7 @@ function SearchFieldCtrl($scope, $location, $route, SearchService, kiAppConstant
     // Perform search using LearningOpportunity service
     $scope.search = function() {
         if ($scope.queryString) {
+            var activeTab = $location.search().tab;
             FilterService.clear(); // clear all filters for new search
             TreeService.clear(); // clear tree selections
             FilterService.setPage(kiAppConstants.searchResultsStartPage);
@@ -41,7 +42,9 @@ function SearchFieldCtrl($scope, $location, $route, SearchService, kiAppConstant
             // update location
             $location.hash(null);
             $location.path('/haku/' + queryString);
-            $location.search(FilterService.get());
+            var filters = FilterService.get();
+            filters.tab = activeTab;
+            $location.search(filters);
         }
     };
 };
@@ -338,6 +341,11 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
         {value: i18n.t('sort-criteria-duration-desc'), group: i18n.t('sort-criteria-duration-group')}
     ];
 
+    $scope.tabs = {
+        learningOpportunities: i18n.t('search-tab-lo'),
+        articles: i18n.t('search-tab-article')
+    };
+
     $scope.paginationNext = i18n.t('pagination-next');
     $scope.paginationPrevious = i18n.t('pagination-previous');
     $scope.valitseAlueTitle = i18n.t('valitse-alue');
@@ -370,7 +378,12 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
                 $scope.itemsPerPage = FilterService.getItemsPerPage();
                 $scope.sortCriteria = FilterService.getSortCriteria();
                 $scope.currentPage = FilterService.getPage();
-                $scope.doSearching();
+
+                $scope.articlesTabActive = (queryParams.tab === 'articles');
+
+                if (!$scope.articlesTabActive) {
+                    $scope.doSearching();
+                }
             });
     }
     $scope.initSearch();
@@ -396,7 +409,6 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
 
     //Searching solr
     $scope.doSearching = function() {
-        console.log('lo search');
     	//If the language filter is set, the search query is made
     	if ($routeParams.queryString && $scope.isLangFilterSet()) {
     		SearchLearningOpportunityService.query({
@@ -420,6 +432,10 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
                     ? $scope.currentPage * $scope.itemsPerPage
                     : $scope.totalItems;
     			$scope.populateFacetSelections();
+
+                var qParams = $location.search();
+                delete qParams.tab;
+                $location.search(qParams);
     		});
 
     		$scope.queryString = $routeParams.queryString;
@@ -515,17 +531,35 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     }
 };
 
-function ArticleSearchCtrl($scope, $routeParams, ArticleContentSearchService) {
+function ArticleSearchCtrl($scope, $location, $routeParams, ArticleContentSearchService) {
+    $scope.currentPage = 1;
+    $scope.showPagination = false;
+
+    $scope.changePage = function(page) {
+        $scope.currentPage = page;
+        $scope.doArticleSearching();
+
+        $('html, body').scrollTop($('body').offset().top); // scroll to top of list
+    }
  
     $scope.doArticleSearching = function() {
-        console.log('article search');
-        ArticleContentSearchService.query($routeParams.queryString).then(function(result) {
+        ArticleContentSearchService.query({queryString: $routeParams.queryString, page: $scope.currentPage}).then(function(result) {
             $scope.articles = result;
             $scope.maxPages = result.pages;
             $scope.totalItems = result.count_total;
-            $scope.itemsPerPage = result.count;
-            $scope.currentPage = 1;
+            $scope.itemsPerPage = 10; //result.count;
+            $scope.pageMin = ($scope.currentPage - 1) * $scope.itemsPerPage + 1;
+            $scope.pageMax = $scope.currentPage * $scope.itemsPerPage < $scope.totalItems
+                ? $scope.currentPage * $scope.itemsPerPage
+                : $scope.totalItems;
+
+            $scope.queryString = $routeParams.queryString;
+            $scope.showPagination = $scope.totalItems > $scope.itemsPerPage;
         });
+
+        var qParams = $location.search();
+        qParams.tab = 'articles';
+        $location.search(qParams);
     }
 };
 

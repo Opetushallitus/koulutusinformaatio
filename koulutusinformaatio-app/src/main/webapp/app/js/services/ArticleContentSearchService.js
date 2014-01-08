@@ -2,22 +2,19 @@ angular.module('kiApp.ArticleContentSearchService', ['ngResource']).
 
 service('ArticleContentSearchService', ['$q', '$http', 'Config', function($q, $http, Config) {
     return {
-        query: function(queryParam) {
+        query: function(options) {
             var deferred = $q.defer();
             var url = Config.get('frontpageUrl');
-
-            /*
+            
+            url += 'page/' + options.page + '/';
             $http.get(url, {
                 params: {
-                    s: queryParam,
+                    s: options.queryString,
                     json: 1
                 }
             }).
-*/
-            $http.get('mocks/wp-content.json', {}).
             success(function(result) {
                 deferred.resolve(result);
-                //console.log(result);
             }).
             error(function(result) {
                 deferred.reject(result);

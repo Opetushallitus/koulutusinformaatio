@@ -1,6 +1,7 @@
 window.Config = window.Config || {};
 window.Config.app = window.Config.app || {};
 
+/* Configurations common for all environments */
 window.Config.app.common = {
 	fi: {
 		ophUrl: 'http://www.oph.fi/etusivu',
@@ -14,6 +15,7 @@ window.Config.app.common = {
     piwikUrl: 'https://analytiikka.opintopolku.fi/piwik/'
 };
 
+/* Configurations for production environment */
 window.Config.app.prod = {
 	fi: {
 		frontpageUrl: '/wp/fi/',
@@ -27,6 +29,7 @@ window.Config.app.prod = {
 	}
 };
 
+/* Configurations for koulutus environment */
 window.Config.app.koulutus = {
 	fi: {
 		frontpageUrl: '/wp/fi/',
@@ -40,6 +43,7 @@ window.Config.app.koulutus = {
 	}
 };
 
+/* Configurations for QA environment */
 window.Config.app.qa = {
 	fi: {
 		frontpageUrl: '/wp/fi/',
@@ -53,15 +57,16 @@ window.Config.app.qa = {
 	}
 };
 
+/* Configurations for development (localhost, luokka, reppu, kielistudio) environment */
 window.Config.app.dev = {
 	fi: {
-		frontpageUrl: '/wp/fi/',
+		frontpageUrl: 'https://testi.opintopolku.fi/wp/fi/',
 		rekisteriselosteUrl: '/wp/fi/',
-		navigationUrl: '/wp/fi/api/nav/json_nav/'
+		navigationUrl: 'https://testi.opintopolku.fi/wp/fi/api/nav/json_nav/'
 	},
 	sv: {
-		frontpageUrl: '/wp/sv/',
+		frontpageUrl: 'https://testi.opintopolku.fi/wp/sv/',
     	rekisteriselosteUrl: '/wp/sv/',
-    	navigationUrl: '/wp/sv/api/nav/json_nav/'
+    	navigationUrl: 'https://testi.opintopolku.fi/wp/sv/api/nav/json_nav/'
 	}
 };

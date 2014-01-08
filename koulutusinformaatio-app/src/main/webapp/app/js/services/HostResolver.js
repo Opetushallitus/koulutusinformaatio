@@ -18,7 +18,7 @@ service('HostResolver', function() {
                 else if (host.indexOf('xtest-') == 0) return hosts.kielistudio;
                 else if (host.indexOf('test-') == 0) return hosts.reppu;
                 else if (host.indexOf('itest-') == 0) return hosts.luokka;
-                else if (host.indexOf('localhost') == 0) return hosts.localhost;
+                else if (host.indexOf('localhost') == 0 || host.indexOf('10.0.2.2') == 0) return hosts.localhost;
             }
         },
 
