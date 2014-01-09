@@ -15,7 +15,8 @@
     "secondary-school-based": "Lukiopohjainen koulutus",
 
     "search-result-title": "Tulokset haulle",
-    "search-result-title-description": "Valitse vasemmalta haluamasi hakutulosrajaukset",
+    "search-result-title-description": "Rajaa koulutushaun tuloksia vasemmalta haluamillasi kriteereillä. Hakusanan mukaiset muut hakuosumat löydät Tietoa ja tarinoita -välilehdeltä",
+    "search-articles-result-title-description": "Hakuehtojen mukaiset koulutushaun osumat löydät Koulutuksia-välilehdeltä. Voit hakea lisää opintoihin ja opiskeluun liittyviä tietoja niihin liittyvillä hakusanoilla.",
     "search-result-count-unit": "kpl",
     "search-field-placeholder": "Hae koulutusta tästä",
     "no-search-results": "Ei hakutuloksia",
@@ -29,7 +30,9 @@
     "search-field-label": "Etsi koulutuksia tästä",
     "search-field-placeholder": "Kirjoita tähän esim. tutkinto, ammatti tai oppilaitoksen nimi",
     "search-button": "Hae",
-
+    "search-tab-lo": "Koulutuksia",
+    "search-tab-article": "Tietoa ja tarinoita",
+    
     "filter-title": "Rajaa hakutuloksia tästä",
     "filter-search-title": "Pohjakoulutus",
     "filter-search-subtitle": "Valitse ylin suorittamasi koulutus",
