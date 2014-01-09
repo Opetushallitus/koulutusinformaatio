@@ -164,31 +164,26 @@ public class LearningOpportunityQuery extends SolrQuery {
         
         if (teachingLangs.contains("fi")) {
             //this.setParam(DisMaxParams.QF, Joiner.on(" ").join(FIELDS_FI));
-            System.out.println("Aiming search at: FIELDS_FI");
             searchFields.addAll(FIELDS_FI);
         } 
         
         if (teachingLangs.contains("sv")) {
             //this.setParam(DisMaxParams.QF, Joiner.on(" ").join(FIELDS_SV));
-            System.out.println("Aiming search at: FIELDS_SV");
             searchFields.addAll(FIELDS_SV);
         } 
         
         if (teachingLangs.contains("en")) {
             //this.setParam(DisMaxParams.QF, Joiner.on(" ").join(FIELDS_EN));
-            System.out.println("Aiming search at: FIELDS_EN");
             searchFields.addAll(FIELDS_EN);
         } 
         
         if (searchFields.isEmpty() 
                 && !teachingLangs.isEmpty()) {
-            System.out.println("Aiming search at: FIELDS_FI fallback");
             searchFields.addAll(FIELDS_FI);
         }
         
         
         if (searchFields.isEmpty()){
-            System.out.println("Aiming at everything");
             this.setParam(DisMaxParams.QF, Joiner.on(" ").join(FIELDS));
         } else {
             this.setParam(DisMaxParams.QF, Joiner.on(" ").join(searchFields));
