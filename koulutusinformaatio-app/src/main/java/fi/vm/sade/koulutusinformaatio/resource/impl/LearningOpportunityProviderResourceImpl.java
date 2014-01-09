@@ -44,14 +44,12 @@ import java.util.List;
 public class LearningOpportunityProviderResourceImpl implements LearningOpportunityProviderResource {
 
     private SearchService searchService;
-    private ModelMapper modelMapper;
     private LearningOpportunityService learningOpportunityService;
 
     @Autowired
     public LearningOpportunityProviderResourceImpl(SearchService searchService, ModelMapper modelMapper,
                                                    LearningOpportunityService learningOpportunityService) {
         this.searchService = searchService;
-        this.modelMapper = modelMapper;
         this.learningOpportunityService = learningOpportunityService;
     }
 
@@ -78,6 +76,7 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
                     return result;
                 }
             }));
+
             Collections.sort(result, new ProviderSearchResultComparator());
             return result;
         } catch (SearchException e) {

@@ -62,6 +62,10 @@
             <param-value>(/app/.*)|(/(buildversion|robots)\.txt)</param-value>
         </init-param>
         <init-param>
+            <param-name>com.sun.jersey.freemarker.templateBasePath</param-name>
+            <param-value>freemarker</param-value>
+        </init-param>
+        <init-param>
             <param-name>com.sun.jersey.spi.container.ContainerRequestFilters</param-name>
             <param-value>fi.vm.sade.koulutusinformaatio.filter.SearchEngineFilter</param-value>
         </init-param>
