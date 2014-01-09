@@ -87,9 +87,6 @@ public class UpdateServiceImpl implements UpdateService {
                 index += count;
             
             
-            
-                
-                
                for (String loOid : loOids) {
                     List<LOS> specifications = null;
                     try {
