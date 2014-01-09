@@ -19,6 +19,7 @@ package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
+
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
@@ -32,8 +33,11 @@ import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 
 import javax.ws.rs.WebApplicationException;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -161,6 +165,7 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
                     })
             );
 
+            Map<String,Code> codeLang = new HashMap<String,Code>();
             for (ChildLOS childLOS : children) {
 
                 // set parent ref
@@ -190,9 +195,9 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
                         }
                     }
                     
-                    List<Code> teachingLangs = parentLOS.getTeachingLanguages() != null ? parentLOS.getTeachingLanguages() : new ArrayList<Code>();
-                    teachingLangs.addAll(childLOI.getTeachingLanguages());
-                    parentLOS.setTeachingLanguages(teachingLangs);
+                    for (Code curLang : childLOI.getTeachingLanguages()) {
+                        codeLang.put(curLang.getValue(), curLang);
+                    }
                 }
                 
             }
@@ -200,6 +205,10 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
                 parentLOI.setApplicationOptions(applicationOptionsByParentLOIId.get(parentLOI.getId()));
             }
             parentLOS.setChildren(children);
+            parentLOS.setTeachingLanguages(new ArrayList<Code>(codeLang.values()));
+            if (parentLOS.getTeachingLanguages().size() != 1) {
+                LOG.error(String.format("%s%s%s%s", "Data problem: ", parentLOS.getTeachingLanguages().size(), " teaching langauges for parentLOS ", parentLOS.getId()));
+            }
         }
         return this;
     }
