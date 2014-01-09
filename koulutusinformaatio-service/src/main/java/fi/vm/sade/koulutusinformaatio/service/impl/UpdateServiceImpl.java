@@ -80,16 +80,13 @@ public class UpdateServiceImpl implements UpdateService {
             int count = MAX_RESULTS;
             int index = 0;
             
-            /*while(count >= MAX_RESULTS) {
+            while(count >= MAX_RESULTS) {
                 LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
                 List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
                 count = loOids.size();
-                index += count;*/
+                index += count;
             
-            List<String> loOids = Arrays.asList("1.2.246.562.5.2013061010191208547980", 
-                                                "1.2.246.562.5.2013061010192577322360", 
-                                                "1.2.246.562.5.2013112814572435763432", 
-                                                "1.2.246.562.5.2013061010184670694756");//"1.2.246.562.5.2013061010184489847408");
+            
             
                 
                 
@@ -107,7 +104,7 @@ public class UpdateServiceImpl implements UpdateService {
                     }
                    this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
                }
-            //}
+            }
             List<Location> locations = locationService.getMunicipalities();
             indexerService.addLocations(locations, locationUpdateSolr);
             indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, true);
