@@ -22,10 +22,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Hannu Lyytikainen
@@ -122,7 +119,9 @@ public class IndexerServiceImpl implements IndexerService {
         List<SolrInputDocument> providerDocs = Lists.newArrayList();
         SolrInputDocument providerDoc = new SolrInputDocument();
         providerDoc.addField("id", provider.getId());
-        providerDoc.addField("name", provider.getName().getTranslations().get("fi"));
+
+        providerDoc.addField("name_fi", resolveTextByLang("fi", provider.getName().getTranslations()));
+        providerDoc.addField("name_sv", resolveTextByLang("sv", provider.getName().getTranslations()));
 
         // check if provider exists and update base education and as id values
         SolrQuery query = new SolrQuery("id:" + provider.getId());
@@ -263,5 +262,15 @@ public class IndexerServiceImpl implements IndexerService {
             return this.locationUpdateHttpSolrServer;
         }
         return this.locationHttpSolrServer;
+    }
+
+    private String resolveTextByLang(String lang, Map<String, String> translations) {
+        if (translations.containsKey(lang)) {
+            return translations.get(lang);
+        } else if (translations.containsKey(FALLBACK_LANG)) {
+            return translations.get(FALLBACK_LANG);
+        } else {
+            return translations.values().iterator().next();
+        }
     }
 }

@@ -29,17 +29,18 @@ public class ProviderQuery extends SolrQuery {
 
     private final static String BASE_EDUCATIONS = "requiredBaseEducations";
     private final static String AS_IDS = "asIds";
-    private final static String NAME = "name";
+    private final static String NAME_FI = "name_fi";
+    private final static String NAME_SV = "name_sv";
     private final static String NEG_VOCATIONAL = "-vocationalAsIds";
     private final static String NEG_NON_VOCATIONAL = "-nonVocationalAsIds";
 
     public ProviderQuery(String q, String asId, String baseEducation, int start, int rows, boolean vocational,
-                         boolean nonVocational) {
-        super(Joiner.on(":").join(NAME, ClientUtils.escapeQueryChars(q) + "*"));
+                         boolean nonVocational, String lang) {
+        super(Joiner.on(":").join(resolveNameField(lang), ClientUtils.escapeQueryChars(q) + "*"));
 
         this.setStart(start);
         this.setRows(rows);
-        this.setSort(NAME, ORDER.asc);
+        this.setSort(resolveNameField(lang), ORDER.asc);
 
         if (asId != null) {
             this.addFilterQuery(Joiner.on(":").join(AS_IDS, asId));
@@ -53,6 +54,14 @@ public class ProviderQuery extends SolrQuery {
         }
         if (baseEducation != null) {
             this.addFilterQuery(Joiner.on(":").join(BASE_EDUCATIONS, baseEducation));
+        }
+    }
+
+    private static String resolveNameField(String lang) {
+        if (lang.equalsIgnoreCase("sv")) {
+            return NAME_SV;
+        } else {
+            return NAME_FI;
         }
     }
 }

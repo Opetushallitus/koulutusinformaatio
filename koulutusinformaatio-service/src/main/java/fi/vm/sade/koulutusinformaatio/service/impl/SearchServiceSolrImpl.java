@@ -74,9 +74,9 @@ public class SearchServiceSolrImpl implements SearchService {
 
     @Override
     public List<Provider> searchLearningOpportunityProviders(
-            String term, String asId, String baseEducation, boolean vocational, boolean nonVocational, int start, int rows) throws SearchException {
+            String term, String asId, String baseEducation, boolean vocational, boolean nonVocational, int start, int rows, String lang) throws SearchException {
         List<Provider> providers = new ArrayList<Provider>();
-        SolrQuery query = new ProviderQuery(term, asId, baseEducation, start, rows, vocational, nonVocational);
+        SolrQuery query = new ProviderQuery(term, asId, baseEducation, start, rows, vocational, nonVocational, lang);
 
         QueryResponse queryResponse = null;
         try {
@@ -91,7 +91,8 @@ public class SearchServiceSolrImpl implements SearchService {
 
             // TODO: i18n handling
             Map<String, String> texts = Maps.newHashMap();
-            texts.put("fi", result.get("name").toString());
+            texts.put("fi", result.get("name_fi").toString());
+            texts.put("sv", result.get("name_sv").toString());
 
             provider.setName(new I18nText(texts));
             providers.add(provider);
