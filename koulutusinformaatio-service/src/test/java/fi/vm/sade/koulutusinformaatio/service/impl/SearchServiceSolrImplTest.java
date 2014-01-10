@@ -62,7 +62,8 @@ public class SearchServiceSolrImplTest {
         SolrDocumentList lopDocs = new SolrDocumentList();
         SolrDocument lop1 = new SolrDocument();
         lop1.put("id", "1.2.3.4.5");
-        lop1.put("name", "LOP NAME");
+        lop1.put("name_fi", "LOP NAME");
+        lop1.put("name_sv", "LOP NAME");
         lop1.put("athleteEducation", false);
         lopDocs.add(lop1);
         QueryResponse lopQueryResponse = mock(QueryResponse.class);
@@ -117,14 +118,14 @@ public class SearchServiceSolrImplTest {
     @Test
     public void testSearchProviders() throws SearchException {
         List<Provider> lops = service.searchLearningOpportunityProviders(
-                "query", "1.2.3.4", "PK", true, true, 0, 100);
+                "query", "1.2.3.4", "PK", true, true, 0, 100, "fi");
         assertEquals(1, lops.size());
     }
 
     @Test
     public void testSearchProvidersEmptyTerm() throws SearchException {
         List<Provider> lops = service.searchLearningOpportunityProviders(
-                "", "1.2.3.4", "PK", true, true, 0, 100);
+                "", "1.2.3.4", "PK", true, true, 0, 100, "fi");
         assertEquals(1, lops.size());
     }
 

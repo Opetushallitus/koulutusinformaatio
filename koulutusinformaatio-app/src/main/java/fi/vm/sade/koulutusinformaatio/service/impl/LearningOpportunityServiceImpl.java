@@ -134,7 +134,7 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
         return Lists.transform(applicationOptions, new Function<ApplicationOption, ApplicationOptionSearchResultDTO>() {
             @Override
             public ApplicationOptionSearchResultDTO apply(ApplicationOption applicationOption) {
-                return ApplicationOptionToSearchResultDTO.convert(applicationOption, LANG_FI);
+                return ApplicationOptionToSearchResultDTO.convert(applicationOption, resolveDefaultLanguage(applicationOption));
             }
         });
     }
@@ -204,6 +204,19 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
                 }
             }
             return loi.getTeachingLanguages().get(0).getValue().toLowerCase();
+        }
+    }
+
+    private String resolveDefaultLanguage(final ApplicationOption ao) {
+        if (ao.getTeachingLanguages() == null || ao.getTeachingLanguages().isEmpty()) {
+            return LANG_FI;
+        } else {
+            for (String lang : ao.getTeachingLanguages()) {
+                if (lang.equalsIgnoreCase(LANG_FI)) {
+                    return LANG_FI;
+                }
+            }
+            return ao.getTeachingLanguages().get(0).toLowerCase();
         }
     }
 

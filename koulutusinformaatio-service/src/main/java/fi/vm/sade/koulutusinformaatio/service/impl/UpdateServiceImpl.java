@@ -16,7 +16,6 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -81,7 +80,6 @@ public class UpdateServiceImpl implements UpdateService {
 
             this.transactionManager.beginTransaction(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
             
-            /*
             int count = MAX_RESULTS;
             int index = 0;
             
@@ -90,16 +88,6 @@ public class UpdateServiceImpl implements UpdateService {
                 List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
                 count = loOids.size();
                 index += count;
-                */
-            List<String> loOids = new ArrayList<String>();
-          //loOids.add("1.2.246.562.5.2013061010184627597002");
-          //loOids.add("1.2.246.562.5.2013061010185992084511");
-          //loOids.add("1.2.246.562.5.2013061010184317101998");
-          //loOids.add("1.2.246.562.5.2013061010190108136320"); // valmentava/erkat
-          //loOids.add("1.2.246.562.5.2013061010184825428645"); // teema
-          //loOids.add("1.2.246.562.5.2013061010185450857902"); // teema
-          loOids.add("1.2.246.562.5.2013061010190108136320"); // ammatillinen erityisopetus
-          loOids.add("1.2.246.562.5.2013112814572435755085"); // valmentava ja kuntouttava
             
             
                for (String loOid : loOids) {
@@ -116,7 +104,7 @@ public class UpdateServiceImpl implements UpdateService {
                     }
                    this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
                }
-            //}
+            }
             List<Location> locations = locationService.getMunicipalities();
             indexerService.addLocations(locations, locationUpdateSolr);
             indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, true);
