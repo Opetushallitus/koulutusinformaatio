@@ -59,7 +59,6 @@ public class AutocompleteQuery extends SolrQuery {
             this.setParam(DisMaxParams.QF, Joiner.on(" ").join(LearningOpportunityQuery.FIELDS));
         }
         
-        //this.setParam(DisMaxParams.QF, Joiner.on(" ").join(LearningOpportunityQuery.FIELDS));
         this.setParam("q.op", "AND");
         
     }

@@ -5,7 +5,6 @@ import com.google.common.collect.Lists;
 
 import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.SolrFields.SolrConstants;
-import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.common.params.DisMaxParams;
@@ -17,6 +16,8 @@ import java.util.List;
  * @author Hannu Lyytikainen
  */
 public class LearningOpportunityQuery extends SolrQuery {
+
+    private static final long serialVersionUID = -4340177833703968140L;
 
     public final static List<String> FIELDS = Lists.newArrayList(
             "text_fi",
@@ -40,52 +41,28 @@ public class LearningOpportunityQuery extends SolrQuery {
     
     public final static List<String> FIELDS_FI = Lists.newArrayList(
             "text_fi",
-            //"text_sv",
-            //"text_en",
             "text_fi_whole",
-            //"text_sv_whole",
-            //"text_en_whole",
             "textBoost_fi^10.0",
-            //"textBoost_sv^10.0",
-            //"textBoost_en^10.0",
             "textBoost_fi_whole^10.0",
-            //"textBoost_sv_whole^10.0",
-            //"textBoost_en_whole^10.0",
             "asNames",
             "lopNames",
             "name_auto_fi"
     );
     
     public final static List<String> FIELDS_SV = Lists.newArrayList(
-            //"text_fi",
             "text_sv",
-            //"text_en",
-            //"text_fi_whole",
             "text_sv_whole",
-            //"text_en_whole",
-            //"textBoost_fi^10.0",
             "textBoost_sv^10.0",
-            //"textBoost_en^10.0",
-            //"textBoost_fi_whole^10.0",
             "textBoost_sv_whole^10.0",
-            //"textBoost_en_whole^10.0",
             "asNames",
             "lopNames",
             "name_auto_sv"
     );
     
     public final static List<String> FIELDS_EN = Lists.newArrayList(
-            //"text_fi",
-            //"text_sv",
             "text_en",
-            //"text_fi_whole",
-            //"text_sv_whole",
             "text_en_whole",
-            //"textBoost_fi^10.0",
-            //"textBoost_sv^10.0",
             "textBoost_en^10.0",
-            //"textBoost_fi_whole^10.0",
-            //"textBoost_sv_whole^10.0",
             "textBoost_en_whole^10.0",
             "asNames",
             "lopNames",
@@ -136,11 +113,7 @@ public class LearningOpportunityQuery extends SolrQuery {
         
         //leaving the facet and timestamp docs out
         this.addFilterQuery(String.format("-%s:%s", LearningOpportunity.ID, SolrConstants.TIMESTAMP_DOC));
-        this.addFilterQuery(String.format("(%s:%s) OR (%s:%s) OR (%s:%s) OR (%s:%s)", 
-                                            LearningOpportunity.TYPE, TarjontaConstants.TYPE_REHAB, 
-                                            LearningOpportunity.TYPE, TarjontaConstants.TYPE_SPECIAL, 
-                                            LearningOpportunity.TYPE, TarjontaConstants.TYPE_UPSEC, 
-                                            LearningOpportunity.TYPE, TarjontaConstants.TYPE_PARENT));
+        this.addFilterQuery(String.format("-%s:%s", LearningOpportunity.TYPE, SolrConstants.TYPE_FACET));
         
         addFacetsToQuery(lang, facetFilters, ongoingFQ.toString(), upcomingFQ.toString());
         
@@ -163,17 +136,14 @@ public class LearningOpportunityQuery extends SolrQuery {
         List<String> searchFields = new ArrayList<String>();
         
         if (teachingLangs.contains("fi")) {
-            //this.setParam(DisMaxParams.QF, Joiner.on(" ").join(FIELDS_FI));
             searchFields.addAll(FIELDS_FI);
         } 
         
         if (teachingLangs.contains("sv")) {
-            //this.setParam(DisMaxParams.QF, Joiner.on(" ").join(FIELDS_SV));
             searchFields.addAll(FIELDS_SV);
         } 
         
         if (teachingLangs.contains("en")) {
-            //this.setParam(DisMaxParams.QF, Joiner.on(" ").join(FIELDS_EN));
             searchFields.addAll(FIELDS_EN);
         } 
         
