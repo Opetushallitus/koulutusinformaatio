@@ -44,6 +44,9 @@ def _(item, dn_key):
 def dateformat(value, format="%d.%m.%Y"):
     return datetime.fromtimestamp(value/1000).strftime(format)
 
+def datetimeformat(value, format="%d.%m.%Y %H:%M"):
+    return datetime.fromtimestamp(value/1000).strftime(format)
+
 def separated_list(values, sep=", "):
     return sep.join(values)
 
@@ -62,6 +65,7 @@ def index_links(links, title="ctx", chars=3, page=None, sep=" "):
 def get_templ(src_fn):
     env = Environment(loader=FileSystemLoader([os.path.dirname(src_fn), "../src/lib-"]), lstrip_blocks=True, trim_blocks=True)
     env.filters['dateformat'] = dateformat
+    env.filters['datetimeformat'] = datetimeformat
     env.filters['separated_list'] = separated_list
     env.filters['index_links'] = index_links
     return env.get_template(os.path.basename(src_fn))

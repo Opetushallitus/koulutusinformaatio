@@ -4,7 +4,8 @@ import requests
 import random
 import string
 
-base_url = "https://test-oppija.oph.ware.fi"
+#base_url = "https://test-oppija.oph.ware.fi"
+base_url = "http://localhost:8080/koulutusinformaatio-app"
 session = requests.Session()
 
 def _(item, dn_key):

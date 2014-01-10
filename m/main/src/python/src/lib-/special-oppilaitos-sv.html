@@ -11,13 +11,13 @@
 <h2>Kontaktuppgifter</h2>
 
 <ul>
-{%if provider.postalAddress.streetAddress is defined %}
+{%if provider.postalAddress is defined and provider.postalAddress.streetAddress is defined %}
     <li>Postadress:<br/>
         {{ provider.postalAddress.streetAddress }}<br/>
         {{ provider.postalAddress.postalCode }} {{ provider.postalAddress.postOffice }}<br/>
     </li>
 {%endif%}
-{%if provider.visitingAddress.streetAddress is defined or provider.visitingAddress.postalAddress == provider.postalAddress.streetAddress %}
+{%if provider.visitingAddress is defined and provider.visitingAddress.streetAddress is defined %}
     <li>Besöksadress:<br/>
         {{ provider.visitingAddress.streetAddress }}<br/>
         {{ provider.visitingAddress.postalCode }} {{ provider.visitingAddress.postOffice }}<br/>

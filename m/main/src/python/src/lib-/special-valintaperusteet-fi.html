@@ -1,30 +1,138 @@
 {% set loi = ctx.lois[0] %}
 {% set as = loi.applicationSystems[0] %}
 {% set ao = as.applicationOptions[0] %}
+{% set provider = ctx.provider %}
 {% extends "base-fi.html" %}
 {% block title %}{{ ctx.provider.name }} - {{ ctx.name }} - Valintaperusteet{% endblock %}
+
+{% block breadcrumb %}
+<a href="/index.html">Kotinäkymä</a>
+<span class="delimiter">&gt;</span>
+<a href="index-1.html">{{title_erityis_koulutukset_fi}}</a>
+<span class="delimiter">&gt;</span>
+<span>{{ ctx.name }}, hakeminen</span>
+{% endblock %}
+
+{% block navi %}
+<a href="{{ ctx.id }}-koulutus.html">Koulutuksen kuvaus</a>
+<a href="{{ ctx.id }}-oppilaitos.html">Oppilaitoskuvaus</a>
+{% endblock %}
+
 {% block content %}
 
-<h1>{{ ctx.provider.name }} - {{ ctx.name }} - Valintaperusteet</h1>
+<h1>{{ ctx.name }}, hakeminen</h1>
 
-{% if loi.prerequisite.description is defined or ao.selectionCriteria is defined %}
-<h2>Pohjakoulutus</h2>
-
-{{ loi.prerequisite.description }}
-
+{% if ao.selectionCriteria is defined %}
 {{ ao.selectionCriteria }}
 {% endif %}
 
-{% if ao.lowestAcceptedAverage is defined %}
-<h2>Keskiarvoraja</h2>
+{% if ao.exams is defined %}
+{% for exam in ao.exams %}
+<h2>{{ exam.type }}</h2>
+
+{% if exam.description %}
+{{ exam.description }}
+{% endif %}
+<table>
+	<thead>
+		<tr>
+			<th>Aika</th>
+			<th>Paikka</th>
+			<th>Kuvaus</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for event in exam.examEvents %}
+		<tr>
+			<td>{{ event.start|datetimeformat }} - {{ event.end|datetimeformat }}</td>
+			<td>
+				{% if event.address.streetAddress is defined %}{{ event.address.streetAddress }}<br />{% endif %}
+				{% if event.address.streetAddress2 is defined %}{{ event.address.streetAddress2 }}<br />{% endif %}
+				{% if event.address.postalCode is defined %}{{ event.address.postalCode }}<br />{% endif %}
+				{% if event.address.postOffice is defined %}{{ event.address.postOffice }}{% endif %}
+			</td>
+			<td>{{ event.description }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endfor %}
+{% endif %}
+
+
+{% if ao.attachments is defined %}
+<h2>Tarvittavat liitteet</h2>
+{% for att in ao.attachments %}
+<h3>{{ att.type }}</h3>
+
+{% if att.descreption %}
+{{ att.descreption }}
+{% endif %}
+{% endfor %}
+<table>
+	<thead>
+		<tr>
+			<th>Liite</th>
+			<th>Toimitusosoite</th>
+			<th>Toimitettava viimeistään</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for att in ao.attachments %}
+		<tr>
+			<td>{{ att.type }}</td>
+			<td>
+				{% if att.address.streetAddress is defined %}{{ att.address.streetAddress }}<br />{% endif %}
+				{% if att.address.streetAddress2 is defined %}{{ att.address.streetAddress2 }}<br />{% endif %}
+				{% if att.address.postalCode is defined %}{{ att.address.postalCode }}<br />{% endif %}
+				{% if att.address.postOffice is defined %}{{ att.address.postOffice }}{% endif %}
+			</td>
+			<td>{{ att.dueDate|dateformat }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+
+{% if ao.additionalInfo is defined %}
+<h2>Lisätietoa hakemisesta</h2>
+{{ ao.additionalInfo }}
+{% endif %}
+
+{% if provider.visitingAddress is defined or provider.postalAddress is defined or provider.email is defined or provider.phone is defined or provider.fax is defined or provider.www is defined %}
+<h2>Hakuneuvonta</h2>
+{% if provider.name is defined %}
+{{ provider.name }}
+{% endif %}
 
 <ul>
-<li>Alin hyväksyttävä keskiarvo: {{ ao.lowestAcceptedAverage }}</li>
-</ul>
-
-<p>
-Oppilaitoksen asettama keskiarvoraja jonka alittaneita hakijoita ei valita koulutukseen. Opiskelijaksi ottamisen keskiarvo vaihtelee vuosittain ja voi olla korkeampi.
-</p>
+{%if provider.postalAddress is defined and provider.postalAddress.streetAddress is defined %}
+    <li>Postiosoite:<br/>
+        {{ provider.postalAddress.streetAddress }}<br/>
+        {{ provider.postalAddress.postalCode }} {{ provider.postalAddress.postOffice }}<br/>
+    </li>
+{%endif%}
+{%if provider.visitingAddress is defined and provider.visitingAddress.streetAddress is defined %}
+    <li>Käyntiosoite:<br/>
+        {{ provider.visitingAddress.streetAddress }}<br/>
+        {{ provider.visitingAddress.postalCode }} {{ provider.visitingAddress.postOffice }}<br/>
+    </li>
+{%endif%}
+{%if provider.email is defined %}
+    <li>Sähköposti: <a href="mailto:{{ provider.email }}">{{ provider.email }}</a></li>
 {% endif %}
+{%if provider.phone is defined %}
+    <li>Puhelin: <a href="tel:{{ provider.phone }}">{{ provider.phone }}</a></li>
+{% endif %}
+{% if provider.fax is defined %}
+    <li>Faksi: <a href="fax:{{ provider.fax }}">{{ provider.fax }}</a></li>
+{% endif %}
+{% if provider.www is defined %}
+    <li>Faksi: <a href="{{ provider.www }}">{{ provider.www }}</a></li>
+{% endif %}
+
+{% endif %}
+
+
 
 {% endblock %}

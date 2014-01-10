@@ -1,8 +1,8 @@
 OUT=out/
 
-all: clean venv
+all: clean venv copyassets
 	venv/bin/python render.py
-
+	
 clean:
 	rm -rf out/
 
@@ -15,3 +15,6 @@ venv/bin/activate: requirements.txt
 	test -d venv || virtualenv venv
 	. venv/bin/activate; venv/bin/pip install -Ur requirements.txt
 	touch venv/bin/activate
+
+copyassets:
+	cp src/style.css out/style.css

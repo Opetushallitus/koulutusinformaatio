@@ -5,4 +5,8 @@ import json
 url = "/lo/search/*?&lang=sv&facetFilters=educationType_ffm:et5"
 #url = "/lo/search/lukio"
 
-retval = sorted([get(s("/lo/special/{x[id]}")) for x in get(url)["results"]], key=dotted_getter("provider.name"))
+results = get(url)
+if "results" in results:
+	retval = sorted([get(s("/lo/special/{x[id]}")) for x in results["results"]], key=dotted_getter("name"))
+else:
+	retval = []

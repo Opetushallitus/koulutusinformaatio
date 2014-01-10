@@ -1,0 +1,92 @@
+body {
+	max-width: 80em;
+	font-family: arial, sans-serif;
+	font-size: 1em;
+	color: #000000;
+	line-height: 1.5em;
+}
+
+h1
+{
+	font-size: 1.692em;
+	line-height:1.3em;
+}
+
+h2
+{
+	font-size: 1.385em;
+	line-height:1.3em;
+}
+
+h3
+{
+	font-size: 0.923em;
+	line-height: 1.538em;
+	font-weight: normal;
+	text-transform: uppercase;
+	letter-spacing: 0.12em;
+}
+
+h4
+{
+	font-size: 1em;
+	line-height: 1.538em;
+	text-transform: none;
+	
+}
+
+h5 {
+	font-size: 1em;
+	line-height: 1.538em;
+	font-weight: normal;
+	font-style: italic;
+}
+
+h6 {
+	font-size: 0.923em;
+	line-height: 1.538em;
+}
+
+p {
+	margin: 1em 0;
+}
+
+table {
+	width: 100%;
+	border: 1px solid #000000;
+	border-collapse: collapse;
+}
+
+table th,
+table td {
+	border: 1px solid #000000;
+	padding: 1em;
+}
+
+table th {
+	text-align: left;
+}
+
+.block {
+	display: block;
+}
+
+#navi a {
+	margin: 0 4em 0 0;
+}
+
+#header {
+	margin: 0 0 1em 0;
+}
+
+#navi {
+	margin: 0 0 1em 0;
+}
+
+#breadcrumb {
+	margin: 0 0 1em 0;
+}
+
+#breadcrumb .delimiter {
+	margin: 0 0.5em;
+}

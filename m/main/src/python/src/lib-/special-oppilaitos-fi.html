@@ -3,29 +3,93 @@
 {% set ao = as.applicationOptions[0] %}
 {% set provider = ctx.provider %}
 {% extends "base-fi.html" %}
-
 {% block title %}{{ ctx.provider.name }} - {{ ctx.name }} - Oppilaitos{% endblock %}
+
+{% block breadcrumb %}
+<a href="/index.html">Kotinäkymä</a>
+<span class="delimiter">&gt;</span>
+<a href="index-1.html">{{title_erityis_koulutukset_fi}}</a>
+<span class="delimiter">&gt;</span>
+<span>{{ ctx.name }}, oppilaitoskuvaus</span>
+{% endblock %}
+
+{% block navi %}
+<a href="{{ ctx.id }}-koulutus.html">Koulutuksen kuvaus</a>
+<a href="{{ ctx.id }}-valintaperusteet.html">Hakeminen</a>
+{% endblock %}
+
 {% block content %}
-<h1>{{ ctx.provider.name }} - {{ ctx.name }} - Oppilaitos</h1>
+<h1>{{ ctx.name }}, oppilaitoskuvaus</h1>
+
+{% if provider.social is defined %}
+<h2>Sosiaaliset mediat</h2>
+<ul>
+    {% for socialItem in provider.social %}
+    <li>
+        <a href="{{ socialItem.url }}">{{socialItem.name}}</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% if provider.description is defined or provider.learningEnvironment is defined or provider.accessibility is defined %}
+<h2>{{ provider.name }}</h2>
+
+{% if provider.description is defined %}
+{{ provider.description }}
+{% endif %}
+
+{% if provider.learningEnvironment is defined %}
+<h3>Tietoa oppimisympäristöstä</h3>
+{{ provider.learningEnvironment }}
+{% endif %}
+
+{% if provider.accessibility is defined %}
+<h3>Esteettömyys ja oppimisen tuki</h3>
+{{ provider.accessibility }}
+{% endif %}
+
+{% endif %}
+
+
+{% if provider.livingExpenses is defined or provider.dining is defined or provider.healthcare is defined %}
+<h2>Opiskelijan edut</h2>
+
+{% if provider.livingExpenses is defined %}
+<h3>Tietoa elämisen kustannuksista</h3>
+{{ provider.livingExpenses }}
+{% endif %}
+
+{% if provider.dining is defined %}
+<h3>Opiskelijaruokailu</h3>
+{{ provider.dining }}
+{% endif %}
+
+{% if provider.healthcare is defined %}
+<h3>Terveydenhuoltopalvelut</h3>
+{{ provider.healthcare }}
+{% endif %}
+
+{% endif %}
 
 <h2>Yhteystiedot</h2>
 
 <ul>
-{%if provider.postalAddress.streetAddress is defined %}
+{% if provider.webPage is defined %}
+    <li><a href="{{ provider.webPage }}">Oppilaitoksen omat sivut</a></li>
+{% endif %}
+{%if provider.postalAddress is defined and provider.postalAddress.streetAddress is defined %}
     <li>Postiosoite:<br/>
         {{ provider.postalAddress.streetAddress }}<br/>
         {{ provider.postalAddress.postalCode }} {{ provider.postalAddress.postOffice }}<br/>
     </li>
 {%endif%}
-{%if provider.visitingAddress.streetAddress is defined or provider.visitingAddress.postalAddress == provider.postalAddress.streetAddress %}
+{%if provider.visitingAddress is defined and provider.visitingAddress.streetAddress is defined %}
     <li>Käyntiosoite:<br/>
         {{ provider.visitingAddress.streetAddress }}<br/>
         {{ provider.visitingAddress.postalCode }} {{ provider.visitingAddress.postOffice }}<br/>
     </li>
 {%endif%}
-{% if provider.webPage is defined %}
-    <li>Www: <a href="{{ provider.webPage }}">{{ provider.webPage }}</a></li>
-{% endif %}
 {%if provider.phone is defined %}
     <li>Puhelin: <a href="tel:{{ provider.phone }}">{{ provider.phone }}</a></li>
 {% endif %}
