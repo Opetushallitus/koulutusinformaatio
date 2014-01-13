@@ -75,7 +75,7 @@ public class DirectoryResource {
             Map<String, Object> model = Maps.newHashMap();
             List<Provider> providers = null;
             try {
-                providers = searchService.searchLearningOpportunityProviders(letter);
+                providers = searchService.searchLearningOpportunityProviders(letter, true);
             } catch (SearchException e) {
                 // error view
             }

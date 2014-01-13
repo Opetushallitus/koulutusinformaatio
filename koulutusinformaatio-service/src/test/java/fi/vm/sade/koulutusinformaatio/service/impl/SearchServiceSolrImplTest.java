@@ -118,14 +118,14 @@ public class SearchServiceSolrImplTest {
     @Test
     public void testSearchProviders() throws SearchException {
         List<Provider> lops = service.searchLearningOpportunityProviders(
-                "query", "1.2.3.4", "PK", true, true, 0, 100, "fi");
+                "query", "1.2.3.4", "PK", true, true, 0, 100, "fi", false);
         assertEquals(1, lops.size());
     }
 
     @Test
     public void testSearchProvidersEmptyTerm() throws SearchException {
         List<Provider> lops = service.searchLearningOpportunityProviders(
-                "", "1.2.3.4", "PK", true, true, 0, 100, "fi");
+                "", "1.2.3.4", "PK", true, true, 0, 100, "fi", false);
         assertEquals(1, lops.size());
     }
 

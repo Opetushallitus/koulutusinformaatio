@@ -74,9 +74,9 @@ public class SearchServiceSolrImpl implements SearchService {
 
     @Override
     public List<Provider> searchLearningOpportunityProviders(
-            String term, String asId, String baseEducation, boolean vocational, boolean nonVocational, int start, int rows, String lang) throws SearchException {
+            String term, String asId, String baseEducation, boolean vocational, boolean nonVocational, int start, int rows, String lang, boolean prefix) throws SearchException {
         List<Provider> providers = new ArrayList<Provider>();
-        SolrQuery query = new ProviderQuery(term, asId, baseEducation, start, rows, vocational, nonVocational, lang);
+        SolrQuery query = new ProviderQuery(term, asId, baseEducation, start, rows, vocational, nonVocational, lang, prefix);
 
         QueryResponse queryResponse = null;
         try {
@@ -101,8 +101,8 @@ public class SearchServiceSolrImpl implements SearchService {
     }
 
     @Override
-    public List<Provider> searchLearningOpportunityProviders(String term) throws SearchException {
-        return searchLearningOpportunityProviders(term, null, null, false, false, 0, Integer.MAX_VALUE, "fi");
+    public List<Provider> searchLearningOpportunityProviders(String term, boolean prefix) throws SearchException {
+        return searchLearningOpportunityProviders(term, null, null, false, false, 0, Integer.MAX_VALUE, "fi", prefix);
     }
 
     @Override
