@@ -71,5 +71,25 @@
         <constructor-arg value="${mongo.test-db.name}"/>
     </bean>
 
+    <bean id="upperSecondaryLearningOpportunityDAO" class="fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO">
+        <constructor-arg>
+            <ref bean="mongo"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="morphia"/>
+        </constructor-arg>
+        <constructor-arg value="${mongo.test-db.name}"/>
+    </bean>
+
+    <bean id="specialLearningOpportunityDAO" class="fi.vm.sade.koulutusinformaatio.dao.SpecialLearningOpportunitySpecificationDAO">
+        <constructor-arg>
+            <ref bean="mongo"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="morphia"/>
+        </constructor-arg>
+        <constructor-arg value="${mongo.test-db.name}"/>
+    </bean>
+
     <bean id="modelMapper" class="org.modelmapper.ModelMapper"/>
 </beans>
