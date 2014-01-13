@@ -44,14 +44,12 @@ import java.util.List;
 public class LearningOpportunityProviderResourceImpl implements LearningOpportunityProviderResource {
 
     private SearchService searchService;
-    private ModelMapper modelMapper;
     private LearningOpportunityService learningOpportunityService;
 
     @Autowired
     public LearningOpportunityProviderResourceImpl(SearchService searchService, ModelMapper modelMapper,
                                                    LearningOpportunityService learningOpportunityService) {
         this.searchService = searchService;
-        this.modelMapper = modelMapper;
         this.learningOpportunityService = learningOpportunityService;
     }
 
@@ -68,7 +66,7 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
             }
             key = key.replace("*", "");
             learningOpportunityProviders = searchService.searchLearningOpportunityProviders(key, asId, baseEducation, vocational,
-                    nonVocational, start, rows, lang);
+                    nonVocational, start, rows, lang, false);
             List<ProviderSearchResult> result = Lists.newArrayList(Lists.transform(learningOpportunityProviders, new Function<Provider, ProviderSearchResult>() {
                 @Override
                 public ProviderSearchResult apply(Provider lop) {
@@ -78,6 +76,7 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
                     return result;
                 }
             }));
+
             Collections.sort(result, new ProviderSearchResultComparator());
             return result;
         } catch (SearchException e) {
