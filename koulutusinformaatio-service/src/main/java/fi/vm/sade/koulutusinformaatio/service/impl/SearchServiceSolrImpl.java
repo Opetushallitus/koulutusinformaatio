@@ -102,7 +102,7 @@ public class SearchServiceSolrImpl implements SearchService {
 
     @Override
     public List<Provider> searchLearningOpportunityProviders(String term) throws SearchException {
-        return searchLearningOpportunityProviders(term, null, null, false, false, 0, Integer.MAX_VALUE);
+        return searchLearningOpportunityProviders(term, null, null, false, false, 0, Integer.MAX_VALUE, "fi");
     }
 
     @Override
