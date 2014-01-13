@@ -110,6 +110,10 @@ public class AbstractEducationServiceTest {
 
     protected LearningOpportunityProviderDAO mockProviderDAO() {
         LearningOpportunityProviderDAO dao = mock(LearningOpportunityProviderDAO.class);
+        LearningOpportunityProviderEntity entity = new LearningOpportunityProviderEntity();
+        entity.setId("providerid");
+        when(dao.get(eq(entity.getId()))).thenReturn(entity);
+        when(dao.get(eq(NOTFOUND))).thenReturn(null);
         return dao;
     }
 }
