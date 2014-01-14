@@ -1,88 +1,103 @@
 {% extends "base-sv.html" %}
-{% block title %}{{ ctx.provider.name }} - {{ ctx.name }} - Beskrivning av utbildningen{% endblock %}
+{% block title %}{{ ctx.provider.name }} - {{ ctx.name }} - {{ locales["lo-description"] }}{% endblock %}
+
+{% block breadcrumb %}
+<a href="../index_sv.html">{{ locales["home"] }}</a>
+<span class="delimiter">&gt;</span>
+<a href="index-1.html">{{title_erityis_koulutukset_sv}}</a>
+<span class="delimiter">&gt;</span>
+<span>{{ ctx.name }} - {{ locales["lo-description"] }}</span>
+{% endblock %}
+
+{% block navi %}
+<a href="{{ ctx.id }}-valintaperusteet.html">{{ locales["lo-application-er"] }}</a>
+<a href="{{ ctx.id }}-oppilaitos.html">{{ locales["lo-tab-academy"] }}</a>
+{% endblock %}
+
 {% block content %}
 
 {% set loi = ctx.lois[0] %}
 {% set as = loi.applicationSystems[0] %}
 {% set ao = as.applicationOptions[0] %}
 
-<h1>{{ ctx.provider.name }} - {{ ctx.name }} - Undervisning</h1>
+<h1>{{ ctx.name }} - {{ locales["lo-description"] }}</h1>
 
-<h2>Grundläggande information</h2>
+<h2>{{ locales["description-basic-info"] }}</h2>
 
 <p>
 <ul>
-    <li>Grundutbildning: {{ loi.prerequisite.description }}</li>
-    <li>Utbildningen inleds: {{ loi.startDate|dateformat }}</li>
-    <li>Undervisningsspråk: {{ ao.teachingLanguages|separated_list }}</li>
-    <li>Undervisningsform: {{ loi.formOfTeaching|separated_list }}</li>
-    <li>Utbildningens omfattning: {{ ctx.creditValue }} {{ ctx.creditUnit }}</li>
-    <li>Planerade löptid: {{ loi.plannedDuration }} {{ loi.plannedDurationUnit }}</li>
+    <li>{{ locales["education-starts"] }}: {{ loi.startDate|dateformat }}</li>
+    <li>{{ locales["language-of-instruction"] }}: {{ ao.teachingLanguages|separated_list }}</li>
+    <li>{{ locales["form-of-education"] }}: {{ loi.formOfTeaching|separated_list }}</li>
+    <li>{{ locales["duration"] }}: {{ ctx.creditValue }} {{ ctx.creditUnit }}</li>
 </ul>
 </p>
 
 {%if ctx.goals is defined %}
-<h2>Mål</h2>
+<h2>{{ locales["goals-of-education"] }}</h2>
 {{ ctx.goals }}
 {% endif %}
 
-{%if ao.webLinks is defined %}
-<h2>Läroplan</h2>
-<p>
-{% for wl in ao.webLinks %}
-  {{ wl.KOULUTUSOHJELMA }}
-{% endfor %}
-</p>
+{% if loi.content is defined %}
+<h2>{{ locales["content-of-studies"] }}</h2>
+{{ loi.content }}
+{% endif %}
+
+{%if loi.webLinks is defined and loi.webLinks.KOULUTUSOHJELMA is defined %}
+<h2>{{ locales["study-plan"] }}</h2>
+<a href="{{loi.webLinks.KOULUTUSOHJELMA}}">{{ loi.webLinks.KOULUTUSOHJELMA  }}</a>
 {% endif %}
 
 {%if ctx.structure is defined %}
-<h2>Studiernas uppbyggnad</h2>
+<h2>{{ locales["structure-of-studies"] }}</h2>
 {{ ctx.structure }}
 {% endif %}
 
-{%if loi.languageSelection is defined %}
-<h2>Språk</h2>
-<p>
-<ul>
-{% for ls in loi.languageSelection %}
-    <li>{{ ls.subjectCode }}: {{ ls.languages|separated_list }}</li>
-{% endfor %}
-</ul>
-</p>
+{% if loi.workingLifePlacement is defined %}
+<h2>{{ locales["working-life-placement"] }}</h2>
+{{ loi.workingLifePlacement }}
 {% endif %}
 
-{%if loi.diploma is defined %}
-<h2>Gymnasiediplom</h2>
-<p>
+{% if loi.professionalTitles is defined %}
+<h2>{{ locales["profession-title"] }}</h2>
 <ul>
-{% for diploma in loi.diploma %}
-    <li>{{ diploma }}</li>
-{% endfor %}
+    {% for ptitle in loi.professionalTitles %}
+    <li>{{ptitle}}</li>
+    {% endfor %}
 </ul>
-</p>
+{% endif %}
+
+{% if loi.internationalization is defined %}
+<h2>{{ locales["internationalization"] }}</h2>
+{{ loi.internationalization }}
+{% endif %}
+
+{% if loi.cooperation is defined %}
+<h2>{{ locales["cooperation"] }}</h2>
+{{ loi.cooperation }}
 {% endif %}
 
 {%if ctx.accessToFurtherStudies is defined %}
-<h2>Fortsatta studiemöjligheter</h2>
+<h2>{{ locales["access-to-further-studies"] }}</h2>
 {{ ctx.accessToFurtherStudies }}
 {% endif %}
 
 {%if loi.contactPersons is defined %}
-<h2>Utbildningskontakter</h2>
-<p>
-<ul>
+<h2>{{ locales["contact-person-title"] }}</h2>
+
 {% for person in loi.contactPersons %}
-    <li>{{person.title}}<br/>
-        {{person.firstNames}} {{ person.lastName }}<br/>
+<p>
+    <span>{{person.title}}</span><br/>
+    <span>{{person.firstNames}} {{ person.lastName }}</span><br/>
     {% if person.email is defined %}
-        E-post: <a href="mailto:{{ person.email }}">{{ person.email }}</a><br/>
+        <span>{{ locales["email"] }}: <a href="mailto:{{ person.email }}">{{ person.email }}</a></span><br/>
     {% endif %}
     {% if person.phone is defined %}
-        Telefon: <a href="tel:{{ person.phone }}">{{ person.phone }}</a>
+        <span>{{ locales["phone"] }}: <a href="tel:{{ person.phone }}">{{ person.phone }}</a></span>
     {% endif %}
     </li>
-{% endfor %}
-</ul>
 </p>
+{% endfor %}
+
 {% endif %}
 {% endblock %}

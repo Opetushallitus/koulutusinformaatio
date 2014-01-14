@@ -1,17 +1,17 @@
 {% extends "base-fi.html" %}
-{% block title %}{{ ctx.provider.name }} - {{ ctx.name }} - Koulutus{% endblock %}
+{% block title %}{{ ctx.provider.name }} - {{ ctx.name }} - {{ locales["lo-description"] }}{% endblock %}
 
 {% block breadcrumb %}
-<a href="/index.html">Kotinäkymä</a>
+<a href="../index.html">{{ locales["home"] }}</a>
 <span class="delimiter">&gt;</span>
 <a href="index-1.html">{{title_erityis_koulutukset_fi}}</a>
 <span class="delimiter">&gt;</span>
-<span>{{ ctx.name }}, koulutuksen kuvaus</span>
+<span>{{ ctx.name }} - {{ locales["lo-description"] }}</span>
 {% endblock %}
 
 {% block navi %}
-<a href="{{ ctx.id }}-valintaperusteet.html">Hakeminen</a>
-<a href="{{ ctx.id }}-oppilaitos.html">Oppilaitoskuvaus</a>
+<a href="{{ ctx.id }}-valintaperusteet.html">{{ locales["lo-application-er"] }}</a>
+<a href="{{ ctx.id }}-oppilaitos.html">{{ locales["lo-tab-academy"] }}</a>
 {% endblock %}
 
 {% block content %}
@@ -20,46 +20,46 @@
 {% set as = loi.applicationSystems[0] %}
 {% set ao = as.applicationOptions[0] %}
 
-<h1>{{ ctx.name }}, koulutuksen kuvaus</h1>
+<h1>{{ ctx.name }} - {{ locales["lo-description"] }}</h1>
 
-<h2>Perustiedot</h2>
+<h2>{{ locales["description-basic-info"] }}</h2>
 
 <p>
 <ul>
-    <li>Koulutus alkaa: {{ loi.startDate|dateformat }}</li>
-    <li>Opetuskieli: {{ ao.teachingLanguages|separated_list }}</li>
-    <li>Opetusmuoto: {{ loi.formOfTeaching|separated_list }}</li>
-    <li>Koulutuksen laajuus: {{ ctx.creditValue }} {{ ctx.creditUnit }}</li>
+    <li>{{ locales["education-starts"] }}: {{ loi.startDate|dateformat }}</li>
+    <li>{{ locales["language-of-instruction"] }}: {{ ao.teachingLanguages|separated_list }}</li>
+    <li>{{ locales["form-of-education"] }}: {{ loi.formOfTeaching|separated_list }}</li>
+    <li>{{ locales["duration"] }}: {{ ctx.creditValue }} {{ ctx.creditUnit }}</li>
 </ul>
 </p>
 
 {%if ctx.goals is defined %}
-<h2>Tavoite</h2>
+<h2>{{ locales["goals-of-education"] }}</h2>
 {{ ctx.goals }}
 {% endif %}
 
 {% if loi.content is defined %}
-<h2>Koulutuksen sisältö</h2>
+<h2>{{ locales["content-of-studies"] }}</h2>
 {{ loi.content }}
 {% endif %}
 
 {%if loi.webLinks is defined and loi.webLinks.KOULUTUSOHJELMA is defined %}
-<h2>Opetussuunnitelma</h2>
+<h2>{{ locales["study-plan"] }}</h2>
 <a href="{{loi.webLinks.KOULUTUSOHJELMA}}">{{ loi.webLinks.KOULUTUSOHJELMA  }}</a>
 {% endif %}
 
 {%if ctx.structure is defined %}
-<h2>Opintojen rakenne</h2>
+<h2>{{ locales["structure-of-studies"] }}</h2>
 {{ ctx.structure }}
 {% endif %}
 
 {% if loi.workingLifePlacement is defined %}
-<h2>Sijoittuminen työelämään</h2>
+<h2>{{ locales["working-life-placement"] }}</h2>
 {{ loi.workingLifePlacement }}
 {% endif %}
 
 {% if loi.professionalTitles is defined %}
-<h2>Ammattinimikkeet</h2>
+<h2>{{ locales["profession-title"] }}</h2>
 <ul>
     {% for ptitle in loi.professionalTitles %}
     <li>{{ptitle}}</li>
@@ -68,32 +68,32 @@
 {% endif %}
 
 {% if loi.internationalization is defined %}
-<h2>Kansainvälistyminen</h2>
+<h2>{{ locales["internationalization"] }}</h2>
 {{ loi.internationalization }}
 {% endif %}
 
 {% if loi.cooperation is defined %}
-<h2>Yhteistyö muiden toimijoiden kanssa</h2>
+<h2>{{ locales["cooperation"] }}</h2>
 {{ loi.cooperation }}
 {% endif %}
 
 {%if ctx.accessToFurtherStudies is defined %}
-<h2>Jatko-opintomahdollisuudet</h2>
+<h2>{{ locales["access-to-further-studies"] }}</h2>
 {{ ctx.accessToFurtherStudies }}
 {% endif %}
 
 {%if loi.contactPersons is defined %}
-<h2>Koulutuksen yhteyshenkilöt</h2>
+<h2>{{ locales["contact-person-title"] }}</h2>
 
 {% for person in loi.contactPersons %}
 <p>
     <span>{{person.title}}</span><br/>
     <span>{{person.firstNames}} {{ person.lastName }}</span><br/>
     {% if person.email is defined %}
-        <span>Sähköposti: <a href="mailto:{{ person.email }}">{{ person.email }}</a></span><br/>
+        <span>{{ locales["email"] }}: <a href="mailto:{{ person.email }}">{{ person.email }}</a></span><br/>
     {% endif %}
     {% if person.phone is defined %}
-        <span>Puhelin: <a href="tel:{{ person.phone }}">{{ person.phone }}</a></span>
+        <span>{{ locales["phone"] }}: <a href="tel:{{ person.phone }}">{{ person.phone }}</a></span>
     {% endif %}
     </li>
 </p>

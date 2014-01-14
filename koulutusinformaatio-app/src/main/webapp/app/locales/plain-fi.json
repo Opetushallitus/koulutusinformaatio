@@ -1,0 +1,22 @@
+{
+    "page-title": "Opintopolku tekstiversio",
+    "header-home": "Opintopolku.fi",
+    "to-full-version": "Siirry palvelun täysversioon",
+	"home": "Kotinäkymä",
+    "lo-tab-academy": "Oppilaitoskuvaus",
+
+    "description-basic-info": "Perustiedot",
+    "email": "Sähköposti",
+    "phone": "Puhelin",
+
+    "postal-address": "Postiosoite",
+    "visiting-address": "Käyntiosoite",
+    "fax": "Faksi",
+    "www": "www",
+
+    "social-media": "Oppilaitoksen sosiaalisen median linkit",
+
+    "footer-service-providers": "Palvelun tarjoavat:",
+    "footer-provider-1": "Opetus- ja kulttuuriministeriö",
+    "footer-provider-2": "Opetushallitus"
+}

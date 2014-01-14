@@ -38,6 +38,8 @@ def s(template, **kwargs):
 
 def get(url):
     r = session.get(base_url + url)
+    print base_url + url
+    print r
     return r.json()
 
 def out(data):

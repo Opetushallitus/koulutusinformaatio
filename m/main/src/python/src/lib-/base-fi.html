@@ -6,21 +6,24 @@
 {% set title_erityis_koulutukset_fi = "Ammatillinen erityisopetus" %}
 {% set title_valmentavat_oppilaitokset_fi = "Valmentavaa ja kuntouttavaa koulutusta järjestävät oppilaitokset" %}
 {% set title_valmentavat_koulutukset_fi = "Valmentava ja kuntouttava opetus ja ohjaus" %}
+{% set locales = locales["localesfi"] %}
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html lang="en">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     {% block head %}
     <meta charset="UTF-8">
+    {% block style %}
     <link rel="stylesheet" href="../style.css" />
-    <title>Opintopolku tekstiversio: {% block title %}{% endblock %}</title>
+    {% endblock %}
+    <title>{{ locales["page-title"] }}: {% block title %}{% endblock %}</title>
     {% endblock %}
 </head>
 <body>
     <div id="header">
         {% block header %}
-        <a class="block" href="/index.html">Opintopolku.fi</a>
-        <a class="block" href="/">Siirry palvelun täysversioon</a>
+        <a class="block" href="/m/index.html">{{ locales["header-home"] }}</a>
+        <a class="block" href="/">{{ locales["to-full-version"] }}</a>
         {% endblock %}
     </div>
     <div id="breadcrumb">{% block breadcrumb %}{% endblock %}</div>
@@ -28,7 +31,9 @@
     <div id="content">{% block content %}{% endblock %}</div>
     <div id="footer">
         {% block footer %}
-        &copy; Copyright 2013 by <a href="http://www.oph.fi/">Opetushallitus</a>
+        {{ locales["footer-service-providers"] }}<br />
+        <a href="http://www.minedu.fi/OPM/">{{ locales["footer-provider-1"] }}</a>
+        <a href="http://www.oph.fi/etusivu">{{ locales["footer-provider-2"] }}</a>
         {% endblock %}
     </div>
 </body>

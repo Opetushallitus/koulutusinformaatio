@@ -10,6 +10,7 @@ import os
 import re
 from jinja2 import Environment, FileSystemLoader
 from datetime import datetime
+from data import get
 
 RESULTS_PER_PAGE = 20
 
@@ -47,6 +48,14 @@ def dateformat(value, format="%d.%m.%Y"):
 def datetimeformat(value, format="%d.%m.%Y %H:%M"):
     return datetime.fromtimestamp(value/1000).strftime(format)
 
+def datetimeinterval(startts, endts):
+    start = datetime.fromtimestamp(startts/1000)
+    end = datetime.fromtimestamp(endts/1000)
+    if start.year == end.year and start.month == end.month and start.day == end.day:
+        return start.strftime("%d.%m.%Y %H:%M") + " - " + end.strftime("%H:%M")
+    else:
+        return start.strftime("%d.%m.%Y %H:%M") + " - " + end.strftime("%d.%m.%Y %H:%M")
+
 def separated_list(values, sep=", "):
     return sep.join(values)
 
@@ -66,6 +75,7 @@ def get_templ(src_fn):
     env = Environment(loader=FileSystemLoader([os.path.dirname(src_fn), "../src/lib-"]), lstrip_blocks=True, trim_blocks=True)
     env.filters['dateformat'] = dateformat
     env.filters['datetimeformat'] = datetimeformat
+    env.filters['datetimeinterval'] = datetimeinterval
     env.filters['separated_list'] = separated_list
     env.filters['index_links'] = index_links
     return env.get_template(os.path.basename(src_fn))
@@ -131,6 +141,15 @@ def workdir_ctx(data, workdir):
             continue
         data = data[s]
     return data
+
+def locales(lngs):
+    result = {}
+    for lng in lngs:
+        locale = get(s("/app/locales/language-{lng}.json"))
+        plain = get(s("/app/locales/plain-{lng}.json"))
+        locale.update(plain)
+        result[s("locales{lng}")] = locale
+    return result
 
 def eval_dir(src_workdir=".", out_workdir=".", data=None):
     "Evaluate a directory as operations"
@@ -222,5 +241,8 @@ def eval_dir(src_workdir=".", out_workdir=".", data=None):
                         render_templ_file(src_path, out_path, data, fn_ctx)
     
 data = {}
+lngs = ["fi", "sv"]
+locales = locales(lngs)
+data["locales"] = locales
 os.chdir("out")
 eval_dir(src_workdir="../src", out_workdir=".", data=data)

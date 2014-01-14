@@ -3,26 +3,26 @@
 {% set ao = as.applicationOptions[0] %}
 {% set provider = ctx.provider %}
 {% extends "base-fi.html" %}
-{% block title %}{{ ctx.provider.name }} - {{ ctx.name }} - Oppilaitos{% endblock %}
+{% block title %}{{ ctx.provider.name }} - {{ ctx.name }} - {{ locales["lo-tab-academy"] }}{% endblock %}
 
 {% block breadcrumb %}
-<a href="/index.html">Kotinäkymä</a>
+<a href="../index.html">{{ locales["home"] }}</a>
 <span class="delimiter">&gt;</span>
 <a href="index-1.html">{{title_erityis_koulutukset_fi}}</a>
 <span class="delimiter">&gt;</span>
-<span>{{ ctx.name }}, oppilaitoskuvaus</span>
+<span>{{ ctx.name }} - {{ locales["lo-tab-academy"] }}</span>
 {% endblock %}
 
 {% block navi %}
-<a href="{{ ctx.id }}-koulutus.html">Koulutuksen kuvaus</a>
-<a href="{{ ctx.id }}-valintaperusteet.html">Hakeminen</a>
+<a href="{{ ctx.id }}-koulutus.html">{{ locales["lo-description"] }}</a>
+<a href="{{ ctx.id }}-valintaperusteet.html">{{ locales["lo-application-er"] }}</a>
 {% endblock %}
 
 {% block content %}
-<h1>{{ ctx.name }}, oppilaitoskuvaus</h1>
+<h1>{{ ctx.name }} - {{ locales["lo-tab-academy"] }}</h1>
 
 {% if provider.social is defined %}
-<h2>Sosiaaliset mediat</h2>
+<h2>{{ locales["social-media"] }}</h2>
 <ul>
     {% for socialItem in provider.social %}
     <li>
@@ -40,12 +40,12 @@
 {% endif %}
 
 {% if provider.learningEnvironment is defined %}
-<h3>Tietoa oppimisympäristöstä</h3>
+<h3>{{ locales["learning-environment-info"] }}</h3>
 {{ provider.learningEnvironment }}
 {% endif %}
 
 {% if provider.accessibility is defined %}
-<h3>Esteettömyys ja oppimisen tuki</h3>
+<h3>{{ locales["accessibility-and-learning-support"] }}</h3>
 {{ provider.accessibility }}
 {% endif %}
 
@@ -53,48 +53,48 @@
 
 
 {% if provider.livingExpenses is defined or provider.dining is defined or provider.healthcare is defined %}
-<h2>Opiskelijan edut</h2>
+<h2>{{ locales["student-benefits"] }}</h2>
 
 {% if provider.livingExpenses is defined %}
-<h3>Tietoa elämisen kustannuksista</h3>
+<h3>{{ locales["living-expenses"] }}</h3>
 {{ provider.livingExpenses }}
 {% endif %}
 
 {% if provider.dining is defined %}
-<h3>Opiskelijaruokailu</h3>
+<h3>{{ locales["student-dining"] }}</h3>
 {{ provider.dining }}
 {% endif %}
 
 {% if provider.healthcare is defined %}
-<h3>Terveydenhuoltopalvelut</h3>
+<h3>{{ locales["health-care-services"] }}</h3>
 {{ provider.healthcare }}
 {% endif %}
 
 {% endif %}
 
-<h2>Yhteystiedot</h2>
+<h2>{{ locales["contact-information"] }}</h2>
 
 <ul>
 {% if provider.webPage is defined %}
-    <li><a href="{{ provider.webPage }}">Oppilaitoksen omat sivut</a></li>
+    <li><a href="{{ provider.webPage }}">{{ locales["provider-web-page"] }}</a></li>
 {% endif %}
 {%if provider.postalAddress is defined and provider.postalAddress.streetAddress is defined %}
-    <li>Postiosoite:<br/>
+    <li>{{ locales["postal-address"] }}:<br/>
         {{ provider.postalAddress.streetAddress }}<br/>
         {{ provider.postalAddress.postalCode }} {{ provider.postalAddress.postOffice }}<br/>
     </li>
 {%endif%}
 {%if provider.visitingAddress is defined and provider.visitingAddress.streetAddress is defined %}
-    <li>Käyntiosoite:<br/>
+    <li>{{ locales["visiting-address"] }}:<br/>
         {{ provider.visitingAddress.streetAddress }}<br/>
         {{ provider.visitingAddress.postalCode }} {{ provider.visitingAddress.postOffice }}<br/>
     </li>
 {%endif%}
 {%if provider.phone is defined %}
-    <li>Puhelin: <a href="tel:{{ provider.phone }}">{{ provider.phone }}</a></li>
+    <li>{{ locales["phone"] }}: <a href="tel:{{ provider.phone }}">{{ provider.phone }}</a></li>
 {% endif %}
 {% if provider.fax is defined %}
-    <li>Faksi: <a href="fax:{{ provider.fax }}">{{ provider.fax }}</a></li>
+    <li>{{ locales["fax"] }}: <a href="fax:{{ provider.fax }}">{{ provider.fax }}</a></li>
 {% endif %}
 
 {% endblock %}
