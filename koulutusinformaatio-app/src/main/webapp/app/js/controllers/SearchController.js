@@ -40,10 +40,10 @@ function SearchFieldCtrl($scope, $location, $route, SearchService, kiAppConstant
             $scope.queryString = '';
 
             // update location
-            $location.hash(null);
-            $location.path('/haku/' + queryString);
             var filters = FilterService.get();
             filters.tab = activeTab;
+            $location.hash(null);
+            $location.path('/haku/' + queryString);
             $location.search(filters);
         }
     };
@@ -390,6 +390,14 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     }
     $scope.initSearch();
 
+    $scope.initTab = function() {
+        var qParams = $location.search();
+        delete qParams.tab;
+        $location.search(qParams).replace();
+
+        $scope.doSearching();
+    }
+
 
 	//Returns true if the language filter is set
 	//i.e. either a teaching language filter or langCleared (language is explicitely cleared by the user)
@@ -434,10 +442,6 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
                     ? $scope.currentPage * $scope.itemsPerPage
                     : $scope.totalItems;
     			$scope.populateFacetSelections();
-
-                var qParams = $location.search();
-                delete qParams.tab;
-                $location.search(qParams).replace();
     		});
 
     		$scope.queryString = $routeParams.queryString;
@@ -543,6 +547,15 @@ function ArticleSearchCtrl($scope, $location, $routeParams, ArticleContentSearch
 
         $('html, body').scrollTop($('body').offset().top); // scroll to top of list
     }
+
+    $scope.initTab = function() {
+        var qParams = $location.search();
+        qParams.tab = 'articles';
+        $location.search(qParams).replace();
+
+        $scope.doArticleSearching();
+
+    }
  
     $scope.doArticleSearching = function() {
         ArticleContentSearchService.query({queryString: $routeParams.queryString, page: $scope.currentPage}).then(function(result) {
@@ -558,10 +571,6 @@ function ArticleSearchCtrl($scope, $location, $routeParams, ArticleContentSearch
             $scope.queryString = $routeParams.queryString;
             $scope.showPagination = $scope.totalItems > $scope.itemsPerPage;
         });
-
-        var qParams = $location.search();
-        qParams.tab = 'articles';
-        $location.search(qParams).replace();
     }
 };
 

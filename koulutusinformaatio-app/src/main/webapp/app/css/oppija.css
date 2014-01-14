@@ -3436,7 +3436,8 @@ button, .button {
     .typeahead li:first-child {
       border: none; }
     .typeahead li.active {
-      background-color: #bfe4f1; }
+      background-color: #bfe4f1;
+      padding: 0; }
     .typeahead li a {
       display: block;
       padding: 6px 10px;
