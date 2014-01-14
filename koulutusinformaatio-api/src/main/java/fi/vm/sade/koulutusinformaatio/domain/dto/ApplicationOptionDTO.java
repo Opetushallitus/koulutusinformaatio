@@ -60,6 +60,7 @@ public class ApplicationOptionDTO {
     private boolean kaksoistutkinto;
     private boolean athleteEducation;
     private boolean vocational;
+    private String educationCodeUri;
 
     public String getId() {
         return id;
@@ -307,5 +308,13 @@ public class ApplicationOptionDTO {
 
     public void setVocational(boolean vocational) {
         this.vocational = vocational;
+    }
+
+    public String getEducationCodeUri() {
+        return educationCodeUri;
+    }
+
+    public void setEducationCodeUri(String educationCodeUri) {
+        this.educationCodeUri = educationCodeUri;
     }
 }

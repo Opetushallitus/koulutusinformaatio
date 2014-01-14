@@ -69,6 +69,7 @@ public final class ApplicationOptionToDTO {
             dto.setOverallScoreLimit(ScoreLimitToDTO.convert(applicationOption.getOverallScoreLimit()));
             dto.setKaksoistutkinto(applicationOption.isKaksoistutkinto());
             dto.setAthleteEducation(applicationOption.isAthleteEducation());
+            dto.setEducationCodeUri(applicationOption.getEducationCodeUri());
             return dto;
         }
         return null;

@@ -46,6 +46,7 @@ public class EducationDataQueryServiceImplTest extends AbstractEducationServiceT
     private SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO;
     private PictureDAO pictureDAO;
     private DataStatusDAO dataStatusDAO;
+    private LearningOpportunityProviderDAO providerDAO;
 
     @Before
     public void setUp() {
@@ -58,10 +59,11 @@ public class EducationDataQueryServiceImplTest extends AbstractEducationServiceT
         pictureDAO = mockPictureDAO();
         upperSecondaryLearningOpportunitySpecificationDAO = mockUpSecDAO();
         specialLearningOpportunitySpecificationDAO = mockSpecialDAO();
+        providerDAO = mockProviderDAO();
         service = new EducationDataQueryServiceImpl(parentLearningOpportunitySpecificationDAO,
                 applicationOptionDAO, modelMapper, childLearningOpportunityDAO,
                 dataStatusDAO, pictureDAO, upperSecondaryLearningOpportunitySpecificationDAO,
-                specialLearningOpportunitySpecificationDAO);
+                specialLearningOpportunitySpecificationDAO, providerDAO);
     }
 
     @Test
@@ -155,4 +157,17 @@ public class EducationDataQueryServiceImplTest extends AbstractEducationServiceT
     public void testGetSpecialLearningOpportunityNotFound() throws ResourceNotFoundException {
         service.getSpecialLearningOpportunity(NOTFOUND);
     }
+
+    @Test
+    public void testGetProvider() throws ResourceNotFoundException {
+        Provider provider = service.getProvider("providerid");
+        assertNotNull(provider);
+        assertEquals("providerid", provider.getId());
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void testGetProviderNotFound() throws ResourceNotFoundException {
+       service.getProvider(NOTFOUND);
+    }
+
 }

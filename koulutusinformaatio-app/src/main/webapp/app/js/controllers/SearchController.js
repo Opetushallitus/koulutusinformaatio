@@ -336,9 +336,9 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     $scope.sortCriterias = [
         {value: i18n.t('sort-criteria-default')}, 
         {value: i18n.t('sort-criteria-alphabetical-desc')}, 
-        {value: i18n.t('sort-criteria-alphabetical-asc')},
-        {value: i18n.t('sort-criteria-duration-asc'), group: i18n.t('sort-criteria-duration-group')},
-        {value: i18n.t('sort-criteria-duration-desc'), group: i18n.t('sort-criteria-duration-group')}
+        {value: i18n.t('sort-criteria-alphabetical-asc')}//,
+        //{value: i18n.t('sort-criteria-duration-asc'), group: i18n.t('sort-criteria-duration-group')},
+        //{value: i18n.t('sort-criteria-duration-desc'), group: i18n.t('sort-criteria-duration-group')}
     ];
 
     $scope.tabs = {
@@ -395,7 +395,7 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
         delete qParams.tab;
         $location.search(qParams).replace();
 
-        $scope.doSearching();
+        $scope.initSearch();
     }
 
 

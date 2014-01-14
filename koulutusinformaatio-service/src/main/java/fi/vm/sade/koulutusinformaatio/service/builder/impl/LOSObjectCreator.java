@@ -109,7 +109,9 @@ public class LOSObjectCreator extends ObjectCreator {
                 continue;
             }
 
-            ChildLOI childLOI = loiCreator.createChildLOI(childKomoto, childLOS.getId(), childLOS.getName());
+            // strip version out of education code uri
+            String educationCodeUri = childKomo.getKoulutusKoodiUri().split("#")[0];
+            ChildLOI childLOI = loiCreator.createChildLOI(childKomoto, childLOS.getId(), childLOS.getName(), educationCodeUri);
             if (!childLOI.getApplicationOptions().isEmpty()) {
                 childLOIs.add(childLOI);
             }
@@ -152,9 +154,12 @@ public class LOSObjectCreator extends ObjectCreator {
 
         List<ChildLOI> lois = Lists.newArrayList();
 
+        // strip version out of education code uri
+        String educationCodeUri = childKomo.getKoulutusKoodiUri().split("#")[0];
+
         for (KomotoDTO komoto : childKomotos) {
             if (CreatorUtil.komotoPublished.apply(komoto)) {
-                ChildLOI loi = loiCreator.createChildLOI(komoto,specialLOSId, los.getName());
+                ChildLOI loi = loiCreator.createChildLOI(komoto,specialLOSId, los.getName(), educationCodeUri);
                 lois.add(loi);
             }
         }
@@ -185,10 +190,13 @@ public class LOSObjectCreator extends ObjectCreator {
             los.setGoals(getI18nText(komoTavoitteet));
         }
 
+        // strip version out of education code uri
+        String educationCodeUri = komo.getKoulutusKoodiUri().split("#")[0];
+
         List<UpperSecondaryLOI> lois = Lists.newArrayList();
         for (KomotoDTO komoto : komotos) {
             if (CreatorUtil.komotoPublished.apply(komoto)) {
-                lois.add(loiCreator.createUpperSecondaryLOI(komoto, losID, los.getName()));
+                lois.add(loiCreator.createUpperSecondaryLOI(komoto, losID, los.getName(), educationCodeUri));
             }
         }
 

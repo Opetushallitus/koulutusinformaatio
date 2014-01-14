@@ -54,7 +54,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
     }
 
     public ApplicationOption createVocationalApplicationOption(HakukohdeDTO hakukohdeDTO, HakuDTO hakuDTO,
-                                                               KomotoDTO childKomoto, Code prerequisite) throws KoodistoException {
+                                                               KomotoDTO childKomoto, Code prerequisite, String educationCodeUri) throws KoodistoException {
         ApplicationOption ao = new ApplicationOption();
         ao.setId(hakukohdeDTO.getOid());
         ao.setName(koodistoService.searchFirst(hakukohdeDTO.getHakukohdeNimiUri()));
@@ -69,6 +69,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         ao.setExams(educationObjectCreator.createVocationalExams(hakukohdeDTO.getValintakoes()));
         ao.setKaksoistutkinto(hakukohdeDTO.isKaksoisTutkinto());
         ao.setVocational(true);
+        ao.setEducationCodeUri(educationCodeUri);
         List<Code> subCodes = koodistoService.searchSubCodes(childKomoto.getPohjakoulutusVaatimusUri(),
                 TarjontaConstants.BASE_EDUCATION_KOODISTO_URI);
         List<String> baseEducations = Lists.transform(subCodes, new Function<Code, String>() {
@@ -173,7 +174,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
     }
 
     public ApplicationOption createUpperSecondaryApplicationOption(HakukohdeDTO hakukohdeDTO, HakuDTO hakuDTO,
-                                                      KomotoDTO komoto, UpperSecondaryLOI loi) throws KoodistoException {
+                                                      KomotoDTO komoto, UpperSecondaryLOI loi, String educationCodeUri) throws KoodistoException {
         ApplicationOption ao = new ApplicationOption();
         ao.setId(hakukohdeDTO.getOid());
         ao.setName(koodistoService.searchFirst(hakukohdeDTO.getHakukohdeNimiUri()));
@@ -188,6 +189,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         ao.setKaksoistutkinto(hakukohdeDTO.isKaksoisTutkinto());
         ao.setExams(educationObjectCreator.createUpperSecondaryExams(hakukohdeDTO.getValintakoes()));
         ao.setVocational(false);
+        ao.setEducationCodeUri(educationCodeUri);
         List<Code> subCodes = koodistoService.searchSubCodes(komoto.getPohjakoulutusVaatimusUri(),
                 TarjontaConstants.BASE_EDUCATION_KOODISTO_URI);
         List<String> baseEducations = Lists.transform(subCodes, new Function<Code, String>() {
