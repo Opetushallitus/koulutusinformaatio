@@ -34,6 +34,9 @@ public class ScoreLimitDTO {
         this.highestScore = highestScore;
     }
 
+    public ScoreLimitDTO() {
+    }
+
     public double getLowestScore() {
         return lowestScore;
     }
