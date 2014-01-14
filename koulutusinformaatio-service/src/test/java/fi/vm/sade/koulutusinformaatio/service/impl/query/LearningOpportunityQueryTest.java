@@ -54,8 +54,8 @@ public class LearningOpportunityQueryTest {
         assertEquals(6, q.getFilterQueries().length);
         String prerequisiteFQ = new StringBuilder("prerequisites:").append(PREREQUISITE).toString();
         assertEquals(prerequisiteFQ, q.getFilterQueries()[0]);
-        String lopHomeplaceFQ = new StringBuilder("lopHomeplace:(")
-                .append(Joiner.on(" OR ").join(CITIES)).append(")").toString();
+        String lopHomeplaceFQ = new StringBuilder("lopHomeplace:(\"")
+        .append(Joiner.on("\" OR \"").join(CITIES)).append("\")").toString();
         assertEquals(lopHomeplaceFQ, q.getFilterQueries()[1]);
         assertEquals(TERM, q.getQuery().toString());
         assertEquals("edismax", q.getParams("defType")[0]);
@@ -70,8 +70,8 @@ public class LearningOpportunityQueryTest {
         assertEquals(6, q.getFilterQueries().length);
         String prerequisiteFQ = new StringBuilder("prerequisites:").append(PREREQUISITE).toString();
         assertEquals(prerequisiteFQ, q.getFilterQueries()[0]);
-        String lopHomeplaceFQ = new StringBuilder("lopHomeplace:(")
-                .append(Joiner.on(" OR ").join(CITIES)).append(")").toString();
+        String lopHomeplaceFQ = new StringBuilder("lopHomeplace:(\"")
+                .append(Joiner.on("\" OR \"").join(CITIES)).append("\")").toString();
         assertEquals(lopHomeplaceFQ, q.getFilterQueries()[1]);
         assertEquals(TERM, q.getQuery().toString());
         assertEquals("edismax", q.getParams("defType")[0]);
@@ -87,8 +87,8 @@ public class LearningOpportunityQueryTest {
         assertEquals(6, q.getFilterQueries().length);
         String prerequisiteFQ = new StringBuilder("prerequisites:").append(PREREQUISITE).toString();
         assertEquals(prerequisiteFQ, q.getFilterQueries()[0]);
-        String lopHomeplaceFQ = new StringBuilder("lopHomeplace:(")
-                .append(Joiner.on(" OR ").join(CITIES)).append(")").toString();
+        String lopHomeplaceFQ = new StringBuilder("lopHomeplace:(\"")
+        .append(Joiner.on("\" OR \"").join(CITIES)).append("\")").toString();
         assertEquals(lopHomeplaceFQ, q.getFilterQueries()[1]);
         assertEquals(TERM, q.getQuery().toString());
         assertEquals("edismax", q.getParams("defType")[0]);
@@ -104,8 +104,8 @@ public class LearningOpportunityQueryTest {
         assertEquals(6, q.getFilterQueries().length);
         String prerequisiteFQ = new StringBuilder("prerequisites:").append(PREREQUISITE).toString();
         assertEquals(prerequisiteFQ, q.getFilterQueries()[0]);
-        String lopHomeplaceFQ = new StringBuilder("lopHomeplace:(")
-                .append(Joiner.on(" OR ").join(CITIES)).append(")").toString();
+        String lopHomeplaceFQ = new StringBuilder("lopHomeplace:(\"")
+        .append(Joiner.on("\" OR \"").join(CITIES)).append("\")").toString();
         assertEquals(lopHomeplaceFQ, q.getFilterQueries()[1]);
         assertEquals(TERM, q.getQuery().toString());
         assertEquals("edismax", q.getParams("defType")[0]);
