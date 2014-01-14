@@ -84,7 +84,7 @@ public class LearningOpportunityQuery extends SolrQuery {
         this.setRows(rows);
         if (cities != null && !cities.isEmpty()) {
             this.addFilterQuery(
-                    String.format("%s:(%s)", LearningOpportunity.LOP_HOMEPLACE, Joiner.on(" OR ").join(cities))
+                    String.format("%s:(\"%s\")", LearningOpportunity.LOP_HOMEPLACE, Joiner.on("\" OR \"").join(cities))
                     );
         }
         
