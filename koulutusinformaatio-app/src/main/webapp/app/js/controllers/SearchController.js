@@ -395,7 +395,7 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
         delete qParams.tab;
         $location.search(qParams).replace();
 
-        $scope.doSearching();
+        $scope.initSearch();
     }
 
 
