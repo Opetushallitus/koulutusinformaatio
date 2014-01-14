@@ -69,6 +69,8 @@ public class ApplicationOption {
     private boolean athleteEducation;
     //ammatillinen koulutus
     private boolean vocational;
+    // koulutuskoodiuri
+    private String educationCodeUri;
 
     public String getId() {
         return id;
@@ -318,6 +320,14 @@ public class ApplicationOption {
         this.vocational = vocational;
     }
 
+    public String getEducationCodeUri() {
+        return educationCodeUri;
+    }
+
+    public void setEducationCodeUri(String educationCodeUri) {
+        this.educationCodeUri = educationCodeUri;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -334,4 +344,5 @@ public class ApplicationOption {
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
     }
+
 }
