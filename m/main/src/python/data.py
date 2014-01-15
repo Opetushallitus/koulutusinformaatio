@@ -46,5 +46,17 @@ def get(url):
 def out(data):
     print json.dumps(data, indent=4)
 
+def transformlostoproviders(los):
+    tempdict = {}
+    for lo in los:
+        id = lo["provider"]["id"]
+        if not id in tempdict:
+            tempdict[id] = lo["provider"]
+            tempdict[id]["los"] = []
+            tempdict[id]["los"].append(lo)
+        else:
+            tempdict[id]["los"].append(lo)
+    return tempdict.values()
+
 #def uniq(l, key):
 #    filter(sorted(l, key=key), key=key)

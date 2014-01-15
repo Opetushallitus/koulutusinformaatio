@@ -1,7 +1,15 @@
 {% extends "index-base-fi.html" %}
-{% block title %}{{ title_valmentavat_oppilaitokset_fi }}{% endblock %}
+{% block title %}{{ locales["provider-valmentava"] }}{% endblock %}
+
+{% block breadcrumb %}
+<a href="../index.html">{{ locales["home"] }}</a>
+<span class="delimiter">&gt;</span>
+<span>{{ locales["provider-valmentava"] }}</span>
+{% endblock %}
+
+{% block maintitle %}{{ locales["provider-valmentava"] }}{% endblock %}
+
 {% block content %}
-<h1>{{ title_valmentavat_oppilaitokset_fi }}</h1>
 
 <ul>
   {% for item in ctx %}

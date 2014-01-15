@@ -1,7 +1,15 @@
 {% extends "index-base-sv.html" %}
-{% block title %}{{ title_erityis_oppilaitokset_sv }}{% endblock %}
+{% block title %}{{ locales["provider-erityis"] }}{% endblock %}
+
+{% block breadcrumb %}
+<a href="../index_sv.html">{{ locales["home"] }}</a>
+<span class="delimiter">&gt;</span>
+<span>{{ locales["provider-erityis"] }}</span>
+{% endblock %}
+
+{% block maintitle %}{{ locales["provider-erityis"] }}{% endblock %}
+
 {% block content %}
-<h1>{{ title_erityis_oppilaitokset_sv }}</h1>
 
 <ul>
   {% for item in ctx %}

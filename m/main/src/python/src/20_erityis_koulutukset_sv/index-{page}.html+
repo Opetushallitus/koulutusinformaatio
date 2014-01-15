@@ -7,7 +7,7 @@
 <span>{{ locales["lo-type-special"] }}</span>
 {% endblock %}
 
-{% block maintitle %}{{ title_erityis_koulutukset_sv }}{% endblock %}
+{% block maintitle %}{{ locales["lo-type-special"] }}{% endblock %}
 
 {% block content %}
 <ul>

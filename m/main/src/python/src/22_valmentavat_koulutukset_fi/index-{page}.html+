@@ -1,5 +1,5 @@
 {% extends "index-base-fi.html" %}
-{% block title %}{{ title_valmentavat_koulutukset_fi }}{% endblock %}
+{% block title %}{{ locales["et5"] }}{% endblock %}
 
 {% block breadcrumb %}
 <a href="../index.html">{{ locales["home"] }}</a>
@@ -7,7 +7,7 @@
 <span>{{ locales["et5"] }}</span>
 {% endblock %}
 
-{% block maintitle %}{{ title_valmentavat_koulutukset_fi }}{% endblock %}
+{% block maintitle %}{{ locales["et5"] }}{% endblock %}
 
 {% block content %}
 
