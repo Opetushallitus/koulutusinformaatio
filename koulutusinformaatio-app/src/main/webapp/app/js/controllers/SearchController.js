@@ -213,18 +213,25 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     }
 };
 
-function LocationDialogCtrl($scope, $modalInstance, ChildLocationsService, UtilityService, DistrictService) {
+function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsService, UtilityService, DistrictService) {
 
     DistrictService.query().then(function(result) {
         $scope.distResult = result;
         $scope.distResult.unshift({name: i18n.t('koko') + ' ' + i18n.t('suomi'), code: '-1'});
+
+        // IE requires this to redraw select boxes after data is loaded
+        $timeout(function() {
+            $("#districtSelection").css("width", '200px');
+        }, 0);
     });
 
     $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
     }
 
-    $scope.doMunicipalitySearch = function() {
+
+
+    var doMunicipalitySearch = function() {
         var queryDistricts = [];
         if ($scope.muniResult != undefined) {
             $scope.muniResult.length = 0;
@@ -245,11 +252,18 @@ function LocationDialogCtrl($scope, $modalInstance, ChildLocationsService, Utili
             } else {
                 $scope.muniResult.push.apply($scope.muniResult, result);
             }
+
+            // IE requires this to redraw select boxes after data is loaded
+            $timeout(function() {
+                $("#municipalitySelection").css("width", '200px');
+            }, 0);
             
         });
     }
 
-    $scope.selectMunicipality = function() {
+    
+
+    var selectMunicipality = function() {
         if (!$scope.selectedMunicipalities) {
             $scope.selectedMunicipalities = [];
         }
@@ -269,6 +283,18 @@ function LocationDialogCtrl($scope, $modalInstance, ChildLocationsService, Utili
 
         });
     }
+
+    $scope.$watch('selectedMunicipality', function(value) {
+        if (value) {
+            selectMunicipality();
+        }
+    });
+
+    $scope.$watch('selectedDistricts', function(value) {
+        if (value) {
+            doMunicipalitySearch();
+        }
+    });
 
     $scope.removeMunicipality = function(code) {
         angular.forEach($scope.selectedMunicipalities, function(mun, key) {

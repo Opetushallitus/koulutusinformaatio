@@ -10,7 +10,8 @@
 
     $scope.tabtitle = (function() {
         var getValintaperusteetTitle = function() {
-            if ($scope.loType == 'erityisopetus') {
+            if ($scope.loType == 'erityisopetus' ||
+                $scope.loType == 'valmentava') {
                 return i18n.t('lo-application-er');
             } else {
                 return i18n.t('lo-application');

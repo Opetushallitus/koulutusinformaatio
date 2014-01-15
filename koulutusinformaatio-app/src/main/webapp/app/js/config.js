@@ -1,20 +1,61 @@
 window.Config = window.Config || {};
+window.Config.app = window.Config.app || {};
 
-window.Config.app = {
+window.Config.app.common = {
 	fi: {
-		frontpageUrl: 'https://opintopolku.fi/wp/fi/',
-		rekisteriselosteUrl: 'https://opintopolku.fi/wp/fi/rekisteriseloste/',
 		ophUrl: 'http://www.oph.fi/etusivu',
 		okmUrl: 'http://www.minedu.fi/OPM/',
 		navigationUrl: '/wp/fi/api/nav/json_nav/'
 	},
 	sv: {
-		frontpageUrl: 'https://opintopolku.fi/wp/sv/',
-    	rekisteriselosteUrl: 'https://opintopolku.fi/wp/sv/registerbeskrivning/',
     	ophUrl: 'http://www.oph.fi/startsidan',
     	okmUrl: 'http://www.minedu.fi/OPM/?lang=sv',
     	navigationUrl: '/wp/sv/api/nav/json_nav/'
 	},
     hakulomakeUrl: '/haku-app/',
     piwikUrl: 'https://analytiikka.opintopolku.fi/piwik/'
-}
+};
+
+window.Config.app.prod = {
+	fi: {
+		frontpageUrl: 'https://opintopolku.fi/wp/fi/',
+		rekisteriselosteUrl: 'https://opintopolku.fi/wp/fi/rekisteriseloste/'
+	},
+	sv: {
+		frontpageUrl: 'https://opintopolku.fi/wp/sv/',
+    	rekisteriselosteUrl: 'https://opintopolku.fi/wp/sv/registerbeskrivning/'
+	}
+};
+
+window.Config.app.koulutus = {
+	fi: {
+		frontpageUrl: '/wp/fi/',
+		rekisteriselosteUrl: '/wp/fi/'
+	},
+	sv: {
+		frontpageUrl: '/wp/sv/',
+    	rekisteriselosteUrl: '/wp/sv/'
+	}
+};
+
+window.Config.app.qa = {
+	fi: {
+		frontpageUrl: '/wp/fi/',
+		rekisteriselosteUrl: '/wp/fi/rekisteriseloste/'
+	},
+	sv: {
+		frontpageUrl: '/wp/sv/',
+    	rekisteriselosteUrl: '/wp/sv/registerbeskrivning/'
+	}
+};
+
+window.Config.app.dev = {
+	fi: {
+		frontpageUrl: '/wp/fi/',
+		rekisteriselosteUrl: '/wp/fi/'
+	},
+	sv: {
+		frontpageUrl: '/wp/sv/',
+    	rekisteriselosteUrl: '/wp/sv/'
+	}
+};

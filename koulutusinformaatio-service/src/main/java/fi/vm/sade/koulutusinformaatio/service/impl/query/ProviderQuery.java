@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl.query;
 
 import com.google.common.base.Joiner;
 import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.util.ClientUtils;
 
 /**
  * Solr query for querying learning opportunity providers.
@@ -34,7 +35,7 @@ public class ProviderQuery extends SolrQuery {
 
     public ProviderQuery(String q, String asId, String baseEducation, int start, int rows, boolean vocational,
                          boolean nonVocational) {
-        super(Joiner.on(":").join(NAME, q));
+        super(Joiner.on(":").join(NAME, ClientUtils.escapeQueryChars(q) + "*"));
 
         this.setStart(start);
         this.setRows(rows);

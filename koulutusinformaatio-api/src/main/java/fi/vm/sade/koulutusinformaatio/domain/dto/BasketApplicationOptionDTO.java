@@ -42,6 +42,8 @@ public class BasketApplicationOptionDTO {
     private Date attachmentDeliveryDeadline;
     private boolean athleteEducation;
     private String aoIdentifier;
+    private boolean kaksoistutkinto;
+    private boolean vocational;
 
     public String getId() {
         return id;
@@ -161,5 +163,21 @@ public class BasketApplicationOptionDTO {
 
     public void setAoIdentifier(String aoIdentifier) {
         this.aoIdentifier = aoIdentifier;
+    }
+
+    public boolean isKaksoistutkinto() {
+        return kaksoistutkinto;
+    }
+
+    public void setKaksoistutkinto(boolean kaksoistutkinto) {
+        this.kaksoistutkinto = kaksoistutkinto;
+    }
+
+    public boolean isVocational() {
+        return vocational;
+    }
+
+    public void setVocational(boolean vocational) {
+        this.vocational = vocational;
     }
 }

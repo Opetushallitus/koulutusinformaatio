@@ -1,6 +1,6 @@
 /*  Services */
 
-angular.module('kiApp.services', ['ngResource', 'kiApp.NavigationService']).
+angular.module('kiApp.services', ['ngResource', 'kiApp.NavigationService', 'kiApp.HostResolver']).
 
 service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analytics', 'FilterService', function($http, $timeout, $q, $analytics, FilterService) {
     
@@ -1188,7 +1188,6 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
         }
     };
 }]).
-
 
 /**
  *  Service for retrieving translated values for text
