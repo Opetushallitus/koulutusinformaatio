@@ -3,23 +3,24 @@
 {% set ao = as.applicationOptions[0] %}
 {% set provider = ctx.provider %}
 {% extends "base-fi.html" %}
-{% block title %}{{ ctx.provider.name }} - {{ ctx.name }} - {{ locales["lo-tab-academy"] }}{% endblock %}
+{% block title %}{{ ctx.name }} - {{ locales["lo-tab-academy"] }}{% endblock %}
 
 {% block breadcrumb %}
 <a href="../index.html">{{ locales["home"] }}</a>
 <span class="delimiter">&gt;</span>
-<a href="index-1.html">{{title_erityis_koulutukset_fi}}</a>
+<a href="index-1.html">{{ locales[lotypekey] }}</a>
 <span class="delimiter">&gt;</span>
 <span>{{ ctx.name }} - {{ locales["lo-tab-academy"] }}</span>
 {% endblock %}
 
-{% block navi %}
+{% block maintitle %}{{ ctx.name }} - {{ locales["lo-tab-academy"] }}{% endblock %}
+
+{% block tabs %}
 <a href="{{ ctx.id }}-koulutus.html">{{ locales["lo-description"] }}</a>
 <a href="{{ ctx.id }}-valintaperusteet.html">{{ locales["lo-application-er"] }}</a>
 {% endblock %}
 
 {% block content %}
-<h1>{{ ctx.name }} - {{ locales["lo-tab-academy"] }}</h1>
 
 {% if provider.social is defined %}
 <h2>{{ locales["social-media"] }}</h2>

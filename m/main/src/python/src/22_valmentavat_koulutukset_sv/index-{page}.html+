@@ -1,10 +1,15 @@
 {% extends "index-base-sv.html" %}
 {% block title %}{{ title_valmentavat_koulutukset_sv }}{% endblock %}
+
+{% block breadcrumb %}
+<a href="../index_sv.html">{{ locales["home"] }}</a>
+<span class="delimiter">&gt;</span>
+<span>{{ locales["et5"] }}</span>
+{% endblock %}
+
+{% block maintitle %}{{ title_valmentavat_koulutukset_sv }}{% endblock %}
+
 {% block content %}
-<h1>{{ title_valmentavat_koulutukset_sv }}</h1>
-
-<h2>Undervisning</h2>
-
 <ul>
   {% for item in ctx %}
   <li>

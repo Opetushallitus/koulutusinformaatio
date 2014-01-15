@@ -1,3 +1,4 @@
+{#
 {% set title_erityis_oppilaitokset_sv = "Läroanstalt med yrkesinriktad specialundervisning" %}
 {% set title_erityis_koulutukset_sv = "Yrkesinriktad specialundervisning" %}
 {% set title_valmentavat_oppilaitokset_sv = "Undervisning och handledning i tränings- och rehabiliteringssyfte" %}
@@ -6,6 +7,7 @@
 {% set title_erityis_koulutukset_fi = "Ammatillinen erityisopetus" %}
 {% set title_valmentavat_oppilaitokset_fi = "Valmentavaa ja kuntouttavaa koulutusta järjestävät oppilaitokset" %}
 {% set title_valmentavat_koulutukset_fi = "Valmentava ja kuntouttava opetus ja ohjaus" %}
+#}
 {% set locales = locales["localesfi"] %}
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html lang="en">
@@ -22,12 +24,16 @@
 <body>
     <div id="header">
         {% block header %}
-        <a class="block" href="/m/index.html">{{ locales["header-home"] }}</a>
+        {% block header_home %}
+        <a class="block" href="../index.html">{{ locales["header-home"] }}</a>
+        {% endblock %}
         <a class="block" href="/">{{ locales["to-full-version"] }}</a>
         {% endblock %}
     </div>
     <div id="breadcrumb">{% block breadcrumb %}{% endblock %}</div>
+    <h1>{% block maintitle %}{% endblock %}</h1>
     <div id="navi">{% block navi %}{% endblock %}</div>
+    <div id="tabs">{% block tabs %}{% endblock %}</div>
     <div id="content">{% block content %}{% endblock %}</div>
     <div id="footer">
         {% block footer %}

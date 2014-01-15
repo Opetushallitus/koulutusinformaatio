@@ -1,22 +1,30 @@
 {
-    "page-title": "Studieinfo textversion",
-    "header-home": "Studieinfo.fi",
-    "to-full-version": "Siirry palvelun täysversioon",
-    "home": "Kotinäkymä",
-    "lo-tab-academy": "Oppilaitoskuvaus",
+    "page-title": "Opintopolku tekstiversio(sv)",
+    "header-home": "Opintopolku.fi(sv)",
+    "to-full-version": "Siirry palvelun täysversioon(sv)",
+    "home": "Kotinäkymä(sv)",
+    "lo-tab-academy": "Oppilaitoskuvaus(sv)",
 
-    "description-basic-info": "Perustiedot",
-    "email": "Sähköposti",
-    "phone": "Puhelin",
+    "index-pager-all": "Näytä kaikki koulutukset sivulla(sv)",
+    "index-pager-page-1": "Näytä(sv)",
+    "index-pager-page-2": "koulutusta sivulla(sv)",
+    "index-pager-next": "Seuraava sivu(sv)",
+    "index-pager-previous": "Edellinen sivu(sv)",
 
-    "postal-address": "Postiosoite",
-    "visiting-address": "Käyntiosoite",
-    "fax": "Faksi",
-    "www": "www",
+    "lo-type-special": "Ammatillinen erityisopetus(sv)",
 
-    "social-media": "Oppilaitoksen sosiaalisen median linkit",
+    "description-basic-info": "Perustiedot(sv)",
+    "email": "Sähköposti(sv)",
+    "phone": "Puhelin(sv)",
 
-    "footer-service-providers": "Palvelun tarjoavat:",
-    "footer-provider-1": "Undervisnings- och kulturministeriet",
-    "footer-provider-2": "Utbildningsstyrelsen"
+    "postal-address": "Postiosoite(sv)",
+    "visiting-address": "Käyntiosoite(sv)",
+    "fax": "Faksi(sv)",
+    "www": "www(sv)",
+
+    "social-media": "Oppilaitoksen sosiaalisen median linkit(sv)",
+
+    "footer-service-providers": "Palvelun tarjoavat:(sv)",
+    "footer-provider-1": "Opetus- ja kulttuuriministeriö(sv)",
+    "footer-provider-2": "Opetushallitus(sv)"
 }

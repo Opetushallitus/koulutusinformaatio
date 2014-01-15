@@ -1,7 +1,15 @@
 import data
 from data import s, get, out
 
-data.base_url = "https://testi.opintopolku.fi"
+#data.base_url = "https://testi.opintopolku.fi"
+data.base_url = "https://test-oppija.oph.ware.fi"
 
-#retval = get("/wp/sv/api/core/get_page?id=2790") #["page"]
-retval = get("/wp/wp_api/v1/posts?post_type=page&p=3050&lang=sv")["posts"][0]
+#url = "/wp/fi/api/core/get_page?id=3050"
+url = "/wp/wp_api/v1/posts?post_type=page&p=3050&lang=fi"
+
+results = get(url)
+if "results" in results:
+	#retval = get("/wp/fi/api/core/get_page?id=3050") #["page"]
+	retval = results["posts"][0]
+else:
+	retval = []

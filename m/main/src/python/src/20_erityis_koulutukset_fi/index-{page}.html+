@@ -1,8 +1,15 @@
 {% extends "index-base-fi.html" %}
 {% block title %}{{ title_erityis_koulutukset_fi }}{% endblock %}
-{% block content %}
-<h1>{{ title_erityis_koulutukset_fi }}</h1>
 
+{% block breadcrumb %}
+<a href="../index.html">{{ locales["home"] }}</a>
+<span class="delimiter">&gt;</span>
+<span>{{ locales["lo-type-special"] }}</span>
+{% endblock %}
+
+{% block maintitle %}{{ title_erityis_koulutukset_fi }}{% endblock %}
+
+{% block content %}
 <ul>
   {% for item in ctx %}
   <li>

@@ -5,6 +5,16 @@
 	"home": "Kotinäkymä",
     "lo-tab-academy": "Oppilaitoskuvaus",
 
+    "index-pager-all": "Näytä kaikki koulutukset sivulla",
+    "index-pager-page-1": "Näytä",
+    "index-pager-page-2": "koulutusta sivulla",
+    "index-pager-next": "Seuraava sivu",
+    "index-pager-previous": "Edellinen sivu",
+
+    "lo-type-special": "Ammatillinen erityisopetus",
+    "provider-erityis": "Ammatillista erityisopetusta tarjoavat oppilaitokset",
+    "provider-valmentava": "Valmentavaa ja kuntouttavaa opetusta ja ohjausta tarjoavat oppilaitokset",
+
     "description-basic-info": "Perustiedot",
     "email": "Sähköposti",
     "phone": "Puhelin",

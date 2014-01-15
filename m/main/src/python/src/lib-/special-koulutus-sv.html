@@ -1,15 +1,17 @@
 {% extends "base-sv.html" %}
-{% block title %}{{ ctx.provider.name }} - {{ ctx.name }} - {{ locales["lo-description"] }}{% endblock %}
+{% block title %}{{ ctx.name }} - {{ locales["lo-description"] }}{% endblock %}
 
 {% block breadcrumb %}
 <a href="../index_sv.html">{{ locales["home"] }}</a>
 <span class="delimiter">&gt;</span>
-<a href="index-1.html">{{title_erityis_koulutukset_sv}}</a>
+<a href="index-1.html">{{ locales[lotypekey] }}</a>
 <span class="delimiter">&gt;</span>
 <span>{{ ctx.name }} - {{ locales["lo-description"] }}</span>
 {% endblock %}
 
-{% block navi %}
+{% block maintitle %}{{ ctx.name }} - {{ locales["lo-description"] }}{% endblock %}
+
+{% block tabs %}
 <a href="{{ ctx.id }}-valintaperusteet.html">{{ locales["lo-application-er"] }}</a>
 <a href="{{ ctx.id }}-oppilaitos.html">{{ locales["lo-tab-academy"] }}</a>
 {% endblock %}
@@ -19,8 +21,6 @@
 {% set loi = ctx.lois[0] %}
 {% set as = loi.applicationSystems[0] %}
 {% set ao = as.applicationOptions[0] %}
-
-<h1>{{ ctx.name }} - {{ locales["lo-description"] }}</h1>
 
 <h2>{{ locales["description-basic-info"] }}</h2>
 

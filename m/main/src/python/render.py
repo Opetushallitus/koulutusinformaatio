@@ -190,6 +190,12 @@ def eval_dir(src_workdir=".", out_workdir=".", data=None):
                 else:
                     last = page * RESULTS_PER_PAGE
 
+                #print first
+                #print last
+                #print page
+                #print out_fn
+                #print ctx[first]
+                #print ctx[last]
                 index_links.append({ "page": page, "url": out_fn, "first": ctx[first], "last": ctx[last] })
 
             # render pages

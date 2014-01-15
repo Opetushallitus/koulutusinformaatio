@@ -6,7 +6,7 @@
 <ul>
   {% for item in ctx %}
   <li>
-    <a href="{{ item.id }}.html">{{ item.provider.name }}: {{ item.name }}</a>
+    <a href="{{ item.id }}.html">{{ item.name }}</a>
   </li>
   {% endfor %}
 </ul>

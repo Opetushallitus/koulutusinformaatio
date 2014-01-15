@@ -2,7 +2,7 @@ OUT=out/
 
 all: clean venv copyassets
 	venv/bin/python render.py
-	cp -r out/* ../../../../koulutusinformaatio-app/src/main/webapp/m/
+	cp -rf out/* ../../../../koulutusinformaatio-app/src/main/webapp/m/
 	
 clean:
 	rm -rf out/

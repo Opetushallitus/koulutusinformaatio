@@ -3,24 +3,24 @@
 {% set ao = as.applicationOptions[0] %}
 {% set provider = ctx.provider %}
 {% extends "base-fi.html" %}
-{% block title %}{{ ctx.provider.name }} - {{ ctx.name }} - {{ locales["lo-application-er"] }}{% endblock %}
+{% block title %}{{ ctx.name }} - {{ locales["lo-application-er"] }}{% endblock %}
 
 {% block breadcrumb %}
 <a href="../index.html">{{ locales["home"] }}</a>
 <span class="delimiter">&gt;</span>
-<a href="index-1.html">{{title_erityis_koulutukset_fi}}</a>
+<a href="index-1.html">{{ locales[lotypekey] }}</a>
 <span class="delimiter">&gt;</span>
 <span>{{ ctx.name }} - {{ locales["lo-application-er"] }}</span>
 {% endblock %}
 
-{% block navi %}
+{% block maintitle %}{{ ctx.name }} - {{ locales["lo-application-er"] }}{% endblock %}
+
+{% block tabs %}
 <a href="{{ ctx.id }}-koulutus.html">{{ locales["lo-description"] }}</a>
 <a href="{{ ctx.id }}-oppilaitos.html">{{ locales["lo-tab-academy"] }}</a>
 {% endblock %}
 
 {% block content %}
-
-<h1>{{ ctx.name }} - {{ locales["lo-application-er"] }}</h1>
 
 {% if ao.selectionCriteria is defined %}
 {{ ao.selectionCriteria }}
