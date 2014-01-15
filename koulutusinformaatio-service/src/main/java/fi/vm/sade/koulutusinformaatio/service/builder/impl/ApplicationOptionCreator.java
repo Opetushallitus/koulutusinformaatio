@@ -279,7 +279,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
             ChildLOIRef cRef = new ChildLOIRef();
             cRef.setId(s.getOid());
             cRef.setLosId(CreatorUtil.resolveLOSId(komoByKomotoOID.getOid(), komoto.getTarjoajaOid()));
-            cRef.setName(koodistoService.searchFirst(komoByKomotoOID.getKoulutusOhjelmaKoodiUri()));
+            cRef.setName(koodistoService.searchFirst(komoByKomotoOID.getLukiolinjaUri()));
             cRef.setQualification(koodistoService.searchFirst(komoByKomotoOID.getTutkintonimikeUri()));
             cRef.setPrerequisite(loi.getPrerequisite());
             ao.getChildLOIRefs().add(cRef);
