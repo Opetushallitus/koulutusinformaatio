@@ -24,10 +24,16 @@
 <body>
     <div id="header">
         {% block header %}
-        {% block header_home %}
-        <a class="block" href="../index_sv.html">{{ locales["header-home"] }}</a>
-        {% endblock %}
-        <a class="block" href="/">{{ locales["to-full-version"] }}</a>
+        <ul class="nobullet">
+            <li>
+            {% block header_home %}
+                <a class="block" href="../index_sv.html">{{ locales["header-home"] }}</a>
+            {% endblock %}
+            </li>
+            <li>
+                <a class="block" href="/">{{ locales["to-full-version"] }}</a>
+            </li>
+        </ul>
         {% endblock %}
     </div>
     <div id="breadcrumb">{% block breadcrumb %}{% endblock %}</div>

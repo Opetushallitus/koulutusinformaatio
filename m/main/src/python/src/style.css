@@ -1,11 +1,12 @@
 body {
 	max-width: 60em;
+	margin: 1em;
 	font-family: arial, sans-serif;
 	/*font-size: 1em;*/
 	font-size: 0.813em;
 	color: #333333;
-	line-height: 2em;
-	/*line-height: 1.22em;*/
+	/*line-height: 2em*/
+	line-height: 1.22em;
 }
 
 h1
@@ -89,11 +90,16 @@ table th {
 	text-align: left;
 }
 
-/*
 ul {
+	list-style-position: inside;
 	line-height: 2em;
+	margin: 0;
+	padding: 0;
 }
-*/
+
+ul.nobullet {
+	list-style-type: none;
+}
 
 .block {
 	display: block;
