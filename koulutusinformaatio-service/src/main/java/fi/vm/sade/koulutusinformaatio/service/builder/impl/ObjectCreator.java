@@ -25,6 +25,9 @@ import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiUrisV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.NimiV1RDTO;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -69,6 +72,62 @@ public abstract class ObjectCreator {
         }
         return null;
     }
+    
+    protected I18nText getI18nTextEnriched(NimiV1RDTO rawMaterial) throws KoodistoException {
+    	final Map<String, String> texts = (rawMaterial != null) ? rawMaterial.getTekstis() : null;
+    	if (texts != null && !texts.isEmpty()) {
+    		Map<String, String> translations = new HashMap<String, String>();
+            Iterator<Map.Entry<String, String>> i = texts.entrySet().iterator();
+            while (i.hasNext()) {
+                Map.Entry<String, String> entry = i.next();
+                if (!Strings.isNullOrEmpty(entry.getKey()) && !Strings.isNullOrEmpty(entry.getValue())) {
+                	try {
+                		String key = rawMaterial.getMeta().get(entry.getKey()).getArvo();//koodistoService.searchFirstCodeValue(entry.getKey());
+                		translations.put(key.toLowerCase(), entry.getValue());
+                	} catch (Exception ex) {
+                		throw new KoodistoException(ex.getMessage());
+                	}
+                    
+                }
+            }
+            I18nText i18nText = new I18nText();
+            i18nText.setTranslations(translations);
+            return i18nText;
+    	}
+    	return null;
+    }
+    
+
+	protected I18nText getI18nTextEnriched(Map<String, KoodiV1RDTO> meta) throws KoodistoException {
+		if (meta != null && !meta.isEmpty()) {
+			Map<String, String> translations = new HashMap<String, String>();
+            Iterator<Map.Entry<String, KoodiV1RDTO>> i = meta.entrySet().iterator();
+            while (i.hasNext()) {
+                Map.Entry<String, KoodiV1RDTO> entry = i.next();
+                if (!Strings.isNullOrEmpty(entry.getKey()) && (entry.getValue() != null)) {
+                	try {
+                		String key = entry.getValue().getKieliArvo();
+                		translations.put(key.toLowerCase(), entry.getValue().getKaannos());
+                	} catch (Exception ex) {
+                		throw new KoodistoException(ex.getMessage());
+                	}
+                    
+                }
+            }
+            I18nText i18nText = new I18nText();
+            i18nText.setTranslations(translations);
+            return i18nText;
+		}
+		return null;
+	}
+	
+
+	private List<I18nText> getMultiI18nTexts(KoodiUrisV1RDTO opetusmuodos) {
+		if (opetusmuodos != null) {
+			//opetusmuodos.get
+		}
+		return null;
+	}
     
     protected List<Code> getTopics(String opintoalaKoodiUri) throws KoodistoException {
         return koodistoService.searchSuperCodes(opintoalaKoodiUri, AIHEET_KOODISTO_URI);

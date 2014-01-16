@@ -139,50 +139,28 @@ public class TarjontaServiceImpl implements TarjontaService {
         });
     }
 
-	@Override
-	public List<UniversityAppliedScienceLOS> findHigherEducations() {
-		System.out.println("Trying trying");
-		
-		LOSObjectCreator creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService);
-		
-		List<UniversityAppliedScienceLOS> koulutukset = new ArrayList<UniversityAppliedScienceLOS>();
-		
-		ObjectMapper mapper = new ObjectMapper();
-		ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes = this.tarjontaRawService.listHigherEducation();
-		HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();//TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO>
-		for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
-			System.out.println("In cur res");
-			//koulutukset.addAll(curRes.getTulokset());
-			for (KoulutusHakutulosV1RDTO curKoulutus : curRes.getTulokset()) {
-				System.out.print("Cur koulutus: " + curKoulutus.getOid());
-				System.out.println(". Koulutusaste: " + curKoulutus.getKoulutusasteTyyppi().value());
-				ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes = this.tarjontaRawService.getHigherEducationLearningOpportunity(curKoulutus.getOid());
-				System.out.println("Got back ");
-				System.out.println("With oid: " + koulutusRes.getResult().getOid());
-				/*try {
-					String json = String.format("%s", koulutusRes.getResult());
-					System.out.println(json);
-					KoulutusKorkeakouluV1RDTO koulutusDTO = mapper.readValue(json, KoulutusKorkeakouluV1RDTO.class);
-					System.out.println("All fine");*/
-					UniversityAppliedScienceLOS los = creator.createUasLOS(koulutusRes.getResult());//koulutusDTO);
-					System.out.println("All fine all");
-					koulutukset.add(los);
-					System.out.println("All fine all fine");
-				/*} catch (JsonParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (JsonMappingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}*/
-				
-				
-			}
-		}
-		System.out.println("All ended");
-		return koulutukset;
-	}
+    @Override
+    public List<UniversityAppliedScienceLOS> findHigherEducations() throws KoodistoException {
+    	System.out.println("Trying trying");
+
+    	LOSObjectCreator creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService);
+
+    	List<UniversityAppliedScienceLOS> koulutukset = new ArrayList<UniversityAppliedScienceLOS>();
+
+    	ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes = this.tarjontaRawService.listHigherEducation();
+    	HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
+    	for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
+    		System.out.println("In cur res");
+    		for (KoulutusHakutulosV1RDTO curKoulutus : curRes.getTulokset()) {
+    			System.out.print("Cur koulutus: " + curKoulutus.getOid());    			
+    			ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes = this.tarjontaRawService.getHigherEducationLearningOpportunity(curKoulutus.getOid());
+    			System.out.println("Got back with oid: " + koulutusRes.getResult().getOid());
+    			UniversityAppliedScienceLOS los = creator.createUasLOS(koulutusRes.getResult());
+    			koulutukset.add(los);
+    			System.out.println("All fine all fine");
+    		}
+    	}
+    	System.out.println("All ended");
+    	return koulutukset;
+    }
 }

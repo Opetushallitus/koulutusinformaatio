@@ -53,5 +53,5 @@ public interface TarjontaService {
      */
     public List<String> listParentLearnignOpportunityOids(int count, int startIndex);
     
-    public List<UniversityAppliedScienceLOS> findHigherEducations();
+    public List<UniversityAppliedScienceLOS> findHigherEducations() throws KoodistoException;
 }

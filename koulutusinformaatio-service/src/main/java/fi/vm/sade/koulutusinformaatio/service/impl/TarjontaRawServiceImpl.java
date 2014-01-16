@@ -44,10 +44,6 @@ import org.springframework.stereotype.Service;
 
 import javax.ws.rs.core.MediaType;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 
 /**
@@ -62,7 +58,6 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     private WebResource komotoResource;
     private WebResource hakuResource;
     private WebResource hakukohdeResource;
-    private String  higherEducationURL;
     private WebResource higherEducationResource;
     private ConversionService conversionService;
     private KoodistoService koodistoService;
@@ -81,8 +76,6 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
         hakuResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "haku");
         hakukohdeResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "hakukohde");
         higherEducationResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "v1/koulutus");
-        higherEducationURL = tarjontaApiUrl + "v1/koulutus";
-        
         this.conversionService = conversionService;
     }
 
@@ -202,43 +195,11 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
 	@Override
 	public ResultV1RDTO<KoulutusKorkeakouluV1RDTO> getHigherEducationLearningOpportunity(
 			String oid) {
-		System.out.println("OId: " + oid);
-		//System.out.println(this.higherEducationResource.path(oid).getURI().toString());
-		
-		ObjectMapper mapper = new ObjectMapper();
-
-		URL heURL;
-        HttpURLConnection myURLConnection;
-		try {
-			heURL = new URL(String.format("%s/%s", this.higherEducationURL,  oid));
-			myURLConnection = (HttpURLConnection)(heURL.openConnection());
-			 myURLConnection.setRequestMethod(SolrConstants.GET);
-		     myURLConnection.connect();
-		     //mapper.readValue(src, valueTypeRef)
-		     //mapper.readValue(myURLConnection.getInputStream(), valueType)
-		     //mapper.readV
-		     //mapper.readV
-		     ResultV1RDTO<KoulutusKorkeakouluV1RDTO> val = mapper.readValue(myURLConnection.getInputStream(), new TypeReference<ResultV1RDTO<KoulutusKorkeakouluV1RDTO>>() { });
-		     System.out.println("Val");
-		     System.out.println("Val: " + val.getResult().getOid());
-		     return val;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		} 
-		
-       
-		/*System.out.println(this.higherEducationResource
-		.path(oid).accept(MediaType.APPLICATION_JSON).get(new GenericType<ResultV1RDTO<KoulutusKorkeakouluV1RDTO>>() {
-				}));
-		
-		//System.out.println("Hello");
-		//return this.higherEducationResource
+		return higherEducationResource
 				.path(oid)
-				.accept(JSON_UTF8)
-				.get(new GenericType<ResultV1RDTO<KoulutusKorkeakouluV1RDTO>>() {
-				});*/
+	        	.accept(JSON_UTF8)
+	        	.get(new GenericType<ResultV1RDTO<KoulutusKorkeakouluV1RDTO>>() {
+	        	});
 	}
 	
 	
