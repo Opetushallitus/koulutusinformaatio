@@ -29,7 +29,8 @@ function TabsetCtrl($scope, $element) {
 
   ctrl.addTab = function addTab(tab) {
     tabs.push(tab);
-    if (tabs.length === 1 || tab.active) {
+    /*if (init) {
+    } else*/ if (tabs.length === 1 || tab.active) {
       ctrl.select(tab);
     }
   };
@@ -199,8 +200,15 @@ function($parse, $http, $templateCache, $compile) {
         if (attrs.active) {
           getActive = $parse(attrs.active);
           setActive = getActive.assign;
-          scope.$parent.$watch(getActive, function updateActive(value) {
-            scope.active = !!value;
+          //scope.$parent.$watch(getActive, function updateActive(value) {
+            //scope.active = !!value;
+          scope.$parent.$watch(getActive, function updateActive(value, oldVal) {
+             // Avoid re-initializing scope.active as it is already initialized
+             // below. (watcher is called async during init with value ===
+             // oldVal)
+             if (value !== oldVal) {
+               scope.active = !!value;
+             }
           });
           scope.active = getActive(scope.$parent);
         } else {
@@ -230,13 +238,15 @@ function($parse, $http, $templateCache, $compile) {
           }
         };
 
-        tabsetCtrl.addTab(scope);
+        tabsetCtrl.addTab(scope /*, true*/);
         scope.$on('$destroy', function() {
           tabsetCtrl.removeTab(scope);
         });
+        /*
         if (scope.active) {
           setActive(scope.$parent, true);
         }
+        */
 
 
         //We need to transclude later, once the content container is ready.
