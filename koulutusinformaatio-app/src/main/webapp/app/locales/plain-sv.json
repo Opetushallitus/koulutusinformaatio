@@ -1,6 +1,6 @@
 {
     "page-title": "Opintopolku tekstiversio (sv)",
-    "header-home": "Opintopolku.fi (sv)",
+    "header-home": "Studieinfo.fi",
     "to-full-version": "Siirry palvelun täysversioon (sv)",
     "home": "Kotinäkymä (sv)",
     "lo-tab-academy": "Oppilaitoskuvaus (sv)",
@@ -27,6 +27,6 @@
     "social-media": "Oppilaitoksen sosiaalisen median linkit (sv)",
 
     "footer-service-providers": "Palvelun tarjoavat: (sv)",
-    "footer-provider-1": "Opetus- ja kulttuuriministeriö (sv)",
-    "footer-provider-2": "Opetushallitus (sv)"
+    "footer-provider-1": "Undervisnings- och kulturministeriet",
+    "footer-provider-2": "Utbildningsstyrelsen"
 }

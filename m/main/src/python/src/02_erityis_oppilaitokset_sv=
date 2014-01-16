@@ -1,7 +1,7 @@
 from operator import itemgetter
 from data import s, get, out, dotted_getter, transformlostoproviders
 
-url = "/lo/search/*?&lang=sv&facetFilters=educationType_ffm:et4"
+url = "/lo/search/*?&facetFilters=educationType_ffm:et4&facetFilters=teachingLangCode_ffm:SV"
 #url = "/lo/search/lukio"
 
 results = get(url)
