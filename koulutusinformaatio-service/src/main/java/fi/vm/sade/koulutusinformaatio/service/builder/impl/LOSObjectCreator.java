@@ -237,10 +237,15 @@ public class LOSObjectCreator extends ObjectCreator {
         
         los.setStartDate(koulutus.getKoulutuksenAlkamisPvms().iterator().next());
         //los.setFormOfEducation(getMultiI18nTexts(koulutus.getOpetusmuodos()));
-        //los.setPlannedDuration(childKomoto.getLaajuusArvo());
-        //los.setPlannedDurationUnit(koodistoService.searchFirst(childKomoto.getLaajuusYksikkoUri()));
-        //los.setPduCodeUri(childKomoto.getLaajuusYksikkoUri());
+        los.setPlannedDuration(koulutus.getSuunniteltuKestoArvo());
+        los.setPlannedDurationUnit(getI18nTextEnriched(koulutus.getSuunniteltuKestoTyyppi().getMeta()));
+        los.setPduCodeUri(koulutus.getSuunniteltuKestoTyyppi().getUri());//childKomoto.getLaajuusYksikkoUri());
+        los.setCreditValue(koulutus.getOpintojenLaajuus().getArvo());
         
+        //educationDegree = koulutusaste
+        //qualification = tutkintonimike
+        //degreeTitle = koulutusohjelma
+
     	return los;
     }
 
