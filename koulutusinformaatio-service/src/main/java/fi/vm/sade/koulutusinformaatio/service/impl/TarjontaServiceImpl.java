@@ -18,7 +18,9 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
+import fi.vm.sade.koulutusinformaatio.domain.UniversityAppliedScienceLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
@@ -27,18 +29,32 @@ import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.koulutusinformaatio.service.builder.LearningOpportunityBuilder;
+import fi.vm.sade.koulutusinformaatio.service.builder.impl.LOSObjectCreator;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.LearningOpportunityDirector;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.SpecialLearningOpportunityBuilder;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.UpperSecondaryLearningOpportunityBuilder;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.VocationalLearningOpportunityBuilder;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusV1RDTO;
+
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.WebApplicationException;
+
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -122,4 +138,51 @@ public class TarjontaServiceImpl implements TarjontaService {
             }
         });
     }
+
+	@Override
+	public List<UniversityAppliedScienceLOS> findHigherEducations() {
+		System.out.println("Trying trying");
+		
+		LOSObjectCreator creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService);
+		
+		List<UniversityAppliedScienceLOS> koulutukset = new ArrayList<UniversityAppliedScienceLOS>();
+		
+		ObjectMapper mapper = new ObjectMapper();
+		ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes = this.tarjontaRawService.listHigherEducation();
+		HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();//TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO>
+		for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
+			System.out.println("In cur res");
+			//koulutukset.addAll(curRes.getTulokset());
+			for (KoulutusHakutulosV1RDTO curKoulutus : curRes.getTulokset()) {
+				System.out.print("Cur koulutus: " + curKoulutus.getOid());
+				System.out.println(". Koulutusaste: " + curKoulutus.getKoulutusasteTyyppi().value());
+				ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes = this.tarjontaRawService.getHigherEducationLearningOpportunity(curKoulutus.getOid());
+				System.out.println("Got back ");
+				System.out.println("With oid: " + koulutusRes.getResult().getOid());
+				/*try {
+					String json = String.format("%s", koulutusRes.getResult());
+					System.out.println(json);
+					KoulutusKorkeakouluV1RDTO koulutusDTO = mapper.readValue(json, KoulutusKorkeakouluV1RDTO.class);
+					System.out.println("All fine");*/
+					UniversityAppliedScienceLOS los = creator.createUasLOS(koulutusRes.getResult());//koulutusDTO);
+					System.out.println("All fine all");
+					koulutukset.add(los);
+					System.out.println("All fine all fine");
+				/*} catch (JsonParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (JsonMappingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}*/
+				
+				
+			}
+		}
+		System.out.println("All ended");
+		return koulutukset;
+	}
 }

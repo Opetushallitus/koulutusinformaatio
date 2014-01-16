@@ -30,12 +30,16 @@ import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.Location;
+import fi.vm.sade.koulutusinformaatio.domain.UniversityAppliedScienceLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import fi.vm.sade.koulutusinformaatio.service.LocationService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 
 /**
  * @author Hannu Lyytikainen
@@ -69,7 +73,7 @@ public class UpdateServiceImpl implements UpdateService {
     @Override
     @Async
     public synchronized void updateAllEducationData() throws Exception {
-    	HttpSolrServer loUpdateSolr = this.indexerService.getLoCollectionToUpdate();
+    	/*HttpSolrServer loUpdateSolr = this.indexerService.getLoCollectionToUpdate();
         HttpSolrServer lopUpdateSolr = this.indexerService.getLopCollectionToUpdate(loUpdateSolr);
         HttpSolrServer locationUpdateSolr = this.indexerService.getLocationCollectionToUpdate(loUpdateSolr);
         
@@ -105,6 +109,9 @@ public class UpdateServiceImpl implements UpdateService {
                    this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
                }
             }
+            
+            //ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> higherEds = //this.tarjontaService
+            
             List<Location> locations = locationService.getMunicipalities();
             indexerService.addLocations(locations, locationUpdateSolr);
             indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, true);
@@ -118,7 +125,11 @@ public class UpdateServiceImpl implements UpdateService {
         } finally {
             running = false;
             runningSince = 0;
-        }
+        }*/
+    	List<UniversityAppliedScienceLOS> higherEducations = this.tarjontaService.findHigherEducations();
+    	System.out.println("Found higher educations: " + higherEducations.size());
+    	
+    	
     }
 
     @Override

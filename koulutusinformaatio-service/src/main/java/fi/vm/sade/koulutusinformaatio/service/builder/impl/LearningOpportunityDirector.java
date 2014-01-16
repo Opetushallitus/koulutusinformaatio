@@ -17,9 +17,12 @@
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
+import fi.vm.sade.koulutusinformaatio.domain.UniversityAppliedScienceLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.builder.LearningOpportunityBuilder;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusV1RDTO;
+
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -37,5 +40,11 @@ public class LearningOpportunityDirector {
     public List<LOS> constructUpperSecondaryLearningOpportunities(LearningOpportunityBuilder builder) {
         return null;
     }
+
+	public UniversityAppliedScienceLOS constructHigherEducationLOs(
+			KoulutusV1RDTO result) {
+		
+		return null;
+	}
 
 }

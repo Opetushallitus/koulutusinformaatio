@@ -27,6 +27,7 @@ import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusV1RDTO;
 import fi.vm.sade.tarjonta.shared.types.KomoTeksti;
 
 import org.slf4j.Logger;
@@ -195,6 +196,14 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setLois(lois);
 
         return los;
+    }
+    
+    public UniversityAppliedScienceLOS createUasLOS(KoulutusV1RDTO koulutus) {
+    	UniversityAppliedScienceLOS los = new UniversityAppliedScienceLOS();
+    	
+    	los.setId(koulutus.getOid());
+    	
+    	return los;
     }
 
 

@@ -17,8 +17,10 @@
 package fi.vm.sade.koulutusinformaatio.service;
 
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
+import fi.vm.sade.koulutusinformaatio.domain.UniversityAppliedScienceLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 
 import java.util.List;
 
@@ -50,4 +52,6 @@ public interface TarjontaService {
      * @return list of oids
      */
     public List<String> listParentLearnignOpportunityOids(int count, int startIndex);
+    
+    public List<UniversityAppliedScienceLOS> findHigherEducations();
 }
