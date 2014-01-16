@@ -20,7 +20,8 @@ function HeaderCtrl($scope, ApplicationBasketService, LanguageService, Config) {
     }
 
     $scope.links = {
-        frontpage: Config.get('frontpageUrl')
+        frontpage: Config.get('frontpageUrl'),
+        textversion: Config.get('textVersionUrl')
     }
 
     $scope.images = {

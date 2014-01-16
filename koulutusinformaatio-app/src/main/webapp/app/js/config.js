@@ -5,11 +5,13 @@ window.Config.app = window.Config.app || {};
 window.Config.app.common = {
 	fi: {
 		ophUrl: 'http://www.oph.fi/etusivu',
-		okmUrl: 'http://www.minedu.fi/OPM/'
+		okmUrl: 'http://www.minedu.fi/OPM/',
+		textVersionUrl: '/m/index.html'
 	},
 	sv: {
     	ophUrl: 'http://www.oph.fi/startsidan',
-    	okmUrl: 'http://www.minedu.fi/OPM/?lang=sv'
+    	okmUrl: 'http://www.minedu.fi/OPM/?lang=sv',
+    	textVersionUrl: '/m/index_sv.html'
 	},
     hakulomakeUrl: '/haku-app/',
     piwikUrl: 'https://analytiikka.opintopolku.fi/piwik/'
