@@ -33,8 +33,9 @@
     <div id="breadcrumb">{% block breadcrumb %}{% endblock %}</div>
     <h1>{% block maintitle %}{% endblock %}</h1>
     <div id="navi">{% block navi %}{% endblock %}</div>
-    <div id="tabs">{% block tabs %}{% endblock %}</div>
+    <div id="tabs-header" class="tabs">{% block tabs %}{% endblock %}</div>
     <div id="content">{% block content %}{% endblock %}</div>
+    <div id="tabs-footer" class="tabs">{{ self.tabs() }}</div>
     <div id="footer">
         {% block footer %}
         {{ locales["footer-service-providers"] }}<br />
