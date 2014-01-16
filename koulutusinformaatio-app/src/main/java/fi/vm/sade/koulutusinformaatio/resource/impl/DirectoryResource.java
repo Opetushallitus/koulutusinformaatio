@@ -20,11 +20,15 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.sun.jersey.api.view.Viewable;
 import fi.vm.sade.koulutusinformaatio.converter.ProviderToSearchResult;
+import fi.vm.sade.koulutusinformaatio.domain.LOSearchResult;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResult;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
+import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.GET;
@@ -54,10 +58,15 @@ public class DirectoryResource {
 
 
     private SearchService searchService;
+    private EducationDataQueryService educationDataQueryService;
+    private String baseUrl;
 
     @Autowired
-    public DirectoryResource(SearchService searchService) {
+    public DirectoryResource(SearchService searchService, EducationDataQueryService educationDataQueryService,
+                             @Value("${koulutusinformaatio.snapshot.baseurl}") String baseUrl) {
         this.searchService = searchService;
+        this.educationDataQueryService = educationDataQueryService;
+        this.baseUrl = baseUrl;
     }
 
     @GET
@@ -94,10 +103,24 @@ public class DirectoryResource {
     @GET
     @Path("oppilaitokset/{providerId}/koulutukset")
     public Viewable getLearningOpportunities(@PathParam("providerId") final String providerId) {
+        List<LOSearchResult> resultList = null;
+        Provider provider = null;
+        try {
+            resultList = searchService.searchLearningOpportunitiesByProvider(providerId);
+        } catch (SearchException e) {
+            // error page
+        }
+        try {
+            provider = educationDataQueryService.getProvider(providerId);
+        } catch (ResourceNotFoundException e) {
+            // error page
+        }
+        Map<String, Object> model = Maps.newHashMap();
+        model.put("provider", provider.getName().getTranslations().get("fi"));
+        model.put("learningOpportunities", resultList);
+        model.put("baseUrl", baseUrl);
 
-
-
-        return new Viewable("/education.ftl");
+        return new Viewable("/education.ftl", model);
     }
 
 

@@ -3,6 +3,14 @@
 {% block head %}
     {{ super() }}
 {% endblock %}
+
+{% block header_home %}
+    <a class="block" href="index_sv.html">{{ locales["header-home"] }}</a>
+{% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" href="style.css" />
+{% endblock %}
 {% block content %}
     <h1>{{ landing_sv.title }}</h1>
     {{ landing_sv.content }}

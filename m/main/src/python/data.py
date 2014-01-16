@@ -5,7 +5,8 @@ import random
 import string
 
 #base_url = "https://test-oppija.oph.ware.fi"
-base_url = "http://localhost:8080/koulutusinformaatio-app"
+#base_url = "http://localhost:8080/koulutusinformaatio-app"
+base_url = "https://itest-oppija.oph.ware.fi"
 session = requests.Session()
 
 def _(item, dn_key):
@@ -38,10 +39,24 @@ def s(template, **kwargs):
 
 def get(url):
     r = session.get(base_url + url)
+    print base_url + url
+    print r
     return r.json()
 
 def out(data):
     print json.dumps(data, indent=4)
+
+def transformlostoproviders(los):
+    tempdict = {}
+    for lo in los:
+        id = lo["provider"]["id"]
+        if not id in tempdict:
+            tempdict[id] = lo["provider"]
+            tempdict[id]["los"] = []
+            tempdict[id]["los"].append(lo)
+        else:
+            tempdict[id]["los"].append(lo)
+    return tempdict.values()
 
 #def uniq(l, key):
 #    filter(sorted(l, key=key), key=key)

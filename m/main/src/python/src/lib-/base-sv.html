@@ -1,27 +1,46 @@
+{#
 {% set title_erityis_oppilaitokset_sv = "Läroanstalt med yrkesinriktad specialundervisning" %}
 {% set title_erityis_koulutukset_sv = "Yrkesinriktad specialundervisning" %}
 {% set title_valmentavat_oppilaitokset_sv = "Undervisning och handledning i tränings- och rehabiliteringssyfte" %}
 {% set title_valmentavat_koulutukset_sv = "Läroanstalt med undervisning och handledning i tränings- och rehabiliteringssyfte" %}
 {% set title_erityis_oppilaitokset_fi = "Erityisopetusta järjestävät oppilaitokset" %}
-{% set title_erityis_koulutukset_fi = "Erityisopetus" %}
-{% set title_valmentavat_oppilaitokset_fi = "Valmentavaa ja kuntouttavaa koulutusta järjestävt oppilaitokset" %}
-{% set title_valmentavat_koulutukset_fi = "Valmentava ja kuntouttava koulutus" %}
+{% set title_erityis_koulutukset_fi = "Ammatillinen erityisopetus" %}
+{% set title_valmentavat_oppilaitokset_fi = "Valmentavaa ja kuntouttavaa koulutusta järjestävät oppilaitokset" %}
+{% set title_valmentavat_koulutukset_fi = "Valmentava ja kuntouttava opetus ja ohjaus" %}
+#}
+{% set locales = locales["localessv"] %}
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html lang="en">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     {% block head %}
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css" />
-    <title>Studieinfo textversion: {% block title %}{% endblock %}</title>
+    {% block style %}
+    <link rel="stylesheet" href="../style.css" />
+    {% endblock %}
+    <title>{{ locales["page-title"] }}: {% block title %}{% endblock %}</title>
     {% endblock %}
 </head>
 <body>
+    <div id="header">
+        {% block header %}
+        {% block header_home %}
+        <a class="block" href="../index_sv.html">{{ locales["header-home"] }}</a>
+        {% endblock %}
+        <a class="block" href="/">{{ locales["to-full-version"] }}</a>
+        {% endblock %}
+    </div>
+    <div id="breadcrumb">{% block breadcrumb %}{% endblock %}</div>
+    <h1>{% block maintitle %}{% endblock %}</h1>
     <div id="navi">{% block navi %}{% endblock %}</div>
+    <div id="tabs-header" class="tabs">{% block tabs %}{% endblock %}</div>
     <div id="content">{% block content %}{% endblock %}</div>
+    <div id="tabs-footer" class="tabs">{{ self.tabs() }}</div>
     <div id="footer">
         {% block footer %}
-        &copy; Copyright 2013 by <a href="http://www.oph.fi/startsidan">Utbildningsstyrelsen</a>
+        {{ locales["footer-service-providers"] }}<br />
+        <a href="http://www.minedu.fi/OPM/?lang=sv">{{ locales["footer-provider-1"] }}</a>
+        <a href="http://www.oph.fi/startsidan">{{ locales["footer-provider-2"] }}</a>
         {% endblock %}
     </div>
 </body>

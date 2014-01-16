@@ -3,6 +3,7 @@
     "title-front-page": "Startsida",
     "title-search-results": "Sökresultat",
     "title-application-basket": "Minneslista",
+    "link-to-accessible-version": "Erityisoppilaitoksen koulutukset tekstiversiona (sv)",
 
     "breadcrumb-search-results": "Sökresultat ",
 
@@ -15,8 +16,8 @@
     "secondary-school-based": "Gymnasiebaserad utbildning",
 
     "search-result-title": "Sökträffar",
-    "search-result-title-description": "Valitse vasemmalta haluamasi hakutulosrajaukset. Suluissa oleva luku kertoo hakusanaa vastaavien koulutusten määrän. (sv)",
-    "search-articles-result-title-description": "Tältä välilehdeltä löydät hakemiseen ja opiskeluun liittyviä tietoja ja artikkeleita. (sv)",
+    "search-result-title-description": "Använd alternativen till vänster för att avgränsa din sökning. Talet inom parentes hänvisar till antalet utbildningar som passar sökordet.",
+    "search-articles-result-title-description": "På denna flik hittar du information och artiklar angående ansökan och studier.",
     "search-result-count-unit": "st",
     "search-field-placeholder": "Sök utbildningar här",
     "no-search-results": "Inga sökresultat",
@@ -28,10 +29,10 @@
     "search-as-ongoing": "Ansökan pågår!",
     "search-as-next": "Kommer att ingå i ansökan",
     "search-field-label": "Sök utbildningar här",
-    "search-field-placeholder": "Kirjoita tähän esim. tutkinto, ammatti tai hakusana (sv)",
+    "search-field-placeholder": "Skriv in t.ex. examen, yrke eller sökord",
     "search-button": "Sök",
-    "search-tab-lo": "Koulutuksia (sv)",
-    "search-tab-article": "Tietoa ja tarinoita (sv)",
+    "search-tab-lo": "Utbildningar",
+    "search-tab-article": "Information och berättelser",
 
     "filter-title": "Begränsa sökresultaten",
     "filter-search-title": "Grundutbildning",
@@ -193,9 +194,9 @@
 
      "valitut-rajaukset": "Valda avgränsningar",
      "facet-opetuskieli": "Avgränsa enligt undervisningsspråk",
-     "facet-teemat": "Rajaa aiheen mukaan (sv)",
-     "topic_ffm": "Aihe (sv)",
-     "theme_ffm": "Teema (sv)",
+     "facet-teemat": "Avgränsa enligt ämne",
+     "topic_ffm": "Ämne",
+     "theme_ffm": "Tema",
      "teachingLangCode_ffm": "Undervisning språk",
      "location-rajaus": "Plats",
      "facet-remove": "Avlägsna",

@@ -1,4 +1,4 @@
 {
-	"search-tab-lo-tooltip": "Tällä välilehdellä listataan koulutuksia ja tutkintoja. Kirjoita hakusanasi hakukenttään, valitse Hae, ja saat listan hakusanaasi sopivista tuloksista, joista voit edetä tarkempiin koulutuskuvauksiin. (sv)",
-    "search-tab-article-tooltip": "Tältä välilehdeltä löydät hakemiseen ja opiskeluun liittyviä tietoja ja artikkeleita. (sv)"
+	"search-tab-lo-tooltip": "Under denna flik listas utbildningar och examina. Skriv in ditt sökord i sökfältet, välj sedan \"Sök\", och du får en lista med sökresultat som passar ditt sökord. Du kan fortsätta till närmare beskrivningar av utbildningarna genom att klicka på länkarna i sökresultatslistan.",
+    "search-tab-article-tooltip": "Under denna flik hittar du  information och artiklar angående ansökan och studier."
 }

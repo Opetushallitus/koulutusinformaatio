@@ -76,4 +76,13 @@ public interface EducationDataQueryService {
      * @throws ResourceNotFoundException
      */
     SpecialLOS getSpecialLearningOpportunity(final String id) throws ResourceNotFoundException;
+
+    /**
+     * Retrieves a learning opportunity provider.
+     *
+     * @param id provider id
+     * @return provider
+     * @throws ResourceNotFoundException no provider found with the id
+     */
+    Provider getProvider(final String id) throws ResourceNotFoundException;
 }

@@ -1,0 +1,32 @@
+{
+    "page-title": "Opintopolku tekstiversio (sv)",
+    "header-home": "Studieinfo.fi",
+    "to-full-version": "Siirry palvelun täysversioon (sv)",
+    "home": "Kotinäkymä (sv)",
+    "lo-tab-academy": "Oppilaitoskuvaus (sv)",
+
+    "index-pager-all": "Näytä kaikki koulutukset sivulla (sv)",
+    "index-pager-page-1": "Näytä (sv)",
+    "index-pager-page-2": "koulutusta sivulla (sv)",
+    "index-pager-next": "Seuraava sivu (sv)",
+    "index-pager-previous": "Edellinen sivu (sv)",
+
+    "lo-type-special": "Ammatillinen erityisopetus (sv)",
+    "provider-erityis": "Ammatillista erityisopetusta tarjoavat oppilaitokset (sv)",
+    "provider-valmentava": "Valmentavaa ja kuntouttavaa opetusta ja ohjausta tarjoavat oppilaitokset (sv)",
+
+    "description-basic-info": "Perustiedot (sv)",
+    "email": "Sähköposti (sv)",
+    "phone": "Puhelin (sv)",
+
+    "postal-address": "Postiosoite (sv)",
+    "visiting-address": "Käyntiosoite (sv)",
+    "fax": "Faksi (sv)",
+    "www": "www (sv)",
+
+    "social-media": "Oppilaitoksen sosiaalisen median linkit (sv)",
+
+    "footer-service-providers": "Palvelun tarjoavat: (sv)",
+    "footer-provider-1": "Undervisnings- och kulturministeriet",
+    "footer-provider-2": "Utbildningsstyrelsen"
+}

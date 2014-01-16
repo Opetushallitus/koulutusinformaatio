@@ -1,0 +1,14 @@
+{% extends "base-fi.html" %}
+{% block title %}{{ ctx.name }}{% endblock %}
+
+{% block content %}
+
+<ul>
+{% for lo in ctx.los %}
+
+<li><a href="../valmentavat_koulutukset_fi/{{lo.id}}-koulutus.html">{{ lo.name }}</a></li>
+
+{% endfor %}
+</ul>
+
+{% endblock %}

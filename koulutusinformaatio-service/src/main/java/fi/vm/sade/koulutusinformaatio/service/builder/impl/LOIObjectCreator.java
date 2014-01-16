@@ -48,7 +48,7 @@ public class LOIObjectCreator extends ObjectCreator {
         this.applicationOptionCreator = new ApplicationOptionCreator(koodistoService, tarjontaRawService);
     }
 
-    public ChildLOI createChildLOI(KomotoDTO childKomoto, String losId, I18nText losName) throws KoodistoException {
+    public ChildLOI createChildLOI(KomotoDTO childKomoto, String losId, I18nText losName, String educationCodeUri) throws KoodistoException {
         ChildLOI childLOI = new ChildLOI();
         childLOI.setName(losName);
         childLOI.setId(childKomoto.getOid());
@@ -101,7 +101,7 @@ public class LOIObjectCreator extends ObjectCreator {
             }
 
             applicationOptions.add(
-                    applicationOptionCreator.createVocationalApplicationOption(hakukohdeDTO, hakuDTO, childKomoto, childLOI.getPrerequisite()));
+                    applicationOptionCreator.createVocationalApplicationOption(hakukohdeDTO, hakuDTO, childKomoto, childLOI.getPrerequisite(), educationCodeUri));
             if (hakukohdeDTO.isKaksoisTutkinto()) {
                 kaksoistutkinto = true;
             }
@@ -113,7 +113,7 @@ public class LOIObjectCreator extends ObjectCreator {
         return childLOI;
     }
 
-    public UpperSecondaryLOI createUpperSecondaryLOI(KomotoDTO komoto, String losId, I18nText losName) throws KoodistoException {
+    public UpperSecondaryLOI createUpperSecondaryLOI(KomotoDTO komoto, String losId, I18nText losName, String educationCodeUri) throws KoodistoException {
         UpperSecondaryLOI loi = new UpperSecondaryLOI();
 
         loi.setName(losName);
@@ -181,7 +181,7 @@ public class LOIObjectCreator extends ObjectCreator {
             }
 
             applicationOptions.add(
-                    applicationOptionCreator.createUpperSecondaryApplicationOption(hakukohdeDTO, hakuDTO, komoto, loi));
+                    applicationOptionCreator.createUpperSecondaryApplicationOption(hakukohdeDTO, hakuDTO, komoto, loi, educationCodeUri));
 
             if (hakukohdeDTO.isKaksoisTutkinto()) {
                 kaksoistutkinto = true;

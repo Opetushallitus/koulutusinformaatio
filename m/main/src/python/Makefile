@@ -2,6 +2,7 @@ OUT=out/
 
 all: clean venv copyassets
 	venv/bin/python render.py
+	cp -rf out/* ../../../../koulutusinformaatio-app/src/main/webapp/m/
 	
 clean:
 	rm -rf out/
@@ -18,3 +19,5 @@ venv/bin/activate: requirements.txt
 
 copyassets:
 	cp src/style.css out/style.css
+
+
