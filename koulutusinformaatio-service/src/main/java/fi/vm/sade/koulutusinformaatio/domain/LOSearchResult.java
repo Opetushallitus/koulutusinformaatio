@@ -54,6 +54,9 @@ public class LOSearchResult {
         this.educationType = educationType;
     }
 
+    public LOSearchResult() {
+    }
+
     public String getId() {
         return id;
     }

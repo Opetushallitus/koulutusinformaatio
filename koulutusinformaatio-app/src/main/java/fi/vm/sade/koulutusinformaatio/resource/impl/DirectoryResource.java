@@ -19,13 +19,15 @@ package fi.vm.sade.koulutusinformaatio.resource.impl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.sun.jersey.api.view.Viewable;
+import fi.vm.sade.koulutusinformaatio.converter.ConverterUtil;
 import fi.vm.sade.koulutusinformaatio.converter.ProviderToSearchResult;
-import fi.vm.sade.koulutusinformaatio.domain.LOSearchResult;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
+import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResult;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
+import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -54,18 +56,21 @@ public class DirectoryResource {
 
     public static final String CHARSET_UTF_8 = ";charset=UTF-8";
     private static final List<String> alphabets = Lists.newArrayList(
-            "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","Å","Ä","Ö");
+            "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "Å", "Ä", "Ö");
 
 
     private SearchService searchService;
     private EducationDataQueryService educationDataQueryService;
+    private LearningOpportunityService learningOpportunityService;
     private String baseUrl;
 
     @Autowired
     public DirectoryResource(SearchService searchService, EducationDataQueryService educationDataQueryService,
+                             LearningOpportunityService learningOpportunityService,
                              @Value("${koulutusinformaatio.snapshot.baseurl}") String baseUrl) {
         this.searchService = searchService;
         this.educationDataQueryService = educationDataQueryService;
+        this.learningOpportunityService = learningOpportunityService;
         this.baseUrl = baseUrl;
     }
 
@@ -94,29 +99,27 @@ public class DirectoryResource {
             model.put("alphabets", alphabets);
             model.put("letter", letter);
             return Response.status(Response.Status.OK).entity(new Viewable("/providers.ftl", model)).build();
-        }
-        else {
+        } else {
             return getProviders();
         }
     }
 
     @GET
-    @Path("oppilaitokset/{providerId}/koulutukset")
-    public Viewable getLearningOpportunities(@PathParam("providerId") final String providerId) {
-        List<LOSearchResult> resultList = null;
+    @Path("oppilaitokset/{letter}/{providerId}/koulutukset")
+    public Viewable getLearningOpportunities(@PathParam("letter") String letter,
+                                             @PathParam("providerId") final String providerId) {
+        List<LearningOpportunitySearchResultDTO> resultList = null;
         Provider provider = null;
-        try {
-            resultList = searchService.searchLearningOpportunitiesByProvider(providerId);
-        } catch (SearchException e) {
-            // error page
-        }
+        resultList = learningOpportunityService.findLearningOpportunitiesByProviderId(providerId, "fi");
         try {
             provider = educationDataQueryService.getProvider(providerId);
         } catch (ResourceNotFoundException e) {
             // error page
         }
         Map<String, Object> model = Maps.newHashMap();
-        model.put("provider", provider.getName().getTranslations().get("fi"));
+        model.put("alphabets", alphabets);
+        model.put("letter", letter);
+        model.put("provider", ConverterUtil.getTextByLanguageUseFallbackLang(provider.getName(), "fi"));
         model.put("learningOpportunities", resultList);
         model.put("baseUrl", baseUrl);
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 The Finnish Board of Education - Opetushallitus
+ * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
  *
  * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
  * soon as they will be approved by the European Commission - subsequent versions
@@ -17,15 +17,25 @@
 package fi.vm.sade.koulutusinformaatio.dao;
 
 import com.mongodb.Mongo;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunitySpecificationEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
+import org.mongodb.morphia.Key;
 import org.mongodb.morphia.Morphia;
+import org.mongodb.morphia.dao.BasicDAO;
+import org.mongodb.morphia.query.Query;
+
+import java.util.List;
 
 /**
- * @author Mikko Majapuro
+ * @author Hannu Lyytikainen
  */
-public class ParentLearningOpportunitySpecificationDAO extends LearningOpportunitySpecificationDAO<ParentLearningOpportunitySpecificationEntity, String> {
-
-    public ParentLearningOpportunitySpecificationDAO(Mongo mongo, Morphia morphia, String dbName) {
+public abstract class LearningOpportunitySpecificationDAO<T, K> extends BasicDAO<T, K> {
+    protected LearningOpportunitySpecificationDAO(Mongo mongo, Morphia morphia, String dbName) {
         super(mongo, morphia, dbName);
+    }
+
+    public List<T> findByProviderId(String providerId) {
+        Query<T> query = createQuery();
+        query.field("provider").equal(new Key(LearningOpportunityProviderEntity.class, providerId));
+        return find(query).asList();
     }
 }

@@ -19,12 +19,11 @@ package fi.vm.sade.koulutusinformaatio.dao;
 import com.mongodb.Mongo;
 import fi.vm.sade.koulutusinformaatio.dao.entity.SpecialLearningOpportunitySpecificationEntity;
 import org.mongodb.morphia.Morphia;
-import org.mongodb.morphia.dao.BasicDAO;
 
 /**
  * @author Hannu Lyytikainen
  */
-public class SpecialLearningOpportunitySpecificationDAO extends BasicDAO<SpecialLearningOpportunitySpecificationEntity, String> {
+public class SpecialLearningOpportunitySpecificationDAO extends LearningOpportunitySpecificationDAO<SpecialLearningOpportunitySpecificationEntity, String> {
     protected SpecialLearningOpportunitySpecificationDAO(Mongo mongo, Morphia morphia, String dbName) {
         super(mongo, morphia, dbName);
     }
