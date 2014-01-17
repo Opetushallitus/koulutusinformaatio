@@ -1,32 +1,32 @@
 {
-    "page-title": "Opintopolku tekstiversio (sv)",
+    "page-title": "Studieinfo textversion",
     "header-home": "Studieinfo.fi",
-    "to-full-version": "Siirry palvelun täysversioon (sv)",
-    "home": "Kotinäkymä (sv)",
-    "lo-tab-academy": "Oppilaitoskuvaus (sv)",
+    "to-full-version": "Gå till tjänstens fullständiga version",
+    "home": "Framsida",
+    "lo-tab-academy": "Beskrivning av läroanstalten",
 
-    "index-pager-all": "Näytä kaikki koulutukset sivulla (sv)",
-    "index-pager-page-1": "Näytä (sv)",
-    "index-pager-page-2": "koulutusta sivulla (sv)",
-    "index-pager-next": "Seuraava sivu (sv)",
-    "index-pager-previous": "Edellinen sivu (sv)",
+    "index-pager-all": "Visa alla utbildningar på sidan",
+    "index-pager-page-1": "Visa",
+    "index-pager-page-2": "utbildningar på sidan",
+    "index-pager-next": "Nästa sida",
+    "index-pager-previous": "Föregående sida",
 
-    "lo-type-special": "Ammatillinen erityisopetus (sv)",
-    "provider-erityis": "Ammatillista erityisopetusta tarjoavat oppilaitokset (sv)",
-    "provider-valmentava": "Valmentavaa ja kuntouttavaa opetusta ja ohjausta tarjoavat oppilaitokset (sv)",
+    "lo-type-special": "Specialyrkesundervisning",
+    "provider-erityis": "Specialyrkesundervisning anordnas av",
+    "provider-valmentava": "Läroanstalter som erbjuder undervisning och handledning i tränings- och rehabiliteringssyfte",
 
-    "description-basic-info": "Perustiedot (sv)",
-    "email": "Sähköposti (sv)",
-    "phone": "Puhelin (sv)",
+    "description-basic-info": "Grunduppgifter",
+    "email": "E-post",
+    "phone": "Telefon",
 
-    "postal-address": "Postiosoite (sv)",
-    "visiting-address": "Käyntiosoite (sv)",
-    "fax": "Faksi (sv)",
+    "postal-address": "Postadress",
+    "visiting-address": "Besöksadress",
+    "fax": "Fax",
     "www": "www (sv)",
 
-    "social-media": "Oppilaitoksen sosiaalisen median linkit (sv)",
+    "social-media": "Läroanstaltens länkar till sociala medier",
 
-    "footer-service-providers": "Palvelun tarjoavat: (sv)",
+    "footer-service-providers": "Tjänsten erbjuds av",
     "footer-provider-1": "Undervisnings- och kulturministeriet",
     "footer-provider-2": "Utbildningsstyrelsen"
 }
