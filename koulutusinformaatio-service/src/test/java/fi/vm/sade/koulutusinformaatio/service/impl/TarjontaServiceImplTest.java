@@ -23,7 +23,7 @@ import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.LearningOpportunityDirector;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.SpecialLearningOpportunityBuilder;
+import fi.vm.sade.koulutusinformaatio.service.builder.impl.RehabilitatingLearningOpportunityBuilder;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.UpperSecondaryLearningOpportunityBuilder;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.VocationalLearningOpportunityBuilder;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
@@ -95,7 +95,7 @@ public class TarjontaServiceImplTest {
     @Test
     public void testRehabilitatingResolveBuilder() throws TarjontaParseException, KoodistoException {
         service.findParentLearningOpportunity(KOMO_ID_REHAB);
-        verify(loDirector).constructLearningOpportunities(isA(SpecialLearningOpportunityBuilder.class));
+        verify(loDirector).constructLearningOpportunities(isA(RehabilitatingLearningOpportunityBuilder.class));
     }
 
     @Test(expected = TarjontaParseException.class)
