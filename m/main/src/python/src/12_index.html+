@@ -4,6 +4,10 @@
     {{ super() }}
 {% endblock %}
 
+{% block logo %}
+    <a href="index.html"><img src="opintopolku-fi.png" alt="{{ locales["header-home"] }}"/></a>
+{% endblock %}
+
 {% block header_home %}
     <a class="block" href="index.html">{{ locales["header-home"] }}</a>
 {% endblock %}
