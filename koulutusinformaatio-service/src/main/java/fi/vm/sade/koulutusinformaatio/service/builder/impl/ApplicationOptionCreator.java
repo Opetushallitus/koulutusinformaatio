@@ -19,6 +19,7 @@ package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KIConversionException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
@@ -26,9 +27,15 @@ import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.tarjonta.service.resources.dto.*;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuaikaV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeLiiteV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.common.base.Predicates.and;
@@ -287,6 +294,108 @@ public class ApplicationOptionCreator extends ObjectCreator {
 
         return ao;
     }
+    
+    public ApplicationOption createHigherEducationApplicationOption(UniversityAppliedScienceLOS los, HakukohdeV1RDTO hakukohde, HakuV1RDTO haku) throws KoodistoException {
+    	ApplicationOption ao = new ApplicationOption();
+        ao.setId(hakukohde.getOid());
+        ao.setName(super.getI18nText(hakukohde.getHakukohteenNimet())); //koodistoService.searchFirst(hakukohdeDTO.getHakukohdeNimiUri()));
+        //ao.setAoIdentifier(//koodistoService.searchFirstCodeValue(hakukohdeDTO.getHakukohdeNimiUri()));
+        ao.setAthleteEducation(false);
+        ao.setStartingQuota(hakukohde.getAloituspaikatLkm());
+        ao.setLowestAcceptedScore(hakukohde.getAlinValintaPistemaara());
+        ao.setLowestAcceptedAverage(hakukohde.getAlinHyvaksyttavaKeskiarvo());
+        ao.setAttachmentDeliveryDeadline(hakukohde.getLiitteidenToimitusPvm());
+        ao.setLastYearApplicantCount(hakukohde.getEdellisenVuodenHakijatLkm());
+        ao.setSelectionCriteria(getI18nText(hakukohde.getValintaperusteKuvaukset()));
+        ao.setExams(educationObjectCreator.createExamsHigherEducation(hakukohde.getValintakokeet()));
+        ao.setKaksoistutkinto(false);
+        ao.setVocational(false);
+        ao.setEducationCodeUri(los.getEducationCode());
+
+        ao.setRequiredBaseEducations(hakukohde.getHakukelpoisuusvaatimusUris());
+
+        ApplicationSystem as = new ApplicationSystem();
+        as.setId(haku.getOid());
+        as.setName(getI18nTextEnriched(haku.getNimi()));
+        if (haku.getHakuaikas() != null) {
+            for (HakuaikaV1RDTO ha : haku.getHakuaikas()) {
+                DateRange range = new DateRange();
+                range.setStartDate(ha.getAlkuPvm());
+                range.setEndDate(ha.getLoppuPvm());
+                as.getApplicationDates().add(range);
+            }
+        }
+        ao.setApplicationSystem(as);
+        if (!Strings.isNullOrEmpty(hakukohde.getSoraKuvausKoodiUri())) {
+            ao.setSora(true);
+        }
+
+        ao.setTeachingLanguages(extractCodeVales(los.getTeachingLanguages()));
+        //ao.setPrerequisite(prerequisite);
+        ao.setSpecificApplicationDates(hakukohde.isKaytetaanHakukohdekohtaistaHakuaikaa());
+        if (ao.isSpecificApplicationDates()) {
+            ao.setApplicationStartDate(hakukohde.getHakuaikaAlkuPvm());
+            ao.setApplicationEndDate(hakukohde.getHakuaikaLoppuPvm());
+        }
+
+        ao.setAttachmentDeliveryAddress(educationObjectCreator.createAddress(hakukohde.getLiitteidenToimitusOsoite()));
+
+        List<ApplicationOptionAttachment> attachments = Lists.newArrayList();
+        if (hakukohde.getHakukohteenLiitteet() != null && !hakukohde.getHakukohteenLiitteet().isEmpty()) {
+            for (HakukohdeLiiteV1RDTO liite : hakukohde.getHakukohteenLiitteet()) {
+                ApplicationOptionAttachment attach = new ApplicationOptionAttachment();
+                attach.setDueDate(liite.getToimitettavaMennessa());
+                //attach.setType(koodistoService.searchFirst(liite.getLiitteenTyyppiUri()));
+                attach.setDescreption(getI18nText(liite.getLiitteenKuvaukset()));
+                attach.setAddress(educationObjectCreator.createAddress(liite.getLiitteenToimitusOsoite()));
+                attachments.add(attach);
+            }
+        }
+        ao.setAttachments(attachments);
+        ao.setAdditionalInfo(getI18nText(hakukohde.getLisatiedot()));
+
+        //TODO TARVITAANKO NÄITÄ???
+        // set child loi names to application option
+        /*List<OidRDTO> komotosByHakukohdeOID = tarjontaRawService.getKomotosByHakukohde(hakukohdeDTO.getOid());
+        for (OidRDTO s : komotosByHakukohdeOID) {
+            KomoDTO komoByKomotoOID = tarjontaRawService.getKomoByKomoto(s.getOid());
+
+            if (not(
+                    and(
+                            CreatorUtil.komoPublished,
+                            CreatorUtil.komoHasKoulutusohjelmaKoodi,
+                            CreatorUtil.komoHasTutkintonimike
+                    )
+            ).apply(komoByKomotoOID)) {
+                LOG.debug(String.format("Skipping invalid child komo %s", komoByKomotoOID.getOid()));
+                continue;
+            }
+
+            KomotoDTO k = tarjontaRawService.getKomoto(s.getOid());
+            if (not(CreatorUtil.komotoPublished).apply(k)) {
+                LOG.debug(String.format("Skipping invalid child komoto %s", k.getOid()));
+                continue;
+            }
+
+            ChildLOIRef cRef = new ChildLOIRef();
+            cRef.setId(s.getOid());
+            cRef.setLosId(CreatorUtil.resolveLOSId(komoByKomotoOID.getOid(), childKomoto.getTarjoajaOid()));
+            cRef.setName(koodistoService.searchFirst(komoByKomotoOID.getKoulutusOhjelmaKoodiUri()));
+            cRef.setQualification(koodistoService.searchFirst(komoByKomotoOID.getTutkintonimikeUri()));
+            cRef.setPrerequisite(prerequisite);
+            ao.getChildLOIRefs().add(cRef);
+        }*/
+        return ao;
+    }
+
+	private List<String> extractCodeVales(List<Code> teachingLanguages) {
+		List<String> vals = new ArrayList<String>();
+		for (Code curCode : teachingLanguages) {
+			vals.add(curCode.getValue());
+		}
+		return vals;
+	}
+
 
 
 

@@ -18,16 +18,25 @@ package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
+import fi.vm.sade.koodisto.service.types.common.KoodiMetadataType;
+import fi.vm.sade.koodisto.service.types.common.KoodiType;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
+import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
+import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
+import fi.vm.sade.tarjonta.service.resources.dto.NimiJaOidRDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.YhteyshenkiloRDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiUrisV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
@@ -40,6 +49,7 @@ import fi.vm.sade.tarjonta.shared.types.KomotoTeksti;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -214,6 +224,7 @@ public class LOSObjectCreator extends ObjectCreator {
     }
     
     public UniversityAppliedScienceLOS createUasLOS(KoulutusKorkeakouluV1RDTO koulutus) throws KoodistoException {
+    	
     	UniversityAppliedScienceLOS los = new UniversityAppliedScienceLOS();
     	los.setId(koulutus.getOid());
     	los.setInfoAboutTeachingLangs(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.LISATIETOA_OPETUSKIELISTA)));
@@ -240,8 +251,11 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setEducationDomain(getI18nTextEnriched(koulutus.getKoulutusala().getMeta()));
         los.setName(getI18nTextEnriched(koulutus.getKoulutusohjelma()));
         los.setKoulutuskoodi(getI18nTextEnriched(koulutus.getKoulutuskoodi().getMeta()));
+        los.setEducationCode(koulutus.getKoulutuskoodi().getUri());
+        los.setEducationDegree(getI18nTextEnriched(koulutus.getKoulutusala().getMeta()));//getTutkinto().getMeta()));
+        los.setDegreeTitle(getI18nTextEnriched(koulutus.getKoulutusohjelma()));
+        los.setQualification(getI18nTextEnriched(koulutus.getTutkintonimike().getMeta()));
         los.setDegree(getI18nTextEnriched(koulutus.getTutkinto().getMeta()));
-        los.setDegreeTitle(getI18nTextEnriched(koulutus.getTutkintonimike().getMeta()));
         
         los.setStartDate(koulutus.getKoulutuksenAlkamisPvms().iterator().next());
         //los.setFormOfEducation(getMultiI18nTexts(koulutus.getOpetusmuodos()));
@@ -249,15 +263,81 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setPlannedDurationUnit(getI18nTextEnriched(koulutus.getSuunniteltuKestoTyyppi().getMeta()));
         los.setPduCodeUri(koulutus.getSuunniteltuKestoTyyppi().getUri());//childKomoto.getLaajuusYksikkoUri());
         los.setCreditValue(koulutus.getOpintojenLaajuus().getArvo());
+        los.setChargeable(koulutus.getOpintojenMaksullisuus()); 
         
-        //educationDegree = koulutusaste
-        //qualification = tutkintonimike
-        //degreeTitle = koulutusohjelma
-
+        los.setTeachingLanguages(createCodes(koulutus.getOpetuskielis()));//koodistoService.searchCodesMultiple(childKomoto.getOpetuskieletUris()));
+        //childLOI.setTeachingLanguages(koodistoService.searchCodesMultiple(childKomoto.getOpetuskieletUris()));
+        Provider provider = providerService.getByOID(koulutus.getOrganisaatio().getOid());
+        los.setProvider(provider);
+        
+        fetchHakukohdeData(los);
+        //educationDegree = koulutusaste Ok
+        //qualification = tutkintonimike Ok
+        //degreeTitle = koulutusohjelma Ok  
+        
+        //Puuttuu vielä (datan rikastus pielessä)
+        //formOfEducation = opetusmuoto
+        //setProfessionalTitles = ammattinimikkeet
+        
+        
+        
     	return los;
     }
 
 
+    private List<Code> createCodes(KoodiUrisV1RDTO opetuskielis) throws KoodistoException {
+    	List<Code> codes = new ArrayList<Code>();
+    	if (opetuskielis != null && opetuskielis.getMeta() != null) {
+			
+			for (KoodiV1RDTO curKoodi : opetuskielis.getMeta().values()) {
+				codes.addAll(koodistoService.searchCodes(curKoodi.getUri()));
+			}
+			
+			
+		}
+		return codes;
+	}
+
+	private void fetchHakukohdeData(UniversityAppliedScienceLOS los) throws KoodistoException {
+		 ResultV1RDTO<List<NimiJaOidRDTO>> hakukohteet = loiCreator.tarjontaRawService.getHakukohdesByHigherEducation(los.getId());
+		
+		 if (hakukohteet == null 
+				 || hakukohteet.getResult() == null 
+				 || hakukohteet.getResult().isEmpty()) {
+			 return;
+		 }
+		 
+		 
+		 for (NimiJaOidRDTO curHakukoh : hakukohteet.getResult()) {
+			    String aoId = curHakukoh.getOid();
+			    
+			    ResultV1RDTO<HakukohdeV1RDTO> hakukohdeRes = loiCreator.tarjontaRawService.getHigherEducationHakukohode(aoId);
+			    HakukohdeV1RDTO hakukohde = hakukohdeRes.getResult();
+			    ResultV1RDTO<HakuV1RDTO> hakuRes = loiCreator.tarjontaRawService.getHigherEducationHakuByOid(hakukohde.getHakuOid());
+			    ApplicationOption ao = loiCreator.applicationOptionCreator.createHigherEducationApplicationOption(los, hakukohde, hakuRes.getResult());
+	            /*HakukohdeDTO hakukohdeDTO = tarjontaRawService.getHakukohde(aoId);
+	            HakuDTO hakuDTO = tarjontaRawService.getHakuByHakukohde(aoId);
+
+	            if (!CreatorUtil.hakukohdePublished.apply(hakukohdeDTO)) {
+	                LOG.debug(String.format("Application option %s skipped due to incorrect state", hakukohdeDTO.getOid()));
+	                continue;
+	            }
+
+	            if (!CreatorUtil.hakuPublished.apply(hakuDTO)) {
+	                LOG.debug(String.format("Application option %s skipped due to incorrect state of application system %s",
+	                        hakukohdeDTO.getOid(), hakuDTO.getOid()));
+	                continue;
+	            }
+
+	            applicationOptions.add(
+	                    applicationOptionCreator.createVocationalApplicationOption(hakukohdeDTO, hakuDTO, childKomoto, childLOI.getPrerequisite(), educationCodeUri));
+	            if (hakukohdeDTO.isKaksoisTutkinto()) {
+	                kaksoistutkinto = true;
+	            }*/
+		 }
+		 
+		 
+	}
 
 
 

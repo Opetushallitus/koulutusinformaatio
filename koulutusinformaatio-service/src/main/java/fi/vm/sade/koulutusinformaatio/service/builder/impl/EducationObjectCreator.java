@@ -16,16 +16,22 @@
 
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.tarjonta.service.resources.dto.OsoiteRDTO;
+import fi.vm.sade.tarjonta.service.resources.dto.TekstiRDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.ValintakoeAjankohtaRDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.ValintakoePisterajaRDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.ValintakoeRDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.ValintakoeV1RDTO;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Hannu Lyytikainen
@@ -143,6 +149,50 @@ public class EducationObjectCreator extends ObjectCreator {
             return null;
         }
     }
+
+	public List<Exam> createExamsHigherEducation(List<ValintakoeV1RDTO> valintakokeet) throws KoodistoException {
+		if (valintakokeet != null && valintakokeet.isEmpty()) {
+            List<Exam> exams = Lists.newArrayList();
+            for (ValintakoeV1RDTO valintakoe : valintakokeet) {
+                if (valintakoe != null && valintakoe.getValintakokeenKuvaus() != null  
+                        && valintakoe.getValintakoeAjankohtas() != null
+                        && !valintakoe.getValintakoeAjankohtas().isEmpty()) {
+                    Exam exam = new Exam();
+                    //exam.setType(koodistoService.searchFirst(valintakoe.getTyyppiUri()));
+                    exam.setDescription(getI18nTextEnriched(valintakoe.getValintakokeenKuvaus()));
+                    List<ExamEvent> examEvents = Lists.newArrayList();
+
+                    for (ValintakoeAjankohtaRDTO valintakoeAjankohta : valintakoe.getValintakoeAjankohtas()) {
+                        ExamEvent examEvent = new ExamEvent();
+                        Address address = new Address();
+                        address.setPostalCode(koodistoService.searchFirstCodeValue(valintakoeAjankohta.getOsoite().getPostinumero()));
+                        address.setPostOffice(valintakoeAjankohta.getOsoite().getPostitoimipaikka());
+                        address.setStreetAddress(valintakoeAjankohta.getOsoite().getOsoiterivi1());
+                        examEvent.setAddress(address);
+                        examEvent.setDescription(valintakoeAjankohta.getLisatiedot());
+                        examEvent.setStart(valintakoeAjankohta.getAlkaa());
+                        examEvent.setEnd(valintakoeAjankohta.getLoppuu());
+                        examEvents.add(examEvent);
+                    }
+                    exam.setExamEvents(examEvents);
+                    exams.add(exam);
+                }
+            }
+            return exams;
+        }
+		return null;
+	}
+
+	private I18nText getI18nTextEnriched(TekstiRDTO valintakokeenKuvaus) {
+		if (Strings.isNullOrEmpty(valintakokeenKuvaus.getArvo()) && Strings.isNullOrEmpty(valintakokeenKuvaus.getTeksti())) {
+			Map<String,String> translations = new HashMap<String,String>();
+			translations.put(valintakokeenKuvaus.getArvo().toLowerCase(), valintakokeenKuvaus.getTeksti());
+			I18nText text = new I18nText();
+			text.setTranslations(translations);
+			return text;
+		}
+		return null;
+	}
 
 
 }

@@ -25,6 +25,7 @@ import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
+import fi.vm.sade.tarjonta.service.resources.dto.TekstiRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiUrisV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.NimiV1RDTO;
@@ -96,6 +97,22 @@ public abstract class ObjectCreator {
     	}
     	return null;
     }
+    
+
+	protected I18nText getI18nTextEnriched(List<TekstiRDTO> nimi) {
+		if (nimi != null && !nimi.isEmpty()) {
+			Map<String, String> translations = new HashMap<String, String>();
+			for (TekstiRDTO curTeksti : nimi) {
+				if (!Strings.isNullOrEmpty(curTeksti.getArvo()) && !Strings.isNullOrEmpty(curTeksti.getTeksti())) {
+					translations.put(curTeksti.getArvo().toLowerCase(), curTeksti.getTeksti());
+				}
+			}
+			I18nText i18nText = new I18nText();
+			i18nText.setTranslations(translations);
+			return i18nText;
+		}
+		return null;
+	}
     
 
 	protected I18nText getI18nTextEnriched(Map<String, KoodiV1RDTO> meta) throws KoodistoException {
