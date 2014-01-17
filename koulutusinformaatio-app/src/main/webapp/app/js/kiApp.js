@@ -61,6 +61,11 @@ var kiApp = angular.module('kiApp',
     });
 }])
 
+.config(['$locationProvider', function($locationProvider) {
+    $locationProvider.html5Mode(false);
+    $locationProvider.hashPrefix('!');
+}])
+
 
 .config(function($httpProvider){
     $httpProvider.defaults.useXDomain = true;

@@ -30,7 +30,6 @@ function SearchFieldCtrl($scope, $location, $route, SearchService, kiAppConstant
     $scope.search = function() {
         if ($scope.queryString) {
             var activeTab = $location.search().tab;
-            console.log(activeTab);
             FilterService.clear(); // clear all filters for new search
             TreeService.clear(); // clear tree selections
             FilterService.setPage(kiAppConstants.searchResultsStartPage);
