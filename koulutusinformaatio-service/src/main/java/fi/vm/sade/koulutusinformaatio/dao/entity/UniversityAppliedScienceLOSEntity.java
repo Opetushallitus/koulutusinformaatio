@@ -7,11 +7,12 @@ import java.util.List;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
+import org.mongodb.morphia.annotations.Reference;
 
 @Entity("universityAppliedScienceLOS")
 public class UniversityAppliedScienceLOSEntity {
 	
-	
+
 	//Varmistetut
 	@Id
     private String id;
@@ -66,7 +67,10 @@ public class UniversityAppliedScienceLOSEntity {
 	private String educationCode;
 	@Embedded
 	private List<CodeEntity> teachingLanguages;
-	
+	@Reference
+    private LearningOpportunityProviderEntity provider;
+	@Reference
+    private List<ApplicationOptionEntity> applicationOptions;
 	
 	public String getId() {
 		return id;
@@ -241,7 +245,18 @@ public class UniversityAppliedScienceLOSEntity {
 	}
 	public void setTeachingLanguages(List<CodeEntity> teachingLanguages) {
 		this.teachingLanguages = teachingLanguages;
+	}	
+	public LearningOpportunityProviderEntity getProvider() {
+		return provider;
 	}
-	
-
+	public void setProvider(LearningOpportunityProviderEntity provider) {
+		this.provider = provider;
+	}
+	public List<ApplicationOptionEntity> getApplicationOptions() {
+		return applicationOptions;
+	}
+	public void setApplicationOptions(
+			List<ApplicationOptionEntity> applicationOptions) {
+		this.applicationOptions = applicationOptions;
+	}
 }

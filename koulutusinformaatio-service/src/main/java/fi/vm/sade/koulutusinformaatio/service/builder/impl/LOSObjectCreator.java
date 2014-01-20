@@ -331,6 +331,7 @@ public class LOSObjectCreator extends ObjectCreator {
 			 return;
 		 }
 		 
+		 List<ApplicationOption> aos = new ArrayList<ApplicationOption>();
 		 
 		 for (NimiJaOidRDTO curHakukoh : hakukohteet.getResult()) {
 			    String aoId = curHakukoh.getOid();
@@ -339,6 +340,7 @@ public class LOSObjectCreator extends ObjectCreator {
 			    HakukohdeV1RDTO hakukohde = hakukohdeRes.getResult();
 			    ResultV1RDTO<HakuV1RDTO> hakuRes = loiCreator.tarjontaRawService.getHigherEducationHakuByOid(hakukohde.getHakuOid());
 			    ApplicationOption ao = loiCreator.applicationOptionCreator.createHigherEducationApplicationOption(los, hakukohde, hakuRes.getResult());
+			    aos.add(ao);
 	            /*HakukohdeDTO hakukohdeDTO = tarjontaRawService.getHakukohde(aoId);
 	            HakuDTO hakuDTO = tarjontaRawService.getHakuByHakukohde(aoId);
 
@@ -360,6 +362,7 @@ public class LOSObjectCreator extends ObjectCreator {
 	            }*/
 		 }
 		 
+		 los.setApplicationOptions(aos);
 		 
 	}
 

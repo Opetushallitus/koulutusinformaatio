@@ -40,7 +40,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
     private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO;
     private DataStatusDAO dataStatusDAO;
     private SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO;
-    private UniversityAppliedScienceLOSDAO universityAppliedScienceLOSDAO;
+    private UniversityAppliedScienceLOSDAO universityAppliedScienceLOSTransactionDAO;
 
     @Autowired
     public EducationDataUpdateServiceImpl(ModelMapper modelMapper, ParentLearningOpportunitySpecificationDAO parentLOSTransactionDAO,
@@ -50,7 +50,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
                                           PictureDAO pictureTransactionDAO,
                                           UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO,
                                           DataStatusDAO dataStatusDAO, SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO,
-                                          UniversityAppliedScienceLOSDAO universityAppliedScienceLOSDAO) {
+                                          UniversityAppliedScienceLOSDAO universityAppliedScienceLOSTransactionDAO) {
         this.modelMapper = modelMapper;
         this.parentLOSTransactionDAO = parentLOSTransactionDAO;
         this.applicationOptionTransactionDAO = applicationOptionTransactionDAO;
@@ -60,7 +60,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
         this.upperSecondaryLOSTransactionDAO = upperSecondaryLOSTransactionDAO;
         this.dataStatusDAO = dataStatusDAO;
         this.specialLOSTransactionDAO = specialLOSTransactionDAO;
-        this.universityAppliedScienceLOSDAO = universityAppliedScienceLOSDAO;
+        this.universityAppliedScienceLOSTransactionDAO = universityAppliedScienceLOSTransactionDAO;
     }
 
     @Override
@@ -176,15 +176,17 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
 		if (los != null) {
             UniversityAppliedScienceLOSEntity plos =
                     modelMapper.map(los, UniversityAppliedScienceLOSEntity.class);
-            //save(plos);
+            
+            save(plos.getProvider());
 
-            /*if (plos.getChildren() != null) {
-                for (ChildLearningOpportunitySpecificationEntity cLO : plos.getChildren()) {
-                    save(cLO);
-                }
-            }*/
+            
+            if (plos.getApplicationOptions() != null) {
+            	for (ApplicationOptionEntity ao : plos.getApplicationOptions()) {
+            		save(ao);
+            	}
+            }
 
-            this.universityAppliedScienceLOSDAO.save(plos);
+            this.universityAppliedScienceLOSTransactionDAO.save(plos);
         }
 	}
 }
