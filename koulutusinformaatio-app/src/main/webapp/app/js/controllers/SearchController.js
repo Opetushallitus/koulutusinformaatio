@@ -341,17 +341,25 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
         //{value: i18n.t('sort-criteria-duration-desc'), group: i18n.t('sort-criteria-duration-group')}
     ];
 
-    $scope.tabs = {
+    $scope.tabTitles = {
         learningOpportunities: i18n.t('search-tab-lo'),
         learningOpportunitiesTooltip: i18n.t('tooltip:search-tab-lo-tooltip'),
         articles: i18n.t('search-tab-article'),
         articlesTooltip: i18n.t('tooltip:search-tab-article-tooltip')
     };
 
+    $scope.tabs = [
+        {active: false},
+        {active: false}
+    ];
+
     $scope.paginationNext = i18n.t('pagination-next');
     $scope.paginationPrevious = i18n.t('pagination-previous');
     $scope.valitseAlueTitle = i18n.t('valitse-alue');
     $scope.noSearchResults = i18n.t('no-search-results-info', {searchterm: SearchService.getTerm()});
+
+
+
 
     $scope.changePage = function(page) {
         $scope.currentPage = page;
@@ -364,11 +372,20 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
         $location.search(FilterService.get()).replace();
         $scope.initSearch();
     }
+
+    $scope.initTabs = function() {
+        var qParams = $location.search();
+        if (qParams.tab && qParams.tab == 'articles') {
+            $scope.tabs[1].active = true;
+        } else {
+            $scope.tabs[0].active = true;
+        }
+    }
     
     //Getting the query params from the url
     //after which searching is done.
     $scope.initSearch = function() {
-        queryParams = $location.search();
+        var queryParams = $location.search();
     	FilterService.query(queryParams)
             .then(function() {
                 $scope.prerequisite = FilterService.getPrerequisite();
@@ -381,22 +398,10 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
                 $scope.sortCriteria = FilterService.getSortCriteria();
                 $scope.currentPage = FilterService.getPage();
 
-                $scope.articlesTabActive = (queryParams.tab === 'articles');
-
-                if (!$scope.articlesTabActive) {
-                    $scope.doSearching();
-                }
+                $scope.doSearching();
             });
     }
-    $scope.initSearch();
-
-    $scope.initTab = function() {
-        var qParams = $location.search();
-        delete qParams.tab;
-        $location.search(qParams).replace();
-
-        $scope.initSearch();
-    }
+    $scope.initTabs();
 
 
 	//Returns true if the language filter is set
@@ -419,6 +424,10 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
 
     //Searching solr
     $scope.doSearching = function() {
+        var qParams = FilterService.get();
+        qParams.tab = 'los';
+        $location.search(qParams).replace();
+
     	//If the language filter is set, the search query is made
     	if ($routeParams.queryString && $scope.isLangFilterSet()) {
     		SearchLearningOpportunityService.query({
@@ -537,7 +546,7 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     }
 };
 
-function ArticleSearchCtrl($scope, $location, $routeParams, ArticleContentSearchService) {
+function ArticleSearchCtrl($scope, $location, $routeParams, ArticleContentSearchService, FilterService) {
     $scope.currentPage = 1;
     $scope.showPagination = false;
 
@@ -548,21 +557,35 @@ function ArticleSearchCtrl($scope, $location, $routeParams, ArticleContentSearch
         $('html, body').scrollTop($('body').offset().top); // scroll to top of list
     }
 
-    $scope.initTab = function() {
-        var qParams = $location.search();
-        qParams.tab = 'articles';
-        $location.search(qParams).replace();
+    //Getting the query params from the url
+    //after which searching is done.
+    $scope.initSearch = function() {
+        var queryParams = $location.search();
+        FilterService.query(queryParams)
+            .then(function() {
+                $scope.prerequisite = FilterService.getPrerequisite();
+                $scope.locations = FilterService.getLocations();
+                $scope.ongoing = FilterService.isOngoing();
+                $scope.upcoming = FilterService.isUpcoming();
+                $scope.facetFilters = FilterService.getFacetFilters();
+                $scope.langCleared = FilterService.getLangCleared();
+                $scope.itemsPerPage = FilterService.getItemsPerPage();
+                $scope.sortCriteria = FilterService.getSortCriteria();
+                $scope.currentPage = FilterService.getPage();
 
-        $scope.doArticleSearching();
-
+                $scope.doArticleSearching();
+            });
     }
  
     $scope.doArticleSearching = function() {
+        var qParams = FilterService.get();
+        qParams.tab = 'articles';
+        $location.search(qParams).replace();
         ArticleContentSearchService.query({queryString: $routeParams.queryString, page: $scope.currentPage}).then(function(result) {
             $scope.articles = result;
             $scope.maxPages = result.pages;
             $scope.totalItems = result.count_total;
-            $scope.itemsPerPage = 10; //result.count;
+            $scope.itemsPerPage = 10;
             $scope.pageMin = ($scope.currentPage - 1) * $scope.itemsPerPage + 1;
             $scope.pageMax = $scope.currentPage * $scope.itemsPerPage < $scope.totalItems
                 ? $scope.currentPage * $scope.itemsPerPage
@@ -573,6 +596,7 @@ function ArticleSearchCtrl($scope, $location, $routeParams, ArticleContentSearch
         });
     }
 };
+
 
 function SortCtrl($scope, $location, FilterService) {
     $scope.updateItemsPerPage = function() {

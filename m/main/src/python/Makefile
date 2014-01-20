@@ -18,6 +18,6 @@ venv/bin/activate: requirements.txt
 	touch venv/bin/activate
 
 copyassets:
-	cp src/style.css out/style.css
+	cp assets/* out/
 
 

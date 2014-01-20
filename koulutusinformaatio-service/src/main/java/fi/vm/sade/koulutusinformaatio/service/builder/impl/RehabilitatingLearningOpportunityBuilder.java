@@ -38,7 +38,7 @@ import java.util.List;
 /**
  * @author Hannu Lyytikainen
  */
-public class SpecialLearningOpportunityBuilder extends LearningOpportunityBuilder<SpecialLOS> {
+public class RehabilitatingLearningOpportunityBuilder extends LearningOpportunityBuilder<SpecialLOS> {
 
     private TarjontaRawService tarjontaRawService;
     private LOSObjectCreator losObjectCreator;
@@ -53,7 +53,7 @@ public class SpecialLearningOpportunityBuilder extends LearningOpportunityBuilde
     // A helper data structure that groups KomotoDTO objects by their provider
     ArrayListMultimap<String, KomotoDTO> komotosByProviderId;
 
-    public SpecialLearningOpportunityBuilder(TarjontaRawService tarjontaRawService,
+    public RehabilitatingLearningOpportunityBuilder(TarjontaRawService tarjontaRawService,
                                                     ProviderService providerService,
                                                     KoodistoService koodistoService, KomoDTO komo) {
         this.tarjontaRawService = tarjontaRawService;
@@ -84,9 +84,12 @@ public class SpecialLearningOpportunityBuilder extends LearningOpportunityBuilde
         }
 
         for (String providerId : komotosByProviderId.keySet()) {
-            SpecialLOS los = losObjectCreator.createSpecialLOS(komo, parentKomo,
-                    resolveLOSId(komo.getOid(), providerId), komotosByProviderId.get(providerId), providerId);
-            loses.add(los);
+            for (KomotoDTO komotoDTO : komotosByProviderId.get(providerId)) {
+                String rehabId = String.format("%s_%s", resolveLOSId(komo.getOid(), providerId), komotoDTO.getOid());
+                SpecialLOS los = losObjectCreator.createRehabLOS(komo, parentKomo,
+                        rehabId, komotoDTO, providerId);
+                loses.add(los);
+            }
         }
         return this;
     }
@@ -115,8 +118,6 @@ public class SpecialLearningOpportunityBuilder extends LearningOpportunityBuilde
     public List<SpecialLOS> build() {
         return this.loses;
     }
-
-
 
 
 }

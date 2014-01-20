@@ -1,11 +1,17 @@
 body {
-	max-width: 60em;
+	width: 100%;
+	margin: 0;
 	font-family: arial, sans-serif;
 	/*font-size: 1em;*/
 	font-size: 0.813em;
 	color: #333333;
-	line-height: 2em;
-	/*line-height: 1.22em;*/
+	/*line-height: 2em*/
+	line-height: 1.22em;
+}
+
+#page {
+	max-width: 60em;
+	margin: 1em;
 }
 
 h1
@@ -89,21 +95,32 @@ table th {
 	text-align: left;
 }
 
-/*
 ul {
+	list-style-position: inside;
 	line-height: 2em;
+	margin: 0;
+	padding: 0;
 }
-*/
+
+ul.nobullet {
+	list-style-type: none;
+}
 
 .block {
 	display: block;
+}
+
+.top {
+	padding: 7px 1em;
+	background: #149ecb;
 }
 
 .tabs a {
 	margin: 0 4em 0 0;
 }
 
-#header {
+#header,
+#toplinks {
 	margin: 0 0 1em 0;
 }
 

@@ -32,7 +32,7 @@ import fi.vm.sade.koulutusinformaatio.service.builder.LearningOpportunityBuilder
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.CreatorUtil;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.LOSObjectCreator;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.LearningOpportunityDirector;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.SpecialLearningOpportunityBuilder;
+import fi.vm.sade.koulutusinformaatio.service.builder.impl.RehabilitatingLearningOpportunityBuilder;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.UpperSecondaryLearningOpportunityBuilder;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.VocationalLearningOpportunityBuilder;
 import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
@@ -122,7 +122,7 @@ public class TarjontaServiceImpl implements TarjontaService {
         }
         else if (educationType.equals(TarjontaConstants.REHABILITATING_EDUCATION_TYPE) &&
                 komo.getModuuliTyyppi().equals(TarjontaConstants.MODULE_TYPE_CHILD)) {
-            return new SpecialLearningOpportunityBuilder(tarjontaRawService, providerService, koodistoService, komo);
+            return new RehabilitatingLearningOpportunityBuilder(tarjontaRawService, providerService, koodistoService, komo);
         }
         else {
             throw new TarjontaParseException(String.format("Unknown education degree %s and module type %s incompatible",
