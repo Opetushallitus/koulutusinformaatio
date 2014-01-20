@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
@@ -30,6 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Hannu Lyytikainen
@@ -48,6 +50,51 @@ public class LOSObjectCreator extends ObjectCreator {
         this.koodistoService = koodistoService;
         this.providerService = providerService;
         this.loiCreator = new LOIObjectCreator(koodistoService, tarjontaRawService);
+    }
+
+    public SpecialLOS createRehabLOS(KomoDTO childKomo, KomoDTO parentKomo, String specialLOSId,
+                                     KomotoDTO childKomoto, String providerOid) throws KoodistoException {
+        SpecialLOS los = new SpecialLOS();
+        if (childKomo.getKoulutusTyyppiUri().equals(BuilderConstants.REHABILITATING_EDUCATION_TYPE)) {
+            los.setType(BuilderConstants.TYPE_REHAB);
+        } else {
+            los.setType(BuilderConstants.TYPE_SPECIAL);
+        }
+
+        los.setId(specialLOSId);
+        String teachingLang = koodistoService.searchFirstCodeValue(childKomoto.getOpetuskieletUris().get(0)).toLowerCase();
+        Map<String, String> nameTranslations = Maps.newHashMap();
+        nameTranslations.put(teachingLang, childKomoto.getKoulutusohjelmanNimi());
+        los.setName(new I18nText(nameTranslations, nameTranslations));
+        los.setEducationDegree(koodistoService.searchFirstCodeValue(parentKomo.getKoulutusAsteUri()));
+        los.setQualification(koodistoService.searchFirst(childKomo.getTutkintonimikeUri()));
+        los.setDegreeTitle(koodistoService.searchFirst(childKomo.getLukiolinjaUri()));
+        los.setStructure(getI18nText(parentKomo.getKoulutuksenRakenne()));
+        los.setAccessToFurtherStudies(getI18nText(parentKomo.getJatkoOpintoMahdollisuudet()));
+        los.setProvider(providerService.getByOID(providerOid));
+        los.setCreditValue(childKomoto.getLaajuusArvo());
+        los.setCreditUnit(koodistoService.searchFirst(childKomoto.getLaajuusYksikkoUri()));
+        los.setEducationDomain(koodistoService.searchFirst(parentKomo.getKoulutusAlaUri()));
+        los.setParent(new ParentLOSRef(CreatorUtil.resolveLOSId(parentKomo.getOid(), providerOid),
+                koodistoService.searchFirst(parentKomo.getKoulutusKoodiUri())));
+
+        if (childKomo.getTavoitteet() == null) {
+            los.setGoals(getI18nText(parentKomo.getTavoitteet()));
+        } else {
+            los.setGoals(getI18nText(childKomo.getTavoitteet()));
+        }
+
+        List<ChildLOI> lois = Lists.newArrayList();
+
+        // strip version out of education code uri
+        String educationCodeUri = childKomo.getKoulutusKoodiUri().split("#")[0];
+
+        if (CreatorUtil.komotoPublished.apply(childKomoto)) {
+            ChildLOI loi = loiCreator.createChildLOI(childKomoto, specialLOSId, los.getName());
+            lois.add(loi);
+        }
+        los.setLois(lois);
+        return los;
     }
 
     public ParentLOS createParentLOS(KomoDTO parentKomo, String providerId, List<KomotoDTO> parentKomotos) throws KoodistoException {
