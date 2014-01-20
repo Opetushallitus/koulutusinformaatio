@@ -84,9 +84,12 @@ public class SpecialLearningOpportunityBuilder extends LearningOpportunityBuilde
         }
 
         for (String providerId : komotosByProviderId.keySet()) {
-            SpecialLOS los = losObjectCreator.createSpecialLOS(komo, parentKomo,
-                    resolveLOSId(komo.getOid(), providerId), komotosByProviderId.get(providerId), providerId);
-            loses.add(los);
+            for (KomotoDTO komotoDTO : komotosByProviderId.get(providerId)) {
+                String rehabId = String.format("%s_%s", resolveLOSId(komo.getOid(), providerId), komotoDTO.getOid());
+                SpecialLOS los = losObjectCreator.createRehabLOS(komo, parentKomo,
+                        rehabId, komotoDTO, providerId);
+                loses.add(los);
+            }
         }
         return this;
     }
