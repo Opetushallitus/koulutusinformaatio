@@ -59,7 +59,10 @@ import javax.ws.rs.WebApplicationException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Hannu Lyytikainen
@@ -149,18 +152,40 @@ public class TarjontaServiceImpl implements TarjontaService {
     	LOSObjectCreator creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService);
 
     	List<UniversityAppliedScienceLOS> koulutukset = new ArrayList<UniversityAppliedScienceLOS>();
+    	Map<String,List<UniversityAppliedScienceLOS>> komoToLOSMap = new HashMap<String,List<UniversityAppliedScienceLOS>>();
 
     	ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes = this.tarjontaRawService.listHigherEducation();
     	HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
     	for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
     		for (KoulutusHakutulosV1RDTO curKoulutus : curRes.getTulokset()) {
     			ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes = this.tarjontaRawService.getHigherEducationLearningOpportunity(curKoulutus.getOid());
-    			UniversityAppliedScienceLOS los = creator.createUasLOS(koulutusRes.getResult());
+    		    KoulutusKorkeakouluV1RDTO koulutusDTO = koulutusRes.getResult();
+    			UniversityAppliedScienceLOS los = creator.createUasLOS(koulutusDTO);
         		koulutukset.add(los);
-    			
-    			
+    			List<UniversityAppliedScienceLOS> loss = komoToLOSMap.get(koulutusDTO.getKomoOid());
+    			if (loss == null) {
+    				loss = new ArrayList<UniversityAppliedScienceLOS>();
+    				loss.add(los);
+    				komoToLOSMap.put(koulutusDTO.getKomoOid(), loss);
+    			} else {
+    				loss.add(los);
+    			}
+    			ResultV1RDTO<Set<String>> childKomoOids = this.tarjontaRawService.getChildrenOfParentHigherEducationLOS(koulutusDTO.getKomoOid());
+    			if (childKomoOids != null && childKomoOids.getResult() != null) {
+    				los.setChildKomoOids(new ArrayList<String>(childKomoOids.getResult()));
+    			}
     		}
     	}
+    	
+    	for (UniversityAppliedScienceLOS curLos : koulutukset) {
+    		for (String curChildKomoOid : curLos.getChildKomoOids()) {
+    			List<UniversityAppliedScienceLOS> loss = komoToLOSMap.get(curChildKomoOid);
+    			if (loss != null) {
+    				curLos.getChildren().addAll(loss);
+    			}
+    		}
+    	}
+    	
     	return koulutukset;
     }
 

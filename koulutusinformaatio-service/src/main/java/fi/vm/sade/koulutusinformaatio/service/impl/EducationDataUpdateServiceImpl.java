@@ -103,7 +103,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
         if (upperSecondaryLOS != null) {
             UpperSecondaryLearningOpportunitySpecificationEntity entity =
                     modelMapper.map(upperSecondaryLOS, UpperSecondaryLearningOpportunitySpecificationEntity.class);
-
+            
             save(entity.getProvider());
 
             for (UpperSecondaryLearningOpportunityInstanceEntity loi : entity.getLois()) {
@@ -174,6 +174,11 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
 	public void save(UniversityAppliedScienceLOS los) {
 		
 		if (los != null) {
+			
+			for (UniversityAppliedScienceLOS curChild : los.getChildren()) {
+				save(curChild);
+			}
+			
             UniversityAppliedScienceLOSEntity plos =
                     modelMapper.map(los, UniversityAppliedScienceLOSEntity.class);
             

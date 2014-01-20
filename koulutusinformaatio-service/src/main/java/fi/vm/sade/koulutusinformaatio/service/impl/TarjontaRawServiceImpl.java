@@ -43,6 +43,7 @@ import org.springframework.stereotype.Service;
 import javax.ws.rs.core.MediaType;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Hannu Lyytikainen
@@ -59,6 +60,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     private WebResource higherEducationResource;
     private WebResource higherEducationAOResource;
     private WebResource higherEducationASResource;
+    private WebResource higherEducationStructureResource;
     private ConversionService conversionService;
     private KoodistoService koodistoService;
     private ProviderService providerService;
@@ -78,6 +80,8 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
         higherEducationResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "v1/koulutus");
         higherEducationAOResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "v1/hakukohde");
         higherEducationASResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "v1/haku");
+        higherEducationStructureResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "v1/link");
+        
         this.conversionService = conversionService;
     }
 
@@ -230,5 +234,15 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
 				.accept(JSON_UTF8)
 				.get(new GenericType<ResultV1RDTO<HakuV1RDTO>>() {
 	        	});
+	}
+
+	@Override
+	public ResultV1RDTO<Set<String>> getChildrenOfParentHigherEducationLOS(
+			String parentOid) {
+		return this.higherEducationStructureResource
+				.path(parentOid)
+				.accept(JSON_UTF8)
+				.get(new GenericType<ResultV1RDTO<Set<String>>>() {
+				});
 	}	
 }

@@ -25,6 +25,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Can be used to access tarjonta APIs. Returns raw tarjonta DTO objects as they are
@@ -63,5 +64,7 @@ public interface TarjontaRawService {
     public ResultV1RDTO<HakukohdeV1RDTO> getHigherEducationHakukohode(String oid);
     
     public ResultV1RDTO<HakuV1RDTO> getHigherEducationHakuByOid(String oid);
+    
+    public ResultV1RDTO<Set<String>> getChildrenOfParentHigherEducationLOS(String parentOid);
     
 }

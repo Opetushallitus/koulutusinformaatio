@@ -9,6 +9,8 @@ import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Reference;
 
+import fi.vm.sade.koulutusinformaatio.domain.UniversityAppliedScienceLOS;
+
 @Entity("universityAppliedScienceLOS")
 public class UniversityAppliedScienceLOSEntity {
 	
@@ -71,6 +73,12 @@ public class UniversityAppliedScienceLOSEntity {
     private LearningOpportunityProviderEntity provider;
 	@Reference
     private List<ApplicationOptionEntity> applicationOptions;
+	
+	private String komoOid;
+	private List<String> childKomoOids;
+	
+	@Reference
+	private List<UniversityAppliedScienceLOSEntity> children;
 	
 	public String getId() {
 		return id;
@@ -258,5 +266,23 @@ public class UniversityAppliedScienceLOSEntity {
 	public void setApplicationOptions(
 			List<ApplicationOptionEntity> applicationOptions) {
 		this.applicationOptions = applicationOptions;
+	}
+	public String getKomoOid() {
+		return komoOid;
+	}
+	public void setKomoOid(String komoOid) {
+		this.komoOid = komoOid;
+	}
+	public List<String> getChildKomoOids() {
+		return childKomoOids;
+	}
+	public void setChildKomoOids(List<String> childKomoOids) {
+		this.childKomoOids = childKomoOids;
+	}
+	public List<UniversityAppliedScienceLOSEntity> getChildren() {
+		return children;
+	}
+	public void setChildren(List<UniversityAppliedScienceLOSEntity> children) {
+		this.children = children;
 	}
 }

@@ -8,11 +8,12 @@ public class UniversityAppliedScienceLOS extends LOS {
 	
     
     
-    private List<ChildLOI> lois;
+    //private List<ChildLOI> lois;
     
     //private I18nText creditUnit;
-    
-    //Varmistetut
+
+
+	//Varmistetut
     private String id;
 	private I18nText infoAboutTeachingLangs;
 	private I18nText content;
@@ -47,6 +48,10 @@ public class UniversityAppliedScienceLOS extends LOS {
 	//private List<ApplicationOption
 	private List<ApplicationOption> applicationOptions;
 	
+	private String komoOid;
+	private List<String> childKomoOids = new ArrayList<String>();
+	
+	private List<UniversityAppliedScienceLOS> children = new ArrayList<UniversityAppliedScienceLOS>();
 	
 	public String getId() {
 		return id;
@@ -94,14 +99,6 @@ public class UniversityAppliedScienceLOS extends LOS {
 	
 	public I18nText getGoals() {
 		return goals;
-	}
-	
-	public void setLois(List<ChildLOI> lois) {
-		this.lois = lois;
-	}
-	
-	public List<ChildLOI> getLois(){
-		return lois;
 	}
 	
 	public void setProvider(Provider provider) {
@@ -310,6 +307,30 @@ public class UniversityAppliedScienceLOS extends LOS {
 
 	public void setApplicationOptions(List<ApplicationOption> applicationOptions) {
 		this.applicationOptions = applicationOptions;
+	}    
+	
+    public String getKomoOid() {
+		return komoOid;
+	}
+
+	public void setKomoOid(String komoOid) {
+		this.komoOid = komoOid;
+	}
+
+	public List<String> getChildKomoOids() {
+		return childKomoOids;
+	}
+
+	public void setChildKomoOids(List<String> childKomoOids) {
+		this.childKomoOids = childKomoOids;
+	}
+
+	public List<UniversityAppliedScienceLOS> getChildren() {
+		return children;
+	}
+
+	public void setChildren(List<UniversityAppliedScienceLOS> children) {
+		this.children = children;
 	}
 
 }
