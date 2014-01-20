@@ -145,7 +145,6 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     @Override
     public List<UniversityAppliedScienceLOS> findHigherEducations() throws KoodistoException {
-    	System.out.println("Trying trying");
 
     	LOSObjectCreator creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService);
 
@@ -154,17 +153,14 @@ public class TarjontaServiceImpl implements TarjontaService {
     	ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes = this.tarjontaRawService.listHigherEducation();
     	HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
     	for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
-    		System.out.println("In cur res");
     		for (KoulutusHakutulosV1RDTO curKoulutus : curRes.getTulokset()) {
-    			System.out.print("Cur koulutus: " + curKoulutus.getOid());    			
     			ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes = this.tarjontaRawService.getHigherEducationLearningOpportunity(curKoulutus.getOid());
-    			System.out.println("Got back with oid: " + koulutusRes.getResult().getOid());
     			UniversityAppliedScienceLOS los = creator.createUasLOS(koulutusRes.getResult());
-    			//fetchHakukohdeData(los);
-    			koulutukset.add(los);
+        		koulutukset.add(los);
+    			
+    			
     		}
     	}
-    	System.out.println("All ended");
     	return koulutukset;
     }
 

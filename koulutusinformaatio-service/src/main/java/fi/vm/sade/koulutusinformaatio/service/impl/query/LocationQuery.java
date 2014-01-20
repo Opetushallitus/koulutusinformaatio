@@ -30,7 +30,9 @@ import java.util.List;
  */
 public class LocationQuery extends SolrQuery {
 
-    private final static String NAME = "name";
+	private static final long serialVersionUID = -4254747245152049594L;
+	
+	private final static String NAME = "name";
     private final static String LANG = "lang";
     private final static String CODE = "code";
     

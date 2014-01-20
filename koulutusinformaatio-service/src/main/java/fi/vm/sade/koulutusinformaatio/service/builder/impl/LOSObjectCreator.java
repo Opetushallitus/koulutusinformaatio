@@ -224,21 +224,46 @@ public class LOSObjectCreator extends ObjectCreator {
     }
     
     public UniversityAppliedScienceLOS createUasLOS(KoulutusKorkeakouluV1RDTO koulutus) throws KoodistoException {
-    	
     	UniversityAppliedScienceLOS los = new UniversityAppliedScienceLOS();
     	los.setId(koulutus.getOid());
-    	los.setInfoAboutTeachingLangs(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.LISATIETOA_OPETUSKIELISTA)));
-    	los.setGoals(getI18nTextEnriched(koulutus.getKuvausKomo().get(KomoTeksti.TAVOITTEET)));
-    	los.setContent(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.SISALTO)));
-    	los.setMajorSelection(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.PAAAINEEN_VALINTA)));
-    	los.setStructure(getI18nTextEnriched(koulutus.getKuvausKomo().get(KomoTeksti.KOULUTUKSEN_RAKENNE)));
-    	los.setFinalExam(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.LOPPUKOEVAATIMUKSET)));
-    	los.setCareerOpportunities(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.SIJOITTUMINEN_TYOELAMAAN)));
-    	los.setCompetence(getI18nTextEnriched(koulutus.getKuvausKomo().get(KomoTeksti.PATEVYYS)));
-    	los.setInternationalization(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.KANSAINVALISTYMINEN)));
-    	los.setCooperation(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.YHTEISTYO_MUIDEN_TOIMIJOIDEN_KANSSA)));
-    	los.setResearchFocus(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.TUTKIMUKSEN_PAINOPISTEET)));
-    	los.setAccessToFurtherStudies(getI18nTextEnriched(koulutus.getKuvausKomo().get(KomoTeksti.JATKOOPINTO_MAHDOLLISUUDET)));
+    	if (!koulutus.getKuvausKomoto().get(KomotoTeksti.LISATIETOA_OPETUSKIELISTA).getTekstis().containsKey("undefined")) {
+    		los.setInfoAboutTeachingLangs(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.LISATIETOA_OPETUSKIELISTA)));
+    	}
+    	if (!koulutus.getKuvausKomo().get(KomoTeksti.TAVOITTEET).getTekstis().containsKey("undefined")) {
+    		los.setGoals(getI18nTextEnriched(koulutus.getKuvausKomo().get(KomoTeksti.TAVOITTEET)));
+    	}
+    	if (!koulutus.getKuvausKomoto().get(KomotoTeksti.SISALTO).getTekstis().containsKey("undefined")) {
+    		los.setContent(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.SISALTO)));
+    	}
+    	if (!koulutus.getKuvausKomoto().get(KomotoTeksti.SISALTO).getTekstis().containsKey("undefined")) {
+    		los.setMajorSelection(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.PAAAINEEN_VALINTA)));
+    	}
+    	if (!koulutus.getKuvausKomo().get(KomoTeksti.KOULUTUKSEN_RAKENNE).getTekstis().containsKey("undefined")) {
+    		los.setStructure(getI18nTextEnriched(koulutus.getKuvausKomo().get(KomoTeksti.KOULUTUKSEN_RAKENNE)));
+    	}
+    	if (!koulutus.getKuvausKomoto().get(KomotoTeksti.LOPPUKOEVAATIMUKSET).getTekstis().containsKey("undefined")) {
+    		los.setFinalExam(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.LOPPUKOEVAATIMUKSET)));
+    	}
+    	if (!koulutus.getKuvausKomoto().get(KomotoTeksti.SIJOITTUMINEN_TYOELAMAAN).getTekstis().containsKey("undefined")) {
+    		los.setCareerOpportunities(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.SIJOITTUMINEN_TYOELAMAAN)));
+    	}
+    	if (!koulutus.getKuvausKomo().get(KomoTeksti.KOULUTUKSEN_RAKENNE).getTekstis().containsKey("undefined")) {
+    		los.setCompetence(getI18nTextEnriched(koulutus.getKuvausKomo().get(KomoTeksti.KOULUTUKSEN_RAKENNE)));
+    	}
+    	if (!koulutus.getKuvausKomoto().get(KomotoTeksti.KANSAINVALISTYMINEN).getTekstis().containsKey("undefined")) {
+    		los.setInternationalization(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.KANSAINVALISTYMINEN)));
+    	}
+    	if (!koulutus.getKuvausKomoto().get(KomotoTeksti.YHTEISTYO_MUIDEN_TOIMIJOIDEN_KANSSA).getTekstis().containsKey("undefined")) {
+    		los.setCooperation(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.YHTEISTYO_MUIDEN_TOIMIJOIDEN_KANSSA)));
+    	}
+    	if (!koulutus.getKuvausKomoto().get(KomotoTeksti.TUTKIMUKSEN_PAINOPISTEET).getTekstis().containsKey("undefined")) {
+    		los.setResearchFocus(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.TUTKIMUKSEN_PAINOPISTEET)));
+    	}
+    	
+    	if (!koulutus.getKuvausKomo().get(KomoTeksti.JATKOOPINTO_MAHDOLLISUUDET).getTekstis().containsKey("undefined")) {
+    		los.setAccessToFurtherStudies(getI18nTextEnriched(koulutus.getKuvausKomo().get(KomoTeksti.JATKOOPINTO_MAHDOLLISUUDET)));
+    	}
+    	
     	
         if (koulutus.getYhteyshenkilos() != null) {
             for (YhteyshenkiloTyyppi yhteyshenkiloRDTO : koulutus.getYhteyshenkilos()) {
@@ -256,9 +281,10 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setDegreeTitle(getI18nTextEnriched(koulutus.getKoulutusohjelma()));
         los.setQualification(getI18nTextEnriched(koulutus.getTutkintonimike().getMeta()));
         los.setDegree(getI18nTextEnriched(koulutus.getTutkinto().getMeta()));
+        if (koulutus.getKoulutuksenAlkamisPvms() != null && !koulutus.getKoulutuksenAlkamisPvms().isEmpty()) {
+        	los.setStartDate(koulutus.getKoulutuksenAlkamisPvms().iterator().next());
+        }
         
-        los.setStartDate(koulutus.getKoulutuksenAlkamisPvms().iterator().next());
-        //los.setFormOfEducation(getMultiI18nTexts(koulutus.getOpetusmuodos()));
         los.setPlannedDuration(koulutus.getSuunniteltuKestoArvo());
         los.setPlannedDurationUnit(getI18nTextEnriched(koulutus.getSuunniteltuKestoTyyppi().getMeta()));
         los.setPduCodeUri(koulutus.getSuunniteltuKestoTyyppi().getUri());//childKomoto.getLaajuusYksikkoUri());
@@ -278,8 +304,6 @@ public class LOSObjectCreator extends ObjectCreator {
         //Puuttuu vielä (datan rikastus pielessä)
         //formOfEducation = opetusmuoto
         //setProfessionalTitles = ammattinimikkeet
-        
-        
         
     	return los;
     }

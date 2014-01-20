@@ -50,7 +50,7 @@ public class EducationDataUpdateServiceImplTest extends AbstractEducationService
         service = new EducationDataUpdateServiceImpl( modelMapper, parentLearningOpportunitySpecificationDAO,
                applicationOptionDAO, learningOpportunityProviderDAO, childLearningOpportunityDAO,
                 pictureDAO, upperSecondaryLearningOpportunitySpecificationDAO, dataStatusDAO,
-                specialLearningOpportunitySpecificationDAO);
+                specialLearningOpportunitySpecificationDAO,  null);
     }
 
     @Test

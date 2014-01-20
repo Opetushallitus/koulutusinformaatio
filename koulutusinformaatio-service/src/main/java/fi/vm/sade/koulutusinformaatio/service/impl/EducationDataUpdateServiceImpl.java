@@ -20,6 +20,7 @@ import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.entity.*;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataUpdateService;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
     private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO;
     private DataStatusDAO dataStatusDAO;
     private SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO;
+    private UniversityAppliedScienceLOSDAO universityAppliedScienceLOSDAO;
 
     @Autowired
     public EducationDataUpdateServiceImpl(ModelMapper modelMapper, ParentLearningOpportunitySpecificationDAO parentLOSTransactionDAO,
@@ -47,7 +49,8 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
                                           ChildLearningOpportunityDAO childLOTransactionDAO,
                                           PictureDAO pictureTransactionDAO,
                                           UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO,
-                                          DataStatusDAO dataStatusDAO, SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO) {
+                                          DataStatusDAO dataStatusDAO, SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO,
+                                          UniversityAppliedScienceLOSDAO universityAppliedScienceLOSDAO) {
         this.modelMapper = modelMapper;
         this.parentLOSTransactionDAO = parentLOSTransactionDAO;
         this.applicationOptionTransactionDAO = applicationOptionTransactionDAO;
@@ -57,6 +60,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
         this.upperSecondaryLOSTransactionDAO = upperSecondaryLOSTransactionDAO;
         this.dataStatusDAO = dataStatusDAO;
         this.specialLOSTransactionDAO = specialLOSTransactionDAO;
+        this.universityAppliedScienceLOSDAO = universityAppliedScienceLOSDAO;
     }
 
     @Override
@@ -165,4 +169,22 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
             pictureTransactionDAO.save(picture);
         }
     }
+
+	@Override
+	public void save(UniversityAppliedScienceLOS los) {
+		
+		if (los != null) {
+            UniversityAppliedScienceLOSEntity plos =
+                    modelMapper.map(los, UniversityAppliedScienceLOSEntity.class);
+            //save(plos);
+
+            /*if (plos.getChildren() != null) {
+                for (ChildLearningOpportunitySpecificationEntity cLO : plos.getChildren()) {
+                    save(cLO);
+                }
+            }*/
+
+            this.universityAppliedScienceLOSDAO.save(plos);
+        }
+	}
 }
