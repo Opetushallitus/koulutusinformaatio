@@ -121,6 +121,7 @@ public class UpdateServiceImpl implements UpdateService {
            		
            		for (UniversityAppliedScienceLOS curLOS : higherEducations) {
            			LOG.debug("Saving highed education: " + curLOS.getId());
+           			this.indexerService.addLearningOpportunitySpecification(curLOS, loUpdateSolr, lopUpdateSolr);
            			this.educationDataUpdateService.save(curLOS);
            		}
             //}

@@ -99,6 +99,8 @@ public class UniversityAppliedScienceLOSEntity {
 	@Reference
 	private List<UniversityAppliedScienceLOSEntity> children;
 	
+	private String type;
+	
 	public String getId() {
 		return id;
 	}
@@ -303,5 +305,11 @@ public class UniversityAppliedScienceLOSEntity {
 	}
 	public void setChildren(List<UniversityAppliedScienceLOSEntity> children) {
 		this.children = children;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
 	}
 }

@@ -64,6 +64,8 @@ public class UniversityAppliedScienceLOS extends LOS {
 	
 	private List<UniversityAppliedScienceLOS> children = new ArrayList<UniversityAppliedScienceLOS>();
 	
+	private Code prerequisite;
+	
 	public String getId() {
 		return id;
 	}
@@ -342,6 +344,14 @@ public class UniversityAppliedScienceLOS extends LOS {
 
 	public void setChildren(List<UniversityAppliedScienceLOS> children) {
 		this.children = children;
+	}
+
+	public Code getPrerequisite() {
+		return prerequisite;
+	}
+
+	public void setPrerequisite(Code prerequisite) {
+		this.prerequisite = prerequisite;
 	}
 
 }

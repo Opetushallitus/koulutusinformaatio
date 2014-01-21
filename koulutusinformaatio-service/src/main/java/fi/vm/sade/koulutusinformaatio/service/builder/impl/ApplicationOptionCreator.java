@@ -331,6 +331,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         }
 
         ao.setTeachingLanguages(extractCodeVales(los.getTeachingLanguages()));
+        
         //ao.setPrerequisite(prerequisite);
         ao.setSpecificApplicationDates(hakukohde.isKaytetaanHakukohdekohtaistaHakuaikaa());
         if (ao.isSpecificApplicationDates()) {

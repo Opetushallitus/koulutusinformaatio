@@ -2,9 +2,11 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LocationFields;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
+
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -112,6 +114,9 @@ public class IndexerServiceImpl implements IndexerService {
         } else if (los instanceof SpecialLOS) {
             SpecialLOS special = (SpecialLOS) los;
             provider = special.getProvider();
+        } else if (los instanceof UniversityAppliedScienceLOS) {
+        	UniversityAppliedScienceLOS uas = (UniversityAppliedScienceLOS)los;
+        	provider = uas.getProvider();
         }
 
         List<SolrInputDocument> docs = conversionService.convert(los, List.class);
@@ -273,4 +278,5 @@ public class IndexerServiceImpl implements IndexerService {
             return translations.values().iterator().next();
         }
     }
+
 }
