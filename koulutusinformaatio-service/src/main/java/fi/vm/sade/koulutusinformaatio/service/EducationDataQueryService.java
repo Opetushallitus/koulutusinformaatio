@@ -76,7 +76,17 @@ public interface EducationDataQueryService {
      * @throws ResourceNotFoundException
      */
     SpecialLOS getSpecialLearningOpportunity(final String id) throws ResourceNotFoundException;
-
+    
+    
+    /**
+     * Retrieves a university of applied science learning opportunity specification.
+     *
+     * @param id los id
+     * @return university of applied science los
+     * @throws ResourceNotFoundException
+     */
+    UniversityAppliedScienceLOS getUasLearningOpportunity(final String oid) throws ResourceNotFoundException;
+    
     /**
      * Retrieves a learning opportunity provider.
      *
@@ -85,4 +95,6 @@ public interface EducationDataQueryService {
      * @throws ResourceNotFoundException no provider found with the id
      */
     Provider getProvider(final String id) throws ResourceNotFoundException;
+    
+    
 }

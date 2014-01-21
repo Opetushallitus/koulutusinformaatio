@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.converter.*;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.dto.*;
@@ -25,6 +26,7 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersExceptio
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -219,5 +221,29 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
             return ao.getTeachingLanguages().get(0).toLowerCase();
         }
     }
+
+	@Override
+	public UniversityAppliedScienceLOSDTO getUniversityAppliedScienceLearningOpportunity(
+			String id) throws ResourceNotFoundException {
+		UniversityAppliedScienceLOS los = educationDataQueryService.getUasLearningOpportunity(id);
+        String lang = (los.getTeachingLanguages() != null && !los.getTeachingLanguages().isEmpty()) ? los.getTeachingLanguages().get(0).getValue().toLowerCase() : LANG_FI;//resolveDefaultLanguage(los.getTeachingLanguages());
+        return UniversityAppliedScienceLOSToDTO.convert(los, lang, lang);
+	}
+
+	@Override
+	public UniversityAppliedScienceLOSDTO getUniversityAppliedScienceLearningOpportunity(
+			String id, String uiLang) throws ResourceNotFoundException {
+		UniversityAppliedScienceLOS los = educationDataQueryService.getUasLearningOpportunity(id);
+		String lang = (los.getTeachingLanguages() != null && !los.getTeachingLanguages().isEmpty()) ? los.getTeachingLanguages().get(0).getValue().toLowerCase() : LANG_FI;//resolveDefaultLanguage(los.getTeachingLanguages());
+        return UniversityAppliedScienceLOSToDTO.convert(los, lang, uiLang);
+	}
+
+	@Override
+	public UniversityAppliedScienceLOSDTO getUniversityAppliedScienceLearningOpportunity(
+			String id, String lang, String uiLang)
+			throws ResourceNotFoundException {
+		UniversityAppliedScienceLOS los = educationDataQueryService.getUasLearningOpportunity(id);
+		return UniversityAppliedScienceLOSToDTO.convert(los, lang, uiLang);
+	}
 
 }

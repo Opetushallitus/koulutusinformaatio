@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.resource.impl;
 
 import com.google.common.base.Strings;
+
 import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
 import fi.vm.sade.koulutusinformaatio.domain.SuggestedTermsResult;
 import fi.vm.sade.koulutusinformaatio.domain.dto.*;
@@ -26,6 +27,7 @@ import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
 import fi.vm.sade.koulutusinformaatio.resource.LearningOpportunityResource;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -155,4 +157,22 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
             throw KIExceptionHandler.resolveException(e);
         }
     }
+
+	@Override
+	public UniversityAppliedScienceLOSDTO getUasLearningOpportunity(String id,
+			String lang, String uiLang) {
+		try {
+            if (Strings.isNullOrEmpty(lang) && Strings.isNullOrEmpty(uiLang)) {
+                return learningOpportunityService.getUniversityAppliedScienceLearningOpportunity(id);
+            }
+            else if (Strings.isNullOrEmpty(lang)) {
+                return learningOpportunityService.getUniversityAppliedScienceLearningOpportunity(id, uiLang.toLowerCase());
+            }
+            else {
+                return learningOpportunityService.getUniversityAppliedScienceLearningOpportunity(id, lang.toLowerCase(), uiLang.toLowerCase());
+            }
+        } catch (ResourceNotFoundException e) {
+            throw KIExceptionHandler.resolveException(e);
+        }
+	}
 }

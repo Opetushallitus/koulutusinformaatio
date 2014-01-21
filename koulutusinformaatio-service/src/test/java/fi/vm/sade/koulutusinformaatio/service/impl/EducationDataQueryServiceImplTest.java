@@ -63,7 +63,7 @@ public class EducationDataQueryServiceImplTest extends AbstractEducationServiceT
         service = new EducationDataQueryServiceImpl(parentLearningOpportunitySpecificationDAO,
                 applicationOptionDAO, modelMapper, childLearningOpportunityDAO,
                 dataStatusDAO, pictureDAO, upperSecondaryLearningOpportunitySpecificationDAO,
-                specialLearningOpportunitySpecificationDAO, providerDAO);
+                specialLearningOpportunitySpecificationDAO, null, providerDAO);
     }
 
     @Test

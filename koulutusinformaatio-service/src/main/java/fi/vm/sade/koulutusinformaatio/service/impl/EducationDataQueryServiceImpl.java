@@ -18,12 +18,14 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.entity.*;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,6 +46,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     private PictureDAO pictureDAO;
     private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO;
     private SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO;
+    private UniversityAppliedScienceLOSDAO uasLearningOpportunitySpecificationDAO;
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
 
     @Autowired
@@ -52,7 +55,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
                                          ChildLearningOpportunityDAO childLearningOpportunityDAO,
                                          DataStatusDAO dataStatusDAO, PictureDAO pictureDAO,
                                          UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO,
-                                         SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO, LearningOpportunityProviderDAO learningOpportunityProviderDAO) {
+                                         SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO, UniversityAppliedScienceLOSDAO uasLearningOpportunitySpecificationDAO, LearningOpportunityProviderDAO learningOpportunityProviderDAO) {
         this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;
         this.modelMapper = modelMapper;
@@ -61,6 +64,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
         this.pictureDAO = pictureDAO;
         this.upperSecondaryLearningOpportunitySpecificationDAO = upperSecondaryLearningOpportunitySpecificationDAO;
         this.specialLearningOpportunitySpecificationDAO = specialLearningOpportunitySpecificationDAO;
+        this.uasLearningOpportunitySpecificationDAO = uasLearningOpportunitySpecificationDAO;
         this.learningOpportunityProviderDAO = learningOpportunityProviderDAO;
     }
 
@@ -160,6 +164,16 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
             throw new ResourceNotFoundException(String.format("Special learning opportunity specification not found: %s", id));
         }
     }
+    
+	@Override
+	public UniversityAppliedScienceLOS getUasLearningOpportunity(String oid) throws ResourceNotFoundException {
+		UniversityAppliedScienceLOSEntity entity = this.uasLearningOpportunitySpecificationDAO.get(oid);
+		if (entity != null) {
+			return modelMapper.map(entity, UniversityAppliedScienceLOS.class);
+		} else {
+			throw new ResourceNotFoundException(String.format("University of applied science learning opportunity specification not found: %s", oid));
+		}
+	}
 
     @Override
     public Provider getProvider(String id) throws ResourceNotFoundException {
@@ -179,4 +193,6 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
         }
         return clo;
     }
+
+
 }

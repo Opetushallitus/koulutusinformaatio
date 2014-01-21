@@ -117,6 +117,21 @@ public interface LearningOpportunityResource {
     public SpecialLearningOpportunitySpecificationDTO getSpecialLearningOpportunity(@PathParam("id") String id,
                                                                                     @QueryParam("lang") String lang,
                                                                                     @QueryParam("uiLang") String uiLang);
+    
+    /**
+     * Fetches a university of applied science learning opportunity specification.
+     *
+     * @param id los id
+     * @param lang translation language
+     * @param uiLang secondary translation language
+     * @return university of applied science learning opportunity specification
+     */
+    @GET
+    @Path("uas/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public UniversityAppliedScienceLOSDTO getUasLearningOpportunity(@PathParam("id") String id,
+                                                                                    @QueryParam("lang") String lang,
+                                                                                    @QueryParam("uiLang") String uiLang);
 
     /**
      * Fetches suggested terms to be used in free text search. 
