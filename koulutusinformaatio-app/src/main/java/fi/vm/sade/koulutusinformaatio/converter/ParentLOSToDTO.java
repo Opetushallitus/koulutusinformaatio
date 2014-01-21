@@ -28,25 +28,25 @@ public final class ParentLOSToDTO {
     private ParentLOSToDTO() {
     }
 
-    public static ParentLearningOpportunitySpecificationDTO convert(final ParentLOS parentLOS, final String lang, final String uiLang) {
+    public static ParentLearningOpportunitySpecificationDTO convert(final ParentLOS parentLOS, final String lang, final String uiLang, final String defaultLang) {
         ParentLearningOpportunitySpecificationDTO parent = new ParentLearningOpportunitySpecificationDTO();
         parent.setId(parentLOS.getId());
-        parent.setName(ConverterUtil.getTextByLanguage(parentLOS.getName(), lang));
+        parent.setName(ConverterUtil.getTextByLanguage(parentLOS.getName(), defaultLang));
         parent.setEducationDegree(parentLOS.getEducationDegree());
         parent.setAvailableTranslationLanguages(ConverterUtil.getAvailableTranslationLanguages(parentLOS.getGoals()));
-        parent.setProvider(ProviderToDTO.convert(parentLOS.getProvider(), lang));
+        parent.setProvider(ProviderToDTO.convert(parentLOS.getProvider(), lang, defaultLang));
         parent.setStructure(ConverterUtil.getTextByLanguage(parentLOS.getStructure(), lang));
         parent.setAccessToFurtherStudies(ConverterUtil.getTextByLanguage(parentLOS.getAccessToFurtherStudies(), lang));
         parent.setGoals(ConverterUtil.getTextByLanguage(parentLOS.getGoals(), lang));
-        parent.setEducationDomain(ConverterUtil.getTextByLanguage(parentLOS.getEducationDomain(), lang));
+        parent.setEducationDomain(ConverterUtil.getTextByLanguage(parentLOS.getEducationDomain(), defaultLang));
         parent.setStydyDomain(ConverterUtil.getTextByLanguage(parentLOS.getStydyDomain(), lang));
         parent.setTranslationLanguage(lang);
         parent.setCreditValue(parentLOS.getCreditValue());
-        parent.setCreditUnit(ConverterUtil.getShortNameTextByLanguage(parentLOS.getCreditUnit(), uiLang));
+        parent.setCreditUnit(ConverterUtil.getShortNameTextByLanguage(parentLOS.getCreditUnit(), defaultLang));
 
         if (parentLOS.getLois() != null) {
             for (ParentLOI loi : parentLOS.getLois()) {
-                parent.getLois().add(ParentLOIToDTO.convert(loi, lang, uiLang));
+                parent.getLois().add(ParentLOIToDTO.convert(loi, lang, uiLang, defaultLang));
             }
         }
         return parent;

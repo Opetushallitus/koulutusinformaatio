@@ -33,7 +33,7 @@ public final class ParentLOIToDTO {
     private ParentLOIToDTO() {
     }
 
-    public static ParentLearningOpportunityInstanceDTO convert(final ParentLOI parentLOI, final String lang, String uiLang) {
+    public static ParentLearningOpportunityInstanceDTO convert(final ParentLOI parentLOI, final String lang, String uiLang, String defaultLang) {
         ParentLearningOpportunityInstanceDTO loi = new ParentLearningOpportunityInstanceDTO();
         loi.setId(parentLOI.getId());
         loi.setPrerequisite(CodeToDTO.convert(parentLOI.getPrerequisite(), uiLang));
@@ -46,9 +46,9 @@ public final class ParentLOIToDTO {
         }
 
         for (ApplicationSystem as : aoByAs.keySet()) {
-            ApplicationSystemDTO asDTO = ApplicationSystemToDTO.convert(as, uiLang);
+            ApplicationSystemDTO asDTO = ApplicationSystemToDTO.convert(as, defaultLang);
             for (ApplicationOption ao : aoByAs.get(as)) {
-                ApplicationOptionDTO aoDTO = ApplicationOptionToDTO.convert(ao, lang, uiLang);
+                ApplicationOptionDTO aoDTO = ApplicationOptionToDTO.convert(ao, lang, uiLang, defaultLang);
                 asDTO.getApplicationOptions().add(aoDTO);
             }
             loi.getApplicationSystems().add(asDTO);

@@ -32,12 +32,12 @@ function HeaderCtrl($scope, ApplicationBasketService, LanguageService, Config) {
 /**
  *  Controls footer actions
  */
-function FooterCtrl($scope, LanguageService, Config) {
+function FooterCtrl($scope, LanguageService, TranslationService, Config) {
     var lang = LanguageService.getLanguage();
 
     $scope.locales = {
-        opetushallitus: i18n.t('opetushallitus-address-line-1'),
-        opetusministerio: i18n.t('opetusministerio-address-line-1')
+        opetushallitus: TranslationService.getTranslation('opetushallitus-address-line-1'),
+        opetusministerio: TranslationService.getTranslation('opetusministerio-address-line-1')
     };
 
     $scope.links = {

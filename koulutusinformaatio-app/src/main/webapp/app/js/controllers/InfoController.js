@@ -1,7 +1,7 @@
 /**
  *  Controller for info views (parent and child)
  */
- function InfoCtrl($scope, $rootScope, $routeParams, $location, SearchService, LearningOpportunityProviderPictureService, UtilityService, Config, loResource) {
+ function InfoCtrl($scope, $rootScope, $routeParams, $location, SearchService, LearningOpportunityProviderPictureService, UtilityService, TranslationService, Config, loResource) {
     $scope.loType = $routeParams.loType;
 
     $scope.queryString = SearchService.getTerm();
@@ -12,14 +12,14 @@
         var getValintaperusteetTitle = function() {
             if ($scope.loType == 'erityisopetus' ||
                 $scope.loType == 'valmentava') {
-                return i18n.t('lo-application-er');
+                return TranslationService.getTranslation('lo-application-er');
             } else {
-                return i18n.t('lo-application');
+                return TranslationService.getTranslation('lo-application');
             }
         };
 
         return {
-            koulutus: i18n.t('lo-description'),
+            koulutus: TranslationService.getTranslation('lo-description'),
             valintaperusteet: getValintaperusteetTitle()
         }
     }());
@@ -27,7 +27,7 @@
     
 
     var setTitle = function(parent, child) {
-        var sitename = i18n.t('sitename');
+        var sitename = TranslationService.getTranslation('sitename');
         if (child) {
             $rootScope.title = child.name + ' - ' + sitename;
         } else {
@@ -217,15 +217,15 @@
 /**
  *  Controller for adding applications to application basket
  */
-function ApplicationCtrl($scope, ApplicationBasketService, UtilityService) {
+function ApplicationCtrl($scope, ApplicationBasketService, UtilityService, TranslationService) {
 
     $scope.addToBasket = function(aoId) {
         var basketType = ApplicationBasketService.getType();
         if (!basketType || $scope.selectedLOI.prerequisite.value == basketType) {
             ApplicationBasketService.addItem(aoId, $scope.selectedLOI.prerequisite.value);
         } else {
-            $scope.popoverTitle = i18n.t('popover-title-error');
-            $scope.popoverContent = "<div>" + i18n.t('popover-content-error') + "</div><a href='#/muistilista'>" + i18n.t('popover-content-link-to-application-basket') + "</a>";
+            $scope.popoverTitle = TranslationService.getTranslation('popover-title-error');
+            $scope.popoverContent = "<div>" + TranslationService.getTranslation('popover-content-error') + "</div><a href='#/muistilista'>" + TranslationService.getTranslation('popover-content-link-to-application-basket') + "</a>";
         }
     };
 

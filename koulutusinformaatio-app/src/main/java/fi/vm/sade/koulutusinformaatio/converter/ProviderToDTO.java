@@ -27,11 +27,11 @@ public final class ProviderToDTO {
     private ProviderToDTO() {
     }
 
-    public static LearningOpportunityProviderDTO convert(final Provider provider, final String lang) {
+    public static LearningOpportunityProviderDTO convert(final Provider provider, final String lang, final String defaultLang) {
         if (provider != null) {
             LearningOpportunityProviderDTO p = new LearningOpportunityProviderDTO();
             p.setId(provider.getId());
-            p.setName(ConverterUtil.getTextByLanguageUseFallbackLang(provider.getName(), lang));
+            p.setName(ConverterUtil.getTextByLanguageUseFallbackLang(provider.getName(), defaultLang));
             p.setApplicationSystemIds(provider.getApplicationSystemIDs());
             p.setPostalAddress(AddressToDTO.convert(provider.getPostalAddress()));
             p.setVisitingAddress(AddressToDTO.convert(provider.getVisitingAddress()));

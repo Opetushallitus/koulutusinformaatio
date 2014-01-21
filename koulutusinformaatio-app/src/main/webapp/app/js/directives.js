@@ -249,7 +249,7 @@ directive('kiRenderAdditionalProof', function() {
     }
 }).
 
-directive('kiRenderScores', function() {
+directive('kiRenderScores', ['TranslationService', function(TranslationService) {
     return {
         restrict: 'A',
         template: '<p data-ng-show="scores">{{scores}}</p>',
@@ -262,12 +262,12 @@ directive('kiRenderScores', function() {
                 if (scope.scoreElement.lowestScore 
                     || scope.scoreElement.highestScore
                     || scope.scoreElement.lowestAcceptedScore) {
-                    scope.scores = i18n.t(scope.typename + '-scores', {min: scope.scoreElement.lowestScore, max: scope.scoreElement.highestScore, threshold: scope.scoreElement.lowestAcceptedScore});
+                    scope.scores = TranslationService.getTranslation(scope.typename + '-scores', {min: scope.scoreElement.lowestScore, max: scope.scoreElement.highestScore, threshold: scope.scoreElement.lowestAcceptedScore});
                 }
             }
         }
     }
-}).
+}]).
 
 directive('kiRenderAttachments', function() {
     return {
@@ -339,7 +339,7 @@ directive('kiAbsoluteLink', function() {
 /**
  *  Creates and controls the location filter element
  */
- directive('kiLocationFilter', ['SearchLocationService', function(SearchLocationService) {
+ directive('kiLocationFilter', ['SearchLocationService', 'TranslationService', function(SearchLocationService, TranslationService) {
     return {
         restrict: 'A',
         templateUrl: 'templates/locationFilter.html',
@@ -363,7 +363,7 @@ directive('kiAbsoluteLink', function() {
                 return SearchLocationService.query($viewValue);
             }
 
-            scope.placeholder = i18n.t('location-filter-placeholder');
+            scope.placeholder = TranslationService.getTranslation('location-filter-placeholder');
         }
     };
  }]).
@@ -453,13 +453,13 @@ directive('kiAbsoluteLink', function() {
 /**
  *  Creates and controls the breadcrumb
  */
- directive('kiBreadcrumb', ['$location', 'SearchService', 'Config', 'LanguageService', 'FilterService', function($location, SearchService, Config, LanguageService, FilterService) {
+ directive('kiBreadcrumb', ['$location', 'SearchService', 'Config', 'LanguageService', 'FilterService', 'TranslationService', function($location, SearchService, Config, LanguageService, FilterService, TranslationService) {
     return {
         restrict: 'E,A',
         templateUrl: 'templates/breadcrumb.html',
         link: function(scope, element, attrs) {
             var home = 'home';
-            var root = i18n.t('breadcrumb-search-results');
+            var root = TranslationService.getTranslation('breadcrumb-search-results');
             var parent;
             var child;
             var provider;
@@ -480,7 +480,7 @@ directive('kiAbsoluteLink', function() {
             }, true);
 
             attrs.$observe('kiBreadcrumb', function(data) {
-                root = i18n.t(data);
+                root = TranslationService.getTranslation(data);
                 update();
             });
 
@@ -512,21 +512,28 @@ directive('kiAbsoluteLink', function() {
 /**
  *  Renders a text block with title. If no content exists the whole text block gets removed. 
  */
-directive('renderTextBlock', function() {
+directive('renderTextBlock', ['TranslationService', function(TranslationService) {
     return function(scope, element, attrs) {
 
             var title;
             var content;
 
+            /*
             attrs.$observe('title', function(value) {
+                //console.log(value);
                 if (value) {
-                    title = i18n.t(value);
+                    //title = TranslationService.getTranslation(value);
+                    title = TranslationService.getTranslationByTeachingLanguage(value);
                 }
                 update();
             });
+            */
 
             attrs.$observe('content', function(value) {
+                //console.log(attrs);
+                //console.log(value);
                 content = value;
+                title = TranslationService.getTranslationByTeachingLanguage(attrs.title);
                 update();
             });
 
@@ -551,7 +558,7 @@ directive('renderTextBlock', function() {
                 }
             };
         };
-}).
+}]).
 
 /**
  *  Renders study plan block
@@ -583,7 +590,7 @@ directive('kiTimestamp', ['UtilityService', function(UtilityService) {
     }
 }]).
 
-directive('kiTimeInterval', ['UtilityService', function(UtilityService) {
+directive('kiTimeInterval', ['UtilityService', 'TranslationService', function(UtilityService, TranslationService) {
     var isSameDay = function(start, end) {
         if (start.getFullYear() != end.getFullYear()) {
             return false;
@@ -607,7 +614,7 @@ directive('kiTimeInterval', ['UtilityService', function(UtilityService) {
 
             if (isSameDay(start, end)) {
                 element.append(start.getDate() + '.' + (start.getMonth() + 1) + '.' + start.getFullYear());
-                element.append(' ' + i18n.t('time-abbreviation') + ' ' + UtilityService.padWithZero(start.getHours()) + ':' + UtilityService.padWithZero(start.getMinutes()));
+                element.append(' ' + TranslationService.getTranslation('time-abbreviation') + ' ' + UtilityService.padWithZero(start.getHours()) + ':' + UtilityService.padWithZero(start.getMinutes()));
             } else {
                 element.append(start.getDate() + '.' + (start.getMonth() + 1) + '.' + start.getFullYear());
                 element.append(' - ');
@@ -620,7 +627,7 @@ directive('kiTimeInterval', ['UtilityService', function(UtilityService) {
 /**
  *  Render application system state as label
  */
-directive('kiAsStateLabel', ['UtilityService', function(UtilityService) {
+directive('kiAsStateLabel', ['UtilityService', 'TranslationService', function(UtilityService, TranslationService) {
     
     var isAsOngoing = function(as) {
         var result = false;
@@ -655,10 +662,10 @@ directive('kiAsStateLabel', ['UtilityService', function(UtilityService) {
 
             if (isOngoing) {
                 element.addClass('label vih');
-                element.text(i18n.t('label-as-ongoing'));
+                element.text(TranslationService.getTranslation('label-as-ongoing'));
             } else {
                 element.addClass('label har');
-                element.text(i18n.t('label-as-not-ongoing'));
+                element.text(TranslationService.getTranslation('label-as-not-ongoing'));
             }
         })
     }
@@ -667,32 +674,35 @@ directive('kiAsStateLabel', ['UtilityService', function(UtilityService) {
 /**
  *  Render application system state for search result view
  */
-directive('kiAsState', function() {
+directive('kiAsState', ['TranslationService', function(TranslationService) {
     return function(scope, element, attrs) {
         if (scope.lo.asOngoing) {
-            element.text(i18n.t('search-as-ongoing'));
+            element.text(TranslationService.getTranslation('search-as-ongoing'));
         } else if (scope.lo.nextApplicationPeriodStarts) {
             var ts = new Date(scope.lo.nextApplicationPeriodStarts);
-            element.text(i18n.t('search-as-next') + ' ' + ts.getDate() + '.' + (ts.getMonth() + 1) + '.' + ts.getFullYear());
+            element.text(TranslationService.getTranslation('search-as-next') + ' ' + ts.getDate() + '.' + (ts.getMonth() + 1) + '.' + ts.getFullYear());
         }
     }
-
-
-}).
+}]).
 
 /**
  *  Render application system status
  */
 directive('kiRenderApplicationSystemActive', function() {
     return {
-        restrict: 'E,A',
+        restrict: 'A',
         template: '<span data-ng-switch="active">' +
-                    '<span data-ng-switch-when="future"><span data-ki-i18n="application-system-active-future"></span> <span data-ki-timestamp="{{timestamp}}"></span></span>' +
-                    '<span data-ng-switch-when="past" data-ki-i18n="application-system-active-past"></span>' +
-                    '<span data-ng-switch-when="present"data-ki-i18n="application-system-active-present"></span>' +
+                    '<span data-ng-switch-when="future"><span data-ki-i18n="application-system-active-future" data-lang="{{lang}}"></span> <span data-ki-timestamp="{{timestamp}}"></span></span>' +
+                    '<span data-ng-switch-when="past" data-ki-i18n="application-system-active-past" data-lang="{{lang}}"></span>' +
+                    '<span data-ng-switch-when="present"data-ki-i18n="application-system-active-present" data-lang="{{lang}}"></span>' +
                 '</span>',
         link: function(scope, element, attrs) {
             var as;
+
+            attrs.$observe('lang', function(value) {
+                scope.lang = value;
+            });
+
             scope.$watch('as', function(data) {
                 as = data;
                 update();
@@ -710,6 +720,7 @@ directive('kiRenderApplicationSystemActive', function() {
                     }
                 }
             };
+            
         }
     }
 }).
@@ -721,12 +732,17 @@ directive('kiRenderApplicationOptionActive', function() {
     return {
         restrict: 'E,A',
         template: '<span data-ng-switch="active">' +
-                    '<span data-ng-switch-when="future"><span data-ki-i18n="application-system-active-future"></span> <span data-ki-timestamp="{{timestamp}}"></span></span>' +
-                    '<span data-ng-switch-when="past" data-ki-i18n="application-system-active-past"></span>' +
-                    '<span data-ng-switch-when="present"data-ki-i18n="application-system-active-present"></span>' +
+                    '<span data-ng-switch-when="future"><span data-ki-i18n="application-system-active-future" data-lang="{{lang}}"></span> <span data-ki-timestamp="{{timestamp}}"></span></span>' +
+                    '<span data-ng-switch-when="past" data-ki-i18n="application-system-active-past" data-lang="{{lang}}"></span>' +
+                    '<span data-ng-switch-when="present"data-ki-i18n="application-system-active-present" data-lang="{{lang}}"></span>' +
                 '</span>',
         link: function(scope, element, attrs) {
             var ao;
+
+            attrs.$observe('lang', function(value) {
+                scope.lang = value;
+            });
+            
             scope.$watch('ao', function(data) {
                 ao = data;
                 update();
@@ -772,14 +788,36 @@ directive('kiBanner', ['$location', function($location) {
  */
 directive('kiI18n', ['TranslationService', function(TranslationService) {
     return function(scope, element, attrs) {
-        attrs.$observe('kiI18n', function(value) {
-            $(element).empty();
-            var translation = TranslationService.getTranslation(value);
-            if (attrs.showColon) {
-                translation += ':';
-            }
+        var key;
+        var lang;
 
-            element.append(translation);
+        attrs.$observe('kiI18n', function(value) {
+            key = value;
+            update();
         });
+
+        attrs.$observe('lang', function(value) {
+            lang = value;
+            update();
+        });
+
+        var update = function() {
+            if (key) {
+                $(element).empty();
+
+                var translation;
+                if (lang) {
+                    translation = TranslationService.getTranslationByLanguage(key, lang);
+                } else {
+                    translation = TranslationService.getTranslation(key);
+                }
+                
+                if (attrs.showColon) {
+                    translation += ':';
+                }
+
+                element.append(translation);
+            }
+        }
     }    
 }]);

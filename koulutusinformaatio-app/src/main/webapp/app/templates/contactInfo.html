@@ -1,7 +1,7 @@
 <div data-ng-show="showContact">
-<h2 data-ki-i18n="contact-information" id="{{anchor}}"></h2>
+<h2 data-ki-i18n="contact-information" data-lang="{{translationLanguage}}" id="{{anchor}}"></h2>
 <p data-ng-show="provider.webPage">
-    <a data-ki-absolute-link="{{provider.webPage}}" target="_blank" data-ki-i18n="provider-web-page"></a>
+    <a data-ki-absolute-link="{{provider.webPage}}" target="_blank" data-ki-i18n="provider-web-page" data-lang="{{translationLanguage}}"></a>
 </p>
 <p>
     <p data-ng-show="provider.visitingAddress">
@@ -21,10 +21,10 @@
     <span data-ki-email="{{provider.email}}"></span><br/>
     </span>
     <span data-ng-show="provider.phone">
-    puh. {{provider.phone}}<br />
+        <span data-ki-i18n="plain:phone"></span> {{provider.phone}}<br />
     </span>
     <span data-ng-show="provider.fax">
-    fax. {{provider.fax}}
+        <span data-ki-i18n="plain:fax"></span> {{provider.fax}}
     </span>
 </p>
 </div>

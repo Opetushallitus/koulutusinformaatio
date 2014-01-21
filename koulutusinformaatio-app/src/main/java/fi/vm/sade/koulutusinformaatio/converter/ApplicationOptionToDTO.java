@@ -30,11 +30,11 @@ public final class ApplicationOptionToDTO {
     private ApplicationOptionToDTO() {
     }
 
-    public static ApplicationOptionDTO convert(final ApplicationOption applicationOption, final String lang, final String uiLang) {
+    public static ApplicationOptionDTO convert(final ApplicationOption applicationOption, final String lang, final String uiLang, String defaultLang) {
         if (applicationOption != null) {
             ApplicationOptionDTO dto = new ApplicationOptionDTO();
             dto.setId(applicationOption.getId());
-            dto.setName(ConverterUtil.getTextByLanguage(applicationOption.getName(), lang));
+            dto.setName(ConverterUtil.getTextByLanguage(applicationOption.getName(), defaultLang));
             dto.setAoIdentifier(applicationOption.getAoIdentifier());
             dto.setAttachmentDeliveryDeadline(applicationOption.getAttachmentDeliveryDeadline());
             dto.setAttachmentDeliveryAddress(AddressToDTO.convert(applicationOption.getAttachmentDeliveryAddress()));
@@ -45,11 +45,11 @@ public final class ApplicationOptionToDTO {
             dto.setSora(applicationOption.isSora());
             dto.setEducationDegree(applicationOption.getEducationDegree());
             dto.setTeachingLanguages(applicationOption.getTeachingLanguages());
-            dto.setSelectionCriteria(ConverterUtil.getTextByLanguage(applicationOption.getSelectionCriteria(), uiLang));
+            dto.setSelectionCriteria(ConverterUtil.getTextByLanguage(applicationOption.getSelectionCriteria(), lang));
             dto.setPrerequisite(CodeToDTO.convert(applicationOption.getPrerequisite(), lang));
             dto.setExams(ExamToDTO.convertAll(applicationOption.getExams(), lang));
-            dto.setProvider(ProviderToDTO.convert(applicationOption.getProvider(), lang));
-            dto.setChildRefs(ChildLOIRefToDTO.convert(applicationOption.getChildLOIRefs(), lang));
+            dto.setProvider(ProviderToDTO.convert(applicationOption.getProvider(), lang, defaultLang));
+            dto.setChildRefs(ChildLOIRefToDTO.convert(applicationOption.getChildLOIRefs(), defaultLang));
             dto.setSpecificApplicationDates(applicationOption.isSpecificApplicationDates());
             dto.setApplicationStartDate(applicationOption.getApplicationStartDate());
             dto.setApplicationEndDate(applicationOption.getApplicationEndDate());
@@ -62,9 +62,9 @@ public final class ApplicationOptionToDTO {
                     dto.setNextApplicationPeriodStarts(applicationOption.getApplicationStartDate());
                 }
             }
-            dto.setAttachments(ApplicationOptionAttachmentToDTO.convertAll(applicationOption.getAttachments(), uiLang));
-            dto.setEmphasizedSubjects(EmphasizedSubjectToDTO.convertAll(applicationOption.getEmphasizedSubjects(), uiLang));
-            dto.setAdditionalInfo(ConverterUtil.getTextByLanguage(applicationOption.getAdditionalInfo(), uiLang));
+            dto.setAttachments(ApplicationOptionAttachmentToDTO.convertAll(applicationOption.getAttachments(), lang));
+            dto.setEmphasizedSubjects(EmphasizedSubjectToDTO.convertAll(applicationOption.getEmphasizedSubjects(), lang));
+            dto.setAdditionalInfo(ConverterUtil.getTextByLanguage(applicationOption.getAdditionalInfo(), lang));
             dto.setAdditionalProof(AdditionalProofToDTO.convert(applicationOption.getAdditionalProof(), lang));
             dto.setOverallScoreLimit(ScoreLimitToDTO.convert(applicationOption.getOverallScoreLimit()));
             dto.setKaksoistutkinto(applicationOption.isKaksoistutkinto());

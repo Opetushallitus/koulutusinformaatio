@@ -1,5 +1,5 @@
 <div data-ng-show="showAttachments">
-    <h2 data-ki-i18n="required-attachments"></h2>
+    <h2 data-ki-i18n="required-attachments" data-lang="{{translationLanguage}}"></h2>
     <div data-ng-repeat="att in attachments" data-ng-show="att.descreption">
         <span class="bold">{{att.type}}</span>
         <div data-ng-bind-html-unsafe="att.descreption"></div>
@@ -12,9 +12,9 @@
         </colgroup>
         <thead>
             <tr>
-                <th data-ki-i18n="attachment-header-name"></th>
-                <th data-ki-i18n="attachment-header-address"></th>
-                <th data-ki-i18n="attachment-header-duedate"></th>
+                <th data-ki-i18n="attachment-header-name" data-lang="{{translationLanguage}}"></th>
+                <th data-ki-i18n="attachment-header-address" data-lang="{{translationLanguage}}"></th>
+                <th data-ki-i18n="attachment-header-duedate" data-lang="{{translationLanguage}}"></th>
             </tr>
         </thead>
         <tbody>
