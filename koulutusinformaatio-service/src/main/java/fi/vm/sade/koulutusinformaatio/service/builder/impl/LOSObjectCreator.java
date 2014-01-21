@@ -147,12 +147,9 @@ public class LOSObjectCreator extends ObjectCreator {
             los.setType(TarjontaConstants.TYPE_SPECIAL);
         }
 
-        System.out.println("\nkomoto oid: " + childKomoto.getOid() + "\n");
-        
         los.setId(specialLOSId);
         String teachingLang = koodistoService.searchFirstCodeValue(childKomoto.getOpetuskieletUris().get(0)).toLowerCase();
         Map<String, String> nameTranslations = Maps.newHashMap();
-        System.out.println("Koulutusohjelman nimi: " + childKomoto.getKoulutusohjelmanNimi());
         nameTranslations.put(teachingLang, childKomoto.getKoulutusohjelmanNimi());
         los.setName(new I18nText(nameTranslations, nameTranslations));
         los.setEducationDegree(koodistoService.searchFirstCodeValue(parentKomo.getKoulutusAsteUri()));
@@ -274,9 +271,7 @@ public class LOSObjectCreator extends ObjectCreator {
     
     public UniversityAppliedScienceLOS createUasLOS(KoulutusKorkeakouluV1RDTO koulutus) throws KoodistoException {
     	UniversityAppliedScienceLOS los = new UniversityAppliedScienceLOS();
-    	
-    	System.out.println("\nkoulutus oid: " + koulutus.getOid() + "\n");
-    	
+
     	los.setType(TarjontaConstants.TYPE_AMK);
     	los.setId(koulutus.getOid());
     	if (!koulutus.getKuvausKomoto().get(KomotoTeksti.LISATIETOA_OPETUSKIELISTA).getTekstis().containsKey("undefined")) {
