@@ -34,6 +34,7 @@ public class DataStatusDTO {
     private boolean running;
     private Date runningSince;
     private String runningSinceStr;
+    private boolean snapshotRenderingRunning;
 
     public Date getLastUpdateFinished() {
         return lastUpdateFinished;
@@ -97,5 +98,13 @@ public class DataStatusDTO {
 
     public void setRunningSinceStr(String runningSinceStr) {
         this.runningSinceStr = runningSinceStr;
+    }
+
+    public boolean isSnapshotRenderingRunning() {
+        return snapshotRenderingRunning;
+    }
+
+    public void setSnapshotRenderingRunning(boolean snapshotRenderingRunning) {
+        this.snapshotRenderingRunning = snapshotRenderingRunning;
     }
 }

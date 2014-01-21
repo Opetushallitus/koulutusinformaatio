@@ -18,13 +18,18 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+
 import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
+
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocument;
+import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -35,19 +40,23 @@ import org.mockito.MockitoAnnotations.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.core.convert.ConversionService;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.argThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static junit.framework.Assert.assertEquals;
+
+import static junit.framework.Assert.assertEquals;
 
 /**
  * @author Hannu Lyytikainen
  */
-@Ignore
 @RunWith(MockitoJUnitRunner.class)
 public class IndexerServiceImplTest {
 
@@ -88,10 +97,32 @@ public class IndexerServiceImplTest {
         aoEndCal.set(Calendar.DATE, 15);
         applicationOptionApplicationPeriodEnds = aoEndCal.getTime();
         when(lopUpdateHttpSolrServer.query(any(SolrQuery.class))).thenReturn(new QueryResponse());
+        
+        SolrDocumentList timestamps1 = new SolrDocumentList();
+        SolrDocument timestamp1 = new SolrDocument();
+        timestamp1.addField(LearningOpportunity.NAME, "01.22.2013 08:43:15");
+        timestamps1.add(timestamp1);
+        QueryResponse timestampResp1 = mock(QueryResponse.class);
+        
+        when(loHttpSolrServer.query(any(SolrQuery.class))).thenReturn(timestampResp1);
+        when(timestampResp1.getResults()).thenReturn(timestamps1);
+        
+        SolrDocumentList timestamps2 = new SolrDocumentList();
+        SolrDocument timestamp2 = new SolrDocument();
+        timestamp2.addField(LearningOpportunity.NAME, "01.23.2013 08:43:15");
+        QueryResponse timestampResp2 = mock(QueryResponse.class);
+        timestamps2.add(timestamp2);
+        when(loUpdateHttpSolrServer.query(any(SolrQuery.class))).thenReturn(timestampResp2);
+        when(timestampResp2.getResults()).thenReturn(timestamps2);
+        
+        when(loHttpSolrServer.getBaseURL()).thenReturn("lo");
+        when(loUpdateHttpSolrServer.getBaseURL()).thenReturn("loUpdate");
+        
         indexerServiceImpl = new IndexerServiceImpl(conversionService, loUpdateHttpSolrServer, lopUpdateHttpSolrServer, locationUpdateHttpSolrServer, loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer);
     }
 
     @Test
+    @Ignore
     public void testAddParentLOS() throws Exception {
         ParentLOS p = createParentLOS();
         indexerServiceImpl.addLearningOpportunitySpecification(p, loUpdateHttpSolrServer, lopUpdateHttpSolrServer);
@@ -100,6 +131,7 @@ public class IndexerServiceImplTest {
     }
 
     @Test
+    @Ignore
     public void testAOSpecificApplicationDates() throws Exception {
         ParentLOS p = createParentLOSWithApplicationOptionSpecificDates();
         indexerServiceImpl.addLearningOpportunitySpecification(p, loUpdateHttpSolrServer, lopUpdateHttpSolrServer);
@@ -123,10 +155,29 @@ public class IndexerServiceImplTest {
     }
 
     @Test
+    @Ignore
     public void testCommitLOChanges() throws Exception {
         indexerServiceImpl.commitLOChanges(loUpdateHttpSolrServer, lopUpdateHttpSolrServer, locationUpdateHttpSolrServer, true);
         verify(loUpdateHttpSolrServer).commit();
         verify(lopUpdateHttpSolrServer).commit();
+    }
+    
+    @Test
+    public void getLoCollectionToUpdateTest() {
+        HttpSolrServer result = this.indexerServiceImpl.getLoCollectionToUpdate();
+        assertEquals(result, loHttpSolrServer);
+    }
+    
+    @Test
+    public void getLopCollectionToUpdateTest() {
+        HttpSolrServer result = this.indexerServiceImpl.getLopCollectionToUpdate(loHttpSolrServer);
+        assertEquals(result, lopHttpSolrServer);
+    }
+    
+    @Test
+    public void getLocationCollectionToUpdateTest() {
+        HttpSolrServer result = this.indexerServiceImpl.getLocationCollectionToUpdate(loHttpSolrServer);
+        assertEquals(result, locationHttpSolrServer);
     }
 
     private ParentLOS createParentLOS() {

@@ -26,7 +26,10 @@ import java.util.List;
 /**
  * @author Hannu Lyytikainen
  */
-public class LanguageSelectionToDTO {
+public final class LanguageSelectionToDTO {
+
+    private LanguageSelectionToDTO() {
+    }
 
     public static LanguageSelectionDTO convert(LanguageSelection ls, String lang) {
         if (ls != null) {

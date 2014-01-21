@@ -25,7 +25,10 @@ import java.util.Date;
 /**
  * @author Mikko Majapuro
  */
-public class ApplicationOptionToDTO {
+public final class ApplicationOptionToDTO {
+
+    private ApplicationOptionToDTO() {
+    }
 
     public static ApplicationOptionDTO convert(final ApplicationOption applicationOption, final String lang, final String uiLang) {
         if (applicationOption != null) {
@@ -66,6 +69,7 @@ public class ApplicationOptionToDTO {
             dto.setOverallScoreLimit(ScoreLimitToDTO.convert(applicationOption.getOverallScoreLimit()));
             dto.setKaksoistutkinto(applicationOption.isKaksoistutkinto());
             dto.setAthleteEducation(applicationOption.isAthleteEducation());
+            dto.setEducationCodeUri(applicationOption.getEducationCodeUri());
             return dto;
         }
         return null;

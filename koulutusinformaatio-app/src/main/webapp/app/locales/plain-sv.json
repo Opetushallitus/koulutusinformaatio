@@ -1,0 +1,32 @@
+{
+    "page-title": "Studieinfo textversion",
+    "header-home": "Studieinfo.fi",
+    "to-full-version": "Gå till tjänstens fullständiga version",
+    "home": "Framsida",
+    "lo-tab-academy": "Beskrivning av läroanstalten",
+
+    "index-pager-all": "Visa alla utbildningar på sidan",
+    "index-pager-page-1": "Visa",
+    "index-pager-page-2": "utbildningar på sidan",
+    "index-pager-next": "Nästa sida",
+    "index-pager-previous": "Föregående sida",
+
+    "lo-type-special": "Specialyrkesundervisning",
+    "provider-erityis": "Specialyrkesundervisning anordnas av",
+    "provider-valmentava": "Läroanstalter som erbjuder undervisning och handledning i tränings- och rehabiliteringssyfte",
+
+    "description-basic-info": "Grunduppgifter",
+    "email": "E-post",
+    "phone": "Telefon",
+
+    "postal-address": "Postadress",
+    "visiting-address": "Besöksadress",
+    "fax": "Fax",
+    "www": "www",
+
+    "social-media": "Läroanstaltens länkar till sociala medier",
+
+    "footer-service-providers": "Tjänsten erbjuds av",
+    "footer-provider-1": "Undervisnings- och kulturministeriet",
+    "footer-provider-2": "Utbildningsstyrelsen"
+}

@@ -22,7 +22,10 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOfficeDTO;
 /**
  * @author Hannu Lyytikainen
  */
-public class ApplicationOfficeToDTO {
+public final class ApplicationOfficeToDTO {
+
+    private ApplicationOfficeToDTO() {
+    }
 
     public static ApplicationOfficeDTO convert(ApplicationOffice applicationOffice, String lang) {
         if (applicationOffice == null) {

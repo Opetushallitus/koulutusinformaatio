@@ -3,6 +3,7 @@
     "title-front-page": "Etusivu",
     "title-search-results": "Hakutulokset",
     "title-application-basket": "Muistilista",
+    "link-to-accessible-version": "Erityisoppilaitosten koulutukset tekstiversiona",
 
     "breadcrumb-search-results": "Hakutulokset",
 
@@ -15,7 +16,8 @@
     "secondary-school-based": "Lukiopohjainen koulutus",
 
     "search-result-title": "Tulokset haulle",
-    "search-result-title-description": "Valitse vasemmalta haluamasi hakutulosrajaukset",
+    "search-result-title-description": "Valitse vasemmalta haluamasi hakutulosrajaukset. Suluissa oleva luku kertoo hakusanaa vastaavien koulutusten määrän.",
+    "search-articles-result-title-description": "Tältä välilehdeltä löydät hakemiseen ja opiskeluun liittyviä tietoja ja artikkeleita.",
     "search-result-count-unit": "kpl",
     "search-field-placeholder": "Hae koulutusta tästä",
     "no-search-results": "Ei hakutuloksia",
@@ -27,9 +29,11 @@
     "search-as-ongoing": "Haku käynnissä!",
     "search-as-next": "Tulossa hakuun",
     "search-field-label": "Etsi koulutuksia tästä",
-    "search-field-placeholder": "Kirjoita tähän esim. tutkinto, ammatti tai oppilaitoksen nimi",
+    "search-field-placeholder": "Kirjoita tähän esim. tutkinto, ammatti tai hakusana",
     "search-button": "Hae",
-
+    "search-tab-lo": "Koulutuksia",
+    "search-tab-article": "Tietoa ja tarinoita",
+    
     "filter-title": "Rajaa hakutuloksia tästä",
     "filter-search-title": "Pohjakoulutus",
     "filter-search-subtitle": "Valitse ylin suorittamasi koulutus",
@@ -145,6 +149,7 @@
     "label-as-ongoing": "Haku käynnissä",
     "label-as-not-ongoing": "Ei nyt haettavissa",
     "not-applicable": "Huom! Haku koulutukseen ei tapahdu tämän palvelun kautta. Tutustu hakutapaan Hakeminen-välilehdellä.",
+    "time-abbreviation": "klo",
 
     "language-fi": "Suomeksi",
     "language-sv": "På svenska",
@@ -190,6 +195,9 @@
     
     "valitut-rajaukset": "Valitut rajaukset",
     "facet-opetuskieli": "Rajaa opetuskielen mukaan",
+    "facet-teemat": "Rajaa aiheen mukaan",
+    "topic_ffm": "Aihe",
+    "theme_ffm": "Teema",
     "teachingLangCode_ffm": "Opetuskieli",
     "location-rajaus": "Paikka",
     "facet-remove": "Poista",

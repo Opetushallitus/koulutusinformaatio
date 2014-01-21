@@ -54,7 +54,9 @@ public class ParentLearningOpportunitySpecificationEntity {
     private List<ParentLearningOpportunityInstanceEntity> lois;
     @Reference
     private List<ChildLearningOpportunitySpecificationEntity> children;
-
+    
+    @Embedded
+    private List<CodeEntity> teachingLanguages;
 
     public ParentLearningOpportunitySpecificationEntity() {
     }
@@ -161,5 +163,13 @@ public class ParentLearningOpportunitySpecificationEntity {
 
     public void setChildren(List<ChildLearningOpportunitySpecificationEntity> children) {
         this.children = children;
+    }
+    
+    public List<CodeEntity> getTeachingLanguages() {
+        return teachingLanguages;
+    }
+
+    public void setTeachingLanguages(List<CodeEntity> teachingLanguages) {
+        this.teachingLanguages = teachingLanguages;
     }
 }

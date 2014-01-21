@@ -1,7 +1,7 @@
 <section class="content-container margin-bottom-2">
     <div class="grid16-16 application-basket-container">
         <div data-ki-breadcrumb="title-application-basket-content" id="breadcrumb" class="float-left"></div>
-        <a class="float-right" href="#/haku/{{queryString}}" data-ki-i18n="application-basket-back"></a>
+        <a class="float-right" href="#!/haku/{{queryString}}" data-ki-i18n="application-basket-back"></a>
         <div class="clear"></clear>
         <h1 class="float-left margin-top-0">{{title}} ({{itemCount}})</h1>
         <div class="clear"></div>
@@ -14,23 +14,31 @@
                 <div class="application-basket margin-bottom-6" data-ng-repeat="as in applicationItems">
                     <table class="margin-bottom-2">
                         <colgroup>
-                            <col style="width: 33%;"></col>
-                            <col style="width: 47%;"></col>
-                            <col></col>
+                            <col style="width: 25%;"></col>
+                            <col style="width: 30%;"></col>
+                            <col style="width: 21%;"></col>
+                            <col style="width: 21%;"></col>
                             <col></col>
                         </colgroup>
                         <thead>
                             <tr>
-                                <th colspan="4"><span class="margin-0 block h2">{{as.applicationSystemName}} <span data-ki-timestamp="{{as.applicationDates.startDate}}"></span> - <span data-ki-timestamp="{{as.applicationDates.endDate}}"></span></span></th>
+                                <th colspan="5"><span class="margin-0 block h2">{{as.applicationSystemName}} <span data-ki-timestamp="{{as.applicationDates.startDate}}"></span> - <span data-ki-timestamp="{{as.applicationDates.endDate}}"></span></span></th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr data-ng-repeat="item in as.applicationOptions" data-ng-class="{first: $first, last: $last}">
+                            <tr class="first">
+                                <th></th>
+                                <th></th>
+                                <th>Liitteet ja kokeet</th>
+                                <th>Liitteen määräaika tai kokeen ajankohta</th>
+                                <th class="last"></th>
+                            </tr>
+                            <tr data-ng-repeat="item in as.applicationOptions" data-ng-class="{last: $last}">
                                 <td>
                                     <ul class="nobullet">
                                         <li>
                                             <h4 class="margin-top-0 margin-bottom-0">{{item.providerName}}, <span class="capitalized">{{item.providerLocation}}</span></h4>
-                                            <a data-ng-hide="item.isLukio" class="block" href="#/tutkinto/{{item.parent.id}}#{{item.prerequisite.value}}">{{item.parent.name}}</a>
+                                            <a data-ng-hide="item.isLukio" class="block" href="#!/tutkinto/{{item.parent.id}}#{{item.prerequisite.value}}">{{item.parent.name}}</a>
                                         </li>
                                         <li class="margin-top-2"><span>{{item.qualification}}</span></li>
                                         <li><span>{{item.prerequisite.description}}</span></li>
@@ -41,18 +49,33 @@
                                         <div data-ng-switch-when="false">
                                             <h4 class="margin-top-0 margin-bottom-1">{{item.name}}</h4>
                                             <ul class="disc">
-                                                <li data-ng-repeat="child in item.children"><a href="#/koulutusohjelma/{{child.losId}}#{{item.prerequisite.value}}">{{child.name}}</a></li>
+                                                <li data-ng-repeat="child in item.children"><a href="#!/koulutusohjelma/{{child.losId}}#{{item.prerequisite.value}}">{{child.name}}</a></li>
                                             </ul>
                                         </div>
                                         <div data-ng-switch-when="true">
-                                            <a href="#/lukio/{{item.losId}}" class="margin-top-0 margin-bottom-1 block">{{item.providerName}}, {{item.name}}</a>
+                                            <a href="#!/lukio/{{item.losId}}" class="margin-top-0 margin-bottom-1 block">{{item.providerName}}, {{item.name}}</a>
                                         </div>
                                     </div>
                                 </td>
-                                <td class="align-left">
-                                    <ul class="nobullet">
-                                        <li data-ng-repeat="dl in item.deadlines">{{dl.name}}<span class="bold margin-left-2" data-ki-timestamp="{{item.attachmentDeliveryDeadline}}"></span></li>
-                                    </ul>
+                                <td class="align-left table-container" colspan="2">
+                                    <table class="sub">
+                                        <colgroup>
+                                            <col style="width: 50%;"></col>
+                                            <col style="width: 50%;"></col>
+                                        </colgroup>
+                                        <tr data-ng-repeat="attachment in item.attachments | orderBy:'dueDate'">
+                                            <td class="align-right">{{attachment.type}}</td>
+                                            <td class="bold"><span data-ki-timestamp="{{attachment.dueDate}}"></span></td>
+                                        </tr>
+                                        <tr data-ng-repeat="exam in item.exams">
+                                            <td class="align-right">{{exam.type}}</td>
+                                            <td class="bold">
+                                                <span data-ng-repeat="examEvent in exam.examEvents | orderBy:'start'">
+                                                    <span data-ki-time-interval data-exam-event="examEvent"></span><br/>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </td>
                                 <td class="basket-remove last">
                                     <a href="javascript:void(0)" class="remove" data-ng-click="removeItem(item.id)">

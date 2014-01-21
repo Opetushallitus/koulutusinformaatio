@@ -37,9 +37,10 @@ public class LOSearchResult {
     private Date nextApplicationPeriodStarts;
     private String type;
     private String credits;
+    private String educationType;
 
     public LOSearchResult(String id, String name, String lopId, String lopName,
-                          String prerequisite, String prerequisiteCode, String parentId, String losId, String type, String credits) {
+                          String prerequisite, String prerequisiteCode, String parentId, String losId, String type, String credits, String educationType) {
         this.id = id;
         this.name = name;
         this.lopId = lopId;
@@ -50,6 +51,7 @@ public class LOSearchResult {
         this.losId = losId;
         this.type = type;
         this.credits = credits;
+        this.educationType = educationType;
     }
 
     public String getId() {
@@ -146,5 +148,13 @@ public class LOSearchResult {
 
     public void setCredits(String credits) {
         this.credits = credits;
+    }
+
+    public String getEducationType() {
+        return educationType;
+    }
+
+    public void setEducationType(String educationType) {
+        this.educationType = educationType;
     }
 }

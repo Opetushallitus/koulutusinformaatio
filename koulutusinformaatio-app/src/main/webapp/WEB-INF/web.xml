@@ -59,12 +59,27 @@
         </init-param>
         <init-param>
             <param-name>com.sun.jersey.config.property.WebPageContentRegex</param-name>
-            <param-value>(/app/.*)|(/(buildversion|robots)\.txt)</param-value>
+            <param-value>(/app/.*)|(/m/.*)|(/(buildversion|robots)\.txt)</param-value>
+        </init-param>
+        <init-param>
+            <param-name>com.sun.jersey.freemarker.templateBasePath</param-name>
+            <param-value>freemarker</param-value>
+        </init-param>
+        <init-param>
+            <param-name>com.sun.jersey.spi.container.ContainerRequestFilters</param-name>
+            <param-value>fi.vm.sade.koulutusinformaatio.filter.SearchEngineFilter</param-value>
         </init-param>
     </filter>
 
+    <filter>
+        <filter-name>searchEngineFilter</filter-name>
+        <filter-class>fi.vm.sade.koulutusinformaatio.filter.SearchEngineFilter</filter-class>
+    </filter>
 
-
+    <filter-mapping>
+        <filter-name>searchEngineFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
     <filter-mapping>
         <filter-name>SetCharacterEncodingFilter</filter-name>
         <url-pattern>/*</url-pattern>

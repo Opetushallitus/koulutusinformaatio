@@ -17,11 +17,11 @@
 package fi.vm.sade.koulutusinformaatio.domain.exception;
 
 /**
- * Abstract super class for all koulutusinformaatio-service exceptions.
+ * Super class for all koulutusinformaatio-service exceptions.
  *
  * @author Hannu Lyytikainen
  */
-public abstract class KIException extends Exception {
+public class KIException extends Exception {
     public KIException(String s) {
         super(s);
     }

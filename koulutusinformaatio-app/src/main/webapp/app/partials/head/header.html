@@ -14,7 +14,7 @@
             <div class="actions primarylinks">
                 <ul>
                     <li class="icon basket">
-                        <a id="appbasket-link" href="#/muistilista">
+                        <a id="appbasket-link" href="#!/muistilista">
                             <span data-ki-i18n="title-application-basket-content"></span> <span>({{appBasketItemCount()}})</span>
                         </a>
                     </li>
@@ -22,4 +22,12 @@
             </div>
         </div>
     </div>
+    
+    <nav>
+        <div class="navigation-container">
+            <div data-ki-navigation></div>
+            <a class="action-link" data-ng-href="{{links.textversion}}"><span data-ki-i18n="link-to-accessible-version"></span></a>
+        </div>
+    </nav>
+    
 </header>

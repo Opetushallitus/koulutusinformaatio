@@ -44,6 +44,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     private PictureDAO pictureDAO;
     private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO;
     private SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO;
+    private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
 
     @Autowired
     public EducationDataQueryServiceImpl(ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO,
@@ -51,7 +52,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
                                          ChildLearningOpportunityDAO childLearningOpportunityDAO,
                                          DataStatusDAO dataStatusDAO, PictureDAO pictureDAO,
                                          UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO,
-                                         SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO) {
+                                         SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO, LearningOpportunityProviderDAO learningOpportunityProviderDAO) {
         this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;
         this.modelMapper = modelMapper;
@@ -60,6 +61,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
         this.pictureDAO = pictureDAO;
         this.upperSecondaryLearningOpportunitySpecificationDAO = upperSecondaryLearningOpportunitySpecificationDAO;
         this.specialLearningOpportunitySpecificationDAO = specialLearningOpportunitySpecificationDAO;
+        this.learningOpportunityProviderDAO = learningOpportunityProviderDAO;
     }
 
     @Override
@@ -156,6 +158,17 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
         }
         else {
             throw new ResourceNotFoundException(String.format("Special learning opportunity specification not found: %s", id));
+        }
+    }
+
+    @Override
+    public Provider getProvider(String id) throws ResourceNotFoundException {
+        LearningOpportunityProviderEntity entity = learningOpportunityProviderDAO.get(id);
+        if (entity != null) {
+            return modelMapper.map(entity, Provider.class);
+        }
+        else {
+            throw new ResourceNotFoundException(String.format("Learning opportunity provider not found: %s", id));
         }
     }
 

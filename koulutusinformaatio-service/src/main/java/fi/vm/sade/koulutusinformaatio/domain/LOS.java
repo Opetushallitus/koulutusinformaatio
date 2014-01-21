@@ -16,16 +16,37 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
+import java.util.List;
+
 /**
  * @author Hannu Lyytikainen
  */
 public abstract class LOS {
+    
     private String type;
-
+    private List<Code> topics;
+    private List<Code> themes;
+    
     public String getType() {
         return type;
     }
     public void setType(String type) {
         this.type = type;
+    }
+    
+    public List<Code> getTopics() {
+        return topics;
+    }
+
+    public void setTopics(List<Code> topics) {
+        this.topics = topics;
+    }
+
+    public List<Code> getThemes() {
+        return themes;
+    }
+
+    public void setThemes(List<Code> themes) {
+        this.themes = themes;
     }
 }

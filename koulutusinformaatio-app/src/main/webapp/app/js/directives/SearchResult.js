@@ -13,7 +13,7 @@ directive('searchResult', ['FilterService', function(FilterService) {
         	}
 
             scope.lo.type = scope.lo.type.toLowerCase();
-            scope.lo.linkHref = '#/' + scope.lo.type + '/' + scope.lo.id;
+            scope.lo.linkHref = '#!/' + scope.lo.type + '/' + scope.lo.id;
 
             var prerequisite = scope.lo.prerequisiteCode || FilterService.getPrerequisite();
             if (prerequisite) {

@@ -20,8 +20,7 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
 import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
-import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
-import fi.vm.sade.koulutusinformaatio.service.builder.BuilderConstants;
+import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
@@ -31,8 +30,10 @@ import fi.vm.sade.tarjonta.shared.types.TarjontaTila;
 /**
  * @author Hannu Lyytikainen
  */
-public class CreatorUtil {
+public final class CreatorUtil {
 
+    private CreatorUtil() {
+    }
 
     protected static Predicate<KomoDTO> komoPublished = new Predicate<KomoDTO>() {
         @Override
@@ -51,14 +52,14 @@ public class CreatorUtil {
     protected static Predicate<HakukohdeDTO> hakukohdePublished = new Predicate<HakukohdeDTO>() {
         @Override
         public boolean apply(HakukohdeDTO hakukohde) {
-            return hakukohde.getTila().equals(BuilderConstants.STATE_PUBLISHED);
+            return hakukohde.getTila().equals(TarjontaConstants.STATE_PUBLISHED);
         }
     };
 
     protected static Predicate<HakuDTO> hakuPublished = new Predicate<HakuDTO>() {
         @Override
         public boolean apply(HakuDTO haku) {
-            return haku.getTila().equals(BuilderConstants.STATE_PUBLISHED);
+            return haku.getTila().equals(TarjontaConstants.STATE_PUBLISHED);
         }
     };
 
@@ -93,27 +94,4 @@ public class CreatorUtil {
     protected static String resolveLOSId(String komoId, String providerId) {
         return Joiner.on("_").join(komoId, providerId);
     }
-
-    @Deprecated
-    protected void validateChildKomo(KomoDTO komo) throws TarjontaParseException {
-        if (!komo.getTila().equals(TarjontaTila.JULKAISTU)) {
-            throw new TarjontaParseException("Child komo " + komo.getOid() + " not in state " + TarjontaTila.JULKAISTU.toString());
-        }
-        if (komo.getKoulutusOhjelmaKoodiUri() == null) {
-            throw new TarjontaParseException("Child KomoDTO koulutusOhjelmaKoodiUri (name) is null");
-        }
-        if (komo.getTutkintonimikeUri() == null) {
-            throw new TarjontaParseException("Child KomoDTO tutkinto nimike uri is null");
-        }
-    }
-
-    @Deprecated
-    protected void validateChildKomoto(KomotoDTO komoto) throws TarjontaParseException {
-        if (!komoto.getTila().equals(TarjontaTila.JULKAISTU)) {
-            throw new TarjontaParseException("Child komoto " + komoto.getOid() + " not in state " + TarjontaTila.JULKAISTU.toString());
-        }
-
-    }
-
-
 }

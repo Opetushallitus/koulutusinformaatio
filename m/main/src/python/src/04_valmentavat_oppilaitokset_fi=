@@ -1,0 +1,14 @@
+from operator import itemgetter
+from data import s, get, out, dotted_getter, transformlostoproviders
+import json
+
+url = "/lo/search/*?&facetFilters=educationType_ffm:et5&facetFilters=teachingLangCode_ffm:FI"
+#url = "/lo/search/lukio"
+
+results = get(url)
+if "results" in results:
+	los = sorted([get(s("/lo/special/{x[id]}")) for x in results["results"]], key=dotted_getter("name"))
+	retval = transformlostoproviders(los)
+	retval = sorted(retval, key=dotted_getter("name"))
+else:
+	retval = []

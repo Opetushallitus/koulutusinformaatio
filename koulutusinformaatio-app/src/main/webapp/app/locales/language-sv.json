@@ -3,6 +3,7 @@
     "title-front-page": "Startsida",
     "title-search-results": "Sökresultat",
     "title-application-basket": "Minneslista",
+    "link-to-accessible-version": "Specialläroanstalternas utbildningar som textversion",
 
     "breadcrumb-search-results": "Sökresultat ",
 
@@ -15,7 +16,8 @@
     "secondary-school-based": "Gymnasiebaserad utbildning",
 
     "search-result-title": "Sökträffar",
-    "search-result-title-description": "Använd alternativen till vänster för att avgränsa din sökning",
+    "search-result-title-description": "Använd alternativen till vänster för att avgränsa din sökning. Talet inom parentes hänvisar till antalet utbildningar som passar sökordet.",
+    "search-articles-result-title-description": "På denna flik hittar du information och artiklar angående ansökan och studier.",
     "search-result-count-unit": "st",
     "search-field-placeholder": "Sök utbildningar här",
     "no-search-results": "Inga sökresultat",
@@ -27,8 +29,10 @@
     "search-as-ongoing": "Ansökan pågår!",
     "search-as-next": "Kommer att ingå i ansökan",
     "search-field-label": "Sök utbildningar här",
-    "search-field-placeholder": "Skriv här t.ex. examen, yrke eller läroanstaltens namn",
+    "search-field-placeholder": "Skriv in t.ex. examen, yrke eller sökord",
     "search-button": "Sök",
+    "search-tab-lo": "Utbildningar",
+    "search-tab-article": "Information och berättelser",
 
     "filter-title": "Begränsa sökresultaten",
     "filter-search-title": "Grundutbildning",
@@ -144,6 +148,7 @@
     "label-as-ongoing": "Ansökan pågår",
     "label-as-not-ongoing": "Ansökan pågår inte",
     "not-applicable": "Obs! Ansökan till utbildning sker inte genom denna tjänst. Bekanta dig med ansökningsförfarandet på mellanbladet Ansökan",
+    "time-abbreviation": "kl",
 
     "language-fi": "Suomeksi",
     "language-sv": "På svenska",
@@ -189,6 +194,9 @@
 
      "valitut-rajaukset": "Valda avgränsningar",
      "facet-opetuskieli": "Avgränsa enligt undervisningsspråk",
+     "facet-teemat": "Avgränsa enligt ämne",
+     "topic_ffm": "Ämne",
+     "theme_ffm": "Tema",
      "teachingLangCode_ffm": "Undervisning språk",
      "location-rajaus": "Plats",
      "facet-remove": "Avlägsna",

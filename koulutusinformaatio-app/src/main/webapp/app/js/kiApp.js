@@ -61,6 +61,18 @@ var kiApp = angular.module('kiApp',
     });
 }])
 
+.config(['$locationProvider', function($locationProvider) {
+    $locationProvider.html5Mode(false);
+    $locationProvider.hashPrefix('!');
+}])
+
+
+.config(function($httpProvider){
+    $httpProvider.defaults.useXDomain = true;
+    delete $httpProvider.defaults.headers.common['X-Requested-With'];
+    //$httpProvider.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+})
+
 .constant('kiAppConstants', {
     searchResultsPerPage: 25,
     defaultSortCriteria: '0',
@@ -81,7 +93,10 @@ var kiApp = angular.module('kiApp',
     i18n.init({
         resGetPath : 'locales/__ns__-__lng__.json',
         lng : LanguageService.getLanguage(),
-        ns: 'language',
+        ns: {
+            namespaces: ['language', 'tooltip'],
+            defaultNs: 'language'
+        },
         getAsync : false,
         sendMissing : false,
         fallbackLng : 'fi',

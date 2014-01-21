@@ -5,7 +5,7 @@
 
     <groupId>fi.vm.sade.koulutusinformaatio</groupId>
     <artifactId>koulutusinformaatio</artifactId>
-    <version>8.0-SNAPSHOT</version>
+    <version>8.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Koulutusinformaatio :: Parent</name>
 
@@ -30,7 +30,7 @@
         <clover.outputDirectory>/data00/atlassian/application-data/bamboo/www/clover_koulutusinformaatio</clover.outputDirectory>
         <maven.build.timestamp.format>dd.MM.yyyy HH:mm</maven.build.timestamp.format>
         <buildDate>${maven.build.timestamp}</buildDate>
-        <solr.version>4.2.1</solr.version>
+        <solr.version>4.6.0</solr.version>
         <mockito.version>1.9.5</mockito.version>
         <guava.version>14.0.1</guava.version>
         <apache-httpcomponents.version>4.2.3</apache-httpcomponents.version>
@@ -38,9 +38,9 @@
         <flapdoodle.version>1.36</flapdoodle.version>
         <jackson.version>1.9.12</jackson.version>
 
-        <oph.organisaatio.version>7.0-SNAPSHOT</oph.organisaatio.version>
+        <oph.organisaatio.version>8.0-SNAPSHOT</oph.organisaatio.version>
         <oph.koodisto.version>7.0-SNAPSHOT</oph.koodisto.version>
-        <oph.tarjonta.version>8.0</oph.tarjonta.version>
+        <oph.tarjonta.version>9.0-SNAPSHOT</oph.tarjonta.version>
     </properties>
 
     <repositories>

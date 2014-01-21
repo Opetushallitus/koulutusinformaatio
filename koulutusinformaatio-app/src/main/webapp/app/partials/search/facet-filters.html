@@ -22,7 +22,7 @@
                     <span data-ki-i18n="filter-search-as-upcoming"></span> ({{loResult.upcomingFacet.count}})
                 </span>
                 <span data-ng-show="upcoming && loResult.upcomingFacet.count > 0" class="facet-item selected">
-                    <span data-ki-i18n="filter-search-as-upcoming"></span> ({{loResult.upcomingFacet.count}})
+                    <span data-ki-i18n="filter-search-as-upcoming"></span>
                     <a href="javascript:void(0)" class="remove" data-ng-click="removeUpcoming()"></a>
                 </span>
             </li>
@@ -143,12 +143,33 @@
     </div>
 </div>
 
+
 <div class="filter">
     <h4 data-ng-click="toggleCollapsed(3)" class="collapser" data-ng-class="{open: !collapsed[3], close: collapsed[3]}">
         <span class="icon"></span>
-        <span data-ki-i18n="facet-opetuskieli"></span>      
+        <span data-ki-i18n="facet-teemat"></span>      
     </h4>
     <div collapse="collapsed[3]" class="collapse">
+        <div
+            class="collapse-content-container"
+            data-angular-treeview="true"
+            data-tree-model="loResult.topicFacet.facetValues"
+            data-tree-id="teematree"
+            data-node-id="valueId"
+            data-node-label="valueName"
+            data-node-children="childValues" >
+        </div>
+    </div>
+</div>
+
+
+
+<div class="filter">
+    <h4 data-ng-click="toggleCollapsed(4)" class="collapser" data-ng-class="{open: !collapsed[4], close: collapsed[4]}">
+        <span class="icon"></span>
+        <span data-ki-i18n="facet-opetuskieli"></span>      
+    </h4>
+    <div collapse="collapsed[4]" class="collapse">
         <ul class="nobullet collapse-content-container">
             <li data-ng-repeat="fv in loResult.teachingLangFacet.facetValues">
                 <span data-ng-show="!isSelected(fv) && (fv.count > 0)" class="facet-item">

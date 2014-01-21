@@ -24,6 +24,7 @@ import org.junit.Test;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import static org.junit.Assert.*;
 
@@ -76,5 +77,13 @@ public class ConverterUtilTest {
         assertEquals("second", sorted.get(0).getId());
         assertEquals("third", sorted.get(1).getId());
         assertEquals("first", sorted.get(2).getId());
+    }
+
+    @Test
+    public void testRegex() {
+        String regex = "^.*\\?_escaped_fragment_=.*$";
+        Pattern pattern = Pattern.compile(regex);
+        String url = "http://localhost:8080/koulutusinformaatio-app/app/?_escaped_fragment_=/tutkinto/1.2.246.562.5.2013111213020035175870_1.2.246.562.10.77155748245#PK";
+        assertTrue(pattern.matcher(url).matches());
     }
 }

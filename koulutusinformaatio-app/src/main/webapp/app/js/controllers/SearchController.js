@@ -1,7 +1,7 @@
 /**
  *  Controller for search field in header
  */
-function SearchFieldCtrl($scope, $location, $route, SearchService, kiAppConstants, FilterService, AutocompleteService) {
+function SearchFieldCtrl($scope, $location, $route, SearchService, kiAppConstants, FilterService, AutocompleteService, TreeService) {
     $scope.searchFieldPlaceholder = i18n.t('search-field-placeholder'); 
     $scope.suggestions = [];
     
@@ -29,7 +29,9 @@ function SearchFieldCtrl($scope, $location, $route, SearchService, kiAppConstant
     // Perform search using LearningOpportunity service
     $scope.search = function() {
         if ($scope.queryString) {
+            var activeTab = $location.search().tab;
             FilterService.clear(); // clear all filters for new search
+            TreeService.clear(); // clear tree selections
             FilterService.setPage(kiAppConstants.searchResultsStartPage);
             SearchService.setTerm($scope.queryString);
             var queryString = $scope.queryString;
@@ -38,9 +40,11 @@ function SearchFieldCtrl($scope, $location, $route, SearchService, kiAppConstant
             $scope.queryString = '';
 
             // update location
+            var filters = FilterService.get();
+            filters.tab = activeTab;
             $location.hash(null);
             $location.path('/haku/' + queryString);
-            $location.search(FilterService.get());
+            $location.search(filters);
         }
     };
 };
@@ -332,15 +336,30 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     $scope.sortCriterias = [
         {value: i18n.t('sort-criteria-default')}, 
         {value: i18n.t('sort-criteria-alphabetical-desc')}, 
-        {value: i18n.t('sort-criteria-alphabetical-asc')},
-        {value: i18n.t('sort-criteria-duration-asc'), group: i18n.t('sort-criteria-duration-group')},
-        {value: i18n.t('sort-criteria-duration-desc'), group: i18n.t('sort-criteria-duration-group')}
+        {value: i18n.t('sort-criteria-alphabetical-asc')}//,
+        //{value: i18n.t('sort-criteria-duration-asc'), group: i18n.t('sort-criteria-duration-group')},
+        //{value: i18n.t('sort-criteria-duration-desc'), group: i18n.t('sort-criteria-duration-group')}
+    ];
+
+    $scope.tabTitles = {
+        learningOpportunities: i18n.t('search-tab-lo'),
+        learningOpportunitiesTooltip: i18n.t('tooltip:search-tab-lo-tooltip'),
+        articles: i18n.t('search-tab-article'),
+        articlesTooltip: i18n.t('tooltip:search-tab-article-tooltip')
+    };
+
+    $scope.tabs = [
+        {active: false},
+        {active: false}
     ];
 
     $scope.paginationNext = i18n.t('pagination-next');
     $scope.paginationPrevious = i18n.t('pagination-previous');
     $scope.valitseAlueTitle = i18n.t('valitse-alue');
     $scope.noSearchResults = i18n.t('no-search-results-info', {searchterm: SearchService.getTerm()});
+
+
+
 
     $scope.changePage = function(page) {
         $scope.currentPage = page;
@@ -350,14 +369,23 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     };
 
     $scope.refreshView = function() {
-        $location.search(FilterService.get());
+        $location.search(FilterService.get()).replace();
         $scope.initSearch();
+    }
+
+    $scope.initTabs = function() {
+        var qParams = $location.search();
+        if (qParams.tab && qParams.tab == 'articles') {
+            $scope.tabs[1].active = true;
+        } else {
+            $scope.tabs[0].active = true;
+        }
     }
     
     //Getting the query params from the url
     //after which searching is done.
     $scope.initSearch = function() {
-        queryParams = $location.search();
+        var queryParams = $location.search();
     	FilterService.query(queryParams)
             .then(function() {
                 $scope.prerequisite = FilterService.getPrerequisite();
@@ -369,10 +397,11 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
                 $scope.itemsPerPage = FilterService.getItemsPerPage();
                 $scope.sortCriteria = FilterService.getSortCriteria();
                 $scope.currentPage = FilterService.getPage();
+
                 $scope.doSearching();
             });
     }
-    $scope.initSearch();
+    $scope.initTabs();
 
 
 	//Returns true if the language filter is set
@@ -395,6 +424,10 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
 
     //Searching solr
     $scope.doSearching = function() {
+        var qParams = FilterService.get();
+        qParams.tab = 'los';
+        $location.search(qParams).replace();
+
     	//If the language filter is set, the search query is made
     	if ($routeParams.queryString && $scope.isLangFilterSet()) {
     		SearchLearningOpportunityService.query({
@@ -512,6 +545,58 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     	return 'FI';
     }
 };
+
+function ArticleSearchCtrl($scope, $location, $routeParams, ArticleContentSearchService, FilterService) {
+    $scope.currentPage = 1;
+    $scope.showPagination = false;
+
+    $scope.changePage = function(page) {
+        $scope.currentPage = page;
+        $scope.doArticleSearching();
+
+        $('html, body').scrollTop($('body').offset().top); // scroll to top of list
+    }
+
+    //Getting the query params from the url
+    //after which searching is done.
+    $scope.initSearch = function() {
+        var queryParams = $location.search();
+        FilterService.query(queryParams)
+            .then(function() {
+                $scope.prerequisite = FilterService.getPrerequisite();
+                $scope.locations = FilterService.getLocations();
+                $scope.ongoing = FilterService.isOngoing();
+                $scope.upcoming = FilterService.isUpcoming();
+                $scope.facetFilters = FilterService.getFacetFilters();
+                $scope.langCleared = FilterService.getLangCleared();
+                $scope.itemsPerPage = FilterService.getItemsPerPage();
+                $scope.sortCriteria = FilterService.getSortCriteria();
+                $scope.currentPage = FilterService.getPage();
+
+                $scope.doArticleSearching();
+            });
+    }
+ 
+    $scope.doArticleSearching = function() {
+        var qParams = FilterService.get();
+        qParams.tab = 'articles';
+        $location.search(qParams).replace();
+        ArticleContentSearchService.query({queryString: $routeParams.queryString, page: $scope.currentPage}).then(function(result) {
+            $scope.articles = result;
+            $scope.maxPages = result.pages;
+            $scope.totalItems = result.count_total;
+            $scope.itemsPerPage = 10;
+            $scope.pageMin = ($scope.currentPage - 1) * $scope.itemsPerPage + 1;
+            $scope.pageMax = $scope.currentPage * $scope.itemsPerPage < $scope.totalItems
+                ? $scope.currentPage * $scope.itemsPerPage
+                : $scope.totalItems;
+
+            $scope.queryString = $routeParams.queryString;
+            $scope.showPagination = $scope.totalItems > $scope.itemsPerPage;
+        });
+    }
+};
+
 
 function SortCtrl($scope, $location, FilterService) {
     $scope.updateItemsPerPage = function() {

@@ -22,7 +22,10 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
 /**
  * @author Mikko Majapuro
  */
-public class ProviderToDTO {
+public final class ProviderToDTO {
+
+    private ProviderToDTO() {
+    }
 
     public static LearningOpportunityProviderDTO convert(final Provider provider, final String lang) {
         if (provider != null) {

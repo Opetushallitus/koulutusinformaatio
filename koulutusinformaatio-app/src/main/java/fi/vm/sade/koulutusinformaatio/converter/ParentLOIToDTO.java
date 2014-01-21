@@ -28,7 +28,10 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunityInstan
 /**
  * @author Mikko Majapuro
  */
-public class ParentLOIToDTO {
+public final class ParentLOIToDTO {
+
+    private ParentLOIToDTO() {
+    }
 
     public static ParentLearningOpportunityInstanceDTO convert(final ParentLOI parentLOI, final String lang, String uiLang) {
         ParentLearningOpportunityInstanceDTO loi = new ParentLearningOpportunityInstanceDTO();

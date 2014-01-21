@@ -1,0 +1,31 @@
+{% extends "base-fi.html" %}
+{% block navi %}
+{% if maxpage > 1 %}
+{% if page != "all" %}
+{# Sivu {{ page }} / {{ maxpage }} #}
+{% endif %}
+
+{% if page == "all" %}
+<a class="pager-switch block" href="index-1.html">{{ locales["index-pager-page-1"] }} {{ results_per_page }} {{ locales["index-pager-page-2"] }}</a>
+
+{% else %}
+<a class="pager-switch block" href="index-all.html">{{ locales["index-pager-all"] }}</a>
+
+<ul>
+{{ index_links|index_links("name", 3, page) }}
+<div class="clear"></div>
+</ul>
+<div class="clear"></div>
+
+{% if prev_page is defined %}
+<a class="pager pager-previous" href="index-{{ prev_page }}.html">{{ locales["index-pager-previous"] }}</a>
+{% endif %}
+
+{% if page != "all" and next_page is defined %}
+<a class="pager pager-next" href="index-{{ next_page }}.html">{{ locales["index-pager-next"] }}</a>
+{% endif %}
+
+{% endif %}
+
+{% endif %}
+{% endblock %}

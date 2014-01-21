@@ -25,6 +25,7 @@ module.exports = function(config) {
             appPath + 'app/lib/modernizr/modernizr-2.6.2.min.js',
             appPath + 'app/lib/jquery.enhanced.cookie.js',
             appPath + 'app/lib/i18next-1.6.0.js',
+            appPath + 'app/lib/angular.treeview.js',
             appPath + 'app/js/**/*.js',
             appPath + 'app/templates/*.html',
 

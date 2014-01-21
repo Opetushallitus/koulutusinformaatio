@@ -1,6 +1,6 @@
 /* Directives */
 
-angular.module('kiApp.directives', []).
+angular.module('kiApp.directives', ['kiApp.Navigation', 'angularTreeview']).
 
 /**
  *  Updates the title element of the page.
@@ -487,10 +487,10 @@ directive('kiAbsoluteLink', function() {
             var update = function() {
                 scope.breadcrumbItems = [];
                 pushItem({name: home, linkHref: Config.get('frontpageUrl') });
-                pushItem({name: root, linkHref: '#/haku/' + SearchService.getTerm() + '?' + FilterService.getParams() });
+                pushItem({name: root, linkHref: '#!/haku/' + SearchService.getTerm() + '?' + FilterService.getParams() });
 
                 if (scope.parent && (scope.loType != 'lukio' && scope.loType != 'erityisopetus')) { // TODO: do not compare to loType
-                    pushItem({name: parent, linkHref: '#/tutkinto/' + scope.parent.id });
+                    pushItem({name: parent, linkHref: '#!/tutkinto/' + scope.parent.id });
                 }
 
                 if (scope.loType == 'lukio') { // TODO: do not compare to loType
@@ -567,16 +567,7 @@ directive('renderStudyPlan', function() {
 /**
  *  Creates a human readable date from timestamp
  */
-directive('kiTimestamp', function() {
-    var padWithZero = function(number) {
-        number = number.toString();
-        if (number.length <= 1) {
-            return "0" + number;
-        } else {
-            return number;
-        }
-    }
-
+directive('kiTimestamp', ['UtilityService', function(UtilityService) {
     return function(scope, element, attrs) {
         attrs.$observe('kiTimestamp', function(value) {
             if (value) {
@@ -585,12 +576,46 @@ directive('kiTimestamp', function() {
                 var date = new Date(value);
                 element.append(date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear());
                 if (attrs.precise) {
-                    element.append(' ' + padWithZero(date.getHours()) + ':' + padWithZero(date.getMinutes()));
+                    element.append(' ' + UtilityService.padWithZero(date.getHours()) + ':' + UtilityService.padWithZero(date.getMinutes()));
                 }
             }
         });
     }
-}).
+}]).
+
+directive('kiTimeInterval', ['UtilityService', function(UtilityService) {
+    var isSameDay = function(start, end) {
+        if (start.getFullYear() != end.getFullYear()) {
+            return false;
+        } else if (start.getMonth() != end.getMonth()) {
+            return false;
+        } else if (start.getDate() != end.getDate()) {
+            return false;
+        } else {
+            return true;
+        }
+    };
+
+    return {
+        restrict: 'A',
+        scope: {
+            examEvent: '='
+        },
+        link: function(scope, element, attrs) {
+            var start = new Date(scope.examEvent.start);
+            var end = new Date(scope.examEvent.end);
+
+            if (isSameDay(start, end)) {
+                element.append(start.getDate() + '.' + (start.getMonth() + 1) + '.' + start.getFullYear());
+                element.append(' ' + i18n.t('time-abbreviation') + ' ' + UtilityService.padWithZero(start.getHours()) + ':' + UtilityService.padWithZero(start.getMinutes()));
+            } else {
+                element.append(start.getDate() + '.' + (start.getMonth() + 1) + '.' + start.getFullYear());
+                element.append(' - ');
+                element.append(end.getDate() + '.' + (end.getMonth() + 1) + '.' + end.getFullYear());
+            }
+        }
+    }
+}]).
 
 /**
  *  Render application system state as label

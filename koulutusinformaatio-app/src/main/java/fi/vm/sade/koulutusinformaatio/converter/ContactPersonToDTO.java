@@ -26,7 +26,10 @@ import java.util.List;
 /**
  * @author Mikko Majapuro
  */
-public class ContactPersonToDTO {
+public final class ContactPersonToDTO {
+
+    private ContactPersonToDTO() {
+    }
 
     public static ContactPersonDTO convert(final ContactPerson contactPerson) {
         if (contactPerson == null) {

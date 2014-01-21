@@ -22,11 +22,10 @@ import com.google.common.collect.Maps;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LocationFields;
+import fi.vm.sade.koulutusinformaatio.domain.SolrFields.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
-import fi.vm.sade.koulutusinformaatio.service.impl.query.LearningOpportunityQuery;
-import fi.vm.sade.koulutusinformaatio.service.impl.query.LocationQuery;
-import fi.vm.sade.koulutusinformaatio.service.impl.query.ProviderQuery;
+import fi.vm.sade.koulutusinformaatio.service.impl.query.*;
 
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -72,9 +71,9 @@ public class SearchServiceSolrImpl implements SearchService {
 
     @Override
     public List<Provider> searchLearningOpportunityProviders(
-            String term, String asId, String baseEducation, boolean vocational, boolean nonVocational, int start, int rows) throws SearchException {
+            String term, String asId, String baseEducation, boolean vocational, boolean nonVocational, int start, int rows, String lang, boolean prefix) throws SearchException {
         List<Provider> providers = new ArrayList<Provider>();
-        SolrQuery query = new ProviderQuery(term, asId, baseEducation, start, rows, vocational, nonVocational);
+        SolrQuery query = new ProviderQuery(term, asId, baseEducation, start, rows, vocational, nonVocational, lang, prefix);
 
         QueryResponse queryResponse = null;
         try {
@@ -89,12 +88,18 @@ public class SearchServiceSolrImpl implements SearchService {
 
             // TODO: i18n handling
             Map<String, String> texts = Maps.newHashMap();
-            texts.put("fi", result.get("name").toString());
+            texts.put("fi", result.get("name_fi").toString());
+            texts.put("sv", result.get("name_sv").toString());
 
             provider.setName(new I18nText(texts));
             providers.add(provider);
         }
         return providers;
+    }
+
+    @Override
+    public List<Provider> searchLearningOpportunityProviders(String term, boolean prefix) throws SearchException {
+        return searchLearningOpportunityProviders(term, null, null, false, false, 0, Integer.MAX_VALUE, "fi", prefix);
     }
 
     @Override
@@ -129,13 +134,14 @@ public class SearchServiceSolrImpl implements SearchService {
                 String prerequisiteCodeText = doc.get("prerequisiteCode") != null ? doc.get("prerequisiteCode").toString() : null;
                 String credits = doc.get(LearningOpportunity.CREDITS) != null ? doc.get(LearningOpportunity.CREDITS).toString() : null;
                 String lopName = doc.get(LearningOpportunity.LOP_NAME) != null ? doc.get(LearningOpportunity.LOP_NAME).toString() : null;
+                String edType = doc.get(LearningOpportunity.EDUCATION_TYPE) != null ? getEdType(doc) : null;
 
                 LOSearchResult lo = null;
                 try {
                     lo = new LOSearchResult(
                             id, doc.get("name").toString(),
                             doc.get("lopId").toString(), lopName, prerequisiteText,
-                            prerequisiteCodeText, parentId, losId, doc.get("type").toString(), credits);
+                            prerequisiteCodeText, parentId, losId, doc.get("type").toString(), credits, edType);
 
                     updateAsStatus(lo, doc);
                 } catch (Exception e) {
@@ -143,41 +149,140 @@ public class SearchServiceSolrImpl implements SearchService {
                 }
                 searchResultList.getResults().add(lo);
             }
-            
+
             addFacetsToResult(searchResultList, response, lang, facetFilters);
         }
 
         return searchResultList;
     }
 
+    @Override
+    public List<LOSearchResult> searchLearningOpportunitiesByProvider(String lopId) throws SearchException {
+        List<LOSearchResult> resultList = Lists.newArrayList();
+        SolrQuery query = new LearningOpportunityByProviderQuery(lopId);
+        QueryResponse response = null;
+        try {
+            response = loHttpSolrServer.query(query);
+        } catch (SolrServerException e) {
+            throw new SearchException("Solr search error occured.");
+        }
+
+        for (SolrDocument doc : response.getResults()) {
+            String parentId = doc.get("parentId") != null ? doc.get("parentId").toString() : null;
+            String losId = doc.get("losId") != null ? doc.get("losId").toString() : null;
+            String id = doc.get("losId") != null ? doc.get("losId").toString() : doc.get("id").toString();
+            String prerequisiteText = doc.get("prerequisite") != null ? doc.get("prerequisite").toString() : null;
+            String prerequisiteCodeText = doc.get("prerequisiteCode") != null ? doc.get("prerequisiteCode").toString() : null;
+            String credits = doc.get(LearningOpportunity.CREDITS) != null ? doc.get(LearningOpportunity.CREDITS).toString() : null;
+            String lopName = doc.get(LearningOpportunity.LOP_NAME) != null ? doc.get(LearningOpportunity.LOP_NAME).toString() : null;
+            String edType = doc.get(LearningOpportunity.EDUCATION_TYPE) != null ? getEdType(doc) : null;
+
+            LOSearchResult lo = null;
+            try {
+                lo = new LOSearchResult(
+                        id, doc.get("name").toString(),
+                        doc.get("lopId").toString(), lopName, prerequisiteText,
+                        prerequisiteCodeText, parentId, losId, doc.get("type").toString(), credits, edType);
+
+                updateAsStatus(lo, doc);
+            } catch (Exception e) {
+                continue;
+            }
+            resultList.add(lo);
+        }
+        return resultList;
+    }
+
+    private String getEdType(SolrDocument doc) {
+        for (Object valO : doc.getFieldValues(LearningOpportunity.EDUCATION_TYPE)) {
+            String val = valO.toString();
+            if (!val.equals(SolrConstants.ED_TYPE_KAKSOIS)) {
+                return val;
+            }
+        }
+        return null;
+    }
+
     /*
      * Adding facets to result
      */
     private void addFacetsToResult(LOSearchResultList searchResultList,
-            QueryResponse response, String lang, List<String> facetFilters) {
-        
+                                   QueryResponse response, String lang, List<String> facetFilters) {
+
         searchResultList.setTeachingLangFacet(getTeachingLangFacet(response, lang));
         searchResultList.setAppStatusFacet(getHaunTila(response));
         searchResultList.setEdTypeFacet(getEdTypeFacet(response));
         searchResultList.setFilterFacet(getFilterFacet(facetFilters, lang));
         searchResultList.setPrerequisiteFacet(getPrerequisiteFacet(response, lang));
-        
+        searchResultList.setTopicFacet(getTopicFacet(response, lang));
+
+
     }
-    
+
+    /*
+     * Adding the topic/theme facet to the search result
+     */
+    private Facet getTopicFacet(QueryResponse response, String lang) {
+        FacetField themeF = response.getFacetField(LearningOpportunity.THEME);
+        FacetField topicF = response.getFacetField(LearningOpportunity.TOPIC);
+        Map<String, List<FacetValue>> themeTopicMap = createThemeTopicMap(topicF, lang);
+
+        Facet topicFacet = new Facet();
+        List<FacetValue> values = new ArrayList<FacetValue>();
+        if (themeF != null) {
+            for (Count curC : themeF.getValues()) {
+
+                FacetValue newVal = new FacetValue(LearningOpportunity.THEME,
+                        getLocalizedFacetName(curC.getName(), lang),
+                        curC.getCount(),
+                        curC.getName());
+                newVal.setChildValues(themeTopicMap.get(curC.getName()));
+                values.add(newVal);
+
+            }
+        }
+        topicFacet.setFacetValues(values);
+        return topicFacet;
+    }
+
+    private Map<String, List<FacetValue>> createThemeTopicMap(FacetField topicF, String lang) {
+        Map<String, List<FacetValue>> resMap = new HashMap<String, List<FacetValue>>();
+        if (topicF != null) {
+            for (Count curC : topicF.getValues()) {
+                FacetValue topic = new FacetValue(LearningOpportunity.TOPIC,
+                        getLocalizedFacetName(curC.getName(), lang),
+                        curC.getCount(),
+                        curC.getName());
+                String themeStr = curC.getName().split("\\.")[0];
+                if (resMap.containsKey(themeStr)) {
+                    resMap.get(themeStr).add(topic);
+                } else {
+                    List<FacetValue> topics = new ArrayList<FacetValue>();
+                    topics.add(topic);
+                    resMap.put(themeStr, topics);
+                }
+            }
+        }
+        return resMap;
+    }
+
+    /*
+     * Adding the prerequisite facet to the search result.
+     */
     private Facet getPrerequisiteFacet(QueryResponse response, String lang) {
         FacetField prerequisiteF = response.getFacetField(LearningOpportunity.PREREQUISITES);
         Facet prerequisiteFacet = new Facet();
         List<FacetValue> values = new ArrayList<FacetValue>();
         if (prerequisiteF != null) {
             for (Count curC : prerequisiteF.getValues()) {
-                
-                //if (curC.getCount() > 0) {
-                    FacetValue newVal = new FacetValue(LearningOpportunity.PREREQUISITES,  
-                                                        curC.getName(), 
-                                                        curC.getCount(), 
-                                                        curC.getName());
-                    values.add(newVal);
-                //}
+
+
+                FacetValue newVal = new FacetValue(LearningOpportunity.PREREQUISITES,
+                        curC.getName(),
+                        curC.getCount(),
+                        curC.getName());
+                values.add(newVal);
+
             }
         }
         prerequisiteFacet.setFacetValues(values);
@@ -193,19 +298,19 @@ public class SearchServiceSolrImpl implements SearchService {
         List<FacetValue> values = new ArrayList<FacetValue>();
         if (edTypeField != null) {
             for (Count curC : edTypeField.getValues()) {
-                //if (curC.getCount() > 0) {
-                    FacetValue newVal = new FacetValue(LearningOpportunity.EDUCATION_TYPE,  
-                                                        curC.getName(), 
-                                                        curC.getCount(), 
-                                                        curC.getName());
-                    values.add(newVal);
-                //}
+
+                FacetValue newVal = new FacetValue(LearningOpportunity.EDUCATION_TYPE,
+                        curC.getName(),
+                        curC.getCount(),
+                        curC.getName());
+                values.add(newVal);
+
             }
         }
         edTypeFacet.setFacetValues(values);
         return edTypeFacet;
     }
-    
+
     /*
      * Teaching language facet
      */
@@ -216,20 +321,20 @@ public class SearchServiceSolrImpl implements SearchService {
         List<FacetValue> values = new ArrayList<FacetValue>();
         if (teachingLangF != null) {
             for (Count curC : teachingLangF.getValues()) {
-                
-                //if (curC.getCount() > 0) {
-                    FacetValue newVal = new FacetValue(LearningOpportunity.TEACHING_LANGUAGE,  
-                                                        getLocalizedFacetName(curC.getName(), lang), 
-                                                        curC.getCount(), 
-                                                        curC.getName());
-                    values.add(newVal);
-                //}
+
+
+                FacetValue newVal = new FacetValue(LearningOpportunity.TEACHING_LANGUAGE,
+                        getLocalizedFacetName(curC.getName(), lang),
+                        curC.getCount(),
+                        curC.getName());
+                values.add(newVal);
+
             }
         }
         teachingLangFacet.setFacetValues(values);
         return teachingLangFacet;
     }
-    
+
     /*
      * Getting haun tila
      */
@@ -238,15 +343,15 @@ public class SearchServiceSolrImpl implements SearchService {
         List<FacetValue> haunTilaVals = new ArrayList<FacetValue>();
         for (String curKey : response.getFacetQuery().keySet()) {
             if (curKey.contains("(asStart_0:[* TO NOW] AND asEnd_0:[NOW TO *])")) {
-                FacetValue facVal = new FacetValue(LearningOpportunityQuery.APP_STATUS, 
-                                                    LearningOpportunityQuery.APP_STATUS_ONGOING, 
-                                                    response.getFacetQuery().get(curKey).longValue(),  
-                                                    LearningOpportunityQuery.APP_STATUS_ONGOING);
+                FacetValue facVal = new FacetValue(LearningOpportunityQuery.APP_STATUS,
+                        LearningOpportunityQuery.APP_STATUS_ONGOING,
+                        response.getFacetQuery().get(curKey).longValue(),
+                        LearningOpportunityQuery.APP_STATUS_ONGOING);
                 haunTilaVals.add(facVal);
             } else if (curKey.contains("(asStart_0:[NOW TO *])")) {
-                FacetValue facVal = new FacetValue(LearningOpportunityQuery.APP_STATUS, 
-                        LearningOpportunityQuery.APP_STATUS_UPCOMING, 
-                        response.getFacetQuery().get(curKey).longValue(), 
+                FacetValue facVal = new FacetValue(LearningOpportunityQuery.APP_STATUS,
+                        LearningOpportunityQuery.APP_STATUS_UPCOMING,
+                        response.getFacetQuery().get(curKey).longValue(),
                         LearningOpportunityQuery.APP_STATUS_UPCOMING);
                 haunTilaVals.add(facVal);
             }
@@ -254,7 +359,7 @@ public class SearchServiceSolrImpl implements SearchService {
         haunTila.setFacetValues(haunTilaVals);
         return haunTila;
     }
-    
+
     /*
      * Facet composed of user's selections.
      * Used in search ui to display 0-selections.
@@ -263,7 +368,7 @@ public class SearchServiceSolrImpl implements SearchService {
 
         Facet fFilFacet = new Facet();
         List<FacetValue> qVals = new ArrayList<FacetValue>();
-        for (String curFacFilter: facetFilters) {
+        for (String curFacFilter : facetFilters) {
             int index = curFacFilter.indexOf(':');
             String facId = curFacFilter.substring(index + 1);
             String facField = curFacFilter.substring(0, index);
@@ -271,12 +376,12 @@ public class SearchServiceSolrImpl implements SearchService {
             String facName = facDoc != null ? String.format("%s", facDoc.getFieldValue(String.format("%s_fname", lang))) : facId;
             FacetValue newVal = new FacetValue(facField, facName, 0, facId);
             qVals.add(newVal);
-            
+
         }
         fFilFacet.setFacetValues(qVals);
         return fFilFacet;
     }
-    
+
     /*
      * Getting the localized name for the facet value.
      */
@@ -296,7 +401,7 @@ public class SearchServiceSolrImpl implements SearchService {
         }
         return null;
     }
-    
+
     /*
      * Getting the facet doc.
      */
@@ -322,28 +427,26 @@ public class SearchServiceSolrImpl implements SearchService {
         Date now = new Date();
         Date nextStarts = null;
 
-        for (String startKey : doc.keySet()) {
-            if (startKey.startsWith(AS_START_DATE_PREFIX)) {
+        for (Map.Entry<String, Object> start : doc.entrySet()) {
+            if (start.getKey().startsWith(AS_START_DATE_PREFIX)) {
                 String endKey = new StringBuilder().append(AS_END_DATE_PREFIX)
-                        .append(startKey.split("_")[1]).toString();
+                        .append(start.getKey().split("_")[1]).toString();
 
-                Date start = ((List<Date>) doc.get(startKey)).get(0);
-                Date end = ((List<Date>) doc.get(endKey)).get(0);
+                Date startDate = ((List<Date>) start.getValue()).get(0);
+                Date endDate = ((List<Date>) doc.get(endKey)).get(0);
 
-                if (start.before(now) && now.before(end)) {
+                if (startDate.before(now) && now.before(endDate)) {
                     lo.setAsOngoing(true);
                     return;
                 }
 
-                if ((nextStarts == null && start.after(now)) || (start.after(now) && start.before(nextStarts))) {
-                    nextStarts = start;
+                if ((nextStarts == null && startDate.after(now)) || (startDate.after(now) && startDate.before(nextStarts))) {
+                    nextStarts = startDate;
                 }
-
             }
         }
 
         lo.setNextApplicationPeriodStarts(nextStarts);
-
     }
 
     private List<String> createParameter(String value) {
@@ -373,7 +476,7 @@ public class SearchServiceSolrImpl implements SearchService {
             return Lists.newArrayList();
         }
     }
-    
+
     private List<Location> executeSolrQuery(final SolrQuery query) throws SearchException {
         List<Location> locations = Lists.newArrayList();
         QueryResponse queryResponse = null;
@@ -408,43 +511,43 @@ public class SearchServiceSolrImpl implements SearchService {
     @Override
     public SuggestedTermsResult searchSuggestedTerms(String term, String lang)
             throws SearchException {
-        
-        SolrQuery query = new LearningOpportunityQuery(term, lang);
-        
+
+        SolrQuery query = new AutocompleteQuery(term, lang);
+
         SuggestedTermsResult result = new SuggestedTermsResult();
-        
+
         QueryResponse response = null;
         try {
             response = loHttpSolrServer.query(query);
-            
-            FacetField nameF = response.getFacetField(LearningOpportunity.NAME_AUTO);
+
+            FacetField nameF = response.getFacetField(String.format("%s_%s", LearningOpportunity.NAME_AUTO, lang.toLowerCase()));
             if (nameF != null) {
                 List<String> terms = new ArrayList<String>();
                 for (Count curC : nameF.getValues()) {
-                    
+
                     terms.add(curC.getName());
-                    
+
                 }
                 result.setLoNames(terms);
             }
-            
+
             FacetField freeF = response.getFacetField(String.format("%s_%s", LearningOpportunity.FREE_AUTO, lang.toLowerCase()));
             if (freeF != null) {
                 List<String> terms = new ArrayList<String>();
                 for (Count curC : freeF.getValues()) {
-                    
+
                     terms.add(curC.getName());
-                    
+
                 }
                 result.setKeywords(terms);
             }
-                
+
         } catch (SolrServerException e) {
             throw new SearchException("Solr search error occured.");
         }
-        
+
         return result;
     }
-	
+
 
 }
