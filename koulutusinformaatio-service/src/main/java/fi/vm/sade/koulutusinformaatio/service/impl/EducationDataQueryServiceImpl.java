@@ -46,7 +46,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     private PictureDAO pictureDAO;
     private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO;
     private SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO;
-    private UniversityAppliedScienceLOSDAO uasLearningOpportunitySpecificationDAO;
+    private UniversityAppliedScienceLOSDAO universityAppliedScienceLOSDAO;
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
 
     @Autowired
@@ -55,7 +55,9 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
                                          ChildLearningOpportunityDAO childLearningOpportunityDAO,
                                          DataStatusDAO dataStatusDAO, PictureDAO pictureDAO,
                                          UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO,
-                                         SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO, UniversityAppliedScienceLOSDAO uasLearningOpportunitySpecificationDAO, LearningOpportunityProviderDAO learningOpportunityProviderDAO) {
+                                         SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO, 
+                                         UniversityAppliedScienceLOSDAO universityAppliedScienceLOSDAO, 
+                                         LearningOpportunityProviderDAO learningOpportunityProviderDAO) {
         this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;
         this.modelMapper = modelMapper;
@@ -64,7 +66,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
         this.pictureDAO = pictureDAO;
         this.upperSecondaryLearningOpportunitySpecificationDAO = upperSecondaryLearningOpportunitySpecificationDAO;
         this.specialLearningOpportunitySpecificationDAO = specialLearningOpportunitySpecificationDAO;
-        this.uasLearningOpportunitySpecificationDAO = uasLearningOpportunitySpecificationDAO;
+        this.universityAppliedScienceLOSDAO = universityAppliedScienceLOSDAO;
         this.learningOpportunityProviderDAO = learningOpportunityProviderDAO;
     }
 
@@ -167,7 +169,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     
 	@Override
 	public UniversityAppliedScienceLOS getUasLearningOpportunity(String oid) throws ResourceNotFoundException {
-		UniversityAppliedScienceLOSEntity entity = this.uasLearningOpportunitySpecificationDAO.get(oid);
+		UniversityAppliedScienceLOSEntity entity = this.universityAppliedScienceLOSDAO.get(oid);
 		if (entity != null) {
 			return modelMapper.map(entity, UniversityAppliedScienceLOS.class);
 		} else {

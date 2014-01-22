@@ -115,10 +115,12 @@ public class IndexerServiceImpl implements IndexerService {
             SpecialLOS special = (SpecialLOS) los;
             provider = special.getProvider();
         } else if (los instanceof UniversityAppliedScienceLOS) {
+        	System.out.println("university applied science los is here");
         	UniversityAppliedScienceLOS uas = (UniversityAppliedScienceLOS)los;
         	provider = uas.getProvider();
         }
 
+        System.out.println("converting");
         List<SolrInputDocument> docs = conversionService.convert(los, List.class);
 
         List<SolrInputDocument> providerDocs = Lists.newArrayList();

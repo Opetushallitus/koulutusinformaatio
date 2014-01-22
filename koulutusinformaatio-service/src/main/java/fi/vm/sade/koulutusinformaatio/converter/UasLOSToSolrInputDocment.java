@@ -17,7 +17,7 @@ public class UasLOSToSolrInputDocment implements Converter<UniversityAppliedScie
 
 	@Override
 	public List<SolrInputDocument> convert(UniversityAppliedScienceLOS los) {
-		
+		System.out.println("In converter");
 		List<SolrInputDocument> docs = Lists.newArrayList();
         FacetIndexer fIndexer = new FacetIndexer();
 
@@ -34,6 +34,8 @@ public class UasLOSToSolrInputDocment implements Converter<UniversityAppliedScie
 	}
 
 	private SolrInputDocument createDoc(UniversityAppliedScienceLOS los) {
+		
+		System.out.println("Converting now!!!!");
 		
 		SolrInputDocument doc = new SolrInputDocument();
 		

@@ -83,7 +83,13 @@ public abstract class ObjectCreator {
                 Map.Entry<String, String> entry = i.next();
                 if (!Strings.isNullOrEmpty(entry.getKey()) && !Strings.isNullOrEmpty(entry.getValue())) {
                 	try {
+                		System.out.println("Entry key: " + entry.getKey());
+                		System.out.println(rawMaterial.getMeta().get(entry.getKey()));
+                		System.out.println(rawMaterial.getMeta().get(entry.getKey()).getKieliArvo());
+                		System.out.println(rawMaterial.getMeta().get(entry.getKey()).getArvo());
+                		System.out.println(rawMaterial.getMeta().get(entry.getKey()).getNimi());
                 		String key = rawMaterial.getMeta().get(entry.getKey()).getArvo();//koodistoService.searchFirstCodeValue(entry.getKey());
+                		key = (key == null) ? rawMaterial.getMeta().get(entry.getKey()).getKieliArvo() : key;
                 		translations.put(key.toLowerCase(), entry.getValue());
                 	} catch (Exception ex) {
                 		throw new KoodistoException(ex.getMessage());
@@ -93,6 +99,7 @@ public abstract class ObjectCreator {
             }
             I18nText i18nText = new I18nText();
             i18nText.setTranslations(translations);
+            i18nText.setTranslationsShortName(translations);
             return i18nText;
     	}
     	return null;
@@ -124,7 +131,8 @@ public abstract class ObjectCreator {
                 if (!Strings.isNullOrEmpty(entry.getKey()) && (entry.getValue() != null)) {
                 	try {
                 		String key = entry.getValue().getKieliArvo();
-                		translations.put(key.toLowerCase(), entry.getValue().getKaannos());
+                		//System.out.println(entry.getValue().get);
+                		translations.put(key.toLowerCase(), entry.getValue().getKieliKaannos());
                 	} catch (Exception ex) {
                 		throw new KoodistoException(ex.getMessage());
                 	}
@@ -142,6 +150,7 @@ public abstract class ObjectCreator {
 	private List<I18nText> getMultiI18nTexts(KoodiUrisV1RDTO opetusmuodos) {
 		if (opetusmuodos != null) {
 			//opetusmuodos.get
+			
 		}
 		return null;
 	}
