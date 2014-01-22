@@ -88,12 +88,15 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
         doc.setField(SolrFields.LearningOpportunity.LOP_NAME, SolrUtil.resolveTranslationInTeachingLangUseFallback(
                 childLOI.getTeachingLanguages(), provider.getName().getTranslations()));
         
+        doc.addField("lopNames", SolrUtil.resolveTranslationInTeachingLangUseFallback(
+                childLOI.getTeachingLanguages(), provider.getName().getTranslations()));
+        
         if (teachingLang.equals("sv")) {
-            doc.addField(SolrFields.LearningOpportunity.LOP_NAME_SV, provider.getName().getTranslations().get("sv"));
+            doc.addField(SolrFields.LearningOpportunity.LOP_NAME_SV, SolrUtil.resolveTextWithFallback("sv", provider.getName().getTranslations()));
         } else if (teachingLang.equals("en")) {
-            doc.addField(SolrFields.LearningOpportunity.LOP_NAME_EN, provider.getName().getTranslations().get("en"));
+            doc.addField(SolrFields.LearningOpportunity.LOP_NAME_EN, SolrUtil.resolveTextWithFallback("en", provider.getName().getTranslations()));
         } else {
-            doc.addField(SolrFields.LearningOpportunity.LOP_NAME_FI, provider.getName().getTranslations().get("fi"));
+            doc.addField(SolrFields.LearningOpportunity.LOP_NAME_FI, SolrUtil.resolveTextWithFallback("fi", provider.getName().getTranslations()));
         }
 
         if (provider.getHomeDistrict() != null) {
