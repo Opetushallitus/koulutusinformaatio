@@ -156,6 +156,7 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     	ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes = this.tarjontaRawService.listHigherEducation();
     	HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
+    	List<String> parentOids = new ArrayList<String>();
     	for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
     		for (KoulutusHakutulosV1RDTO curKoulutus : curRes.getTulokset()) {
     			ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes = this.tarjontaRawService.getHigherEducationLearningOpportunity(curKoulutus.getOid());
@@ -177,8 +178,10 @@ public class TarjontaServiceImpl implements TarjontaService {
     			if (childKomoOids != null && childKomoOids.getResult() != null) {
     				los.setChildKomoOids(new ArrayList<String>(childKomoOids.getResult()));
     			}
+    			parentOids.add(koulutusDTO.getKomoOid());
     		}
     	}
+    	
     	
     	for (UniversityAppliedScienceLOS curLos : koulutukset) {
     		for (String curChildKomoOid : curLos.getChildKomoOids()) {
@@ -186,10 +189,20 @@ public class TarjontaServiceImpl implements TarjontaService {
     			if (loss != null) {
     				curLos.getChildren().addAll(loss);
     			}
+    			
+    			if (parentOids.contains(curChildKomoOid)) {
+    				parentOids.remove(curChildKomoOid);
+    			}
     		}
     	}
+
     	
-    	return koulutukset;
+    	List<UniversityAppliedScienceLOS> parents = new ArrayList<UniversityAppliedScienceLOS>();
+    	for (String curParent : parentOids) {
+    		parents.addAll(komoToLOSMap.get(curParent));
+    	}
+    	
+    	return parents;
     }
 
 	
