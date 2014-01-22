@@ -63,4 +63,6 @@ public interface LearningOpportunityService {
     DataStatus getLastDataStatus();
 
     PictureDTO getPicture(final String id) throws ResourceNotFoundException;
+
+    List<LearningOpportunitySearchResultDTO> findLearningOpportunitiesByProviderId(String providerId, String lang);
 }

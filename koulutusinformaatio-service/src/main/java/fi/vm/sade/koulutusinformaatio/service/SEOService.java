@@ -17,10 +17,24 @@
 package fi.vm.sade.koulutusinformaatio.service;
 
 /**
+ * Used to handle SEO related operations like
+ * updating sitemaps and rendering html snapshots.
+ *
  * @author Hannu Lyytikainen
  */
-public interface SnapshotService {
+public interface SEOService {
 
-    public void renderSnapshots();
+    /**
+     * Update koulutusinformaatio sitemap and
+     * render html snapshots of all learning opportunity
+     * views.
+     */
+    public void update();
 
+    /**
+     * Is update operation running.
+     *
+     * @return
+     */
+    public boolean isRunning();
 }

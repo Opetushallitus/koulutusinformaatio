@@ -17,10 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.dao;
 
 import com.google.common.collect.Lists;
-import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.UpperSecondaryLearningOpportunityInstanceEntity;
-import fi.vm.sade.koulutusinformaatio.dao.entity.UpperSecondaryLearningOpportunitySpecificationEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.*;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,9 +25,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * @author Hannu Lyytikainen
@@ -45,6 +42,8 @@ public class UpperSecondaryLearningOpportunitySpecificationDAOTest {
     private LearningOpportunityProviderDAO providerDAO;
     @Autowired
     private ApplicationOptionDAO applicationOptionDAO;
+    @Autowired
+    private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
 
     @After
     public void removeTestData() {
@@ -97,5 +96,39 @@ public class UpperSecondaryLearningOpportunitySpecificationDAOTest {
     public void testNotFound() {
         UpperSecondaryLearningOpportunitySpecificationEntity entity = upperSecondaryDAO.get("invalid");
         assertNull(entity);
+    }
+
+    @Test
+    public void testFindByProviderId() {
+        String providerId = "providerdi";
+        LearningOpportunityProviderEntity provider= new LearningOpportunityProviderEntity();
+        provider.setId(providerId);
+        UpperSecondaryLearningOpportunitySpecificationEntity entity = new UpperSecondaryLearningOpportunitySpecificationEntity();
+        entity.setId("parentId");
+        entity.setProvider(provider);
+        learningOpportunityProviderDAO.save(provider);
+        upperSecondaryDAO.save(entity);
+        List<UpperSecondaryLearningOpportunitySpecificationEntity> fromDB =
+                upperSecondaryDAO.findByProviderId(providerId);
+        assertNotNull(fromDB);
+        assertEquals(1, fromDB.size());
+        assertEquals(entity.getId(), fromDB.get(0).getId());
+
+    }
+
+    @Test
+    public void testFindByProviderIdNotFound() {
+        String providerId = "providerdi";
+        LearningOpportunityProviderEntity provider= new LearningOpportunityProviderEntity();
+        provider.setId(providerId);
+        UpperSecondaryLearningOpportunitySpecificationEntity entity = new UpperSecondaryLearningOpportunitySpecificationEntity();
+        entity.setId("parentId");
+        entity.setProvider(provider);
+        learningOpportunityProviderDAO.save(provider);
+        upperSecondaryDAO.save(entity);
+        List<UpperSecondaryLearningOpportunitySpecificationEntity> fromDB =
+                upperSecondaryDAO.findByProviderId("invalid");
+        assertNotNull(fromDB);
+        assertEquals(0, fromDB.size());
     }
 }

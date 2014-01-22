@@ -179,6 +179,12 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
         return modelMapper.map(pic, PictureDTO.class);
     }
 
+    @Override
+    public List<LearningOpportunitySearchResultDTO> findLearningOpportunitiesByProviderId(String providerId, String lang) {
+        List<LOS> losses = educationDataQueryService.findLearningOpportunitiesByProviderId(providerId);
+        return LOSToSearchResult.convert(losses, lang);
+    }
+
     private String resolveDefaultLanguage(final ParentLOS parentLO) {
         if (parentLO.getTeachingLanguages() == null || parentLO.getTeachingLanguages().isEmpty()) {//parentLO.getName() == null || parentLO.getName().getTranslations() == null || parentLO.getName().getTranslations().containsKey(LANG_FI)) {
             return LANG_FI;

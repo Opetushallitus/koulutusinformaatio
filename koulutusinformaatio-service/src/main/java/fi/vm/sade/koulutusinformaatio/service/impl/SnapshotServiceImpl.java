@@ -27,8 +27,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -38,7 +37,7 @@ import java.util.List;
 /**
  * @author Hannu Lyytikainen
  */
-@Service
+@Component
 public class SnapshotServiceImpl implements SnapshotService {
 
     private static final Logger LOG = LoggerFactory.getLogger(SnapshotServiceImpl.class);
@@ -56,7 +55,6 @@ public class SnapshotServiceImpl implements SnapshotService {
     private String snapshotScript;
     private String snapshotFolder;
     private String baseUrl;
-    private boolean running = false;
 
     @Autowired
     public SnapshotServiceImpl(@Qualifier("specialLearningOpportunitySpecificationDAO")
@@ -81,25 +79,17 @@ public class SnapshotServiceImpl implements SnapshotService {
     }
 
     @Override
-    @Async
     public void renderSnapshots() {
         LOG.info("Rendering html snapshots");
-        try {
-            running = true;
-            prerender(TYPE_SPECIAL, specialDAO.findIds());
-            LOG.debug("Special LOs rendered");
-            prerender(TYPE_PARENT, parentDAO.findIds());
-            LOG.debug("Parent LOs rendered");
-            prerender(TYPE_CHILD, childDAO.findIds());
-            LOG.debug("Child LOs rendered");
-            prerender(TYPE_UPSEC, upsecDAO.findIds());
-            LOG.debug("Upsec LOs rendered");
-            // todo: handle rehabilitating separately
-        } catch (Exception e) {
-            LOG.error("HTML snapshot rendering failed: " + e.getMessage());
-        } finally {
-            running = false;
-        }
+        prerender(TYPE_SPECIAL, specialDAO.findIds());
+        LOG.debug("Special LOs rendered");
+        prerender(TYPE_PARENT, parentDAO.findIds());
+        LOG.debug("Parent LOs rendered");
+        prerender(TYPE_CHILD, childDAO.findIds());
+        LOG.debug("Child LOs rendered");
+        prerender(TYPE_UPSEC, upsecDAO.findIds());
+        LOG.debug("Upsec LOs rendered");
+        // todo: handle rehabilitating separately
         LOG.info("Rendering html snapshots finished");
     }
 
@@ -117,7 +107,7 @@ public class SnapshotServiceImpl implements SnapshotService {
 
         try {
             // "/usr/local/bin/phantomjs /path/to/script.js http://www.opintopolku.fi/some/edu/1.2.3.4.5 /path/to/static/content/"
-            Process process = Runtime.getRuntime().exec(String.format("%s %s %s/%s/%s %s/%s.html",
+            Process process = Runtime.getRuntime().exec(String.format("%s %s %s%s/%s %s/%s.html",
                     phantomjs, snapshotScript, baseUrl, type, id, snapshotFolder, id));
             int exitStatus = process.waitFor();
 
@@ -141,10 +131,5 @@ public class SnapshotServiceImpl implements SnapshotService {
             throw new KIException(String.format("Rendering learning opportunity %s failed due to InterruptedException: %s",
                     id, e.getMessage()));
         }
-    }
-
-    @Override
-    public boolean isRunning() {
-        return running;
     }
 }
