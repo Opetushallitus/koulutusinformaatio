@@ -107,6 +107,27 @@ public class FacetIndexer {
         
         return docs;
     }
+    
+    /*
+     * Creates the solr docs needed in facet search.
+     */
+    public List<SolrInputDocument> createFacetDocs(UniversityAppliedScienceLOS los) {
+        List<SolrInputDocument> docs = Lists.newArrayList();
+        this.indexCodeAsFacetDoc(los.getTeachingLanguages().get(0), docs, true);
+        if (los.getPrerequisite() != null) {
+        	this.indexCodeAsFacetDoc(los.getPrerequisite(), docs, true);
+        }
+        
+        for (Code curCode : los.getTopics()) {
+            this.indexCodeAsFacetDoc(curCode, docs, false);
+        }
+        
+        for (Code curCode : los.getThemes()) {
+            this.indexCodeAsFacetDoc(curCode, docs, false);
+        }
+        
+        return docs;
+    }
 
 
     private String getTranslationUseFallback(String lang, Map<String, String> translations) {

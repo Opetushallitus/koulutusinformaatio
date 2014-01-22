@@ -160,6 +160,9 @@ public class TarjontaServiceImpl implements TarjontaService {
     		for (KoulutusHakutulosV1RDTO curKoulutus : curRes.getTulokset()) {
     			ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes = this.tarjontaRawService.getHigherEducationLearningOpportunity(curKoulutus.getOid());
     		    KoulutusKorkeakouluV1RDTO koulutusDTO = koulutusRes.getResult();
+    		    if (koulutusDTO == null) {
+    		    	continue;
+    		    }
     			UniversityAppliedScienceLOS los = creator.createUasLOS(koulutusDTO);
         		koulutukset.add(los);
     			List<UniversityAppliedScienceLOS> loss = komoToLOSMap.get(koulutusDTO.getKomoOid());

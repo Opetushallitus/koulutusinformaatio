@@ -9,15 +9,16 @@ import org.springframework.core.convert.converter.Converter;
 import com.google.common.collect.Lists;
 
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.UniversityAppliedScienceLOS;
 import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.domain.SolrFields.SolrConstants;
 
 public class UasLOSToSolrInputDocment implements Converter<UniversityAppliedScienceLOS, List<SolrInputDocument>> {
 
 	@Override
 	public List<SolrInputDocument> convert(UniversityAppliedScienceLOS los) {
-		System.out.println("In converter");
 		List<SolrInputDocument> docs = Lists.newArrayList();
         FacetIndexer fIndexer = new FacetIndexer();
 
@@ -29,13 +30,12 @@ public class UasLOSToSolrInputDocment implements Converter<UniversityAppliedScie
         docs*/
         
         docs.add(createDoc(los));
+        docs.addAll(fIndexer.createFacetDocs(los));
 
         return docs;
 	}
 
 	private SolrInputDocument createDoc(UniversityAppliedScienceLOS los) {
-		
-		System.out.println("Converting now!!!!");
 		
 		SolrInputDocument doc = new SolrInputDocument();
 		
@@ -64,6 +64,7 @@ public class UasLOSToSolrInputDocment implements Converter<UniversityAppliedScie
         
 
         doc.setField(LearningOpportunity.NAME, losName);
+        
         
         
         if (teachingLang.equals("fi")) {
@@ -139,16 +140,17 @@ public class UasLOSToSolrInputDocment implements Converter<UniversityAppliedScie
             }
         }
 
-        for (ApplicationOption ao : los.getApplicationOptions()) {
-            if (ao.getApplicationSystem() != null) {
-                doc.addField(LearningOpportunity.AS_NAME_FI, ao.getApplicationSystem().getName().getTranslations().get("fi"));
-                doc.addField(LearningOpportunity.AS_NAME_SV, ao.getApplicationSystem().getName().getTranslations().get("sv"));
-                doc.addField(LearningOpportunity.AS_NAME_EN, ao.getApplicationSystem().getName().getTranslations().get("en"));
-            }
-        }
+        if (los.getApplicationOptions() != null) {
+        	for (ApplicationOption ao : los.getApplicationOptions()) {
+        		if (ao.getApplicationSystem() != null) {
+        			doc.addField(LearningOpportunity.AS_NAME_FI, ao.getApplicationSystem().getName().getTranslations().get("fi"));
+        			doc.addField(LearningOpportunity.AS_NAME_SV, ao.getApplicationSystem().getName().getTranslations().get("sv"));
+        			doc.addField(LearningOpportunity.AS_NAME_EN, ao.getApplicationSystem().getName().getTranslations().get("en"));
+        		}
+        	}
 
-        SolrUtil.addApplicationDates(doc, los.getApplicationOptions());
-        
+        	SolrUtil.addApplicationDates(doc, los.getApplicationOptions());
+        }
         //Fields for sorting
         doc.addField(LearningOpportunity.START_DATE_SORT, los.getStartDate());
         //indexDurationField(loi, doc);
@@ -158,9 +160,24 @@ public class UasLOSToSolrInputDocment implements Converter<UniversityAppliedScie
         
         
         //For faceting
-        //indexFacetFields(doc, los, loi);
+        indexFacetFields(doc, los);
 		
 		return doc;
+	}
+
+	private void indexFacetFields(SolrInputDocument doc,
+			UniversityAppliedScienceLOS los) {
+		doc.addField(LearningOpportunity.TEACHING_LANGUAGE, los.getTeachingLanguages().get(0).getValue());
+        doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_LUKIO);
+
+        for (Code curTopic : los.getTopics()) {
+            doc.addField(LearningOpportunity.TOPIC, curTopic.getUri());
+        }
+        
+        for (Code curTopic : los.getThemes()) {
+            doc.addField(LearningOpportunity.THEME, curTopic.getUri());
+        }
+		
 	}
 	
 }

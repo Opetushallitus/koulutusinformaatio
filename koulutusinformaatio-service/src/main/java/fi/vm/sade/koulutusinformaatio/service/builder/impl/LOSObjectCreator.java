@@ -275,8 +275,6 @@ public class LOSObjectCreator extends ObjectCreator {
     	los.setType(TarjontaConstants.TYPE_AMK);
     	los.setId(koulutus.getOid());
     	
-    	System.out.println("\nOid is: " + los.getId() + "\n");
-    	
     	if (koulutus.getKuvausKomoto().get(KomotoTeksti.LISATIETOA_OPETUSKIELISTA) != null  
     			&& !koulutus.getKuvausKomoto().get(KomotoTeksti.LISATIETOA_OPETUSKIELISTA).getTekstis().containsKey("undefined")) {
     		los.setInfoAboutTeachingLangs(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.LISATIETOA_OPETUSKIELISTA)));
@@ -359,12 +357,15 @@ public class LOSObjectCreator extends ObjectCreator {
         Provider provider = providerService.getByOID(koulutus.getOrganisaatio().getOid());
         los.setProvider(provider);
         
+        los.setTopics(getTopics(koulutus.getAihees()));
+        los.setThemes(getThemes(koulutus.getAihees()));
+        
         fetchHakukohdeData(los);
         //educationDegree = koulutusaste Ok
         //qualification = tutkintonimike Ok
         //degreeTitle = koulutusohjelma Ok  
         
-        //Puuttuu vielä (datan rikastus pielessä)
+        //Puuttuu vielï¿½ (datan rikastus pielessï¿½)
         //formOfEducation = opetusmuoto
         //setProfessionalTitles = ammattinimikkeet
         

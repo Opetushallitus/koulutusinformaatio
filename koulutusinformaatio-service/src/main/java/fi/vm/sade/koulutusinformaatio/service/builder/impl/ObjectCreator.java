@@ -83,14 +83,10 @@ public abstract class ObjectCreator {
                 Map.Entry<String, String> entry = i.next();
                 if (!Strings.isNullOrEmpty(entry.getKey()) && !Strings.isNullOrEmpty(entry.getValue())) {
                 	try {
-                		System.out.println("Entry key: " + entry.getKey());
-                		System.out.println(rawMaterial.getMeta().get(entry.getKey()));
-                		System.out.println(rawMaterial.getMeta().get(entry.getKey()).getKieliArvo());
-                		System.out.println(rawMaterial.getMeta().get(entry.getKey()).getArvo());
-                		System.out.println(rawMaterial.getMeta().get(entry.getKey()).getNimi());
                 		String key = rawMaterial.getMeta().get(entry.getKey()).getArvo();//koodistoService.searchFirstCodeValue(entry.getKey());
                 		key = (key == null) ? rawMaterial.getMeta().get(entry.getKey()).getKieliArvo() : key;
-                		translations.put(key.toLowerCase(), entry.getValue());
+                		String val = entry.getValue() != null ? entry.getValue() : "";
+                		translations.put(key.toLowerCase(), val);
                 	} catch (Exception ex) {
                 		throw new KoodistoException(ex.getMessage());
                 	}
@@ -111,7 +107,8 @@ public abstract class ObjectCreator {
 			Map<String, String> translations = new HashMap<String, String>();
 			for (TekstiRDTO curTeksti : nimi) {
 				if (!Strings.isNullOrEmpty(curTeksti.getArvo()) && !Strings.isNullOrEmpty(curTeksti.getTeksti())) {
-					translations.put(curTeksti.getArvo().toLowerCase(), curTeksti.getTeksti());
+					String teksti = curTeksti.getTeksti() != null ? curTeksti.getTeksti() : "";
+					translations.put(curTeksti.getArvo().toLowerCase(), teksti);
 				}
 			}
 			I18nText i18nText = new I18nText();
@@ -131,8 +128,8 @@ public abstract class ObjectCreator {
                 if (!Strings.isNullOrEmpty(entry.getKey()) && (entry.getValue() != null)) {
                 	try {
                 		String key = entry.getValue().getKieliArvo();
-                		//System.out.println(entry.getValue().get);
-                		translations.put(key.toLowerCase(), entry.getValue().getKieliKaannos());
+                		String kielikaannos = entry.getValue().getKieliKaannos() != null ? entry.getValue().getKieliKaannos() : "";
+                		translations.put(key.toLowerCase(), kielikaannos);
                 	} catch (Exception ex) {
                 		throw new KoodistoException(ex.getMessage());
                 	}
@@ -176,5 +173,13 @@ public abstract class ObjectCreator {
         
         return new ArrayList<Code>(set);
     }
-
+    
+    protected List<Code> getTopics(KoodiUrisV1RDTO koodit) throws KoodistoException {
+    	return new ArrayList<Code>();
+    }
+    
+    protected List<Code> getThemes(KoodiUrisV1RDTO koodit) throws KoodistoException {
+    	return new ArrayList<Code>();
+    }
+    
 }
