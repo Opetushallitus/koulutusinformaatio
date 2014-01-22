@@ -165,15 +165,18 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         name = name == null ? nameEn : name;
         
         doc.setField(LearningOpportunity.LOP_NAME, name);
+        doc.addField("lopNames", name);
         if (teachLang.equals("sv")) {
-            doc.addField(LearningOpportunity.LOP_NAME_SV, nameSv);
+            doc.addField(LearningOpportunity.LOP_NAME_SV, SolrUtil.resolveTextWithFallback("sv",provider.getName().getTranslations()));
         } else if (teachLang.equals("en")) {
-            doc.addField(LearningOpportunity.LOP_NAME_EN, nameEn);
+            doc.addField(LearningOpportunity.LOP_NAME_EN, SolrUtil.resolveTextWithFallback("en",provider.getName().getTranslations()));
         } else {
-            doc.addField(LearningOpportunity.LOP_NAME_FI, nameFi);
+            doc.addField(LearningOpportunity.LOP_NAME_FI, SolrUtil.resolveTextWithFallback("fi",provider.getName().getTranslations()));
         }
         
     }
+    
+    
     
     
     private void indexChildFields(SolrInputDocument doc, ChildLOS childLOS, ChildLOI childLOI, String teachLang) {
