@@ -114,7 +114,10 @@ public class KoodistoServiceImpl implements KoodistoService {
     @Override
     public List<Code> searchCodesByKoodisto(String koodistoUri, Integer version) throws KoodistoException {
         try {
-            List<KoodiType> codes = koodiService.getKoodisForKoodisto(koodistoUri, version);
+        	
+            List<KoodiType> codes = koodiService.getKoodisForKoodisto(koodistoUri, version, true);
+            
+            
             if (codes == null || codes.isEmpty()) {
                 LOGGER.warn(String.format("No koodis found with koodistoUri %, version %d", koodistoUri, version));
             }
