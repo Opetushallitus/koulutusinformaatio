@@ -40,7 +40,8 @@ public class UniversityAppliedScienceLOSToDTO {
         //DO MORE
         
         dto.setPrerequisite(CodeToDTO.convert(los.getPrerequisite(), lang));
-        //TODO: --> dto.setFormOfTeaching(ConverterUtil.getTextsByLanguage(los.getFormOfTeaching(), uiLang));
+        dto.setFormOfTeaching(ConverterUtil.getTextsByLanguage(los.getFormOfTeaching(), uiLang));
+        dto.setProfessionalTitles(ConverterUtil.getTextsByLanguage(los.getProfessionalTitles(), uiLang));
         dto.setTeachingLanguages(CodeToValue.convertAll(los.getTeachingLanguages()));
         //TODO: --> dto.setFormOfEducation(ConverterUtil.getTextsByLanguage(los.getFormOfEducation(), uiLang));
         dto.setStartDate(los.getStartDate());
@@ -48,11 +49,7 @@ public class UniversityAppliedScienceLOSToDTO {
         dto.setCooperation(ConverterUtil.getTextByLanguage(los.getCooperation(), lang));
         dto.setContent(ConverterUtil.getTextByLanguage(los.getContent(), lang));
         dto.setContactPersons(ContactPersonToDTO.convertAll(los.getContactPersons()));
-        //dto.setDiplomas(ConverterUtil.getTextsByLanguage(los.getDiplomas(), lang));
         dto.setPlannedDuration(los.getPlannedDuration());
-        //dto.setLanguageSelection(LanguageSelectionToDTO.convertAll(los.getLanguageSelection(), lang));
-        //dto.setContactPersons(ContactPersonToDTO.convertAll(loi.getContactPersons()));
-        //dto.setDiplomas(ConverterUtil.getTextsByLanguage(loi.getDiplomas(), lang));
         dto.setPlannedDuration(los.getPlannedDuration());
         dto.setPlannedDurationUnit(ConverterUtil.getTextByLanguageUseFallbackLang(los.getPlannedDurationUnit(), uiLang));
         
