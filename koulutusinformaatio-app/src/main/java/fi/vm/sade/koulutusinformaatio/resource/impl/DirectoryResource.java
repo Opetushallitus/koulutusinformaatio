@@ -102,6 +102,8 @@ public class DirectoryResource {
             model.put("providers", searchResults);
             model.put("alphabets", alphabets);
             model.put("letter", letter);
+            model.put("baseUrl", baseUrl);
+            model.put("lang", lang);
             return Response.status(Response.Status.OK).entity(new Viewable("/providers.ftl", model)).build();
         } else {
             return getProviders(lang);
@@ -128,6 +130,7 @@ public class DirectoryResource {
         model.put("provider", ConverterUtil.getTextByLanguageUseFallbackLang(provider.getName(), "fi"));
         model.put("learningOpportunities", resultList);
         model.put("baseUrl", baseUrl);
+        model.put("lang", lang);
 
         return new Viewable("/education.ftl", model);
     }

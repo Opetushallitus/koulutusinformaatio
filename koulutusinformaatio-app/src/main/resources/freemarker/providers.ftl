@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
+<#include "resources.ftl">
 <head>
     <#include "head.ftl">
 </head>
 <body>
-<#include lang + "/top.ftl">
+<#include "top.ftl">
     <div id="page">
         <div class="grid16-16">
             <div class="buttongroup margin-bottom-4">
@@ -26,5 +27,7 @@
             </p>
         </div>
     </div>
+    <div class="clear"></div>
+    <#include "footer.ftl">
 </body>
 </html>

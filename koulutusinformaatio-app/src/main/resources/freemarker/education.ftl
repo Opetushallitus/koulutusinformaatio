@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<#include "resources.ftl">
 <head>
     <#include "head.ftl">
 </head>
@@ -26,5 +27,7 @@
             </p>
         </div>
     </div>
+    <div class="clear"></div>
+    <#include "footer.ftl">
 </body>
 </html>
