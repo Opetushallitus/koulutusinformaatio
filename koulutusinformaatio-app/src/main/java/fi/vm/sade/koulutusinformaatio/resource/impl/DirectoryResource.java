@@ -51,7 +51,7 @@ import java.util.Map;
  * @author Hannu Lyytikainen
  */
 @Component
-@Path("/hakemisto")
+@Path("/{lang}/hakemisto")
 public class DirectoryResource {
 
     public static final String CHARSET_UTF_8 = ";charset=UTF-8";
@@ -77,14 +77,15 @@ public class DirectoryResource {
     @GET
     @Path("oppilaitokset")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    public Response getProviders() throws URISyntaxException {
-        return Response.seeOther(new URI("hakemisto/oppilaitokset/A")).build();
+    public Response getProviders(@PathParam("lang") String lang) throws URISyntaxException {
+        return Response.seeOther(new URI(String.format("%s/hakemisto/oppilaitokset/A", lang))).build();
     }
 
     @GET
     @Path("oppilaitokset/{letter}")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    public Response getProvidersWithFirstLetter(@PathParam("letter") String letter) throws URISyntaxException {
+    public Response getProvidersWithFirstLetter(@PathParam("lang") String lang,
+                                                @PathParam("letter") String letter) throws URISyntaxException {
         if (alphabets.contains(letter)) {
             Map<String, Object> model = Maps.newHashMap();
             List<Provider> providers = null;
@@ -100,13 +101,13 @@ public class DirectoryResource {
             model.put("letter", letter);
             return Response.status(Response.Status.OK).entity(new Viewable("/providers.ftl", model)).build();
         } else {
-            return getProviders();
+            return getProviders(lang);
         }
     }
 
     @GET
     @Path("oppilaitokset/{letter}/{providerId}/koulutukset")
-    public Viewable getLearningOpportunities(@PathParam("letter") String letter,
+    public Viewable getLearningOpportunities(@PathParam("lang") String lang, @PathParam("letter") String letter,
                                              @PathParam("providerId") final String providerId) {
         List<LearningOpportunitySearchResultDTO> resultList = null;
         Provider provider = null;
