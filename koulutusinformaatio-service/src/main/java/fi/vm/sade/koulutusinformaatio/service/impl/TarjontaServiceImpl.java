@@ -46,6 +46,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusV1RDTO;
+import fi.vm.sade.tarjonta.service.types.TarjontaTila;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -159,6 +160,9 @@ public class TarjontaServiceImpl implements TarjontaService {
     	List<String> parentOids = new ArrayList<String>();
     	for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
     		for (KoulutusHakutulosV1RDTO curKoulutus : curRes.getTulokset()) {
+    			if (!curKoulutus.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
+    				continue;
+    			}
     			ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes = this.tarjontaRawService.getHigherEducationLearningOpportunity(curKoulutus.getOid());
     		    KoulutusKorkeakouluV1RDTO koulutusDTO = koulutusRes.getResult();
     		    if (koulutusDTO == null) {
