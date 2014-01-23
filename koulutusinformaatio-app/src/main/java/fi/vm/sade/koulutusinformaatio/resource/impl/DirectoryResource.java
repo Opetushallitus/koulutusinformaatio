@@ -37,6 +37,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URI;
@@ -106,6 +107,7 @@ public class DirectoryResource {
 
     @GET
     @Path("oppilaitokset/{letter}/{providerId}/koulutukset")
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getLearningOpportunities(@PathParam("letter") String letter,
                                              @PathParam("providerId") final String providerId) {
         List<LearningOpportunitySearchResultDTO> resultList = null;
