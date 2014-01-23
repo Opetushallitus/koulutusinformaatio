@@ -122,8 +122,9 @@ public class UpdateServiceImpl implements UpdateService {
            		
            		for (UniversityAppliedScienceLOS curLOS : higherEducations) {
            			LOG.debug("Saving highed education: " + curLOS.getId());
-           			this.indexerService.addLearningOpportunitySpecification(curLOS, loUpdateSolr, lopUpdateSolr);
-           			this.educationDataUpdateService.save(curLOS);
+           			indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr);
+        			this.educationDataUpdateService.save(curLOS);
+           			
            		}
             //}
             
@@ -144,7 +145,15 @@ public class UpdateServiceImpl implements UpdateService {
     	
     }
 
-    @Override
+	private void indexToSolr(UniversityAppliedScienceLOS curLOS,
+			HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr) throws Exception {
+		this.indexerService.addLearningOpportunitySpecification(curLOS, loUpdateSolr, lopUpdateSolr);
+		for (UniversityAppliedScienceLOS curChild: curLOS.getChildren()) {
+			indexToSolr(curChild, loUpdateSolr, lopUpdateSolr);
+		}
+	}
+
+	@Override
     public boolean isRunning() {
         return running;
     }
