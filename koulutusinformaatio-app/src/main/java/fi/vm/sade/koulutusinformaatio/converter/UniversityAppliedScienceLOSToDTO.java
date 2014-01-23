@@ -29,7 +29,7 @@ public class UniversityAppliedScienceLOSToDTO {
         dto.setStructure(ConverterUtil.getTextByLanguage(los.getStructure(), lang));
         dto.setAccessToFurtherStudies(ConverterUtil.getTextByLanguage(los.getAccessToFurtherStudies(), lang));
         //dto.setLois(UpperSecondaryLOIToDTO.convertAll(los.getLois(), lang, uiLang));
-        dto.setProvider(ProviderToDTO.convert(los.getProvider(), lang));
+        dto.setProvider(ProviderToDTO.convert(los.getProvider(), lang, "fi"));
         dto.setTranslationLanguage(lang);
         dto.setAvailableTranslationLanguages(ConverterUtil.getAvailableTranslationLanguages(los.getGoals()));
         dto.setCreditValue(los.getCreditValue());
@@ -62,7 +62,7 @@ public class UniversityAppliedScienceLOSToDTO {
         for (ApplicationSystem as : aoByAs.keySet()) {
             ApplicationSystemDTO asDTO = ApplicationSystemToDTO.convert(as, uiLang);
             for (ApplicationOption ao : aoByAs.get(as)) {
-                asDTO.getApplicationOptions().add(ApplicationOptionToDTO.convert(ao, lang, uiLang));
+                asDTO.getApplicationOptions().add(ApplicationOptionToDTO.convert(ao, lang, uiLang, "fi"));
             }
             dto.getApplicationSystems().add(asDTO);
         }
