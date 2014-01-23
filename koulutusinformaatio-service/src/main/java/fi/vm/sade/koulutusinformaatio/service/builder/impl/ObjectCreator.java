@@ -21,8 +21,6 @@ import com.google.common.base.Strings;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
-import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
-import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.tarjonta.service.resources.dto.TekstiRDTO;
@@ -163,14 +161,6 @@ public abstract class ObjectCreator {
         los.setTopics(updatedTopics);
         
         return new ArrayList<Code>(set);
-    }
-    
-    protected List<Code> getTopics(KoodiUrisV1RDTO koodit) throws KoodistoException {
-    	return new ArrayList<Code>();
-    }
-    
-    protected List<Code> getThemes(KoodiUrisV1RDTO koodit) throws KoodistoException {
-    	return new ArrayList<Code>();
     }
     
     protected List<I18nText> getI18nTextMultiple(KoodiUrisV1RDTO opetusmuodos) throws KoodistoException {

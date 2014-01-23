@@ -21,13 +21,6 @@ public class UasLOSToSolrInputDocment implements Converter<UniversityAppliedScie
 	public List<SolrInputDocument> convert(UniversityAppliedScienceLOS los) {
 		List<SolrInputDocument> docs = Lists.newArrayList();
         FacetIndexer fIndexer = new FacetIndexer();
-
-        /*for (UpperSecondaryLOI loi : los.getLois()) {
-            docs.add(createDoc(los, loi));
-            docs.addAll(fIndexer.createFacetDocs(loi, los));
-        }
-        
-        docs*/
         
         docs.add(createDoc(los));
         docs.addAll(fIndexer.createFacetDocs(los));
@@ -168,7 +161,7 @@ public class UasLOSToSolrInputDocment implements Converter<UniversityAppliedScie
 	private void indexFacetFields(SolrInputDocument doc,
 			UniversityAppliedScienceLOS los) {
 		doc.addField(LearningOpportunity.TEACHING_LANGUAGE, los.getTeachingLanguages().get(0).getValue());
-        doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_LUKIO);
+        doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMK);
 
         for (Code curTopic : los.getTopics()) {
             doc.addField(LearningOpportunity.TOPIC, curTopic.getUri());

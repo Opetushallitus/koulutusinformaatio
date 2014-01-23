@@ -105,6 +105,7 @@ public class SolrFields {
     	public static final String ED_TYPE_AMMATILLINEN = "et3";
     	public static final String ED_TYPE_AMM_ER = "et4";
     	public static final String ED_TYPE_VALMENTAVA = "et5";
+    	public static final String ED_TYPE_AMK = "et6";
     	public static final String SPECIAL_EDUCATION = "ER";
     	public static final String TIMESTAMP_DOC = "loUpdateTimestampDocument";
     	public static final String TYPE_FACET = "FASETTI";

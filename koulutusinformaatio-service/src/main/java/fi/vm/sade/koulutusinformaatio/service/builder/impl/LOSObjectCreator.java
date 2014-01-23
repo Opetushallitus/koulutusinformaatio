@@ -357,23 +357,14 @@ public class LOSObjectCreator extends ObjectCreator {
         Provider provider = providerService.getByOID(koulutus.getOrganisaatio().getOid());
         los.setProvider(provider);
         
-        los.setTopics(getTopics(koulutus.getAihees()));
-        los.setThemes(getThemes(koulutus.getAihees()));
+        los.setTopics(createCodes(koulutus.getAihees()));
+        los.setThemes(getThemes(los));
         
         los.setFormOfTeaching(getI18nTextMultiple(koulutus.getOpetusmuodos()));
         los.setProfessionalTitles(getI18nTextMultiple(koulutus.getAmmattinimikkeet()));
         
         
         fetchHakukohdeData(los);
-        //educationDegree = koulutusaste Ok
-        //qualification = tutkintonimike Ok
-        //degreeTitle = koulutusohjelma Ok  
-        
-        //formOfEducation = opetusmuoto OK
-        
-        
-        
-        //setProfessionalTitles = ammattinimikkeet
         
         
         
