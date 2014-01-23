@@ -4,14 +4,14 @@
 
 angular.module('ApplicationBasket', []).
 
-controller('ApplicationBasketCtrl', ['$scope', '$rootScope', 'ApplicationBasketService', 'SearchService', 'FilterService', 'kiAppConstants', 'Config', 
-    function($scope, $rootScope, ApplicationBasketService, SearchService, FilterService, kiAppConstants, Config) {
-        $rootScope.title = i18n.t('title-application-basket') + ' - ' + i18n.t('sitename');
+controller('ApplicationBasketCtrl', ['$scope', '$rootScope', 'ApplicationBasketService', 'SearchService', 'FilterService', 'TranslationService', 'kiAppConstants', 'Config', 
+    function($scope, $rootScope, ApplicationBasketService, SearchService, FilterService, TranslationService, kiAppConstants, Config) {
+        $rootScope.title = TranslationService.getTranslation('title-application-basket') + ' - ' + TranslationService.getTranslation('sitename');
         $scope.hakuAppUrl = Config.get('hakulomakeUrl');
         var basketLimit = kiAppConstants.applicationBasketLimit; // TODO: get this from application data?
 
         $scope.queryString = SearchService.getTerm() + '?' + FilterService.getParams();
-        $scope.notificationText = i18n.t('application-basket-fill-form-notification', {count: basketLimit});
+        $scope.notificationText = TranslationService.getTranslation('application-basket-fill-form-notification', {count: basketLimit});
         $scope.basketIsEmpty = ApplicationBasketService.isEmpty();
 
         if (!$scope.basketIsEmpty) {
@@ -20,7 +20,7 @@ controller('ApplicationBasketCtrl', ['$scope', '$rootScope', 'ApplicationBasketS
             });
         }
 
-        $scope.title = i18n.t('title-application-basket')
+        $scope.title = TranslationService.getTranslation('title-application-basket')
         $scope.itemCount = ApplicationBasketService.getItemCount();
 
         
@@ -85,7 +85,7 @@ controller('ApplicationBasketCtrl', ['$scope', '$rootScope', 'ApplicationBasketS
         };
 
         $scope.removeApplicationSystemFromBasket = function(asId) {
-            var areyousure = confirm(i18n.t('application-basket-empty-confirm'));
+            var areyousure = confirm(TranslationService.getTranslation('application-basket-empty-confirm'));
             if (areyousure) {
                 removeApplicationSystem(asId);
                 $scope.itemCount = ApplicationBasketService.getItemCount();

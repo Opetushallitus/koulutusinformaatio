@@ -76,11 +76,11 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
         doc.addField(SolrFields.LearningOpportunity.NAME_SORT, losName);
         
         if (teachingLang.equals("fi")) {
-            doc.addField(SolrFields.LearningOpportunity.NAME_FI, specialLOS.getName().getTranslations().get("fi"));
+            doc.addField(SolrFields.LearningOpportunity.NAME_FI, SolrUtil.resolveTextWithFallback("fi", specialLOS.getName().getTranslations()));
         } else if (teachingLang.equals("sv")) {
-            doc.addField(SolrFields.LearningOpportunity.NAME_SV, specialLOS.getName().getTranslations().get("sv"));
+            doc.addField(SolrFields.LearningOpportunity.NAME_SV, SolrUtil.resolveTextWithFallback("sv", specialLOS.getName().getTranslations()));
         } else if (teachingLang.equals("en")) {
-            doc.addField(SolrFields.LearningOpportunity.NAME_EN, specialLOS.getName().getTranslations().get("en"));
+            doc.addField(SolrFields.LearningOpportunity.NAME_EN, SolrUtil.resolveTextWithFallback("en", specialLOS.getName().getTranslations()));
         } else {
             doc.addField(SolrFields.LearningOpportunity.NAME_FI, losName);
         }
@@ -88,12 +88,15 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
         doc.setField(SolrFields.LearningOpportunity.LOP_NAME, SolrUtil.resolveTranslationInTeachingLangUseFallback(
                 childLOI.getTeachingLanguages(), provider.getName().getTranslations()));
         
+        doc.addField("lopNames", SolrUtil.resolveTranslationInTeachingLangUseFallback(
+                childLOI.getTeachingLanguages(), provider.getName().getTranslations()));
+        
         if (teachingLang.equals("sv")) {
-            doc.addField(SolrFields.LearningOpportunity.LOP_NAME_SV, provider.getName().getTranslations().get("sv"));
+            doc.addField(SolrFields.LearningOpportunity.LOP_NAME_SV, SolrUtil.resolveTextWithFallback("sv", provider.getName().getTranslations()));
         } else if (teachingLang.equals("en")) {
-            doc.addField(SolrFields.LearningOpportunity.LOP_NAME_EN, provider.getName().getTranslations().get("en"));
+            doc.addField(SolrFields.LearningOpportunity.LOP_NAME_EN, SolrUtil.resolveTextWithFallback("en", provider.getName().getTranslations()));
         } else {
-            doc.addField(SolrFields.LearningOpportunity.LOP_NAME_FI, provider.getName().getTranslations().get("fi"));
+            doc.addField(SolrFields.LearningOpportunity.LOP_NAME_FI, SolrUtil.resolveTextWithFallback("fi", provider.getName().getTranslations()));
         }
 
         if (provider.getHomeDistrict() != null) {
@@ -117,42 +120,42 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
             for (I18nText i18n : childLOI.getProfessionalTitles()) {
                 
                 if (teachingLang.equals("sv")) {
-                    doc.addField(SolrFields.LearningOpportunity.PROFESSIONAL_TITLES_SV, i18n.getTranslations().get("sv"));
+                    doc.addField(SolrFields.LearningOpportunity.PROFESSIONAL_TITLES_SV, SolrUtil.resolveTextWithFallback("sv", i18n.getTranslations()));
                 } else if (teachingLang.equals("en")) {
-                    doc.addField(SolrFields.LearningOpportunity.PROFESSIONAL_TITLES_EN, i18n.getTranslations().get("en"));
+                    doc.addField(SolrFields.LearningOpportunity.PROFESSIONAL_TITLES_EN, SolrUtil.resolveTextWithFallback("en", i18n.getTranslations()));
                 } else {
-                    doc.addField(SolrFields.LearningOpportunity.PROFESSIONAL_TITLES_FI, i18n.getTranslations().get("fi"));
+                    doc.addField(SolrFields.LearningOpportunity.PROFESSIONAL_TITLES_FI, SolrUtil.resolveTextWithFallback("fi", i18n.getTranslations()));
                 }
             }
         }
         if (specialLOS.getQualification() != null) {
             
             if (teachingLang.equals("sv")) {
-                doc.addField(SolrFields.LearningOpportunity.QUALIFICATION_SV, specialLOS.getQualification().getTranslations().get("sv"));
+                doc.addField(SolrFields.LearningOpportunity.QUALIFICATION_SV, SolrUtil.resolveTextWithFallback("sv", specialLOS.getQualification().getTranslations()));
             } else if (teachingLang.equals("en")) {
-                doc.addField(SolrFields.LearningOpportunity.QUALIFICATION_EN, specialLOS.getQualification().getTranslations().get("en"));
+                doc.addField(SolrFields.LearningOpportunity.QUALIFICATION_EN, SolrUtil.resolveTextWithFallback("en", specialLOS.getQualification().getTranslations()));
             } else {
-                doc.addField(SolrFields.LearningOpportunity.QUALIFICATION_FI, specialLOS.getQualification().getTranslations().get("fi"));
+                doc.addField(SolrFields.LearningOpportunity.QUALIFICATION_FI, SolrUtil.resolveTextWithFallback("fi", specialLOS.getQualification().getTranslations()));
             }
         }
         if (specialLOS.getGoals() != null) {
             
             if (teachingLang.equals("sv")) {
-                doc.addField(SolrFields.LearningOpportunity.GOALS_SV, specialLOS.getGoals().getTranslations().get("sv"));
+                doc.addField(SolrFields.LearningOpportunity.GOALS_SV, SolrUtil.resolveTextWithFallback("sv", specialLOS.getGoals().getTranslations()));
             } else if  (teachingLang.equals("en")) {
-                doc.addField(SolrFields.LearningOpportunity.GOALS_EN, specialLOS.getGoals().getTranslations().get("en"));
+                doc.addField(SolrFields.LearningOpportunity.GOALS_EN, SolrUtil.resolveTextWithFallback("en", specialLOS.getGoals().getTranslations()));
             } else {
-                doc.addField(SolrFields.LearningOpportunity.GOALS_FI, specialLOS.getGoals().getTranslations().get("fi"));
+                doc.addField(SolrFields.LearningOpportunity.GOALS_FI, SolrUtil.resolveTextWithFallback("fi", specialLOS.getGoals().getTranslations()));
             }
         }
         if (childLOI.getContent() != null) {
             
             if (teachingLang.equals("sv")) {
-                doc.addField(SolrFields.LearningOpportunity.CONTENT_SV, childLOI.getContent().getTranslations().get("sv"));
+                doc.addField(SolrFields.LearningOpportunity.CONTENT_SV, SolrUtil.resolveTextWithFallback("sv", childLOI.getContent().getTranslations()));
             } else if (teachingLang.equals("en")) {
-                doc.addField(SolrFields.LearningOpportunity.CONTENT_EN, childLOI.getContent().getTranslations().get("en"));
+                doc.addField(SolrFields.LearningOpportunity.CONTENT_EN, SolrUtil.resolveTextWithFallback("en", childLOI.getContent().getTranslations()));
             } else {
-                doc.addField(SolrFields.LearningOpportunity.CONTENT_FI, childLOI.getContent().getTranslations().get("fi"));
+                doc.addField(SolrFields.LearningOpportunity.CONTENT_FI, SolrUtil.resolveTextWithFallback("fi", childLOI.getContent().getTranslations()));
             }
         }
 

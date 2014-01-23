@@ -94,7 +94,7 @@ var kiApp = angular.module('kiApp',
         resGetPath : 'locales/__ns__-__lng__.json',
         lng : LanguageService.getLanguage(),
         ns: {
-            namespaces: ['language', 'tooltip'],
+            namespaces: ['language', 'tooltip', 'plain'],
             defaultNs: 'language'
         },
         getAsync : false,

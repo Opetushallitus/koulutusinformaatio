@@ -1,4 +1,4 @@
-<h4 class="title" data-ki-i18n="application-options"></h4>
+<h4 class="title" data-ki-i18n="application-options" data-lang="{{teachingLang}}"></h4>
 <div data-ng-repeat="ao in as.applicationOptions" class="content">
     <div data-ng-include data-src="partialUrl + 'as/aospecific/ao-info.html'"></div>
     <form name="levelSelectionForm" id="application-form-{{as.id}}" action="{{hakuAppUrl}}lomake/{{as.id}}" method="POST" class="margin-top-2" target="hakulomake">

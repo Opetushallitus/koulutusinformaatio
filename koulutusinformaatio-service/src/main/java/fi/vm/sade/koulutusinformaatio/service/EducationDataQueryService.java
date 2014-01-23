@@ -95,6 +95,12 @@ public interface EducationDataQueryService {
      * @throws ResourceNotFoundException no provider found with the id
      */
     Provider getProvider(final String id) throws ResourceNotFoundException;
-    
-    
+
+    /**
+     * Finds all learning opportunitySpecifications by provider id.
+     *
+     * @param providerId provider id
+     * @return list of learning oppportunity search results
+     */
+    List<LOS> findLearningOpportunitiesByProviderId(String providerId);
 }

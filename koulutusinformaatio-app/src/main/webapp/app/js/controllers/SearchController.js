@@ -1,8 +1,8 @@
 /**
  *  Controller for search field in header
  */
-function SearchFieldCtrl($scope, $location, $route, SearchService, kiAppConstants, FilterService, AutocompleteService, TreeService) {
-    $scope.searchFieldPlaceholder = i18n.t('search-field-placeholder'); 
+function SearchFieldCtrl($scope, $location, $route, SearchService, kiAppConstants, FilterService, AutocompleteService, TreeService, TranslationService) {
+    $scope.searchFieldPlaceholder = TranslationService.getTranslation('search-field-placeholder'); 
     $scope.suggestions = [];
     
     $scope.$watch('queryString', function() {
@@ -10,14 +10,14 @@ function SearchFieldCtrl($scope, $location, $route, SearchService, kiAppConstant
     	AutocompleteService.query($scope.queryString).then(function(result) {
     		$scope.suggestions.length = 0;
     		if (result.keywords != undefined) {
-                $scope.suggestions.push({value: i18n.t('autocomplete-keyword'), group: true});
+                $scope.suggestions.push({value: TranslationService.getTranslation('autocomplete-keyword'), group: true});
     			for (var i = 0; i < result.keywords.length; i++) {
     				$scope.suggestions.push({value: result.keywords[i]});
     			}
     		} 
     		
     		if (result.loNames != undefined) {
-                $scope.suggestions.push({value: i18n.t('autocomplete-loname'), group: true});
+                $scope.suggestions.push({value: TranslationService.getTranslation('autocomplete-loname'), group: true});
     			for (var i = 0; i < result.loNames.length; i++) {
     				$scope.suggestions.push({value: result.loNames[i]});
     			}
@@ -167,7 +167,7 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     $scope.openAreaDialog = function() {
     	DistrictService.query().then(function(result) {
     		$scope.distResult = result;
-    		$scope.distResult.unshift({name: i18n.t('koko') + ' ' + i18n.t('suomi'), code: '-1'});
+    		$scope.distResult.unshift({name: TranslationService.getTranslation('koko') + ' ' + TranslationService.getTranslation('suomi'), code: '-1'});
     	});
     }
 
@@ -221,7 +221,7 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
 
     DistrictService.query().then(function(result) {
         $scope.distResult = result;
-        $scope.distResult.unshift({name: i18n.t('koko') + ' ' + i18n.t('suomi'), code: '-1'});
+        $scope.distResult.unshift({name: TranslationService.getTranslation('koko') + ' ' + TranslationService.getTranslation('suomi'), code: '-1'});
 
         // IE requires this to redraw select boxes after data is loaded
         $timeout(function() {
@@ -326,26 +326,24 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
 /**
  *  Controller for search functionality 
  */
- function SearchCtrl($scope, $rootScope, $location, $routeParams, SearchLearningOpportunityService, SearchService, kiAppConstants, FilterService, Config, LanguageService) {
+ function SearchCtrl($scope, $rootScope, $location, $routeParams, SearchLearningOpportunityService, SearchService, kiAppConstants, FilterService, Config, LanguageService, TranslationService) {
     var queryParams;
     $scope.selectAreaVisible = false;
-    $rootScope.title = i18n.t('title-search-results') + ' - ' + i18n.t('sitename');
+    $rootScope.title = TranslationService.getTranslation('title-search-results') + ' - ' + TranslationService.getTranslation('sitename');
 
     $scope.pageSizes = [25, 50, 100];
 
     $scope.sortCriterias = [
-        {value: i18n.t('sort-criteria-default')}, 
-        {value: i18n.t('sort-criteria-alphabetical-desc')}, 
-        {value: i18n.t('sort-criteria-alphabetical-asc')}//,
-        //{value: i18n.t('sort-criteria-duration-asc'), group: i18n.t('sort-criteria-duration-group')},
-        //{value: i18n.t('sort-criteria-duration-desc'), group: i18n.t('sort-criteria-duration-group')}
+        {value: TranslationService.getTranslation('sort-criteria-default')}, 
+        {value: TranslationService.getTranslation('sort-criteria-alphabetical-desc')}, 
+        {value: TranslationService.getTranslation('sort-criteria-alphabetical-asc')}
     ];
 
     $scope.tabTitles = {
-        learningOpportunities: i18n.t('search-tab-lo'),
-        learningOpportunitiesTooltip: i18n.t('tooltip:search-tab-lo-tooltip'),
-        articles: i18n.t('search-tab-article'),
-        articlesTooltip: i18n.t('tooltip:search-tab-article-tooltip')
+        learningOpportunities: TranslationService.getTranslation('search-tab-lo'),
+        learningOpportunitiesTooltip: TranslationService.getTranslation('tooltip:search-tab-lo-tooltip'),
+        articles: TranslationService.getTranslation('search-tab-article'),
+        articlesTooltip: TranslationService.getTranslation('tooltip:search-tab-article-tooltip')
     };
 
     $scope.tabs = [
@@ -353,10 +351,10 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
         {active: false}
     ];
 
-    $scope.paginationNext = i18n.t('pagination-next');
-    $scope.paginationPrevious = i18n.t('pagination-previous');
-    $scope.valitseAlueTitle = i18n.t('valitse-alue');
-    $scope.noSearchResults = i18n.t('no-search-results-info', {searchterm: SearchService.getTerm()});
+    $scope.paginationNext = TranslationService.getTranslation('pagination-next');
+    $scope.paginationPrevious = TranslationService.getTranslation('pagination-previous');
+    $scope.valitseAlueTitle = TranslationService.getTranslation('valitse-alue');
+    $scope.noSearchResults = TranslationService.getTranslation('no-search-results-info', {searchterm: SearchService.getTerm()});
 
 
 

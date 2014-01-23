@@ -5,6 +5,7 @@
 
 </head>
 <body>
+
 <#list alphabets as alphabet>
     <#if alphabet == letter>
         ${alphabet}
@@ -16,7 +17,7 @@
 
 <br>
 <#list providers as provider>
-    <a href="${provider.id}/koulutukset">${provider.name}</a>
+    <a href="${letter}/${provider.id}/koulutukset">${provider.name}</a>
     <br>
 </#list>
 </body>

@@ -3,7 +3,7 @@
 		<h2>{{exam.type}}</h2>
 	</div>
 	<div data-ng-show="!exam.type">
-		<h2 data-ki-i18n="entrance-exam"></h2>
+		<h2 data-ki-i18n="entrance-exam" data-lang="{{translationLanguage}}"></h2>
 	</div>
     <div data-ki-render-scores data-score-element="exam.scoreLimit" data-typename="'exam'"></div>
     <p data-render-text-block data-content="{{exam.description}}"></p>
@@ -15,9 +15,9 @@
         </colgroup>
         <thead>
             <tr>
-                <th data-ki-i18n="exam-header-time"></th>
-                <th data-ki-i18n="exam-header-place"></th>
-                <th data-ki-i18n="exam-header-description"></th>
+                <th data-ki-i18n="exam-header-time" data-lang="{{translationLanguage}}"></th>
+                <th data-ki-i18n="exam-header-place" data-lang="{{translationLanguage}}"></th>
+                <th data-ki-i18n="exam-header-description" data-lang="{{translationLanguage}}"></th>
             </tr>
         </thead>
         <tbody>
