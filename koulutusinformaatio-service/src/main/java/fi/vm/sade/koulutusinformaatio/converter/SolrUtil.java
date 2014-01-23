@@ -105,7 +105,9 @@ public final class SolrUtil {
 		if (translation == null) {
             translation = translations.get(FALLBACK_LANG);
         }
-        if (translation == null) {
+        if ((translation == null) 
+        		&& !translations.isEmpty() 
+        		&& !translations.values().isEmpty()) {
             translation = translations.values().iterator().next();
         }
         return translation;
