@@ -65,7 +65,9 @@ public class UniversityAppliedScienceLOS extends LOS {
 	private List<UniversityAppliedScienceLOS> children = new ArrayList<UniversityAppliedScienceLOS>();
 	
 	private Code prerequisite;
-	
+	private List<I18nText> formOfTeaching;
+	private List<I18nText> professionalTitles;
+
 	public String getId() {
 		return id;
 	}
@@ -353,5 +355,22 @@ public class UniversityAppliedScienceLOS extends LOS {
 	public void setPrerequisite(Code prerequisite) {
 		this.prerequisite = prerequisite;
 	}
+
+	public void setFormOfTeaching(List<I18nText> opetusmuodos) {
+		this.formOfTeaching = opetusmuodos;	
+	}
+	
+	public List<I18nText> getFormOfTeaching() {
+		return formOfTeaching;
+	}
+
+	public void setProfessionalTitles(List<I18nText> ammattinimikkees) {
+		this.professionalTitles = ammattinimikkees;
+	}
+
+	public List<I18nText> getProfessionalTitles() {
+		return professionalTitles;
+	}
+
 
 }

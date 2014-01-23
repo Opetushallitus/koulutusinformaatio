@@ -142,15 +142,6 @@ public abstract class ObjectCreator {
 		}
 		return null;
 	}
-	
-
-	private List<I18nText> getMultiI18nTexts(KoodiUrisV1RDTO opetusmuodos) {
-		if (opetusmuodos != null) {
-			//opetusmuodos.get
-			
-		}
-		return null;
-	}
     
     protected List<Code> getTopics(String opintoalaKoodiUri) throws KoodistoException {
         return koodistoService.searchSuperCodes(opintoalaKoodiUri, AIHEET_KOODISTO_URI);
@@ -181,5 +172,40 @@ public abstract class ObjectCreator {
     protected List<Code> getThemes(KoodiUrisV1RDTO koodit) throws KoodistoException {
     	return new ArrayList<Code>();
     }
+    
+    protected List<I18nText> getI18nTextMultiple(KoodiUrisV1RDTO opetusmuodos) throws KoodistoException {
+    	if (opetusmuodos != null && opetusmuodos.getMeta() != null && !opetusmuodos.getMeta().isEmpty()) {
+			List<I18nText> opetusmuodot = new ArrayList<I18nText>();
+			
+			Iterator<Map.Entry<String, KoodiV1RDTO>> i = opetusmuodos.getMeta().entrySet().iterator();
+			
+			while (i.hasNext()) {
+				Map.Entry<String, KoodiV1RDTO> entry = i.next();
+				if (entry.getValue() != null && entry.getValue().getMeta() != null) {
+					I18nText text = this.getI18nTextEnriched(entry.getValue().getMeta());
+					if (text != null) {
+						opetusmuodot.add(text);
+					}
+				}
+			}
+			
+			return opetusmuodot;
+			
+		}
+		return null;
+	}
+
+	protected List<Code> createCodes(KoodiUrisV1RDTO opetuskielis) throws KoodistoException {
+    	List<Code> codes = new ArrayList<Code>();
+    	if (opetuskielis != null && opetuskielis.getMeta() != null) {
+			
+			for (KoodiV1RDTO curKoodi : opetuskielis.getMeta().values()) {
+				codes.addAll(koodistoService.searchCodes(curKoodi.getUri()));
+			}
+			
+			
+		}
+		return codes;
+	}
     
 }

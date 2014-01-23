@@ -360,31 +360,28 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setTopics(getTopics(koulutus.getAihees()));
         los.setThemes(getThemes(koulutus.getAihees()));
         
+        los.setFormOfTeaching(getI18nTextMultiple(koulutus.getOpetusmuodos()));
+        los.setProfessionalTitles(getI18nTextMultiple(koulutus.getAmmattinimikkeet()));
+        
+        
         fetchHakukohdeData(los);
         //educationDegree = koulutusaste Ok
         //qualification = tutkintonimike Ok
         //degreeTitle = koulutusohjelma Ok  
         
-        //Puuttuu viel� (datan rikastus pieless�)
-        //formOfEducation = opetusmuoto
+        //formOfEducation = opetusmuoto OK
+        
+        
+        
         //setProfessionalTitles = ammattinimikkeet
+        
+        
         
     	return los;
     }
 
 
-    private List<Code> createCodes(KoodiUrisV1RDTO opetuskielis) throws KoodistoException {
-    	List<Code> codes = new ArrayList<Code>();
-    	if (opetuskielis != null && opetuskielis.getMeta() != null) {
-			
-			for (KoodiV1RDTO curKoodi : opetuskielis.getMeta().values()) {
-				codes.addAll(koodistoService.searchCodes(curKoodi.getUri()));
-			}
-			
-			
-		}
-		return codes;
-	}
+
 
 	private void fetchHakukohdeData(UniversityAppliedScienceLOS los) throws KoodistoException {
 		 ResultV1RDTO<List<NimiJaOidRDTO>> hakukohteet = loiCreator.tarjontaRawService.getHakukohdesByHigherEducation(los.getId());

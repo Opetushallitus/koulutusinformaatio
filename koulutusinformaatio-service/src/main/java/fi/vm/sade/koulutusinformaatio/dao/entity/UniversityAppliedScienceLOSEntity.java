@@ -24,6 +24,7 @@ import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Reference;
 
+import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.UniversityAppliedScienceLOS;
 
 /**
@@ -95,6 +96,10 @@ public class UniversityAppliedScienceLOSEntity {
 	
 	private String komoOid;
 	private List<String> childKomoOids;
+	@Embedded
+	private List<I18nTextEntity> formOfTeaching;
+	@Embedded
+	private List<I18nTextEntity> professionalTitles;
 	
 	@Reference
 	private List<UniversityAppliedScienceLOSEntity> children;
@@ -311,5 +316,17 @@ public class UniversityAppliedScienceLOSEntity {
 	}
 	public void setType(String type) {
 		this.type = type;
+	}
+	public List<I18nTextEntity> getFormOfTeaching() {
+		return formOfTeaching;
+	}
+	public void setFormOfTeaching(List<I18nTextEntity> formOfTeaching) {
+		this.formOfTeaching = formOfTeaching;
+	}
+	public List<I18nTextEntity> getProfessionalTitles() {
+		return professionalTitles;
+	}
+	public void setProfessionalTitles(List<I18nTextEntity> professionalTitles) {
+		this.professionalTitles = professionalTitles;
 	}
 }

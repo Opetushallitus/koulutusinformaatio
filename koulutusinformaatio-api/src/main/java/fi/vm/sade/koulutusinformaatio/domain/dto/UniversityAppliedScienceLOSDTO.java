@@ -72,7 +72,10 @@ public class UniversityAppliedScienceLOSDTO {
 	private String translationLanguage;
 	private Set<String> availableTranslationLanguages;
 	
+	private List<String> formOfTeaching;
 
+	private List<String> professionalTitles;
+	
 
 	public String getId() {
 		return id;
@@ -361,6 +364,22 @@ public class UniversityAppliedScienceLOSDTO {
 	}
 	public String getCreditUnit() {
 		return creditUnit;
+	}
+	
+	public List<String> getFormOfTeaching() {
+		return formOfTeaching;
+	}
+
+	public void setFormOfTeaching(List<String> formOfTeaching) {
+		this.formOfTeaching = formOfTeaching;
+	}
+
+	public List<String> getProfessionalTitles() {
+		return professionalTitles;
+	}
+
+	public void setProfessionalTitles(List<String> professionalTitles) {
+		this.professionalTitles = professionalTitles;
 	}
 
 }
