@@ -36,12 +36,12 @@ public final class UpperSecondaryLOIToDTO {
     private UpperSecondaryLOIToDTO() {
     }
 
-    public static UpperSecondaryLearningOpportunityInstanceDTO convert(UpperSecondaryLOI loi, String lang, String uiLang) {
+    public static UpperSecondaryLearningOpportunityInstanceDTO convert(UpperSecondaryLOI loi, String lang, String uiLang, String defaultLang) {
         UpperSecondaryLearningOpportunityInstanceDTO dto =
                 new UpperSecondaryLearningOpportunityInstanceDTO();
 
         dto.setId(loi.getId());
-        dto.setName(ConverterUtil.getShortNameTextByLanguageUseFallbackLang(loi.getName(), lang));
+        dto.setName(ConverterUtil.getShortNameTextByLanguageUseFallbackLang(loi.getName(), defaultLang));
         dto.setPrerequisite(CodeToDTO.convert(loi.getPrerequisite(), lang));
         dto.setFormOfTeaching(ConverterUtil.getTextsByLanguage(loi.getFormOfTeaching(), uiLang));
         dto.setTeachingLanguages(CodeToValue.convertAll(loi.getTeachingLanguages()));
@@ -66,9 +66,9 @@ public final class UpperSecondaryLOIToDTO {
         }
 
         for (ApplicationSystem as : aoByAs.keySet()) {
-            ApplicationSystemDTO asDTO = ApplicationSystemToDTO.convert(as, uiLang);
+            ApplicationSystemDTO asDTO = ApplicationSystemToDTO.convert(as, defaultLang);
             for (ApplicationOption ao : aoByAs.get(as)) {
-                asDTO.getApplicationOptions().add(ApplicationOptionToDTO.convert(ao, lang, uiLang));
+                asDTO.getApplicationOptions().add(ApplicationOptionToDTO.convert(ao, lang, uiLang, defaultLang));
             }
             dto.getApplicationSystems().add(asDTO);
         }
@@ -78,11 +78,11 @@ public final class UpperSecondaryLOIToDTO {
     }
 
     public static List<UpperSecondaryLearningOpportunityInstanceDTO> convertAll(final List<UpperSecondaryLOI> lois,
-                                                                                final String lang, final String uiLang) {
+                                                                                final String lang, final String uiLang, final String defaultLang) {
         return Lists.transform(lois, new Function<UpperSecondaryLOI, UpperSecondaryLearningOpportunityInstanceDTO>() {
             @Override
             public UpperSecondaryLearningOpportunityInstanceDTO apply(UpperSecondaryLOI loi) {
-                return convert(loi, lang, uiLang);
+                return convert(loi, lang, uiLang, defaultLang);
             }
         });
     }

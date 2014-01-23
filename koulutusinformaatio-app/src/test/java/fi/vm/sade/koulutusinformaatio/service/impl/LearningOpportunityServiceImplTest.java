@@ -126,45 +126,45 @@ public class LearningOpportunityServiceImplTest {
     @Test
     public void testGetParentLearningOpportunity() throws ResourceNotFoundException {
         ParentLearningOpportunitySpecificationDTO result = learningOpportunityService.getParentLearningOpportunity("1234");
-        checkResult("fi", result);
+        checkResult("fi", "fi", result);
     }
 
     @Test
     public void testGetParentLearningOpportunityEn() throws ResourceNotFoundException {
         ParentLearningOpportunitySpecificationDTO result = learningOpportunityService.getParentLearningOpportunity("1234", "en", "en");
-        checkResult("en", result);
+        checkResult("en", "fi", result);
     }
 
     @Test
     public void testGetChildLearningOpportunity() throws ResourceNotFoundException {
         ChildLearningOpportunitySpecificationDTO result = learningOpportunityService.getChildLearningOpportunity("clo123");
-        checkResult("fi", result);
+        checkResult("fi", "fi", result);
     }
 
     @Test
     public void testGetChildLearningOpportunityEn() throws ResourceNotFoundException {
         ChildLearningOpportunitySpecificationDTO result = learningOpportunityService.getChildLearningOpportunity("clo123","en", "en");
-        checkResult("en", result);
+        checkResult("en", "fi", result);
     }
 
     @Test
     public void testGetApplicationOption() throws ResourceNotFoundException {
         ApplicationOptionDTO result = learningOpportunityService.getApplicationOption(applicationOption.getId(), "fi", "fi");
-        checkResult("fi", result);
+        checkResult("fi", "fi", result);
     }
 
     @Test
     public void testGetApplicationOptionEn() throws ResourceNotFoundException {
         ApplicationOptionDTO result = learningOpportunityService.getApplicationOption(applicationOption.getId(), "en", "en");
-        checkResult("en", result);
+        checkResult("en", "fi", result);
     }
 
 
-    private void checkResult(String lang, ApplicationOptionDTO result) {
+    private void checkResult(String lang, String defaultLang, ApplicationOptionDTO result) {
         assertNotNull(result);
         assertEquals(applicationOption.getId(), result.getId());
         assertEquals(applicationOption.getAoIdentifier(), result.getAoIdentifier());
-        assertEquals(applicationOption.getName().getTranslations().get(lang), result.getName());
+        assertEquals(applicationOption.getName().getTranslations().get(defaultLang), result.getName());
         assertEquals(applicationOption.getEducationDegree(), result.getEducationDegree());
         assertEquals(applicationOption.getProvider().getId(), result.getProvider().getId());
         assertEquals(applicationOption.getAttachmentDeliveryDeadline(), result.getAttachmentDeliveryDeadline());
@@ -176,18 +176,18 @@ public class LearningOpportunityServiceImplTest {
         assertEquals(applicationOption.getChildLOIRefs().size(), result.getChildRefs().size());
     }
 
-    private void checkResult(String lang, ParentLearningOpportunitySpecificationDTO result) {
+    private void checkResult(String lang, String defaultLang, ParentLearningOpportunitySpecificationDTO result) {
         assertNotNull(result);
         assertEquals(parentLOS.getId(), result.getId());
-        assertEquals(parentLOS.getName().getTranslations().get(lang), result.getName());
+        assertEquals(parentLOS.getName().getTranslations().get(defaultLang), result.getName());
         assertEquals(parentLOS.getAccessToFurtherStudies().getTranslations().get(lang), result.getAccessToFurtherStudies());
         assertEquals(parentLOS.getEducationDegree(), result.getEducationDegree());
         assertEquals(parentLOS.getGoals().getTranslations().get(lang), result.getGoals());
-        assertEquals(parentLOS.getEducationDomain().getTranslations().get(lang), result.getEducationDomain());
+        assertEquals(parentLOS.getEducationDomain().getTranslations().get(defaultLang), result.getEducationDomain());
         assertEquals(parentLOS.getStructure().getTranslations().get(lang), result.getStructure());
         assertEquals(parentLOS.getStydyDomain().getTranslations().get(lang), result.getStydyDomain());
         assertEquals(parentLOS.getProvider().getId(), result.getProvider().getId());
-        assertEquals(parentLOS.getProvider().getName().getTranslations().get(lang), result.getProvider().getName());
+        assertEquals(parentLOS.getProvider().getName().getTranslations().get(defaultLang), result.getProvider().getName());
 
         assertNotNull(result.getLois());
         assertEquals(1, result.getLois().size());
@@ -195,27 +195,27 @@ public class LearningOpportunityServiceImplTest {
         assertEquals(parentLOI.getApplicationOptions().iterator().next().getId(),
                 loi.getApplicationSystems().iterator().next().getApplicationOptions().get(0).getId());
         assertEquals(parentLOI.getPrerequisite().getValue(), loi.getPrerequisite().getValue());
-        assertEquals(parentLOI.getApplicationOptions().iterator().next().getApplicationSystem().getName().getTranslations().get(lang),
+        assertEquals(parentLOI.getApplicationOptions().iterator().next().getApplicationSystem().getName().getTranslations().get(defaultLang),
                 loi.getApplicationSystems().iterator().next().getName());
-        assertEquals(parentLOI.getApplicationOptions().iterator().next().getName().getTranslations().get(lang),
+        assertEquals(parentLOI.getApplicationOptions().iterator().next().getName().getTranslations().get(defaultLang),
                 loi.getApplicationSystems().iterator().next().getApplicationOptions().get(0).getName());
 
         assertEquals(3, result.getAvailableTranslationLanguages().size());
         assertEquals(lang, result.getTranslationLanguage());
     }
 
-    private void checkResult(String lang, ChildLearningOpportunitySpecificationDTO result) {
+    private void checkResult(String lang, String defaultLang, ChildLearningOpportunitySpecificationDTO result) {
         assertNotNull(result);
         assertEquals(childLOS.getId(), result.getId());
-        assertEquals(childLOS.getName().getTranslations().get(lang), result.getName());
+        assertEquals(childLOS.getName().getTranslations().get(defaultLang), result.getName());
 
         assertNotNull(result.getLois());
         assertEquals(1, result.getLois().size());
 
 
-        assertEquals(childLOS.getDegreeTitle().getTranslations().get(lang), result.getDegreeTitle());
-        assertEquals(childLOS.getQualification().getTranslations().get(lang), result.getQualification());
-        assertEquals(childLOS.getParent().getName().getTranslations().get(lang), result.getParent().getName());
+        assertEquals(childLOS.getDegreeTitle().getTranslations().get(defaultLang), result.getDegreeTitle());
+        assertEquals(childLOS.getQualification().getTranslations().get(defaultLang), result.getQualification());
+        assertEquals(childLOS.getParent().getName().getTranslations().get(defaultLang), result.getParent().getName());
         assertEquals(childLOS.getParent().getId(), result.getParent().getId());
 
         assertNotNull(result.getLois());
@@ -223,7 +223,7 @@ public class LearningOpportunityServiceImplTest {
         ChildLearningOpportunityInstanceDTO loi = result.getLois().get(0);
         assertEquals(childLOI.getApplicationOptions().get(0).getId(),
                 loi.getApplicationSystems().iterator().next().getApplicationOptions().iterator().next().getId());
-        assertEquals(childLOI.getApplicationOptions().get(0).getName().getTranslations().get(lang),
+        assertEquals(childLOI.getApplicationOptions().get(0).getName().getTranslations().get(defaultLang),
                 loi.getApplicationSystems().iterator().next().getApplicationOptions().iterator().next().getName());
         assertEquals(childLOI.getPrerequisite().getValue(),
                 loi.getPrerequisite().getValue());

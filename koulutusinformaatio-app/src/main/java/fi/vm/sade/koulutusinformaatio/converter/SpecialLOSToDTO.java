@@ -27,25 +27,25 @@ public final class SpecialLOSToDTO {
     private SpecialLOSToDTO() {
     }
 
-    public static SpecialLearningOpportunitySpecificationDTO convert(SpecialLOS los, String lang, String uiLang) {
+    public static SpecialLearningOpportunitySpecificationDTO convert(SpecialLOS los, String lang, String uiLang, String defaultLang) {
         SpecialLearningOpportunitySpecificationDTO dto = new SpecialLearningOpportunitySpecificationDTO();
 
         dto.setId(los.getId());
-        dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(los.getName(), lang));
+        dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(los.getName(), defaultLang));
         dto.setEducationDegree(los.getEducationDegree());
-        dto.setDegreeTitle(ConverterUtil.getTextByLanguageUseFallbackLang(los.getDegreeTitle(), lang));
-        dto.setQualification(ConverterUtil.getTextByLanguageUseFallbackLang(los.getQualification(), lang));
+        dto.setDegreeTitle(ConverterUtil.getTextByLanguageUseFallbackLang(los.getDegreeTitle(), defaultLang));
+        dto.setQualification(ConverterUtil.getTextByLanguageUseFallbackLang(los.getQualification(), defaultLang));
         dto.setGoals(ConverterUtil.getTextByLanguage(los.getGoals(), lang));
         dto.setStructure(ConverterUtil.getTextByLanguage(los.getStructure(), lang));
         dto.setAccessToFurtherStudies(ConverterUtil.getTextByLanguage(los.getAccessToFurtherStudies(), lang));
-        dto.setLois(ChildLOIToDTO.convert(los.getLois(), lang, uiLang));
-        dto.setProvider(ProviderToDTO.convert(los.getProvider(), lang));
+        dto.setLois(ChildLOIToDTO.convert(los.getLois(), lang, uiLang, defaultLang));
+        dto.setProvider(ProviderToDTO.convert(los.getProvider(), lang, defaultLang));
         dto.setTranslationLanguage(lang);
         dto.setAvailableTranslationLanguages(ConverterUtil.getAvailableTranslationLanguages(los.getGoals()));
         dto.setCreditValue(los.getCreditValue());
         dto.setCreditUnit(ConverterUtil.getTextByLanguage(los.getCreditUnit(), uiLang));
-        dto.setEducationDomain(ConverterUtil.getShortNameTextByLanguage(los.getEducationDomain(), lang));
-        dto.setParent(ParentLOSRefToDTO.convert(los.getParent(), lang));
+        dto.setEducationDomain(ConverterUtil.getShortNameTextByLanguage(los.getEducationDomain(), defaultLang));
+        dto.setParent(ParentLOSRefToDTO.convert(los.getParent(), defaultLang));
 
         return dto;
     }

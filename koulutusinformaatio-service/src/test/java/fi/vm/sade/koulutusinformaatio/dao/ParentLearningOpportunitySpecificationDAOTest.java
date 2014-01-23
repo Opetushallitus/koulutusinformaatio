@@ -148,4 +148,38 @@ public class ParentLearningOpportunitySpecificationDAOTest {
         ParentLearningOpportunitySpecificationEntity entity = parentLearningOpportunitySpecificationDAO.get("1.1.1");
         assertNull(entity);
     }
+
+    @Test
+    public void testFindByProviderId() {
+        String providerId = "providerdi";
+        LearningOpportunityProviderEntity provider= new LearningOpportunityProviderEntity();
+        provider.setId(providerId);
+        ParentLearningOpportunitySpecificationEntity parent = new ParentLearningOpportunitySpecificationEntity();
+        parent.setId("parentId");
+        parent.setProvider(provider);
+        learningOpportunityProviderDAO.save(provider);
+        parentLearningOpportunitySpecificationDAO.save(parent);
+        List<ParentLearningOpportunitySpecificationEntity> fromDB =
+                parentLearningOpportunitySpecificationDAO.findByProviderId(providerId);
+        assertNotNull(fromDB);
+        assertEquals(1, fromDB.size());
+        assertEquals(parent.getId(), fromDB.get(0).getId());
+
+    }
+
+    @Test
+    public void testFindByProviderIdNotFound() {
+        String providerId = "providerdi";
+        LearningOpportunityProviderEntity provider= new LearningOpportunityProviderEntity();
+        provider.setId(providerId);
+        ParentLearningOpportunitySpecificationEntity parent = new ParentLearningOpportunitySpecificationEntity();
+        parent.setId("parentId");
+        parent.setProvider(provider);
+        learningOpportunityProviderDAO.save(provider);
+        parentLearningOpportunitySpecificationDAO.save(parent);
+        List<ParentLearningOpportunitySpecificationEntity> fromDB =
+                parentLearningOpportunitySpecificationDAO.findByProviderId("invalid");
+        assertNotNull(fromDB);
+        assertEquals(0, fromDB.size());
+    }
 }

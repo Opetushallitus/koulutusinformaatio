@@ -28,19 +28,19 @@ public final class UpperSecondaryLOSToDTO {
     }
 
     public static UpperSecondaryLearningOpportunitySpecificationDTO convert(
-            final UpperSecondaryLOS los, final String lang, final String uiLang) {
+            final UpperSecondaryLOS los, final String lang, final String uiLang, final String defaultLang) {
         UpperSecondaryLearningOpportunitySpecificationDTO dto =
                 new UpperSecondaryLearningOpportunitySpecificationDTO();
         dto.setId(los.getId());
-        dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(los.getName(), lang));
+        dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(los.getName(), defaultLang));
         dto.setEducationDegree(los.getEducationDegree());
-        dto.setDegreeTitle(ConverterUtil.getTextByLanguageUseFallbackLang(los.getDegreeTitle(), lang));
-        dto.setQualification(ConverterUtil.getTextByLanguageUseFallbackLang(los.getQualification(), lang));
+        dto.setDegreeTitle(ConverterUtil.getTextByLanguageUseFallbackLang(los.getDegreeTitle(), defaultLang));
+        dto.setQualification(ConverterUtil.getTextByLanguageUseFallbackLang(los.getQualification(), defaultLang));
         dto.setGoals(ConverterUtil.getTextByLanguage(los.getGoals(), lang));
         dto.setStructure(ConverterUtil.getTextByLanguage(los.getStructure(), lang));
         dto.setAccessToFurtherStudies(ConverterUtil.getTextByLanguage(los.getAccessToFurtherStudies(), lang));
-        dto.setLois(UpperSecondaryLOIToDTO.convertAll(los.getLois(), lang, uiLang));
-        dto.setProvider(ProviderToDTO.convert(los.getProvider(), lang));
+        dto.setLois(UpperSecondaryLOIToDTO.convertAll(los.getLois(), lang, uiLang, defaultLang));
+        dto.setProvider(ProviderToDTO.convert(los.getProvider(), lang, defaultLang));
         dto.setTranslationLanguage(lang);
         dto.setAvailableTranslationLanguages(ConverterUtil.getAvailableTranslationLanguages(los.getGoals()));
         dto.setCreditValue(los.getCreditValue());

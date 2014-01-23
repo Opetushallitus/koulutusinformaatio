@@ -12,7 +12,6 @@
     "lo-application-er": "Ansökan",
 
     "elementary-based": "Grundskolbaserad utbildning",
-    "elementary-graduate-selection": "Antagning av grundskolgångna",
     "secondary-school-based": "Gymnasiebaserad utbildning",
 
     "search-result-title": "Sökträffar",
@@ -96,7 +95,6 @@
     "attachment-header-duedate": "Skall lämnas in senast",
 
     "elementary-graduate-selection": "Antagning av grundskolgångna ",
-    "scoring": "Poängsättning",
     "entrance-exam": "Inträdesprov",
     "exam-scores": "Inträdesprovet kan ge __min__ - __max__ poäng. Lägsta godkända poängantal är __threshold__.",
     "additional-proof": "Tilläggsprestationer",
@@ -173,7 +171,7 @@
     "popover-content-error": "Märk att du kan lägga till ansökningsmål utgående från endast en grundutbildning. ",
     "popover-content-link-to-application-basket": "Se i minneslistan",
 
-    "footer-note": "Uppgifterna härstammar från Utbildningsstyrelsens läroanstaltsdatasystem, som uppdateras av utbildningsanordnare, yrkeshögskolor och universitet. <br/>Du kan kontrollera att uppgifterna är riktiga av läroanstalten.",
+    "footer-note": "Utbildningsanordnarna och högskolorna uppdaterar själva uppgifterna om sina utbildningar i Studieinfo. Du kan kontrollera att uppgifterna är riktiga av läroanstalten eller högskolan.",
     "footer-copyright": "Copyright © 2013 Utbildningsstyrelsen",
     "footer-privacy-policy": "Registerbeskrivning",
 

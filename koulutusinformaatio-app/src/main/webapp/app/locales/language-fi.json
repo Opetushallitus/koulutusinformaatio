@@ -12,7 +12,6 @@
     "lo-application-er": "Hakeminen",
 
     "elementary-based": "Peruskoulupohjainen koulutus",
-    "elementary-graduate-selection": "Peruskoulun päättäneiden valinta",
     "secondary-school-based": "Lukiopohjainen koulutus",
 
     "search-result-title": "Tulokset haulle",
@@ -97,7 +96,6 @@
     "attachment-header-duedate": "Toimitettava viimeistään",
 
     "elementary-graduate-selection": "Perusopetuksen päättäneiden valinta",
-    "scoring": "Pisteytys",
     "entrance-exam": "Pääsykoe",
     "exam-scores": "Pääsykokeesta voit saada __min__ – __max__ pistettä. Alin hyväksyttävä pistemäärä on __threshold__.",
     "additional-proof": "Lisänäytöt",
@@ -174,7 +172,7 @@
     "popover-content-error": "Huomioi, että muistilistalle voi lisätä hakukohteita vain yhdellä pohjakoulutuksella.",
     "popover-content-link-to-application-basket": "Katso muistilista",
 
-    "footer-note": "Tiedot on saatu koulutuksen järjestäjien, ammattikorkeakoulujen ja yliopistojen tallentamana tietona Opetushallituksen oppilaitostietojärjestelmästä.<br/>Tietojen oikeellisuuden voit tarkistaa kyseisestä oppilaitoksesta.",
+    "footer-note": "Koulutuksen järjestäjät ja korkeakoulut ylläpitävät tietoja koulutuksistaan Opintopolussa. Tietojen oikeellisuuden voit tarkistaa kyseisestä oppilaitoksesta tai korkeakoulusta.",
     "footer-copyright": "Copyright © 2013 Opetushallitus",
     "footer-privacy-policy": "Rekisteriseloste",
 

@@ -65,11 +65,11 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         doc.addField(LearningOpportunity.NAME_SORT, parentName);
         
         if (teachLang.equals("fi")) {
-            doc.addField(LearningOpportunity.NAME_FI, parent.getName().getTranslations().get("fi"));
+            doc.addField(LearningOpportunity.NAME_FI, SolrUtil.resolveTextWithFallback("fi", parent.getName().getTranslations()));
         } else if (teachLang.equals("sv")) {
-            doc.addField(LearningOpportunity.NAME_SV, parent.getName().getTranslations().get("sv"));
+            doc.addField(LearningOpportunity.NAME_SV, SolrUtil.resolveTextWithFallback("sv", parent.getName().getTranslations()));
         } else if (teachLang.equals("en")) {
-            doc.addField(LearningOpportunity.NAME_EN, parent.getName().getTranslations().get("en"));
+            doc.addField(LearningOpportunity.NAME_EN, SolrUtil.resolveTextWithFallback("en", parent.getName().getTranslations()));
         } else {
             doc.addField(LearningOpportunity.NAME_FI, parentName);
         }
@@ -190,11 +190,11 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         doc.setField(LearningOpportunity.CHILD_NAME, childName);
         
         if (teachLang.equals("sv")) {
-            doc.addField(LearningOpportunity.CHILD_NAME_SV, childLOS.getName().getTranslations().get("sv"));
+            doc.addField(LearningOpportunity.CHILD_NAME_SV, SolrUtil.resolveTextWithFallback("sv", childLOS.getName().getTranslations()));
         } else if (teachLang.equals("en")) {
-            doc.addField(LearningOpportunity.CHILD_NAME_EN, childLOS.getName().getTranslations().get("en"));
+            doc.addField(LearningOpportunity.CHILD_NAME_EN, SolrUtil.resolveTextWithFallback("en", childLOS.getName().getTranslations()));
         } else {
-            doc.addField(LearningOpportunity.CHILD_NAME_FI, childLOS.getName().getTranslations().get("fi"));
+            doc.addField(LearningOpportunity.CHILD_NAME_FI, SolrUtil.resolveTextWithFallback("fi", childLOS.getName().getTranslations()));
         }
         
         
@@ -203,33 +203,33 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
             for (I18nText i18n : childLOI.getProfessionalTitles()) {
                 
                 if (teachLang.equals("sv")) {
-                    doc.addField(LearningOpportunity.PROFESSIONAL_TITLES_SV, i18n.getTranslations().get("sv"));
+                    doc.addField(LearningOpportunity.PROFESSIONAL_TITLES_SV,  SolrUtil.resolveTextWithFallback("sv", i18n.getTranslations()));
                 } else if (teachLang.equals("en")) {
-                    doc.addField(LearningOpportunity.PROFESSIONAL_TITLES_EN, i18n.getTranslations().get("en"));
+                    doc.addField(LearningOpportunity.PROFESSIONAL_TITLES_EN,  SolrUtil.resolveTextWithFallback("en", i18n.getTranslations()));
                 } else{
-                    doc.addField(LearningOpportunity.PROFESSIONAL_TITLES_FI, i18n.getTranslations().get("fi"));
+                    doc.addField(LearningOpportunity.PROFESSIONAL_TITLES_FI,  SolrUtil.resolveTextWithFallback("fi", i18n.getTranslations()));
                 }
             }
         }
         if (childLOS.getQualification() != null) {
             
             if (teachLang.equals("sv")) {
-                doc.addField(LearningOpportunity.QUALIFICATION_SV, childLOS.getQualification().getTranslations().get("sv"));
+                doc.addField(LearningOpportunity.QUALIFICATION_SV,  SolrUtil.resolveTextWithFallback("sv", childLOS.getQualification().getTranslations()));
             } else if (teachLang.equals("en")) {
-                doc.addField(LearningOpportunity.QUALIFICATION_EN, childLOS.getQualification().getTranslations().get("en"));
+                doc.addField(LearningOpportunity.QUALIFICATION_EN,  SolrUtil.resolveTextWithFallback("en", childLOS.getQualification().getTranslations()));
             } else {
-                doc.addField(LearningOpportunity.QUALIFICATION_FI, childLOS.getQualification().getTranslations().get("fi"));
+                doc.addField(LearningOpportunity.QUALIFICATION_FI,  SolrUtil.resolveTextWithFallback("fi", childLOS.getQualification().getTranslations()));
             }
             
         }
         if (childLOS.getGoals() != null) {
             
             if (teachLang.equals("sv")) {
-                doc.addField(LearningOpportunity.GOALS_SV, childLOS.getGoals().getTranslations().get("sv"));
+                doc.addField(LearningOpportunity.GOALS_SV,  SolrUtil.resolveTextWithFallback("sv", childLOS.getGoals().getTranslations()));
             } else if (teachLang.equals("en")) {
-                doc.addField(LearningOpportunity.GOALS_EN, childLOS.getGoals().getTranslations().get("en"));
+                doc.addField(LearningOpportunity.GOALS_EN,  SolrUtil.resolveTextWithFallback("en", childLOS.getGoals().getTranslations()));
             } else {
-                doc.addField(LearningOpportunity.GOALS_FI, childLOS.getGoals().getTranslations().get("fi"));
+                doc.addField(LearningOpportunity.GOALS_FI,  SolrUtil.resolveTextWithFallback("fi", childLOS.getGoals().getTranslations()));
             }
             
             
@@ -237,14 +237,12 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         if (childLOI.getContent() != null) {
             
             if (teachLang.equals("sv")) {
-                doc.addField(LearningOpportunity.CONTENT_SV, childLOI.getContent().getTranslations().get("sv"));
+                doc.addField(LearningOpportunity.CONTENT_SV,  SolrUtil.resolveTextWithFallback("sv", childLOI.getContent().getTranslations()));
             } else if (teachLang.equals("en")) {
-                doc.addField(LearningOpportunity.CONTENT_EN, childLOI.getContent().getTranslations().get("en"));
+                doc.addField(LearningOpportunity.CONTENT_EN,  SolrUtil.resolveTextWithFallback("en", childLOI.getContent().getTranslations()));
             } else {
-                doc.addField(LearningOpportunity.CONTENT_FI, childLOI.getContent().getTranslations().get("fi"));
+                doc.addField(LearningOpportunity.CONTENT_FI,  SolrUtil.resolveTextWithFallback("fi", childLOI.getContent().getTranslations()));
             }
-            
-            
         }
 
         for (ApplicationOption ao : childLOI.getApplicationOptions()) {
