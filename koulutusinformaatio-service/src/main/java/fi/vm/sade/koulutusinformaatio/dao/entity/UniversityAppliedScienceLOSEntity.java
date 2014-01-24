@@ -24,9 +24,6 @@ import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Reference;
 
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-import fi.vm.sade.koulutusinformaatio.domain.UniversityAppliedScienceLOS;
-
 /**
  * 
  * @author Markus
@@ -104,6 +101,10 @@ public class UniversityAppliedScienceLOSEntity {
 	@Reference
 	private List<UniversityAppliedScienceLOSEntity> children;
 	
+	@Embedded
+	private List<CodeEntity> prerequisites;
+	
+
 	private String type;
 	
 	public String getId() {
@@ -328,5 +329,11 @@ public class UniversityAppliedScienceLOSEntity {
 	}
 	public void setProfessionalTitles(List<I18nTextEntity> professionalTitles) {
 		this.professionalTitles = professionalTitles;
+	}
+	public List<CodeEntity> getPrerequisites() {
+		return prerequisites;
+	}
+	public void setPrerequisites(List<CodeEntity> prerequisites) {
+		this.prerequisites = prerequisites;
 	}
 }

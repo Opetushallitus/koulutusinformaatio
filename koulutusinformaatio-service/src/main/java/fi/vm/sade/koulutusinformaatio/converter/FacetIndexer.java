@@ -114,8 +114,10 @@ public class FacetIndexer {
     public List<SolrInputDocument> createFacetDocs(UniversityAppliedScienceLOS los) {
         List<SolrInputDocument> docs = Lists.newArrayList();
         this.indexCodeAsFacetDoc(los.getTeachingLanguages().get(0), docs, true);
-        if (los.getPrerequisite() != null) {
-        	this.indexCodeAsFacetDoc(los.getPrerequisite(), docs, true);
+        if (los.getPrerequisites() != null && !los.getPrerequisites().isEmpty()) {
+        	for (Code curPrereq : los.getPrerequisites()) {
+        		this.indexCodeAsFacetDoc(curPrereq, docs, true);
+        	}
         }
         
         for (Code curCode : los.getTopics()) {

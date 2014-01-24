@@ -64,7 +64,7 @@ public class UniversityAppliedScienceLOS extends LOS {
 	
 	private List<UniversityAppliedScienceLOS> children = new ArrayList<UniversityAppliedScienceLOS>();
 	
-	private Code prerequisite;
+	private List<Code> prerequisites;
 	private List<I18nText> formOfTeaching;
 	private List<I18nText> professionalTitles;
 
@@ -348,12 +348,12 @@ public class UniversityAppliedScienceLOS extends LOS {
 		this.children = children;
 	}
 
-	public Code getPrerequisite() {
-		return prerequisite;
+	public List<Code> getPrerequisites() {
+		return prerequisites;
 	}
 
-	public void setPrerequisite(Code prerequisite) {
-		this.prerequisite = prerequisite;
+	public void setPrerequisites(List<Code> prerequisites) {
+		this.prerequisites = prerequisites;
 	}
 
 	public void setFormOfTeaching(List<I18nText> opetusmuodos) {

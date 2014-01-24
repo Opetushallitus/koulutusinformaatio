@@ -68,7 +68,7 @@ public class UniversityAppliedScienceLOSDTO {
 	
 	private List<UniversityAppliedScienceLOSDTO> children = new ArrayList<UniversityAppliedScienceLOSDTO>();
 	
-	private CodeDTO prerequisite;
+	private List<CodeDTO> prerequisites;
 	private String translationLanguage;
 	private Set<String> availableTranslationLanguages;
 	
@@ -333,12 +333,12 @@ public class UniversityAppliedScienceLOSDTO {
 		this.children = children;
 	}
 
-	public CodeDTO getPrerequisite() {
-		return prerequisite;
+	public List<CodeDTO> getPrerequisites() {
+		return prerequisites;
 	}
 
-	public void setPrerequisite(CodeDTO prerequisite) {
-		this.prerequisite = prerequisite;
+	public void setPrerequisites(List<CodeDTO> prerequisites) {
+		this.prerequisites = prerequisites;
 	}
 
 	public void setTranslationLanguage(String lang) {

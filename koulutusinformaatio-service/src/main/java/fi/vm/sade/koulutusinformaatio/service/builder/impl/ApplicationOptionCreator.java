@@ -313,6 +313,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         ao.setEducationCodeUri(los.getEducationCode());
 
         ao.setRequiredBaseEducations(hakukohde.getHakukelpoisuusvaatimusUris());
+        los.setPrerequisites(koodistoService.searchCodesMultiple(hakukohde.getHakukelpoisuusvaatimusUris()));
 
         ApplicationSystem as = new ApplicationSystem();
         as.setId(haku.getOid());
