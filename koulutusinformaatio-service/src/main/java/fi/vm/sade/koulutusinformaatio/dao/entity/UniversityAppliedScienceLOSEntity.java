@@ -24,6 +24,7 @@ import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Reference;
 
+
 /**
  * 
  * @author Markus
@@ -78,6 +79,8 @@ public class UniversityAppliedScienceLOSEntity {
 	private I18nTextEntity plannedDurationUnit;
 	private String pduCodeUri;
 	private String creditValue;
+	@Embedded
+	private I18nTextEntity creditUnit;
 	@Embedded
 	private I18nTextEntity degree;
 	@Embedded
@@ -335,5 +338,11 @@ public class UniversityAppliedScienceLOSEntity {
 	}
 	public void setPrerequisites(List<CodeEntity> prerequisites) {
 		this.prerequisites = prerequisites;
+	}
+	public I18nTextEntity getCreditUnit() {
+		return creditUnit;
+	}
+	public void setCreditUnit(I18nTextEntity creditUnit) {
+		this.creditUnit = creditUnit;
 	}
 }

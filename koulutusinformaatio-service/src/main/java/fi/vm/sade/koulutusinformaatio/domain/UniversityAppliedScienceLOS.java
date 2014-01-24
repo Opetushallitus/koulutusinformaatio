@@ -50,6 +50,7 @@ public class UniversityAppliedScienceLOS extends LOS {
 	private I18nText plannedDurationUnit;
 	private String pduCodeUri;
 	private String creditValue;
+    private I18nText creditUnit;
 	private I18nText degree;
 	private I18nText qualification;
 	private Boolean chargeable;
@@ -370,6 +371,14 @@ public class UniversityAppliedScienceLOS extends LOS {
 
 	public List<I18nText> getProfessionalTitles() {
 		return professionalTitles;
+	}
+
+	public I18nText getCreditUnit() {
+		return creditUnit;
+	}
+
+	public void setCreditUnit(I18nText creditUnit) {
+		this.creditUnit = creditUnit;
 	}
 
 

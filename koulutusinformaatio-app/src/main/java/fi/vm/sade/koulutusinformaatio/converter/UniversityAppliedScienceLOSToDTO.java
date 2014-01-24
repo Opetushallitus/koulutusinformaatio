@@ -33,8 +33,7 @@ public class UniversityAppliedScienceLOSToDTO {
         dto.setAvailableTranslationLanguages(ConverterUtil.getAvailableTranslationLanguages(los.getGoals()));
         dto.setCreditValue(los.getCreditValue());
         
-        //TODO, fix when unit is in rest
-        dto.setCreditUnit(null);//ConverterUtil.getTextByLanguage(los.getCreditUnit(), uiLang));
+        dto.setCreditUnit(ConverterUtil.getTextByLanguage(los.getCreditUnit(), uiLang));
         
         //DO MORE
         

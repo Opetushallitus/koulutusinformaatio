@@ -48,9 +48,8 @@ public class UasLOSToSolrInputDocment implements Converter<UniversityAppliedScie
 		}
 
 		if (los.getCreditValue() != null) {
-			doc.addField(LearningOpportunity.CREDITS, String.format("%s %s", los.getCreditValue(), ""));
-			/*SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getTeachingLanguages(),
-                           los.getCreditUnit().getTranslationsShortName())));*/
+			doc.addField(LearningOpportunity.CREDITS, String.format("%s %s", los.getCreditValue(), SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getTeachingLanguages(),
+                    los.getCreditUnit().getTranslations())));
 		}
 
 		String teachingLang = los.getTeachingLanguages().isEmpty() ? "EXC" : los.getTeachingLanguages().get(0).getValue().toLowerCase();
