@@ -24,6 +24,7 @@ import fi.vm.sade.koodisto.service.types.common.KoodiMetadataType;
 import fi.vm.sade.koodisto.service.types.common.KoodiType;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
@@ -42,6 +43,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.NimiV1RDTO;
+import fi.vm.sade.tarjonta.service.types.TarjontaTila;
 import fi.vm.sade.tarjonta.service.types.YhteyshenkiloTyyppi;
 import fi.vm.sade.tarjonta.shared.types.KomoTeksti;
 import fi.vm.sade.tarjonta.shared.types.KomotoTeksti;
@@ -269,7 +271,7 @@ public class LOSObjectCreator extends ObjectCreator {
         return los;
     }
     
-    public UniversityAppliedScienceLOS createUasLOS(KoulutusKorkeakouluV1RDTO koulutus) throws KoodistoException {
+    public UniversityAppliedScienceLOS createUasLOS(KoulutusKorkeakouluV1RDTO koulutus) throws TarjontaParseException, KoodistoException {
     	UniversityAppliedScienceLOS los = new UniversityAppliedScienceLOS();
 
     	los.setType(TarjontaConstants.TYPE_AMK);
@@ -364,7 +366,11 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setProfessionalTitles(getI18nTextMultiple(koulutus.getAmmattinimikkeet()));
         
         
-        fetchHakukohdeData(los);
+        boolean existsValidHakukohde = fetchHakukohdeData(los);
+        
+        if (!existsValidHakukohde) {
+        	throw new TarjontaParseException("No valid application options for education: " + los.getId());
+        }
         
         
         
@@ -374,13 +380,13 @@ public class LOSObjectCreator extends ObjectCreator {
 
 
 
-	private void fetchHakukohdeData(UniversityAppliedScienceLOS los) throws KoodistoException {
+	private boolean fetchHakukohdeData(UniversityAppliedScienceLOS los) throws KoodistoException {
 		 ResultV1RDTO<List<NimiJaOidRDTO>> hakukohteet = loiCreator.tarjontaRawService.getHakukohdesByHigherEducation(los.getId());
 		
 		 if (hakukohteet == null 
 				 || hakukohteet.getResult() == null 
 				 || hakukohteet.getResult().isEmpty()) {
-			 return;
+			 return false;
 		 }
 		 
 		 List<ApplicationOption> aos = new ArrayList<ApplicationOption>();
@@ -389,33 +395,28 @@ public class LOSObjectCreator extends ObjectCreator {
 			    String aoId = curHakukoh.getOid();
 			    
 			    ResultV1RDTO<HakukohdeV1RDTO> hakukohdeRes = loiCreator.tarjontaRawService.getHigherEducationHakukohode(aoId);
-			    HakukohdeV1RDTO hakukohde = hakukohdeRes.getResult();
-			    ResultV1RDTO<HakuV1RDTO> hakuRes = loiCreator.tarjontaRawService.getHigherEducationHakuByOid(hakukohde.getHakuOid());
-			    ApplicationOption ao = loiCreator.applicationOptionCreator.createHigherEducationApplicationOption(los, hakukohde, hakuRes.getResult());
+			    HakukohdeV1RDTO hakukohdeDTO = hakukohdeRes.getResult();
+			    
+			    if (!hakukohdeDTO.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
+			    	continue;
+			    }
+			    
+			    ResultV1RDTO<HakuV1RDTO> hakuRes = loiCreator.tarjontaRawService.getHigherEducationHakuByOid(hakukohdeDTO.getHakuOid());
+			    
+			    HakuV1RDTO hakuDTO = hakuRes.getResult();
+			    
+			    if (!hakuDTO.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
+			    	continue;
+			    }
+			    
+			    ApplicationOption ao = loiCreator.applicationOptionCreator.createHigherEducationApplicationOption(los, hakukohdeDTO, hakuRes.getResult());
 			    aos.add(ao);
-	            /*HakukohdeDTO hakukohdeDTO = tarjontaRawService.getHakukohde(aoId);
-	            HakuDTO hakuDTO = tarjontaRawService.getHakuByHakukohde(aoId);
-
-	            if (!CreatorUtil.hakukohdePublished.apply(hakukohdeDTO)) {
-	                LOG.debug(String.format("Application option %s skipped due to incorrect state", hakukohdeDTO.getOid()));
-	                continue;
-	            }
-
-	            if (!CreatorUtil.hakuPublished.apply(hakuDTO)) {
-	                LOG.debug(String.format("Application option %s skipped due to incorrect state of application system %s",
-	                        hakukohdeDTO.getOid(), hakuDTO.getOid()));
-	                continue;
-	            }
-
-	            applicationOptions.add(
-	                    applicationOptionCreator.createVocationalApplicationOption(hakukohdeDTO, hakuDTO, childKomoto, childLOI.getPrerequisite(), educationCodeUri));
-	            if (hakukohdeDTO.isKaksoisTutkinto()) {
-	                kaksoistutkinto = true;
-	            }*/
+			    
 		 }
 		 
 		 los.setApplicationOptions(aos);
 		 
+		 return !aos.isEmpty();
 	}
 
 

@@ -29,28 +29,19 @@ import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.koulutusinformaatio.service.builder.LearningOpportunityBuilder;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.CreatorUtil;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.LOSObjectCreator;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.LearningOpportunityDirector;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.RehabilitatingLearningOpportunityBuilder;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.UpperSecondaryLearningOpportunityBuilder;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.VocationalLearningOpportunityBuilder;
-import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
-import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
-import fi.vm.sade.tarjonta.service.resources.dto.NimiJaOidRDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusV1RDTO;
 import fi.vm.sade.tarjonta.service.types.TarjontaTila;
-
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.convert.ConversionService;
@@ -58,7 +49,6 @@ import org.springframework.stereotype.Service;
 
 import javax.ws.rs.WebApplicationException;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -164,48 +154,52 @@ public class TarjontaServiceImpl implements TarjontaService {
     				continue;
     			}
     			ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes = this.tarjontaRawService.getHigherEducationLearningOpportunity(curKoulutus.getOid());
-    		    KoulutusKorkeakouluV1RDTO koulutusDTO = koulutusRes.getResult();
-    		    if (koulutusDTO == null) {
-    		    	continue;
-    		    }
-    			UniversityAppliedScienceLOS los = creator.createUasLOS(koulutusDTO);
-        		koulutukset.add(los);
-    			List<UniversityAppliedScienceLOS> loss = komoToLOSMap.get(koulutusDTO.getKomoOid());
-    			if (loss == null) {
-    				loss = new ArrayList<UniversityAppliedScienceLOS>();
-    				loss.add(los);
-    				komoToLOSMap.put(koulutusDTO.getKomoOid(), loss);
-    			} else {
-    				loss.add(los);
+    			KoulutusKorkeakouluV1RDTO koulutusDTO = koulutusRes.getResult();
+    			if (koulutusDTO == null) {
+    				continue;
     			}
-    			ResultV1RDTO<Set<String>> childKomoOids = this.tarjontaRawService.getChildrenOfParentHigherEducationLOS(koulutusDTO.getKomoOid());
-    			if (childKomoOids != null && childKomoOids.getResult() != null) {
-    				los.setChildKomoOids(new ArrayList<String>(childKomoOids.getResult()));
+    			try {
+    				UniversityAppliedScienceLOS los = creator.createUasLOS(koulutusDTO);
+    				koulutukset.add(los);
+    				List<UniversityAppliedScienceLOS> loss = komoToLOSMap.get(koulutusDTO.getKomoOid());
+    				if (loss == null) {
+    					loss = new ArrayList<UniversityAppliedScienceLOS>();
+    					loss.add(los);
+    					komoToLOSMap.put(koulutusDTO.getKomoOid(), loss);
+    				} else {
+    					loss.add(los);
+    				}
+    				ResultV1RDTO<Set<String>> childKomoOids = this.tarjontaRawService.getChildrenOfParentHigherEducationLOS(koulutusDTO.getKomoOid());
+    				if (childKomoOids != null && childKomoOids.getResult() != null) {
+    					los.setChildKomoOids(new ArrayList<String>(childKomoOids.getResult()));
+    				}
+    				parentOids.add(koulutusDTO.getKomoOid());
+    			} catch (TarjontaParseException ex) {
+    				continue;
     			}
-    			parentOids.add(koulutusDTO.getKomoOid());
     		}
     	}
-    	
-    	
+
+
     	for (UniversityAppliedScienceLOS curLos : koulutukset) {
     		for (String curChildKomoOid : curLos.getChildKomoOids()) {
     			List<UniversityAppliedScienceLOS> loss = komoToLOSMap.get(curChildKomoOid);
     			if (loss != null) {
     				curLos.getChildren().addAll(loss);
     			}
-    			
+
     			if (parentOids.contains(curChildKomoOid)) {
     				parentOids.remove(curChildKomoOid);
     			}
     		}
     	}
 
-    	
+
     	List<UniversityAppliedScienceLOS> parents = new ArrayList<UniversityAppliedScienceLOS>();
     	for (String curParent : parentOids) {
     		parents.addAll(komoToLOSMap.get(curParent));
     	}
-    	
+
     	return parents;
     }
 
