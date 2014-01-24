@@ -29,6 +29,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -48,8 +49,8 @@ public class SEOServiceImpl implements SEOService {
 
     @Autowired
     public SEOServiceImpl(SnapshotService snapshotService, Datastore mongoDatastore,
-                          @Value("${koulutusinformaatio.snapshot.baseurl}") String baseUrl,
-                          @Value("${koulutusinformaatio.sitemap.location}") String sitemapLocation) {
+                          @Value("${koulutusinformaatio.baseurl.learningopportunity}") String baseUrl,
+                          @Value("${koulutusinformaatio.sitemap.filepath}") String sitemapLocation) {
         this.snapshotService = snapshotService;
         this.mongoDatastore = mongoDatastore;
         this.sitemapBuilder = new SitemapBuilder();
@@ -84,5 +85,11 @@ public class SEOServiceImpl implements SEOService {
     @Override
     public boolean isRunning() {
         return running;
+    }
+
+    @Override
+    public Date getSitemapTimestamp() {
+        File sitemap = new File(sitemapLocation);
+        return new Date(sitemap.lastModified());
     }
 }
