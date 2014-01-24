@@ -224,6 +224,8 @@
     "yo": "Lukio ja / tai ylioppilastutkinto",
     "pk": "Peruskoulu",
     "er": "Yksilöllistetty perusopetus",
+    "102": "Alempi korkeakoulututkinto",
+    "123": "Yleinen yliopistokelpoisuus",
     
     "autocomplete-keyword": "Hakusanaehdotukset",
     "autocomplete-loname": "Kurssit ja tutkinnot"

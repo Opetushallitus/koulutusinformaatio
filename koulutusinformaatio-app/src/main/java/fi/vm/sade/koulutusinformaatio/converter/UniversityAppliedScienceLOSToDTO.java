@@ -38,7 +38,7 @@ public class UniversityAppliedScienceLOSToDTO {
         
         //DO MORE
         
-        dto.setPrerequisite(CodeToDTO.convert(los.getPrerequisite(), lang));
+        dto.setPrerequisites(CodeToDTO.convertAll(los.getPrerequisites(), lang));
         dto.setFormOfTeaching(ConverterUtil.getTextsByLanguage(los.getFormOfTeaching(), uiLang));
         dto.setProfessionalTitles(ConverterUtil.getTextsByLanguage(los.getProfessionalTitles(), uiLang));
         dto.setTeachingLanguages(CodeToValue.convertAll(los.getTeachingLanguages()));
