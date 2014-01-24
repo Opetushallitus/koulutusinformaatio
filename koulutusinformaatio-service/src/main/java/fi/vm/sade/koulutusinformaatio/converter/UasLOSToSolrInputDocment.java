@@ -41,10 +41,6 @@ public class UasLOSToSolrInputDocment implements Converter<UniversityAppliedScie
 			for (Code curPrereq : los.getPrerequisites()) {
 				doc.addField(LearningOpportunity.PREREQUISITES, curPrereq.getValue());
 			}
-
-			doc.setField(LearningOpportunity.PREREQUISITE, SolrUtil.resolveTranslationInTeachingLangUseFallback(
-					los.getTeachingLanguages(), los.getPrerequisites().get(0).getName().getTranslations()));
-			doc.addField(LearningOpportunity.PREREQUISITE_CODE, los.getPrerequisites().get(0).getValue());
 		}
 
 		if (los.getCreditValue() != null) {

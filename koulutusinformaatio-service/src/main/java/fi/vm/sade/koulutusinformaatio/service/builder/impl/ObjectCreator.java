@@ -126,7 +126,7 @@ public abstract class ObjectCreator {
                 if (!Strings.isNullOrEmpty(entry.getKey()) && (entry.getValue() != null)) {
                 	try {
                 		String key = entry.getValue().getKieliArvo();
-                		String kielikaannos = entry.getValue().getKieliKaannos() != null ? entry.getValue().getKieliKaannos() : "";
+                		String kielikaannos = entry.getValue().getNimi() != null ? entry.getValue().getNimi() : "";
                 		translations.put(key.toLowerCase(), kielikaannos);
                 	} catch (Exception ex) {
                 		throw new KoodistoException(ex.getMessage());
