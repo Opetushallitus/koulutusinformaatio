@@ -36,7 +36,7 @@
             <div class="clear"></div>
         </div>
 
-        <div title="{{locales.previousPage}}" data-ng-show="showPagination" class="align-center">
+        <div data-ng-show="showPagination" class="align-center">
             <div data-pager
             data-on-select-page="changePage(page)" 
             data-num-pages="maxPages"
@@ -54,7 +54,7 @@
             <li data-ng-repeat="lo in loResult.results" data-search-result></li>
         </ul>
 
-        <div title="{{locales.nextPage}}" data-ng-show="showPagination" class="align-center">
+        <div data-ng-show="showPagination" class="align-center">
             <div data-pager
             data-on-select-page="changePage(page)" 
             data-num-pages="maxPages"
