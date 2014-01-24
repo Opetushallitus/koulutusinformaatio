@@ -5,6 +5,10 @@ function SearchFieldCtrl($scope, $location, $route, SearchService, kiAppConstant
     $scope.searchFieldPlaceholder = TranslationService.getTranslation('search-field-placeholder'); 
     $scope.suggestions = [];
     
+    $scope.locales = {
+        'search': TranslationService.getTranslation('tooltip:search')
+    }
+
     $scope.$watch('queryString', function() {
     	if ($scope.queryString != undefined && $scope.queryString.length > 0) {
     	AutocompleteService.query($scope.queryString).then(function(result) {
@@ -52,7 +56,7 @@ function SearchFieldCtrl($scope, $location, $route, SearchService, kiAppConstant
 /**
  *  Controller for search filters
  */
-function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, kiAppConstants, FilterService, LanguageService, DistrictService, ChildLocationsService, UtilityService, $modal) {
+function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, kiAppConstants, FilterService, LanguageService, DistrictService, ChildLocationsService, UtilityService, TranslationService, $modal) {
 
     $scope.change = function() {
         FilterService.set({
@@ -69,6 +73,23 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
 
         // append filters to url and reload
         $scope.refreshView();
+    }
+
+    /*
+     * localizations
+     */
+    $scope.locales = {
+        'closeFacet': TranslationService.getTranslation('tooltip:remove-search-result-facet'),
+        'closeEducationFacet': TranslationService.getTranslation('tooltip:close-education-facet'),
+        'closeBasicEducationFacet': TranslationService.getTranslation('tooltip:close-basic-education-facet'),
+        'closeLocationFacet': TranslationService.getTranslation('tooltip:close-location-facet'),
+        'closeLanguageFacet': TranslationService.getTranslation('tooltip:close-language-facet'),
+        'closeSubjectFacet': TranslationService.getTranslation('tooltip:close-subject-facet'),
+        'removeFacet': TranslationService.getTranslation('tooltip:remove-facet'),
+        'nextPage': TranslationService.getTranslation('tooltip:next-page'),
+        'previousPage': TranslationService.getTranslation('tooltip:previous-page'),
+        'resultsToShow': TranslationService.getTranslation('tooltip:choose-results-to-show'),
+        'resultsCriteria': TranslationService.getTranslation('tooltip:choose-result-criteria'),
     }
     
     /*
@@ -345,6 +366,11 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
         articles: TranslationService.getTranslation('search-tab-article'),
         articlesTooltip: TranslationService.getTranslation('tooltip:search-tab-article-tooltip')
     };
+
+    $scope.titleLocales = {
+        close: TranslationService.getTranslation('tooltip:close'),
+        removeFacet: TranslationService.getTranslation('tooltip:remove-facet')
+    }
 
     $scope.tabs = [
         {active: false},
