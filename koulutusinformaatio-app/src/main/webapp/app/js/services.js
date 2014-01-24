@@ -582,133 +582,133 @@ service('ParentLOTransformer', ['UtilityService', '$filter', '$rootScope', funct
  */
 service('UniversityAppliedScienceTransformer', ['UtilityService', '$rootScope', '$filter', function(UtilityService, $rootScope, $filter) {
 
-    var getFirstItemInList = function(list) {
-        if (list && list[0]) {
-            return list[0];
-        } else {
-            return '';
-        }
-    };
+	var getFirstItemInList = function(list) {
+		if (list && list[0]) {
+			return list[0];
+		} else {
+			return '';
+		}
+	};
 
-    return {
-        transform: function(result) {
-        	
-        	
-        	if (result && result.translationLanguage) {
-                $rootScope.translationLanguage = result.translationLanguage;
-            }
+	return {
+		transform: function(result) {
 
-            if (result && result.availableTranslationLanguages) {
-                var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
-                result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
-            }
 
-            if (result && result.provider && result.provider.name) {
-                result.provider.encodedName = $filter('encodeURIComponent')('"' + result.provider.name + '"');
-            }
+			if (result && result.translationLanguage) {
+				$rootScope.translationLanguage = result.translationLanguage;
+			}
 
-            for (var index in result.applicationOptions) {
-                if (result.applicationOptions.hasOwnProperty(index)) {
-                    var ao = result.applicationOptions[index];
-                    if (ao.applicationSystem && ao.applicationSystem.applicationDates && ao.applicationSystem.applicationDates.length > 0) {
-                        ao.applicationSystem.applicationDates = ao.applicationSystem.applicationDates[0];
-                    }
-                    result.applicationSystem = ao.applicationSystem;
-                }
-            }
-        	
-            var studyplanKey = "AMMATTIKORKEA";
+			if (result && result.availableTranslationLanguages) {
+				var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
+				result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
+			}
 
-            
+			if (result && result.provider && result.provider.name) {
+				result.provider.encodedName = $filter('encodeURIComponent')('"' + result.provider.name + '"');
+			}
 
-                    var startDate = new Date(result.startDate);
-                    result.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
-                    result.teachingLanguage = getFirstItemInList(result.teachingLanguages);
-                    result.formOfTeaching = getFirstItemInList(result.formOfTeaching);
+			for (var index in result.applicationOptions) {
+				if (result.applicationOptions.hasOwnProperty(index)) {
+					var ao = result.applicationOptions[index];
+					if (ao.applicationSystem && ao.applicationSystem.applicationDates && ao.applicationSystem.applicationDates.length > 0) {
+						ao.applicationSystem.applicationDates = ao.applicationSystem.applicationDates[0];
+					}
+					result.applicationSystem = ao.applicationSystem;
+				}
+			}
 
-                    if (result.webLinks) {
-                        result.studyPlan = result.webLinks[studyplanKey];
-                    }
-           
-                    for (var asIndex in result.applicationSystems) {
-                        if (result.applicationSystems.hasOwnProperty(asIndex)) {
-                            var as = result.applicationSystems[asIndex];
-                            for (var aoIndex in as.applicationOptions) {
-                                if (as.applicationOptions.hasOwnProperty(aoIndex)) {
-                                    var ao = as.applicationOptions[aoIndex];
+			var studyplanKey = "AMMATTIKORKEA";
 
-                                    if (ao.teachingLanguages && ao.teachingLanguages.length > 0) {
-                                        ao.teachLang = ao.teachingLanguages[0];
-                                        
-                                        $rootScope.teachingLang = ao.teachLang.toLowerCase();
-                                    }
-                                }
-                            }
-                        }
-                    }
-                
-                    for (var asIndex in result.applicationSystems) {
-                        if (result.applicationSystems.hasOwnProperty(asIndex)) {
-                            var as = result.applicationSystems[asIndex];
-                            for (var aoIndex in as.applicationOptions) {
-                                if (as.applicationOptions.hasOwnProperty(aoIndex)) {
-                                    var ao = as.applicationOptions[aoIndex];
-                                    for (var exam in ao.exams) {
-                                        if (ao.exams.hasOwnProperty(exam)) {
-                                            if (ao.exams[exam].examEvents) {
-                                                ao.exams[exam].examEvents.sort(function(a, b) {
-                                                    return a.start - b.start;
-                                                });
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                
-            // group application systems by prerequisite
-            var applicationSystemsByPrerequisite = {};
-            
-                angular.forEach(result.applicationSystems, function(as, askey) {
-                    
-                	
-                	angular.forEach(as.applicationOptions, function(ao, aokey) { 
-                		angular.forEach(ao.requiredBaseEducations, function(prerequisite, prereqKey) {
-                			if (applicationSystemsByPrerequisite[prerequisite]) {
-                				applicationSystemsByPrerequisite[prerequisite].push(as);
-                			} else {
-                				applicationSystemsByPrerequisite[prerequisite] = [];
-                				applicationSystemsByPrerequisite[prerequisite].push(as);
-                			}
-                		});
-                	});
 
-                });
-            
 
-            // sort application systems and select active LOI
-            
-            angular.forEach(applicationSystemsByPrerequisite, function(asByPrerequisite, key){
-                UtilityService.sortApplicationSystems(asByPrerequisite);
-                
-            });
+			var startDate = new Date(result.startDate);
+			result.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
+			result.teachingLanguage = getFirstItemInList(result.teachingLanguages);
+			result.formOfTeaching = getFirstItemInList(result.formOfTeaching);
 
-            
-            // check if application system is of type Lisähaku
-            
-                    for (var asIndex in result.applicationSystems) {
-                        if (result.applicationSystems.hasOwnProperty(asIndex)) {
-                            var as = result.applicationSystems[asIndex];
-                            if (as.applicationOptions && as.applicationOptions.length > 0) {
-                                var firstAo = as.applicationOptions[0];
-                                as.aoSpecificApplicationDates = firstAo.specificApplicationDates;
-                            }
-                        }
-                    }
-                
-        }
-    }
+			if (result.webLinks) {
+				result.studyPlan = result.webLinks[studyplanKey];
+			}
+
+			for (var asIndex in result.applicationSystems) {
+				if (result.applicationSystems.hasOwnProperty(asIndex)) {
+					var as = result.applicationSystems[asIndex];
+					for (var aoIndex in as.applicationOptions) {
+						if (as.applicationOptions.hasOwnProperty(aoIndex)) {
+							var ao = as.applicationOptions[aoIndex];
+
+							if (ao.teachingLanguages && ao.teachingLanguages.length > 0) {
+								ao.teachLang = ao.teachingLanguages[0];
+
+								$rootScope.teachingLang = ao.teachLang.toLowerCase();
+							}
+						}
+					}
+				}
+			}
+
+			for (var asIndex in result.applicationSystems) {
+				if (result.applicationSystems.hasOwnProperty(asIndex)) {
+					var as = result.applicationSystems[asIndex];
+					for (var aoIndex in as.applicationOptions) {
+						if (as.applicationOptions.hasOwnProperty(aoIndex)) {
+							var ao = as.applicationOptions[aoIndex];
+							for (var exam in ao.exams) {
+								if (ao.exams.hasOwnProperty(exam)) {
+									if (ao.exams[exam].examEvents) {
+										ao.exams[exam].examEvents.sort(function(a, b) {
+											return a.start - b.start;
+										});
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			// group application systems by prerequisite
+			var applicationSystemsByPrerequisite = {};
+
+			angular.forEach(result.applicationSystems, function(as, askey) {
+
+
+				angular.forEach(as.applicationOptions, function(ao, aokey) { 
+					angular.forEach(ao.requiredBaseEducations, function(prerequisite, prereqKey) {
+						if (applicationSystemsByPrerequisite[prerequisite]) {
+							applicationSystemsByPrerequisite[prerequisite].push(as);
+						} else {
+							applicationSystemsByPrerequisite[prerequisite] = [];
+							applicationSystemsByPrerequisite[prerequisite].push(as);
+						}
+					});
+				});
+
+			});
+
+
+			// sort application systems and select active LOI
+
+			angular.forEach(applicationSystemsByPrerequisite, function(asByPrerequisite, key){
+				UtilityService.sortApplicationSystems(asByPrerequisite);
+
+			});
+
+
+			// check if application system is of type Lisähaku
+
+			for (var asIndex in result.applicationSystems) {
+				if (result.applicationSystems.hasOwnProperty(asIndex)) {
+					var as = result.applicationSystems[asIndex];
+					if (as.applicationOptions && as.applicationOptions.length > 0) {
+						var firstAo = as.applicationOptions[0];
+						as.aoSpecificApplicationDates = firstAo.specificApplicationDates;
+					}
+				}
+			}
+
+		}
+	}
 }]).
 
 /**
