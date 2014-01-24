@@ -29,5 +29,6 @@
     </div>
     <div class="clear"></div>
     <#include "footer.ftl">
+    <#include "scripts.ftl">
 </body>
 </html>
