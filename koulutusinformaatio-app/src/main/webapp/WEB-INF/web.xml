@@ -59,7 +59,7 @@
         </init-param>
         <init-param>
             <param-name>com.sun.jersey.config.property.WebPageContentRegex</param-name>
-            <param-value>(/app/.*)|(/m/.*)|(/(buildversion|robots)\.txt)|(/sitemap.xml)</param-value>
+            <param-value>(/app/.*)|(/m/.*)|(/script/directory.js)|(/(buildversion|robots)\.txt)|(/sitemap-learningopportunity.xml)</param-value>
         </init-param>
         <init-param>
             <param-name>com.sun.jersey.freemarker.templateBasePath</param-name>

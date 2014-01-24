@@ -67,7 +67,7 @@ public class SnapshotServiceImpl implements SnapshotService {
                                @Value("${koulutusinformaatio.phantomjs}") String phantomjs,
                                @Value("${koulutusinformaatio.snapshot.script}") String script,
                                @Value("${koulutusinformaatio.snapshot.folder}") String prerenderFolder,
-                               @Value("${koulutusinformaatio.snapshot.baseurl}") String baseUrl) {
+                               @Value("${koulutusinformaatio.baseurl.learningopportunity}") String baseUrl) {
         this.specialDAO = specialDAO;
         this.parentDAO = parentDAO;
         this.childDAO = childDAO;

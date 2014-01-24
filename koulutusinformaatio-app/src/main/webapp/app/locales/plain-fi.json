@@ -1,5 +1,5 @@
 {
-    "page-title": "Opintopolku tekstiversio",
+    "page-title": "Erityisoppilaitosten koulutusten tekstiversio - Opintopolku",
     "header-home": "Opintopolku.fi",
     "to-full-version": "Siirry palvelun täysversioon",
 	"home": "Etusivu",
@@ -28,5 +28,7 @@
 
     "footer-service-providers": "Palvelun tarjoavat:",
     "footer-provider-1": "Opetus- ja kulttuuriministeriö",
-    "footer-provider-2": "Opetushallitus"
+    "footer-provider-2": "Opetushallitus",
+
+    "meta-content": "Erityisoppilaitosten koulutustarjonnan tekstiversiossa voi selailla oppilaitoksia, ammatillista erityisopetusta sekä valmentavaa ja kuntouttavaa opetusta ja ohjausta"
 }
