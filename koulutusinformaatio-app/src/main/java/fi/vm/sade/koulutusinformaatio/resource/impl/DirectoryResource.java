@@ -16,9 +16,26 @@
 
 package fi.vm.sade.koulutusinformaatio.resource.impl;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Map;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.sun.jersey.api.view.Viewable;
+
 import fi.vm.sade.koulutusinformaatio.converter.ConverterUtil;
 import fi.vm.sade.koulutusinformaatio.converter.ProviderToSearchResult;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
@@ -29,20 +46,6 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Handles directory calls that lists provider and learning opportunity links
@@ -51,7 +54,7 @@ import java.util.Map;
  * @author Hannu Lyytikainen
  */
 @Component
-@Path("/hakemisto")
+@Path("/{lang}/hakemisto")
 public class DirectoryResource {
 
     public static final String CHARSET_UTF_8 = ";charset=UTF-8";
@@ -77,14 +80,15 @@ public class DirectoryResource {
     @GET
     @Path("oppilaitokset")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    public Response getProviders() throws URISyntaxException {
-        return Response.seeOther(new URI("hakemisto/oppilaitokset/A")).build();
+    public Response getProviders(@PathParam("lang") String lang) throws URISyntaxException {
+        return Response.seeOther(new URI(String.format("%s/hakemisto/oppilaitokset/A", lang))).build();
     }
 
     @GET
     @Path("oppilaitokset/{letter}")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    public Response getProvidersWithFirstLetter(@PathParam("letter") String letter) throws URISyntaxException {
+    public Response getProvidersWithFirstLetter(@PathParam("lang") String lang,
+                                                @PathParam("letter") String letter) throws URISyntaxException {
         if (alphabets.contains(letter)) {
             Map<String, Object> model = Maps.newHashMap();
             List<Provider> providers = null;
@@ -98,15 +102,19 @@ public class DirectoryResource {
             model.put("providers", searchResults);
             model.put("alphabets", alphabets);
             model.put("letter", letter);
+            model.put("baseUrl", baseUrl);
+            model.put("lang", lang);
             return Response.status(Response.Status.OK).entity(new Viewable("/providers.ftl", model)).build();
         } else {
-            return getProviders();
+            return getProviders(lang);
         }
     }
 
     @GET
     @Path("oppilaitokset/{letter}/{providerId}/koulutukset")
-    public Viewable getLearningOpportunities(@PathParam("letter") String letter,
+
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
+    public Viewable getLearningOpportunities(@PathParam("lang") String lang, @PathParam("letter") String letter,
                                              @PathParam("providerId") final String providerId) {
         List<LearningOpportunitySearchResultDTO> resultList = null;
         Provider provider = null;
@@ -122,6 +130,7 @@ public class DirectoryResource {
         model.put("provider", ConverterUtil.getTextByLanguageUseFallbackLang(provider.getName(), "fi"));
         model.put("learningOpportunities", resultList);
         model.put("baseUrl", baseUrl);
+        model.put("lang", lang);
 
         return new Viewable("/education.ftl", model);
     }
