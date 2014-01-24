@@ -16,6 +16,8 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
+import java.util.Date;
+
 /**
  * Used to handle SEO related operations like
  * updating sitemaps and rendering html snapshots.
@@ -37,4 +39,11 @@ public interface SEOService {
      * @return
      */
     public boolean isRunning();
+
+    /**
+     * Returns the last time the learning opportunity sitemap file has been changed.
+     *
+     * @return sitemap file timestamp
+     */
+    public Date getSitemapTimestamp();
 }
