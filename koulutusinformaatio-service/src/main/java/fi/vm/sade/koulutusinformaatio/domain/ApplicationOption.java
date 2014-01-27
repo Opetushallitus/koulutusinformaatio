@@ -71,8 +71,10 @@ public class ApplicationOption {
     private boolean vocational;
     // koulutuskoodiuri
     private String educationCodeUri;
+	private I18nText soraDescription;
 
-    public String getId() {
+
+	public String getId() {
         return id;
     }
 
@@ -344,5 +346,12 @@ public class ApplicationOption {
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
     }
+
+	public void setSoraDescription(I18nText i18nText) {
+		this.soraDescription = i18nText;
+	}
+    public I18nText getSoraDescription() {
+		return soraDescription;
+	}
 
 }

@@ -41,6 +41,7 @@ public class ApplicationOptionDTO {
     private String educationDegree;
     private List<String> teachingLanguages;
     private String selectionCriteria;
+    private String soraDescription;
     private CodeDTO prerequisite;
     private List<ExamDTO> exams;
     private List<ChildLOIRefDTO> childRefs = new ArrayList<ChildLOIRefDTO>();
@@ -317,4 +318,12 @@ public class ApplicationOptionDTO {
     public void setEducationCodeUri(String educationCodeUri) {
         this.educationCodeUri = educationCodeUri;
     }
+
+	public String getSoraDescription() {
+		return soraDescription;
+	}
+
+	public void setSoraDescription(String soraDescription) {
+		this.soraDescription = soraDescription;
+	}
 }

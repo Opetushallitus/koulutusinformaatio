@@ -307,6 +307,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         ao.setAttachmentDeliveryDeadline(hakukohde.getLiitteidenToimitusPvm());
         ao.setLastYearApplicantCount(hakukohde.getEdellisenVuodenHakijatLkm());
         ao.setSelectionCriteria(getI18nText(hakukohde.getValintaperusteKuvaukset()));
+        ao.setSoraDescription(getI18nText(hakukohde.getSoraKuvaukset()));
         ao.setExams(educationObjectCreator.createExamsHigherEducation(hakukohde.getValintakokeet()));
         ao.setKaksoistutkinto(false);
         ao.setVocational(false);
