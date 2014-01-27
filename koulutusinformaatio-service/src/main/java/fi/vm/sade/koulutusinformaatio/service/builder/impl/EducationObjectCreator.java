@@ -151,14 +151,14 @@ public class EducationObjectCreator extends ObjectCreator {
     }
 
 	public List<Exam> createExamsHigherEducation(List<ValintakoeV1RDTO> valintakokeet) throws KoodistoException {
-		if (valintakokeet != null && valintakokeet.isEmpty()) {
+		if (valintakokeet != null && !valintakokeet.isEmpty()) {
             List<Exam> exams = Lists.newArrayList();
             for (ValintakoeV1RDTO valintakoe : valintakokeet) {
                 if (valintakoe != null && valintakoe.getValintakokeenKuvaus() != null  
                         && valintakoe.getValintakoeAjankohtas() != null
                         && !valintakoe.getValintakoeAjankohtas().isEmpty()) {
                     Exam exam = new Exam();
-                    //exam.setType(koodistoService.searchFirst(valintakoe.getTyyppiUri()));
+                    
                     exam.setDescription(getI18nTextEnriched(valintakoe.getValintakokeenKuvaus()));
                     List<ExamEvent> examEvents = Lists.newArrayList();
 
