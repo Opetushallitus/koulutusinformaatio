@@ -1,5 +1,15 @@
 <div class="filter">
-    <h2 class="margin-top-0"><span data-ki-i18n="selaile-koulutuksia"></span></h2>
+    <div >
+        <h2 class="float-left margin-top-0" data-ki-i18n="selaile-koulutuksia"></h2>
+        <button 
+        type="button"
+        class="helplink float-right"
+        data-popover="{{tipPopoverContent}}"
+        data-popover-title="{{locales.tip}}"
+        data-popover-trigger="click"
+        data-popover-placement="right"
+        ></button>
+    </div>
     <div>
         <ul class="nobullet collapse-content-container">
             <li data-ng-show="loResult.ongoingFacet">

@@ -87,8 +87,12 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
         'closeSubjectFacet': TranslationService.getTranslation('tooltip:close-subject-facet'),
         'removeFacet': TranslationService.getTranslation('tooltip:remove-facet'),
         'resultsToShow': TranslationService.getTranslation('tooltip:choose-results-to-show'),
-        'resultsCriteria': TranslationService.getTranslation('tooltip:choose-result-criteria')
+        'resultsCriteria': TranslationService.getTranslation('tooltip:choose-result-criteria'),
+        'tip': TranslationService.getTranslation('tooltip:tip'),
+        'searchResultFacetInfo': TranslationService.getTranslation('tooltip:search-result-facet-info')
     }
+
+    $scope.tipPopoverContent = "<p style='width:400px'>" + $scope.locales.searchResultFacetInfo + "</p>";
     
     /*
      * Selecting a facet value for filtering results
