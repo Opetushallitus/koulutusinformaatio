@@ -1,13 +1,3 @@
-{#
-{% set title_erityis_oppilaitokset_sv = "Läroanstalt med yrkesinriktad specialundervisning" %}
-{% set title_erityis_koulutukset_sv = "Yrkesinriktad specialundervisning" %}
-{% set title_valmentavat_oppilaitokset_sv = "Undervisning och handledning i tränings- och rehabiliteringssyfte" %}
-{% set title_valmentavat_koulutukset_sv = "Läroanstalt med undervisning och handledning i tränings- och rehabiliteringssyfte" %}
-{% set title_erityis_oppilaitokset_fi = "Erityisopetusta järjestävät oppilaitokset" %}
-{% set title_erityis_koulutukset_fi = "Ammatillinen erityisopetus" %}
-{% set title_valmentavat_oppilaitokset_fi = "Valmentavaa ja kuntouttavaa koulutusta järjestävät oppilaitokset" %}
-{% set title_valmentavat_koulutukset_fi = "Valmentava ja kuntouttava opetus ja ohjaus" %}
-#}
 {% set locales = locales["localesfi"] %}
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html lang="en">
@@ -15,6 +5,7 @@
 <head>
     {% block head %}
     <meta charset="UTF-8">
+    <meta name="description" content="{{ locales["meta-content"] }}">
     {% block style %}
     <link rel="stylesheet" href="../style.css" />
     {% endblock %}

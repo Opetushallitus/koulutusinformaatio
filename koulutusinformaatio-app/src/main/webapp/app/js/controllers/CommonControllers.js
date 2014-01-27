@@ -12,7 +12,7 @@ function LanguageCtrl($scope, LanguageService) {
 /**
  *  Controls header actions
  */
-function HeaderCtrl($scope, ApplicationBasketService, LanguageService, Config) {
+function HeaderCtrl($scope, ApplicationBasketService, TranslationService, LanguageService, Config) {
     $scope.lang = LanguageService.getLanguage();
 
     $scope.appBasketItemCount = function() {
@@ -22,6 +22,13 @@ function HeaderCtrl($scope, ApplicationBasketService, LanguageService, Config) {
     $scope.links = {
         frontpage: Config.get('frontpageUrl'),
         textversion: Config.get('textVersionUrl')
+    }
+
+    $scope.locales = {
+        'tofrontpage': TranslationService.getTranslation('tooltip:to-frontpage'),
+        'checklist': TranslationService.getTranslation('tooltip:checklist'),
+        'opintopolkufi':  TranslationService.getTranslation('tooltip:opintopolku-fi'),
+        'opintopolkusv':  TranslationService.getTranslation('tooltip:opintopolku-sv')
     }
 
     $scope.images = {

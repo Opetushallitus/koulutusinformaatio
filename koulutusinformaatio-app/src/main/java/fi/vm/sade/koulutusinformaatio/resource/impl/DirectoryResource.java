@@ -29,6 +29,7 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
+import fi.vm.sade.koulutusinformaatio.util.ResourceBundleHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -62,6 +63,8 @@ public class DirectoryResource {
     private EducationDataQueryService educationDataQueryService;
     private LearningOpportunityService learningOpportunityService;
     private String baseUrl;
+    private ResourceBundleHelper resourceBundleHelper;
+
 
     @Autowired
     public DirectoryResource(SearchService searchService, EducationDataQueryService educationDataQueryService,
@@ -71,6 +74,7 @@ public class DirectoryResource {
         this.educationDataQueryService = educationDataQueryService;
         this.learningOpportunityService = learningOpportunityService;
         this.baseUrl = baseUrl;
+        this.resourceBundleHelper = new ResourceBundleHelper();
     }
 
     @GET
@@ -86,7 +90,7 @@ public class DirectoryResource {
     public Response getProvidersWithFirstLetter(@PathParam("lang") String lang,
                                                 @PathParam("letter") String letter) throws URISyntaxException {
         if (alphabets.contains(letter)) {
-            Map<String, Object> model = Maps.newHashMap();
+            Map<String, Object> model = initModel(lang);
             List<Provider> providers = null;
             try {
                 providers = searchService.searchLearningOpportunityProviders(letter, true);
@@ -119,7 +123,7 @@ public class DirectoryResource {
         } catch (ResourceNotFoundException e) {
             // error page
         }
-        Map<String, Object> model = Maps.newHashMap();
+        Map<String, Object> model = initModel(lang);
         model.put("alphabets", alphabets);
         model.put("letter", letter);
         model.put("provider", ConverterUtil.getTextByLanguageUseFallbackLang(provider.getName(), "fi"));
@@ -130,5 +134,9 @@ public class DirectoryResource {
         return new Viewable("/education.ftl", model);
     }
 
-
+    private Map<String, Object> initModel(String lang) {
+        Map<String, Object> model = Maps.newHashMap();
+        model.put("messages", resourceBundleHelper.getBundle(lang));
+        return model;
+    }
 }
