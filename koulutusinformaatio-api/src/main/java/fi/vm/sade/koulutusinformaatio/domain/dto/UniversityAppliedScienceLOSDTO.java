@@ -75,6 +75,7 @@ public class UniversityAppliedScienceLOSDTO {
 	private List<String> formOfTeaching;
 
 	private List<String> professionalTitles;
+	private String educationDegreeName;
 	
 
 	public String getId() {
@@ -380,6 +381,14 @@ public class UniversityAppliedScienceLOSDTO {
 
 	public void setProfessionalTitles(List<String> professionalTitles) {
 		this.professionalTitles = professionalTitles;
+	}
+
+	public String getEducationDegreeName() {
+		return educationDegreeName;
+	}
+
+	public void setEducationDegreeName(String educationDegreeName) {
+		this.educationDegreeName = educationDegreeName;
 	}
 
 }

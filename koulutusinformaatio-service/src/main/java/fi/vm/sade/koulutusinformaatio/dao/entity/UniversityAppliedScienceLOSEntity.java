@@ -68,9 +68,11 @@ public class UniversityAppliedScienceLOSEntity {
 	private I18nTextEntity name;
     @Embedded
 	private I18nTextEntity koulutuskoodi;
-    @Embedded
-	private I18nTextEntity educationDegree;
-    @Embedded
+	private String educationDegree;
+	@Embedded
+    private I18nTextEntity educationDegreeName;
+
+	@Embedded
     private I18nTextEntity degreeTitle;
 	private Date startDate;
 	private String plannedDuration;
@@ -212,10 +214,10 @@ public class UniversityAppliedScienceLOSEntity {
 	public void setKoulutuskoodi(I18nTextEntity koulutuskoodi) {
 		this.koulutuskoodi = koulutuskoodi;
 	}
-	public I18nTextEntity getEducationDegree() {
+	public String getEducationDegree() {
 		return educationDegree;
 	}
-	public void setEducationDegree(I18nTextEntity educationDegree) {
+	public void setEducationDegree(String educationDegree) {
 		this.educationDegree = educationDegree;
 	}
 	public I18nTextEntity getDegreeTitle() {
@@ -344,5 +346,11 @@ public class UniversityAppliedScienceLOSEntity {
 	}
 	public void setCreditUnit(I18nTextEntity creditUnit) {
 		this.creditUnit = creditUnit;
+	}
+    public I18nTextEntity getEducationDegreeName() {
+		return educationDegreeName;
+	}
+	public void setEducationDegreeName(I18nTextEntity educationDegreeName) {
+		this.educationDegreeName = educationDegreeName;
 	}
 }

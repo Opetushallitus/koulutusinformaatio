@@ -43,7 +43,8 @@ public class UniversityAppliedScienceLOS extends LOS {
 	private I18nText educationDomain;
 	private I18nText name;
 	private I18nText koulutuskoodi;
-	private I18nText educationDegree;
+	private String educationDegree;
+	private I18nText educationDegreeName;
     private I18nText degreeTitle;
 	private Date startDate;
 	private String plannedDuration;
@@ -85,11 +86,11 @@ public class UniversityAppliedScienceLOS extends LOS {
 		return this.name;
 	}
 	
-	public void setEducationDegree(I18nText degree) {
+	public void setEducationDegree(String degree) {
 		this.educationDegree = degree;
 	}
 	
-	public I18nText getEducationDegree() {
+	public String getEducationDegree() {
 		return this.educationDegree;
 	}
 	
@@ -381,5 +382,12 @@ public class UniversityAppliedScienceLOS extends LOS {
 		this.creditUnit = creditUnit;
 	}
 
+	public I18nText getEducationDegreeName() {
+		return educationDegreeName;
+	}
+
+	public void setEducationDegreeName(I18nText educationDegreeName) {
+		this.educationDegreeName = educationDegreeName;
+	}
 
 }

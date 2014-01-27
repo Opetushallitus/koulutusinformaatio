@@ -56,7 +56,8 @@ public class UasLOSToSolrInputDocment implements Converter<UniversityAppliedScie
 
 		doc.setField(LearningOpportunity.NAME, losName);
 
-
+		doc.addField(LearningOpportunity.EDUCATION_DEGREE, SolrUtil.resolveTextWithFallback(teachingLang,  los.getEducationDegreeName().getTranslations()));
+		
 
 		if (teachingLang.equals("fi")) {
 			doc.addField(LearningOpportunity.NAME_FI, los.getName().getTranslations().get("fi"));
