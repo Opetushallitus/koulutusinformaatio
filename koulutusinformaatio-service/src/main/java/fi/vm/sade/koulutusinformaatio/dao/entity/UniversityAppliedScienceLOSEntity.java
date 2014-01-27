@@ -90,6 +90,8 @@ public class UniversityAppliedScienceLOSEntity {
 	private Boolean chargeable;
 	private String educationCode;
 	@Embedded
+	private I18nTextEntity infoAboutCharge;
+	@Embedded
 	private List<CodeEntity> teachingLanguages;
 	@Reference
     private LearningOpportunityProviderEntity provider;
@@ -108,7 +110,10 @@ public class UniversityAppliedScienceLOSEntity {
 	
 	@Embedded
 	private List<CodeEntity> prerequisites;
-	
+	@Embedded
+	private List<I18nTextEntity> teachingTimes;
+	@Embedded
+	private List<I18nTextEntity> teachingPlaces;
 
 	private String type;
 	
@@ -352,5 +357,23 @@ public class UniversityAppliedScienceLOSEntity {
 	}
 	public void setEducationDegreeName(I18nTextEntity educationDegreeName) {
 		this.educationDegreeName = educationDegreeName;
+	}
+	public I18nTextEntity getInfoAboutCharge() {
+		return infoAboutCharge;
+	}
+	public void setInfoAboutCharge(I18nTextEntity infoAboutCharge) {
+		this.infoAboutCharge = infoAboutCharge;
+	}
+	public List<I18nTextEntity> getTeachingTimes() {
+		return teachingTimes;
+	}
+	public void setTeachingTimes(List<I18nTextEntity> teachingTimes) {
+		this.teachingTimes = teachingTimes;
+	}
+	public List<I18nTextEntity> getTeachingPlaces() {
+		return teachingPlaces;
+	}
+	public void setTeachingPlaces(List<I18nTextEntity> teachingPlaces) {
+		this.teachingPlaces = teachingPlaces;
 	}
 }

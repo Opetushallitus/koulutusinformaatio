@@ -327,6 +327,11 @@ public class LOSObjectCreator extends ObjectCreator {
     		los.setAccessToFurtherStudies(getI18nTextEnriched(koulutus.getKuvausKomo().get(KomoTeksti.JATKOOPINTO_MAHDOLLISUUDET)));
     	}
     	
+    	if (koulutus.getKuvausKomoto().get(KomotoTeksti.MAKSULLISUUS) != null  
+    			&& !koulutus.getKuvausKomoto().get(KomotoTeksti.MAKSULLISUUS).getTekstis().containsKey("undefined")) {
+    		los.setInfoAboutCharge(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.MAKSULLISUUS)));
+    	}
+    	
     	
         if (koulutus.getYhteyshenkilos() != null) {
             for (YhteyshenkiloTyyppi yhteyshenkiloRDTO : koulutus.getYhteyshenkilos()) {
@@ -367,6 +372,9 @@ public class LOSObjectCreator extends ObjectCreator {
         
         los.setFormOfTeaching(getI18nTextMultiple(koulutus.getOpetusmuodos()));
         los.setProfessionalTitles(getI18nTextMultiple(koulutus.getAmmattinimikkeet()));
+        
+        los.setTeachingTimes(getI18nTextMultiple(koulutus.getOpetusAikas()));
+        los.setTeachingPlaces(getI18nTextMultiple(koulutus.getOpetusPaikkas()));
         
         
         boolean existsValidHakukohde = fetchHakukohdeData(los);

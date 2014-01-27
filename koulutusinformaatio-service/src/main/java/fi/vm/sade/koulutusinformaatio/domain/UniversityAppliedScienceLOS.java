@@ -69,6 +69,11 @@ public class UniversityAppliedScienceLOS extends LOS {
 	private List<Code> prerequisites;
 	private List<I18nText> formOfTeaching;
 	private List<I18nText> professionalTitles;
+	private List<I18nText> teachingTimes;
+	private List<I18nText> teachingPlaces;
+	private I18nText infoAboutCharge;
+
+
 
 	public String getId() {
 		return id;
@@ -389,5 +394,25 @@ public class UniversityAppliedScienceLOS extends LOS {
 	public void setEducationDegreeName(I18nText educationDegreeName) {
 		this.educationDegreeName = educationDegreeName;
 	}
-
+	public void setTeachingTimes(List<I18nText> teachingTimes) {
+		this.teachingTimes = teachingTimes;
+		
+	}
+	public List<I18nText> getTeachingTimes() {
+		return teachingTimes;
+	}
+	public void setTeachingPlaces(List<I18nText> teachingPlaces) {
+		this.teachingPlaces = teachingPlaces;
+		
+	}
+	public List<I18nText> getTeachingPlaces() {
+		return teachingPlaces;
+	}
+	public void setInfoAboutCharge(I18nText i18nTextEnriched) {
+		this.infoAboutCharge = i18nTextEnriched;
+		
+	}
+	public I18nText getInfoAboutCharge() {
+		return infoAboutCharge;
+	}
 }

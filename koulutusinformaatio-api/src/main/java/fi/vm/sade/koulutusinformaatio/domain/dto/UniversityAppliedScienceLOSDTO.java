@@ -43,6 +43,7 @@ public class UniversityAppliedScienceLOSDTO {
 	private String competence;
 	private String researchFocus;
 	private String accessToFurtherStudies;
+	private String infoAboutCharge;
 	private List<ContactPersonDTO> contactPersons = new ArrayList<ContactPersonDTO>();
 	private String educationDomain;
 	private String name;
@@ -76,7 +77,8 @@ public class UniversityAppliedScienceLOSDTO {
 
 	private List<String> professionalTitles;
 	private String educationDegreeName;
-	
+	private List<String> teachingTimes;
+	private List<String> teachingPlaces;
 
 	public String getId() {
 		return id;
@@ -390,5 +392,26 @@ public class UniversityAppliedScienceLOSDTO {
 	public void setEducationDegreeName(String educationDegreeName) {
 		this.educationDegreeName = educationDegreeName;
 	}
+	public List<String> getTeachingTimes() {
+		return teachingTimes;
+	}
 
+	public void setTeachingTimes(List<String> teachingTimes) {
+		this.teachingTimes = teachingTimes;
+	}
+
+	public List<String> getTeachingPlaces() {
+		return teachingPlaces;
+	}
+	public void setTeachingPlaces(List<String> teachingPlaces) {
+		this.teachingPlaces = teachingPlaces;
+	}
+
+	public String getInfoAboutCharge() {
+		return infoAboutCharge;
+	}
+
+	public void setInfoAboutCharge(String infoAboutCharge) {
+		this.infoAboutCharge = infoAboutCharge;
+	}
 }

@@ -28,6 +28,15 @@ public class UniversityAppliedScienceLOSToDTO {
         dto.setGoals(ConverterUtil.getTextByLanguage(los.getGoals(), lang));
         dto.setStructure(ConverterUtil.getTextByLanguage(los.getStructure(), lang));
         dto.setAccessToFurtherStudies(ConverterUtil.getTextByLanguage(los.getAccessToFurtherStudies(), lang));
+        dto.setInfoAboutTeachingLangs(ConverterUtil.getTextByLanguage(los.getInfoAboutTeachingLangs(), lang));
+        dto.setMajorSelection(ConverterUtil.getTextByLanguage(los.getMajorSelection(), lang));
+        dto.setInfoAboutCharge(ConverterUtil.getTextByLanguage(los.getInfoAboutCharge(), lang));
+        dto.setInfoAboutCharge(ConverterUtil.getTextByLanguage(los.getInfoAboutCharge(), lang));
+        dto.setFinalExam(ConverterUtil.getTextByLanguage(los.getFinalExam(), lang));
+        dto.setCareerOpportunities(ConverterUtil.getTextByLanguage(los.getCareerOpportunities(), lang));
+        dto.setCompetence(ConverterUtil.getTextByLanguage(los.getCompetence(), lang));
+        dto.setResearchFocus(ConverterUtil.getTextByLanguage(los.getResearchFocus(), lang));
+        
         //dto.setLois(UpperSecondaryLOIToDTO.convertAll(los.getLois(), lang, uiLang));
         dto.setProvider(ProviderToDTO.convert(los.getProvider(), lang, "fi"));
         dto.setTranslationLanguage(lang);
@@ -41,6 +50,8 @@ public class UniversityAppliedScienceLOSToDTO {
         dto.setPrerequisites(CodeToDTO.convertAll(los.getPrerequisites(), lang));
         dto.setFormOfTeaching(ConverterUtil.getTextsByLanguage(los.getFormOfTeaching(), uiLang));
         dto.setProfessionalTitles(ConverterUtil.getTextsByLanguage(los.getProfessionalTitles(), uiLang));
+        dto.setTeachingTimes(ConverterUtil.getTextsByLanguage(los.getTeachingTimes(), uiLang));
+        dto.setTeachingPlaces(ConverterUtil.getTextsByLanguage(los.getTeachingPlaces(), uiLang));
         dto.setTeachingLanguages(CodeToValue.convertAll(los.getTeachingLanguages()));
         //TODO: --> dto.setFormOfEducation(ConverterUtil.getTextsByLanguage(los.getFormOfEducation(), uiLang));
         dto.setStartDate(los.getStartDate());
@@ -65,6 +76,7 @@ public class UniversityAppliedScienceLOSToDTO {
             }
             dto.getApplicationSystems().add(asDTO);
         }
+        dto.setChargeable(los.getChargeable());
         
         return dto;
     }
