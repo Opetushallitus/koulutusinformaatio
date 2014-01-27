@@ -36,7 +36,8 @@ public interface ApplicationOptionResource {
             @PathParam("asId") final String asId, @PathParam("lopId") final String lopId,
             @QueryParam("baseEducation") final String baseEducation,
             @DefaultValue("true") @QueryParam("vocational") boolean vocational,
-            @DefaultValue("true") @QueryParam("nonVocational") boolean nonVocational);
+            @DefaultValue("true") @QueryParam("nonVocational") boolean nonVocational,
+            @DefaultValue("fi") @QueryParam("uiLang") String uiLang);
 
     @GET
     @Path("/{aoId}")
