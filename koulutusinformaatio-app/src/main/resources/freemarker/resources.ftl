@@ -10,7 +10,6 @@
 <#else>
 <#assign lang="fi">
 <#assign title="Hakemisto" sitename="Opintopolku.fi" applicationbasket="Muistilista">
-<#assign footeroph="Utbildningsstyrelsen" footerokm="Undervisnings- och kulturministeriet">
 <#assign footeroph="Opetushallitus" footerokm="Opetus- ja kulttuuriministeriö" footercopyright="Copyright © 2013 Opetushallitus">
 <#assign footerprivacypolicy="Rekisteriseloste">
 <#assign footernote="Koulutuksen järjestäjät ja korkeakoulut ylläpitävät tietoja koulutuksistaan Opintopolussa. Tietojen oikeellisuuden voit tarkistaa kyseisestä oppilaitoksesta tai korkeakoulusta.">

@@ -1,6 +1,7 @@
+<#include "macros.ftl">
 <!DOCTYPE html>
 <html>
-<#include "resources.ftl">
+<#-- <#include "resources.ftl"> -->
 <head>
     <#include "head.ftl">
 </head>

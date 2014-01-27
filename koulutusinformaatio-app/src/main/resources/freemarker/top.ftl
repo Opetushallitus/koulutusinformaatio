@@ -2,7 +2,7 @@
     <div class="logo-bg">
         <div class="container">
             <a id="home-link" href="/">
-                <img src="/app/img/opintopolku_large-${lang}.png"  alt="${sitename}"/>
+                <img src="/app/img/opintopolku_large-${lang}.png"  alt="<@msg "sitename"/>"/>
             </a>
             <span data-ki-banner></span>
             <div class="actions">
@@ -15,7 +15,7 @@
                 <ul>
                     <li class="icon basket">
                         <a id="appbasket-link" href="${baseUrl}muistilista">
-                            <span>${applicationbasket}</span> <span></span>
+                            <span><@msg "applicationbasket"/></span> <span></span>
                         </a>
                     </li>
                 </ul>

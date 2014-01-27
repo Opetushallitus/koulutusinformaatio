@@ -2,14 +2,14 @@
     <p class="small" data-ki-i18n="footer-note"></p>
     <div class="footer-wrapper">
         <div class="footer-item">
-            <a href="${ophurl}" title="${footeroph}"><img src="/app/img/OPH_logo-${lang}.png" alt="${footeroph}"></a>
+            <a href="<@msg "ophurl"/>" title="<@msg "footer.oph"/>"><img src="/app/img/OPH_logo-${lang}.png" alt="<@msg "footer.oph"/>"></a>
         </div>
         <div class="footer-item">
-            <a href="${okmurl}" title="${footerokm}"><img src="/app/img/OKM_logo-${lang}.png" alt="${footerokm}"></a>
+            <a href="<@msg "okmurl"/>" title="<@msg "footer.okm"/>"><img src="/app/img/OKM_logo-${lang}.png" alt="<@msg "footer.okm"/>"></a>
         </div>
         <div class="clear"></div>
     </div>
     <p class="small">
-        <span>${footercopyright}</span> - <a href="${privacypolicylink}">${footerprivacypolicy}</a>
+        <span><@msg "footer.copyright"/></span> - <a href="<@msg "footer.privacypolicylink"/>"><@msg "footer.privacypolicy"/></a>
     </p>
 </footer>
