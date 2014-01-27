@@ -1,4 +1,25 @@
 {
 	"search-tab-lo-tooltip": "Tällä välilehdellä listataan koulutuksia ja tutkintoja. Kirjoita hakusanasi hakukenttään, valitse Hae, ja saat listan hakusanaasi sopivista tuloksista, joista voit edetä tarkempiin koulutuskuvauksiin.",
-    "search-tab-article-tooltip": "Tältä välilehdeltä löydät hakemiseen ja opiskeluun liittyviä tietoja ja artikkeleita."
+    "search-tab-article-tooltip": "Tältä välilehdeltä löydät hakemiseen ja opiskeluun liittyviä tietoja ja artikkeleita.",
+    "to-frontpage": "Etusivulle",
+    "search": "Hae",
+    "remove-search-result-facet": "Poista hakutuloksille valittu rajaus",
+    "close-education-facet": "Sulje Koulutuksen mukainen rajausnäkymä",
+    "close-basic-education-facet":"Sulje Pohjakoulutuksen mukainen rajausnäkymä",
+    "close-location-facet": "Sulje Sijainnin mukainen rajausnäkymä",
+    "close-language-facet": "Sulje Opetuskielen mukainen rajaus",
+    "close-subject-facet": "Sulje Aiheen mukainen rajaus",
+    "remove-facet": "Poista rajaus",
+    "open-education-view": "Avaa koulutusnäkymä",
+    "next-page": "Seuraava sivu",
+    "previous-page": "Edellinen sivu",
+    "choose-results-to-show": "Valitse esitettävien hakutulosten määrä",
+    "choose-result-criteria": "Valitse hakutulosten lajittelukriteeri",
+    "close": "Sulje",
+    "open":"Avaa",
+    "tip":"Ohje",
+    "checklist": "Muistilista",
+    "opintopolku-fi": "Opintopolku suomeksi",
+    "opintopolku-sv": "Studieinfo",
+    "search-result-facet-info":"Hakutulosrajaukset auttavat sinua rajaamaan hakua ja löytämään helpommin oikean koulutuksen. Hakutekijöiden perässä esitetään suluissa hakutulosten kappalemäärä, mikäli hakutekijä ei palauta tuloksia, on kappalemäärä nolla. "
 }

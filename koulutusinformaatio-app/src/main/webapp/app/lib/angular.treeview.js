@@ -54,15 +54,15 @@ angular.module( 'angularTreeview', [] ).
 							'<i class="expanded" data-ng-show="getStatus(node) == \'expanded\'" data-ng-click="' + treeId + '.selectNodeHead(node)"></i>' +
 							'<i class="normal" data-ng-hide="getStatus(node) == \'normal\'"></i> ' +
 							
-                			'<span data-ng-show="!isSelected(node) && (node.count > 0)" class="facet-item">' +
+                			'<span title="{{node.valueName}}" data-ng-show="!isSelected(node) && (node.count > 0)" class="facet-item">' +
                     			'<a href="javascript:void(0)" data-ng-click="selectFacetFilter(node.valueId, node.facetField)">{{node.valueName}} ({{node.count}})</a>' +
                 			'</span>' +
-	                		'<span data-ng-show="!isSelected(node) && (node.count <= 0)" class="facet-item inactive">' +
+	                		'<span title="{{node.valueName}}" data-ng-show="!isSelected(node) && (node.count <= 0)" class="facet-item inactive">' +
 	                    		'{{node.valueName}} ({{node.count}})' +
 	                		'</span>' +
-	                		'<span data-ng-show="isSelected(node)" class="facet-item selected">' +
+	                		'<span title="{{node.valueName}}" data-ng-show="isSelected(node)" class="facet-item selected">' +
 	                    		'<span>{{node.valueName}}</span>' +
-	                    		'<a href="javascript:void(0)" class="remove" data-ng-click="removeSelection(node)"></a>' +
+	                    		'<a title="{{locales.removeFacet}}" href="javascript:void(0)" class="remove" data-ng-click="removeSelection(node)"></a>' +
 	                		'</span>' +
 
 							'<div data-ng-show="isExpanded(node)" data-tree-id="' + treeId + '" data-tree-model="node.' + nodeChildren + '" data-node-id=' + nodeId + ' data-node-label=' + nodeLabel + ' data-node-children=' + nodeChildren + '></div>' +

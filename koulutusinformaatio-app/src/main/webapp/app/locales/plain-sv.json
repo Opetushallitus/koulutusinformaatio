@@ -1,5 +1,5 @@
 {
-    "page-title": "Studieinfo textversion",
+    "page-title": "Textversionen av specialläroanstalternas utbildningar – Studieinfo",
     "header-home": "Studieinfo.fi",
     "to-full-version": "Gå till tjänstens fullständiga version",
     "home": "Framsida",
@@ -28,5 +28,7 @@
 
     "footer-service-providers": "Tjänsten erbjuds av",
     "footer-provider-1": "Undervisnings- och kulturministeriet",
-    "footer-provider-2": "Utbildningsstyrelsen"
+    "footer-provider-2": "Utbildningsstyrelsen",
+
+    "meta-content": "I textversionen av specialläroanstalternas utbildningsutbud kan man bläddra bland läroanstalter, specialyrkesundervisning samt undervisning och handledning i tränings- och rehabiliteringssyfte"
 }

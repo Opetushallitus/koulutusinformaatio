@@ -460,6 +460,7 @@ directive('kiAbsoluteLink', function() {
         link: function(scope, element, attrs) {
             var home = 'home';
             var root = TranslationService.getTranslation('breadcrumb-search-results');
+            var homeTooltip = TranslationService.getTranslation('tooltip:to-frontpage');
             var parent;
             var child;
             var provider;
@@ -486,7 +487,7 @@ directive('kiAbsoluteLink', function() {
 
             var update = function() {
                 scope.breadcrumbItems = [];
-                pushItem({name: home, linkHref: Config.get('frontpageUrl') });
+                pushItem({name: home, linkHref: Config.get('frontpageUrl'), tooltip: homeTooltip });
                 pushItem({name: root, linkHref: '#!/haku/' + SearchService.getTerm() + '?' + FilterService.getParams() });
 
                 if (scope.parent && (scope.loType != 'lukio' && scope.loType != 'erityisopetus')) { // TODO: do not compare to loType

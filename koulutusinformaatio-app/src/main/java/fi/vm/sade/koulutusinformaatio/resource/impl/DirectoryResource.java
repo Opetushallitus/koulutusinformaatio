@@ -16,26 +16,9 @@
 
 package fi.vm.sade.koulutusinformaatio.resource.impl;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Map;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.sun.jersey.api.view.Viewable;
-
 import fi.vm.sade.koulutusinformaatio.converter.ConverterUtil;
 import fi.vm.sade.koulutusinformaatio.converter.ProviderToSearchResult;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
@@ -46,6 +29,20 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Handles directory calls that lists provider and learning opportunity links
@@ -61,7 +58,6 @@ public class DirectoryResource {
     private static final List<String> alphabets = Lists.newArrayList(
             "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "Å", "Ä", "Ö");
 
-
     private SearchService searchService;
     private EducationDataQueryService educationDataQueryService;
     private LearningOpportunityService learningOpportunityService;
@@ -70,7 +66,7 @@ public class DirectoryResource {
     @Autowired
     public DirectoryResource(SearchService searchService, EducationDataQueryService educationDataQueryService,
                              LearningOpportunityService learningOpportunityService,
-                             @Value("${koulutusinformaatio.snapshot.baseurl}") String baseUrl) {
+                             @Value("${koulutusinformaatio.baseurl.learningopportunity}") String baseUrl) {
         this.searchService = searchService;
         this.educationDataQueryService = educationDataQueryService;
         this.learningOpportunityService = learningOpportunityService;
@@ -112,7 +108,6 @@ public class DirectoryResource {
 
     @GET
     @Path("oppilaitokset/{letter}/{providerId}/koulutukset")
-
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getLearningOpportunities(@PathParam("lang") String lang, @PathParam("letter") String letter,
                                              @PathParam("providerId") final String providerId) {
