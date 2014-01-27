@@ -382,9 +382,6 @@ public class LOSObjectCreator extends ObjectCreator {
         if (!existsValidHakukohde) {
         	throw new TarjontaParseException("No valid application options for education: " + los.getId());
         }
-        
-        
-        
     	return los;
     }
 

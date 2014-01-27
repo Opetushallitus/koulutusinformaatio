@@ -158,7 +158,8 @@ public class EducationObjectCreator extends ObjectCreator {
                         && valintakoe.getValintakoeAjankohtas() != null
                         && !valintakoe.getValintakoeAjankohtas().isEmpty()) {
                     Exam exam = new Exam();
-                    
+                   
+                    exam.setType(getTypeText(valintakoe));
                     exam.setDescription(getI18nTextEnriched(valintakoe.getValintakokeenKuvaus()));
                     List<ExamEvent> examEvents = Lists.newArrayList();
 
@@ -183,8 +184,17 @@ public class EducationObjectCreator extends ObjectCreator {
 		return null;
 	}
 
+	private I18nText getTypeText(ValintakoeV1RDTO valintakoe) {
+		 I18nText type = new I18nText();
+         Map<String, String> translations = new HashMap<String,String>();
+         String lang = valintakoe.getKieliUri().substring(valintakoe.getKieliUri().length() - 2);
+         translations.put(lang, valintakoe.getValintakoeNimi());
+         type.setTranslations(translations);
+         return type;
+	}
+
 	private I18nText getI18nTextEnriched(TekstiRDTO valintakokeenKuvaus) {
-		if (Strings.isNullOrEmpty(valintakokeenKuvaus.getArvo()) && Strings.isNullOrEmpty(valintakokeenKuvaus.getTeksti())) {
+		if (!Strings.isNullOrEmpty(valintakokeenKuvaus.getArvo()) && !Strings.isNullOrEmpty(valintakokeenKuvaus.getTeksti())) {
 			Map<String,String> translations = new HashMap<String,String>();
 			translations.put(valintakokeenKuvaus.getArvo().toLowerCase(), valintakokeenKuvaus.getTeksti());
 			I18nText text = new I18nText();
