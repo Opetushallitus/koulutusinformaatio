@@ -20,6 +20,7 @@ import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.dto.DataStatusDTO;
 import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
+import fi.vm.sade.koulutusinformaatio.service.SEOService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,14 +45,16 @@ public class AdminResource {
     private UpdateService updateService;
     private LearningOpportunityService learningOpportunityService;
     private ModelMapper modelMapper;
+    private SEOService seoService;
 
     @Autowired
     public AdminResource(UpdateService updateService,
                          LearningOpportunityService learningOpportunityService,
-                         ModelMapper modelMapper) {
+                         ModelMapper modelMapper, SEOService seoService) {
         this.updateService = updateService;
         this.learningOpportunityService = learningOpportunityService;
         this.modelMapper = modelMapper;
+        this.seoService = seoService;
     }
 
     @GET
@@ -85,6 +88,17 @@ public class AdminResource {
             dto.setRunningSince(new Date(updateService.getRunningSince()));
             dto.setRunningSinceStr(new Date(updateService.getRunningSince()).toString());
         }
+        dto.setSnapshotRenderingRunning(seoService.isRunning());
        return dto;
     }
+
+    @GET
+    @Path("/seo")
+    public Response prerender() throws URISyntaxException {
+        if (!seoService.isRunning()) {
+            seoService.update();
+        }
+        return Response.seeOther(new URI("admin/status")).build();
+    }
+
 }

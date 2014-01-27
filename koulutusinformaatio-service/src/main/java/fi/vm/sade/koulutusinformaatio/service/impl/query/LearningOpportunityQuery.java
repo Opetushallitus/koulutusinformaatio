@@ -9,6 +9,7 @@ import fi.vm.sade.koulutusinformaatio.domain.SolrFields.SolrConstants;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.common.params.DisMaxParams;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,7 +17,9 @@ import java.util.List;
  */
 public class LearningOpportunityQuery extends SolrQuery {
 
-    private final static List<String> FIELDS = Lists.newArrayList(
+    private static final long serialVersionUID = -4340177833703968140L;
+
+    public final static List<String> FIELDS = Lists.newArrayList(
             "text_fi",
             "text_sv",
             "text_en",
@@ -31,7 +34,39 @@ public class LearningOpportunityQuery extends SolrQuery {
             "textBoost_en_whole^10.0",
             "asNames",
             "lopNames",
+            "name_auto_fi",
+            "name_auto_sv",
+            "name_auto_en"
+    );
+    
+    public final static List<String> FIELDS_FI = Lists.newArrayList(
+            "text_fi",
+            "text_fi_whole",
+            "textBoost_fi^10.0",
+            "textBoost_fi_whole^10.0",
+            "asNames",
+            "lopNames",
             "name_auto_fi"
+    );
+    
+    public final static List<String> FIELDS_SV = Lists.newArrayList(
+            "text_sv",
+            "text_sv_whole",
+            "textBoost_sv^10.0",
+            "textBoost_sv_whole^10.0",
+            "asNames",
+            "lopNames",
+            "name_auto_sv"
+    );
+    
+    public final static List<String> FIELDS_EN = Lists.newArrayList(
+            "text_en",
+            "text_en_whole",
+            "textBoost_en^10.0",
+            "textBoost_en_whole^10.0",
+            "asNames",
+            "lopNames",
+            "name_auto_en"
     );
 
     private final static Integer AS_COUNT = 10;
@@ -49,7 +84,7 @@ public class LearningOpportunityQuery extends SolrQuery {
         this.setRows(rows);
         if (cities != null && !cities.isEmpty()) {
             this.addFilterQuery(
-                    String.format("%s:(%s)", LearningOpportunity.LOP_HOMEPLACE, Joiner.on(" OR ").join(cities))
+                    String.format("%s:(\"%s\")", LearningOpportunity.LOP_HOMEPLACE, Joiner.on("\" OR \"").join(cities))
                     );
         }
         
@@ -83,48 +118,71 @@ public class LearningOpportunityQuery extends SolrQuery {
         addFacetsToQuery(lang, facetFilters, ongoingFQ.toString(), upcomingFQ.toString());
         
         this.setParam("defType", "edismax");
-        this.setParam(DisMaxParams.QF, Joiner.on(" ").join(FIELDS));
+        
+        setSearchFields(facetFilters);
+        
         this.setParam("q.op", "AND");
         if (sort != null) {
             this.addSort(sort, order.equals("asc") ? ORDER.asc : ORDER.desc);
         }
     }
     
-    /*
-     * For querying suggested terms (autocomplete)
-     */
-    public LearningOpportunityQuery(String term, String lang) {
-        super("*");
-        this.setRows(0);
+
+
+    private void setSearchFields(List<String> facetFilters) {
         
-        //leaving the facet and timestamp docs out
-        this.addFilterQuery(String.format("-%s:%s", LearningOpportunity.ID, SolrConstants.TIMESTAMP_DOC));
-        this.addFilterQuery(String.format("-%s:%s", LearningOpportunity.TYPE, SolrConstants.TYPE_FACET));
+        List<String> teachingLangs = getTeachingLangs(facetFilters);
         
-        addSuggestedTermsFacetToQuery(term, lang);
+        List<String> searchFields = new ArrayList<String>();
         
-        this.setParam("defType", "edismax");
-        this.setParam(DisMaxParams.QF, Joiner.on(" ").join(FIELDS));
-        this.setParam("q.op", "AND");
+        if (teachingLangs.contains("fi")) {
+            searchFields.addAll(FIELDS_FI);
+        } 
         
-    }
-    
-    private void addSuggestedTermsFacetToQuery(String term, String lang) {
-        this.setFacet(true);
-        if (term != null) {
-            this.setFacetPrefix(term.toLowerCase());
+        if (teachingLangs.contains("sv")) {
+            searchFields.addAll(FIELDS_SV);
+        } 
+        
+        if (teachingLangs.contains("en")) {
+            searchFields.addAll(FIELDS_EN);
+        } 
+        
+        if (searchFields.isEmpty() 
+                && !teachingLangs.isEmpty()) {
+            searchFields.addAll(FIELDS_FI);
         }
-        this.addFacetField(LearningOpportunity.NAME_AUTO);
-        this.addFacetField(String.format("%s_%s", LearningOpportunity.FREE_AUTO, lang.toLowerCase()));
-        this.setFacetMinCount(1);
-        this.setFacetLimit(5);
+        
+        
+        if (searchFields.isEmpty()){
+            this.setParam(DisMaxParams.QF, Joiner.on(" ").join(FIELDS));
+        } else {
+            this.setParam(DisMaxParams.QF, Joiner.on(" ").join(searchFields));
+        }
+        
     }
+
+
+
+    private List<String> getTeachingLangs(List<String> facetFilters) {
+        List<String> teachinglangs = new ArrayList<String>();
+        for (String curFilt : facetFilters) {
+            if (curFilt.startsWith(LearningOpportunity.TEACHING_LANGUAGE)) {
+                String theLang = curFilt.substring(curFilt.length() - 2).toLowerCase();
+                teachinglangs.add(theLang);
+            }
+        }
+        return teachinglangs;
+    }
+
+
 
     private void addFacetsToQuery(String lang, List<String> facetFilters, String ongoingFQ, String upcomingFQ) {
         this.setFacet(true);
         this.addFacetField(LearningOpportunity.TEACHING_LANGUAGE);
         this.addFacetField(LearningOpportunity.EDUCATION_TYPE);
         this.addFacetField(LearningOpportunity.PREREQUISITES);
+        this.addFacetField(LearningOpportunity.TOPIC);
+        this.addFacetField(LearningOpportunity.THEME);
         this.setFacetSort("index");
         
         this.addFacetQuery(ongoingFQ);

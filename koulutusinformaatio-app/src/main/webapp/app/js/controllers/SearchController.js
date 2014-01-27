@@ -1,23 +1,27 @@
 /**
  *  Controller for search field in header
  */
-function SearchFieldCtrl($scope, $location, $route, SearchService, kiAppConstants, FilterService, AutocompleteService) {
-    $scope.searchFieldPlaceholder = i18n.t('search-field-placeholder'); 
+function SearchFieldCtrl($scope, $location, $route, SearchService, kiAppConstants, FilterService, AutocompleteService, TreeService, TranslationService) {
+    $scope.searchFieldPlaceholder = TranslationService.getTranslation('search-field-placeholder'); 
     $scope.suggestions = [];
     
+    $scope.locales = {
+        'search': TranslationService.getTranslation('tooltip:search')
+    }
+
     $scope.$watch('queryString', function() {
     	if ($scope.queryString != undefined && $scope.queryString.length > 0) {
     	AutocompleteService.query($scope.queryString).then(function(result) {
     		$scope.suggestions.length = 0;
     		if (result.keywords != undefined) {
-                $scope.suggestions.push({value: i18n.t('autocomplete-keyword'), group: true});
+                $scope.suggestions.push({value: TranslationService.getTranslation('autocomplete-keyword'), group: true});
     			for (var i = 0; i < result.keywords.length; i++) {
     				$scope.suggestions.push({value: result.keywords[i]});
     			}
     		} 
     		
     		if (result.loNames != undefined) {
-                $scope.suggestions.push({value: i18n.t('autocomplete-loname'), group: true});
+                $scope.suggestions.push({value: TranslationService.getTranslation('autocomplete-loname'), group: true});
     			for (var i = 0; i < result.loNames.length; i++) {
     				$scope.suggestions.push({value: result.loNames[i]});
     			}
@@ -29,7 +33,9 @@ function SearchFieldCtrl($scope, $location, $route, SearchService, kiAppConstant
     // Perform search using LearningOpportunity service
     $scope.search = function() {
         if ($scope.queryString) {
+            var activeTab = $location.search().tab;
             FilterService.clear(); // clear all filters for new search
+            TreeService.clear(); // clear tree selections
             FilterService.setPage(kiAppConstants.searchResultsStartPage);
             SearchService.setTerm($scope.queryString);
             var queryString = $scope.queryString;
@@ -38,9 +44,11 @@ function SearchFieldCtrl($scope, $location, $route, SearchService, kiAppConstant
             $scope.queryString = '';
 
             // update location
+            var filters = FilterService.get();
+            filters.tab = activeTab;
             $location.hash(null);
             $location.path('/haku/' + queryString);
-            $location.search(FilterService.get());
+            $location.search(filters);
         }
     };
 };
@@ -48,7 +56,7 @@ function SearchFieldCtrl($scope, $location, $route, SearchService, kiAppConstant
 /**
  *  Controller for search filters
  */
-function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, kiAppConstants, FilterService, LanguageService, DistrictService, ChildLocationsService, UtilityService, $modal) {
+function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, kiAppConstants, FilterService, LanguageService, DistrictService, ChildLocationsService, UtilityService, TranslationService, $modal) {
 
     $scope.change = function() {
         FilterService.set({
@@ -66,6 +74,25 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
         // append filters to url and reload
         $scope.refreshView();
     }
+
+    /*
+     * localizations
+     */
+    $scope.locales = {
+        'closeFacet': TranslationService.getTranslation('tooltip:remove-search-result-facet'),
+        'closeEducationFacet': TranslationService.getTranslation('tooltip:close-education-facet'),
+        'closeBasicEducationFacet': TranslationService.getTranslation('tooltip:close-basic-education-facet'),
+        'closeLocationFacet': TranslationService.getTranslation('tooltip:close-location-facet'),
+        'closeLanguageFacet': TranslationService.getTranslation('tooltip:close-language-facet'),
+        'closeSubjectFacet': TranslationService.getTranslation('tooltip:close-subject-facet'),
+        'removeFacet': TranslationService.getTranslation('tooltip:remove-facet'),
+        'resultsToShow': TranslationService.getTranslation('tooltip:choose-results-to-show'),
+        'resultsCriteria': TranslationService.getTranslation('tooltip:choose-result-criteria'),
+        'tip': TranslationService.getTranslation('tooltip:tip'),
+        'searchResultFacetInfo': TranslationService.getTranslation('tooltip:search-result-facet-info')
+    }
+
+    $scope.tipPopoverContent = "<p style='width:400px'>" + $scope.locales.searchResultFacetInfo + "</p>";
     
     /*
      * Selecting a facet value for filtering results
@@ -163,7 +190,7 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     $scope.openAreaDialog = function() {
     	DistrictService.query().then(function(result) {
     		$scope.distResult = result;
-    		$scope.distResult.unshift({name: i18n.t('koko') + ' ' + i18n.t('suomi'), code: '-1'});
+    		$scope.distResult.unshift({name: TranslationService.getTranslation('koko') + ' ' + TranslationService.getTranslation('suomi'), code: '-1'});
     	});
     }
 
@@ -217,7 +244,7 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
 
     DistrictService.query().then(function(result) {
         $scope.distResult = result;
-        $scope.distResult.unshift({name: i18n.t('koko') + ' ' + i18n.t('suomi'), code: '-1'});
+        $scope.distResult.unshift({name: TranslationService.getTranslation('koko') + ' ' + TranslationService.getTranslation('suomi'), code: '-1'});
 
         // IE requires this to redraw select boxes after data is loaded
         $timeout(function() {
@@ -322,25 +349,43 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
 /**
  *  Controller for search functionality 
  */
- function SearchCtrl($scope, $rootScope, $location, $routeParams, SearchLearningOpportunityService, SearchService, kiAppConstants, FilterService, Config, LanguageService) {
+ function SearchCtrl($scope, $rootScope, $location, $routeParams, SearchLearningOpportunityService, SearchService, kiAppConstants, FilterService, Config, LanguageService, TranslationService) {
     var queryParams;
     $scope.selectAreaVisible = false;
-    $rootScope.title = i18n.t('title-search-results') + ' - ' + i18n.t('sitename');
+    $rootScope.title = TranslationService.getTranslation('title-search-results') + ' - ' + TranslationService.getTranslation('sitename');
 
     $scope.pageSizes = [25, 50, 100];
 
     $scope.sortCriterias = [
-        {value: i18n.t('sort-criteria-default')}, 
-        {value: i18n.t('sort-criteria-alphabetical-desc')}, 
-        {value: i18n.t('sort-criteria-alphabetical-asc')},
-        {value: i18n.t('sort-criteria-duration-asc'), group: i18n.t('sort-criteria-duration-group')},
-        {value: i18n.t('sort-criteria-duration-desc'), group: i18n.t('sort-criteria-duration-group')}
+        {value: TranslationService.getTranslation('sort-criteria-default')}, 
+        {value: TranslationService.getTranslation('sort-criteria-alphabetical-desc')}, 
+        {value: TranslationService.getTranslation('sort-criteria-alphabetical-asc')}
     ];
 
-    $scope.paginationNext = i18n.t('pagination-next');
-    $scope.paginationPrevious = i18n.t('pagination-previous');
-    $scope.valitseAlueTitle = i18n.t('valitse-alue');
-    $scope.noSearchResults = i18n.t('no-search-results-info', {searchterm: SearchService.getTerm()});
+    $scope.tabTitles = {
+        learningOpportunities: TranslationService.getTranslation('search-tab-lo'),
+        learningOpportunitiesTooltip: TranslationService.getTranslation('tooltip:search-tab-lo-tooltip'),
+        articles: TranslationService.getTranslation('search-tab-article'),
+        articlesTooltip: TranslationService.getTranslation('tooltip:search-tab-article-tooltip')
+    };
+
+    $scope.titleLocales = {
+        close: TranslationService.getTranslation('tooltip:close'),
+        removeFacet: TranslationService.getTranslation('tooltip:remove-facet')
+    }
+
+    $scope.tabs = [
+        {active: false},
+        {active: false}
+    ];
+
+    $scope.paginationNext = TranslationService.getTranslation('pagination-next');
+    $scope.paginationPrevious = TranslationService.getTranslation('pagination-previous');
+    $scope.valitseAlueTitle = TranslationService.getTranslation('valitse-alue');
+    $scope.noSearchResults = TranslationService.getTranslation('no-search-results-info', {searchterm: SearchService.getTerm()});
+
+
+
 
     $scope.changePage = function(page) {
         $scope.currentPage = page;
@@ -350,14 +395,23 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     };
 
     $scope.refreshView = function() {
-        $location.search(FilterService.get());
+        $location.search(FilterService.get()).replace();
         $scope.initSearch();
+    }
+
+    $scope.initTabs = function() {
+        var qParams = $location.search();
+        if (qParams.tab && qParams.tab == 'articles') {
+            $scope.tabs[1].active = true;
+        } else {
+            $scope.tabs[0].active = true;
+        }
     }
     
     //Getting the query params from the url
     //after which searching is done.
     $scope.initSearch = function() {
-        queryParams = $location.search();
+        var queryParams = $location.search();
     	FilterService.query(queryParams)
             .then(function() {
                 $scope.prerequisite = FilterService.getPrerequisite();
@@ -369,10 +423,11 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
                 $scope.itemsPerPage = FilterService.getItemsPerPage();
                 $scope.sortCriteria = FilterService.getSortCriteria();
                 $scope.currentPage = FilterService.getPage();
+
                 $scope.doSearching();
             });
     }
-    $scope.initSearch();
+    $scope.initTabs();
 
 
 	//Returns true if the language filter is set
@@ -395,6 +450,10 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
 
     //Searching solr
     $scope.doSearching = function() {
+        var qParams = FilterService.get();
+        qParams.tab = 'los';
+        $location.search(qParams).replace();
+
     	//If the language filter is set, the search query is made
     	if ($routeParams.queryString && $scope.isLangFilterSet()) {
     		SearchLearningOpportunityService.query({
@@ -512,6 +571,58 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     	return 'FI';
     }
 };
+
+function ArticleSearchCtrl($scope, $location, $routeParams, ArticleContentSearchService, FilterService) {
+    $scope.currentPage = 1;
+    $scope.showPagination = false;
+
+    $scope.changePage = function(page) {
+        $scope.currentPage = page;
+        $scope.doArticleSearching();
+
+        $('html, body').scrollTop($('body').offset().top); // scroll to top of list
+    }
+
+    //Getting the query params from the url
+    //after which searching is done.
+    $scope.initSearch = function() {
+        var queryParams = $location.search();
+        FilterService.query(queryParams)
+            .then(function() {
+                $scope.prerequisite = FilterService.getPrerequisite();
+                $scope.locations = FilterService.getLocations();
+                $scope.ongoing = FilterService.isOngoing();
+                $scope.upcoming = FilterService.isUpcoming();
+                $scope.facetFilters = FilterService.getFacetFilters();
+                $scope.langCleared = FilterService.getLangCleared();
+                $scope.itemsPerPage = FilterService.getItemsPerPage();
+                $scope.sortCriteria = FilterService.getSortCriteria();
+                $scope.currentPage = FilterService.getPage();
+
+                $scope.doArticleSearching();
+            });
+    }
+ 
+    $scope.doArticleSearching = function() {
+        var qParams = FilterService.get();
+        qParams.tab = 'articles';
+        $location.search(qParams).replace();
+        ArticleContentSearchService.query({queryString: $routeParams.queryString, page: $scope.currentPage}).then(function(result) {
+            $scope.articles = result;
+            $scope.maxPages = result.pages;
+            $scope.totalItems = result.count_total;
+            $scope.itemsPerPage = 10;
+            $scope.pageMin = ($scope.currentPage - 1) * $scope.itemsPerPage + 1;
+            $scope.pageMax = $scope.currentPage * $scope.itemsPerPage < $scope.totalItems
+                ? $scope.currentPage * $scope.itemsPerPage
+                : $scope.totalItems;
+
+            $scope.queryString = $routeParams.queryString;
+            $scope.showPagination = $scope.totalItems > $scope.itemsPerPage;
+        });
+    }
+};
+
 
 function SortCtrl($scope, $location, FilterService) {
     $scope.updateItemsPerPage = function() {

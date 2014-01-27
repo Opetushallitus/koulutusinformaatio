@@ -19,6 +19,7 @@ package fi.vm.sade.koulutusinformaatio.resource.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.comparator.ProviderSearchResultComparator;
+import fi.vm.sade.koulutusinformaatio.converter.ConverterUtil;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResult;
@@ -43,20 +44,18 @@ import java.util.List;
 public class LearningOpportunityProviderResourceImpl implements LearningOpportunityProviderResource {
 
     private SearchService searchService;
-    private ModelMapper modelMapper;
     private LearningOpportunityService learningOpportunityService;
 
     @Autowired
     public LearningOpportunityProviderResourceImpl(SearchService searchService, ModelMapper modelMapper,
                                                    LearningOpportunityService learningOpportunityService) {
         this.searchService = searchService;
-        this.modelMapper = modelMapper;
         this.learningOpportunityService = learningOpportunityService;
     }
 
     @Override
     public List<ProviderSearchResult> searchProviders(String term, String asId, String baseEducation, boolean vocational,
-                                                      boolean nonVocational, int start, int rows) {
+                                                      boolean nonVocational, int start, int rows, final String lang) {
         List<Provider> learningOpportunityProviders = null;
         try {
             String key = null;
@@ -67,16 +66,17 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
             }
             key = key.replace("*", "");
             learningOpportunityProviders = searchService.searchLearningOpportunityProviders(key, asId, baseEducation, vocational,
-                    nonVocational, start, rows);
+                    nonVocational, start, rows, lang, false);
             List<ProviderSearchResult> result = Lists.newArrayList(Lists.transform(learningOpportunityProviders, new Function<Provider, ProviderSearchResult>() {
                 @Override
                 public ProviderSearchResult apply(Provider lop) {
                     ProviderSearchResult result = new ProviderSearchResult();
                     result.setId(lop.getId());
-                    result.setName(lop.getName().getTranslations().get("fi"));
+                    result.setName(ConverterUtil.getTextByLanguageUseFallbackLang(lop.getName(), lang));
                     return result;
                 }
             }));
+
             Collections.sort(result, new ProviderSearchResultComparator());
             return result;
         } catch (SearchException e) {

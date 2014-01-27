@@ -1,7 +1,13 @@
 /*  Services */
 
-angular.module('kiApp.services', ['ngResource', 'kiApp.NavigationService', 'kiApp.HostResolver']).
-
+angular.module('kiApp.services',
+[
+    'ngResource', 
+    'kiApp.HostResolver', 
+    'kiApp.NavigationService',
+    'kiApp.ArticleContentSearchService',
+    'kiApp.TranslationService'
+]).
 service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analytics', 'FilterService', function($http, $timeout, $q, $analytics, FilterService) {
     
     // gather information for analytics
@@ -393,9 +399,13 @@ service('UpperSecondaryLOService', ['$http', '$timeout', '$q', 'LanguageService'
 /**
  * Transformer for parent LO data
  */
-service('ParentLOTransformer', ['UtilityService', '$filter', function(UtilityService, $filter) {
+service('ParentLOTransformer', ['UtilityService', '$filter', '$rootScope', function(UtilityService, $filter, $rootScope) {
     return {
         transform: function(result) {
+            if (result && result.translationLanguage) {
+                $rootScope.translationLanguage = result.translationLanguage;
+            }
+
             if (result && result.availableTranslationLanguages) {
                 var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
                 result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
@@ -430,6 +440,8 @@ service('ParentLOTransformer', ['UtilityService', '$filter', function(UtilitySer
 
                                     if (ao.teachingLanguages && ao.teachingLanguages.length > 0) {
                                         ao.teachLang = ao.teachingLanguages[0];
+
+                                        $rootScope.teachingLang = ao.teachLang.toLowerCase();
                                     }
                                 }
                             }
@@ -529,7 +541,7 @@ service('ParentLOTransformer', ['UtilityService', '$filter', function(UtilitySer
 /**
  * Transformer for child LO data
  */
-service('ChildLOTransformer', ['UtilityService', function(UtilityService) {
+service('ChildLOTransformer', ['UtilityService', '$rootScope', function(UtilityService, $rootScope) {
 
     var getFirstItemInList = function(list) {
         if (list && list[0]) {
@@ -542,6 +554,10 @@ service('ChildLOTransformer', ['UtilityService', function(UtilityService) {
     return {
         transform: function(result) {
             var studyplanKey = "KOULUTUSOHJELMA";
+
+            if (result && result.translationLanguage) {
+                $rootScope.translationLanguage = result.translationLanguage;
+            }
 
             if (result && result.availableTranslationLanguages) {
                 var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
@@ -577,6 +593,8 @@ service('ChildLOTransformer', ['UtilityService', function(UtilityService) {
 
                                     if (ao.teachingLanguages && ao.teachingLanguages.length > 0) {
                                         ao.teachLang = ao.teachingLanguages[0];
+                                        
+                                        $rootScope.teachingLang = ao.teachLang.toLowerCase();
                                     }
                                 }
                             }
@@ -804,19 +822,6 @@ service('LanguageService', function() {
 }).
 
 /**
- *  Service for retrieving translated values for text
- */
-service('TranslationService', function() {
-    return {
-        getTranslation: function(key) {
-            if (key) {
-                return i18n.t(key);
-            }
-        }
-    }
-}).
-
-/**
  *  Service for maintaining application basket state
  */
 service('ApplicationBasketService', ['$http', '$q', 'LanguageService', 'UtilityService', function($http, $q, LanguageService, UtilityService) {
@@ -845,17 +850,6 @@ service('ApplicationBasketService', ['$http', '$q', 'LanguageService', 'UtilityS
                         if (applicationOptions[i].children && applicationOptions[i].children.length > 0) {
                             result[asIndex].applicationOptions[i].qualification = applicationOptions[i].children[0].qualification;
                             result[asIndex].applicationOptions[i].prerequisite = applicationOptions[i].children[0].prerequisite;
-                        }
-
-                        if (!result[asIndex].applicationOptions[i].deadlines) {
-                            result[asIndex].applicationOptions[i].deadlines = [];
-                        }
-
-                        if (result[asIndex].applicationOptions[i].attachmentDeliveryDeadline) {
-                            result[asIndex].applicationOptions[i].deadlines.push({
-                                name: i18n.t('attachment-delivery-deadline'),
-                                value: result[asIndex].applicationOptions[i].attachmentDeliveryDeadline
-                            });
                         }
 
                         // set teaching languge as the first language in array
@@ -1304,6 +1298,14 @@ service('UtilityService', function() {
                     return 0;
                 }
             });
+        },
+        padWithZero: function(number) {
+            number = number.toString();
+            if (number.length <= 1) {
+                return "0" + number;
+            } else {
+                return number;
+            }
         }
     };
 });

@@ -22,7 +22,10 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.ScoreLimitDTO;
 /**
  * @author Hannu Lyytikainen
  */
-public class ScoreLimitToDTO {
+public final class ScoreLimitToDTO {
+
+    private ScoreLimitToDTO() {
+    }
 
     public static ScoreLimitDTO convert(ScoreLimit sl) {
         if (sl != null) {

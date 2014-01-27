@@ -17,13 +17,12 @@
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
 import com.google.common.collect.Lists;
-import fi.vm.sade.koulutusinformaatio.domain.Address;
-import fi.vm.sade.koulutusinformaatio.domain.Exam;
-import fi.vm.sade.koulutusinformaatio.domain.ExamEvent;
+import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.tarjonta.service.resources.dto.OsoiteRDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.ValintakoeAjankohtaRDTO;
+import fi.vm.sade.tarjonta.service.resources.dto.ValintakoePisterajaRDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.ValintakoeRDTO;
 
 import java.util.List;
@@ -73,6 +72,64 @@ public class EducationObjectCreator extends ObjectCreator {
             return null;
         }
     }
+
+    public List<Exam> createUpperSecondaryExams(List<ValintakoeRDTO> valintakoes) throws KoodistoException {
+        List<Exam> exams = Lists.newArrayList();
+        if (valintakoes != null) {
+            for (ValintakoeRDTO valintakoe : valintakoes) {
+                if (valintakoe.getKuvaus() != null
+                        && valintakoe.getValintakoeAjankohtas() != null
+                        && !valintakoe.getValintakoeAjankohtas().isEmpty()) {
+                    Exam exam = new Exam();
+                    exam.setDescription(getI18nText(valintakoe.getKuvaus()));
+                    List<ExamEvent> examEvents = Lists.newArrayList();
+
+                    for (ValintakoeAjankohtaRDTO valintakoeAjankohta : valintakoe.getValintakoeAjankohtas()) {
+                        ExamEvent examEvent = new ExamEvent();
+                        Address address = new Address();
+                        address.setPostalCode(koodistoService.searchFirstCodeValue(valintakoeAjankohta.getOsoite().getPostinumero()));
+                        address.setPostOffice(valintakoeAjankohta.getOsoite().getPostitoimipaikka());
+                        address.setStreetAddress(valintakoeAjankohta.getOsoite().getOsoiterivi1());
+                        examEvent.setAddress(address);
+                        examEvent.setDescription(valintakoeAjankohta.getLisatiedot());
+                        examEvent.setStart(valintakoeAjankohta.getAlkaa());
+                        examEvent.setEnd(valintakoeAjankohta.getLoppuu());
+                        examEvents.add(examEvent);
+                    }
+                    exam.setExamEvents(examEvents);
+                    exam.setScoreLimit(resolvePointLimit(valintakoe, "Paasykoe"));
+                    exams.add(exam);
+                }
+            }
+        }
+        return exams;
+    }
+
+    public AdditionalProof createAdditionalProof(List<ValintakoeRDTO> valintakoes) throws KoodistoException {
+        if (valintakoes != null) {
+            AdditionalProof additionalProof = new AdditionalProof();
+            for (ValintakoeRDTO valintakoe : valintakoes) {
+                if (valintakoe.getLisanaytot() != null) {
+                    additionalProof.setDescreption(getI18nText(valintakoe.getLisanaytot()));
+                    additionalProof.setScoreLimit(resolvePointLimit(valintakoe, "Lisapisteet"));
+                    return additionalProof;
+                }
+            }
+        }
+        return null;
+    }
+
+    public ScoreLimit resolvePointLimit(ValintakoeRDTO valintakoe, String type) {
+        for (ValintakoePisterajaRDTO valintakoePisteraja : valintakoe.getValintakoePisterajas()) {
+            if (valintakoePisteraja.getTyyppi().equals(type)) {
+                return new ScoreLimit(valintakoePisteraja.getAlinPistemaara(),
+                        valintakoePisteraja.getAlinHyvaksyttyPistemaara(), valintakoePisteraja.getYlinPistemaara());
+            }
+        }
+        return null;
+    }
+
+
 
     public Address createAddress(OsoiteRDTO osoite) throws KoodistoException {
         if (osoite != null) {

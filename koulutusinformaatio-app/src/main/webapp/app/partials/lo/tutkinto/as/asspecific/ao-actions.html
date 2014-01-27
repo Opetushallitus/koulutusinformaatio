@@ -1,13 +1,13 @@
 <button type="submit" data-ng-disabled="!applicationSystemIsActive(as)">
   <span>
-   <span data-ki-i18n="apply-button-label"></span>
+   <span data-ki-i18n="apply-button-label" data-lang="{{teachingLang}}"></span>
 </span>
 </button>
 
 <div data-ng-switch="isItemAddedToBasket(ao.id)" class="add-to-basket">
     <span data-ng-switch-when="true">
-        <span data-ki-i18n="popover-title-success"></span><br/>
-        <a href="#/muistilista" data-ki-i18n="popover-content-link-to-application-basket"></a>
+        <span data-ki-i18n="popover-title-success" data-lang="{{teachingLang}}"></span><br/>
+        <a href="#!/muistilista" data-ki-i18n="popover-content-link-to-application-basket" data-lang="{{teachingLang}}"></a>
     </span>
     <button
     data-ng-switch-default
@@ -20,7 +20,7 @@
     data-popover-trigger="click"
     data-ng-click="addToBasket(ao.id)">
     <span>
-        <span data-ki-i18n="add-to-basket-label"></span>
+        <span data-ki-i18n="add-to-basket-label" data-lang="{{teachingLang}}"></span>
     </span>
 </button>
 </div>

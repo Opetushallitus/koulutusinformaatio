@@ -25,7 +25,10 @@ import java.util.List;
 /**
  * @author Hannu Lyytikainen
  */
-public class CodeToValue {
+public final class CodeToValue {
+
+    private CodeToValue() {
+    }
 
     public static String convert(Code code) {
         return code.getValue();

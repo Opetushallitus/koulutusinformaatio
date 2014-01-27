@@ -1,6 +1,5 @@
 angular.module('kiApp.NavigationService', ['ngResource']).
-
-service('NavigationService', ['$q', '$http', 'Config', function($q, $http, Config) {
+service('NavigationService', ['$q', '$http', 'Config', function($q, $http, Config) {
     return {
         query: function(queryParam) {
             var deferred = $q.defer();

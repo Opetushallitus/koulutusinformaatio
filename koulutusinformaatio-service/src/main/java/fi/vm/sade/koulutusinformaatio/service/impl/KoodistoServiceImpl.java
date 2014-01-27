@@ -119,7 +119,7 @@ public class KoodistoServiceImpl implements KoodistoService {
             
             
             if (codes == null || codes.isEmpty()) {
-                LOGGER.warn(String.format("No koodis found with koodistoUri %, version %d", koodistoUri, version));
+                LOGGER.warn(String.format("No koodis found with koodistoUri %s, version %d", koodistoUri, version));
             }
             return convertAllToCode(codes);
         } catch (GenericFault e) {
@@ -319,7 +319,7 @@ public class KoodistoServiceImpl implements KoodistoService {
             shortName.put(lang, koodiMetadataType.getLyhytNimi());
             description.put(lang, koodiMetadataType.getKuvaus());
         }
-        return new Code(koodiType.getKoodiArvo(), new I18nText(name, shortName), new I18nText(description));
+        return new Code(koodiType.getKoodiArvo(), new I18nText(name, shortName), new I18nText(description), koodiType.getKoodiUri());
     }
 
 

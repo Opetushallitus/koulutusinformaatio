@@ -198,7 +198,7 @@ angular.module('ui.bootstrap.pagination', [])
   align: true
 })
 
-.directive('pager', ['pagerConfig', function(config) {
+.directive('pager', ['pagerConfig','TranslationService', function(config, TranslationService) {
   return {
     restrict: 'EA',
     scope: {
@@ -211,6 +211,10 @@ angular.module('ui.bootstrap.pagination', [])
     templateUrl: 'template/pagination/pager.html',
     replace: true,
     link: function(scope, element, attrs, paginationCtrl) {
+      scope.locales = {
+        'nextPage': TranslationService.getTranslation('tooltip:next-page'),
+        'previousPage': TranslationService.getTranslation('tooltip:previous-page')
+      }
 
       // Setup configuration parameters
       var previousText = paginationCtrl.getAttributeValue(attrs.previousText, config.previousText, true),
@@ -240,11 +244,19 @@ angular.module('ui.bootstrap.pagination', [])
   };
 }]);
 
+/*
+data-ng-switch-when
+data-ng-switch=\"page.text\">"
+*/
+
 angular.module("template/pagination/pager.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("template/pagination/pager.html",
     "<div class=\"pager\">\n" +
     "  <ul>\n" +
-    "    <li data-ng-repeat=\"page in pages\" data-ng-class=\"{disabled: page.disabled, previous: page.previous, next: page.next}\"><a href=\"javascript:void(0)\" data-ng-click=\"selectPage(page.number)\">{{page.text}}</a></li>\n" +
+    "    <li data-ng-switch=\"page.next\" data-ng-repeat=\"page in pages\" data-ng-class=\"{disabled: page.disabled, previous: page.previous, next: page.next}\">" +
+    "       <a data-ng-switch-when=\"true\" title=\"{{locales.nextPage}}\" href=\"javascript:void(0)\" data-ng-click=\"selectPage(page.number)\">{{page.text}}</a> " +
+    "       <a data-ng-switch-when=\"false\" title=\"{{locales.previousPage}}\" href=\"javascript:void(0)\" data-ng-click=\"selectPage(page.number)\">{{page.text}}</a> " +
+    "    </li>\n" +
     "  </ul>\n" +
     "</div>\n" +
     "");

@@ -16,6 +16,8 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
+import java.util.List;
+
 /**
  * 
  * @author Markus
@@ -27,6 +29,7 @@ public class FacetValue {
     private String valueId;
     private String valueName;
     private long count;
+    private List<FacetValue> childValues;
     
     public FacetValue(String facetField, String valueName, long count, String valueId) {
         this.facetField = facetField;
@@ -62,6 +65,14 @@ public class FacetValue {
 
     public void setValueId(String valueId) {
         this.valueId = valueId;
+    }
+
+    public List<FacetValue> getChildValues() {
+        return childValues;
+    }
+
+    public void setChildValues(List<FacetValue> childValues) {
+        this.childValues = childValues;
     }
     
 }

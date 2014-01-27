@@ -1,0 +1,34 @@
+{
+    "page-title": "Erityisoppilaitosten koulutusten tekstiversio - Opintopolku",
+    "header-home": "Opintopolku.fi",
+    "to-full-version": "Siirry palvelun täysversioon",
+	"home": "Etusivu",
+    "lo-tab-academy": "Oppilaitoskuvaus",
+
+    "index-pager-all": "Näytä kaikki koulutukset sivulla",
+    "index-pager-page-1": "Näytä",
+    "index-pager-page-2": "koulutusta sivulla",
+    "index-pager-next": "Seuraava sivu",
+    "index-pager-previous": "Edellinen sivu",
+
+    "lo-type-special": "Ammatillinen erityisopetus",
+    "provider-erityis": "Ammatillista erityisopetusta tarjoavat oppilaitokset",
+    "provider-valmentava": "Valmentavaa ja kuntouttavaa opetusta ja ohjausta tarjoavat oppilaitokset",
+
+    "description-basic-info": "Perustiedot",
+    "email": "Sähköposti",
+    "phone": "Puhelin",
+
+    "postal-address": "Postiosoite",
+    "visiting-address": "Käyntiosoite",
+    "fax": "Faksi",
+    "www": "www",
+
+    "social-media": "Oppilaitoksen sosiaalisen median linkit",
+
+    "footer-service-providers": "Palvelun tarjoavat:",
+    "footer-provider-1": "Opetus- ja kulttuuriministeriö",
+    "footer-provider-2": "Opetushallitus",
+
+    "meta-content": "Erityisoppilaitosten koulutustarjonnan tekstiversiossa voi selailla oppilaitoksia, ammatillista erityisopetusta sekä valmentavaa ja kuntouttavaa opetusta ja ohjausta"
+}

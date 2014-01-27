@@ -19,7 +19,7 @@ package fi.vm.sade.koulutusinformaatio.service.builder;
 /**
  * @author Hannu Lyytikainen
  */
-public class BuilderConstants {
+public class TarjontaConstants {
 
     public static final String MODULE_TYPE_PARENT = "TUTKINTO";
     public static final String MODULE_TYPE_CHILD = "TUTKINTO_OHJELMA";

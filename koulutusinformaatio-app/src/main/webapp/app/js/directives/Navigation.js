@@ -36,7 +36,7 @@ return {
             var template = '';
 
             if (angular.isArray(scope.val)) {
-                template += '<ul class="level-{{level}}"><li ng-repeat="item in val"><a data-ng-href="{{item.link}}">{{item.title}}</a><ul data-tree data-val="item.subnav" data-level="level + 1"></ul></li></ul>';
+                template += '<ul class="level-{{level}}"><li data-ng-repeat="item in val"><a data-ng-href="{{item.link}}">{{item.title}}</a><ul data-tree data-val="item.subnav" data-level="level + 1"></ul></li></ul>';
             }
 
             var newElement = angular.element(template);

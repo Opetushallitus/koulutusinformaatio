@@ -24,7 +24,10 @@ import java.util.Collections;
 /**
  * @author Mikko Majapuro
  */
-public class ApplicationOptionToSearchResultDTO {
+public final class ApplicationOptionToSearchResultDTO {
+
+    private ApplicationOptionToSearchResultDTO() {
+    }
 
     public static ApplicationOptionSearchResultDTO convert(final ApplicationOption applicationOption, final String lang) {
         if (applicationOption != null) {
@@ -39,6 +42,7 @@ public class ApplicationOptionToSearchResultDTO {
             dto.setTeachingLanguages(applicationOption.getTeachingLanguages());
             dto.setKaksoistutkinto(applicationOption.isKaksoistutkinto());
             dto.setVocational(applicationOption.isVocational());
+            dto.setEducationCodeUri(applicationOption.getEducationCodeUri());
             if (applicationOption.getProvider() != null) {
                 dto.setAthleteEducation(applicationOption.getProvider().isAthleteEducation() || applicationOption.isAthleteEducation());
             } else {

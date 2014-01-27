@@ -1,5 +1,6 @@
 <div class="result-content">
-    <h2><a href="{{lo.linkHref}}">{{lo.name}}, {{lo.credits}}</a></h2>
+    <h2 title="{{locales.openEducation}}"><a href="{{lo.linkHref}}">{{lo.name}}, {{lo.credits}}</a></h2>
+    <span data-ng-show="lo.educationType" data-ki-i18n="{{lo.educationType}}"></span><br/>
     <span class="italic" data-ng-show="lo.prerequisite">
         <span data-ki-i18n="application-prerequisite" data-show-colon="true"></span>
         <span>{{lo.prerequisite}}</span><br />

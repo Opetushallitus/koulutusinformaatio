@@ -31,7 +31,10 @@ import java.util.Map;
 /**
  * @author Mikko Majapuro
  */
-public class ApplicationOptionsToBasketItemDTOs {
+public final class ApplicationOptionsToBasketItemDTOs {
+
+    private ApplicationOptionsToBasketItemDTOs() {
+    }
 
     private final static String FALLBACK_LANG = "fi";
 
@@ -60,6 +63,8 @@ public class ApplicationOptionsToBasketItemDTOs {
                 aoDTO.setParent(ParentLOSRefToDTO.convert(ao.getParent(), lang));
                 aoDTO.setChildren(ChildLOIRefToDTO.convert(ao.getChildLOIRefs(), lang));
                 aoDTO.setAttachmentDeliveryDeadline(ao.getAttachmentDeliveryDeadline());
+                aoDTO.setAttachments(ApplicationOptionAttachmentToDTO.convertAll(ao.getAttachments(), lang));
+                aoDTO.setExams(ExamToDTO.convertAll(ao.getExams(), lang));
                 aoDTO.setAoIdentifier(ao.getAoIdentifier());
                 aoDTO.setKaksoistutkinto(ao.isKaksoistutkinto());
                 aoDTO.setVocational(ao.isVocational());

@@ -19,21 +19,25 @@ package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
+
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
-import fi.vm.sade.koulutusinformaatio.service.builder.BuilderConstants;
+import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.koulutusinformaatio.service.builder.LearningOpportunityBuilder;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 
 import javax.ws.rs.WebApplicationException;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -42,8 +46,6 @@ import java.util.Set;
 public class VocationalLearningOpportunityBuilder extends LearningOpportunityBuilder<LOS> {
 
     private TarjontaRawService tarjontaRawService;
-    private ProviderService providerService;
-    private KoodistoService koodistoService;
     private LOSObjectCreator losObjectCreator;
 
     // Parent komo KomoDTO object that corresponds to the oid
@@ -68,8 +70,6 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
                                                 ProviderService providerService,
                                                 KoodistoService koodistoService, KomoDTO parentKomo) {
         this.tarjontaRawService = tarjontaRawService;
-        this.providerService = providerService;
-        this.koodistoService = koodistoService;
         this.losObjectCreator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService);
         this.parentKomo = parentKomo;
         this.parentKomotosByProviderId = ArrayListMultimap.create();
@@ -145,7 +145,7 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
     }
 
     private boolean isSpecialEdKomoto(KomotoDTO komoto) {
-        return komoto.getPohjakoulutusVaatimusUri().equalsIgnoreCase(BuilderConstants.PREREQUISITE_URI_ER);
+        return komoto.getPohjakoulutusVaatimusUri().equalsIgnoreCase(TarjontaConstants.PREREQUISITE_URI_ER);
     }
 
     @Override
@@ -165,6 +165,7 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
                     })
             );
 
+            Map<String,Code> codeLang = new HashMap<String,Code>();
             for (ChildLOS childLOS : children) {
 
                 // set parent ref
@@ -193,12 +194,21 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
                             }
                         }
                     }
+                    
+                    for (Code curLang : childLOI.getTeachingLanguages()) {
+                        codeLang.put(curLang.getValue(), curLang);
+                    }
                 }
+                
             }
             for (ParentLOI parentLOI : parentLOS.getLois()) {
                 parentLOI.setApplicationOptions(applicationOptionsByParentLOIId.get(parentLOI.getId()));
             }
             parentLOS.setChildren(children);
+            parentLOS.setTeachingLanguages(new ArrayList<Code>(codeLang.values()));
+            /*if (parentLOS.getTeachingLanguages().size() != 1) {
+                LOG.error(String.format("%s%s%s%s", "Data problem: ", parentLOS.getTeachingLanguages().size(), " teaching langauges for parentLOS ", parentLOS.getId()));
+            }*/
         }
         return this;
     }
@@ -220,8 +230,8 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
         if (text != null && text.getTranslationsShortName() != null && !text.getTranslationsShortName().isEmpty()) {
             if (languages != null && !languages.isEmpty()) {
                 for (Code code : languages) {
-                    if (code.getValue().equalsIgnoreCase(BuilderConstants.LANG_FI)) {
-                        return text.getTranslationsShortName().get(BuilderConstants.LANG_FI);
+                    if (code.getValue().equalsIgnoreCase(TarjontaConstants.LANG_FI)) {
+                        return text.getTranslationsShortName().get(TarjontaConstants.LANG_FI);
                     }
                 }
                 String val = text.getTranslationsShortName().get(languages.get(0).getValue().toLowerCase());

@@ -31,11 +31,17 @@ public class SolrFields {
         public static final String EN_FNAME = "en_fname"; //english name of a facet value
         public static final String TEACHING_LANGUAGE = "teachingLangCode_ffm"; //The teaching language used in the learning opportunity
         public static final String EDUCATION_TYPE = "educationType_ffm"; //The education type of the learning opportunity
+        public static final String TOPIC = "topic_ffm"; //The topic of the learning opportunity
+        public static final String THEME = "theme_ffm"; //The theme of the learning opportunity
         public static final String LOP_ID = "lopId";
         public static final String NAME = "name";
         public static final String NAME_FI = "name_fi";
         public static final String NAME_SV = "name_sv";
         public static final String NAME_EN = "name_en";
+        public static final String CHILD_NAME = "childName";
+        public static final String CHILD_NAME_FI = "childName_fi";
+        public static final String CHILD_NAME_SV = "childName_sv";
+        public static final String CHILD_NAME_EN = "childName_en";
         public static final String LOP_NAME = "lopName";
         public static final String LOP_NAME_FI = "lopName_fi";
         public static final String LOP_NAME_SV = "lopName_sv";
@@ -73,7 +79,7 @@ public class SolrFields {
         public static final String DURATION_SORT = "duration_isort";
         
         //Fields for autocomplete
-        public static final String NAME_AUTO = "name_auto_fi";
+        public static final String NAME_AUTO = "name_auto";
         public static final String FREE_AUTO = "free_auto";
     }
     

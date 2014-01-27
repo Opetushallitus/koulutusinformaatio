@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.converter;
 
 import fi.vm.sade.koulutusinformaatio.domain.*;
+
 import org.apache.solr.common.SolrInputDocument;
 
 import java.util.List;
@@ -25,16 +26,19 @@ import java.util.Map;
 /**
  * @author Hannu Lyytikainen
  */
-public class SolrUtil {
+public final class SolrUtil {
+
+    private SolrUtil() {
+    }
 
     private static final String FALLBACK_LANG = "fi";
 
     public static String resolveTranslationInTeachingLangUseFallback(List<Code> teachingLanguages, Map<String, String> translations) {
         String translation = null;
         for (Code teachingLanguage : teachingLanguages) {
-            for (String key : translations.keySet()) {
-                if (teachingLanguage.getValue().equalsIgnoreCase(key)) {
-                    translation = translations.get(key);
+            for (Map.Entry<String, String> availableTranslation : translations.entrySet()) {
+                if (teachingLanguage.getValue().equalsIgnoreCase(availableTranslation.getKey())) {
+                    translation = availableTranslation.getValue();
                 }
             }
         }
@@ -94,6 +98,20 @@ public class SolrUtil {
 
         return min < Integer.MAX_VALUE ? min : -1;
     }
+
+	public static Object resolveTextWithFallback(String lang,
+			Map<String, String> translations) {
+		String translation = translations.get(lang);
+		if (translation == null) {
+            translation = translations.get(FALLBACK_LANG);
+        }
+        if ((translation == null)
+        		&& !translations.isEmpty() 
+        		&& !translations.values().isEmpty()) {
+            translation = translations.values().iterator().next();
+        }
+        return translation;
+	}
 
 
 }

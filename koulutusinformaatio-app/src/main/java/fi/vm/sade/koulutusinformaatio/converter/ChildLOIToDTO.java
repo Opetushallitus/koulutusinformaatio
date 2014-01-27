@@ -13,9 +13,12 @@ import java.util.List;
 /**
  * @author Hannu Lyytikainen
  */
-public class ChildLOIToDTO {
+public final class ChildLOIToDTO {
 
-    public static ChildLearningOpportunityInstanceDTO convert(ChildLOI childLOI, String lang, String uiLang) {
+    private ChildLOIToDTO() {
+    }
+
+    public static ChildLearningOpportunityInstanceDTO convert(ChildLOI childLOI, String lang, String uiLang, String defaultLang) {
         if (childLOI != null) {
             ChildLearningOpportunityInstanceDTO dto = new ChildLearningOpportunityInstanceDTO();
             dto.setId(childLOI.getId());
@@ -26,7 +29,7 @@ public class ChildLOIToDTO {
                     dto.getTeachingLanguages().add(code.getValue());
                 }
             }
-            dto.setRelated(ChildLOIRefToDTO.convert(childLOI.getRelated(), lang));
+            dto.setRelated(ChildLOIRefToDTO.convert(childLOI.getRelated(), defaultLang));
             dto.setFormOfTeaching(ConverterUtil.getTextsByLanguage(childLOI.getFormOfTeaching(), uiLang));
             dto.setWebLinks(childLOI.getWebLinks());
             dto.setFormOfEducation(ConverterUtil.getTextsByLanguage(childLOI.getFormOfEducation(), uiLang));
@@ -45,9 +48,9 @@ public class ChildLOIToDTO {
             }
 
             for (ApplicationSystem as : aoByAs.keySet()) {
-                ApplicationSystemDTO asDTO = ApplicationSystemToDTO.convert(as, uiLang);
+                ApplicationSystemDTO asDTO = ApplicationSystemToDTO.convert(as, defaultLang);
                 for (ApplicationOption ao : aoByAs.get(as)) {
-                    asDTO.getApplicationOptions().add(ApplicationOptionToDTO.convert(ao, lang, uiLang));
+                    asDTO.getApplicationOptions().add(ApplicationOptionToDTO.convert(ao, lang, uiLang, defaultLang));
                 }
                 dto.getApplicationSystems().add(asDTO);
             }
@@ -65,12 +68,12 @@ public class ChildLOIToDTO {
         }
     }
 
-    public static List<ChildLearningOpportunityInstanceDTO> convert(final List<ChildLOI> childLOIs, final String lang, final String uiLang) {
+    public static List<ChildLearningOpportunityInstanceDTO> convert(final List<ChildLOI> childLOIs, final String lang, final String uiLang, final String defaultLang) {
         if (childLOIs != null) {
             return Lists.transform(childLOIs, new Function<ChildLOI, ChildLearningOpportunityInstanceDTO>() {
                 @Override
                 public ChildLearningOpportunityInstanceDTO apply(fi.vm.sade.koulutusinformaatio.domain.ChildLOI input) {
-                    return convert(input, lang, uiLang);
+                    return convert(input, lang, uiLang, defaultLang);
                 }
             });
         }

@@ -38,7 +38,7 @@ import java.util.List;
 /**
  * @author Hannu Lyytikainen
  */
-public class SpecialLearningOpportunityBuilder extends LearningOpportunityBuilder<SpecialLOS> {
+public class RehabilitatingLearningOpportunityBuilder extends LearningOpportunityBuilder<SpecialLOS> {
 
     private TarjontaRawService tarjontaRawService;
     private LOSObjectCreator losObjectCreator;
@@ -53,7 +53,7 @@ public class SpecialLearningOpportunityBuilder extends LearningOpportunityBuilde
     // A helper data structure that groups KomotoDTO objects by their provider
     ArrayListMultimap<String, KomotoDTO> komotosByProviderId;
 
-    public SpecialLearningOpportunityBuilder(TarjontaRawService tarjontaRawService,
+    public RehabilitatingLearningOpportunityBuilder(TarjontaRawService tarjontaRawService,
                                                     ProviderService providerService,
                                                     KoodistoService koodistoService, KomoDTO komo) {
         this.tarjontaRawService = tarjontaRawService;
@@ -118,8 +118,6 @@ public class SpecialLearningOpportunityBuilder extends LearningOpportunityBuilde
     public List<SpecialLOS> build() {
         return this.loses;
     }
-
-
 
 
 }

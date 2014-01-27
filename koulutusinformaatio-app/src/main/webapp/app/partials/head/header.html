@@ -2,19 +2,19 @@
     <div class="logo-bg">
         <div class="container">
             <a id="home-link" href="{{links.frontpage}}">
-                <img data-ng-src="{{images.logo}}" alt="Opintopolku.fi"/>
+                <img data-ng-src="{{images.logo}}" title="{{locales.tofrontpage}}" alt="Opintopolku.fi"/>
             </a>
             <span data-ki-banner></span>
             <div class="actions">
                 <ul data-ng-controller="LanguageCtrl">
-                    <li><a href="javascript:void(0)" data-ng-click="changeLanguage('fi')" data-ki-i18n="language-fi"></a></li>
-                    <li><a href="javascript:void(0)" data-ng-click="changeLanguage('sv')" data-ki-i18n="language-sv"></a></li>
+                    <li><a title={{locales.opintopolkufi}} href="javascript:void(0)" data-ng-click="changeLanguage('fi')" data-ki-i18n="language-fi"></a></li>
+                    <li><a title={{locales.opintopolkusv}} href="javascript:void(0)" data-ng-click="changeLanguage('sv')" data-ki-i18n="language-sv"></a></li>
                 </ul>
             </div>
             <div class="actions primarylinks">
                 <ul>
                     <li class="icon basket">
-                        <a id="appbasket-link" href="#/muistilista">
+                        <a title={{locales.checklist}} id="appbasket-link" href="#!/muistilista">
                             <span data-ki-i18n="title-application-basket-content"></span> <span>({{appBasketItemCount()}})</span>
                         </a>
                     </li>
@@ -23,6 +23,9 @@
         </div>
     </div>
     <nav>
-        <div data-ki-navigation class="navigation-container"></div>
+        <div class="navigation-container">
+            <div data-ki-navigation></div>
+            <a class="action-link" data-ng-href="{{links.textversion}}"><span data-ki-i18n="link-to-accessible-version"></span></a>
+        </div>
     </nav>
 </header>

@@ -36,6 +36,8 @@ public interface LearningOpportunityProviderResource {
     public static final String NON_VOCATIONAL = "nonVocational";
     public static final String ASID = "asId";
     public static final String TERM = "term";
+    public static final String LANG = "lang";
+    public static final String LANG_FI = "fi";
 
     /**
      * Searches providers by the search term. The search term can be
@@ -63,7 +65,8 @@ public interface LearningOpportunityProviderResource {
                                                  @DefaultValue(value = "true") @QueryParam(VOCATIONAL) final boolean vocational,
                                                  @DefaultValue(value = "true") @QueryParam(NON_VOCATIONAL) final boolean nonVocational,
                                                  @DefaultValue(value = "0") @QueryParam("start") int start,
-                                                 @DefaultValue(value = "50") @QueryParam("rows") int rows);
+                                                 @DefaultValue(value = "50") @QueryParam("rows") int rows,
+                                                 @DefaultValue(LANG_FI) @QueryParam(LANG) String lang);
 
     @GET
     @Path("{lopId}/picture")

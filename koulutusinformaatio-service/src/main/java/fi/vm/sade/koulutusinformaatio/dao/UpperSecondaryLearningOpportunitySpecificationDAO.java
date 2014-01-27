@@ -19,12 +19,11 @@ package fi.vm.sade.koulutusinformaatio.dao;
 import com.mongodb.Mongo;
 import fi.vm.sade.koulutusinformaatio.dao.entity.UpperSecondaryLearningOpportunitySpecificationEntity;
 import org.mongodb.morphia.Morphia;
-import org.mongodb.morphia.dao.BasicDAO;
 
 /**
  * @author Hannu Lyytikainen
  */
-public class UpperSecondaryLearningOpportunitySpecificationDAO extends BasicDAO<UpperSecondaryLearningOpportunitySpecificationEntity, String> {
+public class UpperSecondaryLearningOpportunitySpecificationDAO extends LearningOpportunitySpecificationDAO<UpperSecondaryLearningOpportunitySpecificationEntity, String> {
 
     public UpperSecondaryLearningOpportunitySpecificationDAO(Mongo mongo, Morphia morphia, String dbName) {
         super(mongo, morphia, dbName);

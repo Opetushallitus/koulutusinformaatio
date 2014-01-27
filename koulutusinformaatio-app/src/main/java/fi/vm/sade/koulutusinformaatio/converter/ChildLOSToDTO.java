@@ -22,17 +22,20 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunitySpecifi
 /**
  * @author Mikko Majapuro
  */
-public class ChildLOSToDTO {
+public final class ChildLOSToDTO {
 
-    public static ChildLearningOpportunitySpecificationDTO convert(final ChildLOS childLOS, final String lang, final String uiLang) {
+    private ChildLOSToDTO() {
+    }
+
+    public static ChildLearningOpportunitySpecificationDTO convert(final ChildLOS childLOS, final String lang, final String uiLang, final String defaultLang) {
         if (childLOS != null) {
             ChildLearningOpportunitySpecificationDTO child = new ChildLearningOpportunitySpecificationDTO();
             child.setId(childLOS.getId());
-            child.setName(ConverterUtil.getTextByLanguage(childLOS.getName(), lang));
-            child.setDegreeTitle(ConverterUtil.getTextByLanguage(childLOS.getDegreeTitle(), lang));
-            child.setQualification(ConverterUtil.getTextByLanguage(childLOS.getQualification(), lang));
-            child.setLois(ChildLOIToDTO.convert(childLOS.getLois(), lang, uiLang));
-            child.setParent(ParentLOSRefToDTO.convert(childLOS.getParent(), lang));
+            child.setName(ConverterUtil.getTextByLanguage(childLOS.getName(), defaultLang));
+            child.setDegreeTitle(ConverterUtil.getTextByLanguage(childLOS.getDegreeTitle(), defaultLang));
+            child.setQualification(ConverterUtil.getTextByLanguage(childLOS.getQualification(), defaultLang));
+            child.setLois(ChildLOIToDTO.convert(childLOS.getLois(), lang, uiLang, defaultLang));
+            child.setParent(ParentLOSRefToDTO.convert(childLOS.getParent(), defaultLang));
             child.setGoals(ConverterUtil.getTextByLanguage(childLOS.getGoals(), lang));
             child.setAvailableTranslationLanguages(ConverterUtil.getAvailableTranslationLanguages(childLOS.getGoals()));
             child.setTranslationLanguage(lang);

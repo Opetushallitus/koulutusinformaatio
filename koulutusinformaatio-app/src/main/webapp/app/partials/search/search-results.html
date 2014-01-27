@@ -15,7 +15,7 @@
                 <span>{{pageMin}} - {{pageMax}} / {{totalItems}}</span>
             </div>
             -->
-            <div class="sort-item">
+            <div title="{{locales.resultsCriteria}}" class="sort-item">
                 <label for="itemsPerPage" data-ki-i18n="sort-criteria-sort-label" data-show-colon="true"></label>
                 <select 
                 data-ng-model="sortCriteria"
@@ -24,7 +24,7 @@
                 data-ng-style="{'width': 'auto'}">
                 </select>
             </div>
-            <div class="sort-item">
+            <div title="{{locales.resultsToShow}}" class="sort-item">
                 <label for="itemsPerPage" data-ki-i18n="sort-criteria-items-per-page-label" data-show-colon="true"></label>
                 <select 
                 data-ng-model="itemsPerPage"

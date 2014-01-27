@@ -64,8 +64,7 @@ public class UpdateServiceImpl implements UpdateService {
     @Override
     @Async
     public synchronized void updateAllEducationData() throws Exception {
-        long t1 = System.currentTimeMillis();
-        HttpSolrServer loUpdateSolr = this.indexerService.getLoCollectionToUpdate();
+    	HttpSolrServer loUpdateSolr = this.indexerService.getLoCollectionToUpdate();
         HttpSolrServer lopUpdateSolr = this.indexerService.getLopCollectionToUpdate(loUpdateSolr);
         HttpSolrServer locationUpdateSolr = this.indexerService.getLocationCollectionToUpdate(loUpdateSolr);
 
@@ -84,7 +83,8 @@ public class UpdateServiceImpl implements UpdateService {
                 List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
                 count = loOids.size();
                 index += count;
-                
+            
+            
                for (String loOid : loOids) {
                     List<LOS> specifications = null;
                     try {

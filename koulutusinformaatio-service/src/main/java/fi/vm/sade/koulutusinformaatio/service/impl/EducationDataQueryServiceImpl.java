@@ -44,6 +44,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     private PictureDAO pictureDAO;
     private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO;
     private SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO;
+    private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
 
     @Autowired
     public EducationDataQueryServiceImpl(ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO,
@@ -51,7 +52,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
                                          ChildLearningOpportunityDAO childLearningOpportunityDAO,
                                          DataStatusDAO dataStatusDAO, PictureDAO pictureDAO,
                                          UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO,
-                                         SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO) {
+                                         SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO, LearningOpportunityProviderDAO learningOpportunityProviderDAO) {
         this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;
         this.modelMapper = modelMapper;
@@ -60,6 +61,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
         this.pictureDAO = pictureDAO;
         this.upperSecondaryLearningOpportunitySpecificationDAO = upperSecondaryLearningOpportunitySpecificationDAO;
         this.specialLearningOpportunitySpecificationDAO = specialLearningOpportunitySpecificationDAO;
+        this.learningOpportunityProviderDAO = learningOpportunityProviderDAO;
     }
 
     @Override
@@ -157,6 +159,68 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
         else {
             throw new ResourceNotFoundException(String.format("Special learning opportunity specification not found: %s", id));
         }
+    }
+
+    @Override
+    public Provider getProvider(String id) throws ResourceNotFoundException {
+        LearningOpportunityProviderEntity entity = learningOpportunityProviderDAO.get(id);
+        if (entity != null) {
+            return modelMapper.map(entity, Provider.class);
+        }
+        else {
+            throw new ResourceNotFoundException(String.format("Learning opportunity provider not found: %s", id));
+        }
+    }
+
+    @Override
+    public List<LOS> findLearningOpportunitiesByProviderId(String providerId) {
+        List<LOS> results = Lists.newArrayList();
+        List<ParentLearningOpportunitySpecificationEntity> parentEntites =
+                parentLearningOpportunitySpecificationDAO.findByProviderId(providerId);
+        List<ParentLOS> parents = Lists.transform(
+                parentEntites,
+                new Function<ParentLearningOpportunitySpecificationEntity, ParentLOS>() {
+                    @Override
+                    public ParentLOS apply(ParentLearningOpportunitySpecificationEntity input) {
+                        return modelMapper.map(input, ParentLOS.class);
+                    }
+                }
+        );
+        List<ChildLOS> children = Lists.newArrayList();
+        for (ParentLearningOpportunitySpecificationEntity parentEntity : parentEntites) {
+            children.addAll(Lists.transform(
+                    parentEntity.getChildren(),
+                    new Function<ChildLearningOpportunitySpecificationEntity, ChildLOS>() {
+                        @Override
+                        public ChildLOS apply(ChildLearningOpportunitySpecificationEntity input) {
+                            return modelMapper.map(input, ChildLOS.class);
+                        }
+                    }
+            ));
+        }
+        List<UpperSecondaryLOS> upsecs = Lists.transform(
+                upperSecondaryLearningOpportunitySpecificationDAO.findByProviderId(providerId),
+                new Function<UpperSecondaryLearningOpportunitySpecificationEntity, UpperSecondaryLOS>() {
+                    @Override
+                    public UpperSecondaryLOS apply(UpperSecondaryLearningOpportunitySpecificationEntity input) {
+                        return modelMapper.map(input, UpperSecondaryLOS.class);
+                    }
+                }
+        );
+        List<SpecialLOS> specials = Lists.transform(
+                specialLearningOpportunitySpecificationDAO.findByProviderId(providerId),
+                new Function<SpecialLearningOpportunitySpecificationEntity, SpecialLOS>() {
+                    @Override
+                    public SpecialLOS apply(SpecialLearningOpportunitySpecificationEntity input) {
+                        return modelMapper.map(input, SpecialLOS.class);
+                    }
+                }
+        );
+        results.addAll(parents);
+        results.addAll(children);
+        results.addAll(upsecs);
+        results.addAll(specials);
+        return results;
     }
 
     private ChildLearningOpportunitySpecificationEntity getChildLO(String childLoId) throws ResourceNotFoundException {

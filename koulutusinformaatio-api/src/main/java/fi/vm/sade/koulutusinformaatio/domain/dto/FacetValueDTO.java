@@ -16,6 +16,8 @@
 
 package fi.vm.sade.koulutusinformaatio.domain.dto;
 
+import java.util.List;
+
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 /**
@@ -31,6 +33,7 @@ public class FacetValueDTO {
     private String valueId;
     private String valueName;
     private long count;
+    private List<FacetValueDTO> childValues;
     
     public FacetValueDTO() {
         
@@ -70,5 +73,13 @@ public class FacetValueDTO {
 
     public void setValueId(String valueId) {
         this.valueId = valueId;
+    }
+
+    public List<FacetValueDTO> getChildValues() {
+        return childValues;
+    }
+
+    public void setChildValues(List<FacetValueDTO> childValues) {
+        this.childValues = childValues;
     }
 }

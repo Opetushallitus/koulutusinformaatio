@@ -18,17 +18,18 @@ service('HostResolver', function() {
                 else if (host.indexOf('xtest-') == 0) return hosts.kielistudio;
                 else if (host.indexOf('test-') == 0) return hosts.reppu;
                 else if (host.indexOf('itest-') == 0) return hosts.luokka;
-                else if (host.indexOf('localhost') == 0) return hosts.localhost;
+                else if (host.indexOf('localhost') == 0 || host.indexOf('10.0.2.2') == 0) return hosts.localhost;
             }
         },
 
         mapHostToConf: function(host) {
             if (host) {
                 if (host == hosts.kielistudio ||
-                    host == hosts.reppu ||
                     host == hosts.luokka ||
                     host == hosts.localhost) {
                     return 'dev';
+                } else if (host == hosts.reppu) {
+                    return 'reppu';
                 } else if (host == hosts.qa) {
                     return 'qa';
                 } else if (host == hosts.koulutus) {
