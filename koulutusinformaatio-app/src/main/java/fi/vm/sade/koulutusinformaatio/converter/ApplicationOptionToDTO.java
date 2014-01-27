@@ -46,6 +46,7 @@ public final class ApplicationOptionToDTO {
             dto.setEducationDegree(applicationOption.getEducationDegree());
             dto.setTeachingLanguages(applicationOption.getTeachingLanguages());
             dto.setSelectionCriteria(ConverterUtil.getTextByLanguage(applicationOption.getSelectionCriteria(), lang));
+            dto.setSoraDescription(ConverterUtil.getTextByLanguage(applicationOption.getSoraDescription(), lang));
             dto.setPrerequisite(CodeToDTO.convert(applicationOption.getPrerequisite(), lang));
             dto.setExams(ExamToDTO.convertAll(applicationOption.getExams(), lang));
             dto.setProvider(ProviderToDTO.convert(applicationOption.getProvider(), lang, defaultLang));
