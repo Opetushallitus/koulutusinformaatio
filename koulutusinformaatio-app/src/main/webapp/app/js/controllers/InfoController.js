@@ -192,6 +192,7 @@
 
     // scrolls to an anchor on page
     $scope.scrollToAnchor = function(id) {
+        id = id.replace(/\./g,"\\.");
         $('html, body').scrollTop($('#' + id).offset().top);
         return false;
     };

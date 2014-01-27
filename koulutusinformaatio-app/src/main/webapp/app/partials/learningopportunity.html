@@ -7,7 +7,7 @@
                 <div data-ng-include data-src="partialUrl + 'kuvaus.html'"></div>
             </section>
         </div>
-        <div data-tab data-heading="{{tabtitle.valintaperusteet}}">
+        <div data-tab data-heading="{{tabtitle.valintaperusteet}}" data-select="$broadcast('tabchanged')">
             <section>
                 <div data-ng-include data-src="partialUrl + 'hakeutuminen.html'"></div>
             </section>

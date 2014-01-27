@@ -1,13 +1,3 @@
-<h4 class="title" data-ki-i18n="application-title" data-lang="{{teachingLang}}"></h4>
-<div class="content">{{as.name}}</div>
-
-<h4 class="title" data-ki-i18n="application-period" data-lang="{{teachingLang}}"></h4>
-<div class="content">
-    <span data-ng-repeat="dates in as.applicationDates">
-        <span data-ki-timestamp="{{dates.startDate}}"></span> - <span data-ki-timestamp="{{dates.endDate}}"></span><br/>
-    </span>
-</div>
-
 <h4 class="title"><span data-ki-i18n="application-options" data-lang="{{teachingLang}}"></span> ({{as.applicationOptions.length}})</h4>
 <div data-ng-repeat="ao in as.applicationOptions" class="content">
     <div data-ng-include data-src="partialUrl + 'as/asspecific/ao-info.html'"></div>
@@ -18,3 +8,12 @@
     <div class="margin-top-2 small" data-ki-render-application-system-active data-lang="{{teachingLang}}"></div>
 </div>
 
+<h4 class="title" data-ki-i18n="application-title" data-lang="{{teachingLang}}"></h4>
+<div class="content">{{as.name}}</div>
+
+<h4 class="title" data-ki-i18n="application-period" data-lang="{{teachingLang}}"></h4>
+<div class="content">
+    <span data-ng-repeat="dates in as.applicationDates">
+        <span data-ki-timestamp="{{dates.startDate}}"></span> - <span data-ki-timestamp="{{dates.endDate}}"></span><br/>
+    </span>
+</div>

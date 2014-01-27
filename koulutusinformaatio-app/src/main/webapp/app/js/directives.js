@@ -73,15 +73,11 @@ directive('renderContactPersonInfo', function() {
     return {
         restrict: 'E,A',
         templateUrl: 'templates/contactPersonInfo.html',
-        scope: false,
+        scope: {
+            contactPersons: '=content'
+        },
         link: function(scope, element, attrs) {
-            scope.$watch('selectedLOI.contactPersons', function(data) {
-                if (data && data.length > 0) {
-                    scope.showContactPersonInfo = true;
-                } else {
-                    scope.showContactPersonInfo = false;
-                }
-            });
+
         }
     }
 }).
@@ -154,16 +150,13 @@ directive('kiRenderOrganizationImage', function() {
  */
 directive('kiRenderProfessionalTitles', function() {
     return {
-        restrict: 'E,A',
+        restrict: 'A',
         templateUrl: 'templates/professionalTitles.html',
-        scope: true,
+        scope: {
+            title: '@title',
+            content: '=content'
+        },
         link: function(scope, element, attrs) {
-            scope.anchor = attrs.anchor;
-
-            scope.$watch('selectedLOI.professionalTitles', function(data) {
-                scope.showProfessionalTitles = data ? true : false;
-
-            });
         }
     }
 }).
@@ -373,12 +366,12 @@ directive('kiAbsoluteLink', function() {
  */
  directive('kiLanguageRibbon', ['$routeParams', function($routeParams) {
     return {
-        restrict: 'E,A',
+        restrict: 'A',
         templateUrl: 'templates/languageRibbon.html',
 
         link: function(scope, element, attrs) {
-            var type = $routeParams.loType;
-            scope.isChild = (type === 'koulutusohjelma' || type == 'lukio') ? true : false; // TODO: do not use loType directly
+            //var type = $routeParams.loType;
+            //scope.isChild = (type === 'koulutusohjelma' || type == 'lukio') ? true : false; // TODO: do not use loType directly
 
             scope.$watch('lo', function(data) {
                 scope.hasMultipleTranslations = (data&& data.availableTranslationLanguages && data.availableTranslationLanguages.length >= 1) ? true : false;
@@ -529,10 +522,18 @@ directive('renderTextBlock', ['TranslationService', function(TranslationService)
                 update();
             });
             */
+            if (attrs.visibilityChanged) {
+                scope.$on('tabchanged', function(event, data) {
+                    var height = element[0].offsetHeight;
+                    if (height > 200) {
+                        element.css('height', 200);
+                        element.css('overflow', 'hidden');
+                    }
+                    console.log(element[0].offsetHeight);
+                })
+            }
 
             attrs.$observe('content', function(value) {
-                //console.log(attrs);
-                //console.log(value);
                 content = value;
                 title = TranslationService.getTranslationByTeachingLanguage(attrs.title);
                 update();
@@ -548,6 +549,7 @@ directive('renderTextBlock', ['TranslationService', function(TranslationService)
 
                     element.append(content);
                 }
+                
             };
 
             var createTitleElement = function(text, anchortag, level) {
@@ -559,6 +561,42 @@ directive('renderTextBlock', ['TranslationService', function(TranslationService)
                 }
             };
         };
+}]).
+
+directive('renderExtendableTextBlock', ['TranslationService', function(TranslationService) {
+    return {
+        restrict: 'A',
+        templateUrl: 'templates/extendableTextBlock.html',
+        scope: {
+            title: '@title',
+            content: '@content'
+        },
+        link: function(scope, element, attrs) {
+            console.log(scope);
+            var contentElement = $(element).find('.extendable-content');
+            var contentHeight;
+
+            scope.$on('tabchanged', function(event, data) {
+                contentHeight = contentElement.get(0).offsetHeight;
+                if (contentHeight > 200) {
+                    scope.state = 'closed';
+                    contentElement.css('height', 200);
+                    contentElement.css('overflow', 'hidden');
+                }
+                //console.log(element[0].offsetHeight);
+            });
+
+            scope.toggleShow = function() {
+                if (scope.state == 'closed') {
+                    contentElement.css('height', contentHeight);
+                    scope.state = 'open'; 
+                } else {
+                    contentElement.css('height', 200);
+                    scope.state = 'closed'; 
+                }
+            }
+        }
+    }
 }]).
 
 /**

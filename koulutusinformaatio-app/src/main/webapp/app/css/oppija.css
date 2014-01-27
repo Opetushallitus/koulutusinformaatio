@@ -2409,6 +2409,14 @@ table.striped {
   color: transparent;
   font-size: 0px; }
 
+/*  Näytä lisää -tekstikomponentti */
+.extendable-content {
+  -webkit-transition: height 0.2s ease;
+  -moz-transition: height 0.2s ease;
+  -o-transition: height 0.2s ease;
+  -ms-transition: height 0.2s ease;
+  transition: height 0.2s ease; }
+
 .remove {
   display: inline-block;
   width: 24px;

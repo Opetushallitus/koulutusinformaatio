@@ -28,11 +28,11 @@
     <div data-ki-render-language-selection></div>
     <div data-ki-render-diploma></div>
     <div data-render-text-block data-title="working-life-placement" data-content="{{selectedLOI.workingLifePlacement}}"></div>
-    <div data-ki-render-professional-titles></div>
+    <div data-ki-render-professional-titles data-title="profession-title" data-content="selectedLOI.professionalTitles"></div>
     <div data-render-text-block data-title="internationalization" data-content="{{selectedLOI.internationalization}}"></div>
     <div data-render-text-block data-title="cooperation" data-content="{{selectedLOI.cooperation}}"></div>
     <div data-render-text-block data-title="access-to-further-studies" data-content="{{lo.accessToFurtherStudies}}"></div>
-    <div data-render-contact-person-info></div>
+    <div data-render-contact-person-info data-content="selectedLOI.contactPersons"></div>
 </section>
 <div data-ng-class="applyFormClass" data-ng-include data-src="partialCommonUrl + 'as/as.html'" data-ng-controller="ApplicationCtrl"></div>
 <div class="clear"></div>

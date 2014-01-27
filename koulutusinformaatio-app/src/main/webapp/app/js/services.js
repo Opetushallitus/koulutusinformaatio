@@ -412,11 +412,14 @@ service('UniversityAppliedScienceLOService', ['$http', '$timeout', '$q', 'Langua
                 queryParams.lang = options.lang
             }
 
+            /*
             var url = '../lo/uas/';
 
             $http.get(url + options.id, {
                 params: queryParams
             }).
+            */
+            $http.get('mocks/amk.json', {}).
             success(function(result) {
             	UniversityAppliedScienceTransformer.transform(result);
                 var loResult = {
