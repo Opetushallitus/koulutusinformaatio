@@ -1,5 +1,8 @@
 package fi.vm.sade.koulutusinformaatio.converter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
 
@@ -8,6 +11,7 @@ import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.UniversityAppliedScienceLOS;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.UniversityAppliedScienceLOSDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.UniversityChildLosReferenceDTO;
 
 public class UniversityAppliedScienceLOSToDTO {
 	
@@ -77,8 +81,22 @@ public class UniversityAppliedScienceLOSToDTO {
             dto.getApplicationSystems().add(asDTO);
         }
         dto.setChargeable(los.getChargeable());
-        
+        dto.setChildren(convertChildren(los.getChildren(), lang));
         return dto;
     }
+
+	private static List<UniversityChildLosReferenceDTO> convertChildren(
+			List<UniversityAppliedScienceLOS> children, String lang) {
+		List<UniversityChildLosReferenceDTO> results = new ArrayList<UniversityChildLosReferenceDTO>();
+		for (UniversityAppliedScienceLOS curChild : children) {
+			UniversityChildLosReferenceDTO childDto = new UniversityChildLosReferenceDTO();
+			childDto.setId(curChild.getId());
+			childDto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(curChild.getName(), lang));
+			childDto.setEducationDegree(curChild.getEducationDegree());
+			results.add(childDto);
+		}
+		
+		return results;
+	}
 
 }

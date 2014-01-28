@@ -67,7 +67,7 @@ public class UniversityAppliedScienceLOSDTO {
 	private LearningOpportunityProviderDTO provider;
 	private List<ApplicationSystemDTO> applicationSystems = new ArrayList<ApplicationSystemDTO>();
 	
-	private List<UniversityAppliedScienceLOSDTO> children = new ArrayList<UniversityAppliedScienceLOSDTO>();
+	private List<UniversityChildLosReferenceDTO> children = new ArrayList<UniversityChildLosReferenceDTO>();
 	
 	private List<CodeDTO> prerequisites;
 	private String translationLanguage;
@@ -328,11 +328,11 @@ public class UniversityAppliedScienceLOSDTO {
 		this.applicationSystems = applicationSystems;
 	}
 
-	public List<UniversityAppliedScienceLOSDTO> getChildren() {
+	public List<UniversityChildLosReferenceDTO> getChildren() {
 		return children;
 	}
 
-	public void setChildren(List<UniversityAppliedScienceLOSDTO> children) {
+	public void setChildren(List<UniversityChildLosReferenceDTO> children) {
 		this.children = children;
 	}
 
