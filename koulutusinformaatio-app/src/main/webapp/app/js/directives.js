@@ -421,23 +421,22 @@ directive('kiAbsoluteLink', function() {
  */
   directive('kiChildRibbon', ['$location', '$routeParams', function($location, $routeParams) {
     return {
-        restrict: 'E,A',
+        restrict: 'A',
         templateUrl: 'templates/children.html',
+        scope: {
+            children: '=children',
+            type: '=type'
+        },
         link: function(scope, element, attrs) {
-
-            scope.$watch('selectedParentLOI', function(data) {
-                if (data && !data.children) {
-                    $(element).remove();
+            scope.$watch('children', function() {
+                if (scope.type) {
+                    angular.forEach(scope.children, function(child, key) {
+                        child.url = scope.type == 'ammattikorkea' ? '#!/' + scope.type + '/' : '#!/koulutusohjelma/';
+                        child.url += scope.type == 'ammattikorkea' ? child.id : child.losId;
+                        child.url += scope.prerequisite ? '#' + scope.prerequisite : '';
+                    });
                 }
             });
-
-            scope.siblingClass = function(sibling) {
-                if (sibling.childLOId == $routeParams.id) {
-                    return 'disabled';
-                } else {
-                    return '';
-                }
-            }
         }
     }
 }]).
@@ -572,7 +571,6 @@ directive('renderExtendableTextBlock', ['TranslationService', function(Translati
             content: '@content'
         },
         link: function(scope, element, attrs) {
-            console.log(scope);
             var contentElement = $(element).find('.extendable-content');
             var contentHeight;
 
@@ -589,9 +587,11 @@ directive('renderExtendableTextBlock', ['TranslationService', function(Translati
             scope.toggleShow = function() {
                 if (scope.state == 'closed') {
                     contentElement.css('height', contentHeight);
+                    contentElement.css('overflow', 'visible');
                     scope.state = 'open'; 
                 } else {
                     contentElement.css('height', 200);
+                    contentElement.css('overflow', 'hidden');
                     scope.state = 'closed'; 
                 }
             }

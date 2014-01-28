@@ -412,7 +412,6 @@ service('UniversityAppliedScienceLOService', ['$http', '$timeout', '$q', 'Langua
                 queryParams.lang = options.lang
             }
 
-            
             var url = '../lo/uas/';
 
             $http.get(url + options.id, {
@@ -1002,6 +1001,7 @@ service('LanguageService', function() {
  */
 service('ApplicationBasketService', ['$http', '$q', 'LanguageService', 'UtilityService', function($http, $q, LanguageService, UtilityService) {
     var key = 'basket';
+    var typekey = 'baskettype';
     var cookieConfig = {useLocalStorage: false, maxChunkSize: 2000, maxNumberOfCookies: 20, path: '/'};
 
     // used to update item count in basket
@@ -1060,12 +1060,16 @@ service('ApplicationBasketService', ['$http', '$q', 'LanguageService', 'UtilityS
                 }
             } else {
                 current = [];
-                current.push(itemType);
                 current.push(aoId);
+
+                // save type if defined
+                if (itemType) {
+                    $.cookie(typekey, itemType, cookieConfig);
+                }
             }
 
             $.cookie(key, JSON.stringify(current), cookieConfig);
-
+            
             updateBasket(this.getItemCount());
         },
 
@@ -1087,6 +1091,7 @@ service('ApplicationBasketService', ['$http', '$q', 'LanguageService', 'UtilityS
 
         empty: function() {
             $.cookie(key, null, cookieConfig);
+            $.cookie(typekey, null, cookieConfig);
             updateBasket(this.getItemCount());
         },
 
@@ -1095,7 +1100,7 @@ service('ApplicationBasketService', ['$http', '$q', 'LanguageService', 'UtilityS
         },
 
         getItemCount: function() {
-            return $.cookie(key) ? JSON.parse($.cookie(key)).length - 1 : 0;
+            return $.cookie(key) ? JSON.parse($.cookie(key)).length : 0;
         },
 
         isEmpty: function() {
@@ -1104,8 +1109,7 @@ service('ApplicationBasketService', ['$http', '$q', 'LanguageService', 'UtilityS
 
         getType: function() {
             if (!this.isEmpty()) {
-                var basket = this.getItems();
-                return basket[0];
+                return $.cookie(typekey);
             }
         },
 
@@ -1127,7 +1131,7 @@ service('ApplicationBasketService', ['$http', '$q', 'LanguageService', 'UtilityS
             var qParams = 'uiLang=' + LanguageService.getLanguage();
 
             
-            for (var index = 1; index < basketItems.length; index++) {
+            for (var index = 0; index < basketItems.length; index++) {
                 if (basketItems.hasOwnProperty(index)) {
                     qParams += '&aoId=' + basketItems[index];
                 }
