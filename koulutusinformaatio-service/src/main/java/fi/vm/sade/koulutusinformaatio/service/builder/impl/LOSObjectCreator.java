@@ -274,7 +274,7 @@ public class LOSObjectCreator extends ObjectCreator {
     public UniversityAppliedScienceLOS createUasLOS(KoulutusKorkeakouluV1RDTO koulutus) throws TarjontaParseException, KoodistoException {
     	UniversityAppliedScienceLOS los = new UniversityAppliedScienceLOS();
 
-    	los.setType(TarjontaConstants.TYPE_AMK);
+    	los.setType(TarjontaConstants.TYPE_KK);
     	los.setId(koulutus.getOid());
     	
     	if (koulutus.getKuvausKomoto().get(KomotoTeksti.LISATIETOA_OPETUSKIELISTA) != null  
