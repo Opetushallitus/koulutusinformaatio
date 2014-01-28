@@ -73,6 +73,7 @@ public class SolrFields {
         public static final String CONTENT_EN = "content_en";
         public static final String CREDITS = "credits_ss";
         public static final String EDUCATION_DEGREE = "educationDegree_ss";
+        public static final String EDUCATION_DEGREE_CODE = "educationDegreeCode_ss";
         
         //Fields for sorting
         public static final String START_DATE_SORT = "startDate_dsort";

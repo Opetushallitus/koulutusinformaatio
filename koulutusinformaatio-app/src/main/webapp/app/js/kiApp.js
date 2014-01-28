@@ -42,7 +42,7 @@ var kiApp = angular.module('kiApp',
                         return SpecialLOService;
                     case 'valmentava':
                         return SpecialLOService;
-                    case 'ammattikorkea':
+                    case 'korkeakoulu':
                     	return UniversityAppliedScienceLOService;
                 }
             },

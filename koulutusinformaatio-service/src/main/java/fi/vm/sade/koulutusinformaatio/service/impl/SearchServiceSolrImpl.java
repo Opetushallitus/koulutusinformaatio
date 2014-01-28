@@ -136,13 +136,15 @@ public class SearchServiceSolrImpl implements SearchService {
                 String lopName = doc.get(LearningOpportunity.LOP_NAME) != null ? doc.get(LearningOpportunity.LOP_NAME).toString() : null;
                 String edType = doc.get(LearningOpportunity.EDUCATION_TYPE) != null ? getEdType(doc) : null;
                 String edDegree = doc.get(LearningOpportunity.EDUCATION_DEGREE) != null ? doc.get(LearningOpportunity.EDUCATION_DEGREE).toString() : null;
+                String edDegreeCode = doc.get(LearningOpportunity.EDUCATION_DEGREE_CODE) != null ? doc.get(LearningOpportunity.EDUCATION_DEGREE_CODE).toString() : null;
 
                 LOSearchResult lo = null;
                 try {
                     lo = new LOSearchResult(
                             id, doc.get("name").toString(),
                             doc.get("lopId").toString(), lopName, prerequisiteText,
-                            prerequisiteCodeText, parentId, losId, doc.get("type").toString(), credits, edType, edDegree);
+                            prerequisiteCodeText, parentId, losId, doc.get("type").toString(), 
+                            credits, edType, edDegree, edDegreeCode);
 
                     updateAsStatus(lo, doc);
                 } catch (Exception e) {
@@ -178,13 +180,15 @@ public class SearchServiceSolrImpl implements SearchService {
             String lopName = doc.get(LearningOpportunity.LOP_NAME) != null ? doc.get(LearningOpportunity.LOP_NAME).toString() : null;
             String edType = doc.get(LearningOpportunity.EDUCATION_TYPE) != null ? getEdType(doc) : null;
             String edDegree = doc.get(LearningOpportunity.EDUCATION_DEGREE) != null ? doc.get(LearningOpportunity.EDUCATION_DEGREE).toString() : null;
+            String edDegreeCode = doc.get(LearningOpportunity.EDUCATION_DEGREE_CODE) != null ? doc.get(LearningOpportunity.EDUCATION_DEGREE_CODE).toString() : null;
             
             LOSearchResult lo = null;
             try {
                 lo = new LOSearchResult(
                         id, doc.get("name").toString(),
                         doc.get("lopId").toString(), lopName, prerequisiteText,
-                        prerequisiteCodeText, parentId, losId, doc.get("type").toString(), credits, edType, edDegree);
+                        prerequisiteCodeText, parentId, losId, doc.get("type").toString(), 
+                        credits, edType, edDegree, edDegreeCode);
 
                 updateAsStatus(lo, doc);
             } catch (Exception e) {
