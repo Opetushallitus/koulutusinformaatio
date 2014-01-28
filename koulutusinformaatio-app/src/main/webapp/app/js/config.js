@@ -6,13 +6,13 @@ window.Config.app.common = {
 	fi: {
 		ophUrl: 'http://www.oph.fi/etusivu',
 		okmUrl: 'http://www.minedu.fi/OPM/',
-		navigationUrl: '/wp/fi/api/nav/json_nav/'
+		navigationUrl: '/wp/fi/api/nav/json_nav/',
 		textVersionUrl: '/m/index.html'
 	},
 	sv: {
     	ophUrl: 'http://www.oph.fi/startsidan',
     	okmUrl: 'http://www.minedu.fi/OPM/?lang=sv',
-    	navigationUrl: '/wp/sv/api/nav/json_nav/'
+    	navigationUrl: '/wp/sv/api/nav/json_nav/',
     	textVersionUrl: '/m/index_sv.html'
 	},
     hakulomakeUrl: '/haku-app/',
