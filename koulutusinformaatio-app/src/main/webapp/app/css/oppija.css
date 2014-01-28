@@ -2417,6 +2417,10 @@ table.striped {
   -ms-transition: height 0.2s ease;
   transition: height 0.2s ease; }
 
+.ao-block {
+  border-bottom: 1px solid #dddddd;
+  margin-bottom: 2em; }
+
 .remove {
   display: inline-block;
   width: 24px;
