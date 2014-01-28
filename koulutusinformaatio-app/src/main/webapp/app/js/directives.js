@@ -431,8 +431,8 @@ directive('kiAbsoluteLink', function() {
             scope.$watch('children', function() {
                 if (scope.type) {
                     angular.forEach(scope.children, function(child, key) {
-                        child.url = scope.type == 'ammattikorkea' ? '#!/' + scope.type + '/' : '#!/koulutusohjelma/';
-                        child.url += scope.type == 'ammattikorkea' ? child.id : child.losId;
+                        child.url = scope.type == 'korkeakoulu' ? '#!/' + scope.type + '/' : '#!/koulutusohjelma/';
+                        child.url += scope.type == 'korkeakoulu' ? child.id : child.losId;
                         child.url += scope.prerequisite ? '#' + scope.prerequisite : '';
                     });
                 }

@@ -443,29 +443,21 @@ service('UniversityAppliedScienceLOService', ['$http', '$timeout', '$q', 'Langua
 service('ParentLOTransformer', ['UtilityService', '$filter', '$rootScope', function(UtilityService, $filter, $rootScope) {
     return {
         transform: function(result) {
+
+            // se LO translation language
             if (result && result.translationLanguage) {
                 $rootScope.translationLanguage = result.translationLanguage;
             }
 
+            // set available trasnlation languages for LO
             if (result && result.availableTranslationLanguages) {
                 var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
                 result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
             }
 
+            // set encoded name for provider
             if (result && result.provider && result.provider.name) {
                 result.provider.encodedName = $filter('encodeURIComponent')('"' + result.provider.name + '"');
-            }
-
-            //var applicationSystems = [];
-
-            for (var index in result.applicationOptions) {
-                if (result.applicationOptions.hasOwnProperty(index)) {
-                    var ao = result.applicationOptions[index];
-                    if (ao.applicationSystem && ao.applicationSystem.applicationDates && ao.applicationSystem.applicationDates.length > 0) {
-                        ao.applicationSystem.applicationDates = ao.applicationSystem.applicationDates[0];
-                    }
-                    result.applicationSystem = ao.applicationSystem;
-                }
             }
 
             // set teaching languge as the first language in array
@@ -595,7 +587,6 @@ service('UniversityAppliedScienceTransformer', ['UtilityService', '$rootScope', 
 	return {
 		transform: function(result) {
 
-
 			if (result && result.translationLanguage) {
 				$rootScope.translationLanguage = result.translationLanguage;
 			}
@@ -609,28 +600,10 @@ service('UniversityAppliedScienceTransformer', ['UtilityService', '$rootScope', 
 				result.provider.encodedName = $filter('encodeURIComponent')('"' + result.provider.name + '"');
 			}
 
-			for (var index in result.applicationOptions) {
-				if (result.applicationOptions.hasOwnProperty(index)) {
-					var ao = result.applicationOptions[index];
-					if (ao.applicationSystem && ao.applicationSystem.applicationDates && ao.applicationSystem.applicationDates.length > 0) {
-						ao.applicationSystem.applicationDates = ao.applicationSystem.applicationDates[0];
-					}
-					result.applicationSystem = ao.applicationSystem;
-				}
-			}
-
-			var studyplanKey = "AMMATTIKORKEA";
-
-
-
 			var startDate = new Date(result.startDate);
 			result.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
 			result.teachingLanguage = getFirstItemInList(result.teachingLanguages);
 			result.formOfTeaching = getFirstItemInList(result.formOfTeaching);
-
-			if (result.webLinks) {
-				result.studyPlan = result.webLinks[studyplanKey];
-			}
 
 			for (var asIndex in result.applicationSystems) {
 				if (result.applicationSystems.hasOwnProperty(asIndex)) {
@@ -708,7 +681,6 @@ service('UniversityAppliedScienceTransformer', ['UtilityService', '$rootScope', 
 					}
 				}
 			}
-
 		}
 	}
 }]).
