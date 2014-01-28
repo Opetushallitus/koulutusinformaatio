@@ -170,9 +170,15 @@ public class TarjontaServiceImpl implements TarjontaService {
     					loss.add(los);
     				}
     				ResultV1RDTO<Set<String>> childKomoOids = this.tarjontaRawService.getChildrenOfParentHigherEducationLOS(koulutusDTO.getKomoOid());
+    				ResultV1RDTO<Set<String>> parentKomoOids = this.tarjontaRawService.getParentsOfHigherEducationLOS(koulutusDTO.getKomoOid());
     				if (childKomoOids != null && childKomoOids.getResult() != null) {
     					los.setChildKomoOids(new ArrayList<String>(childKomoOids.getResult()));
     				}
+    				
+    				if (parentKomoOids != null && parentKomoOids.getResult() != null) {
+    					los.setParentKomoOids(new ArrayList<String>(parentKomoOids.getResult()));
+    				}
+    				
     				parentOids.add(koulutusDTO.getKomoOid());
     			} catch (TarjontaParseException ex) {
     				continue;
@@ -190,6 +196,12 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     			if (parentOids.contains(curChildKomoOid)) {
     				parentOids.remove(curChildKomoOid);
+    			}
+    		}
+    		for (String curParentKomoOid : curLos.getParentKomoOids()) {
+    			List<UniversityAppliedScienceLOS> loss = komoToLOSMap.get(curParentKomoOid);
+    			if (loss != null) {
+    				curLos.getParents().addAll(loss);
     			}
     		}
     	}

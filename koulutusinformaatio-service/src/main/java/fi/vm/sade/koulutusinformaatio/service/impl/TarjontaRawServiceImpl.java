@@ -244,5 +244,16 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
 				.accept(JSON_UTF8)
 				.get(new GenericType<ResultV1RDTO<Set<String>>>() {
 				});
+	}
+
+	@Override
+	public ResultV1RDTO<Set<String>> getParentsOfHigherEducationLOS(
+			String childKomoOid) {
+		return this.higherEducationStructureResource
+				.path(childKomoOid)
+				.path("parents")
+				.accept(JSON_UTF8)
+				.get(new GenericType<ResultV1RDTO<Set<String>>>() {
+				});
 	}	
 }

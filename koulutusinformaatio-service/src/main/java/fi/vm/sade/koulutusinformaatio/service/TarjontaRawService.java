@@ -66,5 +66,8 @@ public interface TarjontaRawService {
     public ResultV1RDTO<HakuV1RDTO> getHigherEducationHakuByOid(String oid);
     
     public ResultV1RDTO<Set<String>> getChildrenOfParentHigherEducationLOS(String parentOid);
+
+	public ResultV1RDTO<Set<String>> getParentsOfHigherEducationLOS(
+			String komoOid);
     
 }

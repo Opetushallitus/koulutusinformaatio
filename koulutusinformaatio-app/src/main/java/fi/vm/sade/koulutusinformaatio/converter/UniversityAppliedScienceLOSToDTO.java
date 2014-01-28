@@ -66,6 +66,7 @@ public class UniversityAppliedScienceLOSToDTO {
         dto.setPlannedDuration(los.getPlannedDuration());
         dto.setPlannedDuration(los.getPlannedDuration());
         dto.setPlannedDurationUnit(ConverterUtil.getTextByLanguageUseFallbackLang(los.getPlannedDurationUnit(), uiLang));
+        dto.setEducationDomain(ConverterUtil.getTextByLanguageUseFallbackLang(los.getEducationDomain(), lang));
         
      // as based approach for UI
         SetMultimap<ApplicationSystem, ApplicationOption> aoByAs = HashMultimap.create();
@@ -81,11 +82,12 @@ public class UniversityAppliedScienceLOSToDTO {
             dto.getApplicationSystems().add(asDTO);
         }
         dto.setChargeable(los.getChargeable());
-        dto.setChildren(convertChildren(los.getChildren(), lang));
+        dto.setChildren(convertReferences(los.getChildren(), lang));
+        dto.setParents(convertReferences(los.getParents(), lang));
         return dto;
     }
 
-	private static List<UniversityChildLosReferenceDTO> convertChildren(
+	private static List<UniversityChildLosReferenceDTO> convertReferences(
 			List<UniversityAppliedScienceLOS> children, String lang) {
 		List<UniversityChildLosReferenceDTO> results = new ArrayList<UniversityChildLosReferenceDTO>();
 		for (UniversityAppliedScienceLOS curChild : children) {

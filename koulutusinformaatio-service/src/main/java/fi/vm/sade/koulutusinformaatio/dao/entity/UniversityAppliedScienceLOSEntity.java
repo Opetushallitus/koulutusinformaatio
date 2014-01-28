@@ -107,7 +107,9 @@ public class UniversityAppliedScienceLOSEntity {
 	
 	@Reference
 	private List<UniversityAppliedScienceLOSEntity> children;
-	
+	@Reference
+	private List<UniversityAppliedScienceLOSEntity> parents;
+
 	@Embedded
 	private List<CodeEntity> prerequisites;
 	@Embedded
@@ -375,5 +377,11 @@ public class UniversityAppliedScienceLOSEntity {
 	}
 	public void setTeachingPlaces(List<I18nTextEntity> teachingPlaces) {
 		this.teachingPlaces = teachingPlaces;
+	}	
+	public List<UniversityAppliedScienceLOSEntity> getParents() {
+		return parents;
+	}
+	public void setParents(List<UniversityAppliedScienceLOSEntity> parents) {
+		this.parents = parents;
 	}
 }

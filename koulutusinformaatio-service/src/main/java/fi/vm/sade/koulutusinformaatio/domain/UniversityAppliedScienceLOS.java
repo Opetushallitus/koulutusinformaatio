@@ -63,8 +63,10 @@ public class UniversityAppliedScienceLOS extends LOS {
 	
 	private String komoOid;
 	private List<String> childKomoOids = new ArrayList<String>();
+	private List<String> parentKomoOids = new ArrayList<String>();
 	
 	private List<UniversityAppliedScienceLOS> children = new ArrayList<UniversityAppliedScienceLOS>();
+	private List<UniversityAppliedScienceLOS> parents = new ArrayList<UniversityAppliedScienceLOS>();
 	
 	private List<Code> prerequisites;
 	private List<I18nText> formOfTeaching;
@@ -414,5 +416,21 @@ public class UniversityAppliedScienceLOS extends LOS {
 	}
 	public I18nText getInfoAboutCharge() {
 		return infoAboutCharge;
+	}
+
+	public List<UniversityAppliedScienceLOS> getParents() {
+		return parents;
+	}
+
+	public void setParents(List<UniversityAppliedScienceLOS> parents) {
+		this.parents = parents;
+	}
+
+	public List<String> getParentKomoOids() {
+		return parentKomoOids;
+	}
+
+	public void setParentKomoOids(List<String> parentKomoOids) {
+		this.parentKomoOids = parentKomoOids;
 	}
 }

@@ -126,12 +126,17 @@ public class UpdateServiceImpl implements UpdateService {
         			this.educationDataUpdateService.save(curLOS);
            			
            		}
+           		LOG.debug("Higher educations saved: ");
             //}
             
             List<Location> locations = locationService.getMunicipalities();
+            LOG.debug("Got locations");
             indexerService.addLocations(locations, locationUpdateSolr);
+            LOG.debug("Added locations");
             indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, true);
+            LOG.debug("Committed to solr");
             this.transactionManager.commit(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+            LOG.debug("Transaction completed");
             educationDataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, "SUCCESS"));
             LOG.info("Education data update successfully finished");
         } catch (Exception e) {
