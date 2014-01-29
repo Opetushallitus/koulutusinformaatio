@@ -68,6 +68,7 @@ public final class ApplicationOptionsToBasketItemDTOs {
                 aoDTO.setAoIdentifier(ao.getAoIdentifier());
                 aoDTO.setKaksoistutkinto(ao.isKaksoistutkinto());
                 aoDTO.setVocational(ao.isVocational());
+                aoDTO.setEducationCodeUri(ao.getEducationCodeUri());
                 Provider provider = ao.getProvider();
                 if (provider != null) {
                     aoDTO.setProviderId(provider.getId());
