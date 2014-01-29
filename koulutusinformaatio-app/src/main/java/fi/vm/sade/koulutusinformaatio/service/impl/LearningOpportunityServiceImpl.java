@@ -132,13 +132,14 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     }
 
     @Override
-    public List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, String lopId, String baseEducation, boolean vocational, boolean nonVocational) {
+    public List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, String lopId, String baseEducation, boolean vocational, boolean nonVocational,
+                                                                           final String uiLang) {
         List<ApplicationOption> applicationOptions = educationDataQueryService.findApplicationOptions(asId, lopId, baseEducation,
                 vocational, nonVocational);
         return Lists.transform(applicationOptions, new Function<ApplicationOption, ApplicationOptionSearchResultDTO>() {
             @Override
             public ApplicationOptionSearchResultDTO apply(ApplicationOption applicationOption) {
-                return ApplicationOptionToSearchResultDTO.convert(applicationOption, resolveDefaultLanguage(applicationOption));
+                return ApplicationOptionToSearchResultDTO.convert(applicationOption, resolveDefaultLanguage(applicationOption), uiLang);
             }
         });
     }
