@@ -179,9 +179,26 @@ public abstract class ObjectCreator {
 				}
 			}
 			
+			
 			return opetusmuodot;
 			
 		}
+		return null;
+	}
+
+	protected I18nText getI18nTextEnrichedFirst(KoodiUrisV1RDTO tutkintonimikes) throws KoodistoException {
+		if (tutkintonimikes != null 
+				&& tutkintonimikes.getUris() != null 
+				&& !tutkintonimikes.getUris().keySet().isEmpty()) {
+			Iterator<Map.Entry<String, KoodiV1RDTO>> i = tutkintonimikes.getMeta().entrySet().iterator();
+			if (i.hasNext()) {
+				Map.Entry<String, KoodiV1RDTO> entry = i.next();
+				if (entry.getValue() != null && entry.getValue().getMeta() != null) {
+					return this.getI18nTextEnriched(entry.getValue().getMeta());
+				}
+			}
+		}
+		
 		return null;
 	}
 

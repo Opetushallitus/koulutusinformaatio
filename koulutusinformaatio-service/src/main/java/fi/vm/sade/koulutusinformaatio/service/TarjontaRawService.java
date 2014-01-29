@@ -69,5 +69,8 @@ public interface TarjontaRawService {
 
 	public ResultV1RDTO<Set<String>> getParentsOfHigherEducationLOS(
 			String komoOid);
+
+	public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> getHigherEducationByKomo(
+			String curKomoOid);
     
 }

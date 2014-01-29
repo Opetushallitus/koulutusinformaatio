@@ -37,6 +37,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.google.common.base.Predicates.and;
 import static com.google.common.base.Predicates.not;
@@ -315,10 +316,10 @@ public class ApplicationOptionCreator extends ObjectCreator {
 
         ao.setRequiredBaseEducations(hakukohde.getHakukelpoisuusvaatimusUris());
         los.setPrerequisites(koodistoService.searchCodesMultiple(hakukohde.getHakukelpoisuusvaatimusUris()));
-
+        //haku.getNimi().
         ApplicationSystem as = new ApplicationSystem();
         as.setId(haku.getOid());
-        as.setName(getI18nTextEnriched(haku.getNimi()));
+        as.setName(getI18nText(haku.getNimi()));
         if (haku.getHakuaikas() != null) {
             for (HakuaikaV1RDTO ha : haku.getHakuaikas()) {
                 DateRange range = new DateRange();

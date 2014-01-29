@@ -42,6 +42,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.service.types.TarjontaTila;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.convert.ConversionService;
@@ -159,7 +160,7 @@ public class TarjontaServiceImpl implements TarjontaService {
     				continue;
     			}
     			try {
-    				UniversityAppliedScienceLOS los = creator.createUasLOS(koulutusDTO);
+    				UniversityAppliedScienceLOS los = creator.createUasLOS(koulutusDTO, true);
     				koulutukset.add(los);
     				List<UniversityAppliedScienceLOS> loss = komoToLOSMap.get(koulutusDTO.getKomoOid());
     				if (loss == null) {
@@ -214,6 +215,44 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     	return parents;
     }
+    
+    @Override
+    public UniversityAppliedScienceLOS findHigherEducationLearningOpportunity(String oid) throws TarjontaParseException, KoodistoException {
+    	LOSObjectCreator creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService);
+    	ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes = this.tarjontaRawService.getHigherEducationLearningOpportunity(oid);
+		KoulutusKorkeakouluV1RDTO koulutusDTO = koulutusRes.getResult();
+		if (koulutusDTO == null) {
+			return null;
+		}
+		UniversityAppliedScienceLOS los = creator.createUasLOS(koulutusDTO, false);
+		
+		ResultV1RDTO<Set<String>> childKomoOids = this.tarjontaRawService.getChildrenOfParentHigherEducationLOS(koulutusDTO.getKomoOid());
+		ResultV1RDTO<Set<String>> parentKomoOids = this.tarjontaRawService.getParentsOfHigherEducationLOS(koulutusDTO.getKomoOid());
+		los.setChildren(getHigherEducationRelatives(childKomoOids, creator));
+		los.setParents(getHigherEducationRelatives(parentKomoOids, creator));
+		return los;
+    }
+
+	private List<UniversityAppliedScienceLOS> getHigherEducationRelatives(
+			ResultV1RDTO<Set<String>> komoOids, LOSObjectCreator creator) throws TarjontaParseException, KoodistoException {
+		List<UniversityAppliedScienceLOS> relatives = new ArrayList<UniversityAppliedScienceLOS>();
+		for (String curKomoOid : komoOids.getResult()) {
+			ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes = this.tarjontaRawService.getHigherEducationByKomo(curKomoOid);
+	    	HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
+	    	for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
+	    		for (KoulutusHakutulosV1RDTO curKoulutus : curRes.getTulokset()) {
+	    			ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes = this.tarjontaRawService.getHigherEducationLearningOpportunity(curKoulutus.getOid());
+	    			KoulutusKorkeakouluV1RDTO koulutusDTO = koulutusRes.getResult();
+	    			if (koulutusDTO == null) {
+	    				continue;
+	    			}
+	    			UniversityAppliedScienceLOS los = creator.createUasLOS(koulutusDTO, false);
+	    			relatives.add(los);
+	    		}
+	    	}
+		}
+		return relatives;
+	}
 
 	
 }

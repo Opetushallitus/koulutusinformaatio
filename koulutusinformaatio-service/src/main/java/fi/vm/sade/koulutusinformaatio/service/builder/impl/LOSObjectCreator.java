@@ -271,7 +271,7 @@ public class LOSObjectCreator extends ObjectCreator {
         return los;
     }
     
-    public UniversityAppliedScienceLOS createUasLOS(KoulutusKorkeakouluV1RDTO koulutus) throws TarjontaParseException, KoodistoException {
+    public UniversityAppliedScienceLOS createUasLOS(KoulutusKorkeakouluV1RDTO koulutus, boolean checkStatus) throws TarjontaParseException, KoodistoException {
     	UniversityAppliedScienceLOS los = new UniversityAppliedScienceLOS();
 
     	los.setType(TarjontaConstants.TYPE_KK);
@@ -349,7 +349,7 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setEducationDegreeName(getI18nTextEnriched(koulutus.getKoulutusaste().getMeta()));
         //los.setEducationType(getI18nTextEnriched(koulutus.get.getMeta()));
         los.setDegreeTitle(getI18nTextEnriched(koulutus.getKoulutusohjelma()));
-        los.setQualification(getI18nTextEnriched(koulutus.getTutkintonimike().getMeta()));
+        los.setQualification(getI18nTextEnrichedFirst(koulutus.getTutkintonimikes()));//getTutkintonimike().getMeta()));
         los.setDegree(getI18nTextEnriched(koulutus.getTutkinto().getMeta()));
         if (koulutus.getKoulutuksenAlkamisPvms() != null && !koulutus.getKoulutuksenAlkamisPvms().isEmpty()) {
         	los.setStartDate(koulutus.getKoulutuksenAlkamisPvms().iterator().next());
@@ -377,7 +377,7 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setTeachingPlaces(getI18nTextMultiple(koulutus.getOpetusPaikkas()));
         
         
-        boolean existsValidHakukohde = fetchHakukohdeData(los);
+        boolean existsValidHakukohde = fetchHakukohdeData(los, checkStatus);
         
         if (!existsValidHakukohde) {
         	throw new TarjontaParseException("No valid application options for education: " + los.getId());
@@ -387,8 +387,7 @@ public class LOSObjectCreator extends ObjectCreator {
 
 
 
-
-	private boolean fetchHakukohdeData(UniversityAppliedScienceLOS los) throws KoodistoException {
+	private boolean fetchHakukohdeData(UniversityAppliedScienceLOS los, boolean checkStatus) throws KoodistoException {
 		 ResultV1RDTO<List<NimiJaOidRDTO>> hakukohteet = loiCreator.tarjontaRawService.getHakukohdesByHigherEducation(los.getId());
 		
 		 if (hakukohteet == null 
@@ -405,7 +404,7 @@ public class LOSObjectCreator extends ObjectCreator {
 			    ResultV1RDTO<HakukohdeV1RDTO> hakukohdeRes = loiCreator.tarjontaRawService.getHigherEducationHakukohode(aoId);
 			    HakukohdeV1RDTO hakukohdeDTO = hakukohdeRes.getResult();
 			    
-			    if (!hakukohdeDTO.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
+			    if (checkStatus && !hakukohdeDTO.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
 			    	continue;
 			    }
 			    
@@ -413,7 +412,7 @@ public class LOSObjectCreator extends ObjectCreator {
 			    
 			    HakuV1RDTO hakuDTO = hakuRes.getResult();
 			    
-			    if (!hakuDTO.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
+			    if (checkStatus && !hakuDTO.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
 			    	continue;
 			    }
 			    

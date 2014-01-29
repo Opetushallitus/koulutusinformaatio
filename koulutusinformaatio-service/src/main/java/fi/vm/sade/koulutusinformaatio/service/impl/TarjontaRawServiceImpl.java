@@ -255,5 +255,16 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
 				.accept(JSON_UTF8)
 				.get(new GenericType<ResultV1RDTO<Set<String>>>() {
 				});
+	}
+
+	@Override
+	public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> getHigherEducationByKomo(
+			String komoOid) {
+		return this.higherEducationResource
+				.path("search")
+				.queryParam("komoOid", komoOid)
+				.accept(JSON_UTF8)
+				.get(new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
+				});
 	}	
 }
