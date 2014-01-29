@@ -376,16 +376,30 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setTeachingTimes(getI18nTextMultiple(koulutus.getOpetusAikas()));
         los.setTeachingPlaces(getI18nTextMultiple(koulutus.getOpetusPaikkas()));
         
-        
         boolean existsValidHakukohde = fetchHakukohdeData(los, checkStatus);
         
-        if (!existsValidHakukohde) {
+        
+        
+        if (checkStatus && !existsValidHakukohde) {
         	throw new TarjontaParseException("No valid application options for education: " + los.getId());
+        }
+        for (ApplicationOption ao : los.getApplicationOptions()) {
+        	ao.setProvider(los.getProvider());
+            ao.setEducationDegree(los.getEducationDegree());
+            los.getProvider().getApplicationSystemIDs().add(ao.getApplicationSystem().getId());
+            ao.setParent(createParetLosRef(los));
         }
     	return los;
     }
 
 
+
+	private ParentLOSRef createParetLosRef(UniversityAppliedScienceLOS los) {
+		ParentLOSRef educationRef = new ParentLOSRef();
+		educationRef.setId(los.getId());
+		educationRef.setName(los.getName());
+		return educationRef;
+	}
 
 	private boolean fetchHakukohdeData(UniversityAppliedScienceLOS los, boolean checkStatus) throws KoodistoException {
 		 ResultV1RDTO<List<NimiJaOidRDTO>> hakukohteet = loiCreator.tarjontaRawService.getHakukohdesByHigherEducation(los.getId());

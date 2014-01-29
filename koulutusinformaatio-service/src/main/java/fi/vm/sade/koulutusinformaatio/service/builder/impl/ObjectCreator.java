@@ -24,6 +24,7 @@ import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.tarjonta.service.resources.dto.TekstiRDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.ValintakoeV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiUrisV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.NimiV1RDTO;
@@ -213,6 +214,15 @@ public abstract class ObjectCreator {
 			
 		}
 		return codes;
+	}
+	
+	protected I18nText getTypeText(String text, String kieliUri) {//ValintakoeV1RDTO valintakoe) {
+		 I18nText type = new I18nText();
+        Map<String, String> translations = new HashMap<String,String>();
+        String lang = kieliUri.substring(kieliUri.length() - 2);
+        translations.put(lang, text);
+        type.setTranslations(translations);
+        return type;
 	}
     
 }

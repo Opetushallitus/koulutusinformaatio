@@ -159,7 +159,7 @@ public class EducationObjectCreator extends ObjectCreator {
                         && !valintakoe.getValintakoeAjankohtas().isEmpty()) {
                     Exam exam = new Exam();
                    
-                    exam.setType(getTypeText(valintakoe));
+                    exam.setType(getTypeText(valintakoe.getValintakoeNimi(), valintakoe.getKieliUri()));
                     exam.setDescription(getI18nTextEnriched(valintakoe.getValintakokeenKuvaus()));
                     List<ExamEvent> examEvents = Lists.newArrayList();
 
@@ -182,15 +182,6 @@ public class EducationObjectCreator extends ObjectCreator {
             return exams;
         }
 		return null;
-	}
-
-	private I18nText getTypeText(ValintakoeV1RDTO valintakoe) {
-		 I18nText type = new I18nText();
-         Map<String, String> translations = new HashMap<String,String>();
-         String lang = valintakoe.getKieliUri().substring(valintakoe.getKieliUri().length() - 2);
-         translations.put(lang, valintakoe.getValintakoeNimi());
-         type.setTranslations(translations);
-         return type;
 	}
 
 	private I18nText getI18nTextEnriched(TekstiRDTO valintakokeenKuvaus) {
