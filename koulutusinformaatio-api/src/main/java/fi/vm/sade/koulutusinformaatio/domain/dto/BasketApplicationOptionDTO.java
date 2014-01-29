@@ -16,10 +16,10 @@
 
 package fi.vm.sade.koulutusinformaatio.domain.dto;
 
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
 import java.util.Date;
 import java.util.List;
-
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 /**
  * @author Mikko Majapuro
@@ -46,6 +46,7 @@ public class BasketApplicationOptionDTO {
     private String aoIdentifier;
     private boolean kaksoistutkinto;
     private boolean vocational;
+    private String educationCodeUri;
 
     public String getId() {
         return id;
@@ -200,4 +201,8 @@ public class BasketApplicationOptionDTO {
     public void setVocational(boolean vocational) {
         this.vocational = vocational;
     }
+
+    public String getEducationCodeUri() { return educationCodeUri; }
+
+    public void setEducationCodeUri(String educationCodeUri) { this.educationCodeUri = educationCodeUri; }
 }

@@ -85,7 +85,7 @@ public class ApplicationOptionResourceImplTest {
         aos.add(ao2);
 
 
-        when(learningOpportunityService.searchApplicationOptions(eq(asId), eq(lopId), eq(baseEducation), eq(true), eq(true))).thenReturn(aos);
+        when(learningOpportunityService.searchApplicationOptions(eq(asId), eq(lopId), eq(baseEducation), eq(true), eq(true), eq("fi"))).thenReturn(aos);
         when(learningOpportunityService.getApplicationOption(eq(aoId), eq("fi"), eq("fi"))).thenReturn(aoDTO);
         when(learningOpportunityService.getApplicationOption(eq(invalidAoId), eq("fi"), eq("fi"))).thenThrow(notFoundException);
         when(learningOpportunityService.getApplicationOptions(argThat(new IsValidAoIdList()), eq("fi"), eq("fi"))).thenReturn(aoDTOs);
@@ -96,7 +96,7 @@ public class ApplicationOptionResourceImplTest {
     @Test
     public void testSearchApplicationOptions() {
         List<ApplicationOptionSearchResultDTO> result = applicationOptionResource.searchApplicationOptions(asId, lopId, baseEducation,
-                true, true);
+                true, true, "fi");
         assertNotNull(result);
         assertEquals(2, result.size());
         assertEquals("1.1.2", result.get(0).getId());

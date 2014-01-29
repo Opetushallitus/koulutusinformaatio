@@ -58,7 +58,7 @@ public interface LearningOpportunityService {
 
     UniversityAppliedScienceLOSDTO getUniversityAppliedScienceLearningOpportunity(String id, String lang, String uiLang) throws ResourceNotFoundException;
 
-    List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, String lopId, String baseEducation, boolean vocational, boolean nonVocational);
+    List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, String lopId, String baseEducation, boolean vocational, boolean nonVocational, String uiLang);
 
     ApplicationOptionDTO getApplicationOption(String aoId, String lang, String uiLang) throws ResourceNotFoundException;
 

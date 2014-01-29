@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
+import com.google.common.base.Strings;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionSearchResultDTO;
 
@@ -29,11 +30,15 @@ public final class ApplicationOptionToSearchResultDTO {
     private ApplicationOptionToSearchResultDTO() {
     }
 
-    public static ApplicationOptionSearchResultDTO convert(final ApplicationOption applicationOption, final String lang) {
+    public static ApplicationOptionSearchResultDTO convert(final ApplicationOption applicationOption, final String lang, final String uiLang) {
         if (applicationOption != null) {
             ApplicationOptionSearchResultDTO dto = new ApplicationOptionSearchResultDTO();
             dto.setId(applicationOption.getId());
-            dto.setName(ConverterUtil.getTextByLanguage(applicationOption.getName(), lang));
+            String name = ConverterUtil.getTextByLanguage(applicationOption.getName(), lang);
+            if (Strings.isNullOrEmpty(name)) {
+                name = ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getName(), uiLang);
+            }
+            dto.setName(name);
             dto.setAoIdentifier(applicationOption.getAoIdentifier());
             dto.setChildLONames(ConverterUtil.getShortNameTextsByLanguage(ChildLOIRefToDTO.convert(applicationOption.getChildLOIRefs()), lang));
             Collections.sort(dto.getChildLONames());

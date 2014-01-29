@@ -1208,6 +1208,7 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
                 ongoing: filters.ongoing,
                 upcoming: filters.upcoming,
                 page: filters.page,
+                articlePage: filters.articlePage,
                 facetFilters: filters.facetFilters,
                 langCleared: filters.langCleared,
                 itemsPerPage: filters.itemsPerPage,
@@ -1266,6 +1267,22 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
         getPage: function() {
             if (filters.page) {
                 return typeof filters.page === 'string' ? parseInt(filters.page) : filters.page;
+            } else {
+                return 1;
+            }
+        },
+
+        setArticlePage: function(value) {
+            if (value && !isNaN(value)) {
+                filters.articlePage = parseInt(value);
+            } else {
+                filters.articlePage = 1;
+            }
+        },
+
+        getArticlePage: function() {
+            if (filters.articlePage) {
+                return typeof filters.articlePage === 'string' ? parseInt(filters.articlePage) : filters.articlePage;
             } else {
                 return 1;
             }
