@@ -37,6 +37,7 @@ function SearchFieldCtrl($scope, $location, $route, SearchService, kiAppConstant
             FilterService.clear(); // clear all filters for new search
             TreeService.clear(); // clear tree selections
             FilterService.setPage(kiAppConstants.searchResultsStartPage);
+            FilterService.setArticlePage(kiAppConstants.searchResultsStartPage);
             SearchService.setTerm($scope.queryString);
             var queryString = $scope.queryString;
             
@@ -65,6 +66,7 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
             ongoing: $scope.ongoing,
             upcoming: $scope.upcoming,
             page: kiAppConstants.searchResultsStartPage,
+            articlePage: kiAppConstants.searchResultsStartPage,
             facetFilters: $scope.facetFilters,
             langCleared: $scope.langCleared,
             itemsPerPage: $scope.itemsPerPage,
@@ -573,13 +575,13 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
 };
 
 function ArticleSearchCtrl($scope, $location, $routeParams, ArticleContentSearchService, FilterService) {
-    $scope.currentPage = 1;
+    //$scope.currentPage = 1;
     $scope.showPagination = false;
 
     $scope.changePage = function(page) {
-        $scope.currentPage = page;
+        $scope.currentArticlePage = page;
+        FilterService.setArticlePage(page);
         $scope.doArticleSearching();
-
         $('html, body').scrollTop($('body').offset().top); // scroll to top of list
     }
 
@@ -597,7 +599,7 @@ function ArticleSearchCtrl($scope, $location, $routeParams, ArticleContentSearch
                 $scope.langCleared = FilterService.getLangCleared();
                 $scope.itemsPerPage = FilterService.getItemsPerPage();
                 $scope.sortCriteria = FilterService.getSortCriteria();
-                $scope.currentPage = FilterService.getPage();
+                $scope.currentArticlePage = FilterService.getArticlePage();
 
                 $scope.doArticleSearching();
             });
@@ -607,14 +609,15 @@ function ArticleSearchCtrl($scope, $location, $routeParams, ArticleContentSearch
         var qParams = FilterService.get();
         qParams.tab = 'articles';
         $location.search(qParams).replace();
-        ArticleContentSearchService.query({queryString: $routeParams.queryString, page: $scope.currentPage}).then(function(result) {
+        ArticleContentSearchService.query({queryString: $routeParams.queryString, page: $scope.currentArticlePage}).then(function(result) {
+            console.log($scope.currentArticlePage);
             $scope.articles = result;
             $scope.maxPages = result.pages;
             $scope.totalItems = result.count_total;
             $scope.itemsPerPage = 10;
-            $scope.pageMin = ($scope.currentPage - 1) * $scope.itemsPerPage + 1;
-            $scope.pageMax = $scope.currentPage * $scope.itemsPerPage < $scope.totalItems
-                ? $scope.currentPage * $scope.itemsPerPage
+            $scope.pageMin = ($scope.currentArticlePage - 1) * $scope.itemsPerPage + 1;
+            $scope.pageMax = $scope.currentArticlePage * $scope.itemsPerPage < $scope.totalItems
+                ? $scope.currentArticlePage * $scope.itemsPerPage
                 : $scope.totalItems;
 
             $scope.queryString = $routeParams.queryString;
