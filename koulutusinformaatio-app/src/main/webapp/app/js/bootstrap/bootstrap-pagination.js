@@ -55,7 +55,7 @@ angular.module('ui.bootstrap.pagination', [])
     }
 
     if ( self.page > value ) {
-      $scope.selectPage(value);
+      //$scope.selectPage(value);
     } else {
       self.render();
     }
