@@ -120,7 +120,7 @@ public class LearningOpportunityServiceImplTest {
         when(educationDataQueryService.getChildLearningOpportunity(eq("clo123"))).thenReturn(childLOS);
         when(educationDataQueryService.getApplicationOption(eq("ao123"))).thenReturn(applicationOption);
 
-        learningOpportunityService = new LearningOpportunityServiceImpl(educationDataQueryService, modelMapper);
+        learningOpportunityService = new LearningOpportunityServiceImpl(educationDataQueryService, null, modelMapper);
     }
 
     @Test

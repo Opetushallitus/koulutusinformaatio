@@ -175,4 +175,14 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
             throw KIExceptionHandler.resolveException(e);
         }
 	}
+
+	@Override
+	public UniversityAppliedScienceLOSDTO previewLearningOpportunity(String oid,
+			String lang, String uiLang) {
+		try {
+			return learningOpportunityService.previewLearningOpportunity(oid, lang, uiLang);
+		} catch (ResourceNotFoundException e) {
+            throw KIExceptionHandler.resolveException(e);
+        }
+	}
 }

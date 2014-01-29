@@ -146,4 +146,18 @@ public interface LearningOpportunityResource {
     @Produces(MediaType.APPLICATION_JSON)
     public SuggestedTermsResultDTO getSuggestedTerms(@PathParam("term") String term,
                                                      @QueryParam("lang") String lang);
+    
+    /**
+     * Fetches data to be used in preview for learning opportunity.
+     *
+     * @param oid of the learning opportunity
+     * @param lang language
+     * @return upper secondary learning opportunity
+     */
+    @GET
+    @Path("preview/{oid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public UniversityAppliedScienceLOSDTO previewLearningOpportunity(@PathParam("oid") String oid,
+                                                     @QueryParam("lang") String lang,
+                                                     @QueryParam("uiLang") String uiLang);
 }

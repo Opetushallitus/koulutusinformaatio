@@ -69,17 +69,20 @@ public class UniversityAppliedScienceLOSToDTO {
         dto.setEducationDomain(ConverterUtil.getTextByLanguageUseFallbackLang(los.getEducationDomain(), lang));
         
      // as based approach for UI
-        SetMultimap<ApplicationSystem, ApplicationOption> aoByAs = HashMultimap.create();
-        for (ApplicationOption ao : los.getApplicationOptions()) {
-            aoByAs.put(ao.getApplicationSystem(), ao);
-        }
+        
+        if (los.getApplicationOptions() != null) {
+        	SetMultimap<ApplicationSystem, ApplicationOption> aoByAs = HashMultimap.create();
+        	for (ApplicationOption ao : los.getApplicationOptions()) {
+        		aoByAs.put(ao.getApplicationSystem(), ao);
+        	}
 
-        for (ApplicationSystem as : aoByAs.keySet()) {
-            ApplicationSystemDTO asDTO = ApplicationSystemToDTO.convert(as, uiLang);
-            for (ApplicationOption ao : aoByAs.get(as)) {
-                asDTO.getApplicationOptions().add(ApplicationOptionToDTO.convert(ao, lang, uiLang, "fi"));
-            }
-            dto.getApplicationSystems().add(asDTO);
+        	for (ApplicationSystem as : aoByAs.keySet()) {
+        		ApplicationSystemDTO asDTO = ApplicationSystemToDTO.convert(as, uiLang);
+        		for (ApplicationOption ao : aoByAs.get(as)) {
+        			asDTO.getApplicationOptions().add(ApplicationOptionToDTO.convert(ao, lang, uiLang, "fi"));
+        		}
+        		dto.getApplicationSystems().add(asDTO);
+        	}
         }
         dto.setChargeable(los.getChargeable());
         dto.setChildren(convertReferences(los.getChildren(), lang));

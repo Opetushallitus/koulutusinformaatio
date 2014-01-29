@@ -26,6 +26,7 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersExceptio
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
+import fi.vm.sade.koulutusinformaatio.service.PreviewService;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,12 +41,14 @@ import java.util.List;
 public class LearningOpportunityServiceImpl implements LearningOpportunityService {
 
     private EducationDataQueryService educationDataQueryService;
+    private PreviewService previewService;
     private ModelMapper modelMapper;
     private static final String LANG_FI = "fi";
 
     @Autowired
-    public LearningOpportunityServiceImpl(EducationDataQueryService educationDataQueryService, ModelMapper modelMapper) {
+    public LearningOpportunityServiceImpl(EducationDataQueryService educationDataQueryService, PreviewService previewService, ModelMapper modelMapper) {
         this.educationDataQueryService = educationDataQueryService;
+        this.previewService = previewService;
         this.modelMapper = modelMapper;
     }
 
@@ -256,6 +259,14 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
 			String id, String lang, String uiLang)
 			throws ResourceNotFoundException {
 		UniversityAppliedScienceLOS los = educationDataQueryService.getUasLearningOpportunity(id);
+		return UniversityAppliedScienceLOSToDTO.convert(los, lang, uiLang);
+	}
+	
+	@Override
+	public UniversityAppliedScienceLOSDTO previewLearningOpportunity(
+			String id, String lang, String uiLang)
+			throws ResourceNotFoundException {
+		UniversityAppliedScienceLOS los = this.previewService.previewHigherEducationLearningOpportunity(id);
 		return UniversityAppliedScienceLOSToDTO.convert(los, lang, uiLang);
 	}
 

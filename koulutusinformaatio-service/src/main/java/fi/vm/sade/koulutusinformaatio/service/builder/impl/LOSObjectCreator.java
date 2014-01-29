@@ -383,11 +383,13 @@ public class LOSObjectCreator extends ObjectCreator {
         if (checkStatus && !existsValidHakukohde) {
         	throw new TarjontaParseException("No valid application options for education: " + los.getId());
         }
-        for (ApplicationOption ao : los.getApplicationOptions()) {
-        	ao.setProvider(los.getProvider());
-            ao.setEducationDegree(los.getEducationDegree());
-            los.getProvider().getApplicationSystemIDs().add(ao.getApplicationSystem().getId());
-            ao.setParent(createParetLosRef(los));
+        if (los.getApplicationOptions() != null) {
+        	for (ApplicationOption ao : los.getApplicationOptions()) {
+        		ao.setProvider(los.getProvider());
+        		ao.setEducationDegree(los.getEducationDegree());
+        		los.getProvider().getApplicationSystemIDs().add(ao.getApplicationSystem().getId());
+        		ao.setParent(createParetLosRef(los));
+        	}
         }
     	return los;
     }
