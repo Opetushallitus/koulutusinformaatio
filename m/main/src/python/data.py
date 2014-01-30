@@ -8,12 +8,8 @@ import sys
 if len(sys.argv) > 1:
     base_url = sys.argv[1]
 else:
-    base_url = "https://testi.opintopolku.fi"
+    base_url = "https://opintopolku.fi"
 
-#base_url = "https://test-oppija.oph.ware.fi"
-#base_url = "http://localhost:8080/koulutusinformaatio-app"
-#base_url = "https://itest-oppija.oph.ware.fi"
-#base_url = "https://testi.opintopolku.fi"
 session = requests.Session()
 
 def _(item, dn_key):

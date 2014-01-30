@@ -254,6 +254,3 @@ locales = locales(lngs)
 data["locales"] = locales
 os.chdir("out")
 eval_dir(src_workdir="../src", out_workdir=".", data=data)
-
-#print len(sys.argv)
-#print str(sys.argv)
