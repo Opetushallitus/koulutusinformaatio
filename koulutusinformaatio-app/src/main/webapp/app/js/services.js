@@ -451,6 +451,22 @@ service('ParentLOTransformer', ['UtilityService', '$filter', '$rootScope', funct
                 }
             }
 
+            // check if application system is of type Lisähaku
+            for (var loiIndex in result.lois) {
+                if (result.lois.hasOwnProperty(loiIndex)) {
+                    var loi = result.lois[loiIndex];
+                    for (var asIndex in loi.applicationSystems) {
+                        if (loi.applicationSystems.hasOwnProperty(asIndex)) {
+                            var as = loi.applicationSystems[asIndex];
+                            if (as.applicationOptions && as.applicationOptions.length > 0) {
+                                var firstAo = as.applicationOptions[0];
+                                as.aoSpecificApplicationDates = firstAo.specificApplicationDates;
+                            }
+                        }
+                    }
+                }
+            }
+
             // sort exams based on start time
             for (var index in result.lois) {
                 if (result.lois.hasOwnProperty(index)) {
@@ -471,22 +487,6 @@ service('ParentLOTransformer', ['UtilityService', '$filter', '$rootScope', funct
                                         }
                                     }
                                 }
-                            }
-                        }
-                    }
-                }
-            }
-
-            // check if application system is of type Lisähaku
-            for (var loiIndex in result.lois) {
-                if (result.lois.hasOwnProperty(loiIndex)) {
-                    var loi = result.lois[loiIndex];
-                    for (var asIndex in loi.applicationSystems) {
-                        if (loi.applicationSystems.hasOwnProperty(asIndex)) {
-                            var as = loi.applicationSystems[asIndex];
-                            if (as.applicationOptions && as.applicationOptions.length > 0) {
-                                var firstAo = as.applicationOptions[0];
-                                as.aoSpecificApplicationDates = firstAo.specificApplicationDates;
                             }
                         }
                     }
@@ -630,6 +630,22 @@ service('ChildLOTransformer', ['UtilityService', '$rootScope', function(UtilityS
                 }
             }
 
+            // check if application system is of type Lisähaku
+            for (var loiIndex in result.lois) {
+                if (result.lois.hasOwnProperty(loiIndex)) {
+                    var loi = result.lois[loiIndex];
+                    for (var asIndex in loi.applicationSystems) {
+                        if (loi.applicationSystems.hasOwnProperty(asIndex)) {
+                            var as = loi.applicationSystems[asIndex];
+                            if (as.applicationOptions && as.applicationOptions.length > 0) {
+                                var firstAo = as.applicationOptions[0];
+                                as.aoSpecificApplicationDates = firstAo.specificApplicationDates;
+                            }
+                        }
+                    }
+                }
+            }
+
             // group application systems by prerequisite
             var applicationSystemsByPrerequisite = {};
             angular.forEach(result.lois, function(loi, loikey) {
@@ -671,21 +687,7 @@ service('ChildLOTransformer', ['UtilityService', '$rootScope', function(UtilityS
                 UtilityService.sortLanguageSelection(loi.languageSelection);
             });
 
-            // check if application system is of type Lisähaku
-            for (var loiIndex in result.lois) {
-                if (result.lois.hasOwnProperty(loiIndex)) {
-                    var loi = result.lois[loiIndex];
-                    for (var asIndex in loi.applicationSystems) {
-                        if (loi.applicationSystems.hasOwnProperty(asIndex)) {
-                            var as = loi.applicationSystems[asIndex];
-                            if (as.applicationOptions && as.applicationOptions.length > 0) {
-                                var firstAo = as.applicationOptions[0];
-                                as.aoSpecificApplicationDates = firstAo.specificApplicationDates;
-                            }
-                        }
-                    }
-                }
-            }
+            
 
             // sort LOIs based on prerequisite
             if (result.lois) {
@@ -1205,6 +1207,10 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
  *  Service for retrieving translated values for text
  */
 service('UtilityService', function() {
+    var isLisahaku = function(as) {
+        return as.aoSpecificApplicationDates;
+    }
+
     return {
         getApplicationOptionById: function(aoId, aos) {
             if (aos && aos.length > 0) {
@@ -1226,21 +1232,68 @@ service('UtilityService', function() {
         isLukio: function(lo) {
             return lo.educationDegree == 31 ? true : false;
         },
-        isLisahaku: function(as) {
-            return as.aoSpecificApplicationDates;
-        },
+        isLisahaku: isLisahaku,
         sortApplicationSystems: function(applicationSystems) {
             if (applicationSystems) {
                 applicationSystems.sort(function(a, b) {
-                    var getEarliestStartDate = function(dates) {
+
+                    var getEarliestStartDate = function(as) {
                         var earliest = -1;
-                        angular.forEach(dates, function(value, key){
-                            if (earliest < 0 || value.startDate < earliest) {
-                                earliest = value.startDate;
+
+                        if (isLisahaku(as)) {
+                            earliest = getEarliestStartDateForLisahaku(as);
+                        } else {
+                            angular.forEach(as.applicationDates, function(value, key){
+                                if (earliest < 0 || value.startDate < earliest) {
+                                    earliest = value.startDate;
+                                }
+                            });
+                        }
+
+                        return earliest;
+                    }
+
+                    var getEarliestStartDateForLisahaku = function(as) {
+                        var earliest = -1;
+                        angular.forEach(as.applicationOptions, function(ao, key) {
+                            if (earliest < 0 || ao.applicationStartDate < earliest) {
+                                earliest = ao.applicationStartDate;
                             }
                         });
 
                         return earliest;
+                    }
+
+                    var getLatestsEndDateForLisahaku = function(as) {
+                        var latest = -1;
+                        angular.forEach(as.applicationOptions, function(ao, key) {
+                            if (latest < 0 || ao.applicationEndDate > latest) {
+                                latest = ao.applicationEndDate;
+                            }
+                        });
+
+                        return latest;
+                    }
+
+
+
+                    var isLisahakuOngoing = function(as) {
+                        var result = false;
+                        angular.forEach(as.applicationOptions, function(ao, key){
+                            if (ao.canBeApplied) {
+                                result = true;
+                            }
+                        });
+
+                        return result;
+                    }
+
+                    if ( isLisahaku(a) ) {
+                        a.asOngoing = isLisahakuOngoing(a) ? true : false;
+                    }
+
+                    if ( isLisahaku(b) ) {
+                        b.asOngoing = isLisahakuOngoing(b) ? true : false;
                     }
 
                     var comp = 0;
@@ -1252,8 +1305,8 @@ service('UtilityService', function() {
                         } else if (b.nextApplicationPeriodStarts) {
                             comp = 1;
                         } else {
-                            var earliestA = getEarliestStartDate(a.applicationDates);
-                            var earliestB = getEarliestStartDate(b.applicationDates);
+                            var earliestA = getEarliestStartDate(a);
+                            var earliestB = getEarliestStartDate(b);
                             comp = earliestA > earliestB ? 1 : -1;
                         }
                     } else if (a.asOngoing) {
