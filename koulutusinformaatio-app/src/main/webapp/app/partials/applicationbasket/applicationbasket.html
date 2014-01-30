@@ -38,7 +38,8 @@
                                     <ul class="nobullet">
                                         <li>
                                             <h4 class="margin-top-0 margin-bottom-0">{{item.providerName}}, <span class="capitalized">{{item.providerLocation}}</span></h4>
-                                            <a data-ng-hide="item.isLukio" class="block" href="#!/tutkinto/{{item.parent.id}}#{{item.prerequisite.value}}">{{item.parent.name}}</a>
+                                            <a data-ng-hide="item.isLukio || item.higherEducation" class="block" href="#!/tutkinto/{{item.parent.id}}#{{item.prerequisite.value}}">{{item.parent.name}}</a>
+                                            <a data-ng-hide="!item.higherEducation" class="block" href="#!/korkeakoulu/{{item.parent.id}}#{{item.prerequisite.value}}">{{item.parent.name}}</a>
                                         </li>
                                         <li class="margin-top-2"><span>{{item.qualification}}</span></li>
                                         <li><span>{{item.prerequisite.description}}</span></li>

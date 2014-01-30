@@ -400,6 +400,7 @@ public class LOSObjectCreator extends ObjectCreator {
 		ParentLOSRef educationRef = new ParentLOSRef();
 		educationRef.setId(los.getId());
 		educationRef.setName(los.getName());
+		educationRef.setLosType(TarjontaConstants.TYPE_KK);
 		return educationRef;
 	}
 
