@@ -245,10 +245,15 @@ def eval_dir(src_workdir=".", out_workdir=".", data=None):
                     else: 
 
                         render_templ_file(src_path, out_path, data, fn_ctx)
-    
+
+
+ 
 data = {}
 lngs = ["fi", "sv"]
 locales = locales(lngs)
 data["locales"] = locales
 os.chdir("out")
 eval_dir(src_workdir="../src", out_workdir=".", data=data)
+
+#print len(sys.argv)
+#print str(sys.argv)

@@ -1,11 +1,10 @@
 OUT=out/
 
 all: clean venv copyassets
-	venv/bin/python render.py
-	cp -rf out/* ../../../../koulutusinformaatio-app/src/main/webapp/m/
+	venv/bin/python render.py $(SOURCE)
 	
 clean:
-	rm -rf out/
+	rm -rf $(OUT)
 
 dirs:
 	mkdir -p out
@@ -18,6 +17,11 @@ venv/bin/activate: requirements.txt
 	touch venv/bin/activate
 
 copyassets:
-	cp assets/* out/
+	cp assets/* $(OUT)
+
+install:
+	rm -rf $(INSTALL_DIR)
+	mkdir $(INSTALL_DIR)
+	cp -rf out/* $(INSTALL_DIR)
 
 
