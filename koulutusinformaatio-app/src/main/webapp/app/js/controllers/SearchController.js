@@ -244,6 +244,11 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
 
 function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsService, UtilityService, DistrictService, TranslationService) {
 
+    $scope.titleLocales = {
+        close: TranslationService.getTranslation('tooltip:close'),
+        removeFacet: TranslationService.getTranslation('tooltip:remove-facet')
+    }
+
     DistrictService.query().then(function(result) {
         $scope.distResult = result;
         $scope.distResult.unshift({name: TranslationService.getTranslation('koko') + ' ' + TranslationService.getTranslation('suomi'), code: '-1'});
@@ -371,10 +376,12 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
         articlesTooltip: TranslationService.getTranslation('tooltip:search-tab-article-tooltip')
     };
 
+    /*
     $scope.titleLocales = {
         close: TranslationService.getTranslation('tooltip:close'),
         removeFacet: TranslationService.getTranslation('tooltip:remove-facet')
     }
+    */
 
     $scope.tabs = [
         {active: false},
