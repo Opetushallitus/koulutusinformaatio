@@ -1,5 +1,4 @@
 <div data-ng-switch="loResult.totalCount">
-
     <div data-ng-switch-when="0">
         <div class="notification info">
             <h3 data-ki-i18n="no-search-results"></h3>
@@ -9,12 +8,6 @@
 
     <div data-ng-switch-default>
         <div class="sort-area" data-ng-controller="SortCtrl">
-            <!--
-            <div class="sort-item left">
-                <label data-ki-i18n="sort-results-label" data-show-colon="true"></label>
-                <span>{{pageMin}} - {{pageMax}} / {{totalItems}}</span>
-            </div>
-            -->
             <div title="{{locales.resultsCriteria}}" class="sort-item">
                 <label for="itemsPerPage" data-ki-i18n="sort-criteria-sort-label" data-show-colon="true"></label>
                 <select 

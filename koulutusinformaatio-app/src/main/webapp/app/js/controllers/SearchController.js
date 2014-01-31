@@ -242,7 +242,7 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     }
 };
 
-function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsService, UtilityService, DistrictService) {
+function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsService, UtilityService, DistrictService, TranslationService) {
 
     DistrictService.query().then(function(result) {
         $scope.distResult = result;
@@ -384,7 +384,7 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     $scope.paginationNext = TranslationService.getTranslation('pagination-next');
     $scope.paginationPrevious = TranslationService.getTranslation('pagination-previous');
     $scope.valitseAlueTitle = TranslationService.getTranslation('valitse-alue');
-    $scope.noSearchResults = TranslationService.getTranslation('no-search-results-info', {searchterm: SearchService.getTerm()});
+    $scope.noSearchResults = TranslationService.getTranslation('no-search-results-info', {searchterm: $routeParams.queryString});
 
 
 
@@ -513,7 +513,10 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     		});
 
     		$scope.refreshView();
-    	}
+    	} else if ($routeParams.queryString == '') {
+            $scope.loResult = {};
+            $scope.loResult.totalCount = 0;
+        }
     }
 
     
