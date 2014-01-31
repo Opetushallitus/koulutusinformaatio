@@ -21,7 +21,7 @@ directive('searchResult', ['FilterService', 'TranslationService', function(Filte
             scope.lo.linkHref = '#!/' + scope.lo.type + '/' + scope.lo.id;
 
             var prerequisite = scope.lo.prerequisiteCode || FilterService.getPrerequisite();
-            if (prerequisite && scope.lo.linkHref.indexOf('#') === -1) {
+            if (prerequisite && scope.lo.id.indexOf('#') === -1) {
             	scope.lo.linkHref += '#' + prerequisite;
             }
         }
