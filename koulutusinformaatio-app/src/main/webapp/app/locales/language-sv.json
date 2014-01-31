@@ -161,7 +161,8 @@
     "application-basket-empty": "Töm minneslistan",
     "application-basket-empty-confirm": "Är du säker på att du vill tömma minneslistan?",
     "application-basket-overflow-warning": "I gemensam ansökan kan du söka till fem (5) olika utbildningar, stryk de som är överlopps",
-    "attachment-delivery-deadline": "Bilagor ska skickas in senast",
+    "application-basket-attachments-exams": "Liitteet ja kokeet (sv)",
+    "application-basket-due-date": "Liitteen määräaika tai kokeen ajankohta (sv)",
 
     "popup-close": "Stäng",
     "popup-continue": "Fortsätt",
