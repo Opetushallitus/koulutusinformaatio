@@ -44,6 +44,7 @@ public class LocationQuery extends SolrQuery {
     public LocationQuery(final List<String> codes, final String lang) {
         super(String.format("%s:(%s)", CODE, Joiner.on(" OR ").join(codes)));
         this.addFilterQuery(Joiner.on(":").join(LANG, lang));
+        this.setRows(1000);
     }
     
     public LocationQuery(String field, String value, final String lang) {
