@@ -25,7 +25,7 @@ import java.util.List;
  *
  * @author Hannu Lyytikainen
  */
-public class SpecialLOI {
+public class SpecialLOI extends LOI{
 
     private String id;
     private I18nText name;
@@ -34,7 +34,6 @@ public class SpecialLOI {
     private List<Code> teachingLanguages;
     private List<I18nText> formOfEducation;
     private Date startDate;
-    private List<ApplicationOption> applicationOptions;
     private I18nText internationalization;
     private I18nText cooperation;
     private I18nText content;
@@ -102,14 +101,6 @@ public class SpecialLOI {
 
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
-    }
-
-    public List<ApplicationOption> getApplicationOptions() {
-        return applicationOptions;
-    }
-
-    public void setApplicationOptions(List<ApplicationOption> applicationOptions) {
-        this.applicationOptions = applicationOptions;
     }
 
     public I18nText getInternationalization() {

@@ -10,7 +10,7 @@ import java.util.Map;
  *
  * @author Hannu Lyytikainen
  */
-public class ChildLOI {
+public class ChildLOI extends LOI {
 
     private String id;
     private String losId;
@@ -26,7 +26,6 @@ public class ChildLOI {
     private List<I18nText> formOfEducation;
     private Date startDate;
     private List<ChildLOIRef> related = new ArrayList<ChildLOIRef>();
-    private List<ApplicationOption> applicationOptions;
     private I18nText workingLifePlacement;
     private I18nText internationalization;
     private I18nText cooperation;
@@ -134,14 +133,6 @@ public class ChildLOI {
 
     public void setRelated(List<ChildLOIRef> related) {
         this.related = related;
-    }
-
-    public List<ApplicationOption> getApplicationOptions() {
-        return applicationOptions;
-    }
-
-    public void setApplicationOptions(List<ApplicationOption> applicationOptions) {
-        this.applicationOptions = applicationOptions;
     }
 
     public I18nText getWorkingLifePlacement() {
