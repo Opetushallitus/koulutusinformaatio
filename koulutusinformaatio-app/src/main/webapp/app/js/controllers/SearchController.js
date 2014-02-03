@@ -82,11 +82,8 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
      */
     $scope.locales = {
         'closeFacet': TranslationService.getTranslation('tooltip:remove-search-result-facet'),
-        'closeEducationFacet': TranslationService.getTranslation('tooltip:close-education-facet'),
-        'closeBasicEducationFacet': TranslationService.getTranslation('tooltip:close-basic-education-facet'),
-        'closeLocationFacet': TranslationService.getTranslation('tooltip:close-location-facet'),
-        'closeLanguageFacet': TranslationService.getTranslation('tooltip:close-language-facet'),
-        'closeSubjectFacet': TranslationService.getTranslation('tooltip:close-subject-facet'),
+        'openCloseFacet': TranslationService.getTranslation('tooltip:close-facet'),
+        'locationDialog': TranslationService.getTranslation('tooltip:location-dialog'),
         'removeFacet': TranslationService.getTranslation('tooltip:remove-facet'),
         'resultsToShow': TranslationService.getTranslation('tooltip:choose-results-to-show'),
         'resultsCriteria': TranslationService.getTranslation('tooltip:choose-result-criteria'),

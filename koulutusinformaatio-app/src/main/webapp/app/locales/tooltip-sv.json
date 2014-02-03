@@ -4,11 +4,8 @@
     "to-frontpage": "Till framsidan",
     "search": "Sök",
     "remove-search-result-facet": "Radera den valda avgränsningen",
-    "close-education-facet": "Stäng vyn",
-    "close-basic-education-facet":"Stäng vyn",
-    "close-location-facet": "Stäng vyn",
-    "close-language-facet": "Stäng vyn",
-    "close-subject-facet": "Stäng vyn",
+    "close-facet": "Voit avata ja sulkea rajausehtovalikon nuolikuvakkeesta (sv)",
+    "location-dialog": "Valitse yksi tai useampi alue, josta haluat etsiä koulutusta. (sv)",
     "remove-facet": "Radera avgränsningen",
     "open-education-view": "Öppna utbildningsvyn",
     "next-page": "Följande sida",
@@ -21,5 +18,5 @@
     "checklist": "Minneslistan",
     "opintopolku-fi": "Opintopolkuun",
     "opintopolku-sv": "Till Studieinfon",
-    "search-result-facet-info":"Avgränsning av sökresultatet hjälper dig att hitta de utbildningar som intresserar dig.  Efter sökkriterierna visas antalet sökträffar inom parentes. Ifall antalet är 0, finns det inga utbildningar som passar till det kriteriet."
+    "search-result-facet-info": "Hakutulosrajaukset auttavat sinua rajaamaan hakua ja löytämään helpommin oikean koulutuksen. Hakutekijöiden jälkeen esitetään suluissa hakutulosten kappalemäärä. Mikäli kappalemäärä on nolla, ei Opintopolussa ole hakutekijään sopivia koulutuksia. (sv)"
 }
