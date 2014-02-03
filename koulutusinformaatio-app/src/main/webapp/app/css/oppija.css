@@ -2409,6 +2409,18 @@ table.striped {
   color: transparent;
   font-size: 0px; }
 
+/*  Näytä lisää -tekstikomponentti */
+.extendable-content {
+  -webkit-transition: height 0.2s ease;
+  -moz-transition: height 0.2s ease;
+  -o-transition: height 0.2s ease;
+  -ms-transition: height 0.2s ease;
+  transition: height 0.2s ease; }
+
+.ao-block {
+  border-bottom: 1px solid #dddddd;
+  margin-bottom: 2em; }
+
 .remove {
   display: inline-block;
   width: 24px;
@@ -3862,7 +3874,8 @@ div[data-tree-model] ul {
   overflow: hidden; }
 
 div[data-tree-model] ul ul {
-  padding: 0 0 0 20px; }
+  padding: 0 0 0 35px;
+  font-size: 0.923em; }
 
 div[data-tree-model] li {
   position: relative;
@@ -3887,6 +3900,8 @@ div[data-tree-model] li i, div[data-tree-model] li span {
 
 div[data-tree-model] li span.facet-item {
   display: inline; }
+  div[data-tree-model] li span.facet-item.inactive {
+    cursor: default; }
 
 div[data-tree-model] li span.facet-item .remove {
   margin: 0 0 0 5px; }

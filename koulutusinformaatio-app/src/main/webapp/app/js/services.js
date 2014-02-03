@@ -9,7 +9,7 @@ angular.module('kiApp.services',
     'kiApp.TranslationService'
 ]).
 
-service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analytics', 'FilterService', function($http, $timeout, $q, $analytics, FilterService) {
+service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analytics', 'FilterService', 'LearningOpportunitySearchResultTransformer', function($http, $timeout, $q, $analytics, FilterService, LearningOpportunitySearchResultTransformer) {
     
     // gather information for analytics
     var parseFilterValues = function(params) {
@@ -124,6 +124,7 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
 
             $http.get('../lo/search/' + encodeURI(params.queryString) + qParams, {}).
             success(function(result) {
+                LearningOpportunitySearchResultTransformer.transform(result);
                 var variables = parseFilterValues(params);
                 var category;
                 if (params.locations && params.locations.length > 0) {
@@ -710,6 +711,38 @@ service('ChildLOTransformer', ['UtilityService', '$rootScope', function(UtilityS
                     if (a.childLOId > b.childLOId) return 1;
                     else if (a.childLOId < b.childLOId) return -1;
                     else return a.childLOId > b.childLOId ? 1 : -1;
+                });
+            }
+        }
+    }
+}]).
+
+/**
+ *  Transform search result data
+ */
+service('LearningOpportunitySearchResultTransformer', ['UtilityService', '$filter', '$rootScope', function(UtilityService, $filter, $rootScope) {
+    return {
+        transform: function(result) {
+
+            // order themes alphabetically (theme Yleisisivistävä is always first)
+            if (result && result.topicFacet && result.topicFacet.facetValues) {
+                result.topicFacet.facetValues.sort(function(a, b) {
+                    if (a.valueId.indexOf('teemat_1') > -1) {
+                        return -1;
+                    } else if (b.valueId.indexOf('teemat_1') > -1) {
+                        return 1;
+                    } else {
+                        return b.valueName > a.valueName ? -1 : 1;
+                    }
+                });
+
+                // order theme subjects alphabetically
+                angular.forEach(result.topicFacet.facetValues, function(facet, key) {
+                    if (facet.childValues) {
+                        facet.childValues.sort(function(a, b) {
+                            return b.valueName > a.valueName ? -1 : 1;
+                        });
+                    }
                 });
             }
         }
