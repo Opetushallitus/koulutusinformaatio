@@ -26,6 +26,7 @@ import java.util.List;
 public abstract class LOI {
 
     private List<ApplicationOption> applicationOptions;
+    private Code prerequisite;
 
     public List<ApplicationOption> getApplicationOptions() {
         return applicationOptions;
@@ -33,5 +34,13 @@ public abstract class LOI {
 
     public void setApplicationOptions(List<ApplicationOption> applicationOptions) {
         this.applicationOptions = applicationOptions;
+    }
+
+    public Code getPrerequisite() {
+        return prerequisite;
+    }
+
+    public void setPrerequisite(Code prerequisite) {
+        this.prerequisite = prerequisite;
     }
 }

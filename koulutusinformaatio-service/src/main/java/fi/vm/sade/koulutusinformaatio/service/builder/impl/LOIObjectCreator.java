@@ -17,8 +17,9 @@
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
 import com.google.common.base.Joiner;
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import com.google.common.collect.Multimap;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
@@ -226,17 +227,21 @@ public class LOIObjectCreator extends ObjectCreator {
 
     /**
      * Filters list of lois. Leaves out old redundant instances.
+     * Filtering is prerequisite specific.
      *
      * @param lois unfiltered list
      * @return filtered list
      */
     private <T extends LOI>  List<T> filterInstances(List<T> lois) {
-        Set<ApplicationOption> applicationOptions = Sets.newHashSet();
+        // list application options by prerequisite
+        Multimap<String, ApplicationOption> applicationOptions = HashMultimap.create();
         for (LOI loi : lois) {
-            applicationOptions.addAll(loi.getApplicationOptions());
+            applicationOptions.putAll(loi.getPrerequisite().getValue(), loi.getApplicationOptions());
         }
-        List<ApplicationOption> filteredApplicationOptions =
-                filterApplicationOptions(Lists.newArrayList(applicationOptions), new ArrayList<ApplicationOption>());
+        List<ApplicationOption> filteredApplicationOptions = Lists.newArrayList();
+        for (Map.Entry<String, Collection<ApplicationOption>> entry : applicationOptions.asMap().entrySet()) {
+            filteredApplicationOptions.addAll(filterApplicationOptions(new ArrayList(entry.getValue()), new ArrayList<ApplicationOption>()));
+        }
         List<T> filteredLOIs = Lists.newArrayList();
 
         for (T loi : lois) {

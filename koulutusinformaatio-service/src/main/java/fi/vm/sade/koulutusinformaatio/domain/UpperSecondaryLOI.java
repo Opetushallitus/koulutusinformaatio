@@ -27,7 +27,6 @@ public class UpperSecondaryLOI extends LOI {
 
     private String id;
     private I18nText name;
-    private Code prerequisite;
     private List<I18nText> formOfTeaching;
     private List<Code> teachingLanguages;
     private List<I18nText> formOfEducation;
@@ -59,14 +58,6 @@ public class UpperSecondaryLOI extends LOI {
 
     public void setName(I18nText name) {
         this.name = name;
-    }
-
-    public Code getPrerequisite() {
-        return prerequisite;
-    }
-
-    public void setPrerequisite(Code prerequisite) {
-        this.prerequisite = prerequisite;
     }
 
     public List<I18nText> getFormOfTeaching() {

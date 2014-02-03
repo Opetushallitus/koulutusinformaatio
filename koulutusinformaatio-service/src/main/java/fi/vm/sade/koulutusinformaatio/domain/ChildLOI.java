@@ -17,7 +17,6 @@ public class ChildLOI extends LOI {
     private I18nText name;
     private String parentLOIId;
     private List<I18nText> professionalTitles;
-    private Code prerequisite;
     // opetusmuoto -> lähiopetus
     private List<I18nText> formOfTeaching;
     private List<Code> teachingLanguages;
@@ -77,14 +76,6 @@ public class ChildLOI extends LOI {
 
     public void setProfessionalTitles(List<I18nText> professionalTitles) {
         this.professionalTitles = professionalTitles;
-    }
-
-    public Code getPrerequisite() {
-        return prerequisite;
-    }
-
-    public void setPrerequisite(Code prerequisite) {
-        this.prerequisite = prerequisite;
     }
 
     public List<I18nText> getFormOfTeaching() {
