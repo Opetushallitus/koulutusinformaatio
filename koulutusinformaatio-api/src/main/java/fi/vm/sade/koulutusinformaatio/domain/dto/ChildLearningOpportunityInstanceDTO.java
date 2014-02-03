@@ -28,6 +28,8 @@ public class ChildLearningOpportunityInstanceDTO {
     private String content;
     private String selectingDegreeProgram;
     private List<ContactPersonDTO> contactPersons = new ArrayList<ContactPersonDTO>();
+    private String plannedDuration;
+    private String plannedDurationUnit;
 
     public String getId() {
         return id;
@@ -164,4 +166,20 @@ public class ChildLearningOpportunityInstanceDTO {
     public void setContactPersons(List<ContactPersonDTO> contactPersons) {
         this.contactPersons = contactPersons;
     }
+
+	public String getPlannedDuration() {
+		return plannedDuration;
+	}
+
+	public void setPlannedDuration(String plannedDuration) {
+		this.plannedDuration = plannedDuration;
+	}
+
+	public String getPlannedDurationUnit() {
+		return plannedDurationUnit;
+	}
+
+	public void setPlannedDurationUnit(String plannedDurationUnit) {
+		this.plannedDurationUnit = plannedDurationUnit;
+	}
 }
