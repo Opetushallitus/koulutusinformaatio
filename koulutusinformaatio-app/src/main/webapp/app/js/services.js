@@ -438,6 +438,47 @@ service('UniversityAppliedScienceLOService', ['$http', '$timeout', '$q', 'Langua
 }]).
 
 /**
+ * Resource for requesting University of Applied Sciences LO data
+ */
+service('UniversityPreviewLOService', ['$http', '$timeout', '$q', 'LanguageService', 'UniversityAppliedScienceTransformer', function($http, $timeout, $q, LanguageService, UniversityAppliedScienceTransformer) {
+    return {
+        query: function(options) {
+            var deferred = $q.defer();
+            var queryParams = {
+                uiLang: LanguageService.getLanguage(),
+                lang: LanguageService.getLanguage()
+            }
+
+            if (options.lang) {
+                queryParams.lang = options.lang
+            }
+
+            var url = '../lo/preview/';
+
+            $http.get(url + options.id, {
+                params: queryParams
+            }).
+            
+            //$http.get('mocks/amk.json', {}).
+            success(function(result) {
+            	UniversityAppliedScienceTransformer.transform(result);
+                var loResult = {
+                    lo: result,
+                    parent: {},
+                    provider: result.provider
+                }
+                deferred.resolve(loResult);
+            }).
+            error(function(result) {
+                deferred.reject(result);
+            });
+
+            return deferred.promise;
+        }
+    }
+}]).
+
+/**
  * Transformer for parent LO data
  */
 service('ParentLOTransformer', ['UtilityService', '$filter', '$rootScope', function(UtilityService, $filter, $rootScope) {
