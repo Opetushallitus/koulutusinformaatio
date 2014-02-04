@@ -48,6 +48,7 @@
     "filter-search-location-title": "Rajaa sijainnin mukaan",
     "location-filter-placeholder": "Kirjoita paikkakunta",
     "filter-search-location-add": "Lisää sijainti",
+    "location-filter-label": "Paikkakunta",
     "filter-search-location-remove": "Poista",
 
     "sort-criteria-default": "-- Valitse --",

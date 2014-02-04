@@ -47,6 +47,7 @@
     "filter-search-university": "Yliopistotutkinto",
     "filter-search-location-title": "Rajaa sijainnin mukaan",
     "location-filter-placeholder": "Kirjoita paikkakunta",
+    "location-filter-label": "Paikkakunta",
     "filter-search-location-add": "Lisää sijainti",
     "filter-search-location-remove": "Poista",
 

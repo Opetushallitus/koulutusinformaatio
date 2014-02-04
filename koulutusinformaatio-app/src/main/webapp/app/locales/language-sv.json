@@ -48,6 +48,7 @@
     "filter-search-location-title": "Avgränsa enligt område",
     "location-filter-placeholder": "Skriv ort eller landskap", 
     "filter-search-location-add": "Lägg till ort",
+    "location-filter-label": "Område",
     "filter-search-location-remove": "Avlägsna",
 
     "sort-criteria-default": "-- Välj --",
