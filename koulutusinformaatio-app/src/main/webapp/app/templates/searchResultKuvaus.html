@@ -1,0 +1,10 @@
+
+<ul class="nobullet">
+    <div ng-repeat="loItem in extendedLO.lo.lois">
+        <div ng-repeat="applicationSystem in loItem.applicationSystems">
+            <div ng-repeat="applicationOption in applicationSystem.applicationOptions">
+                <li ng-repeat="childRef in applicationOption.childRefs ">{{childRef.name}}</li>
+            </div>
+        </div>
+    </div>
+</ul>

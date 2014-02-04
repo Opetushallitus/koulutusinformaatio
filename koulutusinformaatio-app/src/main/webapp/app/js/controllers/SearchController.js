@@ -638,3 +638,18 @@ function SortCtrl($scope, $location, FilterService) {
         $scope.refreshView();
     }
 };
+
+
+function extendedSearchResultCtrl($rootScope, $scope, $location, $route, $routeParams, TranslationService, UpperSecondaryLOService, ChildLOService, ParentLOService, SpecialLOService) {
+    $scope.showExtension = "close";
+    $scope.currentLO = $scope.lo;
+
+    $scope.toggleExtendedView = function() {
+        if($scope.showExtension == 'close') {
+            $scope.showExtension = 'open';
+        } else {
+            $scope.showExtension = 'close';
+        }  
+    }
+
+}

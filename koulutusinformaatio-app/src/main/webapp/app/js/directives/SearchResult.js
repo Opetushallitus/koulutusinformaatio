@@ -26,4 +26,29 @@ directive('searchResult', ['FilterService', 'TranslationService', function(Filte
             }
         }
     }
+}]).
+
+directive('searchResultTarjonta', [function () {
+    return {
+        restrict: 'E',
+        link: function (scope, iElement, iAttrs) {
+        }
+    };
+}]).
+
+directive('srExtendedKuvaus', ['ParentLOService', function (ParentLOService) {
+    return {
+        restrict: 'E',
+        templateUrl: 'templates/searchResultKuvaus.html',
+        link: function(scope, iElement, iAttrs) {
+            scope.extendedLO = ParentLOService.query({id: scope.currentLO.id});
+            scope.extendedLO.then(function(result) {
+                for(var i = 0 ; result.lo.lois.length < i ; i++) {
+                    
+                }
+            }, function(error) {
+                console.error('error fething extended LO');
+            });
+        }
+    };
 }]);
