@@ -14,19 +14,33 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.koulutusinformaatio.dao;
+package fi.vm.sade.koulutusinformaatio.domain;
 
-import com.mongodb.Mongo;
-import fi.vm.sade.koulutusinformaatio.dao.entity.UpperSecondaryLearningOpportunitySpecificationEntity;
-import org.mongodb.morphia.Morphia;
+import java.util.List;
 
 /**
+ * An abstract superclass fror all LOIs.
+ *
  * @author Hannu Lyytikainen
  */
-public class UpperSecondaryLearningOpportunitySpecificationDAO extends LearningOpportunitySpecificationDAO<UpperSecondaryLearningOpportunitySpecificationEntity, String> {
+public abstract class LOI {
 
-    public UpperSecondaryLearningOpportunitySpecificationDAO(Mongo mongo, Morphia morphia, String dbName) {
-        super(mongo, morphia, dbName);
-        ensureIndexes();
+    private List<ApplicationOption> applicationOptions;
+    private Code prerequisite;
+
+    public List<ApplicationOption> getApplicationOptions() {
+        return applicationOptions;
+    }
+
+    public void setApplicationOptions(List<ApplicationOption> applicationOptions) {
+        this.applicationOptions = applicationOptions;
+    }
+
+    public Code getPrerequisite() {
+        return prerequisite;
+    }
+
+    public void setPrerequisite(Code prerequisite) {
+        this.prerequisite = prerequisite;
     }
 }

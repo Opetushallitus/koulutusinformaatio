@@ -82,11 +82,8 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
      */
     $scope.locales = {
         'closeFacet': TranslationService.getTranslation('tooltip:remove-search-result-facet'),
-        'closeEducationFacet': TranslationService.getTranslation('tooltip:close-education-facet'),
-        'closeBasicEducationFacet': TranslationService.getTranslation('tooltip:close-basic-education-facet'),
-        'closeLocationFacet': TranslationService.getTranslation('tooltip:close-location-facet'),
-        'closeLanguageFacet': TranslationService.getTranslation('tooltip:close-language-facet'),
-        'closeSubjectFacet': TranslationService.getTranslation('tooltip:close-subject-facet'),
+        'openCloseFacet': TranslationService.getTranslation('tooltip:close-facet'),
+        'locationDialog': TranslationService.getTranslation('tooltip:location-dialog'),
         'removeFacet': TranslationService.getTranslation('tooltip:remove-facet'),
         'resultsToShow': TranslationService.getTranslation('tooltip:choose-results-to-show'),
         'resultsCriteria': TranslationService.getTranslation('tooltip:choose-result-criteria'),
@@ -242,7 +239,12 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     }
 };
 
-function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsService, UtilityService, DistrictService) {
+function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsService, UtilityService, DistrictService, TranslationService) {
+
+    $scope.titleLocales = {
+        close: TranslationService.getTranslation('tooltip:close'),
+        removeFacet: TranslationService.getTranslation('tooltip:remove-facet')
+    }
 
     DistrictService.query().then(function(result) {
         $scope.distResult = result;
@@ -371,10 +373,12 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
         articlesTooltip: TranslationService.getTranslation('tooltip:search-tab-article-tooltip')
     };
 
+    /*
     $scope.titleLocales = {
         close: TranslationService.getTranslation('tooltip:close'),
         removeFacet: TranslationService.getTranslation('tooltip:remove-facet')
     }
+    */
 
     $scope.tabs = [
         {active: false},
@@ -384,7 +388,7 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     $scope.paginationNext = TranslationService.getTranslation('pagination-next');
     $scope.paginationPrevious = TranslationService.getTranslation('pagination-previous');
     $scope.valitseAlueTitle = TranslationService.getTranslation('valitse-alue');
-    $scope.noSearchResults = TranslationService.getTranslation('no-search-results-info', {searchterm: SearchService.getTerm()});
+    $scope.noSearchResults = TranslationService.getTranslation('no-search-results-info', {searchterm: $routeParams.queryString});
 
 
 
@@ -513,7 +517,10 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     		});
 
     		$scope.refreshView();
-    	}
+    	} else if ($routeParams.queryString == '') {
+            $scope.loResult = {};
+            $scope.loResult.totalCount = 0;
+        }
     }
 
     

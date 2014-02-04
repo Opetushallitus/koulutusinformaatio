@@ -178,7 +178,8 @@
     "application-basket-empty": "Tyhjennä muistilista",
     "application-basket-empty-confirm": "Haluatko varmasti tyhjentää koko muistilistan?",
     "application-basket-overflow-warning": "Voit hakea yhteishaussa viiteen (5) eri koulutukseen, poista ylimääräiset",
-    "attachment-delivery-deadline": "Liitteet toimitettava viimeistään",
+    "application-basket-attachments-exams": "Liitteet ja kokeet",
+    "application-basket-due-date": "Liitteen määräaika tai kokeen ajankohta",
 
     "popup-close": "Sulje",
     "popup-continue": "Jatka",

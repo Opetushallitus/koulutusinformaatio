@@ -3874,7 +3874,8 @@ div[data-tree-model] ul {
   overflow: hidden; }
 
 div[data-tree-model] ul ul {
-  padding: 0 0 0 20px; }
+  padding: 0 0 0 35px;
+  font-size: 0.923em; }
 
 div[data-tree-model] li {
   position: relative;
@@ -3899,6 +3900,8 @@ div[data-tree-model] li i, div[data-tree-model] li span {
 
 div[data-tree-model] li span.facet-item {
   display: inline; }
+  div[data-tree-model] li span.facet-item.inactive {
+    cursor: default; }
 
 div[data-tree-model] li span.facet-item .remove {
   margin: 0 0 0 5px; }

@@ -165,7 +165,6 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
         
         //Fields for sorting
         doc.addField(LearningOpportunity.START_DATE_SORT, loi.getStartDate());
-        indexDurationField(loi, doc);
         doc.addField(LearningOpportunity.NAME_SORT, String.format("%s, %s",
                 SolrUtil.resolveTranslationInTeachingLangUseFallback(loi.getTeachingLanguages(), provider.getName().getTranslations()),
                 SolrUtil.resolveTranslationInTeachingLangUseFallback(loi.getTeachingLanguages(), los.getName().getTranslationsShortName())));
@@ -190,40 +189,5 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
         for (Code curTopic : los.getThemes()) {
             doc.addField(LearningOpportunity.THEME, curTopic.getUri());
         }
-    }
-
-    /*
-     * Indexes the duration_ssort field, used in sorting
-     * results according to planned duration of the loi
-     */
-    private void indexDurationField(UpperSecondaryLOI loi, SolrInputDocument doc) {
-        int duration = getDuration(loi);
-        doc.addField(LearningOpportunity.DURATION_SORT, duration);
-    }
-
-    /*
-     * Parses duration from duration string, which may contain
-     * non numerical characters, e.g. 2-5. Takes the min value
-     * of the numerical values. 
-     * Scales values to be counted in months.
-     */
-    private int getDuration(UpperSecondaryLOI loi) {
-        String[] numStrings = loi.getPlannedDuration().split("[^\\d]+");
-        int min = Integer.MAX_VALUE;
-        for (String curNumStr : numStrings) {
-            if ((curNumStr != null) && !curNumStr.isEmpty()) {
-                try {
-                    int curInt = Integer.parseInt(curNumStr);
-                    min = curInt < min ? curInt : min;
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }
-        if (loi.getPduCodeUri().contains(SolrConstants.KESTOTYYPPI_VUOSI) && (min < Integer.MAX_VALUE)) {
-            min = min * 12;
-        } 
-        
-        return min < Integer.MAX_VALUE ? min : -1;
     }
 }

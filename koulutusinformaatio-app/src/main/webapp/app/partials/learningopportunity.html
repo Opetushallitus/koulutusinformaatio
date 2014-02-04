@@ -2,17 +2,17 @@
     <div data-ki-breadcrumb="breadcrumb-search-results" id="breadcrumb"></div>
     <div data-ng-include data-src="partialUrl + 'top.html'"></div>
     <div data-tabset>
-        <div data-tab data-heading="{{tabtitle.koulutus}}">
+        <div data-tab data-heading="{{tabtitle.koulutus}}" title="{{tabtitle.koulutus}}">
             <section>
                 <div data-ng-include data-src="partialUrl + 'kuvaus.html'"></div>
             </section>
         </div>
-        <div data-tab data-heading="{{tabtitle.valintaperusteet}}" data-select="$broadcast('tabchanged')">
+        <div data-tab data-heading="{{tabtitle.valintaperusteet}}" data-select="$broadcast('tabchanged')" title="{{tabtitle.valintaperusteet}}">
             <section>
                 <div data-ng-include data-src="partialUrl + 'hakeutuminen.html'"></div>
             </section>
         </div>
-        <div data-tab data-heading="{{provider.name}}" class="fluid">
+        <div data-tab data-heading="{{provider.name}}" title="{{provider.name}}" class="fluid">
             <section>
                 <div data-ng-include data-src="partialCommonUrl + 'oppilaitos.html'"></div>
             </section>

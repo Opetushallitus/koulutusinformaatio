@@ -17,6 +17,7 @@
 </ul>
 <div class="clear"></div>
 
+{% block pager %}
 {% if prev_page is defined %}
 <a class="pager pager-previous" href="index-{{ prev_page }}.html">{{ locales["index-pager-previous"] }}</a>
 {% endif %}
@@ -24,6 +25,7 @@
 {% if page != "all" and next_page is defined %}
 <a class="pager pager-next" href="index-{{ next_page }}.html">{{ locales["index-pager-next"] }}</a>
 {% endif %}
+{% endblock %}
 
 {% endif %}
 

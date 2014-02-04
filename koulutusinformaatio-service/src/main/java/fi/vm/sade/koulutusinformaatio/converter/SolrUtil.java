@@ -73,32 +73,6 @@ public final class SolrUtil {
         }
     }
 
-    /**
-     * Parses duration from duration string, which may contain
-     * non numerical characters, e.g. 2-5. Takes the min value
-     * of the numerical values.
-     * Scales values to be counted in months.
-     */
-    public static int getDuration(ChildLOI childLOI) {
-        String[] numStrings = childLOI.getPlannedDuration().split("[^0-9]*");
-        int min = Integer.MAX_VALUE;
-        for (String curNumStr : numStrings) {
-            if ((curNumStr != null) && !curNumStr.isEmpty()) {
-                try {
-                    int curInt = Integer.parseInt(curNumStr);
-                    min = curInt < min ? curInt : min;
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }
-        if (childLOI.getPduCodeUri().contains(SolrFields.SolrConstants.KESTOTYYPPI_VUOSI) && min < Integer.MAX_VALUE) {
-            min = min * 12;
-        }
-
-        return min < Integer.MAX_VALUE ? min : -1;
-    }
-
 	public static Object resolveTextWithFallback(String lang,
 			Map<String, String> translations) {
 		String translation = translations.get(lang);

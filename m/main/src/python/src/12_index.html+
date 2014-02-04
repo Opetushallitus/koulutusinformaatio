@@ -1,8 +1,9 @@
 {% extends "base-fi.html" %}
-{% block title %}{{ landing_fi.title }}{% endblock %}
 {% block head %}
     {{ super() }}
 {% endblock %}
+
+{% block title %}{{ locales["home"] }}{% endblock %}
 
 {% block logo %}
     <a href="index.html"><img src="opintopolku-fi.png" alt="{{ locales["header-home"] }}"/></a>
@@ -13,6 +14,8 @@
 {% endblock %}
 
 {% block style %}
+	<link href="favicon16.ico" rel="shortcut icon" />
+    <link href="favicon32.ico" rel="apple-touch-icon-precomposed" />
     <link rel="stylesheet" href="style.css" />
 {% endblock %}
 {% block content %}

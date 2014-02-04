@@ -40,12 +40,16 @@ public class LocationQuery extends SolrQuery {
 
     public LocationQuery(final String q, final String lang) {
         super(Joiner.on(":").join(NAME, q));
-        this.addFilterQuery(Joiner.on(":").join(LANG, lang));
+        if (lang != null && !lang.isEmpty()) {
+        	this.addFilterQuery(Joiner.on(":").join(LANG, lang));
+        }
     }
 
     public LocationQuery(final List<String> codes, final String lang) {
         super(String.format("%s:(%s)", CODE, Joiner.on(" OR ").join(codes)));
+        if (lang != null)
         this.addFilterQuery(Joiner.on(":").join(LANG, lang));
+        this.setRows(1000);
     }
     
     public LocationQuery(String field, String value, final String lang) {

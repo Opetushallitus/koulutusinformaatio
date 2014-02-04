@@ -353,5 +353,14 @@ public class ApplicationOption {
     public I18nText getSoraDescription() {
 		return soraDescription;
 	}
+    public Date lastApplicationDate() {
+        Date last = new Date(0L);
+        for (DateRange range : applicationSystem.getApplicationDates()) {
+            if (range.getEndDate().after(last)) {
+                last = range.getEndDate();
+            }
+        }
+        return last;
+    }
 
 }

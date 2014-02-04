@@ -1,12 +1,14 @@
 {% set locales = locales["localessv"] %}
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
-<html lang="en">
+<html lang="sv">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     {% block head %}
     <meta charset="UTF-8">
     <meta name="description" content="{{ locales["meta-content"] }}">
     {% block style %}
+    <link href="../favicon16.ico" rel="shortcut icon" />
+    <link href="../favicon32.ico" rel="apple-touch-icon-precomposed" />
     <link rel="stylesheet" href="../style.css" />
     {% endblock %}
     <title>{{ locales["page-title"] }}: {% block title %}{% endblock %}</title>
@@ -40,6 +42,7 @@
         <div id="navi">{% block navi %}{% endblock %}</div>
         <div id="tabs-header" class="tabs">{% block tabs %}{% endblock %}</div>
         <div id="content">{% block content %}{% endblock %}</div>
+        <div id="pager">{% block pager %}{% endblock %}</div>
         <div id="tabs-footer" class="tabs">{{ self.tabs() }}</div>
         <div id="footer">
             {% block footer %}

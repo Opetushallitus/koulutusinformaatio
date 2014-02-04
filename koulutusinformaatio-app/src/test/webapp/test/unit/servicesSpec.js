@@ -105,6 +105,53 @@ describe('UtilityService', function() {
             expect(data[1].id).toEqual('c');
             expect(data[2].id).toEqual('a');
         });
+
+        it('should sort applications systems of type Lisähaku by application option specific dates', function() {
+            var data = [
+                {
+                    id: 'a',
+                    asOngoing: false,
+                    applicationDates: [
+                        {
+                            startDate: 8,
+                            endDate: 9
+                        }
+                    ]
+                },
+                {
+                    id: 'b',
+                    asOngoing: false,
+                    aoSpecificApplicationDates: true,
+                    applicationOptions: [
+                        {
+                            applicationStartDate: 1
+                        },
+                        {
+                            applicationStartDate: 4
+                        }
+                    ]
+                },
+                {
+                    id: 'c',
+                    asOngoing: false,
+                    aoSpecificApplicationDates: true,
+                    applicationOptions: [
+                        {
+                            applicationStartDate: 3
+                        },
+                        {
+                            applicationStartDate: 4
+                        }
+                    ]
+                }
+            ];
+
+            utility.sortApplicationSystems(data);
+            expect(data[0].id).toEqual('b');
+            expect(data[1].id).toEqual('c');
+            expect(data[2].id).toEqual('a');
+
+        });
     });
 
     describe('sortApplicationSystems', function() {
