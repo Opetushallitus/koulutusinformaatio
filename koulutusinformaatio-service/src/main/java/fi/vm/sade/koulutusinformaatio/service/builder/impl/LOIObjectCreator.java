@@ -86,8 +86,8 @@ public class LOIObjectCreator extends ObjectCreator {
         childLOI.setInternationalization(getI18nText(childKomoto.getTekstit().get(KomotoTeksti.KANSAINVALISTYMINEN)));
         childLOI.setCooperation(getI18nText(childKomoto.getTekstit().get(KomotoTeksti.YHTEISTYO_MUIDEN_TOIMIJOIDEN_KANSSA)));
         childLOI.setContent(getI18nText(childKomoto.getTekstit().get(KomotoTeksti.SISALTO)));
-        childLOI.setPlannedDuration(childKomoto.getLaajuusArvo());
-        childLOI.setPlannedDurationUnit(koodistoService.searchFirst(childKomoto.getLaajuusYksikkoUri()));
+        childLOI.setPlannedDuration(childKomoto.getSuunniteltuKestoArvo());
+        childLOI.setPlannedDurationUnit(koodistoService.searchFirst(childKomoto.getSuunniteltuKestoYksikkoUri()));
         childLOI.setPduCodeUri(childKomoto.getLaajuusYksikkoUri());
 
         if (childKomoto.getYhteyshenkilos() != null) {
@@ -158,8 +158,8 @@ public class LOIObjectCreator extends ObjectCreator {
         loi.setCooperation(getI18nText(komoto.getTekstit().get(KomotoTeksti.YHTEISTYO_MUIDEN_TOIMIJOIDEN_KANSSA)));
         loi.setContent(getI18nText(komoto.getTekstit().get(KomotoTeksti.SISALTO)));
 
-        loi.setPlannedDuration(komoto.getLaajuusArvo());
-        loi.setPlannedDurationUnit(koodistoService.searchFirst(komoto.getLaajuusYksikkoUri()));
+        loi.setPlannedDuration(komoto.getSuunniteltuKestoArvo());
+        loi.setPlannedDurationUnit(koodistoService.searchFirst(komoto.getSuunniteltuKestoYksikkoUri()));
         loi.setPduCodeUri(komoto.getLaajuusYksikkoUri());
 
         for (String d : komoto.getLukiodiplomitUris()) {
