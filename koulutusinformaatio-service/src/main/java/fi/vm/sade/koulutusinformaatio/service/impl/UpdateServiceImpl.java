@@ -22,6 +22,7 @@ import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.Location;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.*;
+
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,7 +84,6 @@ public class UpdateServiceImpl implements UpdateService {
                 List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
                 count = loOids.size();
                 index += count;
-            
             
                for (String loOid : loOids) {
                     List<LOS> specifications = null;
