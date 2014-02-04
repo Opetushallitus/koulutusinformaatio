@@ -1,5 +1,5 @@
 {% extends "index-base-sv.html" %}
-{% block title %}{{ title_erityis_koulutukset_sv }}{% endblock %}
+{% block title %}{{ locales["et4"] }}{% endblock %}
 
 {% block breadcrumb %}
 <a href="../index_sv.html">{{ locales["home"] }}</a>

@@ -10,14 +10,13 @@ import java.util.Map;
  *
  * @author Hannu Lyytikainen
  */
-public class ChildLOI {
+public class ChildLOI extends LOI {
 
     private String id;
     private String losId;
     private I18nText name;
     private String parentLOIId;
     private List<I18nText> professionalTitles;
-    private Code prerequisite;
     // opetusmuoto -> lähiopetus
     private List<I18nText> formOfTeaching;
     private List<Code> teachingLanguages;
@@ -26,7 +25,6 @@ public class ChildLOI {
     private List<I18nText> formOfEducation;
     private Date startDate;
     private List<ChildLOIRef> related = new ArrayList<ChildLOIRef>();
-    private List<ApplicationOption> applicationOptions;
     private I18nText workingLifePlacement;
     private I18nText internationalization;
     private I18nText cooperation;
@@ -80,14 +78,6 @@ public class ChildLOI {
         this.professionalTitles = professionalTitles;
     }
 
-    public Code getPrerequisite() {
-        return prerequisite;
-    }
-
-    public void setPrerequisite(Code prerequisite) {
-        this.prerequisite = prerequisite;
-    }
-
     public List<I18nText> getFormOfTeaching() {
         return formOfTeaching;
     }
@@ -134,14 +124,6 @@ public class ChildLOI {
 
     public void setRelated(List<ChildLOIRef> related) {
         this.related = related;
-    }
-
-    public List<ApplicationOption> getApplicationOptions() {
-        return applicationOptions;
-    }
-
-    public void setApplicationOptions(List<ApplicationOption> applicationOptions) {
-        this.applicationOptions = applicationOptions;
     }
 
     public I18nText getWorkingLifePlacement() {

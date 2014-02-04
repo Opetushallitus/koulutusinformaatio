@@ -26,5 +26,6 @@ import org.mongodb.morphia.Morphia;
 public class SpecialLearningOpportunitySpecificationDAO extends LearningOpportunitySpecificationDAO<SpecialLearningOpportunitySpecificationEntity, String> {
     protected SpecialLearningOpportunitySpecificationDAO(Mongo mongo, Morphia morphia, String dbName) {
         super(mongo, morphia, dbName);
+        ensureIndexes();
     }
 }

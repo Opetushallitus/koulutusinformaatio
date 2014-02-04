@@ -345,4 +345,15 @@ public class ApplicationOption {
         return id != null ? id.hashCode() : 0;
     }
 
+    public Date lastApplicationDate() {
+        Date last = new Date(0L);
+        for (DateRange range : applicationSystem.getApplicationDates()) {
+            if (range.getEndDate().after(last)) {
+                last = range.getEndDate();
+            }
+        }
+        return last;
+    }
+
+
 }

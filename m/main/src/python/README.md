@@ -1,21 +1,34 @@
 #ki text version poc
 
+
 ### Requirements
 
 It will only work with Koulutusinformaatio "facet search"
+
 
 ### Install
 
 You need Linux, python and virtualenv
 
+1. Install pip (http://www.pip-installer.org/en/latest/installing.html)
+2. Install virtualenv (http://www.virtualenv.org/en/latest/virtualenv.html#installation)
+3. For python >= 2.7 argparse not required (from requirements.txt)
+
+
 ### Running
 
-    % make
-    
-The static output files will be generated in directory "out/".
+Run the following command to launch the generation of html pages
 
-It will run against reppu (test-oppija.oph.ware.fi) as this is where facet search is working. You can change the environment from data.py. Wordpress queries are done from QA, this is probably OK
-even in production.
+    % make all SOURCE=https://testi.opintopolku.fi
+
+If the argument SOURCE is not defined the script defaults to value "https://opintopolku.fi". The static output files will be generated in directory "out/".
+
+To install the generated files to a desired destination run the following command
+
+	% make install INSTALL_DIR=koulutusinformaatio-app/src/main/webapp/m/
+
+where INSTALL_DIR is the directory the files will be copied to.
+    
 
 ### How to put into production
 
@@ -28,6 +41,7 @@ Then add these files into git with something like this (not tested):
     % find . -type f |xargs git add 
     % git commit -a -m "Erityiskoulutukset ja valmentavat"
     % git push
+
 
 ### Background
 
@@ -48,6 +62,7 @@ with links.
 Rest of the files are handled as template files, and corresponding file is generated in the output directory. The file name may refer to variables, and in this case
 the directory iterator will generate one file for each variable name.
 
+
 ### Example
 
 For example, 10_landing_fi= fetches landing page using Wordpress REST API, referring directly to page ID.
@@ -56,6 +71,7 @@ A variable "landing_fi" is defined, with JSON representation of the page and met
 
 File 12_index.html+ is a Jinja2 template, which displays among other things, "landing_fi.content". File has + sign so it will only be evaluated with the list context. 
 On root directory list context is meaningless.
+
 
 ### Another example
 

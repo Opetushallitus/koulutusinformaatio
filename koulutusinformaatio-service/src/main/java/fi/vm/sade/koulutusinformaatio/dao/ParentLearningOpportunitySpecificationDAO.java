@@ -27,5 +27,6 @@ public class ParentLearningOpportunitySpecificationDAO extends LearningOpportuni
 
     public ParentLearningOpportunitySpecificationDAO(Mongo mongo, Morphia morphia, String dbName) {
         super(mongo, morphia, dbName);
+        ensureIndexes();
     }
 }

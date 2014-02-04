@@ -3,7 +3,6 @@ from data import s, get, out, dotted_getter, transformlostoproviders
 import json
 
 url = "/lo/search/*?&facetFilters=educationType_ffm:et5&facetFilters=teachingLangCode_ffm:SV"
-#url = "/lo/search/lukio"
 
 results = get(url)
 if "results" in results:

@@ -16,10 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.dao.entity;
 
-import org.mongodb.morphia.annotations.Embedded;
-import org.mongodb.morphia.annotations.Entity;
-import org.mongodb.morphia.annotations.Id;
-import org.mongodb.morphia.annotations.Reference;
+import org.mongodb.morphia.annotations.*;
 
 import java.util.List;
 
@@ -42,6 +39,7 @@ public class SpecialLearningOpportunitySpecificationEntity {
     private I18nTextEntity goals;
     @Embedded
     private List<ChildLearningOpportunityInstanceEntity> lois;
+    @Indexed
     @Reference
     private LearningOpportunityProviderEntity provider;
     @Embedded

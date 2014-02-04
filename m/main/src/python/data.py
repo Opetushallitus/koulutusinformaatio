@@ -3,10 +3,13 @@ import inspect
 import requests
 import random
 import string
+import sys
 
-#base_url = "https://test-oppija.oph.ware.fi"
-#base_url = "http://localhost:8080/koulutusinformaatio-app"
-base_url = "https://itest-oppija.oph.ware.fi"
+if len(sys.argv) > 1:
+    base_url = sys.argv[1]
+else:
+    base_url = "https://opintopolku.fi"
+
 session = requests.Session()
 
 def _(item, dn_key):

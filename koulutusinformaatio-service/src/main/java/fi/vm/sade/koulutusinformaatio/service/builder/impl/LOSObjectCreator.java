@@ -28,7 +28,7 @@ import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import fi.vm.sade.tarjonta.shared.types.KomoTeksti;
-
+import fi.vm.sade.tarjonta.shared.types.KomotoTeksti;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -82,7 +82,7 @@ public class LOSObjectCreator extends ObjectCreator {
         for (KomotoDTO komoto : parentKomotos) {
             ParentLOI loi = new ParentLOI();
             loi.setId(komoto.getOid());
-            loi.setSelectingDegreeProgram(getI18nText(komoto.getKoulutusohjelmanValinta()));
+            loi.setSelectingDegreeProgram(getI18nText(komoto.getTekstit().get(KomotoTeksti.KOULUTUSOHJELMAN_VALINTA)));
             loi.setPrerequisite(koodistoService.searchFirstCode(komoto.getPohjakoulutusVaatimusUri()));
             lois.add(loi);
         }
@@ -98,25 +98,9 @@ public class LOSObjectCreator extends ObjectCreator {
         childLOS.setQualification(koodistoService.searchFirst(childKomo.getTutkintonimikeUri()));
         childLOS.setDegreeTitle(koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri()));
         childLOS.setGoals(getI18nText(childKomo.getTekstit().get(KomoTeksti.TAVOITTEET)));
-        List<ChildLOI> childLOIs = Lists.newArrayList();
-
-        for (KomotoDTO childKomoto : childKomotos) {
-            String childKomotoOid = childKomoto.getOid();
-            LOG.debug(Joiner.on(" ").join("Resolving child learning opportunity:", childKomotoOid));
-
-            if (!CreatorUtil.komotoPublished.apply(childKomoto)) {
-                LOG.debug(String.format("Skipping child non published child komoto %s", childKomoto.getOid()));
-                continue;
-            }
-
-            // strip version out of education code uri
-            String educationCodeUri = childKomo.getKoulutusKoodiUri().split("#")[0];
-            ChildLOI childLOI = loiCreator.createChildLOI(childKomoto, childLOS.getId(), childLOS.getName(), educationCodeUri);
-            if (!childLOI.getApplicationOptions().isEmpty()) {
-                childLOIs.add(childLOI);
-            }
-        }
-        childLOS.setLois(childLOIs);
+        // strip version out of education code uri
+        String educationCodeUri = childKomo.getKoulutusKoodiUri().split("#")[0];
+        childLOS.setLois(loiCreator.createChildLOIs(childKomotos, childLOS.getId(), childLOS.getName(), educationCodeUri));
         return childLOS;
     }
 
@@ -164,6 +148,7 @@ public class LOSObjectCreator extends ObjectCreator {
             lois.add(loi);
         }
         los.setLois(lois);
+
         return los;
     }
 
@@ -198,18 +183,9 @@ public class LOSObjectCreator extends ObjectCreator {
             los.setGoals(getI18nText(childKomo.getTavoitteet()));
         }
 
-        List<ChildLOI> lois = Lists.newArrayList();
-
         // strip version out of education code uri
         String educationCodeUri = childKomo.getKoulutusKoodiUri().split("#")[0];
-
-        for (KomotoDTO komoto : childKomotos) {
-            if (CreatorUtil.komotoPublished.apply(komoto)) {
-                ChildLOI loi = loiCreator.createChildLOI(komoto, specialLOSId, los.getName(), educationCodeUri);
-                lois.add(loi);
-            }
-        }
-        los.setLois(lois);
+        los.setLois(loiCreator.createChildLOIs(childKomotos, specialLOSId, los.getName(), educationCodeUri));
         return los;
     }
 
@@ -235,21 +211,9 @@ public class LOSObjectCreator extends ObjectCreator {
         } else {
             los.setGoals(getI18nText(komoTavoitteet));
         }
-
         // strip version out of education code uri
         String educationCodeUri = komo.getKoulutusKoodiUri().split("#")[0];
-
-        List<UpperSecondaryLOI> lois = Lists.newArrayList();
-        for (KomotoDTO komoto : komotos) {
-            if (CreatorUtil.komotoPublished.apply(komoto)) {
-                lois.add(loiCreator.createUpperSecondaryLOI(komoto, losID, los.getName(), educationCodeUri));
-            }
-        }
-
-        los.setLois(lois);
-
+        los.setLois(loiCreator.createUpperSecondaryLOIs(komotos, losID, los.getName(), educationCodeUri));
         return los;
     }
-
-
 }
