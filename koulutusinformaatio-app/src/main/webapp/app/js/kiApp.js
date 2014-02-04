@@ -8,7 +8,8 @@ var kiApp = angular.module('kiApp',
         'SearchResult', 
         'ui.bootstrap', 
         'angulartics', 
-        'angulartics.piwik'
+        'angulartics.piwik',
+        'underscore'
     ])
 
 .config(['$analyticsProvider', function( $analyticsProvider) {

@@ -44,10 +44,10 @@ directive('srExtendedKuvaus', ['ParentLOService', function (ParentLOService) {
             scope.extendedLO = ParentLOService.query({id: scope.currentLO.id});
             scope.extendedLO.then(function(result) {
                 for(var i = 0 ; result.lo.lois.length < i ; i++) {
-                    
+                    //todo filter out unnecessary lois
                 }
             }, function(error) {
-                console.error('error fething extended LO');
+                console.error('error fetching extended LO');
             });
         }
     };
