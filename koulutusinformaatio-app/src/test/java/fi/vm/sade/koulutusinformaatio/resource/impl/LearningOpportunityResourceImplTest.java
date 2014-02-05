@@ -6,6 +6,7 @@ import fi.vm.sade.koulutusinformaatio.domain.LOSearchResult;
 import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
 import fi.vm.sade.koulutusinformaatio.domain.SuggestedTermsResult;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LOSearchResultListDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SuggestedTermsResultDTO;
@@ -74,7 +75,12 @@ public class LearningOpportunityResourceImplTest {
         List<String> terms = Arrays.asList("term1", "term2");
         suggestions.setLoNames(terms);
         when(searchService.searchSuggestedTerms(anyString(), anyString())).thenReturn(suggestions);
-
+        
+        HigherEducationLOSDTO higherLos = new HigherEducationLOSDTO();
+        higherLos.setId("1.2.3.34");
+        
+        when(learningOpportunityService.getHigherEducationLearningOpportunity(anyString())).thenReturn(higherLos);
+        when(learningOpportunityService.previewLearningOpportunity(anyString(), anyString(), anyString())).thenReturn(higherLos);
         resource = new LearningOpportunityResourceImpl(searchService, modelMapper, learningOpportunityService);
 
     }
@@ -119,6 +125,18 @@ public class LearningOpportunityResourceImplTest {
     public void testSuggestedTermsSearch() {
         SuggestedTermsResultDTO strDTO = this.resource.getSuggestedTerms("term1", "fi");
         assertEquals(2, strDTO.getLoNames().size());
+    }
+    
+    @Test
+    public void testGetHigherEducationLearningOpportunity() {
+    	HigherEducationLOSDTO dto = resource.getHigherEducationLearningOpportunity("1.2.3.34", null, null);
+    	assertEquals("1.2.3.34", dto.getId());
+    }
+    
+    @Test
+    public void testPreviewLearningOpportunity() {
+    	HigherEducationLOSDTO dto = resource.previewLearningOpportunity("1.2.3.34", "fi", "fi");
+    	assertEquals("1.2.3.34", dto.getId());
     }
 
 }
