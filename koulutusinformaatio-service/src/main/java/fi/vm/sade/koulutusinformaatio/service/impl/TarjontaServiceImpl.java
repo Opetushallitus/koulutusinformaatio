@@ -68,8 +68,10 @@ public class TarjontaServiceImpl implements TarjontaService {
     private ProviderService providerService;
     private LearningOpportunityDirector loDirector;
     private TarjontaRawService tarjontaRawService;
+    private LOSObjectCreator creator;
 
-    @Autowired
+
+	@Autowired
     public TarjontaServiceImpl(ConversionService conversionService, KoodistoService koodistoService,
                                ProviderService providerService, LearningOpportunityDirector loDirector,
                                TarjontaRawService tarjontaRawService) {
@@ -141,7 +143,9 @@ public class TarjontaServiceImpl implements TarjontaService {
     @Override
     public List<HigherEducationLOS> findHigherEducations() throws KoodistoException {
 
-    	LOSObjectCreator creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService);
+    	if (creator == null) {
+    		creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService);
+    	}
 
     	List<HigherEducationLOS> koulutukset = new ArrayList<HigherEducationLOS>();
     	Map<String,List<HigherEducationLOS>> komoToLOSMap = new HashMap<String,List<HigherEducationLOS>>();
@@ -218,7 +222,9 @@ public class TarjontaServiceImpl implements TarjontaService {
     
     @Override
     public HigherEducationLOS findHigherEducationLearningOpportunity(String oid) throws TarjontaParseException, KoodistoException {
-    	LOSObjectCreator creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService);
+    	if (creator == null) {
+    		creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService);
+    	}
     	ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes = this.tarjontaRawService.getHigherEducationLearningOpportunity(oid);
 		KoulutusKorkeakouluV1RDTO koulutusDTO = koulutusRes.getResult();
 		if (koulutusDTO == null) {
@@ -236,6 +242,9 @@ public class TarjontaServiceImpl implements TarjontaService {
 	private List<HigherEducationLOS> getHigherEducationRelatives(
 			ResultV1RDTO<Set<String>> komoOids, LOSObjectCreator creator) throws TarjontaParseException, KoodistoException {
 		List<HigherEducationLOS> relatives = new ArrayList<HigherEducationLOS>();
+		if (komoOids == null) {
+			return relatives;
+		}
 		for (String curKomoOid : komoOids.getResult()) {
 			ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes = this.tarjontaRawService.getHigherEducationByKomo(curKomoOid);
 	    	HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
@@ -252,6 +261,15 @@ public class TarjontaServiceImpl implements TarjontaService {
 	    	}
 		}
 		return relatives;
+	}
+	
+
+    public LOSObjectCreator getCreator() {
+		return creator;
+	}
+
+	public void setCreator(LOSObjectCreator creator) {
+		this.creator = creator;
 	}
 
 	
