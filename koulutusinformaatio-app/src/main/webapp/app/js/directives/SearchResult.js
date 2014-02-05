@@ -28,27 +28,53 @@ directive('searchResult', ['FilterService', 'TranslationService', function(Filte
     }
 }]).
 
-directive('searchResultTarjonta', [function () {
-    return {
-        restrict: 'E',
+directive('extendedSearchResult', ['ParentLOService', function (ParentLOService) {
+    return {    
+        restrict: 'A',
+        controller: function($scope) {
+            $scope.toggleExtendedView = function() {
+                if($scope.showExtension == 'close') {
+                    if(!$scope.extendedLO) {
+                        $scope.fetchLOData();
+                    } else {
+                        $scope.showExtension = 'open';
+                    }
+                } else {
+                    $scope.showExtension = 'close';
+                }  
+            }
+
+            $scope.fetchLOData = function() {
+
+                $scope.extendedLO = ParentLOService.query({id: $scope.lo.id});
+                $scope.extendedLO.then(function(result) {
+                    $scope.showExtension = 'open';
+                    for(var i = 0 ; result.lo.lois.length < i ; i++) {
+                        //todo filter out unnecessary lois
+                    }
+                }, function(error) {
+                    console.error('error fetching extended LO');
+                });
+            }
+        },
         link: function (scope, iElement, iAttrs) {
+            scope.showExtension = "close";
         }
     };
 }]).
 
-directive('srExtendedKuvaus', ['ParentLOService', function (ParentLOService) {
+directive('srExtendedKuvaus', [function () {
     return {
         restrict: 'E',
+        require: '^extendedKuvaus',
         templateUrl: 'templates/searchResultKuvaus.html',
-        link: function(scope, iElement, iAttrs) {
-            scope.extendedLO = ParentLOService.query({id: scope.currentLO.id});
-            scope.extendedLO.then(function(result) {
-                for(var i = 0 ; result.lo.lois.length < i ; i++) {
-                    //todo filter out unnecessary lois
-                }
-            }, function(error) {
-                console.error('error fetching extended LO');
-            });
-        }
+    };
+}]).
+
+directive('srBasicInformation', [function () {
+    return {
+        restrict: 'E',
+        require: '^extendedKuvaus',
+        templateUrl: 'templates/searchResultBasicInformation.html'
     };
 }]);
