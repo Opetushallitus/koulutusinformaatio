@@ -40,7 +40,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
     private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO;
     private DataStatusDAO dataStatusDAO;
     private SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO;
-    private UniversityAppliedScienceLOSDAO universityAppliedScienceLOSTransactionDAO;
+    private HigherEducationLOSDAO universityAppliedScienceLOSTransactionDAO;
 
     @Autowired
     public EducationDataUpdateServiceImpl(ModelMapper modelMapper, ParentLearningOpportunitySpecificationDAO parentLOSTransactionDAO,
@@ -50,7 +50,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
                                           PictureDAO pictureTransactionDAO,
                                           UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO,
                                           DataStatusDAO dataStatusDAO, SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO,
-                                          UniversityAppliedScienceLOSDAO universityAppliedScienceLOSTransactionDAO) {
+                                          HigherEducationLOSDAO universityAppliedScienceLOSTransactionDAO) {
         this.modelMapper = modelMapper;
         this.parentLOSTransactionDAO = parentLOSTransactionDAO;
         this.applicationOptionTransactionDAO = applicationOptionTransactionDAO;

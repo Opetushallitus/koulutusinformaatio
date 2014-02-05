@@ -46,7 +46,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     private PictureDAO pictureDAO;
     private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO;
     private SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO;
-    private UniversityAppliedScienceLOSDAO universityAppliedScienceLOSDAO;
+    private HigherEducationLOSDAO universityAppliedScienceLOSDAO;
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
 
     @Autowired
@@ -56,7 +56,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
                                          DataStatusDAO dataStatusDAO, PictureDAO pictureDAO,
                                          UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO,
                                          SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO, 
-                                         UniversityAppliedScienceLOSDAO universityAppliedScienceLOSDAO, 
+                                         HigherEducationLOSDAO universityAppliedScienceLOSDAO, 
                                          LearningOpportunityProviderDAO learningOpportunityProviderDAO) {
         this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;

@@ -26,9 +26,9 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSEntity;
  * 
  * @author Markus
  */
-public class UniversityAppliedScienceLOSDAO extends BasicDAO<HigherEducationLOSEntity, String> {
+public class HigherEducationLOSDAO extends BasicDAO<HigherEducationLOSEntity, String> {
 	
-    public UniversityAppliedScienceLOSDAO(Mongo mongo, Morphia morphia, String dbName) {
+    public HigherEducationLOSDAO(Mongo mongo, Morphia morphia, String dbName) {
         super(mongo, morphia, dbName);
     }
 

@@ -30,6 +30,7 @@ public class EducationDataUpdateServiceImplTest extends AbstractEducationService
     private SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO;
     private DataStatusDAO dataStatusDAO;
     private PictureDAO pictureDAO;
+    private HigherEducationLOSDAO higherEdDAO;
     private DBCollection ploCollection;
     private DBCollection aoCollection;
     private DBCollection lopCollection;
@@ -47,10 +48,11 @@ public class EducationDataUpdateServiceImplTest extends AbstractEducationService
         upperSecondaryLearningOpportunitySpecificationDAO = mockUpSecDAO();
         specialLearningOpportunitySpecificationDAO = mockSpecialDAO();
         dataStatusDAO = mockDataStatudDAO();
+        higherEdDAO = mockHigherEdDAO();
         service = new EducationDataUpdateServiceImpl( modelMapper, parentLearningOpportunitySpecificationDAO,
                applicationOptionDAO, learningOpportunityProviderDAO, childLearningOpportunityDAO,
                 pictureDAO, upperSecondaryLearningOpportunitySpecificationDAO, dataStatusDAO,
-                specialLearningOpportunitySpecificationDAO,  null);
+                specialLearningOpportunitySpecificationDAO,  higherEdDAO);
     }
 
     @Test
@@ -123,6 +125,21 @@ public class EducationDataUpdateServiceImplTest extends AbstractEducationService
         los.setProvider(p);
         service.save(los);
         verify(specialLearningOpportunitySpecificationDAO, times(1)).save(any(SpecialLearningOpportunitySpecificationEntity.class));
+        verify(applicationOptionDAO, times(1)).save(any(ApplicationOptionEntity.class));
+        verify(learningOpportunityProviderDAO, times(1)).save(any(LearningOpportunityProviderEntity.class));
+    }
+    
+    @Test
+    public void testSaveHigherEducationLOS() {
+        ApplicationOption ao = new ApplicationOption();
+        ao.setId("aoid");
+        List<ApplicationOption> aos = Lists.newArrayList(ao);
+        Provider p = new Provider("providerid", TestUtil.createI18nText("name", "name", "name"));
+        HigherEducationLOS los = new HigherEducationLOS();
+        los.setApplicationOptions(aos);
+        los.setProvider(p);
+        service.save(los);
+        verify(higherEdDAO, times(1)).save(any(HigherEducationLOSEntity.class));
         verify(applicationOptionDAO, times(1)).save(any(ApplicationOptionEntity.class));
         verify(learningOpportunityProviderDAO, times(1)).save(any(LearningOpportunityProviderEntity.class));
     }

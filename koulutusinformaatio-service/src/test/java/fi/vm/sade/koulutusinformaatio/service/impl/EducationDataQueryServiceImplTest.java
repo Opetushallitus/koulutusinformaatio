@@ -17,10 +17,12 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.modelmapper.ModelMapper;
@@ -47,6 +49,7 @@ public class EducationDataQueryServiceImplTest extends AbstractEducationServiceT
     private PictureDAO pictureDAO;
     private DataStatusDAO dataStatusDAO;
     private LearningOpportunityProviderDAO providerDAO;
+    private HigherEducationLOSDAO higherEdDAO;
 
     @Before
     public void setUp() {
@@ -60,13 +63,14 @@ public class EducationDataQueryServiceImplTest extends AbstractEducationServiceT
         upperSecondaryLearningOpportunitySpecificationDAO = mockUpSecDAO();
         specialLearningOpportunitySpecificationDAO = mockSpecialDAO();
         providerDAO = mockProviderDAO();
+        higherEdDAO = mockHigherEdDAO();
         service = new EducationDataQueryServiceImpl(parentLearningOpportunitySpecificationDAO,
                 applicationOptionDAO, modelMapper, childLearningOpportunityDAO,
                 dataStatusDAO, pictureDAO, upperSecondaryLearningOpportunitySpecificationDAO,
-                specialLearningOpportunitySpecificationDAO, null, providerDAO);
+                specialLearningOpportunitySpecificationDAO, higherEdDAO, providerDAO);
     }
 
-    @Test
+	@Test
     public void testGetParentLearningOpportunity() throws ResourceNotFoundException {
         ParentLOS plo = service.getParentLearningOpportunity("1.2.3");
         assertNotNull(plo);
@@ -168,6 +172,18 @@ public class EducationDataQueryServiceImplTest extends AbstractEducationServiceT
     @Test(expected = ResourceNotFoundException.class)
     public void testGetProviderNotFound() throws ResourceNotFoundException {
        service.getProvider(NOTFOUND);
+    }
+    
+    @Test
+    public void testGetHigherEducation() throws ResourceNotFoundException {
+        HigherEducationLOS lo = service.getHigherEducationLearningOpportunity("higherEdId");
+        assertNotNull(lo);
+        assertEquals("higherEdId", lo.getId());
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void testGetHigherEdNotFound() throws ResourceNotFoundException {
+    	service.getHigherEducationLearningOpportunity(NOTFOUND);
     }
 
 }

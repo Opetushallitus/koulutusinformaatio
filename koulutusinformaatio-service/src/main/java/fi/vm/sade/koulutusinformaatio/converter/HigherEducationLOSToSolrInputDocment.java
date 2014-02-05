@@ -15,7 +15,7 @@ import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.SolrFields.SolrConstants;
 
-public class UasLOSToSolrInputDocment implements Converter<HigherEducationLOS, List<SolrInputDocument>> {
+public class HigherEducationLOSToSolrInputDocment implements Converter<HigherEducationLOS, List<SolrInputDocument>> {
 
 	@Override
 	public List<SolrInputDocument> convert(HigherEducationLOS los) {
