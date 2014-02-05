@@ -401,7 +401,7 @@ service('UpperSecondaryLOService', ['$http', '$timeout', '$q', 'LanguageService'
 /**
  * Resource for requesting University of Applied Sciences LO data
  */
-service('UniversityAppliedScienceLOService', ['$http', '$timeout', '$q', 'LanguageService', 'UniversityAppliedScienceTransformer', function($http, $timeout, $q, LanguageService, UniversityAppliedScienceTransformer) {
+service('HigherEducationLOService', ['$http', '$timeout', '$q', 'LanguageService', 'HigherEducationTransformer', function($http, $timeout, $q, LanguageService, HigherEducationTransformer) {
     return {
         query: function(options) {
             var deferred = $q.defer();
@@ -413,7 +413,7 @@ service('UniversityAppliedScienceLOService', ['$http', '$timeout', '$q', 'Langua
                 queryParams.lang = options.lang
             }
 
-            var url = '../lo/uas/';
+            var url = '../lo/highered/';
 
             $http.get(url + options.id, {
                 params: queryParams
@@ -421,7 +421,7 @@ service('UniversityAppliedScienceLOService', ['$http', '$timeout', '$q', 'Langua
             
             //$http.get('mocks/amk.json', {}).
             success(function(result) {
-            	UniversityAppliedScienceTransformer.transform(result);
+            	HigherEducationTransformer.transform(result);
                 var loResult = {
                     lo: result,
                     parent: {},
@@ -441,7 +441,7 @@ service('UniversityAppliedScienceLOService', ['$http', '$timeout', '$q', 'Langua
 /**
  * Resource for requesting University of Applied Sciences LO data
  */
-service('UniversityPreviewLOService', ['$http', '$timeout', '$q', 'LanguageService', 'UniversityAppliedScienceTransformer', function($http, $timeout, $q, LanguageService, UniversityAppliedScienceTransformer) {
+service('HigherEducationPreviewLOService', ['$http', '$timeout', '$q', 'LanguageService', 'HigherEducationTransformer', function($http, $timeout, $q, LanguageService, HigherEducationTransformer) {
     return {
         query: function(options) {
             var deferred = $q.defer();
@@ -462,7 +462,7 @@ service('UniversityPreviewLOService', ['$http', '$timeout', '$q', 'LanguageServi
             
             //$http.get('mocks/amk.json', {}).
             success(function(result) {
-            	UniversityAppliedScienceTransformer.transform(result);
+            	HigherEducationTransformer.transform(result);
                 var loResult = {
                     lo: result,
                     parent: {},
@@ -616,7 +616,7 @@ service('ParentLOTransformer', ['UtilityService', '$filter', '$rootScope', funct
 /**
  * Transformer for child LO data
  */
-service('UniversityAppliedScienceTransformer', ['UtilityService', '$rootScope', '$filter', function(UtilityService, $rootScope, $filter) {
+service('HigherEducationTransformer', ['UtilityService', '$rootScope', '$filter', function(UtilityService, $rootScope, $filter) {
 
 	var getFirstItemInList = function(list) {
 		if (list && list[0]) {

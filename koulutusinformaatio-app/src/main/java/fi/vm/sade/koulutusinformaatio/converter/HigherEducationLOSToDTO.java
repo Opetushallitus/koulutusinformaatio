@@ -8,21 +8,21 @@ import com.google.common.collect.SetMultimap;
 
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.UniversityAppliedScienceLOS;
+import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.UniversityAppliedScienceLOSDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.UniversityChildLosReferenceDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationLOSDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationChildLosReferenceDTO;
 
-public class UniversityAppliedScienceLOSToDTO {
+public class HigherEducationLOSToDTO {
 	
-	public UniversityAppliedScienceLOSToDTO() {
+	public HigherEducationLOSToDTO() {
 		
 	}
 	
-	public static UniversityAppliedScienceLOSDTO convert(
-            final UniversityAppliedScienceLOS los, final String lang, final String uiLang) {
-		UniversityAppliedScienceLOSDTO dto =
-                new UniversityAppliedScienceLOSDTO();
+	public static HigherEducationLOSDTO convert(
+            final HigherEducationLOS los, final String lang, final String uiLang) {
+		HigherEducationLOSDTO dto =
+                new HigherEducationLOSDTO();
         dto.setId(los.getId());
         dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(los.getName(), lang));
         dto.setEducationDegree(los.getEducationDegree());
@@ -95,11 +95,11 @@ public class UniversityAppliedScienceLOSToDTO {
         return dto;
     }
 
-	private static List<UniversityChildLosReferenceDTO> convertReferences(
-			List<UniversityAppliedScienceLOS> children, String lang) {
-		List<UniversityChildLosReferenceDTO> results = new ArrayList<UniversityChildLosReferenceDTO>();
-		for (UniversityAppliedScienceLOS curChild : children) {
-			UniversityChildLosReferenceDTO childDto = new UniversityChildLosReferenceDTO();
+	private static List<HigherEducationChildLosReferenceDTO> convertReferences(
+			List<HigherEducationLOS> children, String lang) {
+		List<HigherEducationChildLosReferenceDTO> results = new ArrayList<HigherEducationChildLosReferenceDTO>();
+		for (HigherEducationLOS curChild : children) {
+			HigherEducationChildLosReferenceDTO childDto = new HigherEducationChildLosReferenceDTO();
 			childDto.setId(curChild.getId());
 			childDto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(curChild.getName(), lang));
 			childDto.setEducationDegree(curChild.getEducationDegree());

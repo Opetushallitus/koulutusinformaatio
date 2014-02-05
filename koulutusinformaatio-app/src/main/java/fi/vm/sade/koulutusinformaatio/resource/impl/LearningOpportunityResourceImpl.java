@@ -159,17 +159,17 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
     }
 
 	@Override
-	public UniversityAppliedScienceLOSDTO getUasLearningOpportunity(String id,
+	public HigherEducationLOSDTO getHigherEducationLearningOpportunity(String id,
 			String lang, String uiLang) {
 		try {
             if (Strings.isNullOrEmpty(lang) && Strings.isNullOrEmpty(uiLang)) {
-                return learningOpportunityService.getUniversityAppliedScienceLearningOpportunity(id);
+                return learningOpportunityService.getHigherEducationLearningOpportunity(id);
             }
             else if (Strings.isNullOrEmpty(lang)) {
-                return learningOpportunityService.getUniversityAppliedScienceLearningOpportunity(id, uiLang.toLowerCase());
+                return learningOpportunityService.getHigherEducationLearningOpportunity(id, uiLang.toLowerCase());
             }
             else {
-                return learningOpportunityService.getUniversityAppliedScienceLearningOpportunity(id, lang.toLowerCase(), uiLang.toLowerCase());
+                return learningOpportunityService.getHigherEducationLearningOpportunity(id, lang.toLowerCase(), uiLang.toLowerCase());
             }
         } catch (ResourceNotFoundException e) {
             throw KIExceptionHandler.resolveException(e);
@@ -177,7 +177,7 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
 	}
 
 	@Override
-	public UniversityAppliedScienceLOSDTO previewLearningOpportunity(String oid,
+	public HigherEducationLOSDTO previewLearningOpportunity(String oid,
 			String lang, String uiLang) {
 		try {
 			return learningOpportunityService.previewLearningOpportunity(oid, lang, uiLang);

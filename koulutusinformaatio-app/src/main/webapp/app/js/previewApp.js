@@ -30,20 +30,20 @@ var kiApp = angular.module('previewApp',
         controller: InfoCtrl,
         reloadOnSearch: false,
         resolve: {
-            loResource: function($route, $location, UniversityPreviewLOService) {
+            loResource: function($route, $location, HigherEducationPreviewLOService) {
                 switch($route.current.params.loType) {
                     case 'lukio':
-                        return UniversityPreviewLOService;
+                        return HigherEducationPreviewLOService;
                     case 'koulutusohjelma':
-                        return UniversityPreviewLOService;
+                        return HigherEducationPreviewLOService;
                     case 'tutkinto':
-                        return UniversityPreviewLOService;
+                        return HigherEducationPreviewLOService;
                     case 'erityisopetus':
-                        return UniversityPreviewLOService;
+                        return HigherEducationPreviewLOService;
                     case 'valmentava':
-                        return UniversityPreviewLOService;
+                        return HigherEducationPreviewLOService;
                     case 'korkeakoulu':
-                    	return UniversityPreviewLOService;
+                    	return HigherEducationPreviewLOService;
                 }
             },
             partialUrl: function($rootScope, $route) {

@@ -52,11 +52,11 @@ public interface LearningOpportunityService {
 
     SpecialLearningOpportunitySpecificationDTO getSpecialSecondaryLearningOpportunity(String id, String lang, String uiLang) throws ResourceNotFoundException;
     
-    UniversityAppliedScienceLOSDTO getUniversityAppliedScienceLearningOpportunity(String id) throws ResourceNotFoundException;
+    HigherEducationLOSDTO getHigherEducationLearningOpportunity(String id) throws ResourceNotFoundException;
 
-    UniversityAppliedScienceLOSDTO getUniversityAppliedScienceLearningOpportunity(String id, String uiLang) throws ResourceNotFoundException;
+    HigherEducationLOSDTO getHigherEducationLearningOpportunity(String id, String uiLang) throws ResourceNotFoundException;
 
-    UniversityAppliedScienceLOSDTO getUniversityAppliedScienceLearningOpportunity(String id, String lang, String uiLang) throws ResourceNotFoundException;
+    HigherEducationLOSDTO getHigherEducationLearningOpportunity(String id, String lang, String uiLang) throws ResourceNotFoundException;
 
     List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, String lopId, String baseEducation, boolean vocational, boolean nonVocational, String uiLang);
 
@@ -72,6 +72,6 @@ public interface LearningOpportunityService {
 
     List<LearningOpportunitySearchResultDTO> findLearningOpportunitiesByProviderId(String providerId, String lang);
 
-	UniversityAppliedScienceLOSDTO previewLearningOpportunity(String id,
+	HigherEducationLOSDTO previewLearningOpportunity(String id,
 			String lang, String uiLang) throws ResourceNotFoundException;
 }

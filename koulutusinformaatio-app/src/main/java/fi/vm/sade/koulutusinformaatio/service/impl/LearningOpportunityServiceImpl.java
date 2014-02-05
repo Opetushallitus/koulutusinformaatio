@@ -239,35 +239,35 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     }
 
 	@Override
-	public UniversityAppliedScienceLOSDTO getUniversityAppliedScienceLearningOpportunity(
+	public HigherEducationLOSDTO getHigherEducationLearningOpportunity(
 			String id) throws ResourceNotFoundException {
-		UniversityAppliedScienceLOS los = educationDataQueryService.getUasLearningOpportunity(id);
+		HigherEducationLOS los = educationDataQueryService.getHigherEducationLearningOpportunity(id);
         String lang = (los.getTeachingLanguages() != null && !los.getTeachingLanguages().isEmpty()) ? los.getTeachingLanguages().get(0).getValue().toLowerCase() : LANG_FI;//resolveDefaultLanguage(los.getTeachingLanguages());
-        return UniversityAppliedScienceLOSToDTO.convert(los, lang, lang);
+        return HigherEducationLOSToDTO.convert(los, lang, lang);
 	}
 
 	@Override
-	public UniversityAppliedScienceLOSDTO getUniversityAppliedScienceLearningOpportunity(
+	public HigherEducationLOSDTO getHigherEducationLearningOpportunity(
 			String id, String uiLang) throws ResourceNotFoundException {
-		UniversityAppliedScienceLOS los = educationDataQueryService.getUasLearningOpportunity(id);
+		HigherEducationLOS los = educationDataQueryService.getHigherEducationLearningOpportunity(id);
 		String lang = (los.getTeachingLanguages() != null && !los.getTeachingLanguages().isEmpty()) ? los.getTeachingLanguages().get(0).getValue().toLowerCase() : LANG_FI;//resolveDefaultLanguage(los.getTeachingLanguages());
-        return UniversityAppliedScienceLOSToDTO.convert(los, lang, uiLang);
+        return HigherEducationLOSToDTO.convert(los, lang, uiLang);
 	}
 
 	@Override
-	public UniversityAppliedScienceLOSDTO getUniversityAppliedScienceLearningOpportunity(
+	public HigherEducationLOSDTO getHigherEducationLearningOpportunity(
 			String id, String lang, String uiLang)
 			throws ResourceNotFoundException {
-		UniversityAppliedScienceLOS los = educationDataQueryService.getUasLearningOpportunity(id);
-		return UniversityAppliedScienceLOSToDTO.convert(los, lang, uiLang);
+		HigherEducationLOS los = educationDataQueryService.getHigherEducationLearningOpportunity(id);
+		return HigherEducationLOSToDTO.convert(los, lang, uiLang);
 	}
 	
 	@Override
-	public UniversityAppliedScienceLOSDTO previewLearningOpportunity(
+	public HigherEducationLOSDTO previewLearningOpportunity(
 			String id, String lang, String uiLang)
 			throws ResourceNotFoundException {
-		UniversityAppliedScienceLOS los = this.previewService.previewHigherEducationLearningOpportunity(id);
-		return UniversityAppliedScienceLOSToDTO.convert(los, lang, uiLang);
+		HigherEducationLOS los = this.previewService.previewHigherEducationLearningOpportunity(id);
+		return HigherEducationLOSToDTO.convert(los, lang, uiLang);
 	}
 
 }
