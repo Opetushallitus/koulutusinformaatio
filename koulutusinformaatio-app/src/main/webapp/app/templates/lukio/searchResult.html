@@ -13,27 +13,19 @@
 
 <div class="clear"></div>
 
-<div data-ng-controller="extendedSearchResultCtrl">
+<div data-sr-extended-data data-toggle-collapse>
 
-    <h4 class="collapser float-right" ng-class="showExtension" ng-click="toggleExtendedView()">
-    	<span>Avaa tästä</span>
-    	<span class="icon"></span>
-    </h4>
+    <div class="grid16-8">
+        <h4 class="margin-top-0">Perustiedot</h4>
+        <sr-basic-information></sr-basic-information>
+    </div>
+    
+    <div class="grid16-8">
+        <sr-extended-options></sr-extended-options>
+    </div>
 
 
     <div class="clear"></div>
-    
-    <div collapse="showExtension == 'close'">
-        <div class="grid16-8">
-
-        </div>
-
-        <div class="grid16-8">
-            <h4 class="margin-top-0">Tarjonta</h4>
-        </div>
-
-        <div class="clear"></div>
-    </div>
 </div>
 
 
