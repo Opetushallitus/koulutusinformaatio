@@ -80,6 +80,8 @@ public class UniversityAppliedScienceLOSDTO {
 	private String educationDegreeName;
 	private List<String> teachingTimes;
 	private List<String> teachingPlaces;
+	private String startSeason;
+	private int startYear;
 
 	public String getId() {
 		return id;
@@ -423,4 +425,21 @@ public class UniversityAppliedScienceLOSDTO {
 	public void setParents(List<UniversityChildLosReferenceDTO> parents) {
 		this.parents = parents;
 	}
+	
+	public String getStartSeason() {
+		return startSeason;
+	}
+
+	public void setStartSeason(String startSeason) {
+		this.startSeason = startSeason;
+	}
+
+	public int getStartYear() {
+		return startYear;
+	}
+
+	public void setStartYear(int startYear) {
+		this.startYear = startYear;
+	}
+
 }

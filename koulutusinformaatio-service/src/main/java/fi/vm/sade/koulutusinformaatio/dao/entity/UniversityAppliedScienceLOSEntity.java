@@ -118,6 +118,9 @@ public class UniversityAppliedScienceLOSEntity {
 	private List<I18nTextEntity> teachingPlaces;
 
 	private String type;
+	@Embedded
+	private I18nTextEntity startSeason;
+	private int startYear;
 	
 	public String getId() {
 		return id;
@@ -383,5 +386,17 @@ public class UniversityAppliedScienceLOSEntity {
 	}
 	public void setParents(List<UniversityAppliedScienceLOSEntity> parents) {
 		this.parents = parents;
+	}
+	public I18nTextEntity getStartSeason() {
+		return startSeason;
+	}
+	public void setStartSeason(I18nTextEntity startSeason) {
+		this.startSeason = startSeason;
+	}
+	public int getStartYear() {
+		return startYear;
+	}
+	public void setStartYear(int startYear) {
+		this.startYear = startYear;
 	}
 }

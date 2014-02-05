@@ -320,6 +320,12 @@ public class LOSObjectCreator extends ObjectCreator {
         if (koulutus.getKoulutuksenAlkamisPvms() != null && !koulutus.getKoulutuksenAlkamisPvms().isEmpty()) {
         	los.setStartDate(koulutus.getKoulutuksenAlkamisPvms().iterator().next());
         }
+        if (koulutus.getKoulutuksenAlkamisvuosi() != null) {
+        	los.setStartYear(koulutus.getKoulutuksenAlkamisvuosi());
+        }
+        if (koulutus.getKoulutuksenAlkamiskausi() != null) {	
+        	los.setStartSeason(getI18nTextEnriched(koulutus.getKoulutuksenAlkamiskausi().getMeta()));
+        }
         
         los.setPlannedDuration(koulutus.getSuunniteltuKestoArvo());
         los.setPlannedDurationUnit(getI18nTextEnriched(koulutus.getSuunniteltuKestoTyyppi().getMeta()));

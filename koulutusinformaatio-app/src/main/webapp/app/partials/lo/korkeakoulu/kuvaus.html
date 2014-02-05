@@ -3,7 +3,8 @@
         <ul class="nobullet">
             <li>
                 <span data-ki-i18n="education-starts" data-show-colon="true" class="margin-right-1"></span>
-                <span class="bold">{{lo.startDate}}</span>
+                <span data-ng-show="lo.startDate" class="bold">{{lo.startDate}}</span>
+                <span data-ng-hide="lo.startDate" class="bold">{{lo.startSeason}} {{lo.startYear}}</span>
             </li>
             <li>
                 <span data-ki-i18n="language-of-instruction" data-show-colon="true" class="margin-right-1"></span>

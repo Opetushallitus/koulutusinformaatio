@@ -58,7 +58,12 @@ public class UniversityAppliedScienceLOSToDTO {
         dto.setTeachingPlaces(ConverterUtil.getTextsByLanguage(los.getTeachingPlaces(), uiLang));
         dto.setTeachingLanguages(CodeToValue.convertAll(los.getTeachingLanguages()));
         //TODO: --> dto.setFormOfEducation(ConverterUtil.getTextsByLanguage(los.getFormOfEducation(), uiLang));
-        dto.setStartDate(los.getStartDate());
+        if (los.getStartDate() != null) {
+        	dto.setStartDate(los.getStartDate());  
+        } else {
+        	dto.setStartYear(los.getStartYear());
+            dto.setStartSeason(ConverterUtil.getTextByLanguageUseFallbackLang(los.getStartSeason(), lang));
+        }
         dto.setInternationalization(ConverterUtil.getTextByLanguage(los.getInternationalization(), lang));
         dto.setCooperation(ConverterUtil.getTextByLanguage(los.getCooperation(), lang));
         dto.setContent(ConverterUtil.getTextByLanguage(los.getContent(), lang));

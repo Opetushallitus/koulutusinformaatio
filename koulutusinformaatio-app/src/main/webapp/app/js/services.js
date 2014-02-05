@@ -641,9 +641,10 @@ service('UniversityAppliedScienceTransformer', ['UtilityService', '$rootScope', 
 			if (result && result.provider && result.provider.name) {
 				result.provider.encodedName = $filter('encodeURIComponent')('"' + result.provider.name + '"');
 			}
-
-			var startDate = new Date(result.startDate);
-			result.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
+			if (result.startDate) {
+				var startDate = new Date(result.startDate);
+				result.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
+			}
 			result.teachingLanguage = getFirstItemInList(result.teachingLanguages);
 			result.formOfTeaching = getFirstItemInList(result.formOfTeaching);
 

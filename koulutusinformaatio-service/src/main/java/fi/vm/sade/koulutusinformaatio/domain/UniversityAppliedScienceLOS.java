@@ -74,6 +74,8 @@ public class UniversityAppliedScienceLOS extends LOS {
 	private List<I18nText> teachingTimes;
 	private List<I18nText> teachingPlaces;
 	private I18nText infoAboutCharge;
+	private I18nText startSeason;
+	private int startYear;
 
 
 
@@ -432,5 +434,21 @@ public class UniversityAppliedScienceLOS extends LOS {
 
 	public void setParentKomoOids(List<String> parentKomoOids) {
 		this.parentKomoOids = parentKomoOids;
+	}
+
+	public I18nText getStartSeason() {
+		return startSeason;
+	}
+
+	public void setStartSeason(I18nText startSeason) {
+		this.startSeason = startSeason;
+	}
+
+	public int getStartYear() {
+		return startYear;
+	}
+
+	public void setStartYear(int startYear) {
+		this.startYear = startYear;
 	}
 }
