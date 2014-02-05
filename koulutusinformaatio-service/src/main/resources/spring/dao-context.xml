@@ -120,7 +120,7 @@
         <constructor-arg value="${mongo.db.name}"/>
     </bean>
     
-    <bean id="universityAppliedScienceLOSDAO" class="fi.vm.sade.koulutusinformaatio.dao.UniversityAppliedScienceLOSDAO">
+    <bean id="higherEducationLOSDAO" class="fi.vm.sade.koulutusinformaatio.dao.HigherEducationLOSDAO">
         <constructor-arg>
             <ref bean="mongo"/>
         </constructor-arg>

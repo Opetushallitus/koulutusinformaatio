@@ -15,12 +15,17 @@
  */
 package fi.vm.sade.koulutusinformaatio.dao;
 
+import java.util.List;
+
+import org.mongodb.morphia.Key;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.dao.BasicDAO;
+import org.mongodb.morphia.query.Query;
 
 import com.mongodb.Mongo;
 
 import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
 
 /**
  * 
@@ -30,6 +35,12 @@ public class HigherEducationLOSDAO extends BasicDAO<HigherEducationLOSEntity, St
 	
     public HigherEducationLOSDAO(Mongo mongo, Morphia morphia, String dbName) {
         super(mongo, morphia, dbName);
+    }
+    
+    public List<HigherEducationLOSEntity> findByProviderId(String providerId) {
+        Query<HigherEducationLOSEntity> query = createQuery();
+        query.field("provider").equal(new Key(LearningOpportunityProviderEntity.class, providerId));
+        return find(query).asList();
     }
 
 }

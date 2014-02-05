@@ -40,7 +40,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
     private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO;
     private DataStatusDAO dataStatusDAO;
     private SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO;
-    private HigherEducationLOSDAO universityAppliedScienceLOSTransactionDAO;
+    private HigherEducationLOSDAO higherEducationLOSTransactionDAO;
 
     @Autowired
     public EducationDataUpdateServiceImpl(ModelMapper modelMapper, ParentLearningOpportunitySpecificationDAO parentLOSTransactionDAO,
@@ -50,7 +50,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
                                           PictureDAO pictureTransactionDAO,
                                           UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO,
                                           DataStatusDAO dataStatusDAO, SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO,
-                                          HigherEducationLOSDAO universityAppliedScienceLOSTransactionDAO) {
+                                          HigherEducationLOSDAO higherEducationLOSTransactionDAO) {
         this.modelMapper = modelMapper;
         this.parentLOSTransactionDAO = parentLOSTransactionDAO;
         this.applicationOptionTransactionDAO = applicationOptionTransactionDAO;
@@ -60,7 +60,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
         this.upperSecondaryLOSTransactionDAO = upperSecondaryLOSTransactionDAO;
         this.dataStatusDAO = dataStatusDAO;
         this.specialLOSTransactionDAO = specialLOSTransactionDAO;
-        this.universityAppliedScienceLOSTransactionDAO = universityAppliedScienceLOSTransactionDAO;
+        this.higherEducationLOSTransactionDAO = higherEducationLOSTransactionDAO;
     }
 
     @Override
@@ -191,7 +191,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
             	}
             }
 
-            this.universityAppliedScienceLOSTransactionDAO.save(plos);
+            this.higherEducationLOSTransactionDAO.save(plos);
         }
 	}
 }

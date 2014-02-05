@@ -46,7 +46,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     private PictureDAO pictureDAO;
     private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO;
     private SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO;
-    private HigherEducationLOSDAO universityAppliedScienceLOSDAO;
+    private HigherEducationLOSDAO higherEducationLOSDAO;
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
 
     @Autowired
@@ -56,7 +56,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
                                          DataStatusDAO dataStatusDAO, PictureDAO pictureDAO,
                                          UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO,
                                          SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO, 
-                                         HigherEducationLOSDAO universityAppliedScienceLOSDAO, 
+                                         HigherEducationLOSDAO higherEducationLOSDAO, 
                                          LearningOpportunityProviderDAO learningOpportunityProviderDAO) {
         this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;
@@ -66,7 +66,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
         this.pictureDAO = pictureDAO;
         this.upperSecondaryLearningOpportunitySpecificationDAO = upperSecondaryLearningOpportunitySpecificationDAO;
         this.specialLearningOpportunitySpecificationDAO = specialLearningOpportunitySpecificationDAO;
-        this.universityAppliedScienceLOSDAO = universityAppliedScienceLOSDAO;
+        this.higherEducationLOSDAO = higherEducationLOSDAO;
         this.learningOpportunityProviderDAO = learningOpportunityProviderDAO;
     }
 
@@ -169,7 +169,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     
 	@Override
 	public HigherEducationLOS getHigherEducationLearningOpportunity(String oid) throws ResourceNotFoundException {
-		HigherEducationLOSEntity entity = this.universityAppliedScienceLOSDAO.get(oid);
+		HigherEducationLOSEntity entity = this.higherEducationLOSDAO.get(oid);
 		if (entity != null) {
 			return modelMapper.map(entity, HigherEducationLOS.class);
 		} else {

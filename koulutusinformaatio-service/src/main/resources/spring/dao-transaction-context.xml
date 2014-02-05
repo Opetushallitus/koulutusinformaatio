@@ -108,7 +108,7 @@
         <constructor-arg value="${mongo.db.name}"/>
     </bean>
     
-    <bean id="universityAppliedScienceLOSTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.UniversityAppliedScienceLOSDAO">
+    <bean id="higherEducationLOSTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.HigherEducationLOSDAO">
         <constructor-arg>
             <ref bean="mongo"/>
         </constructor-arg>
