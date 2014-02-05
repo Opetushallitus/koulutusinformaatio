@@ -2,27 +2,9 @@
 	<span class="ribbon-label margin-right-1" data-ki-i18n="description-language-selection" data-show-colon="true"></span>
 	<div class="inline">
 		<ul class="ribbon-content nobullet">
-			<li data-ng-repeat="lng in lo.availableTranslationLanguages">
+			<li data-ng-repeat="lng in selectedLOI.availableTranslationLanguages">
 				<a href="javascript:void(0)" data-ng-click="changeDescriptionLanguage(lng)" data-ki-i18n="language-{{lng}}"></a>
 			</li>
 		</ul>
 	</div>
-	<!--
-	<div data-ng-switch="isChild" class="inline">
-		<div data-ng-switch-when="true" class="inline">
-			<ul class="ribbon-content nobullet">
-				<li data-ng-repeat="lng in lo.availableTranslationLanguages">
-					<a href="javascript:void(0)" data-ng-click="changeDescriptionLanguage(lng)" data-ki-i18n="language-{{lng}}"></a>
-				</li>
-			</ul>
-		</div>
-		<div data-ng-switch-when="false" class="inline">
-			<ul class="ribbon-content nobullet">
-				<li data-ng-repeat="lng in parent.availableTranslationLanguages">
-					<a href="javascript:void(0)" data-ng-click="changeDescriptionLanguage(lng)" data-ki-i18n="language-{{lng}}"></a>
-				</li>
-			</ul>
-		</div>
-	</div>
--->
 </div>

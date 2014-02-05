@@ -41,7 +41,6 @@ public final class SpecialLOSToDTO {
         dto.setLois(ChildLOIToDTO.convert(los.getLois(), lang, uiLang, defaultLang));
         dto.setProvider(ProviderToDTO.convert(los.getProvider(), lang, defaultLang));
         dto.setTranslationLanguage(lang);
-        dto.setAvailableTranslationLanguages(ConverterUtil.getAvailableTranslationLanguages(los.getGoals()));
         dto.setCreditValue(los.getCreditValue());
         dto.setCreditUnit(ConverterUtil.getTextByLanguage(los.getCreditUnit(), uiLang));
         dto.setEducationDomain(ConverterUtil.getShortNameTextByLanguage(los.getEducationDomain(), defaultLang));

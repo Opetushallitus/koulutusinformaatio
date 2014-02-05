@@ -23,7 +23,7 @@ public final class ChildLOIToDTO {
         if (childLOI != null) {
             ChildLearningOpportunityInstanceDTO dto = new ChildLearningOpportunityInstanceDTO();
             dto.setId(childLOI.getId());
-            dto.setAvailableTranslationLanguages(ConverterUtil.getAvailableTranslationLanguages(childLOI.getName()));
+            dto.setAvailableTranslationLanguages(childLOI.getAvailableTranslationLanguages());
             dto.setStartDate(childLOI.getStartDate());
             if (childLOI.getTeachingLanguages() != null) {
                 for (Code code : childLOI.getTeachingLanguages()) {
