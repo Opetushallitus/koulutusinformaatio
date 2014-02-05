@@ -40,7 +40,8 @@ public class UpperSecondaryLOI extends LOI {
     private I18nText plannedDurationUnit;
     private List<LanguageSelection> languageSelection;
     private boolean kaksoistutkinto;
-    
+    private List<String> availableTranslationLanguages;
+
     //planned duration unit code uri (used in indexing for solr)
     private String pduCodeUri;
 
@@ -170,5 +171,13 @@ public class UpperSecondaryLOI extends LOI {
 
     public void setPduCodeUri(String pduCodeUri) {
         this.pduCodeUri = pduCodeUri;
+    }
+
+    public List<String> getAvailableTranslationLanguages() {
+        return availableTranslationLanguages;
+    }
+
+    public void setAvailableTranslationLanguages(List<String> availableTranslationLanguages) {
+        this.availableTranslationLanguages = availableTranslationLanguages;
     }
 }

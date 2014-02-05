@@ -20,6 +20,7 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
@@ -98,6 +99,24 @@ public class LOIObjectCreator extends ObjectCreator {
             }
         }
 
+        // fields used to resolve available translation languages
+        // content, internationalization, cooperation
+        Set<String> availableLanguagaes = Sets.newHashSet();
+        if (childLOI.getContent() != null) {
+            availableLanguagaes.addAll(childLOI.getContent().getTranslations().keySet());
+        }
+        if (childLOI.getInternationalization() != null) {
+            availableLanguagaes.addAll(childLOI.getInternationalization().getTranslations().keySet());
+        }
+        if (childLOI.getCooperation() != null) {
+            availableLanguagaes.addAll(childLOI.getCooperation().getTranslations().keySet());
+        }
+        for (Code teachingLanguage : childLOI.getTeachingLanguages()) {
+            availableLanguagaes.add(teachingLanguage.getValue().toLowerCase());
+        }
+
+        childLOI.setAvailableTranslationLanguages(Lists.newArrayList(availableLanguagaes));
+
         List<ApplicationOption> applicationOptions = Lists.newArrayList();
         boolean kaksoistutkinto = false;
         List<OidRDTO> aoIdDTOs = tarjontaRawService.getHakukohdesByKomoto(childKomoto.getOid());
@@ -162,6 +181,23 @@ public class LOIObjectCreator extends ObjectCreator {
         loi.setPlannedDurationUnit(koodistoService.searchFirst(komoto.getSuunniteltuKestoYksikkoUri()));
         loi.setPduCodeUri(komoto.getLaajuusYksikkoUri());
 
+        // fields used to resolve available translation languages
+        // content, internationalization, cooperation
+        Set<String> availableLanguagaes = Sets.newHashSet();
+        if (loi.getContent() != null) {
+            availableLanguagaes.addAll(loi.getContent().getTranslations().keySet());
+        }
+        if (loi.getInternationalization() != null) {
+            availableLanguagaes.addAll(loi.getInternationalization().getTranslations().keySet());
+        }
+        if (loi.getCooperation() != null) {
+            availableLanguagaes.addAll(loi.getCooperation().getTranslations().keySet());
+        }
+        for (Code teachingLanguage : loi.getTeachingLanguages()) {
+            availableLanguagaes.add(teachingLanguage.getValue().toLowerCase());
+        }
+
+        loi.setAvailableTranslationLanguages(Lists.newArrayList(availableLanguagaes));
         for (String d : komoto.getLukiodiplomitUris()) {
             loi.getDiplomas().add(koodistoService.searchFirst(d));
         }
@@ -232,7 +268,7 @@ public class LOIObjectCreator extends ObjectCreator {
      * @param lois unfiltered list
      * @return filtered list
      */
-    private <T extends LOI>  List<T> filterInstances(List<T> lois) {
+    private <T extends LOI> List<T> filterInstances(List<T> lois) {
         // list application options by prerequisite
         Multimap<String, ApplicationOption> applicationOptions = HashMultimap.create();
         for (LOI loi : lois) {
@@ -245,7 +281,8 @@ public class LOIObjectCreator extends ObjectCreator {
         List<T> filteredLOIs = Lists.newArrayList();
 
         for (T loi : lois) {
-            aoLoop : for (ApplicationOption ao : filteredApplicationOptions) {
+            aoLoop:
+            for (ApplicationOption ao : filteredApplicationOptions) {
                 if (loi.getApplicationOptions().contains(ao)) {
                     filteredLOIs.add(loi);
                     break aoLoop;

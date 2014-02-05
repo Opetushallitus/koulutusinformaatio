@@ -34,7 +34,8 @@ public class ChildLOI extends LOI {
     private boolean kaksoistutkinto;
     private String plannedDuration;
     private I18nText plannedDurationUnit;
-    
+    private List<String> availableTranslationLanguages;
+
     //planned duration unit code uri (used in indexing for solr)
     private String pduCodeUri;
 
@@ -204,5 +205,13 @@ public class ChildLOI extends LOI {
 
     public void setPduCodeUri(String pduCodeUri) {
         this.pduCodeUri = pduCodeUri;
+    }
+
+    public List<String> getAvailableTranslationLanguages() {
+        return availableTranslationLanguages;
+    }
+
+    public void setAvailableTranslationLanguages(List<String> availableTranslationLanguages) {
+        this.availableTranslationLanguages = availableTranslationLanguages;
     }
 }

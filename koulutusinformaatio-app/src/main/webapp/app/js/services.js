@@ -408,14 +408,17 @@ service('ParentLOTransformer', ['UtilityService', '$filter', '$rootScope', funct
                 $rootScope.translationLanguage = result.translationLanguage;
             }
 
-            if (result && result.availableTranslationLanguages) {
-                var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
-                result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
-            }
-
             if (result && result.provider && result.provider.name) {
                 result.provider.encodedName = $filter('encodeURIComponent')('"' + result.provider.name + '"');
             }
+
+            for (var loiIndex in result.lois) {
+                if (result.lois.hasOwnProperty(loiIndex)) {
+                    var loi = result.lois[loiIndex];
+                    var translationLanguageIndex = loi.availableTranslationLanguages.indexOf(result.translationLanguage);
+                    loi.availableTranslationLanguages.splice(translationLanguageIndex, 1);
+                }
+            } 
 
             //var applicationSystems = [];
 
@@ -561,10 +564,13 @@ service('ChildLOTransformer', ['UtilityService', '$rootScope', function(UtilityS
                 $rootScope.translationLanguage = result.translationLanguage;
             }
 
-            if (result && result.availableTranslationLanguages) {
-                var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
-                result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
-            }
+            for (var loiIndex in result.lois) {
+                if (result.lois.hasOwnProperty(loiIndex)) {
+                    var loi = result.lois[loiIndex];
+                    var translationLanguageIndex = loi.availableTranslationLanguages.indexOf(result.translationLanguage);
+                    loi.availableTranslationLanguages.splice(translationLanguageIndex, 1);
+                }
+            } 
             
 
             for (var loiIndex in result.lois) {
