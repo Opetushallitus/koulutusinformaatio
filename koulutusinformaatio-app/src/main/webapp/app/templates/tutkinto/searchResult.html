@@ -13,27 +13,15 @@
 <div class="clear"></div>
 
 <div data-extended-search-result>
+    <div class="grid16-8">
+        <h4 class="margin-top-0">Koulutustarjonta</h4>
+        <sr-extended-koulutustarjonta></sr-extended-koulutustarjonta>
+    </div>
 
-    <h4 class="collapser float-right" ng-class="showExtension" ng-click="toggleExtendedView()">
-    	<span>Avaa tästä</span>
-    	<span class="icon"></span>
-    </h4>
-
+    <div class="grid16-8">
+        <h4 class="margin-top-0">Perustiedot</h4>
+        <sr-basic-information></sr-basic-information>
+    </div>
 
     <div class="clear"></div>
-    
-    <div collapse="showExtension == 'close'">
-        
-        <div class="grid16-8">
-            <h4 class="margin-top-0">Koulutustarjonta</h4>
-            <sr-extended-kuvaus></sr-extended-kuvaus>
-        </div>
-
-        <div class="grid16-8">
-            <h4 class="margin-top-0">Perustiedot</h4>
-            <sr-basic-information></sr-basic-information>
-        </div>
-
-        <div class="clear"></div>
-    </div>
 </div>

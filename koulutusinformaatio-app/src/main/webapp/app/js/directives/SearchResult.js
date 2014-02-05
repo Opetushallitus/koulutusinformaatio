@@ -31,6 +31,7 @@ directive('searchResult', ['FilterService', 'TranslationService', function(Filte
 directive('extendedSearchResult', ['ParentLOService', function (ParentLOService) {
     return {    
         restrict: 'A',
+        transclude: true,
         controller: function($scope) {
             $scope.toggleExtendedView = function() {
                 if($scope.showExtension == 'close') {
@@ -43,7 +44,6 @@ directive('extendedSearchResult', ['ParentLOService', function (ParentLOService)
                     $scope.showExtension = 'close';
                 }  
             }
-
             $scope.fetchLOData = function() {
 
                 $scope.extendedLO = ParentLOService.query({id: $scope.lo.id});
@@ -59,15 +59,24 @@ directive('extendedSearchResult', ['ParentLOService', function (ParentLOService)
         },
         link: function (scope, iElement, iAttrs) {
             scope.showExtension = "close";
-        }
+        },
+        template: 
+                '<h4 class="collapser float-right" ng-class="showExtension" ng-click="toggleExtendedView()">' + 
+                    '<span>Avaa tästä </span>' + 
+                    '<span class="icon"></span>' +
+                '</h4>' +
+                '<div class="clear"></div>' +
+                '<div collapse="showExtension == \'close\'">' + 
+                    '<div ng-transclude></div>' +
+                '</div>'
     };
 }]).
 
-directive('srExtendedKuvaus', [function () {
+directive('srExtendedKoulutustarjonta', [function () {
     return {
         restrict: 'E',
         require: '^extendedKuvaus',
-        templateUrl: 'templates/searchResultKuvaus.html',
+        templateUrl: 'templates/searchResultExtendedKoulutustarjonta.html',
     };
 }]).
 
