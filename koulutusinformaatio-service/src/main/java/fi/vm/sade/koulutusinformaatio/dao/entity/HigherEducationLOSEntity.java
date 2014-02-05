@@ -30,7 +30,7 @@ import org.mongodb.morphia.annotations.Reference;
  * @author Markus
  */
 @Entity("universityAppliedScienceLOS")
-public class UniversityAppliedScienceLOSEntity {
+public class HigherEducationLOSEntity {
 	
 
 	//Varmistetut
@@ -106,9 +106,9 @@ public class UniversityAppliedScienceLOSEntity {
 	private List<I18nTextEntity> professionalTitles;
 	
 	@Reference
-	private List<UniversityAppliedScienceLOSEntity> children;
+	private List<HigherEducationLOSEntity> children;
 	@Reference
-	private List<UniversityAppliedScienceLOSEntity> parents;
+	private List<HigherEducationLOSEntity> parents;
 
 	@Embedded
 	private List<CodeEntity> prerequisites;
@@ -321,10 +321,10 @@ public class UniversityAppliedScienceLOSEntity {
 	public void setChildKomoOids(List<String> childKomoOids) {
 		this.childKomoOids = childKomoOids;
 	}
-	public List<UniversityAppliedScienceLOSEntity> getChildren() {
+	public List<HigherEducationLOSEntity> getChildren() {
 		return children;
 	}
-	public void setChildren(List<UniversityAppliedScienceLOSEntity> children) {
+	public void setChildren(List<HigherEducationLOSEntity> children) {
 		this.children = children;
 	}
 	public String getType() {
@@ -381,10 +381,10 @@ public class UniversityAppliedScienceLOSEntity {
 	public void setTeachingPlaces(List<I18nTextEntity> teachingPlaces) {
 		this.teachingPlaces = teachingPlaces;
 	}	
-	public List<UniversityAppliedScienceLOSEntity> getParents() {
+	public List<HigherEducationLOSEntity> getParents() {
 		return parents;
 	}
-	public void setParents(List<UniversityAppliedScienceLOSEntity> parents) {
+	public void setParents(List<HigherEducationLOSEntity> parents) {
 		this.parents = parents;
 	}
 	public I18nTextEntity getStartSeason() {

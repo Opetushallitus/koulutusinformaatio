@@ -40,7 +40,7 @@ import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.Location;
-import fi.vm.sade.koulutusinformaatio.domain.UniversityAppliedScienceLOS;
+import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
@@ -122,10 +122,10 @@ public class UpdateServiceImpl implements UpdateService {
                    this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
                }
                
-               List<UniversityAppliedScienceLOS> higherEducations = this.tarjontaService.findHigherEducations();
+               List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
            	   LOG.debug("Found higher educations: " + higherEducations.size());
            		
-           		for (UniversityAppliedScienceLOS curLOS : higherEducations) {
+           		for (HigherEducationLOS curLOS : higherEducations) {
            			LOG.debug("Saving highed education: " + curLOS.getId());
            			indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr);
         			this.educationDataUpdateService.save(curLOS);
@@ -155,10 +155,10 @@ public class UpdateServiceImpl implements UpdateService {
     	
     }
 
-	private void indexToSolr(UniversityAppliedScienceLOS curLOS,
+	private void indexToSolr(HigherEducationLOS curLOS,
 			HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr) throws Exception {
 		this.indexerService.addLearningOpportunitySpecification(curLOS, loUpdateSolr, lopUpdateSolr);
-		for (UniversityAppliedScienceLOS curChild: curLOS.getChildren()) {
+		for (HigherEducationLOS curChild: curLOS.getChildren()) {
 			indexToSolr(curChild, loUpdateSolr, lopUpdateSolr);
 		}
 	}

@@ -23,7 +23,7 @@ import java.util.List;
  * 
  * @author Markus
  */
-public class UniversityAppliedScienceLOS extends LOS {
+public class HigherEducationLOS extends LOS {
 
 	//Varmistetut
     private String id;
@@ -65,8 +65,8 @@ public class UniversityAppliedScienceLOS extends LOS {
 	private List<String> childKomoOids = new ArrayList<String>();
 	private List<String> parentKomoOids = new ArrayList<String>();
 	
-	private List<UniversityAppliedScienceLOS> children = new ArrayList<UniversityAppliedScienceLOS>();
-	private List<UniversityAppliedScienceLOS> parents = new ArrayList<UniversityAppliedScienceLOS>();
+	private List<HigherEducationLOS> children = new ArrayList<HigherEducationLOS>();
+	private List<HigherEducationLOS> parents = new ArrayList<HigherEducationLOS>();
 	
 	private List<Code> prerequisites;
 	private List<I18nText> formOfTeaching;
@@ -351,11 +351,11 @@ public class UniversityAppliedScienceLOS extends LOS {
 		this.childKomoOids = childKomoOids;
 	}
 
-	public List<UniversityAppliedScienceLOS> getChildren() {
+	public List<HigherEducationLOS> getChildren() {
 		return children;
 	}
 
-	public void setChildren(List<UniversityAppliedScienceLOS> children) {
+	public void setChildren(List<HigherEducationLOS> children) {
 		this.children = children;
 	}
 
@@ -420,11 +420,11 @@ public class UniversityAppliedScienceLOS extends LOS {
 		return infoAboutCharge;
 	}
 
-	public List<UniversityAppliedScienceLOS> getParents() {
+	public List<HigherEducationLOS> getParents() {
 		return parents;
 	}
 
-	public void setParents(List<UniversityAppliedScienceLOS> parents) {
+	public void setParents(List<HigherEducationLOS> parents) {
 		this.parents = parents;
 	}
 

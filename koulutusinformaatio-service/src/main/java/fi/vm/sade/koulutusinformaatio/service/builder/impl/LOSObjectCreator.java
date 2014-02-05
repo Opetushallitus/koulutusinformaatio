@@ -237,8 +237,8 @@ public class LOSObjectCreator extends ObjectCreator {
         return los;
     }
     
-    public UniversityAppliedScienceLOS createUasLOS(KoulutusKorkeakouluV1RDTO koulutus, boolean checkStatus) throws TarjontaParseException, KoodistoException {
-    	UniversityAppliedScienceLOS los = new UniversityAppliedScienceLOS();
+    public HigherEducationLOS createHigherEducationLOS(KoulutusKorkeakouluV1RDTO koulutus, boolean checkStatus) throws TarjontaParseException, KoodistoException {
+    	HigherEducationLOS los = new HigherEducationLOS();
 
     	los.setType(TarjontaConstants.TYPE_KK);
     	los.setId(koulutus.getOid());
@@ -368,7 +368,7 @@ public class LOSObjectCreator extends ObjectCreator {
 
 
 
-	private ParentLOSRef createParetLosRef(UniversityAppliedScienceLOS los) {
+	private ParentLOSRef createParetLosRef(HigherEducationLOS los) {
 		ParentLOSRef educationRef = new ParentLOSRef();
 		educationRef.setId(los.getId());
 		educationRef.setName(los.getName());
@@ -376,7 +376,7 @@ public class LOSObjectCreator extends ObjectCreator {
 		return educationRef;
 	}
 
-	private boolean fetchHakukohdeData(UniversityAppliedScienceLOS los, boolean checkStatus) throws KoodistoException {
+	private boolean fetchHakukohdeData(HigherEducationLOS los, boolean checkStatus) throws KoodistoException {
 		 ResultV1RDTO<List<NimiJaOidRDTO>> hakukohteet = loiCreator.tarjontaRawService.getHakukohdesByHigherEducation(los.getId());
 		
 		 if (hakukohteet == null 

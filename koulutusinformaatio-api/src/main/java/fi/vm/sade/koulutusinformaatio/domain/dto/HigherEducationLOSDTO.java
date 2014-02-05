@@ -28,7 +28,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
  * @author Markus
  */
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
-public class UniversityAppliedScienceLOSDTO {
+public class HigherEducationLOSDTO {
 
 	private String id;
 	private String infoAboutTeachingLangs;
@@ -67,8 +67,8 @@ public class UniversityAppliedScienceLOSDTO {
 	private LearningOpportunityProviderDTO provider;
 	private List<ApplicationSystemDTO> applicationSystems = new ArrayList<ApplicationSystemDTO>();
 	
-	private List<UniversityChildLosReferenceDTO> children = new ArrayList<UniversityChildLosReferenceDTO>();
-	private List<UniversityChildLosReferenceDTO> parents = new ArrayList<UniversityChildLosReferenceDTO>();
+	private List<HigherEducationChildLosReferenceDTO> children = new ArrayList<HigherEducationChildLosReferenceDTO>();
+	private List<HigherEducationChildLosReferenceDTO> parents = new ArrayList<HigherEducationChildLosReferenceDTO>();
 	
 	private List<CodeDTO> prerequisites;
 	private String translationLanguage;
@@ -331,11 +331,11 @@ public class UniversityAppliedScienceLOSDTO {
 		this.applicationSystems = applicationSystems;
 	}
 
-	public List<UniversityChildLosReferenceDTO> getChildren() {
+	public List<HigherEducationChildLosReferenceDTO> getChildren() {
 		return children;
 	}
 
-	public void setChildren(List<UniversityChildLosReferenceDTO> children) {
+	public void setChildren(List<HigherEducationChildLosReferenceDTO> children) {
 		this.children = children;
 	}
 
@@ -418,11 +418,11 @@ public class UniversityAppliedScienceLOSDTO {
 		this.infoAboutCharge = infoAboutCharge;
 	}
 
-	public List<UniversityChildLosReferenceDTO> getParents() {
+	public List<HigherEducationChildLosReferenceDTO> getParents() {
 		return parents;
 	}
 
-	public void setParents(List<UniversityChildLosReferenceDTO> parents) {
+	public void setParents(List<HigherEducationChildLosReferenceDTO> parents) {
 		this.parents = parents;
 	}
 	

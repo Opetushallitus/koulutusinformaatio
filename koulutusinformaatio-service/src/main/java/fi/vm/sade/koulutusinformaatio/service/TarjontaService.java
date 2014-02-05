@@ -17,7 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.service;
 
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
-import fi.vm.sade.koulutusinformaatio.domain.UniversityAppliedScienceLOS;
+import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 
@@ -52,8 +52,8 @@ public interface TarjontaService {
      */
     public List<String> listParentLearnignOpportunityOids(int count, int startIndex);
     
-    public List<UniversityAppliedScienceLOS> findHigherEducations() throws KoodistoException;
+    public List<HigherEducationLOS> findHigherEducations() throws KoodistoException;
 
-	public UniversityAppliedScienceLOS findHigherEducationLearningOpportunity(
+	public HigherEducationLOS findHigherEducationLearningOpportunity(
 			String oid) throws TarjontaParseException, KoodistoException;
 }

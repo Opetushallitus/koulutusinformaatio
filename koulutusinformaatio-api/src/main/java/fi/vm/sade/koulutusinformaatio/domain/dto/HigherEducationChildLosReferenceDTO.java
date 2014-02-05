@@ -1,6 +1,6 @@
 package fi.vm.sade.koulutusinformaatio.domain.dto;
 
-public class UniversityChildLosReferenceDTO {
+public class HigherEducationChildLosReferenceDTO {
 
 	private String id;
 	private String educationDegree;

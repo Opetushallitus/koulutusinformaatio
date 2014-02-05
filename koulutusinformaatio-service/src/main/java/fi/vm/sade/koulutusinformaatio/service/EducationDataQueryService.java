@@ -85,7 +85,7 @@ public interface EducationDataQueryService {
      * @return university of applied science los
      * @throws ResourceNotFoundException
      */
-    UniversityAppliedScienceLOS getUasLearningOpportunity(final String oid) throws ResourceNotFoundException;
+    HigherEducationLOS getHigherEducationLearningOpportunity(final String oid) throws ResourceNotFoundException;
     
     /**
      * Retrieves a learning opportunity provider.

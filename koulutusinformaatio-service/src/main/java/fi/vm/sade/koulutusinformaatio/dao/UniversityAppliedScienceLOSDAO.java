@@ -20,13 +20,13 @@ import org.mongodb.morphia.dao.BasicDAO;
 
 import com.mongodb.Mongo;
 
-import fi.vm.sade.koulutusinformaatio.dao.entity.UniversityAppliedScienceLOSEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSEntity;
 
 /**
  * 
  * @author Markus
  */
-public class UniversityAppliedScienceLOSDAO extends BasicDAO<UniversityAppliedScienceLOSEntity, String> {
+public class UniversityAppliedScienceLOSDAO extends BasicDAO<HigherEducationLOSEntity, String> {
 	
     public UniversityAppliedScienceLOSDAO(Mongo mongo, Morphia morphia, String dbName) {
         super(mongo, morphia, dbName);

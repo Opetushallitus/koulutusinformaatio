@@ -171,16 +171,16 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
     }
 
 	@Override
-	public void save(UniversityAppliedScienceLOS los) {
+	public void save(HigherEducationLOS los) {
 		
 		if (los != null) {
 			
-			for (UniversityAppliedScienceLOS curChild : los.getChildren()) {
+			for (HigherEducationLOS curChild : los.getChildren()) {
 				save(curChild);
 			}
 			
-            UniversityAppliedScienceLOSEntity plos =
-                    modelMapper.map(los, UniversityAppliedScienceLOSEntity.class);
+            HigherEducationLOSEntity plos =
+                    modelMapper.map(los, HigherEducationLOSEntity.class);
             
             save(plos.getProvider());
 

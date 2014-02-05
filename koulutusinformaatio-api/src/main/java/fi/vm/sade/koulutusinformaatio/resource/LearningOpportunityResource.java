@@ -127,9 +127,9 @@ public interface LearningOpportunityResource {
      * @return university of applied science learning opportunity specification
      */
     @GET
-    @Path("uas/{id}")
+    @Path("highered/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public UniversityAppliedScienceLOSDTO getUasLearningOpportunity(@PathParam("id") String id,
+    public HigherEducationLOSDTO getHigherEducationLearningOpportunity(@PathParam("id") String id,
                                                                                     @QueryParam("lang") String lang,
                                                                                     @QueryParam("uiLang") String uiLang);
 
@@ -157,7 +157,7 @@ public interface LearningOpportunityResource {
     @GET
     @Path("preview/{oid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public UniversityAppliedScienceLOSDTO previewLearningOpportunity(@PathParam("oid") String oid,
+    public HigherEducationLOSDTO previewLearningOpportunity(@PathParam("oid") String oid,
                                                      @QueryParam("lang") String lang,
                                                      @QueryParam("uiLang") String uiLang);
 }

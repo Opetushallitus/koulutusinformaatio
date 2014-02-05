@@ -114,8 +114,8 @@ public class IndexerServiceImpl implements IndexerService {
         } else if (los instanceof SpecialLOS) {
             SpecialLOS special = (SpecialLOS) los;
             provider = special.getProvider();
-        } else if (los instanceof UniversityAppliedScienceLOS) {
-        	UniversityAppliedScienceLOS uas = (UniversityAppliedScienceLOS)los;
+        } else if (los instanceof HigherEducationLOS) {
+        	HigherEducationLOS uas = (HigherEducationLOS)los;
         	provider = uas.getProvider();
         }
 

@@ -11,14 +11,14 @@ import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.UniversityAppliedScienceLOS;
+import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.SolrFields.SolrConstants;
 
-public class UasLOSToSolrInputDocment implements Converter<UniversityAppliedScienceLOS, List<SolrInputDocument>> {
+public class UasLOSToSolrInputDocment implements Converter<HigherEducationLOS, List<SolrInputDocument>> {
 
 	@Override
-	public List<SolrInputDocument> convert(UniversityAppliedScienceLOS los) {
+	public List<SolrInputDocument> convert(HigherEducationLOS los) {
 		List<SolrInputDocument> docs = Lists.newArrayList();
         FacetIndexer fIndexer = new FacetIndexer();
         
@@ -28,7 +28,7 @@ public class UasLOSToSolrInputDocment implements Converter<UniversityAppliedScie
         return docs;
 	}
 
-	private SolrInputDocument createDoc(UniversityAppliedScienceLOS los) {
+	private SolrInputDocument createDoc(HigherEducationLOS los) {
 
 		SolrInputDocument doc = new SolrInputDocument();
 
@@ -160,7 +160,7 @@ public class UasLOSToSolrInputDocment implements Converter<UniversityAppliedScie
 	}
 
 	private void indexFacetFields(SolrInputDocument doc,
-			UniversityAppliedScienceLOS los) {
+			HigherEducationLOS los) {
 		doc.addField(LearningOpportunity.TEACHING_LANGUAGE, los.getTeachingLanguages().get(0).getValue());
         doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMK);
 

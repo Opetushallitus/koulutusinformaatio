@@ -168,10 +168,10 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     }
     
 	@Override
-	public UniversityAppliedScienceLOS getUasLearningOpportunity(String oid) throws ResourceNotFoundException {
-		UniversityAppliedScienceLOSEntity entity = this.universityAppliedScienceLOSDAO.get(oid);
+	public HigherEducationLOS getHigherEducationLearningOpportunity(String oid) throws ResourceNotFoundException {
+		HigherEducationLOSEntity entity = this.universityAppliedScienceLOSDAO.get(oid);
 		if (entity != null) {
-			return modelMapper.map(entity, UniversityAppliedScienceLOS.class);
+			return modelMapper.map(entity, HigherEducationLOS.class);
 		} else {
 			throw new ResourceNotFoundException(String.format("University of applied science learning opportunity specification not found: %s", oid));
 		}
