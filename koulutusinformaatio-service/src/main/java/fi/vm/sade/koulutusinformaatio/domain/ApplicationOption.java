@@ -72,6 +72,8 @@ public class ApplicationOption {
     // koulutuskoodiuri
     private String educationCodeUri;
 	private I18nText soraDescription;
+	private String status;
+
 
 
 	public String getId() {
@@ -362,5 +364,13 @@ public class ApplicationOption {
         }
         return last;
     }
+
+	public void setStatus(String tila) {
+		this.status = tila;	
+	}
+	
+	public String getStatus() {
+		return status;
+	}
 
 }

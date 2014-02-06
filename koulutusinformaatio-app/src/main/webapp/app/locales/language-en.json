@@ -245,5 +245,9 @@
     "123": "Yleinen yliopistokelpoisuus",
     
     "autocomplete-keyword": "Hakusanaehdotukset",
-    "autocomplete-loname": "Kurssit ja tutkinnot"
+    "autocomplete-loname": "Kurssit ja tutkinnot",
+    
+    "VALMIS": "Valmis (en)",
+    "LUONNOS": "Luonnos (en)",
+    "JULKAISTU": "Julkaistu (en)"
 }

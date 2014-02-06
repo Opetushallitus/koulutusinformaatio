@@ -351,7 +351,7 @@ public class LOSObjectCreator extends ObjectCreator {
         boolean existsValidHakukohde = fetchHakukohdeData(los, checkStatus);
         
         
-        
+        //If we are not fetching for preview, an exception is thrown if no valid application options exist
         if (checkStatus && !existsValidHakukohde) {
         	throw new TarjontaParseException("No valid application options for education: " + los.getId());
         }
@@ -361,6 +361,7 @@ public class LOSObjectCreator extends ObjectCreator {
         		ao.setEducationDegree(los.getEducationDegree());
         		los.getProvider().getApplicationSystemIDs().add(ao.getApplicationSystem().getId());
         		ao.setParent(createParetLosRef(los));
+        		
         	}
         }
     	return los;
@@ -406,6 +407,11 @@ public class LOSObjectCreator extends ObjectCreator {
 			    }
 			    
 			    ApplicationOption ao = loiCreator.applicationOptionCreator.createHigherEducationApplicationOption(los, hakukohdeDTO, hakuRes.getResult());
+			    //If fetching for preview, the status of the application option is added
+			    if (!checkStatus) {
+			    	ao.setStatus(hakukohdeDTO.getTila());
+			    	ao.getApplicationSystem().setStatus(hakuDTO.getTila());
+			    }
 			    aos.add(ao);
 			    
 		 }

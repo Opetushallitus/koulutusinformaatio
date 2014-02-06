@@ -1,5 +1,5 @@
 <ul class="ribbon-content nobullet">
 	<li data-ng-repeat="child in children" >
-		<a data-ng-href="{{child.url}}">{{child.name}}</a>
+		<a data-ng-href="{{child.url}}">{{child.name}}</a> <span data-ng-show="child.status" data-ki-i18n="{{child.status}}"></span>
 	</li>
 </ul>

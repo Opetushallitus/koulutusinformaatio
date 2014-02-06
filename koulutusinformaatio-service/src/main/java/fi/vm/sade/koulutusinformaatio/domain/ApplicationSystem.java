@@ -27,8 +27,10 @@ public class ApplicationSystem {
     private String id;
     private I18nText name;
     private List<DateRange> applicationDates = new ArrayList<DateRange>();
+	private String status;
 
-    public String getId() {
+
+	public String getId() {
         return id;
     }
 
@@ -68,4 +70,12 @@ public class ApplicationSystem {
     public int hashCode() {
         return id.hashCode();
     }
+
+	public void setStatus(String tila) {
+		this.status = tila;	
+	}
+
+    public String getStatus() {
+		return status;
+	}
 }

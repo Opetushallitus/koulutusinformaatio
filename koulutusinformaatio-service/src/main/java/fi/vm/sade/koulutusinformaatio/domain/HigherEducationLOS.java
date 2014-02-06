@@ -76,8 +76,9 @@ public class HigherEducationLOS extends LOS {
 	private I18nText infoAboutCharge;
 	private I18nText startSeason;
 	private int startYear;
-
-
+	
+	//Status of the lo. For preview
+	private String status;
 
 	public String getId() {
 		return id;
@@ -450,5 +451,13 @@ public class HigherEducationLOS extends LOS {
 
 	public void setStartYear(int startYear) {
 		this.startYear = startYear;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 }

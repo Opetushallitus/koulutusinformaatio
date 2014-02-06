@@ -82,6 +82,7 @@ public class HigherEducationLOSDTO {
 	private List<String> teachingPlaces;
 	private String startSeason;
 	private int startYear;
+	private String status;
 
 	public String getId() {
 		return id;
@@ -440,6 +441,14 @@ public class HigherEducationLOSDTO {
 
 	public void setStartYear(int startYear) {
 		this.startYear = startYear;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 }

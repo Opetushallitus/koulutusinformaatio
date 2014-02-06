@@ -71,6 +71,7 @@ public final class ApplicationOptionToDTO {
             dto.setKaksoistutkinto(applicationOption.isKaksoistutkinto());
             dto.setAthleteEducation(applicationOption.isAthleteEducation());
             dto.setEducationCodeUri(applicationOption.getEducationCodeUri());
+            dto.setStatus(applicationOption.getStatus());
             return dto;
         }
         return null;

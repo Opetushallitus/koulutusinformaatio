@@ -5,6 +5,7 @@ public class HigherEducationChildLosReferenceDTO {
 	private String id;
 	private String educationDegree;
 	private String name;
+	private String status;
 	
 	public String getId() {
 		return id;
@@ -23,5 +24,11 @@ public class HigherEducationChildLosReferenceDTO {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
 	}
 }

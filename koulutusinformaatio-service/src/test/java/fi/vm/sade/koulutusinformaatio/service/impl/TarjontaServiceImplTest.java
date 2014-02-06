@@ -123,13 +123,16 @@ public class TarjontaServiceImplTest {
     	ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes = new ResultV1RDTO<KoulutusKorkeakouluV1RDTO>();
     	KoulutusKorkeakouluV1RDTO koulutus1 = new KoulutusKorkeakouluV1RDTO();
     	koulutus1.setOid(koulJulk.getOid());
+    	koulutus1.setTila(TarjontaTila.JULKAISTU);
     	koulutusRes.setResult(koulutus1);
+    	
     	
     	when(tarjontaRawService.getHigherEducationLearningOpportunity(koulJulk.getOid())).thenReturn(koulutusRes);
     	
     	ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes2 = new ResultV1RDTO<KoulutusKorkeakouluV1RDTO>();
     	KoulutusKorkeakouluV1RDTO koulutus2 = new KoulutusKorkeakouluV1RDTO();
     	koulutus2.setOid(koulEiJulk.getOid());
+    	koulutus2.setTila(TarjontaTila.VALMIS);
     	koulutusRes2.setResult(koulutus2);
     	
     	when(tarjontaRawService.getHigherEducationLearningOpportunity(koulEiJulk.getOid())).thenReturn(koulutusRes2);

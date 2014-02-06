@@ -16,7 +16,7 @@
 
     <div data-ng-repeat="as in lo.applicationSystems">
         <div data-ng-repeat="ao in as.applicationOptions" id="{{ao.id}}" class="ao-block">
-            <h2>{{ao.name}}</h2>
+            <h2>{{ao.name}} <span data-ng-show="ao.status" data-ki-i18n="{{ao.status}}"></span></h2>
             <div class="infobox">
                 <ul class="nobullet">
                     <li>

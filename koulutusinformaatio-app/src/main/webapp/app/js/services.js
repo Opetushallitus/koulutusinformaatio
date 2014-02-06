@@ -628,6 +628,8 @@ service('HigherEducationTransformer', ['UtilityService', '$rootScope', '$filter'
 
 	return {
 		transform: function(result) {
+			
+			result.preview = true;
 
 			if (result && result.translationLanguage) {
 				$rootScope.translationLanguage = result.translationLanguage;

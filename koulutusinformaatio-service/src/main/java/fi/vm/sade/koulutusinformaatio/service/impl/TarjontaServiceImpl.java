@@ -230,7 +230,9 @@ public class TarjontaServiceImpl implements TarjontaService {
 		if (koulutusDTO == null) {
 			return null;
 		}
+		
 		HigherEducationLOS los = creator.createHigherEducationLOS(koulutusDTO, false);
+		los.setStatus(koulutusDTO.getTila().toString());
 		
 		ResultV1RDTO<Set<String>> childKomoOids = this.tarjontaRawService.getChildrenOfParentHigherEducationLOS(koulutusDTO.getKomoOid());
 		ResultV1RDTO<Set<String>> parentKomoOids = this.tarjontaRawService.getParentsOfHigherEducationLOS(koulutusDTO.getKomoOid());
@@ -256,6 +258,7 @@ public class TarjontaServiceImpl implements TarjontaService {
 	    				continue;
 	    			}
 	    			HigherEducationLOS los = creator.createHigherEducationLOS(koulutusDTO, false);
+	    			los.setStatus(koulutusDTO.getTila().toString());
 	    			relatives.add(los);
 	    		}
 	    	}

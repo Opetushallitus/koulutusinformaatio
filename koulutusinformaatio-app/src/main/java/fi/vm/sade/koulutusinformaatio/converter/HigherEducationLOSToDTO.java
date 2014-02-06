@@ -83,6 +83,7 @@ public class HigherEducationLOSToDTO {
 
         	for (ApplicationSystem as : aoByAs.keySet()) {
         		ApplicationSystemDTO asDTO = ApplicationSystemToDTO.convert(as, uiLang);
+        		asDTO.setStatus(as.getStatus());
         		for (ApplicationOption ao : aoByAs.get(as)) {
         			asDTO.getApplicationOptions().add(ApplicationOptionToDTO.convert(ao, lang, uiLang, "fi"));
         		}
@@ -92,6 +93,7 @@ public class HigherEducationLOSToDTO {
         dto.setChargeable(los.getChargeable());
         dto.setChildren(convertReferences(los.getChildren(), lang));
         dto.setParents(convertReferences(los.getParents(), lang));
+        dto.setStatus(los.getStatus());
         return dto;
     }
 
@@ -103,6 +105,7 @@ public class HigherEducationLOSToDTO {
 			childDto.setId(curChild.getId());
 			childDto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(curChild.getName(), lang));
 			childDto.setEducationDegree(curChild.getEducationDegree());
+			childDto.setStatus(curChild.getStatus());
 			results.add(childDto);
 		}
 		

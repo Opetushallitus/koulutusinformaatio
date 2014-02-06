@@ -62,6 +62,7 @@ public class ApplicationOptionDTO {
     private boolean athleteEducation;
     private boolean vocational;
     private String educationCodeUri;
+    private String status;
 
     public String getId() {
         return id;
@@ -325,5 +326,13 @@ public class ApplicationOptionDTO {
 
 	public void setSoraDescription(String soraDescription) {
 		this.soraDescription = soraDescription;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 }

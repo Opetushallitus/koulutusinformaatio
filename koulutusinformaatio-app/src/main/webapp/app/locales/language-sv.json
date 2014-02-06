@@ -244,5 +244,9 @@
      "123": "Yleinen yliopistokelpoisuus (sv)",
 
     "autocomplete-keyword": "Sökordsförslag",
-    "autocomplete-loname": "Kurser och examen"
+    "autocomplete-loname": "Kurser och examen",
+    
+    "VALMIS": "Valmis (sv)",
+    "LUONNOS": "Luonnos (sv)",
+    "JULKAISTU": "Julkaistu (sv)"
 }
