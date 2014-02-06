@@ -1,0 +1,22 @@
+{% extends "index-base-fi.html" %}
+{% block title %}{{ locales["provider-erityis"] }}{% endblock %}
+
+{% block breadcrumb %}
+<a href="../index.html">{{ locales["home"] }}</a>
+<span class="delimiter">&gt;</span>
+<span>{{ locales["provider-erityis"] }}</span>
+{% endblock %}
+
+{% block maintitle %}{{ locales["provider-erityis"] }}{% endblock %}
+
+{% block content %}
+
+<ul>
+  {% for item in ctx %}
+  <li>
+    <a href="{{ item.id }}.html">{{ item.name }}</a>
+  </li>
+  {% endfor %}
+</ul>
+
+{% endblock %}

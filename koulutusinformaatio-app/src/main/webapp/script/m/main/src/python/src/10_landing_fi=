@@ -1,0 +1,15 @@
+import data
+from data import s, get, out
+
+#data.base_url = "https://testi.opintopolku.fi"
+#data.base_url = "https://test-oppija.oph.ware.fi"
+
+#url = "/wp/fi/api/core/get_page?id=2790"
+url = "/wp/wp_api/v1/posts?post_type=page&p=2790&lang=fi"
+
+results = get(url)
+if "posts" in results:
+	#retval = get("/wp/fi/api/core/get_page?id=2790") #["page"]
+	retval = results["posts"][0]
+else:
+	retval = []

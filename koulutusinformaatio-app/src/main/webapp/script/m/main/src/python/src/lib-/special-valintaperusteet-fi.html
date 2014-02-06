@@ -1,0 +1,116 @@
+{% set loi = ctx.lois[0] %}
+{% set as = loi.applicationSystems[0] %}
+{% set ao = as.applicationOptions[0] %}
+{% set provider = ctx.provider %}
+{% extends "base-fi.html" %}
+{% block title %}{{ ctx.name }} - {{ locales["lo-application-er"] }}{% endblock %}
+
+{% block breadcrumb %}
+<a href="../index.html">{{ locales["home"] }}</a>
+<span class="delimiter">&gt;</span>
+<a href="index-1.html">{{ locales[lotypekey] }}</a>
+<span class="delimiter">&gt;</span>
+<span>{{ ctx.name }} - {{ locales["lo-application-er"] }}</span>
+{% endblock %}
+
+{% block maintitle %}{{ ctx.name }} - {{ locales["lo-application-er"] }}{% endblock %}
+
+{% block tabs %}
+<a href="{{ ctx.id }}-koulutus.html">{{ locales["lo-description"] }}</a>
+<a href="{{ ctx.id }}-oppilaitos.html">{{ locales["lo-tab-academy"] }}</a>
+{% endblock %}
+
+{% block content %}
+
+{% if ao.selectionCriteria is defined %}
+{{ ao.selectionCriteria }}
+{% endif %}
+
+{% if ao.exams is defined %}
+{% for exam in ao.exams %}
+<h2>{{ exam.type }}</h2>
+
+{% if exam.description %}
+{{ exam.description }}
+{% endif %}
+
+{% for event in exam.examEvents %}
+<p>
+	Koetilaisuus {{ event.start|datetimeinterval(event.end) }}<br />
+
+	Järjestetään paikassa 
+	{% if event.address.streetAddress is defined %}{{ event.address.streetAddress }}, {% endif %}
+	{% if event.address.streetAddress2 is defined %}{{ event.address.streetAddress2 }}, {% endif %}
+	{% if event.address.postalCode is defined %}{{ event.address.postalCode }} {% endif %}
+	{% if event.address.postOffice is defined %}{{ event.address.postOffice }}{% endif %}<br />
+	Tilaisuuden kuvaus: {{ event.description }}
+</p>
+{% endfor %}
+{% endfor %}
+{% endif %}
+
+
+{% if ao.attachments is defined %}
+<h2>{{ locales["required-attachments"] }}</h2>
+{% for att in ao.attachments %}
+<h3>{{ att.type }}</h3>
+{% if att.descreption %}
+{{ att.descreption }}
+{% endif %}
+
+<p>
+	Liite {{att.type}}<br />
+	Toimitetaan osoitteeseen 
+	{% if att.address.streetAddress is defined %}{{ att.address.streetAddress }}, {% endif %}
+	{% if att.address.streetAddress2 is defined %}{{ att.address.streetAddress2 }}, {% endif %}
+	{% if att.address.postalCode is defined %}{{ att.address.postalCode }} {% endif %}
+	{% if att.address.postOffice is defined %}{{ att.address.postOffice }}{% endif %}<br />
+	Liite toimitettava viimeistään {{ att.dueDate|datetimeformat }}
+
+</p>
+{% endfor %}
+
+{% endif %}
+
+{% if ao.additionalInfo is defined %}
+<h2>{{ locales["further-application-info"] }}</h2>
+{{ ao.additionalInfo }}
+{% endif %}
+
+{% if provider.visitingAddress is defined or provider.postalAddress is defined or provider.email is defined or provider.phone is defined or provider.fax is defined or provider.www is defined %}
+<h2>{{ locales["info-center"] }}</h2>
+{% if provider.name is defined %}
+{{ provider.name }}
+{% endif %}
+
+<ul>
+{%if provider.postalAddress is defined and provider.postalAddress.streetAddress is defined %}
+    <li>{{ locales["postal-address"] }}:<br/>
+        {{ provider.postalAddress.streetAddress }}<br/>
+        {{ provider.postalAddress.postalCode }} {{ provider.postalAddress.postOffice }}<br/>
+    </li>
+{%endif%}
+{%if provider.visitingAddress is defined and provider.visitingAddress.streetAddress is defined %}
+    <li>{{ locales["visiting-address"] }}:<br/>
+        {{ provider.visitingAddress.streetAddress }}<br/>
+        {{ provider.visitingAddress.postalCode }} {{ provider.visitingAddress.postOffice }}<br/>
+    </li>
+{%endif%}
+{%if provider.email is defined %}
+    <li>{{ locales["email"] }}: <a href="mailto:{{ provider.email }}">{{ provider.email }}</a></li>
+{% endif %}
+{%if provider.phone is defined %}
+    <li>{{ locales["phone"] }}: <a href="tel:{{ provider.phone }}">{{ provider.phone }}</a></li>
+{% endif %}
+{% if provider.fax is defined %}
+    <li>{{ locales["fax"] }}: <a href="fax:{{ provider.fax }}">{{ provider.fax }}</a></li>
+{% endif %}
+{% if provider.www is defined %}
+    <li>{{ locales["www"] }}: <a href="{{ provider.www }}">{{ provider.www }}</a></li>
+{% endif %}
+
+{% endif %}
+
+
+
+{% endblock %}

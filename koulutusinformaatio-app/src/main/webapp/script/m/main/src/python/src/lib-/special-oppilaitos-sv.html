@@ -1,0 +1,101 @@
+{% set loi = ctx.lois[0] %}
+{% set as = loi.applicationSystems[0] %}
+{% set ao = as.applicationOptions[0] %}
+{% set provider = ctx.provider %}
+{% extends "base-sv.html" %}
+{% block title %}{{ ctx.name }} - {{ locales["lo-tab-academy"] }}{% endblock %}
+
+{% block breadcrumb %}
+<a href="../index_sv.html">{{ locales["home"] }}</a>
+<span class="delimiter">&gt;</span>
+<a href="index-1.html">{{ locales[lotypekey] }}</a>
+<span class="delimiter">&gt;</span>
+<span>{{ ctx.name }} - {{ locales["lo-tab-academy"] }}</span>
+{% endblock %}
+
+{% block maintitle %}{{ ctx.name }} - {{ locales["lo-tab-academy"] }}{% endblock %}
+
+{% block tabs %}
+<a href="{{ ctx.id }}-koulutus.html">{{ locales["lo-description"] }}</a>
+<a href="{{ ctx.id }}-valintaperusteet.html">{{ locales["lo-application-er"] }}</a>
+{% endblock %}
+
+{% block content %}
+
+{% if provider.social is defined %}
+<h2>{{ locales["social-media"] }}</h2>
+<ul>
+    {% for socialItem in provider.social %}
+    <li>
+        <a href="{{ socialItem.url }}">{{socialItem.name}}</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% if provider.description is defined or provider.learningEnvironment is defined or provider.accessibility is defined %}
+<h2>{{ provider.name }}</h2>
+
+{% if provider.description is defined %}
+{{ provider.description }}
+{% endif %}
+
+{% if provider.learningEnvironment is defined %}
+<h3>{{ locales["learning-environment-info"] }}</h3>
+{{ provider.learningEnvironment }}
+{% endif %}
+
+{% if provider.accessibility is defined %}
+<h3>{{ locales["accessibility-and-learning-support"] }}</h3>
+{{ provider.accessibility }}
+{% endif %}
+
+{% endif %}
+
+
+{% if provider.livingExpenses is defined or provider.dining is defined or provider.healthcare is defined %}
+<h2>{{ locales["student-benefits"] }}</h2>
+
+{% if provider.livingExpenses is defined %}
+<h3>{{ locales["living-expenses"] }}</h3>
+{{ provider.livingExpenses }}
+{% endif %}
+
+{% if provider.dining is defined %}
+<h3>{{ locales["student-dining"] }}</h3>
+{{ provider.dining }}
+{% endif %}
+
+{% if provider.healthcare is defined %}
+<h3>{{ locales["health-care-services"] }}</h3>
+{{ provider.healthcare }}
+{% endif %}
+
+{% endif %}
+
+<h2>{{ locales["contact-information"] }}</h2>
+
+<ul>
+{% if provider.webPage is defined %}
+    <li><a href="{{ provider.webPage }}">{{ locales["provider-web-page"] }}</a></li>
+{% endif %}
+{%if provider.postalAddress is defined and provider.postalAddress.streetAddress is defined %}
+    <li>{{ locales["postal-address"] }}:<br/>
+        {{ provider.postalAddress.streetAddress }}<br/>
+        {{ provider.postalAddress.postalCode }} {{ provider.postalAddress.postOffice }}<br/>
+    </li>
+{%endif%}
+{%if provider.visitingAddress is defined and provider.visitingAddress.streetAddress is defined %}
+    <li>{{ locales["visiting-address"] }}:<br/>
+        {{ provider.visitingAddress.streetAddress }}<br/>
+        {{ provider.visitingAddress.postalCode }} {{ provider.visitingAddress.postOffice }}<br/>
+    </li>
+{%endif%}
+{%if provider.phone is defined %}
+    <li>{{ locales["phone"] }}: <a href="tel:{{ provider.phone }}">{{ provider.phone }}</a></li>
+{% endif %}
+{% if provider.fax is defined %}
+    <li>{{ locales["fax"] }}: <a href="fax:{{ provider.fax }}">{{ provider.fax }}</a></li>
+{% endif %}
+
+{% endblock %}
