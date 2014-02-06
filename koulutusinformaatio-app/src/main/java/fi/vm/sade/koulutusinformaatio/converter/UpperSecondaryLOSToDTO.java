@@ -42,7 +42,6 @@ public final class UpperSecondaryLOSToDTO {
         dto.setLois(UpperSecondaryLOIToDTO.convertAll(los.getLois(), lang, uiLang, defaultLang));
         dto.setProvider(ProviderToDTO.convert(los.getProvider(), lang, defaultLang));
         dto.setTranslationLanguage(lang);
-        dto.setAvailableTranslationLanguages(ConverterUtil.getAvailableTranslationLanguages(los.getGoals()));
         dto.setCreditValue(los.getCreditValue());
         dto.setCreditUnit(ConverterUtil.getTextByLanguage(los.getCreditUnit(), uiLang));
         return dto;
