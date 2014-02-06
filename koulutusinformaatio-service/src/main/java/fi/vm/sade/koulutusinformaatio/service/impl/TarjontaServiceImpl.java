@@ -149,10 +149,9 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     	List<HigherEducationLOS> koulutukset = new ArrayList<HigherEducationLOS>();
     	Map<String,List<HigherEducationLOS>> komoToLOSMap = new HashMap<String,List<HigherEducationLOS>>();
-
+    	List<String> parentOids = new ArrayList<String>();
     	ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes = this.tarjontaRawService.listHigherEducation();
     	HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
-    	List<String> parentOids = new ArrayList<String>();
     	for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
     		for (KoulutusHakutulosV1RDTO curKoulutus : curRes.getTulokset()) {
     			if (!curKoulutus.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
@@ -174,53 +173,56 @@ public class TarjontaServiceImpl implements TarjontaService {
     				} else {
     					loss.add(los);
     				}
-    				ResultV1RDTO<Set<String>> childKomoOids = this.tarjontaRawService.getChildrenOfParentHigherEducationLOS(koulutusDTO.getKomoOid());
-    				ResultV1RDTO<Set<String>> parentKomoOids = this.tarjontaRawService.getParentsOfHigherEducationLOS(koulutusDTO.getKomoOid());
-    				if (childKomoOids != null && childKomoOids.getResult() != null) {
-    					los.setChildKomoOids(new ArrayList<String>(childKomoOids.getResult()));
-    				}
-    				
-    				if (parentKomoOids != null && parentKomoOids.getResult() != null) {
-    					los.setParentKomoOids(new ArrayList<String>(parentKomoOids.getResult()));
-    				}
-    				
-    				parentOids.add(koulutusDTO.getKomoOid());
+    				parentOids.add(los.getKomoOid());
     			} catch (TarjontaParseException ex) {
     				continue;
     			}
+    			
     		}
     	}
 
+    	return createChildHierarchy(koulutukset, komoToLOSMap, parentOids);
+    }
+    
+    /*
+     * Creating the learning opportunity hierarchy for higher education
+     */
+    private List<HigherEducationLOS> createChildHierarchy(List<HigherEducationLOS> koulutukset,
+    		Map<String, List<HigherEducationLOS>> komoToLOSMap, List<String> parentOids) {
 
     	for (HigherEducationLOS curLos : koulutukset) {
-    		for (String curChildKomoOid : curLos.getChildKomoOids()) {
-    			List<HigherEducationLOS> loss = komoToLOSMap.get(curChildKomoOid);
-    			if (loss != null) {
-    				curLos.getChildren().addAll(loss);
-    			}
 
-    			if (parentOids.contains(curChildKomoOid)) {
-    				parentOids.remove(curChildKomoOid);
+    		ResultV1RDTO<Set<String>> childKomoOids = this.tarjontaRawService.getChildrenOfParentHigherEducationLOS(curLos.getKomoOid());
+    		ResultV1RDTO<Set<String>> parentKomoOids = this.tarjontaRawService.getParentsOfHigherEducationLOS(curLos.getKomoOid());
+    		if (childKomoOids != null && childKomoOids.getResult() != null) {
+    			for (String curChildKomoOid : childKomoOids.getResult()) {
+    				List<HigherEducationLOS> loss = komoToLOSMap.get(curChildKomoOid);
+    				if (loss != null) {
+    					curLos.getChildren().addAll(loss);
+    				}
+
+    				if (parentOids.contains(curChildKomoOid)) {
+    					parentOids.remove(curChildKomoOid);
+    				}
     			}
     		}
-    		for (String curParentKomoOid : curLos.getParentKomoOids()) {
-    			List<HigherEducationLOS> loss = komoToLOSMap.get(curParentKomoOid);
-    			if (loss != null) {
-    				curLos.getParents().addAll(loss);
+    		if (parentKomoOids != null && parentKomoOids.getResult() != null) {
+    			for (String curParentKomoOid : parentKomoOids.getResult()) {
+    				List<HigherEducationLOS> loss = komoToLOSMap.get(curParentKomoOid);
+    				if (loss != null) {
+    					curLos.getParents().addAll(loss);
+    				}
     			}
     		}
     	}
-
-
     	List<HigherEducationLOS> parents = new ArrayList<HigherEducationLOS>();
     	for (String curParent : parentOids) {
     		parents.addAll(komoToLOSMap.get(curParent));
     	}
-
     	return parents;
     }
-    
-    @Override
+
+	@Override
     public HigherEducationLOS findHigherEducationLearningOpportunity(String oid) throws TarjontaParseException, KoodistoException {
     	if (creator == null) {
     		creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService);

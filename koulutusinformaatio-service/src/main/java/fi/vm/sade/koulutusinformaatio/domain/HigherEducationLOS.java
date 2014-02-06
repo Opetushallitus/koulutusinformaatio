@@ -62,8 +62,8 @@ public class HigherEducationLOS extends LOS {
 	private List<ApplicationOption> applicationOptions;
 	
 	private String komoOid;
-	private List<String> childKomoOids = new ArrayList<String>();
-	private List<String> parentKomoOids = new ArrayList<String>();
+	//private List<String> childKomoOids = new ArrayList<String>();
+	//private List<String> parentKomoOids = new ArrayList<String>();
 	
 	private List<HigherEducationLOS> children = new ArrayList<HigherEducationLOS>();
 	private List<HigherEducationLOS> parents = new ArrayList<HigherEducationLOS>();
@@ -345,13 +345,14 @@ public class HigherEducationLOS extends LOS {
 		this.komoOid = komoOid;
 	}
 
+	/*
 	public List<String> getChildKomoOids() {
 		return childKomoOids;
 	}
 
 	public void setChildKomoOids(List<String> childKomoOids) {
 		this.childKomoOids = childKomoOids;
-	}
+	}*/
 
 	public List<HigherEducationLOS> getChildren() {
 		return children;
@@ -430,13 +431,14 @@ public class HigherEducationLOS extends LOS {
 		this.parents = parents;
 	}
 
+	/*
 	public List<String> getParentKomoOids() {
 		return parentKomoOids;
 	}
 
 	public void setParentKomoOids(List<String> parentKomoOids) {
 		this.parentKomoOids = parentKomoOids;
-	}
+	}*/
 
 	public I18nText getStartSeason() {
 		return startSeason;

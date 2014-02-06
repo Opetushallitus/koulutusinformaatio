@@ -244,6 +244,7 @@ public class LOSObjectCreator extends ObjectCreator {
 
     	los.setType(TarjontaConstants.TYPE_KK);
     	los.setId(koulutus.getOid());
+    	los.setKomoOid(koulutus.getKomoOid());
     	
     	if (koulutus.getKuvausKomoto().get(KomotoTeksti.LISATIETOA_OPETUSKIELISTA) != null  
     			&& !koulutus.getKuvausKomoto().get(KomotoTeksti.LISATIETOA_OPETUSKIELISTA).getTekstis().containsKey("undefined")) {
@@ -300,6 +301,8 @@ public class LOSObjectCreator extends ObjectCreator {
     		los.setInfoAboutCharge(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.MAKSULLISUUS)));
     	}
     	
+    	los.setTeachingLanguages(createCodes(koulutus.getOpetuskielis()));//koodistoService.searchCodesMultiple(childKomoto.getOpetuskieletUris()));
+    	
     	 // fields used to resolve available translation languages
         // content, internationalization, cooperation
         Set<String> availableLanguagaes = Sets.newHashSet();
@@ -353,7 +356,7 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setCreditUnit(getI18nTextEnriched(koulutus.getOpintojenLaajuusyksikko().getMeta()));
         los.setChargeable(koulutus.getOpintojenMaksullisuus()); 
         
-        los.setTeachingLanguages(createCodes(koulutus.getOpetuskielis()));//koodistoService.searchCodesMultiple(childKomoto.getOpetuskieletUris()));
+        
         //childLOI.setTeachingLanguages(koodistoService.searchCodesMultiple(childKomoto.getOpetuskieletUris()));
         Provider provider = providerService.getByOID(koulutus.getOrganisaatio().getOid());
         los.setProvider(provider);

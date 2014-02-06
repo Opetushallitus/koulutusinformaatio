@@ -99,7 +99,7 @@ public class HigherEducationLOSEntity {
     private List<ApplicationOptionEntity> applicationOptions;
 	
 	private String komoOid;
-	private List<String> childKomoOids;
+	//private List<String> childKomoOids;
 	@Embedded
 	private List<I18nTextEntity> formOfTeaching;
 	@Embedded
@@ -316,12 +316,12 @@ public class HigherEducationLOSEntity {
 	public void setKomoOid(String komoOid) {
 		this.komoOid = komoOid;
 	}
-	public List<String> getChildKomoOids() {
+	/*public List<String> getChildKomoOids() {
 		return childKomoOids;
 	}
 	public void setChildKomoOids(List<String> childKomoOids) {
 		this.childKomoOids = childKomoOids;
-	}
+	}*/
 	public List<HigherEducationLOSEntity> getChildren() {
 		return children;
 	}
