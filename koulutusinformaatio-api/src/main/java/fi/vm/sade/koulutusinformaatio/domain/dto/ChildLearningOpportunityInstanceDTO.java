@@ -19,7 +19,7 @@ public class ChildLearningOpportunityInstanceDTO {
     private Map<String, String> webLinks;
     private List<String> formOfTeaching = new ArrayList<String>();
     private CodeDTO prerequisite;
-    private Set<String> availableTranslationLanguages = new HashSet<String>();
+    private List<String> availableTranslationLanguages;
     private Set<String> teachingLanguages = new HashSet<String>();
     private List<String> professionalTitles;
     private String workingLifePlacement;
@@ -92,15 +92,8 @@ public class ChildLearningOpportunityInstanceDTO {
     }
 
     public void setPrerequisite(CodeDTO prerequisite) {
+
         this.prerequisite = prerequisite;
-    }
-
-    public Set<String> getAvailableTranslationLanguages() {
-        return availableTranslationLanguages;
-    }
-
-    public void setAvailableTranslationLanguages(Set<String> availableTranslationLanguages) {
-        this.availableTranslationLanguages = availableTranslationLanguages;
     }
 
     public Set<String> getTeachingLanguages() {
@@ -182,4 +175,12 @@ public class ChildLearningOpportunityInstanceDTO {
 	public void setPlannedDurationUnit(String plannedDurationUnit) {
 		this.plannedDurationUnit = plannedDurationUnit;
 	}
+
+    public List<String> getAvailableTranslationLanguages() {
+        return availableTranslationLanguages;
+    }
+
+    public void setAvailableTranslationLanguages(List<String> availableTranslationLanguages) {
+        this.availableTranslationLanguages = availableTranslationLanguages;
+    }
 }

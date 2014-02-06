@@ -373,8 +373,8 @@ directive('kiAbsoluteLink', function() {
             //var type = $routeParams.loType;
             //scope.isChild = (type === 'koulutusohjelma' || type == 'lukio') ? true : false; // TODO: do not use loType directly
 
-            scope.$watch('lo', function(data) {
-                scope.hasMultipleTranslations = (data&& data.availableTranslationLanguages && data.availableTranslationLanguages.length >= 1) ? true : false;
+            scope.$watch('selectedLOI', function(data) {
+                scope.hasMultipleTranslations = (data && data.availableTranslationLanguages && data.availableTranslationLanguages.length >= 1) ? true : false;
             });
         }
     };

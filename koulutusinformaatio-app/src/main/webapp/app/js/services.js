@@ -491,15 +491,28 @@ service('ParentLOTransformer', ['UtilityService', '$filter', '$rootScope', funct
                 $rootScope.translationLanguage = result.translationLanguage;
             }
 
-            // set available trasnlation languages for LO
-            if (result && result.availableTranslationLanguages) {
-                var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
-                result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
-            }
-
-            // set encoded name for provider
             if (result && result.provider && result.provider.name) {
                 result.provider.encodedName = $filter('encodeURIComponent')('"' + result.provider.name + '"');
+            }
+
+            for (var loiIndex in result.lois) {
+                if (result.lois.hasOwnProperty(loiIndex)) {
+                    var loi = result.lois[loiIndex];
+                    var translationLanguageIndex = loi.availableTranslationLanguages.indexOf(result.translationLanguage);
+                    loi.availableTranslationLanguages.splice(translationLanguageIndex, 1);
+                }
+            } 
+
+            //var applicationSystems = [];
+
+            for (var index in result.applicationOptions) {
+                if (result.applicationOptions.hasOwnProperty(index)) {
+                    var ao = result.applicationOptions[index];
+                    if (ao.applicationSystem && ao.applicationSystem.applicationDates && ao.applicationSystem.applicationDates.length > 0) {
+                        ao.applicationSystem.applicationDates = ao.applicationSystem.applicationDates[0];
+                    }
+                    result.applicationSystem = ao.applicationSystem;
+                }
             }
 
             // set teaching languge as the first language in array
@@ -751,10 +764,13 @@ service('ChildLOTransformer', ['UtilityService', '$rootScope', function(UtilityS
                 $rootScope.translationLanguage = result.translationLanguage;
             }
 
-            if (result && result.availableTranslationLanguages) {
-                var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
-                result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
-            }
+            for (var loiIndex in result.lois) {
+                if (result.lois.hasOwnProperty(loiIndex)) {
+                    var loi = result.lois[loiIndex];
+                    var translationLanguageIndex = loi.availableTranslationLanguages.indexOf(result.translationLanguage);
+                    loi.availableTranslationLanguages.splice(translationLanguageIndex, 1);
+                }
+            } 
             
 
             for (var loiIndex in result.lois) {

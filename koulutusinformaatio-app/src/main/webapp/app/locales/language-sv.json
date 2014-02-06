@@ -48,6 +48,7 @@
     "filter-search-location-title": "Avgränsa enligt område",
     "location-filter-placeholder": "Skriv ort eller landskap", 
     "filter-search-location-add": "Lägg till ort",
+    "location-filter-label": "Område",
     "filter-search-location-remove": "Avlägsna",
 
     "sort-criteria-default": "-- Välj --",
@@ -177,8 +178,8 @@
     "application-basket-empty": "Töm minneslistan",
     "application-basket-empty-confirm": "Är du säker på att du vill tömma minneslistan?",
     "application-basket-overflow-warning": "I gemensam ansökan kan du söka till fem (5) olika utbildningar, stryk de som är överlopps",
-    "application-basket-attachments-exams": "Liitteet ja kokeet (sv)",
-    "application-basket-due-date": "Liitteen määräaika tai kokeen ajankohta (sv)",
+    "application-basket-attachments-exams": "Bilagor och prov",
+    "application-basket-due-date": "Deadline för bilaga eller tidpunkt för prov",
 
     "popup-close": "Stäng",
     "popup-continue": "Fortsätt",

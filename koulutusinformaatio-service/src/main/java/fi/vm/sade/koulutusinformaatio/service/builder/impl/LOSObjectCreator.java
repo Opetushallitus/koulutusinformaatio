@@ -19,6 +19,7 @@ package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 
 import fi.vm.sade.koodisto.service.types.common.KoodiMetadataType;
 import fi.vm.sade.koodisto.service.types.common.KoodiType;
@@ -54,6 +55,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Hannu Lyytikainen
@@ -298,6 +300,23 @@ public class LOSObjectCreator extends ObjectCreator {
     		los.setInfoAboutCharge(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.MAKSULLISUUS)));
     	}
     	
+    	 // fields used to resolve available translation languages
+        // content, internationalization, cooperation
+        Set<String> availableLanguagaes = Sets.newHashSet();
+        if (los.getContent() != null) {
+            availableLanguagaes.addAll(los.getContent().getTranslations().keySet());
+        }
+        if (los.getInternationalization() != null) {
+            availableLanguagaes.addAll(los.getInternationalization().getTranslations().keySet());
+        }
+        if (los.getCooperation() != null) {
+            availableLanguagaes.addAll(los.getCooperation().getTranslations().keySet());
+        }
+        for (Code teachingLanguage : los.getTeachingLanguages()) {
+            availableLanguagaes.add(teachingLanguage.getValue().toLowerCase());
+        }
+    	
+        los.setAvailableTranslationLanguages(new ArrayList<String>(availableLanguagaes));
     	
         if (koulutus.getYhteyshenkilos() != null) {
             for (YhteyshenkiloTyyppi yhteyshenkiloRDTO : koulutus.getYhteyshenkilos()) {

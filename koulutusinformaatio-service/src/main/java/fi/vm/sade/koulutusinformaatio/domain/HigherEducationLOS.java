@@ -79,6 +79,7 @@ public class HigherEducationLOS extends LOS {
 	
 	//Status of the lo. For preview
 	private String status;
+	private List<String> availableTranslationLanguages;
 
 	public String getId() {
 		return id;
@@ -460,4 +461,12 @@ public class HigherEducationLOS extends LOS {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+    
+	public List<String> getAvailableTranslationLanguages() {
+        return availableTranslationLanguages;
+    }
+
+    public void setAvailableTranslationLanguages(List<String> availableTranslationLanguages) {
+        this.availableTranslationLanguages = availableTranslationLanguages;
+    }
 }

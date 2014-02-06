@@ -255,7 +255,6 @@ public class LearningOpportunityServiceImplTest {
         assertEquals(parentLOI.getApplicationOptions().iterator().next().getName().getTranslations().get(defaultLang),
                 loi.getApplicationSystems().iterator().next().getApplicationOptions().get(0).getName());
 
-        assertEquals(3, result.getAvailableTranslationLanguages().size());
         assertEquals(lang, result.getTranslationLanguage());
     }
 
