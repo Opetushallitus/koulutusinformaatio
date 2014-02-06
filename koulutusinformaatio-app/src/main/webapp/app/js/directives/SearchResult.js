@@ -50,24 +50,24 @@ directive('toggleCollapse', [function () {
             scope.showExtension = "close";
         },
         template: 
-                '<h4 class="collapser float-right" ng-class="showExtension" ng-click="toggleExtendedView()">' + 
-                    '<span>Avaa tästä </span>' + 
-                    '<span class="icon"></span>' +
-                '</h4>' +
-                '<div class="clear"></div>' +
-                '<div collapse="showExtension == \'close\'">' + 
-                    '<div style="padding-top: 15px; border-top: 1px dashed grey; margin-top: 15px" ng-transclude></div>' +
-                '</div>'
+            '<h4 class="collapser float-right" ng-class="showExtension" ng-click="toggleExtendedView()">' + 
+                '<span>Avaa tästä </span>' + 
+                '<span class="icon"></span>' +
+            '</h4>' +
+            '<div class="clear"></div>' +
+            '<div collapse="showExtension == \'close\'">' + 
+                '<div style="padding-top: 15px; border-top: 1px dashed grey; margin-top: 15px" ng-transclude></div>' +
+            '</div>'
 
     };
 }]).
 
-directive('srExtendedData', ['ParentLOService', function (ParentLOService) {
+directive('extendedSearchresultData', ['ParentLOService', function (ParentLOService) {
     return {    
         restrict: 'A',
         controller: function($scope) {
             $scope.fetchLOData = function() {
-
+                console.log($scope)
                 $scope.extendedLO = ParentLOService.query({id: $scope.lo.id});
                 $scope.extendedLO.then(function(result) {
                     for(var i = 0 ; result.lo.lois.length < i ; i++) {
@@ -77,22 +77,25 @@ directive('srExtendedData', ['ParentLOService', function (ParentLOService) {
                     console.error('error fetching extended LO');
                 });
             }
-        },
+        }
     };
 }]).
 
 directive('srExtendedOptions', [function () {
     return {
         restrict: 'E',
-        require: '^extendedSearchResultData',
-        templateUrl: 'templates/searchResultOptions.html'
+        require: '^extendedSearchresultData',
+        templateUrl: 'templates/searchResultOptions.html',
+        link: function() {
+
+        }
     };
 }]).
 
 directive('srExtendedKoulutustarjonta', [function () {
     return {
         restrict: 'E',
-        require: '^extendedSearchResultData',
+        require: '^extendedSearchresultData',
         templateUrl: 'templates/searchResultExtendedKoulutustarjonta.html'
     };
 }]).
@@ -100,7 +103,7 @@ directive('srExtendedKoulutustarjonta', [function () {
 directive('srBasicInformation', [function () {
     return {
         restrict: 'E',
-        require: '^extendedSearchResultData',
+        require: '^extendedSearchresultData',
         templateUrl: 'templates/searchResultBasicInformation.html'
     };
 }]);
