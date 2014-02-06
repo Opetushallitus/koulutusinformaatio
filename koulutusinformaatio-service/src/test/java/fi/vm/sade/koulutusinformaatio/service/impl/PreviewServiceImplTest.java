@@ -15,8 +15,8 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.junit.Before;
+import org.junit.Test;
 
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
@@ -24,37 +24,42 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.PreviewService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.*;
 
 /**
  * 
  * @author Markus
  */
-@Service
-public class PreviewServiceImpl implements PreviewService {
+public class PreviewServiceImplTest {
 	
 	private TarjontaService tarjontaService;
 	
-	@Autowired
-	public PreviewServiceImpl (TarjontaService tarjontaService) {
-		this.tarjontaService = tarjontaService;
+	private PreviewService service;
+	
+	@Before
+    public void setup() throws TarjontaParseException, KoodistoException {
+		tarjontaService = mock(TarjontaService.class);
+		
+		
+		HigherEducationLOS heLOS = new HigherEducationLOS();
+		heLOS.setId("1.2.3.4");
+		
+		when(tarjontaService.findHigherEducationLearningOpportunity(heLOS.getId())).thenReturn(heLOS);
+		
+		service = new PreviewServiceImpl(tarjontaService);
+		
 	}
-
-	@Override
-	public HigherEducationLOS previewHigherEducationLearningOpportunity(
-			String oid) throws ResourceNotFoundException {
-		try {
-			HigherEducationLOS los = this.tarjontaService.findHigherEducationLearningOpportunity(oid);
-			if (los == null) {
-				throw new ResourceNotFoundException("Resource: " + oid + " not found");
-			}
-			return los;
-		} catch (TarjontaParseException e) {
-			e.printStackTrace();
-			throw new ResourceNotFoundException("Resource: " + oid + " not found");
-		} catch (KoodistoException e) {
-			e.printStackTrace();
-			throw new ResourceNotFoundException("Resource: " + oid + " not found");
-		}
+	
+	@Test
+	public void testPreviewHigherEducationLearningOpportunity() throws ResourceNotFoundException {
+		HigherEducationLOS los = service.previewHigherEducationLearningOpportunity("1.2.3.4");
+		assertEquals("1.2.3.4", los.getId());
+	}
+	
+	@Test(expected = ResourceNotFoundException.class) 
+	public void testPreviewNotFound() throws ResourceNotFoundException {
+		service.previewHigherEducationLearningOpportunity("NotFound");
 	}
 
 }
