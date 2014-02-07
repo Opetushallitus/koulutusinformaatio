@@ -28,6 +28,8 @@ public class CodeEntity {
     private String value;
     @Embedded
     private I18nTextEntity description;
+    @Embedded
+    private I18nTextEntity name;
 
     public CodeEntity() {}
 
@@ -45,5 +47,13 @@ public class CodeEntity {
 
     public void setDescription(I18nTextEntity description) {
         this.description = description;
+    }
+
+    public I18nTextEntity getName() {
+        return name;
+    }
+
+    public void setName(I18nTextEntity name) {
+        this.name = name;
     }
 }
