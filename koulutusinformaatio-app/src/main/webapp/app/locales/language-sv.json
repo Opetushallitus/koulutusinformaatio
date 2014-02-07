@@ -249,5 +249,7 @@
     
     "VALMIS": "Valmis (sv)",
     "LUONNOS": "Luonnos (sv)",
-    "JULKAISTU": "Julkaistu (sv)"
+    "JULKAISTU": "Julkaistu (sv)",
+    "tarjontaTarkastelu": "Takaisin (sv)",
+    "tarjontaMuokkaa": "Muokkaa (sv)"
 }

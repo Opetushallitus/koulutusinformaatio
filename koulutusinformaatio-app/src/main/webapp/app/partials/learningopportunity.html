@@ -1,4 +1,8 @@
 <section class="content-container grid16-16">
+	<div data-ng-show="lo.preview" >
+		<a href="{{tarjontaViewUrl}}"><span data-ki-i18n="tarjontaTarkastelu"></span></a> 
+		<a href="{{tarjontaEditUrl}}"><span data-ki-i18n="tarjontaMuokkaa"></span></a>
+    </div>
     <div data-ki-breadcrumb="breadcrumb-search-results" id="breadcrumb"></div>
     <div data-ng-include data-src="partialUrl + 'top.html'"></div>
     <div data-tabset>

@@ -251,5 +251,8 @@
     
     "VALMIS": "Valmis",
     "LUONNOS": "Luonnos",
-    "JULKAISTU": "Julkaistu"
+    "JULKAISTU": "Julkaistu",
+    "tarjontaTarkastelu": "Takaisin",
+    "tarjontaMuokkaa": "Muokkaa"
+     
 }
