@@ -225,7 +225,7 @@ function ApplicationCtrl($scope, ApplicationBasketService, UtilityService, Trans
             ApplicationBasketService.addItem(aoId, $scope.selectedLOI.prerequisite.value);
         } else {
             $scope.popoverTitle = TranslationService.getTranslation('popover-title-error');
-            $scope.popoverContent = "<div>" + TranslationService.getTranslation('popover-content-error') + "</div><a href='#/muistilista'>" + TranslationService.getTranslation('popover-content-link-to-application-basket') + "</a>";
+            $scope.popoverContent = "<div>" + TranslationService.getTranslation('popover-content-error') + "</div><a href='#!/muistilista'>" + TranslationService.getTranslation('popover-content-link-to-application-basket') + "</a>";
         }
     };
 

@@ -17,10 +17,8 @@
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
 import com.google.common.base.Joiner;
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Sets;
+import com.google.common.base.Predicate;
+import com.google.common.collect.*;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
@@ -67,7 +65,7 @@ public class LOIObjectCreator extends ObjectCreator {
                 childLOIs.add(childLOI);
             }
         }
-        return filterInstances(childLOIs);
+        return filter(childLOIs);
     }
 
     public ChildLOI createChildLOI(KomotoDTO childKomoto, String losId, I18nText losName, String educationCodeUri) throws KoodistoException {
@@ -160,7 +158,7 @@ public class LOIObjectCreator extends ObjectCreator {
                 lois.add(createUpperSecondaryLOI(komoto, losId, losName, educationCodeUri));
             }
         }
-        return filterInstances(lois);
+        return filter(lois);
     }
 
     public UpperSecondaryLOI createUpperSecondaryLOI(KomotoDTO komoto, String losId, I18nText losName, String educationCodeUri) throws KoodistoException {
@@ -261,70 +259,80 @@ public class LOIObjectCreator extends ObjectCreator {
         return loi;
     }
 
+
+    private <T extends LOI> List<T> filter(List<T> lois) {
+        List<T> applicationOptionsFiltered = filterApplicationOptions(lois);
+        return Lists.newArrayList(Collections2.filter(applicationOptionsFiltered, new Predicate<T>() {
+            @Override
+            public boolean apply(T input) {
+                return !input.getApplicationOptions().isEmpty();
+            }
+        }));
+
+    }
+
     /**
-     * Filters list of lois. Leaves out old redundant instances.
-     * Filtering is prerequisite specific.
+     * Filters out old application options if newer ones are available.
      *
      * @param lois unfiltered list
      * @return filtered list
      */
-    private <T extends LOI> List<T> filterInstances(List<T> lois) {
+    private <T extends LOI> List<T> filterApplicationOptions(List<T> lois) {
         // list application options by prerequisite
         Multimap<String, ApplicationOption> applicationOptions = HashMultimap.create();
         for (LOI loi : lois) {
             applicationOptions.putAll(loi.getPrerequisite().getValue(), loi.getApplicationOptions());
         }
-        List<ApplicationOption> filteredApplicationOptions = Lists.newArrayList();
+        final List<ApplicationOption> filteredApplicationOptions = Lists.newArrayList();
         for (Map.Entry<String, Collection<ApplicationOption>> entry : applicationOptions.asMap().entrySet()) {
-            filteredApplicationOptions.addAll(filterApplicationOptions(new ArrayList(entry.getValue()), new ArrayList<ApplicationOption>()));
+            filteredApplicationOptions.addAll(reduceApplicationOptions(new ArrayList(entry.getValue()), new ArrayList<ApplicationOption>()));
         }
-        List<T> filteredLOIs = Lists.newArrayList();
-
         for (T loi : lois) {
-            aoLoop:
-            for (ApplicationOption ao : filteredApplicationOptions) {
-                if (loi.getApplicationOptions().contains(ao)) {
-                    filteredLOIs.add(loi);
-                    break aoLoop;
-                }
-            }
+            loi.setApplicationOptions(
+                    Lists.newArrayList(Collections2.filter(loi.getApplicationOptions(), new Predicate<ApplicationOption>() {
+                        @Override
+                        public boolean apply(ApplicationOption input) {
+                            return filteredApplicationOptions.contains(input);
+                        }
+                    }))
+            );
         }
 
-        return filteredLOIs;
+        return Lists.newArrayList(lois);
     }
 
-    private List<ApplicationOption> filterApplicationOptions(List<ApplicationOption> unfiltered, List<ApplicationOption> filtered) {
+    private List<ApplicationOption> reduceApplicationOptions(List<ApplicationOption> unfiltered, List<ApplicationOption> filtered) {
         if (unfiltered.isEmpty()) {
             // no more application options to process, return filtered
             return filtered;
         } else if (filtered.isEmpty()) {
             // filtered is empty, add head
             filtered.add(head(unfiltered));
-            return filterApplicationOptions(tail(unfiltered), Lists.newArrayList(filtered));
+            return reduceApplicationOptions(tail(unfiltered), Lists.newArrayList(filtered));
         } else {
             ApplicationOption unfilteredHead = head(unfiltered);
             ApplicationOption filteredHead = head(filtered);
-            if (isFuture(unfilteredHead) || isCurrent(unfilteredHead)) {
+            if (isCurrentOrFuture(unfilteredHead)) {
                 // unfiltered head is future/current, add to filtered
                 if (!isFuture(filteredHead) && !isCurrent(filteredHead)) {
                     // remove past head from filtered list
                     filtered.remove(0);
                 }
                 filtered.add(unfilteredHead);
-                return filterApplicationOptions(tail(unfiltered), Lists.newArrayList(filtered));
+                return reduceApplicationOptions(tail(unfiltered), Lists.newArrayList(filtered));
             } else {
                 // unfiltered head is in the past
-                if (isFuture(filteredHead) || isCurrent(filteredHead)) {
+                if (isCurrentOrFuture(filteredHead)) {
                     // if filtered head is current/future -> pass
-                    return filterApplicationOptions(tail(unfiltered), Lists.newArrayList(filtered));
+                    return reduceApplicationOptions(tail(unfiltered), Lists.newArrayList(filtered));
                 } else {
                     // filtered and unfiltered heads are in the past -> compare and replace if needed
                     if (isAfter(unfilteredHead, filteredHead)) {
                         // unfiltered head is later -> replace
-                        return filterApplicationOptions(tail(unfiltered), Lists.newArrayList(unfilteredHead));
+                        return reduceApplicationOptions(tail(unfiltered), Lists.newArrayList(unfilteredHead));
                     } else {
                         // filtered head is the latest
-                        return filterApplicationOptions(tail(unfiltered), Lists.newArrayList(filtered));
+                        return reduceApplicationOptions(tail(unfiltered), Lists.newArrayList(filtered));
                     }
                 }
             }
@@ -358,9 +366,13 @@ public class LOIObjectCreator extends ObjectCreator {
         }
     }
 
+    private boolean isCurrentOrFuture(ApplicationOption ao) {
+        return isCurrent(ao) || isFuture(ao);
+    }
+
     private boolean isCurrent(ApplicationOption ao) {
         Date now = new Date();
-        for (DateRange dr : ao.getApplicationSystem().getApplicationDates()) {
+        for (DateRange dr : ao.getApplicationDates()) {
             if (dr.getStartDate().before(now) && dr.getEndDate().after(now)) {
                 return true;
             }
@@ -370,12 +382,14 @@ public class LOIObjectCreator extends ObjectCreator {
 
     private boolean isFuture(ApplicationOption ao) {
         Date now = new Date();
-        for (DateRange dr : ao.getApplicationSystem().getApplicationDates()) {
+        for (DateRange dr : ao.getApplicationDates()) {
             if (dr.getStartDate().before(now)) {
                 return false;
             }
         }
         return true;
     }
+
+
 
 }
