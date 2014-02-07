@@ -18,16 +18,8 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-
-import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
-import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
-import fi.vm.sade.koulutusinformaatio.domain.LOS;
-import fi.vm.sade.koulutusinformaatio.domain.Location;
-import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
-import fi.vm.sade.koulutusinformaatio.service.*;
 
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
@@ -46,6 +38,7 @@ import fi.vm.sade.koulutusinformaatio.service.EducationDataUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import fi.vm.sade.koulutusinformaatio.service.LocationService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
+import fi.vm.sade.koulutusinformaatio.service.TextVersionService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
 
 /**
@@ -59,6 +52,7 @@ public class UpdateServiceImpl implements UpdateService {
     private TarjontaService tarjontaService;
     private IndexerService indexerService;
     private EducationDataUpdateService educationDataUpdateService;
+    private TextVersionService textVersionService;
     private TransactionManager transactionManager;
     private static final int MAX_RESULTS = 100;
     private boolean running = false;
@@ -69,10 +63,12 @@ public class UpdateServiceImpl implements UpdateService {
     @Autowired
     public UpdateServiceImpl(TarjontaService tarjontaService, IndexerService indexerService,
                              EducationDataUpdateService educationDataUpdateService,
+                             TextVersionService textVersionService,
                              TransactionManager transactionManager, LocationService locationService) {
         this.tarjontaService = tarjontaService;
         this.indexerService = indexerService;
         this.educationDataUpdateService = educationDataUpdateService;
+        this.textVersionService = textVersionService;
         this.transactionManager = transactionManager;
         this.locationService = locationService;
     }
@@ -90,7 +86,7 @@ public class UpdateServiceImpl implements UpdateService {
             runningSince = System.currentTimeMillis();
 
             this.transactionManager.beginTransaction(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
-            
+
             int count = MAX_RESULTS;
             int index = 0;
             
@@ -106,6 +102,9 @@ public class UpdateServiceImpl implements UpdateService {
                     "1.2.246.562.5.2013061010184670694756");*///,
             		//"1.2.246.562.5.2013061010190108136320");
             //loOids.add("1.2.246.562.5.2013061010184190024479");
+            
+           
+
             
                for (String loOid : loOids) {
                     List<LOS> specifications = null;
@@ -143,6 +142,10 @@ public class UpdateServiceImpl implements UpdateService {
             this.transactionManager.commit(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
             LOG.debug("Transaction completed");
             educationDataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, "SUCCESS"));
+            
+            // generate text version
+            //textVersionService.update();
+            
             LOG.info("Education data update successfully finished");
         } catch (Exception e) {
             LOG.error("Education data update failed ", e);

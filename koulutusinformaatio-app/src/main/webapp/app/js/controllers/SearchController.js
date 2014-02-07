@@ -617,7 +617,6 @@ function ArticleSearchCtrl($scope, $location, $routeParams, ArticleContentSearch
         qParams.tab = 'articles';
         $location.search(qParams).replace();
         ArticleContentSearchService.query({queryString: $routeParams.queryString, page: $scope.currentArticlePage}).then(function(result) {
-            console.log($scope.currentArticlePage);
             $scope.articles = result;
             $scope.maxPages = result.pages;
             $scope.totalItems = result.count_total;

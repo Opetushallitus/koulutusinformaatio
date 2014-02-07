@@ -1,0 +1,10 @@
+from operator import itemgetter
+from data import s, get, out, dotted_getter
+
+url = "/lo/search/*?&facetFilters=educationType_ffm:et5&facetFilters=teachingLangCode_ffm:SV"
+
+results = get(url)
+if "results" in results:
+	retval = sorted([get(s("/lo/special/{x[id]}")) for x in results["results"]], key=dotted_getter("name"))
+else:
+	retval = []
