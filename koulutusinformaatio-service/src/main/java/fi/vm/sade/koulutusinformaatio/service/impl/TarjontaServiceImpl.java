@@ -259,8 +259,7 @@ public class TarjontaServiceImpl implements TarjontaService {
 	    			if (koulutusDTO == null) {
 	    				continue;
 	    			}
-	    			HigherEducationLOS los = creator.createHigherEducationLOS(koulutusDTO, false);
-	    			los.setStatus(koulutusDTO.getTila().toString());
+	    			HigherEducationLOS los = creator.createHigherEducationLOSReference(koulutusDTO, false);
 	    			relatives.add(los);
 	    		}
 	    	}

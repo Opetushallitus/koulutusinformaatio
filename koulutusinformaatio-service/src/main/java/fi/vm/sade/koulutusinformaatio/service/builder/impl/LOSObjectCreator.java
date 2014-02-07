@@ -443,4 +443,16 @@ public class LOSObjectCreator extends ObjectCreator {
 		 return !aos.isEmpty();
 	}
 
+	public HigherEducationLOS createHigherEducationLOSReference(
+			KoulutusKorkeakouluV1RDTO koulutusDTO, boolean b) throws KoodistoException {
+		HigherEducationLOS los = new HigherEducationLOS();
+		los.setId(koulutusDTO.getOid());
+		los.setName(getI18nTextEnriched(koulutusDTO.getKoulutusohjelma()));
+		los.setEducationDegree(koulutusDTO.getKoulutusaste().getUri());
+		if (!b) {
+			los.setStatus(koulutusDTO.getTila().toString());
+		}
+		return los;
+	}
+
 }
