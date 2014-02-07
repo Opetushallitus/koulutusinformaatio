@@ -228,5 +228,8 @@
     "er": "Yksilöllistetty perusopetus",
     
     "autocomplete-keyword": "Hakusanaehdotukset",
-    "autocomplete-loname": "Kurssit ja tutkinnot"
+    "autocomplete-loname": "Kurssit ja tutkinnot",
+
+    "error-title": "Tapahtui odottamaton virhe",
+    "error-body": "Olemme pahoillamme. Hakemiesi koulutusten tietoja ei saatu jostain syystä haettua. Yritä hetken kuluttua uudelleen."
 }

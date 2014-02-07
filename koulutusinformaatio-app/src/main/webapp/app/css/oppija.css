@@ -2308,10 +2308,15 @@ table.striped {
   -o-text-shadow: 1px 1px 1px white;
   -ms-text-shadow: 1px 1px 1px white;
   text-shadow: 1px 1px 1px white; }
+  .notification.large {
+    background-size: 28px 29px;
+    padding-left: 70px; }
   .notification.warning {
     background-image: url(../img/icon-notification-small.png);
     background-color: #fee7a5;
     color: #730d02; }
+    .notification.warning.large {
+      background-image: url(../img/icon-notification.png); }
   .notification.info {
     color: #333;
     background-color: #c2e6f1;

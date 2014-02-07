@@ -55,6 +55,11 @@ var kiApp = angular.module('kiApp',
         templateUrl: 'partials/applicationbasket/applicationbasket.html',
         controller: 'ApplicationBasketCtrl'
     });
+
+    $routeProvider.when('/virhe', {
+        templateUrl: 'partials/error.html',
+        controller: function() {}
+    });
     
     $routeProvider.otherwise({
     	redirectTo: '/haku/'
@@ -67,11 +72,23 @@ var kiApp = angular.module('kiApp',
 }])
 
 
-.config(function($httpProvider){
+.config(['$httpProvider', function($httpProvider){
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
     //$httpProvider.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-})
+
+    // interceptor for failed responses
+    $httpProvider.responseInterceptors.push(function($q, $location) {
+        return function(promise) {
+            return promise.then(function(response) {
+              return response;
+            }, function(response) {
+              $location.url('/virhe');
+              return $q.reject(response);
+            });
+          }
+    })
+}])
 
 .constant('kiAppConstants', {
     searchResultsPerPage: 25,

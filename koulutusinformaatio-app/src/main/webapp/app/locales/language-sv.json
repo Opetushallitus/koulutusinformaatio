@@ -227,5 +227,8 @@
      "er": "Individualiserad lärokurs",
 
     "autocomplete-keyword": "Sökordsförslag",
-    "autocomplete-loname": "Kurser och examen"
+    "autocomplete-loname": "Kurser och examen",
+
+    "error-title": "Tapahtui odottamaton virhe (sv)",
+    "error-body": "Olemme pahoillamme. Hakemiesi koulutusten tietoja ei saatu jostain syystä haettua. Yritä hetken kuluttua uudelleen. (sv)"
 }
