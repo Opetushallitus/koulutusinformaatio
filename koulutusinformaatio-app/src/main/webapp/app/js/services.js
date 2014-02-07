@@ -463,6 +463,7 @@ service('HigherEducationPreviewLOService', ['$http', '$timeout', '$q', 'Language
             //$http.get('mocks/amk.json', {}).
             success(function(result) {
             	HigherEducationTransformer.transform(result);
+            	result.preview = true;
                 var loResult = {
                     lo: result,
                     parent: {},
@@ -641,8 +642,6 @@ service('HigherEducationTransformer', ['UtilityService', '$rootScope', '$filter'
 
 	return {
 		transform: function(result) {
-			
-			result.preview = true;
 
 			if (result && result.translationLanguage) {
 				$rootScope.translationLanguage = result.translationLanguage;
