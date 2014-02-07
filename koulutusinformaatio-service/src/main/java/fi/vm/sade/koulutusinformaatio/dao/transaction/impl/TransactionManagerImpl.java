@@ -63,6 +63,7 @@ public class TransactionManagerImpl implements TransactionManager {
     private ChildLearningOpportunityDAO childLOTransactionDAO;
     private PictureDAO pictureTransactionDAO;
     private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO;
+    private HigherEducationLOSDAO higherEducationLOSTransactionDAO;
 
     private ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO;
     private ApplicationOptionDAO applicationOptionDAO;
@@ -71,6 +72,8 @@ public class TransactionManagerImpl implements TransactionManager {
     private DataStatusDAO dataStatusDAO;
     private PictureDAO pictureDAO;
     private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO;
+    private HigherEducationLOSDAO higherEducationLOSDAO;
+    
     
     
     @Value("${solr.learningopportunity.alias.url:learning_opportunity}")
@@ -104,13 +107,15 @@ public class TransactionManagerImpl implements TransactionManager {
                                   ChildLearningOpportunityDAO childLOTransactionDAO,
                                   PictureDAO pictureTransactionDAO,
                                   UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO,
+                                  HigherEducationLOSDAO higherEducationLOSTransactionDAO,
                                   ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO,
                                   ApplicationOptionDAO applicationOptionDAO,
                                   ChildLearningOpportunityDAO childLearningOpportunityDAO,
                                   LearningOpportunityProviderDAO learningOpportunityProviderDAO,
                                   DataStatusDAO dataStatusDAO,
                                   PictureDAO pictureDAO,
-                                  UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO) {
+                                  UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO,
+                                  HigherEducationLOSDAO higherEducationLOSDAO) {
 
         this.mongo = mongo;
         this.transactionDbName = transactionDbName;
@@ -131,6 +136,7 @@ public class TransactionManagerImpl implements TransactionManager {
         this.childLOTransactionDAO = childLOTransactionDAO;
         this.pictureTransactionDAO = pictureTransactionDAO;
         this.upperSecondaryLOSTransactionDAO = upperSecondaryLOSTransactionDAO;
+        this.higherEducationLOSTransactionDAO = higherEducationLOSTransactionDAO;
         this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;
         this.childLearningOpportunityDAO = childLearningOpportunityDAO;
@@ -138,6 +144,7 @@ public class TransactionManagerImpl implements TransactionManager {
         this.dataStatusDAO = dataStatusDAO;
         this.pictureDAO = pictureDAO;
         this.upperSecondaryLearningOpportunitySpecificationDAO = upperSecondaryLearningOpportunitySpecificationDAO;
+        this.higherEducationLOSDAO = higherEducationLOSDAO;
     }
 
     @Override
@@ -201,6 +208,7 @@ public class TransactionManagerImpl implements TransactionManager {
         childLOTransactionDAO.getCollection().drop();
         pictureTransactionDAO.getCollection().drop();
         upperSecondaryLOSTransactionDAO.getCollection().drop();
+        higherEducationLOSTransactionDAO.getCollection().drop();
     }
 
     private void dropDbCollections() {
@@ -211,6 +219,7 @@ public class TransactionManagerImpl implements TransactionManager {
         pictureDAO.getCollection().drop();
         learningOpportunityProviderDAO.getCollection().drop();
         upperSecondaryLearningOpportunitySpecificationDAO.getCollection().drop();
+        higherEducationLOSDAO.getCollection().drop();
     }
 
     private CoreAdminRequest getCoreSwapRequest(final String fromCore, final String toCore) {
