@@ -62,13 +62,21 @@ directive('toggleCollapse', [function () {
     };
 }]).
 
-directive('extendedSearchresultData', ['ParentLOService', function (ParentLOService) {
+directive('extendedSearchresultData', ['ParentLOService', 'SpecialLOService', 'UpperSecondaryLOService', function (ParentLOService, SpecialLOService, UpperSecondaryLOService) {
     return {    
         restrict: 'A',
-        controller: function($scope) {
+        link: function($scope, ielement, iAttrs) {
             $scope.fetchLOData = function() {
-                console.log($scope)
-                $scope.extendedLO = ParentLOService.query({id: $scope.lo.id});
+                $scope.extendedLO = undefined;
+                
+                if(iAttrs.extendedSearchresultData === "tutkinto") {
+                    $scope.extendedLO = ParentLOService.query({id: $scope.lo.id});
+                } else if(iAttrs.extendedSearchresultData === "valmentava" || iAttrs.extendedSearchresultData === "erityisopetus") {
+                    $scope.extendedLO = SpecialLOService.query({id: $scope.lo.id});
+                } else if(iAttrs.extendedSearchresultData === "lukio") {
+                    $scope.extendedLO = UpperSecondaryLOService.query({id: $scope.lo.id});
+                }
+                    
                 $scope.extendedLO.then(function(result) {
                     for(var i = 0 ; result.lo.lois.length < i ; i++) {
                         //todo filter out unnecessary lois
@@ -81,20 +89,57 @@ directive('extendedSearchresultData', ['ParentLOService', function (ParentLOServ
     };
 }]).
 
+directive('srApplicationBasket', ['ApplicationBasketService', 'TranslationService', function (ApplicationBasketService, TranslationService) {
+    return {
+        restrict: 'A',
+        controller: function($scope) {
+            $scope.isItemAddedToBasket = function(applicationoptionId) {
+                return ApplicationBasketService.itemExists(applicationoptionId);
+            }
+
+            $scope.addToBasket = function(applicationoptionId) {
+                console.log($scope);
+                var basketType = ApplicationBasketService.getType();
+                if (!basketType || $scope.$parent.$parent.$parent.lo.prerequisite.value == basketType) {
+                    ApplicationBasketService.addItem(applicationoptionId, $scope.$parent.$parent.$parent.lo.prerequisite.value);
+                } else {
+                    $scope.popoverTitle = TranslationService.getTranslation('popover-title-error');
+                    $scope.popoverContent = "<div>" + TranslationService.getTranslation('popover-content-error') + "</div><a href='#/muistilista'>" + TranslationService.getTranslation('popover-content-link-to-application-basket') + "</a>";
+                }
+
+            }
+        },
+        link: function (scope, iElement, iAttrs) {
+        }
+    };
+}]).
+
+directive('srHakukohteet', [function () {
+    return {
+        restrict: 'A',
+        transclude: true,
+        template: 
+            '<div ng-repeat="lo in extendedLO.lo.lois">' +
+                '<div ng-repeat="applicationsystem in lo.applicationSystems">' + 
+                    '<div ng-repeat="applicationoption in applicationsystem.applicationOptions">' +
+                        '<div class="bold margin-bottom-1">{{applicationoption.name}}</div><div ng-transclude></div>' +
+                    '</div>' +
+                '</div>' + 
+            '</div>'
+    };
+}]).
+
 directive('srExtendedOptions', [function () {
     return {
-        restrict: 'E',
+        restrict: 'A',
         require: '^extendedSearchresultData',
-        templateUrl: 'templates/searchResultOptions.html',
-        link: function() {
-
-        }
+        templateUrl: 'templates/searchResultOptions.html'
     };
 }]).
 
 directive('srExtendedKoulutustarjonta', [function () {
     return {
-        restrict: 'E',
+        restrict: 'A',
         require: '^extendedSearchresultData',
         templateUrl: 'templates/searchResultExtendedKoulutustarjonta.html'
     };
@@ -102,7 +147,7 @@ directive('srExtendedKoulutustarjonta', [function () {
 
 directive('srBasicInformation', [function () {
     return {
-        restrict: 'E',
+        restrict: 'A',
         require: '^extendedSearchresultData',
         templateUrl: 'templates/searchResultBasicInformation.html'
     };
