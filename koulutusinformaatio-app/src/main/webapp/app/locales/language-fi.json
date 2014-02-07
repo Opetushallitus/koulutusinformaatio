@@ -253,6 +253,9 @@
     "LUONNOS": "Luonnos",
     "JULKAISTU": "Julkaistu",
     "tarjontaTarkastelu": "Takaisin",
-    "tarjontaMuokkaa": "Muokkaa"
+    "tarjontaMuokkaa": "Muokkaa",
+    "esikatselussa": "Esikatselussa",
+    "organisaatiossa": "organisaatiossa"
+    
      
 }
