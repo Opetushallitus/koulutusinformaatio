@@ -56,7 +56,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<HigherEdu
 
 		doc.setField(LearningOpportunity.NAME, losName);
 
-		doc.addField(LearningOpportunity.EDUCATION_DEGREE, SolrUtil.resolveTextWithFallback(teachingLang,  los.getEducationDegreeName().getTranslations()));
+		doc.addField(LearningOpportunity.EDUCATION_DEGREE, SolrUtil.resolveTextWithFallback(teachingLang,  los.getEducationDegreeLang().getTranslations()));
 		
 		doc.addField(LearningOpportunity.EDUCATION_DEGREE_CODE, los.getEducationDegree());
 		

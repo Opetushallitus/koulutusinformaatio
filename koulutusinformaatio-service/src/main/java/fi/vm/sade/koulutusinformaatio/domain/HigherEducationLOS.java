@@ -44,7 +44,7 @@ public class HigherEducationLOS extends LOS {
 	private I18nText name;
 	private I18nText koulutuskoodi;
 	private String educationDegree;
-	private I18nText educationDegreeName;
+	private I18nText educationDegreeLang;
     private I18nText degreeTitle;
 	private Date startDate;
 	private String plannedDuration;
@@ -394,12 +394,12 @@ public class HigherEducationLOS extends LOS {
 		this.creditUnit = creditUnit;
 	}
 
-	public I18nText getEducationDegreeName() {
-		return educationDegreeName;
+	public I18nText getEducationDegreeLang() {
+		return educationDegreeLang;
 	}
 
-	public void setEducationDegreeName(I18nText educationDegreeName) {
-		this.educationDegreeName = educationDegreeName;
+	public void setEducationDegreeLang(I18nText educationDegreeLang) {
+		this.educationDegreeLang = educationDegreeLang;
 	}
 	public void setTeachingTimes(List<I18nText> teachingTimes) {
 		this.teachingTimes = teachingTimes;

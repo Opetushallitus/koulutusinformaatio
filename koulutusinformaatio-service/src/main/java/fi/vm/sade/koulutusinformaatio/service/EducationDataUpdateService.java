@@ -28,6 +28,5 @@ public interface EducationDataUpdateService {
     void save(final LOS learningOpportunitySpecification);
 
     void save(final DataStatus dataStatus);
-    
-    void save(final HigherEducationLOS los);
+
 }

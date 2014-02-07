@@ -73,7 +73,10 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
         }
         else if (learningOpportunitySpecification instanceof SpecialLOS) {
             save((SpecialLOS) learningOpportunitySpecification);
-        }
+        } 
+        else if (learningOpportunitySpecification instanceof HigherEducationLOS) {
+        	this.saveHigherEducationLOS((HigherEducationLOS)learningOpportunitySpecification);
+        } 
     }
 
     @Override
@@ -170,15 +173,13 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
         }
     }
 
-	@Override
-	public void save(HigherEducationLOS los) {
+	private void saveHigherEducationLOS(HigherEducationLOS los) {
 		
 		if (los != null) {
 			
 			for (HigherEducationLOS curChild : los.getChildren()) {
-				save(curChild);
+				saveHigherEducationLOS(curChild);
 			}
-			
             HigherEducationLOSEntity plos =
                     modelMapper.map(los, HigherEducationLOSEntity.class);
             

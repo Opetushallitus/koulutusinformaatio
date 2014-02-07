@@ -70,7 +70,7 @@ public class HigherEducationLOSEntity {
 	private I18nTextEntity koulutuskoodi;
 	private String educationDegree;
 	@Embedded
-    private I18nTextEntity educationDegreeName;
+    private I18nTextEntity educationDegreeLang;
 
 	@Embedded
     private I18nTextEntity degreeTitle;
@@ -358,11 +358,11 @@ public class HigherEducationLOSEntity {
 	public void setCreditUnit(I18nTextEntity creditUnit) {
 		this.creditUnit = creditUnit;
 	}
-    public I18nTextEntity getEducationDegreeName() {
-		return educationDegreeName;
+    public I18nTextEntity getEducationDegreeLang() {
+		return educationDegreeLang;
 	}
-	public void setEducationDegreeName(I18nTextEntity educationDegreeName) {
-		this.educationDegreeName = educationDegreeName;
+	public void setEducationDegreeLang(I18nTextEntity educationDegreeLang) {
+		this.educationDegreeLang = educationDegreeLang;
 	}
 	public I18nTextEntity getInfoAboutCharge() {
 		return infoAboutCharge;

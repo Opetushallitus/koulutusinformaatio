@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -96,10 +97,10 @@ public class UpdateServiceImpl implements UpdateService {
                 count = loOids.size();
                 index += count;*/
             
-            List<String> loOids = new ArrayList<String>();/*Arrays.asList("1.2.246.562.5.2013061010191208547980", 
+            List<String> loOids = Arrays.asList("1.2.246.562.5.2013061010191208547980", 
                     "1.2.246.562.5.2013061010192577322360", 
-                    "1.2.246.562.5.2013112814572435763432", 
-                    "1.2.246.562.5.2013061010184670694756");*///,
+                    "1.2.246.562.5.2013112814572435763432");//, 
+                    //"1.2.246.562.52013061010184670694756");//,
             		//"1.2.246.562.5.2013061010190108136320");
             //loOids.add("1.2.246.562.5.2013061010184190024479");
             
