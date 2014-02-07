@@ -1,7 +1,9 @@
 
-<button class="float-left" type="submit" data-ng-disabled="!applicationsystem.asOngoing">
-  <span><span data-ki-i18n="apply-button-label" data-lang="{{applicationoption.teachingLang}}"></span></span>
-</button>
+<form name="levelSelectionForm-{{$id}}" id="application-form-{{applicationsystem.id}}-{{$id}}" action="{{hakuAppUrl}}lomake/{{applicationsystem.id}}" method="POST" class="margin-top-2" target="hakulomake">
+    <button class="float-left" type="submit" data-ng-disabled="!applicationsystem.asOngoing">
+      <span><span data-ki-i18n="apply-button-label" data-lang="{{applicationoption.teachingLang}}"></span></span>
+    </button>
+</form>
 
 <div data-sr-application-basket data-ng-switch="isItemAddedToBasket(applicationoption.id)" class="float-left margin-left-2 add-to-basket">
     <span data-ng-switch-when="true">
@@ -27,8 +29,8 @@
 
 <div class="margin-top-1 margin-bottom-3">
     <span data-ng-show="!applicationsystem.asOngoing && applicationsystem.nextApplicationPeriodStarts">
-        Hakuaika: {{applicationsystem.applicationDates[0].startDate | date:'dd.MM.yyyy'}} - {{applicationsystem.applicationDates[0].endDate | date:'dd.MM.yyyy'}}
+        {{locales.hakuaika}}: {{applicationsystem.applicationDates[0].startDate | date:'dd.MM.yyyy'}} - {{applicationsystem.applicationDates[0].endDate | date:'dd.MM.yyyy'}}
     </span>
-    <span data-ng-show="applicationsystem.asOngoing">Haku käynnissä</span>
-    <span data-ng-show="!applicationsystem.asOngoing && !applicationsystem.nextApplicationPeriodStarts">Haku päättynyt</span>
+    <span data-ng-show="applicationsystem.asOngoing">{{locales.hakukaynnissa}}</span>
+    <span data-ng-show="!applicationsystem.asOngoing && !applicationsystem.nextApplicationPeriodStarts">{{locales.hakupaattynyt}}</span>
 </div>

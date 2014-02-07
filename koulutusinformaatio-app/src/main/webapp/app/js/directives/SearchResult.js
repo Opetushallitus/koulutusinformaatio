@@ -129,11 +129,19 @@ directive('srHakukohteet', [function () {
     };
 }]).
 
-directive('srExtendedOptions', [function () {
+directive('srExtendedOptions', ['TranslationService','Config', function (TranslationService, Config) {
     return {
         restrict: 'A',
         require: '^extendedSearchresultData',
-        templateUrl: 'templates/searchResultOptions.html'
+        templateUrl: 'templates/searchResultOptions.html',
+        controller: function($scope) {
+            $scope.hakuAppUrl = Config.get('hakulomakeUrl');
+            $scope.locales = {
+                hakuaika: TranslationService.getTranslation('application-period'),
+                hakukaynnissa: TranslationService.getTranslation('application-system-active-present'),
+                hakupaattynyt: TranslationService.getTranslation('application-system-active-past')
+            } 
+        }
     };
 }]).
 
