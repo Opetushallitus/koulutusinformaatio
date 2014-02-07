@@ -40,7 +40,7 @@
 
         <oph.organisaatio.version>8.0</oph.organisaatio.version>
         <oph.koodisto.version>7.0</oph.koodisto.version>
-        <oph.tarjonta.version>8.0</oph.tarjonta.version>
+        <oph.tarjonta.version>8.1</oph.tarjonta.version>
     </properties>
 
     <repositories>

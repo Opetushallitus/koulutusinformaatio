@@ -33,7 +33,6 @@ public final class ParentLOSToDTO {
         parent.setId(parentLOS.getId());
         parent.setName(ConverterUtil.getTextByLanguage(parentLOS.getName(), defaultLang));
         parent.setEducationDegree(parentLOS.getEducationDegree());
-        parent.setAvailableTranslationLanguages(ConverterUtil.getAvailableTranslationLanguages(parentLOS.getGoals()));
         parent.setProvider(ProviderToDTO.convert(parentLOS.getProvider(), lang, defaultLang));
         parent.setStructure(ConverterUtil.getTextByLanguage(parentLOS.getStructure(), lang));
         parent.setAccessToFurtherStudies(ConverterUtil.getTextByLanguage(parentLOS.getAccessToFurtherStudies(), lang));

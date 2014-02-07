@@ -10,14 +10,13 @@ import java.util.Map;
  *
  * @author Hannu Lyytikainen
  */
-public class ChildLOI {
+public class ChildLOI extends LOI {
 
     private String id;
     private String losId;
     private I18nText name;
     private String parentLOIId;
     private List<I18nText> professionalTitles;
-    private Code prerequisite;
     // opetusmuoto -> lähiopetus
     private List<I18nText> formOfTeaching;
     private List<Code> teachingLanguages;
@@ -26,7 +25,6 @@ public class ChildLOI {
     private List<I18nText> formOfEducation;
     private Date startDate;
     private List<ChildLOIRef> related = new ArrayList<ChildLOIRef>();
-    private List<ApplicationOption> applicationOptions;
     private I18nText workingLifePlacement;
     private I18nText internationalization;
     private I18nText cooperation;
@@ -36,7 +34,8 @@ public class ChildLOI {
     private boolean kaksoistutkinto;
     private String plannedDuration;
     private I18nText plannedDurationUnit;
-    
+    private List<String> availableTranslationLanguages;
+
     //planned duration unit code uri (used in indexing for solr)
     private String pduCodeUri;
 
@@ -78,14 +77,6 @@ public class ChildLOI {
 
     public void setProfessionalTitles(List<I18nText> professionalTitles) {
         this.professionalTitles = professionalTitles;
-    }
-
-    public Code getPrerequisite() {
-        return prerequisite;
-    }
-
-    public void setPrerequisite(Code prerequisite) {
-        this.prerequisite = prerequisite;
     }
 
     public List<I18nText> getFormOfTeaching() {
@@ -134,14 +125,6 @@ public class ChildLOI {
 
     public void setRelated(List<ChildLOIRef> related) {
         this.related = related;
-    }
-
-    public List<ApplicationOption> getApplicationOptions() {
-        return applicationOptions;
-    }
-
-    public void setApplicationOptions(List<ApplicationOption> applicationOptions) {
-        this.applicationOptions = applicationOptions;
     }
 
     public I18nText getWorkingLifePlacement() {
@@ -222,5 +205,13 @@ public class ChildLOI {
 
     public void setPduCodeUri(String pduCodeUri) {
         this.pduCodeUri = pduCodeUri;
+    }
+
+    public List<String> getAvailableTranslationLanguages() {
+        return availableTranslationLanguages;
+    }
+
+    public void setAvailableTranslationLanguages(List<String> availableTranslationLanguages) {
+        this.availableTranslationLanguages = availableTranslationLanguages;
     }
 }

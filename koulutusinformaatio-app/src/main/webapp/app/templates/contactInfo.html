@@ -4,27 +4,33 @@
     <a data-ki-absolute-link="{{provider.webPage}}" target="_blank" data-ki-i18n="provider-web-page" data-lang="{{translationLanguage}}"></a>
 </p>
 <p>
+    <p data-ng-show="provider.name" class="bold">
+    {{provider.name}}
+    </p>
+
     <p data-ng-show="provider.visitingAddress">
-    {{provider.visitingAddress.streetAddress}}<br />
-    <span data-ng-show="provider.visitingAddress.streetAddress2">{{provider.visitingAddress.streetAddress2}}<br /></span>
-    {{provider.visitingAddress.postalCode}} {{provider.visitingAddress.postOffice}}<br />
+        <span data-ki-i18n="plain:visiting-address" data-show-colon="true"></span><br/>
+        <span data-ng-show="provider.visitingAddress.streetAddress">{{provider.visitingAddress.streetAddress}}<br/></span>
+        <span data-ng-show="provider.visitingAddress.streetAddress2">{{provider.visitingAddress.streetAddress2}}<br/></span>
+        <span data-ng-show="provider.visitingAddress.postOffice">{{provider.visitingAddress.postOffice}}</span>
     </p>
+
     <p data-ng-show="provider.postalAddress">
-    {{provider.postalAddress.streetAddress}}<br />
-    <span data-ng-show="provider.postalAddress.streetAddress2">{{provider.postalAddress.streetAddress2}}<br /></span>
-    {{provider.postalAddress.postalCode}} {{provider.postalAddress.postOffice}}<br />
+        <span data-ki-i18n="plain:postal-address" data-show-colon="true"></span><br/>
+        <span data-ng-show="provider.postalAddress.streetAddress">{{provider.postalAddress.streetAddress}}<br/></span>
+        <span data-ng-show="provider.postalAddress.streetAddress2">{{provider.postalAddress.streetAddress2}}<br/></span>
+        <span data-ng-show="provider.postalAddress.postalCode">{{provider.postalAddress.postalCode}}</span>
+        <span data-ng-show="provider.postalAddress.postOffice">{{provider.postalAddress.postOffice}}</span>
     </p>
-    <span data-ng-show="provider.name">
-    {{provider.name}}<br/>
-    </span>
+    
     <span data-ng-show="provider.email">
-    <span data-ki-email="{{provider.email}}"></span><br/>
+        <span data-ki-i18n="plain:email" data-show-colon="true"></span> <span data-ki-email="{{provider.email}}"></span><br/>
     </span>
     <span data-ng-show="provider.phone">
-        <span data-ki-i18n="plain:phone"></span> {{provider.phone}}<br />
+        <span data-ki-i18n="plain:phone" data-show-colon="true"></span> {{provider.phone}}<br />
     </span>
     <span data-ng-show="provider.fax">
-        <span data-ki-i18n="plain:fax"></span> {{provider.fax}}
+        <span data-ki-i18n="plain:fax" data-show-colon="true"></span> {{provider.fax}}
     </span>
 </p>
 </div>

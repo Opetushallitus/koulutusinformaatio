@@ -170,20 +170,9 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
         SolrUtil.addApplicationDates(doc, childLOI.getApplicationOptions());
 
         doc.addField(SolrFields.LearningOpportunity.START_DATE_SORT, childLOI.getStartDate());
-        indexDurationField(childLOI, doc);
-
         indexFacetFields(childLOI, specialLOS, doc);
 
         return doc;
-    }
-
-    /*
-     * Indexes the duration_ssort field, used in sorting
-     * results according to planned duration of the loi
-    */
-    private void indexDurationField(ChildLOI childLOI, SolrInputDocument doc) {
-        int duration = SolrUtil.getDuration(childLOI);
-        doc.addField(SolrFields.LearningOpportunity.DURATION_SORT, duration);
     }
 
     /*

@@ -19,7 +19,7 @@ public class ChildLearningOpportunityInstanceDTO {
     private Map<String, String> webLinks;
     private List<String> formOfTeaching = new ArrayList<String>();
     private CodeDTO prerequisite;
-    private Set<String> availableTranslationLanguages = new HashSet<String>();
+    private List<String> availableTranslationLanguages;
     private Set<String> teachingLanguages = new HashSet<String>();
     private List<String> professionalTitles;
     private String workingLifePlacement;
@@ -28,6 +28,8 @@ public class ChildLearningOpportunityInstanceDTO {
     private String content;
     private String selectingDegreeProgram;
     private List<ContactPersonDTO> contactPersons = new ArrayList<ContactPersonDTO>();
+    private String plannedDuration;
+    private String plannedDurationUnit;
 
     public String getId() {
         return id;
@@ -90,15 +92,8 @@ public class ChildLearningOpportunityInstanceDTO {
     }
 
     public void setPrerequisite(CodeDTO prerequisite) {
+
         this.prerequisite = prerequisite;
-    }
-
-    public Set<String> getAvailableTranslationLanguages() {
-        return availableTranslationLanguages;
-    }
-
-    public void setAvailableTranslationLanguages(Set<String> availableTranslationLanguages) {
-        this.availableTranslationLanguages = availableTranslationLanguages;
     }
 
     public Set<String> getTeachingLanguages() {
@@ -163,5 +158,29 @@ public class ChildLearningOpportunityInstanceDTO {
 
     public void setContactPersons(List<ContactPersonDTO> contactPersons) {
         this.contactPersons = contactPersons;
+    }
+
+	public String getPlannedDuration() {
+		return plannedDuration;
+	}
+
+	public void setPlannedDuration(String plannedDuration) {
+		this.plannedDuration = plannedDuration;
+	}
+
+	public String getPlannedDurationUnit() {
+		return plannedDurationUnit;
+	}
+
+	public void setPlannedDurationUnit(String plannedDurationUnit) {
+		this.plannedDurationUnit = plannedDurationUnit;
+	}
+
+    public List<String> getAvailableTranslationLanguages() {
+        return availableTranslationLanguages;
+    }
+
+    public void setAvailableTranslationLanguages(List<String> availableTranslationLanguages) {
+        this.availableTranslationLanguages = availableTranslationLanguages;
     }
 }

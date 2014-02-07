@@ -23,16 +23,14 @@ import java.util.List;
 /**
  * @author Hannu Lyytikainen
  */
-public class UpperSecondaryLOI {
+public class UpperSecondaryLOI extends LOI {
 
     private String id;
     private I18nText name;
-    private Code prerequisite;
     private List<I18nText> formOfTeaching;
     private List<Code> teachingLanguages;
     private List<I18nText> formOfEducation;
     private Date startDate;
-    private List<ApplicationOption> applicationOptions;
     private I18nText internationalization;
     private I18nText cooperation;
     private I18nText content;
@@ -42,7 +40,8 @@ public class UpperSecondaryLOI {
     private I18nText plannedDurationUnit;
     private List<LanguageSelection> languageSelection;
     private boolean kaksoistutkinto;
-    
+    private List<String> availableTranslationLanguages;
+
     //planned duration unit code uri (used in indexing for solr)
     private String pduCodeUri;
 
@@ -60,14 +59,6 @@ public class UpperSecondaryLOI {
 
     public void setName(I18nText name) {
         this.name = name;
-    }
-
-    public Code getPrerequisite() {
-        return prerequisite;
-    }
-
-    public void setPrerequisite(Code prerequisite) {
-        this.prerequisite = prerequisite;
     }
 
     public List<I18nText> getFormOfTeaching() {
@@ -100,14 +91,6 @@ public class UpperSecondaryLOI {
 
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
-    }
-
-    public List<ApplicationOption> getApplicationOptions() {
-        return applicationOptions;
-    }
-
-    public void setApplicationOptions(List<ApplicationOption> applicationOptions) {
-        this.applicationOptions = applicationOptions;
     }
 
     public I18nText getInternationalization() {
@@ -188,5 +171,13 @@ public class UpperSecondaryLOI {
 
     public void setPduCodeUri(String pduCodeUri) {
         this.pduCodeUri = pduCodeUri;
+    }
+
+    public List<String> getAvailableTranslationLanguages() {
+        return availableTranslationLanguages;
+    }
+
+    public void setAvailableTranslationLanguages(List<String> availableTranslationLanguages) {
+        this.availableTranslationLanguages = availableTranslationLanguages;
     }
 }

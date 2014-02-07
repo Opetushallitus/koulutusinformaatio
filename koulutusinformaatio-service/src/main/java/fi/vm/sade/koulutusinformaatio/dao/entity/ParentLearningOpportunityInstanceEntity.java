@@ -38,7 +38,7 @@ public class ParentLearningOpportunityInstanceEntity {
     private I18nTextEntity selectingDegreeProgram;
     @Embedded
     private Set<ApplicationOption> applicationOptions = Sets.newHashSet();
-
+    private List<String> availableTranslationLanguages;
 
     public String getId() {
         return id;
@@ -78,5 +78,13 @@ public class ParentLearningOpportunityInstanceEntity {
 
     public void setApplicationOptions(Set<ApplicationOption> applicationOptions) {
         this.applicationOptions = applicationOptions;
+    }
+
+    public List<String> getAvailableTranslationLanguages() {
+        return availableTranslationLanguages;
+    }
+
+    public void setAvailableTranslationLanguages(List<String> availableTranslationLanguages) {
+        this.availableTranslationLanguages = availableTranslationLanguages;
     }
 }

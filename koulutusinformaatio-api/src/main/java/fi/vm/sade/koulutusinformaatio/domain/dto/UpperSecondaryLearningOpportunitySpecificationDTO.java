@@ -18,9 +18,7 @@ package fi.vm.sade.koulutusinformaatio.domain.dto;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Hannu Lyytikainen
@@ -39,7 +37,6 @@ public class UpperSecondaryLearningOpportunitySpecificationDTO {
     private String structure;
     private String accessToFurtherStudies;
     private String translationLanguage;
-    private Set<String> availableTranslationLanguages = new HashSet<String>();
     private String creditValue;
     private String creditUnit;
 
@@ -129,14 +126,6 @@ public class UpperSecondaryLearningOpportunitySpecificationDTO {
 
     public void setTranslationLanguage(String translationLanguage) {
         this.translationLanguage = translationLanguage;
-    }
-
-    public Set<String> getAvailableTranslationLanguages() {
-        return availableTranslationLanguages;
-    }
-
-    public void setAvailableTranslationLanguages(Set<String> availableTranslationLanguages) {
-        this.availableTranslationLanguages = availableTranslationLanguages;
     }
 
     public String getCreditValue() {

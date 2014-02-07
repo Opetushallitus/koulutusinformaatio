@@ -47,6 +47,7 @@
     "filter-search-university": "Yliopistotutkinto",
     "filter-search-location-title": "Rajaa sijainnin mukaan",
     "location-filter-placeholder": "Kirjoita paikkakunta",
+    "location-filter-label": "Paikkakunta",
     "filter-search-location-add": "Lisää sijainti",
     "filter-search-location-remove": "Poista",
 
@@ -162,7 +163,8 @@
     "application-basket-empty": "Tyhjennä muistilista",
     "application-basket-empty-confirm": "Haluatko varmasti tyhjentää koko muistilistan?",
     "application-basket-overflow-warning": "Voit hakea yhteishaussa viiteen (5) eri koulutukseen, poista ylimääräiset",
-    "attachment-delivery-deadline": "Liitteet toimitettava viimeistään",
+    "application-basket-attachments-exams": "Liitteet ja kokeet",
+    "application-basket-due-date": "Liitteen määräaika tai kokeen ajankohta",
 
     "popup-close": "Sulje",
     "popup-continue": "Jatka",
@@ -226,5 +228,8 @@
     "er": "Yksilöllistetty perusopetus",
     
     "autocomplete-keyword": "Hakusanaehdotukset",
-    "autocomplete-loname": "Kurssit ja tutkinnot"
+    "autocomplete-loname": "Kurssit ja tutkinnot",
+
+    "error-title": "Tapahtui odottamaton virhe",
+    "error-body": "Olemme pahoillamme. Hakemiesi koulutusten tietoja ei saatu jostain syystä haettua. Yritä hetken kuluttua uudelleen."
 }

@@ -27,5 +27,6 @@ public class UpperSecondaryLearningOpportunitySpecificationDAO extends LearningO
 
     public UpperSecondaryLearningOpportunitySpecificationDAO(Mongo mongo, Morphia morphia, String dbName) {
         super(mongo, morphia, dbName);
+        ensureIndexes();
     }
 }
