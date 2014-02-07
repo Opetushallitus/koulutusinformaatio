@@ -27,7 +27,7 @@ public final class ChildLOIToDTO {
             dto.setStartDate(childLOI.getStartDate());
             if (childLOI.getTeachingLanguages() != null) {
                 for (Code code : childLOI.getTeachingLanguages()) {
-                    dto.getTeachingLanguages().add(code.getValue());
+                    dto.getTeachingLanguages().add(ConverterUtil.getTextByLanguageUseFallbackLang(code.getName(), uiLang));
                 }
             }
             dto.setRelated(ChildLOIRefToDTO.convert(childLOI.getRelated(), defaultLang));
