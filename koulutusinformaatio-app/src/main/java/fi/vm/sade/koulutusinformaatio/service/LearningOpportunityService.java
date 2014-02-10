@@ -72,6 +72,16 @@ public interface LearningOpportunityService {
 
     List<LearningOpportunitySearchResultDTO> findLearningOpportunitiesByProviderId(String providerId, String lang);
 
+    /**
+     * 
+     * Fetches (from tarjonta) and returns a higher education learning opportunity for preview. 
+     * 
+     * @param id the oid of the learning opportunity
+     * @param lang the lang
+     * @param uiLang the language of the user interface.
+     * @return the requested higher education learning opportunity
+     * @throws ResourceNotFoundException
+     */
 	HigherEducationLOSDTO previewLearningOpportunity(String id,
 			String lang, String uiLang) throws ResourceNotFoundException;
 }

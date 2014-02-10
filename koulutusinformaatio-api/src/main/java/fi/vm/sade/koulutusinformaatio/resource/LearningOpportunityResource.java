@@ -148,11 +148,11 @@ public interface LearningOpportunityResource {
                                                      @QueryParam("lang") String lang);
     
     /**
-     * Fetches data to be used in preview for learning opportunity.
+     * Fetches a higher education learning opportunity. To be used in preview for learning opportunity.
      *
      * @param oid of the learning opportunity
      * @param lang language
-     * @return upper secondary learning opportunity
+     * @return higher education learning opportunity
      */
     @GET
     @Path("preview/{oid}")

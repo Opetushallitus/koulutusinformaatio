@@ -147,9 +147,16 @@ public class TarjontaServiceImpl implements TarjontaService {
     		creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService);
     	}
 
+    	//List of all properly published higher education learning objects, regardles of position in hierarchy
     	List<HigherEducationLOS> koulutukset = new ArrayList<HigherEducationLOS>();
+    	
+    	//A map containing komo oid as key and higher education lo as value. This is used in lo-hierarchy creation, because 
+    	//hierarchy relationships are retrieved based on komos.
     	Map<String,List<HigherEducationLOS>> komoToLOSMap = new HashMap<String,List<HigherEducationLOS>>();
+    	
+    	//Komo-oids of parent level learning opportunities. 
     	List<String> parentOids = new ArrayList<String>();
+    	
     	ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes = this.tarjontaRawService.listHigherEducation();
     	HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
     	for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
