@@ -312,7 +312,7 @@ public class LOIObjectCreator extends ObjectCreator {
         } else {
             ApplicationOption unfilteredHead = head(unfiltered);
             ApplicationOption filteredHead = head(filtered);
-            if (isFuture(unfilteredHead) || isCurrent(unfilteredHead)) {
+            if (isCurrentOrFuture(unfilteredHead)) {
                 // unfiltered head is future/current, add to filtered
                 if (!isFuture(filteredHead) && !isCurrent(filteredHead)) {
                     // remove past head from filtered list
@@ -322,7 +322,7 @@ public class LOIObjectCreator extends ObjectCreator {
                 return reduceApplicationOptions(tail(unfiltered), Lists.newArrayList(filtered));
             } else {
                 // unfiltered head is in the past
-                if (isFuture(filteredHead) || isCurrent(filteredHead)) {
+                if (isCurrentOrFuture(filteredHead)) {
                     // if filtered head is current/future -> pass
                     return reduceApplicationOptions(tail(unfiltered), Lists.newArrayList(filtered));
                 } else {
@@ -366,9 +366,13 @@ public class LOIObjectCreator extends ObjectCreator {
         }
     }
 
+    private boolean isCurrentOrFuture(ApplicationOption ao) {
+        return isCurrent(ao) || isFuture(ao);
+    }
+
     private boolean isCurrent(ApplicationOption ao) {
         Date now = new Date();
-        for (DateRange dr : ao.getApplicationSystem().getApplicationDates()) {
+        for (DateRange dr : ao.getApplicationDates()) {
             if (dr.getStartDate().before(now) && dr.getEndDate().after(now)) {
                 return true;
             }
@@ -378,12 +382,14 @@ public class LOIObjectCreator extends ObjectCreator {
 
     private boolean isFuture(ApplicationOption ao) {
         Date now = new Date();
-        for (DateRange dr : ao.getApplicationSystem().getApplicationDates()) {
+        for (DateRange dr : ao.getApplicationDates()) {
             if (dr.getStartDate().before(now)) {
                 return false;
             }
         }
         return true;
     }
+
+
 
 }

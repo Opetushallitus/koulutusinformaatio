@@ -254,5 +254,8 @@
     "tarjontaTarkastelu": "Takaisin (en)",
     "tarjontaMuokkaa": "Muokkaa (en)",
     "esikatselussa": "Esikatselussa (en)",
-    "organisaatiossa": "organisaatiossa (en)"
+    "organisaatiossa": "organisaatiossa (en)",
+
+    "error-title": "Tapahtui odottamaton virhe (en)",
+    "error-body": "Olemme pahoillamme. Hakemiesi koulutusten tietoja ei saatu jostain syystä haettua. Yritä hetken kuluttua uudelleen. (en)"
 }
