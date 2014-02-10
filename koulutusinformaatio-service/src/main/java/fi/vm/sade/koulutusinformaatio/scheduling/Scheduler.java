@@ -39,7 +39,7 @@ public class Scheduler {
     private boolean enabled;
 
     @Autowired
-    public Scheduler(final UpdateService updateService, final SEOService seoService, @Value("${scheduling.data.enabled}") boolean enabled) {
+    public Scheduler(final UpdateService updateService, final SEOService seoService, @Value("${scheduling.enabled}") boolean enabled) {
         this.updateService = updateService;
         this.seoService = seoService;
         this.enabled = enabled;
