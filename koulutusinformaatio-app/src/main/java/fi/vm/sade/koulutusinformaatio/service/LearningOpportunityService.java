@@ -52,10 +52,31 @@ public interface LearningOpportunityService {
 
     SpecialLearningOpportunitySpecificationDTO getSpecialSecondaryLearningOpportunity(String id, String lang, String uiLang) throws ResourceNotFoundException;
     
+    /**
+     * Gets a higher education learning opportunity.
+     * @param id oid of the learning opportunity
+     * @return higher education learning opportunity
+     * @throws ResourceNotFoundException
+     */
     HigherEducationLOSDTO getHigherEducationLearningOpportunity(String id) throws ResourceNotFoundException;
 
+    /**
+     * Gets a higher education learning opportunity.
+     * @param id oid of the learning opportunity
+     * @param uiLang the language of the user interface
+     * @return higher education learning opportunity
+     * @throws ResourceNotFoundException
+     */
     HigherEducationLOSDTO getHigherEducationLearningOpportunity(String id, String uiLang) throws ResourceNotFoundException;
 
+    /**
+     * Gets a higher education learning opportunity.
+     * @param id oid of the learning opportunity
+     * @param lang the preferred language for displaying the content
+     * @param uiLang the language of the user interface
+     * @return higher education learning opportunity
+     * @throws ResourceNotFoundException
+     */
     HigherEducationLOSDTO getHigherEducationLearningOpportunity(String id, String lang, String uiLang) throws ResourceNotFoundException;
 
     List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, String lopId, String baseEducation, boolean vocational, boolean nonVocational, String uiLang);
