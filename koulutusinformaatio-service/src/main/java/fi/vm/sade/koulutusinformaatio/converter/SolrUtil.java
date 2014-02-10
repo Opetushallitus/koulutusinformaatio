@@ -87,7 +87,7 @@ public final class SolrUtil {
         return translation;
 	}
 	
-public static class LearningOpportunity {
+	public static class LearningOpportunity {
         
         public static final String TYPE = "type";
         public static final String ID = "id";
