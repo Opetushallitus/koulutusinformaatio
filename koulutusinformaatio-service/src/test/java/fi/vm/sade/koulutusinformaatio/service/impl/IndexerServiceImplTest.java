@@ -20,7 +20,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import fi.vm.sade.koulutusinformaatio.domain.*;
-import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
 

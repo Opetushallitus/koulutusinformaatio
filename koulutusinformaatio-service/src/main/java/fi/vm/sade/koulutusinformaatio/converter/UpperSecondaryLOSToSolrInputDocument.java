@@ -19,8 +19,8 @@ package fi.vm.sade.koulutusinformaatio.converter;
 import com.google.common.collect.Lists;
 
 import fi.vm.sade.koulutusinformaatio.domain.*;
-import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LearningOpportunity;
-import fi.vm.sade.koulutusinformaatio.domain.SolrFields.SolrConstants;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 
 import org.apache.solr.common.SolrInputDocument;
 import org.springframework.core.convert.converter.Converter;

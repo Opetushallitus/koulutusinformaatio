@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
+ *
+ * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
+ * soon as they will be approved by the European Commission - subsequent versions
+ * of the EUPL (the "Licence");
+ *
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy of the Licence at: http://www.osor.eu/eupl/
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * European Union Public Licence for more details.
+ */
+
 package fi.vm.sade.koulutusinformaatio.converter;
 
 import java.util.ArrayList;
@@ -12,9 +28,13 @@ import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
-import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LearningOpportunity;
-import fi.vm.sade.koulutusinformaatio.domain.SolrFields.SolrConstants;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 
+/**
+ * 
+ * @author Markus
+ */
 public class HigherEducationLOSToSolrInputDocment implements Converter<HigherEducationLOS, List<SolrInputDocument>> {
 
 	@Override
@@ -28,6 +48,9 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<HigherEdu
         return docs;
 	}
 
+	/*
+	 * Creates a higher education learning opportunity solr document.
+	 */
 	private SolrInputDocument createDoc(HigherEducationLOS los) {
 
 		SolrInputDocument doc = new SolrInputDocument();

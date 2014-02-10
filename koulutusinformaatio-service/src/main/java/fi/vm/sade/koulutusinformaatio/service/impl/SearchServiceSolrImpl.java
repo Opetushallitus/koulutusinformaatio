@@ -20,9 +20,9 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import fi.vm.sade.koulutusinformaatio.domain.*;
-import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LearningOpportunity;
-import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LocationFields;
-import fi.vm.sade.koulutusinformaatio.domain.SolrFields.SolrConstants;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LocationFields;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.*;

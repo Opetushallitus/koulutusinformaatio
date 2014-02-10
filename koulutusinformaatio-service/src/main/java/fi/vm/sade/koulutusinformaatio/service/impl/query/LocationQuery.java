@@ -18,8 +18,8 @@ package fi.vm.sade.koulutusinformaatio.service.impl.query;
 
 import com.google.common.base.Joiner;
 
-import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LocationFields;
-import fi.vm.sade.koulutusinformaatio.domain.SolrFields.SolrConstants;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LocationFields;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 
 import org.apache.solr.client.solrj.SolrQuery;
 

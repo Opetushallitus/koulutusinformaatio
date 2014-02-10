@@ -25,8 +25,8 @@ import org.junit.Test;
 
 import com.google.common.base.Joiner;
 
-import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LocationFields;
-import fi.vm.sade.koulutusinformaatio.domain.SolrFields.SolrConstants;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LocationFields;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 
 /**
  * 

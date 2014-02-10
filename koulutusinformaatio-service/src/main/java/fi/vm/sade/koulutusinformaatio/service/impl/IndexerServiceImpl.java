@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import fi.vm.sade.koulutusinformaatio.domain.*;
-import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LocationFields;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LocationFields;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 
 import org.apache.solr.client.solrj.SolrQuery;
