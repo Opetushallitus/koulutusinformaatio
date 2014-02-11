@@ -37,18 +37,43 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
     public List<SolrInputDocument> convert(ParentLOS parent) {
         List<SolrInputDocument> docs = Lists.newArrayList();
         FacetIndexer fIndexer = new FacetIndexer();
-        docs.add(createParentDoc(parent));
+        docs.addAll(createParentDocsByPrerequisites(parent));
         docs.addAll(fIndexer.createFacetsDocs(parent));
 
         return docs;
     }
+    
+    private List<SolrInputDocument> createParentDocsByPrerequisites(ParentLOS parent) {
+    	List<SolrInputDocument> docs = Lists.newArrayList();
+    	Map<String,Code> prerequisitesMap = new HashMap<String,Code>();
+    	for (ChildLOS childLOS : parent.getChildren()) {
+            for (ChildLOI childLOI : childLOS.getLois()) {
+            	String prereq = SolrConstants.SPECIAL_EDUCATION.equalsIgnoreCase(childLOI.getPrerequisite().getValue()) ? SolrConstants.PK : childLOI.getPrerequisite().getValue();
+            	prerequisitesMap.put(prereq, childLOI.getPrerequisite());
+            }
+    	}
+    	
+    	for (Code curPrereq : prerequisitesMap.values()) {
+    		docs.add(createParentDoc(parent, curPrereq));
+    	}
+    	
+    	return docs;
+    }
 
-    private SolrInputDocument createParentDoc(ParentLOS parent) {
+    private SolrInputDocument createParentDoc(ParentLOS parent, Code prerequisite) {
         SolrInputDocument doc = new SolrInputDocument();
         Provider provider = parent.getProvider();
+        String prereqVal = SolrConstants.SPECIAL_EDUCATION.equalsIgnoreCase(prerequisite.getValue()) 
+                ? SolrConstants.PK : prerequisite.getValue();
         doc.addField(LearningOpportunity.TYPE, parent.getType());
-        doc.addField(LearningOpportunity.ID, parent.getId());
+        doc.addField(LearningOpportunity.ID, String.format("%s#%s", parent.getId(), prereqVal));
         doc.addField(LearningOpportunity.LOP_ID, provider.getId());
+        
+        doc.addField(LearningOpportunity.PREREQUISITES, prereqVal);
+
+        doc.setField(LearningOpportunity.PREREQUISITE, SolrUtil.resolveTranslationInTeachingLangUseFallback(
+        		parent.getTeachingLanguages(), prerequisite.getName().getTranslations()));
+        doc.addField(LearningOpportunity.PREREQUISITE_CODE, prereqVal);
 
         //doc.setField(LearningOpportunity.NAME, parent.getName().getTranslations().get("fi"));
         
@@ -118,21 +143,21 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         }
         SolrUtil.addApplicationDates(doc, applicationOptions);
 
-        Set<String> prerequisites = Sets.newHashSet();
+        //Set<String> prerequisites = Sets.newHashSet();
         Date earliest = null;
         
         for (ChildLOS childLOS : parent.getChildren()) {
             for (ChildLOI childLOI : childLOS.getLois()) {
-                addPrerequisite(prerequisites, childLOI);
+                //addPrerequisite(prerequisites, childLOI);
                 if (earliest == null || earliest.after(childLOI.getStartDate())) {
                     earliest = childLOI.getStartDate();
                 }
             }
         }
-        doc.setField(LearningOpportunity.PREREQUISITES, prerequisites);
+        //doc.setField(LearningOpportunity.PREREQUISITES, prerequisites);
         doc.setField(LearningOpportunity.START_DATE_SORT, earliest);
         
-        indexFacetFields(parent, doc);
+        indexFacetFields(parent, doc, prereqVal);
         for (ChildLOS childLOS : parent.getChildren()) {
         for (ChildLOI childLOI : childLOS.getLois()) {
             indexChildFields(doc, childLOS, childLOI, teachLang);
@@ -143,12 +168,13 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         return doc;
     }
 
+    /*
     private void addPrerequisite(Set<String> prerequisites, ChildLOI childLOI) {
         String prereq = SolrConstants.SPECIAL_EDUCATION.equalsIgnoreCase(childLOI.getPrerequisite().getValue()) ? SolrConstants.PK : childLOI.getPrerequisite().getValue();
         if (!prerequisites.contains(prereq)) {
             prerequisites.add(prereq);
         }
-    }
+    }*/
 
     private void indexLopName(SolrInputDocument doc, Provider provider, String teachLang) {
         
@@ -257,7 +283,7 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
     /*
      * Indexes fields used in facet search for ParentLOS learning opportunities
      */
-    private void indexFacetFields(ParentLOS parent, SolrInputDocument doc) {
+    private void indexFacetFields(ParentLOS parent, SolrInputDocument doc, String prereqVal) {
         List<String> usedVals = new ArrayList<String>();
         for (ChildLOS childLOS : parent.getChildren()) {
             for (ChildLOI childLOI : childLOS.getLois()) {
@@ -270,7 +296,9 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
                     doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMMATILLINEN);
                     usedVals.add(SolrConstants.ED_TYPE_AMMATILLINEN);
                 }
-                if (childLOI.isKaksoistutkinto() && !usedVals.contains(SolrConstants.ED_TYPE_KAKSOIS)) {
+                if (SolrConstants.PK.equalsIgnoreCase(prereqVal) 
+                		&& childLOI.isKaksoistutkinto() 
+                		&& !usedVals.contains(SolrConstants.ED_TYPE_KAKSOIS)) {
                     doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_KAKSOIS);
                     usedVals.add(SolrConstants.ED_TYPE_KAKSOIS);
                 }

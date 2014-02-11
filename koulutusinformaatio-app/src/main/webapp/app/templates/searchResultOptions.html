@@ -1,0 +1,36 @@
+
+<form name="levelSelectionForm-{{$id}}" id="application-form-{{applicationsystem.id}}-{{$id}}" action="{{hakuAppUrl}}lomake/{{applicationsystem.id}}" method="POST" class="margin-top-2" target="hakulomake">
+    <button class="float-left" type="submit" data-ng-disabled="!applicationsystem.asOngoing">
+      <span><span data-ki-i18n="apply-button-label" data-lang="{{applicationoption.teachingLang}}"></span></span>
+    </button>
+</form>
+
+<div data-sr-application-basket data-ng-switch="isItemAddedToBasket(applicationoption.id)" class="float-left margin-left-2 add-to-basket">
+    <span data-ng-switch-when="true">
+        <span data-ki-i18n="popover-title-success" data-lang="{{applicationoption.teachingLang}}"></span><br/>
+        <a href="#!/muistilista" data-ki-i18n="popover-content-link-to-application-basket" data-lang="{{applicationoption.teachingLang}}"></a>
+    </span>
+    <button
+    data-ng-switch-default
+    type="button" 
+    id="addToBasket-{{$id}}" 
+    class="primary"
+    data-popover-placement="bottom" 
+    data-popover="{{popoverContent}}" 
+    data-popover-title="{{popoverTitle}}" 
+    data-popover-trigger="click"
+    data-ng-click="addToBasket(applicationoption.id)">
+        <span>
+            <span data-ki-i18n="add-to-basket-label" data-lang="{{applicationoption.teachingLang}}"></span>
+        </span>
+    </button>
+</div>
+<div class="clear"></div>
+
+<div class="margin-top-1 margin-bottom-3">
+    <span data-ng-show="!applicationsystem.asOngoing && applicationsystem.nextApplicationPeriodStarts">
+        {{locales.hakuaika}}: {{applicationsystem.applicationDates[0].startDate | date:'dd.MM.yyyy'}} - {{applicationsystem.applicationDates[0].endDate | date:'dd.MM.yyyy'}}
+    </span>
+    <span data-ng-show="applicationsystem.asOngoing">{{locales.hakukaynnissa}}</span>
+    <span data-ng-show="!applicationsystem.asOngoing && !applicationsystem.nextApplicationPeriodStarts">{{locales.hakupaattynyt}}</span>
+</div>

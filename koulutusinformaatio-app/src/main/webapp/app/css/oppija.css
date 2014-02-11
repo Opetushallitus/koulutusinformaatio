@@ -317,6 +317,7 @@ table {
 /* font-size */
 /*** from haku-app sass styles ***/
 /* buttons */
+/* rounder corners */
 /* responsive layout limits */
 /***  Functions
 ************************************************/
@@ -3435,65 +3436,56 @@ button, .button {
     max-width: none; }
 
 .nav-tabs li {
-  color: #3E3E3E;
-  background-color: #ffffff;
   display: inline-block;
-  border: solid 1px #bdbdbd;
   padding: 1px;
+  margin: 0 10px 0 0;
+  position: relative;
+  top: 2px;
+  float: left;
+  max-width: 390px;
+  background-color: #ffffff;
+  border: solid 1px gainsboro;
   text-decoration: none;
   text-shadow: 0 1px 0 #FFFFFF;
-  position: relative;
-  top: 3px;
-  margin: 0 10px 0 0;
-  float: left;
-  max-width: 390px; }
+  -moz-border-top-left-radius: 3px;
+  -webkit-border-top-left-radius: 3px;
+  -o-border-top-left-radius: 3px;
+  -ms-border-top-left-radius: 3px;
+  border-top-left-radius: 3px;
+  -moz-border-top-right-radius: 3px;
+  -webkit-border-top-right-radius: 3px;
+  -o-border-top-right-radius: 3px;
+  -ms-border-top-right-radius: 3px;
+  border-top-right-radius: 3px; }
   .nav-tabs li > a {
     display: block;
-    padding: 0px 10px;
+    padding: 0px 20px;
     height: 36px;
     line-height: 36px;
     font-weight: normal;
     background: #f6f6f6;
-    background: #c6c6c6;
-    background: -webkit-gradient(linear, left top, left bottom, from(whitesmoke), to(#c6c6c6));
-    background: -webkit-linear-gradient(top, whitesmoke, #c6c6c6);
-    background: -moz-linear-gradient(top, whitesmoke, #c6c6c6);
-    background: -ms-linear-gradient(top, whitesmoke, #c6c6c6);
-    background: -o-linear-gradient(top, whitesmoke, #c6c6c6);
-    background: linear-gradient(top, whitesmoke, #c6c6c6);
+    background: #c8e8f2;
     cursor: pointer; }
     .nav-tabs li > a:hover {
-      background: #c6c6c6;
-      background: whitesmoke;
-      background: -webkit-gradient(linear, left top, left bottom, from(#c6c6c6), to(whitesmoke));
-      background: -webkit-linear-gradient(top, #c6c6c6, whitesmoke);
-      background: -moz-linear-gradient(top, #c6c6c6, whitesmoke);
-      background: -ms-linear-gradient(top, #c6c6c6, whitesmoke);
-      background: -o-linear-gradient(top, #c6c6c6, whitesmoke);
-      background: linear-gradient(top, #c6c6c6, whitesmoke); }
+      background: #91d6eb;
+      text-shadow: #c8e8f2 0px 1px 0px;
+      text-decoration: underline; }
   .nav-tabs li.fluid > a {
     max-width: 390px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
   .nav-tabs li.active {
-    border-top-width: 2px;
-    border-right-width: 2px;
-    border-left-width: 2px;
     border-bottom-width: 0px;
     padding-bottom: 3px;
     position: relative;
-    top: 2px; }
+    top: 1px; }
     .nav-tabs li.active > a {
       font-weight: bold;
-      background: white;
-      background: white;
-      background: -webkit-gradient(linear, left top, left bottom, from(whitesmoke), to(white));
-      background: -webkit-linear-gradient(top, whitesmoke, white);
-      background: -moz-linear-gradient(top, whitesmoke, white);
-      background: -ms-linear-gradient(top, whitesmoke, white);
-      background: -o-linear-gradient(top, whitesmoke, white);
-      background: linear-gradient(top, whitesmoke, white); }
+      border-bottom: 1px solid #ffffff;
+      background: #ffffff;
+      text-decoration: none;
+      text-shadow: none; }
 
 .tabbable {
   *zoom: 1; }
@@ -3510,9 +3502,8 @@ button, .button {
 .tab-content .active,
 .pill-content .active {
   display: block;
-  border: solid 2px #BDBDBD;
+  border: solid 1px gainsboro;
   background-color: #FFFFFF;
-  border: solid 2px #bdbdbd;
   padding: 20px 10px; }
 
 .typeahead {
@@ -4204,24 +4195,24 @@ input {
   min-height: 1px;
   margin: 0 0 1em 0;
   padding: 0; }
-  #search-results li {
+  #search-results > li {
     padding: 1em 0;
     list-style-type: none;
     border-bottom: 1px solid #dddddd; }
-    #search-results li .result-content {
+    #search-results > li .result-content {
       float: left;
       width: 60%; }
-      #search-results li .result-content h2 {
+      #search-results > li .result-content h2 {
         margin: 0; }
-    #search-results li .state-label {
+    #search-results > li .state-label {
       float: right; }
-    #search-results li.inactive {
+    #search-results > li.inactive {
       list-style-type: none; }
-      #search-results li.inactive .result-content a {
+      #search-results > li.inactive .result-content a {
         font-weight: normal; }
-    #search-results li:first-child {
+    #search-results > li:first-child {
       border-top: 1px solid #dddddd; }
-    #search-results li img {
+    #search-results > li img {
       max-width: 200px;
       float: left;
       margin: 0 20px 20px 0; }

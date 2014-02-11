@@ -104,7 +104,6 @@ public class UpdateServiceImpl implements UpdateService {
             		//"1.2.246.562.5.2013061010190108136320");
             //loOids.add("1.2.246.562.5.2013061010184190024479");
             
-            
                for (String loOid : loOids) {
                     List<LOS> specifications = null;
                     try {

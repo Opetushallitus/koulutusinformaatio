@@ -154,7 +154,7 @@ public class ParentLOSToSolrInputDocumentTest {
 		List<SolrInputDocument> docs = converter.convert(los);
 		assertEquals(7, docs.size());
 		SolrInputDocument doc = docs.get(0);
-		assertEquals(los.getId(), doc.get(LearningOpportunity.ID).getValue().toString());
+		assertEquals(los.getId() + "#" + prerequisite.getValue(), doc.get(LearningOpportunity.ID).getValue().toString());
 		assertEquals(prerequisite.getValue(), doc.get(LearningOpportunity.PREREQUISITES).getValues().iterator().next().toString());
 		assertEquals("80 ov fi", doc.get(LearningOpportunity.CREDITS).getValue().toString());
         assertEquals(provider.getName().getTranslations().get("fi"), doc.get(LearningOpportunity.LOP_NAME).getValue().toString());
@@ -168,7 +168,7 @@ public class ParentLOSToSolrInputDocumentTest {
 		List<SolrInputDocument> docs = converter.convert(los);
 		assertEquals(7, docs.size());
 		SolrInputDocument doc = docs.get(0);
-		assertEquals(los.getId(), doc.get(LearningOpportunity.ID).getValue().toString());
+		assertEquals(los.getId() + "#" + prerequisite.getValue(), doc.get(LearningOpportunity.ID).getValue().toString());
 		assertEquals(prerequisite.getValue(), doc.get(LearningOpportunity.PREREQUISITES).getValues().iterator().next().toString());
 		assertEquals("80 ov fi", doc.get(LearningOpportunity.CREDITS).getValue().toString());
         assertEquals(provider.getName().getTranslations().get("fi"), doc.get(LearningOpportunity.LOP_NAME).getValue().toString());

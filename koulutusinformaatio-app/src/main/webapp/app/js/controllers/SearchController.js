@@ -644,3 +644,4 @@ function SortCtrl($scope, $location, FilterService) {
         $scope.refreshView();
     }
 };
+
