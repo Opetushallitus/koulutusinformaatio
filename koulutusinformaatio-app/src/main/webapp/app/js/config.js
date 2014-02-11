@@ -72,13 +72,13 @@ window.Config.app.reppu = {
 	fi: {
 		frontpageUrl: '/wp/fi/',
 		rekisteriselosteUrl: '/wp/fi/rekisteriseloste/',
-		navigationUrl: '/wp/fi/api/nav/json_nav/'
+		navigationUrl: '/wp/fi/api/nav/json_nav/',
 		tarjontaUrl: 'https://test-virkailija.oph.ware.fi/tarjonta-app/#/koulutus/'
 	},
 	sv: {
 		frontpageUrl: '/wp/sv/',
 		rekisteriselosteUrl: '/wp/sv/registerbeskrivning/',
-    	navigationUrl: '/wp/sv/api/nav/json_nav/'
+    	navigationUrl: '/wp/sv/api/nav/json_nav/',
     	tarjontaUrl: 'https://test-virkailija.oph.ware.fi/tarjonta-app/#/koulutus/'
 	}
 };
