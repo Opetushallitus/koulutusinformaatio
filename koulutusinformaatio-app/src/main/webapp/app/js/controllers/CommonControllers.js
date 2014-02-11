@@ -50,10 +50,12 @@ function FooterCtrl($scope, LanguageService, TranslationService, Config) {
     $scope.links = {
         opetushallitus: Config.get('ophUrl'),
         opetusministerio: Config.get('okmUrl'),
-        rekisteriseloste: Config.get('rekisteriselosteUrl')
+        rekisteriseloste: Config.get('rekisteriselosteUrl'),
+        hakemisto: Config.get('sitemapUrl')
     }
 
     $scope.images = {
+        logo: 'img/opintopolku_large-' + lang + '.png',
         opetushallitus: 'img/OPH_logo-' + lang + '.png',
         opetusministerio: 'img/OKM_logo-' + lang + '.png'
     }

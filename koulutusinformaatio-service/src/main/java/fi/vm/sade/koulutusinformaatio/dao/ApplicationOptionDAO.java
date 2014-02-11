@@ -18,13 +18,16 @@ package fi.vm.sade.koulutusinformaatio.dao;
 
 import com.google.common.base.Strings;
 import com.mongodb.Mongo;
+
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
+
 import org.mongodb.morphia.Key;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.dao.BasicDAO;
 import org.mongodb.morphia.query.Query;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -54,7 +57,13 @@ public class ApplicationOptionDAO extends BasicDAO<ApplicationOptionEntity, Stri
     }
 
     public List<ApplicationOptionEntity> find(final List<String> aoIds) {
-        Query<ApplicationOptionEntity> query = getDatastore().get(ApplicationOptionEntity.class, aoIds);
-        return find(query).asList();
+    	List<ApplicationOptionEntity> aos = new ArrayList<ApplicationOptionEntity> ();
+    	for (String curId : aoIds) {
+    		ApplicationOptionEntity curAo = getDatastore().get(ApplicationOptionEntity.class, curId);
+    		if (curAo != null) {
+    			aos.add(curAo);
+    		}
+    	}
+        return aos;
     }
 }

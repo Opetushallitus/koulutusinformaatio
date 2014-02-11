@@ -1,4 +1,6 @@
-<footer data-ng-controller="FooterCtrl">
+<div data-ng-include data-src="'partials/footer/navigation.html'" class="footer-navigation"></div>
+
+<footer>
     <p class="small" data-ki-i18n="footer-note"></p>
     <div class="footer-wrapper">
         <div class="footer-item">
@@ -11,6 +13,6 @@
         <div class="clear"></div>
     </div>
     <p class="small">
-        <span data-ki-i18n="footer-copyright"></span> - <a href="{{links.rekisteriseloste}}" data-ki-i18n="footer-privacy-policy"></a>
+        <span data-ki-i18n="footer-copyright"></span>
     </p>
 </footer>
