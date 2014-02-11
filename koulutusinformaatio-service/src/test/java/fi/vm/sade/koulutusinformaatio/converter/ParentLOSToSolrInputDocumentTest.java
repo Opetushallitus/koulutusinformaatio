@@ -51,7 +51,9 @@ public class ParentLOSToSolrInputDocumentTest {
 	private ParentLOS los;
 	private ParentLOSToSolrInputDocument converter;
 	private Code prerequisite;
+	private Code lang;
 	private Provider provider;
+	private ApplicationOption ao;
 	
 	@Before
 	public void setUp() {
@@ -60,7 +62,7 @@ public class ParentLOSToSolrInputDocumentTest {
 		los.setId("parentId");
 		los.setName(TestUtil.createI18nText("parent name fi", "parent name sv", "parent name en"));
 		
-		Code lang = new Code();
+		lang = new Code();
 		lang.setName(TestUtil.createI18nText("Suomi", "Finska", "Finnish"));
 		lang.setValue("FI");
 		lang.setUri("fi_uri");
@@ -90,7 +92,7 @@ public class ParentLOSToSolrInputDocumentTest {
 		dr.setStartDate(asStart);
 		dr.setEndDate(asEnd);
 		as.setApplicationDates(Arrays.asList(dr));
-		ApplicationOption ao = new ApplicationOption();
+		ao = new ApplicationOption();
 		ao.setSpecificApplicationDates(false);
 		ao.setApplicationSystem(as);
 		parentLoi.setApplicationOptions(new HashSet<ApplicationOption>(Arrays.asList(ao)));
@@ -142,7 +144,9 @@ public class ParentLOSToSolrInputDocumentTest {
 		childLoi.setContent(TestUtil.createI18nText("Content fi", "Content sv", "Content en"));
 		childLoi.setApplicationOptions(Arrays.asList(ao));
 		childLoi.setKaksoistutkinto(false);
-		childLos.setLois(Arrays.asList(childLoi));
+		List<ChildLOI> loiList = new ArrayList<ChildLOI>();
+		loiList.add(childLoi);
+		childLos.setLois(loiList);
 		los.setChildren(Arrays.asList(childLos));
 		
 		converter = new ParentLOSToSolrInputDocument();
@@ -173,6 +177,35 @@ public class ParentLOSToSolrInputDocumentTest {
 		assertEquals("80 ov fi", doc.get(LearningOpportunity.CREDITS).getValue().toString());
         assertEquals(provider.getName().getTranslations().get("fi"), doc.get(LearningOpportunity.LOP_NAME).getValue().toString());
         assertTrue(doc.get(LearningOpportunity.EDUCATION_TYPE).getValue().toString().contains(SolrUtil.SolrConstants.ED_TYPE_KAKSOIS));
+	}
+	
+	@Test
+	public void testMultiplePrerequisites() {
+		ChildLOI childLoi1 = new ChildLOI();
+		childLoi1.setStartDate(new Date());
+		
+		Code prerequisite1 = new Code();
+		prerequisite1.setName(TestUtil.createI18nText("Ylioppilas fi", "Ylioppilas sv", "Ylioppilas en"));
+		prerequisite1.setValue("yo");
+		prerequisite1.setUri("yo_uri");
+		childLoi1.setPrerequisite(prerequisite1);
+		childLoi1.setTeachingLanguages(Arrays.asList(lang));
+		childLoi1.setProfessionalTitles(Arrays.asList(TestUtil.createI18nText("profession1 fi", "profession1 sv", "profession1 en")));
+		childLoi1.setContent(TestUtil.createI18nText("Content1 fi", "Content1 sv", "Content1 en"));
+		childLoi1.setApplicationOptions(Arrays.asList(ao));
+		childLoi1.setKaksoistutkinto(false);
+		los.getChildren().get(0).getLois().add(childLoi1);
+		List<SolrInputDocument> docs = converter.convert(los);
+		
+		assertEquals(10, docs.size());
+		
+		SolrInputDocument yoDoc = docs.get(0);
+		
+		assertEquals(los.getId() + "#" + prerequisite1.getValue(), yoDoc.get(LearningOpportunity.ID).getValue().toString());
+		
+		SolrInputDocument pkDoc = docs.get(1);
+		
+		assertEquals(los.getId() + "#" + prerequisite.getValue(), pkDoc.get(LearningOpportunity.ID).getValue().toString());
 	}
 
 }
