@@ -78,8 +78,15 @@ directive('extendedSearchresultData', ['ParentLOService', 'SpecialLOService', 'U
                 }
                     
                 $scope.extendedLO.then(function(result) {
-                    for(var i = 0 ; result.lo.lois.length < i ; i++) {
-                        //todo filter out unnecessary lois
+                    console.log(result.lo.lois.length);
+                    if ($scope.lo.prerequisiteCode) {
+                        for(var i = 0; i < result.lo.lois.length; i++) {
+                            // filter out unnecessary lois by prerequisite
+                            var loi = result.lo.lois[i];
+                            if ($scope.lo.prerequisiteCode != loi.prerequisite.value) {
+                                delete result.lo.lois[i];
+                            }
+                        }
                     }
                 }, function(error) {
                     console.error('error fetching extended LO');
@@ -98,7 +105,6 @@ directive('srApplicationBasket', ['ApplicationBasketService', 'TranslationServic
             }
 
             $scope.addToBasket = function(applicationoptionId) {
-                console.log($scope);
                 var basketType = ApplicationBasketService.getType();
                 if (!basketType || $scope.$parent.$parent.$parent.lo.prerequisite.value == basketType) {
                     ApplicationBasketService.addItem(applicationoptionId, $scope.$parent.$parent.$parent.lo.prerequisite.value);
