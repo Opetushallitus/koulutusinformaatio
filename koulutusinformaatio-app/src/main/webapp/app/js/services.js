@@ -779,7 +779,7 @@ service('LearningOpportunityProviderPictureService', ['$http', '$timeout', '$q',
 /**
  *  Service taking care of search term saving
  */
- service('SearchService', function() {
+ service('SearchService', ['UtilityService', function(UtilityService) {
     var key = 'searchTerm';
     return {
         getTerm: function() {
@@ -793,16 +793,21 @@ service('LearningOpportunityProviderPictureService', ['$http', '$timeout', '$q',
 
         setTerm: function(newTerm) {
             if (newTerm) {
-                $.cookie(key, newTerm, {useLocalStorage: false, path: '/'});
+                var options = {
+                    useLocalStorage: false, 
+                    path: '/', 
+                    domain: UtilityService.getCookieDomain()
+                };
+                $.cookie(key, newTerm, options);
             }
         }
     };
-}).
+}]).
 
 /**
  *  Service keeping track of the current language selection
  */
-service('LanguageService', function() {
+service('LanguageService', ['UtilityService', function(UtilityService) {
     var defaultLanguage = 'fi';
     var key = 'i18next';
 
@@ -812,14 +817,19 @@ service('LanguageService', function() {
         },
 
         setLanguage: function(language) {
-            $.cookie(key, language, {useLocalStorage: false, path: '/'});
+            var options = {
+                useLocalStorage: false, 
+                path: '/', 
+                domain: UtilityService.getCookieDomain()
+            };
+            $.cookie(key, language, options);
         },
 
         getDefaultLanguage: function() {
             return defaultLanguage;
         }
     };
-}).
+}]).
 
 /**
  *  Service for "caching" current parent selection
@@ -866,9 +876,15 @@ service('LanguageService', function() {
 /**
  *  Service for maintaining application basket state
  */
-service('ApplicationBasketService', ['$http', '$q', 'LanguageService', 'UtilityService', function($http, $q, LanguageService, UtilityService) {
+service('ApplicationBasketService', ['$http', '$q', 'UtilityService', 'LanguageService', 'UtilityService', function($http, $q, UtilityService, LanguageService, UtilityService) {
     var key = 'basket';
-    var cookieConfig = {useLocalStorage: false, maxChunkSize: 2000, maxNumberOfCookies: 20, path: '/'};
+    var cookieConfig = {
+        useLocalStorage: false, 
+        maxChunkSize: 2000, 
+        maxNumberOfCookies: 20, 
+        path: '/', 
+        domain: UtilityService.getCookieDomain()
+    };
 
     // used to update item count in basket
     var updateBasket = function(count) {
@@ -1415,6 +1431,12 @@ service('UtilityService', function() {
                 return "0" + number;
             } else {
                 return number;
+            }
+        },
+
+        getCookieDomain: function() {
+            if (window.location.hostname.indexOf('localhost') < 0) {
+                return window.location.hostname;
             }
         }
     };
