@@ -91,7 +91,7 @@
         <dependency>
             <groupId>org.mongodb.morphia</groupId>
             <artifactId>morphia</artifactId>
-            <version>0.105</version>
+            <version>${morphia.version}</version>
         </dependency>
         <dependency>
             <groupId>cglib</groupId>

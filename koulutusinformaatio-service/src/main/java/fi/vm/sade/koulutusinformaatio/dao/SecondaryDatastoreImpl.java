@@ -16,16 +16,26 @@
 
 package fi.vm.sade.koulutusinformaatio.dao;
 
-import fi.vm.sade.koulutusinformaatio.dao.entity.SpecialLearningOpportunitySpecificationEntity;
-import org.mongodb.morphia.Datastore;
+import com.mongodb.Mongo;
+import com.mongodb.ReadPreference;
+import org.mongodb.morphia.DatastoreImpl;
+import org.mongodb.morphia.Morphia;
+import org.mongodb.morphia.mapping.Mapper;
 
 /**
+ * Datastore implementation that reads from secondary node.
+ *
  * @author Hannu Lyytikainen
  */
-public class SpecialLearningOpportunitySpecificationDAO extends LearningOpportunitySpecificationDAO<SpecialLearningOpportunitySpecificationEntity, String> {
+public class SecondaryDatastoreImpl extends DatastoreImpl {
 
-    public SpecialLearningOpportunitySpecificationDAO(Datastore primaryDatastore, Datastore secondaryDatastore) {
-        super(primaryDatastore, secondaryDatastore);
-        ensureIndexes();
+    public SecondaryDatastoreImpl(Morphia morphia, Mongo mongo, String dbName) {
+        super(morphia, mongo, dbName);
+    }
+
+    @Override
+    public <T, V> T get(final Class<T> clazz, final V id) {
+        return find(getCollection(clazz).getName(), clazz, Mapper.ID_KEY, id, 0, 1, true)
+                .useReadPreference(ReadPreference.secondaryPreferred()).get();
     }
 }

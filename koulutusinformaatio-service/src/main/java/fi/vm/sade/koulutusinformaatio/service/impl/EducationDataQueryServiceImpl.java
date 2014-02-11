@@ -66,7 +66,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
 
     @Override
     public ParentLOS getParentLearningOpportunity(String oid) throws ResourceNotFoundException {
-        ParentLearningOpportunitySpecificationEntity entity = parentLearningOpportunitySpecificationDAO.get(oid);
+        ParentLearningOpportunitySpecificationEntity entity = parentLearningOpportunitySpecificationDAO.getFromSecondary(oid);
         if (entity != null) {
             return modelMapper.map(entity, ParentLOS.class);
         } else {
@@ -140,7 +140,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     @Override
     public UpperSecondaryLOS getUpperSecondaryLearningOpportunity(String id) throws ResourceNotFoundException {
         UpperSecondaryLearningOpportunitySpecificationEntity entity =
-                upperSecondaryLearningOpportunitySpecificationDAO.get(id);
+                upperSecondaryLearningOpportunitySpecificationDAO.getFromSecondary(id);
         if (entity != null) {
             return modelMapper.map(entity, UpperSecondaryLOS.class);
         }
@@ -152,7 +152,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     @Override
     public SpecialLOS getSpecialLearningOpportunity(String id) throws ResourceNotFoundException {
         SpecialLearningOpportunitySpecificationEntity entity =
-                specialLearningOpportunitySpecificationDAO.get(id);
+                specialLearningOpportunitySpecificationDAO.getFromSecondary(id);
         if (entity != null) {
             return modelMapper.map(entity, SpecialLOS.class);
         }
@@ -224,7 +224,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     }
 
     private ChildLearningOpportunitySpecificationEntity getChildLO(String childLoId) throws ResourceNotFoundException {
-        ChildLearningOpportunitySpecificationEntity clo = childLearningOpportunityDAO.get(childLoId);
+        ChildLearningOpportunitySpecificationEntity clo = childLearningOpportunityDAO.getFromSecondary(childLoId);
         if (clo == null) {
             throw new ResourceNotFoundException("Child learning opportunity specification not found: " + childLoId);
         }
