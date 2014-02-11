@@ -1,7 +1,6 @@
 <div data-ng-switch="loResult.totalCount">
-
     <div data-ng-switch-when="0">
-        <div class="notification info">
+        <div class="notification info large">
             <h3 data-ki-i18n="no-search-results"></h3>
             <span>{{noSearchResults}}</span>
         </div>
@@ -9,28 +8,24 @@
 
     <div data-ng-switch-default>
         <div class="sort-area" data-ng-controller="SortCtrl">
-            <!--
-            <div class="sort-item left">
-                <label data-ki-i18n="sort-results-label" data-show-colon="true"></label>
-                <span>{{pageMin}} - {{pageMax}} / {{totalItems}}</span>
-            </div>
-            -->
             <div title="{{locales.resultsCriteria}}" class="sort-item">
-                <label for="itemsPerPage" data-ki-i18n="sort-criteria-sort-label" data-show-colon="true"></label>
+                <label for="sort-items" data-ki-i18n="sort-criteria-sort-label" data-show-colon="true"></label>
                 <select 
                 data-ng-model="sortCriteria"
                 data-ng-options="key as value.value group by value.group for (key, value) in sortCriterias"
                 data-ng-change="updateSortCriteria()"
-                data-ng-style="{'width': 'auto'}">
+                data-ng-style="{'width': 'auto'}"
+                id="sort-items">
                 </select>
             </div>
             <div title="{{locales.resultsToShow}}" class="sort-item">
-                <label for="itemsPerPage" data-ki-i18n="sort-criteria-items-per-page-label" data-show-colon="true"></label>
+                <label for="items-per-page" data-ki-i18n="sort-criteria-items-per-page-label" data-show-colon="true"></label>
                 <select 
                 data-ng-model="itemsPerPage"
                 data-ng-options="value for value in pageSizes"
                 data-ng-change="updateItemsPerPage()"
-                data-ng-style="{'width': 'auto'}">
+                data-ng-style="{'width': 'auto'}"
+                id="items-per-page">
                 </select>
             </div>
             <div class="clear"></div>

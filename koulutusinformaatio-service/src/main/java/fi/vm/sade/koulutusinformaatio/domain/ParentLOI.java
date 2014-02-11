@@ -34,6 +34,7 @@ public class ParentLOI {
     private I18nText selectingDegreeProgram;
     private Code prerequisite;
     private List<ChildLOIRef> childRefs = new ArrayList<ChildLOIRef>();
+    private List<String> availableTranslationLanguages;
 
     public String getId() {
         return id;
@@ -73,5 +74,13 @@ public class ParentLOI {
 
     public void setChildRefs(List<ChildLOIRef> childRefs) {
         this.childRefs = childRefs;
+    }
+
+    public List<String> getAvailableTranslationLanguages() {
+        return availableTranslationLanguages;
+    }
+
+    public void setAvailableTranslationLanguages(List<String> availableTranslationLanguages) {
+        this.availableTranslationLanguages = availableTranslationLanguages;
     }
 }

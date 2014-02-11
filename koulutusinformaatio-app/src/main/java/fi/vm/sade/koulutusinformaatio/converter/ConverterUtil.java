@@ -78,14 +78,6 @@ public final class ConverterUtil {
         return val;
     }
 
-    public static Set<String> getAvailableTranslationLanguages(final I18nText text) {
-        if (text != null && text.getTranslations() != null) {
-            return text.getTranslations().keySet();
-        } else {
-            return null;
-        }
-    }
-
     public static List<String> getTextsByLanguage(final List<I18nText> list, String lang) {
         lang = lang.toLowerCase();
         List<String> texts = new ArrayList<String>();

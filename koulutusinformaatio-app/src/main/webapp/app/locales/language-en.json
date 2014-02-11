@@ -48,6 +48,7 @@
     "filter-search-location-title": "Rajaa sijainnin mukaan",
     "location-filter-placeholder": "Kirjoita paikkakunta",
     "filter-search-location-add": "Lisää sijainti",
+    "location-filter-label": "Paikkakunta",
     "filter-search-location-remove": "Poista",
 
     "sort-criteria-default": "-- Valitse --",
@@ -162,7 +163,8 @@
     "application-basket-empty": "Tyhjennä muistilista",
     "application-basket-empty-confirm": "Haluatko varmasti tyhjentää koko muistilistan?",
     "application-basket-overflow-warning": "Voit hakea yhteishaussa viiteen (5) eri koulutukseen, poista ylimääräiset",
-    "attachment-delivery-deadline": "Liitteet toimitettava viimeistään",
+    "application-basket-attachments-exams": "Liitteet ja kokeet",
+    "application-basket-due-date": "Liitteen määräaika tai kokeen ajankohta",
 
     "popup-close": "Sulje",
     "popup-continue": "Jatka",
@@ -175,6 +177,7 @@
     "footer-note": "Koulutuksen järjestäjät ja korkeakoulut ylläpitävät tietoja koulutuksistaan Opintopolussa. Tietojen oikeellisuuden voit tarkistaa kyseisestä oppilaitoksesta tai korkeakoulusta.",
     "footer-copyright": "Copyright © 2013 Opetushallitus",
     "footer-privacy-policy": "Rekisteriseloste",
+    "footer-sitemap": "Hakemisto",
 
     "opetushallitus-address-line-1": "Opetushallitus",
     "opetushallitus-address-line-2": "Hakaniemenranta 6",
@@ -226,5 +229,8 @@
     "er": "Yksilöllistetty perusopetus",
     
     "autocomplete-keyword": "Hakusanaehdotukset",
-    "autocomplete-loname": "Kurssit ja tutkinnot"
+    "autocomplete-loname": "Kurssit ja tutkinnot",
+
+    "error-title": "Tapahtui odottamaton virhe (en)",
+    "error-body": "Olemme pahoillamme. Hakemiesi koulutusten tietoja ei saatu jostain syystä haettua. Yritä hetken kuluttua uudelleen. (en)"
 }

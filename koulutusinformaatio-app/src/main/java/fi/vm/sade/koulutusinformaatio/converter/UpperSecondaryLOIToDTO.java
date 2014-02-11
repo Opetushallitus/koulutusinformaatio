@@ -58,6 +58,7 @@ public final class UpperSecondaryLOIToDTO {
         dto.setDiplomas(ConverterUtil.getTextsByLanguage(loi.getDiplomas(), lang));
         dto.setPlannedDuration(loi.getPlannedDuration());
         dto.setPlannedDurationUnit(ConverterUtil.getTextByLanguageUseFallbackLang(loi.getPlannedDurationUnit(), uiLang));
+        dto.setAvailableTranslationLanguages(loi.getAvailableTranslationLanguages());
 
         // as based approach for UI
         SetMultimap<ApplicationSystem, ApplicationOption> aoByAs = HashMultimap.create();

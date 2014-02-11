@@ -48,6 +48,7 @@
     "filter-search-location-title": "Avgränsa enligt område",
     "location-filter-placeholder": "Skriv ort eller landskap", 
     "filter-search-location-add": "Lägg till ort",
+    "location-filter-label": "Område",
     "filter-search-location-remove": "Avlägsna",
 
     "sort-criteria-default": "-- Välj --",
@@ -161,7 +162,8 @@
     "application-basket-empty": "Töm minneslistan",
     "application-basket-empty-confirm": "Är du säker på att du vill tömma minneslistan?",
     "application-basket-overflow-warning": "I gemensam ansökan kan du söka till fem (5) olika utbildningar, stryk de som är överlopps",
-    "attachment-delivery-deadline": "Bilagor ska skickas in senast",
+    "application-basket-attachments-exams": "Bilagor och prov",
+    "application-basket-due-date": "Deadline för bilaga eller tidpunkt för prov",
 
     "popup-close": "Stäng",
     "popup-continue": "Fortsätt",
@@ -174,6 +176,7 @@
     "footer-note": "Utbildningsanordnarna och högskolorna uppdaterar själva uppgifterna om sina utbildningar i Studieinfo. Du kan kontrollera att uppgifterna är riktiga av läroanstalten eller högskolan.",
     "footer-copyright": "Copyright © 2013 Utbildningsstyrelsen",
     "footer-privacy-policy": "Registerbeskrivning",
+    "footer-sitemap": "Index",
 
     "opetushallitus-address-line-1": "Utbildningsstyrelsen",
     "opetushallitus-address-line-2": "Hagnäskajen 6",
@@ -225,5 +228,8 @@
      "er": "Individualiserad lärokurs",
 
     "autocomplete-keyword": "Sökordsförslag",
-    "autocomplete-loname": "Kurser och examen"
+    "autocomplete-loname": "Kurser och examen",
+
+    "error-title": "Tapahtui odottamaton virhe (sv)",
+    "error-body": "Olemme pahoillamme. Hakemiesi koulutusten tietoja ei saatu jostain syystä haettua. Yritä hetken kuluttua uudelleen. (sv)"
 }

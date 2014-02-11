@@ -63,6 +63,7 @@ public class TransactionManagerImpl implements TransactionManager {
     private ChildLearningOpportunityDAO childLOTransactionDAO;
     private PictureDAO pictureTransactionDAO;
     private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO;
+    private SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO;
 
     private ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO;
     private ApplicationOptionDAO applicationOptionDAO;
@@ -71,6 +72,7 @@ public class TransactionManagerImpl implements TransactionManager {
     private DataStatusDAO dataStatusDAO;
     private PictureDAO pictureDAO;
     private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO;
+    private SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO;
     
     
     @Value("${solr.learningopportunity.alias.url:learning_opportunity}")
@@ -104,13 +106,15 @@ public class TransactionManagerImpl implements TransactionManager {
                                   ChildLearningOpportunityDAO childLOTransactionDAO,
                                   PictureDAO pictureTransactionDAO,
                                   UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO,
+                                  SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO,
                                   ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO,
                                   ApplicationOptionDAO applicationOptionDAO,
                                   ChildLearningOpportunityDAO childLearningOpportunityDAO,
                                   LearningOpportunityProviderDAO learningOpportunityProviderDAO,
                                   DataStatusDAO dataStatusDAO,
                                   PictureDAO pictureDAO,
-                                  UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO) {
+                                  UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO,
+                                  SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO) {
 
         this.mongo = mongo;
         this.transactionDbName = transactionDbName;
@@ -131,6 +135,7 @@ public class TransactionManagerImpl implements TransactionManager {
         this.childLOTransactionDAO = childLOTransactionDAO;
         this.pictureTransactionDAO = pictureTransactionDAO;
         this.upperSecondaryLOSTransactionDAO = upperSecondaryLOSTransactionDAO;
+        this.specialLOSTransactionDAO = specialLOSTransactionDAO;
         this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;
         this.childLearningOpportunityDAO = childLearningOpportunityDAO;
@@ -138,6 +143,7 @@ public class TransactionManagerImpl implements TransactionManager {
         this.dataStatusDAO = dataStatusDAO;
         this.pictureDAO = pictureDAO;
         this.upperSecondaryLearningOpportunitySpecificationDAO = upperSecondaryLearningOpportunitySpecificationDAO;
+        this.specialLearningOpportunitySpecificationDAO = specialLearningOpportunitySpecificationDAO;
     }
 
     @Override
@@ -201,6 +207,7 @@ public class TransactionManagerImpl implements TransactionManager {
         childLOTransactionDAO.getCollection().drop();
         pictureTransactionDAO.getCollection().drop();
         upperSecondaryLOSTransactionDAO.getCollection().drop();
+        specialLOSTransactionDAO.getCollection().drop();
     }
 
     private void dropDbCollections() {
@@ -211,6 +218,7 @@ public class TransactionManagerImpl implements TransactionManager {
         pictureDAO.getCollection().drop();
         learningOpportunityProviderDAO.getCollection().drop();
         upperSecondaryLearningOpportunitySpecificationDAO.getCollection().drop();
+        specialLearningOpportunitySpecificationDAO.getCollection().drop();
     }
 
     private CoreAdminRequest getCoreSwapRequest(final String fromCore, final String toCore) {

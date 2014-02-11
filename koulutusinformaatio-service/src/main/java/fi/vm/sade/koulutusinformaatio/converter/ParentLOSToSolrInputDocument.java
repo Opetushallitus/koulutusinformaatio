@@ -145,25 +145,21 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
 
         //Set<String> prerequisites = Sets.newHashSet();
         Date earliest = null;
-        int minDuration = Integer.MAX_VALUE;
+        
         for (ChildLOS childLOS : parent.getChildren()) {
             for (ChildLOI childLOI : childLOS.getLois()) {
                 //addPrerequisite(prerequisites, childLOI);
                 if (earliest == null || earliest.after(childLOI.getStartDate())) {
                     earliest = childLOI.getStartDate();
                 }
-                int curDuration = SolrUtil.getDuration(childLOI);
-                minDuration = curDuration < minDuration ? curDuration : minDuration;
             }
         }
         //doc.setField(LearningOpportunity.PREREQUISITES, prerequisites);
         doc.setField(LearningOpportunity.START_DATE_SORT, earliest);
-        doc.setField(LearningOpportunity.DURATION_SORT, minDuration);
         
         indexFacetFields(parent, doc, prereqVal);
         for (ChildLOS childLOS : parent.getChildren()) {
         for (ChildLOI childLOI : childLOS.getLois()) {
-            //docs.add(createChildDoc(childLOS, childLOI, parent));
             indexChildFields(doc, childLOS, childLOI, teachLang);
         }
         }

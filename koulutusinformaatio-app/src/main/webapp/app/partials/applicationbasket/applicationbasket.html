@@ -29,8 +29,8 @@
                             <tr class="first">
                                 <th></th>
                                 <th></th>
-                                <th>Liitteet ja kokeet</th>
-                                <th>Liitteen määräaika tai kokeen ajankohta</th>
+                                <th data-ki-i18n="application-basket-attachments-exams"></th>
+                                <th data-ki-i18n="application-basket-due-date"></th>
                                 <th class="last"></th>
                             </tr>
                             <tr data-ng-repeat="item in as.applicationOptions" data-ng-class="{last: $last}">
@@ -68,7 +68,10 @@
                                             <td class="bold"><span data-ki-timestamp="{{attachment.dueDate}}"></span></td>
                                         </tr>
                                         <tr data-ng-repeat="exam in item.exams">
-                                            <td class="align-right">{{exam.type}}</td>
+                                            <td class="align-right">
+                                                <span data-ng-show="exam.type">{{exam.type}}</span>
+                                                <span data-ng-show="!exam.type" data-ki-i18n="entrance-exam">{{exam.type}}</span>
+                                            </td>
                                             <td class="bold">
                                                 <span data-ng-repeat="examEvent in exam.examEvents | orderBy:'start'">
                                                     <span data-ki-time-interval data-exam-event="examEvent"></span><br/>

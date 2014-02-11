@@ -4,11 +4,8 @@
     "to-frontpage": "Etusivulle",
     "search": "Hae",
     "remove-search-result-facet": "Poista hakutuloksille valittu rajaus",
-    "close-education-facet": "Sulje Koulutuksen mukainen rajausnäkymä",
-    "close-basic-education-facet":"Sulje Pohjakoulutuksen mukainen rajausnäkymä",
-    "close-location-facet": "Sulje Sijainnin mukainen rajausnäkymä",
-    "close-language-facet": "Sulje Opetuskielen mukainen rajaus",
-    "close-subject-facet": "Sulje Aiheen mukainen rajaus",
+    "close-facet": "Voit avata ja sulkea rajausehtovalikon nuolikuvakkeesta",
+    "location-dialog": "Valitse yksi tai useampi alue, josta haluat etsiä koulutusta.",
     "remove-facet": "Poista rajaus",
     "open-education-view": "Avaa koulutusnäkymä",
     "next-page": "Seuraava sivu",
@@ -21,5 +18,5 @@
     "checklist": "Muistilista",
     "opintopolku-fi": "Opintopolku suomeksi",
     "opintopolku-sv": "Studieinfo",
-    "search-result-facet-info":"Hakutulosrajaukset auttavat sinua rajaamaan hakua ja löytämään helpommin oikean koulutuksen. Hakutekijöiden perässä esitetään suluissa hakutulosten kappalemäärä, mikäli hakutekijä ei palauta tuloksia, on kappalemäärä nolla. "
+    "search-result-facet-info": "Hakutulosrajaukset auttavat sinua rajaamaan hakua ja löytämään helpommin oikean koulutuksen. Hakutekijöiden jälkeen esitetään suluissa hakutulosten kappalemäärä. Mikäli kappalemäärä on nolla, ei Opintopolussa ole hakutekijään sopivia koulutuksia."
 }

@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.scheduling;
 
+import fi.vm.sade.koulutusinformaatio.service.SEOService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,16 +35,18 @@ public class Scheduler {
 
     public static final Logger LOG = LoggerFactory.getLogger(Scheduler.class);
     private UpdateService updateService;
+    private SEOService seoService;
     private boolean enabled;
 
     @Autowired
-    public Scheduler(final UpdateService updateService, @Value("${scheduling.enabled}") boolean enabled) {
+    public Scheduler(final UpdateService updateService, final SEOService seoService, @Value("${scheduling.enabled}") boolean enabled) {
         this.updateService = updateService;
+        this.seoService = seoService;
         this.enabled = enabled;
     }
 
-    @Scheduled(cron = "${scheduling.cron}")
-    public void doTask() {
+    @Scheduled(cron = "${scheduling.data.cron}")
+    public void runDateUpdate() {
         if (enabled) {
             LOG.info("Starting scheduled data update {}", new Date());
             try {
@@ -51,8 +54,21 @@ public class Scheduler {
                     updateService.updateAllEducationData();
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                LOG.error("Data update execution failed: {}", e.getStackTrace().toString());
             }
+        }
+    }
+
+    @Scheduled(cron = "${scheduling.seo.cron}")
+    public void runSEOUpdate() {
+        LOG.info("Starting scheduled SEO update {}", new Date());
+        try {
+            if (!seoService.isRunning()) {
+                seoService.update();
+            }
+        }
+        catch (Exception e) {
+            LOG.error("SEO execution failed: {}", e.getStackTrace().toString());
         }
     }
 }

@@ -31,7 +31,7 @@ public class ParentLearningOpportunityInstanceDTO {
     private String selectingDegreeProgram;
     private CodeDTO prerequisite;
     private List<ApplicationSystemDTO> applicationSystems = new ArrayList<ApplicationSystemDTO>();
-
+    private List<String> availableTranslationLanguages;
 
     public String getId() {
         return id;
@@ -63,5 +63,13 @@ public class ParentLearningOpportunityInstanceDTO {
 
     public void setApplicationSystems(List<ApplicationSystemDTO> applicationSystems) {
         this.applicationSystems = applicationSystems;
+    }
+
+    public List<String> getAvailableTranslationLanguages() {
+        return availableTranslationLanguages;
+    }
+
+    public void setAvailableTranslationLanguages(List<String> availableTranslationLanguages) {
+        this.availableTranslationLanguages = availableTranslationLanguages;
     }
 }

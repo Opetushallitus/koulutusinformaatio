@@ -152,7 +152,8 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
     public LearningOpportunityBuilder reassemble() throws TarjontaParseException, KoodistoException, WebApplicationException {
         for (ParentLOS parentLOS : parentLOSs) {
 
-            HashMultimap<String, ApplicationOption> applicationOptionsByParentLOIId = HashMultimap.create();
+            Multimap<String, ApplicationOption> applicationOptionsByParentLOIId = HashMultimap.create();
+            Multimap<String, String> availableTranslationLangsByParentLOIId = HashMultimap.create();
 
             // add children to parent los
             // filter out children without lois
@@ -195,14 +196,16 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
                         }
                     }
                     
-                    for (Code curLang : childLOI.getTeachingLanguages()) {
-                        codeLang.put(curLang.getValue(), curLang);
+                    for (Code lang : childLOI.getTeachingLanguages()) {
+                        codeLang.put(lang.getValue(), lang);
+                        availableTranslationLangsByParentLOIId.put(childLOI.getParentLOIId(), lang.getValue().toLowerCase());
                     }
                 }
                 
             }
             for (ParentLOI parentLOI : parentLOS.getLois()) {
-                parentLOI.setApplicationOptions(applicationOptionsByParentLOIId.get(parentLOI.getId()));
+                parentLOI.setApplicationOptions(Sets.newHashSet(applicationOptionsByParentLOIId.get(parentLOI.getId())));
+                parentLOI.setAvailableTranslationLanguages(Lists.newArrayList(availableTranslationLangsByParentLOIId.get(parentLOI.getId())));
             }
             parentLOS.setChildren(children);
             parentLOS.setTeachingLanguages(new ArrayList<Code>(codeLang.values()));

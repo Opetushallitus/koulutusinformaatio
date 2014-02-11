@@ -16,6 +16,8 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
+import com.google.common.collect.Lists;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -345,4 +347,22 @@ public class ApplicationOption {
         return id != null ? id.hashCode() : 0;
     }
 
+    public Date lastApplicationDate() {
+        Date last = new Date(0L);
+        for (DateRange range : applicationSystem.getApplicationDates()) {
+            if (range.getEndDate().after(last)) {
+                last = range.getEndDate();
+            }
+        }
+        return last;
+    }
+
+    public List<DateRange> getApplicationDates() {
+        if (applicationStartDate != null && applicationEndDate != null) {
+            return Lists.newArrayList(new DateRange(applicationStartDate, applicationEndDate));
+        }
+        else {
+            return applicationSystem.getApplicationDates();
+        }
+    }
 }

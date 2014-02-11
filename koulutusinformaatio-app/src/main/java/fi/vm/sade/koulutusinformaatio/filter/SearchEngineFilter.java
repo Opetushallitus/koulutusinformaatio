@@ -25,8 +25,6 @@ import java.io.IOException;
  */
 public class SearchEngineFilter implements Filter {
 
-    //private Pattern pattern = Pattern.compile("^.*\\?_escaped_fragment_=.*$");
-
     private final String escapedFragment = "_escaped_fragment_";
 
     @Override
