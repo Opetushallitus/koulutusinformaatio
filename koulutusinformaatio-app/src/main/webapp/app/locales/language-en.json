@@ -232,6 +232,11 @@
     "autocomplete-keyword": "Hakusanaehdotukset",
     "autocomplete-loname": "Kurssit ja tutkinnot",
 
-    "error-title": "Tapahtui odottamaton virhe (en)",
-    "error-body": "Olemme pahoillamme. Hakemiesi koulutusten tietoja ei saatu jostain syystä haettua. Yritä hetken kuluttua uudelleen. (en)"
+    "error-title": "Tapahtui odottamaton virhe",
+    "error-body": "Olemme pahoillamme. Hakemiesi koulutusten tietoja ei saatu jostain syystä haettua. Yritä hetken kuluttua uudelleen. Jos ongelma toistuu, ota yhteyttä Opintopolun neuvontaan.",
+    "error-contact-1": "Puhelin: 029 533 1010",
+    "error-contact-2": "avoinna arkisin klo 9–13",
+    "error-contact-3": "hakuaikojen viimeisenä päivänä klo 9–15",
+    "error-contact-4": "puhelun hinta kaikkialta Suomesta paikallisverkkomaksu / matkapuhelinmaksu",
+    "error-contact-5": "Sähköposti: neuvonta(at)opintopolku.fi"
 }
