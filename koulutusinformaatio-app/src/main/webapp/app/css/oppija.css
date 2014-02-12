@@ -1981,6 +1981,11 @@ label, .label {
   .field-container-radio div small {
     margin-left: 24px;
     padding-bottom: 5px; }
+.field-container-radio p.small {
+  width: 480px;
+  margin-bottom: 2.5em;
+  margin-top: 0.3em;
+  margin-left: 1.4em; }
 
 /*** Form row structure
 ************************************************/
@@ -2019,46 +2024,6 @@ label, .label {
   display: inline-block;
   padding-right: 1em; }
 
-/***  duplicate? ***/
-/*** Form item structure
-************************************************/
-/*
-.form-item {
-    margin: 1.5em 0px;
-    clear: both;
-}
-
-.form-item-label {
-    color: #000000;
-}
-
-.form .form-item-content {
-    padding: 0px 0px 0px 1em;
-}
-*/
-/*** Form item row
-************************************************/
-/*
-.form-item-row {
-
-}
-
-.form-item-row .form-item {
-    display: inline-block;
-    padding-right: 1em;
-}
-*/
-/*** Field container radio
-************************************************/
-.field-container-radio input[type="radio"] {
-  margin-right: 5px; }
-.field-container-radio > div {
-  position: relative;
-  top: -3px; }
-  .field-container-radio > div small {
-    margin-left: 24px;
-    padding-bottom: 5px; }
-
 /*** Search result
 ************************************************/
 .search-result .result {
@@ -2083,25 +2048,6 @@ label, .label {
 
 .field-container-text {
   padding: 0px 0.923em 0px 0px; }
-
-/*** Field container radio
-************************************************/
-.field-container-radio input[type="radio"] {
-  margin-right: 5px; }
-
-.field-container-radio > div {
-  position: relative;
-  top: -3px; }
-
-.field-container-radio > div small {
-  margin-left: 24px;
-  padding-bottom: 5px; }
-
-.field-container-radio p.small {
-  width: 480px;
-  margin-bottom: 2.5em;
-  margin-top: 0.3em;
-  margin-left: 1.4em; }
 
 /*** Mandatory
 ************************************************/
@@ -3464,11 +3410,11 @@ button, .button {
     line-height: 36px;
     font-weight: normal;
     background: #f6f6f6;
-    background: #c8e8f2;
+    background: #dff2f8;
     cursor: pointer; }
     .nav-tabs li > a:hover {
-      background: #91d6eb;
-      text-shadow: #c8e8f2 0px 1px 0px;
+      background: #bfe4f1;
+      text-shadow: #dff2f8 0px 1px 0px;
       text-decoration: underline; }
   .nav-tabs li.fluid > a {
     max-width: 390px;
