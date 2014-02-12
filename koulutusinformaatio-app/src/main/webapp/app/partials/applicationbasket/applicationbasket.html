@@ -91,7 +91,8 @@
                         <tfoot>
                         </tfoot>
                     </table>
-                    <span class="float-right margin-bottom-2">{{notificationText}}</span>
+                    <span class="float-right clear margin-bottom-2">{{notificationText}}</span>
+                    <span class="float-right clear margin-bottom-2" data-ki-i18n="application-basket-fill-form-notification-2"></span>
                     <form action="{{hakuAppUrl}}lomake/{{as.applicationSystemId}}" id="application-form-{{as.applicationSystemId}}" method="post" target="hakulomake">
                         <span data-ng-repeat="item in as.applicationOptions">
                             <input type="hidden" name="preference{{$index + 1}}-Opetuspiste" value="{{item.providerName}}"/>

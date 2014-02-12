@@ -176,7 +176,8 @@
     "application-basket-description": "Muistilistalle voit kerätä koulutuksia ja siirtää niiden tiedot hakulomakkeelle. Koulutukset säilyvät muistilistalla selaimen sulkemiseen asti. Voit lisätä muistilistalle vain koulutuksia, joilla on sama pohjakoulutusvaatimus – esimerkiksi vain peruskoulupohjaisia tai vain lukiopohjaisia, et molempia.",
     "application-basket-no-content": "Sinulla ei ole muistilistalla vielä yhtään hakukohdetta. Etsi hakukoneella koulutukset, joihin haluat hakea, kerää ne muistilistalle ja siirrä hakulomakkeelle. Voit hakea yhteishaussa enintään viiteen eri koulutukseen.",
     "application-basket-fill-form": "Täytä hakulomake",
-    "application-basket-fill-form-notification": "Tässä haussa voit hakea enintään __count__ koulutukseen",
+    "application-basket-fill-form-notification": "Tässä haussa voit hakea enintään __count__ koulutukseen.",
+    "application-basket-fill-form-notification-2": "Järjestä koulutukset mieluisuusjärjestykseen hakulomakkeella siten, että ylimpänä on ensimmäinen hakutoiveesi.",
     "application-basket-empty": "Tyhjennä muistilista",
     "application-basket-empty-confirm": "Haluatko varmasti tyhjentää koko muistilistan?",
     "application-basket-overflow-warning": "Voit hakea yhteishaussa viiteen (5) eri koulutukseen, poista ylimääräiset",
@@ -259,5 +260,11 @@
     "organisaatiossa": "organisaatiossa",
 
     "error-title": "Tapahtui odottamaton virhe",
-    "error-body": "Olemme pahoillamme. Hakemiesi koulutusten tietoja ei saatu jostain syystä haettua. Yritä hetken kuluttua uudelleen."
+    "error-body": "Olemme pahoillamme. Hakemiesi koulutusten tietoja ei saatu jostain syystä haettua. Yritä hetken kuluttua uudelleen. Jos ongelma toistuu, ota yhteyttä Opintopolun neuvontaan.",
+    "error-contact-1": "Puhelin: 029 533 1010",
+    "error-contact-2": "avoinna arkisin klo 9–13",
+    "error-contact-3": "hakuaikojen viimeisenä päivänä klo 9–15",
+    "error-contact-4": "puhelun hinta kaikkialta Suomesta paikallisverkkomaksu / matkapuhelinmaksu",
+    "error-contact-5": "Sähköposti: neuvonta(at)opintopolku.fi"
+
 }

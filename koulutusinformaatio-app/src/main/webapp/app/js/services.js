@@ -9,7 +9,7 @@ angular.module('kiApp.services',
     'kiApp.TranslationService'
 ]).
 
-service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analytics', 'FilterService', 'LearningOpportunitySearchResultTransformer', function($http, $timeout, $q, $analytics, FilterService, LearningOpportunitySearchResultTransformer) {
+service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analytics', '$rootScope', 'FilterService', 'LearningOpportunitySearchResultTransformer', function($http, $timeout, $q, $analytics, $rootScope, FilterService, LearningOpportunitySearchResultTransformer) {
     
     // gather information for analytics
     var parseFilterValues = function(params) {
@@ -137,6 +137,7 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
                 deferred.resolve(result);
             }).
             error(function(result) {
+                $rootScope.error = true;
                 deferred.reject(result);
             });
 
@@ -249,7 +250,7 @@ service('ChildLocationsService', ['$http', '$timeout', '$q', 'LanguageService', 
 /**
  *  Resource for requesting parent LO data
  */
-service('ParentLOService', ['$http', '$timeout', '$q', 'LanguageService', 'ParentLOTransformer', function($http, $timeout, $q, LanguageService, ParentLOTransformer) {
+service('ParentLOService', ['$http', '$timeout', '$q', '$rootScope', 'LanguageService', 'ParentLOTransformer', function($http, $timeout, $q, $rootScope, LanguageService, ParentLOTransformer) {
     
     return {
         query: function(options) {
@@ -271,9 +272,11 @@ service('ParentLOService', ['$http', '$timeout', '$q', 'LanguageService', 'Paren
                     lo: result,
                     provider: result.provider
                 }
+
                 deferred.resolve(loResult);
             }).
             error(function(result) {
+                $rootScope.error = true;
                 deferred.reject(result);
             });
 
@@ -285,7 +288,7 @@ service('ParentLOService', ['$http', '$timeout', '$q', 'LanguageService', 'Paren
 /**
  *  Resource for requesting child LO data
  */
-service('ChildLOService', ['$http', '$timeout', '$q', 'LanguageService', 'ChildLOTransformer', 'ParentLOService', function($http, $timeout, $q, LanguageService, ChildLOTransformer, ParentLOService) {
+service('ChildLOService', ['$http', '$timeout', '$q', '$rootScope', 'LanguageService', 'ChildLOTransformer', 'ParentLOService', function($http, $timeout, $q, $rootScope, LanguageService, ChildLOTransformer, ParentLOService) {
     return {
         query: function(options) {
             var deferred = $q.defer();
@@ -316,10 +319,12 @@ service('ChildLOService', ['$http', '$timeout', '$q', 'LanguageService', 'ChildL
                     }
                     deferred.resolve(loResult);    
                 }, function(reason) {
+                    $rootScope.error = true;
                     deferred.reject(reason);
                 });
             }).
             error(function(result) {
+                $rootScope.error = true;
                 deferred.reject(result);
             });
 
@@ -328,7 +333,7 @@ service('ChildLOService', ['$http', '$timeout', '$q', 'LanguageService', 'ChildL
     }
 }]).
 
-service('SpecialLOService', ['$http', '$timeout', '$q', 'LanguageService', 'ChildLOTransformer', function($http, $timeout, $q, LanguageService, ChildLOTransformer) {
+service('SpecialLOService', ['$http', '$timeout', '$q', '$rootScope', 'LanguageService', 'ChildLOTransformer', function($http, $timeout, $q, $rootScope, LanguageService, ChildLOTransformer) {
     return {
         query: function(options) {
             var deferred = $q.defer();
@@ -352,6 +357,7 @@ service('SpecialLOService', ['$http', '$timeout', '$q', 'LanguageService', 'Chil
                 deferred.resolve(loResult);
             }).
             error(function(result) {
+                $rootScope.error = true;
                 deferred.reject(result);
             });
 
@@ -363,7 +369,7 @@ service('SpecialLOService', ['$http', '$timeout', '$q', 'LanguageService', 'Chil
 /**
  * Resource for requesting Upper Secondary LO data
  */
-service('UpperSecondaryLOService', ['$http', '$timeout', '$q', 'LanguageService', 'ChildLOTransformer', function($http, $timeout, $q, LanguageService, ChildLOTransformer) {
+service('UpperSecondaryLOService', ['$http', '$timeout', '$q', '$rootScope', 'LanguageService', 'ChildLOTransformer', function($http, $timeout, $q, $rootScope, LanguageService, ChildLOTransformer) {
     return {
         query: function(options) {
             var deferred = $q.defer();
@@ -390,6 +396,7 @@ service('UpperSecondaryLOService', ['$http', '$timeout', '$q', 'LanguageService'
                 deferred.resolve(loResult);
             }).
             error(function(result) {
+                $rootScope.error = true;
                 deferred.reject(result);
             });
 
@@ -1065,7 +1072,7 @@ service('LanguageService', function() {
 /**
  *  Service for maintaining application basket state
  */
-service('ApplicationBasketService', ['$http', '$q', 'LanguageService', 'UtilityService', function($http, $q, LanguageService, UtilityService) {
+service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageService', 'UtilityService', function($http, $q, $rootScope, LanguageService, UtilityService) {
     var key = 'basket';
     var typekey = 'baskettype';
     var cookieConfig = {useLocalStorage: false, maxChunkSize: 2000, maxNumberOfCookies: 20, path: '/'};
@@ -1209,6 +1216,7 @@ service('ApplicationBasketService', ['$http', '$q', 'LanguageService', 'UtilityS
                 deferred.resolve(result);
             }).
             error(function(result) {
+                $rootScope.error = true;
                 deferred.reject(result);
             });
 
