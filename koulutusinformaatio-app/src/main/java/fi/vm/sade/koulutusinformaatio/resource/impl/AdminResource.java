@@ -16,25 +16,28 @@
 
 package fi.vm.sade.koulutusinformaatio.resource.impl;
 
-import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
-import fi.vm.sade.koulutusinformaatio.domain.dto.DataStatusDTO;
-import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
-import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
-import fi.vm.sade.koulutusinformaatio.service.SEOService;
-import fi.vm.sade.koulutusinformaatio.service.TextVersionService;
-import fi.vm.sade.koulutusinformaatio.service.UpdateService;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Date;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Date;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
+import fi.vm.sade.koulutusinformaatio.domain.dto.DataStatusDTO;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
+import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
+import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
+import fi.vm.sade.koulutusinformaatio.service.SEOService;
+import fi.vm.sade.koulutusinformaatio.service.TextVersionService;
+import fi.vm.sade.koulutusinformaatio.service.UpdateService;
 
 /**
  * @author Hannu Lyytikainen
@@ -107,12 +110,12 @@ public class AdminResource {
     
     @GET
     @Path("/textversion")
-    public Response generate() throws URISyntaxException {
+    public Response generate() throws URISyntaxException, KIException {
         try {
             textVersionService.update();
-        } catch (Exception e) {
+        } catch (KIException e) {
             e.printStackTrace();
-            throw KIExceptionHandler.resolveException(e);
+            throw e;
         }
         
         return Response.seeOther(new URI("admin/status")).build();
