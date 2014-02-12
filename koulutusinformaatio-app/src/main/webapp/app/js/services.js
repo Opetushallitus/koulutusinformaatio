@@ -873,7 +873,7 @@ service('LanguageService', function() {
 /**
  *  Service for maintaining application basket state
  */
-service('ApplicationBasketService', ['$http', '$q', 'LanguageService', 'UtilityService', function($http, $q, LanguageService, UtilityService) {
+service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageService', 'UtilityService', function($http, $q, $rootScope, LanguageService, UtilityService) {
     var key = 'basket';
     var cookieConfig = {useLocalStorage: false, maxChunkSize: 2000, maxNumberOfCookies: 20, path: '/'};
 
@@ -1012,6 +1012,7 @@ service('ApplicationBasketService', ['$http', '$q', 'LanguageService', 'UtilityS
                 deferred.resolve(result);
             }).
             error(function(result) {
+                $rootScope.error = true;
                 deferred.reject(result);
             });
 
