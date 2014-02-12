@@ -75,6 +75,7 @@ public class ApplicationOption {
     private String educationCodeUri;
 	private I18nText soraDescription;
 	private String status;
+	
 
 
 
@@ -383,4 +384,5 @@ public class ApplicationOption {
             return applicationSystem.getApplicationDates();
         }
     }
+
 }

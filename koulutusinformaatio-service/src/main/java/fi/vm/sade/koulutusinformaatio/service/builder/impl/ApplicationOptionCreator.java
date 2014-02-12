@@ -90,6 +90,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
 
         ApplicationSystem as = new ApplicationSystem();
         as.setId(hakuDTO.getOid());
+        as.setMaxApplications(hakuDTO.getMaxHakukohdes());
         as.setName(getI18nText(hakuDTO.getNimi()));
         if (hakuDTO.getHakuaikas() != null) {
             for (HakuaikaRDTO ha : hakuDTO.getHakuaikas()) {
@@ -210,6 +211,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
 
         ApplicationSystem as = new ApplicationSystem();
         as.setId(hakuDTO.getOid());
+        as.setMaxApplications(hakuDTO.getMaxHakukohdes());
         as.setName(getI18nText(hakuDTO.getNimi()));
         if (hakuDTO.getHakuaikas() != null) {
             for (HakuaikaRDTO ha : hakuDTO.getHakuaikas()) {
@@ -319,6 +321,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         //haku.getNimi().
         ApplicationSystem as = new ApplicationSystem();
         as.setId(haku.getOid());
+        as.setMaxApplications(haku.getMaxHakukohdes());
         as.setName(getI18nText(haku.getNimi()));
         if (haku.getHakuaikas() != null) {
             for (HakuaikaV1RDTO ha : haku.getHakuaikas()) {

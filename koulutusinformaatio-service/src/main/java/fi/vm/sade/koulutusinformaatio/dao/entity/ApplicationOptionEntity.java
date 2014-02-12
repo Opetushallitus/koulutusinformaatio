@@ -82,6 +82,7 @@ public class ApplicationOptionEntity {
     private boolean athleteEducation;
     private boolean vocational;
     private String educationCodeUri;
+    
 
     public ApplicationOptionEntity() {
 
@@ -349,4 +350,5 @@ public class ApplicationOptionEntity {
 	public void setSoraDescription(I18nTextEntity soraDescription) {
 		this.soraDescription = soraDescription;
 	}
+
 }

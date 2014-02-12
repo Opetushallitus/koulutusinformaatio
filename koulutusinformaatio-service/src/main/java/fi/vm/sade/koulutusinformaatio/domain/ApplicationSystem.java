@@ -28,7 +28,8 @@ public class ApplicationSystem {
     private I18nText name;
     private List<DateRange> applicationDates = new ArrayList<DateRange>();
 	private String status;
-
+	private int maxApplications;
+	
 
 	public String getId() {
         return id;
@@ -77,5 +78,13 @@ public class ApplicationSystem {
 
     public String getStatus() {
 		return status;
+	}
+
+	public int getMaxApplications() {
+		return maxApplications;
+	}
+
+	public void setMaxApplications(int maxApplications) {
+		this.maxApplications = maxApplications;
 	}
 }

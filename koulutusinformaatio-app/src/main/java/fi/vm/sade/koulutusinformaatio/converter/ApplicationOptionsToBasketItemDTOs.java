@@ -90,6 +90,7 @@ public final class ApplicationOptionsToBasketItemDTOs {
                     items.get(as.getId()).getApplicationOptions().add(aoDTO);
                 } else if (as != null) {
                     BasketItemDTO basketItem = new BasketItemDTO();
+                    basketItem.setMaxApplicationOptions(as.getMaxApplications());
                     basketItem.setApplicationSystemId(as.getId());
                     basketItem.getApplicationOptions().add(aoDTO);
                     basketItem.setApplicationSystemName(ConverterUtil.getTextByLanguageUseFallbackLang(as.getName(), uiLang));
