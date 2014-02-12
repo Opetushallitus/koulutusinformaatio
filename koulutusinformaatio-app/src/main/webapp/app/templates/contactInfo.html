@@ -9,14 +9,14 @@
     </p>
 
     <p data-ng-show="provider.visitingAddress">
-        <span data-ki-i18n="plain:visiting-address" data-show-colon="true"></span><br/>
+        <span data-ki-i18n="plain:visiting-address" data-show-colon="true" data-lang="{{translationLanguage}}"></span><br/>
         <span data-ng-show="provider.visitingAddress.streetAddress">{{provider.visitingAddress.streetAddress}}<br/></span>
         <span data-ng-show="provider.visitingAddress.streetAddress2">{{provider.visitingAddress.streetAddress2}}<br/></span>
         <span data-ng-show="provider.visitingAddress.postOffice">{{provider.visitingAddress.postOffice}}</span>
     </p>
 
     <p data-ng-show="provider.postalAddress">
-        <span data-ki-i18n="plain:postal-address" data-show-colon="true"></span><br/>
+        <span data-ki-i18n="plain:postal-address" data-show-colon="true" data-lang="{{translationLanguage}}"></span><br/>
         <span data-ng-show="provider.postalAddress.streetAddress">{{provider.postalAddress.streetAddress}}<br/></span>
         <span data-ng-show="provider.postalAddress.streetAddress2">{{provider.postalAddress.streetAddress2}}<br/></span>
         <span data-ng-show="provider.postalAddress.postalCode">{{provider.postalAddress.postalCode}}</span>
@@ -24,13 +24,13 @@
     </p>
     
     <span data-ng-show="provider.email">
-        <span data-ki-i18n="plain:email" data-show-colon="true"></span> <span data-ki-email="{{provider.email}}"></span><br/>
+        <span data-ki-i18n="plain:email" data-show-colon="true" data-lang="{{translationLanguage}}"></span> <span data-ki-email="{{provider.email}}"></span><br/>
     </span>
     <span data-ng-show="provider.phone">
-        <span data-ki-i18n="plain:phone" data-show-colon="true"></span> {{provider.phone}}<br />
+        <span data-ki-i18n="plain:phone" data-show-colon="true" data-lang="{{translationLanguage}}"></span> {{provider.phone}}<br />
     </span>
     <span data-ng-show="provider.fax">
-        <span data-ki-i18n="plain:fax" data-show-colon="true"></span> {{provider.fax}}
+        <span data-ki-i18n="plain:fax" data-show-colon="true" data-lang="{{translationLanguage}}"></span> {{provider.fax}}
     </span>
 </p>
 </div>
