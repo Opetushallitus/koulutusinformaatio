@@ -199,13 +199,24 @@ public class ParentLOSToSolrInputDocumentTest {
 		
 		assertEquals(10, docs.size());
 		
-		SolrInputDocument yoDoc = docs.get(0);
+		SolrInputDocument doc1 = docs.get(0);
+		SolrInputDocument doc2 = docs.get(1);
 		
-		assertEquals(los.getId() + "#" + prerequisite1.getValue(), yoDoc.get(LearningOpportunity.ID).getValue().toString());
+		assertTrue(doc1.get(LearningOpportunity.ID).getValue().toString() != doc2.get(LearningOpportunity.ID).getValue().toString());
+		assertTrue(validatePrerequisites(doc1, doc2, prerequisite1));
+	}
+	
+	private boolean validatePrerequisites(SolrInputDocument doc1, SolrInputDocument doc2, Code prerequisite1) {
 		
-		SolrInputDocument pkDoc = docs.get(1);
+		String id1 = los.getId() + "#" + prerequisite1.getValue();
+		String id2 = los.getId() + "#" + prerequisite.getValue();
 		
-		assertEquals(los.getId() + "#" + prerequisite.getValue(), pkDoc.get(LearningOpportunity.ID).getValue().toString());
+		if (id1.equals(doc1.get(LearningOpportunity.ID).getValue().toString())) {
+			return id2.equals(doc2.get(LearningOpportunity.ID).getValue().toString());
+		} else {
+			return id2.equals(doc1.get(LearningOpportunity.ID).getValue().toString())
+					&& id1.equals(doc2.get(LearningOpportunity.ID).getValue().toString());
+		}
 	}
 
 }
