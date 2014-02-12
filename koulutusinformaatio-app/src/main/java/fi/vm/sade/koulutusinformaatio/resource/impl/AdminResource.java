@@ -21,6 +21,7 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.DataStatusDTO;
 import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import fi.vm.sade.koulutusinformaatio.service.SEOService;
+import fi.vm.sade.koulutusinformaatio.service.TextVersionService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,15 +47,18 @@ public class AdminResource {
     private LearningOpportunityService learningOpportunityService;
     private ModelMapper modelMapper;
     private SEOService seoService;
+    private TextVersionService textVersionService;
 
     @Autowired
     public AdminResource(UpdateService updateService,
                          LearningOpportunityService learningOpportunityService,
-                         ModelMapper modelMapper, SEOService seoService) {
+                         ModelMapper modelMapper, SEOService seoService,
+                         TextVersionService textVersionService) {
         this.updateService = updateService;
         this.learningOpportunityService = learningOpportunityService;
         this.modelMapper = modelMapper;
         this.seoService = seoService;
+        this.textVersionService = textVersionService;
     }
 
     @GET
@@ -98,6 +102,19 @@ public class AdminResource {
         if (!seoService.isRunning()) {
             seoService.update();
         }
+        return Response.seeOther(new URI("admin/status")).build();
+    }
+    
+    @GET
+    @Path("/textversion")
+    public Response generate() throws URISyntaxException {
+        try {
+            textVersionService.update();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw KIExceptionHandler.resolveException(e);
+        }
+        
         return Response.seeOther(new URI("admin/status")).build();
     }
 

@@ -231,6 +231,11 @@
     "autocomplete-keyword": "Sökordsförslag",
     "autocomplete-loname": "Kurser och examen",
 
-    "error-title": "Tapahtui odottamaton virhe (sv)",
-    "error-body": "Olemme pahoillamme. Hakemiesi koulutusten tietoja ei saatu jostain syystä haettua. Yritä hetken kuluttua uudelleen. (sv)"
+    "error-title": "Ett oväntat fel inträffade",
+    "error-body": "Vi beklagar. De utbildningsuppgifter du söker kan inte hittas. Var vänlig och försök igen senare. Kontakta Studieinfo-rådgivningen om problemet återkommer.",
+    "error-contact-1": "Telefon: 029 533 1010",
+    "error-contact-2": "öppen vardagar 9–13",
+    "error-contact-3": "under den sista ansökningsdagen 9–15",
+    "error-contact-4": "samtalsavgift enligt lokalnätsavgift / mobiltelefonavgift",
+    "error-contact-5": "E-post: info(at)studieinfo.fi"
 }
