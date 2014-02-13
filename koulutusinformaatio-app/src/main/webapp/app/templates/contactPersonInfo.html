@@ -4,10 +4,10 @@
 		<span data-ng-show="person.title">{{person.title}}<br /></span>
 		<span data-ng-show="person.firstNames">{{person.firstNames}}</span> <span data-ng-show="person.lastName">{{person.lastName}}</span><br />
 		<span data-ng-show="person.email">
-			<span data-ki-i18n="plain:email" data-show-colon="true"></span> <span data-ki-email="{{person.email}}"></span><br />
+			<span data-ki-i18n="plain:email" data-show-colon="true" data-lang="{{translationLanguage}}"></span> <span data-ki-email="{{person.email}}"></span><br />
 		</span>
 		<span data-ng-show="person.phone">
-			<span data-ki-i18n="plain:phone" data-show-colon="true"></span> {{person.phone}}<br />
+			<span data-ki-i18n="plain:phone" data-show-colon="true" data-lang="{{translationLanguage}}"></span> {{person.phone}}<br />
 		</span>
 	</p>
 </div>

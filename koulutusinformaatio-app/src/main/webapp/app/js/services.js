@@ -154,7 +154,7 @@ service('SearchLocationService', ['$http', '$timeout', '$q', 'LanguageService', 
 
             $http.get('../location/search/' + queryParam, {
                 params: {
-                    //lang: LanguageService.getLanguage()
+                    lang: LanguageService.getLanguage()
                 }
             }).
             success(function(result) {

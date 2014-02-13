@@ -49,8 +49,16 @@ public class TextVersionServiceImpl implements TextVersionService {
                     stringBuilder.append(currentLine);
                     currentLine = bufferedReader.readLine();
                 }
-                throw new KIException(String.format("Rendering text version failed: %s",
-                        stringBuilder,toString()));
+                BufferedReader bufferedOutputReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                StringBuilder stringOutputBuilder = new StringBuilder("");
+                String currentOutputLine = null;
+                currentOutputLine = bufferedOutputReader.readLine();
+                while (currentOutputLine != null) {
+                    stringOutputBuilder.append(currentOutputLine);
+                    currentOutputLine = bufferedOutputReader.readLine();
+                }
+                throw new KIException(String.format("Rendering text version failed: ERROR: %s, INPUT: %s",
+                        stringBuilder.toString(), stringOutputBuilder.toString() ));
             }
         } catch (IOException e) {
             throw new KIException(String.format("Rendering text version failed due to IOException: %s",
