@@ -93,7 +93,7 @@ public class DirectoryResource {
             Map<String, Object> model = initModel(lang);
             List<Provider> providers = null;
             try {
-                providers = searchService.searchLearningOpportunityProviders(letter, true);
+                providers = searchService.searchLearningOpportunityProviders(letter, lang, true);
             } catch (SearchException e) {
                 // error view
             }
@@ -117,7 +117,7 @@ public class DirectoryResource {
                                              @PathParam("providerId") final String providerId) {
         List<LearningOpportunitySearchResultDTO> resultList = null;
         Provider provider = null;
-        resultList = learningOpportunityService.findLearningOpportunitiesByProviderId(providerId, "fi");
+        resultList = learningOpportunityService.findLearningOpportunitiesByProviderId(providerId, lang);
         try {
             provider = educationDataQueryService.getProvider(providerId);
         } catch (ResourceNotFoundException e) {
@@ -126,7 +126,7 @@ public class DirectoryResource {
         Map<String, Object> model = initModel(lang);
         model.put("alphabets", alphabets);
         model.put("letter", letter);
-        model.put("provider", ConverterUtil.getTextByLanguageUseFallbackLang(provider.getName(), "fi"));
+        model.put("provider", ConverterUtil.getTextByLanguageUseFallbackLang(provider.getName(), lang));
         model.put("learningOpportunities", resultList);
         model.put("baseUrl", baseUrl);
         model.put("lang", lang);
