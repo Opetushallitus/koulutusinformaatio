@@ -28,24 +28,42 @@
         </constructor-arg>
     </bean>
 
-    <bean id="parentLOSTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecificationDAO">
-        <constructor-arg>
-            <ref bean="transactionMongo"/>
-        </constructor-arg>
+    <bean id="primaryTransactionDatastore" class="org.mongodb.morphia.DatastoreImpl">
         <constructor-arg>
             <ref bean="morphia"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="transactionMongo"/>
         </constructor-arg>
         <constructor-arg value="${mongo.transaction-db.name}"/>
     </bean>
 
-    <bean id="applicationOptionTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO">
-        <constructor-arg>
-            <ref bean="transactionMongo"/>
-        </constructor-arg>
+    <bean id="secondaryTransactionDatastore" class="fi.vm.sade.koulutusinformaatio.dao.SecondaryDatastoreImpl">
         <constructor-arg>
             <ref bean="morphia"/>
         </constructor-arg>
+        <constructor-arg>
+            <ref bean="transactionMongo"/>
+        </constructor-arg>
         <constructor-arg value="${mongo.transaction-db.name}"/>
+    </bean>
+
+    <bean id="parentLOSTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecificationDAO">
+        <constructor-arg>
+            <ref bean="primaryTransactionDatastore"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="secondaryTransactionDatastore"/>
+        </constructor-arg>
+    </bean>
+
+    <bean id="applicationOptionTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO">
+        <constructor-arg>
+            <ref bean="primaryTransactionDatastore"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="secondaryTransactionDatastore"/>
+        </constructor-arg>
     </bean>
 
     <bean id="learningOpportunityProviderTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO">
@@ -60,12 +78,11 @@
 
     <bean id="childLOTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityDAO">
         <constructor-arg>
-            <ref bean="transactionMongo"/>
+            <ref bean="primaryTransactionDatastore"/>
         </constructor-arg>
         <constructor-arg>
-            <ref bean="morphia"/>
+            <ref bean="secondaryTransactionDatastore"/>
         </constructor-arg>
-        <constructor-arg value="${mongo.transaction-db.name}"/>
     </bean>
 
     <bean id="dataStatusTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.DataStatusDAO">
@@ -80,32 +97,29 @@
 
     <bean id="pictureTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.PictureDAO">
         <constructor-arg>
-            <ref bean="transactionMongo"/>
+            <ref bean="primaryTransactionDatastore"/>
         </constructor-arg>
         <constructor-arg>
-            <ref bean="morphia"/>
+            <ref bean="secondaryTransactionDatastore"/>
         </constructor-arg>
-        <constructor-arg value="${mongo.transaction-db.name}"/>
     </bean>
 
     <bean id="upperSecondaryLOSTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO">
         <constructor-arg>
-            <ref bean="transactionMongo"/>
+            <ref bean="primaryTransactionDatastore"/>
         </constructor-arg>
         <constructor-arg>
-            <ref bean="morphia"/>
+            <ref bean="secondaryTransactionDatastore"/>
         </constructor-arg>
-        <constructor-arg value="${mongo.transaction-db.name}"/>
     </bean>
 
     <bean id="specialLOSTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.SpecialLearningOpportunitySpecificationDAO">
         <constructor-arg>
-            <ref bean="mongo"/>
+            <ref bean="primaryTransactionDatastore"/>
         </constructor-arg>
         <constructor-arg>
-            <ref bean="morphia"/>
+            <ref bean="secondaryTransactionDatastore"/>
         </constructor-arg>
-        <constructor-arg value="${mongo.transaction-db.name}"/>
     </bean>
 
 

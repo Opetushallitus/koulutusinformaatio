@@ -17,14 +17,10 @@
 package fi.vm.sade.koulutusinformaatio.dao;
 
 import com.google.common.base.Strings;
-import com.mongodb.Mongo;
-
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
-
+import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Key;
-import org.mongodb.morphia.Morphia;
-import org.mongodb.morphia.dao.BasicDAO;
 import org.mongodb.morphia.query.Query;
 
 import java.util.ArrayList;
@@ -33,11 +29,39 @@ import java.util.List;
 /**
  * @author Mikko Majapuro
  */
-public class ApplicationOptionDAO extends BasicDAO<ApplicationOptionEntity, String> {
+public class ApplicationOptionDAO extends SecondaryAwareDAO<ApplicationOptionEntity, String> {
 
-    public ApplicationOptionDAO(Mongo mongo, Morphia morphia, String dbName) {
-        super(mongo, morphia, dbName);
+    public ApplicationOptionDAO(Datastore primaryDatastore, Datastore secondaryDatastore) {
+        super(primaryDatastore, secondaryDatastore);
     }
+
+
+    public List<ApplicationOptionEntity> findFromSecondary(final String asId, final String lopId, final String baseEducation,
+                                              boolean vocational, boolean nonVocational) {
+        Query<ApplicationOptionEntity> query = createSecondaryQuery();
+        query.field("applicationSystem.id").equal(asId);
+        query.field("provider").equal(new Key(LearningOpportunityProviderEntity.class, lopId));
+        if (!Strings.isNullOrEmpty(baseEducation)) {
+            query.field("requiredBaseEducations").contains(baseEducation);
+        }
+        if (!vocational) {
+            query.field("vocational").equal(false);
+        }
+        if (!nonVocational) {
+            query.field("vocational").equal(true);
+        }
+        return find(query).asList();
+    }
+
+    public List<ApplicationOptionEntity> findFromSecondary(final List<String> aoIds) {
+        Query<ApplicationOptionEntity> query = getSecondaryDatastore().get(ApplicationOptionEntity.class, aoIds);
+        return find(query).asList();
+    }
+
+    public Query<ApplicationOptionEntity> createSecondaryQuery() {
+        return getSecondaryDatastore().createQuery(entityClazz);
+    }
+
 
     public List<ApplicationOptionEntity> find(final String asId, final String lopId, final String baseEducation,
                                               boolean vocational, boolean nonVocational) {
@@ -66,4 +90,5 @@ public class ApplicationOptionDAO extends BasicDAO<ApplicationOptionEntity, Stri
     	}
         return aos;
     }
+
 }

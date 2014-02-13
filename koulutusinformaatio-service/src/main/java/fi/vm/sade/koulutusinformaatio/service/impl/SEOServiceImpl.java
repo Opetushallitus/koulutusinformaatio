@@ -51,13 +51,13 @@ public class SEOServiceImpl implements SEOService {
 
 
     @Autowired
-    public SEOServiceImpl(SnapshotService snapshotService, TextVersionService textVersionService, 
-                          Datastore mongoDatastore,
+    public SEOServiceImpl(SnapshotService snapshotService, TextVersionService textVersionService,
+                          Datastore primaryDatastore,
                           @Value("${koulutusinformaatio.baseurl.learningopportunity}") String baseUrl,
                           @Value("${koulutusinformaatio.sitemap.filepath}") String sitemapLocation) {
         this.snapshotService = snapshotService;
         this.textVersionService = textVersionService;
-        this.mongoDatastore = mongoDatastore;
+        this.mongoDatastore = primaryDatastore;
         this.sitemapBuilder = new SitemapBuilder();
         this.sitemapParams = Maps.newHashMap();
         this.sitemapParams.put(SitemapBuilder.PROPERTY_BASE_URL, baseUrl);

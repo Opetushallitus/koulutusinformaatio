@@ -18,16 +18,11 @@ package fi.vm.sade.koulutusinformaatio.dao.transaction.impl;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
-
 import fi.vm.sade.koulutusinformaatio.dao.*;
-import fi.vm.sade.koulutusinformaatio.dao.entity.DataStatusEntity;
 import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
 import fi.vm.sade.koulutusinformaatio.domain.SolrFields.SolrConstants;
-
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.request.CoreAdminRequest;
-import org.apache.solr.client.solrj.request.CollectionAdminRequest;
-import org.apache.solr.client.solrj.response.CollectionAdminResponse;
 import org.apache.solr.common.params.CoreAdminParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

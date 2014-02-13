@@ -31,24 +31,42 @@
 
     <bean id="morphia" class="org.mongodb.morphia.Morphia" />
 
-    <bean id="parentLearningOpportunitySpecificationDAO" class="fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecificationDAO">
-        <constructor-arg>
-            <ref bean="mongo"/>
-        </constructor-arg>
+    <bean id="primaryDatastore" class="org.mongodb.morphia.DatastoreImpl">
         <constructor-arg>
             <ref bean="morphia"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="mongo"/>
         </constructor-arg>
         <constructor-arg value="${mongo.test-db.name}"/>
     </bean>
 
-    <bean id="applicationOptionDAO" class="fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO">
-        <constructor-arg>
-            <ref bean="mongo"/>
-        </constructor-arg>
+    <bean id="secondaryDatastore" class="fi.vm.sade.koulutusinformaatio.dao.SecondaryDatastoreImpl">
         <constructor-arg>
             <ref bean="morphia"/>
         </constructor-arg>
+        <constructor-arg>
+            <ref bean="mongo"/>
+        </constructor-arg>
         <constructor-arg value="${mongo.test-db.name}"/>
+    </bean>
+
+    <bean id="parentLearningOpportunitySpecificationDAO" class="fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecificationDAO">
+        <constructor-arg>
+            <ref bean="primaryDatastore"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="secondaryDatastore"/>
+        </constructor-arg>
+    </bean>
+
+    <bean id="applicationOptionDAO" class="fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO">
+        <constructor-arg>
+            <ref bean="primaryDatastore"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="secondaryDatastore"/>
+        </constructor-arg>
     </bean>
 
     <bean id="learningOpportunityProviderDAO" class="fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO">
@@ -63,32 +81,29 @@
 
     <bean id="childLearningOpportunityDAO" class="fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityDAO">
         <constructor-arg>
-            <ref bean="mongo"/>
+            <ref bean="primaryDatastore"/>
         </constructor-arg>
         <constructor-arg>
-            <ref bean="morphia"/>
+            <ref bean="secondaryDatastore"/>
         </constructor-arg>
-        <constructor-arg value="${mongo.test-db.name}"/>
     </bean>
 
     <bean id="upperSecondaryLearningOpportunityDAO" class="fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO">
         <constructor-arg>
-            <ref bean="mongo"/>
+            <ref bean="primaryDatastore"/>
         </constructor-arg>
         <constructor-arg>
-            <ref bean="morphia"/>
+            <ref bean="secondaryDatastore"/>
         </constructor-arg>
-        <constructor-arg value="${mongo.test-db.name}"/>
     </bean>
 
     <bean id="specialLearningOpportunityDAO" class="fi.vm.sade.koulutusinformaatio.dao.SpecialLearningOpportunitySpecificationDAO">
         <constructor-arg>
-            <ref bean="mongo"/>
+            <ref bean="primaryDatastore"/>
         </constructor-arg>
         <constructor-arg>
-            <ref bean="morphia"/>
+            <ref bean="secondaryDatastore"/>
         </constructor-arg>
-        <constructor-arg value="${mongo.test-db.name}"/>
     </bean>
 
     <bean id="modelMapper" class="org.modelmapper.ModelMapper"/>
