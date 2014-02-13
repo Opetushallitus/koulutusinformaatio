@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
@@ -37,8 +36,8 @@ public class TextVersionServiceImpl implements TextVersionService {
     public void update() throws KIException {
         LOG.info("Rendering text version html");
         try {
-            Process process = Runtime.getRuntime().exec(String.format("make all install -C %s SOURCE=%s INSTALL_DIR=%s SCRIPT=%s",
-                    script, source, destinationFolder, script));
+            Process process = Runtime.getRuntime().exec(String.format("make all install -C %s SOURCE=%s INSTALL_DIR=%s",
+                    script, source, destinationFolder));
             int exitStatus = process.waitFor();
             
             if (exitStatus != 0) {
@@ -47,7 +46,7 @@ public class TextVersionServiceImpl implements TextVersionService {
                 String currentLine = null;
                 currentLine = bufferedReader.readLine();
                 while (currentLine != null) {
-                    stringBuilder.append(currentLine + "\n");
+                    stringBuilder.append(currentLine);
                     currentLine = bufferedReader.readLine();
                 }
                 BufferedReader bufferedOutputReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -55,7 +54,7 @@ public class TextVersionServiceImpl implements TextVersionService {
                 String currentOutputLine = null;
                 currentOutputLine = bufferedOutputReader.readLine();
                 while (currentOutputLine != null) {
-                    stringOutputBuilder.append(currentOutputLine + "\n");
+                    stringOutputBuilder.append(currentOutputLine);
                     currentOutputLine = bufferedOutputReader.readLine();
                 }
                 throw new KIException(String.format("Rendering text version failed: ERROR: %s, INPUT: %s",
