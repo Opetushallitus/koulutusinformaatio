@@ -33,7 +33,6 @@ public class TextVersionServiceImpl implements TextVersionService {
         
     }
     
-    @Async
     @Override
     public void update() throws KIException {
         LOG.info("Rendering text version html");

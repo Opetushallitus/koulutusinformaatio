@@ -12,7 +12,7 @@ dirs:
 venv: dirs venv/bin/activate
 
 venv/bin/activate: requirements.txt
-	test -d $(SCRIPT)/venv || virtualenv venv
+	test -d $(SCRIPT)/venv || /usr/bin/virtualenv venv
 	. venv/bin/activate; venv/bin/pip install -Ur requirements.txt
 	touch venv/bin/activate
 
