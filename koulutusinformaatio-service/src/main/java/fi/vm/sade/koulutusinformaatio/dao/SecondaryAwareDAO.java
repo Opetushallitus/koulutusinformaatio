@@ -16,28 +16,27 @@
 
 package fi.vm.sade.koulutusinformaatio.dao;
 
-import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
 import org.mongodb.morphia.Datastore;
-import org.mongodb.morphia.Key;
-import org.mongodb.morphia.query.Query;
-
-import java.util.List;
+import org.mongodb.morphia.dao.BasicDAO;
 
 /**
  * @author Hannu Lyytikainen
  */
-public abstract class LearningOpportunitySpecificationDAO<T, K> extends SecondaryAwareDAO<T, K> {
+public abstract class SecondaryAwareDAO<T, K> extends BasicDAO<T, K> {
 
+    protected Datastore secondaryDatastore;
 
-    protected LearningOpportunitySpecificationDAO(Datastore primaryDatastore, Datastore secondaryDatastore) {
-        super(primaryDatastore, secondaryDatastore);
+    protected SecondaryAwareDAO(Datastore primaryDatastore, Datastore secondaryDatastore) {
+        super(primaryDatastore);
+        this.secondaryDatastore = secondaryDatastore;
     }
 
-    public List<T> findByProviderId(String providerId) {
-        Query<T> query = createQuery();
-        query.field("provider").equal(new Key(LearningOpportunityProviderEntity.class, providerId));
-        return find(query).asList();
+    public T getFromSecondary(String id) {
+        return secondaryDatastore.get(entityClazz, id);
+    }
+
+    public Datastore getSecondaryDatastore() {
+        return secondaryDatastore;
     }
 }
-
 

@@ -62,12 +62,11 @@
 
     <bean id="applicationOptionDAO" class="fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO">
         <constructor-arg>
-            <ref bean="mongo"/>
+            <ref bean="primaryDatastore"/>
         </constructor-arg>
         <constructor-arg>
-            <ref bean="morphia"/>
+            <ref bean="secondaryDatastore"/>
         </constructor-arg>
-        <constructor-arg value="${mongo.test-db.name}"/>
     </bean>
 
     <bean id="learningOpportunityProviderDAO" class="fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO">

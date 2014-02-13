@@ -59,12 +59,11 @@
 
     <bean id="applicationOptionTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO">
         <constructor-arg>
-            <ref bean="transactionMongo"/>
+            <ref bean="primaryTransactionDatastore"/>
         </constructor-arg>
         <constructor-arg>
-            <ref bean="morphia"/>
+            <ref bean="secondaryTransactionDatastore"/>
         </constructor-arg>
-        <constructor-arg value="${mongo.transaction-db.name}"/>
     </bean>
 
     <bean id="learningOpportunityProviderTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.LearningOpportunityProviderDAO">
@@ -98,12 +97,11 @@
 
     <bean id="pictureTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.PictureDAO">
         <constructor-arg>
-            <ref bean="transactionMongo"/>
+            <ref bean="primaryTransactionDatastore"/>
         </constructor-arg>
         <constructor-arg>
-            <ref bean="morphia"/>
+            <ref bean="secondaryTransactionDatastore"/>
         </constructor-arg>
-        <constructor-arg value="${mongo.transaction-db.name}"/>
     </bean>
 
     <bean id="upperSecondaryLOSTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO">

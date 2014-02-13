@@ -16,28 +16,18 @@
 
 package fi.vm.sade.koulutusinformaatio.dao;
 
-import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
-import org.mongodb.morphia.Datastore;
-import org.mongodb.morphia.Key;
-import org.mongodb.morphia.query.Query;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
+import com.mongodb.ReadPreference;
 
-import java.util.List;
+import java.net.UnknownHostException;
 
 /**
  * @author Hannu Lyytikainen
  */
-public abstract class LearningOpportunitySpecificationDAO<T, K> extends SecondaryAwareDAO<T, K> {
-
-
-    protected LearningOpportunitySpecificationDAO(Datastore primaryDatastore, Datastore secondaryDatastore) {
-        super(primaryDatastore, secondaryDatastore);
-    }
-
-    public List<T> findByProviderId(String providerId) {
-        Query<T> query = createQuery();
-        query.field("provider").equal(new Key(LearningOpportunityProviderEntity.class, providerId));
-        return find(query).asList();
+public class SecondaryMongoClient extends MongoClient {
+    public SecondaryMongoClient(MongoClientURI uri) throws UnknownHostException {
+        super(uri);
+        this.setReadPreference(ReadPreference.secondaryPreferred());
     }
 }
-
-
