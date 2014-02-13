@@ -28,7 +28,7 @@
 
     <context:property-placeholder
             location="classpath:koulutusinformaatio.properties, file:///${user.home:''}/oph-configuration/common.properties,
-            file:///${user.home:''}/oph-configuration/koulutusinformaatio.properties"
+            file:///${user.home:''}/oph-configuration/koulutusinformaatio.properties, file:///${user.home:''}/oph-configuration/override.properties"
             ignore-resource-not-found="true"/>
 
     <context:component-scan base-package="fi.vm.sade.koulutusinformaatio"/>
