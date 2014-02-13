@@ -16,11 +16,9 @@
 
 package fi.vm.sade.koulutusinformaatio.dao;
 
-import com.mongodb.Mongo;
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
+import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Key;
-import org.mongodb.morphia.Morphia;
-import org.mongodb.morphia.dao.BasicDAO;
 import org.mongodb.morphia.query.Query;
 
 import java.util.List;
@@ -28,9 +26,11 @@ import java.util.List;
 /**
  * @author Hannu Lyytikainen
  */
-public abstract class LearningOpportunitySpecificationDAO<T, K> extends BasicDAO<T, K> {
-    protected LearningOpportunitySpecificationDAO(Mongo mongo, Morphia morphia, String dbName) {
-        super(mongo, morphia, dbName);
+public abstract class LearningOpportunitySpecificationDAO<T, K> extends SecondaryAwareDAO<T, K> {
+
+
+    protected LearningOpportunitySpecificationDAO(Datastore primaryDatastore, Datastore secondaryDatastore) {
+        super(primaryDatastore, secondaryDatastore);
     }
 
     public List<T> findByProviderId(String providerId) {
@@ -39,3 +39,5 @@ public abstract class LearningOpportunitySpecificationDAO<T, K> extends BasicDAO
         return find(query).asList();
     }
 }
+
+

@@ -158,7 +158,8 @@
     "application-basket-description": "I minneslistan kan du samla utbildningar och överföra uppgifterna till ansökningsblanketten. Utbildningarna sparas i minneslistan så länge webbläsaren är öppen. Du kan lägga till enbart utbildningar med samma grundutbildningskrav – exempelvis bara grundskolbaserade eller bara gymnasiebaserade, men inte båda.",
     "application-basket-no-content": "Du har inga utbildningar i minneslistan. Hämta utbildningar som du vill söka till via sökmotorn, samla dem i minneslistan och överför dem till ansökningsblanketten. I gemensam ansökan kan du söka till högst fem olika utbildningar.",
     "application-basket-fill-form": "Fyll i ansökningsblanketten",
-    "application-basket-fill-form-notification": "I denna ansökan kan du söka till högst __count__ utbildningar",
+    "application-basket-fill-form-notification": "I denna ansökan kan du söka till högst __count__ utbildningar.",
+    "application-basket-fill-form-notification-2": "Sortera utbildningarna i blanketten i den ordning du önskar, så att ditt första önskemål finns överst på blanketten.",
     "application-basket-empty": "Töm minneslistan",
     "application-basket-empty-confirm": "Är du säker på att du vill tömma minneslistan?",
     "application-basket-overflow-warning": "I gemensam ansökan kan du söka till fem (5) olika utbildningar, stryk de som är överlopps",
@@ -176,6 +177,7 @@
     "footer-note": "Utbildningsanordnarna och högskolorna uppdaterar själva uppgifterna om sina utbildningar i Studieinfo. Du kan kontrollera att uppgifterna är riktiga av läroanstalten eller högskolan.",
     "footer-copyright": "Copyright © 2013 Utbildningsstyrelsen",
     "footer-privacy-policy": "Registerbeskrivning",
+    "footer-sitemap": "Index",
 
     "opetushallitus-address-line-1": "Utbildningsstyrelsen",
     "opetushallitus-address-line-2": "Hagnäskajen 6",
@@ -229,6 +231,11 @@
     "autocomplete-keyword": "Sökordsförslag",
     "autocomplete-loname": "Kurser och examen",
 
-    "error-title": "Tapahtui odottamaton virhe (sv)",
-    "error-body": "Olemme pahoillamme. Hakemiesi koulutusten tietoja ei saatu jostain syystä haettua. Yritä hetken kuluttua uudelleen. (sv)"
+    "error-title": "Ett oväntat fel inträffade",
+    "error-body": "Vi beklagar. De utbildningsuppgifter du söker kan inte hittas. Var vänlig och försök igen senare. Kontakta Studieinfo-rådgivningen om problemet återkommer.",
+    "error-contact-1": "Telefon: 029 533 1010",
+    "error-contact-2": "öppen vardagar 9–13",
+    "error-contact-3": "under den sista ansökningsdagen 9–15",
+    "error-contact-4": "samtalsavgift enligt lokalnätsavgift / mobiltelefonavgift",
+    "error-contact-5": "E-post: info(at)studieinfo.fi"
 }

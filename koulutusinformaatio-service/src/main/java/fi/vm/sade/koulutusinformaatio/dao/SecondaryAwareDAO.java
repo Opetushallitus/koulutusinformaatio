@@ -16,16 +16,27 @@
 
 package fi.vm.sade.koulutusinformaatio.dao;
 
-import fi.vm.sade.koulutusinformaatio.dao.entity.SpecialLearningOpportunitySpecificationEntity;
 import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.dao.BasicDAO;
 
 /**
  * @author Hannu Lyytikainen
  */
-public class SpecialLearningOpportunitySpecificationDAO extends LearningOpportunitySpecificationDAO<SpecialLearningOpportunitySpecificationEntity, String> {
+public abstract class SecondaryAwareDAO<T, K> extends BasicDAO<T, K> {
 
-    public SpecialLearningOpportunitySpecificationDAO(Datastore primaryDatastore, Datastore secondaryDatastore) {
-        super(primaryDatastore, secondaryDatastore);
-        ensureIndexes();
+    protected Datastore secondaryDatastore;
+
+    protected SecondaryAwareDAO(Datastore primaryDatastore, Datastore secondaryDatastore) {
+        super(primaryDatastore);
+        this.secondaryDatastore = secondaryDatastore;
+    }
+
+    public T getFromSecondary(String id) {
+        return secondaryDatastore.get(entityClazz, id);
+    }
+
+    public Datastore getSecondaryDatastore() {
+        return secondaryDatastore;
     }
 }
+

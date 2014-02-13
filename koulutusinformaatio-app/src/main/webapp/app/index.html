@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:ng="http://angularjs.org" data-ng-app="kiApp" id="ng-app" lang="fi-FI">
+<html xmlns:ng="http://angularjs.org" data-ng-app="kiApp" data-ng-controller="RootCtrl" id="ng-app" lang="fi-FI">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -59,10 +59,18 @@
         <div data-ng-include data-src="'partials/head/header.html'"></div>
         <div id="page">
             <div data-ng-include data-src="'partials/head/searchbar.html'"></div>
-            <div data-ng-view></div>
+            <div data-ng-switch="error" >
+                <div data-ng-switch-when="true">
+                    <div data-ng-include data-src="'partials/error.html'"></div>
+                </div>
+                <div data-ng-switch-default>
+                    <div data-ng-view></div>
+                </div>
+            </div>
+
             <div class="clear"></div>
         </div>
-        <div data-ng-include data-src="'partials/footer/footer.html'"></div>
+        <div data-ng-include data-src="'partials/footer/footer.html'" data-ng-controller="FooterCtrl"></div>
     </div><!-- #site -->
 </body>
 </html>

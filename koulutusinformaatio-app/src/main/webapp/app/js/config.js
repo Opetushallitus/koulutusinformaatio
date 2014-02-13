@@ -6,14 +6,14 @@ window.Config.app.common = {
 	fi: {
 		ophUrl: 'http://www.oph.fi/etusivu',
 		okmUrl: 'http://www.minedu.fi/OPM/',
-		navigationUrl: '/wp/fi/api/nav/json_nav/',
-		textVersionUrl: '/m/index.html'
+		textVersionUrl: '/m/index.html',
+		sitemapUrl: '/fi/hakemisto/oppilaitokset/'
 	},
 	sv: {
     	ophUrl: 'http://www.oph.fi/startsidan',
     	okmUrl: 'http://www.minedu.fi/OPM/?lang=sv',
-    	navigationUrl: '/wp/sv/api/nav/json_nav/',
-    	textVersionUrl: '/m/index_sv.html'
+    	textVersionUrl: '/m/index_sv.html',
+    	sitemapUrl: '/sv/hakemisto/oppilaitokset/'
 	},
     hakulomakeUrl: '/haku-app/',
     piwikUrl: 'https://analytiikka.opintopolku.fi/piwik/'
@@ -65,12 +65,12 @@ window.Config.app.qa = {
 window.Config.app.reppu = {
 	fi: {
 		frontpageUrl: '/wp/fi/',
-		rekisteriselosteUrl: '/wp/fi/',
+		rekisteriselosteUrl: '/wp/fi/rekisteriseloste/',
 		navigationUrl: '/wp/fi/api/nav/json_nav/'
 	},
 	sv: {
 		frontpageUrl: '/wp/sv/',
-    	rekisteriselosteUrl: '/wp/sv/',
+    	rekisteriselosteUrl: '/wp/sv/registerbeskrivning/',
     	navigationUrl: '/wp/sv/api/nav/json_nav/'
 	}
 };

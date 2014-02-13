@@ -16,16 +16,18 @@
 
 package fi.vm.sade.koulutusinformaatio.dao;
 
-import fi.vm.sade.koulutusinformaatio.dao.entity.SpecialLearningOpportunitySpecificationEntity;
-import org.mongodb.morphia.Datastore;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
+import com.mongodb.ReadPreference;
+
+import java.net.UnknownHostException;
 
 /**
  * @author Hannu Lyytikainen
  */
-public class SpecialLearningOpportunitySpecificationDAO extends LearningOpportunitySpecificationDAO<SpecialLearningOpportunitySpecificationEntity, String> {
-
-    public SpecialLearningOpportunitySpecificationDAO(Datastore primaryDatastore, Datastore secondaryDatastore) {
-        super(primaryDatastore, secondaryDatastore);
-        ensureIndexes();
+public class SecondaryMongoClient extends MongoClient {
+    public SecondaryMongoClient(MongoClientURI uri) throws UnknownHostException {
+        super(uri);
+        this.setReadPreference(ReadPreference.secondaryPreferred());
     }
 }

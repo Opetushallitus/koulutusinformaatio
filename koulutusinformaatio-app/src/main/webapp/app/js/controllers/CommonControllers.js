@@ -1,4 +1,13 @@
 /**
+ * Root controller for whole app
+ */
+function RootCtrl($rootScope) {
+    $rootScope.$on("$locationChangeStart", function(event, next, current) { 
+        delete $rootScope.error;
+    });
+};
+
+/**
  *  Controls the selected user interface language
  */
 function LanguageCtrl($scope, LanguageService) {
@@ -50,10 +59,12 @@ function FooterCtrl($scope, LanguageService, TranslationService, Config) {
     $scope.links = {
         opetushallitus: Config.get('ophUrl'),
         opetusministerio: Config.get('okmUrl'),
-        rekisteriseloste: Config.get('rekisteriselosteUrl')
+        rekisteriseloste: Config.get('rekisteriselosteUrl'),
+        hakemisto: Config.get('sitemapUrl')
     }
 
     $scope.images = {
+        logo: 'img/opintopolku_large-' + lang + '.png',
         opetushallitus: 'img/OPH_logo-' + lang + '.png',
         opetusministerio: 'img/OKM_logo-' + lang + '.png'
     }

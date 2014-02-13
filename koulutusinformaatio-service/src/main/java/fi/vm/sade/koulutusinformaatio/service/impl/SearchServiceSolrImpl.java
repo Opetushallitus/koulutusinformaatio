@@ -18,7 +18,6 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LocationFields;
@@ -26,7 +25,6 @@ import fi.vm.sade.koulutusinformaatio.domain.SolrFields.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.*;
-
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -98,8 +96,8 @@ public class SearchServiceSolrImpl implements SearchService {
     }
 
     @Override
-    public List<Provider> searchLearningOpportunityProviders(String term, boolean prefix) throws SearchException {
-        return searchLearningOpportunityProviders(term, null, null, false, false, 0, Integer.MAX_VALUE, "fi", prefix);
+    public List<Provider> searchLearningOpportunityProviders(String term, String lang, boolean prefix) throws SearchException {
+        return searchLearningOpportunityProviders(term, null, null, false, false, 0, Integer.MAX_VALUE, lang, prefix);
     }
 
     @Override

@@ -66,7 +66,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
 
     @Override
     public ParentLOS getParentLearningOpportunity(String oid) throws ResourceNotFoundException {
-        ParentLearningOpportunitySpecificationEntity entity = parentLearningOpportunitySpecificationDAO.get(oid);
+        ParentLearningOpportunitySpecificationEntity entity = parentLearningOpportunitySpecificationDAO.getFromSecondary(oid);
         if (entity != null) {
             return modelMapper.map(entity, ParentLOS.class);
         } else {
@@ -77,7 +77,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     @Override
     public List<ApplicationOption> findApplicationOptions(String asId, String lopId, String baseEducation,
                                                           boolean vocational, boolean nonVocational) {
-        List<ApplicationOptionEntity> applicationOptions = applicationOptionDAO.find(asId, lopId, baseEducation,
+        List<ApplicationOptionEntity> applicationOptions = applicationOptionDAO.findFromSecondary(asId, lopId, baseEducation,
                 vocational, nonVocational);
         return Lists.transform(applicationOptions, new Function<ApplicationOptionEntity, ApplicationOption>() {
             @Override
@@ -92,7 +92,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
         if (aoIds == null || aoIds.isEmpty()) {
             throw new InvalidParametersException("Application option IDs required");
         }
-        List<ApplicationOptionEntity> applicationOptions = applicationOptionDAO.find(aoIds);
+        List<ApplicationOptionEntity> applicationOptions = applicationOptionDAO.findFromSecondary(aoIds);
         return Lists.transform(applicationOptions, new Function<ApplicationOptionEntity, ApplicationOption>() {
             @Override
             public ApplicationOption apply(ApplicationOptionEntity applicationOptionEntity) {
@@ -129,7 +129,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
 
     @Override
     public Picture getPicture(String id) throws ResourceNotFoundException {
-        PictureEntity picture = pictureDAO.get(id);
+        PictureEntity picture = pictureDAO.getFromSecondary(id);
         if (picture != null) {
             return modelMapper.map(picture, Picture.class);
         } else {
@@ -140,7 +140,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     @Override
     public UpperSecondaryLOS getUpperSecondaryLearningOpportunity(String id) throws ResourceNotFoundException {
         UpperSecondaryLearningOpportunitySpecificationEntity entity =
-                upperSecondaryLearningOpportunitySpecificationDAO.get(id);
+                upperSecondaryLearningOpportunitySpecificationDAO.getFromSecondary(id);
         if (entity != null) {
             return modelMapper.map(entity, UpperSecondaryLOS.class);
         }
@@ -152,7 +152,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     @Override
     public SpecialLOS getSpecialLearningOpportunity(String id) throws ResourceNotFoundException {
         SpecialLearningOpportunitySpecificationEntity entity =
-                specialLearningOpportunitySpecificationDAO.get(id);
+                specialLearningOpportunitySpecificationDAO.getFromSecondary(id);
         if (entity != null) {
             return modelMapper.map(entity, SpecialLOS.class);
         }
@@ -224,7 +224,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     }
 
     private ChildLearningOpportunitySpecificationEntity getChildLO(String childLoId) throws ResourceNotFoundException {
-        ChildLearningOpportunitySpecificationEntity clo = childLearningOpportunityDAO.get(childLoId);
+        ChildLearningOpportunitySpecificationEntity clo = childLearningOpportunityDAO.getFromSecondary(childLoId);
         if (clo == null) {
             throw new ResourceNotFoundException("Child learning opportunity specification not found: " + childLoId);
         }

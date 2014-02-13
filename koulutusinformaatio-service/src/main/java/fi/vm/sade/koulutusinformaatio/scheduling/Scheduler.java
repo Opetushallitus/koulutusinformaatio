@@ -37,12 +37,15 @@ public class Scheduler {
     private UpdateService updateService;
     private SEOService seoService;
     private boolean enabled;
+    private boolean seoEnabled;
 
     @Autowired
-    public Scheduler(final UpdateService updateService, final SEOService seoService, @Value("${scheduling.enabled}") boolean enabled) {
+    public Scheduler(final UpdateService updateService, final SEOService seoService, @Value("${scheduling.enabled}") boolean enabled,
+                     @Value("${scheduling.seo.enabled}") boolean seoEnabled) {
         this.updateService = updateService;
         this.seoService = seoService;
         this.enabled = enabled;
+        this.seoEnabled = seoEnabled;
     }
 
     @Scheduled(cron = "${scheduling.data.cron}")
@@ -61,14 +64,15 @@ public class Scheduler {
 
     @Scheduled(cron = "${scheduling.seo.cron}")
     public void runSEOUpdate() {
-        LOG.info("Starting scheduled SEO update {}", new Date());
-        try {
-            if (!seoService.isRunning()) {
-                seoService.update();
+        if (seoEnabled) {
+            LOG.info("Starting scheduled SEO update {}", new Date());
+            try {
+                if (!seoService.isRunning()) {
+                    seoService.update();
+                }
+            } catch (Exception e) {
+                LOG.error("SEO execution failed: {}", e.getStackTrace().toString());
             }
-        }
-        catch (Exception e) {
-            LOG.error("SEO execution failed: {}", e.getStackTrace().toString());
         }
     }
 }

@@ -317,6 +317,7 @@ table {
 /* font-size */
 /*** from haku-app sass styles ***/
 /* buttons */
+/* rounder corners */
 /* responsive layout limits */
 /***  Functions
 ************************************************/
@@ -1491,13 +1492,15 @@ hr {
   background-color: #ffffff; }
 
 .header-container,
+.footer-navigation,
 #sitefooter,
 #sitecontent,
 #page,
 footer {
   width: auto;
   max-width: 960px;
-  margin: 0px auto; }
+  margin: 0px auto;
+  overflow: hidden; }
 
 .navigation-container {
   width: auto;
@@ -1505,22 +1508,36 @@ footer {
   margin: 0px auto;
   position: relative; }
 
-footer {
+.footer-navigation {
   margin-top: 220px;
-  margin-bottom: 20px; }
-  footer .footer-wrapper {
-    border: 1px solid #dcdcdc;
-    padding: 2em;
-    margin: 40px auto; }
-  footer .footer-item {
-    width: 50%;
+  margin-bottom: 20px;
+  border: 1px solid #dddddd;
+  padding: 4px; }
+  .footer-navigation .footer-inner {
+    background: gainsboro;
     float: left;
-    clear: none !important;
-    margin: 0;
-    text-align: center; }
-  footer .small {
-    text-align: center;
-    color: #7f7f7f; }
+    width: 100%; }
+    .footer-navigation .footer-inner a {
+      text-decoration: none;
+      color: #333333; }
+    .footer-navigation .footer-inner .col {
+      float: left;
+      width: 25%;
+      padding: 20px; }
+
+footer .footer-wrapper {
+  border: 1px solid #dcdcdc;
+  padding: 2em;
+  margin: 40px auto; }
+footer .footer-item {
+  width: 50%;
+  float: left;
+  clear: none !important;
+  margin: 0;
+  text-align: center; }
+footer .small {
+  text-align: center;
+  color: #7f7f7f; }
 
 body {
   font-family: helvetica, arial, sans-serif;
@@ -1964,6 +1981,11 @@ label, .label {
   .field-container-radio div small {
     margin-left: 24px;
     padding-bottom: 5px; }
+.field-container-radio p.small {
+  width: 480px;
+  margin-bottom: 2.5em;
+  margin-top: 0.3em;
+  margin-left: 1.4em; }
 
 /*** Form row structure
 ************************************************/
@@ -2002,46 +2024,6 @@ label, .label {
   display: inline-block;
   padding-right: 1em; }
 
-/***  duplicate? ***/
-/*** Form item structure
-************************************************/
-/*
-.form-item {
-    margin: 1.5em 0px;
-    clear: both;
-}
-
-.form-item-label {
-    color: #000000;
-}
-
-.form .form-item-content {
-    padding: 0px 0px 0px 1em;
-}
-*/
-/*** Form item row
-************************************************/
-/*
-.form-item-row {
-
-}
-
-.form-item-row .form-item {
-    display: inline-block;
-    padding-right: 1em;
-}
-*/
-/*** Field container radio
-************************************************/
-.field-container-radio input[type="radio"] {
-  margin-right: 5px; }
-.field-container-radio > div {
-  position: relative;
-  top: -3px; }
-  .field-container-radio > div small {
-    margin-left: 24px;
-    padding-bottom: 5px; }
-
 /*** Search result
 ************************************************/
 .search-result .result {
@@ -2066,19 +2048,6 @@ label, .label {
 
 .field-container-text {
   padding: 0px 0.923em 0px 0px; }
-
-/*** Field container radio
-************************************************/
-.field-container-radio input[type="radio"] {
-  margin-right: 5px; }
-
-.field-container-radio > div {
-  position: relative;
-  top: -3px; }
-
-.field-container-radio > div small {
-  margin-left: 24px;
-  padding-bottom: 5px; }
 
 /*** Mandatory
 ************************************************/
@@ -3412,65 +3381,56 @@ button, .button {
     max-width: none; }
 
 .nav-tabs li {
-  color: #3E3E3E;
-  background-color: #ffffff;
   display: inline-block;
-  border: solid 1px #bdbdbd;
   padding: 1px;
+  margin: 0 10px 0 0;
+  position: relative;
+  top: 2px;
+  float: left;
+  max-width: 390px;
+  background-color: #ffffff;
+  border: solid 1px gainsboro;
   text-decoration: none;
   text-shadow: 0 1px 0 #FFFFFF;
-  position: relative;
-  top: 3px;
-  margin: 0 10px 0 0;
-  float: left;
-  max-width: 390px; }
+  -moz-border-top-left-radius: 3px;
+  -webkit-border-top-left-radius: 3px;
+  -o-border-top-left-radius: 3px;
+  -ms-border-top-left-radius: 3px;
+  border-top-left-radius: 3px;
+  -moz-border-top-right-radius: 3px;
+  -webkit-border-top-right-radius: 3px;
+  -o-border-top-right-radius: 3px;
+  -ms-border-top-right-radius: 3px;
+  border-top-right-radius: 3px; }
   .nav-tabs li > a {
     display: block;
-    padding: 0px 10px;
+    padding: 0px 20px;
     height: 36px;
     line-height: 36px;
     font-weight: normal;
     background: #f6f6f6;
-    background: #c6c6c6;
-    background: -webkit-gradient(linear, left top, left bottom, from(whitesmoke), to(#c6c6c6));
-    background: -webkit-linear-gradient(top, whitesmoke, #c6c6c6);
-    background: -moz-linear-gradient(top, whitesmoke, #c6c6c6);
-    background: -ms-linear-gradient(top, whitesmoke, #c6c6c6);
-    background: -o-linear-gradient(top, whitesmoke, #c6c6c6);
-    background: linear-gradient(top, whitesmoke, #c6c6c6);
+    background: #dff2f8;
     cursor: pointer; }
     .nav-tabs li > a:hover {
-      background: #c6c6c6;
-      background: whitesmoke;
-      background: -webkit-gradient(linear, left top, left bottom, from(#c6c6c6), to(whitesmoke));
-      background: -webkit-linear-gradient(top, #c6c6c6, whitesmoke);
-      background: -moz-linear-gradient(top, #c6c6c6, whitesmoke);
-      background: -ms-linear-gradient(top, #c6c6c6, whitesmoke);
-      background: -o-linear-gradient(top, #c6c6c6, whitesmoke);
-      background: linear-gradient(top, #c6c6c6, whitesmoke); }
+      background: #bfe4f1;
+      text-shadow: #dff2f8 0px 1px 0px;
+      text-decoration: underline; }
   .nav-tabs li.fluid > a {
     max-width: 390px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
   .nav-tabs li.active {
-    border-top-width: 2px;
-    border-right-width: 2px;
-    border-left-width: 2px;
     border-bottom-width: 0px;
     padding-bottom: 3px;
     position: relative;
-    top: 2px; }
+    top: 1px; }
     .nav-tabs li.active > a {
       font-weight: bold;
-      background: white;
-      background: white;
-      background: -webkit-gradient(linear, left top, left bottom, from(whitesmoke), to(white));
-      background: -webkit-linear-gradient(top, whitesmoke, white);
-      background: -moz-linear-gradient(top, whitesmoke, white);
-      background: -ms-linear-gradient(top, whitesmoke, white);
-      background: -o-linear-gradient(top, whitesmoke, white);
-      background: linear-gradient(top, whitesmoke, white); }
+      border-bottom: 1px solid #ffffff;
+      background: #ffffff;
+      text-decoration: none;
+      text-shadow: none; }
 
 .tabbable {
   *zoom: 1; }
@@ -3487,9 +3447,8 @@ button, .button {
 .tab-content .active,
 .pill-content .active {
   display: block;
-  border: solid 2px #BDBDBD;
+  border: solid 1px gainsboro;
   background-color: #FFFFFF;
-  border: solid 2px #bdbdbd;
   padding: 20px 10px; }
 
 .typeahead {
