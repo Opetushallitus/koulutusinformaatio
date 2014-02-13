@@ -35,7 +35,6 @@ import fi.vm.sade.koulutusinformaatio.service.EducationDataUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import fi.vm.sade.koulutusinformaatio.service.LocationService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
-import fi.vm.sade.koulutusinformaatio.service.TextVersionService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
 
 /**
@@ -49,7 +48,7 @@ public class UpdateServiceImpl implements UpdateService {
     private TarjontaService tarjontaService;
     private IndexerService indexerService;
     private EducationDataUpdateService educationDataUpdateService;
-    private TextVersionService textVersionService;
+    
     private TransactionManager transactionManager;
     private static final int MAX_RESULTS = 100;
     private boolean running = false;
@@ -60,12 +59,10 @@ public class UpdateServiceImpl implements UpdateService {
     @Autowired
     public UpdateServiceImpl(TarjontaService tarjontaService, IndexerService indexerService,
                              EducationDataUpdateService educationDataUpdateService,
-                             TextVersionService textVersionService,
                              TransactionManager transactionManager, LocationService locationService) {
         this.tarjontaService = tarjontaService;
         this.indexerService = indexerService;
         this.educationDataUpdateService = educationDataUpdateService;
-        this.textVersionService = textVersionService;
         this.transactionManager = transactionManager;
         this.locationService = locationService;
     }
@@ -114,9 +111,6 @@ public class UpdateServiceImpl implements UpdateService {
             indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, true);
             this.transactionManager.commit(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
             educationDataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, "SUCCESS"));
-            
-            // generate text version
-            //textVersionService.update();
             
             LOG.info("Education data update successfully finished");
         } catch (Exception e) {

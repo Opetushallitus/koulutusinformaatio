@@ -41,24 +41,28 @@ public class TextVersionServiceImpl implements TextVersionService {
             int exitStatus = process.waitFor();
             
             if (exitStatus != 0) {
+                // read error stream
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
                 StringBuilder stringBuilder = new StringBuilder("");
                 String currentLine = null;
                 currentLine = bufferedReader.readLine();
                 while (currentLine != null) {
-                    stringBuilder.append(currentLine);
+                    stringBuilder.append(currentLine + "\n");
                     currentLine = bufferedReader.readLine();
                 }
-                BufferedReader bufferedOutputReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-                StringBuilder stringOutputBuilder = new StringBuilder("");
-                String currentOutputLine = null;
-                currentOutputLine = bufferedOutputReader.readLine();
-                while (currentOutputLine != null) {
-                    stringOutputBuilder.append(currentOutputLine);
-                    currentOutputLine = bufferedOutputReader.readLine();
+                
+                // read input stream
+                BufferedReader bufferedInputReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                StringBuilder stringInputBuilder = new StringBuilder("");
+                currentLine = null;
+                currentLine = bufferedInputReader.readLine();
+                while (currentLine != null) {
+                    stringInputBuilder.append(currentLine + "\n");
+                    currentLine = bufferedInputReader.readLine();
                 }
-                throw new KIException(String.format("Rendering text version failed: ERROR: %s, INPUT: %s",
-                        stringBuilder.toString(), stringOutputBuilder.toString() ));
+                
+                throw new KIException(String.format("Rendering text version failed: %s",
+                        stringBuilder.toString()));
             }
         } catch (IOException e) {
             throw new KIException(String.format("Rendering text version failed due to IOException: %s",
