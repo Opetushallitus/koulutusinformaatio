@@ -448,7 +448,7 @@ service('HigherEducationLOService', ['$http', '$timeout', '$q', 'LanguageService
 /**
  * Resource for requesting University of Applied Sciences LO data
  */
-service('HigherEducationPreviewLOService', ['$http', '$timeout', '$q', 'LanguageService', 'HigherEducationTransformer', function($http, $timeout, $q, LanguageService, HigherEducationTransformer) {
+service('HigherEducationPreviewLOService', ['$http', '$timeout', '$q', 'LanguageService', 'HigherEducationTransformer', 'Config', function($http, $timeout, $q, LanguageService, HigherEducationTransformer, Config) {
     return {
         query: function(options) {
             var deferred = $q.defer();
@@ -471,6 +471,25 @@ service('HigherEducationPreviewLOService', ['$http', '$timeout', '$q', 'Language
             success(function(result) {
             	HigherEducationTransformer.transform(result);
             	result.preview = true;
+            	result.tarjontaEditUrl =  Config.get('tarjontaUrl') + '/koulutus/' + result.id + '/edit';
+            	if (result.children) {
+            		for (var i = 0; i < result.children.length; ++i) {
+            			result.children[i].preview = true;
+            		} 
+            	}
+            	if (result.applicationSystems) {
+            		for (var i = 0; i < result.applicationSystems.length; ++i) {
+            			var as = result.applicationSystems[i];
+            			as.preview = true;
+            			if (as.applicationOptions) {
+            				for (var j = 0; j < as.applicationOptions.length; ++j) {
+            					var ao = as.applicationOptions[j];
+            					ao.preview = true;
+            					ao.editUrl =  Config.get('tarjontaUrl') + '/hakukohde/' + ao.id + '/edit';
+            				}
+            			}
+            		} 
+            	}
                 var loResult = {
                     lo: result,
                     parent: {},

@@ -16,7 +16,15 @@
 
     <div data-ng-repeat="as in lo.applicationSystems">
         <div data-ng-repeat="ao in as.applicationOptions" id="{{ao.id}}" class="ao-block">
-            <h2>{{ao.name}} <span data-ng-show="ao.status" data-ki-i18n="{{ao.status}}"></span></h2>
+            <h2>{{ao.name}}</h2>
+            
+            <!-- PREVIEW -->
+            <div data-ng-show="ao.preview">
+            	<span data-ki-i18n="{{ao.status}}"></span>
+            	<a href="{{ao.editUrl}}"><span data-ki-i18n="tarjontaMuokkaa"></span></a>
+            </div>
+            <!-- END PREVIEW -->
+            
             <div class="infobox">
                 <ul class="nobullet">
                     <li>

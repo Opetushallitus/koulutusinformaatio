@@ -174,8 +174,7 @@
             lang: languageCode
         }).then(function(loResult) {
             $scope.lo = loResult.lo;
-            $scope.tarjontaViewUrl = Config.get('tarjontaUrl') + $scope.lo.id;
-            $scope.tarjontaEditUrl = Config.get('tarjontaUrl') + $scope.lo.id + '/edit';
+            $scope.tarjontaViewUrl = Config.get('tarjontaUrl') + '/koulutus/' + $scope.lo.id;
             $scope.parent = loResult.parent;
             $scope.provider = loResult.provider;
             $scope.lois = loResult.lo.lois;

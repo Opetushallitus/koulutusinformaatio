@@ -1,11 +1,14 @@
 <section class="content-container grid16-16">
+	
+	<!-- PREVIEW -->
 	<div data-ng-show="lo.preview">
 		<div>
 			<span data-ki-i18n="esikatselussa"></span>: {{lo.name}} <span data-ki-i18n="organisaatiossa"></span> {{provider.name}}. 
 		</div>
 		<a href="{{tarjontaViewUrl}}"><span data-ki-i18n="tarjontaTarkastelu"></span></a> 
-		<a href="{{tarjontaEditUrl}}"><span data-ki-i18n="tarjontaMuokkaa"></span></a>
     </div>
+    <!-- END PREVIEW-->
+    
     <div data-ki-breadcrumb="breadcrumb-search-results" id="breadcrumb"></div>
     <div data-ng-include data-src="partialUrl + 'top.html'"></div>
     <div data-tabset>
