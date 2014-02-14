@@ -18,7 +18,6 @@ package fi.vm.sade.koulutusinformaatio.dao.transaction.impl;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
-
 import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;

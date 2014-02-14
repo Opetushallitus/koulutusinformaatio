@@ -43,7 +43,8 @@ public class AbstractEducationServiceTest {
         entity.setId("specialid");
         SpecialLearningOpportunitySpecificationDAO dao = mock(SpecialLearningOpportunitySpecificationDAO.class);
         when(dao.get(eq(entity.getId()))).thenReturn(entity);
-        when(dao.get(eq(NOTFOUND))).thenReturn(null);
+        when(dao.getFromSecondary(eq(entity.getId()))).thenReturn(entity);
+        when(dao.getFromSecondary(eq(NOTFOUND))).thenReturn(null);
         return dao;
     }
 
@@ -52,7 +53,8 @@ public class AbstractEducationServiceTest {
         entity.setId("upsecid");
         UpperSecondaryLearningOpportunitySpecificationDAO dao = mock(UpperSecondaryLearningOpportunitySpecificationDAO.class);
         when(dao.get(eq(entity.getId()))).thenReturn(entity);
-        when(dao.get(eq(NOTFOUND))).thenReturn(null);
+        when(dao.getFromSecondary(eq(entity.getId()))).thenReturn(entity);
+        when(dao.getFromSecondary(eq(NOTFOUND))).thenReturn(null);
         return dao;
     }
 
@@ -62,7 +64,8 @@ public class AbstractEducationServiceTest {
         entity.setPictureEncoded("encoded");
         PictureDAO dao = mock(PictureDAO.class);
         when(dao.get(eq(entity.getId()))).thenReturn(entity);
-        when(dao.get(eq(NOTFOUND))).thenReturn(null);
+        when(dao.getFromSecondary(eq(entity.getId()))).thenReturn(entity);
+        when(dao.getFromSecondary(eq(NOTFOUND))).thenReturn(null);
         return dao;
     }
 
@@ -81,7 +84,9 @@ public class AbstractEducationServiceTest {
         entity.setId("childid");
         ChildLearningOpportunityDAO dao = mock(ChildLearningOpportunityDAO.class);
         when(dao.get(entity.getId())).thenReturn(entity);
+        when(dao.getFromSecondary(entity.getId())).thenReturn(entity);
         when(dao.get(NOTFOUND)).thenReturn(null);
+        when(dao.getFromSecondary(NOTFOUND)).thenReturn(null);
         return dao;
     }
 
@@ -93,6 +98,7 @@ public class AbstractEducationServiceTest {
         plo.setId(ploOid);
         when(parentDAO.getCollection()).thenReturn(ploCollection);
         when(parentDAO.get(eq("1.2.3"))).thenReturn(plo);
+        when(parentDAO.getFromSecondary(eq("1.2.3"))).thenReturn(plo);
         return parentDAO;
     }
 
@@ -106,6 +112,8 @@ public class AbstractEducationServiceTest {
         aos.add(ao);
         when(aoDAO.find(eq("1.1.1"), eq("9.9.9"), eq("1"), eq(true), eq(true))).thenReturn(aos);
         when(aoDAO.find(eq(Lists.newArrayList("8.9.0")))).thenReturn(aos);
+        when(aoDAO.findFromSecondary(eq("1.1.1"), eq("9.9.9"), eq("1"), eq(true), eq(true))).thenReturn(aos);
+        when(aoDAO.findFromSecondary(eq(Lists.newArrayList("8.9.0")))).thenReturn(aos);
         return aoDAO;
      }
 
