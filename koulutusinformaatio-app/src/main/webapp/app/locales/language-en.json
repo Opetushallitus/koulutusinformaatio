@@ -250,6 +250,8 @@
     "er": "Yksilöllistetty perusopetus",
     "102": "Alempi korkeakoulututkinto",
     "123": "Yleinen yliopistokelpoisuus",
+    "108": "Opisto tai AMK",
+    "109": "Suomalainen ylioppilastutkinto",
     
     "autocomplete-keyword": "Hakusanaehdotukset",
     "autocomplete-loname": "Kurssit ja tutkinnot",
