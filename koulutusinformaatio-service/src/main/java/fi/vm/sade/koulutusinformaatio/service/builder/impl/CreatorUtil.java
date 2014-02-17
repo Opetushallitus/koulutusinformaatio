@@ -17,7 +17,9 @@
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
 import com.google.common.base.Joiner;
+import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
+
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
 import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
@@ -38,6 +40,7 @@ public final class CreatorUtil {
     protected static Predicate<KomoDTO> komoPublished = new Predicate<KomoDTO>() {
         @Override
         public boolean apply(KomoDTO komo) {
+            Preconditions.checkNotNull(komo);
             return komo.getTila().equals(TarjontaTila.JULKAISTU);
         }
     };
@@ -45,6 +48,7 @@ public final class CreatorUtil {
     protected static Predicate<KomotoDTO> komotoPublished = new Predicate<KomotoDTO>() {
         @Override
         public boolean apply(KomotoDTO komoto) {
+            Preconditions.checkNotNull(komoto);
             return komoto.getTila().equals(TarjontaTila.JULKAISTU);
         }
     };
@@ -52,6 +56,7 @@ public final class CreatorUtil {
     protected static Predicate<HakukohdeDTO> hakukohdePublished = new Predicate<HakukohdeDTO>() {
         @Override
         public boolean apply(HakukohdeDTO hakukohde) {
+            Preconditions.checkNotNull(hakukohde);
             return hakukohde.getTila().equals(TarjontaConstants.STATE_PUBLISHED);
         }
     };
@@ -59,6 +64,7 @@ public final class CreatorUtil {
     protected static Predicate<HakuDTO> hakuPublished = new Predicate<HakuDTO>() {
         @Override
         public boolean apply(HakuDTO haku) {
+            Preconditions.checkNotNull(haku);
             return haku.getTila().equals(TarjontaConstants.STATE_PUBLISHED);
         }
     };
@@ -66,6 +72,7 @@ public final class CreatorUtil {
     protected static Predicate<KomoDTO> komoHasKoulutusohjelmaKoodi = new Predicate<KomoDTO>() {
         @Override
         public boolean apply(KomoDTO komo) {
+            Preconditions.checkNotNull(komo);
             return komo.getKoulutusOhjelmaKoodiUri() != null;
         }
     };
@@ -73,6 +80,7 @@ public final class CreatorUtil {
     protected static Predicate<KomoDTO> komoHasTutkintonimike = new Predicate<KomoDTO>() {
         @Override
         public boolean apply(KomoDTO komo) {
+            Preconditions.checkNotNull(komo);
             return komo.getTutkintonimikeUri() != null;
         }
     };
@@ -80,6 +88,7 @@ public final class CreatorUtil {
     protected static Predicate<SpecialLOS> specialLOSValid = new Predicate<SpecialLOS>() {
         @Override
         public boolean apply(SpecialLOS los) {
+            Preconditions.checkNotNull(los);
             if (los.getLois() != null) {
                 for (ChildLOI loi : los.getLois()) {
                     if (loi.getApplicationOptions() != null && loi.getApplicationOptions().size() > 0) {

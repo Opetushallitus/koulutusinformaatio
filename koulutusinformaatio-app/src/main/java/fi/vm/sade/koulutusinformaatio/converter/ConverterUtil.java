@@ -17,8 +17,10 @@
 package fi.vm.sade.koulutusinformaatio.converter;
 
 import com.google.common.base.Function;
+import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Ordering;
+
 import fi.vm.sade.koulutusinformaatio.domain.DateRange;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
@@ -170,6 +172,7 @@ public final class ConverterUtil {
                 .onResultOf(new Function<ApplicationSystemDTO, Boolean>() {
                     @Override
                     public Boolean apply(ApplicationSystemDTO input) {
+                        Preconditions.checkNotNull(input);
                         return isOngoingDTO(input.getApplicationDates());
                     }
                 }).compound(
@@ -178,6 +181,7 @@ public final class ConverterUtil {
                                         new Function<ApplicationSystemDTO, Date>() {
                                             @Override
                                             public Date apply(ApplicationSystemDTO input) {
+                                                Preconditions.checkNotNull(input);
                                                 return input.getApplicationDates().get(0).getStartDate();
                                             }
                                         }

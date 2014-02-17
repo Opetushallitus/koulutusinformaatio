@@ -17,8 +17,10 @@
 package fi.vm.sade.koulutusinformaatio.converter;
 
 import com.google.common.base.Function;
+import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOIRef;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLOIRefDTO;
@@ -66,6 +68,7 @@ public final class ChildLOIRefToDTO {
             return Lists.transform(refs, new Function<ChildLOIRef, I18nText>() {
                 @Override
                 public I18nText apply(ChildLOIRef childLOIRef) {
+                    Preconditions.checkNotNull(childLOIRef);
                     return childLOIRef.getName();
                 }
             });

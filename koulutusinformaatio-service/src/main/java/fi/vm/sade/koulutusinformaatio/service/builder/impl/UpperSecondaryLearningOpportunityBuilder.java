@@ -16,10 +16,12 @@
 
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
+import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOI;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
@@ -34,6 +36,7 @@ import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 
 import javax.ws.rs.WebApplicationException;
+
 import java.util.List;
 
 /**
@@ -119,6 +122,7 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
     private static Predicate<UpperSecondaryLOS> losValid = new Predicate<UpperSecondaryLOS>() {
         @Override
         public boolean apply(UpperSecondaryLOS los) {
+            Preconditions.checkNotNull(los);
             if (los.getLois() != null) {
                 for (UpperSecondaryLOI loi : los.getLois()) {
                     if (loi.getApplicationOptions() != null && loi.getApplicationOptions().size() > 0) {

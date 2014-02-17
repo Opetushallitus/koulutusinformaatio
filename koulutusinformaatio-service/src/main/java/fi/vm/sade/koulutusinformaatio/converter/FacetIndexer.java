@@ -28,31 +28,31 @@ import java.util.Map;
  * @author Markus
  */
 public class FacetIndexer {
-    
+
     private static final String FALLBACK_LANG = "fi";
     private static final String TYPE_FACET = "FASETTI";
-    
-    
-    
+
+
+
     public List<SolrInputDocument> createFacetDocs(UpperSecondaryLOI loi, UpperSecondaryLOS los) {
         List<SolrInputDocument> docs = Lists.newArrayList();
-        
+
         //Teaching languages
         this.indexCodeAsFacetDoc(loi.getTeachingLanguages().get(0), docs, true);
         //Prerequisites
         this.indexCodeAsFacetDoc(loi.getPrerequisite(), docs, true);
-        
+
         for (Code curCode : los.getTopics()) {
             this.indexCodeAsFacetDoc(curCode, docs, false);
         }
-        
+
         for (Code curCode : los.getThemes()) {
             this.indexCodeAsFacetDoc(curCode, docs, false);
         }
-        
+
         return docs;
     }
-    
+
     /*
      * Creates the solr docs needed in facet search.
      */
@@ -64,15 +64,15 @@ public class FacetIndexer {
                 docs.addAll(createFacetDocs(childLOI));
             }
         }
-        
+
         for (Code curCode : parent.getTopics()) {
             this.indexCodeAsFacetDoc(curCode, docs, false);
         }
-        
+
         for (Code curCode : parent.getThemes()) {
             this.indexCodeAsFacetDoc(curCode, docs, false);
         }
-        
+
         return docs;
     }
 
@@ -83,12 +83,12 @@ public class FacetIndexer {
         List<SolrInputDocument> docs = Lists.newArrayList();
         this.indexCodeAsFacetDoc(childLOI.getTeachingLanguages().get(0), docs, true);
         this.indexCodeAsFacetDoc(childLOI.getPrerequisite(), docs, true);
-        
-        
-        
+
+
+
         return docs;
     }
-    
+
     /*
      * Creates the solr docs needed in facet search.
      */
@@ -96,40 +96,40 @@ public class FacetIndexer {
         List<SolrInputDocument> docs = Lists.newArrayList();
         this.indexCodeAsFacetDoc(childLOI.getTeachingLanguages().get(0), docs, true);
         this.indexCodeAsFacetDoc(childLOI.getPrerequisite(), docs, true);
-        
+
         for (Code curCode : los.getTopics()) {
             this.indexCodeAsFacetDoc(curCode, docs, false);
         }
-        
+
         for (Code curCode : los.getThemes()) {
             this.indexCodeAsFacetDoc(curCode, docs, false);
         }
-        
+
         return docs;
     }
-    
+
     /*
      * Creates the solr docs needed in facet search.
      */
     public List<SolrInputDocument> createFacetDocs(HigherEducationLOS los) {
         List<SolrInputDocument> docs = Lists.newArrayList();
         for (Code curLang : los.getTeachingLanguages()) {
-        	this.indexCodeAsFacetDoc(curLang, docs, true);
+            this.indexCodeAsFacetDoc(curLang, docs, true);
         }
         if (los.getPrerequisites() != null && !los.getPrerequisites().isEmpty()) {
-        	for (Code curPrereq : los.getPrerequisites()) {
-        		this.indexCodeAsFacetDoc(curPrereq, docs, true);
-        	}
+            for (Code curPrereq : los.getPrerequisites()) {
+                this.indexCodeAsFacetDoc(curPrereq, docs, true);
+            }
         }
-        
+
         for (Code curCode : los.getTopics()) {
             this.indexCodeAsFacetDoc(curCode, docs, false);
         }
-        
+
         for (Code curCode : los.getThemes()) {
             this.indexCodeAsFacetDoc(curCode, docs, false);
         }
-        
+
         return docs;
     }
 
@@ -146,7 +146,7 @@ public class FacetIndexer {
 
         return translation;
     } 
-    
+
     /*
      * Creates a facet document for the given code, and adds to the list of docs given.
      */
