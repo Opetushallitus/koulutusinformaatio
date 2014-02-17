@@ -51,18 +51,18 @@ public class UpdateServiceImpl implements UpdateService {
     private TarjontaService tarjontaService;
     private IndexerService indexerService;
     private EducationDataUpdateService educationDataUpdateService;
-    
+
     private TransactionManager transactionManager;
     private static final int MAX_RESULTS = 100;
     private boolean running = false;
     private long runningSince = 0;
     private LocationService locationService;
-    
+
 
     @Autowired
     public UpdateServiceImpl(TarjontaService tarjontaService, IndexerService indexerService,
-                             EducationDataUpdateService educationDataUpdateService,
-                             TransactionManager transactionManager, LocationService locationService) {
+            EducationDataUpdateService educationDataUpdateService,
+            TransactionManager transactionManager, LocationService locationService) {
         this.tarjontaService = tarjontaService;
         this.indexerService = indexerService;
         this.educationDataUpdateService = educationDataUpdateService;
@@ -73,10 +73,10 @@ public class UpdateServiceImpl implements UpdateService {
     @Override
     @Async
     public synchronized void updateAllEducationData() throws Exception {
-    	HttpSolrServer loUpdateSolr = this.indexerService.getLoCollectionToUpdate();
+        HttpSolrServer loUpdateSolr = this.indexerService.getLoCollectionToUpdate();
         HttpSolrServer lopUpdateSolr = this.indexerService.getLopCollectionToUpdate(loUpdateSolr);
         HttpSolrServer locationUpdateSolr = this.indexerService.getLocationCollectionToUpdate(loUpdateSolr);
-        
+
         try {
             LOG.info("Starting full education data update");
             running = true;
@@ -86,21 +86,16 @@ public class UpdateServiceImpl implements UpdateService {
 
             int count = MAX_RESULTS;
             int index = 0;
-            
-            /*while(count >= MAX_RESULTS) {
+
+            while(count >= MAX_RESULTS) {
                 LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
                 List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
                 count = loOids.size();
-                index += count;*/
-            
-            List<String> loOids = Arrays.asList("1.2.246.562.5.2013061010191208547980", 
-                    "1.2.246.562.5.2013061010192577322360", 
-                    "1.2.246.562.5.2013112814572435763432",//);//, 
-                    //"1.2.246.562.52013061010184670694756");//,
-                    "1.2.246.562.5.2013061010190108136320");
-            //loOids.add("1.2.246.562.5.2013061010184190024479");
-            
-               for (String loOid : loOids) {
+                index += count;
+
+
+
+                for (String loOid : loOids) {
                     List<LOS> specifications = null;
                     try {
                         specifications = tarjontaService.findParentLearningOpportunity(loOid);
@@ -112,21 +107,21 @@ public class UpdateServiceImpl implements UpdateService {
                         this.indexerService.addLearningOpportunitySpecification(spec, loUpdateSolr, lopUpdateSolr);
                         this.educationDataUpdateService.save(spec);
                     }
-                   this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
-               }
-               
-            //}
-            
+                    this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
+                }
+
+            }
+
             List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
-        	LOG.debug("Found higher educations: " + higherEducations.size());
-        		
-        	for (HigherEducationLOS curLOS : higherEducations) {
-        		LOG.debug("Saving highed education: " + curLOS.getId());
-        		indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr);
-        		this.educationDataUpdateService.save(curLOS);
-        	}
-        	LOG.debug("Higher educations saved: ");
-            
+            LOG.debug("Found higher educations: " + higherEducations.size());
+
+            for (HigherEducationLOS curLOS : higherEducations) {
+                LOG.debug("Saving highed education: " + curLOS.getId());
+                indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr);
+                this.educationDataUpdateService.save(curLOS);
+            }
+            LOG.debug("Higher educations saved: ");
+
             List<Location> locations = locationService.getMunicipalities();
             LOG.debug("Got locations");
             indexerService.addLocations(locations, locationUpdateSolr);
@@ -136,7 +131,7 @@ public class UpdateServiceImpl implements UpdateService {
             this.transactionManager.commit(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
             LOG.debug("Transaction completed");
             educationDataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, "SUCCESS"));
-            
+
             LOG.info("Education data update successfully finished");
         } catch (Exception e) {
             LOG.error("Education data update failed ", e);
@@ -146,18 +141,18 @@ public class UpdateServiceImpl implements UpdateService {
             running = false;
             runningSince = 0;
         }
-    	
+
     }
 
-	private void indexToSolr(HigherEducationLOS curLOS,
-			HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr) throws Exception {
-		this.indexerService.addLearningOpportunitySpecification(curLOS, loUpdateSolr, lopUpdateSolr);
-		for (HigherEducationLOS curChild: curLOS.getChildren()) {
-			indexToSolr(curChild, loUpdateSolr, lopUpdateSolr);
-		}
-	}
+    private void indexToSolr(HigherEducationLOS curLOS,
+            HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr) throws Exception {
+        this.indexerService.addLearningOpportunitySpecification(curLOS, loUpdateSolr, lopUpdateSolr);
+        for (HigherEducationLOS curChild: curLOS.getChildren()) {
+            indexToSolr(curChild, loUpdateSolr, lopUpdateSolr);
+        }
+    }
 
-	@Override
+    @Override
     public boolean isRunning() {
         return running;
     }
