@@ -37,7 +37,7 @@ public class ApplicationOptionDAO extends SecondaryAwareDAO<ApplicationOptionEnt
 
 
     public List<ApplicationOptionEntity> findFromSecondary(final String asId, final String lopId, final String baseEducation,
-                                              boolean vocational, boolean nonVocational) {
+            boolean vocational, boolean nonVocational) {
         Query<ApplicationOptionEntity> query = createSecondaryQuery();
         query.field("applicationSystem.id").equal(asId);
         query.field("provider").equal(new Key(LearningOpportunityProviderEntity.class, lopId));
@@ -52,16 +52,16 @@ public class ApplicationOptionDAO extends SecondaryAwareDAO<ApplicationOptionEnt
         }
         return find(query).asList();
     }
-    
+
     public List<ApplicationOptionEntity> findFromSecondary(final List<String> aoIds) {
-    	List<ApplicationOptionEntity> aos = new ArrayList<ApplicationOptionEntity> ();
-    	for (String curId : aoIds) {
-    		ApplicationOptionEntity curAo = getSecondaryDatastore().get(ApplicationOptionEntity.class, curId);
-    		if (curAo != null) {
-    			aos.add(curAo);
-    		}
-    	}
-    	return aos;
+        List<ApplicationOptionEntity> aos = new ArrayList<ApplicationOptionEntity> ();
+        for (String curId : aoIds) {
+            ApplicationOptionEntity curAo = getSecondaryDatastore().get(ApplicationOptionEntity.class, curId);
+            if (curAo != null) {
+                aos.add(curAo);
+            }
+        }
+        return aos;
     }
 
     public Query<ApplicationOptionEntity> createSecondaryQuery() {
@@ -70,7 +70,7 @@ public class ApplicationOptionDAO extends SecondaryAwareDAO<ApplicationOptionEnt
 
 
     public List<ApplicationOptionEntity> find(final String asId, final String lopId, final String baseEducation,
-                                              boolean vocational, boolean nonVocational) {
+            boolean vocational, boolean nonVocational) {
         Query<ApplicationOptionEntity> query = createQuery();
         query.field("applicationSystem.id").equal(asId);
         query.field("provider").equal(new Key(LearningOpportunityProviderEntity.class, lopId));
@@ -87,13 +87,13 @@ public class ApplicationOptionDAO extends SecondaryAwareDAO<ApplicationOptionEnt
     }
 
     public List<ApplicationOptionEntity> find(final List<String> aoIds) {
-    	List<ApplicationOptionEntity> aos = new ArrayList<ApplicationOptionEntity> ();
-    	for (String curId : aoIds) {
-    		ApplicationOptionEntity curAo = getDatastore().get(ApplicationOptionEntity.class, curId);
-    		if (curAo != null) {
-    			aos.add(curAo);
-    		}
-    	}
+        List<ApplicationOptionEntity> aos = new ArrayList<ApplicationOptionEntity> ();
+        for (String curId : aoIds) {
+            ApplicationOptionEntity curAo = getDatastore().get(ApplicationOptionEntity.class, curId);
+            if (curAo != null) {
+                aos.add(curAo);
+            }
+        }
         return aos;
     }
 

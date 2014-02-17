@@ -73,22 +73,22 @@ public final class SolrUtil {
         }
     }
 
-	public static Object resolveTextWithFallback(String lang,
-			Map<String, String> translations) {
-		String translation = translations.get(lang);
-		if (translation == null) {
+    public static Object resolveTextWithFallback(String lang,
+            Map<String, String> translations) {
+        String translation = translations.get(lang);
+        if (translation == null) {
             translation = translations.get(FALLBACK_LANG);
         }
         if ((translation == null) 
-        		&& !translations.isEmpty() 
-        		&& !translations.values().isEmpty()) {
+                && !translations.isEmpty() 
+                && !translations.values().isEmpty()) {
             translation = translations.values().iterator().next();
         }
         return translation;
-	}
-	
-	public static class LearningOpportunity {
-        
+    }
+
+    public static class LearningOpportunity {
+
         public static final String TYPE = "type";
         public static final String ID = "id";
         public static final String FI_FNAME = "fi_fname"; //finnish name of a facet value
@@ -139,18 +139,18 @@ public final class SolrUtil {
         public static final String CREDITS = "credits_ss";
         public static final String EDUCATION_DEGREE = "educationDegree_ss";
         public static final String EDUCATION_DEGREE_CODE = "educationDegreeCode_ss";
-        
+
         //Fields for sorting
         public static final String START_DATE_SORT = "startDate_dsort";
         public static final String NAME_SORT = "name_ssort";
         public static final String DURATION_SORT = "duration_isort";
-        
+
         //Fields for autocomplete
         public static final String NAME_AUTO = "name_auto";
         public static final String FREE_AUTO = "free_auto";
-        
+
     }
-    
+
     public static class LocationFields {
         public static final String TYPE = "type"; //Type of area, i.e. kunta or maakunta
         public static final String ID = "id";
@@ -159,30 +159,30 @@ public final class SolrUtil {
         public static final String CODE = "code"; 
         public static final String PARENT = "parent"; //The parent area of the municipality
     }
-    
+
     public static class SolrConstants {
         //Constants related to core swap
-    	public static final String ALIAS_ACTION = "/admin/collections?action=CREATEALIAS&name=";
-    	public static final String COLLECTIONS = "&collections=";
-    	public static final String GET = "GET";
-    	
-    	//value constants
-    	public static final String ED_TYPE_LUKIO = "et1"; 
-    	public static final String ED_TYPE_KAKSOIS = "et2";
-    	public static final String ED_TYPE_AMMATILLINEN = "et3";
-    	public static final String ED_TYPE_AMM_ER = "et4";
-    	public static final String ED_TYPE_VALMENTAVA = "et5";
-    	public static final String ED_TYPE_AMK = "et6";
-    	public static final String SPECIAL_EDUCATION = "ER";
-    	public static final String TIMESTAMP_DOC = "loUpdateTimestampDocument";
-    	public static final String TYPE_FACET = "FASETTI";
-    	public static final String KESTOTYYPPI_VUOSI = "suunniteltukesto_01";
-    	public static final String KESTOTYYPPI_KK = "suunniteltukesto_02";
-    	public static final String PK = "pk";
-    	public static final String DISTRICT_UNKNOWN = "99";
-    	public static final String MUNICIPALITY_UNKNOWN = "99";
-    	
-    	
+        public static final String ALIAS_ACTION = "/admin/collections?action=CREATEALIAS&name=";
+        public static final String COLLECTIONS = "&collections=";
+        public static final String GET = "GET";
+
+        //value constants
+        public static final String ED_TYPE_LUKIO = "et1"; 
+        public static final String ED_TYPE_KAKSOIS = "et2";
+        public static final String ED_TYPE_AMMATILLINEN = "et3";
+        public static final String ED_TYPE_AMM_ER = "et4";
+        public static final String ED_TYPE_VALMENTAVA = "et5";
+        public static final String ED_TYPE_AMK = "et6";
+        public static final String SPECIAL_EDUCATION = "ER";
+        public static final String TIMESTAMP_DOC = "loUpdateTimestampDocument";
+        public static final String TYPE_FACET = "FASETTI";
+        public static final String KESTOTYYPPI_VUOSI = "suunniteltukesto_01";
+        public static final String KESTOTYYPPI_KK = "suunniteltukesto_02";
+        public static final String PK = "pk";
+        public static final String DISTRICT_UNKNOWN = "99";
+        public static final String MUNICIPALITY_UNKNOWN = "99";
+
+
     }
 
 

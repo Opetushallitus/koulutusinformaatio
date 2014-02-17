@@ -60,7 +60,7 @@ public class ApplicationOptionEntity {
     private I18nTextEntity soraDescription;
 
 
-	@Embedded
+    @Embedded
     private CodeEntity prerequisite;
     private List<String> requiredBaseEducations;
     @Embedded
@@ -82,7 +82,7 @@ public class ApplicationOptionEntity {
     private boolean athleteEducation;
     private boolean vocational;
     private String educationCodeUri;
-    
+
 
     public ApplicationOptionEntity() {
 
@@ -343,12 +343,12 @@ public class ApplicationOptionEntity {
     public void setEducationCodeUri(String educationCodeUri) {
         this.educationCodeUri = educationCodeUri;
     }
-    
+
     public I18nTextEntity getSoraDescription() {
-		return soraDescription;
-	}
-	public void setSoraDescription(I18nTextEntity soraDescription) {
-		this.soraDescription = soraDescription;
-	}
+        return soraDescription;
+    }
+    public void setSoraDescription(I18nTextEntity soraDescription) {
+        this.soraDescription = soraDescription;
+    }
 
 }
