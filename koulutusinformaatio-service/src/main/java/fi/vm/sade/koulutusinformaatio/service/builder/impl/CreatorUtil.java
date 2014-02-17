@@ -41,57 +41,51 @@ public final class CreatorUtil {
 
     protected static Predicate<KomoDTO> komoPublished = new Predicate<KomoDTO>() {
         @Override
-        public boolean apply(@NotNull KomoDTO komo) {
-            Preconditions.checkNotNull(komo);
-            return komo.getTila().equals(TarjontaTila.JULKAISTU);
+        public boolean apply(KomoDTO komo) {
+            return (komo != null) ? komo.getTila().equals(TarjontaTila.JULKAISTU) : false;
         }
     };
 
     protected static Predicate<KomotoDTO> komotoPublished = new Predicate<KomotoDTO>() {
         @Override
-        public boolean apply(@NotNull KomotoDTO komoto) {
-            Preconditions.checkNotNull(komoto);
-            return komoto.getTila().equals(TarjontaTila.JULKAISTU);
+        public boolean apply(KomotoDTO komoto) {
+            return (komoto != null) ? komoto.getTila().equals(TarjontaTila.JULKAISTU) : false;
         }
     };
 
     protected static Predicate<HakukohdeDTO> hakukohdePublished = new Predicate<HakukohdeDTO>() {
         @Override
-        public boolean apply(@NotNull HakukohdeDTO hakukohde) {
-            Preconditions.checkNotNull(hakukohde);
-            return hakukohde.getTila().equals(TarjontaConstants.STATE_PUBLISHED);
+        public boolean apply(HakukohdeDTO hakukohde) {
+            return (hakukohde != null) ? hakukohde.getTila().equals(TarjontaConstants.STATE_PUBLISHED) : false;
         }
     };
 
     protected static Predicate<HakuDTO> hakuPublished = new Predicate<HakuDTO>() {
         @Override
-        public boolean apply(@NotNull HakuDTO haku) {
-            Preconditions.checkNotNull(haku);
-            return haku.getTila().equals(TarjontaConstants.STATE_PUBLISHED);
+        public boolean apply(HakuDTO haku) {
+            return (haku != null) ? haku.getTila().equals(TarjontaConstants.STATE_PUBLISHED) : false;
         }
     };
 
     protected static Predicate<KomoDTO> komoHasKoulutusohjelmaKoodi = new Predicate<KomoDTO>() {
         @Override
-        public boolean apply(@NotNull KomoDTO komo) {
-            Preconditions.checkNotNull(komo);
-            return komo.getKoulutusOhjelmaKoodiUri() != null;
+        public boolean apply(KomoDTO komo) {
+            return (komo != null) ? komo.getKoulutusOhjelmaKoodiUri() != null : false;
         }
     };
 
     protected static Predicate<KomoDTO> komoHasTutkintonimike = new Predicate<KomoDTO>() {
         @Override
-        public boolean apply(@NotNull KomoDTO komo) {
-            Preconditions.checkNotNull(komo);
-            return komo.getTutkintonimikeUri() != null;
+        public boolean apply(KomoDTO komo) {
+            return (komo != null) ? komo.getTutkintonimikeUri() != null : false;
         }
     };
 
     protected static Predicate<SpecialLOS> specialLOSValid = new Predicate<SpecialLOS>() {
         @Override
-        public boolean apply(@NotNull SpecialLOS los) {
-            Preconditions.checkNotNull(los);
-            if (los.getLois() != null) {
+        public boolean apply(SpecialLOS los) {
+            if (los != null 
+                && los.getLois() != null) {
                 for (ChildLOI loi : los.getLois()) {
                     if (loi.getApplicationOptions() != null && loi.getApplicationOptions().size() > 0) {
                         return true;
