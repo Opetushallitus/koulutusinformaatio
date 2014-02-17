@@ -38,7 +38,7 @@ public final class CodeToValue {
         return Lists.transform(codes, new Function<Code, String>() {
             @Override
             public String apply(Code code) {
-                return convert(code);
+                return (code != null) ? convert(code) : null;
             }
         });
     }

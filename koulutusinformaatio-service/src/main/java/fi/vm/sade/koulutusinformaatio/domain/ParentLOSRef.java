@@ -50,11 +50,11 @@ public class ParentLOSRef {
         this.name = name;
     }
 
-	public String getLosType() {
-		return losType;
-	}
+    public String getLosType() {
+        return losType;
+    }
 
-	public void setLosType(String losType) {
-		this.losType = losType;
-	}
+    public void setLosType(String losType) {
+        this.losType = losType;
+    }
 }

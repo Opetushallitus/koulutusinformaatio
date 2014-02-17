@@ -31,30 +31,30 @@ import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
  */
 @Service
 public class PreviewServiceImpl implements PreviewService {
-	
-	private TarjontaService tarjontaService;
-	
-	@Autowired
-	public PreviewServiceImpl (TarjontaService tarjontaService) {
-		this.tarjontaService = tarjontaService;
-	}
 
-	@Override
-	public HigherEducationLOS previewHigherEducationLearningOpportunity(
-			String oid) throws ResourceNotFoundException {
-		try {
-			HigherEducationLOS los = this.tarjontaService.findHigherEducationLearningOpportunity(oid);
-			if (los == null) {
-				throw new ResourceNotFoundException("Resource: " + oid + " not found");
-			}
-			return los;
-		} catch (TarjontaParseException e) {
-			e.printStackTrace();
-			throw new ResourceNotFoundException("Resource: " + oid + " not found");
-		} catch (KoodistoException e) {
-			e.printStackTrace();
-			throw new ResourceNotFoundException("Resource: " + oid + " not found");
-		}
-	}
+    private TarjontaService tarjontaService;
+
+    @Autowired
+    public PreviewServiceImpl (TarjontaService tarjontaService) {
+        this.tarjontaService = tarjontaService;
+    }
+
+    @Override
+    public HigherEducationLOS previewHigherEducationLearningOpportunity(
+            String oid) throws ResourceNotFoundException {
+        try {
+            HigherEducationLOS los = this.tarjontaService.findHigherEducationLearningOpportunity(oid);
+            if (los == null) {
+                throw new ResourceNotFoundException("Resource: " + oid + " not found");
+            }
+            return los;
+        } catch (TarjontaParseException e) {
+            e.printStackTrace();
+            throw new ResourceNotFoundException("Resource: " + oid + " not found");
+        } catch (KoodistoException e) {
+            e.printStackTrace();
+            throw new ResourceNotFoundException("Resource: " + oid + " not found");
+        }
+    }
 
 }

@@ -345,15 +345,6 @@ public class HigherEducationLOS extends LOS {
         this.komoOid = komoOid;
     }
 
-    /*
-	public List<String> getChildKomoOids() {
-		return childKomoOids;
-	}
-
-	public void setChildKomoOids(List<String> childKomoOids) {
-		this.childKomoOids = childKomoOids;
-	}*/
-
     public List<HigherEducationLOS> getChildren() {
         return children;
     }

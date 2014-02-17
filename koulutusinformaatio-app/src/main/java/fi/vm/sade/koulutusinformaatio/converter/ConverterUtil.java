@@ -174,17 +174,15 @@ public final class ConverterUtil {
                 .onResultOf(new Function<ApplicationSystemDTO, Boolean>() {
                     @Override
                     public Boolean apply(ApplicationSystemDTO input) {
-                        Preconditions.checkNotNull(input);
-                        return isOngoingDTO(input.getApplicationDates());
+                        return (input != null) ? isOngoingDTO(input.getApplicationDates()) : false;
                     }
                 }).compound(
                         Ordering.natural().reverse()
                                 .onResultOf(
                                         new Function<ApplicationSystemDTO, Date>() {
                                             @Override
-                                            public Date apply(@NotNull ApplicationSystemDTO input) {
-                                                Preconditions.checkNotNull(input);
-                                                return input.getApplicationDates().get(0).getStartDate();
+                                            public Date apply(ApplicationSystemDTO input) {
+                                                return (input != null) ? input.getApplicationDates().get(0).getStartDate() : null;
                                             }
                                         }
                                 )

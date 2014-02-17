@@ -23,8 +23,8 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException
  * @author Markus
  */
 public interface PreviewService {
-	
-	/**
+
+    /**
      * Gets the parent learning opportunity by oid
      * @param oid
      * @return

@@ -35,7 +35,7 @@ public final class LOSToSearchResult {
         return Lists.transform(losses, new Function<LOS, LearningOpportunitySearchResultDTO>() {
             @Override
             public LearningOpportunitySearchResultDTO apply(LOS input) {
-                return convert(input, lang);
+                return (input != null) ? convert(input, lang) : null;
             }
         });
     }

@@ -73,13 +73,13 @@ public class ApplicationOption {
     private boolean vocational;
     // koulutuskoodiuri
     private String educationCodeUri;
-	private I18nText soraDescription;
-	private String status;
-	
+    private I18nText soraDescription;
+    private String status;
 
 
 
-	public String getId() {
+
+    public String getId() {
         return id;
     }
 
@@ -352,12 +352,12 @@ public class ApplicationOption {
         return id != null ? id.hashCode() : 0;
     }
 
-	public void setSoraDescription(I18nText i18nText) {
-		this.soraDescription = i18nText;
-	}
+    public void setSoraDescription(I18nText i18nText) {
+        this.soraDescription = i18nText;
+    }
     public I18nText getSoraDescription() {
-		return soraDescription;
-	}
+        return soraDescription;
+    }
     public Date lastApplicationDate() {
         Date last = new Date(0L);
         for (DateRange range : applicationSystem.getApplicationDates()) {
@@ -368,13 +368,13 @@ public class ApplicationOption {
         return last;
     }
 
-	public void setStatus(String tila) {
-		this.status = tila;	
-	}
-	
-	public String getStatus() {
-		return status;
-	}
+    public void setStatus(String tila) {
+        this.status = tila;	
+    }
+
+    public String getStatus() {
+        return status;
+    }
 
     public List<DateRange> getApplicationDates() {
         if (applicationStartDate != null && applicationEndDate != null) {

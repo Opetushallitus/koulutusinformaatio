@@ -266,5 +266,5 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                 .accept(JSON_UTF8)
                 .get(new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
                 });
-    }	
+    }
 }

@@ -32,7 +32,7 @@ public class ApplicationSystemEntity {
     private I18nTextEntity name;
     @Embedded
     private List<DateRangeEntity> applicationDates = new ArrayList<DateRangeEntity>();
-    
+
     private int maxApplications;
 
     public ApplicationSystemEntity() {}
@@ -61,11 +61,11 @@ public class ApplicationSystemEntity {
         this.applicationDates = applicationDates;
     }
 
-	public int getMaxApplications() {
-		return maxApplications;
-	}
+    public int getMaxApplications() {
+        return maxApplications;
+    }
 
-	public void setMaxApplications(int maxApplications) {
-		this.maxApplications = maxApplications;
-	}
+    public void setMaxApplications(int maxApplications) {
+        this.maxApplications = maxApplications;
+    }
 }

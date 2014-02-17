@@ -62,7 +62,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
     }
 
     public ApplicationOption createVocationalApplicationOption(HakukohdeDTO hakukohdeDTO, HakuDTO hakuDTO,
-                                                               KomotoDTO childKomoto, Code prerequisite, String educationCodeUri) throws KoodistoException {
+            KomotoDTO childKomoto, Code prerequisite, String educationCodeUri) throws KoodistoException {
         ApplicationOption ao = new ApplicationOption();
         ao.setId(hakukohdeDTO.getOid());
         ao.setName(koodistoService.searchFirst(hakukohdeDTO.getHakukohdeNimiUri()));
@@ -139,8 +139,8 @@ public class ApplicationOptionCreator extends ObjectCreator {
                             CreatorUtil.komoPublished,
                             CreatorUtil.komoHasKoulutusohjelmaKoodi,
                             CreatorUtil.komoHasTutkintonimike
-                    )
-            ).apply(komoByKomotoOID)) {
+                            )
+                    ).apply(komoByKomotoOID)) {
                 LOG.debug(String.format("Skipping invalid child komo %s", komoByKomotoOID.getOid()));
                 continue;
             }
@@ -183,7 +183,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
     }
 
     public ApplicationOption createUpperSecondaryApplicationOption(HakukohdeDTO hakukohdeDTO, HakuDTO hakuDTO,
-                                                      KomotoDTO komoto, UpperSecondaryLOI loi, String educationCodeUri) throws KoodistoException {
+            KomotoDTO komoto, UpperSecondaryLOI loi, String educationCodeUri) throws KoodistoException {
         ApplicationOption ao = new ApplicationOption();
         ao.setId(hakukohdeDTO.getOid());
         ao.setName(koodistoService.searchFirst(hakukohdeDTO.getHakukohdeNimiUri()));
@@ -297,9 +297,9 @@ public class ApplicationOptionCreator extends ObjectCreator {
 
         return ao;
     }
-    
+
     public ApplicationOption createHigherEducationApplicationOption(HigherEducationLOS los, HakukohdeV1RDTO hakukohde, HakuV1RDTO haku) throws KoodistoException {
-    	ApplicationOption ao = new ApplicationOption();
+        ApplicationOption ao = new ApplicationOption();
         ao.setId(hakukohde.getOid());
         ao.setName(super.getI18nText(hakukohde.getHakukohteenNimet())); //koodistoService.searchFirst(hakukohdeDTO.getHakukohdeNimiUri()));
         //ao.setAoIdentifier(//koodistoService.searchFirstCodeValue(hakukohdeDTO.getHakukohdeNimiUri()));
@@ -337,7 +337,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         }
 
         ao.setTeachingLanguages(extractCodeVales(los.getTeachingLanguages()));
-        
+
         //ao.setPrerequisite(prerequisite);
         ao.setSpecificApplicationDates(hakukohde.isKaytetaanHakukohdekohtaistaHakuaikaa());
         if (ao.isSpecificApplicationDates()) {
@@ -396,13 +396,13 @@ public class ApplicationOptionCreator extends ObjectCreator {
         return ao;
     }
 
-	private List<String> extractCodeVales(List<Code> teachingLanguages) {
-		List<String> vals = new ArrayList<String>();
-		for (Code curCode : teachingLanguages) {
-			vals.add(curCode.getValue());
-		}
-		return vals;
-	}
+    private List<String> extractCodeVales(List<Code> teachingLanguages) {
+        List<String> vals = new ArrayList<String>();
+        for (Code curCode : teachingLanguages) {
+            vals.add(curCode.getValue());
+        }
+        return vals;
+    }
 
 
 

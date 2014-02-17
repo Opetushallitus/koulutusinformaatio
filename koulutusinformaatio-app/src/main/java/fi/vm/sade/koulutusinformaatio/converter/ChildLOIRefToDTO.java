@@ -68,8 +68,7 @@ public final class ChildLOIRefToDTO {
             return Lists.transform(refs, new Function<ChildLOIRef, I18nText>() {
                 @Override
                 public I18nText apply(ChildLOIRef childLOIRef) {
-                    Preconditions.checkNotNull(childLOIRef);
-                    return childLOIRef.getName();
+                    return (childLOIRef != null) ? childLOIRef.getName() : null;
                 }
             });
         } else {

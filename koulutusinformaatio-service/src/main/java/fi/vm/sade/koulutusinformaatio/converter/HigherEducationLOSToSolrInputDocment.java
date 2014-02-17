@@ -93,7 +93,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<HigherEdu
             String curTeachingLang = teachingLangCode.getValue().toLowerCase();
             indexLangSpecificFields(curTeachingLang, los, doc, fiIndexed);
             if (curTeachingLang.equals("fi")) {
-                fiIndexed = true;	
+                fiIndexed = true;
             }
         }
 

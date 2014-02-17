@@ -41,10 +41,10 @@ public class LearningOpportunityDirector {
         return null;
     }
 
-	public HigherEducationLOS constructHigherEducationLOs(
-			KoulutusV1RDTO result) {
-		
-		return null;
-	}
+    public HigherEducationLOS constructHigherEducationLOs(
+            KoulutusV1RDTO result) {
+
+        return null;
+    }
 
 }

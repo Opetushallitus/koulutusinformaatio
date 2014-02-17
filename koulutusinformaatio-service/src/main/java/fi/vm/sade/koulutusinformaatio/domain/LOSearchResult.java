@@ -42,9 +42,9 @@ public class LOSearchResult {
     private String educationDegreeCode;
 
     public LOSearchResult(String id, String name, String lopId, String lopName,
-                          String prerequisite, String prerequisiteCode, String parentId, 
-                          String losId, String type, String credits, String educationType, 
-                          String educationDegree, String educationDegreeCode) {
+            String prerequisite, String prerequisiteCode, String parentId, 
+            String losId, String type, String credits, String educationType, 
+            String educationDegree, String educationDegreeCode) {
         this.id = id;
         this.name = name;
         this.lopId = lopId;
@@ -114,7 +114,7 @@ public class LOSearchResult {
     public String getParentId() {
         return parentId;
     }
-    
+
     public void setParentId(String parentId) {
         this.parentId = parentId;
     }
@@ -167,19 +167,19 @@ public class LOSearchResult {
         this.educationType = educationType;
     }
 
-	public String getEducationDegree() {
-		return educationDegree;
-	}
+    public String getEducationDegree() {
+        return educationDegree;
+    }
 
-	public void setEducationDegree(String educationDegree) {
-		this.educationDegree = educationDegree;
-	}
+    public void setEducationDegree(String educationDegree) {
+        this.educationDegree = educationDegree;
+    }
 
-	public String getEducationDegreeCode() {
-		return educationDegreeCode;
-	}
+    public String getEducationDegreeCode() {
+        return educationDegreeCode;
+    }
 
-	public void setEducationDegreeCode(String educationDegreeCode) {
-		this.educationDegreeCode = educationDegreeCode;
-	}
+    public void setEducationDegreeCode(String educationDegreeCode) {
+        this.educationDegreeCode = educationDegreeCode;
+    }
 }

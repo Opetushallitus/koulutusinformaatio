@@ -174,7 +174,7 @@ public class TransactionManagerImpl implements TransactionManager {
 
             //Otherwise using collections api
         } else {
-            swapAliases(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);	
+            swapAliases(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
         }
 
         BasicDBObject cmd = new BasicDBObject("copydb", 1).append("fromdb", transactionDbName).append("todb", dbName);

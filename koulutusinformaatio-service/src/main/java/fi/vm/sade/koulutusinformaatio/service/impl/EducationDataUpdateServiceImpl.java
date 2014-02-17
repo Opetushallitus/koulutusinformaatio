@@ -44,13 +44,13 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
 
     @Autowired
     public EducationDataUpdateServiceImpl(ModelMapper modelMapper, ParentLearningOpportunitySpecificationDAO parentLOSTransactionDAO,
-                                          ApplicationOptionDAO applicationOptionTransactionDAO,
-                                          LearningOpportunityProviderDAO learningOpportunityProviderTransactionDAO,
-                                          ChildLearningOpportunityDAO childLOTransactionDAO,
-                                          PictureDAO pictureTransactionDAO,
-                                          UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO,
-                                          DataStatusDAO dataStatusDAO, SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO,
-                                          HigherEducationLOSDAO higherEducationLOSTransactionDAO) {
+            ApplicationOptionDAO applicationOptionTransactionDAO,
+            LearningOpportunityProviderDAO learningOpportunityProviderTransactionDAO,
+            ChildLearningOpportunityDAO childLOTransactionDAO,
+            PictureDAO pictureTransactionDAO,
+            UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO,
+            DataStatusDAO dataStatusDAO, SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO,
+            HigherEducationLOSDAO higherEducationLOSTransactionDAO) {
         this.modelMapper = modelMapper;
         this.parentLOSTransactionDAO = parentLOSTransactionDAO;
         this.applicationOptionTransactionDAO = applicationOptionTransactionDAO;
@@ -75,7 +75,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
             save((SpecialLOS) learningOpportunitySpecification);
         } 
         else if (learningOpportunitySpecification instanceof HigherEducationLOS) {
-        	this.saveHigherEducationLOS((HigherEducationLOS)learningOpportunitySpecification);
+            this.saveHigherEducationLOS((HigherEducationLOS)learningOpportunitySpecification);
         } 
     }
 
@@ -106,7 +106,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
         if (upperSecondaryLOS != null) {
             UpperSecondaryLearningOpportunitySpecificationEntity entity =
                     modelMapper.map(upperSecondaryLOS, UpperSecondaryLearningOpportunitySpecificationEntity.class);
-            
+
             save(entity.getProvider());
 
             for (UpperSecondaryLearningOpportunityInstanceEntity loi : entity.getLois()) {
@@ -173,26 +173,26 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
         }
     }
 
-	private void saveHigherEducationLOS(HigherEducationLOS los) {
-		
-		if (los != null) {
-			
-			for (HigherEducationLOS curChild : los.getChildren()) {
-				saveHigherEducationLOS(curChild);
-			}
+    private void saveHigherEducationLOS(HigherEducationLOS los) {
+
+        if (los != null) {
+
+            for (HigherEducationLOS curChild : los.getChildren()) {
+                saveHigherEducationLOS(curChild);
+            }
             HigherEducationLOSEntity plos =
                     modelMapper.map(los, HigherEducationLOSEntity.class);
-            
+
             save(plos.getProvider());
 
-            
+
             if (plos.getApplicationOptions() != null) {
-            	for (ApplicationOptionEntity ao : plos.getApplicationOptions()) {
-            		save(ao);
-            	}
+                for (ApplicationOptionEntity ao : plos.getApplicationOptions()) {
+                    save(ao);
+                }
             }
 
             this.higherEducationLOSTransactionDAO.save(plos);
         }
-	}
+    }
 }

@@ -27,11 +27,11 @@ public class ApplicationSystem {
     private String id;
     private I18nText name;
     private List<DateRange> applicationDates = new ArrayList<DateRange>();
-	private String status;
-	private int maxApplications;
-	
+    private String status;
+    private int maxApplications;
 
-	public String getId() {
+
+    public String getId() {
         return id;
     }
 
@@ -72,19 +72,19 @@ public class ApplicationSystem {
         return id.hashCode();
     }
 
-	public void setStatus(String tila) {
-		this.status = tila;	
-	}
+    public void setStatus(String tila) {
+        this.status = tila;	
+    }
 
     public String getStatus() {
-		return status;
-	}
+        return status;
+    }
 
-	public int getMaxApplications() {
-		return maxApplications;
-	}
+    public int getMaxApplications() {
+        return maxApplications;
+    }
 
-	public void setMaxApplications(int maxApplications) {
-		this.maxApplications = maxApplications;
-	}
+    public void setMaxApplications(int maxApplications) {
+        this.maxApplications = maxApplications;
+    }
 }

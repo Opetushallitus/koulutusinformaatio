@@ -150,15 +150,15 @@ public class EducationObjectCreator extends ObjectCreator {
         }
     }
 
-	public List<Exam> createExamsHigherEducation(List<ValintakoeV1RDTO> valintakokeet) throws KoodistoException {
-		if (valintakokeet != null && !valintakokeet.isEmpty()) {
+    public List<Exam> createExamsHigherEducation(List<ValintakoeV1RDTO> valintakokeet) throws KoodistoException {
+        if (valintakokeet != null && !valintakokeet.isEmpty()) {
             List<Exam> exams = Lists.newArrayList();
             for (ValintakoeV1RDTO valintakoe : valintakokeet) {
                 if (valintakoe != null && valintakoe.getValintakokeenKuvaus() != null  
                         && valintakoe.getValintakoeAjankohtas() != null
                         && !valintakoe.getValintakoeAjankohtas().isEmpty()) {
                     Exam exam = new Exam();
-                   
+
                     exam.setType(getTypeText(valintakoe.getValintakoeNimi(), valintakoe.getKieliUri()));
                     exam.setDescription(getI18nTextEnriched(valintakoe.getValintakokeenKuvaus()));
                     List<ExamEvent> examEvents = Lists.newArrayList();
@@ -181,19 +181,19 @@ public class EducationObjectCreator extends ObjectCreator {
             }
             return exams;
         }
-		return null;
-	}
+        return null;
+    }
 
-	private I18nText getI18nTextEnriched(TekstiRDTO valintakokeenKuvaus) {
-		if (!Strings.isNullOrEmpty(valintakokeenKuvaus.getArvo()) && !Strings.isNullOrEmpty(valintakokeenKuvaus.getTeksti())) {
-			Map<String,String> translations = new HashMap<String,String>();
-			translations.put(valintakokeenKuvaus.getArvo().toLowerCase(), valintakokeenKuvaus.getTeksti());
-			I18nText text = new I18nText();
-			text.setTranslations(translations);
-			return text;
-		}
-		return null;
-	}
+    private I18nText getI18nTextEnriched(TekstiRDTO valintakokeenKuvaus) {
+        if (!Strings.isNullOrEmpty(valintakokeenKuvaus.getArvo()) && !Strings.isNullOrEmpty(valintakokeenKuvaus.getTeksti())) {
+            Map<String,String> translations = new HashMap<String,String>();
+            translations.put(valintakokeenKuvaus.getArvo().toLowerCase(), valintakokeenKuvaus.getTeksti());
+            I18nText text = new I18nText();
+            text.setTranslations(translations);
+            return text;
+        }
+        return null;
+    }
 
 
 }

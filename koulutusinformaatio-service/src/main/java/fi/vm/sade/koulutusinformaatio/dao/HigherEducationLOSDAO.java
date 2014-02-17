@@ -32,7 +32,7 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEnti
  * @author Markus
  */
 public class HigherEducationLOSDAO extends BasicDAO<HigherEducationLOSEntity, String> {
-	
+    
     public HigherEducationLOSDAO(Mongo mongo, Morphia morphia, String dbName) {
         super(mongo, morphia, dbName);
     }

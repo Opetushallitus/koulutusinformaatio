@@ -16,7 +16,6 @@
 
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
-import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Collections2;
@@ -122,8 +121,8 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
     private static Predicate<UpperSecondaryLOS> losValid = new Predicate<UpperSecondaryLOS>() {
         @Override
         public boolean apply(UpperSecondaryLOS los) {
-            Preconditions.checkNotNull(los);
-            if (los.getLois() != null) {
+            if (los != null
+                && los.getLois() != null) {
                 for (UpperSecondaryLOI loi : los.getLois()) {
                     if (loi.getApplicationOptions() != null && loi.getApplicationOptions().size() > 0) {
                         return true;
