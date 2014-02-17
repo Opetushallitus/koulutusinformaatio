@@ -25,230 +25,230 @@ import java.util.List;
  */
 public class HigherEducationLOS extends LOS {
 
-	//Varmistetut
+    //Varmistetut
     private String id;
-	private I18nText infoAboutTeachingLangs;
-	private I18nText content;
-	private I18nText goals;
-	private I18nText majorSelection;
-	private I18nText structure;
-	private I18nText finalExam;
-	private I18nText careerOpportunities;
-	private I18nText internationalization;
-	private I18nText cooperation;
-	private I18nText competence;
-	private I18nText researchFocus;
-	private I18nText accessToFurtherStudies;
-	private List<ContactPerson> contactPersons = new ArrayList<ContactPerson>();
-	private I18nText educationDomain;
-	private I18nText name;
-	private I18nText koulutuskoodi;
-	private String educationDegree;
-	private I18nText educationDegreeLang;
+    private I18nText infoAboutTeachingLangs;
+    private I18nText content;
+    private I18nText goals;
+    private I18nText majorSelection;
+    private I18nText structure;
+    private I18nText finalExam;
+    private I18nText careerOpportunities;
+    private I18nText internationalization;
+    private I18nText cooperation;
+    private I18nText competence;
+    private I18nText researchFocus;
+    private I18nText accessToFurtherStudies;
+    private List<ContactPerson> contactPersons = new ArrayList<ContactPerson>();
+    private I18nText educationDomain;
+    private I18nText name;
+    private I18nText koulutuskoodi;
+    private String educationDegree;
+    private I18nText educationDegreeLang;
     private I18nText degreeTitle;
-	private Date startDate;
-	private String plannedDuration;
-	private I18nText plannedDurationUnit;
-	private String pduCodeUri;
-	private String creditValue;
+    private Date startDate;
+    private String plannedDuration;
+    private I18nText plannedDurationUnit;
+    private String pduCodeUri;
+    private String creditValue;
     private I18nText creditUnit;
-	private I18nText degree;
-	private I18nText qualification;
-	private Boolean chargeable;
-	private String educationCode;
-	private List<Code> teachingLanguages;
-	
-	private Provider provider;
-	private List<ApplicationOption> applicationOptions;
-	
-	private String komoOid;
-	//private List<String> childKomoOids = new ArrayList<String>();
-	//private List<String> parentKomoOids = new ArrayList<String>();
-	
-	private List<HigherEducationLOS> children = new ArrayList<HigherEducationLOS>();
-	private List<HigherEducationLOS> parents = new ArrayList<HigherEducationLOS>();
-	
-	private List<Code> prerequisites;
-	private List<I18nText> formOfTeaching;
-	private List<I18nText> professionalTitles;
-	private List<I18nText> teachingTimes;
-	private List<I18nText> teachingPlaces;
-	private I18nText infoAboutCharge;
-	private I18nText startSeason;
-	private int startYear;
-	
-	//Status of the lo. For preview
-	private String status;
-	private List<String> availableTranslationLanguages;
+    private I18nText degree;
+    private I18nText qualification;
+    private Boolean chargeable;
+    private String educationCode;
+    private List<Code> teachingLanguages;
 
-	public String getId() {
-		return id;
-	}
+    private Provider provider;
+    private List<ApplicationOption> applicationOptions;
 
-	public void setId(String id) {
-		this.id = id;
-	}
-	
-	public void setName(I18nText name) {
-		this.name = name;
-	}
-	
-	public I18nText getName() {
-		return this.name;
-	}
-	
-	public void setEducationDegree(String degree) {
-		this.educationDegree = degree;
-	}
-	
-	public String getEducationDegree() {
-		return this.educationDegree;
-	}
-	
-	public void setDegreeTitle(I18nText degreeTitle) {
-		this.degreeTitle = degreeTitle;
-	}
-	
-	public I18nText getDegreeTitle() {
-		return degreeTitle;
-	}
-	
-	public void setQualification(I18nText qualification) {
-		this.qualification = qualification;
-	}
-	
-	public I18nText getQualification() {
-		return qualification;
-	}
-	
-	public void setGoals(I18nText goals) {
-		this.goals = goals;
-	}
-	
-	public I18nText getGoals() {
-		return goals;
-	}
-	
-	public void setProvider(Provider provider) {
-		this.provider = provider;
-	}
-	
-	public Provider getProvider() {
-		return this.provider;
-	}
-	
-	public void setStructure(I18nText structure) {
-		this.structure = structure;
-	}
-	
-	public I18nText getStructure() {
-		return structure;
-	}
-	
-	public void setAccessToFurtherStudies(I18nText accessToFurtherStudies) {
-		this.accessToFurtherStudies = accessToFurtherStudies;
-	}
-	
-	public I18nText getAccessToFurtherStudies() {
-		return accessToFurtherStudies;
-	}
-	
-	public void setCreditValue(String creditValue) {
-		this.creditValue = creditValue;
-	}
-	
-	public String getCreditValue() {
-		return creditValue;
-	}
-	/*
+    private String komoOid;
+    //private List<String> childKomoOids = new ArrayList<String>();
+    //private List<String> parentKomoOids = new ArrayList<String>();
+
+    private List<HigherEducationLOS> children = new ArrayList<HigherEducationLOS>();
+    private List<HigherEducationLOS> parents = new ArrayList<HigherEducationLOS>();
+
+    private List<Code> prerequisites;
+    private List<I18nText> formOfTeaching;
+    private List<I18nText> professionalTitles;
+    private List<I18nText> teachingTimes;
+    private List<I18nText> teachingPlaces;
+    private I18nText infoAboutCharge;
+    private I18nText startSeason;
+    private int startYear;
+
+    //Status of the lo. For preview
+    private String status;
+    private List<String> availableTranslationLanguages;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setName(I18nText name) {
+        this.name = name;
+    }
+
+    public I18nText getName() {
+        return this.name;
+    }
+
+    public void setEducationDegree(String degree) {
+        this.educationDegree = degree;
+    }
+
+    public String getEducationDegree() {
+        return this.educationDegree;
+    }
+
+    public void setDegreeTitle(I18nText degreeTitle) {
+        this.degreeTitle = degreeTitle;
+    }
+
+    public I18nText getDegreeTitle() {
+        return degreeTitle;
+    }
+
+    public void setQualification(I18nText qualification) {
+        this.qualification = qualification;
+    }
+
+    public I18nText getQualification() {
+        return qualification;
+    }
+
+    public void setGoals(I18nText goals) {
+        this.goals = goals;
+    }
+
+    public I18nText getGoals() {
+        return goals;
+    }
+
+    public void setProvider(Provider provider) {
+        this.provider = provider;
+    }
+
+    public Provider getProvider() {
+        return this.provider;
+    }
+
+    public void setStructure(I18nText structure) {
+        this.structure = structure;
+    }
+
+    public I18nText getStructure() {
+        return structure;
+    }
+
+    public void setAccessToFurtherStudies(I18nText accessToFurtherStudies) {
+        this.accessToFurtherStudies = accessToFurtherStudies;
+    }
+
+    public I18nText getAccessToFurtherStudies() {
+        return accessToFurtherStudies;
+    }
+
+    public void setCreditValue(String creditValue) {
+        this.creditValue = creditValue;
+    }
+
+    public String getCreditValue() {
+        return creditValue;
+    }
+    /*
 	public void setCreditUnit(I18nText creditUnit) {
 		this.creditUnit = creditUnit;
 	}
-	
+
 	public I18nText getCreditUnit() {
 		return creditUnit;
 	}*/
-	
-	public void setEducationDomain(I18nText educationDomain) {
-		this.educationDomain = educationDomain;
-	}
-	
-	public I18nText getEducationDomain() {
-		return educationDomain;
-	}
 
-	public void setInfoAboutTeachingLangs(I18nText i18nText) {
-		this.infoAboutTeachingLangs = i18nText;	
-	}
-	
-	public I18nText getInfoAboutTeachingLangs() {
-		return infoAboutTeachingLangs;
-	}
+    public void setEducationDomain(I18nText educationDomain) {
+        this.educationDomain = educationDomain;
+    }
 
-	public void setContent(I18nText i18nTextEnriched) {
-		this.content = i18nTextEnriched;
-	}
-	
-	public I18nText getContent() {
-		return content;
-	}
+    public I18nText getEducationDomain() {
+        return educationDomain;
+    }
 
-	public void setMajorSelection(I18nText i18nTextEnriched) {
-		this.majorSelection = i18nTextEnriched;	
-	}
-	
-	public I18nText getMajorSelection() {
-		return majorSelection;
-	}
+    public void setInfoAboutTeachingLangs(I18nText i18nText) {
+        this.infoAboutTeachingLangs = i18nText;	
+    }
 
-	public void setFinalExam(I18nText i18nTextEnriched) {
-		this.finalExam = i18nTextEnriched;
-	}
+    public I18nText getInfoAboutTeachingLangs() {
+        return infoAboutTeachingLangs;
+    }
 
-	public I18nText getFinalExam() {
-		return finalExam;
-	}
+    public void setContent(I18nText i18nTextEnriched) {
+        this.content = i18nTextEnriched;
+    }
 
-	public void setCareerOpportunities(I18nText i18nTextEnriched) {
-		this.careerOpportunities = i18nTextEnriched;	
-	}
-	
-	public I18nText getCareerOpportunities() {
-		return careerOpportunities;
-	}
+    public I18nText getContent() {
+        return content;
+    }
 
-	public void setInternationalization(I18nText i18nTextEnriched) {
-		this.internationalization = i18nTextEnriched;
-	}
+    public void setMajorSelection(I18nText i18nTextEnriched) {
+        this.majorSelection = i18nTextEnriched;	
+    }
 
-	public I18nText getInternationalization() {
-		return internationalization;
-	}
+    public I18nText getMajorSelection() {
+        return majorSelection;
+    }
 
-	public void setCooperation(I18nText i18nTextEnriched) {
-		this.cooperation  = i18nTextEnriched;
-	}
+    public void setFinalExam(I18nText i18nTextEnriched) {
+        this.finalExam = i18nTextEnriched;
+    }
 
-	public I18nText getCooperation() {
-		return cooperation;
-	}
+    public I18nText getFinalExam() {
+        return finalExam;
+    }
 
-	public void setCompetence(I18nText i18nTextEnriched) {
-		this.competence = i18nTextEnriched;
-	}
+    public void setCareerOpportunities(I18nText i18nTextEnriched) {
+        this.careerOpportunities = i18nTextEnriched;	
+    }
 
-	public I18nText getCompetence() {
-		return competence;
-	}
+    public I18nText getCareerOpportunities() {
+        return careerOpportunities;
+    }
 
-	public void setResearchFocus(I18nText i18nTextEnriched) {
-		this.researchFocus = i18nTextEnriched;
-	}
+    public void setInternationalization(I18nText i18nTextEnriched) {
+        this.internationalization = i18nTextEnriched;
+    }
 
-	public I18nText getResearchFocus() {
-		return researchFocus;
-	}
-	
+    public I18nText getInternationalization() {
+        return internationalization;
+    }
+
+    public void setCooperation(I18nText i18nTextEnriched) {
+        this.cooperation  = i18nTextEnriched;
+    }
+
+    public I18nText getCooperation() {
+        return cooperation;
+    }
+
+    public void setCompetence(I18nText i18nTextEnriched) {
+        this.competence = i18nTextEnriched;
+    }
+
+    public I18nText getCompetence() {
+        return competence;
+    }
+
+    public void setResearchFocus(I18nText i18nTextEnriched) {
+        this.researchFocus = i18nTextEnriched;
+    }
+
+    public I18nText getResearchFocus() {
+        return researchFocus;
+    }
+
     public List<ContactPerson> getContactPersons() {
         return contactPersons;
     }
@@ -257,95 +257,95 @@ public class HigherEducationLOS extends LOS {
         this.contactPersons = contactPersons;
     }
 
-	public I18nText getKoulutuskoodi() {
-		return koulutuskoodi;
-	}
+    public I18nText getKoulutuskoodi() {
+        return koulutuskoodi;
+    }
 
-	public void setKoulutuskoodi(I18nText koulutuskoodi) {
-		this.koulutuskoodi = koulutuskoodi;
-	}
+    public void setKoulutuskoodi(I18nText koulutuskoodi) {
+        this.koulutuskoodi = koulutuskoodi;
+    }
 
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}	
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }	
 
-	public Date getStartDate() {
-		return startDate;
-	}
+    public Date getStartDate() {
+        return startDate;
+    }
 
-	public void setPlannedDuration(String suunniteltuKestoArvo) {
-		this.plannedDuration = suunniteltuKestoArvo;
-	}
+    public void setPlannedDuration(String suunniteltuKestoArvo) {
+        this.plannedDuration = suunniteltuKestoArvo;
+    }
 
-	public String getPlannedDuration() {
-		return plannedDuration;
-	}
+    public String getPlannedDuration() {
+        return plannedDuration;
+    }
 
-	public void setPlannedDurationUnit(I18nText i18nTextEnriched) {
-		this.plannedDurationUnit = i18nTextEnriched;
-	}
+    public void setPlannedDurationUnit(I18nText i18nTextEnriched) {
+        this.plannedDurationUnit = i18nTextEnriched;
+    }
 
-	public I18nText getPlannedDurationUnit() {
-		return plannedDurationUnit;
-	}
+    public I18nText getPlannedDurationUnit() {
+        return plannedDurationUnit;
+    }
 
-	public void setPduCodeUri(String uri) {
-		this.pduCodeUri = uri;
-	}
-	
-	public String getPduCodeUri() {
-		return pduCodeUri;
-	}
+    public void setPduCodeUri(String uri) {
+        this.pduCodeUri = uri;
+    }
 
-	public void setDegree(I18nText i18nText) {
-		this.degree = i18nText;
-	}
-	
-	public I18nText getDegree() {
-		return degree;
-	}
+    public String getPduCodeUri() {
+        return pduCodeUri;
+    }
 
-	public void setChargeable(Boolean opintojenMaksullisuus) {
-		this.chargeable = opintojenMaksullisuus;	
-	}
+    public void setDegree(I18nText i18nText) {
+        this.degree = i18nText;
+    }
 
-	public Boolean getChargeable() {
-		return chargeable;
-	}
+    public I18nText getDegree() {
+        return degree;
+    }
 
-	public void setEducationCode(String uri) {
-		educationCode = uri;
-	}
+    public void setChargeable(Boolean opintojenMaksullisuus) {
+        this.chargeable = opintojenMaksullisuus;	
+    }
 
-	public String getEducationCode() {
-		return educationCode;
-	}
+    public Boolean getChargeable() {
+        return chargeable;
+    }
 
-	public void setTeachingLanguages(List<Code> createCodes) {
-		this.teachingLanguages = createCodes;
-	}
+    public void setEducationCode(String uri) {
+        educationCode = uri;
+    }
 
-	public List<Code> getTeachingLanguages() {
-		return teachingLanguages;
-	}
+    public String getEducationCode() {
+        return educationCode;
+    }
 
-	public List<ApplicationOption> getApplicationOptions() {
-		return applicationOptions;
-	}
+    public void setTeachingLanguages(List<Code> createCodes) {
+        this.teachingLanguages = createCodes;
+    }
 
-	public void setApplicationOptions(List<ApplicationOption> applicationOptions) {
-		this.applicationOptions = applicationOptions;
-	}    
-	
+    public List<Code> getTeachingLanguages() {
+        return teachingLanguages;
+    }
+
+    public List<ApplicationOption> getApplicationOptions() {
+        return applicationOptions;
+    }
+
+    public void setApplicationOptions(List<ApplicationOption> applicationOptions) {
+        this.applicationOptions = applicationOptions;
+    }    
+
     public String getKomoOid() {
-		return komoOid;
-	}
+        return komoOid;
+    }
 
-	public void setKomoOid(String komoOid) {
-		this.komoOid = komoOid;
-	}
+    public void setKomoOid(String komoOid) {
+        this.komoOid = komoOid;
+    }
 
-	/*
+    /*
 	public List<String> getChildKomoOids() {
 		return childKomoOids;
 	}
@@ -354,84 +354,84 @@ public class HigherEducationLOS extends LOS {
 		this.childKomoOids = childKomoOids;
 	}*/
 
-	public List<HigherEducationLOS> getChildren() {
-		return children;
-	}
+    public List<HigherEducationLOS> getChildren() {
+        return children;
+    }
 
-	public void setChildren(List<HigherEducationLOS> children) {
-		this.children = children;
-	}
+    public void setChildren(List<HigherEducationLOS> children) {
+        this.children = children;
+    }
 
-	public List<Code> getPrerequisites() {
-		return prerequisites;
-	}
+    public List<Code> getPrerequisites() {
+        return prerequisites;
+    }
 
-	public void setPrerequisites(List<Code> prerequisites) {
-		this.prerequisites = prerequisites;
-	}
+    public void setPrerequisites(List<Code> prerequisites) {
+        this.prerequisites = prerequisites;
+    }
 
-	public void setFormOfTeaching(List<I18nText> opetusmuodos) {
-		this.formOfTeaching = opetusmuodos;	
-	}
-	
-	public List<I18nText> getFormOfTeaching() {
-		return formOfTeaching;
-	}
+    public void setFormOfTeaching(List<I18nText> opetusmuodos) {
+        this.formOfTeaching = opetusmuodos;	
+    }
 
-	public void setProfessionalTitles(List<I18nText> ammattinimikkees) {
-		this.professionalTitles = ammattinimikkees;
-	}
+    public List<I18nText> getFormOfTeaching() {
+        return formOfTeaching;
+    }
 
-	public List<I18nText> getProfessionalTitles() {
-		return professionalTitles;
-	}
+    public void setProfessionalTitles(List<I18nText> ammattinimikkees) {
+        this.professionalTitles = ammattinimikkees;
+    }
 
-	public I18nText getCreditUnit() {
-		return creditUnit;
-	}
+    public List<I18nText> getProfessionalTitles() {
+        return professionalTitles;
+    }
 
-	public void setCreditUnit(I18nText creditUnit) {
-		this.creditUnit = creditUnit;
-	}
+    public I18nText getCreditUnit() {
+        return creditUnit;
+    }
 
-	public I18nText getEducationDegreeLang() {
-		return educationDegreeLang;
-	}
+    public void setCreditUnit(I18nText creditUnit) {
+        this.creditUnit = creditUnit;
+    }
 
-	public void setEducationDegreeLang(I18nText educationDegreeLang) {
-		this.educationDegreeLang = educationDegreeLang;
-	}
-	public void setTeachingTimes(List<I18nText> teachingTimes) {
-		this.teachingTimes = teachingTimes;
-		
-	}
-	public List<I18nText> getTeachingTimes() {
-		return teachingTimes;
-	}
-	public void setTeachingPlaces(List<I18nText> teachingPlaces) {
-		this.teachingPlaces = teachingPlaces;
-		
-	}
-	public List<I18nText> getTeachingPlaces() {
-		return teachingPlaces;
-	}
-	public void setInfoAboutCharge(I18nText i18nTextEnriched) {
-		this.infoAboutCharge = i18nTextEnriched;
-		
-	}
-	public I18nText getInfoAboutCharge() {
-		return infoAboutCharge;
-	}
+    public I18nText getEducationDegreeLang() {
+        return educationDegreeLang;
+    }
 
-	public List<HigherEducationLOS> getParents() {
-		return parents;
-	}
+    public void setEducationDegreeLang(I18nText educationDegreeLang) {
+        this.educationDegreeLang = educationDegreeLang;
+    }
+    public void setTeachingTimes(List<I18nText> teachingTimes) {
+        this.teachingTimes = teachingTimes;
 
-	public void setParents(List<HigherEducationLOS> parents) {
-		this.parents = parents;
-	}
+    }
+    public List<I18nText> getTeachingTimes() {
+        return teachingTimes;
+    }
+    public void setTeachingPlaces(List<I18nText> teachingPlaces) {
+        this.teachingPlaces = teachingPlaces;
 
-	/*
+    }
+    public List<I18nText> getTeachingPlaces() {
+        return teachingPlaces;
+    }
+    public void setInfoAboutCharge(I18nText i18nTextEnriched) {
+        this.infoAboutCharge = i18nTextEnriched;
+
+    }
+    public I18nText getInfoAboutCharge() {
+        return infoAboutCharge;
+    }
+
+    public List<HigherEducationLOS> getParents() {
+        return parents;
+    }
+
+    public void setParents(List<HigherEducationLOS> parents) {
+        this.parents = parents;
+    }
+
+    /*
 	public List<String> getParentKomoOids() {
 		return parentKomoOids;
 	}
@@ -440,31 +440,31 @@ public class HigherEducationLOS extends LOS {
 		this.parentKomoOids = parentKomoOids;
 	}*/
 
-	public I18nText getStartSeason() {
-		return startSeason;
-	}
+    public I18nText getStartSeason() {
+        return startSeason;
+    }
 
-	public void setStartSeason(I18nText startSeason) {
-		this.startSeason = startSeason;
-	}
+    public void setStartSeason(I18nText startSeason) {
+        this.startSeason = startSeason;
+    }
 
-	public int getStartYear() {
-		return startYear;
-	}
+    public int getStartYear() {
+        return startYear;
+    }
 
-	public void setStartYear(int startYear) {
-		this.startYear = startYear;
-	}
+    public void setStartYear(int startYear) {
+        this.startYear = startYear;
+    }
 
-	public String getStatus() {
-		return status;
-	}
+    public String getStatus() {
+        return status;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
-    
-	public List<String> getAvailableTranslationLanguages() {
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public List<String> getAvailableTranslationLanguages() {
         return availableTranslationLanguages;
     }
 
