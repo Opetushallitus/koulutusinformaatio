@@ -63,7 +63,10 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
                 loi.getTeachingLanguages(), loi.getPrerequisite().getName().getTranslations()));
         doc.addField(LearningOpportunity.PREREQUISITE_CODE, loi.getPrerequisite().getValue());
 
-        if (los.getCreditValue() != null) {
+        if (los.getCreditValue() != null 
+        		&& los.getCreditUnit() != null 
+        		&& los.getCreditUnit().getTranslationsShortName() != null
+        		&& !los.getCreditUnit().getTranslationsShortName().isEmpty()) {
             doc.addField(LearningOpportunity.CREDITS, String.format("%s %s", los.getCreditValue(),
                     SolrUtil.resolveTranslationInTeachingLangUseFallback(loi.getTeachingLanguages(),
                             los.getCreditUnit().getTranslationsShortName())));
