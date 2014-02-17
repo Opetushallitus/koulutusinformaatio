@@ -57,7 +57,9 @@ public class ApplicationOptionDAO extends SecondaryAwareDAO<ApplicationOptionEnt
     	List<ApplicationOptionEntity> aos = new ArrayList<ApplicationOptionEntity> ();
     	for (String curId : aoIds) {
     		ApplicationOptionEntity curAo = getSecondaryDatastore().get(ApplicationOptionEntity.class, curId);
-    		aos.add(curAo);
+    		if (curAo != null) {
+    			aos.add(curAo);
+    		}
     	}
     	return aos;
     }
