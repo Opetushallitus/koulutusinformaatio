@@ -52,10 +52,14 @@ public class ApplicationOptionDAO extends SecondaryAwareDAO<ApplicationOptionEnt
         }
         return find(query).asList();
     }
-
+    
     public List<ApplicationOptionEntity> findFromSecondary(final List<String> aoIds) {
-        Query<ApplicationOptionEntity> query = getSecondaryDatastore().get(ApplicationOptionEntity.class, aoIds);
-        return find(query).asList();
+    	List<ApplicationOptionEntity> aos = new ArrayList<ApplicationOptionEntity> ();
+    	for (String curId : aoIds) {
+    		ApplicationOptionEntity curAo = getSecondaryDatastore().get(ApplicationOptionEntity.class, curId);
+    		aos.add(curAo);
+    	}
+    	return aos;
     }
 
     public Query<ApplicationOptionEntity> createSecondaryQuery() {
