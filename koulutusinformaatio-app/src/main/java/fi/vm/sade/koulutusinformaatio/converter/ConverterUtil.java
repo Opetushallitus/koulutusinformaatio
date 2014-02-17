@@ -28,6 +28,8 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.DateRangeDTO;
 
 import java.util.*;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * @author Mikko Majapuro
  */
@@ -180,7 +182,7 @@ public final class ConverterUtil {
                                 .onResultOf(
                                         new Function<ApplicationSystemDTO, Date>() {
                                             @Override
-                                            public Date apply(ApplicationSystemDTO input) {
+                                            public Date apply(@NotNull ApplicationSystemDTO input) {
                                                 Preconditions.checkNotNull(input);
                                                 return input.getApplicationDates().get(0).getStartDate();
                                             }
