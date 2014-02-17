@@ -108,17 +108,17 @@ public class UpdateServiceImpl implements UpdateService {
                    this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
                }
                
-               List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
-           	   LOG.debug("Found higher educations: " + higherEducations.size());
-           		
-           		for (HigherEducationLOS curLOS : higherEducations) {
-           			LOG.debug("Saving highed education: " + curLOS.getId());
-           			indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr);
-        			this.educationDataUpdateService.save(curLOS);
-           			
-           		}
-           		LOG.debug("Higher educations saved: ");
             }
+            
+            List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
+        	LOG.debug("Found higher educations: " + higherEducations.size());
+        		
+        	for (HigherEducationLOS curLOS : higherEducations) {
+        		LOG.debug("Saving highed education: " + curLOS.getId());
+        		indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr);
+        		this.educationDataUpdateService.save(curLOS);
+        	}
+        	LOG.debug("Higher educations saved: ");
             
             List<Location> locations = locationService.getMunicipalities();
             LOG.debug("Got locations");
