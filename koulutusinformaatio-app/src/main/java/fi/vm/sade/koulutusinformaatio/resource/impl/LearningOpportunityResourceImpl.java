@@ -48,7 +48,7 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
 
     @Autowired
     public LearningOpportunityResourceImpl(SearchService searchService, ModelMapper modelMapper,
-                                           LearningOpportunityService learningOpportunityService) {
+            LearningOpportunityService learningOpportunityService) {
         this.searchService = searchService;
         this.modelMapper = modelMapper;
         this.learningOpportunityService = learningOpportunityService;
@@ -56,7 +56,7 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
 
     @Override
     public LOSearchResultListDTO searchLearningOpportunities(String text, String prerequisite, 
-                                                             List<String> cities, List<String> facetFilters, String lang, boolean ongoing, boolean upcoming, int start, int rows, String sort, String order) {
+            List<String> cities, List<String> facetFilters, String lang, boolean ongoing, boolean upcoming, int start, int rows, String sort, String order) {
         String key = null;
         try {
             key = URLDecoder.decode(text, "UTF-8");
@@ -158,10 +158,10 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
         }
     }
 
-	@Override
-	public HigherEducationLOSDTO getHigherEducationLearningOpportunity(String id,
-			String lang, String uiLang) {
-		try {
+    @Override
+    public HigherEducationLOSDTO getHigherEducationLearningOpportunity(String id,
+            String lang, String uiLang) {
+        try {
             if (Strings.isNullOrEmpty(lang) && Strings.isNullOrEmpty(uiLang)) {
                 return learningOpportunityService.getHigherEducationLearningOpportunity(id);
             }
@@ -174,15 +174,15 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
         } catch (ResourceNotFoundException e) {
             throw KIExceptionHandler.resolveException(e);
         }
-	}
+    }
 
-	@Override
-	public HigherEducationLOSDTO previewLearningOpportunity(String oid,
-			String lang, String uiLang) {
-		try {
-			return learningOpportunityService.previewLearningOpportunity(oid, lang, uiLang);
-		} catch (ResourceNotFoundException e) {
+    @Override
+    public HigherEducationLOSDTO previewLearningOpportunity(String oid,
+            String lang, String uiLang) {
+        try {
+            return learningOpportunityService.previewLearningOpportunity(oid, lang, uiLang);
+        } catch (ResourceNotFoundException e) {
             throw KIExceptionHandler.resolveException(e);
         }
-	}
+    }
 }

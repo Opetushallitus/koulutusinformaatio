@@ -160,21 +160,21 @@ public class ChildLearningOpportunityInstanceDTO {
         this.contactPersons = contactPersons;
     }
 
-	public String getPlannedDuration() {
-		return plannedDuration;
-	}
+    public String getPlannedDuration() {
+        return plannedDuration;
+    }
 
-	public void setPlannedDuration(String plannedDuration) {
-		this.plannedDuration = plannedDuration;
-	}
+    public void setPlannedDuration(String plannedDuration) {
+        this.plannedDuration = plannedDuration;
+    }
 
-	public String getPlannedDurationUnit() {
-		return plannedDurationUnit;
-	}
+    public String getPlannedDurationUnit() {
+        return plannedDurationUnit;
+    }
 
-	public void setPlannedDurationUnit(String plannedDurationUnit) {
-		this.plannedDurationUnit = plannedDurationUnit;
-	}
+    public void setPlannedDurationUnit(String plannedDurationUnit) {
+        this.plannedDurationUnit = plannedDurationUnit;
+    }
 
     public List<String> getAvailableTranslationLanguages() {
         return availableTranslationLanguages;

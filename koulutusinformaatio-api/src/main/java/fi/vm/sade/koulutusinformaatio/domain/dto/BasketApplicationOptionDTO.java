@@ -145,7 +145,7 @@ public class BasketApplicationOptionDTO {
         this.children = children;
     }
 
-    
+
     public Date getAttachmentDeliveryDeadline() {
         return attachmentDeliveryDeadline;
     }
@@ -153,7 +153,7 @@ public class BasketApplicationOptionDTO {
     public void setAttachmentDeliveryDeadline(Date attachmentDeliveryDeadline) {
         this.attachmentDeliveryDeadline = attachmentDeliveryDeadline;
     }
-    
+
 
     public List<ApplicationOptionAttachmentDTO> getAttachments() {
         return attachments;
@@ -207,11 +207,11 @@ public class BasketApplicationOptionDTO {
 
     public void setEducationCodeUri(String educationCodeUri) { this.educationCodeUri = educationCodeUri; }
 
-	public boolean isHigherEducation() {
-		return isHigherEducation;
-	}
+    public boolean isHigherEducation() {
+        return isHigherEducation;
+    }
 
-	public void setHigherEducation(boolean isHigherEducation) {
-		this.isHigherEducation = isHigherEducation;
-	}
+    public void setHigherEducation(boolean isHigherEducation) {
+        this.isHigherEducation = isHigherEducation;
+    }
 }

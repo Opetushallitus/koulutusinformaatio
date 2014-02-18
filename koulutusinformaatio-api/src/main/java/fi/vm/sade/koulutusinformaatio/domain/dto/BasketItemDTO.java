@@ -84,11 +84,11 @@ public class BasketItemDTO {
         this.nextApplicationPeriodStarts = nextApplicationPeriodStarts;
     }
 
-	public int getMaxApplicationOptions() {
-		return maxApplicationOptions;
-	}
+    public int getMaxApplicationOptions() {
+        return maxApplicationOptions;
+    }
 
-	public void setMaxApplicationOptions(int maxApplicationOptions) {
-		this.maxApplicationOptions = maxApplicationOptions;
-	}
+    public void setMaxApplicationOptions(int maxApplicationOptions) {
+        this.maxApplicationOptions = maxApplicationOptions;
+    }
 }
