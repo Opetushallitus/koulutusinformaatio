@@ -50,13 +50,13 @@ directive('toggleCollapse', [function () {
             scope.showExtension = "close";
         },
         template: 
-            '<h4 class="collapser float-right" ng-class="showExtension" ng-click="toggleExtendedView()">' + 
+            '<h4 class="collapser float-right" data-ng-class="showExtension" data-ng-click="toggleExtendedView()">' + 
                 '<span>Avaa tästä </span>' + 
                 '<span class="icon"></span>' +
             '</h4>' +
             '<div class="clear"></div>' +
             '<div collapse="showExtension == \'close\'">' + 
-                '<div style="padding-top: 15px; border-top: 1px dashed grey; margin-top: 15px" ng-transclude></div>' +
+                '<div style="padding-top: 15px; border-top: 1px dashed grey; margin-top: 15px" data-ng-transclude></div>' +
             '</div>'
 
     };
@@ -78,7 +78,6 @@ directive('extendedSearchresultData', ['ParentLOService', 'SpecialLOService', 'U
                 }
                     
                 $scope.extendedLO.then(function(result) {
-                    console.log(result.lo.lois.length);
                     if ($scope.lo.prerequisiteCode) {
                         for(var i = 0; i < result.lo.lois.length; i++) {
                             // filter out unnecessary lois by prerequisite
@@ -89,7 +88,7 @@ directive('extendedSearchresultData', ['ParentLOService', 'SpecialLOService', 'U
                         }
                     }
                 }, function(error) {
-                    console.error('error fetching extended LO');
+                    //console.error('error fetching extended LO');
                 });
             }
         }
@@ -125,10 +124,10 @@ directive('srHakukohteet', [function () {
         restrict: 'A',
         transclude: true,
         template: 
-            '<div ng-repeat="lo in extendedLO.lo.lois">' +
-                '<div ng-repeat="applicationsystem in lo.applicationSystems">' + 
-                    '<div ng-repeat="applicationoption in applicationsystem.applicationOptions">' +
-                        '<div class="bold margin-bottom-1">{{applicationoption.name}}</div><div ng-transclude></div>' +
+            '<div data-ng-repeat="lo in extendedLO.lo.lois">' +
+                '<div data-ng-repeat="applicationsystem in lo.applicationSystems">' + 
+                    '<div data-ng-repeat="applicationoption in applicationsystem.applicationOptions">' +
+                        '<div class="bold margin-bottom-1">{{applicationoption.name}}</div><div data-ng-transclude></div>' +
                     '</div>' +
                 '</div>' + 
             '</div>'
