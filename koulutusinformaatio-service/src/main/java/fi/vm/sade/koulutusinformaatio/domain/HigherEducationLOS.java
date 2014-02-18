@@ -160,14 +160,6 @@ public class HigherEducationLOS extends LOS {
     public String getCreditValue() {
         return creditValue;
     }
-    /*
-	public void setCreditUnit(I18nText creditUnit) {
-		this.creditUnit = creditUnit;
-	}
-
-	public I18nText getCreditUnit() {
-		return creditUnit;
-	}*/
 
     public void setEducationDomain(I18nText educationDomain) {
         this.educationDomain = educationDomain;
@@ -178,7 +170,7 @@ public class HigherEducationLOS extends LOS {
     }
 
     public void setInfoAboutTeachingLangs(I18nText i18nText) {
-        this.infoAboutTeachingLangs = i18nText;	
+        this.infoAboutTeachingLangs = i18nText;
     }
 
     public I18nText getInfoAboutTeachingLangs() {
@@ -421,15 +413,6 @@ public class HigherEducationLOS extends LOS {
     public void setParents(List<HigherEducationLOS> parents) {
         this.parents = parents;
     }
-
-    /*
-	public List<String> getParentKomoOids() {
-		return parentKomoOids;
-	}
-
-	public void setParentKomoOids(List<String> parentKomoOids) {
-		this.parentKomoOids = parentKomoOids;
-	}*/
 
     public I18nText getStartSeason() {
         return startSeason;

@@ -14,14 +14,14 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationChildLosReferenceDTO;
 
 public class HigherEducationLOSToDTO {
-	
-	public HigherEducationLOSToDTO() {
-		
-	}
-	
-	public static HigherEducationLOSDTO convert(
+
+    public HigherEducationLOSToDTO() {
+
+    }
+
+    public static HigherEducationLOSDTO convert(
             final HigherEducationLOS los, final String lang, final String uiLang) {
-		HigherEducationLOSDTO dto =
+        HigherEducationLOSDTO dto =
                 new HigherEducationLOSDTO();
         dto.setId(los.getId());
         dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(los.getName(), lang));
@@ -40,17 +40,17 @@ public class HigherEducationLOSToDTO {
         dto.setCareerOpportunities(ConverterUtil.getTextByLanguage(los.getCareerOpportunities(), lang));
         dto.setCompetence(ConverterUtil.getTextByLanguage(los.getCompetence(), lang));
         dto.setResearchFocus(ConverterUtil.getTextByLanguage(los.getResearchFocus(), lang));
-        
+
         //dto.setLois(UpperSecondaryLOIToDTO.convertAll(los.getLois(), lang, uiLang));
         dto.setProvider(ProviderToDTO.convert(los.getProvider(), lang, "fi"));
         dto.setTranslationLanguage(lang);
         dto.setAvailableTranslationLanguages(los.getAvailableTranslationLanguages());
         dto.setCreditValue(los.getCreditValue());
-        
+
         dto.setCreditUnit(ConverterUtil.getTextByLanguage(los.getCreditUnit(), uiLang));
-        
+
         //DO MORE
-        
+
         dto.setPrerequisites(CodeToDTO.convertAll(los.getPrerequisites(), lang));
         dto.setFormOfTeaching(ConverterUtil.getTextsByLanguage(los.getFormOfTeaching(), uiLang));
         dto.setProfessionalTitles(ConverterUtil.getTextsByLanguage(los.getProfessionalTitles(), uiLang));
@@ -59,9 +59,9 @@ public class HigherEducationLOSToDTO {
         dto.setTeachingLanguages(CodeToValue.convertAll(los.getTeachingLanguages()));
         //TODO: --> dto.setFormOfEducation(ConverterUtil.getTextsByLanguage(los.getFormOfEducation(), uiLang));
         if (los.getStartDate() != null) {
-        	dto.setStartDate(los.getStartDate());  
+            dto.setStartDate(los.getStartDate());  
         } else {
-        	dto.setStartYear(los.getStartYear());
+            dto.setStartYear(los.getStartYear());
             dto.setStartSeason(ConverterUtil.getTextByLanguageUseFallbackLang(los.getStartSeason(), lang));
         }
         dto.setInternationalization(ConverterUtil.getTextByLanguage(los.getInternationalization(), lang));
@@ -72,23 +72,23 @@ public class HigherEducationLOSToDTO {
         dto.setPlannedDuration(los.getPlannedDuration());
         dto.setPlannedDurationUnit(ConverterUtil.getTextByLanguageUseFallbackLang(los.getPlannedDurationUnit(), uiLang));
         dto.setEducationDomain(ConverterUtil.getTextByLanguageUseFallbackLang(los.getEducationDomain(), lang));
-        
-     // as based approach for UI
-        
-        if (los.getApplicationOptions() != null) {
-        	SetMultimap<ApplicationSystem, ApplicationOption> aoByAs = HashMultimap.create();
-        	for (ApplicationOption ao : los.getApplicationOptions()) {
-        		aoByAs.put(ao.getApplicationSystem(), ao);
-        	}
 
-        	for (ApplicationSystem as : aoByAs.keySet()) {
-        		ApplicationSystemDTO asDTO = ApplicationSystemToDTO.convert(as, uiLang);
-        		asDTO.setStatus(as.getStatus());
-        		for (ApplicationOption ao : aoByAs.get(as)) {
-        			asDTO.getApplicationOptions().add(ApplicationOptionToDTO.convert(ao, lang, uiLang, "fi"));
-        		}
-        		dto.getApplicationSystems().add(asDTO);
-        	}
+        // as based approach for UI
+
+        if (los.getApplicationOptions() != null) {
+            SetMultimap<ApplicationSystem, ApplicationOption> aoByAs = HashMultimap.create();
+            for (ApplicationOption ao : los.getApplicationOptions()) {
+                aoByAs.put(ao.getApplicationSystem(), ao);
+            }
+
+            for (ApplicationSystem as : aoByAs.keySet()) {
+                ApplicationSystemDTO asDTO = ApplicationSystemToDTO.convert(as, uiLang);
+                asDTO.setStatus(as.getStatus());
+                for (ApplicationOption ao : aoByAs.get(as)) {
+                    asDTO.getApplicationOptions().add(ApplicationOptionToDTO.convert(ao, lang, uiLang, "fi"));
+                }
+                dto.getApplicationSystems().add(asDTO);
+            }
         }
         dto.setChargeable(los.getChargeable());
         dto.setChildren(convertReferences(los.getChildren(), lang));
@@ -97,19 +97,19 @@ public class HigherEducationLOSToDTO {
         return dto;
     }
 
-	private static List<HigherEducationChildLosReferenceDTO> convertReferences(
-			List<HigherEducationLOS> children, String lang) {
-		List<HigherEducationChildLosReferenceDTO> results = new ArrayList<HigherEducationChildLosReferenceDTO>();
-		for (HigherEducationLOS curChild : children) {
-			HigherEducationChildLosReferenceDTO childDto = new HigherEducationChildLosReferenceDTO();
-			childDto.setId(curChild.getId());
-			childDto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(curChild.getName(), lang));
-			childDto.setEducationDegree(curChild.getEducationDegree());
-			childDto.setStatus(curChild.getStatus());
-			results.add(childDto);
-		}
-		
-		return results;
-	}
+    private static List<HigherEducationChildLosReferenceDTO> convertReferences(
+            List<HigherEducationLOS> children, String lang) {
+        List<HigherEducationChildLosReferenceDTO> results = new ArrayList<HigherEducationChildLosReferenceDTO>();
+        for (HigherEducationLOS curChild : children) {
+            HigherEducationChildLosReferenceDTO childDto = new HigherEducationChildLosReferenceDTO();
+            childDto.setId(curChild.getId());
+            childDto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(curChild.getName(), lang));
+            childDto.setEducationDegree(curChild.getEducationDegree());
+            childDto.setStatus(curChild.getStatus());
+            results.add(childDto);
+        }
+
+        return results;
+    }
 
 }

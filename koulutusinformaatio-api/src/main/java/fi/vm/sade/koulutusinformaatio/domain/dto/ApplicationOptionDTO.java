@@ -320,19 +320,19 @@ public class ApplicationOptionDTO {
         this.educationCodeUri = educationCodeUri;
     }
 
-	public String getSoraDescription() {
-		return soraDescription;
-	}
+    public String getSoraDescription() {
+        return soraDescription;
+    }
 
-	public void setSoraDescription(String soraDescription) {
-		this.soraDescription = soraDescription;
-	}
+    public void setSoraDescription(String soraDescription) {
+        this.soraDescription = soraDescription;
+    }
 
-	public String getStatus() {
-		return status;
-	}
+    public String getStatus() {
+        return status;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

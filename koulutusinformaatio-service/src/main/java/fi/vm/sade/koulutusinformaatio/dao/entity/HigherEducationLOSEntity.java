@@ -99,7 +99,6 @@ public class HigherEducationLOSEntity {
     private List<ApplicationOptionEntity> applicationOptions;
 
     private String komoOid;
-    //private List<String> childKomoOids;
     @Embedded
     private List<I18nTextEntity> formOfTeaching;
     @Embedded
@@ -375,7 +374,7 @@ public class HigherEducationLOSEntity {
     }
     public void setTeachingPlaces(List<I18nTextEntity> teachingPlaces) {
         this.teachingPlaces = teachingPlaces;
-    }	
+    }
     public List<HigherEducationLOSEntity> getParents() {
         return parents;
     }

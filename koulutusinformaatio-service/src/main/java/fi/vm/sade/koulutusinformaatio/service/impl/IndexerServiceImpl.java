@@ -58,12 +58,12 @@ public class IndexerServiceImpl implements IndexerService {
 
     @Autowired
     public IndexerServiceImpl(ConversionService conversionService,
-                              @Qualifier("loUpdateHttpSolrServer") HttpSolrServer loUpdateHttpSolrServer,
-                              @Qualifier("lopUpdateHttpSolrServer") HttpSolrServer lopUpdateHttpSolrServer,
-                              @Qualifier("locationUpdateHttpSolrServer") HttpSolrServer locationUpdateHttpSolrServer,
-                              @Qualifier("loHttpSolrServer") HttpSolrServer loHttpSolrServer,
-                              @Qualifier("lopHttpSolrServer") HttpSolrServer lopHttpSolrServer,
-                              @Qualifier("locationHttpSolrServer") HttpSolrServer locationHttpSolrServer) {
+            @Qualifier("loUpdateHttpSolrServer") HttpSolrServer loUpdateHttpSolrServer,
+            @Qualifier("lopUpdateHttpSolrServer") HttpSolrServer lopUpdateHttpSolrServer,
+            @Qualifier("locationUpdateHttpSolrServer") HttpSolrServer locationUpdateHttpSolrServer,
+            @Qualifier("loHttpSolrServer") HttpSolrServer loHttpSolrServer,
+            @Qualifier("lopHttpSolrServer") HttpSolrServer lopHttpSolrServer,
+            @Qualifier("locationHttpSolrServer") HttpSolrServer locationHttpSolrServer) {
         this.conversionService = conversionService;
         this.loUpdateHttpSolrServer = loUpdateHttpSolrServer;
         this.lopUpdateHttpSolrServer = lopUpdateHttpSolrServer;
@@ -74,13 +74,13 @@ public class IndexerServiceImpl implements IndexerService {
     }
 
     @Override
-    public void addLearningOpportunitySpecification(LOS los, HttpSolrServer loSolr, HttpSolrServer lopSolr) throws Exception {
+    public void addLearningOpportunitySpecification(LOS los, HttpSolrServer loSolr, HttpSolrServer lopSolr) throws IOException, SolrServerException {
         Provider provider = null;
         Set<String> providerAsIds = Sets.newHashSet();
         Set<String> requiredBaseEducations = Sets.newHashSet();
         Set<String> vocationalAsIds = Sets.newHashSet();
         Set<String> nonVocationalAsIds = Sets.newHashSet();
-
+        //Adding parent los (vocational learning opportunity)
         if (los instanceof ParentLOS) {
             ParentLOS parent = (ParentLOS) los;
             provider = parent.getProvider();
@@ -97,6 +97,7 @@ public class IndexerServiceImpl implements IndexerService {
                     }
                 }
             }
+            //Adding upper secondary los (high school)
         } else if (los instanceof UpperSecondaryLOS) {
             UpperSecondaryLOS upperLOS = (UpperSecondaryLOS) los;
             provider = upperLOS.getProvider();
@@ -111,58 +112,62 @@ public class IndexerServiceImpl implements IndexerService {
                     }
                 }
             }
+            //Adding special los 
         } else if (los instanceof SpecialLOS) {
             SpecialLOS special = (SpecialLOS) los;
             provider = special.getProvider();
+            //Adding higher education los
         } else if (los instanceof HigherEducationLOS) {
-        	HigherEducationLOS uas = (HigherEducationLOS)los;
-        	provider = uas.getProvider();
+            HigherEducationLOS uas = (HigherEducationLOS)los;
+            provider = uas.getProvider();
         }
 
         List<SolrInputDocument> docs = conversionService.convert(los, List.class);
 
         List<SolrInputDocument> providerDocs = Lists.newArrayList();
-        SolrInputDocument providerDoc = new SolrInputDocument();
-        providerDoc.addField("id", provider.getId());
+        if (provider != null) {
+            SolrInputDocument providerDoc = new SolrInputDocument();
+            providerDoc.addField("id", provider.getId());
 
-        providerDoc.addField("name_fi", resolveTextByLang("fi", provider.getName().getTranslations()));
-        providerDoc.addField("name_sv", resolveTextByLang("sv", provider.getName().getTranslations()));
+            providerDoc.addField("name_fi", resolveTextByLang("fi", provider.getName().getTranslations()));
+            providerDoc.addField("name_sv", resolveTextByLang("sv", provider.getName().getTranslations()));
 
-        // check if provider exists and update base education and as id values
-        SolrQuery query = new SolrQuery("id:" + provider.getId());
-        QueryResponse response = lopSolr.query(query);//lopUpdateHttpSolrServer.query(query);
-        List<SolrDocument> results = response.getResults();
-        if (results != null && results.size() > 0) {
-            List<String> edus = (List<String>) results.get(0).get("requiredBaseEducations");
-            if (edus != null) {
-                requiredBaseEducations.addAll(edus);
+            // check if provider exists and update base education and as id values
+            SolrQuery query = new SolrQuery("id:" + provider.getId());
+            QueryResponse response = lopSolr.query(query);//lopUpdateHttpSolrServer.query(query);
+            List<SolrDocument> results = response.getResults();
+            if (results != null && results.size() > 0) {
+                List<String> edus = (List<String>) results.get(0).get("requiredBaseEducations");
+                if (edus != null) {
+                    requiredBaseEducations.addAll(edus);
+                }
+                List<String> asids = (List<String>) results.get(0).get("asIds");
+                if (asids != null) {
+                    providerAsIds.addAll(asids);
+                }
+                List<String> vocational = (List<String>) results.get(0).get("vocationalAsIds");
+                if (vocational != null) {
+                    vocationalAsIds.addAll(vocational);
+                }
+                List<String> nonVocational = (List<String>) results.get(0).get("nonVocationalAsIds");
+                if (nonVocational != null) {
+                    nonVocationalAsIds.addAll(nonVocational);
+                }
             }
-            List<String> asids = (List<String>) results.get(0).get("asIds");
-            if (asids != null) {
-                providerAsIds.addAll(asids);
-            }
-            List<String> vocational = (List<String>) results.get(0).get("vocationalAsIds");
-            if (vocational != null) {
-                vocationalAsIds.addAll(vocational);
-            }
-            List<String> nonVocational = (List<String>) results.get(0).get("nonVocationalAsIds");
-            if (nonVocational != null) {
-                nonVocationalAsIds.addAll(nonVocational);
-            }
+
+            providerDoc.setField("asIds", providerAsIds);
+            providerDoc.setField("requiredBaseEducations", requiredBaseEducations);
+            providerDoc.setField("vocationalAsIds", vocationalAsIds);
+            providerDoc.setField("nonVocationalAsIds", nonVocationalAsIds);
+            providerDocs.add(providerDoc);
         }
-
-        providerDoc.setField("asIds", providerAsIds);
-        providerDoc.setField("requiredBaseEducations", requiredBaseEducations);
-        providerDoc.setField("vocationalAsIds", vocationalAsIds);
-        providerDoc.setField("nonVocationalAsIds", nonVocationalAsIds);
-        providerDocs.add(providerDoc);
 
         lopSolr.add(providerDocs);
         loSolr.add(docs);
     }
 
     @Override
-    public void commitLOChanges(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr, boolean createTimestamp) throws Exception {
+    public void commitLOChanges(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr, boolean createTimestamp) throws IOException, SolrServerException {
         if (createTimestamp) {
             List<SolrInputDocument> timeStampDocs = new ArrayList<SolrInputDocument>();
             SolrInputDocument timestampDoc = new SolrInputDocument();
@@ -227,6 +232,7 @@ public class IndexerServiceImpl implements IndexerService {
      * Getting the update timestamp for the lo-collection.
      */
     private Date getUpdateTimestamp(HttpSolrServer server) {
+        LOGGER.debug("Updating solr timestamp");
         SolrQuery query = new SolrQuery();
         query.setQuery("*:*");
         query.addFilterQuery("id:loUpdateTimestampDocument");
@@ -239,7 +245,7 @@ public class IndexerServiceImpl implements IndexerService {
                 return new SimpleDateFormat("MM.dd.yyyy HH:mm:ss").parse(String.format("%s", curDoc.getFieldValue("name")));
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LOGGER.error(String.format("Could not get update timestamp: %s", ex.getMessage()));
         }
         return null;
     }
