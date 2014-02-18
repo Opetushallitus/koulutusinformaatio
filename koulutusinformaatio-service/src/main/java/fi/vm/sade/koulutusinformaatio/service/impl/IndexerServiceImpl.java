@@ -74,13 +74,13 @@ public class IndexerServiceImpl implements IndexerService {
     }
 
     @Override
-    public void addLearningOpportunitySpecification(LOS los, HttpSolrServer loSolr, HttpSolrServer lopSolr) throws Exception {
+    public void addLearningOpportunitySpecification(LOS los, HttpSolrServer loSolr, HttpSolrServer lopSolr) throws IOException, SolrServerException {
         Provider provider = null;
         Set<String> providerAsIds = Sets.newHashSet();
         Set<String> requiredBaseEducations = Sets.newHashSet();
         Set<String> vocationalAsIds = Sets.newHashSet();
         Set<String> nonVocationalAsIds = Sets.newHashSet();
-
+        //Adding parent los (vocational learning opportunity)
         if (los instanceof ParentLOS) {
             ParentLOS parent = (ParentLOS) los;
             provider = parent.getProvider();
@@ -97,6 +97,7 @@ public class IndexerServiceImpl implements IndexerService {
                     }
                 }
             }
+          //Adding upper secondary los (high school)
         } else if (los instanceof UpperSecondaryLOS) {
             UpperSecondaryLOS upperLOS = (UpperSecondaryLOS) los;
             provider = upperLOS.getProvider();
@@ -111,9 +112,11 @@ public class IndexerServiceImpl implements IndexerService {
                     }
                 }
             }
+            //Adding special los 
         } else if (los instanceof SpecialLOS) {
             SpecialLOS special = (SpecialLOS) los;
             provider = special.getProvider();
+            //Adding higher education los
         } else if (los instanceof HigherEducationLOS) {
         	HigherEducationLOS uas = (HigherEducationLOS)los;
         	provider = uas.getProvider();
@@ -162,7 +165,7 @@ public class IndexerServiceImpl implements IndexerService {
     }
 
     @Override
-    public void commitLOChanges(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr, boolean createTimestamp) throws Exception {
+    public void commitLOChanges(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr, boolean createTimestamp) throws IOException, SolrServerException {
         if (createTimestamp) {
             List<SolrInputDocument> timeStampDocs = new ArrayList<SolrInputDocument>();
             SolrInputDocument timestampDoc = new SolrInputDocument();
@@ -227,6 +230,7 @@ public class IndexerServiceImpl implements IndexerService {
      * Getting the update timestamp for the lo-collection.
      */
     private Date getUpdateTimestamp(HttpSolrServer server) {
+        LOGGER.debug("Updating solr timestamp");
         SolrQuery query = new SolrQuery();
         query.setQuery("*:*");
         query.addFilterQuery("id:loUpdateTimestampDocument");

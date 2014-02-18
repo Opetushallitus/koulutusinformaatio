@@ -19,6 +19,7 @@ package fi.vm.sade.koulutusinformaatio.service;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.Location;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
 
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -34,14 +35,14 @@ public interface IndexerService {
      * The data is not committed to index.
      */
     void addLearningOpportunitySpecification(LOS los,
-                                             HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr) throws Exception;
+                                             HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr) throws IOException, SolrServerException;
 
     /**
      * Commits learning opportunities from memory to index.
      * @param lopUpdateSolr 
      * @param loUpdateSolr 
      */
-    void commitLOChanges(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr, boolean createTimestamp) throws Exception;
+    void commitLOChanges(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr, boolean createTimestamp) throws IOException, SolrServerException;
     
     void addLocations(List<Location> locations, HttpSolrServer locationUpdateSolr) throws IOException, SolrServerException;
     
