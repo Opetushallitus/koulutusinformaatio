@@ -23,47 +23,15 @@ import java.util.List;
  *
  * @author Hannu Lyytikainen
  */
-public class ParentLOS extends LOS {
+public class ParentLOS extends BasicLOS<ParentLOI> {
 
-    private String id;
-    private I18nText name;
     private List<ParentLOI> lois;
     private List<ChildLOS> children;
-    private Provider provider;
-    // rakenne
-    private I18nText structure;
-    // jatko-opintomahdollisuudet
-    private I18nText accessToFurtherStudies;
-    // tavoitteet
-    private I18nText goals;
-    //koulutusala, Sosiaali-, terveys- ja liikunta-ala
-    private I18nText educationDomain;
-    //opintoala, Hammaslääketiede ja muu hammashuolto
-    private I18nText stydyDomain;
-    // koulutusaste, 32
-    private String educationDegree;
-    //laajuus arvo, 120
-    private String creditValue;
-    //laajuus yksikkö opintoviikko
-    private I18nText creditUnit;
-    
+
+    private I18nText educationDomain;           // koulutusala, Sosiaali-, terveys- ja liikunta-ala
+    private I18nText stydyDomain;               // opintoala, Hammaslääketiede ja muu hammashuolto
+
     private List<Code> teachingLanguages;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public I18nText getName() {
-        return name;
-    }
-
-    public void setName(I18nText name) {
-        this.name = name;
-    }
 
     public List<ParentLOI> getLois() {
         return lois;
@@ -81,38 +49,6 @@ public class ParentLOS extends LOS {
         this.children = children;
     }
 
-    public Provider getProvider() {
-        return provider;
-    }
-
-    public void setProvider(Provider provider) {
-        this.provider = provider;
-    }
-
-    public I18nText getStructure() {
-        return structure;
-    }
-
-    public void setStructure(I18nText structure) {
-        this.structure = structure;
-    }
-
-    public I18nText getAccessToFurtherStudies() {
-        return accessToFurtherStudies;
-    }
-
-    public void setAccessToFurtherStudies(I18nText accessToFurtherStudies) {
-        this.accessToFurtherStudies = accessToFurtherStudies;
-    }
-
-    public I18nText getGoals() {
-        return goals;
-    }
-
-    public void setGoals(I18nText goals) {
-        this.goals = goals;
-    }
-
     public I18nText getEducationDomain() {
         return educationDomain;
     }
@@ -127,30 +63,6 @@ public class ParentLOS extends LOS {
 
     public void setStydyDomain(I18nText stydyDomain) {
         this.stydyDomain = stydyDomain;
-    }
-
-    public String getEducationDegree() {
-        return educationDegree;
-    }
-
-    public void setEducationDegree(String educationDegree) {
-        this.educationDegree = educationDegree;
-    }
-
-    public String getCreditValue() {
-        return creditValue;
-    }
-
-    public void setCreditValue(String creditValue) {
-        this.creditValue = creditValue;
-    }
-
-    public I18nText getCreditUnit() {
-        return creditUnit;
-    }
-
-    public void setCreditUnit(I18nText creditUnit) {
-        this.creditUnit = creditUnit;
     }
 
     public List<Code> getTeachingLanguages() {

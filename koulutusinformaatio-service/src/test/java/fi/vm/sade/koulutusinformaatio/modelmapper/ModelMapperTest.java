@@ -77,7 +77,9 @@ public class ModelMapperTest {
         childLOI.setApplicationOptions(Lists.newArrayList(ao));
         childLOS.setLois(Lists.newArrayList(childLOI));
 
-        ChildLOS childLOS2 = new ChildLOS("222", TestUtil.createI18nText("child2Name", "child2Name", "child2Name"));
+        ChildLOS childLOS2 = new ChildLOS();
+        childLOS2.setId("222");
+        childLOS2.setName(TestUtil.createI18nText("child2Name", "child2Name", "child2Name"));
         childLOS2.setId("7733");
         ChildLOI childLOI2 = new ChildLOI();
         childLOI2.setId("888");

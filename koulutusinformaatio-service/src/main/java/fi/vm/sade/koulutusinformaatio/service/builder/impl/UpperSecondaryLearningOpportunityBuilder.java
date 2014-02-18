@@ -86,7 +86,7 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
 
         for (String providerId : komotosByProviderId.keySet()) {
             UpperSecondaryLOS los = losObjectCreator.createUpperSecondaryLOS(komo, parentKomo, komotosByProviderId.get(providerId),
-                    resolveLOSId(komo.getOid(), providerId), providerService.getByOID(providerId));
+                    resolveLOSId(komo.getOid(), providerId), providerId);
             loses.add(los);
         }
 

@@ -25,8 +25,18 @@ import java.util.List;
  */
 public abstract class LOI {
 
+    private String id;
     private List<ApplicationOption> applicationOptions;
     private Code prerequisite;
+    private List<String> availableTranslationLanguages;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public List<ApplicationOption> getApplicationOptions() {
         return applicationOptions;
@@ -42,5 +52,13 @@ public abstract class LOI {
 
     public void setPrerequisite(Code prerequisite) {
         this.prerequisite = prerequisite;
+    }
+
+    public List<String> getAvailableTranslationLanguages() {
+        return availableTranslationLanguages;
+    }
+
+    public void setAvailableTranslationLanguages(List<String> availableTranslationLanguages) {
+        this.availableTranslationLanguages = availableTranslationLanguages;
     }
 }

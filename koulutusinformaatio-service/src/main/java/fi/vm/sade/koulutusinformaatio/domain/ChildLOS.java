@@ -23,43 +23,11 @@ import java.util.List;
  *
  * @author Hannu Lyytikainen
  */
-public class ChildLOS extends LOS {
+public class ChildLOS extends InstantiatedLOS<ChildLOI> {
 
-    private String id;
-    private I18nText name;
-    // koulutusohjelma
-    private I18nText degreeTitle;
-    //tutkintonimike
-    private I18nText qualification;
-    //tavoite
-    private I18nText goals;
+    private I18nText qualification;     // tutkintonimike
     private ParentLOSRef parent;
     private List<ChildLOI> lois;
-
-    public ChildLOS(String id, I18nText name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public ChildLOS() {
-
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public I18nText getName() {
-        return name;
-    }
-
-    public void setName(I18nText name) {
-        this.name = name;
-    }
 
     public I18nText getQualification() {
         return qualification;
@@ -67,22 +35,6 @@ public class ChildLOS extends LOS {
 
     public void setQualification(I18nText qualification) {
         this.qualification = qualification;
-    }
-
-    public I18nText getDegreeTitle() {
-        return degreeTitle;
-    }
-
-    public void setDegreeTitle(I18nText degreeTitle) {
-        this.degreeTitle = degreeTitle;
-    }
-
-    public I18nText getGoals() {
-        return goals;
-    }
-
-    public void setGoals(I18nText goals) {
-        this.goals = goals;
     }
 
     public ParentLOSRef getParent() {

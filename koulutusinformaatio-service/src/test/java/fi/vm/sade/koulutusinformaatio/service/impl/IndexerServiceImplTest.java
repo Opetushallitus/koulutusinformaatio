@@ -17,13 +17,10 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-
-import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
-
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -40,19 +37,14 @@ import org.mockito.MockitoAnnotations.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.core.convert.ConversionService;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static junit.framework.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.argThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static junit.framework.Assert.assertEquals;
-
-import static junit.framework.Assert.assertEquals;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Hannu Lyytikainen
@@ -211,7 +203,7 @@ public class IndexerServiceImplTest {
         DateRange dr = new DateRange(applicationSystemStarts, applicationSystemEnds);
         as1.setApplicationDates(Lists.newArrayList(dr));
         ao1.setApplicationSystem(as1);
-        parentLOI1.setApplicationOptions(Sets.newHashSet(ao1));
+        parentLOI1.setApplicationOptions(Lists.newArrayList(ao1));
         p.setLois(Lists.newArrayList(parentLOI1));
 
         ChildLOS childLOS1 = new ChildLOS();

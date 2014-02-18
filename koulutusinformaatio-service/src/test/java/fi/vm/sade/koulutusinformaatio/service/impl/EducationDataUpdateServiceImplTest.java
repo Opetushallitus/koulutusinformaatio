@@ -1,7 +1,6 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import com.mongodb.DBCollection;
 import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.entity.*;
@@ -12,7 +11,6 @@ import org.junit.Test;
 import org.modelmapper.ModelMapper;
 
 import java.util.List;
-import java.util.Set;
 
 import static org.mockito.Mockito.*;
 
@@ -57,7 +55,7 @@ public class EducationDataUpdateServiceImplTest extends AbstractEducationService
 
     @Test
     public void testSaveParentLearningOpportunity() {
-        Set<ApplicationOption> applicationOptions = Sets.newHashSet();
+        List<ApplicationOption> applicationOptions = Lists.newArrayList();
         Provider lop = new Provider();
         lop.setId("6.7.8");
         ApplicationOption ao = new ApplicationOption();
