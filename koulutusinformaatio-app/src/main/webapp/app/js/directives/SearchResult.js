@@ -87,6 +87,8 @@ directive('extendedSearchresultData', ['ParentLOService', 'SpecialLOService', 'U
                             }
                         }
                     }
+
+                    $scope.extendedLO = result;
                 }, function(error) {
                     //console.error('error fetching extended LO');
                 });

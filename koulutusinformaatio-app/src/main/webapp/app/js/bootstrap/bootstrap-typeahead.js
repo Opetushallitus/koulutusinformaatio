@@ -350,7 +350,7 @@ angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.position', 'ui.bootstrap
   });
 angular.module("template/typeahead/typeahead-match.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("template/typeahead/typeahead-match.html",
-    "<a tabindex=\"-1\" data-bind-html-unsafe=\"match.label | typeaheadHighlight:query\"></a>");
+    "<a tabindex=\"-1\" data-ng-bind-html=\"match.label | typeaheadHighlight:query | unsafe\"></a>");
 }]);
 
 angular.module("template/typeahead/typeahead-item.html", []).run(["$templateCache", function($templateCache) {
@@ -376,7 +376,7 @@ angular.module("template/typeahead/typeahead.html", []).run(["$templateCache", f
   $templateCache.put("template/typeahead/typeahead.html",
     "<ul class=\"typeahead dropdown-menu\" data-ng-style=\"{display: isOpen()&&'block' || 'none', top: position.top+'px', left: position.left+'px'}\">\n" +
     "    <li data-ng-repeat=\"match in matches\" data-ng-class=\"{active: isActive($index) }\" data-ng-mouseenter=\"selectActive($index)\">\n" +
-    "        <a tabindex=\"-1\" data-ng-click=\"selectMatch($index)\" data-ng-bind-html-unsafe=\"match.label | typeaheadHighlight:query\"></a>\n" +
+    "        <a tabindex=\"-1\" data-ng-click=\"selectMatch($index)\" data-ng-bind-html=\"match.label | typeaheadHighlight:query | unsafe\"></a>\n" +
     "    </li>\n" +
     "</ul>");
 }]);

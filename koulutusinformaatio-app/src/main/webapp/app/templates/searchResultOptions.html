@@ -1,5 +1,5 @@
 
-<form name="levelSelectionForm-{{$id}}" id="application-form-{{applicationsystem.id}}-{{$id}}" action="{{hakuAppUrl}}lomake/{{applicationsystem.id}}" method="POST" class="margin-top-2" target="hakulomake">
+<form name="levelSelectionForm-{{$id}}" id="application-form-{{applicationsystem.id}}-{{$id}}" action="{{hakuAppUrl + 'lomake/' + applicationsystem.id}}" method="POST" class="margin-top-2" target="hakulomake">
     <button class="float-left" type="submit" data-ng-disabled="!applicationsystem.asOngoing">
       <span><span data-ki-i18n="apply-button-label" data-lang="{{applicationoption.teachingLang}}"></span></span>
     </button>

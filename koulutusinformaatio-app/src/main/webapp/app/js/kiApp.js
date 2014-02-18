@@ -9,7 +9,8 @@ var kiApp = angular.module('kiApp',
         'ui.bootstrap', 
         'angulartics', 
         'angulartics.piwik',
-        'underscore'
+        'underscore',
+        'ngRoute'
     ])
 
 .config(['$analyticsProvider', function( $analyticsProvider) {
@@ -140,7 +141,13 @@ filter('unique', function() {
 
       return output;
    };
-})
+}).
+
+filter('unsafe', function($sce) {
+    return function(val) {
+        return $sce.trustAsHtml(val);
+    };
+});
 
 var OPH = OPH || {};
 

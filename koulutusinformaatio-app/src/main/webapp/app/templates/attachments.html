@@ -2,7 +2,7 @@
     <h2 data-ki-i18n="required-attachments" data-lang="{{translationLanguage}}"></h2>
     <div data-ng-repeat="att in attachments" data-ng-show="att.descreption">
         <span class="bold">{{att.type}}</span>
-        <div data-ng-bind-html-unsafe="att.descreption"></div>
+        <div data-ng-bind-html="att.descreption | unsafe"></div>
     </div>
     <table class="striped">
         <colgroup>

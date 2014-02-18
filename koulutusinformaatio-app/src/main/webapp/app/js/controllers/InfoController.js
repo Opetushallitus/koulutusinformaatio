@@ -232,6 +232,10 @@
  */
 function ApplicationCtrl($scope, ApplicationBasketService, UtilityService, TranslationService) {
 
+    $scope.getApplicationFormUrl = function() {
+        console.log('gaah');
+    }
+
     // vocational education needs prerequisite checking...
     $scope.addToBasket = function(aoId) {
         var basketType = ApplicationBasketService.getType();
