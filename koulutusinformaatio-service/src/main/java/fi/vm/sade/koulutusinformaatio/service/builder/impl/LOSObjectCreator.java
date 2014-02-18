@@ -224,8 +224,12 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setStructure(getI18nText(parentKomo.getTekstit().get(KomoTeksti.KOULUTUKSEN_RAKENNE)));
         los.setAccessToFurtherStudies(getI18nText(parentKomo.getTekstit().get(KomoTeksti.JATKOOPINTO_MAHDOLLISUUDET)));
         los.setProvider(provider);
-        los.setCreditValue(parentKomo.getLaajuusArvo());
-        los.setCreditUnit(koodistoService.searchFirst(parentKomo.getLaajuusYksikkoUri()));
+        
+        I18nText laajuusyksikko = koodistoService.searchFirst(parentKomo.getLaajuusYksikkoUri());
+        if (laajuusyksikko != null) {
+            los.setCreditValue(parentKomo.getLaajuusArvo());
+            los.setCreditUnit(laajuusyksikko);
+        }
 
         Map<String, String> komoTavoitteet = komo.getTekstit().get(KomoTeksti.TAVOITTEET);
         if (komoTavoitteet == null) {
