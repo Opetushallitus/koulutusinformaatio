@@ -83,7 +83,7 @@ directive('extendedSearchresultData', ['ParentLOService', 'SpecialLOService', 'U
                             // filter out unnecessary lois by prerequisite
                             var loi = result.lo.lois[i];
                             if ($scope.lo.prerequisiteCode != loi.prerequisite.value) {
-                                delete result.lo.lois[i];
+                                result.lo.lois = result.lo.lois.splice(i, 1);
                             }
                         }
                     }
