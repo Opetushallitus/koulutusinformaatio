@@ -73,7 +73,7 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
 
 
         doc.setField(SolrUtil.LearningOpportunity.NAME, losName);
-        doc.addField(SolrUtil.LearningOpportunity.NAME_SORT, losName);
+        doc.addField(SolrUtil.LearningOpportunity.NAME_SORT, losName.toLowerCase().trim());
 
         if (teachingLang.equals("fi")) {
             doc.addField(SolrUtil.LearningOpportunity.NAME_FI, SolrUtil.resolveTextWithFallback("fi", specialLOS.getName().getTranslations()));

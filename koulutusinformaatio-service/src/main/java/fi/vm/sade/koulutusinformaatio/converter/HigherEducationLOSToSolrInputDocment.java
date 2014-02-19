@@ -138,8 +138,8 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<HigherEdu
         doc.addField(LearningOpportunity.START_DATE_SORT, los.getStartDate());
         //indexDurationField(loi, doc);
         doc.addField(LearningOpportunity.NAME_SORT, String.format("%s, %s",
-                SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getTeachingLanguages(), provider.getName().getTranslations()),
-                SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getTeachingLanguages(), los.getName().getTranslationsShortName())));
+                SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getTeachingLanguages(), provider.getName().getTranslations()).toLowerCase().trim(),
+                SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getTeachingLanguages(), los.getName().getTranslationsShortName())).toLowerCase().trim());
 
 
         //For faceting
