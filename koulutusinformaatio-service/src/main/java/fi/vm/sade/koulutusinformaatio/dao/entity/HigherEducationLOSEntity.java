@@ -122,6 +122,10 @@ public class HigherEducationLOSEntity {
     private int startYear;
     private List<String> availableTranslationLanguages;
 
+    @Embedded
+    private List<CodeEntity> facetPrerequisites;
+
+
     public String getId() {
         return id;
     }
@@ -396,8 +400,13 @@ public class HigherEducationLOSEntity {
     public List<String> getAvailableTranslationLanguages() {
         return availableTranslationLanguages;
     }
-
     public void setAvailableTranslationLanguages(List<String> availableTranslationLanguages) {
         this.availableTranslationLanguages = availableTranslationLanguages;
+    }
+    public List<CodeEntity> getFacetPrerequisites() {
+        return facetPrerequisites;
+    }
+    public void setFacetPrerequisites(List<CodeEntity> facetPrerequisites) {
+        this.facetPrerequisites = facetPrerequisites;
     }
 }
