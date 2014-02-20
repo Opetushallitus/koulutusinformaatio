@@ -45,6 +45,7 @@ public abstract class ObjectCreator {
     protected static final String APPLICATION_OPTIONS_KOODISTO_URI = "hakukohteet";
     protected static final String AIHEET_KOODISTO_URI = "aiheet";
     protected static final String TEEMAT_KOODISTO_URI = "teemat";
+    protected static final String POHJAKOULUTUSFASETTI_KOODISTO_URI = "pohjakoulutusfasetti";
 
 
 
@@ -222,6 +223,18 @@ public abstract class ObjectCreator {
         translations.put(lang, text);
         type.setTranslations(translations);
         return type;
+    }
+    
+    protected List<Code> getFacetPrequisites(List<Code> rawPrereqs) throws KoodistoException {
+        
+        List<Code> facetPrereqs = new ArrayList<Code>();
+        for (Code curRawPrereq : rawPrereqs) {
+            if (curRawPrereq.getUri() != null) {
+                facetPrereqs.addAll(koodistoService.searchSuperCodes(curRawPrereq.getUri(), POHJAKOULUTUSFASETTI_KOODISTO_URI));
+            }
+        }
+        return facetPrereqs;
+        
     }
 
 }

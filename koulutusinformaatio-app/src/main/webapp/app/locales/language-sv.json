@@ -243,11 +243,9 @@
      "yo": "Gymnasium och / eller studentexamen",
      "pk": "Grundskola",
      "er": "Individualiserad lärokurs",
-     "102": "Alempi korkeakoulututkinto (sv)",
-     "123": "Yleinen yliopistokelpoisuus (sv)",
-     "108": "Opisto tai AMK",
-     "109": "Suomalainen ylioppilastutkinto",
-    
+  	 "at": "Ammatillinen tutkinto",
+     "ak": "Ammattikorkeakoulututkinto",
+     "kt": "Kandidaatin tutkinto",
 
     "autocomplete-keyword": "Sökordsförslag",
     "autocomplete-loname": "Kurser och examen",

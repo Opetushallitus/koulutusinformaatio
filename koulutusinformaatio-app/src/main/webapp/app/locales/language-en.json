@@ -248,10 +248,9 @@
     "yo": "Lukio ja / tai ylioppilastutkinto",
     "pk": "Peruskoulu",
     "er": "Yksilöllistetty perusopetus",
-    "102": "Alempi korkeakoulututkinto",
-    "123": "Yleinen yliopistokelpoisuus",
-    "108": "Opisto tai AMK",
-    "109": "Suomalainen ylioppilastutkinto",
+  	"at": "Ammatillinen tutkinto",
+    "ak": "Ammattikorkeakoulututkinto",
+    "kt": "Kandidaatin tutkinto",
     
     "autocomplete-keyword": "Hakusanaehdotukset",
     "autocomplete-loname": "Kurssit ja tutkinnot",

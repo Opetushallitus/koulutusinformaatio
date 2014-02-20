@@ -381,6 +381,9 @@ public class LOSObjectCreator extends ObjectCreator {
 
             }
         }
+        
+        los.setFacetPrerequisites(this.getFacetPrequisites(los.getPrerequisites()));
+        
         return los;
     }
 
