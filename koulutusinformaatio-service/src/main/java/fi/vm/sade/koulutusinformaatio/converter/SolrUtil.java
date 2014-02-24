@@ -32,6 +32,7 @@ public final class SolrUtil {
     }
 
     private static final String FALLBACK_LANG = "fi";
+    private static final String TYPE_FACET = "FASETTI";
 
     public static String resolveTranslationInTeachingLangUseFallback(List<Code> teachingLanguages, Map<String, String> translations) {
         String translation = null;
@@ -72,8 +73,21 @@ public final class SolrUtil {
             }
         }
     }
+    
+    /*
+     * Creates a facet document for the given code, and adds to the list of docs given.
+     */
+    public static void indexCodeAsFacetDoc(Code code, List<SolrInputDocument> docs, boolean useValueAsId) {
+        SolrInputDocument doc = new SolrInputDocument();
+        doc.addField(LearningOpportunity.ID, useValueAsId ? code.getValue() : code.getUri());
+        doc.addField(LearningOpportunity.TYPE, TYPE_FACET);
+        doc.addField(LearningOpportunity.FI_FNAME, resolveTextWithFallback("fi", code.getName().getTranslations()));
+        doc.addField(LearningOpportunity.SV_FNAME, resolveTextWithFallback("sv", code.getName().getTranslations()));
+        doc.addField(LearningOpportunity.EN_FNAME, resolveTextWithFallback("en", code.getName().getTranslations())); 
+        docs.add(doc);
+    }
 
-    public static Object resolveTextWithFallback(String lang,
+    public static String resolveTextWithFallback(String lang,
             Map<String, String> translations) {
         String translation = translations.get(lang);
         if (translation == null) {
@@ -172,7 +186,13 @@ public final class SolrUtil {
         public static final String ED_TYPE_AMMATILLINEN = "et3";
         public static final String ED_TYPE_AMM_ER = "et4";
         public static final String ED_TYPE_VALMENTAVA = "et5";
-        public static final String ED_TYPE_AMK = "et6";
+        public static final String ED_TYPE_AMKS = "et6";
+        public static final String ED_TYPE_AMK = "et6.et7";
+        public static final String ED_TYPE_YLEMPI_AMK = "et6.et8";
+        public static final String ED_TYPE_YOS = "et9";
+        public static final String ED_TYPE_KANDIDAATTI = "et9.et10";
+        public static final String ED_TYPE_MAISTERI = "et9.et11";
+        
         public static final String SPECIAL_EDUCATION = "ER";
         public static final String TIMESTAMP_DOC = "loUpdateTimestampDocument";
         public static final String TYPE_FACET = "FASETTI";

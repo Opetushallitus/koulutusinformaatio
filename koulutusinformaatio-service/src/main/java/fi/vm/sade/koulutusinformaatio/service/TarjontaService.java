@@ -20,6 +20,7 @@ import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
+import fi.vm.sade.koulutusinformaatio.domain.Code;
 
 import java.util.List;
 
@@ -71,4 +72,6 @@ public interface TarjontaService {
      */
 	public HigherEducationLOS findHigherEducationLearningOpportunity(
 			String oid) throws TarjontaParseException, KoodistoException;
+
+    public List<Code> getEdTypeCodes() throws KoodistoException;
 }

@@ -567,9 +567,16 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     		}
     	});
     	
-    	angular.forEach($scope.loResult.edTypeFacet.facetValues, function(fVal, key) {
-    		$scope.loResult.edTypeFacet[fVal.valueId] = fVal;
-    	});	
+    	/*angular.forEach($scope.loResult.edTypeFacet.facetValues, function(fVal, key) {
+    		if (this == fVal.valueId) {
+				$scope.facetSelections.push(fVal);
+			}
+    		angluar.forEach(fVal.childValues, function(childVal, childKey) {
+    			if (this == childVal.valueId) {
+    				$scope.facetSelections.push(childVal);
+    			}
+    		}, curVal);
+    	}, curVal);*/	
     }
     
 

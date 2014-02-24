@@ -215,7 +215,7 @@ public class SearchServiceSolrImpl implements SearchService {
 
         searchResultList.setTeachingLangFacet(getTeachingLangFacet(response, lang));
         searchResultList.setAppStatusFacet(getHaunTila(response));
-        searchResultList.setEdTypeFacet(getEdTypeFacet(response));
+        searchResultList.setEdTypeFacet(getEdTypeFacet(response, lang));
         searchResultList.setFilterFacet(getFilterFacet(facetFilters, lang));
         searchResultList.setPrerequisiteFacet(getPrerequisiteFacet(response, lang));
         searchResultList.setTopicFacet(getTopicFacet(response, lang));
@@ -296,21 +296,42 @@ public class SearchServiceSolrImpl implements SearchService {
     /*
      * Education type facet
      */
-    private Facet getEdTypeFacet(QueryResponse response) {
+    private Facet getEdTypeFacet(QueryResponse response, String lang) {
         Facet edTypeFacet = new Facet();
         FacetField edTypeField = response.getFacetField(LearningOpportunity.EDUCATION_TYPE);
         List<FacetValue> values = new ArrayList<FacetValue>();
+        Map<String, List<FacetValue>> resMap = new HashMap<String, List<FacetValue>>();
+        
         if (edTypeField != null) {
             for (Count curC : edTypeField.getValues()) {
 
                 FacetValue newVal = new FacetValue(LearningOpportunity.EDUCATION_TYPE,
-                        curC.getName(),
+                        getLocalizedFacetName(curC.getName(), lang),
                         curC.getCount(),
                         curC.getName());
-                values.add(newVal);
+                
+                String[] splits = curC.getName().split("\\.");
+                
+                if (splits.length == 2 ) {
+                    String parentStr = splits[0];
+                    if (resMap.containsKey(parentStr)) {
+                        resMap.get(parentStr).add(newVal);
+                    } else {
+                        List<FacetValue> children = new ArrayList<FacetValue>();
+                        children.add(newVal);
+                        resMap.put(parentStr, children);
+                    }
+                } else {
+                    values.add(newVal);
+                }
 
             }
         }
+        
+        for (FacetValue curVal : values) {
+            curVal.setChildValues(resMap.get(curVal.getValueId()));
+        }
+        
         edTypeFacet.setFacetValues(values);
         return edTypeFacet;
     }

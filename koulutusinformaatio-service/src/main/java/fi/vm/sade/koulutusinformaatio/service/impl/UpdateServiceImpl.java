@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
+import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.Location;
@@ -127,6 +128,9 @@ public class UpdateServiceImpl implements UpdateService {
                 this.educationDataUpdateService.save(curLOS);
             }
             LOG.debug("Higher educations saved: ");
+            
+            List<Code> edTypeCodes = this.tarjontaService.getEdTypeCodes();
+            indexerService.addEdTypeCodes(edTypeCodes, loUpdateSolr);
 
             List<Location> locations = locationService.getMunicipalities();
             LOG.debug("Got locations");

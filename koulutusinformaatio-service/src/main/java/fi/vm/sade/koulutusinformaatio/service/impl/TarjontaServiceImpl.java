@@ -19,6 +19,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 
+import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
@@ -69,6 +70,8 @@ public class TarjontaServiceImpl implements TarjontaService {
     private LearningOpportunityDirector loDirector;
     private TarjontaRawService tarjontaRawService;
     private LOSObjectCreator creator;
+    
+    private static final String ED_TYPE_FACET_KOODISTO = "koulutustyyppifasetti";
 
 
     @Autowired
@@ -283,5 +286,9 @@ public class TarjontaServiceImpl implements TarjontaService {
         this.creator = creator;
     }
 
+    @Override
+    public List<Code> getEdTypeCodes() throws KoodistoException {
+        return koodistoService.searchCodesByKoodisto(ED_TYPE_FACET_KOODISTO, null);
+    }
 
 }

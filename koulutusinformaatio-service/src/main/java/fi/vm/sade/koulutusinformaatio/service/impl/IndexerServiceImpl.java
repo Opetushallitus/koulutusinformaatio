@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LocationFields;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 
@@ -283,6 +284,17 @@ public class IndexerServiceImpl implements IndexerService {
         } else {
             return translations.values().iterator().next();
         }
+    }
+
+    @Override
+    public void addEdTypeCodes(List<Code> edTypeCodes,
+            HttpSolrServer loUpdateSolr) throws IOException,
+            SolrServerException {
+        List<SolrInputDocument> edTypeDocs = Lists.newArrayList();
+        for (Code curEdType : edTypeCodes) {
+            SolrUtil.indexCodeAsFacetDoc(curEdType, edTypeDocs, true);
+        }
+        loUpdateSolr.add(edTypeDocs);
     }
 
 }

@@ -42,6 +42,24 @@
 </div>
 
 <div class="filter">
+    <h4 title="{{locales.openCloseFacet}}" data-ng-click="toggleCollapsed(3)" class="collapser" data-ng-class="{open: !collapsed[3], close: collapsed[3]}">
+        <span class="icon"></span>
+        <span data-ki-i18n="haettava-koulutus"></span>      
+    </h4>
+    <div collapse="collapsed[3]" class="collapse">
+        <div
+            class="collapse-content-container"
+            data-angular-treeview="true"
+            data-tree-model="loResult.edTypeFacet.facetValues"
+            data-tree-id="edTypeTree"
+            data-node-id="valueId"
+            data-node-label="valueName"
+            data-node-children="childValues" >
+        </div>
+    </div>
+</div>
+
+<!--<div class="filter">
     <h4 title="{{locales.openCloseFacet}}" data-ng-click="toggleCollapsed(0)" class="collapser" data-ng-class="{open: !collapsed[0], close: collapsed[0]}">
         <span class="icon"></span>
         <span data-ki-i18n="haettava-koulutus"></span>
@@ -112,7 +130,7 @@
         </ul>
     </div>
 </div>
-
+-->
  <div class="filter">
 		<h4 title="{{locales.openCloseFacet}}" data-ng-click="toggleCollapsed(1)" class="collapser"
 			data-ng-class="{open: !collapsed[1], close: collapsed[1]}">
