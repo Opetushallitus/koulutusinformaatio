@@ -228,13 +228,14 @@ public abstract class ObjectCreator {
     protected List<Code> getFacetPrequisites(List<Code> rawPrereqs) throws KoodistoException {
         
         List<Code> facetPrereqs = new ArrayList<Code>();
-        for (Code curRawPrereq : rawPrereqs) {
-            if (curRawPrereq.getUri() != null) {
-                facetPrereqs.addAll(koodistoService.searchSuperCodes(curRawPrereq.getUri(), POHJAKOULUTUSFASETTI_KOODISTO_URI));
+        if (rawPrereqs != null) {
+            for (Code curRawPrereq : rawPrereqs) {
+                if (curRawPrereq.getUri() != null) {
+                    facetPrereqs.addAll(koodistoService.searchSuperCodes(curRawPrereq.getUri(), POHJAKOULUTUSFASETTI_KOODISTO_URI));
+                }
             }
         }
         return facetPrereqs;
-        
     }
 
 }

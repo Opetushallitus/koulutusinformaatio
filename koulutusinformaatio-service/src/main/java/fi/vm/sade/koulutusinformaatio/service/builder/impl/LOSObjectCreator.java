@@ -380,6 +380,7 @@ public class LOSObjectCreator extends ObjectCreator {
                 ao.setParent(createParetLosRef(los));
 
             }
+            
         }
         
         los.setFacetPrerequisites(this.getFacetPrequisites(los.getPrerequisites()));

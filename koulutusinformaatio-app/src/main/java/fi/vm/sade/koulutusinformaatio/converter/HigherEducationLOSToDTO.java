@@ -50,7 +50,6 @@ public class HigherEducationLOSToDTO {
         dto.setCreditUnit(ConverterUtil.getTextByLanguage(los.getCreditUnit(), uiLang));
 
         //DO MORE
-
         dto.setPrerequisites(CodeToDTO.convertAll(los.getPrerequisites(), lang));
         dto.setFormOfTeaching(ConverterUtil.getTextsByLanguage(los.getFormOfTeaching(), uiLang));
         dto.setProfessionalTitles(ConverterUtil.getTextsByLanguage(los.getProfessionalTitles(), uiLang));
