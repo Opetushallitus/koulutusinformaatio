@@ -243,9 +243,9 @@
      "yo": "Gymnasium och / eller studentexamen",
      "pk": "Grundskola",
      "er": "Individualiserad lärokurs",
-  	 "at": "Ammatillinen tutkinto",
-     "ak": "Ammattikorkeakoulututkinto",
-     "kt": "Kandidaatin tutkinto",
+  	 "at": "Yrkesexamen",
+     "ak": "Yrkeshögskoleexamen",
+     "kt": "Kandidatexamen",
 
     "autocomplete-keyword": "Sökordsförslag",
     "autocomplete-loname": "Kurser och examen",
