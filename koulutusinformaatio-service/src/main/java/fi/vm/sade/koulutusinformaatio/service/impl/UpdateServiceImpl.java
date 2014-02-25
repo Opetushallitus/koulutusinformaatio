@@ -104,9 +104,9 @@ public class UpdateServiceImpl implements UpdateService {
                     }
                     for (LOS spec : specifications) {
                         this.indexerService.addLearningOpportunitySpecification(spec, loUpdateSolr, lopUpdateSolr);
+                        this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
                         this.educationDataUpdateService.save(spec);
                     }
-                    this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
                 }
 
             }
