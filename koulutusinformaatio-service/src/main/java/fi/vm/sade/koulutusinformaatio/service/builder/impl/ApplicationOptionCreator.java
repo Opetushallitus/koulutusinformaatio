@@ -310,9 +310,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         ao.setLastYearApplicantCount(hakukohde.getEdellisenVuodenHakijatLkm());
         ao.setSelectionCriteria(getI18nText(hakukohde.getValintaperusteKuvaukset()));
         ao.setSoraDescription(getI18nText(hakukohde.getSoraKuvaukset()));
-        if (hakukohde.getHakukelpoisuusVaatimusKuvaukset() != null) {
-            ao.setEligibilityDescription(getI18nText(hakukohde.getHakukelpoisuusVaatimusKuvaukset()));
-        }
+        ao.setEligibilityDescription(getI18nText(hakukohde.getHakukelpoisuusVaatimusKuvaukset()));
         ao.setExams(educationObjectCreator.createExamsHigherEducation(hakukohde.getValintakokeet()));
         ao.setKaksoistutkinto(false);
         ao.setVocational(false);
