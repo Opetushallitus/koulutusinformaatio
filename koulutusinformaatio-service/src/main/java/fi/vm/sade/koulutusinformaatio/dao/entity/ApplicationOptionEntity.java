@@ -82,6 +82,8 @@ public class ApplicationOptionEntity {
     private boolean athleteEducation;
     private boolean vocational;
     private String educationCodeUri;
+    @Embedded
+    private I18nTextEntity eligibilityDescription;
 
 
     public ApplicationOptionEntity() {
@@ -349,6 +351,12 @@ public class ApplicationOptionEntity {
     }
     public void setSoraDescription(I18nTextEntity soraDescription) {
         this.soraDescription = soraDescription;
+    }
+    public I18nTextEntity getEligibilityDescription() {
+        return eligibilityDescription;
+    }
+    public void setEligibilityDescription(I18nTextEntity prerequisiteDescription) {
+        this.eligibilityDescription = prerequisiteDescription;
     }
 
 }

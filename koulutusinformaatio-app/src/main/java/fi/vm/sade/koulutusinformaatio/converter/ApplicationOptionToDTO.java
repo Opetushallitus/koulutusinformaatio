@@ -72,6 +72,9 @@ public final class ApplicationOptionToDTO {
             dto.setAthleteEducation(applicationOption.isAthleteEducation());
             dto.setEducationCodeUri(applicationOption.getEducationCodeUri());
             dto.setStatus(applicationOption.getStatus());
+            if (applicationOption.getEligibilityDescription() != null) {
+               dto.setEligibilityDescription(ConverterUtil.getTextByLanguage(applicationOption.getEligibilityDescription(), uiLang));
+            }
             return dto;
         }
         return null;

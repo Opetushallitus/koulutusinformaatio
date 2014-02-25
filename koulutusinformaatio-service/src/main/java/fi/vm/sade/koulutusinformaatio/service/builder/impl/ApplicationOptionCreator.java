@@ -301,8 +301,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
     public ApplicationOption createHigherEducationApplicationOption(HigherEducationLOS los, HakukohdeV1RDTO hakukohde, HakuV1RDTO haku) throws KoodistoException {
         ApplicationOption ao = new ApplicationOption();
         ao.setId(hakukohde.getOid());
-        ao.setName(super.getI18nText(hakukohde.getHakukohteenNimet())); //koodistoService.searchFirst(hakukohdeDTO.getHakukohdeNimiUri()));
-        //ao.setAoIdentifier(//koodistoService.searchFirstCodeValue(hakukohdeDTO.getHakukohdeNimiUri()));
+        ao.setName(super.getI18nText(hakukohde.getHakukohteenNimet())); 
         ao.setAthleteEducation(false);
         ao.setStartingQuota(hakukohde.getAloituspaikatLkm());
         ao.setLowestAcceptedScore(hakukohde.getAlinValintaPistemaara());
@@ -311,6 +310,9 @@ public class ApplicationOptionCreator extends ObjectCreator {
         ao.setLastYearApplicantCount(hakukohde.getEdellisenVuodenHakijatLkm());
         ao.setSelectionCriteria(getI18nText(hakukohde.getValintaperusteKuvaukset()));
         ao.setSoraDescription(getI18nText(hakukohde.getSoraKuvaukset()));
+        if (hakukohde.getHakukelpoisuusVaatimusKuvaukset() != null) {
+            ao.setEligibilityDescription(getI18nText(hakukohde.getHakukelpoisuusVaatimusKuvaukset()));
+        }
         ao.setExams(educationObjectCreator.createExamsHigherEducation(hakukohde.getValintakokeet()));
         ao.setKaksoistutkinto(false);
         ao.setVocational(false);
@@ -318,7 +320,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
 
         ao.setRequiredBaseEducations(hakukohde.getHakukelpoisuusvaatimusUris());
         los.setPrerequisites(koodistoService.searchCodesMultiple(hakukohde.getHakukelpoisuusvaatimusUris()));
-        //haku.getNimi().
+       
         ApplicationSystem as = new ApplicationSystem();
         as.setId(haku.getOid());
         as.setMaxApplications(haku.getMaxHakukohdes());
@@ -338,7 +340,6 @@ public class ApplicationOptionCreator extends ObjectCreator {
 
         ao.setTeachingLanguages(extractCodeVales(los.getTeachingLanguages()));
 
-        //ao.setPrerequisite(prerequisite);
         ao.setSpecificApplicationDates(hakukohde.isKaytetaanHakukohdekohtaistaHakuaikaa());
         if (ao.isSpecificApplicationDates()) {
             ao.setApplicationStartDate(hakukohde.getHakuaikaAlkuPvm());
@@ -361,38 +362,6 @@ public class ApplicationOptionCreator extends ObjectCreator {
         }
         ao.setAttachments(attachments);
         ao.setAdditionalInfo(getI18nText(hakukohde.getLisatiedot()));
-
-        //TODO TARVITAANKO NÄITÄ???
-        // set child loi names to application option
-        /*List<OidRDTO> komotosByHakukohdeOID = tarjontaRawService.getKomotosByHakukohde(hakukohdeDTO.getOid());
-        for (OidRDTO s : komotosByHakukohdeOID) {
-            KomoDTO komoByKomotoOID = tarjontaRawService.getKomoByKomoto(s.getOid());
-
-            if (not(
-                    and(
-                            CreatorUtil.komoPublished,
-                            CreatorUtil.komoHasKoulutusohjelmaKoodi,
-                            CreatorUtil.komoHasTutkintonimike
-                    )
-            ).apply(komoByKomotoOID)) {
-                LOG.debug(String.format("Skipping invalid child komo %s", komoByKomotoOID.getOid()));
-                continue;
-            }
-
-            KomotoDTO k = tarjontaRawService.getKomoto(s.getOid());
-            if (not(CreatorUtil.komotoPublished).apply(k)) {
-                LOG.debug(String.format("Skipping invalid child komoto %s", k.getOid()));
-                continue;
-            }
-
-            ChildLOIRef cRef = new ChildLOIRef();
-            cRef.setId(s.getOid());
-            cRef.setLosId(CreatorUtil.resolveLOSId(komoByKomotoOID.getOid(), childKomoto.getTarjoajaOid()));
-            cRef.setName(koodistoService.searchFirst(komoByKomotoOID.getKoulutusOhjelmaKoodiUri()));
-            cRef.setQualification(koodistoService.searchFirst(komoByKomotoOID.getTutkintonimikeUri()));
-            cRef.setPrerequisite(prerequisite);
-            ao.getChildLOIRefs().add(cRef);
-        }*/
         return ao;
     }
 
