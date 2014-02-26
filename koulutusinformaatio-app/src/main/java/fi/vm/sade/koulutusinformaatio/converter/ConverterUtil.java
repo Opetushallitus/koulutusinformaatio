@@ -95,6 +95,20 @@ public final class ConverterUtil {
         }
         return texts;
     }
+    
+    public static List<String> getTextsByLanguageUseFallbackLang(final List<I18nText> list, String lang) {
+        lang = lang.toLowerCase();
+        List<String> texts = new ArrayList<String>();
+        if (list != null) {
+            for (I18nText text : list) {
+                String value = getTextByLanguageUseFallbackLang(text, lang);
+                if (value != null) {
+                    texts.add(value);
+                }
+            }
+        }
+        return texts;
+    }
 
     public static List<String> getShortNameTextsByLanguage(final List<I18nText> list, String lang) {
         lang = lang.toLowerCase();

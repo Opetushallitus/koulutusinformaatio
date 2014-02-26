@@ -29,17 +29,17 @@ public class HigherEducationLOSToDTO {
         dto.setEducationDegreeName(ConverterUtil.getTextByLanguageUseFallbackLang(los.getEducationDegreeLang(), lang));
         dto.setDegreeTitle(ConverterUtil.getTextByLanguageUseFallbackLang(los.getDegreeTitle(), lang));
         dto.setQualification(ConverterUtil.getTextByLanguageUseFallbackLang(los.getQualification(), lang));
-        dto.setGoals(ConverterUtil.getTextByLanguage(los.getGoals(), lang));
-        dto.setStructure(ConverterUtil.getTextByLanguage(los.getStructure(), lang));
-        dto.setAccessToFurtherStudies(ConverterUtil.getTextByLanguage(los.getAccessToFurtherStudies(), lang));
-        dto.setInfoAboutTeachingLangs(ConverterUtil.getTextByLanguage(los.getInfoAboutTeachingLangs(), lang));
-        dto.setMajorSelection(ConverterUtil.getTextByLanguage(los.getMajorSelection(), lang));
-        dto.setInfoAboutCharge(ConverterUtil.getTextByLanguage(los.getInfoAboutCharge(), lang));
-        dto.setInfoAboutCharge(ConverterUtil.getTextByLanguage(los.getInfoAboutCharge(), lang));
-        dto.setFinalExam(ConverterUtil.getTextByLanguage(los.getFinalExam(), lang));
-        dto.setCareerOpportunities(ConverterUtil.getTextByLanguage(los.getCareerOpportunities(), lang));
-        dto.setCompetence(ConverterUtil.getTextByLanguage(los.getCompetence(), lang));
-        dto.setResearchFocus(ConverterUtil.getTextByLanguage(los.getResearchFocus(), lang));
+        dto.setGoals(ConverterUtil.getTextByLanguageUseFallbackLang(los.getGoals(), lang));
+        dto.setStructure(ConverterUtil.getTextByLanguageUseFallbackLang(los.getStructure(), lang));
+        dto.setAccessToFurtherStudies(ConverterUtil.getTextByLanguageUseFallbackLang(los.getAccessToFurtherStudies(), lang));
+        dto.setInfoAboutTeachingLangs(ConverterUtil.getTextByLanguageUseFallbackLang(los.getInfoAboutTeachingLangs(), lang));
+        dto.setMajorSelection(ConverterUtil.getTextByLanguageUseFallbackLang(los.getMajorSelection(), lang));
+        dto.setInfoAboutCharge(ConverterUtil.getTextByLanguageUseFallbackLang(los.getInfoAboutCharge(), lang));
+        dto.setInfoAboutCharge(ConverterUtil.getTextByLanguageUseFallbackLang(los.getInfoAboutCharge(), lang));
+        dto.setFinalExam(ConverterUtil.getTextByLanguageUseFallbackLang(los.getFinalExam(), lang));
+        dto.setCareerOpportunities(ConverterUtil.getTextByLanguageUseFallbackLang(los.getCareerOpportunities(), lang));
+        dto.setCompetence(ConverterUtil.getTextByLanguageUseFallbackLang(los.getCompetence(), lang));
+        dto.setResearchFocus(ConverterUtil.getTextByLanguageUseFallbackLang(los.getResearchFocus(), lang));
 
         //dto.setLois(UpperSecondaryLOIToDTO.convertAll(los.getLois(), lang, uiLang));
         dto.setProvider(ProviderToDTO.convert(los.getProvider(), lang, "fi"));
@@ -47,14 +47,14 @@ public class HigherEducationLOSToDTO {
         dto.setAvailableTranslationLanguages(los.getAvailableTranslationLanguages());
         dto.setCreditValue(los.getCreditValue());
 
-        dto.setCreditUnit(ConverterUtil.getTextByLanguage(los.getCreditUnit(), uiLang));
+        dto.setCreditUnit(ConverterUtil.getTextByLanguageUseFallbackLang(los.getCreditUnit(), uiLang));
 
         //DO MORE
         dto.setPrerequisites(CodeToDTO.convertAll(los.getPrerequisites(), lang));
-        dto.setFormOfTeaching(ConverterUtil.getTextsByLanguage(los.getFormOfTeaching(), uiLang));
-        dto.setProfessionalTitles(ConverterUtil.getTextsByLanguage(los.getProfessionalTitles(), uiLang));
-        dto.setTeachingTimes(ConverterUtil.getTextsByLanguage(los.getTeachingTimes(), uiLang));
-        dto.setTeachingPlaces(ConverterUtil.getTextsByLanguage(los.getTeachingPlaces(), uiLang));
+        dto.setFormOfTeaching(ConverterUtil.getTextsByLanguageUseFallbackLang(los.getFormOfTeaching(), uiLang));
+        dto.setProfessionalTitles(ConverterUtil.getTextsByLanguageUseFallbackLang(los.getProfessionalTitles(), uiLang));
+        dto.setTeachingTimes(ConverterUtil.getTextsByLanguageUseFallbackLang(los.getTeachingTimes(), uiLang));
+        dto.setTeachingPlaces(ConverterUtil.getTextsByLanguageUseFallbackLang(los.getTeachingPlaces(), uiLang));
         dto.setTeachingLanguages(CodeToValue.convertAll(los.getTeachingLanguages()));
         //TODO: --> dto.setFormOfEducation(ConverterUtil.getTextsByLanguage(los.getFormOfEducation(), uiLang));
         if (los.getStartDate() != null) {
@@ -63,9 +63,9 @@ public class HigherEducationLOSToDTO {
             dto.setStartYear(los.getStartYear());
             dto.setStartSeason(ConverterUtil.getTextByLanguageUseFallbackLang(los.getStartSeason(), lang));
         }
-        dto.setInternationalization(ConverterUtil.getTextByLanguage(los.getInternationalization(), lang));
-        dto.setCooperation(ConverterUtil.getTextByLanguage(los.getCooperation(), lang));
-        dto.setContent(ConverterUtil.getTextByLanguage(los.getContent(), lang));
+        dto.setInternationalization(ConverterUtil.getTextByLanguageUseFallbackLang(los.getInternationalization(), lang));
+        dto.setCooperation(ConverterUtil.getTextByLanguageUseFallbackLang(los.getCooperation(), lang));
+        dto.setContent(ConverterUtil.getTextByLanguageUseFallbackLang(los.getContent(), lang));
         dto.setContactPersons(ContactPersonToDTO.convertAll(los.getContactPersons()));
         dto.setPlannedDuration(los.getPlannedDuration());
         dto.setPlannedDuration(los.getPlannedDuration());
