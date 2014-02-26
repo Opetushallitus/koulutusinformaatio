@@ -252,6 +252,8 @@
   	"at": "Ammatillinen tutkinto",
     "ak": "Ammattikorkeakoulututkinto",
     "kt": "Kandidaatin tutkinto",
+    "kandidaattiYm": "Kandidaatin tutkinto",
+    "lukioYm": "Lukio ja/tai ylioppilastutkinto ym.",
     
     "autocomplete-keyword": "Hakusanaehdotukset",
     "autocomplete-loname": "Kurssit ja tutkinnot",

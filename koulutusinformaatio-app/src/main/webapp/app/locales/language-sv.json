@@ -247,6 +247,8 @@
   	 "at": "Yrkesexamen",
      "ak": "Yrkeshögskoleexamen",
      "kt": "Kandidatexamen",
+     "kandidaattiYm": "Kandidatexamen",
+     "lukioYm": "Gymnasium och / eller studentexamen ym.",
 
     "autocomplete-keyword": "Sökordsförslag",
     "autocomplete-loname": "Kurser och examen",
