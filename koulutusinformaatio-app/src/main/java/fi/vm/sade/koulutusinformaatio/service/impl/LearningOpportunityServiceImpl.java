@@ -250,8 +250,8 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
 	public HigherEducationLOSDTO getHigherEducationLearningOpportunity(
 			String id, String uiLang) throws ResourceNotFoundException {
 		HigherEducationLOS los = educationDataQueryService.getHigherEducationLearningOpportunity(id);
-		String lang = (los.getTeachingLanguages() != null && !los.getTeachingLanguages().isEmpty()) ? los.getTeachingLanguages().get(0).getValue().toLowerCase() : LANG_FI;//resolveDefaultLanguage(los.getTeachingLanguages());
-        return HigherEducationLOSToDTO.convert(los, lang, uiLang);
+		//String lang = (los.getTeachingLanguages() != null && !los.getTeachingLanguages().isEmpty()) ? los.getTeachingLanguages().get(0).getValue().toLowerCase() : LANG_FI;//resolveDefaultLanguage(los.getTeachingLanguages());
+        return HigherEducationLOSToDTO.convert(los, uiLang, uiLang);
 	}
 
 	@Override
@@ -259,7 +259,7 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
 			String id, String lang, String uiLang)
 			throws ResourceNotFoundException {
 		HigherEducationLOS los = educationDataQueryService.getHigherEducationLearningOpportunity(id);
-		return HigherEducationLOSToDTO.convert(los, lang, uiLang);
+		return HigherEducationLOSToDTO.convert(los, uiLang, uiLang);
 	}
 	
 	@Override
@@ -267,7 +267,7 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
 			String id, String lang, String uiLang)
 			throws ResourceNotFoundException {
 		HigherEducationLOS los = this.previewService.previewHigherEducationLearningOpportunity(id);
-		return HigherEducationLOSToDTO.convert(los, lang, uiLang);
+		return HigherEducationLOSToDTO.convert(los, uiLang, uiLang);
 	}
 
 }

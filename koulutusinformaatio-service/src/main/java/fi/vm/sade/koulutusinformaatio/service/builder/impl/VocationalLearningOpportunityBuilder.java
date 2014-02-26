@@ -204,14 +204,11 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
                 
             }
             for (ParentLOI parentLOI : parentLOS.getLois()) {
-                parentLOI.setApplicationOptions(Sets.newHashSet(applicationOptionsByParentLOIId.get(parentLOI.getId())));
+                parentLOI.setApplicationOptions(Lists.newArrayList(applicationOptionsByParentLOIId.get(parentLOI.getId())));
                 parentLOI.setAvailableTranslationLanguages(Lists.newArrayList(availableTranslationLangsByParentLOIId.get(parentLOI.getId())));
             }
             parentLOS.setChildren(children);
             parentLOS.setTeachingLanguages(new ArrayList<Code>(codeLang.values()));
-            /*if (parentLOS.getTeachingLanguages().size() != 1) {
-                LOG.error(String.format("%s%s%s%s", "Data problem: ", parentLOS.getTeachingLanguages().size(), " teaching langauges for parentLOS ", parentLOS.getId()));
-            }*/
         }
         return this;
     }

@@ -33,7 +33,10 @@
                     </li>
                     <li>
                         <span data-ki-i18n="language-of-instruction" data-show-colon="true" class="margin-right-1"></span>
-                        <span class="bold">{{lo.teachingLanguage}}</span>
+                       <!--<span class="bold">{{lo.teachingLanguage}}</span>-->
+                        <span data-ng-repeat="tl in lo.teachingLanguages">
+                    		<span class="bold">{{tl}}</span><span data-ng-show="!$last">,</span>
+                		</span>
                     </li>
                     <li>
                         <span data-ki-i18n="duration" data-show-colon="true" class="margin-right-1"></span>
@@ -62,6 +65,7 @@
                 </ul>
             </div>
             <div data-render-extendable-text-block data-title="{{as.name}}" data-content="{{ao.selectionCriteria}}"></div>
+            <div data-render-text-block data-title="eligibility-description" data-content="{{ao.eligibilityDescription}}"></div>
             <div data-render-text-block data-title="sora" data-content="{{ao.soraDescription}}"></div>
             <div data-ki-render-exams></div>
             <div data-ki-render-attachments></div>

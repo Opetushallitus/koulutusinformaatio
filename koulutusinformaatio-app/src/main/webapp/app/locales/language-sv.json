@@ -123,6 +123,7 @@
     "additional-proof-scores": "Tilläggsprestationer kan ge __min__ - __max__ poäng. Lägsta godkända poängantal är __threshold__.",
     "overall-scores": "Lägsta godkända poängantal för inträdesprov och tilläggsprestationer är __threshold__ poäng.",
     "further-application-info": "Tilläggsinformation om ansökan",
+    "eligibility-description": "Hakukelpoisuusvaatimukset (sv)",
     "info-center": "Ansökningsrådgivning",
 
     "academy-description": "Presentation av läroanstalten",
@@ -248,9 +249,11 @@
      "yo": "Gymnasium och / eller studentexamen",
      "pk": "Grundskola",
      "er": "Individualiserad lärokurs",
-  	 "at": "Ammatillinen tutkinto",
-     "ak": "Ammattikorkeakoulututkinto",
-     "kt": "Kandidaatin tutkinto",
+  	 "at": "Yrkesexamen",
+     "ak": "Yrkeshögskoleexamen",
+     "kt": "Kandidatexamen",
+     "kandidaattiYm": "Kandidatexamen",
+     "lukioYm": "Gymnasium och / eller studentexamen ym.",
 
     "autocomplete-keyword": "Sökordsförslag",
     "autocomplete-loname": "Kurser och examen",

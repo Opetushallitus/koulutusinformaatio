@@ -125,7 +125,6 @@ public class HigherEducationLOSEntity {
     @Embedded
     private List<CodeEntity> facetPrerequisites;
 
-
     public String getId() {
         return id;
     }
@@ -409,4 +408,5 @@ public class HigherEducationLOSEntity {
     public void setFacetPrerequisites(List<CodeEntity> facetPrerequisites) {
         this.facetPrerequisites = facetPrerequisites;
     }
+
 }

@@ -125,6 +125,7 @@
     "additional-proof-scores": "Lisänäytöistä voit saada __min__ – __max__ pistettä. Alin hyväksyttävä pistemäärä on __threshold__.",
     "overall-scores": "Pääsykokeen ja lisänäyttöjen alin hyväksytty yhteispistemäärä on __threshold__ pistettä.",
     "further-application-info": "Lisätietoa hakemisesta",
+    "eligibility-description": "Hakukelpoisuusvaatimukset",
     "info-center": "Hakuneuvonta",
 
     "academy-description": "Oppilaitoksen esittely",
@@ -253,6 +254,8 @@
   	"at": "Ammatillinen tutkinto",
     "ak": "Ammattikorkeakoulututkinto",
     "kt": "Kandidaatin tutkinto",
+    "kandidaattiYm": "Kandidaatin tutkinto",
+    "lukioYm": "Lukio ja/tai ylioppilastutkinto ym.",
     
     
     "autocomplete-keyword": "Hakusanaehdotukset",

@@ -22,11 +22,7 @@ import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
-import fi.vm.sade.tarjonta.service.resources.dto.OsoiteRDTO;
-import fi.vm.sade.tarjonta.service.resources.dto.TekstiRDTO;
-import fi.vm.sade.tarjonta.service.resources.dto.ValintakoeAjankohtaRDTO;
-import fi.vm.sade.tarjonta.service.resources.dto.ValintakoePisterajaRDTO;
-import fi.vm.sade.tarjonta.service.resources.dto.ValintakoeRDTO;
+import fi.vm.sade.tarjonta.service.resources.dto.*;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ValintakoeV1RDTO;
 
 import java.util.HashMap;
@@ -181,19 +177,38 @@ public class EducationObjectCreator extends ObjectCreator {
             }
             return exams;
         }
-        return null;
-    }
+		return null;
+	}
 
-    private I18nText getI18nTextEnriched(TekstiRDTO valintakokeenKuvaus) {
-        if (!Strings.isNullOrEmpty(valintakokeenKuvaus.getArvo()) && !Strings.isNullOrEmpty(valintakokeenKuvaus.getTeksti())) {
-            Map<String,String> translations = new HashMap<String,String>();
-            translations.put(valintakokeenKuvaus.getArvo().toLowerCase(), valintakokeenKuvaus.getTeksti());
-            I18nText text = new I18nText();
-            text.setTranslations(translations);
-            return text;
+    public List<ApplicationOptionAttachment> createApplicationOptionAttachments(List<HakukohdeLiiteDTO> hakukohdeLiiteDTOs) throws KoodistoException {
+        if (hakukohdeLiiteDTOs != null) {
+            List<ApplicationOptionAttachment> attachments = Lists.newArrayList();
+            if (!hakukohdeLiiteDTOs.isEmpty()) {
+                for (HakukohdeLiiteDTO liite : hakukohdeLiiteDTOs) {
+                    ApplicationOptionAttachment attach = new ApplicationOptionAttachment();
+                    attach.setDueDate(liite.getErapaiva());
+                    attach.setType(koodistoService.searchFirst(liite.getLiitteenTyyppiUri()));
+                    attach.setDescreption(getI18nText(liite.getKuvaus()));
+                    attach.setAddress(createAddress(liite.getToimitusosoite()));
+                    attachments.add(attach);
+                }
+            }
+            return attachments;
         }
-        return null;
+        else {
+            return null;
+        }
     }
 
+	private I18nText getI18nTextEnriched(TekstiRDTO valintakokeenKuvaus) {
+		if (!Strings.isNullOrEmpty(valintakokeenKuvaus.getArvo()) && !Strings.isNullOrEmpty(valintakokeenKuvaus.getTeksti())) {
+			Map<String,String> translations = new HashMap<String,String>();
+			translations.put(valintakokeenKuvaus.getArvo().toLowerCase(), valintakokeenKuvaus.getTeksti());
+			I18nText text = new I18nText();
+			text.setTranslations(translations);
+			return text;
+		}
+		return null;
+	}
 
 }

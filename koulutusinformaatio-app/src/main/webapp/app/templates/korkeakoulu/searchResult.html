@@ -1,9 +1,13 @@
 <div class="result-content">
     <h2 title="{{locales.openEducation}}"><a href="{{lo.linkHref}}">{{lo.lopName}}, {{lo.name}}<span data-ng-show="lo.credits != null">, {{lo.credits}}</span></a></h2>
-    <span class="italic">
-        <span>{{lo.educationDegree}}</span><br />
-        <span data-ki-i18n="application-prerequisite" data-show-colon="true"></span>
-        <span data-ki-i18n="yo"></span><br />
+    <span class="italic">{{lo.educationDegree}}</span><br />
+    <span class="italic" data-ng-show="lo.educationDegreeCode == 'koulutusasteoph2002_72'">
+       	<span data-ki-i18n="application-prerequisite" data-show-colon="true"></span>
+        <span data-ki-i18n="kandidaattiYm"></span><br />
+    </span>
+    <span class="italic" data-ng-show="lo.educationDegreeCode != 'koulutusasteoph2002_72'">
+       	<span data-ki-i18n="application-prerequisite" data-show-colon="true"></span>
+        <span data-ki-i18n="lukioYm"></span><br />
     </span>
     <span>{{lo.lopName}}</span>
 </div>

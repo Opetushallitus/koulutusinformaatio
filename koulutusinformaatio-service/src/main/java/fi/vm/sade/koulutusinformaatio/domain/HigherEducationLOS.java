@@ -62,8 +62,6 @@ public class HigherEducationLOS extends LOS {
     private List<ApplicationOption> applicationOptions;
 
     private String komoOid;
-    //private List<String> childKomoOids = new ArrayList<String>();
-    //private List<String> parentKomoOids = new ArrayList<String>();
 
     private List<HigherEducationLOS> children = new ArrayList<HigherEducationLOS>();
     private List<HigherEducationLOS> parents = new ArrayList<HigherEducationLOS>();

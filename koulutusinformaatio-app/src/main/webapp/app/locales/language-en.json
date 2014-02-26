@@ -128,6 +128,7 @@
     "additional-proof-scores": "You can get awarded __min__ – __max__ points for extra achievements. The minimum passing score is __threshold__.",
     "overall-scores": "The minimum passing total score from the entrance examination and the extra achievements is __threshold__ points.",
     "further-application-info": "Additional information on applying",
+    "eligibility-description": "Eligibility",
     "info-center": "Application services",
 
     "academy-description": "Oppilaitoksen esittely",
@@ -256,6 +257,8 @@
   	"at": "Ammatillinen tutkinto",
     "ak": "Ammattikorkeakoulututkinto",
     "kt": "Kandidaatin tutkinto",
+    "kandidaattiYm": "Kandidaatin tutkinto",
+    "lukioYm": "Lukio ja/tai ylioppilastutkinto ym.",
     
     "autocomplete-keyword": "Hakusanaehdotukset",
     "autocomplete-loname": "Kurssit ja tutkinnot",

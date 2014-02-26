@@ -75,8 +75,7 @@ public class ApplicationOption {
     private String educationCodeUri;
     private I18nText soraDescription;
     private String status;
-
-
+    private I18nText eligibilityDescription;
 
 
     public String getId() {
@@ -383,6 +382,14 @@ public class ApplicationOption {
         else {
             return applicationSystem.getApplicationDates();
         }
+    }
+
+    public void setEligibilityDescription(I18nText i18nText) {
+        this.eligibilityDescription = i18nText;
+    }
+
+    public I18nText getEligibilityDescription() {
+        return eligibilityDescription;
     }
 
 }

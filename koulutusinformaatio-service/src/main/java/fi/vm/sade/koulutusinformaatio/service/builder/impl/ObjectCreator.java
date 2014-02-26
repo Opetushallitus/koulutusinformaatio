@@ -17,7 +17,6 @@
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
 import com.google.common.base.Strings;
-
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
@@ -28,13 +27,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiUrisV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.NimiV1RDTO;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Hannu Lyytikainen
@@ -228,13 +221,14 @@ public abstract class ObjectCreator {
     protected List<Code> getFacetPrequisites(List<Code> rawPrereqs) throws KoodistoException {
         
         List<Code> facetPrereqs = new ArrayList<Code>();
-        for (Code curRawPrereq : rawPrereqs) {
-            if (curRawPrereq.getUri() != null) {
-                facetPrereqs.addAll(koodistoService.searchSuperCodes(curRawPrereq.getUri(), POHJAKOULUTUSFASETTI_KOODISTO_URI));
+        if (rawPrereqs != null) {
+            for (Code curRawPrereq : rawPrereqs) {
+                if (curRawPrereq.getUri() != null) {
+                    facetPrereqs.addAll(koodistoService.searchSuperCodes(curRawPrereq.getUri(), POHJAKOULUTUSFASETTI_KOODISTO_URI));
+                }
             }
         }
         return facetPrereqs;
-        
     }
 
 }

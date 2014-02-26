@@ -153,6 +153,16 @@ public final class SolrUtil {
         public static final String CREDITS = "credits_ss";
         public static final String EDUCATION_DEGREE = "educationDegree_ss";
         public static final String EDUCATION_DEGREE_CODE = "educationDegreeCode_ss";
+        public static final String EDUCATION_DEGREE_FI = "educationDegree_fi_ss";
+        public static final String EDUCATION_DEGREE_SV = "educationDegree_sv_ss";
+        public static final String EDUCATION_DEGREE_EN = "educationDegree_en_ss";
+        public static final String NAME_DISPLAY_FI = "name_fi_ss";
+        public static final String NAME_DISPLAY_SV = "name_sv_ss";
+        public static final String NAME_DISPLAY_EN = "name_en_ss";
+        public static final String LOP_NAME_DISPLAY_FI = "lopName_fi_ss";
+        public static final String LOP_NAME_DISPLAY_SV = "lopName_sv_ss";
+        public static final String LOP_NAME_DISPLAY_EN = "lopName_en_ss";
+        
 
         //Fields for sorting
         public static final String START_DATE_SORT = "startDate_dsort";

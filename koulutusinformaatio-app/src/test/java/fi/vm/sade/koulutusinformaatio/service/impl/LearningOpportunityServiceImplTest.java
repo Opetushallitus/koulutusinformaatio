@@ -17,15 +17,12 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.dto.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import fi.vm.sade.koulutusinformaatio.service.PreviewService;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.modelmapper.ModelMapper;
@@ -37,7 +34,6 @@ import static junit.framework.Assert.assertNotNull;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.mockito.Matchers.*;
 
 /**
 * @author Mikko Majapuro
@@ -79,7 +75,7 @@ public class LearningOpportunityServiceImplTest {
         applicationOption = createApplicationOption("ao123", createI18Text("ao name"), "as123",
                 parentLOS.getProvider(), new Date(), 100, 25, 6, 77, childLOIRefs, "32",
                 prerequisite);
-        Set<ApplicationOption> aos = Sets.newHashSet(applicationOption);
+        List<ApplicationOption> aos = Lists.newArrayList(applicationOption);
 
         parentLOI = new ParentLOI();
         parentLOI.setId("2345");
@@ -92,7 +88,6 @@ public class LearningOpportunityServiceImplTest {
         childLOS = new ChildLOS();
         childLOS.setId("lo123");
         childLOS.setName(createI18Text("child 1"));
-        childLOS.setDegreeTitle(createI18Text("degree"));
         childLOS.setQualification(createI18Text("Qualification"));
         ParentLOSRef parent = new ParentLOSRef();
         parent.setId("1234");
@@ -266,8 +261,6 @@ public class LearningOpportunityServiceImplTest {
         assertNotNull(result.getLois());
         assertEquals(1, result.getLois().size());
 
-
-        assertEquals(childLOS.getDegreeTitle().getTranslations().get(defaultLang), result.getDegreeTitle());
         assertEquals(childLOS.getQualification().getTranslations().get(defaultLang), result.getQualification());
         assertEquals(childLOS.getParent().getName().getTranslations().get(defaultLang), result.getParent().getName());
         assertEquals(childLOS.getParent().getId(), result.getParent().getId());

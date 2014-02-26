@@ -16,32 +16,20 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Instance of a parent level learning opportunity specification.
- *
  * @author Hannu Lyytikainen
  */
-public class ParentLOI extends LOI {
+public class InstantiatedLOS<T extends LOI> extends LOS {
 
-    private I18nText selectingDegreeProgram;
-    private List<ChildLOIRef> childRefs = new ArrayList<ChildLOIRef>();
+    private List<T> lois;
 
-    public I18nText getSelectingDegreeProgram() {
-        return selectingDegreeProgram;
+    public List<T> getLois() {
+        return lois;
     }
 
-    public void setSelectingDegreeProgram(I18nText selectingDegreeProgram) {
-        this.selectingDegreeProgram = selectingDegreeProgram;
-    }
-
-    public List<ChildLOIRef> getChildRefs() {
-        return childRefs;
-    }
-
-    public void setChildRefs(List<ChildLOIRef> childRefs) {
-        this.childRefs = childRefs;
+    public void setLois(List<T> lois) {
+        this.lois = lois;
     }
 }

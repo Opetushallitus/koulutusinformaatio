@@ -63,6 +63,7 @@ public class ApplicationOptionDTO {
     private boolean vocational;
     private String educationCodeUri;
     private String status;
+    private String eligibilityDescription;
 
     public String getId() {
         return id;
@@ -334,5 +335,13 @@ public class ApplicationOptionDTO {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getEligibilityDescription() {
+        return eligibilityDescription;
+    }
+
+    public void setEligibilityDescription(String prerequisiteDescription) {
+        this.eligibilityDescription = prerequisiteDescription;
     }
 }
