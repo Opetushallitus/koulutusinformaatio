@@ -1153,11 +1153,11 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
             } else {
                 current = [];
                 current.push(aoId);
+            }
 
-                // save type if defined
-                if (itemType) {
-                    $.cookie(typekey, itemType, cookieConfig);
-                }
+            // save type if defined
+            if (itemType) {
+                $.cookie(typekey, itemType, cookieConfig);
             }
 
             $.cookie(key, JSON.stringify(current), cookieConfig);

@@ -1,0 +1,5 @@
+<div data-ng-repeat="applicationsystem in extendedLO.lo.applicationSystems">
+    <div data-ng-repeat="applicationoption in applicationsystem.applicationOptions">
+		<div class="bold margin-bottom-1">{{applicationoption.name}}</div><div data-ng-transclude></div>
+	</div>
+</div>

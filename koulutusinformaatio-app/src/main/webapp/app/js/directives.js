@@ -735,31 +735,23 @@ directive('kiRenderApplicationSystemActive', function() {
                     '<span data-ng-switch-when="past" data-ki-i18n="application-system-active-past" data-lang="{{lang}}"></span>' +
                     '<span data-ng-switch-when="present"data-ki-i18n="application-system-active-present" data-lang="{{lang}}"></span>' +
                 '</span>',
+        scope: {
+            applicationSystem: '=as',
+            lang: '@lang'
+        },
         link: function(scope, element, attrs) {
-            var as;
+            var as = scope.applicationSystem;
 
-            attrs.$observe('lang', function(value) {
-                scope.lang = value;
-            });
-
-            scope.$watch('as', function(data) {
-                as = data;
-                update();
-            });
-
-            var update = function() {
-                if (as) {
-                    if (as.asOngoing) {
-                        scope.active = "present";
-                    } else if (as.nextApplicationPeriodStarts) {
-                        scope.active = "future";
-                        scope.timestamp = as.nextApplicationPeriodStarts;
-                    } else {
-                        scope.active = "past";
-                    }
+            if (as) {
+                if (as.asOngoing) {
+                    scope.active = "present";
+                } else if (as.nextApplicationPeriodStarts) {
+                    scope.active = "future";
+                    scope.timestamp = as.nextApplicationPeriodStarts;
+                } else {
+                    scope.active = "past";
                 }
-            };
-            
+            }
         }
     }
 }).
