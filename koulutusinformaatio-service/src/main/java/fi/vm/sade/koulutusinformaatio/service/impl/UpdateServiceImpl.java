@@ -104,11 +104,10 @@ public class UpdateServiceImpl implements UpdateService {
                     }
                     for (LOS spec : specifications) {
                         this.indexerService.addLearningOpportunitySpecification(spec, loUpdateSolr, lopUpdateSolr);
+                        this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
                         this.educationDataUpdateService.save(spec);
                     }
-                    this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
                 }
-
             }
 
             List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
@@ -116,7 +115,7 @@ public class UpdateServiceImpl implements UpdateService {
 
             for (HigherEducationLOS curLOS : higherEducations) {
                 LOG.debug("Saving highed education: " + curLOS.getId());
-                indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr);
+                indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 this.educationDataUpdateService.save(curLOS);
             }
             LOG.debug("Higher educations saved: ");
@@ -147,10 +146,11 @@ public class UpdateServiceImpl implements UpdateService {
     }
 
     private void indexToSolr(HigherEducationLOS curLOS,
-            HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr) throws Exception {
+            HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws Exception {
         this.indexerService.addLearningOpportunitySpecification(curLOS, loUpdateSolr, lopUpdateSolr);
+        this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
         for (HigherEducationLOS curChild: curLOS.getChildren()) {
-            indexToSolr(curChild, loUpdateSolr, lopUpdateSolr);
+            indexToSolr(curChild, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
         }
     }
 
