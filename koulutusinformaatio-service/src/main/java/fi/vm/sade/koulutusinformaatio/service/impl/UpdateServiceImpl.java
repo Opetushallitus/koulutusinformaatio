@@ -88,20 +88,11 @@ public class UpdateServiceImpl implements UpdateService {
             int count = MAX_RESULTS;
             int index = 0;
 
-            /*while (count >= MAX_RESULTS) {
+            while(count >= MAX_RESULTS) {
                 LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
                 List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
                 count = loOids.size();
-                index += count;*/
-            
-
-            //1.2.246.562.5.2013112814572435763432
-                       List<String> loOids = Arrays.asList("1.2.246.562.5.2013061010191208547980", 
-                               "1.2.246.562.5.2013061010192577322360", 
-                               "1.2.246.562.5.2013112814572435763432",
-                               //"1.2.246.562.52013061010184670694756");//,
-                               "1.2.246.562.5.2013061010190108136320");
-                       //loOids.add("1.2.246.562.5.2013061010184190024479");
+                index += count;
             
                 for (String loOid : loOids) {
                     List<LOS> specifications = null;
@@ -113,11 +104,12 @@ public class UpdateServiceImpl implements UpdateService {
                     }
                     for (LOS spec : specifications) {
                         this.indexerService.addLearningOpportunitySpecification(spec, loUpdateSolr, lopUpdateSolr);
-                        this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
                         this.educationDataUpdateService.save(spec);
                     }
+                    this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
                 }
-            //}
+
+            }
 
             List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
             LOG.debug("Found higher educations: " + higherEducations.size());

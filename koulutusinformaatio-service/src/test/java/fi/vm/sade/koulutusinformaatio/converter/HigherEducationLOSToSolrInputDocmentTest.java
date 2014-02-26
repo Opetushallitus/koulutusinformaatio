@@ -134,7 +134,7 @@ public class HigherEducationLOSToSolrInputDocmentTest {
 		assertEquals("80 ov fi", doc.get(LearningOpportunity.CREDITS).getValue().toString());
         assertEquals(provider.getName().getTranslations().get("fi"), doc.get(LearningOpportunity.LOP_NAME).getValue().toString());
         //assertEquals(SolrConstants.ED_TYPE_AMKS, doc.get(LearningOpportunity.EDUCATION_TYPE).getValue().toString());
-        assertEquals(los.getEducationDegreeLang().getTranslations().get("fi"), doc.get(LearningOpportunity.EDUCATION_DEGREE).getValue().toString());
+        assertEquals(los.getEducationDegreeLang().getTranslations().get("fi"), doc.get(LearningOpportunity.EDUCATION_DEGREE_FI).getValue().toString());
         assertEquals(los.getEducationDegree(), doc.get(LearningOpportunity.EDUCATION_DEGREE_CODE).getValue().toString());
 		
 	}
