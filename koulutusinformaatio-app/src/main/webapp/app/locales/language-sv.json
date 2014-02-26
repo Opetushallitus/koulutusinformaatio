@@ -118,6 +118,7 @@
     "additional-proof-scores": "Tilläggsprestationer kan ge __min__ - __max__ poäng. Lägsta godkända poängantal är __threshold__.",
     "overall-scores": "Lägsta godkända poängantal för inträdesprov och tilläggsprestationer är __threshold__ poäng.",
     "further-application-info": "Tilläggsinformation om ansökan",
+    "eligibility-description": "Hakukelpoisuusvaatimukset (sv)",
     "info-center": "Ansökningsrådgivning",
 
     "academy-description": "Presentation av läroanstalten",

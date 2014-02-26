@@ -72,11 +72,26 @@ public final class ApplicationOptionToDTO {
             dto.setAthleteEducation(applicationOption.isAthleteEducation());
             dto.setEducationCodeUri(applicationOption.getEducationCodeUri());
             dto.setStatus(applicationOption.getStatus());
-            if (applicationOption.getEligibilityDescription() != null) {
-               dto.setEligibilityDescription(ConverterUtil.getTextByLanguage(applicationOption.getEligibilityDescription(), uiLang));
-            }
+            
             return dto;
         }
         return null;
+    }
+    
+    public static ApplicationOptionDTO convertHigherEducation(final ApplicationOption applicationOption, final String lang, final String uiLang, String defaultLang) {
+        if (applicationOption == null) {
+            return null;
+        }
+        ApplicationOptionDTO dto = convert(applicationOption, lang, uiLang, defaultLang);
+        if (dto == null) {
+            return null;
+        }
+        if (applicationOption.getEligibilityDescription() != null) {
+            dto.setEligibilityDescription(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getEligibilityDescription(), uiLang));            
+         }
+        dto.setSelectionCriteria(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getSelectionCriteria(), lang));
+        dto.setSoraDescription(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getSoraDescription(), lang));
+        dto.setAdditionalInfo(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getAdditionalInfo(), lang));
+        return dto;
     }
 }
