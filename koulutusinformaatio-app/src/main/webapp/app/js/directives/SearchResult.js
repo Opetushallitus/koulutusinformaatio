@@ -136,8 +136,14 @@ directive('srApplicationBasket', ['ApplicationBasketService', 'TranslationServic
                     addVocationalEdToBasket(applicationoptionId);
                 }
             }
-        },
-        link: function (scope, iElement, iAttrs) {
+
+            $scope.isApplicationOpen = function(as, ao) {
+                if (ao.specificApplicationDates) {
+                    return ao.canBeApplied;    
+                } else {
+                    return as.asOngoing;
+                }
+            }
         }
     };
 }]).

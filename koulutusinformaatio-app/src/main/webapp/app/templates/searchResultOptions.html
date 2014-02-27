@@ -14,7 +14,7 @@
 <input type="hidden"name="preference1-Koulutus-id-vocational"value="{{applicationoption.vocational}}" />
 <input type="hidden"name="preference1-Koulutus-id-educationcode"value="{{applicationoption.educationCodeUri}}" />
 
-    <button class="float-left" type="submit" data-ng-disabled="!applicationsystem.asOngoing">
+    <button class="float-left" type="submit" data-ng-disabled="!isApplicationOpen(applicationsystem, applicationoption)">
       <span><span data-ki-i18n="apply-button-label" data-lang="{{applicationoption.teachingLang}}"></span></span>
     </button>
 </form>
@@ -42,5 +42,5 @@
 <div class="clear"></div>
 
 <div class="margin-top-1 margin-bottom-3">
-    <div class="margin-top-2 small" data-ki-render-application-system-active data-as="applicationsystem" data-lang="{{teachingLang}}"></div>
+    <div class="margin-top-2 small" data-ki-render-application-status-label data-as="applicationsystem" data-ao="applicationoption" data-lang="{{teachingLang}}"></div>
 </div>

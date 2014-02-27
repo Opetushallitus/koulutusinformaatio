@@ -725,9 +725,9 @@ directive('kiAsState', ['TranslationService', function(TranslationService) {
 }]).
 
 /**
- *  Render application system status
+ *  Render application status label
  */
-directive('kiRenderApplicationSystemActive', function() {
+directive('kiRenderApplicationStatusLabel', function() {
     return {
         restrict: 'A',
         template: '<span data-ng-switch="active">' +
@@ -737,12 +737,23 @@ directive('kiRenderApplicationSystemActive', function() {
                 '</span>',
         scope: {
             applicationSystem: '=as',
+            applicationOption: '=ao',
             lang: '@lang'
         },
         link: function(scope, element, attrs) {
             var as = scope.applicationSystem;
+            var ao = scope.applicationOption;
 
-            if (as) {
+            if (ao && ao.specificApplicationDates) {
+                if (ao.canBeApplied) {
+                        scope.active = "present";
+                    } else if (ao.nextApplicationPeriodStarts) {
+                        scope.active = "future";
+                        scope.timestamp = ao.nextApplicationPeriodStarts;
+                    } else {
+                        scope.active = "past";
+                    }
+            } else if (as) {
                 if (as.asOngoing) {
                     scope.active = "present";
                 } else if (as.nextApplicationPeriodStarts) {
@@ -752,45 +763,6 @@ directive('kiRenderApplicationSystemActive', function() {
                     scope.active = "past";
                 }
             }
-        }
-    }
-}).
-
-/**
- *  Render application option status
- */
-directive('kiRenderApplicationOptionActive', function() {
-    return {
-        restrict: 'E,A',
-        template: '<span data-ng-switch="active">' +
-                    '<span data-ng-switch-when="future"><span data-ki-i18n="application-system-active-future" data-lang="{{lang}}"></span> <span data-ki-timestamp="{{timestamp}}"></span></span>' +
-                    '<span data-ng-switch-when="past" data-ki-i18n="application-system-active-past" data-lang="{{lang}}"></span>' +
-                    '<span data-ng-switch-when="present"data-ki-i18n="application-system-active-present" data-lang="{{lang}}"></span>' +
-                '</span>',
-        link: function(scope, element, attrs) {
-            var ao;
-
-            attrs.$observe('lang', function(value) {
-                scope.lang = value;
-            });
-            
-            scope.$watch('ao', function(data) {
-                ao = data;
-                update();
-            });
-
-            var update = function() {
-                if (ao) {
-                    if (ao.canBeApplied) {
-                        scope.active = "present";
-                    } else if (ao.nextApplicationPeriodStarts) {
-                        scope.active = "future";
-                        scope.timestamp = ao.nextApplicationPeriodStarts;
-                    } else {
-                        scope.active = "past";
-                    }
-                }
-            };
         }
     }
 }).
