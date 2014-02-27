@@ -27,10 +27,7 @@ import fi.vm.sade.tarjonta.service.resources.dto.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -159,7 +156,7 @@ public class EducationObjectCreatorTest {
     }
 
     @Test
-    public void testResolvePointLimitWrongType() {
+    public void testResolvePointLimitInvalidType() {
         ValintakoeRDTO examDTO = new ValintakoeRDTO();
         ValintakoePisterajaRDTO scoreLimitDTO = new ValintakoePisterajaRDTO();
         scoreLimitDTO.setTyyppi("invalid");
@@ -204,6 +201,27 @@ public class EducationObjectCreatorTest {
         assertEquals("eventinfo", event.getDescription());
         assertEquals(starts, event.getStart());
         assertEquals(ends, event.getEnd());
+    }
+
+
+    @Test
+    public void testCreateUpperSecondaryExamsInvalid() throws KoodistoException {
+        ValintakoeRDTO descriptionNull = new ValintakoeRDTO();
+        ValintakoeRDTO eventsNull = new ValintakoeRDTO();
+        eventsNull.setKuvaus(new HashMap<String, String>());
+        ValintakoeRDTO eventEmpty = new ValintakoeRDTO();
+        eventEmpty.setKuvaus(new HashMap<String, String>());
+        eventEmpty.setValintakoeAjankohtas(new ArrayList<ValintakoeAjankohtaRDTO>());
+        List<ValintakoeRDTO> examDTOs = Lists.newArrayList(descriptionNull, eventsNull, eventEmpty);
+        List<Exam> exams = creator.createUpperSecondaryExams(examDTOs);
+        assertNotNull(exams);
+        assertEquals(0, exams.size());
+    }
+
+    @Test
+    public void testCreateUpperSecondaryExamsNull() throws KoodistoException {
+        List<Exam> exams = creator.createUpperSecondaryExams(null);
+        assertNull(exams);
     }
 
     @Test

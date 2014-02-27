@@ -68,8 +68,8 @@ public class EducationObjectCreator extends ObjectCreator {
     }
 
     public List<Exam> createUpperSecondaryExams(List<ValintakoeRDTO> valintakoes) throws KoodistoException {
-        List<Exam> exams = Lists.newArrayList();
         if (valintakoes != null) {
+            List<Exam> exams = Lists.newArrayList();
             for (ValintakoeRDTO valintakoe : valintakoes) {
                 if (valintakoe.getKuvaus() != null
                         && valintakoe.getValintakoeAjankohtas() != null
@@ -91,8 +91,12 @@ public class EducationObjectCreator extends ObjectCreator {
                     exams.add(exam);
                 }
             }
+
+            return exams;
         }
-        return exams;
+        else {
+            return null;
+        }
     }
 
     public AdditionalProof createAdditionalProof(List<ValintakoeRDTO> valintakoes) throws KoodistoException {
