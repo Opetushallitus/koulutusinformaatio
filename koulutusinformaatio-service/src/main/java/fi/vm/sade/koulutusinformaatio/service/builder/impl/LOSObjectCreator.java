@@ -90,8 +90,6 @@ public class LOSObjectCreator extends ObjectCreator {
         basicLOS.setProvider(providerService.getByOID(providerId));
         basicLOS.setAccessToFurtherStudies(getI18nText(komo.getTekstit().get(KomoTeksti.JATKOOPINTO_MAHDOLLISUUDET)));
         basicLOS.setEducationDegree(koodistoService.searchFirstCodeValue(komo.getKoulutusAsteUri()));
-        basicLOS.setCreditValue(komo.getLaajuusArvo());
-        basicLOS.setCreditUnit(koodistoService.searchFirst(komo.getLaajuusYksikkoUri()));
         return basicLOS;
     }
 
@@ -105,6 +103,8 @@ public class LOSObjectCreator extends ObjectCreator {
         parentLOS.setId(CreatorUtil.resolveLOSId(parentKomo.getOid(), providerId));
         parentLOS.setName(koodistoService.searchFirst(parentKomo.getKoulutusKoodiUri()));
         parentLOS.setGoals(getI18nText(parentKomo.getTekstit().get(KomoTeksti.TAVOITTEET)));
+        parentLOS.setCreditValue(parentKomo.getLaajuusArvo());
+        parentLOS.setCreditUnit(koodistoService.searchFirst(parentKomo.getLaajuusYksikkoUri()));
 
         parentLOS.setEducationDomain(koodistoService.searchFirst(parentKomo.getKoulutusAlaUri()));
         parentLOS.setStydyDomain(koodistoService.searchFirst(parentKomo.getOpintoalaUri()));
@@ -152,6 +152,8 @@ public class LOSObjectCreator extends ObjectCreator {
         Map<String, String> nameTranslations = Maps.newHashMap();
         nameTranslations.put(teachingLang, childKomoto.getKoulutusohjelmanNimi());
         los.setName(new I18nText(nameTranslations, nameTranslations));
+        los.setCreditValue(childKomoto.getLaajuusArvo());
+        los.setCreditUnit(koodistoService.searchFirst(childKomoto.getLaajuusYksikkoUri()));
         los.setQualification(koodistoService.searchFirst(childKomo.getTutkintonimikeUri()));
         los.setEducationDomain(koodistoService.searchFirst(parentKomo.getKoulutusAlaUri()));
         los.setParent(new ParentLOSRef(CreatorUtil.resolveLOSId(parentKomo.getOid(), providerOid),
@@ -190,6 +192,8 @@ public class LOSObjectCreator extends ObjectCreator {
 
         los.setId(specialLOSId);
         los.setName(koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri()));
+        los.setCreditValue(parentKomo.getLaajuusArvo());
+        los.setCreditUnit(koodistoService.searchFirst(parentKomo.getLaajuusYksikkoUri()));
         los.setQualification(koodistoService.searchFirst(childKomo.getTutkintonimikeUri()));
         los.setEducationDomain(koodistoService.searchFirst(parentKomo.getKoulutusAlaUri()));
         los.setParent(new ParentLOSRef(CreatorUtil.resolveLOSId(parentKomo.getOid(), providerOid),
@@ -218,11 +222,11 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setThemes(getThemes(los));
         los.setQualification(koodistoService.searchFirst(komo.getTutkintonimikeUri()));
 
-        //I18nText laajuusyksikko = koodistoService.searchFirst(parentKomo.getLaajuusYksikkoUri());
-        //if (laajuusyksikko != null) {
-        //    los.setCreditValue(parentKomo.getLaajuusArvo());
-        //    los.setCreditUnit(laajuusyksikko);
-        //}
+        I18nText laajuusyksikko = koodistoService.searchFirst(parentKomo.getLaajuusYksikkoUri());
+        if (laajuusyksikko != null) {
+            los.setCreditValue(parentKomo.getLaajuusArvo());
+            los.setCreditUnit(laajuusyksikko);
+        }
 
         Map<String, String> komoTavoitteet = komo.getTekstit().get(KomoTeksti.TAVOITTEET);
         if (komoTavoitteet == null) {
