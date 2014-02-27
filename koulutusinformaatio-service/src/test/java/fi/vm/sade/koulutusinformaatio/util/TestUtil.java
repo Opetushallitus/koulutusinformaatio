@@ -32,6 +32,19 @@ import java.util.Map;
  */
 public class TestUtil {
 
+    public static I18nText createI18nText(String fi) {
+        Map<String, String> values = Maps.newHashMap();
+        values.put("fi", fi);
+        return new I18nText(values, values);
+    }
+
+    public static I18nText createI18nText(String fi, String sv) {
+        Map<String, String> values = Maps.newHashMap();
+        values.put("fi", fi);
+        values.put("sv", sv);
+        return new I18nText(values, values);
+    }
+
     public static I18nText createI18nText(String fi, String sv, String en) {
         Map<String, String> values = Maps.newHashMap();
         values.put("fi", fi);
