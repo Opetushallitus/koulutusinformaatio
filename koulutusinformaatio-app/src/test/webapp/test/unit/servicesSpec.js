@@ -295,7 +295,7 @@ describe('ApplicationBasketService', function() {
             service.addItem('ao_id_2', 'basket_type_1');
             service.removeItem('ao_id_1');
             expect(service.getItemCount()).toEqual(1);
-            expect(service.getItems()[1]).toEqual('ao_id_2');
+            expect(service.getItems()[0]).toEqual('ao_id_2');
         });
     });
 

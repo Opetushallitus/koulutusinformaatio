@@ -1,5 +1,5 @@
 "use strict";
-
+/*
 describe('Location filter directive', function() {
     var scope,
     elem,
@@ -41,13 +41,6 @@ describe('Location filter directive', function() {
         expect(elem.find('input').length).toEqual(1);
     });
 
-    /*
-    it('should contain the locations passed with scope', function() {
-        expect(elem.find('li').length).toEqual(2);
-        expect($(elem).find('li').get(0).innerText).toContain('Helsinki');
-        expect($(elem).find('li').get(1).innerText).toContain('Turku');
-    });
-*/
 
     it('should add input field current value as new location', function() {
         scope.location = 'Espoo';
@@ -56,14 +49,8 @@ describe('Location filter directive', function() {
         expect(scope.locations[2]).toEqual('Espoo');
     });
 
-    /*
-    it('should remove the clicked location', function() {
-        $(elem).find('li a').get(0).click();
-        expect(elem.find('li').length).toEqual(1);
-    });
-*/
-
 });
+*/
 
 
 describe('Application system state label', function() {
@@ -234,4 +221,5 @@ describe('Application system state label', function() {
     });
 
 });
+
 
