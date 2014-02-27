@@ -36,7 +36,7 @@ public class EducationObjectCreator extends ObjectCreator {
 
     private KoodistoService koodistoService;
 
-    protected EducationObjectCreator(KoodistoService koodistoService) {
+    public EducationObjectCreator(KoodistoService koodistoService) {
         super(koodistoService);
         this.koodistoService = koodistoService;
     }
@@ -45,29 +45,21 @@ public class EducationObjectCreator extends ObjectCreator {
         if (valintakoes != null) {
             List<Exam> exams = Lists.newArrayList();
             for (ValintakoeRDTO valintakoe : valintakoes) {
-                if (valintakoe != null && valintakoe.getKuvaus() != null && valintakoe.getTyyppiUri() != null
-                        && valintakoe.getValintakoeAjankohtas() != null
-                        && !valintakoe.getValintakoeAjankohtas().isEmpty()) {
-                    Exam exam = new Exam();
-                    exam.setType(koodistoService.searchFirst(valintakoe.getTyyppiUri()));
-                    exam.setDescription(getI18nText(valintakoe.getKuvaus()));
-                    List<ExamEvent> examEvents = Lists.newArrayList();
+                Exam exam = new Exam();
+                exam.setType(koodistoService.searchFirst(valintakoe.getTyyppiUri()));
+                exam.setDescription(getI18nText(valintakoe.getKuvaus()));
+                List<ExamEvent> examEvents = Lists.newArrayList();
 
-                    for (ValintakoeAjankohtaRDTO valintakoeAjankohta : valintakoe.getValintakoeAjankohtas()) {
-                        ExamEvent examEvent = new ExamEvent();
-                        Address address = new Address();
-                        address.setPostalCode(koodistoService.searchFirstCodeValue(valintakoeAjankohta.getOsoite().getPostinumero()));
-                        address.setPostOffice(valintakoeAjankohta.getOsoite().getPostitoimipaikka());
-                        address.setStreetAddress(valintakoeAjankohta.getOsoite().getOsoiterivi1());
-                        examEvent.setAddress(address);
-                        examEvent.setDescription(valintakoeAjankohta.getLisatiedot());
-                        examEvent.setStart(valintakoeAjankohta.getAlkaa());
-                        examEvent.setEnd(valintakoeAjankohta.getLoppuu());
-                        examEvents.add(examEvent);
-                    }
-                    exam.setExamEvents(examEvents);
-                    exams.add(exam);
+                for (ValintakoeAjankohtaRDTO valintakoeAjankohta : valintakoe.getValintakoeAjankohtas()) {
+                    ExamEvent examEvent = new ExamEvent();
+                    examEvent.setAddress(createAddress(valintakoeAjankohta.getOsoite()));
+                    examEvent.setDescription(valintakoeAjankohta.getLisatiedot());
+                    examEvent.setStart(valintakoeAjankohta.getAlkaa());
+                    examEvent.setEnd(valintakoeAjankohta.getLoppuu());
+                    examEvents.add(examEvent);
                 }
+                exam.setExamEvents(examEvents);
+                exams.add(exam);
             }
             return exams;
         } else {
@@ -88,11 +80,7 @@ public class EducationObjectCreator extends ObjectCreator {
 
                     for (ValintakoeAjankohtaRDTO valintakoeAjankohta : valintakoe.getValintakoeAjankohtas()) {
                         ExamEvent examEvent = new ExamEvent();
-                        Address address = new Address();
-                        address.setPostalCode(koodistoService.searchFirstCodeValue(valintakoeAjankohta.getOsoite().getPostinumero()));
-                        address.setPostOffice(valintakoeAjankohta.getOsoite().getPostitoimipaikka());
-                        address.setStreetAddress(valintakoeAjankohta.getOsoite().getOsoiterivi1());
-                        examEvent.setAddress(address);
+                        examEvent.setAddress(createAddress(valintakoeAjankohta.getOsoite()));
                         examEvent.setDescription(valintakoeAjankohta.getLisatiedot());
                         examEvent.setStart(valintakoeAjankohta.getAlkaa());
                         examEvent.setEnd(valintakoeAjankohta.getLoppuu());
@@ -132,7 +120,6 @@ public class EducationObjectCreator extends ObjectCreator {
     }
 
 
-
     public Address createAddress(OsoiteRDTO osoite) throws KoodistoException {
         if (osoite != null) {
             Address attachmentDeliveryAddress = new Address();
@@ -146,11 +133,11 @@ public class EducationObjectCreator extends ObjectCreator {
         }
     }
 
-    public List<Exam> createExamsHigherEducation(List<ValintakoeV1RDTO> valintakokeet) throws KoodistoException {
+    public List<Exam> createHigherEducationExams (List<ValintakoeV1RDTO> valintakokeet) throws KoodistoException {
         if (valintakokeet != null && !valintakokeet.isEmpty()) {
             List<Exam> exams = Lists.newArrayList();
             for (ValintakoeV1RDTO valintakoe : valintakokeet) {
-                if (valintakoe != null && valintakoe.getValintakokeenKuvaus() != null  
+                if (valintakoe != null && valintakoe.getValintakokeenKuvaus() != null
                         && valintakoe.getValintakoeAjankohtas() != null
                         && !valintakoe.getValintakoeAjankohtas().isEmpty()) {
                     Exam exam = new Exam();
@@ -177,8 +164,8 @@ public class EducationObjectCreator extends ObjectCreator {
             }
             return exams;
         }
-		return null;
-	}
+        return null;
+    }
 
     public List<ApplicationOptionAttachment> createApplicationOptionAttachments(List<HakukohdeLiiteDTO> hakukohdeLiiteDTOs) throws KoodistoException {
         if (hakukohdeLiiteDTOs != null) {
@@ -194,21 +181,20 @@ public class EducationObjectCreator extends ObjectCreator {
                 }
             }
             return attachments;
-        }
-        else {
+        } else {
             return null;
         }
     }
 
-	private I18nText getI18nTextEnriched(TekstiRDTO valintakokeenKuvaus) {
-		if (!Strings.isNullOrEmpty(valintakokeenKuvaus.getArvo()) && !Strings.isNullOrEmpty(valintakokeenKuvaus.getTeksti())) {
-			Map<String,String> translations = new HashMap<String,String>();
-			translations.put(valintakokeenKuvaus.getArvo().toLowerCase(), valintakokeenKuvaus.getTeksti());
-			I18nText text = new I18nText();
-			text.setTranslations(translations);
-			return text;
-		}
-		return null;
-	}
+    private I18nText getI18nTextEnriched(TekstiRDTO valintakokeenKuvaus) {
+        if (!Strings.isNullOrEmpty(valintakokeenKuvaus.getArvo()) && !Strings.isNullOrEmpty(valintakokeenKuvaus.getTeksti())) {
+            Map<String, String> translations = new HashMap<String, String>();
+            translations.put(valintakokeenKuvaus.getArvo().toLowerCase(), valintakokeenKuvaus.getTeksti());
+            I18nText text = new I18nText();
+            text.setTranslations(translations);
+            return text;
+        }
+        return null;
+    }
 
 }
