@@ -162,6 +162,10 @@ public final class SolrUtil {
         public static final String LOP_NAME_DISPLAY_FI = "lopName_fi_ss";
         public static final String LOP_NAME_DISPLAY_SV = "lopName_sv_ss";
         public static final String LOP_NAME_DISPLAY_EN = "lopName_en_ss";
+        public static final String HOMEPLACE_DISPLAY_FI = "homeplace_fi_ss";
+        public static final String HOMEPLACE_DISPLAY_SV = "homeplace_sv_ss";
+        public static final String HOMEPLACE_DISPLAY_EN = "homeplace_en_ss";
+        public static final String HOMEPLACE_DISPLAY = "homeplace_ss";
         
 
         //Fields for sorting

@@ -103,6 +103,12 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         }
 
         indexLopName(doc, provider, teachLang);
+        
+        if (provider.getHomePlace() != null) { 
+            doc.setField(LearningOpportunity.HOMEPLACE_DISPLAY, 
+                    SolrUtil.resolveTextWithFallback(teachLang,
+                            provider.getHomePlace().getTranslations()));
+        }
 
         if (provider.getHomeDistrict() != null) {
             List<String> locVals = new ArrayList<String>();

@@ -19,6 +19,7 @@ package fi.vm.sade.koulutusinformaatio.converter;
 import com.google.common.collect.Lists;
 
 import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 
@@ -83,6 +84,13 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
             doc.addField(SolrUtil.LearningOpportunity.NAME_EN, SolrUtil.resolveTextWithFallback("en", specialLOS.getName().getTranslations()));
         } else {
             doc.addField(SolrUtil.LearningOpportunity.NAME_FI, losName);
+        }
+        
+        
+        if (provider.getHomePlace() != null) { 
+            doc.setField(LearningOpportunity.HOMEPLACE_DISPLAY, 
+                    SolrUtil.resolveTextWithFallback(teachingLang,
+                            provider.getHomePlace().getTranslations()));
         }
 
         doc.setField(SolrUtil.LearningOpportunity.LOP_NAME, SolrUtil.resolveTranslationInTeachingLangUseFallback(

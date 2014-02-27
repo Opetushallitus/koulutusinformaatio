@@ -43,6 +43,7 @@ public class LearningOpportunitySearchResultDTO {
     private String educationType;
     private String educationDegree;
     private String educationDegreeCode;
+    private String homeplace;
 
 
     public String getId() {
@@ -163,5 +164,13 @@ public class LearningOpportunitySearchResultDTO {
 
     public void setEducationDegreeCode(String educationDegreeCode) {
         this.educationDegreeCode = educationDegreeCode;
+    }
+
+    public String getHomeplace() {
+        return homeplace;
+    }
+
+    public void setHomeplace(String homeplace) {
+        this.homeplace = homeplace;
     }
 }

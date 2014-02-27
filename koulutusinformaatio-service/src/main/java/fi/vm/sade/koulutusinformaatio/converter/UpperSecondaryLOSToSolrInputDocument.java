@@ -90,6 +90,12 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
         } else {
             doc.addField(LearningOpportunity.NAME_FI, losName);
         }
+        
+        if (provider.getHomePlace() != null) { 
+            doc.setField(LearningOpportunity.HOMEPLACE_DISPLAY, 
+                    SolrUtil.resolveTextWithFallback(teachingLang,
+                            provider.getHomePlace().getTranslations()));
+        }
 
         doc.setField(LearningOpportunity.LOP_NAME, SolrUtil.resolveTranslationInTeachingLangUseFallback(
                 loi.getTeachingLanguages(), provider.getName().getTranslations()));

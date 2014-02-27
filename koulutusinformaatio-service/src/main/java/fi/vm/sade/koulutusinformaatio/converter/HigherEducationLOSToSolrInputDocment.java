@@ -86,6 +86,13 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<HigherEdu
                 SolrUtil.resolveTextWithFallback(teachingLang,  
                         los.getEducationDegreeLang().getTranslations()));
         
+       if (provider.getHomePlace() != null) { 
+           doc.setField(LearningOpportunity.HOMEPLACE_DISPLAY, 
+                   SolrUtil.resolveTextWithFallback(teachingLang,
+                           provider.getHomePlace().getTranslations()));
+       }
+        
+        
         doc.addField(LearningOpportunity.EDUCATION_DEGREE_CODE, los.getEducationDegree());
 
         //SolrUtil.resolveTextWithFallback("sv",provider.getName().getTranslations()));
@@ -276,6 +283,18 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<HigherEdu
                 doc.setField(LearningOpportunity.EDUCATION_DEGREE_SV, SolrUtil.resolveTextWithFallback("sv",  transls));
             } else if (teachingLang.endsWith("en")) {
                 doc.setField(LearningOpportunity.EDUCATION_DEGREE_EN, SolrUtil.resolveTextWithFallback("en",  transls));
+            } 
+        }
+        
+        if (los.getProvider().getHomePlace() != null) {
+            transls = los.getProvider().getHomePlace().getTranslations();
+            
+            if (teachingLang.equals("fi")) {
+                doc.setField(LearningOpportunity.HOMEPLACE_DISPLAY_FI, SolrUtil.resolveTextWithFallback("fi",  transls));
+            } else if (teachingLang.equals("sv")) {
+                doc.setField(LearningOpportunity.HOMEPLACE_DISPLAY_SV, SolrUtil.resolveTextWithFallback("sv",  transls));
+            } else if (teachingLang.endsWith("en")) {
+                doc.setField(LearningOpportunity.HOMEPLACE_DISPLAY_EN, SolrUtil.resolveTextWithFallback("en",  transls));
             } 
         }
         

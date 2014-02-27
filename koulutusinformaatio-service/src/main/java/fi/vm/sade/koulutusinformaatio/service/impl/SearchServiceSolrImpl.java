@@ -139,6 +139,7 @@ public class SearchServiceSolrImpl implements SearchService {
                 String edDegree = getEdDegree(doc, lang);//doc.get(LearningOpportunity.EDUCATION_DEGREE) != null ? doc.get(LearningOpportunity.EDUCATION_DEGREE).toString() : null;
                 String edDegreeCode = doc.get(LearningOpportunity.EDUCATION_DEGREE_CODE) != null ? doc.get(LearningOpportunity.EDUCATION_DEGREE_CODE).toString() : null;
                 String name = getName(doc, lang);
+                String homeplace = getHomeplace(doc, lang);
 
                 LOSearchResult lo = null;
                 try {
@@ -146,7 +147,7 @@ public class SearchServiceSolrImpl implements SearchService {
                             id, name,
                             doc.get("lopId").toString(), lopName, prerequisiteText,
                             prerequisiteCodeText, parentId, losId, doc.get("type").toString(), 
-                            credits, edType, edDegree, edDegreeCode);
+                            credits, edType, edDegree, edDegreeCode, homeplace);
 
                     updateAsStatus(lo, doc);
                 } catch (Exception e) {
@@ -159,6 +160,14 @@ public class SearchServiceSolrImpl implements SearchService {
         }
 
         return searchResultList;
+    }
+
+    private String getHomeplace(SolrDocument doc, String lang) {
+        return getTranslatedValue(doc, lang, 
+                LearningOpportunity.HOMEPLACE_DISPLAY_FI, 
+                LearningOpportunity.HOMEPLACE_DISPLAY_SV, 
+                LearningOpportunity.HOMEPLACE_DISPLAY_EN, 
+                LearningOpportunity.HOMEPLACE_DISPLAY);
     }
 
     private String getEdDegree(SolrDocument doc, String lang) {
@@ -233,6 +242,8 @@ public class SearchServiceSolrImpl implements SearchService {
             String edType = doc.get(LearningOpportunity.EDUCATION_TYPE) != null ? getEdType(doc) : null;
             String edDegree = doc.get(LearningOpportunity.EDUCATION_DEGREE) != null ? doc.get(LearningOpportunity.EDUCATION_DEGREE).toString() : null;
             String edDegreeCode = doc.get(LearningOpportunity.EDUCATION_DEGREE_CODE) != null ? doc.get(LearningOpportunity.EDUCATION_DEGREE_CODE).toString() : null;
+            String homeplace = doc.getFieldValue(LearningOpportunity.HOMEPLACE_DISPLAY) != null ? doc.getFieldValue(LearningOpportunity.HOMEPLACE_DISPLAY).toString() : null;
+            
             
             LOSearchResult lo = null;
             try {
@@ -240,7 +251,7 @@ public class SearchServiceSolrImpl implements SearchService {
                         id, doc.get("name").toString(),
                         doc.get("lopId").toString(), lopName, prerequisiteText,
                         prerequisiteCodeText, parentId, losId, doc.get("type").toString(), 
-                        credits, edType, edDegree, edDegreeCode);
+                        credits, edType, edDegree, edDegreeCode, homeplace);
 
                 updateAsStatus(lo, doc);
             } catch (Exception e) {
