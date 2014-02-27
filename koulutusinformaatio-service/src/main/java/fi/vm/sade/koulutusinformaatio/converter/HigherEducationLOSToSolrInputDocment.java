@@ -90,14 +90,10 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<HigherEdu
 
         //SolrUtil.resolveTextWithFallback("sv",provider.getName().getTranslations()));
 
-        boolean fiIndexed = false;
-        for (Code teachingLangCode : los.getTeachingLanguages()) {
-            String curTeachingLang = teachingLangCode.getValue().toLowerCase();
-            indexLangSpecificFields(curTeachingLang, los, doc, fiIndexed);
-            if (curTeachingLang.equals("fi")) {
-                fiIndexed = true;
-            }
-        }
+        
+        
+        indexLanguageFields(los, doc);
+
 
         doc.setField(LearningOpportunity.LOP_NAME, SolrUtil.resolveTranslationInTeachingLangUseFallback(
                 los.getTeachingLanguages(), provider.getName().getTranslations()));
@@ -150,6 +146,43 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<HigherEdu
         return doc;
     }
 
+    /*
+     * Indexes language specific fields according to teaching languages
+     * and tries to index fi, sv, and en regardles of teaching languages
+     */
+    private void indexLanguageFields(HigherEducationLOS los,
+            SolrInputDocument doc) {
+        
+        boolean fiIndexed = false;
+        boolean svIndexed = false;
+        boolean enIndexed = false;
+        for (Code teachingLangCode : los.getTeachingLanguages()) {
+            String curTeachingLang = teachingLangCode.getValue().toLowerCase();
+            indexLangSpecificFields(curTeachingLang, los, doc, fiIndexed);
+            if (curTeachingLang.equals("fi")) {
+                fiIndexed = true;
+            } else if (curTeachingLang.equals("sv")) {
+                svIndexed = true;
+            } else if (curTeachingLang.equals("en")) {
+                enIndexed = true;
+            }
+        }
+        
+        if (!fiIndexed) {
+            indexLangSpecificFields("fi", los, doc, fiIndexed);
+        }
+        if (!svIndexed) {
+            indexLangSpecificFields("sv", los, doc, fiIndexed);
+        }
+        if (!enIndexed) {
+            indexLangSpecificFields("en", los, doc, fiIndexed);
+        }
+        
+    }
+
+    /*
+     * Indexes language specific fields according to given teachingLang
+     */
     private void indexLangSpecificFields(String teachingLang,
             HigherEducationLOS los, SolrInputDocument doc, boolean fiIndexed) {
 

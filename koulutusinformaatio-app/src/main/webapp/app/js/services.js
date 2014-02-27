@@ -656,7 +656,7 @@ service('ParentLOTransformer', ['UtilityService', '$filter', '$rootScope', funct
 /**
  * Transformer for child LO data
  */
-service('HigherEducationTransformer', ['UtilityService', '$rootScope', '$filter', function(UtilityService, $rootScope, $filter) {
+service('HigherEducationTransformer', ['UtilityService', '$rootScope', '$filter', 'LanguageService', function(UtilityService, $rootScope, $filter, LanguageService) {
 
 	var getFirstItemInList = function(list) {
 		if (list && list[0]) {
@@ -698,7 +698,7 @@ service('HigherEducationTransformer', ['UtilityService', '$rootScope', '$filter'
 							if (ao.teachingLanguages && ao.teachingLanguages.length > 0) {
 								ao.teachLang = ao.teachingLanguages[0];
 
-								$rootScope.teachingLang = ao.teachLang.toLowerCase();
+								$rootScope.teachingLang = LanguageService.getLanguage();//ao.teachLang.toLowerCase();
 							}
 						}
 					}
