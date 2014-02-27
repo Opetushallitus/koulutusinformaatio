@@ -68,8 +68,8 @@ public class EducationObjectCreator extends ObjectCreator {
     }
 
     public List<Exam> createUpperSecondaryExams(List<ValintakoeRDTO> valintakoes) throws KoodistoException {
-        List<Exam> exams = Lists.newArrayList();
         if (valintakoes != null) {
+            List<Exam> exams = Lists.newArrayList();
             for (ValintakoeRDTO valintakoe : valintakoes) {
                 if (valintakoe.getKuvaus() != null
                         && valintakoe.getValintakoeAjankohtas() != null
@@ -91,8 +91,12 @@ public class EducationObjectCreator extends ObjectCreator {
                     exams.add(exam);
                 }
             }
+
+            return exams;
         }
-        return exams;
+        else {
+            return null;
+        }
     }
 
     public AdditionalProof createAdditionalProof(List<ValintakoeRDTO> valintakoes) throws KoodistoException {
@@ -133,7 +137,7 @@ public class EducationObjectCreator extends ObjectCreator {
         }
     }
 
-    public List<Exam> createHigherEducationExams (List<ValintakoeV1RDTO> valintakokeet) throws KoodistoException {
+    public List<Exam> createHigherEducationExams(List<ValintakoeV1RDTO> valintakokeet) throws KoodistoException {
         if (valintakokeet != null && !valintakokeet.isEmpty()) {
             List<Exam> exams = Lists.newArrayList();
             for (ValintakoeV1RDTO valintakoe : valintakokeet) {
@@ -148,11 +152,7 @@ public class EducationObjectCreator extends ObjectCreator {
 
                     for (ValintakoeAjankohtaRDTO valintakoeAjankohta : valintakoe.getValintakoeAjankohtas()) {
                         ExamEvent examEvent = new ExamEvent();
-                        Address address = new Address();
-                        address.setPostalCode(koodistoService.searchFirstCodeValue(valintakoeAjankohta.getOsoite().getPostinumero()));
-                        address.setPostOffice(valintakoeAjankohta.getOsoite().getPostitoimipaikka());
-                        address.setStreetAddress(valintakoeAjankohta.getOsoite().getOsoiterivi1());
-                        examEvent.setAddress(address);
+                        examEvent.setAddress(createAddress(valintakoeAjankohta.getOsoite()));
                         examEvent.setDescription(valintakoeAjankohta.getLisatiedot());
                         examEvent.setStart(valintakoeAjankohta.getAlkaa());
                         examEvent.setEnd(valintakoeAjankohta.getLoppuu());
@@ -170,15 +170,13 @@ public class EducationObjectCreator extends ObjectCreator {
     public List<ApplicationOptionAttachment> createApplicationOptionAttachments(List<HakukohdeLiiteDTO> hakukohdeLiiteDTOs) throws KoodistoException {
         if (hakukohdeLiiteDTOs != null) {
             List<ApplicationOptionAttachment> attachments = Lists.newArrayList();
-            if (!hakukohdeLiiteDTOs.isEmpty()) {
-                for (HakukohdeLiiteDTO liite : hakukohdeLiiteDTOs) {
-                    ApplicationOptionAttachment attach = new ApplicationOptionAttachment();
-                    attach.setDueDate(liite.getErapaiva());
-                    attach.setType(koodistoService.searchFirst(liite.getLiitteenTyyppiUri()));
-                    attach.setDescreption(getI18nText(liite.getKuvaus()));
-                    attach.setAddress(createAddress(liite.getToimitusosoite()));
-                    attachments.add(attach);
-                }
+            for (HakukohdeLiiteDTO liite : hakukohdeLiiteDTOs) {
+                ApplicationOptionAttachment attach = new ApplicationOptionAttachment();
+                attach.setDueDate(liite.getErapaiva());
+                attach.setType(koodistoService.searchFirst(liite.getLiitteenTyyppiUri()));
+                attach.setDescreption(getI18nText(liite.getKuvaus()));
+                attach.setAddress(createAddress(liite.getToimitusosoite()));
+                attachments.add(attach);
             }
             return attachments;
         } else {
