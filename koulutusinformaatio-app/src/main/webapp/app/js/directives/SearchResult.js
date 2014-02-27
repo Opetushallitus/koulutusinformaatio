@@ -17,6 +17,11 @@ directive('searchResult', ['FilterService', 'TranslationService', function(Filte
         		return 'templates/' + scope.lo.type + '/searchResult.html';
         	}
 
+            var hashIndex = scope.lo.id.indexOf('#');
+            if ( hashIndex > -1) {
+                scope.lo.id = scope.lo.id.substring(0, hashIndex);
+            }
+
             scope.lo.type = scope.lo.type.toLowerCase();
             scope.lo.linkHref = '#!/' + scope.lo.type + '/' + scope.lo.id;
 
@@ -51,7 +56,7 @@ directive('toggleCollapse', [function () {
         },
         template: 
             '<h4 class="collapser float-right" data-ng-class="showExtension" data-ng-click="toggleExtendedView()">' + 
-                '<span>Avaa tästä </span>' + 
+                '<span data-ki-i18n="extended-view-{{showExtension}}" class="margin-right-1"></span>' + 
                 '<span class="icon"></span>' +
             '</h4>' +
             '<div class="clear"></div>' +
@@ -62,7 +67,7 @@ directive('toggleCollapse', [function () {
     };
 }]).
 
-directive('extendedSearchresultData', ['ParentLOService', 'SpecialLOService', 'UpperSecondaryLOService', function (ParentLOService, SpecialLOService, UpperSecondaryLOService) {
+directive('extendedSearchresultData', ['ParentLOService', 'SpecialLOService', 'UpperSecondaryLOService', 'HigherEducationLOService', function (ParentLOService, SpecialLOService, UpperSecondaryLOService, HigherEducationLOService) {
     return {    
         restrict: 'A',
         link: function($scope, ielement, iAttrs) {
@@ -75,7 +80,11 @@ directive('extendedSearchresultData', ['ParentLOService', 'SpecialLOService', 'U
                     $scope.extendedLO = SpecialLOService.query({id: $scope.lo.id});
                 } else if(iAttrs.extendedSearchresultData === "lukio") {
                     $scope.extendedLO = UpperSecondaryLOService.query({id: $scope.lo.id});
+                } else if(iAttrs.extendedSearchresultData === "korkeakoulu") {
+                    $scope.extendedLO = HigherEducationLOService.query({id: $scope.lo.id});
                 }
+
+                $scope.loType = iAttrs.extendedSearchresultData;
                     
                 $scope.extendedLO.then(function(result) {
                     if ($scope.lo.prerequisiteCode) {
@@ -83,7 +92,7 @@ directive('extendedSearchresultData', ['ParentLOService', 'SpecialLOService', 'U
                             // filter out unnecessary lois by prerequisite
                             var loi = result.lo.lois[i];
                             if ($scope.lo.prerequisiteCode != loi.prerequisite.value) {
-                                result.lo.lois = result.lo.lois.splice(i, 1);
+                                result.lo.lois.splice(i, 1);
                             }
                         }
                     }
@@ -105,15 +114,27 @@ directive('srApplicationBasket', ['ApplicationBasketService', 'TranslationServic
                 return ApplicationBasketService.itemExists(applicationoptionId);
             }
 
+            // vocational education needs prerequisite checking...
             $scope.addToBasket = function(applicationoptionId) {
-                var basketType = ApplicationBasketService.getType();
-                if (!basketType || $scope.$parent.$parent.$parent.lo.prerequisite.value == basketType) {
-                    ApplicationBasketService.addItem(applicationoptionId, $scope.$parent.$parent.$parent.lo.prerequisite.value);
-                } else {
-                    $scope.popoverTitle = TranslationService.getTranslation('popover-title-error');
-                    $scope.popoverContent = "<div>" + TranslationService.getTranslation('popover-content-error') + "</div><a href='#/muistilista'>" + TranslationService.getTranslation('popover-content-link-to-application-basket') + "</a>";
+                var addVocationalEdToBasket = function(aoId) {
+                    var basketType = ApplicationBasketService.getType();
+                    if (!basketType || $scope.lo.prerequisite.value == basketType) {
+                        ApplicationBasketService.addItem(applicationoptionId, $scope.lo.prerequisite.value);
+                    } else {
+                        $scope.popoverTitle = TranslationService.getTranslation('popover-title-error');
+                        $scope.popoverContent = "<div>" + TranslationService.getTranslation('popover-content-error') + "</div><a href='#/muistilista'>" + TranslationService.getTranslation('popover-content-link-to-application-basket') + "</a>";
+                    }
                 }
 
+                var addHighEdToBasket = function(aoId) {
+                    ApplicationBasketService.addItem(aoId);
+                }
+
+                if ($scope.loType == 'korkeakoulu') {
+                    addHighEdToBasket(applicationoptionId);
+                } else {
+                    addVocationalEdToBasket(applicationoptionId);
+                }
             }
         },
         link: function (scope, iElement, iAttrs) {
@@ -125,14 +146,13 @@ directive('srHakukohteet', [function () {
     return {
         restrict: 'A',
         transclude: true,
-        template: 
-            '<div data-ng-repeat="lo in extendedLO.lo.lois">' +
-                '<div data-ng-repeat="applicationsystem in lo.applicationSystems">' + 
-                    '<div data-ng-repeat="applicationoption in applicationsystem.applicationOptions">' +
-                        '<div class="bold margin-bottom-1">{{applicationoption.name}}</div><div data-ng-transclude></div>' +
-                    '</div>' +
-                '</div>' + 
-            '</div>'
+        templateUrl: function(element, attrs) {
+            if (attrs.templateType) {
+                return 'templates/' + attrs.templateType + '/searchResultHakukohteet.html';
+            } else {
+                return 'templates/searchResultHakukohteet.html';
+            }
+        }
     };
 }]).
 
@@ -152,11 +172,26 @@ directive('srExtendedOptions', ['TranslationService','Config', function (Transla
     };
 }]).
 
+directive('srNotApplicable', [function() {
+    return {
+        restrict: 'A',
+        require: '^extendedSearchresultData',
+        template:
+            '<p data-ki-i18n="not-applicable"></p>'
+    }
+}]).
+
 directive('srExtendedKoulutustarjonta', [function () {
     return {
         restrict: 'A',
         require: '^extendedSearchresultData',
-        templateUrl: 'templates/searchResultExtendedKoulutustarjonta.html'
+        templateUrl: function(element, attrs) {
+            if (attrs.templateType) {
+                return 'templates/' + attrs.templateType + '/searchResultExtendedKoulutustarjonta.html';
+            } else {
+                return 'templates/searchResultExtendedKoulutustarjonta.html';
+            }
+        }
     };
 }]).
 

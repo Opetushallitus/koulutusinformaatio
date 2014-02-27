@@ -1,5 +1,19 @@
 
 <form name="levelSelectionForm-{{$id}}" id="application-form-{{applicationsystem.id}}-{{$id}}" action="{{hakuAppUrl + 'lomake/' + applicationsystem.id}}" method="POST" class="margin-top-2" target="hakulomake">
+
+<input type="hidden" name="preference1-Opetuspiste" value="{{extendedLO.lo.provider.name}}" />
+<input type="hidden" name="preference1-Opetuspiste-id" value="{{extendedLO.lo.provider.id}}" />
+<input type="hidden" name="preference1-Koulutus" value="{{applicationoption.name}}" />
+<input type="hidden" name="preference1-Koulutus-id" value="{{applicationoption.id}}" />
+<input type="hidden" name="preference1-Koulutus-educationDegree" value="{{extendedLO.lo.educationDegree}}" />
+<input type="hidden" name="preference1-Koulutus-id-sora" value="{{applicationoption.sora}}" />
+<input type="hidden" name="preference1-Koulutus-id-lang" value="{{applicationoption.teachLang}}" />
+<input type="hidden"name="preference1-Koulutus-id-athlete"value="{{provider.athleteEducation || applicationoption.athleteEducation}}" />
+<input type="hidden"name="preference1-Koulutus-id-aoIdentifier"value="{{applicationoption.aoIdentifier}}" />
+<input type="hidden"name="preference1-Koulutus-id-kaksoistutkinto"value="{{applicationoption.kaksoistutkinto}}" />
+<input type="hidden"name="preference1-Koulutus-id-vocational"value="{{applicationoption.vocational}}" />
+<input type="hidden"name="preference1-Koulutus-id-educationcode"value="{{applicationoption.educationCodeUri}}" />
+
     <button class="float-left" type="submit" data-ng-disabled="!applicationsystem.asOngoing">
       <span><span data-ki-i18n="apply-button-label" data-lang="{{applicationoption.teachingLang}}"></span></span>
     </button>
@@ -28,9 +42,5 @@
 <div class="clear"></div>
 
 <div class="margin-top-1 margin-bottom-3">
-    <span data-ng-show="!applicationsystem.asOngoing && applicationsystem.nextApplicationPeriodStarts">
-        {{locales.hakuaika}}: {{applicationsystem.applicationDates[0].startDate | date:'dd.MM.yyyy'}} - {{applicationsystem.applicationDates[0].endDate | date:'dd.MM.yyyy'}}
-    </span>
-    <span data-ng-show="applicationsystem.asOngoing">{{locales.hakukaynnissa}}</span>
-    <span data-ng-show="!applicationsystem.asOngoing && !applicationsystem.nextApplicationPeriodStarts">{{locales.hakupaattynyt}}</span>
+    <div class="margin-top-2 small" data-ki-render-application-system-active data-as="applicationsystem" data-lang="{{teachingLang}}"></div>
 </div>
