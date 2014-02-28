@@ -20,8 +20,8 @@ import org.apache.solr.common.params.DisMaxParams;
 
 import com.google.common.base.Joiner;
 
-import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LearningOpportunity;
-import fi.vm.sade.koulutusinformaatio.domain.SolrFields.SolrConstants;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 
 
 /**

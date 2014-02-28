@@ -25,7 +25,7 @@ import org.junit.Test;
 
 import com.google.common.base.Joiner;
 
-import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 
 /**
  * @author Markus

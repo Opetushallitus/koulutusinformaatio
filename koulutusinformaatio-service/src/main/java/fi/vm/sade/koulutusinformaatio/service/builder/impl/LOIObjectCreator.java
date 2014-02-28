@@ -16,11 +16,13 @@
 
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
+import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.tarjonta.service.resources.dto.*;
@@ -48,8 +50,51 @@ public class LOIObjectCreator extends ObjectCreator {
         this.applicationOptionCreator = new ApplicationOptionCreator(koodistoService, tarjontaRawService);
     }
 
+    private <T extends LOI> T createLOI(Class<T> type, KomotoDTO komoto) throws  TarjontaParseException, KoodistoException {
+        T loi = null;
+        try {
+            loi = type.newInstance();
+        } catch (IllegalAccessException e) {
+            throw new TarjontaParseException(String.format("Could not create new child LOI, komoto oid: %s, error message: %s", komoto.getOid(), e.getMessage()));
+        } catch (InstantiationException e) {
+            throw new TarjontaParseException(String.format("Could not create new child LOI, komoto oid: %s, error message: %s", komoto.getOid(), e.getMessage()));
+        }
+        loi.setId(komoto.getOid());
+        loi.setPrerequisite(koodistoService.searchFirstCode(komoto.getPohjakoulutusVaatimusUri()));
+        return loi;
+
+    }
+    private <T extends BasicLOI> T createBasicLOI(Class<T> type, KomotoDTO komoto) throws TarjontaParseException, KoodistoException {
+        T basicLOI = createLOI(type, komoto);
+        basicLOI.setFormOfTeaching(koodistoService.searchMultiple(komoto.getOpetusmuodotUris()));
+        basicLOI.setTeachingLanguages(koodistoService.searchCodesMultiple(komoto.getOpetuskieletUris()));
+        basicLOI.setStartDate(komoto.getKoulutuksenAlkamisDate());
+        basicLOI.setFormOfEducation(koodistoService.searchMultiple(komoto.getKoulutuslajiUris()));
+        basicLOI.setInternationalization(getI18nText(komoto.getTekstit().get(KomotoTeksti.KANSAINVALISTYMINEN)));
+        basicLOI.setCooperation(getI18nText(komoto.getTekstit().get(KomotoTeksti.YHTEISTYO_MUIDEN_TOIMIJOIDEN_KANSSA)));
+        basicLOI.setContent(getI18nText(komoto.getTekstit().get(KomotoTeksti.SISALTO)));
+        basicLOI.setPlannedDuration(komoto.getSuunniteltuKestoArvo());
+        basicLOI.setPlannedDurationUnit(koodistoService.searchFirst(komoto.getSuunniteltuKestoYksikkoUri()));
+        basicLOI.setPduCodeUri(komoto.getLaajuusYksikkoUri());
+        Set<String> availableLanguagaes = Sets.newHashSet();
+        if (basicLOI.getContent() != null) {
+            availableLanguagaes.addAll(basicLOI.getContent().getTranslations().keySet());
+        }
+        if (basicLOI.getInternationalization() != null) {
+            availableLanguagaes.addAll(basicLOI.getInternationalization().getTranslations().keySet());
+        }
+        if (basicLOI.getCooperation() != null) {
+            availableLanguagaes.addAll(basicLOI.getCooperation().getTranslations().keySet());
+        }
+        for (Code teachingLanguage : basicLOI.getTeachingLanguages()) {
+            availableLanguagaes.add(teachingLanguage.getValue().toLowerCase());
+        }
+        basicLOI.setAvailableTranslationLanguages(Lists.newArrayList(availableLanguagaes));
+        return basicLOI;
+    }
+
     public List<ChildLOI> createChildLOIs(List<KomotoDTO> childKomotos,
-                                          String losId, I18nText losName, String educationCodeUri) throws KoodistoException {
+                                          String losId, I18nText losName, String educationCodeUri) throws KoodistoException, TarjontaParseException {
         List<ChildLOI> childLOIs = Lists.newArrayList();
         for (KomotoDTO childKomoto : childKomotos) {
             String childKomotoOid = childKomoto.getOid();
@@ -68,26 +113,14 @@ public class LOIObjectCreator extends ObjectCreator {
         return filter(childLOIs);
     }
 
-    public ChildLOI createChildLOI(KomotoDTO childKomoto, String losId, I18nText losName, String educationCodeUri) throws KoodistoException {
-        ChildLOI childLOI = new ChildLOI();
+    public ChildLOI createChildLOI(KomotoDTO childKomoto, String losId, I18nText losName, String educationCodeUri) throws KoodistoException, TarjontaParseException {
+        ChildLOI childLOI = createBasicLOI(ChildLOI.class, childKomoto);
         childLOI.setName(losName);
-        childLOI.setId(childKomoto.getOid());
         childLOI.setLosId(losId);
         childLOI.setParentLOIId(childKomoto.getParentKomotoOid());
-        childLOI.setStartDate(childKomoto.getKoulutuksenAlkamisDate());
-        childLOI.setFormOfEducation(koodistoService.searchMultiple(childKomoto.getKoulutuslajiUris()));
         childLOI.setWebLinks(childKomoto.getWebLinkkis());
-        childLOI.setTeachingLanguages(koodistoService.searchCodesMultiple(childKomoto.getOpetuskieletUris()));
-        childLOI.setFormOfTeaching(koodistoService.searchMultiple(childKomoto.getOpetusmuodotUris()));
-        childLOI.setPrerequisite(koodistoService.searchFirstCode(childKomoto.getPohjakoulutusVaatimusUri()));
         childLOI.setProfessionalTitles(koodistoService.searchMultiple(childKomoto.getAmmattinimikeUris()));
         childLOI.setWorkingLifePlacement(getI18nText(childKomoto.getTekstit().get(KomotoTeksti.SIJOITTUMINEN_TYOELAMAAN)));
-        childLOI.setInternationalization(getI18nText(childKomoto.getTekstit().get(KomotoTeksti.KANSAINVALISTYMINEN)));
-        childLOI.setCooperation(getI18nText(childKomoto.getTekstit().get(KomotoTeksti.YHTEISTYO_MUIDEN_TOIMIJOIDEN_KANSSA)));
-        childLOI.setContent(getI18nText(childKomoto.getTekstit().get(KomotoTeksti.SISALTO)));
-        childLOI.setPlannedDuration(childKomoto.getSuunniteltuKestoArvo());
-        childLOI.setPlannedDurationUnit(koodistoService.searchFirst(childKomoto.getSuunniteltuKestoYksikkoUri()));
-        childLOI.setPduCodeUri(childKomoto.getLaajuusYksikkoUri());
 
         if (childKomoto.getYhteyshenkilos() != null) {
             for (YhteyshenkiloRDTO yhteyshenkiloRDTO : childKomoto.getYhteyshenkilos()) {
@@ -97,61 +130,28 @@ public class LOIObjectCreator extends ObjectCreator {
             }
         }
 
-        // fields used to resolve available translation languages
-        // content, internationalization, cooperation
-        Set<String> availableLanguagaes = Sets.newHashSet();
-        if (childLOI.getContent() != null) {
-            availableLanguagaes.addAll(childLOI.getContent().getTranslations().keySet());
-        }
-        if (childLOI.getInternationalization() != null) {
-            availableLanguagaes.addAll(childLOI.getInternationalization().getTranslations().keySet());
-        }
-        if (childLOI.getCooperation() != null) {
-            availableLanguagaes.addAll(childLOI.getCooperation().getTranslations().keySet());
-        }
-        for (Code teachingLanguage : childLOI.getTeachingLanguages()) {
-            availableLanguagaes.add(teachingLanguage.getValue().toLowerCase());
-        }
+        List<OidRDTO> hakukohdeOidDTOs = tarjontaRawService.getHakukohdesByKomoto(childKomoto.getOid());
+        List<String> hakukohdeOids = Lists.transform(hakukohdeOidDTOs, new Function<OidRDTO, String>() {
+            @Override
+            public String apply(OidRDTO input) {
+                return input.getOid();
+            }
+        });
 
-        childLOI.setAvailableTranslationLanguages(Lists.newArrayList(availableLanguagaes));
-
-        List<ApplicationOption> applicationOptions = Lists.newArrayList();
+        childLOI.setApplicationOptions(applicationOptionCreator.createVocationalApplicationOptions(hakukohdeOids, childKomoto, childLOI.getPrerequisite(), educationCodeUri));
         boolean kaksoistutkinto = false;
-        List<OidRDTO> aoIdDTOs = tarjontaRawService.getHakukohdesByKomoto(childKomoto.getOid());
-        for (OidRDTO aoIdDTO : aoIdDTOs) {
-            LOG.debug(Joiner.on(" ").join("Adding application options (",
-                    aoIdDTOs.size(), ") to child learning opportunity"));
-
-            // application option
-            String aoId = aoIdDTO.getOid();
-            HakukohdeDTO hakukohdeDTO = tarjontaRawService.getHakukohde(aoId);
-            HakuDTO hakuDTO = tarjontaRawService.getHakuByHakukohde(aoId);
-
-            if (!CreatorUtil.hakukohdePublished.apply(hakukohdeDTO)) {
-                LOG.debug(String.format("Application option %s skipped due to incorrect state", hakukohdeDTO.getOid()));
-                continue;
-            }
-
-            if (!CreatorUtil.hakuPublished.apply(hakuDTO)) {
-                LOG.debug(String.format("Application option %s skipped due to incorrect state of application system %s",
-                        hakukohdeDTO.getOid(), hakuDTO.getOid()));
-                continue;
-            }
-
-            applicationOptions.add(
-                    applicationOptionCreator.createVocationalApplicationOption(hakukohdeDTO, hakuDTO, childKomoto, childLOI.getPrerequisite(), educationCodeUri));
-            if (hakukohdeDTO.isKaksoisTutkinto()) {
+        for (ApplicationOption ao : childLOI.getApplicationOptions()) {
+            if (ao.isKaksoistutkinto()) {
                 kaksoistutkinto = true;
+                break;
             }
         }
-
-        childLOI.setApplicationOptions(applicationOptions);
         childLOI.setKaksoistutkinto(kaksoistutkinto);
 
         return childLOI;
     }
 
-    public List<UpperSecondaryLOI> createUpperSecondaryLOIs(List<KomotoDTO> komotos, String losId, I18nText losName, String educationCodeUri) throws KoodistoException {
+    public List<UpperSecondaryLOI> createUpperSecondaryLOIs(List<KomotoDTO> komotos, String losId, I18nText losName, String educationCodeUri) throws KoodistoException, TarjontaParseException {
         List<UpperSecondaryLOI> lois = Lists.newArrayList();
         for (KomotoDTO komoto : komotos) {
             if (CreatorUtil.komotoPublished.apply(komoto)) {
@@ -161,41 +161,10 @@ public class LOIObjectCreator extends ObjectCreator {
         return filter(lois);
     }
 
-    public UpperSecondaryLOI createUpperSecondaryLOI(KomotoDTO komoto, String losId, I18nText losName, String educationCodeUri) throws KoodistoException {
-        UpperSecondaryLOI loi = new UpperSecondaryLOI();
-
+    public UpperSecondaryLOI createUpperSecondaryLOI(KomotoDTO komoto, String losId, I18nText losName, String educationCodeUri) throws TarjontaParseException, KoodistoException {
+        UpperSecondaryLOI loi = createBasicLOI(UpperSecondaryLOI.class, komoto);
         loi.setName(losName);
-        loi.setId(komoto.getOid());
-        loi.setStartDate(komoto.getKoulutuksenAlkamisDate());
-        loi.setFormOfEducation(koodistoService.searchMultiple(komoto.getKoulutuslajiUris()));
-        loi.setTeachingLanguages(koodistoService.searchCodesMultiple(komoto.getOpetuskieletUris()));
-        loi.setFormOfTeaching(koodistoService.searchMultiple(komoto.getOpetusmuodotUris()));
-        loi.setPrerequisite(koodistoService.searchFirstCode(komoto.getPohjakoulutusVaatimusUri()));
-        loi.setInternationalization(getI18nText(komoto.getTekstit().get(KomotoTeksti.KANSAINVALISTYMINEN)));
-        loi.setCooperation(getI18nText(komoto.getTekstit().get(KomotoTeksti.YHTEISTYO_MUIDEN_TOIMIJOIDEN_KANSSA)));
-        loi.setContent(getI18nText(komoto.getTekstit().get(KomotoTeksti.SISALTO)));
 
-        loi.setPlannedDuration(komoto.getSuunniteltuKestoArvo());
-        loi.setPlannedDurationUnit(koodistoService.searchFirst(komoto.getSuunniteltuKestoYksikkoUri()));
-        loi.setPduCodeUri(komoto.getLaajuusYksikkoUri());
-
-        // fields used to resolve available translation languages
-        // content, internationalization, cooperation
-        Set<String> availableLanguagaes = Sets.newHashSet();
-        if (loi.getContent() != null) {
-            availableLanguagaes.addAll(loi.getContent().getTranslations().keySet());
-        }
-        if (loi.getInternationalization() != null) {
-            availableLanguagaes.addAll(loi.getInternationalization().getTranslations().keySet());
-        }
-        if (loi.getCooperation() != null) {
-            availableLanguagaes.addAll(loi.getCooperation().getTranslations().keySet());
-        }
-        for (Code teachingLanguage : loi.getTeachingLanguages()) {
-            availableLanguagaes.add(teachingLanguage.getValue().toLowerCase());
-        }
-
-        loi.setAvailableTranslationLanguages(Lists.newArrayList(availableLanguagaes));
         for (String d : komoto.getLukiodiplomitUris()) {
             loi.getDiplomas().add(koodistoService.searchFirst(d));
         }
@@ -222,40 +191,23 @@ public class LOIObjectCreator extends ObjectCreator {
             loi.setLanguageSelection(languageSelection);
         }
 
-        List<ApplicationOption> applicationOptions = Lists.newArrayList();
-        List<OidRDTO> aoIdDTOs = tarjontaRawService.getHakukohdesByKomoto(komoto.getOid());
+        List<OidRDTO> hakukohdeOidDTOs = tarjontaRawService.getHakukohdesByKomoto(komoto.getOid());
+        List<String> hakukohdeOids = Lists.transform(hakukohdeOidDTOs, new Function<OidRDTO, String>() {
+            @Override
+            public String apply(OidRDTO input) {
+                return input.getOid();
+            }
+        });
+        loi.setApplicationOptions(applicationOptionCreator.createUpperSecondaryApplicationOptions(hakukohdeOids, komoto,
+                loi.getPrerequisite(), educationCodeUri));
         boolean kaksoistutkinto = false;
-        for (OidRDTO aoIdDTO : aoIdDTOs) {
-            LOG.debug(Joiner.on(" ").join("Adding application options (",
-                    aoIdDTOs.size(), ") to child learning opportunity"));
-
-            // application option
-            String aoId = aoIdDTO.getOid();
-            HakukohdeDTO hakukohdeDTO = tarjontaRawService.getHakukohde(aoId);
-            HakuDTO hakuDTO = tarjontaRawService.getHakuByHakukohde(aoId);
-
-            if (!CreatorUtil.hakukohdePublished.apply(hakukohdeDTO)) {
-                LOG.debug(String.format("Application option %s skipped due to incorrect state", hakukohdeDTO.getOid()));
-                continue;
-            }
-
-            if (!CreatorUtil.hakuPublished.apply(hakuDTO)) {
-                LOG.debug(String.format("Application option %s skipped due to incorrect state of application system %s",
-                        hakukohdeDTO.getOid(), hakuDTO.getOid()));
-                continue;
-            }
-
-            applicationOptions.add(
-                    applicationOptionCreator.createUpperSecondaryApplicationOption(hakukohdeDTO, hakuDTO, komoto, loi, educationCodeUri));
-
-            if (hakukohdeDTO.isKaksoisTutkinto()) {
+        for (ApplicationOption ao : loi.getApplicationOptions()) {
+            if (ao.isKaksoistutkinto()) {
                 kaksoistutkinto = true;
+                break;
             }
         }
-
-        loi.setApplicationOptions(applicationOptions);
         loi.setKaksoistutkinto(kaksoistutkinto);
-
         return loi;
     }
 

@@ -18,12 +18,14 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.entity.*;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,15 +46,18 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     private PictureDAO pictureDAO;
     private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO;
     private SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO;
+    private HigherEducationLOSDAO higherEducationLOSDAO;
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
 
     @Autowired
     public EducationDataQueryServiceImpl(ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO,
-                                         ApplicationOptionDAO applicationOptionDAO, ModelMapper modelMapper,
-                                         ChildLearningOpportunityDAO childLearningOpportunityDAO,
-                                         DataStatusDAO dataStatusDAO, PictureDAO pictureDAO,
-                                         UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO,
-                                         SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO, LearningOpportunityProviderDAO learningOpportunityProviderDAO) {
+            ApplicationOptionDAO applicationOptionDAO, ModelMapper modelMapper,
+            ChildLearningOpportunityDAO childLearningOpportunityDAO,
+            DataStatusDAO dataStatusDAO, PictureDAO pictureDAO,
+            UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO,
+            SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO, 
+            HigherEducationLOSDAO higherEducationLOSDAO, 
+            LearningOpportunityProviderDAO learningOpportunityProviderDAO) {
         this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;
         this.modelMapper = modelMapper;
@@ -61,6 +66,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
         this.pictureDAO = pictureDAO;
         this.upperSecondaryLearningOpportunitySpecificationDAO = upperSecondaryLearningOpportunitySpecificationDAO;
         this.specialLearningOpportunitySpecificationDAO = specialLearningOpportunitySpecificationDAO;
+        this.higherEducationLOSDAO = higherEducationLOSDAO;
         this.learningOpportunityProviderDAO = learningOpportunityProviderDAO;
     }
 
@@ -76,7 +82,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
 
     @Override
     public List<ApplicationOption> findApplicationOptions(String asId, String lopId, String baseEducation,
-                                                          boolean vocational, boolean nonVocational) {
+            boolean vocational, boolean nonVocational) {
         List<ApplicationOptionEntity> applicationOptions = applicationOptionDAO.findFromSecondary(asId, lopId, baseEducation,
                 vocational, nonVocational);
         return Lists.transform(applicationOptions, new Function<ApplicationOptionEntity, ApplicationOption>() {
@@ -162,6 +168,16 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     }
 
     @Override
+    public HigherEducationLOS getHigherEducationLearningOpportunity(String oid) throws ResourceNotFoundException {
+        HigherEducationLOSEntity entity = this.higherEducationLOSDAO.get(oid);
+        if (entity != null) {
+            return modelMapper.map(entity, HigherEducationLOS.class);
+        } else {
+            throw new ResourceNotFoundException(String.format("University of applied science learning opportunity specification not found: %s", oid));
+        }
+    }
+
+    @Override
     public Provider getProvider(String id) throws ResourceNotFoundException {
         LearningOpportunityProviderEntity entity = learningOpportunityProviderDAO.get(id);
         if (entity != null) {
@@ -185,7 +201,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
                         return modelMapper.map(input, ParentLOS.class);
                     }
                 }
-        );
+                );
         List<ChildLOS> children = Lists.newArrayList();
         for (ParentLearningOpportunitySpecificationEntity parentEntity : parentEntites) {
             children.addAll(Lists.transform(
@@ -196,7 +212,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
                             return modelMapper.map(input, ChildLOS.class);
                         }
                     }
-            ));
+                    ));
         }
         List<UpperSecondaryLOS> upsecs = Lists.transform(
                 upperSecondaryLearningOpportunitySpecificationDAO.findByProviderId(providerId),
@@ -206,7 +222,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
                         return modelMapper.map(input, UpperSecondaryLOS.class);
                     }
                 }
-        );
+                );
         List<SpecialLOS> specials = Lists.transform(
                 specialLearningOpportunitySpecificationDAO.findByProviderId(providerId),
                 new Function<SpecialLearningOpportunitySpecificationEntity, SpecialLOS>() {
@@ -215,7 +231,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
                         return modelMapper.map(input, SpecialLOS.class);
                     }
                 }
-        );
+                );
         results.addAll(parents);
         results.addAll(children);
         results.addAll(upsecs);
@@ -230,4 +246,6 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
         }
         return clo;
     }
+
+
 }

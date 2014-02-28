@@ -7,6 +7,7 @@
     $scope.queryString = SearchService.getTerm();
     $scope.descriptionLanguage = 'fi';
     $scope.hakuAppUrl = Config.get('hakulomakeUrl');
+    
 
     $scope.tabtitle = (function() {
         var getValintaperusteetTitle = function() {
@@ -69,9 +70,19 @@
         return true;
     }
 
+    var showAoAnchorLinks = function() {
+        var length = 0;
+        angular.forEach($scope.lo.applicationSystems, function(as, askey){
+            length += as.applicationOptions.length;
+        });
+
+        return length > 1 ? true : false;
+    }
+
     var initializeLO = function() {
         setTitle($scope.parent, $scope.lo);
         $scope.showApplicationRadioSelection = showApplicationRadioSelection() ? '' : 'hidden';
+        $scope.showAoAnchorLinks = showAoAnchorLinks();
         var loi = getLOIByPrerequisite($location.hash());
         //var loi = getLOIByPrerequisite($location.search().prerequisite);
         if (loi) {
@@ -163,6 +174,7 @@
             lang: languageCode
         }).then(function(loResult) {
             $scope.lo = loResult.lo;
+            $scope.tarjontaViewUrl = Config.get('tarjontaUrl') + '/koulutus/' + $scope.lo.id;
             $scope.parent = loResult.parent;
             $scope.provider = loResult.provider;
             $scope.lois = loResult.lo.lois;
@@ -192,6 +204,7 @@
 
     // scrolls to an anchor on page
     $scope.scrollToAnchor = function(id) {
+        id = id.replace(/\./g,"\\.");
         $('html, body').scrollTop($('#' + id).offset().top);
         return false;
     };
@@ -219,6 +232,7 @@
  */
 function ApplicationCtrl($scope, ApplicationBasketService, UtilityService, TranslationService) {
 
+    // vocational education needs prerequisite checking...
     $scope.addToBasket = function(aoId) {
         var basketType = ApplicationBasketService.getType();
         if (!basketType || $scope.selectedLOI.prerequisite.value == basketType) {
@@ -228,6 +242,11 @@ function ApplicationCtrl($scope, ApplicationBasketService, UtilityService, Trans
             $scope.popoverContent = "<div>" + TranslationService.getTranslation('popover-content-error') + "</div><a href='#!/muistilista'>" + TranslationService.getTranslation('popover-content-link-to-application-basket') + "</a>";
         }
     };
+
+    // ...but high education does not need prerequisite checking
+    $scope.addHighEdToBasket = function(aoId) {
+        ApplicationBasketService.addItem(aoId);
+    }
 
     $scope.applicationSystemIsActive = function(as) {
         for (var i in as.applicationDates) {

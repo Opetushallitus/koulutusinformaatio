@@ -16,49 +16,18 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
-import com.google.common.collect.Sets;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Instance of a parent level learning opportunity specification.
  *
  * @author Hannu Lyytikainen
  */
-public class ParentLOI {
+public class ParentLOI extends LOI {
 
-    private String id;
-    private Set<ApplicationOption> applicationOptions = Sets.newHashSet();
     private I18nText selectingDegreeProgram;
-    private Code prerequisite;
     private List<ChildLOIRef> childRefs = new ArrayList<ChildLOIRef>();
-    private List<String> availableTranslationLanguages;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public Set<ApplicationOption> getApplicationOptions() {
-        return applicationOptions;
-    }
-
-    public void setApplicationOptions(Set<ApplicationOption> applicationOptions) {
-        this.applicationOptions = applicationOptions;
-    }
-
-    public Code getPrerequisite() {
-        return prerequisite;
-    }
-
-    public void setPrerequisite(Code prerequisite) {
-        this.prerequisite = prerequisite;
-    }
 
     public I18nText getSelectingDegreeProgram() {
         return selectingDegreeProgram;
@@ -74,13 +43,5 @@ public class ParentLOI {
 
     public void setChildRefs(List<ChildLOIRef> childRefs) {
         this.childRefs = childRefs;
-    }
-
-    public List<String> getAvailableTranslationLanguages() {
-        return availableTranslationLanguages;
-    }
-
-    public void setAvailableTranslationLanguages(List<String> availableTranslationLanguages) {
-        this.availableTranslationLanguages = availableTranslationLanguages;
     }
 }

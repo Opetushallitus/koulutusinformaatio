@@ -406,11 +406,114 @@ service('UpperSecondaryLOService', ['$http', '$timeout', '$q', '$rootScope', 'La
 }]).
 
 /**
+ * Resource for requesting University of Applied Sciences LO data
+ */
+service('HigherEducationLOService', ['$http', '$timeout', '$q', 'LanguageService', 'HigherEducationTransformer', function($http, $timeout, $q, LanguageService, HigherEducationTransformer) {
+    return {
+        query: function(options) {
+            var deferred = $q.defer();
+            var queryParams = {
+                uiLang: LanguageService.getLanguage()
+            }
+
+            if (options.lang) {
+                queryParams.lang = options.lang
+            }
+
+            var url = '../lo/highered/';
+
+            $http.get(url + options.id, {
+                params: queryParams
+            }).
+            
+            //$http.get('mocks/amk.json', {}).
+            success(function(result) {
+            	HigherEducationTransformer.transform(result);
+                var loResult = {
+                    lo: result,
+                    parent: {},
+                    provider: result.provider
+                }
+                deferred.resolve(loResult);
+            }).
+            error(function(result) {
+                deferred.reject(result);
+            });
+
+            return deferred.promise;
+        }
+    }
+}]).
+
+/**
+ * Resource for requesting University of Applied Sciences LO data
+ */
+service('HigherEducationPreviewLOService', ['$http', '$timeout', '$q', 'LanguageService', 'HigherEducationTransformer', 'Config', function($http, $timeout, $q, LanguageService, HigherEducationTransformer, Config) {
+    return {
+        query: function(options) {
+            var deferred = $q.defer();
+            var queryParams = {
+                uiLang: LanguageService.getLanguage(),
+                lang: LanguageService.getLanguage()
+            }
+
+            if (options.lang) {
+                queryParams.lang = options.lang
+            }
+
+            var url = '../lo/preview/';
+
+            $http.get(url + options.id, {
+                params: queryParams
+            }).
+            
+            //$http.get('mocks/amk.json', {}).
+            success(function(result) {
+            	HigherEducationTransformer.transform(result);
+            	result.preview = true;
+            	result.tarjontaEditUrl =  Config.get('tarjontaUrl') + '/koulutus/' + result.id + '/edit';
+            	if (result.children) {
+            		for (var i = 0; i < result.children.length; ++i) {
+            			result.children[i].preview = true;
+            		} 
+            	}
+            	if (result.applicationSystems) {
+            		for (var i = 0; i < result.applicationSystems.length; ++i) {
+            			var as = result.applicationSystems[i];
+            			as.preview = true;
+            			if (as.applicationOptions) {
+            				for (var j = 0; j < as.applicationOptions.length; ++j) {
+            					var ao = as.applicationOptions[j];
+            					ao.preview = true;
+            					ao.editUrl =  Config.get('tarjontaUrl') + '/hakukohde/' + ao.id + '/edit';
+            				}
+            			}
+            		} 
+            	}
+                var loResult = {
+                    lo: result,
+                    parent: {},
+                    provider: result.provider
+                }
+                deferred.resolve(loResult);
+            }).
+            error(function(result) {
+                deferred.reject(result);
+            });
+
+            return deferred.promise;
+        }
+    }
+}]).
+
+/**
  * Transformer for parent LO data
  */
 service('ParentLOTransformer', ['UtilityService', '$filter', '$rootScope', function(UtilityService, $filter, $rootScope) {
     return {
         transform: function(result) {
+
+            // se LO translation language
             if (result && result.translationLanguage) {
                 $rootScope.translationLanguage = result.translationLanguage;
             }
@@ -548,6 +651,121 @@ service('ParentLOTransformer', ['UtilityService', '$filter', '$rootScope', funct
             }
         }
     }
+}]).
+
+/**
+ * Transformer for child LO data
+ */
+service('HigherEducationTransformer', ['UtilityService', '$rootScope', '$filter', 'LanguageService', function(UtilityService, $rootScope, $filter, LanguageService) {
+
+	var getFirstItemInList = function(list) {
+		if (list && list[0]) {
+			return list[0];
+		} else {
+			return '';
+		}
+	};
+
+	return {
+		transform: function(result) {
+
+			if (result && result.translationLanguage) {
+				$rootScope.translationLanguage = result.translationLanguage;
+			}
+
+			if (result && result.availableTranslationLanguages) {
+				var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
+				result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
+			}
+
+			if (result && result.provider && result.provider.name) {
+				result.provider.encodedName = $filter('encodeURIComponent')('"' + result.provider.name + '"');
+			}
+			if (result.startDate) {
+				var startDate = new Date(result.startDate);
+				result.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
+			}
+			result.teachingLanguage = getFirstItemInList(result.teachingLanguages);
+			result.formOfTeaching = getFirstItemInList(result.formOfTeaching);
+
+			for (var asIndex in result.applicationSystems) {
+				if (result.applicationSystems.hasOwnProperty(asIndex)) {
+					var as = result.applicationSystems[asIndex];
+					for (var aoIndex in as.applicationOptions) {
+						if (as.applicationOptions.hasOwnProperty(aoIndex)) {
+							var ao = as.applicationOptions[aoIndex];
+
+							if (ao.teachingLanguages && ao.teachingLanguages.length > 0) {
+								ao.teachLang = ao.teachingLanguages[0];
+
+								$rootScope.teachingLang = LanguageService.getLanguage();//ao.teachLang.toLowerCase();
+							}
+						}
+					}
+				}
+			}
+
+			for (var asIndex in result.applicationSystems) {
+				if (result.applicationSystems.hasOwnProperty(asIndex)) {
+					var as = result.applicationSystems[asIndex];
+					for (var aoIndex in as.applicationOptions) {
+						if (as.applicationOptions.hasOwnProperty(aoIndex)) {
+							var ao = as.applicationOptions[aoIndex];
+							for (var exam in ao.exams) {
+								if (ao.exams.hasOwnProperty(exam)) {
+									if (ao.exams[exam].examEvents) {
+										ao.exams[exam].examEvents.sort(function(a, b) {
+											return a.start - b.start;
+										});
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			// group application systems by prerequisite
+			var applicationSystemsByPrerequisite = {};
+
+			angular.forEach(result.applicationSystems, function(as, askey) {
+
+
+				angular.forEach(as.applicationOptions, function(ao, aokey) { 
+					angular.forEach(ao.requiredBaseEducations, function(prerequisite, prereqKey) {
+						if (applicationSystemsByPrerequisite[prerequisite]) {
+							applicationSystemsByPrerequisite[prerequisite].push(as);
+						} else {
+							applicationSystemsByPrerequisite[prerequisite] = [];
+							applicationSystemsByPrerequisite[prerequisite].push(as);
+						}
+					});
+				});
+
+			});
+
+
+			// sort application systems and select active LOI
+
+			angular.forEach(applicationSystemsByPrerequisite, function(asByPrerequisite, key){
+				UtilityService.sortApplicationSystems(asByPrerequisite);
+
+			});
+
+
+			// check if application system is of type Lisähaku
+
+			for (var asIndex in result.applicationSystems) {
+				if (result.applicationSystems.hasOwnProperty(asIndex)) {
+					var as = result.applicationSystems[asIndex];
+					if (as.applicationOptions && as.applicationOptions.length > 0) {
+						var firstAo = as.applicationOptions[0];
+						as.aoSpecificApplicationDates = firstAo.specificApplicationDates;
+					}
+				}
+			}
+		}
+	}
 }]).
 
 /**
@@ -875,6 +1093,7 @@ service('LanguageService', function() {
  */
 service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageService', 'UtilityService', function($http, $q, $rootScope, LanguageService, UtilityService) {
     var key = 'basket';
+    var typekey = 'baskettype';
     var cookieConfig = {useLocalStorage: false, maxChunkSize: 2000, maxNumberOfCookies: 20, path: '/'};
 
     // used to update item count in basket
@@ -933,12 +1152,16 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
                 }
             } else {
                 current = [];
-                current.push(itemType);
                 current.push(aoId);
             }
 
-            $.cookie(key, JSON.stringify(current), cookieConfig);
+            // save type if defined
+            if (itemType) {
+                $.cookie(typekey, itemType, cookieConfig);
+            }
 
+            $.cookie(key, JSON.stringify(current), cookieConfig);
+            
             updateBasket(this.getItemCount());
         },
 
@@ -960,6 +1183,7 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
 
         empty: function() {
             $.cookie(key, null, cookieConfig);
+            $.cookie(typekey, null, cookieConfig);
             updateBasket(this.getItemCount());
         },
 
@@ -968,7 +1192,7 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
         },
 
         getItemCount: function() {
-            return $.cookie(key) ? JSON.parse($.cookie(key)).length - 1 : 0;
+            return $.cookie(key) ? JSON.parse($.cookie(key)).length : 0;
         },
 
         isEmpty: function() {
@@ -977,8 +1201,7 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
 
         getType: function() {
             if (!this.isEmpty()) {
-                var basket = this.getItems();
-                return basket[0];
+                return $.cookie(typekey);
             }
         },
 
@@ -1000,7 +1223,7 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
             var qParams = 'uiLang=' + LanguageService.getLanguage();
 
             
-            for (var index = 1; index < basketItems.length; index++) {
+            for (var index = 0; index < basketItems.length; index++) {
                 if (basketItems.hasOwnProperty(index)) {
                     qParams += '&aoId=' + basketItems[index];
                 }

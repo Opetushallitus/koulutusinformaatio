@@ -73,15 +73,11 @@ directive('renderContactPersonInfo', function() {
     return {
         restrict: 'E,A',
         templateUrl: 'templates/contactPersonInfo.html',
-        scope: false,
+        scope: {
+            contactPersons: '=content'
+        },
         link: function(scope, element, attrs) {
-            scope.$watch('selectedLOI.contactPersons', function(data) {
-                if (data && data.length > 0) {
-                    scope.showContactPersonInfo = true;
-                } else {
-                    scope.showContactPersonInfo = false;
-                }
-            });
+
         }
     }
 }).
@@ -154,16 +150,13 @@ directive('kiRenderOrganizationImage', function() {
  */
 directive('kiRenderProfessionalTitles', function() {
     return {
-        restrict: 'E,A',
+        restrict: 'A',
         templateUrl: 'templates/professionalTitles.html',
-        scope: true,
+        scope: {
+            title: '@title',
+            content: '=content'
+        },
         link: function(scope, element, attrs) {
-            scope.anchor = attrs.anchor;
-
-            scope.$watch('selectedLOI.professionalTitles', function(data) {
-                scope.showProfessionalTitles = data ? true : false;
-
-            });
         }
     }
 }).
@@ -373,12 +366,12 @@ directive('kiAbsoluteLink', function() {
  */
  directive('kiLanguageRibbon', ['$routeParams', function($routeParams) {
     return {
-        restrict: 'E,A',
+        restrict: 'A',
         templateUrl: 'templates/languageRibbon.html',
 
         link: function(scope, element, attrs) {
-            var type = $routeParams.loType;
-            scope.isChild = (type === 'koulutusohjelma' || type == 'lukio') ? true : false; // TODO: do not use loType directly
+            //var type = $routeParams.loType;
+            //scope.isChild = (type === 'koulutusohjelma' || type == 'lukio') ? true : false; // TODO: do not use loType directly
 
             scope.$watch('selectedLOI', function(data) {
                 scope.hasMultipleTranslations = (data && data.availableTranslationLanguages && data.availableTranslationLanguages.length >= 1) ? true : false;
@@ -428,23 +421,22 @@ directive('kiAbsoluteLink', function() {
  */
   directive('kiChildRibbon', ['$location', '$routeParams', function($location, $routeParams) {
     return {
-        restrict: 'E,A',
+        restrict: 'A',
         templateUrl: 'templates/children.html',
+        scope: {
+            children: '=children',
+            type: '=type'
+        },
         link: function(scope, element, attrs) {
-
-            scope.$watch('selectedParentLOI', function(data) {
-                if (data && !data.children) {
-                    $(element).remove();
+            scope.$watch('children', function() {
+                if (scope.type) {
+                    angular.forEach(scope.children, function(child, key) {
+                        child.url = scope.type == 'korkeakoulu' ? '#!/' + scope.type + '/' : '#!/koulutusohjelma/';
+                        child.url += scope.type == 'korkeakoulu' ? child.id : child.losId;
+                        child.url += scope.prerequisite ? '#' + scope.prerequisite : '';
+                    });
                 }
             });
-
-            scope.siblingClass = function(sibling) {
-                if (sibling.childLOId == $routeParams.id) {
-                    return 'disabled';
-                } else {
-                    return '';
-                }
-            }
         }
     }
 }]).
@@ -529,10 +521,18 @@ directive('renderTextBlock', ['TranslationService', function(TranslationService)
                 update();
             });
             */
+            if (attrs.visibilityChanged) {
+                scope.$on('tabchanged', function(event, data) {
+                    var height = element[0].offsetHeight;
+                    if (height > 200) {
+                        element.css('height', 200);
+                        element.css('overflow', 'hidden');
+                    }
+                    console.log(element[0].offsetHeight);
+                })
+            }
 
             attrs.$observe('content', function(value) {
-                //console.log(attrs);
-                //console.log(value);
                 content = value;
                 title = TranslationService.getTranslationByTeachingLanguage(attrs.title);
                 update();
@@ -548,6 +548,7 @@ directive('renderTextBlock', ['TranslationService', function(TranslationService)
 
                     element.append(content);
                 }
+                
             };
 
             var createTitleElement = function(text, anchortag, level) {
@@ -559,6 +560,43 @@ directive('renderTextBlock', ['TranslationService', function(TranslationService)
                 }
             };
         };
+}]).
+
+directive('renderExtendableTextBlock', ['TranslationService', function(TranslationService) {
+    return {
+        restrict: 'A',
+        templateUrl: 'templates/extendableTextBlock.html',
+        scope: {
+            title: '@title',
+            content: '@content'
+        },
+        link: function(scope, element, attrs) {
+            var contentElement = $(element).find('.extendable-content');
+            var contentHeight;
+
+            scope.$on('tabchanged', function(event, data) {
+                contentHeight = contentElement.get(0).offsetHeight;
+                if (contentHeight > 200) {
+                    scope.state = 'closed';
+                    contentElement.css('height', 200);
+                    contentElement.css('overflow', 'hidden');
+                }
+                //console.log(element[0].offsetHeight);
+            });
+
+            scope.toggleShow = function() {
+                if (scope.state == 'closed') {
+                    contentElement.css('height', contentHeight);
+                    contentElement.css('overflow', 'visible');
+                    scope.state = 'open'; 
+                } else {
+                    contentElement.css('height', 200);
+                    contentElement.css('overflow', 'hidden');
+                    scope.state = 'closed'; 
+                }
+            }
+        }
+    }
 }]).
 
 /**
@@ -687,9 +725,9 @@ directive('kiAsState', ['TranslationService', function(TranslationService) {
 }]).
 
 /**
- *  Render application system status
+ *  Render application status label
  */
-directive('kiRenderApplicationSystemActive', function() {
+directive('kiRenderApplicationStatusLabel', function() {
     return {
         restrict: 'A',
         template: '<span data-ng-switch="active">' +
@@ -697,61 +735,17 @@ directive('kiRenderApplicationSystemActive', function() {
                     '<span data-ng-switch-when="past" data-ki-i18n="application-system-active-past" data-lang="{{lang}}"></span>' +
                     '<span data-ng-switch-when="present"data-ki-i18n="application-system-active-present" data-lang="{{lang}}"></span>' +
                 '</span>',
+        scope: {
+            applicationSystem: '=as',
+            applicationOption: '=ao',
+            lang: '@lang'
+        },
         link: function(scope, element, attrs) {
-            var as;
+            var as = scope.applicationSystem;
+            var ao = scope.applicationOption;
 
-            attrs.$observe('lang', function(value) {
-                scope.lang = value;
-            });
-
-            scope.$watch('as', function(data) {
-                as = data;
-                update();
-            });
-
-            var update = function() {
-                if (as) {
-                    if (as.asOngoing) {
-                        scope.active = "present";
-                    } else if (as.nextApplicationPeriodStarts) {
-                        scope.active = "future";
-                        scope.timestamp = as.nextApplicationPeriodStarts;
-                    } else {
-                        scope.active = "past";
-                    }
-                }
-            };
-            
-        }
-    }
-}).
-
-/**
- *  Render application option status
- */
-directive('kiRenderApplicationOptionActive', function() {
-    return {
-        restrict: 'E,A',
-        template: '<span data-ng-switch="active">' +
-                    '<span data-ng-switch-when="future"><span data-ki-i18n="application-system-active-future" data-lang="{{lang}}"></span> <span data-ki-timestamp="{{timestamp}}"></span></span>' +
-                    '<span data-ng-switch-when="past" data-ki-i18n="application-system-active-past" data-lang="{{lang}}"></span>' +
-                    '<span data-ng-switch-when="present"data-ki-i18n="application-system-active-present" data-lang="{{lang}}"></span>' +
-                '</span>',
-        link: function(scope, element, attrs) {
-            var ao;
-
-            attrs.$observe('lang', function(value) {
-                scope.lang = value;
-            });
-            
-            scope.$watch('ao', function(data) {
-                ao = data;
-                update();
-            });
-
-            var update = function() {
-                if (ao) {
-                    if (ao.canBeApplied) {
+            if (ao && ao.specificApplicationDates) {
+                if (ao.canBeApplied) {
                         scope.active = "present";
                     } else if (ao.nextApplicationPeriodStarts) {
                         scope.active = "future";
@@ -759,8 +753,16 @@ directive('kiRenderApplicationOptionActive', function() {
                     } else {
                         scope.active = "past";
                     }
+            } else if (as) {
+                if (as.asOngoing) {
+                    scope.active = "present";
+                } else if (as.nextApplicationPeriodStarts) {
+                    scope.active = "future";
+                    scope.timestamp = as.nextApplicationPeriodStarts;
+                } else {
+                    scope.active = "past";
                 }
-            };
+            }
         }
     }
 }).

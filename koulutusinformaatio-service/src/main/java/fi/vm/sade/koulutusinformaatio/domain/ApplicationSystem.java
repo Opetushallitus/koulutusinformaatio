@@ -27,6 +27,9 @@ public class ApplicationSystem {
     private String id;
     private I18nText name;
     private List<DateRange> applicationDates = new ArrayList<DateRange>();
+    private String status;
+    private int maxApplications;
+
 
     public String getId() {
         return id;
@@ -67,5 +70,21 @@ public class ApplicationSystem {
     @Override
     public int hashCode() {
         return id.hashCode();
+    }
+
+    public void setStatus(String tila) {
+        this.status = tila;	
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public int getMaxApplications() {
+        return maxApplications;
+    }
+
+    public void setMaxApplications(int maxApplications) {
+        this.maxApplications = maxApplications;
     }
 }

@@ -1,4 +1,11 @@
 <section class="content-container grid16-16">
+	
+	<!-- PREVIEW -->
+	<div data-ng-show="lo.preview">
+		<a href="{{tarjontaViewUrl}}"><span data-ki-i18n="tarjontaTarkastelu"></span></a> 
+    </div>
+    <!-- END PREVIEW-->
+    
     <div data-ki-breadcrumb="breadcrumb-search-results" id="breadcrumb"></div>
     <div data-ng-include data-src="partialUrl + 'top.html'"></div>
     <div data-tabset>
@@ -7,7 +14,7 @@
                 <div data-ng-include data-src="partialUrl + 'kuvaus.html'"></div>
             </section>
         </div>
-        <div data-tab data-heading="{{tabtitle.valintaperusteet}}" title="{{tabtitle.valintaperusteet}}">
+        <div data-tab data-heading="{{tabtitle.valintaperusteet}}" data-select="$broadcast('tabchanged')" title="{{tabtitle.valintaperusteet}}">
             <section>
                 <div data-ng-include data-src="partialUrl + 'hakeutuminen.html'"></div>
             </section>

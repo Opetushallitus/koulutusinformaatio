@@ -45,5 +45,6 @@ public class KoulutusinformaatioConversionServiceFactoryBean extends ConversionS
         registry.addConverter(new ParentLOSToSolrInputDocument());
         registry.addConverter(new UpperSecondaryLOSToSolrInputDocument());
         registry.addConverter(new SpecialLOSToSolrInputDocument());
+        registry.addConverter(new HigherEducationLOSToSolrInputDocment());
     }
 }

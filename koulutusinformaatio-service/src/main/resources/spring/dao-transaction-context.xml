@@ -121,6 +121,16 @@
             <ref bean="secondaryTransactionDatastore"/>
         </constructor-arg>
     </bean>
+    
+    <bean id="higherEducationLOSTransactionDAO" class="fi.vm.sade.koulutusinformaatio.dao.HigherEducationLOSDAO">
+        <constructor-arg>
+            <ref bean="mongo"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="morphia"/>
+        </constructor-arg>
+        <constructor-arg value="${mongo.transaction-db.name}"/>
+    </bean>
 
 
 </beans>

@@ -41,6 +41,10 @@ public class LearningOpportunitySearchResultDTO {
     private String type;
     private String credits;
     private String educationType;
+    private String educationDegree;
+    private String educationDegreeCode;
+    private String homeplace;
+
 
     public String getId() {
         return id;
@@ -144,5 +148,29 @@ public class LearningOpportunitySearchResultDTO {
 
     public void setEducationType(String educationType) {
         this.educationType = educationType;
+    }
+
+    public String getEducationDegree() {
+        return educationDegree;
+    }
+
+    public void setEducationDegree(String educationDegree) {
+        this.educationDegree = educationDegree;
+    }
+
+    public String getEducationDegreeCode() {
+        return educationDegreeCode;
+    }
+
+    public void setEducationDegreeCode(String educationDegreeCode) {
+        this.educationDegreeCode = educationDegreeCode;
+    }
+
+    public String getHomeplace() {
+        return homeplace;
+    }
+
+    public void setHomeplace(String homeplace) {
+        this.homeplace = homeplace;
     }
 }

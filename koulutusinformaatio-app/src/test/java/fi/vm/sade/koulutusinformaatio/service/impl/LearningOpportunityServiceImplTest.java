@@ -17,12 +17,12 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.dto.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
+import fi.vm.sade.koulutusinformaatio.service.PreviewService;
 import org.junit.Before;
 import org.junit.Test;
 import org.modelmapper.ModelMapper;
@@ -47,6 +47,7 @@ public class LearningOpportunityServiceImplTest {
     private ChildLOS childLOS;
     private ChildLOI childLOI;
     private ApplicationOption applicationOption;
+    private PreviewService previewService;
 
     @Before
     public void setUp() throws ResourceNotFoundException {
@@ -74,7 +75,7 @@ public class LearningOpportunityServiceImplTest {
         applicationOption = createApplicationOption("ao123", createI18Text("ao name"), "as123",
                 parentLOS.getProvider(), new Date(), 100, 25, 6, 77, childLOIRefs, "32",
                 prerequisite);
-        Set<ApplicationOption> aos = Sets.newHashSet(applicationOption);
+        List<ApplicationOption> aos = Lists.newArrayList(applicationOption);
 
         parentLOI = new ParentLOI();
         parentLOI.setId("2345");
@@ -87,7 +88,6 @@ public class LearningOpportunityServiceImplTest {
         childLOS = new ChildLOS();
         childLOS.setId("lo123");
         childLOS.setName(createI18Text("child 1"));
-        childLOS.setDegreeTitle(createI18Text("degree"));
         childLOS.setQualification(createI18Text("Qualification"));
         ParentLOSRef parent = new ParentLOSRef();
         parent.setId("1234");
@@ -119,8 +119,28 @@ public class LearningOpportunityServiceImplTest {
         when(educationDataQueryService.getParentLearningOpportunity(eq("1234"))).thenReturn(parentLOS);
         when(educationDataQueryService.getChildLearningOpportunity(eq("clo123"))).thenReturn(childLOS);
         when(educationDataQueryService.getApplicationOption(eq("ao123"))).thenReturn(applicationOption);
+        
+        previewService = mock(PreviewService.class);
+        
+        HigherEducationLOS heLOS = new HigherEducationLOS();
+        heLOS.setId("1.3.2.4He");
+        heLOS.setCreditUnit(this.createI18Text("opintoviikkoa"));
+        heLOS.setAccessToFurtherStudies(createI18Text("AccessToFurtherStudies"));
+        heLOS.setEducationDegree("32");
+        heLOS.setName(createI18Text("name"));
+        heLOS.setGoals(createI18Text("goals"));
+        heLOS.setStructure(createI18Text("StructureDiagram"));
+        heLOS.setEducationDomain(createI18Text("EducationDomain"));
+        heLOS.setStartDate(new Date());
+        heLOS.setApplicationOptions(Lists.newArrayList(aos));
+        heLOS.setFormOfTeaching(Lists.newArrayList(createI18Text("FormOfTeaching"), createI18Text("FormOfTeaching2")));
+        heLOS.setTeachingLanguages(Lists.newArrayList(c));
+        
+        
+        when(educationDataQueryService.getHigherEducationLearningOpportunity(heLOS.getId())).thenReturn(heLOS);
+        when(previewService.previewHigherEducationLearningOpportunity(heLOS.getId())).thenReturn(heLOS);
 
-        learningOpportunityService = new LearningOpportunityServiceImpl(educationDataQueryService, modelMapper);
+        learningOpportunityService = new LearningOpportunityServiceImpl(educationDataQueryService, previewService, modelMapper);
     }
 
     @Test
@@ -158,6 +178,36 @@ public class LearningOpportunityServiceImplTest {
         ApplicationOptionDTO result = learningOpportunityService.getApplicationOption(applicationOption.getId(), "en", "en");
         checkResult("en", "fi", result);
     }
+    
+    @Test
+    public void testetHigherEducationLearningOpportunity() throws ResourceNotFoundException {
+    	HigherEducationLOSDTO losDto = learningOpportunityService.getHigherEducationLearningOpportunity("1.3.2.4He");
+    	assertEquals("1.3.2.4He", losDto.getId());
+    	assertEquals("opintoviikkoa fi", losDto.getCreditUnit());
+    }
+    
+    @Test
+    public void testetHigherEducationLearningOpportunitySv() throws ResourceNotFoundException {
+    	HigherEducationLOSDTO losDto = learningOpportunityService.getHigherEducationLearningOpportunity("1.3.2.4He", "sv", "sv");
+    	assertEquals("1.3.2.4He", losDto.getId());
+    	assertEquals("opintoviikkoa sv", losDto.getCreditUnit());
+    }
+    
+    @Test
+    public void testetHigherEducationLearningOpportunityEn() throws ResourceNotFoundException {
+    	HigherEducationLOSDTO losDto = learningOpportunityService.getHigherEducationLearningOpportunity("1.3.2.4He", "en", "en");
+    	assertEquals("1.3.2.4He", losDto.getId());
+    	assertEquals("opintoviikkoa en", losDto.getCreditUnit());
+    }
+    
+    @Test
+    public void testPreviewLearningOpportunity() throws ResourceNotFoundException {
+    	HigherEducationLOSDTO losDto = learningOpportunityService.previewLearningOpportunity("1.3.2.4He", "fi", "fi");
+    	assertEquals("1.3.2.4He", losDto.getId());
+    	assertEquals("opintoviikkoa fi", losDto.getCreditUnit());
+    	
+    }
+    
 
 
     private void checkResult(String lang, String defaultLang, ApplicationOptionDTO result) {
@@ -211,8 +261,6 @@ public class LearningOpportunityServiceImplTest {
         assertNotNull(result.getLois());
         assertEquals(1, result.getLois().size());
 
-
-        assertEquals(childLOS.getDegreeTitle().getTranslations().get(defaultLang), result.getDegreeTitle());
         assertEquals(childLOS.getQualification().getTranslations().get(defaultLang), result.getQualification());
         assertEquals(childLOS.getParent().getName().getTranslations().get(defaultLang), result.getParent().getName());
         assertEquals(childLOS.getParent().getId(), result.getParent().getId());

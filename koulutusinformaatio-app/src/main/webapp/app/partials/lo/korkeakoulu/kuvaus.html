@@ -1,0 +1,60 @@
+<section class="grid16-9 offset-right-16-1 no-left-gutter wide-column">
+    <div class="infobox">
+        <ul class="nobullet">
+            <li>
+                <span data-ki-i18n="education-starts" data-show-colon="true" class="margin-right-1"></span>
+                <span data-ng-show="lo.startDate" class="bold">{{lo.startDate}}</span>
+                <span data-ng-hide="lo.startDate" class="bold">{{lo.startSeason}} {{lo.startYear}}</span>
+            </li>
+            <li>
+                <span data-ki-i18n="language-of-instruction" data-show-colon="true" class="margin-right-1"></span>
+                <!--<span class="bold">{{lo.teachingLanguage}}</span>-->
+                 <span data-ng-repeat="tl in lo.teachingLanguages">
+                    <span class="bold">{{tl}}</span><span data-ng-show="!$last">,</span>
+                </span>
+            </li>
+            <li>
+                <span data-ki-i18n="duration" data-show-colon="true" class="margin-right-1"></span>
+                <span class="bold">{{lo.creditValue}} {{lo.creditUnit}}</span>
+            </li>
+            <li>
+                <span data-ki-i18n="planned-duration" data-show-colon="true" class="margin-right-1"></span>
+                <span class="bold">{{lo.plannedDuration}} {{lo.plannedDurationUnit}}</span>
+            </li>
+            <li>
+                <span data-ki-i18n="time-of-teaching" data-show-colon="true" class="margin-right-1"></span>
+                <span data-ng-repeat="tot in lo.teachingTimes">
+                    <span class="bold">{{tot}}</span><span data-ng-show="!$last">,</span>
+                </span>
+            </li>
+            <li>
+                <span data-ki-i18n="place-of-teaching" data-show-colon="true" class="margin-right-1"></span>
+                <span data-ng-repeat="top in lo.teachingPlaces">
+                    <span class="bold">{{top}}</span><span data-ng-show="!$last">,</span>
+                </span>
+            </li>
+            <li>
+                <span data-ki-i18n="chargeable" data-show-colon="true" class="margin-right-1"></span>
+                <span class="bold" data-ki-i18n="chargeable-{{lo.chargeable}}"></span>
+            </li>
+        </ul>
+    </div>
+    <div data-ki-language-ribbon class="ribbon"></div>
+    <div data-render-text-block data-title="goals-of-education" data-content="{{lo.goals}}"></div>
+    <div data-render-text-block data-title="info-about-teaching-langs" data-content="{{lo.infoAboutTeachingLangs}}"></div>
+    <div data-render-text-block data-title="content-of-studies" data-content="{{lo.content}}"></div>
+    <div data-render-text-block data-title="major-selection" data-content="{{lo.majorSelection}}"></div>
+    <div data-render-text-block data-title="info-about-charge" data-content="{{lo.infoAboutCharge}}"></div>
+    <div data-render-text-block data-title="structure-of-studies" data-content="{{lo.structure}}"></div>
+    <div data-render-text-block data-title="final-exam" data-content="{{lo.finalExam}}"></div>
+    <div data-render-text-block data-title="career-opportunities" data-content="{{lo.careerOpportunities}}"></div>
+    <div data-ki-render-professional-titles data-title="job-title" data-content="lo.professionalTitles"></div>
+    <div data-render-text-block data-title="competence" data-content="{{lo.competence}}"></div>
+    <div data-render-text-block data-title="internationalization" data-content="{{lo.internationalization}}"></div>
+    <div data-render-text-block data-title="cooperation" data-content="{{lo.cooperation}}"></div>
+    <div data-render-text-block data-title="research-focus" data-content="{{lo.researchFocus}}"></div>
+    <div data-render-text-block data-title="access-to-further-studies" data-content="{{lo.accessToFurtherStudies}}"></div>
+    <div data-render-contact-person-info data-content="lo.contactPersons"></div>
+</section>
+<div data-ng-class="applyFormClass" data-ng-include data-src="partialCommonUrl + 'as/higherEducationAs.html'" data-ng-controller="ApplicationCtrl"></div>
+<div class="clear"></div>

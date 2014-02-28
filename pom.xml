@@ -5,7 +5,7 @@
 
     <groupId>fi.vm.sade.koulutusinformaatio</groupId>
     <artifactId>koulutusinformaatio</artifactId>
-    <version>8.1-SNAPSHOT</version>
+    <version>9.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Koulutusinformaatio :: Parent</name>
 
@@ -40,7 +40,7 @@
         <morphia.version>0.105</morphia.version>
         <oph.organisaatio.version>8.0-SNAPSHOT</oph.organisaatio.version>
         <oph.koodisto.version>7.0-SNAPSHOT</oph.koodisto.version>
-        <oph.tarjonta.version>8.1</oph.tarjonta.version>
+        <oph.tarjonta.version>9.0-SNAPSHOT</oph.tarjonta.version>
     </properties>
 
     <repositories>

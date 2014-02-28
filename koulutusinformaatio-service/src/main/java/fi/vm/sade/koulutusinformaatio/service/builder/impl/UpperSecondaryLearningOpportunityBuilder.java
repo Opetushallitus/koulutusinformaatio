@@ -20,6 +20,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOI;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
@@ -34,6 +35,7 @@ import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 
 import javax.ws.rs.WebApplicationException;
+
 import java.util.List;
 
 /**
@@ -84,7 +86,7 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
 
         for (String providerId : komotosByProviderId.keySet()) {
             UpperSecondaryLOS los = losObjectCreator.createUpperSecondaryLOS(komo, parentKomo, komotosByProviderId.get(providerId),
-                    resolveLOSId(komo.getOid(), providerId), providerService.getByOID(providerId));
+                    resolveLOSId(komo.getOid(), providerId), providerId);
             loses.add(los);
         }
 
@@ -119,7 +121,8 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
     private static Predicate<UpperSecondaryLOS> losValid = new Predicate<UpperSecondaryLOS>() {
         @Override
         public boolean apply(UpperSecondaryLOS los) {
-            if (los.getLois() != null) {
+            if (los != null
+                && los.getLois() != null) {
                 for (UpperSecondaryLOI loi : los.getLois()) {
                     if (loi.getApplicationOptions() != null && loi.getApplicationOptions().size() > 0) {
                         return true;

@@ -17,14 +17,18 @@
 package fi.vm.sade.koulutusinformaatio.converter;
 
 import com.google.common.base.Function;
+import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Ordering;
+
 import fi.vm.sade.koulutusinformaatio.domain.DateRange;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.DateRangeDTO;
 
 import java.util.*;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * @author Mikko Majapuro
@@ -84,6 +88,20 @@ public final class ConverterUtil {
         if (list != null) {
             for (I18nText text : list) {
                 String value = getTextByLanguage(text, lang);
+                if (value != null) {
+                    texts.add(value);
+                }
+            }
+        }
+        return texts;
+    }
+    
+    public static List<String> getTextsByLanguageUseFallbackLang(final List<I18nText> list, String lang) {
+        lang = lang.toLowerCase();
+        List<String> texts = new ArrayList<String>();
+        if (list != null) {
+            for (I18nText text : list) {
+                String value = getTextByLanguageUseFallbackLang(text, lang);
                 if (value != null) {
                     texts.add(value);
                 }
@@ -170,7 +188,7 @@ public final class ConverterUtil {
                 .onResultOf(new Function<ApplicationSystemDTO, Boolean>() {
                     @Override
                     public Boolean apply(ApplicationSystemDTO input) {
-                        return isOngoingDTO(input.getApplicationDates());
+                        return (input != null) ? isOngoingDTO(input.getApplicationDates()) : false;
                     }
                 }).compound(
                         Ordering.natural().reverse()
@@ -178,7 +196,7 @@ public final class ConverterUtil {
                                         new Function<ApplicationSystemDTO, Date>() {
                                             @Override
                                             public Date apply(ApplicationSystemDTO input) {
-                                                return input.getApplicationDates().get(0).getStartDate();
+                                                return (input != null) ? input.getApplicationDates().get(0).getStartDate() : null;
                                             }
                                         }
                                 )

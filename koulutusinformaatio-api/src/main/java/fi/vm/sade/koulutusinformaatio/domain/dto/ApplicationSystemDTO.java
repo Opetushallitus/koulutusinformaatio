@@ -34,6 +34,7 @@ public class ApplicationSystemDTO {
     private List<ApplicationOptionDTO> applicationOptions = new ArrayList<ApplicationOptionDTO>();
     private boolean asOngoing;
     private Date nextApplicationPeriodStarts;
+    private String status;
 
     public String getId() {
         return id;
@@ -81,5 +82,13 @@ public class ApplicationSystemDTO {
 
     public void setNextApplicationPeriodStarts(Date nextApplicationPeriodStarts) {
         this.nextApplicationPeriodStarts = nextApplicationPeriodStarts;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

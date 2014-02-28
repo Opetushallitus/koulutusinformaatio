@@ -32,6 +32,11 @@
     "search-button": "Hae",
     "search-tab-lo": "Koulutuksia",
     "search-tab-article": "Tietoa ja tarinoita",
+
+    "basic-information": "Perustiedot (en)",
+    "degree-programmes": "Koulutusohjelmat (en)",
+    "extended-view-close": "Avaa (en)",
+    "extended-view-open": "Sulje (en)",
     
     "filter-title": "Rajaa hakutuloksia tästä",
     "filter-search-title": "Pohjakoulutus",
@@ -72,6 +77,26 @@
     "form-of-education": "Opetusmuoto",
     "duration": "Koulutuksen laajuus",
     "planned-duration": "Suunniteltu kesto",
+	
+	"student-selection": "Opiskelijavalinta koulutuksiin (en)",
+    "general-selection-criteria": "Yleiset valintaperusteet",
+    "sora": "Terveydelliset vaatimukset (en)",
+	
+	"time-of-teaching": "Opetusaika (en)",
+    "place-of-teaching": "Opetuspaikka (en)",
+    "chargeable": "Maksullinen (en)",
+    "chargeable-false": "Ei (en)",
+    "chargeable-true": "Kyllä (en)",
+    
+    "info-about-teaching-langs": "Lisätietoa opetuskielistä (en)",
+    "major-selection": "Pääaineen tai erikoistumisalan valinta (en)",
+    "info-about-charge": "Opintojen maksullisuus (en)",
+    "final-exam": "Opinnäytetyö (en)",
+    "career-opportunities": "Uramahdollisuudet (en)",
+    "job-title": "Tehtävänimikkeitä (en)",
+    "competence": "Pätevyys (en)",
+    "research-focus": "Tutkimukselliset painopisteet (en)",
+
     "average-limit": "Minimum grade point average",
     "lowest-acceptable-average": "Minimum grade point average required for admittance",
     "lowest-acceptable-average-description": "The minimum grade point average is set by the educational institution. Applicants whose grade point average is lower than this will not be admitted to the study programme. The grade point average required for admittance varies from year to year and may be higher.",
@@ -103,6 +128,7 @@
     "additional-proof-scores": "You can get awarded __min__ – __max__ points for extra achievements. The minimum passing score is __threshold__.",
     "overall-scores": "The minimum passing total score from the entrance examination and the extra achievements is __threshold__ points.",
     "further-application-info": "Additional information on applying",
+    "eligibility-description": "Eligibility",
     "info-center": "Application services",
 
     "academy-description": "Oppilaitoksen esittely",
@@ -228,9 +254,23 @@
     "yo": "Lukio ja / tai ylioppilastutkinto",
     "pk": "Peruskoulu",
     "er": "Yksilöllistetty perusopetus",
+  	"at": "Ammatillinen tutkinto",
+    "ak": "Ammattikorkeakoulututkinto",
+    "kt": "Kandidaatin tutkinto",
+    "kandidaattiYm": "Kandidaatin tutkinto",
+    "lukioYm": "Lukio ja/tai ylioppilastutkinto ym.",
     
     "autocomplete-keyword": "Hakusanaehdotukset",
     "autocomplete-loname": "Kurssit ja tutkinnot",
+    
+    "VALMIS": "Valmis (en)",
+    "LUONNOS": "Luonnos (en)",
+    "JULKAISTU": "Julkaistu (en)",
+    "tarjontaTarkastelu": "Takaisin (en)",
+    "tarjontaMuokkaa": "Muokkaa (en)",
+    "esikatselussa": "Esikatselussa (en)",
+    "organisaatiossa": "organisaatiossa (en)",
+    "esikatselu": "Esikatselu (en)",
 
     "error-title": "Tapahtui odottamaton virhe",
     "error-body": "Olemme pahoillamme. Hakemiesi koulutusten tietoja ei saatu jostain syystä haettua. Yritä hetken kuluttua uudelleen. Jos ongelma toistuu, ota yhteyttä Opintopolun neuvontaan.",

@@ -34,11 +34,18 @@ public class TarjontaConstants {
     public static final String TYPE_SPECIAL = "ERITYISOPETUS";
     public static final String TYPE_REHAB = "VALMENTAVA";
     public static final String TYPE_UPSEC = "LUKIO";
+    public static final String TYPE_KK = "KORKEAKOULU";
 
     public static final String VOCATIONAL_EDUCATION_TYPE = "AmmatillinenPeruskoulutus";
     public static final String UPPER_SECONDARY_EDUCATION_TYPE = "Lukiokoulutus";
     public static final String REHABILITATING_EDUCATION_TYPE = "ValmentavaJaKuntouttavaOpetus";
 
     public static final String PREREQUISITE_URI_ER = "pohjakoulutusvaatimustoinenaste_er";
+    
+    public static final String ED_DEGREE_URI_AMK = "koulutusasteoph2002_62";
+    public static final String ED_DEGREE_URI_YLEMPI_AMK = "koulutusasteoph2002_71";
+    public static final String ED_DEGREE_URI_KANDI = "koulutusasteoph2002_63";
+    public static final String ED_DEGREE_URI_MAISTERI = "koulutusasteoph2002_72";
+    
 
 }

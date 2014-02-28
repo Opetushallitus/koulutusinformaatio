@@ -32,6 +32,8 @@ public class LocationResourceImplTest {
     
     private LocationResourceImpl resource;
     
+    List<Location> municipalities;
+    
     private final static String UUSIMAA = "Uusimaa";
     private final static String HELSINKI = "Helsinki";
     
@@ -61,7 +63,7 @@ public class LocationResourceImplTest {
         
         when(searchService.getDistricts(anyString())).thenReturn(districts);
         
-        List<Location> municipalities = new ArrayList<Location>();
+        municipalities = new ArrayList<Location>();
         Location loc3 = new Location();
         loc3.setCode("code_helsinki");
         loc3.setId("id_helsinki");
@@ -81,6 +83,8 @@ public class LocationResourceImplTest {
         municipalities.add(loc4);
         
         when(searchService.getChildLocations(anyList(), anyString())).thenReturn(municipalities);
+        
+        when(searchService.searchLocations(anyString(), anyString())).thenReturn(municipalities);
         
         resource = new LocationResourceImpl(searchService);
 
@@ -103,6 +107,14 @@ public class LocationResourceImplTest {
     public void testGetChildLocations() {
         List<LocationDTO> children = resource.getChildLocations(Arrays.asList("code_uusimaa"), "fi");
         assertEquals(2, children.size());
+    }
+    
+    @Test
+    public void testSearchLocations() {
+    	List<LocationDTO> locs = resource.searchLocations("termi", "fi");
+    	assertEquals(2, locs.size());
+    	assertEquals(locs.get(0).getName(), municipalities.get(0).getName());
+    	assertEquals(locs.get(0).getCode(), municipalities.get(0).getCode());
     }
     
 }

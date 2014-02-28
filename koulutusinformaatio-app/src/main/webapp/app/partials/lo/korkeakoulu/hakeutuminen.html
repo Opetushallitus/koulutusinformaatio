@@ -1,0 +1,78 @@
+<section class="grid16-9 offset-right-16-1 no-left-gutter wide-column">
+    <div data-ki-language-ribbon class="ribbon"></div>
+
+    <div data-ng-switch="showAoAnchorLinks">
+        <div data-ng-switch-when="true" class="ao-block">
+            <h2 data-ki-i18n="student-selection"></h2>
+            <div data-ng-repeat="as in lo.applicationSystems">
+                <ul>
+                    <li data-ng-repeat="ao in as.applicationOptions">
+                        <a href="javascript:void(0)" data-ng-click="scrollToAnchor(ao.id)">{{ao.name}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div data-ng-repeat="as in lo.applicationSystems">
+        <div data-ng-repeat="ao in as.applicationOptions" id="{{ao.id}}" class="ao-block">
+            <h2>{{ao.name}}</h2>
+            
+            <!-- PREVIEW -->
+            <div data-ng-show="ao.preview">
+            	<span data-ki-i18n="{{ao.status}}"></span>
+            	<a href="{{ao.editUrl}}"><span data-ki-i18n="tarjontaMuokkaa"></span></a>
+            </div>
+            <!-- END PREVIEW -->
+            
+            <div class="infobox">
+                <ul class="nobullet">
+                    <li>
+                        <span data-ki-i18n="education-starts" data-show-colon="true" class="margin-right-1"></span>
+                        <span class="bold">{{lo.startDate}}</span>
+                    </li>
+                    <li>
+                        <span data-ki-i18n="language-of-instruction" data-show-colon="true" class="margin-right-1"></span>
+                       <!--<span class="bold">{{lo.teachingLanguage}}</span>-->
+                        <span data-ng-repeat="tl in lo.teachingLanguages">
+                    		<span class="bold">{{tl}}</span><span data-ng-show="!$last">,</span>
+                		</span>
+                    </li>
+                    <li>
+                        <span data-ki-i18n="duration" data-show-colon="true" class="margin-right-1"></span>
+                        <span class="bold">{{lo.creditValue}} {{lo.creditUnit}}</span>
+                    </li>
+                    <li>
+                        <span data-ki-i18n="planned-duration" data-show-colon="true" class="margin-right-1"></span>
+                        <span class="bold">{{lo.plannedDuration}} {{lo.plannedDurationUnit}}</span>
+                    </li>
+                    <li>
+                        <span data-ki-i18n="time-of-teaching" data-show-colon="true" class="margin-right-1"></span>
+                        <span data-ng-repeat="tot in lo.teachingTimes">
+                            <span class="bold">{{tot}}</span><span data-ng-show="!$last">,</span>
+                        </span>
+                    </li>
+                    <li>
+                        <span data-ki-i18n="place-of-teaching" data-show-colon="true" class="margin-right-1"></span>
+                        <span data-ng-repeat="top in lo.teachingPlaces">
+                            <span class="bold">{{top}}</span><span data-ng-show="!$last">,</span>
+                        </span>
+                    </li>
+                    <li>
+                        <span data-ki-i18n="chargeable" data-show-colon="true" class="margin-right-1"></span>
+                        <span class="bold" data-ki-i18n="chargeable-{{lo.chargeable}}"></span>
+                    </li>
+                </ul>
+            </div>
+            <div data-render-extendable-text-block data-title="{{as.name}}" data-content="{{ao.selectionCriteria}}"></div>
+            <div data-render-text-block data-title="eligibility-description" data-content="{{ao.eligibilityDescription}}"></div>
+            <div data-render-text-block data-title="sora" data-content="{{ao.soraDescription}}"></div>
+            <div data-ki-render-exams></div>
+            <div data-ki-render-attachments></div>
+            <div data-render-text-block data-title="further-application-info" data-content="{{ao.additionalInfo}}"></div>
+        </div>
+    </div>
+    <div data-ki-render-info-center-address></div>
+</section>
+<div data-ng-class="applyFormClass" data-ng-include data-src="partialCommonUrl + 'as/higherEducationAs.html'" data-ng-controller="ApplicationCtrl"></div>
+<div class="clear"></div>

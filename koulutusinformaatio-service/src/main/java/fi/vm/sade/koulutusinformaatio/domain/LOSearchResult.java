@@ -38,9 +38,14 @@ public class LOSearchResult {
     private String type;
     private String credits;
     private String educationType;
+    private String educationDegree;
+    private String educationDegreeCode;
+    private String homeplace;
 
     public LOSearchResult(String id, String name, String lopId, String lopName,
-                          String prerequisite, String prerequisiteCode, String parentId, String losId, String type, String credits, String educationType) {
+            String prerequisite, String prerequisiteCode, String parentId, 
+            String losId, String type, String credits, String educationType, 
+            String educationDegree, String educationDegreeCode, String homeplace) {
         this.id = id;
         this.name = name;
         this.lopId = lopId;
@@ -52,6 +57,9 @@ public class LOSearchResult {
         this.type = type;
         this.credits = credits;
         this.educationType = educationType;
+        this.educationDegree = educationDegree;
+        this.educationDegreeCode = educationDegreeCode;
+        this.homeplace = homeplace;
     }
 
     public LOSearchResult() {
@@ -108,7 +116,7 @@ public class LOSearchResult {
     public String getParentId() {
         return parentId;
     }
-    
+
     public void setParentId(String parentId) {
         this.parentId = parentId;
     }
@@ -159,5 +167,29 @@ public class LOSearchResult {
 
     public void setEducationType(String educationType) {
         this.educationType = educationType;
+    }
+
+    public String getEducationDegree() {
+        return educationDegree;
+    }
+
+    public void setEducationDegree(String educationDegree) {
+        this.educationDegree = educationDegree;
+    }
+
+    public String getEducationDegreeCode() {
+        return educationDegreeCode;
+    }
+
+    public void setEducationDegreeCode(String educationDegreeCode) {
+        this.educationDegreeCode = educationDegreeCode;
+    }
+
+    public String getHomeplace() {
+        return homeplace;
+    }
+
+    public void setHomeplace(String homeplace) {
+        this.homeplace = homeplace;
     }
 }

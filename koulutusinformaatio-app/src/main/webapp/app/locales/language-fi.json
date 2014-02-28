@@ -32,6 +32,11 @@
     "search-button": "Hae",
     "search-tab-lo": "Koulutuksia",
     "search-tab-article": "Tietoa ja tarinoita",
+
+    "basic-information": "Perustiedot",
+    "degree-programmes": "Koulutusohjelmat",
+    "extended-view-close": "Avaa",
+    "extended-view-open": "Sulje",
     
     "filter-title": "Rajaa hakutuloksia tästä",
     "filter-search-title": "Pohjakoulutus",
@@ -72,6 +77,13 @@
     "form-of-education": "Opetusmuoto",
     "duration": "Koulutuksen laajuus",
     "planned-duration": "Suunniteltu kesto",
+    "time-of-teaching": "Opetusaika",
+    "place-of-teaching": "Opetuspaikka",
+    "chargeable": "Maksullinen",
+    "chargeable-false": "Ei",
+    "chargeable-true": "Kyllä",
+
+
     "average-limit": "Keskiarvoraja",
     "lowest-acceptable-average": "alin hyväksyttävä keskiarvo",
     "lowest-acceptable-average-description": "Oppilaitoksen asettama keskiarvoraja jonka alittaneita hakijoita ei valita koulutukseen. Opiskelijaksi ottamisen keskiarvo vaihtelee vuosittain ja voi olla korkeampi.",
@@ -82,12 +94,22 @@
     "base-education-PK": "Peruskoulupohjaisena järjestettävä koulutus",
     "base-education-YO": "Lukiopohjaisena järjestettävä koulutus",
     "access-to-further-studies": "Jatko-opintomahdollisuudet",
+    "info-about-teaching-langs": "Lisätietoa opetuskielistä",
+    "major-selection": "Pääaineen tai erikoistumisalan valinta",
+    "info-about-charge": "Opintojen maksullisuus",
+    "final-exam": "Opinnäytetyö",
+    "career-opportunities": "Uramahdollisuudet",
+    "job-title": "Tehtävänimikkeitä",
+    "competence": "Pätevyys",
+    "research-focus": "Tutkimukselliset painopisteet",
 
     "exam-header-time": "Aika",
     "exam-header-place": "Paikka",
     "exam-header-description": "Kuvaus",
 
+    "student-selection": "Opiskelijavalinta koulutuksiin",
     "general-selection-criteria": "Yleiset valintaperusteet",
+    "sora": "Terveydelliset vaatimukset",
     "emphasized-subjects": "Painotettavat oppiaineet",
     "emphasized-subjects-description": "Painokerroin tarkoittaa, että painotettavan aineen arvosana lasketaan valinnassa niin monta kertaa kuin painokerroin osoittaa. Esimerkiksi jos liikunnan painokerroin on 2, lasketaan peruskoulun päättötodistuksen liikunnan arvosana kahteen kertaan.",
     "emphasized-subjects-coefficient-title": "painokerroin",
@@ -103,6 +125,7 @@
     "additional-proof-scores": "Lisänäytöistä voit saada __min__ – __max__ pistettä. Alin hyväksyttävä pistemäärä on __threshold__.",
     "overall-scores": "Pääsykokeen ja lisänäyttöjen alin hyväksytty yhteispistemäärä on __threshold__ pistettä.",
     "further-application-info": "Lisätietoa hakemisesta",
+    "eligibility-description": "Hakukelpoisuusvaatimukset",
     "info-center": "Hakuneuvonta",
 
     "academy-description": "Oppilaitoksen esittely",
@@ -228,9 +251,24 @@
     "yo": "Lukio ja / tai ylioppilastutkinto",
     "pk": "Peruskoulu",
     "er": "Yksilöllistetty perusopetus",
+  	"at": "Ammatillinen tutkinto",
+    "ak": "Ammattikorkeakoulututkinto",
+    "kt": "Kandidaatin tutkinto",
+    "kandidaattiYm": "Kandidaatin tutkinto",
+    "lukioYm": "Lukio ja/tai ylioppilastutkinto ym.",
+    
     
     "autocomplete-keyword": "Hakusanaehdotukset",
     "autocomplete-loname": "Kurssit ja tutkinnot",
+    
+    "VALMIS": "Valmis",
+    "LUONNOS": "Luonnos",
+    "JULKAISTU": "Julkaistu",
+    "tarjontaTarkastelu": "Takaisin",
+    "tarjontaMuokkaa": "Muokkaa",
+    "esikatselussa": "Esikatselussa",
+    "organisaatiossa": "organisaatiossa",
+    "esikatselu": "Esikatselu",
 
     "error-title": "Tapahtui odottamaton virhe",
     "error-body": "Olemme pahoillamme. Hakemiesi koulutusten tietoja ei saatu jostain syystä haettua. Yritä hetken kuluttua uudelleen. Jos ongelma toistuu, ota yhteyttä Opintopolun neuvontaan.",

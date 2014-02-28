@@ -405,7 +405,7 @@ angular.module("template/tooltip/tooltip-html-unsafe-popup.html", []).run(["$tem
   $templateCache.put("template/tooltip/tooltip-html-unsafe-popup.html",
     "<div class=\"tooltip {{placement}}\" data-ng-class=\"{ in: isOpen(), fade: animation() }\">\n" +
     "  <div class=\"tooltip-arrow\"></div>\n" +
-    "  <div class=\"tooltip-inner\" data-ng-bind-html-unsafe=\"content\"></div>\n" +
+    "  <div class=\"tooltip-inner\" data-ng-bind-html=\"content | unsafe\"></div>\n" +
     "</div>\n" +
     "");
 }]);
@@ -426,8 +426,8 @@ angular.module("template/popover/popover.html", []).run(["$templateCache", funct
     "\n" +
     "  <div class=\"popover-inner\">\n" +
     "      <span class=\"popover-close\" data-ng-click=\"close()\">&nbsp;</span>" +
-    "      <h2 class=\"popover-title\" data-ng-bind-html-unsafe=\"title\" data-ng-show=\"title\"></h2>\n" +
-    "      <div class=\"popover-content\" data-ng-bind-html-unsafe=\"content\"></div>\n" +
+    "      <h2 class=\"popover-title\" data-ng-bind-html=\"title | unsafe\" data-ng-show=\"title\"></h2>\n" +
+    "      <div class=\"popover-content\" data-ng-bind-html=\"content | unsafe\"></div>\n" +
     "  </div>\n" +
     "</div>\n" +
     "");

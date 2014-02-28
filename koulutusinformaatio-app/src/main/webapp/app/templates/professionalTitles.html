@@ -1,6 +1,6 @@
-<div data-ng-show="showProfessionalTitles">
-    <h2 data-ki-i18n="profession-title" data-lang="{{translationLanguage}}"></h2>
+<div data-ng-show="content">
+    <h2 data-ki-i18n="{{title}}" data-lang="{{translationLanguage}}"></h2>
     <ul class="disc">
-        <li data-ng-repeat="ptitle in selectedLOI.professionalTitles">{{ptitle}}</li>
+        <li data-ng-repeat="ptitle in content">{{ptitle}}</li>
     </ul>
 </div>

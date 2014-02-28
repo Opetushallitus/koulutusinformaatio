@@ -17,8 +17,15 @@
 package fi.vm.sade.koulutusinformaatio.service;
 
 import fi.vm.sade.tarjonta.service.resources.dto.*;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Can be used to access tarjonta APIs. Returns raw tarjonta DTO objects as they are
@@ -47,4 +54,23 @@ public interface TarjontaRawService {
     public HakuDTO getHaku(String oid);
 
     public List<OidRDTO> listParentLearnignOpportunityOids(int count, int startIndex);
+    
+    public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> listHigherEducation();
+    
+    public ResultV1RDTO<KoulutusKorkeakouluV1RDTO> getHigherEducationLearningOpportunity(String oid);
+    
+    public ResultV1RDTO<List<NimiJaOidRDTO>> getHakukohdesByHigherEducation(String oid);
+    
+    public ResultV1RDTO<HakukohdeV1RDTO> getHigherEducationHakukohode(String oid);
+    
+    public ResultV1RDTO<HakuV1RDTO> getHigherEducationHakuByOid(String oid);
+    
+    public ResultV1RDTO<Set<String>> getChildrenOfParentHigherEducationLOS(String parentOid);
+
+	public ResultV1RDTO<Set<String>> getParentsOfHigherEducationLOS(
+			String komoOid);
+
+	public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> getHigherEducationByKomo(
+			String curKomoOid);
+    
 }

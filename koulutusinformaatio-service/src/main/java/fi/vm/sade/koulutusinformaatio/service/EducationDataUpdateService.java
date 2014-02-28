@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.service;
 
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
+import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 
 /**
  * @author Mikko Majapuro
@@ -27,4 +28,5 @@ public interface EducationDataUpdateService {
     void save(final LOS learningOpportunitySpecification);
 
     void save(final DataStatus dataStatus);
+
 }

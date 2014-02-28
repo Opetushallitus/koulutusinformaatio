@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.converter.*;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.dto.*;
@@ -25,6 +26,8 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersExceptio
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
+import fi.vm.sade.koulutusinformaatio.service.PreviewService;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,12 +41,14 @@ import java.util.List;
 public class LearningOpportunityServiceImpl implements LearningOpportunityService {
 
     private EducationDataQueryService educationDataQueryService;
+    private PreviewService previewService;
     private ModelMapper modelMapper;
     private static final String LANG_FI = "fi";
 
     @Autowired
-    public LearningOpportunityServiceImpl(EducationDataQueryService educationDataQueryService, ModelMapper modelMapper) {
+    public LearningOpportunityServiceImpl(EducationDataQueryService educationDataQueryService, PreviewService previewService, ModelMapper modelMapper) {
         this.educationDataQueryService = educationDataQueryService;
+        this.previewService = previewService;
         this.modelMapper = modelMapper;
     }
 
@@ -232,5 +237,37 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
             return ao.getTeachingLanguages().get(0).toLowerCase();
         }
     }
+
+	@Override
+	public HigherEducationLOSDTO getHigherEducationLearningOpportunity(
+			String id) throws ResourceNotFoundException {
+		HigherEducationLOS los = educationDataQueryService.getHigherEducationLearningOpportunity(id);
+        String lang = (los.getTeachingLanguages() != null && !los.getTeachingLanguages().isEmpty()) ? los.getTeachingLanguages().get(0).getValue().toLowerCase() : LANG_FI;//resolveDefaultLanguage(los.getTeachingLanguages());
+        return HigherEducationLOSToDTO.convert(los, lang, lang);
+	}
+
+	@Override
+	public HigherEducationLOSDTO getHigherEducationLearningOpportunity(
+			String id, String uiLang) throws ResourceNotFoundException {
+		HigherEducationLOS los = educationDataQueryService.getHigherEducationLearningOpportunity(id);
+		//String lang = (los.getTeachingLanguages() != null && !los.getTeachingLanguages().isEmpty()) ? los.getTeachingLanguages().get(0).getValue().toLowerCase() : LANG_FI;//resolveDefaultLanguage(los.getTeachingLanguages());
+        return HigherEducationLOSToDTO.convert(los, uiLang, uiLang);
+	}
+
+	@Override
+	public HigherEducationLOSDTO getHigherEducationLearningOpportunity(
+			String id, String lang, String uiLang)
+			throws ResourceNotFoundException {
+		HigherEducationLOS los = educationDataQueryService.getHigherEducationLearningOpportunity(id);
+		return HigherEducationLOSToDTO.convert(los, uiLang, uiLang);
+	}
+	
+	@Override
+	public HigherEducationLOSDTO previewLearningOpportunity(
+			String id, String lang, String uiLang)
+			throws ResourceNotFoundException {
+		HigherEducationLOS los = this.previewService.previewHigherEducationLearningOpportunity(id);
+		return HigherEducationLOSToDTO.convert(los, uiLang, uiLang);
+	}
 
 }

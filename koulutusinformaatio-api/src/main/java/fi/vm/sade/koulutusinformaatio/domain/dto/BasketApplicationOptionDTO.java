@@ -47,6 +47,7 @@ public class BasketApplicationOptionDTO {
     private boolean kaksoistutkinto;
     private boolean vocational;
     private String educationCodeUri;
+    private boolean isHigherEducation;
 
     public String getId() {
         return id;
@@ -144,7 +145,7 @@ public class BasketApplicationOptionDTO {
         this.children = children;
     }
 
-    
+
     public Date getAttachmentDeliveryDeadline() {
         return attachmentDeliveryDeadline;
     }
@@ -152,7 +153,7 @@ public class BasketApplicationOptionDTO {
     public void setAttachmentDeliveryDeadline(Date attachmentDeliveryDeadline) {
         this.attachmentDeliveryDeadline = attachmentDeliveryDeadline;
     }
-    
+
 
     public List<ApplicationOptionAttachmentDTO> getAttachments() {
         return attachments;
@@ -205,4 +206,12 @@ public class BasketApplicationOptionDTO {
     public String getEducationCodeUri() { return educationCodeUri; }
 
     public void setEducationCodeUri(String educationCodeUri) { this.educationCodeUri = educationCodeUri; }
+
+    public boolean isHigherEducation() {
+        return isHigherEducation;
+    }
+
+    public void setHigherEducation(boolean isHigherEducation) {
+        this.isHigherEducation = isHigherEducation;
+    }
 }

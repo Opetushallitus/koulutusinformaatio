@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.resource.impl;
 
 import com.google.common.base.Strings;
+
 import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
 import fi.vm.sade.koulutusinformaatio.domain.SuggestedTermsResult;
 import fi.vm.sade.koulutusinformaatio.domain.dto.*;
@@ -26,6 +27,7 @@ import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
 import fi.vm.sade.koulutusinformaatio.resource.LearningOpportunityResource;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -46,7 +48,7 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
 
     @Autowired
     public LearningOpportunityResourceImpl(SearchService searchService, ModelMapper modelMapper,
-                                           LearningOpportunityService learningOpportunityService) {
+            LearningOpportunityService learningOpportunityService) {
         this.searchService = searchService;
         this.modelMapper = modelMapper;
         this.learningOpportunityService = learningOpportunityService;
@@ -54,7 +56,7 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
 
     @Override
     public LOSearchResultListDTO searchLearningOpportunities(String text, String prerequisite, 
-                                                             List<String> cities, List<String> facetFilters, String lang, boolean ongoing, boolean upcoming, int start, int rows, String sort, String order) {
+            List<String> cities, List<String> facetFilters, String lang, boolean ongoing, boolean upcoming, int start, int rows, String sort, String order) {
         String key = null;
         try {
             key = URLDecoder.decode(text, "UTF-8");
@@ -152,6 +154,34 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
             SuggestedTermsResult suggestedTerms = this.searchService.searchSuggestedTerms(key, lang);
             return modelMapper.map(suggestedTerms, SuggestedTermsResultDTO.class);
         } catch (SearchException e) {
+            throw KIExceptionHandler.resolveException(e);
+        }
+    }
+
+    @Override
+    public HigherEducationLOSDTO getHigherEducationLearningOpportunity(String id,
+            String lang, String uiLang) {
+        try {
+            if (Strings.isNullOrEmpty(lang) && Strings.isNullOrEmpty(uiLang)) {
+                return learningOpportunityService.getHigherEducationLearningOpportunity(id);
+            }
+            else if (Strings.isNullOrEmpty(lang)) {
+                return learningOpportunityService.getHigherEducationLearningOpportunity(id, uiLang.toLowerCase());
+            }
+            else {
+                return learningOpportunityService.getHigherEducationLearningOpportunity(id, lang.toLowerCase(), uiLang.toLowerCase());
+            }
+        } catch (ResourceNotFoundException e) {
+            throw KIExceptionHandler.resolveException(e);
+        }
+    }
+
+    @Override
+    public HigherEducationLOSDTO previewLearningOpportunity(String oid,
+            String lang, String uiLang) {
+        try {
+            return learningOpportunityService.previewLearningOpportunity(oid, lang, uiLang);
+        } catch (ResourceNotFoundException e) {
             throw KIExceptionHandler.resolveException(e);
         }
     }

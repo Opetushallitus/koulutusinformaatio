@@ -16,7 +16,7 @@
 	<li data-ng-repeat="article in articles.posts">
 		<h2><a data-ng-href="{{article.url}}">{{article.title}}</a></h2>
 		<img data-ng-src="{{article.attachments[0].url}}" data-ng-show="article.attachments[0].url"/>
-		<span data-ng-bind-html-unsafe="article.excerpt" style=""></span>
+		<span data-ng-bind-html="article.excerpt | unsafe" style=""></span>
 		<div class="clear"></div>
 	</li>
 </ul>

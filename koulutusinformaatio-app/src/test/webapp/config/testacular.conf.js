@@ -18,8 +18,9 @@ module.exports = function(config) {
             stripPrefix: 'main/webapp/app/'
         },
         files: [
-            appPath + 'app/lib/angular/1.0.8/angular.min.js',
-            appPath + 'app/lib/angular/1.0.8/angular-resource.min.js',
+            appPath + 'app/lib/angular/1.2.13/angular.min.js',
+            appPath + 'app/lib/angular/1.2.13/angular-resource.min.js',
+            appPath + 'app/lib/angular/1.2.13/angular-route.min.js',
             appPath + 'app/lib/angulartics/*.js',
             appPath + 'app/lib/jquery/jquery-1.8.0.min.js',
             appPath + 'app/lib/modernizr/modernizr-2.6.2.min.js',
@@ -33,7 +34,7 @@ module.exports = function(config) {
             testPath + 'test/unit/**/*.js',
         ],
         browsers: ['Chrome'],
-        logLevel: config.LOG_INFO,
+        logLevel: config.LOG_DEBUG,
         autoWatch: true,
         singleRun: false,
         reporters: ['progress', 'junit'],
