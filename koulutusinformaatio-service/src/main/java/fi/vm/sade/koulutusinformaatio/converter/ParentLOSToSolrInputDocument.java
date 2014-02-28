@@ -202,8 +202,8 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
 
     private void indexChildFields(SolrInputDocument doc, ChildLOS childLOS, ChildLOI childLOI, String teachLang) {
 
-        doc.addField(LearningOpportunity.PREREQUISITES, SolrConstants.SPECIAL_EDUCATION.equalsIgnoreCase(childLOI.getPrerequisite().getValue()) 
-                ? SolrConstants.PK : childLOI.getPrerequisite().getValue());
+        /*doc.addField(LearningOpportunity.PREREQUISITES, SolrConstants.SPECIAL_EDUCATION.equalsIgnoreCase(childLOI.getPrerequisite().getValue()) 
+                ? SolrConstants.PK : childLOI.getPrerequisite().getValue());*/
 
 
         String childName = SolrUtil.resolveTranslationInTeachingLangUseFallback(
