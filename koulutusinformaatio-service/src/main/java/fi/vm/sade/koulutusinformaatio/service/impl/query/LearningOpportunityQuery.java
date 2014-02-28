@@ -3,8 +3,8 @@ package fi.vm.sade.koulutusinformaatio.service.impl.query;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 
-import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LearningOpportunity;
-import fi.vm.sade.koulutusinformaatio.domain.SolrFields.SolrConstants;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.common.params.DisMaxParams;

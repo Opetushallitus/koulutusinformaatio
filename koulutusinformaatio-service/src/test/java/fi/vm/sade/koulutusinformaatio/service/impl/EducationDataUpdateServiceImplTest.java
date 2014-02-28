@@ -1,7 +1,6 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import com.mongodb.DBCollection;
 import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.entity.*;
@@ -12,7 +11,6 @@ import org.junit.Test;
 import org.modelmapper.ModelMapper;
 
 import java.util.List;
-import java.util.Set;
 
 import static org.mockito.Mockito.*;
 
@@ -30,6 +28,7 @@ public class EducationDataUpdateServiceImplTest extends AbstractEducationService
     private SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO;
     private DataStatusDAO dataStatusDAO;
     private PictureDAO pictureDAO;
+    private HigherEducationLOSDAO higherEdDAO;
     private DBCollection ploCollection;
     private DBCollection aoCollection;
     private DBCollection lopCollection;
@@ -47,15 +46,16 @@ public class EducationDataUpdateServiceImplTest extends AbstractEducationService
         upperSecondaryLearningOpportunitySpecificationDAO = mockUpSecDAO();
         specialLearningOpportunitySpecificationDAO = mockSpecialDAO();
         dataStatusDAO = mockDataStatudDAO();
+        higherEdDAO = mockHigherEdDAO();
         service = new EducationDataUpdateServiceImpl( modelMapper, parentLearningOpportunitySpecificationDAO,
                applicationOptionDAO, learningOpportunityProviderDAO, childLearningOpportunityDAO,
                 pictureDAO, upperSecondaryLearningOpportunitySpecificationDAO, dataStatusDAO,
-                specialLearningOpportunitySpecificationDAO);
+                specialLearningOpportunitySpecificationDAO,  higherEdDAO);
     }
 
     @Test
     public void testSaveParentLearningOpportunity() {
-        Set<ApplicationOption> applicationOptions = Sets.newHashSet();
+        List<ApplicationOption> applicationOptions = Lists.newArrayList();
         Provider lop = new Provider();
         lop.setId("6.7.8");
         ApplicationOption ao = new ApplicationOption();
@@ -123,6 +123,21 @@ public class EducationDataUpdateServiceImplTest extends AbstractEducationService
         los.setProvider(p);
         service.save(los);
         verify(specialLearningOpportunitySpecificationDAO, times(1)).save(any(SpecialLearningOpportunitySpecificationEntity.class));
+        verify(applicationOptionDAO, times(1)).save(any(ApplicationOptionEntity.class));
+        verify(learningOpportunityProviderDAO, times(1)).save(any(LearningOpportunityProviderEntity.class));
+    }
+    
+    @Test
+    public void testSaveHigherEducationLOS() {
+        ApplicationOption ao = new ApplicationOption();
+        ao.setId("aoid");
+        List<ApplicationOption> aos = Lists.newArrayList(ao);
+        Provider p = new Provider("providerid", TestUtil.createI18nText("name", "name", "name"));
+        HigherEducationLOS los = new HigherEducationLOS();
+        los.setApplicationOptions(aos);
+        los.setProvider(p);
+        service.save(los);
+        verify(higherEdDAO, times(1)).save(any(HigherEducationLOSEntity.class));
         verify(applicationOptionDAO, times(1)).save(any(ApplicationOptionEntity.class));
         verify(learningOpportunityProviderDAO, times(1)).save(any(LearningOpportunityProviderEntity.class));
     }

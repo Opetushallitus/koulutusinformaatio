@@ -16,21 +16,34 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
+import fi.vm.sade.koulutusinformaatio.service.builder.impl.LOSObjectCreator;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.LearningOpportunityDirector;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.RehabilitatingLearningOpportunityBuilder;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.UpperSecondaryLearningOpportunityBuilder;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.VocationalLearningOpportunityBuilder;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
+import fi.vm.sade.tarjonta.shared.types.TarjontaTila;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.convert.ConversionService;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
@@ -68,6 +81,8 @@ public class TarjontaServiceImplTest {
         KomoDTO invalidKomo = new KomoDTO();
         invalidKomo.setKoulutusTyyppiUri("invalid");
         invalidKomo.setModuuliTyyppi("invalid");
+        
+        
 
         tarjontaRawService = mock(TarjontaRawService.class);
         loDirector = mock(LearningOpportunityDirector.class);
@@ -75,12 +90,75 @@ public class TarjontaServiceImplTest {
         when(tarjontaRawService.getKomo(eq(KOMO_ID_UPSEC))).thenReturn(upsecKomo);
         when(tarjontaRawService.getKomo(eq(KOMO_ID_REHAB))).thenReturn(rehabKomo);
         when(tarjontaRawService.getKomo(eq(KOMO_ID_INVALID))).thenReturn(invalidKomo);
-
+        
+        
+        
         service = new TarjontaServiceImpl(conversionService, koodistoService,
                 providerService, loDirector, tarjontaRawService);
+        
+        mockHigherEdRawRes();
     }
 
-    @Test
+    private void mockHigherEdRawRes() {
+    	
+    	ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes = new ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>();
+    	HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = new HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>();
+    	List<TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO>> resSets = new ArrayList<TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO>>();
+    	TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> resSet = new TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO>();
+    	List<KoulutusHakutulosV1RDTO> koulTulokset = new ArrayList<KoulutusHakutulosV1RDTO>();
+    	KoulutusHakutulosV1RDTO koulJulk = new KoulutusHakutulosV1RDTO();
+    	koulJulk.setOid("1.2.3.4");
+    	koulJulk.setTila(TarjontaTila.JULKAISTU);
+    	koulTulokset.add(koulJulk);
+    	KoulutusHakutulosV1RDTO koulEiJulk = new KoulutusHakutulosV1RDTO();
+    	koulEiJulk.setOid("2.2.3.4");
+    	koulEiJulk.setTila(TarjontaTila.VALMIS);
+    	koulTulokset.add(koulEiJulk);
+    	resSet.setTulokset(koulTulokset);
+    	resSets.add(resSet);
+    	results.setTulokset(resSets);
+    	rawRes.setResult(results);
+    	when(tarjontaRawService.listHigherEducation()).thenReturn(rawRes);
+    	
+    	ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes = new ResultV1RDTO<KoulutusKorkeakouluV1RDTO>();
+    	KoulutusKorkeakouluV1RDTO koulutus1 = new KoulutusKorkeakouluV1RDTO();
+    	koulutus1.setOid(koulJulk.getOid());
+    	koulutus1.setTila(TarjontaTila.JULKAISTU);
+    	koulutusRes.setResult(koulutus1);
+    	
+    	
+    	when(tarjontaRawService.getHigherEducationLearningOpportunity(koulJulk.getOid())).thenReturn(koulutusRes);
+    	
+    	ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes2 = new ResultV1RDTO<KoulutusKorkeakouluV1RDTO>();
+    	KoulutusKorkeakouluV1RDTO koulutus2 = new KoulutusKorkeakouluV1RDTO();
+    	koulutus2.setOid(koulEiJulk.getOid());
+    	koulutus2.setTila(TarjontaTila.VALMIS);
+    	koulutusRes2.setResult(koulutus2);
+    	
+    	when(tarjontaRawService.getHigherEducationLearningOpportunity(koulEiJulk.getOid())).thenReturn(koulutusRes2);
+    	LOSObjectCreator creator = mock(LOSObjectCreator.class);//new LOSObjectCreator(koodistoService, tarjontaRawService, providerService);
+    	service.setCreator(creator);
+    	
+    	
+    	try {
+    		HigherEducationLOS los1 = new HigherEducationLOS();
+        	los1.setId(koulJulk.getOid());
+    		when(creator.createHigherEducationLOS(koulutus1, true)).thenReturn(los1);
+    	
+    		HigherEducationLOS los2 = new HigherEducationLOS();
+    		los2.setId(koulEiJulk.getOid());
+    		when(creator.createHigherEducationLOS(koulutus2, false)).thenReturn(los2);
+    	} catch (Exception ex) {
+    		ex.printStackTrace();
+    	}
+    	
+
+        when(tarjontaRawService.getChildrenOfParentHigherEducationLOS(null)).thenReturn(null);
+        when(tarjontaRawService.getParentsOfHigherEducationLOS(null)).thenReturn(null);
+        
+	}
+
+	@Test
     public void testVocationalResolveBuilder() throws TarjontaParseException, KoodistoException {
         service.findParentLearningOpportunity(KOMO_ID_VOC);
         verify(loDirector).constructLearningOpportunities(isA(VocationalLearningOpportunityBuilder.class));
@@ -102,4 +180,17 @@ public class TarjontaServiceImplTest {
     public void testResolveBuilderInvalidEducationType() throws TarjontaParseException {
         service.findParentLearningOpportunity(KOMO_ID_INVALID);
     }
+    
+    @Test
+    public void testFindHigherEducations() throws KoodistoException {
+    	List<HigherEducationLOS> higherEds = service.findHigherEducations();
+    	assertEquals(higherEds.size(), 1);
+    }
+    
+    @Test
+    public void testfindHigherEducationLearningOpportunity() throws TarjontaParseException, KoodistoException {
+    	HigherEducationLOS nonPublished = service.findHigherEducationLearningOpportunity("2.2.3.4");
+    	assertEquals(nonPublished.getId(), "2.2.3.4");
+    }
+    
 }

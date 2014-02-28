@@ -46,6 +46,7 @@ public final class ApplicationOptionToDTO {
             dto.setEducationDegree(applicationOption.getEducationDegree());
             dto.setTeachingLanguages(applicationOption.getTeachingLanguages());
             dto.setSelectionCriteria(ConverterUtil.getTextByLanguage(applicationOption.getSelectionCriteria(), lang));
+            dto.setSoraDescription(ConverterUtil.getTextByLanguage(applicationOption.getSoraDescription(), lang));
             dto.setPrerequisite(CodeToDTO.convert(applicationOption.getPrerequisite(), lang));
             dto.setExams(ExamToDTO.convertAll(applicationOption.getExams(), lang));
             dto.setProvider(ProviderToDTO.convert(applicationOption.getProvider(), lang, defaultLang));
@@ -70,8 +71,27 @@ public final class ApplicationOptionToDTO {
             dto.setKaksoistutkinto(applicationOption.isKaksoistutkinto());
             dto.setAthleteEducation(applicationOption.isAthleteEducation());
             dto.setEducationCodeUri(applicationOption.getEducationCodeUri());
+            dto.setStatus(applicationOption.getStatus());
+            
             return dto;
         }
         return null;
+    }
+    
+    public static ApplicationOptionDTO convertHigherEducation(final ApplicationOption applicationOption, final String lang, final String uiLang, String defaultLang) {
+        if (applicationOption == null) {
+            return null;
+        }
+        ApplicationOptionDTO dto = convert(applicationOption, lang, uiLang, defaultLang);
+        if (dto == null) {
+            return null;
+        }
+        if (applicationOption.getEligibilityDescription() != null) {
+            dto.setEligibilityDescription(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getEligibilityDescription(), uiLang));            
+         }
+        dto.setSelectionCriteria(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getSelectionCriteria(), lang));
+        dto.setSoraDescription(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getSoraDescription(), lang));
+        dto.setAdditionalInfo(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getAdditionalInfo(), lang));
+        return dto;
     }
 }

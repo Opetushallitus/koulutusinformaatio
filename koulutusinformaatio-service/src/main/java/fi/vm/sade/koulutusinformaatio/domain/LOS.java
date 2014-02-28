@@ -22,14 +22,44 @@ import java.util.List;
  * @author Hannu Lyytikainen
  */
 public abstract class LOS {
-    
+
+    private String id;
+    private I18nText name;
+    private I18nText goals;                     // tavoitteet
+
     private String type;
     private List<Code> topics;
     private List<Code> themes;
-    
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public I18nText getName() {
+        return name;
+    }
+
+    public void setName(I18nText name) {
+        this.name = name;
+    }
+
+    public I18nText getGoals() {
+        return goals;
+    }
+
+    public void setGoals(I18nText goals) {
+        this.goals = goals;
+    }
+
     public String getType() {
+
         return type;
     }
+
     public void setType(String type) {
         this.type = type;
     }

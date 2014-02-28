@@ -25,6 +25,7 @@ public class ParentLOSRef {
 
     private String id;
     private I18nText name;
+    private String losType;
 
     public ParentLOSRef() {}
 
@@ -47,5 +48,13 @@ public class ParentLOSRef {
 
     public void setName(I18nText name) {
         this.name = name;
+    }
+
+    public String getLosType() {
+        return losType;
+    }
+
+    public void setLosType(String losType) {
+        this.losType = losType;
     }
 }

@@ -17,9 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
-import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
-import fi.vm.sade.koulutusinformaatio.domain.LOS;
-import fi.vm.sade.koulutusinformaatio.domain.Location;
+import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.*;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -45,7 +43,7 @@ public class UpdateServiceImpl implements UpdateService {
     private TarjontaService tarjontaService;
     private IndexerService indexerService;
     private EducationDataUpdateService educationDataUpdateService;
-    
+
     private TransactionManager transactionManager;
     private static final int MAX_RESULTS = 100;
     private boolean running = false;
@@ -55,8 +53,8 @@ public class UpdateServiceImpl implements UpdateService {
 
     @Autowired
     public UpdateServiceImpl(TarjontaService tarjontaService, IndexerService indexerService,
-                             EducationDataUpdateService educationDataUpdateService,
-                             TransactionManager transactionManager, LocationService locationService) {
+            EducationDataUpdateService educationDataUpdateService,
+            TransactionManager transactionManager, LocationService locationService) {
         this.tarjontaService = tarjontaService;
         this.indexerService = indexerService;
         this.educationDataUpdateService = educationDataUpdateService;
@@ -67,7 +65,7 @@ public class UpdateServiceImpl implements UpdateService {
     @Override
     @Async
     public synchronized void updateAllEducationData() throws Exception {
-    	HttpSolrServer loUpdateSolr = this.indexerService.getLoCollectionToUpdate();
+        HttpSolrServer loUpdateSolr = this.indexerService.getLoCollectionToUpdate();
         HttpSolrServer lopUpdateSolr = this.indexerService.getLopCollectionToUpdate(loUpdateSolr);
         HttpSolrServer locationUpdateSolr = this.indexerService.getLocationCollectionToUpdate(loUpdateSolr);
 
@@ -86,9 +84,8 @@ public class UpdateServiceImpl implements UpdateService {
                 List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
                 count = loOids.size();
                 index += count;
-            
-            
-               for (String loOid : loOids) {
+
+                for (String loOid : loOids) {
                     List<LOS> specifications = null;
                     try {
                         specifications = tarjontaService.findParentLearningOpportunity(loOid);
@@ -103,12 +100,30 @@ public class UpdateServiceImpl implements UpdateService {
                     }
                 }
             }
-            List<Location> locations = locationService.getMunicipalities();
-            indexerService.addLocations(locations, locationUpdateSolr);
-            indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, true);
-            this.transactionManager.commit(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
-            educationDataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, "SUCCESS"));
+
+            List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
+            LOG.debug("Found higher educations: " + higherEducations.size());
+
+            for (HigherEducationLOS curLOS : higherEducations) {
+                LOG.debug("Saving highed education: " + curLOS.getId());
+                indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+                this.educationDataUpdateService.save(curLOS);
+            }
+            LOG.debug("Higher educations saved: ");
             
+            List<Code> edTypeCodes = this.tarjontaService.getEdTypeCodes();
+            indexerService.addEdTypeCodes(edTypeCodes, loUpdateSolr);
+
+            List<Location> locations = locationService.getMunicipalities();
+            LOG.debug("Got locations");
+            indexerService.addLocations(locations, locationUpdateSolr);
+            LOG.debug("Added locations");
+            indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, true);
+            LOG.debug("Committed to solr");
+            this.transactionManager.commit(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+            LOG.debug("Transaction completed");
+            educationDataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, "SUCCESS"));
+
             LOG.info("Education data update successfully finished");
         } catch (Exception e) {
             LOG.error("Education data update failed ", e);
@@ -117,6 +132,16 @@ public class UpdateServiceImpl implements UpdateService {
         } finally {
             running = false;
             runningSince = 0;
+        }
+
+    }
+
+    private void indexToSolr(HigherEducationLOS curLOS,
+            HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws Exception {
+        this.indexerService.addLearningOpportunitySpecification(curLOS, loUpdateSolr, lopUpdateSolr);
+        this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
+        for (HigherEducationLOS curChild: curLOS.getChildren()) {
+            indexToSolr(curChild, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
         }
     }
 

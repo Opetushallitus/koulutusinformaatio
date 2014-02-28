@@ -1,7 +1,6 @@
 package fi.vm.sade.koulutusinformaatio.domain;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -10,42 +9,16 @@ import java.util.Map;
  *
  * @author Hannu Lyytikainen
  */
-public class ChildLOI extends LOI {
+public class ChildLOI extends BasicLOI {
 
-    private String id;
     private String losId;
-    private I18nText name;
     private String parentLOIId;
     private List<I18nText> professionalTitles;
-    // opetusmuoto -> lähiopetus
-    private List<I18nText> formOfTeaching;
     private List<Code> teachingLanguages;
     private Map<String, String> webLinks;
-    // koulutuslaji -> nuorten koulutus
-    private List<I18nText> formOfEducation;
-    private Date startDate;
     private List<ChildLOIRef> related = new ArrayList<ChildLOIRef>();
     private I18nText workingLifePlacement;
-    private I18nText internationalization;
-    private I18nText cooperation;
-    private I18nText content;
     private I18nText selectingDegreeProgram;
-    private List<ContactPerson> contactPersons = new ArrayList<ContactPerson>();
-    private boolean kaksoistutkinto;
-    private String plannedDuration;
-    private I18nText plannedDurationUnit;
-    private List<String> availableTranslationLanguages;
-
-    //planned duration unit code uri (used in indexing for solr)
-    private String pduCodeUri;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getLosId() {
         return losId;
@@ -53,14 +26,6 @@ public class ChildLOI extends LOI {
 
     public void setLosId(String losId) {
         this.losId = losId;
-    }
-
-    public I18nText getName() {
-        return name;
-    }
-
-    public void setName(I18nText name) {
-        this.name = name;
     }
 
     public String getParentLOIId() {
@@ -79,14 +44,6 @@ public class ChildLOI extends LOI {
         this.professionalTitles = professionalTitles;
     }
 
-    public List<I18nText> getFormOfTeaching() {
-        return formOfTeaching;
-    }
-
-    public void setFormOfTeaching(List<I18nText> formOfTeaching) {
-        this.formOfTeaching = formOfTeaching;
-    }
-
     public List<Code> getTeachingLanguages() {
         return teachingLanguages;
     }
@@ -101,22 +58,6 @@ public class ChildLOI extends LOI {
 
     public void setWebLinks(Map<String, String> webLinks) {
         this.webLinks = webLinks;
-    }
-
-    public List<I18nText> getFormOfEducation() {
-        return formOfEducation;
-    }
-
-    public void setFormOfEducation(List<I18nText> formOfEducation) {
-        this.formOfEducation = formOfEducation;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
     }
 
     public List<ChildLOIRef> getRelated() {
@@ -135,83 +76,11 @@ public class ChildLOI extends LOI {
         this.workingLifePlacement = workingLifePlacement;
     }
 
-    public I18nText getInternationalization() {
-        return internationalization;
-    }
-
-    public void setInternationalization(I18nText internationalization) {
-        this.internationalization = internationalization;
-    }
-
-    public I18nText getCooperation() {
-        return cooperation;
-    }
-
-    public void setCooperation(I18nText cooperation) {
-        this.cooperation = cooperation;
-    }
-
-    public I18nText getContent() {
-        return content;
-    }
-
-    public void setContent(I18nText content) {
-        this.content = content;
-    }
-
     public I18nText getSelectingDegreeProgram() {
         return selectingDegreeProgram;
     }
 
     public void setSelectingDegreeProgram(I18nText selectingDegreeProgram) {
         this.selectingDegreeProgram = selectingDegreeProgram;
-    }
-
-    public List<ContactPerson> getContactPersons() {
-        return contactPersons;
-    }
-
-    public void setContactPersons(List<ContactPerson> contactPersons) {
-        this.contactPersons = contactPersons;
-    }
-
-    public boolean isKaksoistutkinto() {
-        return kaksoistutkinto;
-    }
-
-    public void setKaksoistutkinto(boolean kaksoistutkinto) {
-        this.kaksoistutkinto = kaksoistutkinto;
-    }
-
-    public String getPlannedDuration() {
-        return plannedDuration;
-    }
-
-    public void setPlannedDuration(String plannedDuration) {
-        this.plannedDuration = plannedDuration;
-    }
-
-    public I18nText getPlannedDurationUnit() {
-        return plannedDurationUnit;
-    }
-
-    public void setPlannedDurationUnit(I18nText plannedDurationUnit) {
-        this.plannedDurationUnit = plannedDurationUnit;
-    }
-
-    public String getPduCodeUri() {
-        return pduCodeUri;
-    }
-
-    public void setPduCodeUri(String pduCodeUri) {
-        this.pduCodeUri = pduCodeUri;
-    }
-
-    public List<String> getAvailableTranslationLanguages() {
-        return availableTranslationLanguages;
-    }
-
-    public void setAvailableTranslationLanguages(List<String> availableTranslationLanguages) {
-        this.availableTranslationLanguages = availableTranslationLanguages;
     }
 }

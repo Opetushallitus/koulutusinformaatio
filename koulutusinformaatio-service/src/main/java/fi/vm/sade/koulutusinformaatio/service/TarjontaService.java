@@ -17,8 +17,10 @@
 package fi.vm.sade.koulutusinformaatio.service;
 
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
+import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
+import fi.vm.sade.koulutusinformaatio.domain.Code;
 
 import java.util.List;
 
@@ -50,4 +52,26 @@ public interface TarjontaService {
      * @return list of oids
      */
     public List<String> listParentLearnignOpportunityOids(int count, int startIndex);
+    
+    /**
+     * Returns a list of root-level higher education learning opportunities.
+     * The children of each learning opportunity is contained in the object.
+     * @return list of root-level higher education learning opportunities.
+     * @throws KoodistoException
+     */
+    public List<HigherEducationLOS> findHigherEducations() throws KoodistoException;
+
+    /**
+     * Retrieves (from tarjonta) and returns one higher level learning opportunity. This
+     * method is intended to be used in preview.
+     * 
+     * @param oid the oid of the learning opportunity to retrieve. 
+     * @return the retrieved higher education learning opportunity
+     * @throws TarjontaParseException
+     * @throws KoodistoException
+     */
+	public HigherEducationLOS findHigherEducationLearningOpportunity(
+			String oid) throws TarjontaParseException, KoodistoException;
+
+    public List<Code> getEdTypeCodes() throws KoodistoException;
 }

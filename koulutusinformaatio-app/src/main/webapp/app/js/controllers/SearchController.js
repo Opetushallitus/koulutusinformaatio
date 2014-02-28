@@ -388,7 +388,7 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     $scope.paginationNext = TranslationService.getTranslation('pagination-next');
     $scope.paginationPrevious = TranslationService.getTranslation('pagination-previous');
     $scope.valitseAlueTitle = TranslationService.getTranslation('valitse-alue');
-    $scope.noSearchResults = TranslationService.getTranslation('no-search-results-info', {searchterm: $routeParams.queryString});
+    $scope.noSearchResults = TranslationService.getTranslation('no-search-results-info', {searchterm: $routeParams.queryString ? $routeParams.queryString: ''});
 
 
 
@@ -517,7 +517,7 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     		});
 
     		$scope.refreshView();
-    	} else if ($routeParams.queryString == '') {
+    	} else if (!$routeParams.queryString || $routeParams.queryString == '') {
             $scope.loResult = {};
             $scope.loResult.totalCount = 0;
         }
@@ -567,9 +567,6 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     		}
     	});
     	
-    	angular.forEach($scope.loResult.edTypeFacet.facetValues, function(fVal, key) {
-    		$scope.loResult.edTypeFacet[fVal.valueId] = fVal;
-    	});	
     }
     
 
@@ -644,3 +641,4 @@ function SortCtrl($scope, $location, FilterService) {
         $scope.refreshView();
     }
 };
+

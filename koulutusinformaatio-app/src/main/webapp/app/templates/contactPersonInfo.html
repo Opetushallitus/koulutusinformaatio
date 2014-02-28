@@ -1,6 +1,6 @@
-<div data-ng-show="showContactPersonInfo">
+<div data-ng-show="contactPersons">
 	<h2 data-ki-i18n="contact-person-title" data-lang="{{translationLanguage}}"></h2>
-	<p data-ng-repeat="person in selectedLOI.contactPersons">
+	<p data-ng-repeat="person in contactPersons">
 		<span data-ng-show="person.title">{{person.title}}<br /></span>
 		<span data-ng-show="person.firstNames">{{person.firstNames}}</span> <span data-ng-show="person.lastName">{{person.lastName}}</span><br />
 		<span data-ng-show="person.email">

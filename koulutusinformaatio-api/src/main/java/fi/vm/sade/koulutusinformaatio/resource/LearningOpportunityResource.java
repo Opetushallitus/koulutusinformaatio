@@ -117,6 +117,21 @@ public interface LearningOpportunityResource {
     public SpecialLearningOpportunitySpecificationDTO getSpecialLearningOpportunity(@PathParam("id") String id,
                                                                                     @QueryParam("lang") String lang,
                                                                                     @QueryParam("uiLang") String uiLang);
+    
+    /**
+     * Fetches a university of applied science learning opportunity specification.
+     *
+     * @param id los id
+     * @param lang translation language
+     * @param uiLang secondary translation language
+     * @return university of applied science learning opportunity specification
+     */
+    @GET
+    @Path("highered/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public HigherEducationLOSDTO getHigherEducationLearningOpportunity(@PathParam("id") String id,
+                                                                                    @QueryParam("lang") String lang,
+                                                                                    @QueryParam("uiLang") String uiLang);
 
     /**
      * Fetches suggested terms to be used in free text search. 
@@ -131,4 +146,18 @@ public interface LearningOpportunityResource {
     @Produces(MediaType.APPLICATION_JSON)
     public SuggestedTermsResultDTO getSuggestedTerms(@PathParam("term") String term,
                                                      @QueryParam("lang") String lang);
+    
+    /**
+     * Fetches a higher education learning opportunity. To be used in preview for learning opportunity.
+     *
+     * @param oid of the learning opportunity
+     * @param lang language
+     * @return higher education learning opportunity
+     */
+    @GET
+    @Path("preview/{oid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public HigherEducationLOSDTO previewLearningOpportunity(@PathParam("oid") String oid,
+                                                     @QueryParam("lang") String lang,
+                                                     @QueryParam("uiLang") String uiLang);
 }

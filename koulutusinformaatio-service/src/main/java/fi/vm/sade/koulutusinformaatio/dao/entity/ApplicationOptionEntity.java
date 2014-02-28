@@ -57,6 +57,10 @@ public class ApplicationOptionEntity {
     @Embedded
     private I18nTextEntity selectionCriteria;
     @Embedded
+    private I18nTextEntity soraDescription;
+
+
+    @Embedded
     private CodeEntity prerequisite;
     private List<String> requiredBaseEducations;
     @Embedded
@@ -78,6 +82,9 @@ public class ApplicationOptionEntity {
     private boolean athleteEducation;
     private boolean vocational;
     private String educationCodeUri;
+    @Embedded
+    private I18nTextEntity eligibilityDescription;
+
 
     public ApplicationOptionEntity() {
 
@@ -338,4 +345,18 @@ public class ApplicationOptionEntity {
     public void setEducationCodeUri(String educationCodeUri) {
         this.educationCodeUri = educationCodeUri;
     }
+
+    public I18nTextEntity getSoraDescription() {
+        return soraDescription;
+    }
+    public void setSoraDescription(I18nTextEntity soraDescription) {
+        this.soraDescription = soraDescription;
+    }
+    public I18nTextEntity getEligibilityDescription() {
+        return eligibilityDescription;
+    }
+    public void setEligibilityDescription(I18nTextEntity prerequisiteDescription) {
+        this.eligibilityDescription = prerequisiteDescription;
+    }
+
 }

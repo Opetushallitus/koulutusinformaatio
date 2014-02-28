@@ -51,7 +51,6 @@ public class LocationServiceImpl implements LocationService {
         List<Location> municipalities = Lists.newArrayList();
         if (codes != null) {
             for (Code code : codes) {
-                
                 List<Code> maakuntaCodes = koodistoService.searchSubCodes(String.format("%s_%s#1", CODE_MUNICIPALITY, code.getValue()), CODE_DISTRICT);
                 
                 Code parent =  (maakuntaCodes != null &&!maakuntaCodes.isEmpty()) ? maakuntaCodes.get(0) : null;

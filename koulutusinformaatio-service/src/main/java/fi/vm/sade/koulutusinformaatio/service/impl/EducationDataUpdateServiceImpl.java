@@ -20,6 +20,7 @@ import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.entity.*;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataUpdateService;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,15 +40,17 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
     private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO;
     private DataStatusDAO dataStatusDAO;
     private SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO;
+    private HigherEducationLOSDAO higherEducationLOSTransactionDAO;
 
     @Autowired
     public EducationDataUpdateServiceImpl(ModelMapper modelMapper, ParentLearningOpportunitySpecificationDAO parentLOSTransactionDAO,
-                                          ApplicationOptionDAO applicationOptionTransactionDAO,
-                                          LearningOpportunityProviderDAO learningOpportunityProviderTransactionDAO,
-                                          ChildLearningOpportunityDAO childLOTransactionDAO,
-                                          PictureDAO pictureTransactionDAO,
-                                          UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO,
-                                          DataStatusDAO dataStatusDAO, SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO) {
+            ApplicationOptionDAO applicationOptionTransactionDAO,
+            LearningOpportunityProviderDAO learningOpportunityProviderTransactionDAO,
+            ChildLearningOpportunityDAO childLOTransactionDAO,
+            PictureDAO pictureTransactionDAO,
+            UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO,
+            DataStatusDAO dataStatusDAO, SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO,
+            HigherEducationLOSDAO higherEducationLOSTransactionDAO) {
         this.modelMapper = modelMapper;
         this.parentLOSTransactionDAO = parentLOSTransactionDAO;
         this.applicationOptionTransactionDAO = applicationOptionTransactionDAO;
@@ -57,6 +60,7 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
         this.upperSecondaryLOSTransactionDAO = upperSecondaryLOSTransactionDAO;
         this.dataStatusDAO = dataStatusDAO;
         this.specialLOSTransactionDAO = specialLOSTransactionDAO;
+        this.higherEducationLOSTransactionDAO = higherEducationLOSTransactionDAO;
     }
 
     @Override
@@ -69,7 +73,10 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
         }
         else if (learningOpportunitySpecification instanceof SpecialLOS) {
             save((SpecialLOS) learningOpportunitySpecification);
-        }
+        } 
+        else if (learningOpportunitySpecification instanceof HigherEducationLOS) {
+            this.saveHigherEducationLOS((HigherEducationLOS)learningOpportunitySpecification);
+        } 
     }
 
     @Override
@@ -163,6 +170,29 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
     private void save(final PictureEntity picture) {
         if (picture != null) {
             pictureTransactionDAO.save(picture);
+        }
+    }
+
+    private void saveHigherEducationLOS(HigherEducationLOS los) {
+
+        if (los != null) {
+
+            for (HigherEducationLOS curChild : los.getChildren()) {
+                saveHigherEducationLOS(curChild);
+            }
+            HigherEducationLOSEntity plos =
+                    modelMapper.map(los, HigherEducationLOSEntity.class);
+
+            save(plos.getProvider());
+
+
+            if (plos.getApplicationOptions() != null) {
+                for (ApplicationOptionEntity ao : plos.getApplicationOptions()) {
+                    save(ao);
+                }
+            }
+
+            this.higherEducationLOSTransactionDAO.save(plos);
         }
     }
 }

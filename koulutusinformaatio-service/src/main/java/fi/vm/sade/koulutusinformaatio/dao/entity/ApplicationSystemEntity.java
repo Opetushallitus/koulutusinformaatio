@@ -33,6 +33,8 @@ public class ApplicationSystemEntity {
     @Embedded
     private List<DateRangeEntity> applicationDates = new ArrayList<DateRangeEntity>();
 
+    private int maxApplications;
+
     public ApplicationSystemEntity() {}
 
     public String getId() {
@@ -57,5 +59,13 @@ public class ApplicationSystemEntity {
 
     public void setApplicationDates(List<DateRangeEntity> applicationDates) {
         this.applicationDates = applicationDates;
+    }
+
+    public int getMaxApplications() {
+        return maxApplications;
+    }
+
+    public void setMaxApplications(int maxApplications) {
+        this.maxApplications = maxApplications;
     }
 }

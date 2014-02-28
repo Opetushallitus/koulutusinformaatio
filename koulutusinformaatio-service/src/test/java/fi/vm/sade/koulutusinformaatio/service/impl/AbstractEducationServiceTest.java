@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
 import com.mongodb.DBCollection;
+
 import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.entity.*;
 
@@ -123,5 +124,15 @@ public class AbstractEducationServiceTest {
         when(dao.get(eq(entity.getId()))).thenReturn(entity);
         when(dao.get(eq(NOTFOUND))).thenReturn(null);
         return dao;
-    }
+    }    
+
+    protected HigherEducationLOSDAO mockHigherEdDAO() {
+    	HigherEducationLOSDAO dao = mock(HigherEducationLOSDAO.class);
+    	HigherEducationLOSEntity entity = new HigherEducationLOSEntity();
+    	entity.setId("higherEdId");
+    	when(dao.get(eq(entity.getId()))).thenReturn(entity);
+        when(dao.get(eq(NOTFOUND))).thenReturn(null);
+		return dao;
+	}
+
 }

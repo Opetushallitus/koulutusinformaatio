@@ -1,0 +1,11 @@
+<h4 class="margin-top-0 margin-bottom-1" data-ki-i18n="degree-programmes"></h4>
+
+<ul class="nobullet" data-ng-if="loType == 'tutkinto'">
+    <div data-ng-repeat="loItem in extendedLO.lo.lois">
+        <div data-ng-repeat="applicationSystem in loItem.applicationSystems">
+            <div data-ng-repeat="applicationOption in applicationSystem.applicationOptions">
+                <li data-ng-repeat="childRef in applicationOption.childRefs "><a href="#!/koulutusohjelma/{{childRef.losId}}">{{childRef.name}}</a></li>
+            </div>
+        </div>
+    </div>
+</ul>

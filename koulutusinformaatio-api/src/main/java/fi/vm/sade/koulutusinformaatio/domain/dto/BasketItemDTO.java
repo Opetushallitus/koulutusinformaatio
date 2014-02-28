@@ -30,6 +30,7 @@ public class BasketItemDTO {
 
     private String applicationSystemId;
     private String applicationSystemName;
+    private int maxApplicationOptions;
     private List<DateRangeDTO> applicationDates = new ArrayList<DateRangeDTO>();
     private List<BasketApplicationOptionDTO> applicationOptions = new ArrayList<BasketApplicationOptionDTO>();
     private boolean asOngoing;
@@ -81,5 +82,13 @@ public class BasketItemDTO {
 
     public void setNextApplicationPeriodStarts(Date nextApplicationPeriodStarts) {
         this.nextApplicationPeriodStarts = nextApplicationPeriodStarts;
+    }
+
+    public int getMaxApplicationOptions() {
+        return maxApplicationOptions;
+    }
+
+    public void setMaxApplicationOptions(int maxApplicationOptions) {
+        this.maxApplicationOptions = maxApplicationOptions;
     }
 }

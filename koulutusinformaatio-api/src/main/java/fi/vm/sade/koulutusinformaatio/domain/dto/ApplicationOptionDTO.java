@@ -41,6 +41,7 @@ public class ApplicationOptionDTO {
     private String educationDegree;
     private List<String> teachingLanguages;
     private String selectionCriteria;
+    private String soraDescription;
     private CodeDTO prerequisite;
     private List<ExamDTO> exams;
     private List<ChildLOIRefDTO> childRefs = new ArrayList<ChildLOIRefDTO>();
@@ -61,6 +62,8 @@ public class ApplicationOptionDTO {
     private boolean athleteEducation;
     private boolean vocational;
     private String educationCodeUri;
+    private String status;
+    private String eligibilityDescription;
 
     public String getId() {
         return id;
@@ -316,5 +319,29 @@ public class ApplicationOptionDTO {
 
     public void setEducationCodeUri(String educationCodeUri) {
         this.educationCodeUri = educationCodeUri;
+    }
+
+    public String getSoraDescription() {
+        return soraDescription;
+    }
+
+    public void setSoraDescription(String soraDescription) {
+        this.soraDescription = soraDescription;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getEligibilityDescription() {
+        return eligibilityDescription;
+    }
+
+    public void setEligibilityDescription(String prerequisiteDescription) {
+        this.eligibilityDescription = prerequisiteDescription;
     }
 }

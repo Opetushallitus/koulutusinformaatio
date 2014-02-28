@@ -16,6 +16,9 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.dto.CodeDTO;
 
@@ -33,6 +36,21 @@ public final class CodeToDTO {
             dto.setValue(code.getValue());
             dto.setDescription(ConverterUtil.getTextByLanguageUseFallbackLang(code.getDescription(), lang));
             return dto;
+        } else {
+            return null;
+        }
+    }
+    
+    public static List<CodeDTO> convertAll(List<Code> codes, String lang) {
+        if (codes != null && !codes.isEmpty()) {
+        	List<CodeDTO> codesDTO = new ArrayList<CodeDTO>();
+        	for (Code curCode : codes) {
+        		CodeDTO curDTO = convert(curCode, lang);
+        		if (curDTO != null) {
+        			codesDTO.add(curDTO);
+        		}
+        	}
+            return codesDTO;
         } else {
             return null;
         }

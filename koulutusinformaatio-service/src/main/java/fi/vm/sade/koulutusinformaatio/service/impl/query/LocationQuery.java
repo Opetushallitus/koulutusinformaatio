@@ -18,8 +18,8 @@ package fi.vm.sade.koulutusinformaatio.service.impl.query;
 
 import com.google.common.base.Joiner;
 
-import fi.vm.sade.koulutusinformaatio.domain.SolrFields.LocationFields;
-import fi.vm.sade.koulutusinformaatio.domain.SolrFields.SolrConstants;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LocationFields;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 
 import org.apache.solr.client.solrj.SolrQuery;
 
@@ -30,7 +30,9 @@ import java.util.List;
  */
 public class LocationQuery extends SolrQuery {
 
-    private final static String NAME = "name";
+	private static final long serialVersionUID = -4254747245152049594L;
+	
+	private final static String NAME = "name";
     private final static String LANG = "lang";
     private final static String CODE = "code";
     

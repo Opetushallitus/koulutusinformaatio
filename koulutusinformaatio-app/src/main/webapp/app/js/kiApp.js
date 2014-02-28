@@ -8,7 +8,9 @@ var kiApp = angular.module('kiApp',
         'SearchResult', 
         'ui.bootstrap', 
         'angulartics', 
-        'angulartics.piwik'
+        'angulartics.piwik',
+        'underscore',
+        'ngRoute'
     ])
 
 .config(['$analyticsProvider', function( $analyticsProvider) {
@@ -19,7 +21,7 @@ var kiApp = angular.module('kiApp',
 }])
 
 .config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/haku/:queryString', {
+    $routeProvider.when('/haku/:queryString?', {
     	templateUrl: 'partials/search/search.html', 
     	controller: SearchCtrl,
         reloadOnSearch: false
@@ -30,7 +32,7 @@ var kiApp = angular.module('kiApp',
         controller: InfoCtrl,
         reloadOnSearch: false,
         resolve: {
-            loResource: function($route, $location, UpperSecondaryLOService, ChildLOService, ParentLOService, SpecialLOService) {
+            loResource: function($route, $location, UpperSecondaryLOService, ChildLOService, ParentLOService, SpecialLOService, HigherEducationLOService) {
                 switch($route.current.params.loType) {
                     case 'lukio':
                         return UpperSecondaryLOService;
@@ -42,6 +44,8 @@ var kiApp = angular.module('kiApp',
                         return SpecialLOService;
                     case 'valmentava':
                         return SpecialLOService;
+                    case 'korkeakoulu':
+                    	return HigherEducationLOService;
                 }
             },
             partialUrl: function($rootScope, $route) {
@@ -119,7 +123,30 @@ var kiApp = angular.module('kiApp',
             }
         }
     }
-})
+}).
+
+filter('unique', function() {
+   return function(collection, keyname) {
+      var output = [], 
+          keys = [];
+
+      angular.forEach(collection, function(item) {
+          var key = item[keyname];
+          if(keys.indexOf(key) === -1) {
+              keys.push(key);
+              output.push(item);
+          }
+      });
+
+      return output;
+   };
+}).
+
+filter('unsafe', function($sce) {
+    return function(val) {
+        return $sce.trustAsHtml(val);
+    };
+});
 
 var OPH = OPH || {};
 
