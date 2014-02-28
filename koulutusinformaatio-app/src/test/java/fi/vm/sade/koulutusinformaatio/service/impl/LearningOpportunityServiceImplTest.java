@@ -17,12 +17,15 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.dto.*;
+import fi.vm.sade.koulutusinformaatio.domain.exception.InvalidParametersException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import fi.vm.sade.koulutusinformaatio.service.PreviewService;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.modelmapper.ModelMapper;
@@ -34,6 +37,9 @@ import static junit.framework.Assert.assertNotNull;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.Matchers.anyList;
+import static org.mockito.Matchers.anyString;
+
 
 /**
 * @author Mikko Majapuro
@@ -50,7 +56,7 @@ public class LearningOpportunityServiceImplTest {
     private PreviewService previewService;
 
     @Before
-    public void setUp() throws ResourceNotFoundException {
+    public void setUp() throws ResourceNotFoundException, InvalidParametersException {
         educationDataQueryService = mock(EducationDataQueryService.class);
 
         Code prerequisite = new Code("PK", createI18Text("Peruskoulu"), createI18Text("Peruskoulukoodin kuvaus"));
@@ -139,8 +145,25 @@ public class LearningOpportunityServiceImplTest {
         
         when(educationDataQueryService.getHigherEducationLearningOpportunity(heLOS.getId())).thenReturn(heLOS);
         when(previewService.previewHigherEducationLearningOpportunity(heLOS.getId())).thenReturn(heLOS);
+        when(educationDataQueryService.getApplicationOptions(anyList())).thenReturn(aos);
+        when(educationDataQueryService.findApplicationOptions("as123", "", "", true, true)).thenReturn(aos);
 
         learningOpportunityService = new LearningOpportunityServiceImpl(educationDataQueryService, previewService, modelMapper);
+    }
+
+    @Test
+    public void testGetBasketItems() throws InvalidParametersException {
+        List<BasketItemDTO> results = learningOpportunityService.getBasketItems(new ArrayList<String>(), "fi");
+        assertEquals(results.size(), 1);
+        assertEquals(results.get(0).getApplicationOptions().size(), 1);
+        assertEquals(results.get(0).getApplicationOptions().get(0).getId(), "ao123");
+    }
+    
+    @Test
+    public void testSearchApplicationOptions() {
+        List<ApplicationOptionSearchResultDTO> results = learningOpportunityService.searchApplicationOptions("as123", "", "", true, true, "fi");
+        assertEquals(results.size(), 1);
+        assertEquals(results.get(0).getId(), "ao123");
     }
 
     @Test
