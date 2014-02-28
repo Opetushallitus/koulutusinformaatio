@@ -34,11 +34,11 @@ import java.util.*;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.Matchers.anyList;
-import static org.mockito.Matchers.anyString;
 
 
 /**
@@ -147,6 +147,32 @@ public class LearningOpportunityServiceImplTest {
         when(previewService.previewHigherEducationLearningOpportunity(heLOS.getId())).thenReturn(heLOS);
         when(educationDataQueryService.getApplicationOptions(anyList())).thenReturn(aos);
         when(educationDataQueryService.findApplicationOptions("as123", "", "", true, true)).thenReturn(aos);
+        
+        List<LOS> losses = new ArrayList<LOS>();
+        losses.add(parentLOS);
+        
+        UpperSecondaryLOS upperLOS = new UpperSecondaryLOS();
+        upperLOS.setId("2234");
+        upperLOS.setAccessToFurtherStudies(createI18Text("AccessToFurtherStudies"));
+        upperLOS.setEducationDegree("32");
+        upperLOS.setName(createI18Text("name"));
+        upperLOS.setGoals(createI18Text("goals"));
+        upperLOS.setStructure(createI18Text("StructureDiagram"));
+        losses.add(upperLOS);
+        
+        
+        losses.add(childLOS);
+        
+        SpecialLOS specialLOS = new SpecialLOS();
+        specialLOS.setId("3234");
+        specialLOS.setAccessToFurtherStudies(createI18Text("AccessToFurtherStudies"));
+        specialLOS.setEducationDegree("32");
+        specialLOS.setName(createI18Text("name"));
+        specialLOS.setGoals(createI18Text("goals"));
+        specialLOS.setStructure(createI18Text("StructureDiagram"));
+        losses.add(specialLOS);
+        
+        when(educationDataQueryService.findLearningOpportunitiesByProviderId("provId")).thenReturn(losses);
 
         learningOpportunityService = new LearningOpportunityServiceImpl(educationDataQueryService, previewService, modelMapper);
     }
@@ -164,6 +190,13 @@ public class LearningOpportunityServiceImplTest {
         List<ApplicationOptionSearchResultDTO> results = learningOpportunityService.searchApplicationOptions("as123", "", "", true, true, "fi");
         assertEquals(results.size(), 1);
         assertEquals(results.get(0).getId(), "ao123");
+    }
+    
+    @Test
+    public void testFindLearningOpportunitiesByProviderId() {
+        List<LearningOpportunitySearchResultDTO> results = learningOpportunityService.findLearningOpportunitiesByProviderId("provId", "fi");
+        assertEquals(results.size(), 4);
+        assertTrue(results.get(0).getId().contains("23"));
     }
 
     @Test
