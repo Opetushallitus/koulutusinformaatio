@@ -2342,6 +2342,17 @@ table.striped {
   padding: 10px 0 10px 10px;
   border: #dddddd 1px solid;
   border-top: none; }
+.application-container .sr-content {
+  margin: 0;
+  border: #dddddd 1px solid;
+  border-top: none; }
+  .application-container .sr-content .content {
+    width: 50%;
+    float: left;
+    border-left: none;
+    border-right: none; }
+  .application-container .sr-content .lastrow {
+    border-bottom: none; }
 .application-container .small {
   color: #7f7f7f; }
 

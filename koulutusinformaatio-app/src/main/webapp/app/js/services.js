@@ -266,6 +266,7 @@ service('ParentLOService', ['$http', '$timeout', '$q', '$rootScope', 'LanguageSe
             $http.get('../lo/parent/' + options.id, {
                 params: queryParams
             }).
+
             success(function(result) {
                 ParentLOTransformer.transform(result);
                 var loResult = {

@@ -61,7 +61,7 @@ directive('toggleCollapse', [function () {
             '</h4>' +
             '<div class="clear"></div>' +
             '<div collapse="showExtension == \'close\'">' + 
-                '<div style="padding-top: 15px; border-top: 1px dashed grey; margin-top: 15px" data-ng-transclude></div>' +
+                '<div style="padding-top: 20px; border-top: 1px dashed #DDDDDD; margin-top: 10px" data-ng-transclude></div>' +
             '</div>'
 
     };
