@@ -70,19 +70,10 @@
         return true;
     }
 
-    var showAoAnchorLinks = function() {
-        var length = 0;
-        angular.forEach($scope.lo.applicationSystems, function(as, askey){
-            length += as.applicationOptions.length;
-        });
-
-        return length > 1 ? true : false;
-    }
-
     var initializeLO = function() {
         setTitle($scope.parent, $scope.lo);
         $scope.showApplicationRadioSelection = showApplicationRadioSelection() ? '' : 'hidden';
-        $scope.showAoAnchorLinks = showAoAnchorLinks();
+        //$scope.showAoAnchorLinks = showAoAnchorLinks();
         var loi = getLOIByPrerequisite($location.hash());
         //var loi = getLOIByPrerequisite($location.search().prerequisite);
         if (loi) {

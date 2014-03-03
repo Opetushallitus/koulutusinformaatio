@@ -262,10 +262,11 @@ service('ParentLOService', ['$http', '$timeout', '$q', '$rootScope', 'LanguageSe
             if (options.lang) {
                 queryParams.lang = options.lang
             }
-
+            
             $http.get('../lo/parent/' + options.id, {
                 params: queryParams
             }).
+
             success(function(result) {
                 ParentLOTransformer.transform(result);
                 var loResult = {
@@ -530,17 +531,6 @@ service('ParentLOTransformer', ['UtilityService', '$filter', '$rootScope', funct
                 }
             } 
 
-            //var applicationSystems = [];
-
-            for (var index in result.applicationOptions) {
-                if (result.applicationOptions.hasOwnProperty(index)) {
-                    var ao = result.applicationOptions[index];
-                    if (ao.applicationSystem && ao.applicationSystem.applicationDates && ao.applicationSystem.applicationDates.length > 0) {
-                        ao.applicationSystem.applicationDates = ao.applicationSystem.applicationDates[0];
-                    }
-                    result.applicationSystem = ao.applicationSystem;
-                }
-            }
 
             // set teaching languge as the first language in array
             for (var index in result.lois) {
