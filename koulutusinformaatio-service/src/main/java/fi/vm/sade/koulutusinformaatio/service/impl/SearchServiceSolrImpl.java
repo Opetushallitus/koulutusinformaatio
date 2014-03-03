@@ -221,7 +221,7 @@ public class SearchServiceSolrImpl implements SearchService {
     }
 
     @Override
-    public List<LOSearchResult> searchLearningOpportunitiesByProvider(String lopId) throws SearchException {
+    public List<LOSearchResult> searchLearningOpportunitiesByProvider(String lopId, String lang) throws SearchException {
         List<LOSearchResult> resultList = Lists.newArrayList();
         SolrQuery query = new LearningOpportunityByProviderQuery(lopId);
         QueryResponse response = null;
@@ -238,17 +238,17 @@ public class SearchServiceSolrImpl implements SearchService {
             String prerequisiteText = doc.get("prerequisite") != null ? doc.get("prerequisite").toString() : null;
             String prerequisiteCodeText = doc.get("prerequisiteCode") != null ? doc.get("prerequisiteCode").toString() : null;
             String credits = doc.get(LearningOpportunity.CREDITS) != null ? doc.get(LearningOpportunity.CREDITS).toString() : null;
-            String lopName = doc.get(LearningOpportunity.LOP_NAME) != null ? doc.get(LearningOpportunity.LOP_NAME).toString() : null;
+            String lopName = getLopName(doc, lang);
             String edType = doc.get(LearningOpportunity.EDUCATION_TYPE) != null ? getEdType(doc) : null;
-            String edDegree = doc.get(LearningOpportunity.EDUCATION_DEGREE) != null ? doc.get(LearningOpportunity.EDUCATION_DEGREE).toString() : null;
+            String edDegree = getEdDegree(doc, lang);
             String edDegreeCode = doc.get(LearningOpportunity.EDUCATION_DEGREE_CODE) != null ? doc.get(LearningOpportunity.EDUCATION_DEGREE_CODE).toString() : null;
-            String homeplace = doc.getFieldValue(LearningOpportunity.HOMEPLACE_DISPLAY) != null ? doc.getFieldValue(LearningOpportunity.HOMEPLACE_DISPLAY).toString() : null;
-            
+            String name = getName(doc, lang);
+            String homeplace = getHomeplace(doc, lang);
             
             LOSearchResult lo = null;
             try {
                 lo = new LOSearchResult(
-                        id, doc.get("name").toString(),
+                        id, name,
                         doc.get("lopId").toString(), lopName, prerequisiteText,
                         prerequisiteCodeText, parentId, losId, doc.get("type").toString(), 
                         credits, edType, edDegree, edDegreeCode, homeplace);
