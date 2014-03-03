@@ -73,9 +73,11 @@
     var initializeLO = function() {
         setTitle($scope.parent, $scope.lo);
         $scope.showApplicationRadioSelection = showApplicationRadioSelection() ? '' : 'hidden';
-        //$scope.showAoAnchorLinks = showAoAnchorLinks();
-        var loi = getLOIByPrerequisite($location.hash());
-        //var loi = getLOIByPrerequisite($location.search().prerequisite);
+
+        // use hash if present
+        var hash = $location.hash() ? $location.hash() : $location.search().prerequisite;
+        var loi = getLOIByPrerequisite(hash);
+        
         if (loi) {
             changeLOISelection(loi);
         } else {
@@ -174,9 +176,9 @@
     }
 
     $scope.changePrerequisiteSelection = function(prerequisite) {
-        $location.hash(prerequisite).replace();
+        $location.hash(null).replace(); // override hash if used
+        $location.search({prerequisite: prerequisite}).replace();
         loadLo();
-        //$location.search({prerequisite: prerequisite}).replace();
     }
 
     $scope.hasChildren = function() {

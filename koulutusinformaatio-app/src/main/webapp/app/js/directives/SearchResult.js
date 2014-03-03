@@ -27,7 +27,7 @@ directive('searchResult', ['FilterService', 'TranslationService', function(Filte
 
             var prerequisite = scope.lo.prerequisiteCode || FilterService.getPrerequisite();
             if (prerequisite && scope.lo.id.indexOf('#') === -1) {
-            	scope.lo.linkHref += '#' + prerequisite;
+                scope.lo.linkHref += '?prerequisite=' + prerequisite;
             }
         }
     }
@@ -60,7 +60,7 @@ directive('toggleCollapse', [function () {
                 '<span class="icon"></span>' +
             '</h4>' +
             '<div class="clear"></div>' +
-            '<div collapse="showExtension == \'close\'">' + 
+            '<div data-collapse="showExtension == \'close\'">' + 
                 '<div style="padding-top: 20px; border-top: 1px dashed #DDDDDD; margin-top: 10px" data-ng-transclude></div>' +
             '</div>'
 

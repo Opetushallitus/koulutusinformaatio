@@ -46,7 +46,7 @@
         <span class="icon"></span>
         <span data-ki-i18n="haettava-koulutus"></span>      
     </h4>
-    <div collapse="collapsed[0]" class="collapse">
+    <div data-collapse="collapsed[0]" class="collapse">
         <div
             class="collapse-content-container"
             data-angular-treeview="true"
@@ -65,7 +65,7 @@
 			data-ng-class="{open: !collapsed[1], close: collapsed[1]}">
 			<span class="icon"></span> <span data-ki-i18n="pohjakoulutus"></span>
 		</h4>
-		<div collapse="collapsed[1]" class="collapse">
+		<div data-collapse="collapsed[1]" class="collapse">
 			<ul class="nobullet collapse-content-container">
 				<li data-ng-repeat="fv in loResult.prerequisiteFacet.facetValues">
                 <span data-ng-show="!isSelected(fv) && (fv.count > 0)" class="facet-item">
@@ -88,7 +88,7 @@
         <span class="icon"></span>
         <span data-ki-i18n="filter-search-location-title"></span>
     </h4>
-    <div collapse="collapsed[2]" class="collapse">
+    <div data-collapse="collapsed[2]" class="collapse">
         <div class="collapse-content-container">
             <div data-ki-location-filter></div>
         </div>
@@ -101,7 +101,7 @@
         <span class="icon"></span>
         <span data-ki-i18n="facet-teemat"></span>      
     </h4>
-    <div collapse="collapsed[3]" class="collapse">
+    <div data-collapse="collapsed[3]" class="collapse">
         <div
             class="collapse-content-container"
             data-angular-treeview="true"
@@ -119,7 +119,7 @@
         <span class="icon"></span>
         <span data-ki-i18n="facet-opetuskieli"></span>      
     </h4>
-    <div collapse="collapsed[4]" class="collapse">
+    <div data-collapse="collapsed[4]" class="collapse">
         <ul class="nobullet collapse-content-container">
             <li data-ng-repeat="fv in loResult.teachingLangFacet.facetValues">
                 <span data-ng-show="!isSelected(fv) && (fv.count > 0)" class="facet-item">

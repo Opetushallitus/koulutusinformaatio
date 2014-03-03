@@ -12,7 +12,7 @@
 	<span class="pager-results">{{pageMin}} - {{pageMax}} / {{totalItems}}</span>
 </div>
 
-<ul id="search-results">
+<ul id="article-search-results">
 	<li data-ng-repeat="article in articles.posts">
 		<h2><a data-ng-href="{{article.url}}">{{article.title}}</a></h2>
 		<img data-ng-src="{{article.attachments[0].url}}" data-ng-show="article.attachments[0].url"/>
