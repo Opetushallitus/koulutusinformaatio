@@ -3901,8 +3901,6 @@ div[data-tree-model] li i, div[data-tree-model] li span {
 
 div[data-tree-model] li span.facet-item {
   display: inline; }
-  div[data-tree-model] li span.facet-item.inactive {
-    cursor: default; }
 
 div[data-tree-model] li span.facet-item .remove {
   margin: 0 0 0 5px; }

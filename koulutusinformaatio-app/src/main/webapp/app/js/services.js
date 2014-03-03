@@ -948,9 +948,10 @@ service('LearningOpportunitySearchResultTransformer', ['UtilityService', '$filte
             // order themes alphabetically (theme Yleisisivistävä is always first)
             if (result && result.topicFacet && result.topicFacet.facetValues) {
                 result.topicFacet.facetValues.sort(function(a, b) {
-                    if (a.valueId.indexOf('teemat_1') > -1) {
+                    var regexp = /^teemat_1$/;
+                    if (regexp.test(a.valueId)) {
                         return -1;
-                    } else if (b.valueId.indexOf('teemat_1') > -1) {
+                    } else if (regexp.test(b.valueId)) {
                         return 1;
                     } else {
                         return b.valueName > a.valueName ? -1 : 1;
