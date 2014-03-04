@@ -16,11 +16,11 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.dto.CodeDTO;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Hannu Lyytikainen
