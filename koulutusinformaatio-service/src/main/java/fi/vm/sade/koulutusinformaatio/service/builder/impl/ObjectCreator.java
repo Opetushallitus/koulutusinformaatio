@@ -34,8 +34,6 @@ import java.util.*;
  */
 public abstract class ObjectCreator {
 
-    protected static final String ATHLETE_EDUCATION_KOODISTO_URI = "urheilijankoulutus_1#1";
-    protected static final String APPLICATION_OPTIONS_KOODISTO_URI = "hakukohteet";
     protected static final String AIHEET_KOODISTO_URI = "aiheet";
     protected static final String TEEMAT_KOODISTO_URI = "teemat";
     protected static final String POHJAKOULUTUSFASETTI_KOODISTO_URI = "pohjakoulutusfasetti";

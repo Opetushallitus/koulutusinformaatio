@@ -46,6 +46,7 @@ public class TarjontaConstants {
     public static final String ED_DEGREE_URI_YLEMPI_AMK = "koulutusasteoph2002_71";
     public static final String ED_DEGREE_URI_KANDI = "koulutusasteoph2002_63";
     public static final String ED_DEGREE_URI_MAISTERI = "koulutusasteoph2002_72";
-    
 
+    public static final String ATHLETE_EDUCATION_KOODISTO_URI = "urheilijankoulutus_1#1";
+    public static final String APPLICATION_OPTIONS_KOODISTO_URI = "hakukohteet";
 }
