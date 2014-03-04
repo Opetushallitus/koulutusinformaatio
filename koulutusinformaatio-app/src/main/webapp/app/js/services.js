@@ -675,6 +675,9 @@ service('HigherEducationTransformer', ['UtilityService', '$rootScope', '$filter'
 				var startDate = new Date(result.startDate);
 				result.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
 			}
+			if (result.educationDegree && (result.educationDegree == 'koulutusasteoph2002_62' || result.educationDegree == 'koulutusasteoph2002_71')) {
+				result.polytechnic = true;
+			}
 			result.teachingLanguage = getFirstItemInList(result.teachingLanguages);
 			result.formOfTeaching = getFirstItemInList(result.formOfTeaching);
 
