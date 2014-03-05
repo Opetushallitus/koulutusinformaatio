@@ -34,7 +34,7 @@ public interface SearchService {
                                                    String lang, boolean ongoing, boolean upcoming, 
                                                    int start, int rows, String sort, String order) throws SearchException;
 
-    List<LOSearchResult> searchLearningOpportunitiesByProvider(String lopId) throws SearchException;
+    List<LOSearchResult> searchLearningOpportunitiesByProvider(String lopId, String lang) throws SearchException;
 
     List<Location> searchLocations(final String term, final String lang) throws SearchException;
     List<Location> getLocations(List<String> codes, final String lang) throws SearchException;

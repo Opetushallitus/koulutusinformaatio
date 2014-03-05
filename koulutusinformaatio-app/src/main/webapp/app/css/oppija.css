@@ -2342,6 +2342,17 @@ table.striped {
   padding: 10px 0 10px 10px;
   border: #dddddd 1px solid;
   border-top: none; }
+.application-container .sr-content {
+  margin: 0;
+  border: #dddddd 1px solid;
+  border-top: none; }
+  .application-container .sr-content .content {
+    width: 50%;
+    float: left;
+    border-left: none;
+    border-right: none; }
+  .application-container .sr-content .lastrow {
+    border-bottom: none; }
 .application-container .small {
   color: #7f7f7f; }
 
@@ -2421,56 +2432,78 @@ input.button {
   -webkit-box-sizing: content-box;
   -moz-box-sizing: content-box; }
 
-a.button {
-  background: none;
-  border: none;
-  margin: 0px;
-  padding: 0px;
-  display: inline-block;
-  vertical-align: middle;
-  cursor: pointer; }
-  a.button span {
-    display: inline-block;
-    border: transparent 0px solid;
-    padding: 0px;
-    height: 28px;
-    line-height: 28px;
-    background-color: transparent;
-    background-repeat: no-repeat;
-    margin: 0px 5px 0px 0px;
-    background-image: url(../img/button-sprite_idle-hover-selected-disabled.png);
-    background-position: left 0px; }
-    a.button span span {
-      white-space: nowrap;
-      display: block;
-      height: 28px;
-      line-height: 28px;
-      position: relative;
-      left: 5px;
-      background-repeat: no-repeat;
-      margin: 0px;
-      border: none;
-      padding: 0px 11px 0px 6px;
-      background-image: url(../img/button-sprite_idle-hover-selected-disabled.png);
-      background-position: right -112px; }
-  a.button.print span {
-    background-image: url(../img/button-print-sprite_idle-hover-selected-disabled.png); }
-    a.button.print span span {
-      padding-left: 30px;
-      background-image: url(../img/button-print-sprite_idle-hover-selected-disabled.png); }
-  a.button:hover span {
-    background-position: left -28px; }
-    a.button:hover span span {
-      background-position: right -140px; }
-  a.button:focus span, a.button:active span {
-    background-position: left -56px; }
-    a.button:focus span span, a.button:active span span {
-      background-position: right -168px; }
-  a.button:disabled span {
-    background-position: left -84px; }
-    a.button:disabled span span {
-      background-position: right -196px; }
+/*
+a {
+    &.button {
+        background: none;
+        border: none;
+        margin: 0px;
+        padding: 0px;
+        display: inline-block;
+        vertical-align: middle;
+        cursor: pointer;
 
+        span {
+            display: inline-block;
+            border: transparent 0px solid;
+            padding: 0px;
+            height: 28px;
+            line-height: 28px;
+            background-color: transparent;
+            background-repeat: no-repeat;
+            margin: 0px 5px 0px 0px;
+            @include background-image("button-sprite_idle-hover-selected-disabled.png");
+            background-position: left 0px;
+
+            span {
+                white-space: nowrap;
+                display: block;
+                height: 28px;
+                line-height: 28px;
+                position: relative;
+                left: 5px;
+                background-repeat: no-repeat;
+                margin: 0px;
+                border: none;
+                padding: 0px 11px 0px 6px;
+                @include background-image("button-sprite_idle-hover-selected-disabled.png");
+                background-position: right -112px;
+            }
+        }
+
+        &.print span {
+            @include background-image("button-print-sprite_idle-hover-selected-disabled.png");
+            span {
+                padding-left: 30px;
+                @include background-image("button-print-sprite_idle-hover-selected-disabled.png");
+            }
+        }
+
+        &:hover span {
+            background-position: left -28px;
+            span {
+                background-position: right -140px;
+            }
+        }
+
+        &:focus span,
+        &:active span {
+            background-position: left -56px;
+
+            span {
+                background-position: right -168px;
+            }
+        }
+
+        &:disabled span {
+            background-position: left -84px;
+            span {
+                background-position: right -196px;
+            }
+        }
+    }
+}
+*/
 button {
   background: none;
   border: none;
@@ -2633,13 +2666,15 @@ button {
 
 /* links displayed as buttons */
 a.button {
+  /*
   background: none;
   border: none;
   margin: 0px;
   padding: 0px;
   display: inline-block;
   vertical-align: middle;
-  cursor: pointer; }
+  cursor: pointer;
+  */ }
   a.button span {
     display: inline-block;
     border: transparent 0px solid;
@@ -3500,6 +3535,8 @@ button, .button {
   -o-transition: height 0.2s ease;
   -ms-transition: height 0.2s ease;
   transition: height 0.2s ease; }
+  .collapse.partial {
+    height: 200px; }
   .collapse .collapse-content-container {
     margin: 1em 0 0 0; }
 
@@ -3864,8 +3901,6 @@ div[data-tree-model] li i, div[data-tree-model] li span {
 
 div[data-tree-model] li span.facet-item {
   display: inline; }
-  div[data-tree-model] li span.facet-item.inactive {
-    cursor: default; }
 
 div[data-tree-model] li span.facet-item .remove {
   margin: 0 0 0 5px; }
@@ -4137,32 +4172,42 @@ ul {
 input {
   margin: 0 0.5em 0 0; }
 
-#search-results {
+#search-results,
+#article-search-results {
   min-height: 1px;
   margin: 0 0 1em 0;
   padding: 0; }
-  #search-results > li {
+  #search-results > li,
+  #article-search-results > li {
     padding: 1em 0;
     list-style-type: none;
     border-bottom: 1px solid #dddddd; }
-    #search-results > li .result-content {
+    #search-results > li .result-content,
+    #article-search-results > li .result-content {
       float: left;
       width: 60%; }
-      #search-results > li .result-content h2 {
+      #search-results > li .result-content h2,
+      #article-search-results > li .result-content h2 {
         margin: 0; }
-    #search-results > li .state-label {
+    #search-results > li .state-label,
+    #article-search-results > li .state-label {
       float: right; }
-    #search-results > li.inactive {
+    #search-results > li.inactive,
+    #article-search-results > li.inactive {
       list-style-type: none; }
-      #search-results > li.inactive .result-content a {
+      #search-results > li.inactive .result-content a,
+      #article-search-results > li.inactive .result-content a {
         font-weight: normal; }
-    #search-results > li:first-child {
+    #search-results > li:first-child,
+    #article-search-results > li:first-child {
       border-top: 1px solid #dddddd; }
-    #search-results > li img {
+    #search-results > li img,
+    #article-search-results > li img {
       max-width: 200px;
       float: left;
       margin: 0 20px 20px 0; }
-  #search-results small:before {
+  #search-results small:before,
+  #article-search-results small:before {
     content: ""; }
 
 .ribbon .ribbon-content {

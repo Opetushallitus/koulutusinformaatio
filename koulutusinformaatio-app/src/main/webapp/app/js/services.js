@@ -262,10 +262,11 @@ service('ParentLOService', ['$http', '$timeout', '$q', '$rootScope', 'LanguageSe
             if (options.lang) {
                 queryParams.lang = options.lang
             }
-
+            
             $http.get('../lo/parent/' + options.id, {
                 params: queryParams
             }).
+
             success(function(result) {
                 ParentLOTransformer.transform(result);
                 var loResult = {
@@ -530,17 +531,6 @@ service('ParentLOTransformer', ['UtilityService', '$filter', '$rootScope', funct
                 }
             } 
 
-            //var applicationSystems = [];
-
-            for (var index in result.applicationOptions) {
-                if (result.applicationOptions.hasOwnProperty(index)) {
-                    var ao = result.applicationOptions[index];
-                    if (ao.applicationSystem && ao.applicationSystem.applicationDates && ao.applicationSystem.applicationDates.length > 0) {
-                        ao.applicationSystem.applicationDates = ao.applicationSystem.applicationDates[0];
-                    }
-                    result.applicationSystem = ao.applicationSystem;
-                }
-            }
 
             // set teaching languge as the first language in array
             for (var index in result.lois) {
@@ -684,6 +674,9 @@ service('HigherEducationTransformer', ['UtilityService', '$rootScope', '$filter'
 			if (result.startDate) {
 				var startDate = new Date(result.startDate);
 				result.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
+			}
+			if (result.educationDegree && (result.educationDegree == 'koulutusasteoph2002_62' || result.educationDegree == 'koulutusasteoph2002_71')) {
+				result.polytechnic = true;
 			}
 			result.teachingLanguage = getFirstItemInList(result.teachingLanguages);
 			result.formOfTeaching = getFirstItemInList(result.formOfTeaching);
@@ -958,9 +951,10 @@ service('LearningOpportunitySearchResultTransformer', ['UtilityService', '$filte
             // order themes alphabetically (theme Yleisisivistävä is always first)
             if (result && result.topicFacet && result.topicFacet.facetValues) {
                 result.topicFacet.facetValues.sort(function(a, b) {
-                    if (a.valueId.indexOf('teemat_1') > -1) {
+                    var regexp = /^teemat_1$/;
+                    if (regexp.test(a.valueId)) {
                         return -1;
-                    } else if (b.valueId.indexOf('teemat_1') > -1) {
+                    } else if (regexp.test(b.valueId)) {
                         return 1;
                     } else {
                         return b.valueName > a.valueName ? -1 : 1;

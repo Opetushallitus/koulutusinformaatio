@@ -20,7 +20,7 @@
     "search-result-count-unit": "st",
     "search-field-placeholder": "Sök utbildningar här",
     "no-search-results": "Inga sökresultat",
-    "no-search-results-info": "Sökordet \"__searchterm__\" gav inget resultat. Ifrågavarande utbildning eller examen har ev. inte ännu matats in i systemet. Var god och försök med ett annat sökord eller en annan avgränsning. ",
+    "no-search-results-info": "Sökordet \"__searchterm__\" gav inget resultat. Utbildning ordnas inte på svenska eller ifrågavarande utbildning eller examen har ev. inte ännu matats in i systemet. Var god och försök med ett annat sökord eller en annan avgränsning.",
     "search-pagination-first": "Första",
     "search-pagination-last": "sista ",
     "search-pagination-next": "nästa",
@@ -37,6 +37,9 @@
     "degree-programmes": "Koulutusohjelmat (sv)",
     "extended-view-close": "Avaa (sv)",
     "extended-view-open": "Sulje (sv)",
+
+    "read-more": "Lue lisää... (sv)",
+    "read-less": "Pienennä (sv)",
 
     "filter-title": "Begränsa sökresultaten",
     "filter-search-title": "Grundutbildning",

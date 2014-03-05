@@ -49,13 +49,14 @@ public class ApplicationOptionCreator extends ObjectCreator {
     private KoodistoService koodistoService;
     private TarjontaRawService tarjontaRawService;
     private EducationObjectCreator educationObjectCreator;
+    private ApplicationSystemCreator applicationSystemCreator;
 
     protected ApplicationOptionCreator(KoodistoService koodistoService, TarjontaRawService tarjontaRawService) {
         super(koodistoService);
         this.koodistoService = koodistoService;
         this.tarjontaRawService = tarjontaRawService;
         this.educationObjectCreator = new EducationObjectCreator(koodistoService);
-
+        this.applicationSystemCreator = new ApplicationSystemCreator(koodistoService);
     }
 
     private ApplicationOption createApplicationOption(HakukohdeDTO hakukohdeDTO, HakuDTO hakuDTO, KomotoDTO komoto,
@@ -82,19 +83,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
             }
         });
         ao.setRequiredBaseEducations(baseEducations);
-        ApplicationSystem as = new ApplicationSystem();
-        as.setId(hakuDTO.getOid());
-        as.setMaxApplications(hakuDTO.getMaxHakukohdes());
-        as.setName(getI18nText(hakuDTO.getNimi()));
-        if (hakuDTO.getHakuaikas() != null) {
-            for (HakuaikaRDTO ha : hakuDTO.getHakuaikas()) {
-                DateRange range = new DateRange();
-                range.setStartDate(ha.getAlkuPvm());
-                range.setEndDate(ha.getLoppuPvm());
-                as.getApplicationDates().add(range);
-            }
-        }
-        ao.setApplicationSystem(as);
+        ao.setApplicationSystem(applicationSystemCreator.createApplicationSystem(hakuDTO));
         if (!Strings.isNullOrEmpty(hakukohdeDTO.getSoraKuvausKoodiUri())) {
             ao.setSora(true);
         }
@@ -180,8 +169,8 @@ public class ApplicationOptionCreator extends ObjectCreator {
         if (!Strings.isNullOrEmpty(aoIdentifier)) {
             List<Code> superCodes = null;
             try {
-                superCodes = koodistoService.searchSuperCodes(ATHLETE_EDUCATION_KOODISTO_URI,
-                        APPLICATION_OPTIONS_KOODISTO_URI);
+                superCodes = koodistoService.searchSuperCodes(TarjontaConstants.ATHLETE_EDUCATION_KOODISTO_URI,
+                        TarjontaConstants.APPLICATION_OPTIONS_KOODISTO_URI);
             } catch (KoodistoException e) {
                 throw new KIConversionException("Conversion failed - " + e.getMessage());
             }

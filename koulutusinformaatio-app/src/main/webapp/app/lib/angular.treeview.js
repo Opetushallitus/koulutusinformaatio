@@ -57,7 +57,7 @@ angular.module( 'angularTreeview', [] ).
                 			'<span title="{{node.valueName}}" data-ng-show="!isSelected(node) && (node.count > 0)" class="facet-item">' +
                     			'<a href="javascript:void(0)" data-ng-click="selectFacetFilter(node.valueId, node.facetField); ' + treeId + '.selectNodeHead(node)">{{node.valueName}} ({{node.count}})</a>' +
                 			'</span>' +
-	                		'<span title="{{node.valueName}}" data-ng-show="!isSelected(node) && (node.count <= 0)" class="facet-item inactive">' +
+	                		'<span title="{{node.valueName}}" data-ng-show="!isSelected(node) && (node.count <= 0)" class="facet-item inactive" data-ng-click="' + treeId + '.selectNodeHead(node)">' +
 	                    		'{{node.valueName}} ({{node.count}})' +
 	                		'</span>' +
 	                		'<span title="{{node.valueName}}" data-ng-show="isSelected(node)" class="facet-item selected">' +
