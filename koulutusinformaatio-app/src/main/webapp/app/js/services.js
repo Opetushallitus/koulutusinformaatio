@@ -105,6 +105,9 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
             qParams += (params.ongoing != undefined) ? ('&ongoing=' + params.ongoing) : '';
             qParams += (params.upcoming != undefined) ? ('&upcoming=' + params.upcoming) : '';
             qParams += (params.lang != undefined) ? ('&lang=' + params.lang) : '';
+            qParams += (params.lopFilter != undefined) ? ('&lopFilter=' + params.lopFilter) : '';
+            qParams += (params.educationCodeFilter != undefined) ? ('&educationCodeFilter=' + params.educationCodeFilter) : '';
+            
             if (params.facetFilters != undefined) {
             	 angular.forEach(params.facetFilters, function(facetFilter, key) {
             		 qParams += '&facetFilters=' + facetFilter;
@@ -1327,7 +1330,9 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
                 facetFilters: filters.facetFilters,
                 langCleared: filters.langCleared,
                 itemsPerPage: filters.itemsPerPage,
-                sortCriteria: filters.sortCriteria
+                sortCriteria: filters.sortCriteria,
+                lopFilter: filters.lopFilter,
+                educationCodeFilter: filters.educationCodeFilter
             };
 
             angular.forEach(result, function(value, key) {
@@ -1416,7 +1421,8 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
             params += filters.langCleared ? '&langCleared=' + filters.langCleared : '';
             params += filters.itemsPerPage ? '&itemsPerPage=' + filters.itemsPerPage : '';
             params += filters.sortCriteria ? '&sortCriteria=' + filters.sortCriteria : '';
-            
+            params += filters.lopFilter ? '&lopFilter=' + filters.lopFilter : '';
+            params += filters.educationCodeFilter ? '&educationCodeFilter=' + filters.educationCodeFilter : '';
             params = params.length > 0 ? params.substring(1, params.length) : '';
             return params;
         },
@@ -1427,6 +1433,14 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
         		return filters.facetFilters;
         	}
         	return filters.facetFilters;
+        },
+        
+        getLopFilter: function() {
+        	return filters.lopFilter;
+        },
+        
+        getEducationCodeFilter: function() {
+        	return filters.educationCodeFilter;
         },
         
         getLangCleared: function() {

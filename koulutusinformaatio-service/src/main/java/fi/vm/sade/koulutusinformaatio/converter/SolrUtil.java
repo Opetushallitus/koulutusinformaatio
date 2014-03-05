@@ -159,14 +159,16 @@ public final class SolrUtil {
         public static final String NAME_DISPLAY_FI = "name_fi_ss";
         public static final String NAME_DISPLAY_SV = "name_sv_ss";
         public static final String NAME_DISPLAY_EN = "name_en_ss";
-        public static final String LOP_NAME_DISPLAY_FI = "lopName_fi_ss";
-        public static final String LOP_NAME_DISPLAY_SV = "lopName_sv_ss";
-        public static final String LOP_NAME_DISPLAY_EN = "lopName_en_ss";
+        public static final String LOP_NAME_DISPLAY_FI = "lopName_fi_ssort";
+        public static final String LOP_NAME_DISPLAY_SV = "lopName_sv_ssort";
+        public static final String LOP_NAME_DISPLAY_EN = "lopName_en_ssort";
         public static final String HOMEPLACE_DISPLAY_FI = "homeplace_fi_ss";
         public static final String HOMEPLACE_DISPLAY_SV = "homeplace_sv_ss";
         public static final String HOMEPLACE_DISPLAY_EN = "homeplace_en_ss";
         public static final String HOMEPLACE_DISPLAY = "homeplace_ss";
-        
+        public static final String EDUCATION_CODE_DISPLAY_FI = "educationCode_fi_ssort";
+        public static final String EDUCATION_CODE_DISPLAY_SV = "educationCode_sv_ssort";
+        public static final String EDUCATION_CODE_DISPLAY_EN = "educationCode_en_ssort";
 
         //Fields for sorting
         public static final String START_DATE_SORT = "startDate_dsort";

@@ -55,7 +55,7 @@ public class HigherEducationLOS extends LOS {
     private I18nText degree;
     private I18nText qualification;
     private Boolean chargeable;
-    private String educationCode;
+    private Code educationCode;
     private List<Code> teachingLanguages;
 
     private Provider provider;
@@ -308,11 +308,11 @@ public class HigherEducationLOS extends LOS {
         return chargeable;
     }
 
-    public void setEducationCode(String uri) {
-        educationCode = uri;
+    public void setEducationCode(Code edCode) {
+        educationCode = edCode;
     }
 
-    public String getEducationCode() {
+    public Code getEducationCode() {
         return educationCode;
     }
 

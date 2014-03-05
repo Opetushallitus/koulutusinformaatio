@@ -333,7 +333,7 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setEducationDomain(getI18nTextEnriched(koulutus.getKoulutusala().getMeta()));
         los.setName(getI18nTextEnriched(koulutus.getKoulutusohjelma()));
         los.setKoulutuskoodi(getI18nTextEnriched(koulutus.getKoulutuskoodi().getMeta()));
-        los.setEducationCode(koulutus.getKoulutuskoodi().getUri());
+        los.setEducationCode(koodistoService.searchFirstCode(koulutus.getKoulutuskoodi().getUri()));//koulutus.getKoulutuskoodi().getUri());
         los.setEducationDegree(koulutus.getKoulutusaste().getUri());//getI18nTextEnriched(koulutus.getKoulutusaste().getMeta()));//getTutkinto().getMeta()));
         los.setEducationDegreeLang(getI18nTextEnriched(koulutus.getKoulutusaste().getMeta()));
         //los.setEducationType(getI18nTextEnriched(koulutus.get.getMeta()));

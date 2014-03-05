@@ -75,7 +75,7 @@ public class LearningOpportunityQuery extends SolrQuery {
     public final static String APP_STATUS_UPCOMING = "upcoming";
 
     public LearningOpportunityQuery(String term, String prerequisite,
-            List<String> cities, List<String> facetFilters, String lang, boolean ongoing, boolean upcoming, int start, int rows, String sort, String order) {
+            List<String> cities, List<String> facetFilters, String lang, boolean ongoing, boolean upcoming, int start, int rows, String sort, String order, String lopFilter, String educationCodeFilter) {
         super(term);
         if (prerequisite != null) {
             this.addFilterQuery(String.format("%s:%s", LearningOpportunity.PREREQUISITES, prerequisite));
@@ -109,6 +109,14 @@ public class LearningOpportunityQuery extends SolrQuery {
         }
         if (upcoming) {
             this.addFilterQuery(upcomingFQ.toString());
+        }
+        
+        if (lopFilter != null ) {
+            addLopRecommendationFilter(lopFilter, lang);
+        }
+        
+        if (educationCodeFilter != null ) {
+            addEducationCodeRecommendationFilter(lopFilter, lang);
         }
         
         //leaving the facet and timestamp docs out
@@ -152,7 +160,6 @@ public class LearningOpportunityQuery extends SolrQuery {
             searchFields.addAll(FIELDS_FI);
         }
         
-        
         if (searchFields.isEmpty()){
             this.setParam(DisMaxParams.QF, Joiner.on(" ").join(FIELDS));
         } else {
@@ -190,5 +197,37 @@ public class LearningOpportunityQuery extends SolrQuery {
         for (String curFilter : facetFilters) {
             this.addFilterQuery(curFilter);
         }
+        
+    }
+
+    private void addLopRecommendationFilter(String lopFilter,
+            String lang) {
+        
+        if (lang.toLowerCase().equals("fi")) {
+            this.addFilterQuery(String.format("%s:\"%s\"", LearningOpportunity.LOP_NAME_DISPLAY_FI, lopFilter));
+        } else if (lang.toLowerCase().equals("sv")) {
+            this.addFilterQuery(String.format("%s:\"%s\"", LearningOpportunity.LOP_NAME_DISPLAY_SV, lopFilter));
+        } else if (lang.toLowerCase().equals("en")) {
+            this.addFilterQuery(String.format("%s:\"%s\"", LearningOpportunity.LOP_NAME_DISPLAY_EN, lopFilter));
+        } else {
+            this.addFilterQuery(String.format("%s:\"%s\"", LearningOpportunity.LOP_NAME, lopFilter));
+        }
+    }
+    
+    private void addEducationCodeRecommendationFilter(String educationCodeFilter,
+            String lang) { 
+        
+        if (lang.toLowerCase().equals("fi")) {
+            this.addFilterQuery(String.format("%s:\"%s\"", LearningOpportunity.EDUCATION_CODE_DISPLAY_FI, educationCodeFilter));
+        } else if (lang.toLowerCase().equals("sv")) {
+            this.addFilterQuery(String.format("%s:\"%s\"", LearningOpportunity.EDUCATION_CODE_DISPLAY_SV, educationCodeFilter));
+        } else if (lang.toLowerCase().equals("en")) {
+            this.addFilterQuery(String.format("%s:\"%s\"", LearningOpportunity.EDUCATION_CODE_DISPLAY_EN, educationCodeFilter));
+        } else {
+            this.addFilterQuery(String.format("%s:\"%s\"", LearningOpportunity.EDUCATION_CODE_DISPLAY_FI, educationCodeFilter));
+        }
+        
+        
+       
     }
 }

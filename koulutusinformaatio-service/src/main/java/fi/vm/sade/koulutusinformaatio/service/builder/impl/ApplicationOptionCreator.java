@@ -287,7 +287,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         ao.setExams(educationObjectCreator.createHigherEducationExams(hakukohde.getValintakokeet()));
         ao.setKaksoistutkinto(false);
         ao.setVocational(false);
-        ao.setEducationCodeUri(los.getEducationCode());
+        ao.setEducationCodeUri(los.getEducationCode().getUri());
 
         ao.setRequiredBaseEducations(hakukohde.getHakukelpoisuusvaatimusUris());
         los.setPrerequisites(koodistoService.searchCodesMultiple(hakukohde.getHakukelpoisuusvaatimusUris()));

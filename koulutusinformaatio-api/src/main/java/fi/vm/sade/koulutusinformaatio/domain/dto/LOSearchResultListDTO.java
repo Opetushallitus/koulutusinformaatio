@@ -35,6 +35,10 @@ public class LOSearchResultListDTO {
     private FacetDTO edTypeFacet;
     private FacetDTO prerequisiteFacet;
     private FacetDTO topicFacet;
+    private FacetValueDTO lopRecommendationFilter;
+    
+
+    private FacetValueDTO educationCodeRecommendationFilter;
 
 
     public List<LearningOpportunitySearchResultDTO> getResults() {
@@ -100,5 +104,22 @@ public class LOSearchResultListDTO {
 
     public void setTopicFacet(FacetDTO topicFacet) {
         this.topicFacet = topicFacet;
+    }
+    
+    public FacetValueDTO getLopRecommendationFilter() {
+        return lopRecommendationFilter;
+    }
+
+    public void setLopRecommendationFilter(FacetValueDTO lopRecommendationFilter) {
+        this.lopRecommendationFilter = lopRecommendationFilter;
+    }
+
+    public FacetValueDTO getEducationCodeRecommendationFilter() {
+        return educationCodeRecommendationFilter;
+    }
+
+    public void setEducationCodeRecommendationFilter(
+            FacetValueDTO educationCodeRecommendationFilter) {
+        this.educationCodeRecommendationFilter = educationCodeRecommendationFilter;
     }
 }

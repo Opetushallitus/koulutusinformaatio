@@ -429,7 +429,9 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
                 $scope.itemsPerPage = FilterService.getItemsPerPage();
                 $scope.sortCriteria = FilterService.getSortCriteria();
                 $scope.currentPage = FilterService.getPage();
-
+                $scope.lopFilter = FilterService.getLopFilter();
+                $scope.educationCodeFilter = FilterService.getEducationCodeFilter();
+                
                 $scope.doSearching();
             });
     }
@@ -459,6 +461,8 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
         var qParams = FilterService.get();
         qParams.tab = 'los';
         $location.search(qParams).replace();
+        console.log('lopfilter:');
+        console.log(FilterService.getLopFilter());
 
     	//If the language filter is set, the search query is made
     	if ($routeParams.queryString && $scope.isLangFilterSet()) {
@@ -472,7 +476,9 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     			upcoming: FilterService.isUpcoming(),
     			facetFilters: FilterService.getFacetFilters(),
                 sortCriteria: FilterService.getSortCriteria(),
-    			lang: LanguageService.getLanguage()
+    			lang: LanguageService.getLanguage(),
+    			lopFilter: FilterService.getLopFilter(),
+    		    educationCodeFilter: FilterService.getEducationCodeFilter()
     		}).then(function(result) {
     			$scope.loResult = result;
                 $scope.totalItems = result.totalCount;
