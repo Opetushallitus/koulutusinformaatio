@@ -19,6 +19,12 @@
                 <span class="remove" data-ki-i18n="facet-remove"></span>
             </a>
         </li>
+        <li data-ng-show="educationCodeRecommendation">
+            <a href="javascript:void(0)" data-ng-click="removeEducationCodeRecommendation()" class="facet-selection">
+                <span data-ki-i18n="koulutus"></span>: {{educationCodeFilter}}
+                <span class="remove" data-ki-i18n="facet-remove"></span>
+            </a>
+        </li>
         <li data-ng-repeat="fs in facetSelections">
             <a href="javascript:void(0)" data-ng-click="removeSelection(fs)" title="{{locales.closeFacet}}" class="facet-selection">
                 <span data-ki-i18n="{{fs.facetField}}" data-show-colon="true"></span> <span data-ki-i18n="{{fs.valueName}}"></span>

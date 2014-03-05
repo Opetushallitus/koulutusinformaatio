@@ -88,7 +88,8 @@ public class HigherEducationLOSEntity {
     @Embedded
     private I18nTextEntity qualification;
     private Boolean chargeable;
-    private String educationCode;
+    @Embedded
+    private CodeEntity educationCode;
     @Embedded
     private I18nTextEntity infoAboutCharge;
     @Embedded
@@ -124,6 +125,11 @@ public class HigherEducationLOSEntity {
 
     @Embedded
     private List<CodeEntity> facetPrerequisites;
+    
+    @Embedded
+    private List<CodeEntity> topics;
+    @Embedded
+    private List<CodeEntity> themes;
 
     public String getId() {
         return id;
@@ -287,10 +293,10 @@ public class HigherEducationLOSEntity {
     public void setChargeable(Boolean chargeable) {
         this.chargeable = chargeable;
     }
-    public String getEducationCode() {
+    public CodeEntity getEducationCode() {
         return educationCode;
     }
-    public void setEducationCode(String educationCode) {
+    public void setEducationCode(CodeEntity educationCode) {
         this.educationCode = educationCode;
     }
     public List<CodeEntity> getTeachingLanguages() {
@@ -407,6 +413,18 @@ public class HigherEducationLOSEntity {
     }
     public void setFacetPrerequisites(List<CodeEntity> facetPrerequisites) {
         this.facetPrerequisites = facetPrerequisites;
+    }
+    public List<CodeEntity> getTopics() {
+        return topics;
+    }
+    public void setTopics(List<CodeEntity> topics) {
+        this.topics = topics;
+    }
+    public List<CodeEntity> getThemes() {
+        return themes;
+    }
+    public void setThemes(List<CodeEntity> themes) {
+        this.themes = themes;
     }
 
 }

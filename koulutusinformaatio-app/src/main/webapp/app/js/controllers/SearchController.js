@@ -152,7 +152,10 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     	$scope.change();
     }
     
-    
+    $scope.removeEducationCodeRecommendation = function() {
+    	$scope.educationCodeFilter = undefined;
+    	$scope.change();
+    }
     
     //Is the facet selection a selection of finish teaching language
     $scope.isDefaultTeachLang = function(facetSelection) {

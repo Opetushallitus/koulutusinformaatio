@@ -18,10 +18,8 @@ package fi.vm.sade.koulutusinformaatio.domain.dto;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
-
 
 /**
  * 
@@ -57,7 +55,6 @@ public class HigherEducationLOSDTO {
     private String creditValue;
     private String creditUnit;
 
-
     private String degree;
     private String qualification;
     private Boolean chargeable;
@@ -83,6 +80,9 @@ public class HigherEducationLOSDTO {
     private String startSeason;
     private int startYear;
     private String status;
+    
+    private List<CodeDTO> topics;
+    private List<CodeDTO> themes;
 
     public String getId() {
         return id;
@@ -449,6 +449,19 @@ public class HigherEducationLOSDTO {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+    
+    public List<CodeDTO> getTopics() {
+        return topics;
+    }
+    public void setTopics(List<CodeDTO> topics) {
+        this.topics = topics;
+    }
+    public List<CodeDTO> getThemes() {
+        return themes;
+    }
+    public void setThemes(List<CodeDTO> themes) {
+        this.themes = themes;
     }
 
 }

@@ -20,7 +20,9 @@ import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.dto.CodeDTO;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Hannu Lyytikainen
@@ -41,18 +43,37 @@ public final class CodeToDTO {
         }
     }
     
-    public static List<CodeDTO> convertAll(List<Code> codes, String lang) {
+    public static List<CodeDTO> convertAll(List<Code> codes, String lang, boolean uriAsValue) {
         if (codes != null && !codes.isEmpty()) {
-        	List<CodeDTO> codesDTO = new ArrayList<CodeDTO>();
+            Map<String,CodeDTO> codesMap = new HashMap<String,CodeDTO>();
+        	//List<CodeDTO> codesDTO = new ArrayList<CodeDTO>();
         	for (Code curCode : codes) {
-        		CodeDTO curDTO = convert(curCode, lang);
-        		if (curDTO != null) {
-        			codesDTO.add(curDTO);
+        	    CodeDTO curDTO = null;
+        	    if (uriAsValue) {
+        	        curDTO = convertUriAsValue(curCode, lang);
+        	    } else {
+        	        curDTO = convert(curCode, lang);
+        	    }
+        	    if (curDTO != null) {
+        			//codesDTO.add(curDTO);
+        	        codesMap.put(curDTO.getValue(), curDTO);
         		}
         	}
-            return codesDTO;
+            return new ArrayList<CodeDTO>(codesMap.values());
         } else {
             return null;
         }
     }
+    
+    private static CodeDTO convertUriAsValue(Code code, String lang) {
+        if (code != null) {
+            CodeDTO dto = new CodeDTO();
+            dto.setValue(code.getUri());
+            dto.setDescription(ConverterUtil.getTextByLanguageUseFallbackLang(code.getDescription(), lang));
+            return dto;
+        } else {
+            return null;
+        }
+    }
+    
 }

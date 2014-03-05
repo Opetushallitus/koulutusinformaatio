@@ -116,7 +116,7 @@ public class LearningOpportunityQuery extends SolrQuery {
         }
         
         if (educationCodeFilter != null ) {
-            addEducationCodeRecommendationFilter(lopFilter, lang);
+            addEducationCodeRecommendationFilter(educationCodeFilter, lang);
         }
         
         //leaving the facet and timestamp docs out
