@@ -20,7 +20,7 @@ public class ChildLearningOpportunityInstanceDTO {
     private List<String> formOfTeaching = new ArrayList<String>();
     private CodeDTO prerequisite;
     private List<String> availableTranslationLanguages;
-    private Set<String> teachingLanguages = new HashSet<String>();
+    private List<String> teachingLanguages = new ArrayList<String>();
     private List<String> professionalTitles;
     private String workingLifePlacement;
     private String internationalization;
@@ -96,11 +96,11 @@ public class ChildLearningOpportunityInstanceDTO {
         this.prerequisite = prerequisite;
     }
 
-    public Set<String> getTeachingLanguages() {
+    public List<String> getTeachingLanguages() {
         return teachingLanguages;
     }
 
-    public void setTeachingLanguages(Set<String> teachingLanguages) {
+    public void setTeachingLanguages(List<String> teachingLanguages) {
         this.teachingLanguages = teachingLanguages;
     }
 

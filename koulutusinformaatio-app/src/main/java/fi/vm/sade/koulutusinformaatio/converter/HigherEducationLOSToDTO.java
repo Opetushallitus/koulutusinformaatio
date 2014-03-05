@@ -1,17 +1,16 @@
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
-
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationChildLosReferenceDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationLOSDTO;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HigherEducationLOSToDTO {
 
@@ -55,7 +54,7 @@ public class HigherEducationLOSToDTO {
         dto.setProfessionalTitles(ConverterUtil.getTextsByLanguageUseFallbackLang(los.getProfessionalTitles(), uiLang));
         dto.setTeachingTimes(ConverterUtil.getTextsByLanguageUseFallbackLang(los.getTeachingTimes(), uiLang));
         dto.setTeachingPlaces(ConverterUtil.getTextsByLanguageUseFallbackLang(los.getTeachingPlaces(), uiLang));
-        dto.setTeachingLanguages(CodeToValue.convertAll(los.getTeachingLanguages()));
+        dto.setTeachingLanguages(CodeToName.convertAll(los.getTeachingLanguages(), uiLang));
         //TODO: --> dto.setFormOfEducation(ConverterUtil.getTextsByLanguage(los.getFormOfEducation(), uiLang));
         if (los.getStartDate() != null) {
             dto.setStartDate(los.getStartDate());  
