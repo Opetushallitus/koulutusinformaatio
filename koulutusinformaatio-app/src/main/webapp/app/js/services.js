@@ -642,6 +642,29 @@ service('ParentLOTransformer', ['UtilityService', '$filter', '$rootScope', funct
                     else return a.id > b.id ? 1 : -1;
                 });
             }
+
+            // aggregate childrefs from application options to application systems
+            angular.forEach(result.lois, function(loi, loikey) {
+                angular.forEach(loi.applicationSystems, function(as, askey) {
+                    var children = [];
+                    angular.forEach(as.applicationOptions, function(ao, aokey) {
+                        angular.forEach(ao.childRefs, function(childref, childrefkey) {
+                            var childFound = false;
+                            angular.forEach(children, function(child) {
+                                if (child.losId == childref.losId) {
+                                    childFound = true;
+                                }
+                            });
+
+                            if (!childFound) {
+                                children.push(childref);
+                            }
+                        });
+                    });
+
+                    as.children = children;
+                });
+            });
         }
     }
 }]).
@@ -926,20 +949,28 @@ service('ChildLOTransformer', ['UtilityService', '$rootScope', function(UtilityS
                 });
             }
 
-            // add current child to sibligs
-            if (result.related) {
-                result.related.push({
-                    childLOId: result.id, 
-                    name: result.name
-                });
+            // aggregate childrefs from application options to application systems
+            angular.forEach(result.lois, function(loi, loikey) {
+                angular.forEach(loi.applicationSystems, function(as, askey) {
+                    var children = [];
+                    angular.forEach(as.applicationOptions, function(ao, aokey) {
+                        angular.forEach(ao.childRefs, function(childref, childrefkey) {
+                            var childFound = false;
+                            angular.forEach(children, function(child) {
+                                if (child.losId == childref.losId) {
+                                    childFound = true;
+                                }
+                            });
 
-                // sort siblings alphabetically
-                result.related = result.related.sort(function(a, b) {
-                    if (a.childLOId > b.childLOId) return 1;
-                    else if (a.childLOId < b.childLOId) return -1;
-                    else return a.childLOId > b.childLOId ? 1 : -1;
+                            if (!childFound) {
+                                children.push(childref);
+                            }
+                        });
+                    });
+
+                    as.children = children;
                 });
-            }
+            });
         }
     }
 }]).

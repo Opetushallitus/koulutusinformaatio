@@ -88,6 +88,7 @@
 
     var changeLOISelection = function(loi) {
 
+        /*
         var aggregateChildren = function(loi) {
             var children = [];
             if (loi.applicationSystems && loi.applicationSystems.length > 0) {
@@ -122,6 +123,7 @@
 
             return children;
         };
+        */
 
         var getFirstApplicationSystem = function(loi) {
             if (loi.applicationSystems && loi.applicationSystems.length > 0) {
@@ -141,13 +143,15 @@
                 if ($scope.lois[loiIndex].prerequisite.value == loi.prerequisite.value) {
                     $scope.selectedLOI = angular.copy($scope.lois[loiIndex]);
                     $scope.prerequisite = angular.copy($scope.selectedLOI.prerequisite);
-                    var children = aggregateChildren($scope.selectedLOI);
+                    //var children = aggregateChildren($scope.selectedLOI);
                     var as = getFirstApplicationSystem($scope.selectedLOI);
                     $scope.selectedAs = as;
 
+                    /*
                     if ($scope.selectedAs) {
                         $scope.selectedAs.children = children;
                     }
+                    */
 
                     if ($scope.selectedAs && $scope.selectedAs.applicationOptions && $scope.selectedAs.applicationOptions.length > 0) {
                         $scope.applicationOption = $scope.selectedAs.applicationOptions[0];

@@ -2,10 +2,8 @@
 
 <div data-ng-repeat="loItem in extendedLO.lo.lois">
     <div data-ng-repeat="applicationSystem in loItem.applicationSystems">
-        <div data-ng-repeat="applicationOption in applicationSystem.applicationOptions">
-           	<ul class="disc">
-                <li data-ng-repeat="childRef in applicationOption.childRefs "><a href="#!/koulutusohjelma/{{childRef.losId}}">{{childRef.name}}</a></li>
-            </ul>
-        </div>
+        <ul class="disc">
+            <li data-ng-repeat="childRef in applicationSystem.children "><a href="#!/koulutusohjelma/{{childRef.losId}}">{{childRef.name}}</a></li>
+        </ul>
     </div>
 </div>
