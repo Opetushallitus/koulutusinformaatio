@@ -1,7 +1,7 @@
 <div data-ng-repeat="lo in extendedLO.lo.lois">
-	<div data-ng-repeat="applicationsystem in lo.applicationSystems">
+	<div data-ng-repeat="applicationsystem in lo.applicationSystems" class="search-result-applicationsystem">
 		<h4 class="title">{{applicationsystem.name}}</h4>
-		<div class="sr-content">
+		<div class="search-result-content">
 			<div data-ng-repeat="applicationoption in applicationsystem.applicationOptions" class="content" data-ng-class="{lastrow: $even && $last || $odd && $last || $even && $index == applicationsystem.applicationOptions.length-2 }">
 				<div class="bold margin-bottom-1">{{applicationoption.name}}</div>
 				<div data-ng-transclude></div>

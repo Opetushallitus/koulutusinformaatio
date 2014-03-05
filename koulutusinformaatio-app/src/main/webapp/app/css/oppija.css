@@ -2342,17 +2342,6 @@ table.striped {
   padding: 10px 0 10px 10px;
   border: #dddddd 1px solid;
   border-top: none; }
-.application-container .sr-content {
-  margin: 0;
-  border: #dddddd 1px solid;
-  border-top: none; }
-  .application-container .sr-content .content {
-    width: 50%;
-    float: left;
-    border-left: none;
-    border-right: none; }
-  .application-container .sr-content .lastrow {
-    border-bottom: none; }
 .application-container .small {
   color: #7f7f7f; }
 
@@ -2405,6 +2394,41 @@ table.striped {
 .ao-block {
   border-bottom: 1px solid #dddddd;
   margin-bottom: 2em; }
+
+.search-result-collapsed {
+  position: relative;
+  margin: 1em 0; }
+  .search-result-collapsed .result-content {
+    float: left;
+    width: 60%; }
+    .search-result-collapsed .result-content h2 {
+      margin: 0; }
+  .search-result-collapsed .state-label {
+    float: right; }
+  .search-result-collapsed .collapser {
+    position: absolute;
+    bottom: 0;
+    right: 0; }
+
+.search-result-extended {
+  margin-top: 10px;
+  padding: 20px 10px;
+  background-color: #f3fafc;
+  border-top: 1px dashed #dddddd; }
+  .search-result-extended .search-result-applicationsystem {
+    margin-top: 2em; }
+    .search-result-extended .search-result-applicationsystem .search-result-content {
+      margin: 0;
+      background: white;
+      border: #dddddd 1px solid;
+      border-top: none; }
+      .search-result-extended .search-result-applicationsystem .search-result-content .content {
+        width: 50%;
+        float: left;
+        border-left: none;
+        border-right: none; }
+      .search-result-extended .search-result-applicationsystem .search-result-content .lastrow {
+        border-bottom: none; }
 
 .remove {
   display: inline-block;
@@ -4179,19 +4203,8 @@ input {
   padding: 0; }
   #search-results > li,
   #article-search-results > li {
-    padding: 1em 0;
     list-style-type: none;
     border-bottom: 1px solid #dddddd; }
-    #search-results > li .result-content,
-    #article-search-results > li .result-content {
-      float: left;
-      width: 60%; }
-      #search-results > li .result-content h2,
-      #article-search-results > li .result-content h2 {
-        margin: 0; }
-    #search-results > li .state-label,
-    #article-search-results > li .state-label {
-      float: right; }
     #search-results > li.inactive,
     #article-search-results > li.inactive {
       list-style-type: none; }

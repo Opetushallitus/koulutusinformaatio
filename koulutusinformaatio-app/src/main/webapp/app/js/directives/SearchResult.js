@@ -6,7 +6,7 @@ angular.module('SearchResult', []).
 directive('searchResult', ['FilterService', 'TranslationService', function(FilterService, TranslationService) {
     return {
         restrict: 'A',
-        template: '<div data-ng-include="getTemplate()"></div>',
+        template: '<div data-ng-include="getTemplate()" class="search-result"></div>',
         link: function(scope, element, attrs) {
 
             scope.locales = {
@@ -54,14 +54,10 @@ directive('toggleCollapse', [function () {
         link: function (scope, iElement, iAttrs) {
             scope.showExtension = "close";
         },
-        template: 
-            '<h4 class="collapser float-right" data-ng-class="showExtension" data-ng-click="toggleExtendedView()">' + 
-                '<span data-ki-i18n="extended-view-{{showExtension}}" class="margin-right-1"></span>' + 
-                '<span class="icon"></span>' +
-            '</h4>' +
+        template:
             '<div class="clear"></div>' +
             '<div data-collapse="showExtension == \'close\'">' + 
-                '<div style="padding-top: 20px; border-top: 1px dashed #DDDDDD; margin-top: 10px" data-ng-transclude></div>' +
+                '<div class="search-result-extended" data-ng-transclude></div>' +
             '</div>'
 
     };
