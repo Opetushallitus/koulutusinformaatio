@@ -57,4 +57,11 @@
     <div data-render-contact-person-info data-content="lo.contactPersons"></div>
 </section>
 <div data-ng-class="applyFormClass" data-ng-include data-src="partialCommonUrl + 'as/higherEducationAs.html'" data-ng-controller="ApplicationCtrl"></div>
+<div class="grid16-6 application-container">
+	<h3 class="title"><span data-ki-i18n="katso-myos"></span></h3>
+	<div class="content">
+		<a data-ng-href="#!/haku/*?page=1&facetFilters=teachingLangCode_ffm:{{lo.translationLanguage.toUpperCase()}}&lopFilter={{lo.provider.name}}&itemsPerPage=25&sortCriteria=0&tab=los">
+			<span data-ki-i18n="tarjoajan"></span> {{lo.provider.name}} <span data-ki-i18n="muita-koulutuksia"></span> </a>
+	</div>
+</div>
 <div class="clear"></div>

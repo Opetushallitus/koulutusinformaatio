@@ -70,8 +70,25 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
             facetFilters: $scope.facetFilters,
             langCleared: $scope.langCleared,
             itemsPerPage: $scope.itemsPerPage,
-            sortCriteria: $scope.sortCriteria
+            sortCriteria: $scope.sortCriteria,
+            lopFilter: $scope.lopFilter,
+            educationCodeFilter: $scope.educationCodeFilter
         });
+        
+        console.log("SearchFilterCtrl, lopFilter");
+        console.log($scope.lopFilter);
+        
+        if ($scope.lopFilter != undefined) {
+        	$scope.lopRecommendation = true;
+        } else {
+        	$scope.lopRecommendation = false;
+        }
+        
+        if ($scope.educationCodeFilter != undefined) {
+        	$scope.educationCodeRecommendation = true;
+        } else {
+        	$scope.educationCodeRecommendation = false;
+        }
 
         // append filters to url and reload
         $scope.refreshView();
@@ -130,6 +147,13 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     	$scope.change();
     }
     
+    $scope.removeLopRecommendation = function() {
+    	$scope.lopFilter = undefined;
+    	$scope.change();
+    }
+    
+    
+    
     //Is the facet selection a selection of finish teaching language
     $scope.isDefaultTeachLang = function(facetSelection) {
     	return (facetSelection.facetField == 'teachingLangCode_ffm') 
@@ -157,7 +181,9 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     	 return (($scope.facetSelections != undefined) && ($scope.facetSelections.length > 0))
     	 		|| ((locations != undefined) &&  (locations.length > 0))
     	 		|| $scope.ongoing
-    	 		|| $scope.upcoming;
+    	 		|| $scope.upcoming
+    	 		|| $scope.lopRecommendation
+    	 		|| $scope.educationCodeRecommendation;
     }
    
     //Removing a location from the facet selections area
@@ -432,6 +458,23 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
                 $scope.lopFilter = FilterService.getLopFilter();
                 $scope.educationCodeFilter = FilterService.getEducationCodeFilter();
                 
+                console.log("SearchCtrl, lopFilter");
+                console.log($scope.lopFilter);
+                
+                if ($scope.lopFilter != undefined) {
+                	$scope.lopRecommendation = true;
+                	console.log("Setting lopRecommendation to true");
+                } else {
+                	$scope.lopRecommendation = false;
+                	console.log("Setting lopRecommendation to false");
+                }
+                
+                if ($scope.educationCodeFilter != undefined) {
+                	$scope.educationCodeRecommendation = true;
+                } else {
+                	$scope.educationCodeRecommendation = false;
+                }
+                
                 $scope.doSearching();
             });
     }
@@ -461,9 +504,6 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
         var qParams = FilterService.get();
         qParams.tab = 'los';
         $location.search(qParams).replace();
-        console.log('lopfilter:');
-        console.log(FilterService.getLopFilter());
-
     	//If the language filter is set, the search query is made
     	if ($routeParams.queryString && $scope.isLangFilterSet()) {
     		SearchLearningOpportunityService.query({
