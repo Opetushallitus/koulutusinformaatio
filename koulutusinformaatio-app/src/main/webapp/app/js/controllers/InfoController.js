@@ -88,43 +88,6 @@
 
     var changeLOISelection = function(loi) {
 
-        /*
-        var aggregateChildren = function(loi) {
-            var children = [];
-            if (loi.applicationSystems && loi.applicationSystems.length > 0) {
-                var as = loi.applicationSystems[0];
-                for (var i in as.applicationOptions) {
-                    if (as.applicationOptions.hasOwnProperty(i)) {
-                        var ao = as.applicationOptions[i];
-                        if (ao.childRefs) {
-                            //children = children.concat(ao.childRefs);
-                            for (var childIndex in ao.childRefs) {
-                                if (ao.childRefs.hasOwnProperty(childIndex)) {
-                                    var child = ao.childRefs[childIndex];
-
-                                    var childFound = false;
-                                    for (var j in children) {
-                                        if (children.hasOwnProperty(j)) {
-                                            if (child.losId == children[j].losId) {
-                                                childFound = true;
-                                            }
-                                        }
-                                    }
-
-                                    if (!childFound) {
-                                        children.push(child);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            return children;
-        };
-        */
-
         var getFirstApplicationSystem = function(loi) {
             if (loi.applicationSystems && loi.applicationSystems.length > 0) {
                 return loi.applicationSystems[0];
@@ -143,15 +106,8 @@
                 if ($scope.lois[loiIndex].prerequisite.value == loi.prerequisite.value) {
                     $scope.selectedLOI = angular.copy($scope.lois[loiIndex]);
                     $scope.prerequisite = angular.copy($scope.selectedLOI.prerequisite);
-                    //var children = aggregateChildren($scope.selectedLOI);
                     var as = getFirstApplicationSystem($scope.selectedLOI);
                     $scope.selectedAs = as;
-
-                    /*
-                    if ($scope.selectedAs) {
-                        $scope.selectedAs.children = children;
-                    }
-                    */
 
                     if ($scope.selectedAs && $scope.selectedAs.applicationOptions && $scope.selectedAs.applicationOptions.length > 0) {
                         $scope.applicationOption = $scope.selectedAs.applicationOptions[0];
