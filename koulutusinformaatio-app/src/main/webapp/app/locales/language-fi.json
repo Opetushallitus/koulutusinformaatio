@@ -279,6 +279,14 @@
     "error-contact-2": "avoinna arkisin klo 9–13",
     "error-contact-3": "hakuaikojen viimeisenä päivänä klo 9–15",
     "error-contact-4": "puhelun hinta kaikkialta Suomesta paikallisverkkomaksu / matkapuhelinmaksu",
-    "error-contact-5": "Sähköposti: neuvonta(at)opintopolku.fi"
+    "error-contact-5": "Sähköposti: neuvonta(at)opintopolku.fi",
+    
+    "tarjoaja": "Tarjoaja",
+    "katso-myos": "Katso Myös...",
+    "tarjoajan": "Tarjoajan",
+    "muita-koulutuksia": "muita koulutuksia",
+    "koulutus": "Koulutus",
+    "muualla": "muualla",
+    "mukainen-koulutus-muualla": "-teeman mukainen koulutus muualla"
 
 }

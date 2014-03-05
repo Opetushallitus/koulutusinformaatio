@@ -105,11 +105,18 @@ public class SearchServiceSolrImpl implements SearchService {
 
     @Override
     public LOSearchResultList searchLearningOpportunities(String term, String prerequisite,
-                                                          List<String> cities, List<String> facetFilters, String lang, boolean ongoing, boolean upcoming, int start, int rows, String sort, String order) throws SearchException {
+                                                          List<String> cities, List<String> facetFilters,  
+                                                          String lang, boolean ongoing, boolean upcoming, 
+                                                          int start, int rows, String sort, String order, 
+                                                          String lopFilter, String educationCodeFilter) throws SearchException {
         LOSearchResultList searchResultList = new LOSearchResultList();
         String trimmed = term.trim();
         if (!trimmed.isEmpty()) {
-            SolrQuery query = new LearningOpportunityQuery(term, prerequisite, cities, facetFilters, lang, ongoing, upcoming, start, rows, sort, order);
+            SolrQuery query = new LearningOpportunityQuery(term, prerequisite, 
+                                                            cities, facetFilters, 
+                                                            lang, ongoing, upcoming, 
+                                                            start, rows, sort, order,
+                                                            lopFilter, educationCodeFilter);
 
             try {
                 LOG.debug(
@@ -157,6 +164,14 @@ public class SearchServiceSolrImpl implements SearchService {
             }
 
             addFacetsToResult(searchResultList, response, lang, facetFilters);
+            
+            if (lopFilter != null) {
+                searchResultList.setLopRecommendationFilter(getRecommendationFilter(lopFilter, "lopFilter"));
+            }
+            if (educationCodeFilter != null) {
+                searchResultList.setEducationCodeRecommendationFilter(getRecommendationFilter(educationCodeFilter, "educationCodeFilter"));
+            }
+
         }
 
         return searchResultList;
@@ -284,8 +299,16 @@ public class SearchServiceSolrImpl implements SearchService {
         searchResultList.setFilterFacet(getFilterFacet(facetFilters, lang));
         searchResultList.setPrerequisiteFacet(getPrerequisiteFacet(response, lang));
         searchResultList.setTopicFacet(getTopicFacet(response, lang));
+        
 
+    }
 
+    private FacetValue getRecommendationFilter(String recommendationFilter, String fieldId) {
+        FacetValue recFilter = new FacetValue(fieldId,
+                fieldId,
+                1,
+                recommendationFilter);
+        return recFilter;
     }
 
     /*

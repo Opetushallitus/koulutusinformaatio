@@ -276,5 +276,13 @@
     "error-contact-2": "öppen vardagar 9–13",
     "error-contact-3": "under den sista ansökningsdagen 9–15",
     "error-contact-4": "samtalsavgift enligt lokalnätsavgift / mobiltelefonavgift",
-    "error-contact-5": "E-post: info(at)studieinfo.fi"
+    "error-contact-5": "E-post: info(at)studieinfo.fi",
+    
+    "tarjoaja": "Tarjoaja (sv)",
+    "katso-myos": "Katso Myös... (sv)",
+    "tarjoajan": "Tarjoajan (sv)",
+    "muita-koulutuksia": "muita koulutuksia (sv)",
+    "koulutus": "Koulutus (sv)",
+    "muualla": "muualla (sv)",
+    "mukainen-koulutus-muualla": "-teeman mukainen koulutus muualla (sv)"
 }

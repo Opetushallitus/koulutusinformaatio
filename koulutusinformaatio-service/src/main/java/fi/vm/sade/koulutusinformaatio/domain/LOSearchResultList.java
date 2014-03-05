@@ -32,6 +32,9 @@ public class LOSearchResultList {
     private Facet edTypeFacet;
     private Facet prerequisiteFacet;
     private Facet topicFacet;
+    private FacetValue lopRecommendationFilter;
+    private FacetValue educationCodeRecommendationFilter;
+
 
     public List<LOSearchResult> getResults() {
         return results;
@@ -95,5 +98,22 @@ public class LOSearchResultList {
 
     public void setTopicFacet(Facet topicFacet) {
         this.topicFacet = topicFacet;
+    }
+
+    public FacetValue getLopRecommendationFilter() {
+        return lopRecommendationFilter;
+    }
+
+    public void setLopRecommendationFilter(FacetValue lopRecommendationFilter) {
+        this.lopRecommendationFilter = lopRecommendationFilter;
+    }
+
+    public FacetValue getEducationCodeRecommendationFilter() {
+        return educationCodeRecommendationFilter;
+    }
+
+    public void setEducationCodeRecommendationFilter(
+            FacetValue educationCodeRecommendationFilter) {
+        this.educationCodeRecommendationFilter = educationCodeRecommendationFilter;
     }
 }

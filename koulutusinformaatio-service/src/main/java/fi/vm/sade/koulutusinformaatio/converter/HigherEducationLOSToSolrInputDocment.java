@@ -286,6 +286,20 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<HigherEdu
             } 
         }
         
+        if (los.getEducationCode() != null) {
+            transls = los.getEducationCode().getName().getTranslations();
+            
+            if (teachingLang.equals("fi")) {
+                doc.setField(LearningOpportunity.EDUCATION_CODE_DISPLAY_FI, SolrUtil.resolveTextWithFallback("fi",  transls));
+            } else if (teachingLang.equals("sv")) {
+                doc.setField(LearningOpportunity.EDUCATION_CODE_DISPLAY_SV, SolrUtil.resolveTextWithFallback("sv",  transls));
+            } else if (teachingLang.endsWith("en")) {
+                doc.setField(LearningOpportunity.EDUCATION_CODE_DISPLAY_EN, SolrUtil.resolveTextWithFallback("en",  transls));
+            } else if (!fiIndexed) {
+                doc.setField(LearningOpportunity.EDUCATION_CODE_DISPLAY_FI, SolrUtil.resolveTextWithFallback("fi",  transls));
+            }
+        }
+        
         if (los.getProvider().getHomePlace() != null) {
             transls = los.getProvider().getHomePlace().getTranslations();
             

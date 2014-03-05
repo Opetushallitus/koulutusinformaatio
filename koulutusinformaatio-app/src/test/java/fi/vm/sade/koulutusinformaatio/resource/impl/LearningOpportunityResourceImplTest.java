@@ -56,8 +56,8 @@ public class LearningOpportunityResourceImplTest {
         LOSearchResultList resultList = new LOSearchResultList();
         resultList.setResults(Lists.newArrayList(result1));
         resultList.setTotalCount(1);
-        when(searchService.searchLearningOpportunities(eq("term"), eq("PK"), eq(Lists.newArrayList("Helsinki")), eq(new ArrayList<String>()), eq("fi"), eq(false), eq(false), eq(0), eq(30), eq("0"), eq("asc"))).thenReturn(resultList);
-        when(searchService.searchLearningOpportunities(eq(INVALID_TERM), anyString(), anyList(), anyList(), anyString(),  anyBoolean(), anyBoolean(), anyInt(), anyInt(), anyString(), anyString())).thenThrow(SearchException.class);
+        when(searchService.searchLearningOpportunities(eq("term"), eq("PK"), eq(Lists.newArrayList("Helsinki")), eq(new ArrayList<String>()), eq("fi"), eq(false), eq(false), eq(0), eq(30), eq("0"), eq("asc"), eq(""), eq(""))).thenReturn(resultList);
+        when(searchService.searchLearningOpportunities(eq(INVALID_TERM), anyString(), anyList(), anyList(), anyString(),  anyBoolean(), anyBoolean(), anyInt(), anyInt(), anyString(), anyString(), anyString(), anyString())).thenThrow(SearchException.class);
 
         ParentLearningOpportunitySpecificationDTO parentDTO = new ParentLearningOpportunitySpecificationDTO();
         parentDTO.setId("parentLOSId");
@@ -101,7 +101,7 @@ public class LearningOpportunityResourceImplTest {
 
     @Test
     public void testSearchLearningOpportunities() throws SearchException {
-        LOSearchResultListDTO result = resource.searchLearningOpportunities("term", "PK", Lists.newArrayList("Helsinki"), new ArrayList<String>(), "fi", false, false, 0, 30, "0", "asc");
+        LOSearchResultListDTO result = resource.searchLearningOpportunities("term", "PK", Lists.newArrayList("Helsinki"), new ArrayList<String>(), "fi", false, false, 0, 30, "0", "asc", "", "");
         assertNotNull(result);
         assertEquals(1, result.getTotalCount());
         assertEquals("1.2.3", result.getResults().get(0).getId());
@@ -132,7 +132,7 @@ public class LearningOpportunityResourceImplTest {
 
     @Test(expected = HTTPException.class)
     public void testSearchException() {
-        resource.searchLearningOpportunities(INVALID_TERM, "", new ArrayList<String>(), new ArrayList<String>(), "", false, false, 0, 0, "0", "asc");
+        resource.searchLearningOpportunities(INVALID_TERM, "", new ArrayList<String>(), new ArrayList<String>(), "", false, false, 0, 0, "0", "asc", "", "");
     }
     
     @Test
