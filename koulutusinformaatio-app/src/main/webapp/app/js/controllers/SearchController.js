@@ -75,9 +75,6 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
             educationCodeFilter: $scope.educationCodeFilter
         });
         
-        console.log("SearchFilterCtrl, lopFilter");
-        console.log($scope.lopFilter);
-        
         if ($scope.lopFilter != undefined) {
         	$scope.lopRecommendation = true;
         } else {
@@ -461,15 +458,10 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
                 $scope.lopFilter = FilterService.getLopFilter();
                 $scope.educationCodeFilter = FilterService.getEducationCodeFilter();
                 
-                console.log("SearchCtrl, lopFilter");
-                console.log($scope.lopFilter);
-                
                 if ($scope.lopFilter != undefined) {
                 	$scope.lopRecommendation = true;
-                	console.log("Setting lopRecommendation to true");
                 } else {
                 	$scope.lopRecommendation = false;
-                	console.log("Setting lopRecommendation to false");
                 }
                 
                 if ($scope.educationCodeFilter != undefined) {
