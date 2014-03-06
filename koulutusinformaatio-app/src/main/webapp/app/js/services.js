@@ -113,6 +113,13 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
             		 qParams += '&facetFilters=' + facetFilter;
                  });
             }
+            
+            if (params.excludes != undefined) {
+            	angular.forEach(params.excludes, function(exclude, key) {
+           		 	qParams += '&excludes=' + exclude;
+                });
+            }
+            
             var sortField = '';
             if (params.sortCriteria != undefined) {
             	if (params.sortCriteria == 1 || params.sortCriteria == 2) {
@@ -1363,7 +1370,8 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
                 itemsPerPage: filters.itemsPerPage,
                 sortCriteria: filters.sortCriteria,
                 lopFilter: filters.lopFilter,
-                educationCodeFilter: filters.educationCodeFilter
+                educationCodeFilter: filters.educationCodeFilter,
+                excludes: filters.excludes
             };
 
             angular.forEach(result, function(value, key) {
@@ -1454,6 +1462,7 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
             params += filters.sortCriteria ? '&sortCriteria=' + filters.sortCriteria : '';
             params += filters.lopFilter ? '&lopFilter=' + filters.lopFilter : '';
             params += filters.educationCodeFilter ? '&educationCodeFilter=' + filters.educationCodeFilter : '';
+            params += (filters.excludes && filters.excludes.length > 0) ? '&excludes=' + filters.excludes.join(',') : '';
             params = params.length > 0 ? params.substring(1, params.length) : '';
             return params;
         },
@@ -1472,6 +1481,13 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
         
         getEducationCodeFilter: function() {
         	return filters.educationCodeFilter;
+        },
+        
+        getExcludes: function() {
+        	if (filters.excludes != undefined && (typeof filters.excludes == 'string' || filters.excludes instanceof String)) {
+        		filters.excludes = filters.excludes.split(',');
+        	}
+        	return filters.excludes;
         },
         
         getLangCleared: function() {

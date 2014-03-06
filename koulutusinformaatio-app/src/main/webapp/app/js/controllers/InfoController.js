@@ -1,12 +1,13 @@
 /**
  *  Controller for info views (parent and child)
  */
- function InfoCtrl($scope, $rootScope, $routeParams, $location, SearchService, LearningOpportunityProviderPictureService, UtilityService, TranslationService, Config, loResource) {
+ function InfoCtrl($scope, $rootScope, $routeParams, $location, SearchService, LearningOpportunityProviderPictureService, UtilityService, TranslationService, Config, loResource, LanguageService) {
     $scope.loType = $routeParams.loType;
 
     $scope.queryString = SearchService.getTerm();
     $scope.descriptionLanguage = 'fi';
     $scope.hakuAppUrl = Config.get('hakulomakeUrl');
+    $scope.uiLang = LanguageService.getLanguage();
     
 
     $scope.tabtitle = (function() {
@@ -69,11 +70,25 @@
 
         return true;
     }
+    
+    var setRecommendationFields = function() {
+    	if ($scope.uiLang == 'fi') {
+    		$scope.lopExclField = '-lopName_fi_ssort';
+    	} else if ($scope.uiLang == 'sv') {
+    		$scope.lopExclField = '-lopName_sv_ssort';
+    	} else if ($scope.uiLang == 'en') {
+    		$scope.lopExclField = '-lopName_en_ssort';
+    	} else {
+    		$scope.lopExclField = '-lopName';
+    	}
+    }
 
     var initializeLO = function() {
         setTitle($scope.parent, $scope.lo);
         $scope.showApplicationRadioSelection = showApplicationRadioSelection() ? '' : 'hidden';
 
+        setRecommendationFields();
+        
         // use hash if present
         var hash = $location.hash() ? $location.hash() : $location.search().prerequisite;
         var loi = getLOIByPrerequisite(hash);

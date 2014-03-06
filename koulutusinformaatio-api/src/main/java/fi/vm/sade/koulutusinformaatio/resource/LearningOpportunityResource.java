@@ -52,7 +52,8 @@ public interface LearningOpportunityResource {
                                                              @QueryParam("sort") String sort, 
                                                              @DefaultValue(value = "asc") @QueryParam("order") String order,
                                                              @QueryParam("lopFilter") String lopFilter,
-                                                             @QueryParam("educationCodeFilter") String educationCodeFilter);
+                                                             @QueryParam("educationCodeFilter") String educationCodeFilter,
+                                                             @QueryParam("excludes") List<String> excludes);
 
     /**
      * Fetches a parent learning opportunity. Contains parent information and

@@ -72,7 +72,8 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
             itemsPerPage: $scope.itemsPerPage,
             sortCriteria: $scope.sortCriteria,
             lopFilter: $scope.lopFilter,
-            educationCodeFilter: $scope.educationCodeFilter
+            educationCodeFilter: $scope.educationCodeFilter,
+            excludes: $scope.excludes
         });
         
         if ($scope.lopFilter != undefined) {
@@ -457,6 +458,7 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
                 $scope.currentPage = FilterService.getPage();
                 $scope.lopFilter = FilterService.getLopFilter();
                 $scope.educationCodeFilter = FilterService.getEducationCodeFilter();
+                $scope.excludes = FilterService.getExcludes();
                 
                 if ($scope.lopFilter != undefined) {
                 	$scope.lopRecommendation = true;
@@ -513,7 +515,8 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
                 sortCriteria: FilterService.getSortCriteria(),
     			lang: LanguageService.getLanguage(),
     			lopFilter: FilterService.getLopFilter(),
-    		    educationCodeFilter: FilterService.getEducationCodeFilter()
+    		    educationCodeFilter: FilterService.getEducationCodeFilter(),
+    		    excludes : FilterService.getExcludes()
     		}).then(function(result) {
     			$scope.loResult = result;
                 $scope.totalItems = result.totalCount;

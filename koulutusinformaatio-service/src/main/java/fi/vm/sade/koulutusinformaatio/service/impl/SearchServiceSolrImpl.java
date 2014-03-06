@@ -108,7 +108,8 @@ public class SearchServiceSolrImpl implements SearchService {
                                                           List<String> cities, List<String> facetFilters,  
                                                           String lang, boolean ongoing, boolean upcoming, 
                                                           int start, int rows, String sort, String order, 
-                                                          String lopFilter, String educationCodeFilter) throws SearchException {
+                                                          String lopFilter, String educationCodeFilter,
+                                                          List<String> excludes) throws SearchException {
         LOSearchResultList searchResultList = new LOSearchResultList();
         String trimmed = term.trim();
         if (!trimmed.isEmpty()) {
@@ -116,7 +117,7 @@ public class SearchServiceSolrImpl implements SearchService {
                                                             cities, facetFilters, 
                                                             lang, ongoing, upcoming, 
                                                             start, rows, sort, order,
-                                                            lopFilter, educationCodeFilter);
+                                                            lopFilter, educationCodeFilter, excludes);
 
             try {
                 LOG.debug(

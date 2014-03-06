@@ -75,7 +75,7 @@ public class LearningOpportunityQuery extends SolrQuery {
     public final static String APP_STATUS_UPCOMING = "upcoming";
 
     public LearningOpportunityQuery(String term, String prerequisite,
-            List<String> cities, List<String> facetFilters, String lang, boolean ongoing, boolean upcoming, int start, int rows, String sort, String order, String lopFilter, String educationCodeFilter) {
+            List<String> cities, List<String> facetFilters, String lang, boolean ongoing, boolean upcoming, int start, int rows, String sort, String order, String lopFilter, String educationCodeFilter, List<String> excludes) {
         super(term);
         if (prerequisite != null) {
             this.addFilterQuery(String.format("%s:%s", LearningOpportunity.PREREQUISITES, prerequisite));
@@ -117,6 +117,15 @@ public class LearningOpportunityQuery extends SolrQuery {
         
         if (educationCodeFilter != null ) {
             addEducationCodeRecommendationFilter(educationCodeFilter, lang);
+        }
+        
+        if (excludes != null) {
+            for (String curExclude : excludes) {
+                String[] parts = curExclude.split(":");
+                if (parts.length == 2) {
+                    this.addFilterQuery(String.format("%s:\"%s\"", parts[0], parts[1]));
+                }
+            }
         }
         
         //leaving the facet and timestamp docs out

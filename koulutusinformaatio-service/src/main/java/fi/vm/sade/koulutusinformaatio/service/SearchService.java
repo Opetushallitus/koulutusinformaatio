@@ -33,7 +33,8 @@ public interface SearchService {
                                                    List<String> cities, List<String> facetFilters,
                                                    String lang, boolean ongoing, boolean upcoming, 
                                                    int start, int rows, String sort, String order, 
-                                                   String lopFilter, String educationCodeFilter) throws SearchException;
+                                                   String lopFilter, String educationCodeFilter,
+                                                   List<String> excludes) throws SearchException;
 
     List<LOSearchResult> searchLearningOpportunitiesByProvider(String lopId, String lang) throws SearchException;
 
