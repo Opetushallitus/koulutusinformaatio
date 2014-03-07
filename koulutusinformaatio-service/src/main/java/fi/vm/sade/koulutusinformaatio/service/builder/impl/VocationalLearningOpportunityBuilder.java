@@ -249,20 +249,37 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
 
         // filter out empty parent lois
         Set<String> parentLOIIdsInUse = Sets.newHashSet();
+        
+        //Map<String,ApplicationOption> aos = Maps.newHashMap();
+        List<ApplicationOption> aoList = new ArrayList<ApplicationOption>();
         for (ParentLOS parentLOS : this.parentLOSs) {
+            
             for (ChildLOS childLOS : parentLOS.getChildren()) {
                 for (ChildLOI childLOI : childLOS.getLois()) {
                     parentLOIIdsInUse.add(childLOI.getParentLOIId());
+                    for (ApplicationOption ao: childLOI.getApplicationOptions()) {
+                        aoList.add(ao);
+                    }
+                    
                 }
+                
+                
+                
             }
             List<ParentLOI> parentLOIsInUse = Lists.newArrayList();
             for (ParentLOI parentLOI : parentLOS.getLois()) {
                 if (parentLOIIdsInUse.contains(parentLOI.getId())) {
-                    parentLOIsInUse.add(parentLOI);
+                    parentLOIsInUse.add(parentLOI);   
+                }
+                for (ApplicationOption ao: parentLOI.getApplicationOptions()) {
+                    aoList.add(ao);
                 }
             }
             parentLOS.setLois(parentLOIsInUse);
         }
+        
+        
+        
 
         // filter out empty parent LOSs
         this.parentLOSs = Lists.newArrayList(
@@ -273,6 +290,24 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
                     }
                 })
         );
+        
+        //filtering out non-existing childLOIRefs from application options
+        Set<String> childLosIdsInUse = Sets.newHashSet();
+        for (ParentLOS parentLOS : this.parentLOSs) {
+            
+            for (ChildLOS childLOS : parentLOS.getChildren()) {
+                childLosIdsInUse.add(childLOS.getId());
+            }
+        }
+        for (ApplicationOption curAo : aoList) {
+            List<ChildLOIRef> childRefs = new ArrayList<ChildLOIRef>();
+            for (ChildLOIRef curchild : curAo.getChildLOIRefs()) {
+                if (childLosIdsInUse.contains(curchild.getLosId())) {
+                    childRefs.add(curchild);
+                }
+            }
+            curAo.setChildLOIRefs(childRefs);
+        }
 
         // filter out special LOSs
         this.specialLOSs = Lists.newArrayList(

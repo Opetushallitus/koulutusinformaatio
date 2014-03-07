@@ -87,7 +87,11 @@ public class LOSObjectCreator extends ObjectCreator {
     private <T extends BasicLOS> T createBasicLOS(Class<T> type, KomoDTO komo, String providerId) throws TarjontaParseException, KoodistoException {
         T basicLOS = createLOS(type, komo);
         basicLOS.setStructure(getI18nText(komo.getTekstit().get(KomoTeksti.KOULUTUKSEN_RAKENNE)));
-        basicLOS.setProvider(providerService.getByOID(providerId));
+        try {
+            basicLOS.setProvider(providerService.getByOID(providerId));
+        } catch (Exception ex) {
+            throw new KoodistoException("Problem reading organisaatio: " + ex.getMessage());
+        }
         basicLOS.setAccessToFurtherStudies(getI18nText(komo.getTekstit().get(KomoTeksti.JATKOOPINTO_MAHDOLLISUUDET)));
         basicLOS.setEducationDegree(koodistoService.searchFirstCodeValue(komo.getKoulutusAsteUri()));
         return basicLOS;
@@ -359,8 +363,12 @@ public class LOSObjectCreator extends ObjectCreator {
 
 
         //childLOI.setTeachingLanguages(koodistoService.searchCodesMultiple(childKomoto.getOpetuskieletUris()));
+        try {
         Provider provider = providerService.getByOID(koulutus.getOrganisaatio().getOid());
         los.setProvider(provider);
+        } catch (Exception ex) {
+            throw new KoodistoException("Problem reading organisaatio: " + ex.getMessage());
+        }
 
         los.setTopics(createCodes(koulutus.getAihees()));
         los.setThemes(getThemes(los));
