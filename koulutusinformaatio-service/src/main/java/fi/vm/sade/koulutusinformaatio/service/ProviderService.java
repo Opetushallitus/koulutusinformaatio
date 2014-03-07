@@ -16,6 +16,9 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 
@@ -26,5 +29,5 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
  */
 public interface ProviderService {
 
-    public Provider getByOID(String oid) throws KoodistoException;
+    public Provider getByOID(String oid) throws KoodistoException, MalformedURLException, IOException  ;
 }
