@@ -1,23 +1,25 @@
 <section id="main-info">
-    <div class="margin-bottom-3">
+    <div>
         <h4 class="margin-0">{{provider.name}}</h4>
         <span data-ng-show="lo.polytechnic" class="block">{{lo.educationDomain}}</span>
         <span class="block">{{lo.qualification}}</span>
         <span data-ng-repeat="parent in lo.parents">
         	<span class="block">
-        		<a data-ng-href="#!/korkeakoulu/{{parent.id}}">{{parent.name}}</a> 
+        		<a data-ng-href="#!/korkeakoulu/{{parent.id}}" class="margin-right-1">{{parent.name}}</a> 
         		<!-- PREVIEW -->
-        		<span data-ng-show="lo.preview"  data-ki-i18n="{{parent.status}}"></span>
+        		<span data-ng-if="lo.preview" data-ki-preview-status-label="parent.status"></span>
         		<!-- END PREVIEW -->
         	</span>
         </span>
     </div>
-    <h1>{{lo.name}}<span data-ng-show="lo.creditValue">, {{lo.creditValue}} {{lo.creditUnit}}</span> </h1>
+    <h1 class="inline-block margin-right-2">{{lo.name}}<span data-ng-show="lo.creditValue">, {{lo.creditValue}} {{lo.creditUnit}}</span> </h1>
+    
     <!-- PREVIEW -->
-    <div data-ng-show="lo.preview">
-    <span data-ki-i18n="{{lo.status}}"></span>
-    <a href="{{lo.tarjontaEditUrl}}"><span data-ki-i18n="tarjontaMuokkaa"></span></a>
+    <div data-ng-if="lo.preview" class="inline-block">
+        <span data-ki-preview-status-label="lo.status" class="margin-right-1"></span>
+        <a href="{{lo.tarjontaEditUrl}}" class="cssbutton blue"><span data-ki-i18n="tarjontaMuokkaa"></span></a>
     </div>
     <!-- END PREVIEW -->
+    
     <div data-ki-child-ribbon data-children="lo.children" type="loType" class="ribbon margin-bottom-2"></div>
 </section>

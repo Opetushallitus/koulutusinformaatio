@@ -5,12 +5,12 @@
 
     <div data-ng-repeat="as in lo.applicationSystems">
         <div data-ng-repeat="ao in as.applicationOptions" id="{{ao.id}}" class="ao-block">
-            <h2>{{ao.name}}</h2>
+            <h2 class="inline-block margin-right-2">{{ao.name}}</h2>
             
             <!-- PREVIEW -->
-            <div data-ng-show="ao.preview">
-            	<span data-ki-i18n="{{ao.status}}"></span>
-            	<a href="{{ao.editUrl}}"><span data-ki-i18n="tarjontaMuokkaa"></span></a>
+            <div data-ng-show="ao.preview" class="inline-block">
+                <span data-ki-preview-status-label="ao.status" class="margin-right-1"></span>
+            	<a href="{{ao.editUrl}}" data-ki-i18n="tarjontaMuokkaa" class="cssbutton blue"></a>
             </div>
             <!-- END PREVIEW -->
             

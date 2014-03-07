@@ -473,10 +473,13 @@ service('HigherEducationPreviewLOService', ['$http', '$timeout', '$q', 'Language
             }
 
             var url = '../lo/preview/';
-
+            //var url = 'mocks/kk.json';
+            //$http.get(url, {}).
+            
             $http.get(url + options.id, {
                 params: queryParams
             }).
+            
             
             //$http.get('mocks/amk.json', {}).
             success(function(result) {

@@ -2,7 +2,7 @@
 	<li data-ng-repeat="child in children" >
 		<a data-ng-href="{{child.url}}">{{child.name}}</a> 
 		<!-- PREVIEW -->
-		<span data-ng-show="child.preview" data-ki-i18n="{{child.status}}"></span>
+		<span data-ng-if="child.preview" data-ki-preview-status-label="child.status"></span>
 		<!-- END PREVIEW -->
 	</li>
 </ul>

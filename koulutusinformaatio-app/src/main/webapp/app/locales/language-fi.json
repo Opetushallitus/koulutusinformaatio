@@ -287,6 +287,8 @@
     "muita-koulutuksia": "muita koulutuksia",
     "koulutus": "Koulutus",
     "muualla": "muualla",
-    "mukainen-koulutus-muualla": "-teeman mukainen koulutus muualla"
+    "mukainen-koulutus-muualla": "-teeman mukainen koulutus muualla",
+
+    "preview-help": "Esikatselu näyttää koulutuksen ja hakukohteen näkymät samanlaisina, kuin oppija näkee ne Opintopolku.fi-palvelussa. Pääset muokkaamaan koulutuksen tietoja sivun yläosasta ja toiselta välilehdeltä hakukohteen tietoja. Organisaation tietoja ei pääse suoraan muokkaamaan, vaan muokkaus tulee tehdä Organisaatiotiedot-palvelun kautta."
 
 }

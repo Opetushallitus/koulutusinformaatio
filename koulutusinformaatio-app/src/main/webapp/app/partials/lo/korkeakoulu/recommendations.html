@@ -1,7 +1,8 @@
 <div class="grid16-6 application-container">
 	<h3 class="title"><span data-ki-i18n="katso-myos"></span></h3>
 	<div class="content">
-		<ul class="nobullet">
+		<!-- PREVIEW EXCLUDE -->
+		<ul data-ng-if="!lo.preview">
 			<li>
 				<a data-ng-href="#!/haku/*?page=1&facetFilters=teachingLangCode_ffm:{{lo.translationLanguage.toUpperCase()}}&lopFilter={{lo.provider.name}}&excludes=-id:{{lo.id}}&itemsPerPage=25&sortCriteria=0&tab=los">
 					<span data-ki-i18n="tarjoajan"></span> {{lo.provider.name}} <span data-ki-i18n="muita-koulutuksia"></span> </a>
@@ -15,5 +16,20 @@
 					{{theme.description}} <span data-ki-i18n="mukainen-koulutus-muualla"></span> </a>
 			</li>
 		</ul>
+		<!-- END PREVIEW EXCLUDE -->
+
+		<!-- PREVIEW -->
+		<ul data-ng-if="lo.preview">
+			<li>
+				<span data-ki-i18n="tarjoajan"></span> {{lo.provider.name}} <span data-ki-i18n="muita-koulutuksia"></span>
+			</li>
+			<li>
+				{{lo.educationCode}} <span data-ki-i18n="muualla"></span>
+			</li>
+			<li data-ng-repeat="theme in lo.themes">
+				{{theme.description}} <span data-ki-i18n="mukainen-koulutus-muualla"></span>
+			</li>
+		</ul>
+		<!-- END PREVIEW -->
 	</div>
 </div>
