@@ -265,7 +265,8 @@
     "LUONNOS": "Luonnos (sv)",
     "JULKAISTU": "Julkaistu (sv)",
     "tarjontaTarkastelu": "Takaisin (sv)",
-    "tarjontaMuokkaa": "Muokkaa (sv)",
+    "tarjonta-muokkaa-koulutus": "Muokkaa koulutusta (sv)",
+    "tarjonta-muokkaa-hakukohde": "Muokkaa hakukohdetta (sv)",
     "esikatselussa": "Esikatselussa (sv)",
     "organisaatiossa": "organisaatiossa (sv)",
     "esikatselu": "Esikatselu (sv)",
@@ -284,5 +285,8 @@
     "muita-koulutuksia": "muita koulutuksia (sv)",
     "koulutus": "Koulutus (sv)",
     "muualla": "muualla (sv)",
-    "mukainen-koulutus-muualla": "-teeman mukainen koulutus muualla (sv)"
+    "mukainen-koulutus-muualla": "-teeman mukainen koulutus muualla (sv)",
+
+    "preview-help": "Esikatselu näyttää koulutuksen ja hakukohteen näkymät samanlaisina, kuin oppija näkee ne Opintopolku.fi-palvelussa. Pääset muokkaamaan koulutuksen tietoja sivun yläosasta ja toiselta välilehdeltä hakukohteen tietoja. Organisaation tietoja ei pääse suoraan muokkaamaan, vaan muokkaus tulee tehdä Organisaatiotiedot-palvelun kautta. (sv)"
+
 }

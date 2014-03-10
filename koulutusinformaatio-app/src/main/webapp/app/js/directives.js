@@ -747,6 +747,32 @@ directive('kiRenderApplicationStatusLabel', function() {
 }).
 
 /**
+ *  Render status label for preview
+ */
+directive('kiPreviewStatusLabel', ['TranslationService', function(TranslationService) {
+    return {
+        restrict: 'A',
+        scope: {
+            status: '=kiPreviewStatusLabel'
+        },
+        link: function($scope, element, attrs) {
+            var statusPublished = 'JULKAISTU';
+            var statusReady = 'VALMIS';
+            var statusDraft = 'LUONNOS';
+
+            if ($scope.status == statusPublished || $scope.status == statusReady) {
+                element.addClass('label vih');
+            } else {
+                element.addClass('label sin');
+            }
+
+            var labelText = TranslationService.getTranslation($scope.status);
+            element.html(labelText);
+        }
+    }
+}]).
+
+/**
  *  Render application option status
  */
 directive('kiBanner', ['$location', function($location) {
@@ -765,6 +791,9 @@ directive('kiBanner', ['$location', function($location) {
     }
 }]).
 
+/**
+ *  Render application option index for ao tab
+ */
 directive('kiApplicationOptionIndex', [ function() {
     return {
         restrict: 'A',
@@ -773,14 +802,25 @@ directive('kiApplicationOptionIndex', [ function() {
             lo: '=lo'
         },
         controller: function($scope) {
-            var length = 0;
-            if ($scope.lo && $scope.lo.applicationSystems) {
-                angular.forEach($scope.lo.applicationSystems, function(as, askey) {
-                    length += as.applicationOptions.length;
-                });
-            }
+            // scrolls to an anchor on page
+            $scope.scrollToAnchor = function(id) {
+                id = id.replace(/\./g,"\\.");
+                $('html, body').scrollTop($('#' + id).offset().top);
+                return false;
+            };
+            
 
-            $scope.showIndex = length > 1 ? true : false;
+            $scope.$watch('lo', function(value) {
+                var length = 0;
+
+                if ($scope.lo && $scope.lo.applicationSystems) {
+                    angular.forEach($scope.lo.applicationSystems, function(as, askey) {
+                        length += as.applicationOptions.length;
+                    });
+                }
+
+                $scope.showIndex = length > 1 ? true : false;
+            });
         }
     }
 }]).

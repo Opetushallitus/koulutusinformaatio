@@ -8,7 +8,9 @@ var kiApp = angular.module('previewApp',
         'SearchResult', 
         'ui.bootstrap', 
         'angulartics', 
-        'angulartics.piwik'
+        'angulartics.piwik',
+        'underscore',
+        'ngRoute'
     ])
 
 .config(['$analyticsProvider', function( $analyticsProvider) {
@@ -19,11 +21,6 @@ var kiApp = angular.module('previewApp',
 }])
 
 .config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/haku/:queryString', {
-    	templateUrl: 'partials/search/search.html', 
-    	controller: SearchCtrl,
-        reloadOnSearch: false
-    });
 
     $routeProvider.when('/:loType/:id', {
         templateUrl: 'partials/learningopportunity.html', 
@@ -51,15 +48,6 @@ var kiApp = angular.module('previewApp',
                 $rootScope.partialCommonUrl = 'partials/lo/common/';
             }
         }
-    });
-
-    $routeProvider.when('/muistilista', {
-        templateUrl: 'partials/applicationbasket/applicationbasket.html',
-        controller: 'ApplicationBasketCtrl'
-    });
-    
-    $routeProvider.otherwise({
-    	redirectTo: '/haku/'
     });
 }])
 
@@ -105,6 +93,29 @@ var kiApp = angular.module('previewApp',
         debug : false
     });
 }])
+
+.filter('unique', function() {
+   return function(collection, keyname) {
+      var output = [], 
+          keys = [];
+
+      angular.forEach(collection, function(item) {
+          var key = item[keyname];
+          if(keys.indexOf(key) === -1) {
+              keys.push(key);
+              output.push(item);
+          }
+      });
+
+      return output;
+   };
+})
+
+.filter('unsafe', function($sce) {
+    return function(val) {
+        return $sce.trustAsHtml(val);
+    };
+})
 
 .value('appConfig', window.Config.app)
 .factory('Config', function($location, appConfig, LanguageService, HostResolver) {

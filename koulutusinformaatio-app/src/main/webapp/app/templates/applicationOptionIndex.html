@@ -3,7 +3,7 @@
     <div data-ng-repeat="as in lo.applicationSystems">
         <ul>
             <li data-ng-repeat="ao in as.applicationOptions">
-                <a href="javascript:void(0)" data-ng-click="scrollToAnchor(ao.id)">{{ao.name}}</a>
+                <a href="javascript:void(0)" data-ng-click="$parent.scrollToAnchor(ao.id)">{{ao.name}}</a>
             </li>
         </ul>
     </div>

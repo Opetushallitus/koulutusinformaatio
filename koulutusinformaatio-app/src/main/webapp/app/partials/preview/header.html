@@ -1,8 +1,10 @@
 <header id="siteheader" data-ng-controller="HeaderCtrl">
     <div class="logo-bg">
         <div class="container">
-           	<img data-ng-src="{{images.logo}}"/>
-           	<h1><span data-ki-i18n="esikatselu"></span></h1>
+            <a id="home-link" href="javascript:void()">
+           	    <img data-ng-src="{{images.logo}}"/>
+            </a>
+           	<span class="banner-text" data-ki-i18n="esikatselu"></span>
             <div class="actions">
                 <ul data-ng-controller="LanguageCtrl">
                     <li><a title={{locales.opintopolkufi}} href="javascript:void(0)" data-ng-click="changeLanguage('fi')" data-ki-i18n="language-fi"></a></li>
