@@ -169,6 +169,10 @@ public final class SolrUtil {
         public static final String EDUCATION_CODE_DISPLAY_FI = "educationCode_fi_ssort";
         public static final String EDUCATION_CODE_DISPLAY_SV = "educationCode_sv_ssort";
         public static final String EDUCATION_CODE_DISPLAY_EN = "educationCode_en_ssort";
+        
+        public static final String ARTICLE_URL = "article_url_ss";
+        public static final String ARTICLE_PICTURE = "article_picture_ss";
+        public static final String ARTICLE_EXCERPT = "article_excerpt_ss";
 
         //Fields for sorting
         public static final String START_DATE_SORT = "startDate_dsort";
@@ -212,6 +216,7 @@ public final class SolrUtil {
         public static final String SPECIAL_EDUCATION = "ER";
         public static final String TIMESTAMP_DOC = "loUpdateTimestampDocument";
         public static final String TYPE_FACET = "FASETTI";
+        public static final String TYPE_ARTICLE = "ARTIKKELI";
         public static final String KESTOTYYPPI_VUOSI = "suunniteltukesto_01";
         public static final String KESTOTYYPPI_KK = "suunniteltukesto_02";
         public static final String PK = "pk";
