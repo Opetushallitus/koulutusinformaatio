@@ -10,7 +10,8 @@ directive('title', ['$rootScope', function($rootScope) {
         restrict: 'E',
         link: function(scope, element, attrs) {
             $rootScope.$watch('title', function(value) {
-                element.text(value);
+                document.title = value;
+                //element.text(value);
             });
         }
     }
@@ -368,14 +369,21 @@ directive('kiAbsoluteLink', function() {
     return {
         restrict: 'A',
         templateUrl: 'templates/languageRibbon.html',
+        scope: {
+            languages: '=',
+            changeLanguage: '&'
+        },
 
         link: function(scope, element, attrs) {
-            //var type = $routeParams.loType;
-            //scope.isChild = (type === 'koulutusohjelma' || type == 'lukio') ? true : false; // TODO: do not use loType directly
-
-            scope.$watch('selectedLOI', function(data) {
-                scope.hasMultipleTranslations = (data && data.availableTranslationLanguages && data.availableTranslationLanguages.length >= 1) ? true : false;
+            scope.$watch('languages', function(data) {
+                scope.hasMultipleTranslations = (data && data.length >= 1) ? true : false;
             });
+
+            var callback = scope.changeLanguage();
+
+            scope.changeLanguage = function(lang) {
+                callback(lang);
+            }
         }
     };
  }]).

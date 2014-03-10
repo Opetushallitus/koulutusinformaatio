@@ -4,6 +4,7 @@ var kiApp = angular.module('previewApp',
     [
         'kiApp.services',
         'kiApp.directives',
+        'directives.AjaxLoader',
         'ApplicationBasket',
         'SearchResult', 
         'ui.bootstrap', 
