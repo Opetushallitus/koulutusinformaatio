@@ -201,6 +201,12 @@ directive('srBasicInformation', [function () {
     return {
         restrict: 'A',
         require: '^extendedSearchresultData',
-        templateUrl: 'templates/searchResultBasicInformation.html'
+        templateUrl: function(element, attrs) {
+            if (attrs.templateType) {
+                return 'templates/' + attrs.templateType + '/searchResultBasicInformation.html';
+            } else {
+                return 'templates/searchResultBasicInformation.html';
+            }
+        }
     };
 }]);
