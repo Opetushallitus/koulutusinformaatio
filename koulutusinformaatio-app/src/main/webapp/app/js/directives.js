@@ -587,6 +587,21 @@ directive('renderExtendableTextBlock', ['TranslationService', function(Translati
 }]).
 
 /**
+ *  Renders higher education major selection block
+ */
+directive('kiRenderMajorSelection', function() {
+    return {
+        restrict: 'A',
+        templateUrl: 'templates/majorSelection.html',
+        scope: {
+            content: '=',
+            title: '@',
+            children: '='
+        }
+    }
+}).
+
+/**
  *  Renders study plan block
  */
 directive('renderStudyPlan', function() {
