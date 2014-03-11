@@ -179,7 +179,10 @@ directive('srNotApplicable', [function() {
         restrict: 'A',
         require: '^extendedSearchresultData',
         template:
-            '<p data-ki-i18n="not-applicable"></p>'
+            '<p class="small">' +
+            '<span data-ki-i18n="application-period" data-show-colon="true" class="margin-right-1"></span>' +
+            '<span data-ki-timestamp="{{applicationoption.applicationStartDate}}"></span>&ndash;<span data-ki-timestamp="{{applicationoption.applicationEndDate}}"></span>' +
+            '</p>'
     }
 }]).
 
