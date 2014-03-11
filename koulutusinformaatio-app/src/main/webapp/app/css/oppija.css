@@ -2404,7 +2404,8 @@ table.striped {
 
 .ao-block {
   border-bottom: 1px solid #dddddd;
-  margin-bottom: 2em; }
+  margin-bottom: 2em;
+  padding-bottom: 2em; }
 
 .search-result-collapsed {
   position: relative;
