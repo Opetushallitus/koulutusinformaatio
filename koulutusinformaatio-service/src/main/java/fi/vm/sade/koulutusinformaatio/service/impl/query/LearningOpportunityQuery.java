@@ -75,7 +75,7 @@ public class LearningOpportunityQuery extends SolrQuery {
     public final static String APP_STATUS_UPCOMING = "upcoming";
 
     public LearningOpportunityQuery(String term, String prerequisite,
-            List<String> cities, List<String> facetFilters, String lang, boolean ongoing, boolean upcoming, int start, int rows, String sort, String order, String lopFilter, String educationCodeFilter, List<String> excludes) {
+            List<String> cities, List<String> facetFilters, String lang, boolean ongoing, boolean upcoming, int start, int rows, String sort, String order, String lopFilter, String educationCodeFilter, List<String> excludes, boolean articles) {
         super(term);
         if (prerequisite != null) {
             this.addFilterQuery(String.format("%s:%s", LearningOpportunity.PREREQUISITES, prerequisite));
@@ -131,6 +131,11 @@ public class LearningOpportunityQuery extends SolrQuery {
         //leaving the facet and timestamp docs out
         this.addFilterQuery(String.format("-%s:%s", LearningOpportunity.ID, SolrConstants.TIMESTAMP_DOC));
         this.addFilterQuery(String.format("-%s:%s", LearningOpportunity.TYPE, SolrConstants.TYPE_FACET));
+        if (!articles) {
+            this.addFilterQuery(String.format("-%s:%s", LearningOpportunity.TYPE, SolrConstants.TYPE_ARTICLE));
+        } else {
+            this.addFilterQuery(String.format("%s:%s", LearningOpportunity.TYPE, SolrConstants.TYPE_ARTICLE));
+        }
         
         addFacetsToQuery(lang, facetFilters, ongoingFQ.toString(), upcomingFQ.toString());
         

@@ -13,25 +13,25 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * European Union Public Licence for more details.
  */
-package fi.vm.sade.koulutusinformaatio.domain;
+package fi.vm.sade.koulutusinformaatio.domain.dto;
 
-import java.util.List;
+/**
+ * 
+ * @author Markus
+ */
+public class ArticleResultDTO {
 
-public class Article {
-
-    private String title;
+    private String type;
     private String url;
-    private String content;
-    private List<ArticleAttachment> attachments;
+    private String title;
     private String excerpt;
-    private String id;
+    private String imageUrl;
     
-    
-    public String getTitle() {
-        return title;
+    public String getType() {
+        return type;
     }
-    public void setTitle(String title) {
-        this.title = title;
+    public void setType(String type) {
+        this.type = type;
     }
     public String getUrl() {
         return url;
@@ -39,17 +39,11 @@ public class Article {
     public void setUrl(String url) {
         this.url = url;
     }
-    public String getContent() {
-        return content;
+    public String getTitle() {
+        return title;
     }
-    public void setContent(String content) {
-        this.content = content;
-    }
-    public List<ArticleAttachment> getAttachments() {
-        return attachments;
-    }
-    public void setAttachments(List<ArticleAttachment> attachments) {
-        this.attachments = attachments;
+    public void setTitle(String title) {
+        this.title = title;
     }
     public String getExcerpt() {
         return excerpt;
@@ -57,11 +51,11 @@ public class Article {
     public void setExcerpt(String excerpt) {
         this.excerpt = excerpt;
     }
-    public String getId() {
-        return id;
+    public String getImageUrl() {
+        return imageUrl;
     }
-    public void setId(String id) {
-        this.id = id;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
-
+    
 }

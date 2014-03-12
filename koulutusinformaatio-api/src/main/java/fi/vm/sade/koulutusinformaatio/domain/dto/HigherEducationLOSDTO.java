@@ -69,7 +69,7 @@ public class HigherEducationLOSDTO {
 
     private List<CodeDTO> prerequisites;
     private String translationLanguage;
-    private List<String> availableTranslationLanguages;
+    private List<CodeDTO> availableTranslationLanguages;
 
     private List<String> formOfTeaching;
 
@@ -357,11 +357,11 @@ public class HigherEducationLOSDTO {
     }
 
     public void setAvailableTranslationLanguages(
-            List<String> availableTranslationLanguages) {
+            List<CodeDTO> availableTranslationLanguages) {
         this.availableTranslationLanguages = availableTranslationLanguages;	
     }
 
-    public List<String> getAvailableTranslationLanguages() {
+    public List<CodeDTO> getAvailableTranslationLanguages() {
         return availableTranslationLanguages;
     }
 

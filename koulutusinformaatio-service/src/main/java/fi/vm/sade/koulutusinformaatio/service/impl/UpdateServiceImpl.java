@@ -28,6 +28,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -77,11 +79,17 @@ public class UpdateServiceImpl implements UpdateService {
             int count = MAX_RESULTS;
             int index = 0;
 
-            while(count >= MAX_RESULTS) {
+            /*while(count >= MAX_RESULTS) {
                 LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
                 List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
                 count = loOids.size();
-                index += count;
+                index += count;*/
+            
+
+List<String> loOids = Arrays.asList("1.2.246.562.5.2013061010191208547980", 
+                    "1.2.246.562.5.2013061010184431795697", 
+                    "1.2.246.562.5.2013061010184670694756");//,
+                    //"1.2.246.562.5.2013061010190108136320");
             
                 for (String loOid : loOids) {
                     List<LOS> specifications = null;
@@ -97,7 +105,7 @@ public class UpdateServiceImpl implements UpdateService {
                         this.educationDataUpdateService.save(spec);
                     }
                 }
-            }
+            //}
 
             List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
             LOG.debug("Found higher educations: " + higherEducations.size());
@@ -116,8 +124,8 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.debug("Got locations");
             indexerService.addLocations(locations, locationUpdateSolr);
             LOG.debug("Added locations");
-            indexerService.addArticles(loUpdateSolr);
-            LOG.debug("added articles");
+            //indexerService.addArticles(loUpdateSolr);
+            //LOG.debug("added articles");
             indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, true);
             LOG.debug("Committed to solr");
             this.transactionManager.commit(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);

@@ -48,7 +48,17 @@
         <ul id="search-results">
             <li data-ng-repeat="lo in loResult.results" data-search-result></li>
         </ul>
-
+        <!-- 
+        <h3><span data-ki-i18n="search-tab-article"></span></h3>
+        <ul id="article-search-results">
+			<li data-ng-repeat="article in loResult.articleresults">
+				<h2><a data-ng-href="{{article.url}}">{{article.title}}</a></h2>
+				<img data-ng-src="{{article.imageUrl}}" data-ng-show="article.imageUrl"/>
+				<span data-ng-bind-html="article.excerpt | unsafe" style=""></span>
+				<div class="clear"></div>
+			</li>
+		</ul>
+		-->
         <div data-ng-show="showPagination" class="align-center">
             <div data-pager
             data-on-select-page="changePage(page)" 

@@ -25,6 +25,7 @@ public class ArticleToSolrInputDocument implements Converter<Article, List<SolrI
         doc.addField(LearningOpportunity.ID, article.getId());
         
         String lang = extractLanguage(article);
+        doc.addField(LearningOpportunity.TEACHING_LANGUAGE, lang.toUpperCase());
         doc.addField(LearningOpportunity.ARTICLE_URL, article.getUrl());
         
         if (article.getAttachments() != null && !article.getAttachments().isEmpty()) {

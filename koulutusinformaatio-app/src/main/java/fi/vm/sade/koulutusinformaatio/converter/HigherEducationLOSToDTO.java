@@ -22,6 +22,7 @@ public class HigherEducationLOSToDTO {
             final HigherEducationLOS los, final String lang, final String uiLang) {
         HigherEducationLOSDTO dto =
                 new HigherEducationLOSDTO();
+        dto.setTranslationLanguage(lang);
         dto.setId(los.getId());
         dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(los.getName(), uiLang));
         dto.setEducationDegree(los.getEducationDegree());
@@ -43,7 +44,7 @@ public class HigherEducationLOSToDTO {
         //dto.setLois(UpperSecondaryLOIToDTO.convertAll(los.getLois(), uiLang, uiLang));
         dto.setProvider(ProviderToDTO.convert(los.getProvider(), uiLang, "fi"));
         dto.setTranslationLanguage(uiLang);
-        dto.setAvailableTranslationLanguages(los.getAvailableTranslationLanguages());
+        dto.setAvailableTranslationLanguages(CodeToDTO.convertAll(los.getAvailableTranslationLanguages(), uiLang, false));//los.getAvailableTranslationLanguages());
         dto.setCreditValue(los.getCreditValue());
 
         dto.setCreditUnit(ConverterUtil.getTextByLanguageUseFallbackLang(los.getCreditUnit(), uiLang));

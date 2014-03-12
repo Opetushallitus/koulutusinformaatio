@@ -121,7 +121,8 @@ public class HigherEducationLOSEntity {
     @Embedded
     private I18nTextEntity startSeason;
     private int startYear;
-    private List<String> availableTranslationLanguages;
+    @Embedded
+    private List<CodeEntity> availableTranslationLanguages;
 
     @Embedded
     private List<CodeEntity> facetPrerequisites;
@@ -402,10 +403,10 @@ public class HigherEducationLOSEntity {
     public void setStartYear(int startYear) {
         this.startYear = startYear;
     }
-    public List<String> getAvailableTranslationLanguages() {
+    public List<CodeEntity> getAvailableTranslationLanguages() {
         return availableTranslationLanguages;
     }
-    public void setAvailableTranslationLanguages(List<String> availableTranslationLanguages) {
+    public void setAvailableTranslationLanguages(List<CodeEntity> availableTranslationLanguages) {
         this.availableTranslationLanguages = availableTranslationLanguages;
     }
     public List<CodeEntity> getFacetPrerequisites() {

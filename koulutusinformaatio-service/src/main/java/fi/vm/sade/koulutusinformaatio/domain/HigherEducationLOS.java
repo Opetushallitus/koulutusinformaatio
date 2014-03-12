@@ -77,7 +77,7 @@ public class HigherEducationLOS extends LOS {
 
     //Status of the lo. For preview
     private String status;
-    private List<String> availableTranslationLanguages;
+    private List<Code> availableTranslationLanguages;
     
 
     private List<Code> facetPrerequisites;
@@ -441,11 +441,11 @@ public class HigherEducationLOS extends LOS {
         this.status = status;
     }
 
-    public List<String> getAvailableTranslationLanguages() {
+    public List<Code> getAvailableTranslationLanguages() {
         return availableTranslationLanguages;
     }
 
-    public void setAvailableTranslationLanguages(List<String> availableTranslationLanguages) {
+    public void setAvailableTranslationLanguages(List<Code> availableTranslationLanguages) {
         this.availableTranslationLanguages = availableTranslationLanguages;
     }
     

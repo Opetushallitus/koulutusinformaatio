@@ -41,6 +41,7 @@ public final class ContactPersonToDTO {
             cp.setEmail(contactPerson.getEmail());
             cp.setPhone(contactPerson.getPhone());
             cp.setTitle(contactPerson.getTitle());
+            cp.setType(contactPerson.getType());
             return cp;
         }
     }

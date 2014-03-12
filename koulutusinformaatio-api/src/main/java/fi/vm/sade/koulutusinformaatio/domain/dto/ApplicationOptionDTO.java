@@ -45,6 +45,7 @@ public class ApplicationOptionDTO {
     private CodeDTO prerequisite;
     private List<ExamDTO> exams;
     private List<ChildLOIRefDTO> childRefs = new ArrayList<ChildLOIRefDTO>();
+    private List<HigherEducationLOSRefDTO> higherEdLOSRefs = new ArrayList<HigherEducationLOSRefDTO>();
     private LearningOpportunityProviderDTO provider;
     private boolean specificApplicationDates;
     private Date applicationStartDate;
@@ -343,5 +344,13 @@ public class ApplicationOptionDTO {
 
     public void setEligibilityDescription(String prerequisiteDescription) {
         this.eligibilityDescription = prerequisiteDescription;
+    }
+
+    public List<HigherEducationLOSRefDTO> getHigherEdLOSRefs() {
+        return higherEdLOSRefs;
+    }
+
+    public void setHigherEdLOSRefs(List<HigherEducationLOSRefDTO> higherEdLOSRefs) {
+        this.higherEdLOSRefs = higherEdLOSRefs;
     }
 }

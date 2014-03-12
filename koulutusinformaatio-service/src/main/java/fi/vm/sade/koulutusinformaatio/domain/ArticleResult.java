@@ -15,23 +15,32 @@
  */
 package fi.vm.sade.koulutusinformaatio.domain;
 
-import java.util.List;
-
-public class Article {
-
-    private String title;
+/**
+ * 
+ * @author Markus
+ *
+ */
+public class ArticleResult {
+    
+    private String type;
     private String url;
-    private String content;
-    private List<ArticleAttachment> attachments;
+    private String title;
     private String excerpt;
-    private String id;
+    private String imageUrl;
     
-    
-    public String getTitle() {
-        return title;
-    }
-    public void setTitle(String title) {
+    public ArticleResult(String type, String url, String title, String excerpt, String imageUrl) {
+        this.type = type;
+        this.url = url;
         this.title = title;
+        this.excerpt = excerpt;
+        this.imageUrl = imageUrl;
+    }
+    
+    public String getType() {
+        return type;
+    }
+    public void setType(String type) {
+        this.type = type;
     }
     public String getUrl() {
         return url;
@@ -39,17 +48,11 @@ public class Article {
     public void setUrl(String url) {
         this.url = url;
     }
-    public String getContent() {
-        return content;
+    public String getTitle() {
+        return title;
     }
-    public void setContent(String content) {
-        this.content = content;
-    }
-    public List<ArticleAttachment> getAttachments() {
-        return attachments;
-    }
-    public void setAttachments(List<ArticleAttachment> attachments) {
-        this.attachments = attachments;
+    public void setTitle(String title) {
+        this.title = title;
     }
     public String getExcerpt() {
         return excerpt;
@@ -57,11 +60,11 @@ public class Article {
     public void setExcerpt(String excerpt) {
         this.excerpt = excerpt;
     }
-    public String getId() {
-        return id;
+    public String getImageUrl() {
+        return imageUrl;
     }
-    public void setId(String id) {
-        this.id = id;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
 }

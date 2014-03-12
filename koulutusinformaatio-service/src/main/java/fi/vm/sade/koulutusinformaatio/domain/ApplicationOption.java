@@ -33,6 +33,7 @@ public class ApplicationOption {
     private ApplicationSystem applicationSystem;
     private String educationDegree;
     private List<ChildLOIRef> childLOIRefs = new ArrayList<ChildLOIRef>();
+    private List<HigherEducationLOSRef> higherEdLOSRefs = new ArrayList<HigherEducationLOSRef>();
     private Provider provider;
     // "aloituspaikatLkm" : 10,
     private Integer startingQuota;
@@ -390,6 +391,14 @@ public class ApplicationOption {
 
     public I18nText getEligibilityDescription() {
         return eligibilityDescription;
+    }
+
+    public List<HigherEducationLOSRef> getHigherEdLOSRefs() {
+        return higherEdLOSRefs;
+    }
+
+    public void setHigherEdLOSRefs(List<HigherEducationLOSRef> higherEdLOSRefs) {
+        this.higherEdLOSRefs = higherEdLOSRefs;
     }
 
 }
