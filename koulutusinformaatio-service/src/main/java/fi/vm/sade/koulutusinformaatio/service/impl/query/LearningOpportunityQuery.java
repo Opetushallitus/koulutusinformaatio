@@ -82,12 +82,12 @@ public class LearningOpportunityQuery extends SolrQuery {
             String lopFilter, String educationCodeFilter, List<String> excludes, 
             SearchType searchType) {
         super(term);
-        if (prerequisite != null) {
+        if (prerequisite != null && SearchType.LO.equals(searchType)) {
             this.addFilterQuery(String.format("%s:%s", LearningOpportunity.PREREQUISITES, prerequisite));
         }
         this.setStart(start);
         this.setRows(rows);
-        if (cities != null && !cities.isEmpty()) {
+        if (cities != null && !cities.isEmpty() && SearchType.LO.equals(searchType)) {
             this.addFilterQuery(
                     String.format("%s:(\"%s\")", LearningOpportunity.LOP_HOMEPLACE, Joiner.on("\" OR \"").join(cities))
                     );
@@ -100,7 +100,7 @@ public class LearningOpportunityQuery extends SolrQuery {
                 ongoingFQ.append(" OR ");
             }
         }
-        if (ongoing) {
+        if (ongoing && SearchType.LO.equals(searchType)) {
             this.addFilterQuery(ongoingFQ.toString());
         }
         
@@ -112,7 +112,7 @@ public class LearningOpportunityQuery extends SolrQuery {
                 upcomingFQ.append(" OR ");
             }
         }
-        if (upcoming) {
+        if (upcoming && SearchType.LO.equals(searchType)) {
             this.addFilterQuery(upcomingFQ.toString());
         }
         
@@ -142,7 +142,11 @@ public class LearningOpportunityQuery extends SolrQuery {
             this.addFilterQuery(String.format("%s:%s", LearningOpportunity.TYPE, SolrConstants.TYPE_ARTICLE));
         }
         
-        addFacetsToQuery(lang, facetFilters, ongoingFQ.toString(), upcomingFQ.toString());
+        if (SearchType.LO.equals(searchType)) {
+            addFacetsToQuery(lang, facetFilters, ongoingFQ.toString(), upcomingFQ.toString());
+        } else if (SearchType.ARTICLE.equals(searchType)) {
+            this.addFilterQuery(String.format("%s:%s", LearningOpportunity.TEACHING_LANGUAGE, lang.toUpperCase()));
+        }
         
         this.setParam("defType", "edismax");
         

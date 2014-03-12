@@ -150,7 +150,9 @@ public class SearchServiceSolrImpl implements SearchService {
                 }
             }
             
-            addFacetsToResult(searchResultList, response, lang, facetFilters);
+            if (SearchType.LO.equals(searchType)) {
+                addFacetsToResult(searchResultList, response, lang, facetFilters);
+            }
             
             if (lopFilter != null) {
                 searchResultList.setLopRecommendationFilter(getRecommendationFilter(lopFilter, "lopFilter"));
@@ -161,9 +163,9 @@ public class SearchServiceSolrImpl implements SearchService {
             
             //Setting result counts of other searches (one of article, provider or lo)
             if (searchType.LO.equals(searchType)) {
-                setOtherResultCounts(term, lang, start, sort, order, lopFilter, educationCodeFilter, excludes, SearchType.ARTICLE, searchResultList);
+                setOtherResultCounts(term, lang, start, sort, order, cities, facetFilters, ongoing, upcoming, lopFilter, educationCodeFilter, excludes, SearchType.ARTICLE, searchResultList);
             } else if (SearchType.ARTICLE.equals(searchType)) {
-                setOtherResultCounts(term, lang, start, sort, order, lopFilter, educationCodeFilter, excludes, SearchType.LO, searchResultList);
+                setOtherResultCounts(term, lang, start, sort, order, cities, facetFilters, ongoing, upcoming, lopFilter, educationCodeFilter, excludes, SearchType.LO, searchResultList);
             }
             
             searchResultList.setTotalCount(searchResultList.getArticleCount() + searchResultList.getLoCount());
@@ -175,19 +177,25 @@ public class SearchServiceSolrImpl implements SearchService {
     }
 
     private void setOtherResultCounts(String term, String lang, int start,
-            String sort, String order, String lopFilter,
-            String educationCodeFilter, List<String> excludes,
-            SearchType article, LOSearchResultList searchResultList) throws SearchException {
+            String sort, String order, List<String> cities, 
+            List<String> facetFilters, 
+            boolean ongoing, boolean upcoming,
+            String lopFilter, String educationCodeFilter, List<String> excludes,
+            SearchType searchType, LOSearchResultList searchResultList) throws SearchException {
+        
+        /*if (SearchType.LO.equals(searchType) && (facetFilters == null || facetFilters.isEmpty())) {
+            facetFilters = Arrays.asList(new String[]{String.format("%s:%s", LearningOpportunity.TEACHING_LANGUAGE, lang.toUpperCase())});
+        }*/
         
         SolrQuery query = new LearningOpportunityQuery(term, null, 
-                null, Arrays.asList(new String[]{String.format("%s:%s", LearningOpportunity.TEACHING_LANGUAGE, lang.toUpperCase())}), 
-                lang, false, false, 
+                cities, facetFilters, 
+                lang, ongoing, upcoming, 
                 start, 0, sort, order,
-                lopFilter, educationCodeFilter, excludes, SearchType.ARTICLE);
+                lopFilter, educationCodeFilter, excludes, searchType);
         
         try {
             QueryResponse response = loHttpSolrServer.query(query);
-            setResultCount(searchResultList, response, SearchType.ARTICLE);
+            setResultCount(searchResultList, response, searchType);
         } catch (SolrServerException e) {
             throw new SearchException("Solr search error occured.");
         }
