@@ -380,7 +380,7 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
 /**
  *  Controller for search functionality 
  */
- function SearchCtrl($scope, $rootScope, $location, $routeParams, SearchLearningOpportunityService, SearchService, kiAppConstants, FilterService, Config, LanguageService, TranslationService) {
+ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route, SearchLearningOpportunityService, SearchService, kiAppConstants, FilterService, Config, LanguageService, TranslationService) {
     var queryParams;
     $scope.selectAreaVisible = false;
     $rootScope.title = TranslationService.getTranslation('title-search-results') + ' - ' + TranslationService.getTranslation('sitename');
@@ -519,16 +519,24 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     		    excludes : FilterService.getExcludes(),
     		    searchType : 'LO'
     		}).then(function(result) {
-    			$scope.loResult = result;
-                $scope.totalItems = result.totalCount;
-                $scope.loCount = result.loCount;
-    			$scope.maxPages = Math.ceil(result.totalCount / $scope.itemsPerPage);
-    			$scope.showPagination = $scope.maxPages > 1;
-                $scope.pageMin = ($scope.currentPage - 1) * $scope.itemsPerPage + 1;
-                $scope.pageMax = $scope.currentPage * $scope.itemsPerPage < $scope.totalItems
-                    ? $scope.currentPage * $scope.itemsPerPage
-                    : $scope.totalItems;
-    			$scope.populateFacetSelections();
+    			
+    			if (result.loCount == 0) {
+    				qParams.tab = 'articles';
+    				$location.search(qParams).replace();
+    				$route.reload();
+    			} else {
+    			
+    				$scope.loResult = result;
+    				$scope.totalItems = result.totalCount;
+    				$scope.loCount = result.loCount;
+    				$scope.maxPages = Math.ceil(result.totalCount / $scope.itemsPerPage);
+    				$scope.showPagination = $scope.maxPages > 1;
+    				$scope.pageMin = ($scope.currentPage - 1) * $scope.itemsPerPage + 1;
+    				$scope.pageMax = $scope.currentPage * $scope.itemsPerPage < $scope.totalItems
+                    	? $scope.currentPage * $scope.itemsPerPage
+                    			: $scope.totalItems;
+    				$scope.populateFacetSelections();
+    			}
     		});
 
     		$scope.queryString = $routeParams.queryString;

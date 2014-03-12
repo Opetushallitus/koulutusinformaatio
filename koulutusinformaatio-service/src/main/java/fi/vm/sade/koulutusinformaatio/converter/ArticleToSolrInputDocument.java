@@ -48,11 +48,21 @@ public class ArticleToSolrInputDocument implements Converter<Article, List<SolrI
             String lang) {
         
         if (lang.equals("fi")) {
-            doc.setField(LearningOpportunity.NAME_FI, article.getTitle());
+            //doc.setField(LearningOpportunity.NAME_FI, article.getTitle());
+            doc.addField(String.format("%s_fi", LearningOpportunity.FREE_AUTO), article.getTitle());
+            doc.addField("textBoost_fi", article.getTitle());
+            doc.addField("textBoost_fi_whole", article.getTitle());
+            
         } else if (lang.equals("sv")) {
-            doc.setField(LearningOpportunity.NAME_SV, article.getTitle());
+            //doc.setField(LearningOpportunity.NAME_SV, article.getTitle());
+            doc.addField(String.format("%s_sv", LearningOpportunity.FREE_AUTO), article.getTitle());
+            doc.addField("textBoost_sv", article.getTitle());
+            doc.addField("textBoost_sv_whole", article.getTitle());
         } else if (lang.equals("en")) {
-            doc.setField(LearningOpportunity.NAME_EN, article.getTitle());
+            //doc.setField(LearningOpportunity.NAME_EN, article.getTitle());
+            doc.addField(String.format("%s_en", LearningOpportunity.FREE_AUTO), article.getTitle());
+            doc.addField("textBoost_en", article.getTitle());
+            doc.addField("textBoost_en_whole", article.getTitle());
         } 
         
         if (lang.equals("fi")) {
