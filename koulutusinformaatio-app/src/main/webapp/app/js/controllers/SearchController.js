@@ -516,10 +516,12 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     			lang: LanguageService.getLanguage(),
     			lopFilter: FilterService.getLopFilter(),
     		    educationCodeFilter: FilterService.getEducationCodeFilter(),
-    		    excludes : FilterService.getExcludes()
+    		    excludes : FilterService.getExcludes(),
+    		    searchType : 'LO'
     		}).then(function(result) {
     			$scope.loResult = result;
                 $scope.totalItems = result.totalCount;
+                $scope.loCount = result.loCount;
     			$scope.maxPages = Math.ceil(result.totalCount / $scope.itemsPerPage);
     			$scope.showPagination = $scope.maxPages > 1;
                 $scope.pageMin = ($scope.currentPage - 1) * $scope.itemsPerPage + 1;
@@ -622,12 +624,13 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     }
 };
 
-function ArticleSearchCtrl($scope, $location, $routeParams, ArticleContentSearchService, FilterService) {
-    //$scope.currentPage = 1;
+function ArticleSearchCtrl($scope, $location, $routeParams, ArticleContentSearchService, FilterService, SearchLearningOpportunityService, LanguageService) {
+    $scope.currentPage = 1;
     $scope.showPagination = false;
 
     $scope.changePage = function(page) {
         $scope.currentArticlePage = page;
+        $scope.currentPage = page;
         FilterService.setArticlePage(page);
         $scope.doArticleSearching();
         $('html, body').scrollTop($('body').offset().top); // scroll to top of list
@@ -652,37 +655,68 @@ function ArticleSearchCtrl($scope, $location, $routeParams, ArticleContentSearch
                 $scope.doArticleSearching();
             });
     }
+    
+    $scope.getTeachingLangFilter = function() {
+    	teachingLangFilter = [];
+    	teachingLangFilter.push('teachingLangCode_ffm:' + LanguageService.getLanguage().toUpperCase());
+    	return teachingLangFilter;
+    }
  
     $scope.doArticleSearching = function() {
         var qParams = FilterService.get();
         qParams.tab = 'articles';
         $location.search(qParams).replace();
-        ArticleContentSearchService.query({queryString: $routeParams.queryString, page: $scope.currentArticlePage}).then(function(result) {
-            $scope.articles = result;
-            $scope.maxPages = result.pages;
-            $scope.totalItems = result.count_total;
-            $scope.itemsPerPage = 10;
-            $scope.pageMin = ($scope.currentArticlePage - 1) * $scope.itemsPerPage + 1;
-            $scope.pageMax = $scope.currentArticlePage * $scope.itemsPerPage < $scope.totalItems
-                ? $scope.currentArticlePage * $scope.itemsPerPage
+        
+        SearchLearningOpportunityService.query({
+			queryString: $routeParams.queryString,
+			start: (FilterService.getArticlePage()-1) * $scope.itemsPerPage,
+			rows: $scope.itemsPerPage,
+			facetFilters: $scope.getTeachingLangFilter(),
+            sortCriteria: FilterService.getSortCriteria(),
+			lang: LanguageService.getLanguage(),
+		    searchType : 'ARTICLE'
+		}).then(function(result) {
+			$scope.loResult = result;
+            $scope.totalItems = result.totalCount;
+            $scope.loCount = result.loCount;
+            $scope.articleCount = result.articleCount;
+			$scope.maxPages = Math.ceil(result.totalCount / $scope.itemsPerPage);
+			$scope.showPagination = $scope.maxPages > 1;
+            $scope.pageMin = ($scope.currentPage - 1) * $scope.itemsPerPage + 1;
+            $scope.pageMax = $scope.currentPage * $scope.itemsPerPage < $scope.totalItems
+                ? $scope.currentPage * $scope.itemsPerPage
                 : $scope.totalItems;
-
             $scope.queryString = $routeParams.queryString;
             $scope.showPagination = $scope.totalItems > $scope.itemsPerPage;
-        });
+		});
+        
     }
+    
+    $scope.refreshArticleView = function() {
+        $location.search(FilterService.get()).replace();
+        $scope.initSearch();
+    }
+
 };
 
 
 function SortCtrl($scope, $location, FilterService) {
-    $scope.updateItemsPerPage = function() {
+    $scope.updateItemsPerPage = function(tab) {
         FilterService.setItemsPerPage($scope.itemsPerPage);
-        $scope.refreshView();
+        if (tab == 'los') {
+        	$scope.refreshView();
+        } else if (tab == 'article') {
+        	$scope.refreshArticleView();
+        }
     }
 
-    $scope.updateSortCriteria = function() {
+    $scope.updateSortCriteria = function(tab) {
         FilterService.setSortCriteria($scope.sortCriteria);
-        $scope.refreshView();
+        if (tab == 'los') {
+        	$scope.refreshView();
+        } else if (tab == 'article') {
+        	$scope.refreshArticleView();
+        }
     }
 };
 

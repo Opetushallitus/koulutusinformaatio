@@ -24,6 +24,7 @@ import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LocationFields;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
+import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
@@ -110,7 +111,7 @@ public class SearchServiceSolrImpl implements SearchService {
             String lang, boolean ongoing, boolean upcoming, 
             int start, int rows, String sort, String order, 
             String lopFilter, String educationCodeFilter,
-            List<String> excludes) throws SearchException {
+            List<String> excludes, SearchType searchType) throws SearchException {
         LOSearchResultList searchResultList = new LOSearchResultList();
         String trimmed = term.trim();
         if (!trimmed.isEmpty()) {
@@ -118,7 +119,7 @@ public class SearchServiceSolrImpl implements SearchService {
                     cities, facetFilters, 
                     lang, ongoing, upcoming, 
                     start, rows, sort, order,
-                    lopFilter, educationCodeFilter, excludes, false);
+                    lopFilter, educationCodeFilter, excludes, searchType);
 
             try {
                 LOG.debug(
@@ -131,14 +132,18 @@ public class SearchServiceSolrImpl implements SearchService {
             QueryResponse response = null;
             try {
                 response = loHttpSolrServer.query(query);
-                searchResultList.setTotalCount(response.getResults().getNumFound());
+                setResultCount(searchResultList, response, searchType);
             } catch (SolrServerException e) {
                 throw new SearchException("Solr search error occured.");
             }
 
             for (SolrDocument doc : response.getResults()) {
                 try {
-                    searchResultList.getResults().add(createLOSearchResult(doc, lang));
+                    if (SearchType.LO.equals(searchType)) {
+                        searchResultList.getResults().add(createLOSearchResult(doc, lang));
+                    } else if (SearchType.ARTICLE.equals(searchType)) {
+                        searchResultList.getArticleresults().add(createArticleSearchResult(doc));
+                    }
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     continue;
@@ -154,68 +159,52 @@ public class SearchServiceSolrImpl implements SearchService {
                 searchResultList.setEducationCodeRecommendationFilter(getRecommendationFilter(educationCodeFilter, "educationCodeFilter"));
             }
             
-            
-            //Adding article results
-            /*
-            query = new LearningOpportunityQuery(term, prerequisite, 
-                    cities, facetFilters, 
-                    lang, ongoing, upcoming, 
-                    start, rows, sort, order,
-                    lopFilter, educationCodeFilter, excludes, true);
-
-            try {
-                LOG.debug(
-                        URLDecoder.decode(
-                                new StringBuilder().append("Searching learning opportunities with query string: ").append(query.toString()).toString(), "utf-8"));
-            } catch (UnsupportedEncodingException e) {
-                LOG.debug("Could not log search query");
-            }
-
-            response = null;
-            try {
-                response = loHttpSolrServer.query(query);
-                searchResultList.setTotalCount(searchResultList.getTotalCount() + response.getResults().getNumFound());
-            } catch (SolrServerException e) {
-                throw new SearchException("Solr search error occured.");
-            }
-
-            for (SolrDocument doc : response.getResults()) {
-                try {
-                    searchResultList.getArticleresults().add(createArticleSearchResult(doc));
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    continue;
-                }
+            //Setting result counts of other searches (one of article, provider or lo)
+            if (searchType.LO.equals(searchType)) {
+                setOtherResultCounts(term, lang, start, sort, order, lopFilter, educationCodeFilter, excludes, SearchType.ARTICLE, searchResultList);
+            } else if (SearchType.ARTICLE.equals(searchType)) {
+                setOtherResultCounts(term, lang, start, sort, order, lopFilter, educationCodeFilter, excludes, SearchType.LO, searchResultList);
             }
             
-            appendFacetsToResult(searchResultList, response, lang, facetFilters);
+            searchResultList.setTotalCount(searchResultList.getArticleCount() + searchResultList.getLoCount());
             
-            searchResultList.setTotalCount(response.getResults().getNumFound());*/
 
         }
 
         return searchResultList;
     }
-    /*
-    private void appendFacetsToResult(LOSearchResultList searchResultList,
-            QueryResponse response, String lang, List<String> facetFilters) {
-        
-        FacetField teachingLangF = response.getFacetField(LearningOpportunity.TEACHING_LANGUAGE);
-        
-        if (teachingLangF != null) {
-            
-            for (Count curC : teachingLangF.getValues()) {
-                
-                for (FacetValue curVal : searchResultList.getTeachingLangFacet().getFacetValues()) {
-                    if (curC.getName().equals(curVal.getValueId())) {
-                        curVal.setCount(curVal.getCount() + curC.getCount());
-                    }
-                }
 
-            }
-            
+    private void setOtherResultCounts(String term, String lang, int start,
+            String sort, String order, String lopFilter,
+            String educationCodeFilter, List<String> excludes,
+            SearchType article, LOSearchResultList searchResultList) throws SearchException {
+        
+        SolrQuery query = new LearningOpportunityQuery(term, null, 
+                null, Arrays.asList(new String[]{String.format("%s:%s", LearningOpportunity.TEACHING_LANGUAGE, lang.toUpperCase())}), 
+                lang, false, false, 
+                start, 0, sort, order,
+                lopFilter, educationCodeFilter, excludes, SearchType.ARTICLE);
+        
+        try {
+            QueryResponse response = loHttpSolrServer.query(query);
+            setResultCount(searchResultList, response, SearchType.ARTICLE);
+        } catch (SolrServerException e) {
+            throw new SearchException("Solr search error occured.");
         }
         
+        
+    }
+
+    private void setResultCount(LOSearchResultList searchResultList,
+            QueryResponse response, SearchType searchType) {
+        
+        if (SearchType.ARTICLE.equals(searchType)) {
+            searchResultList.setArticleCount(response.getResults().getNumFound());
+        } else if (SearchType.PROVIDER.equals(searchType)) {
+            searchResultList.setOrgCount(response.getResults().getNumFound());
+        } else {
+            searchResultList.setLoCount(response.getResults().getNumFound());
+        }
         
     }
 
@@ -228,7 +217,7 @@ public class SearchServiceSolrImpl implements SearchService {
                                                 doc.getFieldValue(LearningOpportunity.ARTICLE_EXCERPT).toString(), 
                                                 imageUrl);
         return article;
-    }*/
+    }
 
     private LOSearchResult createLOSearchResult(SolrDocument doc, String lang) throws Exception {
         String parentId = doc.get("parentId") != null ? doc.get("parentId").toString() : null;

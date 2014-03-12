@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.service;
 
 import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public interface SearchService {
                                                    String lang, boolean ongoing, boolean upcoming, 
                                                    int start, int rows, String sort, String order, 
                                                    String lopFilter, String educationCodeFilter,
-                                                   List<String> excludes) throws SearchException;
+                                                   List<String> excludes, SearchType searchType) throws SearchException;
 
     List<LOSearchResult> searchLearningOpportunitiesByProvider(String lopId, String lang) throws SearchException;
 

@@ -35,6 +35,7 @@ public class ArticleToSolrInputDocument implements Converter<Article, List<SolrI
         doc.addField(LearningOpportunity.ARTICLE_EXCERPT, article.getExcerpt());
         
         doc.addField(LearningOpportunity.NAME, article.getTitle());
+        doc.addField(LearningOpportunity.NAME_SORT, article.getTitle());
         
         
         indexLangFields(article, doc, lang);

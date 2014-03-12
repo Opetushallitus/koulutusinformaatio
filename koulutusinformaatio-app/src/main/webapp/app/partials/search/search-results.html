@@ -13,7 +13,7 @@
                 <select 
                 data-ng-model="sortCriteria"
                 data-ng-options="key as value.value group by value.group for (key, value) in sortCriterias"
-                data-ng-change="updateSortCriteria()"
+                data-ng-change="updateSortCriteria('los')"
                 data-ng-style="{'width': 'auto'}"
                 id="sort-items">
                 </select>
@@ -23,7 +23,7 @@
                 <select 
                 data-ng-model="itemsPerPage"
                 data-ng-options="value for value in pageSizes"
-                data-ng-change="updateItemsPerPage()"
+                data-ng-change="updateItemsPerPage('los')"
                 data-ng-style="{'width': 'auto'}"
                 id="items-per-page">
                 </select>

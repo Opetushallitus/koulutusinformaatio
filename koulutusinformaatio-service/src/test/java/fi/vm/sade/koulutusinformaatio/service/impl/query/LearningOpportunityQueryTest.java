@@ -20,6 +20,8 @@ package fi.vm.sade.koulutusinformaatio.service.impl.query;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 
+import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
+
 import org.apache.solr.common.params.DisMaxParams;
 import org.junit.Test;
 
@@ -49,7 +51,7 @@ public class LearningOpportunityQueryTest {
 
     @Test
     public void testQueryTeachLangNone() {
-        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FACET_FILTERS, LANG_FI, ONGOING, UPCOMING, START, ROWS, SORT, ORDER, null, null, null, false);
+        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FACET_FILTERS, LANG_FI, ONGOING, UPCOMING, START, ROWS, SORT, ORDER, null, null, null, SearchType.LO);
         assertNotNull(q);
         assertEquals(7, q.getFilterQueries().length);
         String prerequisiteFQ = new StringBuilder("prerequisites:").append(PREREQUISITE).toString();
@@ -65,7 +67,7 @@ public class LearningOpportunityQueryTest {
     @Test
     public void testQueryFieldsTeachLangFi() {
         
-        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FF_TEACH_LANG_FI, LANG_FI, ONGOING, UPCOMING, START, ROWS, SORT, ORDER, null, null, null, false);
+        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FF_TEACH_LANG_FI, LANG_FI, ONGOING, UPCOMING, START, ROWS, SORT, ORDER, null, null, null, SearchType.LO);
         assertNotNull(q);
         assertEquals(7, q.getFilterQueries().length);
         String prerequisiteFQ = new StringBuilder("prerequisites:").append(PREREQUISITE).toString();
@@ -82,7 +84,7 @@ public class LearningOpportunityQueryTest {
     @Test
     public void testQueryFieldsTeachLangSv() {
         
-        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FF_TEACH_LANG_SV, LANG_FI, ONGOING, UPCOMING, START, ROWS, SORT, ORDER, null, null, null, false);
+        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FF_TEACH_LANG_SV, LANG_FI, ONGOING, UPCOMING, START, ROWS, SORT, ORDER, null, null, null, SearchType.LO);
         assertNotNull(q);
         assertEquals(7, q.getFilterQueries().length);
         String prerequisiteFQ = new StringBuilder("prerequisites:").append(PREREQUISITE).toString();
@@ -99,7 +101,7 @@ public class LearningOpportunityQueryTest {
     @Test
     public void testQueryFieldsTeachLangOther() {
         
-        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FF_TEACH_LANG_OTHER, LANG_FI, ONGOING, UPCOMING, START, ROWS, SORT, ORDER, null, null, null, false);
+        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FF_TEACH_LANG_OTHER, LANG_FI, ONGOING, UPCOMING, START, ROWS, SORT, ORDER, null, null, null, SearchType.LO);
         assertNotNull(q);
         assertEquals(7, q.getFilterQueries().length);
         String prerequisiteFQ = new StringBuilder("prerequisites:").append(PREREQUISITE).toString();

@@ -107,6 +107,7 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
             qParams += (params.lang != undefined) ? ('&lang=' + params.lang) : '';
             qParams += (params.lopFilter != undefined) ? ('&lopFilter=' + params.lopFilter) : '';
             qParams += (params.educationCodeFilter != undefined) ? ('&educationCodeFilter=' + params.educationCodeFilter) : '';
+            qParams += (params.searchType != undefined) ? ('&searchType=' + params.searchType) : '&searchType=LO';
             
             if (params.facetFilters != undefined) {
             	 angular.forEach(params.facetFilters, function(facetFilter, key) {

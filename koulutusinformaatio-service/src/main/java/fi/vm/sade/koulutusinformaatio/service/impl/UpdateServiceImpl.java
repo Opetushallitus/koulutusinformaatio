@@ -125,8 +125,8 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.debug("Got locations");
             indexerService.addLocations(locations, locationUpdateSolr);
             LOG.debug("Added locations");
-            //indexerService.addArticles(loUpdateSolr);
-            //LOG.debug("added articles");
+            indexerService.addArticles(loUpdateSolr);
+            LOG.debug("added articles");
             indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, true);
             LOG.debug("Committed to solr");
             this.transactionManager.commit(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
