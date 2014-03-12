@@ -527,8 +527,10 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     			} else {
     			
     				$scope.loResult = result;
+    				$scope.loResult.queryString = $routeParams.queryString;
     				$scope.totalItems = result.totalCount;
     				$scope.loCount = result.loCount;
+    				$scope.articleCount = result.articleCount;
     				$scope.maxPages = Math.ceil(result.totalCount / $scope.itemsPerPage);
     				$scope.showPagination = $scope.maxPages > 1;
     				$scope.pageMin = ($scope.currentPage - 1) * $scope.itemsPerPage + 1;
@@ -536,6 +538,11 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
                     	? $scope.currentPage * $scope.itemsPerPage
                     			: $scope.totalItems;
     				$scope.populateFacetSelections();
+    				
+    				$scope.tabTitles.learningOpportunities = TranslationService.getTranslation('search-tab-lo') + ' (' + $scope.loCount + ')';
+    	            $scope.tabTitles.articles = TranslationService.getTranslation('search-tab-article') + ' (' + $scope.articleCount + ')';
+    	            $scope.tabTitles.queryString = $routeParams.queryString;
+    	            $scope.tabTitles.totalCount = $scope.loResult.totalCount;
     			}
     		});
 
@@ -632,7 +639,7 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     }
 };
 
-function ArticleSearchCtrl($scope, $location, $routeParams, ArticleContentSearchService, FilterService, SearchLearningOpportunityService, LanguageService) {
+function ArticleSearchCtrl($scope, $location, $routeParams, ArticleContentSearchService, FilterService, SearchLearningOpportunityService, LanguageService, TranslationService) {
     $scope.currentPage = 1;
     $scope.showPagination = false;
 
@@ -642,6 +649,35 @@ function ArticleSearchCtrl($scope, $location, $routeParams, ArticleContentSearch
         FilterService.setArticlePage(page);
         $scope.doArticleSearching();
         $('html, body').scrollTop($('body').offset().top); // scroll to top of list
+    }
+    
+  //Returns true if the language filter is set
+	//i.e. either a teaching language filter or langCleared (language is explicitely cleared by the user)
+    $scope.isLangFilterSet = function() {
+    	if ($scope.langCleared) {
+    		return true;
+    	}
+
+    	if ($scope.facetFilters != undefined) {
+    		for (var i = 0; i < $scope.facetFilters.length; ++i) {
+    			if ($scope.facetFilters[i].indexOf("teachingLangCode_ffm") > -1) {
+    				return true;
+    			}
+    		}
+    	}
+    	
+    	return false;
+    }
+    
+    $scope.resolveFacetFilters = function() {
+    	var filters = FilterService.getFacetFilters();
+    	if (filters == undefined) {
+    		filters = [];
+    	}
+    	if (!$scope.isLangFilterSet()) {
+    		filters.push('teachingLangCode_ffm:' + LanguageService.getLanguage().toUpperCase());
+    	}
+    	return filters;
     }
 
     //Getting the query params from the url
@@ -653,21 +689,15 @@ function ArticleSearchCtrl($scope, $location, $routeParams, ArticleContentSearch
                 $scope.prerequisite = FilterService.getPrerequisite();
                 $scope.locations = FilterService.getLocations();
                 $scope.ongoing = FilterService.isOngoing();
-                $scope.upcoming = FilterService.isUpcoming();
-                $scope.facetFilters = FilterService.getFacetFilters();
+                $scope.upcoming = FilterService.isUpcoming(),
                 $scope.langCleared = FilterService.getLangCleared();
                 $scope.itemsPerPage = FilterService.getItemsPerPage();
                 $scope.sortCriteria = FilterService.getSortCriteria();
                 $scope.currentArticlePage = FilterService.getArticlePage();
+                $scope.facetFilters = FilterService.getFacetFilters();
 
                 $scope.doArticleSearching();
             });
-    }
-    
-    $scope.getTeachingLangFilter = function() {
-    	teachingLangFilter = [];
-    	teachingLangFilter.push('teachingLangCode_ffm:' + LanguageService.getLanguage().toUpperCase());
-    	return teachingLangFilter;
     }
  
     $scope.doArticleSearching = function() {
@@ -679,7 +709,11 @@ function ArticleSearchCtrl($scope, $location, $routeParams, ArticleContentSearch
 			queryString: $routeParams.queryString,
 			start: (FilterService.getArticlePage()-1) * $scope.itemsPerPage,
 			rows: $scope.itemsPerPage,
-			facetFilters: $scope.getTeachingLangFilter(),
+			prerequisite: FilterService.getPrerequisite(),
+			locations: FilterService.getLocationNames(),
+			ongoing: FilterService.isOngoing(),
+			upcoming: FilterService.isUpcoming(),
+			facetFilters: $scope.resolveFacetFilters(),
             sortCriteria: FilterService.getSortCriteria(),
 			lang: LanguageService.getLanguage(),
 		    searchType : 'ARTICLE'
@@ -696,6 +730,11 @@ function ArticleSearchCtrl($scope, $location, $routeParams, ArticleContentSearch
                 : $scope.totalItems;
             $scope.queryString = $routeParams.queryString;
             $scope.showPagination = $scope.totalItems > $scope.itemsPerPage;
+            $scope.tabTitles.learningOpportunities = TranslationService.getTranslation('search-tab-lo') + ' (' + $scope.loCount + ')';
+            $scope.tabTitles.articles = TranslationService.getTranslation('search-tab-article') + ' (' + $scope.articleCount + ')';
+            $scope.tabTitles.queryString = $routeParams.queryString;
+            $scope.tabTitles.totalCount = $scope.loResult.totalCount;
+            
 		});
         
     }
