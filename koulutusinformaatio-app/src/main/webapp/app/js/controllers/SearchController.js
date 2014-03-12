@@ -13,14 +13,14 @@ function SearchFieldCtrl($scope, $location, $route, SearchService, kiAppConstant
     	if ($scope.queryString != undefined && $scope.queryString.length > 0) {
     	AutocompleteService.query($scope.queryString).then(function(result) {
     		$scope.suggestions.length = 0;
-    		if (result.keywords != undefined) {
+    		if (result.keywords != undefined && result.keywords.length > 0) {
                 $scope.suggestions.push({value: TranslationService.getTranslation('autocomplete-keyword'), group: true});
     			for (var i = 0; i < result.keywords.length; i++) {
     				$scope.suggestions.push({value: result.keywords[i]});
     			}
     		} 
     		
-    		if (result.loNames != undefined) {
+    		if (result.loNames != undefined && result.loNames.length > 0) {
                 $scope.suggestions.push({value: TranslationService.getTranslation('autocomplete-loname'), group: true});
     			for (var i = 0; i < result.loNames.length; i++) {
     				$scope.suggestions.push({value: result.loNames[i]});
