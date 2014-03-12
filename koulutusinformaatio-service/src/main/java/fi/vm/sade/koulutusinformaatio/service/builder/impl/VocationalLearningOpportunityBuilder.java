@@ -153,7 +153,7 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
         for (ParentLOS parentLOS : parentLOSs) {
 
             Multimap<String, ApplicationOption> applicationOptionsByParentLOIId = HashMultimap.create();
-            Multimap<String, String> availableTranslationLangsByParentLOIId = HashMultimap.create();
+            Multimap<String, Code> availableTranslationLangsByParentLOIId = HashMultimap.create();
 
             // add children to parent los
             // filter out children without lois
@@ -198,7 +198,7 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
                     
                     for (Code lang : childLOI.getTeachingLanguages()) {
                         codeLang.put(lang.getValue(), lang);
-                        availableTranslationLangsByParentLOIId.put(childLOI.getParentLOIId(), lang.getValue().toLowerCase());
+                        availableTranslationLangsByParentLOIId.put(childLOI.getParentLOIId(), lang);
                     }
                 }
                 

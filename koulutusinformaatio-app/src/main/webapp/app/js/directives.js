@@ -521,6 +521,11 @@ directive('renderTextBlock', ['TranslationService', function(TranslationService)
 
             attrs.$observe('content', function(value) {
                 content = value;
+                update();
+            });
+
+            // watch global tarnaslation language in rootScope
+            scope.$watch('translationLanguage', function(value) {
                 title = TranslationService.getTranslationByTeachingLanguage(attrs.title);
                 update();
             });

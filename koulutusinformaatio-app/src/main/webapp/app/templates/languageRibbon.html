@@ -3,7 +3,7 @@
 	<div class="inline">
 		<ul class="ribbon-content nobullet">
 			<li data-ng-repeat="lng in languages">
-				<a href="javascript:void(0)" data-ng-click="changeLanguage(lng)" data-ki-i18n="language-{{lng}}"></a>
+				<a href="javascript:void(0)" data-ng-click="changeLanguage(lng.value.toLowerCase())">{{lng.description}}</a>
 			</li>
 		</ul>
 	</div>

@@ -540,8 +540,7 @@ service('ParentLOTransformer', ['UtilityService', '$filter', '$rootScope', funct
             for (var loiIndex in result.lois) {
                 if (result.lois.hasOwnProperty(loiIndex)) {
                     var loi = result.lois[loiIndex];
-                    var translationLanguageIndex = loi.availableTranslationLanguages.indexOf(result.translationLanguage);
-                    loi.availableTranslationLanguages.splice(translationLanguageIndex, 1);
+                    loi.availableTranslationLanguages = _.filter(loi.availableTranslationLanguages, function(item) { return item.value.toLowerCase() != result.translationLanguage});
                 }
             } 
 
@@ -683,7 +682,7 @@ service('ParentLOTransformer', ['UtilityService', '$filter', '$rootScope', funct
 /**
  * Transformer for child LO data
  */
-service('HigherEducationTransformer', ['UtilityService', '$rootScope', '$filter', 'LanguageService', function(UtilityService, $rootScope, $filter, LanguageService) {
+service('HigherEducationTransformer', ['UtilityService', '$rootScope', '$filter', 'LanguageService', '_', function(UtilityService, $rootScope, $filter, LanguageService, _) {
 
 	var getFirstItemInList = function(list) {
 		if (list && list[0]) {
@@ -701,8 +700,7 @@ service('HigherEducationTransformer', ['UtilityService', '$rootScope', '$filter'
 			}
 
 			if (result && result.availableTranslationLanguages) {
-				var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
-				result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
+                result.availableTranslationLanguages = _.filter(result.availableTranslationLanguages, function(item) { return item.value.toLowerCase() != result.translationLanguage});
 			}
 
 			if (result && result.provider && result.provider.name) {
@@ -822,8 +820,7 @@ service('ChildLOTransformer', ['UtilityService', '$rootScope', function(UtilityS
             for (var loiIndex in result.lois) {
                 if (result.lois.hasOwnProperty(loiIndex)) {
                     var loi = result.lois[loiIndex];
-                    var translationLanguageIndex = loi.availableTranslationLanguages.indexOf(result.translationLanguage);
-                    loi.availableTranslationLanguages.splice(translationLanguageIndex, 1);
+                    loi.availableTranslationLanguages = _.filter(loi.availableTranslationLanguages, function(item) { return item.value.toLowerCase() != result.translationLanguage});
                 }
             } 
             
