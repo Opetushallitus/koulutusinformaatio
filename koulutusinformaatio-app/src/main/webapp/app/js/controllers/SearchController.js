@@ -520,7 +520,7 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     		    searchType : 'LO'
     		}).then(function(result) {
     			
-    			if (result.loCount == 0) {
+    			if (result.loCount == 0 && result.articleCount > 0) {
     				qParams.tab = 'articles';
     				$location.search(qParams).replace();
     				$route.reload();
