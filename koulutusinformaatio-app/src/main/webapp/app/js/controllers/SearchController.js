@@ -402,11 +402,6 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
         articles: TranslationService.getTranslation('search-tab-article'),
         articlesTooltip: TranslationService.getTranslation('tooltip:search-tab-article-tooltip')
     };
-    
-    
-    $scope.tabChangeStatus = {
-    		changeable: false
-    };
 
     /*
     $scope.titleLocales = {
