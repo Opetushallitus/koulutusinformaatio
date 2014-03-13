@@ -1,13 +1,14 @@
 /**
  *  Controller for search field in header
  */
-function SearchFieldCtrl($scope, $location, $route, SearchService, kiAppConstants, FilterService, AutocompleteService, TreeService, TranslationService) {
+function SearchFieldCtrl($scope, $location, $route, $rootScope, SearchService, kiAppConstants, FilterService, AutocompleteService, TreeService, TranslationService) {
     $scope.searchFieldPlaceholder = TranslationService.getTranslation('search-field-placeholder'); 
     $scope.suggestions = [];
     
     $scope.locales = {
         'search': TranslationService.getTranslation('tooltip:search')
     }
+
 
     $scope.$watch('queryString', function() {
     	if ($scope.queryString != undefined && $scope.queryString.length > 0) {
@@ -43,6 +44,8 @@ function SearchFieldCtrl($scope, $location, $route, SearchService, kiAppConstant
             
             // empty query string
             $scope.queryString = '';
+            
+            $rootScope.tabChangeable = false;
 
             // update location
             var filters = FilterService.get();
@@ -399,6 +402,11 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
         articles: TranslationService.getTranslation('search-tab-article'),
         articlesTooltip: TranslationService.getTranslation('tooltip:search-tab-article-tooltip')
     };
+    
+    
+    $scope.tabChangeStatus = {
+    		changeable: false
+    };
 
     /*
     $scope.titleLocales = {
@@ -520,10 +528,11 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     		    searchType : 'LO'
     		}).then(function(result) {
     			
-    			if (result.loCount == 0 && result.articleCount > 0) {
+    			if (result.loCount == 0 && result.articleCount > 0 && !$rootScope.tabChangeable) {
     				qParams.tab = 'articles';
     				$location.search(qParams).replace();
     				$route.reload();
+    				$rootScope.tabChangeable = true;
     			} else {
     			
     				$scope.loResult = result;
@@ -639,7 +648,7 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     }
 };
 
-function ArticleSearchCtrl($scope, $location, $routeParams, ArticleContentSearchService, FilterService, SearchLearningOpportunityService, LanguageService, TranslationService) {
+function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, ArticleContentSearchService, FilterService, SearchLearningOpportunityService, LanguageService, TranslationService) {
     $scope.currentPage = 1;
     $scope.showPagination = false;
 
@@ -718,23 +727,30 @@ function ArticleSearchCtrl($scope, $location, $routeParams, ArticleContentSearch
 			lang: LanguageService.getLanguage(),
 		    searchType : 'ARTICLE'
 		}).then(function(result) {
-			$scope.loResult = result;
-            $scope.totalItems = result.totalCount;
-            $scope.loCount = result.loCount;
-            $scope.articleCount = result.articleCount;
-			$scope.maxPages = Math.ceil(result.totalCount / $scope.itemsPerPage);
-			$scope.showPagination = $scope.maxPages > 1;
-            $scope.pageMin = ($scope.currentPage - 1) * $scope.itemsPerPage + 1;
-            $scope.pageMax = $scope.currentPage * $scope.itemsPerPage < $scope.totalItems
-                ? $scope.currentPage * $scope.itemsPerPage
-                : $scope.totalItems;
-            $scope.queryString = $routeParams.queryString;
-            $scope.showPagination = $scope.totalItems > $scope.itemsPerPage;
-            $scope.tabTitles.learningOpportunities = TranslationService.getTranslation('search-tab-lo') + ' (' + $scope.loCount + ')';
-            $scope.tabTitles.articles = TranslationService.getTranslation('search-tab-article') + ' (' + $scope.articleCount + ')';
-            $scope.tabTitles.queryString = $routeParams.queryString;
-            $scope.tabTitles.totalCount = $scope.loResult.totalCount;
-            
+			
+			if (result.articleCount == 0 && result.loCount > 0 && !$rootScope.tabChangeable) {
+				qParams.tab = 'los';
+				$location.search(qParams).replace();
+				$route.reload();
+				$rootScope.tabChangeable = true;
+			} else {
+				$scope.loResult = result;
+				$scope.totalItems = result.totalCount;
+				$scope.loCount = result.loCount;
+				$scope.articleCount = result.articleCount;
+				$scope.maxPages = Math.ceil(result.totalCount / $scope.itemsPerPage);
+				$scope.showPagination = $scope.maxPages > 1;
+				$scope.pageMin = ($scope.currentPage - 1) * $scope.itemsPerPage + 1;
+				$scope.pageMax = $scope.currentPage * $scope.itemsPerPage < $scope.totalItems
+                	? $scope.currentPage * $scope.itemsPerPage
+                			: $scope.totalItems;
+				$scope.queryString = $routeParams.queryString;
+				$scope.showPagination = $scope.totalItems > $scope.itemsPerPage;
+				$scope.tabTitles.learningOpportunities = TranslationService.getTranslation('search-tab-lo') + ' (' + $scope.loCount + ')';
+				$scope.tabTitles.articles = TranslationService.getTranslation('search-tab-article') + ' (' + $scope.articleCount + ')';
+				$scope.tabTitles.queryString = $routeParams.queryString;
+				$scope.tabTitles.totalCount = $scope.loResult.totalCount;
+			}
 		});
         
     }
