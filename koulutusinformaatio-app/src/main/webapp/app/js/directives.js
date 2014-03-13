@@ -77,8 +77,10 @@ directive('renderContactPersonInfo', function() {
         scope: {
             contactPersons: '=content'
         },
-        link: function(scope, element, attrs) {
-
+        controller: function($rootScope, $scope) {
+            $rootScope.$watch('translationLanguage', function(value) {
+                $scope.translationLanguage = value;
+            });
         }
     }
 }).
@@ -156,6 +158,11 @@ directive('kiRenderProfessionalTitles', function() {
         scope: {
             title: '@title',
             content: '=content'
+        },
+        controller: function($rootScope, $scope) {
+            $rootScope.$watch('translationLanguage', function(value) {
+                $scope.translationLanguage = value;
+            });
         },
         link: function(scope, element, attrs) {
         }
