@@ -547,6 +547,7 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     	            $scope.tabTitles.articles = TranslationService.getTranslation('search-tab-article') + ' (' + $scope.articleCount + ')';
     	            $scope.tabTitles.queryString = $routeParams.queryString;
     	            $scope.tabTitles.totalCount = $scope.loResult.totalCount;
+    	            $rootScope.tabChangeable = true;
     			}
     		});
 
@@ -747,6 +748,7 @@ function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, 
 				$scope.tabTitles.articles = TranslationService.getTranslation('search-tab-article') + ' (' + $scope.articleCount + ')';
 				$scope.tabTitles.queryString = $routeParams.queryString;
 				$scope.tabTitles.totalCount = $scope.loResult.totalCount;
+				$rootScope.tabChangeable = true;
 			}
 		});
         
