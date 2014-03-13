@@ -104,6 +104,18 @@ public class SearchServiceSolrImpl implements SearchService {
     public List<Provider> searchLearningOpportunityProviders(String term, String lang, boolean prefix) throws SearchException {
         return searchLearningOpportunityProviders(term, null, null, false, false, 0, Integer.MAX_VALUE, lang, prefix);
     }
+    
+
+    private String fixString(String term) {
+        String[] splits = term.split(" ");
+        String fixed = "";
+        for (String curSplit : splits) {
+            if (curSplit.length() > 1 || curSplit.equals("*")) {
+                fixed += curSplit + " ";
+            }
+        }
+        return fixed.trim();
+    }
 
     @Override
     public LOSearchResultList searchLearningOpportunities(String term, String prerequisite,
@@ -114,8 +126,9 @@ public class SearchServiceSolrImpl implements SearchService {
             List<String> excludes, SearchType searchType) throws SearchException {
         LOSearchResultList searchResultList = new LOSearchResultList();
         String trimmed = term.trim();
+        String fixed = fixString(trimmed);
         if (!trimmed.isEmpty()) {
-            SolrQuery query = new LearningOpportunityQuery(term, prerequisite, 
+            SolrQuery query = new LearningOpportunityQuery(fixed, prerequisite, 
                     cities, facetFilters, 
                     lang, ongoing, upcoming, 
                     start, rows, sort, order,
@@ -163,9 +176,9 @@ public class SearchServiceSolrImpl implements SearchService {
             
             //Setting result counts of other searches (one of article, provider or lo)
             if (searchType.LO.equals(searchType)) {
-                setOtherResultCounts(term, lang, start, sort, order, cities, facetFilters, ongoing, upcoming, lopFilter, educationCodeFilter, excludes, SearchType.ARTICLE, searchResultList);
+                setOtherResultCounts(fixed, lang, start, sort, order, cities, facetFilters, ongoing, upcoming, lopFilter, educationCodeFilter, excludes, SearchType.ARTICLE, searchResultList);
             } else if (SearchType.ARTICLE.equals(searchType)) {
-                setOtherResultCounts(term, lang, start, sort, order, cities, facetFilters, ongoing, upcoming, lopFilter, educationCodeFilter, excludes, SearchType.LO, searchResultList);
+                setOtherResultCounts(fixed, lang, start, sort, order, cities, facetFilters, ongoing, upcoming, lopFilter, educationCodeFilter, excludes, SearchType.LO, searchResultList);
             }
             
             searchResultList.setTotalCount(searchResultList.getArticleCount() + searchResultList.getLoCount());
@@ -175,6 +188,7 @@ public class SearchServiceSolrImpl implements SearchService {
 
         return searchResultList;
     }
+
 
     private void setOtherResultCounts(String term, String lang, int start,
             String sort, String order, List<String> cities, 

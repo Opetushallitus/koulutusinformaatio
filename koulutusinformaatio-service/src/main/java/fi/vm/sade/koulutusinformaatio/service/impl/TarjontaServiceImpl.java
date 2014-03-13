@@ -47,6 +47,8 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.service.types.TarjontaTila;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.convert.ConversionService;
@@ -121,6 +123,10 @@ public class TarjontaServiceImpl implements TarjontaService {
                     tarjontaRawService, providerService, koodistoService, komo);
         }
         else if (educationType.equals(TarjontaConstants.REHABILITATING_EDUCATION_TYPE) &&
+                komo.getModuuliTyyppi().equals(TarjontaConstants.MODULE_TYPE_CHILD)) {
+            return new RehabilitatingLearningOpportunityBuilder(tarjontaRawService, providerService, koodistoService, komo);
+        } 
+        else if (educationType.equals(TarjontaConstants.PREPARATORY_VOCATIONAL_EDUCATION_TYPE) &&
                 komo.getModuuliTyyppi().equals(TarjontaConstants.MODULE_TYPE_CHILD)) {
             return new RehabilitatingLearningOpportunityBuilder(tarjontaRawService, providerService, koodistoService, komo);
         }

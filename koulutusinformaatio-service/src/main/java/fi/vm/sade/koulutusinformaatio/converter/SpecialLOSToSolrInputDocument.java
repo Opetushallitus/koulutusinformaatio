@@ -191,7 +191,12 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
 
         if (specialLOS.getType().equals(TarjontaConstants.TYPE_REHAB)) {
             doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_VALMENTAVA);
-        } else {
+        } else if (specialLOS.getType().equals(TarjontaConstants.TYPE_PREP)) {
+            System.out.println("Adding field prep");
+            doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_VOC_PREP);
+            doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_MUU);
+        }
+        else {
             doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_AMM_ER);
         }
     }
