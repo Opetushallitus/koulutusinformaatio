@@ -173,6 +173,10 @@ public final class SolrUtil {
         public static final String ARTICLE_URL = "article_url_ss";
         public static final String ARTICLE_PICTURE = "article_picture_ss";
         public static final String ARTICLE_EXCERPT = "article_excerpt_ss";
+        
+        public static final String ARTICLE_NAME_INDEX_FI = "article_name_fi_ssort";
+        public static final String ARTICLE_NAME_INDEX_SV = "article_name_sv_ssort";
+        public static final String ARTICLE_NAME_INDEX_EN = "article_name_en_ssort";
 
         //Fields for sorting
         public static final String START_DATE_SORT = "startDate_dsort";
@@ -182,6 +186,8 @@ public final class SolrUtil {
         //Fields for autocomplete
         public static final String NAME_AUTO = "name_auto";
         public static final String FREE_AUTO = "free_auto";
+        
+        
 
     }
 
