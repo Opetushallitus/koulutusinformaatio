@@ -609,6 +609,11 @@ directive('kiRenderMajorSelection', function() {
             content: '=',
             title: '@',
             children: '='
+        },
+        controller: function($rootScope, $scope) {
+            $rootScope.$watch('translationLanguage', function(value) {
+                $scope.translationLanguage = value;
+            })
         }
     }
 }).

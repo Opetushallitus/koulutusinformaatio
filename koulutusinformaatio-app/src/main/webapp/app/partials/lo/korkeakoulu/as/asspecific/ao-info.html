@@ -5,3 +5,8 @@
     	<span>{{ao.startingQuota}}</span>
     </li>
 </ul>
+<ul class="disc">
+    <li data-ng-repeat="losref in ao.higherEdLOSRefs | filter:{id: '!' + lo.id}">
+        <a href="#!/korkeakoulu/{{losref.id}}">{{losref.name}}</a>
+    </li>
+</ul>
