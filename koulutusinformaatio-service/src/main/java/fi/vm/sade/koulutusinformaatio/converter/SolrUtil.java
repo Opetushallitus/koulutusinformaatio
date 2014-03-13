@@ -222,6 +222,8 @@ public final class SolrUtil {
         public static final String ED_TYPE_MAISTERI = "et9.et11";
         public static final String ED_TYPE_VOC_PREP = "et12.et14";
         public static final String ED_TYPE_TENTH_GRADE = "et12.et13";
+        public static final String ED_TYPE_IMM_VOC = "et12.et15";
+        public static final String ED_TYPE_IMM_UPSEC = "et12.et16";
         public static final String ED_TYPE_MUU = "et12";
         
         public static final String SPECIAL_EDUCATION = "ER";
