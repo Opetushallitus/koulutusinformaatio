@@ -88,7 +88,8 @@ public class UpdateServiceImpl implements UpdateService {
 
                                             "1.2.246.562.5.2013061010184431795697", 
 
-                                            "1.2.246.562.5.2013061010184670694756");//,
+                                            "1.2.246.562.5.2013061010184670694756",
+                                            "1.2.246.562.5.2013112814572438173505");//,
 
                                             //"1.2.246.562.5.2013061010190108136320");
             
@@ -116,10 +117,11 @@ public class UpdateServiceImpl implements UpdateService {
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 this.educationDataUpdateService.save(curLOS);
             }
-            LOG.debug("Higher educations saved: ");
+            LOG.debug("Higher educations saved.");
             
             List<Code> edTypeCodes = this.tarjontaService.getEdTypeCodes();
             indexerService.addEdTypeCodes(edTypeCodes, loUpdateSolr);
+            LOG.debug("Education types indexded.");
 
             List<Location> locations = locationService.getMunicipalities();
             LOG.debug("Got locations");

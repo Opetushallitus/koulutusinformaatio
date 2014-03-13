@@ -218,6 +218,8 @@ public final class SolrUtil {
         public static final String ED_TYPE_YOS = "et9";
         public static final String ED_TYPE_KANDIDAATTI = "et9.et10";
         public static final String ED_TYPE_MAISTERI = "et9.et11";
+        public static final String ED_TYPE_VOC_PREP = "et12.et14";
+        public static final String ED_TYPE_MUU = "et12";
         
         public static final String SPECIAL_EDUCATION = "ER";
         public static final String TIMESTAMP_DOC = "loUpdateTimestampDocument";

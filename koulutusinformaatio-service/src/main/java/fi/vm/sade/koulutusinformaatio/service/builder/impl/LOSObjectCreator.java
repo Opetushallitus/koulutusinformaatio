@@ -149,15 +149,19 @@ public class LOSObjectCreator extends ObjectCreator {
         SpecialLOS los = createBasicLOS(SpecialLOS.class, childKomo, providerOid);
         if (childKomo.getKoulutusTyyppiUri().equals(TarjontaConstants.REHABILITATING_EDUCATION_TYPE)) {
             los.setType(TarjontaConstants.TYPE_REHAB);
+        } else if (childKomo.getKoulutusTyyppiUri().equals(TarjontaConstants.PREPARATORY_VOCATIONAL_EDUCATION_TYPE)) {
+            los.setType(TarjontaConstants.TYPE_PREP);
         } else {
             los.setType(TarjontaConstants.TYPE_SPECIAL);
         }
 
         los.setId(specialLOSId);
         String teachingLang = koodistoService.searchFirstCodeValue(childKomoto.getOpetuskieletUris().get(0)).toLowerCase();
-        Map<String, String> nameTranslations = Maps.newHashMap();
-        nameTranslations.put(teachingLang, childKomoto.getKoulutusohjelmanNimi());
-        los.setName(new I18nText(nameTranslations, nameTranslations));
+        if (!los.getType().equals(TarjontaConstants.TYPE_PREP)) {
+            Map<String, String> nameTranslations = Maps.newHashMap();
+            nameTranslations.put(teachingLang, childKomoto.getKoulutusohjelmanNimi());
+            los.setName(new I18nText(nameTranslations, nameTranslations));
+        }
         los.setCreditValue(childKomoto.getLaajuusArvo());
         los.setCreditUnit(koodistoService.searchFirst(childKomoto.getLaajuusYksikkoUri()));
         los.setQualification(koodistoService.searchFirst(childKomo.getTutkintonimikeUri()));
@@ -182,9 +186,20 @@ public class LOSObjectCreator extends ObjectCreator {
             ChildLOI loi = loiCreator.createChildLOI(childKomoto, specialLOSId, los.getName(), educationCodeUri);
             lois.add(loi);
         }
+        if (!lois.isEmpty() && los.getType().equals(TarjontaConstants.TYPE_PREP)) {
+            createNameForLos(lois, los);
+        }
         los.setLois(lois);
 
         return los;
+    }
+
+    private void createNameForLos(List<ChildLOI> lois, SpecialLOS los) {
+        ChildLOI loi = lois.get(0);
+        if (!loi.getApplicationOptions().isEmpty()) {
+            ApplicationOption ao = loi.getApplicationOptions().get(0);
+            los.setName(ao.getName());
+        }
     }
 
     public SpecialLOS createSpecialLOS(KomoDTO childKomo, KomoDTO parentKomo, String specialLOSId,
@@ -192,6 +207,8 @@ public class LOSObjectCreator extends ObjectCreator {
         SpecialLOS los = createBasicLOS(SpecialLOS.class, childKomo, providerOid);
         if (childKomo.getKoulutusTyyppiUri().equals(TarjontaConstants.REHABILITATING_EDUCATION_TYPE)) {
             los.setType(TarjontaConstants.TYPE_REHAB);
+        } else if (childKomo.getKoulutusTyyppiUri().equals(TarjontaConstants.PREPARATORY_VOCATIONAL_EDUCATION_TYPE)) {
+            los.setType(TarjontaConstants.TYPE_PREP);
         } else {
             los.setType(TarjontaConstants.TYPE_SPECIAL);
         }
