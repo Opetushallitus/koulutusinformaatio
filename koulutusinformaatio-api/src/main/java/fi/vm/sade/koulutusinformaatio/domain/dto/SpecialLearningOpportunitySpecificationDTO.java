@@ -41,6 +41,7 @@ public class SpecialLearningOpportunitySpecificationDTO {
     private String translationLanguage;
     private String educationDomain;
     private ParentLOSRefDTO parent;
+    private String educationTypeUri;
 
     public String getId() {
         return id;
@@ -160,5 +161,13 @@ public class SpecialLearningOpportunitySpecificationDTO {
 
     public void setParent(ParentLOSRefDTO parent) {
         this.parent = parent;
+    }
+
+    public String getEducationTypeUri() {
+        return educationTypeUri;
+    }
+
+    public void setEducationTypeUri(String educationTypeUri) {
+        this.educationTypeUri = educationTypeUri;
     }
 }

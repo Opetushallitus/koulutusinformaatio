@@ -535,12 +535,12 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     				$scope.totalItems = result.totalCount;
     				$scope.loCount = result.loCount;
     				$scope.articleCount = result.articleCount;
-    				$scope.maxPages = Math.ceil(result.totalCount / $scope.itemsPerPage);
+    				$scope.maxPages = Math.ceil(result.loCount / $scope.itemsPerPage);
     				$scope.showPagination = $scope.maxPages > 1;
     				$scope.pageMin = ($scope.currentPage - 1) * $scope.itemsPerPage + 1;
-    				$scope.pageMax = $scope.currentPage * $scope.itemsPerPage < $scope.totalItems
+    				$scope.pageMax = $scope.currentPage * $scope.itemsPerPage < $scope.loCount
                     	? $scope.currentPage * $scope.itemsPerPage
-                    			: $scope.totalItems;
+                    			: $scope.loCount;
     				$scope.populateFacetSelections();
     				
     				$scope.tabTitles.learningOpportunities = TranslationService.getTranslation('search-tab-lo') + ' (' + $scope.loCount + ')';
@@ -736,14 +736,14 @@ function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, 
 				$scope.totalItems = result.totalCount;
 				$scope.loCount = result.loCount;
 				$scope.articleCount = result.articleCount;
-				$scope.maxPages = Math.ceil(result.totalCount / $scope.itemsPerPage);
+				$scope.maxPages = Math.ceil(result.articleCount / $scope.itemsPerPage);
 				$scope.showPagination = $scope.maxPages > 1;
 				$scope.pageMin = ($scope.currentPage - 1) * $scope.itemsPerPage + 1;
-				$scope.pageMax = $scope.currentPage * $scope.itemsPerPage < $scope.totalItems
+				$scope.pageMax = $scope.currentPage * $scope.itemsPerPage < $scope.articleCount
                 	? $scope.currentPage * $scope.itemsPerPage
-                			: $scope.totalItems;
+                			: $scope.articleCount;
 				$scope.queryString = $routeParams.queryString;
-				$scope.showPagination = $scope.totalItems > $scope.itemsPerPage;
+				$scope.showPagination = $scope.articleCount > $scope.itemsPerPage;
 				$scope.tabTitles.learningOpportunities = TranslationService.getTranslation('search-tab-lo') + ' (' + $scope.loCount + ')';
 				$scope.tabTitles.articles = TranslationService.getTranslation('search-tab-article') + ' (' + $scope.articleCount + ')';
 				$scope.tabTitles.queryString = $routeParams.queryString;

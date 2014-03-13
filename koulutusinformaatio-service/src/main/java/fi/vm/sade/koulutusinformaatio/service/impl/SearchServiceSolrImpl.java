@@ -249,7 +249,7 @@ public class SearchServiceSolrImpl implements SearchService {
         String prerequisiteCodeText = doc.get("prerequisiteCode") != null ? doc.get("prerequisiteCode").toString() : null;
         String credits = doc.get(LearningOpportunity.CREDITS) != null ? doc.get(LearningOpportunity.CREDITS).toString() : null;
         String lopName = getLopName(doc, lang);
-        String edType = doc.get(LearningOpportunity.EDUCATION_TYPE) != null ? getEdType(doc) : null;
+        String edType = doc.get(LearningOpportunity.EDUCATION_TYPE_DISPLAY) != null ? doc.getFieldValue(LearningOpportunity.EDUCATION_TYPE_DISPLAY).toString().replace(".", "") : null;
         String edDegree = getEdDegree(doc, lang);
         String edDegreeCode = doc.get(LearningOpportunity.EDUCATION_DEGREE_CODE) != null ? doc.get(LearningOpportunity.EDUCATION_DEGREE_CODE).toString() : null;
         String name = getName(doc, lang);
@@ -344,7 +344,7 @@ public class SearchServiceSolrImpl implements SearchService {
             String prerequisiteCodeText = doc.get("prerequisiteCode") != null ? doc.get("prerequisiteCode").toString() : null;
             String credits = doc.get(LearningOpportunity.CREDITS) != null ? doc.get(LearningOpportunity.CREDITS).toString() : null;
             String lopName = getLopName(doc, lang);
-            String edType = doc.get(LearningOpportunity.EDUCATION_TYPE) != null ? getEdType(doc) : null;
+            String edType = doc.get(LearningOpportunity.EDUCATION_TYPE_DISPLAY) != null ? doc.getFieldValue(LearningOpportunity.EDUCATION_TYPE_DISPLAY).toString().replace(".", "")  : null;
             String edDegree = getEdDegree(doc, lang);
             String edDegreeCode = doc.get(LearningOpportunity.EDUCATION_DEGREE_CODE) != null ? doc.get(LearningOpportunity.EDUCATION_DEGREE_CODE).toString() : null;
             String name = getName(doc, lang);
@@ -365,16 +365,6 @@ public class SearchServiceSolrImpl implements SearchService {
             resultList.add(lo);
         }
         return resultList;
-    }
-
-    private String getEdType(SolrDocument doc) {
-        for (Object valO : doc.getFieldValues(LearningOpportunity.EDUCATION_TYPE)) {
-            String val = valO.toString();
-            if (!val.equals(SolrConstants.ED_TYPE_KAKSOIS)) {
-                return val;
-            }
-        }
-        return null;
     }
 
     /*

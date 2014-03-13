@@ -30,6 +30,7 @@ public class SpecialLOS extends BasicLOS<ChildLOI> {
     private I18nText qualification;
     private I18nText educationDomain;
     private ParentLOSRef parent;
+    private String educationTypeUri;
 
     public List<ChildLOI> getLois() {
         return lois;
@@ -61,5 +62,13 @@ public class SpecialLOS extends BasicLOS<ChildLOI> {
 
     public void setQualification(I18nText qualification) {
         this.qualification = qualification;
+    }
+
+    public String getEducationTypeUri() {
+        return educationTypeUri;
+    }
+
+    public void setEducationTypeUri(String educationTypeUri) {
+        this.educationTypeUri = educationTypeUri;
     }
 }

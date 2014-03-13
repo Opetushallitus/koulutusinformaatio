@@ -41,6 +41,7 @@ public class TarjontaConstants {
     public static final String UPPER_SECONDARY_EDUCATION_TYPE = "Lukiokoulutus";
     public static final String REHABILITATING_EDUCATION_TYPE = "ValmentavaJaKuntouttavaOpetus";
     public static final String PREPARATORY_VOCATIONAL_EDUCATION_TYPE = "AmmOhjaavaJaValmistavaKoulutus";
+    public static final String TENTH_GRADE_EDUCATION_TYPE = "PerusopetuksenLisaopetus";
 
     public static final String PREREQUISITE_URI_ER = "pohjakoulutusvaatimustoinenaste_er";
     

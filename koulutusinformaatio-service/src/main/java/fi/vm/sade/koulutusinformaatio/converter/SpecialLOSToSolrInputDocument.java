@@ -188,12 +188,17 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
      */
     private void indexFacetFields(ChildLOI childLOI, SpecialLOS specialLOS, SolrInputDocument doc) {
         doc.addField(SolrUtil.LearningOpportunity.TEACHING_LANGUAGE, childLOI.getTeachingLanguages().get(0).getValue());
-
+       
         if (specialLOS.getType().equals(TarjontaConstants.TYPE_REHAB)) {
             doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_VALMENTAVA);
         } else if (specialLOS.getType().equals(TarjontaConstants.TYPE_PREP)) {
-            System.out.println("Adding field prep");
-            doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_VOC_PREP);
+            if (specialLOS.getEducationTypeUri().equals(TarjontaConstants.PREPARATORY_VOCATIONAL_EDUCATION_TYPE)) {
+                doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_VOC_PREP);
+                doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE_DISPLAY, SolrUtil.SolrConstants.ED_TYPE_VOC_PREP);
+            } else if (specialLOS.getEducationTypeUri().equals(TarjontaConstants.TENTH_GRADE_EDUCATION_TYPE)) {
+                doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_TENTH_GRADE);
+                doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE_DISPLAY, SolrUtil.SolrConstants.ED_TYPE_TENTH_GRADE);
+            }
             doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_MUU);
         }
         else {

@@ -170,6 +170,8 @@ public final class SolrUtil {
         public static final String EDUCATION_CODE_DISPLAY_SV = "educationCode_sv_ssort";
         public static final String EDUCATION_CODE_DISPLAY_EN = "educationCode_en_ssort";
         
+        public static final String EDUCATION_TYPE_DISPLAY = "educationCode_en_ss";
+        
         public static final String ARTICLE_URL = "article_url_ss";
         public static final String ARTICLE_PICTURE = "article_picture_ss";
         public static final String ARTICLE_EXCERPT = "article_excerpt_ss";
@@ -219,6 +221,7 @@ public final class SolrUtil {
         public static final String ED_TYPE_KANDIDAATTI = "et9.et10";
         public static final String ED_TYPE_MAISTERI = "et9.et11";
         public static final String ED_TYPE_VOC_PREP = "et12.et14";
+        public static final String ED_TYPE_TENTH_GRADE = "et12.et13";
         public static final String ED_TYPE_MUU = "et12";
         
         public static final String SPECIAL_EDUCATION = "ER";

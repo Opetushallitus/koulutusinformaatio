@@ -149,8 +149,10 @@ public class LOSObjectCreator extends ObjectCreator {
         SpecialLOS los = createBasicLOS(SpecialLOS.class, childKomo, providerOid);
         if (childKomo.getKoulutusTyyppiUri().equals(TarjontaConstants.REHABILITATING_EDUCATION_TYPE)) {
             los.setType(TarjontaConstants.TYPE_REHAB);
-        } else if (childKomo.getKoulutusTyyppiUri().equals(TarjontaConstants.PREPARATORY_VOCATIONAL_EDUCATION_TYPE)) {
+        } else if (childKomo.getKoulutusTyyppiUri().equals(TarjontaConstants.PREPARATORY_VOCATIONAL_EDUCATION_TYPE) 
+                || childKomo.getKoulutusTyyppiUri().equals(TarjontaConstants.TENTH_GRADE_EDUCATION_TYPE)) {
             los.setType(TarjontaConstants.TYPE_PREP);
+            los.setEducationTypeUri(childKomo.getKoulutusTyyppiUri());
         } else {
             los.setType(TarjontaConstants.TYPE_SPECIAL);
         }
