@@ -127,7 +127,9 @@ public class TarjontaServiceImpl implements TarjontaService {
             return new RehabilitatingLearningOpportunityBuilder(tarjontaRawService, providerService, koodistoService, komo);
         } 
         else if ((educationType.equals(TarjontaConstants.PREPARATORY_VOCATIONAL_EDUCATION_TYPE) 
-                    || educationType.equals(TarjontaConstants.TENTH_GRADE_EDUCATION_TYPE))
+                    || educationType.equals(TarjontaConstants.TENTH_GRADE_EDUCATION_TYPE)
+                    || educationType.equals(TarjontaConstants.IMMIGRANT_PREPARATORY_VOCATIONAL)
+                    || educationType.equals(TarjontaConstants.IMMIGRANT_PREPARATORY_UPSEC))
                 && komo.getModuuliTyyppi().equals(TarjontaConstants.MODULE_TYPE_CHILD)) {
             return new RehabilitatingLearningOpportunityBuilder(tarjontaRawService, providerService, koodistoService, komo);
         }
