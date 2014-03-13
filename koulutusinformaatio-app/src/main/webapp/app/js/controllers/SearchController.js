@@ -585,6 +585,8 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     	} else if (!$routeParams.queryString || $routeParams.queryString == '') {
             $scope.loResult = {};
             $scope.loResult.totalCount = 0;
+            $scope.loResult.loCount = 0;
+            $scope.loResult.articleCount = 0;
         }
     }
 
