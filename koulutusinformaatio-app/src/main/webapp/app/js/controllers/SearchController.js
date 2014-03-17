@@ -133,16 +133,13 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     	if ($scope.isDefaultTeachLang(facetSelection)) {
     		$scope.langCleared = true;
     	}
-    	
-    	var isEdTypeSel = (facetSelection.facetField == 'educationType_ffm');
 
     	var tempFilters = [];
     	angular.forEach($scope.facetFilters, function(value, index) {
     		var curVal = value.split(':')[1];
     		var curField = value.split(':')[0];
-    		if (((curField != facetSelection.facetField) 
-    				|| (curVal != facetSelection.valueId))
-    				&& (!isEdTypeSel || (isEdTypeSel && curField != 'educationType_ffm'))) {
+    		if ((curField != facetSelection.facetField) 
+    				|| (curVal != facetSelection.valueId)) {
     			tempFilters.push(value);
     		}
     	});

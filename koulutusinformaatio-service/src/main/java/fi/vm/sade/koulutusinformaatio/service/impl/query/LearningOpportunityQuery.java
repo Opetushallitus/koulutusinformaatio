@@ -214,7 +214,6 @@ public class LearningOpportunityQuery extends SolrQuery {
         this.addFacetField(LearningOpportunity.TOPIC);
         this.addFacetField(LearningOpportunity.THEME);
         this.setFacetSort("index");
-        this.setFacetMinCount(1);
         
         this.addFacetQuery(ongoingFQ);
         this.addFacetQuery(upcomingFQ);
