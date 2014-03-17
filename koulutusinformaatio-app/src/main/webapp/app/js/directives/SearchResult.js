@@ -72,7 +72,9 @@ directive('extendedSearchresultData', ['ParentLOService', 'SpecialLOService', 'U
                 
                 if(iAttrs.extendedSearchresultData === "tutkinto") {
                     $scope.extendedLO = ParentLOService.query({id: $scope.lo.id});
-                } else if(iAttrs.extendedSearchresultData === "valmentava" || iAttrs.extendedSearchresultData === "erityisopetus") {
+                } else if(iAttrs.extendedSearchresultData === "valmentava" || 
+                    iAttrs.extendedSearchresultData === "erityisopetus" ||
+                    iAttrs.extendedSearchresultData === "valmistava" ) {
                     $scope.extendedLO = SpecialLOService.query({id: $scope.lo.id});
                 } else if(iAttrs.extendedSearchresultData === "lukio") {
                     $scope.extendedLO = UpperSecondaryLOService.query({id: $scope.lo.id});
