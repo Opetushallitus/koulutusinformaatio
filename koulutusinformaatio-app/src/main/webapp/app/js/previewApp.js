@@ -67,8 +67,7 @@ var kiApp = angular.module('previewApp',
 .constant('kiAppConstants', {
     searchResultsPerPage: 25,
     defaultSortCriteria: '0',
-    searchResultsStartPage: 1,
-    applicationBasketLimit: 5
+    searchResultsStartPage: 1
 })
 
 .filter('escape', function() {

@@ -187,11 +187,6 @@
 
     // initialize view model
     loadLo();
-
-    // trigger once content is loaded
-    $scope.$on('$viewContentLoaded', function() {
-        OPH.Common.initHeader();
-    });
 };
 
 

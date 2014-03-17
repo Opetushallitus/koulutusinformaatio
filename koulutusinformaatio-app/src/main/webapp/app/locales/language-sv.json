@@ -188,9 +188,11 @@
     "application-basket-fill-form-notification-2": "Sortera utbildningarna i blanketten i den ordning du önskar, så att ditt första önskemål finns överst på blanketten.",
     "application-basket-empty": "Töm minneslistan",
     "application-basket-empty-confirm": "Är du säker på att du vill tömma minneslistan?",
-    "application-basket-overflow-warning": "I gemensam ansökan kan du söka till fem (5) olika utbildningar, stryk de som är överlopps",
+    "application-basket-overflow-warning": "I denna ansökan kan du söka till högst __itemcount__ utbildningar, stryk de som är överlopps.",
+    "application-basket-fill-form-notification-single-ao": "Tässä haussa tulee jokaiseen koulutukseen täyttää erillinen hakulomake. (sv)",
     "application-basket-attachments-exams": "Bilagor och prov",
     "application-basket-due-date": "Deadline för bilaga eller tidpunkt för prov",
+    "application-basket-remove": "Avlägsna",
 
     "popup-close": "Stäng",
     "popup-continue": "Fortsätt",

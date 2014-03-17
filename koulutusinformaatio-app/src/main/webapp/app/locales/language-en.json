@@ -193,9 +193,11 @@
     "application-basket-fill-form-notification-2": "Järjestä koulutukset mieluisuusjärjestykseen hakulomakkeella siten, että ylimpänä on ensimmäinen hakutoiveesi.",
     "application-basket-empty": "Tyhjennä muistilista",
     "application-basket-empty-confirm": "Haluatko varmasti tyhjentää koko muistilistan?",
-    "application-basket-overflow-warning": "Voit hakea yhteishaussa viiteen (5) eri koulutukseen, poista ylimääräiset",
+    "application-basket-overflow-warning": "Tässä haussa voit hakea enintään __itemcount__ koulutukseen, poista ylimääräiset. (en)",
+    "application-basket-fill-form-notification-single-ao": "Tässä haussa tulee jokaiseen koulutukseen täyttää erillinen hakulomake. (en)",
     "application-basket-attachments-exams": "Liitteet ja kokeet",
     "application-basket-due-date": "Liitteen määräaika tai kokeen ajankohta",
+    "application-basket-remove": "Remove",
 
     "popup-close": "Sulje",
     "popup-continue": "Jatka",
