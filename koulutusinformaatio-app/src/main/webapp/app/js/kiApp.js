@@ -83,8 +83,7 @@ var kiApp = angular.module('kiApp',
 .constant('kiAppConstants', {
     searchResultsPerPage: 25,
     defaultSortCriteria: '0',
-    searchResultsStartPage: 1,
-    applicationBasketLimit: 5
+    searchResultsStartPage: 1
 })
 
 .filter('escape', function() {
@@ -155,7 +154,6 @@ filter('unsafe', function($sce) {
 var OPH = OPH || {};
 
 OPH.Common = {
-    initHeader: function() {},
     initPiwik: function(piwikUrl) {
         var siteDomain = document.domain;
         var piwikSiteId = 2;

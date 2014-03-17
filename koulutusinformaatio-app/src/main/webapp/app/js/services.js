@@ -1133,11 +1133,6 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
     var cookieConfig = {useLocalStorage: false, maxChunkSize: 2000, maxNumberOfCookies: 20, path: '/'};
 
     // used to update item count in basket
-    var updateBasket = function(count) {
-        var event = $.Event('basketupdate');
-        event.count = count;
-        $('#appbasket-link').trigger(event);
-    };
 
     // TODO: could we automate data transformation somehow?
     var transformData = function(result) {
@@ -1197,8 +1192,6 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
             }
 
             $.cookie(key, JSON.stringify(current), cookieConfig);
-            
-            updateBasket(this.getItemCount());
         },
 
         removeItem: function(aoId) {
@@ -1213,14 +1206,11 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
             } else {
                 this.empty();
             }
-
-            updateBasket(this.getItemCount());
         },
 
         empty: function() {
             $.cookie(key, null, cookieConfig);
             $.cookie(typekey, null, cookieConfig);
-            updateBasket(this.getItemCount());
         },
 
         getItems: function() {

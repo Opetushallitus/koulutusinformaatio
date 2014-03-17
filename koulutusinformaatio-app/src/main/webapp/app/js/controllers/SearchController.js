@@ -591,11 +591,6 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
         }
     }
 
-    
-    $scope.$on('$viewContentLoaded', function() {
-        OPH.Common.initHeader();
-    });
-    
     /*
      * Populating the facet selections (shown in the UI). Based on
      * facet filters in the url.
