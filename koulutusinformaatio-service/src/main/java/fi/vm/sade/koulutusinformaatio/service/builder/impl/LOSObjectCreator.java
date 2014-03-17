@@ -420,6 +420,7 @@ public class LOSObjectCreator extends ObjectCreator {
                 ao.setEducationDegree(los.getEducationDegree());
                 los.getProvider().getApplicationSystemIDs().add(ao.getApplicationSystem().getId());
                 ao.setParent(createParetLosRef(los));
+                ao.setType(TarjontaConstants.TYPE_KK);
 
             }
             

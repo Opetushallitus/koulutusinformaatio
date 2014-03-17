@@ -86,6 +86,7 @@ public class ApplicationOptionEntity {
     private String educationCodeUri;
     @Embedded
     private I18nTextEntity eligibilityDescription;
+    private String type;
 
 
     public ApplicationOptionEntity() {
@@ -367,6 +368,14 @@ public class ApplicationOptionEntity {
 
     public void setHigherEdLOSRefs(List<HigherEducationLOSRefEntity> higherEdLOSRefs) {
         this.higherEdLOSRefs = higherEdLOSRefs;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
 }

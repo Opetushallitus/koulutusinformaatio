@@ -65,6 +65,7 @@ public class ApplicationOptionDTO {
     private String educationCodeUri;
     private String status;
     private String eligibilityDescription;
+    private String type;
 
     public String getId() {
         return id;
@@ -352,5 +353,13 @@ public class ApplicationOptionDTO {
 
     public void setHigherEdLOSRefs(List<HigherEducationLOSRefDTO> higherEdLOSRefs) {
         this.higherEdLOSRefs = higherEdLOSRefs;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

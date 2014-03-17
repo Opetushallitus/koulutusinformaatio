@@ -101,6 +101,7 @@ public class RehabilitatingLearningOpportunityBuilder extends LearningOpportunit
                 for (ApplicationOption ao : loi.getApplicationOptions()) {
                     ao.setProvider(los.getProvider());
                     ao.setEducationDegree(los.getEducationDegree());
+                    ao.setType(los.getType());
                     los.getProvider().getApplicationSystemIDs().add(ao.getApplicationSystem().getId());
                 }
             }

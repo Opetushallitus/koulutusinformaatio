@@ -77,6 +77,7 @@ public class ApplicationOption {
     private I18nText soraDescription;
     private String status;
     private I18nText eligibilityDescription;
+    private String type;
 
 
     public String getId() {
@@ -399,6 +400,14 @@ public class ApplicationOption {
 
     public void setHigherEdLOSRefs(List<HigherEducationLOSRef> higherEdLOSRefs) {
         this.higherEdLOSRefs = higherEdLOSRefs;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
 }

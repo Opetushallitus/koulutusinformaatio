@@ -180,6 +180,7 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
                         ao.setParent(new ParentLOSRef(parentLOS.getId(), parentLOS.getName()));
                         ao.setEducationDegree(parentLOS.getEducationDegree());
                         parentLOS.getProvider().getApplicationSystemIDs().add(ao.getApplicationSystem().getId());
+                        ao.setType(parentLOS.getType());
                     }
 
                     // save application options to be added to parent loi
@@ -210,6 +211,15 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
             parentLOS.setChildren(children);
             parentLOS.setTeachingLanguages(new ArrayList<Code>(codeLang.values()));
         }
+        
+        for (SpecialLOS curSpecial : this.specialLOSs) {
+            for (ChildLOI curChild : curSpecial.getLois()) {
+                for (ApplicationOption curAo : curChild.getApplicationOptions()) {
+                    curAo.setType(TarjontaConstants.TYPE_SPECIAL);
+                }
+            }
+        }
+        
         return this;
     }
 
