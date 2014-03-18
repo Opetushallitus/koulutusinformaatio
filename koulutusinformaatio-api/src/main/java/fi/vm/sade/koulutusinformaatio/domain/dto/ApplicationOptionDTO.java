@@ -66,6 +66,7 @@ public class ApplicationOptionDTO {
     private String status;
     private String eligibilityDescription;
     private String type;
+    private String educationTypeUri;
 
     public String getId() {
         return id;
@@ -361,5 +362,13 @@ public class ApplicationOptionDTO {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getEducationTypeUri() {
+        return educationTypeUri;
+    }
+
+    public void setEducationTypeUri(String educationTypeUri) {
+        this.educationTypeUri = educationTypeUri;
     }
 }

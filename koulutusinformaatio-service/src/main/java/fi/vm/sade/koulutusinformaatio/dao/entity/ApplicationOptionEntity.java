@@ -87,6 +87,7 @@ public class ApplicationOptionEntity {
     @Embedded
     private I18nTextEntity eligibilityDescription;
     private String type;
+    private String educationTypeUri;
 
 
     public ApplicationOptionEntity() {
@@ -376,6 +377,14 @@ public class ApplicationOptionEntity {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getEducationTypeUri() {
+        return educationTypeUri;
+    }
+
+    public void setEducationTypeUri(String educationTypeUri) {
+        this.educationTypeUri = educationTypeUri;
     }
 
 }

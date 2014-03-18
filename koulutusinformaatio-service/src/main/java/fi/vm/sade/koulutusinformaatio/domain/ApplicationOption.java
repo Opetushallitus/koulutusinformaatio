@@ -78,6 +78,7 @@ public class ApplicationOption {
     private String status;
     private I18nText eligibilityDescription;
     private String type;
+    private String educationTypeUri;
 
 
     public String getId() {
@@ -408,6 +409,14 @@ public class ApplicationOption {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getEducationTypeUri() {
+        return educationTypeUri;
+    }
+
+    public void setEducationTypeUri(String educationTypeUri) {
+        this.educationTypeUri = educationTypeUri;
     }
 
 }

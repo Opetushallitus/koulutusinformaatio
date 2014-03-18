@@ -35,6 +35,7 @@ public final class ApplicationOptionToDTO {
             ApplicationOptionDTO dto = new ApplicationOptionDTO();
             dto.setId(applicationOption.getId());
             dto.setType(applicationOption.getType());
+            dto.setEducationTypeUri(applicationOption.getEducationTypeUri());
             dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getName(), defaultLang));
             dto.setAoIdentifier(applicationOption.getAoIdentifier());
             dto.setAttachmentDeliveryDeadline(applicationOption.getAttachmentDeliveryDeadline());
