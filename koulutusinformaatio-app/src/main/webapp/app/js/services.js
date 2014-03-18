@@ -1159,7 +1159,6 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
 
                         // set LOS id for lukio
                         // check if ao is of type lukio
-                        ao.isLukio = UtilityService.isLukio(ao);
                         ao.losId = (ao.children && ao.children.length > 0) ? ao.children[0].losId : '';
                     }
                 }
