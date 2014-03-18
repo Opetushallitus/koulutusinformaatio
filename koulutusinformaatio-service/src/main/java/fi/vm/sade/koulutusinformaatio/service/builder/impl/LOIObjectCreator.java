@@ -351,7 +351,12 @@ public class LOIObjectCreator extends ObjectCreator {
     private boolean isCurrent(ApplicationOption ao) {
         Date now = new Date();
         for (DateRange dr : ao.getApplicationDates()) {
-            if (dr.getStartDate().before(now) && dr.getEndDate().after(now)) {
+            Date endDate = dr.getEndDate();
+            Calendar endCal = Calendar.getInstance();
+            endCal.setTime(endDate);
+            endCal.add(Calendar.MONTH, 4);
+            endDate = endCal.getTime();
+            if (dr.getStartDate().before(now) && endDate.after(now)) {
                 return true;
             }
         }
