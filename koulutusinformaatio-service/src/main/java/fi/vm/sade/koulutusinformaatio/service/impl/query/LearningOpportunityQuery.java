@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
+import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
 
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.common.params.DisMaxParams;
@@ -75,14 +76,18 @@ public class LearningOpportunityQuery extends SolrQuery {
     public final static String APP_STATUS_UPCOMING = "upcoming";
 
     public LearningOpportunityQuery(String term, String prerequisite,
-            List<String> cities, List<String> facetFilters, String lang, boolean ongoing, boolean upcoming, int start, int rows, String sort, String order) {
+            List<String> cities, List<String> facetFilters, String lang, 
+            boolean ongoing, boolean upcoming, 
+            int start, int rows, String sort, String order, 
+            String lopFilter, String educationCodeFilter, List<String> excludes, 
+            SearchType searchType) {
         super(term);
-        if (prerequisite != null) {
+        if (prerequisite != null && SearchType.LO.equals(searchType)) {
             this.addFilterQuery(String.format("%s:%s", LearningOpportunity.PREREQUISITES, prerequisite));
         }
         this.setStart(start);
         this.setRows(rows);
-        if (cities != null && !cities.isEmpty()) {
+        if (cities != null && !cities.isEmpty() && SearchType.LO.equals(searchType)) {
             this.addFilterQuery(
                     String.format("%s:(\"%s\")", LearningOpportunity.LOP_HOMEPLACE, Joiner.on("\" OR \"").join(cities))
                     );
@@ -95,7 +100,7 @@ public class LearningOpportunityQuery extends SolrQuery {
                 ongoingFQ.append(" OR ");
             }
         }
-        if (ongoing) {
+        if (ongoing && SearchType.LO.equals(searchType)) {
             this.addFilterQuery(ongoingFQ.toString());
         }
         
@@ -107,15 +112,41 @@ public class LearningOpportunityQuery extends SolrQuery {
                 upcomingFQ.append(" OR ");
             }
         }
-        if (upcoming) {
+        if (upcoming && SearchType.LO.equals(searchType)) {
             this.addFilterQuery(upcomingFQ.toString());
+        }
+        
+        if (lopFilter != null ) {
+            addLopRecommendationFilter(lopFilter, lang);
+        }
+        
+        if (educationCodeFilter != null ) {
+            addEducationCodeRecommendationFilter(educationCodeFilter, lang);
+        }
+        
+        if (excludes != null) {
+            for (String curExclude : excludes) {
+                String[] parts = curExclude.split(":");
+                if (parts.length == 2) {
+                    this.addFilterQuery(String.format("%s:\"%s\"", parts[0], parts[1]));
+                }
+            }
         }
         
         //leaving the facet and timestamp docs out
         this.addFilterQuery(String.format("-%s:%s", LearningOpportunity.ID, SolrConstants.TIMESTAMP_DOC));
         this.addFilterQuery(String.format("-%s:%s", LearningOpportunity.TYPE, SolrConstants.TYPE_FACET));
+        if (!SearchType.ARTICLE.equals(searchType)) {
+            this.addFilterQuery(String.format("-%s:%s", LearningOpportunity.TYPE, SolrConstants.TYPE_ARTICLE));
+        } else {
+            this.addFilterQuery(String.format("%s:%s", LearningOpportunity.TYPE, SolrConstants.TYPE_ARTICLE));
+        }
         
-        addFacetsToQuery(lang, facetFilters, ongoingFQ.toString(), upcomingFQ.toString());
+        if (SearchType.LO.equals(searchType)) {
+            addFacetsToQuery(lang, facetFilters, ongoingFQ.toString(), upcomingFQ.toString());
+        } else if (SearchType.ARTICLE.equals(searchType)) {
+            this.addFilterQuery(String.format("%s:%s", LearningOpportunity.TEACHING_LANGUAGE, lang.toUpperCase()));
+        }
         
         this.setParam("defType", "edismax");
         
@@ -151,7 +182,6 @@ public class LearningOpportunityQuery extends SolrQuery {
                 && !teachingLangs.isEmpty()) {
             searchFields.addAll(FIELDS_FI);
         }
-        
         
         if (searchFields.isEmpty()){
             this.setParam(DisMaxParams.QF, Joiner.on(" ").join(FIELDS));
@@ -190,5 +220,37 @@ public class LearningOpportunityQuery extends SolrQuery {
         for (String curFilter : facetFilters) {
             this.addFilterQuery(curFilter);
         }
+        
+    }
+
+    private void addLopRecommendationFilter(String lopFilter,
+            String lang) {
+        
+        if (lang.toLowerCase().equals("fi")) {
+            this.addFilterQuery(String.format("%s:\"%s\"", LearningOpportunity.LOP_NAME_DISPLAY_FI, lopFilter));
+        } else if (lang.toLowerCase().equals("sv")) {
+            this.addFilterQuery(String.format("%s:\"%s\"", LearningOpportunity.LOP_NAME_DISPLAY_SV, lopFilter));
+        } else if (lang.toLowerCase().equals("en")) {
+            this.addFilterQuery(String.format("%s:\"%s\"", LearningOpportunity.LOP_NAME_DISPLAY_EN, lopFilter));
+        } else {
+            this.addFilterQuery(String.format("%s:\"%s\"", LearningOpportunity.LOP_NAME, lopFilter));
+        }
+    }
+    
+    private void addEducationCodeRecommendationFilter(String educationCodeFilter,
+            String lang) { 
+        
+        if (lang.toLowerCase().equals("fi")) {
+            this.addFilterQuery(String.format("%s:\"%s\"", LearningOpportunity.EDUCATION_CODE_DISPLAY_FI, educationCodeFilter));
+        } else if (lang.toLowerCase().equals("sv")) {
+            this.addFilterQuery(String.format("%s:\"%s\"", LearningOpportunity.EDUCATION_CODE_DISPLAY_SV, educationCodeFilter));
+        } else if (lang.toLowerCase().equals("en")) {
+            this.addFilterQuery(String.format("%s:\"%s\"", LearningOpportunity.EDUCATION_CODE_DISPLAY_EN, educationCodeFilter));
+        } else {
+            this.addFilterQuery(String.format("%s:\"%s\"", LearningOpportunity.EDUCATION_CODE_DISPLAY_FI, educationCodeFilter));
+        }
+        
+        
+       
     }
 }

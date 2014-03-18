@@ -1,6 +1,6 @@
 /* Directives */
 
-angular.module('kiApp.directives', ['kiApp.Navigation', 'angularTreeview']).
+angular.module('kiApp.directives', ['kiApp.Navigation', 'angularTreeview', 'kiApp.directives.AppBasket']).
 
 /**
  *  Updates the title element of the page.
@@ -10,7 +10,8 @@ directive('title', ['$rootScope', function($rootScope) {
         restrict: 'E',
         link: function(scope, element, attrs) {
             $rootScope.$watch('title', function(value) {
-                element.text(value);
+                document.title = value;
+                //element.text(value);
             });
         }
     }
@@ -76,8 +77,10 @@ directive('renderContactPersonInfo', function() {
         scope: {
             contactPersons: '=content'
         },
-        link: function(scope, element, attrs) {
-
+        controller: function($rootScope, $scope) {
+            $rootScope.$watch('translationLanguage', function(value) {
+                $scope.translationLanguage = value;
+            });
         }
     }
 }).
@@ -155,6 +158,11 @@ directive('kiRenderProfessionalTitles', function() {
         scope: {
             title: '@title',
             content: '=content'
+        },
+        controller: function($rootScope, $scope) {
+            $rootScope.$watch('translationLanguage', function(value) {
+                $scope.translationLanguage = value;
+            });
         },
         link: function(scope, element, attrs) {
         }
@@ -368,14 +376,21 @@ directive('kiAbsoluteLink', function() {
     return {
         restrict: 'A',
         templateUrl: 'templates/languageRibbon.html',
+        scope: {
+            languages: '=',
+            changeLanguage: '&'
+        },
 
         link: function(scope, element, attrs) {
-            //var type = $routeParams.loType;
-            //scope.isChild = (type === 'koulutusohjelma' || type == 'lukio') ? true : false; // TODO: do not use loType directly
-
-            scope.$watch('selectedLOI', function(data) {
-                scope.hasMultipleTranslations = (data && data.availableTranslationLanguages && data.availableTranslationLanguages.length >= 1) ? true : false;
+            scope.$watch('languages', function(data) {
+                scope.hasMultipleTranslations = (data && data.length >= 1) ? true : false;
             });
+
+            var callback = scope.changeLanguage();
+
+            scope.changeLanguage = function(lang) {
+                callback(lang);
+            }
         }
     };
  }]).
@@ -513,6 +528,11 @@ directive('renderTextBlock', ['TranslationService', function(TranslationService)
 
             attrs.$observe('content', function(value) {
                 content = value;
+                update();
+            });
+
+            // watch global tarnaslation language in rootScope
+            scope.$watch('translationLanguage', function(value) {
                 title = TranslationService.getTranslationByTeachingLanguage(attrs.title);
                 update();
             });
@@ -577,6 +597,26 @@ directive('renderExtendableTextBlock', ['TranslationService', function(Translati
         }
     }
 }]).
+
+/**
+ *  Renders higher education major selection block
+ */
+directive('kiRenderMajorSelection', function() {
+    return {
+        restrict: 'A',
+        templateUrl: 'templates/majorSelection.html',
+        scope: {
+            content: '=',
+            title: '@',
+            children: '='
+        },
+        controller: function($rootScope, $scope) {
+            $rootScope.$watch('translationLanguage', function(value) {
+                $scope.translationLanguage = value;
+            })
+        }
+    }
+}).
 
 /**
  *  Renders study plan block
@@ -747,6 +787,32 @@ directive('kiRenderApplicationStatusLabel', function() {
 }).
 
 /**
+ *  Render status label for preview
+ */
+directive('kiPreviewStatusLabel', ['TranslationService', function(TranslationService) {
+    return {
+        restrict: 'A',
+        scope: {
+            status: '=kiPreviewStatusLabel'
+        },
+        link: function($scope, element, attrs) {
+            var statusPublished = 'JULKAISTU';
+            var statusReady = 'VALMIS';
+            var statusDraft = 'LUONNOS';
+
+            if ($scope.status == statusPublished || $scope.status == statusReady) {
+                element.addClass('label vih');
+            } else {
+                element.addClass('label sin');
+            }
+
+            var labelText = TranslationService.getTranslation($scope.status);
+            element.html(labelText);
+        }
+    }
+}]).
+
+/**
  *  Render application option status
  */
 directive('kiBanner', ['$location', function($location) {
@@ -765,6 +831,9 @@ directive('kiBanner', ['$location', function($location) {
     }
 }]).
 
+/**
+ *  Render application option index for ao tab
+ */
 directive('kiApplicationOptionIndex', [ function() {
     return {
         restrict: 'A',
@@ -773,14 +842,25 @@ directive('kiApplicationOptionIndex', [ function() {
             lo: '=lo'
         },
         controller: function($scope) {
-            var length = 0;
-            if ($scope.lo && $scope.lo.applicationSystems) {
-                angular.forEach($scope.lo.applicationSystems, function(as, askey) {
-                    length += as.applicationOptions.length;
-                });
-            }
+            // scrolls to an anchor on page
+            $scope.scrollToAnchor = function(id) {
+                id = id.replace(/\./g,"\\.");
+                $('html, body').scrollTop($('#' + id).offset().top);
+                return false;
+            };
+            
 
-            $scope.showIndex = length > 1 ? true : false;
+            $scope.$watch('lo', function(value) {
+                var length = 0;
+
+                if ($scope.lo && $scope.lo.applicationSystems) {
+                    angular.forEach($scope.lo.applicationSystems, function(as, askey) {
+                        length += as.applicationOptions.length;
+                    });
+                }
+
+                $scope.showIndex = length > 1 ? true : false;
+            });
         }
     }
 }]).

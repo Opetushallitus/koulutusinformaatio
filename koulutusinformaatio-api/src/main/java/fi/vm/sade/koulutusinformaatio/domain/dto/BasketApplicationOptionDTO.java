@@ -48,6 +48,8 @@ public class BasketApplicationOptionDTO {
     private boolean vocational;
     private String educationCodeUri;
     private boolean isHigherEducation;
+    private String type;
+    private String educationTypeUri;
 
     public String getId() {
         return id;
@@ -213,5 +215,21 @@ public class BasketApplicationOptionDTO {
 
     public void setHigherEducation(boolean isHigherEducation) {
         this.isHigherEducation = isHigherEducation;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getEducationTypeUri() {
+        return educationTypeUri;
+    }
+
+    public void setEducationTypeUri(String educationTypeUri) {
+        this.educationTypeUri = educationTypeUri;
     }
 }

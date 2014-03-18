@@ -55,7 +55,7 @@ public class HigherEducationLOS extends LOS {
     private I18nText degree;
     private I18nText qualification;
     private Boolean chargeable;
-    private String educationCode;
+    private Code educationCode;
     private List<Code> teachingLanguages;
 
     private Provider provider;
@@ -77,7 +77,7 @@ public class HigherEducationLOS extends LOS {
 
     //Status of the lo. For preview
     private String status;
-    private List<String> availableTranslationLanguages;
+    private List<Code> availableTranslationLanguages;
     
 
     private List<Code> facetPrerequisites;
@@ -308,11 +308,11 @@ public class HigherEducationLOS extends LOS {
         return chargeable;
     }
 
-    public void setEducationCode(String uri) {
-        educationCode = uri;
+    public void setEducationCode(Code edCode) {
+        educationCode = edCode;
     }
 
-    public String getEducationCode() {
+    public Code getEducationCode() {
         return educationCode;
     }
 
@@ -441,11 +441,11 @@ public class HigherEducationLOS extends LOS {
         this.status = status;
     }
 
-    public List<String> getAvailableTranslationLanguages() {
+    public List<Code> getAvailableTranslationLanguages() {
         return availableTranslationLanguages;
     }
 
-    public void setAvailableTranslationLanguages(List<String> availableTranslationLanguages) {
+    public void setAvailableTranslationLanguages(List<Code> availableTranslationLanguages) {
         this.availableTranslationLanguages = availableTranslationLanguages;
     }
     

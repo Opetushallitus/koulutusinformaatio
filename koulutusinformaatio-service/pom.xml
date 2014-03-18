@@ -13,6 +13,11 @@
     <name>Koulutusinformaatio :: Service</name>
 
     <dependencies>
+    	<dependency>
+            <groupId>fi.vm.sade.koulutusinformaatio</groupId>
+            <artifactId>koulutusinformaatio-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>fi.vm.sade.tarjonta</groupId>
             <artifactId>tarjonta-api</artifactId>

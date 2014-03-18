@@ -6,7 +6,7 @@ angular.module('SearchResult', []).
 directive('searchResult', ['FilterService', 'TranslationService', function(FilterService, TranslationService) {
     return {
         restrict: 'A',
-        template: '<div data-ng-include="getTemplate()"></div>',
+        template: '<div data-ng-include="getTemplate()" class="search-result"></div>',
         link: function(scope, element, attrs) {
 
             scope.locales = {
@@ -54,14 +54,10 @@ directive('toggleCollapse', [function () {
         link: function (scope, iElement, iAttrs) {
             scope.showExtension = "close";
         },
-        template: 
-            '<h4 class="collapser float-right" data-ng-class="showExtension" data-ng-click="toggleExtendedView()">' + 
-                '<span data-ki-i18n="extended-view-{{showExtension}}" class="margin-right-1"></span>' + 
-                '<span class="icon"></span>' +
-            '</h4>' +
+        template:
             '<div class="clear"></div>' +
             '<div data-collapse="showExtension == \'close\'">' + 
-                '<div style="padding-top: 20px; border-top: 1px dashed #DDDDDD; margin-top: 10px" data-ng-transclude></div>' +
+                '<div class="search-result-extended" data-ng-transclude></div>' +
             '</div>'
 
     };
@@ -76,7 +72,9 @@ directive('extendedSearchresultData', ['ParentLOService', 'SpecialLOService', 'U
                 
                 if(iAttrs.extendedSearchresultData === "tutkinto") {
                     $scope.extendedLO = ParentLOService.query({id: $scope.lo.id});
-                } else if(iAttrs.extendedSearchresultData === "valmentava" || iAttrs.extendedSearchresultData === "erityisopetus") {
+                } else if(iAttrs.extendedSearchresultData === "valmentava" || 
+                    iAttrs.extendedSearchresultData === "erityisopetus" ||
+                    iAttrs.extendedSearchresultData === "valmistava" ) {
                     $scope.extendedLO = SpecialLOService.query({id: $scope.lo.id});
                 } else if(iAttrs.extendedSearchresultData === "lukio") {
                     $scope.extendedLO = UpperSecondaryLOService.query({id: $scope.lo.id});
@@ -183,7 +181,10 @@ directive('srNotApplicable', [function() {
         restrict: 'A',
         require: '^extendedSearchresultData',
         template:
-            '<p data-ki-i18n="not-applicable"></p>'
+            '<p class="small">' +
+            '<span data-ki-i18n="application-period" data-show-colon="true" class="margin-right-1"></span>' +
+            '<span data-ki-timestamp="{{applicationoption.applicationStartDate}}"></span>&ndash;<span data-ki-timestamp="{{applicationoption.applicationEndDate}}"></span>' +
+            '</p>'
     }
 }]).
 
@@ -205,6 +206,12 @@ directive('srBasicInformation', [function () {
     return {
         restrict: 'A',
         require: '^extendedSearchresultData',
-        templateUrl: 'templates/searchResultBasicInformation.html'
+        templateUrl: function(element, attrs) {
+            if (attrs.templateType) {
+                return 'templates/' + attrs.templateType + '/searchResultBasicInformation.html';
+            } else {
+                return 'templates/searchResultBasicInformation.html';
+            }
+        }
     };
 }]);

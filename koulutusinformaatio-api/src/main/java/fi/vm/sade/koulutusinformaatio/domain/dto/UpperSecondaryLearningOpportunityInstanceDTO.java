@@ -44,7 +44,7 @@ public class UpperSecondaryLearningOpportunityInstanceDTO {
     private String plannedDuration;
     private String plannedDurationUnit;
     private List<LanguageSelectionDTO> languageSelection;
-    private List<String> availableTranslationLanguages;
+    private List<CodeDTO> availableTranslationLanguages;
 
     public String getId() {
         return id;
@@ -174,11 +174,11 @@ public class UpperSecondaryLearningOpportunityInstanceDTO {
         this.languageSelection = languageSelection;
     }
 
-    public List<String> getAvailableTranslationLanguages() {
+    public List<CodeDTO> getAvailableTranslationLanguages() {
         return availableTranslationLanguages;
     }
 
-    public void setAvailableTranslationLanguages(List<String> availableTranslationLanguages) {
+    public void setAvailableTranslationLanguages(List<CodeDTO> availableTranslationLanguages) {
         this.availableTranslationLanguages = availableTranslationLanguages;
     }
 }

@@ -105,11 +105,22 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
             qParams += (params.ongoing != undefined) ? ('&ongoing=' + params.ongoing) : '';
             qParams += (params.upcoming != undefined) ? ('&upcoming=' + params.upcoming) : '';
             qParams += (params.lang != undefined) ? ('&lang=' + params.lang) : '';
+            qParams += (params.lopFilter != undefined) ? ('&lopFilter=' + params.lopFilter) : '';
+            qParams += (params.educationCodeFilter != undefined) ? ('&educationCodeFilter=' + params.educationCodeFilter) : '';
+            qParams += (params.searchType != undefined) ? ('&searchType=' + params.searchType) : '&searchType=LO';
+            
             if (params.facetFilters != undefined) {
             	 angular.forEach(params.facetFilters, function(facetFilter, key) {
             		 qParams += '&facetFilters=' + facetFilter;
                  });
             }
+            
+            if (params.excludes != undefined) {
+            	angular.forEach(params.excludes, function(exclude, key) {
+           		 	qParams += '&excludes=' + exclude;
+                });
+            }
+            
             var sortField = '';
             if (params.sortCriteria != undefined) {
             	if (params.sortCriteria == 1 || params.sortCriteria == 2) {
@@ -463,10 +474,13 @@ service('HigherEducationPreviewLOService', ['$http', '$timeout', '$q', 'Language
             }
 
             var url = '../lo/preview/';
-
+            //var url = 'mocks/kk.json';
+            //$http.get(url, {}).
+            
             $http.get(url + options.id, {
                 params: queryParams
             }).
+            
             
             //$http.get('mocks/amk.json', {}).
             success(function(result) {
@@ -526,8 +540,7 @@ service('ParentLOTransformer', ['UtilityService', '$filter', '$rootScope', funct
             for (var loiIndex in result.lois) {
                 if (result.lois.hasOwnProperty(loiIndex)) {
                     var loi = result.lois[loiIndex];
-                    var translationLanguageIndex = loi.availableTranslationLanguages.indexOf(result.translationLanguage);
-                    loi.availableTranslationLanguages.splice(translationLanguageIndex, 1);
+                    loi.availableTranslationLanguages = _.filter(loi.availableTranslationLanguages, function(item) { return item.value.toLowerCase() != result.translationLanguage});
                 }
             } 
 
@@ -639,6 +652,29 @@ service('ParentLOTransformer', ['UtilityService', '$filter', '$rootScope', funct
                     else return a.id > b.id ? 1 : -1;
                 });
             }
+
+            // aggregate childrefs from application options to application systems
+            angular.forEach(result.lois, function(loi, loikey) {
+                angular.forEach(loi.applicationSystems, function(as, askey) {
+                    var children = [];
+                    angular.forEach(as.applicationOptions, function(ao, aokey) {
+                        angular.forEach(ao.childRefs, function(childref, childrefkey) {
+                            var childFound = false;
+                            angular.forEach(children, function(child) {
+                                if (child.losId == childref.losId) {
+                                    childFound = true;
+                                }
+                            });
+
+                            if (!childFound) {
+                                children.push(childref);
+                            }
+                        });
+                    });
+
+                    as.children = children;
+                });
+            });
         }
     }
 }]).
@@ -646,7 +682,7 @@ service('ParentLOTransformer', ['UtilityService', '$filter', '$rootScope', funct
 /**
  * Transformer for child LO data
  */
-service('HigherEducationTransformer', ['UtilityService', '$rootScope', '$filter', 'LanguageService', function(UtilityService, $rootScope, $filter, LanguageService) {
+service('HigherEducationTransformer', ['UtilityService', '$rootScope', '$filter', 'LanguageService', '_', function(UtilityService, $rootScope, $filter, LanguageService, _) {
 
 	var getFirstItemInList = function(list) {
 		if (list && list[0]) {
@@ -664,8 +700,7 @@ service('HigherEducationTransformer', ['UtilityService', '$rootScope', '$filter'
 			}
 
 			if (result && result.availableTranslationLanguages) {
-				var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
-				result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
+                result.availableTranslationLanguages = _.filter(result.availableTranslationLanguages, function(item) { return item.value.toLowerCase() != result.translationLanguage});
 			}
 
 			if (result && result.provider && result.provider.name) {
@@ -785,8 +820,7 @@ service('ChildLOTransformer', ['UtilityService', '$rootScope', function(UtilityS
             for (var loiIndex in result.lois) {
                 if (result.lois.hasOwnProperty(loiIndex)) {
                     var loi = result.lois[loiIndex];
-                    var translationLanguageIndex = loi.availableTranslationLanguages.indexOf(result.translationLanguage);
-                    loi.availableTranslationLanguages.splice(translationLanguageIndex, 1);
+                    loi.availableTranslationLanguages = _.filter(loi.availableTranslationLanguages, function(item) { return item.value.toLowerCase() != result.translationLanguage});
                 }
             } 
             
@@ -923,20 +957,28 @@ service('ChildLOTransformer', ['UtilityService', '$rootScope', function(UtilityS
                 });
             }
 
-            // add current child to sibligs
-            if (result.related) {
-                result.related.push({
-                    childLOId: result.id, 
-                    name: result.name
-                });
+            // aggregate childrefs from application options to application systems
+            angular.forEach(result.lois, function(loi, loikey) {
+                angular.forEach(loi.applicationSystems, function(as, askey) {
+                    var children = [];
+                    angular.forEach(as.applicationOptions, function(ao, aokey) {
+                        angular.forEach(ao.childRefs, function(childref, childrefkey) {
+                            var childFound = false;
+                            angular.forEach(children, function(child) {
+                                if (child.losId == childref.losId) {
+                                    childFound = true;
+                                }
+                            });
 
-                // sort siblings alphabetically
-                result.related = result.related.sort(function(a, b) {
-                    if (a.childLOId > b.childLOId) return 1;
-                    else if (a.childLOId < b.childLOId) return -1;
-                    else return a.childLOId > b.childLOId ? 1 : -1;
+                            if (!childFound) {
+                                children.push(childref);
+                            }
+                        });
+                    });
+
+                    as.children = children;
                 });
-            }
+            });
         }
     }
 }]).
@@ -1091,11 +1133,6 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
     var cookieConfig = {useLocalStorage: false, maxChunkSize: 2000, maxNumberOfCookies: 20, path: '/'};
 
     // used to update item count in basket
-    var updateBasket = function(count) {
-        var event = $.Event('basketupdate');
-        event.count = count;
-        $('#appbasket-link').trigger(event);
-    };
 
     // TODO: could we automate data transformation somehow?
     var transformData = function(result) {
@@ -1122,7 +1159,6 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
 
                         // set LOS id for lukio
                         // check if ao is of type lukio
-                        ao.isLukio = UtilityService.isLukio(ao);
                         ao.losId = (ao.children && ao.children.length > 0) ? ao.children[0].losId : '';
                     }
                 }
@@ -1155,8 +1191,6 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
             }
 
             $.cookie(key, JSON.stringify(current), cookieConfig);
-            
-            updateBasket(this.getItemCount());
         },
 
         removeItem: function(aoId) {
@@ -1171,14 +1205,11 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
             } else {
                 this.empty();
             }
-
-            updateBasket(this.getItemCount());
         },
 
         empty: function() {
             $.cookie(key, null, cookieConfig);
             $.cookie(typekey, null, cookieConfig);
-            updateBasket(this.getItemCount());
         },
 
         getItems: function() {
@@ -1327,7 +1358,10 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
                 facetFilters: filters.facetFilters,
                 langCleared: filters.langCleared,
                 itemsPerPage: filters.itemsPerPage,
-                sortCriteria: filters.sortCriteria
+                sortCriteria: filters.sortCriteria,
+                lopFilter: filters.lopFilter,
+                educationCodeFilter: filters.educationCodeFilter,
+                excludes: filters.excludes
             };
 
             angular.forEach(result, function(value, key) {
@@ -1416,7 +1450,9 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
             params += filters.langCleared ? '&langCleared=' + filters.langCleared : '';
             params += filters.itemsPerPage ? '&itemsPerPage=' + filters.itemsPerPage : '';
             params += filters.sortCriteria ? '&sortCriteria=' + filters.sortCriteria : '';
-            
+            params += filters.lopFilter ? '&lopFilter=' + filters.lopFilter : '';
+            params += filters.educationCodeFilter ? '&educationCodeFilter=' + filters.educationCodeFilter : '';
+            params += (filters.excludes && filters.excludes.length > 0) ? '&excludes=' + filters.excludes.join(',') : '';
             params = params.length > 0 ? params.substring(1, params.length) : '';
             return params;
         },
@@ -1427,6 +1463,21 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
         		return filters.facetFilters;
         	}
         	return filters.facetFilters;
+        },
+        
+        getLopFilter: function() {
+        	return filters.lopFilter;
+        },
+        
+        getEducationCodeFilter: function() {
+        	return filters.educationCodeFilter;
+        },
+        
+        getExcludes: function() {
+        	if (filters.excludes != undefined && (typeof filters.excludes == 'string' || filters.excludes instanceof String)) {
+        		filters.excludes = filters.excludes.split(',');
+        	}
+        	return filters.excludes;
         },
         
         getLangCleared: function() {

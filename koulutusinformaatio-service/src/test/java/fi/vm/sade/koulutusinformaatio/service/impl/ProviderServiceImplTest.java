@@ -98,7 +98,7 @@ public class ProviderServiceImplTest {
     }
 
     @Test
-    public void testGetByOid() throws KoodistoException {
+    public void testGetByOid() throws KoodistoException, IOException  {
         Provider p = service.getByOID(CHILD_ORGANISAATIO_OID);
         assertNotNull(p);
         assertEquals(p.getId(), CHILD_ORGANISAATIO_OID);

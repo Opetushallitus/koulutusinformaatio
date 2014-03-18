@@ -1,12 +1,17 @@
 <section class="content-container grid16-16">
-	
+    <div data-ajax-loader></div>
+
 	<!-- PREVIEW -->
-	<div data-ng-show="lo.preview">
-		<a href="{{tarjontaViewUrl}}"><span data-ki-i18n="tarjontaTarkastelu"></span></a> 
+	<div data-ng-if="lo.preview" class="margin-bottom-4">
+		<a href="{{tarjontaViewUrl}}" class="cssbutton primary back" data-ki-i18n="tarjontaTarkastelu"></a>
+        <p data-ki-i18n="preview-help" class="preview-separator" style="border-bottom: 1px solid #DDDDDD; margin-bottom: 20px; padding-bottom: 20px;"></p>
     </div>
     <!-- END PREVIEW-->
     
-    <div data-ki-breadcrumb="breadcrumb-search-results" id="breadcrumb"></div>
+    <!-- PREVIEW EXCLUDE -->
+    <div data-ng-if="!lo.preview" data-ki-breadcrumb="breadcrumb-search-results" id="breadcrumb"></div>
+    <!-- END PREVIEW EXCLUDE -->
+
     <div data-ng-include data-src="partialUrl + 'top.html'"></div>
     <div data-tabset>
         <div data-tab data-heading="{{tabtitle.koulutus}}" title="{{tabtitle.koulutus}}">
@@ -25,4 +30,6 @@
             </section>
         </div>
     </div>
+
+
 </section>

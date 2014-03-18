@@ -43,6 +43,8 @@ public class ApplicationOptionEntity {
     private LearningOpportunityProviderEntity provider;
     @Embedded
     private List<ChildLOIRefEntity> childLOIRefs = new ArrayList<ChildLOIRefEntity>();
+    @Embedded
+    private List<HigherEducationLOSRefEntity> higherEdLOSRefs = new ArrayList<HigherEducationLOSRefEntity>();
     private Integer startingQuota;
     private Integer lowestAcceptedScore;
     private Double lowestAcceptedAverage;
@@ -84,6 +86,8 @@ public class ApplicationOptionEntity {
     private String educationCodeUri;
     @Embedded
     private I18nTextEntity eligibilityDescription;
+    private String type;
+    private String educationTypeUri;
 
 
     public ApplicationOptionEntity() {
@@ -357,6 +361,30 @@ public class ApplicationOptionEntity {
     }
     public void setEligibilityDescription(I18nTextEntity prerequisiteDescription) {
         this.eligibilityDescription = prerequisiteDescription;
+    }
+
+    public List<HigherEducationLOSRefEntity> getHigherEdLOSRefs() {
+        return higherEdLOSRefs;
+    }
+
+    public void setHigherEdLOSRefs(List<HigherEducationLOSRefEntity> higherEdLOSRefs) {
+        this.higherEdLOSRefs = higherEdLOSRefs;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getEducationTypeUri() {
+        return educationTypeUri;
+    }
+
+    public void setEducationTypeUri(String educationTypeUri) {
+        this.educationTypeUri = educationTypeUri;
     }
 
 }

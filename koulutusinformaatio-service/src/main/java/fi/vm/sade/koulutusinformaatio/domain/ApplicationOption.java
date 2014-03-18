@@ -33,6 +33,7 @@ public class ApplicationOption {
     private ApplicationSystem applicationSystem;
     private String educationDegree;
     private List<ChildLOIRef> childLOIRefs = new ArrayList<ChildLOIRef>();
+    private List<HigherEducationLOSRef> higherEdLOSRefs = new ArrayList<HigherEducationLOSRef>();
     private Provider provider;
     // "aloituspaikatLkm" : 10,
     private Integer startingQuota;
@@ -76,6 +77,8 @@ public class ApplicationOption {
     private I18nText soraDescription;
     private String status;
     private I18nText eligibilityDescription;
+    private String type;
+    private String educationTypeUri;
 
 
     public String getId() {
@@ -390,6 +393,30 @@ public class ApplicationOption {
 
     public I18nText getEligibilityDescription() {
         return eligibilityDescription;
+    }
+
+    public List<HigherEducationLOSRef> getHigherEdLOSRefs() {
+        return higherEdLOSRefs;
+    }
+
+    public void setHigherEdLOSRefs(List<HigherEducationLOSRef> higherEdLOSRefs) {
+        this.higherEdLOSRefs = higherEdLOSRefs;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getEducationTypeUri() {
+        return educationTypeUri;
+    }
+
+    public void setEducationTypeUri(String educationTypeUri) {
+        this.educationTypeUri = educationTypeUri;
     }
 
 }

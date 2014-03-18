@@ -59,6 +59,7 @@ public final class ApplicationOptionsToBasketItemDTOs {
 
                 BasketApplicationOptionDTO aoDTO = new BasketApplicationOptionDTO();
                 aoDTO.setId(ao.getId());
+                aoDTO.setType(ao.getType());
                 aoDTO.setName(ConverterUtil.getTextByLanguageUseFallbackLang(ao.getName(), lang));
                 aoDTO.setEducationDegree(ao.getEducationDegree());
                 aoDTO.setSora(ao.isSora());

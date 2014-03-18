@@ -1,0 +1,11 @@
+/* color */
+/* font-size */
+/*** from haku-app sass styles ***/
+/* buttons */
+/* rounder corners */
+/* responsive layout limits */
+/* Tyylit oppijan puolen esikatselua varten */
+.preview-separator {
+  border-bottom: 1px solid #dddddd;
+  margin-bottom: 20px;
+  padding-bottom: 20px; }

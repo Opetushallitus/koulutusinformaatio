@@ -30,6 +30,7 @@ public class CodeEntity {
     private I18nTextEntity description;
     @Embedded
     private I18nTextEntity name;
+    private String uri;
 
     public CodeEntity() {}
 
@@ -55,5 +56,13 @@ public class CodeEntity {
 
     public void setName(I18nTextEntity name) {
         this.name = name;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 }
