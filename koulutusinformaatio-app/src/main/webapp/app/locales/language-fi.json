@@ -21,10 +21,6 @@
     "search-field-placeholder": "Hae koulutusta tästä",
     "no-search-results": "Ei hakutuloksia",
     "no-search-results-info": "Hakusanalla \"__searchterm__\" ei löytynyt yhtään hakutulosta. Järjestelmään ei ehkä vielä ole syötetty kyseistä koulutusta tai tutkintoa. Ole hyvä ja yritä toisella hakusanalla tai rajauksella.",
-    "search-pagination-first": "Ensimmäinen",
-    "search-pagination-last": "Viimeinen",
-    "search-pagination-next": "Seuraava",
-    "search-pagination-previous": "Edellinen",
     "search-as-ongoing": "Haku käynnissä!",
     "search-as-next": "Tulossa hakuun",
     "search-field-label": "Etsi koulutuksia tästä",
@@ -41,18 +37,9 @@
     "read-more": "Lue lisää...",
     "read-less": "Pienennä",
     
-    "filter-title": "Rajaa hakutuloksia tästä",
     "filter-search-title": "Pohjakoulutus",
-    "filter-search-subtitle": "Valitse ylin suorittamasi koulutus",
-    "filter-search-elementary": "Perusopetus (peruskoulu)",
-    "filter-search-elementary-individualized": "Yksilöllistetty oppimäärä",
     "filter-search-upper-secondary": "Lukio / Ylioppilas",
     "filter-search-as-ongoing": "Haku on käynnissä",
-    "filter-search-vocational": "Ammatillinen perustutkinto (120 ov)",
-    "filter-search-vocational-specialized": "Ammatti- tai erikoisammattitutkinto",
-    "filter-search-institute": "Kouluasteen, opistoasteen tai ammatillisen korkea-asteen tutkinto",
-    "filter-search-university-applied": "Ammattikorkeakoulututkinto",
-    "filter-search-university": "Yliopistotutkinto",
     "filter-search-location-title": "Rajaa sijainnin mukaan",
     "location-filter-placeholder": "Kirjoita paikkakunta",
     "location-filter-label": "Paikkakunta",
@@ -60,15 +47,10 @@
     "filter-search-location-remove": "Poista",
 
     "sort-criteria-default": "-- Valitse --",
-    "sort-criteria-startdate": "Alkamisajankohta",
     "sort-criteria-alphabetical-desc": "Aakkoset A-Ö",
     "sort-criteria-alphabetical-asc": "Aakkoset Ö-A",
-    "sort-criteria-duration-group": "Koulutuksen arvioitu kesto",
-    "sort-criteria-duration-asc": "Lyhytkestoiset ensin",
-    "sort-criteria-duration-desc": "Pitkäkestoiset ensin",
     "sort-criteria-items-per-page-label": "Näytä",
     "sort-criteria-sort-label": "Lajittele",
-    "sort-results-label": "Tulokset",
 
     "pagination-next": "Seuraava",
     "pagination-previous": "Edellinen",
@@ -85,7 +67,6 @@
     "chargeable": "Maksullinen",
     "chargeable-false": "Ei",
     "chargeable-true": "Kyllä",
-
 
     "average-limit": "Keskiarvoraja",
     "lowest-acceptable-average": "alin hyväksyttävä keskiarvo",
@@ -269,16 +250,15 @@
     "yo": "Lukio ja / tai ylioppilastutkinto",
     "pk": "Peruskoulu",
     "er": "Yksilöllistetty perusopetus",
-  	"at": "Ammatillinen tutkinto",
+    "at": "Ammatillinen tutkinto",
     "ak": "Ammattikorkeakoulututkinto",
     "kt": "Kandidaatin tutkinto",
     "kandidaattiYm": "Kandidaatin tutkinto",
     "lukioYm": "Lukio ja/tai ylioppilastutkinto ym.",
-    
-    
+
     "autocomplete-keyword": "Hakusanaehdotukset",
     "autocomplete-loname": "Kurssit ja tutkinnot",
-    
+
     "VALMIS": "Valmis",
     "LUONNOS": "Luonnos",
     "JULKAISTU": "Julkaistu",
