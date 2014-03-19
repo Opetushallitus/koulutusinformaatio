@@ -17,12 +17,16 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.Location;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.LocationService;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +43,8 @@ public class LocationServiceImpl implements LocationService {
     public static final String CODE_MUNICIPALITY = "kunta";
     public static final String CODE_DISTRICT = "maakunta";
     private KoodistoService koodistoService;
+    
+    private static final Logger LOGGER = LoggerFactory.getLogger(LocationServiceImpl.class);
 
     @Autowired
     public LocationServiceImpl(KoodistoService koodistoService) {
@@ -71,7 +77,7 @@ public class LocationServiceImpl implements LocationService {
                     municipalities.add(municipality);
                 }
                 
-                
+                LOGGER.debug(String.format("Added location: %s", code.getUri()));
             }
         }
         return municipalities;

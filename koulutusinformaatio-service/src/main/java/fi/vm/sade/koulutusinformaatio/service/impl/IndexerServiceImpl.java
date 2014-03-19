@@ -1,12 +1,16 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LocationFields;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
+import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
 
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -22,7 +26,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -56,6 +66,9 @@ public class IndexerServiceImpl implements IndexerService {
 
     @Value("${solr.learningopportunity.url:learning_opportunity}")
     private String loHttpSolrName;
+    
+    @Value("${koulutusinformaatio.wp.harvest-url:harvest}")
+    private String articleHarvestUrl;
 
     @Autowired
     public IndexerServiceImpl(ConversionService conversionService,
@@ -293,8 +306,54 @@ public class IndexerServiceImpl implements IndexerService {
         List<SolrInputDocument> edTypeDocs = Lists.newArrayList();
         for (Code curEdType : edTypeCodes) {
             SolrUtil.indexCodeAsFacetDoc(curEdType, edTypeDocs, true);
+            LOGGER.debug(String.format("Indexed: %s to solr", curEdType));
         }
         loUpdateSolr.add(edTypeDocs);
+    }
+
+    @Override
+    public void addArticles(HttpSolrServer loUpdateSolr) throws IOException, SolrServerException {
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        
+        indexArticlesByLang(mapper, "fi", loUpdateSolr);
+        LOGGER.debug("Indexed finnish articles");
+        indexArticlesByLang(mapper, "sv", loUpdateSolr);
+        LOGGER.debug("Indexed swedish articles");
+
+    }
+    
+    private void indexArticlesByLang(ObjectMapper mapper, String lang, HttpSolrServer loUpdateSolr) throws IOException,  SolrServerException {
+        int page = 1;
+        ArticleResults articles = getArticlesByLang(mapper, lang, page);
+        int pages = articles.getPages();
+        
+        while (pages > 0) {
+
+            for (Article curArticle : articles.getPosts()) {
+                List<SolrInputDocument> docs = conversionService.convert(curArticle, List.class);
+                loUpdateSolr.add(docs);
+            }
+            articles = getArticlesByLang(mapper, lang, ++page);
+            pages = articles.getPages();
+        }
+        
+    }
+
+    private ArticleResults getArticlesByLang(ObjectMapper mapper, String lang, int page) throws IOException {
+        String url = String.format("%s%s%s%s%s%s%s", this.articleHarvestUrl, lang, "/?s=", URLEncoder.encode(" "), "&json=1", "&page=", page);
+        LOGGER.debug("Article search url: " + url);
+
+        URL orgUrl = new URL(url);        
+        
+        HttpURLConnection conn = (HttpURLConnection) (orgUrl.openConnection());
+
+        conn.setRequestMethod(SolrConstants.GET);
+        conn.connect();
+         
+        ArticleResults articles = mapper.readValue(conn.getInputStream(), ArticleResults.class);
+        return articles;
     }
 
 }

@@ -14,14 +14,13 @@
  * European Union Public Licence for more details.
  */
 
-package fi.vm.sade.koulutusinformaatio.service.impl.builder.impl;
+package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
-import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.EducationObjectCreator;
+import fi.vm.sade.koulutusinformaatio.service.impl.KoodistoAwareTest;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 import fi.vm.sade.tarjonta.service.resources.dto.*;
 import org.junit.Before;
@@ -29,23 +28,17 @@ import org.junit.Test;
 
 import java.util.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
  * @author Hannu Lyytikainen
  */
-public class EducationObjectCreatorTest {
+public class EducationObjectCreatorTest extends KoodistoAwareTest {
 
-    KoodistoService koodistoService;
     EducationObjectCreator creator;
 
-    final String langFiUri = "langfi";
-    final String langFi = "fi";
     final String examTypeUri = "examtypecode";
     final String examTypeFi = "examTypeFi";
     final I18nText examType = TestUtil.createI18nText(examTypeFi);
@@ -57,8 +50,6 @@ public class EducationObjectCreatorTest {
 
     @Before
     public void init() throws KoodistoException {
-        koodistoService = mock(KoodistoService.class);
-        when(koodistoService.searchFirstCodeValue(langFiUri)).thenReturn(langFi);
         when(koodistoService.searchFirst(eq(examTypeUri))).thenReturn(examType);
         when(koodistoService.searchFirstCodeValue(eq(postCodeUri))).thenReturn(postCode);
         when(koodistoService.searchFirst(eq(attachmentTypeUri))).thenReturn(attachmentType);
@@ -71,7 +62,7 @@ public class EducationObjectCreatorTest {
         ValintakoeRDTO examDTO = new ValintakoeRDTO();
         examDTO.setTyyppiUri(examTypeUri);
         Map<String, String> description = Maps.newHashMap();
-        description.put(langFiUri, "examdescription");
+        description.put(getFiUri(), "examdescription");
         examDTO.setKuvaus(description);
         ValintakoeAjankohtaRDTO eventDTO = new ValintakoeAjankohtaRDTO();
         OsoiteRDTO addressDTO = new OsoiteRDTO();
@@ -91,8 +82,8 @@ public class EducationObjectCreatorTest {
         assertEquals(1, exams.size());
         Exam exam = exams.get(0);
         assertNotNull(exam);
-        assertEquals(examType.getTranslations().get(langFi), exam.getType().getTranslations().get(langFi));
-        assertEquals("examdescription", exam.getDescription().getTranslations().get(langFi));
+        assertEquals(examType.getTranslations().get(getFi()), exam.getType().getTranslations().get(getFi()));
+        assertEquals("examdescription", exam.getDescription().getTranslations().get(getFi()));
         assertEquals(examDTO.getValintakoeAjankohtas().size(), exam.getExamEvents().size());
         ExamEvent event  = exam.getExamEvents().get(0);
         Address address = event.getAddress();
@@ -123,7 +114,7 @@ public class EducationObjectCreatorTest {
     public void testCreateAdditionalProof() throws KoodistoException {
         ValintakoeRDTO examDTO = new ValintakoeRDTO();
         Map<String, String> additionalProofMap = Maps.newHashMap();
-        additionalProofMap.put(langFiUri, "additionalproof");
+        additionalProofMap.put(getFiUri(), "additionalproof");
         examDTO.setLisanaytot(additionalProofMap);
         ValintakoePisterajaRDTO scoreLimitDTO = new ValintakoePisterajaRDTO();
         scoreLimitDTO.setAlinPistemaara(10.0);
@@ -134,7 +125,7 @@ public class EducationObjectCreatorTest {
 
         AdditionalProof ap = creator.createAdditionalProof(Lists. newArrayList(examDTO));
         assertNotNull(ap);
-        assertEquals("additionalproof", ap.getDescreption().getTranslations().get(langFi));
+        assertEquals("additionalproof", ap.getDescreption().getTranslations().get(getFi()));
     }
 
     @Test
@@ -170,7 +161,7 @@ public class EducationObjectCreatorTest {
         ValintakoeRDTO examDTO = new ValintakoeRDTO();
         examDTO.setTyyppiUri(examTypeUri);
         Map<String, String> description = Maps.newHashMap();
-        description.put(langFiUri, "examdescription");
+        description.put(getFiUri(), "examdescription");
         examDTO.setKuvaus(description);
         ValintakoeAjankohtaRDTO eventDTO = new ValintakoeAjankohtaRDTO();
         OsoiteRDTO addressDTO = new OsoiteRDTO();
@@ -191,7 +182,7 @@ public class EducationObjectCreatorTest {
         assertEquals(1, exams.size());
         Exam exam = exams.get(0);
         assertNotNull(exam);
-        assertEquals("examdescription", exam.getDescription().getTranslations().get(langFi));
+        assertEquals("examdescription", exam.getDescription().getTranslations().get(getFi()));
         assertEquals(examDTO.getValintakoeAjankohtas().size(), exam.getExamEvents().size());
         ExamEvent event  = exam.getExamEvents().get(0);
         Address address = event.getAddress();
@@ -229,7 +220,7 @@ public class EducationObjectCreatorTest {
         ValintakoeRDTO examDTO = new ValintakoeRDTO();
         examDTO.setTyyppiUri(examTypeUri);
         Map<String, String> description = Maps.newHashMap();
-        description.put(langFiUri, "examdescription");
+        description.put(getFiUri(), "examdescription");
         examDTO.setKuvaus(description);
         ValintakoeAjankohtaRDTO eventDTO = new ValintakoeAjankohtaRDTO();
         OsoiteRDTO addressDTO = new OsoiteRDTO();
@@ -249,8 +240,8 @@ public class EducationObjectCreatorTest {
         assertEquals(1, exams.size());
         Exam exam = exams.get(0);
         assertNotNull(exam);
-        assertEquals(examType.getTranslations().get(langFi), exam.getType().getTranslations().get(langFi));
-        assertEquals("examdescription", exam.getDescription().getTranslations().get(langFi));
+        assertEquals(examType.getTranslations().get(getFi()), exam.getType().getTranslations().get(getFi()));
+        assertEquals("examdescription", exam.getDescription().getTranslations().get(getFi()));
         assertEquals(examDTO.getValintakoeAjankohtas().size(), exam.getExamEvents().size());
         ExamEvent event  = exam.getExamEvents().get(0);
         Address address = event.getAddress();
@@ -269,7 +260,7 @@ public class EducationObjectCreatorTest {
         attachmentDTO.setErapaiva(due);
         attachmentDTO.setLiitteenTyyppiUri(attachmentTypeUri);
         Map<String, String> descritpionMap = Maps.newHashMap();
-        descritpionMap.put(langFiUri, "description");
+        descritpionMap.put(getFiUri(), "description");
         attachmentDTO.setKuvaus(descritpionMap);
 
         List<ApplicationOptionAttachment> attachments = creator.createApplicationOptionAttachments(Lists.newArrayList(attachmentDTO));
@@ -278,7 +269,7 @@ public class EducationObjectCreatorTest {
         ApplicationOptionAttachment attachment = attachments.get(0);
         assertNotNull(attachment);
         assertEquals(due, attachment.getDueDate());
-        assertEquals(attachmentTypeFi, attachment.getType().getTranslations().get(langFi));
-        assertEquals("description", attachment.getDescreption().getTranslations().get(langFi));
+        assertEquals(attachmentTypeFi, attachment.getType().getTranslations().get(getFi()));
+        assertEquals("description", attachment.getDescreption().getTranslations().get(getFi()));
     }
 }

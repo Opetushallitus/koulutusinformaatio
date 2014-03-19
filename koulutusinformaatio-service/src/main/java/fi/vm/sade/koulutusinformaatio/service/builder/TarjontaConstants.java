@@ -33,12 +33,17 @@ public class TarjontaConstants {
     public static final String TYPE_CHILD = "KOULUTUSOHJELMA";
     public static final String TYPE_SPECIAL = "ERITYISOPETUS";
     public static final String TYPE_REHAB = "VALMENTAVA";
+    public static final String TYPE_PREP = "VALMISTAVA";
     public static final String TYPE_UPSEC = "LUKIO";
     public static final String TYPE_KK = "KORKEAKOULU";
 
     public static final String VOCATIONAL_EDUCATION_TYPE = "AmmatillinenPeruskoulutus";
     public static final String UPPER_SECONDARY_EDUCATION_TYPE = "Lukiokoulutus";
     public static final String REHABILITATING_EDUCATION_TYPE = "ValmentavaJaKuntouttavaOpetus";
+    public static final String PREPARATORY_VOCATIONAL_EDUCATION_TYPE = "AmmOhjaavaJaValmistavaKoulutus";
+    public static final String TENTH_GRADE_EDUCATION_TYPE = "PerusopetuksenLisaopetus";
+    public static final String IMMIGRANT_PREPARATORY_VOCATIONAL = "MaahanmAmmValmistavaKoulutus";
+    public static final String IMMIGRANT_PREPARATORY_UPSEC = "MaahanmLukioValmistavaKoulutus";
 
     public static final String PREREQUISITE_URI_ER = "pohjakoulutusvaatimustoinenaste_er";
     
@@ -46,6 +51,7 @@ public class TarjontaConstants {
     public static final String ED_DEGREE_URI_YLEMPI_AMK = "koulutusasteoph2002_71";
     public static final String ED_DEGREE_URI_KANDI = "koulutusasteoph2002_63";
     public static final String ED_DEGREE_URI_MAISTERI = "koulutusasteoph2002_72";
-    
 
+    public static final String ATHLETE_EDUCATION_KOODISTO_URI = "urheilijankoulutus_1#1";
+    public static final String APPLICATION_OPTIONS_KOODISTO_URI = "hakukohteet";
 }

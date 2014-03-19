@@ -30,6 +30,7 @@ public class ContactPersonEntity {
     private String email;
     private String lastName;
     private String firstNames;
+    private String type;
 
     public ContactPersonEntity() {
 
@@ -73,5 +74,13 @@ public class ContactPersonEntity {
 
     public void setFirstNames(String firstNames) {
         this.firstNames = firstNames;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

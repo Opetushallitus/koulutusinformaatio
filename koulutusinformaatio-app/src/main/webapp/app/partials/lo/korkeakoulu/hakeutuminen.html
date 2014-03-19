@@ -1,27 +1,16 @@
 <section class="grid16-9 offset-right-16-1 no-left-gutter wide-column">
-    <div data-ki-language-ribbon class="ribbon"></div>
+    <div data-ki-language-ribbon data-languages="lo.availableTranslationLanguages" data-change-language="changeDescriptionLanguage" class="ribbon"></div>
 
-    <div data-ng-switch="showAoAnchorLinks">
-        <div data-ng-switch-when="true" class="ao-block">
-            <h2 data-ki-i18n="student-selection"></h2>
-            <div data-ng-repeat="as in lo.applicationSystems">
-                <ul>
-                    <li data-ng-repeat="ao in as.applicationOptions">
-                        <a href="javascript:void(0)" data-ng-click="scrollToAnchor(ao.id)">{{ao.name}}</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
+    <div data-ki-application-option-index data-lo="lo"></div>
 
     <div data-ng-repeat="as in lo.applicationSystems">
         <div data-ng-repeat="ao in as.applicationOptions" id="{{ao.id}}" class="ao-block">
-            <h2>{{ao.name}}</h2>
+            <h2 class="inline-block margin-right-2">{{ao.name}}</h2>
             
             <!-- PREVIEW -->
-            <div data-ng-show="ao.preview">
-            	<span data-ki-i18n="{{ao.status}}"></span>
-            	<a href="{{ao.editUrl}}"><span data-ki-i18n="tarjontaMuokkaa"></span></a>
+            <div data-ng-show="ao.preview" class="inline-block">
+                <span data-ki-preview-status-label="ao.status" class="margin-right-1"></span>
+            	<a href="{{ao.editUrl}}" data-ki-i18n="tarjonta-muokkaa-hakukohde" class="cssbutton blue"></a>
             </div>
             <!-- END PREVIEW -->
             
@@ -64,7 +53,7 @@
                     </li>
                 </ul>
             </div>
-            <div data-render-extendable-text-block data-title="{{as.name}}" data-content="{{ao.selectionCriteria}}"></div>
+            <div data-render-extendable-text-block data-content="{{ao.selectionCriteria}}"></div>
             <div data-render-text-block data-title="eligibility-description" data-content="{{ao.eligibilityDescription}}"></div>
             <div data-render-text-block data-title="sora" data-content="{{ao.soraDescription}}"></div>
             <div data-ki-render-exams></div>
@@ -75,4 +64,5 @@
     <div data-ki-render-info-center-address></div>
 </section>
 <div data-ng-class="applyFormClass" data-ng-include data-src="partialCommonUrl + 'as/higherEducationAs.html'" data-ng-controller="ApplicationCtrl"></div>
+<div data-ng-include data-src="partialUrl + 'recommendations.html'"></div>
 <div class="clear"></div>

@@ -20,6 +20,7 @@ import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.*;
+
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,7 +85,7 @@ public class UpdateServiceImpl implements UpdateService {
                 List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
                 count = loOids.size();
                 index += count;
-
+                
                 for (String loOid : loOids) {
                     List<LOS> specifications = null;
                     try {
@@ -109,15 +110,18 @@ public class UpdateServiceImpl implements UpdateService {
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 this.educationDataUpdateService.save(curLOS);
             }
-            LOG.debug("Higher educations saved: ");
+            LOG.debug("Higher educations saved.");
             
             List<Code> edTypeCodes = this.tarjontaService.getEdTypeCodes();
             indexerService.addEdTypeCodes(edTypeCodes, loUpdateSolr);
+            LOG.debug("Education types indexded.");
 
             List<Location> locations = locationService.getMunicipalities();
             LOG.debug("Got locations");
             indexerService.addLocations(locations, locationUpdateSolr);
             LOG.debug("Added locations");
+            indexerService.addArticles(loUpdateSolr);
+            LOG.debug("added articles");
             indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, true);
             LOG.debug("Committed to solr");
             this.transactionManager.commit(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);

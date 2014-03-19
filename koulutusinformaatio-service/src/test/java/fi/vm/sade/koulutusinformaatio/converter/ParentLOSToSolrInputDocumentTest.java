@@ -151,7 +151,7 @@ public class ParentLOSToSolrInputDocumentTest {
 		assertEquals(prerequisite.getValue(), doc.get(LearningOpportunity.PREREQUISITES).getValues().iterator().next().toString());
 		assertEquals("80 ov fi", doc.get(LearningOpportunity.CREDITS).getValue().toString());
         assertEquals(provider.getName().getTranslations().get("fi"), doc.get(LearningOpportunity.LOP_NAME).getValue().toString());
-        assertEquals(SolrConstants.ED_TYPE_AMMATILLINEN, doc.get(LearningOpportunity.EDUCATION_TYPE).getValue().toString());
+        //assertEquals(SolrConstants.ED_TYPE_AMMATILLINEN, doc.get(LearningOpportunity.EDUCATION_TYPE).getValue().toString());
 		
 	}
 	

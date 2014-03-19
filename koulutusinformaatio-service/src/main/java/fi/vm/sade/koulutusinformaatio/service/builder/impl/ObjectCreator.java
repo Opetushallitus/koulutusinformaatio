@@ -34,8 +34,6 @@ import java.util.*;
  */
 public abstract class ObjectCreator {
 
-    protected static final String ATHLETE_EDUCATION_KOODISTO_URI = "urheilijankoulutus_1#1";
-    protected static final String APPLICATION_OPTIONS_KOODISTO_URI = "hakukohteet";
     protected static final String AIHEET_KOODISTO_URI = "aiheet";
     protected static final String TEEMAT_KOODISTO_URI = "teemat";
     protected static final String POHJAKOULUTUSFASETTI_KOODISTO_URI = "pohjakoulutusfasetti";
@@ -91,6 +89,22 @@ public abstract class ObjectCreator {
             return i18nText;
         }
         return null;
+    }
+    
+    protected List<String> getTranslationUris(NimiV1RDTO rawMaterial) {
+        List<String> translUris = new ArrayList<String>();
+        final Map<String, String> texts = (rawMaterial != null) ? rawMaterial.getTekstis() : null;
+        if (texts != null && !texts.isEmpty()) {
+            Iterator<Map.Entry<String, String>> i = texts.entrySet().iterator();
+            while (i.hasNext()) {
+                Map.Entry<String, String> entry = i.next();
+                if (!Strings.isNullOrEmpty(entry.getKey()) && !Strings.isNullOrEmpty(entry.getValue())) {
+                    translUris.add(entry.getKey());
+                }
+            }
+        }
+        
+        return translUris;
     }
 
 

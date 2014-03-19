@@ -1,11 +1,20 @@
-<div class="result-content">
-    <h2 title="{{locales.openEducation}}"><a href="{{lo.linkHref}}">{{lo.lopName}}, {{lo.name}}<span data-ng-show="lo.credits != null">, {{lo.credits}}</span></a></h2>
-    <span>{{lo.lopName}}</span><br/>
-    <span>{{lo.homeplace}}</span>
-</div>
-<span data-ki-as-state class="state-label">&nbsp;</span>
+<div class="search-result-collapsed">
+    <div class="result-content">
+        <h2 title="{{locales.openEducation}}"><a href="{{lo.linkHref}}">{{lo.lopName}}, {{lo.name}}<span data-ng-show="lo.credits != null">, {{lo.credits}}</span></a></h2>
+        <span>{{lo.lopName}}</span><br/>
+        <span>{{lo.homeplace}}</span>
+    </div>
 
-<div class="clear"></div>
+    <div class="float-right">
+        <span data-ki-as-state class="state-label">&nbsp;</span>
+        <span class="collapser" data-ng-class="showExtension" data-ng-click="toggleExtendedView()">
+            <span data-ki-i18n="extended-view-{{showExtension}}" class="margin-right-1"></span>
+            <span class="icon"></span>
+        </span>
+    </div>
+
+    <div class="clear"></div>
+</div>
 
 <div data-extended-searchresult-data="lukio" data-toggle-collapse>
 
@@ -13,8 +22,8 @@
         <h4 class="margin-top-0 margin-bottom-1" data-ki-i18n="basic-information"></h4>
         <div data-sr-basic-information></div>
     </div>
-    
-    <div class="grid16-8">
+
+    <div class="grid16-16 application-container">
         <div data-sr-hakukohteet>
             <div data-sr-extended-options></div>
         </div>

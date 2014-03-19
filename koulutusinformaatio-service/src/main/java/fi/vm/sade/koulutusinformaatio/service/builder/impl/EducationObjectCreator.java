@@ -36,7 +36,7 @@ public class EducationObjectCreator extends ObjectCreator {
 
     private KoodistoService koodistoService;
 
-    public EducationObjectCreator(KoodistoService koodistoService) {
+    protected EducationObjectCreator(KoodistoService koodistoService) {
         super(koodistoService);
         this.koodistoService = koodistoService;
     }

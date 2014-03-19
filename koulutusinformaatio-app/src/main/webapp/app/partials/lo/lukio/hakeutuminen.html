@@ -1,7 +1,10 @@
 <section class="grid16-9 offset-right-16-1 no-left-gutter wide-column">
-    <div data-ki-language-ribbon class="ribbon"></div>
+    <div data-ki-language-ribbon data-languages="selectedLOI.availableTranslationLanguages" data-change-language="changeDescriptionLanguage" class="ribbon"></div>
+
+    <div data-ki-application-option-index data-lo="selectedLOI"></div>
+    
     <div data-ng-repeat="as in selectedLOI.applicationSystems">
-        <div data-ng-repeat="ao in as.applicationOptions">
+        <div data-ng-repeat="ao in as.applicationOptions" id="{{ao.id}}" class="ao-block">
             <h2>{{ao.name}}</h2>
             <div data-render-text-block data-content="{{ao.selectionCriteria}}"></div>
             <div data-ki-render-emphasized-subjects></div>

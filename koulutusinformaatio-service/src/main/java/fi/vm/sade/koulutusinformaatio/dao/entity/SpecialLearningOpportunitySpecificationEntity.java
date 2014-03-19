@@ -53,6 +53,8 @@ public class SpecialLearningOpportunitySpecificationEntity {
     private I18nTextEntity educationDomain;
     @Embedded
     private ParentLOSRefEntity parent;
+    
+    private String educationTypeUri;
 
 
 
@@ -169,5 +171,13 @@ public class SpecialLearningOpportunitySpecificationEntity {
 
     public void setParent(ParentLOSRefEntity parent) {
         this.parent = parent;
+    }
+
+    public String getEducationTypeUri() {
+        return educationTypeUri;
+    }
+
+    public void setEducationTypeUri(String educationTypeUri) {
+        this.educationTypeUri = educationTypeUri;
     }
 }

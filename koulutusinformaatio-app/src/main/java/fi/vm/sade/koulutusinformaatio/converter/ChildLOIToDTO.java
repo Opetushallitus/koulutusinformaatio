@@ -23,13 +23,9 @@ public final class ChildLOIToDTO {
         if (childLOI != null) {
             ChildLearningOpportunityInstanceDTO dto = new ChildLearningOpportunityInstanceDTO();
             dto.setId(childLOI.getId());
-            dto.setAvailableTranslationLanguages(childLOI.getAvailableTranslationLanguages());
+            dto.setAvailableTranslationLanguages(CodeToDTO.convertAll(childLOI.getAvailableTranslationLanguages(), uiLang, false));
             dto.setStartDate(childLOI.getStartDate());
-            if (childLOI.getTeachingLanguages() != null) {
-                for (Code code : childLOI.getTeachingLanguages()) {
-                    dto.getTeachingLanguages().add(ConverterUtil.getTextByLanguageUseFallbackLang(code.getName(), uiLang));
-                }
-            }
+            dto.setTeachingLanguages(CodeToName.convertAll(childLOI.getTeachingLanguages(), uiLang));
             dto.setRelated(ChildLOIRefToDTO.convert(childLOI.getRelated(), defaultLang));
             dto.setFormOfTeaching(ConverterUtil.getTextsByLanguage(childLOI.getFormOfTeaching(), uiLang));
             dto.setWebLinks(childLOI.getWebLinks());

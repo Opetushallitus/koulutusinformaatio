@@ -1,0 +1,7 @@
+<div data-ng-if="content">
+	<h2 data-ki-i18n="{{title}}" data-lang="{{translationLanguage}}"></h2>
+	<div data-ng-bind-html="content | unsafe"></div>
+	<ul>
+		<li data-ng-repeat="child in children"><a href="#!/korkeakoulu/{{child.id}}">{{child.name}}</a></li>
+	</ul>
+</div>

@@ -1,6 +1,6 @@
 /* Directives */
 
-angular.module('kiApp.directives', ['kiApp.Navigation', 'angularTreeview']).
+angular.module('kiApp.directives', ['kiApp.Navigation', 'angularTreeview', 'kiApp.directives.AppBasket']).
 
 /**
  *  Updates the title element of the page.
@@ -10,7 +10,8 @@ directive('title', ['$rootScope', function($rootScope) {
         restrict: 'E',
         link: function(scope, element, attrs) {
             $rootScope.$watch('title', function(value) {
-                element.text(value);
+                document.title = value;
+                //element.text(value);
             });
         }
     }
@@ -76,8 +77,10 @@ directive('renderContactPersonInfo', function() {
         scope: {
             contactPersons: '=content'
         },
-        link: function(scope, element, attrs) {
-
+        controller: function($rootScope, $scope) {
+            $rootScope.$watch('translationLanguage', function(value) {
+                $scope.translationLanguage = value;
+            });
         }
     }
 }).
@@ -155,6 +158,11 @@ directive('kiRenderProfessionalTitles', function() {
         scope: {
             title: '@title',
             content: '=content'
+        },
+        controller: function($rootScope, $scope) {
+            $rootScope.$watch('translationLanguage', function(value) {
+                $scope.translationLanguage = value;
+            });
         },
         link: function(scope, element, attrs) {
         }
@@ -368,14 +376,21 @@ directive('kiAbsoluteLink', function() {
     return {
         restrict: 'A',
         templateUrl: 'templates/languageRibbon.html',
+        scope: {
+            languages: '=',
+            changeLanguage: '&'
+        },
 
         link: function(scope, element, attrs) {
-            //var type = $routeParams.loType;
-            //scope.isChild = (type === 'koulutusohjelma' || type == 'lukio') ? true : false; // TODO: do not use loType directly
-
-            scope.$watch('selectedLOI', function(data) {
-                scope.hasMultipleTranslations = (data && data.availableTranslationLanguages && data.availableTranslationLanguages.length >= 1) ? true : false;
+            scope.$watch('languages', function(data) {
+                scope.hasMultipleTranslations = (data && data.length >= 1) ? true : false;
             });
+
+            var callback = scope.changeLanguage();
+
+            scope.changeLanguage = function(lang) {
+                callback(lang);
+            }
         }
     };
  }]).
@@ -511,29 +526,13 @@ directive('renderTextBlock', ['TranslationService', function(TranslationService)
             var title;
             var content;
 
-            /*
-            attrs.$observe('title', function(value) {
-                //console.log(value);
-                if (value) {
-                    //title = TranslationService.getTranslation(value);
-                    title = TranslationService.getTranslationByTeachingLanguage(value);
-                }
-                update();
-            });
-            */
-            if (attrs.visibilityChanged) {
-                scope.$on('tabchanged', function(event, data) {
-                    var height = element[0].offsetHeight;
-                    if (height > 200) {
-                        element.css('height', 200);
-                        element.css('overflow', 'hidden');
-                    }
-                    console.log(element[0].offsetHeight);
-                })
-            }
-
             attrs.$observe('content', function(value) {
                 content = value;
+                update();
+            });
+
+            // watch global tarnaslation language in rootScope
+            scope.$watch('translationLanguage', function(value) {
                 title = TranslationService.getTranslationByTeachingLanguage(attrs.title);
                 update();
             });
@@ -574,30 +573,50 @@ directive('renderExtendableTextBlock', ['TranslationService', function(Translati
             var contentElement = $(element).find('.extendable-content');
             var contentHeight;
 
-            scope.$on('tabchanged', function(event, data) {
+
+            scope.$watch(function() { return contentElement.is(':visible') }, function(value) {
                 contentHeight = contentElement.get(0).offsetHeight;
                 if (contentHeight > 200) {
                     scope.state = 'closed';
                     contentElement.css('height', 200);
                     contentElement.css('overflow', 'hidden');
                 }
-                //console.log(element[0].offsetHeight);
             });
 
             scope.toggleShow = function() {
                 if (scope.state == 'closed') {
-                    contentElement.css('height', contentHeight);
-                    contentElement.css('overflow', 'visible');
+                    //contentElement.css('overflow', 'visible');
+                    contentElement.css('height', 'auto');
                     scope.state = 'open'; 
                 } else {
                     contentElement.css('height', 200);
-                    contentElement.css('overflow', 'hidden');
+                    //contentElement.css('overflow', 'hidden');
                     scope.state = 'closed'; 
                 }
             }
         }
     }
 }]).
+
+/**
+ *  Renders higher education major selection block
+ */
+directive('kiRenderMajorSelection', function() {
+    return {
+        restrict: 'A',
+        templateUrl: 'templates/majorSelection.html',
+        scope: {
+            content: '=',
+            title: '@',
+            children: '='
+        },
+        controller: function($rootScope, $scope) {
+            $rootScope.$watch('translationLanguage', function(value) {
+                $scope.translationLanguage = value;
+            })
+        }
+    }
+}).
 
 /**
  *  Renders study plan block
@@ -768,6 +787,32 @@ directive('kiRenderApplicationStatusLabel', function() {
 }).
 
 /**
+ *  Render status label for preview
+ */
+directive('kiPreviewStatusLabel', ['TranslationService', function(TranslationService) {
+    return {
+        restrict: 'A',
+        scope: {
+            status: '=kiPreviewStatusLabel'
+        },
+        link: function($scope, element, attrs) {
+            var statusPublished = 'JULKAISTU';
+            var statusReady = 'VALMIS';
+            var statusDraft = 'LUONNOS';
+
+            if ($scope.status == statusPublished || $scope.status == statusReady) {
+                element.addClass('label vih');
+            } else {
+                element.addClass('label sin');
+            }
+
+            var labelText = TranslationService.getTranslation($scope.status);
+            element.html(labelText);
+        }
+    }
+}]).
+
+/**
  *  Render application option status
  */
 directive('kiBanner', ['$location', function($location) {
@@ -782,6 +827,40 @@ directive('kiBanner', ['$location', function($location) {
             else if (host.indexOf('test-') == 0) scope.banner = 'Reppu';
             else if (host.indexOf('itest-') == 0) scope.banner = 'Luokka';
             else if (host.indexOf('localhost') == 0) scope.banner = host;
+        }
+    }
+}]).
+
+/**
+ *  Render application option index for ao tab
+ */
+directive('kiApplicationOptionIndex', [ function() {
+    return {
+        restrict: 'A',
+        templateUrl: 'templates/applicationOptionIndex.html',
+        scope: {
+            lo: '=lo'
+        },
+        controller: function($scope) {
+            // scrolls to an anchor on page
+            $scope.scrollToAnchor = function(id) {
+                id = id.replace(/\./g,"\\.");
+                $('html, body').scrollTop($('#' + id).offset().top);
+                return false;
+            };
+            
+
+            $scope.$watch('lo', function(value) {
+                var length = 0;
+
+                if ($scope.lo && $scope.lo.applicationSystems) {
+                    angular.forEach($scope.lo.applicationSystems, function(as, askey) {
+                        length += as.applicationOptions.length;
+                    });
+                }
+
+                $scope.showIndex = length > 1 ? true : false;
+            });
         }
     }
 }]).

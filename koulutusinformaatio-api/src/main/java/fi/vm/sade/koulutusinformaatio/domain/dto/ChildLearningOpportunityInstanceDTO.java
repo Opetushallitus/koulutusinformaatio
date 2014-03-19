@@ -1,8 +1,11 @@
 package fi.vm.sade.koulutusinformaatio.domain.dto;
 
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
-import java.util.*;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 /**
  * @author Hannu Lyytikainen
@@ -19,8 +22,8 @@ public class ChildLearningOpportunityInstanceDTO {
     private Map<String, String> webLinks;
     private List<String> formOfTeaching = new ArrayList<String>();
     private CodeDTO prerequisite;
-    private List<String> availableTranslationLanguages;
-    private Set<String> teachingLanguages = new HashSet<String>();
+    private List<CodeDTO> availableTranslationLanguages;
+    private List<String> teachingLanguages = new ArrayList<String>();
     private List<String> professionalTitles;
     private String workingLifePlacement;
     private String internationalization;
@@ -96,11 +99,11 @@ public class ChildLearningOpportunityInstanceDTO {
         this.prerequisite = prerequisite;
     }
 
-    public Set<String> getTeachingLanguages() {
+    public List<String> getTeachingLanguages() {
         return teachingLanguages;
     }
 
-    public void setTeachingLanguages(Set<String> teachingLanguages) {
+    public void setTeachingLanguages(List<String> teachingLanguages) {
         this.teachingLanguages = teachingLanguages;
     }
 
@@ -176,11 +179,11 @@ public class ChildLearningOpportunityInstanceDTO {
         this.plannedDurationUnit = plannedDurationUnit;
     }
 
-    public List<String> getAvailableTranslationLanguages() {
+    public List<CodeDTO> getAvailableTranslationLanguages() {
         return availableTranslationLanguages;
     }
 
-    public void setAvailableTranslationLanguages(List<String> availableTranslationLanguages) {
+    public void setAvailableTranslationLanguages(List<CodeDTO> availableTranslationLanguages) {
         this.availableTranslationLanguages = availableTranslationLanguages;
     }
 }

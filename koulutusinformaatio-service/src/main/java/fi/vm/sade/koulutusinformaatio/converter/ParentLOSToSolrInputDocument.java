@@ -293,6 +293,8 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
                 }
                 if (!usedVals.contains(SolrConstants.ED_TYPE_AMMATILLINEN)) {
                     doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMMATILLINEN);
+                    doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMMATILLISET);
+                    doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_TUTKINTOON);
                     usedVals.add(SolrConstants.ED_TYPE_AMMATILLINEN);
                 }
                 if (SolrConstants.PK.equalsIgnoreCase(prereqVal) 

@@ -37,6 +37,9 @@
     "degree-programmes": "Koulutusohjelmat (en)",
     "extended-view-close": "Avaa (en)",
     "extended-view-open": "Sulje (en)",
+
+    "read-more": "Lue lisää... (en)",
+    "read-less": "Pienennä (en)",
     
     "filter-title": "Rajaa hakutuloksia tästä",
     "filter-search-title": "Pohjakoulutus",
@@ -156,6 +159,7 @@
     "emphasis": "Study emphasis",
     "study-plan": "Curriculum",
     "contact-person-title": "Contact person",
+    "ects-coordinator": "ECTS-koordinaattori (en)",
 
     "provider-web-page": "The institution's own web pages",
 
@@ -189,9 +193,11 @@
     "application-basket-fill-form-notification-2": "Järjestä koulutukset mieluisuusjärjestykseen hakulomakkeella siten, että ylimpänä on ensimmäinen hakutoiveesi.",
     "application-basket-empty": "Tyhjennä muistilista",
     "application-basket-empty-confirm": "Haluatko varmasti tyhjentää koko muistilistan?",
-    "application-basket-overflow-warning": "Voit hakea yhteishaussa viiteen (5) eri koulutukseen, poista ylimääräiset",
+    "application-basket-overflow-warning": "Tässä haussa voit hakea enintään __itemcount__ koulutukseen, poista ylimääräiset. (en)",
+    "application-basket-fill-form-notification-single-ao": "Tässä haussa tulee jokaiseen koulutukseen täyttää erillinen hakulomake. (en)",
     "application-basket-attachments-exams": "Liitteet ja kokeet",
     "application-basket-due-date": "Liitteen määräaika tai kokeen ajankohta",
+    "application-basket-remove": "Remove",
 
     "popup-close": "Sulje",
     "popup-continue": "Jatka",
@@ -249,6 +255,14 @@
     "et3": "Ammatillinen perustutkinto",
     "et4": "Ammatillinen perustutkinto erityisopetuksena",
     "et5": "Valmentava ja kuntouttava opetus ja ohjaus",
+    "et020102": "Ammattistartti (en)",
+    "et020101": "Kymppiluokka (en)",
+    "et020103": "Maahanmuuttajien ammatilliseen valmistava (en)",
+    "et020104": "Maahanmuuttajien lukioon valmistava (en)",
+    "PerusopetuksenLisaopetus": "Perusopetuksen lisäopetus (en)",
+    "AmmOhjaavaJaValmistavaKoulutus": "Ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus (en)",
+    "MaahanmAmmValmistavaKoulutus": "Maahanmuuttajien ammatilliseen valmistava (en)",
+    "MaahanmLukioValmistavaKoulutus": "Maahanmuuttajien lukioon valmistava (en)",
     "pohjakoulutus": "Pohjakoulutuksesi",
     "prerequisites": "Pohjakoulutuksesi",
     "yo": "Lukio ja / tai ylioppilastutkinto",
@@ -267,7 +281,8 @@
     "LUONNOS": "Luonnos (en)",
     "JULKAISTU": "Julkaistu (en)",
     "tarjontaTarkastelu": "Takaisin (en)",
-    "tarjontaMuokkaa": "Muokkaa (en)",
+    "tarjonta-muokkaa-koulutus": "Muokkaa koulutusta (en)",
+    "tarjonta-muokkaa-hakukohde": "Muokkaa hakukohdetta (en)",
     "esikatselussa": "Esikatselussa (en)",
     "organisaatiossa": "organisaatiossa (en)",
     "esikatselu": "Esikatselu (en)",
@@ -278,5 +293,15 @@
     "error-contact-2": "avoinna arkisin klo 9–13",
     "error-contact-3": "hakuaikojen viimeisenä päivänä klo 9–15",
     "error-contact-4": "puhelun hinta kaikkialta Suomesta paikallisverkkomaksu / matkapuhelinmaksu",
-    "error-contact-5": "Sähköposti: neuvonta(at)opintopolku.fi"
+    "error-contact-5": "Sähköposti: neuvonta(at)opintopolku.fi",
+    
+    "tarjoaja": "Tarjoaja (en)",
+    "katso-myos": "Katso Myös... (en)",
+    "tarjoajan": "Tarjoajan (en)",
+    "muita-koulutuksia": "muita koulutuksia (en)",
+    "koulutus": "Koulutus (en)",
+    "muualla": "muualla (en)",
+    "mukainen-koulutus-muualla": "-teeman mukainen koulutus muualla (en)",
+
+    "preview-help": "Esikatselu näyttää koulutuksen ja hakukohteen näkymät sellaisina kuin oppija näkee ne Opintopolku.fi -palvelussa. Pääset muokkaamaan koulutuksen tietoja Muokkaa koulutusta-painikkeesta ja toiselta välilehdeltä hakukohteen tietoja. Organisaation tietoja ei pääse suoraan muokkaamaan, vaan muokkaus tulee tehdä Organisaatiotiedot-palvelun kautta. (en)"
 }

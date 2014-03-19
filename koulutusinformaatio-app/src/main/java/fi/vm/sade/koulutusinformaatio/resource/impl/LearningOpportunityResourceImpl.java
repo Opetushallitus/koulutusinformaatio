@@ -56,7 +56,9 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
 
     @Override
     public LOSearchResultListDTO searchLearningOpportunities(String text, String prerequisite, 
-            List<String> cities, List<String> facetFilters, String lang, boolean ongoing, boolean upcoming, int start, int rows, String sort, String order) {
+            List<String> cities, List<String> facetFilters, String lang, boolean ongoing, boolean upcoming, 
+            int start, int rows, String sort, String order, String lopFilter, String educationCodeFilter,
+            List<String> excludes, SearchType searchType) {
         String key = null;
         try {
             key = URLDecoder.decode(text, "UTF-8");
@@ -66,7 +68,8 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
         try {
             sort = (sort != null && !sort.isEmpty()) ? sort : null;
             LOSearchResultList learningOpportunities = searchService.searchLearningOpportunities(key, prerequisite,
-                    cities, facetFilters, lang, ongoing, upcoming, start, rows, sort, order);
+                    cities, facetFilters, lang, ongoing, upcoming, start, rows, sort, order, 
+                    lopFilter, educationCodeFilter, excludes, searchType);
             return modelMapper.map(learningOpportunities, LOSearchResultListDTO.class);
         } catch (SearchException e) {
             throw KIExceptionHandler.resolveException(e);

@@ -2,7 +2,7 @@
 <div class="extendable-content" data-ng-bind-html="content | unsafe"></div>
 <p>
 <a href="javascript:void(0)" data-ng-click="toggleShow()">
-	<span data-ng-show="state == 'closed'">Lue lisää...</span>
-	<span data-ng-show="state == 'open'">Pienennä</span>
+	<span data-ng-show="state == 'closed'" data-ki-i18n="read-more"></span>
+	<span data-ng-show="state == 'open'" data-ki-i18n="read-less"></span>
 </a>
 </p>

@@ -55,4 +55,6 @@ public interface IndexerService {
 
     void addEdTypeCodes(List<Code> edTypeCodes, HttpSolrServer loUpdateSolr) throws IOException, SolrServerException;
     
+    void addArticles(HttpSolrServer loUpdateSolr) throws IOException, SolrServerException;
+    
 }

@@ -1,12 +1,13 @@
 /**
  *  Controller for info views (parent and child)
  */
- function InfoCtrl($scope, $rootScope, $routeParams, $location, SearchService, LearningOpportunityProviderPictureService, UtilityService, TranslationService, Config, loResource) {
+ function InfoCtrl($scope, $rootScope, $routeParams, $location, SearchService, LearningOpportunityProviderPictureService, UtilityService, TranslationService, Config, loResource, LanguageService) {
     $scope.loType = $routeParams.loType;
 
     $scope.queryString = SearchService.getTerm();
     $scope.descriptionLanguage = 'fi';
     $scope.hakuAppUrl = Config.get('hakulomakeUrl');
+    $scope.uiLang = LanguageService.getLanguage();
     
 
     $scope.tabtitle = (function() {
@@ -69,22 +70,29 @@
 
         return true;
     }
-
-    var showAoAnchorLinks = function() {
-        var length = 0;
-        angular.forEach($scope.lo.applicationSystems, function(as, askey){
-            length += as.applicationOptions.length;
-        });
-
-        return length > 1 ? true : false;
+    
+    var setRecommendationFields = function() {
+    	if ($scope.uiLang == 'fi') {
+    		$scope.lopExclField = '-lopName_fi_ssort';
+    	} else if ($scope.uiLang == 'sv') {
+    		$scope.lopExclField = '-lopName_sv_ssort';
+    	} else if ($scope.uiLang == 'en') {
+    		$scope.lopExclField = '-lopName_en_ssort';
+    	} else {
+    		$scope.lopExclField = '-lopName';
+    	}
     }
 
     var initializeLO = function() {
         setTitle($scope.parent, $scope.lo);
         $scope.showApplicationRadioSelection = showApplicationRadioSelection() ? '' : 'hidden';
-        $scope.showAoAnchorLinks = showAoAnchorLinks();
-        var loi = getLOIByPrerequisite($location.hash());
-        //var loi = getLOIByPrerequisite($location.search().prerequisite);
+
+        setRecommendationFields();
+        
+        // use hash if present
+        var hash = $location.hash() ? $location.hash() : $location.search().prerequisite;
+        var loi = getLOIByPrerequisite(hash);
+        
         if (loi) {
             changeLOISelection(loi);
         } else {
@@ -94,41 +102,6 @@
     };
 
     var changeLOISelection = function(loi) {
-
-        var aggregateChildren = function(loi) {
-            var children = [];
-            if (loi.applicationSystems && loi.applicationSystems.length > 0) {
-                var as = loi.applicationSystems[0];
-                for (var i in as.applicationOptions) {
-                    if (as.applicationOptions.hasOwnProperty(i)) {
-                        var ao = as.applicationOptions[i];
-                        if (ao.childRefs) {
-                            //children = children.concat(ao.childRefs);
-                            for (var childIndex in ao.childRefs) {
-                                if (ao.childRefs.hasOwnProperty(childIndex)) {
-                                    var child = ao.childRefs[childIndex];
-
-                                    var childFound = false;
-                                    for (var j in children) {
-                                        if (children.hasOwnProperty(j)) {
-                                            if (child.losId == children[j].losId) {
-                                                childFound = true;
-                                            }
-                                        }
-                                    }
-
-                                    if (!childFound) {
-                                        children.push(child);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            return children;
-        };
 
         var getFirstApplicationSystem = function(loi) {
             if (loi.applicationSystems && loi.applicationSystems.length > 0) {
@@ -148,13 +121,8 @@
                 if ($scope.lois[loiIndex].prerequisite.value == loi.prerequisite.value) {
                     $scope.selectedLOI = angular.copy($scope.lois[loiIndex]);
                     $scope.prerequisite = angular.copy($scope.selectedLOI.prerequisite);
-                    var children = aggregateChildren($scope.selectedLOI);
                     var as = getFirstApplicationSystem($scope.selectedLOI);
                     $scope.selectedAs = as;
-
-                    if ($scope.selectedAs) {
-                        $scope.selectedAs.children = children;
-                    }
 
                     if ($scope.selectedAs && $scope.selectedAs.applicationOptions && $scope.selectedAs.applicationOptions.length > 0) {
                         $scope.applicationOption = $scope.selectedAs.applicationOptions[0];
@@ -183,9 +151,9 @@
     }
 
     $scope.changePrerequisiteSelection = function(prerequisite) {
-        $location.hash(prerequisite).replace();
+        $location.hash(null).replace(); // override hash if used
+        $location.search({prerequisite: prerequisite}).replace();
         loadLo();
-        //$location.search({prerequisite: prerequisite}).replace();
     }
 
     $scope.hasChildren = function() {
@@ -219,11 +187,6 @@
 
     // initialize view model
     loadLo();
-
-    // trigger once content is loaded
-    $scope.$on('$viewContentLoaded', function() {
-        OPH.Common.initHeader();
-    });
 };
 
 
