@@ -83,17 +83,16 @@ public class UpdateServiceImpl implements UpdateService {
                 List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
                 count = loOids.size();
                 index += count;*/
-                
-                List<String> loOids = Arrays.asList("1.2.246.562.5.2013061010191208547980",
-
-                        "1.2.246.562.5.2013061010184431795697",
-
-                        "1.2.246.562.5.2013061010184670694756",
-                        "1.2.246.562.5.2013112814572438173505", //ammattistartti
-                        "1.2.246.562.5.2013112814572435006223",//kymppiluokka
-                        "1.2.246.562.5.2013112814572441041721", // mamu amm
-                        "1.2.246.562.5.2013112814572429147350"); //mamu lukio);
             
+            List<String> loOids = Arrays.asList("1.2.246.562.5.2013061010191208547980",
+
+                    "1.2.246.562.5.2013061010184431795697",
+
+                    "1.2.246.562.5.2013061010184670694756",
+                    "1.2.246.562.5.2013112814572438173505", //ammattistartti
+                    "1.2.246.562.5.2013112814572435006223",//kymppiluokka
+                    "1.2.246.562.5.2013112814572441041721", // mamu amm
+                    "1.2.246.562.5.2013112814572429147350"); //mamu lukio);
                 
                 for (String loOid : loOids) {
                     List<LOS> specifications = null;
