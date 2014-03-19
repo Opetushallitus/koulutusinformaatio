@@ -19,8 +19,10 @@ package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
+import fi.vm.sade.koulutusinformaatio.domain.ParentLOSRef;
 import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
@@ -33,6 +35,7 @@ import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 
 import javax.ws.rs.WebApplicationException;
+
 import java.util.List;
 
 /**
@@ -103,6 +106,7 @@ public class RehabilitatingLearningOpportunityBuilder extends LearningOpportunit
                     ao.setEducationDegree(los.getEducationDegree());
                     ao.setType(los.getType());
                     ao.setEducationTypeUri(los.getEducationTypeUri());
+                    ao.setParent(new ParentLOSRef(los.getId(), los.getName()));
                 }
             }
         }

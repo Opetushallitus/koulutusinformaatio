@@ -47,8 +47,6 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.service.types.TarjontaTila;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.convert.ConversionService;
@@ -76,7 +74,7 @@ public class TarjontaServiceImpl implements TarjontaService {
     private TarjontaRawService tarjontaRawService;
     private LOSObjectCreator creator;
     
-    private static final String ED_TYPE_FACET_KOODISTO = "koulutusfasettimalli";
+    private static final String ED_TYPE_FACET_KOODISTO = "koulutustyyppifasetti";//"koulutusfasettimalli";
 
     @Autowired
     public TarjontaServiceImpl(ConversionService conversionService, KoodistoService koodistoService,

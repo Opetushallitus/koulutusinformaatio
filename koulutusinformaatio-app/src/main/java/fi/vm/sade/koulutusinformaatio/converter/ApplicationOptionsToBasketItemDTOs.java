@@ -73,6 +73,7 @@ public final class ApplicationOptionsToBasketItemDTOs {
                 aoDTO.setKaksoistutkinto(ao.isKaksoistutkinto());
                 aoDTO.setVocational(ao.isVocational());
                 aoDTO.setEducationCodeUri(ao.getEducationCodeUri());
+                aoDTO.setEducationTypeUri(ao.getEducationTypeUri());
                 ParentLOSRef los = ao.getParent();
                 if (los != null) {
                 	aoDTO.setHigherEducation(TarjontaConstants.TYPE_KK.equals(los.getLosType()));
