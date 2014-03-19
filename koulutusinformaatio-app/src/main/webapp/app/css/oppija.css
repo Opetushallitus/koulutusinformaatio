@@ -1844,7 +1844,7 @@ b, strong, .bold {
 .ajax-loader {
   width: 100%;
   height: 100%;
-  position: absolute;
+  position: relative;
   background: #FFFFFF;
   opacity: 1;
   z-index: 1000;
@@ -2440,6 +2440,10 @@ table.striped {
         border-right: none; }
       .search-result-extended .search-result-applicationsystem .search-result-content .lastrow {
         border-bottom: none; }
+
+/* Postal code */
+span.post-office {
+  margin-left: 10px; }
 
 .remove {
   display: inline-block;
