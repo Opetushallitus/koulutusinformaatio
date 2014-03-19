@@ -117,7 +117,6 @@ public class LOSObjectCreator extends ObjectCreator {
         parentLOS.setTopics(getTopics(parentKomo.getOpintoalaUri()));
         parentLOS.setThemes(getThemes(parentLOS));
 
-
         List<ParentLOI> lois = Lists.newArrayList();
 
         for (KomotoDTO komoto : parentKomotos) {
@@ -146,7 +145,7 @@ public class LOSObjectCreator extends ObjectCreator {
 
     public SpecialLOS createRehabLOS(KomoDTO childKomo, KomoDTO parentKomo, String specialLOSId,
             KomotoDTO childKomoto, String providerOid) throws KoodistoException, TarjontaParseException {
-        SpecialLOS los = createBasicLOS(SpecialLOS.class, childKomo, providerOid);
+        SpecialLOS los = createBasicLOS(SpecialLOS.class, parentKomo, providerOid);
         if (childKomo.getKoulutusTyyppiUri().equals(TarjontaConstants.REHABILITATING_EDUCATION_TYPE)) {
             los.setType(TarjontaConstants.TYPE_REHAB);
         } else if (childKomo.getKoulutusTyyppiUri().equals(TarjontaConstants.PREPARATORY_VOCATIONAL_EDUCATION_TYPE) 
@@ -208,7 +207,7 @@ public class LOSObjectCreator extends ObjectCreator {
 
     public SpecialLOS createSpecialLOS(KomoDTO childKomo, KomoDTO parentKomo, String specialLOSId,
             List<KomotoDTO> childKomotos, String providerOid) throws KoodistoException, TarjontaParseException {
-        SpecialLOS los = createBasicLOS(SpecialLOS.class, childKomo, providerOid);
+        SpecialLOS los = createBasicLOS(SpecialLOS.class, parentKomo, providerOid);
         if (childKomo.getKoulutusTyyppiUri().equals(TarjontaConstants.REHABILITATING_EDUCATION_TYPE)) {
             los.setType(TarjontaConstants.TYPE_REHAB);
         } else if (childKomo.getKoulutusTyyppiUri().equals(TarjontaConstants.PREPARATORY_VOCATIONAL_EDUCATION_TYPE)) {
