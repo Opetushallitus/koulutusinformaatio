@@ -1148,7 +1148,6 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
                     if (applicationOptions.hasOwnProperty(i)) {
                         if (applicationOptions[i].children && applicationOptions[i].children.length > 0) {
                             result[asIndex].applicationOptions[i].qualification = applicationOptions[i].children[0].qualification;
-                            result[asIndex].applicationOptions[i].prerequisite = applicationOptions[i].children[0].prerequisite;
                         }
 
                         // set teaching languge as the first language in array

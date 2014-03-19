@@ -2,6 +2,10 @@
     <div class="result-content">
         <h2 title="{{locales.openEducation}}"><a href="{{lo.linkHref}}">{{lo.name}}, {{lo.credits}}</a></h2>
         <span class="italic" data-ki-i18n="{{lo.educationType}}"></span><br />
+        <span data-ng-show="lo.prerequisite">
+            <span data-ki-i18n="application-prerequisite" data-show-colon="true"></span>
+            <span>{{lo.prerequisite}}</span><br />
+        </span>
         <span>{{lo.lopName}}</span><br />
         <span>{{lo.homeplace}}</span>
     </div>

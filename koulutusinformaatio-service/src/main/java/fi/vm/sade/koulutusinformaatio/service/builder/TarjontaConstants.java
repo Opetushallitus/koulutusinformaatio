@@ -44,6 +44,8 @@ public class TarjontaConstants {
     public static final String TENTH_GRADE_EDUCATION_TYPE = "PerusopetuksenLisaopetus";
     public static final String IMMIGRANT_PREPARATORY_VOCATIONAL = "MaahanmAmmValmistavaKoulutus";
     public static final String IMMIGRANT_PREPARATORY_UPSEC = "MaahanmLukioValmistavaKoulutus";
+    public static final String KANSANOPISTO_TYPE = "VapaanSivistystyonKoulutus";
+    
 
     public static final String PREREQUISITE_URI_ER = "pohjakoulutusvaatimustoinenaste_er";
     

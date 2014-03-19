@@ -205,7 +205,10 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
             } else if (specialLOS.getEducationTypeUri().equals(TarjontaConstants.IMMIGRANT_PREPARATORY_VOCATIONAL)) {
                 doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_IMM_VOC);
                 doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE_DISPLAY, SolrUtil.SolrConstants.ED_TYPE_IMM_VOC);
-            }
+            } else if (specialLOS.getEducationTypeUri().equals(TarjontaConstants.KANSANOPISTO_TYPE)) {
+                doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_KANSANOPISTO);
+                doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE_DISPLAY, SolrUtil.SolrConstants.ED_TYPE_KANSANOPISTO);
+            } 
             doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_MUU);
             doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_PK_JALK);
         }
