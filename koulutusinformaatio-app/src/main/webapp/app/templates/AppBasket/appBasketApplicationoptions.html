@@ -5,10 +5,10 @@
 
             <a data-ng-if="item.type == 'TUTKINTO'" class="block" href="#!/tutkinto/{{item.parent.id}}?prerequisite={{item.prerequisite.value}}">{{item.parent.name}}</a>
             <a data-ng-if="item.type == 'KORKEAKOULU'" class="block" href="#!/korkeakoulu/{{item.parent.id}}">{{item.parent.name}}</a>
-
         </li>
         <li class="margin-top-2"><span>{{item.qualification}}</span></li>
         <li><span>{{item.prerequisite.description}}</span></li>
+        <li><span data-ki-i18n="{{item.educationTypeUri}}" class="margin-top-2"></span></li>
     </ul>
 </td>
 
@@ -16,11 +16,14 @@
     <div data-ng-if="item.type == 'LUKIO'">
         <a href="#!/lukio/{{item.losId}}" class="margin-top-0 margin-bottom-1 block">{{item.providerName}}, {{item.name}}</a>
     </div>
-    <div data-ng-if="item.type != 'LUKIO'">
+    <div data-ng-if="item.type == 'TUTKINTO' || item.type == 'KORKEAKOULU'">
         <h4 class="margin-top-0 margin-bottom-1">{{item.name}}</h4>
-            <ul class="disc">
-                <li data-ng-repeat="child in item.children"><a href="#!/koulutusohjelma/{{child.losId}}#{{item.prerequisite.value}}">{{child.name}}</a></li>
-            </ul>
+        <ul class="disc">
+            <li data-ng-repeat="child in item.children"><a href="#!/koulutusohjelma/{{child.losId}}#{{item.prerequisite.value}}">{{child.name}}</a></li>
+        </ul>
+    </div>
+    <div data-ng-if="item.type == 'VALMISTAVA'">
+        <a class="block" href="#!/valmistava/{{item.parent.id}}">{{item.name}}</a>
     </div>
 </td>
 
@@ -73,6 +76,7 @@
                 </span>
             </button>
         </form>
+        <div class="margin-top-2 float-right clear" data-ki-render-application-status-label data-as="as"></div>
     </div>
 </td>
 
