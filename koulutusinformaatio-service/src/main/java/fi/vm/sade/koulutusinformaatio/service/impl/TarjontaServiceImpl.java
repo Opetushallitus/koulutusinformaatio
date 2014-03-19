@@ -76,8 +76,7 @@ public class TarjontaServiceImpl implements TarjontaService {
     private TarjontaRawService tarjontaRawService;
     private LOSObjectCreator creator;
     
-    private static final String ED_TYPE_FACET_KOODISTO = "koulutustyyppifasetti";//"koulutusfasettimalli";//
-
+    private static final String ED_TYPE_FACET_KOODISTO = "koulutusfasettimalli";
 
     @Autowired
     public TarjontaServiceImpl(ConversionService conversionService, KoodistoService koodistoService,
