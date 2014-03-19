@@ -468,6 +468,7 @@ public class SearchServiceSolrImpl implements SearchService {
         Facet edTypeFacet = new Facet();
         FacetField edTypeField = response.getFacetField(LearningOpportunity.EDUCATION_TYPE);
         List<FacetValue> values = new ArrayList<FacetValue>();
+        List<FacetValue> roots = new ArrayList<FacetValue>();
         Map<String, List<FacetValue>> resMap = new HashMap<String, List<FacetValue>>();
         
         if (edTypeField != null) {
@@ -478,10 +479,13 @@ public class SearchServiceSolrImpl implements SearchService {
                         curC.getCount(),
                         curC.getName());
                 
+                values.add(newVal);
+                
                 String[] splits = curC.getName().split("\\.");
                 
-                if (splits.length == 2 ) {
-                    String parentStr = splits[0];
+                if (splits.length >= 2 ) {
+                    int endIndex = curC.getName().lastIndexOf('.');
+                    String parentStr= curC.getName().substring(0, endIndex);
                     if (resMap.containsKey(parentStr)) {
                         resMap.get(parentStr).add(newVal);
                     } else {
@@ -490,7 +494,7 @@ public class SearchServiceSolrImpl implements SearchService {
                         resMap.put(parentStr, children);
                     }
                 } else {
-                    values.add(newVal);
+                    roots.add(newVal);
                 }
 
             }
@@ -500,7 +504,7 @@ public class SearchServiceSolrImpl implements SearchService {
             curVal.setChildValues(resMap.get(curVal.getValueId()));
         }
         
-        edTypeFacet.setFacetValues(values);
+        edTypeFacet.setFacetValues(roots);
         return edTypeFacet;
     }
 

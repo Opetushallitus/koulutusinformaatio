@@ -209,7 +209,7 @@ public final class SolrUtil {
         public static final String GET = "GET";
 
         //value constants
-        public static final String ED_TYPE_LUKIO = "et1"; 
+        /*public static final String ED_TYPE_LUKIO = "et1"; 
         public static final String ED_TYPE_KAKSOIS = "et2";
         public static final String ED_TYPE_AMMATILLINEN = "et3";
         public static final String ED_TYPE_AMM_ER = "et4";
@@ -224,7 +224,30 @@ public final class SolrUtil {
         public static final String ED_TYPE_TENTH_GRADE = "et12.et13";
         public static final String ED_TYPE_IMM_VOC = "et12.et15";
         public static final String ED_TYPE_IMM_UPSEC = "et12.et16";
-        public static final String ED_TYPE_MUU = "et12";
+        public static final String ED_TYPE_MUU = "et12";*/
+        
+        //value constants
+        public static final String ED_TYPE_TUTKINTOON = "et01";
+        public static final String ED_TYPE_LUKIO = "et01.01";
+        public static final String ED_TYPE_KAKSOIS = "et01.02";
+        public static final String ED_TYPE_AMMATILLISET = "et01.03";
+        public static final String ED_TYPE_AMMATILLINEN = "et01.03.01";
+        public static final String ED_TYPE_AMM_ER = "et01.03.02";
+
+        public static final String ED_TYPE_AMKS = "et01.04";
+        public static final String ED_TYPE_AMK = "et01.04.01";
+        public static final String ED_TYPE_YLEMPI_AMK = "et01.04.02";
+        public static final String ED_TYPE_YOS = "et01.05";
+        public static final String ED_TYPE_KANDIDAATTI = "et01.05.01";
+        public static final String ED_TYPE_MAISTERI = "et01.05.02";
+        
+        public static final String ED_TYPE_MUU = "et02";
+        public static final String ED_TYPE_PK_JALK = "et02.01";
+        public static final String ED_TYPE_TENTH_GRADE = "et02.01.01";
+        public static final String ED_TYPE_VOC_PREP = "et02.01.02";
+        public static final String ED_TYPE_IMM_VOC = "et02.01.03";
+        public static final String ED_TYPE_IMM_UPSEC = "et02.01.04";
+        public static final String ED_TYPE_VALMENTAVA = "et02.02";
         
         public static final String SPECIAL_EDUCATION = "ER";
         public static final String TIMESTAMP_DOC = "loUpdateTimestampDocument";
