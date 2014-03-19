@@ -126,7 +126,8 @@ public class TarjontaServiceImpl implements TarjontaService {
         else if ((educationType.equals(TarjontaConstants.PREPARATORY_VOCATIONAL_EDUCATION_TYPE) 
                     || educationType.equals(TarjontaConstants.TENTH_GRADE_EDUCATION_TYPE)
                     || educationType.equals(TarjontaConstants.IMMIGRANT_PREPARATORY_VOCATIONAL)
-                    || educationType.equals(TarjontaConstants.IMMIGRANT_PREPARATORY_UPSEC))
+                    || educationType.equals(TarjontaConstants.IMMIGRANT_PREPARATORY_UPSEC)
+                    || educationType.endsWith(TarjontaConstants.KANSANOPISTO_TYPE))
                 && komo.getModuuliTyyppi().equals(TarjontaConstants.MODULE_TYPE_CHILD)) {
             return new RehabilitatingLearningOpportunityBuilder(tarjontaRawService, providerService, koodistoService, komo);
         }
@@ -235,21 +236,27 @@ public class TarjontaServiceImpl implements TarjontaService {
     private List<HigherEducationLOS> createChildHierarchy(List<HigherEducationLOS> koulutukset,
             Map<String, List<HigherEducationLOS>> komoToLOSMap, List<String> parentOids, Map<String,List<HigherEducationLOSRef>> aoToEducationsMap) {
 
+        Map<String,HigherEducationLOS> leafs = new HashMap<String,HigherEducationLOS>();
+        
         for (HigherEducationLOS curLos : koulutukset) {
 
             ResultV1RDTO<Set<String>> childKomoOids = this.tarjontaRawService.getChildrenOfParentHigherEducationLOS(curLos.getKomoOid());
             ResultV1RDTO<Set<String>> parentKomoOids = this.tarjontaRawService.getParentsOfHigherEducationLOS(curLos.getKomoOid());
-            if (childKomoOids != null && childKomoOids.getResult() != null) {
+            if (childKomoOids != null && childKomoOids.getResult() != null && !childKomoOids.getResult().isEmpty()) {
                 for (String curChildKomoOid : childKomoOids.getResult()) {
                     List<HigherEducationLOS> loss = komoToLOSMap.get(curChildKomoOid);
-                    if (loss != null) {
+                    if (loss != null && !loss.isEmpty()) {
                         curLos.getChildren().addAll(loss);
+                    } else {
+                        leafs.put(curLos.getId(), curLos);
                     }
 
                     if (parentOids.contains(curChildKomoOid)) {
                         parentOids.remove(curChildKomoOid);
                     }
                 }
+            } else {
+                leafs.put(curLos.getId(), curLos);
             }
             if (parentKomoOids != null && parentKomoOids.getResult() != null) {
                 for (String curParentKomoOid : parentKomoOids.getResult()) {
@@ -266,11 +273,36 @@ public class TarjontaServiceImpl implements TarjontaService {
             }
             
         }
+        
+        for (HigherEducationLOS curLeaf : leafs.values()) {
+            System.out.println("\nUpgrading applicatoin options!!!!");
+            upgradeApplicationOptions(curLeaf);
+        }
+        
         List<HigherEducationLOS> parents = new ArrayList<HigherEducationLOS>();
         for (String curParent : parentOids) {
             parents.addAll(komoToLOSMap.get(curParent));
         }
         return parents;
+    }
+
+    private void upgradeApplicationOptions(HigherEducationLOS curLOS) {
+        
+        for (HigherEducationLOS curParent : curLOS.getParents()) {
+            Map<String,ApplicationOption> aoMap = new HashMap<String,ApplicationOption>();
+            for (ApplicationOption curAo : curLOS.getApplicationOptions()) {
+                aoMap.put(curAo.getId(), curAo);
+            }
+            
+            for (ApplicationOption curAo : curParent.getApplicationOptions()) {
+                aoMap.put(curAo.getId(), curAo);
+            }
+            List<ApplicationOption> aos = new ArrayList<ApplicationOption>(aoMap.values());
+            System.out.println("Foiund: " + aos.size() + ", application options.");
+            curParent.setApplicationOptions(new ArrayList<ApplicationOption>(aoMap.values()));
+            upgradeApplicationOptions(curParent);
+        }
+        
     }
 
     @Override

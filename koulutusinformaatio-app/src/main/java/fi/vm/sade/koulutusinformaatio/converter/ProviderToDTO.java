@@ -43,6 +43,7 @@ public final class ProviderToDTO {
             p.setAccessibility(ConverterUtil.getTextByLanguage(provider.getAccessibility(), lang));
             p.setLearningEnvironment(ConverterUtil.getTextByLanguage(provider.getLearningEnvironment(), lang));
             p.setLivingExpenses(ConverterUtil.getTextByLanguage(provider.getLivingExpenses(), lang));
+            p.setLiving(ConverterUtil.getTextByLanguage(provider.getLiving(), lang));
             p.setDining(ConverterUtil.getTextByLanguage(provider.getDining(), lang));
             p.setHealthcare(ConverterUtil.getTextByLanguage(provider.getHealthcare(), lang));
             p.setSocial(SocialToDTO.convert(provider.getSocial()));

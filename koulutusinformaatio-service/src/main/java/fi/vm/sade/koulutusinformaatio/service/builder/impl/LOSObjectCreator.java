@@ -151,7 +151,8 @@ public class LOSObjectCreator extends ObjectCreator {
         } else if (childKomo.getKoulutusTyyppiUri().equals(TarjontaConstants.PREPARATORY_VOCATIONAL_EDUCATION_TYPE) 
                 || childKomo.getKoulutusTyyppiUri().equals(TarjontaConstants.TENTH_GRADE_EDUCATION_TYPE)
                 || childKomo.getKoulutusTyyppiUri().equals(TarjontaConstants.IMMIGRANT_PREPARATORY_UPSEC)
-                || childKomo.getKoulutusTyyppiUri().equals(TarjontaConstants.IMMIGRANT_PREPARATORY_VOCATIONAL)) {
+                || childKomo.getKoulutusTyyppiUri().equals(TarjontaConstants.IMMIGRANT_PREPARATORY_VOCATIONAL)
+                || childKomo.getKoulutusTyyppiUri().equals(TarjontaConstants.KANSANOPISTO_TYPE)) {
             los.setType(TarjontaConstants.TYPE_PREP);
             los.setEducationTypeUri(childKomo.getKoulutusTyyppiUri());
         } else {
