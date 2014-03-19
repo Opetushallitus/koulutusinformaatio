@@ -78,7 +78,7 @@ public class UpdateServiceImpl implements UpdateService {
             int count = MAX_RESULTS;
             int index = 0;
 
-            /*while(count >= MAX_RESULTS) {
+            /*while (count >= MAX_RESULTS) {
                 LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
                 List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
                 count = loOids.size();
@@ -93,6 +93,7 @@ public class UpdateServiceImpl implements UpdateService {
                         "1.2.246.562.5.2013112814572435006223",//kymppiluokka
                         "1.2.246.562.5.2013112814572441041721", // mamu amm
                         "1.2.246.562.5.2013112814572429147350"); //mamu lukio);
+            
                 
                 for (String loOid : loOids) {
                     List<LOS> specifications = null;
