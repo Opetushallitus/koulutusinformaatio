@@ -9,3 +9,8 @@
     	<span data-ki-timestamp="{{ao.applicationStartDate}}"></span>&ndash;<span data-ki-timestamp="{{ao.applicationEndDate}}"></span>
     </li>
 </ul>
+<ul class="disc">
+    <li data-ng-repeat="losref in ao.higherEdLOSRefs">
+        <a href="#!/korkeakoulu/{{losref.id}}">{{losref.name}}</a>
+    </li>
+</ul>

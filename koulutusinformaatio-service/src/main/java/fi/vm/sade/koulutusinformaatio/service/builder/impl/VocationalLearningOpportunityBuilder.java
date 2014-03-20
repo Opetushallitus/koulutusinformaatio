@@ -153,7 +153,7 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
         for (ParentLOS parentLOS : parentLOSs) {
 
             Multimap<String, ApplicationOption> applicationOptionsByParentLOIId = HashMultimap.create();
-            Multimap<String, String> availableTranslationLangsByParentLOIId = HashMultimap.create();
+            Multimap<String, Code> availableTranslationLangsByParentLOIId = HashMultimap.create();
 
             // add children to parent los
             // filter out children without lois
@@ -180,6 +180,7 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
                         ao.setParent(new ParentLOSRef(parentLOS.getId(), parentLOS.getName()));
                         ao.setEducationDegree(parentLOS.getEducationDegree());
                         parentLOS.getProvider().getApplicationSystemIDs().add(ao.getApplicationSystem().getId());
+                        ao.setType(parentLOS.getType());
                     }
 
                     // save application options to be added to parent loi
@@ -198,7 +199,7 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
                     
                     for (Code lang : childLOI.getTeachingLanguages()) {
                         codeLang.put(lang.getValue(), lang);
-                        availableTranslationLangsByParentLOIId.put(childLOI.getParentLOIId(), lang.getValue().toLowerCase());
+                        availableTranslationLangsByParentLOIId.put(childLOI.getParentLOIId(), lang);
                     }
                 }
                 
@@ -210,6 +211,15 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
             parentLOS.setChildren(children);
             parentLOS.setTeachingLanguages(new ArrayList<Code>(codeLang.values()));
         }
+        
+        for (SpecialLOS curSpecial : this.specialLOSs) {
+            for (ChildLOI curChild : curSpecial.getLois()) {
+                for (ApplicationOption curAo : curChild.getApplicationOptions()) {
+                    curAo.setType(TarjontaConstants.TYPE_SPECIAL);
+                }
+            }
+        }
+        
         return this;
     }
 

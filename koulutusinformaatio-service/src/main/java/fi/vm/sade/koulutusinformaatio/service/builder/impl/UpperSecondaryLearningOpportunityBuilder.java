@@ -30,6 +30,7 @@ import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.LearningOpportunityBuilder;
+import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
@@ -100,6 +101,7 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
                 for (ApplicationOption ao : loi.getApplicationOptions()) {
                     ao.setProvider(los.getProvider());
                     ao.setEducationDegree(los.getEducationDegree());
+                    ao.setType(TarjontaConstants.TYPE_UPSEC);
                     los.getProvider().getApplicationSystemIDs().add(ao.getApplicationSystem().getId());
                 }
             }

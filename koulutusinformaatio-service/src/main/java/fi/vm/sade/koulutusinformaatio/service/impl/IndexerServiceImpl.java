@@ -306,6 +306,7 @@ public class IndexerServiceImpl implements IndexerService {
         List<SolrInputDocument> edTypeDocs = Lists.newArrayList();
         for (Code curEdType : edTypeCodes) {
             SolrUtil.indexCodeAsFacetDoc(curEdType, edTypeDocs, true);
+            LOGGER.debug(String.format("Indexed: %s to solr", curEdType));
         }
         loUpdateSolr.add(edTypeDocs);
     }

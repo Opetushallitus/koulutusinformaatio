@@ -19,6 +19,7 @@ package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KIConversionException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
@@ -30,11 +31,14 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuaikaV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeLiiteV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.google.common.base.Predicates.and;
 import static com.google.common.base.Predicates.not;
@@ -63,8 +67,18 @@ public class ApplicationOptionCreator extends ObjectCreator {
                                                       Code prerequisite, String educationCodeUri) throws KoodistoException {
         ApplicationOption ao = new ApplicationOption();
         ao.setId(hakukohdeDTO.getOid());
-        ao.setName(koodistoService.searchFirst(hakukohdeDTO.getHakukohdeNimiUri()));
-        ao.setAoIdentifier(koodistoService.searchFirstCodeValue(hakukohdeDTO.getHakukohdeNimiUri()));
+        try {
+            ao.setName(koodistoService.searchFirst(hakukohdeDTO.getHakukohdeNimiUri()));
+            ao.setAoIdentifier(koodistoService.searchFirstCodeValue(hakukohdeDTO.getHakukohdeNimiUri()));
+        } catch (Exception ex) {
+            LOG.warn("Problem with application option name generation: " + ao.getId() + " name: " + hakukohdeDTO.getHakukohdeNimiUri() );
+        }
+        if (ao.getName() == null) {
+            ao.setName(createI18Name(hakukohdeDTO.getHakukohdeNimiUri()));
+        }
+        if (ao.getAoIdentifier() == null) {
+            ao.setAoIdentifier(hakukohdeDTO.getHakukohdeNimiUri());
+        }
         ao.setAthleteEducation(isAthleteEducation(ao.getAoIdentifier()));
         ao.setStartingQuota(hakukohdeDTO.getAloituspaikatLkm());
         ao.setLowestAcceptedScore(hakukohdeDTO.getAlinValintaPistemaara());
@@ -98,6 +112,17 @@ public class ApplicationOptionCreator extends ObjectCreator {
         ao.setAttachments(educationObjectCreator.createApplicationOptionAttachments(hakukohdeDTO.getLiitteet()));
         ao.setAdditionalInfo(getI18nText(hakukohdeDTO.getLisatiedot()));
         return ao;
+    }
+
+    private I18nText createI18Name(String hakukohdeNimiUri) {
+        I18nText name = new I18nText();
+        Map<String,String> transls = new HashMap<String,String>();
+        transls.put("fi", hakukohdeNimiUri);
+        transls.put("sv", hakukohdeNimiUri);
+        transls.put("en", hakukohdeNimiUri);
+        name.setTranslations(transls);
+        name.setTranslationsShortName(transls);
+        return name;
     }
 
     public List<ApplicationOption> createVocationalApplicationOptions(List<String> hakukohdeOIDs, KomotoDTO komoto,

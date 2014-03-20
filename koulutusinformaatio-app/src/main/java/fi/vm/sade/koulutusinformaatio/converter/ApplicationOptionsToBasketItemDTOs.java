@@ -59,6 +59,7 @@ public final class ApplicationOptionsToBasketItemDTOs {
 
                 BasketApplicationOptionDTO aoDTO = new BasketApplicationOptionDTO();
                 aoDTO.setId(ao.getId());
+                aoDTO.setType(ao.getType());
                 aoDTO.setName(ConverterUtil.getTextByLanguageUseFallbackLang(ao.getName(), lang));
                 aoDTO.setEducationDegree(ao.getEducationDegree());
                 aoDTO.setSora(ao.isSora());
@@ -72,6 +73,8 @@ public final class ApplicationOptionsToBasketItemDTOs {
                 aoDTO.setKaksoistutkinto(ao.isKaksoistutkinto());
                 aoDTO.setVocational(ao.isVocational());
                 aoDTO.setEducationCodeUri(ao.getEducationCodeUri());
+                aoDTO.setEducationTypeUri(ao.getEducationTypeUri());
+                aoDTO.setPrerequisite( CodeToDTO.convert(ao.getPrerequisite(), lang) );
                 ParentLOSRef los = ao.getParent();
                 if (los != null) {
                 	aoDTO.setHigherEducation(TarjontaConstants.TYPE_KK.equals(los.getLosType()));

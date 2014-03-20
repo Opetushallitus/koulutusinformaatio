@@ -25,6 +25,7 @@ import java.util.List;
 public class LOSearchResultList {
 
     private List<LOSearchResult> results = new ArrayList<LOSearchResult>();
+    private List<ArticleResult> articleresults = new ArrayList<ArticleResult>();
     private long totalCount;
     private Facet teachingLangFacet;
     private Facet filterFacet;
@@ -34,6 +35,9 @@ public class LOSearchResultList {
     private Facet topicFacet;
     private FacetValue lopRecommendationFilter;
     private FacetValue educationCodeRecommendationFilter;
+    private long loCount;
+    private long articleCount;
+    private long orgCount;
 
 
     public List<LOSearchResult> getResults() {
@@ -115,5 +119,37 @@ public class LOSearchResultList {
     public void setEducationCodeRecommendationFilter(
             FacetValue educationCodeRecommendationFilter) {
         this.educationCodeRecommendationFilter = educationCodeRecommendationFilter;
+    }
+
+    public List<ArticleResult> getArticleresults() {
+        return articleresults;
+    }
+
+    public void setArticleresults(List<ArticleResult> articleresults) {
+        this.articleresults = articleresults;
+    }
+
+    public long getLoCount() {
+        return loCount;
+    }
+
+    public void setLoCount(long loCount) {
+        this.loCount = loCount;
+    }
+
+    public long getArticleCount() {
+        return articleCount;
+    }
+
+    public void setArticleCount(long articleCount) {
+        this.articleCount = articleCount;
+    }
+
+    public long getOrgCount() {
+        return orgCount;
+    }
+
+    public void setOrgCount(long orgCount) {
+        this.orgCount = orgCount;
     }
 }

@@ -1,0 +1,83 @@
+<td>
+    <ul class="nobullet">
+        <li>
+            <h4 class="margin-top-0 margin-bottom-0">{{item.providerName}}, <span class="capitalized">{{item.providerLocation}}</span></h4>
+
+            <a data-ng-if="item.type == 'TUTKINTO'" class="block" href="#!/tutkinto/{{item.parent.id}}?prerequisite={{item.prerequisite.value}}">{{item.parent.name}}</a>
+            <a data-ng-if="item.type == 'KORKEAKOULU'" class="block" href="#!/korkeakoulu/{{item.parent.id}}">{{item.parent.name}}</a>
+        </li>
+        <li class="margin-top-2"><span>{{item.qualification}}</span></li>
+        <li><span>{{item.prerequisite.description}}</span></li>
+        <li><span data-ki-i18n="{{item.educationTypeUri}}" class="margin-top-2"></span></li>
+    </ul>
+</td>
+
+<td>
+    <div data-ng-if="item.type == 'LUKIO'">
+        <a href="#!/lukio/{{item.losId}}" class="margin-top-0 margin-bottom-1 block">{{item.providerName}}, {{item.name}}</a>
+    </div>
+    <div data-ng-if="item.type == 'TUTKINTO' || item.type == 'KORKEAKOULU'">
+        <h4 class="margin-top-0 margin-bottom-1">{{item.name}}</h4>
+        <ul class="disc">
+            <li data-ng-repeat="child in item.children"><a href="#!/koulutusohjelma/{{child.losId}}#{{item.prerequisite.value}}">{{child.name}}</a></li>
+        </ul>
+    </div>
+    <div data-ng-if="item.type == 'VALMISTAVA'">
+        <a class="block" href="#!/valmistava/{{item.parent.id}}">{{item.name}}</a>
+    </div>
+</td>
+
+<td class="align-left table-container" colspan="2">
+    <table class="sub">
+        <colgroup>
+        <col style="width: 50%;"></col>
+        <col style="width: 50%;"></col>
+    </colgroup>
+    <tr data-ng-repeat="attachment in item.attachments | orderBy:'dueDate'">
+        <td class="align-right">{{attachment.type}}</td>
+        <td class="bold"><span data-ki-timestamp="{{attachment.dueDate}}"></span></td>
+    </tr>
+    <tr data-ng-repeat="exam in item.exams">
+        <td class="align-right">
+            <span data-ng-show="exam.type">{{exam.type}}</span>
+            <span data-ng-show="!exam.type" data-ki-i18n="entrance-exam">{{exam.type}}</span>
+        </td>
+        <td class="bold">
+            <span data-ng-repeat="examEvent in exam.examEvents | orderBy:'start'">
+                <span data-ki-time-interval data-exam-event="examEvent"></span><br/>
+            </span>
+        </td>
+    </tr>
+</table>
+</td>
+
+<td class="basket-remove last align-right">
+    <a href="javascript:void(0)" class="remove" data-ng-click="removeItem(item.id)">
+        <span data-ki-i18n="application-basket-remove"></span>
+    </a>
+
+    <div data-ng-if="as.maxApplicationOptions <= 1" style="margin-top: 20px;">
+        <form action="{{hakuAppUrl + 'lomake/' + as.applicationSystemId}}" id="application-form-{{as.applicationSystemId}}" method="post" target="hakulomake">
+            <input type="hidden" name="preference1-Opetuspiste" value="{{item.providerName}}"/>
+            <input type="hidden" name="preference1-Opetuspiste-id" value="{{item.providerId}}"/>
+            <input type="hidden" name="preference1-Koulutus-id-athlete" value="{{item.athleteEducation}}"/>
+            <input type="hidden" name="preference1-Koulutus" value="{{item.name}}"/>
+            <input type="hidden" name="preference1-Koulutus-id" value="{{item.id}}"/>
+            <input type="hidden" name="preference1-Koulutus-educationDegree" value="{{item.educationDegree}}"/>
+            <input type="hidden" name="preference1-Koulutus-id-sora" value="{{item.sora}}" />
+            <input type="hidden" name="preference1-Koulutus-id-lang" value="{{item.teachLang}}" />
+            <input type="hidden" name="preference1-Koulutus-id-aoIdentifier" value="{{item.aoIdentifier}}" />
+            <input type="hidden" name="preference1-Koulutus-id-kaksoistutkinto" value="{{item.kaksoistutkinto}}" />
+            <input type="hidden" name="preference1-Koulutus-id-vocational" value="{{item.vocational}}" />
+            <input type="hidden" name="preference1-Koulutus-id-educationcode" value="{{item.educationCodeUri}}" />
+            <button class="primary clear float-right" data-ng-disabled="applyButtonIsDisabled(as.applicationSystemId)" type="submit">
+                <span>
+                    <span data-ki-i18n="application-basket-fill-form"></span>
+                </span>
+            </button>
+        </form>
+        <div class="margin-top-2 float-right clear" data-ki-render-application-status-label data-as="as"></div>
+    </div>
+</td>
+
+

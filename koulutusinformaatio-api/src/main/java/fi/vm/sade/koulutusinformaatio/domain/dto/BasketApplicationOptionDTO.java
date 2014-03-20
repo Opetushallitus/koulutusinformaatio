@@ -16,10 +16,10 @@
 
 package fi.vm.sade.koulutusinformaatio.domain.dto;
 
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-
 import java.util.Date;
 import java.util.List;
+
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 /**
  * @author Mikko Majapuro
@@ -48,6 +48,9 @@ public class BasketApplicationOptionDTO {
     private boolean vocational;
     private String educationCodeUri;
     private boolean isHigherEducation;
+    private String type;
+    private String educationTypeUri;
+    private CodeDTO prerequisite; 
 
     public String getId() {
         return id;
@@ -213,5 +216,29 @@ public class BasketApplicationOptionDTO {
 
     public void setHigherEducation(boolean isHigherEducation) {
         this.isHigherEducation = isHigherEducation;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getEducationTypeUri() {
+        return educationTypeUri;
+    }
+
+    public void setEducationTypeUri(String educationTypeUri) {
+        this.educationTypeUri = educationTypeUri;
+    }
+
+    public CodeDTO getPrerequisite() {
+        return prerequisite;
+    }
+
+    public void setPrerequisite(CodeDTO prerequisite) {
+        this.prerequisite = prerequisite;
     }
 }

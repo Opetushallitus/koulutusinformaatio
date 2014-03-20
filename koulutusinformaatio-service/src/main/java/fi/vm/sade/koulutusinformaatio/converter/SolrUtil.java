@@ -170,9 +170,15 @@ public final class SolrUtil {
         public static final String EDUCATION_CODE_DISPLAY_SV = "educationCode_sv_ssort";
         public static final String EDUCATION_CODE_DISPLAY_EN = "educationCode_en_ssort";
         
+        public static final String EDUCATION_TYPE_DISPLAY = "educationCode_en_ss";
+        
         public static final String ARTICLE_URL = "article_url_ss";
         public static final String ARTICLE_PICTURE = "article_picture_ss";
         public static final String ARTICLE_EXCERPT = "article_excerpt_ss";
+        
+        public static final String ARTICLE_NAME_INDEX_FI = "article_name_fi_ssort";
+        public static final String ARTICLE_NAME_INDEX_SV = "article_name_sv_ssort";
+        public static final String ARTICLE_NAME_INDEX_EN = "article_name_en_ssort";
 
         //Fields for sorting
         public static final String START_DATE_SORT = "startDate_dsort";
@@ -182,6 +188,8 @@ public final class SolrUtil {
         //Fields for autocomplete
         public static final String NAME_AUTO = "name_auto";
         public static final String FREE_AUTO = "free_auto";
+        
+        
 
     }
 
@@ -201,7 +209,7 @@ public final class SolrUtil {
         public static final String GET = "GET";
 
         //value constants
-        public static final String ED_TYPE_LUKIO = "et1"; 
+        /*public static final String ED_TYPE_LUKIO = "et1"; 
         public static final String ED_TYPE_KAKSOIS = "et2";
         public static final String ED_TYPE_AMMATILLINEN = "et3";
         public static final String ED_TYPE_AMM_ER = "et4";
@@ -212,6 +220,35 @@ public final class SolrUtil {
         public static final String ED_TYPE_YOS = "et9";
         public static final String ED_TYPE_KANDIDAATTI = "et9.et10";
         public static final String ED_TYPE_MAISTERI = "et9.et11";
+        public static final String ED_TYPE_VOC_PREP = "et12.et14";
+        public static final String ED_TYPE_TENTH_GRADE = "et12.et13";
+        public static final String ED_TYPE_IMM_VOC = "et12.et15";
+        public static final String ED_TYPE_IMM_UPSEC = "et12.et16";
+        public static final String ED_TYPE_MUU = "et12";*/
+        
+        //value constants
+        public static final String ED_TYPE_TUTKINTOON = "et01";
+        public static final String ED_TYPE_LUKIO = "et01.01";
+        public static final String ED_TYPE_KAKSOIS = "et01.02";
+        public static final String ED_TYPE_AMMATILLISET = "et01.03";
+        public static final String ED_TYPE_AMMATILLINEN = "et01.03.01";
+        public static final String ED_TYPE_AMM_ER = "et01.03.02";
+
+        public static final String ED_TYPE_AMKS = "et01.04";
+        public static final String ED_TYPE_AMK = "et01.04.01";
+        public static final String ED_TYPE_YLEMPI_AMK = "et01.04.02";
+        public static final String ED_TYPE_YOS = "et01.05";
+        public static final String ED_TYPE_KANDIDAATTI = "et01.05.01";
+        public static final String ED_TYPE_MAISTERI = "et01.05.02";
+        
+        public static final String ED_TYPE_MUU = "et02";
+        public static final String ED_TYPE_PK_JALK = "et02.01";
+        public static final String ED_TYPE_TENTH_GRADE = "et02.01.01";
+        public static final String ED_TYPE_VOC_PREP = "et02.01.02";
+        public static final String ED_TYPE_IMM_VOC = "et02.01.03";
+        public static final String ED_TYPE_IMM_UPSEC = "et02.01.04";
+        public static final String ED_TYPE_KANSANOPISTO = "et02.01.05";
+        public static final String ED_TYPE_VALMENTAVA = "et02.02";
         
         public static final String SPECIAL_EDUCATION = "ER";
         public static final String TIMESTAMP_DOC = "loUpdateTimestampDocument";

@@ -28,6 +28,7 @@ import java.util.List;
 public class LOSearchResultListDTO {
 
     private List<LearningOpportunitySearchResultDTO> results = new ArrayList<LearningOpportunitySearchResultDTO>();
+    private List<ArticleResultDTO> articleresults = new ArrayList<ArticleResultDTO>();
     private long totalCount;
     private FacetDTO teachingLangFacet;
     private FacetDTO filterFacet;
@@ -36,6 +37,9 @@ public class LOSearchResultListDTO {
     private FacetDTO prerequisiteFacet;
     private FacetDTO topicFacet;
     private FacetValueDTO lopRecommendationFilter;
+    private long loCount;
+    private long articleCount;
+    private long orgCount;
     
 
     private FacetValueDTO educationCodeRecommendationFilter;
@@ -121,5 +125,37 @@ public class LOSearchResultListDTO {
     public void setEducationCodeRecommendationFilter(
             FacetValueDTO educationCodeRecommendationFilter) {
         this.educationCodeRecommendationFilter = educationCodeRecommendationFilter;
+    }
+
+    public List<ArticleResultDTO> getArticleresults() {
+        return articleresults;
+    }
+
+    public void setArticleresults(List<ArticleResultDTO> articleresults) {
+        this.articleresults = articleresults;
+    }
+
+    public long getLoCount() {
+        return loCount;
+    }
+
+    public void setLoCount(long loCount) {
+        this.loCount = loCount;
+    }
+
+    public long getArticleCount() {
+        return articleCount;
+    }
+
+    public void setArticleCount(long articleCount) {
+        this.articleCount = articleCount;
+    }
+
+    public long getOrgCount() {
+        return orgCount;
+    }
+
+    public void setOrgCount(long orgCount) {
+        this.orgCount = orgCount;
     }
 }

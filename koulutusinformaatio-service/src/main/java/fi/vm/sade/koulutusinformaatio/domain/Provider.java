@@ -42,6 +42,7 @@ public class Provider {
     private I18nText learningEnvironment;
     private I18nText dining;
     private I18nText livingExpenses;
+    private I18nText living;
     private List<Social> social;
     private Picture picture;
     private boolean athleteEducation;
@@ -232,5 +233,13 @@ public class Provider {
 
     public void setHomeDistrict(I18nText homeDistrict) {
         this.homeDistrict = homeDistrict;
+    }
+
+    public I18nText getLiving() {
+        return living;
+    }
+
+    public void setLiving(I18nText living) {
+        this.living = living;
     }
 }

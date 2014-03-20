@@ -58,7 +58,8 @@ public class UpperSecondaryLearningOpportunityInstanceEntity {
     private I18nTextEntity plannedDurationUnit;
     @Embedded
     private List<LanguageSelectionEntity> languageSelection;
-    private List<String> availableTranslationLanguages;
+    @Embedded
+    private List<CodeEntity> availableTranslationLanguages;
 
     public UpperSecondaryLearningOpportunityInstanceEntity() {
     }
@@ -191,11 +192,11 @@ public class UpperSecondaryLearningOpportunityInstanceEntity {
         this.languageSelection = languageSelection;
     }
 
-    public List<String> getAvailableTranslationLanguages() {
+    public List<CodeEntity> getAvailableTranslationLanguages() {
         return availableTranslationLanguages;
     }
 
-    public void setAvailableTranslationLanguages(List<String> availableTranslationLanguages) {
+    public void setAvailableTranslationLanguages(List<CodeEntity> availableTranslationLanguages) {
         this.availableTranslationLanguages = availableTranslationLanguages;
     }
 }

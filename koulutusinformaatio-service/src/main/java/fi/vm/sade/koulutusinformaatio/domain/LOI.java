@@ -28,7 +28,7 @@ public abstract class LOI {
     private String id;
     private List<ApplicationOption> applicationOptions;
     private Code prerequisite;
-    private List<String> availableTranslationLanguages;
+    private List<Code> availableTranslationLanguages;
 
     public String getId() {
         return id;
@@ -54,11 +54,11 @@ public abstract class LOI {
         this.prerequisite = prerequisite;
     }
 
-    public List<String> getAvailableTranslationLanguages() {
+    public List<Code> getAvailableTranslationLanguages() {
         return availableTranslationLanguages;
     }
 
-    public void setAvailableTranslationLanguages(List<String> availableTranslationLanguages) {
+    public void setAvailableTranslationLanguages(List<Code> availableTranslationLanguages) {
         this.availableTranslationLanguages = availableTranslationLanguages;
     }
 }

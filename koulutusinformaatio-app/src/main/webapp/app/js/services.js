@@ -107,6 +107,7 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
             qParams += (params.lang != undefined) ? ('&lang=' + params.lang) : '';
             qParams += (params.lopFilter != undefined) ? ('&lopFilter=' + params.lopFilter) : '';
             qParams += (params.educationCodeFilter != undefined) ? ('&educationCodeFilter=' + params.educationCodeFilter) : '';
+            qParams += (params.searchType != undefined) ? ('&searchType=' + params.searchType) : '&searchType=LO';
             
             if (params.facetFilters != undefined) {
             	 angular.forEach(params.facetFilters, function(facetFilter, key) {
@@ -539,8 +540,7 @@ service('ParentLOTransformer', ['UtilityService', '$filter', '$rootScope', funct
             for (var loiIndex in result.lois) {
                 if (result.lois.hasOwnProperty(loiIndex)) {
                     var loi = result.lois[loiIndex];
-                    var translationLanguageIndex = loi.availableTranslationLanguages.indexOf(result.translationLanguage);
-                    loi.availableTranslationLanguages.splice(translationLanguageIndex, 1);
+                    loi.availableTranslationLanguages = _.filter(loi.availableTranslationLanguages, function(item) { return item.value.toLowerCase() != result.translationLanguage});
                 }
             } 
 
@@ -682,7 +682,7 @@ service('ParentLOTransformer', ['UtilityService', '$filter', '$rootScope', funct
 /**
  * Transformer for child LO data
  */
-service('HigherEducationTransformer', ['UtilityService', '$rootScope', '$filter', 'LanguageService', function(UtilityService, $rootScope, $filter, LanguageService) {
+service('HigherEducationTransformer', ['UtilityService', '$rootScope', '$filter', 'LanguageService', '_', function(UtilityService, $rootScope, $filter, LanguageService, _) {
 
 	var getFirstItemInList = function(list) {
 		if (list && list[0]) {
@@ -700,8 +700,7 @@ service('HigherEducationTransformer', ['UtilityService', '$rootScope', '$filter'
 			}
 
 			if (result && result.availableTranslationLanguages) {
-				var translationLanguageIndex = result.availableTranslationLanguages.indexOf(result.translationLanguage);
-				result.availableTranslationLanguages.splice(translationLanguageIndex, 1);
+                result.availableTranslationLanguages = _.filter(result.availableTranslationLanguages, function(item) { return item.value.toLowerCase() != result.translationLanguage});
 			}
 
 			if (result && result.provider && result.provider.name) {
@@ -821,8 +820,7 @@ service('ChildLOTransformer', ['UtilityService', '$rootScope', function(UtilityS
             for (var loiIndex in result.lois) {
                 if (result.lois.hasOwnProperty(loiIndex)) {
                     var loi = result.lois[loiIndex];
-                    var translationLanguageIndex = loi.availableTranslationLanguages.indexOf(result.translationLanguage);
-                    loi.availableTranslationLanguages.splice(translationLanguageIndex, 1);
+                    loi.availableTranslationLanguages = _.filter(loi.availableTranslationLanguages, function(item) { return item.value.toLowerCase() != result.translationLanguage});
                 }
             } 
             
@@ -1135,11 +1133,6 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
     var cookieConfig = {useLocalStorage: false, maxChunkSize: 2000, maxNumberOfCookies: 20, path: '/'};
 
     // used to update item count in basket
-    var updateBasket = function(count) {
-        var event = $.Event('basketupdate');
-        event.count = count;
-        $('#appbasket-link').trigger(event);
-    };
 
     // TODO: could we automate data transformation somehow?
     var transformData = function(result) {
@@ -1155,7 +1148,6 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
                     if (applicationOptions.hasOwnProperty(i)) {
                         if (applicationOptions[i].children && applicationOptions[i].children.length > 0) {
                             result[asIndex].applicationOptions[i].qualification = applicationOptions[i].children[0].qualification;
-                            result[asIndex].applicationOptions[i].prerequisite = applicationOptions[i].children[0].prerequisite;
                         }
 
                         // set teaching languge as the first language in array
@@ -1166,7 +1158,6 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
 
                         // set LOS id for lukio
                         // check if ao is of type lukio
-                        ao.isLukio = UtilityService.isLukio(ao);
                         ao.losId = (ao.children && ao.children.length > 0) ? ao.children[0].losId : '';
                     }
                 }
@@ -1199,8 +1190,6 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
             }
 
             $.cookie(key, JSON.stringify(current), cookieConfig);
-            
-            updateBasket(this.getItemCount());
         },
 
         removeItem: function(aoId) {
@@ -1215,14 +1204,11 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
             } else {
                 this.empty();
             }
-
-            updateBasket(this.getItemCount());
         },
 
         empty: function() {
             $.cookie(key, null, cookieConfig);
             $.cookie(typekey, null, cookieConfig);
-            updateBasket(this.getItemCount());
         },
 
         getItems: function() {

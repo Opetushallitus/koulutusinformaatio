@@ -48,7 +48,8 @@ public class ChildLearningOpportunityInstanceEntity {
     private String plannedDuration;
     @Embedded
     private I18nTextEntity plannedDurationUnit;
-    private List<String> availableTranslationLanguages;
+    @Embedded
+    private List<CodeEntity> availableTranslationLanguages;
 
     public String getId() {
         return id;
@@ -194,11 +195,11 @@ public class ChildLearningOpportunityInstanceEntity {
         this.plannedDurationUnit = plannedDurationUnit;
     }
 
-    public List<String> getAvailableTranslationLanguages() {
+    public List<CodeEntity> getAvailableTranslationLanguages() {
         return availableTranslationLanguages;
     }
 
-    public void setAvailableTranslationLanguages(List<String> availableTranslationLanguages) {
+    public void setAvailableTranslationLanguages(List<CodeEntity> availableTranslationLanguages) {
         this.availableTranslationLanguages = availableTranslationLanguages;
     }
 }

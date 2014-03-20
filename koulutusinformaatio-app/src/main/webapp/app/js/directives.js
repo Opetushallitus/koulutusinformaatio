@@ -1,6 +1,6 @@
 /* Directives */
 
-angular.module('kiApp.directives', ['kiApp.Navigation', 'angularTreeview']).
+angular.module('kiApp.directives', ['kiApp.Navigation', 'angularTreeview', 'kiApp.directives.AppBasket']).
 
 /**
  *  Updates the title element of the page.
@@ -77,8 +77,10 @@ directive('renderContactPersonInfo', function() {
         scope: {
             contactPersons: '=content'
         },
-        link: function(scope, element, attrs) {
-
+        controller: function($rootScope, $scope) {
+            $rootScope.$watch('translationLanguage', function(value) {
+                $scope.translationLanguage = value;
+            });
         }
     }
 }).
@@ -119,7 +121,7 @@ directive('kiRenderOrganization', function() {
             scope.$watch('provider', function(data) {
                 if (data) {
                     scope.showOrganization = (data.description ||
-                        data.learningEnvironment || data.accessibility) ? true : false;
+                        data.learningEnvironment || data.accessibility || data.living) ? true : false;
                 }
             });
         }
@@ -156,6 +158,11 @@ directive('kiRenderProfessionalTitles', function() {
         scope: {
             title: '@title',
             content: '=content'
+        },
+        controller: function($rootScope, $scope) {
+            $rootScope.$watch('translationLanguage', function(value) {
+                $scope.translationLanguage = value;
+            });
         },
         link: function(scope, element, attrs) {
         }
@@ -521,6 +528,11 @@ directive('renderTextBlock', ['TranslationService', function(TranslationService)
 
             attrs.$observe('content', function(value) {
                 content = value;
+                update();
+            });
+
+            // watch global tarnaslation language in rootScope
+            scope.$watch('translationLanguage', function(value) {
                 title = TranslationService.getTranslationByTeachingLanguage(attrs.title);
                 update();
             });
@@ -597,6 +609,11 @@ directive('kiRenderMajorSelection', function() {
             content: '=',
             title: '@',
             children: '='
+        },
+        controller: function($rootScope, $scope) {
+            $rootScope.$watch('translationLanguage', function(value) {
+                $scope.translationLanguage = value;
+            })
         }
     }
 }).

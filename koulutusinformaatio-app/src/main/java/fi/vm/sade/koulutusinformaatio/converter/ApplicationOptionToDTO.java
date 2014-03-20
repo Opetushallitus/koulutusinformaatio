@@ -34,6 +34,8 @@ public final class ApplicationOptionToDTO {
         if (applicationOption != null) {
             ApplicationOptionDTO dto = new ApplicationOptionDTO();
             dto.setId(applicationOption.getId());
+            dto.setType(applicationOption.getType());
+            dto.setEducationTypeUri(applicationOption.getEducationTypeUri());
             dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getName(), defaultLang));
             dto.setAoIdentifier(applicationOption.getAoIdentifier());
             dto.setAttachmentDeliveryDeadline(applicationOption.getAttachmentDeliveryDeadline());
@@ -51,6 +53,7 @@ public final class ApplicationOptionToDTO {
             dto.setExams(ExamToDTO.convertAll(applicationOption.getExams(), lang));
             dto.setProvider(ProviderToDTO.convert(applicationOption.getProvider(), lang, defaultLang));
             dto.setChildRefs(ChildLOIRefToDTO.convert(applicationOption.getChildLOIRefs(), defaultLang));
+            dto.setHigherEdLOSRefs(HigherEducationLOSRefToDTO.convert(applicationOption.getHigherEdLOSRefs(), defaultLang));
             dto.setSpecificApplicationDates(applicationOption.isSpecificApplicationDates());
             dto.setApplicationStartDate(applicationOption.getApplicationStartDate());
             dto.setApplicationEndDate(applicationOption.getApplicationEndDate());
