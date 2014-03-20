@@ -316,11 +316,7 @@ public class TarjontaServiceImpl implements TarjontaService {
 
         HigherEducationLOS los = creator.createHigherEducationLOS(koulutusDTO, false);
         los.setStatus(koulutusDTO.getTila().toString());
-        if (los.getApplicationOptions() != null) {
-            for (ApplicationOption curAo : los.getApplicationOptions()) {
-                createEducationreReferencesForAo(curAo);
-            }
-        }
+        
 
         ResultV1RDTO<Set<String>> childKomoOids = this.tarjontaRawService.getChildrenOfParentHigherEducationLOS(koulutusDTO.getKomoOid());
         ResultV1RDTO<Set<String>> parentKomoOids = this.tarjontaRawService.getParentsOfHigherEducationLOS(koulutusDTO.getKomoOid());
@@ -345,6 +341,12 @@ public class TarjontaServiceImpl implements TarjontaService {
         }
         if (aoMap.values() != null) {
             los.setApplicationOptions(new ArrayList<ApplicationOption>(aoMap.values()));
+        }
+        
+        if (los.getApplicationOptions() != null) {
+            for (ApplicationOption curAo : los.getApplicationOptions()) {
+                createEducationreReferencesForAo(curAo);
+            }
         }
         
         return los;
