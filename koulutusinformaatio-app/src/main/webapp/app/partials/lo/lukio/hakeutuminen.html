@@ -6,7 +6,7 @@
     <div data-ng-repeat="as in selectedLOI.applicationSystems">
         <div data-ng-repeat="ao in as.applicationOptions" id="{{ao.id}}" class="ao-block">
             <h2>{{ao.name}}</h2>
-            <div data-render-text-block data-content="{{ao.selectionCriteria}}"></div>
+            <div data-render-extendable-text-block data-content="{{ao.selectionCriteria}}"></div>
             <div data-ki-render-emphasized-subjects></div>
             <div data-ki-render-average-limit></div>
             <div data-ki-render-exams></div>

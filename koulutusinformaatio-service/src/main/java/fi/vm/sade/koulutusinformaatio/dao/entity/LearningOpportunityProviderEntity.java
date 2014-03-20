@@ -49,6 +49,7 @@ public class LearningOpportunityProviderEntity {
     private I18nTextEntity learningEnvironment;
     private I18nTextEntity dining;
     private I18nTextEntity livingExpenses;
+    private I18nTextEntity living;
     @Embedded
     private List<SocialEntity> social;
     @Reference
@@ -219,5 +220,13 @@ public class LearningOpportunityProviderEntity {
 
     public void setApplicationOffice(ApplicationOfficeEntity applicationOffice) {
         this.applicationOffice = applicationOffice;
+    }
+
+    public I18nTextEntity getLiving() {
+        return living;
+    }
+
+    public void setLiving(I18nTextEntity living) {
+        this.living = living;
     }
 }

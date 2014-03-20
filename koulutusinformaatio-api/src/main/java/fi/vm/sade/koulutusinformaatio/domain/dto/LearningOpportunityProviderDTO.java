@@ -42,6 +42,7 @@ public class LearningOpportunityProviderDTO {
     private String learningEnvironment;
     private String dining;
     private String livingExpenses;
+    private String living;
     private List<SocialDTO> social;
     private boolean pictureFound = false;
     private boolean athleteEducation;
@@ -197,5 +198,13 @@ public class LearningOpportunityProviderDTO {
 
     public void setApplicationOffice(ApplicationOfficeDTO applicationOffice) {
         this.applicationOffice = applicationOffice;
+    }
+
+    public String getLiving() {
+        return living;
+    }
+
+    public void setLiving(String living) {
+        this.living = living;
     }
 }
