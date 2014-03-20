@@ -275,7 +275,6 @@ public class TarjontaServiceImpl implements TarjontaService {
         }
         
         for (HigherEducationLOS curLeaf : leafs.values()) {
-            System.out.println("\nUpgrading applicatoin options!!!!");
             upgradeApplicationOptions(curLeaf);
         }
         
@@ -298,7 +297,6 @@ public class TarjontaServiceImpl implements TarjontaService {
                 aoMap.put(curAo.getId(), curAo);
             }
             List<ApplicationOption> aos = new ArrayList<ApplicationOption>(aoMap.values());
-            System.out.println("Foiund: " + aos.size() + ", application options.");
             curParent.setApplicationOptions(new ArrayList<ApplicationOption>(aoMap.values()));
             upgradeApplicationOptions(curParent);
         }
@@ -318,16 +316,39 @@ public class TarjontaServiceImpl implements TarjontaService {
 
         HigherEducationLOS los = creator.createHigherEducationLOS(koulutusDTO, false);
         los.setStatus(koulutusDTO.getTila().toString());
-        if (los.getApplicationOptions() != null) {
-            for (ApplicationOption curAo : los.getApplicationOptions()) {
-                createEducationreReferencesForAo(curAo);
-            }
-        }
+        
 
         ResultV1RDTO<Set<String>> childKomoOids = this.tarjontaRawService.getChildrenOfParentHigherEducationLOS(koulutusDTO.getKomoOid());
         ResultV1RDTO<Set<String>> parentKomoOids = this.tarjontaRawService.getParentsOfHigherEducationLOS(koulutusDTO.getKomoOid());
         los.setChildren(getHigherEducationRelatives(childKomoOids, creator));
         los.setParents(getHigherEducationRelatives(parentKomoOids, creator));
+        
+        Map<String,ApplicationOption> aoMap = new HashMap<String,ApplicationOption>();
+        if (los.getApplicationOptions() != null) {
+            for (ApplicationOption curAo : los.getApplicationOptions()) {
+                aoMap.put(curAo.getId(), curAo);
+            }
+        }
+        
+        if (los.getChildren() != null) {
+            for (HigherEducationLOS curChild : los.getChildren()) {
+                if (curChild.getApplicationOptions() != null) {
+                    for (ApplicationOption curAo : curChild.getApplicationOptions()) {
+                        aoMap.put(curAo.getId(), curAo);
+                    }
+                }
+            }
+        }
+        if (aoMap.values() != null) {
+            los.setApplicationOptions(new ArrayList<ApplicationOption>(aoMap.values()));
+        }
+        
+        if (los.getApplicationOptions() != null) {
+            for (ApplicationOption curAo : los.getApplicationOptions()) {
+                createEducationreReferencesForAo(curAo);
+            }
+        }
+        
         return los;
     }
 
@@ -368,7 +389,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                     if (koulutusDTO == null) {
                         continue;
                     }
-                    HigherEducationLOS los = creator.createHigherEducationLOSReference(koulutusDTO, false);
+                    HigherEducationLOS los = creator.createHigherEducationLOS(koulutusDTO, false);//creator.createHigherEducationLOSReference(koulutusDTO, false);
                     relatives.add(los);
                 }
             }

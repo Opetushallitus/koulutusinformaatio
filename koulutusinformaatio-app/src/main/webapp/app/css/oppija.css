@@ -3782,7 +3782,8 @@ nav {
     -moz-box-shadow: 0px 1px 1px 0 rgba(0, 0, 0, 0.5);
     -o-box-shadow: 0px 1px 1px 0 rgba(0, 0, 0, 0.5);
     -ms-box-shadow: 0px 1px 1px 0 rgba(0, 0, 0, 0.5);
-    box-shadow: 0px 1px 1px 0 rgba(0, 0, 0, 0.5); }
+    box-shadow: 0px 1px 1px 0 rgba(0, 0, 0, 0.5);
+    outline: none; }
     nav ul.level-1 {
       box-shadow: none;
       float: left; }
@@ -3798,11 +3799,12 @@ nav {
       text-align: left;
       width: 220px;
       max-width: 300px; }
-      nav ul li:hover {
-        background: #FFFFFF; }
-        nav ul li:hover a, nav ul li:hover a:link, nav ul li:hover a:visited {
+      nav ul li.menu-hover, nav ul li.menu-focus {
+        background: #FFFFFF;
+        outline-style: none; }
+        nav ul li.menu-hover a, nav ul li.menu-hover a:link, nav ul li.menu-hover a:visited, nav ul li.menu-focus a, nav ul li.menu-focus a:link, nav ul li.menu-focus a:visited {
           color: #333333; }
-        nav ul li:hover > ul {
+        nav ul li.menu-hover > ul, nav ul li.menu-focus > ul {
           display: block; }
       nav ul li a, nav ul li a:link, nav ul li a:visited {
         display: block;
@@ -3822,8 +3824,14 @@ nav {
           padding: 10px;
           color: #fff;
           font-size: 13px; }
-          nav ul ul li a:hover {
+          nav ul ul li a:hover, nav ul ul li a:focus {
             background: #feedbd; }
+        nav ul ul li:focus {
+          background: #feedbd; }
+          nav ul ul li:focus a {
+            padding: 10px;
+            color: #fff;
+            font-size: 13px; }
       nav ul ul ul {
         position: absolute;
         left: 100%;
