@@ -28,7 +28,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -85,7 +84,7 @@ public class UpdateServiceImpl implements UpdateService {
                 LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
                 List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
                 count = loOids.size();
-                index += count;      
+                index += count;  
             
                 for (String loOid : loOids) {
                     List<LOS> specifications = null;
