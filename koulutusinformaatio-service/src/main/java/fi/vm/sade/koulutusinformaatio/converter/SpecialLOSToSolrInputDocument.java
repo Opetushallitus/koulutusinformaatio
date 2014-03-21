@@ -58,7 +58,10 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
         doc.addField(SolrUtil.LearningOpportunity.LOP_ID, provider.getId());
         doc.addField(SolrUtil.LearningOpportunity.PREREQUISITES, SolrConstants.PK);
 
-        if (specialLOS.getCreditValue() != null) {
+        if (specialLOS.getCreditValue() != null 
+                && specialLOS.getCreditUnit() != null 
+                && specialLOS.getCreditUnit().getTranslationsShortName() != null
+                && !specialLOS.getCreditUnit().getTranslationsShortName().isEmpty()) {
             doc.addField(SolrUtil.LearningOpportunity.CREDITS, String.format("%s %s", specialLOS.getCreditValue(),
                     SolrUtil.resolveTranslationInTeachingLangUseFallback(childLOI.getTeachingLanguages(),
                             specialLOS.getCreditUnit().getTranslationsShortName())));
