@@ -1,6 +1,6 @@
 <div class="search-result-collapsed">
     <div class="result-content">
-        <h2 title="{{locales.openEducation}}"><a href="{{lo.linkHref}}">{{lo.lopName}}, {{lo.name}}<span data-ng-show="lo.credits != null">, {{lo.credits}}</span></a></h2>
+        <h2 title="{{locales.openEducation}}"><a href="{{lo.linkHref}}">{{lo.name}}<span data-ng-show="lo.credits != null">, {{lo.credits}}</span></a></h2>
         <span class="italic">{{lo.educationDegree}}</span><br />
         <span data-ng-show="lo.educationDegreeCode == 'koulutusasteoph2002_72'">
            	<span data-ki-i18n="application-prerequisite" data-show-colon="true"></span>
@@ -26,9 +26,6 @@
 </div>
 
 <div data-extended-searchresult-data="korkeakoulu" data-toggle-collapse>
-    <div class="grid16-8">
-        <div data-sr-extended-koulutustarjonta data-template-type="korkeakoulu"></div>
-    </div>
 
     <div class="grid16-8">
         <h4 class="margin-top-0 margin-bottom-1" data-ki-i18n="basic-information"></h4>
