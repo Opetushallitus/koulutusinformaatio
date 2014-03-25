@@ -901,4 +901,16 @@ directive('kiI18n', ['TranslationService', function(TranslationService) {
             }
         }
     }    
-}]);
+}]).
+
+/*
+* Set focus to element it is set to.
+* */
+directive('setFocusHere', function(){
+        return{
+            restrict: 'A',
+            link: function(scope, element){
+                element[0].focus();
+            }
+        };
+});

@@ -1,21 +1,22 @@
-<div id="select-location-dialog">
+<div id="select-location-dialog" aria-label="{{titleLocales.dialogTitle}}" role="dialog" >
     <span title="{{titleLocales.close}}" class="close" data-ng-click="cancel()">&nbsp;</span>
-    <h2 data-ki-i18n="valitse-alue" ></h2>
+    <h2 data-ki-i18n="valitse-alue"></h2>
     <div class="float-left">
         <h4 class="margin-top-0"><label data-ki-i18n="district" for="districtSelection"></label></h4>
-        <select size="10" 
+        <select size="10"
         id="districtSelection" 
         multiple 
         ng-multiple="true" 
         ng-model="$parent.selectedDistricts" 
         ng-options="dist.name for dist in distResult | orderBy:'name'"
+        data-set-focus-here
         ></select>
         <span class="facet-location-separator">&gt;</span>
     </div>
 
     <div class="float-left">
         <h4 class="margin-top-0"><label data-ki-i18n="municipality" for="municipalitySelection"></label></h4>
-        <select size="10" 
+        <select size="10"
         id="municipalitySelection" 
         multiple 
         ng-multiple="true" 

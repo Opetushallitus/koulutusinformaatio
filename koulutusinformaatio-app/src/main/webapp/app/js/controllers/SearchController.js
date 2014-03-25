@@ -273,7 +273,8 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
 
     $scope.titleLocales = {
         close: TranslationService.getTranslation('tooltip:close'),
-        removeFacet: TranslationService.getTranslation('tooltip:remove-facet')
+        removeFacet: TranslationService.getTranslation('tooltip:remove-facet'),
+        dialogTitle: TranslationService.getTranslation('valitse-alue')
     }
 
     DistrictService.query().then(function(result) {
