@@ -30,7 +30,14 @@
 
     <div class="grid16-16 application-container">
         <div data-sr-hakukohteet>
-            <div data-sr-extended-options></div>
+            <div data-ng-switch="extendedLO.lo.educationTypeUri">
+                <div data-ng-switch-when="VapaanSivistystyonKoulutus">
+                    <div data-sr-not-applicable></div>
+                </div>
+                <div data-ng-switch-default>
+                    <div data-sr-extended-options></div>
+                </div>
+            </div>
         </div>
     </div>
 
