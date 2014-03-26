@@ -1013,6 +1013,141 @@ service('LearningOpportunitySearchResultTransformer', ['UtilityService', '$filte
                     }
                 });
             }
+
+            // order teaching languages in order: FI, SV, EN, other languages in alphabetical order
+            if (result && result.teachingLangFacet && result.teachingLangFacet.facetValues ) {
+                result.teachingLangFacet.facetValues.sort( function(a, b) {
+
+                    if (a.valueId == "FI" && b.valueId == "SV") return -1;
+                    else if (a.valueId == "SV" && b.valueId == "FI") return 1;
+                    else if (a.valueId == "FI" && b.valueId == "EN") return -1;
+                    else if (a.valueId == "EN" && b.valueId == "FI") return 1;
+                    else if (a.valueId == "SV" && b.valueId == "EN") return -1;
+                    else if (a.valueId == "EN" && b.valueId == "SV") return 1;
+                    else return 1
+
+                });
+            }
+        }
+    }
+}]).
+
+service('SearchResultFacetTransformer', ['UtilityService', '$filter', function(UtilityService, $filter) {
+	
+	var getFacetValById = function(valueId, givenVals) {
+    	
+    	var selectedEdTypeFacetVal = undefined;
+    	var edTypeFacetVals = [];
+    	edTypeFacetVals = edTypeFacetVals.concat(givenVals);
+    	
+    	while (edTypeFacetVals != null && edTypeFacetVals.length > 0) {
+			
+			var currentValue = edTypeFacetVals.shift();
+			
+			if (currentValue != null && currentValue.valueId == valueId) {
+				selectedEdTypeFacetVal = currentValue;
+			}
+			
+			if (currentValue != null && selectedEdTypeFacetVal == undefined) {
+				edTypeFacetVals = edTypeFacetVals.concat(currentValue.childValues);
+			}
+		}
+    	return selectedEdTypeFacetVal;
+    };
+    
+	return {
+    	
+        transform: function(result, facetFilters) {
+
+        	var loResult = result;
+        	
+        	var wasEducationType = false;
+        	var educationtypeSelection = undefined;
+        	var wasTheme = false;
+        	var wasTopic = false;
+        	var themeTopicSelection = undefined;
+        	
+        	angular.forEach(facetFilters, function(value, index) {
+        		var curVal = value.split(':')[1];
+        		var curField = value.split(':')[0];
+        		if ((curField == 'educationType_ffm')) {
+        			
+        			wasEducationType = true;
+        			
+        			educationtypeSelection = curVal;
+        		} else if (curField == 'theme_ffm') {
+        			wasTheme = true;
+        			themeTopicSelection = curVal;
+        		} else if (curField == 'topic_ffm') {
+        			wasTopic = true;
+        			themeTopicSelection = curVal;
+        		}
+        	});
+        	
+        	
+        	if (wasTheme) {
+        		var selectedThemeFacetVal = getFacetValById(themeTopicSelection, loResult.topicFacet.facetValues);
+        		topicFacetValues = [];
+    			topicFacetValues.push(selectedThemeFacetVal);
+    			
+    			loResult.topicFacetValues = topicFacetValues;
+        	} else if (wasTopic) {
+        		var selectedTopicFacetVal = getFacetValById(themeTopicSelection, loResult.topicFacet.facetValues);
+        		var parentThemeVal = getFacetValById(selectedTopicFacetVal.parentId, loResult.topicFacet.facetValues);
+        		parentThemeVal.childValues = [];
+        		parentThemeVal.childValues.push(selectedTopicFacetVal);
+        		
+        		topicFacetValues = [];
+    			topicFacetValues.push(parentThemeVal);
+    			
+    			loResult.topicFacetValues = topicFacetValues;
+        	} else {
+        		angular.forEach(loResult.topicFacet.facetValues, function(value, index) {
+            		value.childValues = [];
+            	});
+        		
+        		loResult.topicFacetValues = loResult.topicFacet.facetValues;
+        	}
+        	
+        	if (wasEducationType) {
+        		
+        		var selectedEdTypeFacetVal = getFacetValById(educationtypeSelection, loResult.edTypeFacet.facetValues);  
+        		if (selectedEdTypeFacetVal != undefined) {
+        			
+        			angular.forEach(selectedEdTypeFacetVal.childValues, function(value, index) {
+        				value.childValues = [];
+        			});
+        			
+        			var parent = getFacetValById(selectedEdTypeFacetVal.parentId, loResult.edTypeFacet.facetValues);
+        			
+        			while (parent != undefined && parent != null) {
+        				parent.childValues = [];
+    					parent.childValues.push(selectedEdTypeFacetVal);
+        				selectedEdTypeFacetVal = parent;
+        				parent = getFacetValById(selectedEdTypeFacetVal.parentId, loResult.edTypeFacet.facetValues);
+        			}
+        			
+        			edTypeFacetValues = [];
+        			edTypeFacetValues.push(selectedEdTypeFacetVal);
+        			
+        			loResult.edTypeFacetValues = edTypeFacetValues;
+        		} else {
+        			angular.forEach(loResult.edTypeFacet.facetValues, function(value, index) {
+                		value.childValues = [];
+                	});
+            		
+            		loResult.edTypeFacetValues = loResult.edTypeFacet.facetValues;
+        		}
+        	} else {
+        		angular.forEach(loResult.edTypeFacet.facetValues, function(value, index) {
+            		value.childValues = [];
+            	});
+        		
+        		loResult.edTypeFacetValues = loResult.edTypeFacet.facetValues;
+        	}
+        	
+        	return loResult;
+        	
         }
     }
 }]).

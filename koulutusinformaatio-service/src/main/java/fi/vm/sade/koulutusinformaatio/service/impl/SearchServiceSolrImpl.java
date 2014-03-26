@@ -426,7 +426,14 @@ public class SearchServiceSolrImpl implements SearchService {
                         getLocalizedFacetName(curC.getName(), lang),
                         curC.getCount(),
                         curC.getName());
+                
                 newVal.setChildValues(themeTopicMap.get(curC.getName()));
+                if (newVal.getChildValues() != null) {
+                    for (FacetValue curchild : newVal.getChildValues()) {
+                        curchild.setParentId(newVal.getValueId());
+                    }
+                }
+                
                 values.add(newVal);
 
             }
@@ -520,6 +527,11 @@ public class SearchServiceSolrImpl implements SearchService {
         
         for (FacetValue curVal : values) {
             curVal.setChildValues(resMap.get(curVal.getValueId()));
+            if (curVal.getChildValues() != null) {
+                for (FacetValue curChild : curVal.getChildValues()) {
+                    curChild.setParentId(curVal.getValueId());
+                }
+            }
         }
         
         edTypeFacet.setFacetValues(roots);

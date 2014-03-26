@@ -1,6 +1,11 @@
 /* Directives */
 
-angular.module('kiApp.directives', ['kiApp.Navigation', 'angularTreeview', 'kiApp.directives.AppBasket']).
+angular.module('kiApp.directives', 
+    [
+        'kiApp.Navigation',
+        'kiApp.FacetTree',
+        'angularTreeview',
+        'kiApp.directives.AppBasket']).
 
 /**
  *  Updates the title element of the page.
