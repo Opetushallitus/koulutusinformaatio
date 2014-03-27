@@ -85,7 +85,6 @@ directive('renderContactPersonInfo', function() {
     }
 }).
 
-
 /**
  *  Render student benefits block
  */
@@ -456,7 +455,6 @@ directive('kiAbsoluteLink', function() {
     }
 }]).
 
-
 /**
  *  Creates and controls the breadcrumb
  */
@@ -466,7 +464,8 @@ directive('kiAbsoluteLink', function() {
         templateUrl: 'templates/breadcrumb.html',
         link: function(scope, element, attrs) {
             var home = 'home';
-            var root = TranslationService.getTranslation('breadcrumb-search-results');
+            var root =TranslationService.getTranslation('breadcrumb-search-results');
+            var goToTooltip=TranslationService.getTranslation('breadcrumb-go-to-page')+' ';
             var homeTooltip = TranslationService.getTranslation('tooltip:to-frontpage');
             var parent;
             var child;
@@ -495,10 +494,10 @@ directive('kiAbsoluteLink', function() {
             var update = function() {
                 scope.breadcrumbItems = [];
                 pushItem({name: home, linkHref: Config.get('frontpageUrl'), tooltip: homeTooltip });
-                pushItem({name: root, linkHref: '#!/haku/' + SearchService.getTerm() + '?' + FilterService.getParams() });
+                pushItem({name: root, linkHref: '#!/haku/' + SearchService.getTerm() + '?' + FilterService.getParams(), tooltip: goToTooltip + root });
 
                 if (scope.parent && (scope.loType != 'lukio' && scope.loType != 'erityisopetus')) { // TODO: do not compare to loType
-                    pushItem({name: parent, linkHref: '#!/tutkinto/' + scope.parent.id });
+                    pushItem({name: parent, linkHref: '#!/tutkinto/' + scope.parent.id, tooltip: goToTooltip + parent });
                 }
 
                 if (scope.loType == 'lukio') { // TODO: do not compare to loType
@@ -902,4 +901,16 @@ directive('kiI18n', ['TranslationService', function(TranslationService) {
             }
         }
     }    
-}]);
+}]).
+
+/*
+* Set focus to element it is set to.
+* */
+directive('setFocusHere', function(){
+        return{
+            restrict: 'A',
+            link: function(scope, element){
+                element[0].focus();
+            }
+        };
+});

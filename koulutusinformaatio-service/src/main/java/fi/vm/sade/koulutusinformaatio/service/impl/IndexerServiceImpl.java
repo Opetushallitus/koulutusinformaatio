@@ -66,7 +66,7 @@ public class IndexerServiceImpl implements IndexerService {
 
     @Value("${solr.learningopportunity.url:learning_opportunity}")
     private String loHttpSolrName;
-    
+
     @Value("${koulutusinformaatio.wp.harvest-url:harvest}")
     private String articleHarvestUrl;
 
@@ -130,10 +130,36 @@ public class IndexerServiceImpl implements IndexerService {
         } else if (los instanceof SpecialLOS) {
             SpecialLOS special = (SpecialLOS) los;
             provider = special.getProvider();
+
+            for (ChildLOI childLOI : special.getLois()) {
+                for (ApplicationOption ao : childLOI.getApplicationOptions()) {
+                    providerAsIds.add(ao.getApplicationSystem().getId());
+                    requiredBaseEducations.addAll(ao.getRequiredBaseEducations());
+                    if (ao.isVocational()) {
+                        vocationalAsIds.add(ao.getApplicationSystem().getId());
+                    } else {
+                        nonVocationalAsIds.add(ao.getApplicationSystem().getId());
+                    }
+                }
+            }
+
             //Adding higher education los
         } else if (los instanceof HigherEducationLOS) {
             HigherEducationLOS uas = (HigherEducationLOS)los;
             provider = uas.getProvider();
+
+            if (uas.getApplicationOptions() != null) {
+                for (ApplicationOption ao : uas.getApplicationOptions()) {
+                    providerAsIds.add(ao.getApplicationSystem().getId());
+                    requiredBaseEducations.addAll(ao.getRequiredBaseEducations());
+                    if (ao.isVocational()) {
+                        vocationalAsIds.add(ao.getApplicationSystem().getId());
+                    } else {
+                        nonVocationalAsIds.add(ao.getApplicationSystem().getId());
+                    }
+                }
+            }
+
         }
 
         List<SolrInputDocument> docs = conversionService.convert(los, List.class);
@@ -316,19 +342,19 @@ public class IndexerServiceImpl implements IndexerService {
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        
+
         indexArticlesByLang(mapper, "fi", loUpdateSolr);
         LOGGER.debug("Indexed finnish articles");
         indexArticlesByLang(mapper, "sv", loUpdateSolr);
         LOGGER.debug("Indexed swedish articles");
 
     }
-    
+
     private void indexArticlesByLang(ObjectMapper mapper, String lang, HttpSolrServer loUpdateSolr) throws IOException,  SolrServerException {
         int page = 1;
         ArticleResults articles = getArticlesByLang(mapper, lang, page);
         int pages = articles.getPages();
-        
+
         while (pages > 0) {
 
             for (Article curArticle : articles.getPosts()) {
@@ -338,7 +364,7 @@ public class IndexerServiceImpl implements IndexerService {
             articles = getArticlesByLang(mapper, lang, ++page);
             pages = articles.getPages();
         }
-        
+
     }
 
     private ArticleResults getArticlesByLang(ObjectMapper mapper, String lang, int page) throws IOException {
@@ -346,12 +372,12 @@ public class IndexerServiceImpl implements IndexerService {
         LOGGER.debug("Article search url: " + url);
 
         URL orgUrl = new URL(url);        
-        
+
         HttpURLConnection conn = (HttpURLConnection) (orgUrl.openConnection());
 
         conn.setRequestMethod(SolrConstants.GET);
         conn.connect();
-         
+
         ArticleResults articles = mapper.readValue(conn.getInputStream(), ArticleResults.class);
         return articles;
     }

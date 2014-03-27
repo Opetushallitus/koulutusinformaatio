@@ -263,13 +263,16 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
                     }
                 });
             }
-
             $scope.change();
         })
     }
 };
 
 function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsService, UtilityService, DistrictService, TranslationService) {
+
+    $timeout(function(){
+        $('#select-location-dialog').attr('aria-hidden', 'false');
+    }, 0);
 
     $scope.titleLocales = {
         close: TranslationService.getTranslation('tooltip:close'),
@@ -287,10 +290,9 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     });
 
     $scope.cancel = function() {
+        $('#select-location-dialog').attr('aria-hidden', 'true');
         $modalInstance.dismiss('cancel');
     }
-
-
 
     var doMunicipalitySearch = function() {
         var queryDistricts = [];
@@ -321,8 +323,6 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
             
         });
     }
-
-    
 
     var selectMunicipality = function() {
         if (!$scope.selectedMunicipalities) {

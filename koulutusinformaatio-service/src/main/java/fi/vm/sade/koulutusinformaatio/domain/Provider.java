@@ -43,6 +43,12 @@ public class Provider {
     private I18nText dining;
     private I18nText livingExpenses;
     private I18nText living;
+    
+    private I18nText yearClock;
+    private I18nText financingStudies;
+    private I18nText insurances;
+    private I18nText leisureServices;
+    
     private List<Social> social;
     private Picture picture;
     private boolean athleteEducation;
@@ -50,6 +56,7 @@ public class Provider {
     private I18nText homePlace;
     private I18nText homeDistrict;
     private ApplicationOffice applicationOffice;
+    
 
 
     public Provider(String id, I18nText name) {
@@ -241,5 +248,37 @@ public class Provider {
 
     public void setLiving(I18nText living) {
         this.living = living;
+    }
+
+    public I18nText getYearClock() {
+        return yearClock;
+    }
+
+    public void setYearClock(I18nText yearClock) {
+        this.yearClock = yearClock;
+    }
+
+    public I18nText getFinancingStudies() {
+        return financingStudies;
+    }
+
+    public void setFinancingStudies(I18nText financingStudies) {
+        this.financingStudies = financingStudies;
+    }
+
+    public I18nText getInsurances() {
+        return insurances;
+    }
+
+    public void setInsurances(I18nText insurances) {
+        this.insurances = insurances;
+    }
+
+    public I18nText getLeisureServices() {
+        return leisureServices;
+    }
+
+    public void setLeisureServices(I18nText leisureServices) {
+        this.leisureServices = leisureServices;
     }
 }

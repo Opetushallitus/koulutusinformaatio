@@ -1,24 +1,25 @@
-<div id="select-location-dialog">
+<div id="select-location-dialog" aria-labelledby="selected-location-dialog-title" role="dialog" aria-hidden="true"  >
     <span title="{{titleLocales.close}}" class="close" data-ng-click="cancel()">&nbsp;</span>
-    <h2 data-ki-i18n="valitse-alue"></h2>
+    <h2 id="selected-location-dialog-title" data-ki-i18n="valitse-alue"></h2>
     <div class="float-left">
-        <h4 class="margin-top-0"><span data-ki-i18n="district"></span></h4>
-        <select size="10" 
+        <h4 class="margin-top-0"><label data-ki-i18n="district" for="districtSelection"></label></h4>
+        <select size="10"
         id="districtSelection" 
         multiple 
         ng-multiple="true" 
         ng-model="$parent.selectedDistricts" 
         ng-options="dist.name for dist in distResult | orderBy:'name'"
+        data-set-focus-here
         ></select>
         <span class="facet-location-separator">&gt;</span>
     </div>
 
     <div class="float-left">
-        <h4 class="margin-top-0"><span data-ki-i18n="municipality"></span></h4> 
-        <select size="10" 
+        <h4 class="margin-top-0"><label data-ki-i18n="municipality" for="municipalitySelection"></label></h4>
+        <select size="10"
         id="municipalitySelection" 
         multiple 
-        ng-multiple="true" 
+        ng-multiple="true"
         ng-model="$parent.selectedMunicipality" 
         ng-options="mun.name for mun in muniResult"
         ></select>
@@ -26,10 +27,10 @@
     </div>
 
     <div class="float-left">
-        <h4 class="margin-top-0"><span data-ki-i18n="valitut-alueet"></span></h4> 
+        <h4 class="margin-top-0"><span data-ki-i18n="valitut-alueet"></span></h4>
         <ul class="select">
             <li data-ng-repeat="mun in selectedMunicipalities | orderBy:'name'">
-                <a title="{{titleLocales.removeFacet}}" href="javascript:void(0)" data-ng-click="removeMunicipality(mun.code)">
+                <a title="{{titleLocales.removeFacet}}" href="javascript:void(0)" data-ng-click="removeMunicipality(mun.code)" >
                     <span class="icon remove"></span>
                     <span>{{mun.name}}</span>
                 </a>
