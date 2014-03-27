@@ -49,6 +49,12 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
     private static final String METADATA_OPPIMISYMPARISTO = "OPPIMISYMPARISTO";
     private static final String METADATA_OPISKELIJARUOKAILU = "OPISKELIJARUOKAILU";
     private static final String METADATA_TIETOA_ASUMISESTA = "TIETOA_ASUMISESTA";
+    
+    private static final String METADATA_VUOSIKELLO = "VUOSIKELLO";
+    private static final String METADATA_OPINTOJEN_RAHOITUS = "RAHOITUS";
+    private static final String METADATA_TIETOA_VAKUUTUKSISTA = "VAKUUTUKSET";
+    private static final String METADATA_VAPAA_AJAN_PALVELUT = "VAPAA_AIKA";
+    
 
     private static final String METADATA_SOCIAL_FACEBOOK = "FACEBOOK";
     private static final String METADATA_SOCIAL_LINKEDIN = "LINKED_IN";
@@ -99,6 +105,12 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
             p.setLearningEnvironment(getDataValue(o.getMetadata(), METADATA_OPPIMISYMPARISTO));
             p.setDining(getDataValue(o.getMetadata(), METADATA_OPISKELIJARUOKAILU));
             p.setLiving(getDataValue(o.getMetadata(), METADATA_TIETOA_ASUMISESTA));
+            
+            p.setYearClock(getDataValue(o.getMetadata(), METADATA_VUOSIKELLO));
+            p.setFinancingStudies(getDataValue(o.getMetadata(), METADATA_OPINTOJEN_RAHOITUS));
+            p.setInsurances(getDataValue(o.getMetadata(), METADATA_TIETOA_VAKUUTUKSISTA));
+            p.setLeisureServices(getDataValue(o.getMetadata(), METADATA_VAPAA_AJAN_PALVELUT));
+            
             p.setSocial(getSocialLinks(o.getMetadata(), SOCIAL_LINKS));
             p.setPicture(getPicture(o));
             p.setAthleteEducation(isAthleteEducation(o.getToimipistekoodi()));

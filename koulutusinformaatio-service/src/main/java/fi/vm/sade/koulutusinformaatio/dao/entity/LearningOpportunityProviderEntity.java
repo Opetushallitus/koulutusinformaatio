@@ -50,6 +50,12 @@ public class LearningOpportunityProviderEntity {
     private I18nTextEntity dining;
     private I18nTextEntity livingExpenses;
     private I18nTextEntity living;
+    
+    private I18nTextEntity yearClock;
+    private I18nTextEntity financingStudies;
+    private I18nTextEntity insurances;
+    private I18nTextEntity leisureServices;
+    
     @Embedded
     private List<SocialEntity> social;
     @Reference
@@ -228,5 +234,37 @@ public class LearningOpportunityProviderEntity {
 
     public void setLiving(I18nTextEntity living) {
         this.living = living;
+    }
+
+    public I18nTextEntity getYearClock() {
+        return yearClock;
+    }
+
+    public void setYearClock(I18nTextEntity yearClock) {
+        this.yearClock = yearClock;
+    }
+
+    public I18nTextEntity getFinancingStudies() {
+        return financingStudies;
+    }
+
+    public void setFinancingStudies(I18nTextEntity financingStudies) {
+        this.financingStudies = financingStudies;
+    }
+
+    public I18nTextEntity getInsurances() {
+        return insurances;
+    }
+
+    public void setInsurances(I18nTextEntity insurances) {
+        this.insurances = insurances;
+    }
+
+    public I18nTextEntity getLeisureServices() {
+        return leisureServices;
+    }
+
+    public void setLeisureServices(I18nTextEntity leisureServices) {
+        this.leisureServices = leisureServices;
     }
 }
