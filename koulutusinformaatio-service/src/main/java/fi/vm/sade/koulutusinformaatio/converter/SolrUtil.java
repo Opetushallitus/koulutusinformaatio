@@ -190,6 +190,25 @@ public final class SolrUtil {
         public static final String FREE_AUTO = "free_auto";
         
         
+        //Text search fields
+        public static final String TEXT_FI = "text_fi";
+        public static final String TEXT_SV = "text_sv";
+        public static final String TEXT_EN = "text_en";
+        public static final String TEXT_FI_WHOLE = "text_fi_whole";
+        public static final String TEXT_SV_WHOLE = "text_sv_whole";
+        public static final String TEXT_EN_WHOLE = "text_en_whole";
+        public static final String TEXT_BOOST_FI = "textBoost_fi^10.0";
+        public static final String TEXT_BOOST_SV = "textBoost_sv^10.0";
+        public static final String TEXT_BOOST_EN = "textBoost_en^10.0";
+        public static final String TEXT_BOOST_FI_WHOLE = "textBoost_fi_whole^10.0";
+        public static final String TEXT_BOOST_SV_WHOLE = "textBoost_sv_whole^10.0";
+        public static final String TEXT_BOOST_EN_WHOLE = "textBoost_en_whole^10.0";
+        public static final String AS_NAMES = "asNames";
+        public static final String LOP_NAMES = "lopNames";
+        public static final String NAME_AUTO_FI = "name_auto_fi";
+        public static final String NAME_AUTO_SV = "name_auto_sv";
+        public static final String NAME_AUTO_EN = "name_auto_en";
+        
 
     }
 
@@ -207,24 +226,6 @@ public final class SolrUtil {
         public static final String ALIAS_ACTION = "/admin/collections?action=CREATEALIAS&name=";
         public static final String COLLECTIONS = "&collections=";
         public static final String GET = "GET";
-
-        //value constants
-        /*public static final String ED_TYPE_LUKIO = "et1"; 
-        public static final String ED_TYPE_KAKSOIS = "et2";
-        public static final String ED_TYPE_AMMATILLINEN = "et3";
-        public static final String ED_TYPE_AMM_ER = "et4";
-        public static final String ED_TYPE_VALMENTAVA = "et5";
-        public static final String ED_TYPE_AMKS = "et6";
-        public static final String ED_TYPE_AMK = "et6.et7";
-        public static final String ED_TYPE_YLEMPI_AMK = "et6.et8";
-        public static final String ED_TYPE_YOS = "et9";
-        public static final String ED_TYPE_KANDIDAATTI = "et9.et10";
-        public static final String ED_TYPE_MAISTERI = "et9.et11";
-        public static final String ED_TYPE_VOC_PREP = "et12.et14";
-        public static final String ED_TYPE_TENTH_GRADE = "et12.et13";
-        public static final String ED_TYPE_IMM_VOC = "et12.et15";
-        public static final String ED_TYPE_IMM_UPSEC = "et12.et16";
-        public static final String ED_TYPE_MUU = "et12";*/
         
         //value constants
         public static final String ED_TYPE_TUTKINTOON = "et01";
