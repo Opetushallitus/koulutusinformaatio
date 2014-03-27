@@ -175,8 +175,10 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
         //Fields for sorting
         doc.addField(LearningOpportunity.START_DATE_SORT, loi.getStartDate());
         doc.addField(LearningOpportunity.NAME_SORT, String.format("%s, %s",
-                SolrUtil.resolveTranslationInTeachingLangUseFallback(loi.getTeachingLanguages(), provider.getName().getTranslations()).toLowerCase().trim(),
-                SolrUtil.resolveTranslationInTeachingLangUseFallback(loi.getTeachingLanguages(), los.getName().getTranslationsShortName())).toLowerCase().trim());
+                SolrUtil.resolveTranslationInTeachingLangUseFallback(loi.getTeachingLanguages(), 
+                        provider.getName().getTranslations()).toLowerCase().trim(),
+                SolrUtil.resolveTranslationInTeachingLangUseFallback(loi.getTeachingLanguages(), 
+                        los.getName().getTranslationsShortName())).toLowerCase().trim());
 
 
         //For faceting

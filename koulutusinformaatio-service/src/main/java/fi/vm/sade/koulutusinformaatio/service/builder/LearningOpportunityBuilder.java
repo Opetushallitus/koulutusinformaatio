@@ -39,6 +39,7 @@ import java.util.List;
 public abstract class LearningOpportunityBuilder<T extends LOS> {
 
     public static final Logger LOG = LoggerFactory.getLogger(LearningOpportunityBuilder.class);
+    private static final String NOT_IN_STATE = " not in state ";
 
 
     protected String resolveLOSId(String komoId, String providerId) {
@@ -59,7 +60,7 @@ public abstract class LearningOpportunityBuilder<T extends LOS> {
 
     protected void validateChildKomo(KomoDTO komo) throws TarjontaParseException {
         if (!komo.getTila().equals(TarjontaTila.JULKAISTU)) {
-            throw new TarjontaParseException("Child komo " + komo.getOid() + " not in state " + TarjontaTila.JULKAISTU.toString());
+            throw new TarjontaParseException("Child komo " + komo.getOid() + NOT_IN_STATE + TarjontaTila.JULKAISTU.toString());
         }
         if (komo.getKoulutusOhjelmaKoodiUri() == null) {
             throw new TarjontaParseException("Child KomoDTO koulutusOhjelmaKoodiUri (name) is null");
@@ -71,20 +72,20 @@ public abstract class LearningOpportunityBuilder<T extends LOS> {
 
     protected void validateChildKomoto(KomotoDTO komoto) throws TarjontaParseException {
         if (!komoto.getTila().equals(TarjontaTila.JULKAISTU)) {
-            throw new TarjontaParseException("Child komoto " + komoto.getOid() + " not in state " + TarjontaTila.JULKAISTU.toString());
+            throw new TarjontaParseException("Child komoto " + komoto.getOid() + NOT_IN_STATE + TarjontaTila.JULKAISTU.toString());
         }
 
     }
 
     protected void validateHakukohde(HakukohdeDTO hakukohde) throws TarjontaParseException {
         if (!hakukohde.getTila().equals(TarjontaConstants.STATE_PUBLISHED)) {
-            throw new TarjontaParseException("Application option " + hakukohde.getOid() + " not in state " + TarjontaConstants.STATE_PUBLISHED);
+            throw new TarjontaParseException("Application option " + hakukohde.getOid() + NOT_IN_STATE + TarjontaConstants.STATE_PUBLISHED);
         }
     }
 
     protected void validateHaku(HakuDTO haku) throws TarjontaParseException {
         if (!haku.getTila().equals(TarjontaConstants.STATE_PUBLISHED)) {
-            throw new TarjontaParseException("Application system " + haku.getOid() + " not in state " + TarjontaConstants.STATE_PUBLISHED);
+            throw new TarjontaParseException("Application system " + haku.getOid() + NOT_IN_STATE + TarjontaConstants.STATE_PUBLISHED);
         }
     }
 
