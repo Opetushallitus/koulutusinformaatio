@@ -42,8 +42,7 @@ def s(template, **kwargs):
 
 def get(url):
     r = session.get(base_url + url)
-    print base_url + url
-    print r.status_code
+    print base_url + url + ": " + str(r.status_code) + " " + r.reason
     if r.status_code == requests.codes.ok:
         return r.json()
     else:

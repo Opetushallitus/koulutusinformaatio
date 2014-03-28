@@ -2,6 +2,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import org.slf4j.Logger;
@@ -38,31 +39,20 @@ public class TextVersionServiceImpl implements TextVersionService {
         try {
             Process process = Runtime.getRuntime().exec(String.format("make all install -C %s SOURCE=%s INSTALL_DIR=%s",
                     script, source, destinationFolder));
+            
+            //Set up two threads to read on the output of the external process.
+            Thread stdout = new Thread(new StreamReader(process.getInputStream()));
+            Thread stderr = new Thread(new StreamReader(process.getErrorStream()));
+            
+            stdout.start();
+            stderr.start();
+            
             int exitStatus = process.waitFor();
+            process.destroy();
             
             if (exitStatus != 0) {
-                // read error stream
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-                StringBuilder stringBuilder = new StringBuilder("");
-                String currentLine = null;
-                currentLine = bufferedReader.readLine();
-                while (currentLine != null) {
-                    stringBuilder.append(currentLine + "\n");
-                    currentLine = bufferedReader.readLine();
-                }
-                
-                // read input stream
-                BufferedReader bufferedInputReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-                StringBuilder stringInputBuilder = new StringBuilder("");
-                currentLine = null;
-                currentLine = bufferedInputReader.readLine();
-                while (currentLine != null) {
-                    stringInputBuilder.append(currentLine + "\n");
-                    currentLine = bufferedInputReader.readLine();
-                }
-                
-                throw new KIException(String.format("Rendering text version failed: %s",
-                        stringBuilder.toString()));
+                throw new KIException(String.format("Rendering text version failed with exit status: %d",
+                        exitStatus));
             }
         } catch (IOException e) {
             throw new KIException(String.format("Rendering text version failed due to IOException: %s",
@@ -73,6 +63,44 @@ public class TextVersionServiceImpl implements TextVersionService {
         }
         
         LOG.info("Rendering text version html finished");
+    }
+    
+    private class StreamReader implements Runnable {
+        private InputStream stream;
+        private boolean run;
+
+        public StreamReader(InputStream i) {
+            stream = i;
+            run = true;
+        }
+
+        public void run() {
+            BufferedReader reader = null;
+            StringBuilder stringBuilder = new StringBuilder("");
+            
+            try {
+                reader = new BufferedReader(new InputStreamReader(stream));
+                String line = reader.readLine();
+
+                while(run && line != null) {
+                    stringBuilder.append(line + "\n");
+                    line = reader.readLine();
+                }
+                
+                LOG.debug(stringBuilder.toString());
+            } catch(IOException ex) {
+                LOG.error(String.format("Rendering text version failed due to IOException: %s\n%s",
+                        ex.getMessage(), stringBuilder.toString() ));
+            } finally {
+                try {
+                    reader.close();
+                    run = false;
+                } catch (IOException e) {
+                    LOG.error(String.format("Closing stream failed due to IOException during text version generation: %s",
+                            e.getMessage() ));
+                }
+            }
+        }
     }
 
 }
