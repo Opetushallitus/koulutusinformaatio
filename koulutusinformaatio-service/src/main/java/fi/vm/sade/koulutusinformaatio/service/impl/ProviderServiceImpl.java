@@ -18,14 +18,12 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
@@ -44,8 +42,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
-import javax.ws.rs.core.MediaType;
-
 /**
  * @author Hannu Lyytikainen
  */
@@ -54,20 +50,16 @@ public class ProviderServiceImpl implements ProviderService {
 
     public static final Logger LOG = LoggerFactory.getLogger(ProviderServiceImpl.class);
 
-    private WebResource webResource;
     private ConversionService conversionService;
     private String organisaatioResourceUrl;
 
     @Autowired
     public ProviderServiceImpl(@Value("${organisaatio.api.rest.url}") final String organisaatioResourceUrl,
-                               ConversionService conversionService) {
+            ConversionService conversionService) {
         this.conversionService = conversionService;
         ClientConfig cc = new DefaultClientConfig();
         cc.getClasses().add(JacksonJsonProvider.class);
-        //cc.
         Client clientWithJacksonSerializer = Client.create(cc);
-        //clientWithJacksonSerializer.
-        webResource = clientWithJacksonSerializer.resource(organisaatioResourceUrl);
         this.organisaatioResourceUrl = organisaatioResourceUrl;
     }
 
@@ -79,39 +71,49 @@ public class ProviderServiceImpl implements ProviderService {
         //WebResource oidResource = webResource.path(oid);
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        
+
         URL orgUrl = new URL(String.format("%s/%s", this.organisaatioResourceUrl, oid));
         HttpURLConnection conn = (HttpURLConnection) (orgUrl.openConnection());
         conn.setRequestMethod(SolrConstants.GET);
         conn.connect();
-        
+
         OrganisaatioRDTO organisaatioRDTO = mapper.readValue(conn.getInputStream(), OrganisaatioRDTO.class);
-        
-        /*
-        OrganisaatioRDTO organisaatioRDTO = oidResource.accept(MediaType.APPLICATION_JSON + ";charset=UTF-8")
-                .get(new GenericType<OrganisaatioRDTO>() {
-                });*/
+
         Provider provider = conversionService.convert(organisaatioRDTO, Provider.class);
-        if (!validate(provider)) {
-            if (!Strings.isNullOrEmpty(organisaatioRDTO.getParentOid())) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Enriching provider " + organisaatioRDTO.getOid() + " with parent provider " + organisaatioRDTO.getParentOid());
-                }
-                Provider parent = getByOID(organisaatioRDTO.getParentOid());
-                provider = inheritMetadata(provider, parent);
+        if (!validate(provider) && !Strings.isNullOrEmpty(organisaatioRDTO.getParentOid())) {
+
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Enriching provider " + organisaatioRDTO.getOid() + " with parent provider " + organisaatioRDTO.getParentOid());
             }
+            Provider parent = getByOID(organisaatioRDTO.getParentOid());
+            provider = inheritMetadata(provider, parent);
+
         }
         return provider;
     }
 
     private Provider inheritMetadata(Provider child, Provider parent) {
-        if (child.getDescription() == null) child.setDescription(parent.getDescription());
-        if (child.getHealthcare() == null) child.setHealthcare(parent.getHealthcare());
-        if (child.getAccessibility() == null) child.setAccessibility(parent.getAccessibility());
-        if (child.getLivingExpenses() == null) child.setLivingExpenses(parent.getLivingExpenses());
-        if (child.getLearningEnvironment() == null) child.setLearningEnvironment(parent.getLearningEnvironment());
-        if (child.getDining() == null) child.setDining(parent.getDining());
-        if (child.getSocial() == null) child.setSocial(parent.getSocial());
+        if (child.getDescription() == null) {
+            child.setDescription(parent.getDescription());
+        }
+        if (child.getHealthcare() == null) {
+            child.setHealthcare(parent.getHealthcare());
+        }
+        if (child.getAccessibility() == null) {
+            child.setAccessibility(parent.getAccessibility());
+        }
+        if (child.getLivingExpenses() == null) {
+            child.setLivingExpenses(parent.getLivingExpenses());
+        }
+        if (child.getLearningEnvironment() == null) {
+            child.setLearningEnvironment(parent.getLearningEnvironment());
+        }
+        if (child.getDining() == null) {
+            child.setDining(parent.getDining());
+        }
+        if (child.getSocial() == null) {
+            child.setSocial(parent.getSocial());
+        }
         return child;
     }
 

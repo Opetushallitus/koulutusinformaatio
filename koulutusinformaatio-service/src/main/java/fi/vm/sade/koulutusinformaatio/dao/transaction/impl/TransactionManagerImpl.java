@@ -18,13 +18,18 @@ package fi.vm.sade.koulutusinformaatio.dao.transaction.impl;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
+
 import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KICommitException;
+import fi.vm.sade.koulutusinformaatio.service.impl.UpdateServiceImpl;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.request.CoreAdminRequest;
 import org.apache.solr.common.params.CoreAdminParams;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,6 +43,9 @@ import java.net.URL;
  */
 @Service
 public class TransactionManagerImpl implements TransactionManager {
+    
+    public static final Logger LOG = LoggerFactory.getLogger(TransactionManagerImpl.class);
+    private static final int ERROR_STATUS = 400;
 
     private MongoClient mongo;
     private final String transactionDbName;
@@ -48,10 +56,7 @@ public class TransactionManagerImpl implements TransactionManager {
     private final String learningopportunityCoreName;
     private final String locationUpdateCoreName;
     private final String locationCoreName;
-    private HttpSolrServer loUpdateHttpSolrServer;
-    private HttpSolrServer lopUpdateHttpSolrServer;
-    private HttpSolrServer locationUpdateHttpSolrServer;
-
+    
     private HttpSolrServer adminHttpSolrServer;
     private ParentLearningOpportunitySpecificationDAO parentLOSTransactionDAO;
     private ApplicationOptionDAO applicationOptionTransactionDAO;
@@ -125,9 +130,6 @@ public class TransactionManagerImpl implements TransactionManager {
         this.learningopportunityCoreName = learningopportunityCoreName;
         this.locationCoreName = locationCoreName;
         this.locationUpdateCoreName = locationUpdateCoreName;
-        this.loUpdateHttpSolrServer = loUpdateHttpSolrServer;
-        this.lopUpdateHttpSolrServer = lopUpdateHttpSolrServer;
-        this.locationUpdateHttpSolrServer = locationUpdateHttpSolrServer;
         this.adminHttpSolrServer = adminHttpSolrServer;
         this.parentLOSTransactionDAO = parentLOSTransactionDAO;
         this.applicationOptionTransactionDAO = applicationOptionTransactionDAO;
@@ -159,28 +161,32 @@ public class TransactionManagerImpl implements TransactionManager {
     }
 
     @Override
-    public void commit(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws Exception {
+    public void commit(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws KICommitException {
         //CollectionAdminRequest
         //If solr is not in cloud mode doing swap using CoreAdminRequest
-        if (this.loHttpAliasName.equals(this.loHttpSolrName)) {
-            CoreAdminRequest lopCar = getCoreSwapRequest(providerUpdateCoreName, providerCoreName);
-            lopCar.process(adminHttpSolrServer);
+        try {
+            if (this.loHttpAliasName.equals(this.loHttpSolrName)) {
+                CoreAdminRequest lopCar = getCoreSwapRequest(providerUpdateCoreName, providerCoreName);
+                lopCar.process(adminHttpSolrServer);
 
-            CoreAdminRequest loCar = getCoreSwapRequest(learningopportunityUpdateCoreName, learningopportunityCoreName);
-            loCar.process(adminHttpSolrServer);
+                CoreAdminRequest loCar = getCoreSwapRequest(learningopportunityUpdateCoreName, learningopportunityCoreName);
+                loCar.process(adminHttpSolrServer);
 
-            CoreAdminRequest locationCar = getCoreSwapRequest(locationUpdateCoreName, locationCoreName);
-            locationCar.process(adminHttpSolrServer);
+                CoreAdminRequest locationCar = getCoreSwapRequest(locationUpdateCoreName, locationCoreName);
+                locationCar.process(adminHttpSolrServer);
 
-            //Otherwise using collections api
-        } else {
-            swapAliases(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+                //Otherwise using collections api
+            } else {
+                swapAliases(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+            }
+
+            BasicDBObject cmd = new BasicDBObject("copydb", 1).append("fromdb", transactionDbName).append("todb", dbName);
+            dropDbCollections();
+            mongo.getDB("admin").command(cmd);
+            dropTransactionDbCollections();
+        } catch (Exception ex) {
+            throw new KICommitException(ex);
         }
-
-        BasicDBObject cmd = new BasicDBObject("copydb", 1).append("fromdb", transactionDbName).append("todb", dbName);
-        dropDbCollections();
-        mongo.getDB("admin").command(cmd);
-        dropTransactionDbCollections();
     }
 
     private void dropUpdateData(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) {
@@ -198,7 +204,7 @@ public class TransactionManagerImpl implements TransactionManager {
             locationUpdateSolr.optimize();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.warn(e.getMessage());
         }
     }
 
@@ -233,7 +239,7 @@ public class TransactionManagerImpl implements TransactionManager {
         return car;
     }
 
-    private void swapAliases(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws Exception {
+    private void swapAliases(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws KICommitException {
 
 
         boolean ok = swapAlias(getCollectionName(lopUpdateSolr), lopHttpAliasName);
@@ -252,25 +258,29 @@ public class TransactionManagerImpl implements TransactionManager {
                 swapAlias(this.locationCoreName, locationHttpAliasName);
             }
 
-            throw new RuntimeException("Alias swap failed");
+            throw new KICommitException("Alias swap failed");
         }
     }
 
-    private boolean swapAlias(String solrToSwapName, String aliasName) throws Exception {
-        URL myURL = new URL(String.format("%s%s%s%s%s", 
-                adminHttpSolrServer.getBaseURL(), 
-                SolrConstants.ALIAS_ACTION,
-                aliasName, 
-                SolrConstants.COLLECTIONS, 
-                solrToSwapName));
+    private boolean swapAlias(String solrToSwapName, String aliasName) throws KICommitException {
+        try {
+            URL myURL = new URL(String.format("%s%s%s%s%s", 
+                    adminHttpSolrServer.getBaseURL(), 
+                    SolrConstants.ALIAS_ACTION,
+                    aliasName, 
+                    SolrConstants.COLLECTIONS, 
+                    solrToSwapName));
 
-        HttpURLConnection myURLConnection = (HttpURLConnection)(myURL.openConnection());
-        myURLConnection.setRequestMethod(SolrConstants.GET);
-        myURLConnection.connect();
-        return myURLConnection.getResponseCode() < 400;
+            HttpURLConnection myURLConnection = (HttpURLConnection)(myURL.openConnection());
+            myURLConnection.setRequestMethod(SolrConstants.GET);
+            myURLConnection.connect();
+            return myURLConnection.getResponseCode() < ERROR_STATUS;
+        } catch (Exception ex) {
+            throw new KICommitException(ex);
+        }
     }
 
-    private String getCollectionName (HttpSolrServer solrServer) {
+    private String getCollectionName(HttpSolrServer solrServer) {
         return solrServer.getBaseURL().substring(solrServer.getBaseURL().lastIndexOf('/') + 1);
     }
 }
