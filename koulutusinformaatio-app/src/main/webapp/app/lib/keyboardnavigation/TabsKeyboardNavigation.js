@@ -99,7 +99,6 @@ tabpanel.prototype.switchTabs = function($curTab, $newTab) {
 
     // remove tab from the tab order and update its aria-selected attribute
     $curTab.attr('tabindex', '-1').attr('aria-selected', 'false');
-
     // update the aria attributes
 
     // Highlight the new tab and update its aria-selected attribute
@@ -119,6 +118,8 @@ tabpanel.prototype.switchTabs = function($curTab, $newTab) {
 
     // give the new tab focus
     $newTab.focus();
+    //kustomoitu viritys bootstap tabpanelille
+    $newTab.find('a').click();
 
 } // end switchTabs()
 
