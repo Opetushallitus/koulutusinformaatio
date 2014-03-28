@@ -93,14 +93,9 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<HigherEdu
                    SolrUtil.resolveTextWithFallback(teachingLang,
                            provider.getHomePlace().getTranslations()));
        }
-        
-        
+                
         doc.addField(LearningOpportunity.EDUCATION_DEGREE_CODE, los.getEducationDegree());
 
-        //SolrUtil.resolveTextWithFallback("sv",provider.getName().getTranslations()));
-
-        
-        
         indexLanguageFields(los, doc);
 
 
