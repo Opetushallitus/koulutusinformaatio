@@ -61,7 +61,11 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
     private static final String METADATA_SOCIAL_TWITTER = "TWITTER";
     private static final String METADATA_SOCIAL_GOOGLEPLUS = "GOOGLE_PLUS";
     private static final String METADATA_SOCIAL_OTHER = "MUU";
-    private static final String[] SOCIAL_LINKS = {METADATA_SOCIAL_FACEBOOK, METADATA_SOCIAL_LINKEDIN, METADATA_SOCIAL_TWITTER, METADATA_SOCIAL_GOOGLEPLUS, METADATA_SOCIAL_OTHER};
+    private static final String[] SOCIAL_LINKS = {METADATA_SOCIAL_FACEBOOK, 
+                                                   METADATA_SOCIAL_LINKEDIN, 
+                                                   METADATA_SOCIAL_TWITTER, 
+                                                   METADATA_SOCIAL_GOOGLEPLUS, 
+                                                   METADATA_SOCIAL_OTHER};
 
     private static final String ATHLETE_EDUCATION_KOODISTO_URI = "urheilijankoulutus_1#1";
     private static final String PLACE_OF_BUSINESS_KOODISTO_URI = "opetuspisteet";

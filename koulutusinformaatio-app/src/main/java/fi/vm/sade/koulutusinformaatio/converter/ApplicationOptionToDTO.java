@@ -81,7 +81,10 @@ public final class ApplicationOptionToDTO {
         return null;
     }
     
-    public static ApplicationOptionDTO convertHigherEducation(final ApplicationOption applicationOption, final String lang, final String uiLang, String defaultLang) {
+    public static ApplicationOptionDTO convertHigherEducation(final ApplicationOption applicationOption, 
+                                                              final String lang, 
+                                                              final String uiLang, 
+                                                              String defaultLang) {
         if (applicationOption == null) {
             return null;
         }

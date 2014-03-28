@@ -67,7 +67,8 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     }
 
     @Override
-    public ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(String parentId, String lang, String uiLang) throws ResourceNotFoundException {
+    public ParentLearningOpportunitySpecificationDTO getParentLearningOpportunity(String parentId, String lang, String uiLang) 
+                                                                                    throws ResourceNotFoundException {
         ParentLOS parentLOS = educationDataQueryService.getParentLearningOpportunity(parentId);
         String defaultLang = resolveDefaultLanguage(parentLOS);
         return ParentLOSToDTO.convert(parentLOS, lang, uiLang, defaultLang);
@@ -109,7 +110,8 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     }
 
     @Override
-    public UpperSecondaryLearningOpportunitySpecificationDTO getUpperSecondaryLearningOpportunity(String id, String lang, String uiLang) throws ResourceNotFoundException {
+    public UpperSecondaryLearningOpportunitySpecificationDTO getUpperSecondaryLearningOpportunity(String id, String lang, String uiLang) 
+                                                                                                    throws ResourceNotFoundException {
         UpperSecondaryLOS upperSecondaryLOS = educationDataQueryService.getUpperSecondaryLearningOpportunity(id);
         String defaultLang  = resolveDefaultLanguage(upperSecondaryLOS.getLois().get(0));
         return UpperSecondaryLOSToDTO.convert(upperSecondaryLOS, lang, uiLang, defaultLang);
@@ -130,15 +132,23 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     }
 
     @Override
-    public SpecialLearningOpportunitySpecificationDTO getSpecialSecondaryLearningOpportunity(String id, String lang, String uiLang) throws ResourceNotFoundException {
+    public SpecialLearningOpportunitySpecificationDTO getSpecialSecondaryLearningOpportunity(String id, 
+                                                                                             String lang, 
+                                                                                             String uiLang) 
+                                                                                                     throws ResourceNotFoundException {
         SpecialLOS los = educationDataQueryService.getSpecialLearningOpportunity(id);
         String defaultLang = resolveDefaultLanguage(los.getLois().get(0));
         return SpecialLOSToDTO.convert(los, lang, uiLang, defaultLang);
     }
 
     @Override
-    public List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, String lopId, String baseEducation, boolean vocational, boolean nonVocational,
+    public List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, 
+                                                                           String lopId, 
+                                                                           String baseEducation, 
+                                                                           boolean vocational, 
+                                                                           boolean nonVocational,
                                                                            final String uiLang) {
+        
         List<ApplicationOption> applicationOptions = educationDataQueryService.findApplicationOptions(asId, lopId, baseEducation,
                 vocational, nonVocational);
         return Lists.transform(applicationOptions, new Function<ApplicationOption, ApplicationOptionSearchResultDTO>() {
@@ -192,10 +202,10 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     }
 
     private String resolveDefaultLanguage(final ParentLOS parentLO) {
-        if (parentLO.getTeachingLanguages() == null || parentLO.getTeachingLanguages().isEmpty()) {//parentLO.getName() == null || parentLO.getName().getTranslations() == null || parentLO.getName().getTranslations().containsKey(LANG_FI)) {
+        if (parentLO.getTeachingLanguages() == null || parentLO.getTeachingLanguages().isEmpty()) {
             return LANG_FI;
         } else {
-            return parentLO.getTeachingLanguages().get(0).getValue().toLowerCase();//parentLO.getName().getTranslations().keySet().iterator().next();
+            return parentLO.getTeachingLanguages().get(0).getValue().toLowerCase();
         }
     }
 
@@ -242,7 +252,8 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
 	public HigherEducationLOSDTO getHigherEducationLearningOpportunity(
 			String id) throws ResourceNotFoundException {
 		HigherEducationLOS los = educationDataQueryService.getHigherEducationLearningOpportunity(id);
-        String lang = (los.getTeachingLanguages() != null && !los.getTeachingLanguages().isEmpty()) ? los.getTeachingLanguages().get(0).getValue().toLowerCase() : LANG_FI;//resolveDefaultLanguage(los.getTeachingLanguages());
+        String lang = (los.getTeachingLanguages() != null && !los.getTeachingLanguages().isEmpty()) 
+                            ? los.getTeachingLanguages().get(0).getValue().toLowerCase() : LANG_FI;
         return HigherEducationLOSToDTO.convert(los, lang, lang);
 	}
 
@@ -250,7 +261,6 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
 	public HigherEducationLOSDTO getHigherEducationLearningOpportunity(
 			String id, String uiLang) throws ResourceNotFoundException {
 		HigherEducationLOS los = educationDataQueryService.getHigherEducationLearningOpportunity(id);
-		//String lang = (los.getTeachingLanguages() != null && !los.getTeachingLanguages().isEmpty()) ? los.getTeachingLanguages().get(0).getValue().toLowerCase() : LANG_FI;//resolveDefaultLanguage(los.getTeachingLanguages());
         return HigherEducationLOSToDTO.convert(los, uiLang, uiLang);
 	}
 
