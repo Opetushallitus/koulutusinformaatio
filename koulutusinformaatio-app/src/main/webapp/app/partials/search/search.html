@@ -1,41 +1,60 @@
-<section class="content-container grid16-16 margin-bottom-2">
+<section class="content-container grid16-16 margin-bottom-2" >
     <div data-ki-breadcrumb="breadcrumb-search-results" id="breadcrumb"></div>
     <div data-ng-include="'partials/search/header.html'"></div>
     <h1 class="margin-bottom-0 margin-top-0">
     	<span data-ki-i18n="search-result-title"></span> &rdquo;{{tabTitles.queryString}}&rdquo; ({{tabTitles.totalCount}} <span data-ki-i18n="search-result-count-unit"></span>)
     </h1>
-    <div data-tabset>
-    	<div data-tab data-heading="{{tabTitles.learningOpportunities}}" data-select="initSearch()" data-active="tabs[0].active" title="{{tabTitles.learningOpportunitiesTooltip}}">
-		    <div data-ng-controller="SearchFilterCtrl">
-		    	<div class="grid16-16 margin-bottom-4">
-    				<!--<h1 class="margin-bottom-0 margin-top-0">
-        				<span data-ki-i18n="search-result-title"></span> &rdquo;{{queryString}}&rdquo; ({{loResult.loCount}} <span data-ki-i18n="search-result-count-unit"></span>)
+    <div id="search-tablist" data-tabset role="tablist">
+        <div data-tab data-heading="{{tabTitles.learningOpportunities}}"
+             data-select="initSearch()"
+             data-ng-focus="tabs[0].active = true"
+             data-active="tabs[0].active"
+             title="{{tabTitles.learningOpportunitiesTooltip}}"
+             tabindex="0"
+             aria-selected="true"
+             aria-controls="search-panel1"
+             role="tab"
+             class="tab" >
+            <div data-ng-controller="SearchFilterCtrl" role="tabpanel" id="search-panel1" class="panel">
+                <div class="grid16-16 margin-bottom-4" >
+                    <!--<h1 class="margin-bottom-0 margin-top-0">
+                        <span data-ki-i18n="search-result-title"></span> &rdquo;{{queryString}}&rdquo; ({{loResult.loCount}} <span data-ki-i18n="search-result-count-unit"></span>)
     				</h1>-->
-    				<span data-ki-i18n="search-result-title-description"></span>
-				</div>
-			    <div data-ng-include="'partials/search/facet-selections.html'"></div>
-			    <div class="grid16-5">
-			        <div data-ng-include="'partials/search/facet-filters.html'"></div>
-			    </div>
-			    <div class="grid16-11">
-			        <div data-ng-include="'partials/search/search-results.html'"></div>
-			    </div>
-			</div>
-			<div class="clear"></div>
-		</div>
-		<div data-ng-controller="ArticleSearchCtrl" data-tab data-heading="{{tabTitles.articles}}"  data-select="initSearch()" data-active="tabs[1].active" title="{{tabTitles.articlesTooltip}}">
-			
-				<div class="grid16-16 margin-bottom-4">
-	    			<!--<h1 class="margin-bottom-0 margin-top-0">
-	        			<span data-ki-i18n="search-result-title"></span> &rdquo;{{queryString}}&rdquo; ({{loResult.articleCount}} <span data-ki-i18n="search-result-count-unit"></span>)
+                    <span data-ki-i18n="search-result-title-description"></span>
+                </div>
+                <div data-ng-include="'partials/search/facet-selections.html'"></div>
+                <div class="grid16-5">
+                    <div data-ng-include="'partials/search/facet-filters.html'"></div>
+                </div>
+                <div class="grid16-11">
+                    <div data-ng-include="'partials/search/search-results.html'"></div>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div data-tab data-heading="{{tabTitles.articles}}"
+             data-select="initSearch()"
+             data-active="tabs[1].active"
+             data-ng-focus="tabs[1].active = true"
+             title="{{tabTitles.articlesTooltip}}"
+             tabindex="-1"
+             aria-selected="false"
+             aria-controls="search-panel2"
+             role="tab"
+             class="tab" >
+            <div data-ng-controller="ArticleSearchCtrl" role="tabpanel" id="search-panel2" class="panel">
+                <div class="grid16-16 margin-bottom-4">
+                    <!--<h1 class="margin-bottom-0 margin-top-0">
+                        <span data-ki-i18n="search-result-title"></span> &rdquo;{{queryString}}&rdquo; ({{loResult.articleCount}} <span data-ki-i18n="search-result-count-unit"></span>)
 	    			</h1>
 	    			<span data-ki-i18n="search-articles-result-title-description"></span>-->
-				</div>
-				<div class="grid16-16">
-					<div data-ng-include="'partials/search/articles/search-results.html'"></div>
-				</div>
-				<div class="clear"></div>
-			</div>
+                </div>
+                <div class="grid16-16">
+                    <div data-ng-include="'partials/search/articles/search-results.html'"></div>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
 	</div>
 <div class="clear"></div>
 </section>
