@@ -58,7 +58,7 @@
 {{ loi.workingLifePlacement }}
 {% endif %}
 
-{% if loi.professionalTitles is defined %}
+{% if loi.professionalTitles is defined and loi.professionalTitles != None %}
 <h2>{{ locales["profession-title"] }}</h2>
 <ul>
     {% for ptitle in loi.professionalTitles %}
@@ -82,7 +82,7 @@
 {{ ctx.accessToFurtherStudies }}
 {% endif %}
 
-{%if loi.contactPersons is defined %}
+{%if loi.contactPersons is defined and loi.contactPersons != None %}
 <h2>{{ locales["contact-person-title"] }}</h2>
 
 {% for person in loi.contactPersons %}
