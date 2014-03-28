@@ -26,7 +26,7 @@
 {{ ao.selectionCriteria }}
 {% endif %}
 
-{% if ao.exams is defined %}
+{% if ao.exams is defined and ao.exams != None %}
 {% for exam in ao.exams %}
 <h2>{{ exam.type }}</h2>
 
@@ -34,6 +34,7 @@
 {{ exam.description }}
 {% endif %}
 
+{% if exam.examEvents is defined and exam.examEvents != None %}
 {% for event in exam.examEvents %}
 <p>
 	Koetilaisuus {{ event.start|datetimeinterval(event.end) }}<br />
@@ -46,11 +47,12 @@
 	Tilaisuuden kuvaus: {{ event.description }}
 </p>
 {% endfor %}
+{% endif %}
 {% endfor %}
 {% endif %}
 
 
-{% if ao.attachments is defined %}
+{% if ao.attachments is defined and ao.attachments != None %}
 <h2>{{ locales["required-attachments"] }}</h2>
 {% for att in ao.attachments %}
 <h3>{{ att.type }}</h3>
