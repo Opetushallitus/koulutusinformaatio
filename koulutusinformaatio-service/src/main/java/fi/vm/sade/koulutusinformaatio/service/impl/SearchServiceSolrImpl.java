@@ -256,7 +256,8 @@ public class SearchServiceSolrImpl implements SearchService {
         String losId = doc.get(LearningOpportunity.LOS_ID) != null ? doc.get(LearningOpportunity.LOS_ID).toString() : null;
         String id = doc.get(LearningOpportunity.LOS_ID) != null ? doc.get(LearningOpportunity.LOS_ID).toString() : doc.get(LearningOpportunity.ID).toString();
         String prerequisiteText = doc.get(LearningOpportunity.PREREQUISITE) != null ? doc.get(LearningOpportunity.PREREQUISITE).toString() : null;
-        String prerequisiteCodeText = doc.get(LearningOpportunity.PREREQUISITE_CODE) != null ? doc.get(LearningOpportunity.PREREQUISITE_CODE).toString() : null;
+        String prerequisiteCodeText = doc.get(LearningOpportunity.PREREQUISITE_CODE) != null 
+                            ? doc.get(LearningOpportunity.PREREQUISITE_CODE).toString() : null;
         String credits = doc.get(LearningOpportunity.CREDITS) != null ? doc.get(LearningOpportunity.CREDITS).toString() : null;
         String lopName = getLopName(doc, lang);
         String edType = doc.get(LearningOpportunity.EDUCATION_TYPE_DISPLAY) != null 
