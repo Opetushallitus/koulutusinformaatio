@@ -19,7 +19,6 @@ package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
@@ -47,7 +46,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Hannu Lyytikainen
@@ -55,7 +53,7 @@ import java.util.Set;
 public class LOSObjectCreator extends ObjectCreator {
 
     private static final Logger LOG = LoggerFactory.getLogger(LOSObjectCreator.class);
-    
+
     private static final String UNDEFINED = "undefined";
 
     private KoodistoService koodistoService;
@@ -70,7 +68,7 @@ public class LOSObjectCreator extends ObjectCreator {
         this.loiCreator = new LOIObjectCreator(koodistoService, tarjontaRawService);
     }
 
-    private <T extends LOS> T createLOS(Class<T> type, KomoDTO komo) throws TarjontaParseException {
+    private <T extends LOS> T createLOS(Class<T> type) throws TarjontaParseException {
         T los;
         try {
             los = type.newInstance();
@@ -83,13 +81,14 @@ public class LOSObjectCreator extends ObjectCreator {
         return los;
     }
 
+    @SuppressWarnings("rawtypes")
     private <T extends InstantiatedLOS> T createInstantiatedLOS(Class<T> type, KomoDTO komo) throws TarjontaParseException {
-        T instantiatedLOS = createLOS(type, komo);
-        return instantiatedLOS;
+        return createLOS(type);
     }
 
+    @SuppressWarnings("rawtypes")
     private <T extends BasicLOS> T createBasicLOS(Class<T> type, KomoDTO komo, String providerId) throws TarjontaParseException, KoodistoException {
-        T basicLOS = createLOS(type, komo);
+        T basicLOS = createLOS(type);
         basicLOS.setStructure(getI18nText(komo.getTekstit().get(KomoTeksti.KOULUTUKSEN_RAKENNE)));
         try {
             basicLOS.setProvider(providerService.getByOID(providerId));
@@ -243,8 +242,8 @@ public class LOSObjectCreator extends ObjectCreator {
     }
 
     public UpperSecondaryLOS createUpperSecondaryLOS(KomoDTO komo, KomoDTO parentKomo, List<KomotoDTO> komotos, 
-                                                     String losID, String providerOid) 
-                                                             throws KoodistoException, TarjontaParseException {
+            String losID, String providerOid) 
+                    throws KoodistoException, TarjontaParseException {
         UpperSecondaryLOS los = createBasicLOS(UpperSecondaryLOS.class, komo, providerOid);
         los.setType(TarjontaConstants.TYPE_UPSEC);
         los.setId(losID);
@@ -272,15 +271,15 @@ public class LOSObjectCreator extends ObjectCreator {
     }
 
     public HigherEducationLOS createHigherEducationLOS(KoulutusKorkeakouluV1RDTO koulutus, boolean checkStatus) 
-                                                        throws TarjontaParseException, KoodistoException {
-        
+            throws TarjontaParseException, KoodistoException {
+
         HigherEducationLOS los = new HigherEducationLOS();
 
         los.setType(TarjontaConstants.TYPE_KK);
         los.setId(koulutus.getOid());
         los.setKomoOid(koulutus.getKomoOid());
 
-        
+
         //Set<Code> availableLanguagaes = Sets.newHashSet();
         Map<String,Code> availableLanguagesMap = new HashMap<String,Code>();
         List<Code> rawTranslCodes = new ArrayList<Code>();
@@ -353,7 +352,7 @@ public class LOSObjectCreator extends ObjectCreator {
         for (Code curCode : rawTranslCodes) {
             availableLanguagesMap.put(curCode.getUri(), curCode);
         }
-        
+
         for (Code teachingLanguage : los.getTeachingLanguages()) {
             availableLanguagesMap.put(teachingLanguage.getUri(), teachingLanguage);
         }
@@ -401,8 +400,8 @@ public class LOSObjectCreator extends ObjectCreator {
 
         //childLOI.setTeachingLanguages(koodistoService.searchCodesMultiple(childKomoto.getOpetuskieletUris()));
         try {
-        Provider provider = providerService.getByOID(koulutus.getOrganisaatio().getOid());
-        los.setProvider(provider);
+            Provider provider = providerService.getByOID(koulutus.getOrganisaatio().getOid());
+            los.setProvider(provider);
         } catch (Exception ex) {
             throw new KoodistoException("Problem reading organisaatio: " + ex.getMessage());
         }
@@ -432,11 +431,11 @@ public class LOSObjectCreator extends ObjectCreator {
                 ao.setType(TarjontaConstants.TYPE_KK);
 
             }
-            
+
         }
-        
+
         los.setFacetPrerequisites(this.getFacetPrequisites(los.getPrerequisites()));
-        
+
         return los;
     }
 
@@ -508,14 +507,14 @@ public class LOSObjectCreator extends ObjectCreator {
 
     public HigherEducationLOSRef createHigherEducationLOSRef(
             KoulutusKorkeakouluV1RDTO koulutusDTO, boolean b, ApplicationOption ao) throws TarjontaParseException, KoodistoException {
-        
+
         HigherEducationLOSRef losRef = new HigherEducationLOSRef();
-        
+
         losRef.setId(koulutusDTO.getOid());
         losRef.setName(getI18nTextEnriched(koulutusDTO.getKoulutusohjelma()));
         losRef.setQualification(getI18nTextEnrichedFirst(koulutusDTO.getTutkintonimikes()));
         losRef.setPrerequisite(ao.getPrerequisite());
-        
+
         return losRef;
     }
 
