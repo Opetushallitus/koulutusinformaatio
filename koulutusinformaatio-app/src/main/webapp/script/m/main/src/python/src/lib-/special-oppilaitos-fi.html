@@ -22,7 +22,7 @@
 
 {% block content %}
 
-{% if provider.social is defined %}
+{% if provider.social is defined and provider.social != None %}
 <h2>{{ locales["social-media"] }}</h2>
 <ul>
     {% for socialItem in provider.social %}
