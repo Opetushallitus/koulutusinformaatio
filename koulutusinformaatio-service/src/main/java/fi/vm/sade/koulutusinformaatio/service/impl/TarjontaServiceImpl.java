@@ -235,8 +235,6 @@ public class TarjontaServiceImpl implements TarjontaService {
      */
     private List<HigherEducationLOS> createChildHierarchy(List<HigherEducationLOS> koulutukset,
             Map<String, List<HigherEducationLOS>> komoToLOSMap, List<String> parentOids, Map<String,List<HigherEducationLOSRef>> aoToEducationsMap) {
-
-        //Map<String,HigherEducationLOS> leafs = new HashMap<String,HigherEducationLOS>();
         
         for (HigherEducationLOS curLos : koulutukset) {
 
@@ -247,17 +245,13 @@ public class TarjontaServiceImpl implements TarjontaService {
                     List<HigherEducationLOS> loss = komoToLOSMap.get(curChildKomoOid);
                     if (loss != null && !loss.isEmpty()) {
                         curLos.getChildren().addAll(loss);
-                    } /*else {
-                        leafs.put(curLos.getId(), curLos);
-                    }*/
+                    } 
 
                     if (parentOids.contains(curChildKomoOid)) {
                         parentOids.remove(curChildKomoOid);
                     }
                 }
-            } /*else {
-                leafs.put(curLos.getId(), curLos);
-            }*/
+            } 
             if (parentKomoOids != null && parentKomoOids.getResult() != null) {
                 for (String curParentKomoOid : parentKomoOids.getResult()) {
                     List<HigherEducationLOS> loss = komoToLOSMap.get(curParentKomoOid);
@@ -274,36 +268,12 @@ public class TarjontaServiceImpl implements TarjontaService {
             
         }
         
-        /*
-        for (HigherEducationLOS curLeaf : leafs.values()) {
-            upgradeApplicationOptions(curLeaf);
-        }*/
-        
         List<HigherEducationLOS> parents = new ArrayList<HigherEducationLOS>();
         for (String curParent : parentOids) {
             parents.addAll(komoToLOSMap.get(curParent));
         }
         return parents;
     }
-
-    /*
-    private void upgradeApplicationOptions(HigherEducationLOS curLOS) {
-        
-        for (HigherEducationLOS curParent : curLOS.getParents()) {
-            Map<String,ApplicationOption> aoMap = new HashMap<String,ApplicationOption>();
-            for (ApplicationOption curAo : curLOS.getApplicationOptions()) {
-                aoMap.put(curAo.getId(), curAo);
-            }
-            
-            for (ApplicationOption curAo : curParent.getApplicationOptions()) {
-                aoMap.put(curAo.getId(), curAo);
-            }
-            List<ApplicationOption> aos = new ArrayList<ApplicationOption>(aoMap.values());
-            curParent.setApplicationOptions(new ArrayList<ApplicationOption>(aoMap.values()));
-            upgradeApplicationOptions(curParent);
-        }
-        
-    }*/
 
     @Override
     public HigherEducationLOS findHigherEducationLearningOpportunity(String oid) throws TarjontaParseException, KoodistoException {
@@ -330,29 +300,6 @@ public class TarjontaServiceImpl implements TarjontaService {
         ResultV1RDTO<Set<String>> parentKomoOids = this.tarjontaRawService.getParentsOfHigherEducationLOS(koulutusDTO.getKomoOid());
         los.setChildren(getHigherEducationRelatives(childKomoOids, creator));
         los.setParents(getHigherEducationRelatives(parentKomoOids, creator));
-        
-        /*
-        Map<String,ApplicationOption> aoMap = new HashMap<String,ApplicationOption>();
-        if (los.getApplicationOptions() != null) {
-            for (ApplicationOption curAo : los.getApplicationOptions()) {
-                aoMap.put(curAo.getId(), curAo);
-            }
-        }
-        
-        if (los.getChildren() != null) {
-            for (HigherEducationLOS curChild : los.getChildren()) {
-                if (curChild.getApplicationOptions() != null) {
-                    for (ApplicationOption curAo : curChild.getApplicationOptions()) {
-                        aoMap.put(curAo.getId(), curAo);
-                    }
-                }
-            }
-        }
-        if (aoMap.values() != null) {
-            los.setApplicationOptions(new ArrayList<ApplicationOption>(aoMap.values()));
-        }*/
-        
-        
         
         return los;
     }

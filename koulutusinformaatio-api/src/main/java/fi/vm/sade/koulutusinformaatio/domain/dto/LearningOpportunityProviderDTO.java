@@ -43,6 +43,13 @@ public class LearningOpportunityProviderDTO {
     private String dining;
     private String livingExpenses;
     private String living;
+    
+    private String yearClock;
+    private String financingStudies;
+    private String insurances;
+    private String leisureServices;
+    
+    
     private List<SocialDTO> social;
     private boolean pictureFound = false;
     private boolean athleteEducation;
@@ -206,5 +213,37 @@ public class LearningOpportunityProviderDTO {
 
     public void setLiving(String living) {
         this.living = living;
+    }
+
+    public String getYearClock() {
+        return yearClock;
+    }
+
+    public void setYearClock(String yearClock) {
+        this.yearClock = yearClock;
+    }
+
+    public String getFinancingStudies() {
+        return financingStudies;
+    }
+
+    public void setFinancingStudies(String financingStudies) {
+        this.financingStudies = financingStudies;
+    }
+
+    public String getInsurances() {
+        return insurances;
+    }
+
+    public void setInsurances(String insurances) {
+        this.insurances = insurances;
+    }
+
+    public String getLeisureServices() {
+        return leisureServices;
+    }
+
+    public void setLeisureServices(String leisureServices) {
+        this.leisureServices = leisureServices;
     }
 }

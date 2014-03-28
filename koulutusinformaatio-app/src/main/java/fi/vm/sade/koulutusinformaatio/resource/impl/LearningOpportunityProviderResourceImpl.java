@@ -67,7 +67,9 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
             key = key.replace("*", "");
             learningOpportunityProviders = searchService.searchLearningOpportunityProviders(key, asId, baseEducation, vocational,
                     nonVocational, start, rows, lang, false);
-            List<ProviderSearchResult> result = Lists.newArrayList(Lists.transform(learningOpportunityProviders, new Function<Provider, ProviderSearchResult>() {
+            List<ProviderSearchResult> result = Lists.newArrayList(
+                                                    Lists.transform(learningOpportunityProviders, 
+                                                                    new Function<Provider, ProviderSearchResult>() {
                 @Override
                 public ProviderSearchResult apply(Provider lop) {
                     ProviderSearchResult result = new ProviderSearchResult();
