@@ -443,7 +443,8 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
             $scope.tabs[0].active = true;
         }
         $timeout(function(){
-            new tabpanel('search-tablist', false);
+            var searcTablist = null;
+            searcTablist = new tabpanel('search-tablist', false);
         },0);
 
     }
