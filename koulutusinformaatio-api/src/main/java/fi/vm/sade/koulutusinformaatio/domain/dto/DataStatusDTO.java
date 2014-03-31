@@ -35,6 +35,8 @@ public class DataStatusDTO {
     private Date runningSince;
     private String runningSinceStr;
     private boolean snapshotRenderingRunning;
+    private boolean textVersionRenderingRunning;
+    private String lastTextVersionUpdateFinished;
 
     public Date getLastUpdateFinished() {
         return lastUpdateFinished;
@@ -106,5 +108,21 @@ public class DataStatusDTO {
 
     public void setSnapshotRenderingRunning(boolean snapshotRenderingRunning) {
         this.snapshotRenderingRunning = snapshotRenderingRunning;
+    }
+    
+    public void setTextVersionRenderingRunning(boolean textVersionRenderingRunning) {
+        this.textVersionRenderingRunning = textVersionRenderingRunning;
+    }
+    
+    public boolean isTextVersionRenderingRunning() {
+        return this.textVersionRenderingRunning;
+    }
+
+    public String getLastTextVersionUpdateFinished() {
+        return lastTextVersionUpdateFinished;
+    }
+
+    public void setLastTextVersionUpdateFinished(String lastTextVersionUpdateFinished) {
+        this.lastTextVersionUpdateFinished = lastTextVersionUpdateFinished;
     }
 }

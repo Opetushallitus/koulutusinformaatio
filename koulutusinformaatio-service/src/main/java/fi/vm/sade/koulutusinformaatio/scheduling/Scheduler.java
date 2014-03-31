@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.scheduling;
 
 import fi.vm.sade.koulutusinformaatio.service.SEOService;
+import fi.vm.sade.koulutusinformaatio.service.TextVersionService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,16 +37,24 @@ public class Scheduler {
     public static final Logger LOG = LoggerFactory.getLogger(Scheduler.class);
     private UpdateService updateService;
     private SEOService seoService;
+    private TextVersionService textVersionService;
     private boolean enabled;
     private boolean seoEnabled;
+    private boolean textVersionEnabled;
 
     @Autowired
-    public Scheduler(final UpdateService updateService, final SEOService seoService, @Value("${scheduling.enabled}") boolean enabled,
-                     @Value("${scheduling.seo.enabled}") boolean seoEnabled) {
+    public Scheduler(final UpdateService updateService, 
+            final SEOService seoService, 
+            final TextVersionService textVersionService,
+            @Value("${scheduling.enabled}") boolean enabled,
+            @Value("${scheduling.seo.enabled}") boolean seoEnabled, 
+            @Value("${scheduling.textversion.enabled}") boolean textVersionEnabled) {
         this.updateService = updateService;
         this.seoService = seoService;
+        this.textVersionService = textVersionService;
         this.enabled = enabled;
         this.seoEnabled = seoEnabled;
+        this.textVersionEnabled = textVersionEnabled;
     }
 
     @Scheduled(cron = "${scheduling.data.cron}")
@@ -72,6 +81,20 @@ public class Scheduler {
                 }
             } catch (Exception e) {
                 LOG.error("SEO execution failed: {}", e.getStackTrace().toString());
+            }
+        }
+    }
+    
+    @Scheduled(cron = "${scheduling.textversion.cron}")
+    public void runTextVersionUpdate() {
+        if (textVersionEnabled) {
+            LOG.info("Starting scheduled text version update {}", new Date());
+            try {
+                if (!textVersionService.isRunning()) {
+                    textVersionService.update();
+                }
+            } catch (Exception e) {
+                LOG.error("Text version generation execution failed: {}", e.getStackTrace().toString());
             }
         }
     }
