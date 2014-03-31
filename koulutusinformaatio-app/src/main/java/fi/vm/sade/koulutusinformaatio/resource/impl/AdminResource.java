@@ -96,7 +96,10 @@ public class AdminResource {
             dto.setRunningSinceStr(new Date(updateService.getRunningSince()).toString());
         }
         dto.setSnapshotRenderingRunning(seoService.isRunning());
-       return dto;
+        dto.setTextVersionRenderingRunning(textVersionService.isRunning());
+        dto.setLastTextVersionUpdateFinished(textVersionService.getLastTextVersionUpdateFinished());
+        
+        return dto;
     }
 
     @GET
@@ -112,7 +115,9 @@ public class AdminResource {
     @Path("/textversion")
     public Response generate() throws URISyntaxException, KIException {
         try {
-            textVersionService.update();
+            if (!textVersionService.isRunning()) {
+                textVersionService.update();
+            }
         } catch (KIException e) {
             e.printStackTrace();
             throw e;
