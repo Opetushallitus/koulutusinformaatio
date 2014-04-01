@@ -1,0 +1,22 @@
+{
+	"search-tab-lo-tooltip": "Here you can find study options and qualifications. First enter a search word into the search field and click Search, you will then get a list with search results that match your search word. Proceed to more detailed descriptions of the study programmes by clicking the options in the list.",
+    "search-tab-article-tooltip": "Here you can find information and articles on studies and the application process.",
+    "to-frontpage": "Siirry sivulle Etusivu(en)",
+    "search": "Search",
+    "remove-search-result-facet": "Poista hakutuloksille valittu rajaus(en)",
+    "close-facet": "Voit avata ja sulkea rajausehtovalikon nuolikuvakkeesta(en)",
+    "location-dialog": "Valitse yksi tai useampi alue, josta haluat etsiä koulutusta.(en)",
+    "remove-facet": "Poista rajaus(en)",
+    "open-education-view": "Avaa koulutusnäkymä(en)",
+    "next-page": "Seuraava sivu(en)",
+    "previous-page": "Edellinen sivu(en)",
+    "choose-results-to-show": "Valitse esitettävien hakutulosten määrä(en)",
+    "choose-result-criteria": "Valitse hakutulosten lajittelukriteeri(en)",
+    "close": "Close",
+    "open":"Open",
+    "tip":"Ohje(en)",
+    "checklist": "Shortlist",
+    "opintopolku-fi": "Opintopolku",
+    "opintopolku-sv": "Studieinfo",
+    "search-result-facet-info": "Limiting your search makes it easier to find suitable study options. The number of search results is shown in brackets after the search options. If the number is zero, there are no suitable study programmes provided in Studyinfo."
+}
