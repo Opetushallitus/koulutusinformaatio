@@ -142,11 +142,14 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
         if (specialLOS.getQualification() != null) {
 
             if (teachingLang.equals("sv")) {
-                doc.addField(SolrUtil.LearningOpportunity.QUALIFICATION_SV, SolrUtil.resolveTextWithFallback("sv", specialLOS.getQualification().getTranslations()));
+                doc.addField(SolrUtil.LearningOpportunity.QUALIFICATION_SV, 
+                             SolrUtil.resolveTextWithFallback("sv", specialLOS.getQualification().getTranslations()));
             } else if (teachingLang.equals("en")) {
-                doc.addField(SolrUtil.LearningOpportunity.QUALIFICATION_EN, SolrUtil.resolveTextWithFallback("en", specialLOS.getQualification().getTranslations()));
+                doc.addField(SolrUtil.LearningOpportunity.QUALIFICATION_EN, 
+                             SolrUtil.resolveTextWithFallback("en", specialLOS.getQualification().getTranslations()));
             } else {
-                doc.addField(SolrUtil.LearningOpportunity.QUALIFICATION_FI, SolrUtil.resolveTextWithFallback("fi", specialLOS.getQualification().getTranslations()));
+                doc.addField(SolrUtil.LearningOpportunity.QUALIFICATION_FI, 
+                             SolrUtil.resolveTextWithFallback("fi", specialLOS.getQualification().getTranslations()));
             }
         }
         if (specialLOS.getGoals() != null) {

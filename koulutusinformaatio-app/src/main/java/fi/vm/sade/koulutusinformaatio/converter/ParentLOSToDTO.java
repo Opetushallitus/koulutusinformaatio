@@ -28,7 +28,11 @@ public final class ParentLOSToDTO {
     private ParentLOSToDTO() {
     }
 
-    public static ParentLearningOpportunitySpecificationDTO convert(final ParentLOS parentLOS, final String lang, final String uiLang, final String defaultLang) {
+    public static ParentLearningOpportunitySpecificationDTO convert(final ParentLOS parentLOS, 
+                                                                    final String lang, 
+                                                                    final String uiLang, 
+                                                                    final String defaultLang) {
+        
         ParentLearningOpportunitySpecificationDTO parent = new ParentLearningOpportunitySpecificationDTO();
         parent.setId(parentLOS.getId());
         parent.setName(ConverterUtil.getTextByLanguage(parentLOS.getName(), defaultLang));

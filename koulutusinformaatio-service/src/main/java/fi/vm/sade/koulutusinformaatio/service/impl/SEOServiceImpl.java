@@ -16,11 +16,9 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import com.google.common.collect.Maps;
-import com.google.common.io.Files;
-import fi.vm.sade.koulutusinformaatio.service.SEOService;
-import fi.vm.sade.koulutusinformaatio.service.SnapshotService;
-import fi.vm.sade.koulutusinformaatio.service.TextVersionService;
+import java.io.File;
+import java.util.Date;
+import java.util.Map;
 
 import org.mongodb.morphia.Datastore;
 import org.slf4j.Logger;
@@ -30,9 +28,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.util.Date;
-import java.util.Map;
+import com.google.common.collect.Maps;
+import com.google.common.io.Files;
+
+import fi.vm.sade.koulutusinformaatio.service.SEOService;
+import fi.vm.sade.koulutusinformaatio.service.SnapshotService;
 
 /**
  * @author Hannu Lyytikainen
@@ -43,7 +43,6 @@ public class SEOServiceImpl implements SEOService {
     private static final Logger LOG = LoggerFactory.getLogger(SEOServiceImpl.class);
     private SitemapBuilder sitemapBuilder;
     private SnapshotService snapshotService;
-    private TextVersionService textVersionService;
     private Datastore mongoDatastore;
     private boolean running = false;
     private Map<String, String> sitemapParams;
@@ -51,12 +50,11 @@ public class SEOServiceImpl implements SEOService {
 
 
     @Autowired
-    public SEOServiceImpl(SnapshotService snapshotService, TextVersionService textVersionService,
+    public SEOServiceImpl(SnapshotService snapshotService,
                           Datastore primaryDatastore,
                           @Value("${koulutusinformaatio.baseurl.learningopportunity}") String baseUrl,
                           @Value("${koulutusinformaatio.sitemap.filepath}") String sitemapLocation) {
         this.snapshotService = snapshotService;
-        this.textVersionService = textVersionService;
         this.mongoDatastore = primaryDatastore;
         this.sitemapBuilder = new SitemapBuilder();
         this.sitemapParams = Maps.newHashMap();
@@ -79,9 +77,6 @@ public class SEOServiceImpl implements SEOService {
             byte[] sitemapBytes= sitemapBuilder.buildSitemap(mongoDatastore, sitemapParams);
             File dest = new File(this.sitemapLocation);
             Files.write(sitemapBytes, dest);
-            
-            // generate text version
-            textVersionService.update();
         } catch (Exception e) {
             LOG.error(String.format("SEO batch execution error: %s", e.getMessage()));
         } finally {

@@ -88,7 +88,8 @@ public class IndexerServiceImpl implements IndexerService {
     }
 
     @Override
-    public void addLearningOpportunitySpecification(LOS los, HttpSolrServer loSolr, HttpSolrServer lopSolr) throws IOException, SolrServerException {
+    public void addLearningOpportunitySpecification(LOS los, HttpSolrServer loSolr, HttpSolrServer lopSolr) 
+                                                        throws IOException, SolrServerException {
         Provider provider = null;
         Set<String> providerAsIds = Sets.newHashSet();
         Set<String> requiredBaseEducations = Sets.newHashSet();
@@ -207,7 +208,11 @@ public class IndexerServiceImpl implements IndexerService {
     }
 
     @Override
-    public void commitLOChanges(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr, boolean createTimestamp) throws IOException, SolrServerException {
+    public void commitLOChanges(HttpSolrServer loUpdateSolr, 
+                                HttpSolrServer lopUpdateSolr, 
+                                HttpSolrServer locationUpdateSolr, 
+                                boolean createTimestamp) throws IOException, SolrServerException {
+        
         if (createTimestamp) {
             List<SolrInputDocument> timeStampDocs = new ArrayList<SolrInputDocument>();
             SolrInputDocument timestampDoc = new SolrInputDocument();

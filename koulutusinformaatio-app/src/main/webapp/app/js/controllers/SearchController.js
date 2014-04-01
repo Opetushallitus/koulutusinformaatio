@@ -383,7 +383,7 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
 /**
  *  Controller for search functionality 
  */
- function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route, SearchLearningOpportunityService, SearchService, kiAppConstants, FilterService, Config, LanguageService, TranslationService) {
+ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route, SearchLearningOpportunityService, SearchService, kiAppConstants, FilterService, Config, LanguageService, TranslationService, $timeout) {
     var queryParams;
     $scope.selectAreaVisible = false;
     $rootScope.title = TranslationService.getTranslation('title-search-results') + ' - ' + TranslationService.getTranslation('sitename');
@@ -442,6 +442,11 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
         } else {
             $scope.tabs[0].active = true;
         }
+        $timeout(function(){
+            var searcTablist = null;
+            searcTablist = new tabpanel('search-tablist', false);
+        },0);
+
     }
     
     //Getting the query params from the url
@@ -479,7 +484,6 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
             });
     }
     $scope.initTabs();
-
 
 	//Returns true if the language filter is set
 	//i.e. either a teaching language filter or langCleared (language is explicitely cleared by the user)

@@ -69,7 +69,9 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<HigherEdu
         }
 
         if (los.getCreditValue() != null) {
-            doc.addField(LearningOpportunity.CREDITS, String.format("%s %s", los.getCreditValue(), SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getTeachingLanguages(),
+            doc.addField(LearningOpportunity.CREDITS, 
+                    String.format("%s %s", los.getCreditValue(), 
+                            SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getTeachingLanguages(),
                     los.getCreditUnit().getTranslations())));
         }
 
@@ -91,14 +93,9 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<HigherEdu
                    SolrUtil.resolveTextWithFallback(teachingLang,
                            provider.getHomePlace().getTranslations()));
        }
-        
-        
+                
         doc.addField(LearningOpportunity.EDUCATION_DEGREE_CODE, los.getEducationDegree());
 
-        //SolrUtil.resolveTextWithFallback("sv",provider.getName().getTranslations()));
-
-        
-        
         indexLanguageFields(los, doc);
 
 
@@ -143,8 +140,10 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<HigherEdu
         doc.addField(LearningOpportunity.START_DATE_SORT, los.getStartDate());
         //indexDurationField(loi, doc);
         doc.addField(LearningOpportunity.NAME_SORT, String.format("%s, %s",
-                SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getTeachingLanguages(), provider.getName().getTranslations()).toLowerCase().trim(),
-                SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getTeachingLanguages(), los.getName().getTranslationsShortName())).toLowerCase().trim());
+                SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getTeachingLanguages(), 
+                        provider.getName().getTranslations()).toLowerCase().trim(),
+                SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getTeachingLanguages(), 
+                        los.getName().getTranslationsShortName())).toLowerCase().trim());
 
 
         //For faceting

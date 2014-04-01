@@ -19,6 +19,7 @@
             } else {
                 return TranslationService.getTranslation('lo-application');
             }
+
         };
 
         $scope.tabtitle =  {
@@ -26,6 +27,9 @@
             valintaperusteet: getValintaperusteetTitle()
         }
 
+        // initialisoidaan näppäimistö navigointi sivun välilehdille
+        var loTablist = null;
+        loTablist =  new tabpanel('lo-tablist', false);
     });
 
     var setTitle = function(parent, child) {
