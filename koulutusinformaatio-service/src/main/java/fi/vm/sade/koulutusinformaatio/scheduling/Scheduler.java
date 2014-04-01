@@ -41,6 +41,7 @@ public class Scheduler {
     private boolean enabled;
     private boolean seoEnabled;
     private boolean textVersionEnabled;
+    private boolean incrementalEnabled;
 
     @Autowired
     public Scheduler(final UpdateService updateService, 
@@ -48,13 +49,15 @@ public class Scheduler {
             final TextVersionService textVersionService,
             @Value("${scheduling.enabled}") boolean enabled,
             @Value("${scheduling.seo.enabled}") boolean seoEnabled, 
-            @Value("${scheduling.textversion.enabled}") boolean textVersionEnabled) {
+            @Value("${scheduling.textversion.enabled}") boolean textVersionEnabled,
+            @Value("${scheduling.data.incremental.enabled}") boolean incrementalEnabled) {
         this.updateService = updateService;
         this.seoService = seoService;
         this.textVersionService = textVersionService;
         this.enabled = enabled;
         this.seoEnabled = seoEnabled;
         this.textVersionEnabled = textVersionEnabled;
+        this.incrementalEnabled = incrementalEnabled;
     }
 
     @Scheduled(cron = "${scheduling.data.cron}")
@@ -95,6 +98,21 @@ public class Scheduler {
                 }
             } catch (Exception e) {
                 LOG.error("Text version generation execution failed: {}", e.getStackTrace().toString());
+            }
+        }
+    }
+    
+    @Scheduled(cron = "${scheduling.data.incremental.cron}")
+    public void runIncrementalDataUpdate() {
+        if (incrementalEnabled) {
+            LOG.info("Starting scheduled incremental data update {}", new Date());
+            
+            try {
+                if (!updateService.isRunning()) {
+                    updateService.updateChangedEducationData();
+                }
+            } catch (Exception e) {
+                LOG.error("Incremental data update execution failed: {}", e.getStackTrace().toString());
             }
         }
     }

@@ -25,6 +25,7 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.KICommitException;
 import fi.vm.sade.koulutusinformaatio.service.impl.UpdateServiceImpl;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 
+import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.request.CoreAdminRequest;
 import org.apache.solr.common.params.CoreAdminParams;
@@ -35,6 +36,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -282,5 +284,28 @@ public class TransactionManagerImpl implements TransactionManager {
 
     private String getCollectionName(HttpSolrServer solrServer) {
         return solrServer.getBaseURL().substring(solrServer.getBaseURL().lastIndexOf('/') + 1);
+    }
+
+    @Override
+    public void beginIncrementalTransaction(HttpSolrServer loUpdateSolr,
+            HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr)
+            throws IOException, SolrServerException {
+        
+        parentLOSTransactionDAO.getCollection().drop();
+        applicationOptionTransactionDAO.getCollection().drop();
+        learningOpportunityProviderTransactionDAO.getCollection().drop();
+        childLOTransactionDAO.getCollection().drop();
+        pictureTransactionDAO.getCollection().drop();
+        upperSecondaryLOSTransactionDAO.getCollection().drop();
+        higherEducationLOSTransactionDAO.getCollection().drop();
+        specialLOSTransactionDAO.getCollection().drop();
+        
+        mongo.dropDatabase(transactionDbName);
+        
+        BasicDBObject cmd = new BasicDBObject("copydb", 1).append("fromdb", dbName).append("todb", this.transactionDbName);
+        mongo.getDB("admin").command(cmd);
+        
+        
+        
     }
 }

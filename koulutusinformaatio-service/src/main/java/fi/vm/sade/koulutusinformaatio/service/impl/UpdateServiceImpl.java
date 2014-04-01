@@ -31,6 +31,7 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map.Entry;
 
 /**
  * @author Hannu Lyytikainen
@@ -166,5 +167,19 @@ public class UpdateServiceImpl implements UpdateService {
     @Override
     public long getRunningSince() {
         return runningSince;
+    }
+
+    @Override
+    @Async
+    public void updateChangedEducationData() throws Exception {
+        
+        HttpSolrServer loUpdateSolr = this.indexerService.getLoCollectionToUpdate();
+        HttpSolrServer lopUpdateSolr = this.indexerService.getLopCollectionToUpdate(loUpdateSolr);
+        HttpSolrServer locationUpdateSolr = this.indexerService.getLocationCollectionToUpdate(loUpdateSolr);
+        
+        for (Entry<String, List<String>> curEntry : this.tarjontaService.listChangedLearningOpportunities().entrySet()) {
+            System.out.println(curEntry.getKey() + ", " + curEntry.getValue());
+        }
+        
     }
 }

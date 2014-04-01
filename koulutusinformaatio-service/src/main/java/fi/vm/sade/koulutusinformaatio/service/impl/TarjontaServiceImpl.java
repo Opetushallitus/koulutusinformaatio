@@ -363,4 +363,9 @@ public class TarjontaServiceImpl implements TarjontaService {
         return koodistoService.searchCodesByKoodisto(ED_TYPE_FACET_KOODISTO, null);
     }
 
+    @Override
+    public Map<String, List<String>> listChangedLearningOpportunities() {
+        return this.tarjontaRawService.listModifiedLearningOpportunities();
+    }
+
 }

@@ -25,6 +25,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -54,6 +55,8 @@ public interface TarjontaRawService {
     public HakuDTO getHaku(String oid);
 
     public List<OidRDTO> listParentLearnignOpportunityOids(int count, int startIndex);
+    
+    public Map<String, List<String>> listModifiedLearningOpportunities();
     
     public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> listHigherEducation();
     
