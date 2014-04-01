@@ -16,7 +16,6 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-//import com.fasterxml.jackson.core.type.TypeReference;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
@@ -35,6 +34,8 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
+import org.codehaus.jackson.map.DeserializationConfig;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.convert.ConversionService;
@@ -70,8 +71,11 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
             ConversionService conversionService, KoodistoService koodistoService, ProviderService providerService) {
         this.koodistoService = koodistoService;
         this.providerService = providerService;
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        JacksonJsonProvider jacksProv = new JacksonJsonProvider(mapper);
         ClientConfig cc = new DefaultClientConfig();
-        cc.getClasses().add(JacksonJsonProvider.class);
+        cc.getSingletons().add(jacksProv);
         Client clientWithJacksonSerializer = Client.create(cc);
         komoResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "komo");
         komotoResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "komoto");
