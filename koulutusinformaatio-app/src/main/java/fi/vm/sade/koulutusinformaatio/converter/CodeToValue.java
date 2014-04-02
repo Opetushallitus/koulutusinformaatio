@@ -31,15 +31,25 @@ public final class CodeToValue {
     }
 
     public static String convert(Code code) {
-        return code.getValue();
+        if (code == null) {
+            return null;
+        }
+        else {
+            return code.getValue();
+        }
     }
 
     public static List<String> convertAll(List<Code> codes) {
-        return Lists.transform(codes, new Function<Code, String>() {
-            @Override
-            public String apply(Code code) {
-                return (code != null) ? convert(code) : null;
-            }
-        });
+        if (codes == null) {
+            return null;
+        }
+        else {
+            return Lists.transform(codes, new Function<Code, String>() {
+                @Override
+                public String apply(Code code) {
+                    return convert(code);
+                }
+            });
+        }
     }
 }
