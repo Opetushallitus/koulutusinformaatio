@@ -22,7 +22,6 @@ import com.mongodb.MongoClient;
 import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KICommitException;
-import fi.vm.sade.koulutusinformaatio.service.impl.UpdateServiceImpl;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
