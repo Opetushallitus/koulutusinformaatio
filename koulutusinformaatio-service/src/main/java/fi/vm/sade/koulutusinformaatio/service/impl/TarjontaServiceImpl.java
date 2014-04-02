@@ -74,7 +74,7 @@ public class TarjontaServiceImpl implements TarjontaService {
     private TarjontaRawService tarjontaRawService;
     private LOSObjectCreator creator;
     
-    private static final String ED_TYPE_FACET_KOODISTO = "koulutustyyppifasetti";//"koulutusfasettimalli";
+    private static final String ED_TYPE_FACET_KOODISTO = "koulutustyyppifasetti";
 
     @Autowired
     public TarjontaServiceImpl(ConversionService conversionService, KoodistoService koodistoService,
@@ -365,6 +365,7 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     @Override
     public Map<String, List<String>> listChangedLearningOpportunities() {
+        System.out.println("Calling tarjonta");
         return this.tarjontaRawService.listModifiedLearningOpportunities();
     }
 

@@ -31,6 +31,7 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 /**
@@ -172,12 +173,18 @@ public class UpdateServiceImpl implements UpdateService {
     @Override
     @Async
     public void updateChangedEducationData() throws Exception {
-        
+        LOG.info("updateChangedEducationData on its way");
         HttpSolrServer loUpdateSolr = this.indexerService.getLoCollectionToUpdate();
         HttpSolrServer lopUpdateSolr = this.indexerService.getLopCollectionToUpdate(loUpdateSolr);
         HttpSolrServer locationUpdateSolr = this.indexerService.getLocationCollectionToUpdate(loUpdateSolr);
         
-        for (Entry<String, List<String>> curEntry : this.tarjontaService.listChangedLearningOpportunities().entrySet()) {
+        Map<String,List<String>> result = this.tarjontaService.listChangedLearningOpportunities();
+        
+        LOG.debug("Tarjonta called");
+        
+        LOG.debug("Number of changes: " + result.size());
+        
+        for (Entry<String, List<String>> curEntry : result.entrySet()) {
             System.out.println(curEntry.getKey() + ", " + curEntry.getValue());
         }
         
