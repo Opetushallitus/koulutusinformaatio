@@ -43,13 +43,13 @@ public class HigherEducationLOSToDTO {
 
         //dto.setLois(UpperSecondaryLOIToDTO.convertAll(los.getLois(), uiLang, uiLang));
         dto.setProvider(ProviderToDTO.convert(los.getProvider(), uiLang, "fi"));
-        dto.setAvailableTranslationLanguages(CodeToDTO.convertAll(los.getAvailableTranslationLanguages(), uiLang, false));
+        dto.setAvailableTranslationLanguages(CodeToDTO.convertAll(los.getAvailableTranslationLanguages(), uiLang));
         dto.setCreditValue(los.getCreditValue());
 
         dto.setCreditUnit(ConverterUtil.getTextByLanguageUseFallbackLang(los.getCreditUnit(), uiLang));
 
         //DO MORE
-        dto.setPrerequisites(CodeToDTO.convertAll(los.getPrerequisites(), uiLang, false));
+        dto.setPrerequisites(CodeToDTO.convertAll(los.getPrerequisites(), uiLang));
         dto.setFormOfTeaching(ConverterUtil.getTextsByLanguageUseFallbackLang(los.getFormOfTeaching(), uiLang));
         dto.setProfessionalTitles(ConverterUtil.getTextsByLanguage(los.getProfessionalTitles(), lang));
         dto.setTeachingTimes(ConverterUtil.getTextsByLanguageUseFallbackLang(los.getTeachingTimes(), uiLang));
@@ -97,10 +97,10 @@ public class HigherEducationLOSToDTO {
             dto.setKoulutuskoodi(los.getEducationCode().getUri());
         }
         if (los.getThemes() != null) {
-            dto.setThemes(CodeToDTO.convertAll(los.getThemes(), uiLang, true));
+            dto.setThemes(CodeToDTO.convertAll(los.getThemes(), uiLang));
         }
         if (los.getTopics() != null) {
-            dto.setTopics(CodeToDTO.convertAll(los.getTopics(), uiLang, true));
+            dto.setTopics(CodeToDTO.convertAll(los.getTopics(), uiLang));
         }
         return dto;
     }
