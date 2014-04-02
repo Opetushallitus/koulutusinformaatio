@@ -56,7 +56,7 @@ directive('toggleCollapse', [function () {
         },
         template:
             '<div class="clear"></div>' +
-            '<div data-collapse="showExtension == \'close\'">' + 
+            '<div data-collapse="showExtension == \'close\'">' +
                 '<div class="search-result-extended" data-ng-transclude></div>' +
             '</div>'
 

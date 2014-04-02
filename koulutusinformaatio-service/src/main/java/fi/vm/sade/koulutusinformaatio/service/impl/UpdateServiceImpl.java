@@ -16,10 +16,8 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
-import fi.vm.sade.koulutusinformaatio.domain.*;
-import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
-import fi.vm.sade.koulutusinformaatio.service.*;
+import java.util.Date;
+import java.util.List;
 
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
@@ -28,8 +26,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
+import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
+import fi.vm.sade.koulutusinformaatio.domain.Code;
+import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
+import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
+import fi.vm.sade.koulutusinformaatio.domain.LOS;
+import fi.vm.sade.koulutusinformaatio.domain.Location;
+import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
+import fi.vm.sade.koulutusinformaatio.service.EducationDataUpdateService;
+import fi.vm.sade.koulutusinformaatio.service.IndexerService;
+import fi.vm.sade.koulutusinformaatio.service.LocationService;
+import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
+import fi.vm.sade.koulutusinformaatio.service.UpdateService;
 
 
 
@@ -84,8 +92,8 @@ public class UpdateServiceImpl implements UpdateService {
                 LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
                 List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
                 count = loOids.size();
-                index += count;  
-            
+                index += count;
+
                 for (String loOid : loOids) {
                     List<LOS> specifications = null;
                     try {

@@ -44,7 +44,9 @@ public interface LearningOpportunityService {
 
     UpperSecondaryLearningOpportunitySpecificationDTO getUpperSecondaryLearningOpportunity(String id, String uiLang) throws ResourceNotFoundException;
 
-    UpperSecondaryLearningOpportunitySpecificationDTO getUpperSecondaryLearningOpportunity(String id, String lang, String uiLang) throws ResourceNotFoundException;
+    UpperSecondaryLearningOpportunitySpecificationDTO getUpperSecondaryLearningOpportunity(String id, 
+                                                                                           String lang, 
+                                                                                           String uiLang) throws ResourceNotFoundException;
     
     SpecialLearningOpportunitySpecificationDTO getSpecialSecondaryLearningOpportunity(String id) throws ResourceNotFoundException;
 
@@ -79,7 +81,12 @@ public interface LearningOpportunityService {
      */
     HigherEducationLOSDTO getHigherEducationLearningOpportunity(String id, String lang, String uiLang) throws ResourceNotFoundException;
 
-    List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, String lopId, String baseEducation, boolean vocational, boolean nonVocational, String uiLang);
+    List<ApplicationOptionSearchResultDTO> searchApplicationOptions(String asId, 
+                                                                    String lopId, 
+                                                                    String baseEducation, 
+                                                                    boolean vocational, 
+                                                                    boolean nonVocational, 
+                                                                    String uiLang);
 
     ApplicationOptionDTO getApplicationOption(String aoId, String lang, String uiLang) throws ResourceNotFoundException;
 

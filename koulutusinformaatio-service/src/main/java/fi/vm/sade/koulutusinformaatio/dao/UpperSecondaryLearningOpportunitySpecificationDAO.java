@@ -22,7 +22,8 @@ import org.mongodb.morphia.Datastore;
 /**
  * @author Hannu Lyytikainen
  */
-public class UpperSecondaryLearningOpportunitySpecificationDAO extends LearningOpportunitySpecificationDAO<UpperSecondaryLearningOpportunitySpecificationEntity, String> {
+public class UpperSecondaryLearningOpportunitySpecificationDAO 
+             extends LearningOpportunitySpecificationDAO<UpperSecondaryLearningOpportunitySpecificationEntity, String> {
 
     public UpperSecondaryLearningOpportunitySpecificationDAO(Datastore primaryDatastore, Datastore secondaryDatastore) {
         super(primaryDatastore, secondaryDatastore);

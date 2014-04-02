@@ -67,7 +67,10 @@ public final class ChildLOIToDTO {
         }
     }
 
-    public static List<ChildLearningOpportunityInstanceDTO> convert(final List<ChildLOI> childLOIs, final String lang, final String uiLang, final String defaultLang) {
+    public static List<ChildLearningOpportunityInstanceDTO> convert(final List<ChildLOI> childLOIs, 
+                                                                    final String lang, 
+                                                                    final String uiLang, 
+                                                                    final String defaultLang) {
         if (childLOIs != null) {
             return Lists.transform(childLOIs, new Function<ChildLOI, ChildLearningOpportunityInstanceDTO>() {
                 @Override

@@ -16,7 +16,9 @@ directive('kiAppBasketApplicationsystemTable', function() {
         restrict: 'A',
         require: '^kiAppBasketApplicationsystem',
         templateUrl: 'templates/AppBasket/appBasketApplicationsystemTable.html',
-        controller: function($scope, ApplicationBasketService) {
+        controller: function($scope, ApplicationBasketService, Config) {
+
+            $scope.hakuAppUrl = Config.get('hakulomakeUrl');
 
             // remove ao item form basket, also removes as item if it contains 0 ao items after removal
             $scope.removeItem = function(aoId) {

@@ -8,25 +8,29 @@
     $scope.descriptionLanguage = 'fi';
     $scope.hakuAppUrl = Config.get('hakulomakeUrl');
     $scope.uiLang = LanguageService.getLanguage();
-    
 
-    $scope.tabtitle = (function() {
+    // set tab titles based on lo and education type
+    $scope.$watch('lo.educationTypeUri', function(value) {
         var getValintaperusteetTitle = function() {
             if ($scope.loType == 'erityisopetus' ||
-                $scope.loType == 'valmentava') {
+                $scope.loType == 'valmentava' ||
+                $scope.loType == 'valmistava' && value == 'VapaanSivistystyonKoulutus') {
                 return TranslationService.getTranslation('lo-application-er');
             } else {
                 return TranslationService.getTranslation('lo-application');
             }
+
         };
 
-        return {
+        $scope.tabtitle =  {
             koulutus: TranslationService.getTranslation('lo-description'),
             valintaperusteet: getValintaperusteetTitle()
         }
-    }());
 
-    
+        // initialisoidaan näppäimistö navigointi sivun välilehdille
+        var loTablist = null;
+        loTablist =  new tabpanel('lo-tablist', false);
+    });
 
     var setTitle = function(parent, child) {
         var sitename = TranslationService.getTranslation('sitename');

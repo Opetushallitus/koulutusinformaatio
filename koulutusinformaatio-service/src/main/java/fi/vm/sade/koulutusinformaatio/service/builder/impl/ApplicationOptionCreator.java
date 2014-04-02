@@ -285,7 +285,10 @@ public class ApplicationOptionCreator extends ObjectCreator {
         return ao;
     }
 
-    public ApplicationOption createHigherEducationApplicationOption(HigherEducationLOS los, HakukohdeV1RDTO hakukohde, HakuV1RDTO haku) throws KoodistoException {
+    public ApplicationOption createHigherEducationApplicationOption(HigherEducationLOS los, 
+                                                                    HakukohdeV1RDTO hakukohde, 
+                                                                    HakuV1RDTO haku) throws KoodistoException {
+        
         ApplicationOption ao = new ApplicationOption();
         ao.setId(hakukohde.getOid());
         ao.setName(super.getI18nText(hakukohde.getHakukohteenNimet())); 

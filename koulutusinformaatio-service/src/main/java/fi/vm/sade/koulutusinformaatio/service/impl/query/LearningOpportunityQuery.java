@@ -20,60 +20,61 @@ public class LearningOpportunityQuery extends SolrQuery {
 
     private static final long serialVersionUID = -4340177833703968140L;
 
-    public final static List<String> FIELDS = Lists.newArrayList(
-            "text_fi",
-            "text_sv",
-            "text_en",
-            "text_fi_whole",
-            "text_sv_whole",
-            "text_en_whole",
-            "textBoost_fi^10.0",
-            "textBoost_sv^10.0",
-            "textBoost_en^10.0",
-            "textBoost_fi_whole^10.0",
-            "textBoost_sv_whole^10.0",
-            "textBoost_en_whole^10.0",
-            "asNames",
-            "lopNames",
-            "name_auto_fi",
-            "name_auto_sv",
-            "name_auto_en"
+    public static final List<String> FIELDS = Lists.newArrayList(
+            LearningOpportunity.TEXT_FI,
+            LearningOpportunity.TEXT_SV,
+            LearningOpportunity.TEXT_EN,
+            LearningOpportunity.TEXT_FI_WHOLE,
+            LearningOpportunity.TEXT_SV_WHOLE,
+            LearningOpportunity.TEXT_EN_WHOLE,
+            LearningOpportunity.TEXT_BOOST_FI,
+            LearningOpportunity.TEXT_BOOST_SV,
+            LearningOpportunity.TEXT_BOOST_EN,
+            LearningOpportunity.TEXT_BOOST_FI_WHOLE,
+            LearningOpportunity.TEXT_BOOST_SV_WHOLE,
+            LearningOpportunity.TEXT_BOOST_EN_WHOLE,
+            LearningOpportunity.AS_NAMES,
+            LearningOpportunity.LOP_NAMES,
+            LearningOpportunity.NAME_AUTO_FI,
+            LearningOpportunity.NAME_AUTO_SV,
+            LearningOpportunity.NAME_AUTO_EN
     );
     
-    public final static List<String> FIELDS_FI = Lists.newArrayList(
-            "text_fi",
-            "text_fi_whole",
-            "textBoost_fi^10.0",
-            "textBoost_fi_whole^10.0",
-            "asNames",
-            "lopNames",
-            "name_auto_fi"
+    public static final List<String> FIELDS_FI = Lists.newArrayList(
+            LearningOpportunity.TEXT_FI,
+            LearningOpportunity.TEXT_FI_WHOLE,
+            LearningOpportunity.TEXT_BOOST_FI,
+            LearningOpportunity.TEXT_BOOST_FI_WHOLE,
+            LearningOpportunity.AS_NAMES,
+            LearningOpportunity.LOP_NAMES,
+            LearningOpportunity.NAME_AUTO_FI
     );
     
-    public final static List<String> FIELDS_SV = Lists.newArrayList(
-            "text_sv",
-            "text_sv_whole",
-            "textBoost_sv^10.0",
-            "textBoost_sv_whole^10.0",
-            "asNames",
-            "lopNames",
-            "name_auto_sv"
+    public static final List<String> FIELDS_SV = Lists.newArrayList(
+            LearningOpportunity.TEXT_SV,
+            LearningOpportunity.TEXT_SV_WHOLE,
+            LearningOpportunity.TEXT_BOOST_SV,
+            LearningOpportunity.TEXT_BOOST_SV_WHOLE,
+            LearningOpportunity.AS_NAMES,
+            LearningOpportunity.LOP_NAMES,
+            LearningOpportunity.NAME_AUTO_SV
     );
     
-    public final static List<String> FIELDS_EN = Lists.newArrayList(
-            "text_en",
-            "text_en_whole",
-            "textBoost_en^10.0",
-            "textBoost_en_whole^10.0",
-            "asNames",
-            "lopNames",
-            "name_auto_en"
+    public static final List<String> FIELDS_EN = Lists.newArrayList(
+            LearningOpportunity.TEXT_EN,
+            LearningOpportunity.TEXT_EN_WHOLE,
+            LearningOpportunity.TEXT_BOOST_EN,
+            LearningOpportunity.TEXT_BOOST_EN_WHOLE,
+            LearningOpportunity.AS_NAMES,
+            LearningOpportunity.LOP_NAMES,
+            LearningOpportunity.NAME_AUTO_EN
     );
 
-    private final static Integer AS_COUNT = 10;
-    public final static String APP_STATUS = "appStatus";
-    public final static String APP_STATUS_ONGOING = "ongoing";
-    public final static String APP_STATUS_UPCOMING = "upcoming";
+    private static final Integer AS_COUNT = 10;
+    public static final String APP_STATUS = "appStatus";
+    public static final String APP_STATUS_ONGOING = "ongoing";
+    public static final String APP_STATUS_UPCOMING = "upcoming";
+    public static final String QUOTED_QUERY_FORMAT = "%s:\"%s\"";
 
     public LearningOpportunityQuery(String term, String prerequisite,
             List<String> cities, List<String> facetFilters, String lang, 
@@ -107,7 +108,7 @@ public class LearningOpportunityQuery extends SolrQuery {
         
         StringBuilder upcomingFQ = new StringBuilder();
         for (int i = 0; i < AS_COUNT; i++) {
-            upcomingFQ.append(String.format("(asStart_%d:[NOW TO *])", i, i));
+            upcomingFQ.append(String.format("(asStart_%d:[NOW TO *])", i));
             if (i != AS_COUNT-1) {
                 upcomingFQ.append(" OR ");
             }
@@ -116,11 +117,11 @@ public class LearningOpportunityQuery extends SolrQuery {
             this.addFilterQuery(upcomingFQ.toString());
         }
         
-        if (lopFilter != null ) {
+        if (lopFilter != null) {
             addLopRecommendationFilter(lopFilter, lang);
         }
         
-        if (educationCodeFilter != null ) {
+        if (educationCodeFilter != null) {
             addEducationCodeRecommendationFilter(educationCodeFilter, lang);
         }
         
@@ -128,7 +129,7 @@ public class LearningOpportunityQuery extends SolrQuery {
             for (String curExclude : excludes) {
                 String[] parts = curExclude.split(":");
                 if (parts.length == 2) {
-                    this.addFilterQuery(String.format("%s:\"%s\"", parts[0], parts[1]));
+                    this.addFilterQuery(String.format(QUOTED_QUERY_FORMAT, parts[0], parts[1]));
                 }
             }
         }
@@ -143,7 +144,7 @@ public class LearningOpportunityQuery extends SolrQuery {
         }
         
         if (SearchType.LO.equals(searchType)) {
-            addFacetsToQuery(lang, facetFilters, ongoingFQ.toString(), upcomingFQ.toString());
+            addFacetsToQuery(facetFilters, ongoingFQ.toString(), upcomingFQ.toString());
         } else if (SearchType.ARTICLE.equals(searchType)) {
             this.addFilterQuery(String.format("%s:%s", LearningOpportunity.TEACHING_LANGUAGE, lang.toUpperCase()));
         }
@@ -206,7 +207,7 @@ public class LearningOpportunityQuery extends SolrQuery {
 
 
 
-    private void addFacetsToQuery(String lang, List<String> facetFilters, String ongoingFQ, String upcomingFQ) {
+    private void addFacetsToQuery(List<String> facetFilters, String ongoingFQ, String upcomingFQ) {
         this.setFacet(true);
         this.addFacetField(LearningOpportunity.TEACHING_LANGUAGE);
         this.addFacetField(LearningOpportunity.EDUCATION_TYPE);
@@ -226,28 +227,28 @@ public class LearningOpportunityQuery extends SolrQuery {
     private void addLopRecommendationFilter(String lopFilter,
             String lang) {
         
-        if (lang.toLowerCase().equals("fi")) {
-            this.addFilterQuery(String.format("%s:\"%s\"", LearningOpportunity.LOP_NAME_DISPLAY_FI, lopFilter));
-        } else if (lang.toLowerCase().equals("sv")) {
-            this.addFilterQuery(String.format("%s:\"%s\"", LearningOpportunity.LOP_NAME_DISPLAY_SV, lopFilter));
-        } else if (lang.toLowerCase().equals("en")) {
-            this.addFilterQuery(String.format("%s:\"%s\"", LearningOpportunity.LOP_NAME_DISPLAY_EN, lopFilter));
+        if (lang.equalsIgnoreCase("fi")) {
+            this.addFilterQuery(String.format(QUOTED_QUERY_FORMAT, LearningOpportunity.LOP_NAME_DISPLAY_FI, lopFilter));
+        } else if (lang.equalsIgnoreCase("sv")) {
+            this.addFilterQuery(String.format(QUOTED_QUERY_FORMAT, LearningOpportunity.LOP_NAME_DISPLAY_SV, lopFilter));
+        } else if (lang.equalsIgnoreCase("en")) {
+            this.addFilterQuery(String.format(QUOTED_QUERY_FORMAT, LearningOpportunity.LOP_NAME_DISPLAY_EN, lopFilter));
         } else {
-            this.addFilterQuery(String.format("%s:\"%s\"", LearningOpportunity.LOP_NAME, lopFilter));
+            this.addFilterQuery(String.format(QUOTED_QUERY_FORMAT, LearningOpportunity.LOP_NAME, lopFilter));
         }
     }
     
     private void addEducationCodeRecommendationFilter(String educationCodeFilter,
             String lang) { 
         
-        if (lang.toLowerCase().equals("fi")) {
-            this.addFilterQuery(String.format("%s:\"%s\"", LearningOpportunity.EDUCATION_CODE_DISPLAY_FI, educationCodeFilter));
-        } else if (lang.toLowerCase().equals("sv")) {
-            this.addFilterQuery(String.format("%s:\"%s\"", LearningOpportunity.EDUCATION_CODE_DISPLAY_SV, educationCodeFilter));
-        } else if (lang.toLowerCase().equals("en")) {
-            this.addFilterQuery(String.format("%s:\"%s\"", LearningOpportunity.EDUCATION_CODE_DISPLAY_EN, educationCodeFilter));
+        if (lang.equalsIgnoreCase("fi")) {
+            this.addFilterQuery(String.format(QUOTED_QUERY_FORMAT, LearningOpportunity.EDUCATION_CODE_DISPLAY_FI, educationCodeFilter));
+        } else if (lang.equalsIgnoreCase("sv")) {
+            this.addFilterQuery(String.format(QUOTED_QUERY_FORMAT, LearningOpportunity.EDUCATION_CODE_DISPLAY_SV, educationCodeFilter));
+        } else if (lang.equalsIgnoreCase("en")) {
+            this.addFilterQuery(String.format(QUOTED_QUERY_FORMAT, LearningOpportunity.EDUCATION_CODE_DISPLAY_EN, educationCodeFilter));
         } else {
-            this.addFilterQuery(String.format("%s:\"%s\"", LearningOpportunity.EDUCATION_CODE_DISPLAY_FI, educationCodeFilter));
+            this.addFilterQuery(String.format(QUOTED_QUERY_FORMAT, LearningOpportunity.EDUCATION_CODE_DISPLAY_FI, educationCodeFilter));
         }
         
         
