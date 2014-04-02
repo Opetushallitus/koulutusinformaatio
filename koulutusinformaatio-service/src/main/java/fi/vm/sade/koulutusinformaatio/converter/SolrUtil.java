@@ -216,6 +216,7 @@ public final class SolrUtil {
         public static final String TYPE = "type"; //Type of area, i.e. kunta or maakunta
         public static final String ID = "id";
         public static final String NAME = "name"; 
+        public static final String NAME_AUTO = "name_auto"; 
         public static final String LANG = "lang"; 
         public static final String CODE = "code"; 
         public static final String PARENT = "parent"; //The parent area of the municipality
