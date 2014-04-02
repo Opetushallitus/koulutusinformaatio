@@ -239,6 +239,7 @@ public class IndexerServiceImpl implements IndexerService {
             SolrInputDocument locationDoc = new SolrInputDocument();
             locationDoc.addField(LocationFields.ID, location.getId());
             locationDoc.addField(LocationFields.NAME, location.getName());
+            locationDoc.addField(LocationFields.NAME_AUTO, location.getName());
             locationDoc.addField(LocationFields.CODE, location.getCode());
             locationDoc.addField(LocationFields.LANG, location.getLang());
             locationDoc.addField(LocationFields.TYPE, location.getType());
