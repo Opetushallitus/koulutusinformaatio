@@ -1,0 +1,8 @@
+<span data-ki-i18n="application-period" data-show-colon="true" class="float-left margin-right-1"></span>
+<span data-ng-if="isJatkuva()">jatkuva haku</span>
+<ul data-ng-if="!isJatkuva()" class="nobullet float-left">
+    <li data-ng-repeat="interval in dates">
+        <span data-ki-timestamp="{{interval.startDate}}"></span> - <span data-ki-timestamp="{{interval.endDate}}"></span>
+    </li>
+</ul>
+<div class="clear"></div>

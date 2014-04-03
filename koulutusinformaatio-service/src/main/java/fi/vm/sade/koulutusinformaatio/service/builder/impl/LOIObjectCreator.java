@@ -110,7 +110,7 @@ public class LOIObjectCreator extends ObjectCreator {
     }
 
     public List<ChildLOI> createChildLOIs(List<KomotoDTO> childKomotos,
-            String losId, I18nText losName, String educationCodeUri) throws KoodistoException, TarjontaParseException {
+            String losId, I18nText losName, String educationCodeUri, String educationType) throws KoodistoException, TarjontaParseException {
         List<ChildLOI> childLOIs = Lists.newArrayList();
         for (KomotoDTO childKomoto : childKomotos) {
             String childKomotoOid = childKomoto.getOid();
@@ -121,7 +121,7 @@ public class LOIObjectCreator extends ObjectCreator {
                 continue;
             }
 
-            ChildLOI childLOI = createChildLOI(childKomoto, losId, losName, educationCodeUri);
+            ChildLOI childLOI = createChildLOI(childKomoto, losId, losName, educationCodeUri, educationType);
             if (!childLOI.getApplicationOptions().isEmpty()) {
                 childLOIs.add(childLOI);
             }
@@ -129,7 +129,7 @@ public class LOIObjectCreator extends ObjectCreator {
         return filter(childLOIs);
     }
 
-    public ChildLOI createChildLOI(KomotoDTO childKomoto, String losId, I18nText losName, String educationCodeUri) 
+    public ChildLOI createChildLOI(KomotoDTO childKomoto, String losId, I18nText losName, String educationCodeUri, String educationType) 
             throws KoodistoException, TarjontaParseException {
         ChildLOI childLOI = createBasicLOI(ChildLOI.class, childKomoto);
         childLOI.setName(losName);
@@ -158,7 +158,8 @@ public class LOIObjectCreator extends ObjectCreator {
         childLOI.setApplicationOptions(applicationOptionCreator.createVocationalApplicationOptions(hakukohdeOids, 
                 childKomoto, 
                 childLOI.getPrerequisite(), 
-                educationCodeUri));
+                educationCodeUri, 
+                educationType));
         boolean kaksoistutkinto = false;
         for (ApplicationOption ao : childLOI.getApplicationOptions()) {
             if (ao.isKaksoistutkinto()) {
@@ -174,12 +175,13 @@ public class LOIObjectCreator extends ObjectCreator {
     public List<UpperSecondaryLOI> createUpperSecondaryLOIs(List<KomotoDTO> komotos, 
             String losId, 
             I18nText losName, 
-            String educationCodeUri) 
+            String educationCodeUri,
+            String educationType) 
                     throws KoodistoException, TarjontaParseException {
         List<UpperSecondaryLOI> lois = Lists.newArrayList();
         for (KomotoDTO komoto : komotos) {
             if (CreatorUtil.komotoPublished.apply(komoto)) {
-                lois.add(createUpperSecondaryLOI(komoto, losId, losName, educationCodeUri));
+                lois.add(createUpperSecondaryLOI(komoto, losId, losName, educationCodeUri, educationType));
             }
         }
         return filter(lois);
@@ -188,7 +190,8 @@ public class LOIObjectCreator extends ObjectCreator {
     public UpperSecondaryLOI createUpperSecondaryLOI(KomotoDTO komoto, 
             String losId, 
             I18nText losName, 
-            String educationCodeUri) 
+            String educationCodeUri,
+            String educationType) 
                     throws TarjontaParseException, KoodistoException {
         UpperSecondaryLOI loi = createBasicLOI(UpperSecondaryLOI.class, komoto);
         loi.setName(losName);
@@ -227,7 +230,7 @@ public class LOIObjectCreator extends ObjectCreator {
             }
         });
         loi.setApplicationOptions(applicationOptionCreator.createUpperSecondaryApplicationOptions(hakukohdeOids, komoto,
-                loi.getPrerequisite(), educationCodeUri));
+                loi.getPrerequisite(), educationCodeUri, educationType));
         boolean kaksoistutkinto = false;
         for (ApplicationOption ao : loi.getApplicationOptions()) {
             if (ao.isKaksoistutkinto()) {

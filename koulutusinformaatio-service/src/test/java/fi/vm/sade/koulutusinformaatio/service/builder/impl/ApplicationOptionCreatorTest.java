@@ -117,7 +117,7 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
         when(tarjontaRawService.getKomotosByHakukohde(eq(hakukohde.getOid()))).thenReturn(new ArrayList<OidRDTO>());
         creator = new ApplicationOptionCreator(koodistoService, tarjontaRawService);
 
-        ApplicationOption ao = creator.createVocationalApplicationOption(hakukohde, null, komoto, prerequisite, educationCodeUri);
+        ApplicationOption ao = creator.createVocationalApplicationOption(hakukohde, null, komoto, prerequisite, educationCodeUri, "et3");
         assertNotNull(ao);
         assertEquals("1.2.3.4", ao.getId());
         assertEquals("hakukohdeName", ao.getName().getTranslations().get("fi"));

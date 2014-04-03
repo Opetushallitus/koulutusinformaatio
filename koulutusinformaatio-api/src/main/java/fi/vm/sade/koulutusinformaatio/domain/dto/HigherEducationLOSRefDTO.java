@@ -31,6 +31,7 @@ public class HigherEducationLOSRefDTO implements Comparable<HigherEducationLOSRe
     private String name;
     private List<String> qualifications;
     private CodeDTO prerequisite;
+    private String provider;
     
     public String getId() {
         return id;
@@ -61,6 +62,13 @@ public class HigherEducationLOSRefDTO implements Comparable<HigherEducationLOSRe
     }
     public void setPrerequisite(CodeDTO prerequisite) {
         this.prerequisite = prerequisite;
+    }
+    
+    public String getProvider() {
+        return provider;
+    }
+    public void setProvider(String provider) {
+        this.provider = provider;
     }
     
     @Override

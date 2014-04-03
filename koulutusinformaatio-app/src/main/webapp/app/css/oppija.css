@@ -1609,6 +1609,9 @@ b, strong, .bold {
   font-weight: bold;
   font-size: 1.231em; }
 
+.text-disabled {
+  color: #7f7f7f; }
+
 #viewport {
   position: relative;
   padding-top: 1px;
@@ -2238,6 +2241,10 @@ label, .label {
   line-height: 2em; }
   .application-basket .action-area a {
     margin: 0 2em 0 0; }
+    .application-basket .action-area a.last {
+      margin: 0; }
+.application-basket .basket-table-cell-block {
+  margin-top: 1em; }
 
 table.striped {
   width: 100%;
@@ -2455,6 +2462,9 @@ table.striped {
 /* Postal code */
 span.post-office {
   margin-left: 10px; }
+
+.tarjonta-content a {
+  color: #EEEEEE; }
 
 .remove {
   display: inline-block;

@@ -38,6 +38,8 @@ public class ApplicationSystemCreator extends ObjectCreator {
             as.setId(hakuDTO.getOid());
             as.setMaxApplications(hakuDTO.getMaxHakukohdes());
             as.setName(getI18nText(hakuDTO.getNimi()));
+            as.setApplicationFormLink( hakuDTO.getHakulomakeUrl() );
+            as.setHakutapaUri( koodistoService.searchFirstCodeValue(hakuDTO.getHakutapaUri()) );
             if (hakuDTO.getHakuaikas() != null) {
                 for (HakuaikaRDTO ha : hakuDTO.getHakuaikas()) {
                     DateRange range = new DateRange();

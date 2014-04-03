@@ -34,6 +34,8 @@ public class ApplicationSystemEntity {
     private List<DateRangeEntity> applicationDates = new ArrayList<DateRangeEntity>();
 
     private int maxApplications;
+    private String applicationFormLink;
+    private String hakutapaUri;
 
     public ApplicationSystemEntity() {}
 
@@ -67,5 +69,21 @@ public class ApplicationSystemEntity {
 
     public void setMaxApplications(int maxApplications) {
         this.maxApplications = maxApplications;
+    }
+
+    public String getApplicationFormLink() {
+        return applicationFormLink;
+    }
+
+    public void setApplicationFormLink(String applicationFormLink) {
+        this.applicationFormLink = applicationFormLink;
+    }
+
+    public String getHakutapaUri() {
+        return hakutapaUri;
+    }
+
+    public void setHakutapaUri(String hakutapaUri) {
+        this.hakutapaUri = hakutapaUri;
     }
 }
