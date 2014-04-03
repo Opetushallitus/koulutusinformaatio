@@ -38,6 +38,7 @@ import fi.vm.sade.koulutusinformaatio.service.builder.impl.RehabilitatingLearnin
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.UpperSecondaryLearningOpportunityBuilder;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.VocationalLearningOpportunityBuilder;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
+import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
@@ -47,6 +48,8 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.service.types.TarjontaTila;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.convert.ConversionService;
@@ -59,6 +62,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 /**
  * @author Hannu Lyytikainen
@@ -66,6 +70,8 @@ import java.util.Set;
 @Service
 @Profile("default")
 public class TarjontaServiceImpl implements TarjontaService {
+    
+    public static final Logger LOG = LoggerFactory.getLogger(TarjontaServiceImpl.class);
 
     private ConversionService conversionService;
     private KoodistoService koodistoService;
@@ -365,8 +371,26 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     @Override
     public Map<String, List<String>> listChangedLearningOpportunities() {
-        System.out.println("Calling tarjonta");
-        return this.tarjontaRawService.listModifiedLearningOpportunities();
+        Map<String, List<String>> changemap = this.tarjontaRawService.listModifiedLearningOpportunities();
+        LOG.debug("Tarjonta called");
+        
+        LOG.debug("Number of changes: " + changemap.size());
+        
+        for (Entry<String, List<String>> curEntry : changemap.entrySet()) {
+            LOG.debug(curEntry.getKey() + ", " + curEntry.getValue());
+        }
+        
+        for (String curLoi : changemap.get("koulutusmoduuliToteutus")) {
+            LOG.debug("current loi: " + curLoi);
+            KomotoDTO childKomoto = tarjontaRawService.getKomoto(curLoi);
+            
+            
+            
+        }
+        
+        
+        
+        return changemap;
     }
 
 }

@@ -427,7 +427,7 @@ public class LOSObjectCreator extends ObjectCreator {
                 ao.setProvider(los.getProvider());
                 ao.setEducationDegree(los.getEducationDegree());
                 los.getProvider().getApplicationSystemIDs().add(ao.getApplicationSystem().getId());
-                ao.setParent(createParetLosRef(los));
+                ao.setParent(createParentLosRef(los));
                 ao.setType(TarjontaConstants.TYPE_KK);
 
             }
@@ -441,7 +441,7 @@ public class LOSObjectCreator extends ObjectCreator {
 
 
 
-    private ParentLOSRef createParetLosRef(HigherEducationLOS los) {
+    private ParentLOSRef createParentLosRef(HigherEducationLOS los) {
         ParentLOSRef educationRef = new ParentLOSRef();
         educationRef.setId(los.getId());
         educationRef.setName(los.getName());

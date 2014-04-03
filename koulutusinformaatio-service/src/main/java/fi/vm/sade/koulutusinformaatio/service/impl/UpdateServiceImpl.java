@@ -20,6 +20,7 @@ import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.*;
+import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
@@ -180,13 +181,7 @@ public class UpdateServiceImpl implements UpdateService {
         
         Map<String,List<String>> result = this.tarjontaService.listChangedLearningOpportunities();
         
-        LOG.debug("Tarjonta called");
         
-        LOG.debug("Number of changes: " + result.size());
-        
-        for (Entry<String, List<String>> curEntry : result.entrySet()) {
-            System.out.println(curEntry.getKey() + ", " + curEntry.getValue());
-        }
         
     }
 }
