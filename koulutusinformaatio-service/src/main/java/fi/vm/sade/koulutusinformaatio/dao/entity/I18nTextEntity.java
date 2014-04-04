@@ -28,7 +28,6 @@ import java.util.Map;
 public class I18nTextEntity {
 
     private Map<String, String> translations;
-    private Map<String, String> translationsShortName;
 
     public I18nTextEntity() {}
 
@@ -38,13 +37,5 @@ public class I18nTextEntity {
 
     public void setTranslations(Map<String, String> translations) {
         this.translations = translations;
-    }
-
-    public Map<String, String> getTranslationsShortName() {
-        return translationsShortName;
-    }
-
-    public void setTranslationsShortName(Map<String, String> translationsShortName) {
-        this.translationsShortName = translationsShortName;
     }
 }

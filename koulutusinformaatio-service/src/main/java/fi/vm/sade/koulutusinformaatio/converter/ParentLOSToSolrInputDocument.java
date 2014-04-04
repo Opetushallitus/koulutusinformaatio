@@ -17,12 +17,9 @@
 package fi.vm.sade.koulutusinformaatio.converter;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-
-import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
-
+import fi.vm.sade.koulutusinformaatio.domain.*;
 import org.apache.solr.common.SolrInputDocument;
 import org.springframework.core.convert.converter.Converter;
 
@@ -87,7 +84,7 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
 
         if (parent.getCreditValue() != null) {
             doc.addField(LearningOpportunity.CREDITS, String.format("%s %s", parent.getCreditValue(), 
-                    parent.getCreditUnit().getTranslationsShortName().get("fi")));
+                    parent.getCreditUnit().getTranslations().get("fi")));
         }
 
         doc.addField(LearningOpportunity.NAME_SORT, parentName.toLowerCase().trim());
@@ -207,7 +204,7 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
 
 
         String childName = SolrUtil.resolveTranslationInTeachingLangUseFallback(
-                childLOI.getTeachingLanguages(), childLOS.getName().getTranslationsShortName());
+                childLOI.getTeachingLanguages(), childLOS.getShortName().getTranslations());
         doc.setField(LearningOpportunity.CHILD_NAME, childName);
 
         if (teachLang.equals("sv")) {

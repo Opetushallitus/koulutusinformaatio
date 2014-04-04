@@ -33,6 +33,8 @@ public class UpperSecondaryLearningOpportunityInstanceEntity {
     @Embedded
     private I18nTextEntity name;
     @Embedded
+    private I18nTextEntity shortName;
+    @Embedded
     private CodeEntity prerequisite;
     @Embedded
     private List<I18nTextEntity> formOfTeaching;
@@ -78,6 +80,14 @@ public class UpperSecondaryLearningOpportunityInstanceEntity {
 
     public void setName(I18nTextEntity name) {
         this.name = name;
+    }
+
+    public I18nTextEntity getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(I18nTextEntity shortName) {
+        this.shortName = shortName;
     }
 
     public CodeEntity getPrerequisite() {

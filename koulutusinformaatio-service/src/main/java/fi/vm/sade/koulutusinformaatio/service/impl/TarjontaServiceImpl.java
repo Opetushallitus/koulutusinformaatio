@@ -360,7 +360,7 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     @Override
     public List<Code> getEdTypeCodes() throws KoodistoException {
-        return koodistoService.searchCodesByKoodisto(ED_TYPE_FACET_KOODISTO, null);
+        return koodistoService.searchByKoodisto(ED_TYPE_FACET_KOODISTO, null);
     }
 
 }

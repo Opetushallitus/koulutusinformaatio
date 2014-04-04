@@ -407,6 +407,6 @@ public class LearningOpportunityServiceImplTest {
     private I18nText createI18nText(String fi) {
         Map<String, String> values = Maps.newHashMap();
         values.put("fi", fi);
-        return new I18nText(values, values);
+        return new I18nText(values);
     }
 }

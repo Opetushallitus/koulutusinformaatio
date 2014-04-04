@@ -124,10 +124,10 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
             p.setPicture(getPicture(o));
             p.setAthleteEducation(isAthleteEducation(o.getToimipistekoodi()));
             p.setPlaceOfBusinessCode(o.getToimipistekoodi());
-            p.setHomePlace(koodistoService.searchFirst(o.getKotipaikkaUri()));
+            p.setHomePlace(koodistoService.searchFirstName(o.getKotipaikkaUri()));
             String districtUri = getDistrictUri(o.getKotipaikkaUri());
             if (districtUri != null) { 
-                p.setHomeDistrict(koodistoService.searchFirst(districtUri));
+                p.setHomeDistrict(koodistoService.searchFirstName(districtUri));
             }
             
             p.setApplicationOffice(getApplicationOffice(o.getMetadata()));
