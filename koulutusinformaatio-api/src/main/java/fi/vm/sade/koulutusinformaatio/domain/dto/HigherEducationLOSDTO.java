@@ -56,7 +56,7 @@ public class HigherEducationLOSDTO {
     private String creditUnit;
 
     private String degree;
-    private String qualification;
+    private List<String> qualifications;
     private Boolean chargeable;
     private String educationCode;
     private List<String> teachingLanguages;
@@ -284,12 +284,12 @@ public class HigherEducationLOSDTO {
         this.degree = degree;
     }
 
-    public String getQualification() {
-        return qualification;
+    public List<String> getQualifications() {
+        return qualifications;
     }
 
-    public void setQualification(String qualification) {
-        this.qualification = qualification;
+    public void setQualifications(List<String> qualifications) {
+        this.qualifications = qualifications;
     }
 
     public Boolean getChargeable() {

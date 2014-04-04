@@ -53,7 +53,7 @@ public class HigherEducationLOS extends LOS {
     private String creditValue;
     private I18nText creditUnit;
     private I18nText degree;
-    private I18nText qualification;
+    private List<I18nText> qualifications;
     private Boolean chargeable;
     private Code educationCode;
     private List<Code> teachingLanguages;
@@ -116,12 +116,12 @@ public class HigherEducationLOS extends LOS {
         return degreeTitle;
     }
 
-    public void setQualification(I18nText qualification) {
-        this.qualification = qualification;
+    public void setQualifications(List<I18nText> qualifications) {
+        this.qualifications = qualifications;
     }
 
-    public I18nText getQualification() {
-        return qualification;
+    public List<I18nText> getQualifications() {
+        return qualifications;
     }
 
     public void setGoals(I18nText goals) {

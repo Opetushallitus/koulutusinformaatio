@@ -86,7 +86,7 @@ public class HigherEducationLOSEntity {
     @Embedded
     private I18nTextEntity degree;
     @Embedded
-    private I18nTextEntity qualification;
+    private List<I18nTextEntity> qualifications;
     private Boolean chargeable;
     @Embedded
     private CodeEntity educationCode;
@@ -282,11 +282,11 @@ public class HigherEducationLOSEntity {
     public void setDegree(I18nTextEntity degree) {
         this.degree = degree;
     }
-    public I18nTextEntity getQualification() {
-        return qualification;
+    public List<I18nTextEntity> getQualifications() {
+        return qualifications;
     }
-    public void setQualification(I18nTextEntity qualification) {
-        this.qualification = qualification;
+    public void setQualifications(List<I18nTextEntity> qualifications) {
+        this.qualifications = qualifications;
     }
     public Boolean getChargeable() {
         return chargeable;

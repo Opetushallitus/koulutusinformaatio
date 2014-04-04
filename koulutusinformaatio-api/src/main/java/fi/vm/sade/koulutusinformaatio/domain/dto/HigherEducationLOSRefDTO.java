@@ -29,7 +29,7 @@ public class HigherEducationLOSRefDTO implements Comparable<HigherEducationLOSRe
     private String id;
     private List<String> asIds;
     private String name;
-    private String qualification;
+    private List<String> qualifications;
     private CodeDTO prerequisite;
     
     public String getId() {
@@ -50,11 +50,11 @@ public class HigherEducationLOSRefDTO implements Comparable<HigherEducationLOSRe
     public void setName(String name) {
         this.name = name;
     }
-    public String getQualification() {
-        return qualification;
+    public List<String> getQualifications() {
+        return qualifications;
     }
-    public void setQualification(String qualification) {
-        this.qualification = qualification;
+    public void setQualifications(List<String> qualifications) {
+        this.qualifications = qualifications;
     }
     public CodeDTO getPrerequisite() {
         return prerequisite;

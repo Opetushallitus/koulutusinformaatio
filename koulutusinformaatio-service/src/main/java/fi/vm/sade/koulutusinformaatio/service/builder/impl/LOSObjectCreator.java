@@ -378,7 +378,7 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setEducationDegreeLang(getI18nTextEnriched(koulutus.getKoulutusaste().getMeta()));
         //los.setEducationType(getI18nTextEnriched(koulutus.get.getMeta()));
         los.setDegreeTitle(getI18nTextEnriched(koulutus.getKoulutusohjelma()));
-        los.setQualification(getI18nTextEnrichedFirst(koulutus.getTutkintonimikes()));//getTutkintonimike().getMeta()));
+        los.setQualifications(getI18nTextMultiple(koulutus.getTutkintonimikes()));//getTutkintonimike().getMeta()));
         los.setDegree(getI18nTextEnriched(koulutus.getTutkinto().getMeta()));
         if (koulutus.getKoulutuksenAlkamisPvms() != null && !koulutus.getKoulutuksenAlkamisPvms().isEmpty()) {
             los.setStartDate(koulutus.getKoulutuksenAlkamisPvms().iterator().next());
@@ -512,7 +512,7 @@ public class LOSObjectCreator extends ObjectCreator {
 
         losRef.setId(koulutusDTO.getOid());
         losRef.setName(getI18nTextEnriched(koulutusDTO.getKoulutusohjelma()));
-        losRef.setQualification(getI18nTextEnrichedFirst(koulutusDTO.getTutkintonimikes()));
+        losRef.setQualifications(getI18nTextMultiple(koulutusDTO.getTutkintonimikes()));
         losRef.setPrerequisite(ao.getPrerequisite());
 
         return losRef;

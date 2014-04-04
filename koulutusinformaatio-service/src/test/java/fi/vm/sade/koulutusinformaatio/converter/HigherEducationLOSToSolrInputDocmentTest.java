@@ -33,6 +33,7 @@ import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.DateRange;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
+import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 
@@ -77,7 +78,9 @@ public class HigherEducationLOSToSolrInputDocmentTest {
 		los.setName(TestUtil.createI18nText("los name fi", "los name sv", "los name en"));
 		los.setEducationDegreeLang(TestUtil.createI18nText("Alempi korkeakoulu fi", "Alempi korkeakoulu sv", "Alempi korkeakoulu en"));
 		los.setEducationDegree("alempiKk_uri");
-		los.setQualification(TestUtil.createI18nText("quali fi", "quali sv", "quali en"));
+		List<I18nText> quals = new ArrayList<I18nText>();
+		quals.add(TestUtil.createI18nText("quali fi", "quali sv", "quali en"));
+		los.setQualifications(quals);
 		los.setGoals(TestUtil.createI18nText("Goals fi", "Goals sv", "Goals en"));
 		los.setContent(TestUtil.createI18nText("Content fi", "Content sv", "Content en"));
 		
