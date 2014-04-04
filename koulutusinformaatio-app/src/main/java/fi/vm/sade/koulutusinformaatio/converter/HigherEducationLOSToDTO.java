@@ -28,7 +28,7 @@ public class HigherEducationLOSToDTO {
         dto.setEducationDegree(los.getEducationDegree());
         dto.setEducationDegreeName(ConverterUtil.getTextByLanguageUseFallbackLang(los.getEducationDegreeLang(), uiLang));
         dto.setDegreeTitle(ConverterUtil.getTextByLanguageUseFallbackLang(los.getDegreeTitle(), uiLang));
-        dto.setQualification(ConverterUtil.getTextByLanguageUseFallbackLang(los.getQualification(), uiLang));
+        dto.setQualifications(ConverterUtil.getTextsByLanguageUseFallbackLang(los.getQualifications(), uiLang));
         dto.setGoals(ConverterUtil.getTextByLanguage(los.getGoals(), lang));
         dto.setStructure(ConverterUtil.getTextByLanguage(los.getStructure(), lang));
         dto.setAccessToFurtherStudies(ConverterUtil.getTextByLanguage(los.getAccessToFurtherStudies(), lang));

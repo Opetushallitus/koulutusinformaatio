@@ -36,7 +36,7 @@ public class HigherEducationLOSRefToDTO {
         HigherEducationLOSRefDTO higherEdu = new HigherEducationLOSRefDTO();
         higherEdu.setId(ref.getId());
         higherEdu.setPrerequisite(CodeToDTO.convert(ref.getPrerequisite(), lang));
-        higherEdu.setQualification(ConverterUtil.getTextByLanguageUseFallbackLang(ref.getQualification(), lang));
+        higherEdu.setQualifications(ConverterUtil.getTextsByLanguageUseFallbackLang(ref.getQualifications(), lang));
         higherEdu.setName(ConverterUtil.getShortNameTextByLanguageUseFallbackLang(ref.getName(), lang));
         return higherEdu;
     }
