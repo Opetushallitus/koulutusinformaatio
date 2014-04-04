@@ -16,40 +16,50 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * @author Hannu Lyytikainen
  */
-public final class CodeToValue {
+public class CodeToValueTest {
 
-    private CodeToValue() {
+    Code code;
+
+    @Before
+    public void init() {
+        code = new Code();
+        code.setValue("codeValue");
     }
 
-    public static String convert(Code code) {
-        if (code == null) {
-            return null;
-        }
-        else {
-            return code.getValue();
-        }
+    @Test
+    public void testConvert() {
+        String value = CodeToValue.convert(code);
+        assertNotNull(value);
+        assertEquals("codeValue", value);
     }
 
-    public static List<String> convertAll(List<Code> codes) {
-        if (codes == null) {
-            return null;
-        }
-        else {
-            return Lists.transform(codes, new Function<Code, String>() {
-                @Override
-                public String apply(Code code) {
-                    return convert(code);
-                }
-            });
-        }
+    @Test
+    public void testConvertNull() {
+        assertNull(CodeToValue.convert(null));
+    }
+
+    @Test
+    public void testConvertAll() {
+        List<Code> codes = Lists.newArrayList(code);
+        List<String> values = CodeToValue.convertAll(codes);
+        assertNotNull(values);
+        assertEquals(1, values.size());
+    }
+
+    @Test
+    public void testConvertAllWithNullList() {
+        assertNull(CodeToValue.convertAll(null));
     }
 }

@@ -22,7 +22,7 @@ var kiApp = angular.module('previewApp',
 }])
 
 .config(['$routeProvider', function($routeProvider) {
-
+	
     $routeProvider.when('/:loType/:id', {
         templateUrl: 'partials/learningopportunity.html', 
         controller: InfoCtrl,
@@ -48,6 +48,7 @@ var kiApp = angular.module('previewApp',
                 $rootScope.partialUrl = 'partials/lo/' + $route.current.params.loType + '/';
                 $rootScope.partialCommonUrl = 'partials/lo/common/';
             }
+            
         }
     });
 }])
@@ -79,7 +80,20 @@ var kiApp = angular.module('previewApp',
 })
 
 // initialize i18n library
-.run(['LanguageService', function(LanguageService) {
+.run(['LanguageService', '$location', function(LanguageService, $location) {
+	
+	//1. Setting ui-language based on url-parameter.
+	//2. Removing the parameter, to enable changing of language from ui
+	if ($location.search().lang != undefined 
+			&& ($location.search().lang == 'fi' 
+					|| $location.search().lang == 'sv')) {
+		LanguageService.setLanguage($location.search().lang);
+		$location.search('').replace();
+	} else {
+		LanguageService.setLanguage('fi');
+		$location.search('').replace();
+	}
+	
     i18n.init({
         resGetPath : 'locales/__ns__-__lng__.json',
         lng : LanguageService.getLanguage(),

@@ -56,7 +56,7 @@ public final class ParentLOIToDTO {
 
         // order application systems
         loi.setApplicationSystems(ConverterUtil.sortApplicationSystems(loi.getApplicationSystems()));
-        loi.setAvailableTranslationLanguages(CodeToDTO.convertAll(parentLOI.getAvailableTranslationLanguages(), uiLang, false));
+        loi.setAvailableTranslationLanguages(CodeToDTO.convertAll(parentLOI.getAvailableTranslationLanguages(), uiLang));
 
         return loi;
     }
