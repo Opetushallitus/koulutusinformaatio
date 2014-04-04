@@ -16,13 +16,12 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.dto.CodeDTO;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Hannu Lyytikainen
@@ -36,6 +35,8 @@ public final class CodeToDTO {
         if (code != null) {
             CodeDTO dto = new CodeDTO();
             dto.setValue(code.getValue());
+            dto.setUri(code.getUri());
+            dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(code.getName(), lang));
             dto.setDescription(ConverterUtil.getTextByLanguageUseFallbackLang(code.getDescription(), lang));
             return dto;
         } else {
@@ -43,37 +44,17 @@ public final class CodeToDTO {
         }
     }
     
-    public static List<CodeDTO> convertAll(List<Code> codes, String lang, boolean uriAsValue) {
-        if (codes != null && !codes.isEmpty()) {
-            Map<String,CodeDTO> codesMap = new HashMap<String,CodeDTO>();
-        	//List<CodeDTO> codesDTO = new ArrayList<CodeDTO>();
-        	for (Code curCode : codes) {
-        	    CodeDTO curDTO = null;
-        	    if (uriAsValue) {
-        	        curDTO = convertUriAsValue(curCode, lang);
-        	    } else {
-        	        curDTO = convert(curCode, lang);
-        	    }
-        	    if (curDTO != null) {
-        			//codesDTO.add(curDTO);
-        	        codesMap.put(curDTO.getValue(), curDTO);
-        		}
-        	}
-            return new ArrayList<CodeDTO>(codesMap.values());
+    public static List<CodeDTO> convertAll(List<Code> codes, final String lang) {
+        if (codes != null) {
+            return Lists.transform(codes, new Function<Code, CodeDTO>() {
+                @Override
+                public CodeDTO apply(Code code) {
+                    return convert(code, lang);
+                }
+            });
         } else {
             return null;
         }
     }
-    
-    private static CodeDTO convertUriAsValue(Code code, String lang) {
-        if (code != null) {
-            CodeDTO dto = new CodeDTO();
-            dto.setValue(code.getUri());
-            dto.setDescription(ConverterUtil.getTextByLanguageUseFallbackLang(code.getDescription(), lang));
-            return dto;
-        } else {
-            return null;
-        }
-    }
-    
+
 }
