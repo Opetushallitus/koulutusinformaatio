@@ -39,7 +39,7 @@ public final class ApplicationOptionToDTO {
             dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getName(), defaultLang));
             dto.setAoIdentifier(applicationOption.getAoIdentifier());
             dto.setAttachmentDeliveryDeadline(applicationOption.getAttachmentDeliveryDeadline());
-            dto.setAttachmentDeliveryAddress(AddressToDTO.convert(applicationOption.getAttachmentDeliveryAddress()));
+            dto.setAttachmentDeliveryAddress(AddressToDTO.convert(applicationOption.getAttachmentDeliveryAddress(), uiLang));
             dto.setLastYearApplicantCount(applicationOption.getLastYearApplicantCount());
             dto.setLowestAcceptedAverage(applicationOption.getLowestAcceptedAverage());
             dto.setLowestAcceptedScore(applicationOption.getLowestAcceptedScore());

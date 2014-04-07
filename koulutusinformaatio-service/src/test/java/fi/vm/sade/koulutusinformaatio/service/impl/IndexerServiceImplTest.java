@@ -180,7 +180,7 @@ public class IndexerServiceImplTest {
         provider.setId("123");
         provider.setName(TestUtil.createI18nText("LOP name fi", "LOP name sv", "LOP name en"));
         Address address = new Address();
-        address.setPostOffice("Helsinki");
+        address.setPostOffice(TestUtil.createI18nText("Helsinki"));
         provider.setVisitingAddress(address);
         provider.setDescription(TestUtil.createI18nText("LOP description fi", "LOP description sv", "LOP description en"));
         provider.setHomePlace(TestUtil.createI18nText("homeplace fi", "homeplace sv", "homeplace en"));

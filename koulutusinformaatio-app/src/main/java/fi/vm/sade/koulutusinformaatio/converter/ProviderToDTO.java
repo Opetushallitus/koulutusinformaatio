@@ -34,8 +34,8 @@ public final class ProviderToDTO {
             p.setId(provider.getId());
             p.setName(ConverterUtil.getTextByLanguageUseFallbackLang(provider.getName(), defaultLang));
             p.setApplicationSystemIds(provider.getApplicationSystemIDs());
-            p.setPostalAddress(AddressToDTO.convert(provider.getPostalAddress()));
-            p.setVisitingAddress(AddressToDTO.convert(provider.getVisitingAddress()));
+            p.setPostalAddress(AddressToDTO.convert(provider.getPostalAddress(), lang));
+            p.setVisitingAddress(AddressToDTO.convert(provider.getVisitingAddress(), lang));
             p.setEmail(provider.getEmail());
             p.setWebPage(provider.getWebPage());
             p.setPhone(provider.getPhone());

@@ -16,9 +16,15 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
+import java.util.Map;
+
 import fi.vm.sade.koulutusinformaatio.domain.Address;
+import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.dto.AddressDTO;
+
 import org.junit.Test;
+
+import com.google.common.collect.Maps;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -33,11 +39,11 @@ public class AddressToDTOTest {
     public void testConvert() {
         Address address = new Address();
         address.setPostalCode("00100");
-        address.setPostOffice("Helsinki");
-        address.setStreetAddress("street one");
-        address.setStreetAddress2("street two");
+        address.setPostOffice(createI18nText("Helsinki"));
+        address.setStreetAddress(createI18nText("street one"));
+        address.setStreetAddress2(createI18nText("street two"));
 
-        AddressDTO dto = AddressToDTO.convert(address);
+        AddressDTO dto = AddressToDTO.convert(address, "fi");
         assertNotNull(dto);
         assertEquals("00100", dto.getPostalCode());
         assertEquals("Helsinki", dto.getPostOffice());
@@ -47,7 +53,14 @@ public class AddressToDTOTest {
 
     @Test
     public void testConvertNull() {
-        assertNull(AddressToDTO.convert(null));
+        assertNull(AddressToDTO.convert(null, "fi"));
+    }
+    
+    
+    private I18nText createI18nText(String fi) {
+        Map<String, String> values = Maps.newHashMap();
+        values.put("fi", fi);
+        return new I18nText(values, values);
     }
 
 }

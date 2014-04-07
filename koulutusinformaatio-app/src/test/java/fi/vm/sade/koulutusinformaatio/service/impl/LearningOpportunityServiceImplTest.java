@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.dto.*;
@@ -395,11 +396,17 @@ public class LearningOpportunityServiceImplTest {
         event.setEnd(new Date());
         Address address = new Address();
         address.setPostalCode("00100");
-        address.setPostOffice("Helsinki");
-        address.setStreetAddress("street address");
+        address.setPostOffice(createI18nText("Helsinki"));
+        address.setStreetAddress(createI18nText("street address"));
         event.setAddress(address);
         exam.setExamEvents(Lists.newArrayList(event));
         ao.setExams(Lists.newArrayList(exam));
         return ao;
+    }
+    
+    private I18nText createI18nText(String fi) {
+        Map<String, String> values = Maps.newHashMap();
+        values.put("fi", fi);
+        return new I18nText(values, values);
     }
 }

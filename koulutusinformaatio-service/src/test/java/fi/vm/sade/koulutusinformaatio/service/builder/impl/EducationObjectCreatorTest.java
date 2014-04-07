@@ -88,8 +88,8 @@ public class EducationObjectCreatorTest extends KoodistoAwareTest {
         ExamEvent event  = exam.getExamEvents().get(0);
         Address address = event.getAddress();
         assertEquals(postCode, address.getPostalCode());
-        assertEquals("postoffice", address.getPostOffice());
-        assertEquals("streetaddress", address.getStreetAddress());
+        assertEquals("postoffice", address.getPostOffice().getTranslations().get("fi"));
+        assertEquals("streetaddress", address.getStreetAddress().getTranslations().get("fi"));
         assertEquals("eventinfo", event.getDescription());
         assertEquals(starts, event.getStart());
         assertEquals(ends, event.getEnd());
@@ -105,9 +105,9 @@ public class EducationObjectCreatorTest extends KoodistoAwareTest {
         Address address = creator.createAddress(addressDTO);
         assertNotNull(address);
         assertEquals(postCode, address.getPostalCode());
-        assertEquals("postoffice", address.getPostOffice());
-        assertEquals("streetaddress", address.getStreetAddress());
-        assertEquals("streetaddress2", address.getStreetAddress2());
+        assertEquals("postoffice", address.getPostOffice().getTranslations().get("fi"));
+        assertEquals("streetaddress", address.getStreetAddress().getTranslations().get("fi"));
+        assertEquals("streetaddress2", address.getStreetAddress2().getTranslations().get("fi"));
     }
 
     @Test
@@ -187,8 +187,8 @@ public class EducationObjectCreatorTest extends KoodistoAwareTest {
         ExamEvent event  = exam.getExamEvents().get(0);
         Address address = event.getAddress();
         assertEquals(postCode, address.getPostalCode());
-        assertEquals("postoffice", address.getPostOffice());
-        assertEquals("streetaddress", address.getStreetAddress());
+        assertEquals("postoffice", address.getPostOffice().getTranslations().get("fi"));
+        assertEquals("streetaddress", address.getStreetAddress().getTranslations().get("fi"));
         assertEquals("eventinfo", event.getDescription());
         assertEquals(starts, event.getStart());
         assertEquals(ends, event.getEnd());
@@ -246,8 +246,8 @@ public class EducationObjectCreatorTest extends KoodistoAwareTest {
         ExamEvent event  = exam.getExamEvents().get(0);
         Address address = event.getAddress();
         assertEquals(postCode, address.getPostalCode());
-        assertEquals("postoffice", address.getPostOffice());
-        assertEquals("streetaddress", address.getStreetAddress());
+        assertEquals("postoffice", address.getPostOffice().getTranslations().get("fi"));
+        assertEquals("streetaddress", address.getStreetAddress().getTranslations().get("fi"));
         assertEquals("eventinfo", event.getDescription());
         assertEquals(starts, event.getStart());
         assertEquals(ends, event.getEnd());

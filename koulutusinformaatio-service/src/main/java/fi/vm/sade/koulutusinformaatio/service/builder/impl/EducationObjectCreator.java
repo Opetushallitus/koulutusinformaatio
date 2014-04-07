@@ -127,10 +127,30 @@ public class EducationObjectCreator extends ObjectCreator {
     public Address createAddress(OsoiteRDTO osoite) throws KoodistoException {
         if (osoite != null) {
             Address attachmentDeliveryAddress = new Address();
-            attachmentDeliveryAddress.setStreetAddress(osoite.getOsoiterivi1());
-            attachmentDeliveryAddress.setStreetAddress2(osoite.getOsoiterivi2());
+            
+            Map<String,String> streetAddrTransls = new HashMap<String,String>();
+            Map<String,String> streetAddrTransls2 = new HashMap<String,String>();
+            Map<String,String> postOfficeTransls = new HashMap<String,String>();
+            
+            
+           
+            
+            
+            if (osoite.getOsoiterivi1() != null) {
+                streetAddrTransls.put("fi", osoite.getOsoiterivi1());
+                attachmentDeliveryAddress.setStreetAddress(new I18nText(streetAddrTransls));
+            }
+            if (osoite.getOsoiterivi2() != null) {
+                streetAddrTransls2.put("fi", osoite.getOsoiterivi2());
+                attachmentDeliveryAddress.setStreetAddress2(new I18nText(streetAddrTransls2));
+            }
             attachmentDeliveryAddress.setPostalCode(koodistoService.searchFirstCodeValue(osoite.getPostinumero()));
-            attachmentDeliveryAddress.setPostOffice(osoite.getPostitoimipaikka());
+            
+            
+            if (osoite.getPostitoimipaikka() != null) {
+                postOfficeTransls.put("fi", osoite.getPostitoimipaikka());
+                attachmentDeliveryAddress.setPostOffice(new I18nText(postOfficeTransls));
+            }
             return attachmentDeliveryAddress;
         } else {
             return null;

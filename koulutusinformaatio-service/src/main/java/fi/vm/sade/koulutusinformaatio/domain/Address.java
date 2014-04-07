@@ -21,24 +21,24 @@ package fi.vm.sade.koulutusinformaatio.domain;
  */
 public class Address {
 
-    private String streetAddress;
-    private String streetAddress2;
+    private I18nText streetAddress;
+    private I18nText streetAddress2;
     private String postalCode;
-    private String postOffice;
+    private I18nText postOffice;
 
-    public String getStreetAddress() {
+    public I18nText getStreetAddress() {
         return streetAddress;
     }
 
-    public void setStreetAddress(String streetAddress) {
+    public void setStreetAddress(I18nText streetAddress) {
         this.streetAddress = streetAddress;
     }
 
-    public String getStreetAddress2() {
+    public I18nText getStreetAddress2() {
         return streetAddress2;
     }
 
-    public void setStreetAddress2(String streetAddress2) {
+    public void setStreetAddress2(I18nText streetAddress2) {
         this.streetAddress2 = streetAddress2;
     }
 
@@ -50,11 +50,11 @@ public class Address {
         this.postalCode = postalCode;
     }
 
-    public String getPostOffice() {
+    public I18nText getPostOffice() {
         return postOffice;
     }
 
-    public void setPostOffice(String postOffice) {
+    public void setPostOffice(I18nText postOffice) {
         this.postOffice = postOffice;
     }
 }
