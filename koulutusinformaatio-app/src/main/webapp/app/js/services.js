@@ -6,7 +6,8 @@ angular.module('kiApp.services',
     'kiApp.HostResolver', 
     'kiApp.NavigationService',
     'kiApp.ArticleContentSearchService',
-    'kiApp.TranslationService'
+    'kiApp.TranslationService',
+    'kiApp.CookieService'
 ]).
 
 service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analytics', '$rootScope', 'FilterService', 'LearningOpportunitySearchResultTransformer', function($http, $timeout, $q, $analytics, $rootScope, FilterService, LearningOpportunitySearchResultTransformer) {
@@ -1040,51 +1041,47 @@ service('LearningOpportunityProviderPictureService', ['$http', '$timeout', '$q',
 /**
  *  Service taking care of search term saving
  */
- service('SearchService', function() {
+ service('SearchService', ['CookieService', function(CookieService) {
     var key = 'searchTerm';
     return {
         getTerm: function() {
-            var term = $.cookie(key);
-            if (term) {
-                return term;
-            } else {
-                return '';
-            }
+            return CookieService.get(key) || '';
         },
 
         setTerm: function(newTerm) {
             if (newTerm) {
-                $.cookie(key, newTerm, {useLocalStorage: false, path: '/'});
+                CookieService.set(key, newTerm);
             }
         }
     };
-}).
+}]).
 
 /**
  *  Service keeping track of the current language selection
  */
-service('LanguageService', function() {
+service('LanguageService', ['CookieService', function(CookieService) {
     var defaultLanguage = 'fi';
     var key = 'i18next';
 
     return {
         getLanguage: function() {
-            return $.cookie(key) || defaultLanguage;
+            return CookieService.get(key) || defaultLanguage;
         },
 
         setLanguage: function(language) {
-            $.cookie(key, language, {useLocalStorage: false, path: '/'});
+            CookieService.set(key, language);
         },
 
         getDefaultLanguage: function() {
             return defaultLanguage;
         }
     };
-}).
+}]).
 
 /**
  *  Service for "caching" current parent selection
  */
+ /*
  service('ParentLODataService', function() {
     var data;
 
@@ -1102,10 +1099,12 @@ service('LanguageService', function() {
         }
     };
 }).
+*/
 
 /**
  *  Service for "caching" current child selection
  */
+ /*
  service('ChildLODataService', function() {
     var data;
 
@@ -1123,11 +1122,12 @@ service('LanguageService', function() {
         }
     };
 }).
+*/
 
 /**
  *  Service for maintaining application basket state
  */
-service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageService', 'UtilityService', function($http, $q, $rootScope, LanguageService, UtilityService) {
+service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageService', 'UtilityService', 'CookieService', function($http, $q, $rootScope, LanguageService, UtilityService, CookieService) {
     var key = 'basket';
     var typekey = 'baskettype';
     var cookieConfig = {useLocalStorage: false, maxChunkSize: 2000, maxNumberOfCookies: 20, path: '/'};
@@ -1170,7 +1170,7 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
     return {
         addItem: function(aoId, itemType) {
 
-            var current = $.cookie(key);
+            var current = CookieService.get(key);
 
             if (current) {
                 current = JSON.parse(current);
@@ -1186,37 +1186,37 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
 
             // save type if defined
             if (itemType) {
-                $.cookie(typekey, itemType, cookieConfig);
+                CookieService.set(typekey, itemType, cookieConfig);
             }
 
-            $.cookie(key, JSON.stringify(current), cookieConfig);
+            CookieService.set(key, JSON.stringify(current), cookieConfig);
         },
 
         removeItem: function(aoId) {
             if (this.getItemCount() > 1) {
-                var value = $.cookie(key);
+                var value = CookieService.get(key);
                 value = JSON.parse(value);
 
                 var index = value.indexOf(aoId);
                 value.splice(index, 1);
 
-                $.cookie(key, JSON.stringify(value), cookieConfig);
+                CookieService.set(key, JSON.stringify(value), cookieConfig);
             } else {
                 this.empty();
             }
         },
 
         empty: function() {
-            $.cookie(key, null, cookieConfig);
-            $.cookie(typekey, null, cookieConfig);
+            CookieService.set(key, null, cookieConfig);
+            CookieService.set(typekey, null, cookieConfig);
         },
 
         getItems: function() {
-            return JSON.parse($.cookie(key));
+            return JSON.parse( CookieService.get(key) );
         },
 
         getItemCount: function() {
-            return $.cookie(key) ? JSON.parse($.cookie(key)).length : 0;
+            return CookieService.get(key) ? JSON.parse( CookieService.get(key) ).length : 0;
         },
 
         isEmpty: function() {
@@ -1225,7 +1225,7 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
 
         getType: function() {
             if (!this.isEmpty()) {
-                return $.cookie(typekey);
+                return CookieService.get(typekey);
             }
         },
 
