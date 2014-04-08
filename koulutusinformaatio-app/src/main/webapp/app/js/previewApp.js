@@ -89,7 +89,7 @@ var kiApp = angular.module('previewApp',
 					|| $location.search().lang == 'sv')) {
 		LanguageService.setLanguage($location.search().lang);
 		$location.search('').replace();
-	} else {
+	} else if ($location.search().lang != undefined) {
 		LanguageService.setLanguage('fi');
 		$location.search('').replace();
 	}
