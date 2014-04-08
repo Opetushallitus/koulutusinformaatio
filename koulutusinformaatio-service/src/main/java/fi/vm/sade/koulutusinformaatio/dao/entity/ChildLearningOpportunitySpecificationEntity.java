@@ -34,6 +34,8 @@ public class ChildLearningOpportunitySpecificationEntity {
     @Embedded
     private I18nTextEntity name;
     @Embedded
+    private I18nTextEntity shortName;
+    @Embedded
     private I18nTextEntity degreeTitle;
     @Embedded
     private I18nTextEntity goals;
@@ -56,6 +58,14 @@ public class ChildLearningOpportunitySpecificationEntity {
 
     public I18nTextEntity getName() {
         return name;
+    }
+
+    public I18nTextEntity getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(I18nTextEntity shortName) {
+        this.shortName = shortName;
     }
 
     public void setName(I18nTextEntity name) {

@@ -82,7 +82,7 @@ public class ProviderServiceImplTest {
         );
         KoodistoService koodistoService = mock(KoodistoService.class);
         ConversionService conversionService = mock(ConversionService.class);
-        when(koodistoService.searchFirst(eq(HOMEPLACE_URI))).thenReturn(HOMEPLACE);
+        when(koodistoService.searchFirstName(eq(HOMEPLACE_URI))).thenReturn(HOMEPLACE);
         when(koodistoService.searchFirstCodeValue(eq(POSTNUMBER_URI))).thenReturn(POSTALNUMBER);
         when(koodistoService.searchSuperCodes(ATHLETE_EDUCATION_KOODISTO_URI,
                 PLACE_OF_BUSINESS_KOODISTO_URI)).thenReturn(new ArrayList<Code>());

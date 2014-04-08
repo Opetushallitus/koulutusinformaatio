@@ -16,19 +16,15 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import java.util.Map;
-
+import com.google.common.collect.Maps;
 import fi.vm.sade.koulutusinformaatio.domain.Address;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.dto.AddressDTO;
-
 import org.junit.Test;
 
-import com.google.common.collect.Maps;
+import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 /**
  * @author Hannu Lyytikainen
@@ -60,7 +56,7 @@ public class AddressToDTOTest {
     private I18nText createI18nText(String fi) {
         Map<String, String> values = Maps.newHashMap();
         values.put("fi", fi);
-        return new I18nText(values, values);
+        return new I18nText(values);
     }
 
 }

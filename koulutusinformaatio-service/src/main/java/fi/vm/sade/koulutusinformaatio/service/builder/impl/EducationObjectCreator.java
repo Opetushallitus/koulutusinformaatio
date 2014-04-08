@@ -46,7 +46,7 @@ public class EducationObjectCreator extends ObjectCreator {
             List<Exam> exams = Lists.newArrayList();
             for (ValintakoeRDTO valintakoe : valintakoes) {
                 Exam exam = new Exam();
-                exam.setType(koodistoService.searchFirst(valintakoe.getTyyppiUri()));
+                exam.setType(koodistoService.searchFirstName(valintakoe.getTyyppiUri()));
                 exam.setDescription(getI18nText(valintakoe.getKuvaus()));
                 List<ExamEvent> examEvents = Lists.newArrayList();
 
@@ -193,7 +193,7 @@ public class EducationObjectCreator extends ObjectCreator {
             for (HakukohdeLiiteDTO liite : hakukohdeLiiteDTOs) {
                 ApplicationOptionAttachment attach = new ApplicationOptionAttachment();
                 attach.setDueDate(liite.getErapaiva());
-                attach.setType(koodistoService.searchFirst(liite.getLiitteenTyyppiUri()));
+                attach.setType(koodistoService.searchFirstName(liite.getLiitteenTyyppiUri()));
                 attach.setDescreption(getI18nText(liite.getKuvaus()));
                 attach.setAddress(createAddress(liite.getToimitusosoite()));
                 attachments.add(attach);

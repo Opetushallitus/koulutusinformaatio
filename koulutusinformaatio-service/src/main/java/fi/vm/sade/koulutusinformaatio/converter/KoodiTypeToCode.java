@@ -42,6 +42,6 @@ public class KoodiTypeToCode implements Converter<KoodiType, Code> {
             shortName.put(lang, koodiMetadataType.getLyhytNimi());
             description.put(lang, koodiMetadataType.getKuvaus());
         }
-        return new Code(koodiType.getKoodiArvo(), new I18nText(name, shortName), new I18nText(description));
+        return new Code(koodiType.getKoodiArvo(), new I18nText(name), new I18nText(shortName), new I18nText(description), koodiType.getKoodiUri());
     }
 }

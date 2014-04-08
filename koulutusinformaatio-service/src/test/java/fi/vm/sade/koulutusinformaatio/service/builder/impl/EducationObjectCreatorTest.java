@@ -50,9 +50,9 @@ public class EducationObjectCreatorTest extends KoodistoAwareTest {
 
     @Before
     public void init() throws KoodistoException {
-        when(koodistoService.searchFirst(eq(examTypeUri))).thenReturn(examType);
+        when(koodistoService.searchFirstName(eq(examTypeUri))).thenReturn(examType);
         when(koodistoService.searchFirstCodeValue(eq(postCodeUri))).thenReturn(postCode);
-        when(koodistoService.searchFirst(eq(attachmentTypeUri))).thenReturn(attachmentType);
+        when(koodistoService.searchFirstName(eq(attachmentTypeUri))).thenReturn(attachmentType);
         creator = new EducationObjectCreator(koodistoService);
 
     }

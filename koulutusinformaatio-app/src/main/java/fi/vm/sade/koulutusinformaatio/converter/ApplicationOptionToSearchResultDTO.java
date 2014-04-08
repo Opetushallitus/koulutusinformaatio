@@ -40,7 +40,7 @@ public final class ApplicationOptionToSearchResultDTO {
             }
             dto.setName(name);
             dto.setAoIdentifier(applicationOption.getAoIdentifier());
-            dto.setChildLONames(ConverterUtil.getShortNameTextsByLanguage(ChildLOIRefToDTO.convert(applicationOption.getChildLOIRefs()), lang));
+            dto.setChildLONames(ConverterUtil.getTextsByLanguage(ChildLOIRefToDTO.convert(applicationOption.getChildLOIRefs()), lang));
             Collections.sort(dto.getChildLONames());
             dto.setEducationDegree(applicationOption.getEducationDegree());
             dto.setSora(applicationOption.isSora());

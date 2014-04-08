@@ -15,27 +15,18 @@
  */
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import static org.junit.Assert.assertEquals;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.util.TestUtil;
+import org.apache.solr.common.SolrInputDocument;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.solr.common.SolrInputDocument;
-import org.junit.Test;
-
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
-import fi.vm.sade.koulutusinformaatio.domain.Address;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.DateRange;
-import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.util.TestUtil;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Markus
@@ -76,6 +67,7 @@ public class HigherEducationLOSToSolrInputDocmentTest {
 		los.setCreditValue("80");
 		los.setCreditUnit(TestUtil.createI18nText("ov fi", "ov sv", "ov en"));
 		los.setName(TestUtil.createI18nText("los name fi", "los name sv", "los name en"));
+        los.setShortName(TestUtil.createI18nText("los short name fi", "los short name sv", "los short name en"));
 		los.setEducationDegreeLang(TestUtil.createI18nText("Alempi korkeakoulu fi", "Alempi korkeakoulu sv", "Alempi korkeakoulu en"));
 		los.setEducationDegree("alempiKk_uri");
 		List<I18nText> quals = new ArrayList<I18nText>();

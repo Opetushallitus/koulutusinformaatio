@@ -41,7 +41,7 @@ public final class UpperSecondaryLOIToDTO {
                 new UpperSecondaryLearningOpportunityInstanceDTO();
 
         dto.setId(loi.getId());
-        dto.setName(ConverterUtil.getShortNameTextByLanguageUseFallbackLang(loi.getName(), defaultLang));
+        dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(loi.getShortName(), defaultLang));
         dto.setPrerequisite(CodeToDTO.convert(loi.getPrerequisite(), lang));
         dto.setFormOfTeaching(ConverterUtil.getTextsByLanguage(loi.getFormOfTeaching(), uiLang));
         dto.setTeachingLanguages(CodeToName.convertAll(loi.getTeachingLanguages(), uiLang));

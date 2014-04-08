@@ -45,7 +45,7 @@ public final class ParentLOSToDTO {
         parent.setStydyDomain(ConverterUtil.getTextByLanguage(parentLOS.getStydyDomain(), lang));
         parent.setTranslationLanguage(lang);
         parent.setCreditValue(parentLOS.getCreditValue());
-        parent.setCreditUnit(ConverterUtil.getShortNameTextByLanguage(parentLOS.getCreditUnit(), defaultLang));
+        parent.setCreditUnit(ConverterUtil.getTextByLanguage(parentLOS.getCreditUnit(), defaultLang));
 
         if (parentLOS.getLois() != null) {
             for (ParentLOI loi : parentLOS.getLois()) {
