@@ -33,6 +33,7 @@ import fi.vm.sade.tarjonta.service.resources.dto.NimiJaOidRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.service.types.TarjontaTila;
 import fi.vm.sade.tarjonta.service.types.YhteyshenkiloTyyppi;
@@ -378,7 +379,7 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setEducationDegreeLang(getI18nTextEnriched(koulutus.getKoulutusaste().getMeta()));
         //los.setEducationType(getI18nTextEnriched(koulutus.get.getMeta()));
         los.setDegreeTitle(getI18nTextEnriched(koulutus.getKoulutusohjelma()));
-        los.setQualifications(getI18nTextMultiple(koulutus.getTutkintonimikes()));//getTutkintonimike().getMeta()));
+        los.setQualifications(getQualifications(koulutus));//getTutkintonimike().getMeta()));
         los.setDegree(getI18nTextEnriched(koulutus.getTutkinto().getMeta()));
         if (koulutus.getKoulutuksenAlkamisPvms() != null && !koulutus.getKoulutuksenAlkamisPvms().isEmpty()) {
             los.setStartDate(koulutus.getKoulutuksenAlkamisPvms().iterator().next());
@@ -437,6 +438,29 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setFacetPrerequisites(this.getFacetPrequisites(los.getPrerequisites()));
 
         return los;
+    }
+    
+    //tutkintonimike
+    private List<I18nText> getQualifications(KoulutusKorkeakouluV1RDTO koulutus) throws KoodistoException {
+        
+        List<I18nText> qualifications = new ArrayList<I18nText>();
+        
+        KoodiV1RDTO kandKoul = koulutus.getKandidaatinKoulutuskoodi();
+        
+        List<Code> kandQuals = new ArrayList<Code>();
+        
+        if (kandKoul != null && kandKoul.getUri() != null) {
+            
+            kandQuals = this.koodistoService.searchSubCodes(kandKoul.getUri(), TarjontaConstants.TUTKINTONIMIKE_KK_KOODISTO_URI);
+        }
+        
+        if (!kandQuals.isEmpty()) {
+            qualifications.add(kandQuals.get(0).getName());
+        }
+        
+        qualifications.addAll(getI18nTextMultiple(koulutus.getTutkintonimikes()));
+        
+        return qualifications;
     }
 
 
