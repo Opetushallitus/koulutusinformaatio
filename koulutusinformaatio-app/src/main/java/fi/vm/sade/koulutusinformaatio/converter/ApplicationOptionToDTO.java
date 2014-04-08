@@ -51,7 +51,7 @@ public final class ApplicationOptionToDTO {
             dto.setSoraDescription(ConverterUtil.getTextByLanguage(applicationOption.getSoraDescription(), lang));
             dto.setPrerequisite(CodeToDTO.convert(applicationOption.getPrerequisite(), lang));
             dto.setExams(ExamToDTO.convertAll(applicationOption.getExams(), lang));
-            dto.setProvider(ProviderToDTO.convert(applicationOption.getProvider(), lang, defaultLang));
+            dto.setProvider(ProviderToDTO.convert(applicationOption.getProvider(), lang, defaultLang, uiLang));
             dto.setChildRefs(ChildLOIRefToDTO.convert(applicationOption.getChildLOIRefs(), defaultLang));
             dto.setHigherEdLOSRefs(HigherEducationLOSRefToDTO.convert(applicationOption.getHigherEdLOSRefs(), defaultLang));
             dto.setSpecificApplicationDates(applicationOption.isSpecificApplicationDates());
