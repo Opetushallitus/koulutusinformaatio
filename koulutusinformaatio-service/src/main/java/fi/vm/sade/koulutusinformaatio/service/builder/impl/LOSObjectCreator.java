@@ -19,6 +19,9 @@ package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
@@ -38,6 +41,7 @@ import fi.vm.sade.tarjonta.service.types.TarjontaTila;
 import fi.vm.sade.tarjonta.service.types.YhteyshenkiloTyyppi;
 import fi.vm.sade.tarjonta.shared.types.KomoTeksti;
 import fi.vm.sade.tarjonta.shared.types.KomotoTeksti;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -303,7 +307,6 @@ public class LOSObjectCreator extends ObjectCreator {
         if (koulutus.getKuvausKomoto().get(KomotoTeksti.SISALTO) != null  
                 && !koulutus.getKuvausKomoto().get(KomotoTeksti.SISALTO).getTekstis().containsKey(UNDEFINED)) {
             los.setContent(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.SISALTO)));
-            //availableLanguagaes.add(koodistoService.searchCodesMultiple(koodiUri))
             rawTranslCodes.addAll(koodistoService.searchMultiple(
                     this.getTranslationUris(koulutus.getKuvausKomoto().get(KomotoTeksti.SISALTO))));            
         }
@@ -383,12 +386,12 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setName(getI18nTextEnriched(koulutus.getKoulutusohjelma()));
         los.setShortName(getI18nTextEnriched(koulutus.getKoulutusohjelma()));
         los.setKoulutuskoodi(getI18nTextEnriched(koulutus.getKoulutuskoodi().getMeta()));
-        los.setEducationCode(koodistoService.searchFirst(koulutus.getKoulutuskoodi().getUri()));//koulutus.getKoulutuskoodi().getUri());
-        los.setEducationDegree(koulutus.getKoulutusaste().getUri());//getI18nTextEnriched(koulutus.getKoulutusaste().getMeta()));//getTutkinto().getMeta()));
+        los.setEducationCode(koodistoService.searchFirst(koulutus.getKoulutuskoodi().getUri()));
+        los.setEducationDegree(koulutus.getKoulutusaste().getUri());
+        los.setEducationType(getEducationType(koulutus.getKoulutusaste().getUri()));
         los.setEducationDegreeLang(getI18nTextEnriched(koulutus.getKoulutusaste().getMeta()));
-        //los.setEducationType(getI18nTextEnriched(koulutus.get.getMeta()));
         los.setDegreeTitle(getI18nTextEnriched(koulutus.getKoulutusohjelma()));
-        los.setQualifications(getQualifications(koulutus));//getTutkintonimike().getMeta()));
+        los.setQualifications(getQualifications(koulutus));
         los.setDegree(getI18nTextEnriched(koulutus.getTutkinto().getMeta()));
         if (koulutus.getKoulutuksenAlkamisPvms() != null && !koulutus.getKoulutuksenAlkamisPvms().isEmpty()) {
             los.setStartDate(koulutus.getKoulutuksenAlkamisPvms().iterator().next());
@@ -402,13 +405,11 @@ public class LOSObjectCreator extends ObjectCreator {
 
         los.setPlannedDuration(koulutus.getSuunniteltuKestoArvo());
         los.setPlannedDurationUnit(getI18nTextEnriched(koulutus.getSuunniteltuKestoTyyppi().getMeta()));
-        los.setPduCodeUri(koulutus.getSuunniteltuKestoTyyppi().getUri());//childKomoto.getLaajuusYksikkoUri());
-        los.setCreditValue(koulutus.getOpintojenLaajuusarvo().getArvo());//getOpintojenLaajuus().getArvo());
+        los.setPduCodeUri(koulutus.getSuunniteltuKestoTyyppi().getUri());
+        los.setCreditValue(koulutus.getOpintojenLaajuusarvo().getArvo());
         los.setCreditUnit(getI18nTextEnriched(koulutus.getOpintojenLaajuusyksikko().getMeta()));
         los.setChargeable(koulutus.getOpintojenMaksullisuus()); 
 
-
-        //childLOI.setTeachingLanguages(koodistoService.searchCodesMultiple(childKomoto.getOpetuskieletUris()));
         try {
             Provider provider = providerService.getByOID(koulutus.getOrganisaatio().getOid());
             los.setProvider(provider);
@@ -449,6 +450,19 @@ public class LOSObjectCreator extends ObjectCreator {
         return los;
     }
     
+    private String getEducationType(String uri) {
+        if (uri.contains(TarjontaConstants.ED_DEGREE_URI_AMK)) {
+            return SolrConstants.ED_TYPE_AMK;
+        } else if (uri.contains(TarjontaConstants.ED_DEGREE_URI_YLEMPI_AMK)) {
+            return SolrConstants.ED_TYPE_YLEMPI_AMK;
+        } else if (uri.contains(TarjontaConstants.ED_DEGREE_URI_KANDI)) {
+            return SolrConstants.ED_TYPE_KANDIDAATTI;
+        } else if (uri.contains(TarjontaConstants.ED_DEGREE_URI_MAISTERI)) {
+            return SolrConstants.ED_TYPE_MAISTERI;
+        }
+        return null;
+    }
+
     //tutkintonimike
     private List<I18nText> getQualifications(KoulutusKorkeakouluV1RDTO koulutus) throws KoodistoException {
         

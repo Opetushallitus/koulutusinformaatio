@@ -133,6 +133,8 @@ public class HigherEducationLOSEntity {
     private List<CodeEntity> topics;
     @Embedded
     private List<CodeEntity> themes;
+    
+    private String educationType;
 
     public String getId() {
         return id;
@@ -437,6 +439,12 @@ public class HigherEducationLOSEntity {
     }
     public void setThemes(List<CodeEntity> themes) {
         this.themes = themes;
+    }
+    public String getEducationType() {
+        return educationType;
+    }
+    public void setEducationType(String educationType) {
+        this.educationType = educationType;
     }
 
 }

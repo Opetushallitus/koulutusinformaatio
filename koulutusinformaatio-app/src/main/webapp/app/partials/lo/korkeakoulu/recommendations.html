@@ -33,3 +33,31 @@
 		<!-- END PREVIEW -->
 	</div>
 </div>
+<div class="application-container">
+	<h3 class="title"><span data-ki-i18n="lue-lisaa"></span></h3>
+	<div class="content">
+		<!-- PREVIEW EXCLUDE -->
+		<ul data-ng-if="!lo.preview">
+			<li data-ng-repeat="article in lo.edCodeSuggestions">
+				<a data-ng-href="{{article.url}}">
+					{{article.title}} </a>
+			</li>
+			<li data-ng-repeat="article in lo.edTypeSuggestions">
+				<a data-ng-href="{{article.url}}">
+					{{article.title}} </a>
+			</li>
+		</ul>
+		<!-- END PREVIEW EXCLUDE -->
+
+		<!-- PREVIEW -->
+		<ul data-ng-if="lo.preview">
+			<li data-ng-repeat="article in lo.edCodeSuggestions">
+					{{article.title}}
+			</li>
+			<li data-ng-repeat="article in lo.edTypeSuggestions">
+					{{article.title}}
+			</li>
+		</ul>
+		<!-- END PREVIEW -->
+	</div>
+</div>

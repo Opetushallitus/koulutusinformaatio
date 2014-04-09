@@ -102,6 +102,7 @@ public class HigherEducationLOSToDTO {
         if (los.getTopics() != null) {
             dto.setTopics(CodeToDTO.convertAll(los.getTopics(), uiLang));
         }
+        dto.setEducationType(los.getEducationType());
         return dto;
     }
 

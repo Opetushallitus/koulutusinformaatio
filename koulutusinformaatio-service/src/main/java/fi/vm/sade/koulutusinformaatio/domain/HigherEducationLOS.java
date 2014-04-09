@@ -81,6 +81,7 @@ public class HigherEducationLOS extends LOS {
     
 
     private List<Code> facetPrerequisites;
+    private String educationType;
 
 
 
@@ -456,4 +457,12 @@ public class HigherEducationLOS extends LOS {
     public void setFacetPrerequisites(List<Code> facetPrerequisites) {
         this.facetPrerequisites = facetPrerequisites;
     }
+
+    public void setEducationType(String educationType) {
+        this.educationType = educationType;   
+    }
+    public String getEducationType() {
+        return educationType;   
+    }
+    
 }
