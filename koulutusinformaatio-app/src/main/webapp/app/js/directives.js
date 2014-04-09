@@ -16,7 +16,6 @@ directive('title', ['$rootScope', function($rootScope) {
         link: function(scope, element, attrs) {
             $rootScope.$watch('title', function(value) {
                 document.title = value;
-                //element.text(value);
             });
         }
     }

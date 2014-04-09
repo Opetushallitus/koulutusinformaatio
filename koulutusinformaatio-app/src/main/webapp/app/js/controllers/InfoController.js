@@ -34,10 +34,18 @@
 
     var setTitle = function(parent, child) {
         var sitename = TranslationService.getTranslation('sitename');
+        var provider = '';
+
+        if (child && child.provider) {
+            provider = child.provider.name;
+        } else if (parent && parent.provider) {
+            provider = parent.provider.name;
+        } 
+
         if (child) {
-            $rootScope.title = child.name + ' - ' + sitename;
+            $rootScope.title = child.name + ' - ' + provider + ' - ' + sitename;
         } else {
-            $rootScope.title = parent.name + ' - ' + sitename;
+            $rootScope.title = parent.name + ' - ' + provider + ' - ' + sitename;
         }
     };
 
