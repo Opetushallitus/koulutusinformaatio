@@ -23,7 +23,7 @@
     "search-field-placeholder": "Hae koulutusta tästä",
     "no-search-results": "Ei hakutuloksia",
     "no-search-results-info": "Hakusanalla \"__searchterm__\" ei löytynyt yhtään hakutulosta. Järjestelmään ei ehkä vielä ole syötetty kyseistä koulutusta tai tutkintoa. Ole hyvä ja yritä toisella hakusanalla tai rajauksella.",
-    "search-as-ongoing": "Haku käynnissä!",
+    "search-as-ongoing": "Haku käynnissä",
     "search-as-next": "Tulossa hakuun",
     "search-field-label": "Etsi koulutuksia tästä",
     "search-field-placeholder": "Kirjoita tähän esim. tutkinto, ammatti tai hakusana",
