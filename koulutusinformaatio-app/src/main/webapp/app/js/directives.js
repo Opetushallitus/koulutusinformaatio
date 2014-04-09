@@ -21,6 +21,19 @@ directive('title', ['$rootScope', function($rootScope) {
     }
 }]).
 
+directive('meta', ['$rootScope', function($rootScope) {
+    return {
+        restrict: 'E',
+        link: function(scope, element, attrs) {
+            if (attrs.name === 'description') {
+                $rootScope.$watch('description', function(value) {
+                    element.attr('content', value);
+                });
+            }
+        }
+    }
+}]).
+
 /**
  * Render contact info block
  */
