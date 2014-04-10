@@ -30,6 +30,8 @@ public class UpperSecondaryLearningOpportunitySpecificationEntity {
     private String id;
     @Embedded
     private I18nTextEntity name;
+    @Embedded
+    private I18nTextEntity shortName;
     private String educationDegree;
     @Embedded
     private I18nTextEntity degreeTitle;
@@ -67,6 +69,14 @@ public class UpperSecondaryLearningOpportunitySpecificationEntity {
 
     public void setName(I18nTextEntity name) {
         this.name = name;
+    }
+
+    public I18nTextEntity getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(I18nTextEntity shortName) {
+        this.shortName = shortName;
     }
 
     public String getEducationDegree() {

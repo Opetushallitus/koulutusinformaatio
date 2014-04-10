@@ -50,6 +50,8 @@ public class ChildLearningOpportunityInstanceEntity {
     private I18nTextEntity plannedDurationUnit;
     @Embedded
     private List<CodeEntity> availableTranslationLanguages;
+    
+    
 
     public String getId() {
         return id;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 The Finnish Board of Education - Opetushallitus
+ * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
  *
  * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
  * soon as they will be approved by the European Commission - subsequent versions
@@ -13,29 +13,20 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * European Union Public Licence for more details.
  */
+package fi.vm.sade.koulutusinformaatio.service;
 
-package fi.vm.sade.koulutusinformaatio.dao.entity;
+import java.io.IOException;
+import java.util.List;
 
-
-import org.mongodb.morphia.annotations.Embedded;
-
-import java.util.Map;
+import fi.vm.sade.koulutusinformaatio.domain.Article;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 
 /**
- * @author Mikko Majapuro
+ * 
+ * @author Markus
  */
-@Embedded
-public class I18nTextEntity {
+public interface ArticleService {
+    
+    List<Article> fetchArticles() throws IOException, KoodistoException;
 
-    private Map<String, String> translations;
-
-    public I18nTextEntity() {}
-
-    public Map<String, String> getTranslations() {
-        return translations;
-    }
-
-    public void setTranslations(Map<String, String> translations) {
-        this.translations = translations;
-    }
 }

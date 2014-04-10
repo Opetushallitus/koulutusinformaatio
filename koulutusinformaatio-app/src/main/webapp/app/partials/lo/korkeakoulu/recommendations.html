@@ -12,7 +12,7 @@
 					{{lo.educationCode}} <span data-ki-i18n="muualla"></span> </a>
 			</li>
 			<li data-ng-repeat="theme in lo.themes">
-				<a data-ng-href="#!/haku/*?page=1&facetFilters=teachingLangCode_ffm:{{lo.translationLanguage.toUpperCase()}}&facetFilters=theme_ffm:{{theme.uri}}&excludes={{lopExclField}}:{{lo.provider.name}}&itemsPerPage=25&sortCriteria=0&tab=los">
+				<a data-ng-href="#!/haku/*?page=1&facetFilters=teachingLangCode_ffm:{{lo.translationLanguage.toUpperCase()}}&facetFilters=theme_ffm:{{theme.uri}}&facetFilters=educationType_ffm:{{lo.educationType}}&excludes={{lopExclField}}:{{lo.provider.name}}&itemsPerPage=25&sortCriteria=0&tab=los">
 					{{theme.description}} <span data-ki-i18n="mukainen-koulutus-muualla"></span> </a>
 			</li>
 		</ul>
@@ -28,6 +28,34 @@
 			</li>
 			<li data-ng-repeat="theme in lo.themes">
 				{{theme.description}} <span data-ki-i18n="mukainen-koulutus-muualla"></span>
+			</li>
+		</ul>
+		<!-- END PREVIEW -->
+	</div>
+</div>
+<div class="application-container">
+	<h3 class="title"><span data-ki-i18n="lue-lisaa"></span></h3>
+	<div class="content">
+		<!-- PREVIEW EXCLUDE -->
+		<ul data-ng-if="!lo.preview">
+			<li data-ng-repeat="article in lo.edCodeSuggestions">
+				<a data-ng-href="{{article.url}}">
+					{{article.title}} </a>
+			</li>
+			<li data-ng-repeat="article in lo.edTypeSuggestions">
+				<a data-ng-href="{{article.url}}">
+					{{article.title}} </a>
+			</li>
+		</ul>
+		<!-- END PREVIEW EXCLUDE -->
+
+		<!-- PREVIEW -->
+		<ul data-ng-if="lo.preview">
+			<li data-ng-repeat="article in lo.edCodeSuggestions">
+					{{article.title}}
+			</li>
+			<li data-ng-repeat="article in lo.edTypeSuggestions">
+					{{article.title}}
 			</li>
 		</ul>
 		<!-- END PREVIEW -->

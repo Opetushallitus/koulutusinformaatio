@@ -117,6 +117,22 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     $scope.selectFacetFilter = function(selection, facetField) {
     	var facetSelection = {facetField: facetField, selection: selection};
     	if ($scope.facetFilters != undefined) {
+    		
+    		var tempFilters = [];
+    		
+    		angular.forEach($scope.facetFilters, function(value, index) {
+    			var curField = value.split(':')[0];
+    			if ((facetField == 'theme_ffm' || facetField == 'topic_ffm')
+    					&& curField != 'theme_ffm' && curField != 'topic_ffm') {
+    				tempFilters.push(value);
+    			}
+    			else if (!(facetField == 'theme_ffm' || facetField == 'topic_ffm') && curField != facetField) {
+    				tempFilters.push(value);
+    			}
+    		});
+    		
+    		$scope.facetFilters = tempFilters;
+    		
     		$scope.facetFilters.push(facetField +':'+selection);
     	} else {
     		$scope.facetFilters = [];
@@ -383,7 +399,7 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
 /**
  *  Controller for search functionality 
  */
- function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route, SearchLearningOpportunityService, SearchService, kiAppConstants, FilterService, Config, LanguageService, TranslationService, $timeout) {
+function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route, SearchLearningOpportunityService, SearchService, kiAppConstants, FilterService, Config, LanguageService, TranslationService, $timeout, SearchResultFacetTransformer) {
     var queryParams;
     $scope.selectAreaVisible = false;
     $rootScope.title = TranslationService.getTranslation('title-search-results') + ' - ' + TranslationService.getTranslation('sitename');
@@ -552,6 +568,9 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     	            $scope.tabTitles.queryString = $routeParams.queryString;
     	            $scope.tabTitles.totalCount = $scope.loResult.totalCount;
     	            $rootScope.tabChangeable = true;
+    	            $scope.loResult = SearchResultFacetTransformer.transform($scope.loResult, $scope.facetFilters);//$scope.convertLoResult($scope.loResult);
+    	            
+    	            
     			}
     		});
 
@@ -701,6 +720,9 @@ function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, 
                 $scope.sortCriteria = FilterService.getSortCriteria();
                 $scope.currentArticlePage = FilterService.getArticlePage();
                 $scope.facetFilters = FilterService.getFacetFilters();
+                $scope.lopFilter = FilterService.getLopFilter();
+                $scope.educationCodeFilter = FilterService.getEducationCodeFilter();
+                $scope.excludes = FilterService.getExcludes();
 
                 $scope.doArticleSearching();
             });
@@ -722,6 +744,9 @@ function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, 
 			facetFilters: $scope.resolveFacetFilters(),
             sortCriteria: FilterService.getSortCriteria(),
 			lang: LanguageService.getLanguage(),
+			lopFilter: FilterService.getLopFilter(),
+		    educationCodeFilter: FilterService.getEducationCodeFilter(),
+		    excludes : FilterService.getExcludes(),
 		    searchType : 'ARTICLE'
 		}).then(function(result) {
 			

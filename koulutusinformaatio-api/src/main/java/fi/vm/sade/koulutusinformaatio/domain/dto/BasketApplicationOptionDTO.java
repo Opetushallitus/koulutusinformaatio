@@ -38,6 +38,7 @@ public class BasketApplicationOptionDTO {
     private String qualification;
     private String baseEducationRequirement;
     private ParentLOSRefDTO parent;
+    private List<HigherEducationLOSRefDTO> higherEducations;
     private List<ChildLOIRefDTO> children;
     private Date attachmentDeliveryDeadline;
     private List<ApplicationOptionAttachmentDTO> attachments;
@@ -240,5 +241,13 @@ public class BasketApplicationOptionDTO {
 
     public void setPrerequisite(CodeDTO prerequisite) {
         this.prerequisite = prerequisite;
+    }
+
+    public List<HigherEducationLOSRefDTO> getHigherEducations() {
+        return higherEducations;
+    }
+
+    public void setHigherEducations(List<HigherEducationLOSRefDTO> higherEducations) {
+        this.higherEducations = higherEducations;
     }
 }

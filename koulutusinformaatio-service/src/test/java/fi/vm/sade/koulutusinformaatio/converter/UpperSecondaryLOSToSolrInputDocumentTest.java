@@ -15,29 +15,20 @@
  */
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import static org.junit.Assert.assertEquals;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
+import fi.vm.sade.koulutusinformaatio.util.TestUtil;
+import org.apache.solr.common.SolrInputDocument;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.solr.common.SolrInputDocument;
-import org.junit.Before;
-import org.junit.Test;
-
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
-import fi.vm.sade.koulutusinformaatio.domain.Address;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.DateRange;
-import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOI;
-import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
-import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
-import fi.vm.sade.koulutusinformaatio.util.TestUtil;
+import static org.junit.Assert.assertEquals;
 
 /**
  * 
@@ -60,17 +51,18 @@ public class UpperSecondaryLOSToSolrInputDocumentTest {
 		los.setType(TarjontaConstants.TYPE_UPSEC);
 		los.setId("upsecId");
 		los.setName(TestUtil.createI18nText("Upsec name fi", "Upsec name sv", "Upsec name en"));
-		
+        los.setShortName(TestUtil.createI18nText("Upsec short name fi", "Upsec short name sv", "Upsec short name en"));
+
 		los.setCreditValue("80");
 		los.setCreditUnit(TestUtil.createI18nText("ov fi", "ov sv", "ov en"));
-		
+
 		provider = new Provider();
 		provider.setId("provId");
 		provider.setName(TestUtil.createI18nText("prov fi", "prov sv", "prov en"));
 		provider.setHomeDistrict(TestUtil.createI18nText("Uusimaa fi", "Uusimaa sv", "Uusimaa en"));
 		provider.setHomePlace(TestUtil.createI18nText("Hki fi", "Hki sv", "Hki en"));
 		Address addr = new Address();
-		addr.setPostOffice("04620");
+		addr.setPostalCode("04620");
 		provider.setVisitingAddress(addr);
 		provider.setDescription(TestUtil.createI18nText("prov descr fi", "prov descr sv", "prov descr en"));
 		los.setProvider(provider);

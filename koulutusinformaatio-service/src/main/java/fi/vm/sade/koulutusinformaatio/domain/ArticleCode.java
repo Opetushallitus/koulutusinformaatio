@@ -13,31 +13,22 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * European Union Public Licence for more details.
  */
-
 package fi.vm.sade.koulutusinformaatio.domain;
 
-import com.google.common.collect.ImmutableMap;
-
-import java.util.Map;
-
 /**
- * @author Mikko Majapuro
+ * 
+ * @author Markus
  */
-public class I18nText {
+public class ArticleCode {
+    
+    private String slug;
 
-    private Map<String, String> translations;
-
-    public I18nText() {}
-
-    public I18nText(final Map<String, String> translations) {
-        this.translations = ImmutableMap.copyOf(translations);
+    public String getSlug() {
+        return slug;
     }
 
-    public Map<String, String> getTranslations() {
-        return translations;
+    public void setSlug(String slug) {
+        this.slug = slug;
     }
 
-    public void setTranslations(Map<String, String> translations) {
-        this.translations = translations;
-    }
 }

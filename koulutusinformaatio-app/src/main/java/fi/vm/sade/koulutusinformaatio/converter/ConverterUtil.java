@@ -17,18 +17,17 @@
 package fi.vm.sade.koulutusinformaatio.converter;
 
 import com.google.common.base.Function;
-import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Ordering;
-
 import fi.vm.sade.koulutusinformaatio.domain.DateRange;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.DateRangeDTO;
 
-import java.util.*;
-
-import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Mikko Majapuro
@@ -61,27 +60,6 @@ public final class ConverterUtil {
         return val;
     }
 
-    public static String getShortNameTextByLanguage(final I18nText text, String lang) {
-        lang = lang.toLowerCase();
-        if (text != null && text.getTranslationsShortName() != null && text.getTranslationsShortName().containsKey(lang)) {
-            return text.getTranslationsShortName().get(lang);
-        } else {
-            return null;
-        }
-    }
-
-    public static String getShortNameTextByLanguageUseFallbackLang(final I18nText text, String lang) {
-        String val = getShortNameTextByLanguage(text, lang);
-        if (Strings.isNullOrEmpty(val) && text != null && text.getTranslationsShortName() != null &&
-                !text.getTranslationsShortName().isEmpty()) {
-            val = getShortNameTextByLanguage(text, FALLBACK_LANG);
-            if (Strings.isNullOrEmpty(val)) {
-                val = text.getTranslationsShortName().values().iterator().next();
-            }
-        }
-        return val;
-    }
-
     public static List<String> getTextsByLanguage(final List<I18nText> list, String lang) {
         lang = lang.toLowerCase();
         List<String> texts = new ArrayList<String>();
@@ -102,20 +80,6 @@ public final class ConverterUtil {
         if (list != null) {
             for (I18nText text : list) {
                 String value = getTextByLanguageUseFallbackLang(text, lang);
-                if (value != null) {
-                    texts.add(value);
-                }
-            }
-        }
-        return texts;
-    }
-
-    public static List<String> getShortNameTextsByLanguage(final List<I18nText> list, String lang) {
-        lang = lang.toLowerCase();
-        List<String> texts = new ArrayList<String>();
-        if (list != null) {
-            for (I18nText text : list) {
-                String value = getShortNameTextByLanguage(text, lang);
                 if (value != null) {
                     texts.add(value);
                 }

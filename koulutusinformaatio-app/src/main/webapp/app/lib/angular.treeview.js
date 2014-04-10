@@ -36,6 +36,7 @@ angular.module( 'angularTreeview', [] ).
 			
 				//tree model
 				var treeModel = attrs.treeModel;
+				//console.log(treeModel);
 
 				//node id
 				var nodeId = attrs.nodeId || 'id';

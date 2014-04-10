@@ -2,7 +2,11 @@
     <div>
         <h4 class="margin-0">{{provider.name}}</h4>
         <span data-ng-show="lo.polytechnic" class="block">{{lo.educationDomain}}</span>
-        <span class="block">{{lo.qualification}}</span>
+        <span class="block" data-ng-repeat="qual in lo.qualifications">
+       		<span>{{qual}}</span>
+        </span>
+        
+        <!--<span class="block">{{lo.qualification}}</span>-->
         <span data-ng-repeat="parent in lo.parents">
         	<span class="block">
         		<a data-ng-href="#!/korkeakoulu/{{parent.id}}" class="margin-right-1">{{parent.name}}</a> 

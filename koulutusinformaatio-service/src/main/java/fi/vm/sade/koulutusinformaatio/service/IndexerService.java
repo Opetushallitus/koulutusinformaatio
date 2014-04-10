@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
+import fi.vm.sade.koulutusinformaatio.domain.Article;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.Location;
@@ -56,6 +57,6 @@ public interface IndexerService {
 
     void addEdTypeCodes(List<Code> edTypeCodes, HttpSolrServer loUpdateSolr) throws IOException, SolrServerException;
     
-    void addArticles(HttpSolrServer loUpdateSolr) throws IOException, SolrServerException;
+    void addArticles(HttpSolrServer loUpdateSolr, List<Article> articles) throws IOException, SolrServerException;
     
 }

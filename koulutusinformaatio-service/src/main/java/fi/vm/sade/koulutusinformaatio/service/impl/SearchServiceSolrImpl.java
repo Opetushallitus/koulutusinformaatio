@@ -111,6 +111,44 @@ public class SearchServiceSolrImpl implements SearchService {
         return searchLearningOpportunityProviders(term, null, null, false, false, 0, Integer.MAX_VALUE, lang, prefix);
     }
     
+    @Override
+    public List<ArticleResult> searchArticleSuggestions(String filter, String lang) throws SearchException {
+        
+        LOG.debug("Searching suggestions: " + filter);
+        
+        List<ArticleResult> articles = new ArrayList<ArticleResult>();
+        
+        SolrQuery query = new ArticleQuery(filter, lang);
+        
+        try {
+            LOG.debug(
+                    URLDecoder.decode(
+                            new StringBuilder().append(
+                                    "Searching learning opportunities with query string: ").append(
+                                            query.toString()).toString(), "utf-8"));
+        } catch (UnsupportedEncodingException e) {
+            LOG.debug("Could not log search query");
+        }
+        
+        QueryResponse queryResponse = null;
+        try {
+            queryResponse = loHttpSolrServer.query(query);
+        } catch (SolrServerException e) {
+            throw new SearchException(SOLR_ERROR);
+        }
+
+        LOG.debug("Response size: " + queryResponse.getResults().size());
+        for (SolrDocument result : queryResponse.getResults()) {
+            try {
+                articles.add(createArticleSearchResult(result));
+            } catch (Exception ex) {
+                LOG.warn(ex.getMessage());
+            }
+        }
+        
+        return articles;
+    }
+    
 
     private String fixString(String term) {
         String[] splits = term.split(" ");
@@ -426,7 +464,14 @@ public class SearchServiceSolrImpl implements SearchService {
                         getLocalizedFacetName(curC.getName(), lang),
                         curC.getCount(),
                         curC.getName());
+                
                 newVal.setChildValues(themeTopicMap.get(curC.getName()));
+                if (newVal.getChildValues() != null) {
+                    for (FacetValue curchild : newVal.getChildValues()) {
+                        curchild.setParentId(newVal.getValueId());
+                    }
+                }
+                
                 values.add(newVal);
 
             }
@@ -520,6 +565,11 @@ public class SearchServiceSolrImpl implements SearchService {
         
         for (FacetValue curVal : values) {
             curVal.setChildValues(resMap.get(curVal.getValueId()));
+            if (curVal.getChildValues() != null) {
+                for (FacetValue curChild : curVal.getChildValues()) {
+                    curChild.setParentId(curVal.getValueId());
+                }
+            }
         }
         
         edTypeFacet.setFacetValues(roots);

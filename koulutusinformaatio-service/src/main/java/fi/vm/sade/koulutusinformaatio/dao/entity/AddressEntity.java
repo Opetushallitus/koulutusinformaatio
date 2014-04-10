@@ -25,26 +25,29 @@ import org.mongodb.morphia.annotations.Embedded;
 @Embedded
 public class AddressEntity {
 
-    private String streetAddress;
-    private String streetAddress2;
+    @Embedded
+    private I18nTextEntity streetAddress;
+    @Embedded
+    private I18nTextEntity streetAddress2;
     private String postalCode;
-    private String postOffice;
+    @Embedded
+    private I18nTextEntity postOffice;
 
     public AddressEntity() {}
 
-    public String getStreetAddress() {
+    public I18nTextEntity getStreetAddress() {
         return streetAddress;
     }
 
-    public void setStreetAddress(String streetAddress) {
+    public void setStreetAddress(I18nTextEntity streetAddress) {
         this.streetAddress = streetAddress;
     }
 
-    public String getStreetAddress2() {
+    public I18nTextEntity getStreetAddress2() {
         return streetAddress2;
     }
 
-    public void setStreetAddress2(String streetAddress2) {
+    public void setStreetAddress2(I18nTextEntity streetAddress2) {
         this.streetAddress2 = streetAddress2;
     }
 
@@ -56,11 +59,11 @@ public class AddressEntity {
         this.postalCode = postalCode;
     }
 
-    public String getPostOffice() {
+    public I18nTextEntity getPostOffice() {
         return postOffice;
     }
 
-    public void setPostOffice(String postOffice) {
+    public void setPostOffice(I18nTextEntity postOffice) {
         this.postOffice = postOffice;
     }
 }
