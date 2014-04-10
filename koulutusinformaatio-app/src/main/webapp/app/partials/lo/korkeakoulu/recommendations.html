@@ -12,7 +12,7 @@
 					{{lo.educationCode}} <span data-ki-i18n="muualla"></span> </a>
 			</li>
 			<li data-ng-repeat="theme in lo.themes">
-				<a data-ng-href="#!/haku/*?page=1&facetFilters=teachingLangCode_ffm:{{lo.translationLanguage.toUpperCase()}}&facetFilters=theme_ffm:{{theme.uri}}&excludes={{lopExclField}}:{{lo.provider.name}}&itemsPerPage=25&sortCriteria=0&tab=los">
+				<a data-ng-href="#!/haku/*?page=1&facetFilters=teachingLangCode_ffm:{{lo.translationLanguage.toUpperCase()}}&facetFilters=theme_ffm:{{theme.uri}}&facetFilters=educationType_ffm:{{lo.educationType}}&excludes={{lopExclField}}:{{lo.provider.name}}&itemsPerPage=25&sortCriteria=0&tab=los">
 					{{theme.description}} <span data-ki-i18n="mukainen-koulutus-muualla"></span> </a>
 			</li>
 		</ul>
