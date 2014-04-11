@@ -60,7 +60,7 @@ function SearchFieldCtrl($scope, $location, $route, $rootScope, SearchService, k
 /**
  *  Controller for search filters
  */
-function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, kiAppConstants, FilterService, LanguageService, DistrictService, ChildLocationsService, UtilityService, TranslationService, $modal) {
+function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, kiAppConstants, FilterService, LanguageService, DistrictService, ChildLocationsService, UtilityService, TranslationService, $modal, _) {
 
     $scope.change = function() {
         FilterService.set({
@@ -261,140 +261,16 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     	return isSelected;
     }
 
-    $scope.openModal = function() {
-
-        var modalIntance = $modal.open({
-            templateUrl: 'templates/selectArea.html',
-            backdrop: 'static',
-            controller: LocationDialogCtrl
-        });
-
-        modalIntance.result.then(function(result) {
+    $scope.setFilteredLocations = function(value) {
+        _.each(value, function(location) {
             if (!$scope.locations) {
-                $scope.locations = result;
-            } else {
-                angular.forEach(result, function(value, key){
-                    if ($scope.locations.indexOf(value) < 0) {
-                        $scope.locations.push(value);
-                    }
-                });
+                $scope.locations = [location];
+            } else if (_.where($scope.locations, {code: location.code}).length <= 0) {
+                $scope.locations.push(location);
             }
-            $scope.change();
-        })
+        });
     }
 };
-
-function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsService, UtilityService, DistrictService, TranslationService) {
-
-    $timeout(function(){
-        $('#select-location-dialog').attr('aria-hidden', 'false');
-    }, 0);
-
-    $scope.titleLocales = {
-        close: TranslationService.getTranslation('tooltip:close'),
-        removeFacet: TranslationService.getTranslation('tooltip:remove-facet')
-    }
-
-    DistrictService.query().then(function(result) {
-        $scope.distResult = result;
-        $scope.distResult.unshift({name: TranslationService.getTranslation('koko') + ' ' + TranslationService.getTranslation('suomi'), code: '-1'});
-
-        // IE requires this to redraw select boxes after data is loaded
-        $timeout(function() {
-            $("#districtSelection").css("width", '200px');
-        }, 0);
-    });
-
-    $scope.cancel = function() {
-        $('#select-location-dialog').attr('aria-hidden', 'true');
-        $modalInstance.dismiss('cancel');
-    }
-
-    var doMunicipalitySearch = function() {
-        var queryDistricts = [];
-        if ($scope.muniResult != undefined) {
-            $scope.muniResult.length = 0;
-        } else {
-            $scope.muniResult = [];
-        }
-        if ($scope.isWholeAreaSelected($scope.selectedDistricts)) {
-            queryDistricts = $scope.distResult;
-        } else {
-            queryDistricts = $scope.selectedDistricts;
-        }
-        ChildLocationsService.query(queryDistricts).then(function(result) {
-            
-            if (!$scope.isWholeAreaSelected($scope.selectedDistricts)) {
-                UtilityService.sortLocationsByName(result);
-                $scope.muniResult.push.apply($scope.muniResult, queryDistricts);
-                $scope.muniResult.push.apply($scope.muniResult, result);
-            } else {
-                $scope.muniResult.push.apply($scope.muniResult, result);
-            }
-
-            // IE requires this to redraw select boxes after data is loaded
-            $timeout(function() {
-                $("#municipalitySelection").css("width", '200px');
-            }, 0);
-            
-        });
-    }
-
-    var selectMunicipality = function() {
-        if (!$scope.selectedMunicipalities) {
-            $scope.selectedMunicipalities = [];
-        }
-
-        angular.forEach($scope.selectedMunicipality, function(mun, munkey){
-            
-            var found = false;
-            angular.forEach($scope.selectedMunicipalities, function(value, key){
-                if (value.code == mun.code) {
-                    found = true;
-                }
-            });
-
-            if (!found) {
-                $scope.selectedMunicipalities.push(mun);
-            }
-
-        });
-    }
-
-    $scope.$watch('selectedMunicipality', function(value) {
-        if (value) {
-            selectMunicipality();
-        }
-    });
-
-    $scope.$watch('selectedDistricts', function(value) {
-        if (value) {
-            doMunicipalitySearch();
-        }
-    });
-
-    $scope.removeMunicipality = function(code) {
-        angular.forEach($scope.selectedMunicipalities, function(mun, key) {
-            if (code == mun.code) {
-                $scope.selectedMunicipalities.splice(key, 1);
-            }
-        });
-    }
-
-    $scope.isWholeAreaSelected = function(areaArray) {
-        for (var i = 0; i < areaArray.length; i++) {
-            if (areaArray[i].code == '-1') {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    $scope.filterBySelLocations = function() {
-        $modalInstance.close($scope.selectedMunicipalities);
-    }
-
-}
 
 /**
  *  Controller for search functionality 

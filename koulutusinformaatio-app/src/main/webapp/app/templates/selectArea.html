@@ -1,14 +1,14 @@
-<div id="select-location-dialog" aria-labelledby="selected-location-dialog-title" role="dialog" aria-hidden="true"  >
-    <span title="{{titleLocales.close}}" class="close" data-ng-click="cancel()">&nbsp;</span>
+<div id="select-location-dialog" data-ki-keyboard-control aria-labelledby="selected-location-dialog-title" role="dialog" aria-hidden="true"  >
+    <a href="javascript:void(0)" title="{{titleLocales.close}}" class="close" data-ng-click="cancel()"></a>
     <h2 id="selected-location-dialog-title" data-ki-i18n="valitse-alue"></h2>
     <div class="float-left">
         <h4 class="margin-top-0"><label data-ki-i18n="district" for="districtSelection"></label></h4>
         <select size="10"
         id="districtSelection" 
         multiple 
-        ng-multiple="true" 
-        ng-model="$parent.selectedDistricts" 
-        ng-options="dist.name for dist in distResult | orderBy:'name'"
+        data-ng-multiple="true" 
+        data-ng-model="$parent.selectedDistricts" 
+        data-ng-options="dist.name for dist in distResult | orderBy:'name'"
         data-set-focus-here
         ></select>
         <span class="facet-location-separator">&gt;</span>
@@ -19,9 +19,11 @@
         <select size="10"
         id="municipalitySelection" 
         multiple 
-        ng-multiple="true"
-        ng-model="$parent.selectedMunicipality" 
-        ng-options="mun.name for mun in muniResult"
+        data-ng-multiple="true"
+        data-ng-model="$parent.selectedMunicipality" 
+        data-ng-options="mun.name for mun in muniResult"
+        data-ng-keypress="changeSelection()"
+        data-ng-click="changeSelection()"
         ></select>
         <span class="facet-location-separator">&gt;</span>
     </div>
