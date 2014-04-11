@@ -1586,7 +1586,7 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
             params += filters.sortCriteria ? '&sortCriteria=' + filters.sortCriteria : '';
             params += filters.lopFilter ? '&lopFilter=' + filters.lopFilter : '';
             params += filters.educationCodeFilter ? '&educationCodeFilter=' + filters.educationCodeFilter : '';
-            params += (filters.excludes && filters.excludes.length > 0) ? '&excludes=' + filters.excludes.join(',') : '';
+            params += (filters.excludes && filters.excludes.length > 0) ? '&excludes=' + filters.excludes.join('|') : '';
             params = params.length > 0 ? params.substring(1, params.length) : '';
             return params;
         },
@@ -1609,7 +1609,7 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
         
         getExcludes: function() {
         	if (filters.excludes != undefined && (typeof filters.excludes == 'string' || filters.excludes instanceof String)) {
-        		filters.excludes = filters.excludes.split(',');
+        		filters.excludes = filters.excludes.split('|');
         	}
         	return filters.excludes;
         },

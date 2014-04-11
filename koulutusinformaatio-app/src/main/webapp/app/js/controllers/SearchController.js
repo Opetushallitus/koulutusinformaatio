@@ -596,6 +596,9 @@ function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, 
                 $scope.sortCriteria = FilterService.getSortCriteria();
                 $scope.currentArticlePage = FilterService.getArticlePage();
                 $scope.facetFilters = FilterService.getFacetFilters();
+                $scope.lopFilter = FilterService.getLopFilter();
+                $scope.educationCodeFilter = FilterService.getEducationCodeFilter();
+                $scope.excludes = FilterService.getExcludes();
 
                 $scope.doArticleSearching();
             });
@@ -617,6 +620,9 @@ function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, 
 			facetFilters: $scope.resolveFacetFilters(),
             sortCriteria: FilterService.getSortCriteria(),
 			lang: LanguageService.getLanguage(),
+			lopFilter: FilterService.getLopFilter(),
+		    educationCodeFilter: FilterService.getEducationCodeFilter(),
+		    excludes : FilterService.getExcludes(),
 		    searchType : 'ARTICLE'
 		}).then(function(result) {
 			
