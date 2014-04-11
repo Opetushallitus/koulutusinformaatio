@@ -4,6 +4,8 @@ angular.module('kiApp.directives',
     [
         'kiApp.Navigation',
         'kiApp.FacetTree',
+        'kiApp.KeyboardControl',
+        'kiApp.SelectAreaDialog',
         'angularTreeview',
         'kiApp.directives.AppBasket']).
 
@@ -352,16 +354,10 @@ directive('kiAbsoluteLink', function() {
         link: function(scope, element, attrs) {
 
             scope.add = function() {
-                if (!scope.$parent.locations) {
-                    scope.$parent.locations = [];
-                }
-
-                if (scope.location && scope.$parent.locations.indexOf(scope.location) < 0) {
-                    scope.$parent.locations.push(scope.location);
-                    scope.location = '';
-                    scope.change();
-                    return false;
-                }
+                scope.setFilteredLocations([scope.location]);
+                scope.location = '';
+                scope.change();
+                return false;
             }
 
             scope.getLocations = function($viewValue) {
