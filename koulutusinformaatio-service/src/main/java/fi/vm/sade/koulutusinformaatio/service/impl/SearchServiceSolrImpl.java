@@ -163,7 +163,7 @@ public class SearchServiceSolrImpl implements SearchService {
 
     @Override
     public LOSearchResultList searchLearningOpportunities(String term, String prerequisite,
-            List<String> cities, List<String> facetFilters,  
+            List<String> cities, List<String> facetFilters,  List<String> articleFilters,
             String lang, boolean ongoing, boolean upcoming, 
             int start, int rows, String sort, String order, 
             String lopFilter, String educationCodeFilter,
@@ -173,7 +173,7 @@ public class SearchServiceSolrImpl implements SearchService {
         String fixed = fixString(trimmed);
         if (!trimmed.isEmpty()) {
             SolrQuery query = new LearningOpportunityQuery(fixed, prerequisite, 
-                    cities, facetFilters, 
+                    cities, facetFilters, articleFilters,
                     lang, ongoing, upcoming, 
                     start, rows, sort, order,
                     lopFilter, educationCodeFilter, excludes, searchType);
@@ -222,10 +222,10 @@ public class SearchServiceSolrImpl implements SearchService {
             
             //Setting result counts of other searches (one of article, provider or lo)
             if (searchType.LO.equals(searchType)) {
-                setOtherResultCounts(fixed, lang, start, sort, order, cities, facetFilters, ongoing, upcoming, 
+                setOtherResultCounts(fixed, lang, start, sort, order, cities, facetFilters, articleFilters, ongoing, upcoming, 
                                      lopFilter, educationCodeFilter, excludes, SearchType.ARTICLE, searchResultList);
             } else if (SearchType.ARTICLE.equals(searchType)) {
-                setOtherResultCounts(fixed, lang, start, sort, order, cities, facetFilters, ongoing, upcoming, 
+                setOtherResultCounts(fixed, lang, start, sort, order, cities, facetFilters, articleFilters, ongoing, upcoming, 
                                      lopFilter, educationCodeFilter, excludes, SearchType.LO, searchResultList);
             }
             
@@ -240,7 +240,7 @@ public class SearchServiceSolrImpl implements SearchService {
 
     private void setOtherResultCounts(String term, String lang, int start,
             String sort, String order, List<String> cities, 
-            List<String> facetFilters, 
+            List<String> facetFilters, List<String> articleFilters,
             boolean ongoing, boolean upcoming,
             String lopFilter, String educationCodeFilter, List<String> excludes,
             SearchType searchType, LOSearchResultList searchResultList) throws SearchException {
@@ -250,7 +250,7 @@ public class SearchServiceSolrImpl implements SearchService {
         }*/
         
         SolrQuery query = new LearningOpportunityQuery(term, null, 
-                cities, facetFilters, 
+                cities, facetFilters, articleFilters,
                 lang, ongoing, upcoming, 
                 start, 0, sort, order,
                 lopFilter, educationCodeFilter, excludes, searchType);

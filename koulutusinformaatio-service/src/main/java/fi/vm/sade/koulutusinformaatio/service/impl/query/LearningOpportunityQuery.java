@@ -77,7 +77,7 @@ public class LearningOpportunityQuery extends SolrQuery {
     public static final String QUOTED_QUERY_FORMAT = "%s:\"%s\"";
 
     public LearningOpportunityQuery(String term, String prerequisite,
-            List<String> cities, List<String> facetFilters, String lang, 
+            List<String> cities, List<String> facetFilters, List<String> articleFilters, String lang, 
             boolean ongoing, boolean upcoming, 
             int start, int rows, String sort, String order, 
             String lopFilter, String educationCodeFilter, List<String> excludes, 
@@ -147,6 +147,9 @@ public class LearningOpportunityQuery extends SolrQuery {
             addFacetsToQuery(facetFilters, ongoingFQ.toString(), upcomingFQ.toString());
         } else if (SearchType.ARTICLE.equals(searchType)) {
             this.addFilterQuery(String.format("%s:%s", LearningOpportunity.TEACHING_LANGUAGE, lang.toUpperCase()));
+            this.setFacet(true);
+            this.addFacetField(LearningOpportunity.ARTICLE_CONTENT_TYPE);
+            
         }
         
         this.setParam("defType", "edismax");

@@ -38,6 +38,7 @@ public class LearningOpportunityQueryTest {
     private static final String PREREQUISITE = "PK";
     private static final List<String> CITIES = Lists.newArrayList("city1", "city2");
     private static final List<String> FACET_FILTERS = Lists.newArrayList("someOther:vaat", "someOther:vaat2");
+    private static final List<String> ARTICLE_FILTERS = Lists.newArrayList("someTYPE:vaat", "someTYPE:vaat2");
     private static final List<String> FF_TEACH_LANG_FI = Lists.newArrayList( "teachingLangCode_ffm:FI", "someOther_ffm:whatever");
     private static final List<String> FF_TEACH_LANG_SV = Lists.newArrayList( "teachingLangCode_ffm:SV", "someOther_ffm:whatever");
     private static final List<String> FF_TEACH_LANG_OTHER = Lists.newArrayList( "teachingLangCode_ffm:OT", "someOther_ffm:whatever");
@@ -51,7 +52,7 @@ public class LearningOpportunityQueryTest {
 
     @Test
     public void testQueryTeachLangNone() {
-        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FACET_FILTERS, LANG_FI, ONGOING, UPCOMING, START, ROWS, SORT, ORDER, null, null, null, SearchType.LO);
+        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FACET_FILTERS, ARTICLE_FILTERS, LANG_FI, ONGOING, UPCOMING, START, ROWS, SORT, ORDER, null, null, null, SearchType.LO);
         assertNotNull(q);
         assertEquals(7, q.getFilterQueries().length);
         String prerequisiteFQ = new StringBuilder("prerequisites:").append(PREREQUISITE).toString();
@@ -67,7 +68,7 @@ public class LearningOpportunityQueryTest {
     @Test
     public void testQueryFieldsTeachLangFi() {
         
-        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FF_TEACH_LANG_FI, LANG_FI, ONGOING, UPCOMING, START, ROWS, SORT, ORDER, null, null, null, SearchType.LO);
+        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FF_TEACH_LANG_FI, ARTICLE_FILTERS, LANG_FI, ONGOING, UPCOMING, START, ROWS, SORT, ORDER, null, null, null, SearchType.LO);
         assertNotNull(q);
         assertEquals(7, q.getFilterQueries().length);
         String prerequisiteFQ = new StringBuilder("prerequisites:").append(PREREQUISITE).toString();
@@ -84,7 +85,7 @@ public class LearningOpportunityQueryTest {
     @Test
     public void testQueryFieldsTeachLangSv() {
         
-        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FF_TEACH_LANG_SV, LANG_FI, ONGOING, UPCOMING, START, ROWS, SORT, ORDER, null, null, null, SearchType.LO);
+        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FF_TEACH_LANG_SV,ARTICLE_FILTERS,  LANG_FI, ONGOING, UPCOMING, START, ROWS, SORT, ORDER, null, null, null, SearchType.LO);
         assertNotNull(q);
         assertEquals(7, q.getFilterQueries().length);
         String prerequisiteFQ = new StringBuilder("prerequisites:").append(PREREQUISITE).toString();
@@ -101,7 +102,7 @@ public class LearningOpportunityQueryTest {
     @Test
     public void testQueryFieldsTeachLangOther() {
         
-        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FF_TEACH_LANG_OTHER, LANG_FI, ONGOING, UPCOMING, START, ROWS, SORT, ORDER, null, null, null, SearchType.LO);
+        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FF_TEACH_LANG_OTHER, ARTICLE_FILTERS, LANG_FI, ONGOING, UPCOMING, START, ROWS, SORT, ORDER, null, null, null, SearchType.LO);
         assertNotNull(q);
         assertEquals(7, q.getFilterQueries().length);
         String prerequisiteFQ = new StringBuilder("prerequisites:").append(PREREQUISITE).toString();

@@ -33,6 +33,7 @@ public class LOSearchResultList {
     private Facet edTypeFacet;
     private Facet prerequisiteFacet;
     private Facet topicFacet;
+    private Facet articleContentTypeFacet;
     private FacetValue lopRecommendationFilter;
     private FacetValue educationCodeRecommendationFilter;
     private long loCount;
@@ -151,5 +152,13 @@ public class LOSearchResultList {
 
     public void setOrgCount(long orgCount) {
         this.orgCount = orgCount;
+    }
+
+    public Facet getArticleContentTypeFacet() {
+        return articleContentTypeFacet;
+    }
+
+    public void setArticleContentTypeFacet(Facet articleContenTypeFacet) {
+        this.articleContentTypeFacet = articleContenTypeFacet;
     }
 }
