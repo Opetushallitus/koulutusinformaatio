@@ -158,7 +158,7 @@ public class LOSearchResultList {
         return articleContentTypeFacet;
     }
 
-    public void setArticleContentTypeFacet(Facet articleContenTypeFacet) {
-        this.articleContentTypeFacet = articleContenTypeFacet;
+    public void setArticleContentTypeFacet(Facet articleContentTypeFacet) {
+        this.articleContentTypeFacet = articleContentTypeFacet;
     }
 }

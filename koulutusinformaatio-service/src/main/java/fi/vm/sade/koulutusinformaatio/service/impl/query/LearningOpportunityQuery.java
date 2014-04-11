@@ -149,7 +149,11 @@ public class LearningOpportunityQuery extends SolrQuery {
             this.addFilterQuery(String.format("%s:%s", LearningOpportunity.TEACHING_LANGUAGE, lang.toUpperCase()));
             this.setFacet(true);
             this.addFacetField(LearningOpportunity.ARTICLE_CONTENT_TYPE);
-            
+            this.setFacetSort("index");
+            this.setFacetMinCount(1);
+            for (String curFilter : articleFilters) {
+                this.addFilterQuery(curFilter);
+            }
         }
         
         this.setParam("defType", "edismax");

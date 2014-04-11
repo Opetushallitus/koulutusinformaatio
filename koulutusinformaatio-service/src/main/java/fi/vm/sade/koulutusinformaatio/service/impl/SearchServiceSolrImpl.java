@@ -211,6 +211,8 @@ public class SearchServiceSolrImpl implements SearchService {
             
             if (SearchType.LO.equals(searchType)) {
                 addFacetsToResult(searchResultList, response, lang, facetFilters);
+            } else {
+                addArticleFacetsToResult(searchResultList, response, lang, articleFilters);
             }
             
             if (lopFilter != null) {
@@ -236,7 +238,6 @@ public class SearchServiceSolrImpl implements SearchService {
 
         return searchResultList;
     }
-
 
     private void setOtherResultCounts(String term, String lang, int start,
             String sort, String order, List<String> cities, 
@@ -421,6 +422,28 @@ public class SearchServiceSolrImpl implements SearchService {
             resultList.add(lo);
         }
         return resultList;
+    }
+    
+    private void addArticleFacetsToResult(LOSearchResultList searchResultList,
+            QueryResponse response, String lang, List<String> articleFilters) {
+        FacetField articleContentTypeF = response.getFacetField(LearningOpportunity.ARTICLE_CONTENT_TYPE);
+        Facet articleContentTypeFacet = new Facet();
+        List<FacetValue> values = new ArrayList<FacetValue>();
+        if (articleContentTypeF != null) {
+            for (Count curC : articleContentTypeF.getValues()) {
+
+
+                FacetValue newVal = new FacetValue(LearningOpportunity.ARTICLE_CONTENT_TYPE,
+                        curC.getName(),
+                        curC.getCount(),
+                        curC.getName());
+                values.add(newVal);
+
+            }
+        }
+        articleContentTypeFacet.setFacetValues(values);
+        searchResultList.setArticleContentTypeFacet(articleContentTypeFacet);
+        
     }
 
     /*

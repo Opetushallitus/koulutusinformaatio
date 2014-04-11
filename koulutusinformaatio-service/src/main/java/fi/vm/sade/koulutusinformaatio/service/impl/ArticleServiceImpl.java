@@ -85,17 +85,17 @@ public class ArticleServiceImpl implements ArticleService {
         return articles;
     }
     
-    private List<Article> getArticlesByExtension(ObjectMapper mapper, String lang, String extesion) throws IOException, KoodistoException {
+    private List<Article> getArticlesByExtension(ObjectMapper mapper, String lang, String extension) throws IOException, KoodistoException {
         int page = 1;
         List<Article> articles = new ArrayList<Article>();
         
-        ArticleResults articlesRes = getArticlesByLang(mapper, lang, "", page);
+        ArticleResults articlesRes = getArticlesByLang(mapper, lang, extension, page);
         int pages = articlesRes.getPages();
 
         while (pages > 0) {
 
             articles.addAll(articlesRes.getPosts());
-            articlesRes = getArticlesByLang(mapper, lang, "", ++page);
+            articlesRes = getArticlesByLang(mapper, lang, extension, ++page);
             pages = articlesRes.getPages();
         
         }
@@ -108,23 +108,27 @@ public class ArticleServiceImpl implements ArticleService {
     }
     
     private void transformArticleCodes(Article article) throws KoodistoException {
-        
+
         List<String> edTypeVals = new ArrayList<String>();
-        for (ArticleCode curCode : article.getTaxonomy_oph_koulutustyyppi()) {
-            String codeUri = curCode.getSlug().substring(0, curCode.getSlug().lastIndexOf('_'));
-            LOGGER.debug(String.format("edTypeUrl: %s", codeUri));
-            String curVal = koodistoService.searchFirstCodeValue(codeUri);
-            if (curVal != null) {
-                LOGGER.debug(String.format("edTypeVal: %s", curVal));
-                edTypeVals.add(curVal.trim());
+        if (article.getTaxonomy_oph_koulutustyyppi() != null) {
+            for (ArticleCode curCode : article.getTaxonomy_oph_koulutustyyppi()) {
+                String codeUri = curCode.getSlug().substring(0, curCode.getSlug().lastIndexOf('_'));
+                LOGGER.debug(String.format("edTypeUrl: %s", codeUri));
+                String curVal = koodistoService.searchFirstCodeValue(codeUri);
+                if (curVal != null) {
+                    LOGGER.debug(String.format("edTypeVal: %s", curVal));
+                    edTypeVals.add(curVal.trim());
+                }
             }
         }
         article.setEducationTypeCodes(edTypeVals);
-        
+
         List<String> edVals = new ArrayList<String>();
-        for (ArticleCode curCode : article.getTaxonomy_oph_koulutus()) {
-            String codeUri = curCode.getSlug().substring(0, curCode.getSlug().lastIndexOf('_'));
-            edVals.add(codeUri);
+        if (article.getTaxonomy_oph_koulutus() != null) {
+            for (ArticleCode curCode : article.getTaxonomy_oph_koulutus()) {
+                String codeUri = curCode.getSlug().substring(0, curCode.getSlug().lastIndexOf('_'));
+                edVals.add(codeUri);
+            }
         }
         article.setEducationCodes(edVals);
     }
