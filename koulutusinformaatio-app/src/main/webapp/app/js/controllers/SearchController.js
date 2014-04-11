@@ -60,7 +60,7 @@ function SearchFieldCtrl($scope, $location, $route, $rootScope, SearchService, k
 /**
  *  Controller for search filters
  */
-function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, kiAppConstants, FilterService, LanguageService, DistrictService, ChildLocationsService, UtilityService, TranslationService, $modal) {
+function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, kiAppConstants, FilterService, LanguageService, DistrictService, ChildLocationsService, UtilityService, TranslationService, $modal, _) {
 
     $scope.change = function() {
         FilterService.set({
@@ -262,10 +262,10 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     }
 
     $scope.setFilteredLocations = function(value) {
-        angular.forEach(value, function(location) {
+        _.each(value, function(location) {
             if (!$scope.locations) {
                 $scope.locations = [location];
-            } else if ($scope.locations.indexOf(location) < 0) {
+            } else if (_.where($scope.locations, {code: location.code}).length <= 0) {
                 $scope.locations.push(location);
             }
         });
