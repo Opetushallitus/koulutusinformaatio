@@ -425,7 +425,7 @@ angular.module("template/popover/popover.html", []).run(["$templateCache", funct
     "  <div class=\"arrow\"></div>\n" +
     "\n" +
     "  <div class=\"popover-inner\">\n" +
-    "      <span class=\"popover-close\" data-ng-click=\"close()\">&nbsp;</span>" +
+    "      <a href=\"javascript:void(0)\" class=\"popover-close\" data-ki-title=\"popup-close\" data-ng-click=\"close()\"></a>" +
     "      <h2 class=\"popover-title\" data-ng-bind-html=\"title | unsafe\" data-ng-show=\"title\"></h2>\n" +
     "      <div class=\"popover-content\" data-ng-bind-html=\"content | unsafe\"></div>\n" +
     "  </div>\n" +
@@ -439,7 +439,7 @@ angular.module("template/popover/popover-template.html", []).run(["$templateCach
     "  <div class=\"arrow\"></div>\n" +
     "\n" +
     "  <div class=\"popover-inner\">\n" +
-    "      <span class=\"popover-close\" data-ng-click=\"close()\">&nbsp;</span>" +
+    "      <a href=\"javascript:void(0)\" class=\"popover-close\" data-ki-title=\"popup-close\" data-ng-click=\"close()\"></a>" +
     "      <h2 class=\"popover-title\" data-ng-bind=\"title\" ng-show=\"title\"></h2>\n" +
     "      <div class=\"popover-content\"></div>\n" +
     "  </div>\n" +

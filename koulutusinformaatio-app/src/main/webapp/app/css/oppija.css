@@ -1851,7 +1851,6 @@ b, strong, .bold {
         width: 19px;
         height: 17px;
         display: block;
-        color: transparent;
         font-size: 0px; }
 
 .ajax-loader {
@@ -1884,16 +1883,16 @@ b, strong, .bold {
   position: relative;
   bottom: 20px; }
 
-#facetSelections {
+.facetSelections {
   margin-bottom: 1em; }
-  #facetSelections ul {
+  .facetSelections ul {
     margin: 0;
     padding: 0; }
-    #facetSelections ul li {
+    .facetSelections ul li {
       list-style-type: none;
       display: inline-block;
       margin: 0 10px 10px 0; }
-      #facetSelections ul li a.facet-selection {
+      .facetSelections ul li a.facet-selection {
         display: inline-block;
         padding: 0 10px;
         background: #8BCFE3;
@@ -1910,7 +1909,7 @@ b, strong, .bold {
         -o-box-shadow: inset 0px 1px 1px 0px #c1e5f0;
         -ms-box-shadow: inset 0px 1px 1px 0px #c1e5f0;
         box-shadow: inset 0px 1px 1px 0px #c1e5f0; }
-        #facetSelections ul li a.facet-selection:hover {
+        .facetSelections ul li a.facet-selection:hover {
           background: #8bcfe3;
           background: -webkit-gradient(linear, left top, left bottom, from(#55b9d7), to(#8bcfe3));
           background: -webkit-linear-gradient(top, #55b9d7, #8bcfe3);
@@ -1919,9 +1918,9 @@ b, strong, .bold {
           background: -o-linear-gradient(top, #55b9d7, #8bcfe3);
           background: linear-gradient(top, #55b9d7, #8bcfe3);
           cursor: pointer; }
-          #facetSelections ul li a.facet-selection:hover .remove {
+          .facetSelections ul li a.facet-selection:hover .remove {
             background: transparent url("../img/selection-close.png") no-repeat scroll right 0; }
-        #facetSelections ul li a.facet-selection:active {
+        .facetSelections ul li a.facet-selection:active {
           background: #8bcfe3;
           background: -webkit-gradient(linear, left top, left bottom, from(#55b9d7), to(#8bcfe3));
           background: -webkit-linear-gradient(top, #55b9d7, #8bcfe3);
@@ -1934,15 +1933,15 @@ b, strong, .bold {
           -o-box-shadow: inset 0px 1px 1px 0px #3d94ad;
           -ms-box-shadow: inset 0px 1px 1px 0px #3d94ad;
           box-shadow: inset 0px 1px 1px 0px #3d94ad; }
-        #facetSelections ul li a.facet-selection .remove {
+        .facetSelections ul li a.facet-selection .remove {
           width: 10px;
           height: 10px;
           margin: 0 0 0 4px;
           font-size: 0;
           background: transparent url("../img/selection-close.png") no-repeat scroll left 0; }
-        #facetSelections ul li a.facet-selection:hover, #facetSelections ul li a.facet-selection:active {
+        .facetSelections ul li a.facet-selection:hover, .facetSelections ul li a.facet-selection:active {
           color: #333333; }
-      #facetSelections ul li:first-child {
+      .facetSelections ul li:first-child {
         padding-left: 0; }
 
 /*** Form generic
@@ -3213,7 +3212,6 @@ a.cssbutton {
   background-repeat: no-repeat;
   background-position: center center;
   cursor: pointer;
-  color: transparent;
   font-size: 0px; }
 
 /* Pagination styles from twitter bootstrap */

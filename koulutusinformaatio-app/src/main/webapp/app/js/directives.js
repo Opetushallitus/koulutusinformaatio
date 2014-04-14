@@ -904,6 +904,22 @@ directive('kiI18n', ['TranslationService', function(TranslationService) {
     }    
 }]).
 
+/**
+ *  Inserts a title attribute to the element using a translation key
+ */
+directive('kiTitle', ['TranslationService', function(TranslationService) {
+    return {
+        restrict: 'A',
+        scope: false,
+        link: function($scope, element, attrs) {
+            attrs.$observe('kiTitle', function(value) {
+                var translation = TranslationService.getTranslation(value);
+                element.attr('title', translation);
+            });
+        }
+    }
+}]).
+
 /*
 * Set focus to element it is set to.
 * */
