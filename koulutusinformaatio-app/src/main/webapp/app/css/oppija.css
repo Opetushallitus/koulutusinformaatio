@@ -1884,16 +1884,16 @@ b, strong, .bold {
   position: relative;
   bottom: 20px; }
 
-#facetSelections {
+.facetSelections {
   margin-bottom: 1em; }
-  #facetSelections ul {
+  .facetSelections ul {
     margin: 0;
     padding: 0; }
-    #facetSelections ul li {
+    .facetSelections ul li {
       list-style-type: none;
       display: inline-block;
       margin: 0 10px 10px 0; }
-      #facetSelections ul li a.facet-selection {
+      .facetSelections ul li a.facet-selection {
         display: inline-block;
         padding: 0 10px;
         background: #8BCFE3;
@@ -1910,7 +1910,7 @@ b, strong, .bold {
         -o-box-shadow: inset 0px 1px 1px 0px #c1e5f0;
         -ms-box-shadow: inset 0px 1px 1px 0px #c1e5f0;
         box-shadow: inset 0px 1px 1px 0px #c1e5f0; }
-        #facetSelections ul li a.facet-selection:hover {
+        .facetSelections ul li a.facet-selection:hover {
           background: #8bcfe3;
           background: -webkit-gradient(linear, left top, left bottom, from(#55b9d7), to(#8bcfe3));
           background: -webkit-linear-gradient(top, #55b9d7, #8bcfe3);
@@ -1919,9 +1919,9 @@ b, strong, .bold {
           background: -o-linear-gradient(top, #55b9d7, #8bcfe3);
           background: linear-gradient(top, #55b9d7, #8bcfe3);
           cursor: pointer; }
-          #facetSelections ul li a.facet-selection:hover .remove {
+          .facetSelections ul li a.facet-selection:hover .remove {
             background: transparent url("../img/selection-close.png") no-repeat scroll right 0; }
-        #facetSelections ul li a.facet-selection:active {
+        .facetSelections ul li a.facet-selection:active {
           background: #8bcfe3;
           background: -webkit-gradient(linear, left top, left bottom, from(#55b9d7), to(#8bcfe3));
           background: -webkit-linear-gradient(top, #55b9d7, #8bcfe3);
@@ -1934,15 +1934,15 @@ b, strong, .bold {
           -o-box-shadow: inset 0px 1px 1px 0px #3d94ad;
           -ms-box-shadow: inset 0px 1px 1px 0px #3d94ad;
           box-shadow: inset 0px 1px 1px 0px #3d94ad; }
-        #facetSelections ul li a.facet-selection .remove {
+        .facetSelections ul li a.facet-selection .remove {
           width: 10px;
           height: 10px;
           margin: 0 0 0 4px;
           font-size: 0;
           background: transparent url("../img/selection-close.png") no-repeat scroll left 0; }
-        #facetSelections ul li a.facet-selection:hover, #facetSelections ul li a.facet-selection:active {
+        .facetSelections ul li a.facet-selection:hover, .facetSelections ul li a.facet-selection:active {
           color: #333333; }
-      #facetSelections ul li:first-child {
+      .facetSelections ul li:first-child {
         padding-left: 0; }
 
 /*** Form generic
@@ -4220,3 +4220,57 @@ p {
   position: absolute;
   right: 87px;
   top: 2px; }
+
+@font-face {
+  font-family: 'fontello';
+  src: url("../font/fontello.eot?73014415");
+  src: url("../font/fontello.eot?73014415#iefix") format("embedded-opentype"), url("../font/fontello.woff?73014415") format("woff"), url("../font/fontello.ttf?73014415") format("truetype"), url("../font/fontello.svg?73014415#fontello") format("svg");
+  font-weight: normal;
+  font-style: normal; }
+
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: 'fontello';
+    src: url('../font/fontello.svg?73014415#fontello') format('svg');
+  }
+}
+*/
+[class^="icon-"]:before, [class*=" icon-"]:before {
+  font-family: "fontello";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  /* opacity: .8; */
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+  margin-left: .2em;
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */ }
+
+.icon-link-ext:before {
+  content: '\e800'; }
+
+/* '' */
+.icon-link-ext-alt:before {
+  content: '\e801'; }
+
+/* '' */
+.icon-angle-double-right:before {
+  content: '\e802'; }
+
+/* '' */
