@@ -1,0 +1,11 @@
+<div id="articleFacetSelections" class="grid16-16" data-ng-show="areThereArticleFacetSelections()">
+   <ul>
+        <li class="bold padding-left-0"><span data-ki-i18n="valitut-rajaukset" data-show-colon="true"></span></li>
+        <li data-ng-repeat="fs in articleFacetSelections">
+            <a href="javascript:void(0)" data-ng-click="removeArticleFacetSelection(fs)" title="{{locales.closeFacet}}" class="facet-selection">
+                <span data-ki-i18n="{{fs.facetField}}" data-show-colon="true"></span> <span data-ki-i18n="{{fs.valueName}}"></span>
+                <span class="remove" data-ki-i18n="facet-remove"></span>
+            </a>
+        </li>
+    </ul>
+</div>

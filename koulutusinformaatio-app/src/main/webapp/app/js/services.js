@@ -116,6 +116,12 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
                  });
             }
             
+            if (params.articleFacetFilters != undefined) {
+           	 angular.forEach(params.articleFacetFilters, function(facetFilter, key) {
+           		 qParams += '&articleFacetFilters=' + facetFilter;
+                });
+           }
+            
             if (params.excludes != undefined) {
             	angular.forEach(params.excludes, function(exclude, key) {
            		 	qParams += '&excludes=' + exclude;
@@ -1495,7 +1501,8 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
                 sortCriteria: filters.sortCriteria,
                 lopFilter: filters.lopFilter,
                 educationCodeFilter: filters.educationCodeFilter,
-                excludes: filters.excludes
+                excludes: filters.excludes,
+                articleFacetFilters : filters.articleFacetFilters
             };
 
             angular.forEach(result, function(value, key) {
@@ -1587,6 +1594,7 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
             params += filters.lopFilter ? '&lopFilter=' + filters.lopFilter : '';
             params += filters.educationCodeFilter ? '&educationCodeFilter=' + filters.educationCodeFilter : '';
             params += (filters.excludes && filters.excludes.length > 0) ? '&excludes=' + filters.excludes.join('|') : '';
+            params += (filters.articleFacetFilters && filters.articleFacetFilters.length > 0) ? '&articleFacetFilters=' + filters.articleFacetFilters.join(',') : '';
             params = params.length > 0 ? params.substring(1, params.length) : '';
             return params;
         },
@@ -1597,6 +1605,14 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
         		return filters.facetFilters;
         	}
         	return filters.facetFilters;
+        },
+        
+        getArticleFacetFilters: function() {
+        	if (filters.articleFacetFilters != undefined && (typeof filters.articleFacetFilters == 'string' || filters.articleFacetFilters instanceof String)) {
+        		filters.articleFacetFilters = filters.articleFacetFilters.split(',');
+        		return filters.articleFacetFilters;
+        	}
+        	return filters.articleFacetFilters;
         },
         
         getLopFilter: function() {

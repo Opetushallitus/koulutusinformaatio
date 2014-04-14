@@ -42,13 +42,11 @@
              role="tab"
              class="tab" >
             <div role="tabpanel" id="search-panel2" class="panel">
-                <div class="grid16-16 margin-bottom-4">
-                    <!--<h1 class="margin-bottom-0 margin-top-0">
-                        <span data-ki-i18n="search-result-title"></span> &rdquo;{{queryString}}&rdquo; ({{loResult.articleCount}} <span data-ki-i18n="search-result-count-unit"></span>)
-	    			</h1>
-	    			<span data-ki-i18n="search-articles-result-title-description"></span>-->
+            	<div data-ng-include="'partials/search/articles/facet-selections.html'"></div>
+                <div class="grid16-5 margin-bottom-4">
+                    <div data-ng-include="'partials/search/articles/facet-filters.html'"></div>
                 </div>
-                <div class="grid16-16">
+                <div class="grid16-11">
                     <div data-ng-include="'partials/search/articles/search-results.html'"></div>
                 </div>
             </div>

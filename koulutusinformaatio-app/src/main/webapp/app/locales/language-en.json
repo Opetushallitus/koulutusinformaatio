@@ -220,6 +220,7 @@
     "topic_ffm": "Subject",
     "theme_ffm": "Theme",
     "teachingLangCode_ffm": "Language of instruction",
+    "articleContentType_ffm": "Aineistotyyppi (en)",
     "location-rajaus": "Place",
     "facet-remove": "Remove",
     "facet-focus-filter": "Tarkenna rajaustasi (en)",
