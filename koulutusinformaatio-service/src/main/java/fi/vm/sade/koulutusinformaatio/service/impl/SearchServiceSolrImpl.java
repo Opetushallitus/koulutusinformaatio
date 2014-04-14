@@ -154,7 +154,7 @@ public class SearchServiceSolrImpl implements SearchService {
         String[] splits = term.split(" ");
         String fixed = "";
         for (String curSplit : splits) {
-            if (curSplit.length() > 1 || curSplit.equals("*")) {
+            if ((curSplit.length() > 1 || curSplit.equals("*")) && !curSplit.startsWith("&")) {
                 fixed = String.format("%s%s ", fixed, curSplit);
             }
         }

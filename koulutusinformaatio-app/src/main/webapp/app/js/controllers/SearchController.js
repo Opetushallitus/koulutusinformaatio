@@ -402,6 +402,7 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
         $location.search(qParams).replace();
     	//If the language filter is set, the search query is made
     	if ($routeParams.queryString && $scope.isLangFilterSet()) {
+    		
     		SearchLearningOpportunityService.query({
     			queryString: $routeParams.queryString,
     			start: (FilterService.getPage()-1) * $scope.itemsPerPage,

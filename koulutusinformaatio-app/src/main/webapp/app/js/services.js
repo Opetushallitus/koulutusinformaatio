@@ -140,7 +140,7 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
             qParams += (sortField.length > 0) ? ('&sort=' +sortField) : '';
             qParams += ((params.sortCriteria != undefined) && ((params.sortCriteria == 2) || (params.sortCriteria == 4))) ? ('&order=desc') : '';
 
-            $http.get('../lo/search/' + encodeURI(params.queryString) + qParams, {}).
+            $http.get('../lo/search/' + encodeURI(params.queryString).replace("#", "%23").replace(";", "%3B") + qParams, {}).
             success(function(result) {
                 LearningOpportunitySearchResultTransformer.transform(result);
                 var variables = parseFilterValues(params);

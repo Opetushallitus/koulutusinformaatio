@@ -217,6 +217,7 @@
     "valitut-rajaukset": "Valda avgränsningar",
     "facet-opetuskieli": "Avgränsa enligt undervisningsspråk",
     "facet-teemat": "Avgränsa enligt ämne",
+    "facet-aineistotyyppi": "Rajaa aineistotyypin mukaan (sv)",
     "topic_ffm": "Ämne",
     "theme_ffm": "Tema",
     "teachingLangCode_ffm": "Undervisningsspråk",

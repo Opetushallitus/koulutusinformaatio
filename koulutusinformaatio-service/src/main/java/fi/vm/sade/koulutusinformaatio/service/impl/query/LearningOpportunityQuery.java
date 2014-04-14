@@ -6,9 +6,12 @@ import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
+import fi.vm.sade.koulutusinformaatio.service.impl.SearchServiceSolrImpl;
 
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.common.params.DisMaxParams;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +22,8 @@ import java.util.List;
 public class LearningOpportunityQuery extends SolrQuery {
 
     private static final long serialVersionUID = -4340177833703968140L;
+    
+    public static final Logger LOG = LoggerFactory.getLogger(LearningOpportunityQuery.class);
 
     public static final List<String> FIELDS = Lists.newArrayList(
             LearningOpportunity.TEXT_FI,
@@ -83,6 +88,8 @@ public class LearningOpportunityQuery extends SolrQuery {
             String lopFilter, String educationCodeFilter, List<String> excludes, 
             SearchType searchType) {
         super(term);
+        LOG.debug(String.format("Query term: (%s)", term));
+        
         if (prerequisite != null && SearchType.LO.equals(searchType)) {
             this.addFilterQuery(String.format("%s:%s", LearningOpportunity.PREREQUISITES, prerequisite));
         }
