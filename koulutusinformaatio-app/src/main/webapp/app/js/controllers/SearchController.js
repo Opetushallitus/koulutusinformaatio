@@ -279,6 +279,7 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
     var queryParams;
     $scope.selectAreaVisible = false;
     $rootScope.title = TranslationService.getTranslation('title-search-results') + ' - ' + TranslationService.getTranslation('sitename');
+    $rootScope.description = $rootScope.title;
 
     $scope.pageSizes = [25, 50, 100];
 

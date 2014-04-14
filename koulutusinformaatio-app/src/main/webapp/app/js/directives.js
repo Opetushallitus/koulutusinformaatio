@@ -18,8 +18,20 @@ directive('title', ['$rootScope', function($rootScope) {
         link: function(scope, element, attrs) {
             $rootScope.$watch('title', function(value) {
                 document.title = value;
-                //element.text(value);
             });
+        }
+    }
+}]).
+
+directive('meta', ['$rootScope', function($rootScope) {
+    return {
+        restrict: 'E',
+        link: function(scope, element, attrs) {
+            if (attrs.name === 'description') {
+                $rootScope.$watch('description', function(value) {
+                    element.attr('content', value);
+                });
+            }
         }
     }
 }]).

@@ -10,13 +10,15 @@
     <div id="page">
         <div class="grid16-16">
             <div class="buttongroup margin-bottom-4">
-                <#list alphabets as alphabet>
-                    <#if alphabet == letter>
-                    <a href="#" class="button active">${alphabet}</a>
-                    <#else>
+            <#list alphabets as alphabet>
+                <#if alphabet == letter>
+                    <a href="javascript:void(0);" class="button active">${alphabet}</a>
+                <#elseif validCharacters?seq_contains(alphabet)>
                     <a href="../../${alphabet}" class="button">${alphabet}</a>
-                    </#if>
-                </#list>
+                <#else>
+                    <a href="javascript:void(0);" class="button disabled">${alphabet}</a>
+                </#if>
+            </#list>
             </div>
             <div class="clear"></div>
             <h1>${provider}</h1>

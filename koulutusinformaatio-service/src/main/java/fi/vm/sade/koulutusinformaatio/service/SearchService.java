@@ -45,4 +45,12 @@ public interface SearchService {
     List<Location> getChildLocations(List<String> districts, final String lang) throws SearchException;
     SuggestedTermsResult searchSuggestedTerms(String term, String lang) throws SearchException;
     List<ArticleResult> searchArticleSuggestions(String filter, String lang) throws SearchException;
+
+    /**
+     * Returns a list of characters that the providers' names start with.
+     *
+     * @param lang language of provider
+     * @return list of characters
+     */
+    List<String> getProviderFirstCharacterList(String lang) throws SearchException;
 }

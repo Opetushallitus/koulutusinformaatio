@@ -12,9 +12,11 @@
             <div class="buttongroup margin-bottom-4">
             <#list alphabets as alphabet>
                 <#if alphabet == letter>
-                    <a href="#" class="button active">${alphabet}</a>
-                <#else>
+                    <a href="javascript:void(0);" class="button active">${alphabet}</a>
+                <#elseif validCharacters?seq_contains(alphabet)>
                     <a href="${alphabet}" class="button">${alphabet}</a>
+                <#else>
+                    <a href="javascript:void(0);" class="button disabled">${alphabet}</a>
                 </#if>
             </#list>
             </div>

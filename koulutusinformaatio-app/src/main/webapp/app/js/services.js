@@ -403,7 +403,7 @@ service('UpperSecondaryLOService', ['$http', '$timeout', '$q', '$rootScope', 'La
                 ChildLOTransformer.transform(result);
                 var loResult = {
                     lo: result,
-                    parent: {},
+                    //parent: {},
                     provider: result.provider
                 }
                 deferred.resolve(loResult);
@@ -444,7 +444,7 @@ service('HigherEducationLOService', ['$http', '$timeout', '$q', 'LanguageService
             	HigherEducationTransformer.transform(result);
                 var loResult = {
                     lo: result,
-                    parent: {},
+                    //parent: {},
                     provider: result.provider
                 }
                 deferred.resolve(loResult);
@@ -508,7 +508,7 @@ service('HigherEducationPreviewLOService', ['$http', '$timeout', '$q', 'Language
             	}
                 var loResult = {
                     lo: result,
-                    parent: {},
+                    //parent: {},
                     provider: result.provider
                 }
                 deferred.resolve(loResult);
