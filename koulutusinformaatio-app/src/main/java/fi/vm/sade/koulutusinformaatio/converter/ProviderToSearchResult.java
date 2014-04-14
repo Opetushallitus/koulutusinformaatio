@@ -32,22 +32,22 @@ public final class ProviderToSearchResult {
     private ProviderToSearchResult() {
     }
 
-    public static ProviderSearchResult convert(Provider p) {
+    public static ProviderSearchResult convert(final Provider p, final String lang) {
         if (p != null) {
             ProviderSearchResult result = new ProviderSearchResult();
             result.setId(p.getId());
-            result.setName(p.getName().getTranslations().get("fi"));
+            result.setName(ConverterUtil.getTextByLanguageUseFallbackLang(p.getName(), lang));
             return result;
         }
         return null;
     }
 
-    public static List<ProviderSearchResult> convertAll(List<Provider> providers) {
+    public static List<ProviderSearchResult> convertAll(List<Provider> providers, final String lang) {
         if (providers != null) {
             return Lists.transform(providers, new Function<Provider, ProviderSearchResult>() {
                 @Override
                 public ProviderSearchResult apply(Provider input) {
-                    return convert(input);
+                    return convert(input, lang);
                 }
             });
         }

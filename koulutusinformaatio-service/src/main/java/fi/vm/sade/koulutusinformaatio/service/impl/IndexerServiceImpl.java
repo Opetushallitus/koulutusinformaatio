@@ -170,8 +170,12 @@ public class IndexerServiceImpl implements IndexerService {
             SolrInputDocument providerDoc = new SolrInputDocument();
             providerDoc.addField("id", provider.getId());
 
-            providerDoc.addField("name_fi", resolveTextByLang("fi", provider.getName().getTranslations()));
-            providerDoc.addField("name_sv", resolveTextByLang("sv", provider.getName().getTranslations()));
+            String nameFi = resolveTextByLang("fi", provider.getName().getTranslations());
+            providerDoc.addField("name_fi", nameFi);
+            providerDoc.addField("startsWith_fi", nameFi.substring(0, 1).toUpperCase());
+            String nameSv = resolveTextByLang("sv", provider.getName().getTranslations());
+            providerDoc.addField("name_sv", nameSv);
+            providerDoc.addField("startsWith_sv", nameSv.substring(0, 1).toUpperCase());
 
             // check if provider exists and update base education and as id values
             SolrQuery query = new SolrQuery("id:" + provider.getId());

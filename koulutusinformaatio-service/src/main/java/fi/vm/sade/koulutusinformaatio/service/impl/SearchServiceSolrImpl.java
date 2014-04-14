@@ -18,21 +18,21 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
-import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LocationFields;
+import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.*;
-
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.FacetField.Count;
+import org.apache.solr.client.solrj.response.Group;
+import org.apache.solr.client.solrj.response.GroupCommand;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.slf4j.Logger;
@@ -767,6 +767,27 @@ public class SearchServiceSolrImpl implements SearchService {
         }
 
         return result;
+    }
+
+    @Override
+    public List<String> getProviderFirstCharacterList(String lang) throws SearchException {
+        SolrQuery query = new ProviderNameFirstCharactersQuery(lang);
+        QueryResponse response  = null;
+        try {
+             response = lopHttpSolrServer.query(query);
+        } catch (SolrServerException e) {
+            throw new SearchException(e.getMessage());
+        }
+        List<String> characters = Lists.newArrayList();
+        for(GroupCommand gc : response.getGroupResponse().getValues()) {
+            if (gc.getName().startsWith("startsWith")) {
+                for (Group g : gc.getValues()) {
+                    characters.add(g.getGroupValue());
+                }
+                break;
+            }
+        }
+        return characters;
     }
 
 
