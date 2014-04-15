@@ -171,14 +171,14 @@ public class SearchServiceSolrImpl implements SearchService {
             int month = limit.get(Calendar.MONTH) <= 5 ? 5 : 11;
             int dayOfMonth = limit.get(Calendar.MONTH) <= 5 ? 30 : 31;
         
-            limit.set(Calendar.MARCH, month);
+            limit.set(Calendar.MONTH, month);
             limit.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         } else {
             int month = limit.get(Calendar.MONTH) <= 5 ? 11 : 5;
             int year =  limit.get(Calendar.MONTH) <= 5 ? limit.get(Calendar.YEAR) : limit.get(Calendar.YEAR) + 1;
             int dayOfMonth = limit.get(Calendar.MONTH) <= 5 ? 31 : 30;
             
-            limit.set(Calendar.MARCH, month);
+            limit.set(Calendar.MONTH, month);
             limit.set(Calendar.YEAR, year);
             limit.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         }
@@ -653,14 +653,21 @@ public class SearchServiceSolrImpl implements SearchService {
                         LearningOpportunityQuery.APP_STATUS_ONGOING);
                 haunTilaVals.add(facVal);
             } else if (curKey.contains(String.format("NOW TO %s])", upcomingLimit))) {
+                LOG.debug("upcoming limit: " + upcomingLimit);
+                String[] valueName = upcomingLimit.split("-");
+                String kausi = Integer.parseInt(valueName[1]) > 6 ? "fall" : "spring";
+                
                 FacetValue facVal = new FacetValue(LearningOpportunityQuery.APP_STATUS,
-                        LearningOpportunityQuery.APP_STATUS_UPCOMING,
+                        String.format("%s|%s", valueName[0], kausi),//LearningOpportunityQuery.APP_STATUS_UPCOMING,
                         response.getFacetQuery().get(curKey).longValue(),
                         LearningOpportunityQuery.APP_STATUS_UPCOMING);
                 haunTilaVals.add(facVal);
             } else if (curKey.contains(String.format("NOW TO %s])", upcomingLaterLimit))) {
+                LOG.debug("upcoming later limit: " + upcomingLaterLimit);
+                String[] valueName = upcomingLaterLimit.split("-");
+                String kausi = Integer.parseInt(valueName[1]) > 6 ? "fall" : "spring";
                 FacetValue facVal = new FacetValue(LearningOpportunityQuery.APP_STATUS,
-                        LearningOpportunityQuery.APP_STATUS_UPCOMING_LATER,
+                        String.format("%s|%s", valueName[0], kausi),
                         response.getFacetQuery().get(curKey).longValue(),
                         LearningOpportunityQuery.APP_STATUS_UPCOMING_LATER);
                 haunTilaVals.add(facVal);

@@ -541,8 +541,12 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
     		if (fVal.valueId == 'ongoing') {
     			$scope.loResult.ongoingFacet = fVal;
     		} else if (fVal.valueId == 'upcoming') {
+    			fVal.year = fVal.valueName.split("|")[0];
+    			fVal.season = fVal.valueName.split("|")[1];
     			$scope.loResult.upcomingFacet = fVal;
     		} else if (fVal.valueId == 'upcomingLater') {
+    			fVal.year = fVal.valueName.split("|")[0];
+    			fVal.season = fVal.valueName.split("|")[1];
     			$scope.loResult.upcomingLaterFacet = fVal;
     		}
     	});
