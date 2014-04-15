@@ -17,32 +17,33 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
-
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LocationFields;
 import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
 import fi.vm.sade.koulutusinformaatio.domain.Location;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LocationFields;
 import fi.vm.sade.koulutusinformaatio.domain.SuggestedTermsResult;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
-
+import fi.vm.sade.koulutusinformaatio.service.impl.query.ProviderNameFirstCharactersQuery;
+import fi.vm.sade.koulutusinformaatio.service.impl.query.ProviderQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
-import org.apache.solr.client.solrj.response.FacetField;
+import org.apache.solr.client.solrj.response.*;
 import org.apache.solr.client.solrj.response.FacetField.Count;
-import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.SolrParams;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentMatcher;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.*;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -70,7 +71,7 @@ public class SearchServiceSolrImplTest {
         QueryResponse lopQueryResponse = mock(QueryResponse.class);
         when(lopQueryResponse.getResults()).thenReturn(lopDocs);
         lopHttpSolrServer = mock(HttpSolrServer.class);
-        when(lopHttpSolrServer.query((SolrParams)any())).thenReturn(lopQueryResponse);
+        when(lopHttpSolrServer.query(argThat(isProviderQuery()))).thenReturn(lopQueryResponse);
 
         SolrDocumentList loDocs = new SolrDocumentList();
         SolrDocument lo1 = new SolrDocument();
@@ -105,13 +106,25 @@ public class SearchServiceSolrImplTest {
         
         QueryResponse locQueryResponse = mock(QueryResponse.class);
         when(locQueryResponse.getResults()).thenReturn(locDocs);
-        
-        
-        
         loHttpSolrServer = mock(HttpSolrServer.class);
         when(loHttpSolrServer.query((SolrParams)any())).thenReturn(loQueryResponse);
         locationHttpSolrServer = mock(HttpSolrServer.class);
         when(locationHttpSolrServer.query((SolrParams)any())).thenReturn(locQueryResponse);
+
+        Group a = mock(Group.class);
+        when(a.getGroupValue()).thenReturn("A");
+        Group b = mock(Group.class);
+        when(b.getGroupValue()).thenReturn("B");
+        Group c = mock(Group.class);
+        when(c.getGroupValue()).thenReturn("C");
+        GroupCommand gc = mock(GroupCommand.class);
+        when(gc.getName()).thenReturn("startsWith_fi");
+        when(gc.getValues()).thenReturn(Lists.newArrayList(a, b, c));
+        GroupResponse groupResponse = mock(GroupResponse.class);
+        when(groupResponse.getValues()).thenReturn(Lists.newArrayList(gc));
+        QueryResponse firstCharResponse = mock(QueryResponse.class);
+        when(firstCharResponse.getGroupResponse()).thenReturn(groupResponse);
+        when(lopHttpSolrServer.query(argThat(isProviderNameFirstCharactersQuery()))).thenReturn(firstCharResponse);
 
         service = new SearchServiceSolrImpl(lopHttpSolrServer, loHttpSolrServer, locationHttpSolrServer);
     }
@@ -159,7 +172,34 @@ public class SearchServiceSolrImplTest {
         List<Location> locs = service.getChildLocations(Arrays.asList("uusimaa"), "fi");
         assertEquals(1, locs.size());
     }
-    
-    
+
+    @Test
+    public void testGetProviderFirstCharacterList() throws SearchException {
+        List<String> characters = service.getProviderFirstCharacterList("fi");
+        assertNotNull(characters);
+        assertEquals(3, characters.size());
+        assertTrue(characters.contains("A"));
+        assertTrue(characters.contains("B"));
+        assertTrue(characters.contains("C"));
+        assertFalse(characters.contains("D"));
+    }
+
+    private static ArgumentMatcher<SolrParams> isProviderQuery() {
+        return new ArgumentMatcher<SolrParams>() {
+            @Override
+            public boolean matches(Object o) {
+                return o instanceof ProviderQuery;
+            }
+        };
+    }
+
+    private static ArgumentMatcher<SolrParams> isProviderNameFirstCharactersQuery() {
+        return new ArgumentMatcher<SolrParams>() {
+            @Override
+            public boolean matches(Object o) {
+                return o instanceof ProviderNameFirstCharactersQuery;
+            }
+        };
+    }
 
 }

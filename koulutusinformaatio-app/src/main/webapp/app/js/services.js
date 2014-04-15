@@ -403,7 +403,7 @@ service('UpperSecondaryLOService', ['$http', '$timeout', '$q', '$rootScope', 'La
                 ChildLOTransformer.transform(result);
                 var loResult = {
                     lo: result,
-                    parent: {},
+                    //parent: {},
                     provider: result.provider
                 }
                 deferred.resolve(loResult);
@@ -444,7 +444,7 @@ service('HigherEducationLOService', ['$http', '$timeout', '$q', 'LanguageService
             	HigherEducationTransformer.transform(result);
                 var loResult = {
                     lo: result,
-                    parent: {},
+                    //parent: {},
                     provider: result.provider
                 }
                 deferred.resolve(loResult);
@@ -508,7 +508,7 @@ service('HigherEducationPreviewLOService', ['$http', '$timeout', '$q', 'Language
             	}
                 var loResult = {
                     lo: result,
-                    parent: {},
+                    //parent: {},
                     provider: result.provider
                 }
                 deferred.resolve(loResult);
@@ -1406,7 +1406,7 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
 /**
  *  Service for maintaining search filter state
  */
-service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'kiAppConstants', function($q, $http, UtilityService, LanguageService, kiAppConstants) {
+service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'kiAppConstants', '_', function($q, $http, UtilityService, LanguageService, kiAppConstants, _) {
     var filters = {};
 
     var filterIsEmpty = function(filter) {
@@ -1449,7 +1449,7 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
             var deferred = $q.defer();
 
             var codes = ''
-            var locationCodes = (queryParams.locations && typeof queryParams.locations == 'string') ? UtilityService.getStringAsArray(queryParams.locations) : getLocationCodes();
+            var locationCodes = (queryParams.locations && typeof queryParams.locations == 'string') ? UtilityService.getStringAsArray(queryParams.locations) : queryParams.locations || [];
 
             angular.forEach(locationCodes, function(value, key){
                 codes += '&code=' + value;

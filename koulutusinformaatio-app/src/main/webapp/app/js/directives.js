@@ -4,6 +4,8 @@ angular.module('kiApp.directives',
     [
         'kiApp.Navigation',
         'kiApp.FacetTree',
+        'kiApp.KeyboardControl',
+        'kiApp.SelectAreaDialog',
         'angularTreeview',
         'kiApp.directives.AppBasket']).
 
@@ -16,8 +18,20 @@ directive('title', ['$rootScope', function($rootScope) {
         link: function(scope, element, attrs) {
             $rootScope.$watch('title', function(value) {
                 document.title = value;
-                //element.text(value);
             });
+        }
+    }
+}]).
+
+directive('meta', ['$rootScope', function($rootScope) {
+    return {
+        restrict: 'E',
+        link: function(scope, element, attrs) {
+            if (attrs.name === 'description') {
+                $rootScope.$watch('description', function(value) {
+                    element.attr('content', value);
+                });
+            }
         }
     }
 }]).
@@ -352,16 +366,10 @@ directive('kiAbsoluteLink', function() {
         link: function(scope, element, attrs) {
 
             scope.add = function() {
-                if (!scope.$parent.locations) {
-                    scope.$parent.locations = [];
-                }
-
-                if (scope.location && scope.$parent.locations.indexOf(scope.location) < 0) {
-                    scope.$parent.locations.push(scope.location);
-                    scope.location = '';
-                    scope.change();
-                    return false;
-                }
+                scope.setFilteredLocations([scope.location]);
+                scope.location = '';
+                scope.change();
+                return false;
             }
 
             scope.getLocations = function($viewValue) {
@@ -906,6 +914,22 @@ directive('kiI18n', ['TranslationService', function(TranslationService) {
             }
         }
     }    
+}]).
+
+/**
+ *  Inserts a title attribute to the element using a translation key
+ */
+directive('kiTitle', ['TranslationService', function(TranslationService) {
+    return {
+        restrict: 'A',
+        scope: false,
+        link: function($scope, element, attrs) {
+            attrs.$observe('kiTitle', function(value) {
+                var translation = TranslationService.getTranslation(value);
+                element.attr('title', translation);
+            });
+        }
+    }
 }]).
 
 /*

@@ -1,17 +1,20 @@
-<div class="application-container">
+<div class="application-container margin-bottom-4">
 	<h3 class="title"><span data-ki-i18n="katso-myos"></span></h3>
 	<div class="content">
 		<!-- PREVIEW EXCLUDE -->
-		<ul data-ng-if="!lo.preview">
+		<ul class="nobullet" data-ng-if="!lo.preview">
 			<li>
+				<i class="icon-angle-double-right"></i>
 				<a data-ng-href="#!/haku/*?page=1&facetFilters=teachingLangCode_ffm:{{lo.translationLanguage.toUpperCase()}}&lopFilter={{lo.provider.name}}&excludes=-id:{{lo.id}}&itemsPerPage=25&sortCriteria=0&tab=los">
 					<span data-ki-i18n="tarjoajan"></span> {{lo.provider.name}} <span data-ki-i18n="muita-koulutuksia"></span> </a>
 			</li>
 			<li>
+				<i class="icon-angle-double-right"></i>
 				<a data-ng-href="#!/haku/*?page=1&facetFilters=teachingLangCode_ffm:{{lo.translationLanguage.toUpperCase()}}&educationCodeFilter={{lo.educationCode}}&excludes={{lopExclField}}:{{lo.provider.name}}&itemsPerPage=25&sortCriteria=0&tab=los">
 					{{lo.educationCode}} <span data-ki-i18n="muualla"></span> </a>
 			</li>
 			<li data-ng-repeat="theme in lo.themes">
+				<i class="icon-angle-double-right"></i>
 				<a data-ng-href="#!/haku/*?page=1&facetFilters=teachingLangCode_ffm:{{lo.translationLanguage.toUpperCase()}}&facetFilters=theme_ffm:{{theme.uri}}&facetFilters=educationType_ffm:{{lo.educationType}}&excludes={{lopExclField}}:{{lo.provider.name}}&itemsPerPage=25&sortCriteria=0&tab=los">
 					{{theme.description}} <span data-ki-i18n="mukainen-koulutus-muualla"></span> </a>
 			</li>
@@ -33,16 +36,18 @@
 		<!-- END PREVIEW -->
 	</div>
 </div>
-<div class="application-container">
+<div class="application-container margin-bottom-4">
 	<h3 class="title"><span data-ki-i18n="lue-lisaa"></span></h3>
 	<div class="content">
 		<!-- PREVIEW EXCLUDE -->
-		<ul data-ng-if="!lo.preview">
+		<ul class="nobullet" data-ng-if="!lo.preview">
 			<li data-ng-repeat="article in lo.edCodeSuggestions">
+				<i class="icon-angle-double-right"></i>
 				<a data-ng-href="{{article.url}}">
 					{{article.title}} </a>
 			</li>
 			<li data-ng-repeat="article in lo.edTypeSuggestions">
+				<i class="icon-angle-double-right"></i>
 				<a data-ng-href="{{article.url}}">
 					{{article.title}} </a>
 			</li>

@@ -16,9 +16,12 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
+
+import java.util.List;
 
 /**
  * @author Mikko Majapuro
@@ -60,5 +63,15 @@ public final class ProviderToDTO {
             return p;
         }
         return null;
+    }
+
+    public static List<LearningOpportunityProviderDTO> convertAll(final List<Provider> providers, final String lang,
+                                                                  final String defaultLang, final String uiLang) {
+        return Lists.transform(providers, new Function<Provider, LearningOpportunityProviderDTO>() {
+            @Override
+            public LearningOpportunityProviderDTO apply(Provider input) {
+                return convert(input, lang, defaultLang, uiLang);
+            }
+        });
     }
 }
