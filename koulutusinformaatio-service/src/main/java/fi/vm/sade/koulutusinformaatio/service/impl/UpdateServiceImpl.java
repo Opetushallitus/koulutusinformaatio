@@ -29,6 +29,10 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+<<<<<<< HEAD
+=======
+import java.util.Arrays;
+>>>>>>> KSH-409
 import java.util.Date;
 import java.util.List;
 
@@ -83,14 +87,11 @@ public class UpdateServiceImpl implements UpdateService {
             int count = MAX_RESULTS;
             int index = 0;
 
-            /*while (count >= MAX_RESULTS) {
+            while (count >= MAX_RESULTS) {
             LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
             List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
             count = loOids.size();
-            index += count;*/  
-            
-            List<String> loOids = new ArrayList<String>();
-
+            index += count;
                 for (String loOid : loOids) {
                     List<LOS> specifications = null;
                     try {
@@ -105,7 +106,7 @@ public class UpdateServiceImpl implements UpdateService {
                         this.educationDataUpdateService.save(spec);
                     }
                 }
-            //}
+            }
 
             List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
             LOG.debug("Found higher educations: " + higherEducations.size());

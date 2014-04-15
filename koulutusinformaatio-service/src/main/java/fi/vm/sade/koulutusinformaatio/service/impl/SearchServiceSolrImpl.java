@@ -158,7 +158,7 @@ public class SearchServiceSolrImpl implements SearchService {
         String[] splits = term.split(" ");
         String fixed = "";
         for (String curSplit : splits) {
-            if (curSplit.length() > 1 || curSplit.equals("*")) {
+            if ((curSplit.length() > 1 || curSplit.equals("*")) && !curSplit.startsWith("&")) {
                 fixed = String.format("%s%s ", fixed, curSplit);
             }
         }
@@ -191,7 +191,7 @@ public class SearchServiceSolrImpl implements SearchService {
 
     @Override
     public LOSearchResultList searchLearningOpportunities(String term, String prerequisite,
-            List<String> cities, List<String> facetFilters,  
+            List<String> cities, List<String> facetFilters,  List<String> articleFilters,
             String lang, boolean ongoing, boolean upcoming, boolean upcomingLater,
             int start, int rows, String sort, String order, 
             String lopFilter, String educationCodeFilter,
@@ -205,7 +205,7 @@ public class SearchServiceSolrImpl implements SearchService {
             String upcomingLaterLimit = getDateLimitStr(true);
             
             SolrQuery query = new LearningOpportunityQuery(fixed, prerequisite, 
-                    cities, facetFilters, 
+                    cities, facetFilters, articleFilters,
                     lang, ongoing, upcoming, 
                     upcomingLater, 
                     start, rows, sort, order,
@@ -245,6 +245,9 @@ public class SearchServiceSolrImpl implements SearchService {
             
             if (SearchType.LO.equals(searchType)) {
                 addFacetsToResult(searchResultList, response, lang, facetFilters, upcomingLimit, upcomingLaterLimit);
+
+            } else {
+                addArticleFacetsToResult(searchResultList, response, lang, articleFilters);
             }
             
             if (lopFilter != null) {
@@ -256,11 +259,11 @@ public class SearchServiceSolrImpl implements SearchService {
             
             //Setting result counts of other searches (one of article, provider or lo)
             if (searchType.LO.equals(searchType)) {
-                setOtherResultCounts(fixed, lang, start, sort, order, cities, facetFilters, ongoing, upcoming, upcomingLater,
+                setOtherResultCounts(fixed, lang, start, sort, order, cities, facetFilters, articleFilters,  ongoing, upcoming, upcomingLater,
                                      lopFilter, educationCodeFilter, excludes, SearchType.ARTICLE, searchResultList, 
                                      upcomingLimit, upcomingLaterLimit);
             } else if (SearchType.ARTICLE.equals(searchType)) {
-                setOtherResultCounts(fixed, lang, start, sort, order, cities, facetFilters, ongoing, upcoming, upcomingLater, 
+                setOtherResultCounts(fixed, lang, start, sort, order, cities, facetFilters, articleFilters, ongoing, upcoming, upcomingLater, 
                                      lopFilter, educationCodeFilter, excludes, SearchType.LO, searchResultList,
                                      upcomingLimit, upcomingLaterLimit);
             }
@@ -273,10 +276,9 @@ public class SearchServiceSolrImpl implements SearchService {
         return searchResultList;
     }
 
-
     private void setOtherResultCounts(String term, String lang, int start,
             String sort, String order, List<String> cities, 
-            List<String> facetFilters, 
+            List<String> facetFilters, List<String> articleFilters,
             boolean ongoing, boolean upcoming, boolean upcomingLater,
             String lopFilter, String educationCodeFilter, List<String> excludes,
             SearchType searchType, LOSearchResultList searchResultList,
@@ -287,7 +289,7 @@ public class SearchServiceSolrImpl implements SearchService {
         }*/
         
         SolrQuery query = new LearningOpportunityQuery(term, null, 
-                cities, facetFilters, 
+                cities, facetFilters, articleFilters,
                 lang, ongoing, upcoming, upcomingLater, 
                 start, 0, sort, order,
                 lopFilter, educationCodeFilter, excludes, searchType,
@@ -459,6 +461,28 @@ public class SearchServiceSolrImpl implements SearchService {
             resultList.add(lo);
         }
         return resultList;
+    }
+    
+    private void addArticleFacetsToResult(LOSearchResultList searchResultList,
+            QueryResponse response, String lang, List<String> articleFilters) {
+        FacetField articleContentTypeF = response.getFacetField(LearningOpportunity.ARTICLE_CONTENT_TYPE);
+        Facet articleContentTypeFacet = new Facet();
+        List<FacetValue> values = new ArrayList<FacetValue>();
+        if (articleContentTypeF != null) {
+            for (Count curC : articleContentTypeF.getValues()) {
+
+
+                FacetValue newVal = new FacetValue(LearningOpportunity.ARTICLE_CONTENT_TYPE,
+                        curC.getName(),
+                        curC.getCount(),
+                        curC.getName());
+                values.add(newVal);
+
+            }
+        }
+        articleContentTypeFacet.setFacetValues(values);
+        searchResultList.setArticleContentTypeFacet(articleContentTypeFacet);
+        
     }
 
     /*

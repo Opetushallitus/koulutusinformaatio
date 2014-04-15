@@ -10,6 +10,7 @@ import org.springframework.core.convert.converter.Converter;
 
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.Article;
+import fi.vm.sade.koulutusinformaatio.domain.ArticleTag;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.service.impl.ArticleServiceImpl;
 
@@ -51,6 +52,10 @@ public class ArticleToSolrInputDocument implements Converter<Article, List<SolrI
         
         for (String curCode : article.getEducationCodes()) {
             doc.addField(LearningOpportunity.ARTICLE_EDUCATION_CODE, curCode);
+        }
+        
+        for (ArticleTag curTag : article.getTags()) {
+            doc.addField(LearningOpportunity.ARTICLE_CONTENT_TYPE, curTag.getTitle());
         }
         
         indexLangFields(article, doc, lang);

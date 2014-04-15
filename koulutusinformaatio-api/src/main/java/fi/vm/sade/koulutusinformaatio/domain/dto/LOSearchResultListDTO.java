@@ -36,6 +36,7 @@ public class LOSearchResultListDTO {
     private FacetDTO edTypeFacet;
     private FacetDTO prerequisiteFacet;
     private FacetDTO topicFacet;
+    private FacetDTO articleContentTypeFacet;
     private FacetValueDTO lopRecommendationFilter;
     private long loCount;
     private long articleCount;
@@ -157,5 +158,13 @@ public class LOSearchResultListDTO {
 
     public void setOrgCount(long orgCount) {
         this.orgCount = orgCount;
+    }
+
+    public FacetDTO getArticleContentTypeFacet() {
+        return articleContentTypeFacet;
+    }
+
+    public void setArticleContentTypeFacet(FacetDTO articleContentTypeFacet) {
+        this.articleContentTypeFacet = articleContentTypeFacet;
     }
 }

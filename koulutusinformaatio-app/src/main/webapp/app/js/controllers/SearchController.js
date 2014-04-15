@@ -416,6 +416,7 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
         $location.search(qParams).replace();
     	//If the language filter is set, the search query is made
     	if ($routeParams.queryString && $scope.isLangFilterSet()) {
+    		
     		SearchLearningOpportunityService.query({
     			queryString: $routeParams.queryString,
     			start: (FilterService.getPage()-1) * $scope.itemsPerPage,
@@ -562,8 +563,43 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
     }
 };
 
-function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, ArticleContentSearchService, FilterService, SearchLearningOpportunityService, LanguageService, TranslationService) {
-    $scope.currentPage = 1;
+function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, ArticleContentSearchService, FilterService, SearchLearningOpportunityService, LanguageService, kiAppConstants, TranslationService) {
+    
+	$scope.change = function() {
+        FilterService.set({
+            prerequisite: $scope.prerequisite,
+            locations: $scope.locations,
+            ongoing: $scope.ongoing,
+            upcoming: $scope.upcoming,
+            page: kiAppConstants.searchResultsStartPage,
+            articlePage: kiAppConstants.searchResultsStartPage,
+            facetFilters: $scope.facetFilters,
+            langCleared: $scope.langCleared,
+            itemsPerPage: $scope.itemsPerPage,
+            sortCriteria: $scope.sortCriteria,
+            lopFilter: $scope.lopFilter,
+            educationCodeFilter: $scope.educationCodeFilter,
+            excludes: $scope.excludes,
+            articleFacetFilters: $scope.articleFacetFilters
+        });
+        
+        if ($scope.lopFilter != undefined) {
+        	$scope.lopRecommendation = true;
+        } else {
+        	$scope.lopRecommendation = false;
+        }
+        
+        if ($scope.educationCodeFilter != undefined) {
+        	$scope.educationCodeRecommendation = true;
+        } else {
+        	$scope.educationCodeRecommendation = false;
+        }
+
+        // append filters to url and reload
+        $scope.refreshArticleView();
+    }
+	
+	$scope.currentPage = 1;
     $scope.showPagination = false;
 
     $scope.changePage = function(page) {
@@ -622,6 +658,7 @@ function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, 
                 $scope.lopFilter = FilterService.getLopFilter();
                 $scope.educationCodeFilter = FilterService.getEducationCodeFilter();
                 $scope.excludes = FilterService.getExcludes();
+                $scope.articleFacetFilters = FilterService.getArticleFacetFilters();
 
                 $scope.doArticleSearching();
             });
@@ -647,6 +684,7 @@ function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, 
 			lopFilter: FilterService.getLopFilter(),
 		    educationCodeFilter: FilterService.getEducationCodeFilter(),
 		    excludes : FilterService.getExcludes(),
+		    articleFacetFilters : FilterService.getArticleFacetFilters(),
 		    searchType : 'ARTICLE'
 		}).then(function(result) {
 			
@@ -673,6 +711,7 @@ function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, 
 				$scope.tabTitles.queryString = $routeParams.queryString;
 				$scope.tabTitles.totalCount = $scope.loResult.totalCount;
 				$rootScope.tabChangeable = true;
+				$scope.populateArticleFacetSelections();
 			}
 		});
         
@@ -681,6 +720,62 @@ function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, 
     $scope.refreshArticleView = function() {
         $location.search(FilterService.get()).replace();
         $scope.initSearch();
+    }
+    
+    $scope.isArticleFacetSelected = function(fv) {
+    	var isSelected = false;
+    	for (var i = 0; i < $scope.articleFacetSelections.length; i++) {
+    		if (($scope.articleFacetSelections[i].facetField == fv.facetField)
+    				&& ($scope.articleFacetSelections[i].valueId == fv.valueId)) {
+    			isSelected = true;
+    		}
+    	}
+    	return isSelected;
+    }
+    
+    $scope.selectArticleFacetFilter = function(selection, facetField) {
+    	if ($scope.articleFacetFilters != undefined) {
+    		$scope.articleFacetFilters.push(facetField +':'+ selection);
+    	} else {
+    		$scope.articleFacetFilters = [];
+    		$scope.articleFacetFilters.push(facetField +':'+selection);
+    	}
+
+    	$scope.change();
+    }
+
+    $scope.removeArticleFacetSelection = function(facetSelection) {
+
+    	var tempFilters = [];
+    	angular.forEach($scope.articleFacetFilters, function(value, index) {
+    		var curVal = value.split(':')[1];
+    		var curField = value.split(':')[0];
+    		if ((curField != facetSelection.facetField) 
+    				|| (curVal != facetSelection.valueId)) {
+    			tempFilters.push(value);
+    		}
+    	});
+
+    	$scope.articleFacetFilters = tempFilters;
+    	$scope.change();
+    }
+    
+    $scope.areThereArticleFacetSelections = function() {
+    	return (($scope.articleFacetSelections != undefined) && ($scope.articleFacetSelections.length > 0));
+    }
+    
+    $scope.populateArticleFacetSelections = function() {
+    	$scope.articleFacetSelections = [];
+    	$scope.articleFacetFilters = FilterService.getArticleFacetFilters();
+    	angular.forEach($scope.articleFacetFilters, function(fFilter, key) {
+    		var curSelection = {
+    							facetField: fFilter.split(':')[0], 
+    							valueId: fFilter.split(':')[1],
+    							valueName: fFilter.split(':')[1]
+    							};
+    		$scope.articleFacetSelections.push(curSelection);
+    	});
+    	
     }
 
 };
