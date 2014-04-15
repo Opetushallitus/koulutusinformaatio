@@ -68,6 +68,7 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
             locations: $scope.locations,
             ongoing: $scope.ongoing,
             upcoming: $scope.upcoming,
+            upcomingLater: $scope.upcomingLater,
             page: kiAppConstants.searchResultsStartPage,
             articlePage: kiAppConstants.searchResultsStartPage,
             facetFilters: $scope.facetFilters,
@@ -202,6 +203,7 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     	 		|| ((locations != undefined) &&  (locations.length > 0))
     	 		|| $scope.ongoing
     	 		|| $scope.upcoming
+    	 		|| $scope.upcomingLater
     	 		|| $scope.lopRecommendation
     	 		|| $scope.educationCodeRecommendation;
     }
@@ -227,8 +229,18 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     	$scope.change();
     }
     
+    $scope.setUpcomingLater = function() {
+    	$scope.upcomingLater = true;
+    	$scope.change();
+    }
+    
     $scope.removeUpcoming = function() {
     	$scope.upcoming = false;
+    	$scope.change();
+    }
+    
+    $scope.removeUpcomingLater = function() {
+    	$scope.upcomingLater = false;
     	$scope.change();
     }
     
@@ -352,6 +364,7 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
                 $scope.locations = FilterService.getLocations();
                 $scope.ongoing = FilterService.isOngoing();
                 $scope.upcoming = FilterService.isUpcoming();
+                $scope.upcomingLater = FilterService.isUpcomingLater();
                 $scope.facetFilters = FilterService.getFacetFilters();
                 $scope.langCleared = FilterService.getLangCleared();
                 $scope.itemsPerPage = FilterService.getItemsPerPage();
@@ -411,6 +424,7 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
     			locations: FilterService.getLocationNames(),
     			ongoing: FilterService.isOngoing(),
     			upcoming: FilterService.isUpcoming(),
+    			upcomingLater: FilterService.isUpcomingLater(),
     			facetFilters: FilterService.getFacetFilters(),
                 sortCriteria: FilterService.getSortCriteria(),
     			lang: LanguageService.getLanguage(),
@@ -478,6 +492,7 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
     			locations: $scope.locations,
     			ongoing: $scope.ongoing,
     			upcoming: $scope.upcoming,
+    			upcomingLater: $scope.upcomingLater,
     			page: kiAppConstants.searchResultsStartPage,
     			facetFilters: facetFiltersArr.join()
     		});
@@ -527,6 +542,8 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
     			$scope.loResult.ongoingFacet = fVal;
     		} else if (fVal.valueId == 'upcoming') {
     			$scope.loResult.upcomingFacet = fVal;
+    		} else if (fVal.valueId == 'upcomingLater') {
+    			$scope.loResult.upcomingLaterFacet = fVal;
     		}
     	});
     	
@@ -592,6 +609,7 @@ function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, 
                 $scope.locations = FilterService.getLocations();
                 $scope.ongoing = FilterService.isOngoing();
                 $scope.upcoming = FilterService.isUpcoming(),
+                $scope.upcomingLater = FilterService.isUpcomingLater(),
                 $scope.langCleared = FilterService.getLangCleared();
                 $scope.itemsPerPage = FilterService.getItemsPerPage();
                 $scope.sortCriteria = FilterService.getSortCriteria();
@@ -618,6 +636,7 @@ function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, 
 			locations: FilterService.getLocationNames(),
 			ongoing: FilterService.isOngoing(),
 			upcoming: FilterService.isUpcoming(),
+			upcomingLater: FilterService.isUpcomingLater(),
 			facetFilters: $scope.resolveFacetFilters(),
             sortCriteria: FilterService.getSortCriteria(),
 			lang: LanguageService.getLanguage(),

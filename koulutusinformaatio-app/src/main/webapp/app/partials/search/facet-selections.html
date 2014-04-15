@@ -13,6 +13,12 @@
                 <span class="remove" data-ki-i18n="facet-remove"></span>
             </a>
         </li>
+        <li data-ng-show="upcomingLater">
+            <a href="javascript:void(0)" data-ng-click="removeUpcomingLater()" class="facet-selection">
+                <span data-ki-i18n="haun-tila"></span>: <span data-ki-i18n="filter-search-as-upcoming-later"></span>
+                <span class="remove" data-ki-i18n="facet-remove"></span>
+            </a>
+        </li>
         <li data-ng-show="lopRecommendation">
             <a href="javascript:void(0)" data-ng-click="removeLopRecommendation()" class="facet-selection">
                 <span data-ki-i18n="tarjoaja"></span>: {{lopFilter}}

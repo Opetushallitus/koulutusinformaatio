@@ -29,6 +29,14 @@
                     <span data-ki-i18n="filter-search-as-upcoming"></span><a title="{{locales.removeFacet}}" href="javascript:void(0)" class="remove" data-ng-click="removeUpcoming()"></a>
                 </span>
             </li>
+            <li data-ng-show="loResult.upcomingLaterFacet">
+                <span data-ng-show="!upcomingLater && loResult.upcomingLaterFacet.count > 0" class="facet-item">
+                    <a href="javascript:void(0)" data-ng-click="setUpcomingLater()"><span data-ki-i18n="filter-search-as-upcoming-later"></span> ({{loResult.upcomingLaterFacet.count}})</a>
+                </span>
+                <span data-ng-show="upcomingLater && loResult.upcomingLaterFacet.count > 0" class="facet-item selected">
+                    <span data-ki-i18n="filter-search-as-upcoming-later"></span><a title="{{locales.removeFacetLater}}" href="javascript:void(0)" class="remove" data-ng-click="removeUpcomingLater()"></a>
+                </span>
+            </li>
         </ul>
     </div>
 </div>

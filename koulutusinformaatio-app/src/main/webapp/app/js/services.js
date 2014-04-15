@@ -18,6 +18,7 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
             var result = 0;
             result = params.ongoing ? result + 1 : result;
             result = params.upcoming ? result + 1 : result;
+            result = params.upcomingLater ? result + 1 : result;
 
             return result;
         }
@@ -105,6 +106,7 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
             qParams += (params.locations != undefined && params.locations.length > 0) ? ('&' + cities) : '';
             qParams += (params.ongoing != undefined) ? ('&ongoing=' + params.ongoing) : '';
             qParams += (params.upcoming != undefined) ? ('&upcoming=' + params.upcoming) : '';
+            qParams += (params.upcomingLater != undefined) ? ('&upcomingLater=' + params.upcomingLater) : '';
             qParams += (params.lang != undefined) ? ('&lang=' + params.lang) : '';
             qParams += (params.lopFilter != undefined) ? ('&lopFilter=' + params.lopFilter) : '';
             qParams += (params.educationCodeFilter != undefined) ? ('&educationCodeFilter=' + params.educationCodeFilter) : '';
@@ -1487,6 +1489,7 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
                 locations: getLocationCodes(),
                 ongoing: filters.ongoing,
                 upcoming: filters.upcoming,
+                upcomingLater: filters.upcomingLater,
                 page: filters.page,
                 articlePage: filters.articlePage,
                 facetFilters: filters.facetFilters,
@@ -1524,6 +1527,10 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
         
         isUpcoming: function() {
             return filters.upcoming;
+        },
+        
+        isUpcomingLater: function() {
+            return filters.upcomingLater;
         },
 
         getLocations: function() {
@@ -1579,6 +1586,7 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
             params += (filters.locations && filters.locations.length > 0) ? '&locations=' + getLocationCodes().join(',') : '';
             params += filters.ongoing ? '&ongoing' : '';
             params += filters.upcoming ? '&upcoming' : '';
+            params += filters.upcomingLater ? '&upcomingLater' : '';
             params += filters.page ? '&page=' + filters.page : '';
             params += (filters.facetFilters && filters.facetFilters.length > 0) ? '&facetFilters=' + filters.facetFilters.join(',') : '';
             params += filters.langCleared ? '&langCleared=' + filters.langCleared : '';

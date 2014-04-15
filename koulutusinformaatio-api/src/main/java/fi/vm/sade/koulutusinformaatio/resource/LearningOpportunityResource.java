@@ -47,6 +47,7 @@ public interface LearningOpportunityResource {
                                                              @QueryParam("lang") String lang,
                                                              @DefaultValue(value = "false") @QueryParam("ongoing") boolean ongoing,
                                                              @DefaultValue(value = "false") @QueryParam("upcoming") boolean upcoming,
+                                                             @DefaultValue(value = "false") @QueryParam("upcomingLater") boolean upcomingLater,
                                                              @DefaultValue(value = "0") @QueryParam("start") int start,
                                                              @DefaultValue(value = "100") @QueryParam("rows") int rows,
                                                              @QueryParam("sort") String sort, 
