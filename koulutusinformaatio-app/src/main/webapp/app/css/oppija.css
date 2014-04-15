@@ -2751,6 +2751,9 @@ a.button {
     -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#bf8a02,endColorstr=#e3a300,GradientType=0);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#bf8a02,endColorstr=#e3a300,GradientType=0);
     box-shadow: none; }
+  .buttongroup .button:disabled, .buttongroup .button.disabled {
+    background: #ffeba2;
+    color: #888888; }
   .buttongroup .button:first-child {
     border-top-left-radius: 3px;
     border-bottom-left-radius: 3px; }
