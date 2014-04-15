@@ -31,6 +31,8 @@ public class ParentLearningOpportunitySpecificationEntity {
     @Embedded
     private I18nTextEntity name;
     @Embedded
+    private I18nTextEntity shortName;
+    @Embedded
     private String educationDegree;
     @Indexed
     @Reference
@@ -73,6 +75,14 @@ public class ParentLearningOpportunitySpecificationEntity {
 
     public void setName(I18nTextEntity name) {
         this.name = name;
+    }
+
+    public I18nTextEntity getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(I18nTextEntity shortName) {
+        this.shortName = shortName;
     }
 
     public String getEducationDegree() {

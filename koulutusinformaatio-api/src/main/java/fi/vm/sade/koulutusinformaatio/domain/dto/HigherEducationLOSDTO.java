@@ -83,6 +83,11 @@ public class HigherEducationLOSDTO {
     
     private List<CodeDTO> topics;
     private List<CodeDTO> themes;
+    
+    private List<ArticleResultDTO> edCodeSuggestions = new ArrayList<ArticleResultDTO>();
+    private List<ArticleResultDTO> edTypeSuggestions = new ArrayList<ArticleResultDTO>();
+    private String educationType;
+    
 
     public String getId() {
         return id;
@@ -462,6 +467,29 @@ public class HigherEducationLOSDTO {
     }
     public void setThemes(List<CodeDTO> themes) {
         this.themes = themes;
+    }
+
+    public List<ArticleResultDTO> getEdCodeSuggestions() {
+        return edCodeSuggestions;
+    }
+
+    public void setEdCodeSuggestions(List<ArticleResultDTO> edCodeSuggestions) {
+        this.edCodeSuggestions = edCodeSuggestions;
+    }
+
+    public List<ArticleResultDTO> getEdTypeSuggestions() {
+        return edTypeSuggestions;
+    }
+
+    public void setEdTypeSuggestions(List<ArticleResultDTO> edTypeSuggestions) {
+        this.edTypeSuggestions = edTypeSuggestions;
+    }
+
+    public String getEducationType() {
+        return educationType;
+    }
+    public void setEducationType(String educationType) {
+        this.educationType = educationType;
     }
 
 }

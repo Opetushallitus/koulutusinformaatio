@@ -180,7 +180,7 @@ public class IndexerServiceImplTest {
         provider.setId("123");
         provider.setName(TestUtil.createI18nText("LOP name fi", "LOP name sv", "LOP name en"));
         Address address = new Address();
-        address.setPostOffice("Helsinki");
+        address.setPostOffice(TestUtil.createI18nText("Helsinki"));
         provider.setVisitingAddress(address);
         provider.setDescription(TestUtil.createI18nText("LOP description fi", "LOP description sv", "LOP description en"));
         provider.setHomePlace(TestUtil.createI18nText("homeplace fi", "homeplace sv", "homeplace en"));
@@ -208,8 +208,8 @@ public class IndexerServiceImplTest {
 
         ChildLOS childLOS1 = new ChildLOS();
         childLOS1.setId("childLOS1_id");
-        childLOS1.setName(TestUtil.createI18nText("child los name fi", "child los name sv", "child los name en",
-                "child los name short fi", "child los name short sv", "child los name short en"));
+        childLOS1.setName(TestUtil.createI18nText("child los name fi", "child los name sv", "child los name en"));
+        childLOS1.setShortName(TestUtil.createI18nText("child los name short fi", "child los name short sv", "child los name short en"));
         childLOS1.setQualification(TestUtil.createI18nText("Qualification fi", "Qualification sv", "Qualification en"));
         childLOS1.setGoals(TestUtil.createI18nText("Degree goal fi", "Degree goal sv", "Degree goal en"));
 

@@ -79,7 +79,7 @@ public final class SolrUtil {
      */
     public static void indexCodeAsFacetDoc(Code code, List<SolrInputDocument> docs, boolean useValueAsId) {
         SolrInputDocument doc = new SolrInputDocument();
-        doc.addField(LearningOpportunity.ID, useValueAsId ? code.getValue() : code.getUri());
+        doc.addField(LearningOpportunity.ID, useValueAsId ? code.getValue().trim() : code.getUri().trim());
         doc.addField(LearningOpportunity.TYPE, TYPE_FACET);
         doc.addField(LearningOpportunity.FI_FNAME, resolveTextWithFallback("fi", code.getName().getTranslations()));
         doc.addField(LearningOpportunity.SV_FNAME, resolveTextWithFallback("sv", code.getName().getTranslations()));
@@ -179,6 +179,9 @@ public final class SolrUtil {
         public static final String ARTICLE_NAME_INDEX_FI = "article_name_fi_ssort";
         public static final String ARTICLE_NAME_INDEX_SV = "article_name_sv_ssort";
         public static final String ARTICLE_NAME_INDEX_EN = "article_name_en_ssort";
+        
+        public static final String ARTICLE_EDUCATION_CODE = "articleEducationCode_ffm";
+        public static final String ARTICLE_LANG = "article_lang_ssort";
 
         //Fields for sorting
         public static final String START_DATE_SORT = "startDate_dsort";

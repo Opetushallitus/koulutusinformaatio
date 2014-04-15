@@ -35,14 +35,14 @@ public class TestUtil {
     public static I18nText createI18nText(String fi) {
         Map<String, String> values = Maps.newHashMap();
         values.put("fi", fi);
-        return new I18nText(values, values);
+        return new I18nText(values);
     }
 
     public static I18nText createI18nText(String fi, String sv) {
         Map<String, String> values = Maps.newHashMap();
         values.put("fi", fi);
         values.put("sv", sv);
-        return new I18nText(values, values);
+        return new I18nText(values);
     }
 
     public static I18nText createI18nText(String fi, String sv, String en) {
@@ -50,19 +50,7 @@ public class TestUtil {
         values.put("fi", fi);
         values.put("sv", sv);
         values.put("en", en);
-        return new I18nText(values, values);
-    }
-
-    public static I18nText createI18nText(String fi, String sv, String en, String shortFi, String shortSv, String shortEn) {
-        Map<String, String> values = Maps.newHashMap();
-        values.put("fi", fi);
-        values.put("sv", sv);
-        values.put("en", en);
-        Map<String, String> shortNames = Maps.newHashMap();
-        shortNames.put("fi", shortFi);
-        shortNames.put("sv", shortSv);
-        shortNames.put("en", shortEn);
-        return new I18nText(values, shortNames);
+        return new I18nText(values);
     }
 
     public static I18nTextEntity createI18nTextEntity(String fi, String sv, String en) {

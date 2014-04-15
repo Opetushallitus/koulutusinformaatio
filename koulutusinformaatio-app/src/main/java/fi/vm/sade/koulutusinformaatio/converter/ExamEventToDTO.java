@@ -34,7 +34,7 @@ public final class ExamEventToDTO {
     public static ExamEventDTO convert(final ExamEvent event, final String lang) {
         if (event != null) {
             ExamEventDTO dto = new ExamEventDTO();
-            dto.setAddress(AddressToDTO.convert(event.getAddress()));
+            dto.setAddress(AddressToDTO.convert(event.getAddress(), lang));
             dto.setDescription(event.getDescription());
             dto.setStart(event.getStart());
             dto.setEnd(event.getEnd());

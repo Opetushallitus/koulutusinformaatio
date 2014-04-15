@@ -4,6 +4,7 @@
     "title-search-results": "Sökresultat",
     "title-application-basket": "Minneslista",
     "link-to-accessible-version": "Specialläroanstalternas utbildningar som textversion",
+    "skip-to-content": "Siirry sisältöön (sv)",
 
     "breadcrumb-search-results": "Sökresultat ",
     "breadcrumb-go-to-page": "Gå till",
@@ -22,7 +23,7 @@
     "search-field-placeholder": "Sök utbildningar här",
     "no-search-results": "Inga sökresultat",
     "no-search-results-info": "Sökordet \"__searchterm__\" gav inget resultat. Utbildning ordnas inte på svenska eller ifrågavarande utbildning eller examen har ev. inte ännu matats in i systemet. Var god och försök med ett annat sökord eller en annan avgränsning.",
-    "search-as-ongoing": "Ansökan pågår!",
+    "search-as-ongoing": "Ansökan pågår",
     "search-as-next": "Kommer att ingå i ansökan",
     "search-field-label": "Sök utbildningar här",
     "search-field-placeholder": "Skriv in t.ex. examen, yrke eller sökord",
@@ -221,6 +222,7 @@
     "teachingLangCode_ffm": "Undervisningsspråk",
     "location-rajaus": "Plats",
     "facet-remove": "Avlägsna",
+    "facet-focus-filter": "Tarkenna rajaustasi (sv)",
     "filter-search-as-upcoming": "Ansökningstiden ännu ej påbörjad",
     "haun-tila": "Ansökans status",
     "selaile-koulutuksia": "Avgränsa sökresultatet",
@@ -285,6 +287,7 @@
     
     "tarjoaja": "Anordnare",
     "katso-myos": "Se också...",
+    "lue-lisaa": "Lue lisää... (sv)",
     "tarjoajan": "Anordnarens",
     "muita-koulutuksia": "ndra utbildningar",
     "koulutus": "Utbildning",

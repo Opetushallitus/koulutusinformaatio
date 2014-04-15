@@ -50,9 +50,7 @@ public class ChildLOIRefToDTOTest {
         ref.setNameByTeachingLang("name by teaching lang");
         Map<String, String> nameTranslations = Maps.newHashMap();
         nameTranslations.put("fi", "ref name");
-        Map<String, String> nameTranslationsShort = Maps.newHashMap();
-        nameTranslationsShort.put("fi", "ref name short");
-        ref.setName(new I18nText(nameTranslations, nameTranslationsShort));
+        ref.setName(new I18nText(nameTranslations));
     }
 
     @Test
@@ -70,7 +68,7 @@ public class ChildLOIRefToDTOTest {
     public void testConvertWithNaturalName() {
         ref.setNameByTeachingLang(null);
         ChildLOIRefDTO dto = ChildLOIRefToDTO.convert(ref, "fi");
-        assertEquals("ref name short", dto.getName());
+        assertEquals("ref name", dto.getName());
     }
 
     @Test
@@ -88,7 +86,6 @@ public class ChildLOIRefToDTOTest {
         assertNotNull(i18nList);
         assertEquals(1, i18nList.size());
         assertEquals("ref name", i18nList.get(0).getTranslations().get("fi"));
-        assertEquals("ref name short", i18nList.get(0).getTranslationsShortName().get("fi"));
     }
 
     @Test

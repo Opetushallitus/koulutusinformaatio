@@ -229,7 +229,7 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
             ref.setId(childLOI.getId());
             ref.setLosId(childLOI.getLosId());
             ref.setName(childLOI.getName());
-            ref.setNameByTeachingLang(getTextByEducationLanguage(childLOI.getName(), childLOI.getTeachingLanguages()));
+            ref.setNameByTeachingLang(getTextByEducationLanguage(childLOI.getShortName(), childLOI.getTeachingLanguages()));
             ref.setPrerequisite(childLOI.getPrerequisite());
             return ref;
         }
@@ -237,19 +237,19 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
     }
 
     private static String getTextByEducationLanguage(final I18nText text, List<Code> languages) {
-        if (text != null && text.getTranslationsShortName() != null && !text.getTranslationsShortName().isEmpty()) {
+        if (text != null && text.getTranslations() != null && !text.getTranslations().isEmpty()) {
             if (languages != null && !languages.isEmpty()) {
                 for (Code code : languages) {
                     if (code.getValue().equalsIgnoreCase(TarjontaConstants.LANG_FI)) {
-                        return text.getTranslationsShortName().get(TarjontaConstants.LANG_FI);
+                        return text.getTranslations().get(TarjontaConstants.LANG_FI);
                     }
                 }
-                String val = text.getTranslationsShortName().get(languages.get(0).getValue().toLowerCase());
+                String val = text.getTranslations().get(languages.get(0).getValue().toLowerCase());
                 if (val != null) {
                     return val;
                 }
             }
-            return text.getTranslationsShortName().values().iterator().next();
+            return text.getTranslations().values().iterator().next();
         }
         return null;
     }

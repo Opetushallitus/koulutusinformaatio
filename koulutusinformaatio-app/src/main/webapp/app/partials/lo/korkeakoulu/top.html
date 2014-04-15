@@ -2,11 +2,9 @@
     <div>
         <h4 class="margin-0">{{provider.name}}</h4>
         <span data-ng-show="lo.polytechnic" class="block">{{lo.educationDomain}}</span>
-        <div>
-        	<span data-ng-repeat="qual in lo.qualifications">
-       			<span>{{qual}}</span><span data-ng-show="!$last">,</span>
-        	</span>
-        </div>
+        <span class="block" data-ng-repeat="qual in lo.qualifications">
+       		<span>{{qual}}</span>
+        </span>
         
         <!--<span class="block">{{lo.qualification}}</span>-->
         <span data-ng-repeat="parent in lo.parents">

@@ -73,6 +73,7 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
     private static final String ADDRESS_DATA_TYPE = "osoiteTyyppi";
     private static final String ADDRESS_DATA_TYPE_VISIT = "kaynti";
     private static final String ADDRESS_DATA_TYPE_POSTAL = "posti";
+    private static final String LANG = "kieli";
 
     private static final String DATA_TYPE = "tyyppi";
     private static final String DATA_TYPE_PHONE = "puhelin";
@@ -92,12 +93,16 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
     @Override
     public Provider convert(OrganisaatioRDTO o) {
         Provider p = null;
+        
+        
+        
+        
         try {
             p = new Provider();
             p.setId(o.getOid());
             p.setName(new I18nText(o.getNimi()));
-            p.setPostalAddress(getAddress(o.getPostiosoite()));
-            p.setVisitingAddress(getAddress(o.getKayntiosoite()));
+            p.setPostalAddress(getLocalizedAddress(o.getYhteystiedot(), ADDRESS_DATA_TYPE_POSTAL));
+            p.setVisitingAddress(getLocalizedAddress(o.getYhteystiedot(), ADDRESS_DATA_TYPE_VISIT));
             p.setEmail(o.getEmailOsoite());
             p.setFax(o.getFaksinumero());
             p.setPhone(o.getPuhelinnumero());
@@ -119,10 +124,10 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
             p.setPicture(getPicture(o));
             p.setAthleteEducation(isAthleteEducation(o.getToimipistekoodi()));
             p.setPlaceOfBusinessCode(o.getToimipistekoodi());
-            p.setHomePlace(koodistoService.searchFirst(o.getKotipaikkaUri()));
+            p.setHomePlace(koodistoService.searchFirstName(o.getKotipaikkaUri()));
             String districtUri = getDistrictUri(o.getKotipaikkaUri());
             if (districtUri != null) { 
-                p.setHomeDistrict(koodistoService.searchFirst(districtUri));
+                p.setHomeDistrict(koodistoService.searchFirstName(districtUri));
             }
             
             p.setApplicationOffice(getApplicationOffice(o.getMetadata()));
@@ -130,6 +135,32 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
             throw new KIConversionException("Conversion failed - " + e.getMessage());
         }
         return p;
+    }
+    
+    private Address getLocalizedAddress(List<Map<String,String>> yhteystiedot, String addressType) throws KoodistoException {
+        
+        Map<String,String> streetAddrTransls = new HashMap<String,String>();
+        Map<String,String> postOfficeTransls = new HashMap<String,String>();
+        String postalCode = null;
+        
+        for (Map<String,String> curYht : yhteystiedot) {
+            if (curYht.containsKey(ADDRESS_DATA_TYPE) && curYht.get(ADDRESS_DATA_TYPE).equals(addressType)) {
+                String key = koodistoService.searchFirstCodeValue(curYht.get(LANG));
+                if (curYht.get(STREET_ADDRESS) != null) {
+                    streetAddrTransls.put(key.toLowerCase(), curYht.get(STREET_ADDRESS));
+                } 
+                if (curYht.get(POST_OFFICE) != null) {
+                    postOfficeTransls.put(key.toLowerCase(), curYht.get(POST_OFFICE));
+                }
+                postalCode = postalCode == null ? koodistoService.searchFirstCodeValue(curYht.get(POSTAL_CODE)) : postalCode;
+            }
+        }
+        
+        Address addr = new Address();
+        addr.setStreetAddress(new I18nText(streetAddrTransls));
+        addr.setPostOffice(new I18nText(postOfficeTransls));
+        addr.setPostalCode(postalCode);
+        return addr;
     }
 
     private String getDistrictUri(String kotipaikkaUri) throws KoodistoException {
@@ -152,14 +183,11 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
             String email = null;
             String www = null;
 
+            visitingAddress = getLocalizedAddress(metadata.getYhteystiedot(), ADDRESS_DATA_TYPE_VISIT);
+            postalAddress = getLocalizedAddress(metadata.getYhteystiedot(), ADDRESS_DATA_TYPE_POSTAL);
+            
             for (Map<String, String> info : metadata.getYhteystiedot()) {
-                if (info.get(ADDRESS_DATA_TYPE) != null) {
-                    if (info.get(ADDRESS_DATA_TYPE).equals(ADDRESS_DATA_TYPE_VISIT)) {
-                        visitingAddress = getAddress(info);
-                    } else if (info.get(ADDRESS_DATA_TYPE).equals(ADDRESS_DATA_TYPE_POSTAL)) {
-                        postalAddress = getAddress(info);
-                    }
-                } else if (info.get(DATA_TYPE) != null && info.get(DATA_TYPE).equals(DATA_TYPE_PHONE)) {
+                if (info.get(DATA_TYPE) != null && info.get(DATA_TYPE).equals(DATA_TYPE_PHONE)) {
                     phone = info.get(DATA_TYPE_PHONE_NUMBER);
                 } else if (info.get(DATA_TYPE_EMAIL) != null) {
                     email = info.get(DATA_TYPE_EMAIL);
@@ -172,6 +200,7 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
         }
     }
 
+    /*
     private Address getAddress(final Map<String, String> addrs) throws KoodistoException {
         if (addrs != null && !addrs.isEmpty()) {
             Address address = new Address();
@@ -181,7 +210,7 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
             return address;
         }
         return null;
-    }
+    }*/
 
     private boolean isAthleteEducation(final String placeOfBusinessCode) {
         if (!Strings.isNullOrEmpty(placeOfBusinessCode)) {

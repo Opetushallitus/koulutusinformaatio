@@ -16,11 +16,8 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
-import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -29,17 +26,11 @@ import java.util.Map;
 public class I18nText {
 
     private Map<String, String> translations;
-    private Map<String, String> translationsShortName;
 
     public I18nText() {}
 
     public I18nText(final Map<String, String> translations) {
         this.translations = ImmutableMap.copyOf(translations);
-    }
-
-    public I18nText(final Map<String, String> translations, final Map<String, String> translationsShortName) {
-        this.translations = ImmutableMap.copyOf(translations);
-        this.translationsShortName = ImmutableMap.copyOf(translationsShortName);
     }
 
     public Map<String, String> getTranslations() {
@@ -48,13 +39,5 @@ public class I18nText {
 
     public void setTranslations(Map<String, String> translations) {
         this.translations = translations;
-    }
-
-    public Map<String, String> getTranslationsShortName() {
-        return translationsShortName;
-    }
-
-    public void setTranslationsShortName(Map<String, String> translationsShortName) {
-        this.translationsShortName = translationsShortName;
     }
 }

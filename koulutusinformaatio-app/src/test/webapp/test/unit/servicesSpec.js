@@ -387,6 +387,76 @@ describe('HostResolver', function() {
         });
 
     });
+
+    describe('getCookiePrefixByDomain', function() {
+
+        it('should return prefix value for non prod domains', function() {
+            var prefix = 'test';
+
+            var result_qa = service.getCookiePrefixByDomain('testi.opintopolku.fi');
+            expect(result_qa).toEqual(prefix);
+
+            var result_reppu = service.getCookiePrefixByDomain('test-oph.ware.fi');
+            expect(result_reppu).toEqual(prefix);
+
+            var result_koulutus = service.getCookiePrefixByDomain('koulutus.opintopolku.fi');
+            expect(result_koulutus).toEqual(prefix);
+
+            var result_sth = service.getCookiePrefixByDomain('opintopolku.fi ');
+            expect(result_sth).toEqual(prefix);
+        });
+
+        it('should return empty prefix value for prod domains', function() {
+            var prefix = '';
+
+            var result_fi = service.getCookiePrefixByDomain('opintopolku.fi');
+            expect(result_fi).toEqual(prefix);
+
+            var result_sv = service.getCookiePrefixByDomain('studieinfo.fi');
+            expect(result_sv).toEqual(prefix);
+
+            var result_en = service.getCookiePrefixByDomain('studyinfo.fi');
+            expect(result_en).toEqual(prefix);
+        });
+
+        it('should return empty value for undefined params', function() {
+            var result = service.getCookiePrefixByDomain();
+            expect(result).toEqual('');
+
+            var result2 = service.getCookiePrefixByDomain(null);
+            expect(result2).toEqual('');
+        });
+
+        it('should be case insensitive', function() {
+            var result = service.getCookiePrefixByDomain('OPINTOPOLKU.FI');
+            expect(result).toEqual('');
+
+            var result2 = service.getCookiePrefixByDomain('StudyInfo.fi');
+            expect(result2).toEqual('');
+        });
+    })
+});
+
+describe('CookieService', function() {
+    var service;
+
+    beforeEach(function() {
+        module('kiApp', 'kiApp.CookieService');
+
+        inject(function(CookieService) {
+            service = CookieService;
+        });
+    });
+
+    describe('CookieService set and get', function() {
+
+        it('should set cookie correctly', function() {
+            service.set('testcookiekey', 'testcookievalue');
+            var result = service.get('testcookiekey');
+            expect(result).toEqual('testcookievalue');
+        });
+
+    });
 });
 
 /*

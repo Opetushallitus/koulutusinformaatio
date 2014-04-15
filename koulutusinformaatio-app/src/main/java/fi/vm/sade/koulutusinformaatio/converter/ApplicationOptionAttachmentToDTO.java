@@ -37,7 +37,7 @@ public final class ApplicationOptionAttachmentToDTO {
             dto.setDueDate(aoa.getDueDate());
             dto.setType(ConverterUtil.getTextByLanguageUseFallbackLang(aoa.getType(), lang));
             dto.setDescreption(ConverterUtil.getTextByLanguageUseFallbackLang(aoa.getDescreption(), lang));
-            dto.setAddress(AddressToDTO.convert(aoa.getAddress()));
+            dto.setAddress(AddressToDTO.convert(aoa.getAddress(), lang));
             return dto;
         }
         return null;

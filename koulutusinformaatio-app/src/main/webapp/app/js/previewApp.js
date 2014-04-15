@@ -80,7 +80,7 @@ var kiApp = angular.module('previewApp',
 })
 
 // initialize i18n library
-.run(['LanguageService', '$location', function(LanguageService, $location) {
+.run(['$location', 'LanguageService', 'HostResolver', function($location, LanguageService, HostResolver) {
 	
 	//1. Setting ui-language based on url-parameter.
 	//2. Removing the parameter, to enable changing of language from ui
@@ -89,10 +89,14 @@ var kiApp = angular.module('previewApp',
 					|| $location.search().lang == 'sv')) {
 		LanguageService.setLanguage($location.search().lang);
 		$location.search('').replace();
-	} else {
+	} else if ($location.search().lang != undefined) {
 		LanguageService.setLanguage('fi');
 		$location.search('').replace();
 	}
+
+    var defaultName = 'i18next';
+    var currentHost = $location.host();
+    var i18nCookieName = HostResolver.getCookiePrefixByDomain(currentHost) + defaultName;
 	
     i18n.init({
         resGetPath : 'locales/__ns__-__lng__.json',
@@ -101,6 +105,7 @@ var kiApp = angular.module('previewApp',
             namespaces: ['language', 'tooltip', 'plain'],
             defaultNs: 'language'
         },
+        cookieName: i18nCookieName,
         getAsync : false,
         sendMissing : false,
         fallbackLng : 'fi',

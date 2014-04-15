@@ -86,7 +86,7 @@ public final class ApplicationOptionToBasketItemDTO {
                     aoDTO.setAthleteEducation(provider.isAthleteEducation() || ao.isAthleteEducation());
                     aoDTO.setProviderName(ConverterUtil.getTextByLanguageUseFallbackLang(provider.getName(), lang));
                     if (provider.getVisitingAddress() != null) {
-                        aoDTO.setProviderLocation(provider.getVisitingAddress().getPostOffice());
+                        aoDTO.setProviderLocation(ConverterUtil.getTextByLanguageUseFallbackLang(provider.getVisitingAddress().getPostOffice(), lang));
                     }
                 }
                 ApplicationSystem as = ao.getApplicationSystem();

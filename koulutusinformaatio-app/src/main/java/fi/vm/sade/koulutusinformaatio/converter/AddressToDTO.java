@@ -27,13 +27,13 @@ public final class AddressToDTO {
     private AddressToDTO() {
     }
 
-    public static AddressDTO convert(final Address address) {
+    public static AddressDTO convert(final Address address, String lang) {
         if (address != null) {
             AddressDTO addrs = new AddressDTO();
-            addrs.setStreetAddress(address.getStreetAddress());
-            addrs.setStreetAddress2(address.getStreetAddress2());
+            addrs.setStreetAddress(ConverterUtil.getTextByLanguageUseFallbackLang(address.getStreetAddress(), lang));
+            addrs.setStreetAddress2(ConverterUtil.getTextByLanguageUseFallbackLang(address.getStreetAddress2(), lang));
             addrs.setPostalCode(address.getPostalCode());
-            addrs.setPostOffice(address.getPostOffice());
+            addrs.setPostOffice(ConverterUtil.getTextByLanguageUseFallbackLang(address.getPostOffice(), lang));
             return addrs;
         } else {
             return null;

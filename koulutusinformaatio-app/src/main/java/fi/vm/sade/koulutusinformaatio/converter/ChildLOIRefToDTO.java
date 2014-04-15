@@ -17,10 +17,8 @@
 package fi.vm.sade.koulutusinformaatio.converter;
 
 import com.google.common.base.Function;
-import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOIRef;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLOIRefDTO;
@@ -58,7 +56,7 @@ public final class ChildLOIRefToDTO {
         if (!Strings.isNullOrEmpty(ref.getNameByTeachingLang())) {
             child.setName(ref.getNameByTeachingLang());
         } else {
-            child.setName(ConverterUtil.getShortNameTextByLanguageUseFallbackLang(ref.getName(), lang));
+            child.setName(ConverterUtil.getTextByLanguageUseFallbackLang(ref.getName(), lang));
         }
         return child;
     }
