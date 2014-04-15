@@ -4,7 +4,7 @@
     "title-search-results": "Sökresultat",
     "title-application-basket": "Minneslista",
     "link-to-accessible-version": "Specialläroanstalternas utbildningar som textversion",
-    "skip-to-content": "Siirry sisältöön (sv)",
+    "skip-to-content": "Gå till innehållet",
 
     "breadcrumb-search-results": "Sökresultat ",
     "breadcrumb-go-to-page": "Gå till",
@@ -222,7 +222,7 @@
     "teachingLangCode_ffm": "Undervisningsspråk",
     "location-rajaus": "Plats",
     "facet-remove": "Avlägsna",
-    "facet-focus-filter": "Tarkenna rajaustasi (sv)",
+    "facet-focus-filter": "Specificera avgränsningen",
     "filter-search-as-upcoming": "Ansökningstiden ännu ej påbörjad",
     "haun-tila": "Ansökans status",
     "selaile-koulutuksia": "Avgränsa sökresultatet",
@@ -287,7 +287,7 @@
     
     "tarjoaja": "Anordnare",
     "katso-myos": "Se också...",
-    "lue-lisaa": "Lue lisää... (sv)",
+    "lue-lisaa": "Läs mera...",
     "tarjoajan": "Anordnarens",
     "muita-koulutuksia": "ndra utbildningar",
     "koulutus": "Utbildning",
