@@ -559,6 +559,9 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
     	if (LanguageService.getLanguage() == 'sv' || LanguageService.getLanguage() == 'SV') {
     		return 'SV';
     	}
+        else if (LanguageService.getLanguage() == 'en' || LanguageService.getLanguage() == 'EN') {
+            return 'EN';
+        }
     	return 'FI';
     }
 };
