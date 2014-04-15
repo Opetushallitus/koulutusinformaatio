@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LocationFields;
 import fi.vm.sade.koulutusinformaatio.domain.*;
@@ -26,6 +27,7 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.*;
+
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -43,6 +45,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Component
@@ -160,11 +164,35 @@ public class SearchServiceSolrImpl implements SearchService {
         }
         return fixed.trim();
     }
+    
+    private String getDateLimitStr(boolean upcomingLater) {
+        Calendar limit = Calendar.getInstance();
+        if (!upcomingLater) {
+            int month = limit.get(Calendar.MONTH) <= 5 ? 5 : 11;
+            int dayOfMonth = limit.get(Calendar.MONTH) <= 5 ? 30 : 31;
+        
+            limit.set(Calendar.MONTH, month);
+            limit.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        } else {
+            int month = limit.get(Calendar.MONTH) <= 5 ? 11 : 5;
+            int year =  limit.get(Calendar.MONTH) <= 5 ? limit.get(Calendar.YEAR) : limit.get(Calendar.YEAR) + 1;
+            int dayOfMonth = limit.get(Calendar.MONTH) <= 5 ? 31 : 30;
+            
+            limit.set(Calendar.MONTH, month);
+            limit.set(Calendar.YEAR, year);
+            limit.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        }
+        
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        
+        return dateFormat.format(limit.getTime());
+        
+    }
 
     @Override
     public LOSearchResultList searchLearningOpportunities(String term, String prerequisite,
             List<String> cities, List<String> facetFilters,  
-            String lang, boolean ongoing, boolean upcoming, 
+            String lang, boolean ongoing, boolean upcoming, boolean upcomingLater,
             int start, int rows, String sort, String order, 
             String lopFilter, String educationCodeFilter,
             List<String> excludes, SearchType searchType) throws SearchException {
@@ -172,11 +200,17 @@ public class SearchServiceSolrImpl implements SearchService {
         String trimmed = term.trim();
         String fixed = fixString(trimmed);
         if (!trimmed.isEmpty()) {
+            
+            String upcomingLimit = getDateLimitStr(false);
+            String upcomingLaterLimit = getDateLimitStr(true);
+            
             SolrQuery query = new LearningOpportunityQuery(fixed, prerequisite, 
                     cities, facetFilters, 
                     lang, ongoing, upcoming, 
+                    upcomingLater, 
                     start, rows, sort, order,
-                    lopFilter, educationCodeFilter, excludes, searchType);
+                    lopFilter, educationCodeFilter, excludes, searchType,
+                    upcomingLimit, upcomingLaterLimit);
 
             try {
                 LOG.debug(
@@ -210,7 +244,7 @@ public class SearchServiceSolrImpl implements SearchService {
             }
             
             if (SearchType.LO.equals(searchType)) {
-                addFacetsToResult(searchResultList, response, lang, facetFilters);
+                addFacetsToResult(searchResultList, response, lang, facetFilters, upcomingLimit, upcomingLaterLimit);
             }
             
             if (lopFilter != null) {
@@ -222,11 +256,13 @@ public class SearchServiceSolrImpl implements SearchService {
             
             //Setting result counts of other searches (one of article, provider or lo)
             if (searchType.LO.equals(searchType)) {
-                setOtherResultCounts(fixed, lang, start, sort, order, cities, facetFilters, ongoing, upcoming, 
-                                     lopFilter, educationCodeFilter, excludes, SearchType.ARTICLE, searchResultList);
+                setOtherResultCounts(fixed, lang, start, sort, order, cities, facetFilters, ongoing, upcoming, upcomingLater,
+                                     lopFilter, educationCodeFilter, excludes, SearchType.ARTICLE, searchResultList, 
+                                     upcomingLimit, upcomingLaterLimit);
             } else if (SearchType.ARTICLE.equals(searchType)) {
-                setOtherResultCounts(fixed, lang, start, sort, order, cities, facetFilters, ongoing, upcoming, 
-                                     lopFilter, educationCodeFilter, excludes, SearchType.LO, searchResultList);
+                setOtherResultCounts(fixed, lang, start, sort, order, cities, facetFilters, ongoing, upcoming, upcomingLater, 
+                                     lopFilter, educationCodeFilter, excludes, SearchType.LO, searchResultList,
+                                     upcomingLimit, upcomingLaterLimit);
             }
             
             searchResultList.setTotalCount(searchResultList.getArticleCount() + searchResultList.getLoCount());
@@ -241,9 +277,10 @@ public class SearchServiceSolrImpl implements SearchService {
     private void setOtherResultCounts(String term, String lang, int start,
             String sort, String order, List<String> cities, 
             List<String> facetFilters, 
-            boolean ongoing, boolean upcoming,
+            boolean ongoing, boolean upcoming, boolean upcomingLater,
             String lopFilter, String educationCodeFilter, List<String> excludes,
-            SearchType searchType, LOSearchResultList searchResultList) throws SearchException {
+            SearchType searchType, LOSearchResultList searchResultList,
+            String upcomingLimit, String upcomingLaterLimit) throws SearchException {
         
         /*if (SearchType.LO.equals(searchType) && (facetFilters == null || facetFilters.isEmpty())) {
             facetFilters = Arrays.asList(new String[]{String.format("%s:%s", LearningOpportunity.TEACHING_LANGUAGE, lang.toUpperCase())});
@@ -251,9 +288,10 @@ public class SearchServiceSolrImpl implements SearchService {
         
         SolrQuery query = new LearningOpportunityQuery(term, null, 
                 cities, facetFilters, 
-                lang, ongoing, upcoming, 
+                lang, ongoing, upcoming, upcomingLater, 
                 start, 0, sort, order,
-                lopFilter, educationCodeFilter, excludes, searchType);
+                lopFilter, educationCodeFilter, excludes, searchType,
+                upcomingLimit, upcomingLaterLimit);
         
         try {
             QueryResponse response = loHttpSolrServer.query(query);
@@ -427,10 +465,11 @@ public class SearchServiceSolrImpl implements SearchService {
      * Adding facets to result
      */
     private void addFacetsToResult(LOSearchResultList searchResultList,
-                                   QueryResponse response, String lang, List<String> facetFilters) {
+                                   QueryResponse response, String lang, List<String> facetFilters,
+                                   String upcomingLimit, String upcomingLaterLimit) {
 
         searchResultList.setTeachingLangFacet(getTeachingLangFacet(response, lang));
-        searchResultList.setAppStatusFacet(getHaunTila(response));
+        searchResultList.setAppStatusFacet(getHaunTila(response, upcomingLimit, upcomingLaterLimit));
         searchResultList.setEdTypeFacet(getEdTypeFacet(response, lang));
         searchResultList.setFilterFacet(getFilterFacet(facetFilters, lang));
         searchResultList.setPrerequisiteFacet(getPrerequisiteFacet(response));
@@ -603,21 +642,34 @@ public class SearchServiceSolrImpl implements SearchService {
     /*
      * Getting haun tila
      */
-    private Facet getHaunTila(QueryResponse response) {
+    private Facet getHaunTila(QueryResponse response, String upcomingLimit, String upcomingLaterLimit) {
         Facet haunTila = new Facet();
         List<FacetValue> haunTilaVals = new ArrayList<FacetValue>();
         for (String curKey : response.getFacetQuery().keySet()) {
-            if (curKey.contains("(asStart_0:[* TO NOW] AND asEnd_0:[NOW TO *])")) {
+            if (curKey.contains("[* TO NOW] AND asEnd_0:[NOW TO *])")) {//"(asStart_0:[* TO NOW] AND asEnd_0:[NOW TO *])")) {
                 FacetValue facVal = new FacetValue(LearningOpportunityQuery.APP_STATUS,
                         LearningOpportunityQuery.APP_STATUS_ONGOING,
                         response.getFacetQuery().get(curKey).longValue(),
                         LearningOpportunityQuery.APP_STATUS_ONGOING);
                 haunTilaVals.add(facVal);
-            } else if (curKey.contains("(asStart_0:[NOW TO *])")) {
+            } else if (curKey.contains(String.format("NOW TO %s])", upcomingLimit))) {
+                LOG.debug("upcoming limit: " + upcomingLimit);
+                String[] valueName = upcomingLimit.split("-");
+                String kausi = Integer.parseInt(valueName[1]) > 6 ? "fall" : "spring";
+                
                 FacetValue facVal = new FacetValue(LearningOpportunityQuery.APP_STATUS,
-                        LearningOpportunityQuery.APP_STATUS_UPCOMING,
+                        String.format("%s|%s", valueName[0], kausi),//LearningOpportunityQuery.APP_STATUS_UPCOMING,
                         response.getFacetQuery().get(curKey).longValue(),
                         LearningOpportunityQuery.APP_STATUS_UPCOMING);
+                haunTilaVals.add(facVal);
+            } else if (curKey.contains(String.format("NOW TO %s])", upcomingLaterLimit))) {
+                LOG.debug("upcoming later limit: " + upcomingLaterLimit);
+                String[] valueName = upcomingLaterLimit.split("-");
+                String kausi = Integer.parseInt(valueName[1]) > 6 ? "fall" : "spring";
+                FacetValue facVal = new FacetValue(LearningOpportunityQuery.APP_STATUS,
+                        String.format("%s|%s", valueName[0], kausi),
+                        response.getFacetQuery().get(curKey).longValue(),
+                        LearningOpportunityQuery.APP_STATUS_UPCOMING_LATER);
                 haunTilaVals.add(facVal);
             }
         }
