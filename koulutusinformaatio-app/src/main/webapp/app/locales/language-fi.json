@@ -20,7 +20,6 @@
     "search-result-title-description": "Valitse vasemmalta haluamasi hakutulosrajaukset. Suluissa oleva luku kertoo hakusanaa vastaavien koulutusten määrän.",
     "search-articles-result-title-description": "Tältä välilehdeltä löydät hakemiseen ja opiskeluun liittyviä tietoja ja artikkeleita.",
     "search-result-count-unit": "kpl",
-    "search-field-placeholder": "Hae koulutusta tästä",
     "no-search-results": "Ei hakutuloksia",
     "no-search-results-info": "Hakusanalla \"__searchterm__\" ei löytynyt yhtään hakutulosta. Järjestelmään ei ehkä vielä ole syötetty kyseistä koulutusta tai tutkintoa. Ole hyvä ja yritä toisella hakusanalla tai rajauksella.",
     "search-as-ongoing": "Haku käynnissä",
