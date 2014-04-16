@@ -686,7 +686,7 @@ public class SearchServiceSolrImpl implements SearchService {
                         response.getFacetQuery().get(curKey).longValue(),
                         LearningOpportunityQuery.APP_STATUS_UPCOMING);
                 haunTilaVals.add(facVal);
-            } else if (curKey.contains(String.format("NOW TO %s])", upcomingLaterLimit))) {
+            } else if (curKey.contains(String.format("%s TO %s])", upcomingLimit, upcomingLaterLimit))) {
                 LOG.debug("upcoming later limit: " + upcomingLaterLimit);
                 String[] valueName = upcomingLaterLimit.split("-");
                 String kausi = Integer.parseInt(valueName[1]) > 6 ? "fall" : "spring";

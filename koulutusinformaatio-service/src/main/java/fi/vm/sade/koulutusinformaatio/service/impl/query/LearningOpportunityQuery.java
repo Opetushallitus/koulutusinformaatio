@@ -188,7 +188,7 @@ public class LearningOpportunityQuery extends SolrQuery {
         
         StringBuilder upcomingLaterFQ = new StringBuilder();
         for (int i = 0; i < AS_COUNT; i++) {
-            upcomingLaterFQ.append(String.format("(asStart_%d:[NOW TO %s])", i, upcomingLaterLimit));
+            upcomingLaterFQ.append(String.format("(asStart_%d:[%s TO %s])", i, upcomingLimit, upcomingLaterLimit));
             if (i != AS_COUNT-1) {
                 upcomingLaterFQ.append(" OR ");
             }
