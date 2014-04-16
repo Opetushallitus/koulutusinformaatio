@@ -1214,6 +1214,28 @@ service('LanguageService', ['CookieService', function(CookieService) {
 }]).
 
 /**
+ *  Service keeping track of virkalija language selection
+ */
+service('VirkailijaLanguageService', ['CookieService', function(CookieService) {
+    var defaultLanguage = 'fi';
+    var key = 'virkailijaLang';
+
+    return {
+        getLanguage: function() {
+            return CookieService.get(key) || defaultLanguage;
+        },
+
+        setLanguage: function(language) {
+            CookieService.set(key, language);
+        },
+
+        getDefaultLanguage: function() {
+            return defaultLanguage;
+        }
+    };
+}]).
+
+/**
  *  Service for "caching" current parent selection
  */
  /*
