@@ -716,6 +716,22 @@ service('HigherEducationTransformer', ['UtilityService', '$rootScope', '$filter'
 			}
 			result.teachingLanguage = getFirstItemInList(result.teachingLanguages);
 			result.formOfTeaching = getFirstItemInList(result.formOfTeaching);
+			
+
+			if (result.themes != undefined && result.themes != null) {
+				var distinctMap = {};
+				var distinctArray = [];
+				for (var i=0; i < result.themes.length;i++) {
+					var theme = result.themes[i];
+					if (distinctMap[theme.uri] == undefined) {
+						distinctMap[theme.uri] = theme;
+						distinctArray.push(theme);
+					}
+				}
+				result.themes = distinctArray;
+			}
+			
+			
 
 			for (var asIndex in result.applicationSystems) {
 				if (result.applicationSystems.hasOwnProperty(asIndex)) {
