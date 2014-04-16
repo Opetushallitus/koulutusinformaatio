@@ -28,7 +28,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -83,22 +82,11 @@ public class UpdateServiceImpl implements UpdateService {
             int count = MAX_RESULTS;
             int index = 0;
 
-            /*while (count >= MAX_RESULTS) {
+            while (count >= MAX_RESULTS) {
             LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
             List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
             count = loOids.size();
-            index += count;*/
-            
-            List<String> loOids = Arrays.asList("1.2.246.562.5.2013061010191208547980", //Lukiokoulutus (musiikkilinja) //new ArrayList<String>();//
-
-                    "1.2.246.562.5.2013061010184431795697",//lukiokoulutus
-
-                    "1.2.246.562.5.2013061010184670694756",
-                    "1.2.246.562.5.2013112814572438173505", //ammattistartti
-                    "1.2.246.562.5.2013112814572435006223",//kymppiluokka
-                    "1.2.246.562.5.2013112814572441041721", // mamu amm
-                    "1.2.246.562.5.2013112814572429147350", //mamu lukio
-                    "1.2.246.562.5.2013112814572437251385"); //kansanopisto
+            index += count;
 
                 for (String loOid : loOids) {
                     List<LOS> specifications = null;
@@ -114,7 +102,7 @@ public class UpdateServiceImpl implements UpdateService {
                         this.educationDataUpdateService.save(spec);
                     }
                 }
-            //}
+            }
 
             List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
             LOG.debug("Found higher educations: " + higherEducations.size());
