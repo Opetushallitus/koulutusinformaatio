@@ -29,8 +29,7 @@ function HeaderCtrl($scope, ApplicationBasketService, TranslationService, Langua
     }
 
     $scope.links = {
-        frontpage: Config.get('frontpageUrl'),
-        textversion: Config.get('textVersionUrl')
+        frontpage: Config.get('frontpageUrl')
     }
 
     $scope.locales = {
