@@ -442,7 +442,12 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
     				
     				$scope.tabTitles.learningOpportunities = TranslationService.getTranslation('search-tab-lo') + ' (' + $scope.loCount + ')';
     	            $scope.tabTitles.articles = TranslationService.getTranslation('search-tab-article') + ' (' + $scope.articleCount + ')';
-    	            $scope.tabTitles.queryString = $routeParams.queryString;
+    	            console.log(FilterService.getLopFilter());
+    	            if (FilterService.getLopFilter() != undefined && FilterService.getLopFilter() != null) {
+    	            	$scope.tabTitles.queryString = FilterService.getLopFilter();
+    	            } else {
+    	            	$scope.tabTitles.queryString = $routeParams.queryString;
+    	            }
     	            $scope.tabTitles.totalCount = $scope.loResult.totalCount;
     	            $rootScope.tabChangeable = true;
     	            $scope.loResult = SearchResultFacetTransformer.transform($scope.loResult, $scope.facetFilters);//$scope.convertLoResult($scope.loResult);
