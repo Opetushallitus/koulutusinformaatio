@@ -1,13 +1,14 @@
 /**
  *  Controller for info views (parent and child)
  */
- function InfoCtrl($scope, $rootScope, $routeParams, $location, SearchService, LearningOpportunityProviderPictureService, UtilityService, TranslationService, Config, loResource, LanguageService, _) {
+ function InfoCtrl($scope, $rootScope, $routeParams, $location, SearchService, LearningOpportunityProviderPictureService, UtilityService, TranslationService, Config, loResource, LanguageService, VirkailijaLanguageService, _) {
     $scope.loType = $routeParams.loType;
 
     $scope.queryString = SearchService.getTerm();
     $scope.descriptionLanguage = 'fi';
     $scope.hakuAppUrl = Config.get('hakulomakeUrl');
     $scope.uiLang = LanguageService.getLanguage();
+    $scope.virkailijaLang = VirkailijaLanguageService.getLanguage();
 
     // set tab titles based on lo and education type
     $scope.$watch('lo.educationTypeUri', function(value) {
