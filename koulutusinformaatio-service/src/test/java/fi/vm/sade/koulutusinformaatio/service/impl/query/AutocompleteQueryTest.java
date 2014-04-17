@@ -25,6 +25,7 @@ import org.junit.Test;
 
 import com.google.common.base.Joiner;
 
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 
 /**
@@ -51,7 +52,7 @@ public class AutocompleteQueryTest {
     public void testQueryFieldsFi() {
         AutocompleteQuery q = new AutocompleteQuery(TERM, LANG_FI);
         assertNotNull(q); 
-        assertEquals(Joiner.on(" ").join(LearningOpportunityQuery.FIELDS_FI), q.getParams(DisMaxParams.QF)[0]);
+        assertEquals(Joiner.on(" ").join(SolrUtil.FIELDS_FI), q.getParams(DisMaxParams.QF)[0]);
         assertTrue(q.getFacetFields().length == 2);
         assertEquals(String.format("%s_%s", LearningOpportunity.NAME_AUTO, LANG_FI), q.getFacetFields()[0]);
     }
@@ -60,7 +61,7 @@ public class AutocompleteQueryTest {
     public void testQueryFieldsSv() {
         AutocompleteQuery q = new AutocompleteQuery(TERM, LANG_SV);
         assertNotNull(q); 
-        assertEquals(Joiner.on(" ").join(LearningOpportunityQuery.FIELDS_SV), q.getParams(DisMaxParams.QF)[0]);
+        assertEquals(Joiner.on(" ").join(SolrUtil.FIELDS_SV), q.getParams(DisMaxParams.QF)[0]);
         assertTrue(q.getFacetFields().length == 2);
         assertEquals(String.format("%s_%s", LearningOpportunity.NAME_AUTO, LANG_SV), q.getFacetFields()[0]);
     }
@@ -69,7 +70,7 @@ public class AutocompleteQueryTest {
     public void testQueryFieldsEn() {
         AutocompleteQuery q = new AutocompleteQuery(TERM, LANG_EN);
         assertNotNull(q); 
-        assertEquals(Joiner.on(" ").join(LearningOpportunityQuery.FIELDS_EN), q.getParams(DisMaxParams.QF)[0]);
+        assertEquals(Joiner.on(" ").join(SolrUtil.FIELDS_EN), q.getParams(DisMaxParams.QF)[0]);
         assertTrue(q.getFacetFields().length == 2);
         assertEquals(String.format("%s_%s", LearningOpportunity.NAME_AUTO, LANG_EN), q.getFacetFields()[0]);
     }

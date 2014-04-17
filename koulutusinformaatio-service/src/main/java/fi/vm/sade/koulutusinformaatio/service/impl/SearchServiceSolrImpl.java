@@ -19,6 +19,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LocationFields;
 import fi.vm.sade.koulutusinformaatio.domain.*;
@@ -204,13 +205,20 @@ public class SearchServiceSolrImpl implements SearchService {
             String upcomingLimit = getDateLimitStr(false);
             String upcomingLaterLimit = getDateLimitStr(true);
             
-            SolrQuery query = new LearningOpportunityQuery(fixed, prerequisite, 
-                    cities, facetFilters, articleFilters,
-                    lang, ongoing, upcoming, 
-                    upcomingLater, 
-                    start, rows, sort, order,
-                    lopFilter, educationCodeFilter, excludes, searchType,
-                    upcomingLimit, upcomingLaterLimit);
+            SolrQuery query = null;
+            if (SearchType.LO.equals(searchType)) {
+                query = new LearningOpportunityQuery(fixed, prerequisite, 
+                        cities, facetFilters,
+                        lang, ongoing, upcoming, 
+                        upcomingLater, 
+                        start, rows, sort, order,
+                        lopFilter, educationCodeFilter, excludes,
+                        upcomingLimit, upcomingLaterLimit);
+            } else if (lopFilter == null && educationCodeFilter == null) {
+               query = new ArticleQuery(fixed, lang,  
+                        start, rows, sort, order,
+                        facetFilters, articleFilters);
+            }
 
             try {
                 LOG.debug(
@@ -284,25 +292,30 @@ public class SearchServiceSolrImpl implements SearchService {
             SearchType searchType, LOSearchResultList searchResultList,
             String upcomingLimit, String upcomingLaterLimit) throws SearchException {
         
-        /*if (SearchType.LO.equals(searchType) && (facetFilters == null || facetFilters.isEmpty())) {
-            facetFilters = Arrays.asList(new String[]{String.format("%s:%s", LearningOpportunity.TEACHING_LANGUAGE, lang.toUpperCase())});
-        }*/
+        SolrQuery query = null;
         
-        SolrQuery query = new LearningOpportunityQuery(term, null, 
-                cities, facetFilters, articleFilters,
-                lang, ongoing, upcoming, upcomingLater, 
-                start, 0, sort, order,
-                lopFilter, educationCodeFilter, excludes, searchType,
-                upcomingLimit, upcomingLaterLimit);
-        
-        try {
-            QueryResponse response = loHttpSolrServer.query(query);
-            setResultCount(searchResultList, response, searchType);
-        } catch (SolrServerException e) {
-            throw new SearchException(SOLR_ERROR);
+        if (SearchType.LO.equals(searchType)) {
+            query = new LearningOpportunityQuery(term, null, 
+                    cities, facetFilters, 
+                    lang, ongoing, upcoming, upcomingLater, 
+                    start, 0, sort, order,
+                    lopFilter, educationCodeFilter, excludes,
+                    upcomingLimit, upcomingLaterLimit);
+        } else if (lopFilter == null && educationCodeFilter == null) {
+            query = new ArticleQuery(term, lang,  
+                    start, 0, sort, order,
+                    facetFilters, articleFilters);
+        } 
+        if (query != null) {
+            try {
+                QueryResponse response = loHttpSolrServer.query(query);
+                setResultCount(searchResultList, response, searchType);
+            } catch (SolrServerException e) {
+                throw new SearchException(SOLR_ERROR);
+            }
+        } else {
+            searchResultList.setArticleCount(0);
         }
-        
-        
     }
 
     private void setResultCount(LOSearchResultList searchResultList,
@@ -671,29 +684,29 @@ public class SearchServiceSolrImpl implements SearchService {
         List<FacetValue> haunTilaVals = new ArrayList<FacetValue>();
         for (String curKey : response.getFacetQuery().keySet()) {
             if (curKey.contains("[* TO NOW] AND asEnd_0:[NOW TO *])")) {
-                FacetValue facVal = new FacetValue(LearningOpportunityQuery.APP_STATUS,
-                        LearningOpportunityQuery.APP_STATUS_ONGOING,
+                FacetValue facVal = new FacetValue(SolrUtil.APP_STATUS,
+                        SolrUtil.APP_STATUS_ONGOING,
                         response.getFacetQuery().get(curKey).longValue(),
-                        LearningOpportunityQuery.APP_STATUS_ONGOING);
+                        SolrUtil.APP_STATUS_ONGOING);
                 haunTilaVals.add(facVal);
             } else if (curKey.contains(String.format("NOW TO %s])", upcomingLimit))) {
                 LOG.debug("upcoming limit: " + upcomingLimit);
                 String[] valueName = upcomingLimit.split("-");
                 String kausi = Integer.parseInt(valueName[1]) > 6 ? "fall" : "spring";
                 
-                FacetValue facVal = new FacetValue(LearningOpportunityQuery.APP_STATUS,
+                FacetValue facVal = new FacetValue(SolrUtil.APP_STATUS,
                         String.format("%s|%s", valueName[0], kausi),
                         response.getFacetQuery().get(curKey).longValue(),
-                        LearningOpportunityQuery.APP_STATUS_UPCOMING);
+                        SolrUtil.APP_STATUS_UPCOMING);
                 haunTilaVals.add(facVal);
             } else if (curKey.contains(String.format("%s TO %s])", upcomingLimit, upcomingLaterLimit))) {
                 LOG.debug("upcoming later limit: " + upcomingLaterLimit);
                 String[] valueName = upcomingLaterLimit.split("-");
                 String kausi = Integer.parseInt(valueName[1]) > 6 ? "fall" : "spring";
-                FacetValue facVal = new FacetValue(LearningOpportunityQuery.APP_STATUS,
+                FacetValue facVal = new FacetValue(SolrUtil.APP_STATUS,
                         String.format("%s|%s", valueName[0], kausi),
                         response.getFacetQuery().get(curKey).longValue(),
-                        LearningOpportunityQuery.APP_STATUS_UPCOMING_LATER);
+                        SolrUtil.APP_STATUS_UPCOMING_LATER);
                 haunTilaVals.add(facVal);
             }
         }
