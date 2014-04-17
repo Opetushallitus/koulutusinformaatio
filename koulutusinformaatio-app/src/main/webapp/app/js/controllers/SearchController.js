@@ -457,7 +457,6 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
     				
     				$scope.tabTitles.learningOpportunities = TranslationService.getTranslation('search-tab-lo') + ' (' + $scope.loCount + ')';
     	            $scope.tabTitles.articles = TranslationService.getTranslation('search-tab-article') + ' (' + $scope.articleCount + ')';
-    	            console.log(FilterService.getLopFilter());
     	            if (FilterService.getLopFilter() != undefined && FilterService.getLopFilter() != null) {
     	            	$scope.tabTitles.queryString = FilterService.getLopFilter();
     	            } else {

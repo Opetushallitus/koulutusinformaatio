@@ -670,7 +670,7 @@ public class SearchServiceSolrImpl implements SearchService {
         Facet haunTila = new Facet();
         List<FacetValue> haunTilaVals = new ArrayList<FacetValue>();
         for (String curKey : response.getFacetQuery().keySet()) {
-            if (curKey.contains("[* TO NOW] AND asEnd_0:[NOW TO *])")) {//"(asStart_0:[* TO NOW] AND asEnd_0:[NOW TO *])")) {
+            if (curKey.contains("[* TO NOW] AND asEnd_0:[NOW TO *])")) {
                 FacetValue facVal = new FacetValue(LearningOpportunityQuery.APP_STATUS,
                         LearningOpportunityQuery.APP_STATUS_ONGOING,
                         response.getFacetQuery().get(curKey).longValue(),
@@ -682,7 +682,7 @@ public class SearchServiceSolrImpl implements SearchService {
                 String kausi = Integer.parseInt(valueName[1]) > 6 ? "fall" : "spring";
                 
                 FacetValue facVal = new FacetValue(LearningOpportunityQuery.APP_STATUS,
-                        String.format("%s|%s", valueName[0], kausi),//LearningOpportunityQuery.APP_STATUS_UPCOMING,
+                        String.format("%s|%s", valueName[0], kausi),
                         response.getFacetQuery().get(curKey).longValue(),
                         LearningOpportunityQuery.APP_STATUS_UPCOMING);
                 haunTilaVals.add(facVal);
