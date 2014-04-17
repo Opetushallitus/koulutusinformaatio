@@ -452,7 +452,8 @@ directive('kiAbsoluteLink', function() {
         templateUrl: 'templates/children.html',
         scope: {
             children: '=children',
-            type: '=type'
+            type: '=type',
+            lang: '=lang'
         },
         link: function(scope, element, attrs) {
             scope.$watch('children', function() {
@@ -805,7 +806,8 @@ directive('kiPreviewStatusLabel', ['TranslationService', function(TranslationSer
     return {
         restrict: 'A',
         scope: {
-            status: '=kiPreviewStatusLabel'
+            status: '=kiPreviewStatusLabel',
+            lang: '=lang'
         },
         link: function($scope, element, attrs) {
             var statusPublished = 'JULKAISTU';
@@ -818,7 +820,7 @@ directive('kiPreviewStatusLabel', ['TranslationService', function(TranslationSer
                 element.addClass('label sin');
             }
 
-            var labelText = TranslationService.getTranslation($scope.status);
+            var labelText = TranslationService.getTranslationByLanguage($scope.status, $scope.lang);
             element.html(labelText);
         }
     }
