@@ -20,6 +20,7 @@ import org.apache.solr.common.params.DisMaxParams;
 
 import com.google.common.base.Joiner;
 
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 
@@ -50,13 +51,13 @@ public class AutocompleteQuery extends SolrQuery {
         this.setParam("defType", "edismax");
         
         if ("fi".equalsIgnoreCase(lang)) {
-            this.setParam(DisMaxParams.QF, Joiner.on(" ").join(LearningOpportunityQuery.FIELDS_FI));
+            this.setParam(DisMaxParams.QF, Joiner.on(" ").join(SolrUtil.FIELDS_FI));
         } else if ("sv".equalsIgnoreCase(lang)) {
-            this.setParam(DisMaxParams.QF, Joiner.on(" ").join(LearningOpportunityQuery.FIELDS_SV));
+            this.setParam(DisMaxParams.QF, Joiner.on(" ").join(SolrUtil.FIELDS_SV));
         } else if ("en".equalsIgnoreCase(lang)) {
-            this.setParam(DisMaxParams.QF, Joiner.on(" ").join(LearningOpportunityQuery.FIELDS_EN));
+            this.setParam(DisMaxParams.QF, Joiner.on(" ").join(SolrUtil.FIELDS_EN));
         } else {
-            this.setParam(DisMaxParams.QF, Joiner.on(" ").join(LearningOpportunityQuery.FIELDS));
+            this.setParam(DisMaxParams.QF, Joiner.on(" ").join(SolrUtil.FIELDS));
         }
         
         this.setParam("q.op", "AND");
