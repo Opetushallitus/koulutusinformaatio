@@ -182,6 +182,7 @@ public final class SolrUtil {
         
         public static final String ARTICLE_EDUCATION_CODE = "articleEducationCode_ffm";
         public static final String ARTICLE_LANG = "article_lang_ssort";
+        public static final String ARTICLE_CONTENT_TYPE = "articleContentType_ffm";
 
         //Fields for sorting
         public static final String START_DATE_SORT = "startDate_dsort";

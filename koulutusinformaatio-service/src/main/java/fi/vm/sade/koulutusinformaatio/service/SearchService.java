@@ -31,8 +31,10 @@ public interface SearchService {
     List<Provider> searchLearningOpportunityProviders(final String term, String lang, boolean prefix) throws SearchException;
 
     LOSearchResultList searchLearningOpportunities(final String term, final String prerequisite,
-                                                   List<String> cities, List<String> facetFilters,
+                                                   List<String> cities, List<String> facetFilters, 
+                                                   List<String> articleFilters,
                                                    String lang, boolean ongoing, boolean upcoming, 
+                                                   boolean upcomingLater,
                                                    int start, int rows, String sort, String order, 
                                                    String lopFilter, String educationCodeFilter,
                                                    List<String> excludes, SearchType searchType) throws SearchException;
