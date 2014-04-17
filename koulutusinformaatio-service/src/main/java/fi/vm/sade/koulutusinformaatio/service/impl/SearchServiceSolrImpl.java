@@ -214,7 +214,7 @@ public class SearchServiceSolrImpl implements SearchService {
                         start, rows, sort, order,
                         lopFilter, educationCodeFilter, excludes,
                         upcomingLimit, upcomingLaterLimit);
-            } else if (lopFilter == null && educationCodeFilter == null) {
+            } else if (lopFilter == null && educationCodeFilter == null && (excludes == null || excludes.isEmpty())) {
                query = new ArticleQuery(fixed, lang,  
                         start, rows, sort, order,
                         facetFilters, articleFilters);
@@ -225,36 +225,40 @@ public class SearchServiceSolrImpl implements SearchService {
                         URLDecoder.decode(
                                 new StringBuilder().append(
                                         "Searching learning opportunities with query string: ").append(
-                                                query.toString()).toString(), "utf-8"));
+                                                query != null ? query.toString() : "").toString(), "utf-8"));
             } catch (UnsupportedEncodingException e) {
                 LOG.debug("Could not log search query");
             }
 
             QueryResponse response = null;
             try {
-                response = loHttpSolrServer.query(query);
+                if (query != null) {
+                    response = loHttpSolrServer.query(query);
+                }
                 setResultCount(searchResultList, response, searchType);
             } catch (SolrServerException e) {
                 throw new SearchException(SOLR_ERROR);
             }
 
-            for (SolrDocument doc : response.getResults()) {
-                try {
-                    if (SearchType.LO.equals(searchType)) {
-                        searchResultList.getResults().add(createLOSearchResult(doc, lang));
-                    } else if (SearchType.ARTICLE.equals(searchType)) {
-                        searchResultList.getArticleresults().add(createArticleSearchResult(doc));
+            if (response != null) {
+                for (SolrDocument doc : response.getResults()) {
+                    try {
+                        if (SearchType.LO.equals(searchType)) {
+                            searchResultList.getResults().add(createLOSearchResult(doc, lang));
+                        } else if (SearchType.ARTICLE.equals(searchType)) {
+                            searchResultList.getArticleresults().add(createArticleSearchResult(doc));
+                        }
+                    } catch (Exception ex) {
+                        LOG.warn(ex.getMessage());
+                        continue;
                     }
-                } catch (Exception ex) {
-                    LOG.warn(ex.getMessage());
-                    continue;
                 }
             }
             
             if (SearchType.LO.equals(searchType)) {
                 addFacetsToResult(searchResultList, response, lang, facetFilters, upcomingLimit, upcomingLaterLimit);
 
-            } else {
+            } else if (response != null) {
                 addArticleFacetsToResult(searchResultList, response, lang, articleFilters);
             }
             
@@ -301,7 +305,7 @@ public class SearchServiceSolrImpl implements SearchService {
                     start, 0, sort, order,
                     lopFilter, educationCodeFilter, excludes,
                     upcomingLimit, upcomingLaterLimit);
-        } else if (lopFilter == null && educationCodeFilter == null) {
+        } else if (lopFilter == null && educationCodeFilter == null && (excludes == null || excludes.isEmpty())) {
             query = new ArticleQuery(term, lang,  
                     start, 0, sort, order,
                     facetFilters, articleFilters);
@@ -321,12 +325,17 @@ public class SearchServiceSolrImpl implements SearchService {
     private void setResultCount(LOSearchResultList searchResultList,
             QueryResponse response, SearchType searchType) {
         
+        long count = 0;
+        if (response != null) {
+            count = response.getResults().getNumFound();
+        }
+        
         if (SearchType.ARTICLE.equals(searchType)) {
-            searchResultList.setArticleCount(response.getResults().getNumFound());
+            searchResultList.setArticleCount(count);
         } else if (SearchType.PROVIDER.equals(searchType)) {
-            searchResultList.setOrgCount(response.getResults().getNumFound());
+            searchResultList.setOrgCount(count);
         } else {
-            searchResultList.setLoCount(response.getResults().getNumFound());
+            searchResultList.setLoCount(count);
         }
         
     }
