@@ -15,8 +15,16 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.impl.query;
 
-import org.apache.solr.client.solrj.SolrQuery;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrQuery.ORDER;
+import org.apache.solr.common.params.DisMaxParams;
+
+import com.google.common.base.Joiner;
+
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 
@@ -37,5 +45,44 @@ public class ArticleQuery extends SolrQuery {
         this.setParam("q.op", "AND");
         this.addSort(LearningOpportunity.NAME_SORT, ORDER.asc);
     }
+    
+    public ArticleQuery(String term, String lang,
+                        int start, int rows, String sort, String order,
+                        List<String> facetFilters, List<String> articleFilters) {
+        super(term);
+        
+        this.setStart(start);
+        this.setRows(rows);
+        
+        //leaving the facet and timestamp docs out
+        this.addFilterQuery(String.format("-%s:%s", LearningOpportunity.ID, SolrConstants.TIMESTAMP_DOC));
+        this.addFilterQuery(String.format("-%s:%s", LearningOpportunity.TYPE, SolrConstants.TYPE_FACET));
+        
+        this.addFilterQuery(String.format("%s:%s", LearningOpportunity.TYPE, SolrConstants.TYPE_ARTICLE));
+        
+        this.addFilterQuery(String.format("%s:%s", LearningOpportunity.TEACHING_LANGUAGE, lang.toUpperCase()));
+
+        addFacetsToQuery(articleFilters);
+        
+        SolrUtil.setSearchFields(facetFilters, this);
+        
+        this.setParam("defType", "edismax");
+        
+        this.setParam("q.op", "AND");
+        if (sort != null) {
+            this.addSort(sort, order.equals("asc") ? ORDER.asc : ORDER.desc);
+        }   
+    }
+    
+    private void addFacetsToQuery(List<String> articleFilters) {
+        this.setFacet(true);
+        this.addFacetField(LearningOpportunity.ARTICLE_CONTENT_TYPE);
+        this.setFacetSort("index");
+        this.setFacetMinCount(1);
+        for (String curFilter : articleFilters) {
+            this.addFilterQuery(curFilter);
+        }
+    }
+
 
 }
