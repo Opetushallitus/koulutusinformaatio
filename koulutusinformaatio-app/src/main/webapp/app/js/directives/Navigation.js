@@ -29,7 +29,7 @@ directive('kiSkipNavigation', function() {
     }
 }).
 
-directive('tree', function ($compile) {
+directive('tree', function ($compile, $rootScope) {
 return {
     restrict: 'A',
     terminal: true,
@@ -68,13 +68,14 @@ return {
                 template += '<ul data-tree data-val="item.subnav"  data-level="level + 1"></ul>';
                 template += '</li>';
 
-                if (attrs.level == 1) {
+                if (attrs.level == 1 && !$rootScope.isStudyInfo) {
                     template += '<li class="float-right"><a data-ng-href="{{links.textversion}}" class="action-link"><span data-ki-i18n="link-to-accessible-version"></span></a></li></ul>';
                 } else {
                     template += '</ul>';
                 }
 
-                            }
+            }
+
             var newElement = angular.element(template);
             $compile(newElement)(scope);
             element.replaceWith(newElement);
