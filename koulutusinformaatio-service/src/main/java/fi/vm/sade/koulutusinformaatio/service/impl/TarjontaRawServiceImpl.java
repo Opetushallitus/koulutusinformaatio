@@ -279,9 +279,9 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     }
 
     @Override
-    public Map<String, List<String>> listModifiedLearningOpportunities() {
+    public Map<String, List<String>> listModifiedLearningOpportunities(long updatePeriod) {
         return this.lastModifiedResource
-                .queryParam("lastModified", String.format("-%s", changePeriod))
+                .queryParam("lastModified", String.format("-%s", updatePeriod))
                 .accept(JSON_UTF8)
                 .get(new GenericType<Map<String, List<String>>>() {
                 });

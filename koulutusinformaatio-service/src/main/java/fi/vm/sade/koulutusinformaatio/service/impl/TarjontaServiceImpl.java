@@ -370,8 +370,8 @@ public class TarjontaServiceImpl implements TarjontaService {
     }
 
     @Override
-    public Map<String, List<String>> listChangedLearningOpportunities() {
-        Map<String, List<String>> changemap = this.tarjontaRawService.listModifiedLearningOpportunities();
+    public Map<String, List<String>> listChangedLearningOpportunities(long updatePeriod) {
+        Map<String, List<String>> changemap = this.tarjontaRawService.listModifiedLearningOpportunities(updatePeriod);
         LOG.debug("Tarjonta called");
         
         LOG.debug("Number of changes: " + changemap.size());

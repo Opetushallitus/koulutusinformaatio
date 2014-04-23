@@ -56,7 +56,7 @@ public interface TarjontaRawService {
 
     public List<OidRDTO> listParentLearnignOpportunityOids(int count, int startIndex);
     
-    public Map<String, List<String>> listModifiedLearningOpportunities();
+    public Map<String, List<String>> listModifiedLearningOpportunities(long updatePeriod);
     
     public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> listHigherEducation();
     

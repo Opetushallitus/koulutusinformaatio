@@ -60,7 +60,7 @@ public interface TarjontaService {
      * @param startIndex start index of results
      * @return list of oids
      */
-    public  Map<String, List<String>> listChangedLearningOpportunities();
+    public  Map<String, List<String>> listChangedLearningOpportunities(long updatePeriod);
     
     /**
      * Returns a list of root-level higher education learning opportunities.
