@@ -61,7 +61,7 @@ public class DirectoryResourceTest {
         ProviderSearchResult psr2 = new ProviderSearchResult();
         psr2.setId("2.3.4");
         psr2.setName("provider search result 2");
-        when(providerService.searchProviders(anyString(), eq("fi"))).thenReturn(Lists.newArrayList(psr1, psr2));
+        when(providerService.searchProviders(anyString(), eq("fi"), anyString())).thenReturn(Lists.newArrayList(psr1, psr2));
 
         LearningOpportunityService learningOpportunityService = mock(LearningOpportunityService.class);
         LearningOpportunitySearchResultDTO losr = new LearningOpportunitySearchResultDTO();
@@ -88,7 +88,7 @@ public class DirectoryResourceTest {
 
     @Test
     public void testGetProvidersWithFirstLetter() throws URISyntaxException {
-        Response response = resource.getProvidersWithFirstLetter("fi", "A");
+        Response response = resource.getProvidersWithFirstLetter("fi", "A", "10");
         assertNotNull(response);
         Viewable view = ((Viewable) response.getEntity());
         Map<String, Object> model = (HashMap) view.getModel();
@@ -108,7 +108,7 @@ public class DirectoryResourceTest {
 
     @Test
     public void testGetProvidersInvalidCharacter() throws URISyntaxException {
-        Response response = resource.getProvidersWithFirstLetter("fi", "?");
+        Response response = resource.getProvidersWithFirstLetter("fi", "?", "00");
         assertNotNull(response);
         assertEquals(Response.Status.SEE_OTHER.getStatusCode(), response.getStatus());
     }

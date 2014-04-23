@@ -19,6 +19,7 @@ package fi.vm.sade.koulutusinformaatio.resource.impl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.sun.jersey.api.view.Viewable;
+import fi.vm.sade.koulutusinformaatio.domain.dto.CodeDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResult;
@@ -31,10 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URI;
@@ -82,18 +80,26 @@ public class DirectoryResource {
     @Path("oppilaitokset/{letter}")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Response getProvidersWithFirstLetter(@PathParam("lang") String lang,
-                                                @PathParam("letter") String letter) throws URISyntaxException {
+                                                @PathParam("letter") String letter,
+                                                @QueryParam("type") String type) throws URISyntaxException {
         List<String> characters = null;
+        List<CodeDTO> types = null;
         try {
             characters = learningOpportunityProviderService.getProviderNameFirstCharacters(lang);
+            types = learningOpportunityProviderService.getProviderTypes(letter, lang);
         } catch (SearchException e) {
             // error view
         }
+
+        if (type == null) {
+            type = types.get(0).getValue();
+        }
+
         if (alphabets.contains(letter)) {
             Map<String, Object> model = initModel(lang);
             List<ProviderSearchResult> providers = null;
             try {
-                providers = learningOpportunityProviderService.searchProviders(letter, lang);
+                providers = learningOpportunityProviderService.searchProviders(letter, lang, type);
             } catch (SearchException e) {
                 // error view
             }
@@ -101,6 +107,8 @@ public class DirectoryResource {
             model.put("providers", providers);
             model.put("alphabets", alphabets);
             model.put("validCharacters", characters);
+            model.put("providerTypes", types);
+            model.put("selectedProviderType", type);
             model.put("letter", letter);
             model.put("baseUrl", baseUrl);
             model.put("lang", lang);

@@ -319,8 +319,6 @@ public final class SolrUtil {
         public static final String NAME_AUTO_FI = "name_auto_fi";
         public static final String NAME_AUTO_SV = "name_auto_sv";
         public static final String NAME_AUTO_EN = "name_auto_en";
-        
-
     }
 
     public static class LocationFields {
@@ -331,6 +329,14 @@ public final class SolrUtil {
         public static final String LANG = "lang"; 
         public static final String CODE = "code"; 
         public static final String PARENT = "parent"; //The parent area of the municipality
+    }
+
+    public static class ProviderFields {
+        public final static String STARTS_WITH_FI = "startsWith_fi";
+        public final static String STARTS_WITH_SV = "startsWith_sv";
+        public static final String TYPE_VALUE = "typeValue";
+        public static final String TYPE_FI = "type_fi";
+        public static final String TYPE_SV = "type_sv";
     }
 
     public static class SolrConstants {
@@ -373,7 +379,7 @@ public final class SolrUtil {
         public static final String DISTRICT_UNKNOWN = "99";
         public static final String MUNICIPALITY_UNKNOWN = "99";
 
-
+        public static final String PROVIDER_TYPE_UNKNOWN = "99";
     }
 
 

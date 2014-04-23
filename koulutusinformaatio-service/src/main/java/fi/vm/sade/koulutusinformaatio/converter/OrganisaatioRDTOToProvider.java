@@ -93,10 +93,6 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
     @Override
     public Provider convert(OrganisaatioRDTO o) {
         Provider p = null;
-        
-        
-        
-        
         try {
             p = new Provider();
             p.setId(o.getOid());
@@ -129,8 +125,8 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
             if (districtUri != null) { 
                 p.setHomeDistrict(koodistoService.searchFirstName(districtUri));
             }
-            
             p.setApplicationOffice(getApplicationOffice(o.getMetadata()));
+            p.setType(koodistoService.searchFirst(o.getOppilaitosTyyppiUri()));
         } catch (KoodistoException e) {
             throw new KIConversionException("Conversion failed - " + e.getMessage());
         }
@@ -199,18 +195,6 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
                     visitingAddress, postalAddress);
         }
     }
-
-    /*
-    private Address getAddress(final Map<String, String> addrs) throws KoodistoException {
-        if (addrs != null && !addrs.isEmpty()) {
-            Address address = new Address();
-            address.setStreetAddress(addrs.get(STREET_ADDRESS));
-            address.setPostOffice(addrs.get(POST_OFFICE));
-            address.setPostalCode(koodistoService.searchFirstCodeValue(addrs.get(POSTAL_CODE)));
-            return address;
-        }
-        return null;
-    }*/
 
     private boolean isAthleteEducation(final String placeOfBusinessCode) {
         if (!Strings.isNullOrEmpty(placeOfBusinessCode)) {
