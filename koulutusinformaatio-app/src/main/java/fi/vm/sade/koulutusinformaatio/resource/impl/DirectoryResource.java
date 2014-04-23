@@ -33,8 +33,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -50,22 +52,25 @@ import java.util.Map;
 @Path("/{lang}/hakemisto")
 public class DirectoryResource {
 
+    @Context
+    UriInfo uri;
+
     public static final String CHARSET_UTF_8 = ";charset=UTF-8";
     private static final List<String> alphabets = Lists.newArrayList(
             "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "Å", "Ä", "Ö");
 
     private LearningOpportunityService learningOpportunityService;
     private LearningOpportunityProviderService learningOpportunityProviderService;
-    private String baseUrl;
+    private String ngBaseUrl;
     private ResourceBundleHelper resourceBundleHelper;
 
     @Autowired
     public DirectoryResource(LearningOpportunityService learningOpportunityService,
                              LearningOpportunityProviderService learningOpportunityProviderService,
-                             @Value("${koulutusinformaatio.baseurl.learningopportunity}") String baseUrl) {
+                             @Value("${koulutusinformaatio.baseurl.learningopportunity}") String ngBaseUrl) {
         this.learningOpportunityService = learningOpportunityService;
         this.learningOpportunityProviderService = learningOpportunityProviderService;
-        this.baseUrl = baseUrl;
+        this.ngBaseUrl = ngBaseUrl;
         this.resourceBundleHelper = new ResourceBundleHelper();
     }
 
@@ -110,7 +115,7 @@ public class DirectoryResource {
             model.put("providerTypes", types);
             model.put("selectedProviderType", type);
             model.put("letter", letter);
-            model.put("baseUrl", baseUrl);
+            model.put("ngBaseUrl", ngBaseUrl);
             model.put("lang", lang);
             return Response.status(Response.Status.OK).entity(new Viewable("/providers.ftl", model)).build();
         } else {
@@ -143,7 +148,7 @@ public class DirectoryResource {
         model.put("letter", letter);
         model.put("provider", provider.getName());
         model.put("learningOpportunities", resultList);
-        model.put("baseUrl", baseUrl);
+        model.put("ngBaseUrl", ngBaseUrl);
         model.put("lang", lang);
 
         return new Viewable("/education.ftl", model);
@@ -152,6 +157,7 @@ public class DirectoryResource {
     private Map<String, Object> initModel(String lang) {
         Map<String, Object> model = Maps.newHashMap();
         model.put("messages", resourceBundleHelper.getBundle(lang));
+        model.put("baseUrl", uri.getBaseUri());
         return model;
     }
 }
