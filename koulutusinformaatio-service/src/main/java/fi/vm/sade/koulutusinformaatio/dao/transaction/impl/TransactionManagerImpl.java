@@ -78,7 +78,6 @@ public class TransactionManagerImpl implements TransactionManager {
     private HigherEducationLOSDAO higherEducationLOSDAO;
     private SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO;
 
-
     @Value("${solr.learningopportunity.alias.url:learning_opportunity}")
     private String loHttpAliasName;
 

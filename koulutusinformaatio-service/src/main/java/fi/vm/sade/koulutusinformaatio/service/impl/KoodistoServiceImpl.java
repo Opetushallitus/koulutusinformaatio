@@ -62,47 +62,7 @@ public class KoodistoServiceImpl implements KoodistoService {
     }
 
     @Override
-    public List<I18nText> search(String koodiUri) throws KoodistoException {
-        if (Strings.isNullOrEmpty(koodiUri)) {
-            return null;
-        } else {
-            LOGGER.debug("search koodi: " + koodiUri);
-            return convertAllToI18nText(searchKoodiTypes(koodiUri));
-        }
-    }
-
-    @Override
-    public List<I18nText> searchMultiple(List<String> koodiUris) throws KoodistoException {
-        if (koodiUris == null) {
-            return null;
-        } else if (koodiUris.isEmpty()) {
-            return Lists.newArrayList();
-        } else {
-            List<I18nText> results = Lists.newArrayList();
-            for (String koodiUri : koodiUris) {
-                results.addAll(search(koodiUri));
-            }
-            return results;
-        }
-    }
-
-    @Override
-    public I18nText searchFirst(String koodiUri) throws KoodistoException {
-        if (Strings.isNullOrEmpty(koodiUri)) {
-            return null;
-        } else {
-            LOGGER.debug("search first koodi: " + koodiUri);
-            List<I18nText> koodis = search(koodiUri);
-            if (koodis.size() < 1) {
-                LOGGER.warn("No koodis found with uri: " + koodiUri);
-                return null;
-            }
-            return koodis.get(0);
-        }
-    }
-
-    @Override
-    public List<Code> searchCodes(String koodiUri) throws KoodistoException {
+    public List<Code> search(String koodiUri) throws KoodistoException {
         if (Strings.isNullOrEmpty(koodiUri)) {
             return null;
         } else {
@@ -112,12 +72,39 @@ public class KoodistoServiceImpl implements KoodistoService {
     }
 
     @Override
-    public List<Code> searchCodesByKoodisto(String koodistoUri, Integer version) throws KoodistoException {
+    public List<Code> searchMultiple(List<String> koodiUris) throws KoodistoException {
+        if (koodiUris == null) {
+            return null;
+        } else if (koodiUris.isEmpty()) {
+            return Lists.newArrayList();
+        } else {
+            List<Code> results = Lists.newArrayList();
+            for (String koodiUri : koodiUris) {
+                results.addAll(search(koodiUri));
+            }
+            return results;
+        }
+    }
+
+    @Override
+    public Code searchFirst(String koodiUri) throws KoodistoException {
+        if (Strings.isNullOrEmpty(koodiUri)) {
+            return null;
+        } else {
+            LOGGER.debug("search first koodi: " + koodiUri);
+            List<Code> koodis = search(koodiUri);
+            if (koodis.size() < 1) {
+                LOGGER.warn("No koodis found with uri: " + koodiUri);
+                return null;
+            }
+            return koodis.get(0);
+        }
+    }
+
+    @Override
+    public List<Code> searchByKoodisto(String koodistoUri, Integer version) throws KoodistoException {
         try {
-        	
             List<KoodiType> codes = koodiService.getKoodisForKoodisto(koodistoUri, version, true);
-            
-            
             if (codes == null || codes.isEmpty()) {
                 LOGGER.warn(String.format("No koodis found with koodistoUri %s, version %d", koodistoUri, version));
             }
@@ -128,46 +115,8 @@ public class KoodistoServiceImpl implements KoodistoService {
     }
 
     @Override
-    public List<Code> searchCodesMultiple(List<String> koodiUris) throws KoodistoException {
-        if (koodiUris == null) {
-            return null;
-        } else if (koodiUris.isEmpty()) {
-            return Lists.newArrayList();
-        } else {
-            List<Code> results = Lists.newArrayList();
-            for (String koodiUri : koodiUris) {
-                results.addAll(searchCodes(koodiUri));
-            }
-            return results;
-        }
-    }
-
-    @Override
-    public Code searchFirstCode(String koodiUri) throws KoodistoException {
-        if (!Strings.isNullOrEmpty(koodiUri)) {
-            LOGGER.debug("search first code: " + koodiUri);
-            List<Code> codes = searchCodes(koodiUri);
-            if (codes != null && !codes.isEmpty()) {
-                return searchCodes(koodiUri).get(0);
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public String searchFirstCodeValue(String koodiUri) throws KoodistoException {
-        if (!Strings.isNullOrEmpty(koodiUri)) {
-            Code code = searchFirstCode(koodiUri);
-            if (code != null) {
-                return code.getValue();
-            }
-        }
-        return null;
-    }
-
-    @Override
     public List<String> searchCodeValuesMultiple(List<String> koodiUri) throws KoodistoException {
-        List<Code> results = searchCodesMultiple(koodiUri);
+        List<Code> results = searchMultiple(koodiUri);
         return Lists.transform(results, new Function<Code, String>() {
             @Override
             public String apply(fi.vm.sade.koulutusinformaatio.domain.Code code) {
@@ -193,6 +142,118 @@ public class KoodistoServiceImpl implements KoodistoService {
             return convertAllToCode(searchSuperKoodiTypes(koodiURIAndVersion));
         }
     }
+
+    @Override
+    public List<I18nText> searchNames(String koodiUri) throws KoodistoException {
+        if (Strings.isNullOrEmpty(koodiUri)) {
+            return null;
+        } else {
+            LOGGER.debug("search koodi: " + koodiUri);
+            return convertAllToName(searchKoodiTypes(koodiUri));
+        }
+    }
+
+    @Override
+    public List<I18nText> searchNamesByKoodisto(String koodistoUri, Integer version) throws KoodistoException {
+        try {
+            List<KoodiType> codes = koodiService.getKoodisForKoodisto(koodistoUri, version, true);
+            if (codes == null || codes.isEmpty()) {
+                LOGGER.warn(String.format("No koodis found with koodistoUri %s, version %d", koodistoUri, version));
+            }
+            return convertAllToName(codes);
+        } catch (GenericFault e) {
+            throw new KoodistoException(e);
+        }
+    }
+
+    @Override
+    public List<I18nText> searchNamesMultiple(List<String> koodiUris) throws KoodistoException {
+        if (koodiUris == null) {
+            return null;
+        } else if (koodiUris.isEmpty()) {
+            return Lists.newArrayList();
+        } else {
+            List<I18nText> results = Lists.newArrayList();
+            for (String koodiUri : koodiUris) {
+                results.addAll(searchNames(koodiUri));
+            }
+            return results;
+        }
+    }
+
+    @Override
+    public I18nText searchFirstName(String koodiUri) throws KoodistoException {
+        if (!Strings.isNullOrEmpty(koodiUri)) {
+            LOGGER.debug("search first code: " + koodiUri);
+            List<Code> codes = search(koodiUri);
+            if (codes != null && !codes.isEmpty()) {
+                return searchNames(koodiUri).get(0);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public List<I18nText> searchShortNames(String koodiUri) throws KoodistoException {
+        if (Strings.isNullOrEmpty(koodiUri)) {
+            return null;
+        } else {
+            LOGGER.debug("search koodi: " + koodiUri);
+            return convertAllToShortName(searchKoodiTypes(koodiUri));
+        }
+    }
+
+    @Override
+    public List<I18nText> searchShortNamesByKoodisto(String koodistoUri, Integer version) throws KoodistoException {
+        try {
+            List<KoodiType> codes = koodiService.getKoodisForKoodisto(koodistoUri, version, true);
+            if (codes == null || codes.isEmpty()) {
+                LOGGER.warn(String.format("No koodis found with koodistoUri %s, version %d", koodistoUri, version));
+            }
+            return convertAllToShortName(codes);
+        } catch (GenericFault e) {
+            throw new KoodistoException(e);
+        }
+    }
+
+    @Override
+    public List<I18nText> searchShortNamesMultiple(List<String> koodiUris) throws KoodistoException {
+        if (koodiUris == null) {
+            return null;
+        } else if (koodiUris.isEmpty()) {
+            return Lists.newArrayList();
+        } else {
+            List<I18nText> results = Lists.newArrayList();
+            for (String koodiUri : koodiUris) {
+                results.addAll(searchShortNames(koodiUri));
+            }
+            return results;
+        }
+    }
+
+    @Override
+    public I18nText searchFirstShortName(String koodiUri) throws KoodistoException {
+        if (!Strings.isNullOrEmpty(koodiUri)) {
+            LOGGER.debug("search first code: " + koodiUri);
+            List<Code> codes = search(koodiUri);
+            if (codes != null && !codes.isEmpty()) {
+                return searchShortNames(koodiUri).get(0);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public String searchFirstCodeValue(String koodiUri) throws KoodistoException {
+        if (!Strings.isNullOrEmpty(koodiUri)) {
+            Code code = searchFirst(koodiUri);
+            if (code != null) {
+                return code.getValue();
+            }
+        }
+        return null;
+    }
+
 
     private List<KoodiType> searchSubKoodiTypes(final String koodiUriAndVersion, final String koodistoURI) throws KoodistoException {
         return Lists.newArrayList(Collections2.filter(searchSubKoodiTypes(koodiUriAndVersion), new Predicate<KoodiType>() {
@@ -276,26 +337,40 @@ public class KoodistoServiceImpl implements KoodistoService {
                 Joiner.on(" ").join(sc.getKoodiUris()), sc.getKoodiVersio());
     }
 
-
-    private List<I18nText> convertAllToI18nText(final List<KoodiType> codes) {
+    private List<I18nText> convertAllToName(final List<KoodiType> codes) {
         return Lists.transform(codes, new Function<KoodiType, I18nText>() {
             @Override
             public I18nText apply(fi.vm.sade.koodisto.service.types.common.KoodiType koodiType) {
-                return convertToI18nText(koodiType);
+                return convertToName(koodiType);
             }
         });
     }
 
+    private List<I18nText> convertAllToShortName(final List<KoodiType> codes) {
+        return Lists.transform(codes, new Function<KoodiType, I18nText>() {
+            @Override
+            public I18nText apply(fi.vm.sade.koodisto.service.types.common.KoodiType koodiType) {
+                return convertToShortName(koodiType);
+            }
+        });
+    }
 
-    public I18nText convertToI18nText(KoodiType koodiType) {
+    public I18nText convertToName(KoodiType koodiType) {
         List<KoodiMetadataType> metadata = koodiType.getMetadata();
         Map<String, String> translations = new HashMap<String, String>();
-        Map<String, String> translationsShortName = new HashMap<String, String>();
         for (KoodiMetadataType koodiMetadataType : metadata) {
             translations.put(koodiMetadataType.getKieli().value().toLowerCase(), koodiMetadataType.getNimi());
-            translationsShortName.put(koodiMetadataType.getKieli().value().toLowerCase(), koodiMetadataType.getLyhytNimi());
         }
-        return new I18nText(translations, translationsShortName);
+        return new I18nText(translations);
+    }
+
+    public I18nText convertToShortName(KoodiType koodiType) {
+        List<KoodiMetadataType> metadata = koodiType.getMetadata();
+        Map<String, String> translations = new HashMap<String, String>();
+        for (KoodiMetadataType koodiMetadataType : metadata) {
+            translations.put(koodiMetadataType.getKieli().value().toLowerCase(), koodiMetadataType.getLyhytNimi());
+        }
+        return new I18nText(translations);
     }
 
 
@@ -319,7 +394,7 @@ public class KoodistoServiceImpl implements KoodistoService {
             shortName.put(lang, koodiMetadataType.getLyhytNimi());
             description.put(lang, koodiMetadataType.getKuvaus());
         }
-        return new Code(koodiType.getKoodiArvo(), new I18nText(name, shortName), new I18nText(description), koodiType.getKoodiUri());
+        return new Code(koodiType.getKoodiArvo(), new I18nText(name), new I18nText(shortName), new I18nText(description), koodiType.getKoodiUri());
     }
 
 

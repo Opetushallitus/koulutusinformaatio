@@ -20,13 +20,13 @@
     <target name="deploy-to-remote-tomcat">
 <!--
 	shell command:
-	#ant -Dtomcat-host=luokka -Dtomcat-port=8406
+	#ant -Dtomcat-host=luokka -Dtomcat-port=8307
 -->
 		<fail message="tomcat-host not defined" unless="tomcat-host" />
 		<fail message="tomcat-port not defined" unless="tomcat-port" />	
 
 		<property name="oph.name" value="koulutusinformaatio"/>
-		<property name="pom.version" value="9.0-SNAPSHOT"/>
+		<property name="pom.version" value="9.3-SNAPSHOT"/>
 
 		<property name="maven.repo" value="${user.home}/.m2/repository"/>
 		<property name="tomcat.name" value="tomcat_${oph.name}"/>
@@ -52,10 +52,17 @@
                  host="${tomcat-host}" username="tomcat" keyfile="${ssh.keyfile}"
                  passphrase="${ssh.keypass}" trust="true" failonerror="false" />
 
-        <echo>Copy files to ${tomcat-host}</echo>
+	 <echo>Copy files to ${tomcat-host}</echo>
+                <condition property="war.dir" value="koulutusinformaatio-app/target">
+                     <isset property="integration-test" />
+                </condition>
+                <condition property="war.dir" value="target">
+                     <isset property="system-test" />
+                </condition>
+
 		<scp todir="tomcat@${tomcat-host}:${tomcat.home}/webapps/"
                keyfile="${ssh.keyfile}" passphrase="${ssh.keypass}" >
-			<fileset dir="koulutusinformaatio-app/target">
+	       <fileset dir="${war.dir}">
 				<include name="koulutusinformaatio-app*.war"/>
 			</fileset>
 		</scp>

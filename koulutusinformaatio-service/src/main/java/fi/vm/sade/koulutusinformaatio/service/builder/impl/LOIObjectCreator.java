@@ -16,17 +16,6 @@
 
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
@@ -34,17 +23,7 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
-
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.BasicLOI;
-import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.ContactPerson;
-import fi.vm.sade.koulutusinformaatio.domain.DateRange;
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-import fi.vm.sade.koulutusinformaatio.domain.LOI;
-import fi.vm.sade.koulutusinformaatio.domain.LanguageSelection;
-import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOI;
+import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
@@ -53,6 +32,10 @@ import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.YhteyshenkiloRDTO;
 import fi.vm.sade.tarjonta.shared.types.KomotoTeksti;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.*;
 
 /**
  * @author Hannu Lyytikainen
@@ -84,7 +67,7 @@ public class LOIObjectCreator extends ObjectCreator {
                     komoto.getOid(), e.getMessage()));
         }
         loi.setId(komoto.getOid());
-        loi.setPrerequisite(koodistoService.searchFirstCode(komoto.getPohjakoulutusVaatimusUri()));
+        loi.setPrerequisite(koodistoService.searchFirst(komoto.getPohjakoulutusVaatimusUri()));
         return loi;
 
     }
@@ -92,26 +75,26 @@ public class LOIObjectCreator extends ObjectCreator {
         T basicLOI = createLOI(type, komoto);
         Map<String,Code> availableLanguagesMap = new HashMap<String,Code>();
         List<Code> rawTranslCodes = new ArrayList<Code>();
-        basicLOI.setFormOfTeaching(koodistoService.searchMultiple(komoto.getOpetusmuodotUris()));
-        basicLOI.setTeachingLanguages(koodistoService.searchCodesMultiple(komoto.getOpetuskieletUris()));
+        basicLOI.setFormOfTeaching(koodistoService.searchNamesMultiple(komoto.getOpetusmuodotUris()));
+        basicLOI.setTeachingLanguages(koodistoService.searchMultiple(komoto.getOpetuskieletUris()));
         basicLOI.setStartDate(komoto.getKoulutuksenAlkamisDate());
-        basicLOI.setFormOfEducation(koodistoService.searchMultiple(komoto.getKoulutuslajiUris()));
+        basicLOI.setFormOfEducation(koodistoService.searchNamesMultiple(komoto.getKoulutuslajiUris()));
         basicLOI.setInternationalization(getI18nText(komoto.getTekstit().get(KomotoTeksti.KANSAINVALISTYMINEN)));
         basicLOI.setCooperation(getI18nText(komoto.getTekstit().get(KomotoTeksti.YHTEISTYO_MUIDEN_TOIMIJOIDEN_KANSSA)));
         basicLOI.setContent(getI18nText(komoto.getTekstit().get(KomotoTeksti.SISALTO)));
         basicLOI.setPlannedDuration(komoto.getSuunniteltuKestoArvo());
-        basicLOI.setPlannedDurationUnit(koodistoService.searchFirst(komoto.getSuunniteltuKestoYksikkoUri()));
+        basicLOI.setPlannedDurationUnit(koodistoService.searchFirstName(komoto.getSuunniteltuKestoYksikkoUri()));
         basicLOI.setPduCodeUri(komoto.getLaajuusYksikkoUri());
         if (basicLOI.getContent() != null) {
-            rawTranslCodes.addAll(koodistoService.searchCodesMultiple(
+            rawTranslCodes.addAll(koodistoService.searchMultiple(
                     new ArrayList<String>(komoto.getTekstit().get(KomotoTeksti.SISALTO).keySet())));
         }
         if (basicLOI.getInternationalization() != null) {
-            rawTranslCodes.addAll(koodistoService.searchCodesMultiple(
+            rawTranslCodes.addAll(koodistoService.searchMultiple(
                     new ArrayList<String>(komoto.getTekstit().get(KomotoTeksti.KANSAINVALISTYMINEN).keySet())));
         }
         if (basicLOI.getCooperation() != null) {
-            rawTranslCodes.addAll(koodistoService.searchCodesMultiple(
+            rawTranslCodes.addAll(koodistoService.searchMultiple(
                     new ArrayList<String>(komoto.getTekstit().get(
                             KomotoTeksti.YHTEISTYO_MUIDEN_TOIMIJOIDEN_KANSSA).keySet())));
         }
@@ -153,7 +136,7 @@ public class LOIObjectCreator extends ObjectCreator {
         childLOI.setLosId(losId);
         childLOI.setParentLOIId(childKomoto.getParentKomotoOid());
         childLOI.setWebLinks(childKomoto.getWebLinkkis());
-        childLOI.setProfessionalTitles(koodistoService.searchMultiple(childKomoto.getAmmattinimikeUris()));
+        childLOI.setProfessionalTitles(koodistoService.searchNamesMultiple(childKomoto.getAmmattinimikeUris()));
         childLOI.setWorkingLifePlacement(getI18nText(childKomoto.getTekstit().get(KomotoTeksti.SIJOITTUMINEN_TYOELAMAAN)));
 
         if (childKomoto.getYhteyshenkilos() != null) {
@@ -211,7 +194,7 @@ public class LOIObjectCreator extends ObjectCreator {
         loi.setName(losName);
 
         for (String d : komoto.getLukiodiplomitUris()) {
-            loi.getDiplomas().add(koodistoService.searchFirst(d));
+            loi.getDiplomas().add(koodistoService.searchFirstName(d));
         }
 
         if (komoto.getYhteyshenkilos() != null) {
@@ -229,7 +212,7 @@ public class LOIObjectCreator extends ObjectCreator {
             for (Map.Entry<String, List<String>> oppiaine : kielivalikoimat.entrySet()) {
                 List<I18nText> languages = Lists.newArrayList();
                 for (String kieliKoodi : oppiaine.getValue()) {
-                    languages.add(koodistoService.searchFirst(kieliKoodi));
+                    languages.add(koodistoService.searchFirstName(kieliKoodi));
                 }
                 languageSelection.add(new LanguageSelection(oppiaine.getKey(), languages));
             }

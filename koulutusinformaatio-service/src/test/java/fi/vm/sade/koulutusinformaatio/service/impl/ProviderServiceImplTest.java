@@ -61,6 +61,7 @@ public class ProviderServiceImplTest {
     private static final String PLACE_OF_BUSINESS_KOODISTO_URI = "opetuspisteet";
     private static final String LANG_SELECTION_FI = "kielivalikoima_fi";
     private static final String LANG_FI = "fi";
+    private static final String LANG_FI_URI = "kieli_fi#1";
 
     @Rule
     public WireMockRule wireMockRule = new WireMockRule(PORT);
@@ -81,11 +82,12 @@ public class ProviderServiceImplTest {
         );
         KoodistoService koodistoService = mock(KoodistoService.class);
         ConversionService conversionService = mock(ConversionService.class);
-        when(koodistoService.searchFirst(eq(HOMEPLACE_URI))).thenReturn(HOMEPLACE);
+        when(koodistoService.searchFirstName(eq(HOMEPLACE_URI))).thenReturn(HOMEPLACE);
         when(koodistoService.searchFirstCodeValue(eq(POSTNUMBER_URI))).thenReturn(POSTALNUMBER);
         when(koodistoService.searchSuperCodes(ATHLETE_EDUCATION_KOODISTO_URI,
                 PLACE_OF_BUSINESS_KOODISTO_URI)).thenReturn(new ArrayList<Code>());
         when(koodistoService.searchFirstCodeValue(eq(LANG_SELECTION_FI))).thenReturn(LANG_FI);
+        when(koodistoService.searchFirstCodeValue(eq(LANG_FI_URI))).thenReturn(LANG_FI);
         ObjectMapper objectMapper = new ObjectMapper();
         OrganisaatioRDTOToProvider converter = new OrganisaatioRDTOToProvider(koodistoService);
         OrganisaatioRDTO childOrganisaatio = objectMapper.readValue(CHILD_ORGANISAATIO_JSON, OrganisaatioRDTO.class);
@@ -165,6 +167,36 @@ public class ProviderServiceImplTest {
             "  \"parentOidPath\" : \"|1.2.246.562.10.00000000001|1.2.246.562.10.67094744702|\",\n" +
             "  \"wwwOsoite\" : \"http://www.pedanet/veraja/porvoo/borgagymnasium\",\n" +
             "  \"puhelinnumero\" : \"0407488664\",\n" +
+            "  \"yhteystiedot\" : [ {\n" +
+            "    \"kieli\" : \"kieli_fi#1\",\n" +
+            "    \"osoiteTyyppi\" : \"kaynti\",\n" +
+            "    \"yhteystietoOid\" : \"1.2.246.562.5.67136319307\",\n" +
+            "    \"postinumeroUri\" : \"" + POSTNUMBER_URI + "\",\n" +
+            "    \"osoite\" : \"Gymnasiegatan 10\",\n" +
+            "    \"postitoimipaikka\" : \"PORVOO\",\n" +
+            "    \"ytjPaivitysPvm\" : \"null\",\n" +
+            "    \"lng\" : null,\n" +
+            "    \"lap\" : null,\n" +
+            "    \"coordinateType\" : null,\n" +
+            "    \"osavaltio\" : null,\n" +
+            "    \"extraRivi\" : null,\n" +
+            "    \"maaUri\" : null\n" +
+            "  }, {\n" +
+            "    \"kieli\" : \"kieli_fi#1\",\n" +
+            "    \"osoiteTyyppi\" : \"posti\",\n" +
+            "    \"yhteystietoOid\" : \"1.2.246.562.5.854073253410\",\n" +
+            "    \"postinumeroUri\" : \"" + POSTNUMBER_URI + "\",\n" +
+            "    \"osoite\" : \"PB 8\",\n" +
+            "    \"postitoimipaikka\" : \"PORVOO\",\n" +
+            "    \"ytjPaivitysPvm\" : \"null\",\n" +
+            "    \"lng\" : null,\n" +
+            "    \"lap\" : null,\n" +
+            "    \"coordinateType\" : null,\n" +
+            "    \"osavaltio\" : null,\n" +
+            "    \"extraRivi\" : null,\n" +
+            "    \"maaUri\" : null\n" +
+            "  }\n" +
+            "], \n" +
             "  \"postiosoite\" : {\n" +
             "    \"osoiteTyyppi\" : \"posti\",\n" +
             "    \"yhteystietoOid\" : \"1.2.246.562.5.854073253410\",\n" +
@@ -231,6 +263,36 @@ public class ProviderServiceImplTest {
             "  \"parentOidPath\" : \"|1.2.246.562.10.00000000001|\",\n" +
             "  \"wwwOsoite\" : \"www.porvoo.fi\",\n" +
             "  \"puhelinnumero\" : \"019  520 211\",\n" +
+            "  \"yhteystiedot\" : [ {\n" +
+            "    \"kieli\" : \"kieli_fi#1\",\n" +
+            "    \"osoiteTyyppi\" : \"posti\",\n" +
+            "    \"yhteystietoOid\" : \"1.2.246.562.5.344428525210\",\n" +
+            "    \"postinumeroUri\" : \"" + POSTNUMBER_URI + "\",\n" +
+            "    \"osoite\" : \"PL 23\",\n" +
+            "    \"postitoimipaikka\" : \"PORVOO\",\n" +
+            "    \"ytjPaivitysPvm\" : \"null\",\n" +
+            "    \"lng\" : null,\n" +
+            "    \"lap\" : null,\n" +
+            "    \"coordinateType\" : null,\n" +
+            "    \"osavaltio\" : null,\n" +
+            "    \"extraRivi\" : null,\n" +
+            "    \"maaUri\" : null\n" +
+            "  }, { \n" +
+            "    \"kieli\" : \"kieli_fi#1\",\n" +
+            "    \"osoiteTyyppi\" : \"kaynti\",\n" +
+            "    \"yhteystietoOid\" : \"1.2.246.562.5.86846741535\",\n" +
+            "    \"postinumeroUri\" : \"" + POSTNUMBER_URI + "\",\n" +
+            "    \"osoite\" : \"Taidetehtaankatu 1\",\n" +
+            "    \"postitoimipaikka\" : \"PORVOO\",\n" +
+            "    \"ytjPaivitysPvm\" : \"null\",\n" +
+            "    \"lng\" : null,\n" +
+            "    \"lap\" : null,\n" +
+            "    \"coordinateType\" : null,\n" +
+            "    \"osavaltio\" : null,\n" +
+            "    \"extraRivi\" : null,\n" +
+            "    \"maaUri\" : null\n" +
+            "  }\n" +
+            "], \n" +
             "  \"postiosoite\" : {\n" +
             "    \"osoiteTyyppi\" : \"posti\",\n" +
             "    \"yhteystietoOid\" : \"1.2.246.562.5.344428525210\",\n" +

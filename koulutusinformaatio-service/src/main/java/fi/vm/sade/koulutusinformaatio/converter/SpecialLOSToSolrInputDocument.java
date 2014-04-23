@@ -58,13 +58,11 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
         doc.addField(SolrUtil.LearningOpportunity.LOP_ID, provider.getId());
         doc.addField(SolrUtil.LearningOpportunity.PREREQUISITES, SolrConstants.PK);
 
-        if (specialLOS.getCreditValue() != null 
-                && specialLOS.getCreditUnit() != null 
-                && specialLOS.getCreditUnit().getTranslationsShortName() != null
-                && !specialLOS.getCreditUnit().getTranslationsShortName().isEmpty()) {
+        if (specialLOS.getCreditValue() != null
+                && specialLOS.getCreditUnit() != null) {
             doc.addField(SolrUtil.LearningOpportunity.CREDITS, String.format("%s %s", specialLOS.getCreditValue(),
                     SolrUtil.resolveTranslationInTeachingLangUseFallback(childLOI.getTeachingLanguages(),
-                            specialLOS.getCreditUnit().getTranslationsShortName())));
+                            specialLOS.getCreditUnit().getTranslations())));
         }
 
         doc.setField(SolrUtil.LearningOpportunity.PREREQUISITE, SolrUtil.resolveTranslationInTeachingLangUseFallback(
@@ -73,7 +71,7 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
 
         String teachingLang = childLOI.getTeachingLanguages().isEmpty() ? "EXC" : childLOI.getTeachingLanguages().get(0).getValue().toLowerCase();
         String losName = SolrUtil.resolveTranslationInTeachingLangUseFallback(
-                childLOI.getTeachingLanguages(), specialLOS.getName().getTranslationsShortName());
+                childLOI.getTeachingLanguages(), specialLOS.getShortName().getTranslations());
 
 
         doc.setField(SolrUtil.LearningOpportunity.NAME, losName);
@@ -95,6 +93,7 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
                     SolrUtil.resolveTextWithFallback(teachingLang,
                             provider.getHomePlace().getTranslations()));
         }
+
 
         doc.setField(SolrUtil.LearningOpportunity.LOP_NAME, SolrUtil.resolveTranslationInTeachingLangUseFallback(
                 childLOI.getTeachingLanguages(), provider.getName().getTranslations()));

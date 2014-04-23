@@ -95,7 +95,11 @@ var kiApp = angular.module('kiApp',
 })
 
 // initialize i18n library
-.run(['LanguageService', function(LanguageService) {
+.run(['$location', '$rootScope', 'LanguageService', 'HostResolver', function($location, $rootScope, LanguageService, HostResolver) {
+    var defaultName = 'i18next';
+    var currentHost = $location.host();
+    var i18nCookieName = HostResolver.getCookiePrefixByDomain(currentHost) + defaultName;
+
     i18n.init({
         resGetPath : 'locales/__ns__-__lng__.json',
         lng : LanguageService.getLanguage(),
@@ -103,11 +107,15 @@ var kiApp = angular.module('kiApp',
             namespaces: ['language', 'tooltip', 'plain'],
             defaultNs: 'language'
         },
+        cookieName: i18nCookieName,
         getAsync : false,
         sendMissing : false,
         fallbackLng : 'fi',
         debug : false
     });
+
+    // set global flag when ui language is English
+    $rootScope.isStudyInfo = LanguageService.getLanguage() === 'en';
 }])
 
 .value('appConfig', window.Config.app)

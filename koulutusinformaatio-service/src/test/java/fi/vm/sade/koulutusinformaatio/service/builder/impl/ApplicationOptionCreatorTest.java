@@ -61,7 +61,7 @@ public class ApplicationOptionCreatorTest extends KoodistoAwareTest {
         hakukohde.setOid("1.2.3.4");
         String hakukohdeNameUri = "hakukohdeNameUri";
         I18nText name  = TestUtil.createI18nText("hakukohdeName");
-        when(koodistoService.searchFirst(eq(hakukohdeNameUri))).thenReturn(name);
+        when(koodistoService.searchFirstName(eq(hakukohdeNameUri))).thenReturn(name);
         hakukohde.setHakukohdeNimiUri(hakukohdeNameUri);
         String aoIdentifierAthlete = "aoIdentifier";
         when(koodistoService.searchFirstCodeValue(eq(hakukohdeNameUri))).thenReturn(aoIdentifierAthlete);

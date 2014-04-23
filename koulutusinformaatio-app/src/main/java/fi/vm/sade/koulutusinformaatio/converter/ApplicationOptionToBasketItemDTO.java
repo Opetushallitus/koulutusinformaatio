@@ -65,6 +65,7 @@ public final class ApplicationOptionToBasketItemDTO {
                 aoDTO.setSora(ao.isSora());
                 aoDTO.setTeachingLanguages(ao.getTeachingLanguages());
                 aoDTO.setParent(ParentLOSRefToDTO.convert(ao.getParent(), lang));
+                aoDTO.setHigherEducations(HigherEducationLOSRefToDTO.convert(ao.getHigherEdLOSRefs(), lang));
                 aoDTO.setChildren(ChildLOIRefToDTO.convert(ao.getChildLOIRefs(), lang));
                 aoDTO.setAttachmentDeliveryDeadline(ao.getAttachmentDeliveryDeadline());
                 aoDTO.setAttachments(ApplicationOptionAttachmentToDTO.convertAll(ao.getAttachments(), lang));
@@ -85,7 +86,7 @@ public final class ApplicationOptionToBasketItemDTO {
                     aoDTO.setAthleteEducation(provider.isAthleteEducation() || ao.isAthleteEducation());
                     aoDTO.setProviderName(ConverterUtil.getTextByLanguageUseFallbackLang(provider.getName(), lang));
                     if (provider.getVisitingAddress() != null) {
-                        aoDTO.setProviderLocation(provider.getVisitingAddress().getPostOffice());
+                        aoDTO.setProviderLocation(ConverterUtil.getTextByLanguageUseFallbackLang(provider.getVisitingAddress().getPostOffice(), lang));
                     }
                 }
                 ApplicationSystem as = ao.getApplicationSystem();

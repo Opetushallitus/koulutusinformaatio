@@ -170,8 +170,12 @@ public class IndexerServiceImpl implements IndexerService {
             SolrInputDocument providerDoc = new SolrInputDocument();
             providerDoc.addField("id", provider.getId());
 
-            providerDoc.addField("name_fi", resolveTextByLang("fi", provider.getName().getTranslations()));
-            providerDoc.addField("name_sv", resolveTextByLang("sv", provider.getName().getTranslations()));
+            String nameFi = resolveTextByLang("fi", provider.getName().getTranslations());
+            providerDoc.addField("name_fi", nameFi);
+            providerDoc.addField("startsWith_fi", nameFi.substring(0, 1).toUpperCase());
+            String nameSv = resolveTextByLang("sv", provider.getName().getTranslations());
+            providerDoc.addField("name_sv", nameSv);
+            providerDoc.addField("startsWith_sv", nameSv.substring(0, 1).toUpperCase());
 
             // check if provider exists and update base education and as id values
             SolrQuery query = new SolrQuery("id:" + provider.getId());
@@ -344,48 +348,13 @@ public class IndexerServiceImpl implements IndexerService {
     }
 
     @Override
-    public void addArticles(HttpSolrServer loUpdateSolr) throws IOException, SolrServerException {
-
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-        indexArticlesByLang(mapper, "fi", loUpdateSolr);
-        LOGGER.debug("Indexed finnish articles");
-        indexArticlesByLang(mapper, "sv", loUpdateSolr);
-        LOGGER.debug("Indexed swedish articles");
-
-    }
-
-    private void indexArticlesByLang(ObjectMapper mapper, String lang, HttpSolrServer loUpdateSolr) throws IOException,  SolrServerException {
-        int page = 1;
-        ArticleResults articles = getArticlesByLang(mapper, lang, page);
-        int pages = articles.getPages();
-
-        while (pages > 0) {
-
-            for (Article curArticle : articles.getPosts()) {
-                List<SolrInputDocument> docs = conversionService.convert(curArticle, List.class);
-                loUpdateSolr.add(docs);
-            }
-            articles = getArticlesByLang(mapper, lang, ++page);
-            pages = articles.getPages();
+    public void addArticles(HttpSolrServer loUpdateSolr, List<Article> articles) throws IOException, SolrServerException {
+        
+        for (Article curArticle : articles) {
+            List<SolrInputDocument> docs = conversionService.convert(curArticle, List.class);
+            loUpdateSolr.add(docs);
         }
-
-    }
-
-    private ArticleResults getArticlesByLang(ObjectMapper mapper, String lang, int page) throws IOException {
-        String url = String.format("%s%s%s%s%s%s%s", this.articleHarvestUrl, lang, "/?s=", URLEncoder.encode(" "), "&json=1", "&page=", page);
-        LOGGER.debug("Article search url: " + url);
-
-        URL orgUrl = new URL(url);        
-
-        HttpURLConnection conn = (HttpURLConnection) (orgUrl.openConnection());
-
-        conn.setRequestMethod(SolrConstants.GET);
-        conn.connect();
-
-        ArticleResults articles = mapper.readValue(conn.getInputStream(), ArticleResults.class);
-        return articles;
+        
     }
 
 }

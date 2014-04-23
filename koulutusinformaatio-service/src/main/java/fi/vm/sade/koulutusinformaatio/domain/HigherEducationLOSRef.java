@@ -11,7 +11,7 @@ public class HigherEducationLOSRef {
     private String id;
     private List<String> asIds;
     private I18nText name;
-    private I18nText qualification;
+    private List<I18nText> qualifications;
     private Code prerequisite;
     
     public String getId() {
@@ -32,11 +32,11 @@ public class HigherEducationLOSRef {
     public void setName(I18nText name) {
         this.name = name;
     }
-    public I18nText getQualification() {
-        return qualification;
+    public List<I18nText> getQualifications() {
+        return qualifications;
     }
-    public void setQualification(I18nText qualification) {
-        this.qualification = qualification;
+    public void setQualifications(List<I18nText> qualifications) {
+        this.qualifications = qualifications;
     }
     public Code getPrerequisite() {
         return prerequisite;

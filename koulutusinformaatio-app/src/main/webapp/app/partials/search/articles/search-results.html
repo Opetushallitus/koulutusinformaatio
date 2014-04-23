@@ -47,7 +47,7 @@
 
         <ul id="article-search-results">
 			<li data-ng-repeat="article in loResult.articleresults">
-				<h2><a data-ng-href="{{article.url}}">{{article.title}}</a></h2>
+				<h2><a data-ng-href="{{article.url}}"><span data-ng-bind-html="article.title | unsafe"></span></a></h2>
 				<img data-ng-src="{{article.imageUrl}}" data-ng-show="article.imageUrl"/>
 				<span data-ng-bind-html="article.excerpt | unsafe" style=""></span>
 				<div class="clear"></div>

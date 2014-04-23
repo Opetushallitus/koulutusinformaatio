@@ -31,8 +31,10 @@ public interface SearchService {
     List<Provider> searchLearningOpportunityProviders(final String term, String lang, boolean prefix) throws SearchException;
 
     LOSearchResultList searchLearningOpportunities(final String term, final String prerequisite,
-                                                   List<String> cities, List<String> facetFilters,
+                                                   List<String> cities, List<String> facetFilters, 
+                                                   List<String> articleFilters,
                                                    String lang, boolean ongoing, boolean upcoming, 
+                                                   boolean upcomingLater,
                                                    int start, int rows, String sort, String order, 
                                                    String lopFilter, String educationCodeFilter,
                                                    List<String> excludes, SearchType searchType) throws SearchException;
@@ -44,4 +46,13 @@ public interface SearchService {
     List<Location> getDistricts(final String lang) throws SearchException;
     List<Location> getChildLocations(List<String> districts, final String lang) throws SearchException;
     SuggestedTermsResult searchSuggestedTerms(String term, String lang) throws SearchException;
+    List<ArticleResult> searchArticleSuggestions(String filter, String lang) throws SearchException;
+
+    /**
+     * Returns a list of characters that the providers' names start with.
+     *
+     * @param lang language of provider
+     * @return list of characters
+     */
+    List<String> getProviderFirstCharacterList(String lang) throws SearchException;
 }

@@ -25,6 +25,7 @@ import java.util.List;
  */
 public class BasicLOI extends LOI {
     private I18nText name;
+    private I18nText shortName;
     private List<I18nText> formOfTeaching;
     private List<Code> teachingLanguages;
     private List<I18nText> formOfEducation;
@@ -44,6 +45,14 @@ public class BasicLOI extends LOI {
 
     public void setName(I18nText name) {
         this.name = name;
+    }
+
+    public I18nText getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(I18nText shortName) {
+        this.shortName = shortName;
     }
 
     public List<I18nText> getFormOfTeaching() {

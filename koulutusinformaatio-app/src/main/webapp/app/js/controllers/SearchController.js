@@ -60,7 +60,7 @@ function SearchFieldCtrl($scope, $location, $route, $rootScope, SearchService, k
 /**
  *  Controller for search filters
  */
-function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, kiAppConstants, FilterService, LanguageService, DistrictService, ChildLocationsService, UtilityService, TranslationService, $modal) {
+function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, kiAppConstants, FilterService, LanguageService, DistrictService, ChildLocationsService, UtilityService, TranslationService, $modal, _) {
 
     $scope.change = function() {
         FilterService.set({
@@ -68,6 +68,7 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
             locations: $scope.locations,
             ongoing: $scope.ongoing,
             upcoming: $scope.upcoming,
+            upcomingLater: $scope.upcomingLater,
             page: kiAppConstants.searchResultsStartPage,
             articlePage: kiAppConstants.searchResultsStartPage,
             facetFilters: $scope.facetFilters,
@@ -117,6 +118,22 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     $scope.selectFacetFilter = function(selection, facetField) {
     	var facetSelection = {facetField: facetField, selection: selection};
     	if ($scope.facetFilters != undefined) {
+    		
+    		var tempFilters = [];
+    		
+    		angular.forEach($scope.facetFilters, function(value, index) {
+    			var curField = value.split(':')[0];
+    			if ((facetField == 'theme_ffm' || facetField == 'topic_ffm')
+    					&& curField != 'theme_ffm' && curField != 'topic_ffm') {
+    				tempFilters.push(value);
+    			}
+    			else if (!(facetField == 'theme_ffm' || facetField == 'topic_ffm') && curField != facetField) {
+    				tempFilters.push(value);
+    			}
+    		});
+    		
+    		$scope.facetFilters = tempFilters;
+    		
     		$scope.facetFilters.push(facetField +':'+selection);
     	} else {
     		$scope.facetFilters = [];
@@ -186,6 +203,7 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     	 		|| ((locations != undefined) &&  (locations.length > 0))
     	 		|| $scope.ongoing
     	 		|| $scope.upcoming
+    	 		|| $scope.upcomingLater
     	 		|| $scope.lopRecommendation
     	 		|| $scope.educationCodeRecommendation;
     }
@@ -211,8 +229,18 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     	$scope.change();
     }
     
+    $scope.setUpcomingLater = function() {
+    	$scope.upcomingLater = true;
+    	$scope.change();
+    }
+    
     $scope.removeUpcoming = function() {
     	$scope.upcoming = false;
+    	$scope.change();
+    }
+    
+    $scope.removeUpcomingLater = function() {
+    	$scope.upcomingLater = false;
     	$scope.change();
     }
     
@@ -245,148 +273,25 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
     	return isSelected;
     }
 
-    $scope.openModal = function() {
-
-        var modalIntance = $modal.open({
-            templateUrl: 'templates/selectArea.html',
-            backdrop: 'static',
-            controller: LocationDialogCtrl
-        });
-
-        modalIntance.result.then(function(result) {
+    $scope.setFilteredLocations = function(value) {
+        _.each(value, function(location) {
             if (!$scope.locations) {
-                $scope.locations = result;
-            } else {
-                angular.forEach(result, function(value, key){
-                    if ($scope.locations.indexOf(value) < 0) {
-                        $scope.locations.push(value);
-                    }
-                });
+                $scope.locations = [location];
+            } else if (_.where($scope.locations, {code: location.code}).length <= 0) {
+                $scope.locations.push(location);
             }
-            $scope.change();
-        })
+        });
     }
 };
-
-function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsService, UtilityService, DistrictService, TranslationService) {
-
-    $timeout(function(){
-        $('#select-location-dialog').attr('aria-hidden', 'false');
-    }, 0);
-
-    $scope.titleLocales = {
-        close: TranslationService.getTranslation('tooltip:close'),
-        removeFacet: TranslationService.getTranslation('tooltip:remove-facet')
-    }
-
-    DistrictService.query().then(function(result) {
-        $scope.distResult = result;
-        $scope.distResult.unshift({name: TranslationService.getTranslation('koko') + ' ' + TranslationService.getTranslation('suomi'), code: '-1'});
-
-        // IE requires this to redraw select boxes after data is loaded
-        $timeout(function() {
-            $("#districtSelection").css("width", '200px');
-        }, 0);
-    });
-
-    $scope.cancel = function() {
-        $('#select-location-dialog').attr('aria-hidden', 'true');
-        $modalInstance.dismiss('cancel');
-    }
-
-    var doMunicipalitySearch = function() {
-        var queryDistricts = [];
-        if ($scope.muniResult != undefined) {
-            $scope.muniResult.length = 0;
-        } else {
-            $scope.muniResult = [];
-        }
-        if ($scope.isWholeAreaSelected($scope.selectedDistricts)) {
-            queryDistricts = $scope.distResult;
-        } else {
-            queryDistricts = $scope.selectedDistricts;
-        }
-        ChildLocationsService.query(queryDistricts).then(function(result) {
-            
-            if (!$scope.isWholeAreaSelected($scope.selectedDistricts)) {
-                UtilityService.sortLocationsByName(result);
-                $scope.muniResult.push.apply($scope.muniResult, queryDistricts);
-                $scope.muniResult.push.apply($scope.muniResult, result);
-            } else {
-                $scope.muniResult.push.apply($scope.muniResult, result);
-            }
-
-            // IE requires this to redraw select boxes after data is loaded
-            $timeout(function() {
-                $("#municipalitySelection").css("width", '200px');
-            }, 0);
-            
-        });
-    }
-
-    var selectMunicipality = function() {
-        if (!$scope.selectedMunicipalities) {
-            $scope.selectedMunicipalities = [];
-        }
-
-        angular.forEach($scope.selectedMunicipality, function(mun, munkey){
-            
-            var found = false;
-            angular.forEach($scope.selectedMunicipalities, function(value, key){
-                if (value.code == mun.code) {
-                    found = true;
-                }
-            });
-
-            if (!found) {
-                $scope.selectedMunicipalities.push(mun);
-            }
-
-        });
-    }
-
-    $scope.$watch('selectedMunicipality', function(value) {
-        if (value) {
-            selectMunicipality();
-        }
-    });
-
-    $scope.$watch('selectedDistricts', function(value) {
-        if (value) {
-            doMunicipalitySearch();
-        }
-    });
-
-    $scope.removeMunicipality = function(code) {
-        angular.forEach($scope.selectedMunicipalities, function(mun, key) {
-            if (code == mun.code) {
-                $scope.selectedMunicipalities.splice(key, 1);
-            }
-        });
-    }
-
-    $scope.isWholeAreaSelected = function(areaArray) {
-        for (var i = 0; i < areaArray.length; i++) {
-            if (areaArray[i].code == '-1') {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    $scope.filterBySelLocations = function() {
-        $modalInstance.close($scope.selectedMunicipalities);
-    }
-
-}
 
 /**
  *  Controller for search functionality 
  */
- function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route, SearchLearningOpportunityService, SearchService, kiAppConstants, FilterService, Config, LanguageService, TranslationService, $timeout) {
+function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route, SearchLearningOpportunityService, SearchService, kiAppConstants, FilterService, Config, LanguageService, TranslationService, $timeout, SearchResultFacetTransformer) {
     var queryParams;
     $scope.selectAreaVisible = false;
     $rootScope.title = TranslationService.getTranslation('title-search-results') + ' - ' + TranslationService.getTranslation('sitename');
+    $rootScope.description = $rootScope.title;
 
     $scope.pageSizes = [25, 50, 100];
 
@@ -459,6 +364,7 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
                 $scope.locations = FilterService.getLocations();
                 $scope.ongoing = FilterService.isOngoing();
                 $scope.upcoming = FilterService.isUpcoming();
+                $scope.upcomingLater = FilterService.isUpcomingLater();
                 $scope.facetFilters = FilterService.getFacetFilters();
                 $scope.langCleared = FilterService.getLangCleared();
                 $scope.itemsPerPage = FilterService.getItemsPerPage();
@@ -510,6 +416,7 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
         $location.search(qParams).replace();
     	//If the language filter is set, the search query is made
     	if ($routeParams.queryString && $scope.isLangFilterSet()) {
+    		
     		SearchLearningOpportunityService.query({
     			queryString: $routeParams.queryString,
     			start: (FilterService.getPage()-1) * $scope.itemsPerPage,
@@ -518,6 +425,7 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     			locations: FilterService.getLocationNames(),
     			ongoing: FilterService.isOngoing(),
     			upcoming: FilterService.isUpcoming(),
+    			upcomingLater: FilterService.isUpcomingLater(),
     			facetFilters: FilterService.getFacetFilters(),
                 sortCriteria: FilterService.getSortCriteria(),
     			lang: LanguageService.getLanguage(),
@@ -549,9 +457,16 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     				
     				$scope.tabTitles.learningOpportunities = TranslationService.getTranslation('search-tab-lo') + ' (' + $scope.loCount + ')';
     	            $scope.tabTitles.articles = TranslationService.getTranslation('search-tab-article') + ' (' + $scope.articleCount + ')';
-    	            $scope.tabTitles.queryString = $routeParams.queryString;
+    	            if (FilterService.getLopFilter() != undefined && FilterService.getLopFilter() != null) {
+    	            	$scope.tabTitles.queryString = FilterService.getLopFilter();
+    	            } else {
+    	            	$scope.tabTitles.queryString = $routeParams.queryString;
+    	            }
     	            $scope.tabTitles.totalCount = $scope.loResult.totalCount;
     	            $rootScope.tabChangeable = true;
+    	            $scope.loResult = SearchResultFacetTransformer.transform($scope.loResult, $scope.facetFilters);//$scope.convertLoResult($scope.loResult);
+    	            
+    	            
     			}
     		});
 
@@ -582,6 +497,7 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     			locations: $scope.locations,
     			ongoing: $scope.ongoing,
     			upcoming: $scope.upcoming,
+    			upcomingLater: $scope.upcomingLater,
     			page: kiAppConstants.searchResultsStartPage,
     			facetFilters: facetFiltersArr.join()
     		});
@@ -630,7 +546,13 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     		if (fVal.valueId == 'ongoing') {
     			$scope.loResult.ongoingFacet = fVal;
     		} else if (fVal.valueId == 'upcoming') {
+    			fVal.year = fVal.valueName.split("|")[0];
+    			fVal.season = fVal.valueName.split("|")[1];
     			$scope.loResult.upcomingFacet = fVal;
+    		} else if (fVal.valueId == 'upcomingLater') {
+    			fVal.year = fVal.valueName.split("|")[0];
+    			fVal.season = fVal.valueName.split("|")[1];
+    			$scope.loResult.upcomingLaterFacet = fVal;
     		}
     	});
     	
@@ -641,12 +563,50 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
     	if (LanguageService.getLanguage() == 'sv' || LanguageService.getLanguage() == 'SV') {
     		return 'SV';
     	}
+        else if (LanguageService.getLanguage() == 'en' || LanguageService.getLanguage() == 'EN') {
+            return 'EN';
+        }
     	return 'FI';
     }
 };
 
-function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, ArticleContentSearchService, FilterService, SearchLearningOpportunityService, LanguageService, TranslationService) {
-    $scope.currentPage = 1;
+function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, ArticleContentSearchService, FilterService, SearchLearningOpportunityService, LanguageService, kiAppConstants, TranslationService) {
+    
+	$scope.change = function() {
+        FilterService.set({
+            prerequisite: $scope.prerequisite,
+            locations: $scope.locations,
+            ongoing: $scope.ongoing,
+            upcoming: $scope.upcoming,
+            page: kiAppConstants.searchResultsStartPage,
+            articlePage: kiAppConstants.searchResultsStartPage,
+            facetFilters: $scope.facetFilters,
+            langCleared: $scope.langCleared,
+            itemsPerPage: $scope.itemsPerPage,
+            sortCriteria: $scope.sortCriteria,
+            lopFilter: $scope.lopFilter,
+            educationCodeFilter: $scope.educationCodeFilter,
+            excludes: $scope.excludes,
+            articleFacetFilters: $scope.articleFacetFilters
+        });
+        
+        if ($scope.lopFilter != undefined) {
+        	$scope.lopRecommendation = true;
+        } else {
+        	$scope.lopRecommendation = false;
+        }
+        
+        if ($scope.educationCodeFilter != undefined) {
+        	$scope.educationCodeRecommendation = true;
+        } else {
+        	$scope.educationCodeRecommendation = false;
+        }
+
+        // append filters to url and reload
+        $scope.refreshArticleView();
+    }
+	
+	$scope.currentPage = 1;
     $scope.showPagination = false;
 
     $scope.changePage = function(page) {
@@ -696,11 +656,16 @@ function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, 
                 $scope.locations = FilterService.getLocations();
                 $scope.ongoing = FilterService.isOngoing();
                 $scope.upcoming = FilterService.isUpcoming(),
+                $scope.upcomingLater = FilterService.isUpcomingLater(),
                 $scope.langCleared = FilterService.getLangCleared();
                 $scope.itemsPerPage = FilterService.getItemsPerPage();
                 $scope.sortCriteria = FilterService.getSortCriteria();
                 $scope.currentArticlePage = FilterService.getArticlePage();
                 $scope.facetFilters = FilterService.getFacetFilters();
+                $scope.lopFilter = FilterService.getLopFilter();
+                $scope.educationCodeFilter = FilterService.getEducationCodeFilter();
+                $scope.excludes = FilterService.getExcludes();
+                $scope.articleFacetFilters = FilterService.getArticleFacetFilters();
 
                 $scope.doArticleSearching();
             });
@@ -719,9 +684,14 @@ function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, 
 			locations: FilterService.getLocationNames(),
 			ongoing: FilterService.isOngoing(),
 			upcoming: FilterService.isUpcoming(),
+			upcomingLater: FilterService.isUpcomingLater(),
 			facetFilters: $scope.resolveFacetFilters(),
             sortCriteria: FilterService.getSortCriteria(),
 			lang: LanguageService.getLanguage(),
+			lopFilter: FilterService.getLopFilter(),
+		    educationCodeFilter: FilterService.getEducationCodeFilter(),
+		    excludes : FilterService.getExcludes(),
+		    articleFacetFilters : FilterService.getArticleFacetFilters(),
 		    searchType : 'ARTICLE'
 		}).then(function(result) {
 			
@@ -748,6 +718,7 @@ function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, 
 				$scope.tabTitles.queryString = $routeParams.queryString;
 				$scope.tabTitles.totalCount = $scope.loResult.totalCount;
 				$rootScope.tabChangeable = true;
+				$scope.populateArticleFacetSelections();
 			}
 		});
         
@@ -756,6 +727,62 @@ function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, 
     $scope.refreshArticleView = function() {
         $location.search(FilterService.get()).replace();
         $scope.initSearch();
+    }
+    
+    $scope.isArticleFacetSelected = function(fv) {
+    	var isSelected = false;
+    	for (var i = 0; i < $scope.articleFacetSelections.length; i++) {
+    		if (($scope.articleFacetSelections[i].facetField == fv.facetField)
+    				&& ($scope.articleFacetSelections[i].valueId == fv.valueId)) {
+    			isSelected = true;
+    		}
+    	}
+    	return isSelected;
+    }
+    
+    $scope.selectArticleFacetFilter = function(selection, facetField) {
+    	if ($scope.articleFacetFilters != undefined) {
+    		$scope.articleFacetFilters.push(facetField +':'+ selection);
+    	} else {
+    		$scope.articleFacetFilters = [];
+    		$scope.articleFacetFilters.push(facetField +':'+selection);
+    	}
+
+    	$scope.change();
+    }
+
+    $scope.removeArticleFacetSelection = function(facetSelection) {
+
+    	var tempFilters = [];
+    	angular.forEach($scope.articleFacetFilters, function(value, index) {
+    		var curVal = value.split(':')[1];
+    		var curField = value.split(':')[0];
+    		if ((curField != facetSelection.facetField) 
+    				|| (curVal != facetSelection.valueId)) {
+    			tempFilters.push(value);
+    		}
+    	});
+
+    	$scope.articleFacetFilters = tempFilters;
+    	$scope.change();
+    }
+    
+    $scope.areThereArticleFacetSelections = function() {
+    	return (($scope.articleFacetSelections != undefined) && ($scope.articleFacetSelections.length > 0));
+    }
+    
+    $scope.populateArticleFacetSelections = function() {
+    	$scope.articleFacetSelections = [];
+    	$scope.articleFacetFilters = FilterService.getArticleFacetFilters();
+    	angular.forEach($scope.articleFacetFilters, function(fFilter, key) {
+    		var curSelection = {
+    							facetField: fFilter.split(':')[0], 
+    							valueId: fFilter.split(':')[1],
+    							valueName: fFilter.split(':')[1]
+    							};
+    		$scope.articleFacetSelections.push(curSelection);
+    	});
+    	
     }
 
 };

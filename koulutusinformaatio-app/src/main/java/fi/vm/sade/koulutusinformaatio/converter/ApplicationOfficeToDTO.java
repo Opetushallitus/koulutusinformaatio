@@ -33,8 +33,8 @@ public final class ApplicationOfficeToDTO {
         } else {
             ApplicationOfficeDTO dto = new ApplicationOfficeDTO();
             dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOffice.getName(), lang));
-            dto.setVisitingAddress(AddressToDTO.convert(applicationOffice.getVisitingAddress()));
-            dto.setPostalAddress(AddressToDTO.convert(applicationOffice.getPostalAddress()));
+            dto.setVisitingAddress(AddressToDTO.convert(applicationOffice.getVisitingAddress(), lang));
+            dto.setPostalAddress(AddressToDTO.convert(applicationOffice.getPostalAddress(), lang));
             dto.setPhone(applicationOffice.getPhone());
             dto.setEmail(applicationOffice.getEmail());
             dto.setWww(applicationOffice.getWww());

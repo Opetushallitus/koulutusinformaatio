@@ -6,7 +6,8 @@ angular.module('kiApp.services',
     'kiApp.HostResolver', 
     'kiApp.NavigationService',
     'kiApp.ArticleContentSearchService',
-    'kiApp.TranslationService'
+    'kiApp.TranslationService',
+    'kiApp.CookieService'
 ]).
 
 service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analytics', '$rootScope', 'FilterService', 'LearningOpportunitySearchResultTransformer', function($http, $timeout, $q, $analytics, $rootScope, FilterService, LearningOpportunitySearchResultTransformer) {
@@ -17,6 +18,7 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
             var result = 0;
             result = params.ongoing ? result + 1 : result;
             result = params.upcoming ? result + 1 : result;
+            result = params.upcomingLater ? result + 1 : result;
 
             return result;
         }
@@ -104,6 +106,7 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
             qParams += (params.locations != undefined && params.locations.length > 0) ? ('&' + cities) : '';
             qParams += (params.ongoing != undefined) ? ('&ongoing=' + params.ongoing) : '';
             qParams += (params.upcoming != undefined) ? ('&upcoming=' + params.upcoming) : '';
+            qParams += (params.upcomingLater != undefined) ? ('&upcomingLater=' + params.upcomingLater) : '';
             qParams += (params.lang != undefined) ? ('&lang=' + params.lang) : '';
             qParams += (params.lopFilter != undefined) ? ('&lopFilter=' + params.lopFilter) : '';
             qParams += (params.educationCodeFilter != undefined) ? ('&educationCodeFilter=' + params.educationCodeFilter) : '';
@@ -114,6 +117,12 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
             		 qParams += '&facetFilters=' + facetFilter;
                  });
             }
+            
+            if (params.articleFacetFilters != undefined) {
+           	 angular.forEach(params.articleFacetFilters, function(facetFilter, key) {
+           		 qParams += '&articleFacetFilters=' + facetFilter;
+                });
+           }
             
             if (params.excludes != undefined) {
             	angular.forEach(params.excludes, function(exclude, key) {
@@ -133,7 +142,7 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
             qParams += (sortField.length > 0) ? ('&sort=' +sortField) : '';
             qParams += ((params.sortCriteria != undefined) && ((params.sortCriteria == 2) || (params.sortCriteria == 4))) ? ('&order=desc') : '';
 
-            $http.get('../lo/search/' + encodeURI(params.queryString) + qParams, {}).
+            $http.get('../lo/search/' + encodeURI(params.queryString).replace("#", "%23").replace(";", "%3B") + qParams, {}).
             success(function(result) {
                 LearningOpportunitySearchResultTransformer.transform(result);
                 var variables = parseFilterValues(params);
@@ -402,7 +411,7 @@ service('UpperSecondaryLOService', ['$http', '$timeout', '$q', '$rootScope', 'La
                 ChildLOTransformer.transform(result);
                 var loResult = {
                     lo: result,
-                    parent: {},
+                    //parent: {},
                     provider: result.provider
                 }
                 deferred.resolve(loResult);
@@ -443,7 +452,7 @@ service('HigherEducationLOService', ['$http', '$timeout', '$q', 'LanguageService
             	HigherEducationTransformer.transform(result);
                 var loResult = {
                     lo: result,
-                    parent: {},
+                    //parent: {},
                     provider: result.provider
                 }
                 deferred.resolve(loResult);
@@ -507,7 +516,7 @@ service('HigherEducationPreviewLOService', ['$http', '$timeout', '$q', 'Language
             	}
                 var loResult = {
                     lo: result,
-                    parent: {},
+                    //parent: {},
                     provider: result.provider
                 }
                 deferred.resolve(loResult);
@@ -715,6 +724,22 @@ service('HigherEducationTransformer', ['UtilityService', '$rootScope', '$filter'
 			}
 			result.teachingLanguage = getFirstItemInList(result.teachingLanguages);
 			result.formOfTeaching = getFirstItemInList(result.formOfTeaching);
+			
+
+			if (result.themes != undefined && result.themes != null) {
+				var distinctMap = {};
+				var distinctArray = [];
+				for (var i=0; i < result.themes.length;i++) {
+					var theme = result.themes[i];
+					if (distinctMap[theme.uri] == undefined) {
+						distinctMap[theme.uri] = theme;
+						distinctArray.push(theme);
+					}
+				}
+				result.themes = distinctArray;
+			}
+			
+			
 
 			for (var asIndex in result.applicationSystems) {
 				if (result.applicationSystems.hasOwnProperty(asIndex)) {
@@ -1012,6 +1037,141 @@ service('LearningOpportunitySearchResultTransformer', ['UtilityService', '$filte
                     }
                 });
             }
+
+            // order teaching languages in order: FI, SV, EN, other languages in alphabetical order
+            if (result && result.teachingLangFacet && result.teachingLangFacet.facetValues ) {
+                result.teachingLangFacet.facetValues.sort( function(a, b) {
+
+                    if (a.valueId == "FI" && b.valueId == "SV") return -1;
+                    else if (a.valueId == "SV" && b.valueId == "FI") return 1;
+                    else if (a.valueId == "FI" && b.valueId == "EN") return -1;
+                    else if (a.valueId == "EN" && b.valueId == "FI") return 1;
+                    else if (a.valueId == "SV" && b.valueId == "EN") return -1;
+                    else if (a.valueId == "EN" && b.valueId == "SV") return 1;
+                    else return 1
+
+                });
+            }
+        }
+    }
+}]).
+
+service('SearchResultFacetTransformer', ['UtilityService', '$filter', function(UtilityService, $filter) {
+	
+	var getFacetValById = function(valueId, givenVals) {
+    	
+    	var selectedEdTypeFacetVal = undefined;
+    	var edTypeFacetVals = [];
+    	edTypeFacetVals = edTypeFacetVals.concat(givenVals);
+    	
+    	while (edTypeFacetVals != null && edTypeFacetVals.length > 0) {
+			
+			var currentValue = edTypeFacetVals.shift();
+			
+			if (currentValue != null && currentValue.valueId == valueId) {
+				selectedEdTypeFacetVal = currentValue;
+			}
+			
+			if (currentValue != null && selectedEdTypeFacetVal == undefined) {
+				edTypeFacetVals = edTypeFacetVals.concat(currentValue.childValues);
+			}
+		}
+    	return selectedEdTypeFacetVal;
+    };
+    
+	return {
+    	
+        transform: function(result, facetFilters) {
+
+        	var loResult = result;
+        	
+        	var wasEducationType = false;
+        	var educationtypeSelection = undefined;
+        	var wasTheme = false;
+        	var wasTopic = false;
+        	var themeTopicSelection = undefined;
+        	
+        	angular.forEach(facetFilters, function(value, index) {
+        		var curVal = value.split(':')[1];
+        		var curField = value.split(':')[0];
+        		if ((curField == 'educationType_ffm')) {
+        			
+        			wasEducationType = true;
+        			
+        			educationtypeSelection = curVal;
+        		} else if (curField == 'theme_ffm') {
+        			wasTheme = true;
+        			themeTopicSelection = curVal;
+        		} else if (curField == 'topic_ffm') {
+        			wasTopic = true;
+        			themeTopicSelection = curVal;
+        		}
+        	});
+        	
+        	
+        	if (wasTheme) {
+        		var selectedThemeFacetVal = getFacetValById(themeTopicSelection, loResult.topicFacet.facetValues);
+        		topicFacetValues = [];
+    			topicFacetValues.push(selectedThemeFacetVal);
+    			
+    			loResult.topicFacetValues = topicFacetValues;
+        	} else if (wasTopic) {
+        		var selectedTopicFacetVal = getFacetValById(themeTopicSelection, loResult.topicFacet.facetValues);
+        		var parentThemeVal = getFacetValById(selectedTopicFacetVal.parentId, loResult.topicFacet.facetValues);
+        		parentThemeVal.childValues = [];
+        		parentThemeVal.childValues.push(selectedTopicFacetVal);
+        		
+        		topicFacetValues = [];
+    			topicFacetValues.push(parentThemeVal);
+    			
+    			loResult.topicFacetValues = topicFacetValues;
+        	} else {
+        		angular.forEach(loResult.topicFacet.facetValues, function(value, index) {
+            		value.childValues = [];
+            	});
+        		
+        		loResult.topicFacetValues = loResult.topicFacet.facetValues;
+        	}
+        	
+        	if (wasEducationType) {
+        		
+        		var selectedEdTypeFacetVal = getFacetValById(educationtypeSelection, loResult.edTypeFacet.facetValues);  
+        		if (selectedEdTypeFacetVal != undefined) {
+        			
+        			angular.forEach(selectedEdTypeFacetVal.childValues, function(value, index) {
+        				value.childValues = [];
+        			});
+        			
+        			var parent = getFacetValById(selectedEdTypeFacetVal.parentId, loResult.edTypeFacet.facetValues);
+        			
+        			while (parent != undefined && parent != null) {
+        				parent.childValues = [];
+    					parent.childValues.push(selectedEdTypeFacetVal);
+        				selectedEdTypeFacetVal = parent;
+        				parent = getFacetValById(selectedEdTypeFacetVal.parentId, loResult.edTypeFacet.facetValues);
+        			}
+        			
+        			edTypeFacetValues = [];
+        			edTypeFacetValues.push(selectedEdTypeFacetVal);
+        			
+        			loResult.edTypeFacetValues = edTypeFacetValues;
+        		} else {
+        			angular.forEach(loResult.edTypeFacet.facetValues, function(value, index) {
+                		value.childValues = [];
+                	});
+            		
+            		loResult.edTypeFacetValues = loResult.edTypeFacet.facetValues;
+        		}
+        	} else {
+        		angular.forEach(loResult.edTypeFacet.facetValues, function(value, index) {
+            		value.childValues = [];
+            	});
+        		
+        		loResult.edTypeFacetValues = loResult.edTypeFacet.facetValues;
+        	}
+        	
+        	return loResult;
+        	
         }
     }
 }]).
@@ -1040,51 +1200,69 @@ service('LearningOpportunityProviderPictureService', ['$http', '$timeout', '$q',
 /**
  *  Service taking care of search term saving
  */
- service('SearchService', function() {
+ service('SearchService', ['CookieService', function(CookieService) {
     var key = 'searchTerm';
     return {
         getTerm: function() {
-            var term = $.cookie(key);
-            if (term) {
-                return term;
-            } else {
-                return '';
-            }
+            return CookieService.get(key) || '';
         },
 
         setTerm: function(newTerm) {
             if (newTerm) {
-                $.cookie(key, newTerm, {useLocalStorage: false, path: '/'});
+                CookieService.set(key, newTerm);
             }
         }
     };
-}).
+}]).
 
 /**
  *  Service keeping track of the current language selection
  */
-service('LanguageService', function() {
+service('LanguageService', ['CookieService', function(CookieService) {
     var defaultLanguage = 'fi';
     var key = 'i18next';
 
     return {
         getLanguage: function() {
-            return $.cookie(key) || defaultLanguage;
+            return CookieService.get(key) || defaultLanguage;
         },
 
         setLanguage: function(language) {
-            $.cookie(key, language, {useLocalStorage: false, path: '/'});
+            CookieService.set(key, language);
         },
 
         getDefaultLanguage: function() {
             return defaultLanguage;
         }
     };
-}).
+}]).
+
+/**
+ *  Service keeping track of virkalija language selection
+ */
+service('VirkailijaLanguageService', ['CookieService', function(CookieService) {
+    var defaultLanguage = 'fi';
+    var key = 'virkailijaLang';
+
+    return {
+        getLanguage: function() {
+            return CookieService.get(key) || defaultLanguage;
+        },
+
+        setLanguage: function(language) {
+            CookieService.set(key, language);
+        },
+
+        getDefaultLanguage: function() {
+            return defaultLanguage;
+        }
+    };
+}]).
 
 /**
  *  Service for "caching" current parent selection
  */
+ /*
  service('ParentLODataService', function() {
     var data;
 
@@ -1102,10 +1280,12 @@ service('LanguageService', function() {
         }
     };
 }).
+*/
 
 /**
  *  Service for "caching" current child selection
  */
+ /*
  service('ChildLODataService', function() {
     var data;
 
@@ -1123,11 +1303,12 @@ service('LanguageService', function() {
         }
     };
 }).
+*/
 
 /**
  *  Service for maintaining application basket state
  */
-service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageService', 'UtilityService', function($http, $q, $rootScope, LanguageService, UtilityService) {
+service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageService', 'UtilityService', 'CookieService', function($http, $q, $rootScope, LanguageService, UtilityService, CookieService) {
     var key = 'basket';
     var typekey = 'baskettype';
     var cookieConfig = {useLocalStorage: false, maxChunkSize: 2000, maxNumberOfCookies: 20, path: '/'};
@@ -1170,7 +1351,7 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
     return {
         addItem: function(aoId, itemType) {
 
-            var current = $.cookie(key);
+            var current = CookieService.get(key);
 
             if (current) {
                 current = JSON.parse(current);
@@ -1186,37 +1367,37 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
 
             // save type if defined
             if (itemType) {
-                $.cookie(typekey, itemType, cookieConfig);
+                CookieService.set(typekey, itemType, cookieConfig);
             }
 
-            $.cookie(key, JSON.stringify(current), cookieConfig);
+            CookieService.set(key, JSON.stringify(current), cookieConfig);
         },
 
         removeItem: function(aoId) {
             if (this.getItemCount() > 1) {
-                var value = $.cookie(key);
+                var value = CookieService.get(key);
                 value = JSON.parse(value);
 
                 var index = value.indexOf(aoId);
                 value.splice(index, 1);
 
-                $.cookie(key, JSON.stringify(value), cookieConfig);
+                CookieService.set(key, JSON.stringify(value), cookieConfig);
             } else {
                 this.empty();
             }
         },
 
         empty: function() {
-            $.cookie(key, null, cookieConfig);
-            $.cookie(typekey, null, cookieConfig);
+            CookieService.set(key, null, cookieConfig);
+            CookieService.set(typekey, null, cookieConfig);
         },
 
         getItems: function() {
-            return JSON.parse($.cookie(key));
+            return JSON.parse( CookieService.get(key) );
         },
 
         getItemCount: function() {
-            return $.cookie(key) ? JSON.parse($.cookie(key)).length : 0;
+            return CookieService.get(key) ? JSON.parse( CookieService.get(key) ).length : 0;
         },
 
         isEmpty: function() {
@@ -1225,7 +1406,7 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
 
         getType: function() {
             if (!this.isEmpty()) {
-                return $.cookie(typekey);
+                return CookieService.get(typekey);
             }
         },
 
@@ -1271,7 +1452,7 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
 /**
  *  Service for maintaining search filter state
  */
-service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'kiAppConstants', function($q, $http, UtilityService, LanguageService, kiAppConstants) {
+service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'kiAppConstants', '_', function($q, $http, UtilityService, LanguageService, kiAppConstants, _) {
     var filters = {};
 
     var filterIsEmpty = function(filter) {
@@ -1314,7 +1495,7 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
             var deferred = $q.defer();
 
             var codes = ''
-            var locationCodes = (queryParams.locations && typeof queryParams.locations == 'string') ? UtilityService.getStringAsArray(queryParams.locations) : getLocationCodes();
+            var locationCodes = (queryParams.locations && typeof queryParams.locations == 'string') ? UtilityService.getStringAsArray(queryParams.locations) : queryParams.locations || [];
 
             angular.forEach(locationCodes, function(value, key){
                 codes += '&code=' + value;
@@ -1352,6 +1533,7 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
                 locations: getLocationCodes(),
                 ongoing: filters.ongoing,
                 upcoming: filters.upcoming,
+                upcomingLater: filters.upcomingLater,
                 page: filters.page,
                 articlePage: filters.articlePage,
                 facetFilters: filters.facetFilters,
@@ -1360,7 +1542,8 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
                 sortCriteria: filters.sortCriteria,
                 lopFilter: filters.lopFilter,
                 educationCodeFilter: filters.educationCodeFilter,
-                excludes: filters.excludes
+                excludes: filters.excludes,
+                articleFacetFilters : filters.articleFacetFilters
             };
 
             angular.forEach(result, function(value, key) {
@@ -1389,6 +1572,10 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
         
         isUpcoming: function() {
             return filters.upcoming;
+        },
+        
+        isUpcomingLater: function() {
+            return filters.upcomingLater;
         },
 
         getLocations: function() {
@@ -1444,6 +1631,7 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
             params += (filters.locations && filters.locations.length > 0) ? '&locations=' + getLocationCodes().join(',') : '';
             params += filters.ongoing ? '&ongoing' : '';
             params += filters.upcoming ? '&upcoming' : '';
+            params += filters.upcomingLater ? '&upcomingLater' : '';
             params += filters.page ? '&page=' + filters.page : '';
             params += (filters.facetFilters && filters.facetFilters.length > 0) ? '&facetFilters=' + filters.facetFilters.join(',') : '';
             params += filters.langCleared ? '&langCleared=' + filters.langCleared : '';
@@ -1451,7 +1639,8 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
             params += filters.sortCriteria ? '&sortCriteria=' + filters.sortCriteria : '';
             params += filters.lopFilter ? '&lopFilter=' + filters.lopFilter : '';
             params += filters.educationCodeFilter ? '&educationCodeFilter=' + filters.educationCodeFilter : '';
-            params += (filters.excludes && filters.excludes.length > 0) ? '&excludes=' + filters.excludes.join(',') : '';
+            params += (filters.excludes && filters.excludes.length > 0) ? '&excludes=' + filters.excludes.join('|') : '';
+            params += (filters.articleFacetFilters && filters.articleFacetFilters.length > 0) ? '&articleFacetFilters=' + filters.articleFacetFilters.join(',') : '';
             params = params.length > 0 ? params.substring(1, params.length) : '';
             return params;
         },
@@ -1464,6 +1653,14 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
         	return filters.facetFilters;
         },
         
+        getArticleFacetFilters: function() {
+        	if (filters.articleFacetFilters != undefined && (typeof filters.articleFacetFilters == 'string' || filters.articleFacetFilters instanceof String)) {
+        		filters.articleFacetFilters = filters.articleFacetFilters.split(',');
+        		return filters.articleFacetFilters;
+        	}
+        	return filters.articleFacetFilters;
+        },
+        
         getLopFilter: function() {
         	return filters.lopFilter;
         },
@@ -1474,7 +1671,7 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
         
         getExcludes: function() {
         	if (filters.excludes != undefined && (typeof filters.excludes == 'string' || filters.excludes instanceof String)) {
-        		filters.excludes = filters.excludes.split(',');
+        		filters.excludes = filters.excludes.split('|');
         	}
         	return filters.excludes;
         },

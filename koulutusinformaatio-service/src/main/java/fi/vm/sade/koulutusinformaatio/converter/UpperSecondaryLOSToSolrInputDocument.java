@@ -64,18 +64,16 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
         doc.addField(LearningOpportunity.PREREQUISITE_CODE, loi.getPrerequisite().getValue());
 
         if (los.getCreditValue() != null 
-                && los.getCreditUnit() != null 
-                && los.getCreditUnit().getTranslationsShortName() != null
-                && !los.getCreditUnit().getTranslationsShortName().isEmpty()) {
+                && los.getCreditUnit() != null) {
             doc.addField(LearningOpportunity.CREDITS, String.format("%s %s", los.getCreditValue(),
                     SolrUtil.resolveTranslationInTeachingLangUseFallback(loi.getTeachingLanguages(),
-                            los.getCreditUnit().getTranslationsShortName())));
+                            los.getCreditUnit().getTranslations())));
         }
 
         String teachingLang = loi.getTeachingLanguages().isEmpty() ? "EXC" : loi.getTeachingLanguages().get(0).getValue().toLowerCase();
 
         String losName = SolrUtil.resolveTranslationInTeachingLangUseFallback(
-                loi.getTeachingLanguages(), los.getName().getTranslationsShortName());
+                loi.getTeachingLanguages(), los.getShortName().getTranslations());
 
 
         doc.setField(LearningOpportunity.NAME, losName);
@@ -178,7 +176,7 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
                 SolrUtil.resolveTranslationInTeachingLangUseFallback(loi.getTeachingLanguages(), 
                         provider.getName().getTranslations()).toLowerCase().trim(),
                 SolrUtil.resolveTranslationInTeachingLangUseFallback(loi.getTeachingLanguages(), 
-                        los.getName().getTranslationsShortName())).toLowerCase().trim());
+                        los.getShortName().getTranslations())).toLowerCase().trim());
 
 
         //For faceting

@@ -1,13 +1,14 @@
 /**
  *  Controller for info views (parent and child)
  */
- function InfoCtrl($scope, $rootScope, $routeParams, $location, SearchService, LearningOpportunityProviderPictureService, UtilityService, TranslationService, Config, loResource, LanguageService) {
+ function InfoCtrl($scope, $rootScope, $routeParams, $location, SearchService, LearningOpportunityProviderPictureService, UtilityService, TranslationService, Config, loResource, LanguageService, VirkailijaLanguageService, _) {
     $scope.loType = $routeParams.loType;
 
     $scope.queryString = SearchService.getTerm();
     $scope.descriptionLanguage = 'fi';
     $scope.hakuAppUrl = Config.get('hakulomakeUrl');
     $scope.uiLang = LanguageService.getLanguage();
+    $scope.virkailijaLang = VirkailijaLanguageService.getLanguage();
 
     // set tab titles based on lo and education type
     $scope.$watch('lo.educationTypeUri', function(value) {
@@ -32,14 +33,50 @@
         loTablist =  new tabpanel('lo-tablist', false);
     });
 
+    // sets site title content
     var setTitle = function(parent, child) {
         var sitename = TranslationService.getTranslation('sitename');
+        var provider = '';
+
+        if (child && child.provider) {
+            provider = child.provider.name;
+        } else if (parent && parent.provider) {
+            provider = parent.provider.name;
+        } 
+
         if (child) {
-            $rootScope.title = child.name + ' - ' + sitename;
+            $rootScope.title = child.name + ' - ' + provider + ' - ' + sitename;
         } else {
-            $rootScope.title = parent.name + ' - ' + sitename;
+            $rootScope.title = parent.name + ' - ' + provider + ' - ' + sitename;
         }
     };
+
+    // sets meta description tag content
+    var setMetaDescription = function(parent, child) {
+        var lo = child || parent;
+        var description;
+        var maxLength = 160;
+
+        // use goals (Tavoitteet) to generate description content if exists
+        if (lo.goals) {
+            var goalsAsText = $(lo.goals).contents().filter(function() { 
+                return this.nodeType === 3; // Node.TEXT_NODE;
+            }).text();
+
+            if (goalsAsText) {
+                description = _.first(goalsAsText.split('.'));
+                description = description.length > maxLength ? description.substr(0, maxLength) : description
+            }
+
+            $rootScope.description = description;
+        } else { // otherwise use learning opportunity name and provider name
+            description = lo.name;
+            if (lo.provider) {
+                description += ' - ' + lo.provider.name;
+            }
+            $rootScope.description = description;
+        }
+    }
 
     var getFirstLOI = function() {
         if (hasLOIs()) {
@@ -89,6 +126,7 @@
 
     var initializeLO = function() {
         setTitle($scope.parent, $scope.lo);
+        setMetaDescription($scope.parent, $scope.lo);
         $scope.showApplicationRadioSelection = showApplicationRadioSelection() ? '' : 'hidden';
 
         setRecommendationFields();

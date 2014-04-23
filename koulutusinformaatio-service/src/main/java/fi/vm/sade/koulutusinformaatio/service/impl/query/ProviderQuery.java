@@ -38,10 +38,8 @@ public class ProviderQuery extends SolrQuery {
 
     public ProviderQuery(String q, String asId, String baseEducation, int start, int rows, boolean vocational,
                          boolean nonVocational, String lang, boolean prefix) {
-        
         super(Joiner.on(":").join(resolveNameField(lang, prefix), ClientUtils.escapeQueryChars(q) + "*"));
         
-
         this.setStart(start);
         this.setRows(rows);
         this.setSort(resolveNameField(lang, prefix), ORDER.asc);

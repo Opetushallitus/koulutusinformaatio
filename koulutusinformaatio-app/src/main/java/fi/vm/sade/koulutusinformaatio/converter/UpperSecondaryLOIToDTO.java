@@ -41,7 +41,7 @@ public final class UpperSecondaryLOIToDTO {
                 new UpperSecondaryLearningOpportunityInstanceDTO();
 
         dto.setId(loi.getId());
-        dto.setName(ConverterUtil.getShortNameTextByLanguageUseFallbackLang(loi.getName(), defaultLang));
+        dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(loi.getShortName(), defaultLang));
         dto.setPrerequisite(CodeToDTO.convert(loi.getPrerequisite(), lang));
         dto.setFormOfTeaching(ConverterUtil.getTextsByLanguage(loi.getFormOfTeaching(), uiLang));
         dto.setTeachingLanguages(CodeToName.convertAll(loi.getTeachingLanguages(), uiLang));
@@ -58,7 +58,7 @@ public final class UpperSecondaryLOIToDTO {
         dto.setDiplomas(ConverterUtil.getTextsByLanguage(loi.getDiplomas(), lang));
         dto.setPlannedDuration(loi.getPlannedDuration());
         dto.setPlannedDurationUnit(ConverterUtil.getTextByLanguageUseFallbackLang(loi.getPlannedDurationUnit(), uiLang));
-        dto.setAvailableTranslationLanguages(CodeToDTO.convertAll(loi.getAvailableTranslationLanguages(), uiLang, false));
+        dto.setAvailableTranslationLanguages(CodeToDTO.convertAll(loi.getAvailableTranslationLanguages(), uiLang));
 
         // as based approach for UI
         SetMultimap<ApplicationSystem, ApplicationOption> aoByAs = HashMultimap.create();

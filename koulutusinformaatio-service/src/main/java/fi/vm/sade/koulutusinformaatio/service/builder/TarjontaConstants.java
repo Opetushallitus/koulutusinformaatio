@@ -56,4 +56,6 @@ public class TarjontaConstants {
 
     public static final String ATHLETE_EDUCATION_KOODISTO_URI = "urheilijankoulutus_1#1";
     public static final String APPLICATION_OPTIONS_KOODISTO_URI = "hakukohteet";
+    
+    public static final String TUTKINTONIMIKE_KK_KOODISTO_URI =  "tutkintonimikekk";
 }

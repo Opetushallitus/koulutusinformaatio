@@ -145,8 +145,11 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
 
     @Override
     public UpperSecondaryLOS getUpperSecondaryLearningOpportunity(String id) throws ResourceNotFoundException {
+        
         UpperSecondaryLearningOpportunitySpecificationEntity entity =
                 upperSecondaryLearningOpportunitySpecificationDAO.getFromSecondary(id);
+        
+        
         if (entity != null) {
             return modelMapper.map(entity, UpperSecondaryLOS.class);
         }

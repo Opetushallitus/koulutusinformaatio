@@ -26,7 +26,7 @@ public class BasicLOS<T extends LOI> extends InstantiatedLOS<T> {
     private I18nText accessToFurtherStudies;    // jatko-opintomahdollisuudet
     private String educationDegree;             // koulutusaste, 32
     private String creditValue;                 // laajuus arvo, 120
-    private I18nText creditUnit;                // laajuus yksikkö opintoviikko
+    private I18nText creditUnit;                // laajuus yksikkö op
 
     public String getEducationDegree() {
         return educationDegree;

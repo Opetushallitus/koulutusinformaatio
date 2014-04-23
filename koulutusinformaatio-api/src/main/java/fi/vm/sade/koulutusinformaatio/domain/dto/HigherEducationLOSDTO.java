@@ -56,7 +56,7 @@ public class HigherEducationLOSDTO {
     private String creditUnit;
 
     private String degree;
-    private String qualification;
+    private List<String> qualifications;
     private Boolean chargeable;
     private String educationCode;
     private List<String> teachingLanguages;
@@ -83,6 +83,11 @@ public class HigherEducationLOSDTO {
     
     private List<CodeDTO> topics;
     private List<CodeDTO> themes;
+    
+    private List<ArticleResultDTO> edCodeSuggestions = new ArrayList<ArticleResultDTO>();
+    private List<ArticleResultDTO> edTypeSuggestions = new ArrayList<ArticleResultDTO>();
+    private String educationType;
+    
 
     public String getId() {
         return id;
@@ -284,12 +289,12 @@ public class HigherEducationLOSDTO {
         this.degree = degree;
     }
 
-    public String getQualification() {
-        return qualification;
+    public List<String> getQualifications() {
+        return qualifications;
     }
 
-    public void setQualification(String qualification) {
-        this.qualification = qualification;
+    public void setQualifications(List<String> qualifications) {
+        this.qualifications = qualifications;
     }
 
     public Boolean getChargeable() {
@@ -462,6 +467,29 @@ public class HigherEducationLOSDTO {
     }
     public void setThemes(List<CodeDTO> themes) {
         this.themes = themes;
+    }
+
+    public List<ArticleResultDTO> getEdCodeSuggestions() {
+        return edCodeSuggestions;
+    }
+
+    public void setEdCodeSuggestions(List<ArticleResultDTO> edCodeSuggestions) {
+        this.edCodeSuggestions = edCodeSuggestions;
+    }
+
+    public List<ArticleResultDTO> getEdTypeSuggestions() {
+        return edTypeSuggestions;
+    }
+
+    public void setEdTypeSuggestions(List<ArticleResultDTO> edTypeSuggestions) {
+        this.edTypeSuggestions = edTypeSuggestions;
+    }
+
+    public String getEducationType() {
+        return educationType;
+    }
+    public void setEducationType(String educationType) {
+        this.educationType = educationType;
     }
 
 }

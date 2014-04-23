@@ -1,15 +1,14 @@
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOSRef;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationLOSRefDTO;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * 
@@ -36,8 +35,8 @@ public class HigherEducationLOSRefToDTO {
         HigherEducationLOSRefDTO higherEdu = new HigherEducationLOSRefDTO();
         higherEdu.setId(ref.getId());
         higherEdu.setPrerequisite(CodeToDTO.convert(ref.getPrerequisite(), lang));
-        higherEdu.setQualification(ConverterUtil.getTextByLanguageUseFallbackLang(ref.getQualification(), lang));
-        higherEdu.setName(ConverterUtil.getShortNameTextByLanguageUseFallbackLang(ref.getName(), lang));
+        higherEdu.setQualifications(ConverterUtil.getTextsByLanguageUseFallbackLang(ref.getQualifications(), lang));
+        higherEdu.setName(ConverterUtil.getTextByLanguageUseFallbackLang(ref.getName(), lang));
         return higherEdu;
     }
 

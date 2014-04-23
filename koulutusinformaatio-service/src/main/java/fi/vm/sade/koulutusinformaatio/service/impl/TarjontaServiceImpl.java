@@ -228,7 +228,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                 newRef.setId(los.getId());
                 newRef.setName(los.getName());
                 newRef.setPrerequisite(curAo.getPrerequisite());
-                newRef.setQualification(los.getQualification());
+                newRef.setQualifications(los.getQualifications());
                 aoLoss.add(newRef);
                 aoToEducationsMap.put(curAo.getId(), aoLoss);
             }
@@ -366,7 +366,7 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     @Override
     public List<Code> getEdTypeCodes() throws KoodistoException {
-        return koodistoService.searchCodesByKoodisto(ED_TYPE_FACET_KOODISTO, null);
+        return koodistoService.searchByKoodisto(ED_TYPE_FACET_KOODISTO, null);
     }
 
     @Override

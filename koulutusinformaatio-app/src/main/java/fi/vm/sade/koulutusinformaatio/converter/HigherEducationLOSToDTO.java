@@ -28,7 +28,7 @@ public class HigherEducationLOSToDTO {
         dto.setEducationDegree(los.getEducationDegree());
         dto.setEducationDegreeName(ConverterUtil.getTextByLanguageUseFallbackLang(los.getEducationDegreeLang(), uiLang));
         dto.setDegreeTitle(ConverterUtil.getTextByLanguageUseFallbackLang(los.getDegreeTitle(), uiLang));
-        dto.setQualification(ConverterUtil.getTextByLanguageUseFallbackLang(los.getQualification(), uiLang));
+        dto.setQualifications(ConverterUtil.getTextsByLanguageUseFallbackLang(los.getQualifications(), uiLang));
         dto.setGoals(ConverterUtil.getTextByLanguage(los.getGoals(), lang));
         dto.setStructure(ConverterUtil.getTextByLanguage(los.getStructure(), lang));
         dto.setAccessToFurtherStudies(ConverterUtil.getTextByLanguage(los.getAccessToFurtherStudies(), lang));
@@ -42,14 +42,14 @@ public class HigherEducationLOSToDTO {
         dto.setResearchFocus(ConverterUtil.getTextByLanguage(los.getResearchFocus(), lang));
 
         //dto.setLois(UpperSecondaryLOIToDTO.convertAll(los.getLois(), uiLang, uiLang));
-        dto.setProvider(ProviderToDTO.convert(los.getProvider(), uiLang, "fi"));
-        dto.setAvailableTranslationLanguages(CodeToDTO.convertAll(los.getAvailableTranslationLanguages(), uiLang, false));
+        dto.setProvider(ProviderToDTO.convert(los.getProvider(), uiLang, "fi", uiLang));
+        dto.setAvailableTranslationLanguages(CodeToDTO.convertAll(los.getAvailableTranslationLanguages(), uiLang));
         dto.setCreditValue(los.getCreditValue());
 
         dto.setCreditUnit(ConverterUtil.getTextByLanguageUseFallbackLang(los.getCreditUnit(), uiLang));
 
         //DO MORE
-        dto.setPrerequisites(CodeToDTO.convertAll(los.getPrerequisites(), uiLang, false));
+        dto.setPrerequisites(CodeToDTO.convertAll(los.getPrerequisites(), uiLang));
         dto.setFormOfTeaching(ConverterUtil.getTextsByLanguageUseFallbackLang(los.getFormOfTeaching(), uiLang));
         dto.setProfessionalTitles(ConverterUtil.getTextsByLanguage(los.getProfessionalTitles(), lang));
         dto.setTeachingTimes(ConverterUtil.getTextsByLanguageUseFallbackLang(los.getTeachingTimes(), uiLang));
@@ -97,11 +97,12 @@ public class HigherEducationLOSToDTO {
             dto.setKoulutuskoodi(los.getEducationCode().getUri());
         }
         if (los.getThemes() != null) {
-            dto.setThemes(CodeToDTO.convertAll(los.getThemes(), uiLang, true));
+            dto.setThemes(CodeToDTO.convertAll(los.getThemes(), uiLang));
         }
         if (los.getTopics() != null) {
-            dto.setTopics(CodeToDTO.convertAll(los.getTopics(), uiLang, true));
+            dto.setTopics(CodeToDTO.convertAll(los.getTopics(), uiLang));
         }
+        dto.setEducationType(los.getEducationType());
         return dto;
     }
 

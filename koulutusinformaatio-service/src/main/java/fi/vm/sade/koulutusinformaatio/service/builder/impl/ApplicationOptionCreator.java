@@ -68,7 +68,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         ApplicationOption ao = new ApplicationOption();
         ao.setId(hakukohdeDTO.getOid());
         try {
-            ao.setName(koodistoService.searchFirst(hakukohdeDTO.getHakukohdeNimiUri()));
+            ao.setName(koodistoService.searchFirstName(hakukohdeDTO.getHakukohdeNimiUri()));
             ao.setAoIdentifier(koodistoService.searchFirstCodeValue(hakukohdeDTO.getHakukohdeNimiUri()));
         } catch (Exception ex) {
             LOG.warn("Problem with application option name generation: " + ao.getId() + " name: " + hakukohdeDTO.getHakukohdeNimiUri() );
@@ -121,7 +121,6 @@ public class ApplicationOptionCreator extends ObjectCreator {
         transls.put("sv", hakukohdeNimiUri);
         transls.put("en", hakukohdeNimiUri);
         name.setTranslations(transls);
-        name.setTranslationsShortName(transls);
         return name;
     }
 
@@ -182,8 +181,8 @@ public class ApplicationOptionCreator extends ObjectCreator {
             ChildLOIRef cRef = new ChildLOIRef();
             cRef.setId(s.getOid());
             cRef.setLosId(CreatorUtil.resolveLOSId(komoByKomotoOID.getOid(), komoto.getTarjoajaOid()));
-            cRef.setName(koodistoService.searchFirst(komoByKomotoOID.getKoulutusOhjelmaKoodiUri()));
-            cRef.setQualification(koodistoService.searchFirst(komoByKomotoOID.getTutkintonimikeUri()));
+            cRef.setName(koodistoService.searchFirstShortName(komoByKomotoOID.getKoulutusOhjelmaKoodiUri()));
+            cRef.setQualification(koodistoService.searchFirstName(komoByKomotoOID.getTutkintonimikeUri()));
             cRef.setPrerequisite(prerequisite);
             ao.getChildLOIRefs().add(cRef);
         }
@@ -252,7 +251,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
             List<List<String>> painotettavat = hakukohdeDTO.getPainotettavatOppiaineet();
             for (List<String> painotettava : painotettavat) {
                 emphasizedSubjects.add(
-                        new EmphasizedSubject(koodistoService.searchFirst(painotettava.get(0)), painotettava.get(1)));
+                        new EmphasizedSubject(koodistoService.searchFirstName(painotettava.get(0)), painotettava.get(1)));
             }
             ao.setEmphasizedSubjects(emphasizedSubjects);
         }
@@ -276,8 +275,8 @@ public class ApplicationOptionCreator extends ObjectCreator {
             ChildLOIRef cRef = new ChildLOIRef();
             cRef.setId(s.getOid());
             cRef.setLosId(CreatorUtil.resolveLOSId(komoByKomotoOID.getOid(), komoto.getTarjoajaOid()));
-            cRef.setName(koodistoService.searchFirst(komoByKomotoOID.getLukiolinjaUri()));
-            cRef.setQualification(koodistoService.searchFirst(komoByKomotoOID.getTutkintonimikeUri()));
+            cRef.setName(koodistoService.searchFirstShortName(komoByKomotoOID.getLukiolinjaUri()));
+            cRef.setQualification(koodistoService.searchFirstName(komoByKomotoOID.getTutkintonimikeUri()));
             cRef.setPrerequisite(prerequisite);
             ao.getChildLOIRefs().add(cRef);
         }
@@ -307,7 +306,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         ao.setEducationCodeUri(los.getEducationCode().getUri());
 
         ao.setRequiredBaseEducations(hakukohde.getHakukelpoisuusvaatimusUris());
-        los.setPrerequisites(koodistoService.searchCodesMultiple(hakukohde.getHakukelpoisuusvaatimusUris()));
+        los.setPrerequisites(koodistoService.searchMultiple(hakukohde.getHakukelpoisuusvaatimusUris()));
        
         ApplicationSystem as = new ApplicationSystem();
         as.setId(haku.getOid());

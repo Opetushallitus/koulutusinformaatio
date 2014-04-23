@@ -15,7 +15,21 @@ directive('kiNavigation', function() {
     }
 }).
 
-directive('tree', function ($compile) {
+directive('kiSkipNavigation', function() {
+    return {
+        restrict: 'A',
+        template: '<div id="skip-link"><a href="javascript:void(0)" data-ki-i18n="skip-to-content" data-ng-click="skipNavigation()"></a></div>',
+        controller: function($scope, $location, $anchorScroll) {
+            $scope.skipNavigation = function() {
+                $location.hash('page');
+                $anchorScroll();
+                angular.element('#search-field').focus();
+            }
+        }
+    }
+}).
+
+directive('tree', function ($compile, $rootScope) {
 return {
     restrict: 'A',
     terminal: true,
@@ -23,6 +37,11 @@ return {
     scope: {
         val: '=',
         level: '='
+    },
+    controller: function($scope, Config) {
+        $scope.links = {
+            textversion: Config.get('textVersionUrl')
+        };
     },
     link: function (scope, element, attrs) {
 
@@ -37,18 +56,26 @@ return {
             if (angular.isArray(scope.val)) {
                 template +=
                     '<ul class="level-{{level}}';
-                if(attrs.level == 1 ) {
+                if (attrs.level == 1 ) {
                     template += ' menubar root-level" role="menubar" id="nav" >'
                         + '<li class="menu-parent" data-ng-repeat="item in val" title="{{item.title}}" role="menuitem" aria-haspopup="true" tabindex="0">'
                         + '<a data-ng-href="{{item.link}}" tabindex="-1">{{item.title}}</a>' ;
-                }else {
+                } else {
                     template += ' menu" role="menu" aria-hidden="true" style="display: none;" >'
                         + '<li class="menu-item" data-ng-repeat="item in val" role="menuitem" tabIndex="-1" >'
                         + '<a data-ng-href="{{item.link}}" tabIndex="-1" >{{item.title}}</a>';
                 }
                 template += '<ul data-tree data-val="item.subnav"  data-level="level + 1"></ul>';
-                template += '</li> </ul>';
+                template += '</li>';
+
+                if (attrs.level == 1 && !$rootScope.isStudyInfo) {
+                    template += '<li class="float-right"><a data-ng-href="{{links.textversion}}" class="action-link"><span data-ki-i18n="link-to-accessible-version"></span></a></li></ul>';
+                } else {
+                    template += '</ul>';
+                }
+
             }
+
             var newElement = angular.element(template);
             $compile(newElement)(scope);
             element.replaceWith(newElement);

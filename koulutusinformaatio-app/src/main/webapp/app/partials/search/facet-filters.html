@@ -17,24 +17,24 @@
                 <span data-ng-show="!ongoing && loResult.ongoingFacet.count > 0" class="facet-item">
                     <a href="javascript:void(0)" data-ng-click="setOngoing()"><span data-ki-i18n="filter-search-as-ongoing"></span> ({{loResult.ongoingFacet.count}})</a>
                 </span>
-                <span data-ng-show="!ongoing && loResult.ongoingFacet.count <= 0" class="facet-item inactive">
-                    <span data-ki-i18n="filter-search-as-ongoing"></span> ({{loResult.ongoingFacet.count}})
-                </span>
                 <span data-ng-show="ongoing && loResult.ongoingFacet.count > 0" class="facet-item selected">
-                    <span data-ki-i18n="filter-search-as-ongoing"></span> <!--({{loResult.ongoingFacet.count}})-->
-                    <a title="{{locales.removeFacet}}" href="javascript:void(0)" class="remove" data-ng-click="removeOngoing()"></a>
+                    <span data-ki-i18n="filter-search-as-ongoing"></span><a title="{{locales.removeFacet}}" href="javascript:void(0)" class="remove" data-ng-click="removeOngoing()"></a>
                 </span>
             </li>
             <li data-ng-show="loResult.upcomingFacet">
                 <span data-ng-show="!upcoming && loResult.upcomingFacet.count > 0" class="facet-item">
-                    <a href="javascript:void(0)" data-ng-click="setUpcoming()"><span data-ki-i18n="filter-search-as-upcoming"></span> ({{loResult.upcomingFacet.count}})</a>
-                </span>
-                <span data-ng-show="!upcoming && loResult.upcomingFacet.count <= 0" class="facet-item inactive">
-                    <span data-ki-i18n="filter-search-as-upcoming"></span> ({{loResult.upcomingFacet.count}})
+                    <a href="javascript:void(0)" data-ng-click="setUpcoming()"><span data-ki-i18n="{{loResult.upcomingFacet.season}}"></span> {{loResult.upcomingFacet.year}} ({{loResult.upcomingFacet.count}})</a>
                 </span>
                 <span data-ng-show="upcoming && loResult.upcomingFacet.count > 0" class="facet-item selected">
-                    <span data-ki-i18n="filter-search-as-upcoming"></span>
-                    <a title="{{locales.removeFacet}}" href="javascript:void(0)" class="remove" data-ng-click="removeUpcoming()"></a>
+                    <span data-ki-i18n="{{loResult.upcomingFacet.season}}"></span> {{loResult.upcomingFacet.year}}<a title="{{locales.removeFacet}}" href="javascript:void(0)" class="remove" data-ng-click="removeUpcoming()"></a>
+                </span>
+            </li>
+            <li data-ng-show="loResult.upcomingLaterFacet">
+                <span data-ng-show="!upcomingLater && loResult.upcomingLaterFacet.count > 0" class="facet-item">
+                    <a href="javascript:void(0)" data-ng-click="setUpcomingLater()"><span data-ki-i18n="{{loResult.upcomingLaterFacet.season}}"></span> {{loResult.upcomingLaterFacet.year}} ({{loResult.upcomingLaterFacet.count}})</a>
+                </span>
+                <span data-ng-show="upcomingLater && loResult.upcomingLaterFacet.count > 0" class="facet-item selected">
+                    <span data-ki-i18n="{{loResult.upcomingLaterFacet.season}}"></span> {{loResult.upcomingLaterFacet.year}}<a title="{{locales.removeFacetLater}}" href="javascript:void(0)" class="remove" data-ng-click="removeUpcomingLater()"></a>
                 </span>
             </li>
         </ul>
@@ -47,14 +47,11 @@
         <span data-ki-i18n="haettava-koulutus"></span>      
     </h4>
     <div data-collapse="collapsed[0]" class="collapse">
-        <div
-            class="collapse-content-container"
-            data-angular-treeview="true"
-            data-tree-model="loResult.edTypeFacet.facetValues"
-            data-tree-id="edTypeTree"
-            data-node-id="valueId"
-            data-node-label="valueName"
-            data-node-children="childValues" >
+        <div class="collapse-content-container">
+            <div class="facet-tree-container">
+                <ul data-facet-tree data-tree-model="loResult.edTypeFacetValues"></ul>
+                <ul data-facet-tree-leaves data-tree-model="loResult.edTypeFacetValues" data-select-node="selectFacetFilter" data-node-is-selected="isSelected"></ul>
+            </div>
         </div>
     </div>
 </div>
@@ -71,12 +68,8 @@
                 <span data-ng-show="!isSelected(fv) && (fv.count > 0)" class="facet-item">
                     <a href="javascript:void(0)" data-ng-click="selectFacetFilter(fv.valueId, fv.facetField)"><span data-ki-i18n="{{fv.valueName}}"></span> ({{fv.count}})</a>
                 </span>
-                <span data-ng-show="!isSelected(fv) && (fv.count <= 0)" class="facet-item inactive">
-                    <span data-ki-i18n="{{fv.valueName}}"></span> ({{fv.count}})
-                </span>
                 <span data-ng-show="isSelected(fv)" class="facet-item selected">
-                    <span data-ki-i18n="{{fv.valueName}}"></span>
-                    <a title="{{locales.removeFacet}}" href="javascript:void(0)" class="remove" data-ng-click="removeSelection(fv)"></a>
+                    <span data-ki-i18n="{{fv.valueName}}"></span><a title="{{locales.removeFacet}}" href="javascript:void(0)" class="remove" data-ng-click="removeSelection(fv)"></a>
                 </span>
             </li>
 			</ul>
@@ -102,14 +95,12 @@
         <span data-ki-i18n="facet-teemat"></span>      
     </h4>
     <div data-collapse="collapsed[3]" class="collapse">
-        <div
-            class="collapse-content-container"
-            data-angular-treeview="true"
-            data-tree-model="loResult.topicFacet.facetValues"
-            data-tree-id="teematree"
-            data-node-id="valueId"
-            data-node-label="valueName"
-            data-node-children="childValues" >
+        <div class="collapse-content-container">
+            <ul data-facet-tree data-tree-model=""></ul>
+            <div class="facet-tree-container">
+                <ul data-facet-tree data-tree-model="loResult.topicFacetValues"></ul>
+                <ul data-facet-tree-leaves data-tree-model="loResult.topicFacetValues" data-select-node="selectFacetFilter" data-node-is-selected="isSelected"></ul>
+            </div>
         </div>
     </div>
 </div>
@@ -125,12 +116,8 @@
                 <span data-ng-show="!isSelected(fv) && (fv.count > 0)" class="facet-item">
                     <a href="javascript:void(0)" data-ng-click="selectFacetFilter(fv.valueId, fv.facetField)">{{fv.valueName}} ({{fv.count}})</a>
                 </span>
-                <span data-ng-show="!isSelected(fv) && (fv.count <= 0)" class="facet-item inactive">
-                    {{fv.valueName}} ({{fv.count}})
-                </span>
                 <span data-ng-show="isSelected(fv)" class="facet-item selected">
-                    <span>{{fv.valueName}}</span>
-                    <a title="{{locales.removeFacet}}" href="javascript:void(0)" class="remove" data-ng-click="removeSelection(fv)"></a>
+                    <span>{{fv.valueName}}</span><a title="{{locales.removeFacet}}" href="javascript:void(0)" class="remove" data-ng-click="removeSelection(fv)"></a>
                 </span>
             </li>
         </ul>
