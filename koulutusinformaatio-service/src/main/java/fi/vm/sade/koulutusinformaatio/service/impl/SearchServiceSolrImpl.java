@@ -18,21 +18,22 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
-import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LocationFields;
+import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.*;
-
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.FacetField.Count;
+import org.apache.solr.client.solrj.response.Group;
+import org.apache.solr.client.solrj.response.GroupCommand;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.slf4j.Logger;
@@ -71,18 +72,19 @@ public class SearchServiceSolrImpl implements SearchService {
     }
 
     @Override
-    public List<Provider> searchLearningOpportunityProviders(String term, 
-                                                             String asId, 
-                                                             String baseEducation, 
-                                                             boolean vocational, 
-                                                             boolean nonVocational, 
-                                                             int start, 
-                                                             int rows, 
-                                                             String lang, 
-                                                             boolean prefix) throws SearchException {
-        
+    public List<Provider> searchLearningOpportunityProviders(String term,
+                                                             String asId,
+                                                             String baseEducation,
+                                                             boolean vocational,
+                                                             boolean nonVocational,
+                                                             int start,
+                                                             int rows,
+                                                             String lang,
+                                                             boolean prefix,
+                                                             String type) throws SearchException {
+
         List<Provider> providers = new ArrayList<Provider>();
-        SolrQuery query = new ProviderQuery(term, asId, baseEducation, start, rows, vocational, nonVocational, lang, prefix);
+        SolrQuery query = new ProviderQuery(term, asId, baseEducation, start, rows, vocational, nonVocational, lang, prefix, type);
 
         QueryResponse queryResponse = null;
         try {
@@ -107,10 +109,50 @@ public class SearchServiceSolrImpl implements SearchService {
     }
 
     @Override
-    public List<Provider> searchLearningOpportunityProviders(String term, String lang, boolean prefix) throws SearchException {
-        return searchLearningOpportunityProviders(term, null, null, false, false, 0, Integer.MAX_VALUE, lang, prefix);
+    public List<Provider> searchLearningOpportunityProviders(String term, String lang, boolean prefix, String type) throws SearchException {
+        return searchLearningOpportunityProviders(term, null, null, false, false, 0, Integer.MAX_VALUE, lang, prefix, type);
     }
-    
+
+    @Override
+    public List<ArticleResult> searchArticleSuggestions(String filter, String lang) throws SearchException {
+
+        LOG.debug("Searching suggestions: " + filter);
+
+        List<ArticleResult> articles = new ArrayList<ArticleResult>();
+
+        SolrQuery query = new ArticleQuery(filter, lang);
+
+        try {
+            LOG.debug(
+                    URLDecoder.decode(
+                            new StringBuilder().append(
+                                    "Searching learning opportunities with query string: ").append(
+                                    query.toString()).toString(), "utf-8"
+                    )
+            );
+        } catch (UnsupportedEncodingException e) {
+            LOG.debug("Could not log search query");
+        }
+
+        QueryResponse queryResponse = null;
+        try {
+            queryResponse = loHttpSolrServer.query(query);
+        } catch (SolrServerException e) {
+            throw new SearchException(SOLR_ERROR);
+        }
+
+        LOG.debug("Response size: " + queryResponse.getResults().size());
+        for (SolrDocument result : queryResponse.getResults()) {
+            try {
+                articles.add(createArticleSearchResult(result));
+            } catch (Exception ex) {
+                LOG.warn(ex.getMessage());
+            }
+        }
+
+        return articles;
+    }
+
 
     private String fixString(String term) {
         String[] splits = term.split(" ");
@@ -134,7 +176,7 @@ public class SearchServiceSolrImpl implements SearchService {
         String trimmed = term.trim();
         String fixed = fixString(trimmed);
         if (!trimmed.isEmpty()) {
-            SolrQuery query = new LearningOpportunityQuery(fixed, prerequisite, 
+            SolrQuery query = new LearningOpportunityQuery(fixed, prerequisite,
                     cities, facetFilters, 
                     lang, ongoing, upcoming, 
                     start, rows, sort, order,
@@ -170,18 +212,18 @@ public class SearchServiceSolrImpl implements SearchService {
                     continue;
                 }
             }
-            
+
             if (SearchType.LO.equals(searchType)) {
                 addFacetsToResult(searchResultList, response, lang, facetFilters);
             }
-            
+
             if (lopFilter != null) {
                 searchResultList.setLopRecommendationFilter(getRecommendationFilter(lopFilter, "lopFilter"));
             }
             if (educationCodeFilter != null) {
                 searchResultList.setEducationCodeRecommendationFilter(getRecommendationFilter(educationCodeFilter, "educationCodeFilter"));
             }
-            
+
             //Setting result counts of other searches (one of article, provider or lo)
             if (searchType.LO.equals(searchType)) {
                 setOtherResultCounts(fixed, lang, start, sort, order, cities, facetFilters, ongoing, upcoming, 
@@ -190,9 +232,9 @@ public class SearchServiceSolrImpl implements SearchService {
                 setOtherResultCounts(fixed, lang, start, sort, order, cities, facetFilters, ongoing, upcoming, 
                                      lopFilter, educationCodeFilter, excludes, SearchType.LO, searchResultList);
             }
-            
+
             searchResultList.setTotalCount(searchResultList.getArticleCount() + searchResultList.getLoCount());
-            
+
 
         }
 
@@ -201,7 +243,7 @@ public class SearchServiceSolrImpl implements SearchService {
 
 
     private void setOtherResultCounts(String term, String lang, int start,
-            String sort, String order, List<String> cities, 
+            String sort, String order, List<String> cities,
             List<String> facetFilters, 
             boolean ongoing, boolean upcoming,
             String lopFilter, String educationCodeFilter, List<String> excludes,
@@ -237,17 +279,17 @@ public class SearchServiceSolrImpl implements SearchService {
         } else {
             searchResultList.setLoCount(response.getResults().getNumFound());
         }
-        
+
     }
 
     private ArticleResult createArticleSearchResult(SolrDocument doc) throws Exception {
-        String imageUrl = doc.getFieldValue(LearningOpportunity.ARTICLE_PICTURE) != null 
+        String imageUrl = doc.getFieldValue(LearningOpportunity.ARTICLE_PICTURE) != null
                 ? doc.getFieldValue(LearningOpportunity.ARTICLE_PICTURE).toString() : null;
-        ArticleResult article = new ArticleResult(doc.getFieldValue(LearningOpportunity.TYPE).toString(), 
-                                                doc.getFieldValue(LearningOpportunity.ARTICLE_URL).toString(), 
-                                                doc.getFieldValue(LearningOpportunity.NAME).toString(), 
-                                                doc.getFieldValue(LearningOpportunity.ARTICLE_EXCERPT).toString(), 
-                                                imageUrl);
+        ArticleResult article = new ArticleResult(doc.getFieldValue(LearningOpportunity.TYPE).toString(),
+                doc.getFieldValue(LearningOpportunity.ARTICLE_URL).toString(),
+                doc.getFieldValue(LearningOpportunity.NAME).toString(),
+                doc.getFieldValue(LearningOpportunity.ARTICLE_EXCERPT).toString(),
+                imageUrl);
         return article;
     }
 
@@ -256,23 +298,23 @@ public class SearchServiceSolrImpl implements SearchService {
         String losId = doc.get(LearningOpportunity.LOS_ID) != null ? doc.get(LearningOpportunity.LOS_ID).toString() : null;
         String id = doc.get(LearningOpportunity.LOS_ID) != null ? doc.get(LearningOpportunity.LOS_ID).toString() : doc.get(LearningOpportunity.ID).toString();
         String prerequisiteText = doc.get(LearningOpportunity.PREREQUISITE) != null ? doc.get(LearningOpportunity.PREREQUISITE).toString() : null;
-        String prerequisiteCodeText = doc.get(LearningOpportunity.PREREQUISITE_CODE) != null 
-                            ? doc.get(LearningOpportunity.PREREQUISITE_CODE).toString() : null;
+        String prerequisiteCodeText = doc.get(LearningOpportunity.PREREQUISITE_CODE) != null
+                ? doc.get(LearningOpportunity.PREREQUISITE_CODE).toString() : null;
         String credits = doc.get(LearningOpportunity.CREDITS) != null ? doc.get(LearningOpportunity.CREDITS).toString() : null;
         String lopName = getLopName(doc, lang);
-        String edType = doc.get(LearningOpportunity.EDUCATION_TYPE_DISPLAY) != null 
-                            ? doc.getFieldValue(LearningOpportunity.EDUCATION_TYPE_DISPLAY).toString().replace(".", "") : null;
+        String edType = doc.get(LearningOpportunity.EDUCATION_TYPE_DISPLAY) != null
+                ? doc.getFieldValue(LearningOpportunity.EDUCATION_TYPE_DISPLAY).toString().replace(".", "") : null;
         String edDegree = getEdDegree(doc, lang);
-        String edDegreeCode = doc.get(LearningOpportunity.EDUCATION_DEGREE_CODE) != null 
-                            ? doc.get(LearningOpportunity.EDUCATION_DEGREE_CODE).toString() : null;
+        String edDegreeCode = doc.get(LearningOpportunity.EDUCATION_DEGREE_CODE) != null
+                ? doc.get(LearningOpportunity.EDUCATION_DEGREE_CODE).toString() : null;
         String name = getName(doc, lang);
         String homeplace = getHomeplace(doc, lang);
-        String lopId =  doc.get(LearningOpportunity.LOP_ID) != null ? doc.get(LearningOpportunity.LOP_ID).toString() : null;
+        String lopId = doc.get(LearningOpportunity.LOP_ID) != null ? doc.get(LearningOpportunity.LOP_ID).toString() : null;
 
         LOSearchResult lo = new LOSearchResult(
                 id, name,
                 lopId, lopName, prerequisiteText,
-                prerequisiteCodeText, parentId, losId, doc.get("type").toString(), 
+                prerequisiteCodeText, parentId, losId, doc.get("type").toString(),
                 credits, edType, edDegree, edDegreeCode, homeplace);
 
         updateAsStatus(lo, doc);
@@ -281,37 +323,37 @@ public class SearchServiceSolrImpl implements SearchService {
     }
 
     private String getHomeplace(SolrDocument doc, String lang) {
-        return getTranslatedValue(doc, lang, 
-                LearningOpportunity.HOMEPLACE_DISPLAY_FI, 
-                LearningOpportunity.HOMEPLACE_DISPLAY_SV, 
-                LearningOpportunity.HOMEPLACE_DISPLAY_EN, 
+        return getTranslatedValue(doc, lang,
+                LearningOpportunity.HOMEPLACE_DISPLAY_FI,
+                LearningOpportunity.HOMEPLACE_DISPLAY_SV,
+                LearningOpportunity.HOMEPLACE_DISPLAY_EN,
                 LearningOpportunity.HOMEPLACE_DISPLAY);
     }
 
     private String getEdDegree(SolrDocument doc, String lang) {
-        return getTranslatedValue(doc, lang, 
-                LearningOpportunity.EDUCATION_DEGREE_FI, 
-                LearningOpportunity.EDUCATION_DEGREE_SV, 
-                LearningOpportunity.EDUCATION_DEGREE_EN, 
+        return getTranslatedValue(doc, lang,
+                LearningOpportunity.EDUCATION_DEGREE_FI,
+                LearningOpportunity.EDUCATION_DEGREE_SV,
+                LearningOpportunity.EDUCATION_DEGREE_EN,
                 LearningOpportunity.EDUCATION_DEGREE);
     }
 
     private String getName(SolrDocument doc, String lang) {
-        return getTranslatedValue(doc, lang, 
-                LearningOpportunity.NAME_DISPLAY_FI, 
-                LearningOpportunity.NAME_DISPLAY_SV, 
-                LearningOpportunity.NAME_DISPLAY_EN, 
+        return getTranslatedValue(doc, lang,
+                LearningOpportunity.NAME_DISPLAY_FI,
+                LearningOpportunity.NAME_DISPLAY_SV,
+                LearningOpportunity.NAME_DISPLAY_EN,
                 LearningOpportunity.NAME);
     }
 
     private String getLopName(SolrDocument doc, String lang) {
-        return getTranslatedValue(doc, lang, 
-                LearningOpportunity.LOP_NAME_DISPLAY_FI, 
-                LearningOpportunity.LOP_NAME_DISPLAY_SV, 
-                LearningOpportunity.LOP_NAME_DISPLAY_EN, 
+        return getTranslatedValue(doc, lang,
+                LearningOpportunity.LOP_NAME_DISPLAY_FI,
+                LearningOpportunity.LOP_NAME_DISPLAY_SV,
+                LearningOpportunity.LOP_NAME_DISPLAY_EN,
                 LearningOpportunity.LOP_NAME);
     }
-    
+
     private String getTranslatedValue(SolrDocument doc, String lang, String fieldFi, String fieldSv, String fieldEn, String field) {
         if (doc.getFieldValue(LearningOpportunity.TYPE) != null
                 && doc.getFieldValue(LearningOpportunity.TYPE).toString().equals(TarjontaConstants.TYPE_KK)
@@ -334,7 +376,7 @@ public class SearchServiceSolrImpl implements SearchService {
         if (doc.getFieldValue(field) != null) {
             return doc.getFieldValue(field).toString();
         }
-        
+
         return null;
     }
 
@@ -352,28 +394,28 @@ public class SearchServiceSolrImpl implements SearchService {
         for (SolrDocument doc : response.getResults()) {
             String parentId = doc.get(LearningOpportunity.PARENT_ID) != null ? doc.get(LearningOpportunity.PARENT_ID).toString() : null;
             String losId = doc.get(LearningOpportunity.LOS_ID) != null ? doc.get(LearningOpportunity.LOS_ID).toString() : null;
-            String id = doc.get(LearningOpportunity.LOS_ID) != null 
-                            ? doc.get(LearningOpportunity.LOS_ID).toString() : doc.get(LearningOpportunity.ID).toString();
-            String prerequisiteText = doc.get(LearningOpportunity.PREREQUISITE) != null 
-                                        ? doc.get(LearningOpportunity.PREREQUISITE).toString() : null;
-            String prerequisiteCodeText = doc.get(LearningOpportunity.PREREQUISITE_CODE) != null 
-                                            ? doc.get(LearningOpportunity.PREREQUISITE_CODE).toString() : null;
+            String id = doc.get(LearningOpportunity.LOS_ID) != null
+                    ? doc.get(LearningOpportunity.LOS_ID).toString() : doc.get(LearningOpportunity.ID).toString();
+            String prerequisiteText = doc.get(LearningOpportunity.PREREQUISITE) != null
+                    ? doc.get(LearningOpportunity.PREREQUISITE).toString() : null;
+            String prerequisiteCodeText = doc.get(LearningOpportunity.PREREQUISITE_CODE) != null
+                    ? doc.get(LearningOpportunity.PREREQUISITE_CODE).toString() : null;
             String credits = doc.get(LearningOpportunity.CREDITS) != null ? doc.get(LearningOpportunity.CREDITS).toString() : null;
             String lopName = getLopName(doc, lang);
-            String edType = doc.get(LearningOpportunity.EDUCATION_TYPE_DISPLAY) != null 
-                                    ? doc.getFieldValue(LearningOpportunity.EDUCATION_TYPE_DISPLAY).toString().replace(".", "")  : null;
+            String edType = doc.get(LearningOpportunity.EDUCATION_TYPE_DISPLAY) != null
+                    ? doc.getFieldValue(LearningOpportunity.EDUCATION_TYPE_DISPLAY).toString().replace(".", "") : null;
             String edDegree = getEdDegree(doc, lang);
-            String edDegreeCode = doc.get(LearningOpportunity.EDUCATION_DEGREE_CODE) != null 
-                                    ? doc.get(LearningOpportunity.EDUCATION_DEGREE_CODE).toString() : null;
+            String edDegreeCode = doc.get(LearningOpportunity.EDUCATION_DEGREE_CODE) != null
+                    ? doc.get(LearningOpportunity.EDUCATION_DEGREE_CODE).toString() : null;
             String name = getName(doc, lang);
             String homeplace = getHomeplace(doc, lang);
-            
+
             LOSearchResult lo = null;
             try {
                 lo = new LOSearchResult(
                         id, name,
                         doc.get(LearningOpportunity.LOP_ID).toString(), lopName, prerequisiteText,
-                        prerequisiteCodeText, parentId, losId, doc.get(LearningOpportunity.TYPE).toString(), 
+                        prerequisiteCodeText, parentId, losId, doc.get(LearningOpportunity.TYPE).toString(),
                         credits, edType, edDegree, edDegreeCode, homeplace);
 
                 updateAsStatus(lo, doc);
@@ -397,7 +439,7 @@ public class SearchServiceSolrImpl implements SearchService {
         searchResultList.setFilterFacet(getFilterFacet(facetFilters, lang));
         searchResultList.setPrerequisiteFacet(getPrerequisiteFacet(response));
         searchResultList.setTopicFacet(getTopicFacet(response, lang));
-        
+
 
     }
 
@@ -426,7 +468,14 @@ public class SearchServiceSolrImpl implements SearchService {
                         getLocalizedFacetName(curC.getName(), lang),
                         curC.getCount(),
                         curC.getName());
+
                 newVal.setChildValues(themeTopicMap.get(curC.getName()));
+                if (newVal.getChildValues() != null) {
+                    for (FacetValue curchild : newVal.getChildValues()) {
+                        curchild.setParentId(newVal.getValueId());
+                    }
+                }
+
                 values.add(newVal);
 
             }
@@ -488,7 +537,7 @@ public class SearchServiceSolrImpl implements SearchService {
         List<FacetValue> values = new ArrayList<FacetValue>();
         List<FacetValue> roots = new ArrayList<FacetValue>();
         Map<String, List<FacetValue>> resMap = new HashMap<String, List<FacetValue>>();
-        
+
         if (edTypeField != null) {
             for (Count curC : edTypeField.getValues()) {
 
@@ -496,14 +545,14 @@ public class SearchServiceSolrImpl implements SearchService {
                         getLocalizedFacetName(curC.getName(), lang),
                         curC.getCount(),
                         curC.getName());
-                
+
                 values.add(newVal);
-                
+
                 String[] splits = curC.getName().split("\\.");
-                
+
                 if (splits.length >= 2) {
                     int endIndex = curC.getName().lastIndexOf('.');
-                    String parentStr= curC.getName().substring(0, endIndex);
+                    String parentStr = curC.getName().substring(0, endIndex);
                     if (resMap.containsKey(parentStr)) {
                         resMap.get(parentStr).add(newVal);
                     } else {
@@ -517,11 +566,16 @@ public class SearchServiceSolrImpl implements SearchService {
 
             }
         }
-        
+
         for (FacetValue curVal : values) {
             curVal.setChildValues(resMap.get(curVal.getValueId()));
+            if (curVal.getChildValues() != null) {
+                for (FacetValue curChild : curVal.getChildValues()) {
+                    curChild.setParentId(curVal.getValueId());
+                }
+            }
         }
-        
+
         edTypeFacet.setFacetValues(roots);
         return edTypeFacet;
     }
@@ -757,5 +811,56 @@ public class SearchServiceSolrImpl implements SearchService {
         return result;
     }
 
+    @Override
+    public List<String> getProviderFirstCharacterList(String lang) throws SearchException {
+        SolrQuery query = new ProviderNameFirstCharactersQuery(lang);
+        QueryResponse response = null;
+        try {
+            response = lopHttpSolrServer.query(query);
+        } catch (SolrServerException e) {
+            throw new SearchException(e.getMessage());
+        }
+        List<String> characters = Lists.newArrayList();
+        for (GroupCommand gc : response.getGroupResponse().getValues()) {
+            if (gc.getName().startsWith("startsWith")) {
+                for (Group g : gc.getValues()) {
+                    characters.add(g.getGroupValue());
+                }
+                break;
+            }
+        }
+        return characters;
+    }
+
+    @Override
+    public List<Code> getProviderTypes(String firstCharacter, String lang) throws SearchException {
+        SolrQuery query = new ProviderTypeQuery(firstCharacter, lang);
+        QueryResponse response = null;
+        try {
+            response = lopHttpSolrServer.query(query);
+        } catch (SolrServerException e) {
+            throw new SearchException(e.getMessage());
+        }
+        List<Code> types = Lists.newArrayList();
+        for (GroupCommand gc : response.getGroupResponse().getValues()) {
+            if (gc.getName().equals(SolrUtil.ProviderFields.TYPE_VALUE)) {
+                for (Group g : gc.getValues()) {
+                    if (g.getGroupValue() != null) {
+                        SolrDocument result = g.getResult().get(0);
+                        I18nText name = null;
+                        if (!result.get(SolrUtil.ProviderFields.TYPE_VALUE).equals(SolrUtil.SolrConstants.PROVIDER_TYPE_UNKNOWN)) {
+                            Map<String, String> nameTranslations = Maps.newHashMap();
+                            nameTranslations.put("fi", (String) result.get(SolrUtil.ProviderFields.TYPE_FI));
+                            nameTranslations.put("sv", (String) result.get(SolrUtil.ProviderFields.TYPE_SV));
+                            name = new I18nText(nameTranslations);
+                        }
+                        types.add(new Code((String) result.get(SolrUtil.ProviderFields.TYPE_VALUE), name));
+                    }
+                }
+                break;
+            }
+        }
+        return types;
+    }
 
 }

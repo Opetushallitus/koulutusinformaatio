@@ -25,8 +25,8 @@ public abstract class LOS {
 
     private String id;
     private I18nText name;
-    private I18nText goals;                     // tavoitteet
-
+    private I18nText shortName;
+    private I18nText goals;
     private String type;
     private List<Code> topics;
     private List<Code> themes;
@@ -45,6 +45,14 @@ public abstract class LOS {
 
     public void setName(I18nText name) {
         this.name = name;
+    }
+
+    public I18nText getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(I18nText shortName) {
+        this.shortName = shortName;
     }
 
     public I18nText getGoals() {

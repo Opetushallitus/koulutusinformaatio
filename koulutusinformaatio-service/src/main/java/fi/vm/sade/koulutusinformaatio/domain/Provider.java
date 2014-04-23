@@ -43,12 +43,10 @@ public class Provider {
     private I18nText dining;
     private I18nText livingExpenses;
     private I18nText living;
-    
     private I18nText yearClock;
     private I18nText financingStudies;
     private I18nText insurances;
     private I18nText leisureServices;
-    
     private List<Social> social;
     private Picture picture;
     private boolean athleteEducation;
@@ -56,8 +54,7 @@ public class Provider {
     private I18nText homePlace;
     private I18nText homeDistrict;
     private ApplicationOffice applicationOffice;
-    
-
+    private Code type;
 
     public Provider(String id, I18nText name) {
         this.id = id;
@@ -280,5 +277,13 @@ public class Provider {
 
     public void setLeisureServices(I18nText leisureServices) {
         this.leisureServices = leisureServices;
+    }
+
+    public Code getType() {
+        return type;
+    }
+
+    public void setType(Code type) {
+        this.type = type;
     }
 }

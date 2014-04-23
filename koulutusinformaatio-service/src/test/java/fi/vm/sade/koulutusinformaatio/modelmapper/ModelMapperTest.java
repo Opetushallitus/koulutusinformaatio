@@ -59,8 +59,8 @@ public class ModelMapperTest {
         ExamEvent examEvent = new ExamEvent();
         Address address = new Address();
         address.setPostalCode("00100");
-        address.setPostOffice("Helsinki");
-        address.setStreetAddress("Exam street address");
+        address.setPostOffice(TestUtil.createI18nText("Helsinki"));
+        address.setStreetAddress(TestUtil.createI18nText("Exam street address"));
         examEvent.setAddress(address);
         examEvent.setDescription("Exam event description");
         examEvent.setStart(new Date());

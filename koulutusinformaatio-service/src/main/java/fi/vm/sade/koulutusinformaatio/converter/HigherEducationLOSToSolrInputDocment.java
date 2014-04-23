@@ -16,22 +16,17 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
+import com.google.common.collect.Lists;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
+import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import org.apache.solr.common.SolrInputDocument;
 import org.springframework.core.convert.converter.Converter;
 
-import com.google.common.collect.Lists;
-
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
-import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -78,7 +73,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<HigherEdu
         String teachingLang = los.getTeachingLanguages().isEmpty() ? "EXC" : los.getTeachingLanguages().get(0).getValue().toLowerCase();
 
         String losName = SolrUtil.resolveTranslationInTeachingLangUseFallback(
-                los.getTeachingLanguages(), los.getName().getTranslationsShortName());
+                los.getTeachingLanguages(), los.getShortName().getTranslations());
 
 
         doc.setField(LearningOpportunity.NAME, losName);
@@ -143,7 +138,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<HigherEdu
                 SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getTeachingLanguages(), 
                         provider.getName().getTranslations()).toLowerCase().trim(),
                 SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getTeachingLanguages(), 
-                        los.getName().getTranslationsShortName())).toLowerCase().trim());
+                        los.getShortName().getTranslations())).toLowerCase().trim());
 
 
         //For faceting
@@ -193,7 +188,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<HigherEdu
             HigherEducationLOS los, SolrInputDocument doc, boolean fiIndexed) {
 
         String losName = SolrUtil.resolveTranslationInTeachingLangUseFallback(
-                los.getTeachingLanguages(), los.getName().getTranslationsShortName());
+                los.getTeachingLanguages(), los.getShortName().getTranslations());
 
         Provider provider = los.getProvider();
         Map<String,String> transls = los.getName().getTranslations();
@@ -225,20 +220,23 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<HigherEdu
             doc.setField(LearningOpportunity.LOP_NAME_FI, SolrUtil.resolveTextWithFallback(teachingLang, transls));
         }
 
-        if (los.getQualification() != null) {
+        if (los.getQualifications() != null && !los.getQualifications().isEmpty()) {
 
-            transls = los.getQualification().getTranslations();
+            for (I18nText curQualification : los.getQualifications()) {
+            
+                transls = curQualification.getTranslations();
 
-            if (teachingLang.equals("fi")) {
-                doc.addField(LearningOpportunity.QUALIFICATION_FI, SolrUtil.resolveTextWithFallback("fi",  transls));
-            } else if (teachingLang.equals("sv")) {
-                doc.addField(LearningOpportunity.QUALIFICATION_SV, SolrUtil.resolveTextWithFallback("sv",  transls));
-            } else if (teachingLang.equals("en")) {
-                doc.addField(LearningOpportunity.QUALIFICATION_EN, SolrUtil.resolveTextWithFallback("en",  transls));
-            } else {
-                doc.addField(LearningOpportunity.QUALIFICATION_FI, SolrUtil.resolveTextWithFallback(teachingLang,  transls));
-                doc.addField(LearningOpportunity.QUALIFICATION_SV, SolrUtil.resolveTextWithFallback(teachingLang,  transls));
-                doc.addField(LearningOpportunity.QUALIFICATION_EN, SolrUtil.resolveTextWithFallback(teachingLang,  transls));
+                if (teachingLang.equals("fi")) {
+                    doc.addField(LearningOpportunity.QUALIFICATION_FI, SolrUtil.resolveTextWithFallback("fi",  transls));
+                } else if (teachingLang.equals("sv")) {
+                    doc.addField(LearningOpportunity.QUALIFICATION_SV, SolrUtil.resolveTextWithFallback("sv",  transls));
+                } else if (teachingLang.equals("en")) {
+                    doc.addField(LearningOpportunity.QUALIFICATION_EN, SolrUtil.resolveTextWithFallback("en",  transls));
+                } else {
+                    doc.addField(LearningOpportunity.QUALIFICATION_FI, SolrUtil.resolveTextWithFallback(teachingLang,  transls));
+                    doc.addField(LearningOpportunity.QUALIFICATION_SV, SolrUtil.resolveTextWithFallback(teachingLang,  transls));
+                    doc.addField(LearningOpportunity.QUALIFICATION_EN, SolrUtil.resolveTextWithFallback(teachingLang,  transls));
+                }
             }
 
         }

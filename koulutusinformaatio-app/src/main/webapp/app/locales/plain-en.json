@@ -1,34 +1,34 @@
 {
-    "page-title": "Erityisoppilaitosten koulutusten tekstiversio - Opintopolku",
-    "header-home": "Opintopolku.fi",
-    "to-full-version": "Siirry palvelun täysversioon",
-	"home": "Etusivu",
-    "lo-tab-academy": "Oppilaitoskuvaus",
+    "page-title": "Erityisoppilaitosten koulutusten tekstiversio - Opintopolku (en)",
+    "header-home": "Opintopolku.fi (en)",
+    "to-full-version": "Siirry palvelun täysversioon (en)",
+	"home": "Etusivu (en)",
+    "lo-tab-academy": "Oppilaitoskuvaus (en)",
 
-    "index-pager-all": "Näytä kaikki koulutukset sivulla",
-    "index-pager-page-1": "Näytä",
-    "index-pager-page-2": "koulutusta sivulla",
-    "index-pager-next": "Seuraava sivu",
-    "index-pager-previous": "Edellinen sivu",
+    "index-pager-all": "Näytä kaikki koulutukset sivulla (en)",
+    "index-pager-page-1": "Näytä (en)",
+    "index-pager-page-2": "koulutusta sivulla (en)",
+    "index-pager-next": "Seuraava sivu (en)",
+    "index-pager-previous": "Edellinen sivu (en)",
 
-    "lo-type-special": "Ammatillinen erityisopetus",
-    "provider-erityis": "Ammatillista erityisopetusta tarjoavat oppilaitokset",
-    "provider-valmentava": "Valmentavaa ja kuntouttavaa opetusta ja ohjausta tarjoavat oppilaitokset",
+    "lo-type-special": "Ammatillinen erityisopetus (en)",
+    "provider-erityis": "Ammatillista erityisopetusta tarjoavat oppilaitokset (en)",
+    "provider-valmentava": "Valmentavaa ja kuntouttavaa opetusta ja ohjausta tarjoavat oppilaitokset (en)",
 
-    "description-basic-info": "Perustiedot",
-    "email": "Email",
-    "phone": "Phone",
+    "description-basic-info": "Perustiedot (en)",
+    "email": "Email (en)",
+    "phone": "Phone (en)",
 
-    "postal-address": "Postal address",
-    "visiting-address": "Visiting address",
-    "fax": "Fax",
-    "www": "www",
+    "postal-address": "Postal address (en)",
+    "visiting-address": "Visiting address (en)",
+    "fax": "Fax (en)",
+    "www": "www (en)",
 
-    "social-media": "Oppilaitoksen sosiaalisen median linkit",
+    "social-media": "Oppilaitoksen sosiaalisen median linkit (en)",
 
-    "footer-service-providers": "Palvelun tarjoavat:",
-    "footer-provider-1": "Opetus- ja kulttuuriministeriö",
-    "footer-provider-2": "Opetushallitus",
+    "footer-service-providers": "Palvelun tarjoavat: (en)",
+    "footer-provider-1": "Opetus- ja kulttuuriministeriö (en)",
+    "footer-provider-2": "Opetushallitus (en)",
 
-    "meta-content": "Erityisoppilaitosten koulutustarjonnan tekstiversiossa voi selailla oppilaitoksia, ammatillista erityisopetusta sekä valmentavaa ja kuntouttavaa opetusta ja ohjausta"
+    "meta-content": "Erityisoppilaitosten koulutustarjonnan tekstiversiossa voi selailla oppilaitoksia, ammatillista erityisopetusta sekä valmentavaa ja kuntouttavaa opetusta ja ohjausta (en)"
 }

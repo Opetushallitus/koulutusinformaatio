@@ -39,6 +39,6 @@ public class KoodiTypeToI18nText implements Converter<KoodiType, I18nText> {
             translations.put(koodiMetadataType.getKieli().value().toLowerCase(), koodiMetadataType.getNimi());
             translationsShortName.put(koodiMetadataType.getKieli().value().toLowerCase(), koodiMetadataType.getLyhytNimi());
         }
-        return new I18nText(translations, translationsShortName);
+        return new I18nText(translations);
     }
 }

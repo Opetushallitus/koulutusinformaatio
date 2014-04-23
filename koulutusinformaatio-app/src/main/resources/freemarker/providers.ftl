@@ -3,33 +3,54 @@
 <html>
 <#-- <#include "resources.ftl"> -->
 <head>
-    <#include "head.ftl">
+<#include "head.ftl">
 </head>
 <body>
 <#include "top.ftl">
-    <div id="page">
-        <div class="grid16-16">
-            <div class="buttongroup margin-bottom-4">
-            <#list alphabets as alphabet>
-                <#if alphabet == letter>
-                    <a href="#" class="button active">${alphabet}</a>
-                <#else>
-                    <a href="${alphabet}" class="button">${alphabet}</a>
-                </#if>
-            </#list>
-            </div>
-            <div class="clear"></div>
-
-            <p>
-            <#list providers as provider>
-                <a href="${letter}/${provider.id}/koulutukset">${provider.name}</a>
-                <br>
-            </#list>
-            </p>
+<div id="page">
+    <div class="grid16-16">
+        <div class="buttongroup margin-bottom-4">
+        <#list alphabets as alphabet>
+            <#if alphabet == letter>
+                <a href="javascript:void(0);" class="button active">${alphabet}</a>
+            <#elseif validCharacters?seq_contains(alphabet)>
+                <a href="${alphabet}" class="button">${alphabet}</a>
+            <#else>
+                <a href="javascript:void(0);" class="button disabled">${alphabet}</a>
+            </#if>
+        </#list>
         </div>
+        <div class="clear"></div>
+        <p>
+        <#list providerTypes as providerType>
+
+            <#if providerType.value == "99">
+                <#assign providerName><@msg "provider.type.other"/></#assign>
+            <#else>
+                    <#assign providerName = providerType.name>
+            </#if>
+
+            <#if providerType.value == selectedProviderType>
+                ${providerName}
+            <#else>
+                <a href="?type=${providerType.value}">${providerName}</a>
+            </#if>
+            <#if providerType_has_next> | </#if>
+
+        </#list>
+        </p>
+
+        <div class="clear"></div>
+        <p>
+        <#list providers as provider>
+            <a href="${letter}/${provider.id}/koulutukset">${provider.name}</a>
+            <br>
+        </#list>
+        </p>
     </div>
-    <div class="clear"></div>
-    <#include "footer.ftl">
-    <#include "scripts.ftl">
+</div>
+<div class="clear"></div>
+<#include "footer.ftl">
+<#include "scripts.ftl">
 </body>
 </html>

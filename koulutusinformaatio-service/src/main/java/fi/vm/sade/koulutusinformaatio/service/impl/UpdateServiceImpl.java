@@ -16,8 +16,10 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import java.util.Date;
-import java.util.List;
+import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
+import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
+import fi.vm.sade.koulutusinformaatio.service.*;
 
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
@@ -26,18 +28,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
-import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
-import fi.vm.sade.koulutusinformaatio.domain.LOS;
-import fi.vm.sade.koulutusinformaatio.domain.Location;
-import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
-import fi.vm.sade.koulutusinformaatio.service.EducationDataUpdateService;
-import fi.vm.sade.koulutusinformaatio.service.IndexerService;
-import fi.vm.sade.koulutusinformaatio.service.LocationService;
-import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
-import fi.vm.sade.koulutusinformaatio.service.UpdateService;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 
 
@@ -52,6 +45,7 @@ public class UpdateServiceImpl implements UpdateService {
     private TarjontaService tarjontaService;
     private IndexerService indexerService;
     private EducationDataUpdateService educationDataUpdateService;
+    private ArticleService articleService;
 
     private TransactionManager transactionManager;
     private static final int MAX_RESULTS = 100;
@@ -59,16 +53,17 @@ public class UpdateServiceImpl implements UpdateService {
     private long runningSince = 0;
     private LocationService locationService;
 
-
     @Autowired
     public UpdateServiceImpl(TarjontaService tarjontaService, IndexerService indexerService,
             EducationDataUpdateService educationDataUpdateService,
-            TransactionManager transactionManager, LocationService locationService) {
+            TransactionManager transactionManager, LocationService locationService,
+            ArticleService articleService) {
         this.tarjontaService = tarjontaService;
         this.indexerService = indexerService;
         this.educationDataUpdateService = educationDataUpdateService;
         this.transactionManager = transactionManager;
         this.locationService = locationService;
+        this.articleService = articleService;
     }
 
     @Override
@@ -89,11 +84,11 @@ public class UpdateServiceImpl implements UpdateService {
             int index = 0;
 
             while (count >= MAX_RESULTS) {
-                LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
-                List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
-                count = loOids.size();
-                index += count;
-
+            LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
+            List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
+            count = loOids.size();
+            index += count;  
+            
                 for (String loOid : loOids) {
                     List<LOS> specifications = null;
                     try {
@@ -128,8 +123,10 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.debug("Got locations");
             indexerService.addLocations(locations, locationUpdateSolr);
             LOG.debug("Added locations");
-            indexerService.addArticles(loUpdateSolr);
-            LOG.debug("added articles");
+            List<Article> articles = this.articleService.fetchArticles();
+            LOG.debug("Articles fetched");
+            indexerService.addArticles(loUpdateSolr, articles);
+            LOG.debug("Articles indexed to solr");
             indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, true);
             LOG.debug("Committed to solr");
             this.transactionManager.commit(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);

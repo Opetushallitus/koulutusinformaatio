@@ -26,9 +26,9 @@ public interface SearchService {
 
     List<Provider> searchLearningOpportunityProviders(
             final String term, final String asId, final String baseEducation, final boolean vocational,
-            final boolean nonVocational, int start, int rows, String lang, boolean prefix) throws SearchException;
+            final boolean nonVocational, int start, int rows, String lang, boolean prefix, String type) throws SearchException;
 
-    List<Provider> searchLearningOpportunityProviders(final String term, String lang, boolean prefix) throws SearchException;
+    List<Provider> searchLearningOpportunityProviders(final String term, String lang, boolean prefix, String type) throws SearchException;
 
     LOSearchResultList searchLearningOpportunities(final String term, final String prerequisite,
                                                    List<String> cities, List<String> facetFilters,
@@ -44,4 +44,20 @@ public interface SearchService {
     List<Location> getDistricts(final String lang) throws SearchException;
     List<Location> getChildLocations(List<String> districts, final String lang) throws SearchException;
     SuggestedTermsResult searchSuggestedTerms(String term, String lang) throws SearchException;
+    List<ArticleResult> searchArticleSuggestions(String filter, String lang) throws SearchException;
+
+    /**
+     * Returns a list of characters that the providers' names start with.
+     *
+     * @param lang language of provider
+     * @return list of characters
+     */
+    List<String> getProviderFirstCharacterList(String lang) throws SearchException;
+
+    /**
+     * Fetches the list of provider types that are currently in use.
+     *
+     * @return list of types as code objects
+     */
+    List<Code> getProviderTypes(String firstCharacter, String lang) throws SearchException;
 }

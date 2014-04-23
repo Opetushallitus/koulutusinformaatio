@@ -15,26 +15,18 @@
  */
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import static org.junit.Assert.assertEquals;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.util.TestUtil;
+import org.apache.solr.common.SolrInputDocument;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.solr.common.SolrInputDocument;
-import org.junit.Test;
-
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
-import fi.vm.sade.koulutusinformaatio.domain.Address;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.DateRange;
-import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
-import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.util.TestUtil;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Markus
@@ -67,7 +59,7 @@ public class HigherEducationLOSToSolrInputDocmentTest {
 		provider.setHomeDistrict(TestUtil.createI18nText("Uusimaa fi", "Uusimaa sv", "Uusimaa en"));
 		provider.setHomePlace(TestUtil.createI18nText("Hki fi", "Hki sv", "Hki en"));
 		Address addr = new Address();
-		addr.setPostOffice("04620");
+		addr.setPostalCode("04620");
 		provider.setVisitingAddress(addr);
 		provider.setDescription(TestUtil.createI18nText("prov descr fi", "prov descr sv", "prov descr en"));
 		los.setProvider(provider);
@@ -75,9 +67,12 @@ public class HigherEducationLOSToSolrInputDocmentTest {
 		los.setCreditValue("80");
 		los.setCreditUnit(TestUtil.createI18nText("ov fi", "ov sv", "ov en"));
 		los.setName(TestUtil.createI18nText("los name fi", "los name sv", "los name en"));
+        los.setShortName(TestUtil.createI18nText("los short name fi", "los short name sv", "los short name en"));
 		los.setEducationDegreeLang(TestUtil.createI18nText("Alempi korkeakoulu fi", "Alempi korkeakoulu sv", "Alempi korkeakoulu en"));
 		los.setEducationDegree("alempiKk_uri");
-		los.setQualification(TestUtil.createI18nText("quali fi", "quali sv", "quali en"));
+		List<I18nText> quals = new ArrayList<I18nText>();
+		quals.add(TestUtil.createI18nText("quali fi", "quali sv", "quali en"));
+		los.setQualifications(quals);
 		los.setGoals(TestUtil.createI18nText("Goals fi", "Goals sv", "Goals en"));
 		los.setContent(TestUtil.createI18nText("Content fi", "Content sv", "Content en"));
 		

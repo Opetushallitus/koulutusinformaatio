@@ -16,7 +16,6 @@
 package fi.vm.sade.koulutusinformaatio.converter;
 
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 import org.apache.solr.common.SolrInputDocument;
@@ -63,7 +62,7 @@ public class ParentLOSToSolrInputDocumentTest {
 		provider.setHomeDistrict(TestUtil.createI18nText("Uusimaa fi", "Uusimaa sv", "Uusimaa en"));
 		provider.setHomePlace(TestUtil.createI18nText("Hki fi", "Hki sv", "Hki en"));
 		Address addr = new Address();
-		addr.setPostOffice("04620");
+		addr.setPostalCode("04620");
 		provider.setVisitingAddress(addr);
 		provider.setDescription(TestUtil.createI18nText("prov descr fi", "prov descr sv", "prov descr en"));
 		los.setProvider(provider);
@@ -117,6 +116,7 @@ public class ParentLOSToSolrInputDocumentTest {
 		
 		ChildLOS childLos = new ChildLOS();
 		childLos.setName(TestUtil.createI18nText("child los name fi", "child los name sv", "child los name en"));
+        childLos.setShortName(TestUtil.createI18nText("child los short name fi", "child los short name sv", "child los short name en"));
 		childLos.setQualification(TestUtil.createI18nText("quali fi", "quali sv", "quali en"));
 		childLos.setGoals(TestUtil.createI18nText("Goals child fi", "Goals child sv", "Goals child en"));
 		

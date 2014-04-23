@@ -38,11 +38,11 @@ public final class SpecialLOSToDTO {
         dto.setStructure(ConverterUtil.getTextByLanguage(los.getStructure(), lang));
         dto.setAccessToFurtherStudies(ConverterUtil.getTextByLanguage(los.getAccessToFurtherStudies(), lang));
         dto.setLois(ChildLOIToDTO.convert(los.getLois(), lang, uiLang, defaultLang));
-        dto.setProvider(ProviderToDTO.convert(los.getProvider(), lang, defaultLang));
+        dto.setProvider(ProviderToDTO.convert(los.getProvider(), lang, defaultLang, uiLang));
         dto.setTranslationLanguage(lang);
         dto.setCreditValue(los.getCreditValue());
         dto.setCreditUnit(ConverterUtil.getTextByLanguage(los.getCreditUnit(), uiLang));
-        dto.setEducationDomain(ConverterUtil.getShortNameTextByLanguage(los.getEducationDomain(), defaultLang));
+        dto.setEducationDomain(ConverterUtil.getTextByLanguage(los.getEducationDomain(), defaultLang));
         dto.setParent(ParentLOSRefToDTO.convert(los.getParent(), defaultLang));
         dto.setEducationTypeUri(los.getEducationTypeUri());
 

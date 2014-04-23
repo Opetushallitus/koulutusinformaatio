@@ -26,11 +26,7 @@
 		<fail message="tomcat-port not defined" unless="tomcat-port" />	
 
 		<property name="oph.name" value="koulutusinformaatio"/>
-<<<<<<< HEAD
-		<property name="pom.version" value="8.1.1"/>
-=======
-		<property name="pom.version" value="9.0"/>
->>>>>>> master
+		<property name="pom.version" value="9.3"/>
 
 		<property name="maven.repo" value="${user.home}/.m2/repository"/>
 		<property name="tomcat.name" value="tomcat_${oph.name}"/>

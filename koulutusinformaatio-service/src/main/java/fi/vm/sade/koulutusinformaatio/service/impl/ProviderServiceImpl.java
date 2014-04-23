@@ -106,6 +106,9 @@ public class ProviderServiceImpl implements ProviderService {
         if (child.getSocial() == null) {
             child.setSocial(parent.getSocial());
         }
+        if (child.getType() == null) {
+            child.setType(parent.getType());
+        }
         return child;
     }
 
@@ -117,7 +120,8 @@ public class ProviderServiceImpl implements ProviderService {
                 provider.getLivingExpenses() == null ||
                 provider.getLearningEnvironment() == null ||
                 provider.getDining() == null ||
-                provider.getSocial() == null) {
+                provider.getSocial() == null ||
+                provider.getType() == null) {
             valid = false;
         }
         return valid;

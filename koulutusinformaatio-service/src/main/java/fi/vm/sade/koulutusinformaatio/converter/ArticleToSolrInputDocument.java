@@ -4,12 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.solr.common.SolrInputDocument;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.Article;
+import fi.vm.sade.koulutusinformaatio.domain.Code;
+import fi.vm.sade.koulutusinformaatio.service.impl.ArticleServiceImpl;
 
 public class ArticleToSolrInputDocument implements Converter<Article, List<SolrInputDocument>> {
+    
+    private static final Logger LOGGER = LoggerFactory.getLogger(ArticleToSolrInputDocument.class);
 
     @Override
     public List<SolrInputDocument> convert(Article article) {
@@ -36,7 +42,16 @@ public class ArticleToSolrInputDocument implements Converter<Article, List<SolrI
         
         doc.addField(LearningOpportunity.NAME, article.getTitle());
         doc.addField(LearningOpportunity.NAME_SORT, article.getTitle());
+        doc.setField(LearningOpportunity.ARTICLE_LANG, lang);
         
+        for (String curCode : article.getEducationTypeCodes()) {
+            LOGGER.debug(curCode);
+            doc.addField(LearningOpportunity.EDUCATION_TYPE, curCode);
+        }
+        
+        for (String curCode : article.getEducationCodes()) {
+            doc.addField(LearningOpportunity.ARTICLE_EDUCATION_CODE, curCode);
+        }
         
         indexLangFields(article, doc, lang);
         
@@ -78,6 +93,7 @@ public class ArticleToSolrInputDocument implements Converter<Article, List<SolrI
             doc.addField(LearningOpportunity.CONTENT_EN, article.getContent());
             doc.addField(LearningOpportunity.CONTENT_EN, article.getExcerpt());
         } 
+
         
     }
 

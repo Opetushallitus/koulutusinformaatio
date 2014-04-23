@@ -1658,6 +1658,16 @@ b, strong, .bold {
       #siteheader .actions ul li.basket {
         background: transparent url(../img/muistilista4.png) no-repeat scroll; }
 
+/* skip navigation link */
+#skip-link a {
+  position: absolute;
+  top: -500px; }
+  #skip-link a:focus {
+    display: block;
+    top: 0;
+    padding: 10px 20px;
+    background: #FFFFFF; }
+
 /* Search field */
 .search-container {
   margin: 20px auto;
@@ -1841,7 +1851,6 @@ b, strong, .bold {
         width: 19px;
         height: 17px;
         display: block;
-        color: transparent;
         font-size: 0px; }
 
 .ajax-loader {
@@ -1874,16 +1883,16 @@ b, strong, .bold {
   position: relative;
   bottom: 20px; }
 
-#facetSelections {
+.facetSelections {
   margin-bottom: 1em; }
-  #facetSelections ul {
+  .facetSelections ul {
     margin: 0;
     padding: 0; }
-    #facetSelections ul li {
+    .facetSelections ul li {
       list-style-type: none;
       display: inline-block;
       margin: 0 10px 10px 0; }
-      #facetSelections ul li a.facet-selection {
+      .facetSelections ul li a.facet-selection {
         display: inline-block;
         padding: 0 10px;
         background: #8BCFE3;
@@ -1900,7 +1909,7 @@ b, strong, .bold {
         -o-box-shadow: inset 0px 1px 1px 0px #c1e5f0;
         -ms-box-shadow: inset 0px 1px 1px 0px #c1e5f0;
         box-shadow: inset 0px 1px 1px 0px #c1e5f0; }
-        #facetSelections ul li a.facet-selection:hover {
+        .facetSelections ul li a.facet-selection:hover {
           background: #8bcfe3;
           background: -webkit-gradient(linear, left top, left bottom, from(#55b9d7), to(#8bcfe3));
           background: -webkit-linear-gradient(top, #55b9d7, #8bcfe3);
@@ -1909,9 +1918,9 @@ b, strong, .bold {
           background: -o-linear-gradient(top, #55b9d7, #8bcfe3);
           background: linear-gradient(top, #55b9d7, #8bcfe3);
           cursor: pointer; }
-          #facetSelections ul li a.facet-selection:hover .remove {
+          .facetSelections ul li a.facet-selection:hover .remove {
             background: transparent url("../img/selection-close.png") no-repeat scroll right 0; }
-        #facetSelections ul li a.facet-selection:active {
+        .facetSelections ul li a.facet-selection:active {
           background: #8bcfe3;
           background: -webkit-gradient(linear, left top, left bottom, from(#55b9d7), to(#8bcfe3));
           background: -webkit-linear-gradient(top, #55b9d7, #8bcfe3);
@@ -1924,15 +1933,15 @@ b, strong, .bold {
           -o-box-shadow: inset 0px 1px 1px 0px #3d94ad;
           -ms-box-shadow: inset 0px 1px 1px 0px #3d94ad;
           box-shadow: inset 0px 1px 1px 0px #3d94ad; }
-        #facetSelections ul li a.facet-selection .remove {
+        .facetSelections ul li a.facet-selection .remove {
           width: 10px;
           height: 10px;
           margin: 0 0 0 4px;
           font-size: 0;
           background: transparent url("../img/selection-close.png") no-repeat scroll left 0; }
-        #facetSelections ul li a.facet-selection:hover, #facetSelections ul li a.facet-selection:active {
+        .facetSelections ul li a.facet-selection:hover, .facetSelections ul li a.facet-selection:active {
           color: #333333; }
-      #facetSelections ul li:first-child {
+      .facetSelections ul li:first-child {
         padding-left: 0; }
 
 /*** Form generic
@@ -2392,7 +2401,6 @@ table.striped {
   background-repeat: no-repeat;
   background-position: center center;
   cursor: pointer;
-  color: transparent;
   font-size: 0px; }
 
 /*  Näytä lisää -tekstikomponentti */
@@ -2742,6 +2750,9 @@ a.button {
     -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#bf8a02,endColorstr=#e3a300,GradientType=0);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#bf8a02,endColorstr=#e3a300,GradientType=0);
     box-shadow: none; }
+  .buttongroup .button:disabled, .buttongroup .button.disabled {
+    background: #ffeba2;
+    color: #888888; }
   .buttongroup .button:first-child {
     border-top-left-radius: 3px;
     border-bottom-left-radius: 3px; }
@@ -3203,7 +3214,6 @@ a.cssbutton {
   background-repeat: no-repeat;
   background-position: center center;
   cursor: pointer;
-  color: transparent;
   font-size: 0px; }
 
 /* Pagination styles from twitter bootstrap */
@@ -3608,9 +3618,7 @@ a.cssbutton {
     background: transparent url("../img/fasetti-location-close.png") scroll no-repeat 0 0;
     width: 10px;
     height: 10px;
-    margin: 0 0 0 3px; }
-  .collapse-content-container .facet-item.inactive {
-    text-decoration: none; }
+    margin: 0 0 0 5px; }
 .collapse-content-container .selected:hover {
   text-decoration: none;
   cursor: auto; }
@@ -3650,6 +3658,15 @@ a.cssbutton {
   border-top: none; }
   .filter:first-child {
     border-top: 1px solid #dddddd; }
+
+.facet-tree-container ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0; }
+  .facet-tree-container ul ul {
+    margin-left: 16px; }
+.facet-tree-container .facet-tree-leaf {
+  margin-left: 16px; }
 
 /* to reduce animation artifacts with Chrome */
 /*
@@ -3769,8 +3786,7 @@ nav {
   font-size: 16px;
   line-height: 20px;
   z-index: 1001;
-  position: relative;
-  height: 40px; }
+  position: relative; }
   nav ul {
     padding: 0px;
     margin: 0px;
@@ -3784,6 +3800,7 @@ nav {
     box-shadow: 0px 1px 1px 0 rgba(0, 0, 0, 0.5);
     outline: none; }
     nav ul.level-1 {
+      width: 100%;
       box-shadow: none;
       float: left; }
       nav ul.level-1 > li {
@@ -3795,9 +3812,7 @@ nav {
       display: block; }
     nav ul li {
       float: left;
-      text-align: left;
-      width: 220px;
-      max-width: 300px; }
+      text-align: left; }
       nav ul li.menu-hover, nav ul li.menu-focus {
         background: #FFFFFF;
         outline-style: none; }
@@ -3810,6 +3825,9 @@ nav {
         padding: 10px;
         color: white;
         text-decoration: none; }
+      nav ul li a.action-link {
+        font-size: 13px;
+        text-decoration: underline; }
     nav ul ul {
       background: #FFFFFF;
       border-radius: 0px;
@@ -3835,140 +3853,6 @@ nav {
         position: absolute;
         left: 100%;
         top: 0; }
-  nav a.action-link {
-    float: right;
-    color: #FFFFFF;
-    line-height: 40px;
-    font-size: 13px; }
-
-/*
-nav ul li:hover > ul {
-	display: block;
-}
-*/
-/*
-nav ul {
-
-	
-	//box-shadow: 0px 0px 9px rgba(0,0,0,0.15);
-	
-	padding: 0px;
-	margin: 0px;
-	border-radius: 10px;  
-	list-style: none;
-	position: relative;
-	display: inline-block;
-
-	-webkit-box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.65);
-	box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.65);
-
-	&.level-1 {
-		box-shadow: none;
-	}
-
-}
-*/
-/*
-nav ul:after {
-	content: ""; clear: both; display: block;
-}
-*/
-/*
-	nav ul li {
-		float: left;
-	}
-	*/
-/*
-	nav ul li:hover {
-		background: #FFFFFF;
-		//background: linear-gradient(top, #4f5964 0%, #5f6975 40%);
-		//background: -moz-linear-gradient(top, #4f5964 0%, #5f6975 40%);
-		//background: -webkit-linear-gradient(top, #4f5964 0%,#5f6975 40%);
-	}
-*/
-/*
-nav ul li:hover a {
-	color: $color-font-default;
-}
-*/
-/*
-nav ul li a {
-	display: block; 
-	padding: 10px;
-	color: $font-color-inverse; 
-	text-decoration: none;
-}
-*/
-/*	
-nav ul ul {
-	background: #FFFFFF; 
-	border-radius: 0px; 
-	padding: 0;
-	position: absolute; 
-	top: 100%;
-}
-	nav ul ul li {
-		float: none; 
-		//border-top: 1px solid #6b727c;
-		//border-bottom: 1px solid #575f6a; position: relative;
-	}
-		nav ul ul li a {
-			padding: 15px 40px;
-			color: #fff;
-		}	
-			nav ul ul li a:hover {
-				background: #feedbd;;
-			}
-	
-nav ul ul ul {
-	position: absolute; left: 100%; top:0;
-}
-*/
-div[data-angular-treeview] {
-  /* prevent user selection */
-  -moz-user-select: -moz-none;
-  -khtml-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none; }
-
-div[data-tree-model] ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  border: none;
-  overflow: hidden; }
-
-div[data-tree-model] ul ul {
-  padding: 0 0 0 35px;
-  font-size: 0.923em; }
-
-div[data-tree-model] li {
-  position: relative;
-  line-height: 20px; }
-
-div[data-tree-model] li .expanded {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  margin-right: 5px;
-  background: transparent url("../img/fasetti-miinus.png") no-repeat scroll 0 0; }
-
-div[data-tree-model] li .collapsed {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  margin-right: 5px;
-  background: transparent url("../img/fasetti-plus.png") no-repeat scroll 0 0; }
-
-div[data-tree-model] li i, div[data-tree-model] li span {
-  cursor: pointer; }
-
-div[data-tree-model] li span.facet-item {
-  display: inline; }
-
-div[data-tree-model] li span.facet-item .remove {
-  margin: 0 0 0 5px; }
 
 /*** Main navigation
 **************************************************************/
@@ -4332,3 +4216,57 @@ p {
   position: absolute;
   right: 87px;
   top: 2px; }
+
+@font-face {
+  font-family: 'fontello';
+  src: url("../font/fontello.eot?73014415");
+  src: url("../font/fontello.eot?73014415#iefix") format("embedded-opentype"), url("../font/fontello.woff?73014415") format("woff"), url("../font/fontello.ttf?73014415") format("truetype"), url("../font/fontello.svg?73014415#fontello") format("svg");
+  font-weight: normal;
+  font-style: normal; }
+
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: 'fontello';
+    src: url('../font/fontello.svg?73014415#fontello') format('svg');
+  }
+}
+*/
+[class^="icon-"]:before, [class*=" icon-"]:before {
+  font-family: "fontello";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  /* opacity: .8; */
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+  margin-left: .2em;
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */ }
+
+.icon-link-ext:before {
+  content: '\e800'; }
+
+/* '' */
+.icon-link-ext-alt:before {
+  content: '\e801'; }
+
+/* '' */
+.icon-angle-double-right:before {
+  content: '\e802'; }
+
+/* '' */

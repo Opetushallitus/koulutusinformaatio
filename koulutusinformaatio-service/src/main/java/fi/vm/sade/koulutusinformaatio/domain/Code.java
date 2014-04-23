@@ -26,11 +26,17 @@ public class Code {
 
     private String value;
     private I18nText name;
+    private I18nText shortName;
     private I18nText description;
     private Code parent;
     private String uri;
 
     public Code() {}
+
+    public Code(String value, I18nText name) {
+        this.value = value;
+        this.name = name;
+    }
 
     public Code(String value, I18nText name, I18nText description) {
         this.value = value;
@@ -38,9 +44,10 @@ public class Code {
         this.description = description;
     }
     
-    public Code(String value, I18nText name, I18nText description, String uri) {
+    public Code(String value, I18nText name, I18nText shortName, I18nText description, String uri) {
         this.value = value;
         this.name = name;
+        this.shortName = shortName;
         this.description = description;
         this.uri = uri;
     }
@@ -59,6 +66,14 @@ public class Code {
 
     public void setName(I18nText name) {
         this.name = name;
+    }
+
+    public I18nText getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(I18nText shortName) {
+        this.shortName = shortName;
     }
 
     public I18nText getDescription() {

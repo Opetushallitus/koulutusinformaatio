@@ -85,7 +85,6 @@ public abstract class ObjectCreator {
             }
             I18nText i18nText = new I18nText();
             i18nText.setTranslations(translations);
-            i18nText.setTranslationsShortName(translations);
             return i18nText;
         }
         return null;
@@ -215,7 +214,7 @@ public abstract class ObjectCreator {
         if (opetuskielis != null && opetuskielis.getMeta() != null) {
 
             for (KoodiV1RDTO curKoodi : opetuskielis.getMeta().values()) {
-                codes.addAll(koodistoService.searchCodes(curKoodi.getUri()));
+                codes.addAll(koodistoService.search(curKoodi.getUri()));
             }
 
 

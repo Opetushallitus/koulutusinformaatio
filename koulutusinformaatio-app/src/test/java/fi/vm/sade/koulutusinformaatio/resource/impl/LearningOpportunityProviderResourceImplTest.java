@@ -15,17 +15,6 @@
  */
 package fi.vm.sade.koulutusinformaatio.resource.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.mock;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
@@ -35,6 +24,18 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.resource.LearningOpportunityProviderResource;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * 
@@ -74,7 +75,7 @@ public class LearningOpportunityProviderResourceImplTest {
         providers.add(provider);
         providers.add(provider2);
         
-        when(searchService.searchLearningOpportunityProviders("prov", "", "", true, true, 10, 10, "fi", false)).thenReturn(providers);
+        when(searchService.searchLearningOpportunityProviders("prov", "", "", true, true, 10, 10, "fi", false, null)).thenReturn(providers);
         
         PictureDTO pict = new PictureDTO();
         pict.setId("pict1");

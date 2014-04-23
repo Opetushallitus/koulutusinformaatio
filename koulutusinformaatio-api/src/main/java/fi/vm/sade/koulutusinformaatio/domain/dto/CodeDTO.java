@@ -26,6 +26,7 @@ public class CodeDTO {
 
     private String value;
     private String name;
+    private String shortName;
     private String description;
     private String uri;
 
@@ -35,6 +36,14 @@ public class CodeDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 
     public String getUri() {

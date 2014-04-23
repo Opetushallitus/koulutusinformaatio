@@ -30,6 +30,8 @@ public class CodeEntity {
     private I18nTextEntity description;
     @Embedded
     private I18nTextEntity name;
+    @Embedded
+    private I18nTextEntity shortName;
     private String uri;
 
     public CodeEntity() {}
@@ -56,6 +58,14 @@ public class CodeEntity {
 
     public void setName(I18nTextEntity name) {
         this.name = name;
+    }
+
+    public I18nTextEntity getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(I18nTextEntity shortName) {
+        this.shortName = shortName;
     }
 
     public String getUri() {

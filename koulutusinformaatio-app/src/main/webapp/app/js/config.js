@@ -7,13 +7,13 @@ window.Config.app.common = {
 		ophUrl: 'http://www.oph.fi/etusivu',
 		okmUrl: 'http://www.minedu.fi/OPM/',
 		textVersionUrl: '/m/index.html',
-		sitemapUrl: '/fi/hakemisto/oppilaitokset/'
+		sitemapUrl: '/fi/hakemisto/oppilaitokset/A'
 	},
 	sv: {
     	ophUrl: 'http://www.oph.fi/startsidan',
     	okmUrl: 'http://www.minedu.fi/OPM/?lang=sv',
     	textVersionUrl: '/m/index_sv.html',
-    	sitemapUrl: '/sv/hakemisto/oppilaitokset/'
+    	sitemapUrl: '/sv/hakemisto/oppilaitokset/A'
 	},
     hakulomakeUrl: '/haku-app/',
     piwikUrl: 'https://analytiikka.opintopolku.fi/piwik/'

@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.mongodb.morphia.annotations.Embedded;
 
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 
 /**
  * 
@@ -16,9 +15,9 @@ public class HigherEducationLOSRefEntity {
     private String id;
     private List<String> asIds;
     @Embedded
-    private I18nText name;
+    private I18nTextEntity name;
     @Embedded
-    private I18nText qualification;
+    private List<I18nTextEntity> qualifications;
     @Embedded
     private CodeEntity prerequisite;
     
@@ -34,17 +33,17 @@ public class HigherEducationLOSRefEntity {
     public void setAsIds(List<String> asIds) {
         this.asIds = asIds;
     }
-    public I18nText getName() {
+    public I18nTextEntity getName() {
         return name;
     }
-    public void setName(I18nText name) {
+    public void setName(I18nTextEntity name) {
         this.name = name;
     }
-    public I18nText getQualification() {
-        return qualification;
+    public List<I18nTextEntity> getQualifications() {
+        return qualifications;
     }
-    public void setQualification(I18nText qualification) {
-        this.qualification = qualification;
+    public void setQualifications(List<I18nTextEntity> qualifications) {
+        this.qualifications = qualifications;
     }
     public CodeEntity getPrerequisite() {
         return prerequisite;

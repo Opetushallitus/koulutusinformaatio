@@ -53,7 +53,7 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public List<Location> getMunicipalities() throws KoodistoException {
-        List<Code> codes = koodistoService.searchCodesByKoodisto(CODE_MUNICIPALITY, null);
+        List<Code> codes = koodistoService.searchByKoodisto(CODE_MUNICIPALITY, null);
         List<Location> municipalities = Lists.newArrayList();
         if (codes != null) {
             for (Code code : codes) {

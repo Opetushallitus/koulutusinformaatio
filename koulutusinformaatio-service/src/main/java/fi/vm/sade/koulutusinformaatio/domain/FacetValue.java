@@ -30,6 +30,7 @@ public class FacetValue {
     private String valueName;
     private long count;
     private List<FacetValue> childValues;
+    private String parentId;
     
     public FacetValue(String facetField, String valueName, long count, String valueId) {
         this.facetField = facetField;
@@ -73,6 +74,14 @@ public class FacetValue {
 
     public void setChildValues(List<FacetValue> childValues) {
         this.childValues = childValues;
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
     
 }

@@ -15,14 +15,14 @@
  */
 package fi.vm.sade.koulutusinformaatio.dao.entity;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Reference;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -67,6 +67,8 @@ public class HigherEducationLOSEntity {
     @Embedded
     private I18nTextEntity name;
     @Embedded
+    private I18nTextEntity shortName;
+    @Embedded
     private I18nTextEntity koulutuskoodi;
     private String educationDegree;
     @Embedded
@@ -86,7 +88,7 @@ public class HigherEducationLOSEntity {
     @Embedded
     private I18nTextEntity degree;
     @Embedded
-    private I18nTextEntity qualification;
+    private List<I18nTextEntity> qualifications;
     private Boolean chargeable;
     @Embedded
     private CodeEntity educationCode;
@@ -131,6 +133,8 @@ public class HigherEducationLOSEntity {
     private List<CodeEntity> topics;
     @Embedded
     private List<CodeEntity> themes;
+    
+    private String educationType;
 
     public String getId() {
         return id;
@@ -222,6 +226,15 @@ public class HigherEducationLOSEntity {
     public void setEducationDomain(I18nTextEntity educationDomain) {
         this.educationDomain = educationDomain;
     }
+
+    public I18nTextEntity getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(I18nTextEntity shortName) {
+        this.shortName = shortName;
+    }
+
     public I18nTextEntity getName() {
         return name;
     }
@@ -282,11 +295,11 @@ public class HigherEducationLOSEntity {
     public void setDegree(I18nTextEntity degree) {
         this.degree = degree;
     }
-    public I18nTextEntity getQualification() {
-        return qualification;
+    public List<I18nTextEntity> getQualifications() {
+        return qualifications;
     }
-    public void setQualification(I18nTextEntity qualification) {
-        this.qualification = qualification;
+    public void setQualifications(List<I18nTextEntity> qualifications) {
+        this.qualifications = qualifications;
     }
     public Boolean getChargeable() {
         return chargeable;
@@ -426,6 +439,12 @@ public class HigherEducationLOSEntity {
     }
     public void setThemes(List<CodeEntity> themes) {
         this.themes = themes;
+    }
+    public String getEducationType() {
+        return educationType;
+    }
+    public void setEducationType(String educationType) {
+        this.educationType = educationType;
     }
 
 }

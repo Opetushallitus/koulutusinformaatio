@@ -38,6 +38,24 @@ service('HostResolver', function() {
             }
 
             return 'prod'; // return prod config by default
+        },
+
+        getCookiePrefixByDomain: function(currentHost) {
+            var prefix = 'test'
+            var prodHosts = ['opintopolku.fi', 'studieinfo.fi', 'studyinfo.fi'];
+
+            var result = '';
+            if (currentHost) {
+                result = prefix;
+                currentHost = currentHost.toLowerCase(); // domain names are case insensitive
+                for (var host in prodHosts) {
+                    if (currentHost.indexOf( prodHosts[host] ) >= 0 && currentHost.length == prodHosts[host].length) {
+                        result = '';
+                    }
+                }
+            }
+
+            return result;
         }
     };
 });

@@ -34,6 +34,8 @@ public class FacetValueDTO {
     private String valueName;
     private long count;
     private List<FacetValueDTO> childValues;
+    private String parentId;
+    
     
     public FacetValueDTO() {
         
@@ -81,5 +83,13 @@ public class FacetValueDTO {
 
     public void setChildValues(List<FacetValueDTO> childValues) {
         this.childValues = childValues;
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParent(String parentId) {
+        this.parentId = parentId;
     }
 }

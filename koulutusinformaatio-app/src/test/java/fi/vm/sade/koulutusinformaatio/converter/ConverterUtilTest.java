@@ -17,6 +17,8 @@
 package fi.vm.sade.koulutusinformaatio.converter;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.DateRangeDTO;
 import org.junit.Test;
@@ -24,6 +26,7 @@ import org.junit.Test;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import static org.junit.Assert.*;
@@ -32,6 +35,35 @@ import static org.junit.Assert.*;
  * @author Hannu Lyytikainen
  */
 public class ConverterUtilTest {
+
+    @Test
+    public void testGetTextByLanguageFound() {
+        I18nText i18n = createI18nText("localize");
+        String text = ConverterUtil.getTextByLanguage(i18n, "fi");
+        assertNotNull(text);
+        assertEquals("localize", text);
+    }
+
+    @Test
+    public void testGetTextByLanguageNotFound () {
+        I18nText i18n = createI18nText("localize");
+        assertNull(ConverterUtil.getTextByLanguage(i18n, "invalidlang"));
+    }
+
+    @Test
+    public void testGetTextByLanguageUseFallbackLangLFound() {
+        I18nText i18n = createI18nText("localize");
+        String text = ConverterUtil.getTextByLanguageUseFallbackLang(i18n, "fi");
+        assertNotNull(text);
+        assertEquals("localize", text);
+    }
+
+    @Test
+    public void testGetTextByLanguageUseFallbackLangLNotFound() {
+        I18nText i18n = createI18nText("localize");
+        String text = ConverterUtil.getTextByLanguageUseFallbackLang(i18n, "invalidlang");
+        assertNotNull(text);
+    }
 
     @Test
     public void testSortApplicationSystems() {
@@ -86,4 +118,11 @@ public class ConverterUtilTest {
         String url = "http://localhost:8080/koulutusinformaatio-app/app/?_escaped_fragment_=/tutkinto/1.2.246.562.5.2013111213020035175870_1.2.246.562.10.77155748245#PK";
         assertTrue(pattern.matcher(url).matches());
     }
+
+    private I18nText createI18nText(String fi) {
+        Map<String, String> values = Maps.newHashMap();
+        values.put("fi", fi);
+        return new I18nText(values);
+    }
+
 }

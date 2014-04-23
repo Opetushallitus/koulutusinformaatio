@@ -33,7 +33,7 @@ public interface KoodistoService {
      * @return list of I18nText objects
      * @throws KoodistoException
      */
-    List<I18nText> search(final String koodiUri) throws KoodistoException;
+    List<Code> search(final String koodiUri) throws KoodistoException;
 
     /**
      * Search localized texts by given koodi uris
@@ -41,7 +41,7 @@ public interface KoodistoService {
      * @return list of I18nText objects
      * @throws KoodistoException
      */
-    List<I18nText> searchMultiple(final List<String> koodiUris) throws KoodistoException;
+    List<Code> searchMultiple(final List<String> koodiUris) throws KoodistoException;
 
     /**
      * Search localized texts by given koodi uri, returns the first search result
@@ -49,7 +49,9 @@ public interface KoodistoService {
      * @return I18nText object
      * @throws KoodistoException
      */
-    I18nText searchFirst(final String koodiUri) throws KoodistoException;
+    Code searchFirst(final String koodiUri) throws KoodistoException;
+
+    List<Code> searchByKoodisto(String koodistoUri, Integer version) throws KoodistoException;
 
     /**
      * Search codes from koodisto service by given uri.
@@ -57,7 +59,7 @@ public interface KoodistoService {
      * @return list of Code objects
      * @throws KoodistoException
      */
-    List<Code> searchCodes(final String koodiUri) throws KoodistoException;
+    List<I18nText> searchNames(final String koodiUri) throws KoodistoException;
 
     /**
      * Search codes from koodisto by koodisto uri
@@ -66,7 +68,7 @@ public interface KoodistoService {
      * @return list of codes
      * @throws KoodistoException
      */
-    List<Code> searchCodesByKoodisto(String koodistoUri, Integer version) throws KoodistoException;
+    List<I18nText> searchNamesByKoodisto(String koodistoUri, Integer version) throws KoodistoException;
 
     /**
      * Search codes from koodisto service by given uris.
@@ -74,7 +76,7 @@ public interface KoodistoService {
      * @return list of Code objects
      * @throws KoodistoException
      */
-    List<Code> searchCodesMultiple(final List<String> koodiUri) throws KoodistoException;
+    List<I18nText> searchNamesMultiple(final List<String> koodiUri) throws KoodistoException;
 
     /**
      * Search codes from koodisto service by given uri, returns the first search result
@@ -82,8 +84,40 @@ public interface KoodistoService {
      * @return Code object
      * @throws KoodistoException
      */
-    Code searchFirstCode(final String koodiUri) throws KoodistoException;
+    I18nText searchFirstName(final String koodiUri) throws KoodistoException;
 
+    /**
+     * Search codes from koodisto service by given uri.
+     * @param koodiUri koodi uri
+     * @return list of Code objects
+     * @throws KoodistoException
+     */
+    List<I18nText> searchShortNames(final String koodiUri) throws KoodistoException;
+
+    /**
+     * Search codes from koodisto by koodisto uri
+     * @param koodistoUri koodisto uri
+     * @param version version number of koodisto
+     * @return list of codes
+     * @throws KoodistoException
+     */
+    List<I18nText> searchShortNamesByKoodisto(String koodistoUri, Integer version) throws KoodistoException;
+
+    /**
+     * Search codes from koodisto service by given uris.
+     * @param koodiUri list of koodi uris
+     * @return list of Code objects
+     * @throws KoodistoException
+     */
+    List<I18nText> searchShortNamesMultiple(final List<String> koodiUri) throws KoodistoException;
+
+    /**
+     * Search codes from koodisto service by given uri, returns the first search result
+     * @param koodiUri koodi uri
+     * @return Code object
+     * @throws KoodistoException
+     */
+    I18nText searchFirstShortName(final String koodiUri) throws KoodistoException;
     /**
      * Search codes from koodisto service by given uri, returns the first search result value
      * @param koodiUri
