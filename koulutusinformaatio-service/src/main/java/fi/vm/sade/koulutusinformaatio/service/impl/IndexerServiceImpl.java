@@ -1,7 +1,5 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
@@ -10,7 +8,6 @@ import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LocationFields;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
-import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
 
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -26,13 +23,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -176,6 +167,14 @@ public class IndexerServiceImpl implements IndexerService {
             String nameSv = resolveTextByLang("sv", provider.getName().getTranslations());
             providerDoc.addField("name_sv", nameSv);
             providerDoc.addField("startsWith_sv", nameSv.substring(0, 1).toUpperCase());
+            if (provider.getType() != null) {
+                providerDoc.setField(SolrUtil.ProviderFields.TYPE_VALUE, provider.getType().getValue());
+                providerDoc.setField(SolrUtil.ProviderFields.TYPE_FI, provider.getType().getName().getTranslations().get("fi"));
+                providerDoc.setField(SolrUtil.ProviderFields.TYPE_SV, provider.getType().getName().getTranslations().get("sv"));
+            }
+            else {
+                providerDoc.setField(SolrUtil.ProviderFields.TYPE_VALUE, SolrConstants.PROVIDER_TYPE_UNKNOWN);
+            }
 
             // check if provider exists and update base education and as id values
             SolrQuery query = new SolrQuery("id:" + provider.getId());
