@@ -46,7 +46,7 @@ import static org.mockito.Mockito.when;
  */
 public class DirectoryResourceTest {
 
-    private static final String BASE_URL = "www.base.url";
+    private static final String NG_BASE_URL = "www.base.url/ngapp";
 
     DirectoryResource resource;
 
@@ -76,7 +76,7 @@ public class DirectoryResourceTest {
         when(providerService.getProvider(eq("4.5.6"), eq("fi")))
                 .thenReturn(provider);
 
-        resource = new DirectoryResource(learningOpportunityService, providerService, BASE_URL);
+        resource = new DirectoryResource(learningOpportunityService, providerService, NG_BASE_URL);
     }
 
     @Test
@@ -101,7 +101,7 @@ public class DirectoryResourceTest {
         assertEquals("provider search result 2", providers.get(1).getName());
         assertNotNull(model.get("alphabets"));
         assertEquals("A", model.get("letter"));
-        assertEquals(BASE_URL, model.get("baseUrl"));
+        assertEquals(NG_BASE_URL, model.get("ngBaseUrl"));
         assertEquals("fi", model.get("lang"));
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
     }
@@ -124,7 +124,7 @@ public class DirectoryResourceTest {
         assertNotNull(providerName);
         assertEquals("provider name", providerName);
         assertEquals("A", model.get("letter"));
-        assertEquals(BASE_URL, model.get("baseUrl"));
+        assertEquals(NG_BASE_URL, model.get("ngBaseUrl"));
         assertEquals("fi", model.get("lang"));
     }
 

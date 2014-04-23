@@ -157,7 +157,9 @@ public class DirectoryResource {
     private Map<String, Object> initModel(String lang) {
         Map<String, Object> model = Maps.newHashMap();
         model.put("messages", resourceBundleHelper.getBundle(lang));
-        model.put("baseUrl", uri.getBaseUri());
+        if (uri != null) {
+            model.put("baseUrl", uri.getBaseUri());
+        }
         return model;
     }
 }
