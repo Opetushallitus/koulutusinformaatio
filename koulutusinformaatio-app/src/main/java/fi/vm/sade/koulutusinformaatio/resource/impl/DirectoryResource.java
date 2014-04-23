@@ -96,7 +96,7 @@ public class DirectoryResource {
             // error view
         }
 
-        if (type == null) {
+        if (type == null && !types.isEmpty()) {
             type = types.get(0).getValue();
         }
 
