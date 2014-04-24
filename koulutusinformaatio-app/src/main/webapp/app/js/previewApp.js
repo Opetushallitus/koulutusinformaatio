@@ -80,24 +80,23 @@ var kiApp = angular.module('previewApp',
 })
 
 // initialize i18n library
-.run(['$location', 'LanguageService', 'HostResolver', function($location, LanguageService, HostResolver) {
+.run(['$location', 'LanguageService', 'HostResolver', 'VirkailijaLanguageService', function($location, LanguageService, HostResolver, VirkailijaLanguageService) {
 	
-	//1. Setting ui-language based on url-parameter.
-	//2. Removing the parameter, to enable changing of language from ui
+	// 1. Setting ui-language based on url-parameter.
+	// 2. Setting virkailija ui language
+    // 3. Removing the parameter, to enable changing of language from ui
 	if ($location.search().lang != undefined 
-			&& ($location.search().lang == 'fi' 
-					|| $location.search().lang == 'sv')) {
+			&& ($location.search().lang == 'fi' || $location.search().lang == 'sv')) {
 		LanguageService.setLanguage($location.search().lang);
-		$location.search('').replace();
-	} else if ($location.search().lang != undefined) {
-		LanguageService.setLanguage('fi');
+        VirkailijaLanguageService.setLanguage(LanguageService.getLanguage());
 		$location.search('').replace();
 	}
 
-    var defaultName = 'i18next';
     var currentHost = $location.host();
+    var defaultName = 'i18next';
     var i18nCookieName = HostResolver.getCookiePrefixByDomain(currentHost) + defaultName;
 	
+    // initialize i18next library
     i18n.init({
         resGetPath : 'locales/__ns__-__lng__.json',
         lng : LanguageService.getLanguage(),

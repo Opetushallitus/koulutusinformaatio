@@ -31,6 +31,7 @@ public class Article {
     private List<ArticleAttachment> attachments;
     private String excerpt;
     private String id;
+    private List<ArticleTag> tags;
     
     private List<ArticleCode> taxonomy_oph_koulutus;
     private List<ArticleCode> taxonomy_oph_koulutustyyppi;
@@ -100,6 +101,12 @@ public class Article {
     }
     public void setEducationTypeCodes(List<String> educationTypeCodes) {
         this.educationTypeCodes = educationTypeCodes;
+    }
+    public List<ArticleTag> getTags() {
+        return tags;
+    }
+    public void setTags(List<ArticleTag> tags) {
+        this.tags = tags;
     }
 
 }

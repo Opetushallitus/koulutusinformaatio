@@ -18,6 +18,7 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
             var result = 0;
             result = params.ongoing ? result + 1 : result;
             result = params.upcoming ? result + 1 : result;
+            result = params.upcomingLater ? result + 1 : result;
 
             return result;
         }
@@ -105,6 +106,7 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
             qParams += (params.locations != undefined && params.locations.length > 0) ? ('&' + cities) : '';
             qParams += (params.ongoing != undefined) ? ('&ongoing=' + params.ongoing) : '';
             qParams += (params.upcoming != undefined) ? ('&upcoming=' + params.upcoming) : '';
+            qParams += (params.upcomingLater != undefined) ? ('&upcomingLater=' + params.upcomingLater) : '';
             qParams += (params.lang != undefined) ? ('&lang=' + params.lang) : '';
             qParams += (params.lopFilter != undefined) ? ('&lopFilter=' + params.lopFilter) : '';
             qParams += (params.educationCodeFilter != undefined) ? ('&educationCodeFilter=' + params.educationCodeFilter) : '';
@@ -115,6 +117,12 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
             		 qParams += '&facetFilters=' + facetFilter;
                  });
             }
+            
+            if (params.articleFacetFilters != undefined) {
+           	 angular.forEach(params.articleFacetFilters, function(facetFilter, key) {
+           		 qParams += '&articleFacetFilters=' + facetFilter;
+                });
+           }
             
             if (params.excludes != undefined) {
             	angular.forEach(params.excludes, function(exclude, key) {
@@ -134,7 +142,7 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
             qParams += (sortField.length > 0) ? ('&sort=' +sortField) : '';
             qParams += ((params.sortCriteria != undefined) && ((params.sortCriteria == 2) || (params.sortCriteria == 4))) ? ('&order=desc') : '';
 
-            $http.get('../lo/search/' + encodeURI(params.queryString) + qParams, {}).
+            $http.get('../lo/search/' + encodeURI(params.queryString).replace("#", "%23").replace(";", "%3B") + qParams, {}).
             success(function(result) {
                 LearningOpportunitySearchResultTransformer.transform(result);
                 var variables = parseFilterValues(params);
@@ -1230,6 +1238,28 @@ service('LanguageService', ['CookieService', function(CookieService) {
 }]).
 
 /**
+ *  Service keeping track of virkalija language selection
+ */
+service('VirkailijaLanguageService', ['CookieService', function(CookieService) {
+    var defaultLanguage = 'fi';
+    var key = 'virkailijaLang';
+
+    return {
+        getLanguage: function() {
+            return CookieService.get(key) || defaultLanguage;
+        },
+
+        setLanguage: function(language) {
+            CookieService.set(key, language);
+        },
+
+        getDefaultLanguage: function() {
+            return defaultLanguage;
+        }
+    };
+}]).
+
+/**
  *  Service for "caching" current parent selection
  */
  /*
@@ -1503,6 +1533,7 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
                 locations: getLocationCodes(),
                 ongoing: filters.ongoing,
                 upcoming: filters.upcoming,
+                upcomingLater: filters.upcomingLater,
                 page: filters.page,
                 articlePage: filters.articlePage,
                 facetFilters: filters.facetFilters,
@@ -1511,7 +1542,8 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
                 sortCriteria: filters.sortCriteria,
                 lopFilter: filters.lopFilter,
                 educationCodeFilter: filters.educationCodeFilter,
-                excludes: filters.excludes
+                excludes: filters.excludes,
+                articleFacetFilters : filters.articleFacetFilters
             };
 
             angular.forEach(result, function(value, key) {
@@ -1540,6 +1572,10 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
         
         isUpcoming: function() {
             return filters.upcoming;
+        },
+        
+        isUpcomingLater: function() {
+            return filters.upcomingLater;
         },
 
         getLocations: function() {
@@ -1595,6 +1631,7 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
             params += (filters.locations && filters.locations.length > 0) ? '&locations=' + getLocationCodes().join(',') : '';
             params += filters.ongoing ? '&ongoing' : '';
             params += filters.upcoming ? '&upcoming' : '';
+            params += filters.upcomingLater ? '&upcomingLater' : '';
             params += filters.page ? '&page=' + filters.page : '';
             params += (filters.facetFilters && filters.facetFilters.length > 0) ? '&facetFilters=' + filters.facetFilters.join(',') : '';
             params += filters.langCleared ? '&langCleared=' + filters.langCleared : '';
@@ -1603,6 +1640,7 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
             params += filters.lopFilter ? '&lopFilter=' + filters.lopFilter : '';
             params += filters.educationCodeFilter ? '&educationCodeFilter=' + filters.educationCodeFilter : '';
             params += (filters.excludes && filters.excludes.length > 0) ? '&excludes=' + filters.excludes.join('|') : '';
+            params += (filters.articleFacetFilters && filters.articleFacetFilters.length > 0) ? '&articleFacetFilters=' + filters.articleFacetFilters.join(',') : '';
             params = params.length > 0 ? params.substring(1, params.length) : '';
             return params;
         },
@@ -1613,6 +1651,14 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
         		return filters.facetFilters;
         	}
         	return filters.facetFilters;
+        },
+        
+        getArticleFacetFilters: function() {
+        	if (filters.articleFacetFilters != undefined && (typeof filters.articleFacetFilters == 'string' || filters.articleFacetFilters instanceof String)) {
+        		filters.articleFacetFilters = filters.articleFacetFilters.split(',');
+        		return filters.articleFacetFilters;
+        	}
+        	return filters.articleFacetFilters;
         },
         
         getLopFilter: function() {

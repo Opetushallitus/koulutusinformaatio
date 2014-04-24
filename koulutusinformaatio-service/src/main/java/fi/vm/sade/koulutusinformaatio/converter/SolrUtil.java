@@ -18,8 +18,14 @@ package fi.vm.sade.koulutusinformaatio.converter;
 
 import fi.vm.sade.koulutusinformaatio.domain.*;
 
+import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.common.SolrInputDocument;
+import org.apache.solr.common.params.DisMaxParams;
 
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -28,11 +34,69 @@ import java.util.Map;
  */
 public final class SolrUtil {
 
+    public static final List<String> FIELDS = Lists.newArrayList(
+            LearningOpportunity.TEXT_FI,
+            LearningOpportunity.TEXT_SV,
+            LearningOpportunity.TEXT_EN,
+            LearningOpportunity.TEXT_FI_WHOLE,
+            LearningOpportunity.TEXT_SV_WHOLE,
+            LearningOpportunity.TEXT_EN_WHOLE,
+            LearningOpportunity.TEXT_BOOST_FI,
+            LearningOpportunity.TEXT_BOOST_SV,
+            LearningOpportunity.TEXT_BOOST_EN,
+            LearningOpportunity.TEXT_BOOST_FI_WHOLE,
+            LearningOpportunity.TEXT_BOOST_SV_WHOLE,
+            LearningOpportunity.TEXT_BOOST_EN_WHOLE,
+            LearningOpportunity.AS_NAMES,
+            LearningOpportunity.LOP_NAMES,
+            LearningOpportunity.NAME_AUTO_FI,
+            LearningOpportunity.NAME_AUTO_SV,
+            LearningOpportunity.NAME_AUTO_EN
+    );
+    
+    public static final List<String> FIELDS_FI = Lists.newArrayList(
+            LearningOpportunity.TEXT_FI,
+            LearningOpportunity.TEXT_FI_WHOLE,
+            LearningOpportunity.TEXT_BOOST_FI,
+            LearningOpportunity.TEXT_BOOST_FI_WHOLE,
+            LearningOpportunity.AS_NAMES,
+            LearningOpportunity.LOP_NAMES,
+            LearningOpportunity.NAME_AUTO_FI
+    );
+    
+    public static final List<String> FIELDS_SV = Lists.newArrayList(
+            LearningOpportunity.TEXT_SV,
+            LearningOpportunity.TEXT_SV_WHOLE,
+            LearningOpportunity.TEXT_BOOST_SV,
+            LearningOpportunity.TEXT_BOOST_SV_WHOLE,
+            LearningOpportunity.AS_NAMES,
+            LearningOpportunity.LOP_NAMES,
+            LearningOpportunity.NAME_AUTO_SV
+    );
+    
+    public static final List<String> FIELDS_EN = Lists.newArrayList(
+            LearningOpportunity.TEXT_EN,
+            LearningOpportunity.TEXT_EN_WHOLE,
+            LearningOpportunity.TEXT_BOOST_EN,
+            LearningOpportunity.TEXT_BOOST_EN_WHOLE,
+            LearningOpportunity.AS_NAMES,
+            LearningOpportunity.LOP_NAMES,
+            LearningOpportunity.NAME_AUTO_EN
+    );
+    
     private SolrUtil() {
     }
 
     private static final String FALLBACK_LANG = "fi";
     private static final String TYPE_FACET = "FASETTI";
+    
+
+    public static final Integer AS_COUNT = 10;
+    public static final String APP_STATUS = "appStatus";
+    public static final String APP_STATUS_ONGOING = "ongoing";
+    public static final String APP_STATUS_UPCOMING = "upcoming";
+    public static final String APP_STATUS_UPCOMING_LATER = "upcomingLater";
+    public static final String QUOTED_QUERY_FORMAT = "%s:\"%s\"";
 
     public static String resolveTranslationInTeachingLangUseFallback(List<Code> teachingLanguages, Map<String, String> translations) {
         String translation = null;
@@ -99,6 +163,49 @@ public final class SolrUtil {
             translation = translations.values().iterator().next();
         }
         return translation;
+    }
+    
+    
+    public static void setSearchFields(List<String> facetFilters, SolrQuery query) {
+        
+        List<String> teachingLangs = getTeachingLangs(facetFilters);
+        
+        List<String> searchFields = new ArrayList<String>();
+        
+        if (teachingLangs.contains("fi")) {
+            searchFields.addAll(SolrUtil.FIELDS_FI);
+        } 
+        
+        if (teachingLangs.contains("sv")) {
+            searchFields.addAll(SolrUtil.FIELDS_SV);
+        } 
+        
+        if (teachingLangs.contains("en")) {
+            searchFields.addAll(SolrUtil.FIELDS_EN);
+        } 
+        
+        if (searchFields.isEmpty() 
+                && !teachingLangs.isEmpty()) {
+            searchFields.addAll(SolrUtil.FIELDS_FI);
+        }
+        
+        if (searchFields.isEmpty()){
+            query.setParam(DisMaxParams.QF, Joiner.on(" ").join(SolrUtil.FIELDS));
+        } else {
+            query.setParam(DisMaxParams.QF, Joiner.on(" ").join(searchFields));
+        }
+        
+    }
+    
+    private static List<String> getTeachingLangs(List<String> facetFilters) {
+        List<String> teachinglangs = new ArrayList<String>();
+        for (String curFilt : facetFilters) {
+            if (curFilt.startsWith(LearningOpportunity.TEACHING_LANGUAGE)) {
+                String theLang = curFilt.substring(curFilt.length() - 2).toLowerCase();
+                teachinglangs.add(theLang);
+            }
+        }
+        return teachinglangs;
     }
 
     public static class LearningOpportunity {
@@ -182,6 +289,7 @@ public final class SolrUtil {
         
         public static final String ARTICLE_EDUCATION_CODE = "articleEducationCode_ffm";
         public static final String ARTICLE_LANG = "article_lang_ssort";
+        public static final String ARTICLE_CONTENT_TYPE = "articleContentType_ffm";
 
         //Fields for sorting
         public static final String START_DATE_SORT = "startDate_dsort";

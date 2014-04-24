@@ -27,6 +27,7 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.*;
+
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -44,6 +45,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Component
@@ -158,17 +161,41 @@ public class SearchServiceSolrImpl implements SearchService {
         String[] splits = term.split(" ");
         String fixed = "";
         for (String curSplit : splits) {
-            if (curSplit.length() > 1 || curSplit.equals("*")) {
+            if ((curSplit.length() > 1 || curSplit.equals("*")) && !curSplit.startsWith("&")) {
                 fixed = String.format("%s%s ", fixed, curSplit);
             }
         }
         return fixed.trim();
     }
+    
+    private String getDateLimitStr(boolean upcomingLater) {
+        Calendar limit = Calendar.getInstance();
+        if (!upcomingLater) {
+            int month = limit.get(Calendar.MONTH) <= 5 ? 5 : 11;
+            int dayOfMonth = limit.get(Calendar.MONTH) <= 5 ? 30 : 31;
+        
+            limit.set(Calendar.MONTH, month);
+            limit.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        } else {
+            int month = limit.get(Calendar.MONTH) <= 5 ? 11 : 5;
+            int year =  limit.get(Calendar.MONTH) <= 5 ? limit.get(Calendar.YEAR) : limit.get(Calendar.YEAR) + 1;
+            int dayOfMonth = limit.get(Calendar.MONTH) <= 5 ? 31 : 30;
+            
+            limit.set(Calendar.MONTH, month);
+            limit.set(Calendar.YEAR, year);
+            limit.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        }
+        
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        
+        return dateFormat.format(limit.getTime());
+        
+    }
 
     @Override
     public LOSearchResultList searchLearningOpportunities(String term, String prerequisite,
-            List<String> cities, List<String> facetFilters,  
-            String lang, boolean ongoing, boolean upcoming, 
+            List<String> cities, List<String> facetFilters,  List<String> articleFilters,
+            String lang, boolean ongoing, boolean upcoming, boolean upcomingLater,
             int start, int rows, String sort, String order, 
             String lopFilter, String educationCodeFilter,
             List<String> excludes, SearchType searchType) throws SearchException {
@@ -176,45 +203,65 @@ public class SearchServiceSolrImpl implements SearchService {
         String trimmed = term.trim();
         String fixed = fixString(trimmed);
         if (!trimmed.isEmpty()) {
-            SolrQuery query = new LearningOpportunityQuery(fixed, prerequisite,
-                    cities, facetFilters, 
-                    lang, ongoing, upcoming, 
-                    start, rows, sort, order,
-                    lopFilter, educationCodeFilter, excludes, searchType);
+
+            String upcomingLimit = getDateLimitStr(false);
+            String upcomingLaterLimit = getDateLimitStr(true);
+            
+            SolrQuery query = null;
+            if (SearchType.LO.equals(searchType)) {
+                query = new LearningOpportunityQuery(fixed, prerequisite, 
+                        cities, facetFilters,
+                        lang, ongoing, upcoming, 
+                        upcomingLater, 
+                        start, rows, sort, order,
+                        lopFilter, educationCodeFilter, excludes,
+                        upcomingLimit, upcomingLaterLimit);
+            } else if (lopFilter == null && educationCodeFilter == null && (excludes == null || excludes.isEmpty())) {
+               query = new ArticleQuery(fixed, lang,  
+                        start, rows, sort, order,
+                        facetFilters, articleFilters);
+            }
 
             try {
                 LOG.debug(
                         URLDecoder.decode(
                                 new StringBuilder().append(
                                         "Searching learning opportunities with query string: ").append(
-                                                query.toString()).toString(), "utf-8"));
+                                                query != null ? query.toString() : "").toString(), "utf-8"));
             } catch (UnsupportedEncodingException e) {
                 LOG.debug("Could not log search query");
             }
 
             QueryResponse response = null;
             try {
-                response = loHttpSolrServer.query(query);
+                if (query != null) {
+                    response = loHttpSolrServer.query(query);
+                }
                 setResultCount(searchResultList, response, searchType);
             } catch (SolrServerException e) {
                 throw new SearchException(SOLR_ERROR);
             }
 
-            for (SolrDocument doc : response.getResults()) {
-                try {
-                    if (SearchType.LO.equals(searchType)) {
-                        searchResultList.getResults().add(createLOSearchResult(doc, lang));
-                    } else if (SearchType.ARTICLE.equals(searchType)) {
-                        searchResultList.getArticleresults().add(createArticleSearchResult(doc));
+            if (response != null) {
+                for (SolrDocument doc : response.getResults()) {
+                    try {
+                        if (SearchType.LO.equals(searchType)) {
+                            searchResultList.getResults().add(createLOSearchResult(doc, lang));
+                        } else if (SearchType.ARTICLE.equals(searchType)) {
+                            searchResultList.getArticleresults().add(createArticleSearchResult(doc));
+                        }
+                    } catch (Exception ex) {
+                        LOG.warn(ex.getMessage());
+                        continue;
                     }
-                } catch (Exception ex) {
-                    LOG.warn(ex.getMessage());
-                    continue;
                 }
             }
 
             if (SearchType.LO.equals(searchType)) {
-                addFacetsToResult(searchResultList, response, lang, facetFilters);
+                addFacetsToResult(searchResultList, response, lang, facetFilters, upcomingLimit, upcomingLaterLimit);
+
+            } else if (response != null) {
+                addArticleFacetsToResult(searchResultList, response, lang, articleFilters);
             }
 
             if (lopFilter != null) {
@@ -226,11 +273,13 @@ public class SearchServiceSolrImpl implements SearchService {
 
             //Setting result counts of other searches (one of article, provider or lo)
             if (searchType.LO.equals(searchType)) {
-                setOtherResultCounts(fixed, lang, start, sort, order, cities, facetFilters, ongoing, upcoming, 
-                                     lopFilter, educationCodeFilter, excludes, SearchType.ARTICLE, searchResultList);
+                setOtherResultCounts(fixed, lang, start, sort, order, cities, facetFilters, articleFilters,  ongoing, upcoming, upcomingLater,
+                                     lopFilter, educationCodeFilter, excludes, SearchType.ARTICLE, searchResultList, 
+                                     upcomingLimit, upcomingLaterLimit);
             } else if (SearchType.ARTICLE.equals(searchType)) {
-                setOtherResultCounts(fixed, lang, start, sort, order, cities, facetFilters, ongoing, upcoming, 
-                                     lopFilter, educationCodeFilter, excludes, SearchType.LO, searchResultList);
+                setOtherResultCounts(fixed, lang, start, sort, order, cities, facetFilters, articleFilters, ongoing, upcoming, upcomingLater, 
+                                     lopFilter, educationCodeFilter, excludes, SearchType.LO, searchResultList,
+                                     upcomingLimit, upcomingLaterLimit);
             }
 
             searchResultList.setTotalCount(searchResultList.getArticleCount() + searchResultList.getLoCount());
@@ -241,43 +290,54 @@ public class SearchServiceSolrImpl implements SearchService {
         return searchResultList;
     }
 
-
     private void setOtherResultCounts(String term, String lang, int start,
             String sort, String order, List<String> cities,
-            List<String> facetFilters, 
-            boolean ongoing, boolean upcoming,
+            List<String> facetFilters, List<String> articleFilters,
+            boolean ongoing, boolean upcoming, boolean upcomingLater,
             String lopFilter, String educationCodeFilter, List<String> excludes,
-            SearchType searchType, LOSearchResultList searchResultList) throws SearchException {
+            SearchType searchType, LOSearchResultList searchResultList,
+            String upcomingLimit, String upcomingLaterLimit) throws SearchException {
         
-        /*if (SearchType.LO.equals(searchType) && (facetFilters == null || facetFilters.isEmpty())) {
-            facetFilters = Arrays.asList(new String[]{String.format("%s:%s", LearningOpportunity.TEACHING_LANGUAGE, lang.toUpperCase())});
-        }*/
+        SolrQuery query = null;
         
-        SolrQuery query = new LearningOpportunityQuery(term, null, 
-                cities, facetFilters, 
-                lang, ongoing, upcoming, 
-                start, 0, sort, order,
-                lopFilter, educationCodeFilter, excludes, searchType);
-        
-        try {
-            QueryResponse response = loHttpSolrServer.query(query);
-            setResultCount(searchResultList, response, searchType);
-        } catch (SolrServerException e) {
-            throw new SearchException(SOLR_ERROR);
+        if (SearchType.LO.equals(searchType)) {
+            query = new LearningOpportunityQuery(term, null, 
+                    cities, facetFilters, 
+                    lang, ongoing, upcoming, upcomingLater, 
+                    start, 0, sort, order,
+                    lopFilter, educationCodeFilter, excludes,
+                    upcomingLimit, upcomingLaterLimit);
+        } else if (lopFilter == null && educationCodeFilter == null && (excludes == null || excludes.isEmpty())) {
+            query = new ArticleQuery(term, lang,  
+                    start, 0, sort, order,
+                    facetFilters, articleFilters);
+        } 
+        if (query != null) {
+            try {
+                QueryResponse response = loHttpSolrServer.query(query);
+                setResultCount(searchResultList, response, searchType);
+            } catch (SolrServerException e) {
+                throw new SearchException(SOLR_ERROR);
+            }
+        } else {
+            searchResultList.setArticleCount(0);
         }
-        
-        
     }
 
     private void setResultCount(LOSearchResultList searchResultList,
             QueryResponse response, SearchType searchType) {
         
+        long count = 0;
+        if (response != null) {
+            count = response.getResults().getNumFound();
+        }
+        
         if (SearchType.ARTICLE.equals(searchType)) {
-            searchResultList.setArticleCount(response.getResults().getNumFound());
+            searchResultList.setArticleCount(count);
         } else if (SearchType.PROVIDER.equals(searchType)) {
-            searchResultList.setOrgCount(response.getResults().getNumFound());
+            searchResultList.setOrgCount(count);
         } else {
-            searchResultList.setLoCount(response.getResults().getNumFound());
+            searchResultList.setLoCount(count);
         }
 
     }
@@ -426,15 +486,38 @@ public class SearchServiceSolrImpl implements SearchService {
         }
         return resultList;
     }
+    
+    private void addArticleFacetsToResult(LOSearchResultList searchResultList,
+            QueryResponse response, String lang, List<String> articleFilters) {
+        FacetField articleContentTypeF = response.getFacetField(LearningOpportunity.ARTICLE_CONTENT_TYPE);
+        Facet articleContentTypeFacet = new Facet();
+        List<FacetValue> values = new ArrayList<FacetValue>();
+        if (articleContentTypeF != null) {
+            for (Count curC : articleContentTypeF.getValues()) {
+
+
+                FacetValue newVal = new FacetValue(LearningOpportunity.ARTICLE_CONTENT_TYPE,
+                        curC.getName(),
+                        curC.getCount(),
+                        curC.getName());
+                values.add(newVal);
+
+            }
+        }
+        articleContentTypeFacet.setFacetValues(values);
+        searchResultList.setArticleContentTypeFacet(articleContentTypeFacet);
+        
+    }
 
     /*
      * Adding facets to result
      */
     private void addFacetsToResult(LOSearchResultList searchResultList,
-                                   QueryResponse response, String lang, List<String> facetFilters) {
+                                   QueryResponse response, String lang, List<String> facetFilters,
+                                   String upcomingLimit, String upcomingLaterLimit) {
 
         searchResultList.setTeachingLangFacet(getTeachingLangFacet(response, lang));
-        searchResultList.setAppStatusFacet(getHaunTila(response));
+        searchResultList.setAppStatusFacet(getHaunTila(response, upcomingLimit, upcomingLaterLimit));
         searchResultList.setEdTypeFacet(getEdTypeFacet(response, lang));
         searchResultList.setFilterFacet(getFilterFacet(facetFilters, lang));
         searchResultList.setPrerequisiteFacet(getPrerequisiteFacet(response));
@@ -607,21 +690,34 @@ public class SearchServiceSolrImpl implements SearchService {
     /*
      * Getting haun tila
      */
-    private Facet getHaunTila(QueryResponse response) {
+    private Facet getHaunTila(QueryResponse response, String upcomingLimit, String upcomingLaterLimit) {
         Facet haunTila = new Facet();
         List<FacetValue> haunTilaVals = new ArrayList<FacetValue>();
         for (String curKey : response.getFacetQuery().keySet()) {
-            if (curKey.contains("(asStart_0:[* TO NOW] AND asEnd_0:[NOW TO *])")) {
-                FacetValue facVal = new FacetValue(LearningOpportunityQuery.APP_STATUS,
-                        LearningOpportunityQuery.APP_STATUS_ONGOING,
+            if (curKey.contains("[* TO NOW] AND asEnd_0:[NOW TO *])")) {
+                FacetValue facVal = new FacetValue(SolrUtil.APP_STATUS,
+                        SolrUtil.APP_STATUS_ONGOING,
                         response.getFacetQuery().get(curKey).longValue(),
-                        LearningOpportunityQuery.APP_STATUS_ONGOING);
+                        SolrUtil.APP_STATUS_ONGOING);
                 haunTilaVals.add(facVal);
-            } else if (curKey.contains("(asStart_0:[NOW TO *])")) {
-                FacetValue facVal = new FacetValue(LearningOpportunityQuery.APP_STATUS,
-                        LearningOpportunityQuery.APP_STATUS_UPCOMING,
+            } else if (curKey.contains(String.format("NOW TO %s])", upcomingLimit))) {
+                LOG.debug("upcoming limit: " + upcomingLimit);
+                String[] valueName = upcomingLimit.split("-");
+                String kausi = Integer.parseInt(valueName[1]) > 6 ? "fall" : "spring";
+                
+                FacetValue facVal = new FacetValue(SolrUtil.APP_STATUS,
+                        String.format("%s|%s", valueName[0], kausi),
                         response.getFacetQuery().get(curKey).longValue(),
-                        LearningOpportunityQuery.APP_STATUS_UPCOMING);
+                        SolrUtil.APP_STATUS_UPCOMING);
+                haunTilaVals.add(facVal);
+            } else if (curKey.contains(String.format("%s TO %s])", upcomingLimit, upcomingLaterLimit))) {
+                LOG.debug("upcoming later limit: " + upcomingLaterLimit);
+                String[] valueName = upcomingLaterLimit.split("-");
+                String kausi = Integer.parseInt(valueName[1]) > 6 ? "fall" : "spring";
+                FacetValue facVal = new FacetValue(SolrUtil.APP_STATUS,
+                        String.format("%s|%s", valueName[0], kausi),
+                        response.getFacetQuery().get(curKey).longValue(),
+                        SolrUtil.APP_STATUS_UPCOMING_LATER);
                 haunTilaVals.add(facVal);
             }
         }
