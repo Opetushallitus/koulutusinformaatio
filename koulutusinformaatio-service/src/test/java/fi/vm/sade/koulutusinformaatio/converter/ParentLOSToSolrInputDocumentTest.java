@@ -116,7 +116,7 @@ public class ParentLOSToSolrInputDocumentTest {
 		
 		ChildLOS childLos = new ChildLOS();
 		childLos.setName(TestUtil.createI18nText("child los name fi", "child los name sv", "child los name en"));
-        childLos.setShortName(TestUtil.createI18nText("child los short name fi", "child los short name sv", "child los short name en"));
+        childLos.setShortTitle(TestUtil.createI18nText("child los short name fi", "child los short name sv", "child los short name en"));
 		childLos.setQualification(TestUtil.createI18nText("quali fi", "quali sv", "quali en"));
 		childLos.setGoals(TestUtil.createI18nText("Goals child fi", "Goals child sv", "Goals child en"));
 		

@@ -71,7 +71,7 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
 
         String teachingLang = childLOI.getTeachingLanguages().isEmpty() ? "EXC" : childLOI.getTeachingLanguages().get(0).getValue().toLowerCase();
         String losName = SolrUtil.resolveTranslationInTeachingLangUseFallback(
-                childLOI.getTeachingLanguages(), specialLOS.getShortName().getTranslations());
+                childLOI.getTeachingLanguages(), specialLOS.getShortTitle().getTranslations());
 
 
         doc.setField(SolrUtil.LearningOpportunity.NAME, losName);

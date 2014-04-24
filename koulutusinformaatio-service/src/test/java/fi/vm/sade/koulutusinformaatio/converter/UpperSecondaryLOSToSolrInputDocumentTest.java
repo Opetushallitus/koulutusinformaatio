@@ -51,7 +51,7 @@ public class UpperSecondaryLOSToSolrInputDocumentTest {
 		los.setType(TarjontaConstants.TYPE_UPSEC);
 		los.setId("upsecId");
 		los.setName(TestUtil.createI18nText("Upsec name fi", "Upsec name sv", "Upsec name en"));
-        los.setShortName(TestUtil.createI18nText("Upsec short name fi", "Upsec short name sv", "Upsec short name en"));
+        los.setShortTitle(TestUtil.createI18nText("Upsec short name fi", "Upsec short name sv", "Upsec short name en"));
 
 		los.setCreditValue("80");
 		los.setCreditUnit(TestUtil.createI18nText("ov fi", "ov sv", "ov en"));
