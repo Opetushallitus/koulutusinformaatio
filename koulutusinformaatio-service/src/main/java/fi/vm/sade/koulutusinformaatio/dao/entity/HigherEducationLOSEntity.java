@@ -67,7 +67,7 @@ public class HigherEducationLOSEntity {
     @Embedded
     private I18nTextEntity name;
     @Embedded
-    private I18nTextEntity shortName;
+    private I18nTextEntity shortTitle;
     @Embedded
     private I18nTextEntity koulutuskoodi;
     private String educationDegree;
@@ -227,12 +227,12 @@ public class HigherEducationLOSEntity {
         this.educationDomain = educationDomain;
     }
 
-    public I18nTextEntity getShortName() {
-        return shortName;
+    public I18nTextEntity getShortTitle() {
+        return shortTitle;
     }
 
-    public void setShortName(I18nTextEntity shortName) {
-        this.shortName = shortName;
+    public void setShortTitle(I18nTextEntity shortTitle) {
+        this.shortTitle = shortTitle;
     }
 
     public I18nTextEntity getName() {

@@ -73,7 +73,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<HigherEdu
         String teachingLang = los.getTeachingLanguages().isEmpty() ? "EXC" : los.getTeachingLanguages().get(0).getValue().toLowerCase();
 
         String losName = SolrUtil.resolveTranslationInTeachingLangUseFallback(
-                los.getTeachingLanguages(), los.getShortName().getTranslations());
+                los.getTeachingLanguages(), los.getShortTitle().getTranslations());
 
 
         doc.setField(LearningOpportunity.NAME, losName);
@@ -138,7 +138,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<HigherEdu
                 SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getTeachingLanguages(), 
                         provider.getName().getTranslations()).toLowerCase().trim(),
                 SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getTeachingLanguages(), 
-                        los.getShortName().getTranslations())).toLowerCase().trim());
+                        los.getShortTitle().getTranslations())).toLowerCase().trim());
 
 
         //For faceting
@@ -188,7 +188,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<HigherEdu
             HigherEducationLOS los, SolrInputDocument doc, boolean fiIndexed) {
 
         String losName = SolrUtil.resolveTranslationInTeachingLangUseFallback(
-                los.getTeachingLanguages(), los.getShortName().getTranslations());
+                los.getTeachingLanguages(), los.getShortTitle().getTranslations());
 
         Provider provider = los.getProvider();
         Map<String,String> transls = los.getName().getTranslations();
