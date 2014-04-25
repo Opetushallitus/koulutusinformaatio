@@ -204,7 +204,7 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
 
 
         String childName = SolrUtil.resolveTranslationInTeachingLangUseFallback(
-                childLOI.getTeachingLanguages(), childLOS.getShortName().getTranslations());
+                childLOI.getTeachingLanguages(), childLOS.getShortTitle().getTranslations());
         doc.setField(LearningOpportunity.CHILD_NAME, childName);
 
         if (teachLang.equals("sv")) {

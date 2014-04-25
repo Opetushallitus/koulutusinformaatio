@@ -67,7 +67,7 @@ public class HigherEducationLOSToSolrInputDocmentTest {
 		los.setCreditValue("80");
 		los.setCreditUnit(TestUtil.createI18nText("ov fi", "ov sv", "ov en"));
 		los.setName(TestUtil.createI18nText("los name fi", "los name sv", "los name en"));
-        los.setShortName(TestUtil.createI18nText("los short name fi", "los short name sv", "los short name en"));
+        los.setShortTitle(TestUtil.createI18nText("los short name fi", "los short name sv", "los short name en"));
 		los.setEducationDegreeLang(TestUtil.createI18nText("Alempi korkeakoulu fi", "Alempi korkeakoulu sv", "Alempi korkeakoulu en"));
 		los.setEducationDegree("alempiKk_uri");
 		List<I18nText> quals = new ArrayList<I18nText>();

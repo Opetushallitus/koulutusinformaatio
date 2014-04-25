@@ -73,7 +73,7 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
         String teachingLang = loi.getTeachingLanguages().isEmpty() ? "EXC" : loi.getTeachingLanguages().get(0).getValue().toLowerCase();
 
         String losName = SolrUtil.resolveTranslationInTeachingLangUseFallback(
-                loi.getTeachingLanguages(), los.getShortName().getTranslations());
+                loi.getTeachingLanguages(), los.getShortTitle().getTranslations());
 
 
         doc.setField(LearningOpportunity.NAME, losName);
@@ -176,7 +176,7 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
                 SolrUtil.resolveTranslationInTeachingLangUseFallback(loi.getTeachingLanguages(), 
                         provider.getName().getTranslations()).toLowerCase().trim(),
                 SolrUtil.resolveTranslationInTeachingLangUseFallback(loi.getTeachingLanguages(), 
-                        los.getShortName().getTranslations())).toLowerCase().trim());
+                        los.getShortTitle().getTranslations())).toLowerCase().trim());
 
 
         //For faceting

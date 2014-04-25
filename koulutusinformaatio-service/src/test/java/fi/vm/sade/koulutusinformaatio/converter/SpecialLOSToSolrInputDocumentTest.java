@@ -60,7 +60,7 @@ public class SpecialLOSToSolrInputDocumentTest {
 		los.setType(TarjontaConstants.TYPE_SPECIAL);
 		los.setId("specialId");
 		los.setName(TestUtil.createI18nText("Special name fi", "Special name sv", "Special name en"));
-        los.setShortName(TestUtil.createI18nText("Special short name fi", "Special short name sv", "Special short name en"));
+        los.setShortTitle(TestUtil.createI18nText("Special short name fi", "Special short name sv", "Special short name en"));
 
 		los.setCreditValue("80");
 		los.setCreditUnit(TestUtil.createI18nText("ov fi", "ov sv", "ov en"));
