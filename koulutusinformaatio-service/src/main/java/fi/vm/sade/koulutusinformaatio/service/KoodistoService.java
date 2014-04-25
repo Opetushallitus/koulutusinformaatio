@@ -147,4 +147,6 @@ public interface KoodistoService {
      * @throws KoodistoException
      */
     List<Code> searchSuperCodes(final String koodiURIAndVersion, final String koodistoURI) throws KoodistoException;
+    
+    void clearCache();
 }
