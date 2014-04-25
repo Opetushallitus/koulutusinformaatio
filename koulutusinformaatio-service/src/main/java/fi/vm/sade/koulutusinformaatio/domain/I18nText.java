@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.domain;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 
 import java.util.Map;
 
@@ -27,7 +28,9 @@ public class I18nText {
 
     private Map<String, String> translations;
 
-    public I18nText() {}
+    public I18nText() {
+        this.translations = Maps.newHashMap();
+    }
 
     public I18nText(final Map<String, String> translations) {
         this.translations = ImmutableMap.copyOf(translations);
@@ -39,5 +42,25 @@ public class I18nText {
 
     public void setTranslations(Map<String, String> translations) {
         this.translations = translations;
+    }
+
+    /**
+     * Get text with language key.
+     *
+     * @param key language code
+     * @return internationalized text
+     */
+    public String get(String key) {
+        return this.translations.get(key);
+    }
+
+    /**
+     * Set internationalized text value.
+     *
+     * @param key language code
+     * @param value internationalized text
+     */
+    public void put(String key, String value) {
+        this.translations.put(key, value);
     }
 }
