@@ -255,8 +255,9 @@
     "VapaanSivistystyonKoulutus": "Vapaan sivistystyön koulutus (en)",
     "pohjakoulutus": "Your prior education",
     "prerequisites": "Your prior education",
-    "yo": "Finnish matriculation examination and/or completed Finnish upper secondary education",
+    "yo": "General upper secondary education and / or matriculation examination",
     "pk": "Basic education",
+<<<<<<< HEAD
     "er": "Yksilöllistetty perusopetus (en)",
     "at": "Ammatillinen tutkinto (en)",
     "ak": "Ammattikorkeakoulututkinto (en)",
@@ -284,6 +285,35 @@
     "error-contact-3": "hakuaikojen viimeisenä päivänä klo 9–15 (en)",
     "error-contact-4": "puhelun hinta kaikkialta Suomesta paikallisverkkomaksu / matkapuhelinmaksu (en)",
     "error-contact-5": "Sähköposti: neuvonta(at)opintopolku.fi (en)",
+=======
+    "er": "Yksilöllistetty perusopetus (na.)",
+    "at": "Vocational qualification",
+    "ak": "Bachelor's degree (UAS)",
+    "kt": "Bachelor's degree (University)",
+    "kandidaattiYm": "Bachelor's degree",
+    "lukioYm": "General upper secondary education and/or matriculation examination",
+
+    "autocomplete-keyword": "Search word suggestions",
+    "autocomplete-loname": "Courses and qualifications",
+
+    "VALMIS": "Completed",
+    "LUONNOS": "Draft",
+    "JULKAISTU": "Published",
+    "tarjontaTarkastelu": "Back",
+    "tarjonta-muokkaa-koulutus": "Muokkaa koulutusta (na.)",
+    "tarjonta-muokkaa-hakukohde": "Muokkaa hakukohdetta (na.)",
+    "esikatselussa": "Preview mode",
+    "organisaatiossa": "in the organization",
+    "esikatselu": "Preview",
+
+    "error-title": "An unexpected error has occured",
+    "error-body": "We apologize. The information for the study programmes that you searched for cannot be showed at the moment.  Try again later. If the problem occurs again, please contact the Studyinfo customer service.",
+    "error-contact-1": "Telephone: 029 533 1010 (en)",
+    "error-contact-2": "open Mon-Fri from 9 a.m. to 1 p.m.",
+    "error-contact-3": "on the last day of application periods from 9 a.m.-3 p.m.",
+    "error-contact-4": "phone charges from all locations in Finland local network charge / mobile phone charge",
+    "error-contact-5": "E-mail: neuvonta(at)opintopolku.fi (en)",
+>>>>>>> cdbf8f4... OVT-7622, OVT-7623
     
     "tarjoaja": "Tarjoaja (en)",
     "katso-myos": "Katso Myös... (en)",
