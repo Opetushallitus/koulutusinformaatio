@@ -257,35 +257,6 @@
     "prerequisites": "Your prior education",
     "yo": "General upper secondary education and / or matriculation examination",
     "pk": "Basic education",
-<<<<<<< HEAD
-    "er": "Yksilöllistetty perusopetus (en)",
-    "at": "Ammatillinen tutkinto (en)",
-    "ak": "Ammattikorkeakoulututkinto (en)",
-    "kt": "Kandidaatin tutkinto (en)",
-    "kandidaattiYm": "Kandidaatin tutkinto (en)",
-    "lukioYm": "Lukio ja/tai ylioppilastutkinto ym. (en)",
-
-    "autocomplete-keyword": "Hakusanaehdotukset (en)",
-    "autocomplete-loname": "Kurssit ja tutkinnot (en)",
-
-    "VALMIS": "Valmis (en)",
-    "LUONNOS": "Luonnos (en)",
-    "JULKAISTU": "Julkaistu (en)",
-    "tarjontaTarkastelu": "Takaisin (en)",
-    "tarjonta-muokkaa-koulutus": "Muokkaa koulutusta (en)",
-    "tarjonta-muokkaa-hakukohde": "Muokkaa hakukohdetta (en)",
-    "esikatselussa": "Esikatselussa (en)",
-    "organisaatiossa": "organisaatiossa (en)",
-    "esikatselu": "Esikatselu (en)",
-
-    "error-title": "Tapahtui odottamaton virhe (en)",
-    "error-body": "Olemme pahoillamme. Hakemiesi koulutusten tietoja ei saatu jostain syystä haettua. Yritä hetken kuluttua uudelleen. Jos ongelma toistuu, ota yhteyttä Opintopolun neuvontaan. (en)",
-    "error-contact-1": "Puhelin: 029 533 1010 (en)",
-    "error-contact-2": "avoinna arkisin klo 9–13 (en)",
-    "error-contact-3": "hakuaikojen viimeisenä päivänä klo 9–15 (en)",
-    "error-contact-4": "puhelun hinta kaikkialta Suomesta paikallisverkkomaksu / matkapuhelinmaksu (en)",
-    "error-contact-5": "Sähköposti: neuvonta(at)opintopolku.fi (en)",
-=======
     "er": "Yksilöllistetty perusopetus (na.)",
     "at": "Vocational qualification",
     "ak": "Bachelor's degree (UAS)",
@@ -313,7 +284,6 @@
     "error-contact-3": "on the last day of application periods from 9 a.m.-3 p.m.",
     "error-contact-4": "phone charges from all locations in Finland local network charge / mobile phone charge",
     "error-contact-5": "E-mail: neuvonta(at)opintopolku.fi (en)",
->>>>>>> cdbf8f4... OVT-7622, OVT-7623
     
     "tarjoaja": "Tarjoaja (en)",
     "katso-myos": "Katso Myös... (en)",
