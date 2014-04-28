@@ -366,7 +366,7 @@ public final class SolrUtil {
         public static final String ED_TYPE_VOC_PREP = "et02.01.02";
         public static final String ED_TYPE_IMM_VOC = "et02.01.03";
         public static final String ED_TYPE_IMM_UPSEC = "et02.01.04";
-        public static final String ED_TYPE_KANSANOPISTO = "et02.01.05";
+        public static final String ED_TYPE_KANSANOPISTO = "et02.05";
         public static final String ED_TYPE_VALMENTAVA = "et02.02";
         
         public static final String SPECIAL_EDUCATION = "ER";
