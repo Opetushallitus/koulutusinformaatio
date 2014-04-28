@@ -56,7 +56,13 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
         doc.addField(SolrUtil.LearningOpportunity.ID, childLOI.getId());
         doc.addField(SolrUtil.LearningOpportunity.LOS_ID, specialLOS.getId());
         doc.addField(SolrUtil.LearningOpportunity.LOP_ID, provider.getId());
-        doc.addField(SolrUtil.LearningOpportunity.PREREQUISITES, SolrConstants.PK);
+        
+        if (specialLOS.getEducationTypeUri() != null 
+                && specialLOS.getEducationTypeUri().equals(TarjontaConstants.KANSANOPISTO_TYPE)) {
+            doc.addField(SolrUtil.LearningOpportunity.PREREQUISITES, childLOI.getPrerequisite().getValue());
+        } else {
+            doc.addField(SolrUtil.LearningOpportunity.PREREQUISITES, SolrConstants.PK);
+        }
 
         if (specialLOS.getCreditValue() != null
                 && specialLOS.getCreditUnit() != null) {
@@ -215,7 +221,9 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
                 doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE_DISPLAY, SolrUtil.SolrConstants.ED_TYPE_KANSANOPISTO);
             } 
             doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_MUU);
-            doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_PK_JALK);
+            if (!(specialLOS.getEducationTypeUri().equals(TarjontaConstants.KANSANOPISTO_TYPE))) {
+                doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_PK_JALK);
+            }
         }
         else {
             doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_AMM_ER);
