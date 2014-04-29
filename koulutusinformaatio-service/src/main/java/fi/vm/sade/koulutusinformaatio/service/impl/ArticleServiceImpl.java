@@ -103,21 +103,33 @@ public class ArticleServiceImpl implements ArticleService {
     private void transformArticleCodes(Article article) throws KoodistoException {
         
         List<String> edTypeVals = new ArrayList<String>();
-        for (ArticleCode curCode : article.getTaxonomy_oph_koulutustyyppi()) {
-            String codeUri = curCode.getSlug().substring(0, curCode.getSlug().lastIndexOf('_'));
-            LOGGER.debug(String.format("edTypeUrl: %s", codeUri));
-            String curVal = koodistoService.searchFirstCodeValue(codeUri);
-            if (curVal != null) {
-                LOGGER.debug(String.format("edTypeVal: %s", curVal));
-                edTypeVals.add(curVal.trim());
+        if (article.getTaxonomy_oph_koulutustyyppi() != null) {
+            for (ArticleCode curCode : article.getTaxonomy_oph_koulutustyyppi()) {
+                try {
+                    String codeUri = curCode.getSlug().substring(0, curCode.getSlug().lastIndexOf('_'));
+                    LOGGER.debug(String.format("edTypeUrl: %s", codeUri));
+                    String curVal = koodistoService.searchFirstCodeValue(codeUri);
+                    if (curVal != null) {
+                        LOGGER.debug(String.format("edTypeVal: %s", curVal));
+                        edTypeVals.add(curVal.trim());
+                    }
+                } catch (Exception ex) {
+                    continue;
+                }
             }
         }
         article.setEducationTypeCodes(edTypeVals);
         
         List<String> edVals = new ArrayList<String>();
-        for (ArticleCode curCode : article.getTaxonomy_oph_koulutus()) {
-            String codeUri = curCode.getSlug().substring(0, curCode.getSlug().lastIndexOf('_'));
-            edVals.add(codeUri);
+        if (article.getTaxonomy_oph_koulutus() != null) {
+            for (ArticleCode curCode : article.getTaxonomy_oph_koulutus()) {
+                try {
+                    String codeUri = curCode.getSlug().substring(0, curCode.getSlug().lastIndexOf('_'));
+                    edVals.add(codeUri);
+                } catch (Exception ex) {
+                    continue;
+                }
+            }
         }
         article.setEducationCodes(edVals);
     }
@@ -125,16 +137,27 @@ public class ArticleServiceImpl implements ArticleService {
     private ArticleResults getArticlesByLang(ObjectMapper mapper, String lang, int page) throws IOException {
         String url = String.format("%s%s%s%s%s%s%s", this.articleHarvestUrl, lang, "/?s=", URLEncoder.encode(" "), "&json=1", "&page=", page);
         LOGGER.debug("Article search url: " + url);
+        
+        try { 
+            URL orgUrl = new URL(url);        
 
-        URL orgUrl = new URL(url);        
+            HttpURLConnection conn = (HttpURLConnection) (orgUrl.openConnection());
 
-        HttpURLConnection conn = (HttpURLConnection) (orgUrl.openConnection());
+            conn.setRequestMethod(SolrConstants.GET);
+            conn.connect();
 
-        conn.setRequestMethod(SolrConstants.GET);
-        conn.connect();
-
-        ArticleResults articles = mapper.readValue(conn.getInputStream(), ArticleResults.class);
-        return articles;
+            ArticleResults articles = mapper.readValue(conn.getInputStream(), ArticleResults.class);
+            return articles;
+        } catch (Exception ex) {
+            LOGGER.debug("No articles for url: " + url);
+            ArticleResults articles = new ArticleResults();
+            articles.setPosts(new ArrayList<Article>());
+            articles.setCount(0);
+            articles.setCount_total(0);
+            articles.setPages(0);
+            return articles;
+        }
+        
     }
 
 }
