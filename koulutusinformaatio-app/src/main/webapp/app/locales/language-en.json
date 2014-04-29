@@ -18,7 +18,7 @@
     "search-articles-result-title-description": "Here you can find information and articles on studies and the application process.",
     "search-result-count-unit": "pcs",
     "no-search-results": "No search results",
-    "no-search-results-info": "Sorry, but there are no matches for your search on \"__searchterm__\" . It might be that the study programme or qualification has not yet been added to the system. Please enter another search word or change the search criteria and try again.",
+    "no-search-results-info": "Sorry, but there are no matches for your search on \"__searchterm__\". Please enter another search word or change the search criteria and try again.",
     "search-as-ongoing": "Application period ongoing",
     "search-as-next": "Application period opens",
     "search-field-label": "Search for study options",
