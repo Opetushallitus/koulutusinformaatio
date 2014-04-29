@@ -87,13 +87,17 @@ public class DirectoryResource {
     public Response getProvidersWithFirstLetter(@PathParam("lang") String lang,
                                                 @PathParam("letter") String letter,
                                                 @QueryParam("type") String type) throws URISyntaxException {
+        Map<String, Object> model = initModel(lang);
+        model.put("lang", lang);
+        model.put("ngBaseUrl", ngBaseUrl);
+        model.put("letter", letter);
         List<String> characters = null;
         List<CodeDTO> types = null;
         try {
             characters = learningOpportunityProviderService.getProviderNameFirstCharacters(lang);
             types = learningOpportunityProviderService.getProviderTypes(letter, lang);
-        } catch (SearchException e) {
-            // error view
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new Viewable("/error.ftl", model)).build();
         }
 
         if (type == null && !types.isEmpty()) {
@@ -101,12 +105,11 @@ public class DirectoryResource {
         }
 
         if (alphabets.contains(letter)) {
-            Map<String, Object> model = initModel(lang);
             List<ProviderSearchResult> providers = null;
             try {
                 providers = learningOpportunityProviderService.searchProviders(letter, lang, type);
-            } catch (SearchException e) {
-                // error view
+            } catch (Exception e) {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new Viewable("/error.ftl", model)).build();
             }
 
             model.put("providers", providers);
@@ -114,9 +117,6 @@ public class DirectoryResource {
             model.put("validCharacters", characters);
             model.put("providerTypes", types);
             model.put("selectedProviderType", type);
-            model.put("letter", letter);
-            model.put("ngBaseUrl", ngBaseUrl);
-            model.put("lang", lang);
             return Response.status(Response.Status.OK).entity(new Viewable("/providers.ftl", model)).build();
         } else {
             return getProviders(lang);
@@ -128,29 +128,28 @@ public class DirectoryResource {
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Viewable getLearningOpportunities(@PathParam("lang") String lang, @PathParam("letter") String letter,
                                              @PathParam("providerId") final String providerId) {
+        Map<String, Object> model = initModel(lang);
+        model.put("ngBaseUrl", ngBaseUrl);
+        model.put("lang", lang);
+        model.put("letter", letter);
         List<LearningOpportunitySearchResultDTO> resultList = null;
         LearningOpportunityProviderDTO provider = null;
         resultList = learningOpportunityService.findLearningOpportunitiesByProviderId(providerId, lang);
         List<String> characters = null;
         try {
             characters = learningOpportunityProviderService.getProviderNameFirstCharacters(lang);
-        } catch (SearchException e) {
-            // error view
+        } catch (Exception e) {
+            return new Viewable("/error.ftl", model);
         }
         try {
             provider = learningOpportunityProviderService.getProvider(providerId, lang);
-        } catch (ResourceNotFoundException e) {
-            // error page
+        } catch (Exception e) {
+            return new Viewable("/error.ftl", model);
         }
-        Map<String, Object> model = initModel(lang);
         model.put("alphabets", alphabets);
         model.put("validCharacters", characters);
-        model.put("letter", letter);
         model.put("provider", provider.getName());
         model.put("learningOpportunities", resultList);
-        model.put("ngBaseUrl", ngBaseUrl);
-        model.put("lang", lang);
-
         return new Viewable("/education.ftl", model);
     }
 
