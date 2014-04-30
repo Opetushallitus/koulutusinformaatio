@@ -30,4 +30,5 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 public interface ProviderService {
 
     public Provider getByOID(String oid) throws KoodistoException, MalformedURLException, IOException  ;
+    void clearCache();
 }

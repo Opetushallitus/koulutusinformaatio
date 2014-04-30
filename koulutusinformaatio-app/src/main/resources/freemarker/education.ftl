@@ -24,7 +24,7 @@
             <h1>${provider}</h1>
             <p>
             <#list learningOpportunities as lo>
-                <a href="${baseUrl}${lo.type?lower_case}/${lo.id}">${lo.name}</a>
+                <a href="${ngBaseUrl}${lo.type?lower_case}/${lo.id}">${lo.name}</a>
                 <br>
             </#list>
             </p>

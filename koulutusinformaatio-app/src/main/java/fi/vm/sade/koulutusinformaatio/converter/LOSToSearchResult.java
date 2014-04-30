@@ -60,11 +60,17 @@ public final class LOSToSearchResult {
                     ((UpperSecondaryLOS) los).getName(), lang));
             dto.setType(TarjontaConstants.TYPE_UPSEC.toLowerCase());
         }
-        else {
+        else if (los instanceof SpecialLOS) {
             dto.setId(((SpecialLOS) los).getId());
             dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(
                     ((SpecialLOS) los).getName(), lang));
             dto.setType(TarjontaConstants.TYPE_SPECIAL.toLowerCase());
+        }
+        else {
+            dto.setId(((HigherEducationLOS) los).getId());
+            dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(
+                    ((HigherEducationLOS) los).getName(), lang));
+            dto.setType(TarjontaConstants.TYPE_KK);
         }
         return dto;
     }

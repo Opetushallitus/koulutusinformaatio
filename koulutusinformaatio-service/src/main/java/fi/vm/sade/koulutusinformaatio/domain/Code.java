@@ -33,6 +33,11 @@ public class Code {
 
     public Code() {}
 
+    public Code(String value, I18nText name) {
+        this.value = value;
+        this.name = name;
+    }
+
     public Code(String value, I18nText name, I18nText description) {
         this.value = value;
         this.name = name;

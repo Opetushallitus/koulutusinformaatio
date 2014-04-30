@@ -235,10 +235,20 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
                     }
                 }
                 );
+
+        List<HigherEducationLOS> higherEds = Lists.transform(higherEducationLOSDAO.findByProviderId(providerId),
+                new Function<HigherEducationLOSEntity, HigherEducationLOS>() {
+                    @Override
+                    public HigherEducationLOS apply(HigherEducationLOSEntity input) {
+                        return modelMapper.map(input, HigherEducationLOS.class);
+                    }
+                });
+
         results.addAll(parents);
         results.addAll(children);
         results.addAll(upsecs);
         results.addAll(specials);
+        results.addAll(higherEds);
         return results;
     }
 

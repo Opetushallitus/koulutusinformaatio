@@ -22,6 +22,8 @@ import com.mongodb.MongoClient;
 import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KICommitException;
+import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
+import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 
 import org.apache.solr.client.solrj.SolrServerException;
@@ -77,6 +79,9 @@ public class TransactionManagerImpl implements TransactionManager {
     private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO;
     private HigherEducationLOSDAO higherEducationLOSDAO;
     private SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO;
+    
+    private KoodistoService koodistoService;
+    private ProviderService providerService;
 
     @Value("${solr.learningopportunity.alias.url:learning_opportunity}")
     private String loHttpAliasName;
@@ -119,7 +124,9 @@ public class TransactionManagerImpl implements TransactionManager {
             PictureDAO pictureDAO,
             UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO,
             HigherEducationLOSDAO higherEducationLOSDAO, 
-            SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO) {
+            SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO,
+            KoodistoService koodistoService,
+            ProviderService providerService) {
 
         this.mongo = mongo;
         this.transactionDbName = transactionDbName;
@@ -148,11 +155,15 @@ public class TransactionManagerImpl implements TransactionManager {
         this.upperSecondaryLearningOpportunitySpecificationDAO = upperSecondaryLearningOpportunitySpecificationDAO;
         this.higherEducationLOSDAO = higherEducationLOSDAO;
         this.specialLearningOpportunitySpecificationDAO = specialLearningOpportunitySpecificationDAO;
+        this.koodistoService = koodistoService;
+        this.providerService = providerService;
     }
 
     @Override
     public void beginTransaction(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) {
         dropUpdateData(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+        this.koodistoService.clearCache();
+        this.providerService.clearCache();
     }
 
     @Override

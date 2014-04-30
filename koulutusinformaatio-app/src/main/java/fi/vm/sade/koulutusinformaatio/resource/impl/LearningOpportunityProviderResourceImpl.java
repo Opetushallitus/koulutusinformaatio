@@ -66,7 +66,7 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
             }
             key = key.replace("*", "");
             learningOpportunityProviders = searchService.searchLearningOpportunityProviders(key, asId, baseEducation, vocational,
-                    nonVocational, start, rows, lang, false);
+                    nonVocational, start, rows, lang, false, null);
             List<ProviderSearchResult> result = Lists.newArrayList(
                                                     Lists.transform(learningOpportunityProviders, 
                                                                     new Function<Provider, ProviderSearchResult>() {

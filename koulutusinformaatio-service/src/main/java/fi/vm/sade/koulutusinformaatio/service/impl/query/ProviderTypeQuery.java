@@ -16,7 +16,6 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl.query;
 
-import com.google.common.base.Joiner;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.common.params.GroupParams;
@@ -24,17 +23,18 @@ import org.apache.solr.common.params.GroupParams;
 /**
  * @author Hannu Lyytikainen
  */
-public class ProviderNameFirstCharactersQuery extends SolrQuery {
+public class ProviderTypeQuery extends SolrQuery {
 
-    public ProviderNameFirstCharactersQuery(String lang) {
-        super(Joiner.on(":").join(resolveStartsWithFieldName(lang), "*"));
+    public ProviderTypeQuery(String firstCharacter, String lang) {
+        super(String.format("%s:%s", resolveStartsWithField(lang), firstCharacter));
         this.setParam(GroupParams.GROUP, true);
-        this.setParam(GroupParams.GROUP_FIELD, resolveStartsWithFieldName(lang));
-        this.setParam(GroupParams.GROUP_LIMIT, "0");
+        this.setParam(GroupParams.GROUP_FIELD, SolrUtil.ProviderFields.TYPE_VALUE);
+        this.setParam(GroupParams.GROUP_LIMIT, "1");
         this.setRows(Integer.MAX_VALUE);
+        this.setSort(SolrUtil.ProviderFields.TYPE_VALUE, ORDER.asc);
     }
 
-    private static String resolveStartsWithFieldName(String lang) {
+    private static String resolveStartsWithField(String lang) {
         if (lang.equalsIgnoreCase("sv")) {
             return SolrUtil.ProviderFields.STARTS_WITH_SV;
         }

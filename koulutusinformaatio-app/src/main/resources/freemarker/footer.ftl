@@ -2,10 +2,10 @@
     <p class="small" data-ki-i18n="footer-note"></p>
     <div class="footer-wrapper">
         <div class="footer-item">
-            <a href="<@msg "ophurl"/>" title="<@msg "footer.oph"/>"><img src="/app/img/OPH_logo-${lang}.png" alt="<@msg "footer.oph"/>"></a>
+            <a href="<@msg "ophurl"/>" title="<@msg "footer.oph"/>"><img src="${baseUrl}app/img/OPH_logo-${lang}.png" alt="<@msg "footer.oph"/>"></a>
         </div>
         <div class="footer-item">
-            <a href="<@msg "okmurl"/>" title="<@msg "footer.okm"/>"><img src="/app/img/OKM_logo-${lang}.png" alt="<@msg "footer.okm"/>"></a>
+            <a href="<@msg "okmurl"/>" title="<@msg "footer.okm"/>"><img src="${baseUrl}app/img/OKM_logo-${lang}.png" alt="<@msg "footer.okm"/>"></a>
         </div>
         <div class="clear"></div>
     </div>

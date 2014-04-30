@@ -16,8 +16,10 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import fi.vm.sade.koulutusinformaatio.converter.CodeToDTO;
 import fi.vm.sade.koulutusinformaatio.converter.ProviderToDTO;
 import fi.vm.sade.koulutusinformaatio.converter.ProviderToSearchResult;
+import fi.vm.sade.koulutusinformaatio.domain.dto.CodeDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResult;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
@@ -56,8 +58,13 @@ public class LearningOpportunityProviderServiceImpl implements LearningOpportuni
     }
 
     @Override
-    public List<ProviderSearchResult> searchProviders(String term, String lang) throws SearchException {
+    public List<ProviderSearchResult> searchProviders(String term, String lang, String type) throws SearchException {
         return ProviderToSearchResult.convertAll(
-                searchService.searchLearningOpportunityProviders(term, lang, true), lang);
+                searchService.searchLearningOpportunityProviders(term, lang, true, type), lang);
+    }
+
+    @Override
+    public List<CodeDTO> getProviderTypes(String firstCharacter, String lang) throws SearchException {
+        return CodeToDTO.convertAll(searchService.getProviderTypes(firstCharacter, lang), lang);
     }
 }

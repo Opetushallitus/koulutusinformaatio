@@ -35,6 +35,8 @@ import fi.vm.sade.tarjonta.shared.types.TarjontaTila;
  * @author Hannu Lyytikainen
  */
 public final class CreatorUtil {
+    
+    //public static Map<String,>
 
     private CreatorUtil() {
     }

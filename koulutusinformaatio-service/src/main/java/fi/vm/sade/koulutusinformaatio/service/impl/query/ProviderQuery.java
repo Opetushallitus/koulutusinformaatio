@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.service.impl.query;
 
 import com.google.common.base.Joiner;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.util.ClientUtils;
 
@@ -37,7 +38,7 @@ public class ProviderQuery extends SolrQuery {
     private final static String NEG_NON_VOCATIONAL = "-nonVocationalAsIds";
 
     public ProviderQuery(String q, String asId, String baseEducation, int start, int rows, boolean vocational,
-                         boolean nonVocational, String lang, boolean prefix) {
+                         boolean nonVocational, String lang, boolean prefix, String type) {
         super(Joiner.on(":").join(resolveNameField(lang, prefix), ClientUtils.escapeQueryChars(q) + "*"));
         
         this.setStart(start);
@@ -56,6 +57,9 @@ public class ProviderQuery extends SolrQuery {
         }
         if (baseEducation != null) {
             this.addFilterQuery(Joiner.on(":").join(BASE_EDUCATIONS, baseEducation));
+        }
+        if (type != null) {
+            this.addFilterQuery(Joiner.on(":").join(SolrUtil.ProviderFields.TYPE_VALUE, type));
         }
     }
 
