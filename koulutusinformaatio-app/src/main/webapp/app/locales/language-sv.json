@@ -18,7 +18,7 @@
     "search-articles-result-title-description": "På denna flik hittar du information och artiklar angående ansökan och studier.",
     "search-result-count-unit": "st",
     "no-search-results": "Inga sökresultat",
-    "no-search-results-info": "Sökordet \"__searchterm__\" gav inget resultat. Utbildning ordnas inte på svenska eller ifrågavarande utbildning eller examen har ev. inte ännu matats in i systemet. Var god och försök med ett annat sökord eller en annan avgränsning.",
+    "no-search-results-info": "Sökordet \"__searchterm__\" gav inget resultat. Utbildning ordnas eventuellt inte på svenska. Var god och försök med ett annat sökord eller en annan avgränsning.",
     "search-as-ongoing": "Ansökan pågår",
     "search-as-next": "Kommer att ingå i ansökan",
     "search-field-label": "Sök utbildningar här",

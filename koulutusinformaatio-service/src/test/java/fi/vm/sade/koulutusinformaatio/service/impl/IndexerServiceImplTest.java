@@ -29,7 +29,6 @@ import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatcher;
@@ -37,9 +36,7 @@ import org.mockito.MockitoAnnotations.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.core.convert.ConversionService;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Matchers.any;
@@ -109,12 +106,24 @@ public class IndexerServiceImplTest {
         
         when(loHttpSolrServer.getBaseURL()).thenReturn("lo");
         when(loUpdateHttpSolrServer.getBaseURL()).thenReturn("loUpdate");
+
+        List<SolrInputDocument> parentDocs = new ArrayList<SolrInputDocument>();
+        SolrInputDocument parentDoc1 = new SolrInputDocument();
+        parentDoc1.setField("parentId", "parentId1");
+        parentDoc1.setField("asStart_0", applicationOptionApplicationPeriodStarts);
+        parentDoc1.setField("asEnd_0", applicationOptionApplicationPeriodEnds);
+        parentDocs.add(parentDoc1);
+        SolrInputDocument parentDoc2 = new SolrInputDocument();
+        parentDoc2.setField("parentId", "parentId2");
+        parentDoc2.setField("asStart_0", applicationOptionApplicationPeriodStarts);
+        parentDoc2.setField("asEnd_0", applicationOptionApplicationPeriodEnds);
+        parentDocs.add(parentDoc2);
+        when(conversionService.convert(any(ParentLOS.class), eq(List.class))).thenReturn(parentDocs);
         
         indexerServiceImpl = new IndexerServiceImpl(conversionService, loUpdateHttpSolrServer, lopUpdateHttpSolrServer, locationUpdateHttpSolrServer, loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer);
     }
 
     @Test
-    @Ignore
     public void testAddParentLOS() throws Exception {
         ParentLOS p = createParentLOS();
         indexerServiceImpl.addLearningOpportunitySpecification(p, loUpdateHttpSolrServer, lopUpdateHttpSolrServer);
@@ -123,7 +132,6 @@ public class IndexerServiceImplTest {
     }
 
     @Test
-    @Ignore
     public void testAOSpecificApplicationDates() throws Exception {
         ParentLOS p = createParentLOSWithApplicationOptionSpecificDates();
         indexerServiceImpl.addLearningOpportunitySpecification(p, loUpdateHttpSolrServer, lopUpdateHttpSolrServer);
@@ -147,7 +155,6 @@ public class IndexerServiceImplTest {
     }
 
     @Test
-    @Ignore
     public void testCommitLOChanges() throws Exception {
         indexerServiceImpl.commitLOChanges(loUpdateHttpSolrServer, lopUpdateHttpSolrServer, locationUpdateHttpSolrServer, true);
         verify(loUpdateHttpSolrServer).commit();
