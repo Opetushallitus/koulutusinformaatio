@@ -23,8 +23,6 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.CodeDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResult;
-import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityProviderService;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import fi.vm.sade.koulutusinformaatio.util.ResourceBundleHelper;
@@ -32,7 +30,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.*;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -81,23 +82,47 @@ public class DirectoryResource {
         return Response.seeOther(new URI(String.format("%s/hakemisto/oppilaitokset/A", lang))).build();
     }
 
+
     @GET
     @Path("oppilaitokset/{letter}")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
     public Response getProvidersWithFirstLetter(@PathParam("lang") String lang,
+                                                @PathParam("letter") String letter
+                                                ) throws URISyntaxException {
+        List<CodeDTO> types = null;
+        try {
+            types = learningOpportunityProviderService.getProviderTypes(letter, lang);
+        } catch (Exception e) {
+            return buildInternalError(lang);
+        }
+
+        Map<String, Object> model = initModel(lang);
+        String type = types.get(0).getValue();
+        String canonical = String.format("%s%s/hakemisto/oppilaitokset/%s/%s", uri.getBaseUri(), lang, letter, type);
+
+        return getProvidersWithFirstLetter(lang, letter, type, canonical);
+    }
+
+    @GET
+    @Path("oppilaitokset/{letter}/{type}")
+    @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
+    public Response getProvidersWithFirstLetter(@PathParam("lang") String lang,
                                                 @PathParam("letter") String letter,
-                                                @QueryParam("type") String type) throws URISyntaxException {
+                                                @PathParam("type") String type, String canonical) throws URISyntaxException {
         Map<String, Object> model = initModel(lang);
         model.put("lang", lang);
         model.put("ngBaseUrl", ngBaseUrl);
         model.put("letter", letter);
+        if (canonical != null && !canonical.isEmpty()) {
+            model.put("canonical", canonical);
+        }
         List<String> characters = null;
         List<CodeDTO> types = null;
         try {
             characters = learningOpportunityProviderService.getProviderNameFirstCharacters(lang);
             types = learningOpportunityProviderService.getProviderTypes(letter, lang);
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new Viewable("/error.ftl", model)).build();
+            return buildInternalError(lang);
         }
 
         if (type == null && !types.isEmpty()) {
@@ -109,7 +134,7 @@ public class DirectoryResource {
             try {
                 providers = learningOpportunityProviderService.searchProviders(letter, lang, type);
             } catch (Exception e) {
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new Viewable("/error.ftl", model)).build();
+                return buildInternalError(lang);
             }
 
             model.put("providers", providers);
@@ -124,14 +149,13 @@ public class DirectoryResource {
     }
 
     @GET
-    @Path("oppilaitokset/{letter}/{providerId}/koulutukset")
+    @Path("koulutukset/{providerId}")
     @Produces(MediaType.TEXT_HTML + CHARSET_UTF_8)
-    public Viewable getLearningOpportunities(@PathParam("lang") String lang, @PathParam("letter") String letter,
+    public Viewable getLearningOpportunities(@PathParam("lang") String lang,
                                              @PathParam("providerId") final String providerId) {
         Map<String, Object> model = initModel(lang);
         model.put("ngBaseUrl", ngBaseUrl);
         model.put("lang", lang);
-        model.put("letter", letter);
         List<LearningOpportunitySearchResultDTO> resultList = null;
         LearningOpportunityProviderDTO provider = null;
         resultList = learningOpportunityService.findLearningOpportunitiesByProviderId(providerId, lang);
@@ -146,6 +170,7 @@ public class DirectoryResource {
         } catch (Exception e) {
             return new Viewable("/error.ftl", model);
         }
+        model.put("letter", provider.getName().substring(0, 1).toUpperCase());
         model.put("alphabets", alphabets);
         model.put("validCharacters", characters);
         model.put("provider", provider.getName());
@@ -160,5 +185,9 @@ public class DirectoryResource {
             model.put("baseUrl", uri.getBaseUri());
         }
         return model;
+    }
+
+    private Response buildInternalError(String lang) {
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new Viewable("/error.ftl", initModel(lang))).build();
     }
 }

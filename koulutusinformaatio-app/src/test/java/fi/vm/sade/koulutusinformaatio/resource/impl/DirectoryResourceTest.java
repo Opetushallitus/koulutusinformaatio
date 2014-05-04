@@ -88,7 +88,7 @@ public class DirectoryResourceTest {
 
     @Test
     public void testGetProvidersWithFirstLetter() throws URISyntaxException {
-        Response response = resource.getProvidersWithFirstLetter("fi", "A", "10");
+        Response response = resource.getProvidersWithFirstLetter("fi", "A", "10", null);
         assertNotNull(response);
         Viewable view = ((Viewable) response.getEntity());
         Map<String, Object> model = (HashMap) view.getModel();
@@ -108,14 +108,14 @@ public class DirectoryResourceTest {
 
     @Test
     public void testGetProvidersInvalidCharacter() throws URISyntaxException {
-        Response response = resource.getProvidersWithFirstLetter("fi", "?", "00");
+        Response response = resource.getProvidersWithFirstLetter("fi", "?", "00", null);
         assertNotNull(response);
         assertEquals(Response.Status.SEE_OTHER.getStatusCode(), response.getStatus());
     }
 
     @Test
     public void testGetLearningOpportunities() {
-        Viewable view = resource.getLearningOpportunities("fi", "A", "4.5.6");
+        Viewable view = resource.getLearningOpportunities("fi", "4.5.6");
         assertNotNull(view);
         Map<String, Object> model = (HashMap)view.getModel();
         assertNotNull(model);
@@ -123,7 +123,7 @@ public class DirectoryResourceTest {
         String providerName = (String) model.get("provider");
         assertNotNull(providerName);
         assertEquals("provider name", providerName);
-        assertEquals("A", model.get("letter"));
+        assertEquals("P", model.get("letter"));
         assertEquals(NG_BASE_URL, model.get("ngBaseUrl"));
         assertEquals("fi", model.get("lang"));
     }
