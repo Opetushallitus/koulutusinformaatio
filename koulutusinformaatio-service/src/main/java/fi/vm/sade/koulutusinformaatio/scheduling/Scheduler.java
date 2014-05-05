@@ -16,9 +16,11 @@
 
 package fi.vm.sade.koulutusinformaatio.scheduling;
 
+import fi.vm.sade.koulutusinformaatio.service.IncrementalUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.SEOService;
 import fi.vm.sade.koulutusinformaatio.service.TextVersionService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,7 @@ public class Scheduler {
 
     public static final Logger LOG = LoggerFactory.getLogger(Scheduler.class);
     private UpdateService updateService;
+    private IncrementalUpdateService incrementalUpdateService;
     private SEOService seoService;
     private TextVersionService textVersionService;
     private boolean enabled;
@@ -45,6 +48,7 @@ public class Scheduler {
 
     @Autowired
     public Scheduler(final UpdateService updateService, 
+            final IncrementalUpdateService incrementalUpdateService,
             final SEOService seoService, 
             final TextVersionService textVersionService,
             @Value("${scheduling.enabled}") boolean enabled,
@@ -58,6 +62,7 @@ public class Scheduler {
         this.seoEnabled = seoEnabled;
         this.textVersionEnabled = textVersionEnabled;
         this.incrementalEnabled = incrementalEnabled;
+        this.incrementalUpdateService = incrementalUpdateService;
     }
 
     @Scheduled(cron = "${scheduling.data.cron}")
@@ -109,7 +114,7 @@ public class Scheduler {
             
             try {
                 if (!updateService.isRunning()) {
-                    updateService.updateChangedEducationData();
+                    this.incrementalUpdateService.updateChangedEducationData();
                 }
             } catch (Exception e) {
                 LOG.error("Incremental data update execution failed: {}", e.getStackTrace().toString());

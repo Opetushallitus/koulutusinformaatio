@@ -187,6 +187,16 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                 .get(new GenericType<HakuDTO>() {
                 });
     }
+    
+    @Override
+    public List<OidRDTO> getHakukohdesByHaku(String oid) {
+        return hakuResource
+                .path(oid)
+                .path("hakukohde")
+                .accept(JSON_UTF8)
+                .get(new GenericType<List<OidRDTO>>() {
+                });
+    }
 
     @Override
     public List<OidRDTO> listParentLearnignOpportunityOids(int count, int startIndex) {

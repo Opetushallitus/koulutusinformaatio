@@ -296,23 +296,24 @@ public class TransactionManagerImpl implements TransactionManager {
     }
 
     @Override
-    public void beginIncrementalTransaction(HttpSolrServer loUpdateSolr,
-            HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr)
+    public void beginIncrementalTransaction()
             throws IOException, SolrServerException {
         
-        parentLOSTransactionDAO.getCollection().drop();
+        /*parentLOSTransactionDAO.getCollection().drop();
         applicationOptionTransactionDAO.getCollection().drop();
         learningOpportunityProviderTransactionDAO.getCollection().drop();
         childLOTransactionDAO.getCollection().drop();
         pictureTransactionDAO.getCollection().drop();
         upperSecondaryLOSTransactionDAO.getCollection().drop();
         higherEducationLOSTransactionDAO.getCollection().drop();
-        specialLOSTransactionDAO.getCollection().drop();
+        specialLOSTransactionDAO.getCollection().drop();*/
         
         mongo.dropDatabase(transactionDbName);
         
         BasicDBObject cmd = new BasicDBObject("copydb", 1).append("fromdb", dbName).append("todb", this.transactionDbName);
         mongo.getDB("admin").command(cmd);
+        
+        
         
         
         

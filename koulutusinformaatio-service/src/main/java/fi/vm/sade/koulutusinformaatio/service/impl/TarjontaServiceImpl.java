@@ -37,6 +37,7 @@ import fi.vm.sade.koulutusinformaatio.service.builder.impl.LearningOpportunityDi
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.RehabilitatingLearningOpportunityBuilder;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.UpperSecondaryLearningOpportunityBuilder;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.VocationalLearningOpportunityBuilder;
+import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
@@ -369,28 +370,8 @@ public class TarjontaServiceImpl implements TarjontaService {
         return koodistoService.searchByKoodisto(ED_TYPE_FACET_KOODISTO, null);
     }
 
-    @Override
-    public Map<String, List<String>> listChangedLearningOpportunities(long updatePeriod) {
-        Map<String, List<String>> changemap = this.tarjontaRawService.listModifiedLearningOpportunities(updatePeriod);
-        LOG.debug("Tarjonta called");
-        
-        LOG.debug("Number of changes: " + changemap.size());
-        
-        for (Entry<String, List<String>> curEntry : changemap.entrySet()) {
-            LOG.debug(curEntry.getKey() + ", " + curEntry.getValue());
-        }
-        
-        for (String curLoi : changemap.get("koulutusmoduuliToteutus")) {
-            LOG.debug("current loi: " + curLoi);
-            KomotoDTO childKomoto = tarjontaRawService.getKomoto(curLoi);
-            
-            
-            
-        }
-        
-        
-        
-        return changemap;
-    }
+
+
+    
 
 }

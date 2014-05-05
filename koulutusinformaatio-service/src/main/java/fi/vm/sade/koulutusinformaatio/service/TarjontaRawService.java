@@ -49,6 +49,8 @@ public interface TarjontaRawService {
     public HakukohdeDTO getHakukohde(String oid);
 
     public HakuDTO getHakuByHakukohde(String oid);
+    
+    public List<OidRDTO> getHakukohdesByHaku(String oid);
 
     public List<OidRDTO> getKomotosByHakukohde(String oid);
 

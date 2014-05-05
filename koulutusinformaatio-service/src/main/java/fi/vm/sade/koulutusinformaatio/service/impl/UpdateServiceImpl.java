@@ -166,27 +166,5 @@ public class UpdateServiceImpl implements UpdateService {
         return runningSince;
     }
 
-    @Override
-    @Async
-    public void updateChangedEducationData() throws Exception {
-        LOG.info("updateChangedEducationData on its way");
-        
-        long updatePeriod = getUpdatePeriod();
-        
-        
-        
-        HttpSolrServer loUpdateSolr = this.indexerService.getLoCollectionToUpdate();
-        HttpSolrServer lopUpdateSolr = this.indexerService.getLopCollectionToUpdate(loUpdateSolr);
-        HttpSolrServer locationUpdateSolr = this.indexerService.getLocationCollectionToUpdate(loUpdateSolr);
-        
-        Map<String,List<String>> result = this.tarjontaService.listChangedLearningOpportunities(updatePeriod);
-        
-        
-        
-    }
-    
-    private long getUpdatePeriod() {
-        long period = 0;
-        return period;
-    }
 }
+

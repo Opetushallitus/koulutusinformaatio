@@ -54,13 +54,6 @@ public interface TarjontaService {
      */
     public List<String> listParentLearnignOpportunityOids(int count, int startIndex);
     
-    /**
-     * Returns a list of parent learning opportunity oids
-     * @param count maximum count of results
-     * @param startIndex start index of results
-     * @return list of oids
-     */
-    public  Map<String, List<String>> listChangedLearningOpportunities(long updatePeriod);
     
     /**
      * Returns a list of root-level higher education learning opportunities.
