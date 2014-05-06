@@ -44,7 +44,7 @@ public final class ApplicationOptionAttachmentToDTO {
     }
 
     public static List<ApplicationOptionAttachmentDTO> convertAll(final List<ApplicationOptionAttachment> aoas, final String lang) {
-        if (aoas != null) {
+        if (aoas != null && !aoas.isEmpty()) {
             return Lists.transform(aoas, new Function<ApplicationOptionAttachment, ApplicationOptionAttachmentDTO>() {
                 @Override
                 public ApplicationOptionAttachmentDTO apply(ApplicationOptionAttachment input) {

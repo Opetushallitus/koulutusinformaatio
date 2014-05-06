@@ -7,8 +7,8 @@
             <span data-ki-banner></span>
             <div class="actions">
                 <ul >
-                    <li><a href="/fi/hakemisto/oppilaitokset/${letter}" onclick="setCookie('i18next', 'fi', 999)">Suomeksi</a></li>
-                    <li><a href="/sv/hakemisto/oppilaitokset/${letter}" onclick="setCookie('i18next', 'sv', 999)">På svenska</a></li>
+                    <li><a href="${baseUrl}fi/hakemisto/oppilaitokset/${letter}" onclick="setCookie('i18next', 'fi', 999)">Suomeksi</a></li>
+                    <li><a href="${baseUrl}sv/hakemisto/oppilaitokset/${letter}" onclick="setCookie('i18next', 'sv', 999)">På svenska</a></li>
                 </ul>
             </div>
             <div class="actions primarylinks">

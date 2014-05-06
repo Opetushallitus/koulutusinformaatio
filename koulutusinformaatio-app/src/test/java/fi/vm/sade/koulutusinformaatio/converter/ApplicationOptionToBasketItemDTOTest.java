@@ -109,7 +109,7 @@ public class ApplicationOptionToBasketItemDTOTest {
         assertNotNull(baoDTO.getParent());
         assertNotNull(baoDTO.getChildren());
         assertEquals(attachmentDeadline, baoDTO.getAttachmentDeliveryDeadline());
-        assertNotNull(baoDTO.getAttachments());
+        //assertNotNull(baoDTO.getAttachments());
         assertNotNull(baoDTO.getExams());
         assertEquals("123", baoDTO.getAoIdentifier());
         assertFalse(baoDTO.isKaksoistutkinto());
