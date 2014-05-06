@@ -99,7 +99,7 @@ public class ApplicationOptionToDTOTest {
         assertFalse(dto.isAthleteEducation());
         assertNotNull(dto.getAttachmentDeliveryAddress());
         assertEquals(attachmentsDue, dto.getAttachmentDeliveryDeadline());
-        assertNotNull(dto.getAttachments());
+        //assertNotNull(dto.getAttachments());
         assertEquals(Integer.valueOf(10), dto.getLastYearApplicantCount());
         assertEquals(Double.valueOf(5.0), dto.getLowestAcceptedAverage());
         assertEquals(Integer.valueOf(5), dto.getLowestAcceptedScore());
