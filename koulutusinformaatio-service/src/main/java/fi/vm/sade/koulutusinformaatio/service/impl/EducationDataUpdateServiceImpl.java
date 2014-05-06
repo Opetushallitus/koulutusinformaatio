@@ -195,4 +195,21 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
             this.higherEducationLOSTransactionDAO.save(plos);
         }
     }
+
+    @Override
+    public void deleteLos(LOS los) {
+        
+        if (los instanceof ParentLOS) {
+            this.parentLOSTransactionDAO.deleteById(los.getId());
+        } else if (los instanceof ChildLOS) {
+            this.childLOTransactionDAO.deleteById(los.getId());
+        } else if (los instanceof SpecialLOS) {
+            this.specialLOSTransactionDAO.deleteById(los.getId());
+        } else if (los instanceof UpperSecondaryLOS) {
+            this.upperSecondaryLOSTransactionDAO.deleteById(los.getId());
+        } else if (los instanceof HigherEducationLOS) {
+            this.higherEducationLOSTransactionDAO.deleteById(los.getId());
+        }
+        
+    }
 }

@@ -103,4 +103,6 @@ public interface EducationDataQueryService {
      * @return list of learning oppportunity search results
      */
     List<LOS> findLearningOpportunitiesByProviderId(String providerId);
+    
+    LOS getLos(String losId);
 }
