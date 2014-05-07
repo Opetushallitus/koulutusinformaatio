@@ -39,10 +39,10 @@ public class LearningOpportunityProviderEntity {
     private AddressEntity postalAddress;
     @Embedded
     private AddressEntity visitingAddress;
-    private String webPage;
-    private String email;
-    private String fax;
-    private String phone;
+    private I18nTextEntity webPage;
+    private I18nTextEntity email;
+    private I18nTextEntity fax;
+    private I18nTextEntity phone;
     private I18nTextEntity description;
     private I18nTextEntity healthcare;
     private I18nTextEntity accessibility;
@@ -108,35 +108,35 @@ public class LearningOpportunityProviderEntity {
         this.visitingAddress = visitingAddress;
     }
 
-    public String getWebPage() {
+    public I18nTextEntity getWebPage() {
         return webPage;
     }
 
-    public void setWebPage(String webPage) {
+    public void setWebPage(I18nTextEntity webPage) {
         this.webPage = webPage;
     }
 
-    public String getEmail() {
+    public I18nTextEntity getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(I18nTextEntity email) {
         this.email = email;
     }
 
-    public String getFax() {
+    public I18nTextEntity getFax() {
         return fax;
     }
 
-    public void setFax(String fax) {
+    public void setFax(I18nTextEntity fax) {
         this.fax = fax;
     }
 
-    public String getPhone() {
+    public I18nTextEntity getPhone() {
         return phone;
     }
 
-    public void setPhone(String phone) {
+    public void setPhone(I18nTextEntity phone) {
         this.phone = phone;
     }
 

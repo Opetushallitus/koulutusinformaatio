@@ -60,7 +60,7 @@ public class LearningOpportunityProviderResourceImplTest {
         provider.setId("prov111");
         provider.setAccessibility(createI18Text("accessibility"));
         provider.setDescription(createI18Text("description"));
-        provider.setEmail("has@email.fi");
+        provider.setEmail(createI18Text("has@email.fi"));
         provider.setHomePlace(createI18Text("Vantaa"));
         provider.setName(createI18Text("prov111"));
         
@@ -68,7 +68,7 @@ public class LearningOpportunityProviderResourceImplTest {
         provider2.setId("prov211");
         provider2.setAccessibility(createI18Text("accessibility 2"));
         provider2.setDescription(createI18Text("description 2"));
-        provider2.setEmail("has@email.fi2");
+        provider2.setEmail(createI18Text("has@email.fi2"));
         provider2.setHomePlace(createI18Text("Vantaa 2"));
         provider2.setName(createI18Text("prov111 2"));
         

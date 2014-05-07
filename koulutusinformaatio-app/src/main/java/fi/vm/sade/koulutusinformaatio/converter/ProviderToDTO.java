@@ -39,10 +39,10 @@ public final class ProviderToDTO {
             p.setApplicationSystemIds(provider.getApplicationSystemIDs());
             p.setPostalAddress(AddressToDTO.convert(provider.getPostalAddress(), uiLang));
             p.setVisitingAddress(AddressToDTO.convert(provider.getVisitingAddress(), uiLang));
-            p.setEmail(provider.getEmail());
-            p.setWebPage(provider.getWebPage());
-            p.setPhone(provider.getPhone());
-            p.setFax(provider.getFax());
+            p.setEmail(ConverterUtil.getTextByLanguageUseFallbackLang(provider.getEmail(), uiLang));
+            p.setWebPage(ConverterUtil.getTextByLanguageUseFallbackLang(provider.getWebPage(), uiLang));
+            p.setPhone(ConverterUtil.getTextByLanguageUseFallbackLang(provider.getPhone(), uiLang));
+            p.setFax(ConverterUtil.getTextByLanguageUseFallbackLang(provider.getFax(), uiLang));
             p.setDescription(ConverterUtil.getTextByLanguage(provider.getDescription(), lang));
             p.setAccessibility(ConverterUtil.getTextByLanguage(provider.getAccessibility(), lang));
             p.setLearningEnvironment(ConverterUtil.getTextByLanguage(provider.getLearningEnvironment(), lang));
@@ -59,7 +59,7 @@ public final class ProviderToDTO {
             p.setSocial(SocialToDTO.convert(provider.getSocial()));
             p.setPictureFound(provider.getPicture() != null);
             p.setAthleteEducation(provider.isAthleteEducation());
-            p.setApplicationOffice(ApplicationOfficeToDTO.convert(provider.getApplicationOffice(), lang));
+            p.setApplicationOffice(ApplicationOfficeToDTO.convert(provider, lang));
             return p;
         }
         return null;

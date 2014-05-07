@@ -32,10 +32,10 @@ public class Provider {
     private Set<String> applicationSystemIDs = new HashSet<String>();
     private Address postalAddress;
     private Address visitingAddress;
-    private String webPage;
-    private String email;
-    private String fax;
-    private String phone;
+    private I18nText webPage;
+    private I18nText email;
+    private I18nText fax;
+    private I18nText phone;
     private I18nText description;
     private I18nText healthcare;
     private I18nText accessibility;
@@ -103,35 +103,35 @@ public class Provider {
         this.visitingAddress = visitingAddress;
     }
 
-    public String getWebPage() {
+    public I18nText getWebPage() {
         return webPage;
     }
 
-    public void setWebPage(String webPage) {
+    public void setWebPage(I18nText webPage) {
         this.webPage = webPage;
     }
 
-    public String getEmail() {
+    public I18nText getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(I18nText email) {
         this.email = email;
     }
 
-    public String getFax() {
+    public I18nText getFax() {
         return fax;
     }
 
-    public void setFax(String fax) {
+    public void setFax(I18nText fax) {
         this.fax = fax;
     }
 
-    public String getPhone() {
+    public I18nText getPhone() {
         return phone;
     }
 
-    public void setPhone(String phone) {
+    public void setPhone(I18nText phone) {
         this.phone = phone;
     }
 

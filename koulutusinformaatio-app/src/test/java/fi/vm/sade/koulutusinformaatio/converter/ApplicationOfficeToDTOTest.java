@@ -17,12 +17,16 @@
 package fi.vm.sade.koulutusinformaatio.converter;
 
 import com.google.common.collect.Maps;
+
 import fi.vm.sade.koulutusinformaatio.domain.Address;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOffice;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
+import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOfficeDTO;
+
 import org.junit.Test;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -36,17 +40,19 @@ public class ApplicationOfficeToDTOTest {
 
     @Test
     public void testConvert() {
+        Provider prov = new Provider();
         ApplicationOffice office = new ApplicationOffice();
+        prov.setApplicationOffice(office);
         Map<String, String> nameTranslations = Maps.newHashMap();
         nameTranslations.put("fi", "officeName");
         office.setName(new I18nText(nameTranslations));
-        office.setEmail("application@office.com");
-        office.setPhone("55512345");
+        office.setEmail(createI18Text("application@office.com"));
+        office.setPhone(createI18Text("55512345"));
         office.setPostalAddress(new Address());
         office.setVisitingAddress(new Address());
-        office.setWww("office.com");
+        office.setWww(createI18Text("office.com"));
 
-        ApplicationOfficeDTO dto = ApplicationOfficeToDTO.convert(office, "fi");
+        ApplicationOfficeDTO dto = ApplicationOfficeToDTO.convert(prov, "fi");
         assertNotNull(dto);
         assertEquals("officeName", dto.getName());
         assertEquals("application@office.com", dto.getEmail());
@@ -58,6 +64,16 @@ public class ApplicationOfficeToDTOTest {
 
     @Test
     public void testConvertNull() {
-        assertNull(ApplicationOfficeToDTO.convert(null, ""));
+        Provider prov = new Provider();
+        assertNull(ApplicationOfficeToDTO.convert(prov, ""));
+    }
+    
+    
+    private I18nText createI18Text(String text) {
+        Map<String, String> translations = new HashMap<String, String>();
+        translations.put("fi", text);
+        translations.put("sv", text);
+        translations.put("en", text);
+        return new I18nText(translations);
     }
 }
