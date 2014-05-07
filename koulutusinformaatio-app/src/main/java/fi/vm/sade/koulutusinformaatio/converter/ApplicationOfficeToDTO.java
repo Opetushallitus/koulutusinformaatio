@@ -16,7 +16,9 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
+import fi.vm.sade.koulutusinformaatio.domain.Address;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOffice;
+import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOfficeDTO;
 
@@ -36,12 +38,12 @@ public final class ApplicationOfficeToDTO {
         } else {
             dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(provider.getName(), lang));
         }
-        if (applicationOffice.getVisitingAddress() != null) {
+        if (applicationOffice.getVisitingAddress() != null && !emptyAddress(applicationOffice.getVisitingAddress())) {
             dto.setVisitingAddress(AddressToDTO.convert(applicationOffice.getVisitingAddress(), lang));
         } else {
             dto.setVisitingAddress(AddressToDTO.convert(provider.getVisitingAddress(), lang));
         }
-        if (applicationOffice.getPostalAddress() != null) {
+        if (applicationOffice.getPostalAddress() != null && !emptyAddress(applicationOffice.getPostalAddress())) {
             dto.setPostalAddress(AddressToDTO.convert(applicationOffice.getPostalAddress(), lang));
         } else {
             dto.setPostalAddress(AddressToDTO.convert(provider.getPostalAddress(), lang));
@@ -67,6 +69,14 @@ public final class ApplicationOfficeToDTO {
         return null;
     }
     
+    private static boolean emptyAddress(Address address) {
+        return address.getPostalCode() == null && emptyI18nText(address.getPostOffice())  &&  emptyI18nText(address.getStreetAddress()) && emptyI18nText(address.getStreetAddress2()); 
+    }
+    
+    private static boolean emptyI18nText(I18nText text) {
+        return text == null || text.getTranslations() == null || text.getTranslations().isEmpty();
+    }
+
     private static boolean isEmpty(ApplicationOfficeDTO dto) {
         return dto.getEmail() == null && dto.getPhone() == null && dto.getPostalAddress() == null && dto.getVisitingAddress() == null && dto.getWww() == null;
     }
