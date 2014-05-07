@@ -57,8 +57,8 @@ public class ApplicationOfficeToDTOTest {
         assertEquals("officeName", dto.getName());
         assertEquals("application@office.com", dto.getEmail());
         assertEquals("55512345", dto.getPhone());
-        assertNotNull(dto.getPostalAddress());
-        assertNotNull(dto.getVisitingAddress());
+        assertNull(dto.getPostalAddress());
+        assertNull(dto.getVisitingAddress());
         assertEquals("office.com", dto.getWww());
     }
 
