@@ -31,9 +31,9 @@ public class ApplicationOfficeEntity {
     private AddressEntity visitingAddress;
     @Embedded
     private AddressEntity postalAddress;
-    private String phone;
-    private String email;
-    private String www;
+    private I18nTextEntity phone;
+    private I18nTextEntity email;
+    private I18nTextEntity www;
 
     public ApplicationOfficeEntity() {
     }
@@ -62,27 +62,27 @@ public class ApplicationOfficeEntity {
         this.postalAddress = postalAddress;
     }
 
-    public String getPhone() {
+    public I18nTextEntity getPhone() {
         return phone;
     }
 
-    public void setPhone(String phone) {
+    public void setPhone(I18nTextEntity phone) {
         this.phone = phone;
     }
 
-    public String getEmail() {
+    public I18nTextEntity getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(I18nTextEntity email) {
         this.email = email;
     }
 
-    public String getWww() {
+    public I18nTextEntity getWww() {
         return www;
     }
 
-    public void setWww(String www) {
+    public void setWww(I18nTextEntity www) {
         this.www = www;
     }
 }

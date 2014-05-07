@@ -22,13 +22,13 @@ package fi.vm.sade.koulutusinformaatio.domain;
 public class ApplicationOffice {
 
     private I18nText name;
-    private String phone;
-    private String email;
-    private String www;
+    private I18nText phone;
+    private I18nText email;
+    private I18nText www;
     private Address visitingAddress;
     private Address postalAddress;
 
-    public ApplicationOffice(I18nText name, String phone, String email, String www, Address visitingAddress, Address postalAddress) {
+    public ApplicationOffice(I18nText name, I18nText phone, I18nText email, I18nText www, Address visitingAddress, Address postalAddress) {
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -63,27 +63,27 @@ public class ApplicationOffice {
         this.postalAddress = postalAddress;
     }
 
-    public String getPhone() {
+    public I18nText getPhone() {
         return phone;
     }
 
-    public void setPhone(String phone) {
+    public void setPhone(I18nText phone) {
         this.phone = phone;
     }
 
-    public String getEmail() {
+    public I18nText getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(I18nText email) {
         this.email = email;
     }
 
-    public String getWww() {
+    public I18nText getWww() {
         return www;
     }
 
-    public void setWww(String www) {
+    public void setWww(I18nText www) {
         this.www = www;
     }
 }

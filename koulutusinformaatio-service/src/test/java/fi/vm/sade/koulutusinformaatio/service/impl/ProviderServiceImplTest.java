@@ -106,8 +106,8 @@ public class ProviderServiceImplTest {
         assertEquals(p.getId(), CHILD_ORGANISAATIO_OID);
         assertEquals("Porvoon lukio", p.getName().getTranslations().get("fi"));
         assertEquals("Borgå Gymnasium", p.getName().getTranslations().get("sv"));
-        assertEquals("borga.gymnasium@porvoo.fi", p.getEmail());
-        assertEquals("0407488664", p.getPhone());
+        assertEquals("borga.gymnasium@porvoo.fi", p.getEmail().get("fi"));
+        assertEquals("0407488664", p.getPhone().get("fi"));
         assertEquals(HOMEPLACE.getTranslations().get("fi"), p.getHomePlace().getTranslations().get("fi"));
         assertEquals(HOMEPLACE.getTranslations().get("sv"), p.getHomePlace().getTranslations().get("sv"));
         assertEquals(HOMEPLACE.getTranslations().get("en"), p.getHomePlace().getTranslations().get("en"));
@@ -165,8 +165,8 @@ public class ProviderServiceImplTest {
             "  },\n" +
             "  \"alkuPvm\" : \"1992-01-01\",\n" +
             "  \"parentOidPath\" : \"|1.2.246.562.10.00000000001|1.2.246.562.10.67094744702|\",\n" +
-            "  \"wwwOsoite\" : \"http://www.pedanet/veraja/porvoo/borgagymnasium\",\n" +
-            "  \"puhelinnumero\" : \"0407488664\",\n" +
+            //"  \"wwwOsoite\" : \"http://www.pedanet/veraja/porvoo/borgagymnasium\",\n" +
+            //"  \"puhelinnumero\" : \"0407488664\",\n" +
             "  \"yhteystiedot\" : [ {\n" +
             "    \"kieli\" : \"kieli_fi#1\",\n" +
             "    \"osoiteTyyppi\" : \"kaynti\",\n" +
@@ -195,7 +195,23 @@ public class ProviderServiceImplTest {
             "    \"osavaltio\" : null,\n" +
             "    \"extraRivi\" : null,\n" +
             "    \"maaUri\" : null\n" +
-            "  }\n" +
+            "  }, {\n" +
+            "    \"kieli\" : \"kieli_fi#1\",\n" +
+            "    \"id\" : \"217339\",\n" +
+            "    \"yhteystietoOid\" : \"1.2.246.562.5.91862370631\",\n" +
+            "    \"www\" : \"http://www.pedanet/veraja/porvoo/borgagymnasium\"\n" +
+            "  }, {\n" +
+            "   \"kieli\" : \"kieli_fi#1\",\n" +
+            "   \"id\" : \"217199\",\n" +
+            "   \"yhteystietoOid\" : \"13945230737530.19501560464365164\",\n" +
+            "   \"email\" : \"borga.gymnasium@porvoo.fi\"\n" +
+            "  }, {\n" +
+            "   \"tyyppi\" : \"puhelin\",\n" +
+            "   \"kieli\" : \"kieli_fi#1\",\n" +
+            "   \"id\" : \"217201\",\n" +
+            "   \"yhteystietoOid\" : \"1.2.246.562.5.2014031109311375622541\",\n" +
+            "   \"numero\" : \"0407488664\"\n" +
+            " }\n" +
             "], \n" +
             "  \"postiosoite\" : {\n" +
             "    \"osoiteTyyppi\" : \"posti\",\n" +
@@ -225,7 +241,7 @@ public class ProviderServiceImplTest {
             "    \"extraRivi\" : null,\n" +
             "    \"maaUri\" : null\n" +
             "  },\n" +
-            "  \"emailOsoite\" : \"borga.gymnasium@porvoo.fi\",\n" +
+            //"  \"emailOsoite\" : \"borga.gymnasium@porvoo.fi\",\n" +
             "  \"kieletUris\" : [ \"kielivalikoima_sv\" ],\n" +
             "  \"kuvaus2\" : {\n" +
             "  },\n" +
