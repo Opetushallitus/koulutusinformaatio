@@ -11,9 +11,9 @@
     "index-pager-next": "Next page",
     "index-pager-previous": "Previous page",
 
-    "lo-type-special": "Ammatillinen erityisopetus (en)",
-    "provider-erityis": "Ammatillista erityisopetusta tarjoavat oppilaitokset (en)",
-    "provider-valmentava": "Valmentavaa ja kuntouttavaa opetusta ja ohjausta tarjoavat oppilaitokset (en)",
+    "lo-type-special": "Vocational special needs education",
+    "provider-erityis": "Educational institutions that offer vocational special needs education",
+    "provider-valmentava": "Educational institutions that offer rehabilitative instruction and guidance",
 
     "description-basic-info": "Basic information",
     "email": "E-mail",
