@@ -533,7 +533,7 @@ directive('kiAbsoluteLink', function() {
 /**
  *  Renders a text block with title. If no content exists the whole text block gets removed. 
  */
-directive('renderTextBlock', ['TranslationService', function(TranslationService) {
+directive('renderTextBlock', ['TranslationService', function(TranslationService) {    
     return function(scope, element, attrs) {
 
             var title;
@@ -553,11 +553,11 @@ directive('renderTextBlock', ['TranslationService', function(TranslationService)
             var update = function() {
                 $(element).empty();
                 if (content) {
+                    element.addClass('tarjonta-content');
                     if (title) {
                         var titleElement = createTitleElement(title, attrs.anchor, attrs.level);
                         element.append(titleElement);
                     }
-
                     element.append(content);
                 }
                 
@@ -571,7 +571,7 @@ directive('renderTextBlock', ['TranslationService', function(TranslationService)
                     return $('<h2 ' + idAttr + '>' + text + '</h2>');
                 }
             };
-        };
+        };  
 }]).
 
 directive('renderExtendableTextBlock', ['TranslationService', function(TranslationService) {

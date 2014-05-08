@@ -2463,8 +2463,11 @@ table.striped {
 span.post-office {
   margin-left: 10px; }
 
-.tarjonta-content a {
-  color: #EEEEEE; }
+.tarjonta-content a:before {
+  font-family: "fontello";
+  content: '\e801';
+  margin-right: .2em;
+  display: inline-block; }
 
 .remove {
   display: inline-block;
