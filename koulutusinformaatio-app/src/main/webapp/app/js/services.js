@@ -475,7 +475,8 @@ service('HigherEducationPreviewLOService', ['$http', '$timeout', '$q', 'Language
             var deferred = $q.defer();
             var queryParams = {
                 uiLang: LanguageService.getLanguage(),
-                lang: LanguageService.getLanguage()
+                lang: LanguageService.getLanguage(),
+                timestamp: Date.now()
             }
 
             if (options.lang) {
