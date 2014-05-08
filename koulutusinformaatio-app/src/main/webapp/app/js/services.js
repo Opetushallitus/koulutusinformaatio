@@ -475,7 +475,8 @@ service('HigherEducationPreviewLOService', ['$http', '$timeout', '$q', 'Language
             var deferred = $q.defer();
             var queryParams = {
                 uiLang: LanguageService.getLanguage(),
-                lang: LanguageService.getLanguage()
+                lang: LanguageService.getLanguage(),
+                timestamp: Date.now()
             }
 
             if (options.lang) {
@@ -495,7 +496,7 @@ service('HigherEducationPreviewLOService', ['$http', '$timeout', '$q', 'Language
             success(function(result) {
             	HigherEducationTransformer.transform(result);
             	result.preview = true;
-            	result.tarjontaEditUrl =  Config.get('tarjontaUrl') + '/koulutus/' + result.id + '/edit';
+            	result.tarjontaEditUrl =  Config.get('tarjontaUrl') + '/koulutus/' + result.id + '/edit?' + Date.now();
             	if (result.children) {
             		for (var i = 0; i < result.children.length; ++i) {
             			result.children[i].preview = true;
@@ -509,7 +510,7 @@ service('HigherEducationPreviewLOService', ['$http', '$timeout', '$q', 'Language
             				for (var j = 0; j < as.applicationOptions.length; ++j) {
             					var ao = as.applicationOptions[j];
             					ao.preview = true;
-            					ao.editUrl =  Config.get('tarjontaUrl') + '/hakukohde/' + ao.id + '/edit';
+            					ao.editUrl =  Config.get('tarjontaUrl') + '/hakukohde/' + ao.id + '/edit?' + Date.now();
             				}
             			}
             		} 
