@@ -166,4 +166,9 @@ public interface LearningOpportunityResource {
     public HigherEducationLOSDTO previewLearningOpportunity(@PathParam("oid") String oid,
                                                      @QueryParam("lang") String lang,
                                                      @QueryParam("uiLang") String uiLang);
+    
+    @GET
+    @Path("/picture/{id}")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    public PictureDTO getPicture(@PathParam("id") final String id);
 }

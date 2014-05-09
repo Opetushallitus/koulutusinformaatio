@@ -167,6 +167,26 @@ directive('kiRenderOrganizationImage', function() {
 }).
 
 /**
+ *  Render organization image
+ */
+directive('kiRenderStructureImage', function() {
+    return function(scope, element, attrs) {
+        scope.$watch('structureImage', function(data) {
+            if (data && data.pictureEncoded) {
+                var imgElem = $('<img>', {
+                    src: 'data:image/jpeg;base64,' + data.pictureEncoded,
+                    alt: 'Opintojen rakenteen kuva'
+                });
+
+                $(element).empty();
+                element.append(imgElem);
+            }
+        });
+    }
+
+}).
+
+/**
  *  Render professional titles
  */
 directive('kiRenderProfessionalTitles', function() {

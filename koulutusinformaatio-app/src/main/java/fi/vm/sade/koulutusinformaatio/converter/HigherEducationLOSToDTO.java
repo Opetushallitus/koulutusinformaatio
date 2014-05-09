@@ -2,9 +2,12 @@ package fi.vm.sade.koulutusinformaatio.converter;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
+
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
+import fi.vm.sade.koulutusinformaatio.domain.I18nPicture;
+import fi.vm.sade.koulutusinformaatio.domain.Picture;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationChildLosReferenceDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationLOSDTO;
@@ -103,7 +106,20 @@ public class HigherEducationLOSToDTO {
             dto.setTopics(CodeToDTO.convertAll(los.getTopics(), uiLang));
         }
         dto.setEducationType(los.getEducationType());
+        dto.setStructureImageId(getStructureImageId(los, uiLang));
         return dto;
+    }
+
+    private static String getStructureImageId(HigherEducationLOS los,
+            String uiLang) {
+        I18nPicture image = los.getStructureImage();
+        Picture pict = null;
+        if (image != null 
+                && image.getPictureTranslations() != null 
+                && !image.getPictureTranslations().isEmpty()) {
+            pict = image.getPictureTranslations().get(uiLang);
+        }
+        return pict != null ? pict.getId() : null;
     }
 
     private static List<HigherEducationChildLosReferenceDTO> convertReferences(
