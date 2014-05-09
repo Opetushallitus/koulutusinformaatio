@@ -212,4 +212,11 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
         }
         
     }
+
+    @Override
+    public void deleteAo(ApplicationOption ao) {
+        
+        this.applicationOptionTransactionDAO.deleteById(ao.getId());
+        
+    }
 }

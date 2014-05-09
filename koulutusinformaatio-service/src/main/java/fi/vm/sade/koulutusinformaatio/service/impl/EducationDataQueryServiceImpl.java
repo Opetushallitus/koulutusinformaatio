@@ -288,5 +288,13 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
         return null;
     }
 
+    @Override
+    public LOS findLearningOpportunitiesByLoiId(String loiId) {
+        
+        
+        
+        return null;
+    }
+
 
 }

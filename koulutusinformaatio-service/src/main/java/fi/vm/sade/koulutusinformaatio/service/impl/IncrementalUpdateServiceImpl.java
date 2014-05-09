@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.BasicLOI;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOIRef;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
@@ -24,6 +25,7 @@ import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOSRef;
 import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
+import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOI;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
@@ -33,6 +35,7 @@ import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
+import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 
@@ -99,22 +102,51 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             List<OidRDTO> hakukohdeOids = this.tarjontaRawService.getHakukohdesByHaku(asOid);
             if (hakukohdeOids != null && hakukohdeOids.isEmpty()) {
                 for (OidRDTO curOid : hakukohdeOids) {
-                    indexApplicationOptionData(curOid.getOid(), asDto);
+                    HakukohdeDTO aoDto = this.tarjontaRawService.getHakukohde(curOid.getOid());
+                    indexApplicationOptionData(aoDto, asDto);
                 }
             }
         //}
         
     }
 
-    private void indexApplicationOptionData(String oid, HakuDTO asDto) {
+    private void indexApplicationOptionData(HakukohdeDTO aoDto, HakuDTO asDto) {
         
-        if (!TarjontaConstants.STATE_PUBLISHED.equals(asDto.getTila())) {
-            removeApplicationOption(oid);
+        if (!TarjontaConstants.STATE_PUBLISHED.equals(asDto.getTila()) || !TarjontaConstants.STATE_PUBLISHED.equals(aoDto.getTila())) {
+            removeApplicationOption(aoDto.getOid());
+        } else {
+            try {
+                ApplicationOption ao = this.dataQueryService.getApplicationOption(aoDto.getOid());
+                updateApplicationOption(ao);
+            } catch (ResourceNotFoundException ex) {
+                LOG.debug(ex.getMessage());
+                addApplicationOption(aoDto);
+            }
         }
         
         
     }
     
+    private void updateApplicationOption(ApplicationOption ao) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    private void addApplicationOption(HakukohdeDTO aoDto) {
+        
+        List<String> koulutusOids = aoDto.getHakukohdeKoulutusOids();
+        for (String curKoulutusOid : koulutusOids) {
+            
+            KomotoDTO komotoDto = this.tarjontaRawService.getKomoto(curKoulutusOid);
+            
+            if (TarjontaConstants.STATE_PUBLISHED.equals(komotoDto.getTila())) {
+                
+            }
+            
+        }
+        
+    }
+
     private void removeApplicationOption(String oid) {
         
         try {
@@ -141,6 +173,8 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             }
             
             
+            this.dataUpdateService.deleteAo(ao);
+            
             
         } catch (ResourceNotFoundException notFoundEx) {
             LOG.debug(notFoundEx.getMessage());
@@ -159,8 +193,31 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             } else if (referencedLos instanceof ChildLOS) {
                 handleChildLosReferenceRemoval((ChildLOS)referencedLos, ao);      
             } else if (referencedLos instanceof UpperSecondaryLOS) {
-                
+                handleUpperSecondarLosReferenceRemoval((UpperSecondaryLOS)referencedLos, ao);
             }
+            
+        }
+        
+    }
+
+    private void handleUpperSecondarLosReferenceRemoval(
+            UpperSecondaryLOS los, ApplicationOption ao) {
+        
+        Map<String,ChildLOIRef> loiMap = constructChildLoiMap(ao.getChildLOIRefs());
+        
+        List<UpperSecondaryLOI> remainingLOIs = new ArrayList<UpperSecondaryLOI>();
+        for (UpperSecondaryLOI curLoi : los.getLois()) {
+            if (!loiMap.containsKey(curLoi.getId()) || hasOtherAoReferences(curLoi, ao)) {
+                remainingLOIs.add(curLoi);
+            } 
+        }
+        
+        
+        if (!remainingLOIs.isEmpty()) {
+            los.setLois(remainingLOIs);
+            this.dataUpdateService.save(los);
+        } else {
+            this.dataUpdateService.deleteLos(los);
         }
         
     }
@@ -172,7 +229,9 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
         LOS los = this.dataQueryService.getLos(parentRef.getId());
         if (los instanceof ParentLOS) {
             this.handleParentLOSReferenceRemoval((ParentLOS)los, ao, false);
-        } 
+        } else {
+            LOG.warn("Child los has reference to parent that is not of type ParentLOS.");
+        }
         
     }
 
@@ -332,7 +391,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
         
     }
 
-    private boolean hasOtherAoReferences(ChildLOI curChildLoi,
+    private boolean hasOtherAoReferences(BasicLOI curChildLoi,
             ApplicationOption ao) {
         List<ApplicationOption> remainingAos = new ArrayList<ApplicationOption>();
         for (ApplicationOption curAo : curChildLoi.getApplicationOptions()) {
