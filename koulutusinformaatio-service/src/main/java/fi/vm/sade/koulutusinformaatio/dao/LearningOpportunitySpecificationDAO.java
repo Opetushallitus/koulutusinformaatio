@@ -16,7 +16,9 @@
 
 package fi.vm.sade.koulutusinformaatio.dao;
 
+import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunitySpecificationEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
+
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Key;
 import org.mongodb.morphia.query.Query;
@@ -37,6 +39,12 @@ public abstract class LearningOpportunitySpecificationDAO<T, K> extends Secondar
         Query<T> query = createQuery();
         query.field("provider").equal(new Key(LearningOpportunityProviderEntity.class, providerId));
         return find(query).asList();
+    }
+    
+    public List<T> findByLoiId(String loiId) {
+        Query<T> q = createQuery();
+        q.field("lois.id").equal(loiId);
+        return find(q).asList();
     }
 }
 

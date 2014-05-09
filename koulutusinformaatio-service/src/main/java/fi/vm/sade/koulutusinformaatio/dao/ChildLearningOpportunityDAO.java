@@ -16,8 +16,12 @@
 
 package fi.vm.sade.koulutusinformaatio.dao;
 
+import java.util.List;
+
 import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunitySpecificationEntity;
+
 import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.query.Query;
 
 /**
  * @author Mikko Majapuro
@@ -26,5 +30,11 @@ public class ChildLearningOpportunityDAO extends LearningOpportunitySpecificatio
 
     public ChildLearningOpportunityDAO(Datastore primaryDatastore, Datastore secondaryDatastore) {
         super(primaryDatastore, secondaryDatastore);
+    }
+    
+    public List<ChildLearningOpportunitySpecificationEntity> findByLoiId(String loiId) {
+        Query<ChildLearningOpportunitySpecificationEntity> q = createQuery();
+        q.field("lois.id").equal(loiId);
+        return find(q).asList();
     }
 }

@@ -106,5 +106,5 @@ public interface EducationDataQueryService {
     
     LOS getLos(String losId);
     
-    LOS findLearningOpportunitiesByLoiId(String loiId);
+    List<LOS> findLearningOpportunitiesByLoiId(String loiId);
 }

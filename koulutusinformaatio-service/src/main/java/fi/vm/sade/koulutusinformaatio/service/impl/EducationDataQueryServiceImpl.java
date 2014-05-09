@@ -30,6 +30,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -289,7 +290,57 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     }
 
     @Override
-    public LOS findLearningOpportunitiesByLoiId(String loiId) {
+    public List<LOS> findLearningOpportunitiesByLoiId(String loiId) {
+        
+        
+        List<ChildLearningOpportunitySpecificationEntity> childrenE = this.childLearningOpportunityDAO.findByLoiId(loiId);
+        if (childrenE != null) {
+            
+            
+            return Lists.transform(
+                    childrenE,
+                    new Function<ChildLearningOpportunitySpecificationEntity, LOS>() {
+                        @Override
+                        public LOS apply(ChildLearningOpportunitySpecificationEntity input) {
+                            return modelMapper.map(input, ChildLOS.class);
+                        }
+                    }
+                    );
+            
+        }
+        
+        List<SpecialLearningOpportunitySpecificationEntity> specialsE = this.specialLearningOpportunitySpecificationDAO.findByLoiId(loiId);
+        if (specialsE != null) {
+            return Lists.transform(
+                    specialsE,
+                    new Function<SpecialLearningOpportunitySpecificationEntity, LOS>() {
+                        @Override
+                        public LOS apply(SpecialLearningOpportunitySpecificationEntity input) {
+                            return modelMapper.map(input, SpecialLOS.class);
+                        }
+                    }
+                    );
+        }
+        
+        List<UpperSecondaryLearningOpportunitySpecificationEntity> upsecsE = this.upperSecondaryLearningOpportunitySpecificationDAO.findByLoiId(loiId);
+        if (upsecsE != null) {
+            return Lists.transform(
+                    upsecsE,
+                    new Function<UpperSecondaryLearningOpportunitySpecificationEntity, LOS>() {
+                        @Override
+                        public LOS apply(UpperSecondaryLearningOpportunitySpecificationEntity input) {
+                            return modelMapper.map(input, UpperSecondaryLOS.class);
+                        }
+                    }
+                    );
+        }
+        
+        HigherEducationLOSEntity higheredE = this.higherEducationLOSDAO.get(loiId);
+        if (higheredE != null) {
+            List<LOS> losses = new ArrayList<LOS>();
+            losses.add(modelMapper.map(higheredE, HigherEducationLOS.class));
+            return losses;
+        }
         
         
         

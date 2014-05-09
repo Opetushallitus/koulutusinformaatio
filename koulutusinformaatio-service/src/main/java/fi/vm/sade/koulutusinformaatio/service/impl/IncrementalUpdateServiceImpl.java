@@ -140,7 +140,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             KomotoDTO komotoDto = this.tarjontaRawService.getKomoto(curKoulutusOid);
             
             if (TarjontaConstants.STATE_PUBLISHED.equals(komotoDto.getTila())) {
-                
+                List<LOS> losses = this.dataQueryService.findLearningOpportunitiesByLoiId(curKoulutusOid);
             }
             
         }
