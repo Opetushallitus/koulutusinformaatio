@@ -135,6 +135,9 @@ public class HigherEducationLOSEntity {
     private List<CodeEntity> themes;
     
     private String educationType;
+    
+    @Embedded
+    private I18nPictureEntity structureImage;
 
     public String getId() {
         return id;
@@ -445,6 +448,12 @@ public class HigherEducationLOSEntity {
     }
     public void setEducationType(String educationType) {
         this.educationType = educationType;
+    }
+    public I18nPictureEntity getStructureImage() {
+        return structureImage;
+    }
+    public void setStructureImage(I18nPictureEntity structureImage) {
+        this.structureImage = structureImage;
     }
 
 }

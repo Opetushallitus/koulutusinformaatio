@@ -211,7 +211,7 @@ public class TarjontaServiceImpl implements TarjontaService {
         return createChildHierarchy(koulutukset, komoToLOSMap, parentOids, aoToEducationsMap);
     }
 
-    private I18nPicture retrieveStructureImage(String oid) {
+    private I18nPicture retrieveStructureImage(String oid) throws KoodistoException {
         I18nPicture structureImage = null;
         ResultV1RDTO<List<KuvaV1RDTO>> result = this.tarjontaRawService.getStructureImages(oid);
         List<KuvaV1RDTO> imageDtos = result != null ? result.getResult() : null;
@@ -219,10 +219,11 @@ public class TarjontaServiceImpl implements TarjontaService {
         if (imageDtos != null && !imageDtos.isEmpty()) {
             structureImage = new I18nPicture();
             for (KuvaV1RDTO curDto : imageDtos) {
+                String kielikoodi =  this.koodistoService.searchFirstCodeValue(curDto.getKieliUri());
                 Picture pict = new Picture();
-                pict.setId(String.format("%s_%s", oid, curDto.getKieliUri()));
+                pict.setId(String.format("%s_%s", oid, kielikoodi.toLowerCase()));
                 pict.setPictureEncoded(curDto.getBase64data());
-                structureImage.getPictureTranslations().put(curDto.getKieliUri(), pict);
+                structureImage.getPictureTranslations().put(kielikoodi.toLowerCase(), pict);
             }
         }
         return structureImage;

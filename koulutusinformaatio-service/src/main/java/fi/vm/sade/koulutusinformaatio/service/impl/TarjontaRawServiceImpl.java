@@ -275,7 +275,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
 
     @Override
     public ResultV1RDTO<List<KuvaV1RDTO>> getStructureImages(String koulutusOid) {
-        return higherEducationASResource
+        return higherEducationResource
                 .path(koulutusOid)
                 .path("kuva")
                 .accept(JSON_UTF8)
