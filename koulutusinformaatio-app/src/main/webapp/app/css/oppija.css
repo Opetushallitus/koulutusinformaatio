@@ -2136,6 +2136,7 @@ label, .label {
   -o-border-radius: 5px 5px 0px 0px;
   -ms-border-radius: 5px 5px 0px 0px;
   border-radius: 5px 5px 0px 0px;
+  text-transform: none;
   text-align: left; }
   .application-basket thead tr th:first-child {
     border-top: 1px solid #e1e1e1;
@@ -2148,7 +2149,10 @@ label, .label {
   border: none;
   vertical-align: top;
   padding: 1em 1em;
-  background-color: #fcfcfc; }
+  background-color: #fafafa; }
+.application-basket tbody th {
+  font-size: 12px;
+  text-transform: uppercase; }
 .application-basket tbody tr:nth-child(even) td {
   background-color: #ffffff; }
 .application-basket tbody tr th {
@@ -2245,27 +2249,6 @@ label, .label {
       margin: 0; }
 .application-basket .basket-table-cell-block {
   margin-top: 1em; }
-
-table.striped {
-  width: 100%;
-  border: none;
-  border-spacing: 0; }
-  table.striped td, table.striped th {
-    border: 0;
-    padding: 5px;
-    vertical-align: top; }
-  table.striped thead tr {
-    background-color: #DFF2F8; }
-    table.striped thead tr th {
-      text-align: left; }
-  table.striped tbody tr:nth-child(even) {
-    background-color: #DFF2F8; }
-  table.striped tbody tr:nth-child(odd) {
-    background-color: #FFFFFF; }
-  table.striped tbody.headless tr:nth-child(even) {
-    background-color: #FFFFFF; }
-  table.striped tbody.headless tr:nth-child(odd) {
-    background-color: #DFF2F8; }
 
 /*** search-applications
 ************************************************/
@@ -2462,12 +2445,6 @@ table.striped {
 /* Postal code */
 span.post-office {
   margin-left: 10px; }
-
-.tarjonta-content a:before {
-  font-family: "fontello";
-  content: '\e801';
-  margin-right: .2em;
-  display: inline-block; }
 
 .remove {
   display: inline-block;
@@ -2967,6 +2944,31 @@ a.cssbutton {
     padding-left: 36px;
     background-repeat: no-repeat;
     background-position: 5px center; }
+
+table {
+  width: 100%;
+  border: none;
+  border-spacing: 0; }
+  table td, table th {
+    border: 0;
+    padding: 5px;
+    vertical-align: top; }
+  table thead tr th {
+    font-size: 12px;
+    text-align: left;
+    text-transform: uppercase; }
+  table.striped thead tr {
+    background-color: white; }
+  table.striped tbody tr:nth-child(even) {
+    background-color: white; }
+  table.striped tbody tr:nth-child(odd) {
+    background-color: #dff2f8; }
+  table.striped tbody.headless tr:nth-child(even) {
+    background-color: #dff2f8; }
+  table.striped tbody.headless tr:nth-child(odd) {
+    background-color: white; }
+  table.table tbody tr td {
+    border-top: 1px solid #bfe4f1; }
 
 /* Overlay */
 #overlay {
@@ -3867,6 +3869,35 @@ nav {
         position: absolute;
         left: 100%;
         top: 0; }
+
+/* styles for content coming from tarjonta */
+.tarjonta-content a:before {
+  font-family: "fontello";
+  content: '\e801';
+  margin-right: .2em;
+  display: inline-block; }
+.tarjonta-content table {
+  width: 100%;
+  border: none;
+  border-spacing: 0; }
+  .tarjonta-content table td, .tarjonta-content table th {
+    border: 0;
+    padding: 5px;
+    vertical-align: top; }
+  .tarjonta-content table thead tr {
+    background-color: white; }
+    .tarjonta-content table thead tr th {
+      font-size: 12px;
+      text-transform: uppercase;
+      text-align: left; }
+  .tarjonta-content table tbody tr:nth-child(odd) {
+    background-color: #dff2f8; }
+  .tarjonta-content table tbody tr:nth-child(even) {
+    background-color: white; }
+  .tarjonta-content table tbody.headless tr:nth-child(odd) {
+    background-color: white; }
+  .tarjonta-content table tbody.headless tr:nth-child(even) {
+    background-color: #dff2f8; }
 
 /*** Main navigation
 **************************************************************/
