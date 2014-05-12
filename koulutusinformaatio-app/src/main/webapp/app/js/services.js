@@ -455,6 +455,7 @@ service('HigherEducationLOService', ['$http', '$timeout', '$q', 'LanguageService
                     //parent: {},
                     provider: result.provider
                 }
+                
                 deferred.resolve(loResult);
             }).
             error(function(result) {
@@ -1197,6 +1198,28 @@ service('LearningOpportunityProviderPictureService', ['$http', '$timeout', '$q',
         }
     }
 }]).
+
+/**
+ *  Resource for requesting LO picture
+ */
+service('LearningOpportunityPictureService', ['$http', '$timeout', '$q', function($http, $timeout, $q) {
+    return  {
+        query: function(options) {
+            var deferred = $q.defer();
+            
+            $http.get('../lo/picture/' + options.pictureId).
+            success(function(result) {
+                deferred.resolve(result);
+            }).
+            error(function(result) {
+                deferred.reject(result);
+            });
+
+            return deferred.promise;
+        }
+    }
+}]).
+
 
 /**
  *  Service taking care of search term saving

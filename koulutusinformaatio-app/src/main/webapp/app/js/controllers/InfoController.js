@@ -1,7 +1,7 @@
 /**
  *  Controller for info views (parent and child)
  */
- function InfoCtrl($scope, $rootScope, $routeParams, $location, SearchService, LearningOpportunityProviderPictureService, UtilityService, TranslationService, Config, loResource, LanguageService, VirkailijaLanguageService, _) {
+ function InfoCtrl($scope, $rootScope, $routeParams, $location, SearchService, LearningOpportunityPictureService, LearningOpportunityProviderPictureService, UtilityService, TranslationService, Config, loResource, LanguageService, VirkailijaLanguageService, _) {
     $scope.loType = $routeParams.loType;
 
     $scope.queryString = SearchService.getTerm();
@@ -224,6 +224,18 @@
             LearningOpportunityProviderPictureService.query({providerId: data.id}).then(function(result) {
                 $scope.providerImage = result;
             });
+        }
+    });
+    
+    $scope.$watch('lo', function(data) {
+        if (data && data.structureImageId) {
+        	if (data.structureImage && data.structureImage != null) {
+        		$scope.structureImage = data.structureImage;
+        	} else {
+        		LearningOpportunityPictureService.query({pictureId: data.structureImageId}).then(function(result) {
+        			$scope.structureImage = result;
+        		});
+        	}
         }
     });
 

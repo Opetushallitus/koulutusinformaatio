@@ -36,7 +36,9 @@ import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOSRef;
+import fi.vm.sade.koulutusinformaatio.domain.I18nPicture;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
+import fi.vm.sade.koulutusinformaatio.domain.Picture;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
@@ -58,6 +60,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KuvaV1RDTO;
 import fi.vm.sade.tarjonta.service.types.TarjontaTila;
 
 /**
@@ -185,6 +188,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                 }
                 try {
                     HigherEducationLOS los = creator.createHigherEducationLOS(koulutusDTO, true);
+                    los.setStructureImage(retrieveStructureImage(curKoulutus.getOid()));
                     koulutukset.add(los);
                     List<HigherEducationLOS> loss = komoToLOSMap.get(koulutusDTO.getKomoOid());
                     if (loss == null) {
@@ -205,6 +209,24 @@ public class TarjontaServiceImpl implements TarjontaService {
         }
 
         return createChildHierarchy(koulutukset, komoToLOSMap, parentOids, aoToEducationsMap);
+    }
+
+    private I18nPicture retrieveStructureImage(String oid) throws KoodistoException {
+        I18nPicture structureImage = null;
+        ResultV1RDTO<List<KuvaV1RDTO>> result = this.tarjontaRawService.getStructureImages(oid);
+        List<KuvaV1RDTO> imageDtos = result != null ? result.getResult() : null;
+        
+        if (imageDtos != null && !imageDtos.isEmpty()) {
+            structureImage = new I18nPicture();
+            for (KuvaV1RDTO curDto : imageDtos) {
+                String kielikoodi =  this.koodistoService.searchFirstCodeValue(curDto.getKieliUri());
+                Picture pict = new Picture();
+                pict.setId(String.format("%s_%s", oid, kielikoodi.toLowerCase()));
+                pict.setPictureEncoded(curDto.getBase64data());
+                structureImage.getPictureTranslations().put(kielikoodi.toLowerCase(), pict);
+            }
+        }
+        return structureImage;
     }
 
     private void updateAOLosReferences(HigherEducationLOS los,
@@ -301,6 +323,8 @@ public class TarjontaServiceImpl implements TarjontaService {
         ResultV1RDTO<Set<String>> parentKomoOids = this.tarjontaRawService.getParentsOfHigherEducationLOS(koulutusDTO.getKomoOid());
         los.setChildren(getHigherEducationRelatives(childKomoOids, creator));
         los.setParents(getHigherEducationRelatives(parentKomoOids, creator));
+        
+        los.setStructureImage(retrieveStructureImage(los.getId()));
         
         return los;
     }
