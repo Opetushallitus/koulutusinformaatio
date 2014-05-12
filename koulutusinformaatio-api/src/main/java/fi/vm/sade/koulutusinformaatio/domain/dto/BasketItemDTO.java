@@ -16,11 +16,11 @@
 
 package fi.vm.sade.koulutusinformaatio.domain.dto;
 
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 /**
  * @author Mikko Majapuro
@@ -31,6 +31,7 @@ public class BasketItemDTO {
     private String applicationSystemId;
     private String applicationSystemName;
     private int maxApplicationOptions;
+    private String applicationFormLink;
     private List<DateRangeDTO> applicationDates = new ArrayList<DateRangeDTO>();
     private List<BasketApplicationOptionDTO> applicationOptions = new ArrayList<BasketApplicationOptionDTO>();
     private boolean asOngoing;
@@ -90,5 +91,13 @@ public class BasketItemDTO {
 
     public void setMaxApplicationOptions(int maxApplicationOptions) {
         this.maxApplicationOptions = maxApplicationOptions;
+    }
+
+    public String getApplicationFormLink() {
+        return applicationFormLink;
+    }
+
+    public void setApplicationFormLink(String applicationFormLink) {
+        this.applicationFormLink = applicationFormLink;
     }
 }

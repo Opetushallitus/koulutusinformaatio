@@ -35,7 +35,7 @@ public final class ApplicationOptionToDTO {
             ApplicationOptionDTO dto = new ApplicationOptionDTO();
             dto.setId(applicationOption.getId());
             dto.setType(applicationOption.getType());
-            dto.setEducationTypeUri(applicationOption.getEducationTypeUri());
+            dto.setEducationTypeUri(createEducationTypeUri(applicationOption.getEducationTypeUri()));
             dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getName(), defaultLang));
             dto.setAoIdentifier(applicationOption.getAoIdentifier());
             dto.setAttachmentDeliveryDeadline(applicationOption.getAttachmentDeliveryDeadline());
@@ -99,5 +99,14 @@ public final class ApplicationOptionToDTO {
         dto.setSoraDescription(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getSoraDescription(), lang));
         dto.setAdditionalInfo(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getAdditionalInfo(), lang));
         return dto;
+    }
+    
+    private static String createEducationTypeUri(String educationTypeUri) {
+        
+        if (educationTypeUri != null) {
+            return educationTypeUri.replace(".", "");
+        }
+        
+        return null;
     }
 }

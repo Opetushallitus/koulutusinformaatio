@@ -22,12 +22,14 @@ import com.google.common.collect.Maps;
 
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
+import fi.vm.sade.koulutusinformaatio.domain.DateRange;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOSRef;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.dto.BasketApplicationOptionDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.BasketItemDTO;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +42,8 @@ public final class ApplicationOptionToBasketItemDTO {
     }
 
     private final static String FALLBACK_LANG = "fi";
+    private final static String HAKUTAPA_JATKUVA = "03";
+    private final static String HAKU_GENERIC_ID = "erikseenHaettavatHakukohteet";
 
     public static List<BasketItemDTO> convert(final List<ApplicationOption> aos, String uiLang) {
         if (aos != null) {
@@ -49,7 +53,11 @@ public final class ApplicationOptionToBasketItemDTO {
 
                 String lang = null;
                 try {
-                    lang = ao.getTeachingLanguages().get(0).toLowerCase();
+                    if (ao.getTeachingLanguages().size() == 1) {
+                        lang = ao.getTeachingLanguages().get(0).toLowerCase();
+                    } else {
+                        lang = uiLang;
+                    }
                 } catch (Exception e) {
                     lang = FALLBACK_LANG;
                 }
@@ -74,7 +82,7 @@ public final class ApplicationOptionToBasketItemDTO {
                 aoDTO.setKaksoistutkinto(ao.isKaksoistutkinto());
                 aoDTO.setVocational(ao.isVocational());
                 aoDTO.setEducationCodeUri(ao.getEducationCodeUri());
-                aoDTO.setEducationTypeUri(ao.getEducationTypeUri());
+                aoDTO.setEducationTypeUri(createEducationTypeUri(ao.getEducationTypeUri()));
                 aoDTO.setPrerequisite( CodeToDTO.convert(ao.getPrerequisite(), lang) );
                 ParentLOSRef los = ao.getParent();
                 if (los != null) {
@@ -90,23 +98,74 @@ public final class ApplicationOptionToBasketItemDTO {
                     }
                 }
                 ApplicationSystem as = ao.getApplicationSystem();
-                if (as != null && items.containsKey(as.getId())) {
-                    items.get(as.getId()).getApplicationOptions().add(aoDTO);
-                } else if (as != null) {
-                    BasketItemDTO basketItem = new BasketItemDTO();
-                    basketItem.setMaxApplicationOptions(as.getMaxApplications());
-                    basketItem.setApplicationSystemId(as.getId());
-                    basketItem.getApplicationOptions().add(aoDTO);
-                    basketItem.setApplicationSystemName(ConverterUtil.getTextByLanguageUseFallbackLang(as.getName(), uiLang));
-                    basketItem.setApplicationDates(DateRangeToDTO.convert(as.getApplicationDates()));
-                    basketItem.setAsOngoing(ConverterUtil.isOngoing(as.getApplicationDates()));
-                    basketItem.setNextApplicationPeriodStarts(ConverterUtil.resolveNextDateRangeStart(as.getApplicationDates()));
-                    items.put(as.getId(), basketItem);
+                
+                // add to generic application system pool
+                if (as.getMaxApplications() <= 1 || isHakutapaJatkuva(as) || ao.isSpecificApplicationDates() || as.getApplicationFormLink() != null) {
+                    
+                    // use application system specific application dates if application option specific dates are not available
+                    if (!ao.isSpecificApplicationDates()) {
+                        aoDTO.setApplicationDates( DateRangeToDTO.convert(as.getApplicationDates()) );
+                        aoDTO.setCanBeApplied(ConverterUtil.isOngoing(as.getApplicationDates()));
+                        aoDTO.setNextApplicationPeriodStarts(ConverterUtil.resolveNextDateRangeStart(as.getApplicationDates()));
+                    } else {
+                        aoDTO.setApplicationDates(DateRangeToDTO.convert(ao.getApplicationDates()));
+                        aoDTO.setCanBeApplied(ConverterUtil.isOngoing(ao.getApplicationDates()));
+                        aoDTO.setNextApplicationPeriodStarts(ConverterUtil.resolveNextDateRangeStart(ao.getApplicationDates()));
+                    }
+                    
+                    // set hakutapa for application option
+                    aoDTO.setHakutapaUri(as.getHakutapaUri());
+                    
+                    // set application form link from application system to application option
+                    aoDTO.setApplicationFormLink(as.getApplicationFormLink());
+                    
+                    if (items.containsKey( HAKU_GENERIC_ID )) {
+                        items.get( HAKU_GENERIC_ID ).getApplicationOptions().add(aoDTO);
+                    } else {
+                        BasketItemDTO basketItem = new BasketItemDTO();
+                        basketItem.setApplicationSystemId(HAKU_GENERIC_ID);
+                        basketItem.setMaxApplicationOptions(1);
+                        basketItem.getApplicationOptions().add(aoDTO);
+                        items.put(HAKU_GENERIC_ID, basketItem);
+                    }
+                } else {
+                    if (as != null && items.containsKey(as.getId())) {
+                        items.get(as.getId()).getApplicationOptions().add(aoDTO);
+                    } else if (as != null) {
+                        BasketItemDTO basketItem = new BasketItemDTO();
+                        basketItem.setApplicationFormLink( as.getApplicationFormLink() );
+                        basketItem.setMaxApplicationOptions(as.getMaxApplications());
+                        basketItem.setApplicationSystemId(as.getId());
+                        basketItem.getApplicationOptions().add(aoDTO);
+                        basketItem.setApplicationSystemName(ConverterUtil.getTextByLanguageUseFallbackLang(as.getName(), uiLang));
+                        basketItem.setApplicationDates(DateRangeToDTO.convert(as.getApplicationDates()));
+                        basketItem.setAsOngoing(ConverterUtil.isOngoing(as.getApplicationDates()));
+                        basketItem.setNextApplicationPeriodStarts(ConverterUtil.resolveNextDateRangeStart(as.getApplicationDates()));
+                        items.put(as.getId(), basketItem);
+                    }
                 }
             }
             return Lists.newArrayList(items.values());
         } else {
             return null;
         }
+    }
+    
+    private static String createEducationTypeUri(String educationTypeUri) {
+        
+        if (educationTypeUri != null) {
+            return educationTypeUri.replace(".", "");
+        }
+        
+        return null;
+    }
+
+    private static boolean isHakutapaJatkuva(ApplicationSystem as) {
+        if (as.getHakutapaUri() != null && as.getHakutapaUri().equals(HAKUTAPA_JATKUVA)) {
+            return true;
+        }
+        
+        return false;
+        
     }
 }

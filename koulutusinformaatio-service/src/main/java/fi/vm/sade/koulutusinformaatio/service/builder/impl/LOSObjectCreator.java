@@ -147,7 +147,7 @@ public class LOSObjectCreator extends ObjectCreator {
         childLOS.setGoals(getI18nText(childKomo.getTekstit().get(KomoTeksti.TAVOITTEET)));
         // strip version out of education code uri
         String educationCodeUri = childKomo.getKoulutusKoodiUri().split("#")[0];
-        childLOS.setLois(loiCreator.createChildLOIs(childKomotos, childLOS.getId(), childLOS.getName(), educationCodeUri));
+        childLOS.setLois(loiCreator.createChildLOIs(childKomotos, childLOS.getId(), childLOS.getName(), educationCodeUri, SolrConstants.ED_TYPE_AMMATILLINEN_SHORT));
         return childLOS;
     }
 
@@ -196,7 +196,7 @@ public class LOSObjectCreator extends ObjectCreator {
         String educationCodeUri = childKomo.getKoulutusKoodiUri().split("#")[0];
 
         if (CreatorUtil.komotoPublished.apply(childKomoto)) {
-            ChildLOI loi = loiCreator.createChildLOI(childKomoto, specialLOSId, los.getName(), educationCodeUri);
+            ChildLOI loi = loiCreator.createChildLOI(childKomoto, specialLOSId, los.getName(), educationCodeUri, resolveEducationType(los));
             lois.add(loi);
         }
         if (!lois.isEmpty() && los.getType().equals(TarjontaConstants.TYPE_PREP)) {
@@ -205,6 +205,29 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setLois(lois);
 
         return los;
+    }
+
+    private String resolveEducationType(SpecialLOS los) {
+        if (los.getType().equals(TarjontaConstants.TYPE_REHAB)) {
+            return SolrConstants.ED_TYPE_VALMENTAVA_SHORT;
+            
+        } else if (los.getType().equals(TarjontaConstants.TYPE_PREP)) {
+            if (los.getEducationTypeUri().equals(TarjontaConstants.PREPARATORY_VOCATIONAL_EDUCATION_TYPE)) {
+                return SolrConstants.ED_TYPE_VOC_PREP;
+            } else if (los.getEducationTypeUri().equals(TarjontaConstants.TENTH_GRADE_EDUCATION_TYPE)) {
+                return SolrConstants.ED_TYPE_TENTH_GRADE;
+            } else if (los.getEducationTypeUri().equals(TarjontaConstants.IMMIGRANT_PREPARATORY_UPSEC)) {
+                return SolrConstants.ED_TYPE_IMM_UPSEC;
+            } else if (los.getEducationTypeUri().equals(TarjontaConstants.IMMIGRANT_PREPARATORY_VOCATIONAL)) {
+                return SolrConstants.ED_TYPE_IMM_VOC;
+            } else if (los.getEducationTypeUri().equals(TarjontaConstants.KANSANOPISTO_TYPE)) {
+                return SolrConstants.ED_TYPE_KANSANOPISTO;
+            } 
+        }
+        else {
+            return SolrConstants.ED_TYPE_AMM_ER_SHORT;
+        }
+        return null;
     }
 
     private void createNameForLos(List<ChildLOI> lois, SpecialLOS los) {
@@ -248,7 +271,7 @@ public class LOSObjectCreator extends ObjectCreator {
 
         // strip version out of education code uri
         String educationCodeUri = childKomo.getKoulutusKoodiUri().split("#")[0];
-        los.setLois(loiCreator.createChildLOIs(childKomotos, specialLOSId, los.getName(), educationCodeUri));
+        los.setLois(loiCreator.createChildLOIs(childKomotos, specialLOSId, los.getName(), educationCodeUri, this.resolveEducationType(los)));
         return los;
     }
 
@@ -279,7 +302,7 @@ public class LOSObjectCreator extends ObjectCreator {
         }
         // strip version out of education code uri
         String educationCodeUri = komo.getKoulutusKoodiUri().split("#")[0];
-        los.setLois(loiCreator.createUpperSecondaryLOIs(komotos, losID, los.getName(), educationCodeUri));
+        los.setLois(loiCreator.createUpperSecondaryLOIs(komotos, losID, los.getName(), educationCodeUri, SolrConstants.ED_TYPE_LUKIO_SHORT));
         return los;
     }
 

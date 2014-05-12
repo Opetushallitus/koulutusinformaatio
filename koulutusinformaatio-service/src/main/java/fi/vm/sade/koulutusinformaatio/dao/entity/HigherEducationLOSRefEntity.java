@@ -20,6 +20,8 @@ public class HigherEducationLOSRefEntity {
     private List<I18nTextEntity> qualifications;
     @Embedded
     private CodeEntity prerequisite;
+    @Embedded
+    private I18nTextEntity provider;
     
     public String getId() {
         return id;
@@ -50,6 +52,12 @@ public class HigherEducationLOSRefEntity {
     }
     public void setPrerequisite(CodeEntity prerequisite) {
         this.prerequisite = prerequisite;
+    }
+    public I18nTextEntity getProvider() {
+        return provider;
+    }
+    public void setProvider(I18nTextEntity provider) {
+        this.provider = provider;
     }
 
 }
