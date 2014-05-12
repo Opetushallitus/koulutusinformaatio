@@ -79,7 +79,7 @@
         <profile>
             <id>clover</id>
             <properties>
-                <clover.version>3.3.0</clover.version>
+                <clover.version>3.1.8</clover.version>
                 <clover.fullRunEvery>500</clover.fullRunEvery>
                 <clover.generateHistorical>true</clover.generateHistorical>
                 <clover.base>/data00/atlassian/application-data/bamboo/clover_koulutusinformaatio</clover.base>
