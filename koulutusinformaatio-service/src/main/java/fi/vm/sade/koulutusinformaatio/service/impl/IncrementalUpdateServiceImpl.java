@@ -141,6 +141,11 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             
             if (TarjontaConstants.STATE_PUBLISHED.equals(komotoDto.getTila())) {
                 List<LOS> losses = this.dataQueryService.findLearningOpportunitiesByLoiId(curKoulutusOid);
+                for (LOS curLos : losses) {
+                    if (curLos instanceof ChildLOS) {
+                        
+                    }
+                }
             }
             
         }

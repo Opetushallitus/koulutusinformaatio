@@ -32,9 +32,5 @@ public class ChildLearningOpportunityDAO extends LearningOpportunitySpecificatio
         super(primaryDatastore, secondaryDatastore);
     }
     
-    public List<ChildLearningOpportunitySpecificationEntity> findByLoiId(String loiId) {
-        Query<ChildLearningOpportunitySpecificationEntity> q = createQuery();
-        q.field("lois.id").equal(loiId);
-        return find(q).asList();
-    }
+
 }
