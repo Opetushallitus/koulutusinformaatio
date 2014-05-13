@@ -177,10 +177,11 @@
     "application-basket-empty": "Töm minneslistan",
     "application-basket-empty-confirm": "Är du säker på att du vill tömma minneslistan?",
     "application-basket-overflow-warning": "I denna ansökan kan du söka till högst __itemcount__ utbildningar, stryk de som är överlopps.",
-    "application-basket-fill-form-notification-single-ao": "I denna ansökan ska du fylla i en egen ansökningsblankett för varje utbildning.",
+    "application-basket-fill-form-notification-single-ao": "Jokaiseen tässä listattavaan koulutukseen tulee hakea erikseen. Osaan koulutuksista haetaan oppilaitoksen omien sivujen kautta. (sv)",
     "application-basket-attachments-exams": "Bilagor och prov",
     "application-basket-due-date": "Deadline för bilaga eller tidpunkt för prov",
-    "application-basket-remove": "Avlägsna",
+
+    "erikseenHaettavatHakukohteet": "Erikseen haettavat hakukohteet (sv)",
 
     "popup-close": "Stäng",
     "popup-continue": "Fortsätt",

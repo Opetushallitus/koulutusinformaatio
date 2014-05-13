@@ -1,0 +1,34 @@
+<a href="javascript:void(0)" class="remove" data-ng-click="removeItem(item.id)" title="{{tooltips.removeApplicationOption}}"></a>
+
+<div data-ng-if="isErikseenHaettava(as)" class="disc basket-table-cell-block">
+    <form data-ng-if="!item.applicationFormLink" action="{{hakuAppUrl + 'lomake/' + as.applicationSystemId}}" id="application-form-{{as.applicationSystemId}}" method="post" target="hakulomake">
+        <input type="hidden" name="preference1-Opetuspiste" value="{{item.providerName}}"/>
+        <input type="hidden" name="preference1-Opetuspiste-id" value="{{item.providerId}}"/>
+        <input type="hidden" name="preference1-Koulutus-id-athlete" value="{{item.athleteEducation}}"/>
+        <input type="hidden" name="preference1-Koulutus" value="{{item.name}}"/>
+        <input type="hidden" name="preference1-Koulutus-id" value="{{item.id}}"/>
+        <input type="hidden" name="preference1-Koulutus-educationDegree" value="{{item.educationDegree}}"/>
+        <input type="hidden" name="preference1-Koulutus-id-sora" value="{{item.sora}}" />
+        <input type="hidden" name="preference1-Koulutus-id-lang" value="{{item.teachLang}}" />
+        <input type="hidden" name="preference1-Koulutus-id-aoIdentifier" value="{{item.aoIdentifier}}" />
+        <input type="hidden" name="preference1-Koulutus-id-kaksoistutkinto" value="{{item.kaksoistutkinto}}" />
+        <input type="hidden" name="preference1-Koulutus-id-vocational" value="{{item.vocational}}" />
+        <input type="hidden" name="preference1-Koulutus-id-educationcode" value="{{item.educationCodeUri}}" />
+        <button class="primary clear float-right" data-ng-disabled="isApplicationOptionDisabled(item)" type="submit">
+            <span>
+                <span data-ki-i18n="application-basket-fill-form"></span>
+            </span>
+        </button>
+    </form>
+
+    <div data-ng-if="item.applicationFormLink">
+        <a data-ng-if="!isApplicationOptionDisabled(item)" data-ng-href="{{item.applicationFormLink}}" title="{{tooltips.externalApplicationForm}}" target="_blank">
+        <i class="icon-link-ext-alt"></i><span data-ki-i18n="apply-button-label"></span>
+        </a>
+        <span data-ng-if="isApplicationOptionDisabled(item)" class="text-disabled">
+            <i class="icon-link-ext-alt"></i><span data-ki-i18n="apply-button-label"></span>
+        </a>
+    </div>
+
+    <div class="margin-top-1 float-right clear" data-ki-app-basket-application-status data-ao="item"></div>
+</div>

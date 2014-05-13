@@ -29,6 +29,8 @@ public class ApplicationSystem {
     private List<DateRange> applicationDates = new ArrayList<DateRange>();
     private String status;
     private int maxApplications;
+    private String applicationFormLink;
+    private String hakutapaUri;
 
 
     public String getId() {
@@ -86,5 +88,21 @@ public class ApplicationSystem {
 
     public void setMaxApplications(int maxApplications) {
         this.maxApplications = maxApplications;
+    }
+
+    public String getApplicationFormLink() {
+        return applicationFormLink;
+    }
+
+    public void setApplicationFormLink(String applicationFormLink) {
+        this.applicationFormLink = applicationFormLink;
+    }
+
+    public String getHakutapaUri() {
+        return hakutapaUri;
+    }
+
+    public void setHakutapaUri(String hakutapaUri) {
+        this.hakutapaUri = hakutapaUri;
     }
 }

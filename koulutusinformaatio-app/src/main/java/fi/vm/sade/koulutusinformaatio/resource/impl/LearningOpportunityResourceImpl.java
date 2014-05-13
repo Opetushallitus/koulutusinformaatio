@@ -230,4 +230,13 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
             throw KIExceptionHandler.resolveException(ex);
         }
     }
+
+    @Override
+    public PictureDTO getPicture(String id) {
+        try {
+            return learningOpportunityService.getPicture(id);
+        } catch (ResourceNotFoundException ex) {
+            throw KIExceptionHandler.resolveException(ex);
+        }
+    }
 }

@@ -32,6 +32,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KuvaV1RDTO;
 
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.codehaus.jackson.map.DeserializationConfig;
@@ -269,6 +270,16 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                 .queryParam("komoOid", komoOid)
                 .accept(JSON_UTF8)
                 .get(new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
+                });
+    }
+
+    @Override
+    public ResultV1RDTO<List<KuvaV1RDTO>> getStructureImages(String koulutusOid) {
+        return higherEducationResource
+                .path(koulutusOid)
+                .path("kuva")
+                .accept(JSON_UTF8)
+                .get(new GenericType<ResultV1RDTO<List<KuvaV1RDTO>>>() {
                 });
     }
 }

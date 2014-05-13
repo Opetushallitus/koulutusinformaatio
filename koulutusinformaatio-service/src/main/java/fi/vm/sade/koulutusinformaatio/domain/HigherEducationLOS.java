@@ -82,8 +82,8 @@ public class HigherEducationLOS extends LOS {
 
     private List<Code> facetPrerequisites;
     private String educationType;
-
-
+    
+    private I18nPicture structureImage;
 
     public String getId() {
         return id;
@@ -463,6 +463,14 @@ public class HigherEducationLOS extends LOS {
     }
     public String getEducationType() {
         return educationType;   
+    }
+
+    public I18nPicture getStructureImage() {
+        return structureImage;
+    }
+
+    public void setStructureImage(I18nPicture structureImage) {
+        this.structureImage = structureImage;
     }
     
 }

@@ -1,4 +1,4 @@
-<div data-ng-if="as.maxApplicationOptions > 1">
+<div data-ng-if="!isErikseenHaettava(as)">
     <span class="float-right clear margin-bottom-2">{{getNotificationText(as.maxApplicationOptions)}}</span>
     <span class="float-right clear margin-bottom-2" data-ki-i18n="application-basket-fill-form-notification-2"></span>
 
@@ -23,11 +23,20 @@
                 <div class="notification warning clear float-right margin-bottom-2">{{getOverflowWarning(as.maxApplicationOptions)}}</div>
             </div>
 
-            <button class="primary clear float-right" data-ng-disabled="applyButtonIsDisabled(as.applicationSystemId)" type="submit">
+            <button data-ng-if="!as.applicationFormLink" class="primary clear float-right" data-ng-disabled="isApplicationSystemDisabled(as)" type="submit">
                 <span>
                     <span data-ki-i18n="application-basket-fill-form"></span>
                 </span>
             </button>
+
+            <div data-ng-if="as.applicationFormLink" class="primary clear float-right">
+                <a data-ng-if="!isApplicationSystemDisabled(as)" data-ng-href="{{as.applicationFormLink}}" title="{{tooltips.externalApplicationForm}}" target="_blank" class="last text-disabled">
+                <i class="icon-link-ext-alt"></i><span data-ki-i18n="apply-button-label"></span>
+                </a>
+                <span data-ng-if="isApplicationSystemDisabled(as)">
+                    <i class="icon-link-ext-alt"></i><span data-ki-i18n="apply-button-label"></span>
+                </a>
+            </div>
 
             <a href="javascript:void(0)" data-ng-click="removeApplicationSystemFromBasket(as.applicationSystemId)" data-ki-i18n="application-basket-empty" class="float-right block"></a>
             <div class="margin-top-2 float-right clear" data-ki-render-application-status-label data-as="as"></div>

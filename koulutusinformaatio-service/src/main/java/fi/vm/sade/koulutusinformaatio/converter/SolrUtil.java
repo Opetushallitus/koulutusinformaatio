@@ -352,6 +352,11 @@ public final class SolrUtil {
         public static final String ED_TYPE_AMMATILLISET = "et01.03";
         public static final String ED_TYPE_AMMATILLINEN = "et01.03.01";
         public static final String ED_TYPE_AMM_ER = "et01.03.02";
+        
+        public static final String ED_TYPE_LUKIO_SHORT = "et1";
+        public static final String ED_TYPE_AMMATILLINEN_SHORT = "et3";
+        public static final String ED_TYPE_AMM_ER_SHORT = "et4";
+        public static final String ED_TYPE_VALMENTAVA_SHORT = "et5";
 
         public static final String ED_TYPE_AMKS = "et01.04";
         public static final String ED_TYPE_AMK = "et01.04.01";

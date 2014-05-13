@@ -1,0 +1,21 @@
+<table class="sub">
+        <colgroup>
+        <col style="width: 50%;"></col>
+        <col style="width: 50%;"></col>
+    </colgroup>
+    <tr data-ng-repeat="attachment in item.attachments | orderBy:'dueDate'">
+        <td class="align-right">{{attachment.type}}</td>
+        <td class="bold"><span data-ki-timestamp="{{attachment.dueDate}}"></span></td>
+    </tr>
+    <tr data-ng-repeat="exam in item.exams">
+        <td class="align-right">
+            <span data-ng-show="exam.type">{{exam.type}}</span>
+            <span data-ng-show="!exam.type" data-ki-i18n="entrance-exam">{{exam.type}}</span>
+        </td>
+        <td class="bold">
+            <span data-ng-repeat="examEvent in exam.examEvents | orderBy:'start'">
+                <span data-ki-time-interval data-exam-event="examEvent"></span><br/>
+            </span>
+        </td>
+    </tr>
+</table>

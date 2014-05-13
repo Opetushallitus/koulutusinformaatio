@@ -8,7 +8,8 @@
     </colgroup>
     <thead>
         <tr>
-            <th colspan="5"><span class="margin-0 block h2">{{as.applicationSystemName}} <span data-ki-timestamp="{{as.applicationDates.startDate}}"></span> - <span data-ki-timestamp="{{as.applicationDates.endDate}}"></span></span></th>
+            <th data-ng-if="isErikseenHaettava(as)" colspan="5"><span class="margin-0 block h2" data-ki-i18n="erikseenHaettavatHakukohteet"></span></th>
+            <th data-ng-if="!isErikseenHaettava(as)" colspan="5"><span class="margin-0 block h2">{{as.applicationSystemName}} <span data-ki-timestamp="{{as.applicationDates.startDate}}"></span> - <span data-ki-timestamp="{{as.applicationDates.endDate}}"></span></span></th>
         </tr>
     </thead>
     <tbody>
@@ -19,7 +20,7 @@
             <th data-ki-i18n="application-basket-due-date"></th>
             <th class="last"></th>
         </tr>
-        <tr data-ng-repeat="item in as.applicationOptions" data-ng-class="{last: $last}" ki-app-basket-applicationoption></tr>
+        <tr data-ng-repeat="item in as.applicationOptions" data-ng-class="{last: $last}" ki-app-basket-applicationoption="{{item.type}}"></tr>
     </tbody>
     <tfoot></tfoot>
 </table>

@@ -184,6 +184,15 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
                     modelMapper.map(los, HigherEducationLOSEntity.class);
 
             save(plos.getProvider());
+            
+            
+            if (plos.getStructureImage() != null 
+                    && plos.getStructureImage().getPictureTranslations() != null 
+                    && plos.getStructureImage().getPictureTranslations() != null) {
+                for (PictureEntity curPict : plos.getStructureImage().getPictureTranslations().values()) {
+                    save(curPict);
+                }
+            }
 
 
             if (plos.getApplicationOptions() != null) {
