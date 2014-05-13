@@ -579,6 +579,9 @@ directive('renderTextBlock', ['TranslationService', function(TranslationService)
                         element.append(titleElement);
                     }
                     element.append(content);
+
+                    // all links will open to a new tab
+                    element.find('a').attr('target', '_blank');
                 }
                 
             };
@@ -605,7 +608,6 @@ directive('renderExtendableTextBlock', ['TranslationService', function(Translati
         link: function(scope, element, attrs) {
             var contentElement = $(element).find('.extendable-content');
             var contentHeight;
-
 
             scope.$watch(function() { return contentElement.is(':visible') }, function(value) {
                 contentHeight = contentElement.get(0).offsetHeight;
