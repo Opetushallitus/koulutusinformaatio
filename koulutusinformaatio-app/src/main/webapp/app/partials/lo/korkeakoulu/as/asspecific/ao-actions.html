@@ -1,8 +1,17 @@
-<button type="submit" data-ng-disabled="!applicationSystemIsActive(as) || lo.preview">
-  <span>
-   <span data-ki-i18n="apply-button-label" data-lang="{{teachingLang}}"></span>
-</span>
+<button data-ng-if="!as.applicationFormLink" type="submit" data-ng-disabled="!applicationSystemIsActive(as) || lo.preview">
+    <span>
+        <span data-ki-i18n="apply-button-label" data-lang="{{teachingLang}}"></span>
+    </span>
 </button>
+
+<div class="inline-block" data-ng-if="as.applicationFormLink">
+    <a data-ng-if="applicationSystemIsActive(as)" data-ng-href="{{as.applicationFormLink}}" title="{{tooltips.externalApplicationForm}}" target="_blank">
+    <i class="icon-link-ext-alt"></i><span data-ki-i18n="apply-button-label" data-lang="{{teachingLang}}"></span>
+    </a>
+    <span data-ng-if="!applicationSystemIsActive(as)" class="text-disabled">
+        <i class="icon-link-ext-alt"></i><span data-ki-i18n="apply-button-label" data-lang="{{teachingLang}}"></span>
+    </a>
+</div>
 
 <div data-ng-switch="isItemAddedToBasket(ao.id)" class="add-to-basket">
     <span data-ng-switch-when="true">

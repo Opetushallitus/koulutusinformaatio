@@ -170,7 +170,8 @@ directive('srExtendedOptions', ['TranslationService','Config', function (Transla
             $scope.locales = {
                 hakuaika: TranslationService.getTranslation('application-period'),
                 hakukaynnissa: TranslationService.getTranslation('application-system-active-present'),
-                hakupaattynyt: TranslationService.getTranslation('application-system-active-past')
+                hakupaattynyt: TranslationService.getTranslation('application-system-active-past'),
+                externalApplicationForm: TranslationService.getTranslation('tooltip:external-application-form')
             } 
         }
     };
