@@ -283,4 +283,10 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
         return HigherEducationLOSToDTO.convert(los, uiLang, uiLang);
     }
 
+    @Override
+    public DataStatus getLastSuccesfulDataStatus() { 
+       return educationDataQueryService.getLatestSuccessDataStatus();
+        
+    }
+
 }

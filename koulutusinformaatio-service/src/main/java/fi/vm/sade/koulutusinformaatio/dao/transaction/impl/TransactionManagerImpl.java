@@ -69,6 +69,7 @@ public class TransactionManagerImpl implements TransactionManager {
     private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO;
     private HigherEducationLOSDAO higherEducationLOSTransactionDAO;
     private SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO;
+    private DataStatusDAO dataStatusTransactionDAO;
 
     private ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO;
     private ApplicationOptionDAO applicationOptionDAO;
@@ -116,6 +117,7 @@ public class TransactionManagerImpl implements TransactionManager {
             UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO,
             HigherEducationLOSDAO higherEducationLOSTransactionDAO,
             SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO,
+            DataStatusDAO dataStatusTransactionDAO,
             ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO,
             ApplicationOptionDAO applicationOptionDAO,
             ChildLearningOpportunityDAO childLearningOpportunityDAO,
@@ -157,6 +159,7 @@ public class TransactionManagerImpl implements TransactionManager {
         this.specialLearningOpportunitySpecificationDAO = specialLearningOpportunitySpecificationDAO;
         this.koodistoService = koodistoService;
         this.providerService = providerService;
+        this.dataStatusTransactionDAO = dataStatusTransactionDAO;
     }
 
     @Override
@@ -228,6 +231,7 @@ public class TransactionManagerImpl implements TransactionManager {
         upperSecondaryLOSTransactionDAO.getCollection().drop();
         higherEducationLOSTransactionDAO.getCollection().drop();
         specialLOSTransactionDAO.getCollection().drop();
+        dataStatusTransactionDAO.getCollection().drop();
     }
 
     private void dropDbCollections() {
@@ -308,7 +312,9 @@ public class TransactionManagerImpl implements TransactionManager {
         higherEducationLOSTransactionDAO.getCollection().drop();
         specialLOSTransactionDAO.getCollection().drop();*/
         
-        mongo.dropDatabase(transactionDbName);
+        //mongo.dropDatabase(transactionDbName);
+        
+        dropTransactionDbCollections();
         
         BasicDBObject cmd = new BasicDBObject("copydb", 1).append("fromdb", dbName).append("todb", this.transactionDbName);
         mongo.getDB("admin").command(cmd);
@@ -319,5 +325,7 @@ public class TransactionManagerImpl implements TransactionManager {
         BasicDBObject cmd = new BasicDBObject("copydb", 1).append("fromdb", transactionDbName).append("todb", dbName);
         dropDbCollections();
         mongo.getDB("admin").command(cmd);
+        dropTransactionDbCollections();
     }
+
 }

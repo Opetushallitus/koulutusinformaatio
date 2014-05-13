@@ -51,6 +51,14 @@ public class UpperSecondaryLearningOpportunitySpecificationEntity {
     private String creditValue;
     @Embedded
     private I18nTextEntity creditUnit;
+    
+    @Embedded
+    private List<CodeEntity> topics;
+    @Embedded
+    private List<CodeEntity> themes;
+    
+    private String type;
+
 
     public UpperSecondaryLearningOpportunitySpecificationEntity() {
     }
@@ -157,5 +165,29 @@ public class UpperSecondaryLearningOpportunitySpecificationEntity {
 
     public void setCreditUnit(I18nTextEntity creditUnit) {
         this.creditUnit = creditUnit;
+    }
+
+    public List<CodeEntity> getTopics() {
+        return topics;
+    }
+
+    public void setTopics(List<CodeEntity> topics) {
+        this.topics = topics;
+    }
+
+    public List<CodeEntity> getThemes() {
+        return themes;
+    }
+
+    public void setThemes(List<CodeEntity> themes) {
+        this.themes = themes;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

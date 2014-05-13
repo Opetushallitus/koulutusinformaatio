@@ -112,4 +112,6 @@ public interface LearningOpportunityService {
      */
 	HigherEducationLOSDTO previewLearningOpportunity(String id,
 			String lang, String uiLang) throws ResourceNotFoundException;
+
+    DataStatus getLastSuccesfulDataStatus();
 }
