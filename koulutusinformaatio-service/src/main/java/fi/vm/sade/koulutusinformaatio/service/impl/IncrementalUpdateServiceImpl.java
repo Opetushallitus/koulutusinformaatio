@@ -1,6 +1,7 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,17 +28,27 @@ import fi.vm.sade.koulutusinformaatio.domain.ParentLOSRef;
 import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOI;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.IncrementalUpdateService;
+import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
+import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
+import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
+import fi.vm.sade.koulutusinformaatio.service.builder.impl.LOIObjectCreator;
+import fi.vm.sade.koulutusinformaatio.service.builder.impl.LOSObjectCreator;
 import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
+import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 
 @Service
 @Profile("default")
@@ -50,18 +61,27 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
     private TransactionManager transactionManager;
     private EducationDataQueryService dataQueryService;
     private EducationDataUpdateService dataUpdateService;
+    private KoodistoService koodistoService;
+    private ProviderService providerService;
+    private TarjontaService tarjontaService;
     
     @Autowired
     public IncrementalUpdateServiceImpl(TarjontaRawService tarjontaRawService, 
                                          UpdateService updateService, 
                                          TransactionManager transactionManager,
                                          EducationDataQueryService dataQueryService,
-                                         EducationDataUpdateService dataUpdateService) {
+                                         EducationDataUpdateService dataUpdateService,
+                                         KoodistoService koodistoService,
+                                         ProviderService providerService,
+                                         TarjontaService tarjontaService) {
         this.tarjontaRawService = tarjontaRawService;
         this.updateService = updateService;
         this.transactionManager = transactionManager;
         this.dataQueryService = dataQueryService;
         this.dataUpdateService = dataUpdateService;
+        this.koodistoService = koodistoService;
+        this.providerService = providerService;
+        this.tarjontaService = tarjontaService;
     }
     
     @Override
@@ -96,6 +116,27 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
 
     private void indexApplicationSystemData(String asOid) {
         
+        ResultV1RDTO<HakuV1RDTO> higherEdAs = this.tarjontaRawService.getHigherEducationHakuByOid(asOid);
+        
+        if (higherEdAs != null && higherEdAs.getResult() != null) {
+            
+            indexHigherEdAsData(higherEdAs);
+            
+        } else {
+            indexSecondaryAsData(asOid);
+        }
+        
+        
+    }
+    
+    private void indexHigherEdAsData(ResultV1RDTO<HakuV1RDTO> higherEdAs) {
+       
+        
+        
+        
+    }
+
+    private void indexSecondaryAsData(String asOid) {
         HakuDTO asDto = this.tarjontaRawService.getHaku(asOid);
         String asState = asDto.getTila();
         //if (asState.equals(TarjontaConstants.STATE_PUBLISHED)) {
@@ -106,8 +147,6 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
                     indexApplicationOptionData(aoDto, asDto);
                 }
             }
-        //}
-        
     }
 
     private void indexApplicationOptionData(HakukohdeDTO aoDto, HakuDTO asDto) {
@@ -128,65 +167,281 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
     }
     
     private void updateApplicationOption(ApplicationOption ao) {
-        // TODO Auto-generated method stub
+        
+        
+        
         
     }
 
+    //when adding an applicatoin option, the lois that are connected to it
+    //need to be added or updated.
     private void addApplicationOption(HakukohdeDTO aoDto) {
-        
-        List<String> koulutusOids = aoDto.getHakukohdeKoulutusOids();
-        for (String curKoulutusOid : koulutusOids) {
-            
-            KomotoDTO komotoDto = this.tarjontaRawService.getKomoto(curKoulutusOid);
-            
-            if (TarjontaConstants.STATE_PUBLISHED.equals(komotoDto.getTila())) {
-                List<LOS> losses = this.dataQueryService.findLearningOpportunitiesByLoiId(curKoulutusOid);
-                for (LOS curLos : losses) {
-                    if (curLos instanceof ChildLOS) {
-                        
+
+
+        try {
+
+            List<String> koulutusOids = aoDto.getHakukohdeKoulutusOids();
+            for (String curKoulutusOid : koulutusOids) {
+                
+                
+
+                KomotoDTO komotoDto = this.tarjontaRawService.getKomoto(curKoulutusOid);
+
+                //if komoto (loi) is in state published it needs to be added or updated
+                if (TarjontaConstants.STATE_PUBLISHED.equals(komotoDto.getTila())) {
+                    List<LOS> losses = this.dataQueryService.findLearningOpportunitiesByLoiId(curKoulutusOid);
+                    //If loi is found, it is updated with the new ao data
+                    if (losses != null && !losses.isEmpty()) {
+                        for (LOS curLos : losses) {
+                            if (curLos instanceof ChildLOS) {
+                                updateChildLosRefForAo(aoDto, komotoDto, (ChildLOS)curLos);
+                            } else if (curLos instanceof SpecialLOS) {
+                                updateSpecialLosReferencesForAo(aoDto, komotoDto, (SpecialLOS)curLos);
+                            } else if (curLos instanceof UpperSecondaryLOS) {
+                                updateUpperSecondaryLosReferencesForAo(aoDto, komotoDto, (UpperSecondaryLOS)curLos);
+                            } 
+                        }
+                    //If loi is not found it needs to be added
+                    } else {
+                        handleSecondaryLoiAddition(komotoDto, aoDto);
                     }
+                }
+
+            }
+        }
+        catch (Exception ex) {
+            LOG.warn(String.format("Problem indexing application option: %s. %s", aoDto.getOid(), ex.getMessage()));
+        }
+
+    }
+
+    private void updateUpperSecondaryLosReferencesForAo(HakukohdeDTO aoDto,
+            KomotoDTO komotoDto, UpperSecondaryLOS los) throws KoodistoException {
+        
+        try {
+            
+            LOIObjectCreator loiCreator = new LOIObjectCreator(koodistoService, tarjontaRawService);
+            
+            List<UpperSecondaryLOI> tempLois = new ArrayList<UpperSecondaryLOI>();
+            for (UpperSecondaryLOI curLoi : los.getLois()) {
+                if (!curLoi.getId().equals(komotoDto.getOid())) {
+                    tempLois.add(curLoi);
                 }
             }
             
+            KomoDTO komo = this.tarjontaRawService.getKomo(komotoDto.getKomoOid());
+            String koulutuskoodi = komo.getKoulutusKoodiUri().split("#")[0];
+            
+            UpperSecondaryLOI updatedLoi = loiCreator.createUpperSecondaryLOI(komotoDto, los.getId(), los.getName(), koulutuskoodi);
+            if (updatedLoi != null) {
+                tempLois.add(updatedLoi);
+            }
+            this.dataUpdateService.save(los);
+            
+        } catch (TarjontaParseException ex) {
+            LOG.warn(String.format("Problem indexing incrementally ao: %s with loi: %s. %s",  aoDto.getOid(), komotoDto.getOid(), ex.getMessage()));
         }
+        
         
     }
 
+    private void updateSpecialLosReferencesForAo(HakukohdeDTO aoDto,
+            KomotoDTO komotoDto, SpecialLOS los) throws KoodistoException {
+
+        try {
+            LOIObjectCreator loiCreator = new LOIObjectCreator(koodistoService, tarjontaRawService);
+
+            List<ChildLOI> tempLois = new ArrayList<ChildLOI>();
+            for (ChildLOI curLoi : los.getLois()) {
+                if (!curLoi.getId().equals(komotoDto.getOid())) {
+                    tempLois.add(curLoi);
+                }
+            }
+            
+            KomoDTO komo = this.tarjontaRawService.getKomo(komotoDto.getKomoOid());
+            String koulutuskoodi = komo.getKoulutusKoodiUri().split("#")[0];
+
+            ChildLOI childLoi = loiCreator.createChildLOI(komotoDto, los.getId(), los.getName(), koulutuskoodi);
+            if (childLoi != null) {
+                tempLois.add(childLoi);
+            }
+            
+            
+            this.dataUpdateService.save(los);
+            
+        } catch (TarjontaParseException ex) {
+            LOG.warn(String.format("Problem indexing incrementally ao: %s with loi: %s. %s",  aoDto.getOid(), komotoDto.getOid(), ex.getMessage()));
+        }   
+    }
+
+    private void handleSecondaryLoiAddition(KomotoDTO komotoDto, HakukohdeDTO aoDto) throws KoodistoException {
+
+        try {
+
+            LOIObjectCreator loiCreator = new LOIObjectCreator(koodistoService, tarjontaRawService);
+
+            String providerOid = komotoDto.getTarjoajaOid();
+            String komoOid = komotoDto.getKomoOid();
+            KomoDTO komo = this.tarjontaRawService.getKomo(komotoDto.getKomoOid());
+            String koulutuskoodi = komo.getKoulutusKoodiUri().split("#")[0];
+
+            String basicLosId = String.format("%s_%s", komoOid, providerOid);
+
+            LOS los = this.dataQueryService.getLos(basicLosId);
+
+            if (los != null && los instanceof ChildLOS) {
+
+                
+                ChildLOI childLoi = loiCreator.createChildLOI(komotoDto, los.getId(), los.getName(), koulutuskoodi);
+                if (childLoi != null) {
+                    ((ChildLOS)los).getLois().add(childLoi);
+                }
+
+            } else if (los != null && los instanceof UpperSecondaryLOS) {
+                
+                UpperSecondaryLOI updatedLoi = loiCreator.createUpperSecondaryLOI(komotoDto, los.getId(), los.getName(), koulutuskoodi);
+                if (updatedLoi != null) {
+                   ((UpperSecondaryLOS)los).getLois().add(updatedLoi);
+                }
+
+            } else if (los != null && los instanceof SpecialLOS) {
+                
+                ChildLOI childLoi = loiCreator.createChildLOI(komotoDto, los.getId(), los.getName(), koulutuskoodi);
+                if (childLoi != null) {
+                    ((SpecialLOS)los).getLois().add(childLoi);
+                }
+
+            } else if (los == null) {
+                los = this.dataQueryService.getLos(String.format("%s_%s", basicLosId, komotoDto.getOid()));
+            }
+            if (los != null && los instanceof SpecialLOS) {
+
+                ChildLOI childLoi = loiCreator.createChildLOI(komotoDto, los.getId(), los.getName(), koulutuskoodi);
+                if (childLoi != null) {
+                    ((SpecialLOS)los).getLois().add(childLoi);
+                }
+                
+            } else if (los == null) {
+                KomoDTO childKomo = this.tarjontaRawService.getKomo(komoOid);
+                List<String> ylamoduulit = childKomo.getYlaModuulit();
+                if (ylamoduulit != null && ylamoduulit.size() > 0) {
+                    los = this.dataQueryService.getLos(String.format("%s_%s", ylamoduulit.get(0), providerOid));
+                }
+
+            }
+
+            if (los != null && los instanceof ParentLOS) {
+                
+                LOSObjectCreator losCreator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService);
+                
+                List<KomotoDTO> childKomotos = Arrays.asList(komotoDto);
+                ChildLOS childLos = losCreator.createChildLOS(komo, basicLosId, childKomotos);
+                ((ParentLOS)los).getChildren().add(childLos);
+
+            } 
+            
+            if (los != null) {
+                this.dataUpdateService.save(los);
+            } else {
+               this.tarjontaService.findParentLearningOpportunity(komoOid);
+            }
+            
+            
+            
+        } catch (TarjontaParseException ex) {
+            LOG.warn(String.format("Problem indexing incrementally ao: %s with loi: %s. %s",  aoDto.getOid(), komotoDto.getOid(), ex.getMessage()));
+        }
+
+    }
+
+    private void updateChildLosRefForAo(HakukohdeDTO aoDto,
+            KomotoDTO komotoDto, ChildLOS los) throws KoodistoException {
+
+        try {
+
+            LOIObjectCreator loiCreator = new LOIObjectCreator(koodistoService, tarjontaRawService);
+            
+            String komoOid = komotoDto.getKomoOid();
+            
+           
+
+            List<ChildLOI> tempLois = new ArrayList<ChildLOI>();
+            for (ChildLOI curLoi : los.getLois()) {
+                if (!curLoi.getId().equals(komotoDto.getOid())) {
+                    tempLois.add(curLoi);
+                }
+            }
+
+            ParentLOSRef parentRef = los.getParent();
+
+            LOS parentLos = this.dataQueryService.getLos(parentRef.getId());
+
+            if (parentLos instanceof ParentLOS) { 
+                KomoDTO komo = this.tarjontaRawService.getKomo(komoOid);
+                String koulutuskoodi = komo.getKoulutusKoodiUri().split("#")[0];
+                ChildLOI childLoi = loiCreator.createChildLOI(komotoDto, los.getId(), los.getName(), koulutuskoodi);
+                if (childLoi != null) {
+                    tempLois.add(childLoi);
+                }
+            }
+            
+            los.setLois(tempLois);
+            
+            this.dataUpdateService.save(los);
+            
+            
+            
+        } catch (TarjontaParseException ex) {
+            LOG.warn(String.format("Problem indexing incrementally ao: %s with loi: %s. %s",  aoDto.getOid(), komotoDto.getOid(), ex.getMessage()));
+        }
+
+    }
+
+    //Handling removal of application option and related data
     private void removeApplicationOption(String oid) {
         
         try {
+            
+            //Getting ao from mongo
             ApplicationOption ao = this.dataQueryService.getApplicationOption(oid);
             
+            //Getting parent ref
             ParentLOSRef parentRef = ao.getParent();
             
-            LOS los  = this.dataQueryService.getLos(parentRef.getId());
+            //If there is a parent ref, handling removal of parent data
+            if (parentRef != null && parentRef.getId() != null) {
+                LOS los  = this.dataQueryService.getLos(parentRef.getId());
             
-            if (los != null && los instanceof ParentLOS) {
-                handleParentLOSReferenceRemoval((ParentLOS)los, ao, true);
-            } else if (los != null && los instanceof SpecialLOS) {
-                handleSpecialLOSReferenceRemoval((SpecialLOS)los, ao, true);
-            } 
-            
+                if (los != null && los instanceof ParentLOS) {
+                    handleParentLOSReferenceRemoval((ParentLOS)los, ao, true);
+                } else if (los != null && los instanceof SpecialLOS) {
+                    handleSpecialLOSReferenceRemoval((SpecialLOS)los, ao, true);
+                } 
+            }
+            //If there is a higher education los ref, then handling removal of higher education data
             if (ao.getHigherEdLOSRefs() != null 
                     && !ao.getHigherEdLOSRefs().isEmpty()) {
                 handleHigherEdLOSsReferenceRemoval(ao);
             }
             
+            //If there are child loi refs, handling removal based on child references
             if (ao.getChildLOIRefs() != null
                     && !ao.getChildLOIRefs().isEmpty()) {
                 handleLoiRefRemoval(ao);
             }
             
-            
+            //In the end deleting the ao itself
             this.dataUpdateService.deleteAo(ao);
             
             
+        //If application option is not in mongo, nothing needs to be done    
         } catch (ResourceNotFoundException notFoundEx) {
             LOG.debug(notFoundEx.getMessage());
         }
         
     }
 
+    //Removal based on child loi references
     private void handleLoiRefRemoval(ApplicationOption ao) {
         
         for (ChildLOIRef curChildRef : ao.getChildLOIRefs()) {

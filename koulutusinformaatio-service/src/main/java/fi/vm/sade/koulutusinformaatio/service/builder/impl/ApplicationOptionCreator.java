@@ -288,6 +288,8 @@ public class ApplicationOptionCreator extends ObjectCreator {
                                                                     HakukohdeV1RDTO hakukohde, 
                                                                     HakuV1RDTO haku) throws KoodistoException {
         
+        
+        
         ApplicationOption ao = new ApplicationOption();
         ao.setId(hakukohde.getOid());
         ao.setName(super.getI18nText(hakukohde.getHakukohteenNimet())); 
