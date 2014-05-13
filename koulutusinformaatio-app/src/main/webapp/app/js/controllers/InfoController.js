@@ -249,6 +249,10 @@
  */
 function ApplicationCtrl($scope, ApplicationBasketService, UtilityService, TranslationService) {
 
+    $scope.tooltips = {
+        externalApplicationForm: TranslationService.getTranslation('tooltip:external-application-form')
+    };
+
     // vocational education needs prerequisite checking...
     $scope.addToBasket = function(aoId) {
         var basketType = ApplicationBasketService.getType();
