@@ -166,5 +166,15 @@ public class UpdateServiceImpl implements UpdateService {
         return runningSince;
     }
 
+    @Override
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
+
+    @Override
+    public void setRunningSince(long runningSince) {
+        this.runningSince = runningSince;
+    }
+
 }
 

@@ -37,4 +37,11 @@ public class DataStatusDAO extends BasicDAO<DataStatusEntity, ObjectId> {
         query.order("-lastUpdateFinished");
         return find(query).get();
     }
+    
+    public DataStatusEntity getLatestSuccess() {
+        Query<DataStatusEntity> query = createQuery();
+        query.field("lastUpdateOutcome").equal("SUCCESS");
+        query.order("-lastUpdateFinished");
+        return find(query).get();
+    }
 }

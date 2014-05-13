@@ -2,6 +2,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import fi.vm.sade.koulutusinformaatio.domain.BasicLOI;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOIRef;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
+import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOSRef;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
@@ -31,8 +33,8 @@ import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
-import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataUpdateService;
+import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.IncrementalUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
@@ -57,7 +59,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
     private TarjontaRawService tarjontaRawService;
     private UpdateService updateService;
     private TransactionManager transactionManager;
-    private EducationDataQueryService dataQueryService;
+    private EducationIncrementalDataQueryService dataQueryService;
     private EducationDataUpdateService dataUpdateService;
     private KoodistoService koodistoService;
     private ProviderService providerService;
@@ -67,7 +69,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
     public IncrementalUpdateServiceImpl(TarjontaRawService tarjontaRawService, 
                                          UpdateService updateService, 
                                          TransactionManager transactionManager,
-                                         EducationDataQueryService dataQueryService,
+                                         EducationIncrementalDataQueryService dataQueryService,
                                          EducationDataUpdateService dataUpdateService,
                                          KoodistoService koodistoService,
                                          ProviderService providerService,
@@ -94,10 +96,14 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
         Map<String,List<String>> result = listChangedLearningOpportunities(updatePeriod);
         
         //If there are changes in komo-data, a full update is performed
-        if (result.containsKey("koulutusmoduuli") && !result.get("koulutusmoduuli").isEmpty()) {
+        if ((result.containsKey("koulutusmoduuli") && !result.get("koulutusmoduuli").isEmpty()) || updatePeriod == 0) {
+            LOG.warn(String.format("Starting full update instead of incremental. Update period was: %s", updatePeriod));
             updateService.updateAllEducationData();
         //Otherwise doing incremental indexing    
         } else {
+            LOG.debug("Starting incremental update");
+            this.updateService.setRunning(true);
+            this.updateService.setRunningSince(System.currentTimeMillis());
             this.transactionManager.beginIncrementalTransaction();
         }
         
@@ -123,6 +129,10 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             }
         }
         
+        dataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - this.updateService.getRunningSince(), "SUCCESS"));
+        this.transactionManager.commitIncrementalTransaction();
+        this.updateService.setRunning(false);
+        this.updateService.setRunningSince(0);
     }
 
 
@@ -138,10 +148,17 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
         
     }
     
-
     private void handleLoiAdditionOrUpdate(KomotoDTO komotoDto) {
        
-        
+        List<LOS> referencedLoss = this.dataQueryService.findLearningOpportunitiesByLoiId(komotoDto.getOid());
+        //Loi is in mongo, thus it is updated
+        if (referencedLoss != null && !referencedLoss.isEmpty()) {
+            this.handleLoiRemoval(komotoDto);
+            this.handleLoiAdditionOrUpdate(komotoDto);
+        //Loi is not in mongo, so it is added    
+        } else {
+            this.handleLoiAdditionOrUpdate(komotoDto);
+        }
         
     }
 
@@ -907,8 +924,12 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
     
     
     private long getUpdatePeriod() {
-        long period = 0;
-        return period;
+        DataStatus status = this.dataQueryService.getLatestDataStatus();
+        if (status != null) {
+            long period = (System.currentTimeMillis() - status.getLastUpdateFinished().getTime()) + status.getLastUpdateDuration();
+            return period;
+        }
+        return 0;
     }
 
 }

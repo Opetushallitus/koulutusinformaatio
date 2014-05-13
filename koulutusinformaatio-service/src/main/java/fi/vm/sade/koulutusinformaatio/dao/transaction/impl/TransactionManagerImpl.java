@@ -312,10 +312,12 @@ public class TransactionManagerImpl implements TransactionManager {
         
         BasicDBObject cmd = new BasicDBObject("copydb", 1).append("fromdb", dbName).append("todb", this.transactionDbName);
         mongo.getDB("admin").command(cmd);
-        
-        
-        
-        
-        
+    }
+
+    @Override
+    public void commitIncrementalTransaction() throws KICommitException {
+        BasicDBObject cmd = new BasicDBObject("copydb", 1).append("fromdb", transactionDbName).append("todb", dbName);
+        dropDbCollections();
+        mongo.getDB("admin").command(cmd);
     }
 }

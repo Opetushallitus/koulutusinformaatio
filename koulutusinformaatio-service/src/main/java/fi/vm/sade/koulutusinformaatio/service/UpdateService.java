@@ -32,6 +32,10 @@ public interface UpdateService {
     public void updateAllEducationData() throws Exception;
     
     public boolean isRunning();
+    
+    public void setRunning(boolean running);
 
     public long getRunningSince();
+    
+    public void setRunningSince(long runningSince);
 }
