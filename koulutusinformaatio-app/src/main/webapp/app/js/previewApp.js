@@ -79,6 +79,17 @@ var kiApp = angular.module('previewApp',
     return window.encodeURIComponent;
 })
 
+// adds target blank to links
+.filter('externalLinks', function() {
+    return function(val) {
+        if (val) {
+            val = val.replace('<a', '<a target="_blank"');
+        }
+        
+        return val;
+    }
+})
+
 // initialize i18n library
 .run(['$location', 'LanguageService', 'HostResolver', 'VirkailijaLanguageService', function($location, LanguageService, HostResolver, VirkailijaLanguageService) {
 	
