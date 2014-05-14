@@ -58,5 +58,7 @@ public interface IndexerService {
     void addEdTypeCodes(List<Code> edTypeCodes, HttpSolrServer loUpdateSolr) throws IOException, SolrServerException;
     
     void addArticles(HttpSolrServer loUpdateSolr, List<Article> articles) throws IOException, SolrServerException;
+
+    void removeLos(LOS curLos, HttpSolrServer loHttpSolrServer) throws IOException, SolrServerException;
     
 }

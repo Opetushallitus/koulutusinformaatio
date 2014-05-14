@@ -63,12 +63,17 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakoulu
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KuvaV1RDTO;
 import fi.vm.sade.tarjonta.service.types.TarjontaTila;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author Hannu Lyytikainen
  */
 @Service
 @Profile("default")
 public class TarjontaServiceImpl implements TarjontaService {
+    
+    public static final Logger LOG = LoggerFactory.getLogger(TarjontaServiceImpl.class);
 
     private ConversionService conversionService;
     private KoodistoService koodistoService;
@@ -77,7 +82,7 @@ public class TarjontaServiceImpl implements TarjontaService {
     private TarjontaRawService tarjontaRawService;
     private LOSObjectCreator creator;
     
-    private static final String ED_TYPE_FACET_KOODISTO = "koulutustyyppifasetti";//"koulutusfasettimalli";
+    private static final String ED_TYPE_FACET_KOODISTO = "koulutustyyppifasetti";
 
     @Autowired
     public TarjontaServiceImpl(ConversionService conversionService, KoodistoService koodistoService,
@@ -387,5 +392,9 @@ public class TarjontaServiceImpl implements TarjontaService {
     public List<Code> getEdTypeCodes() throws KoodistoException {
         return koodistoService.searchByKoodisto(ED_TYPE_FACET_KOODISTO, null);
     }
+
+
+
+    
 
 }

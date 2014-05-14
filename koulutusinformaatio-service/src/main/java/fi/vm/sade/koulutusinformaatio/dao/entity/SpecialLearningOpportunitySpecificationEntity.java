@@ -57,6 +57,14 @@ public class SpecialLearningOpportunitySpecificationEntity {
     private ParentLOSRefEntity parent;
     
     private String educationTypeUri;
+    
+    @Embedded
+    private List<CodeEntity> topics;
+    @Embedded
+    private List<CodeEntity> themes;
+    
+    private String type;
+
 
 
 
@@ -189,5 +197,29 @@ public class SpecialLearningOpportunitySpecificationEntity {
 
     public void setEducationTypeUri(String educationTypeUri) {
         this.educationTypeUri = educationTypeUri;
+    }
+
+    public List<CodeEntity> getTopics() {
+        return topics;
+    }
+
+    public void setTopics(List<CodeEntity> topics) {
+        this.topics = topics;
+    }
+
+    public List<CodeEntity> getThemes() {
+        return themes;
+    }
+
+    public void setThemes(List<CodeEntity> themes) {
+        this.themes = themes;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

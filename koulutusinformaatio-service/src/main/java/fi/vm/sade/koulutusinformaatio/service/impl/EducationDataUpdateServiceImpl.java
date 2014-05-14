@@ -81,7 +81,9 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
 
     @Override
     public void save(DataStatus dataStatus) {
+        System.out.println("Saving data status: " + dataStatus);
         if (dataStatus != null) {
+            System.out.println(dataStatus.getLastUpdateFinished());
             dataStatusDAO.save(modelMapper.map(dataStatus, DataStatusEntity.class));
         }
     }
@@ -203,5 +205,33 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
 
             this.higherEducationLOSTransactionDAO.save(plos);
         }
+    }
+
+    @Override
+    public void deleteLos(LOS los) {
+        
+        if (los instanceof ParentLOS) {
+            
+            for (ChildLOS curChild : ((ParentLOS) los).getChildren()) {
+                this.childLOTransactionDAO.deleteById(curChild.getId());
+            }
+            this.parentLOSTransactionDAO.deleteById(los.getId());
+        } else if (los instanceof ChildLOS) {
+            this.childLOTransactionDAO.deleteById(los.getId());
+        } else if (los instanceof SpecialLOS) {
+            this.specialLOSTransactionDAO.deleteById(los.getId());
+        } else if (los instanceof UpperSecondaryLOS) {
+            this.upperSecondaryLOSTransactionDAO.deleteById(los.getId());
+        } else if (los instanceof HigherEducationLOS) {
+            this.higherEducationLOSTransactionDAO.deleteById(los.getId());
+        }
+        
+    }
+
+    @Override
+    public void deleteAo(ApplicationOption ao) {
+        
+        this.applicationOptionTransactionDAO.deleteById(ao.getId());
+        
     }
 }

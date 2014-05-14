@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
@@ -28,5 +29,9 @@ public interface EducationDataUpdateService {
     void save(final LOS learningOpportunitySpecification);
 
     void save(final DataStatus dataStatus);
+    
+    void deleteLos(LOS los);
+    
+    void deleteAo(ApplicationOption ao);
 
 }

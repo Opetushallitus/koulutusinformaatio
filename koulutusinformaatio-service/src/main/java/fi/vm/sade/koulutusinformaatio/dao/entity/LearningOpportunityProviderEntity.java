@@ -64,6 +64,9 @@ public class LearningOpportunityProviderEntity {
     private String placeOfBusinessCode;
     @Embedded
     private ApplicationOfficeEntity applicationOffice;
+    
+    private I18nTextEntity homePlace;
+    private I18nTextEntity homeDistrict;
 
     public LearningOpportunityProviderEntity() {
     }
@@ -266,5 +269,21 @@ public class LearningOpportunityProviderEntity {
 
     public void setLeisureServices(I18nTextEntity leisureServices) {
         this.leisureServices = leisureServices;
+    }
+
+    public I18nTextEntity getHomePlace() {
+        return homePlace;
+    }
+
+    public void setHomePlace(I18nTextEntity homePlace) {
+        this.homePlace = homePlace;
+    }
+
+    public I18nTextEntity getHomeDistrict() {
+        return homeDistrict;
+    }
+
+    public void setHomeDistrict(I18nTextEntity homeDistrict) {
+        this.homeDistrict = homeDistrict;
     }
 }

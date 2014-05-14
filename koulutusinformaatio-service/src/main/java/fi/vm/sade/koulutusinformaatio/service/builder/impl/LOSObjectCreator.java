@@ -207,7 +207,7 @@ public class LOSObjectCreator extends ObjectCreator {
         return los;
     }
 
-    private String resolveEducationType(SpecialLOS los) {
+    public String resolveEducationType(SpecialLOS los) {
         if (los.getType().equals(TarjontaConstants.TYPE_REHAB)) {
             return SolrConstants.ED_TYPE_VALMENTAVA_SHORT;
             
@@ -461,7 +461,7 @@ public class LOSObjectCreator extends ObjectCreator {
                 ao.setProvider(los.getProvider());
                 ao.setEducationDegree(los.getEducationDegree());
                 los.getProvider().getApplicationSystemIDs().add(ao.getApplicationSystem().getId());
-                ao.setParent(createParetLosRef(los));
+                ao.setParent(createParentLosRef(los));
                 ao.setType(TarjontaConstants.TYPE_KK);
 
             }
@@ -511,7 +511,7 @@ public class LOSObjectCreator extends ObjectCreator {
 
 
 
-    private ParentLOSRef createParetLosRef(HigherEducationLOS los) {
+    private ParentLOSRef createParentLosRef(HigherEducationLOS los) {
         ParentLOSRef educationRef = new ParentLOSRef();
         educationRef.setId(los.getId());
         educationRef.setName(los.getName());
@@ -535,6 +535,8 @@ public class LOSObjectCreator extends ObjectCreator {
 
             ResultV1RDTO<HakukohdeV1RDTO> hakukohdeRes = loiCreator.tarjontaRawService.getHigherEducationHakukohode(aoId);
             HakukohdeV1RDTO hakukohdeDTO = hakukohdeRes.getResult();
+            
+           
 
             if (checkStatus && !hakukohdeDTO.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
                 continue;
