@@ -1388,6 +1388,9 @@ input, textarea, select, option {
 .break-word {
   word-wrap: break-word; }
 
+.oneline {
+  white-space: nowrap; }
+
 /*** Links
 ************************************************/
 a:link {
@@ -2952,7 +2955,8 @@ table {
   table td, table th {
     border: 0;
     padding: 5px;
-    vertical-align: top; }
+    vertical-align: top;
+    text-align: left; }
   table thead tr th {
     font-size: 12px;
     text-align: left;
