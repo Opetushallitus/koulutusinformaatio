@@ -16,7 +16,6 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -95,13 +94,11 @@ public class UpdateServiceImpl implements UpdateService {
             int index = 0;
             
 
-            /*while (count >= MAX_RESULTS) {
+            while (count >= MAX_RESULTS) {
             LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
             List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
             count = loOids.size();
-            index += count;*/
-            
-            List<String> loOids = new ArrayList<String>();
+            index += count;
             
                 for (String loOid : loOids) {
                     List<LOS> specifications = null;
@@ -117,7 +114,7 @@ public class UpdateServiceImpl implements UpdateService {
                         this.educationDataUpdateService.save(spec);
                     }
                 }
-            //}
+            }
 
             List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
             LOG.debug("Found higher educations: " + higherEducations.size());
@@ -137,10 +134,10 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.debug("Got locations");
             indexerService.addLocations(locations, locationUpdateSolr);
             LOG.debug("Added locations");
-            /*List<Article> articles = this.articleService.fetchArticles();
+            List<Article> articles = this.articleService.fetchArticles();
             LOG.debug("Articles fetched");
             indexerService.addArticles(loUpdateSolr, articles);
-            LOG.debug("Articles indexed to solr");*/
+            LOG.debug("Articles indexed to solr");
             indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, true);
             LOG.debug("Committed to solr");
             this.transactionManager.commit(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
