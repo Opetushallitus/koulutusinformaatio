@@ -207,7 +207,7 @@ public class LOSObjectCreator extends ObjectCreator {
         return los;
     }
 
-    private String resolveEducationType(SpecialLOS los) {
+    public String resolveEducationType(SpecialLOS los) {
         if (los.getType().equals(TarjontaConstants.TYPE_REHAB)) {
             return SolrConstants.ED_TYPE_VALMENTAVA_SHORT;
             

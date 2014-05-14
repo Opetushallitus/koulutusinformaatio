@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.BasicLOI;
@@ -528,7 +529,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             KomoDTO komo = this.tarjontaRawService.getKomo(komotoDto.getKomoOid());
             String koulutuskoodi = komo.getKoulutusKoodiUri().split("#")[0];
             
-            UpperSecondaryLOI updatedLoi = loiCreator.createUpperSecondaryLOI(komotoDto, los.getId(), los.getName(), koulutuskoodi);
+            UpperSecondaryLOI updatedLoi = loiCreator.createUpperSecondaryLOI(komotoDto, los.getId(), los.getName(), koulutuskoodi, SolrConstants.ED_TYPE_LUKIO_SHORT);
             if (updatedLoi != null) {
                 tempLois.add(updatedLoi);
             }
@@ -546,6 +547,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
 
         try {
             LOIObjectCreator loiCreator = new LOIObjectCreator(koodistoService, tarjontaRawService);
+            LOSObjectCreator losCreator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService);
 
             List<ChildLOI> tempLois = new ArrayList<ChildLOI>();
             for (ChildLOI curLoi : los.getLois()) {
@@ -557,7 +559,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             KomoDTO komo = this.tarjontaRawService.getKomo(komotoDto.getKomoOid());
             String koulutuskoodi = komo.getKoulutusKoodiUri().split("#")[0];
 
-            ChildLOI childLoi = loiCreator.createChildLOI(komotoDto, los.getId(), los.getName(), koulutuskoodi);
+            ChildLOI childLoi = loiCreator.createChildLOI(komotoDto, los.getId(), los.getName(), koulutuskoodi, losCreator.resolveEducationType(los));
             if (childLoi != null) {
                 tempLois.add(childLoi);
             }
@@ -575,6 +577,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
         try {
 
             LOIObjectCreator loiCreator = new LOIObjectCreator(koodistoService, tarjontaRawService);
+            LOSObjectCreator losCreator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService);
 
             String providerOid = komotoDto.getTarjoajaOid();
             String komoOid = komotoDto.getKomoOid();
@@ -589,7 +592,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
 
                 LOG.debug(String.format("A suitable child los for loi: %s is in mongo, updating los: %s", komotoDto.getOid(), los.getId()));
                 
-                ChildLOI childLoi = loiCreator.createChildLOI(komotoDto, los.getId(), los.getName(), koulutuskoodi);
+                ChildLOI childLoi = loiCreator.createChildLOI(komotoDto, los.getId(), los.getName(), koulutuskoodi, SolrConstants.ED_TYPE_AMMATILLINEN_SHORT);
                 
                 if (childLoi != null) {
                     
@@ -609,7 +612,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
                 
                 LOG.debug(String.format("A suitable upper secondary los for loi: %s is in mongo, updating los: %s", komotoDto.getOid(), los.getId()));
                 
-                UpperSecondaryLOI updatedLoi = loiCreator.createUpperSecondaryLOI(komotoDto, los.getId(), los.getName(), koulutuskoodi);
+                UpperSecondaryLOI updatedLoi = loiCreator.createUpperSecondaryLOI(komotoDto, los.getId(), los.getName(), koulutuskoodi, SolrConstants.ED_TYPE_LUKIO_SHORT);
                 if (updatedLoi != null) {
                    ((UpperSecondaryLOS)los).getLois().add(updatedLoi);
                 }
@@ -618,7 +621,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
                 
                 LOG.debug(String.format("A suitable special los for loi: %s is in mongo, updating los: %s", komotoDto.getOid(), los.getId()));
                 
-                ChildLOI childLoi = loiCreator.createChildLOI(komotoDto, los.getId(), los.getName(), koulutuskoodi);
+                ChildLOI childLoi = loiCreator.createChildLOI(komotoDto, los.getId(), los.getName(), koulutuskoodi, losCreator.resolveEducationType((SpecialLOS)los));
                 if (childLoi != null) {
                     ((SpecialLOS)los).getLois().add(childLoi);
                 }
@@ -630,7 +633,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
 
                 LOG.debug(String.format("A suitable joint or stuff special los for loi: %s is in mongo, updating los: %s", komotoDto.getOid(), los.getId()));
                 
-                ChildLOI childLoi = loiCreator.createChildLOI(komotoDto, los.getId(), los.getName(), koulutuskoodi);
+                ChildLOI childLoi = loiCreator.createChildLOI(komotoDto, los.getId(), los.getName(), koulutuskoodi, losCreator.resolveEducationType((SpecialLOS)los));
                 if (childLoi != null) {
                     ((SpecialLOS)los).getLois().add(childLoi);
                 }
@@ -647,8 +650,6 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             if (los != null && los instanceof ParentLOS) {
                 
                 LOG.debug(String.format("A suitable parent los for loi: %s is in mongo, updating los: %s", komotoDto.getOid(), los.getId()));
-                
-                LOSObjectCreator losCreator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService);
                 
                 List<KomotoDTO> childKomotos = Arrays.asList(komotoDto);
                 ChildLOS childLos = losCreator.createChildLOS(komo, basicLosId, childKomotos);
@@ -726,7 +727,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             if (parentLos instanceof ParentLOS) { 
                 KomoDTO komo = this.tarjontaRawService.getKomo(komoOid);
                 String koulutuskoodi = komo.getKoulutusKoodiUri().split("#")[0];
-                ChildLOI childLoi = loiCreator.createChildLOI(komotoDto, los.getId(), los.getName(), koulutuskoodi);
+                ChildLOI childLoi = loiCreator.createChildLOI(komotoDto, los.getId(), los.getName(), koulutuskoodi, SolrConstants.ED_TYPE_AMMATILLINEN_SHORT);
                 if (childLoi != null) {
                     tempLois.add(childLoi);
                 }
