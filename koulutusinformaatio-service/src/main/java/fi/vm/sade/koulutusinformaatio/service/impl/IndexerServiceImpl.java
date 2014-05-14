@@ -209,10 +209,13 @@ public class IndexerServiceImpl implements IndexerService {
             providerDoc.setField("nonVocationalAsIds", nonVocationalAsIds);
             providerDocs.add(providerDoc);
         }
-
-        lopSolr.add(providerDocs);
+        if (!providerDocs.isEmpty()) {
+            lopSolr.add(providerDocs);
+        }
         loSolr.add(docs);
     }
+    
+    
 
     @Override
     public void commitLOChanges(HttpSolrServer loUpdateSolr, 
@@ -358,6 +361,39 @@ public class IndexerServiceImpl implements IndexerService {
             loUpdateSolr.add(docs);
         }
         
+    }
+
+    @Override
+    public void removeLos(LOS curLos, HttpSolrServer loHttpSolrServer)
+            throws IOException, SolrServerException {
+        
+        if (curLos instanceof ParentLOS) {
+            ParentLOS parent = (ParentLOS)curLos;
+            Map<String,String> prerequisitesMap = new HashMap<String,String>();
+            for (ChildLOS childLOS : parent.getChildren()) {
+                for (ChildLOI childLOI : childLOS.getLois()) {
+                    String prereq = SolrConstants.SPECIAL_EDUCATION.equalsIgnoreCase(childLOI.getPrerequisite().getValue()) 
+                            ? SolrConstants.PK 
+                                    : childLOI.getPrerequisite().getValue();
+                    prerequisitesMap.put(prereq, prereq);
+                }
+            }
+
+            for (String curPrereq : prerequisitesMap.values()) {
+                //docs.add(createParentDoc(parent, curPrereq));
+                loHttpSolrServer.deleteById(String.format("%s#%s", curLos.getId(), curPrereq));
+            }
+        } else if (curLos instanceof SpecialLOS){
+            for (ChildLOI curChild : ((SpecialLOS) curLos).getLois()) { 
+                loHttpSolrServer.deleteById(curChild.getId());
+            }
+        } else if (curLos instanceof UpperSecondaryLOS) {
+            for (UpperSecondaryLOI curLoi : ((UpperSecondaryLOS) curLos).getLois()) {
+                loHttpSolrServer.deleteById(curLoi.getId());
+            }
+        } else if (curLos instanceof HigherEducationLOS) {
+            loHttpSolrServer.deleteById(curLos.getId());
+        }
     }
 
 }

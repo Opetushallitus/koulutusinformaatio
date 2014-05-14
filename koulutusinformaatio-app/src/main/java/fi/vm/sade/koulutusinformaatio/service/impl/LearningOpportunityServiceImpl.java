@@ -290,4 +290,10 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
         return dto;
     }
 
+    @Override
+    public DataStatus getLastSuccesfulDataStatus() { 
+       return educationDataQueryService.getLatestSuccessDataStatus();
+        
+    }
+
 }

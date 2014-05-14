@@ -16,9 +16,11 @@
 
 package fi.vm.sade.koulutusinformaatio.scheduling;
 
+import fi.vm.sade.koulutusinformaatio.service.IncrementalUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.SEOService;
 import fi.vm.sade.koulutusinformaatio.service.TextVersionService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,25 +38,31 @@ public class Scheduler {
 
     public static final Logger LOG = LoggerFactory.getLogger(Scheduler.class);
     private UpdateService updateService;
+    private IncrementalUpdateService incrementalUpdateService;
     private SEOService seoService;
     private TextVersionService textVersionService;
     private boolean enabled;
     private boolean seoEnabled;
     private boolean textVersionEnabled;
+    private boolean incrementalEnabled;
 
     @Autowired
     public Scheduler(final UpdateService updateService, 
+            final IncrementalUpdateService incrementalUpdateService,
             final SEOService seoService, 
             final TextVersionService textVersionService,
             @Value("${scheduling.enabled}") boolean enabled,
             @Value("${scheduling.seo.enabled}") boolean seoEnabled, 
-            @Value("${scheduling.textversion.enabled}") boolean textVersionEnabled) {
+            @Value("${scheduling.textversion.enabled}") boolean textVersionEnabled,
+            @Value("${scheduling.data.incremental.enabled}") boolean incrementalEnabled) {
         this.updateService = updateService;
         this.seoService = seoService;
         this.textVersionService = textVersionService;
         this.enabled = enabled;
         this.seoEnabled = seoEnabled;
         this.textVersionEnabled = textVersionEnabled;
+        this.incrementalEnabled = incrementalEnabled;
+        this.incrementalUpdateService = incrementalUpdateService;
     }
 
     @Scheduled(cron = "${scheduling.data.cron}")
@@ -95,6 +103,21 @@ public class Scheduler {
                 }
             } catch (Exception e) {
                 LOG.error("Text version generation execution failed: {}", e.getStackTrace().toString());
+            }
+        }
+    }
+    
+    @Scheduled(cron = "${scheduling.data.incremental.cron}")
+    public void runIncrementalDataUpdate() {
+        if (incrementalEnabled) {
+            LOG.info("Starting scheduled incremental data update {}", new Date());
+            
+            try {
+                if (!updateService.isRunning()) {
+                    this.incrementalUpdateService.updateChangedEducationData();
+                }
+            } catch (Exception e) {
+                LOG.error("Incremental data update execution failed: {}", e.getStackTrace().toString());
             }
         }
     }

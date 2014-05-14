@@ -99,7 +99,7 @@ public class UpdateServiceImpl implements UpdateService {
             List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
             count = loOids.size();
             index += count;
- 
+            
                 for (String loOid : loOids) {
                     List<LOS> specifications = null;
                     try {
@@ -174,4 +174,16 @@ public class UpdateServiceImpl implements UpdateService {
     public long getRunningSince() {
         return runningSince;
     }
+
+    @Override
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
+
+    @Override
+    public void setRunningSince(long runningSince) {
+        this.runningSince = runningSince;
+    }
+
 }
+

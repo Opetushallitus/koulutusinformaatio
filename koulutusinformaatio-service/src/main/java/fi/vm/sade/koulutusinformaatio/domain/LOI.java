@@ -29,6 +29,7 @@ public abstract class LOI {
     private List<ApplicationOption> applicationOptions;
     private Code prerequisite;
     private List<Code> availableTranslationLanguages;
+    
 
     public String getId() {
         return id;

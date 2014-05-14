@@ -23,6 +23,7 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Hannu Lyytikainen
@@ -52,6 +53,7 @@ public interface TarjontaService {
      * @return list of oids
      */
     public List<String> listParentLearnignOpportunityOids(int count, int startIndex);
+    
     
     /**
      * Returns a list of root-level higher education learning opportunities.

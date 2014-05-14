@@ -37,6 +37,8 @@ public class DataStatusDTO {
     private boolean snapshotRenderingRunning;
     private boolean textVersionRenderingRunning;
     private String lastTextVersionUpdateFinished;
+    private Date lastSuccessfulFinished;
+    private String lastSuccessfulFinishedStr;
 
     public Date getLastUpdateFinished() {
         return lastUpdateFinished;
@@ -124,5 +126,21 @@ public class DataStatusDTO {
 
     public void setLastTextVersionUpdateFinished(String lastTextVersionUpdateFinished) {
         this.lastTextVersionUpdateFinished = lastTextVersionUpdateFinished;
+    }
+
+    public Date getLastSuccessfulFinished() {
+        return lastSuccessfulFinished;
+    }
+
+    public void setLastSuccessfulFinished(Date lastSuccessfulFinished) {
+        this.lastSuccessfulFinished = lastSuccessfulFinished;
+    }
+
+    public String getLastSuccessfulFinishedStr() {
+        return lastSuccessfulFinishedStr;
+    }
+
+    public void setLastSuccessfulFinishedStr(String lastSuccessfulFinishedStr) {
+        this.lastSuccessfulFinishedStr = lastSuccessfulFinishedStr;
     }
 }
