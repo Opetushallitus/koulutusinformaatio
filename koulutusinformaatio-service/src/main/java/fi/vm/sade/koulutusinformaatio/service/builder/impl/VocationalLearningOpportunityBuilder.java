@@ -236,7 +236,7 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
         return null;
     }
 
-    private static String getTextByEducationLanguage(final I18nText text, List<Code> languages) {
+    public static String getTextByEducationLanguage(final I18nText text, List<Code> languages) {
         if (text != null && text.getTranslations() != null && !text.getTranslations().isEmpty()) {
             if (languages != null && !languages.isEmpty()) {
                 for (Code code : languages) {
