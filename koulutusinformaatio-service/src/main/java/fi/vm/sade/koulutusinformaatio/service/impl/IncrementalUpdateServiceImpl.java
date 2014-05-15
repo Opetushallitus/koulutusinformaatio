@@ -135,15 +135,16 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
         
         //If there are changes in komo-data, a full update is performed
         if ((result.containsKey("koulutusmoduuli") && !result.get("koulutusmoduuli").isEmpty()) || updatePeriod == 0) {
-            LOG.warn(String.format("Starting full update instead of incremental. Update period was: %s", updatePeriod));
-            updateService.updateAllEducationData();
+            LOG.warn(String.format("Komos changed. Update period was: %s", updatePeriod));
+            //updateService.updateAllEducationData();
         //Otherwise doing incremental indexing    
-        } else {
+        } //else {
             LOG.debug("Starting incremental update");
             this.updateService.setRunning(true);
             this.updateService.setRunningSince(System.currentTimeMillis());
             this.transactionManager.beginIncrementalTransaction();
-          //If changes in haku objects indexing them
+            
+            //If changes in haku objects indexing them
             if (result.containsKey("haku")) {
                 LOG.debug("Haku changes: " + result.get("haku").size());
                 
@@ -153,9 +154,15 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
                 }
              
             }
-          //If changes in hakukohde, indexing them   
+            
+            
+            List<String> changedHakukohdeOids = new ArrayList<String>();
+            
+            //If changes in hakukohde, indexing them   
             if (result.containsKey("hakukohde")) {
-                LOG.debug("Haku changes: " + result.get("hakukohde").size());
+                changedHakukohdeOids = result.get("hakukohde");
+                LOG.debug("Haku changes: " + changedHakukohdeOids.size());
+                
                 for (String curOid : result.get("hakukohde")) {
                     LOG.debug("Changed hakukohde: " + curOid);
                     HakukohdeDTO aoDto = this.tarjontaRawService.getHakukohde(curOid);
@@ -164,12 +171,18 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
                 }
                
             }
-          //If changes in koulutusmoduuliToteutus, indexing them 
+            
+            //If changes in koulutusmoduuliToteutus, indexing them 
             if (result.containsKey("koulutusmoduuliToteutus")) {
                 LOG.debug("Changed komotos: " + result.get("koulutusmoduuliToteutus").size());
                 for (String curOid : result.get("koulutusmoduuliToteutus")) {
-                    LOG.debug("Changed komoto: " + curOid);
-                    indexLoiData(curOid);
+                    List<OidRDTO> aoOidDtos = this.tarjontaRawService.getHakukohdesByKomoto(curOid);
+                    if (isLoiAlreadyHandled(aoOidDtos, changedHakukohdeOids)) {
+                        LOG.debug("Komoto: " + curOid + " was handled during hakukohde process");
+                    } else {
+                        LOG.debug("Will index changed komoto: " + curOid);
+                        indexLoiData(curOid);
+                    }
                 }
             }
             
@@ -194,14 +207,27 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             LOG.debug("Committing.");
             this.updateService.setRunning(false);
             this.updateService.setRunningSince(0);
-        }
+        //}
         
         } catch (Exception e) {
             LOG.error("Education data update failed ", e);
             dataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - this.updateService.getRunningSince(), String.format("FAIL: %s", e.getMessage())));
+            this.updateService.setRunning(false);
+            this.updateService.setRunningSince(0);
         }
     }
 
+
+    private boolean isLoiAlreadyHandled(List<OidRDTO> aoOidDtos, List<String> changedHakukohdeOids) {
+        
+        for (OidRDTO curOidDto : aoOidDtos) {
+            if (changedHakukohdeOids.contains(curOidDto.getOid())) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
 
     //Indexes changed loi data
     private void indexLoiData(String komotoOid) throws KoodistoException {
@@ -483,7 +509,8 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
                 KomotoDTO komotoDto = this.tarjontaRawService.getKomoto(curKoulutusOid);
 
                 //if komoto (loi) is in state published it needs to be added or updated
-                if (TarjontaConstants.STATE_PUBLISHED.equals(komotoDto.getTila())) {
+                if (TarjontaConstants.STATE_PUBLISHED.equals(komotoDto.getTila().name())) {
+                    LOG.debug("komoto to add is published");
                     List<LOS> losses = this.dataQueryService.findLearningOpportunitiesByLoiId(curKoulutusOid);
                     //If loi is found, it is updated with the new ao data
                     if (losses != null && !losses.isEmpty()) {
@@ -495,11 +522,19 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
                             } else if (curLos instanceof UpperSecondaryLOS) {
                                 updateUpperSecondaryLosReferencesForAo(aoDto, komotoDto, (UpperSecondaryLOS)curLos);
                             }
-                            this.updateSolrMaps(curLos, ADDITION);
+                            
+                            if (curLos instanceof ChildLOS) {
+                                ParentLOSRef parRef = ((ChildLOS) curLos).getParent();
+                                ParentLOS parent = (ParentLOS)this.dataQueryService.getLos(parRef.getId());
+                                this.updateSolrMaps(parent, ADDITION);
+                            } else {
+                                this.updateSolrMaps(curLos, ADDITION);
+                            }
                         }
                         
                     //If loi is not found it needs to be added
                     } else {
+                        LOG.debug("komoto to add has no los in mongo, adding it");
                         handleSecondaryLoiAddition(komotoDto);
                     }
                 }
@@ -969,6 +1004,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
 
     private void handleParentLOSReferenceRemoval(ParentLOS los,
             ApplicationOption ao, boolean withAoReferenceRemoval) {
+        LOG.debug("Currently in parent los reference removal, with ao: " + ao.getId() + " and parent los: " + los.getId());
         
         Map<String,ChildLOIRef> childLoiMap = constructChildLoiMap(ao.getChildLOIRefs());
         
@@ -977,23 +1013,30 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
         List<ChildLOS> remainingChildren = new ArrayList<ChildLOS>();
         
         for (ChildLOS curChildLos : los.getChildren()) {
+            LOG.debug("current childLOS: " + curChildLos.getId());
             List<ChildLOI> remainingChildLOIs = new ArrayList<ChildLOI>();
             for (ChildLOI curChildLoi : curChildLos.getLois()) {
+                LOG.debug("current childLOI: " + curChildLoi.getId());
                 if (!childLoiMap.containsKey(curChildLoi.getId()) || hasOtherAoReferences(curChildLoi, ao)) {
+                    LOG.debug("A non match with removed ao with childLOI: " + curChildLoi.getId());
                     remainingChildLOIs.add(curChildLoi);
                 } else {
+                    LOG.debug("A match with removed ao with childLOI: " + curChildLoi.getId());
                     matchedLoiIds.add(curChildLoi.getId());
                 }
             }
             if (!remainingChildLOIs.isEmpty()) {
+                LOG.debug("Child los: " + curChildLos.getId() + " has reamingn child lois: " + remainingChildLOIs.size());
                 curChildLos.setLois(remainingChildLOIs);
                 remainingChildren.add(curChildLos);
             } else {
+                LOG.debug("Child los: " + curChildLos.getId() + " is empty, removing it");
                 this.dataUpdateService.deleteLos(curChildLos);
             }
             
         }
         if (withAoReferenceRemoval) {
+            LOG.debug("Here in reference removal wiht ao: " + ao.getId());
             for (String curLoiId : matchedLoiIds) {
                 childLoiMap.remove(curLoiId);
             }
@@ -1009,11 +1052,16 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
         
         
         if (remainingChildren.isEmpty()) {
+            LOG.debug("parent los: " + los.getId()  + " has no children it will be removed.");
             updateSolrMaps(los, REMOVAL);
             this.dataUpdateService.deleteLos(los);
         } else {
+            LOG.debug("parent los: " + los.getId()  + " has still children it is upodated.");
             updateSolrMaps(los, UPDATE);
             los.setChildren(remainingChildren);
+            LOG.debug("Deleting parent los");
+            this.dataUpdateService.deleteLos(los);
+            LOG.debug("Adding parent los");
             this.dataUpdateService.save(los);
         }
         
@@ -1022,15 +1070,22 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
 
     private boolean hasOtherAoReferences(BasicLOI curChildLoi,
             ApplicationOption ao) {
+        LOG.debug("Checking other ao references with ao: " + ao.getId() +", and loi: " + curChildLoi.getId());
         List<ApplicationOption> remainingAos = new ArrayList<ApplicationOption>();
         for (ApplicationOption curAo : curChildLoi.getApplicationOptions()) {
+            LOG.debug("Current ao: " + curAo.getId());
             if (!curAo.getId().equals(ao.getId())) {
+                LOG.debug("Child loi has other ao references with:  " + curAo.getId());
                 remainingAos.add(curAo);
             }
         }
         if (!remainingAos.isEmpty()) {
+            LOG.debug("Setting remaining aos for childLoi:  " + curChildLoi.getId());
             curChildLoi.setApplicationOptions(remainingAos);
             return true;
+        } else {
+            LOG.debug("No remaining aos for childLoi:  " + curChildLoi.getId());
+            curChildLoi.setApplicationOptions(new ArrayList<ApplicationOption>());
         }
         return false;
     }
