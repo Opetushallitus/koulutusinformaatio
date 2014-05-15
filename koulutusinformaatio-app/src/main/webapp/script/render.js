@@ -8,8 +8,8 @@ if (system.args.length < 3) {
   phantom.exit()
 }
 
-url = system.args[1]
-filename = system.args[2]
+url = system.args[1];
+filename = system.args[2];
 
 page.open(url,
     function() {
