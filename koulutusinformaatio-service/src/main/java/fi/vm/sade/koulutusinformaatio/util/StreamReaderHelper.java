@@ -34,7 +34,6 @@ private static final Logger LOG = LoggerFactory.getLogger(StreamReaderHelper.cla
                 line = reader.readLine();
             }
             
-            LOG.debug(stringBuilder.toString());
         } catch (IOException ex) {
             LOG.error(String.format("Stream reading failed due to IOException: %s\n%s",
                     ex.getMessage(), stringBuilder.toString() ));
@@ -43,8 +42,8 @@ private static final Logger LOG = LoggerFactory.getLogger(StreamReaderHelper.cla
                 reader.close();
                 run = false;
             } catch (IOException e) {
-                LOG.error(String.format("Closing stream failed due to IOException during text version generation: %s",
-                        e.getMessage() ));
+                LOG.error(String.format("Closing stream failed due to IOException: %s\n%s",
+                        e.getMessage(), stringBuilder.toString() ));
             }
         }
     }

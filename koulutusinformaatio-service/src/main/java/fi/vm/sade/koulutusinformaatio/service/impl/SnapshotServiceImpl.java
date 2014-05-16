@@ -16,12 +16,9 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityDAO;
-import fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecificationDAO;
-import fi.vm.sade.koulutusinformaatio.dao.SpecialLearningOpportunitySpecificationDAO;
-import fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
-import fi.vm.sade.koulutusinformaatio.service.SnapshotService;
+import java.io.IOException;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +26,14 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.List;
+import fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityDAO;
+import fi.vm.sade.koulutusinformaatio.dao.HigherEducationLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecificationDAO;
+import fi.vm.sade.koulutusinformaatio.dao.SpecialLearningOpportunitySpecificationDAO;
+import fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
+import fi.vm.sade.koulutusinformaatio.service.SnapshotService;
+import fi.vm.sade.koulutusinformaatio.util.StreamReaderHelper;
 
 /**
  * @author Hannu Lyytikainen
@@ -46,11 +47,13 @@ public class SnapshotServiceImpl implements SnapshotService {
     private static final String TYPE_PARENT = "tutkinto";
     private static final String TYPE_CHILD = "koulutusohjelma";
     private static final String TYPE_UPSEC = "lukio";
+    private static final String TYPE_HIGHERED = "korkeakoulu";
 
     private SpecialLearningOpportunitySpecificationDAO specialDAO;
     private ParentLearningOpportunitySpecificationDAO parentDAO;
     private ChildLearningOpportunityDAO childDAO;
     private UpperSecondaryLearningOpportunitySpecificationDAO upsecDAO;
+    private HigherEducationLOSDAO higheredDAO;
     private String phantomjs;
     private String snapshotScript;
     private String snapshotFolder;
@@ -64,6 +67,7 @@ public class SnapshotServiceImpl implements SnapshotService {
                                @Qualifier("childLearningOpportunityDAO") ChildLearningOpportunityDAO childDAO,
                                @Qualifier("upperSecondaryLearningOpportunitySpecificationDAO")
                                UpperSecondaryLearningOpportunitySpecificationDAO upsecDAO,
+                               @Qualifier("higherEducationLOSDAO") HigherEducationLOSDAO higheredDAO,
                                @Value("${koulutusinformaatio.phantomjs}") String phantomjs,
                                @Value("${koulutusinformaatio.snapshot.script}") String script,
                                @Value("${koulutusinformaatio.snapshot.folder}") String prerenderFolder,
@@ -72,6 +76,7 @@ public class SnapshotServiceImpl implements SnapshotService {
         this.parentDAO = parentDAO;
         this.childDAO = childDAO;
         this.upsecDAO = upsecDAO;
+        this.higheredDAO = higheredDAO;
         this.phantomjs = phantomjs;
         this.snapshotScript = script;
         this.snapshotFolder = prerenderFolder;
@@ -89,6 +94,8 @@ public class SnapshotServiceImpl implements SnapshotService {
         LOG.debug("Child LOs rendered");
         prerender(TYPE_UPSEC, upsecDAO.findIds());
         LOG.debug("Upsec LOs rendered");
+        prerender(TYPE_HIGHERED, higheredDAO.findIds());
+        LOG.debug("HigherEd LOs rendered");
         // todo: handle rehabilitating separately
         LOG.info("Rendering html snapshots finished");
     }
@@ -109,19 +116,20 @@ public class SnapshotServiceImpl implements SnapshotService {
             // "/usr/local/bin/phantomjs /path/to/script.js http://www.opintopolku.fi/some/edu/1.2.3.4.5 /path/to/static/content/"
             Process process = Runtime.getRuntime().exec(String.format("%s %s %s%s/%s %s/%s.html",
                     phantomjs, snapshotScript, baseUrl, type, id, snapshotFolder, id));
+            
+            //Set up two threads to read on the output of the external process.
+            Thread stdout = new Thread(new StreamReaderHelper(process.getInputStream()));
+            Thread stderr = new Thread(new StreamReaderHelper(process.getErrorStream()));
+            
+            stdout.start();
+            stderr.start();
+            
             int exitStatus = process.waitFor();
-
+            process.destroy();
+            
             if (exitStatus != 0) {
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-                StringBuilder stringBuilder = new StringBuilder("");
-                String currentLine = null;
-                currentLine = bufferedReader.readLine();
-                while (currentLine != null) {
-                    stringBuilder.append(currentLine);
-                    currentLine = bufferedReader.readLine();
-                }
-                throw new KIException(String.format("Rendering learning opportunity %s failed: %s",
-                        id, stringBuilder,toString()));
+                throw new KIException(String.format("Rendering snapshot for learning opportunity %s failed with exit status: %d",
+                        id, exitStatus));
             }
 
         } catch (IOException e) {
