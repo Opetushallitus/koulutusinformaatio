@@ -1,0 +1,77 @@
+package fi.vm.sade.koulutusinformaatio.service.builder.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOI;
+import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
+import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
+import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
+import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
+import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
+import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
+
+public class SingleUpperSecondaryLOSBuilder {
+
+    private LOSObjectCreator losObjectCreator;
+    private TarjontaRawService tarjontaRawService;
+
+    public SingleUpperSecondaryLOSBuilder(LOSObjectCreator losObjectCreator, TarjontaRawService tarjontaRawService) {
+        this.losObjectCreator = losObjectCreator;
+        this.tarjontaRawService = tarjontaRawService;
+    }
+
+    public UpperSecondaryLOS createUpperSecondaryLOS(KomoDTO komo, String providerId) throws TarjontaParseException, KoodistoException {
+
+        KomoDTO parentKomo = tarjontaRawService.getKomo(komo.getYlaModuulit().get(0));
+        if (!CreatorUtil.komoPublished.apply(parentKomo)) {
+            throw new TarjontaParseException(String.format("Parent komo not published: %s", parentKomo.getOid()));
+        }
+
+        if (!CreatorUtil.komoPublished.apply(komo)) {
+            throw new TarjontaParseException(String.format("Child komo not published: %s", komo.getOid()));
+        }
+        List<KomotoDTO> komotos = new ArrayList<KomotoDTO>();
+        List<OidRDTO> komotoOids = tarjontaRawService.getKomotosByKomo(komo.getOid(), Integer.MAX_VALUE, 0);
+        for (OidRDTO komotoOid : komotoOids) {
+            KomotoDTO komoto = tarjontaRawService.getKomoto(komotoOid.getOid());
+            if (komoto.getTarjoajaOid().equals(providerId)) {
+                komotos.add(komoto);
+            }
+
+        }
+
+
+        UpperSecondaryLOS los = losObjectCreator.createUpperSecondaryLOS(komo, parentKomo, komotos,
+                String.format("%s_%s", komo.getOid(), providerId), providerId);
+
+
+
+        for (UpperSecondaryLOI loi : los.getLois()) {
+            for (ApplicationOption ao : loi.getApplicationOptions()) {
+                ao.setProvider(los.getProvider());
+                ao.setEducationDegree(los.getEducationDegree());
+                ao.setType(TarjontaConstants.TYPE_UPSEC);
+                los.getProvider().getApplicationSystemIDs().add(ao.getApplicationSystem().getId());
+            }
+        }
+
+        return isValid(los) ? los : null;
+    }
+    
+    private boolean isValid(UpperSecondaryLOS los) {
+        if (los != null
+            && los.getLois() != null) {
+            for (UpperSecondaryLOI loi : los.getLois()) {
+                if (loi.getApplicationOptions() != null && loi.getApplicationOptions().size() > 0) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+}
