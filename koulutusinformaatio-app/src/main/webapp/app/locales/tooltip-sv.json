@@ -20,5 +20,6 @@
     "opintopolku-sv": "Till Studieinfon",
     "search-result-facet-info": "Avgränsningen av sökresultat hjälper dig att avgränsa sökningen och lättare hitta rätt utbildning. Antalet sökresultat anges inom parentes efter sökfaktorerna. Ifall antalet är noll, innebär det att det inte finns lämpliga utbildningar i Studieinfo.",
     "external-application-form": "Hae koulutukseen oppilaitoksen omien sivujen kautta. (sv)",
-    "application-basket-remove": "Avlägsna"
+    "application-basket-remove": "Avlägsna",
+    "uas": ""
 }

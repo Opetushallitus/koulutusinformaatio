@@ -6,7 +6,8 @@ angular.module('kiApp.directives',
         'kiApp.FacetTree',
         'kiApp.KeyboardControl',
         'kiApp.SelectAreaDialog',
-        'angularTreeview',
+        //'angularTreeview',
+        'kiApp.FacetTitle',
         'kiApp.directives.AppBasket']).
 
 /**

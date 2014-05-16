@@ -1,7 +1,7 @@
 /**
  *  Controller for search field in header
  */
-function SearchFieldCtrl($scope, $location, $route, $rootScope, SearchService, kiAppConstants, FilterService, AutocompleteService, TreeService, TranslationService) {
+function SearchFieldCtrl($scope, $location, $route, $rootScope, SearchService, kiAppConstants, FilterService, AutocompleteService, TranslationService) {
     $scope.searchFieldPlaceholder = TranslationService.getTranslation('search-field-placeholder'); 
     $scope.suggestions = [];
     
@@ -36,7 +36,6 @@ function SearchFieldCtrl($scope, $location, $route, $rootScope, SearchService, k
         if ($scope.queryString) {
             var activeTab = $location.search().tab;
             FilterService.clear(); // clear all filters for new search
-            TreeService.clear(); // clear tree selections
             FilterService.setPage(kiAppConstants.searchResultsStartPage);
             FilterService.setArticlePage(kiAppConstants.searchResultsStartPage);
             SearchService.setTerm($scope.queryString);
