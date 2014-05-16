@@ -37,15 +37,15 @@ import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import fi.vm.sade.tarjonta.shared.types.TarjontaTila;
 
-public class SingeLOSBuilder {
+public class SingleParentLOSBuilder {
     
-    public static final Logger LOG = LoggerFactory.getLogger(IncrementalUpdateServiceImpl.class);
+    public static final Logger LOG = LoggerFactory.getLogger(SingleParentLOSBuilder.class);
     private static final String NOT_IN_STATE = " not in state ";
     
     private LOSObjectCreator losCreator;
     private TarjontaRawService tarjontaRawService;
     
-    public SingeLOSBuilder(LOSObjectCreator losCreator, TarjontaRawService tarjontaRawService) {
+    public SingleParentLOSBuilder(LOSObjectCreator losCreator, TarjontaRawService tarjontaRawService) {
         this.losCreator = losCreator;
         this.tarjontaRawService = tarjontaRawService;
     }
@@ -192,7 +192,7 @@ public class SingeLOSBuilder {
         return String.format("%s_%s", komoId, providerId);
     }
     
-    private boolean isSpecialEdKomoto(KomotoDTO komoto) {
+    public static boolean isSpecialEdKomoto(KomotoDTO komoto) {
         return komoto.getPohjakoulutusVaatimusUri().contains(TarjontaConstants.PREREQUISITE_URI_ER);
     }
 

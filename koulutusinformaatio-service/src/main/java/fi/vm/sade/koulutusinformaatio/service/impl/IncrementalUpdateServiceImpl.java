@@ -2,7 +2,6 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -19,10 +18,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.BasicLOI;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOIRef;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
@@ -50,9 +47,10 @@ import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.LOIObjectCreator;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.LOSObjectCreator;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.SingeLOSBuilder;
+import fi.vm.sade.koulutusinformaatio.service.builder.impl.SingleParentLOSBuilder;
+import fi.vm.sade.koulutusinformaatio.service.builder.impl.SingleSpecialLOSBuilder;
+import fi.vm.sade.koulutusinformaatio.service.builder.impl.SingleUpperSecondaryLOSBuilder;
 import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
@@ -75,12 +73,13 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
     private ProviderService providerService;
     private TarjontaService tarjontaService;
     private IndexerService indexerService;
-    
-    private LOIObjectCreator loiCreator;
+
     private LOSObjectCreator losCreator;
-    private SingeLOSBuilder losBuilder;
-    
-    
+    private SingleParentLOSBuilder parentLosBuilder;
+    private SingleSpecialLOSBuilder specialLosBuilder;
+    private SingleUpperSecondaryLOSBuilder upperSecLosBuilder;
+
+
     Map<String,LOS> lossToRemove;
     Map<String,LOS> lossToUpdate;
 
@@ -123,10 +122,11 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
         this.lopHttpSolrServer = lopAliasSolrServer;
         this.locationHttpSolrServer = locationAliasSolrServer;
         this.prodDataQueryService = prodDataQueryService;
-        
-        this.loiCreator = new LOIObjectCreator(this.koodistoService, this.tarjontaRawService);
+
         this.losCreator = new LOSObjectCreator(this.koodistoService, this.tarjontaRawService, this.providerService);
-        this.losBuilder = new SingeLOSBuilder(losCreator, tarjontaRawService);
+        this.parentLosBuilder = new SingleParentLOSBuilder(losCreator, tarjontaRawService);
+        this.specialLosBuilder = new SingleSpecialLOSBuilder(losCreator, tarjontaRawService);
+        this.upperSecLosBuilder = new SingleUpperSecondaryLOSBuilder(losCreator, tarjontaRawService);
     }
 
     @Override
@@ -150,9 +150,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             //If there are changes in komo-data, a full update is performed
             if ((result.containsKey("koulutusmoduuli") && !result.get("koulutusmoduuli").isEmpty()) || updatePeriod == 0) {
                 LOG.warn(String.format("Komos changed. Update period was: %s", updatePeriod));
-                //updateService.updateAllEducationData();
-                //Otherwise doing incremental indexing    
-            } //else {
+            } 
             LOG.debug("Starting incremental update");
             this.updateService.setRunning(true);
             this.updateService.setRunningSince(System.currentTimeMillis());
@@ -221,7 +219,6 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             LOG.debug("Committing.");
             this.updateService.setRunning(false);
             this.updateService.setRunningSince(0);
-            //}
 
         } catch (Exception e) {
             LOG.error("Education data update failed ", e);
@@ -244,7 +241,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
     }
 
     //Indexes changed loi data
-    private void indexLoiData(String komotoOid) throws KoodistoException, SolrServerException, IOException {
+    private void indexLoiData(String komotoOid) throws KoodistoException, SolrServerException, IOException, TarjontaParseException {
         LOG.debug(String.format("Indexing loi: %s", komotoOid));
         KomotoDTO komotoDto = this.tarjontaRawService.getKomoto(komotoOid);
         LOG.debug(String.format("Loi: %s, status: %s", komotoOid, komotoDto.getTila()));
@@ -258,7 +255,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
 
     }
 
-    private void handleLoiAdditionOrUpdate(KomotoDTO komotoDto) throws KoodistoException, SolrServerException, IOException {
+    private void handleLoiAdditionOrUpdate(KomotoDTO komotoDto) throws KoodistoException, SolrServerException, IOException, TarjontaParseException {
         LOG.debug(String.format("Handling addition or update: %s", komotoDto.getOid()));
         List<LOS> referencedLoss = this.dataQueryService.findLearningOpportunitiesByLoiId(komotoDto.getOid());
         //Loi is in mongo, thus it is updated
@@ -275,192 +272,44 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
     }
 
     //Handles removal of loi
-    private void handleLoiRemoval(KomotoDTO komotoDto) {
+    private void handleLoiRemoval(KomotoDTO komotoDto) throws TarjontaParseException, KoodistoException, SolrServerException, IOException {
 
 
         List<LOS> referencedLoss = this.dataQueryService.findLearningOpportunitiesByLoiId(komotoDto.getOid());
         if (referencedLoss != null && !referencedLoss.isEmpty()) {
             for (LOS referencedLos : referencedLoss) {
                 if (referencedLos instanceof ParentLOS) {
-                    this.handleLoiRemovalFromParentLOS((ParentLOS)referencedLos, komotoDto.getOid());
+                    handleLoiRemovalFromParentLOS((ParentLOS)referencedLos, komotoDto.getOid());
                 } else if (referencedLos instanceof SpecialLOS) {
-                    this.handleLoiRemovalFromSpecialLOS((SpecialLOS)referencedLos, komotoDto.getOid());
+                    handleLoiRemovalFromSpecialLOS((SpecialLOS)referencedLos, komotoDto.getOid());
                 } else if (referencedLos instanceof ChildLOS) {
                     handleLoiRemovalFromChildLos((ChildLOS)referencedLos, komotoDto.getOid());      
                 } else if (referencedLos instanceof UpperSecondaryLOS) {
-                    handleLoiRemovalFromUpperSecondarLos((UpperSecondaryLOS)referencedLos, komotoDto.getOid());
+                    handleLoiRemovalFromUpperSecondarLos((UpperSecondaryLOS)referencedLos);
                 }
-
             }
-
         } 
-
     }
 
-    private void handleLoiRemovalFromSpecialLOS(SpecialLOS los, String komotoOid) {
-
-        List<ChildLOI> remainingChildLOIs = new ArrayList<ChildLOI>();
-        List<ApplicationOption> aosToRemove = new ArrayList<ApplicationOption>();
-        for (ChildLOI curChildLoi : los.getLois()) {
-
-            if (!curChildLoi.equals(komotoOid)) {
-                remainingChildLOIs.add(curChildLoi);
-            } else {
-                aosToRemove.addAll(handleAoReferenceRemovals(curChildLoi));
-            }
-        }
-
-        if (!remainingChildLOIs.isEmpty()) {
-            this.updateSolrMaps(los, UPDATE);
-            los.setLois(remainingChildLOIs);
-            this.dataUpdateService.save(los);
-        } else {
-            this.updateSolrMaps(los, REMOVAL);
-            this.dataUpdateService.deleteLos(los);
-        }
-
-        for(ApplicationOption curAo : aosToRemove) {
-            this.dataUpdateService.deleteAo(curAo);
-        }
-
+    private void handleLoiRemovalFromSpecialLOS(SpecialLOS los, String komotoOid) throws TarjontaParseException, KoodistoException, SolrServerException, IOException {
+        KomotoDTO komotoDto = this.tarjontaRawService.getKomoto(komotoOid);
+        KomoDTO komo = this.tarjontaRawService.getKomoByKomoto(komotoOid);
+        this.reCreateSpecialLOS(los, komotoDto, komo, komotoDto.getTarjoajaOid());
     }
 
-    private List<ApplicationOption> handleAoReferenceRemovals(ChildLOI curChildLoi) {
-        List<ApplicationOption> aosToRemove = new ArrayList<ApplicationOption>();
-        if (curChildLoi.getApplicationOptions() != null && !curChildLoi.getApplicationOptions().isEmpty()) {
-
-            for (ApplicationOption curAo : curChildLoi.getApplicationOptions()) {
-                if (!hasOtherLoiReferences(curAo, curChildLoi.getId())) {
-                    aosToRemove.add(curAo);
-                }
-            }
-        }
-
-        return aosToRemove;
-
-    }
-
-    private List<ApplicationOption> handleAoReferenceRemovals(UpperSecondaryLOI curChildLoi) {
-        List<ApplicationOption> aosToRemove = new ArrayList<ApplicationOption>();
-        if (curChildLoi.getApplicationOptions() != null && !curChildLoi.getApplicationOptions().isEmpty()) {
-
-            for (ApplicationOption curAo : curChildLoi.getApplicationOptions()) {
-                if (!hasOtherLoiReferences(curAo, curChildLoi.getId())) {
-                    aosToRemove.add(curAo);
-                }
-            }
-        }
-
-        return aosToRemove;
-
-    }
-
-    private boolean hasOtherLoiReferences(ApplicationOption curAo, String id) {
-        List<ChildLOIRef> remainingLois = new ArrayList<ChildLOIRef>();
-        for (ChildLOIRef curChild : curAo.getChildLOIRefs()) {
-            if (!curChild.getId().equals(id)) {
-                remainingLois.add(curChild);
-            }
-        }
-        if (remainingLois.isEmpty()) {
-            return false;
-        } else {
-            curAo.setChildLOIRefs(remainingLois);
-            return true;
-        }
-
-
-
-    }
-
-    private void handleLoiRemovalFromParentLOS(ParentLOS los, String komotoOid) {
+    private void handleLoiRemovalFromParentLOS(ParentLOS los, String komotoOid) throws TarjontaParseException, KoodistoException, SolrServerException, IOException {
         LOG.debug("handling removal from parent los");
-        List<ChildLOS> remainingChildren = new ArrayList<ChildLOS>();
-        List<ApplicationOption> aosToRemove = new ArrayList<ApplicationOption>();
+        this.reCreateParentLOS(los.getId().split("_")[0], los);
+    }
 
-        for (ChildLOS curChildLos : los.getChildren()) {
-            LOG.debug("curChildLos: " + curChildLos.getId());
-            List<ChildLOI> remainingChildLOIs = new ArrayList<ChildLOI>();
-            for (ChildLOI curChildLoi : curChildLos.getLois()) {
-                if (!curChildLoi.getId().equals(komotoOid)) {
-                    LOG.debug("Adding childLoi: " + curChildLoi.getId() + " to curChildLos: " + curChildLos.getId());
-                    remainingChildLOIs.add(curChildLoi);
-                } else {
-                    LOG.debug("Not adding childLoi: " + curChildLoi.getId() + " to curChildLos: " + curChildLos.getId());
-                    aosToRemove.addAll(handleAoReferenceRemovals(curChildLoi)); 
-
-                }
-            }
-            if (!remainingChildLOIs.isEmpty()) {
-                LOG.debug("curChildLos is retained: " + curChildLos.getId());
-                curChildLos.setLois(remainingChildLOIs);
-                remainingChildren.add(curChildLos);
-            } else {
-                LOG.debug("curChildLos is removed: " + curChildLos.getId());
-                this.dataUpdateService.deleteLos(curChildLos);
-            }
-
-        }
-
-        if (remainingChildren.isEmpty()) {
-            this.updateSolrMaps(los, REMOVAL);
-            this.dataUpdateService.deleteLos(los);
-        } else {
-
-
-
-            los.setChildren(remainingChildren);
-            this.updateSolrMaps(los, UPDATE);
-            LOG.debug("Deleting parent los");
-            this.dataUpdateService.deleteLos(los);
-            LOG.debug("Saving parent los");
-            this.dataUpdateService.save(los);
-        }
-
-        for(ApplicationOption curAo : aosToRemove) {
-            this.dataUpdateService.deleteAo(curAo);
-        }
+    private void handleLoiRemovalFromChildLos(ChildLOS referencedLos, String komotoOid) throws TarjontaParseException, KoodistoException, SolrServerException, IOException {
+        this.reCreateChildLOS(referencedLos);
 
     }
 
-    private void handleLoiRemovalFromChildLos(ChildLOS referencedLos, String komotoOid) {
+    private void handleLoiRemovalFromUpperSecondarLos(UpperSecondaryLOS los) throws TarjontaParseException, KoodistoException, IOException, SolrServerException {
 
-        ParentLOSRef parentRef = referencedLos.getParent();
-        LOS los = this.dataQueryService.getLos(parentRef.getId());
-        if (los instanceof ParentLOS) {
-            this.handleLoiRemovalFromParentLOS((ParentLOS)los, komotoOid);
-        } else {
-            LOG.warn("Child los has reference to parent that is not of type ParentLOS.");
-        }
-
-    }
-
-    private void handleLoiRemovalFromUpperSecondarLos(UpperSecondaryLOS los, String komotoOid) {
-
-        //Map<String,ChildLOIRef> loiMap = constructChildLoiMap(ao.getChildLOIRefs());
-        List<ApplicationOption> aosToRemove = new ArrayList<ApplicationOption>();
-        List<UpperSecondaryLOI> remainingLOIs = new ArrayList<UpperSecondaryLOI>();
-        for (UpperSecondaryLOI curLoi : los.getLois()) {
-            if (curLoi.getId().equals(komotoOid)) {
-                remainingLOIs.add(curLoi);
-            } else {
-                aosToRemove.addAll(handleAoReferenceRemovals(curLoi));
-            }
-        }
-
-
-        if (!remainingLOIs.isEmpty()) {
-            this.updateSolrMaps(los, UPDATE);
-            los.setLois(remainingLOIs);
-            this.dataUpdateService.save(los);
-        } else {
-            this.updateSolrMaps(los, REMOVAL);
-            this.dataUpdateService.deleteLos(los);
-        }
-
-        for (ApplicationOption curAo : aosToRemove) {
-            this.dataUpdateService.deleteAo(curAo);
-        }
+        this.reCreateUpperSecondaryLOS(los);
 
     }
 
@@ -525,32 +374,8 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
                 //if komoto (loi) is in state published it needs to be added or updated
                 if (TarjontaConstants.STATE_PUBLISHED.equals(komotoDto.getTila().name())) {
                     LOG.debug("komoto to add is published");
-                    List<LOS> losses = this.dataQueryService.findLearningOpportunitiesByLoiId(curKoulutusOid);
-                    //If loi is found, it is updated with the new ao data
-                    if (losses != null && !losses.isEmpty()) {
-                        for (LOS curLos : losses) {
-                            if (curLos instanceof ChildLOS) {
-                                updateChildLosRefForAo(aoDto, komotoDto, (ChildLOS)curLos);
-                            } else if (curLos instanceof SpecialLOS) {
-                                updateSpecialLosReferencesForAo(aoDto, komotoDto, (SpecialLOS)curLos);
-                            } else if (curLos instanceof UpperSecondaryLOS) {
-                                updateUpperSecondaryLosReferencesForAo(aoDto, komotoDto, (UpperSecondaryLOS)curLos);
-                            }
+                    handleSecondaryLoiAddition(komotoDto);
 
-                            if (curLos instanceof ChildLOS) {
-                                ParentLOSRef parRef = ((ChildLOS) curLos).getParent();
-                                ParentLOS parent = (ParentLOS)this.dataQueryService.getLos(parRef.getId());
-                                this.updateSolrMaps(parent, ADDITION);
-                            } else {
-                                this.updateSolrMaps(curLos, ADDITION);
-                            }
-                        }
-
-                        //If loi is not found it needs to be added
-                    } else {
-                        LOG.debug("komoto to add has no los in mongo, adding it");
-                        handleSecondaryLoiAddition(komotoDto);
-                    }
                 }
 
             }
@@ -561,312 +386,217 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
 
     }
 
-    private void updateUpperSecondaryLosReferencesForAo(HakukohdeDTO aoDto,
-            KomotoDTO komotoDto, UpperSecondaryLOS los) throws KoodistoException {
-
-        try {
-
-           
-
-            List<UpperSecondaryLOI> tempLois = new ArrayList<UpperSecondaryLOI>();
-            for (UpperSecondaryLOI curLoi : los.getLois()) {
-                if (!curLoi.getId().equals(komotoDto.getOid())) {
-                    tempLois.add(curLoi);
-                }
-            }
-
-            KomoDTO komo = this.tarjontaRawService.getKomo(komotoDto.getKomoOid());
-            String koulutuskoodi = komo.getKoulutusKoodiUri().split("#")[0];
-
-            UpperSecondaryLOI updatedLoi = loiCreator.createUpperSecondaryLOI(komotoDto, los.getId(), los.getName(), koulutuskoodi, SolrConstants.ED_TYPE_LUKIO_SHORT);
-            if (updatedLoi != null) {
-                tempLois.add(updatedLoi);
-            }
-            this.dataUpdateService.save(los);
-
-        } catch (TarjontaParseException ex) {
-            LOG.warn(String.format("Problem indexing incrementally ao: %s with loi: %s. %s",  aoDto.getOid(), komotoDto.getOid(), ex.getMessage()));
-        }
-
-
-    }
-
-    private void updateSpecialLosReferencesForAo(HakukohdeDTO aoDto,
-            KomotoDTO komotoDto, SpecialLOS los) throws KoodistoException {
-
-        try {
-           
-
-            List<ChildLOI> tempLois = new ArrayList<ChildLOI>();
-            for (ChildLOI curLoi : los.getLois()) {
-                if (!curLoi.getId().equals(komotoDto.getOid())) {
-                    tempLois.add(curLoi);
-                }
-            }
-
-            KomoDTO komo = this.tarjontaRawService.getKomo(komotoDto.getKomoOid());
-            String koulutuskoodi = komo.getKoulutusKoodiUri().split("#")[0];
-
-            ChildLOI childLoi = loiCreator.createChildLOI(komotoDto, los.getId(), los.getName(), koulutuskoodi, losCreator.resolveEducationType(los));
-            if (childLoi != null) {
-                tempLois.add(childLoi);
-            }
-
-
-            this.dataUpdateService.save(los);
-
-        } catch (TarjontaParseException ex) {
-            LOG.warn(String.format("Problem indexing incrementally ao: %s with loi: %s. %s",  aoDto.getOid(), komotoDto.getOid(), ex.getMessage()));
-        }   
-    }
 
     private void handleSecondaryLoiAddition(KomotoDTO komotoDto) throws KoodistoException, SolrServerException, IOException {
         LOG.debug(String.format("Adding loi: %s", komotoDto.getOid()));
         try {
-
-           
-
             String providerOid = komotoDto.getTarjoajaOid();
             String komoOid = komotoDto.getKomoOid();
             KomoDTO komo = this.tarjontaRawService.getKomo(komotoDto.getKomoOid());
-            String koulutuskoodi = komo.getKoulutusKoodiUri().split("#")[0];
-
             String basicLosId = String.format("%s_%s", komoOid, providerOid);
+            
+            if (isRehabLOS(komo)) {
+                basicLosId = String.format("%s_%s", basicLosId, komotoDto.getOid());
+            } else if (isSpecialVocationalLos(komotoDto)) {
+                basicLosId = String.format("%s_er", basicLosId);
+            }
 
             LOS los = this.dataQueryService.getLos(basicLosId);
-
-            Map<String,ApplicationOption> affectedAos = new HashMap<String,ApplicationOption>();
-
             if (los != null && los instanceof ChildLOS) {
-                
                 LOG.debug(String.format("A suitable child los for loi: %s is in mongo, updating los: %s", komotoDto.getOid(), los.getId()));
-
-                reCreateChildLOS((ChildLOS)los, komotoDto, koulutuskoodi);
-
+                reCreateChildLOS((ChildLOS)los);
             } else if (los != null && los instanceof UpperSecondaryLOS) {
-
                 LOG.debug(String.format("A suitable upper secondary los for loi: %s is in mongo, updating los: %s", komotoDto.getOid(), los.getId()));
-
-                UpperSecondaryLOI updatedLoi = loiCreator.createUpperSecondaryLOI(komotoDto, los.getId(), los.getName(), koulutuskoodi, SolrConstants.ED_TYPE_LUKIO_SHORT);
-                if (updatedLoi != null) {
-
-                    for (ApplicationOption curAo : updatedLoi.getApplicationOptions()) {
-                        affectedAos.put(curAo.getId(), curAo);
-                    }
-
-                    ((UpperSecondaryLOS)los).getLois().add(updatedLoi);
-                }
-
+                this.reCreateUpperSecondaryLOS((UpperSecondaryLOS)los);
             } else if (los != null && los instanceof SpecialLOS) {
-
                 LOG.debug(String.format("A suitable special los for loi: %s is in mongo, updating los: %s", komotoDto.getOid(), los.getId()));
-
-                ChildLOI childLoi = loiCreator.createChildLOI(komotoDto, los.getId(), los.getName(), koulutuskoodi, losCreator.resolveEducationType((SpecialLOS)los));
-                if (childLoi != null) {
-
-                    for (ApplicationOption curAo : childLoi.getApplicationOptions()) {
-                        affectedAos.put(curAo.getId(), curAo);
-                    }
-
-                    ((SpecialLOS)los).getLois().add(childLoi);
-                }
-
+                this.reCreateSpecialLOS((SpecialLOS)los, komotoDto, komo, komotoDto.getTarjoajaOid());
+                //Trying to find parent los
             } else if (los == null) {
-                los = this.dataQueryService.getLos(String.format("%s_%s", basicLosId, komotoDto.getOid()));
-            }
-            if (los != null && los instanceof SpecialLOS) {
-
-                LOG.debug(String.format("A suitable joint or stuff special los for loi: %s is in mongo, updating los: %s", komotoDto.getOid(), los.getId()));
-
-                ChildLOI childLoi = loiCreator.createChildLOI(komotoDto, los.getId(), los.getName(), koulutuskoodi, losCreator.resolveEducationType((SpecialLOS)los));
-                if (childLoi != null) {
-
-                    for (ApplicationOption curAo : childLoi.getApplicationOptions()) {
-                        affectedAos.put(curAo.getId(), curAo);
-                    }
-
-                    ((SpecialLOS)los).getLois().add(childLoi);
-                }
-
-            } else if (los == null) {
-                //KomoDTO childKomo = this.tarjontaRawService.getKomo(komoOid);
                 List<String> ylamoduulit = komo.getYlaModuulit();
                 if (ylamoduulit != null && ylamoduulit.size() > 0) {
                     los = this.dataQueryService.getLos(String.format("%s_%s", ylamoduulit.get(0), providerOid));
                 }
 
             }
-
+            //If parent los is found, it is recreated
             if (los != null && los instanceof ParentLOS) {
-
                 LOG.debug(String.format("A suitable parent los for loi: %s is in mongo, updating los: %s", komotoDto.getOid(), los.getId()));
-
-               
-                //if (!existsParentLoi((ParentLOS)los, komotoDto.getParentKomotoOid())) {
-                    
-                    KomoDTO parentKomo = this.tarjontaRawService.getKomoByKomoto(komotoDto.getParentKomotoOid());
-                    
-                    los = reCreateParentLOS(parentKomo.getOid(), (ParentLOS)los);//losCreator.createParentLOS(parentKomo, providerId, parentKomotos)
-                    LOG.debug("Parent los recreated");
-
-                /*} else {
-
-                        
-                    
-                    List<KomotoDTO> childKomotos = Arrays.asList(komotoDto);
-                    ChildLOS childLos = losCreator.createChildLOS(komo, basicLosId, childKomotos);
-                    ParentLOSRef parentRef = new ParentLOSRef();
-                    parentRef.setId(los.getId());
-                    parentRef.setName(los.getName());
-                    parentRef.setLosType(los.getType());
-                    childLos.setParent(parentRef);
-
-                    for (ChildLOI curLoi : childLos.getLois()) {
-                        for (ApplicationOption curAo : curLoi.getApplicationOptions()) {
-                            LOG.debug(String.format("The ao to delete is: %s", curAo.getId()));
-                            affectedAos.put(curAo.getId(), curAo);
-                            //this.dataUpdateService.deleteAo(curAo);
-                        }
-                    }
-
-                    ((ParentLOS)los).getChildren().add(childLos);
-                }
-
-
-                LOG.debug(String.format("parent los has %s children", ((ParentLOS)los).getChildren().size()));
-                
-                this.dataUpdateService.save(los);
-                this.updateSolrMaps(los, ADDITION);*/
-
-
+                KomoDTO parentKomo = this.tarjontaRawService.getKomoByKomoto(komotoDto.getParentKomotoOid());
+                los = reCreateParentLOS(parentKomo.getOid(), (ParentLOS)los);
+                LOG.debug("Parent los recreated");
             } 
-            
+
             //if no matching los was there to be updated, a new los is created completely
             if (los == null) {
                 LOG.debug(String.format("There was no los for komoto: %s, creating it", komotoDto.getOid()));
-                String educationType = komo.getKoulutusTyyppiUri();
-                if (educationType.equals(TarjontaConstants.VOCATIONAL_EDUCATION_TYPE) &&
-                        komo.getModuuliTyyppi().equals(TarjontaConstants.MODULE_TYPE_CHILD)) {
-                    komoOid = komo.getYlaModuulit().get(0);
-                }
-                
-                los = this.createParentLOS(komoOid, providerOid);
-                LOG.debug(String.format("Created parentLos %s for komoto: %s, creating it", los.getId(), komotoDto.getOid()));
+                createNewLos(komo, komotoDto);
             }
-
-
 
         } catch (TarjontaParseException ex) {
             LOG.warn(String.format("Problem adding loi incrementally with loi: %s. %s",  komotoDto.getOid(), ex.getMessage()));
         }
+    }
+
+    private void createNewLos(KomoDTO komo, KomotoDTO komotoDto) throws TarjontaParseException, KoodistoException, SolrServerException, IOException {
+        LOS los = null;
+        String komoOid = komo.getOid();
+        String educationType = komo.getKoulutusTyyppiUri();
+        if (educationType.equals(TarjontaConstants.VOCATIONAL_EDUCATION_TYPE) && !this.isSpecialVocationalLos(komotoDto)) {
+
+            if (komo.getModuuliTyyppi().equals(TarjontaConstants.MODULE_TYPE_CHILD)) {
+                komoOid = komo.getYlaModuulit().get(0);
+            }
+            los = createParentLOS(komoOid, komotoDto.getTarjoajaOid());
+            LOG.debug(String.format("Created parentLos %s for komoto: %s, creating it", los.getId(), komotoDto.getOid()));
+        } else if (this.isSpecialVocationalLos(komotoDto) || this.isRehabLOS(komo)) {
+            los = createSpecialLOS(komo, komotoDto, komotoDto.getTarjoajaOid());
+
+        } else if (educationType.equals(TarjontaConstants.UPPER_SECONDARY_EDUCATION_TYPE) && komo.getModuuliTyyppi().equals(TarjontaConstants.MODULE_TYPE_CHILD)) {
+            los = this.createUpperSecondaryLOS(komo, komotoDto.getTarjoajaOid());
+        }
+        if (los == null) {
+            LOG.warn("Los is still null after everything was tried. Komo oid is: " + komo.getOid());
+        }
 
     }
 
-    private void reCreateChildLOS(ChildLOS los, KomotoDTO komotoDto, String koulutuskoodi) throws TarjontaParseException, KoodistoException, SolrServerException, IOException {
-        
+    private boolean isSpecialVocationalLos(KomotoDTO komotoDto) {
+        return komotoDto.getPohjakoulutusVaatimusUri().contains(TarjontaConstants.PREREQUISITE_URI_ER);        
+    }
 
-        Map<String, ApplicationOption> affectedAos = new HashMap<String,ApplicationOption>();
-        
-        ChildLOI childLoi = loiCreator.createChildLOI(komotoDto, los.getId(), los.getName(), koulutuskoodi, SolrConstants.ED_TYPE_AMMATILLINEN_SHORT);
+    private boolean isRehabLOS(KomoDTO komo) {
 
-            List<ChildLOI> otherLois = new ArrayList<ChildLOI>();
-            for (ChildLOI curLoi : ((ChildLOS)los).getLois()) {
-                if (curLoi.getId().equals(childLoi.getId())) {
-                    otherLois.add(curLoi);
-                }
-            }
+        String educationType  = komo.getKoulutusTyyppiUri();
 
-            for (ApplicationOption curAo : childLoi.getApplicationOptions()) {
-                affectedAos.put(curAo.getId(), curAo);
-            }
+        if (educationType.equals(TarjontaConstants.REHABILITATING_EDUCATION_TYPE) &&
+                komo.getModuuliTyyppi().equals(TarjontaConstants.MODULE_TYPE_CHILD)) {
+            return true;
+        } 
+        else if ((educationType.equals(TarjontaConstants.PREPARATORY_VOCATIONAL_EDUCATION_TYPE) 
+                || educationType.equals(TarjontaConstants.TENTH_GRADE_EDUCATION_TYPE)
+                || educationType.equals(TarjontaConstants.IMMIGRANT_PREPARATORY_VOCATIONAL)
+                || educationType.equals(TarjontaConstants.IMMIGRANT_PREPARATORY_UPSEC)
+                || educationType.endsWith(TarjontaConstants.KANSANOPISTO_TYPE))
+                && komo.getModuuliTyyppi().equals(TarjontaConstants.MODULE_TYPE_CHILD)) {
+            return true;
+        }
+        return false;
+    }
 
-            otherLois.add(childLoi);
+    private void reCreateChildLOS(ChildLOS los) throws TarjontaParseException, KoodistoException, SolrServerException, IOException {
 
-            ((ChildLOS)los).setLois(otherLois);
-        
-            
-            ParentLOSRef parentRef = ((ChildLOS) los).getParent();
-            ParentLOS parent = (ParentLOS)(this.dataQueryService.getLos(parentRef.getId()));
-            //this.dataUpdateService.deleteLos(parent);
+        ParentLOSRef parentRef = ((ChildLOS) los).getParent();
+        ParentLOS parent = (ParentLOS)(this.dataQueryService.getLos(parentRef.getId()));
 
-            this.deleteParentLOSRecursively(parent);
-            this.indexerService.removeLos(parent, loHttpSolrServer);
+        this.reCreateParentLOS(parent.getId().split("_")[0], parent);
 
-            for (ParentLOI curParentLoi : parent.getLois()) {
-                List<ApplicationOption> realAos = new ArrayList<ApplicationOption>();
-                for (ApplicationOption curAo : curParentLoi.getApplicationOptions()) {
-                    if (affectedAos.containsKey(curAo.getId())) {
-                        realAos.add(affectedAos.get(curAo.getId()));
-                    } else {
-                        realAos.add(curAo);
-                    }
-                }
-                curParentLoi.setApplicationOptions(realAos);
-            }
-            for (ChildLOS curChildLos : parent.getChildren()) {
-                for (ChildLOI curChildLoi : curChildLos.getLois()) {
-                    List<ApplicationOption> realAos = new ArrayList<ApplicationOption>();
-                    for (ApplicationOption curAo : curChildLoi.getApplicationOptions()) {
-                        if (affectedAos.containsKey(curAo.getId())) {
-                            realAos.add(affectedAos.get(curAo.getId()));
-                        } else {
-                            realAos.add(curAo);
-                        }
-                    }
-                    curChildLoi.setApplicationOptions(realAos);
-                }
-            }
-            
-            this.dataUpdateService.save(parent);
-            this.updateSolrMaps(los, ADDITION);
     }
 
     private ParentLOS reCreateParentLOS(String parentKomoOid, ParentLOS los) throws TarjontaParseException, KoodistoException, SolrServerException, IOException {
         LOG.debug("Recreating parent los: " + los.getId());
-        
+
         this.deleteParentLOSRecursively(los);
         this.indexerService.removeLos(los, loHttpSolrServer);
-        
+
         ParentLOS parent = createParentLOS(parentKomoOid, los.getProvider().getId());
-        
-       return parent;
+
+        return parent;
     }
-    
+
     private ParentLOS createParentLOS(String parentKomoOid, String providerId) throws TarjontaParseException, KoodistoException, SolrServerException, IOException {
         LOG.debug("Creating parent los: " + parentKomoOid + "_" + providerId);
-        
+
         KomoDTO parentKomo = this.tarjontaRawService.getKomo(parentKomoOid);
-        
-        ParentLOS parent = this.losBuilder.createParentLOS(parentKomo, providerId);
+
+        ParentLOS parent = this.parentLosBuilder.createParentLOS(parentKomo, providerId);
         LOG.debug("Creating child losses for parent: " + parent.getId());
-        List<ChildLOS> children = this.losBuilder.createChildLoss(parentKomo, parent);
+        List<ChildLOS> children = this.parentLosBuilder.createChildLoss(parentKomo, parent);
         LOG.debug("Assembing child losses which amount to: " + children.size());
-        this.losBuilder.assembleParentLos(parent, children);
+        this.parentLosBuilder.assembleParentLos(parent, children);
         LOG.debug("Filtering child losses which amount to: " + parent.getChildren().size());
-        parent = this.losBuilder.filterParentLos(parent);
-        
-        
+        parent = this.parentLosBuilder.filterParentLos(parent);
+
+
         if (parent != null) {
             LOG.debug("Saving parent los: " +parent.getId() + " with " + parent.getChildren().size() + " children");
             this.dataUpdateService.save(parent);
             this.updateSolrMaps(parent, ADDITION);
         } 
-        
-       return parent;
+
+        return parent;
     }
-    
-    
+
+    private SpecialLOS reCreateSpecialLOS(SpecialLOS los, KomotoDTO komotoDto, KomoDTO komo, String providerId) throws SolrServerException, IOException, TarjontaParseException, KoodistoException {
+
+        this.deleteSpecialLosRecursively(los);
+        this.indexerService.removeLos(los, loHttpSolrServer);
+        SpecialLOS specialLos = this.createSpecialLOS(komo, komotoDto, providerId);
+
+        return specialLos;
+
+    }
+
+
+    private SpecialLOS createSpecialLOS(KomoDTO komo, KomotoDTO komoto, String providerId) throws SolrServerException, IOException, TarjontaParseException, KoodistoException {
+        SpecialLOS specialLos = this.specialLosBuilder.createSpecialLOS(komo, komoto, this.isRehabLOS(komo), providerId);
+
+        if (specialLos != null) {
+            LOG.debug("Saving special los: " + specialLos.getId() + " with " + specialLos.getLois().size() + " children");
+            this.dataUpdateService.save(specialLos);
+            this.updateSolrMaps(specialLos, ADDITION);
+        }
+        return specialLos;
+    }
+
+    private UpperSecondaryLOS reCreateUpperSecondaryLOS(UpperSecondaryLOS los) throws IOException, SolrServerException, TarjontaParseException, KoodistoException {
+        LOG.debug("recreating upper secondary los: " + los.getId());
+        this.deleteUpperSecondaryLosRecursive(los);
+        this.indexerService.removeLos(los, loHttpSolrServer);
+        KomoDTO komo = this.tarjontaRawService.getKomo(los.getId().split("_")[0]);
+        return this.createUpperSecondaryLOS(komo, los.getProvider().getId());
+    }
+
+    private UpperSecondaryLOS createUpperSecondaryLOS(KomoDTO komo, String providerId) throws TarjontaParseException, KoodistoException {
+        UpperSecondaryLOS newLos = this.upperSecLosBuilder.createUpperSecondaryLOS(komo, providerId);
+        if (newLos != null) {
+            LOG.debug("Saving special los: " + newLos.getId() + " with " + newLos.getLois().size() + " children");
+            this.dataUpdateService.save(newLos);
+            this.updateSolrMaps(newLos, ADDITION);
+        }
+        return newLos;
+    }
+
+
+    private void deleteUpperSecondaryLosRecursive(UpperSecondaryLOS los) {
+        this.dataUpdateService.deleteLos(los);
+        for (UpperSecondaryLOI curLoi : los.getLois()) {
+            for (ApplicationOption curAo : curLoi.getApplicationOptions()) {
+                this.dataUpdateService.deleteAo(curAo);
+            }
+        }
+
+    }
+
+    private void deleteSpecialLosRecursively(SpecialLOS los) {
+        this.dataUpdateService.deleteLos(los);
+        for (ChildLOI curChildLoi : los.getLois()) {
+            for (ApplicationOption curAo :curChildLoi.getApplicationOptions()) {
+                this.dataUpdateService.deleteAo(curAo);
+            }
+        }
+    }
 
     private void deleteParentLOSRecursively(ParentLOS los) {
-        
+
         this.dataUpdateService.deleteLos(los); 
-        
+
         for (ParentLOI curParentLOI : los.getLois()) {
             for (ApplicationOption curAo : curParentLOI.getApplicationOptions()) {
                 this.dataUpdateService.deleteAo(curAo);
             }
         }
-        
+
         for (ChildLOS curChild : los.getChildren()) {
             this.dataUpdateService.deleteLos(curChild);
             for (ChildLOI curChildLoi : curChild.getLois()) {
@@ -877,52 +607,10 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
         }
     }
 
-    private void updateChildLosRefForAo(HakukohdeDTO aoDto,
-            KomotoDTO komotoDto, ChildLOS los) throws KoodistoException {
-
-        try {
-
-            
-
-            String komoOid = komotoDto.getKomoOid();
-
-
-
-            List<ChildLOI> tempLois = new ArrayList<ChildLOI>();
-            for (ChildLOI curLoi : los.getLois()) {
-                if (!curLoi.getId().equals(komotoDto.getOid())) {
-                    tempLois.add(curLoi);
-                }
-            }
-
-            ParentLOSRef parentRef = los.getParent();
-
-            LOS parentLos = this.dataQueryService.getLos(parentRef.getId());
-
-            if (parentLos instanceof ParentLOS) { 
-                KomoDTO komo = this.tarjontaRawService.getKomo(komoOid);
-                String koulutuskoodi = komo.getKoulutusKoodiUri().split("#")[0];
-                ChildLOI childLoi = loiCreator.createChildLOI(komotoDto, los.getId(), los.getName(), koulutuskoodi, SolrConstants.ED_TYPE_AMMATILLINEN_SHORT);
-                if (childLoi != null) {
-                    tempLois.add(childLoi);
-                }
-            }
-
-            los.setLois(tempLois);
-
-            this.dataUpdateService.save(los);
-
-
-
-        } catch (TarjontaParseException ex) {
-            LOG.warn(String.format("Problem indexing incrementally ao: %s with loi: %s. %s",  aoDto.getOid(), komotoDto.getOid(), ex.getMessage()));
-        }
-
-    }
-
     //Handling removal of application option and related data
     private void removeApplicationOption(String oid) throws KoodistoException, TarjontaParseException, SolrServerException, IOException {
 
+        LOG.debug("In remove application option");
         try {
 
             //Getting ao from mongo
@@ -933,12 +621,15 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
 
             //If there is a parent ref, handling removal of parent data
             if (parentRef != null && parentRef.getId() != null) {
+                LOG.debug("There is a parent ref in ao");
                 LOS los  = this.dataQueryService.getLos(parentRef.getId());
 
                 if (los != null && los instanceof ParentLOS) {
-                    handleParentLOSReferenceRemoval((ParentLOS)los, ao);
+                    LOG.debug("The referenced los is ParentLOS");
+                    handleParentLOSReferenceRemoval((ParentLOS)los);
                 } else if (los != null && los instanceof SpecialLOS) {
-                    handleSpecialLOSReferenceRemoval((SpecialLOS)los, ao, true);//NOT DONE YET
+                    LOG.debug("The referenced los is SpecialLOS");
+                    handleSpecialLOSReferenceRemoval((SpecialLOS)los);
                 } 
             }
 
@@ -946,10 +637,25 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             //If there are child loi refs, handling removal based on child references
             if (ao.getChildLOIRefs() != null
                     && !ao.getChildLOIRefs().isEmpty()) {
+                LOG.debug("Handling childLOIRefs for ao");
                 handleLoiRefRemoval(ao);
             }
-
-
+            
+            /*
+            List<SpecialLOS> specialLoss = this.dataQueryService.findSpecialLossByAoId(oid);
+            if (specialLoss != null && !specialLoss.isEmpty()) {
+                LOG.debug("Handling special loss connected to ao");
+                for (SpecialLOS curLos : specialLoss) {
+                    KomoDTO komo = this.tarjontaRawService.getKomo(curLos.getId().split("_")[0]);
+                    if (this.isRehabLOS(komo)) {
+                        KomotoDTO komotoDto = this.tarjontaRawService.getKomoto(curLos.getId().split("_")[2]);
+                        this.reCreateSpecialLOS(curLos, komotoDto, komo, curLos.getProvider().getId());
+                    } else {
+                        this.reCreateSpecialLOS(curLos, null, komo, curLos.getProvider().getId());
+                    }
+                }
+            }*/
+            
             //If application option is not in mongo, nothing needs to be done    
         } catch (ResourceNotFoundException notFoundEx) {
             LOG.debug(notFoundEx.getMessage());
@@ -957,54 +663,26 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
     }
 
     //Removal based on child loi references
-    private void handleLoiRefRemoval(ApplicationOption ao) {
-
+    private void handleLoiRefRemoval(ApplicationOption ao) throws TarjontaParseException, KoodistoException, SolrServerException, IOException {
+        LOG.debug("In handleLoiRefRemoval from ao ");
         for (ChildLOIRef curChildRef : ao.getChildLOIRefs()) {
             LOS referencedLos = this.dataQueryService.getLos(curChildRef.getLosId());
             if (referencedLos instanceof UpperSecondaryLOS) {
-                handleUpperSecondarLosReferenceRemoval((UpperSecondaryLOS)referencedLos, ao);
+                LOG.debug("The referenced los is UpperSecondary");
+                handleUpperSecondarLosReferenceRemoval((UpperSecondaryLOS)referencedLos);
+            } else if (referencedLos instanceof SpecialLOS) {
+                LOG.debug("The referenced los is SpecialLOS");
+                this.handleSpecialLOSReferenceRemoval((SpecialLOS)referencedLos);
             }
-
         }
-
     }
 
     private void handleUpperSecondarLosReferenceRemoval(
-            UpperSecondaryLOS los, ApplicationOption ao) {
-
-        Map<String,ChildLOIRef> loiMap = constructChildLoiMap(ao.getChildLOIRefs());
-
-        List<UpperSecondaryLOI> remainingLOIs = new ArrayList<UpperSecondaryLOI>();
-        for (UpperSecondaryLOI curLoi : los.getLois()) {
-            if (!loiMap.containsKey(curLoi.getId()) || hasOtherAoReferences(curLoi, ao)) {
-                remainingLOIs.add(curLoi);
-            } 
-        }
-
-
-        if (!remainingLOIs.isEmpty()) {
-            los.setLois(remainingLOIs);
-            this.dataUpdateService.save(los);
-            updateSolrMaps(los, UPDATE);
-        } else {
-            updateSolrMaps(los, REMOVAL);
-            this.dataUpdateService.deleteLos(los);
-        }
-
+            UpperSecondaryLOS los) throws IOException, SolrServerException, TarjontaParseException, KoodistoException {
+        LOG.debug("Handling uppersecondary los reference removal, related to ao");
+        this.reCreateUpperSecondaryLOS(los);
     }
 
-    private void handleChildLosReferenceRemoval(ChildLOS referencedLos,
-            ApplicationOption ao) throws KoodistoException, TarjontaParseException, SolrServerException, IOException {
-
-        ParentLOSRef parentRef = referencedLos.getParent();
-        LOS los = this.dataQueryService.getLos(parentRef.getId());
-        if (los instanceof ParentLOS) {
-            this.handleParentLOSReferenceRemoval((ParentLOS)los, ao);
-        } else {
-            LOG.warn("Child los has reference to parent that is not of type ParentLOS.");
-        }
-
-    }
 
     private void handleHigherEdLOSsReferenceRemoval(ApplicationOption ao) {
 
@@ -1070,47 +748,20 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
                 this.dataUpdateService.save(curParent);
             }
         }
-
     }
 
-    private void handleSpecialLOSReferenceRemoval(SpecialLOS los,
-            ApplicationOption ao, boolean withAoReferenceRemoval) {
+    private void handleSpecialLOSReferenceRemoval(SpecialLOS los) throws TarjontaParseException, KoodistoException, SolrServerException, IOException {
+        String komoOid = los.getId().split("_")[0];
+        String tarjoaja = los.getId().split("_")[1];
 
-        Map<String,ChildLOIRef> childLoiMap = constructChildLoiMap(ao.getChildLOIRefs());
+        KomoDTO komo = this.tarjontaRawService.getKomo(komoOid);
 
-        List<String> matchedLoiIds = new ArrayList<String>();
-
-        List<ChildLOI> remainingChildLOIs = new ArrayList<ChildLOI>();
-        for (ChildLOI curChildLoi : los.getLois()) {
-            if (!childLoiMap.containsKey(curChildLoi.getId()) || hasOtherAoReferences(curChildLoi, ao)) {
-                remainingChildLOIs.add(curChildLoi);
-            } else {
-                matchedLoiIds.add(curChildLoi.getId());
-            }
-        }
-        if (withAoReferenceRemoval) { 
-            for (String curLoiId : matchedLoiIds) {
-                childLoiMap.remove(curLoiId);
-            }
-
-            if (!childLoiMap.isEmpty()) {
-                ao.setChildLOIRefs(new ArrayList<ChildLOIRef>(childLoiMap.values()));
-            } else {
-                ao.setChildLOIRefs(new ArrayList<ChildLOIRef>());
-            }
-
-            ao.setParent(null);
-        }
-
-        if (!remainingChildLOIs.isEmpty()) {
-            los.setLois(remainingChildLOIs);
-            this.dataUpdateService.save(los);
-            updateSolrMaps(los, UPDATE);
+        if (los.getType().equals(TarjontaConstants.TYPE_SPECIAL)) {
+            this.reCreateSpecialLOS(los, null, komo, tarjoaja);
         } else {
-            updateSolrMaps(los, REMOVAL);
-            this.dataUpdateService.deleteLos(los);
+            KomotoDTO komoto = this.tarjontaRawService.getKomoto(los.getId().split("_")[2]);
+            this.reCreateSpecialLOS(los, komoto, komo, tarjoaja);
         }
-
     }
 
     private void updateSolrMaps(LOS los, int updateStatus) {
@@ -1128,57 +779,11 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
         }
     }
 
-    private void handleParentLOSReferenceRemoval(ParentLOS los,
-            ApplicationOption ao) throws TarjontaParseException, KoodistoException, SolrServerException, IOException {
-        LOG.debug("Currently in parent los reference removal, with ao: " + ao.getId() + " and parent los: " + los.getId());
-
-        
+    private void handleParentLOSReferenceRemoval(ParentLOS los) throws TarjontaParseException, KoodistoException, SolrServerException, IOException {
+        LOG.debug("Currently in parent los reference removal, with  parent los: " + los.getId());
         String parentKomoOid = los.getId().split("_")[0];
-        
         LOG.debug("parent komo to handle: " + parentKomoOid);
-        
-        //KomoDTO parentKomo = this.tarjontaRawService.getKomo(parentKomoOid); 
-        
         this.reCreateParentLOS(parentKomoOid, los);
-        
-
-    }
-
-    private boolean hasOtherAoReferences(BasicLOI curChildLoi,
-            ApplicationOption ao) {
-        LOG.debug("Checking other ao references with ao: " + ao.getId() +", and loi: " + curChildLoi.getId());
-        List<ApplicationOption> remainingAos = new ArrayList<ApplicationOption>();
-        for (ApplicationOption curAo : curChildLoi.getApplicationOptions()) {
-            LOG.debug("Current ao: " + curAo.getId());
-            if (!curAo.getId().equals(ao.getId())) {
-                LOG.debug("Child loi has other ao references with:  " + curAo.getId());
-                remainingAos.add(curAo);
-            }
-        }
-        if (!remainingAos.isEmpty()) {
-            LOG.debug("Setting remaining aos for childLoi:  " + curChildLoi.getId());
-            curChildLoi.setApplicationOptions(remainingAos);
-            return true;
-        } else {
-            LOG.debug("No remaining aos for childLoi:  " + curChildLoi.getId());
-            curChildLoi.setApplicationOptions(new ArrayList<ApplicationOption>());
-        }
-        return false;
-    }
-
-    private Map<String, ChildLOIRef> constructChildLoiMap(
-            List<ChildLOIRef> childLOIRefs) {
-        Map<String,ChildLOIRef> childLoiMap = new HashMap<String,ChildLOIRef>();
-        for (ChildLOIRef curChild : childLOIRefs) {
-            childLoiMap.put(curChild.getId(), curChild);
-        }
-        return childLoiMap;
-    }
-
-    private void handleLoiRemoval(String loiId, String aoId) {
-
-        //this.dataQueryService.getC
-
     }
 
     private Map<String, List<String>> listChangedLearningOpportunities(long updatePeriod) {
@@ -1191,20 +796,8 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             LOG.debug(curEntry.getKey() + ", " + curEntry.getValue());
         }
 
-        /*
-        for (String curLoi : changemap.get("koulutusmoduuliToteutus")) {
-            LOG.debug("current loi: " + curLoi);
-            KomotoDTO childKomoto = tarjontaRawService.getKomoto(curLoi);
-
-
-
-        }*/
-
-
-
         return changemap;
     }
-
 
     private long getUpdatePeriod() {
         DataStatus status = this.prodDataQueryService.getLatestSuccessDataStatus();

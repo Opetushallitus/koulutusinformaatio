@@ -32,7 +32,7 @@ import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
 
 @Service
 public class EducationIncrementalDataQueryServiceImpl implements
-        EducationIncrementalDataQueryService {
+EducationIncrementalDataQueryService {
 
     private ParentLearningOpportunitySpecificationDAO parentLOSTransactionDAO;
     private ApplicationOptionDAO applicationOptionTransactionDAO;
@@ -66,7 +66,7 @@ public class EducationIncrementalDataQueryServiceImpl implements
         this.specialLOSTransactionDAO = specialLOSTransactionDAO;
         this.higherEducationLOSTransactionDAO = higherEducationLOSTransactionDAO;
         this.learningOpportunityProviderTransactionDAO = learningOpportunityProviderTransactionDAO;
-        
+
     }
 
     @Override
@@ -144,11 +144,11 @@ public class EducationIncrementalDataQueryServiceImpl implements
 
     @Override
     public UpperSecondaryLOS getUpperSecondaryLearningOpportunity(String id) throws ResourceNotFoundException {
-        
+
         UpperSecondaryLearningOpportunitySpecificationEntity entity =
                 upperSecondaryLOSTransactionDAO.getFromSecondary(id);
-        
-        
+
+
         if (entity != null) {
             return modelMapper.map(entity, UpperSecondaryLOS.class);
         }
@@ -237,11 +237,11 @@ public class EducationIncrementalDataQueryServiceImpl implements
 
         List<HigherEducationLOS> higherEds = Lists.transform(higherEducationLOSTransactionDAO.findByProviderId(providerId),
                 new Function<HigherEducationLOSEntity, HigherEducationLOS>() {
-                    @Override
-                    public HigherEducationLOS apply(HigherEducationLOSEntity input) {
-                        return modelMapper.map(input, HigherEducationLOS.class);
-                    }
-                });
+            @Override
+            public HigherEducationLOS apply(HigherEducationLOSEntity input) {
+                return modelMapper.map(input, HigherEducationLOS.class);
+            }
+        });
 
         results.addAll(parents);
         results.addAll(children);
@@ -261,7 +261,7 @@ public class EducationIncrementalDataQueryServiceImpl implements
 
     @Override
     public LOS getLos(String losId) {
-        
+
         ParentLearningOpportunitySpecificationEntity losE = this.parentLOSTransactionDAO.get(losId);
         if (losE != null) {
             return modelMapper.map(losE, ParentLOS.class);
@@ -278,25 +278,25 @@ public class EducationIncrementalDataQueryServiceImpl implements
         if (specialLosE != null) {
             return modelMapper.map(specialLosE, SpecialLOS.class);
         }
-        
+
         HigherEducationLOSEntity higherEdE = this.higherEducationLOSTransactionDAO.get(losId);
         if (higherEdE != null) {
             return modelMapper.map(higherEdE, HigherEducationLOS.class);
         }
-        
+
         return null;
     }
 
     @Override
     public List<LOS> findLearningOpportunitiesByLoiId(String loiId) {
-        
+
         System.out.println("Finding learning opportunities");
-        
+
         List<ChildLearningOpportunitySpecificationEntity> childrenE = this.childLOTransactionDAO.findByLoiId(loiId);
         if (childrenE != null) {
-            
+
             System.out.println("There are entities: " + childrenE.size());
-            
+
             return Lists.transform(
                     childrenE,
                     new Function<ChildLearningOpportunitySpecificationEntity, LOS>() {
@@ -306,9 +306,9 @@ public class EducationIncrementalDataQueryServiceImpl implements
                         }
                     }
                     );
-            
+
         }
-        
+
         List<SpecialLearningOpportunitySpecificationEntity> specialsE = this.specialLOSTransactionDAO.findByLoiId(loiId);
         if (specialsE != null) {
             return Lists.transform(
@@ -321,7 +321,7 @@ public class EducationIncrementalDataQueryServiceImpl implements
                     }
                     );
         }
-        
+
         List<UpperSecondaryLearningOpportunitySpecificationEntity> upsecsE = this.upperSecondaryLOSTransactionDAO.findByLoiId(loiId);
         if (upsecsE != null) {
             return Lists.transform(
@@ -334,22 +334,22 @@ public class EducationIncrementalDataQueryServiceImpl implements
                     }
                     );
         }
-        
+
         HigherEducationLOSEntity higheredE = this.higherEducationLOSTransactionDAO.get(loiId);
         if (higheredE != null) {
             List<LOS> losses = new ArrayList<LOS>();
             losses.add(modelMapper.map(higheredE, HigherEducationLOS.class));
             return losses;
         }
-        
-        
-        
+
+
+
         return null;
     }
 
     @Override
     public DataStatus getLatestSuccessDataStatus() {
-        
+
         DataStatusEntity dataStatusE = this.dataStatusTransactionDAO.getLatestSuccess();
         if (dataStatusE != null) {
             return modelMapper.map(dataStatusE, DataStatus.class);
