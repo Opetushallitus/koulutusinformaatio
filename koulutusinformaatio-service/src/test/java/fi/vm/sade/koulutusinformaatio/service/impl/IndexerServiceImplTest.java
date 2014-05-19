@@ -120,7 +120,7 @@ public class IndexerServiceImplTest {
         parentDocs.add(parentDoc2);
         when(conversionService.convert(any(ParentLOS.class), eq(List.class))).thenReturn(parentDocs);
         
-        indexerServiceImpl = new IndexerServiceImpl(conversionService, loUpdateHttpSolrServer, lopUpdateHttpSolrServer, locationUpdateHttpSolrServer, loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer);
+        indexerServiceImpl = new IndexerServiceImpl(conversionService, loUpdateHttpSolrServer, lopUpdateHttpSolrServer, locationUpdateHttpSolrServer, loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, loUpdateHttpSolrServer, lopUpdateHttpSolrServer, locationUpdateHttpSolrServer);
     }
 
     @Test

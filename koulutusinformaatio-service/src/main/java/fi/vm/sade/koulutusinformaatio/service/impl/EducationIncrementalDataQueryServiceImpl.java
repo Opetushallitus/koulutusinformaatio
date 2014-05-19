@@ -358,10 +358,5 @@ EducationIncrementalDataQueryService {
         }
     }
 
-    @Override
-    public void clearHigherEducations() {
-        List<HigherEducationLOSEntity> higherEds = this.higherEducationLOSTransactionDAO.findAllHigherEds();
-       
-    }
 
 }

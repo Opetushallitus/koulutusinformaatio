@@ -100,6 +100,4 @@ public interface EducationIncrementalDataQueryService {
     
     DataStatus getLatestSuccessDataStatus();
 
-    void clearHigherEducations();
-
 }

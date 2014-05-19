@@ -31,6 +31,11 @@ public interface UpdateService {
      */
     public void updateAllEducationData() throws Exception;
     
+    /**
+     * Indexes articles to solr
+     */
+    public void updateArticles() throws Exception;
+    
     public boolean isRunning();
     
     public void setRunning(boolean running);
