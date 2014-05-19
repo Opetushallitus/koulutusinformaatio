@@ -35,7 +35,7 @@ public final class ProviderToDTO {
         if (provider != null) {
             LearningOpportunityProviderDTO p = new LearningOpportunityProviderDTO();
             p.setId(provider.getId());
-            p.setName(ConverterUtil.getTextByLanguageUseFallbackLang(provider.getName(), defaultLang));
+            p.setName(ConverterUtil.getTextByLanguageUseFallbackLang(provider.getName(), uiLang));
             p.setApplicationSystemIds(provider.getApplicationSystemIDs());
             p.setPostalAddress(AddressToDTO.convert(provider.getPostalAddress(), uiLang));
             p.setVisitingAddress(AddressToDTO.convert(provider.getVisitingAddress(), uiLang));

@@ -259,6 +259,8 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
      */
     private void reIndexHigherEducation() throws IOException, SolrServerException, Exception {
         
+        this.providerService.clearCache();
+        
         this.dataUpdateService.clearHigherEducations(this.indexerService, this.loHttpSolrServer);
         List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
         LOG.debug("Found higher educations: " + higherEducations.size());
