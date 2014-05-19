@@ -186,6 +186,7 @@ public class UpdateServiceImpl implements UpdateService {
     }
 
     @Override
+    @Async
     public void updateArticles() throws Exception {
         
         if (this.running) {
