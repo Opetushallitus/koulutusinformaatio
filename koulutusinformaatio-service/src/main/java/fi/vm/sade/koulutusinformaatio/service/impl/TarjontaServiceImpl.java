@@ -305,6 +305,9 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     @Override
     public HigherEducationLOS findHigherEducationLearningOpportunity(String oid) throws TarjontaParseException, KoodistoException {
+        if (this.providerService != null) {
+            this.providerService.clearCache();
+        }
         if (creator == null) {
             creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService);
         }

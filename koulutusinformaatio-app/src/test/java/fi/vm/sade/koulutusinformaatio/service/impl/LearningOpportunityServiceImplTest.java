@@ -294,7 +294,7 @@ public class LearningOpportunityServiceImplTest {
         assertEquals(parentLOS.getStructure().getTranslations().get(lang), result.getStructure());
         assertEquals(parentLOS.getStydyDomain().getTranslations().get(lang), result.getStydyDomain());
         assertEquals(parentLOS.getProvider().getId(), result.getProvider().getId());
-        assertEquals(parentLOS.getProvider().getName().getTranslations().get(defaultLang), result.getProvider().getName());
+        assertEquals(parentLOS.getProvider().getName().getTranslations().get(lang), result.getProvider().getName());
 
         assertNotNull(result.getLois());
         assertEquals(1, result.getLois().size());

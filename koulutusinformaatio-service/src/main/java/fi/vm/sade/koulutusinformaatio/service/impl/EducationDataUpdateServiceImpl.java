@@ -16,11 +16,17 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import java.io.IOException;
+import java.util.List;
+
 import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.entity.*;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataUpdateService;
+import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 
+import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -232,6 +238,21 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
     public void deleteAo(ApplicationOption ao) {
         
         this.applicationOptionTransactionDAO.deleteById(ao.getId());
+        
+    }
+    
+    @Override
+    public void clearHigherEducations(IndexerService indexerService, HttpSolrServer loHttpSolrServer) throws IOException, SolrServerException {
+        List<HigherEducationLOSEntity> higherEds = higherEducationLOSTransactionDAO.findAllHigherEds();
+        for (HigherEducationLOSEntity curHigherEd : higherEds) {
+            HigherEducationLOS curLos = modelMapper.map(curHigherEd, HigherEducationLOS.class);
+            this.deleteLos(curLos);
+            indexerService.removeLos(curLos, loHttpSolrServer);
+            for (ApplicationOption curAo : curLos.getApplicationOptions()) {
+                this.deleteAo(curAo);
+            }
+            
+        }
         
     }
 }

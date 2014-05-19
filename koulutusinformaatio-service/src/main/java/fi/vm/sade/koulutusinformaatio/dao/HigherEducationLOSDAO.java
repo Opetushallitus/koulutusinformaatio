@@ -43,4 +43,8 @@ public class HigherEducationLOSDAO extends BasicDAO<HigherEducationLOSEntity, St
         return find(query).asList();
     }
 
+    public List<HigherEducationLOSEntity> findAllHigherEds() {
+        return this.find().asList();
+    }
+
 }
