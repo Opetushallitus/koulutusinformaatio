@@ -114,7 +114,10 @@ public class Scheduler {
             
             try {
                 if (!updateService.isRunning()) {
+                    LOG.debug("indexing is not running, starting incremental indexing.");
                     this.incrementalUpdateService.updateChangedEducationData();
+                } else {
+                    LOG.debug("\n\nindexing is running, not starting incremental indexing.\n\n");
                 }
             } catch (Exception e) {
                 LOG.error("Incremental data update execution failed: {}", e.getStackTrace().toString());

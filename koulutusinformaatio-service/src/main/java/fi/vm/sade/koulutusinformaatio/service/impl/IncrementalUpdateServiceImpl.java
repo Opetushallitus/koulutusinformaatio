@@ -137,6 +137,12 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
     @Override
     @Async
     public void updateChangedEducationData() throws Exception {
+        
+        if (this.updateService.isRunning()) {
+            LOG.debug("Indexing is running, not starting");
+            return;
+        }
+        
         LOG.info("updateChangedEducationData on its way");
 
         //Getting get update period
