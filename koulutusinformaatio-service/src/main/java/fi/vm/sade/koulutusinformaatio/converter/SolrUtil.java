@@ -120,13 +120,13 @@ public final class SolrUtil {
     public static void addApplicationDates(SolrInputDocument doc, List<ApplicationOption> applicationOptions) {
         int parentApplicationDateRangeIndex = 0;
         for (ApplicationOption ao : applicationOptions) {
-            if (ao.isSpecificApplicationDates()) {
+            //if (ao.isSpecificApplicationDates()) {
                 doc.addField(new StringBuilder().append("asStart").append("_").
                         append(String.valueOf(parentApplicationDateRangeIndex)).toString(), ao.getApplicationStartDate());
                 doc.addField(new StringBuilder().append("asEnd").append("_").
                         append(String.valueOf(parentApplicationDateRangeIndex)).toString(), ao.getApplicationEndDate());
                 parentApplicationDateRangeIndex++;
-            } else {
+            /*} else {
                 for (DateRange dr : ao.getApplicationSystem().getApplicationDates()) {
                     doc.addField(new StringBuilder().append("asStart").append("_").
                             append(String.valueOf(parentApplicationDateRangeIndex)).toString(), dr.getStartDate());
@@ -134,7 +134,7 @@ public final class SolrUtil {
                             append(String.valueOf(parentApplicationDateRangeIndex)).toString(), dr.getEndDate());
                     parentApplicationDateRangeIndex++;
                 }
-            }
+            }*/
         }
     }
     

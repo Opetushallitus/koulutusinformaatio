@@ -243,12 +243,13 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             this.transactionManager.commitIncrementalTransaction();
             dataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - this.updateService.getRunningSince(), "SUCCESS"));
             LOG.debug("Committing.");
-            this.updateService.setRunning(false);
-            this.updateService.setRunningSince(0);
 
         } catch (Exception e) {
             LOG.error("Education data update failed ", e);
+            this.indexerService.rollbackIncrementalSolrChanges();
             dataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - this.updateService.getRunningSince(), String.format("FAIL: %s", e.getMessage())));
+            
+        } finally {
             this.updateService.setRunning(false);
             this.updateService.setRunningSince(0);
         }

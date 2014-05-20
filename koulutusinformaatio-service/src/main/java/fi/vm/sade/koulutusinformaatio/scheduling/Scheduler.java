@@ -45,6 +45,7 @@ public class Scheduler {
     private boolean seoEnabled;
     private boolean textVersionEnabled;
     private boolean incrementalEnabled;
+    private boolean articlesEnabled;
 
     @Autowired
     public Scheduler(final UpdateService updateService, 
@@ -54,7 +55,8 @@ public class Scheduler {
             @Value("${scheduling.enabled}") boolean enabled,
             @Value("${scheduling.seo.enabled}") boolean seoEnabled, 
             @Value("${scheduling.textversion.enabled}") boolean textVersionEnabled,
-            @Value("${scheduling.data.incremental.enabled}") boolean incrementalEnabled) {
+            @Value("${scheduling.data.incremental.enabled}") boolean incrementalEnabled,
+            @Value("${scheduling.data.articles.enabled}") boolean articlesEnabled) {
         this.updateService = updateService;
         this.seoService = seoService;
         this.textVersionService = textVersionService;
@@ -63,6 +65,7 @@ public class Scheduler {
         this.textVersionEnabled = textVersionEnabled;
         this.incrementalEnabled = incrementalEnabled;
         this.incrementalUpdateService = incrementalUpdateService;
+        this.articlesEnabled = articlesEnabled;
     }
 
     @Scheduled(cron = "${scheduling.data.cron}")
@@ -118,6 +121,24 @@ public class Scheduler {
                     this.incrementalUpdateService.updateChangedEducationData();
                 } else {
                     LOG.debug("\n\nindexing is running, not starting incremental indexing.\n\n");
+                }
+            } catch (Exception e) {
+                LOG.error("Incremental data update execution failed: {}", e.getStackTrace().toString());
+            }
+        }
+    }
+    
+    @Scheduled(cron = "${scheduling.data.articles.cron}")
+    public void runArticleUpdate() {
+        if (this.articlesEnabled) {
+            LOG.info("Starting scheduled article update {}", new Date());
+            
+            try {
+                if (!updateService.isRunning()) {
+                    LOG.debug("indexing is not running, starting article indexing.");
+                    this.updateService.updateArticles();
+                } else {
+                    LOG.debug("\n\nindexing is running, not starting article indexing.\n\n");
                 }
             } catch (Exception e) {
                 LOG.error("Incremental data update execution failed: {}", e.getStackTrace().toString());

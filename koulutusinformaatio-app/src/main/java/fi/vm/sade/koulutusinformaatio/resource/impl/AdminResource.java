@@ -83,6 +83,20 @@ public class AdminResource {
     }
     
     @GET
+    @Path("/updateArticles")
+    public Response updateArticles() throws URISyntaxException {
+        try {
+            if (!updateService.isRunning()) {
+                updateService.updateArticles();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw KIExceptionHandler.resolveException(e);
+        }
+        return Response.seeOther(new URI("admin/status")).build();
+    }
+    
+    @GET
     @Path("/increment")
     public Response incrementEducationData() throws URISyntaxException {
         try {

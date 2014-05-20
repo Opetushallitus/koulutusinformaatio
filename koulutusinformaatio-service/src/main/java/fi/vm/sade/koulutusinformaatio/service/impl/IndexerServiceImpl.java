@@ -4,7 +4,9 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LocationFields;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
@@ -14,6 +16,7 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
+import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +40,8 @@ public class IndexerServiceImpl implements IndexerService {
     private static final Logger LOGGER = LoggerFactory.getLogger(IndexerServiceImpl.class);
 
     private static final String FALLBACK_LANG = "fi";
+    
+    private static final String SOLR_ERROR = "Solr search error occured.";
 
     private final ConversionService conversionService;
 
@@ -51,6 +56,11 @@ public class IndexerServiceImpl implements IndexerService {
     private final HttpSolrServer lopHttpSolrServer;
     private final HttpSolrServer locationUpdateHttpSolrServer;
     private final HttpSolrServer locationHttpSolrServer;
+    
+    private final HttpSolrServer loAliasHttpSolrServer;
+    private final HttpSolrServer lopAliasHttpSolrServer;
+    private final HttpSolrServer locationAliasHttpSolrServer;
+    
 
     @Value("${solr.learningopportunity.alias.url:learning_opportunity}")
     private String loHttpAliasName;
@@ -68,7 +78,10 @@ public class IndexerServiceImpl implements IndexerService {
             @Qualifier("locationUpdateHttpSolrServer") HttpSolrServer locationUpdateHttpSolrServer,
             @Qualifier("loHttpSolrServer") HttpSolrServer loHttpSolrServer,
             @Qualifier("lopHttpSolrServer") HttpSolrServer lopHttpSolrServer,
-            @Qualifier("locationHttpSolrServer") HttpSolrServer locationHttpSolrServer) {
+            @Qualifier("locationHttpSolrServer") HttpSolrServer locationHttpSolrServer,
+            @Qualifier("loAliasSolrServer") HttpSolrServer loAliasHttpSolrServer,
+            @Qualifier("lopAliasSolrServer") final HttpSolrServer lopAliasHttpSolrServer,
+            @Qualifier("locationAliasSolrServer") final HttpSolrServer locationAliasHttpSolrServer) {
         this.conversionService = conversionService;
         this.loUpdateHttpSolrServer = loUpdateHttpSolrServer;
         this.lopUpdateHttpSolrServer = lopUpdateHttpSolrServer;
@@ -76,6 +89,9 @@ public class IndexerServiceImpl implements IndexerService {
         this.loHttpSolrServer = loHttpSolrServer;
         this.lopHttpSolrServer = lopHttpSolrServer;
         this.locationHttpSolrServer = locationHttpSolrServer;
+        this.loAliasHttpSolrServer = loAliasHttpSolrServer;
+        this.lopAliasHttpSolrServer = lopAliasHttpSolrServer;
+        this.locationAliasHttpSolrServer = locationAliasHttpSolrServer;
     }
 
     @Override
@@ -394,6 +410,49 @@ public class IndexerServiceImpl implements IndexerService {
         } else if (curLos instanceof HigherEducationLOS) {
             loHttpSolrServer.deleteById(curLos.getId());
         }
+    }
+
+    @Override
+    public void removeArticles() throws SearchException, IOException {
+        
+        SolrQuery query = new SolrQuery("*");
+        query.addFilterQuery(String.format("%s:%s", LearningOpportunity.TYPE,  SolrConstants.TYPE_ARTICLE));
+        
+        QueryResponse response = null;
+        try {
+            if (query != null) {
+                response = loHttpSolrServer.query(query);
+                //SolrDocumentList docList =  response.getResults();
+                
+            }
+            if (response != null) {
+                for (SolrDocument result : response.getResults()) {
+                    String articleId = result.getFieldValue(SolrUtil.LearningOpportunity.ID).toString();
+                    this.loAliasHttpSolrServer.deleteById(articleId);
+                }
+            }
+            
+            
+        } catch (SolrServerException e) {
+            throw new SearchException(SOLR_ERROR);
+        }
+        
+        
+    }
+
+    @Override
+    public void addArticles(List<Article> articles) throws IOException, SolrServerException {
+       
+        this.addArticles(this.loAliasHttpSolrServer, articles);
+        this.commitLOChanges(this.loAliasHttpSolrServer, this.lopAliasHttpSolrServer, this.locationAliasHttpSolrServer, true);
+        
+    }
+    
+    @Override
+    public void rollbackIncrementalSolrChanges() throws SolrServerException, IOException {
+        loAliasHttpSolrServer.rollback();
+        lopAliasHttpSolrServer.rollback();
+        locationAliasHttpSolrServer.rollback();
     }
 
 }

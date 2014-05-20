@@ -185,5 +185,39 @@ public class UpdateServiceImpl implements UpdateService {
         this.runningSince = runningSince;
     }
 
+    @Override
+    @Async
+    public void updateArticles() throws Exception {
+        
+        if (this.running) {
+            return;
+        }
+        
+        LOG.info("Indexing articles");
+        
+        try {
+            running = true;
+            runningSince = System.currentTimeMillis();
+            this.indexerService.removeArticles();
+            
+            List<Article> articles = this.articleService.fetchArticles();
+            LOG.debug("Articles fetched");
+            indexerService.addArticles(articles);
+            
+            //educationDataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, "SUCCESS"));
+            LOG.info("Articles succesfully indexed");
+        } catch (Exception ex) {
+            indexerService.rollbackIncrementalSolrChanges();
+            educationDataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, String.format("FAIL: Article indexing %s", ex.getMessage())));
+            LOG.error("Article update failed ", ex);
+            
+        } finally {
+            running = false;
+            runningSince = 0;
+        }
+        
+        
+    }
+
 }
 

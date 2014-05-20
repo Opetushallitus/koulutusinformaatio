@@ -22,6 +22,7 @@ import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.Location;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -60,5 +61,11 @@ public interface IndexerService {
     void addArticles(HttpSolrServer loUpdateSolr, List<Article> articles) throws IOException, SolrServerException;
 
     void removeLos(LOS curLos, HttpSolrServer loHttpSolrServer) throws IOException, SolrServerException;
+
+    void removeArticles() throws SearchException, IOException;
+
+    void addArticles(List<Article> articles) throws IOException, SolrServerException;
+
+    void rollbackIncrementalSolrChanges() throws SolrServerException, IOException;
     
 }
