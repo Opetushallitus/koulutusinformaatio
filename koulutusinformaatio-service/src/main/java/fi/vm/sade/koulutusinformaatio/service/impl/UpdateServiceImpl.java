@@ -204,15 +204,18 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.debug("Articles fetched");
             indexerService.addArticles(articles);
             
-            running = false;
-            runningSince = 0;
             educationDataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, "SUCCESS"));
             LOG.info("Articles succesfully indexed");
         } catch (Exception ex) {
+            indexerService.rollbackIncrementalSolrChanges();
+            educationDataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, String.format("FAIL: %s", ex.getMessage())));
             LOG.error("Article update failed ", ex);
+            
+        } finally {
             running = false;
             runningSince = 0;
         }
+        
         
     }
 

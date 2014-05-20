@@ -447,5 +447,12 @@ public class IndexerServiceImpl implements IndexerService {
         this.commitLOChanges(this.loAliasHttpSolrServer, this.lopAliasHttpSolrServer, this.locationAliasHttpSolrServer, true);
         
     }
+    
+    @Override
+    public void rollbackIncrementalSolrChanges() throws SolrServerException, IOException {
+        loAliasHttpSolrServer.rollback();
+        lopAliasHttpSolrServer.rollback();
+        locationAliasHttpSolrServer.rollback();
+    }
 
 }

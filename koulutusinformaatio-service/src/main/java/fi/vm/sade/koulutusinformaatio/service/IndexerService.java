@@ -65,5 +65,7 @@ public interface IndexerService {
     void removeArticles() throws SearchException, IOException;
 
     void addArticles(List<Article> articles) throws IOException, SolrServerException;
+
+    void rollbackIncrementalSolrChanges() throws SolrServerException, IOException;
     
 }
