@@ -102,7 +102,8 @@
     "attachment-header-duedate": "Must be delivered by",
 
     "elementary-graduate-selection": "Admission for basic education graduates",
-    "entrance-exam": "Entrance examination",
+    "entrance-exam": "Entrance examination and aptitude test",
+    "entrance-exam-default": "Entrance examination",
     "exam-scores": "You can get awarded __min__ – __max__ points for the entrance examination. The minimum passing score is __threshold__.",
     "additional-proof": "Extra achievements",
     "additional-proof-scores": "You can get awarded __min__ – __max__ points for extra achievements. The minimum passing score is __threshold__.",

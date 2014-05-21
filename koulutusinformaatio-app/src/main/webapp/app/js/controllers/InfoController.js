@@ -198,6 +198,7 @@
         loadLo();
     }
 
+    /*
     $scope.hasChildren = function() {
         if ($scope.selectedAs && $scope.selectedAs.children) {
             return $scope.selectedAs.children.length > 0;
@@ -205,6 +206,7 @@
             return false;
         }
     };
+    */
 
     // change description language and re-load LO data with the specified language
     $scope.changeDescriptionLanguage = function(languageCode) {

@@ -686,6 +686,8 @@ service('ParentLOTransformer', ['UtilityService', '$filter', '$rootScope', funct
                     as.children = children;
                 });
             });
+
+            //console.log(result);
         }
     }
 }]).
@@ -1766,6 +1768,31 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
         }
     };
 }]).
+
+/**
+ * Keeps up information about collapse block hide/show status
+ */
+service('CollapseBlockService', function() {
+    var blocks = {};
+
+    return {
+        setBlock: function(id, value) {
+            if (value) {
+                blocks[id] = value;
+            } else {
+                blocks[id] = false;
+            }
+        },
+
+        getBlock: function(id) {
+            if (blocks[id] === undefined) {
+                return true;
+            } else {
+                return blocks[id];
+            }
+        }
+    }
+}).
 
 /**
  *  Service for retrieving translated values for text

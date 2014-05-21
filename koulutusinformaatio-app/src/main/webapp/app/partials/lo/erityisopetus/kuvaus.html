@@ -24,17 +24,21 @@
         </ul>
     </div>
     <div data-ki-language-ribbon data-languages="selectedLOI.availableTranslationLanguages" data-change-language="changeDescriptionLanguage" class="ribbon"></div>
-    <div data-render-text-block data-title="goals-of-education" data-content="{{lo.goals}}"></div>
-    <div data-render-text-block data-title="content-of-studies" data-content="{{selectedLOI.content}}"></div>
-    <div data-render-text-block data-title="emphasis" data-content="{{selectedLOI.emphasis}}"></div>
-    <div data-render-study-plan></div>
-    <div data-render-text-block data-title="structure-of-studies" data-content="{{lo.structure}}" data-level="2"></div>
-    <div data-render-text-block data-title="working-life-placement" data-content="{{selectedLOI.workingLifePlacement}}"></div>
-    <div data-ki-render-professional-titles data-title="profession-title" data-content="selectedLOI.professionalTitles"></div>
-    <div data-render-text-block data-title="internationalization" data-content="{{selectedLOI.internationalization}}"></div>
-    <div data-render-text-block data-title="cooperation" data-content="{{selectedLOI.cooperation}}"></div>
-    <div data-render-text-block data-title="access-to-further-studies" data-content="{{lo.accessToFurtherStudies}}"></div>
-    <div data-render-contact-person-info data-content="selectedLOI.contactPersons"></div>
+    <div data-data-ki-collapse-text-block data-title="goals-of-education" data-content="{{lo.goals}}"></div>
+    <div data-data-ki-collapse-text-block data-title="content-of-studies" data-content="{{selectedLOI.content}}"></div>
+    <div data-data-ki-collapse-text-block data-title="emphasis" data-content="{{selectedLOI.emphasis}}"></div>
+    <div data-ki-collapse-block data-title="study-plan" data-content="selectedLOI.studyPlan">
+        <div data-ki-study-plan></div>
+    </div>
+    <div data-data-ki-collapse-text-block data-title="structure-of-studies" data-content="{{lo.structure}}" data-level="2"></div>
+    <div data-data-ki-collapse-text-block data-title="working-life-placement" data-content="{{selectedLOI.workingLifePlacement}}"></div>
+    <div data-ki-collapse-block data-title="profession-title" data-content="selectedLOI.professionalTitles">
+        <div data-ki-professional-titles></div>
+    </div>
+    <div data-data-ki-collapse-text-block data-title="internationalization" data-content="{{selectedLOI.internationalization}}"></div>
+    <div data-data-ki-collapse-text-block data-title="cooperation" data-content="{{selectedLOI.cooperation}}"></div>
+    <div data-data-ki-collapse-text-block data-title="access-to-further-studies" data-content="{{lo.accessToFurtherStudies}}"></div>
+    <div data-ki-contact-person-info data-content="selectedLOI.contactPersons"></div>
 </section>
 <div data-ng-class="applyFormClass" data-ng-include data-src="partialCommonUrl + 'as/as.html'" data-ng-controller="ApplicationCtrl"></div>
 <div class="clear"></div>

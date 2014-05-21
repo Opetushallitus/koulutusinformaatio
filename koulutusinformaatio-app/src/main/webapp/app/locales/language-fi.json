@@ -102,7 +102,8 @@
     "attachment-header-duedate": "Toimitettava viimeistään",
 
     "elementary-graduate-selection": "Perusopetuksen päättäneiden valinta",
-    "entrance-exam": "Pääsykoe",
+    "entrance-exam": "Pääsy- ja soveltuvuuskoe",
+    "entrance-exam-default": "Pääsykoe",
     "exam-scores": "Pääsykokeesta voit saada __min__ – __max__ pistettä. Alin hyväksyttävä pistemäärä on __threshold__.",
     "additional-proof": "Lisänäytöt",
     "additional-proof-scores": "Lisänäytöistä voit saada __min__ – __max__ pistettä. Alin hyväksyttävä pistemäärä on __threshold__.",
