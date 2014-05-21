@@ -422,7 +422,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
 
 
     private boolean isSecondaryAS(HakuDTO asDto) {
-        return asDto != null && asDto.getHakutyyppiUri() != null && !asDto.getHakutyyppiUri().contains("haunkohdejoukko_12");
+        return asDto != null && asDto.getKohdejoukkoUri() != null && !asDto.getKohdejoukkoUri().contains("haunkohdejoukko_12");
     }
 
     private void indexSecondaryEducationAsData(HakuDTO asDto) throws Exception {
