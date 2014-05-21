@@ -560,7 +560,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
                 komoOid = komo.getYlaModuulit().get(0);
             }
             los = createParentLOS(komoOid, komotoDto.getTarjoajaOid());
-            LOG.debug(String.format("Created parentLos %s for komoto: %s, creating it", los.getId(), komotoDto.getOid()));
+            LOG.debug(String.format("Created parentLos %s for komoto: %s, creating it", (los != null ? los.getId() : null), komotoDto.getOid()));
         } else if (this.isSpecialVocationalLos(komotoDto) || this.isRehabLOS(komo)) {
             los = createSpecialLOS(komo, komotoDto, komotoDto.getTarjoajaOid());
 
