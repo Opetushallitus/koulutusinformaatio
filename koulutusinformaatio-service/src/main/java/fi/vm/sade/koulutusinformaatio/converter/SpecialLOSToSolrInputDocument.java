@@ -45,7 +45,6 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
         FacetIndexer fIndexer = new FacetIndexer();
 
         for (ChildLOI loi : los.getLois()) {
-            LOG.debug("\nHERE IS THE CHILD LOI TO INDEX: " + loi.getId() + "\n");
             docs.add(createDoc(los, loi));
             docs.addAll(fIndexer.createFacetDocs(loi, los));
         }
