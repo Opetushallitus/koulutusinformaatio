@@ -22,8 +22,11 @@ import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
+import fi.vm.sade.koulutusinformaatio.service.builder.impl.LOSObjectCreator;
 
 import org.apache.solr.common.SolrInputDocument;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 
 import java.util.ArrayList;
@@ -34,7 +37,7 @@ import java.util.List;
  */
 public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List<SolrInputDocument>> {
 
-
+    private static final Logger LOG = LoggerFactory.getLogger(SpecialLOSToSolrInputDocument.class);
 
     @Override
     public List<SolrInputDocument> convert(SpecialLOS los) {
@@ -42,6 +45,7 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
         FacetIndexer fIndexer = new FacetIndexer();
 
         for (ChildLOI loi : los.getLois()) {
+            LOG.debug("\nHERE IS THE CHILD LOI TO INDEX: " + loi.getId() + "\n");
             docs.add(createDoc(los, loi));
             docs.addAll(fIndexer.createFacetDocs(loi, los));
         }
