@@ -103,15 +103,15 @@ public final class ApplicationOptionToBasketItemDTO {
                 if (as.getMaxApplications() <= 1 || isHakutapaJatkuva(as) || ao.isSpecificApplicationDates() || as.getApplicationFormLink() != null) {
                     
                     // use application system specific application dates if application option specific dates are not available
-                    if (!ao.isSpecificApplicationDates()) {
-                        aoDTO.setApplicationDates( DateRangeToDTO.convert(as.getApplicationDates()) );
-                        aoDTO.setCanBeApplied(ConverterUtil.isOngoing(as.getApplicationDates()));
-                        aoDTO.setNextApplicationPeriodStarts(ConverterUtil.resolveNextDateRangeStart(as.getApplicationDates()));
-                    } else {
+                    //if (!ao.isSpecificApplicationDates()) {
+                        aoDTO.setApplicationDates( DateRangeToDTO.convert(ao.getApplicationDates()) );
+                        aoDTO.setCanBeApplied(ConverterUtil.isOngoing(ao.getApplicationDates()));
+                        aoDTO.setNextApplicationPeriodStarts(ConverterUtil.resolveNextDateRangeStart(ao.getApplicationDates()));
+                    /*} else {
                         aoDTO.setApplicationDates(DateRangeToDTO.convert(ao.getApplicationDates()));
                         aoDTO.setCanBeApplied(ConverterUtil.isOngoing(ao.getApplicationDates()));
                         aoDTO.setNextApplicationPeriodStarts(ConverterUtil.resolveNextDateRangeStart(ao.getApplicationDates()));
-                    }
+                    }*/
                     
                     // set hakutapa for application option
                     aoDTO.setHakutapaUri(as.getHakutapaUri());
