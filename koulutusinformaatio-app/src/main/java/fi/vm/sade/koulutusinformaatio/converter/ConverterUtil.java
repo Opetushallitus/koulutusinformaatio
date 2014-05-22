@@ -108,7 +108,7 @@ public final class ConverterUtil {
 
     public static boolean isOngoing(DateRange dateRange) {
         Date now = new Date();
-        if (dateRange.getStartDate().before(now) && now.before(dateRange.getEndDate())) {
+        if (dateRange != null && dateRange.getStartDate() != null && dateRange.getEndDate() !=null && dateRange.getStartDate().before(now) && now.before(dateRange.getEndDate())) {
             return true;
         } else {
             return false;
@@ -117,7 +117,7 @@ public final class ConverterUtil {
 
     public static boolean isOngoingDTO(DateRangeDTO dateRange) {
         Date now = new Date();
-        if (dateRange.getStartDate().before(now) && now.before(dateRange.getEndDate())) {
+        if (dateRange != null && dateRange.getStartDate() != null && dateRange.getEndDate() !=null && dateRange.getStartDate().before(now) && now.before(dateRange.getEndDate())) {
             return true;
         } else {
             return false;

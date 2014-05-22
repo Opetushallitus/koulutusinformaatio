@@ -62,7 +62,8 @@ public final class ApplicationOptionToDTO {
 
             dto.setCanBeApplied(ConverterUtil.isOngoing(new DateRange(applicationOption.getApplicationStartDate(),
                     applicationOption.getApplicationEndDate())));
-            if (applicationOption.getApplicationStartDate().after(new Date())) {
+            if (applicationOption.getApplicationStartDate() != null 
+                    && applicationOption.getApplicationStartDate().after(new Date())) {
                 dto.setNextApplicationPeriodStarts(applicationOption.getApplicationStartDate());
             }
 
