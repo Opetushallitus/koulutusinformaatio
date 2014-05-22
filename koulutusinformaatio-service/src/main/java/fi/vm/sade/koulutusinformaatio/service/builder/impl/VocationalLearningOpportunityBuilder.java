@@ -90,9 +90,9 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
         parentKomotosByProviderId = ArrayListMultimap.create();
         for (OidRDTO parentKomotoOid : parentKomotoOids) {
             KomotoDTO parentKomoto = tarjontaRawService.getKomoto(parentKomotoOid.getOid());
-            if (isNuortenKoulutus(parentKomoto)) {
+            //if (isNuortenKoulutus(parentKomoto)) {
                 parentKomotosByProviderId.put(parentKomoto.getTarjoajaOid(), parentKomoto);
-            }
+            //}
         }
 
         for (String key : parentKomotosByProviderId.keySet()) {

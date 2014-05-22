@@ -63,7 +63,7 @@ public class SingleParentLOSBuilder {
         
         for (OidRDTO parentKomotoOid : parentKomotoOids) {
             KomotoDTO parentKomoto = tarjontaRawService.getKomoto(parentKomotoOid.getOid());
-            if (parentKomoto.getTarjoajaOid().equals(providerId) && isNuortenKoulutus(parentKomoto)) {
+            if (parentKomoto.getTarjoajaOid().equals(providerId)) { //&& isNuortenKoulutus(parentKomoto)) {
                 providersParentKomotos.add(parentKomoto);
             }
         }
