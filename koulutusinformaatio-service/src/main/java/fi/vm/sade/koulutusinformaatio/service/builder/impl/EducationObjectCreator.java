@@ -142,7 +142,7 @@ public class EducationObjectCreator extends ObjectCreator {
             }
             if (osoite.getOsoiterivi2() != null) {
                 streetAddrTransls2.put("fi", osoite.getOsoiterivi2());
-                attachmentDeliveryAddress.setStreetAddress2(new I18nText(streetAddrTransls2));
+                attachmentDeliveryAddress.setStreet2Address(new I18nText(streetAddrTransls2));
             }
             attachmentDeliveryAddress.setPostalCode(koodistoService.searchFirstCodeValue(osoite.getPostinumero()));
             

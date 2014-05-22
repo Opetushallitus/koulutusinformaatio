@@ -26,6 +26,8 @@ import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioMetaDataRDTO;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 
 import java.util.HashMap;
@@ -37,6 +39,8 @@ import java.util.Map;
  * @author Hannu Lyytikainen
  */
 public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, Provider> {
+    
+    private static final Logger LOG = LoggerFactory.getLogger(OrganisaatioRDTOToProvider.class);
 
     private static final String STREET_ADDRESS = "osoite";
     private static final String POST_OFFICE = "postitoimipaikka";
@@ -98,6 +102,7 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
             p = new Provider();
             p.setId(o.getOid());
             p.setName(new I18nText(o.getNimi()));
+            LOG.debug("Getting postal address for organisation: " + o.getOid());
             p.setPostalAddress(getLocalizedAddress(o.getYhteystiedot(), ADDRESS_DATA_TYPE_POSTAL));
             p.setVisitingAddress(getLocalizedAddress(o.getYhteystiedot(), ADDRESS_DATA_TYPE_VISIT));
             p.setEmail(getSimpleContactInfo(o.getYhteystiedot(), DATA_TYPE_EMAIL));
@@ -172,11 +177,22 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
         Map<String,String> postOfficeTransls = new HashMap<String,String>();
         String postalCode = null;
         
+        
+        LOG.debug("Getting " + addressType);
+        
         for (Map<String,String> curYht : yhteystiedot) {
             if (curYht.containsKey(ADDRESS_DATA_TYPE) && curYht.get(ADDRESS_DATA_TYPE).equals(addressType)) {
+                
+                LOG.debug("Yhteystieto: " + addressType);
+                
                 String key = koodistoService.searchFirstCodeValue(curYht.get(LANG));
+                
+                LOG.debug("Lang key is: " + key);
                 if (curYht.get(STREET_ADDRESS) != null) {
                     streetAddrTransls.put(key.toLowerCase(), curYht.get(STREET_ADDRESS));
+                    
+                    LOG.debug("there is street address: " + curYht.get(STREET_ADDRESS));
+                    
                 } 
                 if (curYht.get(POST_OFFICE) != null) {
                     postOfficeTransls.put(key.toLowerCase(), curYht.get(POST_OFFICE));
@@ -220,15 +236,6 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
             www = getSimpleContactInfo(metadata.getYhteystiedot(), DATA_TYPE_WWW);
             email = this.getSimpleContactInfo(metadata.getYhteystiedot(), DATA_TYPE_EMAIL); 
             
-            /*for (Map<String, String> info : metadata.getYhteystiedot()) {
-                if (info.get(DATA_TYPE) != null && info.get(DATA_TYPE).equals(DATA_TYPE_PHONE)) {
-                    phone = info.get(DATA_TYPE_PHONE_NUMBER);
-                } else if (info.get(DATA_TYPE_EMAIL) != null) {
-                    email = info.get(DATA_TYPE_EMAIL);
-                } else if (info.get(DATA_TYPE_WWW) != null) {
-                    www = info.get(DATA_TYPE_WWW);
-                }
-            }*/
             return new ApplicationOffice(getI18nText(metadata.getHakutoimistonNimi()), phone, email, www,
                     visitingAddress, postalAddress);
         }
