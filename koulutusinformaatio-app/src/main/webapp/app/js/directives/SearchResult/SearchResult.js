@@ -14,7 +14,7 @@ directive('searchResult', ['FilterService', 'TranslationService', function(Filte
             }
 
             scope.getTemplate = function() {
-                return 'templates/' + scope.lo.type + '/searchResult.html';
+                return 'js/directives/SearchResult/' + scope.lo.type + '/searchResult.html';
             }
 
             var hashIndex = scope.lo.id.indexOf('#');
