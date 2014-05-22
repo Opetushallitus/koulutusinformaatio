@@ -269,16 +269,6 @@ function ApplicationCtrl($scope, ApplicationBasketService, UtilityService, Trans
         ApplicationBasketService.addItem(aoId);
     }
 
-    $scope.applicationSystemIsActive = function(as) {
-        for (var i in as.applicationDates) {
-            if (as.applicationDates.hasOwnProperty(i)) {
-                return as.asOngoing ? true : false;
-            }
-        }
-
-        return false;
-    };
-
     $scope.isItemAddedToBasket = function(aoId) {
         return ApplicationBasketService.itemExists(aoId);
     }

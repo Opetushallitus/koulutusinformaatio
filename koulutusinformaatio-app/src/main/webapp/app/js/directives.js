@@ -795,15 +795,15 @@ directive('kiRenderApplicationStatusLabel', function() {
             var as = scope.applicationSystem;
             var ao = scope.applicationOption;
 
-            if (ao && ao.specificApplicationDates) {
+            if (ao) {
                 if (ao.canBeApplied) {
-                        scope.active = "present";
-                    } else if (ao.nextApplicationPeriodStarts) {
-                        scope.active = "future";
-                        scope.timestamp = ao.nextApplicationPeriodStarts;
-                    } else {
-                        scope.active = "past";
-                    }
+                    scope.active = "present";
+                } else if (ao.nextApplicationPeriodStarts) {
+                    scope.active = "future";
+                    scope.timestamp = ao.nextApplicationPeriodStarts;
+                } else {
+                    scope.active = "past";
+                }
             } else if (as) {
                 if (as.asOngoing) {
                     scope.active = "present";

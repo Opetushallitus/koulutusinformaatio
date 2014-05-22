@@ -1,0 +1,40 @@
+<div class="search-result-collapsed">
+    <div class="result-content">
+        <h2 title="{{locales.openEducation}}"><a href="{{lo.linkHref}}">{{lo.name}}, {{lo.credits}}</a></h2>
+    	<span class="italic" data-ki-i18n="et3"></span><br />
+        <span data-ng-show="lo.prerequisite">
+           	<span data-ki-i18n="application-prerequisite" data-show-colon="true"></span>
+            <span>{{lo.prerequisite}}</span><br />
+        </span>
+        <span>{{lo.lopName}}</span><br />
+        <span>{{lo.homeplace}}</span>
+    </div>
+
+    <div class="float-right">
+        <span data-ki-as-state class="state-label">&nbsp;</span>
+        <span class="collapser" data-ng-class="showExtension" data-ng-click="toggleExtendedView()" data-ng-keypress="toggleExtendedView()" tabindex="0">
+            <span data-ki-i18n="extended-view-{{showExtension}}" class="margin-right-1"></span>
+            <span class="icon"></span>
+        </span>
+    </div>
+
+    <div class="clear"></div>
+</div>
+
+<div data-extended-searchresult-data="tutkinto" data-toggle-collapse>
+    <div class="grid16-8">
+        <div data-sr-extended-koulutustarjonta></div>
+    </div>
+
+    <div class="grid16-8">
+        <h4 class="margin-top-0 margin-bottom-1" data-ki-i18n="basic-information"></h4>
+        <div data-sr-basic-information></div>
+    </div>
+
+    <div class="grid16-16 application-container">
+        <div data-sr-hakukohteet>
+            <div data-sr-extended-options></div>
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>

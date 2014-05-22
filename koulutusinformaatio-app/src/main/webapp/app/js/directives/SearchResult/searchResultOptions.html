@@ -7,23 +7,23 @@
     <input type="hidden" name="preference1-Koulutus-educationDegree" value="{{extendedLO.lo.educationDegree}}" />
     <input type="hidden" name="preference1-Koulutus-id-sora" value="{{applicationoption.sora}}" />
     <input type="hidden" name="preference1-Koulutus-id-lang" value="{{applicationoption.teachLang}}" />
-    <input type="hidden"name="preference1-Koulutus-id-athlete"value="{{provider.athleteEducation || applicationoption.athleteEducation}}" />
-    <input type="hidden"name="preference1-Koulutus-id-aoIdentifier"value="{{applicationoption.aoIdentifier}}" />
-    <input type="hidden"name="preference1-Koulutus-id-kaksoistutkinto"value="{{applicationoption.kaksoistutkinto}}" />
-    <input type="hidden"name="preference1-Koulutus-id-vocational"value="{{applicationoption.vocational}}" />
-    <input type="hidden"name="preference1-Koulutus-id-educationcode"value="{{applicationoption.educationCodeUri}}" />
+    <input type="hidden"name="preference1-Koulutus-id-athlete" value="{{provider.athleteEducation || applicationoption.athleteEducation}}" />
+    <input type="hidden"name="preference1-Koulutus-id-aoIdentifier" value="{{applicationoption.aoIdentifier}}" />
+    <input type="hidden"name="preference1-Koulutus-id-kaksoistutkinto" value="{{applicationoption.kaksoistutkinto}}" />
+    <input type="hidden"name="preference1-Koulutus-id-vocational" value="{{applicationoption.vocational}}" />
+    <input type="hidden"name="preference1-Koulutus-id-educationcode" value="{{applicationoption.educationCodeUri}}" />
 
-    <button data-ng-if="!applicationsystem.applicationFormLink" class="float-left" type="submit" data-ng-disabled="!isApplicationOpen(applicationsystem, applicationoption)">
+    <button data-ng-if="!applicationsystem.applicationFormLink" class="float-left" type="submit" data-ng-disabled="!applicationoption.canBeApplied">
         <span>
             <span data-ki-i18n="apply-button-label" data-lang="{{applicationoption.teachingLang}}"></span>
         </span>
     </button>
 
     <div class="float-left" data-ng-if="applicationsystem.applicationFormLink">
-        <a data-ng-if="isApplicationOpen(applicationsystem, applicationoption)" data-ng-href="{{applicationsystem.applicationFormLink}}" title="{{locales.externalApplicationForm}}" target="_blank">
+        <a data-ng-if="applicationoption.canBeApplied" data-ng-href="{{applicationsystem.applicationFormLink}}" title="{{locales.externalApplicationForm}}" target="_blank">
         <i class="icon-link-ext-alt"></i><span data-ki-i18n="apply-button-label" data-lang="{{teachingLang}}"></span>
         </a>
-        <span data-ng-if="!isApplicationOpen(applicationsystem, applicationoption)" class="text-disabled">
+        <span data-ng-if="!applicationoption.canBeApplied" class="text-disabled">
             <i class="icon-link-ext-alt"></i><span data-ki-i18n="apply-button-label" data-lang="{{teachingLang}}"></span>
         </a>
     </div>
@@ -52,5 +52,5 @@
 <div class="clear"></div>
 
 <div class="margin-top-1">
-    <div class="margin-top-2 small" data-ki-render-application-status-label data-as="applicationsystem" data-ao="applicationoption" data-lang="{{teachingLang}}"></div>
+    <div class="margin-top-2 small" data-ki-render-application-status-label data-ao="applicationoption" data-lang="{{teachingLang}}"></div>
 </div>

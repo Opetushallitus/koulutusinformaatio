@@ -1,14 +1,14 @@
-<button data-ng-if="!as.applicationFormLink" type="submit" data-ng-disabled="!applicationSystemIsActive(as)">
+<button data-ng-if="!as.applicationFormLink" type="submit" data-ng-disabled="!ao.canBeApplied">
     <span>
         <span data-ki-i18n="apply-button-label" data-lang="{{teachingLang}}"></span>
     </span>
 </button>
 
 <div class="inline-block" data-ng-if="as.applicationFormLink">
-    <a data-ng-if="applicationSystemIsActive(as)" data-ng-href="{{as.applicationFormLink}}" title="{{tooltips.externalApplicationForm}}" target="_blank">
+    <a data-ng-if="ao.canBeApplied" data-ng-href="{{as.applicationFormLink}}" title="{{tooltips.externalApplicationForm}}" target="_blank">
     <i class="icon-link-ext-alt"></i><span data-ki-i18n="apply-button-label" data-lang="{{teachingLang}}"></span>
     </a>
-    <span data-ng-if="!applicationSystemIsActive(as)" class="text-disabled">
+    <span data-ng-if="!ao.canBeApplied" class="text-disabled">
         <i class="icon-link-ext-alt"></i><span data-ki-i18n="apply-button-label" data-lang="{{teachingLang}}"></span>
     </a>
 </div>
