@@ -39,6 +39,7 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataQueryService;
+import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.IncrementalUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
@@ -71,7 +72,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
     private TransactionManager transactionManager;
     private EducationIncrementalDataQueryService dataQueryService;
     private EducationDataQueryService prodDataQueryService;
-    private EducationDataUpdateService dataUpdateService;
+    private EducationIncrementalDataUpdateService dataUpdateService;
     private KoodistoService koodistoService;
     private ProviderService providerService;
     private TarjontaService tarjontaService;
@@ -106,7 +107,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             TransactionManager transactionManager,
             EducationIncrementalDataQueryService dataQueryService,
             EducationDataQueryService prodDataQueryService,
-            EducationDataUpdateService dataUpdateService,
+            EducationIncrementalDataUpdateService dataUpdateService,
             KoodistoService koodistoService,
             ProviderService providerService,
             TarjontaService tarjontaService,
@@ -161,6 +162,11 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
 
 
             LOG.debug("Starting incremental update");
+            
+            if (!hasChanges(result)) {
+                return;
+            }
+            
             this.updateService.setRunning(true);
             this.updateService.setRunningSince(System.currentTimeMillis());
             this.transactionManager.beginIncrementalTransaction();
@@ -240,12 +246,12 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             LOG.debug("Committing to solr");
             this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
             LOG.debug("Saving successful status");
-            this.transactionManager.commitIncrementalTransaction();
             dataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - this.updateService.getRunningSince(), "SUCCESS"));
             LOG.debug("Committing.");
 
         } catch (Exception e) {
             LOG.error("Education data update failed ", e);
+            this.transactionManager.rollbackIncrementalTransaction();
             this.indexerService.rollbackIncrementalSolrChanges();
             dataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - this.updateService.getRunningSince(), String.format("FAIL: %s", e.getMessage())));
             
@@ -253,6 +259,15 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             this.updateService.setRunning(false);
             this.updateService.setRunningSince(0);
         }
+    }
+
+    private boolean hasChanges(Map<String, List<String>> result) {
+       
+        return (result.containsKey("koulutusmoduuli") && !result.get("koulutusmoduuli").isEmpty())
+                || (result.containsKey("haku") && !result.get("haku").isEmpty())
+                || (result.containsKey("hakukohde") && !result.get("hakukohde").isEmpty())
+                || (result.containsKey("koulutusmoduuliToteutus") && !result.get("koulutusmoduuliToteutus").isEmpty());
+        
     }
 
     /*

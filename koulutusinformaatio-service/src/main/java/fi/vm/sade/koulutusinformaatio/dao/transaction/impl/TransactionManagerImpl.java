@@ -303,17 +303,6 @@ public class TransactionManagerImpl implements TransactionManager {
     public void beginIncrementalTransaction()
             throws IOException, SolrServerException {
         
-        /*parentLOSTransactionDAO.getCollection().drop();
-        applicationOptionTransactionDAO.getCollection().drop();
-        learningOpportunityProviderTransactionDAO.getCollection().drop();
-        childLOTransactionDAO.getCollection().drop();
-        pictureTransactionDAO.getCollection().drop();
-        upperSecondaryLOSTransactionDAO.getCollection().drop();
-        higherEducationLOSTransactionDAO.getCollection().drop();
-        specialLOSTransactionDAO.getCollection().drop();*/
-        
-        //mongo.dropDatabase(transactionDbName);
-        
         dropTransactionDbCollections();
         
         BasicDBObject cmd = new BasicDBObject("copydb", 1).append("fromdb", dbName).append("todb", this.transactionDbName);
@@ -321,7 +310,7 @@ public class TransactionManagerImpl implements TransactionManager {
     }
 
     @Override
-    public void commitIncrementalTransaction() throws KICommitException {
+    public void rollbackIncrementalTransaction() throws KICommitException {
         BasicDBObject cmd = new BasicDBObject("copydb", 1).append("fromdb", transactionDbName).append("todb", dbName);
         dropDbCollections();
         mongo.getDB("admin").command(cmd);
