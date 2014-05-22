@@ -146,7 +146,6 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
         return this;
     }
 
-
     private boolean isSpecialEdKomoto(KomotoDTO komoto) {
         return komoto.getPohjakoulutusVaatimusUri().contains(TarjontaConstants.PREREQUISITE_URI_ER) && komoto.getKoulutuslajiUris() != null && !komoto.getKoulutuslajiUris().isEmpty() && komoto.getKoulutuslajiUris().get(0).contains(TarjontaConstants.NUORTEN_KOULUTUS);
     }

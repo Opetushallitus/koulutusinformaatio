@@ -28,7 +28,7 @@ public class AddressEntity {
     @Embedded
     private I18nTextEntity streetAddress;
     @Embedded
-    private I18nTextEntity streetAddress2;
+    private I18nTextEntity street2Address;
     private String postalCode;
     @Embedded
     private I18nTextEntity postOffice;
@@ -43,12 +43,12 @@ public class AddressEntity {
         this.streetAddress = streetAddress;
     }
 
-    public I18nTextEntity getStreetAddress2() {
-        return streetAddress2;
+    public I18nTextEntity getStreet2Address() {
+        return street2Address;
     }
 
-    public void setStreetAddress2(I18nTextEntity streetAddress2) {
-        this.streetAddress2 = streetAddress2;
+    public void setStreet2Address(I18nTextEntity street2Address) {
+        this.street2Address = street2Address;
     }
 
     public String getPostalCode() {

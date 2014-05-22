@@ -107,7 +107,7 @@ public class EducationObjectCreatorTest extends KoodistoAwareTest {
         assertEquals(postCode, address.getPostalCode());
         assertEquals("postoffice", address.getPostOffice().getTranslations().get("fi"));
         assertEquals("streetaddress", address.getStreetAddress().getTranslations().get("fi"));
-        assertEquals("streetaddress2", address.getStreetAddress2().getTranslations().get("fi"));
+        assertEquals("streetaddress2", address.getStreet2Address().getTranslations().get("fi"));
     }
 
     @Test
