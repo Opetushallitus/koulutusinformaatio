@@ -70,7 +70,7 @@ public final class ApplicationOfficeToDTO {
     }
     
     private static boolean emptyAddress(Address address) {
-        return address.getPostalCode() == null && emptyI18nText(address.getPostOffice())  &&  emptyI18nText(address.getStreetAddress()) && emptyI18nText(address.getStreet2Address()); 
+        return address.getPostalCode() == null && emptyI18nText(address.getPostOffice())  &&  emptyI18nText(address.getStreetAddress()) && emptyI18nText(address.getSecondForeignAddr()); 
     }
     
     private static boolean emptyI18nText(I18nText text) {

@@ -32,5 +32,5 @@ public interface TransactionManager {
     void beginIncrementalTransaction() throws IOException, SolrServerException;
     void rollBack(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws IOException, SolrServerException;
     void commit(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws KICommitException;
-    void commitIncrementalTransaction() throws KICommitException;
+    void rollbackIncrementalTransaction() throws KICommitException;
 }
