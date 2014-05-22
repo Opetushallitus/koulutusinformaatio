@@ -58,6 +58,7 @@ public class BasketApplicationOptionDTO {
     private Date nextApplicationPeriodStarts;
     private String hakutapaUri;
     private String applicationFormLink;
+    private String asId;
 
     public String getId() {
         return id;
@@ -295,5 +296,13 @@ public class BasketApplicationOptionDTO {
 
     public void setApplicationFormLink(String applicationFormLink) {
         this.applicationFormLink = applicationFormLink;
+    }
+
+    public String getAsId() {
+        return asId;
+    }
+
+    public void setAsId(String asId) {
+        this.asId = asId;
     }
 }

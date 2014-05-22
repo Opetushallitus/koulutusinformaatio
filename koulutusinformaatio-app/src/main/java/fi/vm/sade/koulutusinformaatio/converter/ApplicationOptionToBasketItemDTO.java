@@ -16,22 +16,20 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
+import java.util.List;
+import java.util.Map;
+
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
-import fi.vm.sade.koulutusinformaatio.domain.DateRange;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOSRef;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.dto.BasketApplicationOptionDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.BasketItemDTO;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Mikko Majapuro
@@ -102,22 +100,18 @@ public final class ApplicationOptionToBasketItemDTO {
                 // add to generic application system pool
                 if (as.getMaxApplications() <= 1 || isHakutapaJatkuva(as) || ao.isSpecificApplicationDates() || as.getApplicationFormLink() != null) {
                     
-                    // use application system specific application dates if application option specific dates are not available
-                    //if (!ao.isSpecificApplicationDates()) {
-                        aoDTO.setApplicationDates( DateRangeToDTO.convert(ao.getApplicationDates()) );
-                        aoDTO.setCanBeApplied(ConverterUtil.isOngoing(ao.getApplicationDates()));
-                        aoDTO.setNextApplicationPeriodStarts(ConverterUtil.resolveNextDateRangeStart(ao.getApplicationDates()));
-                    /*} else {
-                        aoDTO.setApplicationDates(DateRangeToDTO.convert(ao.getApplicationDates()));
-                        aoDTO.setCanBeApplied(ConverterUtil.isOngoing(ao.getApplicationDates()));
-                        aoDTO.setNextApplicationPeriodStarts(ConverterUtil.resolveNextDateRangeStart(ao.getApplicationDates()));
-                    }*/
+                    aoDTO.setApplicationDates( DateRangeToDTO.convert(ao.getApplicationDates()) );
+                    aoDTO.setCanBeApplied(ConverterUtil.isOngoing(ao.getApplicationDates()));
+                    aoDTO.setNextApplicationPeriodStarts(ConverterUtil.resolveNextDateRangeStart(ao.getApplicationDates()));
                     
                     // set hakutapa for application option
                     aoDTO.setHakutapaUri(as.getHakutapaUri());
                     
                     // set application form link from application system to application option
                     aoDTO.setApplicationFormLink(as.getApplicationFormLink());
+                    
+                    // set application system id for application option (used for routing to correct application form)
+                    aoDTO.setAsId(as.getId());
                     
                     if (items.containsKey( HAKU_GENERIC_ID )) {
                         items.get( HAKU_GENERIC_ID ).getApplicationOptions().add(aoDTO);

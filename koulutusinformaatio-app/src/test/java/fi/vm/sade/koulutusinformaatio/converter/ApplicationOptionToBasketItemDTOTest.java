@@ -163,6 +163,7 @@ public class ApplicationOptionToBasketItemDTOTest {
         BasketItemDTO bItemDTO = basketItems.get(0);
         BasketApplicationOptionDTO baoDTO = bItemDTO.getApplicationOptions().get(0);
         assertEquals("erikseenHaettavatHakukohteet", bItemDTO.getApplicationSystemId());
+        assertEquals(baoDTO.getAsId(), as.getId());
     }
     
     @Test
@@ -174,6 +175,7 @@ public class ApplicationOptionToBasketItemDTOTest {
         BasketItemDTO bItemDTO = basketItems.get(0);
         BasketApplicationOptionDTO baoDTO = bItemDTO.getApplicationOptions().get(0);
         assertEquals("erikseenHaettavatHakukohteet", bItemDTO.getApplicationSystemId());
+        assertEquals(baoDTO.getAsId(), as.getId());
         assertNotNull(baoDTO.getApplicationDates());
         assertTrue(baoDTO.getApplicationDates().size() > 0);
     }
