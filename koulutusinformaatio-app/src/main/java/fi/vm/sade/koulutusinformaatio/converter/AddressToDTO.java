@@ -31,7 +31,7 @@ public final class AddressToDTO {
         if (address != null) {
             AddressDTO addrs = new AddressDTO();
             addrs.setStreetAddress(ConverterUtil.getTextByLanguageUseFallbackLang(address.getStreetAddress(), lang));
-            addrs.setStreetAddress2(ConverterUtil.getTextByLanguageUseFallbackLang(address.getStreetAddress2(), lang));
+            addrs.setStreetAddress2(ConverterUtil.getTextByLanguageUseFallbackLang(address.getStreet2Address(), lang));
             addrs.setPostalCode(address.getPostalCode());
             addrs.setPostOffice(ConverterUtil.getTextByLanguageUseFallbackLang(address.getPostOffice(), lang));
             return addrs;
