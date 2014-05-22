@@ -59,13 +59,13 @@ public final class ApplicationOptionToDTO {
             dto.setApplicationEndDate(applicationOption.getApplicationEndDate());
             dto.setRequiredBaseEducations(applicationOption.getRequiredBaseEducations());
             dto.setVocational(applicationOption.isVocational());
-            if (applicationOption.isSpecificApplicationDates()) {
-                dto.setCanBeApplied(ConverterUtil.isOngoing(new DateRange(applicationOption.getApplicationStartDate(),
-                        applicationOption.getApplicationEndDate())));
-                if (applicationOption.getApplicationStartDate().after(new Date())) {
-                    dto.setNextApplicationPeriodStarts(applicationOption.getApplicationStartDate());
-                }
+
+            dto.setCanBeApplied(ConverterUtil.isOngoing(new DateRange(applicationOption.getApplicationStartDate(),
+                    applicationOption.getApplicationEndDate())));
+            if (applicationOption.getApplicationStartDate().after(new Date())) {
+                dto.setNextApplicationPeriodStarts(applicationOption.getApplicationStartDate());
             }
+
             dto.setAttachments(ApplicationOptionAttachmentToDTO.convertAll(applicationOption.getAttachments(), lang));
             dto.setEmphasizedSubjects(EmphasizedSubjectToDTO.convertAll(applicationOption.getEmphasizedSubjects(), lang));
             dto.setAdditionalInfo(ConverterUtil.getTextByLanguage(applicationOption.getAdditionalInfo(), lang));
@@ -75,16 +75,16 @@ public final class ApplicationOptionToDTO {
             dto.setAthleteEducation(applicationOption.isAthleteEducation());
             dto.setEducationCodeUri(applicationOption.getEducationCodeUri());
             dto.setStatus(applicationOption.getStatus());
-            
+
             return dto;
         }
         return null;
     }
-    
+
     public static ApplicationOptionDTO convertHigherEducation(final ApplicationOption applicationOption, 
-                                                              final String lang, 
-                                                              final String uiLang, 
-                                                              String defaultLang) {
+            final String lang, 
+            final String uiLang, 
+            String defaultLang) {
         if (applicationOption == null) {
             return null;
         }
@@ -94,19 +94,19 @@ public final class ApplicationOptionToDTO {
         }
         if (applicationOption.getEligibilityDescription() != null) {
             dto.setEligibilityDescription(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getEligibilityDescription(), uiLang));            
-         }
+        }
         dto.setSelectionCriteria(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getSelectionCriteria(), lang));
         dto.setSoraDescription(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getSoraDescription(), lang));
         dto.setAdditionalInfo(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getAdditionalInfo(), lang));
         return dto;
     }
-    
+
     private static String createEducationTypeUri(String educationTypeUri) {
-        
+
         if (educationTypeUri != null) {
             return educationTypeUri.replace(".", "");
         }
-        
+
         return null;
     }
 }
