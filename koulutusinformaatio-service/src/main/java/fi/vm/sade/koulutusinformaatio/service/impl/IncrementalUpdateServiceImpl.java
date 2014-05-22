@@ -170,7 +170,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
                 LOG.warn(String.format("Komos changed. Update period was: %s", updatePeriod));
                 
                 for (String curKomoOid : result.get("koulutusmoduuli")) {
-                    if (!isSecondaryKomo(curKomoOid) && !higherEdReindexed) {
+                    if (isHigherEdKomo(curKomoOid) && !higherEdReindexed) {
                         
                         reIndexHigherEducation();
                         higherEdReindexed = true;
@@ -281,7 +281,6 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
     private void indexToSolr(HigherEducationLOS curLOS,
             HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws Exception {
         this.indexerService.addLearningOpportunitySpecification(curLOS, loUpdateSolr, lopUpdateSolr);
-        this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
         for (HigherEducationLOS curChild: curLOS.getChildren()) {
             indexToSolr(curChild, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
         }
@@ -312,7 +311,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
                 LOG.debug(String.format("Loi need to be indexed: %s", komotoOid));
                 handleLoiAdditionOrUpdate(komotoDto);
             }
-        } else if (!this.higherEdReindexed){
+        } else if (!this.higherEdReindexed && this.isHigherEdKomo(komotoDto.getKomoOid())) {
             this.reIndexHigherEducation();
             this.higherEdReindexed = true;
         }
@@ -341,12 +340,15 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
     }
 
     private boolean isSecondaryEducation(KomotoDTO komotoDto) {
-       return isSecondaryKomo(komotoDto.getKomoOid());
+       return !isHigherEdKomo(komotoDto.getKomoOid()) 
+               && komotoDto.getKoulutuslajiUris() != null 
+               && !komotoDto.getKoulutuslajiUris().isEmpty() 
+               && !komotoDto.getKoulutuslajiUris().get(0).contains("koulutuslaji_a");
     }
     
-    private boolean isSecondaryKomo(String komoOid) {
+    private boolean isHigherEdKomo(String komoOid) {
         KomoDTO komo = this.tarjontaRawService.getKomo(komoOid);
-        return komo != null && komo.getKoulutustyyppi() != null && !komo.getKoulutustyyppi().equals("KORKEAKOULUTUS");
+        return komo != null && komo.getKoulutustyyppi() != null && komo.getKoulutustyyppi().equals("KORKEAKOULUTUS");
     }
 
     private void handleLoiAdditionOrUpdate(KomotoDTO komotoDto) throws KoodistoException, SolrServerException, IOException, TarjontaParseException {

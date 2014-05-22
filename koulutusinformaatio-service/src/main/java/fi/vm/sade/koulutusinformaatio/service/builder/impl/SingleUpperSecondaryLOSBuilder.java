@@ -38,7 +38,7 @@ public class SingleUpperSecondaryLOSBuilder {
         List<OidRDTO> komotoOids = tarjontaRawService.getKomotosByKomo(komo.getOid(), Integer.MAX_VALUE, 0);
         for (OidRDTO komotoOid : komotoOids) {
             KomotoDTO komoto = tarjontaRawService.getKomoto(komotoOid.getOid());
-            if (komoto.getTarjoajaOid().equals(providerId)) {
+            if (komoto.getTarjoajaOid().equals(providerId) && SingleParentLOSBuilder.isNuortenKoulutus(komoto)) {
                 komotos.add(komoto);
             }
 

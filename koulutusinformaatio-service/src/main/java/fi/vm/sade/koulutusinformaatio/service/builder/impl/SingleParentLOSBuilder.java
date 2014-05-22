@@ -63,7 +63,7 @@ public class SingleParentLOSBuilder {
         
         for (OidRDTO parentKomotoOid : parentKomotoOids) {
             KomotoDTO parentKomoto = tarjontaRawService.getKomoto(parentKomotoOid.getOid());
-            if (parentKomoto.getTarjoajaOid().equals(providerId)) {
+            if (parentKomoto.getTarjoajaOid().equals(providerId) && isNuortenKoulutus(parentKomoto)) {
                 providersParentKomotos.add(parentKomoto);
             }
         }
@@ -98,7 +98,7 @@ public class SingleParentLOSBuilder {
                     LOG.warn("Here is a special ed komoto, it should not be here.");
 
                 }
-                else if (childKomoto.getTarjoajaOid().equals(los.getProvider().getId())) {
+                else if (childKomoto.getTarjoajaOid().equals(los.getProvider().getId()) && isNuortenKoulutus(childKomoto)) {
                     // PK & YO
                     childKomotos.add(childKomoto);
                     
@@ -346,6 +346,12 @@ public class SingleParentLOSBuilder {
      }
      return parentLOS;
         
+    }
+    
+    public static boolean isNuortenKoulutus(KomotoDTO komotoDto) {
+        return komotoDto.getKoulutuslajiUris() != null 
+                && !komotoDto.getKoulutuslajiUris().isEmpty() 
+                && komotoDto.getKoulutuslajiUris().get(0).contains(TarjontaConstants.NUORTEN_KOULUTUS);
     }
 
 

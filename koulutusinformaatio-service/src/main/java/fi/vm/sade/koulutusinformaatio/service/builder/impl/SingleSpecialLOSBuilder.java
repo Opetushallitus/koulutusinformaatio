@@ -56,7 +56,7 @@ public class SingleSpecialLOSBuilder {
         for (OidRDTO childKomotoOid : childKomotoOids) {
             KomotoDTO childKomoto = tarjontaRawService.getKomoto(childKomotoOid.getOid());
 
-            if (SingleParentLOSBuilder.isSpecialEdKomoto(childKomoto) && childKomoto.getTarjoajaOid().equals(providerId)) {
+            if (SingleParentLOSBuilder.isSpecialEdKomoto(childKomoto) && childKomoto.getTarjoajaOid().equals(providerId) && SingleParentLOSBuilder.isNuortenKoulutus(childKomoto)) {
                 // ER
                 LOG.warn("Here is a special ed komoto, it should definitely be here.");
                 childKomotos.add(childKomoto);

@@ -90,7 +90,9 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
         parentKomotosByProviderId = ArrayListMultimap.create();
         for (OidRDTO parentKomotoOid : parentKomotoOids) {
             KomotoDTO parentKomoto = tarjontaRawService.getKomoto(parentKomotoOid.getOid());
-            parentKomotosByProviderId.put(parentKomoto.getTarjoajaOid(), parentKomoto);
+            if (isNuortenKoulutus(parentKomoto)) {
+                parentKomotosByProviderId.put(parentKomoto.getTarjoajaOid(), parentKomoto);
+            }
         }
 
         for (String key : parentKomotosByProviderId.keySet()) {
@@ -127,7 +129,7 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
                     specialChildKomotosByChildLOSId.put(id, childKomoto);
 
                 }
-                else {
+                else if (isNuortenKoulutus(childKomoto)) {
                     // PK & YO
                     childKomotosByChildLOSId.put(resolveLOSId(childKomoId, childKomoto.getTarjoajaOid()), childKomoto);
                 }
@@ -144,8 +146,9 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
         return this;
     }
 
+
     private boolean isSpecialEdKomoto(KomotoDTO komoto) {
-        return komoto.getPohjakoulutusVaatimusUri().contains(TarjontaConstants.PREREQUISITE_URI_ER);
+        return komoto.getPohjakoulutusVaatimusUri().contains(TarjontaConstants.PREREQUISITE_URI_ER) && komoto.getKoulutuslajiUris() != null && !komoto.getKoulutuslajiUris().isEmpty() && komoto.getKoulutuslajiUris().get(0).contains(TarjontaConstants.NUORTEN_KOULUTUS);
     }
 
     @Override
