@@ -355,9 +355,11 @@ public class ApplicationOptionCreator extends ObjectCreator {
         } else if (aoHakuaika != null) {
             ao.setApplicationStartDate(aoHakuaika.getAlkuPvm());
             ao.setApplicationEndDate(aoHakuaika.getLoppuPvm());
+            ao.setInternalASDateRef(aoHakuaika.getHakuaikaId());
         } else if (haku.getHakuaikas() != null && !haku.getHakuaikas().isEmpty()) {
             ao.setApplicationStartDate(haku.getHakuaikas().get(0).getAlkuPvm());
             ao.setApplicationEndDate(haku.getHakuaikas().get(0).getLoppuPvm());
+            ao.setInternalASDateRef(haku.getHakuaikas().get(0).getHakuaikaId());
         }
 
         ao.setAttachmentDeliveryAddress(educationObjectCreator.createAddress(hakukohde.getLiitteidenToimitusOsoite()));

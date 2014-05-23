@@ -82,6 +82,9 @@ public final class ApplicationOptionToBasketItemDTO {
                 aoDTO.setEducationCodeUri(ao.getEducationCodeUri());
                 aoDTO.setEducationTypeUri(createEducationTypeUri(ao.getEducationTypeUri()));
                 aoDTO.setPrerequisite( CodeToDTO.convert(ao.getPrerequisite(), lang) );
+                aoDTO.setKotitalous(ao.getEducationCodeUri() != null && ao.getEducationCodeUri().contains(TarjontaConstants.KOTITALOUSKOODI));
+                aoDTO.setHakuaikaId(ao.getInternalASDateRef());
+                
                 ParentLOSRef los = ao.getParent();
                 if (los != null) {
                 	aoDTO.setHigherEducation(TarjontaConstants.TYPE_KK.equals(los.getLosType()));

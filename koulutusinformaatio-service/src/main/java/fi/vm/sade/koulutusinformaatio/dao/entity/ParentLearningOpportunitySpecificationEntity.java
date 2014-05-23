@@ -64,6 +64,8 @@ public class ParentLearningOpportunitySpecificationEntity {
     private List<CodeEntity> themes;
     
     private String type;
+    
+    private boolean kotitalousopetus;
 
     public ParentLearningOpportunitySpecificationEntity() {
     }
@@ -210,5 +212,13 @@ public class ParentLearningOpportunitySpecificationEntity {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public boolean isKotitalousopetus() {
+        return kotitalousopetus;
+    }
+
+    public void setKotitalousopetus(boolean kotitalousopetus) {
+        this.kotitalousopetus = kotitalousopetus;
     }
 }
