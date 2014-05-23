@@ -122,6 +122,9 @@ public class LOSObjectCreator extends ObjectCreator {
         parentLOS.setStydyDomain(koodistoService.searchFirstName(parentKomo.getOpintoalaUri()));
         parentLOS.setTopics(getTopics(parentKomo.getOpintoalaUri()));
         parentLOS.setThemes(getThemes(parentLOS));
+        
+        parentLOS.setKotitalousopetus(parentKomo.getKoulutusKoodiUri() != null 
+                                        && parentKomo.getKoulutusKoodiUri().contains(TarjontaConstants.KOTITALOUSKOODI));
 
         List<ParentLOI> lois = Lists.newArrayList();
 

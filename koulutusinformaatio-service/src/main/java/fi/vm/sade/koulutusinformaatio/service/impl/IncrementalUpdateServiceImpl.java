@@ -25,7 +25,6 @@ import fi.vm.sade.koulutusinformaatio.domain.ChildLOIRef;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
-import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOSRef;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOI;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
@@ -37,7 +36,6 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
-import fi.vm.sade.koulutusinformaatio.service.EducationDataUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.IncrementalUpdateService;
@@ -57,9 +55,10 @@ import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
 
 @Service
 @Profile("default")
@@ -166,9 +165,9 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             if (!hasChanges(result)) {
                 return;
             }
-            
+            long runningSince = System.currentTimeMillis();
             this.updateService.setRunning(true);
-            this.updateService.setRunningSince(System.currentTimeMillis());
+            this.updateService.setRunningSince(runningSince);
             this.transactionManager.beginIncrementalTransaction();
             
             //If there are changes in komo-data, a full update is performed
@@ -246,7 +245,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             LOG.debug("Committing to solr");
             this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
             LOG.debug("Saving successful status");
-            dataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - this.updateService.getRunningSince(), "SUCCESS"));
+            dataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, "SUCCESS"));
             LOG.debug("Committing.");
 
         } catch (Exception e) {
@@ -260,6 +259,37 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             this.updateService.setRunningSince(0);
         }
     }
+
+    /*
+    private void indexHigherEdKomo(String curKomoOid) {
+        
+        
+        ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> higherEdRes = this.tarjontaRawService.getHigherEducationByKomo(curKomoOid);
+        //higherEdRes.getResult().getTulokset().
+        
+        
+        
+        if (higherEdRes != null 
+                && higherEdRes.getResult() != null 
+                && higherEdRes.getResult().getTulokset() != null 
+                && !higherEdRes.getResult().getTulokset().isEmpty()) {
+            
+            List<String> higherEdsToIndex = new ArrayList<String>();
+            
+            for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> tarjResult :  higherEdRes.getResult().getTulokset()) {
+                if (tarjResult.getTulokset() !=  null && !tarjResult.getTulokset().isEmpty()) {
+                    for (KoulutusHakutulosV1RDTO curKoul : tarjResult.getTulokset()) {
+                        this.tarjontaRawService.getParentsOfHigherEducationLOS(komoOid)
+                    }
+                }
+            }
+        }
+        
+        
+        
+        
+        
+    }*/
 
     private boolean hasChanges(Map<String, List<String>> result) {
        
@@ -448,7 +478,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
         
         
         
-        if (hakukohdeOids != null && hakukohdeOids.isEmpty()) {
+        if (hakukohdeOids != null && !hakukohdeOids.isEmpty()) {
             for (OidRDTO curOid : hakukohdeOids) {
                 HakukohdeDTO aoDto = this.tarjontaRawService.getHakukohde(curOid.getOid());
                 indexApplicationOptionData(aoDto, asDto);

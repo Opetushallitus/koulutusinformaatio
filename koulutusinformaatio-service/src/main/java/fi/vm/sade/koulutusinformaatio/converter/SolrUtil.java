@@ -373,6 +373,7 @@ public final class SolrUtil {
         public static final String ED_TYPE_IMM_UPSEC = "et02.01.04";
         public static final String ED_TYPE_KANSANOPISTO = "et02.05";
         public static final String ED_TYPE_VALMENTAVA = "et02.02";
+        public static final String ED_TYPE_KOTITALOUS = "kotitalous";
         
         public static final String SPECIAL_EDUCATION = "ER";
         public static final String TIMESTAMP_DOC = "loUpdateTimestampDocument";
