@@ -1,6 +1,6 @@
 <td colspan="2">
     <h4 class="margin-top-0 margin-bottom-0"><span class="capitalized">{{item.name}}</span></h4>
-    <div data-ng-if="isErikseenHaettava(as)" data-ki-application-time data-dates="item.applicationDates" data-hakutapa="item.hakutapaUri"></div>
+    <div data-ng-if="isErikseenHaettava(as)" data-ki-application-time data-dates="item.applicationDates" data-hakutapa="item.hakutapaUri" data-label="item.asName"></div>
     <ul class="disc basket-table-cell-block">
         <li data-ng-repeat="highLo in item.higherEducations">
             <a href="#!/korkeakoulu/{{highLo.id}}">{{highLo.name}}</a>, 
@@ -10,7 +10,7 @@
     </ul>
 </td>
 
-<td class="align-left table-container" colspan="2">
+<td>
     <div data-ng-include src="'js/directives/AppBasket/common/attachmentsAndExams.html'"></div>
 </td>
 
