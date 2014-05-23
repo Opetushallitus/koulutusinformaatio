@@ -111,7 +111,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
             ao.setApplicationEndDate(hakukohdeDTO.getHakuaikaLoppuPvm());
         } else if (hakuDTO != null 
                     && hakuDTO.getHakuaikas() != null 
-                    && hakuDTO.getHakuaikas().isEmpty()) {
+                    && !hakuDTO.getHakuaikas().isEmpty()) {
             HakuaikaRDTO aoHakuaika =  hakuDTO.getHakuaikas().get(0);
             ao.setApplicationStartDate(aoHakuaika.getAlkuPvm());
             ao.setApplicationEndDate(aoHakuaika.getLoppuPvm());

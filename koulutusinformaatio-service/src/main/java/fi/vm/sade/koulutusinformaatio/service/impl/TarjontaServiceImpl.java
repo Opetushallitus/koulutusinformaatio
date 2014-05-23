@@ -329,8 +329,43 @@ public class TarjontaServiceImpl implements TarjontaService {
         
         ResultV1RDTO<Set<String>> childKomoOids = this.tarjontaRawService.getChildrenOfParentHigherEducationLOS(koulutusDTO.getKomoOid());
         ResultV1RDTO<Set<String>> parentKomoOids = this.tarjontaRawService.getParentsOfHigherEducationLOS(koulutusDTO.getKomoOid());
-        los.setChildren(getHigherEducationRelatives(childKomoOids, creator));
-        los.setParents(getHigherEducationRelatives(parentKomoOids, creator));
+        los.setChildren(getHigherEducationRelatives(childKomoOids, creator, false));
+        los.setParents(getHigherEducationRelatives(parentKomoOids, creator, false));
+        
+        los.setStructureImage(retrieveStructureImage(los.getId()));
+        
+        return los;
+    }
+    
+    @Override
+    public HigherEducationLOS createHigherEducationLearningOpportunityTree(String oid) throws TarjontaParseException, KoodistoException {
+        if (this.providerService != null) {
+            this.providerService.clearCache();
+        }
+        if (creator == null) {
+            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService);
+        }
+        ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes = this.tarjontaRawService.getHigherEducationLearningOpportunity(oid);
+        KoulutusKorkeakouluV1RDTO koulutusDTO = koulutusRes.getResult();
+        if (koulutusDTO == null) {
+            return null;
+        }
+
+        HigherEducationLOS los = creator.createHigherEducationLOS(koulutusDTO, true);
+        los.setStatus(koulutusDTO.getTila().toString());
+        
+
+        if (los.getApplicationOptions() != null) {
+            for (ApplicationOption curAo : los.getApplicationOptions()) {
+                createEducationreReferencesForAo(curAo);
+            }
+        }
+        
+        ResultV1RDTO<Set<String>> childKomoOids = this.tarjontaRawService.getChildrenOfParentHigherEducationLOS(koulutusDTO.getKomoOid());
+        //ResultV1RDTO<Set<String>> parentKomoOids = this.tarjontaRawService.getParentsOfHigherEducationLOS(koulutusDTO.getKomoOid());
+        //los.setChildren(getHigherEducationRelatives(childKomoOids, creator));
+        //los.setParents(getHigherEducationRelatives(parentKomoOids, creator));
+        los.setChildren(this.getHigherEducationRelatives(childKomoOids, creator, true));
         
         los.setStructureImage(retrieveStructureImage(los.getId()));
         
@@ -354,12 +389,13 @@ public class TarjontaServiceImpl implements TarjontaService {
              curAo.getHigherEdLOSRefs().add(losRef);
              
              
+             
          }
         
     }
 
     private List<HigherEducationLOS> getHigherEducationRelatives(
-            ResultV1RDTO<Set<String>> komoOids, LOSObjectCreator creator) throws TarjontaParseException, KoodistoException {
+            ResultV1RDTO<Set<String>> komoOids, LOSObjectCreator creator, boolean fullRelatives) throws TarjontaParseException, KoodistoException {
         List<HigherEducationLOS> relatives = new ArrayList<HigherEducationLOS>();
         if (komoOids == null) {
             return relatives;
@@ -374,8 +410,25 @@ public class TarjontaServiceImpl implements TarjontaService {
                     if (koulutusDTO == null) {
                         continue;
                     }
-                    HigherEducationLOS los = creator.createHigherEducationLOSReference(koulutusDTO, false);
-                    relatives.add(los);
+                    
+                    if (fullRelatives && koulutusDTO.getTila().equals(TarjontaTila.JULKAISTU)) {
+                        
+                        try {
+                        
+                            HigherEducationLOS los = creator.createHigherEducationLOS(koulutusDTO, true);
+                            relatives.add(los);
+                            
+                        } catch (TarjontaParseException ex) {
+                            LOG.warn("Skipping non published higher education");
+                        }
+                    } else if (!fullRelatives) {
+                        HigherEducationLOS los = creator.createHigherEducationLOSReference(koulutusDTO, false);
+                        relatives.add(los);
+                    }
+                    
+                    
+                    
+                    
                 }
             }
         }

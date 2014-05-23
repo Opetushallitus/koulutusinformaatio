@@ -59,6 +59,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 
 @Service
 @Profile("default")
@@ -260,14 +261,12 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
         }
     }
 
-    /*
+    
     private void indexHigherEdKomo(String curKomoOid) {
         
         
         ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> higherEdRes = this.tarjontaRawService.getHigherEducationByKomo(curKomoOid);
         //higherEdRes.getResult().getTulokset().
-        
-        
         
         if (higherEdRes != null 
                 && higherEdRes.getResult() != null 
@@ -279,17 +278,17 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> tarjResult :  higherEdRes.getResult().getTulokset()) {
                 if (tarjResult.getTulokset() !=  null && !tarjResult.getTulokset().isEmpty()) {
                     for (KoulutusHakutulosV1RDTO curKoul : tarjResult.getTulokset()) {
-                        this.tarjontaRawService.getParentsOfHigherEducationLOS(komoOid)
+                        //this.tarjontaRawService.getParentsOfHigherEducationLOS(komoOid)
+                        
+                        ResultV1RDTO<KoulutusKorkeakouluV1RDTO> curHigherEd = this.tarjontaRawService.getHigherEducationLearningOpportunity(curKoul.getOid());
+                        
+                        
                     }
                 }
             }
-        }
+        }   
         
-        
-        
-        
-        
-    }*/
+    }
 
     private boolean hasChanges(Map<String, List<String>> result) {
        
