@@ -179,7 +179,9 @@
     "application-basket-overflow-warning": "You can apply to up to __itemcount__ study programmes with this application",
     "application-basket-fill-form-notification-single-ao": "Jokaiseen tässä listattavaan koulutukseen tulee hakea erikseen. Osaan koulutuksista haetaan oppilaitoksen omien sivujen kautta. (en)",
     "application-basket-attachments-exams": "Attachments and examinations",
-    "application-basket-due-date": "Closing date for attachment or examination time",
+    "application-basket-no-attachments": "Ei liitteitä (en)",
+    "application-basket-attachments-required": "Vaaditaan liitteitä (en)",
+    "application-basket-no-exams": "Pääsykokeita (en)",
 
     "erikseenHaettavatHakukohteet": "Erikseen haettavat hakukohteet (en)",
 
@@ -294,6 +296,8 @@
     "koulutus": "Study programme",
     "muualla": "Vastaava koulutus muualla (en)",
     "mukainen-koulutus-muualla": "- education elsewhere",
+
+    "hakutapa-jatkuva": "Jatkuva haku (en)",
 
     "preview-help": "Esikatselu näyttää koulutuksen ja hakukohteen näkymät sellaisina kuin oppija näkee ne Opintopolku.fi -palvelussa. Pääset muokkaamaan koulutuksen tietoja Muokkaa koulutusta-painikkeesta ja toiselta välilehdeltä hakukohteen tietoja. Organisaation tietoja ei pääse suoraan muokkaamaan, vaan muokkaus tulee tehdä Organisaatiotiedot-palvelun kautta. (na.)"
 }

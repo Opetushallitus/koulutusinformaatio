@@ -110,8 +110,9 @@ public final class ApplicationOptionToBasketItemDTO {
                     // set application form link from application system to application option
                     aoDTO.setApplicationFormLink(as.getApplicationFormLink());
                     
-                    // set application system id for application option (used for routing to correct application form)
+                    // set application system id and name for application option (used for routing to correct application form)
                     aoDTO.setAsId(as.getId());
+                    aoDTO.setAsName(ConverterUtil.getTextByLanguageUseFallbackLang(as.getName(), lang));
                     
                     if (items.containsKey( HAKU_GENERIC_ID )) {
                         items.get( HAKU_GENERIC_ID ).getApplicationOptions().add(aoDTO);

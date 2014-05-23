@@ -59,6 +59,7 @@ public class BasketApplicationOptionDTO {
     private String hakutapaUri;
     private String applicationFormLink;
     private String asId;
+    private String asName;
 
     public String getId() {
         return id;
@@ -304,5 +305,13 @@ public class BasketApplicationOptionDTO {
 
     public void setAsId(String asId) {
         this.asId = asId;
+    }
+
+    public String getAsName() {
+        return asName;
+    }
+
+    public void setAsName(String asName) {
+        this.asName = asName;
     }
 }

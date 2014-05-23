@@ -215,14 +215,17 @@ directive('kiApplicationTime', function() {
         templateUrl: 'js/directives/AppBasket/applicationTime.html',
         scope : {
             dates: '=',
-            hakutapa: '='
+            hakutapa: '=',
+            label: '='
         },
         controller: function($scope) {
             $scope.isJatkuva = function() {
+                // code for jatkuva haku is 03
                 return $scope.hakutapa == '03';
             }
         },
-        link: function(scope, element, attrs) {
+        link: function($scope, element, attrs) {
+            console.log($scope.label);
             element.addClass('italic');
         }
     }
