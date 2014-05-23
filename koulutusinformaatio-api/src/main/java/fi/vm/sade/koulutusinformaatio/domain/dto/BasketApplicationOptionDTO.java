@@ -59,6 +59,8 @@ public class BasketApplicationOptionDTO {
     private String hakutapaUri;
     private String applicationFormLink;
     private String asId;
+    private boolean kotitalous;
+    private String hakuaikaId;
 
     public String getId() {
         return id;
@@ -304,5 +306,21 @@ public class BasketApplicationOptionDTO {
 
     public void setAsId(String asId) {
         this.asId = asId;
+    }
+
+    public boolean isKotitalous() {
+        return kotitalous;
+    }
+
+    public void setKotitalous(boolean kotitalous) {
+        this.kotitalous = kotitalous;
+    }
+
+    public String getHakuaikaId() {
+        return hakuaikaId;
+    }
+
+    public void setHakuaikaId(String hakuaikaId) {
+        this.hakuaikaId = hakuaikaId;
     }
 }

@@ -19,6 +19,7 @@ package fi.vm.sade.koulutusinformaatio.converter;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.DateRange;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
+import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 
 import java.util.Date;
 
@@ -76,6 +77,8 @@ public final class ApplicationOptionToDTO {
             dto.setAthleteEducation(applicationOption.isAthleteEducation());
             dto.setEducationCodeUri(applicationOption.getEducationCodeUri());
             dto.setStatus(applicationOption.getStatus());
+            dto.setKotitalous(applicationOption.getEducationCodeUri() != null && applicationOption.getEducationCodeUri().contains(TarjontaConstants.KOTITALOUSKOODI));
+            dto.setHakuaikaId(applicationOption.getInternalASDateRef());
 
             return dto;
         }
