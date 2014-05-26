@@ -1337,10 +1337,33 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
     var typekey = 'baskettype';
     var cookieConfig = {useLocalStorage: false, maxChunkSize: 2000, maxNumberOfCookies: 20, path: '/'};
 
-    // used to update item count in basket
-
-    // TODO: could we automate data transformation somehow?
     var transformData = function(result) {
+
+        var createLinkToLo = function(ao) {
+            var loRef = ao.type + '/';
+
+            switch(ao.type) {
+                case 'korkeakoulu':
+                    loRef += ao.higherEducations && ao.higherEducations.length > 0 ? ao.higherEducations[0].id : '';
+                    break;
+                case 'lukio':
+                    loRef += ao.losId;
+                    break;
+                case 'tutkinto':
+                    loRef += ao.parent.id;
+                    break;
+                case 'valmistava':
+                    loRef += ao.parent.id;
+                    break;
+            }
+
+            loRef += '?';
+            loRef += ao.prerequisite ? 'prerequisite=' + ao.prerequisite.value + '&' : '';
+            loRef += 'tab=1';
+
+            return loRef;
+        };
+
         for (var asIndex in result) {
             if (result.hasOwnProperty(asIndex)) {
                 var applicationDates = result[asIndex].applicationDates;
@@ -1364,6 +1387,12 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
                         // set LOS id for lukio
                         // check if ao is of type lukio
                         ao.losId = (ao.children && ao.children.length > 0) ? ao.children[0].losId : '';
+
+                        // transform type to lower case
+                        ao.type = ao.type ? ao.type.toLowerCase() : '';
+
+                        // set link to lo
+                        ao.loRef = createLinkToLo(ao);
                     }
                 }
             }

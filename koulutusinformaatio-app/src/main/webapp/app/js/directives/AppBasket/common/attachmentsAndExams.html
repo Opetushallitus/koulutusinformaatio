@@ -1,13 +1,13 @@
 <ul class="nobullet">
     <li data-ng-if="item.attachments">
-        <a href="#" data-ki-i18n="application-basket-attachments-required"></a>
+        <a href="#!/{{item.loRef}}" data-ki-i18n="application-basket-attachments-required"></a>
     </li>
     <li data-ng-if="!item.attachments">
         <span data-ki-i18n="application-basket-no-attachments"></span>
     </li>
 
     <li data-ng-if="item.exams" data-ng-repeat="exam in item.exams">
-        <a href="#">
+        <a href="#!/{{item.loRef}}">
             <span data-ng-if="exam.type">{{exam.type}}</span>
             <span data-ng-if="!exam.type" data-ki-i18n="entrance-exam"></span>
         </a>
