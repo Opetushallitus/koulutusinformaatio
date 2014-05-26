@@ -109,6 +109,7 @@ public class RehabilitatingLearningOpportunityBuilder extends LearningOpportunit
                     ao.setType(los.getType());
                     //ao.setEducationTypeUri();
                     ao.setParent(new ParentLOSRef(los.getId(), los.getName()));
+                    los.getProvider().getApplicationSystemIDs().add(ao.getApplicationSystem().getId());
                 }
             }
         }

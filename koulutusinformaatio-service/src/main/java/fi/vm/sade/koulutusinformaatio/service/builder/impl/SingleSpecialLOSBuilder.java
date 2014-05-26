@@ -101,6 +101,7 @@ public class SingleSpecialLOSBuilder {
                 ao.setType(newSpecial.getType());
                 //ao.setEducationTypeUri();
                 ao.setParent(new ParentLOSRef(newSpecial.getId(), newSpecial.getName()));
+                newSpecial.getProvider().getApplicationSystemIDs().add(ao.getApplicationSystem().getId());
             }
         }
 

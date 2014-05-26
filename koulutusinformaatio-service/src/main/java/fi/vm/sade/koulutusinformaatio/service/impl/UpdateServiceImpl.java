@@ -95,21 +95,11 @@ public class UpdateServiceImpl implements UpdateService {
             int index = 0;
             
 
-            /*while (count >= MAX_RESULTS) {
+            while (count >= MAX_RESULTS) {
             LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
             List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
             count = loOids.size();
-            index += count;*/
-            
-            List<String> loOids = Arrays.asList(
-                    "1.2.246.562.5.2013061010191633089982", 
-                    "1.2.246.562.5.2013061010184223617527", //amm
-                    "1.2.246.562.5.2013061010191530269331" //lukio
-                    //"1.2.246.562.5.2013112814572429147350", //valmistava
-                    //"1.2.246.562.5.2013061010184317101998", //amm kuvataide
-                    //"1.2.246.562.5.2013061010184614853416"  //kotitalousopetus
-                    );
-          
+            index += count;
             
                 for (String loOid : loOids) {
                     List<LOS> specifications = null;
@@ -125,7 +115,7 @@ public class UpdateServiceImpl implements UpdateService {
                         this.educationDataUpdateService.save(spec);
                     }
                 }
-            //}
+            }
 
             List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
             LOG.debug("Found higher educations: " + higherEducations.size());
