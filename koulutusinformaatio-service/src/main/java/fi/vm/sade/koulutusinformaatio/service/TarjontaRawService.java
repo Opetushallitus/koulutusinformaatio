@@ -80,5 +80,8 @@ public interface TarjontaRawService {
 			String curKomoOid);
 	
 	public ResultV1RDTO<List<KuvaV1RDTO>> getStructureImages(String koulutusOid);
+
+    ResultV1RDTO<List<NimiJaOidRDTO>> getHigherEducationByHakukohode(
+            String hakukohdeOid);
     
 }

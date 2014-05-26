@@ -171,8 +171,8 @@ public abstract class ObjectCreator {
     }
 
     protected List<I18nText> getI18nTextMultiple(KoodiUrisV1RDTO opetusmuodos) throws KoodistoException {
+        List<I18nText> opetusmuodot = new ArrayList<I18nText>();
         if (opetusmuodos != null && opetusmuodos.getMeta() != null && !opetusmuodos.getMeta().isEmpty()) {
-            List<I18nText> opetusmuodot = new ArrayList<I18nText>();
 
             Iterator<Map.Entry<String, KoodiV1RDTO>> i = opetusmuodos.getMeta().entrySet().iterator();
 
@@ -187,10 +187,8 @@ public abstract class ObjectCreator {
             }
 
 
-            return opetusmuodot;
-
         }
-        return null;
+        return opetusmuodot;
     }
 
     protected I18nText getI18nTextEnrichedFirst(KoodiUrisV1RDTO tutkintonimikes) throws KoodistoException {

@@ -262,4 +262,40 @@ public class EducationIncrementalDataUpdateServiceImpl implements
         
     }
 
+    @Override
+    public void updateHigherEdLos(HigherEducationLOS los) {
+        if (los != null) {
+
+            for (HigherEducationLOS curChild : los.getChildren()) {
+                updateHigherEdLos(curChild);
+            }
+            HigherEducationLOSEntity plos =
+                    modelMapper.map(los, HigherEducationLOSEntity.class);
+
+            this.learningOpportunityProviderDAO.deleteById(plos.getProvider().getId());
+            save(plos.getProvider());
+            
+            
+            if (plos.getStructureImage() != null 
+                    && plos.getStructureImage().getPictureTranslations() != null 
+                    && plos.getStructureImage().getPictureTranslations() != null) {
+                for (PictureEntity curPict : plos.getStructureImage().getPictureTranslations().values()) {
+                    save(curPict);
+                }
+            }
+
+
+            if (plos.getApplicationOptions() != null) {
+                for (ApplicationOptionEntity ao : plos.getApplicationOptions()) {
+                    this.applicationOptionDAO.deleteById(ao.getId());
+                    save(ao);
+                }
+            }
+
+            this.higherEducationLOSDAO.deleteById(plos.getId());
+            this.higherEducationLOSDAO.save(plos);
+        }
+        
+    }
+
 }
