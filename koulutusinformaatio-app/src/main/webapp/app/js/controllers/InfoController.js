@@ -243,6 +243,17 @@
     loadLo();
 };
 
+function LoTabCtrl($scope, $location) {
+    
+    var qParams = $location.search();
+    if (qParams.tab) {
+        $scope.tabs = [false, false, false];
+        $scope.tabs[qParams.tab] = true;
+    } else {
+        $scope.tabs = [true, false, false];
+    }
+};
+
 
 /**
  *  Controller for adding applications to application basket

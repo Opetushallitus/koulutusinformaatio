@@ -29,6 +29,7 @@ import fi.vm.sade.koulutusinformaatio.domain.ParentLOSRef;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.dto.BasketApplicationOptionDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.BasketItemDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.DateRangeDTO;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 
 /**
@@ -100,7 +101,7 @@ public final class ApplicationOptionToBasketItemDTO {
                 }
                 ApplicationSystem as = ao.getApplicationSystem();
                 
-                // add to generic application system pool
+                // add to generic application system pool (erikseen haettavat hakukohteet)
                 if (as.getMaxApplications() <= 1 || isHakutapaJatkuva(as) || ao.isSpecificApplicationDates() || as.getApplicationFormLink() != null) {
                     
                     aoDTO.setApplicationDates( DateRangeToDTO.convert(ao.getApplicationDates()) );
@@ -127,8 +128,9 @@ public final class ApplicationOptionToBasketItemDTO {
                         items.put(HAKU_GENERIC_ID, basketItem);
                     }
                 } else {
-                    if (as != null && items.containsKey(as.getId())) {
-                        items.get(as.getId()).getApplicationOptions().add(aoDTO);
+                    String asId = generateAsId(as, aoDTO);
+                    if (as != null && items.containsKey(asId)) {
+                        items.get(asId).getApplicationOptions().add(aoDTO);
                     } else if (as != null) {
                         BasketItemDTO basketItem = new BasketItemDTO();
                         basketItem.setApplicationFormLink( as.getApplicationFormLink() );
@@ -136,10 +138,12 @@ public final class ApplicationOptionToBasketItemDTO {
                         basketItem.setApplicationSystemId(as.getId());
                         basketItem.getApplicationOptions().add(aoDTO);
                         basketItem.setApplicationSystemName(ConverterUtil.getTextByLanguageUseFallbackLang(as.getName(), uiLang));
-                        basketItem.setApplicationDates(DateRangeToDTO.convert(as.getApplicationDates()));
-                        basketItem.setAsOngoing(ConverterUtil.isOngoing(as.getApplicationDates()));
-                        basketItem.setNextApplicationPeriodStarts(ConverterUtil.resolveNextDateRangeStart(as.getApplicationDates()));
-                        items.put(as.getId(), basketItem);
+                        basketItem.setApplicationDates(DateRangeToDTO.convert(ao.getApplicationDates()));
+                        basketItem.setAsOngoing(ConverterUtil.isOngoing(ao.getApplicationDates()));
+                        basketItem.setNextApplicationPeriodStarts(ConverterUtil.resolveNextDateRangeStart(ao.getApplicationDates()));
+                        
+                       
+                        items.put(asId, basketItem);
                     }
                 }
             }
@@ -164,6 +168,10 @@ public final class ApplicationOptionToBasketItemDTO {
         }
         
         return false;
-        
     }
+    
+    private static String generateAsId(ApplicationSystem as, BasketApplicationOptionDTO aoDTO) {
+        return as.getId() + "_" + aoDTO.getHakuaikaId();
+    }
+
 }
