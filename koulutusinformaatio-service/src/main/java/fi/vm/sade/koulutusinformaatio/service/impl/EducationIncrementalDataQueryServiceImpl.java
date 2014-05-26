@@ -290,12 +290,8 @@ EducationIncrementalDataQueryService {
     @Override
     public List<LOS> findLearningOpportunitiesByLoiId(String loiId) {
 
-        System.out.println("Finding learning opportunities");
-
         List<ChildLearningOpportunitySpecificationEntity> childrenE = this.childLearningOpportunityDAO.findByLoiId(loiId);
         if (childrenE != null) {
-
-            System.out.println("There are entities: " + childrenE.size());
 
             return Lists.transform(
                     childrenE,

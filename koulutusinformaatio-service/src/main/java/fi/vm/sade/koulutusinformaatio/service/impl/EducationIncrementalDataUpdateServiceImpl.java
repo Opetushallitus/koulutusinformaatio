@@ -93,9 +93,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
 
     @Override
     public void save(DataStatus dataStatus) {
-        System.out.println("Saving data status: " + dataStatus);
         if (dataStatus != null) {
-            System.out.println(dataStatus.getLastUpdateFinished());
             dataStatusDAO.save(modelMapper.map(dataStatus, DataStatusEntity.class));
         }
     }

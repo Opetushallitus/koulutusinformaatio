@@ -34,7 +34,6 @@ public class ChildLearningOpportunityDAO extends LearningOpportunitySpecificatio
     
     @Override
     public List<ChildLearningOpportunitySpecificationEntity> findByLoiId(String loiId) {
-        System.out.println("Loi id: " + loiId);
         Query<ChildLearningOpportunitySpecificationEntity> q = this.ds.createQuery(ChildLearningOpportunitySpecificationEntity.class).field("lois.id").equal(loiId);
         return find(q).asList();
         
