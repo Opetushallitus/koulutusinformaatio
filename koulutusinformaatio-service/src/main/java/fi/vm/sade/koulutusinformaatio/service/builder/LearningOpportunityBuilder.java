@@ -94,9 +94,10 @@ public abstract class LearningOpportunityBuilder<T extends LOS> {
     
     
     protected boolean isNuortenKoulutus(KomotoDTO komotoDto) {
-        return komotoDto.getKoulutuslajiUris() != null 
+        return (komotoDto.getKoulutuslajiUris() != null 
                 && !komotoDto.getKoulutuslajiUris().isEmpty() 
-                && komotoDto.getKoulutuslajiUris().get(0).contains(TarjontaConstants.NUORTEN_KOULUTUS);
+                && komotoDto.getKoulutuslajiUris().get(0).contains(TarjontaConstants.NUORTEN_KOULUTUS))
+                || ((komotoDto.getKoulutuslajiUris() == null) || komotoDto.getKoulutuslajiUris().isEmpty());
     }
 
     public abstract LearningOpportunityBuilder resolveParentLOSs() throws TarjontaParseException, KoodistoException, WebApplicationException;
