@@ -1,7 +1,9 @@
 <div class="search-result-collapsed">
     <div class="result-content">
         <h2 title="{{locales.openEducation}}"><a href="{{lo.linkHref}}">{{lo.name}}, {{lo.credits}}</a></h2>
+    	<div data-ng-show="!lo.educationType">
     	<span class="italic" data-ki-i18n="et3"></span><br />
+    	</div>
         <span data-ng-show="lo.prerequisite">
            	<span data-ki-i18n="application-prerequisite" data-show-colon="true"></span>
             <span>{{lo.prerequisite}}</span><br />

@@ -34,6 +34,7 @@ import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.dto.DataStatusDTO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
 import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
+import fi.vm.sade.koulutusinformaatio.service.IncrementalUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import fi.vm.sade.koulutusinformaatio.service.SEOService;
 import fi.vm.sade.koulutusinformaatio.service.TextVersionService;
@@ -47,6 +48,7 @@ import fi.vm.sade.koulutusinformaatio.service.UpdateService;
 public class AdminResource {
 
     private UpdateService updateService;
+    private IncrementalUpdateService incrementalUpdateService;
     private LearningOpportunityService learningOpportunityService;
     private ModelMapper modelMapper;
     private SEOService seoService;
@@ -56,12 +58,14 @@ public class AdminResource {
     public AdminResource(UpdateService updateService,
                          LearningOpportunityService learningOpportunityService,
                          ModelMapper modelMapper, SEOService seoService,
-                         TextVersionService textVersionService) {
+                         TextVersionService textVersionService,
+                         IncrementalUpdateService incrementalUpdateService) {
         this.updateService = updateService;
         this.learningOpportunityService = learningOpportunityService;
         this.modelMapper = modelMapper;
         this.seoService = seoService;
         this.textVersionService = textVersionService;
+        this.incrementalUpdateService = incrementalUpdateService;
     }
 
     @GET
@@ -70,6 +74,34 @@ public class AdminResource {
         try {
             if (!updateService.isRunning()) {
                 updateService.updateAllEducationData();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw KIExceptionHandler.resolveException(e);
+        }
+        return Response.seeOther(new URI("admin/status")).build();
+    }
+    
+    @GET
+    @Path("/updateArticles")
+    public Response updateArticles() throws URISyntaxException {
+        try {
+            if (!updateService.isRunning()) {
+                updateService.updateArticles();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw KIExceptionHandler.resolveException(e);
+        }
+        return Response.seeOther(new URI("admin/status")).build();
+    }
+    
+    @GET
+    @Path("/increment")
+    public Response incrementEducationData() throws URISyntaxException {
+        try {
+            if (!updateService.isRunning()) {
+                incrementalUpdateService.updateChangedEducationData();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -98,6 +130,12 @@ public class AdminResource {
         dto.setSnapshotRenderingRunning(seoService.isRunning());
         dto.setTextVersionRenderingRunning(textVersionService.isRunning());
         dto.setLastTextVersionUpdateFinished(textVersionService.getLastTextVersionUpdateFinished());
+        DataStatus succStatus = learningOpportunityService.getLastSuccesfulDataStatus();
+        if (succStatus != null) {
+            dto.setLastSuccessfulFinished(succStatus.getLastUpdateFinished());
+            dto.setLastSuccessfulFinishedStr(succStatus.getLastUpdateFinished().toString());
+        }
+        
         
         return dto;
     }

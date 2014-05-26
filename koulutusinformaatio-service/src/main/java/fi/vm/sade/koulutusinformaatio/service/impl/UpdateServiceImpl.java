@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -99,8 +100,8 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
             List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
             count = loOids.size();
-            index += count;  
-
+            index += count;
+            
                 for (String loOid : loOids) {
                     List<LOS> specifications = null;
                     try {
@@ -175,4 +176,50 @@ public class UpdateServiceImpl implements UpdateService {
     public long getRunningSince() {
         return runningSince;
     }
+
+    @Override
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
+
+    @Override
+    public void setRunningSince(long runningSince) {
+        this.runningSince = runningSince;
+    }
+
+    @Override
+    @Async
+    public void updateArticles() throws Exception {
+        
+        if (this.running) {
+            return;
+        }
+        
+        LOG.info("Indexing articles");
+        
+        try {
+            running = true;
+            runningSince = System.currentTimeMillis();
+            this.indexerService.removeArticles();
+            
+            List<Article> articles = this.articleService.fetchArticles();
+            LOG.debug("Articles fetched");
+            indexerService.addArticles(articles);
+            
+            //educationDataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, "SUCCESS"));
+            LOG.info("Articles succesfully indexed");
+        } catch (Exception ex) {
+            indexerService.rollbackIncrementalSolrChanges();
+            educationDataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, String.format("FAIL: Article indexing %s", ex.getMessage())));
+            LOG.error("Article update failed ", ex);
+            
+        } finally {
+            running = false;
+            runningSince = 0;
+        }
+        
+        
+    }
+
 }
+

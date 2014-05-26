@@ -63,7 +63,7 @@ directive('kiAppBasketApplicationoption', function() {
         template: '<tr data-ng-include="getTemplate()"></tr>',
         link: function($scope, element, attrs) {
             $scope.getTemplate = function() {
-                return 'js/directives/AppBasket/' + $scope.item.type.toLowerCase() + '/ao.html';
+                return 'js/directives/AppBasket/' + $scope.item.type + '/ao.html';
             }
         }
     }   
@@ -78,11 +78,11 @@ directive('kiAppBasketApplicationsystemTableInfo', function() {
 
             $scope.getOverflowWarning = function(itemcount) {
                 return TranslationService.getTranslation('application-basket-overflow-warning', {itemcount: itemcount});
-            }
+            };
 
             $scope.getNotificationText = function(itemcount) {
                 return TranslationService.getTranslation('application-basket-fill-form-notification', {count: itemcount});
-            }
+            };
 
             var applicationSystemIsActive = function(as) {
                 if (as && as.applicationDates) {
@@ -92,31 +92,19 @@ directive('kiAppBasketApplicationsystemTableInfo', function() {
                 return false;
             };
 
-            var getApplicationSystem = function(asId) {
-                var result;
-                angular.forEach($scope.items, function(as, askey){
-                    if (asId == as.applicationSystemId) {
-                        result = as;
-                    }
-                });
-
-                return result;
-            }
-
-            var removeApplicationSystem = function(asId) {
-                var as = getApplicationSystem(asId);
+            var removeApplicationSystem = function(as) {
                 if (as) {
                     var aos = angular.copy(as.applicationOptions);
                     angular.forEach(aos, function(ao, aokey) {
                         $scope.removeItem(ao.id);
                     });
                 }
-            }
+            };
 
-            $scope.removeApplicationSystemFromBasket = function(asId) {
+            $scope.removeApplicationSystemFromBasket = function(as) {
                 var areyousure = confirm(TranslationService.getTranslation('application-basket-empty-confirm'));
                 if (areyousure) {
-                    removeApplicationSystem(asId);
+                    removeApplicationSystem(as);
                 }
             };
 
@@ -127,11 +115,11 @@ directive('kiAppBasketApplicationsystemTableInfo', function() {
                 } else {
                     return false;
                 }
-            }
+            };
 
             $scope.isApplicationOptionDisabled = function(ao) {
                 return !ao.canBeApplied;
-            }
+            };
 
             $scope.applicationBasketIsOverflowing = function(as) {
                 var itemsInBasket = 0;
@@ -147,7 +135,7 @@ directive('kiAppBasketApplicationsystemTableInfo', function() {
                 } else {
                     return false;
                 }
-            }
+            };
         }
     }
 }).
@@ -215,14 +203,16 @@ directive('kiApplicationTime', function() {
         templateUrl: 'js/directives/AppBasket/applicationTime.html',
         scope : {
             dates: '=',
-            hakutapa: '='
+            hakutapa: '=',
+            label: '='
         },
         controller: function($scope) {
             $scope.isJatkuva = function() {
+                // code for jatkuva haku is 03
                 return $scope.hakutapa == '03';
             }
         },
-        link: function(scope, element, attrs) {
+        link: function($scope, element, attrs) {
             element.addClass('italic');
         }
     }

@@ -169,7 +169,7 @@
 
     "title-application-basket-content": "My shortlist",
     "application-basket-back": "Back to search results",
-    "application-basket-description": "You can add study programmes to the shortlist and transfer them to the application form. The study programmes remain on the shortlist until you close the browser. You can only add study programmes that have the same prior education requirement.",
+    "application-basket-description": "You can add study programmes to the shortlist and transfer them to the application form. The study programmes remain on the shortlist until you close the browser.",
     "application-basket-no-content": "You have not added any study programmes to your shortlist yet. Search for interesting study programmes with the search function, add them to the shortlist and transfer them to the application form. You can apply for up to five study programmes in the joint application.",
     "application-basket-fill-form": "Fill in the application form",
     "application-basket-fill-form-notification": "You can apply to up to __count__ study programmes with this application.",
@@ -179,7 +179,9 @@
     "application-basket-overflow-warning": "You can apply to up to __itemcount__ study programmes with this application",
     "application-basket-fill-form-notification-single-ao": "Jokaiseen tässä listattavaan koulutukseen tulee hakea erikseen. Osaan koulutuksista haetaan oppilaitoksen omien sivujen kautta. (en)",
     "application-basket-attachments-exams": "Attachments and examinations",
-    "application-basket-due-date": "Closing date for attachment or examination time",
+    "application-basket-no-attachments": "Ei liitteitä (en)",
+    "application-basket-attachments-required": "Vaaditaan liitteitä (en)",
+    "application-basket-no-exams": "Ei pääsykokeita (en)",
 
     "erikseenHaettavatHakukohteet": "Erikseen haettavat hakukohteet (en)",
 
@@ -289,11 +291,13 @@
     "tarjoaja": "Provider",
     "katso-myos": "See also...",
     "lue-lisaa": "Read more...",
-    "tarjoajan": "The provider's",
+    "tarjoajan": "Muut koulutukset: (en)",
     "muita-koulutuksia": "other study options",
     "koulutus": "Study programme",
-    "muualla": "elsewhere",
-    "mukainen-koulutus-muualla": "theme-related education elsewhere",
+    "muualla": "Vastaava koulutus muualla (en)",
+    "mukainen-koulutus-muualla": "- education elsewhere",
+
+    "hakutapa-jatkuva": "Jatkuva haku (en)",
 
     "preview-help": "Esikatselu näyttää koulutuksen ja hakukohteen näkymät sellaisina kuin oppija näkee ne Opintopolku.fi -palvelussa. Pääset muokkaamaan koulutuksen tietoja Muokkaa koulutusta-painikkeesta ja toiselta välilehdeltä hakukohteen tietoja. Organisaation tietoja ei pääse suoraan muokkaamaan, vaan muokkaus tulee tehdä Organisaatiotiedot-palvelun kautta. (na.)"
 }

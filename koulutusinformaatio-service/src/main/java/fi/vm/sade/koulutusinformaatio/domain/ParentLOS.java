@@ -32,6 +32,8 @@ public class ParentLOS extends BasicLOS<ParentLOI> {
     private I18nText stydyDomain;               // opintoala, Hammaslääketiede ja muu hammashuolto
 
     private List<Code> teachingLanguages;
+    
+    private boolean kotitalousopetus;
 
     public List<ParentLOI> getLois() {
         return lois;
@@ -71,6 +73,14 @@ public class ParentLOS extends BasicLOS<ParentLOI> {
 
     public void setTeachingLanguages(List<Code> teachingLanguages) {
         this.teachingLanguages = teachingLanguages;
+    }
+
+    public boolean isKotitalousopetus() {
+        return kotitalousopetus;
+    }
+
+    public void setKotitalousopetus(boolean kotitalousopetus) {
+        this.kotitalousopetus = kotitalousopetus;
     }
  
 

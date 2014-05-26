@@ -23,6 +23,7 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Hannu Lyytikainen
@@ -53,6 +54,7 @@ public interface TarjontaService {
      */
     public List<String> listParentLearnignOpportunityOids(int count, int startIndex);
     
+    
     /**
      * Returns a list of root-level higher education learning opportunities.
      * The children of each learning opportunity is contained in the object.
@@ -74,4 +76,7 @@ public interface TarjontaService {
 			String oid) throws TarjontaParseException, KoodistoException;
 
     public List<Code> getEdTypeCodes() throws KoodistoException;
+
+    HigherEducationLOS createHigherEducationLearningOpportunityTree(String oid)
+            throws TarjontaParseException, KoodistoException;
 }

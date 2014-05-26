@@ -60,6 +60,7 @@ public class ApplicationOptionEntity {
     private I18nTextEntity selectionCriteria;
     @Embedded
     private I18nTextEntity soraDescription;
+    private String InternalASDateRef;
 
 
     @Embedded
@@ -385,6 +386,14 @@ public class ApplicationOptionEntity {
 
     public void setEducationTypeUri(String educationTypeUri) {
         this.educationTypeUri = educationTypeUri;
+    }
+
+    public String getInternalASDateRef() {
+        return InternalASDateRef;
+    }
+
+    public void setInternalASDateRef(String internalASDateRef) {
+        InternalASDateRef = internalASDateRef;
     }
 
 }

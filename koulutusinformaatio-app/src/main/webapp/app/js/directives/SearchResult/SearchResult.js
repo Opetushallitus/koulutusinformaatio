@@ -13,9 +13,9 @@ directive('searchResult', ['FilterService', 'TranslationService', function(Filte
                 openEducation: TranslationService.getTranslation('tooltip:open-education-view')
             }
 
-        	scope.getTemplate = function() {
-        		return 'templates/' + scope.lo.type + '/searchResult.html';
-        	}
+            scope.getTemplate = function() {
+                return 'js/directives/SearchResult/' + scope.lo.type + '/searchResult.html';
+            }
 
             var hashIndex = scope.lo.id.indexOf('#');
             if ( hashIndex > -1) {
@@ -134,14 +134,6 @@ directive('srApplicationBasket', ['ApplicationBasketService', 'TranslationServic
                     addVocationalEdToBasket(applicationoptionId);
                 }
             }
-
-            $scope.isApplicationOpen = function(as, ao) {
-                if (ao.specificApplicationDates) {
-                    return ao.canBeApplied;    
-                } else {
-                    return as.asOngoing;
-                }
-            }
         }
     };
 }]).
@@ -152,9 +144,9 @@ directive('srHakukohteet', [function () {
         transclude: true,
         templateUrl: function(element, attrs) {
             if (attrs.templateType) {
-                return 'templates/' + attrs.templateType + '/searchResultHakukohteet.html';
+                return 'js/directives/SearchResult/' + attrs.templateType + '/searchResultHakukohteet.html';
             } else {
-                return 'templates/searchResultHakukohteet.html';
+                return 'js/directives/SearchResult/searchResultHakukohteet.html';
             }
         }
     };
@@ -164,7 +156,7 @@ directive('srExtendedOptions', ['TranslationService','Config', function (Transla
     return {
         restrict: 'A',
         require: '^extendedSearchresultData',
-        templateUrl: 'templates/searchResultOptions.html',
+        templateUrl: 'js/directives/SearchResult/searchResultOptions.html',
         controller: function($scope) {
             $scope.hakuAppUrl = Config.get('hakulomakeUrl');
             $scope.locales = {
@@ -195,9 +187,9 @@ directive('srExtendedKoulutustarjonta', [function () {
         require: '^extendedSearchresultData',
         templateUrl: function(element, attrs) {
             if (attrs.templateType) {
-                return 'templates/' + attrs.templateType + '/searchResultExtendedKoulutustarjonta.html';
+                return 'js/directives/SearchResult/' + attrs.templateType + '/searchResultExtendedKoulutustarjonta.html';
             } else {
-                return 'templates/searchResultExtendedKoulutustarjonta.html';
+                return 'js/directives/SearchResult/searchResultExtendedKoulutustarjonta.html';
             }
         }
     };
@@ -209,9 +201,9 @@ directive('srBasicInformation', [function () {
         require: '^extendedSearchresultData',
         templateUrl: function(element, attrs) {
             if (attrs.templateType) {
-                return 'templates/' + attrs.templateType + '/searchResultBasicInformation.html';
+                return 'js/directives/SearchResult/' + attrs.templateType + '/searchResultBasicInformation.html';
             } else {
-                return 'templates/searchResultBasicInformation.html';
+                return 'js/directives/SearchResult/searchResultBasicInformation.html';
             }
         }
     };

@@ -151,6 +151,7 @@ public class LOIObjectCreator extends ObjectCreator {
         List<String> hakukohdeOids = Lists.transform(hakukohdeOidDTOs, new Function<OidRDTO, String>() {
             @Override
             public String apply(OidRDTO input) {
+                LOG.debug("current hakukohdeOid: " + input.getOid());
                 return input.getOid();
             }
         });
@@ -162,6 +163,7 @@ public class LOIObjectCreator extends ObjectCreator {
                 educationType));
         boolean kaksoistutkinto = false;
         for (ApplicationOption ao : childLOI.getApplicationOptions()) {
+            LOG.debug("here is the created ao: " + ao.getId() + " for the child loi: " + childLOI.getId());
             if (ao.isKaksoistutkinto()) {
                 kaksoistutkinto = true;
                 break;

@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.service.builder;
 
 import com.google.common.base.Joiner;
+
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
@@ -25,10 +26,12 @@ import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import fi.vm.sade.tarjonta.shared.types.TarjontaTila;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.WebApplicationException;
+
 import java.util.List;
 
 /**
@@ -87,6 +90,14 @@ public abstract class LearningOpportunityBuilder<T extends LOS> {
         if (!haku.getTila().equals(TarjontaConstants.STATE_PUBLISHED)) {
             throw new TarjontaParseException("Application system " + haku.getOid() + NOT_IN_STATE + TarjontaConstants.STATE_PUBLISHED);
         }
+    }
+    
+    
+    protected boolean isNuortenKoulutus(KomotoDTO komotoDto) {
+        return (komotoDto.getKoulutuslajiUris() != null 
+                && !komotoDto.getKoulutuslajiUris().isEmpty() 
+                && komotoDto.getKoulutuslajiUris().get(0).contains(TarjontaConstants.NUORTEN_KOULUTUS))
+                || ((komotoDto.getKoulutuslajiUris() == null) || komotoDto.getKoulutuslajiUris().isEmpty());
     }
 
     public abstract LearningOpportunityBuilder resolveParentLOSs() throws TarjontaParseException, KoodistoException, WebApplicationException;

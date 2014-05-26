@@ -57,6 +57,15 @@ public class ParentLearningOpportunitySpecificationEntity {
     
     @Embedded
     private List<CodeEntity> teachingLanguages;
+    
+    @Embedded
+    private List<CodeEntity> topics;
+    @Embedded
+    private List<CodeEntity> themes;
+    
+    private String type;
+    
+    private boolean kotitalousopetus;
 
     public ParentLearningOpportunitySpecificationEntity() {
     }
@@ -179,5 +188,37 @@ public class ParentLearningOpportunitySpecificationEntity {
 
     public void setTeachingLanguages(List<CodeEntity> teachingLanguages) {
         this.teachingLanguages = teachingLanguages;
+    }
+
+    public List<CodeEntity> getTopics() {
+        return topics;
+    }
+
+    public void setTopics(List<CodeEntity> topics) {
+        this.topics = topics;
+    }
+
+    public List<CodeEntity> getThemes() {
+        return themes;
+    }
+
+    public void setThemes(List<CodeEntity> themes) {
+        this.themes = themes;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public boolean isKotitalousopetus() {
+        return kotitalousopetus;
+    }
+
+    public void setKotitalousopetus(boolean kotitalousopetus) {
+        this.kotitalousopetus = kotitalousopetus;
     }
 }

@@ -17,9 +17,11 @@
 package fi.vm.sade.koulutusinformaatio.converter;
 
 import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.domain.*;
+
 import org.apache.solr.common.SolrInputDocument;
 import org.springframework.core.convert.converter.Converter;
 
@@ -288,17 +290,24 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
                     doc.addField(LearningOpportunity.TEACHING_LANGUAGE, teachingLang);
                     usedVals.add(teachingLang);
                 }
-                if (!usedVals.contains(SolrConstants.ED_TYPE_AMMATILLINEN)) {
+                if (!parent.isKotitalousopetus() 
+                        && !usedVals.contains(SolrConstants.ED_TYPE_AMMATILLINEN)) {
                     doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMMATILLINEN);
                     doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMMATILLISET);
                     doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_TUTKINTOON);
                     usedVals.add(SolrConstants.ED_TYPE_AMMATILLINEN);
                 }
-                if (SolrConstants.PK.equalsIgnoreCase(prereqVal) 
+                if ( !parent.isKotitalousopetus()
+                        && SolrConstants.PK.equalsIgnoreCase(prereqVal) 
                         && childLOI.isKaksoistutkinto() 
                         && !usedVals.contains(SolrConstants.ED_TYPE_KAKSOIS)) {
                     doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_KAKSOIS);
                     usedVals.add(SolrConstants.ED_TYPE_KAKSOIS);
+                } 
+                if (parent.isKotitalousopetus() && !usedVals.contains(SolrConstants.ED_TYPE_MUU)) {
+                    usedVals.add(SolrConstants.ED_TYPE_MUU);
+                    doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_MUU);
+                    doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE_DISPLAY, SolrUtil.SolrConstants.ED_TYPE_KOTITALOUS);
                 }
             }
         }

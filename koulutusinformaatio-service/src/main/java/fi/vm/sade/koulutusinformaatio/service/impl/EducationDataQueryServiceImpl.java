@@ -30,6 +30,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -258,6 +259,103 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
             throw new ResourceNotFoundException("Child learning opportunity specification not found: " + childLoId);
         }
         return clo;
+    }
+
+    @Override
+    public LOS getLos(String losId) {
+        
+        ParentLearningOpportunitySpecificationEntity losE = this.parentLearningOpportunitySpecificationDAO.get(losId);
+        if (losE != null) {
+            return modelMapper.map(losE, ParentLOS.class);
+        }
+        ChildLearningOpportunitySpecificationEntity childE = this.childLearningOpportunityDAO.get(losId);
+        if (childE != null) {
+            return modelMapper.map(childE, ChildLOS.class);
+        }
+        UpperSecondaryLearningOpportunitySpecificationEntity upsecE = this.upperSecondaryLearningOpportunitySpecificationDAO.get(losId);
+        if (upsecE != null) {
+            return modelMapper.map(upsecE, UpperSecondaryLOS.class);
+        }
+        SpecialLearningOpportunitySpecificationEntity specialLosE = this.specialLearningOpportunitySpecificationDAO.get(losId);
+        if (specialLosE != null) {
+            return modelMapper.map(specialLosE, SpecialLOS.class);
+        }
+        
+        HigherEducationLOSEntity higherEdE = this.higherEducationLOSDAO.get(losId);
+        if (higherEdE != null) {
+            return modelMapper.map(higherEdE, HigherEducationLOS.class);
+        }
+        
+        return null;
+    }
+
+    @Override
+    public List<LOS> findLearningOpportunitiesByLoiId(String loiId) {
+        
+        
+        List<ChildLearningOpportunitySpecificationEntity> childrenE = this.childLearningOpportunityDAO.findByLoiId(loiId);
+        if (childrenE != null) {
+            
+            
+            return Lists.transform(
+                    childrenE,
+                    new Function<ChildLearningOpportunitySpecificationEntity, LOS>() {
+                        @Override
+                        public LOS apply(ChildLearningOpportunitySpecificationEntity input) {
+                            return modelMapper.map(input, ChildLOS.class);
+                        }
+                    }
+                    );
+            
+        }
+        
+        List<SpecialLearningOpportunitySpecificationEntity> specialsE = this.specialLearningOpportunitySpecificationDAO.findByLoiId(loiId);
+        if (specialsE != null) {
+            return Lists.transform(
+                    specialsE,
+                    new Function<SpecialLearningOpportunitySpecificationEntity, LOS>() {
+                        @Override
+                        public LOS apply(SpecialLearningOpportunitySpecificationEntity input) {
+                            return modelMapper.map(input, SpecialLOS.class);
+                        }
+                    }
+                    );
+        }
+        
+        List<UpperSecondaryLearningOpportunitySpecificationEntity> upsecsE = this.upperSecondaryLearningOpportunitySpecificationDAO.findByLoiId(loiId);
+        if (upsecsE != null) {
+            return Lists.transform(
+                    upsecsE,
+                    new Function<UpperSecondaryLearningOpportunitySpecificationEntity, LOS>() {
+                        @Override
+                        public LOS apply(UpperSecondaryLearningOpportunitySpecificationEntity input) {
+                            return modelMapper.map(input, UpperSecondaryLOS.class);
+                        }
+                    }
+                    );
+        }
+        
+        HigherEducationLOSEntity higheredE = this.higherEducationLOSDAO.get(loiId);
+        if (higheredE != null) {
+            List<LOS> losses = new ArrayList<LOS>();
+            losses.add(modelMapper.map(higheredE, HigherEducationLOS.class));
+            return losses;
+        }
+        
+        
+        
+        return null;
+    }
+    
+    @Override
+    public DataStatus getLatestSuccessDataStatus() {
+        
+        DataStatusEntity dataStatusE = this.dataStatusDAO.getLatestSuccess();
+        if (dataStatusE != null) {
+            return modelMapper.map(dataStatusE, DataStatus.class);
+        } else {
+            return null;
+        }
     }
 
 

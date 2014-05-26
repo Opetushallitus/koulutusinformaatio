@@ -38,7 +38,7 @@
                 </a>
             </div>
 
-            <a href="javascript:void(0)" data-ng-click="removeApplicationSystemFromBasket(as.applicationSystemId)" data-ki-i18n="application-basket-empty" class="float-right block"></a>
+            <a href="javascript:void(0)" data-ng-click="removeApplicationSystemFromBasket(as)" data-ki-i18n="application-basket-empty" class="float-right block"></a>
             <div class="margin-top-2 float-right clear" data-ki-render-application-status-label data-as="as"></div>
         </div>
     </form>
@@ -46,5 +46,5 @@
 
 <div data-ng-if="as.maxApplicationOptions <= 1">
     <span class="float-right clear margin-bottom-2" data-ki-i18n="application-basket-fill-form-notification-single-ao"></span>
-    <a href="javascript:void(0)" data-ng-click="removeApplicationSystemFromBasket(as.applicationSystemId)" data-ki-i18n="application-basket-empty" class="float-right clear"></a>
+    <a href="javascript:void(0)" data-ng-click="removeApplicationSystemFromBasket(as)" data-ki-i18n="application-basket-empty" class="float-right clear"></a>
 </div>

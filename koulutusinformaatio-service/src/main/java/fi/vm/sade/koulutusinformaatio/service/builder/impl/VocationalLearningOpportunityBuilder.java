@@ -90,7 +90,9 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
         parentKomotosByProviderId = ArrayListMultimap.create();
         for (OidRDTO parentKomotoOid : parentKomotoOids) {
             KomotoDTO parentKomoto = tarjontaRawService.getKomoto(parentKomotoOid.getOid());
-            parentKomotosByProviderId.put(parentKomoto.getTarjoajaOid(), parentKomoto);
+            //if (isNuortenKoulutus(parentKomoto)) {
+                parentKomotosByProviderId.put(parentKomoto.getTarjoajaOid(), parentKomoto);
+            //}
         }
 
         for (String key : parentKomotosByProviderId.keySet()) {
@@ -127,7 +129,7 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
                     specialChildKomotosByChildLOSId.put(id, childKomoto);
 
                 }
-                else {
+                else if (isNuortenKoulutus(childKomoto)) {
                     // PK & YO
                     childKomotosByChildLOSId.put(resolveLOSId(childKomoId, childKomoto.getTarjoajaOid()), childKomoto);
                 }
@@ -145,7 +147,7 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
     }
 
     private boolean isSpecialEdKomoto(KomotoDTO komoto) {
-        return komoto.getPohjakoulutusVaatimusUri().contains(TarjontaConstants.PREREQUISITE_URI_ER);
+        return komoto.getPohjakoulutusVaatimusUri().contains(TarjontaConstants.PREREQUISITE_URI_ER) && komoto.getKoulutuslajiUris() != null && !komoto.getKoulutuslajiUris().isEmpty() && komoto.getKoulutuslajiUris().get(0).contains(TarjontaConstants.NUORTEN_KOULUTUS);
     }
 
     @Override
@@ -216,6 +218,8 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
             for (ChildLOI curChild : curSpecial.getLois()) {
                 for (ApplicationOption curAo : curChild.getApplicationOptions()) {
                     curAo.setType(TarjontaConstants.TYPE_SPECIAL);
+                    curAo.setParent(new ParentLOSRef(curSpecial.getId(), curSpecial.getName()));
+                    curSpecial.getProvider().getApplicationSystemIDs().add(curAo.getApplicationSystem().getId());
                 }
             }
         }
@@ -236,7 +240,7 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
         return null;
     }
 
-    private static String getTextByEducationLanguage(final I18nText text, List<Code> languages) {
+    public static String getTextByEducationLanguage(final I18nText text, List<Code> languages) {
         if (text != null && text.getTranslations() != null && !text.getTranslations().isEmpty()) {
             if (languages != null && !languages.isEmpty()) {
                 for (Code code : languages) {

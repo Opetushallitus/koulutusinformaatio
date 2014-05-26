@@ -82,7 +82,10 @@ public class UpperSecondaryLearningOpportunityBuilder extends LearningOpportunit
         List<OidRDTO> komotoOids = tarjontaRawService.getKomotosByKomo(komo.getOid(), Integer.MAX_VALUE, 0);
         for (OidRDTO komotoOid : komotoOids) {
             KomotoDTO komoto = tarjontaRawService.getKomoto(komotoOid.getOid());
-            komotosByProviderId.put(komoto.getTarjoajaOid(), komoto);
+            
+            if (isNuortenKoulutus(komoto)) {
+                komotosByProviderId.put(komoto.getTarjoajaOid(), komoto);
+            }
         }
 
         for (String providerId : komotosByProviderId.keySet()) {

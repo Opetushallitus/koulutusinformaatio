@@ -70,11 +70,24 @@ public class LocationServiceImpl implements LocationService {
                 I18nText name = code.getName();
 
                 Iterator entries = name.getTranslations().entrySet().iterator();
+                Location finnish = null;
+                Location english = null;
                 while (entries.hasNext()) {
                     Map.Entry<String, String> entry = (Map.Entry) entries.next();
+
                     Location municipality = new Location(entry.getKey() + code.getValue(), entry.getValue(),
                             code.getValue(), entry.getKey(), CODE_MUNICIPALITY, parentVal);
+                    if (entry.getKey().equalsIgnoreCase("fi")) {
+                        finnish = municipality;
+                    } else  if (entry.getKey().equalsIgnoreCase("en")) {
+                        english = municipality;
+                    }
                     municipalities.add(municipality);
+                }
+                
+                if (english == null && finnish != null) {
+                    english = new Location("en" + finnish.getCode(), finnish.getName(), finnish.getCode(), "en", CODE_MUNICIPALITY, finnish.getParent());
+                    municipalities.add(english);
                 }
                 
                 LOGGER.debug(String.format("Added location: %s", code.getUri()));
@@ -88,11 +101,25 @@ public class LocationServiceImpl implements LocationService {
         I18nText name = parent.getName();
 
         Iterator entries = name.getTranslations().entrySet().iterator();
+        Location finnish = null;
+        Location english = null;
         while (entries.hasNext()) {
             Map.Entry<String, String> entry = (Map.Entry) entries.next();
             Location district = new Location(entry.getKey() + parent.getValue(), entry.getValue(),
                     parent.getValue(), entry.getKey(), CODE_DISTRICT, null);
             municipalities.add(district);
+            if (entry.getKey().equalsIgnoreCase("fi")) {
+                finnish = district;
+            } else  if (entry.getKey().equalsIgnoreCase("en")) {
+                english = district;
+            }
         }
+        
+        if (english == null && finnish != null) {
+            english = new Location("en" + finnish.getCode(), finnish.getName(), finnish.getCode(), "en", CODE_DISTRICT, null);
+            municipalities.add(english);
+        }
+        
+        
     }
 }

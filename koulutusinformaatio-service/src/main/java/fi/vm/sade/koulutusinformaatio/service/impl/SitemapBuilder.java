@@ -110,7 +110,7 @@ public class SitemapBuilder {
                     lastModifiedDate = this.getDate(dbo);
                     root.appendChild(this.createUrlElement(dom, (String)dbo.get(FIELD_ID), lastModifiedDate, idPrefix, properties.get(PROPERTY_BASE_URL)));
                 }
-                LOG.debug("Processed "+counter+" entities for "+idPrefix);
+                LOG.debug("Processed " + counterByCollection + " entities for "+idPrefix);
                 counterByCollection = 0;
             }else{
                 LOG.warn("Collection name value pair is not well formed, "+sitemapCollections[i]);

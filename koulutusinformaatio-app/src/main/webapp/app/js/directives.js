@@ -6,7 +6,8 @@ angular.module('kiApp.directives',
         'kiApp.FacetTree',
         'kiApp.KeyboardControl',
         'kiApp.SelectAreaDialog',
-        'angularTreeview',
+        //'angularTreeview',
+        'kiApp.FacetTitle',
         'kiApp.directives.AppBasket']).
 
 /**
@@ -442,17 +443,13 @@ directive('kiAbsoluteLink', function() {
  */
   directive('kiSiblingRibbon', ['$location', '$routeParams', function($location, $routeParams) {
     return {
-        restrict: 'E,A',
+        restrict: 'A',
         templateUrl: 'templates/siblings.html',
-        link: function(scope, element, attrs) {
-
-            scope.$watch('selectedAs.children', function(data) {
-                if (data && data.length <= 1) {
-                    $(element).remove();
-                }
-            });
-
-            scope.siblingClass = function(sibling) {
+        scope: {
+            siblings: '='
+        },
+        controller: function($scope) {
+            $scope.siblingClass = function(sibling) {
                 if (sibling.losId == $routeParams.id) {
                     return 'disabled';
                 } else {
@@ -481,7 +478,7 @@ directive('kiAbsoluteLink', function() {
                     angular.forEach(scope.children, function(child, key) {
                         child.url = scope.type == 'korkeakoulu' ? '#!/' + scope.type + '/' : '#!/koulutusohjelma/';
                         child.url += scope.type == 'korkeakoulu' ? child.id : child.losId;
-                        child.url += scope.prerequisite ? '#' + scope.prerequisite : '';
+                        child.url += (child.prerequisite && child.prerequisite.value) ? '?prerequisite=' + child.prerequisite.value : '';
                     });
                 }
             });
@@ -798,15 +795,15 @@ directive('kiRenderApplicationStatusLabel', function() {
             var as = scope.applicationSystem;
             var ao = scope.applicationOption;
 
-            if (ao && ao.specificApplicationDates) {
+            if (ao) {
                 if (ao.canBeApplied) {
-                        scope.active = "present";
-                    } else if (ao.nextApplicationPeriodStarts) {
-                        scope.active = "future";
-                        scope.timestamp = ao.nextApplicationPeriodStarts;
-                    } else {
-                        scope.active = "past";
-                    }
+                    scope.active = "present";
+                } else if (ao.nextApplicationPeriodStarts) {
+                    scope.active = "future";
+                    scope.timestamp = ao.nextApplicationPeriodStarts;
+                } else {
+                    scope.active = "past";
+                }
             } else if (as) {
                 if (as.asOngoing) {
                     scope.active = "present";

@@ -243,6 +243,17 @@
     loadLo();
 };
 
+function LoTabCtrl($scope, $location) {
+    
+    var qParams = $location.search();
+    if (qParams.tab) {
+        $scope.tabs = [false, false, false];
+        $scope.tabs[qParams.tab] = true;
+    } else {
+        $scope.tabs = [true, false, false];
+    }
+};
+
 
 /**
  *  Controller for adding applications to application basket
@@ -268,16 +279,6 @@ function ApplicationCtrl($scope, ApplicationBasketService, UtilityService, Trans
     $scope.addHighEdToBasket = function(aoId) {
         ApplicationBasketService.addItem(aoId);
     }
-
-    $scope.applicationSystemIsActive = function(as) {
-        for (var i in as.applicationDates) {
-            if (as.applicationDates.hasOwnProperty(i)) {
-                return as.asOngoing ? true : false;
-            }
-        }
-
-        return false;
-    };
 
     $scope.isItemAddedToBasket = function(aoId) {
         return ApplicationBasketService.itemExists(aoId);

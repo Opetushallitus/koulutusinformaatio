@@ -109,6 +109,12 @@ public class ApplicationOptionCreator extends ObjectCreator {
         if (ao.isSpecificApplicationDates()) {
             ao.setApplicationStartDate(hakukohdeDTO.getHakuaikaAlkuPvm());
             ao.setApplicationEndDate(hakukohdeDTO.getHakuaikaLoppuPvm());
+        } else if (hakuDTO != null 
+                    && hakuDTO.getHakuaikas() != null 
+                    && !hakuDTO.getHakuaikas().isEmpty()) {
+            HakuaikaRDTO aoHakuaika =  hakuDTO.getHakuaikas().get(0);
+            ao.setApplicationStartDate(aoHakuaika.getAlkuPvm());
+            ao.setApplicationEndDate(aoHakuaika.getLoppuPvm());
         }
         ao.setAttachmentDeliveryAddress(educationObjectCreator.createAddress(hakukohdeDTO.getLiitteidenToimitusosoite()));
         ao.setAttachments(educationObjectCreator.createApplicationOptionAttachments(hakukohdeDTO.getLiitteet()));
@@ -292,6 +298,8 @@ public class ApplicationOptionCreator extends ObjectCreator {
                                                                     HakukohdeV1RDTO hakukohde, 
                                                                     HakuV1RDTO haku) throws KoodistoException {
         
+        
+        
         ApplicationOption ao = new ApplicationOption();
         ao.setId(hakukohde.getOid());
         ao.setName(super.getI18nText(hakukohde.getHakukohteenNimet())); 
@@ -308,7 +316,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         ao.setKaksoistutkinto(false);
         ao.setVocational(false);
         ao.setEducationCodeUri(los.getEducationCode().getUri());
-
+        
         ao.setRequiredBaseEducations(hakukohde.getHakukelpoisuusvaatimusUris());
         los.setPrerequisites(koodistoService.searchMultiple(hakukohde.getHakukelpoisuusvaatimusUris()));
        
@@ -317,12 +325,20 @@ public class ApplicationOptionCreator extends ObjectCreator {
         as.setMaxApplications(haku.getMaxHakukohdes());
         as.setName(getI18nText(haku.getNimi()));
         as.setApplicationFormLink( haku.getHakulomakeUri());
+        
+        HakuaikaV1RDTO aoHakuaika = null;
+        
         if (haku.getHakuaikas() != null) {
             for (HakuaikaV1RDTO ha : haku.getHakuaikas()) {
                 DateRange range = new DateRange();
                 range.setStartDate(ha.getAlkuPvm());
                 range.setEndDate(ha.getLoppuPvm());
                 as.getApplicationDates().add(range);
+                
+                if (ha.getHakuaikaId().equals(hakukohde.getHakuaikaId())) {
+                    aoHakuaika = ha;
+                }
+                
             }
         }
         ao.setApplicationSystem(as);
@@ -336,6 +352,14 @@ public class ApplicationOptionCreator extends ObjectCreator {
         if (ao.isSpecificApplicationDates()) {
             ao.setApplicationStartDate(hakukohde.getHakuaikaAlkuPvm());
             ao.setApplicationEndDate(hakukohde.getHakuaikaLoppuPvm());
+        } else if (aoHakuaika != null) {
+            ao.setApplicationStartDate(aoHakuaika.getAlkuPvm());
+            ao.setApplicationEndDate(aoHakuaika.getLoppuPvm());
+            ao.setInternalASDateRef(aoHakuaika.getHakuaikaId());
+        } else if (haku.getHakuaikas() != null && !haku.getHakuaikas().isEmpty()) {
+            ao.setApplicationStartDate(haku.getHakuaikas().get(0).getAlkuPvm());
+            ao.setApplicationEndDate(haku.getHakuaikas().get(0).getLoppuPvm());
+            ao.setInternalASDateRef(haku.getHakuaikas().get(0).getHakuaikaId());
         }
 
         ao.setAttachmentDeliveryAddress(educationObjectCreator.createAddress(hakukohde.getLiitteidenToimitusOsoite()));
