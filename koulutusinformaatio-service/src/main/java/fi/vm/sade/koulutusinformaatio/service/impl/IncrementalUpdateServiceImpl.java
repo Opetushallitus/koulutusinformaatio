@@ -98,12 +98,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
 
     private final HttpSolrServer locationHttpSolrServer;
 
-    //private boolean higherEdReindexed = false;
-
-    /*private static final int REMOVAL = 0;
-    private static final int UPDATE = 1;
-    private static final int ADDITION = 2;*/
-
+    List<String> createdLOS = new ArrayList<String>();
 
     @Autowired
     public IncrementalUpdateServiceImpl(TarjontaRawService tarjontaRawService, 
@@ -173,6 +168,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             long runningSince = System.currentTimeMillis();
             this.updateService.setRunning(true);
             this.updateService.setRunningSince(runningSince);
+            this.createdLOS = new ArrayList<String>();
             //this.transactionManager.beginIncrementalTransaction();
 
             //If there are changes in komo-data, a full update is performed
@@ -840,6 +836,10 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             } else if (isSpecialVocationalLos(komotoDto)) {
                 basicLosId = String.format("%s_er", basicLosId);
             }
+            
+            if (this.createdLOS.contains(basicLosId)) {
+                return;
+            }
 
             LOS los = this.dataQueryService.getLos(basicLosId);
             if (los != null && los instanceof ChildLOS) {
@@ -966,6 +966,8 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
             //this.updateSolrMaps(parent, ADDITION);
         } 
+        
+        this.createdLOS.add(parent.getId());
 
         return parent;
     }
@@ -992,6 +994,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
             //this.updateSolrMaps(specialLos, ADDITION);
         }
+        this.createdLOS.add(specialLos.getId());
         return specialLos;
     }
 
@@ -1013,6 +1016,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
             //this.updateSolrMaps(newLos, ADDITION);
         }
+        this.createdLOS.add(newLos.getId());
         return newLos;
     }
 

@@ -189,6 +189,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
         return hakuResource
                 .path(oid)
                 .path("hakukohde")
+                .queryParam("count", String.valueOf(10000))
                 .accept(JSON_UTF8)
                 .get(new GenericType<List<OidRDTO>>() {
                 });
