@@ -616,9 +616,10 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
 
     private boolean isSecondaryEducation(KomotoDTO komotoDto) {
         return !isHigherEdKomo(komotoDto.getKomoOid()) 
-                && komotoDto.getKoulutuslajiUris() != null 
+                && ((komotoDto.getKoulutuslajiUris() != null 
                 && !komotoDto.getKoulutuslajiUris().isEmpty() 
-                && !komotoDto.getKoulutuslajiUris().get(0).contains("koulutuslaji_a");
+                && !komotoDto.getKoulutuslajiUris().get(0).contains("koulutuslaji_a"))
+                || (komotoDto.getKoulutuslajiUris() == null || komotoDto.getKoulutuslajiUris().isEmpty())); 
     }
 
     private boolean isHigherEdKomo(String komoOid) {
