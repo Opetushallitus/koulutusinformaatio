@@ -34,44 +34,44 @@ import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
 public class EducationIncrementalDataQueryServiceImpl implements
 EducationIncrementalDataQueryService {
 
-    private ParentLearningOpportunitySpecificationDAO parentLOSTransactionDAO;
-    private ApplicationOptionDAO applicationOptionTransactionDAO;
-    private ChildLearningOpportunityDAO childLOTransactionDAO;
-    private DataStatusDAO dataStatusTransactionDAO;
+    private ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO;
+    private ApplicationOptionDAO applicationOptionDAO;
+    private ChildLearningOpportunityDAO childLearningOpportunityDAO;
+    private DataStatusDAO dataStatusDAO;
     private ModelMapper modelMapper;
-    private PictureDAO pictureTransactionDAO;
-    private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO;
-    private SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO;
-    private HigherEducationLOSDAO higherEducationLOSTransactionDAO;
-    private LearningOpportunityProviderDAO learningOpportunityProviderTransactionDAO;
+    private PictureDAO pictureDAO;
+    private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO;
+    private SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO;
+    private HigherEducationLOSDAO higherEducationLOSDAO;
+    private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
 
 
     @Autowired
-    public EducationIncrementalDataQueryServiceImpl(ParentLearningOpportunitySpecificationDAO parentLOSTransactionDAO,
-            ApplicationOptionDAO applicationOptionTransactionDAO, ModelMapper modelMapper,
-            ChildLearningOpportunityDAO childLOTransactionDAO,
-            DataStatusDAO dataStatusTransactionDAO, PictureDAO pictureTransactionDAO,
-            UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO,
-            SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO, 
-            HigherEducationLOSDAO higherEducationLOSTransactionDAO, 
-            LearningOpportunityProviderDAO learningOpportunityProviderTransactionDAO,
+    public EducationIncrementalDataQueryServiceImpl(ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO,
+            ApplicationOptionDAO applicationOptionDAO, ModelMapper modelMapper,
+            ChildLearningOpportunityDAO childLearningOpportunityDAO,
+            DataStatusDAO dataStatusDAO, PictureDAO pictureDAO,
+            UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO,
+            SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO, 
+            HigherEducationLOSDAO higherEducationLOSDAO, 
+            LearningOpportunityProviderDAO learningOpportunityProviderDAO,
             IndexerService indexerService) {
-        this.parentLOSTransactionDAO = parentLOSTransactionDAO;
-        this.applicationOptionTransactionDAO = applicationOptionTransactionDAO;
+        this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
+        this.applicationOptionDAO = applicationOptionDAO;
         this.modelMapper = modelMapper;
-        this.childLOTransactionDAO = childLOTransactionDAO;
-        this.dataStatusTransactionDAO = dataStatusTransactionDAO;
-        this.pictureTransactionDAO = pictureTransactionDAO;
-        this.upperSecondaryLOSTransactionDAO = upperSecondaryLOSTransactionDAO;
-        this.specialLOSTransactionDAO = specialLOSTransactionDAO;
-        this.higherEducationLOSTransactionDAO = higherEducationLOSTransactionDAO;
-        this.learningOpportunityProviderTransactionDAO = learningOpportunityProviderTransactionDAO;
+        this.childLearningOpportunityDAO = childLearningOpportunityDAO;
+        this.dataStatusDAO = dataStatusDAO;
+        this.pictureDAO = pictureDAO;
+        this.upperSecondaryLearningOpportunitySpecificationDAO = upperSecondaryLearningOpportunitySpecificationDAO;
+        this.specialLearningOpportunitySpecificationDAO = specialLearningOpportunitySpecificationDAO;
+        this.higherEducationLOSDAO = higherEducationLOSDAO;
+        this.learningOpportunityProviderDAO = learningOpportunityProviderDAO;
 
     }
 
     @Override
     public ParentLOS getParentLearningOpportunity(String oid) throws ResourceNotFoundException {
-        ParentLearningOpportunitySpecificationEntity entity = parentLOSTransactionDAO.getFromSecondary(oid);
+        ParentLearningOpportunitySpecificationEntity entity = parentLearningOpportunitySpecificationDAO.getFromSecondary(oid);
         if (entity != null) {
             return modelMapper.map(entity, ParentLOS.class);
         } else {
@@ -82,7 +82,7 @@ EducationIncrementalDataQueryService {
     @Override
     public List<ApplicationOption> findApplicationOptions(String asId, String lopId, String baseEducation,
             boolean vocational, boolean nonVocational) {
-        List<ApplicationOptionEntity> applicationOptions = applicationOptionTransactionDAO.findFromSecondary(asId, lopId, baseEducation,
+        List<ApplicationOptionEntity> applicationOptions = applicationOptionDAO.findFromSecondary(asId, lopId, baseEducation,
                 vocational, nonVocational);
         return Lists.transform(applicationOptions, new Function<ApplicationOptionEntity, ApplicationOption>() {
             @Override
@@ -97,7 +97,7 @@ EducationIncrementalDataQueryService {
         if (aoIds == null || aoIds.isEmpty()) {
             throw new InvalidParametersException("Application option IDs required");
         }
-        List<ApplicationOptionEntity> applicationOptions = applicationOptionTransactionDAO.findFromSecondary(aoIds);
+        List<ApplicationOptionEntity> applicationOptions = applicationOptionDAO.findFromSecondary(aoIds);
         return Lists.transform(applicationOptions, new Function<ApplicationOptionEntity, ApplicationOption>() {
             @Override
             public ApplicationOption apply(ApplicationOptionEntity applicationOptionEntity) {
@@ -108,7 +108,7 @@ EducationIncrementalDataQueryService {
 
     @Override
     public ApplicationOption getApplicationOption(String aoId) throws ResourceNotFoundException {
-        ApplicationOptionEntity ao = applicationOptionTransactionDAO.get(aoId);
+        ApplicationOptionEntity ao = applicationOptionDAO.get(aoId);
         if (ao != null) {
             return modelMapper.map(ao, ApplicationOption.class);
         } else {
@@ -124,7 +124,7 @@ EducationIncrementalDataQueryService {
 
     @Override
     public DataStatus getLatestDataStatus() {
-        DataStatusEntity status = dataStatusTransactionDAO.getLatest();
+        DataStatusEntity status = dataStatusDAO.getLatest();
         if (status != null) {
             return modelMapper.map(status, DataStatus.class);
         } else {
@@ -134,7 +134,7 @@ EducationIncrementalDataQueryService {
 
     @Override
     public Picture getPicture(String id) throws ResourceNotFoundException {
-        PictureEntity picture = pictureTransactionDAO.getFromSecondary(id);
+        PictureEntity picture = pictureDAO.getFromSecondary(id);
         if (picture != null) {
             return modelMapper.map(picture, Picture.class);
         } else {
@@ -146,7 +146,7 @@ EducationIncrementalDataQueryService {
     public UpperSecondaryLOS getUpperSecondaryLearningOpportunity(String id) throws ResourceNotFoundException {
 
         UpperSecondaryLearningOpportunitySpecificationEntity entity =
-                upperSecondaryLOSTransactionDAO.getFromSecondary(id);
+                upperSecondaryLearningOpportunitySpecificationDAO.getFromSecondary(id);
 
 
         if (entity != null) {
@@ -160,7 +160,7 @@ EducationIncrementalDataQueryService {
     @Override
     public SpecialLOS getSpecialLearningOpportunity(String id) throws ResourceNotFoundException {
         SpecialLearningOpportunitySpecificationEntity entity =
-                specialLOSTransactionDAO.getFromSecondary(id);
+                specialLearningOpportunitySpecificationDAO.getFromSecondary(id);
         if (entity != null) {
             return modelMapper.map(entity, SpecialLOS.class);
         }
@@ -171,7 +171,7 @@ EducationIncrementalDataQueryService {
 
     @Override
     public HigherEducationLOS getHigherEducationLearningOpportunity(String oid) throws ResourceNotFoundException {
-        HigherEducationLOSEntity entity = this.higherEducationLOSTransactionDAO.get(oid);
+        HigherEducationLOSEntity entity = this.higherEducationLOSDAO.get(oid);
         if (entity != null) {
             return modelMapper.map(entity, HigherEducationLOS.class);
         } else {
@@ -181,7 +181,7 @@ EducationIncrementalDataQueryService {
 
     @Override
     public Provider getProvider(String id) throws ResourceNotFoundException {
-        LearningOpportunityProviderEntity entity = learningOpportunityProviderTransactionDAO.get(id);
+        LearningOpportunityProviderEntity entity = learningOpportunityProviderDAO.get(id);
         if (entity != null) {
             return modelMapper.map(entity, Provider.class);
         }
@@ -194,7 +194,7 @@ EducationIncrementalDataQueryService {
     public List<LOS> findLearningOpportunitiesByProviderId(String providerId) {
         List<LOS> results = Lists.newArrayList();
         List<ParentLearningOpportunitySpecificationEntity> parentEntites =
-                parentLOSTransactionDAO.findByProviderId(providerId);
+                parentLearningOpportunitySpecificationDAO.findByProviderId(providerId);
         List<ParentLOS> parents = Lists.transform(
                 parentEntites,
                 new Function<ParentLearningOpportunitySpecificationEntity, ParentLOS>() {
@@ -217,7 +217,7 @@ EducationIncrementalDataQueryService {
                     ));
         }
         List<UpperSecondaryLOS> upsecs = Lists.transform(
-                upperSecondaryLOSTransactionDAO.findByProviderId(providerId),
+                upperSecondaryLearningOpportunitySpecificationDAO.findByProviderId(providerId),
                 new Function<UpperSecondaryLearningOpportunitySpecificationEntity, UpperSecondaryLOS>() {
                     @Override
                     public UpperSecondaryLOS apply(UpperSecondaryLearningOpportunitySpecificationEntity input) {
@@ -226,7 +226,7 @@ EducationIncrementalDataQueryService {
                 }
                 );
         List<SpecialLOS> specials = Lists.transform(
-                specialLOSTransactionDAO.findByProviderId(providerId),
+                specialLearningOpportunitySpecificationDAO.findByProviderId(providerId),
                 new Function<SpecialLearningOpportunitySpecificationEntity, SpecialLOS>() {
                     @Override
                     public SpecialLOS apply(SpecialLearningOpportunitySpecificationEntity input) {
@@ -235,7 +235,7 @@ EducationIncrementalDataQueryService {
                 }
                 );
 
-        List<HigherEducationLOS> higherEds = Lists.transform(higherEducationLOSTransactionDAO.findByProviderId(providerId),
+        List<HigherEducationLOS> higherEds = Lists.transform(higherEducationLOSDAO.findByProviderId(providerId),
                 new Function<HigherEducationLOSEntity, HigherEducationLOS>() {
             @Override
             public HigherEducationLOS apply(HigherEducationLOSEntity input) {
@@ -252,7 +252,7 @@ EducationIncrementalDataQueryService {
     }
 
     private ChildLearningOpportunitySpecificationEntity getChildLO(String childLoId) throws ResourceNotFoundException {
-        ChildLearningOpportunitySpecificationEntity clo = childLOTransactionDAO.getFromSecondary(childLoId);
+        ChildLearningOpportunitySpecificationEntity clo = childLearningOpportunityDAO.getFromSecondary(childLoId);
         if (clo == null) {
             throw new ResourceNotFoundException("Child learning opportunity specification not found: " + childLoId);
         }
@@ -262,24 +262,24 @@ EducationIncrementalDataQueryService {
     @Override
     public LOS getLos(String losId) {
 
-        ParentLearningOpportunitySpecificationEntity losE = this.parentLOSTransactionDAO.get(losId);
+        ParentLearningOpportunitySpecificationEntity losE = this.parentLearningOpportunitySpecificationDAO.get(losId);
         if (losE != null) {
             return modelMapper.map(losE, ParentLOS.class);
         }
-        ChildLearningOpportunitySpecificationEntity childE = this.childLOTransactionDAO.get(losId);
+        ChildLearningOpportunitySpecificationEntity childE = this.childLearningOpportunityDAO.get(losId);
         if (childE != null) {
             return modelMapper.map(childE, ChildLOS.class);
         }
-        UpperSecondaryLearningOpportunitySpecificationEntity upsecE = this.upperSecondaryLOSTransactionDAO.get(losId);
+        UpperSecondaryLearningOpportunitySpecificationEntity upsecE = this.upperSecondaryLearningOpportunitySpecificationDAO.get(losId);
         if (upsecE != null) {
             return modelMapper.map(upsecE, UpperSecondaryLOS.class);
         }
-        SpecialLearningOpportunitySpecificationEntity specialLosE = this.specialLOSTransactionDAO.get(losId);
+        SpecialLearningOpportunitySpecificationEntity specialLosE = this.specialLearningOpportunitySpecificationDAO.get(losId);
         if (specialLosE != null) {
             return modelMapper.map(specialLosE, SpecialLOS.class);
         }
 
-        HigherEducationLOSEntity higherEdE = this.higherEducationLOSTransactionDAO.get(losId);
+        HigherEducationLOSEntity higherEdE = this.higherEducationLOSDAO.get(losId);
         if (higherEdE != null) {
             return modelMapper.map(higherEdE, HigherEducationLOS.class);
         }
@@ -290,12 +290,8 @@ EducationIncrementalDataQueryService {
     @Override
     public List<LOS> findLearningOpportunitiesByLoiId(String loiId) {
 
-        System.out.println("Finding learning opportunities");
-
-        List<ChildLearningOpportunitySpecificationEntity> childrenE = this.childLOTransactionDAO.findByLoiId(loiId);
+        List<ChildLearningOpportunitySpecificationEntity> childrenE = this.childLearningOpportunityDAO.findByLoiId(loiId);
         if (childrenE != null) {
-
-            System.out.println("There are entities: " + childrenE.size());
 
             return Lists.transform(
                     childrenE,
@@ -309,7 +305,7 @@ EducationIncrementalDataQueryService {
 
         }
 
-        List<SpecialLearningOpportunitySpecificationEntity> specialsE = this.specialLOSTransactionDAO.findByLoiId(loiId);
+        List<SpecialLearningOpportunitySpecificationEntity> specialsE = this.specialLearningOpportunitySpecificationDAO.findByLoiId(loiId);
         if (specialsE != null) {
             return Lists.transform(
                     specialsE,
@@ -322,7 +318,7 @@ EducationIncrementalDataQueryService {
                     );
         }
 
-        List<UpperSecondaryLearningOpportunitySpecificationEntity> upsecsE = this.upperSecondaryLOSTransactionDAO.findByLoiId(loiId);
+        List<UpperSecondaryLearningOpportunitySpecificationEntity> upsecsE = this.upperSecondaryLearningOpportunitySpecificationDAO.findByLoiId(loiId);
         if (upsecsE != null) {
             return Lists.transform(
                     upsecsE,
@@ -335,7 +331,7 @@ EducationIncrementalDataQueryService {
                     );
         }
 
-        HigherEducationLOSEntity higheredE = this.higherEducationLOSTransactionDAO.get(loiId);
+        HigherEducationLOSEntity higheredE = this.higherEducationLOSDAO.get(loiId);
         if (higheredE != null) {
             List<LOS> losses = new ArrayList<LOS>();
             losses.add(modelMapper.map(higheredE, HigherEducationLOS.class));
@@ -350,7 +346,7 @@ EducationIncrementalDataQueryService {
     @Override
     public DataStatus getLatestSuccessDataStatus() {
 
-        DataStatusEntity dataStatusE = this.dataStatusTransactionDAO.getLatestSuccess();
+        DataStatusEntity dataStatusE = this.dataStatusDAO.getLatestSuccess();
         if (dataStatusE != null) {
             return modelMapper.map(dataStatusE, DataStatus.class);
         } else {

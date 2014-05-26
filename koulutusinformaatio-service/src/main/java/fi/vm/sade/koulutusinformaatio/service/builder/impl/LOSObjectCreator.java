@@ -503,7 +503,7 @@ public class LOSObjectCreator extends ObjectCreator {
             kandQuals = this.koodistoService.searchSubCodes(kandKoul.getUri(), TarjontaConstants.TUTKINTONIMIKE_KK_KOODISTO_URI);
         }
         
-        if (!kandQuals.isEmpty()) {
+        if (!kandQuals.isEmpty() && kandQuals.get(0).getName() != null) {
             qualifications.add(kandQuals.get(0).getName());
         }
         

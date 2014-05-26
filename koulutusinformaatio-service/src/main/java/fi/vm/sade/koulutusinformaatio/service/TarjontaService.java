@@ -76,4 +76,7 @@ public interface TarjontaService {
 			String oid) throws TarjontaParseException, KoodistoException;
 
     public List<Code> getEdTypeCodes() throws KoodistoException;
+
+    HigherEducationLOS createHigherEducationLearningOpportunityTree(String oid)
+            throws TarjontaParseException, KoodistoException;
 }

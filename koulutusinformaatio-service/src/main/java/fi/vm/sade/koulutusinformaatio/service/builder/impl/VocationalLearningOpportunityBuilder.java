@@ -219,7 +219,7 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
                 for (ApplicationOption curAo : curChild.getApplicationOptions()) {
                     curAo.setType(TarjontaConstants.TYPE_SPECIAL);
                     curAo.setParent(new ParentLOSRef(curSpecial.getId(), curSpecial.getName()));
-                    
+                    curSpecial.getProvider().getApplicationSystemIDs().add(curAo.getApplicationSystem().getId());
                 }
             }
         }

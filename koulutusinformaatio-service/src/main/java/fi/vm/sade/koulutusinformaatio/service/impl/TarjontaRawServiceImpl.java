@@ -242,6 +242,15 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                 .get(new GenericType<ResultV1RDTO<HakukohdeV1RDTO>>() {
                 });
     }
+    
+    @Override
+    public ResultV1RDTO<List<NimiJaOidRDTO>> getHigherEducationByHakukohode(String hakukohdeOid) {
+        return higherEducationAOResource
+                .path(String.format("%s/%s", hakukohdeOid, "koulutukset")) 
+                .accept(JSON_UTF8)
+                .get(new GenericType<ResultV1RDTO<List<NimiJaOidRDTO>>>() {
+                });
+    }
 
     @Override
     public ResultV1RDTO<HakuV1RDTO> getHigherEducationHakuByOid(String oid) {

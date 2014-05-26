@@ -7,6 +7,7 @@ import org.apache.solr.client.solrj.impl.HttpSolrServer;
 
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
+import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 
 public interface EducationIncrementalDataUpdateService {
@@ -20,5 +21,7 @@ public interface EducationIncrementalDataUpdateService {
     void deleteAo(ApplicationOption ao);
 
     void clearHigherEducations(IndexerService indexerService, HttpSolrServer loHttpSolrServer) throws IOException, SolrServerException;
+
+    void updateHigherEdLos(HigherEducationLOS curParent);
 
 }
