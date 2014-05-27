@@ -163,7 +163,7 @@ public class EducationObjectCreator extends ObjectCreator {
             for (ValintakoeV1RDTO valintakoe : valintakokeet) {
                 if (valintakoe != null && valintakoe.getValintakokeenKuvaus() != null
                         && valintakoe.getValintakoeAjankohtas() != null
-                        && !valintakoe.getValintakoeAjankohtas().isEmpty()) {
+                        && !valintakoe.getValintakoeAjankohtas().isEmpty() && valintakoe.getKieliUri() != null) {
                     Exam exam = new Exam();
 
                     exam.setType(getTypeText(valintakoe.getValintakoeNimi(), valintakoe.getKieliUri()));

@@ -100,4 +100,6 @@ public interface EducationIncrementalDataQueryService {
     
     DataStatus getLatestSuccessDataStatus();
 
+    List<String> getLearningOpportunityIdsByAS(String asId);
+
 }
