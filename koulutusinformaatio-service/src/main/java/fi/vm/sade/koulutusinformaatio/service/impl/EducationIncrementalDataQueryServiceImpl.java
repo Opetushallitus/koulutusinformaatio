@@ -13,6 +13,7 @@ import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataQueryServi
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 
 import org.modelmapper.ModelMapper;
+import org.mongodb.morphia.Key;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -355,39 +356,37 @@ EducationIncrementalDataQueryService {
     }
 
     @Override
-    public List<LOS> getLearningOpportunitiesByAS(String asId) {
+    public List<String> getLearningOpportunityIdsByAS(String asId) {
 
-        List<LOS> loss = new ArrayList<LOS>();
+        List<String> loss = new ArrayList<String>();
         
-        List<ApplicationOptionEntity> aosE = this.applicationOptionDAO.findByAS(asId); 
+        List<Key<ApplicationOptionEntity>> aosE = this.applicationOptionDAO.findByAS(asId); 
         
-       for (ApplicationOptionEntity curAoE : aosE) {
-           loss.addAll(this.getLearningOpportunitiesByAO(curAoE));
+       for (Key<ApplicationOptionEntity> curAoE : aosE) {
+           ApplicationOptionEntity aoEntity = this.applicationOptionDAO.get(curAoE.getId().toString());
+           loss.addAll(this.getLearningOpportunitiesByAO(aoEntity));
        }
         
         return loss;
     }
     
-    private List<LOS> getLearningOpportunitiesByAO(ApplicationOptionEntity aoE) {
-        List<LOS> loss = new ArrayList<LOS>();
+    private List<String> getLearningOpportunitiesByAO(ApplicationOptionEntity aoE) {
+        List<String> loss = new ArrayList<String>();
         for (ChildLOIRefEntity childLoiE :  aoE.getChildLOIRefs()) {
             List<LOS> curLoss = this.findLearningOpportunitiesByLoiId(childLoiE.getId());
             if (curLoss != null) {
-                loss.addAll(curLoss);
+                for (LOS curLos : curLoss) {
+                    loss.add(curLos.getId());
+                }
             }
         }
         
         List<HigherEducationLOSRefEntity> higherEdLossRefs =  aoE.getHigherEdLOSRefs();
         if (higherEdLossRefs != null) {
             for (HigherEducationLOSRefEntity curLosRef : higherEdLossRefs) {
-                HigherEducationLOSEntity curHigherEd = this.higherEducationLOSDAO.get(curLosRef.getId());
-                if (curHigherEd != null) {
-                    loss.add(modelMapper.map(curHigherEd, HigherEducationLOS.class));
-                }
+                loss.add(curLosRef.getId());
             }
         }
-        
-        
         
         return loss;
     }
