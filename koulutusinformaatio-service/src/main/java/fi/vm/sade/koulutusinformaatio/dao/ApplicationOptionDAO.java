@@ -96,5 +96,12 @@ public class ApplicationOptionDAO extends SecondaryAwareDAO<ApplicationOptionEnt
         }
         return aos;
     }
+    
+    
+    public List<ApplicationOptionEntity> findByAS(final String asId) {
+        Query<ApplicationOptionEntity> query = createQuery();
+        query.field("applicationSystem.id").equal(asId);
+        return find(query).asList();
+    }
 
 }

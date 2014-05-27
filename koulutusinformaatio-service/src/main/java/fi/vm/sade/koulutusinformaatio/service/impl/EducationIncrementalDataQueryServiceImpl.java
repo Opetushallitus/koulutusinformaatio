@@ -354,5 +354,43 @@ EducationIncrementalDataQueryService {
         }
     }
 
+    @Override
+    public List<LOS> getLearningOpportunitiesByAS(String asId) {
+
+        List<LOS> loss = new ArrayList<LOS>();
+        
+        List<ApplicationOptionEntity> aosE = this.applicationOptionDAO.findByAS(asId); 
+        
+       for (ApplicationOptionEntity curAoE : aosE) {
+           loss.addAll(this.getLearningOpportunitiesByAO(curAoE));
+       }
+        
+        return loss;
+    }
+    
+    private List<LOS> getLearningOpportunitiesByAO(ApplicationOptionEntity aoE) {
+        List<LOS> loss = new ArrayList<LOS>();
+        for (ChildLOIRefEntity childLoiE :  aoE.getChildLOIRefs()) {
+            List<LOS> curLoss = this.findLearningOpportunitiesByLoiId(childLoiE.getId());
+            if (curLoss != null) {
+                loss.addAll(curLoss);
+            }
+        }
+        
+        List<HigherEducationLOSRefEntity> higherEdLossRefs =  aoE.getHigherEdLOSRefs();
+        if (higherEdLossRefs != null) {
+            for (HigherEducationLOSRefEntity curLosRef : higherEdLossRefs) {
+                HigherEducationLOSEntity curHigherEd = this.higherEducationLOSDAO.get(curLosRef.getId());
+                if (curHigherEd != null) {
+                    loss.add(modelMapper.map(curHigherEd, HigherEducationLOS.class));
+                }
+            }
+        }
+        
+        
+        
+        return loss;
+    }
+
 
 }

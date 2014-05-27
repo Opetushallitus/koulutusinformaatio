@@ -28,7 +28,7 @@ import fi.vm.sade.tarjonta.service.resources.dto.HakuaikaRDTO;
  */
 public class ApplicationSystemCreator extends ObjectCreator {
 
-    protected ApplicationSystemCreator(KoodistoService koodistoService) {
+    public ApplicationSystemCreator(KoodistoService koodistoService) {
         super(koodistoService);
     }
 
