@@ -1028,9 +1028,13 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
     private void reCreateChildLOS(ChildLOS los) throws TarjontaParseException, KoodistoException, SolrServerException, IOException {
 
         ParentLOSRef parentRef = ((ChildLOS) los).getParent();
+        LOG.debug("parent to retrieve: " + parentRef.getId());
         ParentLOS parent = (ParentLOS)(this.dataQueryService.getLos(parentRef.getId()));
-
-        this.reCreateParentLOS(parent.getId().split("_")[0], parent);
+        if (parent != null) {
+            this.reCreateParentLOS(parent.getId().split("_")[0], parent);
+        } else {
+            LOG.error("Parent: " + parentRef.getId() + " not found");
+        }
 
     }
 
@@ -1066,9 +1070,10 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             this.indexerService.addLearningOpportunitySpecification(parent, loHttpSolrServer, lopHttpSolrServer);
             this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
             //this.updateSolrMaps(parent, ADDITION);
+            this.createdLOS.add(parent.getId());
         } 
 
-        this.createdLOS.add(parent.getId());
+        
 
         return parent;
     }
@@ -1122,8 +1127,9 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             this.indexerService.addLearningOpportunitySpecification(specialLos, loHttpSolrServer, lopHttpSolrServer);
             this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
             //this.updateSolrMaps(specialLos, ADDITION);
+            this.createdLOS.add(specialLos.getId());
         }
-        this.createdLOS.add(specialLos.getId());
+        
         return specialLos;
     }
 
@@ -1144,8 +1150,9 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             this.indexerService.addLearningOpportunitySpecification(newLos, loHttpSolrServer, lopHttpSolrServer);
             this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
             //this.updateSolrMaps(newLos, ADDITION);
+            this.createdLOS.add(newLos.getId());
         }
-        this.createdLOS.add(newLos.getId());
+        
         return newLos;
     }
 
