@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOIRef;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
@@ -47,6 +48,7 @@ import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
+import fi.vm.sade.koulutusinformaatio.service.builder.impl.ApplicationSystemCreator;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.LOSObjectCreator;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.SingleParentLOSBuilder;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.SingleSpecialLOSBuilder;
@@ -64,6 +66,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
+import fi.vm.sade.tarjonta.service.types.KoulutusasteTyyppi;
 
 @Service
 @Profile("default")
@@ -268,7 +271,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
     private void indexHigherEdKomo(String curKomoOid) throws Exception {
 
         LOG.debug("Indexing higher ed komo: " + curKomoOid);
-        
+
         ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> higherEdRes = this.tarjontaRawService.getHigherEducationByKomo(curKomoOid);
         //higherEdRes.getResult().getTulokset().
 
@@ -286,10 +289,19 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
 
                         //ResultV1RDTO<KoulutusKorkeakouluV1RDTO> curHigherEd = this.tarjontaRawService.getHigherEducationLearningOpportunity(curKoul.getOid());
                         
+                        if (!curKoul.getKoulutusasteTyyppi().equals(KoulutusasteTyyppi.KORKEAKOULUTUS)) {
+                            continue;
+                        }
+                        
                         LOG.debug("Now indexing higher education: " + curKoul.getOid());
 
-                        HigherEducationLOS createdLos = this.tarjontaService.createHigherEducationLearningOpportunityTree(curKoul.getOid());
-                        
+                        HigherEducationLOS createdLos = null;
+                        try {
+                            createdLos = this.tarjontaService.createHigherEducationLearningOpportunityTree(curKoul.getOid());
+                        } catch (TarjontaParseException tpe) {
+                            createdLos = null;
+                        }
+
                         LOG.debug("Created los");
 
                         if (createdLos == null) {
@@ -297,7 +309,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
                             removeHigherEd(curKoul.getOid(), curKomoOid);
                             continue;
                         }
-                        
+
                         LOG.debug("Doing family adjustements");
 
                         List<HigherEducationLOS> parentEds = fetchParentsOfLos(curKomoOid);
@@ -469,6 +481,8 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
     }
 
     private void indexToSolr(HigherEducationLOS curLOS) throws Exception {
+        LOG.debug("Indexing higher ed: " + curLOS.getId());
+        LOG.debug("Indexing higher ed: " + curLOS.getShortTitle());
         this.indexerService.removeLos(curLOS, loHttpSolrServer);
         this.indexerService.addLearningOpportunitySpecification(curLOS, loHttpSolrServer, lopHttpSolrServer);
         this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
@@ -717,29 +731,41 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             HakukohdeV1RDTO curAo = aoRes.getResult();
             if (curAo != null) {
 
-                ResultV1RDTO<List<NimiJaOidRDTO>> koulutusOidRes = this.tarjontaRawService.getHigherEducationByHakukohode(curAo.getOid());
+                    ResultV1RDTO<List<NimiJaOidRDTO>> koulutusOidRes = this.tarjontaRawService.getHigherEducationByHakukohode(curAo.getOid());
 
-                if (koulutusOidRes != null && koulutusOidRes.getResult() != null) {
-                    for (NimiJaOidRDTO curKoulOid : koulutusOidRes.getResult()) {
-                        ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes = this.tarjontaRawService.getHigherEducationLearningOpportunity(curKoulOid.getOid());
-                        if (koulutusRes != null && koulutusRes.getResult() != null && koulutusRes.getResult().getKomoOid() != null) {
-                            this.indexHigherEdKomo(koulutusRes.getResult().getKomoOid());
+                    if (koulutusOidRes != null && koulutusOidRes.getResult() != null) {
+                        for (NimiJaOidRDTO curKoulOid : koulutusOidRes.getResult()) {
+                            ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes = this.tarjontaRawService.getHigherEducationLearningOpportunity(curKoulOid.getOid());
+                            if (koulutusRes != null && koulutusRes.getResult() != null && koulutusRes.getResult().getKomoOid() != null) {
+                                if (!toRemove) {
+                                    this.indexHigherEdKomo(koulutusRes.getResult().getKomoOid());
+                                } else {
+                                    this.removeHigherEd(curKoulOid.getOid(), koulutusRes.getResult().getKomoOid());
+                                }
+                            }
+
                         }
-                            
                     }
+                    
+                    if (!curAo.getTila().equals(TarjontaConstants.STATE_PUBLISHED) || toRemove) {
+                        LOG.debug("Removing ao: " + curAo.getOid() + " with tila: " + curAo.getTila());
+                        try {
+                        ApplicationOption ao = this.dataQueryService.getApplicationOption(aoOid);
+                        if (ao != null) {
+                            this.dataUpdateService.deleteAo(ao);
+                        }
+                        } catch (ResourceNotFoundException ex) {
+                            LOG.debug("Ao not found in mongo not doing anything");
+                        }
+
+                    }
+                    
                 }
 
-                /*if (!curAo.getTila().equals(TarjontaConstants.STATE_PUBLISHED) || toRemove) {
-                    ApplicationOption ao = this.dataQueryService.getApplicationOption(aoOid);
-                    if (ao != null) {
-                        this.dataUpdateService.deleteAo(ao);
-                    }
-
-                }*/
+                
 
 
             }
-        }
 
     }
 
@@ -749,18 +775,93 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
 
     private void indexSecondaryEducationAsData(HakuDTO asDto) throws Exception {
         //Indexing application options connected to the changed application system
-        List<OidRDTO> hakukohdeOids = this.tarjontaRawService.getHakukohdesByHaku(asDto.getOid());
+
+        List<String> lossesInAS = new ArrayList<String>();
+
+        if (asDto.getTila().equals(TarjontaConstants.STATE_PUBLISHED)) {
+
+            lossesInAS = this.dataQueryService.getLearningOpportunityIdsByAS(asDto.getOid());
+
+            ApplicationSystemCreator asCreator = new ApplicationSystemCreator(koodistoService);
+            
+            for (String curLosId : lossesInAS) {
+                LOS curLos = this.dataQueryService.getLos(curLosId);
+                if (curLos instanceof ChildLOS) {
+                    ParentLOS parent = this.dataQueryService.getParentLearningOpportunity(((ChildLOS) curLos).getParent().getId());
+                    reIndexAsDataForParentLOS(parent, asDto, asCreator);
+                    this.updateParentLos(parent);
+
+                } else if (curLos instanceof SpecialLOS) {
+                    reIndexAsDataForSpecialLOS((SpecialLOS)curLos, asDto, asCreator);
+                    this.updateSpecialLos((SpecialLOS)curLos);
+                } else if (curLos instanceof UpperSecondaryLOS) {
+                    reIndexAsDataForUpsecLOS((UpperSecondaryLOS)curLos, asDto, asCreator);
+                    this.updateUpsecLos((UpperSecondaryLOS)curLos);
+                }
+
+
+            }
+
+
+        }
+
+        if (lossesInAS.isEmpty()) {
+
+            List<OidRDTO> hakukohdeOids = this.tarjontaRawService.getHakukohdesByHaku(asDto.getOid());
 
 
 
-        if (hakukohdeOids != null && !hakukohdeOids.isEmpty()) {
-            for (OidRDTO curOid : hakukohdeOids) {
-                HakukohdeDTO aoDto = this.tarjontaRawService.getHakukohde(curOid.getOid());
-                indexApplicationOptionData(aoDto, asDto);
+            if (hakukohdeOids != null && !hakukohdeOids.isEmpty()) {
+                for (OidRDTO curOid : hakukohdeOids) {
+                    HakukohdeDTO aoDto = this.tarjontaRawService.getHakukohde(curOid.getOid());
+                    indexApplicationOptionData(aoDto, asDto);
+                }
             }
         }
     }
 
+
+    private void reIndexAsDataForUpsecLOS(UpperSecondaryLOS curLos,
+            HakuDTO asDto, ApplicationSystemCreator asCreator) throws KoodistoException {
+        for (UpperSecondaryLOI curUpsecLoi : curLos.getLois()) {
+            for (ApplicationOption curAo : curUpsecLoi.getApplicationOptions()) {
+                //curAo.getApplicationSystem()
+                ApplicationSystem newAs = asCreator.createApplicationSystem(asDto);
+                if (newAs != null) {
+                    curAo.setApplicationSystem(newAs);
+                }
+            }
+        }
+
+    }
+
+    private void reIndexAsDataForSpecialLOS(SpecialLOS curLos, HakuDTO asDto,
+            ApplicationSystemCreator asCreator) throws KoodistoException {
+
+        for (ChildLOI curChildLoi : curLos.getLois()) {
+            for (ApplicationOption curAo : curChildLoi.getApplicationOptions()) {
+                //curAo.getApplicationSystem()
+                ApplicationSystem newAs = asCreator.createApplicationSystem(asDto);
+                if (newAs != null) {
+                    curAo.setApplicationSystem(newAs);
+                }
+            }
+        }
+
+    }
+
+    private void reIndexAsDataForParentLOS(ParentLOS parent, HakuDTO hakuDTO, ApplicationSystemCreator asCreator) throws KoodistoException {
+        for (ParentLOI parentLoi : parent.getLois()) {
+            for (ApplicationOption curAo : parentLoi.getApplicationOptions()) {
+                //curAo.getApplicationSystem()
+                ApplicationSystem newAs = asCreator.createApplicationSystem(hakuDTO);
+                if (newAs != null) {
+                    curAo.setApplicationSystem(newAs);
+                }
+            }
+        }
+
+    }
 
     private void indexApplicationOptionData(HakukohdeDTO aoDto, HakuDTO asDto) throws Exception {
 
@@ -836,7 +937,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             } else if (isSpecialVocationalLos(komotoDto)) {
                 basicLosId = String.format("%s_er", basicLosId);
             }
-            
+
             if (this.createdLOS.contains(basicLosId)) {
                 return;
             }
@@ -927,9 +1028,13 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
     private void reCreateChildLOS(ChildLOS los) throws TarjontaParseException, KoodistoException, SolrServerException, IOException {
 
         ParentLOSRef parentRef = ((ChildLOS) los).getParent();
+        LOG.debug("parent to retrieve: " + parentRef.getId());
         ParentLOS parent = (ParentLOS)(this.dataQueryService.getLos(parentRef.getId()));
-
-        this.reCreateParentLOS(parent.getId().split("_")[0], parent);
+        if (parent != null) {
+            this.reCreateParentLOS(parent.getId().split("_")[0], parent);
+        } else {
+            LOG.error("Parent: " + parentRef.getId() + " not found");
+        }
 
     }
 
@@ -965,9 +1070,10 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             this.indexerService.addLearningOpportunitySpecification(parent, loHttpSolrServer, lopHttpSolrServer);
             this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
             //this.updateSolrMaps(parent, ADDITION);
+            this.createdLOS.add(parent.getId());
         } 
+
         
-        this.createdLOS.add(parent.getId());
 
         return parent;
     }
@@ -983,6 +1089,34 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
 
     }
 
+    private void updateParentLos(ParentLOS los) throws IOException, SolrServerException  {
+        this.deleteParentLOSRecursively(los);
+        this.indexerService.removeLos(los, loHttpSolrServer);
+        this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
+        this.dataUpdateService.save(los);
+        this.indexerService.addLearningOpportunitySpecification(los, loHttpSolrServer, lopHttpSolrServer);
+        this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
+
+    }
+
+    private void updateSpecialLos(SpecialLOS los) throws IOException, SolrServerException  {
+        this.deleteSpecialLosRecursively(los);
+        this.indexerService.removeLos(los, loHttpSolrServer);
+        this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
+        this.dataUpdateService.save(los);
+        this.indexerService.addLearningOpportunitySpecification(los, loHttpSolrServer, lopHttpSolrServer);
+        this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
+    }
+
+    private void updateUpsecLos(UpperSecondaryLOS los) throws IOException, SolrServerException  {
+        this.deleteUpperSecondaryLosRecursive(los);
+        this.indexerService.removeLos(los, loHttpSolrServer);
+        this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
+        this.dataUpdateService.save(los);
+        this.indexerService.addLearningOpportunitySpecification(los, loHttpSolrServer, lopHttpSolrServer);
+        this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
+    }
+
 
     private SpecialLOS createSpecialLOS(KomoDTO komo, KomotoDTO komoto, String providerId) throws SolrServerException, IOException, TarjontaParseException, KoodistoException {
         SpecialLOS specialLos = this.specialLosBuilder.createSpecialLOS(komo, komoto, this.isRehabLOS(komo), providerId);
@@ -993,8 +1127,9 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             this.indexerService.addLearningOpportunitySpecification(specialLos, loHttpSolrServer, lopHttpSolrServer);
             this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
             //this.updateSolrMaps(specialLos, ADDITION);
+            this.createdLOS.add(specialLos.getId());
         }
-        this.createdLOS.add(specialLos.getId());
+        
         return specialLos;
     }
 
@@ -1015,8 +1150,9 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             this.indexerService.addLearningOpportunitySpecification(newLos, loHttpSolrServer, lopHttpSolrServer);
             this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
             //this.updateSolrMaps(newLos, ADDITION);
+            this.createdLOS.add(newLos.getId());
         }
-        this.createdLOS.add(newLos.getId());
+        
         return newLos;
     }
 

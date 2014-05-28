@@ -72,7 +72,7 @@ import org.slf4j.LoggerFactory;
 @Service
 @Profile("default")
 public class TarjontaServiceImpl implements TarjontaService {
-    
+
     public static final Logger LOG = LoggerFactory.getLogger(TarjontaServiceImpl.class);
 
     private ConversionService conversionService;
@@ -81,7 +81,7 @@ public class TarjontaServiceImpl implements TarjontaService {
     private LearningOpportunityDirector loDirector;
     private TarjontaRawService tarjontaRawService;
     private LOSObjectCreator creator;
-    
+
     private static final String ED_TYPE_FACET_KOODISTO = "koulutustyyppifasetti";
 
     @Autowired
@@ -132,10 +132,10 @@ public class TarjontaServiceImpl implements TarjontaService {
             return new RehabilitatingLearningOpportunityBuilder(tarjontaRawService, providerService, koodistoService, komo);
         } 
         else if ((educationType.equals(TarjontaConstants.PREPARATORY_VOCATIONAL_EDUCATION_TYPE) 
-                    || educationType.equals(TarjontaConstants.TENTH_GRADE_EDUCATION_TYPE)
-                    || educationType.equals(TarjontaConstants.IMMIGRANT_PREPARATORY_VOCATIONAL)
-                    || educationType.equals(TarjontaConstants.IMMIGRANT_PREPARATORY_UPSEC)
-                    || educationType.endsWith(TarjontaConstants.KANSANOPISTO_TYPE))
+                || educationType.equals(TarjontaConstants.TENTH_GRADE_EDUCATION_TYPE)
+                || educationType.equals(TarjontaConstants.IMMIGRANT_PREPARATORY_VOCATIONAL)
+                || educationType.equals(TarjontaConstants.IMMIGRANT_PREPARATORY_UPSEC)
+                || educationType.endsWith(TarjontaConstants.KANSANOPISTO_TYPE))
                 && komo.getModuuliTyyppi().equals(TarjontaConstants.MODULE_TYPE_CHILD)) {
             return new RehabilitatingLearningOpportunityBuilder(tarjontaRawService, providerService, koodistoService, komo);
         }
@@ -205,7 +205,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                     }
                     parentOids.add(los.getKomoOid());
                     updateAOLosReferences(los, aoToEducationsMap);
-                    
+
                 } catch (TarjontaParseException ex) {
                     continue;
                 }
@@ -220,7 +220,7 @@ public class TarjontaServiceImpl implements TarjontaService {
         I18nPicture structureImage = null;
         ResultV1RDTO<List<KuvaV1RDTO>> result = this.tarjontaRawService.getStructureImages(oid);
         List<KuvaV1RDTO> imageDtos = result != null ? result.getResult() : null;
-        
+
         if (imageDtos != null && !imageDtos.isEmpty()) {
             structureImage = new I18nPicture();
             for (KuvaV1RDTO curDto : imageDtos) {
@@ -263,7 +263,7 @@ public class TarjontaServiceImpl implements TarjontaService {
      */
     private List<HigherEducationLOS> createChildHierarchy(List<HigherEducationLOS> koulutukset,
             Map<String, List<HigherEducationLOS>> komoToLOSMap, List<String> parentOids, Map<String,List<HigherEducationLOSRef>> aoToEducationsMap) {
-        
+
         for (HigherEducationLOS curLos : koulutukset) {
 
             ResultV1RDTO<Set<String>> childKomoOids = this.tarjontaRawService.getChildrenOfParentHigherEducationLOS(curLos.getKomoOid());
@@ -293,9 +293,9 @@ public class TarjontaServiceImpl implements TarjontaService {
                     ao.setHigherEdLOSRefs(aoToEducationsMap.get(ao.getId()));
                 }
             }
-            
+
         }
-        
+
         List<HigherEducationLOS> parents = new ArrayList<HigherEducationLOS>();
         for (String curParent : parentOids) {
             parents.addAll(komoToLOSMap.get(curParent));
@@ -319,24 +319,24 @@ public class TarjontaServiceImpl implements TarjontaService {
 
         HigherEducationLOS los = creator.createHigherEducationLOS(koulutusDTO, false);
         los.setStatus(koulutusDTO.getTila().toString());
-        
+
 
         if (los.getApplicationOptions() != null) {
             for (ApplicationOption curAo : los.getApplicationOptions()) {
                 createEducationreReferencesForAo(curAo, false);
             }
         }
-        
+
         ResultV1RDTO<Set<String>> childKomoOids = this.tarjontaRawService.getChildrenOfParentHigherEducationLOS(koulutusDTO.getKomoOid());
         ResultV1RDTO<Set<String>> parentKomoOids = this.tarjontaRawService.getParentsOfHigherEducationLOS(koulutusDTO.getKomoOid());
         los.setChildren(getHigherEducationRelatives(childKomoOids, creator, false));
         los.setParents(getHigherEducationRelatives(parentKomoOids, creator, false));
-        
+
         los.setStructureImage(retrieveStructureImage(los.getId()));
-        
+
         return los;
     }
-    
+
     @Override
     public HigherEducationLOS createHigherEducationLearningOpportunityTree(String oid) throws TarjontaParseException, KoodistoException {
         if (this.providerService != null) {
@@ -353,82 +353,85 @@ public class TarjontaServiceImpl implements TarjontaService {
             return null;
         }
 
-        
         LOG.debug("Now creating higherEducation learning opportunity tree");
         HigherEducationLOS los = creator.createHigherEducationLOS(koulutusDTO, true);
         los.setStatus(koulutusDTO.getTila().toString());
-        
+
 
         if (los.getApplicationOptions() != null) {
             for (ApplicationOption curAo : los.getApplicationOptions()) {
                 createEducationreReferencesForAo(curAo, true);
             }
         }
-        
+
         ResultV1RDTO<Set<String>> childKomoOids = this.tarjontaRawService.getChildrenOfParentHigherEducationLOS(koulutusDTO.getKomoOid());
-        
+
         List<HigherEducationLOS> children = new ArrayList<HigherEducationLOS>();
-        
+
         for (String curChildKomoOid : childKomoOids.getResult()) {
             List<String> koulutusOids = getKoulutusoidsForKomo(curChildKomoOid);
             for (String curKoulutusOid : koulutusOids) {
-                HigherEducationLOS curChild = createHigherEducationLearningOpportunityTree(curKoulutusOid);
-                curChild.getParents().add(los);
-                if (curChild != null) {
-                    children.add(curChild);
+                try {
+                    HigherEducationLOS curChild = createHigherEducationLearningOpportunityTree(curKoulutusOid);
+                    if (curChild != null) {
+                        curChild.getParents().add(los);
+                        children.add(curChild);
+                    }
+                } catch (TarjontaParseException tpe) {
+                    LOG.warn("Child to add was not valid: " + curKoulutusOid);
                 }
             }
         }
         los.setChildren(children);
-        
+
         los.setStructureImage(retrieveStructureImage(los.getId()));
-        
+
         return los;
     }
 
     private List<String> getKoulutusoidsForKomo(String komoOid) {
-        
+
         List<String> koulutusOids = new ArrayList<String>();
-        
+
         ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes = this.tarjontaRawService.getHigherEducationByKomo(komoOid);
         HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
         for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
             for (KoulutusHakutulosV1RDTO curKoulutus : curRes.getTulokset()) {
-                
+
                 koulutusOids.add(curKoulutus.getOid());
-                
+
             }
         }
-        
-        
+
+
         return koulutusOids;
     }
 
     private void createEducationreReferencesForAo(ApplicationOption curAo, boolean validating) throws TarjontaParseException, KoodistoException {
-        
-         ResultV1RDTO<HakukohdeV1RDTO> hakukohdeResDTO =  this.tarjontaRawService.getHigherEducationHakukohode(curAo.getId());
-         HakukohdeV1RDTO hakukohdeDTO = hakukohdeResDTO.getResult();
-         for (String curEduOid : hakukohdeDTO.getHakukohdeKoulutusOids()) {
-             
-             ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes = this.tarjontaRawService.getHigherEducationLearningOpportunity(curEduOid);
-             KoulutusKorkeakouluV1RDTO koulutusDTO = koulutusRes.getResult();
-             if (koulutusDTO == null) {
-                 continue;
-             }
-             
-             
-             if ((validating && koulutusDTO.getTila().equals(TarjontaTila.JULKAISTU)) || !validating) {
-             
-                 HigherEducationLOSRef losRef = creator.createHigherEducationLOSRef(koulutusDTO, validating, curAo);
-             
+
+        ResultV1RDTO<HakukohdeV1RDTO> hakukohdeResDTO =  this.tarjontaRawService.getHigherEducationHakukohode(curAo.getId());
+        HakukohdeV1RDTO hakukohdeDTO = hakukohdeResDTO.getResult();
+        for (String curEduOid : hakukohdeDTO.getHakukohdeKoulutusOids()) {
+
+            ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes = this.tarjontaRawService.getHigherEducationLearningOpportunity(curEduOid);
+            KoulutusKorkeakouluV1RDTO koulutusDTO = koulutusRes.getResult();
+            if (koulutusDTO == null) {
+                continue;
+            }
+
+
+            if ((validating && koulutusDTO.getTila().equals(TarjontaTila.JULKAISTU)) || !validating) {
+
+                HigherEducationLOSRef losRef = creator.createHigherEducationLOSRef(koulutusDTO, validating, curAo);
+
                 curAo.getHigherEdLOSRefs().add(losRef);
-                
-             } 
-             
-             
-             
-         }
-        
+
+            } 
+
+
+
+        }
+
     }
 
     private List<HigherEducationLOS> getHigherEducationRelatives(
@@ -447,14 +450,14 @@ public class TarjontaServiceImpl implements TarjontaService {
                     if (koulutusDTO == null) {
                         continue;
                     }
-                    
+
                     if (fullRelatives && koulutusDTO.getTila().equals(TarjontaTila.JULKAISTU)) {
-                        
+
                         try {
-                        
+
                             HigherEducationLOS los = creator.createHigherEducationLOS(koulutusDTO, true);
                             relatives.add(los);
-                            
+
                         } catch (TarjontaParseException ex) {
                             LOG.warn("Skipping non published higher education");
                         }
@@ -462,10 +465,10 @@ public class TarjontaServiceImpl implements TarjontaService {
                         HigherEducationLOS los = creator.createHigherEducationLOSReference(koulutusDTO, false);
                         relatives.add(los);
                     }
-                    
-                    
-                    
-                    
+
+
+
+
                 }
             }
         }
@@ -488,6 +491,6 @@ public class TarjontaServiceImpl implements TarjontaService {
 
 
 
-    
+
 
 }

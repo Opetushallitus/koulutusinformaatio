@@ -18,9 +18,11 @@ package fi.vm.sade.koulutusinformaatio.converter;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.domain.Exam;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ExamDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,6 +45,7 @@ public final class ExamToDTO {
             return null;
         }
     }
+    
 
     public static List<ExamDTO> convertAll(final List<Exam> exams, final String lang) {
         if (exams == null) {
@@ -55,6 +58,32 @@ public final class ExamToDTO {
                 return convert(input, lang);
             }
         });
+        }
+    }
+    
+    public static List<ExamDTO> convertAllHigherEducation(final List<Exam> exams, final String lang) {
+        if (exams == null) {
+            return null;
+        }
+        else {
+            
+            List<ExamDTO> convertedExams = new ArrayList<ExamDTO>();
+            String keyLang = lang.toLowerCase();
+            
+            for (Exam curExam : exams) {
+                ExamDTO exam = null;
+                if (curExam != null 
+                        && curExam.getType() != null 
+                        && curExam.getType().getTranslations().containsKey(keyLang)) {
+                    exam = convert(curExam, lang);
+                }
+                if (exam != null) {
+                    convertedExams.add(exam);
+                }
+            }
+            
+            return !convertedExams.isEmpty() ? convertedExams : null;
+
         }
     }
 }

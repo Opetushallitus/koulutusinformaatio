@@ -13,6 +13,7 @@ import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataQueryServi
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 
 import org.modelmapper.ModelMapper;
+import org.mongodb.morphia.Key;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -352,6 +353,42 @@ EducationIncrementalDataQueryService {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public List<String> getLearningOpportunityIdsByAS(String asId) {
+
+        List<String> loss = new ArrayList<String>();
+        
+        List<Key<ApplicationOptionEntity>> aosE = this.applicationOptionDAO.findByAS(asId); 
+        
+       for (Key<ApplicationOptionEntity> curAoE : aosE) {
+           ApplicationOptionEntity aoEntity = this.applicationOptionDAO.get(curAoE.getId().toString());
+           loss.addAll(this.getLearningOpportunitiesByAO(aoEntity));
+       }
+        
+        return loss;
+    }
+    
+    private List<String> getLearningOpportunitiesByAO(ApplicationOptionEntity aoE) {
+        List<String> loss = new ArrayList<String>();
+        for (ChildLOIRefEntity childLoiE :  aoE.getChildLOIRefs()) {
+            List<LOS> curLoss = this.findLearningOpportunitiesByLoiId(childLoiE.getId());
+            if (curLoss != null) {
+                for (LOS curLos : curLoss) {
+                    loss.add(curLos.getId());
+                }
+            }
+        }
+        
+        List<HigherEducationLOSRefEntity> higherEdLossRefs =  aoE.getHigherEdLOSRefs();
+        if (higherEdLossRefs != null) {
+            for (HigherEducationLOSRefEntity curLosRef : higherEdLossRefs) {
+                loss.add(curLosRef.getId());
+            }
+        }
+        
+        return loss;
     }
 
 
