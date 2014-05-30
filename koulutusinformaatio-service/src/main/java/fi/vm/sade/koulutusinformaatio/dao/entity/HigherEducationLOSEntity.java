@@ -138,6 +138,9 @@ public class HigherEducationLOSEntity {
     
     @Embedded
     private I18nPictureEntity structureImage;
+    
+    @Embedded
+    private List<CodeEntity> fotFacet = new ArrayList<CodeEntity>();
 
     public String getId() {
         return id;
@@ -454,6 +457,12 @@ public class HigherEducationLOSEntity {
     }
     public void setStructureImage(I18nPictureEntity structureImage) {
         this.structureImage = structureImage;
+    }
+    public List<CodeEntity> getFotFacet() {
+        return fotFacet;
+    }
+    public void setFotFacet(List<CodeEntity> fotFacet) {
+        this.fotFacet = fotFacet;
     }
 
 }

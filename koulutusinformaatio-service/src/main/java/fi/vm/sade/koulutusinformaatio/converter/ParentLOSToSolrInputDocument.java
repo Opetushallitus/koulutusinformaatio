@@ -309,6 +309,15 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
                     doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_MUU);
                     doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE_DISPLAY, SolrUtil.SolrConstants.ED_TYPE_KOTITALOUS);
                 }
+                
+                if (childLOI.getFotFacet() != null) {
+                    for (Code curCode : childLOI.getFotFacet()) {
+                        if (!usedVals.contains(curCode.getUri())) {
+                            doc.addField(LearningOpportunity.FORM_OF_TEACHING, curCode.getUri());
+                            usedVals.add(curCode.getUri());
+                        }
+                    }
+                }
             }
         }
 

@@ -5,6 +5,7 @@ import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Reference;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +51,8 @@ public class ChildLearningOpportunityInstanceEntity {
     private I18nTextEntity plannedDurationUnit;
     @Embedded
     private List<CodeEntity> availableTranslationLanguages;
+    @Embedded
+    private List<CodeEntity> fotFacet = new ArrayList<CodeEntity>();
     
     
 
@@ -203,5 +206,13 @@ public class ChildLearningOpportunityInstanceEntity {
 
     public void setAvailableTranslationLanguages(List<CodeEntity> availableTranslationLanguages) {
         this.availableTranslationLanguages = availableTranslationLanguages;
+    }
+
+    public List<CodeEntity> getFotFacet() {
+        return fotFacet;
+    }
+
+    public void setFotFacet(List<CodeEntity> fotFacet) {
+        this.fotFacet = fotFacet;
     }
 }

@@ -155,9 +155,6 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
 
         try {
 
-            //higherEdReindexed = false;
-            /*lossToRemove = new HashMap<String,LOS>();
-            losToUpdate = new HashMap<String,LOS>();*/
 
             //Fetching changes within the update period
             Map<String,List<String>> result = listChangedLearningOpportunities(updatePeriod);
@@ -168,6 +165,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             if (!hasChanges(result)) {
                 return;
             }
+            
             long runningSince = System.currentTimeMillis();
             this.updateService.setRunning(true);
             this.updateService.setRunningSince(runningSince);
@@ -235,32 +233,15 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
                 }
             }
 
-            /*
-            LOG.debug("Losses to remove in solr: " + this.lossToRemove.size());
-            LOG.debug("Losses to update in solr: " + this.lossToUpdate.size());*/
-
-            /*for (LOS curLos : this.lossToUpdate.values()) {
-                LOG.debug("Indexing to update: " + curLos.getId());
-                this.indexerService.addLearningOpportunitySpecification(curLos, loHttpSolrServer, lopHttpSolrServer);
-            }
-            this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, false);
-            for (LOS curLos : this.lossToRemove.values()) {
-                LOG.debug("Indexing to remove: " + curLos.getId());
-                this.indexerService.removeLos(curLos, loHttpSolrServer);
-            }*/
-
             LOG.debug("Committing to solr");
             this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
             LOG.debug("Saving successful status");
             dataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, "SUCCESS"));
-            LOG.debug("Committing.");
+            LOG.debug("All done");
 
         } catch (Exception e) {
             LOG.error("Education data update failed ", e);
-            //this.transactionManager.rollbackIncrementalTransaction();
-            //this.indexerService.rollbackIncrementalSolrChanges();
             dataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - this.updateService.getRunningSince(), String.format("FAIL: %s", e.getMessage())));
-
         } finally {
             this.updateService.setRunning(false);
             this.updateService.setRunningSince(0);
@@ -783,19 +764,20 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             lossesInAS = this.dataQueryService.getLearningOpportunityIdsByAS(asDto.getOid());
 
             ApplicationSystemCreator asCreator = new ApplicationSystemCreator(koodistoService);
+            ApplicationSystem as = asCreator.createApplicationSystem(asDto);
             
             for (String curLosId : lossesInAS) {
                 LOS curLos = this.dataQueryService.getLos(curLosId);
                 if (curLos instanceof ChildLOS) {
                     ParentLOS parent = this.dataQueryService.getParentLearningOpportunity(((ChildLOS) curLos).getParent().getId());
-                    reIndexAsDataForParentLOS(parent, asDto, asCreator);
+                    reIndexAsDataForParentLOS(parent, asDto, as);
                     this.updateParentLos(parent);
 
                 } else if (curLos instanceof SpecialLOS) {
-                    reIndexAsDataForSpecialLOS((SpecialLOS)curLos, asDto, asCreator);
+                    reIndexAsDataForSpecialLOS((SpecialLOS)curLos, asDto, as);
                     this.updateSpecialLos((SpecialLOS)curLos);
                 } else if (curLos instanceof UpperSecondaryLOS) {
-                    reIndexAsDataForUpsecLOS((UpperSecondaryLOS)curLos, asDto, asCreator);
+                    reIndexAsDataForUpsecLOS((UpperSecondaryLOS)curLos, asDto, as);
                     this.updateUpsecLos((UpperSecondaryLOS)curLos);
                 }
 
@@ -822,13 +804,13 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
 
 
     private void reIndexAsDataForUpsecLOS(UpperSecondaryLOS curLos,
-            HakuDTO asDto, ApplicationSystemCreator asCreator) throws KoodistoException {
+            HakuDTO asDto, ApplicationSystem as) throws KoodistoException {
         for (UpperSecondaryLOI curUpsecLoi : curLos.getLois()) {
             for (ApplicationOption curAo : curUpsecLoi.getApplicationOptions()) {
                 //curAo.getApplicationSystem()
-                ApplicationSystem newAs = asCreator.createApplicationSystem(asDto);
-                if (newAs != null) {
-                    curAo.setApplicationSystem(newAs);
+                //ApplicationSystem newAs = asCreator.createApplicationSystem(asDto);
+                if (as != null) {
+                    curAo.setApplicationSystem(as);
                 }
             }
         }
@@ -836,27 +818,27 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
     }
 
     private void reIndexAsDataForSpecialLOS(SpecialLOS curLos, HakuDTO asDto,
-            ApplicationSystemCreator asCreator) throws KoodistoException {
+            ApplicationSystem as) throws KoodistoException {
 
         for (ChildLOI curChildLoi : curLos.getLois()) {
             for (ApplicationOption curAo : curChildLoi.getApplicationOptions()) {
                 //curAo.getApplicationSystem()
-                ApplicationSystem newAs = asCreator.createApplicationSystem(asDto);
-                if (newAs != null) {
-                    curAo.setApplicationSystem(newAs);
+                //ApplicationSystem newAs = asCreator.createApplicationSystem(asDto);
+                if (as != null) {
+                    curAo.setApplicationSystem(as);
                 }
             }
         }
 
     }
 
-    private void reIndexAsDataForParentLOS(ParentLOS parent, HakuDTO hakuDTO, ApplicationSystemCreator asCreator) throws KoodistoException {
+    private void reIndexAsDataForParentLOS(ParentLOS parent, HakuDTO hakuDTO, ApplicationSystem as) throws KoodistoException {
         for (ParentLOI parentLoi : parent.getLois()) {
             for (ApplicationOption curAo : parentLoi.getApplicationOptions()) {
                 //curAo.getApplicationSystem()
-                ApplicationSystem newAs = asCreator.createApplicationSystem(hakuDTO);
-                if (newAs != null) {
-                    curAo.setApplicationSystem(newAs);
+                //ApplicationSystem newAs = asCreator.createApplicationSystem(hakuDTO);
+                if (as != null) {
+                    curAo.setApplicationSystem(as);
                 }
             }
         }

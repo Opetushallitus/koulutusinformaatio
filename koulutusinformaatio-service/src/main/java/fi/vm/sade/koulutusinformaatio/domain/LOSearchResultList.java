@@ -34,11 +34,13 @@ public class LOSearchResultList {
     private Facet prerequisiteFacet;
     private Facet topicFacet;
     private Facet articleContentTypeFacet;
+    private Facet fotFacet;
     private FacetValue lopRecommendationFilter;
     private FacetValue educationCodeRecommendationFilter;
     private long loCount;
     private long articleCount;
     private long orgCount;
+   
 
 
     public List<LOSearchResult> getResults() {
@@ -160,5 +162,13 @@ public class LOSearchResultList {
 
     public void setArticleContentTypeFacet(Facet articleContentTypeFacet) {
         this.articleContentTypeFacet = articleContentTypeFacet;
+    }
+
+    public void setFotFacet(Facet fotFacet) {
+        this.fotFacet = fotFacet;
+    }
+    
+    public Facet getFotFacet() {
+        return this.fotFacet;
     }
 }

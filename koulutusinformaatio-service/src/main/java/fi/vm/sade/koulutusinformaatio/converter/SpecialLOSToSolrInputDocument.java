@@ -233,6 +233,17 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
             doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_AMMATILLISET);
             doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_TUTKINTOON);
         }
+        
+        List<String> usedVals = new ArrayList<String>();
+        if (childLOI.getFotFacet() != null) {
+            for (Code curFOT : childLOI.getFotFacet()) {
+                if (!usedVals.contains(curFOT.getUri())) {
+                    doc.addField(SolrUtil.LearningOpportunity.FORM_OF_TEACHING, curFOT.getUri());
+                    usedVals.add(curFOT.getUri());
+                }
+            }
+        }
+        
     }
 
 

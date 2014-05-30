@@ -26,6 +26,7 @@ public class TarjontaConstants {
     public static final String STATE_PUBLISHED = "JULKAISTU";
 
     public static final String BASE_EDUCATION_KOODISTO_URI = "pohjakoulutustoinenaste";
+    public static final String FORM_OF_EDUCATION_FACET_KOODISTO_URI = "opetuspaikkakk";
 
     public static final String LANG_FI = "fi";
 

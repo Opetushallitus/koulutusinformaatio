@@ -23,15 +23,18 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
+
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
+import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.YhteyshenkiloRDTO;
 import fi.vm.sade.tarjonta.shared.types.KomotoTeksti;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -106,6 +109,20 @@ public class LOIObjectCreator extends ObjectCreator {
         }
 
         basicLOI.setAvailableTranslationLanguages(new ArrayList<Code>(availableLanguagesMap.values()));
+        
+        List<String> opetusmuodotUris =  komoto.getOpetusmuodotUris() != null ? komoto.getOpetusmuodotUris() : new ArrayList<String>();
+        Map<String,Code> opFacetMap = new HashMap<String,Code>();
+        
+        for (String curOMUri : opetusmuodotUris) {
+            List<Code> omFacs = this.koodistoService.searchSuperCodes(curOMUri, TarjontaConstants.FORM_OF_EDUCATION_FACET_KOODISTO_URI);
+            for (Code curOMFacet : omFacs) {
+                System.out.println("Putting form of teaching code: " + curOMFacet.getUri());
+                opFacetMap.put(curOMFacet.getUri(), curOMFacet);
+            }
+        }
+        basicLOI.setFotFacet(new ArrayList<Code>(opFacetMap.values()));
+        LOG.debug("Set: " + basicLOI.getFotFacet().size() + " form of teaching facet values.");
+        
         return basicLOI;
     }
 

@@ -49,6 +49,12 @@ public class FacetIndexer {
         for (Code curCode : los.getThemes()) {
             SolrUtil.indexCodeAsFacetDoc(curCode, docs, false);
         }
+        
+        if (loi.getFotFacet() != null) {
+            for (Code curFOT : loi.getFotFacet()) {
+                SolrUtil.indexCodeAsFacetDoc(curFOT, docs, false);
+            }
+        }
 
         return docs;
     }
@@ -62,6 +68,9 @@ public class FacetIndexer {
         for (ChildLOS childLOS : parent.getChildren()) {
             for (ChildLOI childLOI : childLOS.getLois()) {
                 docs.addAll(createFacetDocs(childLOI));
+                for (Code curFOT : childLOI.getFotFacet()) {
+                    SolrUtil.indexCodeAsFacetDoc(curFOT, docs, false);
+                }
             }
         }
 
@@ -104,6 +113,12 @@ public class FacetIndexer {
         for (Code curCode : los.getThemes()) {
             SolrUtil.indexCodeAsFacetDoc(curCode, docs, false);
         }
+        
+        if (childLOI.getFotFacet() != null) {
+            for (Code curFOT : childLOI.getFotFacet()) {
+                SolrUtil.indexCodeAsFacetDoc(curFOT, docs, false);
+            }
+        }
 
         return docs;
     }
@@ -128,6 +143,12 @@ public class FacetIndexer {
 
         for (Code curCode : los.getThemes()) {
             SolrUtil.indexCodeAsFacetDoc(curCode, docs, false);
+        }
+        
+        if (los.getFotFacet() != null) {
+            for (Code curFOT : los.getFotFacet()) {
+                SolrUtil.indexCodeAsFacetDoc(curFOT, docs, false);
+            }
         }
 
         return docs;
