@@ -263,22 +263,30 @@ function ApplicationCtrl($scope, ApplicationBasketService, UtilityService, Trans
     $scope.tooltips = {
         externalApplicationForm: TranslationService.getTranslation('tooltip:external-application-form')
     };
-
-    // vocational education needs prerequisite checking...
+    
     $scope.addToBasket = function(aoId) {
-        var basketType = ApplicationBasketService.getType();
-        if (!basketType || $scope.selectedLOI.prerequisite.value == basketType) {
-            ApplicationBasketService.addItem(aoId, $scope.selectedLOI.prerequisite.value);
+        // vocational education needs prerequisite checking...
+        var addVocationalEdToBasket = function(aoId) {
+            var basketType = ApplicationBasketService.getType();
+            if (!basketType || $scope.selectedLOI.prerequisite.value == basketType) {
+                ApplicationBasketService.addItem(aoId, $scope.selectedLOI.prerequisite.value);
+            } else {
+                $scope.popoverTitle = TranslationService.getTranslation('popover-title-error');
+                $scope.popoverContent = "<div>" + TranslationService.getTranslation('popover-content-error') + "</div><a href='#!/muistilista'>" + TranslationService.getTranslation('popover-content-link-to-application-basket') + "</a>";
+            }
+        }
+
+        // ...but other types of education do not require prerequisite checking
+        var addEducationToBasket = function(aoId) {
+            ApplicationBasketService.addItem(aoId);
+        }
+
+        if ($scope.loType == 'tutkinto' || $scope.loType == 'koulutusohjelma') {
+            addVocationalEdToBasket(aoId);
         } else {
-            $scope.popoverTitle = TranslationService.getTranslation('popover-title-error');
-            $scope.popoverContent = "<div>" + TranslationService.getTranslation('popover-content-error') + "</div><a href='#!/muistilista'>" + TranslationService.getTranslation('popover-content-link-to-application-basket') + "</a>";
+            addEducationToBasket(aoId);
         }
     };
-
-    // ...but high education does not need prerequisite checking
-    $scope.addHighEdToBasket = function(aoId) {
-        ApplicationBasketService.addItem(aoId);
-    }
 
     $scope.isItemAddedToBasket = function(aoId) {
         return ApplicationBasketService.itemExists(aoId);
