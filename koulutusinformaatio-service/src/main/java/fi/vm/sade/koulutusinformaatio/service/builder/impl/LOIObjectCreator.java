@@ -111,16 +111,27 @@ public class LOIObjectCreator extends ObjectCreator {
         basicLOI.setAvailableTranslationLanguages(new ArrayList<Code>(availableLanguagesMap.values()));
         
         List<String> opetusmuodotUris =  komoto.getOpetusmuodotUris() != null ? komoto.getOpetusmuodotUris() : new ArrayList<String>();
-        Map<String,Code> opFacetMap = new HashMap<String,Code>();
+        Map<String,Code> opFacetMap = new HashMap<String,Code>();//opetuspaikka
+        Map<String,Code> oaFacetMap = new HashMap<String,Code>();//opetusaika
         
         for (String curOMUri : opetusmuodotUris) {
             List<Code> omFacs = this.koodistoService.searchSuperCodes(curOMUri, TarjontaConstants.FORM_OF_EDUCATION_FACET_KOODISTO_URI);
             for (Code curOMFacet : omFacs) {
-                System.out.println("Putting form of teaching code: " + curOMFacet.getUri());
                 opFacetMap.put(curOMFacet.getUri(), curOMFacet);
             }
+            
+            List<Code> oaFacs = this.koodistoService.searchSuperCodes(curOMUri, TarjontaConstants.TIME_OF_EDUCATION_FACET_KOODISTO_URI);
+            for (Code curOAFacet : oaFacs) {
+                oaFacetMap.put(curOAFacet.getUri(), curOAFacet);
+            }
+            
         }
         basicLOI.setFotFacet(new ArrayList<Code>(opFacetMap.values()));
+        basicLOI.setTimeOfTeachingFacet(new ArrayList<Code>(oaFacetMap.values()));
+        
+        
+        
+        
         LOG.debug("Set: " + basicLOI.getFotFacet().size() + " form of teaching facet values.");
         
         return basicLOI;

@@ -141,6 +141,9 @@ public class HigherEducationLOSEntity {
     
     @Embedded
     private List<CodeEntity> fotFacet = new ArrayList<CodeEntity>();
+    
+    @Embedded
+    private List<CodeEntity> timeOfTeachingFacet = new ArrayList<CodeEntity>();
 
     public String getId() {
         return id;
@@ -463,6 +466,12 @@ public class HigherEducationLOSEntity {
     }
     public void setFotFacet(List<CodeEntity> fotFacet) {
         this.fotFacet = fotFacet;
+    }
+    public List<CodeEntity> getTimeOfTeachingFacet() {
+        return timeOfTeachingFacet;
+    }
+    public void setTimeOfTeachingFacet(List<CodeEntity> timeOfTeachingFacet) {
+        this.timeOfTeachingFacet = timeOfTeachingFacet;
     }
 
 }

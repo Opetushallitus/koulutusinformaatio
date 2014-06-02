@@ -55,6 +55,12 @@ public class FacetIndexer {
                 SolrUtil.indexCodeAsFacetDoc(curFOT, docs, false);
             }
         }
+        
+        if (loi.getTimeOfTeachingFacet() != null) {
+            for (Code curTimeOfTeaching : loi.getTimeOfTeachingFacet()) {
+                SolrUtil.indexCodeAsFacetDoc(curTimeOfTeaching, docs, false);
+            }
+        }
 
         return docs;
     }
@@ -68,8 +74,16 @@ public class FacetIndexer {
         for (ChildLOS childLOS : parent.getChildren()) {
             for (ChildLOI childLOI : childLOS.getLois()) {
                 docs.addAll(createFacetDocs(childLOI));
-                for (Code curFOT : childLOI.getFotFacet()) {
-                    SolrUtil.indexCodeAsFacetDoc(curFOT, docs, false);
+                
+                if (childLOI.getFotFacet() != null) {
+                    for (Code curFOT : childLOI.getFotFacet()) {
+                        SolrUtil.indexCodeAsFacetDoc(curFOT, docs, false);
+                    }
+                }
+                if (childLOI.getTimeOfTeachingFacet() != null) {
+                    for (Code curTimeOfTeaching : childLOI.getTimeOfTeachingFacet()) {
+                        SolrUtil.indexCodeAsFacetDoc(curTimeOfTeaching, docs, false);
+                    }
                 }
             }
         }
@@ -119,6 +133,12 @@ public class FacetIndexer {
                 SolrUtil.indexCodeAsFacetDoc(curFOT, docs, false);
             }
         }
+        
+        if (childLOI.getTimeOfTeachingFacet() != null) {
+            for (Code curTimeOfTeaching : childLOI.getTimeOfTeachingFacet()) {
+                SolrUtil.indexCodeAsFacetDoc(curTimeOfTeaching, docs, false);
+            }
+        }
 
         return docs;
     }
@@ -148,6 +168,13 @@ public class FacetIndexer {
         if (los.getFotFacet() != null) {
             for (Code curFOT : los.getFotFacet()) {
                 SolrUtil.indexCodeAsFacetDoc(curFOT, docs, false);
+            }
+        }
+        
+        
+        if (los.getTimeOfTeachingFacet() != null) {
+            for (Code curTimeOfTeaching : los.getTimeOfTeachingFacet()) {
+                SolrUtil.indexCodeAsFacetDoc(curTimeOfTeaching, docs, false);
             }
         }
 

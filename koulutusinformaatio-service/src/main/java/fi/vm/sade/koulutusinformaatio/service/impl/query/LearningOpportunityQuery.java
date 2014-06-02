@@ -142,6 +142,7 @@ public class LearningOpportunityQuery extends SolrQuery {
         this.addFacetField(LearningOpportunity.TOPIC);
         this.addFacetField(LearningOpportunity.THEME);
         this.addFacetField(LearningOpportunity.FORM_OF_TEACHING);
+        this.addFacetField(LearningOpportunity.TIME_OF_TEACHING);
         this.setFacetSort("index");
         
         for (String curFilter : facetFilters) {

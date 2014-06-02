@@ -244,6 +244,15 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
             }
         }
         
+        if (childLOI.getTimeOfTeachingFacet() != null) {
+            for (Code curTimeOfTeaching : childLOI.getTimeOfTeachingFacet()) {
+                if (!usedVals.contains(curTimeOfTeaching.getUri())) {
+                    doc.addField(SolrUtil.LearningOpportunity.TIME_OF_TEACHING, curTimeOfTeaching.getUri());
+                    usedVals.add(curTimeOfTeaching.getUri());
+                }
+            }
+        }
+        
     }
 
 

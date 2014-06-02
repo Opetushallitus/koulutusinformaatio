@@ -39,6 +39,7 @@ public class BasicLOI extends LOI {
     private boolean kaksoistutkinto;
     private String pduCodeUri;      //planned duration unit code uri (used in indexing for solr)
     private List<Code> fotFacet = new ArrayList<Code>();
+    private List<Code> timeOfTeachingFacet = new ArrayList<Code>();
 
     public I18nText getName() {
         return name;
@@ -158,5 +159,13 @@ public class BasicLOI extends LOI {
 
     public void setFotFacet(List<Code> formOfTeachingFacet) {
         this.fotFacet = formOfTeachingFacet;
+    }
+
+    public List<Code> getTimeOfTeachingFacet() {
+        return timeOfTeachingFacet;
+    }
+
+    public void setTimeOfTeachingFacet(List<Code> timeOfTeachingFacet) {
+        this.timeOfTeachingFacet = timeOfTeachingFacet;
     }
 }

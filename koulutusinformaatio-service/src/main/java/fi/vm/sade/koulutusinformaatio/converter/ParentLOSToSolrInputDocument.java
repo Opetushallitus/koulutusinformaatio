@@ -318,6 +318,15 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
                         }
                     }
                 }
+                
+                if (childLOI.getTimeOfTeachingFacet() != null) {
+                    for (Code curCode : childLOI.getTimeOfTeachingFacet()) {
+                        if (!usedVals.contains(curCode.getUri())) {
+                            doc.addField(LearningOpportunity.TIME_OF_TEACHING, curCode.getUri());
+                            usedVals.add(curCode.getUri());
+                        }
+                    }
+                }
             }
         }
 

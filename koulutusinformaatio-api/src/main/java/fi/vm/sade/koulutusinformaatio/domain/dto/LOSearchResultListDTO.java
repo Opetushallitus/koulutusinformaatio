@@ -38,6 +38,7 @@ public class LOSearchResultListDTO {
     private FacetDTO topicFacet;
     private FacetDTO articleContentTypeFacet;
     private FacetDTO fotFacet;
+    private FacetDTO timeOfTeachingFacet;
     private FacetValueDTO lopRecommendationFilter;
     private long loCount;
     private long articleCount;
@@ -175,5 +176,13 @@ public class LOSearchResultListDTO {
 
     public void setFotFacet(FacetDTO fotFacet) {
         this.fotFacet = fotFacet;
+    }
+
+    public FacetDTO getTimeOfTeachingFacet() {
+        return timeOfTeachingFacet;
+    }
+
+    public void setTimeOfTeachingFacet(FacetDTO timeOfTeachingFacet) {
+        this.timeOfTeachingFacet = timeOfTeachingFacet;
     }
 }

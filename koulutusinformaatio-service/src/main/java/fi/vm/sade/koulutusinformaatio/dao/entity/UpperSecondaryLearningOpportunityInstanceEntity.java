@@ -64,6 +64,8 @@ public class UpperSecondaryLearningOpportunityInstanceEntity {
     private List<CodeEntity> availableTranslationLanguages;
     @Embedded
     private List<CodeEntity> fotFacet = new ArrayList<CodeEntity>();
+    @Embedded
+    private List<CodeEntity> timeOfTeachingFacet = new ArrayList<CodeEntity>();
 
     public UpperSecondaryLearningOpportunityInstanceEntity() {
     }
@@ -218,5 +220,13 @@ public class UpperSecondaryLearningOpportunityInstanceEntity {
 
     public void setFotFacet(List<CodeEntity> fotFacet) {
         this.fotFacet = fotFacet;
+    }
+
+    public List<CodeEntity> getTimeOfTeachingFacet() {
+        return timeOfTeachingFacet;
+    }
+
+    public void setTimeOfTeachingFacet(List<CodeEntity> timeOfTeachingFacet) {
+        this.timeOfTeachingFacet = timeOfTeachingFacet;
     }
 }

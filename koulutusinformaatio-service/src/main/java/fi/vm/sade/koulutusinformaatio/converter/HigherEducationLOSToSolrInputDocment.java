@@ -350,9 +350,19 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<HigherEdu
             for (Code curFOT : los.getFotFacet()) {
                 if (!usedVals.contains(curFOT.getUri())) {
                     doc.addField(LearningOpportunity.FORM_OF_TEACHING, curFOT.getUri());
+                    usedVals.add(curFOT.getUri());
                 }
             }
-            
+        }
+        
+        if (los.getTimeOfTeachingFacet() != null) {
+            List<String> usedVals = new ArrayList<String>();
+            for (Code curTimeOfTeaching : los.getTimeOfTeachingFacet()) {
+                if (!usedVals.contains(curTimeOfTeaching.getUri())) {
+                    doc.addField(LearningOpportunity.TIME_OF_TEACHING, curTimeOfTeaching.getUri());
+                    usedVals.add(curTimeOfTeaching.getUri());
+                }
+            }
         }
 
     }

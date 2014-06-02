@@ -212,5 +212,17 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
             }
         }
         
+        if (loi.getTimeOfTeachingFacet() != null) {
+            
+            List<String> usedVals = new ArrayList<String>();
+            
+            for (Code curTimeOfTeachinig : loi.getTimeOfTeachingFacet()) {
+                if (!usedVals.contains(curTimeOfTeachinig.getUri())) {
+                    doc.addField(LearningOpportunity.TIME_OF_TEACHING, curTimeOfTeachinig.getUri());
+                    usedVals.add(curTimeOfTeachinig.getUri());
+                }
+            }
+        }
+        
     }
 }

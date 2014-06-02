@@ -123,6 +123,25 @@
 
 <div class="filter">
     <h4 title="{{locales.openCloseFacet}}" data-ng-click="toggleCollapsed(4)" class="collapser" data-ng-class="{open: !collapsed[4], close: collapsed[4]}">
+        <span class="icon"></span>
+        <span data-ki-i18n="facet-opetusaika"></span>      
+    </h4>
+    <div data-collapse="collapsed[4]" class="collapse">
+        <ul class="nobullet collapse-content-container">
+            <li data-ng-repeat="fv in loResult.timeOfTeachingFacet.facetValues">
+                <span data-ng-show="!isSelected(fv) && (fv.count > 0)" class="facet-item">
+                    <a href="javascript:void(0)" data-ng-click="selectFacetFilter(fv.valueId, fv.facetField)">{{fv.valueName}} ({{fv.count}})</a>
+                </span>
+                <span data-ng-show="isSelected(fv)" class="facet-item selected">
+                    <span>{{fv.valueName}}</span><a title="{{locales.removeFacet}}" href="javascript:void(0)" class="remove" data-ng-click="removeSelection(fv)"></a>
+                </span>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="filter">
+    <h4 title="{{locales.openCloseFacet}}" data-ng-click="toggleCollapsed(4)" class="collapser" data-ng-class="{open: !collapsed[4], close: collapsed[4]}">
         <span data-ki-i18n="facet-opetuskieli"></span>      
     </h4>
     <div data-collapse="collapsed[4]" class="collapse">
