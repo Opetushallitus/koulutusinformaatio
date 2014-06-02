@@ -224,5 +224,17 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
             }
         }
         
+        if (loi.getFormOfStudyFacet() != null) {
+            
+            List<String> usedVals = new ArrayList<String>();
+            
+            for (Code curFormOfStudy : loi.getFormOfStudyFacet()) {
+                if (!usedVals.contains(curFormOfStudy.getUri())) {
+                    doc.addField(LearningOpportunity.FORM_OF_STUDY, curFormOfStudy.getUri());
+                    usedVals.add(curFormOfStudy.getUri());
+                }
+            }
+        }
+        
     }
 }

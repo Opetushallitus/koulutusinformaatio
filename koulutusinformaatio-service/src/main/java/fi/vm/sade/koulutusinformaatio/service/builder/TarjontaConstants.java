@@ -28,6 +28,7 @@ public class TarjontaConstants {
     public static final String BASE_EDUCATION_KOODISTO_URI = "pohjakoulutustoinenaste";
     public static final String FORM_OF_EDUCATION_FACET_KOODISTO_URI = "opetuspaikkakk";
     public static final String TIME_OF_EDUCATION_FACET_KOODISTO_URI = "opetusaikakk";
+    public static final String FORM_OF_STUDY_FACET_KOODISTO_URI = "opetusmuotokk";
 
     public static final String LANG_FI = "fi";
 

@@ -36,13 +36,13 @@ public class LOSearchResultList {
     private Facet articleContentTypeFacet;
     private Facet fotFacet;
     private Facet timeOfTeachingFacet;
+    private Facet formOfStudyFacet;
     private FacetValue lopRecommendationFilter;
     private FacetValue educationCodeRecommendationFilter;
     private long loCount;
     private long articleCount;
     private long orgCount;
    
-
 
     public List<LOSearchResult> getResults() {
         return results;
@@ -179,5 +179,13 @@ public class LOSearchResultList {
     
     public Facet getTimeOfTeachingFacet() {
         return this.timeOfTeachingFacet;
+    }
+
+    public void setFormOfStudyFacet(Facet formOfStudyFacet) {
+        this.formOfStudyFacet = formOfStudyFacet;
+    }
+
+    public Facet getFormOfStudyFacet() {
+        return formOfStudyFacet;
     }
 }

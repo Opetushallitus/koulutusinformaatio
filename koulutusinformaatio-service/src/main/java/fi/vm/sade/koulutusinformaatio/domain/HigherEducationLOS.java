@@ -88,6 +88,8 @@ public class HigherEducationLOS extends LOS {
     private List<Code> fotFacet = new ArrayList<Code>();
     
     private List<Code> timeOfTeachingFacet = new ArrayList<Code>();
+    
+    private List<Code> formOfStudyFacet = new ArrayList<Code>();
 
     public String getId() {
         return id;
@@ -491,6 +493,14 @@ public class HigherEducationLOS extends LOS {
 
     public void setTimeOfTeachingFacet(List<Code> timeOfTeachingFacet) {
         this.timeOfTeachingFacet = timeOfTeachingFacet;
+    }
+
+    public List<Code> getFormOfStudyFacet() {
+        return formOfStudyFacet;
+    }
+
+    public void setFormOfStudyFacet(List<Code> formOfStudyFacet) {
+        this.formOfStudyFacet = formOfStudyFacet;
     }
     
 }

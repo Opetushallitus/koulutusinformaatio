@@ -40,7 +40,8 @@ public class BasicLOI extends LOI {
     private String pduCodeUri;      //planned duration unit code uri (used in indexing for solr)
     private List<Code> fotFacet = new ArrayList<Code>();
     private List<Code> timeOfTeachingFacet = new ArrayList<Code>();
-
+    private List<Code> formOfStudyFacet = new ArrayList<Code>();
+   
     public I18nText getName() {
         return name;
     }
@@ -167,5 +168,13 @@ public class BasicLOI extends LOI {
 
     public void setTimeOfTeachingFacet(List<Code> timeOfTeachingFacet) {
         this.timeOfTeachingFacet = timeOfTeachingFacet;
+    }
+
+    public List<Code> getFormOfStudyFacet() {
+        return formOfStudyFacet;
+    }
+
+    public void setFormOfStudyFacet(List<Code> formOfStudyFacet) {
+        this.formOfStudyFacet = formOfStudyFacet;
     }
 }

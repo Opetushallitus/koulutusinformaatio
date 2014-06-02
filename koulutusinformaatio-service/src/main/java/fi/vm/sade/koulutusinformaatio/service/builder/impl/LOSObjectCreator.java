@@ -456,6 +456,7 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setFormOfTeaching(getI18nTextMultiple(koulutus.getOpetusmuodos()));
         los.setFotFacet(this.createCodes(koulutus.getOpetusPaikkas()));
         los.setTimeOfTeachingFacet(this.createCodes(koulutus.getOpetusAikas()));
+        los.setFormOfStudyFacet(this.createCodes(koulutus.getOpetusmuodos()));
         
         los.setProfessionalTitles(getI18nTextMultiple(koulutus.getAmmattinimikkeet()));
         

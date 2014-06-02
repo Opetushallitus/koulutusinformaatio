@@ -55,6 +55,8 @@ public class ChildLearningOpportunityInstanceEntity {
     private List<CodeEntity> fotFacet = new ArrayList<CodeEntity>();
     @Embedded
     private List<CodeEntity> timeOfTeachingFacet = new ArrayList<CodeEntity>();
+    @Embedded
+    private List<CodeEntity> formOfStudyFacet = new ArrayList<CodeEntity>();
     
     
 
@@ -224,5 +226,13 @@ public class ChildLearningOpportunityInstanceEntity {
 
     public void setTimeOfTeachingFacet(List<CodeEntity> timeOfTeachingFacet) {
         this.timeOfTeachingFacet = timeOfTeachingFacet;
+    }
+
+    public List<CodeEntity> getFormOfStudyFacet() {
+        return formOfStudyFacet;
+    }
+
+    public void setFormOfStudyFacet(List<CodeEntity> formOfStudyFacet) {
+        this.formOfStudyFacet = formOfStudyFacet;
     }
 }

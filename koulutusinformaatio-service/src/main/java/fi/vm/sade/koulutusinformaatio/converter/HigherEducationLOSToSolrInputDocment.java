@@ -364,6 +364,16 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<HigherEdu
                 }
             }
         }
+        
+        if (los.getFormOfStudyFacet() != null) {
+            List<String> usedVals = new ArrayList<String>();
+            for (Code curFormOfStudy : los.getFormOfStudyFacet()) {
+                if (!usedVals.contains(curFormOfStudy.getUri())) {
+                    doc.addField(LearningOpportunity.FORM_OF_STUDY, curFormOfStudy.getUri());
+                    usedVals.add(curFormOfStudy.getUri());
+                }
+            }
+        }
 
     }
 
