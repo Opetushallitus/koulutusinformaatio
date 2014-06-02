@@ -10,7 +10,7 @@
     </li>
     <ul class="disc">
         <li data-ng-repeat="child in ao.childRefs">
-            <a href="#!/koulutusohjelma/{{child.losId}}#{{prerequisite.value}}">{{child.name}}</a>
+            <a href="#!/koulutusohjelma/{{child.losId}}?prerequisite={{prerequisite.value}}">{{child.name}}</a>
         </li>
     </ul>
 </ul>
