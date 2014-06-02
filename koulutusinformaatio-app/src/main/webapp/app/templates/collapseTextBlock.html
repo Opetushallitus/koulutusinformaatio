@@ -1,7 +1,9 @@
 <div data-ng-if="content" class="collapse-block">
-    <h2 data-ng-click="toggleState()" class="collapser" data-ng-class="{open: !isClose, close: isClose}" id="{{anchor}}">
-        <span data-ki-i18n="{{title}}" data-lang="{{translationLanguage}}"></span>
-    </h2>
+    <a href="javascript:void(0);" data-ng-click="toggleState()" class="block">
+        <h2 class="collapser" data-ng-class="{open: !isClose, close: isClose}" id="{{anchor}}">
+            <span data-ki-i18n="{{title}}" data-lang="{{translationLanguage}}"></span> 
+        </h2>
+    </a>
     <div class="tarjonta-content" data-collapse="isClose">
         <div class="collapse-content-container" data-ng-bind-html="content | externalLinks | unsafe"></div>
     </div>
