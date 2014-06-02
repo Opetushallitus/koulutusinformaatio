@@ -1,4 +1,4 @@
-package fi.vm.sade.koulutusinformaatio.service.builder.impl;
+package fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +14,8 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
+import fi.vm.sade.koulutusinformaatio.service.builder.impl.CreatorUtil;
+import fi.vm.sade.koulutusinformaatio.service.builder.impl.LOSObjectCreator;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
