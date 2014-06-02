@@ -3690,6 +3690,9 @@ table {
 
 .collapse-block {
   padding: 0 0 1em 0; }
+  .collapse-block a {
+    text-decoration: none;
+    color: #333333; }
   .collapse-block .collapse-content-container {
     margin: 1em 0 0 29px; }
 
