@@ -22,6 +22,7 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.HakuaikaRDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 
 /**
  * @author Hannu Lyytikainen
@@ -52,5 +53,14 @@ public class ApplicationSystemCreator extends ObjectCreator {
         } else {
             return null;
         }
+    }
+    
+    public ApplicationSystem createHigherEdApplicationSystem(HakuV1RDTO haku) throws KoodistoException {
+        ApplicationSystem as = new ApplicationSystem();
+        as.setId(haku.getOid());
+        as.setMaxApplications(haku.getMaxHakukohdes());
+        as.setName(getI18nText(haku.getNimi()));
+        as.setApplicationFormLink( haku.getHakulomakeUri());
+        return as;
     }
 }
