@@ -37,6 +37,7 @@ public final class ApplicationSystemToDTO {
             ao.setNextApplicationPeriodStarts(ConverterUtil.resolveNextDateRangeStart(applicationSystem.getApplicationDates()));
             ao.setApplicationFormLink( applicationSystem.getApplicationFormLink() );
             ao.setHakutapa( applicationSystem.getHakutapaUri() );
+            ao.setHakutyyppi(applicationSystem.getHakutyyppiUri());
             return ao;
         } else {
             return null;
