@@ -31,7 +31,7 @@ public class ApplicationSystem {
     private int maxApplications;
     private String applicationFormLink;
     private String hakutapaUri;
-
+    private String hakutyyppiUri;
 
     public String getId() {
         return id;
@@ -104,5 +104,13 @@ public class ApplicationSystem {
 
     public void setHakutapaUri(String hakutapaUri) {
         this.hakutapaUri = hakutapaUri;
+    }
+
+    public void setHakutyyppiUri(String hakutyyppiUri) {
+        this.hakutyyppiUri = hakutyyppiUri; 
+    }
+
+    public String getHakutyyppiUri() {
+        return hakutyyppiUri;
     }
 }

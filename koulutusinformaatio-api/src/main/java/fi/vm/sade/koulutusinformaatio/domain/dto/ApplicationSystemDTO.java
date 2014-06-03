@@ -37,6 +37,7 @@ public class ApplicationSystemDTO {
     private String status;
     private String applicationFormLink;
     private String hakutapa;
+    private String hakutyyppi;
 
     public String getId() {
         return id;
@@ -108,5 +109,13 @@ public class ApplicationSystemDTO {
 
     public void setHakutapa(String hakutapa) {
         this.hakutapa = hakutapa;
+    }
+
+    public String getHakutyyppi() {
+        return hakutyyppi;
+    }
+
+    public void setHakutyyppi(String hakutyyppi) {
+        this.hakutyyppi = hakutyyppi;
     }
 }
