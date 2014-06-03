@@ -253,6 +253,15 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
             }
         }
         
+        if (childLOI.getFormOfStudyFacet() != null) {
+            for (Code curCode : childLOI.getFormOfStudyFacet()) {
+                if (!usedVals.contains(curCode.getUri())) {
+                    doc.addField(LearningOpportunity.FORM_OF_STUDY, curCode.getUri());
+                    usedVals.add(curCode.getUri());
+                }
+            }
+        }
+        
     }
 
 

@@ -20,6 +20,8 @@ import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Reference;
 
+import fi.vm.sade.koulutusinformaatio.domain.Code;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -144,6 +146,8 @@ public class HigherEducationLOSEntity {
     
     @Embedded
     private List<CodeEntity> timeOfTeachingFacet = new ArrayList<CodeEntity>();
+    @Embedded
+    private List<CodeEntity> formOfStudyFacet = new ArrayList<CodeEntity>();
 
     public String getId() {
         return id;
@@ -472,6 +476,12 @@ public class HigherEducationLOSEntity {
     }
     public void setTimeOfTeachingFacet(List<CodeEntity> timeOfTeachingFacet) {
         this.timeOfTeachingFacet = timeOfTeachingFacet;
+    }
+    public List<CodeEntity> getFormOfStudyFacet() {
+        return formOfStudyFacet;
+    }
+    public void setFormOfStudyFacet(List<CodeEntity> formOfStudyFacet) {
+        this.formOfStudyFacet = formOfStudyFacet;
     }
 
 }

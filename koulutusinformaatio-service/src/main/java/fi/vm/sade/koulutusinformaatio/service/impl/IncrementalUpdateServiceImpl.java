@@ -1,3 +1,18 @@
+/*
+ * Copyright (c) 2013 The Finnish Board of Education - Opetushallitus
+ *
+ * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
+ * soon as they will be approved by the European Commission - subsequent versions
+ * of the EUPL (the "Licence");
+ *
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy of the Licence at: http://www.osor.eu/eupl/
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * European Union Public Licence for more details.
+ */
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import java.util.ArrayList;
@@ -36,6 +51,13 @@ import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 
+
+
+/**
+ * 
+ * @author Markus
+ *
+ */
 @Service
 @Profile("default")
 public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
@@ -120,27 +142,17 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             LOG.debug("Indexing is running, not starting");
             return;
         }
-
         LOG.info("updateChangedEducationData on its way");
-
         //Getting get update period
         long updatePeriod = getUpdatePeriod();
-
         LOG.debug(String.format("Update period: %s", updatePeriod));
-
         try {
-
-
             //Fetching changes within the update period
             Map<String,List<String>> result = listChangedLearningOpportunities(updatePeriod);
-
-
             LOG.debug("Starting incremental update");
-
             if (!hasChanges(result)) {
                 return;
             }
-            
             long runningSince = System.currentTimeMillis();
             this.updateService.setRunning(true);
             this.updateService.setRunningSince(runningSince);
@@ -149,58 +161,27 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             //If there are changes in komo-data, a full update is performed
             if ((result.containsKey("koulutusmoduuli") && !result.get("koulutusmoduuli").isEmpty()) || updatePeriod == 0) {
                 LOG.warn(String.format("Komos changed. Update period was: %s", updatePeriod));
-
-                for (String curKomoOid : result.get("koulutusmoduuli")) {
-                    if (this.losIndexer.isHigherEdKomo(curKomoOid)) { //&& !higherEdReindexed) {
-
-                        this.losIndexer.indexHigherEdKomo(curKomoOid);
-
-
-                    }
-                }
-
+                indexKomoChanges(result.get("koulutusmoduuli"));
             } 
 
             //If changes in haku objects indexing them
             if (result.containsKey("haku")) {
                 LOG.debug("Haku changes: " + result.get("haku").size());
-
-                for (String curOid : result.get("haku")) {
-                    LOG.debug("Changed haku: " + curOid);
-                    this.asIndexer.indexApplicationSystemData(curOid);
-                }
-
+                indexHakuChanges(result.get("haku"));
             }
 
             List<String> changedHakukohdeOids = new ArrayList<String>();
-
             //If changes in hakukohde, indexing them   
             if (result.containsKey("hakukohde")) {
                 changedHakukohdeOids = result.get("hakukohde");
                 LOG.debug("Haku changes: " + changedHakukohdeOids.size());
-
-                for (String curOid : result.get("hakukohde")) {
-                    LOG.debug("Changed hakukohde: " + curOid);
-
-                    HakukohdeDTO aoDto = this.tarjontaRawService.getHakukohde(curOid);
-                    HakuDTO asDto = this.tarjontaRawService.getHaku(aoDto.getHakuOid());
-                    this.aoIndexer.indexApplicationOptionData(aoDto, asDto);
-                }
-
+                indexHakukohdeChanges(result.get("hakukohde"));
             }
 
             //If changes in koulutusmoduuliToteutus, indexing them 
             if (result.containsKey("koulutusmoduuliToteutus")) {
                 LOG.debug("Changed komotos: " + result.get("koulutusmoduuliToteutus").size());
-                for (String curOid : result.get("koulutusmoduuliToteutus")) {
-                    List<OidRDTO> aoOidDtos = this.tarjontaRawService.getHakukohdesByKomoto(curOid);
-                    if (this.losIndexer.isLoiAlreadyHandled(aoOidDtos, changedHakukohdeOids)) {
-                        LOG.debug("Komoto: " + curOid + " was handled during hakukohde process");
-                    } else {
-                        LOG.debug("Will index changed komoto: " + curOid);
-                        this.losIndexer.indexLoiData(curOid);
-                    }
-                }
+                indexKomotoChanges(result.get("koulutusmoduuliToteutus"), changedHakukohdeOids);
             }
 
             LOG.debug("Committing to solr");
@@ -215,6 +196,46 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
         } finally {
             this.updateService.setRunning(false);
             this.updateService.setRunningSince(0);
+        }
+    }
+
+    private void indexKomotoChanges(List<String> komotoChanges,
+            List<String> changedHakukohdeOids) throws Exception {
+        for (String curOid : komotoChanges) {
+            List<OidRDTO> aoOidDtos = this.tarjontaRawService.getHakukohdesByKomoto(curOid);
+            if (this.losIndexer.isLoiAlreadyHandled(aoOidDtos, changedHakukohdeOids)) {
+                LOG.debug("Komoto: " + curOid + " was handled during hakukohde process");
+            } else {
+                LOG.debug("Will index changed komoto: " + curOid);
+                this.losIndexer.indexLoiData(curOid);
+            }
+        }
+        
+    }
+
+    private void indexHakukohdeChanges(List<String> hakukohdeChanges) throws Exception {
+        for (String curOid : hakukohdeChanges) {
+            LOG.debug("Changed hakukohde: " + curOid);
+            HakukohdeDTO aoDto = this.tarjontaRawService.getHakukohde(curOid);
+            HakuDTO asDto = this.tarjontaRawService.getHaku(aoDto.getHakuOid());
+            this.aoIndexer.indexApplicationOptionData(aoDto, asDto);
+        }
+        
+    }
+
+    private void indexHakuChanges(List<String> hakuChanges) throws Exception {
+        for (String curOid : hakuChanges) {
+            LOG.debug("Changed haku: " + curOid);
+            this.asIndexer.indexApplicationSystemData(curOid);
+        }
+        
+    }
+
+    private void indexKomoChanges(List<String> komoChanges) throws Exception {
+        for (String curKomoOid : komoChanges) {
+            if (this.losIndexer.isHigherEdKomo(curKomoOid)) { //&& !higherEdReindexed) {
+                this.losIndexer.indexHigherEdKomo(curKomoOid);
+            }
         }
     }
 
@@ -249,5 +270,4 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
         }
         return 0;
     }
-
 }

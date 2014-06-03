@@ -1,3 +1,18 @@
+/*
+ * Copyright (c) 2013 The Finnish Board of Education - Opetushallitus
+ *
+ * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
+ * soon as they will be approved by the European Commission - subsequent versions
+ * of the EUPL (the "Licence");
+ *
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy of the Licence at: http://www.osor.eu/eupl/
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * European Union Public Licence for more details.
+ */
 package fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental;
 
 import java.io.IOException;
@@ -37,6 +52,11 @@ import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 
+/**
+ * 
+ * @author Markus
+ *
+ */
 public class IncrementalLOSIndexer {
     
     public static final Logger LOG = LoggerFactory.getLogger(IncrementalLOSIndexer.class);
@@ -338,16 +358,19 @@ public class IncrementalLOSIndexer {
 
     }
 
-    private ParentLOS reCreateParentLOS(String parentKomoOid, ParentLOS los) throws TarjontaParseException, KoodistoException, SolrServerException, IOException {
+    public ParentLOS reCreateParentLOS(String parentKomoOid, ParentLOS los) throws TarjontaParseException, KoodistoException, SolrServerException, IOException {
         LOG.debug("Recreating parent los: " + los.getId());
 
-        this.deleteParentLOSRecursively(los);
-        this.indexerService.removeLos(los, loHttpSolrServer);
-        this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
-
+        this.removeParentLOS(los);
         ParentLOS parent = createParentLOS(parentKomoOid, los.getProvider().getId());
 
         return parent;
+    }
+    
+    public void removeParentLOS(ParentLOS los) throws IOException, SolrServerException {
+        this.deleteParentLOSRecursively(los);
+        this.indexerService.removeLos(los, loHttpSolrServer);
+        this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
     }
 
     private ParentLOS createParentLOS(String parentKomoOid, String providerId) throws TarjontaParseException, KoodistoException, SolrServerException, IOException {
@@ -378,15 +401,17 @@ public class IncrementalLOSIndexer {
         return parent;
     }
 
-    private SpecialLOS reCreateSpecialLOS(SpecialLOS los, KomotoDTO komotoDto, KomoDTO komo, String providerId) throws SolrServerException, IOException, TarjontaParseException, KoodistoException {
+    public SpecialLOS reCreateSpecialLOS(SpecialLOS los, KomotoDTO komotoDto, KomoDTO komo, String providerId) throws SolrServerException, IOException, TarjontaParseException, KoodistoException {
+        this.removeSpecialLOS(los);
+        SpecialLOS specialLos = this.createSpecialLOS(komo, komotoDto, providerId);
+        return specialLos;
 
+    }
+    
+    public void removeSpecialLOS(SpecialLOS los) throws IOException, SolrServerException {
         this.deleteSpecialLosRecursively(los);
         this.indexerService.removeLos(los, loHttpSolrServer);
         this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
-        SpecialLOS specialLos = this.createSpecialLOS(komo, komotoDto, providerId);
-
-        return specialLos;
-
     }
 
     public void updateParentLos(ParentLOS los) throws IOException, SolrServerException  {
@@ -442,11 +467,15 @@ public class IncrementalLOSIndexer {
 
     private UpperSecondaryLOS reCreateUpperSecondaryLOS(UpperSecondaryLOS los) throws IOException, SolrServerException, TarjontaParseException, KoodistoException {
         LOG.debug("recreating upper secondary los: " + los.getId());
+        this.removeUpperSecondaryLOS(los);
+        KomoDTO komo = this.tarjontaRawService.getKomo(los.getId().split("_")[0]);
+        return this.createUpperSecondaryLOS(komo, los.getProvider().getId());
+    }
+    
+    public void removeUpperSecondaryLOS(UpperSecondaryLOS los) throws IOException, SolrServerException {
         this.deleteUpperSecondaryLosRecursive(los);
         this.indexerService.removeLos(los, loHttpSolrServer);
         this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
-        KomoDTO komo = this.tarjontaRawService.getKomo(los.getId().split("_")[0]);
-        return this.createUpperSecondaryLOS(komo, los.getProvider().getId());
     }
 
     private UpperSecondaryLOS createUpperSecondaryLOS(KomoDTO komo, String providerId) throws TarjontaParseException, KoodistoException, IOException, SolrServerException {

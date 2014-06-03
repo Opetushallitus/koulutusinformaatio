@@ -523,7 +523,8 @@ public class SearchServiceSolrImpl implements SearchService {
         searchResultList.setPrerequisiteFacet(getPrerequisiteFacet(response));
         searchResultList.setTopicFacet(getTopicFacet(response, lang));
         searchResultList.setFotFacet(getFotFacet(response, lang));
-        searchResultList.setTimeOfTeachingFacet(this.getTimeOfTeachingFacet(response, lang));
+        searchResultList.setTimeOfTeachingFacet(getTimeOfTeachingFacet(response, lang));
+        searchResultList.setFormOfStudyFacet(getFormOfStudyFacet(response, lang));
 
 
     }
@@ -715,7 +716,7 @@ public class SearchServiceSolrImpl implements SearchService {
     
     
     /*
-     * Form of teaching facet
+     * Time of teaching facet
      */
     private Facet getTimeOfTeachingFacet(QueryResponse response, String lang) {
 
@@ -732,6 +733,29 @@ public class SearchServiceSolrImpl implements SearchService {
                         curC.getName());
                 values.add(newVal);
 
+            }
+        }
+        timeOfTeachingFacet.setFacetValues(values);
+        return timeOfTeachingFacet;
+    }
+    
+    /*
+     * Form of study facet
+     */
+    private Facet getFormOfStudyFacet(QueryResponse response, String lang) {
+
+        FacetField timeOfTeachingF = response.getFacetField(LearningOpportunity.FORM_OF_STUDY);
+        Facet timeOfTeachingFacet = new Facet();
+        List<FacetValue> values = new ArrayList<FacetValue>();
+        if (timeOfTeachingF != null) {
+            for (Count curC : timeOfTeachingF.getValues()) {
+
+
+                FacetValue newVal = new FacetValue(LearningOpportunity.FORM_OF_STUDY,
+                        getLocalizedFacetName(curC.getName(), lang),
+                        curC.getCount(),
+                        curC.getName());
+                values.add(newVal);
             }
         }
         timeOfTeachingFacet.setFacetValues(values);

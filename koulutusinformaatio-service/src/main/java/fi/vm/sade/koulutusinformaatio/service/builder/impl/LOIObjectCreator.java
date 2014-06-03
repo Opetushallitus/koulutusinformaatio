@@ -111,8 +111,9 @@ public class LOIObjectCreator extends ObjectCreator {
         basicLOI.setAvailableTranslationLanguages(new ArrayList<Code>(availableLanguagesMap.values()));
         
         List<String> opetusmuodotUris =  komoto.getOpetusmuodotUris() != null ? komoto.getOpetusmuodotUris() : new ArrayList<String>();
-        Map<String,Code> opFacetMap = new HashMap<String,Code>();//opetuspaikka
+        Map<String,Code> opFacetMap = new HashMap<String,Code>();//opetusmuoto
         Map<String,Code> oaFacetMap = new HashMap<String,Code>();//opetusaika
+        Map<String,Code> opiskmFacetMap = new HashMap<String,Code>();//opiskelumuoto
         
         for (String curOMUri : opetusmuodotUris) {
             List<Code> omFacs = this.koodistoService.searchSuperCodes(curOMUri, TarjontaConstants.FORM_OF_EDUCATION_FACET_KOODISTO_URI);
@@ -125,11 +126,16 @@ public class LOIObjectCreator extends ObjectCreator {
                 oaFacetMap.put(curOAFacet.getUri(), curOAFacet);
             }
             
+            
+            List<Code> opiskMFacs = this.koodistoService.searchSuperCodes(curOMUri, TarjontaConstants.FORM_OF_STUDY_FACET_KOODISTO_URI);
+            for (Code curOAFacet : opiskMFacs) {
+                opiskmFacetMap.put(curOAFacet.getUri(), curOAFacet);
+            }
+            
         }
         basicLOI.setFotFacet(new ArrayList<Code>(opFacetMap.values()));
         basicLOI.setTimeOfTeachingFacet(new ArrayList<Code>(oaFacetMap.values()));
-        
-        
+        basicLOI.setFormOfStudyFacet(new ArrayList<Code>(opiskmFacetMap.values()));   
         
         
         LOG.debug("Set: " + basicLOI.getFotFacet().size() + " form of teaching facet values.");
