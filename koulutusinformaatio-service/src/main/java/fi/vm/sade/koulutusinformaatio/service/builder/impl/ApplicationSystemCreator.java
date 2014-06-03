@@ -41,6 +41,7 @@ public class ApplicationSystemCreator extends ObjectCreator {
             as.setName(getI18nText(hakuDTO.getNimi()));
             as.setApplicationFormLink( hakuDTO.getHakulomakeUrl() );
             as.setHakutapaUri( koodistoService.searchFirstCodeValue(hakuDTO.getHakutapaUri()) );
+            as.setHakutyyppiUri( koodistoService.searchFirstCodeValue(hakuDTO.getHakutyyppiUri()));
             if (hakuDTO.getHakuaikas() != null) {
                 for (HakuaikaRDTO ha : hakuDTO.getHakuaikas()) {
                     DateRange range = new DateRange();
@@ -61,6 +62,8 @@ public class ApplicationSystemCreator extends ObjectCreator {
         as.setMaxApplications(haku.getMaxHakukohdes());
         as.setName(getI18nText(haku.getNimi()));
         as.setApplicationFormLink( haku.getHakulomakeUri());
+        as.setHakutapaUri(koodistoService.searchFirstCodeValue(haku.getHakutapaUri()));
+        as.setHakutyyppiUri(koodistoService.searchFirstCodeValue(haku.getHakutyyppiUri()));
         return as;
     }
 }
