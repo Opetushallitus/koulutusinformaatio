@@ -199,5 +199,42 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
         for (Code curTopic : los.getThemes()) {
             doc.addField(LearningOpportunity.THEME, curTopic.getUri());
         }
+        
+        if (loi.getFotFacet() != null) {
+            
+            List<String> usedVals = new ArrayList<String>();
+            
+            for (Code curFOT : loi.getFotFacet()) {
+                if (!usedVals.contains(curFOT.getUri())) {
+                    doc.addField(LearningOpportunity.FORM_OF_TEACHING, curFOT.getUri());
+                    usedVals.add(curFOT.getUri());
+                }
+            }
+        }
+        
+        if (loi.getTimeOfTeachingFacet() != null) {
+            
+            List<String> usedVals = new ArrayList<String>();
+            
+            for (Code curTimeOfTeachinig : loi.getTimeOfTeachingFacet()) {
+                if (!usedVals.contains(curTimeOfTeachinig.getUri())) {
+                    doc.addField(LearningOpportunity.TIME_OF_TEACHING, curTimeOfTeachinig.getUri());
+                    usedVals.add(curTimeOfTeachinig.getUri());
+                }
+            }
+        }
+        
+        if (loi.getFormOfStudyFacet() != null) {
+            
+            List<String> usedVals = new ArrayList<String>();
+            
+            for (Code curFormOfStudy : loi.getFormOfStudyFacet()) {
+                if (!usedVals.contains(curFormOfStudy.getUri())) {
+                    doc.addField(LearningOpportunity.FORM_OF_STUDY, curFormOfStudy.getUri());
+                    usedVals.add(curFormOfStudy.getUri());
+                }
+            }
+        }
+        
     }
 }

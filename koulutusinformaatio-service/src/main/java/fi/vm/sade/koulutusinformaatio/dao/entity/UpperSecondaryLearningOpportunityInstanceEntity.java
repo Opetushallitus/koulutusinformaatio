@@ -62,6 +62,12 @@ public class UpperSecondaryLearningOpportunityInstanceEntity {
     private List<LanguageSelectionEntity> languageSelection;
     @Embedded
     private List<CodeEntity> availableTranslationLanguages;
+    @Embedded
+    private List<CodeEntity> fotFacet = new ArrayList<CodeEntity>();
+    @Embedded
+    private List<CodeEntity> timeOfTeachingFacet = new ArrayList<CodeEntity>();
+    @Embedded
+    private List<CodeEntity> formOfStudyFacet = new ArrayList<CodeEntity>();
 
     public UpperSecondaryLearningOpportunityInstanceEntity() {
     }
@@ -208,5 +214,29 @@ public class UpperSecondaryLearningOpportunityInstanceEntity {
 
     public void setAvailableTranslationLanguages(List<CodeEntity> availableTranslationLanguages) {
         this.availableTranslationLanguages = availableTranslationLanguages;
+    }
+
+    public List<CodeEntity> getFotFacet() {
+        return fotFacet;
+    }
+
+    public void setFotFacet(List<CodeEntity> fotFacet) {
+        this.fotFacet = fotFacet;
+    }
+
+    public List<CodeEntity> getTimeOfTeachingFacet() {
+        return timeOfTeachingFacet;
+    }
+
+    public void setTimeOfTeachingFacet(List<CodeEntity> timeOfTeachingFacet) {
+        this.timeOfTeachingFacet = timeOfTeachingFacet;
+    }
+
+    public List<CodeEntity> getFormOfStudyFacet() {
+        return formOfStudyFacet;
+    }
+
+    public void setFormOfStudyFacet(List<CodeEntity> formOfStudyFacet) {
+        this.formOfStudyFacet = formOfStudyFacet;
     }
 }

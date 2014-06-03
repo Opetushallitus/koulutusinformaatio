@@ -16,7 +16,6 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -92,15 +91,17 @@ public class UpdateServiceImpl implements UpdateService {
             runningSince = System.currentTimeMillis();
 
             this.transactionManager.beginTransaction(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+            
+            
             int count = MAX_RESULTS;
             int index = 0;
-            
 
             while (count >= MAX_RESULTS) {
             LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
             List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
             count = loOids.size();
             index += count;
+            
             
                 for (String loOid : loOids) {
                     List<LOS> specifications = null;

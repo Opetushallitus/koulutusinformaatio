@@ -8,7 +8,6 @@
             </li>
             <li>
                 <span data-ki-i18n="language-of-instruction" data-show-colon="true" class="margin-right-1"></span>
-                <!--<span class="bold">{{lo.teachingLanguage}}</span>-->
                  <span data-ng-repeat="tl in lo.teachingLanguages">
                     <span class="bold">{{tl}}</span><span data-ng-show="!$last">,</span>
                 </span>
@@ -40,22 +39,27 @@
         </ul>
     </div>
     <div data-ki-language-ribbon data-languages="lo.availableTranslationLanguages" data-change-language="changeDescriptionLanguage" class="ribbon"></div>
-    <div data-render-text-block data-title="goals-of-education" data-content="{{lo.goals}}"></div>
-    <div data-render-text-block data-title="info-about-teaching-langs" data-content="{{lo.infoAboutTeachingLangs}}"></div>
-    <div data-render-text-block data-title="content-of-studies" data-content="{{lo.content}}"></div>
-    <div data-ki-render-major-selection data-title="major-selection" data-content="lo.majorSelection" data-children="lo.children"></div>
-    <div data-render-text-block data-title="info-about-charge" data-content="{{lo.infoAboutCharge}}"></div>
-    <div data-render-text-block data-title="structure-of-studies" data-content="{{lo.structure}}"></div>
-    <figure data-ki-render-structure-image></figure>
-    <div data-render-text-block data-title="final-exam" data-content="{{lo.finalExam}}"></div>
-    <div data-render-text-block data-title="career-opportunities" data-content="{{lo.careerOpportunities}}"></div>
-    <div data-ki-render-professional-titles data-title="job-title" data-content="lo.professionalTitles"></div>
-    <div data-render-text-block data-title="competence" data-content="{{lo.competence}}"></div>
-    <div data-render-text-block data-title="internationalization" data-content="{{lo.internationalization}}"></div>
-    <div data-render-text-block data-title="cooperation" data-content="{{lo.cooperation}}"></div>
-    <div data-render-text-block data-title="research-focus" data-content="{{lo.researchFocus}}"></div>
-    <div data-render-text-block data-title="access-to-further-studies" data-content="{{lo.accessToFurtherStudies}}"></div>
-    <div data-render-contact-person-info data-content="lo.contactPersons"></div>
+    <div data-ki-collapse-text-block data-title="goals-of-education" data-content="lo.goals" data-closed="false"></div>
+    <div data-ki-collapse-text-block data-title="info-about-teaching-langs" data-content="lo.infoAboutTeachingLangs" data-closed="false"></div>
+    <div data-ki-collapse-text-block data-title="content-of-studies" data-content="lo.content" data-closed="false"></div>
+    <div data-ki-collapse-block data-title="major-selection" data-content="[lo.majorSelection, lo.children]" data-closed="false">
+        <div data-ki-major-selection></div>
+    </div>
+    <div data-ki-collapse-text-block data-title="info-about-charge" data-content="lo.infoAboutCharge" data-closed="false"></div>
+    <div data-ki-collapse-block data-title="structure-of-studies" data-content="[lo.structure, structureImage]" data-closed="false">
+        <div data-ki-structure-of-studies></div>
+    </div>
+    <div data-ki-collapse-text-block data-title="final-exam" data-content="lo.finalExam" data-closed="false"></div>
+    <div data-ki-collapse-text-block data-title="career-opportunities" data-content="lo.careerOpportunities" data-closed="false"></div>
+    <div data-ki-collapse-block data-title="job-title" data-content="lo.professionalTitles" data-closed="false">
+        <div data-ki-professional-titles></div>
+    </div>
+    <div data-ki-collapse-text-block data-title="competence" data-content="lo.competence" data-closed="false"></div>
+    <div data-ki-collapse-text-block data-title="internationalization" data-content="lo.internationalization" data-closed="false"></div>
+    <div data-ki-collapse-text-block data-title="cooperation" data-content="lo.cooperation" data-closed="false"></div>
+    <div data-ki-collapse-text-block data-title="research-focus" data-content="lo.researchFocus" data-closed="false"></div>
+    <div data-ki-collapse-text-block data-title="access-to-further-studies" data-content="lo.accessToFurtherStudies" data-closed="false"></div>
+    <div data-ki-contact-person-info data-content="lo.contactPersons" data-closed="false"></div>
 </section>
 <div class="grid16-6">
     <div data-ng-class="applyFormClass" data-ng-include data-src="partialCommonUrl + 'as/higherEducationAs.html'" data-ng-controller="ApplicationCtrl"></div>

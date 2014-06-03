@@ -233,6 +233,35 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
             doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_AMMATILLISET);
             doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_TUTKINTOON);
         }
+        
+        List<String> usedVals = new ArrayList<String>();
+        if (childLOI.getFotFacet() != null) {
+            for (Code curFOT : childLOI.getFotFacet()) {
+                if (!usedVals.contains(curFOT.getUri())) {
+                    doc.addField(SolrUtil.LearningOpportunity.FORM_OF_TEACHING, curFOT.getUri());
+                    usedVals.add(curFOT.getUri());
+                }
+            }
+        }
+        
+        if (childLOI.getTimeOfTeachingFacet() != null) {
+            for (Code curTimeOfTeaching : childLOI.getTimeOfTeachingFacet()) {
+                if (!usedVals.contains(curTimeOfTeaching.getUri())) {
+                    doc.addField(SolrUtil.LearningOpportunity.TIME_OF_TEACHING, curTimeOfTeaching.getUri());
+                    usedVals.add(curTimeOfTeaching.getUri());
+                }
+            }
+        }
+        
+        if (childLOI.getFormOfStudyFacet() != null) {
+            for (Code curCode : childLOI.getFormOfStudyFacet()) {
+                if (!usedVals.contains(curCode.getUri())) {
+                    doc.addField(LearningOpportunity.FORM_OF_STUDY, curCode.getUri());
+                    usedVals.add(curCode.getUri());
+                }
+            }
+        }
+        
     }
 
 

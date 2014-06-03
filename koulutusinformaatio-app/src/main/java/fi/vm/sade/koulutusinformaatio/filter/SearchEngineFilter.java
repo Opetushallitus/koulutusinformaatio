@@ -45,7 +45,10 @@ public class SearchEngineFilter implements Filter {
 
         if (request.getParameterMap().containsKey(escapedFragment)) {
             HttpServletRequest httpRequest = (HttpServletRequest) request;
-            String newUri = String.format("snapshot/%s.html", httpRequest.getParameter(escapedFragment).split("/")[2]);
+            String loId = httpRequest.getParameter(escapedFragment).split("/")[2];
+            loId = stripParams(loId, "#");
+            loId = stripParams(loId, "\\?");
+            String newUri = String.format("snapshot/%s.html", loId);
             //String newUri = String.format("/snapshots/%s.html", httpRequest.getParameter(escapedFragment).split("/")[2]);
             httpRequest.getRequestDispatcher(newUri).forward(request, response);
             //FileInputStream snapshot = new FileInputStream(String.format("/Users/klu/cases/snapshots/%s.html", httpRequest.getParameter(escapedFragment).split("/")[2]));
@@ -59,5 +62,14 @@ public class SearchEngineFilter implements Filter {
     @Override
     public void destroy() {
 
+    }
+    
+    private String stripParams(String value, String delimiter) {
+        String[] parts = value.split(delimiter);
+        if (parts.length > 0) {
+            return parts[0];
+        } else {
+            return value;
+        }
     }
 }

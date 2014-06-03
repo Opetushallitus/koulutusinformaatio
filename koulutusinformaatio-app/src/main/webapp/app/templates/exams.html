@@ -1,12 +1,12 @@
 <div data-ng-repeat="exam in exams">
 	<div data-ng-show="exam.type">
-		<h2>{{exam.type}}</h2>
+		<h3>{{exam.type}}</h3>
 	</div>
 	<div data-ng-show="!exam.type">
-		<h2 data-ki-i18n="entrance-exam" data-lang="{{translationLanguage}}"></h2>
+		<h3 data-ki-i18n="entrance-exam-default" data-lang="{{translationLanguage}}"></h3>
 	</div>
-    <div data-ki-render-scores data-score-element="exam.scoreLimit" data-typename="'exam'"></div>
-    <p data-render-text-block data-content="{{exam.description}}"></p>
+    <div data-ki-scores data-score-element="exam.scoreLimit" data-typename="'exam'"></div>
+    <p data-ki-text-block data-content="exam.description"></p>
     <table class="striped">
         <colgroup>
             <col style="width: 34%;"></col>

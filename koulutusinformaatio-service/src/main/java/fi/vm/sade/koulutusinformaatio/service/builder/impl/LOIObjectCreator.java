@@ -23,15 +23,18 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
+
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
+import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.YhteyshenkiloRDTO;
 import fi.vm.sade.tarjonta.shared.types.KomotoTeksti;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -106,6 +109,37 @@ public class LOIObjectCreator extends ObjectCreator {
         }
 
         basicLOI.setAvailableTranslationLanguages(new ArrayList<Code>(availableLanguagesMap.values()));
+        
+        List<String> opetusmuodotUris =  komoto.getOpetusmuodotUris() != null ? komoto.getOpetusmuodotUris() : new ArrayList<String>();
+        Map<String,Code> opFacetMap = new HashMap<String,Code>();//opetusmuoto
+        Map<String,Code> oaFacetMap = new HashMap<String,Code>();//opetusaika
+        Map<String,Code> opiskmFacetMap = new HashMap<String,Code>();//opiskelumuoto
+        
+        for (String curOMUri : opetusmuodotUris) {
+            List<Code> omFacs = this.koodistoService.searchSuperCodes(curOMUri, TarjontaConstants.FORM_OF_EDUCATION_FACET_KOODISTO_URI);
+            for (Code curOMFacet : omFacs) {
+                opFacetMap.put(curOMFacet.getUri(), curOMFacet);
+            }
+            
+            List<Code> oaFacs = this.koodistoService.searchSuperCodes(curOMUri, TarjontaConstants.TIME_OF_EDUCATION_FACET_KOODISTO_URI);
+            for (Code curOAFacet : oaFacs) {
+                oaFacetMap.put(curOAFacet.getUri(), curOAFacet);
+            }
+            
+            
+            List<Code> opiskMFacs = this.koodistoService.searchSuperCodes(curOMUri, TarjontaConstants.FORM_OF_STUDY_FACET_KOODISTO_URI);
+            for (Code curOAFacet : opiskMFacs) {
+                opiskmFacetMap.put(curOAFacet.getUri(), curOAFacet);
+            }
+            
+        }
+        basicLOI.setFotFacet(new ArrayList<Code>(opFacetMap.values()));
+        basicLOI.setTimeOfTeachingFacet(new ArrayList<Code>(oaFacetMap.values()));
+        basicLOI.setFormOfStudyFacet(new ArrayList<Code>(opiskmFacetMap.values()));   
+        
+        
+        LOG.debug("Set: " + basicLOI.getFotFacet().size() + " form of teaching facet values.");
+        
         return basicLOI;
     }
 

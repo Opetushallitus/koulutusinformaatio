@@ -41,7 +41,7 @@ public final class CreatorUtil {
     private CreatorUtil() {
     }
 
-    protected static Predicate<KomoDTO> komoPublished = new Predicate<KomoDTO>() {
+    public static Predicate<KomoDTO> komoPublished = new Predicate<KomoDTO>() {
         @Override
         public boolean apply(KomoDTO komo) {
             return (komo != null) ? komo.getTila().equals(TarjontaTila.JULKAISTU) : false;
@@ -100,5 +100,9 @@ public final class CreatorUtil {
 
     protected static String resolveLOSId(String komoId, String providerId) {
         return Joiner.on("_").join(komoId, providerId);
+    }
+    
+    public static boolean isSecondaryAS(HakuDTO asDto) {
+        return asDto != null && asDto.getKohdejoukkoUri() != null && !asDto.getKohdejoukkoUri().contains("haunkohdejoukko_12");
     }
 }

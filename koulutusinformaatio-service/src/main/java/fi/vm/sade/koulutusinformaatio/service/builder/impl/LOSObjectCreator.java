@@ -151,6 +151,11 @@ public class LOSObjectCreator extends ObjectCreator {
         // strip version out of education code uri
         String educationCodeUri = childKomo.getKoulutusKoodiUri().split("#")[0];
         childLOS.setLois(loiCreator.createChildLOIs(childKomotos, childLOS.getId(), childLOS.getName(), educationCodeUri, SolrConstants.ED_TYPE_AMMATILLINEN_SHORT));
+        
+        for (ChildLOI curChild : childLOS.getLois()) {
+            //curChild.get
+        }
+        
         return childLOS;
     }
 
@@ -449,7 +454,12 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setThemes(getThemes(los));
 
         los.setFormOfTeaching(getI18nTextMultiple(koulutus.getOpetusmuodos()));
+        los.setFotFacet(this.createCodes(koulutus.getOpetusPaikkas()));
+        los.setTimeOfTeachingFacet(this.createCodes(koulutus.getOpetusAikas()));
+        los.setFormOfStudyFacet(this.createCodes(koulutus.getOpetusmuodos()));
+        
         los.setProfessionalTitles(getI18nTextMultiple(koulutus.getAmmattinimikkeet()));
+        
 
         los.setTeachingTimes(getI18nTextMultiple(koulutus.getOpetusAikas()));
         los.setTeachingPlaces(getI18nTextMultiple(koulutus.getOpetusPaikkas()));

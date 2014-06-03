@@ -84,6 +84,12 @@ public class HigherEducationLOS extends LOS {
     private String educationType;
     
     private I18nPicture structureImage;
+    
+    private List<Code> fotFacet = new ArrayList<Code>();
+    
+    private List<Code> timeOfTeachingFacet = new ArrayList<Code>();
+    
+    private List<Code> formOfStudyFacet = new ArrayList<Code>();
 
     public String getId() {
         return id;
@@ -471,6 +477,30 @@ public class HigherEducationLOS extends LOS {
 
     public void setStructureImage(I18nPicture structureImage) {
         this.structureImage = structureImage;
+    }
+
+    public List<Code> getFotFacet() {
+        return fotFacet;
+    }
+
+    public void setFotFacet(List<Code> formOfTeachingFacet) {
+        this.fotFacet = formOfTeachingFacet;
+    }
+
+    public List<Code> getTimeOfTeachingFacet() {
+        return timeOfTeachingFacet;
+    }
+
+    public void setTimeOfTeachingFacet(List<Code> timeOfTeachingFacet) {
+        this.timeOfTeachingFacet = timeOfTeachingFacet;
+    }
+
+    public List<Code> getFormOfStudyFacet() {
+        return formOfStudyFacet;
+    }
+
+    public void setFormOfStudyFacet(List<Code> formOfStudyFacet) {
+        this.formOfStudyFacet = formOfStudyFacet;
     }
     
 }

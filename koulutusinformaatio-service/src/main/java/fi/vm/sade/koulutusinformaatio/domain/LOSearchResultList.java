@@ -34,12 +34,15 @@ public class LOSearchResultList {
     private Facet prerequisiteFacet;
     private Facet topicFacet;
     private Facet articleContentTypeFacet;
+    private Facet fotFacet;
+    private Facet timeOfTeachingFacet;
+    private Facet formOfStudyFacet;
     private FacetValue lopRecommendationFilter;
     private FacetValue educationCodeRecommendationFilter;
     private long loCount;
     private long articleCount;
     private long orgCount;
-
+   
 
     public List<LOSearchResult> getResults() {
         return results;
@@ -160,5 +163,29 @@ public class LOSearchResultList {
 
     public void setArticleContentTypeFacet(Facet articleContentTypeFacet) {
         this.articleContentTypeFacet = articleContentTypeFacet;
+    }
+
+    public void setFotFacet(Facet fotFacet) {
+        this.fotFacet = fotFacet;
+    }
+    
+    public Facet getFotFacet() {
+        return this.fotFacet;
+    }
+
+    public void setTimeOfTeachingFacet(Facet timeOfTeachingFacet) {
+        this.timeOfTeachingFacet = timeOfTeachingFacet;
+    }
+    
+    public Facet getTimeOfTeachingFacet() {
+        return this.timeOfTeachingFacet;
+    }
+
+    public void setFormOfStudyFacet(Facet formOfStudyFacet) {
+        this.formOfStudyFacet = formOfStudyFacet;
+    }
+
+    public Facet getFormOfStudyFacet() {
+        return formOfStudyFacet;
     }
 }

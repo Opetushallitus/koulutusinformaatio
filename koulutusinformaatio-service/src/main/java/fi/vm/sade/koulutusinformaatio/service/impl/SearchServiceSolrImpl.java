@@ -522,6 +522,9 @@ public class SearchServiceSolrImpl implements SearchService {
         searchResultList.setFilterFacet(getFilterFacet(facetFilters, lang));
         searchResultList.setPrerequisiteFacet(getPrerequisiteFacet(response));
         searchResultList.setTopicFacet(getTopicFacet(response, lang));
+        searchResultList.setFotFacet(getFotFacet(response, lang));
+        searchResultList.setTimeOfTeachingFacet(getTimeOfTeachingFacet(response, lang));
+        searchResultList.setFormOfStudyFacet(getFormOfStudyFacet(response, lang));
 
 
     }
@@ -685,6 +688,78 @@ public class SearchServiceSolrImpl implements SearchService {
         }
         teachingLangFacet.setFacetValues(values);
         return teachingLangFacet;
+    }
+    
+    /*
+     * Form of teaching facet
+     */
+    private Facet getFotFacet(QueryResponse response, String lang) {
+
+        FacetField fotF = response.getFacetField(LearningOpportunity.FORM_OF_TEACHING);
+        Facet fotFacet = new Facet();
+        List<FacetValue> values = new ArrayList<FacetValue>();
+        if (fotF != null) {
+            for (Count curC : fotF.getValues()) {
+
+
+                FacetValue newVal = new FacetValue(LearningOpportunity.FORM_OF_TEACHING,
+                        getLocalizedFacetName(curC.getName(), lang),
+                        curC.getCount(),
+                        curC.getName());
+                values.add(newVal);
+
+            }
+        }
+        fotFacet.setFacetValues(values);
+        return fotFacet;
+    }
+    
+    
+    /*
+     * Time of teaching facet
+     */
+    private Facet getTimeOfTeachingFacet(QueryResponse response, String lang) {
+
+        FacetField timeOfTeachingF = response.getFacetField(LearningOpportunity.TIME_OF_TEACHING);
+        Facet timeOfTeachingFacet = new Facet();
+        List<FacetValue> values = new ArrayList<FacetValue>();
+        if (timeOfTeachingF != null) {
+            for (Count curC : timeOfTeachingF.getValues()) {
+
+
+                FacetValue newVal = new FacetValue(LearningOpportunity.TIME_OF_TEACHING,
+                        getLocalizedFacetName(curC.getName(), lang),
+                        curC.getCount(),
+                        curC.getName());
+                values.add(newVal);
+
+            }
+        }
+        timeOfTeachingFacet.setFacetValues(values);
+        return timeOfTeachingFacet;
+    }
+    
+    /*
+     * Form of study facet
+     */
+    private Facet getFormOfStudyFacet(QueryResponse response, String lang) {
+
+        FacetField timeOfTeachingF = response.getFacetField(LearningOpportunity.FORM_OF_STUDY);
+        Facet timeOfTeachingFacet = new Facet();
+        List<FacetValue> values = new ArrayList<FacetValue>();
+        if (timeOfTeachingF != null) {
+            for (Count curC : timeOfTeachingF.getValues()) {
+
+
+                FacetValue newVal = new FacetValue(LearningOpportunity.FORM_OF_STUDY,
+                        getLocalizedFacetName(curC.getName(), lang),
+                        curC.getCount(),
+                        curC.getName());
+                values.add(newVal);
+            }
+        }
+        timeOfTeachingFacet.setFacetValues(values);
+        return timeOfTeachingFacet;
     }
 
     /*

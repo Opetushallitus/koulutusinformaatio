@@ -344,6 +344,36 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<HigherEdu
         for (Code curTopic : los.getThemes()) {
             doc.addField(LearningOpportunity.THEME, curTopic.getUri());
         }
+        
+        if (los.getFotFacet() != null) {
+            List<String> usedVals = new ArrayList<String>();
+            for (Code curFOT : los.getFotFacet()) {
+                if (!usedVals.contains(curFOT.getUri())) {
+                    doc.addField(LearningOpportunity.FORM_OF_TEACHING, curFOT.getUri());
+                    usedVals.add(curFOT.getUri());
+                }
+            }
+        }
+        
+        if (los.getTimeOfTeachingFacet() != null) {
+            List<String> usedVals = new ArrayList<String>();
+            for (Code curTimeOfTeaching : los.getTimeOfTeachingFacet()) {
+                if (!usedVals.contains(curTimeOfTeaching.getUri())) {
+                    doc.addField(LearningOpportunity.TIME_OF_TEACHING, curTimeOfTeaching.getUri());
+                    usedVals.add(curTimeOfTeaching.getUri());
+                }
+            }
+        }
+        
+        if (los.getFormOfStudyFacet() != null) {
+            List<String> usedVals = new ArrayList<String>();
+            for (Code curFormOfStudy : los.getFormOfStudyFacet()) {
+                if (!usedVals.contains(curFormOfStudy.getUri())) {
+                    doc.addField(LearningOpportunity.FORM_OF_STUDY, curFormOfStudy.getUri());
+                    usedVals.add(curFormOfStudy.getUri());
+                }
+            }
+        }
 
     }
 

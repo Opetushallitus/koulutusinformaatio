@@ -49,6 +49,24 @@ public class FacetIndexer {
         for (Code curCode : los.getThemes()) {
             SolrUtil.indexCodeAsFacetDoc(curCode, docs, false);
         }
+        
+        if (loi.getFotFacet() != null) {
+            for (Code curFOT : loi.getFotFacet()) {
+                SolrUtil.indexCodeAsFacetDoc(curFOT, docs, false);
+            }
+        }
+        
+        if (loi.getTimeOfTeachingFacet() != null) {
+            for (Code curTimeOfTeaching : loi.getTimeOfTeachingFacet()) {
+                SolrUtil.indexCodeAsFacetDoc(curTimeOfTeaching, docs, false);
+            }
+        }
+        
+        if (loi.getFormOfStudyFacet() != null) {
+            for (Code curFormOfStudy : loi.getFormOfStudyFacet()) {
+                SolrUtil.indexCodeAsFacetDoc(curFormOfStudy, docs, false);
+            }
+        }
 
         return docs;
     }
@@ -62,6 +80,22 @@ public class FacetIndexer {
         for (ChildLOS childLOS : parent.getChildren()) {
             for (ChildLOI childLOI : childLOS.getLois()) {
                 docs.addAll(createFacetDocs(childLOI));
+                
+                if (childLOI.getFotFacet() != null) {
+                    for (Code curFOT : childLOI.getFotFacet()) {
+                        SolrUtil.indexCodeAsFacetDoc(curFOT, docs, false);
+                    }
+                }
+                if (childLOI.getTimeOfTeachingFacet() != null) {
+                    for (Code curTimeOfTeaching : childLOI.getTimeOfTeachingFacet()) {
+                        SolrUtil.indexCodeAsFacetDoc(curTimeOfTeaching, docs, false);
+                    }
+                }
+                if (childLOI.getFormOfStudyFacet() != null) {
+                    for (Code curFormOfStudy : childLOI.getFormOfStudyFacet()) {
+                        SolrUtil.indexCodeAsFacetDoc(curFormOfStudy, docs, false);
+                    }
+                }
             }
         }
 
@@ -104,6 +138,24 @@ public class FacetIndexer {
         for (Code curCode : los.getThemes()) {
             SolrUtil.indexCodeAsFacetDoc(curCode, docs, false);
         }
+        
+        if (childLOI.getFotFacet() != null) {
+            for (Code curFOT : childLOI.getFotFacet()) {
+                SolrUtil.indexCodeAsFacetDoc(curFOT, docs, false);
+            }
+        }
+        
+        if (childLOI.getTimeOfTeachingFacet() != null) {
+            for (Code curTimeOfTeaching : childLOI.getTimeOfTeachingFacet()) {
+                SolrUtil.indexCodeAsFacetDoc(curTimeOfTeaching, docs, false);
+            }
+        }
+        
+        if (childLOI.getFormOfStudyFacet() != null) {
+            for (Code curFormOfStudy : childLOI.getFormOfStudyFacet()) {
+                SolrUtil.indexCodeAsFacetDoc(curFormOfStudy, docs, false);
+            }
+        }
 
         return docs;
     }
@@ -128,6 +180,25 @@ public class FacetIndexer {
 
         for (Code curCode : los.getThemes()) {
             SolrUtil.indexCodeAsFacetDoc(curCode, docs, false);
+        }
+        
+        if (los.getFotFacet() != null) {
+            for (Code curFOT : los.getFotFacet()) {
+                SolrUtil.indexCodeAsFacetDoc(curFOT, docs, false);
+            }
+        }
+        
+        
+        if (los.getTimeOfTeachingFacet() != null) {
+            for (Code curTimeOfTeaching : los.getTimeOfTeachingFacet()) {
+                SolrUtil.indexCodeAsFacetDoc(curTimeOfTeaching, docs, false);
+            }
+        }
+        
+        if (los.getFormOfStudyFacet() != null) {
+            for (Code curFormOfStudy : los.getFormOfStudyFacet()) {
+                SolrUtil.indexCodeAsFacetDoc(curFormOfStudy, docs, false);
+            }
         }
 
         return docs;

@@ -36,6 +36,7 @@ public class ApplicationSystemEntity {
     private int maxApplications;
     private String applicationFormLink;
     private String hakutapaUri;
+    private String hakutyyppiUri;
 
     public ApplicationSystemEntity() {}
 
@@ -85,5 +86,13 @@ public class ApplicationSystemEntity {
 
     public void setHakutapaUri(String hakutapaUri) {
         this.hakutapaUri = hakutapaUri;
+    }
+
+    public String getHakutyyppiUri() {
+        return hakutyyppiUri;
+    }
+
+    public void setHakutyyppiUri(String hakutyyppiUri) {
+        this.hakutyyppiUri = hakutyyppiUri;
     }
 }

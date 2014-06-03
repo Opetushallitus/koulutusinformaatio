@@ -1,0 +1,11 @@
+<div data-ng-show="isVisible()" class="collapse-block">
+    <a href="javascript:void(0);" data-ng-click="toggleState()" class="block">
+        <h2 class="collapser" data-ng-class="{open: !isClose, close: isClose}" id="{{anchor}}">
+            <span data-ng-if="title" data-ki-i18n="{{title}}" data-lang="{{translationLanguage}}"></span>
+            <span data-ng-if="titleValue">{{titleValue}}</span>
+        </h2>
+    </a>
+    <div class="tarjonta-content" data-collapse="isClose">
+        <div class="collapse-content-container"></div>
+    </div>
+</div>

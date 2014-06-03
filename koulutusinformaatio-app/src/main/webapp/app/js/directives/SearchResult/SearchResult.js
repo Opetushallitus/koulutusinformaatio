@@ -112,8 +112,8 @@ directive('srApplicationBasket', ['ApplicationBasketService', 'TranslationServic
                 return ApplicationBasketService.itemExists(applicationoptionId);
             }
 
-            // vocational education needs prerequisite checking...
             $scope.addToBasket = function(applicationoptionId) {
+                // vocational education needs prerequisite checking...
                 var addVocationalEdToBasket = function(aoId) {
                     var basketType = ApplicationBasketService.getType();
                     if (!basketType || $scope.lo.prerequisite.value == basketType) {
@@ -124,14 +124,15 @@ directive('srApplicationBasket', ['ApplicationBasketService', 'TranslationServic
                     }
                 }
 
-                var addHighEdToBasket = function(aoId) {
+                // ...but other types of education do not require prerequisite checking
+                var addEducationToBasket = function(aoId) {
                     ApplicationBasketService.addItem(aoId);
                 }
 
-                if ($scope.loType == 'korkeakoulu') {
-                    addHighEdToBasket(applicationoptionId);
-                } else {
+                if ($scope.loType == 'tutkinto') {
                     addVocationalEdToBasket(applicationoptionId);
+                } else {
+                    addEducationToBasket(applicationoptionId);
                 }
             }
         }
