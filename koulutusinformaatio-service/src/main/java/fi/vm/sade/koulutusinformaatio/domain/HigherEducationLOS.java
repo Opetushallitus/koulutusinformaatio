@@ -91,6 +91,8 @@ public class HigherEducationLOS extends LOS {
     
     private List<Code> formOfStudyFacet = new ArrayList<Code>();
 
+    private Code koulutuslaji;
+
     public String getId() {
         return id;
     }
@@ -501,6 +503,14 @@ public class HigherEducationLOS extends LOS {
 
     public void setFormOfStudyFacet(List<Code> formOfStudyFacet) {
         this.formOfStudyFacet = formOfStudyFacet;
+    }
+
+    public Code getKoulutuslaji() {
+        return koulutuslaji;
+    }
+
+    public void setKoulutuslaji(Code koulutuslaji) {
+        this.koulutuslaji = koulutuslaji;
     }
     
 }

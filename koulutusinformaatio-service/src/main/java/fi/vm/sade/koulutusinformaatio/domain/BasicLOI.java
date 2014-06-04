@@ -41,6 +41,7 @@ public class BasicLOI extends LOI {
     private List<Code> fotFacet = new ArrayList<Code>();
     private List<Code> timeOfTeachingFacet = new ArrayList<Code>();
     private List<Code> formOfStudyFacet = new ArrayList<Code>();
+    private Code koulutuslaji;
    
     public I18nText getName() {
         return name;
@@ -176,5 +177,13 @@ public class BasicLOI extends LOI {
 
     public void setFormOfStudyFacet(List<Code> formOfStudyFacet) {
         this.formOfStudyFacet = formOfStudyFacet;
+    }
+
+    public Code getKoulutuslaji() {
+        return koulutuslaji;
+    }
+
+    public void setKoulutuslaji(Code koulutuslaji) {
+        this.koulutuslaji = koulutuslaji;
     }
 }

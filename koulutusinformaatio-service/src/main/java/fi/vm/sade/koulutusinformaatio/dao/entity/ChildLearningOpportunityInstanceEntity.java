@@ -1,5 +1,6 @@
 package fi.vm.sade.koulutusinformaatio.dao.entity;
 
+import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 
 import org.mongodb.morphia.annotations.Embedded;
@@ -57,6 +58,8 @@ public class ChildLearningOpportunityInstanceEntity {
     private List<CodeEntity> timeOfTeachingFacet = new ArrayList<CodeEntity>();
     @Embedded
     private List<CodeEntity> formOfStudyFacet = new ArrayList<CodeEntity>();
+    @Embedded
+    private CodeEntity koulutuslaji;
     
     
 
@@ -234,5 +237,13 @@ public class ChildLearningOpportunityInstanceEntity {
 
     public void setFormOfStudyFacet(List<CodeEntity> formOfStudyFacet) {
         this.formOfStudyFacet = formOfStudyFacet;
+    }
+
+    public CodeEntity getKoulutuslaji() {
+        return koulutuslaji;
+    }
+
+    public void setKoulutuslaji(CodeEntity koulutuslaji) {
+        this.koulutuslaji = koulutuslaji;
     }
 }

@@ -68,6 +68,8 @@ public class UpperSecondaryLearningOpportunityInstanceEntity {
     private List<CodeEntity> timeOfTeachingFacet = new ArrayList<CodeEntity>();
     @Embedded
     private List<CodeEntity> formOfStudyFacet = new ArrayList<CodeEntity>();
+    @Embedded
+    private CodeEntity koulutuslaji;
 
     public UpperSecondaryLearningOpportunityInstanceEntity() {
     }
@@ -238,5 +240,13 @@ public class UpperSecondaryLearningOpportunityInstanceEntity {
 
     public void setFormOfStudyFacet(List<CodeEntity> formOfStudyFacet) {
         this.formOfStudyFacet = formOfStudyFacet;
+    }
+
+    public CodeEntity getKoulutuslaji() {
+        return koulutuslaji;
+    }
+
+    public void setKoulutuslaji(CodeEntity koulutuslaji) {
+        this.koulutuslaji = koulutuslaji;
     }
 }

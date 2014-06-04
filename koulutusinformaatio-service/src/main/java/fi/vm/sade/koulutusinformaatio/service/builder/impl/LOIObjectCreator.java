@@ -137,6 +137,11 @@ public class LOIObjectCreator extends ObjectCreator {
         basicLOI.setTimeOfTeachingFacet(new ArrayList<Code>(oaFacetMap.values()));
         basicLOI.setFormOfStudyFacet(new ArrayList<Code>(opiskmFacetMap.values()));   
         
+        List<Code> koulutuslajis = this.koodistoService.searchMultiple(komoto.getKoulutuslajiUris());
+        if (koulutuslajis != null && !koulutuslajis.isEmpty()) {
+            basicLOI.setKoulutuslaji(koulutuslajis.get(0));
+        }
+        
         
         LOG.debug("Set: " + basicLOI.getFotFacet().size() + " form of teaching facet values.");
         

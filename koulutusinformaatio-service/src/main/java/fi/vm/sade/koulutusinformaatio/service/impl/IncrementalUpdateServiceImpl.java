@@ -146,6 +146,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
         //Getting get update period
         long updatePeriod = getUpdatePeriod();
         LOG.debug(String.format("Update period: %s", updatePeriod));
+        long runningSince = System.currentTimeMillis();
         try {
             //Fetching changes within the update period
             Map<String,List<String>> result = listChangedLearningOpportunities(updatePeriod);
@@ -153,7 +154,6 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             if (!hasChanges(result)) {
                 return;
             }
-            long runningSince = System.currentTimeMillis();
             this.updateService.setRunning(true);
             this.updateService.setRunningSince(runningSince);
             this.losIndexer.clearCreatedLOS();
@@ -192,7 +192,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
 
         } catch (Exception e) {
             LOG.error("Education data update failed ", e);
-            dataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - this.updateService.getRunningSince(), String.format("FAIL: %s", e.getMessage())));
+            dataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, String.format("FAIL: %s", e.getMessage())));
         } finally {
             this.updateService.setRunning(false);
             this.updateService.setRunningSince(0);
@@ -233,7 +233,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
 
     private void indexKomoChanges(List<String> komoChanges) throws Exception {
         for (String curKomoOid : komoChanges) {
-            if (this.losIndexer.isHigherEdKomo(curKomoOid)) { //&& !higherEdReindexed) {
+            if (this.losIndexer.isHigherEdKomo(curKomoOid)) { 
                 this.losIndexer.indexHigherEdKomo(curKomoOid);
             }
         }

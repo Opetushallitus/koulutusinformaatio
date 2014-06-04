@@ -374,6 +374,10 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<HigherEdu
                 }
             }
         }
+        
+        if (los.getKoulutuslaji() != null) {
+            doc.addField(LearningOpportunity.KIND_OF_EDUCATION, los.getKoulutuslaji().getUri());
+        }
 
     }
 
