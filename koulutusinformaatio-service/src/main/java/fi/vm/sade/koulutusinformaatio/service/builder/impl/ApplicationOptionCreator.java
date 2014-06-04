@@ -320,12 +320,8 @@ public class ApplicationOptionCreator extends ObjectCreator {
         ao.setRequiredBaseEducations(hakukohde.getHakukelpoisuusvaatimusUris());
         los.setPrerequisites(koodistoService.searchMultiple(hakukohde.getHakukelpoisuusvaatimusUris()));
        
-        ApplicationSystem as = new ApplicationSystem();
-        as.setId(haku.getOid());
-        as.setMaxApplications(haku.getMaxHakukohdes());
-        as.setName(getI18nText(haku.getNimi()));
-        as.setApplicationFormLink( haku.getHakulomakeUri());
-        
+        ApplicationSystem as = applicationSystemCreator.createHigherEdApplicationSystem(haku); 
+                
         HakuaikaV1RDTO aoHakuaika = null;
         
         if (haku.getHakuaikas() != null) {

@@ -178,16 +178,6 @@ public class UpdateServiceImpl implements UpdateService {
     }
 
     @Override
-    public void setRunning(boolean running) {
-        this.running = running;
-    }
-
-    @Override
-    public void setRunningSince(long runningSince) {
-        this.runningSince = runningSince;
-    }
-
-    @Override
     @Async
     public void updateArticles() throws Exception {
         

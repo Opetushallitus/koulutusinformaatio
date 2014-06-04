@@ -73,7 +73,7 @@ public class Scheduler {
         if (enabled) {
             LOG.info("Starting scheduled data update {}", new Date());
             try {
-                if (!updateService.isRunning()) {
+                if (!updateService.isRunning() && !incrementalUpdateService.isRunning()) {
                     updateService.updateAllEducationData();
                 }
             } catch (Exception e) {
@@ -116,7 +116,7 @@ public class Scheduler {
             LOG.info("Starting scheduled incremental data update {}", new Date());
             
             try {
-                if (!updateService.isRunning()) {
+                if (!updateService.isRunning() && !incrementalUpdateService.isRunning()) {
                     LOG.debug("indexing is not running, starting incremental indexing.");
                     this.incrementalUpdateService.updateChangedEducationData();
                 } else {
@@ -134,7 +134,7 @@ public class Scheduler {
             LOG.info("Starting scheduled article update {}", new Date());
             
             try {
-                if (!updateService.isRunning()) {
+                if (!updateService.isRunning() && !incrementalUpdateService.isRunning()) {
                     LOG.debug("indexing is not running, starting article indexing.");
                     this.updateService.updateArticles();
                 } else {

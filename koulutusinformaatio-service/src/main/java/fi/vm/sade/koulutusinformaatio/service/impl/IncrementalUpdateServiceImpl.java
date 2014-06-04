@@ -90,6 +90,9 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
     private final HttpSolrServer lopHttpSolrServer;
 
     private final HttpSolrServer locationHttpSolrServer;
+    
+    private boolean isRunning = false;
+    private long runningSince = 0;
 
     @Autowired
     public IncrementalUpdateServiceImpl(TarjontaRawService tarjontaRawService, 
@@ -138,7 +141,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
     @Async
     public void updateChangedEducationData() throws Exception {
 
-        if (this.updateService.isRunning()) {
+        if (isRunning || updateService.isRunning()) {
             LOG.debug("Indexing is running, not starting");
             return;
         }
@@ -146,7 +149,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
         //Getting get update period
         long updatePeriod = getUpdatePeriod();
         LOG.debug(String.format("Update period: %s", updatePeriod));
-        long runningSince = System.currentTimeMillis();
+        
         try {
             //Fetching changes within the update period
             Map<String,List<String>> result = listChangedLearningOpportunities(updatePeriod);
@@ -154,8 +157,9 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             if (!hasChanges(result)) {
                 return;
             }
-            this.updateService.setRunning(true);
-            this.updateService.setRunningSince(runningSince);
+            runningSince = System.currentTimeMillis();
+            isRunning = true;
+            
             this.losIndexer.clearCreatedLOS();
 
             //If there are changes in komo-data, a full update is performed
@@ -194,8 +198,8 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             LOG.error("Education data update failed ", e);
             dataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, String.format("FAIL: %s", e.getMessage())));
         } finally {
-            this.updateService.setRunning(false);
-            this.updateService.setRunningSince(0);
+            this.isRunning = false;
+            this.runningSince = 0;
         }
     }
 
@@ -269,5 +273,15 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             return period;
         }
         return 0;
+    }
+    
+    @Override
+    public boolean isRunning() {
+        return isRunning;
+    }
+    
+    @Override
+    public long getRunningSince() {
+        return runningSince;
     }
 }
