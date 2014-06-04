@@ -39,14 +39,12 @@ import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOI;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOSRef;
-import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.LOSObjectCreator;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.VocationalLearningOpportunityBuilder;
-import fi.vm.sade.koulutusinformaatio.service.impl.IncrementalUpdateServiceImpl;
 import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
@@ -262,6 +260,7 @@ public class SingleParentLOSBuilder {
         }
     }
     
+    /*
     private boolean isParentLOSValid(ParentLOS parentLOS) {
         if (parentLOS.getChildren() == null || parentLOS.getChildren().isEmpty()) {
             return false;
@@ -269,7 +268,7 @@ public class SingleParentLOSBuilder {
             return true;
         }
 
-    }
+    }*/
 
     private boolean isChildLOSValid(ChildLOS childLOS) {
         if (childLOS.getLois() != null) {
@@ -282,9 +281,10 @@ public class SingleParentLOSBuilder {
         return false;
     }
 
+    /*
     private String resolveProviderId(String losId) {
         return losId.split("_")[1];
-    }
+    }*/
     
     private ChildLOIRef buildChildLOIRef(final ChildLOI childLOI) {
         if (childLOI != null) {
@@ -304,9 +304,7 @@ public class SingleParentLOSBuilder {
         // filter out empty parent lois
         Set<String> parentLOIIdsInUse = Sets.newHashSet();
         
-        //Map<String,ApplicationOption> aos = Maps.newHashMap();
         List<ApplicationOption> aoList = new ArrayList<ApplicationOption>();
-        //for (ParentLOS parentLOS : this.parentLOSs) {
             
             for (ChildLOS childLOS : parentLOS.getChildren()) {
                 for (ChildLOI childLOI : childLOS.getLois()) {
@@ -330,29 +328,16 @@ public class SingleParentLOSBuilder {
                 }
             }
             parentLOS.setLois(parentLOIsInUse);
-        //}
-        
-        
         
 
-        // filter out empty parent LOSs
-        /*this.parentLOSs = Lists.newArrayList(
-                Collections2.filter(this.parentLOSs, new Predicate<ParentLOS>() {
-                    @Override
-                    public boolean apply(fi.vm.sade.koulutusinformaatio.domain.ParentLOS input) {
-                        return isParentLOSValid(input);
-                    }
-                })
-        );*/
         
         //filtering out non-existing childLOIRefs from application options
         Set<String> childLosIdsInUse = Sets.newHashSet();
-        //for (ParentLOS parentLOS : this.parentLOSs) {
             
             for (ChildLOS childLOS : parentLOS.getChildren()) {
                 childLosIdsInUse.add(childLOS.getId());
             }
-        //}
+        
         for (ApplicationOption curAo : aoList) {
             List<ChildLOIRef> childRefs = new ArrayList<ChildLOIRef>();
             for (ChildLOIRef curchild : curAo.getChildLOIRefs()) {

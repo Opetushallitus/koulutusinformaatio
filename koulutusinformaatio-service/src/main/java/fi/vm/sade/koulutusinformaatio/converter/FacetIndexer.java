@@ -17,22 +17,15 @@ package fi.vm.sade.koulutusinformaatio.converter;
 
 import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.domain.*;
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import org.apache.solr.common.SolrInputDocument;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 
  * @author Markus
  */
 public class FacetIndexer {
-
-    private static final String FALLBACK_LANG = "fi";
-
-
-
 
     public List<SolrInputDocument> createFacetDocs(UpperSecondaryLOI loi, UpperSecondaryLOS los) {
         List<SolrInputDocument> docs = Lists.newArrayList();
@@ -67,6 +60,10 @@ public class FacetIndexer {
                 SolrUtil.indexCodeAsFacetDoc(curFormOfStudy, docs, false);
             }
         }
+        
+        if (loi.getKoulutuslaji() != null) {
+            SolrUtil.indexCodeAsFacetDoc(loi.getKoulutuslaji(), docs, false);
+        }
 
         return docs;
     }
@@ -95,6 +92,9 @@ public class FacetIndexer {
                     for (Code curFormOfStudy : childLOI.getFormOfStudyFacet()) {
                         SolrUtil.indexCodeAsFacetDoc(curFormOfStudy, docs, false);
                     }
+                }
+                if (childLOI.getKoulutuslaji() != null) {
+                    SolrUtil.indexCodeAsFacetDoc(childLOI.getKoulutuslaji(), docs, false);
                 }
             }
         }
@@ -156,6 +156,10 @@ public class FacetIndexer {
                 SolrUtil.indexCodeAsFacetDoc(curFormOfStudy, docs, false);
             }
         }
+        
+        if (childLOI.getKoulutuslaji() != null) {
+            SolrUtil.indexCodeAsFacetDoc(childLOI.getKoulutuslaji(), docs, false);
+        }
 
         return docs;
     }
@@ -199,6 +203,10 @@ public class FacetIndexer {
             for (Code curFormOfStudy : los.getFormOfStudyFacet()) {
                 SolrUtil.indexCodeAsFacetDoc(curFormOfStudy, docs, false);
             }
+        }
+        
+        if (los.getKoulutuslaji() != null) {
+            SolrUtil.indexCodeAsFacetDoc(los.getKoulutuslaji(), docs, false);
         }
 
         return docs;

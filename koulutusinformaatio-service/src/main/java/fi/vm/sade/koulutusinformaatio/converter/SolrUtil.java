@@ -222,6 +222,7 @@ public final class SolrUtil {
         public static final String FORM_OF_TEACHING = "formOfTeaching_ffm"; //The education type of the learning opportunity
         public static final String TIME_OF_TEACHING = "timeOfTeaching_ffm"; //The education type of the learning opportunity
         public static final String FORM_OF_STUDY = "formOfStudy_ffm"; //The education type of the learning opportunity
+        public static final String KIND_OF_EDUCATION = "kindOfEducation_ffm"; //The education type of the learning opportunity
         public static final String LOP_ID = "lopId";
         public static final String NAME = "name";
         public static final String NAME_FI = "name_fi";

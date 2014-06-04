@@ -200,9 +200,11 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
             doc.addField(LearningOpportunity.THEME, curTopic.getUri());
         }
         
+        List<String> usedVals = new ArrayList<String>();
+        
         if (loi.getFotFacet() != null) {
             
-            List<String> usedVals = new ArrayList<String>();
+            
             
             for (Code curFOT : loi.getFotFacet()) {
                 if (!usedVals.contains(curFOT.getUri())) {
@@ -214,8 +216,6 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
         
         if (loi.getTimeOfTeachingFacet() != null) {
             
-            List<String> usedVals = new ArrayList<String>();
-            
             for (Code curTimeOfTeachinig : loi.getTimeOfTeachingFacet()) {
                 if (!usedVals.contains(curTimeOfTeachinig.getUri())) {
                     doc.addField(LearningOpportunity.TIME_OF_TEACHING, curTimeOfTeachinig.getUri());
@@ -226,14 +226,18 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
         
         if (loi.getFormOfStudyFacet() != null) {
             
-            List<String> usedVals = new ArrayList<String>();
-            
             for (Code curFormOfStudy : loi.getFormOfStudyFacet()) {
                 if (!usedVals.contains(curFormOfStudy.getUri())) {
                     doc.addField(LearningOpportunity.FORM_OF_STUDY, curFormOfStudy.getUri());
                     usedVals.add(curFormOfStudy.getUri());
                 }
             }
+        }
+        
+        if (loi.getKoulutuslaji() != null 
+                && !usedVals.contains(loi.getKoulutuslaji().getUri())) {
+            doc.addField(LearningOpportunity.KIND_OF_EDUCATION, loi.getKoulutuslaji().getUri());
+            usedVals.add(loi.getKoulutuslaji().getUri());
         }
         
     }

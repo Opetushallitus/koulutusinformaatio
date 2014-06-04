@@ -466,7 +466,6 @@ public class LOSObjectCreator extends ObjectCreator {
 
         boolean existsValidHakukohde = fetchHakukohdeData(los, checkStatus);
 
-
         //If we are not fetching for preview, an exception is thrown if no valid application options exist
         if (checkStatus && !existsValidHakukohde) {
             throw new TarjontaParseException("No valid application options for education: " + los.getId());

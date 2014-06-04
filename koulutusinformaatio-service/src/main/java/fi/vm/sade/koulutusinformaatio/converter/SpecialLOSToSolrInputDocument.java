@@ -262,6 +262,12 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
             }
         }
         
+        if (childLOI.getKoulutuslaji() != null 
+                && !usedVals.contains(childLOI.getKoulutuslaji().getUri())) {
+            doc.addField(LearningOpportunity.KIND_OF_EDUCATION, childLOI.getKoulutuslaji().getUri());
+            usedVals.add(childLOI.getKoulutuslaji().getUri());
+        }
+        
     }
 
 
