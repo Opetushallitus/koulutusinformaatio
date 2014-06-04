@@ -1,0 +1,113 @@
+#
+# TÄHÄN TIEDOSTOON EI SAA TALLENTAA YMPÄRISTÖKOHTAISIA ARVOJA MUUTOIN KUIN MUUTTUJINA!!!
+# 
+# Tämä tiedosto toimii pohjana oph-configuration/common.properties tiedostolle,
+# joka asettaa tomcatin ympäristökohtaiset arvot.
+#
+
+# Aseta vähintään nämä ympäristökohtaiset arvot
+activemq.brokerurl={{activemq_brokerurl}}
+activemq.jmxurl={{activemq_jmxurl}}
+auth.mode={{auth_mode}}
+env.loglevel={{env_loglevel}}
+host.cas={{host_cas}}
+host.haku={{host_haku}}
+host.ilb={{host_ilb}}
+host.virkailija={{host_virkailija}}
+host.oppija={{host_oppija}}
+mongo.db.maxpoolsize=100
+mongodb.ki.uri=mongodb://{{mongodb_ki_auth}}@{{mongodb_ki_host}}:{{mongodb_ki_port}}
+server.name={{ansible_hostname}}
+solr.base.url={{solr_base_url}}
+
+# Oletusarvoja
+accessRight.webservice.url.backend=https\://${host.virkailija}/authentication-service/services/accessRightService
+accessRightAdmin.webservice.url.backend=https\://${host.virkailija}/authentication-service/services/accessRightAdminService
+accessRightHistory.webservice.url.backend=https\://${host.virkailija}/authentication-service/services/accessRightHistoryService
+activemq.queue.name.log.error=Sade.Log_Error
+activemq.queue.name.log=Sade.Log
+activemq.queue.name.mail=Sade.Email
+activeMq.queueName.organisaatio=fi.vm.sade.organisaatio.service
+activeMq.queueNameHaku=fi.vm.sade.tarjonta.haku.service
+activeMq.queueNameTarjontaAdmin=fi.vm.sade.tarjonta.admin.service
+activeMq.queueNameTarjontaPublic=fi.vm.sade.tarjonta.public.service
+activeMq.targetDestination.learningopportunityprovider.public=fi.vm.sade.learningopportunityprovider.public.service
+activeMq.targetDestination.organisaatio=fi.vm.sade.organisaatio.service
+activeMq.targetDestinationAdmin.tarjonta=fi.vm.sade.tarjonta.admin.service
+activeMq.targetDestinationPublic.tarjonta=fi.vm.sade.tarjonta.public.service
+activemq.topic.name.events=fi.vm.sade.events.eventsTopic
+aoid=1.2.246.562.14.71344129359
+application.oid.prefix=1.2.246.562.11
+asid=1.2.246.562.5.50476818906
+cas.callback.organisaatio-app=http://${server.name}:8301/organisaatio-app
+cas.callback.organisaatio-service=http://${server.name}:8301/organisaatio-service
+cas.callback.authentication-service=http://${server.name}:8308/authentication-service
+cas.callback.registration-ui=http://${server.name}:8308/registration-ui
+cas.sendRenew=false
+customAttribute.webservice.url.backend=https://${host.virkailija}/authentication-service/services/customAttributeService
+flyway.initOnMigrate=true
+koodi.public.webservice.url.backend=https://${host.virkailija}/koodisto-service/services/koodiService
+koodisto.public.webservice.url.backend=https://${host.virkailija}/koodisto-service/services/koodistoService
+koulutusinformaatio.phantomjs=/usr/bin/phantomjs
+koulutusinformaatio.snapshot.script=/data00/oph/koulutusinformaatio/tomcat/webapps/ROOT/script/render.js
+koulutusinformaatio.snapshot.folder=/data00/oph/koulutusinformaatio/tomcat/webapps/ROOT/app/snapshot
+koulutusinformaatio.baseurl.learningopportunity=https://test-oppija.oph.ware.fi/app/#!/
+koulutusinformaatio.sitemap.filename=sitemap-learningopportunity.xml
+koulutusinformaatio.sitemap.filepath=/data00/oph/koulutusinformaatio/tomcat/webapps/ROOT/${koulutusinformaatio.sitemap.filename}
+koulutusinformaatio.sitemap.url=https\://${host.oppija}/${koulutusinformaatio.sitemap.filename}
+koulutusinformaatio.sitemap.wp-url=https\://${host.oppija}/wp/sitemap.xml
+koulutusinformaatio.textversion.script=/data00/oph/koulutusinformaatio/tomcat/webapps/ROOT/script/m/main/src/python
+koulutusinformaatio.textversion.folder=/data00/oph/koulutusinformaatio/tomcat/webapps/ROOT/m
+koulutusinformaatio.textversion.source=https\://${host.oppija}
+koulutusinformaatio.wp.harvest-url=https\://${host.oppija}/wp/
+jpa.schemaUpdate=validate
+jpa.showSql=false
+ldap.cache.size=10000
+ldap.data.dir=${user.home}/data
+ldap.filter.people=uid\=%u
+ldap.index.cache.size=10000
+ldap.manager.userdn=cn=admin,ou=People,dc=opintopolku,dc=fi
+ldap.manager-dn=uid\=admin,ou\=system
+ldap.port=10389
+ldap.search.base.people=ou=People,dc=opintopolku,dc=fi
+ldap.url=ldap://${host.ldap}\:${ldap.port}
+ldap.url.with.base=ldap\://${host.ldap}\:${ldap.port}/dc\=opintopolku,dc\=fi
+log4j.properties.file=${user.home.conf}/log4j.properties
+mongo.db.name=koulutusinformaatio
+mongodb.url=${mongodb.ki.uri}/${mongo.db.name}?maxpoolsize=${mongo.db.maxpoolsize}
+mongo.transaction-db.name=koulutusinformaatio-transaction
+mongodb.transaction.url=${mongodb.ki.uri}/${mongo.transaction-db.name}?maxpoolsize=${mongo.db.maxpoolsize}
+mongo.test-db.name=koulutusinformaatio-test-db
+mongodb.test.url=mongodb://taulu.hard.ware.fi:57017/${mongo.test-db.name}
+oid.rest.url.backend=${host.ilb}/oid-service/rest/oid
+oid.webservice.url.backend=${host.ilb}/services/oidService
+organisaatio.api.rest.url=https\://${host.virkailija}/organisaatio-service/rest/organisaatio
+preview.cas.koulutusinformaatio-app=https\://${host.oppija}
+root.organisaatio.oid=1.2.246.562.10.00000000001
+scheduling.data.cron=0 0 * * * *
+scheduling.enabled=false
+scheduling.seo.cron=0 0 3 * * *
+scheduling.seo.enabled=true
+scheduling.textversion.cron=0 0 4 * * *
+scheduling.textversion.enabled=true
+scheduling.data.incremental.enabled=true
+scheduling.data.incremental.cron=0 * * * * ?
+scheduling.data.articles.enabled=false
+scheduling.data.articles.cron=45 45 * * * ?
+solr.learningopportunity.url=learning_opportunity
+solr.learningopportunity.update.url=learning_opportunity_update
+solr.learningopportunity.alias.url=learning_opportunity_alias
+solr.provider.url=provider
+solr.provider.update.url=provider_update
+solr.provider.alias.url=provider_alias
+solr.location.url=location
+solr.location.update.url=location_update
+solr.location.alias.url=location_alias
+tarjonta.data.url=https\://${host.virkailija}/tarjonta-service/rest/
+tarjonta.api.rest.url=https\://${host.virkailija}/tarjonta-service/rest/
+tarjonta.haku.resource.url=https\://${host.virkailija}/tarjonta-service/rest/haku
+tarjonta.hakukohde.resource.url=https\://${host.virkailija}/tarjonta-service/rest/hakukohde
+user.home.conf=${user.home}/oph-configuration
+user.oid.prefix=1.2.246.562.24
+user.webservice.url.backend=https\://${host.virkailija}/authentication-service/services/userService
+web.url.cas=https\://${host.cas}/cas
