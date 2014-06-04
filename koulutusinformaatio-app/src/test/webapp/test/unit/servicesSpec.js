@@ -4,74 +4,44 @@ describe('UtilityService', function() {
     beforeEach(function() {
         module('kiApp', 'kiApp.services');
 
-        inject(function(UtilityService) {
-            utility = UtilityService;
+        inject(function(KiSorter) {
+            utility = KiSorter;
         });
     });
 
     describe('sortApplicationSystems', function() {
 
+        var hakutapa = {
+            yhteishaku: '01',
+            erillishaku: '02',
+            jatkuva: '03'
+        };
+
+        var hakutyyppi = {
+            varsinainen: '01',
+            taydennys: '02',
+            lisa: '03'
+        };
+
         it('should work for empty input', function() {
             utility.sortApplicationSystems();
         });
 
-        it('should sort application systems by ongoing attribute', function() {
+        it('should sort application systems by their status', function() {
             var data = [
                 {
-                    asOngoing: false,
-                },
-                {
-                    asOngoing: true
-                }
-            ];
-
-            utility.sortApplicationSystems(data);
-            expect(data[0].asOngoing).toBeTruthy();
-            expect(data[1].asOngoing).toBeFalsy();
-        });
-
-        it('should sort application systems by nextApplicationPeriodStarts attribute', function() {
-            var data = [
-                {
-                    asOngoing: false,
                     id: 'a',
-                    nextApplicationPeriodStarts: 2
-                },
-                {
-                    asOngoing: false,
-                    id: 'b',
-                    nextApplicationPeriodStarts: 1
-                }
-            ];
-
-            utility.sortApplicationSystems(data);
-            expect(data[0].id).toEqual('b');
-            expect(data[1].id).toEqual('a');
-        });
-
-        it('should sort application systems by earliest start date', function() {
-            var data = [
-                {
-                    asOngoing: false,
-                    id: 'a',
-                    applicationDates: [
+                    applicationOptions: [
                         {
-                            startDate: 5,
-                            endDate: 10
-                        },
-                        {
-                            startDate: 20,
-                            endDate: 30
+                            canBeApplied: false
                         }
                     ]
                 },
                 {
-                    asOngoing: false,
                     id: 'b',
-                    applicationDates: [
+                    applicationOptions: [
                         {
-                            startDate: 4,
-                            endDate: 8
+                            canBeApplied: true
                         }
                     ]
                 }
@@ -82,65 +52,25 @@ describe('UtilityService', function() {
             expect(data[1].id).toEqual('a');
         });
 
-        it('should sort ended applications systems to the bottom', function() {
-            var data = [
-                {
-                    asOngoing: false,
-                    id: 'a'
-                },
-                {
-                    asOngoing: false,
-                    id: 'b',
-                    nextApplicationPeriodStarts: 1
-                },
-                {
-                    asOngoing: false,
-                    id: 'c',
-                    nextApplicationPeriodStarts: 2
-                }
-            ];
-
-            utility.sortApplicationSystems(data);
-            expect(data[0].id).toEqual('b');
-            expect(data[1].id).toEqual('c');
-            expect(data[2].id).toEqual('a');
-        });
-
-        it('should sort applications systems of type Lisähaku by application option specific dates', function() {
+        it('should sort "käynnissä oleva varsinainen yhteishaku" first', function() {
             var data = [
                 {
                     id: 'a',
-                    asOngoing: false,
-                    applicationDates: [
+                    hakutapa: hakutapa.yhteishaku,
+                    hakutyyppi: hakutyyppi.lisa,
+                    applicationOptions: [
                         {
-                            startDate: 8,
-                            endDate: 9
+                            canBeApplied: true
                         }
                     ]
                 },
                 {
                     id: 'b',
-                    asOngoing: false,
-                    aoSpecificApplicationDates: true,
+                    hakutapa: hakutapa.yhteishaku,
+                    hakutyyppi: hakutyyppi.varsinainen,
                     applicationOptions: [
                         {
-                            applicationStartDate: 1
-                        },
-                        {
-                            applicationStartDate: 4
-                        }
-                    ]
-                },
-                {
-                    id: 'c',
-                    asOngoing: false,
-                    aoSpecificApplicationDates: true,
-                    applicationOptions: [
-                        {
-                            applicationStartDate: 3
-                        },
-                        {
-                            applicationStartDate: 4
+                            canBeApplied: true
                         }
                     ]
                 }
@@ -148,11 +78,295 @@ describe('UtilityService', function() {
 
             utility.sortApplicationSystems(data);
             expect(data[0].id).toEqual('b');
-            expect(data[1].id).toEqual('c');
-            expect(data[2].id).toEqual('a');
+            expect(data[1].id).toEqual('a');
+        });
 
+        it('should sort "käynnissä oleva yhteishaun lisähaku" first', function() {
+            var data = [
+                {
+                    id: 'a',
+                    hakutapa: hakutapa.yhteishaku,
+                    hakutyyppi: hakutyyppi.varsinainen,
+                    applicationOptions: [
+                        {
+                            canBeApplied: false
+                        }
+                    ]
+                },
+                {
+                    id: 'b',
+                    hakutapa: hakutapa.yhteishaku,
+                    hakutyyppi: hakutyyppi.lisa,
+                    applicationOptions: [
+                        {
+                            canBeApplied: true
+                        }
+                    ]
+                }
+            ];
+
+            utility.sortApplicationSystems(data);
+            expect(data[0].id).toEqual('b');
+            expect(data[1].id).toEqual('a');
+        });
+
+        it('should sort "käynnissä oleva yhteishaun lisähaku" before upcoming "varsinainen yhteishaku"', function() {
+            var ts = new Date().getTime();
+            var data = [
+                {
+                    id: 'a',
+                    hakutapa: hakutapa.yhteishaku,
+                    hakutyyppi: hakutyyppi.varsinainen,
+                    applicationOptions: [
+                        {
+                            canBeApplied: false,
+                            applicationStartDate: ts + 15 * 24 * 60 * 60 * 1000 
+                        }
+                    ]
+                },
+                {
+                    id: 'b',
+                    hakutapa: hakutapa.yhteishaku,
+                    hakutyyppi: hakutyyppi.lisa,
+                    applicationOptions: [
+                        {
+                            canBeApplied: true
+                        }
+                    ]
+                }
+            ];
+
+            utility.sortApplicationSystems(data);
+            expect(data[0].id).toEqual('b');
+            expect(data[1].id).toEqual('a');
+        });
+
+        it('should sort upcoming "varsinainen yhteishaku" before "käynnissä oleva erillishaku"', function() {
+            var ts = new Date().getTime();
+            var data = [
+                {
+                    id: 'a',
+                    hakutapa: hakutapa.erillishaku,
+                    hakutyyppi: hakutyyppi.varsinainen,
+                    applicationOptions: [
+                        {
+                            canBeApplied: true,
+                            
+                        }
+                    ]
+                },
+                {
+                    id: 'b',
+                    hakutapa: hakutapa.yhteishaku,
+                    hakutyyppi: hakutyyppi.varsinainen,
+                    applicationOptions: [
+                        {
+                            canBeApplied: false,
+                            applicationStartDate: ts + 15 * 24 * 60 * 60 * 1000 
+                        }
+                    ]
+                }
+            ];
+
+            utility.sortApplicationSystems(data);
+            expect(data[0].id).toEqual('b');
+            expect(data[1].id).toEqual('a');
+        });
+
+        it('should sort applications systems by start date', function() {
+            var ts = new Date().getTime();
+            var data = [
+                {
+                    id: 'a',
+                    hakutapa: hakutapa.yhteishaku,
+                    hakutyyppi: hakutyyppi.varsinainen,
+                    applicationOptions: [
+                        {
+                            canBeApplied: false,
+                            applicationStartDate: ts + 15 * 24 * 60 * 60 * 1000
+                        }
+                    ]
+                },
+                {
+                    id: 'b',
+                    hakutapa: hakutapa.yhteishaku,
+                    hakutyyppi: hakutyyppi.varsinainen,
+                    applicationOptions: [
+                        {
+                            canBeApplied: false,
+                            applicationStartDate: ts + 5 * 24 * 60 * 60 * 1000 
+                        }
+                    ]
+                }
+            ];
+
+            utility.sortApplicationSystems(data);
+            expect(data[0].id).toEqual('b');
+            expect(data[1].id).toEqual('a');
+        });
+
+        it('should sort applications systems by name', function() {
+            var ts = new Date().getTime();
+            var data = [
+                {
+                    id: 'a',
+                    name: 'baa',
+                    hakutapa: hakutapa.yhteishaku,
+                    hakutyyppi: hakutyyppi.varsinainen,
+                    applicationOptions: [
+                        {
+                            canBeApplied: false,
+                            applicationStartDate: ts + 15 * 24 * 60 * 60 * 1000
+                        }
+                    ]
+                },
+                {
+                    id: 'b',
+                    name: 'aab',
+                    hakutapa: hakutapa.yhteishaku,
+                    hakutyyppi: hakutyyppi.varsinainen,
+                    applicationOptions: [
+                        {
+                            canBeApplied: false,
+                            applicationStartDate: ts + 15 * 24 * 60 * 60 * 1000 
+                        }
+                    ]
+                }
+            ];
+
+            utility.sortApplicationSystems(data);
+            expect(data[0].id).toEqual('b');
+            expect(data[1].id).toEqual('a');
+        });
+
+        it('should sort applications systems correctly', function() {
+            var ts = new Date().getTime();
+            var data = [
+                {
+                    id: 'a',
+                    name: 'a',
+                    hakutapa: hakutapa.yhteishaku,
+                    hakutyyppi: hakutyyppi.varsinainen,
+                    applicationOptions: [
+                        {
+                            canBeApplied: false,
+                            applicationStartDate: ts + 15 * 24 * 60 * 60 * 1000
+                        }
+                    ]
+                },
+                {
+                    id: 'b',
+                    name: 'b',
+                    hakutapa: hakutapa.yhteishaku,
+                    hakutyyppi: hakutyyppi.varsinainen,
+                    applicationOptions: [
+                        {
+                            canBeApplied: false,
+                            applicationStartDate: ts + 5 * 24 * 60 * 60 * 1000 
+                        }
+                    ]
+                },
+                {
+                    id: 'c',
+                    name: 'c',
+                    hakutapa: hakutapa.yhteishaku,
+                    hakutyyppi: hakutyyppi.varsinainen,
+                    applicationOptions: [
+                        {
+                            canBeApplied: false,
+                            applicationStartDate: ts + 5 * 24 * 60 * 60 * 1000 
+                        }
+                    ]
+                },
+                {
+                    id: 'd',
+                    name: 'd',
+                    hakutapa: hakutapa.yhteishaku,
+                    hakutyyppi: hakutyyppi.lisa,
+                    applicationOptions: [
+                        {
+                            canBeApplied: true
+                        }
+                    ]
+                },
+                {
+                    id: 'e',
+                    name: 'e',
+                    hakutapa: hakutapa.yhteishaku,
+                    hakutyyppi: hakutyyppi.varsinainen,
+                    applicationOptions: [
+                        {
+                            canBeApplied: true
+                        }
+                    ]
+                }
+            ];
+
+            utility.sortApplicationSystems(data);
+            expect(data[0].id).toEqual('e');
+            expect(data[1].id).toEqual('d');
+            expect(data[2].id).toEqual('b');
+            expect(data[3].id).toEqual('c');
+            expect(data[4].id).toEqual('a');
+        });
+
+        it('should sort application options correctly', function() {
+            var data = [
+                {
+                    id: 'a',
+                    hakutapa: hakutapa.yhteishaku,
+                    hakutyyppi: hakutyyppi.lisa,
+                    applicationOptions: [
+                        {
+                            name: 'a',
+                            applicationStartDate: 15,
+                            canBeApplied: false
+                        },
+                        {
+                            name: 'b',
+                            canBeApplied: true
+                        },
+                        {
+                            name: 'c',
+                            applicationStartDate: 10,
+                            canBeApplied: false
+                        },
+                        {
+                            name: 'd',
+                            applicationStartDate: 10,
+                            canBeApplied: false
+                        },
+                        {
+                            name: 'e',
+                            applicationStartDate: 15,
+                            canBeApplied: false
+                        }
+                    ]
+                }
+            ];
+
+            utility.sortApplicationSystems(data);
+            expect(data[0].applicationOptions[0].name).toEqual('b');
+            expect(data[0].applicationOptions[1].name).toEqual('c');
+            expect(data[0].applicationOptions[2].name).toEqual('d');
+            expect(data[0].applicationOptions[3].name).toEqual('a');
+            expect(data[0].applicationOptions[4].name).toEqual('e');
         });
     });
+});
+
+
+describe('UtilityService', function() {
+    var utility;
+
+    beforeEach(function() {
+        module('kiApp', 'kiApp.services');
+
+        inject(function(UtilityService) {
+            utility = UtilityService;
+        });
+    });
+
 
     describe('sortApplicationSystems', function() {
         var data = [
