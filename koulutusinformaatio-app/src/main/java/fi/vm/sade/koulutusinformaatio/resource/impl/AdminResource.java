@@ -122,10 +122,13 @@ public class AdminResource {
         dto.setLastUpdateDuration(millis);
         dto.setLastUpdateDurationStr(String.format("%d hours, %d minutes", millis / 3600000, millis / 60000 % 60));
         dto.setLastUpdateOutcome(status.getLastUpdateOutcome());
-        dto.setRunning(updateService.isRunning());
-        if (dto.isRunning()) {
+        dto.setRunning(updateService.isRunning() || incrementalUpdateService.isRunning());
+        if (dto.isRunning() && updateService.isRunning()) {
             dto.setRunningSince(new Date(updateService.getRunningSince()));
             dto.setRunningSinceStr(new Date(updateService.getRunningSince()).toString());
+        } else if (dto.isRunning() && incrementalUpdateService.isRunning()) {
+            dto.setRunningSince(new Date(incrementalUpdateService.getRunningSince()));
+            dto.setRunningSinceStr(new Date(incrementalUpdateService.getRunningSince()).toString());
         }
         dto.setSnapshotRenderingRunning(seoService.isRunning());
         dto.setTextVersionRenderingRunning(textVersionService.isRunning());

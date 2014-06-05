@@ -3657,21 +3657,21 @@ table {
     display: inline-block;
     margin: 0 10px 0 0;
     content: " ";
-    width: 9px;
+    width: 14px;
     height: 14px;
-    background: transparent url("../img/triangle-close.png") scroll no-repeat 0 0;
+    background: transparent url("../img/triangle-yellow-close.png") scroll no-repeat 0 0;
     overflow: hidden; }
   .collapser.close:hover:before {
-    background-position: -9px 0; }
+    background-position: -14px 0; }
   .collapser.close:active:before {
-    background-position: -18px 0; }
+    background-position: -28px 0; }
   .collapser.open:before {
     display: inline-block;
     margin: 0 10px 0 0;
     content: "";
     width: 14px;
-    height: 9px;
-    background: transparent url("../img/triangle-open.png") scroll no-repeat 0 0;
+    height: 14px;
+    background: transparent url("../img/triangle-yellow-open.png") scroll no-repeat 0 0;
     overflow: hidden; }
   .collapser.open:hover:before {
     background-position: -14px 0; }

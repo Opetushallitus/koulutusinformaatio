@@ -5,4 +5,8 @@ public interface IncrementalUpdateService {
 
     public void updateChangedEducationData() throws Exception;
 
+    boolean isRunning();
+
+    long getRunningSince();
+
 }

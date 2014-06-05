@@ -92,7 +92,7 @@ public class UpdateServiceImpl implements UpdateService {
 
             this.transactionManager.beginTransaction(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
             
-            
+
             int count = MAX_RESULTS;
             int index = 0;
 
@@ -176,16 +176,6 @@ public class UpdateServiceImpl implements UpdateService {
     @Override
     public long getRunningSince() {
         return runningSince;
-    }
-
-    @Override
-    public void setRunning(boolean running) {
-        this.running = running;
-    }
-
-    @Override
-    public void setRunningSince(long runningSince) {
-        this.runningSince = runningSince;
     }
 
     @Override

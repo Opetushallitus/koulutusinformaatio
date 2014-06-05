@@ -38,9 +38,9 @@ public interface UpdateService {
     
     public boolean isRunning();
     
-    public void setRunning(boolean running);
+    //public void setRunning(boolean running);
 
     public long getRunningSince();
     
-    public void setRunningSince(long runningSince);
+    //public void setRunningSince(long runningSince);
 }
