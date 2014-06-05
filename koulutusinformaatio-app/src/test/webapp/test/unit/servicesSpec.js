@@ -187,8 +187,20 @@ describe('UtilityService', function() {
                         }
                     ]
                 },
+                ,
                 {
                     id: 'b',
+                    hakutapa: hakutapa.yhteishaku,
+                    hakutyyppi: hakutyyppi.varsinainen,
+                    applicationOptions: [
+                        {
+                            canBeApplied: false,
+                            applicationStartDate: ts - 25 * 24 * 60 * 60 * 1000 
+                        }
+                    ]
+                },
+                {
+                    id: 'c',
                     hakutapa: hakutapa.yhteishaku,
                     hakutyyppi: hakutyyppi.varsinainen,
                     applicationOptions: [
@@ -201,8 +213,9 @@ describe('UtilityService', function() {
             ];
 
             utility.sortApplicationSystems(data);
-            expect(data[0].id).toEqual('b');
+            expect(data[0].id).toEqual('c');
             expect(data[1].id).toEqual('a');
+            expect(data[2].id).toEqual('b');
         });
 
         it('should sort applications systems by name', function() {
