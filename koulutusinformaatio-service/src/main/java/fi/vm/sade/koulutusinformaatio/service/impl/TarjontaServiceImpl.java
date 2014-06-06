@@ -32,6 +32,7 @@ import org.springframework.stereotype.Service;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 
+import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
@@ -60,6 +61,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusLukioV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KuvaV1RDTO;
 import fi.vm.sade.tarjonta.service.types.TarjontaTila;
 
@@ -178,7 +180,7 @@ public class TarjontaServiceImpl implements TarjontaService {
         //Komo-oids of parent level learning opportunities. 
         List<String> parentOids = new ArrayList<String>();
 
-        ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes = this.tarjontaRawService.listHigherEducation();
+        ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes = this.tarjontaRawService.listEducations(TarjontaConstants.HIGHER_EDUCATION_TYPE);//listHigherEducation();
         HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
         Map<String,List<HigherEducationLOSRef>> aoToEducationsMap = new HashMap<String,List<HigherEducationLOSRef>>();
         for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
@@ -487,6 +489,58 @@ public class TarjontaServiceImpl implements TarjontaService {
     @Override
     public List<Code> getEdTypeCodes() throws KoodistoException {
         return koodistoService.searchByKoodisto(ED_TYPE_FACET_KOODISTO, null);
+    }
+
+    @Override
+    public List<AdultUpperSecondaryLOS> findAdultUpperSecondaries() {
+        
+        if (creator == null) {
+            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService);
+        }
+        
+        List<AdultUpperSecondaryLOS> koulutukset = new ArrayList<AdultUpperSecondaryLOS>();
+        
+        ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes =  this.tarjontaRawService.listEducations(TarjontaConstants.UPPER_SECONDARY_EDUCATION_TYPE);
+        HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
+        Map<String,List<HigherEducationLOSRef>> aoToEducationsMap = new HashMap<String,List<HigherEducationLOSRef>>();
+        for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
+            for (KoulutusHakutulosV1RDTO curKoulutus : curRes.getTulokset()) {
+                if (!curKoulutus.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
+                    continue;
+                }
+                
+                ResultV1RDTO<KoulutusLukioV1RDTO> koulutusRes = this.tarjontaRawService.getUpperSecondaryLearningOpportunity(curKoulutus.getOid());
+                KoulutusLukioV1RDTO koulutusDTO = koulutusRes.getResult();
+                if (koulutusDTO == null || koulutusDTO.getKoulutuslaji() == null || koulutusDTO.getKoulutuslaji().getUri().contains(TarjontaConstants.NUORTEN_KOULUTUS)) {
+                    continue;
+                }
+                
+                //
+                
+                /*
+                try {
+                    HigherEducationLOS los = creator.createHigherEducationLOS(koulutusDTO, true);
+                    los.setStructureImage(retrieveStructureImage(curKoulutus.getOid()));
+                    koulutukset.add(los);
+                    List<HigherEducationLOS> loss = komoToLOSMap.get(koulutusDTO.getKomoOid());
+                    if (loss == null) {
+                        loss = new ArrayList<HigherEducationLOS>();
+                        loss.add(los);
+                        komoToLOSMap.put(koulutusDTO.getKomoOid(), loss);
+                    } else {
+                        loss.add(los);
+                    }
+                    parentOids.add(los.getKomoOid());
+                    updateAOLosReferences(los, aoToEducationsMap);
+
+                } catch (TarjontaParseException ex) {
+                    continue;
+                }*/
+                
+            }
+        }
+        
+        return koulutukset;
     }
 
 

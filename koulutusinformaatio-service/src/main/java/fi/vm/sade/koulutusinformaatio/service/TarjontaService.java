@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
+import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
@@ -79,4 +80,6 @@ public interface TarjontaService {
 
     HigherEducationLOS createHigherEducationLearningOpportunityTree(String oid)
             throws TarjontaParseException, KoodistoException;
+
+    public List<AdultUpperSecondaryLOS> findAdultUpperSecondaries();
 }

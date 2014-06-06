@@ -23,6 +23,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusLukioV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KuvaV1RDTO;
 
 import java.util.List;
@@ -61,7 +62,7 @@ public interface TarjontaRawService {
     
     public Map<String, List<String>> listModifiedLearningOpportunities(long updatePeriod);
     
-    public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> listHigherEducation();
+    public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> listEducations(String educationType);
     
     public ResultV1RDTO<KoulutusKorkeakouluV1RDTO> getHigherEducationLearningOpportunity(String oid);
     
@@ -83,5 +84,8 @@ public interface TarjontaRawService {
 
     ResultV1RDTO<List<NimiJaOidRDTO>> getHigherEducationByHakukohode(
             String hakukohdeOid);
+
+    ResultV1RDTO<KoulutusLukioV1RDTO> getUpperSecondaryLearningOpportunity(
+            String oid);
     
 }
