@@ -805,14 +805,13 @@ directive('kiApplicationStatusLabel', function() {
     return {
         restrict: 'A',
         template: '<span data-ng-switch="active">' +
-                    '<span data-ng-switch-when="future"><span data-ki-i18n="application-system-active-future" data-lang="{{lang}}"></span> <span data-ki-timestamp="{{timestamp}}"></span></span>' +
-                    '<span data-ng-switch-when="past" data-ki-i18n="application-system-active-past" data-lang="{{lang}}"></span>' +
-                    '<span data-ng-switch-when="present"data-ki-i18n="application-system-active-present" data-lang="{{lang}}"></span>' +
+                    '<span data-ng-switch-when="future"><span data-ki-i18n="application-system-active-future"></span> <span data-ki-timestamp="{{timestamp}}"></span></span>' +
+                    '<span data-ng-switch-when="past" data-ki-i18n="application-system-active-past"></span>' +
+                    '<span data-ng-switch-when="present"data-ki-i18n="application-system-active-present"></span>' +
                 '</span>',
         scope: {
             applicationSystem: '=as',
-            applicationOption: '=ao',
-            lang: '@lang'
+            applicationOption: '=ao'
         },
         link: function(scope, element, attrs) {
             var as = scope.applicationSystem;

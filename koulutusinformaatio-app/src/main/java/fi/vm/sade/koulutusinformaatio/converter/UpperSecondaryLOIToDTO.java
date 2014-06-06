@@ -67,7 +67,7 @@ public final class UpperSecondaryLOIToDTO {
         }
 
         for (ApplicationSystem as : aoByAs.keySet()) {
-            ApplicationSystemDTO asDTO = ApplicationSystemToDTO.convert(as, defaultLang);
+            ApplicationSystemDTO asDTO = ApplicationSystemToDTO.convert(as, uiLang);
             for (ApplicationOption ao : aoByAs.get(as)) {
                 asDTO.getApplicationOptions().add(ApplicationOptionToDTO.convert(ao, lang, uiLang, defaultLang));
             }

@@ -60,6 +60,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<HigherEdu
         if (los.getFacetPrerequisites() != null && !los.getFacetPrerequisites().isEmpty()) {
             for (Code curPrereq : los.getFacetPrerequisites()) {
                 doc.addField(LearningOpportunity.PREREQUISITES, curPrereq.getValue());
+                doc.addField(LearningOpportunity.PREREQUISITE_DISPLAY, curPrereq.getValue());
             }
         }
 

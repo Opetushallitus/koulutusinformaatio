@@ -138,6 +138,25 @@ public final class SolrUtil {
         }
     }
     
+    public static void setLopAndHomeplaceDisplaynames(SolrInputDocument doc,
+            Provider provider, Code prerequisite) {
+        
+        doc.setField(LearningOpportunity.LOP_NAME_DISPLAY_FI, provider.getName().get("fi"));
+        doc.setField(LearningOpportunity.LOP_NAME_DISPLAY_SV, provider.getName().get("sv"));
+        doc.setField(LearningOpportunity.LOP_NAME_DISPLAY_EN, provider.getName().get("en"));
+        
+        doc.setField(LearningOpportunity.HOMEPLACE_DISPLAY_FI, provider.getHomePlace().get("fi"));
+        doc.setField(LearningOpportunity.HOMEPLACE_DISPLAY_SV, provider.getHomePlace().get("sv"));
+        doc.setField(LearningOpportunity.HOMEPLACE_DISPLAY_EN, provider.getHomePlace().get("en"));
+        
+        doc.setField(LearningOpportunity.PREREQUISITE_DISPLAY_FI, prerequisite.getName().get("fi"));
+        doc.setField(LearningOpportunity.PREREQUISITE_DISPLAY_SV, prerequisite.getName().get("sv"));
+        doc.setField(LearningOpportunity.PREREQUISITE_DISPLAY_EN, prerequisite.getName().get("en"));
+        
+        
+        
+    }
+    
     /*
      * Creates a facet document for the given code, and adds to the list of docs given.
      */
@@ -277,6 +296,11 @@ public final class SolrUtil {
         public static final String HOMEPLACE_DISPLAY_SV = "homeplace_sv_ss";
         public static final String HOMEPLACE_DISPLAY_EN = "homeplace_en_ss";
         public static final String HOMEPLACE_DISPLAY = "homeplace_ss";
+        public static final String PREREQUISITE_DISPLAY_EN = "prerequisite_en_ss";
+        public static final String PREREQUISITE_DISPLAY_FI = "prerequisite_fi_ss";
+        public static final String PREREQUISITE_DISPLAY_SV = "prerequisite_sv_ss";
+        public static final String PREREQUISITE_DISPLAY = "prerequisite_ss";
+        
         public static final String EDUCATION_CODE_DISPLAY_FI = "educationCode_fi_ssort";
         public static final String EDUCATION_CODE_DISPLAY_SV = "educationCode_sv_ssort";
         public static final String EDUCATION_CODE_DISPLAY_EN = "educationCode_en_ssort";

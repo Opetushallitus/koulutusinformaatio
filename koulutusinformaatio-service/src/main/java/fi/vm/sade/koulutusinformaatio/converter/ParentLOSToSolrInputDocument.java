@@ -74,6 +74,8 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
 
         doc.setField(LearningOpportunity.PREREQUISITE, SolrUtil.resolveTranslationInTeachingLangUseFallback(
                 parent.getTeachingLanguages(), prerequisite.getName().getTranslations()));
+        doc.setField(LearningOpportunity.PREREQUISITE_DISPLAY, SolrUtil.resolveTranslationInTeachingLangUseFallback(
+                parent.getTeachingLanguages(), prerequisite.getName().getTranslations()));
         doc.addField(LearningOpportunity.PREREQUISITE_CODE, prereqVal);
 
         //doc.setField(LearningOpportunity.NAME, parent.getName().getTranslations().get("fi"));
@@ -86,7 +88,7 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
 
         if (parent.getCreditValue() != null) {
             doc.addField(LearningOpportunity.CREDITS, String.format("%s %s", parent.getCreditValue(), 
-                    parent.getCreditUnit().getTranslations().get("fi")));
+                    SolrUtil.resolveTranslationInTeachingLangUseFallback(parent.getTeachingLanguages(),parent.getCreditUnit().getTranslations())));
         }
 
         doc.addField(LearningOpportunity.NAME_SORT, parentName.toLowerCase().trim());
@@ -108,7 +110,9 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
                     SolrUtil.resolveTextWithFallback(teachLang,
                             provider.getHomePlace().getTranslations()));
         }
-
+        
+        SolrUtil.setLopAndHomeplaceDisplaynames(doc, provider, prerequisite);
+        
         if (provider.getHomeDistrict() != null) {
             List<String> locVals = new ArrayList<String>();
             locVals.addAll(provider.getHomeDistrict().getTranslations().values());

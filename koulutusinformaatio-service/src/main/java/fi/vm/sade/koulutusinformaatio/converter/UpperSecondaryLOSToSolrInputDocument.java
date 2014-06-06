@@ -61,6 +61,8 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
 
         doc.setField(LearningOpportunity.PREREQUISITE, SolrUtil.resolveTranslationInTeachingLangUseFallback(
                 loi.getTeachingLanguages(), loi.getPrerequisite().getName().getTranslations()));
+        doc.setField(LearningOpportunity.PREREQUISITE_DISPLAY, SolrUtil.resolveTranslationInTeachingLangUseFallback(
+                loi.getTeachingLanguages(), loi.getPrerequisite().getName().getTranslations()));
         doc.addField(LearningOpportunity.PREREQUISITE_CODE, loi.getPrerequisite().getValue());
 
         if (los.getCreditValue() != null 
@@ -181,6 +183,7 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
 
         //For faceting
         indexFacetFields(doc, los, loi);
+        SolrUtil.setLopAndHomeplaceDisplaynames(doc, provider, loi.getPrerequisite());
 
         return doc;
     }

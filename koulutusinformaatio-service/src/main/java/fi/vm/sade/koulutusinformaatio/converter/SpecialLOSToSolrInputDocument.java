@@ -76,6 +76,8 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
 
         doc.setField(SolrUtil.LearningOpportunity.PREREQUISITE, SolrUtil.resolveTranslationInTeachingLangUseFallback(
                 childLOI.getTeachingLanguages(), childLOI.getPrerequisite().getName().getTranslations()));
+        doc.setField(SolrUtil.LearningOpportunity.PREREQUISITE_DISPLAY, SolrUtil.resolveTranslationInTeachingLangUseFallback(
+                childLOI.getTeachingLanguages(), childLOI.getPrerequisite().getName().getTranslations()));
         doc.addField(SolrUtil.LearningOpportunity.PREREQUISITE_CODE, childLOI.getPrerequisite().getValue());
 
         String teachingLang = childLOI.getTeachingLanguages().isEmpty() ? "EXC" : childLOI.getTeachingLanguages().get(0).getValue().toLowerCase();
@@ -193,6 +195,7 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
 
         doc.addField(SolrUtil.LearningOpportunity.START_DATE_SORT, childLOI.getStartDate());
         indexFacetFields(childLOI, specialLOS, doc);
+        SolrUtil.setLopAndHomeplaceDisplaynames(doc, provider, childLOI.getPrerequisite());
 
         return doc;
     }
