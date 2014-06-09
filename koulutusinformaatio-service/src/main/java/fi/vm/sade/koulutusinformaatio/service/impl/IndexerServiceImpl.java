@@ -152,8 +152,8 @@ public class IndexerServiceImpl implements IndexerService {
             }
 
             //Adding higher education los
-        } else if (los instanceof HigherEducationLOS) {
-            HigherEducationLOS uas = (HigherEducationLOS)los;
+        } else if (los instanceof StandaloneLOS) {
+            StandaloneLOS uas = (StandaloneLOS)los;
             provider = uas.getProvider();
 
             if (uas.getApplicationOptions() != null) {

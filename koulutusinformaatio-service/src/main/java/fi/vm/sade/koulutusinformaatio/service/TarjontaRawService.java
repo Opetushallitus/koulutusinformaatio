@@ -66,11 +66,11 @@ public interface TarjontaRawService {
     
     public ResultV1RDTO<KoulutusKorkeakouluV1RDTO> getHigherEducationLearningOpportunity(String oid);
     
-    public ResultV1RDTO<List<NimiJaOidRDTO>> getHakukohdesByHigherEducation(String oid);
+    public ResultV1RDTO<List<NimiJaOidRDTO>> getHakukohdesByEducationOid(String oid);
     
-    public ResultV1RDTO<HakukohdeV1RDTO> getHigherEducationHakukohode(String oid);
+    public ResultV1RDTO<HakukohdeV1RDTO> getV1EducationHakukohode(String oid);
     
-    public ResultV1RDTO<HakuV1RDTO> getHigherEducationHakuByOid(String oid);
+    public ResultV1RDTO<HakuV1RDTO> getV1EducationHakuByOid(String oid);
     
     public ResultV1RDTO<Set<String>> getChildrenOfParentHigherEducationLOS(String parentOid);
 

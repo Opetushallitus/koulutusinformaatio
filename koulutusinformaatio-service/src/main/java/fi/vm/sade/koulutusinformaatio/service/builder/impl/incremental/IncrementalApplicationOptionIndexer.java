@@ -168,7 +168,7 @@ public class IncrementalApplicationOptionIndexer {
     
     public void indexHigherEdAo(String aoOid, boolean toRemove) throws Exception {
 
-        ResultV1RDTO<HakukohdeV1RDTO> aoRes = this.tarjontaRawService.getHigherEducationHakukohode(aoOid);
+        ResultV1RDTO<HakukohdeV1RDTO> aoRes = this.tarjontaRawService.getV1EducationHakukohode(aoOid);
         if (aoRes != null) {
             HakukohdeV1RDTO curAo = aoRes.getResult();
             if (curAo != null) {

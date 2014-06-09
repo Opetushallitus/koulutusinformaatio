@@ -294,7 +294,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         return ao;
     }
 
-    public ApplicationOption createHigherEducationApplicationOption(HigherEducationLOS los, 
+    public ApplicationOption createV1EducationApplicationOption(StandaloneLOS los, 
                                                                     HakukohdeV1RDTO hakukohde, 
                                                                     HakuV1RDTO haku) throws KoodistoException {
         

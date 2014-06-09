@@ -237,7 +237,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     }
 
     @Override
-    public ResultV1RDTO<List<NimiJaOidRDTO>> getHakukohdesByHigherEducation(
+    public ResultV1RDTO<List<NimiJaOidRDTO>> getHakukohdesByEducationOid(
             String oid) {
         return higherEducationResource
                 .path(String.format("%s/%s", oid, "hakukohteet"))
@@ -247,7 +247,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     }
 
     @Override
-    public ResultV1RDTO<HakukohdeV1RDTO> getHigherEducationHakukohode(String oid) {
+    public ResultV1RDTO<HakukohdeV1RDTO> getV1EducationHakukohode(String oid) {
         return higherEducationAOResource
                 .path(oid)
                 .accept(JSON_UTF8)
@@ -265,7 +265,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     }
 
     @Override
-    public ResultV1RDTO<HakuV1RDTO> getHigherEducationHakuByOid(String oid) {
+    public ResultV1RDTO<HakuV1RDTO> getV1EducationHakuByOid(String oid) {
         return higherEducationASResource
                 .path(oid)
                 .accept(JSON_UTF8)

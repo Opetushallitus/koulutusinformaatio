@@ -87,7 +87,7 @@ public class IncrementalApplicationSystemIndexer {
     
     private void indexHigherEducationAsData(String asOid) throws Exception {
         
-        ResultV1RDTO<HakuV1RDTO> hakuRes = this.tarjontaRawService.getHigherEducationHakuByOid(asOid);
+        ResultV1RDTO<HakuV1RDTO> hakuRes = this.tarjontaRawService.getV1EducationHakuByOid(asOid);
         if (hakuRes != null) {
             HakuV1RDTO asDto = hakuRes.getResult();
             List<String> lossesInAS = this.dataQueryService.getLearningOpportunityIdsByAS(asDto.getOid());

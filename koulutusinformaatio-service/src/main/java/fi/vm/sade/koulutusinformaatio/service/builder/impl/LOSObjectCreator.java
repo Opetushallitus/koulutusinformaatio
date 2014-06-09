@@ -35,7 +35,9 @@ import fi.vm.sade.tarjonta.service.resources.dto.NimiJaOidRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiUrisV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiValikoimaV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusLukioV1RDTO;
 import fi.vm.sade.tarjonta.service.types.TarjontaTila;
@@ -47,6 +49,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -549,15 +552,14 @@ public class LOSObjectCreator extends ObjectCreator {
             
             //Map<String, List<String>> kielivalikoimat = komoto.getTarjotutKielet();
             List<LanguageSelection> languageSelection = Lists.newArrayList();
+            KoodiValikoimaV1RDTO kielivalikoima = koulutus.getKielivalikoima();
+            //kielivalikoima.
 
-            for (Map.Entry<String, List<String>> oppiaine : kielivalikoimat.entrySet()) {
-                List<I18nText> languages = Lists.newArrayList();
-                for (String kieliKoodi : oppiaine.getValue()) {
-                    languages.add(koodistoService.searchFirstName(kieliKoodi));
-                }
+            for (Map.Entry<String,KoodiUrisV1RDTO> oppiaine : kielivalikoima.entrySet()) {
+                List<I18nText> languages = getI18nTextMultiple(oppiaine.getValue());//Lists.newArrayList();
                 languageSelection.add(new LanguageSelection(oppiaine.getKey(), languages));
             }
-            loi.setLanguageSelection(languageSelection);
+            los.setLanguageSelection(languageSelection);
         }
 
         los.setTeachingLanguages(createCodes(koulutus.getOpetuskielis()));//koodistoService.searchCodesMultiple(childKomoto.getOpetuskieletUris()));
@@ -571,8 +573,11 @@ public class LOSObjectCreator extends ObjectCreator {
         for (Code teachingLanguage : los.getTeachingLanguages()) {
             availableLanguagesMap.put(teachingLanguage.getUri(), teachingLanguage);
         }
-
         los.setAvailableTranslationLanguages(new ArrayList<Code>(availableLanguagesMap.values()));
+        
+        if (koulutus.getLukiodiplomit() != null) {
+            los.setDiplomas(getI18nTextMultiple(koulutus.getLukiodiplomit()));
+        }
 
         if (koulutus.getYhteyshenkilos() != null) {
             for (YhteyshenkiloTyyppi yhteyshenkiloRDTO : koulutus.getYhteyshenkilos()) {
@@ -596,7 +601,7 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setEducationType(getEducationType(koulutus.getKoulutusaste().getUri()));
         los.setEducationDegreeLang(getI18nTextEnriched(koulutus.getKoulutusaste().getMeta()));
         los.setDegreeTitle(getI18nTextEnriched(koulutus.getKoulutusohjelma()));
-        los.setQualifications(getQualifications(koulutus));
+        los.setQualifications(Arrays.asList(getI18nTextEnriched(koulutus.getTutkintonimike().getMeta())));
         los.setDegree(getI18nTextEnriched(koulutus.getTutkinto().getMeta()));
         if (koulutus.getKoulutuksenAlkamisPvms() != null && !koulutus.getKoulutuksenAlkamisPvms().isEmpty()) {
             los.setStartDate(koulutus.getKoulutuksenAlkamisPvms().iterator().next());
@@ -613,7 +618,6 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setPduCodeUri(koulutus.getSuunniteltuKestoTyyppi().getUri());
         los.setCreditValue(koulutus.getOpintojenLaajuusarvo().getArvo());
         los.setCreditUnit(getI18nTextEnriched(koulutus.getOpintojenLaajuusyksikko().getMeta()));
-        //los.setChargeable(koulutus.getOpintojenMaksullisuus()); 
 
         try {
             Provider provider = providerService.getByOID(koulutus.getOrganisaatio().getOid());
@@ -622,17 +626,15 @@ public class LOSObjectCreator extends ObjectCreator {
             throw new KoodistoException("Problem reading organisaatio: " + ex.getMessage());
         }
 
-        
-        los.setTopics(createCodes(koulutus.getAihees()));
-        los.setThemes(getThemes(los));
+        if (koulutus.getOpintoala() != null) {
+            los.setTopics(getTopics(koulutus.getOpintoala().getUri()));
+            los.setThemes(getThemes(los));
+        }
 
         los.setFormOfTeaching(getI18nTextMultiple(koulutus.getOpetusmuodos()));
         los.setFotFacet(this.createCodes(koulutus.getOpetusPaikkas()));
         los.setTimeOfTeachingFacet(this.createCodes(koulutus.getOpetusAikas()));
-        los.setFormOfStudyFacet(this.createCodes(koulutus.getOpetusmuodos()));
-        
-        los.setProfessionalTitles(getI18nTextMultiple(koulutus.getAmmattinimikkeet()));
-        
+        los.setFormOfStudyFacet(this.createCodes(koulutus.getOpetusmuodos()));        
 
         los.setTeachingTimes(getI18nTextMultiple(koulutus.getOpetusAikas()));
         los.setTeachingPlaces(getI18nTextMultiple(koulutus.getOpetusPaikkas()));
@@ -648,11 +650,9 @@ public class LOSObjectCreator extends ObjectCreator {
                 ao.setProvider(los.getProvider());
                 ao.setEducationDegree(los.getEducationDegree());
                 los.getProvider().getApplicationSystemIDs().add(ao.getApplicationSystem().getId());
-                ao.setParent(createParentLosRef(los));
-                ao.setType(TarjontaConstants.TYPE_KK);
-
+                //ao.setParent(createParentLosRef(los));
+                ao.setType(TarjontaConstants.TYPE_ADULT_UPSEC);
             }
-
         }
 
         los.setFacetPrerequisites(this.getFacetPrequisites(los.getPrerequisites()));
@@ -706,8 +706,8 @@ public class LOSObjectCreator extends ObjectCreator {
         return educationRef;
     }
 
-    private boolean fetchHakukohdeData(HigherEducationLOS los, boolean checkStatus) throws KoodistoException {
-        ResultV1RDTO<List<NimiJaOidRDTO>> hakukohteet = loiCreator.tarjontaRawService.getHakukohdesByHigherEducation(los.getId());
+    private boolean fetchHakukohdeData(StandaloneLOS los, boolean checkStatus) throws KoodistoException {
+        ResultV1RDTO<List<NimiJaOidRDTO>> hakukohteet = loiCreator.tarjontaRawService.getHakukohdesByEducationOid(los.getId());
 
         if (hakukohteet == null 
                 || hakukohteet.getResult() == null 
@@ -720,7 +720,7 @@ public class LOSObjectCreator extends ObjectCreator {
         for (NimiJaOidRDTO curHakukoh : hakukohteet.getResult()) {
             String aoId = curHakukoh.getOid();
 
-            ResultV1RDTO<HakukohdeV1RDTO> hakukohdeRes = loiCreator.tarjontaRawService.getHigherEducationHakukohode(aoId);
+            ResultV1RDTO<HakukohdeV1RDTO> hakukohdeRes = loiCreator.tarjontaRawService.getV1EducationHakukohode(aoId);
             HakukohdeV1RDTO hakukohdeDTO = hakukohdeRes.getResult();
             
            
@@ -729,7 +729,7 @@ public class LOSObjectCreator extends ObjectCreator {
                 continue;
             }
 
-            ResultV1RDTO<HakuV1RDTO> hakuRes = loiCreator.tarjontaRawService.getHigherEducationHakuByOid(hakukohdeDTO.getHakuOid());
+            ResultV1RDTO<HakuV1RDTO> hakuRes = loiCreator.tarjontaRawService.getV1EducationHakuByOid(hakukohdeDTO.getHakuOid());
 
             HakuV1RDTO hakuDTO = hakuRes.getResult();
 
@@ -737,7 +737,7 @@ public class LOSObjectCreator extends ObjectCreator {
                 continue;
             }
 
-            ApplicationOption ao = loiCreator.applicationOptionCreator.createHigherEducationApplicationOption(los, hakukohdeDTO, hakuRes.getResult());
+            ApplicationOption ao = loiCreator.applicationOptionCreator.createV1EducationApplicationOption(los, hakukohdeDTO, hakuRes.getResult());
             //If fetching for preview, the status of the application option is added
             if (!checkStatus) {
                 ao.setStatus(hakukohdeDTO.getTila());

@@ -40,6 +40,7 @@ import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOSRef;
 import fi.vm.sade.koulutusinformaatio.domain.I18nPicture;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.Picture;
+import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
@@ -236,7 +237,7 @@ public class TarjontaServiceImpl implements TarjontaService {
         return structureImage;
     }
 
-    private void updateAOLosReferences(HigherEducationLOS los,
+    private void updateAOLosReferences(StandaloneLOS los,
             Map<String, List<HigherEducationLOSRef>> aoToEducationsMap) {
         if (los.getApplicationOptions() != null) {
             for (ApplicationOption curAo : los.getApplicationOptions()) {
@@ -251,7 +252,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                 newRef.setId(los.getId());
                 newRef.setName(los.getName());
                 newRef.setPrerequisite(curAo.getPrerequisite());
-                newRef.setQualifications(los.getQualifications());
+                newRef.setQualifications(((HigherEducationLOS)los).getQualifications());
                 newRef.setProvider(curAo.getProvider().getName());
                 aoLoss.add(newRef);
                 aoToEducationsMap.put(curAo.getId(), aoLoss);
@@ -411,7 +412,7 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     private void createEducationreReferencesForAo(ApplicationOption curAo, boolean validating) throws TarjontaParseException, KoodistoException {
 
-        ResultV1RDTO<HakukohdeV1RDTO> hakukohdeResDTO =  this.tarjontaRawService.getHigherEducationHakukohode(curAo.getId());
+        ResultV1RDTO<HakukohdeV1RDTO> hakukohdeResDTO =  this.tarjontaRawService.getV1EducationHakukohode(curAo.getId());
         HakukohdeV1RDTO hakukohdeDTO = hakukohdeResDTO.getResult();
         for (String curEduOid : hakukohdeDTO.getHakukohdeKoulutusOids()) {
 
@@ -492,7 +493,7 @@ public class TarjontaServiceImpl implements TarjontaService {
     }
 
     @Override
-    public List<AdultUpperSecondaryLOS> findAdultUpperSecondaries() {
+    public List<AdultUpperSecondaryLOS> findAdultUpperSecondaries() throws KoodistoException {
         
         if (creator == null) {
             creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService);
@@ -515,27 +516,14 @@ public class TarjontaServiceImpl implements TarjontaService {
                     continue;
                 }
                 
-                //
-                
-                /*
                 try {
-                    HigherEducationLOS los = creator.createHigherEducationLOS(koulutusDTO, true);
-                    los.setStructureImage(retrieveStructureImage(curKoulutus.getOid()));
+                    AdultUpperSecondaryLOS los = creator.createAdultUpperSeconcaryLOS(koulutusDTO, true);//createHigherEducationLOS(koulutusDTO, true);
                     koulutukset.add(los);
-                    List<HigherEducationLOS> loss = komoToLOSMap.get(koulutusDTO.getKomoOid());
-                    if (loss == null) {
-                        loss = new ArrayList<HigherEducationLOS>();
-                        loss.add(los);
-                        komoToLOSMap.put(koulutusDTO.getKomoOid(), loss);
-                    } else {
-                        loss.add(los);
-                    }
-                    parentOids.add(los.getKomoOid());
                     updateAOLosReferences(los, aoToEducationsMap);
 
                 } catch (TarjontaParseException ex) {
                     continue;
-                }*/
+                }
                 
             }
         }

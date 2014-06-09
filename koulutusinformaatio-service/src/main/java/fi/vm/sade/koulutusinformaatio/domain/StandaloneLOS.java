@@ -6,7 +6,7 @@ import java.util.List;
 
 public class StandaloneLOS extends LOS {
     
-  //Varmistetut
+    //Varmistetut
     private String id;
     private I18nText content;
     private I18nText goals;
@@ -28,7 +28,7 @@ public class StandaloneLOS extends LOS {
     private String creditValue;
     private I18nText creditUnit;
     private I18nText degree;
-    private List<I18nText> qualifications;
+    
     
     private Code educationCode;
     private List<Code> teachingLanguages;
@@ -40,9 +40,9 @@ public class StandaloneLOS extends LOS {
 
     private List<Code> prerequisites;
     private List<I18nText> formOfTeaching;
-    private List<I18nText> professionalTitles;
     private List<I18nText> teachingTimes;
     private List<I18nText> teachingPlaces;
+    private List<I18nText> qualifications;
     private I18nText startSeason;
     private int startYear;
 
@@ -53,8 +53,6 @@ public class StandaloneLOS extends LOS {
 
     private List<Code> facetPrerequisites;
     private String educationType;
-    
-    private I18nPicture structureImage;
     
     private List<Code> fotFacet = new ArrayList<Code>();
     
@@ -94,14 +92,6 @@ public class StandaloneLOS extends LOS {
 
     public I18nText getDegreeTitle() {
         return degreeTitle;
-    }
-
-    public void setQualifications(List<I18nText> qualifications) {
-        this.qualifications = qualifications;
-    }
-
-    public List<I18nText> getQualifications() {
-        return qualifications;
     }
 
     public void setGoals(I18nText goals) {
@@ -280,14 +270,6 @@ public class StandaloneLOS extends LOS {
         return formOfTeaching;
     }
 
-    public void setProfessionalTitles(List<I18nText> ammattinimikkees) {
-        this.professionalTitles = ammattinimikkees;
-    }
-
-    public List<I18nText> getProfessionalTitles() {
-        return professionalTitles;
-    }
-
     public I18nText getCreditUnit() {
         return creditUnit;
     }
@@ -365,14 +347,6 @@ public class StandaloneLOS extends LOS {
         return educationType;   
     }
 
-    public I18nPicture getStructureImage() {
-        return structureImage;
-    }
-
-    public void setStructureImage(I18nPicture structureImage) {
-        this.structureImage = structureImage;
-    }
-
     public List<Code> getFotFacet() {
         return fotFacet;
     }
@@ -403,6 +377,14 @@ public class StandaloneLOS extends LOS {
 
     public void setKoulutuslaji(Code koulutuslaji) {
         this.koulutuslaji = koulutuslaji;
+    }
+
+    public List<I18nText> getQualifications() {
+        return qualifications;
+    }
+
+    public void setQualifications(List<I18nText> qualifications) {
+        this.qualifications = qualifications;
     }
 
 }

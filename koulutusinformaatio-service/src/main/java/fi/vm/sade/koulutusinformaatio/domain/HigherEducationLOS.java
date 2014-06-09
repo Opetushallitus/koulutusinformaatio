@@ -22,8 +22,7 @@ import java.util.List;
  * 
  * @author Markus
  */
-public class HigherEducationLOS extends StandaloneLOS {
-    
+public class HigherEducationLOS extends StandaloneLOS {  
     
     private I18nText infoAboutTeachingLangs;
     private I18nText majorSelection;
@@ -33,10 +32,14 @@ public class HigherEducationLOS extends StandaloneLOS {
     private I18nText researchFocus;
     private I18nText infoAboutCharge;
     
+    private List<I18nText> professionalTitles;
+    
     private Boolean chargeable;
     
     private List<HigherEducationLOS> children = new ArrayList<HigherEducationLOS>();
     private List<HigherEducationLOS> parents = new ArrayList<HigherEducationLOS>();
+    
+    private I18nPicture structureImage;
     
 
     public void setInfoAboutTeachingLangs(I18nText i18nText) {
@@ -115,6 +118,22 @@ public class HigherEducationLOS extends StandaloneLOS {
     }
     public void setParents(List<HigherEducationLOS> parents) {
         this.parents = parents;
+    }
+
+    public List<I18nText> getProfessionalTitles() {
+        return professionalTitles;
+    }
+
+    public void setProfessionalTitles(List<I18nText> professionalTitles) {
+        this.professionalTitles = professionalTitles;
+    }
+
+    public I18nPicture getStructureImage() {
+        return structureImage;
+    }
+
+    public void setStructureImage(I18nPicture structureImage) {
+        this.structureImage = structureImage;
     }
 
     
