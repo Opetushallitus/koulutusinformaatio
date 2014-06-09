@@ -727,7 +727,7 @@ service('HigherEducationTransformer', ['KiSorter', '$rootScope', '$filter', 'Lan
 				result.polytechnic = true;
 			}
 			result.teachingLanguage = getFirstItemInList(result.teachingLanguages);
-			result.formOfTeaching = getFirstItemInList(result.formOfTeaching);
+			//result.formOfTeaching = getFirstItemInList(result.formOfTeaching);
 			
 
 			if (result.themes != undefined && result.themes != null) {
