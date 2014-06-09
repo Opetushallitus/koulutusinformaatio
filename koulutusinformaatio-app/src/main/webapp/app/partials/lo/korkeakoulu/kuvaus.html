@@ -20,12 +20,6 @@
                 <span data-ki-i18n="planned-duration" data-show-colon="true" class="margin-right-1"></span>
                 <span class="bold">{{lo.plannedDuration}} {{lo.plannedDurationUnit}}</span>
             </li>
-           <li>
-                <span data-ki-i18n="form-of-education" data-show-colon="true" class="margin-right-1"></span>
-                <span data-ng-repeat="fot in lo.formOfTeaching">
-                    <span class="bold">{{fot}}</span><span data-ng-show="!$last">,</span>
-                </span>
-            </li>
             <li>
                 <span data-ki-i18n="time-of-teaching" data-show-colon="true" class="margin-right-1"></span>
                 <span data-ng-repeat="tot in lo.teachingTimes">
@@ -36,6 +30,12 @@
                 <span data-ki-i18n="place-of-teaching" data-show-colon="true" class="margin-right-1"></span>
                 <span data-ng-repeat="top in lo.teachingPlaces">
                     <span class="bold">{{top}}</span><span data-ng-show="!$last">,</span>
+                </span>
+            </li>
+            <li>
+                <span data-ki-i18n="form-of-education-higher" data-show-colon="true" class="margin-right-1"></span>
+                <span data-ng-repeat="fot in lo.formOfTeaching">
+                    <span class="bold">{{fot}}</span><span data-ng-show="!$last">,</span>
                 </span>
             </li>
             <li>
