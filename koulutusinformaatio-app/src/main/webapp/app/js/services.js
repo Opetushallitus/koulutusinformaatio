@@ -861,7 +861,9 @@ service('ChildLOTransformer', ['UtilityService', 'KiSorter', '$rootScope', funct
                     var startDate = new Date(loi.startDate);
                     loi.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
                     loi.teachingLanguage = getFirstItemInList(loi.teachingLanguages);
+                    loi.formsOfTeaching = loi.formOfTeaching;
                     loi.formOfTeaching = getFirstItemInList(loi.formOfTeaching);
+                    
 
                     if (loi.webLinks) {
                         loi.studyPlan = loi.webLinks[studyplanKey];

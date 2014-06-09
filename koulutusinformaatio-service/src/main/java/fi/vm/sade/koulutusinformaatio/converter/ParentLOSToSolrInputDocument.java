@@ -104,15 +104,15 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         }
 
         indexLopName(doc, provider, teachLang);
-        
+
         if (provider.getHomePlace() != null) { 
             doc.setField(LearningOpportunity.HOMEPLACE_DISPLAY, 
                     SolrUtil.resolveTextWithFallback(teachLang,
                             provider.getHomePlace().getTranslations()));
         }
-        
+
         SolrUtil.setLopAndHomeplaceDisplaynames(doc, provider, prerequisite);
-        
+
         if (provider.getHomeDistrict() != null) {
             List<String> locVals = new ArrayList<String>();
             locVals.addAll(provider.getHomeDistrict().getTranslations().values());
@@ -313,38 +313,40 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
                     doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_MUU);
                     doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE_DISPLAY, SolrUtil.SolrConstants.ED_TYPE_KOTITALOUS);
                 }
-                
-                if (childLOI.getFotFacet() != null) {
-                    for (Code curCode : childLOI.getFotFacet()) {
-                        if (!usedVals.contains(curCode.getUri())) {
-                            doc.addField(LearningOpportunity.FORM_OF_TEACHING, curCode.getUri());
-                            usedVals.add(curCode.getUri());
+
+                if (childLOI.getPrerequisite().getValue().equals(prereqVal)) {
+                    if (childLOI.getFotFacet() != null) {
+                        for (Code curCode : childLOI.getFotFacet()) {
+                            if (!usedVals.contains(curCode.getUri())) {
+                                doc.addField(LearningOpportunity.FORM_OF_TEACHING, curCode.getUri());
+                                usedVals.add(curCode.getUri());
+                            }
                         }
                     }
-                }
-                
-                if (childLOI.getTimeOfTeachingFacet() != null) {
-                    for (Code curCode : childLOI.getTimeOfTeachingFacet()) {
-                        if (!usedVals.contains(curCode.getUri())) {
-                            doc.addField(LearningOpportunity.TIME_OF_TEACHING, curCode.getUri());
-                            usedVals.add(curCode.getUri());
+
+                    if (childLOI.getTimeOfTeachingFacet() != null) {
+                        for (Code curCode : childLOI.getTimeOfTeachingFacet()) {
+                            if (!usedVals.contains(curCode.getUri())) {
+                                doc.addField(LearningOpportunity.TIME_OF_TEACHING, curCode.getUri());
+                                usedVals.add(curCode.getUri());
+                            }
                         }
                     }
-                }
-                if (childLOI.getFormOfStudyFacet() != null) {
-                    for (Code curCode : childLOI.getFormOfStudyFacet()) {
-                        if (!usedVals.contains(curCode.getUri())) {
-                            doc.addField(LearningOpportunity.FORM_OF_STUDY, curCode.getUri());
-                            usedVals.add(curCode.getUri());
+                    if (childLOI.getFormOfStudyFacet() != null) {
+                        for (Code curCode : childLOI.getFormOfStudyFacet()) {
+                            if (!usedVals.contains(curCode.getUri())) {
+                                doc.addField(LearningOpportunity.FORM_OF_STUDY, curCode.getUri());
+                                usedVals.add(curCode.getUri());
+                            }
                         }
                     }
+                    if (childLOI.getKoulutuslaji() != null 
+                            && !usedVals.contains(childLOI.getKoulutuslaji().getUri())) {
+                        doc.addField(LearningOpportunity.KIND_OF_EDUCATION, childLOI.getKoulutuslaji().getUri());
+                        usedVals.add(childLOI.getKoulutuslaji().getUri());
+                    }
                 }
-                if (childLOI.getKoulutuslaji() != null 
-                        && !usedVals.contains(childLOI.getKoulutuslaji().getUri())) {
-                    doc.addField(LearningOpportunity.KIND_OF_EDUCATION, childLOI.getKoulutuslaji().getUri());
-                    usedVals.add(childLOI.getKoulutuslaji().getUri());
-                }
-                
+
             }
         }
 
