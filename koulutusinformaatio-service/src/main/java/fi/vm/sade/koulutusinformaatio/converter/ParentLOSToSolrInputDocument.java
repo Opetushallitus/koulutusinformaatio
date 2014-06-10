@@ -298,7 +298,7 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
                         && !usedVals.contains(SolrConstants.ED_TYPE_AMMATILLINEN)) {
                     doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMMATILLINEN);
                     doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMMATILLISET);
-                    doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_TUTKINTOON);
+                    //doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_TUTKINTOON);
                     usedVals.add(SolrConstants.ED_TYPE_AMMATILLINEN);
                 }
                 if ( !parent.isKotitalousopetus()
@@ -311,7 +311,8 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
                 if (parent.isKotitalousopetus() && !usedVals.contains(SolrConstants.ED_TYPE_MUU)) {
                     usedVals.add(SolrConstants.ED_TYPE_MUU);
                     doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_MUU);
-                    doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE_DISPLAY, SolrUtil.SolrConstants.ED_TYPE_KOTITALOUS);
+                    doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_KOTITALOUS);
+                    doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE_DISPLAY, SolrUtil.SolrConstants.ED_TYPE_KOTITALOUS_DISPLAY);
                 }
 
                 if (childLOI.getPrerequisite().getValue().equals(prereqVal)) {

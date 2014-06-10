@@ -234,7 +234,7 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
         else {
             doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_AMM_ER);
             doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_AMMATILLISET);
-            doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_TUTKINTOON);
+            //doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_TUTKINTOON);
         }
         
         List<String> usedVals = new ArrayList<String>();

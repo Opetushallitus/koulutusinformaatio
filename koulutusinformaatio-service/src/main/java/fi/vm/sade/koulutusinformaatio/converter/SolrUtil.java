@@ -374,9 +374,9 @@ public final class SolrUtil {
         public static final String GET = "GET";
         
         //value constants
-        public static final String ED_TYPE_TUTKINTOON = "et01";
+        //public static final String ED_TYPE_TUTKINTOON = "et01";
         public static final String ED_TYPE_LUKIO = "et01.01";
-        public static final String ED_TYPE_KAKSOIS = "et01.02";
+        public static final String ED_TYPE_KAKSOIS = "et01.03.001";
         public static final String ED_TYPE_AMMATILLISET = "et01.03";
         public static final String ED_TYPE_AMMATILLINEN = "et01.03.01";
         public static final String ED_TYPE_AMM_ER = "et01.03.02";
@@ -401,7 +401,8 @@ public final class SolrUtil {
         public static final String ED_TYPE_IMM_UPSEC = "et02.01.04";
         public static final String ED_TYPE_KANSANOPISTO = "et02.05";
         public static final String ED_TYPE_VALMENTAVA = "et02.02";
-        public static final String ED_TYPE_KOTITALOUS = "kotitalous";
+        public static final String ED_TYPE_KOTITALOUS = "et02.015";
+        public static final String ED_TYPE_KOTITALOUS_DISPLAY = "kotitalous";
         
         public static final String SPECIAL_EDUCATION = "ER";
         public static final String TIMESTAMP_DOC = "loUpdateTimestampDocument";

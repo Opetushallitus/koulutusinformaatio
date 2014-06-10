@@ -678,7 +678,7 @@ public class SearchServiceSolrImpl implements SearchService {
 
                 String[] splits = curC.getName().split("\\.");
 
-                if (splits.length >= 2) {
+                if ((splits.length >= 2 && !splits[0].equals("et01")) || (splits.length >= 3 && splits[0].equals("et01"))) {
                     int endIndex = curC.getName().lastIndexOf('.');
                     String parentStr = curC.getName().substring(0, endIndex);
                     if (resMap.containsKey(parentStr)) {
