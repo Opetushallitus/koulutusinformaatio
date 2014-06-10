@@ -163,6 +163,7 @@ directive('kiOrganizationImage', function() {
                     src: 'data:image/jpeg;base64,' + data.pictureEncoded,
                     alt: 'Oppilaitoksen kuva'
                 });
+                imgElem.addClass('img-responsive');
 
                 $(element).empty();
                 element.append(imgElem);
@@ -774,10 +775,10 @@ directive('kiAsStateLabel', ['UtilityService', 'TranslationService', function(Ut
             }
 
             if (isOngoing) {
-                element.addClass('label vih');
+                element.addClass('label label-success');
                 element.text(TranslationService.getTranslation('label-as-ongoing'));
             } else {
-                element.addClass('label har');
+                element.addClass('label label-default');
                 element.text(TranslationService.getTranslation('label-as-not-ongoing'));
             }
         })
@@ -804,7 +805,7 @@ directive('kiAsState', ['TranslationService', function(TranslationService) {
 directive('kiApplicationStatusLabel', function() {
     return {
         restrict: 'A',
-        template: '<span data-ng-switch="active">' +
+        template: '<span data-ng-switch="active" class="text-muted">' +
                     '<span data-ng-switch-when="future"><span data-ki-i18n="application-system-active-future"></span> <span data-ki-timestamp="{{timestamp}}"></span></span>' +
                     '<span data-ng-switch-when="past" data-ki-i18n="application-system-active-past"></span>' +
                     '<span data-ng-switch-when="present"data-ki-i18n="application-system-active-present"></span>' +
@@ -856,9 +857,9 @@ directive('kiPreviewStatusLabel', ['TranslationService', function(TranslationSer
             var statusDraft = 'LUONNOS';
 
             if ($scope.status == statusPublished || $scope.status == statusReady) {
-                element.addClass('label vih');
+                element.addClass('label label-success');
             } else {
-                element.addClass('label sin');
+                element.addClass('label label-info');
             }
 
             var labelText = TranslationService.getTranslationByLanguage($scope.status, $scope.lang);

@@ -30,8 +30,8 @@
     "basic-information": "Basic information",
     "degree-programmes": "Study programmes",
     "included-educations": "Included study programmes",
-    "extended-view-close": "Open",
-    "extended-view-open": "Close",
+    "extended-view-closed": "Open",
+    "extended-view-opened": "Close",
 
     "read-more": "Read more...",
     "read-less": "Show less",

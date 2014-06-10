@@ -1,36 +1,44 @@
-<button data-ng-if="!as.applicationFormLink" type="submit" data-ng-disabled="!ao.canBeApplied || lo.preview">
-    <span>
-        <span data-ki-i18n="apply-button-label"></span>
-    </span>
-</button>
+<div class="row margin-vertical-small">
+    <div class="col-md-8">
+        <button 
+            data-ng-if="!as.applicationFormLink" 
+            type="submit" 
+            data-ng-disabled="!ao.canBeApplied || lo.preview"
+            class="btn btn-default"
+            data-ki-i18n="apply-button-label">
+        </button>
 
-<div class="inline-block" data-ng-if="as.applicationFormLink">
-    <a data-ng-if="ao.canBeApplied" data-ng-href="{{as.applicationFormLink}}" title="{{tooltips.externalApplicationForm}}" target="_blank">
-    <i class="icon-link-ext-alt"></i><span data-ki-i18n="apply-button-label"></span>
-    </a>
-    <span data-ng-if="!ao.canBeApplied" class="text-disabled">
-        <i class="icon-link-ext-alt"></i><span data-ki-i18n="apply-button-label"></span>
-    </a>
-</div>
-
-<div data-ng-switch="isItemAddedToBasket(ao.id)" class="add-to-basket">
-    <span data-ng-switch-when="true">
-        <span data-ki-i18n="popover-title-success"></span><br/>
-        <a href="#!/muistilista" data-ki-i18n="popover-content-link-to-application-basket"></a>
-    </span>
-    <button
-    data-ng-switch-default
-    type="button" 
-    id="addToBasket-{{$id}}" 
-    class="primary"
-    data-popover-placement="bottom" 
-    data-popover="{{popoverContent}}" 
-    data-popover-title="{{popoverTitle}}" 
-    data-popover-trigger="click"
-    data-ng-click="addToBasket(ao.id)"
-    data-ng-disabled="lo.preview">
-    <span>
-        <span data-ki-i18n="add-to-basket-label"></span>
-    </span>
-</button>
+        <div data-ng-if="as.applicationFormLink">
+            <a data-ng-if="ao.canBeApplied" data-ng-href="{{as.applicationFormLink}}" title="{{tooltips.externalApplicationForm}}" target="_blank">
+                <i class="icon-link-ext-alt"></i>
+                <span data-ki-i18n="apply-button-label"></span>
+            </a>
+            <span data-ng-if="!ao.canBeApplied" class="text-muted">
+                <i class="icon-link-ext-alt"></i>
+                <span data-ki-i18n="apply-button-label"></span>
+            </a>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div data-ng-switch="isItemAddedToBasket(ao.id)" class="add-to-basket">
+            <span data-ng-switch-when="true">
+                <span data-ki-i18n="popover-title-success"></span><br/>
+                <a href="#!/muistilista" data-ki-i18n="popover-content-link-to-application-basket"></a>
+            </span>
+            <button
+            data-ng-switch-default
+            type="button" 
+            id="addToBasket-{{$id}}" 
+            class="btn btn-primary"
+            data-popover-placement="bottom" 
+            data-popover="{{popoverContent}}" 
+            data-popover-title="{{popoverTitle}}" 
+            data-popover-trigger="click"
+            data-ng-click="addToBasket(ao.id)"
+            data-ng-disabled="lo.preview"
+            data-ki-i18n="add-to-basket-label">
+            </button>
+        </div>
+    </div>
 </div>

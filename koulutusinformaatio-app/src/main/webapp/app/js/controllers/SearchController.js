@@ -9,7 +9,7 @@ function SearchFieldCtrl($scope, $location, $route, $rootScope, SearchService, k
         'search': TranslationService.getTranslation('tooltip:search')
     }
 
-
+    
     $scope.$watch('queryString', function() {
     	if ($scope.queryString != undefined && $scope.queryString.length > 0) {
     	AutocompleteService.query($scope.queryString).then(function(result) {
@@ -29,7 +29,7 @@ function SearchFieldCtrl($scope, $location, $route, $rootScope, SearchService, k
     		}
     	});
     	}
-    }, true);
+    }, true);    
     
     // Perform search using LearningOpportunity service
     $scope.search = function() {
@@ -109,7 +109,7 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
         'searchResultFacetInfo': TranslationService.getTranslation('tooltip:search-result-facet-info')
     }
 
-    $scope.tipPopoverContent = "<p style='width:400px'>" + $scope.locales.searchResultFacetInfo + "</p>";
+    $scope.tipPopoverContent = "<p style='width: 400px;'>" + $scope.locales.searchResultFacetInfo + "</p>";
     
     /*
      * Selecting a facet value for filtering results
@@ -307,13 +307,6 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
         articlesTooltip: TranslationService.getTranslation('tooltip:search-tab-article-tooltip')
     };
 
-    /*
-    $scope.titleLocales = {
-        close: TranslationService.getTranslation('tooltip:close'),
-        removeFacet: TranslationService.getTranslation('tooltip:remove-facet')
-    }
-    */
-
     $scope.tabs = [
         {active: false},
         {active: false}
@@ -325,10 +318,7 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
     $scope.noSearchResults = TranslationService.getTranslation('no-search-results-info', {searchterm: $routeParams.queryString ? $routeParams.queryString: ''});
 
 
-
-
     $scope.changePage = function(page) {
-        $scope.currentPage = page;
         FilterService.setPage(page);
         $scope.refreshView();
         $('html, body').scrollTop($('body').offset().top); // scroll to top of list
@@ -440,7 +430,7 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
     				$route.reload();
     				$rootScope.tabChangeable = true;
     			} else {
-    			
+
     				$scope.loResult = result;
     				$scope.loResult.queryString = $routeParams.queryString;
     				$scope.totalItems = result.totalCount;
@@ -604,13 +594,10 @@ function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, 
         // append filters to url and reload
         $scope.refreshArticleView();
     }
-	
-	$scope.currentPage = 1;
+
     $scope.showPagination = false;
 
     $scope.changePage = function(page) {
-        $scope.currentArticlePage = page;
-        $scope.currentPage = page;
         FilterService.setArticlePage(page);
         $scope.doArticleSearching();
         $('html, body').scrollTop($('body').offset().top); // scroll to top of list
@@ -659,7 +646,9 @@ function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, 
                 $scope.langCleared = FilterService.getLangCleared();
                 $scope.itemsPerPage = FilterService.getItemsPerPage();
                 $scope.sortCriteria = FilterService.getSortCriteria();
-                $scope.currentArticlePage = FilterService.getArticlePage();
+                $scope.model = {
+                    currentArticlePage: FilterService.getArticlePage()
+                };
                 $scope.facetFilters = FilterService.getFacetFilters();
                 $scope.lopFilter = FilterService.getLopFilter();
                 $scope.educationCodeFilter = FilterService.getEducationCodeFilter();
@@ -706,9 +695,9 @@ function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, 
 				$scope.articleCount = result.articleCount;
 				$scope.maxPages = Math.ceil(result.articleCount / $scope.itemsPerPage);
 				$scope.showPagination = $scope.maxPages > 1;
-				$scope.pageMin = ($scope.currentPage - 1) * $scope.itemsPerPage + 1;
-				$scope.pageMax = $scope.currentPage * $scope.itemsPerPage < $scope.articleCount
-                	? $scope.currentPage * $scope.itemsPerPage
+				$scope.pageMin = ($scope.model.currentArticlePage - 1) * $scope.itemsPerPage + 1;
+				$scope.pageMax = $scope.model.currentArticlePage * $scope.itemsPerPage < $scope.articleCount
+                	? $scope.model.currentArticlePage * $scope.itemsPerPage
                 			: $scope.articleCount;
 				$scope.queryString = $routeParams.queryString;
 				$scope.showPagination = $scope.articleCount > $scope.itemsPerPage;
@@ -782,6 +771,14 @@ function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, 
     		$scope.articleFacetSelections.push(curSelection);
     	});
     	
+    }
+
+    $scope.toggleCollapsed = function(index) {
+        if (!$scope.collapsed) {
+            $scope.collapsed = [];
+        }
+
+        $scope.collapsed[index] = !$scope.collapsed[index];
     }
 
 };

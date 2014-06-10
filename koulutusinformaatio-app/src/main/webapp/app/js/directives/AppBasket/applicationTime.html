@@ -1,9 +1,9 @@
-<span data-ng-if="label" class="float-left margin-right-1">{{label}}</span>
-<span data-ng-if="!label" data-ki-i18n="application-period" data-show-colon="true" class="float-left margin-right-1"></span>
+<span data-ng-if="label" class="pull-left margin-right-small">{{label}}</span>
+<span data-ng-if="!label" data-ki-i18n="application-period" data-show-colon="true" class="pull-left"></span>
 <span data-ng-if="isJatkuva()" data-ki-i18n="hakutapa-jatkuva"></span>
-<ul data-ng-if="!isJatkuva()" class="nobullet float-left">
+<ul data-ng-if="!isJatkuva()" class="list-unstyled">
     <li data-ng-repeat="interval in dates">
-        <span data-ki-timestamp="{{interval.startDate}}"></span> - <span data-ki-timestamp="{{interval.endDate}}"></span>
+        (<span data-ki-timestamp="{{interval.startDate}}"></span> - <span data-ki-timestamp="{{interval.endDate}}"></span>)
     </li>
 </ul>
 <div class="clear"></div>

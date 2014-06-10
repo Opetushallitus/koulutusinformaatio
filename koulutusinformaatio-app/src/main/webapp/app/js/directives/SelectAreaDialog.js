@@ -47,7 +47,7 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
 
         // IE requires this to redraw select boxes after data is loaded
         $timeout(function() {
-        	$("#districtSelection").css("width", '200px');
+        	$("#districtSelection").css("width", '80%');
         }, 0);
     });
 
@@ -84,7 +84,7 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
 
             // IE requires this to redraw select boxes after data is loaded
             $timeout(function() {
-            	$("#municipalitySelection").css("width", '200px');
+            	$("#municipalitySelection").css("width", '80%');
             }, 0);
             
         });

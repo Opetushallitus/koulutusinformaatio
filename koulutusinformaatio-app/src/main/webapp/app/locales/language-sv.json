@@ -30,8 +30,8 @@
     "basic-information": "Basuppgifter",
     "degree-programmes": "Utbildningsprogram",
     "included-educations": "Inkluderade utbildningar",
-    "extended-view-close": "Öppna",
-    "extended-view-open": "Stäng",
+    "extended-view-closed": "Öppna",
+    "extended-view-opened": "Stäng",
 
     "read-more": "Läs mera...",
     "read-less": "Visa mindre",

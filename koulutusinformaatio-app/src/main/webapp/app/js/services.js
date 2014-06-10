@@ -686,8 +686,6 @@ service('ParentLOTransformer', ['KiSorter', '$filter', '$rootScope', function(Ki
                     as.children = children;
                 });
             });
-
-            //console.log(result);
         }
     }
 }]).

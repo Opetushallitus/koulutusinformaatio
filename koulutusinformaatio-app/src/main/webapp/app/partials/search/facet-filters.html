@@ -1,18 +1,18 @@
-<div class="filter">
-    <div class="clear">
-        <h2 class="float-left margin-top-0" data-ki-i18n="selaile-koulutuksia"></h2>
-        <button 
-        type="button"
-        class="helplink float-right"
-        data-popover="{{tipPopoverContent}}"
-        data-popover-title="{{locales.tip}}"
-        data-popover-trigger="click"
-        data-popover-placement="right"
+<div class="panel panel-filter">
+    <div class="panel-heading">
+        <h2 class="pull-left" data-ki-i18n="selaile-koulutuksia"></h2>
+            <button 
+            type="button"
+            class="helplink pull-right"
+            data-popover="{{tipPopoverContent}}"
+            data-popover-title="{{locales.tip}}"
+            data-popover-trigger="click"
+            data-popover-placement="right"
         ></button>
+        <div class="clearfix"></div>
     </div>
-    <div class="clear"></div>
-    <div>
-        <ul class="nobullet collapse-content-container">
+    <div class="panel-body">
+        <ul class="list-unstyled">
             <li data-ng-show="loResult.ongoingFacet">
                 <span data-ng-show="!ongoing && loResult.ongoingFacet.count > 0" class="facet-item">
                     <a href="javascript:void(0)" data-ng-click="setOngoing()"><span data-ki-i18n="filter-search-as-ongoing"></span> ({{loResult.ongoingFacet.count}})</a>
@@ -41,57 +41,69 @@
     </div>
 </div>
 
-<div class="filter">
-    <h4 title="{{locales.openCloseFacet}}" data-ng-click="toggleCollapsed(0)" class="collapser" data-ng-class="{open: !collapsed[0], close: collapsed[0]}">
-        <span data-ki-i18n="haettava-koulutus"></span>      
-    </h4>
-    <div data-collapse="collapsed[0]" class="collapse">
-        <div class="collapse-content-container">
-            <div class="facet-tree-container">
-                <ul data-facet-tree data-tree-model="loResult.edTypeFacetValues"></ul>
-                <ul data-facet-tree-leaves data-tree-model="loResult.edTypeFacetValues" data-select-node="selectFacetFilter" data-node-is-selected="isSelected"></ul>
+<div class="panel panel-filter">
+    <div class="panel-heading">
+        <h4 class="collapser panel-title" title="{{locales.openCloseFacet}}" data-ng-click="toggleCollapsed(0)" data-ng-class="{opened: !collapsed[0], closed: collapsed[0]}">
+            <span data-ki-i18n="haettava-koulutus"></span>      
+        </h4>
+    </div>
+    <div class="panel-body">
+        <div data-collapse="collapsed[0]" class="collapse">
+            <div class="collapse-content-container">
+                <div class="facet-tree-container">
+                    <ul data-facet-tree data-tree-model="loResult.edTypeFacetValues"></ul>
+                    <ul data-facet-tree-leaves data-tree-model="loResult.edTypeFacetValues" data-select-node="selectFacetFilter" data-node-is-selected="isSelected"></ul>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-
- <div class="filter">
-		<h4 title="{{locales.openCloseFacet}}" data-ng-click="toggleCollapsed(1)" class="collapser" data-ng-class="{open: !collapsed[1], close: collapsed[1]}">
-			<span data-ki-i18n="pohjakoulutus"></span>
-		</h4>
-		<div data-collapse="collapsed[1]" class="collapse">
-			<ul class="nobullet collapse-content-container">
-				<li data-ng-repeat="fv in loResult.prerequisiteFacet.facetValues">
-                <span data-ng-show="!isSelected(fv) && (fv.count > 0)" class="facet-item">
-                    <a href="javascript:void(0)" data-ng-click="selectFacetFilter(fv.valueId, fv.facetField)" data-facet-title="fv"><span data-ki-i18n="{{fv.valueName}}"></span> ({{fv.count}})</a>
-                </span>
-                <span data-ng-show="isSelected(fv)" class="facet-item selected">
-                    <span data-ki-i18n="{{fv.valueName}}" data-facet-title="fv"></span><a title="{{locales.removeFacet}}" href="javascript:void(0)" class="remove" data-ng-click="removeSelection(fv)"></a>
-                </span>
-            </li>
-			</ul>
-		</div>
-	</div>
-
-	<div class="filter">
-    <h4 title="{{locales.openCloseFacet}}" data-ng-click="toggleCollapsed(2)" class="collapser" data-ng-class="{open: !collapsed[2], close: collapsed[2]}">
-        <span data-ki-i18n="filter-search-location-title"></span>
-    </h4>
-    <div data-collapse="collapsed[2]" class="collapse">
-        <div class="collapse-content-container">
-            <div data-ki-location-filter></div>
+<div class="panel panel-filter">
+    <div class="panel-heading">
+        <h4 class="panel-title collapser" data-ng-click="toggleCollapsed(1)" data-ng-class="{opened: !collapsed[1], closed: collapsed[1]}">
+            <span data-ki-i18n="pohjakoulutus"></span>
+        </h4>
+    </div>
+    <div class="panel-body">
+        <div class="collapse" data-collapse="collapsed[1]">
+            <ul class="list-unstyled">
+                <li data-ng-repeat="fv in loResult.prerequisiteFacet.facetValues">
+                    <span data-ng-show="!isSelected(fv) && (fv.count > 0)" class="facet-item">
+                        <a href="javascript:void(0)" data-ng-click="selectFacetFilter(fv.valueId, fv.facetField)" data-facet-title="fv"><span data-ki-i18n="{{fv.valueName}}"></span> ({{fv.count}})</a>
+                    </span>
+                    <span data-ng-show="isSelected(fv)" class="facet-item selected">
+                        <span data-ki-i18n="{{fv.valueName}}" data-facet-title="fv"></span><a title="{{locales.removeFacet}}" href="javascript:void(0)" class="remove" data-ng-click="removeSelection(fv)"></a>
+                    </span>
+                </li>
+            </ul>
         </div>
     </div>
 </div>
 
+<div class="panel panel-filter">
+    <div class="panel-heading">
+        <h4 class="collapser panel-title" title="{{locales.openCloseFacet}}" data-ng-click="toggleCollapsed(2)" data-ng-class="{opened: !collapsed[2], closed: collapsed[2]}">
+            <span data-ki-i18n="filter-search-location-title"></span>
+        </h4>
+    </div>
+    <div class="panel-body">
+        <div data-collapse="collapsed[2]" class="collapse">
+            <div class="margin-vertical-small">
+                <div data-ki-location-filter></div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<div class="filter">
-    <h4 title="{{locales.openCloseFacet}}" data-ng-click="toggleCollapsed(3)" class="collapser" data-ng-class="{open: !collapsed[3], close: collapsed[3]}">
-        <span data-ki-i18n="facet-teemat"></span>      
-    </h4>
-    <div data-collapse="collapsed[3]" class="collapse">
-        <div class="collapse-content-container">
+<div class="panel panel-filter">
+    <div class="panel-heading">
+        <h4 class="collapser panel-title" title="{{locales.openCloseFacet}}" data-ng-click="toggleCollapsed(3)" data-ng-class="{opened: !collapsed[3], closed: collapsed[3]}">
+            <span data-ki-i18n="facet-teemat"></span>      
+        </h4>
+    </div>
+    <div class="panel-body">
+        <div data-collapse="collapsed[3]" class="collapse">
             <ul data-facet-tree data-tree-model=""></ul>
             <div class="facet-tree-container">
                 <ul data-facet-tree data-tree-model="loResult.topicFacetValues"></ul>
@@ -101,78 +113,90 @@
     </div>
 </div>
 
-
-<div class="filter">
-    <h4 title="{{locales.openCloseFacet}}" data-ng-click="toggleCollapsed(4)" class="collapser" data-ng-class="{open: !collapsed[4], close: collapsed[4]}">
-        <span class="icon"></span>
-        <span data-ki-i18n="facet-opetusmuoto"></span>      
-    </h4>
-    <div data-collapse="collapsed[4]" class="collapse">
-        <ul class="nobullet collapse-content-container">
-            <li data-ng-repeat="fv in loResult.fotFacet.facetValues">
-                <span data-ng-show="!isSelected(fv) && (fv.count > 0)" class="facet-item">
-                    <a href="javascript:void(0)" data-ng-click="selectFacetFilter(fv.valueId, fv.facetField)">{{fv.valueName}} ({{fv.count}})</a>
-                </span>
-                <span data-ng-show="isSelected(fv)" class="facet-item selected">
-                    <span>{{fv.valueName}}</span><a title="{{locales.removeFacet}}" href="javascript:void(0)" class="remove" data-ng-click="removeSelection(fv)"></a>
-                </span>
-            </li>
-        </ul>
+<div class="panel panel-filter">
+    <div class="panel-heading">
+        <h4 class="collapser panel-title" title="{{locales.openCloseFacet}}" data-ng-click="toggleCollapsed(4)" data-ng-class="{opened: !collapsed[4], closed: collapsed[4]}">
+            <span data-ki-i18n="facet-opetusmuoto"></span>      
+        </h4>
+    </div>
+    <div class="panel-body">
+        <div data-collapse="collapsed[4]" class="collapse">
+            <ul class="list-unstyled">
+                <li data-ng-repeat="fv in loResult.fotFacet.facetValues">
+                    <span data-ng-show="!isSelected(fv) && (fv.count > 0)" class="facet-item">
+                        <a href="javascript:void(0)" data-ng-click="selectFacetFilter(fv.valueId, fv.facetField)">{{fv.valueName}} ({{fv.count}})</a>
+                    </span>
+                    <span data-ng-show="isSelected(fv)" class="facet-item selected">
+                        <span>{{fv.valueName}}</span><a title="{{locales.removeFacet}}" href="javascript:void(0)" class="remove" data-ng-click="removeSelection(fv)"></a>
+                    </span>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>
 
-<div class="filter">
-    <h4 title="{{locales.openCloseFacet}}" data-ng-click="toggleCollapsed(4)" class="collapser" data-ng-class="{open: !collapsed[4], close: collapsed[4]}">
-        <span class="icon"></span>
-        <span data-ki-i18n="facet-opetusaika"></span>      
-    </h4>
-    <div data-collapse="collapsed[4]" class="collapse">
-        <ul class="nobullet collapse-content-container">
-            <li data-ng-repeat="fv in loResult.timeOfTeachingFacet.facetValues">
-                <span data-ng-show="!isSelected(fv) && (fv.count > 0)" class="facet-item">
-                    <a href="javascript:void(0)" data-ng-click="selectFacetFilter(fv.valueId, fv.facetField)">{{fv.valueName}} ({{fv.count}})</a>
-                </span>
-                <span data-ng-show="isSelected(fv)" class="facet-item selected">
-                    <span>{{fv.valueName}}</span><a title="{{locales.removeFacet}}" href="javascript:void(0)" class="remove" data-ng-click="removeSelection(fv)"></a>
-                </span>
-            </li>
-        </ul>
+<div class="panel panel-filter">
+    <div class="panel-heading">
+        <h4 class="collapser panel-title" title="{{locales.openCloseFacet}}" data-ng-click="toggleCollapsed(5)" data-ng-class="{opened: !collapsed[5], closed: collapsed[5]}">
+            <span data-ki-i18n="facet-opetusaika"></span>      
+        </h4>
+    </div>
+    <div class="panel-body">
+        <div data-collapse="collapsed[5]" class="collapse">
+            <ul class="list-unstyled">
+                <li data-ng-repeat="fv in loResult.timeOfTeachingFacet.facetValues">
+                    <span data-ng-show="!isSelected(fv) && (fv.count > 0)" class="facet-item">
+                        <a href="javascript:void(0)" data-ng-click="selectFacetFilter(fv.valueId, fv.facetField)">{{fv.valueName}} ({{fv.count}})</a>
+                    </span>
+                    <span data-ng-show="isSelected(fv)" class="facet-item selected">
+                        <span>{{fv.valueName}}</span><a title="{{locales.removeFacet}}" href="javascript:void(0)" class="remove" data-ng-click="removeSelection(fv)"></a>
+                    </span>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>
 
-<div class="filter">
-    <h4 title="{{locales.openCloseFacet}}" data-ng-click="toggleCollapsed(4)" class="collapser" data-ng-class="{open: !collapsed[4], close: collapsed[4]}">
-        <span class="icon"></span>
-        <span data-ki-i18n="facet-opiskelumuoto"></span>      
-    </h4>
-    <div data-collapse="collapsed[4]" class="collapse">
-        <ul class="nobullet collapse-content-container">
-            <li data-ng-repeat="fv in loResult.formOfStudyFacet.facetValues">
-                <span data-ng-show="!isSelected(fv) && (fv.count > 0)" class="facet-item">
-                    <a href="javascript:void(0)" data-ng-click="selectFacetFilter(fv.valueId, fv.facetField)">{{fv.valueName}} ({{fv.count}})</a>
-                </span>
-                <span data-ng-show="isSelected(fv)" class="facet-item selected">
-                    <span>{{fv.valueName}}</span><a title="{{locales.removeFacet}}" href="javascript:void(0)" class="remove" data-ng-click="removeSelection(fv)"></a>
-                </span>
-            </li>
-        </ul>
+<div class="panel panel-filter">
+    <div class="panel-heading">
+        <h4 class="collapser panel-title" title="{{locales.openCloseFacet}}" data-ng-click="toggleCollapsed(6)" data-ng-class="{opened: !collapsed[6], closed: collapsed[6]}">
+            <span data-ki-i18n="facet-opiskelumuoto"></span>      
+        </h4>
+    </div>
+    <div class="panel-body">
+        <div data-collapse="collapsed[6]" class="collapse">
+            <ul class="list-unstyled">
+                <li data-ng-repeat="fv in loResult.formOfStudyFacet.facetValues">
+                    <span data-ng-show="!isSelected(fv) && (fv.count > 0)" class="facet-item">
+                        <a href="javascript:void(0)" data-ng-click="selectFacetFilter(fv.valueId, fv.facetField)">{{fv.valueName}} ({{fv.count}})</a>
+                    </span>
+                    <span data-ng-show="isSelected(fv)" class="facet-item selected">
+                        <span>{{fv.valueName}}</span><a title="{{locales.removeFacet}}" href="javascript:void(0)" class="remove" data-ng-click="removeSelection(fv)"></a>
+                    </span>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>
 
-<div class="filter">
-    <h4 title="{{locales.openCloseFacet}}" data-ng-click="toggleCollapsed(4)" class="collapser" data-ng-class="{open: !collapsed[4], close: collapsed[4]}">
-        <span data-ki-i18n="facet-opetuskieli"></span>      
-    </h4>
-    <div data-collapse="collapsed[4]" class="collapse">
-        <ul class="nobullet collapse-content-container">
-            <li data-ng-repeat="fv in loResult.teachingLangFacet.facetValues">
-                <span data-ng-show="!isSelected(fv) && (fv.count > 0)" class="facet-item">
-                    <a href="javascript:void(0)" data-ng-click="selectFacetFilter(fv.valueId, fv.facetField)">{{fv.valueName}} ({{fv.count}})</a>
-                </span>
-                <span data-ng-show="isSelected(fv)" class="facet-item selected">
-                    <span>{{fv.valueName}}</span><a title="{{locales.removeFacet}}" href="javascript:void(0)" class="remove" data-ng-click="removeSelection(fv)"></a>
-                </span>
-            </li>
-        </ul>
+<div class="panel panel-filter">
+    <div class="panel-heading">
+        <h4 class="collapser panel-title" title="{{locales.openCloseFacet}}" data-ng-click="toggleCollapsed(7)" data-ng-class="{opened: !collapsed[7], closed: collapsed[7]}">
+            <span data-ki-i18n="facet-opetuskieli"></span>      
+        </h4>
+    </div>
+    <div class="panel-body">
+        <div data-collapse="collapsed[7]" class="collapse">
+            <ul class="list-unstyled">
+                <li data-ng-repeat="fv in loResult.teachingLangFacet.facetValues">
+                    <span data-ng-show="!isSelected(fv) && (fv.count > 0)" class="facet-item">
+                        <a href="javascript:void(0)" data-ng-click="selectFacetFilter(fv.valueId, fv.facetField)">{{fv.valueName}} ({{fv.count}})</a>
+                    </span>
+                    <span data-ng-show="isSelected(fv)" class="facet-item selected">
+                        <span>{{fv.valueName}}</span><a title="{{locales.removeFacet}}" href="javascript:void(0)" class="remove" data-ng-click="removeSelection(fv)"></a>
+                    </span>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>

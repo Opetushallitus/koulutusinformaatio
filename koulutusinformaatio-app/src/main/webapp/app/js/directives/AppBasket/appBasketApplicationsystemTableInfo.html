@@ -1,50 +1,83 @@
 <div data-ng-if="!isErikseenHaettava(as)">
-    <span class="float-right clear margin-bottom-2">{{getNotificationText(as.maxApplicationOptions)}}</span>
-    <span class="float-right clear margin-bottom-2" data-ki-i18n="application-basket-fill-form-notification-2"></span>
-
-    <form action="{{hakuAppUrl + 'lomake/' + as.applicationSystemId}}" id="application-form-{{as.applicationSystemId}}" method="post" target="hakulomake">
-        <span data-ng-repeat="item in as.applicationOptions">
-            <input type="hidden" name="preference{{$index + 1}}-Opetuspiste" value="{{item.providerName}}"/>
-            <input type="hidden" name="preference{{$index + 1}}-Opetuspiste-id" value="{{item.providerId}}"/>
-            <input type="hidden" name="preference{{$index + 1}}-Koulutus-id-athlete" value="{{item.athleteEducation}}"/>
-            <input type="hidden" name="preference{{$index + 1}}-Koulutus" value="{{item.name}}"/>
-            <input type="hidden" name="preference{{$index + 1}}-Koulutus-id" value="{{item.id}}"/>
-            <input type="hidden" name="preference{{$index + 1}}-Koulutus-educationDegree" value="{{item.educationDegree}}"/>
-            <input type="hidden" name="preference{{$index + 1}}-Koulutus-id-sora" value="{{item.sora}}" />
-            <input type="hidden" name="preference{{$index + 1}}-Koulutus-id-lang" value="{{item.teachLang}}" />
-            <input type="hidden" name="preference{{$index + 1}}-Koulutus-id-aoIdentifier" value="{{item.aoIdentifier}}" />
-            <input type="hidden" name="preference{{$index + 1}}-Koulutus-id-kaksoistutkinto" value="{{item.kaksoistutkinto}}" />
-            <input type="hidden" name="preference{{$index + 1}}-Koulutus-id-vocational" value="{{item.vocational}}" />
-            <input type="hidden" name="preference{{$index + 1}}-Koulutus-id-educationcode" value="{{item.educationCodeUri}}" />
-        </span>
-
-        <div class="action-area">
-            <div data-ng-if="as.applicationOptions.length > as.maxApplicationOptions">
-                <div class="notification warning clear float-right margin-bottom-2">{{getOverflowWarning(as.maxApplicationOptions)}}</div>
-            </div>
-
-            <button data-ng-if="!as.applicationFormLink" class="primary clear float-right" data-ng-disabled="isApplicationSystemDisabled(as)" type="submit">
-                <span>
-                    <span data-ki-i18n="application-basket-fill-form"></span>
-                </span>
-            </button>
-
-            <div data-ng-if="as.applicationFormLink" class="primary clear float-right">
-                <a data-ng-if="!isApplicationSystemDisabled(as)" data-ng-href="{{as.applicationFormLink}}" title="{{tooltips.externalApplicationForm}}" target="_blank" class="last text-disabled">
-                <i class="icon-link-ext-alt"></i><span data-ki-i18n="apply-button-label"></span>
-                </a>
-                <span data-ng-if="isApplicationSystemDisabled(as)">
-                    <i class="icon-link-ext-alt"></i><span data-ki-i18n="apply-button-label"></span>
-                </a>
-            </div>
-
-            <a href="javascript:void(0)" data-ng-click="removeApplicationSystemFromBasket(as)" data-ki-i18n="application-basket-empty" class="float-right block"></a>
-            <div class="margin-top-2 float-right clear" data-ki-application-status-label data-as="as"></div>
+    <div class="row margin-vertical-default">
+        <div class="col-md-16">
+            <span class="pull-right">{{getNotificationText(as.maxApplicationOptions)}}</span>
         </div>
-    </form>
-</div>
+    </div>
+    <div class="row margin-vertical-default">
+        <div class="col-md-16">
+            <span class="pull-right" data-ki-i18n="application-basket-fill-form-notification-2"></span>
+        </div>
+    </div>
 
-<div data-ng-if="as.maxApplicationOptions <= 1">
-    <span class="float-right clear margin-bottom-2" data-ki-i18n="application-basket-fill-form-notification-single-ao"></span>
-    <a href="javascript:void(0)" data-ng-click="removeApplicationSystemFromBasket(as)" data-ki-i18n="application-basket-empty" class="float-right clear"></a>
+        <form action="{{hakuAppUrl + 'lomake/' + as.applicationSystemId}}" id="application-form-{{as.applicationSystemId}}" method="post" target="hakulomake">
+            <span data-ng-repeat="item in as.applicationOptions">
+                <input type="hidden" name="preference{{$index + 1}}-Opetuspiste" value="{{item.providerName}}"/>
+                <input type="hidden" name="preference{{$index + 1}}-Opetuspiste-id" value="{{item.providerId}}"/>
+                <input type="hidden" name="preference{{$index + 1}}-Koulutus-id-athlete" value="{{item.athleteEducation}}"/>
+                <input type="hidden" name="preference{{$index + 1}}-Koulutus" value="{{item.name}}"/>
+                <input type="hidden" name="preference{{$index + 1}}-Koulutus-id" value="{{item.id}}"/>
+                <input type="hidden" name="preference{{$index + 1}}-Koulutus-educationDegree" value="{{item.educationDegree}}"/>
+                <input type="hidden" name="preference{{$index + 1}}-Koulutus-id-sora" value="{{item.sora}}" />
+                <input type="hidden" name="preference{{$index + 1}}-Koulutus-id-lang" value="{{item.teachLang}}" />
+                <input type="hidden" name="preference{{$index + 1}}-Koulutus-id-aoIdentifier" value="{{item.aoIdentifier}}" />
+                <input type="hidden" name="preference{{$index + 1}}-Koulutus-id-kaksoistutkinto" value="{{item.kaksoistutkinto}}" />
+                <input type="hidden" name="preference{{$index + 1}}-Koulutus-id-vocational" value="{{item.vocational}}" />
+                <input type="hidden" name="preference{{$index + 1}}-Koulutus-id-educationcode" value="{{item.educationCodeUri}}" />
+            </span>
+
+            <div class="row">
+                <div class="col-md-16">
+                    <div data-ng-if="as.applicationOptions.length > as.maxApplicationOptions">
+                        <div class="alert alert-warning alert-icon">
+                            <div class="alert-body">{{getOverflowWarning(as.maxApplicationOptions)}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row margin-vertical-default">
+                <div class="col-md-16">
+                    <button 
+                        data-ng-if="!as.applicationFormLink"
+                        class="btn btn-primary pull-right margin-left-default"
+                        data-ng-disabled="isApplicationSystemDisabled(as)"
+                        type="submit"
+                        data-ki-i18n="application-basket-fill-form">
+                    </button>
+
+                    <div data-ng-if="as.applicationFormLink" class="pull-right margin-left-default">
+                        <a data-ng-if="!isApplicationSystemDisabled(as)" data-ng-href="{{as.applicationFormLink}}" title="{{tooltips.externalApplicationForm}}" target="_blank" class="last text-muted">
+                            <i class="icon-link-ext-alt"></i>
+                            <span data-ki-i18n="apply-button-label"></span>
+                        </a>
+                        <span data-ng-if="isApplicationSystemDisabled(as)">
+                            <i class="icon-link-ext-alt"></i>
+                            <span data-ki-i18n="apply-button-label"></span>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0)" data-ng-click="removeApplicationSystemFromBasket(as)" data-ki-i18n="application-basket-empty" class="pull-right"></a>
+                </div>
+            </div>
+
+            <div class="row margin-vertical-default">
+                <div class="col-md-16">
+                    <div class="pull-right" data-ki-application-status-label data-as="as"></div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div data-ng-if="as.maxApplicationOptions <= 1">
+        <div class="row margin-vertical-default">
+            <div class="col-md-16">
+                <span class="pull-right" data-ki-i18n="application-basket-fill-form-notification-single-ao"></span>
+            </div>
+        </div>
+        <div class="row margin-vertical-default">
+            <div class="col-md-16">
+                <a href="javascript:void(0)" data-ng-click="removeApplicationSystemFromBasket(as)" data-ki-i18n="application-basket-empty" class="pull-right"></a>
+            </div>
+        </div>
+    </div>
 </div>
