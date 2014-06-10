@@ -33,6 +33,12 @@
                 </span>
             </li>
             <li>
+                <span data-ki-i18n="form-of-education-higher" data-show-colon="true" class="margin-right-1"></span>
+                <span data-ng-repeat="fot in lo.formOfTeaching">
+                    <span class="bold">{{fot}}</span><span data-ng-show="!$last">,</span>
+                </span>
+            </li>
+            <li>
                 <span data-ki-i18n="chargeable" data-show-colon="true" class="margin-right-1"></span>
                 <span class="bold" data-ki-i18n="chargeable-{{lo.chargeable}}"></span>
             </li>

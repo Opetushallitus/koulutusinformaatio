@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LocationFields;
@@ -357,7 +358,7 @@ public class SearchServiceSolrImpl implements SearchService {
         String parentId = doc.get(LearningOpportunity.PARENT_ID) != null ? doc.get(LearningOpportunity.PARENT_ID).toString() : null;
         String losId = doc.get(LearningOpportunity.LOS_ID) != null ? doc.get(LearningOpportunity.LOS_ID).toString() : null;
         String id = doc.get(LearningOpportunity.LOS_ID) != null ? doc.get(LearningOpportunity.LOS_ID).toString() : doc.get(LearningOpportunity.ID).toString();
-        String prerequisiteText = doc.get(LearningOpportunity.PREREQUISITE) != null ? doc.get(LearningOpportunity.PREREQUISITE).toString() : null;
+        String prerequisiteText = getPrerequisiteText(doc, lang);
         String prerequisiteCodeText = doc.get(LearningOpportunity.PREREQUISITE_CODE) != null
                 ? doc.get(LearningOpportunity.PREREQUISITE_CODE).toString() : null;
         String credits = doc.get(LearningOpportunity.CREDITS) != null ? doc.get(LearningOpportunity.CREDITS).toString() : null;
@@ -382,12 +383,42 @@ public class SearchServiceSolrImpl implements SearchService {
 
     }
 
+    private String getPrerequisiteText(SolrDocument doc, String lang) {
+        if (lang.equalsIgnoreCase("fi")
+                && doc.getFieldValue(LearningOpportunity.PREREQUISITE_DISPLAY_FI) != null) {
+            return doc.getFieldValue(LearningOpportunity.PREREQUISITE_DISPLAY_FI).toString();
+        }
+        if (lang.equalsIgnoreCase("sv")
+                && doc.getFieldValue(LearningOpportunity.PREREQUISITE_DISPLAY_SV) != null) {
+            return doc.getFieldValue(LearningOpportunity.PREREQUISITE_DISPLAY_SV).toString();
+        }
+        if (lang.equalsIgnoreCase("en")
+                && doc.getFieldValue(LearningOpportunity.PREREQUISITE_DISPLAY_EN) != null) {
+            return doc.getFieldValue(LearningOpportunity.PREREQUISITE_DISPLAY_EN).toString();
+        }
+        if (doc.getFieldValue(LearningOpportunity.PREREQUISITE_DISPLAY) != null) {
+            return doc.getFieldValue(LearningOpportunity.PREREQUISITE_DISPLAY).toString();
+        }
+        return null;
+    }
+
     private String getHomeplace(SolrDocument doc, String lang) {
-        return getTranslatedValue(doc, lang,
-                LearningOpportunity.HOMEPLACE_DISPLAY_FI,
-                LearningOpportunity.HOMEPLACE_DISPLAY_SV,
-                LearningOpportunity.HOMEPLACE_DISPLAY_EN,
-                LearningOpportunity.HOMEPLACE_DISPLAY);
+        if (lang.equalsIgnoreCase("fi")
+                && doc.getFieldValue(LearningOpportunity.HOMEPLACE_DISPLAY_FI) != null) {
+            return doc.getFieldValue(LearningOpportunity.HOMEPLACE_DISPLAY_FI).toString();
+        }
+        if (lang.equalsIgnoreCase("sv")
+                && doc.getFieldValue(LearningOpportunity.HOMEPLACE_DISPLAY_SV) != null) {
+            return doc.getFieldValue(LearningOpportunity.HOMEPLACE_DISPLAY_SV).toString();
+        }
+        if (lang.equalsIgnoreCase("en")
+                && doc.getFieldValue(LearningOpportunity.HOMEPLACE_DISPLAY_EN) != null) {
+            return doc.getFieldValue(LearningOpportunity.HOMEPLACE_DISPLAY_EN).toString();
+        }
+        if (doc.getFieldValue(LearningOpportunity.HOMEPLACE_DISPLAY) != null) {
+            return doc.getFieldValue(LearningOpportunity.HOMEPLACE_DISPLAY).toString();
+        }
+        return null;
     }
 
     private String getEdDegree(SolrDocument doc, String lang) {
@@ -407,11 +438,22 @@ public class SearchServiceSolrImpl implements SearchService {
     }
 
     private String getLopName(SolrDocument doc, String lang) {
-        return getTranslatedValue(doc, lang,
-                LearningOpportunity.LOP_NAME_DISPLAY_FI,
-                LearningOpportunity.LOP_NAME_DISPLAY_SV,
-                LearningOpportunity.LOP_NAME_DISPLAY_EN,
-                LearningOpportunity.LOP_NAME);
+        if (lang.equalsIgnoreCase("fi")
+                && doc.getFieldValue(LearningOpportunity.LOP_NAME_DISPLAY_FI) != null) {
+            return doc.getFieldValue(LearningOpportunity.LOP_NAME_DISPLAY_FI).toString();
+        }
+        if (lang.equalsIgnoreCase("sv")
+                && doc.getFieldValue(LearningOpportunity.LOP_NAME_DISPLAY_SV) != null) {
+            return doc.getFieldValue(LearningOpportunity.LOP_NAME_DISPLAY_SV).toString();
+        }
+        if (lang.equalsIgnoreCase("en")
+                && doc.getFieldValue(LearningOpportunity.LOP_NAME_DISPLAY_EN) != null) {
+            return doc.getFieldValue(LearningOpportunity.LOP_NAME_DISPLAY_EN).toString();
+        }
+        if (doc.getFieldValue(LearningOpportunity.LOP_NAME) != null) {
+            return doc.getFieldValue(LearningOpportunity.LOP_NAME).toString();
+        }
+        return null;
     }
 
     private String getTranslatedValue(SolrDocument doc, String lang, String fieldFi, String fieldSv, String fieldEn, String field) {
@@ -636,7 +678,7 @@ public class SearchServiceSolrImpl implements SearchService {
 
                 String[] splits = curC.getName().split("\\.");
 
-                if (splits.length >= 2) {
+                if ((splits.length >= 2 && !splits[0].equals("et01")) || (splits.length >= 3 && splits[0].equals("et01"))) {
                     int endIndex = curC.getName().lastIndexOf('.');
                     String parentStr = curC.getName().substring(0, endIndex);
                     if (resMap.containsKey(parentStr)) {

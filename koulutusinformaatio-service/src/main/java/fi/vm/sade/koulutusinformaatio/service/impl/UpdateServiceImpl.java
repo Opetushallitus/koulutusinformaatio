@@ -92,7 +92,6 @@ public class UpdateServiceImpl implements UpdateService {
 
             this.transactionManager.beginTransaction(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
             
-
             int count = MAX_RESULTS;
             int index = 0;
 
@@ -101,8 +100,7 @@ public class UpdateServiceImpl implements UpdateService {
             List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
             count = loOids.size();
             index += count;
-            
-            
+
                 for (String loOid : loOids) {
                     List<LOS> specifications = null;
                     try {

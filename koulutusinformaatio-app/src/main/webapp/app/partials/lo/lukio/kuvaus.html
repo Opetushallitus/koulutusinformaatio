@@ -11,7 +11,9 @@
             </li>
             <li>
                 <span data-ki-i18n="form-of-education" data-show-colon="true" class="margin-right-1"></span>
-                <span class="bold">{{selectedLOI.formOfTeaching}}</span>
+                <span data-ng-repeat="fot in selectedLOI.formsOfTeaching">
+                    <span class="bold">{{fot}}</span><span data-ng-show="!$last">,</span>
+                </span>
             </li>
             <li>
                 <span data-ki-i18n="duration" data-show-colon="true" class="margin-right-1"></span>
