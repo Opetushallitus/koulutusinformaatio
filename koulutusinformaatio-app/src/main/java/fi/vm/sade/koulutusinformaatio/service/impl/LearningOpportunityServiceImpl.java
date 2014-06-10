@@ -284,7 +284,7 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
             dto = HigherEducationLOSToDTO.convert(los, uiLang, uiLang); 
         }
         
-        if (dto.getStructureImageId() != null) {
+        if (dto.getStructureImageId() != null && los.getStructureImage() != null &&  los.getStructureImage().getPictureTranslations().get(uiLang) != null) {
             dto.setStructureImage(modelMapper.map(los.getStructureImage().getPictureTranslations().get(uiLang), PictureDTO.class));
         }
         return dto;
