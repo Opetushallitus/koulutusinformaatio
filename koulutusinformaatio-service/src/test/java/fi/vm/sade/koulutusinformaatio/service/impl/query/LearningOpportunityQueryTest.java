@@ -20,6 +20,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl.query;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
 
 import org.apache.solr.common.params.DisMaxParams;
@@ -43,6 +44,8 @@ public class LearningOpportunityQueryTest {
     private static final List<String> FF_TEACH_LANG_OTHER = Lists.newArrayList( "teachingLangCode_ffm:OT", "someOther_ffm:whatever");
     private static final boolean ONGOING = false;
     private static final boolean UPCOMING = false;
+    private static final boolean UPCOMING_LATER = false;
+    private static final String UPCOMING_DATE = "2014-10-30T00:00:00Z";
     private static final String LANG_FI = "fi";
     private static final int START = 0;
     private static final int ROWS = 10;
@@ -51,7 +54,7 @@ public class LearningOpportunityQueryTest {
 
     @Test
     public void testQueryTeachLangNone() {
-        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FACET_FILTERS, LANG_FI, ONGOING, UPCOMING, START, ROWS, SORT, ORDER, null, null, null, SearchType.LO);
+        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FACET_FILTERS, LANG_FI, ONGOING, UPCOMING, UPCOMING_LATER, START, ROWS, SORT, ORDER, null, null, null, UPCOMING_DATE, UPCOMING_DATE);
         assertNotNull(q);
         assertEquals(7, q.getFilterQueries().length);
         String prerequisiteFQ = new StringBuilder("prerequisites:").append(PREREQUISITE).toString();
@@ -61,13 +64,13 @@ public class LearningOpportunityQueryTest {
         assertEquals(lopHomeplaceFQ, q.getFilterQueries()[1]);
         assertEquals(TERM, q.getQuery().toString());
         assertEquals("edismax", q.getParams("defType")[0]);
-        assertEquals(Joiner.on(" ").join(LearningOpportunityQuery.FIELDS), q.getParams(DisMaxParams.QF)[0]);
+        assertEquals(Joiner.on(" ").join(SolrUtil.FIELDS), q.getParams(DisMaxParams.QF)[0]);
     }
     
     @Test
     public void testQueryFieldsTeachLangFi() {
         
-        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FF_TEACH_LANG_FI, LANG_FI, ONGOING, UPCOMING, START, ROWS, SORT, ORDER, null, null, null, SearchType.LO);
+        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FF_TEACH_LANG_FI, LANG_FI, ONGOING, UPCOMING,  UPCOMING_LATER, START, ROWS, SORT, ORDER, null, null, null, UPCOMING_DATE, UPCOMING_DATE);
         assertNotNull(q);
         assertEquals(7, q.getFilterQueries().length);
         String prerequisiteFQ = new StringBuilder("prerequisites:").append(PREREQUISITE).toString();
@@ -77,14 +80,14 @@ public class LearningOpportunityQueryTest {
         assertEquals(lopHomeplaceFQ, q.getFilterQueries()[1]);
         assertEquals(TERM, q.getQuery().toString());
         assertEquals("edismax", q.getParams("defType")[0]);
-        assertEquals(Joiner.on(" ").join(LearningOpportunityQuery.FIELDS_FI), q.getParams(DisMaxParams.QF)[0]);
+        assertEquals(Joiner.on(" ").join(SolrUtil.FIELDS_FI), q.getParams(DisMaxParams.QF)[0]);
         
     }
     
     @Test
     public void testQueryFieldsTeachLangSv() {
         
-        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FF_TEACH_LANG_SV, LANG_FI, ONGOING, UPCOMING, START, ROWS, SORT, ORDER, null, null, null, SearchType.LO);
+        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FF_TEACH_LANG_SV, LANG_FI, ONGOING, UPCOMING, UPCOMING_LATER, START, ROWS, SORT, ORDER, null, null, null, UPCOMING_DATE, UPCOMING_DATE);
         assertNotNull(q);
         assertEquals(7, q.getFilterQueries().length);
         String prerequisiteFQ = new StringBuilder("prerequisites:").append(PREREQUISITE).toString();
@@ -94,14 +97,13 @@ public class LearningOpportunityQueryTest {
         assertEquals(lopHomeplaceFQ, q.getFilterQueries()[1]);
         assertEquals(TERM, q.getQuery().toString());
         assertEquals("edismax", q.getParams("defType")[0]);
-        assertEquals(Joiner.on(" ").join(LearningOpportunityQuery.FIELDS_SV), q.getParams(DisMaxParams.QF)[0]);
+        assertEquals(Joiner.on(" ").join(SolrUtil.FIELDS_SV), q.getParams(DisMaxParams.QF)[0]);
         
     }
     
     @Test
     public void testQueryFieldsTeachLangOther() {
-        
-        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FF_TEACH_LANG_OTHER, LANG_FI, ONGOING, UPCOMING, START, ROWS, SORT, ORDER, null, null, null, SearchType.LO);
+        LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FF_TEACH_LANG_OTHER, LANG_FI, ONGOING, UPCOMING, UPCOMING_LATER, START, ROWS, SORT, ORDER, null, null, null, UPCOMING_DATE, UPCOMING_DATE);
         assertNotNull(q);
         assertEquals(7, q.getFilterQueries().length);
         String prerequisiteFQ = new StringBuilder("prerequisites:").append(PREREQUISITE).toString();
@@ -111,7 +113,7 @@ public class LearningOpportunityQueryTest {
         assertEquals(lopHomeplaceFQ, q.getFilterQueries()[1]);
         assertEquals(TERM, q.getQuery().toString());
         assertEquals("edismax", q.getParams("defType")[0]);
-        assertEquals(Joiner.on(" ").join(LearningOpportunityQuery.FIELDS_FI), q.getParams(DisMaxParams.QF)[0]);
+        assertEquals(Joiner.on(" ").join(SolrUtil.FIELDS_FI), q.getParams(DisMaxParams.QF)[0]);
         
     }
     

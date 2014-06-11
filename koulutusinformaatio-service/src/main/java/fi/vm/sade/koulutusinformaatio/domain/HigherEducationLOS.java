@@ -82,8 +82,16 @@ public class HigherEducationLOS extends LOS {
 
     private List<Code> facetPrerequisites;
     private String educationType;
+    
+    private I18nPicture structureImage;
+    
+    private List<Code> fotFacet = new ArrayList<Code>();
+    
+    private List<Code> timeOfTeachingFacet = new ArrayList<Code>();
+    
+    private List<Code> formOfStudyFacet = new ArrayList<Code>();
 
-
+    private Code koulutuslaji;
 
     public String getId() {
         return id;
@@ -463,6 +471,46 @@ public class HigherEducationLOS extends LOS {
     }
     public String getEducationType() {
         return educationType;   
+    }
+
+    public I18nPicture getStructureImage() {
+        return structureImage;
+    }
+
+    public void setStructureImage(I18nPicture structureImage) {
+        this.structureImage = structureImage;
+    }
+
+    public List<Code> getFotFacet() {
+        return fotFacet;
+    }
+
+    public void setFotFacet(List<Code> formOfTeachingFacet) {
+        this.fotFacet = formOfTeachingFacet;
+    }
+
+    public List<Code> getTimeOfTeachingFacet() {
+        return timeOfTeachingFacet;
+    }
+
+    public void setTimeOfTeachingFacet(List<Code> timeOfTeachingFacet) {
+        this.timeOfTeachingFacet = timeOfTeachingFacet;
+    }
+
+    public List<Code> getFormOfStudyFacet() {
+        return formOfStudyFacet;
+    }
+
+    public void setFormOfStudyFacet(List<Code> formOfStudyFacet) {
+        this.formOfStudyFacet = formOfStudyFacet;
+    }
+
+    public Code getKoulutuslaji() {
+        return koulutuslaji;
+    }
+
+    public void setKoulutuslaji(Code koulutuslaji) {
+        this.koulutuslaji = koulutuslaji;
     }
     
 }

@@ -61,6 +61,8 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
 
         doc.setField(LearningOpportunity.PREREQUISITE, SolrUtil.resolveTranslationInTeachingLangUseFallback(
                 loi.getTeachingLanguages(), loi.getPrerequisite().getName().getTranslations()));
+        doc.setField(LearningOpportunity.PREREQUISITE_DISPLAY, SolrUtil.resolveTranslationInTeachingLangUseFallback(
+                loi.getTeachingLanguages(), loi.getPrerequisite().getName().getTranslations()));
         doc.addField(LearningOpportunity.PREREQUISITE_CODE, loi.getPrerequisite().getValue());
 
         if (los.getCreditValue() != null 
@@ -181,6 +183,7 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
 
         //For faceting
         indexFacetFields(doc, los, loi);
+        SolrUtil.setLopAndHomeplaceDisplaynames(doc, provider, loi.getPrerequisite());
 
         return doc;
     }
@@ -188,9 +191,10 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
     private void indexFacetFields(SolrInputDocument doc, UpperSecondaryLOS los,  UpperSecondaryLOI loi) {
         doc.addField(LearningOpportunity.TEACHING_LANGUAGE, loi.getTeachingLanguages().get(0).getValue());
         doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_LUKIO);
-        doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_TUTKINTOON);
+        //doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_TUTKINTOON);
         if (loi.isKaksoistutkinto()) {
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_KAKSOIS);
+            doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMMATILLISET);
         }
         for (Code curTopic : los.getTopics()) {
             doc.addField(LearningOpportunity.TOPIC, curTopic.getUri());
@@ -199,5 +203,46 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
         for (Code curTopic : los.getThemes()) {
             doc.addField(LearningOpportunity.THEME, curTopic.getUri());
         }
+        
+        List<String> usedVals = new ArrayList<String>();
+        
+        if (loi.getFotFacet() != null) {
+            
+            
+            
+            for (Code curFOT : loi.getFotFacet()) {
+                if (!usedVals.contains(curFOT.getUri())) {
+                    doc.addField(LearningOpportunity.FORM_OF_TEACHING, curFOT.getUri());
+                    usedVals.add(curFOT.getUri());
+                }
+            }
+        }
+        
+        if (loi.getTimeOfTeachingFacet() != null) {
+            
+            for (Code curTimeOfTeachinig : loi.getTimeOfTeachingFacet()) {
+                if (!usedVals.contains(curTimeOfTeachinig.getUri())) {
+                    doc.addField(LearningOpportunity.TIME_OF_TEACHING, curTimeOfTeachinig.getUri());
+                    usedVals.add(curTimeOfTeachinig.getUri());
+                }
+            }
+        }
+        
+        if (loi.getFormOfStudyFacet() != null) {
+            
+            for (Code curFormOfStudy : loi.getFormOfStudyFacet()) {
+                if (!usedVals.contains(curFormOfStudy.getUri())) {
+                    doc.addField(LearningOpportunity.FORM_OF_STUDY, curFormOfStudy.getUri());
+                    usedVals.add(curFormOfStudy.getUri());
+                }
+            }
+        }
+        
+        if (loi.getKoulutuslaji() != null 
+                && !usedVals.contains(loi.getKoulutuslaji().getUri())) {
+            doc.addField(LearningOpportunity.KIND_OF_EDUCATION, loi.getKoulutuslaji().getUri());
+            usedVals.add(loi.getKoulutuslaji().getUri());
+        }
+        
     }
 }

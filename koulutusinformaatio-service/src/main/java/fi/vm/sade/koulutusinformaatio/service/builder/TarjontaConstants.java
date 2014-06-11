@@ -26,6 +26,9 @@ public class TarjontaConstants {
     public static final String STATE_PUBLISHED = "JULKAISTU";
 
     public static final String BASE_EDUCATION_KOODISTO_URI = "pohjakoulutustoinenaste";
+    public static final String FORM_OF_EDUCATION_FACET_KOODISTO_URI = "opetuspaikkakk";
+    public static final String TIME_OF_EDUCATION_FACET_KOODISTO_URI = "opetusaikakk";
+    public static final String FORM_OF_STUDY_FACET_KOODISTO_URI = "opetusmuotokk";
 
     public static final String LANG_FI = "fi";
 
@@ -46,6 +49,10 @@ public class TarjontaConstants {
     public static final String IMMIGRANT_PREPARATORY_UPSEC = "MaahanmLukioValmistavaKoulutus";
     public static final String KANSANOPISTO_TYPE = "VapaanSivistystyonKoulutus";
     
+    public static final String NUORTEN_KOULUTUS = "koulutuslaji_n";
+    public static final String AIKUISKOULUTUS = "koulutuslaji_a";
+    
+    public static final String KOTITALOUSKOODI = "koulutus_038411";
 
     public static final String PREREQUISITE_URI_ER = "pohjakoulutusvaatimustoinenaste_er";
     

@@ -19,6 +19,8 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -47,6 +49,7 @@ public class ProviderServiceImpl implements ProviderService {
 
     private ConversionService conversionService;
     private String organisaatioResourceUrl;
+    private static Map<String,Provider> providerMap = new HashMap<String,Provider>();
 
     @Autowired
     public ProviderServiceImpl(@Value("${organisaatio.api.rest.url}") final String organisaatioResourceUrl,
@@ -60,6 +63,11 @@ public class ProviderServiceImpl implements ProviderService {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Fetching provider with oid " + oid);
         }
+        
+        if (providerMap.containsKey(oid)) {
+            return providerMap.get(oid);
+        }
+        
         //WebResource oidResource = webResource.path(oid);
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -81,6 +89,7 @@ public class ProviderServiceImpl implements ProviderService {
             provider = inheritMetadata(provider, parent);
 
         }
+        providerMap.put(oid, provider);
         return provider;
     }
 
@@ -125,6 +134,11 @@ public class ProviderServiceImpl implements ProviderService {
             valid = false;
         }
         return valid;
+    }
+
+    @Override
+    public void clearCache() {
+        providerMap = new HashMap<String,Provider>();   
     }
 
 

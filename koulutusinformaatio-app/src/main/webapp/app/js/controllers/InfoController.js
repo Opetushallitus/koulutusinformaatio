@@ -1,13 +1,14 @@
 /**
  *  Controller for info views (parent and child)
  */
- function InfoCtrl($scope, $rootScope, $routeParams, $location, SearchService, LearningOpportunityProviderPictureService, UtilityService, TranslationService, Config, loResource, LanguageService, _) {
+ function InfoCtrl($scope, $rootScope, $routeParams, $location, SearchService, LearningOpportunityPictureService, LearningOpportunityProviderPictureService, UtilityService, TranslationService, Config, loResource, LanguageService, VirkailijaLanguageService, _) {
     $scope.loType = $routeParams.loType;
 
     $scope.queryString = SearchService.getTerm();
     $scope.descriptionLanguage = 'fi';
     $scope.hakuAppUrl = Config.get('hakulomakeUrl');
     $scope.uiLang = LanguageService.getLanguage();
+    $scope.virkailijaLang = VirkailijaLanguageService.getLanguage();
 
     // set tab titles based on lo and education type
     $scope.$watch('lo.educationTypeUri', function(value) {
@@ -197,6 +198,7 @@
         loadLo();
     }
 
+    /*
     $scope.hasChildren = function() {
         if ($scope.selectedAs && $scope.selectedAs.children) {
             return $scope.selectedAs.children.length > 0;
@@ -204,6 +206,7 @@
             return false;
         }
     };
+    */
 
     // change description language and re-load LO data with the specified language
     $scope.changeDescriptionLanguage = function(languageCode) {
@@ -225,9 +228,32 @@
             });
         }
     });
+    
+    $scope.$watch('lo', function(data) {
+        if (data && data.structureImageId) {
+        	if (data.structureImage && data.structureImage != null) {
+        		$scope.structureImage = data.structureImage;
+        	} else {
+        		LearningOpportunityPictureService.query({pictureId: data.structureImageId}).then(function(result) {
+        			$scope.structureImage = result;
+        		});
+        	}
+        }
+    });
 
     // initialize view model
     loadLo();
+};
+
+function LoTabCtrl($scope, $location) {
+    
+    var qParams = $location.search();
+    if (qParams.tab) {
+        $scope.tabs = [false, false, false];
+        $scope.tabs[qParams.tab] = true;
+    } else {
+        $scope.tabs = [true, false, false];
+    }
 };
 
 
@@ -236,30 +262,32 @@
  */
 function ApplicationCtrl($scope, ApplicationBasketService, UtilityService, TranslationService) {
 
-    // vocational education needs prerequisite checking...
-    $scope.addToBasket = function(aoId) {
-        var basketType = ApplicationBasketService.getType();
-        if (!basketType || $scope.selectedLOI.prerequisite.value == basketType) {
-            ApplicationBasketService.addItem(aoId, $scope.selectedLOI.prerequisite.value);
-        } else {
-            $scope.popoverTitle = TranslationService.getTranslation('popover-title-error');
-            $scope.popoverContent = "<div>" + TranslationService.getTranslation('popover-content-error') + "</div><a href='#!/muistilista'>" + TranslationService.getTranslation('popover-content-link-to-application-basket') + "</a>";
-        }
+    $scope.tooltips = {
+        externalApplicationForm: TranslationService.getTranslation('tooltip:external-application-form')
     };
-
-    // ...but high education does not need prerequisite checking
-    $scope.addHighEdToBasket = function(aoId) {
-        ApplicationBasketService.addItem(aoId);
-    }
-
-    $scope.applicationSystemIsActive = function(as) {
-        for (var i in as.applicationDates) {
-            if (as.applicationDates.hasOwnProperty(i)) {
-                return as.asOngoing ? true : false;
+    
+    $scope.addToBasket = function(aoId) {
+        // vocational education needs prerequisite checking...
+        var addVocationalEdToBasket = function(aoId) {
+            var basketType = ApplicationBasketService.getType();
+            if (!basketType || $scope.selectedLOI.prerequisite.value == basketType) {
+                ApplicationBasketService.addItem(aoId, $scope.selectedLOI.prerequisite.value);
+            } else {
+                $scope.popoverTitle = TranslationService.getTranslation('popover-title-error');
+                $scope.popoverContent = "<div>" + TranslationService.getTranslation('popover-content-error') + "</div><a href='#!/muistilista'>" + TranslationService.getTranslation('popover-content-link-to-application-basket') + "</a>";
             }
         }
 
-        return false;
+        // ...but other types of education do not require prerequisite checking
+        var addEducationToBasket = function(aoId) {
+            ApplicationBasketService.addItem(aoId);
+        }
+
+        if ($scope.loType == 'tutkinto' || $scope.loType == 'koulutusohjelma') {
+            addVocationalEdToBasket(aoId);
+        } else {
+            addEducationToBasket(aoId);
+        }
     };
 
     $scope.isItemAddedToBasket = function(aoId) {

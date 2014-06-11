@@ -18,6 +18,7 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
             var result = 0;
             result = params.ongoing ? result + 1 : result;
             result = params.upcoming ? result + 1 : result;
+            result = params.upcomingLater ? result + 1 : result;
 
             return result;
         }
@@ -105,6 +106,7 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
             qParams += (params.locations != undefined && params.locations.length > 0) ? ('&' + cities) : '';
             qParams += (params.ongoing != undefined) ? ('&ongoing=' + params.ongoing) : '';
             qParams += (params.upcoming != undefined) ? ('&upcoming=' + params.upcoming) : '';
+            qParams += (params.upcomingLater != undefined) ? ('&upcomingLater=' + params.upcomingLater) : '';
             qParams += (params.lang != undefined) ? ('&lang=' + params.lang) : '';
             qParams += (params.lopFilter != undefined) ? ('&lopFilter=' + params.lopFilter) : '';
             qParams += (params.educationCodeFilter != undefined) ? ('&educationCodeFilter=' + params.educationCodeFilter) : '';
@@ -115,6 +117,12 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
             		 qParams += '&facetFilters=' + facetFilter;
                  });
             }
+            
+            if (params.articleFacetFilters != undefined) {
+           	 angular.forEach(params.articleFacetFilters, function(facetFilter, key) {
+           		 qParams += '&articleFacetFilters=' + facetFilter;
+                });
+           }
             
             if (params.excludes != undefined) {
             	angular.forEach(params.excludes, function(exclude, key) {
@@ -134,7 +142,7 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
             qParams += (sortField.length > 0) ? ('&sort=' +sortField) : '';
             qParams += ((params.sortCriteria != undefined) && ((params.sortCriteria == 2) || (params.sortCriteria == 4))) ? ('&order=desc') : '';
 
-            $http.get('../lo/search/' + encodeURI(params.queryString) + qParams, {}).
+            $http.get('../lo/search/' + encodeURI(params.queryString).replace("#", "%23").replace(";", "%3B") + qParams, {}).
             success(function(result) {
                 LearningOpportunitySearchResultTransformer.transform(result);
                 var variables = parseFilterValues(params);
@@ -447,6 +455,7 @@ service('HigherEducationLOService', ['$http', '$timeout', '$q', 'LanguageService
                     //parent: {},
                     provider: result.provider
                 }
+                
                 deferred.resolve(loResult);
             }).
             error(function(result) {
@@ -467,7 +476,8 @@ service('HigherEducationPreviewLOService', ['$http', '$timeout', '$q', 'Language
             var deferred = $q.defer();
             var queryParams = {
                 uiLang: LanguageService.getLanguage(),
-                lang: LanguageService.getLanguage()
+                lang: LanguageService.getLanguage(),
+                timestamp: Date.now()
             }
 
             if (options.lang) {
@@ -487,7 +497,7 @@ service('HigherEducationPreviewLOService', ['$http', '$timeout', '$q', 'Language
             success(function(result) {
             	HigherEducationTransformer.transform(result);
             	result.preview = true;
-            	result.tarjontaEditUrl =  Config.get('tarjontaUrl') + '/koulutus/' + result.id + '/edit';
+            	result.tarjontaEditUrl =  Config.get('tarjontaUrl') + '/koulutus/' + result.id + '/edit?' + Date.now();
             	if (result.children) {
             		for (var i = 0; i < result.children.length; ++i) {
             			result.children[i].preview = true;
@@ -501,7 +511,7 @@ service('HigherEducationPreviewLOService', ['$http', '$timeout', '$q', 'Language
             				for (var j = 0; j < as.applicationOptions.length; ++j) {
             					var ao = as.applicationOptions[j];
             					ao.preview = true;
-            					ao.editUrl =  Config.get('tarjontaUrl') + '/hakukohde/' + ao.id + '/edit';
+            					ao.editUrl =  Config.get('tarjontaUrl') + '/hakukohde/' + ao.id + '/edit?' + Date.now();
             				}
             			}
             		} 
@@ -525,7 +535,7 @@ service('HigherEducationPreviewLOService', ['$http', '$timeout', '$q', 'Language
 /**
  * Transformer for parent LO data
  */
-service('ParentLOTransformer', ['UtilityService', '$filter', '$rootScope', function(UtilityService, $filter, $rootScope) {
+service('ParentLOTransformer', ['KiSorter', '$filter', '$rootScope', function(KiSorter, $filter, $rootScope) {
     return {
         transform: function(result) {
 
@@ -629,7 +639,7 @@ service('ParentLOTransformer', ['UtilityService', '$filter', '$rootScope', funct
             // sort application systems and select active LOI
             var lois = [];
             angular.forEach(applicationSystemsByPrerequisite, function(asByPrerequisite, key){
-                UtilityService.sortApplicationSystems(asByPrerequisite);
+                KiSorter.sortApplicationSystems(asByPrerequisite);
                 
                 if (asByPrerequisite.length > 0) {
                     var loiId = asByPrerequisite[0].loiId;
@@ -676,6 +686,8 @@ service('ParentLOTransformer', ['UtilityService', '$filter', '$rootScope', funct
                     as.children = children;
                 });
             });
+
+            //console.log(result);
         }
     }
 }]).
@@ -683,7 +695,7 @@ service('ParentLOTransformer', ['UtilityService', '$filter', '$rootScope', funct
 /**
  * Transformer for child LO data
  */
-service('HigherEducationTransformer', ['UtilityService', '$rootScope', '$filter', 'LanguageService', '_', function(UtilityService, $rootScope, $filter, LanguageService, _) {
+service('HigherEducationTransformer', ['KiSorter', '$rootScope', '$filter', 'LanguageService', '_', function(KiSorter, $rootScope, $filter, LanguageService, _) {
 
 	var getFirstItemInList = function(list) {
 		if (list && list[0]) {
@@ -715,7 +727,7 @@ service('HigherEducationTransformer', ['UtilityService', '$rootScope', '$filter'
 				result.polytechnic = true;
 			}
 			result.teachingLanguage = getFirstItemInList(result.teachingLanguages);
-			result.formOfTeaching = getFirstItemInList(result.formOfTeaching);
+			//result.formOfTeaching = getFirstItemInList(result.formOfTeaching);
 			
 
 			if (result.themes != undefined && result.themes != null) {
@@ -793,7 +805,7 @@ service('HigherEducationTransformer', ['UtilityService', '$rootScope', '$filter'
 			// sort application systems and select active LOI
 
 			angular.forEach(applicationSystemsByPrerequisite, function(asByPrerequisite, key){
-				UtilityService.sortApplicationSystems(asByPrerequisite);
+				KiSorter.sortApplicationSystems(asByPrerequisite);
 
 			});
 
@@ -816,7 +828,7 @@ service('HigherEducationTransformer', ['UtilityService', '$rootScope', '$filter'
 /**
  * Transformer for child LO data
  */
-service('ChildLOTransformer', ['UtilityService', '$rootScope', function(UtilityService, $rootScope) {
+service('ChildLOTransformer', ['UtilityService', 'KiSorter', '$rootScope', function(UtilityService, KiSorter, $rootScope) {
 
     var getFirstItemInList = function(list) {
         if (list && list[0]) {
@@ -849,7 +861,9 @@ service('ChildLOTransformer', ['UtilityService', '$rootScope', function(UtilityS
                     var startDate = new Date(loi.startDate);
                     loi.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
                     loi.teachingLanguage = getFirstItemInList(loi.teachingLanguages);
+                    loi.formsOfTeaching = loi.formOfTeaching;
                     loi.formOfTeaching = getFirstItemInList(loi.formOfTeaching);
+                    
 
                     if (loi.webLinks) {
                         loi.studyPlan = loi.webLinks[studyplanKey];
@@ -940,7 +954,7 @@ service('ChildLOTransformer', ['UtilityService', '$rootScope', function(UtilityS
             // sort application systems and select active LOI
             var lois = [];
             angular.forEach(applicationSystemsByPrerequisite, function(asByPrerequisite, key){
-                UtilityService.sortApplicationSystems(asByPrerequisite);
+                KiSorter.sortApplicationSystems(asByPrerequisite);
                 
                 if (asByPrerequisite.length > 0) {
                     var loiId = asByPrerequisite[0].loiId;
@@ -1003,7 +1017,7 @@ service('ChildLOTransformer', ['UtilityService', '$rootScope', function(UtilityS
 /**
  *  Transform search result data
  */
-service('LearningOpportunitySearchResultTransformer', ['UtilityService', '$filter', '$rootScope', function(UtilityService, $filter, $rootScope) {
+service('LearningOpportunitySearchResultTransformer', ['$filter', '$rootScope', function($filter, $rootScope) {
     return {
         transform: function(result) {
 
@@ -1190,6 +1204,28 @@ service('LearningOpportunityProviderPictureService', ['$http', '$timeout', '$q',
 }]).
 
 /**
+ *  Resource for requesting LO picture
+ */
+service('LearningOpportunityPictureService', ['$http', '$timeout', '$q', function($http, $timeout, $q) {
+    return  {
+        query: function(options) {
+            var deferred = $q.defer();
+            
+            $http.get('../lo/picture/' + options.pictureId).
+            success(function(result) {
+                deferred.resolve(result);
+            }).
+            error(function(result) {
+                deferred.reject(result);
+            });
+
+            return deferred.promise;
+        }
+    }
+}]).
+
+
+/**
  *  Service taking care of search term saving
  */
  service('SearchService', ['CookieService', function(CookieService) {
@@ -1213,6 +1249,28 @@ service('LearningOpportunityProviderPictureService', ['$http', '$timeout', '$q',
 service('LanguageService', ['CookieService', function(CookieService) {
     var defaultLanguage = 'fi';
     var key = 'i18next';
+
+    return {
+        getLanguage: function() {
+            return CookieService.get(key) || defaultLanguage;
+        },
+
+        setLanguage: function(language) {
+            CookieService.set(key, language);
+        },
+
+        getDefaultLanguage: function() {
+            return defaultLanguage;
+        }
+    };
+}]).
+
+/**
+ *  Service keeping track of virkalija language selection
+ */
+service('VirkailijaLanguageService', ['CookieService', function(CookieService) {
+    var defaultLanguage = 'fi';
+    var key = 'virkailijaLang';
 
     return {
         getLanguage: function() {
@@ -1283,10 +1341,33 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
     var typekey = 'baskettype';
     var cookieConfig = {useLocalStorage: false, maxChunkSize: 2000, maxNumberOfCookies: 20, path: '/'};
 
-    // used to update item count in basket
-
-    // TODO: could we automate data transformation somehow?
     var transformData = function(result) {
+
+        var createLinkToLo = function(ao) {
+            var loRef = ao.type + '/';
+
+            switch(ao.type) {
+                case 'korkeakoulu':
+                    loRef += ao.higherEducations && ao.higherEducations.length > 0 ? ao.higherEducations[0].id : '';
+                    break;
+                case 'lukio':
+                    loRef += ao.losId;
+                    break;
+                case 'tutkinto':
+                    loRef += ao.parent.id;
+                    break;
+                case 'valmistava':
+                    loRef += ao.parent.id;
+                    break;
+            }
+
+            loRef += '?';
+            loRef += ao.prerequisite ? 'prerequisite=' + ao.prerequisite.value + '&' : '';
+            loRef += 'tab=1';
+
+            return loRef;
+        };
+
         for (var asIndex in result) {
             if (result.hasOwnProperty(asIndex)) {
                 var applicationDates = result[asIndex].applicationDates;
@@ -1310,6 +1391,12 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
                         // set LOS id for lukio
                         // check if ao is of type lukio
                         ao.losId = (ao.children && ao.children.length > 0) ? ao.children[0].losId : '';
+
+                        // transform type to lower case
+                        ao.type = ao.type ? ao.type.toLowerCase() : '';
+
+                        // set link to lo
+                        ao.loRef = createLinkToLo(ao);
                     }
                 }
             }
@@ -1503,6 +1590,7 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
                 locations: getLocationCodes(),
                 ongoing: filters.ongoing,
                 upcoming: filters.upcoming,
+                upcomingLater: filters.upcomingLater,
                 page: filters.page,
                 articlePage: filters.articlePage,
                 facetFilters: filters.facetFilters,
@@ -1511,7 +1599,8 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
                 sortCriteria: filters.sortCriteria,
                 lopFilter: filters.lopFilter,
                 educationCodeFilter: filters.educationCodeFilter,
-                excludes: filters.excludes
+                excludes: filters.excludes,
+                articleFacetFilters : filters.articleFacetFilters
             };
 
             angular.forEach(result, function(value, key) {
@@ -1540,6 +1629,10 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
         
         isUpcoming: function() {
             return filters.upcoming;
+        },
+        
+        isUpcomingLater: function() {
+            return filters.upcomingLater;
         },
 
         getLocations: function() {
@@ -1595,6 +1688,7 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
             params += (filters.locations && filters.locations.length > 0) ? '&locations=' + getLocationCodes().join(',') : '';
             params += filters.ongoing ? '&ongoing' : '';
             params += filters.upcoming ? '&upcoming' : '';
+            params += filters.upcomingLater ? '&upcomingLater' : '';
             params += filters.page ? '&page=' + filters.page : '';
             params += (filters.facetFilters && filters.facetFilters.length > 0) ? '&facetFilters=' + filters.facetFilters.join(',') : '';
             params += filters.langCleared ? '&langCleared=' + filters.langCleared : '';
@@ -1603,6 +1697,7 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
             params += filters.lopFilter ? '&lopFilter=' + filters.lopFilter : '';
             params += filters.educationCodeFilter ? '&educationCodeFilter=' + filters.educationCodeFilter : '';
             params += (filters.excludes && filters.excludes.length > 0) ? '&excludes=' + filters.excludes.join('|') : '';
+            params += (filters.articleFacetFilters && filters.articleFacetFilters.length > 0) ? '&articleFacetFilters=' + filters.articleFacetFilters.join(',') : '';
             params = params.length > 0 ? params.substring(1, params.length) : '';
             return params;
         },
@@ -1613,6 +1708,14 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
         		return filters.facetFilters;
         	}
         	return filters.facetFilters;
+        },
+        
+        getArticleFacetFilters: function() {
+        	if (filters.articleFacetFilters != undefined && (typeof filters.articleFacetFilters == 'string' || filters.articleFacetFilters instanceof String)) {
+        		filters.articleFacetFilters = filters.articleFacetFilters.split(',');
+        		return filters.articleFacetFilters;
+        	}
+        	return filters.articleFacetFilters;
         },
         
         getLopFilter: function() {
@@ -1669,11 +1772,175 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
 }]).
 
 /**
+ * Keeps up information about collapse block hide/show status
+ */
+service('CollapseBlockService', function() {
+    var blocks = {};
+
+    return {
+        setBlock: function(id, value) {
+            if (value) {
+                blocks[id] = value;
+            } else {
+                blocks[id] = false;
+            }
+        },
+
+        getBlock: function(id) {
+            if (blocks[id] === undefined) {
+                return true;
+            } else {
+                return blocks[id];
+            }
+        }
+    }
+}).
+
+/**
+ *  Sort application systems and application options by complex rules
+ */
+service('KiSorter', ['UtilityService', function(UtilityService) {
+    var sortApplicationSystems = function(applicationSystems) {
+
+        var isHakuKaynnissa = function(as) {
+            var isOngoing = false;
+            angular.forEach(as.applicationOptions, function(item) {
+                if (item.canBeApplied) {
+                    isOngoing = true;
+                }
+            });
+
+            return isOngoing;
+        }
+
+        var isVarsinainenYhteishakuKaynnissa = function(as) {
+            return UtilityService.isYhteishaku(as) && UtilityService.isVarsinainenHaku(as) && isHakuKaynnissa(as);
+        }
+
+        var isLisaYhteishakuKaynnissa = function(as) {
+            return UtilityService.isYhteishaku(as) && UtilityService.isLisahaku(as) && isHakuKaynnissa(as);
+        }
+
+        var isVarsinainenYhteishakuTulossaHakuun = function(as) {
+            var earliest = -1;
+            var limit = 30 * 24 * 60 * 60 * 1000;
+            var ts = new Date().getTime();
+            if (UtilityService.isYhteishaku(as) && UtilityService.isVarsinainenHaku(as)) {
+                angular.forEach(as.applicationOptions, function(ao) {
+                    if (earliest < 0 || ao.applicationStartDate < earliest) {
+                        earliest = ao.applicationStartDate;
+                    }
+                });
+
+                var delta = earliest - ts
+                return delta >= 0 && delta < limit;
+            }
+
+            return false;
+        }
+
+        var getEarliestStartDate = function(as) {
+            var earliest = -1;
+            angular.forEach(as.applicationOptions, function(ao) {
+                if (earliest < 0 || ao.applicationStartDate < earliest) {
+                    earliest = ao.applicationStartDate;
+                }
+            });
+
+            return earliest;
+        }
+
+
+        if (applicationSystems) {
+            applicationSystems.sort(function(a, b) {
+
+                /*
+                Hakujen järjestys:
+                1. Käynnissä oleva varsinainen yhteishaku
+                2. Käynnissä oleva yhteishaun lisähaku
+                3. 30 päivän sisällä hakuun tuleva varsinainen yhteishaku
+                4. Mikä tahansa käynnissä oleva haku
+                5. Haku, joka alkaa ensimmäisenä
+                6. Haku, jonka nimi on aakkosissa ensimmäisenä
+                */
+                if (isVarsinainenYhteishakuKaynnissa(a) != isVarsinainenYhteishakuKaynnissa(b)) {
+                    return isVarsinainenYhteishakuKaynnissa(a) ? -1 : 1
+                } else if (isLisaYhteishakuKaynnissa(a) != isLisaYhteishakuKaynnissa(b)) {
+                    return isLisaYhteishakuKaynnissa(a) ? -1 : 1;
+                } else if (isVarsinainenYhteishakuTulossaHakuun(a) != isVarsinainenYhteishakuTulossaHakuun(b)) {
+                    return isVarsinainenYhteishakuTulossaHakuun(a) ? -1 : 1;
+                } else if (isHakuKaynnissa(a) != isHakuKaynnissa(b)) {
+                    return isHakuKaynnissa(a) ? -1 : 1;
+                } else if (getEarliestStartDate(a) != getEarliestStartDate(b)) {
+                    return getEarliestStartDate(a) - getEarliestStartDate(b);
+                } else {
+                    if (a.name < b.name) return -1;
+                    else if (a.name > b.name) return 1;
+                    else return 0;
+                }
+            });
+        }
+    };
+
+    var sortApplicationOptions = function(applicationOptions) {
+        if (applicationOptions) {
+            applicationOptions.sort(function(a, b) {
+
+                /*
+                Hakukohteiden järjestys:
+                1. Käynnissä oleva hakukohde
+                2. Hakukohde, jonka haku alkaa ensimmäisenä
+                3. Hakukohde, jonka nimi on aakkosissa ensimmäisenä
+                */
+                if (a.canBeApplied != b.canBeApplied) {
+                    return a.canBeApplied ? -1 : 1;
+                } else if (a.applicationStartDate != b.applicationStartDate) {
+                    return a.applicationStartDate - b.applicationStartDate;
+                } else {
+                    if (a.name < b.name) return -1;
+                    else if (a.name > b.name) return 1;
+                    else return 0;
+                }
+            });
+        }
+    };
+
+    return {
+        sortApplicationSystems: function(applicationSystems) {
+            sortApplicationSystems(applicationSystems);
+            angular.forEach(applicationSystems, function(as) {
+                sortApplicationOptions(as.applicationOptions);
+            });
+        }
+    }
+}]).
+
+/**
  *  Service for retrieving translated values for text
  */
 service('UtilityService', function() {
+    var hakutapa = {
+        yhteishaku: '01',
+        erillishaku: '02',
+        jatkuva: '03'
+    };
+
+    var hakutyyppi = {
+        varsinainen: '01',
+        taydennys: '02',
+        lisa: '03'
+    };
+
     var isLisahaku = function(as) {
-        return as.aoSpecificApplicationDates;
+        return as.hakutyyppi == hakutyyppi.lisa;
+    }
+
+    var isYhteishaku = function(as) {
+        return as.hakutapa == hakutapa.yhteishaku;
+    }
+
+    var isVarsinainenHaku = function(as) {
+        return as.hakutyyppi == hakutyyppi.varsinainen;
     }
 
     return {
@@ -1697,93 +1964,9 @@ service('UtilityService', function() {
         isLukio: function(lo) {
             return lo.educationDegree == 31 ? true : false;
         },
+        isYhteishaku: isYhteishaku,
+        isVarsinainenHaku: isVarsinainenHaku,
         isLisahaku: isLisahaku,
-        sortApplicationSystems: function(applicationSystems) {
-            if (applicationSystems) {
-                applicationSystems.sort(function(a, b) {
-
-                    var getEarliestStartDate = function(as) {
-                        var earliest = -1;
-
-                        if (isLisahaku(as)) {
-                            earliest = getEarliestStartDateForLisahaku(as);
-                        } else {
-                            angular.forEach(as.applicationDates, function(value, key){
-                                if (earliest < 0 || value.startDate < earliest) {
-                                    earliest = value.startDate;
-                                }
-                            });
-                        }
-
-                        return earliest;
-                    }
-
-                    var getEarliestStartDateForLisahaku = function(as) {
-                        var earliest = -1;
-                        angular.forEach(as.applicationOptions, function(ao, key) {
-                            if (earliest < 0 || ao.applicationStartDate < earliest) {
-                                earliest = ao.applicationStartDate;
-                            }
-                        });
-
-                        return earliest;
-                    }
-
-                    var getLatestsEndDateForLisahaku = function(as) {
-                        var latest = -1;
-                        angular.forEach(as.applicationOptions, function(ao, key) {
-                            if (latest < 0 || ao.applicationEndDate > latest) {
-                                latest = ao.applicationEndDate;
-                            }
-                        });
-
-                        return latest;
-                    }
-
-
-
-                    var isLisahakuOngoing = function(as) {
-                        var result = false;
-                        angular.forEach(as.applicationOptions, function(ao, key){
-                            if (ao.canBeApplied) {
-                                result = true;
-                            }
-                        });
-
-                        return result;
-                    }
-
-                    if ( isLisahaku(a) ) {
-                        a.asOngoing = isLisahakuOngoing(a) ? true : false;
-                    }
-
-                    if ( isLisahaku(b) ) {
-                        b.asOngoing = isLisahakuOngoing(b) ? true : false;
-                    }
-
-                    var comp = 0;
-                    if (a.asOngoing == b.asOngoing) {
-                        if (a.nextApplicationPeriodStarts && b.nextApplicationPeriodStarts) {
-                            comp = a.nextApplicationPeriodStarts - b.nextApplicationPeriodStarts;
-                        } else if (a.nextApplicationPeriodStarts) {
-                            comp = -1;
-                        } else if (b.nextApplicationPeriodStarts) {
-                            comp = 1;
-                        } else {
-                            var earliestA = getEarliestStartDate(a);
-                            var earliestB = getEarliestStartDate(b);
-                            comp = earliestA > earliestB ? 1 : -1;
-                        }
-                    } else if (a.asOngoing) {
-                        comp = -1;
-                    } else {
-                        comp = 1;
-                    }
-
-                    return comp;
-                });
-            }
-        },
         groupByApplicationSystem: function(applicationSystems) {
             result = [];
             angular.forEach(applicationSystems, function(as, askey){

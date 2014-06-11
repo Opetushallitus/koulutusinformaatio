@@ -7,12 +7,19 @@
             <li><a href="javascript:void(0)" data-ng-click="scrollToAnchor('yhteystiedot-anchor')" data-ki-i18n="contact-information"></a></li>
         </ul>
     </div>
-    <figure data-ki-render-organization-image></figure>
+    <figure data-ki-organization-image></figure>
     <div data-ki-social-links></div>
     <div data-ki-language-ribbon data-languages="lo.availableTranslationLanguages" data-change-language="changeDescriptionLanguage" class="ribbon margin-bottom-2"></div>
-    <div data-ki-render-organization="provider" data-anchor="oppilaitos-anchor"></div>
-    <div data-ki-render-student-benefits="provider" data-anchor="edut-anchor"></div>
-    <div data-ki-render-contact-info="provider" data-anchor="yhteystiedot-anchor"></div>
+    
+    <div data-ki-collapse-block data-title-value="provider.name" data-content="provider" data-anchor="oppilaitos-anchor">
+        <div data-ki-organization></div>
+    </div>
+    <div data-ki-collapse-text-block data-title="accessibility-and-learning-support" data-content="provider.accessibility" data-anchor="esteettomyys-anchor"></div>
+    <div data-ki-collapse-block data-title="student-benefits" data-content="provider" data-anchor="edut-anchor">
+        <div data-ki-student-benefits></div>
+    </div>
+
+    <div data-ki-contact-info="provider" data-anchor="yhteystiedot-anchor"></div>
 </section>
 <div data-ng-class="providerAsideClass" data-ng-include data-src="partialUrl + 'oppilaitos-aside.html'"></div>
 <div class="clear"></div>

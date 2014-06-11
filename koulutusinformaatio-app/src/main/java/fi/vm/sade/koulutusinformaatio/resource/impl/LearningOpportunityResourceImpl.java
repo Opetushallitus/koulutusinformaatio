@@ -61,7 +61,8 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
 
     @Override
     public LOSearchResultListDTO searchLearningOpportunities(String text, String prerequisite, 
-            List<String> cities, List<String> facetFilters, String lang, boolean ongoing, boolean upcoming, 
+            List<String> cities, List<String> facetFilters,  List<String> articleFilters, String lang, boolean ongoing, boolean upcoming,
+            boolean upcomingLater,
             int start, int rows, String sort, String order, String lopFilter, String educationCodeFilter,
             List<String> excludes, SearchType searchType) {
         String key = null;
@@ -73,7 +74,7 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
         try {
             sort = (sort != null && !sort.isEmpty()) ? sort : null;
             LOSearchResultList learningOpportunities = searchService.searchLearningOpportunities(key, prerequisite,
-                    cities, facetFilters, lang, ongoing, upcoming, start, rows, sort, order, 
+                    cities, facetFilters, articleFilters,  lang, ongoing, upcoming, upcomingLater, start, rows, sort, order, 
                     lopFilter, educationCodeFilter, excludes, searchType);
             return modelMapper.map(learningOpportunities, LOSearchResultListDTO.class);
         } catch (SearchException e) {
@@ -226,6 +227,15 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
         } catch (ResourceNotFoundException e) {
             throw KIExceptionHandler.resolveException(e);
         } catch (SearchException ex) {
+            throw KIExceptionHandler.resolveException(ex);
+        }
+    }
+
+    @Override
+    public PictureDTO getPicture(String id) {
+        try {
+            return learningOpportunityService.getPicture(id);
+        } catch (ResourceNotFoundException ex) {
             throw KIExceptionHandler.resolveException(ex);
         }
     }

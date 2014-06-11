@@ -9,3 +9,6 @@
 <!--[if lt IE 9]>
 <script src="${baseUrl}app/lib/respond.min.js"></script>
 <![endif]-->
+<#if canonical??>
+<link rel="canonical" href="${canonical}" />
+</#if>

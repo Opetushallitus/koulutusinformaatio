@@ -79,16 +79,23 @@ public class ArticleServiceImpl implements ArticleService {
     }
     
     private List<Article> fetchArticlesByLang(ObjectMapper mapper, String lang) throws IOException, KoodistoException {
+        List<Article> articles = new ArrayList<Article>();
+        articles.addAll(getArticlesByExtension(mapper, lang, ""));
+        articles.addAll(getArticlesByExtension(mapper, lang, "/story"));
+        return articles;
+    }
+    
+    private List<Article> getArticlesByExtension(ObjectMapper mapper, String lang, String extension) throws IOException, KoodistoException {
         int page = 1;
         List<Article> articles = new ArrayList<Article>();
         
-        ArticleResults articlesRes = getArticlesByLang(mapper, lang, page);
+        ArticleResults articlesRes = getArticlesByLang(mapper, lang, extension, page);
         int pages = articlesRes.getPages();
 
         while (pages > 0) {
 
             articles.addAll(articlesRes.getPosts());
-            articlesRes = getArticlesByLang(mapper, lang, ++page);
+            articlesRes = getArticlesByLang(mapper, lang, extension, ++page);
             pages = articlesRes.getPages();
         
         }
@@ -101,7 +108,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
     
     private void transformArticleCodes(Article article) throws KoodistoException {
-        
+
         List<String> edTypeVals = new ArrayList<String>();
         if (article.getTaxonomy_oph_koulutustyyppi() != null) {
             for (ArticleCode curCode : article.getTaxonomy_oph_koulutustyyppi()) {
@@ -119,7 +126,7 @@ public class ArticleServiceImpl implements ArticleService {
             }
         }
         article.setEducationTypeCodes(edTypeVals);
-        
+
         List<String> edVals = new ArrayList<String>();
         if (article.getTaxonomy_oph_koulutus() != null) {
             for (ArticleCode curCode : article.getTaxonomy_oph_koulutus()) {
@@ -134,8 +141,8 @@ public class ArticleServiceImpl implements ArticleService {
         article.setEducationCodes(edVals);
     }
 
-    private ArticleResults getArticlesByLang(ObjectMapper mapper, String lang, int page) throws IOException {
-        String url = String.format("%s%s%s%s%s%s%s", this.articleHarvestUrl, lang, "/?s=", URLEncoder.encode(" "), "&json=1", "&page=", page);
+    private ArticleResults getArticlesByLang(ObjectMapper mapper, String lang, String extension, int page) throws IOException {
+        String url = String.format("%s%s%s/?s=%s&json=1&page=%s", this.articleHarvestUrl, lang, extension, URLEncoder.encode(" "), page);
         LOGGER.debug("Article search url: " + url);
         
         try { 

@@ -1,0 +1,23 @@
+<td>
+    <h4 class="margin-top-0 margin-bottom-0">{{item.providerName}}, <span class="capitalized">{{item.providerLocation}}</span></h4>
+    <span data-ki-i18n="{{item.educationTypeUri}}" class="block italic"></span>
+    <div class="disc basket-table-cell-block">
+        <span class="block">{{item.qualification}}</span>
+        <div>
+            <span data-ki-i18n="application-prerequisite" data-show-colon="true"></span> <span>{{item.prerequisite.description}}</span>
+        </div>
+    </div>
+</td>
+
+<td>
+    <a href="#!/lukio/{{item.losId}}" class="block">{{item.providerName}}, {{item.name}}</a>
+    <div data-ng-if="isErikseenHaettava(as)" data-ki-application-time data-dates="item.applicationDates" data-hakutapa="item.hakutapaUri"></div>
+</td>
+
+<td>
+    <div data-ng-include src="'js/directives/AppBasket/common/attachmentsAndExams.html'"></div>
+</td>
+
+<td class="basket-remove last align-right">
+    <div data-ng-include src="'js/directives/AppBasket/common/aoActions.html'"></div>
+</td>

@@ -36,6 +36,10 @@ public class LOSearchResultListDTO {
     private FacetDTO edTypeFacet;
     private FacetDTO prerequisiteFacet;
     private FacetDTO topicFacet;
+    private FacetDTO articleContentTypeFacet;
+    private FacetDTO fotFacet;
+    private FacetDTO timeOfTeachingFacet;
+    private FacetDTO formOfStudyFacet;
     private FacetValueDTO lopRecommendationFilter;
     private long loCount;
     private long articleCount;
@@ -157,5 +161,37 @@ public class LOSearchResultListDTO {
 
     public void setOrgCount(long orgCount) {
         this.orgCount = orgCount;
+    }
+
+    public FacetDTO getArticleContentTypeFacet() {
+        return articleContentTypeFacet;
+    }
+
+    public void setArticleContentTypeFacet(FacetDTO articleContentTypeFacet) {
+        this.articleContentTypeFacet = articleContentTypeFacet;
+    }
+
+    public FacetDTO getFotFacet() {
+        return fotFacet;
+    }
+
+    public void setFotFacet(FacetDTO fotFacet) {
+        this.fotFacet = fotFacet;
+    }
+
+    public FacetDTO getTimeOfTeachingFacet() {
+        return timeOfTeachingFacet;
+    }
+
+    public void setTimeOfTeachingFacet(FacetDTO timeOfTeachingFacet) {
+        this.timeOfTeachingFacet = timeOfTeachingFacet;
+    }
+
+    public FacetDTO getFormOfStudyFacet() {
+        return formOfStudyFacet;
+    }
+
+    public void setFormOfStudyFacet(FacetDTO formOfStudyFacet) {
+        this.formOfStudyFacet = formOfStudyFacet;
     }
 }

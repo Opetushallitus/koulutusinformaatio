@@ -16,10 +16,8 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
-import fi.vm.sade.koulutusinformaatio.domain.*;
-import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
-import fi.vm.sade.koulutusinformaatio.service.*;
+import java.util.Date;
+import java.util.List;
 
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
@@ -28,9 +26,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
+import fi.vm.sade.koulutusinformaatio.domain.Article;
+import fi.vm.sade.koulutusinformaatio.domain.Code;
+import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
+import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
+import fi.vm.sade.koulutusinformaatio.domain.LOS;
+import fi.vm.sade.koulutusinformaatio.domain.Location;
+import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
+import fi.vm.sade.koulutusinformaatio.service.ArticleService;
+import fi.vm.sade.koulutusinformaatio.service.EducationDataUpdateService;
+import fi.vm.sade.koulutusinformaatio.service.IndexerService;
+import fi.vm.sade.koulutusinformaatio.service.LocationService;
+import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
+import fi.vm.sade.koulutusinformaatio.service.UpdateService;
+
+
 
 
 
@@ -80,6 +91,7 @@ public class UpdateServiceImpl implements UpdateService {
             runningSince = System.currentTimeMillis();
 
             this.transactionManager.beginTransaction(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+            
             int count = MAX_RESULTS;
             int index = 0;
 
@@ -87,8 +99,8 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
             List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
             count = loOids.size();
-            index += count;  
-            
+            index += count;
+
                 for (String loOid : loOids) {
                     List<LOS> specifications = null;
                     try {
@@ -163,4 +175,40 @@ public class UpdateServiceImpl implements UpdateService {
     public long getRunningSince() {
         return runningSince;
     }
+
+    @Override
+    @Async
+    public void updateArticles() throws Exception {
+        
+        if (this.running) {
+            return;
+        }
+        
+        LOG.info("Indexing articles");
+        
+        try {
+            running = true;
+            runningSince = System.currentTimeMillis();
+            this.indexerService.removeArticles();
+            
+            List<Article> articles = this.articleService.fetchArticles();
+            LOG.debug("Articles fetched");
+            indexerService.addArticles(articles);
+            
+            //educationDataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, "SUCCESS"));
+            LOG.info("Articles succesfully indexed");
+        } catch (Exception ex) {
+            indexerService.rollbackIncrementalSolrChanges();
+            educationDataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, String.format("FAIL: Article indexing %s", ex.getMessage())));
+            LOG.error("Article update failed ", ex);
+            
+        } finally {
+            running = false;
+            runningSince = 0;
+        }
+        
+        
+    }
+
 }
+

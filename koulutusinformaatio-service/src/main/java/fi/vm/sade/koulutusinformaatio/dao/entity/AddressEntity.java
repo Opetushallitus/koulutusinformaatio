@@ -28,7 +28,7 @@ public class AddressEntity {
     @Embedded
     private I18nTextEntity streetAddress;
     @Embedded
-    private I18nTextEntity streetAddress2;
+    private I18nTextEntity secondForeignAddr;
     private String postalCode;
     @Embedded
     private I18nTextEntity postOffice;
@@ -41,14 +41,6 @@ public class AddressEntity {
 
     public void setStreetAddress(I18nTextEntity streetAddress) {
         this.streetAddress = streetAddress;
-    }
-
-    public I18nTextEntity getStreetAddress2() {
-        return streetAddress2;
-    }
-
-    public void setStreetAddress2(I18nTextEntity streetAddress2) {
-        this.streetAddress2 = streetAddress2;
     }
 
     public String getPostalCode() {
@@ -65,5 +57,13 @@ public class AddressEntity {
 
     public void setPostOffice(I18nTextEntity postOffice) {
         this.postOffice = postOffice;
+    }
+
+    public I18nTextEntity getSecondForeignAddr() {
+        return secondForeignAddr;
+    }
+
+    public void setSecondForeignAddr(I18nTextEntity secondForeignAddr) {
+        this.secondForeignAddr = secondForeignAddr;
     }
 }

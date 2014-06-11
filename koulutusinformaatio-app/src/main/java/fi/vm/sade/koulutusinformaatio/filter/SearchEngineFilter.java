@@ -16,9 +16,18 @@
 
 package fi.vm.sade.koulutusinformaatio.filter;
 
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
+import java.io.FileInputStream;
 import java.io.IOException;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.io.IOUtils;
 
 /**
  * @author Hannu Lyytikainen
@@ -36,8 +45,14 @@ public class SearchEngineFilter implements Filter {
 
         if (request.getParameterMap().containsKey(escapedFragment)) {
             HttpServletRequest httpRequest = (HttpServletRequest) request;
-            String newUri = String.format("snapshot/%s.html", httpRequest.getParameter(escapedFragment).split("/")[2]);
+            String loId = httpRequest.getParameter(escapedFragment).split("/")[2];
+            loId = stripParams(loId, "#");
+            loId = stripParams(loId, "\\?");
+            String newUri = String.format("snapshot/%s.html", loId);
+            //String newUri = String.format("/snapshots/%s.html", httpRequest.getParameter(escapedFragment).split("/")[2]);
             httpRequest.getRequestDispatcher(newUri).forward(request, response);
+            //FileInputStream snapshot = new FileInputStream(String.format("/Users/klu/cases/snapshots/%s.html", httpRequest.getParameter(escapedFragment).split("/")[2]));
+            //IOUtils.copy(snapshot, response.getOutputStream());
         }
         else {
             filterChain.doFilter(request, response);
@@ -47,5 +62,14 @@ public class SearchEngineFilter implements Filter {
     @Override
     public void destroy() {
 
+    }
+    
+    private String stripParams(String value, String delimiter) {
+        String[] parts = value.split(delimiter);
+        if (parts.length > 0) {
+            return parts[0];
+        } else {
+            return value;
+        }
     }
 }

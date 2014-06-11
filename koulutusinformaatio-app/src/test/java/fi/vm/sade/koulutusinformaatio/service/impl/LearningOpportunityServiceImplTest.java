@@ -290,11 +290,11 @@ public class LearningOpportunityServiceImplTest {
         assertEquals(parentLOS.getAccessToFurtherStudies().getTranslations().get(lang), result.getAccessToFurtherStudies());
         assertEquals(parentLOS.getEducationDegree(), result.getEducationDegree());
         assertEquals(parentLOS.getGoals().getTranslations().get(lang), result.getGoals());
-        assertEquals(parentLOS.getEducationDomain().getTranslations().get(defaultLang), result.getEducationDomain());
+        assertEquals(parentLOS.getEducationDomain().getTranslations().get(lang), result.getEducationDomain());
         assertEquals(parentLOS.getStructure().getTranslations().get(lang), result.getStructure());
         assertEquals(parentLOS.getStydyDomain().getTranslations().get(lang), result.getStydyDomain());
         assertEquals(parentLOS.getProvider().getId(), result.getProvider().getId());
-        assertEquals(parentLOS.getProvider().getName().getTranslations().get(defaultLang), result.getProvider().getName());
+        assertEquals(parentLOS.getProvider().getName().getTranslations().get(lang), result.getProvider().getName());
 
         assertNotNull(result.getLois());
         assertEquals(1, result.getLois().size());
@@ -302,7 +302,7 @@ public class LearningOpportunityServiceImplTest {
         assertEquals(parentLOI.getApplicationOptions().iterator().next().getId(),
                 loi.getApplicationSystems().iterator().next().getApplicationOptions().get(0).getId());
         assertEquals(parentLOI.getPrerequisite().getValue(), loi.getPrerequisite().getValue());
-        assertEquals(parentLOI.getApplicationOptions().iterator().next().getApplicationSystem().getName().getTranslations().get(defaultLang),
+        assertEquals(parentLOI.getApplicationOptions().iterator().next().getApplicationSystem().getName().getTranslations().get(lang),
                 loi.getApplicationSystems().iterator().next().getName());
         assertEquals(parentLOI.getApplicationOptions().iterator().next().getName().getTranslations().get(defaultLang),
                 loi.getApplicationSystems().iterator().next().getApplicationOptions().get(0).getName());
@@ -318,7 +318,7 @@ public class LearningOpportunityServiceImplTest {
         assertNotNull(result.getLois());
         assertEquals(1, result.getLois().size());
 
-        assertEquals(childLOS.getQualification().getTranslations().get(defaultLang), result.getQualification());
+        assertEquals(childLOS.getQualification().getTranslations().get(lang), result.getQualification());
         assertEquals(childLOS.getParent().getName().getTranslations().get(defaultLang), result.getParent().getName());
         assertEquals(childLOS.getParent().getId(), result.getParent().getId());
 

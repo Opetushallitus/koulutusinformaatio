@@ -23,8 +23,10 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KuvaV1RDTO;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -48,12 +50,16 @@ public interface TarjontaRawService {
     public HakukohdeDTO getHakukohde(String oid);
 
     public HakuDTO getHakuByHakukohde(String oid);
+    
+    public List<OidRDTO> getHakukohdesByHaku(String oid);
 
     public List<OidRDTO> getKomotosByHakukohde(String oid);
 
     public HakuDTO getHaku(String oid);
 
     public List<OidRDTO> listParentLearnignOpportunityOids(int count, int startIndex);
+    
+    public Map<String, List<String>> listModifiedLearningOpportunities(long updatePeriod);
     
     public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> listHigherEducation();
     
@@ -72,5 +78,10 @@ public interface TarjontaRawService {
 
 	public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> getHigherEducationByKomo(
 			String curKomoOid);
+	
+	public ResultV1RDTO<List<KuvaV1RDTO>> getStructureImages(String koulutusOid);
+
+    ResultV1RDTO<List<NimiJaOidRDTO>> getHigherEducationByHakukohode(
+            String hakukohdeOid);
     
 }

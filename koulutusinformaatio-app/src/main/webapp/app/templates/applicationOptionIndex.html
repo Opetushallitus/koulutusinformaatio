@@ -1,8 +1,0 @@
-<div data-ng-if="showIndex" class="ao-block">
-    <h2 data-ki-i18n="student-selection"></h2>
-    <ul class="disc" data-ng-repeat="as in lo.applicationSystems">
-        <li data-ng-repeat="ao in as.applicationOptions">
-           	<a href="javascript:void(0)" data-ng-click="$parent.scrollToAnchor(ao.id)">{{ao.name}}</a>
-        </li>
-    </ul>
-</div>

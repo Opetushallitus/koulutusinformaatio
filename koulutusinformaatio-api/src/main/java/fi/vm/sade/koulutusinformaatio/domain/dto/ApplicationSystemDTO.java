@@ -35,6 +35,9 @@ public class ApplicationSystemDTO {
     private boolean asOngoing;
     private Date nextApplicationPeriodStarts;
     private String status;
+    private String applicationFormLink;
+    private String hakutapa;
+    private String hakutyyppi;
 
     public String getId() {
         return id;
@@ -90,5 +93,29 @@ public class ApplicationSystemDTO {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getApplicationFormLink() {
+        return applicationFormLink;
+    }
+
+    public void setApplicationFormLink(String applicationFormLink) {
+        this.applicationFormLink = applicationFormLink;
+    }
+
+    public String getHakutapa() {
+        return hakutapa;
+    }
+
+    public void setHakutapa(String hakutapa) {
+        this.hakutapa = hakutapa;
+    }
+
+    public String getHakutyyppi() {
+        return hakutyyppi;
+    }
+
+    public void setHakutyyppi(String hakutyyppi) {
+        this.hakutyyppi = hakutyyppi;
     }
 }

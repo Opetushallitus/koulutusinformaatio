@@ -16,7 +16,10 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
+import fi.vm.sade.koulutusinformaatio.domain.Address;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOffice;
+import fi.vm.sade.koulutusinformaatio.domain.I18nText;
+import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOfficeDTO;
 
 /**
@@ -27,18 +30,54 @@ public final class ApplicationOfficeToDTO {
     private ApplicationOfficeToDTO() {
     }
 
-    public static ApplicationOfficeDTO convert(ApplicationOffice applicationOffice, String lang) {
-        if (applicationOffice == null) {
-            return null;
-        } else {
-            ApplicationOfficeDTO dto = new ApplicationOfficeDTO();
+    public static ApplicationOfficeDTO convert(Provider provider, String lang) {
+        ApplicationOffice applicationOffice = provider.getApplicationOffice() != null ? provider.getApplicationOffice() : new ApplicationOffice();
+        ApplicationOfficeDTO dto = new ApplicationOfficeDTO();
+        if (applicationOffice.getName() != null) {
             dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOffice.getName(), lang));
+        } else {
+            dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(provider.getName(), lang));
+        }
+        if (applicationOffice.getVisitingAddress() != null && !emptyAddress(applicationOffice.getVisitingAddress())) {
             dto.setVisitingAddress(AddressToDTO.convert(applicationOffice.getVisitingAddress(), lang));
+        } else {
+            dto.setVisitingAddress(AddressToDTO.convert(provider.getVisitingAddress(), lang));
+        }
+        if (applicationOffice.getPostalAddress() != null && !emptyAddress(applicationOffice.getPostalAddress())) {
             dto.setPostalAddress(AddressToDTO.convert(applicationOffice.getPostalAddress(), lang));
-            dto.setPhone(applicationOffice.getPhone());
-            dto.setEmail(applicationOffice.getEmail());
-            dto.setWww(applicationOffice.getWww());
+        } else {
+            dto.setPostalAddress(AddressToDTO.convert(provider.getPostalAddress(), lang));
+        }
+        if (applicationOffice.getPhone() != null) {
+            dto.setPhone(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOffice.getPhone(), lang));
+        } else {
+            dto.setPhone(ConverterUtil.getTextByLanguageUseFallbackLang(provider.getPhone(), lang));
+        }
+        if (applicationOffice.getEmail() != null) {
+            dto.setEmail(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOffice.getEmail(), lang));
+        } else {
+            dto.setEmail(ConverterUtil.getTextByLanguageUseFallbackLang(provider.getEmail(), lang));
+        } 
+        if (applicationOffice.getWww() != null) {
+            dto.setWww(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOffice.getWww(), lang));
+        } else {
+            dto.setWww(ConverterUtil.getTextByLanguageUseFallbackLang(provider.getWebPage(), lang));
+        }
+        if (!isEmpty(dto)) {
             return dto;
         }
+        return null;
+    }
+    
+    private static boolean emptyAddress(Address address) {
+        return address.getPostalCode() == null && emptyI18nText(address.getPostOffice())  &&  emptyI18nText(address.getStreetAddress()) && emptyI18nText(address.getSecondForeignAddr()); 
+    }
+    
+    private static boolean emptyI18nText(I18nText text) {
+        return text == null || text.getTranslations() == null || text.getTranslations().isEmpty();
+    }
+
+    private static boolean isEmpty(ApplicationOfficeDTO dto) {
+        return dto.getEmail() == null && dto.getPhone() == null && dto.getPostalAddress() == null && dto.getVisitingAddress() == null && dto.getWww() == null;
     }
 }

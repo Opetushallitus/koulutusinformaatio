@@ -83,7 +83,9 @@ public class RehabilitatingLearningOpportunityBuilder extends LearningOpportunit
         List<OidRDTO> komotoOids = tarjontaRawService.getKomotosByKomo(komo.getOid(), Integer.MAX_VALUE, 0);
         for (OidRDTO komotoOid : komotoOids) {
             KomotoDTO komoto = tarjontaRawService.getKomoto(komotoOid.getOid());
-            komotosByProviderId.put(komoto.getTarjoajaOid(), komoto);
+            if (isNuortenKoulutus(komoto)) {
+                komotosByProviderId.put(komoto.getTarjoajaOid(), komoto);
+            }
         }
 
         for (String providerId : komotosByProviderId.keySet()) {
@@ -105,8 +107,9 @@ public class RehabilitatingLearningOpportunityBuilder extends LearningOpportunit
                     ao.setProvider(los.getProvider());
                     ao.setEducationDegree(los.getEducationDegree());
                     ao.setType(los.getType());
-                    ao.setEducationTypeUri(los.getEducationTypeUri());
+                    //ao.setEducationTypeUri();
                     ao.setParent(new ParentLOSRef(los.getId(), los.getName()));
+                    los.getProvider().getApplicationSystemIDs().add(ao.getApplicationSystem().getId());
                 }
             }
         }

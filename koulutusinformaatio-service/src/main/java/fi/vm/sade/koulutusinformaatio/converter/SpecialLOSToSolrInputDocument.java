@@ -22,8 +22,11 @@ import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
+import fi.vm.sade.koulutusinformaatio.service.builder.impl.LOSObjectCreator;
 
 import org.apache.solr.common.SolrInputDocument;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 
 import java.util.ArrayList;
@@ -34,7 +37,7 @@ import java.util.List;
  */
 public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List<SolrInputDocument>> {
 
-
+    private static final Logger LOG = LoggerFactory.getLogger(SpecialLOSToSolrInputDocument.class);
 
     @Override
     public List<SolrInputDocument> convert(SpecialLOS los) {
@@ -72,6 +75,8 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
         }
 
         doc.setField(SolrUtil.LearningOpportunity.PREREQUISITE, SolrUtil.resolveTranslationInTeachingLangUseFallback(
+                childLOI.getTeachingLanguages(), childLOI.getPrerequisite().getName().getTranslations()));
+        doc.setField(SolrUtil.LearningOpportunity.PREREQUISITE_DISPLAY, SolrUtil.resolveTranslationInTeachingLangUseFallback(
                 childLOI.getTeachingLanguages(), childLOI.getPrerequisite().getName().getTranslations()));
         doc.addField(SolrUtil.LearningOpportunity.PREREQUISITE_CODE, childLOI.getPrerequisite().getValue());
 
@@ -190,6 +195,7 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
 
         doc.addField(SolrUtil.LearningOpportunity.START_DATE_SORT, childLOI.getStartDate());
         indexFacetFields(childLOI, specialLOS, doc);
+        SolrUtil.setLopAndHomeplaceDisplaynames(doc, provider, childLOI.getPrerequisite());
 
         return doc;
     }
@@ -228,8 +234,43 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
         else {
             doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_AMM_ER);
             doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_AMMATILLISET);
-            doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_TUTKINTOON);
+            //doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE, SolrUtil.SolrConstants.ED_TYPE_TUTKINTOON);
         }
+        
+        List<String> usedVals = new ArrayList<String>();
+        if (childLOI.getFotFacet() != null) {
+            for (Code curFOT : childLOI.getFotFacet()) {
+                if (!usedVals.contains(curFOT.getUri())) {
+                    doc.addField(SolrUtil.LearningOpportunity.FORM_OF_TEACHING, curFOT.getUri());
+                    usedVals.add(curFOT.getUri());
+                }
+            }
+        }
+        
+        if (childLOI.getTimeOfTeachingFacet() != null) {
+            for (Code curTimeOfTeaching : childLOI.getTimeOfTeachingFacet()) {
+                if (!usedVals.contains(curTimeOfTeaching.getUri())) {
+                    doc.addField(SolrUtil.LearningOpportunity.TIME_OF_TEACHING, curTimeOfTeaching.getUri());
+                    usedVals.add(curTimeOfTeaching.getUri());
+                }
+            }
+        }
+        
+        if (childLOI.getFormOfStudyFacet() != null) {
+            for (Code curCode : childLOI.getFormOfStudyFacet()) {
+                if (!usedVals.contains(curCode.getUri())) {
+                    doc.addField(LearningOpportunity.FORM_OF_STUDY, curCode.getUri());
+                    usedVals.add(curCode.getUri());
+                }
+            }
+        }
+        
+        if (childLOI.getKoulutuslaji() != null 
+                && !usedVals.contains(childLOI.getKoulutuslaji().getUri())) {
+            doc.addField(LearningOpportunity.KIND_OF_EDUCATION, childLOI.getKoulutuslaji().getUri());
+            usedVals.add(childLOI.getKoulutuslaji().getUri());
+        }
+        
     }
 
 

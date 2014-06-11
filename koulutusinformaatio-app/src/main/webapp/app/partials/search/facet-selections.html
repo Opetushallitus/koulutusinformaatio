@@ -9,13 +9,19 @@
         </li>
         <li data-ng-show="upcoming">
             <a href="javascript:void(0)" data-ng-click="removeUpcoming()" class="facet-selection">
-                <span data-ki-i18n="haun-tila"></span>: <span data-ki-i18n="filter-search-as-upcoming"></span>
+                <span data-ki-i18n="haun-tila"></span>: <span data-ki-i18n="{{loResult.upcomingFacet.season}}"></span> {{loResult.upcomingFacet.year}}
+                <span class="remove" data-ki-i18n="facet-remove"></span>
+            </a>
+        </li>
+        <li data-ng-show="upcomingLater">
+            <a href="javascript:void(0)" data-ng-click="removeUpcomingLater()" class="facet-selection">
+                <span data-ki-i18n="haun-tila"></span>: <span data-ki-i18n="{{loResult.upcomingLaterFacet.season}}"></span> {{loResult.upcomingLaterFacet.year}}
                 <span class="remove" data-ki-i18n="facet-remove"></span>
             </a>
         </li>
         <li data-ng-show="lopRecommendation">
             <a href="javascript:void(0)" data-ng-click="removeLopRecommendation()" class="facet-selection">
-                <span data-ki-i18n="tarjoaja"></span>: {{lopFilter}}
+            	 {{lopFilter}}
                 <span class="remove" data-ki-i18n="facet-remove"></span>
             </a>
         </li>

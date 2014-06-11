@@ -93,8 +93,19 @@ var kiApp = angular.module('kiApp',
     return window.encodeURIComponent;
 })
 
+// adds target blank to links
+.filter('externalLinks', function() {
+    return function(val) {
+        if (val) {
+            val = val.replace('<a', '<a target="_blank"');
+        }
+        
+        return val;
+    }
+})
+
 // initialize i18n library
-.run(['$location', 'LanguageService', 'HostResolver', function($location, LanguageService, HostResolver) {
+.run(['$location', '$rootScope', 'LanguageService', 'HostResolver', function($location, $rootScope, LanguageService, HostResolver) {
     var defaultName = 'i18next';
     var currentHost = $location.host();
     var i18nCookieName = HostResolver.getCookiePrefixByDomain(currentHost) + defaultName;
@@ -112,6 +123,9 @@ var kiApp = angular.module('kiApp',
         fallbackLng : 'fi',
         debug : false
     });
+
+    // set global flag when ui language is English
+    $rootScope.isStudyInfo = LanguageService.getLanguage() === 'en';
 }])
 
 .value('appConfig', window.Config.app)

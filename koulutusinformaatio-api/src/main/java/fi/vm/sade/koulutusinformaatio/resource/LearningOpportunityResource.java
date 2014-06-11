@@ -44,9 +44,11 @@ public interface LearningOpportunityResource {
                                                              @QueryParam("prerequisite") String prerequisite,
                                                              @QueryParam("city") List<String> cities,
                                                              @QueryParam("facetFilters") List<String> facetFilters,
+                                                             @QueryParam("articleFacetFilters") List<String> articleFilters,
                                                              @QueryParam("lang") String lang,
                                                              @DefaultValue(value = "false") @QueryParam("ongoing") boolean ongoing,
                                                              @DefaultValue(value = "false") @QueryParam("upcoming") boolean upcoming,
+                                                             @DefaultValue(value = "false") @QueryParam("upcomingLater") boolean upcomingLater,
                                                              @DefaultValue(value = "0") @QueryParam("start") int start,
                                                              @DefaultValue(value = "100") @QueryParam("rows") int rows,
                                                              @QueryParam("sort") String sort, 
@@ -164,4 +166,9 @@ public interface LearningOpportunityResource {
     public HigherEducationLOSDTO previewLearningOpportunity(@PathParam("oid") String oid,
                                                      @QueryParam("lang") String lang,
                                                      @QueryParam("uiLang") String uiLang);
+    
+    @GET
+    @Path("/picture/{id}")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    public PictureDTO getPicture(@PathParam("id") final String id);
 }

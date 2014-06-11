@@ -1,0 +1,27 @@
+<table class="margin-bottom-2">
+    <colgroup>
+        <col style="width: 25%;"></col>
+        <col style="width: 30%;"></col>
+        <col style="width: 21%;"></col>
+        <col style="width: 21%;"></col>
+        <col></col>
+    </colgroup>
+    <thead>
+        <tr>
+            <th data-ng-if="isErikseenHaettava(as)" colspan="5"><span class="margin-0 block h2" data-ki-i18n="erikseenHaettavatHakukohteet"></span></th>
+            <th data-ng-if="!isErikseenHaettava(as)" colspan="5"><span class="margin-0 block h2">{{as.applicationSystemName}} <span data-ki-timestamp="{{as.applicationDates.startDate}}"></span> - <span data-ki-timestamp="{{as.applicationDates.endDate}}"></span></span></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="first">
+            <th></th>
+            <th></th>
+            <th data-ki-i18n="application-basket-attachments-exams"></th>
+            <th class="last"></th>
+        </tr>
+        <tr data-ng-repeat="item in as.applicationOptions" data-ng-class="{last: $last}" ki-app-basket-applicationoption="{{item.type}}"></tr>
+    </tbody>
+    <tfoot></tfoot>
+</table>
+<div data-ki-app-basket-applicationsystem-table-info></div>
+<div class="clear"></div>

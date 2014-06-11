@@ -17,9 +17,11 @@
 package fi.vm.sade.koulutusinformaatio.converter;
 
 import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.domain.*;
+
 import org.apache.solr.common.SolrInputDocument;
 import org.springframework.core.convert.converter.Converter;
 
@@ -72,6 +74,8 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
 
         doc.setField(LearningOpportunity.PREREQUISITE, SolrUtil.resolveTranslationInTeachingLangUseFallback(
                 parent.getTeachingLanguages(), prerequisite.getName().getTranslations()));
+        doc.setField(LearningOpportunity.PREREQUISITE_DISPLAY, SolrUtil.resolveTranslationInTeachingLangUseFallback(
+                parent.getTeachingLanguages(), prerequisite.getName().getTranslations()));
         doc.addField(LearningOpportunity.PREREQUISITE_CODE, prereqVal);
 
         //doc.setField(LearningOpportunity.NAME, parent.getName().getTranslations().get("fi"));
@@ -84,7 +88,7 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
 
         if (parent.getCreditValue() != null) {
             doc.addField(LearningOpportunity.CREDITS, String.format("%s %s", parent.getCreditValue(), 
-                    parent.getCreditUnit().getTranslations().get("fi")));
+                    SolrUtil.resolveTranslationInTeachingLangUseFallback(parent.getTeachingLanguages(),parent.getCreditUnit().getTranslations())));
         }
 
         doc.addField(LearningOpportunity.NAME_SORT, parentName.toLowerCase().trim());
@@ -100,12 +104,14 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         }
 
         indexLopName(doc, provider, teachLang);
-        
+
         if (provider.getHomePlace() != null) { 
             doc.setField(LearningOpportunity.HOMEPLACE_DISPLAY, 
                     SolrUtil.resolveTextWithFallback(teachLang,
                             provider.getHomePlace().getTranslations()));
         }
+
+        SolrUtil.setLopAndHomeplaceDisplaynames(doc, provider, prerequisite);
 
         if (provider.getHomeDistrict() != null) {
             List<String> locVals = new ArrayList<String>();
@@ -288,18 +294,60 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
                     doc.addField(LearningOpportunity.TEACHING_LANGUAGE, teachingLang);
                     usedVals.add(teachingLang);
                 }
-                if (!usedVals.contains(SolrConstants.ED_TYPE_AMMATILLINEN)) {
+                if (!parent.isKotitalousopetus() 
+                        && !usedVals.contains(SolrConstants.ED_TYPE_AMMATILLINEN)) {
                     doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMMATILLINEN);
                     doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMMATILLISET);
-                    doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_TUTKINTOON);
+                    //doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_TUTKINTOON);
                     usedVals.add(SolrConstants.ED_TYPE_AMMATILLINEN);
                 }
-                if (SolrConstants.PK.equalsIgnoreCase(prereqVal) 
+                if ( !parent.isKotitalousopetus()
+                        && SolrConstants.PK.equalsIgnoreCase(prereqVal) 
                         && childLOI.isKaksoistutkinto() 
                         && !usedVals.contains(SolrConstants.ED_TYPE_KAKSOIS)) {
                     doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_KAKSOIS);
                     usedVals.add(SolrConstants.ED_TYPE_KAKSOIS);
+                } 
+                if (parent.isKotitalousopetus() && !usedVals.contains(SolrConstants.ED_TYPE_MUU)) {
+                    usedVals.add(SolrConstants.ED_TYPE_MUU);
+                    doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_MUU);
+                    doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_KOTITALOUS);
+                    doc.addField(SolrUtil.LearningOpportunity.EDUCATION_TYPE_DISPLAY, SolrUtil.SolrConstants.ED_TYPE_KOTITALOUS_DISPLAY);
                 }
+
+                if (childLOI.getPrerequisite().getValue().equals(prereqVal)) {
+                    if (childLOI.getFotFacet() != null) {
+                        for (Code curCode : childLOI.getFotFacet()) {
+                            if (!usedVals.contains(curCode.getUri())) {
+                                doc.addField(LearningOpportunity.FORM_OF_TEACHING, curCode.getUri());
+                                usedVals.add(curCode.getUri());
+                            }
+                        }
+                    }
+
+                    if (childLOI.getTimeOfTeachingFacet() != null) {
+                        for (Code curCode : childLOI.getTimeOfTeachingFacet()) {
+                            if (!usedVals.contains(curCode.getUri())) {
+                                doc.addField(LearningOpportunity.TIME_OF_TEACHING, curCode.getUri());
+                                usedVals.add(curCode.getUri());
+                            }
+                        }
+                    }
+                    if (childLOI.getFormOfStudyFacet() != null) {
+                        for (Code curCode : childLOI.getFormOfStudyFacet()) {
+                            if (!usedVals.contains(curCode.getUri())) {
+                                doc.addField(LearningOpportunity.FORM_OF_STUDY, curCode.getUri());
+                                usedVals.add(curCode.getUri());
+                            }
+                        }
+                    }
+                    if (childLOI.getKoulutuslaji() != null 
+                            && !usedVals.contains(childLOI.getKoulutuslaji().getUri())) {
+                        doc.addField(LearningOpportunity.KIND_OF_EDUCATION, childLOI.getKoulutuslaji().getUri());
+                        usedVals.add(childLOI.getKoulutuslaji().getUri());
+                    }
+                }
+
             }
         }
 

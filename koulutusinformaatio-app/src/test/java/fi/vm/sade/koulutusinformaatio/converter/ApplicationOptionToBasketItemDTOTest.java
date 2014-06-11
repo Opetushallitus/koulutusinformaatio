@@ -38,6 +38,7 @@ import static org.junit.Assert.*;
 public class ApplicationOptionToBasketItemDTOTest {
 
     ApplicationOption ao;
+    ApplicationSystem as;
     Date attachmentDeadline = new Date();
     DateRange applicationSystemDates = new DateRange(new Date(), new Date());
 
@@ -72,7 +73,7 @@ public class ApplicationOptionToBasketItemDTOTest {
         p.setAthleteEducation(true);
         ao.setProvider(p);
 
-        ApplicationSystem as = new ApplicationSystem();
+        as = new ApplicationSystem();
         as.setId("3.4.5");
         as.setMaxApplications(5);
         Map<String, String> asNameTranslations = Maps.newHashMap();
@@ -109,7 +110,7 @@ public class ApplicationOptionToBasketItemDTOTest {
         assertNotNull(baoDTO.getParent());
         assertNotNull(baoDTO.getChildren());
         assertEquals(attachmentDeadline, baoDTO.getAttachmentDeliveryDeadline());
-        assertNotNull(baoDTO.getAttachments());
+        //assertNotNull(baoDTO.getAttachments());
         assertNotNull(baoDTO.getExams());
         assertEquals("123", baoDTO.getAoIdentifier());
         assertFalse(baoDTO.isKaksoistutkinto());
@@ -122,7 +123,63 @@ public class ApplicationOptionToBasketItemDTOTest {
         assertTrue(baoDTO.isAthleteEducation());
         assertEquals("providerName", baoDTO.getProviderName());
     }
-
+    
+    @Test
+    public void testMaxAoCount() {
+        as.setMaxApplications(1);
+        List<ApplicationOption> aos = Lists.newArrayList(ao);
+        List<BasketItemDTO> basketItems = ApplicationOptionToBasketItemDTO.convert(aos, "fi");
+        assertEquals("erikseenHaettavatHakukohteet", basketItems.get(0).getApplicationSystemId());
+    }
+    
+    @Test
+    public void testHakutapaJatkuva() {
+        
+        as.setHakutapaUri("03");
+        List<ApplicationOption> aos = Lists.newArrayList(ao);
+        List<BasketItemDTO> basketItems = ApplicationOptionToBasketItemDTO.convert(aos, "fi");
+        BasketItemDTO bItemDTO = basketItems.get(0);
+        BasketApplicationOptionDTO baoDTO = bItemDTO.getApplicationOptions().get(0);
+        assertEquals("erikseenHaettavatHakukohteet", bItemDTO.getApplicationSystemId());
+        assertEquals("03", baoDTO.getHakutapaUri());
+    }
+    
+    @Test
+    public void testUlkoinenHakulomake() {
+        as.setApplicationFormLink("formLink");
+        List<ApplicationOption> aos = Lists.newArrayList(ao);
+        List<BasketItemDTO> basketItems = ApplicationOptionToBasketItemDTO.convert(aos, "fi");
+        BasketItemDTO bItemDTO = basketItems.get(0);
+        BasketApplicationOptionDTO baoDTO = bItemDTO.getApplicationOptions().get(0);
+        assertEquals("erikseenHaettavatHakukohteet", bItemDTO.getApplicationSystemId());
+        assertEquals("formLink", baoDTO.getApplicationFormLink());
+    }
+    
+    @Test
+    public void testAoSpecificDates() {
+        ao.setSpecificApplicationDates(true);
+        List<ApplicationOption> aos = Lists.newArrayList(ao);
+        List<BasketItemDTO> basketItems = ApplicationOptionToBasketItemDTO.convert(aos, "fi");
+        BasketItemDTO bItemDTO = basketItems.get(0);
+        BasketApplicationOptionDTO baoDTO = bItemDTO.getApplicationOptions().get(0);
+        assertEquals("erikseenHaettavatHakukohteet", bItemDTO.getApplicationSystemId());
+        assertEquals(baoDTO.getAsId(), as.getId());
+    }
+    
+    @Test
+    public void testAsSpecificDates() {
+        ao.setSpecificApplicationDates(false);
+        as.setMaxApplications(1);
+        List<ApplicationOption> aos = Lists.newArrayList(ao);
+        List<BasketItemDTO> basketItems = ApplicationOptionToBasketItemDTO.convert(aos, "fi");
+        BasketItemDTO bItemDTO = basketItems.get(0);
+        BasketApplicationOptionDTO baoDTO = bItemDTO.getApplicationOptions().get(0);
+        assertEquals("erikseenHaettavatHakukohteet", bItemDTO.getApplicationSystemId());
+        assertEquals(baoDTO.getAsId(), as.getId());
+        assertNotNull(baoDTO.getApplicationDates());
+        assertTrue(baoDTO.getApplicationDates().size() > 0);
+    }
+    
     public void testHigherEducation() {
         ParentLOSRef parent = new ParentLOSRef();
         parent.setLosType(TarjontaConstants.TYPE_KK);

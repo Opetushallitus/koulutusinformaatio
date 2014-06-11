@@ -88,6 +88,10 @@ public class HigherEducationLOSDTO {
     private List<ArticleResultDTO> edTypeSuggestions = new ArrayList<ArticleResultDTO>();
     private String educationType;
     
+    private String structureImageId;
+    
+    private PictureDTO structureImage;
+    
 
     public String getId() {
         return id;
@@ -492,4 +496,19 @@ public class HigherEducationLOSDTO {
         this.educationType = educationType;
     }
 
+    public String getStructureImageId() {
+        return structureImageId;
+    }
+
+    public void setStructureImageId(String structureImageId) {
+        this.structureImageId = structureImageId;
+    }
+
+    public PictureDTO getStructureImage() {
+        return structureImage;
+    }
+
+    public void setStructureImage(PictureDTO structureImage) {
+        this.structureImage = structureImage;
+    }
 }

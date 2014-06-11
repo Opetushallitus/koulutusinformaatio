@@ -20,6 +20,8 @@ import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Reference;
 
+import fi.vm.sade.koulutusinformaatio.domain.Code;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -135,6 +137,20 @@ public class HigherEducationLOSEntity {
     private List<CodeEntity> themes;
     
     private String educationType;
+    
+    @Embedded
+    private I18nPictureEntity structureImage;
+    
+    @Embedded
+    private List<CodeEntity> fotFacet = new ArrayList<CodeEntity>();
+    
+    @Embedded
+    private List<CodeEntity> timeOfTeachingFacet = new ArrayList<CodeEntity>();
+    @Embedded
+    private List<CodeEntity> formOfStudyFacet = new ArrayList<CodeEntity>();
+    
+    @Embedded
+    private CodeEntity koulutuslaji;
 
     public String getId() {
         return id;
@@ -445,6 +461,36 @@ public class HigherEducationLOSEntity {
     }
     public void setEducationType(String educationType) {
         this.educationType = educationType;
+    }
+    public I18nPictureEntity getStructureImage() {
+        return structureImage;
+    }
+    public void setStructureImage(I18nPictureEntity structureImage) {
+        this.structureImage = structureImage;
+    }
+    public List<CodeEntity> getFotFacet() {
+        return fotFacet;
+    }
+    public void setFotFacet(List<CodeEntity> fotFacet) {
+        this.fotFacet = fotFacet;
+    }
+    public List<CodeEntity> getTimeOfTeachingFacet() {
+        return timeOfTeachingFacet;
+    }
+    public void setTimeOfTeachingFacet(List<CodeEntity> timeOfTeachingFacet) {
+        this.timeOfTeachingFacet = timeOfTeachingFacet;
+    }
+    public List<CodeEntity> getFormOfStudyFacet() {
+        return formOfStudyFacet;
+    }
+    public void setFormOfStudyFacet(List<CodeEntity> formOfStudyFacet) {
+        this.formOfStudyFacet = formOfStudyFacet;
+    }
+    public CodeEntity getKoulutuslaji() {
+        return koulutuslaji;
+    }
+    public void setKoulutuslaji(CodeEntity koulutuslaji) {
+        this.koulutuslaji = koulutuslaji;
     }
 
 }

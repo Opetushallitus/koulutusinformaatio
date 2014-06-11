@@ -32,6 +32,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KuvaV1RDTO;
 
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.codehaus.jackson.map.DeserializationConfig;
@@ -44,6 +45,7 @@ import org.springframework.stereotype.Service;
 import javax.ws.rs.core.MediaType;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -62,15 +64,16 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     private WebResource higherEducationAOResource;
     private WebResource higherEducationASResource;
     private WebResource higherEducationStructureResource;
-    private ConversionService conversionService;
-    private KoodistoService koodistoService;
-    private ProviderService providerService;
+    private WebResource lastModifiedResource;
+    
+    @Value("${scheduling.data.incremental.period:300000}")
+    private String changePeriod;
+    
+    private String higherEdUrl;
 
     @Autowired
     public TarjontaRawServiceImpl(@Value("${tarjonta.api.rest.url}") final String tarjontaApiUrl,
             ConversionService conversionService, KoodistoService koodistoService, ProviderService providerService) {
-        this.koodistoService = koodistoService;
-        this.providerService = providerService;
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         JacksonJsonProvider jacksProv = new JacksonJsonProvider(mapper);
@@ -85,8 +88,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
         higherEducationAOResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "v1/hakukohde");
         higherEducationASResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "v1/haku");
         higherEducationStructureResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "v1/link");
-
-        this.conversionService = conversionService;
+        lastModifiedResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "v1/lastmodified");
     }
 
     public TarjontaRawServiceImpl() {
@@ -181,6 +183,17 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                 .get(new GenericType<HakuDTO>() {
                 });
     }
+    
+    @Override
+    public List<OidRDTO> getHakukohdesByHaku(String oid) {
+        return hakuResource
+                .path(oid)
+                .path("hakukohde")
+                .queryParam("count", String.valueOf(10000))
+                .accept(JSON_UTF8)
+                .get(new GenericType<List<OidRDTO>>() {
+                });
+    }
 
     @Override
     public List<OidRDTO> listParentLearnignOpportunityOids(int count, int startIndex) {
@@ -230,6 +243,15 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                 .get(new GenericType<ResultV1RDTO<HakukohdeV1RDTO>>() {
                 });
     }
+    
+    @Override
+    public ResultV1RDTO<List<NimiJaOidRDTO>> getHigherEducationByHakukohode(String hakukohdeOid) {
+        return higherEducationAOResource
+                .path(String.format("%s/%s", hakukohdeOid, "koulutukset")) 
+                .accept(JSON_UTF8)
+                .get(new GenericType<ResultV1RDTO<List<NimiJaOidRDTO>>>() {
+                });
+    }
 
     @Override
     public ResultV1RDTO<HakuV1RDTO> getHigherEducationHakuByOid(String oid) {
@@ -269,6 +291,24 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                 .queryParam("komoOid", komoOid)
                 .accept(JSON_UTF8)
                 .get(new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
+                });
+    }
+
+    @Override
+    public ResultV1RDTO<List<KuvaV1RDTO>> getStructureImages(String koulutusOid) {
+        return higherEducationResource
+                .path(koulutusOid)
+                .path("kuva")
+                .accept(JSON_UTF8)
+                .get(new GenericType<ResultV1RDTO<List<KuvaV1RDTO>>>() {
+                });
+    }
+
+    public Map<String, List<String>> listModifiedLearningOpportunities(long updatePeriod) {
+        return this.lastModifiedResource
+                .queryParam("lastModified", String.format("-%s", updatePeriod))
+                .accept(JSON_UTF8)
+                .get(new GenericType<Map<String, List<String>>>() {
                 });
     }
 }

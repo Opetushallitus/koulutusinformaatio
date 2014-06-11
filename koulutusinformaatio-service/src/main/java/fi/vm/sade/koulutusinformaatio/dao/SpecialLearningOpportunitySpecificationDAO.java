@@ -16,8 +16,13 @@
 
 package fi.vm.sade.koulutusinformaatio.dao;
 
+import java.util.List;
+
+import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunitySpecificationEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.SpecialLearningOpportunitySpecificationEntity;
+
 import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.query.Query;
 
 /**
  * @author Hannu Lyytikainen
@@ -28,4 +33,5 @@ public class SpecialLearningOpportunitySpecificationDAO extends LearningOpportun
         super(primaryDatastore, secondaryDatastore);
         ensureIndexes();
     }
+    
 }

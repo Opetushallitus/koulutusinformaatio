@@ -19,6 +19,7 @@ package fi.vm.sade.koulutusinformaatio.converter;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.DateRange;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionDTO;
+import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 
 import java.util.Date;
 
@@ -35,7 +36,7 @@ public final class ApplicationOptionToDTO {
             ApplicationOptionDTO dto = new ApplicationOptionDTO();
             dto.setId(applicationOption.getId());
             dto.setType(applicationOption.getType());
-            dto.setEducationTypeUri(applicationOption.getEducationTypeUri());
+            dto.setEducationTypeUri(createEducationTypeUri(applicationOption.getEducationTypeUri()));
             dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getName(), defaultLang));
             dto.setAoIdentifier(applicationOption.getAoIdentifier());
             dto.setAttachmentDeliveryDeadline(applicationOption.getAttachmentDeliveryDeadline());
@@ -59,13 +60,18 @@ public final class ApplicationOptionToDTO {
             dto.setApplicationEndDate(applicationOption.getApplicationEndDate());
             dto.setRequiredBaseEducations(applicationOption.getRequiredBaseEducations());
             dto.setVocational(applicationOption.isVocational());
-            if (applicationOption.isSpecificApplicationDates()) {
+
+            if (applicationOption.getApplicationStartDate() != null && applicationOption.getApplicationEndDate() != null) {
                 dto.setCanBeApplied(ConverterUtil.isOngoing(new DateRange(applicationOption.getApplicationStartDate(),
-                        applicationOption.getApplicationEndDate())));
-                if (applicationOption.getApplicationStartDate().after(new Date())) {
-                    dto.setNextApplicationPeriodStarts(applicationOption.getApplicationStartDate());
-                }
+                    applicationOption.getApplicationEndDate())));
+            } else {
+                dto.setCanBeApplied(ConverterUtil.isOngoing(applicationOption.getApplicationSystem().getApplicationDates()));
             }
+            if (applicationOption.getApplicationStartDate() != null 
+                    && applicationOption.getApplicationStartDate().after(new Date())) {
+                dto.setNextApplicationPeriodStarts(applicationOption.getApplicationStartDate());
+            }
+
             dto.setAttachments(ApplicationOptionAttachmentToDTO.convertAll(applicationOption.getAttachments(), lang));
             dto.setEmphasizedSubjects(EmphasizedSubjectToDTO.convertAll(applicationOption.getEmphasizedSubjects(), lang));
             dto.setAdditionalInfo(ConverterUtil.getTextByLanguage(applicationOption.getAdditionalInfo(), lang));
@@ -75,16 +81,18 @@ public final class ApplicationOptionToDTO {
             dto.setAthleteEducation(applicationOption.isAthleteEducation());
             dto.setEducationCodeUri(applicationOption.getEducationCodeUri());
             dto.setStatus(applicationOption.getStatus());
-            
+            dto.setKotitalous(applicationOption.getEducationCodeUri() != null && applicationOption.getEducationCodeUri().contains(TarjontaConstants.KOTITALOUSKOODI));
+            dto.setHakuaikaId(applicationOption.getInternalASDateRef());
+
             return dto;
         }
         return null;
     }
-    
+
     public static ApplicationOptionDTO convertHigherEducation(final ApplicationOption applicationOption, 
-                                                              final String lang, 
-                                                              final String uiLang, 
-                                                              String defaultLang) {
+            final String lang, 
+            final String uiLang, 
+            String defaultLang) {
         if (applicationOption == null) {
             return null;
         }
@@ -94,10 +102,21 @@ public final class ApplicationOptionToDTO {
         }
         if (applicationOption.getEligibilityDescription() != null) {
             dto.setEligibilityDescription(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getEligibilityDescription(), uiLang));            
-         }
+        }
         dto.setSelectionCriteria(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getSelectionCriteria(), lang));
         dto.setSoraDescription(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getSoraDescription(), lang));
         dto.setAdditionalInfo(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getAdditionalInfo(), lang));
+        dto.setExams(ExamToDTO.convertAllHigherEducation(applicationOption.getExams(), lang));
+        dto.setAttachments(ApplicationOptionAttachmentToDTO.convertAllHigherEducation(applicationOption.getAttachments(), lang));
         return dto;
+    }
+
+    private static String createEducationTypeUri(String educationTypeUri) {
+
+        if (educationTypeUri != null) {
+            return educationTypeUri.replace(".", "");
+        }
+
+        return null;
     }
 }

@@ -22,7 +22,7 @@ package fi.vm.sade.koulutusinformaatio.domain;
 public class Address {
 
     private I18nText streetAddress;
-    private I18nText streetAddress2;
+    private I18nText secondForeignAddr;
     private String postalCode;
     private I18nText postOffice;
 
@@ -32,14 +32,6 @@ public class Address {
 
     public void setStreetAddress(I18nText streetAddress) {
         this.streetAddress = streetAddress;
-    }
-
-    public I18nText getStreetAddress2() {
-        return streetAddress2;
-    }
-
-    public void setStreetAddress2(I18nText streetAddress2) {
-        this.streetAddress2 = streetAddress2;
     }
 
     public String getPostalCode() {
@@ -56,5 +48,13 @@ public class Address {
 
     public void setPostOffice(I18nText postOffice) {
         this.postOffice = postOffice;
+    }
+
+    public I18nText getSecondForeignAddr() {
+        return secondForeignAddr;
+    }
+
+    public void setSecondForeignAddr(I18nText secondForeignAddr) {
+        this.secondForeignAddr = secondForeignAddr;
     }
 }

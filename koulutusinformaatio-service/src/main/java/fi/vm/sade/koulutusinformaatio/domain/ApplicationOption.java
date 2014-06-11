@@ -62,6 +62,7 @@ public class ApplicationOption {
     private boolean specificApplicationDates;
     private Date applicationStartDate;
     private Date applicationEndDate;
+    private String InternalASDateRef;
     private List<ApplicationOptionAttachment> attachments;
     private List<EmphasizedSubject> emphasizedSubjects;
     private I18nText additionalInfo;
@@ -417,6 +418,14 @@ public class ApplicationOption {
 
     public void setEducationTypeUri(String educationTypeUri) {
         this.educationTypeUri = educationTypeUri;
+    }
+
+    public String getInternalASDateRef() {
+        return InternalASDateRef;
+    }
+
+    public void setInternalASDateRef(String internalASDateRef) {
+        InternalASDateRef = internalASDateRef;
     }
 
 }

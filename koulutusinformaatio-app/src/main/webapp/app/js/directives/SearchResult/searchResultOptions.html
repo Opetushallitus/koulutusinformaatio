@@ -1,0 +1,56 @@
+
+<form name="levelSelectionForm-{{$id}}" id="application-form-{{applicationsystem.id}}-{{$id}}" action="{{hakuAppUrl + 'lomake/' + applicationsystem.id}}" method="POST" class="margin-top-2" target="hakulomake">
+    <input type="hidden" name="preference1-Opetuspiste" value="{{extendedLO.lo.provider.name}}" />
+    <input type="hidden" name="preference1-Opetuspiste-id" value="{{extendedLO.lo.provider.id}}" />
+    <input type="hidden" name="preference1-Koulutus" value="{{applicationoption.name}}" />
+    <input type="hidden" name="preference1-Koulutus-id" value="{{applicationoption.id}}" />
+    <input type="hidden" name="preference1-Koulutus-educationDegree" value="{{extendedLO.lo.educationDegree}}" />
+    <input type="hidden" name="preference1-Koulutus-id-sora" value="{{applicationoption.sora}}" />
+    <input type="hidden" name="preference1-Koulutus-id-lang" value="{{applicationoption.teachLang}}" />
+    <input type="hidden"name="preference1-Koulutus-id-athlete" value="{{provider.athleteEducation || applicationoption.athleteEducation}}" />
+    <input type="hidden"name="preference1-Koulutus-id-aoIdentifier" value="{{applicationoption.aoIdentifier}}" />
+    <input type="hidden"name="preference1-Koulutus-id-kaksoistutkinto" value="{{applicationoption.kaksoistutkinto}}" />
+    <input type="hidden"name="preference1-Koulutus-id-vocational" value="{{applicationoption.vocational}}" />
+    <input type="hidden"name="preference1-Koulutus-id-educationcode" value="{{applicationoption.educationCodeUri}}" />
+
+    <button data-ng-if="!applicationsystem.applicationFormLink" class="float-left" type="submit" data-ng-disabled="!applicationoption.canBeApplied">
+        <span>
+            <span data-ki-i18n="apply-button-label"></span>
+        </span>
+    </button>
+
+    <div class="float-left" data-ng-if="applicationsystem.applicationFormLink">
+        <a data-ng-if="applicationoption.canBeApplied" data-ng-href="{{applicationsystem.applicationFormLink}}" title="{{locales.externalApplicationForm}}" target="_blank">
+        <i class="icon-link-ext-alt"></i><span data-ki-i18n="apply-button-label"></span>
+        </a>
+        <span data-ng-if="!applicationoption.canBeApplied" class="text-disabled">
+            <i class="icon-link-ext-alt"></i><span data-ki-i18n="apply-button-label"></span>
+        </a>
+    </div>
+</form>
+
+<div data-sr-application-basket data-ng-switch="isItemAddedToBasket(applicationoption.id)" class="float-left margin-left-2 add-to-basket">
+    <span data-ng-switch-when="true">
+        <span data-ki-i18n="popover-title-success"></span><br/>
+        <a href="#!/muistilista" data-ki-i18n="popover-content-link-to-application-basket"></a>
+    </span>
+    <button
+    data-ng-switch-default
+    type="button" 
+    id="addToBasket-{{$id}}" 
+    class="primary"
+    data-popover-placement="bottom" 
+    data-popover="{{popoverContent}}" 
+    data-popover-title="{{popoverTitle}}" 
+    data-popover-trigger="click"
+    data-ng-click="addToBasket(applicationoption.id)">
+        <span>
+            <span data-ki-i18n="add-to-basket-label"></span>
+        </span>
+    </button>
+</div>
+<div class="clear"></div>
+
+<div class="margin-top-1">
+    <div class="margin-top-2 small" data-ki-application-status-label data-ao="applicationoption"></div>
+</div>

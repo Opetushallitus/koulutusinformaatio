@@ -18,9 +18,13 @@ package fi.vm.sade.koulutusinformaatio.converter;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOptionAttachment;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionAttachmentDTO;
 
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationOptionAttachment;
+import fi.vm.sade.koulutusinformaatio.domain.Exam;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationOptionAttachmentDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ExamDTO;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,7 +48,7 @@ public final class ApplicationOptionAttachmentToDTO {
     }
 
     public static List<ApplicationOptionAttachmentDTO> convertAll(final List<ApplicationOptionAttachment> aoas, final String lang) {
-        if (aoas != null) {
+        if (aoas != null && !aoas.isEmpty()) {
             return Lists.transform(aoas, new Function<ApplicationOptionAttachment, ApplicationOptionAttachmentDTO>() {
                 @Override
                 public ApplicationOptionAttachmentDTO apply(ApplicationOptionAttachment input) {
@@ -53,5 +57,30 @@ public final class ApplicationOptionAttachmentToDTO {
             });
         }
         return null;
+    }
+    
+    public static List<ApplicationOptionAttachmentDTO> convertAllHigherEducation(final List<ApplicationOptionAttachment> aoas, final String lang) {
+        if (aoas == null) {
+            return null;
+        }
+        else {
+            
+            List<ApplicationOptionAttachmentDTO> convertedAttachments = new ArrayList<ApplicationOptionAttachmentDTO>();
+            String keyLang = lang.toLowerCase();
+            
+            for (ApplicationOptionAttachment curAttachment : aoas) {
+                ApplicationOptionAttachmentDTO attachment = null;
+                if (curAttachment != null 
+                        && curAttachment.getType() != null 
+                        && curAttachment.getType().getTranslations().containsKey(keyLang)) {
+                    attachment = convert(curAttachment, lang);
+                }
+                if (attachment != null) {
+                    convertedAttachments.add(attachment);
+                }
+            }
+            
+            return !convertedAttachments.isEmpty() ? convertedAttachments : null;
+        }
     }
 }

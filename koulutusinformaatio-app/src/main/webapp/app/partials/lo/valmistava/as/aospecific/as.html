@@ -1,21 +1,21 @@
-<!-- hake ei mahdollista järjestelmän hakulomakkeella vapaan sivistystyön koulutuksille -->
+<!-- haku ei mahdollista järjestelmän hakulomakkeella vapaan sivistystyön koulutuksille -->
 <div data-ng-switch="lo.educationTypeUri">
     <div data-ng-switch-when="VapaanSivistystyonKoulutus">
-        <h4 class="title" data-ki-i18n="application-options" data-lang="{{teachingLang}}"></h4>
+        <h4 class="title" data-ki-i18n="application-options"></h4>
         <div data-ng-repeat="ao in as.applicationOptions" class="content">
             <div data-ng-include data-src="partialUrl + 'as/aospecific/ao-info.html'"></div>
-            <p data-ki-i18n="not-applicable" data-lang="{{teachingLang}}"></p>
+            <p data-ki-i18n="not-applicable"></p>
         </div>
     </div>
     <div data-ng-switch-default>
-        <h4 class="title" data-ki-i18n="application-options-additional" data-lang="{{teachingLang}}"></h4>
+        <h4 class="title" data-ki-i18n="application-options-additional"></h4>
         <div data-ng-repeat="ao in as.applicationOptions" class="content">
             <div data-ng-include data-src="partialUrl + 'as/aospecific/ao-info.html'"></div>
             <form name="levelSelectionForm" id="application-form-{{as.id}}" action="{{hakuAppUrl + 'lomake/' + as.id}}" method="POST" class="margin-top-2" target="hakulomake">
                 <div data-ng-include data-src="partialCommonUrl + 'as/ao-inputs.html'"></div>
                 <div data-ng-include data-src="partialUrl + 'as/aospecific/ao-actions.html'"></div>
             </form>
-            <div class="margin-top-2 small" data-ki-render-application-status-label data-ao="ao" data-lang="{{teachingLang}}"></div>
+            <div class="margin-top-2 small" data-ki-application-status-label data-ao="ao"></div>
         </div>
     </div>
 </div>

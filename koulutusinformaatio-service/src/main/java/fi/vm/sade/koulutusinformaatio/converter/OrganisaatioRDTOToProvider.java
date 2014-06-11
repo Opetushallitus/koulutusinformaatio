@@ -26,6 +26,8 @@ import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioMetaDataRDTO;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 
 import java.util.HashMap;
@@ -37,6 +39,8 @@ import java.util.Map;
  * @author Hannu Lyytikainen
  */
 public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, Provider> {
+    
+    private static final Logger LOG = LoggerFactory.getLogger(OrganisaatioRDTOToProvider.class);
 
     private static final String STREET_ADDRESS = "osoite";
     private static final String POST_OFFICE = "postitoimipaikka";
@@ -77,6 +81,7 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
 
     private static final String DATA_TYPE = "tyyppi";
     private static final String DATA_TYPE_PHONE = "puhelin";
+    private static final String DATA_TYPE_FAX = "faksi";
     private static final String DATA_TYPE_PHONE_NUMBER = "numero";
     private static final String DATA_TYPE_EMAIL = "email";
     private static final String DATA_TYPE_WWW = "www";
@@ -97,12 +102,13 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
             p = new Provider();
             p.setId(o.getOid());
             p.setName(new I18nText(o.getNimi()));
+            LOG.debug("Getting postal address for organisation: " + o.getOid());
             p.setPostalAddress(getLocalizedAddress(o.getYhteystiedot(), ADDRESS_DATA_TYPE_POSTAL));
             p.setVisitingAddress(getLocalizedAddress(o.getYhteystiedot(), ADDRESS_DATA_TYPE_VISIT));
-            p.setEmail(o.getEmailOsoite());
-            p.setFax(o.getFaksinumero());
-            p.setPhone(o.getPuhelinnumero());
-            p.setWebPage(o.getWwwOsoite());
+            p.setEmail(getSimpleContactInfo(o.getYhteystiedot(), DATA_TYPE_EMAIL));
+            p.setFax(getPhoneNumber(o.getYhteystiedot(), DATA_TYPE_FAX));
+            p.setPhone(getPhoneNumber(o.getYhteystiedot(), DATA_TYPE_PHONE));
+            p.setWebPage(getSimpleContactInfo(o.getYhteystiedot(), DATA_TYPE_WWW));
             p.setDescription(getDataValue(o.getMetadata(), METADATA_YLEISKUVAUS));
             p.setHealthcare(getDataValue(o.getMetadata(), METADATA_TERVEYDENHUOLTOPALVELUT));
             p.setAccessibility(getDataValue(o.getMetadata(), METADATA_ESTEETTOMYYS));
@@ -133,17 +139,60 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
         return p;
     }
     
+    private I18nText getPhoneNumber(List<Map<String, String>> yhteystiedot,
+            String phoneType) throws KoodistoException {
+        Map<String,String> phoneTransls = new HashMap<String,String>();
+        for (Map<String,String> curYht : yhteystiedot) {
+            String key = koodistoService.searchFirstCodeValue(curYht.get(LANG));
+            if (curYht.get(DATA_TYPE) != null && curYht.get(DATA_TYPE).equals(phoneType)) {
+                phoneTransls.put(key.toLowerCase(), curYht.get(DATA_TYPE_PHONE_NUMBER));
+            }
+        }
+        
+        if (!phoneTransls.isEmpty()) {
+            return new I18nText(phoneTransls);
+        }
+        
+        return null;
+    }
+
+    private I18nText getSimpleContactInfo(List<Map<String, String>> yhteystiedot,
+            String dataType) throws KoodistoException {
+        Map<String,String> contactInfoTransls = new HashMap<String,String>();
+        for (Map<String,String> curYht : yhteystiedot) {
+            String key = koodistoService.searchFirstCodeValue(curYht.get(LANG));
+            if (curYht.get(dataType) != null) {
+                contactInfoTransls.put(key.toLowerCase(), curYht.get(dataType));
+            }
+        }
+        if (!contactInfoTransls.isEmpty()) {
+            return new I18nText(contactInfoTransls);
+        }
+        return null;
+    }
+
     private Address getLocalizedAddress(List<Map<String,String>> yhteystiedot, String addressType) throws KoodistoException {
         
         Map<String,String> streetAddrTransls = new HashMap<String,String>();
         Map<String,String> postOfficeTransls = new HashMap<String,String>();
         String postalCode = null;
         
+        
+        LOG.debug("Getting " + addressType);
+        
         for (Map<String,String> curYht : yhteystiedot) {
             if (curYht.containsKey(ADDRESS_DATA_TYPE) && curYht.get(ADDRESS_DATA_TYPE).equals(addressType)) {
+                
+                LOG.debug("Yhteystieto: " + addressType);
+                
                 String key = koodistoService.searchFirstCodeValue(curYht.get(LANG));
+                
+                LOG.debug("Lang key is: " + key);
                 if (curYht.get(STREET_ADDRESS) != null) {
                     streetAddrTransls.put(key.toLowerCase(), curYht.get(STREET_ADDRESS));
+                    
+                    LOG.debug("there is street address: " + curYht.get(STREET_ADDRESS));
+                    
                 } 
                 if (curYht.get(POST_OFFICE) != null) {
                     postOfficeTransls.put(key.toLowerCase(), curYht.get(POST_OFFICE));
@@ -175,22 +224,18 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
         } else {
             Address visitingAddress = null;
             Address postalAddress = null;
-            String phone = null;
-            String email = null;
-            String www = null;
+            I18nText phone = null;
+            I18nText email = null;
+            I18nText www = null;
 
             visitingAddress = getLocalizedAddress(metadata.getYhteystiedot(), ADDRESS_DATA_TYPE_VISIT);
             postalAddress = getLocalizedAddress(metadata.getYhteystiedot(), ADDRESS_DATA_TYPE_POSTAL);
             
-            for (Map<String, String> info : metadata.getYhteystiedot()) {
-                if (info.get(DATA_TYPE) != null && info.get(DATA_TYPE).equals(DATA_TYPE_PHONE)) {
-                    phone = info.get(DATA_TYPE_PHONE_NUMBER);
-                } else if (info.get(DATA_TYPE_EMAIL) != null) {
-                    email = info.get(DATA_TYPE_EMAIL);
-                } else if (info.get(DATA_TYPE_WWW) != null) {
-                    www = info.get(DATA_TYPE_WWW);
-                }
-            }
+            
+            phone = getPhoneNumber(metadata.getYhteystiedot(), DATA_TYPE_PHONE);
+            www = getSimpleContactInfo(metadata.getYhteystiedot(), DATA_TYPE_WWW);
+            email = this.getSimpleContactInfo(metadata.getYhteystiedot(), DATA_TYPE_EMAIL); 
+            
             return new ApplicationOffice(getI18nText(metadata.getHakutoimistonNimi()), phone, email, www,
                     visitingAddress, postalAddress);
         }

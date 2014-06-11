@@ -23,15 +23,18 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
+
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
+import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.YhteyshenkiloRDTO;
 import fi.vm.sade.tarjonta.shared.types.KomotoTeksti;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -106,11 +109,47 @@ public class LOIObjectCreator extends ObjectCreator {
         }
 
         basicLOI.setAvailableTranslationLanguages(new ArrayList<Code>(availableLanguagesMap.values()));
+        
+        List<String> opetusmuodotUris =  komoto.getOpetusmuodotUris() != null ? komoto.getOpetusmuodotUris() : new ArrayList<String>();
+        Map<String,Code> opFacetMap = new HashMap<String,Code>();//opetusmuoto
+        Map<String,Code> oaFacetMap = new HashMap<String,Code>();//opetusaika
+        Map<String,Code> opiskmFacetMap = new HashMap<String,Code>();//opiskelumuoto
+        
+        for (String curOMUri : opetusmuodotUris) {
+            List<Code> omFacs = this.koodistoService.searchSuperCodes(curOMUri, TarjontaConstants.FORM_OF_EDUCATION_FACET_KOODISTO_URI);
+            for (Code curOMFacet : omFacs) {
+                opFacetMap.put(curOMFacet.getUri(), curOMFacet);
+            }
+            
+            List<Code> oaFacs = this.koodistoService.searchSuperCodes(curOMUri, TarjontaConstants.TIME_OF_EDUCATION_FACET_KOODISTO_URI);
+            for (Code curOAFacet : oaFacs) {
+                oaFacetMap.put(curOAFacet.getUri(), curOAFacet);
+            }
+            
+            
+            List<Code> opiskMFacs = this.koodistoService.searchSuperCodes(curOMUri, TarjontaConstants.FORM_OF_STUDY_FACET_KOODISTO_URI);
+            for (Code curOAFacet : opiskMFacs) {
+                opiskmFacetMap.put(curOAFacet.getUri(), curOAFacet);
+            }
+            
+        }
+        basicLOI.setFotFacet(new ArrayList<Code>(opFacetMap.values()));
+        basicLOI.setTimeOfTeachingFacet(new ArrayList<Code>(oaFacetMap.values()));
+        basicLOI.setFormOfStudyFacet(new ArrayList<Code>(opiskmFacetMap.values()));   
+        
+        List<Code> koulutuslajis = this.koodistoService.searchMultiple(komoto.getKoulutuslajiUris());
+        if (koulutuslajis != null && !koulutuslajis.isEmpty()) {
+            basicLOI.setKoulutuslaji(koulutuslajis.get(0));
+        }
+        
+        
+        LOG.debug("Set: " + basicLOI.getFotFacet().size() + " form of teaching facet values.");
+        
         return basicLOI;
     }
 
     public List<ChildLOI> createChildLOIs(List<KomotoDTO> childKomotos,
-            String losId, I18nText losName, String educationCodeUri) throws KoodistoException, TarjontaParseException {
+            String losId, I18nText losName, String educationCodeUri, String educationType) throws KoodistoException, TarjontaParseException {
         List<ChildLOI> childLOIs = Lists.newArrayList();
         for (KomotoDTO childKomoto : childKomotos) {
             String childKomotoOid = childKomoto.getOid();
@@ -121,7 +160,7 @@ public class LOIObjectCreator extends ObjectCreator {
                 continue;
             }
 
-            ChildLOI childLOI = createChildLOI(childKomoto, losId, losName, educationCodeUri);
+            ChildLOI childLOI = createChildLOI(childKomoto, losId, losName, educationCodeUri, educationType);
             if (!childLOI.getApplicationOptions().isEmpty()) {
                 childLOIs.add(childLOI);
             }
@@ -129,7 +168,7 @@ public class LOIObjectCreator extends ObjectCreator {
         return filter(childLOIs);
     }
 
-    public ChildLOI createChildLOI(KomotoDTO childKomoto, String losId, I18nText losName, String educationCodeUri) 
+    public ChildLOI createChildLOI(KomotoDTO childKomoto, String losId, I18nText losName, String educationCodeUri, String educationType) 
             throws KoodistoException, TarjontaParseException {
         ChildLOI childLOI = createBasicLOI(ChildLOI.class, childKomoto);
         childLOI.setName(losName);
@@ -151,6 +190,7 @@ public class LOIObjectCreator extends ObjectCreator {
         List<String> hakukohdeOids = Lists.transform(hakukohdeOidDTOs, new Function<OidRDTO, String>() {
             @Override
             public String apply(OidRDTO input) {
+                LOG.debug("current hakukohdeOid: " + input.getOid());
                 return input.getOid();
             }
         });
@@ -158,9 +198,11 @@ public class LOIObjectCreator extends ObjectCreator {
         childLOI.setApplicationOptions(applicationOptionCreator.createVocationalApplicationOptions(hakukohdeOids, 
                 childKomoto, 
                 childLOI.getPrerequisite(), 
-                educationCodeUri));
+                educationCodeUri, 
+                educationType));
         boolean kaksoistutkinto = false;
         for (ApplicationOption ao : childLOI.getApplicationOptions()) {
+            LOG.debug("here is the created ao: " + ao.getId() + " for the child loi: " + childLOI.getId());
             if (ao.isKaksoistutkinto()) {
                 kaksoistutkinto = true;
                 break;
@@ -174,12 +216,13 @@ public class LOIObjectCreator extends ObjectCreator {
     public List<UpperSecondaryLOI> createUpperSecondaryLOIs(List<KomotoDTO> komotos, 
             String losId, 
             I18nText losName, 
-            String educationCodeUri) 
+            String educationCodeUri,
+            String educationType) 
                     throws KoodistoException, TarjontaParseException {
         List<UpperSecondaryLOI> lois = Lists.newArrayList();
         for (KomotoDTO komoto : komotos) {
             if (CreatorUtil.komotoPublished.apply(komoto)) {
-                lois.add(createUpperSecondaryLOI(komoto, losId, losName, educationCodeUri));
+                lois.add(createUpperSecondaryLOI(komoto, losId, losName, educationCodeUri, educationType));
             }
         }
         return filter(lois);
@@ -188,7 +231,8 @@ public class LOIObjectCreator extends ObjectCreator {
     public UpperSecondaryLOI createUpperSecondaryLOI(KomotoDTO komoto, 
             String losId, 
             I18nText losName, 
-            String educationCodeUri) 
+            String educationCodeUri,
+            String educationType) 
                     throws TarjontaParseException, KoodistoException {
         UpperSecondaryLOI loi = createBasicLOI(UpperSecondaryLOI.class, komoto);
         loi.setName(losName);
@@ -227,7 +271,7 @@ public class LOIObjectCreator extends ObjectCreator {
             }
         });
         loi.setApplicationOptions(applicationOptionCreator.createUpperSecondaryApplicationOptions(hakukohdeOids, komoto,
-                loi.getPrerequisite(), educationCodeUri));
+                loi.getPrerequisite(), educationCodeUri, educationType));
         boolean kaksoistutkinto = false;
         for (ApplicationOption ao : loi.getApplicationOptions()) {
             if (ao.isKaksoistutkinto()) {

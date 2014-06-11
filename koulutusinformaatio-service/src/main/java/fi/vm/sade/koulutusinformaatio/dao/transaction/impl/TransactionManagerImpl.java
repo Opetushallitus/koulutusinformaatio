@@ -22,8 +22,11 @@ import com.mongodb.MongoClient;
 import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KICommitException;
+import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
+import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 
+import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.request.CoreAdminRequest;
 import org.apache.solr.common.params.CoreAdminParams;
@@ -34,6 +37,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -65,6 +69,7 @@ public class TransactionManagerImpl implements TransactionManager {
     private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO;
     private HigherEducationLOSDAO higherEducationLOSTransactionDAO;
     private SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO;
+    private DataStatusDAO dataStatusTransactionDAO;
 
     private ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO;
     private ApplicationOptionDAO applicationOptionDAO;
@@ -75,6 +80,9 @@ public class TransactionManagerImpl implements TransactionManager {
     private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO;
     private HigherEducationLOSDAO higherEducationLOSDAO;
     private SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO;
+    
+    private KoodistoService koodistoService;
+    private ProviderService providerService;
 
     @Value("${solr.learningopportunity.alias.url:learning_opportunity}")
     private String loHttpAliasName;
@@ -109,6 +117,7 @@ public class TransactionManagerImpl implements TransactionManager {
             UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO,
             HigherEducationLOSDAO higherEducationLOSTransactionDAO,
             SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO,
+            DataStatusDAO dataStatusTransactionDAO,
             ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO,
             ApplicationOptionDAO applicationOptionDAO,
             ChildLearningOpportunityDAO childLearningOpportunityDAO,
@@ -117,7 +126,9 @@ public class TransactionManagerImpl implements TransactionManager {
             PictureDAO pictureDAO,
             UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO,
             HigherEducationLOSDAO higherEducationLOSDAO, 
-            SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO) {
+            SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO,
+            KoodistoService koodistoService,
+            ProviderService providerService) {
 
         this.mongo = mongo;
         this.transactionDbName = transactionDbName;
@@ -146,11 +157,16 @@ public class TransactionManagerImpl implements TransactionManager {
         this.upperSecondaryLearningOpportunitySpecificationDAO = upperSecondaryLearningOpportunitySpecificationDAO;
         this.higherEducationLOSDAO = higherEducationLOSDAO;
         this.specialLearningOpportunitySpecificationDAO = specialLearningOpportunitySpecificationDAO;
+        this.koodistoService = koodistoService;
+        this.providerService = providerService;
+        this.dataStatusTransactionDAO = dataStatusTransactionDAO;
     }
 
     @Override
     public void beginTransaction(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) {
         dropUpdateData(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+        this.koodistoService.clearCache();
+        this.providerService.clearCache();
     }
 
     @Override
@@ -215,6 +231,7 @@ public class TransactionManagerImpl implements TransactionManager {
         upperSecondaryLOSTransactionDAO.getCollection().drop();
         higherEducationLOSTransactionDAO.getCollection().drop();
         specialLOSTransactionDAO.getCollection().drop();
+        dataStatusTransactionDAO.getCollection().drop();
     }
 
     private void dropDbCollections() {
@@ -281,4 +298,23 @@ public class TransactionManagerImpl implements TransactionManager {
     private String getCollectionName(HttpSolrServer solrServer) {
         return solrServer.getBaseURL().substring(solrServer.getBaseURL().lastIndexOf('/') + 1);
     }
+
+    @Override
+    public void beginIncrementalTransaction()
+            throws IOException, SolrServerException {
+        
+        dropTransactionDbCollections();
+        
+        BasicDBObject cmd = new BasicDBObject("copydb", 1).append("fromdb", dbName).append("todb", this.transactionDbName);
+        mongo.getDB("admin").command(cmd);
+    }
+
+    @Override
+    public void rollbackIncrementalTransaction() throws KICommitException {
+        BasicDBObject cmd = new BasicDBObject("copydb", 1).append("fromdb", transactionDbName).append("todb", dbName);
+        dropDbCollections();
+        mongo.getDB("admin").command(cmd);
+        dropTransactionDbCollections();
+    }
+
 }

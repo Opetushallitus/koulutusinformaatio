@@ -1,36 +1,33 @@
-<div data-ng-show="showAttachments">
-    <h2 data-ki-i18n="required-attachments" data-lang="{{translationLanguage}}"></h2>
-    <div data-ng-repeat="att in attachments" data-ng-show="att.descreption">
-        <span class="bold">{{att.type}}</span>
-        <div data-ng-bind-html="att.descreption | unsafe"></div>
-    </div>
-    <table class="striped">
-        <colgroup>
-            <col style="width: 34%;"></col>
-            <col></col>
-            <col style="width: 33%;"></col>
-        </colgroup>
-        <thead>
-            <tr>
-                <th data-ki-i18n="attachment-header-name" data-lang="{{translationLanguage}}"></th>
-                <th data-ki-i18n="attachment-header-address" data-lang="{{translationLanguage}}"></th>
-                <th data-ki-i18n="attachment-header-duedate" data-lang="{{translationLanguage}}"></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr data-ng-repeat="att in attachments" data-ng-class="{first: $first, last: $last}">
-                <td>{{att.type}}</td>
-                <td>
-                    <span data-ng-show="att.address.streetAddress">{{att.address.streetAddress}}<br /></span>
-                    <span data-ng-show="att.address.streetAddress2">{{att.address.streetAddress2}}<br /></span>
-                    <span data-ng-show="att.address.postalCode">{{att.address.postalCode}}</span>
-                    <span data-ng-show="att.address.postOffice">{{att.address.postOffice}}</span>
-                </td>
-                <td class="last">
-                    <span data-ki-timestamp="{{att.dueDate}}"></span>
-                </td>
-            </tr>
-        </tbody>
-        <tfoot></tfoot>
-    </table>
+<div data-ng-repeat="att in attachments" data-ng-show="att.descreption">
+    <h3>{{att.type}}</h3>
+    <div data-ng-bind-html="att.descreption | unsafe"></div>
 </div>
+<table class="striped">
+    <colgroup>
+        <col style="width: 34%;"></col>
+        <col></col>
+        <col style="width: 33%;"></col>
+    </colgroup>
+    <thead>
+        <tr>
+            <th data-ki-i18n="attachment-header-name" data-lang="{{translationLanguage}}"></th>
+            <th data-ki-i18n="attachment-header-address" data-lang="{{translationLanguage}}"></th>
+            <th data-ki-i18n="attachment-header-duedate" data-lang="{{translationLanguage}}"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr data-ng-repeat="att in attachments" data-ng-class="{first: $first, last: $last}">
+            <td>{{att.type}}</td>
+            <td>
+                <span data-ng-show="att.address.streetAddress">{{att.address.streetAddress}}<br /></span>
+                <span data-ng-show="att.address.streetAddress2">{{att.address.streetAddress2}}<br /></span>
+                <span data-ng-show="att.address.postalCode">{{att.address.postalCode}}</span>
+                <span data-ng-show="att.address.postOffice">{{att.address.postOffice}}</span>
+            </td>
+            <td class="last">
+                <span data-ki-timestamp="{{att.dueDate}}"></span>
+            </td>
+        </tr>
+    </tbody>
+    <tfoot></tfoot>
+</table>

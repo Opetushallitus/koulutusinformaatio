@@ -18,8 +18,14 @@ package fi.vm.sade.koulutusinformaatio.converter;
 
 import fi.vm.sade.koulutusinformaatio.domain.*;
 
+import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.common.SolrInputDocument;
+import org.apache.solr.common.params.DisMaxParams;
 
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -28,11 +34,69 @@ import java.util.Map;
  */
 public final class SolrUtil {
 
+    public static final List<String> FIELDS = Lists.newArrayList(
+            LearningOpportunity.TEXT_FI,
+            LearningOpportunity.TEXT_SV,
+            LearningOpportunity.TEXT_EN,
+            LearningOpportunity.TEXT_FI_WHOLE,
+            LearningOpportunity.TEXT_SV_WHOLE,
+            LearningOpportunity.TEXT_EN_WHOLE,
+            LearningOpportunity.TEXT_BOOST_FI,
+            LearningOpportunity.TEXT_BOOST_SV,
+            LearningOpportunity.TEXT_BOOST_EN,
+            LearningOpportunity.TEXT_BOOST_FI_WHOLE,
+            LearningOpportunity.TEXT_BOOST_SV_WHOLE,
+            LearningOpportunity.TEXT_BOOST_EN_WHOLE,
+            LearningOpportunity.AS_NAMES,
+            LearningOpportunity.LOP_NAMES,
+            LearningOpportunity.NAME_AUTO_FI,
+            LearningOpportunity.NAME_AUTO_SV,
+            LearningOpportunity.NAME_AUTO_EN
+    );
+    
+    public static final List<String> FIELDS_FI = Lists.newArrayList(
+            LearningOpportunity.TEXT_FI,
+            LearningOpportunity.TEXT_FI_WHOLE,
+            LearningOpportunity.TEXT_BOOST_FI,
+            LearningOpportunity.TEXT_BOOST_FI_WHOLE,
+            LearningOpportunity.AS_NAMES,
+            LearningOpportunity.LOP_NAMES,
+            LearningOpportunity.NAME_AUTO_FI
+    );
+    
+    public static final List<String> FIELDS_SV = Lists.newArrayList(
+            LearningOpportunity.TEXT_SV,
+            LearningOpportunity.TEXT_SV_WHOLE,
+            LearningOpportunity.TEXT_BOOST_SV,
+            LearningOpportunity.TEXT_BOOST_SV_WHOLE,
+            LearningOpportunity.AS_NAMES,
+            LearningOpportunity.LOP_NAMES,
+            LearningOpportunity.NAME_AUTO_SV
+    );
+    
+    public static final List<String> FIELDS_EN = Lists.newArrayList(
+            LearningOpportunity.TEXT_EN,
+            LearningOpportunity.TEXT_EN_WHOLE,
+            LearningOpportunity.TEXT_BOOST_EN,
+            LearningOpportunity.TEXT_BOOST_EN_WHOLE,
+            LearningOpportunity.AS_NAMES,
+            LearningOpportunity.LOP_NAMES,
+            LearningOpportunity.NAME_AUTO_EN
+    );
+    
     private SolrUtil() {
     }
 
     private static final String FALLBACK_LANG = "fi";
     private static final String TYPE_FACET = "FASETTI";
+    
+
+    public static final Integer AS_COUNT = 10;
+    public static final String APP_STATUS = "appStatus";
+    public static final String APP_STATUS_ONGOING = "ongoing";
+    public static final String APP_STATUS_UPCOMING = "upcoming";
+    public static final String APP_STATUS_UPCOMING_LATER = "upcomingLater";
+    public static final String QUOTED_QUERY_FORMAT = "%s:\"%s\"";
 
     public static String resolveTranslationInTeachingLangUseFallback(List<Code> teachingLanguages, Map<String, String> translations) {
         String translation = null;
@@ -56,13 +120,13 @@ public final class SolrUtil {
     public static void addApplicationDates(SolrInputDocument doc, List<ApplicationOption> applicationOptions) {
         int parentApplicationDateRangeIndex = 0;
         for (ApplicationOption ao : applicationOptions) {
-            if (ao.isSpecificApplicationDates()) {
+            //if (ao.isSpecificApplicationDates()) {
                 doc.addField(new StringBuilder().append("asStart").append("_").
                         append(String.valueOf(parentApplicationDateRangeIndex)).toString(), ao.getApplicationStartDate());
                 doc.addField(new StringBuilder().append("asEnd").append("_").
                         append(String.valueOf(parentApplicationDateRangeIndex)).toString(), ao.getApplicationEndDate());
                 parentApplicationDateRangeIndex++;
-            } else {
+            /*} else {
                 for (DateRange dr : ao.getApplicationSystem().getApplicationDates()) {
                     doc.addField(new StringBuilder().append("asStart").append("_").
                             append(String.valueOf(parentApplicationDateRangeIndex)).toString(), dr.getStartDate());
@@ -70,8 +134,27 @@ public final class SolrUtil {
                             append(String.valueOf(parentApplicationDateRangeIndex)).toString(), dr.getEndDate());
                     parentApplicationDateRangeIndex++;
                 }
-            }
+            }*/
         }
+    }
+    
+    public static void setLopAndHomeplaceDisplaynames(SolrInputDocument doc,
+            Provider provider, Code prerequisite) {
+        
+        doc.setField(LearningOpportunity.LOP_NAME_DISPLAY_FI, provider.getName().get("fi"));
+        doc.setField(LearningOpportunity.LOP_NAME_DISPLAY_SV, provider.getName().get("sv"));
+        doc.setField(LearningOpportunity.LOP_NAME_DISPLAY_EN, provider.getName().get("en"));
+        
+        doc.setField(LearningOpportunity.HOMEPLACE_DISPLAY_FI, provider.getHomePlace().get("fi"));
+        doc.setField(LearningOpportunity.HOMEPLACE_DISPLAY_SV, provider.getHomePlace().get("sv"));
+        doc.setField(LearningOpportunity.HOMEPLACE_DISPLAY_EN, provider.getHomePlace().get("en"));
+        
+        doc.setField(LearningOpportunity.PREREQUISITE_DISPLAY_FI, prerequisite.getName().get("fi"));
+        doc.setField(LearningOpportunity.PREREQUISITE_DISPLAY_SV, prerequisite.getName().get("sv"));
+        doc.setField(LearningOpportunity.PREREQUISITE_DISPLAY_EN, prerequisite.getName().get("en"));
+        
+        
+        
     }
     
     /*
@@ -100,6 +183,49 @@ public final class SolrUtil {
         }
         return translation;
     }
+    
+    
+    public static void setSearchFields(List<String> facetFilters, SolrQuery query) {
+        
+        List<String> teachingLangs = getTeachingLangs(facetFilters);
+        
+        List<String> searchFields = new ArrayList<String>();
+        
+        if (teachingLangs.contains("fi")) {
+            searchFields.addAll(SolrUtil.FIELDS_FI);
+        } 
+        
+        if (teachingLangs.contains("sv")) {
+            searchFields.addAll(SolrUtil.FIELDS_SV);
+        } 
+        
+        if (teachingLangs.contains("en")) {
+            searchFields.addAll(SolrUtil.FIELDS_EN);
+        } 
+        
+        if (searchFields.isEmpty() 
+                && !teachingLangs.isEmpty()) {
+            searchFields.addAll(SolrUtil.FIELDS_FI);
+        }
+        
+        if (searchFields.isEmpty()){
+            query.setParam(DisMaxParams.QF, Joiner.on(" ").join(SolrUtil.FIELDS));
+        } else {
+            query.setParam(DisMaxParams.QF, Joiner.on(" ").join(searchFields));
+        }
+        
+    }
+    
+    private static List<String> getTeachingLangs(List<String> facetFilters) {
+        List<String> teachinglangs = new ArrayList<String>();
+        for (String curFilt : facetFilters) {
+            if (curFilt.startsWith(LearningOpportunity.TEACHING_LANGUAGE)) {
+                String theLang = curFilt.substring(curFilt.length() - 2).toLowerCase();
+                teachinglangs.add(theLang);
+            }
+        }
+        return teachinglangs;
+    }
 
     public static class LearningOpportunity {
 
@@ -112,6 +238,10 @@ public final class SolrUtil {
         public static final String EDUCATION_TYPE = "educationType_ffm"; //The education type of the learning opportunity
         public static final String TOPIC = "topic_ffm"; //The topic of the learning opportunity
         public static final String THEME = "theme_ffm"; //The theme of the learning opportunity
+        public static final String FORM_OF_TEACHING = "formOfTeaching_ffm"; //The education type of the learning opportunity
+        public static final String TIME_OF_TEACHING = "timeOfTeaching_ffm"; //The education type of the learning opportunity
+        public static final String FORM_OF_STUDY = "formOfStudy_ffm"; //The education type of the learning opportunity
+        public static final String KIND_OF_EDUCATION = "kindOfEducation_ffm"; //The education type of the learning opportunity
         public static final String LOP_ID = "lopId";
         public static final String NAME = "name";
         public static final String NAME_FI = "name_fi";
@@ -166,6 +296,11 @@ public final class SolrUtil {
         public static final String HOMEPLACE_DISPLAY_SV = "homeplace_sv_ss";
         public static final String HOMEPLACE_DISPLAY_EN = "homeplace_en_ss";
         public static final String HOMEPLACE_DISPLAY = "homeplace_ss";
+        public static final String PREREQUISITE_DISPLAY_EN = "prerequisite_en_ss";
+        public static final String PREREQUISITE_DISPLAY_FI = "prerequisite_fi_ss";
+        public static final String PREREQUISITE_DISPLAY_SV = "prerequisite_sv_ss";
+        public static final String PREREQUISITE_DISPLAY = "prerequisite_ss";
+        
         public static final String EDUCATION_CODE_DISPLAY_FI = "educationCode_fi_ssort";
         public static final String EDUCATION_CODE_DISPLAY_SV = "educationCode_sv_ssort";
         public static final String EDUCATION_CODE_DISPLAY_EN = "educationCode_en_ssort";
@@ -182,6 +317,7 @@ public final class SolrUtil {
         
         public static final String ARTICLE_EDUCATION_CODE = "articleEducationCode_ffm";
         public static final String ARTICLE_LANG = "article_lang_ssort";
+        public static final String ARTICLE_CONTENT_TYPE = "articleContentType_ffm";
 
         //Fields for sorting
         public static final String START_DATE_SORT = "startDate_dsort";
@@ -238,12 +374,17 @@ public final class SolrUtil {
         public static final String GET = "GET";
         
         //value constants
-        public static final String ED_TYPE_TUTKINTOON = "et01";
+        //public static final String ED_TYPE_TUTKINTOON = "et01";
         public static final String ED_TYPE_LUKIO = "et01.01";
-        public static final String ED_TYPE_KAKSOIS = "et01.02";
+        public static final String ED_TYPE_KAKSOIS = "et01.03.001";
         public static final String ED_TYPE_AMMATILLISET = "et01.03";
         public static final String ED_TYPE_AMMATILLINEN = "et01.03.01";
         public static final String ED_TYPE_AMM_ER = "et01.03.02";
+        
+        public static final String ED_TYPE_LUKIO_SHORT = "et1";
+        public static final String ED_TYPE_AMMATILLINEN_SHORT = "et3";
+        public static final String ED_TYPE_AMM_ER_SHORT = "et4";
+        public static final String ED_TYPE_VALMENTAVA_SHORT = "et5";
 
         public static final String ED_TYPE_AMKS = "et01.04";
         public static final String ED_TYPE_AMK = "et01.04.01";
@@ -260,6 +401,8 @@ public final class SolrUtil {
         public static final String ED_TYPE_IMM_UPSEC = "et02.01.04";
         public static final String ED_TYPE_KANSANOPISTO = "et02.05";
         public static final String ED_TYPE_VALMENTAVA = "et02.02";
+        public static final String ED_TYPE_KOTITALOUS = "et02.015";
+        public static final String ED_TYPE_KOTITALOUS_DISPLAY = "kotitalous";
         
         public static final String SPECIAL_EDUCATION = "ER";
         public static final String TIMESTAMP_DOC = "loUpdateTimestampDocument";

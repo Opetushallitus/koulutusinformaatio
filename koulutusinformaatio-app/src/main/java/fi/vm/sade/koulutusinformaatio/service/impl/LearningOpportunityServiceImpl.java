@@ -277,10 +277,23 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
             String id, String lang, String uiLang)
                     throws ResourceNotFoundException {
         HigherEducationLOS los = this.previewService.previewHigherEducationLearningOpportunity(id);
+        HigherEducationLOSDTO dto = null;
         if (lang != null && !lang.isEmpty()) {
-            return HigherEducationLOSToDTO.convert(los, lang, uiLang);
-        } 
-        return HigherEducationLOSToDTO.convert(los, uiLang, uiLang);
+            dto = HigherEducationLOSToDTO.convert(los, lang, uiLang);
+        } else {
+            dto = HigherEducationLOSToDTO.convert(los, uiLang, uiLang); 
+        }
+        
+        if (dto.getStructureImageId() != null && los.getStructureImage() != null &&  los.getStructureImage().getPictureTranslations().get(uiLang) != null) {
+            dto.setStructureImage(modelMapper.map(los.getStructureImage().getPictureTranslations().get(uiLang), PictureDTO.class));
+        }
+        return dto;
+    }
+
+    @Override
+    public DataStatus getLastSuccesfulDataStatus() { 
+       return educationDataQueryService.getLatestSuccessDataStatus();
+        
     }
 
 }

@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.domain.dto;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -51,7 +52,17 @@ public class BasketApplicationOptionDTO {
     private boolean isHigherEducation;
     private String type;
     private String educationTypeUri;
-    private CodeDTO prerequisite; 
+    private CodeDTO prerequisite;
+    private List<DateRangeDTO> applicationDates = new ArrayList<DateRangeDTO>();
+    private boolean canBeApplied;
+    private Date nextApplicationPeriodStarts;
+    private String hakutapaUri;
+    private String applicationFormLink;
+    private String asId;
+    private String asName;
+    private boolean kotitalous;
+    private String hakuaikaId;
+
 
     public String getId() {
         return id;
@@ -249,5 +260,77 @@ public class BasketApplicationOptionDTO {
 
     public void setHigherEducations(List<HigherEducationLOSRefDTO> higherEducations) {
         this.higherEducations = higherEducations;
+    }
+
+    public List<DateRangeDTO> getApplicationDates() {
+        return applicationDates;
+    }
+
+    public void setApplicationDates(List<DateRangeDTO> applicationDates) {
+        this.applicationDates = applicationDates;
+    }
+
+    public boolean isCanBeApplied() {
+        return canBeApplied;
+    }
+
+    public void setCanBeApplied(boolean canBeApplied) {
+        this.canBeApplied = canBeApplied;
+    }
+
+    public Date getNextApplicationPeriodStarts() {
+        return nextApplicationPeriodStarts;
+    }
+
+    public void setNextApplicationPeriodStarts(Date nextApplicationPeriodStarts) {
+        this.nextApplicationPeriodStarts = nextApplicationPeriodStarts;
+    }
+
+    public String getHakutapaUri() {
+        return hakutapaUri;
+    }
+
+    public void setHakutapaUri(String hakutapaUri) {
+        this.hakutapaUri = hakutapaUri;
+    }
+
+    public String getApplicationFormLink() {
+        return applicationFormLink;
+    }
+
+    public void setApplicationFormLink(String applicationFormLink) {
+        this.applicationFormLink = applicationFormLink;
+    }
+
+    public String getAsId() {
+        return asId;
+    }
+
+    public void setAsId(String asId) {
+        this.asId = asId;
+    }
+
+    public String getAsName() {
+        return asName;
+    }
+
+    public void setAsName(String asName) {
+        this.asName = asName;
+    }
+    
+    public boolean isKotitalous() {
+        return kotitalous;
+    }
+
+    public void setKotitalous(boolean kotitalous) {
+        this.kotitalous = kotitalous;
+    }
+
+    public String getHakuaikaId() {
+        return hakuaikaId;
+    }
+
+    public void setHakuaikaId(String hakuaikaId) {
+        this.hakuaikaId = hakuaikaId;
     }
 }

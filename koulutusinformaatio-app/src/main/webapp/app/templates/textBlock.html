@@ -1,0 +1,7 @@
+<div data-ng-if="content">
+    <h2 data-ng-if="level == 2 || !level" data-ki-i18n="{{title}}" data-lang="{{translationLanguage}}"></h2>
+    <h3 data-ng-if="level == 3" data-ki-i18n="{{title}}" data-lang="{{translationLanguage}}"></h3>
+    <h4 data-ng-if="level == 4" data-ki-i18n="{{title}}" data-lang="{{translationLanguage}}"></h4>
+    <h5 data-ng-if="level == 5" data-ki-i18n="{{title}}" data-lang="{{translationLanguage}}"></h5>
+    <div class="tarjonta-content" data-ng-bind-html="content | externalLinks | unsafe"></div>
+</div>

@@ -18,5 +18,8 @@
     "checklist": "Muistilista",
     "opintopolku-fi": "Opintopolku suomeksi",
     "opintopolku-sv": "Studieinfo",
-    "search-result-facet-info": "Hakutulosrajaukset auttavat sinua rajaamaan hakua ja löytämään helpommin oikean koulutuksen. Hakutekijöiden jälkeen esitetään suluissa hakutulosten kappalemäärä. Mikäli kappalemäärä on nolla, ei Opintopolussa ole hakutekijään sopivia koulutuksia."
+    "search-result-facet-info": "Hakutulosrajaukset auttavat sinua rajaamaan hakua ja löytämään helpommin oikean koulutuksen. Hakutekijöiden jälkeen esitetään suluissa hakutulosten kappalemäärä. Mikäli kappalemäärä on nolla, ei Opintopolussa ole hakutekijään sopivia koulutuksia.",
+    "external-application-form": "Hae koulutukseen oppilaitoksen omien sivujen kautta.",
+    "application-basket-remove": "Poista",
+    "uas": ""
 }

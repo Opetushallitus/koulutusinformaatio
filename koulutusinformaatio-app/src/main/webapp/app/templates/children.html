@@ -1,8 +1,6 @@
-<ul class="ribbon-content nobullet">
-	<li data-ng-repeat="child in children" >
-		<a data-ng-href="{{child.url}}">{{child.name}}</a> 
-		<!-- PREVIEW -->
-		<span data-ng-if="child.preview" data-ki-preview-status-label="child.status"></span>
-		<!-- END PREVIEW -->
-	</li>
+<ul class="disc">
+    <li data-ng-repeat="child in children">
+        <a class="internal" href="#!/koulutusohjelma/{{child.losId}}?prerequisite={{child.prerequisite.value}}">{{child.name}}</a>
+    </li>
 </ul>
+

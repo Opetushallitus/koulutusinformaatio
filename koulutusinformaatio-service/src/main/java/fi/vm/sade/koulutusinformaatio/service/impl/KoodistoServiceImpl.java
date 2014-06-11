@@ -50,6 +50,12 @@ import java.util.regex.Pattern;
 @Service
 public class KoodistoServiceImpl implements KoodistoService {
 
+    public static Map<String,List<KoodiType>> koodisByKoodistoMap = new HashMap<String,List<KoodiType>>();
+    public static Map<String, List<KoodiType>> koodiTypeMap = new HashMap<String,List<KoodiType>>();
+    public static Map<String,List<KoodiType>> subkoodisMap = new HashMap<String,List<KoodiType>>();
+    public static Map<String,List<KoodiType>> superkoodisMap = new HashMap<String,List<KoodiType>>();
+    
+    
     private final KoodistoClient koodiService;
     private final Pattern pattern;
     private static final String KOODI_URI_WITH_VERSION_PATTERN = "^[^#]+#\\d+$";
@@ -77,7 +83,7 @@ public class KoodistoServiceImpl implements KoodistoService {
             return null;
         } else if (koodiUris.isEmpty()) {
             return Lists.newArrayList();
-        } else {
+        }  else {
             List<Code> results = Lists.newArrayList();
             for (String koodiUri : koodiUris) {
                 results.addAll(search(koodiUri));
@@ -104,7 +110,14 @@ public class KoodistoServiceImpl implements KoodistoService {
     @Override
     public List<Code> searchByKoodisto(String koodistoUri, Integer version) throws KoodistoException {
         try {
-            List<KoodiType> codes = koodiService.getKoodisForKoodisto(koodistoUri, version, true);
+            String key = String.format("%s#%s", koodistoUri, version);
+            List<KoodiType> codes = null;
+            if (koodisByKoodistoMap.containsKey(key)) {
+                codes = koodisByKoodistoMap.get(key);
+            } else {
+               codes = koodiService.getKoodisForKoodisto(koodistoUri, version, true);
+               koodisByKoodistoMap.put(key, codes);
+            }
             if (codes == null || codes.isEmpty()) {
                 LOGGER.warn(String.format("No koodis found with koodistoUri %s, version %d", koodistoUri, version));
             }
@@ -156,7 +169,14 @@ public class KoodistoServiceImpl implements KoodistoService {
     @Override
     public List<I18nText> searchNamesByKoodisto(String koodistoUri, Integer version) throws KoodistoException {
         try {
-            List<KoodiType> codes = koodiService.getKoodisForKoodisto(koodistoUri, version, true);
+            String key = String.format("%s#%s", koodistoUri, version);
+            List<KoodiType> codes = null;
+            if (koodisByKoodistoMap.containsKey(key)) {
+                codes = koodisByKoodistoMap.get(key); 
+            } else {
+                codes = koodiService.getKoodisForKoodisto(koodistoUri, version, true);
+                koodisByKoodistoMap.put(key, codes);
+            }
             if (codes == null || codes.isEmpty()) {
                 LOGGER.warn(String.format("No koodis found with koodistoUri %s, version %d", koodistoUri, version));
             }
@@ -206,7 +226,16 @@ public class KoodistoServiceImpl implements KoodistoService {
     @Override
     public List<I18nText> searchShortNamesByKoodisto(String koodistoUri, Integer version) throws KoodistoException {
         try {
-            List<KoodiType> codes = koodiService.getKoodisForKoodisto(koodistoUri, version, true);
+            
+            String key = String.format("%s#%s", koodistoUri, version);
+            List<KoodiType> codes = null;
+            if (koodisByKoodistoMap.containsKey(key)) {
+                codes = koodisByKoodistoMap.get(key); 
+            } else {
+                codes = koodiService.getKoodisForKoodisto(koodistoUri, version, true);
+                koodisByKoodistoMap.put(key, codes);
+            }
+
             if (codes == null || codes.isEmpty()) {
                 LOGGER.warn(String.format("No koodis found with koodistoUri %s, version %d", koodistoUri, version));
             }
@@ -265,11 +294,17 @@ public class KoodistoServiceImpl implements KoodistoService {
     }
 
     private List<KoodiType> searchSubKoodiTypes(String koodiUriAndVersion) throws KoodistoException {
+        
+        if (subkoodisMap.containsKey(koodiUriAndVersion)) {
+            return subkoodisMap.get(koodiUriAndVersion);
+        }
+        
         CodeUriAndVersion codeUriAndVersion = resolveKoodiUriAndVersion(koodiUriAndVersion);
         List<KoodiType> alakoodis = koodiService.getAlakoodis(codeUriAndVersion.getUri());
         if (alakoodis == null || alakoodis.isEmpty()) {
             LOGGER.warn(String.format("No sub koodis found with koodi uri and version %s", koodiUriAndVersion));
         }
+        subkoodisMap.put(koodiUriAndVersion, alakoodis);
         return alakoodis;
     }
 
@@ -283,17 +318,29 @@ public class KoodistoServiceImpl implements KoodistoService {
     }
 
     private List<KoodiType> searchSuperKoodiTypes(String koodiUriAndVersion) throws KoodistoException {
+        if (superkoodisMap.containsKey(koodiUriAndVersion)) {
+            return superkoodisMap.get(koodiUriAndVersion);
+        }
+        
         CodeUriAndVersion codeUriAndVersion = resolveKoodiUriAndVersion(koodiUriAndVersion);
         List<KoodiType> ylakoodis = koodiService.getYlakoodis(codeUriAndVersion.getUri());
         if (ylakoodis == null || ylakoodis.isEmpty()) {
             LOGGER.warn(String.format("No super koodis found with koodi uri and version %s", koodiUriAndVersion));
         }
+        
+        superkoodisMap.put(koodiUriAndVersion, ylakoodis);
         return ylakoodis;
     }
 
     private List<KoodiType> searchKoodiTypes(String koodiUri) throws KoodistoException {
+        
+        if (koodiTypeMap.containsKey(koodiUri)) {
+            return koodiTypeMap.get(koodiUri);
+        }
+        
         CodeUriAndVersion codeUriAndVersion = resolveKoodiUriAndVersion(koodiUri);
-        return getKoodiTypes(codeUriAndVersion);
+        koodiTypeMap.put(koodiUri, getKoodiTypes(codeUriAndVersion));
+        return koodiTypeMap.get(koodiUri);
     }
 
     private CodeUriAndVersion resolveKoodiUriAndVersion(String koodiUri) throws KoodistoException {
@@ -322,6 +369,7 @@ public class KoodistoServiceImpl implements KoodistoService {
 
     private List<KoodiType> searchKoodis(final SearchKoodisCriteriaType criteria) throws KoodistoException {
         try {
+            
             List<KoodiType> codes = koodiService.searchKoodis(criteria);
             if (codes == null || codes.isEmpty()) {
                 LOGGER.warn(String.format("No koodis found with search criteria: %s", searchCriteriaToString(criteria)));
@@ -397,7 +445,12 @@ public class KoodistoServiceImpl implements KoodistoService {
         return new Code(koodiType.getKoodiArvo(), new I18nText(name), new I18nText(shortName), new I18nText(description), koodiType.getKoodiUri());
     }
 
-
-
-
+    @Override
+    public void clearCache() {
+        koodisByKoodistoMap = new HashMap<String,List<KoodiType>>();
+        koodiTypeMap = new HashMap<String,List<KoodiType>>();
+        subkoodisMap = new HashMap<String,List<KoodiType>>();
+        superkoodisMap = new HashMap<String,List<KoodiType>>();
+    }
+    
 }

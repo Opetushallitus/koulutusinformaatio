@@ -16,8 +16,12 @@
 
 package fi.vm.sade.koulutusinformaatio.dao;
 
+import java.util.List;
+
 import com.mongodb.Mongo;
+
 import fi.vm.sade.koulutusinformaatio.dao.entity.DataStatusEntity;
+
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.dao.BasicDAO;
@@ -34,6 +38,13 @@ public class DataStatusDAO extends BasicDAO<DataStatusEntity, ObjectId> {
 
     public DataStatusEntity getLatest() {
         Query<DataStatusEntity> query = createQuery();
+        query.order("-lastUpdateFinished");
+        return find(query).get();
+    }
+    
+    public DataStatusEntity getLatestSuccess() {
+        Query<DataStatusEntity> query = createQuery();
+        query.field("lastUpdateOutcome").equal("SUCCESS");
         query.order("-lastUpdateFinished");
         return find(query).get();
     }

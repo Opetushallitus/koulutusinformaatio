@@ -62,8 +62,9 @@ public class SEOServiceImpl implements SEOService {
         String collections = "tutkinto:parentLearningOpportunitySpecifications," +
                 "koulutusohjelma:childLearningOpportunities," +
                 "lukio:upperSecondaryLearningOpportunitySpecifications," +
-                "valmentava:specialLearningOpportunitySpecifications:-creditValue" +
-                "erityisopetus:specialLearningOpportunitySpecifications:+creditValue";
+                "valmentava:specialLearningOpportunitySpecifications:-creditValue," +
+                "erityisopetus:specialLearningOpportunitySpecifications:+creditValue," +
+                "korkeakoulu:universityAppliedScienceLOS";
         this.sitemapParams.put(SitemapBuilder.PROPERTY_COLLECTIONS, collections);
         this.sitemapLocation = sitemapLocation;
     }

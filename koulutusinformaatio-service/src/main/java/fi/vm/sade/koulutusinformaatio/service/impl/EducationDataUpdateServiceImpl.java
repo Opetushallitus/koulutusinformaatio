@@ -16,11 +16,17 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import java.io.IOException;
+import java.util.List;
+
 import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.entity.*;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataUpdateService;
+import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 
+import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -184,6 +190,15 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
                     modelMapper.map(los, HigherEducationLOSEntity.class);
 
             save(plos.getProvider());
+            
+            
+            if (plos.getStructureImage() != null 
+                    && plos.getStructureImage().getPictureTranslations() != null 
+                    && plos.getStructureImage().getPictureTranslations() != null) {
+                for (PictureEntity curPict : plos.getStructureImage().getPictureTranslations().values()) {
+                    save(curPict);
+                }
+            }
 
 
             if (plos.getApplicationOptions() != null) {
@@ -194,5 +209,48 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
 
             this.higherEducationLOSTransactionDAO.save(plos);
         }
+    }
+
+    @Override
+    public void deleteLos(LOS los) {
+        
+        if (los instanceof ParentLOS) {
+            
+            for (ChildLOS curChild : ((ParentLOS) los).getChildren()) {
+                this.childLOTransactionDAO.deleteById(curChild.getId());
+            }
+            this.parentLOSTransactionDAO.deleteById(los.getId());
+        } else if (los instanceof ChildLOS) {
+            this.childLOTransactionDAO.deleteById(los.getId());
+        } else if (los instanceof SpecialLOS) {
+            this.specialLOSTransactionDAO.deleteById(los.getId());
+        } else if (los instanceof UpperSecondaryLOS) {
+            this.upperSecondaryLOSTransactionDAO.deleteById(los.getId());
+        } else if (los instanceof HigherEducationLOS) {
+            this.higherEducationLOSTransactionDAO.deleteById(los.getId());
+        }
+        
+    }
+
+    @Override
+    public void deleteAo(ApplicationOption ao) {
+        
+        this.applicationOptionTransactionDAO.deleteById(ao.getId());
+        
+    }
+    
+    @Override
+    public void clearHigherEducations(IndexerService indexerService, HttpSolrServer loHttpSolrServer) throws IOException, SolrServerException {
+        List<HigherEducationLOSEntity> higherEds = higherEducationLOSTransactionDAO.findAllHigherEds();
+        for (HigherEducationLOSEntity curHigherEd : higherEds) {
+            HigherEducationLOS curLos = modelMapper.map(curHigherEd, HigherEducationLOS.class);
+            this.deleteLos(curLos);
+            indexerService.removeLos(curLos, loHttpSolrServer);
+            for (ApplicationOption curAo : curLos.getApplicationOptions()) {
+                this.deleteAo(curAo);
+            }
+            
+        }
+        
     }
 }

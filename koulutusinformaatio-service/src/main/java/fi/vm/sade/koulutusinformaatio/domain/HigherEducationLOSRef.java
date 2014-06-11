@@ -13,6 +13,7 @@ public class HigherEducationLOSRef {
     private I18nText name;
     private List<I18nText> qualifications;
     private Code prerequisite;
+    private I18nText provider;
     
     public String getId() {
         return id;
@@ -43,6 +44,12 @@ public class HigherEducationLOSRef {
     }
     public void setPrerequisite(Code prerequisite) {
         this.prerequisite = prerequisite;
+    }
+    public I18nText getProvider() {
+        return provider;
+    }
+    public void setProvider(I18nText provider) {
+        this.provider = provider;
     }
 
 }

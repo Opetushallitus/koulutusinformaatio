@@ -37,7 +37,7 @@ public class AddressToDTOTest {
         address.setPostalCode("00100");
         address.setPostOffice(createI18nText("Helsinki"));
         address.setStreetAddress(createI18nText("street one"));
-        address.setStreetAddress2(createI18nText("street two"));
+        address.setSecondForeignAddr(createI18nText("street two"));
 
         AddressDTO dto = AddressToDTO.convert(address, "fi");
         assertNotNull(dto);

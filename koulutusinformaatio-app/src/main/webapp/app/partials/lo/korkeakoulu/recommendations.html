@@ -6,17 +6,17 @@
 			<li>
 				<i class="icon-angle-double-right"></i>
 				<a data-ng-href="#!/haku/*?page=1&facetFilters=teachingLangCode_ffm:{{lo.translationLanguage.toUpperCase()}}&lopFilter={{lo.provider.name}}&excludes=-id:{{lo.id}}&itemsPerPage=25&sortCriteria=0&tab=los">
-					<span data-ki-i18n="tarjoajan"></span> {{lo.provider.name}} <span data-ki-i18n="muita-koulutuksia"></span> </a>
+					<span data-ki-i18n="tarjoajan"></span> {{lo.provider.name}}</a>
 			</li>
 			<li>
 				<i class="icon-angle-double-right"></i>
 				<a data-ng-href="#!/haku/*?page=1&facetFilters=teachingLangCode_ffm:{{lo.translationLanguage.toUpperCase()}}&educationCodeFilter={{lo.educationCode}}&excludes={{lopExclField}}:{{lo.provider.name}}&itemsPerPage=25&sortCriteria=0&tab=los">
-					{{lo.educationCode}} <span data-ki-i18n="muualla"></span> </a>
+				<span data-ki-i18n="muualla"></span> </a>
 			</li>
-			<li data-ng-repeat="theme in lo.themes">
+			<li data-ng-repeat="topic in lo.topics">
 				<i class="icon-angle-double-right"></i>
-				<a data-ng-href="#!/haku/*?page=1&facetFilters=teachingLangCode_ffm:{{lo.translationLanguage.toUpperCase()}}&facetFilters=theme_ffm:{{theme.uri}}&facetFilters=educationType_ffm:{{lo.educationType}}&excludes={{lopExclField}}:{{lo.provider.name}}&itemsPerPage=25&sortCriteria=0&tab=los">
-					{{theme.description}} <span data-ki-i18n="mukainen-koulutus-muualla"></span> </a>
+				<a data-ng-href="#!/haku/*?page=1&facetFilters=teachingLangCode_ffm:{{lo.translationLanguage.toUpperCase()}}&facetFilters=topic_ffm:{{topic.uri}}&facetFilters=educationType_ffm:{{lo.educationType}}&excludes={{lopExclField}}:{{lo.provider.name}}&itemsPerPage=25&sortCriteria=0&tab=los">
+					{{topic.description}} <span data-ki-i18n="mukainen-koulutus-muualla"></span> </a>
 			</li>
 		</ul>
 		<!-- END PREVIEW EXCLUDE -->
@@ -36,7 +36,7 @@
 		<!-- END PREVIEW -->
 	</div>
 </div>
-<div class="application-container margin-bottom-4">
+<div data-ng-show="(lo.edCodeSuggestions && lo.edCodeSuggestions.length > 0) || (lo.edTypeSuggestions && lo.edTypeSuggestions.length > 0)"  class="application-container margin-bottom-4">
 	<h3 class="title"><span data-ki-i18n="lue-lisaa"></span></h3>
 	<div class="content">
 		<!-- PREVIEW EXCLUDE -->

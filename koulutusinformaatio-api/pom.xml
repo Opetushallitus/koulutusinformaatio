@@ -5,7 +5,7 @@
     <parent>
         <artifactId>koulutusinformaatio</artifactId>
         <groupId>fi.vm.sade.koulutusinformaatio</groupId>
-        <version>9.3</version>
+        <version>9.6</version>
         <relativePath>..</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>

@@ -157,6 +157,8 @@ describe('Application system state label', function() {
                     applicationSystems: 
                     [
                         {
+                            hakutapa: '01',
+                            hakutyyppi: '03',
                             asOngoing: false,
                             aoSpecificApplicationDates: true,
                             applicationOptions: 

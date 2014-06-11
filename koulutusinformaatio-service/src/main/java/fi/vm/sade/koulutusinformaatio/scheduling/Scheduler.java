@@ -16,9 +16,11 @@
 
 package fi.vm.sade.koulutusinformaatio.scheduling;
 
+import fi.vm.sade.koulutusinformaatio.service.IncrementalUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.SEOService;
 import fi.vm.sade.koulutusinformaatio.service.TextVersionService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,25 +38,34 @@ public class Scheduler {
 
     public static final Logger LOG = LoggerFactory.getLogger(Scheduler.class);
     private UpdateService updateService;
+    private IncrementalUpdateService incrementalUpdateService;
     private SEOService seoService;
     private TextVersionService textVersionService;
     private boolean enabled;
     private boolean seoEnabled;
     private boolean textVersionEnabled;
+    private boolean incrementalEnabled;
+    private boolean articlesEnabled;
 
     @Autowired
     public Scheduler(final UpdateService updateService, 
+            final IncrementalUpdateService incrementalUpdateService,
             final SEOService seoService, 
             final TextVersionService textVersionService,
             @Value("${scheduling.enabled}") boolean enabled,
             @Value("${scheduling.seo.enabled}") boolean seoEnabled, 
-            @Value("${scheduling.textversion.enabled}") boolean textVersionEnabled) {
+            @Value("${scheduling.textversion.enabled}") boolean textVersionEnabled,
+            @Value("${scheduling.data.incremental.enabled}") boolean incrementalEnabled,
+            @Value("${scheduling.data.articles.enabled}") boolean articlesEnabled) {
         this.updateService = updateService;
         this.seoService = seoService;
         this.textVersionService = textVersionService;
         this.enabled = enabled;
         this.seoEnabled = seoEnabled;
         this.textVersionEnabled = textVersionEnabled;
+        this.incrementalEnabled = incrementalEnabled;
+        this.incrementalUpdateService = incrementalUpdateService;
+        this.articlesEnabled = articlesEnabled;
     }
 
     @Scheduled(cron = "${scheduling.data.cron}")
@@ -62,7 +73,7 @@ public class Scheduler {
         if (enabled) {
             LOG.info("Starting scheduled data update {}", new Date());
             try {
-                if (!updateService.isRunning()) {
+                if (!updateService.isRunning() && !incrementalUpdateService.isRunning()) {
                     updateService.updateAllEducationData();
                 }
             } catch (Exception e) {
@@ -95,6 +106,42 @@ public class Scheduler {
                 }
             } catch (Exception e) {
                 LOG.error("Text version generation execution failed: {}", e.getStackTrace().toString());
+            }
+        }
+    }
+    
+    @Scheduled(cron = "${scheduling.data.incremental.cron}")
+    public void runIncrementalDataUpdate() {
+        if (incrementalEnabled) {
+            LOG.info("Starting scheduled incremental data update {}", new Date());
+            
+            try {
+                if (!updateService.isRunning() && !incrementalUpdateService.isRunning()) {
+                    LOG.debug("indexing is not running, starting incremental indexing.");
+                    this.incrementalUpdateService.updateChangedEducationData();
+                } else {
+                    LOG.debug("\n\nindexing is running, not starting incremental indexing.\n\n");
+                }
+            } catch (Exception e) {
+                LOG.error("Incremental data update execution failed: {}", e.getStackTrace().toString());
+            }
+        }
+    }
+    
+    @Scheduled(cron = "${scheduling.data.articles.cron}")
+    public void runArticleUpdate() {
+        if (this.articlesEnabled) {
+            LOG.info("Starting scheduled article update {}", new Date());
+            
+            try {
+                if (!updateService.isRunning() && !incrementalUpdateService.isRunning()) {
+                    LOG.debug("indexing is not running, starting article indexing.");
+                    this.updateService.updateArticles();
+                } else {
+                    LOG.debug("\n\nindexing is running, not starting article indexing.\n\n");
+                }
+            } catch (Exception e) {
+                LOG.error("Incremental data update execution failed: {}", e.getStackTrace().toString());
             }
         }
     }

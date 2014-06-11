@@ -3,8 +3,8 @@
 
 	<!-- PREVIEW -->
 	<div data-ng-if="lo.preview" class="margin-bottom-4">
-		<a href="{{tarjontaViewUrl}}" class="cssbutton primary back" data-ki-i18n="tarjontaTarkastelu"></a>
-        <p data-ki-i18n="preview-help" class="preview-separator" style="border-bottom: 1px solid #DDDDDD; margin-bottom: 20px; padding-bottom: 20px;"></p>
+		<a href="{{tarjontaViewUrl}}" class="cssbutton primary back" data-ki-i18n="tarjontaTarkastelu" data-lang="{{virkailijaLang}}"></a>
+        <p data-ki-i18n="preview-help" data-lang="{{virkailijaLang}}" class="preview-separator" style="border-bottom: 1px solid #DDDDDD; margin-bottom: 20px; padding-bottom: 20px;"></p>
     </div>
     <!-- END PREVIEW-->
     
@@ -13,45 +13,50 @@
     <!-- END PREVIEW EXCLUDE -->
 
     <div data-ng-include data-src="partialUrl + 'top.html'"></div>
-    <div data-tabset role="tablist" id="lo-tablist">
-        <div data-tab
-             data-heading="{{tabtitle.koulutus}}"
-             title="{{tabtitle.koulutus}}"
-             aria-selected="true"
-             aria-controls="lo-panel1"
-             tabindex="0"
-             role="tab"
-             class="tab"
-                >
-            <section role="tabpanel" class="panel" id="lo-panel1" >
-                <div data-ng-include data-src="partialUrl + 'kuvaus.html'"></div>
-            </section>
-        </div>
-        <div data-tab
-             data-heading="{{tabtitle.valintaperusteet}}"
-             title="{{tabtitle.valintaperusteet}}"
-             aria-selected="false"
-             aria-controls="lo-panel2"
-             tabindex="-1"
-             role="tab"
-             class="tab"
-                >
-            <section role="tabpanel" class="panel" id="lo-panel2">
-                <div data-ng-include data-src="partialUrl + 'hakeutuminen.html'"></div>
-            </section>
-        </div>
-        <div data-tab
-             data-heading="{{provider.name}}"
-             title="{{provider.name}}"
-             class="fluid tab"
-             tabindex="-1"
-             aria-selected="false"
-             aria-controls="lo-panel3"
-             role="tab"
-                >
-            <section role="tabpanel" class="panel" id="lo-panel3">
-                <div data-ng-include data-src="partialCommonUrl + 'oppilaitos.html'"></div>
-            </section>
+    <div data-ng-controller="LoTabCtrl">
+        <div data-tabset role="tablist" id="lo-tablist">
+            <div data-tab
+                 data-heading="{{tabtitle.koulutus}}"
+                 data-active="tabs[0]"
+                 title="{{tabtitle.koulutus}}"
+                 aria-selected="true"
+                 aria-controls="lo-panel1"
+                 tabindex="0"
+                 role="tab"
+                 class="tab"
+                    >
+                <section role="tabpanel" class="panel" id="lo-panel1" >
+                    <div data-ng-include data-src="partialUrl + 'kuvaus.html'"></div>
+                </section>
+            </div>
+            <div data-tab
+                 data-heading="{{tabtitle.valintaperusteet}}"
+                 data-active="tabs[1]"
+                 title="{{tabtitle.valintaperusteet}}"
+                 aria-selected="false"
+                 aria-controls="lo-panel2"
+                 tabindex="-1"
+                 role="tab"
+                 class="tab"
+                    >
+                <section role="tabpanel" class="panel" id="lo-panel2">
+                    <div data-ng-include data-src="partialUrl + 'hakeutuminen.html'"></div>
+                </section>
+            </div>
+            <div data-tab
+                 data-heading="{{provider.name}}"
+                 data-active="tabs[2]"
+                 title="{{provider.name}}"
+                 class="fluid tab"
+                 tabindex="-1"
+                 aria-selected="false"
+                 aria-controls="lo-panel3"
+                 role="tab"
+                    >
+                <section role="tabpanel" class="panel" id="lo-panel3">
+                    <div data-ng-include data-src="partialCommonUrl + 'oppilaitos.html'"></div>
+                </section>
+            </div>
         </div>
     </div>
 

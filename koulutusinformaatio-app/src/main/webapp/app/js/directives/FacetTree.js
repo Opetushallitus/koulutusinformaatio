@@ -9,11 +9,11 @@ directive('facetTree', function($compile) {
             var update = function() {
                 template = '<ul data-ng-if="isNotLeaf(' + attrs.treeModel + ')">' +
                     '<li data-ng-repeat="node in ' + attrs.treeModel + '">' + 
-                        '<span title="{{node.valueName}}" data-ng-if="!isSelected(node) && (node.count > 0)" class="facet-item">' +
-                            '<a href="javascript:void(0)" data-ng-click="selectFacetFilter(node.valueId, node.facetField);">{{node.valueName}} ({{node.count}})</a>' +
+                        '<span data-ng-if="!isSelected(node) && (node.count > 0)" class="facet-item">' +
+                            '<a href="javascript:void(0)" data-ng-click="selectFacetFilter(node.valueId, node.facetField);" data-facet-title="node">{{node.valueName}} ({{node.count}})</a>' +
                         '</span>' +
-                        '<span title="{{node.valueName}}" data-ng-show="isSelected(node)" class="facet-item selected">' +
-                            '<span>{{node.valueName}}</span>' +
+                        '<span data-ng-show="isSelected(node)" class="facet-item selected">' +
+                            '<span data-facet-title="node">{{node.valueName}}</span>' +
                             '<a title="{{locales.removeFacet}}" href="javascript:void(0)" class="remove" data-ng-click="removeSelection(node)"></a>' +
                         '</span>' +
                         '<ul data-ng-if="node.childValues" data-facet-tree data-tree-model="node.childValues"></ul>' +
@@ -82,7 +82,7 @@ directive('facetTreeLeaves', function() {
                 '<li class="bold block margin-top-1" data-ki-i18n="facet-focus-filter"></li>' +
                 '<li data-ng-repeat="node in leaves" class="facet-tree-leaf">' +
                     '<span title="{{node.valueName}}" data-ng-if="node.count > 0" class="facet-item">' +
-                        '<a href="javascript:void(0)" data-ng-click="selectFacetFilter(node.valueId, node.facetField);">{{node.valueName}} ({{node.count}})</a>' +
+                        '<a href="javascript:void(0)" data-ng-click="selectFacetFilter(node.valueId, node.facetField);" data-facet-title="node">{{node.valueName}} ({{node.count}})</a>' +
                     '</span>' +
                 '</li>' +
             '</ul>'

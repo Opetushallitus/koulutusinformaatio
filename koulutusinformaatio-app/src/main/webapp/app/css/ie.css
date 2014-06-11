@@ -1,4 +1,10 @@
-/* >= IE8 specific styles */
+/* <= IE8 specific styles */
+/* color */
+/* font-size */
+/*** from haku-app sass styles ***/
+/* buttons */
+/* rounder corners */
+/* responsive layout limits */
 #overlay {
   background: transparent;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#88000000,endColorstr=#88000000);
@@ -6,3 +12,7 @@
 
 .search-container .search .search-field {
   background-color: #fff5da; }
+
+table.striped tbody tr td,
+.tarjonta-content table tbody tr td {
+  border-top: 1px solid #bfe4f1; }

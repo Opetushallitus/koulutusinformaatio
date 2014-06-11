@@ -67,6 +67,8 @@ public class ApplicationOptionDTO {
     private String eligibilityDescription;
     private String type;
     private String educationTypeUri;
+    private boolean isKotitalous;
+    private String hakuaikaId;
 
     public String getId() {
         return id;
@@ -370,5 +372,21 @@ public class ApplicationOptionDTO {
 
     public void setEducationTypeUri(String educationTypeUri) {
         this.educationTypeUri = educationTypeUri;
+    }
+
+    public boolean isKotitalous() {
+        return isKotitalous;
+    }
+
+    public void setKotitalous(boolean isKotitalous) {
+        this.isKotitalous = isKotitalous;
+    }
+
+    public String getHakuaikaId() {
+        return hakuaikaId;
+    }
+
+    public void setHakuaikaId(String hakuaikaId) {
+        this.hakuaikaId = hakuaikaId;
     }
 }
