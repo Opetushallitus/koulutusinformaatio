@@ -205,6 +205,11 @@ public class LOSObjectCreator extends ObjectCreator {
 
         if (CreatorUtil.komotoPublished.apply(childKomoto)) {
             ChildLOI loi = loiCreator.createChildLOI(childKomoto, specialLOSId, los.getName(), educationCodeUri, resolveEducationType(los));
+            for (ApplicationOption curAo : loi.getApplicationOptions()) {
+                if (childKomo.getKoulutusTyyppiUri().equals(TarjontaConstants.IMMIGRANT_PREPARATORY_UPSEC)) {
+                    curAo.setVocational(false);
+                }
+            }
             lois.add(loi);
         }
         if (!lois.isEmpty() && los.getType().equals(TarjontaConstants.TYPE_PREP)) {
