@@ -29,6 +29,8 @@ import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 
 import org.modelmapper.ModelMapper;
 import org.mongodb.morphia.Key;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,6 +56,8 @@ import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
 @Service
 public class EducationIncrementalDataQueryServiceImpl implements
 EducationIncrementalDataQueryService {
+    
+    public static final Logger LOG = LoggerFactory.getLogger(EducationIncrementalDataQueryServiceImpl.class);
 
     private ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO;
     private ApplicationOptionDAO applicationOptionDAO;
@@ -391,6 +395,7 @@ EducationIncrementalDataQueryService {
     }
     
     private List<String> getLearningOpportunitiesByAO(ApplicationOptionEntity aoE) {
+        LOG.debug("getting los ids for application option: " + aoE.getId());
         List<String> loss = new ArrayList<String>();
         for (ChildLOIRefEntity childLoiE :  aoE.getChildLOIRefs()) {
             List<LOS> curLoss = this.findLearningOpportunitiesByLoiId(childLoiE.getId());
@@ -403,11 +408,12 @@ EducationIncrementalDataQueryService {
         
         List<HigherEducationLOSRefEntity> higherEdLossRefs =  aoE.getHigherEdLOSRefs();
         if (higherEdLossRefs != null) {
+            LOG.debug("Higher ed los refs: " + higherEdLossRefs.size());
             for (HigherEducationLOSRefEntity curLosRef : higherEdLossRefs) {
                 loss.add(curLosRef.getId());
             }
         }
-        
+        LOG.debug("returning: " + loss.size() + " los ids.");
         return loss;
     }
 
