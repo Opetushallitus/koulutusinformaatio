@@ -105,9 +105,16 @@ public class IncrementalApplicationSystemIndexer {
                 ApplicationSystem as = asCreator.createHigherEdApplicationSystem(asDto);
                 
                 for (String curLosId : lossesInAS) {
-                    HigherEducationLOS curLos = this.dataQueryService.getHigherEducationLearningOpportunity(curLosId);
-                    this.reIndexAsDataForHigherEdLOS(curLos, asDto, as);
-                    this.losIndexer.updateHigherEdLos(curLos);
+                    HigherEducationLOS curLos = null;
+                    try {
+                        curLos = this.dataQueryService.getHigherEducationLearningOpportunity(curLosId);
+                    } catch (ResourceNotFoundException ex) {
+                        LOG.warn("higher education los not found");
+                    }
+                    if (curLos != null) {
+                        this.reIndexAsDataForHigherEdLOS(curLos, asDto, as);
+                        this.losIndexer.updateHigherEdLos(curLos);
+                    }
                 }
                 
                 if (lossesInAS.isEmpty()) {
