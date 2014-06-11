@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.solr.client.solrj.SolrServerException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
@@ -41,6 +43,7 @@ import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.ApplicationSystemCreator;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.CreatorUtil;
+import fi.vm.sade.koulutusinformaatio.service.impl.IncrementalUpdateServiceImpl;
 import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
@@ -53,6 +56,8 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
  *
  */
 public class IncrementalApplicationSystemIndexer {
+    
+    public static final Logger LOG = LoggerFactory.getLogger(IncrementalApplicationSystemIndexer.class);
     
     private TarjontaRawService tarjontaRawService;
     private EducationIncrementalDataQueryService dataQueryService;
@@ -86,11 +91,14 @@ public class IncrementalApplicationSystemIndexer {
     }
     
     private void indexHigherEducationAsData(String asOid) throws Exception {
-        
+        LOG.debug("Indexing higher education application system");
         ResultV1RDTO<HakuV1RDTO> hakuRes = this.tarjontaRawService.getHigherEducationHakuByOid(asOid);
         if (hakuRes != null) {
             HakuV1RDTO asDto = hakuRes.getResult();
             List<String> lossesInAS = this.dataQueryService.getLearningOpportunityIdsByAS(asDto.getOid());
+            
+            LOG.debug("Higher education loss in application system: " + lossesInAS.size());
+            
             if (asDto.getTila().equals(TarjontaConstants.STATE_PUBLISHED)) {
 
                 ApplicationSystemCreator asCreator = new ApplicationSystemCreator(koodistoService);
@@ -122,10 +130,13 @@ public class IncrementalApplicationSystemIndexer {
 
     private void handleAsRemovalFromHigherEdLOS(String curLosId,
             HakuV1RDTO asDto) throws Exception {
+        LOG.debug("Removing from higher ed: " + curLosId);
         HigherEducationLOS curLos = null;
         try {
             curLos = this.dataQueryService.getHigherEducationLearningOpportunity(curLosId);
+            LOG.debug("Found los");
         } catch (ResourceNotFoundException ex) {
+            LOG.warn("Los: " + curLosId + " not found");
             return;
         }
         if (curLos != null) {
@@ -133,6 +144,7 @@ public class IncrementalApplicationSystemIndexer {
             boolean wasOtherAs = false;
             for (ApplicationOption curAo : curLos.getApplicationOptions()) {
                 if (!curAo.getApplicationSystem().getId().equals(asDto.getOid())) {
+                    LOG.debug("There was other application system: " + curAo.getApplicationSystem().getId());
                     wasOtherAs = true;
                     aos.add(curAo);
                 }
@@ -140,9 +152,12 @@ public class IncrementalApplicationSystemIndexer {
         
             curLos.setApplicationOptions(aos);
             if (wasOtherAs) {
+                LOG.debug("Updating higher ed los: " + curLos.getId());
                 this.losIndexer.updateHigherEdLos(curLos);
             } else {
+                LOG.debug("Removing higher ed los: " + curLos.getId());
                 this.losIndexer.removeHigherEd(curLos.getId(), curLos.getKomoOid());
+                LOG.debug("Higher ed los: " + curLos.getId() + " removed!");
             }
         }
     }

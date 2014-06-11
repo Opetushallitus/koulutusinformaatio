@@ -180,7 +180,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             //If changes in hakukohde, indexing them   
             if (result.containsKey("hakukohde")) {
                 changedHakukohdeOids = result.get("hakukohde");
-                LOG.debug("Haku changes: " + changedHakukohdeOids.size());
+                LOG.debug("Hakukohde changes: " + changedHakukohdeOids.size());
                 indexHakukohdeChanges(result.get("hakukohde"));
             }
 
