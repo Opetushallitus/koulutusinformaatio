@@ -122,23 +122,28 @@ public class IncrementalApplicationSystemIndexer {
 
     private void handleAsRemovalFromHigherEdLOS(String curLosId,
             HakuV1RDTO asDto) throws Exception {
-        
-        HigherEducationLOS curLos = this.dataQueryService.getHigherEducationLearningOpportunity(curLosId);
-        
-        List<ApplicationOption> aos = new ArrayList<ApplicationOption>();
-        boolean wasOtherAs = false;
-        for (ApplicationOption curAo : curLos.getApplicationOptions()) {
-            if (!curAo.getApplicationSystem().getId().equals(asDto.getOid())) {
-                wasOtherAs = true;
-                aos.add(curAo);
-            }
+        HigherEducationLOS curLos = null;
+        try {
+            curLos = this.dataQueryService.getHigherEducationLearningOpportunity(curLosId);
+        } catch (ResourceNotFoundException ex) {
+            return;
         }
+        if (curLos != null) {
+            List<ApplicationOption> aos = new ArrayList<ApplicationOption>();
+            boolean wasOtherAs = false;
+            for (ApplicationOption curAo : curLos.getApplicationOptions()) {
+                if (!curAo.getApplicationSystem().getId().equals(asDto.getOid())) {
+                    wasOtherAs = true;
+                    aos.add(curAo);
+                }
+            }
         
-        curLos.setApplicationOptions(aos);
-        if (wasOtherAs) {
-            this.losIndexer.updateHigherEdLos(curLos);
-        } else {
-            this.losIndexer.removeHigherEd(curLos.getId(), curLos.getKomoOid());
+            curLos.setApplicationOptions(aos);
+            if (wasOtherAs) {
+                this.losIndexer.updateHigherEdLos(curLos);
+            } else {
+                this.losIndexer.removeHigherEd(curLos.getId(), curLos.getKomoOid());
+            }
         }
     }
 
