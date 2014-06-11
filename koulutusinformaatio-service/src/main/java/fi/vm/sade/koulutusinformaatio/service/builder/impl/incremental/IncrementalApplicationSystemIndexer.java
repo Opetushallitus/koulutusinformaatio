@@ -109,7 +109,7 @@ public class IncrementalApplicationSystemIndexer {
                     try {
                         curLos = this.dataQueryService.getHigherEducationLearningOpportunity(curLosId);
                     } catch (ResourceNotFoundException ex) {
-                        LOG.warn("higher education los: " + curLos.getId() + " not found");
+                        LOG.warn("higher education los not found");
                     }
                     if (curLos != null) {
                         this.reIndexAsDataForHigherEdLOS(curLos, asDto, as);
