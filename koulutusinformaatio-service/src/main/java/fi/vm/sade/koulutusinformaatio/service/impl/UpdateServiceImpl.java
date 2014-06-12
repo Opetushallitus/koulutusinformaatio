@@ -100,6 +100,7 @@ public class UpdateServiceImpl implements UpdateService {
             count = loOids.size();
             index += count;
 
+            
                 for (String loOid : loOids) {
                     List<LOS> specifications = null;
                     try {

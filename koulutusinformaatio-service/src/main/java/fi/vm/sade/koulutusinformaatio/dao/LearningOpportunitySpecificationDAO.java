@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.dao;
 
 import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunitySpecificationEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.SpecialLearningOpportunitySpecificationEntity;
 
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Key;
@@ -46,6 +47,7 @@ public abstract class LearningOpportunitySpecificationDAO<T, K> extends Secondar
         q.field("lois.id").equal(loiId);
         return find(q).asList();
     }
+
 }
 
 
