@@ -61,7 +61,7 @@ public interface LearningOpportunityProviderResource {
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public List<ProviderSearchResult> searchProviders(@PathParam(TERM) final String term,
                                                  @QueryParam(ASID) final String asId,
-                                                 @QueryParam(BASE_EDUCATION) final String baseEducation,
+                                                 @QueryParam(BASE_EDUCATION) final List<String> baseEducation,
                                                  @DefaultValue(value = "true") @QueryParam(VOCATIONAL) final boolean vocational,
                                                  @DefaultValue(value = "true") @QueryParam(NON_VOCATIONAL) final boolean nonVocational,
                                                  @DefaultValue(value = "0") @QueryParam("start") int start,

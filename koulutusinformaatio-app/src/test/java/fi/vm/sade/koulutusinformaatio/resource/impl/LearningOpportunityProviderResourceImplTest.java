@@ -24,10 +24,12 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.resource.LearningOpportunityProviderResource;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,7 +77,7 @@ public class LearningOpportunityProviderResourceImplTest {
         providers.add(provider);
         providers.add(provider2);
         
-        when(searchService.searchLearningOpportunityProviders("prov", "", "", true, true, 10, 10, "fi", false, null)).thenReturn(providers);
+        when(searchService.searchLearningOpportunityProviders("prov", "", Arrays.asList(""), true, true, 10, 10, "fi", false, null)).thenReturn(providers);
         
         PictureDTO pict = new PictureDTO();
         pict.setId("pict1");
@@ -88,7 +90,7 @@ public class LearningOpportunityProviderResourceImplTest {
     
     @Test
     public void testSearchProviders() {
-        List<ProviderSearchResult> results = providerResource.searchProviders("prov", "", "", true, true, 10, 10, "fi");
+        List<ProviderSearchResult> results = providerResource.searchProviders("prov", "", Arrays.asList(""), true, true, 10, 10, "fi");
         assertEquals(results.size(), 2);
         assertTrue(results.get(0).getId().contains("prov"));
     }
