@@ -247,9 +247,10 @@ public class IncrementalApplicationSystemIndexer {
                 lois.add(curUpsecLoi);
             }
         }
-        curLos.setLois(lois);
+        
         
         if (wasOtherAs) {
+            curLos.setLois(lois);
             this.losIndexer.updateUpsecLos(curLos);
         } else {
             this.losIndexer.removeUpperSecondaryLOS(curLos);
@@ -273,9 +274,9 @@ public class IncrementalApplicationSystemIndexer {
                 childLois.add(curChildLoi);
             }
         }
-        curLos.setLois(childLois);
         
         if (wasOtherAs) {
+            curLos.setLois(childLois);
             this.losIndexer.updateSpecialLos(curLos);
         } else {
             this.losIndexer.removeSpecialLOS(curLos);
@@ -299,7 +300,7 @@ public class IncrementalApplicationSystemIndexer {
                 parentLois.add(curLoi);
             }
         }
-        parent.setLois(parentLois);
+       
         
         List<ChildLOS> children = new ArrayList<ChildLOS>();
         for (ChildLOS curChild : parent.getChildren()) {
@@ -322,9 +323,10 @@ public class IncrementalApplicationSystemIndexer {
                 children.add(curChild);
             }
         }
-        parent.setChildren(children);
         
         if (wasOtherAs) {
+            parent.setLois(parentLois);
+            parent.setChildren(children);
             this.losIndexer.updateParentLos(parent);
         } else {
             this.losIndexer.removeParentLOS(parent);

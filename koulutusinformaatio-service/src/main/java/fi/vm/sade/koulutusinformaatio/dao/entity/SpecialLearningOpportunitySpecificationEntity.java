@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.dao.entity;
 
 import org.mongodb.morphia.annotations.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -64,9 +65,8 @@ public class SpecialLearningOpportunitySpecificationEntity {
     private List<CodeEntity> themes;
     
     private String type;
-
-
-
+    
+    private List<String> aoIds = new ArrayList<String>();
 
     public SpecialLearningOpportunitySpecificationEntity() {
     }
@@ -221,5 +221,13 @@ public class SpecialLearningOpportunitySpecificationEntity {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public List<String> getAoIds() {
+        return aoIds;
+    }
+
+    public void setAoIds(List<String> aoIds) {
+        this.aoIds = aoIds;
     }
 }

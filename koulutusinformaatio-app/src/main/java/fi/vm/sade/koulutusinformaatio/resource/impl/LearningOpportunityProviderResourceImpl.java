@@ -54,7 +54,7 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
     }
 
     @Override
-    public List<ProviderSearchResult> searchProviders(String term, String asId, String baseEducation, boolean vocational,
+    public List<ProviderSearchResult> searchProviders(String term, String asId, List<String> baseEducations, boolean vocational,
                                                       boolean nonVocational, int start, int rows, final String lang) {
         List<Provider> learningOpportunityProviders = null;
         try {
@@ -65,7 +65,7 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
                 key = term;
             }
             key = key.replace("*", "");
-            learningOpportunityProviders = searchService.searchLearningOpportunityProviders(key, asId, baseEducation, vocational,
+            learningOpportunityProviders = searchService.searchLearningOpportunityProviders(key, asId, baseEducations, vocational,
                     nonVocational, start, rows, lang, false, null);
             List<ProviderSearchResult> result = Lists.newArrayList(
                                                     Lists.transform(learningOpportunityProviders, 

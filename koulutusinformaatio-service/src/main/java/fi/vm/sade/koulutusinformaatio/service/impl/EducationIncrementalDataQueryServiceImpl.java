@@ -413,6 +413,18 @@ EducationIncrementalDataQueryService {
                 loss.add(curLosRef.getId());
             }
         }
+        LOG.debug("Getting special loss");
+        List<Key<SpecialLearningOpportunitySpecificationEntity>> specials =  this.specialLearningOpportunitySpecificationDAO.findByAoId(aoE.getId());
+        if (specials != null && !specials.isEmpty()) {
+            LOG.debug("There are specials: " + specials.size());
+            for (Key<SpecialLearningOpportunitySpecificationEntity> curSpec : specials) {
+                if (!loss.contains(curSpec.getId().toString())) {
+                    LOG.debug("Adding here: " + curSpec.getId());
+                    loss.add(curSpec.getId().toString());
+                }
+            }
+        }
+        
         LOG.debug("returning: " + loss.size() + " los ids.");
         return loss;
     }

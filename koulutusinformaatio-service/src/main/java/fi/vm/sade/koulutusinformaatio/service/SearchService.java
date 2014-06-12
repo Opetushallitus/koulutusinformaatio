@@ -25,7 +25,7 @@ import java.util.List;
 public interface SearchService {
 
     List<Provider> searchLearningOpportunityProviders(
-            final String term, final String asId, final String baseEducation, final boolean vocational,
+            final String term, final String asId, final List<String> baseEducations, final boolean vocational,
             final boolean nonVocational, int start, int rows, String lang, boolean prefix, String type) throws SearchException;
 
     List<Provider> searchLearningOpportunityProviders(final String term, String lang, boolean prefix, String type) throws SearchException;

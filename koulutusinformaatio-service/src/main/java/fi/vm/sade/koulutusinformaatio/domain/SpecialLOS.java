@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,6 +32,8 @@ public class SpecialLOS extends BasicLOS<ChildLOI> {
     private I18nText educationDomain;
     private ParentLOSRef parent;
     private String educationTypeUri;
+    
+    private List<String> aoIds = new ArrayList<String>();
 
     public List<ChildLOI> getLois() {
         return lois;
@@ -70,5 +73,13 @@ public class SpecialLOS extends BasicLOS<ChildLOI> {
 
     public void setEducationTypeUri(String educationTypeUri) {
         this.educationTypeUri = educationTypeUri;
+    }
+
+    public List<String> getAoIds() {
+        return aoIds;
+    }
+
+    public void setAoIds(List<String> aoIds) {
+        this.aoIds = aoIds;
     }
 }
