@@ -16,8 +16,13 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl.query;
 
+import java.util.List;
+
 import com.google.common.base.Joiner;
+
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
+
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.util.ClientUtils;
 
@@ -37,7 +42,7 @@ public class ProviderQuery extends SolrQuery {
     private final static String NEG_VOCATIONAL = "-vocationalAsIds";
     private final static String NEG_NON_VOCATIONAL = "-nonVocationalAsIds";
 
-    public ProviderQuery(String q, String asId, String baseEducation, int start, int rows, boolean vocational,
+    public ProviderQuery(String q, String asId, List<String> baseEducations, int start, int rows, boolean vocational,
                          boolean nonVocational, String lang, boolean prefix, String type) {
         super(Joiner.on(":").join(resolveNameField(lang, prefix), ClientUtils.escapeQueryChars(q) + "*"));
         
@@ -55,8 +60,10 @@ public class ProviderQuery extends SolrQuery {
                 this.addFilterQuery(Joiner.on(":").join(NEG_NON_VOCATIONAL, asId));
             }
         }
-        if (baseEducation != null) {
-            this.addFilterQuery(Joiner.on(":").join(BASE_EDUCATIONS, baseEducation));
+        if (baseEducations != null && !baseEducations.isEmpty()) {
+            //this.addFilterQuery(Joiner.on(":").join(BASE_EDUCATIONS, baseEducation));
+            this.addFilterQuery(
+                    String.format("%s:(\"%s\")", BASE_EDUCATIONS, Joiner.on("\" OR \"").join(baseEducations)));
         }
         if (type != null) {
             this.addFilterQuery(Joiner.on(":").join(SolrUtil.ProviderFields.TYPE_VALUE, type));
