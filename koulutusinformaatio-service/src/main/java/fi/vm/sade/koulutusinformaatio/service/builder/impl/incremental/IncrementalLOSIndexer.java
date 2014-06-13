@@ -323,7 +323,7 @@ public class IncrementalLOSIndexer {
     }
 
     private boolean isSpecialVocationalLos(KomotoDTO komotoDto) {
-        return komotoDto.getPohjakoulutusVaatimusUri().contains(TarjontaConstants.PREREQUISITE_URI_ER);        
+        return komotoDto.getPohjakoulutusVaatimusUri() != null && komotoDto.getPohjakoulutusVaatimusUri().contains(TarjontaConstants.PREREQUISITE_URI_ER);        
     }
 
     private boolean isRehabLOS(KomoDTO komo) {
