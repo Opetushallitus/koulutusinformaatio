@@ -213,7 +213,7 @@ public class SingleParentLOSBuilder {
     }
     
     public static boolean isSpecialEdKomoto(KomotoDTO komoto) {
-        return komoto.getPohjakoulutusVaatimusUri().contains(TarjontaConstants.PREREQUISITE_URI_ER);
+        return komoto.getPohjakoulutusVaatimusUri() != null && komoto.getPohjakoulutusVaatimusUri().contains(TarjontaConstants.PREREQUISITE_URI_ER);
     }
 
     
