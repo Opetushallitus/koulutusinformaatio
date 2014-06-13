@@ -198,6 +198,10 @@ public class TransactionManagerImpl implements TransactionManager {
             dropDbCollections();
             mongo.getDB("admin").command(cmd);
             dropTransactionDbCollections();
+            
+            this.koodistoService.clearCache();
+            this.providerService.clearCache();
+            
         } catch (Exception ex) {
             throw new KICommitException(ex);
         }
