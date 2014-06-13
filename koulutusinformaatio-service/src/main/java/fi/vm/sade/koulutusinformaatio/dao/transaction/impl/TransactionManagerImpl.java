@@ -172,6 +172,10 @@ public class TransactionManagerImpl implements TransactionManager {
     @Override
     public void rollBack(HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) {
         dropUpdateData(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+        
+        this.koodistoService.clearCache();
+        this.providerService.clearCache();
+        
     }
 
     @Override
