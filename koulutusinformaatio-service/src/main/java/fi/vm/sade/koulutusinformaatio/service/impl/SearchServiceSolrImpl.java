@@ -256,7 +256,7 @@ public class SearchServiceSolrImpl implements SearchService {
                             searchResultList.getArticleresults().add(createArticleSearchResult(doc));
                         }
                     } catch (Exception ex) {
-                        LOG.warn(ex.getMessage());
+                        LOG.warn("Problem creating search result: " + ex.getMessage());
                         continue;
                     }
                 }
@@ -376,13 +376,20 @@ public class SearchServiceSolrImpl implements SearchService {
         String homeplace = getHomeplace(doc, lang);
         String lopId = doc.get(LearningOpportunity.LOP_ID) != null ? doc.get(LearningOpportunity.LOP_ID).toString() : null;
 
+        LOG.debug("gathered info now creating search result: " + id);
+        
         LOSearchResult lo = new LOSearchResult(
                 id, name,
                 lopId, lopName, prerequisiteText,
                 prerequisiteCodeText, parentId, losId, doc.get("type").toString(),
                 credits, edType, edDegree, edDegreeCode, homeplace);
+        
+        LOG.debug("Created search result: " + id);
 
         updateAsStatus(lo, doc);
+        
+        LOG.debug("Updated as status: " + id);
+        
         return lo;
 
     }
@@ -913,14 +920,30 @@ public class SearchServiceSolrImpl implements SearchService {
         Date now = new Date();
         Date nextStarts = null;
 
+        System.out.println("Generating asStatus");
+        
         for (Map.Entry<String, Object> start : doc.entrySet()) {
+            
+            System.out.println("Here is entryset");
+            
             if (start.getKey().startsWith(AS_START_DATE_PREFIX)) {
+                
+                System.out.println("Ok, it is as start date field");
+                
                 String endKey = new StringBuilder().append(AS_END_DATE_PREFIX)
                         .append(start.getKey().split("_")[1]).toString();
+                
+                System.out.println("End key is: " + endKey);
 
                 Date startDate = ((List<Date>) start.getValue()).get(0);
-                Date endDate = ((List<Date>) doc.get(endKey)).get(0);
+                Date endDate = null;
+                if (doc.containsKey(endKey)) {
+                    endDate = ((List<Date>) doc.get(endKey)).get(0);
+                }
+               
 
+                System.out.println("Got dates, start: " + startDate + ", end date: " + endDate);
+                
                 if (startDate.before(now) && now.before(endDate)) {
                     lo.setAsOngoing(true);
                     return;
@@ -932,7 +955,11 @@ public class SearchServiceSolrImpl implements SearchService {
             }
         }
 
+        System.out.println("Setting next application period starts: " + nextStarts);
+        
         lo.setNextApplicationPeriodStarts(nextStarts);
+        
+        System.out.println("returning from asStatus");
     }
 
     @Override

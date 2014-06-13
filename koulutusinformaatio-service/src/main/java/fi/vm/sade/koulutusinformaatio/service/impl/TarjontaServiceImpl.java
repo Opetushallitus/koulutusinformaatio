@@ -241,7 +241,7 @@ public class TarjontaServiceImpl implements TarjontaService {
             Map<String, List<HigherEducationLOSRef>> aoToEducationsMap) {
         if (los.getApplicationOptions() != null) {
             for (ApplicationOption curAo : los.getApplicationOptions()) {
-
+                LOG.debug("Updating ao los references for ao: " + curAo.getId());
                 List<HigherEducationLOSRef> aoLoss = aoToEducationsMap.get(curAo.getId());
                 if (aoLoss == null) {
                     aoLoss = new ArrayList<HigherEducationLOSRef>();
@@ -252,12 +252,13 @@ public class TarjontaServiceImpl implements TarjontaService {
                 newRef.setId(los.getId());
                 newRef.setName(los.getName());
                 newRef.setPrerequisite(curAo.getPrerequisite());
-                newRef.setQualifications(((HigherEducationLOS)los).getQualifications());
+                newRef.setQualifications(((StandaloneLOS)los).getQualifications());
                 newRef.setProvider(curAo.getProvider().getName());
                 aoLoss.add(newRef);
                 aoToEducationsMap.put(curAo.getId(), aoLoss);
             }
         }
+        LOG.debug("ao los references now updated");
 
     }
 
@@ -507,21 +508,28 @@ public class TarjontaServiceImpl implements TarjontaService {
         HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
         Map<String,List<HigherEducationLOSRef>> aoToEducationsMap = new HashMap<String,List<HigherEducationLOSRef>>();
         for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
+            LOG.debug("Cur tarjoaja result: " + curRes.getOid());
             for (KoulutusHakutulosV1RDTO curKoulutus : curRes.getTulokset()) {
+                
+                LOG.debug("cur koulutus result: " + curKoulutus.getOid());
                 if (!curKoulutus.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
                     continue;
                 }
                 
                 ResultV1RDTO<KoulutusLukioV1RDTO> koulutusRes = this.tarjontaRawService.getUpperSecondaryLearningOpportunity(curKoulutus.getOid());
                 KoulutusLukioV1RDTO koulutusDTO = koulutusRes.getResult();
+                
+                LOG.debug("cur upsec adult education dto: " + koulutusDTO.getOid());
                 if (koulutusDTO == null || koulutusDTO.getKoulutuslaji() == null || koulutusDTO.getKoulutuslaji().getUri().contains(TarjontaConstants.NUORTEN_KOULUTUS)) {
                     continue;
                 }
                 
                 try {
                     AdultUpperSecondaryLOS los = creator.createAdultUpperSeconcaryLOS(koulutusDTO, true);//createHigherEducationLOS(koulutusDTO, true);
+                    LOG.debug("Created los: " + los.getId());
                     koulutukset.add(los);
                     updateAOLosReferences(los, aoToEducationsMap);
+                    LOG.debug("Updated aolos references for: " + los.getId());
 
                 } catch (TarjontaParseException ex) {
                     continue;
