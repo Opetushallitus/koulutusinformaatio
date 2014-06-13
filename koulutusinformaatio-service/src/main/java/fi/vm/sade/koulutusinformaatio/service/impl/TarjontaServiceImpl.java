@@ -362,6 +362,7 @@ public class TarjontaServiceImpl implements TarjontaService {
 
 
         if (los.getApplicationOptions() != null) {
+            LOG.debug("now creating higher edu los refs for los: " + los.getId());
             for (ApplicationOption curAo : los.getApplicationOptions()) {
                 createEducationreReferencesForAo(curAo, true);
             }
@@ -421,17 +422,18 @@ public class TarjontaServiceImpl implements TarjontaService {
             if (koulutusDTO == null) {
                 continue;
             }
+            
+            LOG.debug("KOULUTUS TILA: " + koulutusDTO.getTila().name());
 
-
-            if ((validating && koulutusDTO.getTila().equals(TarjontaTila.JULKAISTU)) || !validating) {
+            if ((validating && koulutusDTO.getTila().name().equals(TarjontaTila.JULKAISTU.name())) || !validating) {
+                
+                LOG.debug("Creating higher education los ref for higher education!!!");
 
                 HigherEducationLOSRef losRef = creator.createHigherEducationLOSRef(koulutusDTO, validating, curAo);
 
                 curAo.getHigherEdLOSRefs().add(losRef);
 
             } 
-
-
 
         }
 

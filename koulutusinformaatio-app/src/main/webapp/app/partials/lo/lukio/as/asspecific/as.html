@@ -1,20 +1,13 @@
-<h4 class="title" data-ki-i18n="application-title" data-lang="{{teachingLang}}"></h4>
+<h4 class="title" data-ki-i18n="application-title"></h4>
 <div class="content">{{as.name}}</div>
 
-<h4 class="title" data-ki-i18n="application-period" data-lang="{{teachingLang}}"></h4>
-<div class="content">
-    <span data-ng-repeat="dates in as.applicationDates">
-        <span data-ki-timestamp="{{dates.startDate}}"></span> - <span data-ki-timestamp="{{dates.endDate}}"></span><br/>
-    </span>
-</div>
-
-<h4 class="title"><span data-ki-i18n="application-options" data-lang="{{teachingLang}}"></span></h4>
+<h4 class="title"><span data-ki-i18n="application-options"></span></h4>
 <div data-ng-repeat="ao in as.applicationOptions" class="content">
     <div data-ng-include data-src="partialUrl + 'as/asspecific/ao-info.html'"></div>
     <form name="levelSelectionForm-{{$id}}" id="application-form-{{as.id}}-{{$id}}" action="{{hakuAppUrl + 'lomake/' + as.id}}" method="POST" class="margin-top-2" target="hakulomake">
         <div data-ng-include="partialCommonUrl + 'as/ao-inputs.html'"></div>
         <div data-ng-include="partialUrl + 'as/asspecific/ao-actions.html'"></div> 
     </form>
-    <div class="margin-top-2 small" data-ki-application-status-label data-as="as" data-lang="{{teachingLang}}"></div>
+    <div class="margin-top-2 small" data-ki-application-status-label data-as="as"></div>
 </div>
 

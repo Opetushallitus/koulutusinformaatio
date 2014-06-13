@@ -22,6 +22,7 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunitySpecifi
 import fi.vm.sade.koulutusinformaatio.dao.entity.SpecialLearningOpportunitySpecificationEntity;
 
 import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.Key;
 import org.mongodb.morphia.query.Query;
 
 /**
@@ -32,6 +33,14 @@ public class SpecialLearningOpportunitySpecificationDAO extends LearningOpportun
     public SpecialLearningOpportunitySpecificationDAO(Datastore primaryDatastore, Datastore secondaryDatastore) {
         super(primaryDatastore, secondaryDatastore);
         ensureIndexes();
+    }
+
+    public List<Key<SpecialLearningOpportunitySpecificationEntity>> findByAoId(
+            String id) {
+        
+        Query<SpecialLearningOpportunitySpecificationEntity> q = this.ds.createQuery(SpecialLearningOpportunitySpecificationEntity.class).field("aoIds").contains(id);
+        return find(q).asKeyList();
+        
     }
     
 }

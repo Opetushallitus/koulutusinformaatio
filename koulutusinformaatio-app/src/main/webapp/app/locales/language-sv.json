@@ -63,6 +63,7 @@
     "planned-duration": "Planerad längd",
     "time-of-teaching": "Undervisningstid",
     "place-of-teaching": "Undervisningsställe",
+    "form-of-education-higher": "Studieform",
     "chargeable": "Avgiftsbelagd",
     "chargeable-false": "Nej",
     "chargeable-true": "Ja",
@@ -102,7 +103,7 @@
     "attachment-header-duedate": "Skall lämnas in senast",
 
     "elementary-graduate-selection": "Antagning av grundskolgångna ",
-    "entrance-exam": "Pääsy- ja soveltuvuuskoe (sv)",
+    "entrance-exam": "Inträdes- och lämplighetsprov",
     "entrance-exam-default": "Inträdesprov",
     "exam-scores": "Inträdesprovet kan ge __min__ - __max__ poäng. Lägsta godkända poängantal är __threshold__.",
     "additional-proof": "Tilläggsprestationer",
@@ -178,13 +179,13 @@
     "application-basket-empty": "Töm minneslistan",
     "application-basket-empty-confirm": "Är du säker på att du vill tömma minneslistan?",
     "application-basket-overflow-warning": "I denna ansökan kan du söka till högst __itemcount__ utbildningar, stryk de som är överlopps.",
-    "application-basket-fill-form-notification-single-ao": "Jokaiseen tässä listattavaan koulutukseen tulee hakea erikseen. Osaan koulutuksista haetaan oppilaitoksen omien sivujen kautta. (sv)",
+    "application-basket-fill-form-notification-single-ao": "Man söker skilt till alla utbildningar som finns listade här. Till en del av utbildningarna söker man via läroanstaltens egna sidor.",
     "application-basket-attachments-exams": "Bilagor och prov",
-    "application-basket-no-attachments": "Ei liitteitä (sv)",
-    "application-basket-attachments-required": "Vaaditaan liitteitä (sv)",
-    "application-basket-no-exams": "Ei pääsykokeita (sv)",
+    "application-basket-no-attachments": "Inga bilagor",
+    "application-basket-attachments-required": "Bilagor krävs",
+    "application-basket-no-exams": "Inga inträdesprov",
 
-    "erikseenHaettavatHakukohteet": "Erikseen haettavat hakukohteet (sv)",
+    "erikseenHaettavatHakukohteet": "Ansökningsmål med skild ansökan",
 
     "popup-close": "Stäng",
     "popup-continue": "Fortsätt",
@@ -298,13 +299,13 @@
     "tarjoaja": "Anordnare",
     "katso-myos": "Se också...",
     "lue-lisaa": "Läs mera...",
-    "tarjoajan": "Muut koulutukset: (sv)",
+    "tarjoajan": "Andra utbildningar:",
     "muita-koulutuksia": "ndra utbildningar",
     "koulutus": "Utbildning",
-    "muualla": "Vastaava koulutus muualla (sv)",
+    "muualla": "Motsvarande utbildning annanstans",
     "mukainen-koulutus-muualla": "- utbildning annanstans",
 
-    "hakutapa-jatkuva": "Jatkuva haku (sv)",
+    "hakutapa-jatkuva": "Fortlöpande ansökan",
 
     "preview-help": "Förhandsgranskningen visar utbildningen och ansökningsmålet såsom en användare ser dem i Studieinfo.fi-tjänsten. Du kan behandla uppgifterna om utbildningen genom att klicka på knappen Behandla utbildningen. Via den andra fliken kan du behandla ansökningsmålets uppgifter. Du kan inte behandla organisationsuppgifter här, utan via tjänsten Organisationstjänster."
 }

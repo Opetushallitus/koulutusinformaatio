@@ -46,7 +46,7 @@ public final class ParentLOIToDTO {
         }
 
         for (ApplicationSystem as : aoByAs.keySet()) {
-            ApplicationSystemDTO asDTO = ApplicationSystemToDTO.convert(as, defaultLang);
+            ApplicationSystemDTO asDTO = ApplicationSystemToDTO.convert(as, uiLang);
             for (ApplicationOption ao : aoByAs.get(as)) {
                 ApplicationOptionDTO aoDTO = ApplicationOptionToDTO.convert(ao, lang, uiLang, defaultLang);
                 asDTO.getApplicationOptions().add(aoDTO);

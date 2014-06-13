@@ -138,6 +138,25 @@ public final class SolrUtil {
         }
     }
     
+    public static void setLopAndHomeplaceDisplaynames(SolrInputDocument doc,
+            Provider provider, Code prerequisite) {
+        
+        doc.setField(LearningOpportunity.LOP_NAME_DISPLAY_FI, provider.getName().get("fi"));
+        doc.setField(LearningOpportunity.LOP_NAME_DISPLAY_SV, provider.getName().get("sv"));
+        doc.setField(LearningOpportunity.LOP_NAME_DISPLAY_EN, provider.getName().get("en"));
+        
+        doc.setField(LearningOpportunity.HOMEPLACE_DISPLAY_FI, provider.getHomePlace().get("fi"));
+        doc.setField(LearningOpportunity.HOMEPLACE_DISPLAY_SV, provider.getHomePlace().get("sv"));
+        doc.setField(LearningOpportunity.HOMEPLACE_DISPLAY_EN, provider.getHomePlace().get("en"));
+        
+        doc.setField(LearningOpportunity.PREREQUISITE_DISPLAY_FI, prerequisite.getName().get("fi"));
+        doc.setField(LearningOpportunity.PREREQUISITE_DISPLAY_SV, prerequisite.getName().get("sv"));
+        doc.setField(LearningOpportunity.PREREQUISITE_DISPLAY_EN, prerequisite.getName().get("en"));
+        
+        
+        
+    }
+    
     /*
      * Creates a facet document for the given code, and adds to the list of docs given.
      */
@@ -277,6 +296,11 @@ public final class SolrUtil {
         public static final String HOMEPLACE_DISPLAY_SV = "homeplace_sv_ss";
         public static final String HOMEPLACE_DISPLAY_EN = "homeplace_en_ss";
         public static final String HOMEPLACE_DISPLAY = "homeplace_ss";
+        public static final String PREREQUISITE_DISPLAY_EN = "prerequisite_en_ss";
+        public static final String PREREQUISITE_DISPLAY_FI = "prerequisite_fi_ss";
+        public static final String PREREQUISITE_DISPLAY_SV = "prerequisite_sv_ss";
+        public static final String PREREQUISITE_DISPLAY = "prerequisite_ss";
+        
         public static final String EDUCATION_CODE_DISPLAY_FI = "educationCode_fi_ssort";
         public static final String EDUCATION_CODE_DISPLAY_SV = "educationCode_sv_ssort";
         public static final String EDUCATION_CODE_DISPLAY_EN = "educationCode_en_ssort";
@@ -350,9 +374,9 @@ public final class SolrUtil {
         public static final String GET = "GET";
         
         //value constants
-        public static final String ED_TYPE_TUTKINTOON = "et01";
+        //public static final String ED_TYPE_TUTKINTOON = "et01";
         public static final String ED_TYPE_LUKIO = "et01.01";
-        public static final String ED_TYPE_KAKSOIS = "et01.02";
+        public static final String ED_TYPE_KAKSOIS = "et01.03.001";
         public static final String ED_TYPE_AMMATILLISET = "et01.03";
         public static final String ED_TYPE_AMMATILLINEN = "et01.03.01";
         public static final String ED_TYPE_AMM_ER = "et01.03.02";
@@ -377,7 +401,8 @@ public final class SolrUtil {
         public static final String ED_TYPE_IMM_UPSEC = "et02.01.04";
         public static final String ED_TYPE_KANSANOPISTO = "et02.05";
         public static final String ED_TYPE_VALMENTAVA = "et02.02";
-        public static final String ED_TYPE_KOTITALOUS = "kotitalous";
+        public static final String ED_TYPE_KOTITALOUS = "et02.015";
+        public static final String ED_TYPE_KOTITALOUS_DISPLAY = "kotitalous";
         
         public static final String SPECIAL_EDUCATION = "ER";
         public static final String TIMESTAMP_DOC = "loUpdateTimestampDocument";

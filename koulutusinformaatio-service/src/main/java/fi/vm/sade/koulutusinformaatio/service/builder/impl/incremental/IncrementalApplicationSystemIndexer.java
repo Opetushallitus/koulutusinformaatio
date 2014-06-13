@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.solr.client.solrj.SolrServerException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
@@ -41,6 +43,7 @@ import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.ApplicationSystemCreator;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.CreatorUtil;
+import fi.vm.sade.koulutusinformaatio.service.impl.IncrementalUpdateServiceImpl;
 import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
@@ -53,6 +56,8 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
  *
  */
 public class IncrementalApplicationSystemIndexer {
+    
+    public static final Logger LOG = LoggerFactory.getLogger(IncrementalApplicationSystemIndexer.class);
     
     private TarjontaRawService tarjontaRawService;
     private EducationIncrementalDataQueryService dataQueryService;
@@ -87,19 +92,31 @@ public class IncrementalApplicationSystemIndexer {
     
     private void indexHigherEducationAsData(String asOid) throws Exception {
         
+        LOG.debug("Indexing higher education application system");
         ResultV1RDTO<HakuV1RDTO> hakuRes = this.tarjontaRawService.getV1EducationHakuByOid(asOid);
+        
         if (hakuRes != null) {
             HakuV1RDTO asDto = hakuRes.getResult();
             List<String> lossesInAS = this.dataQueryService.getLearningOpportunityIdsByAS(asDto.getOid());
+            
+            LOG.debug("Higher education loss in application system: " + lossesInAS.size());
+            
             if (asDto.getTila().equals(TarjontaConstants.STATE_PUBLISHED)) {
 
                 ApplicationSystemCreator asCreator = new ApplicationSystemCreator(koodistoService);
                 ApplicationSystem as = asCreator.createHigherEdApplicationSystem(asDto);
                 
                 for (String curLosId : lossesInAS) {
-                    HigherEducationLOS curLos = this.dataQueryService.getHigherEducationLearningOpportunity(curLosId);
-                    this.reIndexAsDataForHigherEdLOS(curLos, asDto, as);
-                    this.losIndexer.updateHigherEdLos(curLos);
+                    HigherEducationLOS curLos = null;
+                    try {
+                        curLos = this.dataQueryService.getHigherEducationLearningOpportunity(curLosId);
+                    } catch (ResourceNotFoundException ex) {
+                        LOG.warn("higher education los not found");
+                    }
+                    if (curLos != null) {
+                        this.reIndexAsDataForHigherEdLOS(curLos, asDto, as);
+                        this.losIndexer.updateHigherEdLos(curLos);
+                    }
                 }
                 
                 if (lossesInAS.isEmpty()) {
@@ -122,23 +139,35 @@ public class IncrementalApplicationSystemIndexer {
 
     private void handleAsRemovalFromHigherEdLOS(String curLosId,
             HakuV1RDTO asDto) throws Exception {
-        
-        HigherEducationLOS curLos = this.dataQueryService.getHigherEducationLearningOpportunity(curLosId);
-        
-        List<ApplicationOption> aos = new ArrayList<ApplicationOption>();
-        boolean wasOtherAs = false;
-        for (ApplicationOption curAo : curLos.getApplicationOptions()) {
-            if (!curAo.getApplicationSystem().getId().equals(asDto.getOid())) {
-                wasOtherAs = true;
-                aos.add(curAo);
-            }
+        LOG.debug("Removing from higher ed: " + curLosId);
+        HigherEducationLOS curLos = null;
+        try {
+            curLos = this.dataQueryService.getHigherEducationLearningOpportunity(curLosId);
+            LOG.debug("Found los");
+        } catch (ResourceNotFoundException ex) {
+            LOG.warn("Los: " + curLosId + " not found");
+            return;
         }
+        if (curLos != null) {
+            List<ApplicationOption> aos = new ArrayList<ApplicationOption>();
+            boolean wasOtherAs = false;
+            for (ApplicationOption curAo : curLos.getApplicationOptions()) {
+                if (!curAo.getApplicationSystem().getId().equals(asDto.getOid())) {
+                    LOG.debug("There was other application system: " + curAo.getApplicationSystem().getId());
+                    wasOtherAs = true;
+                    aos.add(curAo);
+                }
+            }
         
-        curLos.setApplicationOptions(aos);
-        if (wasOtherAs) {
-            this.losIndexer.updateHigherEdLos(curLos);
-        } else {
-            this.losIndexer.removeHigherEd(curLos.getId(), curLos.getKomoOid());
+            curLos.setApplicationOptions(aos);
+            if (wasOtherAs) {
+                LOG.debug("Updating higher ed los: " + curLos.getId());
+                this.losIndexer.updateHigherEdLos(curLos);
+            } else {
+                LOG.debug("Removing higher ed los: " + curLos.getId());
+                this.losIndexer.removeHigherEd(curLos.getId(), curLos.getKomoOid());
+                LOG.debug("Higher ed los: " + curLos.getId() + " removed!");
+            }
         }
     }
 
@@ -220,9 +249,10 @@ public class IncrementalApplicationSystemIndexer {
                 lois.add(curUpsecLoi);
             }
         }
-        curLos.setLois(lois);
+        
         
         if (wasOtherAs) {
+            curLos.setLois(lois);
             this.losIndexer.updateUpsecLos(curLos);
         } else {
             this.losIndexer.removeUpperSecondaryLOS(curLos);
@@ -246,9 +276,9 @@ public class IncrementalApplicationSystemIndexer {
                 childLois.add(curChildLoi);
             }
         }
-        curLos.setLois(childLois);
         
         if (wasOtherAs) {
+            curLos.setLois(childLois);
             this.losIndexer.updateSpecialLos(curLos);
         } else {
             this.losIndexer.removeSpecialLOS(curLos);
@@ -272,7 +302,7 @@ public class IncrementalApplicationSystemIndexer {
                 parentLois.add(curLoi);
             }
         }
-        parent.setLois(parentLois);
+       
         
         List<ChildLOS> children = new ArrayList<ChildLOS>();
         for (ChildLOS curChild : parent.getChildren()) {
@@ -295,9 +325,10 @@ public class IncrementalApplicationSystemIndexer {
                 children.add(curChild);
             }
         }
-        parent.setChildren(children);
         
         if (wasOtherAs) {
+            parent.setLois(parentLois);
+            parent.setChildren(children);
             this.losIndexer.updateParentLos(parent);
         } else {
             this.losIndexer.removeParentLOS(parent);

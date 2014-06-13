@@ -15,24 +15,24 @@
 
     <button data-ng-if="!applicationsystem.applicationFormLink" class="float-left" type="submit" data-ng-disabled="!applicationoption.canBeApplied">
         <span>
-            <span data-ki-i18n="apply-button-label" data-lang="{{applicationoption.teachingLang}}"></span>
+            <span data-ki-i18n="apply-button-label"></span>
         </span>
     </button>
 
     <div class="float-left" data-ng-if="applicationsystem.applicationFormLink">
         <a data-ng-if="applicationoption.canBeApplied" data-ng-href="{{applicationsystem.applicationFormLink}}" title="{{locales.externalApplicationForm}}" target="_blank">
-        <i class="icon-link-ext-alt"></i><span data-ki-i18n="apply-button-label" data-lang="{{teachingLang}}"></span>
+        <i class="icon-link-ext-alt"></i><span data-ki-i18n="apply-button-label"></span>
         </a>
         <span data-ng-if="!applicationoption.canBeApplied" class="text-disabled">
-            <i class="icon-link-ext-alt"></i><span data-ki-i18n="apply-button-label" data-lang="{{teachingLang}}"></span>
+            <i class="icon-link-ext-alt"></i><span data-ki-i18n="apply-button-label"></span>
         </a>
     </div>
 </form>
 
 <div data-sr-application-basket data-ng-switch="isItemAddedToBasket(applicationoption.id)" class="float-left margin-left-2 add-to-basket">
     <span data-ng-switch-when="true">
-        <span data-ki-i18n="popover-title-success" data-lang="{{applicationoption.teachingLang}}"></span><br/>
-        <a href="#!/muistilista" data-ki-i18n="popover-content-link-to-application-basket" data-lang="{{applicationoption.teachingLang}}"></a>
+        <span data-ki-i18n="popover-title-success"></span><br/>
+        <a href="#!/muistilista" data-ki-i18n="popover-content-link-to-application-basket"></a>
     </span>
     <button
     data-ng-switch-default
@@ -45,12 +45,12 @@
     data-popover-trigger="click"
     data-ng-click="addToBasket(applicationoption.id)">
         <span>
-            <span data-ki-i18n="add-to-basket-label" data-lang="{{applicationoption.teachingLang}}"></span>
+            <span data-ki-i18n="add-to-basket-label"></span>
         </span>
     </button>
 </div>
 <div class="clear"></div>
 
 <div class="margin-top-1">
-    <div class="margin-top-2 small" data-ki-application-status-label data-ao="applicationoption" data-lang="{{teachingLang}}"></div>
+    <div class="margin-top-2 small" data-ki-application-status-label data-ao="applicationoption"></div>
 </div>

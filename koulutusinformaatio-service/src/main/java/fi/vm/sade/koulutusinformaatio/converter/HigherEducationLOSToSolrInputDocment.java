@@ -59,8 +59,9 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
         doc.addField(LearningOpportunity.LOP_ID, provider.getId());
         if (los.getFacetPrerequisites() != null && !los.getFacetPrerequisites().isEmpty()) {
             for (Code curPrereq : los.getFacetPrerequisites()) {
-                doc.addField(LearningOpportunity.PREREQUISITES, curPrereq.getValue());
+                doc.addField(LearningOpportunity.PREREQUISITES, curPrereq.getValue());                
             }
+            doc.setField(LearningOpportunity.PREREQUISITE_DISPLAY, los.getFacetPrerequisites().get(0).getValue());            
         }
 
         if (los.getCreditValue() != null) {
@@ -323,19 +324,19 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
         if (los.getEducationDegree().contains(TarjontaConstants.ED_DEGREE_URI_AMK)) {
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMKS);
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMK);
-            doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_TUTKINTOON);
+            //doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_TUTKINTOON);
         } else if (los.getEducationDegree().contains(TarjontaConstants.ED_DEGREE_URI_YLEMPI_AMK)) {
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMKS);
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_YLEMPI_AMK);
-            doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_TUTKINTOON);
+            //doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_TUTKINTOON);
         } else if (los.getEducationDegree().contains(TarjontaConstants.ED_DEGREE_URI_KANDI)) {
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_YOS);
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_KANDIDAATTI);
-            doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_TUTKINTOON);
+            //doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_TUTKINTOON);
         } else if (los.getEducationDegree().contains(TarjontaConstants.ED_DEGREE_URI_MAISTERI)) {
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_YOS);
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_MAISTERI);
-            doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_TUTKINTOON);
+            //doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_TUTKINTOON);
         }
 
         for (Code curTopic : los.getTopics()) {

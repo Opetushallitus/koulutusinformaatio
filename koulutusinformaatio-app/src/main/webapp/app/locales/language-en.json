@@ -62,7 +62,8 @@
     "duration": "Extent of the study programme",
     "planned-duration": "Planned duration",
     "time-of-teaching": "Teaching time",
-    "place-of-teaching": "Teaching location",
+    "place-of-teaching": "Mode of teaching",
+    "form-of-education-higher": "Form of study",
     "chargeable": "Tuition fee",
     "chargeable-false": "No",
     "chargeable-true": "Yes",
@@ -178,13 +179,13 @@
     "application-basket-empty": "Clear my shortlist",
     "application-basket-empty-confirm": "Are you sure you want to clear your shortlist?",
     "application-basket-overflow-warning": "You can apply to up to __itemcount__ study programmes with this application",
-    "application-basket-fill-form-notification-single-ao": "Jokaiseen tässä listattavaan koulutukseen tulee hakea erikseen. Osaan koulutuksista haetaan oppilaitoksen omien sivujen kautta. (en)",
+    "application-basket-fill-form-notification-single-ao": "You should apply separately to all study options listed here. For some of the studies you apply through the educational institution's own web pages.",
     "application-basket-attachments-exams": "Attachments and examinations",
-    "application-basket-no-attachments": "Ei liitteitä (en)",
-    "application-basket-attachments-required": "Vaaditaan liitteitä (en)",
-    "application-basket-no-exams": "Ei pääsykokeita (en)",
+    "application-basket-no-attachments": "No attachments",
+    "application-basket-attachments-required": "Attachments required",
+    "application-basket-no-exams": "No entrance exams",
 
-    "erikseenHaettavatHakukohteet": "Erikseen haettavat hakukohteet (en)",
+    "erikseenHaettavatHakukohteet": "Study options with separate application",
 
     "popup-close": "Close",
     "popup-continue": "Continue",
@@ -298,13 +299,13 @@
     "tarjoaja": "Provider",
     "katso-myos": "See also...",
     "lue-lisaa": "Read more...",
-    "tarjoajan": "Muut koulutukset: (en)",
+    "tarjoajan": "Other study options:",
     "muita-koulutuksia": "other study options",
     "koulutus": "Study programme",
-    "muualla": "Vastaava koulutus muualla (en)",
+    "muualla": "Equivalent study options elsewhere",
     "mukainen-koulutus-muualla": "- education elsewhere",
 
-    "hakutapa-jatkuva": "Jatkuva haku (en)",
+    "hakutapa-jatkuva": "Continuous application process",
 
     "preview-help": "Esikatselu näyttää koulutuksen ja hakukohteen näkymät sellaisina kuin oppija näkee ne Opintopolku.fi -palvelussa. Pääset muokkaamaan koulutuksen tietoja Muokkaa koulutusta-painikkeesta ja toiselta välilehdeltä hakukohteen tietoja. Organisaation tietoja ei pääse suoraan muokkaamaan, vaan muokkaus tulee tehdä Organisaatiotiedot-palvelun kautta. (na.)"
 }

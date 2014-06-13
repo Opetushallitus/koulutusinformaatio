@@ -152,13 +152,15 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
         
         try {
             //Fetching changes within the update period
+            runningSince = System.currentTimeMillis();
+            isRunning = true;
             Map<String,List<String>> result = listChangedLearningOpportunities(updatePeriod);
             LOG.debug("Starting incremental update");
             if (!hasChanges(result)) {
+                isRunning = false;
+                runningSince = 0;
                 return;
             }
-            runningSince = System.currentTimeMillis();
-            isRunning = true;
             
             this.losIndexer.clearCreatedLOS();
 
@@ -178,7 +180,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             //If changes in hakukohde, indexing them   
             if (result.containsKey("hakukohde")) {
                 changedHakukohdeOids = result.get("hakukohde");
-                LOG.debug("Haku changes: " + changedHakukohdeOids.size());
+                LOG.debug("Hakukohde changes: " + changedHakukohdeOids.size());
                 indexHakukohdeChanges(result.get("hakukohde"));
             }
 
