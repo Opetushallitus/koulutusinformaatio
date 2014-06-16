@@ -125,17 +125,32 @@ public interface LearningOpportunityResource {
                                                                                     @QueryParam("uiLang") String uiLang);
     
     /**
-     * Fetches a university of applied science learning opportunity specification.
+     * Fetches a higher education learning opportunity specification.
      *
      * @param id los id
      * @param lang translation language
      * @param uiLang secondary translation language
-     * @return university of applied science learning opportunity specification
+     * @return higher education learning opportunity specification
      */
     @GET
     @Path("highered/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public HigherEducationLOSDTO getHigherEducationLearningOpportunity(@PathParam("id") String id,
+                                                                                    @QueryParam("lang") String lang,
+                                                                                    @QueryParam("uiLang") String uiLang);
+    
+    /**
+     * Fetches an adult upper secondary learning opportunity specification.
+     *
+     * @param id los id
+     * @param lang translation language
+     * @param uiLang secondary translation language
+     * @return adult upper secondary learning opportunity specification
+     */
+    @GET
+    @Path("adultupsec/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public AdultUpperSecondaryLOSDTO getAdultUpperSecondaryLearningOpportunity(@PathParam("id") String id,
                                                                                     @QueryParam("lang") String lang,
                                                                                     @QueryParam("uiLang") String uiLang);
 
