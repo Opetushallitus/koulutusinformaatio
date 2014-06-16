@@ -114,4 +114,7 @@ public interface LearningOpportunityService {
 			String lang, String uiLang) throws ResourceNotFoundException;
 
     DataStatus getLastSuccesfulDataStatus();
+
+    AdultUpperSecondaryLOSDTO getAdultUpperSecondaryLearningOpportunity(
+            String id) throws ResourceNotFoundException;
 }
