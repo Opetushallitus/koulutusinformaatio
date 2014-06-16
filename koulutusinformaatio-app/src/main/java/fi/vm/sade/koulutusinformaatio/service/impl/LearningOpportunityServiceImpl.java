@@ -301,10 +301,25 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     @Override
     public AdultUpperSecondaryLOSDTO getAdultUpperSecondaryLearningOpportunity(
             String id) throws ResourceNotFoundException {
-        AdultUpperSecondaryLOS los = educationDataQueryService.getAdultUpperSecondaryLearningOpportunity(id);//getHigherEducationLearningOpportunity(id);
+        AdultUpperSecondaryLOS los = educationDataQueryService.getAdultUpperSecondaryLearningOpportunity(id);
         String lang = (los.getTeachingLanguages() != null && !los.getTeachingLanguages().isEmpty()) 
                 ? los.getTeachingLanguages().get(0).getValue().toLowerCase() : LANG_FI;
         return AdultUpperSecondaryLOSToDTO.convert(los, lang, lang);
+    }
+    
+    @Override
+    public AdultUpperSecondaryLOSDTO getAdultUpperSecondaryLearningOpportunity(
+            String id, String uiLang) throws ResourceNotFoundException {
+        AdultUpperSecondaryLOS los = educationDataQueryService.getAdultUpperSecondaryLearningOpportunity(id);
+        return AdultUpperSecondaryLOSToDTO.convert(los, uiLang, uiLang);
+    }
+
+    @Override
+    public AdultUpperSecondaryLOSDTO getAdultUpperSecondaryLearningOpportunity(
+            String id, String lang, String uiLang)
+                    throws ResourceNotFoundException {
+        AdultUpperSecondaryLOS los = educationDataQueryService.getAdultUpperSecondaryLearningOpportunity(id);
+        return AdultUpperSecondaryLOSToDTO.convert(los, lang, uiLang);
     }
 
 }
