@@ -74,6 +74,12 @@ public class ArticleServiceImpl implements ArticleService {
         LOGGER.debug("Fetched finnish articles");
         articles.addAll(fetchArticlesByLang(mapper, "sv"));
         LOGGER.debug("Fetched swedish articles");
+        try {
+            articles.addAll(fetchArticlesByLang(mapper, "en"));
+        } catch (Exception ex) {
+            LOGGER.warn("English wp indexing problem: " + ex.getMessage());
+        }
+        LOGGER.debug("Fetched english articles");
         
         return articles;
     }
