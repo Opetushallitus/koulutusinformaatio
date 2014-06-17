@@ -16,7 +16,7 @@ host.ilb={{host_ilb}}
 host.virkailija={{host_virkailija}}
 host.oppija={{host_oppija}}
 mongo.db.maxpoolsize=100
-mongodb.ki.uri=mongodb://{{mongodb_ki_auth}}@{{mongodb_ki_host}}:{{mongodb_ki_port}}
+mongodb.ki.uri=mongodb://{{mongodb_oppija_auth}}@{{mongodb_oppija_host}}:{{mongodb_oppija_port}}
 server.name={{ansible_hostname}}
 solr.base.url={{solr_base_url}}
 
