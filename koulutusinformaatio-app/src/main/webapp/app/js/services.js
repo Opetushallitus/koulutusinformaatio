@@ -470,6 +470,47 @@ service('HigherEducationLOService', ['$http', '$timeout', '$q', 'LanguageService
 /**
  * Resource for requesting University of Applied Sciences LO data
  */
+service('AdultUpperSecondaryLOService', ['$http', '$timeout', '$q', 'LanguageService', 'HigherEducationTransformer', function($http, $timeout, $q, LanguageService, HigherEducationTransformer) {
+    return {
+        query: function(options) {
+            var deferred = $q.defer();
+            var queryParams = {
+                uiLang: LanguageService.getLanguage()
+            }
+
+            if (options.lang) {
+                queryParams.lang = options.lang
+            }
+
+            var url = '../lo/adultupsec/';
+
+            $http.get(url + options.id, {
+                params: queryParams
+            }).
+            
+            //$http.get('mocks/amk.json', {}).
+            success(function(result) {
+            	HigherEducationTransformer.transform(result);
+                var loResult = {
+                    lo: result,
+                    //parent: {},
+                    provider: result.provider
+                }
+                
+                deferred.resolve(loResult);
+            }).
+            error(function(result) {
+                deferred.reject(result);
+            });
+
+            return deferred.promise;
+        }
+    }
+}]).
+
+/**
+ * Resource for requesting University of Applied Sciences LO data
+ */
 service('HigherEducationPreviewLOService', ['$http', '$timeout', '$q', 'LanguageService', 'HigherEducationTransformer', 'Config', function($http, $timeout, $q, LanguageService, HigherEducationTransformer, Config) {
     return {
         query: function(options) {
