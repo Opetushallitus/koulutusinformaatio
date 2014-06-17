@@ -40,9 +40,9 @@ window.Config.app.prod = {
 		tarjontaUrl: 'https://virkailija.opintopolku.fi/tarjonta-app/#'
 	},
     en: {
-        frontpageUrl: '/wp/en/',
-        rekisteriselosteUrl: '/wp/en/rekisteriseloste/',
-        navigationUrl: '/wp/en/api/nav/json_nav/',
+        frontpageUrl: '/wp2/en/',
+        rekisteriselosteUrl: '/wp2/en/rekisteriseloste/',
+        navigationUrl: '/wp2/en/api/nav/json_nav/',
         tarjontaUrl: 'https://virkailija.opintopolku.fi/tarjonta-app/#'
     }
 };
@@ -62,9 +62,9 @@ window.Config.app.koulutus = {
 		tarjontaUrl: 'https://koulutus.virkailija.opintopolku.fi/tarjonta-app/#'
 	},
     en: {
-        frontpageUrl: '/wp/en/',
-        rekisteriselosteUrl: '/wp/en/',
-        navigationUrl: '/wp/en/api/nav/json_nav/',
+        frontpageUrl: '/wp2/en/',
+        rekisteriselosteUrl: '/wp2/en/',
+        navigationUrl: '/wp2/en/api/nav/json_nav/',
         tarjontaUrl: 'https://koulutus.virkailija.opintopolku.fi/tarjonta-app/#'
     }
 };
@@ -84,9 +84,9 @@ window.Config.app.qa = {
     	tarjontaUrl: 'https://testi.virkailija.opintopolku.fi/tarjonta-app/#'
 	},
     en: {
-        frontpageUrl: '/wp/en/',
-        rekisteriselosteUrl: '/wp/en/rekisteriseloste/',
-        navigationUrl: '/wp/en/api/nav/json_nav/',
+        frontpageUrl: '/wp2/en/',
+        rekisteriselosteUrl: '/wp2/en/rekisteriseloste/',
+        navigationUrl: '/wp2/en/api/nav/json_nav/',
         tarjontaUrl: 'https://testi.virkailija.opintopolku.fi/tarjonta-app/#'
     }
 };
@@ -106,9 +106,9 @@ window.Config.app.reppu = {
     	tarjontaUrl: 'https://test-virkailija.oph.ware.fi/tarjonta-app/#'
 	},
     en: {
-        frontpageUrl: '/wp/en/',
-        rekisteriselosteUrl: '/wp/en/rekisteriseloste/',
-        navigationUrl: '/wp/en/api/nav/json_nav/',
+        frontpageUrl: '/wp2/en/',
+        rekisteriselosteUrl: '/wp2/en/rekisteriseloste/',
+        navigationUrl: '/wp2/en/api/nav/json_nav/',
         tarjontaUrl: 'https://test-virkailija.oph.ware.fi/tarjonta-app/#'
     }
 };
@@ -129,9 +129,9 @@ window.Config.app.dev = {
     	tarjontaUrl: 'https://itest-virkailija.oph.ware.fi/tarjonta-app/#'
 	},
     en: {
-        frontpageUrl: 'https://testi.opintopolku.fi/wp/en/',
-        rekisteriselosteUrl: '/wp/en/',
-        navigationUrl: 'https://testi.opintopolku.fi/wp/en/api/nav/json_nav/',
+        frontpageUrl: 'https://testi.opintopolku.fi/wp2/en/',
+        rekisteriselosteUrl: 'https://testi.opintopolku.fi/wp2/en/rekisteriseloste',
+        navigationUrl: 'https://testi.opintopolku.fi/wp2/en/api/nav/json_nav/',
         tarjontaUrl: 'https://itest-virkailija.oph.ware.fi/tarjonta-app/#'
     }
 };
