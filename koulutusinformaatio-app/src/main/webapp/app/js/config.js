@@ -108,7 +108,7 @@ window.Config.app.reppu = {
     en: {
         frontpageUrl: '/wp2/en/',
         rekisteriselosteUrl: '/wp2/en/rekisteriseloste/',
-        navigationUrl: '/wp2/en/api/nav/json_nav/',
+        navigationUrl: 'https://testi.opintopolku.fi/wp2/en/api/nav/json_nav/',
         tarjontaUrl: 'https://test-virkailija.oph.ware.fi/tarjonta-app/#'
     }
 };
