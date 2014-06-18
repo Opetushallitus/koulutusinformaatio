@@ -112,7 +112,6 @@ public class UpdateServiceImpl implements UpdateService {
                     //"1.2.246.562.5.2013061010184317101998" //amm kuvataide
                     );
 
-            
                 for (String loOid : loOids) {
                     List<LOS> specifications = null;
                     try {

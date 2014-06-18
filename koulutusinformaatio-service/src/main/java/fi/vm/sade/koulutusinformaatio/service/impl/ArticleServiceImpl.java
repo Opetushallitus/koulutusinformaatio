@@ -20,6 +20,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.solr.client.solrj.SolrServerException;
@@ -55,6 +56,9 @@ public class ArticleServiceImpl implements ArticleService {
     @Value("${koulutusinformaatio.wp.harvest-url:harvest}")
     private String articleHarvestUrl;
     
+    @Value("${koulutusinformaatio.wp.harvest-url-en:harvest-en}")
+    private String articleHarvestUrlEn;
+    
     private KoodistoService koodistoService;
     
     @Autowired
@@ -74,10 +78,81 @@ public class ArticleServiceImpl implements ArticleService {
         LOGGER.debug("Fetched finnish articles");
         articles.addAll(fetchArticlesByLang(mapper, "sv"));
         LOGGER.debug("Fetched swedish articles");
+        try {
+            articles.addAll(fetchEnglishArticles(mapper));//fetchArticlesByLang(mapper, "en"));
+        } catch (Exception ex) {
+            LOGGER.warn("English wp indexing problem: " + ex.getMessage());
+        }
+        LOGGER.debug("Fetched english articles");
         
         return articles;
     }
     
+    private List<Article> fetchEnglishArticles(
+            ObjectMapper mapper) throws Exception {
+        
+        
+        List<Article> articles = new ArrayList<Article>();
+        articles.addAll(getEnglishArticlesByExtension(mapper, ""));
+        articles.addAll(getEnglishArticlesByExtension(mapper, "/story"));
+        return articles;
+    }
+
+
+    private List<Article> getEnglishArticlesByExtension(
+            ObjectMapper mapper, String extension) throws Exception {
+        
+        int page = 1;
+        List<Article> articles = new ArrayList<Article>();
+        
+        ArticleResults articlesRes = getEnglishArticles(mapper, extension, page);
+        int pages = articlesRes.getPages();
+
+        while (pages > 0) {
+
+            articles.addAll(articlesRes.getPosts());
+            articlesRes = getEnglishArticles(mapper, extension, ++page);
+            pages = articlesRes.getPages();
+        
+        }
+        
+        for (Article curArticle : articles) {
+            transformArticleCodes(curArticle);
+        }
+        
+        return articles;
+        
+    }
+
+    private ArticleResults getEnglishArticles(ObjectMapper mapper,
+            String extension, int page) {
+        
+        String url = String.format("%s%s/?s=%s&json=1&page=%s", this.articleHarvestUrlEn, extension, URLEncoder.encode(" "), page);
+        LOGGER.debug("Article search url: " + url);
+        
+        try { 
+            URL orgUrl = new URL(url);        
+
+            HttpURLConnection conn = (HttpURLConnection) (orgUrl.openConnection());
+
+            conn.setRequestMethod(SolrConstants.GET);
+            conn.connect();
+
+            ArticleResults articles = mapper.readValue(conn.getInputStream(), ArticleResults.class);
+            return articles;
+        } catch (Exception ex) {
+            LOGGER.debug("No articles for url: " + url);
+            ArticleResults articles = new ArticleResults();
+            articles.setPosts(new ArrayList<Article>());
+            articles.setCount(0);
+            articles.setCount_total(0);
+            articles.setPages(0);
+            return articles;
+        }
+        
+    }
+
+
     private List<Article> fetchArticlesByLang(ObjectMapper mapper, String lang) throws IOException, KoodistoException {
         List<Article> articles = new ArrayList<Article>();
         articles.addAll(getArticlesByExtension(mapper, lang, ""));
