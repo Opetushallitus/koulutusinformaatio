@@ -143,15 +143,16 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
 
         List<ApplicationOption> applicationOptions = Lists.newArrayList();
         for (ParentLOI parentLOI : parent.getLois()) {
-            applicationOptions.addAll(parentLOI.getApplicationOptions());
-            for (ApplicationOption ao : parentLOI.getApplicationOptions()) {
-                if (ao.getApplicationSystem() != null) {
-                    doc.addField(LearningOpportunity.AS_NAME_FI, ao.getApplicationSystem().getName().getTranslations().get("fi"));
-                    doc.addField(LearningOpportunity.AS_NAME_SV, ao.getApplicationSystem().getName().getTranslations().get("sv"));
-                    doc.addField(LearningOpportunity.AS_NAME_EN, ao.getApplicationSystem().getName().getTranslations().get("en"));
+            if (parentLOI.getPrerequisite() != null && parentLOI.getPrerequisite().getValue().equals(prerequisite.getValue())) {
+                applicationOptions.addAll(parentLOI.getApplicationOptions());
+                for (ApplicationOption ao : parentLOI.getApplicationOptions()) {
+                    if (ao.getApplicationSystem() != null) {
+                        doc.addField(LearningOpportunity.AS_NAME_FI, ao.getApplicationSystem().getName().getTranslations().get("fi"));
+                        doc.addField(LearningOpportunity.AS_NAME_SV, ao.getApplicationSystem().getName().getTranslations().get("sv"));
+                        doc.addField(LearningOpportunity.AS_NAME_EN, ao.getApplicationSystem().getName().getTranslations().get("en"));
+                    }
                 }
             }
-
         }
         SolrUtil.addApplicationDates(doc, applicationOptions);
 
@@ -169,7 +170,9 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         indexFacetFields(parent, doc, prereqVal);
         for (ChildLOS childLOS : parent.getChildren()) {
             for (ChildLOI childLOI : childLOS.getLois()) {
-                indexChildFields(doc, childLOS, childLOI, teachLang);
+                if (childLOI.getPrerequisite() != null && childLOI.getPrerequisite().getValue().equals(prerequisite.getValue())) {
+                    indexChildFields(doc, childLOS, childLOI, teachLang);
+                }
             }
         }
 
