@@ -31,6 +31,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KomoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KuvaV1RDTO;
 
@@ -64,7 +65,9 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     private WebResource higherEducationAOResource;
     private WebResource higherEducationASResource;
     private WebResource higherEducationStructureResource;
+    private WebResource higherEducationKomoResource;
     private WebResource lastModifiedResource;
+    
     
     @Value("${scheduling.data.incremental.period:300000}")
     private String changePeriod;
@@ -88,6 +91,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
         higherEducationAOResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "v1/hakukohde");
         higherEducationASResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "v1/haku");
         higherEducationStructureResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "v1/link");
+        higherEducationKomoResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "v1/komo");
         lastModifiedResource = clientWithJacksonSerializer.resource(tarjontaApiUrl + "v1/lastmodified");
     }
 
@@ -222,6 +226,16 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                 .path(oid)
                 .accept(JSON_UTF8)
                 .get(new GenericType<ResultV1RDTO<KoulutusKorkeakouluV1RDTO>>() {
+                });
+    }
+    
+    @Override
+    public ResultV1RDTO<KomoV1RDTO> getV1Komo(
+            String oid) {
+        return this.higherEducationKomoResource
+                .path(oid)
+                .accept(JSON_UTF8)
+                .get(new GenericType<ResultV1RDTO<KomoV1RDTO>>() {
                 });
     }
 
