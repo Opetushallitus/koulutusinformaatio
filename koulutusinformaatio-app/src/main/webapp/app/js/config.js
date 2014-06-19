@@ -19,7 +19,7 @@ window.Config.app.common = {
         ophUrl: 'http://www.oph.fi/english',
         okmUrl: 'http://www.minedu.fi/OPM/?lang=en',
         textVersionUrl: '/m/index.html',
-        sitemapUrl: '/fi/hakemisto/oppilaitokset/'
+        sitemapUrl: '/en/hakemisto/oppilaitokset/'
     },
     hakulomakeUrl: '/haku-app/',
     piwikUrl: 'https://analytiikka.opintopolku.fi/piwik/'
@@ -41,7 +41,7 @@ window.Config.app.prod = {
 	},
     en: {
         frontpageUrl: '/wp2/en/',
-        rekisteriselosteUrl: '/wp2/en/rekisteriseloste/',
+        rekisteriselosteUrl: '/wp2/en/register/',
         navigationUrl: '/wp2/en/api/nav/json_nav/',
         tarjontaUrl: 'https://virkailija.opintopolku.fi/tarjonta-app/#'
     }
@@ -85,7 +85,7 @@ window.Config.app.qa = {
 	},
     en: {
         frontpageUrl: '/wp2/en/',
-        rekisteriselosteUrl: '/wp2/en/rekisteriseloste/',
+        rekisteriselosteUrl: '/wp2/en/register/',
         navigationUrl: '/wp2/en/api/nav/json_nav/',
         tarjontaUrl: 'https://testi.virkailija.opintopolku.fi/tarjonta-app/#'
     }
@@ -107,7 +107,7 @@ window.Config.app.reppu = {
 	},
     en: {
         frontpageUrl: '/wp2/en/',
-        rekisteriselosteUrl: '/wp2/en/rekisteriseloste/',
+        rekisteriselosteUrl: '/wp2/en/register/',
         navigationUrl: 'https://testi.opintopolku.fi/wp2/en/api/nav/json_nav/',
         tarjontaUrl: 'https://test-virkailija.oph.ware.fi/tarjonta-app/#'
     }
