@@ -388,5 +388,29 @@ public class AdultUpperSecondaryLOSEntity {
     public void setKoulutuslaji(CodeEntity koulutuslaji) {
         this.koulutuslaji = koulutuslaji;
     }
+    public I18nTextEntity getTargetGroup() {
+        return targetGroup;
+    }
+    public void setTargetGroup(I18nTextEntity targetGroup) {
+        this.targetGroup = targetGroup;
+    }
+    public I18nTextEntity getSubjectsAndCourses() {
+        return subjectsAndCourses;
+    }
+    public void setSubjectsAndCourses(I18nTextEntity subjectsAndCourses) {
+        this.subjectsAndCourses = subjectsAndCourses;
+    }
+    public List<LanguageSelection> getLanguageSelection() {
+        return languageSelection;
+    }
+    public void setLanguageSelection(List<LanguageSelection> languageSelection) {
+        this.languageSelection = languageSelection;
+    }
+    public List<I18nTextEntity> getDiplomas() {
+        return diplomas;
+    }
+    public void setDiplomas(List<I18nTextEntity> diplomas) {
+        this.diplomas = diplomas;
+    }
 
 }
