@@ -22,6 +22,8 @@ mongo.db.maxpoolsize=100
 mongodb.ki.uri=mongodb://{{mongodb_oppija_auth}}@{{mongodb_oppija_host}}:{{mongodb_oppija_port}}
 server.name={{ansible_hostname}}
 solr.base.url={{solr_base_url}}
+# Workaround, user.home propertyn pitäisi tulla systeemistä kuten muissakin, mutta ei toimi tässä palvelussa 
+user.home=/data00/oph/koulutusinformaatio
 
 # Oletusarvoja
 accessRight.webservice.url.backend=https\://${host.virkailija}/authentication-service/services/accessRightService
