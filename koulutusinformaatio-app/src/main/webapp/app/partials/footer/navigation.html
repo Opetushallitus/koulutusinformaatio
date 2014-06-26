@@ -5,9 +5,12 @@
     <div class="col">
         <ul class="nobullet">
             <li>
-                <a href="{{links.rekisteriseloste}}" data-ki-i18n="footer-privacy-policy"></a>
+                <a href="{{links.mikaon}}" data-ki-i18n="footer-whatis"></a>
             </li>
             <li>
+                <a href="{{links.rekisteriseloste}}" data-ki-i18n="footer-privacy-policy"></a>
+            </li>
+            <li data-ng-if="!isStudyInfo">
                 <a href="{{links.hakemisto}}" data-ki-i18n="footer-sitemap"></a>
             </li>
         </ul>
