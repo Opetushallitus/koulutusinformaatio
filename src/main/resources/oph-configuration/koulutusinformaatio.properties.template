@@ -20,7 +20,7 @@ ldap.manager.password={{ldap_manager_password}}
 ldap.manager-password={{ldap_manager_password}}
 ldap.manager.userdn={{ldap_manager_userdn}}
 mongo.db.maxpoolsize=100
-mongodb.ki.uri=mongodb://{{mongodb_oppija_auth}}@{{mongodb_oppija_host}}:{{mongodb_oppija_port}}
+mongodb.ki.uri=mongodb://{{mongodb_koulutusinformaatio_auth}}@{{mongodb_koulutusinformaatio_host}}:{{mongodb_koulutusinformaatio_port}}
 server.name={{ansible_hostname}}
 solr.base.url={{solr_base_url}}
 # Workaround, user.home propertyn pitäisi tulla systeemistä kuten muissakin, mutta ei toimi tässä palvelussa 
