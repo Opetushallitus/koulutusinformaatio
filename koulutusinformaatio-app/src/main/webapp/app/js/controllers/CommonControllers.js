@@ -59,7 +59,8 @@ function FooterCtrl($scope, LanguageService, TranslationService, Config) {
         opetushallitus: Config.get('ophUrl'),
         opetusministerio: Config.get('okmUrl'),
         rekisteriseloste: Config.get('rekisteriselosteUrl'),
-        hakemisto: Config.get('sitemapUrl')
+        hakemisto: Config.get('sitemapUrl'),
+        mikaon: Config.get('whatisUrl')
     }
 
     $scope.images = {

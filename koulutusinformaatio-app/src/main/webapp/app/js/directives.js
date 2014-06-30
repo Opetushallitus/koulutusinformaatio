@@ -868,6 +868,28 @@ directive('kiPreviewStatusLabel', ['TranslationService', function(TranslationSer
 }]).
 
 /**
+ *  Render application time
+ */
+directive('kiAoApplicationTime', function() {
+    return {
+        restrict: 'A',
+        templateUrl: 'templates/aoApplicationTime.html',
+        scope : {
+            startdate: '=',
+            enddate: '=',
+            hakutapa: '=',
+            label: '@'
+        },
+        controller: function($scope) {
+            $scope.isJatkuva = function() {
+                // code for jatkuva haku is 03
+                return $scope.hakutapa == '03';
+            }
+        }
+    }
+}).
+
+/**
  *  Render application option status
  */
 directive('kiBanner', ['$location', function($location) {
