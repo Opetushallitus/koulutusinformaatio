@@ -16,18 +16,16 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LocationFields;
-import fi.vm.sade.koulutusinformaatio.domain.*;
-import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
-import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
-import fi.vm.sade.koulutusinformaatio.service.SearchService;
-import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
-import fi.vm.sade.koulutusinformaatio.service.impl.query.*;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -44,11 +42,34 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LocationFields;
+import fi.vm.sade.koulutusinformaatio.domain.ArticleResult;
+import fi.vm.sade.koulutusinformaatio.domain.Code;
+import fi.vm.sade.koulutusinformaatio.domain.Facet;
+import fi.vm.sade.koulutusinformaatio.domain.FacetValue;
+import fi.vm.sade.koulutusinformaatio.domain.I18nText;
+import fi.vm.sade.koulutusinformaatio.domain.LOSearchResult;
+import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
+import fi.vm.sade.koulutusinformaatio.domain.Location;
+import fi.vm.sade.koulutusinformaatio.domain.Provider;
+import fi.vm.sade.koulutusinformaatio.domain.SuggestedTermsResult;
+import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
+import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
+import fi.vm.sade.koulutusinformaatio.service.SearchService;
+import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
+import fi.vm.sade.koulutusinformaatio.service.impl.query.ArticleQuery;
+import fi.vm.sade.koulutusinformaatio.service.impl.query.AutocompleteQuery;
+import fi.vm.sade.koulutusinformaatio.service.impl.query.LearningOpportunityByProviderQuery;
+import fi.vm.sade.koulutusinformaatio.service.impl.query.LearningOpportunityQuery;
+import fi.vm.sade.koulutusinformaatio.service.impl.query.LocationQuery;
+import fi.vm.sade.koulutusinformaatio.service.impl.query.ProviderNameFirstCharactersQuery;
+import fi.vm.sade.koulutusinformaatio.service.impl.query.ProviderQuery;
+import fi.vm.sade.koulutusinformaatio.service.impl.query.ProviderTypeQuery;
 
 @Component
 public class SearchServiceSolrImpl implements SearchService {
@@ -256,15 +277,14 @@ public class SearchServiceSolrImpl implements SearchService {
                             searchResultList.getArticleresults().add(createArticleSearchResult(doc));
                         }
                     } catch (Exception ex) {
-                        LOG.warn(ex.getMessage());
+                        LOG.warn("Exception while creating search result", ex);
                         continue;
                     }
                 }
             }
-
+            
             if (SearchType.LO.equals(searchType)) {
                 addFacetsToResult(searchResultList, response, lang, facetFilters, upcomingLimit, upcomingLaterLimit);
-
             } else if (response != null) {
                 addArticleFacetsToResult(searchResultList, response, lang, articleFilters);
             }
@@ -272,6 +292,7 @@ public class SearchServiceSolrImpl implements SearchService {
             if (lopFilter != null) {
                 searchResultList.setLopRecommendationFilter(getRecommendationFilter(lopFilter, "lopFilter"));
             }
+            
             if (educationCodeFilter != null) {
                 searchResultList.setEducationCodeRecommendationFilter(getRecommendationFilter(educationCodeFilter, "educationCodeFilter"));
             }
@@ -288,7 +309,6 @@ public class SearchServiceSolrImpl implements SearchService {
             }
 
             searchResultList.setTotalCount(searchResultList.getArticleCount() + searchResultList.getLoCount());
-
 
         }
 
@@ -918,12 +938,20 @@ public class SearchServiceSolrImpl implements SearchService {
                 String endKey = new StringBuilder().append(AS_END_DATE_PREFIX)
                         .append(start.getKey().split("_")[1]).toString();
 
+                // end date may be null for jatkuva haku
                 Date startDate = ((List<Date>) start.getValue()).get(0);
-                Date endDate = ((List<Date>) doc.get(endKey)).get(0);
+                Date endDate = doc.get(endKey) != null ? ((List<Date>) doc.get(endKey)).get(0) : null;
 
-                if (startDate.before(now) && now.before(endDate)) {
-                    lo.setAsOngoing(true);
-                    return;
+                if (endDate != null) {
+                    if (startDate.before(now) && now.before(endDate)) {
+                        lo.setAsOngoing(true);
+                        return;
+                    }
+                } else {
+                    if (startDate.before(now)) {
+                        lo.setAsOngoing(true);
+                        return;
+                    }
                 }
 
                 if ((nextStarts == null && startDate.after(now)) || (startDate.after(now) && startDate.before(nextStarts))) {
