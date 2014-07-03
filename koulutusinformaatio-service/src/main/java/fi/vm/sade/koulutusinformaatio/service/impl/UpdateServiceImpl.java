@@ -16,7 +16,6 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -91,7 +90,6 @@ public class UpdateServiceImpl implements UpdateService {
             runningSince = System.currentTimeMillis();
 
             this.transactionManager.beginTransaction(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
-            /*
             int count = MAX_RESULTS;
             int index = 0;
 
@@ -100,15 +98,6 @@ public class UpdateServiceImpl implements UpdateService {
             List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
             count = loOids.size();
             index += count;
-            */
-            List<String> loOids = Arrays.asList(
-                    "1.2.246.562.5.2013061010184190024479", // amm artesaani
-                    "1.2.246.562.5.2013061010184443434255", //amm
-                    "1.2.246.562.5.2013061010191530269331", //lukio
-                    "1.2.246.562.5.2013112814572429147350", //valmistava
-                    "1.2.246.562.5.2013112814572435763432", //valmentava
-                    "1.2.246.562.5.2013061010184317101998" //amm kuvataide
-                    );
 
                 for (String loOid : loOids) {
                     List<LOS> specifications = null;
@@ -124,7 +113,7 @@ public class UpdateServiceImpl implements UpdateService {
                         this.educationDataUpdateService.save(spec);
                     }
                 }
-            //}
+            }
 
             List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
             LOG.debug("Found higher educations: " + higherEducations.size());
