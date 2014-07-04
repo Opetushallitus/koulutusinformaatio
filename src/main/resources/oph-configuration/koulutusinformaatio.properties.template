@@ -53,6 +53,7 @@ cas.group-role-attribute=cn
 cas.group-search-base=ou\=groups
 cas.group-search-filter=(uniqueMember\={0})
 cas.sendRenew=false
+cas.service.koodisto-service=https://${host.virkailija}/koodisto-service
 cas.user-search-base=ou\=people
 cas.user-search-filter=(|(mail\={0})(uid\={0}))
 customAttribute.webservice.url.backend=https://${host.virkailija}/authentication-service/services/customAttributeService
