@@ -1530,9 +1530,11 @@ select:hover,
   .panel-filter .panel-heading h2 {
     margin: 0;
     padding: 0; }
+  .panel-filter .panel-heading a {
+    text-decoration: none; }
 .panel-filter .panel-body {
   padding: 0;
-  margin-left: 27px; }
+  margin-left: 25px; }
   .panel-filter .panel-body a {
     text-decoration: none; }
     .panel-filter .panel-body a:hover, .panel-filter .panel-body a:active {
@@ -1649,7 +1651,8 @@ select:hover,
   .search-result .collapser {
     position: absolute;
     bottom: 0;
-    right: 20px; }
+    right: 20px;
+    text-decoration: none; }
 
 .search-result-extended-container {
   margin-top: 20px; }
@@ -1753,6 +1756,9 @@ label {
 
 .col-bottom {
   vertical-align: bottom; }
+
+.container-equal-height {
+  width: 100%; }
 
 /* skip navigation link */
 #skip-link a {

@@ -114,12 +114,12 @@ directive('kiStudentBenefits', ['CollapseBlockService', function(CollapseBlockSe
         require: '^kiCollapseBlock',
         templateUrl: 'templates/studentBenefits.html',
         link: function($scope, element, attrs) {
-            $scope.anchor = attrs.anchor;
 
             $scope.$watch('content', function(value) {
                 if (value) {
                     $scope.provider = value;
-                    var showStudentBenefits = (value.livingExpenses ||
+                    var showStudentBenefits = (value.living ||
+                        value.livingExpenses ||
                         value.dining ||
                         value.healthcare) ? true : false;
                     CollapseBlockService.setBlock($scope.blockId, showStudentBenefits);      
@@ -138,7 +138,6 @@ directive('kiOrganization', ['CollapseBlockService', function(CollapseBlockServi
         require: '^kiCollapseBlock',
         templateUrl: 'templates/organization.html',
         link: function($scope, element, attrs) {
-            $scope.anchor = attrs.anchor;
 
             $scope.$watch('content', function(value) {
                 if (value) {

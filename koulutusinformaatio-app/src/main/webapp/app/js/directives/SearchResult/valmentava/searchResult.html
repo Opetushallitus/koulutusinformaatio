@@ -1,5 +1,5 @@
-<div class="container-lg-height">
-    <div class="row row-lg-height">
+<div class="container-equal-height container-md-height">
+    <div class="row row-md-height">
         <div class="col-md-10 col-md-height">
             <h2 title="{{locales.openEducation}}">
                 <a href="{{lo.linkHref}}">{{lo.name}}, {{lo.credits}}</a>
@@ -11,9 +11,8 @@
 
         <div class="col-md-6 col-md-height">
             <span data-ki-as-state class="pull-right">&nbsp;</span>
-            <span class="collapser" data-ng-class="showExtension" data-ng-click="toggleExtendedView()" data-ng-keypress="toggleExtendedView()" tabindex="0">
-                <span data-ki-i18n="extended-view-{{showExtension}}"></span>
-            </span>
+            <a href="javascript:void(0)" class="collapser" data-ki-i18n="extended-view-{{showExtension}}" data-ng-class="showExtension" data-ng-click="toggleExtendedView()">
+            </a>
         </div>
     </div>
 </div>
