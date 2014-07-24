@@ -40,7 +40,7 @@
         <morphia.version>0.105</morphia.version>
         <oph.organisaatio.version>9.1</oph.organisaatio.version>
         <oph.koodisto.version>7.0</oph.koodisto.version>
-        <oph.tarjonta.version>9.4.1</oph.tarjonta.version>
+        <oph.tarjonta.version>9.7-SNAPSHOT</oph.tarjonta.version>
     </properties>
 
     <repositories>
