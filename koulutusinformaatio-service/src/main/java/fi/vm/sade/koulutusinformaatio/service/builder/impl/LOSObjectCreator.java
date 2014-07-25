@@ -19,13 +19,13 @@ package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
+import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
@@ -41,7 +41,6 @@ import fi.vm.sade.tarjonta.service.types.TarjontaTila;
 import fi.vm.sade.tarjonta.service.types.YhteyshenkiloTyyppi;
 import fi.vm.sade.tarjonta.shared.types.KomoTeksti;
 import fi.vm.sade.tarjonta.shared.types.KomotoTeksti;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,14 +60,16 @@ public class LOSObjectCreator extends ObjectCreator {
 
     private KoodistoService koodistoService;
     private ProviderService providerService;
+    private OrganisaatioRawService organisaatioRawService;
     private LOIObjectCreator loiCreator;
 
     public LOSObjectCreator(KoodistoService koodistoService, TarjontaRawService tarjontaRawService,
-            ProviderService providerService) {
+            ProviderService providerService, OrganisaatioRawService organisaatioRawService) {
         super(koodistoService);
         this.koodistoService = koodistoService;
         this.providerService = providerService;
-        this.loiCreator = new LOIObjectCreator(koodistoService, tarjontaRawService);
+        this.organisaatioRawService = organisaatioRawService;
+        this.loiCreator = new LOIObjectCreator(koodistoService, tarjontaRawService, organisaatioRawService);
     }
 
     private <T extends LOS> T createLOS(Class<T> type) throws TarjontaParseException {
@@ -344,8 +345,8 @@ public class LOSObjectCreator extends ObjectCreator {
         return los;
     }
 
-    public HigherEducationLOS createHigherEducationLOS(KoulutusKorkeakouluV1RDTO koulutus, boolean checkStatus) 
-            throws TarjontaParseException, KoodistoException {
+    public HigherEducationLOS createHigherEducationLOS(KoulutusKorkeakouluV1RDTO koulutus, boolean checkStatus)
+            throws TarjontaParseException, KoodistoException, ResourceNotFoundException {
 
         HigherEducationLOS los = new HigherEducationLOS();
 
@@ -507,9 +508,7 @@ public class LOSObjectCreator extends ObjectCreator {
                 los.getProvider().getApplicationSystemIDs().add(ao.getApplicationSystem().getId());
                 ao.setParent(createParentLosRef(los));
                 ao.setType(TarjontaConstants.TYPE_KK);
-
             }
-
         }
 
         los.setFacetPrerequisites(this.getFacetPrequisites(los.getPrerequisites()));
@@ -563,7 +562,7 @@ public class LOSObjectCreator extends ObjectCreator {
         return educationRef;
     }
 
-    private boolean fetchHakukohdeData(HigherEducationLOS los, boolean checkStatus) throws KoodistoException {
+    private boolean fetchHakukohdeData(HigherEducationLOS los, boolean checkStatus) throws KoodistoException, ResourceNotFoundException {
         ResultV1RDTO<List<NimiJaOidRDTO>> hakukohteet = loiCreator.tarjontaRawService.getHakukohdesByHigherEducation(los.getId());
 
         if (hakukohteet == null 

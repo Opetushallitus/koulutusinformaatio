@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.dao.entity;
 
+import fi.vm.sade.koulutusinformaatio.domain.OrganizationGroup;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
@@ -62,7 +63,6 @@ public class ApplicationOptionEntity {
     private I18nTextEntity soraDescription;
     private String InternalASDateRef;
 
-
     @Embedded
     private CodeEntity prerequisite;
     private List<String> requiredBaseEducations;
@@ -89,6 +89,8 @@ public class ApplicationOptionEntity {
     private I18nTextEntity eligibilityDescription;
     private String type;
     private String educationTypeUri;
+    @Embedded
+    private List<OrganizationGroupEntity> organizationGroups;
 
 
     public ApplicationOptionEntity() {
@@ -396,4 +398,11 @@ public class ApplicationOptionEntity {
         InternalASDateRef = internalASDateRef;
     }
 
+    public List<OrganizationGroupEntity> getOrganizationGroups() {
+        return organizationGroups;
+    }
+
+    public void setOrganizationGroups(List<OrganizationGroupEntity> organizationGroups) {
+        this.organizationGroups = organizationGroups;
+    }
 }

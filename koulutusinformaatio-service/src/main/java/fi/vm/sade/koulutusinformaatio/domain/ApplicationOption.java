@@ -80,6 +80,7 @@ public class ApplicationOption {
     private I18nText eligibilityDescription;
     private String type;
     private String educationTypeUri;
+    private List<OrganizationGroup> organizationGroups;
 
 
     public String getId() {
@@ -428,4 +429,11 @@ public class ApplicationOption {
         InternalASDateRef = internalASDateRef;
     }
 
+    public void setOrganizationGroups(List<OrganizationGroup> organizationGroups) {
+        this.organizationGroups = organizationGroups;
+    }
+
+    public List<OrganizationGroup> getOrganizationGroups() {
+        return organizationGroups;
+    }
 }

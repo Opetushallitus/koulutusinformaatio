@@ -15,12 +15,13 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
+import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
+import fi.vm.sade.koulutusinformaatio.service.*;
+import fi.vm.sade.koulutusinformaatio.service.builder.impl.LOSObjectCreator;
+import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.*;
+import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
+import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
+import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,26 +31,11 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
-import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataQueryService;
-import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateService;
-import fi.vm.sade.koulutusinformaatio.service.IncrementalUpdateService;
-import fi.vm.sade.koulutusinformaatio.service.IndexerService;
-import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
-import fi.vm.sade.koulutusinformaatio.service.ProviderService;
-import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
-import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
-import fi.vm.sade.koulutusinformaatio.service.UpdateService;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.LOSObjectCreator;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationOptionIndexer;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalApplicationSystemIndexer;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.IncrementalLOSIndexer;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.SingleParentLOSBuilder;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.SingleSpecialLOSBuilder;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental.SingleUpperSecondaryLOSBuilder;
-import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
-import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
-import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 
 
@@ -74,6 +60,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
     private ProviderService providerService;
     private TarjontaService tarjontaService;
     private IndexerService indexerService;
+    private OrganisaatioRawService organisaatioRawService;
 
     private LOSObjectCreator losCreator;
     private SingleParentLOSBuilder parentLosBuilder;
@@ -103,6 +90,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             ProviderService providerService,
             TarjontaService tarjontaService,
             IndexerService indexerService,
+            OrganisaatioRawService organisaatioRawService,
             @Qualifier("lopAliasSolrServer") final HttpSolrServer lopAliasSolrServer,
             @Qualifier("loAliasSolrServer") final HttpSolrServer loAliasSolrServer,
             @Qualifier("locationAliasSolrServer") final HttpSolrServer locationAliasSolrServer) {
@@ -114,11 +102,13 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
         this.providerService = providerService;
         this.tarjontaService = tarjontaService;
         this.indexerService = indexerService;
+        this.organisaatioRawService = organisaatioRawService;
         this.loHttpSolrServer = loAliasSolrServer;
         this.lopHttpSolrServer = lopAliasSolrServer;
         this.locationHttpSolrServer = locationAliasSolrServer;
 
-        this.losCreator = new LOSObjectCreator(this.koodistoService, this.tarjontaRawService, this.providerService);
+        this.losCreator = new LOSObjectCreator(this.koodistoService, this.tarjontaRawService, this.providerService,
+                this.organisaatioRawService);
         this.parentLosBuilder = new SingleParentLOSBuilder(losCreator, tarjontaRawService);
         this.specialLosBuilder = new SingleSpecialLOSBuilder(losCreator, tarjontaRawService);
         this.upperSecLosBuilder = new SingleUpperSecondaryLOSBuilder(losCreator, tarjontaRawService);

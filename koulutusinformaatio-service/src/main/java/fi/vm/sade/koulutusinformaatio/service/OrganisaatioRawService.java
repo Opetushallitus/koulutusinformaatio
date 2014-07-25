@@ -16,20 +16,16 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-
-import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
 
 /**
- * Hides integration to the Organisaatio service.
+ * Can be used to access organisaatio APIs. Returns raw organisaatio DTO objects as they are
+ * returned from API.
  *
- * @author Hannu Lyytikainen
  */
-public interface ProviderService {
+public interface OrganisaatioRawService {
 
-    public Provider getByOID(String oid) throws KoodistoException, MalformedURLException, IOException, ResourceNotFoundException;
-    void clearCache();
+    public OrganisaatioRDTO getOrganisaatio(String oid) throws ResourceNotFoundException;
+
 }

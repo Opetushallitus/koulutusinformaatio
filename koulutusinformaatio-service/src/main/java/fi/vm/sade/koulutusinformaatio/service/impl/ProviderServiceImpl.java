@@ -16,28 +16,21 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
-
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Hannu Lyytikainen
@@ -48,18 +41,18 @@ public class ProviderServiceImpl implements ProviderService {
     public static final Logger LOG = LoggerFactory.getLogger(ProviderServiceImpl.class);
 
     private ConversionService conversionService;
-    private String organisaatioResourceUrl;
+    private final OrganisaatioRawService organisaatioRawService;
+
     private static Map<String,Provider> providerMap = new HashMap<String,Provider>();
 
     @Autowired
-    public ProviderServiceImpl(@Value("${organisaatio.api.rest.url}") final String organisaatioResourceUrl,
-            ConversionService conversionService) {
+    public ProviderServiceImpl(ConversionService conversionService, OrganisaatioRawService organisaatioRawService) {
         this.conversionService = conversionService;
-        this.organisaatioResourceUrl = organisaatioResourceUrl;
+        this.organisaatioRawService = organisaatioRawService;
     }
 
     @Override
-    public Provider getByOID(String oid) throws KoodistoException, IOException {
+    public Provider getByOID(String oid) throws KoodistoException, ResourceNotFoundException {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Fetching provider with oid " + oid);
         }
@@ -67,17 +60,8 @@ public class ProviderServiceImpl implements ProviderService {
         if (providerMap.containsKey(oid)) {
             return providerMap.get(oid);
         }
-        
-        //WebResource oidResource = webResource.path(oid);
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        URL orgUrl = new URL(String.format("%s/%s", this.organisaatioResourceUrl, oid));
-        HttpURLConnection conn = (HttpURLConnection) (orgUrl.openConnection());
-        conn.setRequestMethod(SolrConstants.GET);
-        conn.connect();
-
-        OrganisaatioRDTO organisaatioRDTO = mapper.readValue(conn.getInputStream(), OrganisaatioRDTO.class);
+        OrganisaatioRDTO organisaatioRDTO = organisaatioRawService.getOrganisaatio(oid);
 
         Provider provider = conversionService.convert(organisaatioRDTO, Provider.class);
         if (!validate(provider) && !Strings.isNullOrEmpty(organisaatioRDTO.getParentOid())) {
