@@ -197,6 +197,7 @@ public class EducationObjectCreator extends ObjectCreator {
                 attach.setType(koodistoService.searchFirstName(liite.getLiitteenTyyppiUri()));
                 attach.setDescreption(getI18nText(liite.getKuvaus()));
                 attach.setAddress(createAddress(liite.getToimitusosoite()));
+                attach.setEmailAddr(liite.getSahkoinenToimitusosoite());
                 attachments.add(attach);
             }
             return attachments;

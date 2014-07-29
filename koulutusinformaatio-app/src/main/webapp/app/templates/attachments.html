@@ -23,6 +23,10 @@
                 <span data-ng-show="att.address.streetAddress2">{{att.address.streetAddress2}}<br /></span>
                 <span data-ng-show="att.address.postalCode">{{att.address.postalCode}}</span>
                 <span data-ng-show="att.address.postOffice">{{att.address.postOffice}}</span>
+                <div data-ng-show="att.emailAddr">
+                	<span data-ki-i18n="tai"></span><br />
+                	{{att.emailAddr}}
+                </div>
             </td>
             <td class="last">
                 <span data-ki-timestamp="{{att.dueDate}}"></span>
