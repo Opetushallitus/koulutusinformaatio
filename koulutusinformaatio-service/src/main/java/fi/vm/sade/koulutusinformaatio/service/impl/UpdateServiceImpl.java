@@ -102,6 +102,7 @@ public class UpdateServiceImpl implements UpdateService {
             index += count;
             */
             List<String> loOids = Arrays.asList(
+                    "1.2.246.562.5.2013061010191484576250", //lukio luonnontieteet
                     "1.2.246.562.5.2013061010184443434255", //amm
                     "1.2.246.562.5.2013061010191530269331", //lukio
                     "1.2.246.562.5.2013112814572429147350", //valmistava

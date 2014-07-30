@@ -370,6 +370,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
                 attach.setType(getTypeText(liite.getLiitteenNimi(), liite.getKieliUri()));
                 attach.setDescreption(getI18nText(liite.getLiitteenKuvaukset()));
                 attach.setAddress(educationObjectCreator.createAddress(liite.getLiitteenToimitusOsoite()));
+                attach.setEmailAddr(liite.getSahkoinenToimitusOsoite());
                 attachments.add(attach);
             }
         }

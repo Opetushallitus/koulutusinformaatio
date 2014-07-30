@@ -218,6 +218,9 @@ public class EducationObjectCreator extends ObjectCreator {
     }
 
     public List<OrganizationGroup> createOrganizationGroups(String... organisaatioRyhmaOids) throws ResourceNotFoundException {
+        if (organisaatioRyhmaOids == null) {
+            return new ArrayList<OrganizationGroup>();
+        }
         List<OrganizationGroup> groups = new ArrayList<OrganizationGroup>(organisaatioRyhmaOids.length);
         for (int i = 0; i < organisaatioRyhmaOids.length; i++) {
             String oid = organisaatioRyhmaOids[i];

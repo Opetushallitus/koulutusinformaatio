@@ -404,7 +404,7 @@ public class LOIObjectCreator extends ObjectCreator {
              Date endDate = dr.getEndDate();
              Calendar endCal = Calendar.getInstance();
              endCal.setTime(endDate);
-             endCal.add(Calendar.MONTH, 4);
+             endCal.add(Calendar.MONTH, 10);
              endDate = endCal.getTime();
              if (dr.getStartDate().before(now) && endDate.after(now)) {
                  return true;
