@@ -19,12 +19,12 @@ package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-
-import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KIConversionException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
+import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.tarjonta.service.resources.dto.*;
@@ -32,7 +32,6 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuaikaV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeLiiteV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,14 +52,17 @@ public class ApplicationOptionCreator extends ObjectCreator {
 
     private KoodistoService koodistoService;
     private TarjontaRawService tarjontaRawService;
+    private OrganisaatioRawService organisaatioRawService;
     private EducationObjectCreator educationObjectCreator;
     private ApplicationSystemCreator applicationSystemCreator;
 
-    protected ApplicationOptionCreator(KoodistoService koodistoService, TarjontaRawService tarjontaRawService) {
+    protected ApplicationOptionCreator(KoodistoService koodistoService, TarjontaRawService tarjontaRawService,
+                                       OrganisaatioRawService organisaatioRawService) {
         super(koodistoService);
         this.koodistoService = koodistoService;
         this.tarjontaRawService = tarjontaRawService;
-        this.educationObjectCreator = new EducationObjectCreator(koodistoService);
+        this.organisaatioRawService = organisaatioRawService;
+        this.educationObjectCreator = new EducationObjectCreator(koodistoService, organisaatioRawService);
         this.applicationSystemCreator = new ApplicationSystemCreator(koodistoService);
     }
 
@@ -296,10 +298,8 @@ public class ApplicationOptionCreator extends ObjectCreator {
 
     public ApplicationOption createHigherEducationApplicationOption(HigherEducationLOS los, 
                                                                     HakukohdeV1RDTO hakukohde, 
-                                                                    HakuV1RDTO haku) throws KoodistoException {
-        
-        
-        
+                                                                    HakuV1RDTO haku) throws KoodistoException, ResourceNotFoundException {
+
         ApplicationOption ao = new ApplicationOption();
         ao.setId(hakukohde.getOid());
         ao.setName(super.getI18nText(hakukohde.getHakukohteenNimet())); 
@@ -313,6 +313,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         ao.setSoraDescription(getI18nText(hakukohde.getSoraKuvaukset()));
         ao.setEligibilityDescription(getI18nText(hakukohde.getHakukelpoisuusVaatimusKuvaukset()));
         ao.setExams(educationObjectCreator.createHigherEducationExams(hakukohde.getValintakokeet()));
+        ao.setOrganizationGroups(educationObjectCreator.createOrganizationGroups(hakukohde.getOrganisaatioRyhmaOids()));
         ao.setKaksoistutkinto(false);
         ao.setVocational(false);
         ao.setEducationCodeUri(los.getEducationCode().getUri());
@@ -369,6 +370,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
                 attach.setType(getTypeText(liite.getLiitteenNimi(), liite.getKieliUri()));
                 attach.setDescreption(getI18nText(liite.getLiitteenKuvaukset()));
                 attach.setAddress(educationObjectCreator.createAddress(liite.getLiitteenToimitusOsoite()));
+                attach.setEmailAddr(liite.getSahkoinenToimitusOsoite());
                 attachments.add(attach);
             }
         }

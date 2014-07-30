@@ -38,17 +38,15 @@ public class PreviewServiceImplTest {
 	private PreviewService service;
 	
 	@Before
-    public void setup() throws TarjontaParseException, KoodistoException {
+    public void setup() throws TarjontaParseException, KoodistoException, ResourceNotFoundException {
 		tarjontaService = mock(TarjontaService.class);
-		
-		
+
 		HigherEducationLOS heLOS = new HigherEducationLOS();
 		heLOS.setId("1.2.3.4");
 		
 		when(tarjontaService.findHigherEducationLearningOpportunity(heLOS.getId())).thenReturn(heLOS);
 		
 		service = new PreviewServiceImpl(tarjontaService);
-		
 	}
 	
 	@Test

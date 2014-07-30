@@ -27,6 +27,7 @@ public class ApplicationOptionAttachmentDTO {
     private String type;
     private String descreption;
     private AddressDTO address;
+    private String emailAddr;
 
     public Date getDueDate() {
         return dueDate;
@@ -58,5 +59,13 @@ public class ApplicationOptionAttachmentDTO {
 
     public void setAddress(AddressDTO address) {
         this.address = address;
+    }
+
+    public String getEmailAddr() {
+        return emailAddr;
+    }
+
+    public void setEmailAddr(String emailAddr) {
+        this.emailAddr = emailAddr;
     }
 }

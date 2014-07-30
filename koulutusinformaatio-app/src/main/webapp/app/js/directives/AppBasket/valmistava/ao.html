@@ -1,7 +1,7 @@
 <td>
-    <h4 class="margin-top-0 margin-bottom-0">{{item.providerName}}, <span class="capitalized">{{item.providerLocation}}</span></h4>
-    <span data-ki-i18n="{{item.educationTypeUri}}" class="block italic"></span>
-    <div class="basket-table-cell-block">
+    <h4>{{item.providerName}}, <span class="capitalized">{{item.providerLocation}}</span></h4>
+    <em data-ki-i18n="{{item.educationTypeUri}}"></em>
+    <div>
         <span data-ki-i18n="application-prerequisite" data-show-colon="true"></span> <span>{{item.prerequisite.description}}</span>
     </div>
 <td>
@@ -13,6 +13,6 @@
     <div data-ng-include src="'js/directives/AppBasket/common/attachmentsAndExams.html'"></div>
 </td>
 
-<td class="basket-remove last align-right">
+<td class="last text-right">
     <div data-ng-include src="'js/directives/AppBasket/common/aoActions.html'"></div>
 </td>

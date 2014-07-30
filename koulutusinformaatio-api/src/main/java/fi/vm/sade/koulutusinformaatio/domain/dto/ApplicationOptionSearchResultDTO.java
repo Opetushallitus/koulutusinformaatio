@@ -38,6 +38,7 @@ public class ApplicationOptionSearchResultDTO {
     private boolean kaksoistutkinto;
     private boolean vocational;
     private String educationCodeUri;
+    private List<OrganizationGroupDTO> organizationGroups;
 
     public String getId() {
         return id;
@@ -125,5 +126,13 @@ public class ApplicationOptionSearchResultDTO {
 
     public void setEducationCodeUri(String educationCodeUri) {
         this.educationCodeUri = educationCodeUri;
+    }
+
+    public void setOrganizationGroups(List<OrganizationGroupDTO> organizationGroups) {
+        this.organizationGroups = organizationGroups;
+    }
+
+    public List<OrganizationGroupDTO> getOrganizationGroups() {
+        return organizationGroups;
     }
 }

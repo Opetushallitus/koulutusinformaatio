@@ -24,6 +24,7 @@ import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
+import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
@@ -68,9 +69,11 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
 
     public VocationalLearningOpportunityBuilder(TarjontaRawService tarjontaRawService,
                                                 ProviderService providerService,
-                                                KoodistoService koodistoService, KomoDTO parentKomo) {
+                                                KoodistoService koodistoService, KomoDTO parentKomo,
+                                                OrganisaatioRawService organisaatioRawService) {
         this.tarjontaRawService = tarjontaRawService;
-        this.losObjectCreator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService);
+        this.losObjectCreator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService,
+                organisaatioRawService);
         this.parentKomo = parentKomo;
         this.parentKomotosByProviderId = ArrayListMultimap.create();
         this.childLOSsByParentLOSId = ArrayListMultimap.create();

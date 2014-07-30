@@ -14,21 +14,24 @@
         <input type="hidden" name="preference1-Koulutus-id-kaksoistutkinto" value="{{item.kaksoistutkinto}}" />
         <input type="hidden" name="preference1-Koulutus-id-vocational" value="{{item.vocational}}" />
         <input type="hidden" name="preference1-Koulutus-id-educationcode" value="{{item.educationCodeUri}}" />
-        <button class="primary clear float-right" data-ng-disabled="isApplicationOptionDisabled(item)" type="submit">
-            <span>
-                <span data-ki-i18n="application-basket-fill-form"></span>
-            </span>
+        <button 
+            class="btn btn-primary pull-right" 
+            data-ng-disabled="isApplicationOptionDisabled(item)" 
+            type="submit"
+            data-ki-i18n="application-basket-fill-form">
         </button>
     </form>
 
     <div data-ng-if="item.applicationFormLink">
-        <a data-ng-if="!isApplicationOptionDisabled(item)" data-ng-href="{{item.applicationFormLink}}" title="{{tooltips.externalApplicationForm}}" target="_blank" class="oneline">
-        <i class="icon-link-ext-alt"></i><span data-ki-i18n="apply-button-label"></span>
+        <a data-ng-if="!isApplicationOptionDisabled(item)" data-ng-href="{{item.applicationFormLink}}" title="{{tooltips.externalApplicationForm}}" target="_blank">
+            <i class="icon-link-ext-alt"></i>
+            <span data-ki-i18n="apply-button-label"></span>
         </a>
-        <span data-ng-if="isApplicationOptionDisabled(item)" class="text-disabled oneline">
-            <i class="icon-link-ext-alt"></i><span data-ki-i18n="apply-button-label"></span>
+        <span data-ng-if="isApplicationOptionDisabled(item)" class="text-muted">
+            <i class="icon-link-ext-alt"></i>
+            <span data-ki-i18n="apply-button-label"></span>
         </a>
     </div>
 
-    <div class="margin-top-1 float-right clear" data-ki-app-basket-application-status data-ao="item"></div>
+    <div class="pull-right" data-ki-app-basket-application-status data-ao="item"></div>
 </div>

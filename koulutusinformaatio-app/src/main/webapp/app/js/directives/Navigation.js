@@ -57,7 +57,7 @@ return {
                 template +=
                     '<ul class="level-{{level}}';
                 if (attrs.level == 1 ) {
-                    template += ' menubar root-level" role="menubar" id="nav" >'
+                    template += ' menubar root-level nav navbar-nav" role="menubar" id="nav" >'
                         + '<li class="menu-parent" data-ng-repeat="item in val" title="{{item.title}}" role="menuitem" aria-haspopup="true" tabindex="0">'
                         + '<a data-ng-href="{{item.link}}" tabindex="-1">{{item.title}}</a>' ;
                 } else {
@@ -69,7 +69,7 @@ return {
                 template += '</li>';
 
                 if (attrs.level == 1 && !$rootScope.isStudyInfo) {
-                    template += '<li class="float-right"><a data-ng-href="{{links.textversion}}" class="action-link"><span data-ki-i18n="link-to-accessible-version"></span></a></li></ul>';
+                    template += '<li class="navbar-right"><a data-ng-href="{{links.textversion}}" class="action-link navbar-link"><span data-ki-i18n="link-to-accessible-version"></span></a></li></ul>';
                 } else {
                     template += '</ul>';
                 }

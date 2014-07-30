@@ -22,7 +22,9 @@ import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
+import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -96,11 +98,13 @@ public class ProviderServiceImplTest {
         Provider parentProvider = converter.convert(parentOrganisaatio);
         when(conversionService.convert(argThat(new IsChildOrganisaatio()), eq(Provider.class))).thenReturn(childProvider);
         when(conversionService.convert(argThat(new IsParentOrganisaatio()), eq(Provider.class))).thenReturn(parentProvider);
-        service = new ProviderServiceImpl(BASE_URL, conversionService);
+
+        OrganisaatioRawService organisaatioRawService = new OrganisaatioRawServiceImpl(BASE_URL);
+        service = new ProviderServiceImpl(conversionService, organisaatioRawService);
     }
 
     @Test
-    public void testGetByOid() throws KoodistoException, IOException  {
+    public void testGetByOid() throws KoodistoException, ResourceNotFoundException {
         Provider p = service.getByOID(CHILD_ORGANISAATIO_OID);
         assertNotNull(p);
         assertEquals(p.getId(), CHILD_ORGANISAATIO_OID);

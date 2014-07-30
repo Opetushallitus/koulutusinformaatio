@@ -1,10 +1,14 @@
-<div data-ng-if="content" class="collapse-block">
-    <a href="javascript:void(0);" data-ng-click="toggleState()" class="block">
-        <h2 class="collapser" data-ng-class="{open: !isClose, close: isClose}" id="{{anchor}}">
-            <span data-ki-i18n="{{title}}" data-lang="{{translationLanguage}}"></span> 
-        </h2>
-    </a>
-    <div class="tarjonta-content" data-collapse="isClose">
-        <div class="collapse-content-container" data-ng-bind-html="content | externalLinks | unsafe"></div>
+<div data-ng-if="content" class="panel panel-tarjonta">
+    <div class="panel-heading">
+        <a href="javascript:void(0);" data-ng-click="toggleState()" class="block panel-title" id="{{anchor}}">
+            <h2 class="collapser" data-ng-class="{opened: !isClose, closed: isClose}">
+                <span data-ki-i18n="{{title}}" data-lang="{{translationLanguage}}"></span> 
+            </h2>
+        </a>
+    </div>
+    <div class="panel-body">
+        <div class="tarjonta-content" data-collapse="isClose">
+            <div data-ng-bind-html="content | externalLinks | tables | unsafe"></div>
+        </div>
     </div>
 </div>

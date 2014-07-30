@@ -18,13 +18,17 @@ package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
+import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
+import fi.vm.sade.organisaatio.api.model.types.OrganisaatioTyyppi;
+import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.*;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ValintakoeV1RDTO;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,11 +38,13 @@ import java.util.Map;
  */
 public class EducationObjectCreator extends ObjectCreator {
 
+    private final OrganisaatioRawService organisaatioRawService;
     private KoodistoService koodistoService;
 
-    protected EducationObjectCreator(KoodistoService koodistoService) {
+    protected EducationObjectCreator(KoodistoService koodistoService, OrganisaatioRawService organisaatioRawService) {
         super(koodistoService);
         this.koodistoService = koodistoService;
+        this.organisaatioRawService = organisaatioRawService;
     }
 
     public List<Exam> createVocationalExams(List<ValintakoeRDTO> valintakoes) throws KoodistoException {
@@ -132,10 +138,6 @@ public class EducationObjectCreator extends ObjectCreator {
             Map<String,String> streetAddrTransls2 = new HashMap<String,String>();
             Map<String,String> postOfficeTransls = new HashMap<String,String>();
             
-            
-           
-            
-            
             if (osoite.getOsoiterivi1() != null) {
                 streetAddrTransls.put("fi", osoite.getOsoiterivi1());
                 attachmentDeliveryAddress.setStreetAddress(new I18nText(streetAddrTransls));
@@ -145,8 +147,7 @@ public class EducationObjectCreator extends ObjectCreator {
                 attachmentDeliveryAddress.setSecondForeignAddr(new I18nText(streetAddrTransls2));
             }
             attachmentDeliveryAddress.setPostalCode(koodistoService.searchFirstCodeValue(osoite.getPostinumero()));
-            
-            
+
             if (osoite.getPostitoimipaikka() != null) {
                 postOfficeTransls.put("fi", osoite.getPostitoimipaikka());
                 attachmentDeliveryAddress.setPostOffice(new I18nText(postOfficeTransls));
@@ -196,6 +197,7 @@ public class EducationObjectCreator extends ObjectCreator {
                 attach.setType(koodistoService.searchFirstName(liite.getLiitteenTyyppiUri()));
                 attach.setDescreption(getI18nText(liite.getKuvaus()));
                 attach.setAddress(createAddress(liite.getToimitusosoite()));
+                attach.setEmailAddr(liite.getSahkoinenToimitusosoite());
                 attachments.add(attach);
             }
             return attachments;
@@ -215,4 +217,31 @@ public class EducationObjectCreator extends ObjectCreator {
         return null;
     }
 
+    public List<OrganizationGroup> createOrganizationGroups(String... organisaatioRyhmaOids) throws ResourceNotFoundException {
+        if (organisaatioRyhmaOids == null) {
+            return new ArrayList<OrganizationGroup>();
+        }
+        List<OrganizationGroup> groups = new ArrayList<OrganizationGroup>(organisaatioRyhmaOids.length);
+        for (int i = 0; i < organisaatioRyhmaOids.length; i++) {
+            String oid = organisaatioRyhmaOids[i];
+            OrganisaatioRDTO organisaatioRDTO = organisaatioRawService.getOrganisaatio(oid);
+            boolean isGroup = false;
+            for (String tyyppi : organisaatioRDTO.getTyypit()) {
+                if (OrganisaatioTyyppi.RYHMA.value().equals(tyyppi)) {
+                    isGroup = true;
+                    break;
+                }
+            }
+            if (!isGroup) {
+                throw new ResourceNotFoundException("Organization "+oid+" is not group");
+            }
+
+            OrganizationGroup group = new OrganizationGroup();
+            group.setOid(oid);
+            group.setGroupTypes(organisaatioRDTO.getRyhmatyypit());
+            group.setUsageGroups(organisaatioRDTO.getKayttoryhmat());
+            groups.add(group);
+        }
+        return groups;
+    }
 }
