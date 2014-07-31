@@ -35,6 +35,8 @@ public class ApplicationOptionAttachmentEntity {
     private I18nText descreption;
     @Embedded
     private Address address;
+    
+    private String emailAddr;
 
     public Date getDueDate() {
         return dueDate;
@@ -66,5 +68,13 @@ public class ApplicationOptionAttachmentEntity {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public String getEmailAddr() {
+        return emailAddr;
+    }
+
+    public void setEmailAddr(String emailAddr) {
+        this.emailAddr = emailAddr;
     }
 }

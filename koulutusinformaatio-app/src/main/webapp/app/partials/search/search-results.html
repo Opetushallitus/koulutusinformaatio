@@ -1,72 +1,73 @@
 <div data-ng-switch="loResult.loCount">
     <div data-ng-switch-when="0">
-        <div class="notification info large">
-            <h3 data-ki-i18n="no-search-results"></h3>
-            <span>{{noSearchResults}}</span>
+        <div class="alert alert-info alert-icon">
+            <div class="alert-heading">
+                <h3 class="alert-title" data-ki-i18n="no-search-results"></h3>
+            </div>
+            <div class="alert-body>">{{noSearchResults}}</div>
         </div>
     </div>
 
     <div data-ng-switch-default>
-        <div class="sort-area" data-ng-controller="SortCtrl">
-            <div title="{{locales.resultsCriteria}}" class="sort-item">
-                <label for="sort-items-label" data-ki-i18n="sort-criteria-sort-label" data-show-colon="true"></label>
-                <select 
-                data-ng-model="sortCriteria"
-                data-ng-options="key as value.value group by value.group for (key, value) in sortCriterias"
-                data-ng-change="updateSortCriteria('los')"
-                data-ng-style="{'width': 'auto'}"
-                id="sort-items-label">
-                </select>
+        <div class="panel panel-gray" data-ng-controller="SortCtrl">
+            <div class="panel-body">
+                <div class="row">
+                    <form class="form-inline" role="form">
+                        <div title="{{locales.resultsToShow}}" class="col-sm-8">
+                            <div class="pull-right">
+                                <label for="items-per-page-label" data-ki-i18n="sort-criteria-items-per-page-label" data-show-colon="true" class="control-label"></label>
+                                <select 
+                                data-ng-model="itemsPerPage"
+                                data-ng-options="value for value in pageSizes"
+                                data-ng-change="updateItemsPerPage('los')"
+                                data-ng-style="{'width': 'auto'}"
+                                id="items-per-page-label"
+                                class="form-control">
+                                </select>
+                            </div>
+                        </div>
+                        <div title="{{locales.resultsCriteria}}" class="col-sm-8">
+                            <div class="pull-right">
+                                <label for="sort-items-label" data-ki-i18n="sort-criteria-sort-label" data-show-colon="true" class="control-label"></label>
+                                <select 
+                                data-ng-model="sortCriteria"
+                                data-ng-options="key as value.value group by value.group for (key, value) in sortCriterias"
+                                data-ng-change="updateSortCriteria('los')"
+                                data-ng-style="{'width': 'auto'}"
+                                id="sort-items-label"
+                                class="form-control">
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div title="{{locales.resultsToShow}}" class="sort-item">
-                <label for="items-per-page-label" data-ki-i18n="sort-criteria-items-per-page-label" data-show-colon="true"></label>
-                <select 
-                data-ng-model="itemsPerPage"
-                data-ng-options="value for value in pageSizes"
-                data-ng-change="updateItemsPerPage('los')"
-                data-ng-style="{'width': 'auto'}"
-                id="items-per-page-label">
-                </select>
-            </div>
-            <div class="clear"></div>
         </div>
 
-        <div data-ng-show="showPagination" class="align-center">
+        <div data-ng-show="showPagination" class="text-center">
             <div data-pager
-            data-on-select-page="changePage(page)" 
+            data-ng-model="currentPage"
+            data-ng-change="changePage(currentPage)" 
             data-num-pages="maxPages"
             data-total-items="loCount"
             data-items-per-page="itemsPerPage"
-            data-rotate="false"
-            data-page="currentPage" 
             data-next-text="{{paginationNext}}"
             data-previous-text="{{paginationPrevious}}">
             </div>
             <span class="pager-results">{{pageMin}} - {{pageMax}} / {{loCount}}</span>
         </div>
 
-        <ul id="search-results">
-            <li data-ng-repeat="lo in loResult.results" data-search-result></li>
-        </ul>
-        <!-- 
-        <h3><span data-ki-i18n="search-tab-article"></span></h3>
-        <ul id="article-search-results">
-			<li data-ng-repeat="article in loResult.articleresults">
-				<h2><a data-ng-href="{{article.url}}">{{article.title}}</a></h2>
-				<img data-ng-src="{{article.imageUrl}}" data-ng-show="article.imageUrl"/>
-				<span data-ng-bind-html="article.excerpt | unsafe" style=""></span>
-				<div class="clear"></div>
-			</li>
-		</ul>
-		-->
-        <div data-ng-show="showPagination" class="align-center">
+        <div id="search-results">
+            <div data-ng-repeat="lo in loResult.results" data-search-result></div>
+        </div>
+
+        <div data-ng-show="showPagination" class="text-center">
             <div data-pager
-            data-on-select-page="changePage(page)" 
+            data-ng-model="currentPage"
+            data-ng-change="changePage(currentPage)" 
             data-num-pages="maxPages"
             data-total-items="loCount"
             data-items-per-page="itemsPerPage"
-            data-rotate="false"
-            data-page="currentPage" 
             data-next-text="{{paginationNext}}"
             data-previous-text="{{paginationPrevious}}">
             </div>

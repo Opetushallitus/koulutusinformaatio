@@ -7,7 +7,7 @@ directive('facetTree', function($compile) {
         link: function($scope, element, attrs) {
 
             var update = function() {
-                template = '<ul data-ng-if="isNotLeaf(' + attrs.treeModel + ')">' +
+                template = '<ul data-ng-if="isNotLeaf(' + attrs.treeModel + ')" class="list-unstyled">' +
                     '<li data-ng-repeat="node in ' + attrs.treeModel + '">' + 
                         '<span data-ng-if="!isSelected(node) && (node.count > 0)" class="facet-item">' +
                             '<a href="javascript:void(0)" data-ng-click="selectFacetFilter(node.valueId, node.facetField);" data-facet-title="node">{{node.valueName}} ({{node.count}})</a>' +
@@ -78,8 +78,8 @@ directive('facetTreeLeaves', function() {
             nodeIsSelected: '&'
         },
         template: 
-            '<ul data-ng-if="showLeaves" class="nobullet">' + 
-                '<li class="bold block margin-top-1" data-ki-i18n="facet-focus-filter"></li>' +
+            '<ul data-ng-if="showLeaves" class="list-unstyled">' + 
+                '<li><strong data-ki-i18n="facet-focus-filter"></strong></li>' +
                 '<li data-ng-repeat="node in leaves" class="facet-tree-leaf">' +
                     '<span title="{{node.valueName}}" data-ng-if="node.count > 0" class="facet-item">' +
                         '<a href="javascript:void(0)" data-ng-click="selectFacetFilter(node.valueId, node.facetField);" data-facet-title="node">{{node.valueName}} ({{node.count}})</a>' +

@@ -27,6 +27,7 @@ public class ApplicationOptionAttachment {
     private I18nText type;
     private I18nText descreption;
     private Address address;
+    private String emailAddr;
 
     public Date getDueDate() {
         return dueDate;
@@ -58,5 +59,13 @@ public class ApplicationOptionAttachment {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public void setEmailAddr(String sahkoinenToimitusosoite) {
+        this.emailAddr = sahkoinenToimitusosoite;
+    }
+
+    public String getEmailAddr() {
+        return emailAddr;
     }
 }

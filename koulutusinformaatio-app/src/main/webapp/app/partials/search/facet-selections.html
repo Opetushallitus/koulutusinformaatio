@@ -1,47 +1,63 @@
-<div id="facetSelections" class="grid16-16 facetSelections" data-ng-show="areThereSelections()">
-   <ul>
-        <li class="bold padding-left-0"><span data-ki-i18n="valitut-rajaukset" data-show-colon="true"></span></li>
-        <li data-ng-show="ongoing">
-            <a href="javascript:void(0)" data-ng-click="removeOngoing()" class="facet-selection">
-                <span data-ki-i18n="haun-tila" data-show-colon="true"></span> <span data-ki-i18n="filter-search-as-ongoing"></span>
-                <span class="remove" data-ki-i18n="facet-remove"></span>
-            </a>
-        </li>
-        <li data-ng-show="upcoming">
-            <a href="javascript:void(0)" data-ng-click="removeUpcoming()" class="facet-selection">
-                <span data-ki-i18n="haun-tila"></span>: <span data-ki-i18n="{{loResult.upcomingFacet.season}}"></span> {{loResult.upcomingFacet.year}}
-                <span class="remove" data-ki-i18n="facet-remove"></span>
-            </a>
-        </li>
-        <li data-ng-show="upcomingLater">
-            <a href="javascript:void(0)" data-ng-click="removeUpcomingLater()" class="facet-selection">
-                <span data-ki-i18n="haun-tila"></span>: <span data-ki-i18n="{{loResult.upcomingLaterFacet.season}}"></span> {{loResult.upcomingLaterFacet.year}}
-                <span class="remove" data-ki-i18n="facet-remove"></span>
-            </a>
-        </li>
-        <li data-ng-show="lopRecommendation">
-            <a href="javascript:void(0)" data-ng-click="removeLopRecommendation()" class="facet-selection">
-            	 {{lopFilter}}
-                <span class="remove" data-ki-i18n="facet-remove"></span>
-            </a>
-        </li>
-        <li data-ng-show="educationCodeRecommendation">
-            <a href="javascript:void(0)" data-ng-click="removeEducationCodeRecommendation()" class="facet-selection">
-                <span data-ki-i18n="koulutus"></span>: {{educationCodeFilter}}
-                <span class="remove" data-ki-i18n="facet-remove"></span>
-            </a>
-        </li>
-        <li data-ng-repeat="fs in facetSelections">
-            <a href="javascript:void(0)" data-ng-click="removeSelection(fs)" title="{{locales.closeFacet}}" class="facet-selection">
-                <span data-ki-i18n="{{fs.facetField}}" data-show-colon="true"></span> <span data-ki-i18n="{{fs.valueName}}"></span>
-                <span class="remove" data-ki-i18n="facet-remove"></span>
-            </a>
-        </li>
-        <li data-ng-repeat="loc in locations">
-            <a href="javascript:void(0)" data-ng-click="removeLocation(loc)" class="facet-selection">
-                <span data-ki-i18n="location-rajaus" data-show-colon="true"></span> {{loc.name}}
-                <span class="remove" data-ki-i18n="facet-remove"></span>
-            </a>
-        </li>
-    </ul>
+<div class="row facet-selections margin-vertical-default" data-ng-show="areThereSelections()">
+    <div class="col-md-16">
+        <ul class="list-unstyled">
+            <li><span data-ki-i18n="valitut-rajaukset" data-show-colon="true"></span></li>
+            <li data-ng-show="ongoing">
+                <a href="javascript:void(0)" data-ng-click="removeOngoing()" class="facet-selection">
+                    <span data-ki-i18n="haun-tila" data-show-colon="true"></span> <span data-ki-i18n="filter-search-as-ongoing"></span>
+                    <span class="remove">
+                        <span class="sr-only" data-ki-i18n="facet-remove"></span>
+                    </span>
+                </a>
+            </li>
+            <li data-ng-show="upcoming">
+                <a href="javascript:void(0)" data-ng-click="removeUpcoming()" class="facet-selection">
+                    <span data-ki-i18n="haun-tila"></span>: <span data-ki-i18n="{{loResult.upcomingFacet.season}}"></span> {{loResult.upcomingFacet.year}}
+                    <span class="remove">
+                        <span class="sr-only" data-ki-i18n="facet-remove"></span>
+                    </span>
+                </a>
+            </li>
+            <li data-ng-show="upcomingLater">
+                <a href="javascript:void(0)" data-ng-click="removeUpcomingLater()" class="facet-selection">
+                    <span data-ki-i18n="haun-tila"></span>: <span data-ki-i18n="{{loResult.upcomingLaterFacet.season}}"></span> {{loResult.upcomingLaterFacet.year}}
+                    <span class="remove">
+                        <span class="sr-only" data-ki-i18n="facet-remove"></span>
+                    </span>
+                </a>
+            </li>
+            <li data-ng-show="lopRecommendation">
+                <a href="javascript:void(0)" data-ng-click="removeLopRecommendation()" class="facet-selection">
+                	 {{lopFilter}}
+                    <span class="remove">
+                        <span class="sr-only" data-ki-i18n="facet-remove"></span>
+                    </span>
+                </a>
+            </li>
+            <li data-ng-show="educationCodeRecommendation">
+                <a href="javascript:void(0)" data-ng-click="removeEducationCodeRecommendation()" class="facet-selection">
+                    <span data-ki-i18n="koulutus"></span>: {{educationCodeFilter}}
+                    <span class="remove">
+                        <span class="sr-only" data-ki-i18n="facet-remove"></span>
+                    </span>
+                </a>
+            </li>
+            <li data-ng-repeat="fs in facetSelections">
+                <a href="javascript:void(0)" data-ng-click="removeSelection(fs)" title="{{locales.closeFacet}}" class="facet-selection">
+                    <span data-ki-i18n="{{fs.facetField}}" data-show-colon="true"></span> <span data-ki-i18n="{{fs.valueName}}"></span>
+                    <span class="remove">
+                        <span class="sr-only" data-ki-i18n="facet-remove"></span>
+                    </span>
+                </a>
+            </li>
+            <li data-ng-repeat="loc in locations">
+                <a href="javascript:void(0)" data-ng-click="removeLocation(loc)" class="facet-selection">
+                    <span data-ki-i18n="location-rajaus" data-show-colon="true"></span> {{loc.name}}
+                    <span class="remove">
+                        <span class="sr-only" data-ki-i18n="facet-remove"></span>
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </div>
 </div>

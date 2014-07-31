@@ -1,12 +1,16 @@
-<header id="siteheader" data-ng-controller="HeaderCtrl">
-    <div class="logo-bg">
-        <div class="container">
-            <a id="home-link" href="javascript:void()">
-           	    <img data-ng-src="{{images.logo}}"/>
-            </a>
-           	<span class="banner-text" data-ki-i18n="esikatselu"></span>
-            <div class="actions">
-                <ul data-ng-controller="LanguageCtrl">
+<header class="oppija-header" data-ng-controller="HeaderCtrl">
+    <div class="container header">
+        <div class="row">
+            <div class="col-md-4">
+                <a id="home-link" href="javascript:void()">
+               	    <img data-ng-src="{{images.logo}}"/>
+                </a>
+            </div>
+            <div class="col-md-8">
+           	    <span class="banner-text" data-ki-i18n="esikatselu"></span>
+            </div>
+            <div class="col-md-2">
+                <ul data-ng-controller="LanguageCtrl" class="list-unstyled">
                     <li><a title={{locales.opintopolkufi}} href="javascript:void(0)" data-ng-click="changeLanguage('fi')" data-ki-i18n="language-fi"></a></li>
                     <li><a title={{locales.opintopolkusv}} href="javascript:void(0)" data-ng-click="changeLanguage('sv')" data-ki-i18n="language-sv"></a></li>
                     <li><a title={{locales.opintopolkuen}} href="javascript:void(0)" data-ng-click="changeLanguage('en')" data-ki-i18n="language-en"></a></li>
@@ -14,5 +18,4 @@
             </div>
         </div>
     </div>
-    
 </header>

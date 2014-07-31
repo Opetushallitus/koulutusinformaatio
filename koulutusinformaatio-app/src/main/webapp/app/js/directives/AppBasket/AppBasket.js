@@ -7,7 +7,7 @@ directive('kiAppBasketApplicationsystem', function() {
         scope: {
             items: '='
         },
-        template: '<div class="application-basket margin-bottom-6" data-ng-repeat="as in items" data-ng-transclude></div>'
+        template: '<div data-ng-repeat="as in items" data-ng-transclude></div>'
     }
 }).
 

@@ -20,6 +20,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
+import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
 import fi.vm.sade.koulutusinformaatio.service.impl.KoodistoAwareTest;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 import fi.vm.sade.tarjonta.service.resources.dto.*;
@@ -39,6 +40,8 @@ public class EducationObjectCreatorTest extends KoodistoAwareTest {
 
     EducationObjectCreator creator;
 
+    OrganisaatioRawService organisaatioRawService;
+
     final String examTypeUri = "examtypecode";
     final String examTypeFi = "examTypeFi";
     final I18nText examType = TestUtil.createI18nText(examTypeFi);
@@ -53,8 +56,7 @@ public class EducationObjectCreatorTest extends KoodistoAwareTest {
         when(koodistoService.searchFirstName(eq(examTypeUri))).thenReturn(examType);
         when(koodistoService.searchFirstCodeValue(eq(postCodeUri))).thenReturn(postCode);
         when(koodistoService.searchFirstName(eq(attachmentTypeUri))).thenReturn(attachmentType);
-        creator = new EducationObjectCreator(koodistoService);
-
+        creator = new EducationObjectCreator(koodistoService, organisaatioRawService);
     }
 
     @Test

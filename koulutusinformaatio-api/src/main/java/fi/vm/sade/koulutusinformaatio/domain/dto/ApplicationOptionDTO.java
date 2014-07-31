@@ -69,6 +69,7 @@ public class ApplicationOptionDTO {
     private String educationTypeUri;
     private boolean isKotitalous;
     private String hakuaikaId;
+    private List<OrganizationGroupDTO> organizationGroups;
 
     public String getId() {
         return id;
@@ -388,5 +389,13 @@ public class ApplicationOptionDTO {
 
     public void setHakuaikaId(String hakuaikaId) {
         this.hakuaikaId = hakuaikaId;
+    }
+
+    public List<OrganizationGroupDTO> getOrganizationGroups() {
+        return organizationGroups;
+    }
+
+    public void setOrganizationGroups(List<OrganizationGroupDTO> organizationGroups) {
+        this.organizationGroups = organizationGroups;
     }
 }

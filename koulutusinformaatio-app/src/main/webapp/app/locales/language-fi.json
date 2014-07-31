@@ -1,4 +1,5 @@
 {
+	"tai": "TAI",
     "sitename": "Opintopolku.fi",
     "title-front-page": "Etusivu",
     "title-search-results": "Hakutulokset",
@@ -30,8 +31,8 @@
     "basic-information": "Perustiedot",
     "degree-programmes": "Koulutusohjelmat",
     "included-educations": "Sisältyvät koulutukset",
-    "extended-view-close": "Avaa",
-    "extended-view-open": "Sulje",
+    "extended-view-closed": "Avaa",
+    "extended-view-opened": "Sulje",
 
     "read-more": "Lue lisää...",
     "read-less": "Pienennä",

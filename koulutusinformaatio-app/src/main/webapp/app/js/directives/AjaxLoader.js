@@ -4,7 +4,7 @@ directive('ajaxLoader', function () {
     return {
         restrict: 'A',
         template: 
-            '<div class="ajax-loader">' +
+            '<div class="ajax-loader text-center">' +
                 '<img src="img/ajax-loader-big.gif" />' +
             '</div>',
         link: function (scope, elm, attrs) {

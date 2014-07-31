@@ -1,17 +1,23 @@
-<div class="margin-bottom-2 relative">
-	<label for="sijainti" data-ki-i18n="location-filter-label"></label>
-    <a data-ki-select-area-dialog href="javascript:void(0);" data-ki-i18n="valitse-alue-link" class="float-right" title="{{locales.locationDialog}}" data-ng-click="openModal()"></a>
-	<input 
-		type="text"
-		id="sijainti"
-		name="sijainti"
-		class="width-100"
-		data-ng-model="location" 
-		data-typeahead="state as state.name for state in getLocations($viewValue)" 
-		data-typeahead-on-select="add()"
-		data-typeahead-min-length="1"
-		data-typeahead-wait-ms="500"
-		data-typeahead-editable="false"
-		autocomplete="off"
-		placeholder="{{placeholder}}" />
-</div>
+<form role="form">
+	<div class="form-group">
+		<div class="row">
+			<div class="col-md-16">
+				<a data-ki-select-area-dialog href="javascript:void(0);" data-ki-i18n="valitse-alue-link" class="pull-right underline" title="{{locales.locationDialog}}" data-ng-click="openModal()"></a>
+				<label for="sijainti" data-ki-i18n="location-filter-label" class="control-label pull-left"></label>
+			</div>
+		</div>
+		<input 
+			type="text"
+			id="sijainti"
+			name="sijainti"
+			class="width-100 form-control"
+			data-ng-model="location" 
+			data-typeahead="state as state.name for state in getLocations($viewValue)" 
+			data-typeahead-on-select="add()"
+			data-typeahead-min-length="1"
+			data-typeahead-wait-ms="500"
+			data-typeahead-editable="false"
+			autocomplete="off"
+			placeholder="{{placeholder}}" />
+	</div>
+</form>

@@ -1,8 +1,10 @@
-<div class="margin-bottom-4">
-    <h4 class="title" data-ki-i18n="application-prerequisite"></h4>
-    <div class="content">
+<div class="panel panel-ki-default">
+    <div class="panel-heading">
+        <h4 class="panel-title" data-ki-i18n="application-prerequisite"></h4>
+    </div>
+    <div class="panel-body">
         <form>
-            <ul class="nobullet">
+            <ul class="list-unstyled">
                 <li data-ng-repeat="loi in lois">
                     <input 
                     type="radio" 
@@ -13,7 +15,7 @@
                     data-ng-model="prerequisite.value"
                     data-ng-class="showApplicationRadioSelection" />
                     <label for="input{{$index}}-{{$id}}">{{loi.prerequisite.description}}</label>
-                    <span data-ki-as-state-label class="margin-left-1"></span>
+                    <span data-ki-as-state-label></span>
                 </li>
             </ul>
         </form>

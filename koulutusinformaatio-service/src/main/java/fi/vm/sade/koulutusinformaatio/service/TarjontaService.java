@@ -16,14 +16,14 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
-import fi.vm.sade.koulutusinformaatio.domain.LOS;
-import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
-import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
-import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
+import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
+import fi.vm.sade.koulutusinformaatio.domain.LOS;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Hannu Lyytikainen
@@ -61,7 +61,7 @@ public interface TarjontaService {
      * @return list of root-level higher education learning opportunities.
      * @throws KoodistoException
      */
-    public List<HigherEducationLOS> findHigherEducations() throws KoodistoException;
+    public List<HigherEducationLOS> findHigherEducations() throws KoodistoException, ResourceNotFoundException;
 
     /**
      * Retrieves (from tarjonta) and returns one higher level learning opportunity. This
@@ -73,10 +73,10 @@ public interface TarjontaService {
      * @throws KoodistoException
      */
 	public HigherEducationLOS findHigherEducationLearningOpportunity(
-			String oid) throws TarjontaParseException, KoodistoException;
+			String oid) throws TarjontaParseException, KoodistoException, ResourceNotFoundException;
 
     public List<Code> getEdTypeCodes() throws KoodistoException;
 
     HigherEducationLOS createHigherEducationLearningOpportunityTree(String oid)
-            throws TarjontaParseException, KoodistoException;
+            throws TarjontaParseException, KoodistoException, ResourceNotFoundException;
 }

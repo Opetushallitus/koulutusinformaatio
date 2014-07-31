@@ -1,9 +1,9 @@
 <td>
-    <h4 class="margin-top-0 margin-bottom-0">{{item.providerName}}, <span class="capitalized">{{item.providerLocation}}</span></h4>
-    <a class="block" href="#!/tutkinto/{{item.parent.id}}?prerequisite={{item.prerequisite.value}}">{{item.parent.name}}</a>
-    <span data-ng-if="!item.kotitalous" data-ki-i18n="{{item.educationTypeUri}}" class="block italic"></span>
-    <div class="basket-table-cell-block">
-        <span data-ng-if="!item.kotitalous" class="block">{{item.qualification}}</span>
+    <h4>{{item.providerName}}, <span>{{item.providerLocation}}</span></h4>
+    <a href="#!/tutkinto/{{item.parent.id}}?prerequisite={{item.prerequisite.value}}">{{item.parent.name}}</a>
+    <em data-ng-if="!item.kotitalous" data-ki-i18n="{{item.educationTypeUri}}"></em>
+    <div>
+        <span data-ng-if="!item.kotitalous">{{item.qualification}}</span>
         <div>
             <span data-ki-i18n="application-prerequisite" data-show-colon="true"></span> <span>{{item.prerequisite.description}}</span>
         </div>
@@ -11,9 +11,9 @@
 </td>
 
 <td>
-    <h4 class="margin-top-0 margin-bottom-0">{{item.name}}</h4>
+    <h4>{{item.name}}</h4>
     <div data-ng-if="isErikseenHaettava(as)" data-ki-application-time data-dates="item.applicationDates" data-hakutapa="item.hakutapaUri"></div>
-    <ul class="disc basket-table-cell-block">
+    <ul class="inside">
         <li data-ng-repeat="child in item.children"><a href="#!/koulutusohjelma/{{child.losId}}?prerequisite={{item.prerequisite.value}}">{{child.name}}</a></li>
     </ul>
 </td>
@@ -22,7 +22,7 @@
     <div data-ng-include src="'js/directives/AppBasket/common/attachmentsAndExams.html'"></div>
 </td>
 
-<td class="basket-remove last align-right">
+<td class="last text-right">
     <div data-ng-include src="'js/directives/AppBasket/common/aoActions.html'"></div>
 </td>
 

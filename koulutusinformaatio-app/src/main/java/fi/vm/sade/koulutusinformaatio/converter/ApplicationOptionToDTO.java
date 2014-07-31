@@ -83,6 +83,7 @@ public final class ApplicationOptionToDTO {
             dto.setStatus(applicationOption.getStatus());
             dto.setKotitalous(applicationOption.getEducationCodeUri() != null && applicationOption.getEducationCodeUri().contains(TarjontaConstants.KOTITALOUSKOODI));
             dto.setHakuaikaId(applicationOption.getInternalASDateRef());
+            dto.setOrganizationGroups(OrganizationGroupToDTO.convertAll(applicationOption.getOrganizationGroups()));
 
             return dto;
         }

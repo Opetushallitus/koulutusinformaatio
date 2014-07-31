@@ -1,8 +1,8 @@
-<h4 class="margin-top-0 margin-bottom-1" data-ki-i18n="degree-programmes"></h4>
+<h4 data-ki-i18n="degree-programmes"></h4>
 
 <div data-ng-repeat="loItem in extendedLO.lo.lois">
     <div data-ng-repeat="applicationSystem in loItem.applicationSystems">
-        <ul class="disc">
+        <ul class="inside">
             <li data-ng-repeat="childRef in applicationSystem.children "><a href="#!/koulutusohjelma/{{childRef.losId}}">{{childRef.name}}</a></li>
         </ul>
     </div>
