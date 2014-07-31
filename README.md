@@ -12,6 +12,8 @@ And go to http://localhost:8080/koulutusinformaatio-app/
 
 ### Installing Solr
 
+The easiest way to run the application is to point it to use external Solr and Mongo. However, if you want to run Solr locally, you need to do the following.
+
 Install Voikko: https://github.com/KDK-Alli/SolrPlugins/wiki/Voikko-plugin
 
 Set environment variable solr.data.dir, for example somewhere inside the target:
