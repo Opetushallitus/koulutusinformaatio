@@ -31,6 +31,33 @@ function SearchFieldCtrl($scope, $location, $route, $rootScope, SearchService, k
     	}
     }, true);    
     
+    $scope.fixSearchQueryString = function(queryString) {
+    	
+    	
+    	var index = queryString.indexOf('/');
+    	
+    	if (index === -1) {
+    		return queryString;
+    	}
+    	
+    	var startStr = "";
+    	var endStr = "";
+    	
+    	if (index > 0) {
+    		
+    		startStr = queryString.substr(0, index); 
+        
+    	}
+    	
+    	if (index >= 0 && index < queryString.length - 1 ) {
+    		var tempEndStr = queryString.substr(index +1, queryString.length);
+    		endStr = " " + $scope.fixSearchQueryString(tempEndStr);
+    	}
+    	
+    	return startStr + endStr;
+    	
+    }
+    
     // Perform search using LearningOpportunity service
     $scope.search = function() {
         if ($scope.queryString) {
@@ -40,6 +67,10 @@ function SearchFieldCtrl($scope, $location, $route, $rootScope, SearchService, k
             FilterService.setArticlePage(kiAppConstants.searchResultsStartPage);
             SearchService.setTerm($scope.queryString);
             var queryString = $scope.queryString;
+            if (queryString.length > 0) {
+            	queryString = $scope.fixSearchQueryString(queryString);
+            }
+            
             
             // empty query string
             $scope.queryString = '';
@@ -50,6 +81,7 @@ function SearchFieldCtrl($scope, $location, $route, $rootScope, SearchService, k
             var filters = FilterService.get();
             filters.tab = activeTab;
             $location.hash(null);
+            
             $location.path('/haku/' + queryString);
             $location.search(filters);
         }
