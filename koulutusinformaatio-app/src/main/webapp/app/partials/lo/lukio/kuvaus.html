@@ -1,29 +1,31 @@
-<section class="grid16-9 offset-right-16-1 no-left-gutter wide-column">
-    <div class="infobox">
-        <ul class="nobullet">
-            <li>
-                <span data-ki-i18n="education-starts" data-show-colon="true" class="margin-right-1"></span>
-                <span class="bold">{{selectedLOI.startDate}}</span>
-            </li>
-            <li>
-                <span data-ki-i18n="language-of-instruction" data-show-colon="true" class="margin-right-1"></span>
-                <span class="bold">{{selectedLOI.teachingLanguage}}</span>
-            </li>
-            <li>
-                <span data-ki-i18n="form-of-education" data-show-colon="true" class="margin-right-1"></span>
-                <span data-ng-repeat="fot in selectedLOI.formsOfTeaching">
-                    <span class="bold">{{fot}}</span><span data-ng-show="!$last">,</span>
-                </span>
-            </li>
-            <li>
-                <span data-ki-i18n="duration" data-show-colon="true" class="margin-right-1"></span>
-                <span class="bold">{{lo.creditValue}} {{lo.creditUnit}}</span>
-            </li>
-            <li>
-                <span data-ki-i18n="planned-duration" data-show-colon="true" class="margin-right-1"></span>
-                <span class="bold">{{selectedLOI.plannedDuration}} {{selectedLOI.plannedDurationUnit}}</span>
-            </li>
-        </ul>
+<section class="col-md-9">
+    <div class="panel panel-gray">
+        <div class="panel-body">
+            <ul class="list-unstyled">
+                <li>
+                    <span data-ki-i18n="education-starts" data-show-colon="true"></span>
+                    <strong>{{selectedLOI.startDate}}</strong>
+                </li>
+                <li>
+                    <span data-ki-i18n="language-of-instruction" data-show-colon="true"></span>
+                    <strong>{{selectedLOI.teachingLanguage}}</strong>
+                </li>
+                <li>
+                    <span data-ki-i18n="form-of-education" data-show-colon="true"></span>
+                    <span data-ng-repeat="fot in selectedLOI.formsOfTeaching">
+                        <strong>{{fot}}</strong><span data-ng-show="!$last">,</span>
+                    </span>
+                </li>
+                <li>
+                    <span data-ki-i18n="duration" data-show-colon="true"></span>
+                    <strong>{{lo.creditValue}} {{lo.creditUnit}}</strong>
+                </li>
+                <li>
+                    <span data-ki-i18n="planned-duration" data-show-colon="true"></span>
+                    <strong>{{selectedLOI.plannedDuration}} {{selectedLOI.plannedDurationUnit}}</strong>
+                </li>
+            </ul>
+        </div>
     </div>
     <div data-ki-language-ribbon data-languages="selectedLOI.availableTranslationLanguages" data-change-language="changeDescriptionLanguage" class="ribbon"></div>
     <div data-ki-collapse-text-block data-title="goals-of-education" data-content="lo.goals" data-closed="false"></div>
@@ -44,5 +46,4 @@
     <div data-ki-collapse-text-block data-title="access-to-further-studies" data-content="lo.accessToFurtherStudies" data-closed="false"></div>
     <div data-ki-contact-person-info data-content="selectedLOI.contactPersons"></div>
 </section>
-<div data-ng-class="applyFormClass" data-ng-include data-src="partialCommonUrl + 'as/as.html'" data-ng-controller="ApplicationCtrl"></div>
-<div class="clear"></div>
+<div class="col-md-5 col-md-offset-2" data-ng-class="applyFormClass" data-ng-include data-src="partialCommonUrl + 'as/as.html'" data-ng-controller="ApplicationCtrl"></div>

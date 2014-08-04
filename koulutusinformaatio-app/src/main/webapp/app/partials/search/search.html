@@ -1,7 +1,6 @@
-<section class="content-container grid16-16 margin-bottom-2" >
+<div class="container">
     <div data-ki-breadcrumb="breadcrumb-search-results" id="breadcrumb"></div>
-    <div data-ng-include="'partials/search/header.html'"></div>
-    <h1 class="margin-bottom-0 margin-top-0">
+    <h1>
     	<span data-ki-i18n="search-result-title"></span> &rdquo;<span data-ng-bind-html="tabTitles.queryString | unsafe"></span>&rdquo; ({{tabTitles.totalCount}} <span data-ki-i18n="search-result-count-unit"></span>)
     </h1>
     <div id="search-tablist" data-tabset role="tablist">
@@ -14,23 +13,20 @@
              aria-controls="search-panel1"
              role="tab"
              class="tab" >
-            <div data-ng-controller="SearchFilterCtrl" role="tabpanel" id="search-panel1" class="panel">
-                <div class="grid16-16 margin-bottom-4" >
-                    <!--<h1 class="margin-bottom-0 margin-top-0">
-                        <span data-ki-i18n="search-result-title"></span> &rdquo;{{queryString}}&rdquo; ({{loResult.loCount}} <span data-ki-i18n="search-result-count-unit"></span>)
-    				</h1>-->
-                    <span data-ki-i18n="search-result-title-description"></span>
+            <div data-ng-controller="SearchFilterCtrl" role="tabpanel" id="search-panel1">
+                <div class="row margin-vertical-default">
+                    <div class="col-md-16">
+                        <span data-ki-i18n="search-result-title-description"></span>
+                    </div>
                 </div>
                 <div data-ng-include="'partials/search/facet-selections.html'"></div>
-                <div class="grid16-5">
-                    <div data-ng-include="'partials/search/facet-filters.html'"></div>
-                </div>
-                <div class="grid16-11">
-                    <div data-ng-include="'partials/search/search-results.html'"></div>
+                <div class="row margin-vertical-default">
+                    <div data-ng-include="'partials/search/facet-filters.html'" class="col-md-5"></div>
+                    <div data-ng-include="'partials/search/search-results.html'" class="col-md-11"></div>
                 </div>
             </div>
-            <div class="clear"></div>
         </div>
+        
         <div data-ng-controller="ArticleSearchCtrl"
              data-tab data-heading="{{tabTitles.articles}}"
              data-select="initSearch()"
@@ -41,17 +37,13 @@
              aria-controls="search-panel2"
              role="tab"
              class="tab" >
-            <div role="tabpanel" id="search-panel2" class="panel">
+            <div role="tabpanel" id="search-panel2">
             	<div data-ng-include="'partials/search/articles/facet-selections.html'"></div>
-                <div class="grid16-5 margin-bottom-4">
-                    <div data-ng-include="'partials/search/articles/facet-filters.html'"></div>
-                </div>
-                <div class="grid16-11">
-                    <div data-ng-include="'partials/search/articles/search-results.html'"></div>
+                <div class="row">
+                    <div data-ng-include="'partials/search/articles/facet-filters.html'" class="col-md-5"></div>
+                    <div data-ng-include="'partials/search/articles/search-results.html'" class="col-md-11"></div>
                 </div>
             </div>
-            <div class="clear"></div>
         </div>
 	</div>
-<div class="clear"></div>
-</section>
+</div>

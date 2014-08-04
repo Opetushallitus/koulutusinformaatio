@@ -1,4 +1,5 @@
 {
+	"tai": "OR",
     "sitename": "Studyinfo.fi",
     "title-front-page": "Frontpage",
     "title-search-results": "Search results",
@@ -30,8 +31,8 @@
     "basic-information": "Basic information",
     "degree-programmes": "Study programmes",
     "included-educations": "Included study programmes",
-    "extended-view-close": "Open",
-    "extended-view-open": "Close",
+    "extended-view-closed": "Open",
+    "extended-view-opened": "Close",
 
     "read-more": "Read more...",
     "read-less": "Show less",
@@ -39,7 +40,7 @@
     "filter-search-title": "Prior education",
     "filter-search-upper-secondary": "Finnish matriculation examination and/or completed Finnish upper secondary education",
     "filter-search-as-ongoing": "Application period ongoing",
-    "filter-search-location-title": "Search by location",
+    "filter-search-location-title": "Filter by location",
     "location-filter-placeholder": "Enter region",
     "location-filter-label": "Province",
     "filter-search-location-add": "Add location",
@@ -153,7 +154,7 @@
     "application-options": "Study programmes",
     "application-options-additional": "Study programmes with vacant study places",
     "application-system-additional": "Additional application",
-    "apply-button-label": "Apply",
+    "apply-button-label": "Fill in application",
     "apply-button-label-additional": "Apply",
     "add-to-basket-label": "Add to shortlist",
     "application-system-active-future": "Application period begins",
@@ -197,8 +198,9 @@
 
     "footer-note": "The education providers and higher education institutions maintain their study programme information on Studyinfo. You can check the validity of the information directly from the educational institution or the higher education institution.",
     "footer-copyright": "Copyright @ 2013 Finnish National Board of Education",
-    "footer-privacy-policy": "Database description",
+    "footer-privacy-policy": "Register description",
     "footer-sitemap": "Educational institution index",
+    "footer-whatis": "What is Studyinfo?",
 
     "opetushallitus-address-line-1": "Opetushallitus",
     "opetushallitus-address-line-2": "Hakaniemenranta 6",
@@ -218,11 +220,11 @@
     "valitut-rajaukset": "Search selections",
     "spring": "Application period opens in spring",
     "fall": "Application period opens in autumn",
-    "facet-opetuskieli": "Search by language of instruction",
-    "facet-opetusmuoto": "Specify by mode of teaching",
-    "facet-opetusaika": "Specify by teaching time",
-    "facet-opiskelumuoto": "Specify by form of studies",
-    "facet-teemat": "Search by subject",
+    "facet-opetuskieli": "Filter by language of instruction",
+    "facet-opetusmuoto": "Filter by mode of teaching",
+    "facet-opetusaika": "Filter by teaching time",
+    "facet-opiskelumuoto": "Filter by form of studies",
+    "facet-teemat": "Filter by subject",
     "facet-aineistotyyppi": "Filter by material type",
     "topic_ffm": "Subject",
     "theme_ffm": "Theme",
@@ -247,7 +249,7 @@
     "koko": "Whole",
     "suomi": "Finland",
     "valitse-kaikki": "Select all",
-    "haettava-koulutus": "Search by education type",
+    "haettava-koulutus": "Filter by education type",
     "educationType_ffm": "Education type",
     "et1": "General upper secondary education",
     "et2": "Double degree",
@@ -305,7 +307,7 @@
     "muualla": "Equivalent study options elsewhere",
     "mukainen-koulutus-muualla": "- education elsewhere",
 
-    "hakutapa-jatkuva": "Continuous application process",
+    "hakutapa-jatkuva": "Continuous application",
 
     "preview-help": "Esikatselu näyttää koulutuksen ja hakukohteen näkymät sellaisina kuin oppija näkee ne Opintopolku.fi -palvelussa. Pääset muokkaamaan koulutuksen tietoja Muokkaa koulutusta-painikkeesta ja toiselta välilehdeltä hakukohteen tietoja. Organisaation tietoja ei pääse suoraan muokkaamaan, vaan muokkaus tulee tehdä Organisaatiotiedot-palvelun kautta. (na.)"
 }

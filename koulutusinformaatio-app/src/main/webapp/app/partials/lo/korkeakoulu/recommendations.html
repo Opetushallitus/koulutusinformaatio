@@ -1,8 +1,10 @@
-<div class="application-container margin-bottom-4">
-	<h3 class="title"><span data-ki-i18n="katso-myos"></span></h3>
-	<div class="content">
+<div class="panel panel-ki-default">
+    <div class="panel-heading">
+        <h3 class="panel-title emphasis" data-ki-i18n="katso-myos"></h3>
+    </div>
+	<div class="panel-body">
 		<!-- PREVIEW EXCLUDE -->
-		<ul class="nobullet" data-ng-if="!lo.preview">
+		<ul class="list-unstyled" data-ng-if="!lo.preview">
 			<li>
 				<i class="icon-angle-double-right"></i>
 				<a data-ng-href="#!/haku/*?page=1&facetFilters=teachingLangCode_ffm:{{lo.translationLanguage.toUpperCase()}}&lopFilter={{lo.provider.name}}&excludes=-id:{{lo.id}}&itemsPerPage=25&sortCriteria=0&tab=los">
@@ -22,7 +24,7 @@
 		<!-- END PREVIEW EXCLUDE -->
 
 		<!-- PREVIEW -->
-		<ul data-ng-if="lo.preview">
+		<ul data-ng-if="lo.preview" class="inside">
 			<li>
 				<span data-ki-i18n="tarjoajan"></span> {{lo.provider.name}} <span data-ki-i18n="muita-koulutuksia"></span>
 			</li>
@@ -36,33 +38,38 @@
 		<!-- END PREVIEW -->
 	</div>
 </div>
-<div data-ng-show="(lo.edCodeSuggestions && lo.edCodeSuggestions.length > 0) || (lo.edTypeSuggestions && lo.edTypeSuggestions.length > 0)"  class="application-container margin-bottom-4">
-	<h3 class="title"><span data-ki-i18n="lue-lisaa"></span></h3>
-	<div class="content">
-		<!-- PREVIEW EXCLUDE -->
-		<ul class="nobullet" data-ng-if="!lo.preview">
-			<li data-ng-repeat="article in lo.edCodeSuggestions">
-				<i class="icon-angle-double-right"></i>
-				<a data-ng-href="{{article.url}}">
-					{{article.title | unsafe}}</a>
-			</li>
-			<li data-ng-repeat="article in lo.edTypeSuggestions">
-				<i class="icon-angle-double-right"></i>
-				<a data-ng-href="{{article.url}}">
-					{{article.title | unsafe}} </a>
-			</li>
-		</ul>
-		<!-- END PREVIEW EXCLUDE -->
 
-		<!-- PREVIEW -->
-		<ul data-ng-if="lo.preview">
-			<li data-ng-repeat="article in lo.edCodeSuggestions">
-					{{article.title | unsafe}}
-			</li>
-			<li data-ng-repeat="article in lo.edTypeSuggestions">
-					{{article.title | unsafe}}
-			</li>
-		</ul>
-		<!-- END PREVIEW -->
+<div data-ng-show="(lo.edCodeSuggestions && lo.edCodeSuggestions.length > 0) || (lo.edTypeSuggestions && lo.edTypeSuggestions.length > 0)">
+	<div class="panel panel-ki-default">
+    	<div class="panel-heading">
+        	<h3 class="panel-title emphasis" data-ki-i18n="lue-lisaa"></h3>
+        </div>
+		<div class="panel-body">
+			<!-- PREVIEW EXCLUDE -->
+			<ul class="list-unstyled" data-ng-if="!lo.preview">
+				<li data-ng-repeat="article in lo.edCodeSuggestions">
+					<i class="icon-angle-double-right"></i>
+					<a data-ng-href="{{article.url}}">
+						{{article.title | unsafe}}</a>
+				</li>
+				<li data-ng-repeat="article in lo.edTypeSuggestions">
+					<i class="icon-angle-double-right"></i>
+					<a data-ng-href="{{article.url}}">
+						{{article.title | unsafe}} </a>
+				</li>
+			</ul>
+			<!-- END PREVIEW EXCLUDE -->
+
+			<!-- PREVIEW -->
+			<ul data-ng-if="lo.preview" class="inside">
+				<li data-ng-repeat="article in lo.edCodeSuggestions">
+						{{article.title | unsafe}}
+				</li>
+				<li data-ng-repeat="article in lo.edTypeSuggestions">
+						{{article.title | unsafe}}
+				</li>
+			</ul>
+			<!-- END PREVIEW -->
+		</div>
 	</div>
 </div>

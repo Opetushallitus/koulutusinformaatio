@@ -1,10 +1,8 @@
 <div data-ng-show="hasMultipleTranslations">
-	<span class="ribbon-label margin-right-1" data-ki-i18n="description-language-selection" data-show-colon="true"></span>
-	<div class="inline">
-		<ul class="ribbon-content nobullet">
-			<li data-ng-repeat="lng in languages">
-				<a href="javascript:void(0)" data-ng-click="changeLanguage(lng.value.toLowerCase())">{{lng.description}}</a>
-			</li>
-		</ul>
-	</div>
+	<span class="ribbon-label" data-ki-i18n="description-language-selection" data-show-colon="true"></span>
+	<ul class="ribbon-content list-unstyled">
+		<li data-ng-repeat="lng in languages">
+			<a href="javascript:void(0)" data-ng-click="changeLanguage(lng.value.toLowerCase())">{{lng.description}}</a>
+		</li>
+	</ul>
 </div>

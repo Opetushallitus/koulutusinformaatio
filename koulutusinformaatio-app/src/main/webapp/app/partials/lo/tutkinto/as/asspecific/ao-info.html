@@ -1,18 +1,18 @@
-<ul class="nobullet">
+<ul class="list-unstyled">
     <li>
-    	<h2 class="margin-bottom-0 margin-top-0">{{ao.name}}</h2>
+    	<h2>{{ao.name}}</h2>
     </li>
-    <li class="small">
-    	<span data-ki-i18n="starting-quota" data-show-colon="true" class="margin-right-1"></span>
+    <li class="text-muted">
+    	<span data-ki-i18n="starting-quota" data-show-colon="true"></span>
     	<span>{{ao.startingQuota}}</span>
     </li>
-    <li class="small">
-        <span data-ki-i18n="application-period" data-show-colon="true" class="margin-right-1"></span>
+    <li class="text-muted">
+        <span data-ki-i18n="application-period" data-show-colon="true"></span>
         <span data-ki-timestamp="{{ao.applicationStartDate}}"></span> &ndash; <span data-ki-timestamp="{{ao.applicationEndDate}}"></span>
     </li>
-    <ul class="disc">
-        <li data-ng-repeat="child in ao.childRefs">
-            <a href="#!/koulutusohjelma/{{child.losId}}?prerequisite={{prerequisite.value}}">{{child.name}}</a>
-        </li>
-    </ul>
+</ul>
+<ul class="inside">
+    <li data-ng-repeat="child in ao.childRefs">
+        <a href="#!/koulutusohjelma/{{child.losId}}?prerequisite={{prerequisite.value}}">{{child.name}}</a>
+    </li>
 </ul>

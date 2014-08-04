@@ -1,21 +1,20 @@
-<section class="content-container margin-bottom-2">
-    <div class="grid16-16 application-basket-container">
-        <div data-ki-breadcrumb="title-application-basket-content" id="breadcrumb" class="float-left"></div>
-        <a class="float-right" href="#!/haku/{{queryString}}" data-ki-i18n="application-basket-back"></a>
-        <div class="clear"></clear>
-        <h1 class="float-left margin-top-0">{{title}} ({{itemCount}})</h1>
-        <div class="clear"></div>
-        <p data-ki-i18n="application-basket-description"></p>
-        <div data-ng-switch="basketIsEmpty">
-            <div data-ng-switch-when="true">
-                <p data-ki-i18n="application-basket-no-content"></p>
-            </div>
-            <div data-ng-switch="false">
-                <div data-ki-app-basket-applicationsystem data-items="applicationItems">
-                    <div data-ki-app-basket-applicationsystem-table></div>
-                </div>
+<section class="container">
+    <div class="row">
+        <div class="col-md-16">
+            <div data-ki-breadcrumb="title-application-basket-content" id="breadcrumb" class="pull-left"></div>
+            <a class="pull-right" href="#!/haku/{{queryString}}" data-ki-i18n="application-basket-back"></a>
+        </div>
+    </div>
+    <h1>{{title}} ({{itemCount}})</h1>
+    <p data-ki-i18n="application-basket-description"></p>
+    <div data-ng-switch="basketIsEmpty">
+        <div data-ng-switch-when="true">
+            <p data-ki-i18n="application-basket-no-content"></p>
+        </div>
+        <div data-ng-switch="false">
+            <div data-ki-app-basket-applicationsystem data-items="applicationItems">
+                <div data-ki-app-basket-applicationsystem-table></div>
             </div>
         </div>
     </div>
-<div class="clear"></div>
 </section>

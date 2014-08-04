@@ -114,12 +114,12 @@ directive('kiStudentBenefits', ['CollapseBlockService', function(CollapseBlockSe
         require: '^kiCollapseBlock',
         templateUrl: 'templates/studentBenefits.html',
         link: function($scope, element, attrs) {
-            $scope.anchor = attrs.anchor;
 
             $scope.$watch('content', function(value) {
                 if (value) {
                     $scope.provider = value;
-                    var showStudentBenefits = (value.livingExpenses ||
+                    var showStudentBenefits = (value.living ||
+                        value.livingExpenses ||
                         value.dining ||
                         value.healthcare) ? true : false;
                     CollapseBlockService.setBlock($scope.blockId, showStudentBenefits);      
@@ -138,7 +138,6 @@ directive('kiOrganization', ['CollapseBlockService', function(CollapseBlockServi
         require: '^kiCollapseBlock',
         templateUrl: 'templates/organization.html',
         link: function($scope, element, attrs) {
-            $scope.anchor = attrs.anchor;
 
             $scope.$watch('content', function(value) {
                 if (value) {
@@ -163,6 +162,7 @@ directive('kiOrganizationImage', function() {
                     src: 'data:image/jpeg;base64,' + data.pictureEncoded,
                     alt: 'Oppilaitoksen kuva'
                 });
+                imgElem.addClass('img-responsive');
 
                 $(element).empty();
                 element.append(imgElem);
@@ -774,10 +774,10 @@ directive('kiAsStateLabel', ['UtilityService', 'TranslationService', function(Ut
             }
 
             if (isOngoing) {
-                element.addClass('label vih');
+                element.addClass('label label-success');
                 element.text(TranslationService.getTranslation('label-as-ongoing'));
             } else {
-                element.addClass('label har');
+                element.addClass('label label-default');
                 element.text(TranslationService.getTranslation('label-as-not-ongoing'));
             }
         })
@@ -804,7 +804,7 @@ directive('kiAsState', ['TranslationService', function(TranslationService) {
 directive('kiApplicationStatusLabel', function() {
     return {
         restrict: 'A',
-        template: '<span data-ng-switch="active">' +
+        template: '<span data-ng-switch="active" class="text-muted">' +
                     '<span data-ng-switch-when="future"><span data-ki-i18n="application-system-active-future"></span> <span data-ki-timestamp="{{timestamp}}"></span></span>' +
                     '<span data-ng-switch-when="past" data-ki-i18n="application-system-active-past"></span>' +
                     '<span data-ng-switch-when="present"data-ki-i18n="application-system-active-present"></span>' +
@@ -856,9 +856,9 @@ directive('kiPreviewStatusLabel', ['TranslationService', function(TranslationSer
             var statusDraft = 'LUONNOS';
 
             if ($scope.status == statusPublished || $scope.status == statusReady) {
-                element.addClass('label vih');
+                element.addClass('label label-success');
             } else {
-                element.addClass('label sin');
+                element.addClass('label label-info');
             }
 
             var labelText = TranslationService.getTranslationByLanguage($scope.status, $scope.lang);
@@ -866,6 +866,28 @@ directive('kiPreviewStatusLabel', ['TranslationService', function(TranslationSer
         }
     }
 }]).
+
+/**
+ *  Render application time
+ */
+directive('kiAoApplicationTime', function() {
+    return {
+        restrict: 'A',
+        templateUrl: 'templates/aoApplicationTime.html',
+        scope : {
+            startdate: '=',
+            enddate: '=',
+            hakutapa: '=',
+            label: '@'
+        },
+        controller: function($scope) {
+            $scope.isJatkuva = function() {
+                // code for jatkuva haku is 03
+                return $scope.hakutapa == '03';
+            }
+        }
+    }
+}).
 
 /**
  *  Render application option status

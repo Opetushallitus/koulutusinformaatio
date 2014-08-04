@@ -39,24 +39,24 @@ directive('toggleCollapse', [function () {
         transclude: true,
         controller: function($scope) {
             $scope.toggleExtendedView = function() {
-                if($scope.showExtension == 'close') {
+                if($scope.showExtension == 'closed') {
                     if(!$scope.extendedLO) {
                         $scope.fetchLOData();
-                        $scope.showExtension = 'open';
+                        $scope.showExtension = 'opened';
                     } else {
-                        $scope.showExtension = 'open';
+                        $scope.showExtension = 'opened';
                     }
                 } else {
-                    $scope.showExtension = 'close';
+                    $scope.showExtension = 'closed';
                 }  
             }
         },
         link: function (scope, iElement, iAttrs) {
-            scope.showExtension = "close";
+            scope.showExtension = "closed";
         },
         template:
             '<div class="clear"></div>' +
-            '<div data-collapse="showExtension == \'close\'">' +
+            '<div data-collapse="showExtension == \'closed\'">' +
                 '<div class="search-result-extended" data-ng-transclude></div>' +
             '</div>'
 
@@ -177,8 +177,8 @@ directive('srNotApplicable', [function() {
         restrict: 'A',
         require: '^extendedSearchresultData',
         template:
-            '<p class="small">' +
-            '<span data-ki-i18n="application-period" data-show-colon="true" class="margin-right-1"></span>' +
+            '<p class="text-muted">' +
+            '<span data-ki-i18n="application-period" data-show-colon="true"></span>' +
             '<span data-ki-timestamp="{{applicationoption.applicationStartDate}}"></span>&ndash;<span data-ki-timestamp="{{applicationoption.applicationEndDate}}"></span>' +
             '</p>'
     }

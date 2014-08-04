@@ -35,13 +35,19 @@ public class FacetIndexer {
         //Prerequisites
         SolrUtil.indexCodeAsFacetDoc(loi.getPrerequisite(), docs, true);
 
-        for (Code curCode : los.getTopics()) {
-            SolrUtil.indexCodeAsFacetDoc(curCode, docs, false);
+        if (los.getTopics() != null) {
+        
+            for (Code curCode : los.getTopics()) {
+                SolrUtil.indexCodeAsFacetDoc(curCode, docs, false);
+            }
         }
 
-        for (Code curCode : los.getThemes()) {
-            SolrUtil.indexCodeAsFacetDoc(curCode, docs, false);
+        if (los.getThemes() != null) {
+            for (Code curCode : los.getThemes()) {
+                SolrUtil.indexCodeAsFacetDoc(curCode, docs, false);
+            }
         }
+        
         
         if (loi.getFotFacet() != null) {
             for (Code curFOT : loi.getFotFacet()) {
@@ -99,12 +105,17 @@ public class FacetIndexer {
             }
         }
 
-        for (Code curCode : parent.getTopics()) {
-            SolrUtil.indexCodeAsFacetDoc(curCode, docs, false);
+        if (parent.getTopics() != null) {
+            
+            for (Code curCode : parent.getTopics()) {
+                SolrUtil.indexCodeAsFacetDoc(curCode, docs, false);
+            }
         }
 
-        for (Code curCode : parent.getThemes()) {
-            SolrUtil.indexCodeAsFacetDoc(curCode, docs, false);
+        if (parent.getThemes() != null) {
+            for (Code curCode : parent.getThemes()) {
+                SolrUtil.indexCodeAsFacetDoc(curCode, docs, false);
+            }
         }
 
         return docs;
@@ -131,12 +142,17 @@ public class FacetIndexer {
         SolrUtil.indexCodeAsFacetDoc(childLOI.getTeachingLanguages().get(0), docs, true);
         SolrUtil.indexCodeAsFacetDoc(childLOI.getPrerequisite(), docs, true);
 
-        for (Code curCode : los.getTopics()) {
-            SolrUtil.indexCodeAsFacetDoc(curCode, docs, false);
+        if (los.getTopics() != null) {
+            
+            for (Code curCode : los.getTopics()) {
+                SolrUtil.indexCodeAsFacetDoc(curCode, docs, false);
+            }
         }
 
-        for (Code curCode : los.getThemes()) {
-            SolrUtil.indexCodeAsFacetDoc(curCode, docs, false);
+        if (los.getThemes() != null) {
+            for (Code curCode : los.getThemes()) {
+                SolrUtil.indexCodeAsFacetDoc(curCode, docs, false);
+            }
         }
         
         if (childLOI.getFotFacet() != null) {
@@ -178,12 +194,17 @@ public class FacetIndexer {
             }
         }
 
-        for (Code curCode : los.getTopics()) {
-            SolrUtil.indexCodeAsFacetDoc(curCode, docs, false);
+        if (los.getTopics() != null) {
+            
+            for (Code curCode : los.getTopics()) {
+                SolrUtil.indexCodeAsFacetDoc(curCode, docs, false);
+            }
         }
 
-        for (Code curCode : los.getThemes()) {
-            SolrUtil.indexCodeAsFacetDoc(curCode, docs, false);
+        if (los.getThemes() != null) {
+            for (Code curCode : los.getThemes()) {
+                SolrUtil.indexCodeAsFacetDoc(curCode, docs, false);
+            }
         }
         
         if (los.getFotFacet() != null) {

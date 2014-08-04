@@ -48,6 +48,8 @@ public final class ApplicationOptionToSearchResultDTO {
             dto.setKaksoistutkinto(applicationOption.isKaksoistutkinto());
             dto.setVocational(applicationOption.isVocational());
             dto.setEducationCodeUri(applicationOption.getEducationCodeUri());
+            dto.setOrganizationGroups(OrganizationGroupToDTO.convertAll(applicationOption.getOrganizationGroups()));
+
             if (applicationOption.getProvider() != null) {
                 dto.setAthleteEducation(applicationOption.getProvider().isAthleteEducation() || applicationOption.isAthleteEducation());
             } else {

@@ -1,8 +1,12 @@
-<h4 class="title" data-ki-i18n="application-options"></h4>
-<div data-ng-repeat="ao in as.applicationOptions" class="content">
-    <div data-ng-include data-src="partialUrl + 'as/aospecific/ao-info.html'"></div>
-    <form name="levelSelectionForm" id="application-form-{{as.id}}" action="{{hakuAppUrl + 'lomake/' + as.id}}" method="POST" class="margin-top-2" target="hakulomake">
-        <div data-ng-include data-src="partialCommonUrl + 'as/ao-inputs.html'"></div>
-        <div data-ng-include data-src="partialUrl + 'as/aospecific/ao-actions.html'"></div>
-    </form>
+<div class="panel panel-ki-default">
+    <div class="panel-heading">
+        <h4 class="panel-title" data-ki-i18n="application-options"></h4>
+    </div>
+    <div data-ng-repeat="ao in as.applicationOptions" class="panel-body">
+        <div data-ng-include data-src="partialUrl + 'as/aospecific/ao-info.html'"></div>
+        <form name="levelSelectionForm" id="application-form-{{as.id}}" action="{{hakuAppUrl + 'lomake/' + as.id}}" method="POST" target="hakulomake">
+            <div data-ng-include data-src="partialCommonUrl + 'as/ao-inputs.html'"></div>
+            <div data-ng-include data-src="partialUrl + 'as/aospecific/ao-actions.html'"></div>
+        </form>
+    </div>
 </div>

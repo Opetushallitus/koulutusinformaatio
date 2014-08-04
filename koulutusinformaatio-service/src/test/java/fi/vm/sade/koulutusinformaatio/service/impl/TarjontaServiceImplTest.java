@@ -16,32 +16,30 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
+import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.LOSObjectCreator;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.LearningOpportunityDirector;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.RehabilitatingLearningOpportunityBuilder;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.UpperSecondaryLearningOpportunityBuilder;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.VocationalLearningOpportunityBuilder;
+import fi.vm.sade.koulutusinformaatio.service.builder.impl.*;
+import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
-import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.shared.types.TarjontaTila;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.convert.ConversionService;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.eq;
@@ -62,6 +60,7 @@ public class TarjontaServiceImplTest {
     ProviderService providerService;
     LearningOpportunityDirector loDirector;
     TarjontaRawService tarjontaRawService;
+    OrganisaatioRawService organisaatioRawService;
     TarjontaServiceImpl service;
 
     @Before
@@ -82,8 +81,6 @@ public class TarjontaServiceImplTest {
         invalidKomo.setKoulutusTyyppiUri("invalid");
         invalidKomo.setModuuliTyyppi("invalid");
         
-        
-
         tarjontaRawService = mock(TarjontaRawService.class);
         loDirector = mock(LearningOpportunityDirector.class);
         when(tarjontaRawService.getKomo(eq(KOMO_ID_VOC))).thenReturn(vocationalKomo);
@@ -91,10 +88,8 @@ public class TarjontaServiceImplTest {
         when(tarjontaRawService.getKomo(eq(KOMO_ID_REHAB))).thenReturn(rehabKomo);
         when(tarjontaRawService.getKomo(eq(KOMO_ID_INVALID))).thenReturn(invalidKomo);
         
-        
-        
         service = new TarjontaServiceImpl(conversionService, koodistoService,
-                providerService, loDirector, tarjontaRawService);
+                providerService, loDirector, tarjontaRawService, organisaatioRawService);
         
         mockHigherEdRawRes();
     }
@@ -182,13 +177,13 @@ public class TarjontaServiceImplTest {
     }
     
     @Test
-    public void testFindHigherEducations() throws KoodistoException {
+    public void testFindHigherEducations() throws KoodistoException, IOException, ResourceNotFoundException {
     	List<HigherEducationLOS> higherEds = service.findHigherEducations();
     	assertEquals(higherEds.size(), 1);
     }
     
     @Test
-    public void testfindHigherEducationLearningOpportunity() throws TarjontaParseException, KoodistoException {
+    public void testfindHigherEducationLearningOpportunity() throws TarjontaParseException, KoodistoException, IOException, ResourceNotFoundException {
     	HigherEducationLOS nonPublished = service.findHigherEducationLearningOpportunity("2.2.3.4");
     	assertEquals(nonPublished.getId(), "2.2.3.4");
     }

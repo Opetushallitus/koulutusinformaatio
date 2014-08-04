@@ -1,11 +1,13 @@
-<section class="grid16-9 offset-right-16-1 no-left-gutter wide-column">
+<section class="col-md-9">
     <div data-ki-language-ribbon data-languages="selectedLOI.availableTranslationLanguages" data-change-language="changeDescriptionLanguage" class="ribbon"></div>
 
     <div data-ng-repeat="as in selectedLOI.applicationSystems">
-        <div data-ng-repeat="ao in as.applicationOptions" class="ao-block">
-            <div class="margin-bottom-2">
-                <h2 class="margin-bottom-0 margin-right-2">{{ao.name}}</h2>
-                <span>{{as.name}}</span> (<span data-ki-timestamp="{{ao.applicationStartDate}}"></span> - <span data-ki-timestamp="{{ao.applicationEndDate}}"></span>)
+        <div data-ng-repeat="ao in as.applicationOptions">
+            <div>
+                <h2>{{ao.name}}</h2>
+                <div class="margin-vertical-default">
+                    <span>{{as.name}}</span> (<span data-ki-timestamp="{{ao.applicationStartDate}}"></span> - <span data-ki-timestamp="{{ao.applicationEndDate}}"></span>)
+                </div>
             </div>
             <div data-ki-collapse-text-block data-title="selection-criteria" data-content="ao.selectionCriteria"></div>
             <div data-ki-collapse-block data-title="entrance-exam" data-content="ao.exams">
@@ -15,9 +17,9 @@
                 <div data-ki-attachments></div>
             </div>
             <div data-ki-collapse-text-block data-title="further-application-info" data-content="ao.additionalInfo"></div>
+            <hr/>
         </div>
     </div>
     <div data-ki-info-center-address></div>
 </section>
-<div data-ng-class="applyFormClass" data-ng-include data-src="partialCommonUrl + 'as/as.html'" data-ng-controller="ApplicationCtrl"></div>
-<div class="clear"></div>
+<div class="col-md-5 col-md-offset-2" data-ng-class="applyFormClass" data-ng-include data-src="partialCommonUrl + 'as/as.html'" data-ng-controller="ApplicationCtrl"></div>

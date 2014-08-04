@@ -7,19 +7,22 @@ window.Config.app.common = {
 		ophUrl: 'http://www.oph.fi/etusivu',
 		okmUrl: 'http://www.minedu.fi/OPM/',
 		textVersionUrl: '/m/index.html',
-		sitemapUrl: '/fi/hakemisto/oppilaitokset/A'
+		sitemapUrl: '/fi/hakemisto/oppilaitokset/A',
+        whatisUrl: '/wp/fi/opintopolku/tietoa-palvelusta/'
 	},
 	sv: {
     	ophUrl: 'http://www.oph.fi/startsidan',
     	okmUrl: 'http://www.minedu.fi/OPM/?lang=sv',
     	textVersionUrl: '/m/index_sv.html',
-    	sitemapUrl: '/sv/hakemisto/oppilaitokset/A'
+    	sitemapUrl: '/sv/hakemisto/oppilaitokset/A',
+        whatisUrl: '/wp/sv/studieinfo-2/vad-ar-studieinfo/'
 	},
     en: {
         ophUrl: 'http://www.oph.fi/english',
         okmUrl: 'http://www.minedu.fi/OPM/?lang=en',
         textVersionUrl: '/m/index.html',
-        sitemapUrl: '/fi/hakemisto/oppilaitokset/'
+        sitemapUrl: '/en/hakemisto/oppilaitokset/',
+        whatisUrl: '/wp2/en/what-is-studyinfo/'
     },
     hakulomakeUrl: '/haku-app/',
     piwikUrl: 'https://analytiikka.opintopolku.fi/piwik/'
@@ -41,7 +44,7 @@ window.Config.app.prod = {
 	},
     en: {
         frontpageUrl: '/wp2/en/',
-        rekisteriselosteUrl: '/wp2/en/rekisteriseloste/',
+        rekisteriselosteUrl: '/wp2/en/register/',
         navigationUrl: '/wp2/en/api/nav/json_nav/',
         tarjontaUrl: 'https://virkailija.opintopolku.fi/tarjonta-app/#'
     }
@@ -85,7 +88,7 @@ window.Config.app.qa = {
 	},
     en: {
         frontpageUrl: '/wp2/en/',
-        rekisteriselosteUrl: '/wp2/en/rekisteriseloste/',
+        rekisteriselosteUrl: '/wp2/en/register/',
         navigationUrl: '/wp2/en/api/nav/json_nav/',
         tarjontaUrl: 'https://testi.virkailija.opintopolku.fi/tarjonta-app/#'
     }
@@ -107,7 +110,7 @@ window.Config.app.reppu = {
 	},
     en: {
         frontpageUrl: '/wp2/en/',
-        rekisteriselosteUrl: '/wp2/en/rekisteriseloste/',
+        rekisteriselosteUrl: '/wp2/en/register/',
         navigationUrl: 'https://testi.opintopolku.fi/wp2/en/api/nav/json_nav/',
         tarjontaUrl: 'https://test-virkailija.oph.ware.fi/tarjonta-app/#'
     }
@@ -118,19 +121,19 @@ window.Config.app.reppu = {
 window.Config.app.dev = {
 	fi: {
 		frontpageUrl: 'https://testi.opintopolku.fi/wp/fi/',
-		rekisteriselosteUrl: '/wp/fi/',
+		rekisteriselosteUrl: 'https://testi.opintopolku.fi/wp/fi/rekisteriseloste/',
 		navigationUrl: 'https://testi.opintopolku.fi/wp/fi/api/nav/json_nav/',
 		tarjontaUrl: 'https://itest-virkailija.oph.ware.fi/tarjonta-app/#'
 	},
 	sv: {
 		frontpageUrl: 'https://testi.opintopolku.fi/wp/sv/',
-    	rekisteriselosteUrl: '/wp/sv/',
+    	rekisteriselosteUrl: 'https://testi.opintopolku.fi/wp/sv/registerbeskrivning/',
     	navigationUrl: 'https://testi.opintopolku.fi/wp/sv/api/nav/json_nav/',
     	tarjontaUrl: 'https://itest-virkailija.oph.ware.fi/tarjonta-app/#'
 	},
     en: {
         frontpageUrl: 'https://testi.opintopolku.fi/wp2/en/',
-        rekisteriselosteUrl: 'https://testi.opintopolku.fi/wp2/en/rekisteriseloste',
+        rekisteriselosteUrl: 'https://testi.opintopolku.fi/wp2/en/register',
         navigationUrl: 'https://testi.opintopolku.fi/wp2/en/api/nav/json_nav/',
         tarjontaUrl: 'https://itest-virkailija.oph.ware.fi/tarjonta-app/#'
     }

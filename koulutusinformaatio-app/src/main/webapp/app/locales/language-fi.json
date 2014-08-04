@@ -1,4 +1,5 @@
 {
+	"tai": "TAI",
     "sitename": "Opintopolku.fi",
     "title-front-page": "Etusivu",
     "title-search-results": "Hakutulokset",
@@ -30,8 +31,8 @@
     "basic-information": "Perustiedot",
     "degree-programmes": "Koulutusohjelmat",
     "included-educations": "Sisältyvät koulutukset",
-    "extended-view-close": "Avaa",
-    "extended-view-open": "Sulje",
+    "extended-view-closed": "Avaa",
+    "extended-view-opened": "Sulje",
 
     "read-more": "Lue lisää...",
     "read-less": "Pienennä",
@@ -153,7 +154,7 @@
     "application-options": "Hakukohteet",
     "application-options-additional": "Hakukohteet, joissa paikkoja vapaana",
     "application-system-additional": "Lisähaku",
-    "apply-button-label": "Hae koulutukseen",
+    "apply-button-label": "Täytä hakulomake",
     "apply-button-label-additional": "Hae vapaata paikkaa",
     "add-to-basket-label": "Lisää muistilistalle",
     "application-system-active-future": "Hakuaika alkaa",
@@ -199,6 +200,7 @@
     "footer-copyright": "Copyright © 2013 Opetushallitus",
     "footer-privacy-policy": "Rekisteriseloste",
     "footer-sitemap": "Hakemisto",
+    "footer-whatis": "Mikä on Opintopolku?",
 
     "opetushallitus-address-line-1": "Opetushallitus",
     "opetushallitus-address-line-2": "Hakaniemenranta 6",

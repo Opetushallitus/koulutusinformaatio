@@ -108,8 +108,13 @@ public final class ConverterUtil {
 
     public static boolean isOngoing(DateRange dateRange) {
         Date now = new Date();
-        if (dateRange != null && dateRange.getStartDate() != null && dateRange.getEndDate() !=null && dateRange.getStartDate().before(now) && now.before(dateRange.getEndDate())) {
-            return true;
+        if (dateRange != null ) {
+            if (dateRange.getStartDate() != null && dateRange.getEndDate() !=null && dateRange.getStartDate().before(now) && now.before(dateRange.getEndDate())) {
+                return true;
+            } else if (dateRange.getStartDate() != null && dateRange.getEndDate() == null && dateRange.getStartDate().before(now)) {
+                return true;
+            }
+            return false;
         } else {
             return false;
         }
@@ -117,8 +122,13 @@ public final class ConverterUtil {
 
     public static boolean isOngoingDTO(DateRangeDTO dateRange) {
         Date now = new Date();
-        if (dateRange != null && dateRange.getStartDate() != null && dateRange.getEndDate() !=null && dateRange.getStartDate().before(now) && now.before(dateRange.getEndDate())) {
-            return true;
+        if (dateRange != null ) {
+            if (dateRange.getStartDate() != null && dateRange.getEndDate() !=null && dateRange.getStartDate().before(now) && now.before(dateRange.getEndDate())) {
+                return true;
+            } else if (dateRange.getStartDate() != null && dateRange.getEndDate() ==null && dateRange.getStartDate().before(now)) {
+                return true;
+            }
+            return false;
         } else {
             return false;
         }

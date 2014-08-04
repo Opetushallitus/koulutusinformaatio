@@ -1,5 +1,17 @@
-<ul>
-	<li data-ng-repeat="crumb in breadcrumbItems" class="breadcrumb-item {{crumb.name}}">
+<ol class="breadcrumb">
+	<li data-ng-repeat="crumb in breadcrumbItems" data-ng-class="{active: $last, home: $first}">
+		<a data-ng-if="$first" href="{{crumb.linkHref}}" title="{{crumb.tooltip}}">
+			<span class="sr-only">{{crumb.tooltip}}</span>
+			<i class="icon-home"></i>
+		</a>
+		<span data-ng-if="$last" title="{{crumb.name}}">
+			{{crumb.name}}
+		</span>
+		<span data-ng-if="!$first && !$last">
+			<a href="{{crumb.linkHref}}" title="{{crumb.tooltip}}">{{crumb.name}}</a>
+		</span>
+
+	<!--
 		<span data-ng-switch="$last">
 			<span data-ng-switch-when="true" title="{{crumb.name}}">
 				{{crumb.name}}
@@ -8,5 +20,6 @@
 				<a href="{{crumb.linkHref}}" title="{{crumb.tooltip}}">{{crumb.name}}</a>
 			</span>
 		</span>
+	-->
 	</li>
-</ul>
+</ol>

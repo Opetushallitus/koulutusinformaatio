@@ -1,4 +1,5 @@
 {
+	"tai": "ELLER",
     "sitename": "Studieinfo.fi",
     "title-front-page": "Startsida",
     "title-search-results": "Sökresultat",
@@ -30,8 +31,8 @@
     "basic-information": "Basuppgifter",
     "degree-programmes": "Utbildningsprogram",
     "included-educations": "Inkluderade utbildningar",
-    "extended-view-close": "Öppna",
-    "extended-view-open": "Stäng",
+    "extended-view-closed": "Öppna",
+    "extended-view-opened": "Stäng",
 
     "read-more": "Läs mera...",
     "read-less": "Visa mindre",
@@ -153,7 +154,7 @@
     "application-options": "Ansökningsmål",
     "application-options-additional": "Ansökningsmål med lediga studieplatser",
     "application-system-additional": "Tilläggsansökan",
-    "apply-button-label": "Sök till utbildning",
+    "apply-button-label": "Fyll i ansökan",
     "apply-button-label-additional": "Sök till ledig studieplats",
     "add-to-basket-label": "Lägg till i minneslistan",
     "application-system-active-future": "Ansökningstiden inleds",
@@ -199,6 +200,7 @@
     "footer-copyright": "Copyright © 2013 Utbildningsstyrelsen",
     "footer-privacy-policy": "Registerbeskrivning",
     "footer-sitemap": "Index",
+    "footer-whatis": "Vad är Studieinfo?",
 
     "opetushallitus-address-line-1": "Utbildningsstyrelsen",
     "opetushallitus-address-line-2": "Hagnäskajen 6",
@@ -305,7 +307,7 @@
     "muualla": "Motsvarande utbildning annanstans",
     "mukainen-koulutus-muualla": "- utbildning annanstans",
 
-    "hakutapa-jatkuva": "Fortlöpande ansökan",
+    "hakutapa-jatkuva": "Fortlöpande ansökningstid",
 
     "preview-help": "Förhandsgranskningen visar utbildningen och ansökningsmålet såsom en användare ser dem i Studieinfo.fi-tjänsten. Du kan behandla uppgifterna om utbildningen genom att klicka på knappen Behandla utbildningen. Via den andra fliken kan du behandla ansökningsmålets uppgifter. Du kan inte behandla organisationsuppgifter här, utan via tjänsten Organisationstjänster."
 }

@@ -727,8 +727,6 @@ service('ParentLOTransformer', ['KiSorter', '$filter', '$rootScope', function(Ki
                     as.children = children;
                 });
             });
-
-            //console.log(result);
         }
     }
 }]).
@@ -1912,6 +1910,8 @@ service('KiSorter', ['UtilityService', function(UtilityService) {
                     return isVarsinainenYhteishakuTulossaHakuun(a) ? -1 : 1;
                 } else if (isHakuKaynnissa(a) != isHakuKaynnissa(b)) {
                     return isHakuKaynnissa(a) ? -1 : 1;
+                } else if (!isHakuKaynnissa(a) && !isHakuKaynnissa(b)) {
+                	return getEarliestStartDate(b) - getEarliestStartDate(a);
                 } else if (getEarliestStartDate(a) != getEarliestStartDate(b)) {
                     return getEarliestStartDate(a) - getEarliestStartDate(b);
                 } else {

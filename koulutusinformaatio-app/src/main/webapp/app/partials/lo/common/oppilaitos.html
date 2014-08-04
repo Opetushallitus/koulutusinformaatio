@@ -1,6 +1,6 @@
-<section class="grid16-9 offset-right-16-1 no-left-gutter wide-column">
-    <div class="ribbon margin-bottom-2">
-        <ul class="ribbon-content nobullet">
+<section class="col-md-9">
+    <div class="ribbon">
+        <ul class="ribbon-content list-unstyled">
             <li><a href="javascript:void(0)" data-ng-click="scrollToAnchor('oppilaitos-anchor')" data-ki-i18n="academy-description"></a></li>
             <li><a href="javascript:void(0)" data-ng-click="scrollToAnchor('esteettomyys-anchor')" data-ki-i18n="accessibility-anchor"></a></li>
             <li><a href="javascript:void(0)" data-ng-click="scrollToAnchor('edut-anchor')" data-ki-i18n="student-benefits-anchor"></a></li>
@@ -9,7 +9,7 @@
     </div>
     <figure data-ki-organization-image></figure>
     <div data-ki-social-links></div>
-    <div data-ki-language-ribbon data-languages="lo.availableTranslationLanguages" data-change-language="changeDescriptionLanguage" class="ribbon margin-bottom-2"></div>
+    <div data-ki-language-ribbon data-languages="lo.availableTranslationLanguages" data-change-language="changeDescriptionLanguage" class="ribbon"></div>
     
     <div data-ki-collapse-block data-title-value="provider.name" data-content="provider" data-anchor="oppilaitos-anchor">
         <div data-ki-organization></div>
@@ -21,5 +21,4 @@
 
     <div data-ki-contact-info="provider" data-anchor="yhteystiedot-anchor"></div>
 </section>
-<div data-ng-class="providerAsideClass" data-ng-include data-src="partialUrl + 'oppilaitos-aside.html'"></div>
-<div class="clear"></div>
+<div class="col-md-5 col-md-offset-2" data-ng-class="providerAsideClass" data-ng-include data-src="partialUrl + 'oppilaitos-aside.html'"></div>

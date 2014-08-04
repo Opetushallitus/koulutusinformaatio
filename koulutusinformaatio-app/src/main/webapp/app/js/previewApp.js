@@ -90,6 +90,16 @@ var kiApp = angular.module('previewApp',
     }
 })
 
+.filter('tables', function() {
+    return function(val) {
+        if (val) {
+            val = val.replace(/<\s*table.*?>/gi, '<table class="table table-striped table-condensed table-responsive>"');
+        }
+
+        return val;
+    }
+})
+
 // initialize i18n library
 .run(['$location', 'LanguageService', 'HostResolver', 'VirkailijaLanguageService', function($location, LanguageService, HostResolver, VirkailijaLanguageService) {
 	
