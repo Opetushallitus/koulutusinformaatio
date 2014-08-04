@@ -1,57 +1,4 @@
 "use strict";
-/*
-describe('Location filter directive', function() {
-    var scope,
-    elem,
-    directive,
-    compiled,
-    html;
-  
-    beforeEach(function () {
-
-        //load the module
-        module('kiApp', 'kiApp.directives', 'templates/locationFilter.html');
-        
-        //set our view html.
-        html = '<div data-ki-location-filter></div>';
-        
-        inject(function($compile, $rootScope, $templateCache) {
-            //create a scope (you could just use $rootScope, I suppose)
-            scope = $rootScope;
-            scope.$parent = $rootScope.$new();
-            scope.locations = [{name: 'Helsinki', code: 091}, {name: 'Turku', code: 092}];
-            scope.change = function() {};
-
-            //get the jqLite or jQuery element
-            elem = angular.element(html);
-
-            //compile the element into a function to 
-            // process the view.
-            compiled = $compile(elem);
-
-            //run the compiled view.
-            compiled(scope);
-
-            //call digest on the scope!
-            scope.$digest();
-        });
-    });
-
-    it('should contain exactly one input field', function() {
-        expect(elem.find('input').length).toEqual(1);
-    });
-
-
-    it('should add input field current value as new location', function() {
-        scope.location = 'Espoo';
-        scope.add();
-        expect(scope.locations.length).toEqual(3);
-        expect(scope.locations[2]).toEqual('Espoo');
-    });
-
-});
-*/
-
 
 describe('Application system state label', function() {
     var scope,
@@ -103,7 +50,7 @@ describe('Application system state label', function() {
 
         it('should have class label and vih', function() {
             expect(elem.hasClass('label')).toBeTruthy();
-            expect(elem.hasClass('vih')).toBeTruthy();
+            expect(elem.hasClass('label-success')).toBeTruthy();
         });
 
         it('should contain correct text', function() {
@@ -139,7 +86,7 @@ describe('Application system state label', function() {
 
         it('should have class label and har', function() {
             expect(elem.hasClass('label')).toBeTruthy();
-            expect(elem.hasClass('har')).toBeTruthy();
+            expect(elem.hasClass('label-default')).toBeTruthy();
         });
 
         it('should contain correct text', function() {
@@ -177,7 +124,7 @@ describe('Application system state label', function() {
 
         it('should have class label and vih', function() {
             expect(elem.hasClass('label')).toBeTruthy();
-            expect(elem.hasClass('vih')).toBeTruthy();
+            expect(elem.hasClass('label-success')).toBeTruthy();
         });
 
         it('should contain correct text', function() {
@@ -213,7 +160,7 @@ describe('Application system state label', function() {
 
         it('should have class label and har', function() {
             expect(elem.hasClass('label')).toBeTruthy();
-            expect(elem.hasClass('har')).toBeTruthy();
+            expect(elem.hasClass('label-default')).toBeTruthy();
         });
 
         it('should contain correct text', function() {
