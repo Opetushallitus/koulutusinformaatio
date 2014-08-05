@@ -302,7 +302,15 @@ public class ApplicationOptionCreator extends ObjectCreator {
 
         ApplicationOption ao = new ApplicationOption();
         ao.setId(hakukohde.getOid());
-        ao.setName(super.getI18nText(hakukohde.getHakukohteenNimet())); 
+        if (hakukohde.getHakukohteenNimet() != null) {
+            ao.setName(super.getI18nText(hakukohde.getHakukohteenNimet()));
+        } else if (hakukohde.getHakukohteenNimiUri() != null) {
+            
+            List<I18nText> hakKohdeNames = this.koodistoService.searchNames(hakukohde.getHakukohteenNimiUri());
+            if (hakKohdeNames != null && !hakKohdeNames.isEmpty()) {
+                ao.setName(hakKohdeNames.get(0));
+            }
+        }
         ao.setAthleteEducation(false);
         ao.setStartingQuota(hakukohde.getAloituspaikatLkm());
         ao.setLowestAcceptedScore(hakukohde.getAlinValintaPistemaara());
