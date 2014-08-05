@@ -7,6 +7,7 @@ var kiApp = angular.module('kiApp',
         'kiApp.directives',
         'directives.AjaxLoader',
         'ApplicationBasket',
+        'SearchWizard',
         'SearchResult', 
         'ui.bootstrap', 
         'angulartics', 
@@ -27,6 +28,11 @@ var kiApp = angular.module('kiApp',
     	templateUrl: 'partials/search/search.html', 
     	controller: SearchCtrl,
         reloadOnSearch: false
+    });
+
+    $routeProvider.when('/hakuwizard', {
+        templateUrl: 'partials/searchwizard/searchwizard.html',
+        controller: 'SearchWizardCtrl'
     });
 
     $routeProvider.when('/:loType/:id', {
@@ -63,7 +69,7 @@ var kiApp = angular.module('kiApp',
         templateUrl: 'partials/applicationbasket/applicationbasket.html',
         controller: 'ApplicationBasketCtrl'
     });
-    
+
     $routeProvider.otherwise({
     	redirectTo: '/haku/'
     });
@@ -96,7 +102,7 @@ var kiApp = angular.module('kiApp',
         resGetPath : 'locales/__ns__-__lng__.json',
         lng : LanguageService.getLanguage(),
         ns: {
-            namespaces: ['language', 'tooltip', 'plain'],
+            namespaces: ['language', 'tooltip', 'plain', 'searchwizard'],
             defaultNs: 'language'
         },
         cookieName: i18nCookieName,

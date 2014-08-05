@@ -7,6 +7,7 @@ var kiApp = angular.module('previewApp',
         'kiApp.directives',
         'directives.AjaxLoader',
         'ApplicationBasket',
+        'SearchWizard',
         'SearchResult', 
         'ui.bootstrap', 
         'angulartics', 
@@ -70,35 +71,6 @@ var kiApp = angular.module('previewApp',
     searchResultsPerPage: 25,
     defaultSortCriteria: '0',
     searchResultsStartPage: 1
-})
-
-.filter('escape', function() {
-  return window.escape;
-})
-
-.filter('encodeURIComponent', function() {
-    return window.encodeURIComponent;
-})
-
-// adds target blank to links
-.filter('externalLinks', function() {
-    return function(val) {
-        if (val) {
-            val = val.replace('<a', '<a target="_blank"');
-        }
-        
-        return val;
-    }
-})
-
-.filter('tables', function() {
-    return function(val) {
-        if (val) {
-            val = val.replace(/<\s*table.*?>/gi, '<table class="table table-striped table-condensed table-responsive>"');
-        }
-
-        return val;
-    }
 })
 
 // initialize i18n library
