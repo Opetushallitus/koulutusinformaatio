@@ -2,6 +2,7 @@
 
 var kiApp = angular.module('previewApp', 
     [
+        'kiApp.filters',
         'kiApp.services',
         'kiApp.directives',
         'directives.AjaxLoader',

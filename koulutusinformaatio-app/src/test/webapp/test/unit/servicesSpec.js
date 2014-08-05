@@ -182,7 +182,7 @@ describe('UtilityService', function() {
                     hakutyyppi: hakutyyppi.varsinainen,
                     applicationOptions: [
                         {
-                            canBeApplied: false,
+                            canBeApplied: true,
                             applicationStartDate: ts + 15 * 24 * 60 * 60 * 1000
                         }
                     ]
@@ -194,7 +194,7 @@ describe('UtilityService', function() {
                     hakutyyppi: hakutyyppi.varsinainen,
                     applicationOptions: [
                         {
-                            canBeApplied: false,
+                            canBeApplied: true,
                             applicationStartDate: ts - 25 * 24 * 60 * 60 * 1000 
                         }
                     ]
@@ -205,7 +205,7 @@ describe('UtilityService', function() {
                     hakutyyppi: hakutyyppi.varsinainen,
                     applicationOptions: [
                         {
-                            canBeApplied: false,
+                            canBeApplied: true,
                             applicationStartDate: ts + 5 * 24 * 60 * 60 * 1000 
                         }
                     ]
@@ -228,7 +228,7 @@ describe('UtilityService', function() {
                     hakutyyppi: hakutyyppi.varsinainen,
                     applicationOptions: [
                         {
-                            canBeApplied: false,
+                            canBeApplied: true,
                             applicationStartDate: ts + 15 * 24 * 60 * 60 * 1000
                         }
                     ]
@@ -240,7 +240,7 @@ describe('UtilityService', function() {
                     hakutyyppi: hakutyyppi.varsinainen,
                     applicationOptions: [
                         {
-                            canBeApplied: false,
+                            canBeApplied: true,
                             applicationStartDate: ts + 15 * 24 * 60 * 60 * 1000 
                         }
                     ]
@@ -318,9 +318,9 @@ describe('UtilityService', function() {
             utility.sortApplicationSystems(data);
             expect(data[0].id).toEqual('e');
             expect(data[1].id).toEqual('d');
-            expect(data[2].id).toEqual('b');
-            expect(data[3].id).toEqual('c');
-            expect(data[4].id).toEqual('a');
+            expect(data[2].id).toEqual('a');
+            expect(data[3].id).toEqual('b');
+            expect(data[4].id).toEqual('c');
         });
 
         it('should sort application options correctly', function() {
@@ -468,6 +468,19 @@ describe('UtilityService', function() {
             expect(result.length).toEqual(2);
             expect(result[0].id).toEqual('1a');
             expect(result[0].applicationOptions.length).toEqual(4);
+        });
+    });
+
+    describe('replaceAll', function() {
+
+        it('should replace all occurences in a string', function() {
+            var result = utility.replaceAll(/a/g, 'b', 'aabaca');
+            expect(result).toEqual('bbbbcb');
+        });
+
+        it('should replace all occurences in a string', function() {
+            var result = utility.replaceAll(/<a/g, '<a target="_blank"', '<a href="abc">link</a><span>something</span><a href="def">another link</a>');
+            expect(result).toEqual('<a target="_blank" href="abc">link</a><span>something</span><a target="_blank" href="def">another link</a>');
         });
     });
 });
@@ -685,164 +698,3 @@ describe('CookieService', function() {
 
     });
 });
-
-/*
-'use strict';
-describe('FilterService', function() {
-    beforeEach(module('kiApp'));
-
-    beforeEach(inject(function(FilterService) {
-        this.FilterService = FilterService;
-    }));
-
-    it('should set empty filter as empty', function() {
-        this.FilterService.set({});
-
-        expect(this.FilterService.get()).toEqual({});
-    });
-
-    it('should set the filters correctly', function() {
-        var myFilter = {myFilter: 'myFilterValue'};
-        this.FilterService.set(myFilter);
-
-        expect(this.FilterService.get()).toEqual(myFilter);
-    });
-
-    it('should transform locations filter to array', function() {
-        this.FilterService.set({
-            locations: 'Helsinki'
-        });
-
-        expect(this.FilterService.get().locations instanceof Array).toBeTruthy();
-        expect(this.FilterService.get().locations.length).toEqual(1);
-        expect(this.FilterService.get().locations[0]).toMatch('Helsinki');
-    });
-
-    it('should set boolean value only when it is true', function() {
-        this.FilterService.set({
-            myTrueFilter: true,
-            myFalseFilter: false
-        });
-
-        expect(this.FilterService.get().myTrueFilter).toEqual(true);
-        expect(this.FilterService.get().myFalseFilter).toBeUndefined();
-    });
-
-    it('should return empty filter as empty query param string', function() {
-        this.FilterService.set({});
-
-        expect(this.FilterService.getParams()).toMatch('');
-    });
-
-    it('should return array filter as comma separated list', function() {
-        this.FilterService.set({
-            locations: 'Helsinki,Turku,Espoo'
-        });
-
-        expect(this.FilterService.getParams()).toEqual('locations=Helsinki,Turku,Espoo');
-    });
-
-    it('should return boolean filter only when value is true', function() {
-        this.FilterService.set({
-            booleanFilterTrue: true,
-            booleanFilterFalse: false
-        });
-
-        expect(this.FilterService.getParams()).toEqual('booleanFilterTrue');
-    });
-
-    it('should return combination of filters', function() {
-        this.FilterService.set({
-            locations: 'Helsinki,Turku',
-            booleanFilter: true,
-            stringFilter: 'filterstring'
-        });
-
-        expect(this.FilterService.getParams()).toEqual('locations=Helsinki,Turku&booleanFilter&stringFilter=filterstring');
-    });
-
-})
-/*
-describe('SearchService', function() {
-
-    beforeEach(module('kiApp'));
-
-    beforeEach(inject(function(SearchService) {
-        this.SearchService = SearchService;
-    }));
-
-    it('should save the search term', function() {
-        var searchterm = 'musiikki';
-        this.SearchService.setTerm(searchterm);
-
-        expect(this.SearchService.getTerm()).toMatch(searchterm);
-    });
-});
-
-describe('TitleService', function() {
-
-    beforeEach(module('kiApp'));
-
-    beforeEach(inject(function(TitleService) {
-        this.TitleService = TitleService;
-    }));
-
-    it('should save the given title set', function() {
-        var title = 'Etusivu';
-        this.TitleService.setTitle(title);
-
-        expect(this.TitleService.getTitle()).toMatch(title + ' - Opintopolku.fi');
-    });
-});
-
-describe('ParentLODataService', function() {
-    var parentId = '123456';
-    var childId = parentId + '_2';
-
-    beforeEach(module('kiApp'));
-
-    beforeEach(inject(function(ParentLODataService) {
-        this.ParentLODataService = ParentLODataService;
-    }));
-
-    it('should have no data set', function() {
-        expect(this.ParentLODataService.dataExists(parentId)).toBeFalsy();
-    });
-
-    it('should have parent data set', function() {
-        this.ParentLODataService.setParentLOData({"id": parentId, "name": "parent name"});
-        expect(this.ParentLODataService.dataExists(parentId)).toBeTruthy();
-        expect(this.ParentLODataService.getParentLOData(parentId).id).toEqual(parentId);
-    });
-
-    it('should have parent and child data set', function() {
-        this.ParentLODataService.setParentLOData({"id": parentId, "name": "parent name", children: [{"id": "123456_1"}, {"id": childId}]});
-        expect(this.ParentLODataService.dataExists(parentId)).toBeTruthy();
-        expect(this.ParentLODataService.getParentLOData(parentId).id).toEqual(parentId);
-    });
-
-
-});
-
-describe('TranslationService', function() {
-    
-    beforeEach(module('kiApp'));
-
-    beforeEach(inject(function(TranslationService) {
-        this.TranslationService = TranslationService;
-    }));
-
-    it('should return a value for existing key', function() {
-        var key = 'existing-key';
-        var value = this.TranslationService.getTranslation(key);
-        expect(value).toMatch('translation value');
-    });
-
-    it('should return key for non-existing key', function() {
-        var key = 'non-existing-key';
-        var value = this.TranslationService.getTranslation(key);
-        expect(value).toMatch(key);
-    });
-
-})
-*/

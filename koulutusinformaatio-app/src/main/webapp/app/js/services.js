@@ -111,7 +111,7 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
             qParams += (params.lopFilter != undefined) ? ('&lopFilter=' + params.lopFilter) : '';
             qParams += (params.educationCodeFilter != undefined) ? ('&educationCodeFilter=' + params.educationCodeFilter) : '';
             qParams += (params.searchType != undefined) ? ('&searchType=' + params.searchType) : '&searchType=LO';
-            qParams += (params.queryString != undefined) ? ('&text=' + params.queryString) : '&text= '; 
+            qParams += (params.queryString != undefined) ? ('&text=' + params.queryString) : '&text= ';
             
             if (params.facetFilters != undefined) {
             	 angular.forEach(params.facetFilters, function(facetFilter, key) {
@@ -2068,6 +2068,9 @@ service('UtilityService', function() {
             } else {
                 return number;
             }
+        },
+        replaceAll: function(regexp, replace, str) {
+            return str.replace(regexp, replace);
         }
     };
 });

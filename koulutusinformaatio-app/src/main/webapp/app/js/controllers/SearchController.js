@@ -31,39 +31,9 @@ function SearchFieldCtrl($scope, $location, $route, $rootScope, SearchService, k
     	}
     }, true);    
     
-    
-    $scope.fixSearchQueryString = function(queryString) {
-    	
-    	
-    	var index = queryString.indexOf('/');
-    	
-    	if (index === -1) {
-    		return queryString;
-    	}
-    	
-    	var startStr = "";
-    	var endStr = "";
-    	
-    	if (index > 0) {
-    		
-    		startStr = queryString.substr(0, index); 
-        
-    	}
-    	
-    	if (index >= 0 && index < queryString.length - 1 ) {
-    		var tempEndStr = queryString.substr(index +1, queryString.length);
-    		endStr = " " + $scope.fixSearchQueryString(tempEndStr);
-    	}
-    	
-    	return startStr + endStr;
-    	
-    }
-    
     // Perform search using LearningOpportunity service
     $scope.search = function() {
         if ($scope.queryString) {
-        	
-        	console.log('Current search string: ' + $scope.queryString);
         	
             var activeTab = $location.search().tab;
             FilterService.clear(); // clear all filters for new search
@@ -71,9 +41,6 @@ function SearchFieldCtrl($scope, $location, $route, $rootScope, SearchService, k
             FilterService.setArticlePage(kiAppConstants.searchResultsStartPage);
             SearchService.setTerm($scope.queryString);
             var queryString = $scope.queryString;
-            /*if (queryString.length > 0) {
-            	queryString = $scope.fixSearchQueryString(queryString);
-            }*/
             
             
             // empty query string
@@ -86,11 +53,8 @@ function SearchFieldCtrl($scope, $location, $route, $rootScope, SearchService, k
             filters.tab = activeTab;
             $location.hash(null);
             
-            console.log('Updating url with: ' + queryString);
-            
             $location.path('/haku/' + encodeURIComponent(queryString));
             $location.search(filters);
-            console.log('Updated url with: ' + queryString);
         }
     };
 };
@@ -387,8 +351,6 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
     $scope.initSearch = function() {
         var queryParams = $location.search();
         
-        console.log(queryParams);
-        
     	FilterService.query(queryParams)
             .then(function() {
                 $scope.prerequisite = FilterService.getPrerequisite();
@@ -442,15 +404,12 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
 
     //Searching solr
     $scope.doSearching = function() {
-    	console.log("Doing search " + $routeParams.queryString);
         var qParams = FilterService.get();
         qParams.tab = 'los';
         $location.search(qParams).replace();
     	//If the language filter is set, the search query is made
     	if ($routeParams.queryString && $scope.isLangFilterSet()) {
-    		
-    		console.log("Doing search with: " + $routeParams.queryString);
-    		
+
     		SearchLearningOpportunityService.query({
     			queryString: $routeParams.queryString,
     			start: (FilterService.getPage()-1) * $scope.itemsPerPage,
@@ -510,8 +469,7 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
     		//If the language filter is not set, it is added to the url, and then page is refreshed
     		//which will result in the search being made
     	} else if ($routeParams.queryString && !$scope.isLangFilterSet()) {
-    		
-    		console.log('Updating language filter ' + $routeParams.queryString);
+
     		var queryParams = $location.search();
     		var facetFiltersArr = [];
     		//The existing facet filters are preserved
@@ -540,9 +498,7 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
 
     		$scope.refreshView();
     	} else if (!$routeParams.queryString || $routeParams.queryString == '') {
-    		
-    		console.log('No query params ' + $routeParams.queryString);
-    		
+
             $scope.loResult = {};
             $scope.loResult.totalCount = 0;
             $scope.loResult.loCount = 0;
