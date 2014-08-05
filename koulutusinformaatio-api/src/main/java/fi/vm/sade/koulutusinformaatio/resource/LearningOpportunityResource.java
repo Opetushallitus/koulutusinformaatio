@@ -38,9 +38,9 @@ public interface LearningOpportunityResource {
      * @return list of search results
      */
     @GET
-    @Path("search/{text}")
+    @Path("search")
     @Produces(MediaType.APPLICATION_JSON)
-    public LOSearchResultListDTO searchLearningOpportunities(@PathParam("text") String text,
+    public LOSearchResultListDTO searchLearningOpportunities(@QueryParam("text") String text,
                                                              @QueryParam("prerequisite") String prerequisite,
                                                              @QueryParam("city") List<String> cities,
                                                              @QueryParam("facetFilters") List<String> facetFilters,
@@ -163,9 +163,9 @@ public interface LearningOpportunityResource {
      * @return upper secondary learning opportunity
      */
     @GET
-    @Path("autocomplete/{term}")
+    @Path("autocomplete")
     @Produces(MediaType.APPLICATION_JSON)
-    public SuggestedTermsResultDTO getSuggestedTerms(@PathParam("term") String term,
+    public SuggestedTermsResultDTO getSuggestedTerms(@QueryParam("term") String term,
                                                      @QueryParam("lang") String lang);
     
     /**

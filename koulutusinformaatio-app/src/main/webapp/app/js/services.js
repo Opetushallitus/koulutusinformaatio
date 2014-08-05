@@ -111,6 +111,7 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
             qParams += (params.lopFilter != undefined) ? ('&lopFilter=' + params.lopFilter) : '';
             qParams += (params.educationCodeFilter != undefined) ? ('&educationCodeFilter=' + params.educationCodeFilter) : '';
             qParams += (params.searchType != undefined) ? ('&searchType=' + params.searchType) : '&searchType=LO';
+            qParams += (params.queryString != undefined) ? ('&text=' + params.queryString) : '&text= '; 
             
             if (params.facetFilters != undefined) {
             	 angular.forEach(params.facetFilters, function(facetFilter, key) {
@@ -142,7 +143,7 @@ service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analyt
             qParams += (sortField.length > 0) ? ('&sort=' +sortField) : '';
             qParams += ((params.sortCriteria != undefined) && ((params.sortCriteria == 2) || (params.sortCriteria == 4))) ? ('&order=desc') : '';
 
-            $http.get('../lo/search/' + encodeURI(params.queryString).replace("#", "%23").replace(";", "%3B") + qParams, {}).
+            $http.get('../lo/search' + qParams, {}).
             success(function(result) {
                 LearningOpportunitySearchResultTransformer.transform(result);
                 var variables = parseFilterValues(params);
@@ -195,8 +196,9 @@ service('AutocompleteService', ['$http', '$timeout', '$q', 'LanguageService', fu
         query: function(queryParam) {
             var deferred = $q.defer();
 
-            $http.get('../lo/autocomplete/' + queryParam, {
+            $http.get('../lo/autocomplete', {
                 params: {
+                	term: queryParam,
                     lang: LanguageService.getLanguage()
                 }
             }).
