@@ -1,10 +1,16 @@
-<div data-ng-repeat="applicationsystem in extendedLO.lo.applicationSystems" class="search-result-applicationsystem">
-	<h4 class="title">{{applicationsystem.name}}</h4>
-	<div class="search-result-content">
-    	<div data-ng-repeat="applicationoption in applicationsystem.applicationOptions" class="content" data-ng-class="{lastrow: $even && $last || $odd && $last || $even && $index == applicationsystem.applicationOptions.length-2 }">
-			<div class="bold margin-bottom-1">{{applicationoption.name}}</div>
-			<div data-ng-transclude></div>
-		</div>
-		<div class="clear"></div>
+<div data-ng-repeat="applicationsystem in extendedLO.lo.applicationSystems">
+	<div class="panel panel-ki-default">
+        <div class="panel-heading">
+            <span class="panel-title">{{applicationsystem.name}}</span>
+        </div>
+            
+		<div class="panel-body">
+        	<div data-ng-repeat="applicationoptionRow in applicationsystem.applicationOptions | columnize:2" class="row ao-row">
+                <div data-ng-repeat="applicationoption in applicationoptionRow" class="col-md-8">
+        			<div class="margin-vertical-small"><strong>{{applicationoption.name}}</strong></div>
+        			<div data-ng-transclude></div>
+                </div>
+    		</div>
+        </div>
 	</div>
 </div>
