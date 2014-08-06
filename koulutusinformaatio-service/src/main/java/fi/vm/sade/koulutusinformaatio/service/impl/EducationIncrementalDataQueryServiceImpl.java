@@ -68,6 +68,7 @@ EducationIncrementalDataQueryService {
     private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO;
     private SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO;
     private HigherEducationLOSDAO higherEducationLOSDAO;
+    private AdultUpperSecondaryLOSDAO adultUpsecLOSDAO;
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
 
 
@@ -78,7 +79,8 @@ EducationIncrementalDataQueryService {
             DataStatusDAO dataStatusDAO, PictureDAO pictureDAO,
             UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO,
             SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO, 
-            HigherEducationLOSDAO higherEducationLOSDAO, 
+            HigherEducationLOSDAO higherEducationLOSDAO,
+            AdultUpperSecondaryLOSDAO adultUpsecLOSDAO,
             LearningOpportunityProviderDAO learningOpportunityProviderDAO,
             IndexerService indexerService) {
         this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
@@ -90,6 +92,7 @@ EducationIncrementalDataQueryService {
         this.upperSecondaryLearningOpportunitySpecificationDAO = upperSecondaryLearningOpportunitySpecificationDAO;
         this.specialLearningOpportunitySpecificationDAO = specialLearningOpportunitySpecificationDAO;
         this.higherEducationLOSDAO = higherEducationLOSDAO;
+        this.adultUpsecLOSDAO = adultUpsecLOSDAO;
         this.learningOpportunityProviderDAO = learningOpportunityProviderDAO;
 
     }
@@ -307,6 +310,11 @@ EducationIncrementalDataQueryService {
         HigherEducationLOSEntity higherEdE = this.higherEducationLOSDAO.get(losId);
         if (higherEdE != null) {
             return modelMapper.map(higherEdE, HigherEducationLOS.class);
+        }
+        
+        AdultUpperSecondaryLOSEntity adultUpsecEdE = this.adultUpsecLOSDAO.get(losId);
+        if (adultUpsecEdE != null) {
+            return modelMapper.map(adultUpsecEdE, AdultUpperSecondaryLOS.class);
         }
 
         return null;

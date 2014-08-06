@@ -231,6 +231,8 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
         for (String curKomoOid : komoChanges) {
             if (this.losIndexer.isHigherEdKomo(curKomoOid)) { 
                 this.losIndexer.indexHigherEdKomo(curKomoOid);
+            } else if (this.losIndexer.isAdultUpsecKomo(curKomoOid)) {
+                this.losIndexer.indexAdultUpsecKomo(curKomoOid);
             }
         }
     }

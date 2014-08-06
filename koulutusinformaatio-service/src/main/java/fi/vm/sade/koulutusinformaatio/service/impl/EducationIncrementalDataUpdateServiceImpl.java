@@ -24,6 +24,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fi.vm.sade.koulutusinformaatio.dao.AdultUpperSecondaryLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityDAO;
 import fi.vm.sade.koulutusinformaatio.dao.DataStatusDAO;
@@ -33,6 +34,7 @@ import fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecification
 import fi.vm.sade.koulutusinformaatio.dao.PictureDAO;
 import fi.vm.sade.koulutusinformaatio.dao.SpecialLearningOpportunitySpecificationDAO;
 import fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO;
+import fi.vm.sade.koulutusinformaatio.dao.entity.AdultUpperSecondaryLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunityInstanceEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunitySpecificationEntity;
@@ -44,6 +46,7 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.PictureEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.SpecialLearningOpportunitySpecificationEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.UpperSecondaryLearningOpportunityInstanceEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.UpperSecondaryLearningOpportunitySpecificationEntity;
+import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
@@ -73,6 +76,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
     private DataStatusDAO dataStatusDAO;
     private SpecialLearningOpportunitySpecificationDAO specialLOSDAO;
     private HigherEducationLOSDAO higherEducationLOSDAO;
+    private AdultUpperSecondaryLOSDAO adultUpsecLOSDAO;
 
     @Autowired
     public EducationIncrementalDataUpdateServiceImpl(ModelMapper modelMapper, ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO,
@@ -82,7 +86,8 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             PictureDAO pictureDAO,
             UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO,
             DataStatusDAO dataStatusDAO, SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO,
-            HigherEducationLOSDAO higherEducationLOSDAO) {
+            HigherEducationLOSDAO higherEducationLOSDAO,
+            AdultUpperSecondaryLOSDAO adultUpsecLOSDAO) {
         this.modelMapper = modelMapper;
         this.parentLOSDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;
@@ -93,6 +98,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
         this.dataStatusDAO = dataStatusDAO;
         this.specialLOSDAO = specialLearningOpportunitySpecificationDAO;
         this.higherEducationLOSDAO = higherEducationLOSDAO;
+        this.adultUpsecLOSDAO = adultUpsecLOSDAO;
     }
 
     @Override
@@ -254,6 +260,8 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             this.upperSecondaryLOSDAO.deleteById(los.getId());
         } else if (los instanceof HigherEducationLOS) {
             this.higherEducationLOSDAO.deleteById(los.getId());
+        } else if (los instanceof AdultUpperSecondaryLOS) {
+            this.adultUpsecLOSDAO.deleteById(los.getId());
         }
         
     }
@@ -313,6 +321,32 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             this.higherEducationLOSDAO.deleteById(plos.getId());
             this.higherEducationLOSDAO.save(plos);
         }
+        
+    }
+
+    @Override
+    public void updateAdultUpsecLos(AdultUpperSecondaryLOS los) {
+        
+        if (los != null) {
+
+            AdultUpperSecondaryLOSEntity plos =
+                    modelMapper.map(los, AdultUpperSecondaryLOSEntity.class);
+
+            this.learningOpportunityProviderDAO.deleteById(plos.getProvider().getId());
+            save(plos.getProvider());
+
+
+            if (plos.getApplicationOptions() != null) {
+                for (ApplicationOptionEntity ao : plos.getApplicationOptions()) {
+                    this.applicationOptionDAO.deleteById(ao.getId());
+                    save(ao);
+                }
+            }
+
+            this.adultUpsecLOSDAO.deleteById(plos.getId());
+            this.adultUpsecLOSDAO.save(plos);
+        }
+        
         
     }
 

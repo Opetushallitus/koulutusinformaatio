@@ -49,7 +49,10 @@ import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomotoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KomoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.service.types.KoulutusasteTyyppi;
@@ -82,6 +85,7 @@ public class IncrementalLOSIndexer {
     private SingleUpperSecondaryLOSBuilder upperSecLosBuilder;
     
     private IncrementalHigherEducationLOSIndexer higherEdLOSIndexer;
+    private IncrementalAdultLOSIndexer adultLosIndexer;
     
     public IncrementalLOSIndexer (TarjontaRawService tarjontaRawService, 
                                     TarjontaService tarjontaService, 
@@ -113,7 +117,15 @@ public class IncrementalLOSIndexer {
                                                                             this.indexerService, 
                                                                             this.loHttpSolrServer, 
                                                                             this.lopHttpSolrServer, 
-                                                                            this.locationHttpSolrServer);        
+                                                                            this.locationHttpSolrServer);      
+        this.adultLosIndexer = new IncrementalAdultLOSIndexer(this.tarjontaRawService, 
+                this.tarjontaService, 
+                this.dataUpdateService, 
+                this.dataQueryService, 
+                this.indexerService, 
+                this.loHttpSolrServer, 
+                this.lopHttpSolrServer, 
+                this.locationHttpSolrServer);     
     }
     
 
@@ -150,6 +162,8 @@ public class IncrementalLOSIndexer {
             if (koulutusRes != null && koulutusRes.getResult() != null && koulutusRes.getResult().getKomoOid() != null) {
                 this.higherEdLOSIndexer.indexHigherEdKomo(koulutusRes.getResult().getKomoOid());
             }
+        } else if (isAdultUpsecKomo(komotoDto.getKomoOid())) {
+            this.indexAdultUpsecKomo(komotoDto.getKomoOid());
         }
 
     }
@@ -191,6 +205,39 @@ public class IncrementalLOSIndexer {
         return komoRes != null && komoRes.getResult() != null && komoRes.getResult().getKoulutusasteTyyppi().value().equals(KoulutusasteTyyppi.KORKEAKOULUTUS.value());
         
         //return komo != null && komo.getKoulutustyyppi() != null && komo.getKoulutustyyppi().equals("KORKEAKOULUTUS");
+    }
+    
+
+    public boolean isAdultUpsecKomo(String komoOid) {
+        ResultV1RDTO<KomoV1RDTO> komoRes = this.tarjontaRawService.getV1Komo(komoOid);
+        
+        boolean isLukio = komoRes != null && komoRes.getResult() != null && komoRes.getResult().getKoulutusasteTyyppi().value().equals(KoulutusasteTyyppi.LUKIOKOULUTUS.value());
+
+        if (!isLukio) {
+            return false;
+        }
+        
+        ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> komotoRes = this.tarjontaRawService.getHigherEducationByKomo(komoOid);
+        
+        if (komotoRes != null 
+                && komotoRes.getResult() != null 
+                && komotoRes.getResult().getTulokset() != null 
+                && !komotoRes.getResult().getTulokset().isEmpty()) {
+
+
+            for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> tarjResult :  komotoRes.getResult().getTulokset()) {
+                if (tarjResult.getTulokset() !=  null && !tarjResult.getTulokset().isEmpty()) {
+                    for (KoulutusHakutulosV1RDTO curKoul : tarjResult.getTulokset()) {
+                        if (curKoul.getKoulutuslajiUri() != null && curKoul.getKoulutuslajiUri().contains(TarjontaConstants.AIKUISKOULUTUS)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        
+        
+        return false;
     }
 
     private void handleLoiAdditionOrUpdate(KomotoDTO komotoDto) throws KoodistoException, SolrServerException, IOException, TarjontaParseException {
@@ -597,6 +644,19 @@ public class IncrementalLOSIndexer {
     public void removeHigherEd(String oid, String komoOid) throws Exception {
         this.higherEdLOSIndexer.removeHigherEd(oid, komoOid);        
     }
+    
+    public void removeAdultUpsecEd(String oid, String komoOid) throws Exception {
+        this.adultLosIndexer.removeAdultUpsecEd(oid, komoOid);
+    }
+
+
+    public void indexAdultUpsecKomo(String curKomoOid) throws Exception {
+        
+        this.adultLosIndexer.indexAdultUpsecKomo(curKomoOid);
+        
+    }
+
+
 
 
 

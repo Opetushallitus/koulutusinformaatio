@@ -81,14 +81,56 @@ public class IncrementalApplicationOptionIndexer {
                     addApplicationOption(aoDto);
                 }
             }
-        } else {// if (!this.higherEdReindexed) {
-            /*this.reIndexHigherEducation();
-            this.higherEdReindexed = true;*/
+        }else if (CreatorUtil.isAdultUpperSecondaryAS(asDto)) {
+            this.indexAdultUpsecEdAo(aoDto.getOid(), !TarjontaConstants.STATE_PUBLISHED.equals(asDto.getTila()) || !TarjontaConstants.STATE_PUBLISHED.equals(aoDto.getTila()));
+        } else {
             this.indexHigherEdAo(aoDto.getOid(), !TarjontaConstants.STATE_PUBLISHED.equals(asDto.getTila()) || !TarjontaConstants.STATE_PUBLISHED.equals(aoDto.getTila()));
         }
 
     }
     
+    private void indexAdultUpsecEdAo(String aoOid, boolean toRemove) throws Exception {
+       
+        
+        ResultV1RDTO<HakukohdeV1RDTO> aoRes = this.tarjontaRawService.getV1EducationHakukohode(aoOid);
+        if (aoRes != null) {
+            HakukohdeV1RDTO curAo = aoRes.getResult();
+            if (curAo != null) {
+
+                    ResultV1RDTO<List<NimiJaOidRDTO>> koulutusOidRes = this.tarjontaRawService.getHigherEducationByHakukohode(curAo.getOid());
+
+                    if (koulutusOidRes != null && koulutusOidRes.getResult() != null) {
+                        for (NimiJaOidRDTO curKoulOid : koulutusOidRes.getResult()) {
+                            ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes = this.tarjontaRawService.getHigherEducationLearningOpportunity(curKoulOid.getOid());
+                            if (koulutusRes != null && koulutusRes.getResult() != null && koulutusRes.getResult().getKomoOid() != null) {
+                                if (!toRemove) {
+                                    this.losIndexer.indexAdultUpsecKomo(koulutusRes.getResult().getKomoOid());
+                                } else {
+                                    this.losIndexer.removeAdultUpsecEd(curKoulOid.getOid(), koulutusRes.getResult().getKomoOid());
+                                }
+                            }
+
+                        }
+                    }
+                    
+                    if (!curAo.getTila().equals(TarjontaConstants.STATE_PUBLISHED) || toRemove) {
+                        LOG.debug("Removing ao: " + curAo.getOid() + " with tila: " + curAo.getTila());
+                        try {
+                        ApplicationOption ao = this.dataQueryService.getApplicationOption(aoOid);
+                        if (ao != null) {
+                            this.dataUpdateService.deleteAo(ao);
+                        }
+                        } catch (ResourceNotFoundException ex) {
+                            LOG.debug("Ao not found in mongo not doing anything");
+                        }
+
+                    }
+                    
+                }
+
+            }
+    }
+
     private void updateApplicationOption(ApplicationOption ao, HakukohdeDTO aoDto) throws KoodistoException, TarjontaParseException, SolrServerException, IOException {
 
         removeApplicationOption(ao.getId());

@@ -19,15 +19,6 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 
-import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
-import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOSRef;
-import fi.vm.sade.koulutusinformaatio.domain.I18nPicture;
-import fi.vm.sade.koulutusinformaatio.domain.LOS;
-import fi.vm.sade.koulutusinformaatio.domain.Picture;
-import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
@@ -43,6 +34,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakoulu
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusLukioV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KuvaV1RDTO;
 import fi.vm.sade.tarjonta.service.types.TarjontaTila;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +43,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.WebApplicationException;
+
 import java.util.*;
 
 /**
@@ -523,6 +516,34 @@ public class TarjontaServiceImpl implements TarjontaService {
         }
         
         return koulutukset;
+    }
+
+    @Override
+    public AdultUpperSecondaryLOS createAdultUpperSecondaryLOS(String oid)
+            throws TarjontaParseException, KoodistoException,
+            ResourceNotFoundException {
+        
+        
+        ResultV1RDTO<KoulutusLukioV1RDTO> koulutusRes = this.tarjontaRawService.getUpperSecondaryLearningOpportunity(oid);
+        KoulutusLukioV1RDTO koulutusDTO = koulutusRes.getResult();
+        
+        LOG.debug("cur upsec adult education dto: " + koulutusDTO.getOid());
+        if (koulutusDTO == null || koulutusDTO.getKoulutuslaji() == null || koulutusDTO.getKoulutuslaji().getUri().contains(TarjontaConstants.NUORTEN_KOULUTUS)) {
+            LOG.debug("Koulutus is not adult upper secondary");
+            throw new TarjontaParseException("Koulutus is not adult upper secondary");
+        }
+        
+        try {
+            AdultUpperSecondaryLOS los = creator.createAdultUpperSeconcaryLOS(koulutusDTO, true);//createHigherEducationLOS(koulutusDTO, true);
+            LOG.debug("Created los: " + los.getId());
+            LOG.debug("Updated aolos references for: " + los.getId());
+            return los;
+
+        } catch (TarjontaParseException ex) {
+            LOG.debug(ex.getMessage());
+            throw ex;
+        }
+        
     }
 
 
