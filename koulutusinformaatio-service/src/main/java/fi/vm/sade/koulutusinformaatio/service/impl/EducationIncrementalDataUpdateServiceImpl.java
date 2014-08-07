@@ -76,7 +76,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
     private DataStatusDAO dataStatusDAO;
     private SpecialLearningOpportunitySpecificationDAO specialLOSDAO;
     private HigherEducationLOSDAO higherEducationLOSDAO;
-    private AdultUpperSecondaryLOSDAO adultUpsecLOSDAO;
+    private AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSDAO;
 
     @Autowired
     public EducationIncrementalDataUpdateServiceImpl(ModelMapper modelMapper, ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO,
@@ -87,7 +87,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO,
             DataStatusDAO dataStatusDAO, SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO,
             HigherEducationLOSDAO higherEducationLOSDAO,
-            AdultUpperSecondaryLOSDAO adultUpsecLOSDAO) {
+            AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSDAO) {
         this.modelMapper = modelMapper;
         this.parentLOSDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;
@@ -98,7 +98,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
         this.dataStatusDAO = dataStatusDAO;
         this.specialLOSDAO = specialLearningOpportunitySpecificationDAO;
         this.higherEducationLOSDAO = higherEducationLOSDAO;
-        this.adultUpsecLOSDAO = adultUpsecLOSDAO;
+        this.adultUpperSecondaryLOSDAO = adultUpperSecondaryLOSDAO;
     }
 
     @Override
@@ -261,7 +261,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
         } else if (los instanceof HigherEducationLOS) {
             this.higherEducationLOSDAO.deleteById(los.getId());
         } else if (los instanceof AdultUpperSecondaryLOS) {
-            this.adultUpsecLOSDAO.deleteById(los.getId());
+            this.adultUpperSecondaryLOSDAO.deleteById(los.getId());
         }
         
     }
@@ -343,8 +343,8 @@ public class EducationIncrementalDataUpdateServiceImpl implements
                 }
             }
 
-            this.adultUpsecLOSDAO.deleteById(plos.getId());
-            this.adultUpsecLOSDAO.save(plos);
+            this.adultUpperSecondaryLOSDAO.deleteById(plos.getId());
+            this.adultUpperSecondaryLOSDAO.save(plos);
         }
         
         

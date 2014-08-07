@@ -24,6 +24,7 @@ import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOIRef;
@@ -501,6 +502,10 @@ public class IncrementalLOSIndexer {
         
         this.higherEdLOSIndexer.updateHigherEdLos(curLos);
         
+    }
+    
+    public void updateAdultUpsecLos(AdultUpperSecondaryLOS curLos) throws Exception {
+        this.adultLosIndexer.updateAdultUpsecLos(curLos);
     }
 
 

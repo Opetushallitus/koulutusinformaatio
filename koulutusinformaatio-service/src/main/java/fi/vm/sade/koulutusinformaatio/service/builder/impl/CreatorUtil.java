@@ -103,10 +103,10 @@ public final class CreatorUtil {
     }
     
     public static boolean isSecondaryAS(HakuDTO asDto) {
-        return asDto != null && asDto.getKohdejoukkoUri() != null && !asDto.getKohdejoukkoUri().contains("haunkohdejoukko_12");
+        return asDto != null && asDto.getKohdejoukkoUri() != null && !asDto.getKohdejoukkoUri().contains("haunkohdejoukko_12") && !asDto.getKohdejoukkoUri().contains("haunkohdejoukko_10");
     }
 
     public static boolean isAdultUpperSecondaryAS(HakuDTO asDto) {
-        return asDto != null && asDto.getKohdejoukkoUri() != null && !asDto.getKohdejoukkoUri().contains("haunkohdejoukko_10");
+        return asDto != null && asDto.getKohdejoukkoUri() != null && asDto.getKohdejoukkoUri().contains("haunkohdejoukko_10");
     }
 }

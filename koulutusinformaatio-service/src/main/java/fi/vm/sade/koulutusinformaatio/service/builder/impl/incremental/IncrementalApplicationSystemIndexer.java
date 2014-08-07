@@ -23,6 +23,7 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
@@ -32,6 +33,7 @@ import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOI;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
+import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOI;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
@@ -85,8 +87,55 @@ public class IncrementalApplicationSystemIndexer {
         HakuDTO asDto = this.tarjontaRawService.getHaku(asOid);
         if (CreatorUtil.isSecondaryAS(asDto)) {
             indexSecondaryEducationAsData(asDto);
+        } else if (CreatorUtil.isAdultUpperSecondaryAS(asDto)) {
+            indexAdultUpsecAsData(asOid);
         } else {
             indexHigherEducationAsData(asOid);
+        }
+    }
+    
+    private void indexAdultUpsecAsData(String asOid) throws Exception {
+        LOG.debug("Indexing higher education application system");
+        ResultV1RDTO<HakuV1RDTO> hakuRes = this.tarjontaRawService.getV1EducationHakuByOid(asOid);
+        
+        if (hakuRes != null) {
+            HakuV1RDTO asDto = hakuRes.getResult();
+            List<String> lossesInAS = this.dataQueryService.getLearningOpportunityIdsByAS(asDto.getOid());
+            
+            LOG.debug("Higher education loss in application system: " + lossesInAS.size());
+            
+            if (asDto.getTila().equals(TarjontaConstants.STATE_PUBLISHED)) {
+
+                ApplicationSystemCreator asCreator = new ApplicationSystemCreator(koodistoService);
+                ApplicationSystem as = asCreator.createHigherEdApplicationSystem(asDto);
+                
+                for (String curLosId : lossesInAS) {
+                    AdultUpperSecondaryLOS curLos = null;
+                    try {
+                        curLos = this.dataQueryService.getAdultUpsecLearningOpportunity(curLosId);
+                    } catch (ResourceNotFoundException ex) {
+                        LOG.warn("higher education los not found");
+                    }
+                    if (curLos != null) {
+                        this.reIndexAsDataForStandaloneLOS(curLos, asDto, as);
+                        this.losIndexer.updateAdultUpsecLos(curLos);;
+                    }
+                }
+                
+                if (lossesInAS.isEmpty()) {
+                    
+                    for (String curHakukohde : asDto.getHakukohdeOids()) {
+                        this.aoIndexer.indexAdultUpsecEdAo(curHakukohde, !asDto.getTila().equals(TarjontaConstants.STATE_PUBLISHED));
+                    }
+                }
+                
+            } else {
+                
+                for (String curLosId : lossesInAS) {                
+                    handleAsRemovalFromHigherEdLOS(curLosId, asDto);
+                }
+                
+            }
         }
     }
     
@@ -114,7 +163,7 @@ public class IncrementalApplicationSystemIndexer {
                         LOG.warn("higher education los not found");
                     }
                     if (curLos != null) {
-                        this.reIndexAsDataForHigherEdLOS(curLos, asDto, as);
+                        this.reIndexAsDataForStandaloneLOS(curLos, asDto, as);
                         this.losIndexer.updateHigherEdLos(curLos);
                     }
                 }
@@ -335,7 +384,7 @@ public class IncrementalApplicationSystemIndexer {
         }
     }
 
-    private void reIndexAsDataForHigherEdLOS(HigherEducationLOS curLos,
+    private void reIndexAsDataForStandaloneLOS(StandaloneLOS curLos,
             HakuV1RDTO asDto, ApplicationSystem as) {
         
      for (ApplicationOption curAo : curLos.getApplicationOptions()) {
@@ -345,6 +394,7 @@ public class IncrementalApplicationSystemIndexer {
      }
         
     }
+
     
     private void reIndexAsDataForUpsecLOS(UpperSecondaryLOS curLos,
             HakuDTO asDto, ApplicationSystem as) throws KoodistoException {

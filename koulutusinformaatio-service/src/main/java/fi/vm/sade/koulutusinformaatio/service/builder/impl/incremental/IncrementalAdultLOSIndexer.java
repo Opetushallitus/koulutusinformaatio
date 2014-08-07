@@ -152,4 +152,15 @@ public class IncrementalAdultLOSIndexer {
         }
     }
 
+    public void updateAdultUpsecLos(AdultUpperSecondaryLOS los) throws Exception {
+        
+        this.removeAdultUpsecEd(los.getId(), los.getKomoOid());
+        this.indexerService.removeLos(los, loHttpSolrServer);
+        this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
+        this.dataUpdateService.save(los);
+        this.indexerService.addLearningOpportunitySpecification(los, loHttpSolrServer, lopHttpSolrServer);
+        this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
+       
+    }
+
 }

@@ -523,6 +523,9 @@ public class TarjontaServiceImpl implements TarjontaService {
             throws TarjontaParseException, KoodistoException,
             ResourceNotFoundException {
         
+        if (creator == null) {
+            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService);
+        }
         
         ResultV1RDTO<KoulutusLukioV1RDTO> koulutusRes = this.tarjontaRawService.getUpperSecondaryLearningOpportunity(oid);
         KoulutusLukioV1RDTO koulutusDTO = koulutusRes.getResult();

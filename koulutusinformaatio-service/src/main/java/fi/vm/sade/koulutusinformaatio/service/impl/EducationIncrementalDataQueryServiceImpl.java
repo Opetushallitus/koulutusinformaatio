@@ -37,6 +37,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
@@ -68,7 +69,7 @@ EducationIncrementalDataQueryService {
     private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO;
     private SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO;
     private HigherEducationLOSDAO higherEducationLOSDAO;
-    private AdultUpperSecondaryLOSDAO adultUpsecLOSDAO;
+    private AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSDAO;
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
 
 
@@ -80,7 +81,7 @@ EducationIncrementalDataQueryService {
             UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO,
             SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO, 
             HigherEducationLOSDAO higherEducationLOSDAO,
-            AdultUpperSecondaryLOSDAO adultUpsecLOSDAO,
+            AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSDAO,
             LearningOpportunityProviderDAO learningOpportunityProviderDAO,
             IndexerService indexerService) {
         this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
@@ -92,7 +93,7 @@ EducationIncrementalDataQueryService {
         this.upperSecondaryLearningOpportunitySpecificationDAO = upperSecondaryLearningOpportunitySpecificationDAO;
         this.specialLearningOpportunitySpecificationDAO = specialLearningOpportunitySpecificationDAO;
         this.higherEducationLOSDAO = higherEducationLOSDAO;
-        this.adultUpsecLOSDAO = adultUpsecLOSDAO;
+        this.adultUpperSecondaryLOSDAO = adultUpperSecondaryLOSDAO;
         this.learningOpportunityProviderDAO = learningOpportunityProviderDAO;
 
     }
@@ -312,7 +313,7 @@ EducationIncrementalDataQueryService {
             return modelMapper.map(higherEdE, HigherEducationLOS.class);
         }
         
-        AdultUpperSecondaryLOSEntity adultUpsecEdE = this.adultUpsecLOSDAO.get(losId);
+        AdultUpperSecondaryLOSEntity adultUpsecEdE = this.adultUpperSecondaryLOSDAO.get(losId);
         if (adultUpsecEdE != null) {
             return modelMapper.map(adultUpsecEdE, AdultUpperSecondaryLOS.class);
         }
@@ -435,6 +436,17 @@ EducationIncrementalDataQueryService {
         
         LOG.debug("returning: " + loss.size() + " los ids.");
         return loss;
+    }
+
+    @Override
+    public AdultUpperSecondaryLOS getAdultUpsecLearningOpportunity(
+            String oid) throws ResourceNotFoundException {
+        AdultUpperSecondaryLOSEntity entity = this.adultUpperSecondaryLOSDAO.get(oid);
+        if (entity != null) {
+            return modelMapper.map(entity, AdultUpperSecondaryLOS.class);
+        } else {
+            throw new ResourceNotFoundException(String.format("Adult Upper Secondary specification not found: %s", oid));
+        }
     }
 
 
