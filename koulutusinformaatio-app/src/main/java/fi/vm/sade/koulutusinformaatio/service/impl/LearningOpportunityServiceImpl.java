@@ -275,7 +275,7 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
     
 
     @Override
-    public HigherEducationLOSDTO previewLearningOpportunity(
+    public HigherEducationLOSDTO previewHigherEdLearningOpportunity(
             String id, String lang, String uiLang)
                     throws ResourceNotFoundException {
         HigherEducationLOS los = this.previewService.previewHigherEducationLearningOpportunity(id);
@@ -288,6 +288,21 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
         
         if (dto.getStructureImageId() != null && los.getStructureImage() != null &&  los.getStructureImage().getPictureTranslations().get(uiLang) != null) {
             dto.setStructureImage(modelMapper.map(los.getStructureImage().getPictureTranslations().get(uiLang), PictureDTO.class));
+        }
+        return dto;
+    }
+    
+
+    @Override
+    public AdultUpperSecondaryLOSDTO previewAdultUpperSecondaryLearningOpportunity(
+            String oid, String lang, String uiLang)
+            throws ResourceNotFoundException {
+        AdultUpperSecondaryLOS los = this.previewService.previewAdultUpperSecondaryLearningOpportunity(oid);
+        AdultUpperSecondaryLOSDTO dto = null;
+        if (lang != null && !lang.isEmpty()) {
+            dto = AdultUpperSecondaryLOSToDTO.convert(los, lang, uiLang);
+        } else {
+            dto = AdultUpperSecondaryLOSToDTO.convert(los, uiLang, uiLang); 
         }
         return dto;
     }
@@ -321,5 +336,6 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
         AdultUpperSecondaryLOS los = educationDataQueryService.getAdultUpperSecondaryLearningOpportunity(id);
         return AdultUpperSecondaryLOSToDTO.convert(los, lang, uiLang);
     }
+
 
 }

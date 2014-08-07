@@ -26,7 +26,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
  * @author Markus
  */
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
-public class HigherEducationLOSDTO {
+public class HigherEducationLOSDTO extends StandaloneLOSDTO {
 
     private String id;
     private String infoAboutTeachingLangs;

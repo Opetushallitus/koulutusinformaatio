@@ -84,7 +84,7 @@ public class LearningOpportunityResourceImplTest {
         higherLos.setId("1.2.3.34");
         
         when(learningOpportunityService.getHigherEducationLearningOpportunity(anyString())).thenReturn(higherLos);
-        when(learningOpportunityService.previewLearningOpportunity(anyString(), anyString(), anyString())).thenReturn(higherLos);
+        when(learningOpportunityService.previewHigherEdLearningOpportunity(anyString(), anyString(), anyString())).thenReturn(higherLos);
         
         
         SpecialLearningOpportunitySpecificationDTO specialLos = new SpecialLearningOpportunitySpecificationDTO();
@@ -151,7 +151,7 @@ public class LearningOpportunityResourceImplTest {
     
     @Test
     public void testPreviewLearningOpportunity() {
-    	HigherEducationLOSDTO dto = resource.previewLearningOpportunity("1.2.3.34", "fi", "fi");
+    	HigherEducationLOSDTO dto = (HigherEducationLOSDTO)(resource.previewLearningOpportunity("1.2.3.34", "fi", "fi", "korkeakoulu"));
     	assertEquals("1.2.3.34", dto.getId());
     }
     

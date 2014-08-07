@@ -110,7 +110,7 @@ public interface LearningOpportunityService {
      * @return the requested higher education learning opportunity
      * @throws ResourceNotFoundException
      */
-	HigherEducationLOSDTO previewLearningOpportunity(String id,
+	HigherEducationLOSDTO previewHigherEdLearningOpportunity(String id,
 			String lang, String uiLang) throws ResourceNotFoundException;
 
     DataStatus getLastSuccesfulDataStatus();
@@ -123,4 +123,7 @@ public interface LearningOpportunityService {
     AdultUpperSecondaryLOSDTO getAdultUpperSecondaryLearningOpportunity(
             String id, String lang, String uiLang)
             throws ResourceNotFoundException;
+
+    AdultUpperSecondaryLOSDTO previewAdultUpperSecondaryLearningOpportunity(
+            String oid, String lang, String uiLang) throws ResourceNotFoundException;
 }

@@ -178,9 +178,10 @@ public interface LearningOpportunityResource {
     @GET
     @Path("preview/{oid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public HigherEducationLOSDTO previewLearningOpportunity(@PathParam("oid") String oid,
+    public StandaloneLOSDTO previewLearningOpportunity(@PathParam("oid") String oid,
                                                      @QueryParam("lang") String lang,
-                                                     @QueryParam("uiLang") String uiLang);
+                                                     @QueryParam("uiLang") String uiLang,
+                                                     @QueryParam("loType") String loType);
     
     @GET
     @Path("/picture/{id}")

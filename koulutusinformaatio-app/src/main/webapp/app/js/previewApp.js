@@ -43,6 +43,8 @@ var kiApp = angular.module('previewApp',
                         return HigherEducationPreviewLOService;
                     case 'korkeakoulu':
                     	return HigherEducationPreviewLOService;
+                    case 'aikuislukio':
+                    	return HigherEducationPreviewLOService;
                 }
             },
             partialUrl: function($rootScope, $route) {

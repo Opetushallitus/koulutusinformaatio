@@ -39,6 +39,7 @@ import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecif
 import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SpecialLearningOpportunitySpecificationDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.StandaloneLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SuggestedTermsResultDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.UpperSecondaryLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
@@ -216,10 +217,11 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
     }
 
     @Override
-    public HigherEducationLOSDTO previewLearningOpportunity(String oid,
-            String lang, String uiLang) {
+    public StandaloneLOSDTO previewLearningOpportunity(String oid,
+            String lang, String uiLang, String loType) {
         try {
-            HigherEducationLOSDTO dto = learningOpportunityService.previewLearningOpportunity(oid, lang, uiLang);
+            if ("korkeakoulu".equals(loType)) {
+            HigherEducationLOSDTO dto = learningOpportunityService.previewHigherEdLearningOpportunity(oid, lang, uiLang);
 
             List<ArticleResult> edCodeSuggestions = this.searchService.searchArticleSuggestions(String.format("%s:%s", LearningOpportunity.ARTICLE_EDUCATION_CODE, dto.getKoulutuskoodi()), uiLang);
             List<ArticleResult> edTypeSuggestions = this.searchService.searchArticleSuggestions(String.format("%s:%s", LearningOpportunity.EDUCATION_TYPE, dto.getEducationType()), uiLang);
@@ -230,9 +232,13 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
                 dto.setEdTypeSuggestions(ArticleResultToDTO.convert(edTypeSuggestions, 3));
                 dto.setEdCodeSuggestions(ArticleResultToDTO.convert(edCodeSuggestions, 6 - dto.getEdTypeSuggestions().size()));
 
-            }
+                }
 
-            return dto; 
+                return dto; 
+            } else if ("aikuislukio".equals(loType)) {
+                return learningOpportunityService.previewAdultUpperSecondaryLearningOpportunity(oid, lang, uiLang);
+            }
+            throw new ResourceNotFoundException("No preview implemented for loType: " + loType);
         } catch (ResourceNotFoundException e) {
             throw KIExceptionHandler.resolveException(e);
         } catch (SearchException ex) {

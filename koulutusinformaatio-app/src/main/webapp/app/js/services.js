@@ -520,6 +520,7 @@ service('HigherEducationPreviewLOService', ['$http', '$timeout', '$q', 'Language
             var queryParams = {
                 uiLang: LanguageService.getLanguage(),
                 lang: LanguageService.getLanguage(),
+                loType: options.loType,
                 timestamp: Date.now()
             }
 
