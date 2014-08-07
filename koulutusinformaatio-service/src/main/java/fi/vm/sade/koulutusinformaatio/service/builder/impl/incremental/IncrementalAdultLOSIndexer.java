@@ -108,7 +108,7 @@ public class IncrementalAdultLOSIndexer {
                         
                         
                         try {
-                            createdLos = this.tarjontaService.createAdultUpperSecondaryLOS(curKoul.getOid());//createHigherEducationLearningOpportunityTree(curKoul.getOid());
+                            createdLos = this.tarjontaService.createAdultUpperSecondaryLOS(curKoul.getOid(), true);//createHigherEducationLearningOpportunityTree(curKoul.getOid());
                         } catch (TarjontaParseException tpe) {
                             createdLos = null;
                         }

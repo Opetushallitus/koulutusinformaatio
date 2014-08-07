@@ -63,7 +63,7 @@ public class PreviewServiceImpl implements PreviewService {
             String oid) throws ResourceNotFoundException {
         
         try {
-            AdultUpperSecondaryLOS los = this.tarjontaService.createAdultUpperSecondaryLOS(oid);
+            AdultUpperSecondaryLOS los = this.tarjontaService.createAdultUpperSecondaryLOS(oid, false);
             if (los == null) {
                 throw new ResourceNotFoundException("Resource: " + oid + " not found");
             }

@@ -519,7 +519,7 @@ public class TarjontaServiceImpl implements TarjontaService {
     }
 
     @Override
-    public AdultUpperSecondaryLOS createAdultUpperSecondaryLOS(String oid)
+    public AdultUpperSecondaryLOS createAdultUpperSecondaryLOS(String oid, boolean checkStatus)
             throws TarjontaParseException, KoodistoException,
             ResourceNotFoundException {
         
@@ -535,9 +535,13 @@ public class TarjontaServiceImpl implements TarjontaService {
             LOG.debug("Koulutus is not adult upper secondary");
             throw new TarjontaParseException("Koulutus is not adult upper secondary");
         }
+        if (checkStatus && !(TarjontaTila.JULKAISTU.toString().equals(koulutusDTO.getTila().toString()))) {
+            throw new TarjontaParseException("Koulutus: "  +  oid + " is not published");
+        }
         
         try {
-            AdultUpperSecondaryLOS los = creator.createAdultUpperSeconcaryLOS(koulutusDTO, true);//createHigherEducationLOS(koulutusDTO, true);
+            AdultUpperSecondaryLOS los = creator.createAdultUpperSeconcaryLOS(koulutusDTO, checkStatus);
+            los.setStatus(koulutusDTO.getTila().toString());
             LOG.debug("Created los: " + los.getId());
             LOG.debug("Updated aolos references for: " + los.getId());
             return los;

@@ -83,6 +83,6 @@ public interface TarjontaService {
 
     public List<AdultUpperSecondaryLOS> findAdultUpperSecondaries() throws KoodistoException;
 
-    public AdultUpperSecondaryLOS createAdultUpperSecondaryLOS(String oid) throws TarjontaParseException, KoodistoException, ResourceNotFoundException;
+    public AdultUpperSecondaryLOS createAdultUpperSecondaryLOS(String oid, boolean checkStatus) throws TarjontaParseException, KoodistoException, ResourceNotFoundException;
             
 }
