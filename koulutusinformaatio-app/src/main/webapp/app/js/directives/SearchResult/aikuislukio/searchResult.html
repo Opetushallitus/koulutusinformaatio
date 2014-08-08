@@ -1,0 +1,36 @@
+<div class="container-equal-height container-md-height">
+    <div class="row row-md-height">
+    <div class="col-md-10 col-md-height">
+        <h2 title="{{locales.openEducation}}"><a href="{{lo.linkHref}}">{{lo.lopName}}, {{lo.name}}<span data-ng-show="lo.credits != null">, {{lo.credits}}</span></a></h2>
+        <span>{{lo.lopName}}</span><br/>
+        <span>{{lo.homeplace}}</span>
+    </div>
+
+    <div class="col-md-6 col-md-height">
+            <span data-ki-as-state class="pull-right">&nbsp;</span>
+            <a href="javascript:void(0)" class="collapser" data-ki-i18n="extended-view-{{showExtension}}" data-ng-class="showExtension" data-ng-click="toggleExtendedView()">
+            </a>
+    </div>
+
+<!--  
+    <div class="clear"></div>-->
+    </div>
+</div>
+
+<div data-extended-searchresult-data="aikuislukio" data-toggle-collapse>
+
+    <div class="grid16-8">
+        <h4 class="margin-top-0 margin-bottom-1" data-ki-i18n="basic-information"></h4>
+        <div data-sr-basic-information data-template-type="aikuislukio" class="margin-bottom-2"></div>
+    </div>
+
+    <div class="grid16-16 application-container">
+        <div data-sr-hakukohteet data-template-type="aikuislukio">
+            <div data-sr-extended-options></div>
+        </div>
+    </div>
+
+    <div class="clear"></div>
+</div>
+
+

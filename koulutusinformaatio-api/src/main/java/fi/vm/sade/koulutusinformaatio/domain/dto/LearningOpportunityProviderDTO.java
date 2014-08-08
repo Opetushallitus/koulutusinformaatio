@@ -54,6 +54,7 @@ public class LearningOpportunityProviderDTO {
     private boolean pictureFound = false;
     private boolean athleteEducation;
     private ApplicationOfficeDTO applicationOffice;
+    private String homeplace;
 
     public String getId() {
         return id;
@@ -245,5 +246,13 @@ public class LearningOpportunityProviderDTO {
 
     public void setLeisureServices(String leisureServices) {
         this.leisureServices = leisureServices;
+    }
+
+    public String getHomeplace() {
+        return homeplace;
+    }
+
+    public void setHomeplace(String homeplace) {
+        this.homeplace = homeplace;
     }
 }

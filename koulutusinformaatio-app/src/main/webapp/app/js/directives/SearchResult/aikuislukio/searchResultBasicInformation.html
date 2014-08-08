@@ -1,0 +1,29 @@
+<ul class="list-unstyled">
+	<li><span data-ki-i18n="education-starts" data-show-colon="true"
+		class="margin-right-1"></span> <span data-ng-show="extendedLO.lo.startDate"
+		class="bold">{{extendedLO.lo.startDate}}</span> <span data-ng-hide="extendedLO.lo.startDate"
+		class="bold">{{extendedLO.lo.startSeason}} {{extendedLO.lo.startYear}}</span></li>
+	<li><span data-ki-i18n="language-of-instruction"
+		data-show-colon="true" class="margin-right-1"></span> <span
+		data-ng-repeat="teachLang in extendedLO.lo.teachingLanguages"><span class="bold"> {{teachLang}}</span><span
+			data-ng-if="!$last">, </span></span></li>
+
+	<li><span data-ki-i18n="time-of-teaching" data-show-colon="true"
+		class="margin-right-1"></span> <span
+		data-ng-repeat="tot in extendedLO.lo.teachingTimes"> <span class="bold">{{tot}}</span><span
+			data-ng-show="!$last">,</span>
+	</span></li>
+	<li><span data-ki-i18n="place-of-teaching" data-show-colon="true"
+		class="margin-right-1"></span> <span
+		data-ng-repeat="top in extendedLO.lo.teachingPlaces"> <span class="bold">{{top}}</span><span
+			data-ng-show="!$last">,</span>
+	</span></li>
+	<li><span data-ki-i18n="form-of-education-higher"
+		data-show-colon="true" class="margin-right-1"></span> <span
+		data-ng-repeat="fot in extendedLO.lo.formOfTeaching"> <span class="bold">{{fot}}</span><span
+			data-ng-show="!$last">,</span>
+	</span></li>
+
+	<li><span data-ki-i18n="duration" data-show-colon="true"
+		class="margin-right-1"></span> <span class="bold">{{lo.credits}}</span></li>
+</ul>

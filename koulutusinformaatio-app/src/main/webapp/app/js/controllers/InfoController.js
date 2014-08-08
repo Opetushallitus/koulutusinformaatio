@@ -181,7 +181,8 @@
     var loadLo = function(languageCode) {
         loResource.query({
             id: $routeParams.id,
-            lang: languageCode
+            lang: languageCode,
+            loType: $routeParams.loType
         }).then(function(loResult) {
             $scope.lo = loResult.lo;
             $scope.tarjontaViewUrl = Config.get('tarjontaUrl') + '/koulutus/' + $scope.lo.id;

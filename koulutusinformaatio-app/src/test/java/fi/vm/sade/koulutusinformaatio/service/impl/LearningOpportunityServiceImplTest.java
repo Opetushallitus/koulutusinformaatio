@@ -259,7 +259,7 @@ public class LearningOpportunityServiceImplTest {
     
     @Test
     public void testPreviewLearningOpportunity() throws ResourceNotFoundException {
-    	HigherEducationLOSDTO losDto = learningOpportunityService.previewLearningOpportunity("1.3.2.4He", "fi", "fi");
+    	HigherEducationLOSDTO losDto = learningOpportunityService.previewHigherEdLearningOpportunity("1.3.2.4He", "fi", "fi");
     	assertEquals("1.3.2.4He", losDto.getId());
     	assertEquals("opintoviikkoa fi", losDto.getCreditUnit());
     	

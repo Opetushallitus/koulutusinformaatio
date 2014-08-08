@@ -34,6 +34,7 @@ function SearchFieldCtrl($scope, $location, $route, $rootScope, SearchService, k
     // Perform search using LearningOpportunity service
     $scope.search = function() {
         if ($scope.queryString) {
+        	
             var activeTab = $location.search().tab;
             FilterService.clear(); // clear all filters for new search
             FilterService.setPage(kiAppConstants.searchResultsStartPage);
@@ -349,6 +350,7 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
     //after which searching is done.
     $scope.initSearch = function() {
         var queryParams = $location.search();
+        
     	FilterService.query(queryParams)
             .then(function() {
                 $scope.prerequisite = FilterService.getPrerequisite();
@@ -407,7 +409,7 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
         $location.search(qParams).replace();
     	//If the language filter is set, the search query is made
     	if ($routeParams.queryString && $scope.isLangFilterSet()) {
-    		
+
     		SearchLearningOpportunityService.query({
     			queryString: $routeParams.queryString,
     			start: (FilterService.getPage()-1) * $scope.itemsPerPage,
@@ -467,6 +469,7 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
     		//If the language filter is not set, it is added to the url, and then page is refreshed
     		//which will result in the search being made
     	} else if ($routeParams.queryString && !$scope.isLangFilterSet()) {
+
     		var queryParams = $location.search();
     		var facetFiltersArr = [];
     		//The existing facet filters are preserved
@@ -495,6 +498,7 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
 
     		$scope.refreshView();
     	} else if (!$routeParams.queryString || $routeParams.queryString == '') {
+
             $scope.loResult = {};
             $scope.loResult.totalCount = 0;
             $scope.loResult.loCount = 0;

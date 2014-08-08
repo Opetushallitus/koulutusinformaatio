@@ -141,5 +141,14 @@
         </constructor-arg>
         <constructor-arg value="${mongo.db.name}"/>
     </bean>
+    
+    <bean id="adultUpperSecondaryLOSDAO" class="fi.vm.sade.koulutusinformaatio.dao.AdultUpperSecondaryLOSDAO">
+        <constructor-arg>
+            <ref bean="primaryDatastore"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="secondaryDatastore"/>
+        </constructor-arg>
+    </bean>
 
 </beans>

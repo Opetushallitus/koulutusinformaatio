@@ -113,7 +113,7 @@ public class TarjontaServiceImplTest {
     	resSets.add(resSet);
     	results.setTulokset(resSets);
     	rawRes.setResult(results);
-    	when(tarjontaRawService.listHigherEducation()).thenReturn(rawRes);
+    	when(tarjontaRawService.listEducations(TarjontaConstants.HIGHER_EDUCATION_TYPE)).thenReturn(rawRes);
     	
     	ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes = new ResultV1RDTO<KoulutusKorkeakouluV1RDTO>();
     	KoulutusKorkeakouluV1RDTO koulutus1 = new KoulutusKorkeakouluV1RDTO();

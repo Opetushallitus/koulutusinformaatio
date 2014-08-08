@@ -396,13 +396,20 @@ public class SearchServiceSolrImpl implements SearchService {
         String homeplace = getHomeplace(doc, lang);
         String lopId = doc.get(LearningOpportunity.LOP_ID) != null ? doc.get(LearningOpportunity.LOP_ID).toString() : null;
 
+        LOG.debug("gathered info now creating search result: " + id);
+        
         LOSearchResult lo = new LOSearchResult(
                 id, name,
                 lopId, lopName, prerequisiteText,
                 prerequisiteCodeText, parentId, losId, doc.get("type").toString(),
                 credits, edType, edDegree, edDegreeCode, homeplace);
+        
+        LOG.debug("Created search result: " + id);
 
         updateAsStatus(lo, doc);
+        
+        LOG.debug("Updated as status: " + id);
+        
         return lo;
 
     }
@@ -932,9 +939,11 @@ public class SearchServiceSolrImpl implements SearchService {
         lo.setAsOngoing(false);
         Date now = new Date();
         Date nextStarts = null;
-
+        
         for (Map.Entry<String, Object> start : doc.entrySet()) {
+            
             if (start.getKey().startsWith(AS_START_DATE_PREFIX)) {
+                
                 String endKey = new StringBuilder().append(AS_END_DATE_PREFIX)
                         .append(start.getKey().split("_")[1]).toString();
 
@@ -959,7 +968,7 @@ public class SearchServiceSolrImpl implements SearchService {
                 }
             }
         }
-
+        
         lo.setNextApplicationPeriodStarts(nextStarts);
     }
 
