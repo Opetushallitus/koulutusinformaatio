@@ -64,7 +64,6 @@
 <body>
     <div id="site">
         <div data-ki-skip-navigation></div>
-        <div data-ng-include data-src="'partials/head/header.html'"></div>
         <div id="page">
             <div data-ng-include data-src="'partials/head/searchbar.html'"></div>
             <div data-ng-switch="error" >
@@ -78,7 +77,12 @@
 
             <div class="clear"></div>
         </div>
-        <div data-ng-include data-src="'partials/footer/footer.html'" data-ng-controller="FooterCtrl"></div>
     </div><!-- #site -->
+    <script id="apply-raamit" type="text/javascript" src="https://test-oppija.oph.ware.fi/oppija-raamit/apply-raamit.js"></script>
+    <script>
+        $("html").on("oppija-raamit-loaded", function() {
+            $("body").show()
+        })
+    </script>
 </body>
 </html>
