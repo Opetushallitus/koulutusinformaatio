@@ -28,6 +28,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
+import fi.vm.sade.koulutusinformaatio.domain.AdultSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Article;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
@@ -139,6 +140,13 @@ public class UpdateServiceImpl implements UpdateService {
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 this.educationDataUpdateService.save(curLOS);
             }
+            
+            List<AdultSecondaryLOS> adultSecondaries = this.tarjontaService.findAdultSecondaries();
+            for (AdultSecondaryLOS curLOS : adultSecondaries) {
+                indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+                this.educationDataUpdateService.save(curLOS);
+            }
+            
             
             List<Code> edTypeCodes = this.tarjontaService.getEdTypeCodes();
             indexerService.addEdTypeCodes(edTypeCodes, loUpdateSolr);
