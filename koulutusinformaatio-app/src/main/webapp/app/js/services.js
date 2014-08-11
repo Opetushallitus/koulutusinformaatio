@@ -2069,9 +2069,6 @@ service('UtilityService', function() {
             } else {
                 return number;
             }
-        },
-        replaceAll: function(regexp, replace, str) {
-            return str.replace(regexp, replace);
         }
     };
 });
