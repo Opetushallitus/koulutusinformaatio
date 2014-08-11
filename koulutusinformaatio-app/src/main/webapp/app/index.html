@@ -62,22 +62,19 @@
 <!--[if lte IE 8]> <body class="lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--><!--<![endif]-->
 <body style="display:none">
-    <div id="site">
+    <div class="app-container">
         <div data-ki-skip-navigation></div>
-        <div id="page">
-            <div data-ng-include data-src="'partials/head/searchbar.html'"></div>
-            <div data-ng-switch="error" >
-                <div data-ng-switch-when="true">
-                    <div data-ng-include data-src="'partials/error.html'"></div>
-                </div>
-                <div data-ng-switch-default>
-                    <div data-ng-view></div>
-                </div>
+        <div data-ng-include data-src="'partials/head/searchbar.html'"></div>
+        <div data-ng-switch="error" >
+            <div data-ng-switch-when="true">
+                <div data-ng-include data-src="'partials/error.html'"></div>
             </div>
-
-            <div class="clear"></div>
+            <div data-ng-switch-default>
+                <div data-ng-view></div>
+            </div>
         </div>
-    </div><!-- #site -->
+    </div>
+
     <script type="text/javascript" src="../raamit/load"></script>
     <script>
         $("html").on("oppija-raamit-loaded", function() {

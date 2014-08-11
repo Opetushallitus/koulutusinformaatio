@@ -33,13 +33,15 @@ angular.module('kiApp.filters', [])
 // replace h1 and h2 headers with h3 headers
 .filter('headers', function() {
     return function(val) {
-        // replace h1 with h3
-        val = val.replace(/<h1/gi, '<h3');
-        val = val.replace(/<\/h1>/gi, '</h3>');
+        if (val) {
+            // replace h1 with h3
+            val = val.replace(/<h1/gi, '<h3');
+            val = val.replace(/<\/h1>/gi, '</h3>');
 
-        // replace h2 with h3
-        val = val.replace(/<h2/gi, '<h3');
-        val = val.replace(/<\/h2>/gi, '</h3>');
+            // replace h2 with h3
+            val = val.replace(/<h2/gi, '<h3');
+            val = val.replace(/<\/h2>/gi, '</h3>');
+        }
 
         return val;
     }
@@ -48,9 +50,11 @@ angular.module('kiApp.filters', [])
 // combines a bunch of filters (used for textual content from tarjonta)
 .filter('tarjontaFilter', ['$filter', function($filter) {
     return function(val) {
-        val = $filter('externalLinks')(val);
-        val = $filter('tables')(val);
-        val = $filter('headers')(val);
+        if (val) {
+            val = $filter('externalLinks')(val);
+            val = $filter('tables')(val);
+            val = $filter('headers')(val);
+        }
 
         return val;
     }

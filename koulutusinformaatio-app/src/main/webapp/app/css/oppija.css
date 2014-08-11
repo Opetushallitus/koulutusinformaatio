@@ -1397,19 +1397,8 @@ table th[class*="col-"] {
 @media (min-width: 992px) {
   .modal-lg {
     width: 900px; } }
-header.oppija-header {
-  background-color: #149ecb;
-  margin-bottom: 60px; }
-  header.oppija-header .header {
-    padding-top: 20px;
-    padding-bottom: 20px; }
-    header.oppija-header .header a {
-      color: white;
-      font-weight: bold;
-      text-decoration: none; }
-
-footer {
-  margin-top: 220px; }
+.app-container {
+  margin: 60px 0 220px 0; }
 
 .search-field {
   margin-bottom: 40px; }
@@ -1949,80 +1938,6 @@ select {
 .area-select {
   width: 80%;
   display: inline-block; }
-
-nav {
-  font-size: 16px;
-  line-height: 20px;
-  z-index: 1001;
-  position: relative; }
-  nav ul {
-    padding: 0px;
-    margin: 0px;
-    list-style: none;
-    position: relative;
-    display: block;
-    -webkit-box-shadow: 0px 1px 1px 0 rgba(0, 0, 0, 0.5);
-    box-shadow: 0px 1px 1px 0 rgba(0, 0, 0, 0.5);
-    outline: none; }
-    nav ul.level-1 {
-      width: 100%;
-      box-shadow: none;
-      float: left; }
-      nav ul.level-1 > li {
-        max-width: none;
-        width: auto; }
-    nav ul:after {
-      content: "";
-      clear: both;
-      display: block; }
-    nav ul li {
-      float: left;
-      text-align: left; }
-      nav ul li.menu-hover, nav ul li.menu-focus {
-        background: #FFFFFF;
-        outline-style: none; }
-        nav ul li.menu-hover a, nav ul li.menu-hover a:link, nav ul li.menu-hover a:visited, nav ul li.menu-focus a, nav ul li.menu-focus a:link, nav ul li.menu-focus a:visited {
-          color: #333333; }
-        nav ul li.menu-hover > ul, nav ul li.menu-focus > ul {
-          display: block; }
-      nav ul li a, nav ul li a:link, nav ul li a:visited {
-        display: block;
-        padding: 10px;
-        color: white;
-        text-decoration: none; }
-      nav ul li a.action-link {
-        font-size: 13px;
-        text-decoration: underline; }
-    nav ul ul {
-      background: #FFFFFF;
-      border-radius: 0px;
-      padding: 0;
-      position: absolute;
-      display: none;
-      min-width: 200px; }
-      nav ul ul li {
-        float: none;
-        position: relative; }
-        nav ul ul li a {
-          padding: 10px;
-          color: #fff;
-          font-size: 13px; }
-          nav ul ul li a:hover, nav ul ul li a:focus {
-            background: #feedbd; }
-        nav ul ul li:focus {
-          background: #feedbd; }
-          nav ul ul li:focus a {
-            padding: 10px;
-            color: #fff;
-            font-size: 13px; }
-      nav ul ul ul {
-        position: absolute;
-        left: 100%;
-        top: 0; }
-
-.navbar-default .navbar-nav > li > a.navbar-link {
-  color: white;
-  text-decoration: underline; }
 
 .banner-text {
   font-size: 18px;
