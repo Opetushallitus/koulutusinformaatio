@@ -61,7 +61,7 @@
 </head>
 <!--[if lte IE 8]> <body class="lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--><!--<![endif]-->
-<body>
+<body style="display:none">
     <div id="site">
         <div data-ki-skip-navigation></div>
         <div id="page">
@@ -78,7 +78,7 @@
             <div class="clear"></div>
         </div>
     </div><!-- #site -->
-    <script id="apply-raamit" type="text/javascript" src="https://test-oppija.oph.ware.fi/oppija-raamit/apply-raamit.js"></script>
+    <script type="text/javascript" src="../raamit/load"></script>
     <script>
         $("html").on("oppija-raamit-loaded", function() {
             $("body").show()
