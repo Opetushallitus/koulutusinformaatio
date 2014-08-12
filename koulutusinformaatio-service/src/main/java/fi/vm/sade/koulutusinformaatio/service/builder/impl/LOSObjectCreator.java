@@ -818,6 +818,8 @@ public class LOSObjectCreator extends ObjectCreator {
     public AdultVocationalLOS createAdultVocationalLOS(
             KoulutusLukioV1RDTO koulutus, boolean checkStatus) throws TarjontaParseException, KoodistoException {
         
+        LOG.debug("Creating adult vocational los: " + koulutus.getOid());
+        
         AdultVocationalLOS los = new AdultVocationalLOS();
 
         los.setType(TarjontaConstants.TYPE_ADULT_VOCATIONAL);//TarjontaConstants.TYPE_ADULT_UPSEC);
