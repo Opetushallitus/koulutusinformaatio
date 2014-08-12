@@ -1,3 +1,18 @@
+/*
+ * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
+ *
+ * This program is free software:  Licensed under the EUPL, Version 1.1 or - as
+ * soon as they will be approved by the European Commission - subsequent versions
+ * of the EUPL (the "Licence");
+ *
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy of the Licence at: http://www.osor.eu/eupl/
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * European Union Public Licence for more details.
+ */
 package fi.vm.sade.koulutusinformaatio.dao.entity;
 
 import java.util.ArrayList;
@@ -9,15 +24,13 @@ import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Reference;
 
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-import fi.vm.sade.koulutusinformaatio.domain.LanguageSelection;
 /**
  * 
  * @author Markus
  *
  */
-@Entity("adultUpperSecondaryLOS")
-public class AdultUpperSecondaryLOSEntity {
+@Entity("adultVocationalLOS")
+public class AdultVocationalLOSEntity {
     
 
     //Varmistetut
@@ -112,15 +125,6 @@ public class AdultUpperSecondaryLOSEntity {
     
     @Embedded
     private CodeEntity koulutuslaji;
-    //specials
-    @Embedded
-    private I18nTextEntity targetGroup;
-    @Embedded
-    private I18nTextEntity subjectsAndCourses;
-    
-    private List<LanguageSelection> languageSelection;
-    @Embedded
-    private List<I18nTextEntity> diplomas = new ArrayList<I18nTextEntity>(); 
 
     public String getId() {
         return id;
@@ -392,29 +396,6 @@ public class AdultUpperSecondaryLOSEntity {
     public void setKoulutuslaji(CodeEntity koulutuslaji) {
         this.koulutuslaji = koulutuslaji;
     }
-    public I18nTextEntity getTargetGroup() {
-        return targetGroup;
-    }
-    public void setTargetGroup(I18nTextEntity targetGroup) {
-        this.targetGroup = targetGroup;
-    }
-    public I18nTextEntity getSubjectsAndCourses() {
-        return subjectsAndCourses;
-    }
-    public void setSubjectsAndCourses(I18nTextEntity subjectsAndCourses) {
-        this.subjectsAndCourses = subjectsAndCourses;
-    }
-    public List<LanguageSelection> getLanguageSelection() {
-        return languageSelection;
-    }
-    public void setLanguageSelection(List<LanguageSelection> languageSelection) {
-        this.languageSelection = languageSelection;
-    }
-    public List<I18nTextEntity> getDiplomas() {
-        return diplomas;
-    }
-    public void setDiplomas(List<I18nTextEntity> diplomas) {
-        this.diplomas = diplomas;
-    }
+
 
 }

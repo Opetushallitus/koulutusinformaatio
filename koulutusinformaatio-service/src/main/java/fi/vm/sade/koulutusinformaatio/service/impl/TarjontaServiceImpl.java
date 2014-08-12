@@ -34,6 +34,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakoulu
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusLukioV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KuvaV1RDTO;
 import fi.vm.sade.tarjonta.service.types.TarjontaTila;
+import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -520,16 +521,16 @@ public class TarjontaServiceImpl implements TarjontaService {
     
 
     @Override
-    public List<AdultSecondaryLOS> findAdultSecondaries()
+    public List<AdultVocationalLOS> findAdultVocationals()
             throws KoodistoException {
         
         if (creator == null) {
             creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService);
         }
         
-        List<AdultSecondaryLOS> koulutukset = new ArrayList<AdultSecondaryLOS>();
+        List<AdultVocationalLOS> koulutukset = new ArrayList<AdultVocationalLOS>();
         
-        ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes =  this.tarjontaRawService.listEducations(TarjontaConstants.UPPER_SECONDARY_EDUCATION_TYPE);
+        ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes =  this.tarjontaRawService.listEducationsByToteutustyyppi(ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO_NAYTTOTUTKINTONA.name());//listEducations(TarjontaConstants.UPPER_SECONDARY_EDUCATION_TYPE);
         HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
         Map<String,List<HigherEducationLOSRef>> aoToEducationsMap = new HashMap<String,List<HigherEducationLOSRef>>();
         
@@ -541,7 +542,25 @@ public class TarjontaServiceImpl implements TarjontaService {
                 if (!curKoulutus.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
                     continue;
                 }
-            }
+                
+                ResultV1RDTO<KoulutusLukioV1RDTO> koulutusRes = this.tarjontaRawService.getUpperSecondaryLearningOpportunity(curKoulutus.getOid());
+                KoulutusLukioV1RDTO koulutusDTO = koulutusRes.getResult();
+                
+                try {
+                    AdultVocationalLOS los = creator.createAdultVocationalLOS(koulutusDTO, true);//createHigherEducationLOS(koulutusDTO, true);
+                    LOG.debug("Created los: " + los.getId());
+                    koulutukset.add(los);
+                    updateAOLosReferences(los, aoToEducationsMap);
+                    LOG.debug("Updated aolos references for: " + los.getId());
+
+                } catch (TarjontaParseException ex) {
+                    continue;
+                }
+                
+                
+            }         
+            
+            
         }
         
         

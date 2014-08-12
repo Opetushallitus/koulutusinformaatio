@@ -13,17 +13,23 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * European Union Public Licence for more details.
  */
+package fi.vm.sade.koulutusinformaatio.dao;
 
-package fi.vm.sade.koulutusinformaatio.domain;
+import org.mongodb.morphia.Datastore;
+
+import fi.vm.sade.koulutusinformaatio.dao.entity.AdultVocationalLOSEntity;
 
 /**
  * 
  * @author Markus
  *
  */
-public class AdultSecondaryLOS extends StandaloneLOS {
-    
-    
-    
+public class AdultVocationalLOSDAO extends LearningOpportunitySpecificationDAO<AdultVocationalLOSEntity, String> {
+
+    protected AdultVocationalLOSDAO(Datastore primaryDatastore,
+            Datastore secondaryDatastore) {
+        super(primaryDatastore, secondaryDatastore);
+        ensureIndexes();
+    }
 
 }
