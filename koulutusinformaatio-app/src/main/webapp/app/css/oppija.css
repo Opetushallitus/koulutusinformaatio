@@ -1971,3 +1971,14 @@ select {
 
 .preview-actions > * {
   margin-left: 10px; }
+
+header.preview-header {
+  background-color: #149ecb;
+  margin-bottom: 60px; }
+  header.preview-header .header {
+    padding-top: 20px;
+    padding-bottom: 20px; }
+    header.preview-header .header a {
+      color: white;
+      font-weight: bold;
+      text-decoration: none; }

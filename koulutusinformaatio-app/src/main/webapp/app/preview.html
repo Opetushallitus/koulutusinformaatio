@@ -61,13 +61,10 @@
 <!--[if gt IE 8]><!--><!--<![endif]-->
 <body>
     <div id="overlay"></div>
-    <div id="site">
-        <div data-ng-include data-src="'partials/preview/header.html'"></div>
-        <div id="page">
-            <div data-ng-view></div>
-            <div class="clear"></div>
-        </div>
-        <div data-ng-include data-src="'partials/footer/footer.html'" data-ng-controller="FooterCtrl"></div>
-    </div><!-- #site -->
+    <div data-ng-include data-src="'partials/preview/header.html'"></div>
+    <div class="app-container">
+        <div data-ng-view></div>
+    </div>
+    <div data-ng-include data-src="'partials/footer/footer.html'" data-ng-controller="FooterCtrl"></div>
 </body>
 </html>
