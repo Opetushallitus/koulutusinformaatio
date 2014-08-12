@@ -41,6 +41,7 @@ function SearchFieldCtrl($scope, $location, $route, $rootScope, SearchService, k
             SearchService.setTerm($scope.queryString);
             var queryString = $scope.queryString;
             
+            
             // empty query string
             $scope.queryString = '';
             
@@ -50,7 +51,8 @@ function SearchFieldCtrl($scope, $location, $route, $rootScope, SearchService, k
             var filters = FilterService.get();
             filters.tab = activeTab;
             $location.hash(null);
-            $location.path('/haku/' + queryString);
+            
+            $location.path('/haku/' + encodeURIComponent(queryString));
             $location.search(filters);
         }
     };
