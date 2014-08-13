@@ -61,7 +61,8 @@ public final class SolrUtil {
             LearningOpportunity.TEXT_BOOST_FI_WHOLE,
             LearningOpportunity.AS_NAMES,
             LearningOpportunity.LOP_NAMES,
-            LearningOpportunity.NAME_AUTO_FI
+            LearningOpportunity.NAME_AUTO_FI,
+            LearningOpportunity.ARTICLE_CONTENT_FI
     );
     
     public static final List<String> FIELDS_SV = Lists.newArrayList(
@@ -71,7 +72,8 @@ public final class SolrUtil {
             LearningOpportunity.TEXT_BOOST_SV_WHOLE,
             LearningOpportunity.AS_NAMES,
             LearningOpportunity.LOP_NAMES,
-            LearningOpportunity.NAME_AUTO_SV
+            LearningOpportunity.NAME_AUTO_SV,
+            LearningOpportunity.ARTICLE_CONTENT_SV
     );
     
     public static final List<String> FIELDS_EN = Lists.newArrayList(
@@ -81,7 +83,8 @@ public final class SolrUtil {
             LearningOpportunity.TEXT_BOOST_EN_WHOLE,
             LearningOpportunity.AS_NAMES,
             LearningOpportunity.LOP_NAMES,
-            LearningOpportunity.NAME_AUTO_EN
+            LearningOpportunity.NAME_AUTO_EN,
+            LearningOpportunity.ARTICLE_CONTENT_EN
     );
     
     private SolrUtil() {
@@ -318,6 +321,10 @@ public final class SolrUtil {
         public static final String ARTICLE_EDUCATION_CODE = "articleEducationCode_ffm";
         public static final String ARTICLE_LANG = "article_lang_ssort";
         public static final String ARTICLE_CONTENT_TYPE = "articleContentType_ffm";
+        
+        public static final String ARTICLE_CONTENT_FI = "articleContent_fi_ffm";
+        public static final String ARTICLE_CONTENT_SV = "articleContent_sv_ffm";
+        public static final String ARTICLE_CONTENT_EN = "articleContent_en_ffm";
 
         //Fields for sorting
         public static final String START_DATE_SORT = "startDate_dsort";
