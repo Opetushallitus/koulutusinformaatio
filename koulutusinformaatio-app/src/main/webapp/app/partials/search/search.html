@@ -12,7 +12,7 @@
              aria-selected="true"
              aria-controls="search-panel1"
              role="tab"
-             class="tab" >
+             class="tab ki-search-intro-step2" >
             <div data-ng-controller="SearchFilterCtrl" role="tabpanel" id="search-panel1">
                 <div class="row margin-vertical-default">
                     <div class="col-md-16">
@@ -21,8 +21,8 @@
                 </div>
                 <div data-ng-include="'partials/search/facet-selections.html'"></div>
                 <div class="row margin-vertical-default">
-                    <div data-ng-include="'partials/search/facet-filters.html'" class="col-md-5"></div>
-                    <div data-ng-include="'partials/search/search-results.html'" class="col-md-11"></div>
+                    <div data-ng-include="'partials/search/facet-filters.html'" class="col-sm-5"></div>
+                    <div data-ng-include="'partials/search/search-results.html'" class="col-sm-11"></div>
                 </div>
             </div>
         </div>
@@ -40,8 +40,8 @@
             <div role="tabpanel" id="search-panel2">
             	<div data-ng-include="'partials/search/articles/facet-selections.html'"></div>
                 <div class="row">
-                    <div data-ng-include="'partials/search/articles/facet-filters.html'" class="col-md-5"></div>
-                    <div data-ng-include="'partials/search/articles/search-results.html'" class="col-md-11"></div>
+                    <div data-ng-include="'partials/search/articles/facet-filters.html'" class="col-sm-5"></div>
+                    <div data-ng-include="'partials/search/articles/search-results.html'" class="col-sm-11"></div>
                 </div>
             </div>
         </div>

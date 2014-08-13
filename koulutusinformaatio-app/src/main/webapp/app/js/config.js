@@ -4,13 +4,16 @@ window.Config.app = window.Config.app || {};
 /* Configurations common for all environments */
 window.Config.app.common = {
 	fi: {
-        frontpageUrl: '/wp/fi/'
+        frontpageUrl: '/wp/fi/',
+        introUrl: '/wp/fi/api/get_search_results/?search=+&post_type=oph-helptext'
 	},
 	sv: {
-        frontpageUrl: '/wp/sv/'
+        frontpageUrl: '/wp/sv/',
+        introUrl: '/wp/sv/api/get_search_results/?search=+&post_type=oph-helptext'
 	},
     en: {
-        frontpageUrl: '/wp2/en/'
+        frontpageUrl: '/wp2/en/',
+        introUrl: '/wp2/en/api/get_search_results/?search=+&post_type=oph-helptext'
     },
     hakulomakeUrl: '/haku-app/',
     piwikUrl: 'https://analytiikka.opintopolku.fi/piwik/'
@@ -72,12 +75,15 @@ window.Config.app.reppu = {
 // NOTE: currently Wordpress related data is fetched from QA environment
 window.Config.app.dev = {
 	fi: {
-		tarjontaUrl: 'https://itest-virkailija.oph.ware.fi/tarjonta-app/#'
+		tarjontaUrl: 'https://itest-virkailija.oph.ware.fi/tarjonta-app/#',
+        introUrl: 'https://testi.opintopolku.fi/wp/fi/api/get_search_results/?search=+&post_type=oph-helptext'
 	},
 	sv: {
-    	tarjontaUrl: 'https://itest-virkailija.oph.ware.fi/tarjonta-app/#'
+    	tarjontaUrl: 'https://itest-virkailija.oph.ware.fi/tarjonta-app/#',
+        introUrl: 'https://testi.opintopolku.fi/wp/sv/api/get_search_results/?search=+&post_type=oph-helptext'
 	},
     en: {
-        tarjontaUrl: 'https://itest-virkailija.oph.ware.fi/tarjonta-app/#'
+        tarjontaUrl: 'https://itest-virkailija.oph.ware.fi/tarjonta-app/#',
+        introUrl: 'https://testi.opintopolku.fi/wp2/en/api/get_search_results/?search=+&post_type=oph-helptext'
     }
 };
