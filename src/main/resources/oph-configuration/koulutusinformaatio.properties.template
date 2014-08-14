@@ -121,3 +121,5 @@ user.home.conf=${user.home}/oph-configuration
 user.oid.prefix=1.2.246.562.24
 user.webservice.url.backend=https\://${host.virkailija}/authentication-service/services/userService
 web.url.cas=https\://${host.cas}/cas
+
+oppija-raamit.url=https://oppija-raamit.herokuapp.com

@@ -108,29 +108,6 @@ var kiApp = angular.module('previewApp',
     });
 }])
 
-.filter('unique', function() {
-   return function(collection, keyname) {
-      var output = [], 
-          keys = [];
-
-      angular.forEach(collection, function(item) {
-          var key = item[keyname];
-          if(keys.indexOf(key) === -1) {
-              keys.push(key);
-              output.push(item);
-          }
-      });
-
-      return output;
-   };
-})
-
-.filter('unsafe', function($sce) {
-    return function(val) {
-        return $sce.trustAsHtml(val);
-    };
-})
-
 .value('appConfig', window.Config.app)
 .factory('Config', function($location, appConfig, LanguageService, HostResolver) {
     return {

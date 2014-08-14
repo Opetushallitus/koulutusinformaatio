@@ -134,29 +134,6 @@ var kiApp = angular.module('kiApp',
             }
         }
     }
-}).
-
-filter('unique', function() {
-   return function(collection, keyname) {
-      var output = [], 
-          keys = [];
-
-      angular.forEach(collection, function(item) {
-          var key = item[keyname];
-          if(keys.indexOf(key) === -1) {
-              keys.push(key);
-              output.push(item);
-          }
-      });
-
-      return output;
-   };
-}).
-
-filter('unsafe', function($sce) {
-    return function(val) {
-        return $sce.trustAsHtml(val);
-    };
 });
 
 var OPH = OPH || {};

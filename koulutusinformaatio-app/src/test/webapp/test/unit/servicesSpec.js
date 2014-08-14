@@ -470,19 +470,6 @@ describe('UtilityService', function() {
             expect(result[0].applicationOptions.length).toEqual(4);
         });
     });
-
-    describe('replaceAll', function() {
-
-        it('should replace all occurences in a string', function() {
-            var result = utility.replaceAll(/a/g, 'b', 'aabaca');
-            expect(result).toEqual('bbbbcb');
-        });
-
-        it('should replace all occurences in a string', function() {
-            var result = utility.replaceAll(/<a/g, '<a target="_blank"', '<a href="abc">link</a><span>something</span><a href="def">another link</a>');
-            expect(result).toEqual('<a target="_blank" href="abc">link</a><span>something</span><a target="_blank" href="def">another link</a>');
-        });
-    });
 });
 
 

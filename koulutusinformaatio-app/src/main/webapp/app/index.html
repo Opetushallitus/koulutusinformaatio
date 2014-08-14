@@ -61,24 +61,25 @@
 </head>
 <!--[if lte IE 8]> <body class="lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--><!--<![endif]-->
-<body>
-    <div id="site">
+<body style="display:none">
+    <div class="app-container">
         <div data-ki-skip-navigation></div>
-        <div data-ng-include data-src="'partials/head/header.html'"></div>
-        <div id="page">
-            <div data-ng-include data-src="'partials/head/searchbar.html'"></div>
-            <div data-ng-switch="error" >
-                <div data-ng-switch-when="true">
-                    <div data-ng-include data-src="'partials/error.html'"></div>
-                </div>
-                <div data-ng-switch-default>
-                    <div data-ng-view></div>
-                </div>
+        <div data-ng-include data-src="'partials/head/searchbar.html'"></div>
+        <div data-ng-switch="error" >
+            <div data-ng-switch-when="true">
+                <div data-ng-include data-src="'partials/error.html'"></div>
             </div>
-
-            <div class="clear"></div>
+            <div data-ng-switch-default>
+                <div data-ng-view></div>
+            </div>
         </div>
-        <div data-ng-include data-src="'partials/footer/footer.html'" data-ng-controller="FooterCtrl"></div>
-    </div><!-- #site -->
+    </div>
+
+    <script type="text/javascript" src="../raamit/load"></script>
+    <script>
+        $("html").on("oppija-raamit-loaded", function() {
+            $("body").show()
+        })
+    </script>
 </body>
 </html>

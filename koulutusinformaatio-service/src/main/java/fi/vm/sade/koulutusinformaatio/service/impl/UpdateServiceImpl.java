@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import java.util.Date;
 import java.util.List;
 
@@ -116,6 +117,7 @@ public class UpdateServiceImpl implements UpdateService {
                                         "1.2.246.562.5.2013112814572435006223", //kymppikluokka
                                         "1.2.246.562.5.2013112814572438173505"//ammattistartti
                                         );*/
+
 
                 for (String loOid : loOids) {
                     List<LOS> specifications = null;
