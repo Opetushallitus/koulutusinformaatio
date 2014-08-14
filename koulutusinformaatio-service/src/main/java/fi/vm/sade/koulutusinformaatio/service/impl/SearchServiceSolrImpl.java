@@ -183,25 +183,7 @@ public class SearchServiceSolrImpl implements SearchService {
     }
 
 
-    private String fixString(String term) {
-        String[] splits = term.split(" ");
-        String fixed = "";
-        for (String curSplit : splits) {
-            if ((curSplit.length() > 1 || curSplit.equals("*")) && !curSplit.startsWith("&")) {
-                fixed = String.format("%s%s ", fixed, curSplit);
-            }
-        }
-        
-        fixed = fixed.trim();
-        
-        if (fixed.endsWith("?")) {
-            fixed = fixed.substring(0, fixed.lastIndexOf('?'));
-        }
-        
-        LOG.debug("Fixed: " + fixed);
-        
-        return fixed;
-    }
+    
     
     private String getDateLimitStr(boolean upcomingLater) {
         Calendar limit = Calendar.getInstance();
@@ -236,7 +218,7 @@ public class SearchServiceSolrImpl implements SearchService {
             List<String> excludes, SearchType searchType) throws SearchException {
         LOSearchResultList searchResultList = new LOSearchResultList();
         String trimmed = term.trim();
-        String fixed = fixString(trimmed);
+        String fixed = SolrUtil.fixString(trimmed);
         if (!trimmed.isEmpty()) {
 
             String upcomingLimit = getDateLimitStr(false);
