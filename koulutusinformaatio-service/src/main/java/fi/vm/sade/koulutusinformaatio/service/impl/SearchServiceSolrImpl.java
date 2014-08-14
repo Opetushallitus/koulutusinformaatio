@@ -191,7 +191,16 @@ public class SearchServiceSolrImpl implements SearchService {
                 fixed = String.format("%s%s ", fixed, curSplit);
             }
         }
-        return fixed.trim();
+        
+        fixed = fixed.trim();
+        
+        if (fixed.endsWith("?")) {
+            fixed = fixed.substring(0, fixed.lastIndexOf('?'));
+        }
+        
+        LOG.debug("Fixed: " + fixed);
+        
+        return fixed;
     }
     
     private String getDateLimitStr(boolean upcomingLater) {
