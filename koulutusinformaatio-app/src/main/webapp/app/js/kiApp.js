@@ -69,7 +69,7 @@ var kiApp = angular.module('kiApp',
 
     $routeProvider.when('/muistilista', {
         templateUrl: 'partials/applicationbasket/applicationbasket.html',
-        controller: 'ApplicationBasketCtrl'
+        controller: 'AppBasketCtrl'
     });
 
     $routeProvider.otherwise({

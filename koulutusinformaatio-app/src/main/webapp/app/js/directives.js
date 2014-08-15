@@ -2,7 +2,6 @@
 
 angular.module('kiApp.directives', 
     [
-        'kiApp.Navigation',
         'kiApp.FacetTree',
         'kiApp.KeyboardControl',
         'kiApp.SelectAreaDialog',

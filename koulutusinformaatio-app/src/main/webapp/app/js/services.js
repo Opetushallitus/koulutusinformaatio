@@ -4,7 +4,6 @@ angular.module('kiApp.services',
 [
     'ngResource', 
     'kiApp.HostResolver', 
-    'kiApp.NavigationService',
     'kiApp.ArticleContentSearchService',
     'kiApp.TranslationService',
     'kiApp.CookieService'

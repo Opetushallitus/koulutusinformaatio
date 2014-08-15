@@ -122,19 +122,16 @@ window.Config.app.dev = {
 	fi: {
 		frontpageUrl: 'https://testi.opintopolku.fi/wp/fi/',
 		rekisteriselosteUrl: 'https://testi.opintopolku.fi/wp/fi/rekisteriseloste/',
-		navigationUrl: 'https://testi.opintopolku.fi/wp/fi/api/nav/json_nav/',
 		tarjontaUrl: 'https://itest-virkailija.oph.ware.fi/tarjonta-app/#'
 	},
 	sv: {
 		frontpageUrl: 'https://testi.opintopolku.fi/wp/sv/',
     	rekisteriselosteUrl: 'https://testi.opintopolku.fi/wp/sv/registerbeskrivning/',
-    	navigationUrl: 'https://testi.opintopolku.fi/wp/sv/api/nav/json_nav/',
     	tarjontaUrl: 'https://itest-virkailija.oph.ware.fi/tarjonta-app/#'
 	},
     en: {
         frontpageUrl: 'https://testi.opintopolku.fi/wp2/en/',
         rekisteriselosteUrl: 'https://testi.opintopolku.fi/wp2/en/register',
-        navigationUrl: 'https://testi.opintopolku.fi/wp2/en/api/nav/json_nav/',
         tarjontaUrl: 'https://itest-virkailija.oph.ware.fi/tarjonta-app/#'
     }
 };
