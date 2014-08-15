@@ -21,6 +21,8 @@ module.exports = function(config) {
             appPath + 'app/lib/angular/1.2.13/angular.min.js',
             appPath + 'app/lib/angular/1.2.13/angular-resource.min.js',
             appPath + 'app/lib/angular/1.2.13/angular-route.min.js',
+            appPath + 'app/lib/angular/1.2.13/angular-sanitize.min.js',
+            appPath + 'app/lib/angular-bootstrap/*.js',
             appPath + 'app/lib/angulartics/*.js',
             appPath + 'app/lib/jquery/jquery-1.8.0.min.js',
             appPath + 'app/lib/modernizr/modernizr-2.6.2.min.js',

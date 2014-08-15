@@ -565,7 +565,7 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
     }
 };
 
-function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, ArticleContentSearchService, FilterService, SearchLearningOpportunityService, LanguageService, kiAppConstants, TranslationService) {
+function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, FilterService, SearchLearningOpportunityService, LanguageService, kiAppConstants, TranslationService) {
     
 	$scope.change = function() {
         FilterService.set({
