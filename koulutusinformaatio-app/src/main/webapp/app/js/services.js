@@ -413,7 +413,6 @@ service('UpperSecondaryLOService', ['$http', '$timeout', '$q', '$rootScope', 'La
                 ChildLOTransformer.transform(result);
                 var loResult = {
                     lo: result,
-                    //parent: {},
                     provider: result.provider
                 }
                 deferred.resolve(loResult);
@@ -449,12 +448,10 @@ service('HigherEducationLOService', ['$http', '$timeout', '$q', 'LanguageService
                 params: queryParams
             }).
             
-            //$http.get('mocks/amk.json', {}).
             success(function(result) {
             	HigherEducationTransformer.transform(result);
                 var loResult = {
                     lo: result,
-                    //parent: {},
                     provider: result.provider
                 }
                 
@@ -490,12 +487,10 @@ service('AdultUpperSecondaryLOService', ['$http', '$timeout', '$q', 'LanguageSer
                 params: queryParams
             }).
             
-            //$http.get('mocks/amk.json', {}).
             success(function(result) {
             	HigherEducationTransformer.transform(result);
                 var loResult = {
                     lo: result,
-                    //parent: {},
                     provider: result.provider
                 }
                 
@@ -529,15 +524,11 @@ service('HigherEducationPreviewLOService', ['$http', '$timeout', '$q', 'Language
             }
 
             var url = '../lo/preview/';
-            //var url = 'mocks/kk.json';
-            //$http.get(url, {}).
             
             $http.get(url + options.id, {
                 params: queryParams
             }).
             
-            
-            //$http.get('mocks/amk.json', {}).
             success(function(result) {
             	HigherEducationTransformer.transform(result);
             	result.preview = true;
@@ -562,7 +553,6 @@ service('HigherEducationPreviewLOService', ['$http', '$timeout', '$q', 'Language
             	}
                 var loResult = {
                     lo: result,
-                    //parent: {},
                     provider: result.provider
                 }
                 deferred.resolve(loResult);
@@ -769,8 +759,6 @@ service('HigherEducationTransformer', ['KiSorter', '$rootScope', '$filter', 'Lan
 				result.polytechnic = true;
 			}
 			result.teachingLanguage = getFirstItemInList(result.teachingLanguages);
-			//result.formOfTeaching = getFirstItemInList(result.formOfTeaching);
-			
 
 			if (result.themes != undefined && result.themes != null) {
 				var distinctMap = {};
@@ -1330,52 +1318,6 @@ service('VirkailijaLanguageService', ['CookieService', function(CookieService) {
 }]).
 
 /**
- *  Service for "caching" current parent selection
- */
- /*
- service('ParentLODataService', function() {
-    var data;
-
-    return {
-        getParentLOData: function() {
-            return data;
-        },
-
-        setParentLOData: function(newData) {
-            data = newData;
-        },
-
-        dataExists: function(id) {
-            return data && data.id == id; 
-        }
-    };
-}).
-*/
-
-/**
- *  Service for "caching" current child selection
- */
- /*
- service('ChildLODataService', function() {
-    var data;
-
-    return {
-        getChildLOData: function() {
-            return data;
-        },
-
-        setChildLOData: function(newData) {
-            data = newData;
-        },
-
-        dataExists: function(id) {
-            return data && data.id == id; 
-        }
-    };
-}).
-*/
-
-/**
  *  Service for maintaining application basket state
  */
 service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageService', 'UtilityService', 'CookieService', function($http, $q, $rootScope, LanguageService, UtilityService, CookieService) {
@@ -1582,12 +1524,6 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
             }
         }
     }
-
-    /*
-    var setLocations = function(locations) {
-        filters.locations = locations;
-    }
-    */
 
     return {
         query: function(queryParams) {
