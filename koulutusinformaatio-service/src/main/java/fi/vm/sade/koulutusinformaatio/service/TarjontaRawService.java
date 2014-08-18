@@ -26,6 +26,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KomoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusLukioV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KuvaV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.NayttotutkintoV1RDTO;
 
 import java.util.List;
 import java.util.Map;
@@ -92,5 +93,8 @@ public interface TarjontaRawService {
             String oid);
 
     ResultV1RDTO<KomoV1RDTO> getV1Komo(String oid);
+
+    ResultV1RDTO<NayttotutkintoV1RDTO> getAdultVocationalLearningOpportunity(
+            String oid);
     
 }

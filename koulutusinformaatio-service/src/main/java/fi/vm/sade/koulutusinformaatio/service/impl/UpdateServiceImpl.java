@@ -13,12 +13,9 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * European Union Public Licence for more details.
  */
-
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-
 import java.util.Date;
 import java.util.List;
 
@@ -34,6 +31,7 @@ import fi.vm.sade.koulutusinformaatio.domain.AdultVocationalLOS;
 import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Article;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
+import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
@@ -155,8 +153,8 @@ public class UpdateServiceImpl implements UpdateService {
                 this.educationDataUpdateService.save(curLOS);
             }
             
-            List<AdultVocationalLOS> adultVocationals = this.tarjontaService.findAdultVocationals();
-            for (AdultVocationalLOS curLOS : adultVocationals) {
+            List<CompetenceBasedQualificationParentLOS> adultVocationals = this.tarjontaService.findAdultVocationals();
+            for (CompetenceBasedQualificationParentLOS curLOS : adultVocationals) {
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 this.educationDataUpdateService.save(curLOS);
             }
@@ -201,6 +199,13 @@ public class UpdateServiceImpl implements UpdateService {
                 indexToSolr(curChild, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
             }
         }
+    }
+    
+    private void indexToSolr(CompetenceBasedQualificationParentLOS curLOS,
+            HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws Exception {
+        this.indexerService.addLearningOpportunitySpecification(curLOS, loUpdateSolr, lopUpdateSolr);
+        this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
+        
     }
 
     @Override

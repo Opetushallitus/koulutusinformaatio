@@ -19,6 +19,7 @@ package fi.vm.sade.koulutusinformaatio.service;
 import fi.vm.sade.koulutusinformaatio.domain.AdultVocationalLOS;
 import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
+import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
@@ -84,7 +85,7 @@ public interface TarjontaService {
 
     public List<AdultUpperSecondaryLOS> findAdultUpperSecondaries() throws KoodistoException;
     
-    public List<AdultVocationalLOS> findAdultVocationals() throws KoodistoException;
+    public List<CompetenceBasedQualificationParentLOS> findAdultVocationals() throws KoodistoException;
 
     public AdultUpperSecondaryLOS createAdultUpperSecondaryLOS(String oid, boolean checkStatus) throws TarjontaParseException, KoodistoException, ResourceNotFoundException;
             

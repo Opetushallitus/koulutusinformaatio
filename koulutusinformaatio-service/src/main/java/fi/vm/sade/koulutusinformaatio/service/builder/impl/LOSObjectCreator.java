@@ -41,6 +41,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiValikoimaV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusLukioV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.NayttotutkintoV1RDTO;
 import fi.vm.sade.tarjonta.service.types.TarjontaTila;
 import fi.vm.sade.tarjonta.service.types.YhteyshenkiloTyyppi;
 import fi.vm.sade.tarjonta.shared.types.KomoTeksti;
@@ -816,7 +817,7 @@ public class LOSObjectCreator extends ObjectCreator {
     }
 
     public AdultVocationalLOS createAdultVocationalLOS(
-            KoulutusLukioV1RDTO koulutus, boolean checkStatus) throws TarjontaParseException, KoodistoException {
+            NayttotutkintoV1RDTO koulutus, boolean checkStatus) throws TarjontaParseException, KoodistoException {
         
         LOG.debug("Creating adult vocational los: " + koulutus.getOid());
         
@@ -902,21 +903,28 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setDegreeTitle(getI18nTextEnriched(koulutus.getKoulutusohjelma()));
         los.setQualifications(Arrays.asList(getI18nTextEnriched(koulutus.getTutkintonimike().getMeta())));
         los.setDegree(getI18nTextEnriched(koulutus.getTutkinto().getMeta()));
+         
         if (koulutus.getKoulutuksenAlkamisPvms() != null && !koulutus.getKoulutuksenAlkamisPvms().isEmpty()) {
             los.setStartDate(koulutus.getKoulutuksenAlkamisPvms().iterator().next());
-        }
+        }   
         if (koulutus.getKoulutuksenAlkamisvuosi() != null) {
             los.setStartYear(koulutus.getKoulutuksenAlkamisvuosi());
         }
         if (koulutus.getKoulutuksenAlkamiskausi() != null) {    
             los.setStartSeason(getI18nTextEnriched(koulutus.getKoulutuksenAlkamiskausi().getMeta()));
         }
+            
+        if (koulutus.getValmistavaKoulutus() != null) {
 
-        los.setPlannedDuration(koulutus.getSuunniteltuKestoArvo());
-        los.setPlannedDurationUnit(getI18nTextEnriched(koulutus.getSuunniteltuKestoTyyppi().getMeta()));
-        los.setPduCodeUri(koulutus.getSuunniteltuKestoTyyppi().getUri());
+            los.setPlannedDuration(koulutus.getValmistavaKoulutus().getSuunniteltuKestoArvo());
+            los.setPlannedDurationUnit(getI18nTextEnriched(koulutus.getValmistavaKoulutus().getSuunniteltuKestoTyyppi().getMeta()));
+            los.setPduCodeUri(koulutus.getValmistavaKoulutus().getSuunniteltuKestoTyyppi().getUri());
+        
+        }
+        
         los.setCreditValue(koulutus.getOpintojenLaajuusarvo().getArvo());
         los.setCreditUnit(getI18nTextEnriched(koulutus.getOpintojenLaajuusyksikko().getMeta()));
+        
 
         try {
             Provider provider = providerService.getByOID(koulutus.getOrganisaatio().getOid());

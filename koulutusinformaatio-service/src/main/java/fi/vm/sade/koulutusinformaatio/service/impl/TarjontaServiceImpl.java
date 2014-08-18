@@ -33,6 +33,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.*;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusLukioV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KuvaV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.NayttotutkintoV1RDTO;
 import fi.vm.sade.tarjonta.service.types.TarjontaTila;
 import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
 
@@ -521,18 +522,21 @@ public class TarjontaServiceImpl implements TarjontaService {
     
 
     @Override
-    public List<AdultVocationalLOS> findAdultVocationals()
+    public List<CompetenceBasedQualificationParentLOS> findAdultVocationals()
             throws KoodistoException {
         
         if (creator == null) {
             creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService);
         }
         
-        List<AdultVocationalLOS> koulutukset = new ArrayList<AdultVocationalLOS>();
+        List<CompetenceBasedQualificationParentLOS> koulutukset = new ArrayList<CompetenceBasedQualificationParentLOS>();
         
         ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes =  this.tarjontaRawService.listEducationsByToteutustyyppi(ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO_NAYTTOTUTKINTONA.name());//listEducations(TarjontaConstants.UPPER_SECONDARY_EDUCATION_TYPE);
         HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
         Map<String,List<HigherEducationLOSRef>> aoToEducationsMap = new HashMap<String,List<HigherEducationLOSRef>>();
+        
+        Map<String,List<String>> parentChildKomos = new HashMap<String,List<String>>();
+        Map<String,List<String>> komoToKomotoMap = new HashMap<String,List<String>>(); 
         
         for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
             LOG.debug("Cur tarjoaja result: " + curRes.getOid());
@@ -543,8 +547,60 @@ public class TarjontaServiceImpl implements TarjontaService {
                     continue;
                 }
                 
-                ResultV1RDTO<KoulutusLukioV1RDTO> koulutusRes = this.tarjontaRawService.getUpperSecondaryLearningOpportunity(curKoulutus.getOid());
-                KoulutusLukioV1RDTO koulutusDTO = koulutusRes.getResult();
+                ResultV1RDTO<Set<String>> parentsRes = this.tarjontaRawService.getParentsOfHigherEducationLOS(curKoulutus.getKomoOid());
+                
+                if (parentsRes != null && parentsRes.getResult() != null && !parentsRes.getResult().isEmpty()) {
+                    for (String curKomoOid : parentsRes.getResult()) {
+                        if (!parentChildKomos.containsKey(curKomoOid)) {
+                            parentChildKomos.put(curKomoOid, Arrays.asList(curKoulutus.getKomoOid()));
+                        } else {
+                            List<String> curChildren = parentChildKomos.get(curKomoOid);
+                            if (!curChildren.contains(curKoulutus.getKomoOid())) {
+                                curChildren.add(curKoulutus.getKomoOid());
+                                parentChildKomos.put(curKomoOid, curChildren);
+                            }
+                        }
+                    }
+                } else if (!parentChildKomos.containsKey(curKoulutus.getKomoOid())) {
+                    
+                    parentChildKomos.put(curKoulutus.getKomoOid(), new ArrayList<String>());
+                    
+                }
+            
+            
+                
+                if (komoToKomotoMap.containsKey(curKoulutus.getKomoOid())) {
+                    List<String> komotos = komoToKomotoMap.get(curKoulutus.getKomoOid());
+                    komotos.add(curKoulutus.getOid());
+                    komoToKomotoMap.put(curKoulutus.getKomoOid(), komotos);
+                } else {
+                    komoToKomotoMap.put(curKoulutus.getKomoOid(), Arrays.asList(curKoulutus.getOid()));
+                }
+            }
+        }
+        
+        for (Map.Entry<String,List<String>> curParentChild : parentChildKomos.entrySet()) {
+            String parentKomoOid = curParentChild.getKey();
+            List<String> curChildren = curParentChild.getValue();
+            
+            if (curChildren.isEmpty()) {
+                List<String> komotoOids = komoToKomotoMap.get(parentKomoOid);
+                
+            }
+        }
+        
+        
+        
+            
+            /*
+            
+            
+            
+            
+                
+                
+                ResultV1RDTO<NayttotutkintoV1RDTO> koulutusRes = this.tarjontaRawService.getAdultVocationalLearningOpportunity(curKoulutus.getOid());
+                NayttotutkintoV1RDTO koulutusDTO = koulutusRes.getResult();
                 
                 try {
                     AdultVocationalLOS los = creator.createAdultVocationalLOS(koulutusDTO, true);//createHigherEducationLOS(koulutusDTO, true);
@@ -561,7 +617,7 @@ public class TarjontaServiceImpl implements TarjontaService {
             }         
             
             
-        }
+        }*/
         
         
         return koulutukset;
