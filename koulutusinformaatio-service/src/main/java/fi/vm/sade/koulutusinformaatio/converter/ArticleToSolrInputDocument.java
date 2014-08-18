@@ -11,8 +11,6 @@ import org.springframework.core.convert.converter.Converter;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.Article;
 import fi.vm.sade.koulutusinformaatio.domain.ArticleTag;
-import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.service.impl.ArticleServiceImpl;
 
 public class ArticleToSolrInputDocument implements Converter<Article, List<SolrInputDocument>> {
     
@@ -27,7 +25,13 @@ public class ArticleToSolrInputDocument implements Converter<Article, List<SolrI
     }
 
     private SolrInputDocument convertArticle(Article article) {
+        String fixedTitle = article.getTitle();
+        if (article.getTitle() != null) {
+            fixedTitle = SolrUtil.fixString(article.getTitle());
+        }
+        
         SolrInputDocument doc = new SolrInputDocument();
+        
         doc.addField(LearningOpportunity.TYPE, SolrUtil.SolrConstants.TYPE_ARTICLE);
         doc.addField(LearningOpportunity.ID, article.getId());
         
@@ -58,45 +62,45 @@ public class ArticleToSolrInputDocument implements Converter<Article, List<SolrI
             doc.addField(LearningOpportunity.ARTICLE_CONTENT_TYPE, curTag.getTitle());
         }
         
-        indexLangFields(article, doc, lang);
+        indexLangFields(article, doc, lang, fixedTitle);
         
         
         return doc;
     }
     
     private void indexLangFields(Article article, SolrInputDocument doc,
-            String lang) {
+            String lang, String fixedTitle) {
         
         if (lang.equals("fi")) {
             //doc.setField(LearningOpportunity.NAME_FI, article.getTitle());
-            doc.addField(LearningOpportunity.ARTICLE_NAME_INDEX_FI, article.getTitle());
+            doc.addField(LearningOpportunity.ARTICLE_NAME_INDEX_FI, fixedTitle);
             doc.addField(String.format("%s_fi", LearningOpportunity.FREE_AUTO), article.getTitle());
-            doc.addField("textBoost_fi", article.getTitle());
-            doc.addField("textBoost_fi_whole", article.getTitle());
+            doc.addField("textBoost_fi", fixedTitle);
+            doc.addField("textBoost_fi_whole", fixedTitle);
             
         } else if (lang.equals("sv")) {
             //doc.setField(LearningOpportunity.NAME_SV, article.getTitle());
-            doc.addField(LearningOpportunity.ARTICLE_NAME_INDEX_SV, article.getTitle());
+            doc.addField(LearningOpportunity.ARTICLE_NAME_INDEX_SV, fixedTitle);
             doc.addField(String.format("%s_sv", LearningOpportunity.FREE_AUTO), article.getTitle());
-            doc.addField("textBoost_sv", article.getTitle());
-            doc.addField("textBoost_sv_whole", article.getTitle());
+            doc.addField("textBoost_sv", fixedTitle);
+            doc.addField("textBoost_sv_whole", fixedTitle);
         } else if (lang.equals("en")) {
             //doc.setField(LearningOpportunity.NAME_EN, article.getTitle());
-            doc.addField(LearningOpportunity.ARTICLE_NAME_INDEX_EN, article.getTitle());
+            doc.addField(LearningOpportunity.ARTICLE_NAME_INDEX_EN, fixedTitle);
             doc.addField(String.format("%s_en", LearningOpportunity.FREE_AUTO), article.getTitle());
-            doc.addField("textBoost_en", article.getTitle());
-            doc.addField("textBoost_en_whole", article.getTitle());
+            doc.addField("textBoost_en", fixedTitle);
+            doc.addField("textBoost_en_whole", fixedTitle);
         } 
         
         if (lang.equals("fi")) {
-            doc.addField(LearningOpportunity.CONTENT_FI, article.getContent());
-            doc.addField(LearningOpportunity.CONTENT_FI, article.getExcerpt());
+            doc.addField(LearningOpportunity.ARTICLE_CONTENT_FI, article.getContent());
+            doc.addField(LearningOpportunity.ARTICLE_CONTENT_FI, article.getExcerpt());
         } else if (lang.equals("sv")) {
-            doc.addField(LearningOpportunity.CONTENT_SV, article.getContent());
-            doc.addField(LearningOpportunity.CONTENT_SV, article.getExcerpt());
+            doc.addField(LearningOpportunity.ARTICLE_CONTENT_SV, article.getContent());
+            doc.addField(LearningOpportunity.ARTICLE_CONTENT_SV, article.getExcerpt());
         } else if (lang.equals("en")) {
-            doc.addField(LearningOpportunity.CONTENT_EN, article.getContent());
-            doc.addField(LearningOpportunity.CONTENT_EN, article.getExcerpt());
+            doc.addField(LearningOpportunity.ARTICLE_CONTENT_EN, article.getContent());
+            doc.addField(LearningOpportunity.ARTICLE_CONTENT_EN, article.getExcerpt());
         } 
 
         

@@ -2,7 +2,6 @@
 
 angular.module('kiApp.directives', 
     [
-        'kiApp.Navigation',
         'kiApp.FacetTree',
         'kiApp.KeyboardControl',
         'kiApp.SelectAreaDialog',
@@ -928,6 +927,7 @@ directive('kiI18n', ['TranslationService', function(TranslationService) {
 
         var update = function() {
             if (key) {
+                key = key.replace(/\./g, ''); // remove . chars from key
                 $(element).empty();
 
                 var translation;

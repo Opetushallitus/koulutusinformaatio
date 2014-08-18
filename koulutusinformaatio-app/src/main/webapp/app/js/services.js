@@ -4,8 +4,6 @@ angular.module('kiApp.services',
 [
     'ngResource', 
     'kiApp.HostResolver', 
-    'kiApp.NavigationService',
-    'kiApp.ArticleContentSearchService',
     'kiApp.TranslationService',
     'kiApp.CookieService'
 ]).
@@ -413,7 +411,6 @@ service('UpperSecondaryLOService', ['$http', '$timeout', '$q', '$rootScope', 'La
                 ChildLOTransformer.transform(result);
                 var loResult = {
                     lo: result,
-                    //parent: {},
                     provider: result.provider
                 }
                 deferred.resolve(loResult);
@@ -449,12 +446,49 @@ service('HigherEducationLOService', ['$http', '$timeout', '$q', 'LanguageService
                 params: queryParams
             }).
             
-            //$http.get('mocks/amk.json', {}).
             success(function(result) {
             	HigherEducationTransformer.transform(result);
                 var loResult = {
                     lo: result,
-                    //parent: {},
+                    provider: result.provider
+                }
+                
+                deferred.resolve(loResult);
+            }).
+            error(function(result) {
+                deferred.reject(result);
+            });
+
+            return deferred.promise;
+        }
+    }
+}]).
+
+/**
+ * Resource for requesting University of Applied Sciences LO data
+ */
+service('AdultUpperSecondaryLOService', ['$http', '$timeout', '$q', 'LanguageService', 'HigherEducationTransformer', function($http, $timeout, $q, LanguageService, HigherEducationTransformer) {
+    return {
+        query: function(options) {
+            var deferred = $q.defer();
+            var queryParams = {
+                uiLang: LanguageService.getLanguage()
+            }
+
+            if (options.lang) {
+                queryParams.lang = options.lang
+            }
+
+            var url = '../lo/adultupsec/';
+
+            $http.get(url + options.id, {
+                params: queryParams
+            }).
+            
+            success(function(result) {
+            	HigherEducationTransformer.transform(result);
+                var loResult = {
+                    lo: result,
                     provider: result.provider
                 }
                 
@@ -479,6 +513,7 @@ service('HigherEducationPreviewLOService', ['$http', '$timeout', '$q', 'Language
             var queryParams = {
                 uiLang: LanguageService.getLanguage(),
                 lang: LanguageService.getLanguage(),
+                loType: options.loType,
                 timestamp: Date.now()
             }
 
@@ -487,15 +522,11 @@ service('HigherEducationPreviewLOService', ['$http', '$timeout', '$q', 'Language
             }
 
             var url = '../lo/preview/';
-            //var url = 'mocks/kk.json';
-            //$http.get(url, {}).
             
             $http.get(url + options.id, {
                 params: queryParams
             }).
             
-            
-            //$http.get('mocks/amk.json', {}).
             success(function(result) {
             	HigherEducationTransformer.transform(result);
             	result.preview = true;
@@ -520,7 +551,6 @@ service('HigherEducationPreviewLOService', ['$http', '$timeout', '$q', 'Language
             	}
                 var loResult = {
                     lo: result,
-                    //parent: {},
                     provider: result.provider
                 }
                 deferred.resolve(loResult);
@@ -727,8 +757,6 @@ service('HigherEducationTransformer', ['KiSorter', '$rootScope', '$filter', 'Lan
 				result.polytechnic = true;
 			}
 			result.teachingLanguage = getFirstItemInList(result.teachingLanguages);
-			//result.formOfTeaching = getFirstItemInList(result.formOfTeaching);
-			
 
 			if (result.themes != undefined && result.themes != null) {
 				var distinctMap = {};
@@ -1288,52 +1316,6 @@ service('VirkailijaLanguageService', ['CookieService', function(CookieService) {
 }]).
 
 /**
- *  Service for "caching" current parent selection
- */
- /*
- service('ParentLODataService', function() {
-    var data;
-
-    return {
-        getParentLOData: function() {
-            return data;
-        },
-
-        setParentLOData: function(newData) {
-            data = newData;
-        },
-
-        dataExists: function(id) {
-            return data && data.id == id; 
-        }
-    };
-}).
-*/
-
-/**
- *  Service for "caching" current child selection
- */
- /*
- service('ChildLODataService', function() {
-    var data;
-
-    return {
-        getChildLOData: function() {
-            return data;
-        },
-
-        setChildLOData: function(newData) {
-            data = newData;
-        },
-
-        dataExists: function(id) {
-            return data && data.id == id; 
-        }
-    };
-}).
-*/
-
-/**
  *  Service for maintaining application basket state
  */
 service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageService', 'UtilityService', 'CookieService', function($http, $q, $rootScope, LanguageService, UtilityService, CookieService) {
@@ -1540,12 +1522,6 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
             }
         }
     }
-
-    /*
-    var setLocations = function(locations) {
-        filters.locations = locations;
-    }
-    */
 
     return {
         query: function(queryParams) {
@@ -1813,30 +1789,23 @@ service('KiSorter', ['UtilityService', function(UtilityService) {
             return isOngoing;
         }
 
-        var isVarsinainenYhteishakuKaynnissa = function(as) {
-            return UtilityService.isYhteishaku(as) && UtilityService.isVarsinainenHaku(as) && isHakuKaynnissa(as);
+        var isHakuTulossaHakuun = function(as) {
+            var result = false;
+            angular.forEach(as.applicationOptions, function(ao) {
+                if (!ao.canBeApplied && ao.nextApplicationPeriodStarts) {
+                    result = true;
+                }
+            });
+
+            return result;
         }
 
-        var isLisaYhteishakuKaynnissa = function(as) {
-            return UtilityService.isYhteishaku(as) && UtilityService.isLisahaku(as) && isHakuKaynnissa(as);
+        var isVarsinainenYhteishaku = function(as) {
+            return UtilityService.isVarsinainenHaku(as) && UtilityService.isYhteishaku(as);
         }
 
-        var isVarsinainenYhteishakuTulossaHakuun = function(as) {
-            var earliest = -1;
-            var limit = 30 * 24 * 60 * 60 * 1000;
-            var ts = new Date().getTime();
-            if (UtilityService.isYhteishaku(as) && UtilityService.isVarsinainenHaku(as)) {
-                angular.forEach(as.applicationOptions, function(ao) {
-                    if (earliest < 0 || ao.applicationStartDate < earliest) {
-                        earliest = ao.applicationStartDate;
-                    }
-                });
-
-                var delta = earliest - ts
-                return delta >= 0 && delta < limit;
-            }
-
-            return false;
+        var isYhteishaunLisahaku = function(as) {
+            return UtilityService.isLisahaku(as) && UtilityService.isYhteishaku(as);
         }
 
         var getEarliestStartDate = function(as) {
@@ -1850,35 +1819,53 @@ service('KiSorter', ['UtilityService', function(UtilityService) {
             return earliest;
         }
 
+        var getEarliestEndDate = function(as) {
+            var earliest = -1;
+            angular.forEach(as.applicationOptions, function(ao) {
+                if (earliest < 0 || ao.applicationEndDate < earliest) {
+                    earliest = ao.applicationEndDate;
+                }
+            });
+
+            return earliest;
+        }
+
 
         if (applicationSystems) {
             applicationSystems.sort(function(a, b) {
 
                 /*
                 Hakujen järjestys:
-                1. Käynnissä oleva varsinainen yhteishaku
-                2. Käynnissä oleva yhteishaun lisähaku
-                3. 30 päivän sisällä hakuun tuleva varsinainen yhteishaku
-                4. Mikä tahansa käynnissä oleva haku
-                5. Haku, joka alkaa ensimmäisenä
-                6. Haku, jonka nimi on aakkosissa ensimmäisenä
+                1. Käynnissä oleva haku aina ennen ei-käynnissä olevaa hakua
+                    •   jos käynnissä sekä varsinainen yhteishaku että päättyneen yhteishaun lisähaku, näytetään varsinaisen yhteishaun hakukohde ensin
+                2. Tulossa oleva haku ennen mennyttä hakua
+                3. Varsinainen yhteishaku ennen muun tyyppisiä hakuja
+                4. Yhteishaun lisähaku ennen muun tyyppisiä hakuja
+                5. Aikajärjestys:
+                    •   tulevissa hauissa alkamispäivän mukaan laskevassa järjestyksessä
+                    •   menneissä hauissa alkamispäivän mukaan nousevassa järjestyksessä
                 */
-                if (isVarsinainenYhteishakuKaynnissa(a) != isVarsinainenYhteishakuKaynnissa(b)) {
-                    return isVarsinainenYhteishakuKaynnissa(a) ? -1 : 1
-                } else if (isLisaYhteishakuKaynnissa(a) != isLisaYhteishakuKaynnissa(b)) {
-                    return isLisaYhteishakuKaynnissa(a) ? -1 : 1;
-                } else if (isVarsinainenYhteishakuTulossaHakuun(a) != isVarsinainenYhteishakuTulossaHakuun(b)) {
-                    return isVarsinainenYhteishakuTulossaHakuun(a) ? -1 : 1;
+
+                if (isHakuKaynnissa(a) && isHakuKaynnissa(b)) {
+                    if (isVarsinainenYhteishaku(a) != isVarsinainenYhteishaku(b)) {
+                        return isVarsinainenYhteishaku(a) ? -1 : 1
+                    } else if (isYhteishaunLisahaku(a) != isYhteishaunLisahaku(b)) {
+                        return isYhteishaunLisahaku(a) ? -1 : 1;
+                    } else {
+                        return getEarliestEndDate(a) - getEarliestEndDate(b);
+                    }
                 } else if (isHakuKaynnissa(a) != isHakuKaynnissa(b)) {
                     return isHakuKaynnissa(a) ? -1 : 1;
-                } else if (!isHakuKaynnissa(a) && !isHakuKaynnissa(b)) {
-                	return getEarliestStartDate(b) - getEarliestStartDate(a);
-                } else if (getEarliestStartDate(a) != getEarliestStartDate(b)) {
-                    return getEarliestStartDate(a) - getEarliestStartDate(b);
                 } else {
-                    if (a.name < b.name) return -1;
-                    else if (a.name > b.name) return 1;
-                    else return 0;
+                    if (isVarsinainenYhteishaku(a) != isVarsinainenYhteishaku(b)) {
+                        return isVarsinainenYhteishaku(a) ? -1 : 1
+                    } else if (isYhteishaunLisahaku(a) != isYhteishaunLisahaku(b)) {
+                        return isYhteishaunLisahaku(a) ? -1 : 1;
+                    } else if (isHakuTulossaHakuun(a) && isHakuTulossaHakuun(b)) {
+                        return getEarliestStartDate(a) - getEarliestStartDate(b);
+                    } else {
+                        return getEarliestEndDate(a) - getEarliestEndDate(b);
+                    }
                 }
             });
         }
@@ -2027,9 +2014,6 @@ service('UtilityService', function() {
             } else {
                 return number;
             }
-        },
-        replaceAll: function(regexp, replace, str) {
-            return str.replace(regexp, replace);
         }
     };
 });

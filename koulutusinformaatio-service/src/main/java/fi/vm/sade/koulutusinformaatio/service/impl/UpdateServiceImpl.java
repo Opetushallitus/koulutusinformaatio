@@ -16,7 +16,6 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -28,12 +27,14 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
+import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Article;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.Location;
+import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.ArticleService;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataUpdateService;
@@ -94,6 +95,7 @@ public class UpdateServiceImpl implements UpdateService {
             this.transactionManager.beginTransaction(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
             int count = MAX_RESULTS;
             int index = 0;
+
             
             
             while (count >= MAX_RESULTS) {
@@ -101,8 +103,7 @@ public class UpdateServiceImpl implements UpdateService {
             List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
             count = loOids.size();
             index += count;
-            
-            
+
 
                 for (String loOid : loOids) {
                     List<LOS> specifications = null;
@@ -129,6 +130,16 @@ public class UpdateServiceImpl implements UpdateService {
                 this.educationDataUpdateService.save(curLOS);
             }
             LOG.debug("Higher educations saved.");
+            
+            
+            List<AdultUpperSecondaryLOS> adultUpperSecondaries = this.tarjontaService.findAdultUpperSecondaries();
+            LOG.debug("Found adult upper secondary educations: " + adultUpperSecondaries.size());
+            
+            for (AdultUpperSecondaryLOS curLOS : adultUpperSecondaries) {
+                LOG.debug("Saving adult education: " + curLOS.getId());
+                indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+                this.educationDataUpdateService.save(curLOS);
+            }
             
             List<Code> edTypeCodes = this.tarjontaService.getEdTypeCodes();
             indexerService.addEdTypeCodes(edTypeCodes, loUpdateSolr);
@@ -160,12 +171,14 @@ public class UpdateServiceImpl implements UpdateService {
 
     }
 
-    private void indexToSolr(HigherEducationLOS curLOS,
+    private void indexToSolr(StandaloneLOS curLOS,
             HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws Exception {
         this.indexerService.addLearningOpportunitySpecification(curLOS, loUpdateSolr, lopUpdateSolr);
         this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
-        for (HigherEducationLOS curChild: curLOS.getChildren()) {
-            indexToSolr(curChild, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+        if (curLOS instanceof HigherEducationLOS) {
+            for (HigherEducationLOS curChild: ((HigherEducationLOS)curLOS).getChildren()) {
+                indexToSolr(curChild, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+            }
         }
     }
 

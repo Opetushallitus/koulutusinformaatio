@@ -3846,7 +3846,7 @@ tbody.collapse.in {
   padding: 0px 0px;
   margin-bottom: 20px;
   list-style: none;
-  background-color: white;
+  background-color: transparent;
   border-radius: 3px; }
   .breadcrumb > li {
     display: inline-block; }

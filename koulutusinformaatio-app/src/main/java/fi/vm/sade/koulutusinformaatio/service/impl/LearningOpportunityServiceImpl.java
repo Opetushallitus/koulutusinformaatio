@@ -271,9 +271,11 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
         HigherEducationLOS los = educationDataQueryService.getHigherEducationLearningOpportunity(id);
         return HigherEducationLOSToDTO.convert(los, lang, uiLang);
     }
+    
+    
 
     @Override
-    public HigherEducationLOSDTO previewLearningOpportunity(
+    public HigherEducationLOSDTO previewHigherEdLearningOpportunity(
             String id, String lang, String uiLang)
                     throws ResourceNotFoundException {
         HigherEducationLOS los = this.previewService.previewHigherEducationLearningOpportunity(id);
@@ -289,11 +291,51 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
         }
         return dto;
     }
+    
+
+    @Override
+    public AdultUpperSecondaryLOSDTO previewAdultUpperSecondaryLearningOpportunity(
+            String oid, String lang, String uiLang)
+            throws ResourceNotFoundException {
+        AdultUpperSecondaryLOS los = this.previewService.previewAdultUpperSecondaryLearningOpportunity(oid);
+        AdultUpperSecondaryLOSDTO dto = null;
+        if (lang != null && !lang.isEmpty()) {
+            dto = AdultUpperSecondaryLOSToDTO.convert(los, lang, uiLang);
+        } else {
+            dto = AdultUpperSecondaryLOSToDTO.convert(los, uiLang, uiLang); 
+        }
+        return dto;
+    }
 
     @Override
     public DataStatus getLastSuccesfulDataStatus() { 
        return educationDataQueryService.getLatestSuccessDataStatus();
         
     }
+
+    @Override
+    public AdultUpperSecondaryLOSDTO getAdultUpperSecondaryLearningOpportunity(
+            String id) throws ResourceNotFoundException {
+        AdultUpperSecondaryLOS los = educationDataQueryService.getAdultUpperSecondaryLearningOpportunity(id);
+        String lang = (los.getTeachingLanguages() != null && !los.getTeachingLanguages().isEmpty()) 
+                ? los.getTeachingLanguages().get(0).getValue().toLowerCase() : LANG_FI;
+        return AdultUpperSecondaryLOSToDTO.convert(los, lang, lang);
+    }
+    
+    @Override
+    public AdultUpperSecondaryLOSDTO getAdultUpperSecondaryLearningOpportunity(
+            String id, String uiLang) throws ResourceNotFoundException {
+        AdultUpperSecondaryLOS los = educationDataQueryService.getAdultUpperSecondaryLearningOpportunity(id);
+        return AdultUpperSecondaryLOSToDTO.convert(los, uiLang, uiLang);
+    }
+
+    @Override
+    public AdultUpperSecondaryLOSDTO getAdultUpperSecondaryLearningOpportunity(
+            String id, String lang, String uiLang)
+                    throws ResourceNotFoundException {
+        AdultUpperSecondaryLOS los = educationDataQueryService.getAdultUpperSecondaryLearningOpportunity(id);
+        return AdultUpperSecondaryLOSToDTO.convert(los, lang, uiLang);
+    }
+
 
 }

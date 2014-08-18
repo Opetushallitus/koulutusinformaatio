@@ -7,6 +7,7 @@ var kiApp = angular.module('kiApp',
         'kiApp.directives',
         'directives.AjaxLoader',
         'ApplicationBasket',
+        'SearchWizard',
         'SearchResult', 
         'ui.bootstrap', 
         'angulartics', 
@@ -29,12 +30,17 @@ var kiApp = angular.module('kiApp',
         reloadOnSearch: false
     });
 
+    $routeProvider.when('/hakuwizard', {
+        templateUrl: 'partials/searchwizard/searchwizard.html',
+        controller: 'SearchWizardCtrl'
+    });
+
     $routeProvider.when('/:loType/:id', {
         templateUrl: 'partials/learningopportunity.html', 
         controller: InfoCtrl,
         reloadOnSearch: false,
         resolve: {
-            loResource: function($route, $location, UpperSecondaryLOService, ChildLOService, ParentLOService, SpecialLOService, HigherEducationLOService) {
+            loResource: function($route, $location, UpperSecondaryLOService, ChildLOService, ParentLOService, SpecialLOService, HigherEducationLOService, AdultUpperSecondaryLOService) {
                 switch($route.current.params.loType) {
                     case 'lukio':
                         return UpperSecondaryLOService;
@@ -50,6 +56,8 @@ var kiApp = angular.module('kiApp',
                     	return HigherEducationLOService;
                     case 'valmistava':
                         return SpecialLOService;
+                    case 'aikuislukio':
+                        return AdultUpperSecondaryLOService;
                 }
             },
             partialUrl: function($rootScope, $route) {
@@ -61,9 +69,9 @@ var kiApp = angular.module('kiApp',
 
     $routeProvider.when('/muistilista', {
         templateUrl: 'partials/applicationbasket/applicationbasket.html',
-        controller: 'ApplicationBasketCtrl'
+        controller: 'AppBasketCtrl'
     });
-    
+
     $routeProvider.otherwise({
     	redirectTo: '/haku/'
     });
@@ -96,7 +104,7 @@ var kiApp = angular.module('kiApp',
         resGetPath : 'locales/__ns__-__lng__.json',
         lng : LanguageService.getLanguage(),
         ns: {
-            namespaces: ['language', 'tooltip', 'plain'],
+            namespaces: ['language', 'tooltip', 'plain', 'searchwizard'],
             defaultNs: 'language'
         },
         cookieName: i18nCookieName,
@@ -126,29 +134,6 @@ var kiApp = angular.module('kiApp',
             }
         }
     }
-}).
-
-filter('unique', function() {
-   return function(collection, keyname) {
-      var output = [], 
-          keys = [];
-
-      angular.forEach(collection, function(item) {
-          var key = item[keyname];
-          if(keys.indexOf(key) === -1) {
-              keys.push(key);
-              output.push(item);
-          }
-      });
-
-      return output;
-   };
-}).
-
-filter('unsafe', function($sce) {
-    return function(val) {
-        return $sce.trustAsHtml(val);
-    };
 });
 
 var OPH = OPH || {};

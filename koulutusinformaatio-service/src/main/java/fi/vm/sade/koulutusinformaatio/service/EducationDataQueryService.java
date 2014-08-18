@@ -109,4 +109,7 @@ public interface EducationDataQueryService {
     List<LOS> findLearningOpportunitiesByLoiId(String loiId);
 
     DataStatus getLatestSuccessDataStatus();
+
+    AdultUpperSecondaryLOS getAdultUpperSecondaryLearningOpportunity(final String oid)
+            throws ResourceNotFoundException;
 }

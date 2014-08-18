@@ -7,6 +7,7 @@ var kiApp = angular.module('previewApp',
         'kiApp.directives',
         'directives.AjaxLoader',
         'ApplicationBasket',
+        'SearchWizard',
         'SearchResult', 
         'ui.bootstrap', 
         'angulartics', 
@@ -43,6 +44,8 @@ var kiApp = angular.module('previewApp',
                         return HigherEducationPreviewLOService;
                     case 'korkeakoulu':
                     	return HigherEducationPreviewLOService;
+                    case 'aikuislukio':
+                    	return HigherEducationPreviewLOService;
                 }
             },
             partialUrl: function($rootScope, $route) {
@@ -70,35 +73,6 @@ var kiApp = angular.module('previewApp',
     searchResultsPerPage: 25,
     defaultSortCriteria: '0',
     searchResultsStartPage: 1
-})
-
-.filter('escape', function() {
-  return window.escape;
-})
-
-.filter('encodeURIComponent', function() {
-    return window.encodeURIComponent;
-})
-
-// adds target blank to links
-.filter('externalLinks', function() {
-    return function(val) {
-        if (val) {
-            val = val.replace('<a', '<a target="_blank"');
-        }
-        
-        return val;
-    }
-})
-
-.filter('tables', function() {
-    return function(val) {
-        if (val) {
-            val = val.replace(/<\s*table.*?>/gi, '<table class="table table-striped table-condensed table-responsive>"');
-        }
-
-        return val;
-    }
 })
 
 // initialize i18n library
@@ -133,29 +107,6 @@ var kiApp = angular.module('previewApp',
         debug : false
     });
 }])
-
-.filter('unique', function() {
-   return function(collection, keyname) {
-      var output = [], 
-          keys = [];
-
-      angular.forEach(collection, function(item) {
-          var key = item[keyname];
-          if(keys.indexOf(key) === -1) {
-              keys.push(key);
-              output.push(item);
-          }
-      });
-
-      return output;
-   };
-})
-
-.filter('unsafe', function($sce) {
-    return function(val) {
-        return $sce.trustAsHtml(val);
-    };
-})
 
 .value('appConfig', window.Config.app)
 .factory('Config', function($location, appConfig, LanguageService, HostResolver) {
