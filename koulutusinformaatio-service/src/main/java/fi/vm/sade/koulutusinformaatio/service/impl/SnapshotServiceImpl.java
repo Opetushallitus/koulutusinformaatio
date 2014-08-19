@@ -31,6 +31,8 @@ import fi.vm.sade.koulutusinformaatio.dao.HigherEducationLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecificationDAO;
 import fi.vm.sade.koulutusinformaatio.dao.SpecialLearningOpportunitySpecificationDAO;
 import fi.vm.sade.koulutusinformaatio.dao.UpperSecondaryLearningOpportunitySpecificationDAO;
+import fi.vm.sade.koulutusinformaatio.dao.entity.CodeEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSEntity;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
 import fi.vm.sade.koulutusinformaatio.service.SnapshotService;
 import fi.vm.sade.koulutusinformaatio.util.StreamReaderHelper;
@@ -94,28 +96,58 @@ public class SnapshotServiceImpl implements SnapshotService {
         LOG.debug("Child LOs rendered");
         prerender(TYPE_UPSEC, upsecDAO.findIds());
         LOG.debug("Upsec LOs rendered");
-        prerender(TYPE_HIGHERED, higheredDAO.findIds());
+        prerenderHigherEd(higheredDAO.findIds());
         LOG.debug("HigherEd LOs rendered");
         // todo: handle rehabilitating separately
         LOG.info("Rendering html snapshots finished");
+    }
+    
+    private void prerenderHigherEd(List<String> ids) {
+        for (String id : ids) {
+            HigherEducationLOSEntity los = higheredDAO.get(id);
+            for (CodeEntity teachingLang : los.getTeachingLanguages()) {
+                try {
+                    String lang = "";
+                    if (teachingLang != null && teachingLang.getValue() != null) {
+                        lang = teachingLang.getValue().toLowerCase();
+                    }
+                    String cmd = generatePhantomJSCommand(TYPE_HIGHERED, id, lang);
+                    invokePhantomJS(cmd, id);
+                } catch (KIException e) {
+                    LOG.error(e.getMessage());
+                }
+            }
+        }
     }
 
     private void prerender(String type, List<String> ids) {
         for (String id : ids) {
             try {
-                invokePhantomJS(type, id);
+                String cmd = generatePhantomJSCommand(type, id);
+                invokePhantomJS(cmd, id);
             } catch (KIException e) {
                 LOG.error(e.getMessage());
             }
         }
     }
+    
+    private String generatePhantomJSCommand(String type, String id) {
+        return String.format("%s %s %s%s/%s %s/%s.html",
+                phantomjs, snapshotScript, baseUrl, type, id, snapshotFolder, id);
+    }
+    
+    private String generatePhantomJSCommand(String type, String id, String lang) {
+        return String.format("%s %s %s%s/%s?uilang=%s %s/%s_%s.html",
+                phantomjs, snapshotScript, baseUrl, type, id, lang, snapshotFolder, id, lang);
+    }
+    
+    
 
-    private void invokePhantomJS(String type, String id) throws KIException {
+    private void invokePhantomJS(String cmd, String id) throws KIException {
 
         try {
-            // "/usr/local/bin/phantomjs /path/to/script.js http://www.opintopolku.fi/some/edu/1.2.3.4.5 /path/to/static/content/"
-            Process process = Runtime.getRuntime().exec(String.format("%s %s %s%s/%s %s/%s.html",
-                    phantomjs, snapshotScript, baseUrl, type, id, snapshotFolder, id));
+            // "/usr/local/bin/phantomjs /path/to/script.js http://www.opintopolku.fi/some/edu/1.2.3.4.5 /path/to/static/content/"            
+            Process process = Runtime.getRuntime().exec(cmd);
             
             //Set up two threads to read on the output of the external process.
             Thread stdout = new Thread(new StreamReaderHelper(process.getInputStream()));
