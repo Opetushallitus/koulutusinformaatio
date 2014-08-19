@@ -31,6 +31,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.AmmattitutkintoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KomoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusLukioV1RDTO;
@@ -242,12 +243,12 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     }
     
     @Override
-    public ResultV1RDTO<NayttotutkintoV1RDTO> getAdultVocationalLearningOpportunity(
+    public ResultV1RDTO<AmmattitutkintoV1RDTO> getAdultVocationalLearningOpportunity(
             String oid) {
         return higherEducationResource
                 .path(oid)
                 .accept(JSON_UTF8)
-                .get(new GenericType<ResultV1RDTO<NayttotutkintoV1RDTO>>() {
+                .get(new GenericType<ResultV1RDTO<AmmattitutkintoV1RDTO>>() {
                 });
     }
                 

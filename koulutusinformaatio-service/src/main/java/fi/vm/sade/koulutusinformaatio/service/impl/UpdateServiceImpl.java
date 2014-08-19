@@ -155,6 +155,7 @@ public class UpdateServiceImpl implements UpdateService {
             
             List<CompetenceBasedQualificationParentLOS> adultVocationals = this.tarjontaService.findAdultVocationals();
             for (CompetenceBasedQualificationParentLOS curLOS : adultVocationals) {
+                LOG.debug("Saving adult vocational los: " + curLOS.getId() + " with name: " + curLOS.getName().get("fi"));
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 this.educationDataUpdateService.save(curLOS);
             }

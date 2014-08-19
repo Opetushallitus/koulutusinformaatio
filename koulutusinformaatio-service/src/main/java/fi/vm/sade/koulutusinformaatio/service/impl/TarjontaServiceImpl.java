@@ -30,6 +30,7 @@ import fi.vm.sade.koulutusinformaatio.service.builder.impl.*;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.*;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.AmmattitutkintoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusLukioV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KuvaV1RDTO;
@@ -531,7 +532,7 @@ public class TarjontaServiceImpl implements TarjontaService {
         
         List<CompetenceBasedQualificationParentLOS> koulutukset = new ArrayList<CompetenceBasedQualificationParentLOS>();
         
-        ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes =  this.tarjontaRawService.listEducationsByToteutustyyppi(ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO_NAYTTOTUTKINTONA.name());//listEducations(TarjontaConstants.UPPER_SECONDARY_EDUCATION_TYPE);
+        ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes =  this.tarjontaRawService.listEducationsByToteutustyyppi(ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO_NAYTTOTUTKINTONA.name());// //AMMATTITUTKINTO.name());//listEducations(TarjontaConstants.UPPER_SECONDARY_EDUCATION_TYPE);
         HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
         Map<String,List<HigherEducationLOSRef>> aoToEducationsMap = new HashMap<String,List<HigherEducationLOSRef>>();
         
@@ -539,11 +540,12 @@ public class TarjontaServiceImpl implements TarjontaService {
         Map<String,List<String>> komoToKomotoMap = new HashMap<String,List<String>>(); 
         
         for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
-            LOG.debug("Cur tarjoaja result: " + curRes.getOid());
+            LOG.debug("Cur Adult Vocationals tarjoaja result: " + curRes.getOid());
             for (KoulutusHakutulosV1RDTO curKoulutus : curRes.getTulokset()) {
                 
-                LOG.debug("cur koulutus result: " + curKoulutus.getOid());
+                LOG.debug("cur Adult Vocationals koulutus result: " + curKoulutus.getOid());
                 if (!curKoulutus.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
+                    LOG.debug("koulutus not published, discarding");
                     continue;
                 }
                 
@@ -580,20 +582,53 @@ public class TarjontaServiceImpl implements TarjontaService {
         }
         
         for (Map.Entry<String,List<String>> curParentChild : parentChildKomos.entrySet()) {
+            
+            
             String parentKomoOid = curParentChild.getKey();
+            LOG.debug("Cur parent komo oid: " + parentKomoOid);
+            
             List<String> curChildren = curParentChild.getValue();
             
-            if (curChildren.isEmpty()) {
-                List<String> komotoOids = komoToKomotoMap.get(parentKomoOid);
+            //List<String> komotoOids = new ArrayList<String>();
+            CompetenceBasedQualificationParentLOS los = null;
+            if (curChildren.isEmpty() || curChildren.size() == 1) {
                 
+                los =  createStandaloneCompetenceLOS(parentKomoOid, curChildren, komoToKomotoMap);
+                //komotoOids.addAll(komoToKomotoMap.get(parentKomoOid));
+                
+            } else {
+                
+                los = new CompetenceBasedQualificationParentLOS();
+                
+                for (String curChild : curChildren) {
+                    String curKomotoOid = komoToKomotoMap.get(curChild).get(0);
+                    LOG.debug("cur adult vocational komotoOid: " + curKomotoOid);
+                    ResultV1RDTO<AmmattitutkintoV1RDTO> res = this.tarjontaRawService.getAdultVocationalLearningOpportunity(curKomotoOid);
+                    NayttotutkintoV1RDTO dto = res.getResult();
+                    LOG.debug("Got dto");
+                    try {
+                        AdultVocationalLOS newLos = this.creator.createAdultVocationalLOS(dto, true);
+                        los.setName(newLos.getName());
+                        los.getChildren().add(newLos);
+                    } catch (TarjontaParseException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+                
+                if (los == null || los.getChildren() == null || los.getChildren().isEmpty()) {
+                    los = null;
+                }
             }
+            if (los != null) {
+                koulutukset.add(los);
+            }
+            //updateAOLosReferences(los, aoToEducationsMap);
         }
-        
         
         
             
             /*
-            
             
             
             
@@ -621,6 +656,39 @@ public class TarjontaServiceImpl implements TarjontaService {
         
         
         return koulutukset;
+    }
+
+    private CompetenceBasedQualificationParentLOS createStandaloneCompetenceLOS(String parentKomoOid,
+            List<String> curChildren,  Map<String,List<String>> komoToKomotoMap) throws KoodistoException {
+       
+        CompetenceBasedQualificationParentLOS los = new CompetenceBasedQualificationParentLOS();
+        
+        List<String> komotoOids = new ArrayList<String>();
+        
+        if (curChildren.isEmpty()) {
+            komotoOids.addAll(komoToKomotoMap.get(parentKomoOid));
+        } else {
+            komotoOids.addAll(komoToKomotoMap.get(curChildren.get(0)));
+        }
+        
+        for (String curKomotoOid : komotoOids) {
+            LOG.debug("Cur standalone competence comoto oid: " + curKomotoOid);
+            ResultV1RDTO<AmmattitutkintoV1RDTO> res = this.tarjontaRawService.getAdultVocationalLearningOpportunity(curKomotoOid);
+            NayttotutkintoV1RDTO dto = res.getResult();
+            LOG.debug("Got dto ");
+            try {
+                AdultVocationalLOS newLos = this.creator.createAdultVocationalLOS(dto, true);
+                los.setName(newLos.getName());
+                los.getChildren().add(newLos);
+            } catch (TarjontaParseException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        
+        return los == null || los.getChildren() == null || los.getChildren().isEmpty() ? null : los;
+        
+        
     }
 
     @Override
