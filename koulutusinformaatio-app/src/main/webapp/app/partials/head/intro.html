@@ -1,0 +1,12 @@
+<div data-ng-controller="IntroCtrl"
+    data-ng-intro-options="introOptions"
+    data-ng-intro-method="startIntro">
+    <div class="container" data-ng-if="showIntroLauncher()">
+        <div class="row">
+            <a href="javascript:void(0);" data-ng-click="startIntro();" class="pull-right intro-launcher">
+                <span data-ki-i18n="show-intro"></span>
+                <i class="icon-help-circled"></i>
+            </a>
+        </div>
+    </div>
+</div>

@@ -311,5 +311,8 @@
 
     "hakutapa-jatkuva": "Fortlöpande ansökningstid",
 
-    "preview-help": "Förhandsgranskningen visar utbildningen och ansökningsmålet såsom en användare ser dem i Studieinfo.fi-tjänsten. Du kan behandla uppgifterna om utbildningen genom att klicka på knappen Behandla utbildningen. Via den andra fliken kan du behandla ansökningsmålets uppgifter. Du kan inte behandla organisationsuppgifter här, utan via tjänsten Organisationstjänster."
+    "preview-help": "Förhandsgranskningen visar utbildningen och ansökningsmålet såsom en användare ser dem i Studieinfo.fi-tjänsten. Du kan behandla uppgifterna om utbildningen genom att klicka på knappen Behandla utbildningen. Via den andra fliken kan du behandla ansökningsmålets uppgifter. Du kan inte behandla organisationsuppgifter här, utan via tjänsten Organisationstjänster.",
+
+    "show-intro": "Näytä ohjeet (sv)",
+    "intro-next": "Följande"
 }

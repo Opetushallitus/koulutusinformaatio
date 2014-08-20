@@ -27,6 +27,8 @@
     <script src="lib/angular-bootstrap/ui-bootstrap-tpls.js" type="text/javascript"></script>
     <script src="lib/angulartics/angulartics.min.js" type="text/javascript"></script>
     <script src="lib/angulartics/angulartics-piwik.js" type="text/javascript"></script>
+    <script src="lib/intro/intro-0.9.0.js" type="text/javascript"></script>
+    <script src="lib/intro/angular-intro.min.js" type="text/javascript"></script>
     <script src="lib/keyboardnavigation/TabsKeyboardNavigation.js" type="text/javascript"></script>
     <script src="js/filters.js" type="text/javascript"></script>
     <script src="js/services.js" type="text/javascript"></script>
@@ -49,6 +51,7 @@
     <script src="js/controllers/SearchCtrl.js" type="text/javascript"></script>
     <script src="js/controllers/RootCtrl.js" type="text/javascript"></script>
     <script src="js/controllers/SearchWizardCtrl.js" type="text/javascript"></script>
+    <script src="js/controllers/IntroCtrl.js" type="text/javascript"></script>
     <script src="js/kiApp.js" type="text/javascript"></script>
     <script src="js/main.js" type="text/javascript"></script>   
     <!--[if lt IE 9]>
@@ -60,7 +63,7 @@
 <!--[if gt IE 8]><!--><!--<![endif]-->
 <body style="display:none">
     <div class="app-container">
-        <div data-ki-skip-navigation></div>
+        <div data-ng-include data-src="'partials/head/intro.html'"></div>
         <div data-ng-include data-src="'partials/head/searchbar.html'"></div>
         <div data-ng-switch="error" >
             <div data-ng-switch-when="true">
@@ -70,6 +73,7 @@
                 <div data-ng-view></div>
             </div>
         </div>
+        
     </div>
 
     <script type="text/javascript" src="../raamit/load"></script>
