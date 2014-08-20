@@ -33,7 +33,16 @@ var kiApp = angular.module('kiApp',
 
     $routeProvider.when('/hakuwizard', {
         templateUrl: 'partials/searchwizard/searchwizard.html',
-        controller: 'SearchWizardCtrl'
+        controller: 'SearchWizardCtrl',
+        reloadOnSearch: false,
+        resolve: {
+            factory: function($rootScope, $location) {
+                // studyinfo has no search wizard
+                if ($rootScope.isStudyInfo) {
+                    $location.path('/haku/');
+                }
+            }
+        }
     });
 
     $routeProvider.when('/:loType/:id', {
