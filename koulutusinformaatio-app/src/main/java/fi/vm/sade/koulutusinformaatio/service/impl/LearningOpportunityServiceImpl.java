@@ -306,6 +306,16 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
         }
         return dto;
     }
+    
+    @Override
+    public AdultVocationalParentLOSDTO previewAdultVocationalLearningOpportunity(
+            String oid, String lang, String uiLang)
+            throws ResourceNotFoundException {
+        
+        CompetenceBasedQualificationParentLOS los = this.previewService.previewAdultVocationaParentLearningOpportunity(oid);
+        
+        return null;
+    }
 
     @Override
     public DataStatus getLastSuccesfulDataStatus() { 

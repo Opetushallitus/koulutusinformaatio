@@ -88,5 +88,7 @@ public interface TarjontaService {
     public List<CompetenceBasedQualificationParentLOS> findAdultVocationals() throws KoodistoException;
 
     public AdultUpperSecondaryLOS createAdultUpperSecondaryLOS(String oid, boolean checkStatus) throws TarjontaParseException, KoodistoException, ResourceNotFoundException;
+
+    public CompetenceBasedQualificationParentLOS createCBQPLOS(String oid) throws TarjontaParseException, KoodistoException, ResourceNotFoundException;
             
 }

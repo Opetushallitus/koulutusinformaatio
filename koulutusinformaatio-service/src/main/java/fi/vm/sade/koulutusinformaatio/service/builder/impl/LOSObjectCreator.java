@@ -839,6 +839,10 @@ public class LOSObjectCreator extends ObjectCreator {
                 if (los.getGoals() == null) {
                     los.setGoals(getI18nTextEnriched(dto.getKuvausKomo().get(KomoTeksti.TAVOITTEET)));
                 }
+                if (los.getProvider() == null) {
+                    los.setProvider(newLos.getProvider());
+                }
+                
                 los.getChildren().add(newLos);
             } catch (TarjontaParseException e) {
                 // TODO Auto-generated catch block
@@ -852,9 +856,18 @@ public class LOSObjectCreator extends ObjectCreator {
         
         los.setId(String.format("%s_%s", parentKomoOid, los.getChildren().get(0).getProvider().getId()));
         
+        Map<String,ApplicationOption> aoMap = new HashMap<String,ApplicationOption>();
+        
+        for (AdultVocationalLOS curChild: los.getChildren()) {
+            for (ApplicationOption ao : curChild.getApplicationOptions()) {
+                aoMap.put(ao.getId(), ao);
+            }
+        }
         
         
-        
+        if (!aoMap.isEmpty()) {
+            los.setApplicationOptions(new ArrayList<ApplicationOption>(aoMap.values()));
+        }
         
         return los;
         

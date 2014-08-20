@@ -717,6 +717,16 @@ public class TarjontaServiceImpl implements TarjontaService {
         
     }
 
+    @Override
+    public CompetenceBasedQualificationParentLOS createCBQPLOS(String oid)
+            throws TarjontaParseException, KoodistoException,
+            ResourceNotFoundException {
+        
+        
+        
+        return null;
+    }
+
 
 
 
