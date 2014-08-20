@@ -1,14 +1,21 @@
+
 package fi.vm.sade.koulutusinformaatio.domain;
 
 import java.util.List;
 
+/**
+ * 
+ * @author Markus
+ *
+ */
 public class CompetenceBasedQualificationParentLOS  extends LOS {
-    
     
     private I18nText accessToFurtherStudies;
     private I18nText choosingCompetence;
     private I18nText degreeCompletion;
     
+    private Provider provider;
+    private List<ApplicationOption> applicationOptions;
     
     private List<AdultVocationalLOS> children;
     
@@ -37,6 +44,20 @@ public class CompetenceBasedQualificationParentLOS  extends LOS {
     }
     public void setDegreeCompletion(I18nText degreeCompletion) {
         this.degreeCompletion = degreeCompletion;
+    }
+    
+    public Provider getProvider() {
+        return provider;
+    }
+    public void setProvider(Provider provider) {
+        this.provider = provider;
+    }
+    
+    public List<ApplicationOption> getApplicationOptions() {
+        return applicationOptions;
+    }
+    public void setApplicationOptions(List<ApplicationOption> applicationOptions) {
+        this.applicationOptions = applicationOptions;
     }
 
 }

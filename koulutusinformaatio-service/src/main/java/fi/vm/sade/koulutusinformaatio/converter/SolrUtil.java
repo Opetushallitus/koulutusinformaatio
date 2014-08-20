@@ -155,9 +155,11 @@ public final class SolrUtil {
         doc.setField(LearningOpportunity.HOMEPLACE_DISPLAY_SV, provider.getHomePlace().get("sv"));
         doc.setField(LearningOpportunity.HOMEPLACE_DISPLAY_EN, provider.getHomePlace().get("en"));
         
-        doc.setField(LearningOpportunity.PREREQUISITE_DISPLAY_FI, prerequisite.getName().get("fi"));
-        doc.setField(LearningOpportunity.PREREQUISITE_DISPLAY_SV, prerequisite.getName().get("sv"));
-        doc.setField(LearningOpportunity.PREREQUISITE_DISPLAY_EN, prerequisite.getName().get("en"));
+        if (prerequisite != null) {
+            doc.setField(LearningOpportunity.PREREQUISITE_DISPLAY_FI, prerequisite.getName().get("fi"));
+            doc.setField(LearningOpportunity.PREREQUISITE_DISPLAY_SV, prerequisite.getName().get("sv"));
+            doc.setField(LearningOpportunity.PREREQUISITE_DISPLAY_EN, prerequisite.getName().get("en"));
+        }
         
         
         
@@ -450,6 +452,29 @@ public final class SolrUtil {
         public static final String MUNICIPALITY_UNKNOWN = "99";
 
         public static final String PROVIDER_TYPE_UNKNOWN = "99";
+    }
+    
+    public static void indexLopName(SolrInputDocument doc, Provider provider, String teachLang) {
+
+        String nameFi = provider.getName().getTranslations().get("fi");
+        String nameSv = provider.getName().getTranslations().get("sv");
+        String nameEn = provider.getName().getTranslations().get("en");
+
+        //Setting the lop name to be finnish, if no finnish name, fallback to swedish or english
+        String name = nameFi != null ? nameFi : nameSv;
+        name = name == null ? nameEn : name;
+
+        doc.setField(LearningOpportunity.LOP_NAME, name);
+        doc.addField("lopNames", name);
+        if (teachLang.equals("sv")) {
+            doc.addField(LearningOpportunity.LOP_NAME_SV, 
+                    SolrUtil.resolveTextWithFallback("sv",provider.getName().getTranslations()));
+        } else if (teachLang.equals("en")) {
+            doc.addField(LearningOpportunity.LOP_NAME_EN, SolrUtil.resolveTextWithFallback("en",provider.getName().getTranslations()));
+        } else {
+            doc.addField(LearningOpportunity.LOP_NAME_FI, SolrUtil.resolveTextWithFallback("fi",provider.getName().getTranslations()));
+        }
+
     }
 
 

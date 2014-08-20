@@ -168,6 +168,8 @@ public class IndexerServiceImpl implements IndexerService {
                 }
             }
 
+        } else if (los instanceof CompetenceBasedQualificationParentLOS) {
+            
         }
 
         List<SolrInputDocument> docs = conversionService.convert(los, List.class);

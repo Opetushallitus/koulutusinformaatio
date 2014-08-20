@@ -36,6 +36,7 @@ import fi.vm.sade.tarjonta.service.resources.dto.NimiJaOidRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.AmmattitutkintoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiUrisV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiValikoimaV1RDTO;
@@ -69,6 +70,7 @@ public class LOSObjectCreator extends ObjectCreator {
     private ProviderService providerService;
     private OrganisaatioRawService organisaatioRawService;
     private LOIObjectCreator loiCreator;
+    private TarjontaRawService tarjontaRawService;
 
     public LOSObjectCreator(KoodistoService koodistoService, TarjontaRawService tarjontaRawService,
             ProviderService providerService, OrganisaatioRawService organisaatioRawService) {
@@ -76,7 +78,9 @@ public class LOSObjectCreator extends ObjectCreator {
         this.koodistoService = koodistoService;
         this.providerService = providerService;
         this.organisaatioRawService = organisaatioRawService;
+        this.tarjontaRawService = tarjontaRawService;
         this.loiCreator = new LOIObjectCreator(koodistoService, tarjontaRawService, organisaatioRawService);
+        
     }
 
     private <T extends LOS> T createLOS(Class<T> type) throws TarjontaParseException {
@@ -814,6 +818,46 @@ public class LOSObjectCreator extends ObjectCreator {
         losRef.setPrerequisite(ao.getPrerequisite());
 
         return losRef;
+    }
+    
+    public CompetenceBasedQualificationParentLOS createCBQPLOS(String parentKomoOid, List<String> komotoOids) throws TarjontaParseException, KoodistoException {
+        
+        CompetenceBasedQualificationParentLOS los = new CompetenceBasedQualificationParentLOS();
+        
+        for (String curKomotoOid : komotoOids) {
+            LOG.debug("Cur standalone competence komoto oid: " + curKomotoOid);
+            ResultV1RDTO<AmmattitutkintoV1RDTO> res = this.tarjontaRawService.getAdultVocationalLearningOpportunity(curKomotoOid);
+            NayttotutkintoV1RDTO dto = res.getResult();
+            LOG.debug("Got dto ");
+            try {
+                AdultVocationalLOS newLos = createAdultVocationalLOS(dto, true);
+                
+                if (los.getName() == null) {
+                    //los.setName(newLos.getName());
+                    los.setName(getI18nTextEnriched(dto.getKoulutuskoodi().getMeta()));
+                }
+                if (los.getGoals() == null) {
+                    los.setGoals(getI18nTextEnriched(dto.getKuvausKomo().get(KomoTeksti.TAVOITTEET)));
+                }
+                los.getChildren().add(newLos);
+            } catch (TarjontaParseException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        
+        if (los == null || los.getChildren() == null || los.getChildren().isEmpty()) {
+            return null;
+        }
+        
+        los.setId(String.format("%s_%s", parentKomoOid, los.getChildren().get(0).getProvider().getId()));
+        
+        
+        
+        
+        
+        return los;
+        
     }
 
     public AdultVocationalLOS createAdultVocationalLOS(

@@ -598,29 +598,21 @@ public class TarjontaServiceImpl implements TarjontaService {
                 
             } else {
                 
-                los = new CompetenceBasedQualificationParentLOS();
-                
-                for (String curChild : curChildren) {
-                    String curKomotoOid = komoToKomotoMap.get(curChild).get(0);
-                    LOG.debug("cur adult vocational komotoOid: " + curKomotoOid);
-                    ResultV1RDTO<AmmattitutkintoV1RDTO> res = this.tarjontaRawService.getAdultVocationalLearningOpportunity(curKomotoOid);
-                    NayttotutkintoV1RDTO dto = res.getResult();
-                    LOG.debug("Got dto");
-                    try {
-                        AdultVocationalLOS newLos = this.creator.createAdultVocationalLOS(dto, true);
-                        los.setName(newLos.getName());
-                        los.getChildren().add(newLos);
-                    } catch (TarjontaParseException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
+                List<String> komotoOids = new ArrayList<String>();
+                for(String curChild : curChildren) {
+                    komotoOids.add(komoToKomotoMap.get(curChild).get(0));
                 }
                 
-                if (los == null || los.getChildren() == null || los.getChildren().isEmpty()) {
+                try {
+                    los = creator.createCBQPLOS(parentKomoOid, komotoOids);
+                } catch (TarjontaParseException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
                     los = null;
                 }
             }
             if (los != null) {
+                
                 koulutukset.add(los);
             }
             //updateAOLosReferences(los, aoToEducationsMap);
@@ -628,6 +620,7 @@ public class TarjontaServiceImpl implements TarjontaService {
         
         
             
+        
             /*
             
             
@@ -666,27 +659,25 @@ public class TarjontaServiceImpl implements TarjontaService {
         List<String> komotoOids = new ArrayList<String>();
         
         if (curChildren.isEmpty()) {
+            
             komotoOids.addAll(komoToKomotoMap.get(parentKomoOid));
+            
         } else {
+            
             komotoOids.addAll(komoToKomotoMap.get(curChildren.get(0)));
         }
         
-        for (String curKomotoOid : komotoOids) {
-            LOG.debug("Cur standalone competence comoto oid: " + curKomotoOid);
-            ResultV1RDTO<AmmattitutkintoV1RDTO> res = this.tarjontaRawService.getAdultVocationalLearningOpportunity(curKomotoOid);
-            NayttotutkintoV1RDTO dto = res.getResult();
-            LOG.debug("Got dto ");
-            try {
-                AdultVocationalLOS newLos = this.creator.createAdultVocationalLOS(dto, true);
-                los.setName(newLos.getName());
-                los.getChildren().add(newLos);
-            } catch (TarjontaParseException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+        try {
+            los = this.creator.createCBQPLOS(parentKomoOid, komotoOids);
+        } catch (TarjontaParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            los = null;
         }
         
-        return los == null || los.getChildren() == null || los.getChildren().isEmpty() ? null : los;
+        
+        
+        return los;
         
         
     }
