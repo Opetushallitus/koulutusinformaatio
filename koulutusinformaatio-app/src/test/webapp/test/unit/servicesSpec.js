@@ -2,7 +2,7 @@ describe('UtilityService', function() {
     var utility;
 
     beforeEach(function() {
-        module('kiApp', 'kiApp.services');
+        module('kiApp');
 
         inject(function(KiSorter) {
             utility = KiSorter;
