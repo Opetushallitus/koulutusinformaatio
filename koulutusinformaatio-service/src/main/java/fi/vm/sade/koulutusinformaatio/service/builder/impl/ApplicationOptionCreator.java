@@ -71,6 +71,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         ApplicationOption ao = new ApplicationOption();
         ao.setEducationTypeUri(educationType);
         ao.setId(hakukohdeDTO.getOid());
+        //ao.setHakuaikaId(hakukohdeDTO.);
         try {
             ao.setName(koodistoService.searchFirstName(hakukohdeDTO.getHakukohdeNimiUri()));
             ao.setAoIdentifier(koodistoService.searchFirstCodeValue(hakukohdeDTO.getHakukohdeNimiUri()));

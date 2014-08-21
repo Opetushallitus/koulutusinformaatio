@@ -102,8 +102,7 @@ public class UpdateServiceImpl implements UpdateService {
             List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
             count = loOids.size();
             index += count;
-
-
+            
                 for (String loOid : loOids) {
                     List<LOS> specifications = null;
                     try {
