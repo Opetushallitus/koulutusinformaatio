@@ -5,7 +5,9 @@ angular.module('kiApp.services',
     'ngResource', 
     'kiApp.HostResolver', 
     'kiApp.TranslationService',
-    'kiApp.CookieService'
+    'kiApp.CookieService',
+    'kiApp.AlertService',
+    'kiApp.AuthService'
 ]).
 
 service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analytics', '$rootScope', 'FilterService', 'LearningOpportunitySearchResultTransformer', function($http, $timeout, $q, $analytics, $rootScope, FilterService, LearningOpportunitySearchResultTransformer) {

@@ -114,7 +114,7 @@ var kiApp = angular.module('kiApp',
         resGetPath : 'locales/__ns__-__lng__.json',
         lng : LanguageService.getLanguage(),
         ns: {
-            namespaces: ['language', 'tooltip', 'plain', 'searchwizard'],
+            namespaces: ['language', 'tooltip', 'plain', 'searchwizard', 'appbasket'],
             defaultNs: 'language'
         },
         cookieName: i18nCookieName,
