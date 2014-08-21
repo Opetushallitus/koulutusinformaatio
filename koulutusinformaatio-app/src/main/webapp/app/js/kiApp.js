@@ -8,6 +8,7 @@ var kiApp = angular.module('kiApp',
         'directives.AjaxLoader',
         'ApplicationBasket',
         'SearchWizard',
+        'Intro',
         'SearchResult', 
         'ui.bootstrap', 
         'angulartics', 
@@ -32,7 +33,16 @@ var kiApp = angular.module('kiApp',
 
     $routeProvider.when('/hakuwizard', {
         templateUrl: 'partials/searchwizard/searchwizard.html',
-        controller: 'SearchWizardCtrl'
+        controller: 'SearchWizardCtrl',
+        reloadOnSearch: false,
+        resolve: {
+            factory: function($rootScope, $location) {
+                // studyinfo has no search wizard
+                if ($rootScope.isStudyInfo) {
+                    $location.path('/haku/');
+                }
+            }
+        }
     });
 
     $routeProvider.when('/:loType/:id', {
@@ -69,7 +79,7 @@ var kiApp = angular.module('kiApp',
 
     $routeProvider.when('/muistilista', {
         templateUrl: 'partials/applicationbasket/applicationbasket.html',
-        controller: 'ApplicationBasketCtrl'
+        controller: 'AppBasketCtrl'
     });
 
     $routeProvider.otherwise({

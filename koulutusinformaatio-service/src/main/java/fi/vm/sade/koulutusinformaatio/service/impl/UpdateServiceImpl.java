@@ -117,7 +117,6 @@ public class UpdateServiceImpl implements UpdateService {
                                         "1.2.246.562.5.2013112814572438173505"//ammattistartti
                                         );
 
-
                 for (String loOid : loOids) {
                     List<LOS> specifications = null;
                     try {

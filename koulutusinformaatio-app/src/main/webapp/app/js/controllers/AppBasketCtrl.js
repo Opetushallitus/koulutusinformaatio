@@ -4,7 +4,7 @@
 
 angular.module('ApplicationBasket', []).
 
-controller('ApplicationBasketCtrl', ['$scope', '$rootScope', 'ApplicationBasketService', 'SearchService', 'FilterService', 'TranslationService', 'Config', 
+controller('AppBasketCtrl', ['$scope', '$rootScope', 'ApplicationBasketService', 'SearchService', 'FilterService', 'TranslationService', 'Config', 
     function($scope, $rootScope, ApplicationBasketService, SearchService, FilterService, TranslationService, Config) {
         $rootScope.title = TranslationService.getTranslation('title-application-basket') + ' - ' + TranslationService.getTranslation('sitename');
         $rootScope.description = $rootScope.title;

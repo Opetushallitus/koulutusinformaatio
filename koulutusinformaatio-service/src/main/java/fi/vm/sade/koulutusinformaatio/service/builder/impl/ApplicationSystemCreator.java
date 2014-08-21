@@ -64,6 +64,25 @@ public class ApplicationSystemCreator extends ObjectCreator {
         as.setApplicationFormLink( haku.getHakulomakeUri());
         as.setHakutapaUri(koodistoService.searchFirstCodeValue(haku.getHakutapaUri()));
         as.setHakutyyppiUri(koodistoService.searchFirstCodeValue(haku.getHakutyyppiUri()));
+        
         return as;
     }
+    
+    /*
+    public ApplicationSystem createHigherEdApplicationSystemWithDates(HakuV1RDTO haku) throws KoodistoException {
+        ApplicationSystem as = new ApplicationSystem();
+        as.setId(haku.getOid());
+        as.setMaxApplications(haku.getMaxHakukohdes());
+        as.setName(getI18nText(haku.getNimi()));
+        as.setApplicationFormLink( haku.getHakulomakeUri());
+        as.setHakutapaUri(koodistoService.searchFirstCodeValue(haku.getHakutapaUri()));
+        as.setHakutyyppiUri(koodistoService.searchFirstCodeValue(haku.getHakutyyppiUri()));
+        if (haku.getHakuaikas() != null) {
+            for () {
+                
+            }
+        }
+        
+        return as;
+    }*/
 }

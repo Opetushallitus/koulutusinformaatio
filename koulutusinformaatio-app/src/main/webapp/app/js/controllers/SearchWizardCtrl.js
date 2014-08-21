@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  *  Search wizard
  */
@@ -8,7 +10,8 @@ constant('SearchWizardConstants', {
     prerequisites: {
         PK: 'pk',
         YO: 'yo',
-        MM: 'mm'
+        MM: 'mm',
+        AT: 'at'
     },
     phases: {
         BASEED: 'baseeducation',
@@ -37,8 +40,31 @@ controller('SearchWizardCtrl', [
     'SearchWizardSelectionsService',
     'SearchWizardPhaseService',
     'SearchWizardConstants',
-    function($scope, $rootScope, $routeParams, $location, TranslationService, SearchLearningOpportunityService, SearchWizardService, SearchWizardSelectionsService, SearchWizardPhaseService, SearchWizardConstants) {
+    '_',
+    function($scope, $rootScope, $routeParams, $location, TranslationService, SearchLearningOpportunityService, SearchWizardService, SearchWizardSelectionsService, SearchWizardPhaseService, SearchWizardConstants, _) {
         $rootScope.title = TranslationService.getTranslation('searchwizard:title') + ' - ' + TranslationService.getTranslation('sitename');
+
+        var initWizard = function() {
+            var qParams = $location.search();
+            angular.forEach(qParams, function(val, key) {
+                var isValidKey = _.contains(_.values(SearchWizardConstants.keys), key);
+                if (isValidKey) {
+                    var vParts = val.split(':');
+                    var value = vParts.length > 0 ? vParts[0] : undefined;
+                    var label = vParts.length > 1 ? vParts[1] : undefined;
+                    SearchWizardSelectionsService.addSelection(key, value, label);
+                } else if (key === 'phase') {
+                    $scope.currentPhase = SearchWizardPhaseService.getNextPhase(val);
+                }
+            });
+
+            if (!$scope.currentPhase) {
+                $scope.currentPhase = SearchWizardPhaseService.getFirstPhase();
+            }
+
+            $location.search({}).replace();
+            initPhase($scope.currentPhase);
+        };
 
         var initPhase = function(phase) {
             $scope.phaseIsLoading = true;
@@ -49,7 +75,7 @@ controller('SearchWizardCtrl', [
                 $scope.resultCount = result.loCount;
                 $scope.phase = {
                     options: SearchWizardPhaseService.getPhase(phase, result)
-                }
+                };
                 $scope.selections = SearchWizardSelectionsService.getSelections();
                 $scope.baseEducation = SearchWizardSelectionsService.getSelectionValueByKey(SearchWizardConstants.keys.BASEED);
                 $scope.phaseIsLoading = false;
@@ -82,8 +108,7 @@ controller('SearchWizardCtrl', [
             $location.url( searchUrl );
         };
 
-        $scope.currentPhase = SearchWizardPhaseService.getFirstPhase();
-        initPhase($scope.currentPhase);
+        initWizard();        
     }
 ]).
 
@@ -97,7 +122,8 @@ service('SearchWizardService', ['SearchWizardConstants',
                 return [
                     SearchWizardConstants.prerequisites.PK,
                     SearchWizardConstants.prerequisites.YO,
-                    SearchWizardConstants.prerequisites.MM
+                    SearchWizardConstants.prerequisites.MM,
+                    SearchWizardConstants.prerequisites.AT
                 ];
             },
 
@@ -121,6 +147,11 @@ service('SearchWizardService', ['SearchWizardConstants',
                         'et01.05.01',   // Yliopisto (alempi)
                         'et02.05',      // Kansanopistojen pitkät linjat
                         'et02.015'      // Kotitalousopetus
+                    ];
+                } else if (prerequisite === SearchWizardConstants.prerequisites.AT) {
+                    return [
+                        'et01.04.01',   // Ammattikorkeakoulututkinto
+                        'et01.05'       // Yliopisto
                     ];
                 } else {
                     return [
@@ -148,6 +179,7 @@ service('SearchWizardService', ['SearchWizardConstants',
                     'et01.03.02',   // Ammatillinen erityisopetus
                     'et01.03.01',   // Ammatillinen koulutus
                     'et01.04.01',   // Ammattikorkeakoulututkinto
+                    'et01.05',      // Yliopistotutkinto
                     'et01.05.01'    // Yliopisto (alempi)
                 ];
             },
@@ -207,6 +239,7 @@ service('SearchWizardPhaseService', ['SearchWizardService', 'SearchWizardSelecti
                     var edTypesRequiringTheme = SearchWizardService.getEducationTypesRequiringThemeSelection();
                     if (edTypesRequiringTheme.indexOf( SearchWizardSelectionsService.getSelectionValueByKey(SearchWizardConstants.keys.EDTYPE) ) < 0) {
                         var indexAfterTopic = phases.indexOf(SearchWizardConstants.phases.TOPIC) + 1;
+                        //console.log(indexAfterTopic);
                         return phases[indexAfterTopic];
                     }
                 }
@@ -310,11 +343,22 @@ service('SearchWizardSelectionsService', ['SearchWizardService', 'LanguageServic
             },
 
             addSelection: function(name, value, label) {
-                var item = {};
-                item.name = name;
-                item.value = value;
-                item.label = label;
-                selections.push(item);
+                if (name && value) {
+                    var foundItem = _.find(selections, function(item) { return item.name === name }),
+                        item = {};
+
+                    if (foundItem) {
+                        item = foundItem;
+                        item.name = name;
+                        item.value = value;
+                        item.label = label;
+                    } else {
+                        item.name = name;
+                        item.value = value;
+                        item.label = label;
+                        selections.push(item);
+                    }
+                }
             },
 
             addLocation: function(location) {
