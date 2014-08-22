@@ -10,6 +10,14 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
 public class AdultVocationalChildLOSDTO extends HigherEducationLOSDTO {
     
-    
+    private boolean valmistavaKoulutus;
+
+    public boolean isValmistavaKoulutus() {
+        return valmistavaKoulutus;
+    }
+
+    public void setValmistavaKoulutus(boolean valmistavaKoulutus) {
+        this.valmistavaKoulutus = valmistavaKoulutus;
+    }
 
 }

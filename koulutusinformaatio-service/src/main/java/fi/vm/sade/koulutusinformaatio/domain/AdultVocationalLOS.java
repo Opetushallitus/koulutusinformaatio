@@ -24,13 +24,22 @@ package fi.vm.sade.koulutusinformaatio.domain;
 public class AdultVocationalLOS extends StandaloneLOS {
     
     private ParentLOSRef parent;
-
+    private boolean valmistavaKoulutus;
+    
     public ParentLOSRef getParent() {
         return parent;
     }
 
     public void setParent(ParentLOSRef parent) {
         this.parent = parent;
+    }
+
+    public boolean isValmistavaKoulutus() {
+        return valmistavaKoulutus;
+    }
+
+    public void setValmistavaKoulutus(boolean valmistava) {
+        this.valmistavaKoulutus = valmistava;
     }
     
     

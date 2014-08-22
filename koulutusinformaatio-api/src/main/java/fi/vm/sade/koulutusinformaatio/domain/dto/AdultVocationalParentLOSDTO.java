@@ -51,6 +51,7 @@ public class AdultVocationalParentLOSDTO extends LOSDTO {
     private List<AdultVocationalChildLOSDTO> children;
     private String translationLanguage;
     private List<CodeDTO> availableTranslationLanguages;
+    
 
     public String getId() {
         return id;

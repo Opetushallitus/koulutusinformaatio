@@ -935,6 +935,8 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setType(TarjontaConstants.TYPE_ADULT_VOCATIONAL);//TarjontaConstants.TYPE_ADULT_UPSEC);
         los.setId(koulutus.getOid());
         los.setKomoOid(koulutus.getKomoOid());
+        los.setValmistavaKoulutus(koulutus.getValmistavaKoulutus() != null);
+        
 
         //Set<Code> availableLanguagaes = Sets.newHashSet();
         Map<String,Code> availableLanguagesMap = new HashMap<String,Code>();

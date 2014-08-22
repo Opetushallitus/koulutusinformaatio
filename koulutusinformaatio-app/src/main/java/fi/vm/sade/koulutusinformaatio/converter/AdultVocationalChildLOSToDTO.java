@@ -87,6 +87,7 @@ public final class AdultVocationalChildLOSToDTO {
         dto.setPlannedDuration(los.getPlannedDuration());
         dto.setPlannedDurationUnit(ConverterUtil.getTextByLanguageUseFallbackLang(los.getPlannedDurationUnit(), uiLang));
         dto.setEducationDomain(ConverterUtil.getTextByLanguageUseFallbackLang(los.getEducationDomain(), uiLang));
+        dto.setValmistavaKoulutus(los.isValmistavaKoulutus());
 
         // as based approach for UI
 
