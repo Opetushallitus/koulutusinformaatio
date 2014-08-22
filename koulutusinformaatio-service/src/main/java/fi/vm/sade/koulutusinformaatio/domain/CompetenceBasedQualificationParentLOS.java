@@ -8,7 +8,7 @@ import java.util.List;
  * @author Markus
  *
  */
-public class CompetenceBasedQualificationParentLOS  extends LOS {
+public class CompetenceBasedQualificationParentLOS extends LOS {
     
     private I18nText accessToFurtherStudies;
     private I18nText choosingCompetence;
@@ -19,6 +19,7 @@ public class CompetenceBasedQualificationParentLOS  extends LOS {
     
     private List<AdultVocationalLOS> children;
     
+    private List<Code> availableTranslationLanguages;
    
     public List<AdultVocationalLOS> getChildren() {
         return children;
@@ -59,5 +60,13 @@ public class CompetenceBasedQualificationParentLOS  extends LOS {
     public void setApplicationOptions(List<ApplicationOption> applicationOptions) {
         this.applicationOptions = applicationOptions;
     }
+    public List<Code> getAvailableTranslationLanguages() {
+        return availableTranslationLanguages;
+    }
+    public void setAvailableTranslationLanguages(
+            List<Code> availableTranslationLanguages) {
+        this.availableTranslationLanguages = availableTranslationLanguages;
+    }
+
 
 }

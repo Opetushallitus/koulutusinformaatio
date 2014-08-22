@@ -97,5 +97,8 @@ public interface TarjontaRawService {
 
     ResultV1RDTO<AmmattitutkintoV1RDTO> getAdultVocationalLearningOpportunity(
             String oid);
+
+    ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> getAdultEducationByKomo(
+            String komoOid);
     
 }
