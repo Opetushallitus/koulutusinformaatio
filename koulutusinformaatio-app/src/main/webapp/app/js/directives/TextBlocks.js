@@ -1,6 +1,11 @@
-angular.module('kiApp.directives.kiBlocks', []).
+"use strict";
 
-directive('kiTextBlock', ['TranslationService', function(TranslationService) {
+/*
+ *  Directives to implement collapsible content blocks
+ */
+angular.module('kiApp.directives.TextBlocks', []).
+
+directive('kiTextBlock', [function() {
     return {
         restrict: 'A',
         templateUrl: 'templates/textBlock.html',
@@ -9,15 +14,15 @@ directive('kiTextBlock', ['TranslationService', function(TranslationService) {
             content: '=',
             level: '@'
         },
-        controller: function($rootScope, $scope, $filter) {
+        controller: function($rootScope, $scope) {
             $rootScope.$watch('translationLanguage', function(value) {
                 $scope.translationLanguage = value;
             });
         }
-    }
+    };
 }]).
 
-directive('kiCollapseTextBlock', ['TranslationService', function(TranslationService) {
+directive('kiCollapseTextBlock', [function() {
     return {
         restrict: 'A',
         templateUrl: 'templates/collapseTextBlock.html',
@@ -34,17 +39,17 @@ directive('kiCollapseTextBlock', ['TranslationService', function(TranslationServ
 
             $scope.toggleState = function() {
                 $scope.isClose = !$scope.isClose;
-            }
+            };
         },
         link: function($scope, element, attrs) {
             if ($scope.closed === undefined) {
                 $scope.isClose = true;
             }
         }
-    }
+    };
 }]).
 
-directive('kiCollapseBlock', ['TranslationService', 'CollapseBlockService', function(TranslationService, CollapseBlockService) {
+directive('kiCollapseBlock', ['CollapseBlockService', function(CollapseBlockService) {
     return {
         restrict: 'A',
         transclude: true,
@@ -65,11 +70,11 @@ directive('kiCollapseBlock', ['TranslationService', 'CollapseBlockService', func
 
             $scope.toggleState = function() {
                 $scope.isClose = !$scope.isClose;
-            }
+            };
 
             $scope.isVisible = function() {
                 return CollapseBlockService.getBlock($scope.blockId);
-            }
+            };
 
         },
         link: function($scope, element, attrs, ctrl, transclude) {
@@ -83,5 +88,5 @@ directive('kiCollapseBlock', ['TranslationService', 'CollapseBlockService', func
             });
 
         }
-    }
+    };
 }]);

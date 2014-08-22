@@ -1,4 +1,4 @@
-angular.module('kiApp.KeyboardControl', [])
+angular.module('kiApp.directives.KeyboardControl', [])
 
 /**
  *  keeps focus within the selected elements when navigating with keyboard

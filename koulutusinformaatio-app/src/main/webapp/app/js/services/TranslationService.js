@@ -13,6 +13,7 @@ service('TranslationService', ['$rootScope', function($rootScope) {
 
         getTranslationByLanguage: function(key, lang) {
             if (key && lang) {
+                console.log(i18n.t(key, { lng: lang }));
                 return i18n.t(key, { lng: lang });
             }
         },
