@@ -725,26 +725,43 @@ public class TarjontaServiceImpl implements TarjontaService {
         if (creator == null) {
             creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService);
         }
-
-        ResultV1RDTO<AmmattitutkintoV1RDTO> res = this.tarjontaRawService.getAdultVocationalLearningOpportunity(oid);
-        NayttotutkintoV1RDTO dto = res.getResult();
-
+        String providerOid = null;
+        String parentKomoOid = null;
         List<String> komoOids = new ArrayList<String>();
-        String parentKomoOid = dto.getKomoOid();
-        komoOids.add(parentKomoOid);
+        int splitIndex = oid.indexOf('_');
+        if (splitIndex > -1) {
+            parentKomoOid = oid.substring(0, splitIndex);
+            providerOid = oid.substring(splitIndex + 1);
+            
+            ResultV1RDTO<Set<String>> childRes = this.tarjontaRawService.getChildrenOfParentHigherEducationLOS(parentKomoOid);
+            if (childRes != null && childRes.getResult() != null) {
+                komoOids.addAll(new ArrayList<String>(childRes.getResult()));
+            }
+            komoOids.add(parentKomoOid);
+            
+        } else {
 
-        ResultV1RDTO<Set<String>> parentsRes = this.tarjontaRawService.getParentsOfHigherEducationLOS(dto.getKomoOid());
+            ResultV1RDTO<AmmattitutkintoV1RDTO> res = this.tarjontaRawService.getAdultVocationalLearningOpportunity(oid);
+            NayttotutkintoV1RDTO dto = res.getResult();
 
-        if (parentsRes != null && parentsRes.getResult() != null && !parentsRes.getResult().isEmpty()) {
+            
+            parentKomoOid = dto.getKomoOid();
+            providerOid = dto.getOrganisaatio().getOid();
+            komoOids.add(parentKomoOid);
+
+            ResultV1RDTO<Set<String>> parentsRes = this.tarjontaRawService.getParentsOfHigherEducationLOS(dto.getKomoOid());
+
+            if (parentsRes != null && parentsRes.getResult() != null && !parentsRes.getResult().isEmpty()) {
 
 
-            for (String curKomoOid : parentsRes.getResult()) {
+                for (String curKomoOid : parentsRes.getResult()) {
 
 
-                parentKomoOid = curKomoOid;
-                ResultV1RDTO<Set<String>> childRes = this.tarjontaRawService.getChildrenOfParentHigherEducationLOS(curKomoOid);
-                if (childRes != null && childRes.getResult() != null) {
-                    komoOids.addAll(new ArrayList<String>(childRes.getResult()));
+                    parentKomoOid = curKomoOid;
+                    ResultV1RDTO<Set<String>> childRes = this.tarjontaRawService.getChildrenOfParentHigherEducationLOS(curKomoOid);
+                    if (childRes != null && childRes.getResult() != null) {
+                        komoOids.addAll(new ArrayList<String>(childRes.getResult()));
+                    }
                 }
             }
         }
@@ -761,8 +778,9 @@ public class TarjontaServiceImpl implements TarjontaService {
                 LOG.debug("There is some komotoresult");
                 
                 for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curTarjRes : curRes.getResult().getTulokset()) {
-                    //TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> tarjRes = curRes.getResult().getTulokset().get(0);
-                    if (curTarjRes.getTulokset() != null
+                    //TarjoajaHakutulosV1RDTO<KoulutusHautulosV1RDTO> tarjRes = curRes.getResult().getTulokset().get(0);
+                    if (curTarjRes.getOid().equals(providerOid)
+                            && curTarjRes.getTulokset() != null
                             && !curTarjRes.getTulokset().isEmpty()) {
                         
                         for ( KoulutusHakutulosV1RDTO curKoul : curTarjRes.getTulokset()) {

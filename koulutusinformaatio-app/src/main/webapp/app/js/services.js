@@ -984,6 +984,16 @@ service('AdultVocationalTransformer', ['KiSorter', '$rootScope', '$filter', 'Lan
 					}
 				}
 			}
+			
+			result.hasSelectedChild = false;
+			angular.forEach(result.children, function(child, childKey) {
+				if (child.id == loId) {
+					result.selectedChild = child;
+					result.hasSelectedChild = true;
+				}
+			});
+			
+			result.parentId = result.id;
 			result.id = loId;
 		}
 	}
