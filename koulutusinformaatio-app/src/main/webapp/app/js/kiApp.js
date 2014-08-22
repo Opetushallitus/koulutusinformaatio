@@ -5,7 +5,6 @@ var kiApp = angular.module('kiApp',
         'kiApp.filters',
         'kiApp.services',
         'kiApp.directives',
-        'directives.AjaxLoader',
         'ApplicationBasket',
         'SearchWizard',
         'Intro',
@@ -113,6 +112,7 @@ var kiApp = angular.module('kiApp',
     i18n.init({
         resGetPath : 'locales/__ns__-__lng__.json',
         lng : LanguageService.getLanguage(),
+        preload: ['fi', 'sv', 'en'],
         ns: {
             namespaces: ['language', 'tooltip', 'plain', 'searchwizard', 'appbasket'],
             defaultNs: 'language'

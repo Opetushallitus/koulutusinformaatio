@@ -10,7 +10,8 @@ angular.module('kiApp.directives',
         'kiApp.directives.FacetTitle',
         'kiApp.directives.TextBlocks',
         'kiApp.directives.ContentBlocks',
-        'kiApp.directives.AppBasket']).
+        'kiApp.directives.AppBasket',
+        'kiApp.directives.AjaxLoader',]).
 
 /**
  *  Updates the title element of the page.
@@ -23,7 +24,7 @@ directive('title', ['$rootScope', function($rootScope) {
                 document.title = value;
             });
         }
-    }
+    };
 }]).
 
 directive('meta', ['$rootScope', function($rootScope) {
@@ -36,7 +37,7 @@ directive('meta', ['$rootScope', function($rootScope) {
                 });
             }
         }
-    }
+    };
 }]).
 
 /**
@@ -52,7 +53,7 @@ directive('kiEmail', function() {
                 }
             });
         }
-    }
+    };
 }).
 
 /**
@@ -70,7 +71,7 @@ directive('kiAbsoluteLink', function() {
                 }
             });
         }
-    }
+    };
 }).
 
 /**
@@ -88,11 +89,11 @@ directive('kiAbsoluteLink', function() {
                 scope.location = '';
                 scope.change();
                 return false;
-            }
+            };
 
             scope.getLocations = function($viewValue) {
                 return SearchLocationService.query($viewValue);
-            }
+            };
 
             scope.placeholder = TranslationService.getTranslation('location-filter-placeholder');
         }
@@ -102,7 +103,7 @@ directive('kiAbsoluteLink', function() {
 /**
  *  Creates and controls language selector for description language
  */
- directive('kiLanguageRibbon', ['$routeParams', function($routeParams) {
+ directive('kiLanguageRibbon', [function() {
     return {
         restrict: 'A',
         templateUrl: 'templates/languageRibbon.html',
@@ -120,7 +121,7 @@ directive('kiAbsoluteLink', function() {
 
             scope.changeLanguage = function(lang) {
                 callback(lang);
-            }
+            };
         }
     };
  }]).
@@ -128,7 +129,7 @@ directive('kiAbsoluteLink', function() {
  /**
  *  Creates and controls prerequisite selection
  */
- directive('kiPrerequisiteSelectionRibbon', ['$routeParams', function($routeParams) {
+ directive('kiPrerequisiteSelectionRibbon', [function() {
     return {
         restrict: 'E,A',
         templateUrl: 'templates/prerequisiteRibbon.html'
@@ -138,7 +139,7 @@ directive('kiAbsoluteLink', function() {
 /**
  *  Creates and controls the link "ribbon" of sibling LOs in child view
  */
-  directive('kiSiblingRibbon', ['$location', '$routeParams', function($location, $routeParams) {
+  directive('kiSiblingRibbon', ['$routeParams', function($routeParams) {
     return {
         restrict: 'A',
         templateUrl: 'templates/siblings.html',
@@ -147,20 +148,20 @@ directive('kiAbsoluteLink', function() {
         },
         controller: function($scope) {
             $scope.siblingClass = function(sibling) {
-                if (sibling.losId == $routeParams.id) {
+                if (sibling.losId === $routeParams.id) {
                     return 'disabled';
-                } else {
-                    return '';
                 }
-            }
+                
+                return '';
+            };
         }
-    }
+    };
 }]).
 
 /**
  *  Creates and controls the link "ribbon" of sibling LOs in child view
  */
-  directive('kiChildRibbon', ['$location', '$routeParams', function($location, $routeParams) {
+  directive('kiChildRibbon', [function() {
     return {
         restrict: 'A',
         templateUrl: 'templates/childRibbon.html',
@@ -172,32 +173,32 @@ directive('kiAbsoluteLink', function() {
         link: function(scope, element, attrs) {
             scope.$watch('children', function() {
                 if (scope.type) {
-                    angular.forEach(scope.children, function(child, key) {
-                        child.url = scope.type == 'korkeakoulu' ? '#!/' + scope.type + '/' : '#!/koulutusohjelma/';
-                        child.url += scope.type == 'korkeakoulu' ? child.id : child.losId;
+                    angular.forEach(scope.children, function(child) {
+                        child.url = scope.type === 'korkeakoulu' ? '#!/' + scope.type + '/' : '#!/koulutusohjelma/';
+                        child.url += scope.type === 'korkeakoulu' ? child.id : child.losId;
                         child.url += (child.prerequisite && child.prerequisite.value) ? '?prerequisite=' + child.prerequisite.value : '';
                     });
                 }
             });
         }
-    }
+    };
 }]).
 
 /**
  *  Creates and controls the breadcrumb
  */
- directive('kiBreadcrumb', ['$location', 'SearchService', 'Config', 'LanguageService', 'FilterService', 'TranslationService', function($location, SearchService, Config, LanguageService, FilterService, TranslationService) {
+ directive('kiBreadcrumb', ['SearchService', 'Config', 'FilterService', 'TranslationService', function(SearchService, Config, FilterService, TranslationService) {
     return {
         restrict: 'E,A',
         templateUrl: 'templates/breadcrumb.html',
         link: function(scope, element, attrs) {
-            var home = 'home';
-            var root =TranslationService.getTranslation('breadcrumb-search-results');
-            var goToTooltip=TranslationService.getTranslation('breadcrumb-go-to-page')+' ';
-            var homeTooltip = TranslationService.getTranslation('tooltip:to-frontpage');
-            var parent;
-            var child;
-            var provider;
+            var home = 'home',
+                root = TranslationService.getTranslation('breadcrumb-search-results'),
+                goToTooltip = TranslationService.getTranslation('breadcrumb-go-to-page') + ' ',
+                homeTooltip = TranslationService.getTranslation('tooltip:to-frontpage'),
+                parent,
+                child,
+                provider;
 
             scope.$watch('parent.name', function(data) {
                 parent = data;
@@ -224,11 +225,11 @@ directive('kiAbsoluteLink', function() {
                 pushItem({name: home, linkHref: Config.get('frontpageUrl'), tooltip: homeTooltip });
                 pushItem({name: root, linkHref: '#!/haku/' + SearchService.getTerm() + '?' + FilterService.getParams(), tooltip: goToTooltip + root });
 
-                if (scope.parent && (scope.loType != 'lukio' && scope.loType != 'erityisopetus')) { // TODO: do not compare to loType
+                if (scope.parent && (scope.loType !== 'lukio' && scope.loType !== 'erityisopetus')) {
                     pushItem({name: parent, linkHref: '#!/tutkinto/' + scope.parent.id, tooltip: goToTooltip + parent });
                 }
 
-                if (scope.loType == 'lukio') { // TODO: do not compare to loType
+                if (scope.loType === 'lukio') {
                     pushItem({name: provider + ', ' + child});
                 } else {
                     pushItem({name: child});
@@ -261,16 +262,16 @@ directive('kiTimestamp', ['TranslationService', 'UtilityService', function(Trans
                 element.append(' ' + TranslationService.getTranslation('time-abbreviation') + ' ' + UtilityService.padWithZero(date.getHours()) + ':' + UtilityService.padWithZero(date.getMinutes()));
             }
         });
-    }
+    };
 }]).
 
 directive('kiTimeInterval', ['UtilityService', 'TranslationService', function(UtilityService, TranslationService) {
     var isSameDay = function(start, end) {
-        if (start.getFullYear() != end.getFullYear()) {
+        if (start.getFullYear() !== end.getFullYear()) {
             return false;
-        } else if (start.getMonth() != end.getMonth()) {
+        } else if (start.getMonth() !== end.getMonth()) {
             return false;
-        } else if (start.getDate() != end.getDate()) {
+        } else if (start.getDate() !== end.getDate()) {
             return false;
         } else {
             return true;
@@ -295,7 +296,7 @@ directive('kiTimeInterval', ['UtilityService', 'TranslationService', function(Ut
                 element.append(end.getDate() + '.' + (end.getMonth() + 1) + '.' + end.getFullYear());
             }
         }
-    }
+    };
 }]).
 
 /**
@@ -306,7 +307,7 @@ directive('kiAsStateLabel', ['UtilityService', 'TranslationService', function(Ut
     var isAsOngoing = function(as) {
         var result = false;
         if (UtilityService.isLisahaku(as)) {
-            angular.forEach(as.applicationOptions, function(value, key) {
+            angular.forEach(as.applicationOptions, function(value) {
                 if (value.canBeApplied) {
                     result = true;
                 }          
@@ -341,8 +342,8 @@ directive('kiAsStateLabel', ['UtilityService', 'TranslationService', function(Ut
                 element.addClass('label label-default');
                 element.text(TranslationService.getTranslation('label-as-not-ongoing'));
             }
-        })
-    }
+        });
+    };
 }]).
 
 /**
@@ -363,7 +364,7 @@ directive('kiAsState', ['TranslationService', 'UtilityService', function(Transla
                 ':' + UtilityService.padWithZero(ts.getMinutes());
             element.text(content);
         }
-    }
+    };
 }]).
 
 /**
@@ -405,7 +406,7 @@ directive('kiApplicationStatusLabel', function() {
                 }
             }
         }
-    }
+    };
 }).
 
 /**
@@ -432,7 +433,7 @@ directive('kiPreviewStatusLabel', ['TranslationService', function(TranslationSer
             var labelText = TranslationService.getTranslationByLanguage($scope.status, $scope.lang);
             element.html(labelText);
         }
-    }
+    };
 }]).
 
 /**
@@ -454,7 +455,7 @@ directive('kiAoApplicationTime', function() {
                 return $scope.hakutapa == '03';
             }
         }
-    }
+    };
 }).
 
 /**
@@ -473,7 +474,7 @@ directive('kiBanner', ['$location', function($location) {
             else if (host.indexOf('itest-') == 0) scope.banner = 'Luokka';
             else if (host.indexOf('localhost') == 0) scope.banner = host;
         }
-    }
+    };
 }]).
 
 /**
@@ -513,7 +514,7 @@ directive('kiI18n', ['TranslationService', function(TranslationService) {
                 element.append(translation);
             }
         }
-    }    
+    };
 }]).
 
 /**
@@ -529,7 +530,7 @@ directive('kiTitle', ['TranslationService', function(TranslationService) {
                 element.attr('title', translation);
             });
         }
-    }
+    };
 }]).
 
 /*
