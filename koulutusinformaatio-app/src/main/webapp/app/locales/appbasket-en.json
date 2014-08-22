@@ -1,6 +1,6 @@
 {
-    "alert-title": "Kirjautuneen käyttäjän palvelut (en)",
-    "alert-link": "Kirjaudu sisään (en)",
-    "alert-text-1": "Tunnistautumalla verkkopankkitunnuksin, mobiilivarmenteella tai sähköisellä henkilökortilla saat käyttöösi Oma Opintopolku –palvelun. Ensi vaiheessa tunnistautunut käyttäjä voi muokata hakulomakettaan hakuaikana: vaihtaa hakutoiveiden järjestystä yhteishauissa, lisätä ja poistaa hakutoiveita. Syksyn 2014 kuluessa Oma Opintopolku-palveluun on tulossa myös tieto valintojen tuloksista sekä opiskelupaikan vastaanotto. (en)",
-    "alert-text-2": "tästä tai sivun yläreunan linkistä. (en)"
+    "alert-title": "Services for registered users",
+    "alert-link": "Log in",
+    "alert-text-1": "The My Studyinfo –service provides extra services for registered users. You can register by using Finnish internet banking codes, Finnish electronic ID-card or mobile certificate. Applicants who have none of these cannot access this service. As an identified user you can edit your application form during the application period: change the order of preference of study programme choices, add and remove study programme choices. Later in autumn 2014 My Studyinfo will also include information about results of the selection process and the possibility to accept a study place electronically.",
+    "alert-text-2": "here or using the link at the top of the page."
 }
