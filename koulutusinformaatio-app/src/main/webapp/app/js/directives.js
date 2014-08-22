@@ -501,7 +501,6 @@ directive('kiI18n', ['TranslationService', function(TranslationService) {
 
                 var translation;
                 if (lang) {
-                    console.log(key + ', ' + lang);
                     translation = TranslationService.getTranslationByLanguage(key, lang);
                 } else {
                     translation = TranslationService.getTranslation(key);
