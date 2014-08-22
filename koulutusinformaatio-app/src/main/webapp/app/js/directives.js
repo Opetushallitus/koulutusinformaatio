@@ -541,9 +541,10 @@ directive('kiAbsoluteLink', function() {
         link: function(scope, element, attrs) {
             scope.$watch('children', function() {
                 if (scope.type) {
+                	console.log('scope.type: ' + scope.type);
                     angular.forEach(scope.children, function(child, key) {
-                        child.url = scope.type == 'korkeakoulu' ? '#!/' + scope.type + '/' : '#!/koulutusohjelma/';
-                        child.url += scope.type == 'korkeakoulu' ? child.id : child.losId;
+                        child.url = (scope.type == 'korkeakoulu' || scope.type == 'ammatillinenaikuiskoulutus') ? '#!/' + scope.type + '/' : '#!/koulutusohjelma/';
+                        child.url += (scope.type == 'korkeakoulu' || scope.type == 'ammatillinenaikuiskoulutus') ? child.id : child.losId;
                         child.url += (child.prerequisite && child.prerequisite.value) ? '?prerequisite=' + child.prerequisite.value : '';
                     });
                 }

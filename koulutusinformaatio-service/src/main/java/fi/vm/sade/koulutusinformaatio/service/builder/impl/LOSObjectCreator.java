@@ -831,6 +831,7 @@ public class LOSObjectCreator extends ObjectCreator {
             LOG.debug("Cur standalone competence komoto oid: " + curKomotoOid);
             ResultV1RDTO<AmmattitutkintoV1RDTO> res = this.tarjontaRawService.getAdultVocationalLearningOpportunity(curKomotoOid);
             NayttotutkintoV1RDTO dto = res.getResult();
+            
             LOG.debug("Got dto ");
             
             if (dto == null || dto.getToteutustyyppi() == null || !dto.getToteutustyyppi().name().startsWith(ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO_NAYTTOTUTKINTONA.name())) {
@@ -872,6 +873,12 @@ public class LOSObjectCreator extends ObjectCreator {
                 }
                 if (los.getId() == null) {
                     los.setId(String.format("%s_%s", parentKomoOid, los.getProvider().getId()));
+                }
+                if (los.getEducationDomain() == null) {
+                    los.setEducationDomain(newLos.getEducationDomain());
+                }
+                if (los.getEducationKind() == null) {
+                    los.setEducationKind(getI18nTextEnriched(dto.getKoulutuslaji().getMeta()));
                 }
                 
                 newLos.setParent(new ParentLOSRef(los.getId(), los.getName()));
@@ -993,10 +1000,10 @@ public class LOSObjectCreator extends ObjectCreator {
         }
 
         
-        //los.setEducationDomain(getI18nTextEnriched(koulutus.getKoulutusala().getMeta()));
-        //los.setName(getI18nTextEnriched(koulutus.getKoulutusohjelma().getMeta()));
-        //LOG.debug("Koulutusohjelma for " + koulutus.getOid() + ": " + koulutus.getKoulutusohjelma());
-        //los.setShortTitle(getI18nTextEnriched(koulutus.getKoulutusohjelma().getMeta()));
+        los.setEducationDomain(getI18nTextEnriched(koulutus.getKoulutusala().getMeta()));
+        los.setName(getI18nTextEnriched(koulutus.getKoulutusohjelma().getMeta()));
+        LOG.debug("Koulutusohjelma for " + koulutus.getOid() + ": " + koulutus.getKoulutusohjelma());
+        los.setShortTitle(getI18nTextEnriched(koulutus.getKoulutusohjelma().getMeta()));
         LOG.debug("Short title: " + los.getShortTitle());
         los.setKoulutuskoodi(getI18nTextEnriched(koulutus.getKoulutuskoodi().getMeta()));
         los.setEducationCode(koodistoService.searchFirst(koulutus.getKoulutuskoodi().getUri()));

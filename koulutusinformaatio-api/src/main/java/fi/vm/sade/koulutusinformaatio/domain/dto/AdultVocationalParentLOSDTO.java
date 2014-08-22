@@ -41,6 +41,8 @@ public class AdultVocationalParentLOSDTO extends LOSDTO {
     private String choosingCompetence;
     private String degreeCompletion;
     
+    private String educationDomain;
+    private String educationKind;
     
     private LearningOpportunityProviderDTO provider;
     //private List<ApplicationOptionDTO> applicationOptions;
@@ -168,6 +170,22 @@ public class AdultVocationalParentLOSDTO extends LOSDTO {
 
     public void setApplicationSystems(List<ApplicationSystemDTO> applicationSystems) {
         this.applicationSystems = applicationSystems;
+    }
+
+    public String getEducationDomain() {
+        return educationDomain;
+    }
+
+    public void setEducationDomain(String educationDomain) {
+        this.educationDomain = educationDomain;
+    }
+
+    public String getEducationKind() {
+        return educationKind;
+    }
+
+    public void setEducationKind(String educationKind) {
+        this.educationKind = educationKind;
     }
     
    

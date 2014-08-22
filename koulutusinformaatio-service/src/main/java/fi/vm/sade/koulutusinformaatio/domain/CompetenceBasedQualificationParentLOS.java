@@ -13,6 +13,9 @@ public class CompetenceBasedQualificationParentLOS extends LOS {
     private I18nText accessToFurtherStudies;
     private I18nText choosingCompetence;
     private I18nText degreeCompletion;
+    private I18nText educationKind;
+    
+    private I18nText educationDomain;
     
     private Provider provider;
     private List<ApplicationOption> applicationOptions;
@@ -20,6 +23,7 @@ public class CompetenceBasedQualificationParentLOS extends LOS {
     private List<AdultVocationalLOS> children;
     
     private List<Code> availableTranslationLanguages;
+    
    
     public List<AdultVocationalLOS> getChildren() {
         return children;
@@ -66,6 +70,18 @@ public class CompetenceBasedQualificationParentLOS extends LOS {
     public void setAvailableTranslationLanguages(
             List<Code> availableTranslationLanguages) {
         this.availableTranslationLanguages = availableTranslationLanguages;
+    }
+    public I18nText getEducationDomain() {
+        return educationDomain;
+    }
+    public void setEducationDomain(I18nText educationDomain) {
+        this.educationDomain = educationDomain;
+    }
+    public I18nText getEducationKind() {
+        return educationKind;
+    }
+    public void setEducationKind(I18nText educationKind) {
+        this.educationKind = educationKind;
     }
 
 
