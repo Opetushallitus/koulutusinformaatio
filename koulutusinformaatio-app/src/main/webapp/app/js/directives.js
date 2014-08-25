@@ -516,7 +516,7 @@ directive('kiAbsoluteLink', function() {
         },
         controller: function($scope) {
             $scope.siblingClass = function(sibling) {
-                if (sibling.losId == $routeParams.id) {
+                if (sibling.losId == $routeParams.id || sibling.id == $routeParams.id) {
                     return 'disabled';
                 } else {
                     return '';

@@ -16,6 +16,8 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
+import java.util.List;
+
 /**
  * 
  * @author Markus
@@ -25,6 +27,15 @@ public class AdultVocationalLOS extends StandaloneLOS {
     
     private ParentLOSRef parent;
     private boolean valmistavaKoulutus;
+    
+    
+    private boolean chargeable;
+    private double charge;
+    
+    private List<I18nText> professionalTitles;
+    
+    private I18nText personalization;
+    private List<ContactPerson> preparatoryContactPersons;
     
     public ParentLOSRef getParent() {
         return parent;
@@ -41,7 +52,47 @@ public class AdultVocationalLOS extends StandaloneLOS {
     public void setValmistavaKoulutus(boolean valmistava) {
         this.valmistavaKoulutus = valmistava;
     }
-    
+
+    public boolean isChargeable() {
+        return chargeable;
+    }
+
+    public void setChargeable(boolean chargeable) {
+        this.chargeable = chargeable;
+    }
+
+    public double getCharge() {
+        return charge;
+    }
+
+    public void setCharge(double charge) {
+        this.charge = charge;
+    }
+
+    public List<I18nText> getProfessionalTitles() {
+        return professionalTitles;
+    }
+
+    public void setProfessionalTitles(List<I18nText> professionalTitles) {
+        this.professionalTitles = professionalTitles;
+    }
+
+    public I18nText getPersonalization() {
+        return personalization;
+    }
+
+    public void setPersonalization(I18nText personalization) {
+        this.personalization = personalization;
+    }
+
+    public void setPreparatoryContactPersons(List<ContactPerson> persons) {
+        this.preparatoryContactPersons = persons;
+        
+    }
+
+    public List<ContactPerson> getPreparatoryContactPersons() {
+        return preparatoryContactPersons;
+    }
     
 
 }

@@ -125,6 +125,9 @@ public class AdultVocationalLOSEntity {
     
     @Embedded
     private CodeEntity koulutuslaji;
+    
+    private boolean chargeable;
+    private double charge;
 
     public String getId() {
         return id;
@@ -395,6 +398,18 @@ public class AdultVocationalLOSEntity {
     }
     public void setKoulutuslaji(CodeEntity koulutuslaji) {
         this.koulutuslaji = koulutuslaji;
+    }
+    public boolean isChargeable() {
+        return chargeable;
+    }
+    public void setChargeable(boolean chargeable) {
+        this.chargeable = chargeable;
+    }
+    public double getCharge() {
+        return charge;
+    }
+    public void setCharge(double charge) {
+        this.charge = charge;
     }
 
 

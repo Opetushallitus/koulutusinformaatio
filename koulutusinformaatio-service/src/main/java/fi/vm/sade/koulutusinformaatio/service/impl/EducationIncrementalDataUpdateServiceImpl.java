@@ -295,9 +295,14 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             for (HigherEducationLOS curChild : los.getChildren()) {
                 updateHigherEdLos(curChild);
             }
+            
+            
+            
             HigherEducationLOSEntity plos =
                     modelMapper.map(los, HigherEducationLOSEntity.class);
 
+            //this.learningOpportunityProviderDAO.get(id)
+            
             this.learningOpportunityProviderDAO.deleteById(plos.getProvider().getId());
             save(plos.getProvider());
             

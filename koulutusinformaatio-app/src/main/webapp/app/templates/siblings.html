@@ -1,6 +1,7 @@
 <ul class="ribbon-content list-unstyled" data-ng-class="{hidden: siblings.length <= 1}">
 	<li data-ng-repeat="sibling in siblings" >
-		<a href="#!/koulutusohjelma/{{sibling.losId}}?prerequisite={{sibling.prerequisite.value}}" ng-class="siblingClass(sibling)">{{sibling.name}}</a>
+		<a data-ng-show="sibling.losId" href="#!/koulutusohjelma/{{sibling.losId}}?prerequisite={{sibling.prerequisite.value}}" ng-class="siblingClass(sibling)">{{sibling.name}}</a>
+		<a data-ng-hide="sibling.losId" href="#!/ammatillinenaikuiskoulutus/{{sibling.id}}" ng-class="siblingClass(sibling)">{{sibling.name}}</a>
 	</li>
 </ul>
         

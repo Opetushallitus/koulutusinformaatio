@@ -25,18 +25,10 @@ import java.util.List;
  */
 public class AdultUpperSecondaryLOS extends StandaloneLOS {
 
-    private I18nText targetGroup;
     private I18nText subjectsAndCourses;
     private List<LanguageSelection> languageSelection;
     private List<I18nText> diplomas = new ArrayList<I18nText>();   
 
-    public I18nText getTargetGroup() {
-        return targetGroup;
-    }
-
-    public void setTargetGroup(I18nText targetGroup) {
-        this.targetGroup = targetGroup;
-    }
 
     public I18nText getSubjectsAndCourses() {
         return subjectsAndCourses;

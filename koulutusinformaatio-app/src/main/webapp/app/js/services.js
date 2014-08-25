@@ -986,12 +986,23 @@ service('AdultVocationalTransformer', ['KiSorter', '$rootScope', '$filter', 'Lan
 			}
 			
 			result.hasSelectedChild = false;
-			angular.forEach(result.children, function(child, childKey) {
-				if (child.id == loId) {
-					result.selectedChild = child;
-					result.hasSelectedChild = true;
-				}
-			});
+			result.isStandalone = false;
+			if (result.children != null && result.children.length == 1) {
+				result.isStandalone = true;
+				result.selectedChild = result.children[0];
+				result.hasSelectedChild = true;
+			} else {
+				angular.forEach(result.children, function(child, childKey) {
+					if (child.id == loId) {
+						result.selectedChild = child;
+						result.hasSelectedChild = true;
+					}
+					if (child.startDate) {
+						var startDate = new Date(child.startDate);
+						child.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
+					}
+				});
+			}
 			
 			result.parentId = result.id;
 			result.id = loId;

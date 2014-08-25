@@ -55,6 +55,8 @@ public final class AdultVocationalParentLOSToDTO {
         dto.setGoals(ConverterUtil.getTextByLanguage(los.getGoals(), descriptionLang));
         //dto.setStructure(ConverterUtil.getTextByLanguage(los.getStructure(), descriptionLang));
         dto.setAccessToFurtherStudies(ConverterUtil.getTextByLanguage(los.getAccessToFurtherStudies(), descriptionLang));
+        dto.setDegreeCompletion(ConverterUtil.getTextByLanguage(los.getDegreeCompletion(), descriptionLang));
+        dto.setChoosingCompetence(ConverterUtil.getTextByLanguage(los.getChoosingCompetence(), descriptionLang));
 
         dto.setProvider(ProviderToDTO.convert(los.getProvider(), uiLang, "fi", uiLang));
         dto.setAvailableTranslationLanguages(CodeToDTO.convertAll(los.getAvailableTranslationLanguages(), uiLang));

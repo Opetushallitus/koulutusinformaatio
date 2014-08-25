@@ -52,12 +52,14 @@ public final class AdultVocationalChildLOSToDTO {
         dto.setGoals(ConverterUtil.getTextByLanguage(los.getGoals(), descriptionLang));
         dto.setStructure(ConverterUtil.getTextByLanguage(los.getStructure(), descriptionLang));
         dto.setAccessToFurtherStudies(ConverterUtil.getTextByLanguage(los.getAccessToFurtherStudies(), descriptionLang));
+        dto.setInfoAboutCharge(ConverterUtil.getTextByLanguage(los.getInfoAboutCharge(), descriptionLang));
+        dto.setCooperation(ConverterUtil.getTextByLanguage(los.getCooperation(), descriptionLang));
+        dto.setCareerOpportunities(ConverterUtil.getTextByLanguage(los.getCareerOpportunities(), descriptionLang));
         
-        /*dto.setTargetGroup(ConverterUtil.getTextByLanguage(los.getTargetGroup(), descriptionLang));
-        dto.setSubjectsAndCourses(ConverterUtil.getTextByLanguage(los.getSubjectsAndCourses(), descriptionLang));
-        dto.setDiplomas(ConverterUtil.getTextsByLanguage(los.getDiplomas(), lang));
-        dto.setLanguageSelection(LanguageSelectionToDTO.convertAll(los.getLanguageSelection(), lang));*/
-        
+        dto.setContent(ConverterUtil.getTextByLanguage(los.getContent(), descriptionLang));
+        dto.setTargetGroup(ConverterUtil.getTextByLanguage(los.getTargetGroup(), descriptionLang));
+        dto.setPersonalization(ConverterUtil.getTextByLanguage(los.getPersonalization(), descriptionLang));
+        dto.setInternationalization(ConverterUtil.getTextByLanguage(los.getInternationalization(), descriptionLang));
         
         dto.setProvider(ProviderToDTO.convert(los.getProvider(), uiLang, "fi", uiLang));
         dto.setAvailableTranslationLanguages(CodeToDTO.convertAll(los.getAvailableTranslationLanguages(), uiLang));
@@ -83,6 +85,9 @@ public final class AdultVocationalChildLOSToDTO {
         dto.setCooperation(ConverterUtil.getTextByLanguage(los.getCooperation(), descriptionLang));
         dto.setContent(ConverterUtil.getTextByLanguage(los.getContent(), descriptionLang));
         dto.setContactPersons(ContactPersonToDTO.convertAll(los.getContactPersons()));
+        if (los.getPreparatoryContactPersons() != null) {
+            dto.setPreparatoryContactPersons(ContactPersonToDTO.convertAll(los.getPreparatoryContactPersons()));
+        }
         dto.setPlannedDuration(los.getPlannedDuration());
         dto.setPlannedDuration(los.getPlannedDuration());
         dto.setPlannedDurationUnit(ConverterUtil.getTextByLanguageUseFallbackLang(los.getPlannedDurationUnit(), uiLang));
@@ -120,7 +125,9 @@ public final class AdultVocationalChildLOSToDTO {
         }
         dto.setEducationType(los.getEducationType());
         
-        
+        dto.setChargeable(los.isChargeable());
+        dto.setCharge(los.getCharge());
+        dto.setProfessionalTitles(ConverterUtil.getTextsByLanguage(los.getProfessionalTitles(), lang));
         
         
         return dto;
