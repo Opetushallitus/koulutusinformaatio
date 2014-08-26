@@ -941,6 +941,8 @@ public class LOSObjectCreator extends ObjectCreator {
         
         AdultVocationalLOS los = new AdultVocationalLOS();
 
+        los.setStatus(koulutus.getTila().toString());
+        
         los.setType(TarjontaConstants.TYPE_ADULT_VOCATIONAL);//TarjontaConstants.TYPE_ADULT_UPSEC);
         los.setId(koulutus.getOid());
         los.setKomoOid(koulutus.getKomoOid());

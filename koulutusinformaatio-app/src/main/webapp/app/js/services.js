@@ -994,6 +994,7 @@ service('AdultVocationalTransformer', ['KiSorter', '$rootScope', '$filter', 'Lan
 				result.selectedChild = result.children[0];
 				result.hasSelectedChild = true;
 			} else {
+				result.parentId = result.id;
 				angular.forEach(result.children, function(child, childKey) {
 					if (child.id == loId) {
 						result.selectedChild = child;
@@ -1012,7 +1013,6 @@ service('AdultVocationalTransformer', ['KiSorter', '$rootScope', '$filter', 'Lan
 				});
 			}
 			
-			result.parentId = result.id;
 			result.id = loId;
 		}
 	}
