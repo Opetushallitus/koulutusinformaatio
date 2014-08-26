@@ -128,7 +128,7 @@ public final class AdultVocationalChildLOSToDTO {
         dto.setChargeable(los.isChargeable());
         dto.setCharge(los.getCharge());
         dto.setProfessionalTitles(ConverterUtil.getTextsByLanguage(los.getProfessionalTitles(), lang));
-        
+        dto.setDegreeOrganizer(ConverterUtil.getTextByLanguageUseFallbackLang(los.getDegreeOrganizer(), uiLang));
         
         return dto;
         

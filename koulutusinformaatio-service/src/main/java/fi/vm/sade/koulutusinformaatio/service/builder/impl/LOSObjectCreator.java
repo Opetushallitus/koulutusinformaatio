@@ -1103,6 +1103,13 @@ public class LOSObjectCreator extends ObjectCreator {
                 los.setPreparatoryContactPersons(persons);
             }
             
+            los.setFormOfTeaching(getI18nTextMultiple(koulutus.getValmistavaKoulutus().getOpetusmuodos()));
+            los.setFotFacet(this.createCodes(koulutus.getValmistavaKoulutus().getOpetusPaikkas()));
+            los.setTimeOfTeachingFacet(this.createCodes(koulutus.getValmistavaKoulutus().getOpetusAikas()));
+            los.setFormOfStudyFacet(this.createCodes(koulutus.getValmistavaKoulutus().getOpetusmuodos()));        
+            los.setTeachingTimes(getI18nTextMultiple(koulutus.getValmistavaKoulutus().getOpetusAikas()));
+            los.setTeachingPlaces(getI18nTextMultiple(koulutus.getValmistavaKoulutus().getOpetusPaikkas()));
+            
             
         }
         
@@ -1127,13 +1134,13 @@ public class LOSObjectCreator extends ObjectCreator {
             los.setThemes(getThemes(los));
         }
 
-        los.setFormOfTeaching(getI18nTextMultiple(koulutus.getOpetusmuodos()));
-        los.setFotFacet(this.createCodes(koulutus.getOpetusPaikkas()));
-        los.setTimeOfTeachingFacet(this.createCodes(koulutus.getOpetusAikas()));
-        los.setFormOfStudyFacet(this.createCodes(koulutus.getOpetusmuodos()));        
-
-        los.setTeachingTimes(getI18nTextMultiple(koulutus.getOpetusAikas()));
-        los.setTeachingPlaces(getI18nTextMultiple(koulutus.getOpetusPaikkas()));
+        try {
+            Provider organizer = providerService.getByOID(koulutus.getJarjestavaOrganisaatio().getOid());
+            los.setDegreeOrganizer(organizer.getName());
+        } catch (Exception ex) {
+            throw new KoodistoException("Problem reading jarjestava organisaatio: " + ex.getMessage());
+        }
+        
 
         boolean existsValidHakukohde = fetchHakukohdeData(los, checkStatus);
 

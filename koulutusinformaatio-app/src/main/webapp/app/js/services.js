@@ -1004,6 +1004,12 @@ service('AdultVocationalTransformer', ['KiSorter', '$rootScope', '$filter', 'Lan
 				});
 			}
 			
+			if (result.selectedChild && result.selectedChild.contactPersons != null) {
+				angular.forEach(result.selectedChild.contactPersons, function(person, key) {
+					person.isNayttotutkinto = true;
+				});
+			}
+			
 			result.parentId = result.id;
 			result.id = loId;
 		}

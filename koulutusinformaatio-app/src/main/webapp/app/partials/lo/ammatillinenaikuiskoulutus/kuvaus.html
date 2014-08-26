@@ -19,7 +19,7 @@
                 </li>
                 <li>
                 	<span data-ki-i18n="organizer" data-show-colon="true"></span>
-                    <strong>{{provider.name}}</strong>
+                    <strong>{{lo.selectedChild.degreeOrganizer}}</strong>
                 </li>
                 
             </ul>
@@ -28,12 +28,8 @@
     
     <div data-ki-language-ribbon data-languages="lo.selectedChild.availableTranslationLanguages" data-change-language="changeDescriptionLanguage" class="ribbon"></div>
 	
-	<div data-ki-collapse-text-block data-title="goals-of-education" data-content="lo.selectedChild.goals" data-closed="false"></div>
+	<div data-ki-collapse-text-block data-title="goals-of-degree" data-content="lo.selectedChild.goals" data-closed="false"></div>
 	<div data-ki-collapse-text-block data-title="structure-of-studies" data-content="lo.selectedChild.structure" data-closed="false"></div>
-	<!--<div data-ki-collapse-text-block data-title="selection-of-degree-program" data-content="selectedLOI.selectingDegreeProgram" data-closed="false"></div>-->
-	<!-- <div data-ki-collapse-block data-title="base-education-{{selectedLOI.prerequisite.value}}" data-content="selectedAs.children" data-closed="false">
-		<div data-ki-children></div>
-	</div>-->
 	<div data-ki-collapse-text-block data-title="info-about-charge" data-content="lo.selectedChild.infoAboutCharge" data-closed="false"></div>
 	<div data-ki-collapse-text-block data-title="career-opportunities" data-content="lo.selectedChild.careerOpportunities" data-closed="false"></div>
     <div data-ki-collapse-block data-title="profession-title" data-content="lo.selectedChild.professionalTitles" data-closed="false">
@@ -74,7 +70,7 @@
                 </li>
                 <li>
                 	<span data-ki-i18n="organizer" data-show-colon="true"></span>
-                    <strong>{{provider.name}}</strong>
+                    <strong>{{lo.selectedChild.degreeOrganizer}}</strong>
                 </li>
                 
             </ul>
@@ -83,7 +79,7 @@
     
     <div data-ki-language-ribbon data-languages="lo.selectedChild.availableTranslationLanguages" data-change-language="changeDescriptionLanguage" class="ribbon"></div>
 	
-	<div data-ki-collapse-text-block data-title="goals-of-education" data-content="lo.selectedChild.goals" data-closed="false"></div>
+	<div data-ki-collapse-text-block data-title="goals-of-degree" data-content="lo.selectedChild.goals" data-closed="false"></div>
 	
 	<div data-ki-collapse-text-block data-title="choosing-competence" data-content="lo.choosingCompetence" data-closed="false"></div>
 	
@@ -110,7 +106,9 @@
 
 <section data-ng-show="lo.hasSelectedChild && lo.selectedChild.valmistavaKoulutus" class="col-md-9">
 	
-	<h2><span data-ki-i18n="valmistava-koulutus"></span></h2>
+	<hr />
+	
+	<h1><span data-ki-i18n="valmistava-koulutus"></span></h1>
     <div class="panel panel-gray">
         <div class="panel-body">
             <ul class="list-unstyled">
@@ -166,12 +164,20 @@
 <section data-ng-show="!lo.hasSelectedChild" class="col-md-9">
     <!-- <div data-ki-prerequisite-selection-ribbon></div>-->
 
+	<div class="panel panel-gray">
+        <div class="panel-body">
+            <span data-ki-i18n="nayttotutkinto-infoteksti"></span>
+        </div>
+    </div>
     
     <div data-ki-language-ribbon data-languages="lo.availableTranslationLanguages" data-change-language="changeDescriptionLanguage" class="ribbon"></div>
-	<div data-ki-collapse-text-block data-title="goals-of-education" data-content="lo.goals" data-closed="false"></div>
+    
+    <h1><span data-ki-i18n="nayttotutkinnon-kuvaus"></span></h1>
+    
+	<div data-ki-collapse-text-block data-title="goals-of-degree" data-content="lo.goals" data-closed="false"></div>
 	<div data-ki-collapse-text-block data-title="degree-completion" data-content="lo.degreeCompletion" data-closed="false"></div>
 	<div data-ki-collapse-text-block data-title="choosing-competence" data-content="lo.choosingCompetence" data-closed="false"></div>
-	<div data-ki-collapse-block data-title="" data-content="lo.children" data-closed="false">
+	<div data-ki-collapse-block data-title="competences" data-content="lo.children" data-closed="false">
 		<div data-ki-children></div>
 	</div>
 	<div data-ki-collapse-text-block data-title="access-to-further-studies" data-content="lo.accessToFurtherStudies" data-closed="false"></div>

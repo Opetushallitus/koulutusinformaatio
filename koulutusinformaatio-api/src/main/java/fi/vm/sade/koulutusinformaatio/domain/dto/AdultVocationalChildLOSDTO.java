@@ -20,6 +20,7 @@ public class AdultVocationalChildLOSDTO extends HigherEducationLOSDTO {
     private String personalization;
     
     private List<ContactPersonDTO> preparatoryContactPersons = new ArrayList<ContactPersonDTO>();
+    private String degreeOrganizer;
     
 
     public boolean isValmistavaKoulutus() {
@@ -61,6 +62,14 @@ public class AdultVocationalChildLOSDTO extends HigherEducationLOSDTO {
     public void setPreparatoryContactPersons(
             List<ContactPersonDTO> preparatoryContactPersons) {
         this.preparatoryContactPersons = preparatoryContactPersons;
+    }
+
+    public void setDegreeOrganizer(String organizerName) {
+        this.degreeOrganizer = organizerName;    
+    }
+
+    public String getDegreeOrganizer() {
+        return degreeOrganizer;
     }
 
 }
