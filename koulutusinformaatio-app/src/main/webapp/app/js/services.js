@@ -1005,6 +1005,7 @@ service('AdultVocationalTransformer', ['KiSorter', '$rootScope', '$filter', 'Lan
 						child.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
 					}
 				});
+				
 			}
 			
 			if (result.selectedChild && result.selectedChild.contactPersons != null) {
@@ -1013,7 +1014,11 @@ service('AdultVocationalTransformer', ['KiSorter', '$rootScope', '$filter', 'Lan
 				});
 			}
 			
-			result.id = loId;
+			if (!result.hasSelectedChild && result.children != null && result.children.length > 1) {
+				result.id = result.children[0].id;
+			} else {
+				result.id = loId;
+			}
 		}
 	}
 }]).
