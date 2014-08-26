@@ -49,6 +49,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     private SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO;
     private HigherEducationLOSDAO higherEducationLOSDAO;
     private AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSDAO;
+    private AdultVocationalLOSDAO adultVocationalLOSDAO;
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
 
     @Autowired
@@ -60,6 +61,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
             SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO, 
             HigherEducationLOSDAO higherEducationLOSDAO, 
             AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSDAO,
+            AdultVocationalLOSDAO adultVocationalLOSDAO,
             LearningOpportunityProviderDAO learningOpportunityProviderDAO) {
         this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;
@@ -72,6 +74,7 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
         this.higherEducationLOSDAO = higherEducationLOSDAO;
         this.learningOpportunityProviderDAO = learningOpportunityProviderDAO;
         this.adultUpperSecondaryLOSDAO = adultUpperSecondaryLOSDAO;
+        this.adultVocationalLOSDAO = adultVocationalLOSDAO;
     }
 
     @Override
@@ -189,6 +192,16 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
         AdultUpperSecondaryLOSEntity entity = this.adultUpperSecondaryLOSDAO.get(oid);
         if (entity != null) {
             return modelMapper.map(entity, AdultUpperSecondaryLOS.class);
+        } else {
+            throw new ResourceNotFoundException(String.format("University of applied science learning opportunity specification not found: %s", oid));
+        }
+    }
+    
+    @Override
+    public AdultVocationalLOS getAdultVocationalLearningOpportunity(String oid) throws ResourceNotFoundException {
+        AdultVocationalLOSEntity entity = this.adultVocationalLOSDAO.get(oid);
+        if (entity != null) {
+            return modelMapper.map(entity, AdultVocationalLOS.class);
         } else {
             throw new ResourceNotFoundException(String.format("University of applied science learning opportunity specification not found: %s", oid));
         }

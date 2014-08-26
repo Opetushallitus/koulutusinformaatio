@@ -148,7 +148,7 @@ directive('kiAbsoluteLink', function() {
         },
         controller: function($scope) {
             $scope.siblingClass = function(sibling) {
-                if (sibling.losId === $routeParams.id) {
+                if (sibling.losId == $routeParams.id || sibling.id == $routeParams.id) {
                     return 'disabled';
                 }
                 
@@ -173,9 +173,16 @@ directive('kiAbsoluteLink', function() {
         link: function(scope, element, attrs) {
             scope.$watch('children', function() {
                 if (scope.type) {
+<<<<<<< HEAD
                     angular.forEach(scope.children, function(child) {
                         child.url = scope.type === 'korkeakoulu' ? '#!/' + scope.type + '/' : '#!/koulutusohjelma/';
                         child.url += scope.type === 'korkeakoulu' ? child.id : child.losId;
+=======
+                	console.log('scope.type: ' + scope.type);
+                    angular.forEach(scope.children, function(child, key) {
+                        child.url = (scope.type == 'korkeakoulu' || scope.type == 'ammatillinenaikuiskoulutus') ? '#!/' + scope.type + '/' : '#!/koulutusohjelma/';
+                        child.url += (scope.type == 'korkeakoulu' || scope.type == 'ammatillinenaikuiskoulutus') ? child.id : child.losId;
+>>>>>>> KSH-508
                         child.url += (child.prerequisite && child.prerequisite.value) ? '?prerequisite=' + child.prerequisite.value : '';
                     });
                 }

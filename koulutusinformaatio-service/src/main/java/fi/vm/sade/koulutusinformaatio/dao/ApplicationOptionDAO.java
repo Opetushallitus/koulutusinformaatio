@@ -100,6 +100,7 @@ public class ApplicationOptionDAO extends SecondaryAwareDAO<ApplicationOptionEnt
     public List<Key<ApplicationOptionEntity>> findByAS(final String asId) {
         Query<ApplicationOptionEntity> query= createQuery();
         query.field("applicationSystem.id").equal(asId);
+        //query.
         return find(query).asKeyList();
     }
 

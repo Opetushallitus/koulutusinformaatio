@@ -16,6 +16,7 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
+import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
@@ -75,6 +76,27 @@ public class PreviewServiceImpl implements PreviewService {
             e.printStackTrace();
             throw new ResourceNotFoundException("Resource: " + oid + " not found");
         }
+    }
+
+    @Override
+    public CompetenceBasedQualificationParentLOS previewAdultVocationaParentLearningOpportunity(String oid)
+            throws ResourceNotFoundException {
+        
+        try {
+            
+            CompetenceBasedQualificationParentLOS los = this.tarjontaService.createCBQPLOS(oid);
+            return los;
+            
+        } catch (TarjontaParseException e) {
+            e.printStackTrace();
+            throw new ResourceNotFoundException("Resource: " + oid + " not found");
+        } catch (KoodistoException e) {
+            e.printStackTrace();
+            throw new ResourceNotFoundException("Resource: " + oid + " not found");
+        }
+        
+        
+        
     }
 
 }

@@ -30,10 +30,13 @@ import fi.vm.sade.koulutusinformaatio.service.builder.impl.*;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.*;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.AmmattitutkintoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusLukioV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KuvaV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.NayttotutkintoV1RDTO;
 import fi.vm.sade.tarjonta.service.types.TarjontaTila;
+import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -404,11 +407,11 @@ public class TarjontaServiceImpl implements TarjontaService {
             if (koulutusDTO == null) {
                 continue;
             }
-            
+
             LOG.debug("KOULUTUS TILA: " + koulutusDTO.getTila().name());
 
             if ((validating && koulutusDTO.getTila().name().equals(TarjontaTila.JULKAISTU.name())) || !validating) {
-                
+
                 LOG.debug("Creating higher education los ref for higher education!!!");
 
                 HigherEducationLOSRef losRef = creator.createHigherEducationLOSRef(koulutusDTO, validating, curAo);
@@ -474,33 +477,31 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     @Override
     public List<AdultUpperSecondaryLOS> findAdultUpperSecondaries() throws KoodistoException {
-        
+
         if (creator == null) {
             creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService);
         }
-        
+
         List<AdultUpperSecondaryLOS> koulutukset = new ArrayList<AdultUpperSecondaryLOS>();
-        
-        ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes =  this.tarjontaRawService.listEducations(TarjontaConstants.UPPER_SECONDARY_EDUCATION_TYPE);
+
+        ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes =  this.tarjontaRawService.listEducationsByToteutustyyppi(ToteutustyyppiEnum.LUKIOKOULUTUS_AIKUISTEN_OPPIMAARA.name());//listEducations(TarjontaConstants.UPPER_SECONDARY_EDUCATION_TYPE);
         HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
         Map<String,List<HigherEducationLOSRef>> aoToEducationsMap = new HashMap<String,List<HigherEducationLOSRef>>();
         for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
-            LOG.debug("Cur tarjoaja result: " + curRes.getOid());
             for (KoulutusHakutulosV1RDTO curKoulutus : curRes.getTulokset()) {
-                
-                LOG.debug("cur koulutus result: " + curKoulutus.getOid());
+
                 if (!curKoulutus.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
                     continue;
                 }
-                
+
                 ResultV1RDTO<KoulutusLukioV1RDTO> koulutusRes = this.tarjontaRawService.getUpperSecondaryLearningOpportunity(curKoulutus.getOid());
                 KoulutusLukioV1RDTO koulutusDTO = koulutusRes.getResult();
-                
+
                 LOG.debug("cur upsec adult education dto: " + koulutusDTO.getOid());
                 if (koulutusDTO == null || koulutusDTO.getKoulutuslaji() == null || koulutusDTO.getKoulutuslaji().getUri().contains(TarjontaConstants.NUORTEN_KOULUTUS)) {
                     continue;
                 }
-                
+
                 try {
                     AdultUpperSecondaryLOS los = creator.createAdultUpperSeconcaryLOS(koulutusDTO, true);//createHigherEducationLOS(koulutusDTO, true);
                     LOG.debug("Created los: " + los.getId());
@@ -511,25 +512,186 @@ public class TarjontaServiceImpl implements TarjontaService {
                 } catch (TarjontaParseException ex) {
                     continue;
                 }
-                
+
             }
         }
-        
+
         return koulutukset;
+    }
+
+
+    @Override
+    public List<CompetenceBasedQualificationParentLOS> findAdultVocationals()
+            throws KoodistoException {
+
+        if (creator == null) {
+            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService);
+        }
+
+        List<CompetenceBasedQualificationParentLOS> koulutukset = new ArrayList<CompetenceBasedQualificationParentLOS>();
+
+        ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes =  this.tarjontaRawService.listEducationsByToteutustyyppi(ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO_NAYTTOTUTKINTONA.name());// //AMMATTITUTKINTO.name());//listEducations(TarjontaConstants.UPPER_SECONDARY_EDUCATION_TYPE);
+        HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
+        Map<String,List<HigherEducationLOSRef>> aoToEducationsMap = new HashMap<String,List<HigherEducationLOSRef>>();
+
+        Map<String,List<String>> parentChildKomos = new HashMap<String,List<String>>();
+        Map<String,List<String>> komoToKomotoMap = new HashMap<String,List<String>>(); 
+
+        for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
+            LOG.debug("Cur Adult Vocationals tarjoaja result: " + curRes.getOid());
+            for (KoulutusHakutulosV1RDTO curKoulutus : curRes.getTulokset()) {
+
+                LOG.debug("cur Adult Vocationals koulutus result: " + curKoulutus.getOid());
+                if (!curKoulutus.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
+                    LOG.debug("koulutus not published, discarding");
+                    continue;
+                }
+
+                ResultV1RDTO<Set<String>> parentsRes = this.tarjontaRawService.getParentsOfHigherEducationLOS(curKoulutus.getKomoOid());
+
+                if (parentsRes != null && parentsRes.getResult() != null && !parentsRes.getResult().isEmpty()) {
+                    for (String curKomoOid : parentsRes.getResult()) {
+                        if (!parentChildKomos.containsKey(curKomoOid)) {
+                            parentChildKomos.put(curKomoOid, Arrays.asList(curKoulutus.getKomoOid()));
+                        } else {
+                            List<String> curChildren = parentChildKomos.get(curKomoOid);
+                            if (!curChildren.contains(curKoulutus.getKomoOid())) {
+                                curChildren.add(curKoulutus.getKomoOid());
+                                parentChildKomos.put(curKomoOid, curChildren);
+                            }
+                        }
+                    }
+                } else if (!parentChildKomos.containsKey(curKoulutus.getKomoOid())) {
+
+                    parentChildKomos.put(curKoulutus.getKomoOid(), new ArrayList<String>());
+
+                }
+
+
+
+                if (komoToKomotoMap.containsKey(curKoulutus.getKomoOid())) {
+                    List<String> komotos = komoToKomotoMap.get(curKoulutus.getKomoOid());
+                    komotos.add(curKoulutus.getOid());
+                    komoToKomotoMap.put(curKoulutus.getKomoOid(), komotos);
+                } else {
+                    komoToKomotoMap.put(curKoulutus.getKomoOid(), Arrays.asList(curKoulutus.getOid()));
+                }
+            }
+        }
+
+        for (Map.Entry<String,List<String>> curParentChild : parentChildKomos.entrySet()) {
+
+
+            String parentKomoOid = curParentChild.getKey();
+            LOG.debug("Cur parent komo oid: " + parentKomoOid);
+
+            List<String> curChildren = curParentChild.getValue();
+
+            //List<String> komotoOids = new ArrayList<String>();
+            CompetenceBasedQualificationParentLOS los = null;
+            if (curChildren.isEmpty() || curChildren.size() == 1) {
+
+                los =  createStandaloneCompetenceLOS(parentKomoOid, curChildren, komoToKomotoMap);
+                //komotoOids.addAll(komoToKomotoMap.get(parentKomoOid));
+
+            } else {
+
+                List<String> komotoOids = new ArrayList<String>();
+                for(String curChild : curChildren) {
+                    komotoOids.add(komoToKomotoMap.get(curChild).get(0));
+                }
+
+                try {
+                    los = creator.createCBQPLOS(parentKomoOid, komotoOids, true);
+                } catch (TarjontaParseException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                    los = null;
+                }
+            }
+            if (los != null) {
+
+                koulutukset.add(los);
+            }
+            //updateAOLosReferences(los, aoToEducationsMap);
+        }
+
+
+
+
+        /*
+
+
+
+
+
+                ResultV1RDTO<NayttotutkintoV1RDTO> koulutusRes = this.tarjontaRawService.getAdultVocationalLearningOpportunity(curKoulutus.getOid());
+                NayttotutkintoV1RDTO koulutusDTO = koulutusRes.getResult();
+
+                try {
+                    AdultVocationalLOS los = creator.createAdultVocationalLOS(koulutusDTO, true);//createHigherEducationLOS(koulutusDTO, true);
+                    LOG.debug("Created los: " + los.getId());
+                    koulutukset.add(los);
+                    updateAOLosReferences(los, aoToEducationsMap);
+                    LOG.debug("Updated aolos references for: " + los.getId());
+
+                } catch (TarjontaParseException ex) {
+                    continue;
+                }
+
+
+            }         
+
+
+        }*/
+
+
+        return koulutukset;
+    }
+
+    private CompetenceBasedQualificationParentLOS createStandaloneCompetenceLOS(String parentKomoOid,
+            List<String> curChildren,  Map<String,List<String>> komoToKomotoMap) throws KoodistoException {
+
+        CompetenceBasedQualificationParentLOS los = new CompetenceBasedQualificationParentLOS();
+
+        List<String> komotoOids = new ArrayList<String>();
+
+        if (curChildren.isEmpty()) {
+
+            komotoOids.addAll(komoToKomotoMap.get(parentKomoOid));
+
+        } else {
+
+            komotoOids.addAll(komoToKomotoMap.get(curChildren.get(0)));
+        }
+
+        try {
+            los = this.creator.createCBQPLOS(parentKomoOid, komotoOids, true);
+        } catch (TarjontaParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            los = null;
+        }
+
+
+
+        return los;
+
+
     }
 
     @Override
     public AdultUpperSecondaryLOS createAdultUpperSecondaryLOS(String oid, boolean checkStatus)
             throws TarjontaParseException, KoodistoException,
             ResourceNotFoundException {
-        
+
         if (creator == null) {
             creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService);
         }
-        
+
         ResultV1RDTO<KoulutusLukioV1RDTO> koulutusRes = this.tarjontaRawService.getUpperSecondaryLearningOpportunity(oid);
         KoulutusLukioV1RDTO koulutusDTO = koulutusRes.getResult();
-        
+
         LOG.debug("cur upsec adult education dto: " + koulutusDTO.getOid());
         if (koulutusDTO == null || koulutusDTO.getKoulutuslaji() == null || koulutusDTO.getKoulutuslaji().getUri().contains(TarjontaConstants.NUORTEN_KOULUTUS)) {
             LOG.debug("Koulutus is not adult upper secondary");
@@ -538,7 +700,7 @@ public class TarjontaServiceImpl implements TarjontaService {
         if (checkStatus && !(TarjontaTila.JULKAISTU.toString().equals(koulutusDTO.getTila().toString()))) {
             throw new TarjontaParseException("Koulutus: "  +  oid + " is not published");
         }
-        
+
         try {
             AdultUpperSecondaryLOS los = creator.createAdultUpperSeconcaryLOS(koulutusDTO, checkStatus);
             los.setStatus(koulutusDTO.getTila().toString());
@@ -550,11 +712,90 @@ public class TarjontaServiceImpl implements TarjontaService {
             LOG.debug(ex.getMessage());
             throw ex;
         }
-        
+
     }
 
+    @Override
+    public CompetenceBasedQualificationParentLOS createCBQPLOS(String oid)
+            throws TarjontaParseException, KoodistoException,
+            ResourceNotFoundException {
+        
+        if (creator == null) {
+            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService);
+        }
+        String providerOid = null;
+        String parentKomoOid = null;
+        List<String> komoOids = new ArrayList<String>();
+        int splitIndex = oid.indexOf('_');
+        if (splitIndex > -1) {
+            parentKomoOid = oid.substring(0, splitIndex);
+            providerOid = oid.substring(splitIndex + 1);
+            
+            ResultV1RDTO<Set<String>> childRes = this.tarjontaRawService.getChildrenOfParentHigherEducationLOS(parentKomoOid);
+            if (childRes != null && childRes.getResult() != null) {
+                komoOids.addAll(new ArrayList<String>(childRes.getResult()));
+            }
+            komoOids.add(parentKomoOid);
+            
+        } else {
+
+            ResultV1RDTO<AmmattitutkintoV1RDTO> res = this.tarjontaRawService.getAdultVocationalLearningOpportunity(oid);
+            NayttotutkintoV1RDTO dto = res.getResult();
+
+            
+            parentKomoOid = dto.getKomoOid();
+            providerOid = dto.getOrganisaatio().getOid();
+            komoOids.add(parentKomoOid);
+
+            ResultV1RDTO<Set<String>> parentsRes = this.tarjontaRawService.getParentsOfHigherEducationLOS(dto.getKomoOid());
+
+            if (parentsRes != null && parentsRes.getResult() != null && !parentsRes.getResult().isEmpty()) {
 
 
+                for (String curKomoOid : parentsRes.getResult()) {
 
 
+                    parentKomoOid = curKomoOid;
+                    ResultV1RDTO<Set<String>> childRes = this.tarjontaRawService.getChildrenOfParentHigherEducationLOS(curKomoOid);
+                    if (childRes != null && childRes.getResult() != null) {
+                        komoOids.addAll(new ArrayList<String>(childRes.getResult()));
+                    }
+                }
+            }
+        }
+
+        Map<String,String> komotoOids  = new HashMap<String,String>();
+
+        for (String curKomoOid : komoOids) {
+            LOG.debug("CurKomoOid: " + curKomoOid + "\n");
+            ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> curRes = this.tarjontaRawService.getAdultEducationByKomo(curKomoOid);
+            if (curRes != null 
+                    && curRes.getResult() != null 
+                    && curRes.getResult().getTulokset() != null 
+                    && !curRes.getResult().getTulokset().isEmpty()) {
+                LOG.debug("There is some komotoresult");
+                
+                for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curTarjRes : curRes.getResult().getTulokset()) {
+                    //TarjoajaHakutulosV1RDTO<KoulutusHautulosV1RDTO> tarjRes = curRes.getResult().getTulokset().get(0);
+                    if (curTarjRes.getOid().equals(providerOid)
+                            && curTarjRes.getTulokset() != null
+                            && !curTarjRes.getTulokset().isEmpty()) {
+                        
+                        for ( KoulutusHakutulosV1RDTO curKoul : curTarjRes.getTulokset()) {
+                        
+                            LOG.debug("There is a koulutus result");
+                            //KoulutusHakutulosV1RDTO koul = tarjRes.getTulokset().get(0);
+                            komotoOids.put(curKoul.getOid(), curKoul.getOid());
+                            LOG.debug(curKoul.getOid());
+                        }
+                    }
+                }
+            }
+        }
+        LOG.debug("data gathewred, now creating Adult vocational stuff");
+        
+        LOG.debug("komotoOids: " + komotoOids.values());
+
+        return this.creator.createCBQPLOS(parentKomoOid, new ArrayList<String>(komotoOids.values()), false);
+    }
 }

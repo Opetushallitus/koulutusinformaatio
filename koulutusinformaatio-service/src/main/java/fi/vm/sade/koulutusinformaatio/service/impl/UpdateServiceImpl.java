@@ -13,9 +13,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * European Union Public Licence for more details.
  */
-
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -27,9 +28,11 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
+import fi.vm.sade.koulutusinformaatio.domain.AdultVocationalLOS;
 import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Article;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
+import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
@@ -97,12 +100,23 @@ public class UpdateServiceImpl implements UpdateService {
 
             
             
-            while (count >= MAX_RESULTS) {
+            /*while (count >= MAX_RESULTS) {
             LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
             List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
             count = loOids.size();
-            index += count;
+            index += count;*/
             
+            List<String> loOids = Arrays.asList(
+                                
+                                        "1.2.246.562.5.2013061010191484576250", //lukio luonnontieteet
+                                        "1.2.246.562.5.2013061010184443434255", //amm
+                                        "1.2.246.562.5.2013061010191530269331", //lukio
+                                        "1.2.246.562.5.2013112814572429147350", //valmistava
+                                        "1.2.246.562.5.2013061010184317101998", //amm kuvataide
+                                        "1.2.246.562.5.2013112814572435006223", //kymppikluokka
+                                        "1.2.246.562.5.2013112814572438173505"//ammattistartti
+                                        );
+
                 for (String loOid : loOids) {
                     List<LOS> specifications = null;
                     try {
@@ -117,7 +131,7 @@ public class UpdateServiceImpl implements UpdateService {
                         this.educationDataUpdateService.save(spec);
                     }
                 }
-            }
+            //}
 
             List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
             LOG.debug("Found higher educations: " + higherEducations.size());
@@ -138,6 +152,14 @@ public class UpdateServiceImpl implements UpdateService {
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 this.educationDataUpdateService.save(curLOS);
             }
+            
+            List<CompetenceBasedQualificationParentLOS> adultVocationals = this.tarjontaService.findAdultVocationals();
+            for (CompetenceBasedQualificationParentLOS curLOS : adultVocationals) {
+                LOG.debug("Saving adult vocational los: " + curLOS.getId() + " with name: " + curLOS.getName().get("fi"));
+                indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+                this.educationDataUpdateService.save(curLOS);
+            }
+            
             
             List<Code> edTypeCodes = this.tarjontaService.getEdTypeCodes();
             indexerService.addEdTypeCodes(edTypeCodes, loUpdateSolr);
@@ -178,6 +200,13 @@ public class UpdateServiceImpl implements UpdateService {
                 indexToSolr(curChild, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
             }
         }
+    }
+    
+    private void indexToSolr(CompetenceBasedQualificationParentLOS curLOS,
+            HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws Exception {
+        this.indexerService.addLearningOpportunitySpecification(curLOS, loUpdateSolr, lopUpdateSolr);
+        this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
+        
     }
 
     @Override

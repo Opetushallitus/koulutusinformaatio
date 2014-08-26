@@ -88,6 +88,7 @@
     "competence": "Qualification",
     "research-focus": "Research focus",
     "target-group": "Kohderyhma (en)",
+    "subjects-and-courses": "Lukiokohtaiset oppiaineet ja kurssit (en)",
 
     "exam-header-time": "Time",
     "exam-header-place": "Place",
@@ -147,6 +148,18 @@
     "study-plan": "Curriculum",
     "contact-person-title": "Contact persons",
     "ects-coordinator": "ECTS coordinator",
+    
+    "nayttotutkinto-infoteksti": "Hakijan lähtötilanne määrittää tutkinnon suorittamisen aikataulut ja valmistavan koulutuksen tarpeen. Näyttötutkinnon voi suorittaa myös ilman valmistavaa koulutusta. (en)",
+    "nayttotutkinnon-kuvaus": "Tutkinnon kuvaus (en)",
+    "organizer": "Tutkinnon järjestäjä (en)",
+    "choosing-competence": "Osaamisalan valinta (en)",
+    "degree-completion": "Tutkinnon suorittaminen (en)",
+    "valmistava-koulutus": "Valmistava koulutus (en)",
+    "personalization": "Henkilökohtaistaminen (en)",
+    "goals-of-degree": "Tutkinnon tavoite (en)",
+    "competence-contact-person-title": "Näyttötutkinnon yhteyshenkilö (en)",
+    "competences": "Osaamisalat (en)",
+    
 
     "provider-web-page": "The institution's own web pages",
 
@@ -313,5 +326,7 @@
     "preview-help": "Esikatselu näyttää koulutuksen ja hakukohteen näkymät sellaisina kuin oppija näkee ne Opintopolku.fi -palvelussa. Pääset muokkaamaan koulutuksen tietoja Muokkaa koulutusta-painikkeesta ja toiselta välilehdeltä hakukohteen tietoja. Organisaation tietoja ei pääse suoraan muokkaamaan, vaan muokkaus tulee tehdä Organisaatiotiedot-palvelun kautta. (na.)",
 
     "show-intro": "Näytä ohjeet (en)",
-    "intro-next": "Next"
+    "intro-next": "Next",
+    
+    
 }

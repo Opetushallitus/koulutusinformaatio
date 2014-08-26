@@ -34,6 +34,7 @@ import fi.vm.sade.koulutusinformaatio.domain.SuggestedTermsResult;
 import fi.vm.sade.koulutusinformaatio.domain.dto.AdultUpperSecondaryLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationLOSDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.LOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LOSearchResultListDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
@@ -217,7 +218,7 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
     }
 
     @Override
-    public StandaloneLOSDTO previewLearningOpportunity(String oid,
+    public LOSDTO previewLearningOpportunity(String oid,
             String lang, String uiLang, String loType) {
         try {
             if ("korkeakoulu".equals(loType)) {
@@ -237,6 +238,8 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
                 return dto; 
             } else if ("aikuislukio".equals(loType)) {
                 return learningOpportunityService.previewAdultUpperSecondaryLearningOpportunity(oid, lang, uiLang);
+            } else if ("ammatillinenaikuiskoulutus".equals(loType)) {
+                return learningOpportunityService.previewAdultVocationalLearningOpportunity(oid, lang, uiLang);
             }
             throw new ResourceNotFoundException("No preview implemented for loType: " + loType);
         } catch (ResourceNotFoundException e) {
