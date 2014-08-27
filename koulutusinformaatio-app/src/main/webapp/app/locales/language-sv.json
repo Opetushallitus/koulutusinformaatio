@@ -87,8 +87,8 @@
     "job-title": "Uppgiftsbenämningar",
     "competence": "Kompetens",
     "research-focus": "Tyngdpunkter i forskning",
-    "target-group": "Kohderyhmä (sv)",
-    "subjects-and-courses": "Lukiokohtaiset oppiaineet ja kurssit (sv)",
+    "target-group": "Målgrupp",
+    "subjects-and-courses": "Gymnasiespecifika läroämnen och kurser",
 
     "exam-header-time": "Tid",
     "exam-header-place": "Plats",
@@ -326,6 +326,6 @@
 
     "preview-help": "Förhandsgranskningen visar utbildningen och ansökningsmålet såsom en användare ser dem i Studieinfo.fi-tjänsten. Du kan behandla uppgifterna om utbildningen genom att klicka på knappen Behandla utbildningen. Via den andra fliken kan du behandla ansökningsmålets uppgifter. Du kan inte behandla organisationsuppgifter här, utan via tjänsten Organisationstjänster.",
 
-    "show-intro": "Näytä ohjeet (sv)",
+    "show-intro": "Visa anvisningar",
     "intro-next": "Följande"
 }
