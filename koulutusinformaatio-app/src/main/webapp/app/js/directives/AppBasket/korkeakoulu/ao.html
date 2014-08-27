@@ -2,10 +2,10 @@
     <h4>{{item.name}}</h4>
     <div data-ng-if="isErikseenHaettava(as)" data-ki-application-time data-dates="item.applicationDates" data-hakutapa="item.hakutapaUri" data-label="item.asName"></div>
     <ul class="inside">
-        <li data-ng-repeat="highLo in item.higherEducations">
-            <a href="#!/korkeakoulu/{{highLo.id}}">{{highLo.name}}</a>, 
-            <span data-ng-repeat="qualification in highLo.qualifications">{{qualification}}, </span>
-            <span>{{highLo.provider}}</span>
+        <li data-ng-repeat="losref in item.losRefs">
+            <a href="#!/korkeakoulu/{{losref.id}}">{{losref.name}}</a>, 
+            <span data-ng-repeat="qualification in losref.qualifications">{{qualification}}, </span>
+            <span>{{losref.provider}}</span>
         </li>
     </ul>
 </td>
