@@ -179,6 +179,13 @@
 
     // fetch data for LO
     var loadLo = function(languageCode) {
+        
+        // force to load content with queried language (used for SEO snapshots)
+        var queryLang = $location.search().uilang;
+        if (queryLang) {
+            languageCode = queryLang;
+        }
+
         loResource.query({
             id: $routeParams.id,
             lang: languageCode,

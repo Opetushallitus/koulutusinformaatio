@@ -1,14 +1,11 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
-import org.mongodb.morphia.Datastore;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -16,10 +13,18 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.ByteArrayOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Map;
+
+import org.mongodb.morphia.Datastore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 
 /*
  * Copyright (c) 2012 The Finnish Board of Education - Opetushallitus
@@ -74,6 +79,7 @@ public class SitemapBuilder {
         String idPrefix = null;
         DBObject fields = new BasicDBObject();
         fields.put(FIELD_ID, 1);
+        fields.put(TEACHING_LANGUAGES, 2);
         Document dom = builder.newDocument();
         Element root  = createNode(dom, ELEMENT_URLSET, null);
         root.setAttribute(ATTRIBUTE_XMLNS, NAMESPACE);
@@ -108,7 +114,16 @@ public class SitemapBuilder {
                     counterByCollection++;
                     DBObject dbo = cursor.next();
                     lastModifiedDate = this.getDate(dbo);
-                    root.appendChild(this.createUrlElement(dom, (String)dbo.get(FIELD_ID), lastModifiedDate, idPrefix, properties.get(PROPERTY_BASE_URL)));
+                    List<String> teachingLanguages = getTeachingLanguageCodes( (BasicDBList)dbo.get(TEACHING_LANGUAGES) );
+                    
+                    // separate node for each higher education teaching language
+                    if (idPrefix.equals(ID_PREFIX_HIGHERED) && !teachingLanguages.isEmpty()) {
+                        for(String lang: teachingLanguages) {
+                            root.appendChild(this.createUrlElement(dom, (String)dbo.get(FIELD_ID), lastModifiedDate, idPrefix, lang, properties.get(PROPERTY_BASE_URL)));
+                        }
+                    } else {
+                        root.appendChild(this.createUrlElement(dom, (String)dbo.get(FIELD_ID), lastModifiedDate, idPrefix, null, properties.get(PROPERTY_BASE_URL)));
+                    }
                 }
                 LOG.debug("Processed " + counterByCollection + " entities for "+idPrefix);
                 counterByCollection = 0;
@@ -129,13 +144,33 @@ public class SitemapBuilder {
         return out.toByteArray();
 
     }
+    
+    private List<String> getTeachingLanguageCodes(BasicDBList languages) {
+        List<String> result = new ArrayList<String>();
+        if (languages != null) {
+            for (Object language: languages) {
+               String lang = (String)((DBObject)language).get("value");
+               result.add(lang.toLowerCase());
+            }
+        }
+        
+        return result;
+    }
+    
     private Date getDate(DBObject dbo){
         //using System.currentTimeMillist until proper date can be found from DBOjbect
         return new Date();
     }
-    private Element createUrlElement(Document dom, String id, Date lastModified, String idPrefix, String baseUrl){
+    
+    private Element createUrlElement(Document dom, String id, Date lastModified, String idPrefix, String lang, String baseUrl){
         Element url = this.createNode(dom, ELEMENT_URL, null);
-        url.appendChild(this.createNode(dom, ELEMENT_LOC, baseUrl.concat(idPrefix).concat(CHAR_SLASH).concat(id)));
+        
+        String locationUrl = baseUrl.concat(idPrefix).concat(CHAR_SLASH).concat(id);
+        if (lang != null) {
+            locationUrl = locationUrl.concat("?").concat(QUERY_PARAM_LANG).concat("=").concat(lang);
+        }
+        
+        url.appendChild(this.createNode(dom, ELEMENT_LOC, locationUrl));
         if (lastModified != null){
             url.appendChild(this.createNode(dom,ELEMENT_LASTMOD,SDF.format(lastModified)));
         }
@@ -143,6 +178,7 @@ public class SitemapBuilder {
         url.appendChild(this.createNode(dom,ELEMENT_PRIORITY,PRIORITY_VALUE));
         return url;
     }
+    
     private Element createNode(Document dom, String name, String value) {
         Element e = dom.createElement(name);
         if (value != null) {
@@ -150,6 +186,7 @@ public class SitemapBuilder {
         }
         return e;
     }
+    
     public static final String ELEMENT_URLSET = "urlset";
     public static final String ELEMENT_URL = "url";
     public static final String ELEMENT_LASTMOD = "lastmod";
@@ -160,13 +197,13 @@ public class SitemapBuilder {
     public static final String PRIORITY_VALUE = "0.5";
     public static final String CHAR_SLASH = "/";
     public static final String FIELD_ID = "_id";
+    public static final String TEACHING_LANGUAGES = "teachingLanguages";
     public static final String ATTRIBUTE_XMLNS = "xmlns";
     public static final String NAMESPACE = "http://www.sitemaps.org/schemas/sitemap/0.9";
     public static final String COLLECTION_SEPARATOR = ",";
     public static final String PREFIX_COLLECTION_SEPARATOR = ":";
     public static final String RESTICTION_CONTAINS = "+";
     public static final String QUERY_EXISTS = "$exists";
-
-
-
+    public static final String QUERY_PARAM_LANG = "uilang";
+    public static final String ID_PREFIX_HIGHERED = "korkeakoulu";
 }

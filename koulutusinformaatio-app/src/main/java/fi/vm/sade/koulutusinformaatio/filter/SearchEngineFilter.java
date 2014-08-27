@@ -16,8 +16,11 @@
 
 package fi.vm.sade.koulutusinformaatio.filter;
 
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -27,7 +30,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.io.IOUtils;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 
 /**
  * @author Hannu Lyytikainen
@@ -35,6 +39,7 @@ import org.apache.commons.io.IOUtils;
 public class SearchEngineFilter implements Filter {
 
     private final String escapedFragment = "_escaped_fragment_";
+    private final String language = "uilang";
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -42,13 +47,37 @@ public class SearchEngineFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-
+        
+        String lang = request.getParameter(language);
+        
         if (request.getParameterMap().containsKey(escapedFragment)) {
             HttpServletRequest httpRequest = (HttpServletRequest) request;
             String loId = httpRequest.getParameter(escapedFragment).split("/")[2];
-            loId = stripParams(loId, "#");
-            loId = stripParams(loId, "\\?");
-            String newUri = String.format("snapshot/%s.html", loId);
+            
+            String path = null;
+            String query = null;
+            URI uri = null;
+            String newUri;
+            
+            try {
+                uri = new URI(loId);
+                path = uri.getPath();
+                query = uri.getQuery();
+            } catch (URISyntaxException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            
+            if (lang == null) {
+                List<NameValuePair> params = parseQueryParams(query);
+                lang = getLangParam(params);
+            }
+            
+            if (lang != null) {
+                newUri = String.format("snapshot/%s_%s.html", path, lang);
+            } else {
+                newUri = String.format("snapshot/%s.html", path);
+            }
             //String newUri = String.format("/snapshots/%s.html", httpRequest.getParameter(escapedFragment).split("/")[2]);
             httpRequest.getRequestDispatcher(newUri).forward(request, response);
             //FileInputStream snapshot = new FileInputStream(String.format("/Users/klu/cases/snapshots/%s.html", httpRequest.getParameter(escapedFragment).split("/")[2]));
@@ -64,12 +93,29 @@ public class SearchEngineFilter implements Filter {
 
     }
     
-    private String stripParams(String value, String delimiter) {
-        String[] parts = value.split(delimiter);
-        if (parts.length > 0) {
-            return parts[0];
-        } else {
-            return value;
+    private String getLangParam(List<NameValuePair> params) {
+        for (NameValuePair pair : params) {
+            if (pair.getName().equals(language)) {
+                return pair.getValue();
+            }
         }
+        
+        return null;
+    }
+    
+    private List<NameValuePair> parseQueryParams(String query) {
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        
+        if (query != null) {
+            String[] queryParams = query.split("&");
+            for (String param: queryParams) {
+                String[] pair = param.split("=");
+                if (pair.length >= 2) {
+                    params.add( new BasicNameValuePair(pair[0], pair[1]) );
+                }
+            }
+        }
+        
+        return params;
     }
 }
