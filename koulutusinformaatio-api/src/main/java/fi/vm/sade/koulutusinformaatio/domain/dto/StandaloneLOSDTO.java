@@ -9,6 +9,6 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
  *
  */
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
-public class StandaloneLOSDTO {
+public class StandaloneLOSDTO extends LOSDTO {
 
 }

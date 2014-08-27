@@ -23,7 +23,7 @@
         <tbody>
             <tr data-ng-repeat="event in exam.examEvents" data-ng-class="{first: $first, last: $last}">
                 <td>
-                    <span data-ki-timestamp="{{event.start}}" data-precise="true"></span> &ndash; <span data-ki-timestamp="{{event.end}}" data-precise="true"></span>
+                    <span data-ki-timestamp="{{event.start}}"></span> &ndash; <span data-ki-timestamp="{{event.end}}"></span>
                 </td>
                 <td>
                     <span data-ng-show="event.address.streetAddress">{{event.address.streetAddress}}<br /></span>

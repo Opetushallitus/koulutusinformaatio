@@ -1,4 +1,4 @@
-angular.module('kiApp.FacetTitle', []).
+angular.module('kiApp.directives.FacetTitle', []).
 
 /**
  *  Sets tooltips for faceted search

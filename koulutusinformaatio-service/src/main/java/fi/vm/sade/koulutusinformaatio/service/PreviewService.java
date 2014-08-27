@@ -16,6 +16,7 @@
 package fi.vm.sade.koulutusinformaatio.service;
 
 import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
+import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 
@@ -38,5 +39,7 @@ public interface PreviewService {
      * @return
      */
     AdultUpperSecondaryLOS previewAdultUpperSecondaryLearningOpportunity(final String oid) throws ResourceNotFoundException;
+
+    CompetenceBasedQualificationParentLOS previewAdultVocationaParentLearningOpportunity(final String oid) throws ResourceNotFoundException;
 
 }

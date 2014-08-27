@@ -28,6 +28,9 @@ public class StandaloneLOS extends LOS {
     private String creditValue;
     private I18nText creditUnit;
     private I18nText degree;
+    private I18nText infoAboutCharge;
+    private I18nText careerOpportunities;
+    private I18nText targetGroup;
     
     
     private Code educationCode;
@@ -61,6 +64,7 @@ public class StandaloneLOS extends LOS {
     private List<Code> formOfStudyFacet = new ArrayList<Code>();
 
     private Code koulutuslaji;
+
 
     public String getId() {
         return id;
@@ -385,6 +389,31 @@ public class StandaloneLOS extends LOS {
 
     public void setQualifications(List<I18nText> qualifications) {
         this.qualifications = qualifications;
+    }
+    
+    public void setInfoAboutCharge(I18nText i18nTextEnriched) {
+        this.infoAboutCharge = i18nTextEnriched;
+
+    }
+    
+    public I18nText getInfoAboutCharge() {
+        return infoAboutCharge;
+    }
+
+    public void setCareerOpportunities(I18nText i18nTextEnriched) {
+        this.careerOpportunities = i18nTextEnriched;    
+    }
+
+    public I18nText getCareerOpportunities() {
+        return careerOpportunities;
+    }
+
+    public I18nText getTargetGroup() {
+        return targetGroup;
+    }
+
+    public void setTargetGroup(I18nText targetGroup) {
+        this.targetGroup = targetGroup;
     }
 
 }

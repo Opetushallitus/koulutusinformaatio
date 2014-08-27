@@ -11,7 +11,11 @@ import org.mongodb.morphia.annotations.Reference;
 
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.LanguageSelection;
-
+/**
+ * 
+ * @author Markus
+ *
+ */
 @Entity("adultUpperSecondaryLOS")
 public class AdultUpperSecondaryLOSEntity {
     

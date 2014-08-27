@@ -168,6 +168,21 @@ public class IndexerServiceImpl implements IndexerService {
                 }
             }
 
+        } else if (los instanceof CompetenceBasedQualificationParentLOS) {
+            CompetenceBasedQualificationParentLOS cbqpLos = (CompetenceBasedQualificationParentLOS)los;
+            provider = cbqpLos.getProvider();
+
+            if (cbqpLos.getApplicationOptions() != null) {
+                for (ApplicationOption ao : cbqpLos.getApplicationOptions()) {
+                    providerAsIds.add(ao.getApplicationSystem().getId());
+                    requiredBaseEducations.addAll(ao.getRequiredBaseEducations());
+                    if (ao.isVocational()) {
+                        vocationalAsIds.add(ao.getApplicationSystem().getId());
+                    } else {
+                        nonVocationalAsIds.add(ao.getApplicationSystem().getId());
+                    }
+                }
+            }
         }
 
         List<SolrInputDocument> docs = conversionService.convert(los, List.class);

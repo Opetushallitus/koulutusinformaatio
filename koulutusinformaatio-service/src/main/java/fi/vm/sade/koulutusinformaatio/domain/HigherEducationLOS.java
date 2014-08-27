@@ -27,10 +27,9 @@ public class HigherEducationLOS extends StandaloneLOS {
     private I18nText infoAboutTeachingLangs;
     private I18nText majorSelection;
     private I18nText finalExam;
-    private I18nText careerOpportunities;
     private I18nText competence;
     private I18nText researchFocus;
-    private I18nText infoAboutCharge;
+    
     
     private List<I18nText> professionalTitles;
     
@@ -66,14 +65,6 @@ public class HigherEducationLOS extends StandaloneLOS {
         return finalExam;
     }
 
-    public void setCareerOpportunities(I18nText i18nTextEnriched) {
-        this.careerOpportunities = i18nTextEnriched;    
-    }
-
-    public I18nText getCareerOpportunities() {
-        return careerOpportunities;
-    }
-
     public void setCompetence(I18nText i18nTextEnriched) {
         this.competence = i18nTextEnriched;
     }
@@ -88,15 +79,6 @@ public class HigherEducationLOS extends StandaloneLOS {
 
     public I18nText getResearchFocus() {
         return researchFocus;
-    }
-    
-    public void setInfoAboutCharge(I18nText i18nTextEnriched) {
-        this.infoAboutCharge = i18nTextEnriched;
-
-    }
-    
-    public I18nText getInfoAboutCharge() {
-        return infoAboutCharge;
     }
     
     public void setChargeable(Boolean opintojenMaksullisuus) {

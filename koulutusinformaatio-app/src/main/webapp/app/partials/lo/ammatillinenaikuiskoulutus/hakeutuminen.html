@@ -1,0 +1,38 @@
+<section class="col-md-9">
+    <div data-ki-language-ribbon data-languages="lo.availableTranslationLanguages" data-change-language="changeDescriptionLanguage" class="ribbon"></div>
+
+    <div data-ng-repeat="as in lo.applicationSystems">
+        <div data-ng-repeat="ao in as.applicationOptions">
+
+            <h2 class="inline">{{ao.name}}</h2>
+
+            <!-- PREVIEW -->
+            <div data-ng-show="ao.preview" class="inline preview-actions">
+                <span data-ki-preview-status-label="ao.status" data-lang="virkailijaLang"></span>
+                <a class="btn btn-info" href="{{ao.editUrl}}" data-ki-i18n="tarjonta-muokkaa-hakukohde" data-lang="{{virkailijaLang}}"></a>
+            </div>
+            <!-- END PREVIEW -->
+
+            <div class="margin-vertical-default">
+                <span>{{as.name}}</span> (<span data-ki-ao-application-time data-startdate="ao.applicationStartDate" data-enddate="ao.applicationEndDate" data-hakutapa="as.hakutapa"></span>)
+            </div>
+
+            <div data-ki-collapse-text-block data-content="ao.selectionCriteria" data-title="selection-criteria"></div>
+            <div data-ki-collapse-text-block data-title="eligibility-description" data-content="ao.eligibilityDescription"></div>
+            <div data-ki-collapse-block data-title="entrance-exam" data-content="ao.exams">
+                <div data-ki-exams></div>
+            </div>
+            <div data-ki-collapse-block data-title="required-attachments" data-content="ao.attachments">
+                <div data-ki-attachments></div>
+            </div>
+            <div data-ki-collapse-text-block data-title="sora" data-content="ao.soraDescription"></div>
+            <div data-ki-collapse-text-block data-title="further-application-info" data-content="ao.additionalInfo"></div>
+            <hr/>
+        </div>
+    </div>
+    <div data-ki-info-center-address></div>
+</section>
+<div class="col-md-5 col-md-offset-2">
+    <div data-ng-class="applyFormClass" data-ng-include data-src="partialCommonUrl + 'as/higherEducationAs.html'" data-ng-controller="ApplicationCtrl"></div>
+    <div data-ng-include data-src="partialUrl + 'recommendations.html'"></div>
+</div>

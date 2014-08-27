@@ -32,6 +32,7 @@ public class EducationDataUpdateServiceImplTest extends AbstractEducationService
     private PictureDAO pictureDAO;
     private HigherEducationLOSDAO higherEdDAO;
     private AdultUpperSecondaryLOSDAO adultUpsecDAO;
+    private AdultVocationalLOSDAO adultVocDAO;
     private DBCollection ploCollection;
     private DBCollection aoCollection;
     private DBCollection lopCollection;
@@ -51,10 +52,11 @@ public class EducationDataUpdateServiceImplTest extends AbstractEducationService
         dataStatusDAO = mockDataStatudDAO();
         higherEdDAO = mockHigherEdDAO();
         adultUpsecDAO = mock(AdultUpperSecondaryLOSDAO.class);
+        adultVocDAO = mock(AdultVocationalLOSDAO.class);
         service = new EducationDataUpdateServiceImpl( modelMapper, parentLearningOpportunitySpecificationDAO,
                applicationOptionDAO, learningOpportunityProviderDAO, childLearningOpportunityDAO,
                 pictureDAO, upperSecondaryLearningOpportunitySpecificationDAO, dataStatusDAO,
-                specialLearningOpportunitySpecificationDAO,  higherEdDAO, adultUpsecDAO);
+                specialLearningOpportunitySpecificationDAO,  higherEdDAO, adultUpsecDAO, adultVocDAO);
     }
 
     @Test

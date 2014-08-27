@@ -16,7 +16,8 @@ window.Config.app.common = {
         introUrl: '/wp2/en/api/get_search_results/?search=+&post_type=oph-helptext'
     },
     hakulomakeUrl: '/haku-app/',
-    piwikUrl: 'https://analytiikka.opintopolku.fi/piwik/'
+    piwikUrl: 'https://analytiikka.opintopolku.fi/piwik/',
+    loginUrl: '/omatsivut/login'
 };
 
 /* Configurations for production environment */

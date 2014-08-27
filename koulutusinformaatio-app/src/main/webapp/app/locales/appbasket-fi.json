@@ -1,0 +1,8 @@
+{
+    "alert-title": "Kirjautuneen käyttäjän palvelut",
+    "alert-link": "Kirjaudu sisään",
+    "alert-text-1": "Tunnistautumalla verkkopankkitunnuksin, mobiilivarmenteella tai sähköisellä henkilökortilla saat käyttöösi Oma Opintopolku –palvelun. Ensi vaiheessa tunnistautunut käyttäjä voi muokata hakulomakettaan hakuaikana: vaihtaa hakutoiveiden järjestystä yhteishauissa, lisätä ja poistaa hakutoiveita. Syksyn 2014 kuluessa Oma Opintopolku-palveluun on tulossa myös tieto valintojen tuloksista sekä opiskelupaikan vastaanotto.",
+    "alert-text-2": "tästä tai sivun yläreunan linkistä.",
+
+    "no-prerequisite-requirement": "Ei pohjakoulutusvaatimusta"
+}

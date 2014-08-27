@@ -39,7 +39,7 @@ public class BasketApplicationOptionDTO {
     private String qualification;
     private String baseEducationRequirement;
     private ParentLOSRefDTO parent;
-    private List<HigherEducationLOSRefDTO> higherEducations;
+    private List<HigherEducationLOSRefDTO> losRefs;
     private List<ChildLOIRefDTO> children;
     private Date attachmentDeliveryDeadline;
     private List<ApplicationOptionAttachmentDTO> attachments;
@@ -254,12 +254,12 @@ public class BasketApplicationOptionDTO {
         this.prerequisite = prerequisite;
     }
 
-    public List<HigherEducationLOSRefDTO> getHigherEducations() {
-        return higherEducations;
+    public List<HigherEducationLOSRefDTO> getLosRefs() {
+        return losRefs;
     }
 
-    public void setHigherEducations(List<HigherEducationLOSRefDTO> higherEducations) {
-        this.higherEducations = higherEducations;
+    public void setLosRefs(List<HigherEducationLOSRefDTO> losRefs) {
+        this.losRefs = losRefs;
     }
 
     public List<DateRangeDTO> getApplicationDates() {

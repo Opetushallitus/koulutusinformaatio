@@ -6,6 +6,14 @@
         </div>
     </div>
     <h1>{{title}} ({{itemCount}})</h1>
+    <div data-alert type="warning" data-close="closeAlert()" data-ng-if="!hideAlert() && !isAuthenticated">
+        <strong data-ki-i18n="appbasket:alert-title"></strong>
+        <p>
+            <span data-ki-i18n="appbasket:alert-text-1"></span>
+            <a data-ng-href="{{loginUrl}}" data-ki-i18n="appbasket:alert-link"></a>
+            <span data-ki-i18n="appbasket:alert-text-2"></span>
+        </p>
+    </div>
     <p data-ki-i18n="application-basket-description"></p>
     <div data-ng-switch="basketIsEmpty">
         <div data-ng-switch-when="true">

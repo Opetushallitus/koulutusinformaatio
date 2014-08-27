@@ -1,4 +1,4 @@
-angular.module('kiApp.SelectAreaDialog', [])
+angular.module('kiApp.directives.SelectAreaDialog', [])
 
 .directive('kiSelectAreaDialog', function() {
 	return {
