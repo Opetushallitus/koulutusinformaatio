@@ -1,18 +1,18 @@
 {
-    "title": "Minne hakisin (sv)",
+    "title": "Vart ska jag söka?",
 
-    "breadcrumb-label": "Valintasi (sv)",
-    "to-previous-phase": "Palaa edelliseen (sv)",
-    "no-results": "Valitsemillasi vaihtoehdoilla ei tällä hetkellä löydy koulutuksia. Palaa edelliseen vaiheeseen ja valitse jokin toinen vaihtoehto. (sv)",
+    "breadcrumb-label": "Ditt val",
+    "to-previous-phase": "Återgå till föregående",
+    "no-results": "Med de valda alternativen hittades för tillfället inga utbildningar. Återgå till föregående skede och välj något annat alternativ.",
 
     "baseeducation-title": "Välj",
     "educationtype-pk-title": "Efter grundskolan är jag intresserad av...",
     "educationtype-yo-title": "Efter gymnasiet är jag intresserad av...",
     "educationtype-mm-title": "Jag är intresserad av följande utbildningar för invandrare...",
-    "educationtype-at-title": "Ammatillisen jälkeen kiinnostaisi... (sv)",
-    "theme-title": "Valitse teema (sv)",
-    "topic-title": "Valitse aihe (sv)",
-    "location-title": "Valitse opiskelupaikkakunta (sv)",
+    "educationtype-at-title": "Efter yrkesutbildningen är jag intresserad av...",
+    "theme-title": "Välj tema",
+    "topic-title": "Välj ämne",
+    "location-title": "Välj studieort",
 
     "prerequisites-pk": "Jag har gått ut grundskolan",
     "prerequisites-yo": "Jag har gått ut gymnasiet och avlagt studentexamen",
@@ -22,17 +22,17 @@
     "educationType_ffm-et010301": "Yrkesutbildning",
     "educationType_ffm-et010401": "Yrkeshögskoleexamen",
     "educationType_ffm-et0105": "Universitetsexamen",
-    "educationType_ffm-et010501": "Yliopisto, alempi tutkinto (kandidaatti ym.) (sv)",
+    "educationType_ffm-et010501": "Universitet, lägre examen (kandidat mm.)",
     "educationType_ffm-et0205": "Folkhögskolornas allmänbildande linjer",
-    "educationType_ffm-et02015": "Kotitalousopetus (Talouskoulu) (sv)",
+    "educationType_ffm-et02015": "Undervisning i huslig ekonomi (Hushållsskolan)",
     "educationType_ffm-et0101": "Gymnasieutbildning",
-    "educationType_ffm-et0102": "Useampi tutkinto samanaikaisesti (kaksoistutkinto) (sv)",
+    "educationType_ffm-et0102": "Flera examina samtidigt (dubbelexamen)",
     "educationType_ffm-et020102": "Yrkesstarten",
     "educationType_ffm-et020101": "Tionde klassen",
-    "educationType_ffm-et010302": "Ammatillinen erityisopetus (sv)",
+    "educationType_ffm-et010302": "Specialyrkesundervisning",
     "educationType_ffm-et0202": "Undervisning och handledning i tränings- och rehabiliteringssyfte",
     "educationType_ffm-et020104": "Utbildning som förbereder invandrare för gymnasium",
-    "educationType_ffm-et020103": "Ammatilliseen koulutukseen valmistava (sv)",
+    "educationType_ffm-et020103": "Förberedande för yrkesutbildning",
 
-    "show-results": "Näytä opiskelupaikat (sv)"
+    "show-results": "Visa studieplatser"
 }

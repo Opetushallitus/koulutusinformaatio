@@ -1525,7 +1525,7 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
 
             switch(ao.type) {
                 case 'korkeakoulu':
-                    loRef += ao.higherEducations && ao.higherEducations.length > 0 ? ao.higherEducations[0].id : '';
+                    loRef += ao.losRefs && ao.losRefs.length > 0 ? ao.losRefs[0].id : '';
                     break;
                 case 'lukio':
                     loRef += ao.losId;
@@ -1535,6 +1535,9 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
                     break;
                 case 'valmistava':
                     loRef += ao.parent.id;
+                    break;
+                case 'aikuislukio':
+                    loRef += ao.losRefs && ao.losRefs.length > 0 ? ao.losRefs[0].id : '';
                     break;
             }
 
