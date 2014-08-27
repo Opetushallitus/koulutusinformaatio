@@ -89,6 +89,6 @@ public interface TarjontaService {
 
     public AdultUpperSecondaryLOS createAdultUpperSecondaryLOS(String oid, boolean checkStatus) throws TarjontaParseException, KoodistoException, ResourceNotFoundException;
 
-    public CompetenceBasedQualificationParentLOS createCBQPLOS(String oid) throws TarjontaParseException, KoodistoException, ResourceNotFoundException;
+    public CompetenceBasedQualificationParentLOS createCBQPLOS(String oid, List<String> createdOids, boolean checkStatus) throws TarjontaParseException, KoodistoException, ResourceNotFoundException;
             
 }

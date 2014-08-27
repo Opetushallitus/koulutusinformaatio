@@ -9,8 +9,8 @@
     			<!-- END PREVIEW -->
     	</span>
     </div>
-    <h1 data-ng-show="lo.selectedChild.name" class="inline">{{lo.selectedChild.name}}</h1>
-    <h1 data-ng-hide="lo.selectedChild.name" class="inline">{{lo.name}}</h1>
+    <h1 data-ng-show="lo.selectedChild.name && !lo.isStandalone" class="inline">{{lo.selectedChild.name}}</h1>
+    <h1 data-ng-hide="lo.selectedChild.name && !lo.isStandalone" class="inline">{{lo.name}}</h1>
     
     <!-- PREVIEW -->
     <div data-ng-if="lo.preview" class="inline preview-actions">

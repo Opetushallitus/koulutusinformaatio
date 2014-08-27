@@ -32,6 +32,7 @@ import fi.vm.sade.koulutusinformaatio.domain.ArticleResult;
 import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
 import fi.vm.sade.koulutusinformaatio.domain.SuggestedTermsResult;
 import fi.vm.sade.koulutusinformaatio.domain.dto.AdultUpperSecondaryLOSDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.AdultVocationalParentLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LOSDTO;
@@ -239,7 +240,21 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
             } else if ("aikuislukio".equals(loType)) {
                 return learningOpportunityService.previewAdultUpperSecondaryLearningOpportunity(oid, lang, uiLang);
             } else if ("ammatillinenaikuiskoulutus".equals(loType)) {
-                return learningOpportunityService.previewAdultVocationalLearningOpportunity(oid, lang, uiLang);
+                AdultVocationalParentLOSDTO dto = learningOpportunityService.previewAdultVocationalLearningOpportunity(oid, lang, uiLang);
+                String koulutuskoodi = dto.getChildren().get(0).getKoulutuskoodi();
+                String edType = dto.getChildren().get(0).getEducationType();
+                List<ArticleResult> edCodeSuggestions = this.searchService.searchArticleSuggestions(String.format("%s:%s", LearningOpportunity.ARTICLE_EDUCATION_CODE, koulutuskoodi), uiLang);
+                List<ArticleResult> edTypeSuggestions = this.searchService.searchArticleSuggestions(String.format("%s:%s", LearningOpportunity.EDUCATION_TYPE, edType), uiLang);
+                if (edCodeSuggestions.size() < edTypeSuggestions.size()) {
+                    dto.setEdCodeSuggestions(ArticleResultToDTO.convert(edCodeSuggestions, 3));
+                    dto.setEdTypeSuggestions(ArticleResultToDTO.convert(edTypeSuggestions, 6 - dto.getEdCodeSuggestions().size()));
+                } else {
+                    dto.setEdTypeSuggestions(ArticleResultToDTO.convert(edTypeSuggestions, 3));
+                    dto.setEdCodeSuggestions(ArticleResultToDTO.convert(edCodeSuggestions, 6 - dto.getEdTypeSuggestions().size()));
+
+                }
+
+                    return dto; 
             }
             throw new ResourceNotFoundException("No preview implemented for loType: " + loType);
         } catch (ResourceNotFoundException e) {

@@ -15,6 +15,8 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import java.util.ArrayList;
+
 import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
@@ -84,7 +86,7 @@ public class PreviewServiceImpl implements PreviewService {
         
         try {
             
-            CompetenceBasedQualificationParentLOS los = this.tarjontaService.createCBQPLOS(oid);
+            CompetenceBasedQualificationParentLOS los = this.tarjontaService.createCBQPLOS(oid, new ArrayList<String>(), false);
             return los;
             
         } catch (TarjontaParseException e) {

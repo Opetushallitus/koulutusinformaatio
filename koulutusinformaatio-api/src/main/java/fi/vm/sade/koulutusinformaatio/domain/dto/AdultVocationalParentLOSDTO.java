@@ -51,6 +51,8 @@ public class AdultVocationalParentLOSDTO extends LOSDTO {
     private List<AdultVocationalChildLOSDTO> children;
     private String translationLanguage;
     private List<CodeDTO> availableTranslationLanguages;
+    private List<ArticleResultDTO> edCodeSuggestions;
+    private List<ArticleResultDTO> edTypeSuggestions;
     
 
     public String getId() {
@@ -187,6 +189,24 @@ public class AdultVocationalParentLOSDTO extends LOSDTO {
 
     public void setEducationKind(String educationKind) {
         this.educationKind = educationKind;
+    }
+
+    public void setEdCodeSuggestions(List<ArticleResultDTO> suggestions) {
+        this.edCodeSuggestions = suggestions;
+        
+    }
+
+    public List<ArticleResultDTO> getEdCodeSuggestions() {
+        return edCodeSuggestions;
+    }
+
+    public void setEdTypeSuggestions(List<ArticleResultDTO> suggestions) {
+        this.edTypeSuggestions = suggestions;
+        
+    }
+
+    public List<ArticleResultDTO> getEdTypeSuggestions() {
+        return edTypeSuggestions;
     }
     
    

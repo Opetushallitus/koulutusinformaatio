@@ -139,13 +139,13 @@ public class UpdateServiceImpl implements UpdateService {
                 this.educationDataUpdateService.save(curLOS);
             }
             
-            /*
+            
             List<CompetenceBasedQualificationParentLOS> adultVocationals = this.tarjontaService.findAdultVocationals();
             for (CompetenceBasedQualificationParentLOS curLOS : adultVocationals) {
                 LOG.debug("Saving adult vocational los: " + curLOS.getId() + " with name: " + curLOS.getName().get("fi"));
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 this.educationDataUpdateService.save(curLOS);
-            }*/
+            }
             
             
             List<Code> edTypeCodes = this.tarjontaService.getEdTypeCodes();
@@ -188,13 +188,13 @@ public class UpdateServiceImpl implements UpdateService {
             }
         }
     }
-    /*
+    
     private void indexToSolr(CompetenceBasedQualificationParentLOS curLOS,
             HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws Exception {
         this.indexerService.addLearningOpportunitySpecification(curLOS, loUpdateSolr, lopUpdateSolr);
         this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
         
-    }*/
+    }
 
     @Override
     public boolean isRunning() {

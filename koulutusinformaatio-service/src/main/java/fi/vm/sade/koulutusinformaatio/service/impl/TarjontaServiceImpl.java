@@ -532,11 +532,13 @@ public class TarjontaServiceImpl implements TarjontaService {
 
         ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes =  this.tarjontaRawService.listEducationsByToteutustyyppi(ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO_NAYTTOTUTKINTONA.name());// //AMMATTITUTKINTO.name());//listEducations(TarjontaConstants.UPPER_SECONDARY_EDUCATION_TYPE);
         HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
-        Map<String,List<HigherEducationLOSRef>> aoToEducationsMap = new HashMap<String,List<HigherEducationLOSRef>>();
+        /*Map<String,List<HigherEducationLOSRef>> aoToEducationsMap = new HashMap<String,List<HigherEducationLOSRef>>();
 
         Map<String,List<String>> parentChildKomos = new HashMap<String,List<String>>();
-        Map<String,List<String>> komoToKomotoMap = new HashMap<String,List<String>>(); 
+        Map<String,List<String>> komoToKomotoMap = new HashMap<String,List<String>>();*/ 
 
+        List<String> createdOids = new ArrayList<String>();
+        
         for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
             LOG.debug("Cur Adult Vocationals tarjoaja result: " + curRes.getOid());
             for (KoulutusHakutulosV1RDTO curKoulutus : curRes.getTulokset()) {
@@ -546,138 +548,25 @@ public class TarjontaServiceImpl implements TarjontaService {
                     LOG.debug("koulutus not published, discarding");
                     continue;
                 }
-
-                ResultV1RDTO<Set<String>> parentsRes = this.tarjontaRawService.getParentsOfHigherEducationLOS(curKoulutus.getKomoOid());
-
-                if (parentsRes != null && parentsRes.getResult() != null && !parentsRes.getResult().isEmpty()) {
-                    for (String curKomoOid : parentsRes.getResult()) {
-                        if (!parentChildKomos.containsKey(curKomoOid)) {
-                            parentChildKomos.put(curKomoOid, Arrays.asList(curKoulutus.getKomoOid()));
-                        } else {
-                            List<String> curChildren = parentChildKomos.get(curKomoOid);
-                            if (!curChildren.contains(curKoulutus.getKomoOid())) {
-                                curChildren.add(curKoulutus.getKomoOid());
-                                parentChildKomos.put(curKomoOid, curChildren);
-                            }
-                        }
+                
+                if (!createdOids.contains(curKoulutus.getOid())) {
+                    try {
+                        CompetenceBasedQualificationParentLOS newLos = this.createCBQPLOS(curKoulutus.getOid(), createdOids, true);
+                        koulutukset.add(newLos);
+                    } catch (TarjontaParseException ex) {
+                        ex.printStackTrace();
+                    } catch (ResourceNotFoundException ex) {
+                        ex.printStackTrace();
                     }
-                } else if (!parentChildKomos.containsKey(curKoulutus.getKomoOid())) {
-
-                    parentChildKomos.put(curKoulutus.getKomoOid(), new ArrayList<String>());
-
+                    if (!createdOids.contains(curKoulutus.getOid())) {
+                        createdOids.add(curKoulutus.getOid());
+                    }
                 }
 
-
-
-                if (komoToKomotoMap.containsKey(curKoulutus.getKomoOid())) {
-                    List<String> komotos = komoToKomotoMap.get(curKoulutus.getKomoOid());
-                    komotos.add(curKoulutus.getOid());
-                    komoToKomotoMap.put(curKoulutus.getKomoOid(), komotos);
-                } else {
-                    komoToKomotoMap.put(curKoulutus.getKomoOid(), Arrays.asList(curKoulutus.getOid()));
-                }
             }
         }
-
-        for (Map.Entry<String,List<String>> curParentChild : parentChildKomos.entrySet()) {
-
-
-            String parentKomoOid = curParentChild.getKey();
-            LOG.debug("Cur parent komo oid: " + parentKomoOid);
-
-            List<String> curChildren = curParentChild.getValue();
-
-            //List<String> komotoOids = new ArrayList<String>();
-            CompetenceBasedQualificationParentLOS los = null;
-            if (curChildren.isEmpty() || curChildren.size() == 1) {
-
-                los =  createStandaloneCompetenceLOS(parentKomoOid, curChildren, komoToKomotoMap);
-                //komotoOids.addAll(komoToKomotoMap.get(parentKomoOid));
-
-            } else {
-
-                List<String> komotoOids = new ArrayList<String>();
-                for(String curChild : curChildren) {
-                    komotoOids.add(komoToKomotoMap.get(curChild).get(0));
-                }
-
-                try {
-                    los = creator.createCBQPLOS(parentKomoOid, komotoOids, true);
-                } catch (TarjontaParseException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                    los = null;
-                }
-            }
-            if (los != null) {
-
-                koulutukset.add(los);
-            }
-            //updateAOLosReferences(los, aoToEducationsMap);
-        }
-
-
-
-
-        /*
-
-
-
-
-
-                ResultV1RDTO<NayttotutkintoV1RDTO> koulutusRes = this.tarjontaRawService.getAdultVocationalLearningOpportunity(curKoulutus.getOid());
-                NayttotutkintoV1RDTO koulutusDTO = koulutusRes.getResult();
-
-                try {
-                    AdultVocationalLOS los = creator.createAdultVocationalLOS(koulutusDTO, true);//createHigherEducationLOS(koulutusDTO, true);
-                    LOG.debug("Created los: " + los.getId());
-                    koulutukset.add(los);
-                    updateAOLosReferences(los, aoToEducationsMap);
-                    LOG.debug("Updated aolos references for: " + los.getId());
-
-                } catch (TarjontaParseException ex) {
-                    continue;
-                }
-
-
-            }         
-
-
-        }*/
-
 
         return koulutukset;
-    }
-
-    private CompetenceBasedQualificationParentLOS createStandaloneCompetenceLOS(String parentKomoOid,
-            List<String> curChildren,  Map<String,List<String>> komoToKomotoMap) throws KoodistoException {
-
-        CompetenceBasedQualificationParentLOS los = new CompetenceBasedQualificationParentLOS();
-
-        List<String> komotoOids = new ArrayList<String>();
-
-        if (curChildren.isEmpty()) {
-
-            komotoOids.addAll(komoToKomotoMap.get(parentKomoOid));
-
-        } else {
-
-            komotoOids.addAll(komoToKomotoMap.get(curChildren.get(0)));
-        }
-
-        try {
-            los = this.creator.createCBQPLOS(parentKomoOid, komotoOids, true);
-        } catch (TarjontaParseException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            los = null;
-        }
-
-
-
-        return los;
-
-
     }
 
     @Override
@@ -716,7 +605,7 @@ public class TarjontaServiceImpl implements TarjontaService {
     }
 
     @Override
-    public CompetenceBasedQualificationParentLOS createCBQPLOS(String oid)
+    public CompetenceBasedQualificationParentLOS createCBQPLOS(String oid, List<String> createdOids, boolean checkStatus)
             throws TarjontaParseException, KoodistoException,
             ResourceNotFoundException {
         
@@ -783,10 +672,14 @@ public class TarjontaServiceImpl implements TarjontaService {
                         
                         for ( KoulutusHakutulosV1RDTO curKoul : curTarjRes.getTulokset()) {
                         
+                            
                             LOG.debug("There is a koulutus result");
                             //KoulutusHakutulosV1RDTO koul = tarjRes.getTulokset().get(0);
                             komotoOids.put(curKoul.getOid(), curKoul.getOid());
                             LOG.debug(curKoul.getOid());
+                            if (!createdOids.contains(curKoul.getOid())) {
+                                createdOids.add(curKoul.getOid());
+                            }
                         }
                     }
                 }
@@ -796,6 +689,6 @@ public class TarjontaServiceImpl implements TarjontaService {
         
         LOG.debug("komotoOids: " + komotoOids.values());
 
-        return this.creator.createCBQPLOS(parentKomoOid, new ArrayList<String>(komotoOids.values()), false);
+        return this.creator.createCBQPLOS(parentKomoOid, new ArrayList<String>(komotoOids.values()), checkStatus);
     }
 }

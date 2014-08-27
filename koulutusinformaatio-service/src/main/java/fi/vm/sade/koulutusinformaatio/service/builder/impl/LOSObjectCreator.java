@@ -904,6 +904,9 @@ public class LOSObjectCreator extends ObjectCreator {
         
         
         if (los == null || los.getChildren() == null || los.getChildren().isEmpty()) {
+            if (checkStatus) {
+                throw new TarjontaParseException("No valid children for parent adult vocational: " + parentKomoOid);
+            }
             return null;
         }
         
