@@ -15,6 +15,7 @@
         var getValintaperusteetTitle = function() {
             if ($scope.loType == 'erityisopetus' ||
                 $scope.loType == 'valmentava' ||
+                $scope.loType == 'ammatillinenaikuiskoulutus' ||
                 $scope.loType == 'valmistava' && value == 'VapaanSivistystyonKoulutus') {
                 return TranslationService.getTranslation('lo-application-er');
             } else {
