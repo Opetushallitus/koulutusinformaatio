@@ -87,6 +87,8 @@
     "job-title": "Uppgiftsbenämningar",
     "competence": "Kompetens",
     "research-focus": "Tyngdpunkter i forskning",
+    "target-group": "Målgrupp",
+    "subjects-and-courses": "Gymnasiespecifika läroämnen och kurser",
 
     "exam-header-time": "Tid",
     "exam-header-place": "Plats",
@@ -146,6 +148,19 @@
     "study-plan": "Läroplan",
     "contact-person-title": "Utbildningens kontaktperson",
     "ects-coordinator": "ECTS-koordinator",
+    
+        
+    "nayttotutkinto-infoteksti": "Hakijan lähtötilanne määrittää tutkinnon suorittamisen aikataulut ja valmistavan koulutuksen tarpeen. Näyttötutkinnon voi suorittaa myös ilman valmistavaa koulutusta. (sv)",
+    "nayttotutkinnon-kuvaus": "Tutkinnon kuvaus (sv)",
+    "organizer": "Tutkinnon järjestäjä (sv)",
+    "choosing-competence": "Osaamisalan valinta (sv)",
+    "degree-completion": "Tutkinnon suorittaminen (sv)",
+    "valmistava-koulutus": "Valmistava koulutus (sv)",
+    "personalization": "Henkilökohtaistaminen (sv)",
+    "goals-of-degree": "Tutkinnon tavoite (sv)",
+    "competence-contact-person-title": "Näyttötutkinnon yhteyshenkilö (sv)",
+    "competences": "Osaamisalat (sv)",
+    "goals-of-competence": "Osaamisalan tavoite (sv)",
 
     "provider-web-page": "Läroanstaltens egna sidor",
 
@@ -309,5 +324,8 @@
 
     "hakutapa-jatkuva": "Fortlöpande ansökningstid",
 
-    "preview-help": "Förhandsgranskningen visar utbildningen och ansökningsmålet såsom en användare ser dem i Studieinfo.fi-tjänsten. Du kan behandla uppgifterna om utbildningen genom att klicka på knappen Behandla utbildningen. Via den andra fliken kan du behandla ansökningsmålets uppgifter. Du kan inte behandla organisationsuppgifter här, utan via tjänsten Organisationstjänster."
+    "preview-help": "Förhandsgranskningen visar utbildningen och ansökningsmålet såsom en användare ser dem i Studieinfo.fi-tjänsten. Du kan behandla uppgifterna om utbildningen genom att klicka på knappen Behandla utbildningen. Via den andra fliken kan du behandla ansökningsmålets uppgifter. Du kan inte behandla organisationsuppgifter här, utan via tjänsten Organisationstjänster.",
+
+    "show-intro": "Visa anvisningar",
+    "intro-next": "Följande"
 }

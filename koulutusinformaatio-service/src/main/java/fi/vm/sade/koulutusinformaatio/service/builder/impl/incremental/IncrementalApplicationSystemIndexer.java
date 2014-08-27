@@ -23,15 +23,20 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Strings;
+
+import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
+import fi.vm.sade.koulutusinformaatio.domain.DateRange;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOI;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
+import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOI;
 import fi.vm.sade.koulutusinformaatio.domain.UpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
@@ -45,9 +50,11 @@ import fi.vm.sade.koulutusinformaatio.service.builder.impl.ApplicationSystemCrea
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.CreatorUtil;
 import fi.vm.sade.koulutusinformaatio.service.impl.IncrementalUpdateServiceImpl;
 import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
+import fi.vm.sade.tarjonta.service.resources.dto.HakuaikaRDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.HakukohdeDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuaikaV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 
 /**
@@ -85,14 +92,63 @@ public class IncrementalApplicationSystemIndexer {
         HakuDTO asDto = this.tarjontaRawService.getHaku(asOid);
         if (CreatorUtil.isSecondaryAS(asDto)) {
             indexSecondaryEducationAsData(asDto);
+        } else if (CreatorUtil.isAdultUpperSecondaryAS(asDto)) {
+            indexAdultUpsecAsData(asOid);
         } else {
             indexHigherEducationAsData(asOid);
         }
     }
     
-    private void indexHigherEducationAsData(String asOid) throws Exception {
+    private void indexAdultUpsecAsData(String asOid) throws Exception {
         LOG.debug("Indexing higher education application system");
-        ResultV1RDTO<HakuV1RDTO> hakuRes = this.tarjontaRawService.getHigherEducationHakuByOid(asOid);
+        ResultV1RDTO<HakuV1RDTO> hakuRes = this.tarjontaRawService.getV1EducationHakuByOid(asOid);
+        
+        if (hakuRes != null) {
+            HakuV1RDTO asDto = hakuRes.getResult();
+            List<String> lossesInAS = this.dataQueryService.getLearningOpportunityIdsByAS(asDto.getOid());
+            
+            LOG.debug("Higher education loss in application system: " + lossesInAS.size());
+            
+            if (asDto.getTila().equals(TarjontaConstants.STATE_PUBLISHED)) {
+
+                ApplicationSystemCreator asCreator = new ApplicationSystemCreator(koodistoService);
+                ApplicationSystem as = asCreator.createHigherEdApplicationSystem(asDto);
+                
+                for (String curLosId : lossesInAS) {
+                    AdultUpperSecondaryLOS curLos = null;
+                    try {
+                        curLos = this.dataQueryService.getAdultUpsecLearningOpportunity(curLosId);
+                    } catch (ResourceNotFoundException ex) {
+                        LOG.warn("higher education los not found");
+                    }
+                    if (curLos != null) {
+                        this.reIndexAsDataForStandaloneLOS(curLos, asDto, as);
+                        this.losIndexer.updateAdultUpsecLos(curLos);;
+                    }
+                }
+                
+                if (lossesInAS.isEmpty()) {
+                    
+                    for (String curHakukohde : asDto.getHakukohdeOids()) {
+                        this.aoIndexer.indexAdultUpsecEdAo(curHakukohde, !asDto.getTila().equals(TarjontaConstants.STATE_PUBLISHED));
+                    }
+                }
+                
+            } else {
+                
+                for (String curLosId : lossesInAS) {                
+                    handleAsRemovalFromHigherEdLOS(curLosId, asDto);
+                }
+                
+            }
+        }
+    }
+    
+    private void indexHigherEducationAsData(String asOid) throws Exception {
+        
+        LOG.debug("Indexing higher education application system");
+        ResultV1RDTO<HakuV1RDTO> hakuRes = this.tarjontaRawService.getV1EducationHakuByOid(asOid);
+        
         if (hakuRes != null) {
             HakuV1RDTO asDto = hakuRes.getResult();
             List<String> lossesInAS = this.dataQueryService.getLearningOpportunityIdsByAS(asDto.getOid());
@@ -112,7 +168,7 @@ public class IncrementalApplicationSystemIndexer {
                         LOG.warn("higher education los not found");
                     }
                     if (curLos != null) {
-                        this.reIndexAsDataForHigherEdLOS(curLos, asDto, as);
+                        this.reIndexAsDataForStandaloneLOS(curLos, asDto, as);
                         this.losIndexer.updateHigherEdLos(curLos);
                     }
                 }
@@ -333,16 +389,46 @@ public class IncrementalApplicationSystemIndexer {
         }
     }
 
-    private void reIndexAsDataForHigherEdLOS(HigherEducationLOS curLos,
+    private void reIndexAsDataForStandaloneLOS(StandaloneLOS curLos,
             HakuV1RDTO asDto, ApplicationSystem as) {
         
      for (ApplicationOption curAo : curLos.getApplicationOptions()) {
          if (as != null && curAo.getApplicationSystem().getId().equals(as.getId())) {
              curAo.setApplicationSystem(as);
+             this.reIndexHakuaikaForStandaloneLOS(curAo, as, asDto);
          }
      }
         
     }
+    
+    private void reIndexHakuaikaForStandaloneLOS(ApplicationOption ao, ApplicationSystem as, HakuV1RDTO haku) {
+        HakuaikaV1RDTO aoHakuaika = null;
+    
+        if (haku.getHakuaikas() != null) {
+            for (HakuaikaV1RDTO ha  : haku.getHakuaikas()) {
+                DateRange range = new DateRange();
+                range.setStartDate(ha.getAlkuPvm());
+                range.setEndDate(ha.getLoppuPvm());
+                as.getApplicationDates().add(range);
+            
+                if (ha.getHakuaikaId().equals(ao.getInternalASDateRef())) {
+                    aoHakuaika = ha;
+                }
+            
+            }
+        }
+       
+        if (!ao.isSpecificApplicationDates() && (aoHakuaika != null)) {
+            ao.setApplicationStartDate(aoHakuaika.getAlkuPvm());
+            ao.setApplicationEndDate(aoHakuaika.getLoppuPvm());
+            ao.setInternalASDateRef(aoHakuaika.getHakuaikaId());
+        } else if (haku.getHakuaikas() != null && !haku.getHakuaikas().isEmpty()) {
+            ao.setApplicationStartDate(haku.getHakuaikas().get(0).getAlkuPvm());
+            ao.setApplicationEndDate(haku.getHakuaikas().get(0).getLoppuPvm());
+            ao.setInternalASDateRef(haku.getHakuaikas().get(0).getHakuaikaId());
+        }
+    }
+
     
     private void reIndexAsDataForUpsecLOS(UpperSecondaryLOS curLos,
             HakuDTO asDto, ApplicationSystem as) throws KoodistoException {
@@ -350,6 +436,7 @@ public class IncrementalApplicationSystemIndexer {
             for (ApplicationOption curAo : curUpsecLoi.getApplicationOptions()) {
                 if (as != null && curAo.getApplicationSystem().getId().equals(as.getId())) {
                     curAo.setApplicationSystem(as);
+                    this.reIndexHakuaikaForSecondaryLOS(curAo, asDto, as);
                 }
             }
         }
@@ -363,6 +450,7 @@ public class IncrementalApplicationSystemIndexer {
             for (ApplicationOption curAo : curChildLoi.getApplicationOptions()) {
                 if (as != null && curAo.getApplicationSystem().getId().equals(as.getId())) {
                     curAo.setApplicationSystem(as);
+                    this.reIndexHakuaikaForSecondaryLOS(curAo, asDto, as);
                 }
             }
         }
@@ -374,10 +462,22 @@ public class IncrementalApplicationSystemIndexer {
             for (ApplicationOption curAo : parentLoi.getApplicationOptions()) {
                 if (as != null && curAo.getApplicationSystem().getId().equals(as.getId())) {
                     curAo.setApplicationSystem(as);
+                    this.reIndexHakuaikaForSecondaryLOS(curAo, hakuDTO, as);
                 }
             }
         }
 
+    }
+    
+    private void reIndexHakuaikaForSecondaryLOS(ApplicationOption ao, HakuDTO hakuDTO, ApplicationSystem as) {
+        if (!ao.isSpecificApplicationDates()
+                && hakuDTO != null 
+                && hakuDTO.getHakuaikas() != null 
+                && !hakuDTO.getHakuaikas().isEmpty()) {
+            HakuaikaRDTO aoHakuaika =  hakuDTO.getHakuaikas().get(0);
+            ao.setApplicationStartDate(aoHakuaika.getAlkuPvm());
+            ao.setApplicationEndDate(aoHakuaika.getLoppuPvm());
+        }
     }
 
 }

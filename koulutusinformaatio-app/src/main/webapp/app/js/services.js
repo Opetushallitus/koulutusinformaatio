@@ -4,10 +4,10 @@ angular.module('kiApp.services',
 [
     'ngResource', 
     'kiApp.HostResolver', 
-    'kiApp.NavigationService',
-    'kiApp.ArticleContentSearchService',
     'kiApp.TranslationService',
-    'kiApp.CookieService'
+    'kiApp.CookieService',
+    'kiApp.AlertService',
+    'kiApp.AuthService'
 ]).
 
 service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analytics', '$rootScope', 'FilterService', 'LearningOpportunitySearchResultTransformer', function($http, $timeout, $q, $analytics, $rootScope, FilterService, LearningOpportunitySearchResultTransformer) {
@@ -413,7 +413,6 @@ service('UpperSecondaryLOService', ['$http', '$timeout', '$q', '$rootScope', 'La
                 ChildLOTransformer.transform(result);
                 var loResult = {
                     lo: result,
-                    //parent: {},
                     provider: result.provider
                 }
                 deferred.resolve(loResult);
@@ -449,12 +448,10 @@ service('HigherEducationLOService', ['$http', '$timeout', '$q', 'LanguageService
                 params: queryParams
             }).
             
-            //$http.get('mocks/amk.json', {}).
             success(function(result) {
             	HigherEducationTransformer.transform(result);
                 var loResult = {
                     lo: result,
-                    //parent: {},
                     provider: result.provider
                 }
                 
@@ -472,13 +469,53 @@ service('HigherEducationLOService', ['$http', '$timeout', '$q', 'LanguageService
 /**
  * Resource for requesting University of Applied Sciences LO data
  */
-service('HigherEducationPreviewLOService', ['$http', '$timeout', '$q', 'LanguageService', 'HigherEducationTransformer', 'Config', function($http, $timeout, $q, LanguageService, HigherEducationTransformer, Config) {
+service('AdultUpperSecondaryLOService', ['$http', '$timeout', '$q', 'LanguageService', 'HigherEducationTransformer', function($http, $timeout, $q, LanguageService, HigherEducationTransformer) {
+    return {
+        query: function(options) {
+            var deferred = $q.defer();
+            var queryParams = {
+                uiLang: LanguageService.getLanguage()
+            }
+
+            if (options.lang) {
+                queryParams.lang = options.lang
+            }
+
+            var url = '../lo/adultupsec/';
+
+            $http.get(url + options.id, {
+                params: queryParams
+            }).
+            
+            success(function(result) {
+            	HigherEducationTransformer.transform(result);
+                var loResult = {
+                    lo: result,
+                    provider: result.provider
+                }
+                
+                deferred.resolve(loResult);
+            }).
+            error(function(result) {
+                deferred.reject(result);
+            });
+
+            return deferred.promise;
+        }
+    }
+}]).
+
+/**
+ * Resource for requesting University of Applied Sciences LO data
+ */
+service('HigherEducationPreviewLOService', ['$http', '$timeout', '$q', 'LanguageService', 'HigherEducationTransformer', 'AdultVocationalTransformer', 'Config', function($http, $timeout, $q, LanguageService, HigherEducationTransformer, AdultVocationalTransformer, Config) {
     return {
         query: function(options) {
             var deferred = $q.defer();
             var queryParams = {
                 uiLang: LanguageService.getLanguage(),
                 lang: LanguageService.getLanguage(),
+                loType: options.loType,
                 timestamp: Date.now()
             }
 
@@ -487,17 +524,17 @@ service('HigherEducationPreviewLOService', ['$http', '$timeout', '$q', 'Language
             }
 
             var url = '../lo/preview/';
-            //var url = 'mocks/kk.json';
-            //$http.get(url, {}).
             
             $http.get(url + options.id, {
                 params: queryParams
             }).
             
-            
-            //$http.get('mocks/amk.json', {}).
             success(function(result) {
-            	HigherEducationTransformer.transform(result);
+            	if (options.loType == 'ammatillinenaikuiskoulutus') {
+            		AdultVocationalTransformer.transform(result, options.id);
+            	} else {
+            		HigherEducationTransformer.transform(result);
+            	}
             	result.preview = true;
             	result.tarjontaEditUrl =  Config.get('tarjontaUrl') + '/koulutus/' + result.id + '/edit?' + Date.now();
             	if (result.children) {
@@ -520,7 +557,6 @@ service('HigherEducationPreviewLOService', ['$http', '$timeout', '$q', 'Language
             	}
                 var loResult = {
                     lo: result,
-                    //parent: {},
                     provider: result.provider
                 }
                 deferred.resolve(loResult);
@@ -727,8 +763,6 @@ service('HigherEducationTransformer', ['KiSorter', '$rootScope', '$filter', 'Lan
 				result.polytechnic = true;
 			}
 			result.teachingLanguage = getFirstItemInList(result.teachingLanguages);
-			//result.formOfTeaching = getFirstItemInList(result.formOfTeaching);
-			
 
 			if (result.themes != undefined && result.themes != null) {
 				var distinctMap = {};
@@ -820,6 +854,170 @@ service('HigherEducationTransformer', ['KiSorter', '$rootScope', '$filter', 'Lan
 						as.aoSpecificApplicationDates = firstAo.specificApplicationDates;
 					}
 				}
+			}
+		}
+	}
+}]).
+
+/**
+ * Transformer for child LO data
+ */
+service('AdultVocationalTransformer', ['KiSorter', '$rootScope', '$filter', 'LanguageService', '_', function(KiSorter, $rootScope, $filter, LanguageService, _) {
+
+	var getFirstItemInList = function(list) {
+		if (list && list[0]) {
+			return list[0];
+		} else {
+			return '';
+		}
+	};
+
+	return {
+		transform: function(result, loId) {
+
+			if (result && result.translationLanguage) {
+				$rootScope.translationLanguage = result.translationLanguage;
+			}
+
+			if (result && result.availableTranslationLanguages) {
+                result.availableTranslationLanguages = _.filter(result.availableTranslationLanguages, function(item) { return item.value.toLowerCase() != result.translationLanguage});
+			}
+
+			if (result && result.provider && result.provider.name) {
+				result.provider.encodedName = $filter('encodeURIComponent')('"' + result.provider.name + '"');
+			}
+			if (result.startDate) {
+				var startDate = new Date(result.startDate);
+				result.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
+			}
+			if (result.educationDegree && (result.educationDegree == 'koulutusasteoph2002_62' || result.educationDegree == 'koulutusasteoph2002_71')) {
+				result.polytechnic = true;
+			}
+			result.teachingLanguage = getFirstItemInList(result.teachingLanguages);
+
+			if (result.themes != undefined && result.themes != null) {
+				var distinctMap = {};
+				var distinctArray = [];
+				for (var i=0; i < result.themes.length;i++) {
+					var theme = result.themes[i];
+					if (distinctMap[theme.uri] == undefined) {
+						distinctMap[theme.uri] = theme;
+						distinctArray.push(theme);
+					}
+				}
+				result.themes = distinctArray;
+			}
+			
+			
+
+			for (var asIndex in result.applicationSystems) {
+				if (result.applicationSystems.hasOwnProperty(asIndex)) {
+					var as = result.applicationSystems[asIndex];
+					for (var aoIndex in as.applicationOptions) {
+						if (as.applicationOptions.hasOwnProperty(aoIndex)) {
+							var ao = as.applicationOptions[aoIndex];
+
+							if (ao.teachingLanguages && ao.teachingLanguages.length > 0) {
+								ao.teachLang = ao.teachingLanguages[0];
+
+								$rootScope.teachingLang = LanguageService.getLanguage();//ao.teachLang.toLowerCase();
+							}
+						}
+					}
+				}
+			}
+
+			for (var asIndex in result.applicationSystems) {
+				if (result.applicationSystems.hasOwnProperty(asIndex)) {
+					var as = result.applicationSystems[asIndex];
+					for (var aoIndex in as.applicationOptions) {
+						if (as.applicationOptions.hasOwnProperty(aoIndex)) {
+							var ao = as.applicationOptions[aoIndex];
+							for (var exam in ao.exams) {
+								if (ao.exams.hasOwnProperty(exam)) {
+									if (ao.exams[exam].examEvents) {
+										ao.exams[exam].examEvents.sort(function(a, b) {
+											return a.start - b.start;
+										});
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			// group application systems by prerequisite
+			var applicationSystemsByPrerequisite = {};
+
+			angular.forEach(result.applicationSystems, function(as, askey) {
+
+
+				angular.forEach(as.applicationOptions, function(ao, aokey) { 
+					angular.forEach(ao.requiredBaseEducations, function(prerequisite, prereqKey) {
+						if (applicationSystemsByPrerequisite[prerequisite]) {
+							applicationSystemsByPrerequisite[prerequisite].push(as);
+						} else {
+							applicationSystemsByPrerequisite[prerequisite] = [];
+							applicationSystemsByPrerequisite[prerequisite].push(as);
+						}
+					});
+				});
+
+			});
+
+
+			// sort application systems and select active LOI
+
+			angular.forEach(applicationSystemsByPrerequisite, function(asByPrerequisite, key){
+				KiSorter.sortApplicationSystems(asByPrerequisite);
+
+			});
+
+
+			// check if application system is of type Lisähaku
+
+			for (var asIndex in result.applicationSystems) {
+				if (result.applicationSystems.hasOwnProperty(asIndex)) {
+					var as = result.applicationSystems[asIndex];
+					if (as.applicationOptions && as.applicationOptions.length > 0) {
+						var firstAo = as.applicationOptions[0];
+						as.aoSpecificApplicationDates = firstAo.specificApplicationDates;
+					}
+				}
+			}
+			
+			result.hasSelectedChild = false;
+			result.isStandalone = false;
+			if (result.children != null && result.children.length == 1) {
+				result.isStandalone = true;
+				result.selectedChild = result.children[0];
+				result.hasSelectedChild = true;
+			} else {
+				result.parentId = result.id;
+				angular.forEach(result.children, function(child, childKey) {
+					if (child.id == loId) {
+						result.selectedChild = child;
+						result.hasSelectedChild = true;
+					}
+					if (child.startDate) {
+						var startDate = new Date(child.startDate);
+						child.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
+					}
+				});
+				
+			}
+			
+			if (result.selectedChild && result.selectedChild.contactPersons != null) {
+				angular.forEach(result.selectedChild.contactPersons, function(person, key) {
+					person.isNayttotutkinto = true;
+				});
+			}
+			
+			if (!result.hasSelectedChild && result.children != null && result.children.length > 1) {
+				result.id = result.children[0].id;
+			} else {
+				result.id = loId;
 			}
 		}
 	}
@@ -1246,22 +1444,47 @@ service('LearningOpportunityPictureService', ['$http', '$timeout', '$q', functio
 /**
  *  Service keeping track of the current language selection
  */
-service('LanguageService', ['CookieService', function(CookieService) {
-    var defaultLanguage = 'fi';
-    var key = 'i18next';
+service('LanguageService', ['CookieService', '$location', '_', function(CookieService, $location, _) {
+    var languages = {
+            finnish: 'fi',
+            swedish: 'sv',
+            english: 'en'
+        },
+        supportedLanguages = _.values(languages),
+        defaultLanguage = languages.finnish,
+        key = 'i18next',
 
-    return {
-        getLanguage: function() {
+        getLanguage = function() {
+
+            // force ui lang to queried language (used for SEO snapshots)
+            // fallback to english
+            var queryLanguage = $location.search().uilang;
+            if (queryLanguage && isSupportedLanguage(queryLanguage)) {
+                return queryLanguage;
+            } else if (queryLanguage) {
+                return languages.finnish;
+            }
+
             return CookieService.get(key) || defaultLanguage;
         },
 
-        setLanguage: function(language) {
+        setLanguage = function(language) {
             CookieService.set(key, language);
         },
 
-        getDefaultLanguage: function() {
+        getDefaultLanguage = function() {
             return defaultLanguage;
-        }
+        },
+
+        isSupportedLanguage = function(lang) {
+            return supportedLanguages.indexOf(lang) > -1;
+        };
+
+    return {
+        getLanguage: getLanguage,
+        setLanguage: setLanguage,
+        getDefaultLanguage: getDefaultLanguage,
+        isSupportedLanguage: isSupportedLanguage
     };
 }]).
 
@@ -1288,52 +1511,6 @@ service('VirkailijaLanguageService', ['CookieService', function(CookieService) {
 }]).
 
 /**
- *  Service for "caching" current parent selection
- */
- /*
- service('ParentLODataService', function() {
-    var data;
-
-    return {
-        getParentLOData: function() {
-            return data;
-        },
-
-        setParentLOData: function(newData) {
-            data = newData;
-        },
-
-        dataExists: function(id) {
-            return data && data.id == id; 
-        }
-    };
-}).
-*/
-
-/**
- *  Service for "caching" current child selection
- */
- /*
- service('ChildLODataService', function() {
-    var data;
-
-    return {
-        getChildLOData: function() {
-            return data;
-        },
-
-        setChildLOData: function(newData) {
-            data = newData;
-        },
-
-        dataExists: function(id) {
-            return data && data.id == id; 
-        }
-    };
-}).
-*/
-
-/**
  *  Service for maintaining application basket state
  */
 service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageService', 'UtilityService', 'CookieService', function($http, $q, $rootScope, LanguageService, UtilityService, CookieService) {
@@ -1348,7 +1525,7 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
 
             switch(ao.type) {
                 case 'korkeakoulu':
-                    loRef += ao.higherEducations && ao.higherEducations.length > 0 ? ao.higherEducations[0].id : '';
+                    loRef += ao.losRefs && ao.losRefs.length > 0 ? ao.losRefs[0].id : '';
                     break;
                 case 'lukio':
                     loRef += ao.losId;
@@ -1358,6 +1535,9 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
                     break;
                 case 'valmistava':
                     loRef += ao.parent.id;
+                    break;
+                case 'aikuislukio':
+                    loRef += ao.losRefs && ao.losRefs.length > 0 ? ao.losRefs[0].id : '';
                     break;
             }
 
@@ -1540,12 +1720,6 @@ service('FilterService', ['$q', '$http', 'UtilityService', 'LanguageService', 'k
             }
         }
     }
-
-    /*
-    var setLocations = function(locations) {
-        filters.locations = locations;
-    }
-    */
 
     return {
         query: function(queryParams) {
@@ -1813,30 +1987,23 @@ service('KiSorter', ['UtilityService', function(UtilityService) {
             return isOngoing;
         }
 
-        var isVarsinainenYhteishakuKaynnissa = function(as) {
-            return UtilityService.isYhteishaku(as) && UtilityService.isVarsinainenHaku(as) && isHakuKaynnissa(as);
+        var isHakuTulossaHakuun = function(as) {
+            var result = false;
+            angular.forEach(as.applicationOptions, function(ao) {
+                if (!ao.canBeApplied && ao.nextApplicationPeriodStarts) {
+                    result = true;
+                }
+            });
+
+            return result;
         }
 
-        var isLisaYhteishakuKaynnissa = function(as) {
-            return UtilityService.isYhteishaku(as) && UtilityService.isLisahaku(as) && isHakuKaynnissa(as);
+        var isVarsinainenYhteishaku = function(as) {
+            return UtilityService.isVarsinainenHaku(as) && UtilityService.isYhteishaku(as);
         }
 
-        var isVarsinainenYhteishakuTulossaHakuun = function(as) {
-            var earliest = -1;
-            var limit = 30 * 24 * 60 * 60 * 1000;
-            var ts = new Date().getTime();
-            if (UtilityService.isYhteishaku(as) && UtilityService.isVarsinainenHaku(as)) {
-                angular.forEach(as.applicationOptions, function(ao) {
-                    if (earliest < 0 || ao.applicationStartDate < earliest) {
-                        earliest = ao.applicationStartDate;
-                    }
-                });
-
-                var delta = earliest - ts
-                return delta >= 0 && delta < limit;
-            }
-
-            return false;
+        var isYhteishaunLisahaku = function(as) {
+            return UtilityService.isLisahaku(as) && UtilityService.isYhteishaku(as);
         }
 
         var getEarliestStartDate = function(as) {
@@ -1850,35 +2017,53 @@ service('KiSorter', ['UtilityService', function(UtilityService) {
             return earliest;
         }
 
+        var getEarliestEndDate = function(as) {
+            var earliest = -1;
+            angular.forEach(as.applicationOptions, function(ao) {
+                if (earliest < 0 || ao.applicationEndDate < earliest) {
+                    earliest = ao.applicationEndDate;
+                }
+            });
+
+            return earliest;
+        }
+
 
         if (applicationSystems) {
             applicationSystems.sort(function(a, b) {
 
                 /*
                 Hakujen järjestys:
-                1. Käynnissä oleva varsinainen yhteishaku
-                2. Käynnissä oleva yhteishaun lisähaku
-                3. 30 päivän sisällä hakuun tuleva varsinainen yhteishaku
-                4. Mikä tahansa käynnissä oleva haku
-                5. Haku, joka alkaa ensimmäisenä
-                6. Haku, jonka nimi on aakkosissa ensimmäisenä
+                1. Käynnissä oleva haku aina ennen ei-käynnissä olevaa hakua
+                    •   jos käynnissä sekä varsinainen yhteishaku että päättyneen yhteishaun lisähaku, näytetään varsinaisen yhteishaun hakukohde ensin
+                2. Tulossa oleva haku ennen mennyttä hakua
+                3. Varsinainen yhteishaku ennen muun tyyppisiä hakuja
+                4. Yhteishaun lisähaku ennen muun tyyppisiä hakuja
+                5. Aikajärjestys:
+                    •   tulevissa hauissa alkamispäivän mukaan laskevassa järjestyksessä
+                    •   menneissä hauissa alkamispäivän mukaan nousevassa järjestyksessä
                 */
-                if (isVarsinainenYhteishakuKaynnissa(a) != isVarsinainenYhteishakuKaynnissa(b)) {
-                    return isVarsinainenYhteishakuKaynnissa(a) ? -1 : 1
-                } else if (isLisaYhteishakuKaynnissa(a) != isLisaYhteishakuKaynnissa(b)) {
-                    return isLisaYhteishakuKaynnissa(a) ? -1 : 1;
-                } else if (isVarsinainenYhteishakuTulossaHakuun(a) != isVarsinainenYhteishakuTulossaHakuun(b)) {
-                    return isVarsinainenYhteishakuTulossaHakuun(a) ? -1 : 1;
+
+                if (isHakuKaynnissa(a) && isHakuKaynnissa(b)) {
+                    if (isVarsinainenYhteishaku(a) != isVarsinainenYhteishaku(b)) {
+                        return isVarsinainenYhteishaku(a) ? -1 : 1
+                    } else if (isYhteishaunLisahaku(a) != isYhteishaunLisahaku(b)) {
+                        return isYhteishaunLisahaku(a) ? -1 : 1;
+                    } else {
+                        return getEarliestEndDate(a) - getEarliestEndDate(b);
+                    }
                 } else if (isHakuKaynnissa(a) != isHakuKaynnissa(b)) {
                     return isHakuKaynnissa(a) ? -1 : 1;
-                } else if (!isHakuKaynnissa(a) && !isHakuKaynnissa(b)) {
-                	return getEarliestStartDate(b) - getEarliestStartDate(a);
-                } else if (getEarliestStartDate(a) != getEarliestStartDate(b)) {
-                    return getEarliestStartDate(a) - getEarliestStartDate(b);
                 } else {
-                    if (a.name < b.name) return -1;
-                    else if (a.name > b.name) return 1;
-                    else return 0;
+                    if (isVarsinainenYhteishaku(a) != isVarsinainenYhteishaku(b)) {
+                        return isVarsinainenYhteishaku(a) ? -1 : 1
+                    } else if (isYhteishaunLisahaku(a) != isYhteishaunLisahaku(b)) {
+                        return isYhteishaunLisahaku(a) ? -1 : 1;
+                    } else if (isHakuTulossaHakuun(a) && isHakuTulossaHakuun(b)) {
+                        return getEarliestStartDate(a) - getEarliestStartDate(b);
+                    } else {
+                        return getEarliestEndDate(a) - getEarliestEndDate(b);
+                    }
                 }
             });
         }
@@ -2027,9 +2212,6 @@ service('UtilityService', function() {
             } else {
                 return number;
             }
-        },
-        replaceAll: function(regexp, replace, str) {
-            return str.replace(regexp, replace);
         }
     };
 });

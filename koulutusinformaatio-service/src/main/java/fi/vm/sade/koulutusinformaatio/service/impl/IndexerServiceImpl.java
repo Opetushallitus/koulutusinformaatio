@@ -152,8 +152,8 @@ public class IndexerServiceImpl implements IndexerService {
             }
 
             //Adding higher education los
-        } else if (los instanceof HigherEducationLOS) {
-            HigherEducationLOS uas = (HigherEducationLOS)los;
+        } else if (los instanceof StandaloneLOS) {
+            StandaloneLOS uas = (StandaloneLOS)los;
             provider = uas.getProvider();
 
             if (uas.getApplicationOptions() != null) {
@@ -168,6 +168,21 @@ public class IndexerServiceImpl implements IndexerService {
                 }
             }
 
+        } else if (los instanceof CompetenceBasedQualificationParentLOS) {
+            CompetenceBasedQualificationParentLOS cbqpLos = (CompetenceBasedQualificationParentLOS)los;
+            provider = cbqpLos.getProvider();
+
+            if (cbqpLos.getApplicationOptions() != null) {
+                for (ApplicationOption ao : cbqpLos.getApplicationOptions()) {
+                    providerAsIds.add(ao.getApplicationSystem().getId());
+                    requiredBaseEducations.addAll(ao.getRequiredBaseEducations());
+                    if (ao.isVocational()) {
+                        vocationalAsIds.add(ao.getApplicationSystem().getId());
+                    } else {
+                        nonVocationalAsIds.add(ao.getApplicationSystem().getId());
+                    }
+                }
+            }
         }
 
         List<SolrInputDocument> docs = conversionService.convert(los, List.class);
@@ -407,9 +422,10 @@ public class IndexerServiceImpl implements IndexerService {
             for (UpperSecondaryLOI curLoi : ((UpperSecondaryLOS) curLos).getLois()) {
                 loHttpSolrServer.deleteById(curLoi.getId());
             }
-        } else if (curLos instanceof HigherEducationLOS) {
+        } else if ((curLos instanceof HigherEducationLOS) 
+                    || (curLos instanceof AdultUpperSecondaryLOS)) {
             loHttpSolrServer.deleteById(curLos.getId());
-        }
+        } 
     }
 
     @Override

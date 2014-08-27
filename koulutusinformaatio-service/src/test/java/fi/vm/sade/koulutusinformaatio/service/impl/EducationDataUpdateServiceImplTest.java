@@ -2,10 +2,12 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
 import com.mongodb.DBCollection;
+
 import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.entity.*;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.modelmapper.ModelMapper;
@@ -29,6 +31,8 @@ public class EducationDataUpdateServiceImplTest extends AbstractEducationService
     private DataStatusDAO dataStatusDAO;
     private PictureDAO pictureDAO;
     private HigherEducationLOSDAO higherEdDAO;
+    private AdultUpperSecondaryLOSDAO adultUpsecDAO;
+    private AdultVocationalLOSDAO adultVocDAO;
     private DBCollection ploCollection;
     private DBCollection aoCollection;
     private DBCollection lopCollection;
@@ -47,10 +51,12 @@ public class EducationDataUpdateServiceImplTest extends AbstractEducationService
         specialLearningOpportunitySpecificationDAO = mockSpecialDAO();
         dataStatusDAO = mockDataStatudDAO();
         higherEdDAO = mockHigherEdDAO();
+        adultUpsecDAO = mock(AdultUpperSecondaryLOSDAO.class);
+        adultVocDAO = mock(AdultVocationalLOSDAO.class);
         service = new EducationDataUpdateServiceImpl( modelMapper, parentLearningOpportunitySpecificationDAO,
                applicationOptionDAO, learningOpportunityProviderDAO, childLearningOpportunityDAO,
                 pictureDAO, upperSecondaryLearningOpportunitySpecificationDAO, dataStatusDAO,
-                specialLearningOpportunitySpecificationDAO,  higherEdDAO);
+                specialLearningOpportunitySpecificationDAO,  higherEdDAO, adultUpsecDAO, adultVocDAO);
     }
 
     @Test

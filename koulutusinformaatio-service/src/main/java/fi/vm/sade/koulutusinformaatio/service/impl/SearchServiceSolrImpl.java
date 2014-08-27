@@ -181,27 +181,6 @@ public class SearchServiceSolrImpl implements SearchService {
 
         return articles;
     }
-
-
-    private String fixString(String term) {
-        String[] splits = term.split(" ");
-        String fixed = "";
-        for (String curSplit : splits) {
-            if ((curSplit.length() > 1 || curSplit.equals("*")) && !curSplit.startsWith("&")) {
-                fixed = String.format("%s%s ", fixed, curSplit);
-            }
-        }
-        
-        fixed = fixed.trim();
-        
-        if (fixed.endsWith("?")) {
-            fixed = fixed.substring(0, fixed.lastIndexOf('?'));
-        }
-        
-        LOG.debug("Fixed: " + fixed);
-        
-        return fixed;
-    }
     
     private String getDateLimitStr(boolean upcomingLater) {
         Calendar limit = Calendar.getInstance();
@@ -236,7 +215,7 @@ public class SearchServiceSolrImpl implements SearchService {
             List<String> excludes, SearchType searchType) throws SearchException {
         LOSearchResultList searchResultList = new LOSearchResultList();
         String trimmed = term.trim();
-        String fixed = fixString(trimmed);
+        String fixed = SolrUtil.fixString(trimmed);
         if (!trimmed.isEmpty()) {
 
             String upcomingLimit = getDateLimitStr(false);
@@ -405,13 +384,20 @@ public class SearchServiceSolrImpl implements SearchService {
         String homeplace = getHomeplace(doc, lang);
         String lopId = doc.get(LearningOpportunity.LOP_ID) != null ? doc.get(LearningOpportunity.LOP_ID).toString() : null;
 
+        LOG.debug("gathered info now creating search result: " + id);
+        
         LOSearchResult lo = new LOSearchResult(
                 id, name,
                 lopId, lopName, prerequisiteText,
                 prerequisiteCodeText, parentId, losId, doc.get("type").toString(),
                 credits, edType, edDegree, edDegreeCode, homeplace);
+        
+        LOG.debug("Created search result: " + id);
 
         updateAsStatus(lo, doc);
+        
+        LOG.debug("Updated as status: " + id);
+        
         return lo;
 
     }
@@ -941,9 +927,11 @@ public class SearchServiceSolrImpl implements SearchService {
         lo.setAsOngoing(false);
         Date now = new Date();
         Date nextStarts = null;
-
+        
         for (Map.Entry<String, Object> start : doc.entrySet()) {
+            
             if (start.getKey().startsWith(AS_START_DATE_PREFIX)) {
+                
                 String endKey = new StringBuilder().append(AS_END_DATE_PREFIX)
                         .append(start.getKey().split("_")[1]).toString();
 
@@ -968,7 +956,7 @@ public class SearchServiceSolrImpl implements SearchService {
                 }
             }
         }
-
+        
         lo.setNextApplicationPeriodStarts(nextStarts);
     }
 

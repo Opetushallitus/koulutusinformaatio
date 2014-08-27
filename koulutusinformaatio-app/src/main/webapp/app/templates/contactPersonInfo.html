@@ -1,5 +1,6 @@
 <div data-ng-show="contactPersons">
-	<h2 data-ki-i18n="contact-person-title" data-lang="{{translationLanguage}}"></h2>
+	<h2 data-ng-show="contactPersons[0].isNayttotutkinto" data-ki-i18n="competence-contact-person-title" data-lang="{{translationLanguage}}"></h2>
+	<h2 data-ng-hide="contactPersons[0].isNayttotutkinto" data-ki-i18n="contact-person-title" data-lang="{{translationLanguage}}"></h2>
 	<p data-ng-repeat="person in contactPersons">
 		<span data-ng-if="person.type == 'ECTS_KOORDINAATTORI'">
 			<span data-ki-i18n="ects-coordinator"></span><br/>

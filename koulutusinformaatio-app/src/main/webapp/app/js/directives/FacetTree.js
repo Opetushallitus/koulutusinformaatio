@@ -1,4 +1,4 @@
-angular.module('kiApp.FacetTree', []).
+angular.module('kiApp.directives.FacetTree', []).
 
 directive('facetTree', function($compile) {
     return {

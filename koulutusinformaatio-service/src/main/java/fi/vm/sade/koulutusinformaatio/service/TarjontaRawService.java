@@ -22,9 +22,12 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.AmmattitutkintoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KomoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusLukioV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KuvaV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.NayttotutkintoV1RDTO;
 
 import java.util.List;
 import java.util.Map;
@@ -62,15 +65,17 @@ public interface TarjontaRawService {
     
     public Map<String, List<String>> listModifiedLearningOpportunities(long updatePeriod);
     
-    public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> listHigherEducation();
+    public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> listEducations(String educationType);
+    
+    public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> listEducationsByToteutustyyppi(String educationType);
     
     public ResultV1RDTO<KoulutusKorkeakouluV1RDTO> getHigherEducationLearningOpportunity(String oid);
     
-    public ResultV1RDTO<List<NimiJaOidRDTO>> getHakukohdesByHigherEducation(String oid);
+    public ResultV1RDTO<List<NimiJaOidRDTO>> getHakukohdesByEducationOid(String oid);
     
-    public ResultV1RDTO<HakukohdeV1RDTO> getHigherEducationHakukohode(String oid);
+    public ResultV1RDTO<HakukohdeV1RDTO> getV1EducationHakukohode(String oid);
     
-    public ResultV1RDTO<HakuV1RDTO> getHigherEducationHakuByOid(String oid);
+    public ResultV1RDTO<HakuV1RDTO> getV1EducationHakuByOid(String oid);
     
     public ResultV1RDTO<Set<String>> getChildrenOfParentHigherEducationLOS(String parentOid);
 
@@ -85,6 +90,15 @@ public interface TarjontaRawService {
     ResultV1RDTO<List<NimiJaOidRDTO>> getHigherEducationByHakukohode(
             String hakukohdeOid);
 
+    ResultV1RDTO<KoulutusLukioV1RDTO> getUpperSecondaryLearningOpportunity(
+            String oid);
+
     ResultV1RDTO<KomoV1RDTO> getV1Komo(String oid);
+
+    ResultV1RDTO<AmmattitutkintoV1RDTO> getAdultVocationalLearningOpportunity(
+            String oid);
+
+    ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> getAdultEducationByKomo(
+            String komoOid);
     
 }

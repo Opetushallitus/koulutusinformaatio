@@ -114,7 +114,7 @@ public class HigherEducationLOSToDTO {
         return dto;
     }
 
-    private static String getDescriptionLang(String lang,
+    public static String getDescriptionLang(String lang,
             List<Code> availableTranslationLanguages) {
         
         boolean uiLangHasDescription = false;

@@ -16,6 +16,8 @@
 
 package fi.vm.sade.koulutusinformaatio.service.builder;
 
+import fi.vm.sade.tarjonta.shared.types.ToteutustyyppiEnum;
+
 /**
  * @author Hannu Lyytikainen
  */
@@ -39,6 +41,8 @@ public class TarjontaConstants {
     public static final String TYPE_PREP = "VALMISTAVA";
     public static final String TYPE_UPSEC = "LUKIO";
     public static final String TYPE_KK = "KORKEAKOULU";
+    public static final String TYPE_ADULT_UPSEC = "AIKUISLUKIO";
+    public static final String TYPE_ADULT_VOCATIONAL = "AMMATILLINEN_AIKUISKOULUTUS";
 
     public static final String VOCATIONAL_EDUCATION_TYPE = "AmmatillinenPeruskoulutus";
     public static final String UPPER_SECONDARY_EDUCATION_TYPE = "Lukiokoulutus";
@@ -48,6 +52,8 @@ public class TarjontaConstants {
     public static final String IMMIGRANT_PREPARATORY_VOCATIONAL = "MaahanmAmmValmistavaKoulutus";
     public static final String IMMIGRANT_PREPARATORY_UPSEC = "MaahanmLukioValmistavaKoulutus";
     public static final String KANSANOPISTO_TYPE = "VapaanSivistystyonKoulutus";
+    public static final String HIGHER_EDUCATION_TYPE = "Korkeakoulutus";
+    
     
     public static final String NUORTEN_KOULUTUS = "koulutuslaji_n";
     public static final String AIKUISKOULUTUS = "koulutuslaji_a";

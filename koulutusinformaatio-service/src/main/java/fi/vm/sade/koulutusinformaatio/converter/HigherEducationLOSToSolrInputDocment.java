@@ -32,10 +32,10 @@ import java.util.Map;
  * 
  * @author Markus
  */
-public class HigherEducationLOSToSolrInputDocment implements Converter<HigherEducationLOS, List<SolrInputDocument>> {
+public class HigherEducationLOSToSolrInputDocment implements Converter<StandaloneLOS, List<SolrInputDocument>> {
 
     @Override
-    public List<SolrInputDocument> convert(HigherEducationLOS los) {
+    public List<SolrInputDocument> convert(StandaloneLOS los) {
         List<SolrInputDocument> docs = Lists.newArrayList();
         FacetIndexer fIndexer = new FacetIndexer();
 
@@ -48,7 +48,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<HigherEdu
     /*
      * Creates a higher education learning opportunity solr document.
      */
-    private SolrInputDocument createDoc(HigherEducationLOS los) {
+    private SolrInputDocument createDoc(StandaloneLOS los) {
 
         SolrInputDocument doc = new SolrInputDocument();
 
@@ -152,7 +152,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<HigherEdu
      * Indexes language specific fields according to teaching languages
      * and tries to index fi, sv, and en regardles of teaching languages
      */
-    private void indexLanguageFields(HigherEducationLOS los,
+    private void indexLanguageFields(StandaloneLOS los,
             SolrInputDocument doc) {
         
         boolean fiIndexed = false;
@@ -186,7 +186,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<HigherEdu
      * Indexes language specific fields according to given teachingLang
      */
     private void indexLangSpecificFields(String teachingLang,
-            HigherEducationLOS los, SolrInputDocument doc, boolean enIndexed) {
+            StandaloneLOS los, SolrInputDocument doc, boolean enIndexed) {
 
         String losName = SolrUtil.resolveTranslationInTeachingLangUseFallback(
                 los.getTeachingLanguages(), los.getShortTitle().getTranslations());
@@ -221,6 +221,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<HigherEdu
             doc.setField(LearningOpportunity.LOP_NAME_EN, SolrUtil.resolveTextWithFallback(teachingLang, transls));
         }
 
+        
         if (los.getQualifications() != null && !los.getQualifications().isEmpty()) {
 
             for (I18nText curQualification : los.getQualifications()) {
@@ -239,8 +240,8 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<HigherEdu
                     doc.addField(LearningOpportunity.QUALIFICATION_EN, SolrUtil.resolveTextWithFallback(teachingLang,  transls));
                 }
             }
-
         }
+        
         if (los.getGoals() != null) {
             transls = los.getGoals().getTranslations();
             if (teachingLang.equals("fi")) {
@@ -313,7 +314,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<HigherEdu
     }
 
     private void indexFacetFields(SolrInputDocument doc,
-            HigherEducationLOS los) {
+            StandaloneLOS los) {
 
         for (Code teachingLangCode : los.getTeachingLanguages()) {
             String curTeachingLang = teachingLangCode.getValue();
@@ -336,7 +337,15 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<HigherEdu
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_YOS);
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_MAISTERI);
             //doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_TUTKINTOON);
+        } else if (los.getType().equals(TarjontaConstants.TYPE_ADULT_UPSEC)) {
+            doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_LUKIO);
+            doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AIKUISLUKIO);
+        } else if (los.getType().equals(TarjontaConstants.TYPE_ADULT_VOCATIONAL)) {
+            doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMM_TUTK);
+            doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMMATILLISET);
         }
+        
+        
 
         for (Code curTopic : los.getTopics()) {
             doc.addField(LearningOpportunity.TOPIC, curTopic.getUri());

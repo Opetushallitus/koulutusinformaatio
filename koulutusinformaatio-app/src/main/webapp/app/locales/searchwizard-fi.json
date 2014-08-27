@@ -1,0 +1,38 @@
+{
+    "title": "Minne hakisin?",
+
+    "breadcrumb-label": "Valintasi",
+    "to-previous-phase": "Palaa edelliseen",
+    "no-results": "Valitsemillasi vaihtoehdoilla ei tällä hetkellä löydy koulutuksia. Palaa edelliseen vaiheeseen ja valitse jokin toinen vaihtoehto.",
+
+    "baseeducation-title": "Valitse",
+    "educationtype-pk-title": "Peruskoulun jälkeen kiinnostaisi...",
+    "educationtype-yo-title": "Lukion jälkeen kiinnostaisi...",
+    "educationtype-mm-title": "Maahanmuuttajien koulutuksista kiinnostaisi...",
+    "educationtype-at-title": "Ammatillisen jälkeen kiinnostaisi...",
+    "theme-title": "Valitse teema",
+    "topic-title": "Valitse aihe",
+    "location-title": "Valitse opiskelupaikkakunta",
+
+    "prerequisites-pk": "Olen käynyt peruskoulun",
+    "prerequisites-yo": "Olen käynyt lukion ja suorittanut ylioppilastutkinnon",
+    "prerequisites-mm": "Etsin maahanmuuttajien koulutusta",
+    "prerequisites-at": "Minulla on ammatillinen tutkinto",
+
+    "educationType_ffm-et010301": "Ammatillinen koulutus",
+    "educationType_ffm-et010401": "Ammattikorkeakoulutukinto",
+    "educationType_ffm-et0105": "Yliopistotutkinto",
+    "educationType_ffm-et010501": "Yliopisto, alempi tutkinto (kandidaatti ym.)",
+    "educationType_ffm-et0205": "Kansanopistojen pitkät linjat",
+    "educationType_ffm-et02015": "Kotitalousopetus (Talouskoulu)",
+    "educationType_ffm-et0101": "Lukiokoulutus",
+    "educationType_ffm-et0102": "Useampi tutkinto samanaikaisesti (kaksoistutkinto)",
+    "educationType_ffm-et020102": "Ammattistartti",
+    "educationType_ffm-et020101": "10. luokka",
+    "educationType_ffm-et010302": "Ammatillinen erityisopetus",
+    "educationType_ffm-et0202": "Valmentava ja kuntouttava opetus ja ohjaus",
+    "educationType_ffm-et020104": "Maahanmuuttajien lukioon valmistava",
+    "educationType_ffm-et020103": "Ammatilliseen koulutukseen valmistava",
+
+    "show-results": "Näytä opiskelupaikat"
+}

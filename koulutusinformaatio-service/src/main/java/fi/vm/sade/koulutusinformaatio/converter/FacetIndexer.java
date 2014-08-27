@@ -183,7 +183,7 @@ public class FacetIndexer {
     /*
      * Creates the solr docs needed in facet search.
      */
-    public List<SolrInputDocument> createFacetDocs(HigherEducationLOS los) {
+    public List<SolrInputDocument> createFacetDocs(StandaloneLOS los) {
         List<SolrInputDocument> docs = Lists.newArrayList();
         for (Code curLang : los.getTeachingLanguages()) {
             SolrUtil.indexCodeAsFacetDoc(curLang, docs, true);

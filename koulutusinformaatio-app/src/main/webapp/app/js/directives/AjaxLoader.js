@@ -1,4 +1,4 @@
-angular.module('directives.AjaxLoader', []).
+angular.module('kiApp.directives.AjaxLoader', []).
 
 directive('ajaxLoader', function () {
     return {

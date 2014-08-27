@@ -103,7 +103,7 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
             doc.addField(LearningOpportunity.NAME_FI, parentName);
         }
 
-        indexLopName(doc, provider, teachLang);
+        SolrUtil.indexLopName(doc, provider, teachLang);
 
         if (provider.getHomePlace() != null) { 
             doc.setField(LearningOpportunity.HOMEPLACE_DISPLAY, 
@@ -180,28 +180,7 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         return doc;
     }
 
-    private void indexLopName(SolrInputDocument doc, Provider provider, String teachLang) {
 
-        String nameFi = provider.getName().getTranslations().get("fi");
-        String nameSv = provider.getName().getTranslations().get("sv");
-        String nameEn = provider.getName().getTranslations().get("en");
-
-        //Setting the lop name to be finnish, if no finnish name, fallback to swedish or english
-        String name = nameFi != null ? nameFi : nameSv;
-        name = name == null ? nameEn : name;
-
-        doc.setField(LearningOpportunity.LOP_NAME, name);
-        doc.addField("lopNames", name);
-        if (teachLang.equals("sv")) {
-            doc.addField(LearningOpportunity.LOP_NAME_SV, 
-                    SolrUtil.resolveTextWithFallback("sv",provider.getName().getTranslations()));
-        } else if (teachLang.equals("en")) {
-            doc.addField(LearningOpportunity.LOP_NAME_EN, SolrUtil.resolveTextWithFallback("en",provider.getName().getTranslations()));
-        } else {
-            doc.addField(LearningOpportunity.LOP_NAME_FI, SolrUtil.resolveTextWithFallback("fi",provider.getName().getTranslations()));
-        }
-
-    }
 
 
 

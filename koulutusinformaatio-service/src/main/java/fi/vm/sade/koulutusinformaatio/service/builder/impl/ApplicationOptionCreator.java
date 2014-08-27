@@ -71,6 +71,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         ApplicationOption ao = new ApplicationOption();
         ao.setEducationTypeUri(educationType);
         ao.setId(hakukohdeDTO.getOid());
+        //ao.setHakuaikaId(hakukohdeDTO.);
         try {
             ao.setName(koodistoService.searchFirstName(hakukohdeDTO.getHakukohdeNimiUri()));
             ao.setAoIdentifier(koodistoService.searchFirstCodeValue(hakukohdeDTO.getHakukohdeNimiUri()));
@@ -296,13 +297,21 @@ public class ApplicationOptionCreator extends ObjectCreator {
         return ao;
     }
 
-    public ApplicationOption createHigherEducationApplicationOption(HigherEducationLOS los, 
+    public ApplicationOption createV1EducationApplicationOption(StandaloneLOS los, 
                                                                     HakukohdeV1RDTO hakukohde, 
                                                                     HakuV1RDTO haku) throws KoodistoException, ResourceNotFoundException {
 
         ApplicationOption ao = new ApplicationOption();
         ao.setId(hakukohde.getOid());
-        ao.setName(super.getI18nText(hakukohde.getHakukohteenNimet())); 
+        if (hakukohde.getHakukohteenNimet() != null) {
+            ao.setName(super.getI18nText(hakukohde.getHakukohteenNimet()));
+        } else if (hakukohde.getHakukohteenNimiUri() != null) {
+            
+            List<I18nText> hakKohdeNames = this.koodistoService.searchNames(hakukohde.getHakukohteenNimiUri());
+            if (hakKohdeNames != null && !hakKohdeNames.isEmpty()) {
+                ao.setName(hakKohdeNames.get(0));
+            }
+        }
         ao.setAthleteEducation(false);
         ao.setStartingQuota(hakukohde.getAloituspaikatLkm());
         ao.setLowestAcceptedScore(hakukohde.getAlinValintaPistemaara());

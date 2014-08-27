@@ -1,0 +1,17 @@
+<ul class="list-unstyled">
+    <li>
+        <h2>{{ao.name}}</h2>
+    </li>
+    <li class="text-muted">
+    	<span data-ki-i18n="starting-quota" data-show-colon="true"></span>
+    	<span>{{ao.startingQuota}}</span>
+    </li>
+    <li class="text-muted">
+        <div data-ki-ao-application-time data-startdate="ao.applicationStartDate" data-enddate="ao.applicationEndDate" data-hakutapa="as.hakutapa" data-label="application-period"></div>
+    </li>
+</ul>
+<ul class="inside">
+    <li data-ng-repeat="losref in ao.higherEdLOSRefs">
+        <a href="#!/korkeakoulu/{{losref.id}}">{{losref.name}}</a>
+    </li>
+</ul>

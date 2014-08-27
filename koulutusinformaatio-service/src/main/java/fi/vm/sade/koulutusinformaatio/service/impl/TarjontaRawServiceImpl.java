@@ -31,9 +31,12 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.HakukohdeV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.AmmattitutkintoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KomoV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusLukioV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KuvaV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.NayttotutkintoV1RDTO;
 
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.codehaus.jackson.map.DeserializationConfig;
@@ -210,10 +213,10 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     }
 
     @Override
-    public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> listHigherEducation() {
+    public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> listEducations(String educationType) {
         return this.higherEducationResource
                 .path("search")
-                .queryParam("koulutusastetyyppi", "Korkeakoulutus")
+                .queryParam("koulutusastetyyppi", educationType)//"Korkeakoulutus")
                 .accept(JSON_UTF8)
                 .get(new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
                 });
@@ -230,6 +233,25 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     }
     
     @Override
+    public ResultV1RDTO<KoulutusLukioV1RDTO> getUpperSecondaryLearningOpportunity(
+            String oid) {
+        return higherEducationResource
+                .path(oid)
+                .accept(JSON_UTF8)
+                .get(new GenericType<ResultV1RDTO<KoulutusLukioV1RDTO>>() {
+                });
+    }
+    
+    @Override
+    public ResultV1RDTO<AmmattitutkintoV1RDTO> getAdultVocationalLearningOpportunity(
+            String oid) {
+        return higherEducationResource
+                .path(oid)
+                .accept(JSON_UTF8)
+                .get(new GenericType<ResultV1RDTO<AmmattitutkintoV1RDTO>>() {
+                });
+    }
+                
     public ResultV1RDTO<KomoV1RDTO> getV1Komo(
             String oid) {
         return this.higherEducationKomoResource
@@ -240,7 +262,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     }
 
     @Override
-    public ResultV1RDTO<List<NimiJaOidRDTO>> getHakukohdesByHigherEducation(
+    public ResultV1RDTO<List<NimiJaOidRDTO>> getHakukohdesByEducationOid(
             String oid) {
         return higherEducationResource
                 .path(String.format("%s/%s", oid, "hakukohteet"))
@@ -250,7 +272,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     }
 
     @Override
-    public ResultV1RDTO<HakukohdeV1RDTO> getHigherEducationHakukohode(String oid) {
+    public ResultV1RDTO<HakukohdeV1RDTO> getV1EducationHakukohode(String oid) {
         return higherEducationAOResource
                 .path(oid)
                 .accept(JSON_UTF8)
@@ -268,7 +290,7 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
     }
 
     @Override
-    public ResultV1RDTO<HakuV1RDTO> getHigherEducationHakuByOid(String oid) {
+    public ResultV1RDTO<HakuV1RDTO> getV1EducationHakuByOid(String oid) {
         return higherEducationASResource
                 .path(oid)
                 .accept(JSON_UTF8)
@@ -307,6 +329,18 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                 .get(new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
                 });
     }
+    
+    @Override
+    public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> getAdultEducationByKomo(
+            String komoOid) {
+        return this.higherEducationResource
+                .path("search")
+                .queryParam("komoOid", komoOid)
+                .queryParam("koulutuslaji", "koulutuslaji_a")
+                .accept(JSON_UTF8)
+                .get(new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
+                });
+    }
 
     @Override
     public ResultV1RDTO<List<KuvaV1RDTO>> getStructureImages(String koulutusOid) {
@@ -323,6 +357,17 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                 .queryParam("lastModified", String.format("-%s", updatePeriod))
                 .accept(JSON_UTF8)
                 .get(new GenericType<Map<String, List<String>>>() {
+                });
+    }
+
+    @Override
+    public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> listEducationsByToteutustyyppi(
+            String educationType) {
+        return this.higherEducationResource
+                .path("search")
+                .queryParam("toteutustyyppi", educationType)
+                .accept(JSON_UTF8)
+                .get(new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
                 });
     }
 }

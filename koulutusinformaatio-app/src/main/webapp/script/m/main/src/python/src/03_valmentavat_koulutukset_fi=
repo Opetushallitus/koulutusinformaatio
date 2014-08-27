@@ -1,7 +1,7 @@
 from operator import itemgetter
 from data import s, get, out, dotted_getter
 
-url = "/lo/search/*?start=0&rows=25&lang=fi&searchType=LO&facetFilters=teachingLangCode_ffm:FI&facetFilters=educationType_ffm:et02.02"
+url = "/lo/search?text=*&start=0&rows=25&lang=fi&searchType=LO&facetFilters=teachingLangCode_ffm:FI&facetFilters=educationType_ffm:et02.02"
 
 results = get(url)
 if "results" in results:

@@ -2,7 +2,7 @@ describe('UtilityService', function() {
     var utility;
 
     beforeEach(function() {
-        module('kiApp', 'kiApp.services');
+        module('kiApp');
 
         inject(function(KiSorter) {
             utility = KiSorter;
@@ -81,6 +81,7 @@ describe('UtilityService', function() {
             expect(data[1].id).toEqual('a');
         });
 
+        
         it('should sort "käynnissä oleva yhteishaun lisähaku" first', function() {
             var data = [
                 {
@@ -109,6 +110,7 @@ describe('UtilityService', function() {
             expect(data[0].id).toEqual('b');
             expect(data[1].id).toEqual('a');
         });
+
 
         it('should sort "käynnissä oleva yhteishaun lisähaku" before upcoming "varsinainen yhteishaku"', function() {
             var ts = new Date().getTime();
@@ -141,28 +143,28 @@ describe('UtilityService', function() {
             expect(data[1].id).toEqual('a');
         });
 
-        it('should sort upcoming "varsinainen yhteishaku" before "käynnissä oleva erillishaku"', function() {
+        it('should sort upcoming "varsinainen yhteishaku" after "käynnissä oleva erillishaku"', function() {
             var ts = new Date().getTime();
             var data = [
                 {
                     id: 'a',
-                    hakutapa: hakutapa.erillishaku,
-                    hakutyyppi: hakutyyppi.varsinainen,
-                    applicationOptions: [
-                        {
-                            canBeApplied: true,
-                            
-                        }
-                    ]
-                },
-                {
-                    id: 'b',
                     hakutapa: hakutapa.yhteishaku,
                     hakutyyppi: hakutyyppi.varsinainen,
                     applicationOptions: [
                         {
                             canBeApplied: false,
                             applicationStartDate: ts + 15 * 24 * 60 * 60 * 1000 
+                        }
+                    ]
+                },
+                {
+                    id: 'b',
+                    hakutapa: hakutapa.erillishaku,
+                    hakutyyppi: hakutyyppi.varsinainen,
+                    applicationOptions: [
+                        {
+                            canBeApplied: true,
+                            
                         }
                     ]
                 }
@@ -183,7 +185,7 @@ describe('UtilityService', function() {
                     applicationOptions: [
                         {
                             canBeApplied: true,
-                            applicationStartDate: ts + 15 * 24 * 60 * 60 * 1000
+                            applicationEndDate: ts + 3 * 24 * 60 * 60 * 1000
                         }
                     ]
                 },
@@ -195,7 +197,7 @@ describe('UtilityService', function() {
                     applicationOptions: [
                         {
                             canBeApplied: true,
-                            applicationStartDate: ts - 25 * 24 * 60 * 60 * 1000 
+                            applicationEndDate: ts + 1 * 24 * 60 * 60 * 1000
                         }
                     ]
                 },
@@ -206,42 +208,7 @@ describe('UtilityService', function() {
                     applicationOptions: [
                         {
                             canBeApplied: true,
-                            applicationStartDate: ts + 5 * 24 * 60 * 60 * 1000 
-                        }
-                    ]
-                }
-            ];
-
-            utility.sortApplicationSystems(data);
-            expect(data[0].id).toEqual('c');
-            expect(data[1].id).toEqual('a');
-            expect(data[2].id).toEqual('b');
-        });
-
-        it('should sort applications systems by name', function() {
-            var ts = new Date().getTime();
-            var data = [
-                {
-                    id: 'a',
-                    name: 'baa',
-                    hakutapa: hakutapa.yhteishaku,
-                    hakutyyppi: hakutyyppi.varsinainen,
-                    applicationOptions: [
-                        {
-                            canBeApplied: true,
-                            applicationStartDate: ts + 15 * 24 * 60 * 60 * 1000
-                        }
-                    ]
-                },
-                {
-                    id: 'b',
-                    name: 'aab',
-                    hakutapa: hakutapa.yhteishaku,
-                    hakutyyppi: hakutyyppi.varsinainen,
-                    applicationOptions: [
-                        {
-                            canBeApplied: true,
-                            applicationStartDate: ts + 15 * 24 * 60 * 60 * 1000 
+                            applicationEndDate: ts + 2 * 24 * 60 * 60 * 1000
                         }
                     ]
                 }
@@ -249,7 +216,8 @@ describe('UtilityService', function() {
 
             utility.sortApplicationSystems(data);
             expect(data[0].id).toEqual('b');
-            expect(data[1].id).toEqual('a');
+            expect(data[1].id).toEqual('c');
+            expect(data[2].id).toEqual('a');
         });
 
         it('should sort applications systems correctly', function() {
@@ -263,7 +231,8 @@ describe('UtilityService', function() {
                     applicationOptions: [
                         {
                             canBeApplied: false,
-                            applicationStartDate: ts + 15 * 24 * 60 * 60 * 1000
+                            applicationStartDate: ts + 15 * 24 * 60 * 60 * 1000,
+                            nextApplicationPeriodStarts: ts + 15 * 24 * 60 * 60 * 1000
                         }
                     ]
                 },
@@ -274,8 +243,8 @@ describe('UtilityService', function() {
                     hakutyyppi: hakutyyppi.varsinainen,
                     applicationOptions: [
                         {
-                            canBeApplied: false,
-                            applicationStartDate: ts + 5 * 24 * 60 * 60 * 1000 
+                            canBeApplied: true,
+                            applicationEndDate: ts + 1 * 24 * 60 * 60 * 1000 
                         }
                     ]
                 },
@@ -286,8 +255,8 @@ describe('UtilityService', function() {
                     hakutyyppi: hakutyyppi.varsinainen,
                     applicationOptions: [
                         {
-                            canBeApplied: false,
-                            applicationStartDate: ts + 5 * 24 * 60 * 60 * 1000 
+                            canBeApplied: true,
+                            applicationEndDate: ts + 2 * 24 * 60 * 60 * 1000 
                         }
                     ]
                 },
@@ -298,7 +267,8 @@ describe('UtilityService', function() {
                     hakutyyppi: hakutyyppi.lisa,
                     applicationOptions: [
                         {
-                            canBeApplied: true
+                            canBeApplied: true,
+                            applicationEndDate: ts + 1 * 24 * 60 * 60 * 1000
                         }
                     ]
                 },
@@ -309,18 +279,99 @@ describe('UtilityService', function() {
                     hakutyyppi: hakutyyppi.varsinainen,
                     applicationOptions: [
                         {
-                            canBeApplied: true
+                            canBeApplied: true,
+                            applicationEndDate: ts + 3 * 24 * 60 * 60 * 1000 
+                        }
+                    ]
+                },
+                {
+                    id: 'f',
+                    name: 'f',
+                    hakutapa: hakutapa.erillishaku,
+                    hakutyyppi: hakutyyppi.varsinainen,
+                    applicationOptions: [
+                        {
+                            canBeApplied: true,
+                            applicationEndDate: ts + 1 * 24 * 60 * 60 * 1000 
+                        }
+                    ]
+                },
+                {
+                    id: 'g',
+                    name: 'g',
+                    hakutapa: hakutapa.erillishaku,
+                    hakutyyppi: hakutyyppi.varsinainen,
+                    applicationOptions: [
+                        {
+                            canBeApplied: false,
+                            applicationStartDate: ts - 20 * 24 * 60 * 60 * 1000
+                        }
+                    ]
+                },
+                {
+                    id: 'h',
+                    name: 'h',
+                    hakutapa: hakutapa.yhteishaku,
+                    hakutyyppi: hakutyyppi.lisa,
+                    applicationOptions: [
+                        {
+                            canBeApplied: false,
+                            applicationStartDate: ts - 30 * 24 * 60 * 60 * 1000
+                        }
+                    ]
+                },
+                {
+                    id: 'i',
+                    name: 'i',
+                    hakutapa: hakutapa.yhteishaku,
+                    hakutyyppi: hakutyyppi.varsinainen,
+                    applicationOptions: [
+                        {
+                            canBeApplied: false,
+                            applicationStartDate: ts + 20 * 24 * 60 * 60 * 1000,
+                            nextApplicationPeriodStarts: ts + 20 * 24 * 60 * 60 * 1000
+                        }
+                    ]
+                },
+                {
+                    id: 'j',
+                    name: 'j',
+                    hakutapa: hakutapa.yhteishaku,
+                    hakutyyppi: hakutyyppi.varsinainen,
+                    applicationOptions: [
+                        {
+                            canBeApplied: false,
+                            applicationStartDate: ts + 10 * 24 * 60 * 60 * 1000,
+                            nextApplicationPeriodStarts: ts + 10 * 24 * 60 * 60 * 1000
+                        }
+                    ]
+                },
+                {
+                    id: 'k',
+                    name: 'k',
+                    hakutapa: hakutapa.erillishaku,
+                    hakutyyppi: hakutyyppi.varsinainen,
+                    applicationOptions: [
+                        {
+                            canBeApplied: false,
+                            applicationEndDate: ts - 10 * 24 * 60 * 60 * 1000
                         }
                     ]
                 }
             ];
 
             utility.sortApplicationSystems(data);
-            expect(data[0].id).toEqual('e');
-            expect(data[1].id).toEqual('d');
-            expect(data[2].id).toEqual('a');
-            expect(data[3].id).toEqual('b');
-            expect(data[4].id).toEqual('c');
+            expect(data[0].id).toEqual('b');
+            expect(data[1].id).toEqual('c');
+            expect(data[2].id).toEqual('e');
+            expect(data[3].id).toEqual('d');
+            expect(data[4].id).toEqual('f');
+            expect(data[5].id).toEqual('j');
+            expect(data[6].id).toEqual('a');
+            expect(data[7].id).toEqual('i');
+            expect(data[8].id).toEqual('h');
+            expect(data[9].id).toEqual('g');
+            expect(data[10].id).toEqual('k');
         });
 
         it('should sort application options correctly', function() {
@@ -468,19 +519,6 @@ describe('UtilityService', function() {
             expect(result.length).toEqual(2);
             expect(result[0].id).toEqual('1a');
             expect(result[0].applicationOptions.length).toEqual(4);
-        });
-    });
-
-    describe('replaceAll', function() {
-
-        it('should replace all occurences in a string', function() {
-            var result = utility.replaceAll(/a/g, 'b', 'aabaca');
-            expect(result).toEqual('bbbbcb');
-        });
-
-        it('should replace all occurences in a string', function() {
-            var result = utility.replaceAll(/<a/g, '<a target="_blank"', '<a href="abc">link</a><span>something</span><a href="def">another link</a>');
-            expect(result).toEqual('<a target="_blank" href="abc">link</a><span>something</span><a target="_blank" href="def">another link</a>');
         });
     });
 });

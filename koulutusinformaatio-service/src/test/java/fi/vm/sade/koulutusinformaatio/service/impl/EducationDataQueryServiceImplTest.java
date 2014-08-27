@@ -33,6 +33,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.mock;
 
 /**
  * @author Mikko Majapuro
@@ -50,6 +51,8 @@ public class EducationDataQueryServiceImplTest extends AbstractEducationServiceT
     private DataStatusDAO dataStatusDAO;
     private LearningOpportunityProviderDAO providerDAO;
     private HigherEducationLOSDAO higherEdDAO;
+    private AdultUpperSecondaryLOSDAO adultUpsecDAO;
+    private AdultVocationalLOSDAO adultVocDAO;
 
     @Before
     public void setUp() {
@@ -64,10 +67,12 @@ public class EducationDataQueryServiceImplTest extends AbstractEducationServiceT
         specialLearningOpportunitySpecificationDAO = mockSpecialDAO();
         providerDAO = mockProviderDAO();
         higherEdDAO = mockHigherEdDAO();
+        adultUpsecDAO = mock(AdultUpperSecondaryLOSDAO.class);
+        adultVocDAO = mock(AdultVocationalLOSDAO.class);
         service = new EducationDataQueryServiceImpl(parentLearningOpportunitySpecificationDAO,
                 applicationOptionDAO, modelMapper, childLearningOpportunityDAO,
                 dataStatusDAO, pictureDAO, upperSecondaryLearningOpportunitySpecificationDAO,
-                specialLearningOpportunitySpecificationDAO, higherEdDAO, providerDAO);
+                specialLearningOpportunitySpecificationDAO, higherEdDAO, adultUpsecDAO, adultVocDAO, providerDAO);
     }
 
 	@Test

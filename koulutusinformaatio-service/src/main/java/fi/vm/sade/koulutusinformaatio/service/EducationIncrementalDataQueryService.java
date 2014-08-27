@@ -2,6 +2,7 @@ package fi.vm.sade.koulutusinformaatio.service;
 
 import java.util.List;
 
+import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
@@ -101,5 +102,7 @@ public interface EducationIncrementalDataQueryService {
     DataStatus getLatestSuccessDataStatus();
 
     List<String> getLearningOpportunityIdsByAS(String asId);
+
+    AdultUpperSecondaryLOS getAdultUpsecLearningOpportunity(String curLosId) throws ResourceNotFoundException;
 
 }

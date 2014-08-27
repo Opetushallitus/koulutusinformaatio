@@ -47,6 +47,8 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
     private DataStatusDAO dataStatusDAO;
     private SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO;
     private HigherEducationLOSDAO higherEducationLOSTransactionDAO;
+    private AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSTransactionDAO;
+    private AdultVocationalLOSDAO adultVocationalLOSTransactionDAO;
 
     @Autowired
     public EducationDataUpdateServiceImpl(ModelMapper modelMapper, ParentLearningOpportunitySpecificationDAO parentLOSTransactionDAO,
@@ -56,7 +58,9 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
             PictureDAO pictureTransactionDAO,
             UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO,
             DataStatusDAO dataStatusDAO, SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO,
-            HigherEducationLOSDAO higherEducationLOSTransactionDAO) {
+            HigherEducationLOSDAO higherEducationLOSTransactionDAO,
+            AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSTransactionDAO,
+            AdultVocationalLOSDAO adultVocationalLOSTransactionDAO) {
         this.modelMapper = modelMapper;
         this.parentLOSTransactionDAO = parentLOSTransactionDAO;
         this.applicationOptionTransactionDAO = applicationOptionTransactionDAO;
@@ -67,6 +71,8 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
         this.dataStatusDAO = dataStatusDAO;
         this.specialLOSTransactionDAO = specialLOSTransactionDAO;
         this.higherEducationLOSTransactionDAO = higherEducationLOSTransactionDAO;
+        this.adultUpperSecondaryLOSTransactionDAO = adultUpperSecondaryLOSTransactionDAO;
+        this.adultVocationalLOSTransactionDAO = adultVocationalLOSTransactionDAO;
     }
 
     @Override
@@ -81,8 +87,48 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
             save((SpecialLOS) learningOpportunitySpecification);
         } 
         else if (learningOpportunitySpecification instanceof HigherEducationLOS) {
-            this.saveHigherEducationLOS((HigherEducationLOS)learningOpportunitySpecification);
+            saveHigherEducationLOS((HigherEducationLOS)learningOpportunitySpecification);
         } 
+        else if (learningOpportunitySpecification instanceof AdultUpperSecondaryLOS) {
+            saveAdultUpperSecondaryLOS((AdultUpperSecondaryLOS)learningOpportunitySpecification);
+        } 
+        else if (learningOpportunitySpecification instanceof AdultUpperSecondaryLOS) {
+            saveAdultVocationalLOS((AdultVocationalLOS)learningOpportunitySpecification);
+        }
+    }
+
+    private void saveAdultVocationalLOS(
+            AdultVocationalLOS learningOpportunitySpecification) {
+        
+        if (learningOpportunitySpecification != null) {
+            AdultVocationalLOSEntity entity =
+                    modelMapper.map(learningOpportunitySpecification, AdultVocationalLOSEntity.class);
+
+            save(entity.getProvider());
+
+                for (ApplicationOptionEntity ao : entity.getApplicationOptions()) {
+                    save(ao);
+                }
+            this.adultVocationalLOSTransactionDAO.save(entity);
+        }
+        
+    }
+
+    private void saveAdultUpperSecondaryLOS(
+            AdultUpperSecondaryLOS learningOpportunitySpecification) {
+        
+        if (learningOpportunitySpecification != null) {
+            AdultUpperSecondaryLOSEntity entity =
+                    modelMapper.map(learningOpportunitySpecification, AdultUpperSecondaryLOSEntity.class);
+
+            save(entity.getProvider());
+
+                for (ApplicationOptionEntity ao : entity.getApplicationOptions()) {
+                    save(ao);
+                }
+            this.adultUpperSecondaryLOSTransactionDAO.save(entity);
+        }
+        
     }
 
     @Override
