@@ -29,6 +29,7 @@ import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
 import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Article;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
+import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
@@ -139,6 +140,7 @@ public class UpdateServiceImpl implements UpdateService {
             
             /*
             List<CompetenceBasedQualificationParentLOS> adultVocationals = this.tarjontaService.findAdultVocationals();
+            LOG.debug("Indexed " + adultVocationals.size() + "adult comptence based qualifactions");
             for (CompetenceBasedQualificationParentLOS curLOS : adultVocationals) {
                 LOG.debug("Saving adult vocational los: " + curLOS.getId() + " with name: " + curLOS.getName().get("fi"));
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
@@ -186,6 +188,7 @@ public class UpdateServiceImpl implements UpdateService {
             }
         }
     }
+    
     /*
     private void indexToSolr(CompetenceBasedQualificationParentLOS curLOS,
             HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws Exception {

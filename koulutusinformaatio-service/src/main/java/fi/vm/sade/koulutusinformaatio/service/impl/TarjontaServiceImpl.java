@@ -515,6 +515,14 @@ public class TarjontaServiceImpl implements TarjontaService {
 
             }
         }
+        
+        for (AdultUpperSecondaryLOS curLos : koulutukset) {
+            if (curLos.getApplicationOptions() != null) {
+                for (ApplicationOption ao : curLos.getApplicationOptions()) {
+                    ao.setHigherEdLOSRefs(aoToEducationsMap.get(ao.getId()));
+                }
+            }
+        }
 
         return koulutukset;
     }
