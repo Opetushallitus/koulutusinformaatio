@@ -16,6 +16,7 @@ public class CompetenceBasedQualificationParentLOS extends LOS {
     private I18nText educationKind;
     
     private I18nText educationDomain;
+    private I18nText educationType;
     
     private Provider provider;
     private List<ApplicationOption> applicationOptions;
@@ -82,6 +83,12 @@ public class CompetenceBasedQualificationParentLOS extends LOS {
     }
     public void setEducationKind(I18nText educationKind) {
         this.educationKind = educationKind;
+    }
+    public I18nText getEducationType() {
+        return educationType;
+    }
+    public void setEducationType(I18nText educationType) {
+        this.educationType = educationType;
     }
 
 

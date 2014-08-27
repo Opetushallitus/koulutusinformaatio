@@ -826,7 +826,10 @@ public class LOSObjectCreator extends ObjectCreator {
         
         CompetenceBasedQualificationParentLOS los = new CompetenceBasedQualificationParentLOS();
         
+        los.setType(TarjontaConstants.TYPE_ADULT_VOCATIONAL);
         List<Code> rawTranslCodes = new ArrayList<Code>();
+        
+        
         
         for (String curKomotoOid : komotoOids) {
             LOG.debug("Cur standalone competence komoto oid: " + curKomotoOid);
@@ -889,6 +892,9 @@ public class LOSObjectCreator extends ObjectCreator {
                 if (los.getEducationKind() == null) {
                     los.setEducationKind(getI18nTextEnriched(dto.getKoulutuslaji().getMeta()));
                 }
+                if (los.getEducationType() == null) {
+                    los.setEducationType(getI18nTextEnriched(dto.getKoulutustyyppi().getMeta()));
+                }
                 
                 newLos.setParent(new ParentLOSRef(los.getId(), los.getName()));
                 if (los.getChildren() == null) {
@@ -917,6 +923,8 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setAvailableTranslationLanguages(new ArrayList<Code>(availableLanguagesMap.values()));
         
         Map<String,ApplicationOption> aoMap = new HashMap<String,ApplicationOption>();
+        Map<String,Code> topicMap = new HashMap<String,Code>();
+        Map<String,Code> themeMap = new HashMap<String,Code>();
         
         for (AdultVocationalLOS curChild: los.getChildren()) {
             if (curChild.getApplicationOptions() != null) { 
@@ -924,8 +932,16 @@ public class LOSObjectCreator extends ObjectCreator {
                     aoMap.put(ao.getId(), ao);
                 }
             }
+            for (Code curTopic : curChild.getTopics()) {
+                topicMap.put(curTopic.getUri(), curTopic);
+            }
+            for (Code curTheme : curChild.getThemes()) {
+                themeMap.put(curTheme.getUri(), curTheme);
+            }
         }
         
+        los.setTopics(new ArrayList<Code>(topicMap.values()));
+        los.setThemes(new ArrayList<Code>(themeMap.values()));
         
         if (!aoMap.isEmpty()) {
             los.setApplicationOptions(new ArrayList<ApplicationOption>(aoMap.values()));
