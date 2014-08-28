@@ -624,7 +624,9 @@ public class TarjontaServiceImpl implements TarjontaService {
         String parentKomoOid = null;
         List<String> komoOids = new ArrayList<String>();
         int splitIndex = oid.indexOf('_');
+        boolean isKomotoOid = true;
         if (splitIndex > -1) {
+            isKomotoOid = false;
             parentKomoOid = oid.substring(0, splitIndex);
             providerOid = oid.substring(splitIndex + 1);
             
@@ -661,7 +663,10 @@ public class TarjontaServiceImpl implements TarjontaService {
             }
         }
 
-        Map<String,String> komotoOids  = new HashMap<String,String>();
+        List<String> komotoOids  = new ArrayList<String>();
+        if (isKomotoOid) {
+            komotoOids.add(oid);
+        }
 
         for (String curKomoOid : komoOids) {
             LOG.debug("CurKomoOid: " + curKomoOid + "\n");
@@ -683,7 +688,10 @@ public class TarjontaServiceImpl implements TarjontaService {
                             
                             LOG.debug("There is a koulutus result");
                             //KoulutusHakutulosV1RDTO koul = tarjRes.getTulokset().get(0);
-                            komotoOids.put(curKoul.getOid(), curKoul.getOid());
+                            //komotoOids.put(curKoul.getOid(), curKoul.getOid());
+                            if (!komotoOids.contains(curKoul.getOid())) {
+                                komotoOids.add(curKoul.getOid());
+                            }
                             LOG.debug(curKoul.getOid());
                             if (!createdOids.contains(curKoul.getOid())) {
                                 createdOids.add(curKoul.getOid());
@@ -695,8 +703,8 @@ public class TarjontaServiceImpl implements TarjontaService {
         }
         LOG.debug("data gathewred, now creating Adult vocational stuff");
         
-        LOG.debug("komotoOids: " + komotoOids.values());
+        LOG.debug("komotoOids: " + komotoOids.size());
 
-        return this.creator.createCBQPLOS(parentKomoOid, new ArrayList<String>(komotoOids.values()), checkStatus);
+        return this.creator.createCBQPLOS(parentKomoOid, komotoOids, checkStatus, isKomotoOid);
     }
 }

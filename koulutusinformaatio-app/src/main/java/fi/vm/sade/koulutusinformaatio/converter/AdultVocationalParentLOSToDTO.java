@@ -49,6 +49,7 @@ public final class AdultVocationalParentLOSToDTO {
         dto.setId(los.getId());
         
         String descriptionLang = HigherEducationLOSToDTO.getDescriptionLang(lang, los.getAvailableTranslationLanguages());
+        descriptionLang = descriptionLang != null ? descriptionLang : "fi";
         dto.setTranslationLanguage(descriptionLang);
         dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(los.getName(), uiLang));
 
