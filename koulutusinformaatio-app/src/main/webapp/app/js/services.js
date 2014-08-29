@@ -284,7 +284,7 @@ service('ParentLOService', ['$http', '$timeout', '$q', '$rootScope', 'LanguageSe
             if (options.lang) {
                 queryParams.lang = options.lang
             }
-            
+
             $http.get('../lo/parent/' + options.id, {
                 params: queryParams
             }).
@@ -2002,6 +2002,10 @@ service('KiSorter', ['UtilityService', function(UtilityService) {
             return result;
         }
 
+        var isHakuPaattynyt = function(as) {
+            return (!isHakuKaynnissa(as) && !isHakuTulossaHakuun(as));
+        }
+
         var isVarsinainenYhteishaku = function(as) {
             return UtilityService.isVarsinainenHaku(as) && UtilityService.isYhteishaku(as);
         }
@@ -2058,6 +2062,10 @@ service('KiSorter', ['UtilityService', function(UtilityService) {
                     }
                 } else if (isHakuKaynnissa(a) != isHakuKaynnissa(b)) {
                     return isHakuKaynnissa(a) ? -1 : 1;
+                } else if (isHakuTulossaHakuun(a) && isHakuPaattynyt(b)) {
+                    return -1;
+                } else if(isHakuTulossaHakuun(b) && isHakuPaattynyt(a)) {
+                    return 1;
                 } else {
                     if (isVarsinainenYhteishaku(a) != isVarsinainenYhteishaku(b)) {
                         return isVarsinainenYhteishaku(a) ? -1 : 1
