@@ -39,6 +39,7 @@ public class ApplicationOptionSearchResultDTO {
     private boolean vocational;
     private String educationCodeUri;
     private List<OrganizationGroupDTO> organizationGroups;
+    private List<ApplicationOptionAttachmentDTO> attachments;
 
     public String getId() {
         return id;
@@ -134,5 +135,13 @@ public class ApplicationOptionSearchResultDTO {
 
     public List<OrganizationGroupDTO> getOrganizationGroups() {
         return organizationGroups;
+    }
+
+    public List<ApplicationOptionAttachmentDTO> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(List<ApplicationOptionAttachmentDTO> attachments) {
+        this.attachments = attachments;
     }
 }
