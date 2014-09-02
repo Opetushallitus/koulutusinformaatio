@@ -43,6 +43,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiValikoimaV1RDT
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusLukioV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.NayttotutkintoV1RDTO;
+import fi.vm.sade.tarjonta.service.types.KoulutusmoduuliTyyppi;
 import fi.vm.sade.tarjonta.service.types.TarjontaTila;
 import fi.vm.sade.tarjonta.service.types.YhteyshenkiloTyyppi;
 import fi.vm.sade.tarjonta.shared.types.KomoTeksti;
@@ -851,6 +852,8 @@ public class LOSObjectCreator extends ObjectCreator {
 
                 AdultVocationalLOS newLos = createAdultVocationalLOS(dto, checkStatus);
 
+                LOG.debug("Updating parnet los data with dto: " + dto.getOid());
+                
                 updateParentLosData(los, rawTranslCodes, dto, parentKomoOid, newLos);
                 if (los.getChildren() == null) {
                     los.setChildren(new ArrayList<AdultVocationalLOS>());
@@ -947,7 +950,7 @@ public class LOSObjectCreator extends ObjectCreator {
             los.setProvider(newLos.getProvider());
         }
         if (los.getId() == null) {
-            los.setId(String.format("%s_%s", parentKomoOid, los.getProvider().getId()));
+            los.setId(dto.getOid());
         }
         if (los.getEducationDomain() == null) {
             los.setEducationDomain(newLos.getEducationDomain());
@@ -958,6 +961,14 @@ public class LOSObjectCreator extends ObjectCreator {
         if (los.getEducationType() == null) {
             los.setEducationType(getI18nTextEnriched(dto.getKoulutustyyppi().getMeta()));
         }
+        
+        LOG.debug("setting charge with los: " + los.getId() +" and dto hinta: " + dto.getHinta());
+        if (dto.getHinta() != null) {
+            los.setCharge(dto.getHinta());
+        }
+        los.setChargeable(dto.getOpintojenMaksullisuus());
+        los.setOsaamisala(!dto.getKoulutusmoduuliTyyppi().name().equals(KoulutusmoduuliTyyppi.TUTKINTO.name()));
+        
     }
 
 

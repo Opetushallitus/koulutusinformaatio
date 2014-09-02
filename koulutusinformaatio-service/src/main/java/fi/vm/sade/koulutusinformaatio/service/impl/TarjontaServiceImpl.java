@@ -621,10 +621,10 @@ public class TarjontaServiceImpl implements TarjontaService {
         if (creator == null) {
             creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService);
         }
-        String providerOid = null;
-        String parentKomoOid = null;
-        List<String> komoOids = new ArrayList<String>();
-        int splitIndex = oid.indexOf('_');
+        //String providerOid = null;
+        //String parentKomoOid = null;
+        //List<String> komoOids = new ArrayList<String>();
+        /*int splitIndex = oid.indexOf('_');
         if (splitIndex > -1) {
             parentKomoOid = oid.substring(0, splitIndex);
             providerOid = oid.substring(splitIndex + 1);
@@ -635,7 +635,7 @@ public class TarjontaServiceImpl implements TarjontaService {
             }
             komoOids.add(parentKomoOid);
 
-        } else {
+        } else {*/
 
             ResultV1RDTO<AmmattitutkintoV1RDTO> res = this.tarjontaRawService.getAdultVocationalLearningOpportunity(oid);
             NayttotutkintoV1RDTO dto = res.getResult();
@@ -643,18 +643,18 @@ public class TarjontaServiceImpl implements TarjontaService {
 
 
 
-            parentKomoOid = dto.getKomoOid();
-            providerOid = dto.getOrganisaatio().getOid();
-            komoOids.add(parentKomoOid);
+            //parentKomoOid = dto.getKomoOid();
+            //providerOid = dto.getOrganisaatio().getOid();
+            //komoOids.add(parentKomoOid);
 
-            if (dto.getKoulutusmoduuliTyyppi().name().equals(KoulutusmoduuliTyyppi.TUTKINTO.name())) {
+            /*if (dto.getKoulutusmoduuliTyyppi().name().equals(KoulutusmoduuliTyyppi.TUTKINTO.name())) {
                 if (!createdOids.contains(oid)) {
                     createdOids.add(oid);
-                }
+                }*/
                 
-                return this.creator.createCBQPLOS(parentKomoOid, Arrays.asList(oid), checkStatus);
+                return this.creator.createCBQPLOS(dto.getKomoOid(), Arrays.asList(oid), checkStatus);
                 
-            } else {
+            /*} else {
 
 
                 ResultV1RDTO<Set<String>> parentsRes = this.tarjontaRawService.getParentsOfHigherEducationLOS(dto.getKomoOid());
@@ -714,6 +714,6 @@ public class TarjontaServiceImpl implements TarjontaService {
 
         LOG.debug("komotoOids: " + komotoOids.size());
 
-        return this.creator.createCBQPLOS(parentKomoOid, komotoOids, checkStatus);
+        return this.creator.createCBQPLOS(parentKomoOid, komotoOids, checkStatus);*/
     }
 }

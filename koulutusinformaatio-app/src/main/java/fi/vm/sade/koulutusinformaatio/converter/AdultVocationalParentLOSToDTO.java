@@ -66,6 +66,10 @@ public final class AdultVocationalParentLOSToDTO {
         if (dto.getEducationKind() != null) {
             dto.setEducationKind(dto.getEducationKind().toLowerCase());
         }
+        
+        dto.setChargeable(los.isChargeable());
+        dto.setCharge(los.getCharge());
+        dto.setOsaamisala(los.isOsaamisala());
 
         // as based approach for UI
 
