@@ -36,7 +36,7 @@ public class FacetIndexer {
         SolrUtil.indexCodeAsFacetDoc(loi.getPrerequisite(), docs, true);
 
         if (los.getTopics() != null) {
-        
+
             for (Code curCode : los.getTopics()) {
                 SolrUtil.indexCodeAsFacetDoc(curCode, docs, false);
             }
@@ -47,26 +47,26 @@ public class FacetIndexer {
                 SolrUtil.indexCodeAsFacetDoc(curCode, docs, false);
             }
         }
-        
-        
+
+
         if (loi.getFotFacet() != null) {
             for (Code curFOT : loi.getFotFacet()) {
                 SolrUtil.indexCodeAsFacetDoc(curFOT, docs, false);
             }
         }
-        
+
         if (loi.getTimeOfTeachingFacet() != null) {
             for (Code curTimeOfTeaching : loi.getTimeOfTeachingFacet()) {
                 SolrUtil.indexCodeAsFacetDoc(curTimeOfTeaching, docs, false);
             }
         }
-        
+
         if (loi.getFormOfStudyFacet() != null) {
             for (Code curFormOfStudy : loi.getFormOfStudyFacet()) {
                 SolrUtil.indexCodeAsFacetDoc(curFormOfStudy, docs, false);
             }
         }
-        
+
         if (loi.getKoulutuslaji() != null) {
             SolrUtil.indexCodeAsFacetDoc(loi.getKoulutuslaji(), docs, false);
         }
@@ -83,7 +83,7 @@ public class FacetIndexer {
         for (ChildLOS childLOS : parent.getChildren()) {
             for (ChildLOI childLOI : childLOS.getLois()) {
                 docs.addAll(createFacetDocs(childLOI));
-                
+
                 if (childLOI.getFotFacet() != null) {
                     for (Code curFOT : childLOI.getFotFacet()) {
                         SolrUtil.indexCodeAsFacetDoc(curFOT, docs, false);
@@ -106,7 +106,56 @@ public class FacetIndexer {
         }
 
         if (parent.getTopics() != null) {
-            
+
+            for (Code curCode : parent.getTopics()) {
+                SolrUtil.indexCodeAsFacetDoc(curCode, docs, false);
+            }
+        }
+
+        if (parent.getThemes() != null) {
+            for (Code curCode : parent.getThemes()) {
+                SolrUtil.indexCodeAsFacetDoc(curCode, docs, false);
+            }
+        }
+
+        return docs;
+    }
+
+
+    /*
+     * Creates the solr docs needed in facet search.
+     */
+    public List<SolrInputDocument> createFacetsDocs(
+            CompetenceBasedQualificationParentLOS parent) {
+        List<SolrInputDocument> docs = Lists.newArrayList();
+        for (AdultVocationalLOS childLOS : parent.getChildren()) {
+
+            for (Code teachLang: childLOS.getTeachingLanguages()) {
+                SolrUtil.indexCodeAsFacetDoc(teachLang, docs, true);
+            }
+
+            if (childLOS.getFotFacet() != null) {
+                for (Code curFOT : childLOS.getFotFacet()) {
+                    SolrUtil.indexCodeAsFacetDoc(curFOT, docs, false);
+                }
+            }
+            if (childLOS.getTimeOfTeachingFacet() != null) {
+                for (Code curTimeOfTeaching : childLOS.getTimeOfTeachingFacet()) {
+                    SolrUtil.indexCodeAsFacetDoc(curTimeOfTeaching, docs, false);
+                }
+            }
+            if (childLOS.getFormOfStudyFacet() != null) {
+                for (Code curFormOfStudy : childLOS.getFormOfStudyFacet()) {
+                    SolrUtil.indexCodeAsFacetDoc(curFormOfStudy, docs, false);
+                }
+            }
+            if (childLOS.getKoulutuslaji() != null) {
+                SolrUtil.indexCodeAsFacetDoc(childLOS.getKoulutuslaji(), docs, false);
+            }
+        }
+
+        if (parent.getTopics() != null) {
+
             for (Code curCode : parent.getTopics()) {
                 SolrUtil.indexCodeAsFacetDoc(curCode, docs, false);
             }
@@ -143,7 +192,7 @@ public class FacetIndexer {
         SolrUtil.indexCodeAsFacetDoc(childLOI.getPrerequisite(), docs, true);
 
         if (los.getTopics() != null) {
-            
+
             for (Code curCode : los.getTopics()) {
                 SolrUtil.indexCodeAsFacetDoc(curCode, docs, false);
             }
@@ -154,25 +203,25 @@ public class FacetIndexer {
                 SolrUtil.indexCodeAsFacetDoc(curCode, docs, false);
             }
         }
-        
+
         if (childLOI.getFotFacet() != null) {
             for (Code curFOT : childLOI.getFotFacet()) {
                 SolrUtil.indexCodeAsFacetDoc(curFOT, docs, false);
             }
         }
-        
+
         if (childLOI.getTimeOfTeachingFacet() != null) {
             for (Code curTimeOfTeaching : childLOI.getTimeOfTeachingFacet()) {
                 SolrUtil.indexCodeAsFacetDoc(curTimeOfTeaching, docs, false);
             }
         }
-        
+
         if (childLOI.getFormOfStudyFacet() != null) {
             for (Code curFormOfStudy : childLOI.getFormOfStudyFacet()) {
                 SolrUtil.indexCodeAsFacetDoc(curFormOfStudy, docs, false);
             }
         }
-        
+
         if (childLOI.getKoulutuslaji() != null) {
             SolrUtil.indexCodeAsFacetDoc(childLOI.getKoulutuslaji(), docs, false);
         }
@@ -195,7 +244,7 @@ public class FacetIndexer {
         }
 
         if (los.getTopics() != null) {
-            
+
             for (Code curCode : los.getTopics()) {
                 SolrUtil.indexCodeAsFacetDoc(curCode, docs, false);
             }
@@ -206,26 +255,26 @@ public class FacetIndexer {
                 SolrUtil.indexCodeAsFacetDoc(curCode, docs, false);
             }
         }
-        
+
         if (los.getFotFacet() != null) {
             for (Code curFOT : los.getFotFacet()) {
                 SolrUtil.indexCodeAsFacetDoc(curFOT, docs, false);
             }
         }
-        
-        
+
+
         if (los.getTimeOfTeachingFacet() != null) {
             for (Code curTimeOfTeaching : los.getTimeOfTeachingFacet()) {
                 SolrUtil.indexCodeAsFacetDoc(curTimeOfTeaching, docs, false);
             }
         }
-        
+
         if (los.getFormOfStudyFacet() != null) {
             for (Code curFormOfStudy : los.getFormOfStudyFacet()) {
                 SolrUtil.indexCodeAsFacetDoc(curFormOfStudy, docs, false);
             }
         }
-        
+
         if (los.getKoulutuslaji() != null) {
             SolrUtil.indexCodeAsFacetDoc(los.getKoulutuslaji(), docs, false);
         }

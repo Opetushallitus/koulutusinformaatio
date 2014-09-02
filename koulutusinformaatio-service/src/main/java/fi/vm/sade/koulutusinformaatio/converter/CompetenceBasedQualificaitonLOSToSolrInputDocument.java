@@ -29,9 +29,7 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
         List<SolrInputDocument> docs = Lists.newArrayList();
         FacetIndexer fIndexer = new FacetIndexer();
         docs.add(createParentDoc(los));
-        //docs.addAll(fIndexer.createFacetsDocs(los));
-        
-        
+        docs.addAll(fIndexer.createFacetsDocs(los));
 
         return docs;
     }
@@ -42,6 +40,7 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
         SolrInputDocument doc = new SolrInputDocument();
         
         doc.addField(LearningOpportunity.ID, los.getId());
+        doc.addField(LearningOpportunity.TYPE, los.getType());
         
         Provider provider = null;
         
@@ -56,19 +55,25 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
         
         String teachLang = los.getChildren().get(0).getTeachingLanguages().isEmpty() ? "EXC" : los.getChildren().get(0).getTeachingLanguages().get(0).getValue().toLowerCase();
 
-        String losName = SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getChildren().get(0).getTeachingLanguages(), 
-                los.getName().getTranslations());
+        String losName = String.format("%s, %s", SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getChildren().get(0).getTeachingLanguages(), 
+                los.getName().getTranslations()), SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getChildren().get(0).getTeachingLanguages(), 
+                        los.getEducationKind().getTranslations()).toLowerCase());
         doc.setField(LearningOpportunity.NAME, losName);
         doc.addField(LearningOpportunity.NAME_SORT, losName.toLowerCase().trim());
         if (teachLang.equals("fi")) {
-            doc.addField(LearningOpportunity.NAME_FI, SolrUtil.resolveTextWithFallback("fi", los.getName().getTranslations()));
+            doc.addField(LearningOpportunity.NAME_FI, String.format("%s, %s", SolrUtil.resolveTextWithFallback("fi", los.getName().getTranslations()), SolrUtil.resolveTextWithFallback("fi", los.getEducationKind().getTranslations()).toLowerCase()));
         } else if (teachLang.equals("sv")) {
-            doc.addField(LearningOpportunity.NAME_SV, SolrUtil.resolveTextWithFallback("sv", los.getName().getTranslations()));
+            doc.addField(LearningOpportunity.NAME_SV, String.format("%s, %s", SolrUtil.resolveTextWithFallback("sv", los.getName().getTranslations()), SolrUtil.resolveTextWithFallback("sv", los.getEducationKind().getTranslations())).toLowerCase());
         } else if (teachLang.equals("en")) {
-            doc.addField(LearningOpportunity.NAME_EN, SolrUtil.resolveTextWithFallback("en", los.getName().getTranslations()));
+            doc.addField(LearningOpportunity.NAME_EN, String.format("%s, %s", SolrUtil.resolveTextWithFallback("en", los.getName().getTranslations()), SolrUtil.resolveTextWithFallback("en", los.getEducationKind().getTranslations()).toLowerCase()));
         } else {
             doc.addField(LearningOpportunity.NAME_FI, losName);
         }
+        
+        String educationTypeDisplay = SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getChildren().get(0).getTeachingLanguages(), 
+                los.getName().getTranslations());
+        
+        doc.setField(LearningOpportunity.EDUCATION_TYPE_DISPLAY, educationTypeDisplay);
         
         if (provider.getHomePlace() != null) { 
             doc.setField(LearningOpportunity.HOMEPLACE_DISPLAY, 
@@ -146,7 +151,7 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
         
         
         
-        return null;
+        return doc;
     }
     
     private void indexChildFields(SolrInputDocument doc,

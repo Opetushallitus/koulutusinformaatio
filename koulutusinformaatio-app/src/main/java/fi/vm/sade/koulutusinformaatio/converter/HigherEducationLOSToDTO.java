@@ -79,6 +79,7 @@ public class HigherEducationLOSToDTO {
         dto.setEducationDomain(ConverterUtil.getTextByLanguageUseFallbackLang(los.getEducationDomain(), uiLang));
 
         // as based approach for UI
+        String defLang = dto.getTeachingLanguages().size() == 1 && dto.getTeachingLanguages().get(0) != null ? dto.getTeachingLanguages().get(0) : uiLang;
 
         if (los.getApplicationOptions() != null) {
             SetMultimap<ApplicationSystem, ApplicationOption> aoByAs = HashMultimap.create();
@@ -90,7 +91,7 @@ public class HigherEducationLOSToDTO {
                 ApplicationSystemDTO asDTO = ApplicationSystemToDTO.convert(as, uiLang);
                 asDTO.setStatus(as.getStatus());
                 for (ApplicationOption ao : aoByAs.get(as)) {
-                    asDTO.getApplicationOptions().add(ApplicationOptionToDTO.convertHigherEducation(ao, lang, uiLang, "fi"));
+                    asDTO.getApplicationOptions().add(ApplicationOptionToDTO.convertHigherEducation(ao, lang, uiLang, defLang));
                 }
                 dto.getApplicationSystems().add(asDTO);
             }

@@ -9,8 +9,9 @@
     			<!-- END PREVIEW -->
     	</span>
     </div>
-    <h1 data-ng-show="lo.selectedChild.name && !lo.isStandalone" class="inline">{{lo.selectedChild.name}}</h1>
-    <h1 data-ng-hide="lo.selectedChild.name && !lo.isStandalone" class="inline">{{lo.name}}</h1>
+    
+    <h1 data-ng-show="lo.name" class="inline">{{lo.name}}</h1>
+    
     
     <!-- PREVIEW -->
     <div data-ng-if="lo.preview" class="inline preview-actions">
@@ -18,6 +19,8 @@
         <a class="btn btn-info" href="{{lo.tarjontaEditUrl}}" data-ki-i18n="tarjonta-muokkaa-koulutus" data-lang="{{virkailijaLang}}"></a>
     </div>
     <!-- END PREVIEW -->
+    
+    <h3 data-ng-show="lo.selectedChild.name && lo.osaamisala">{{lo.selectedChild.name}}</h3>
     
     <div data-ki-sibling-ribbon data-siblings="lo.children" class="ribbon"></div>
 </section>

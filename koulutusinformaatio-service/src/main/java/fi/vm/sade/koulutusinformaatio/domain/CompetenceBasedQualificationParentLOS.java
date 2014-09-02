@@ -16,6 +16,7 @@ public class CompetenceBasedQualificationParentLOS extends LOS {
     private I18nText educationKind;
     
     private I18nText educationDomain;
+    private I18nText educationType;
     
     private Provider provider;
     private List<ApplicationOption> applicationOptions;
@@ -23,6 +24,10 @@ public class CompetenceBasedQualificationParentLOS extends LOS {
     private List<AdultVocationalLOS> children;
     
     private List<Code> availableTranslationLanguages;
+    
+    private boolean chargeable;
+    private double charge;
+    private boolean osaamisala;
     
    
     public List<AdultVocationalLOS> getChildren() {
@@ -82,6 +87,31 @@ public class CompetenceBasedQualificationParentLOS extends LOS {
     }
     public void setEducationKind(I18nText educationKind) {
         this.educationKind = educationKind;
+    }
+    public I18nText getEducationType() {
+        return educationType;
+    }
+    public void setEducationType(I18nText educationType) {
+        this.educationType = educationType;
+    }
+    public boolean isChargeable() {
+        return chargeable;
+    }
+    public void setChargeable(boolean chargeable) {
+        this.chargeable = chargeable;
+    }
+    public double getCharge() {
+        return charge;
+    }
+    public void setCharge(double charge) {
+        this.charge = charge;
+    }
+    public void setOsaamisala(boolean isOsaamisala) {
+        this.osaamisala = isOsaamisala;
+        
+    }
+    public boolean isOsaamisala() {
+        return osaamisala;
     }
 
 

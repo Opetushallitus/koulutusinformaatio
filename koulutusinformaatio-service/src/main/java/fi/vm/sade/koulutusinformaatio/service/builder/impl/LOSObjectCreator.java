@@ -43,6 +43,7 @@ import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoodiValikoimaV1RDT
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusLukioV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.NayttotutkintoV1RDTO;
+import fi.vm.sade.tarjonta.service.types.KoulutusmoduuliTyyppi;
 import fi.vm.sade.tarjonta.service.types.TarjontaTila;
 import fi.vm.sade.tarjonta.service.types.YhteyshenkiloTyyppi;
 import fi.vm.sade.tarjonta.shared.types.KomoTeksti;
@@ -81,7 +82,7 @@ public class LOSObjectCreator extends ObjectCreator {
         this.organisaatioRawService = organisaatioRawService;
         this.tarjontaRawService = tarjontaRawService;
         this.loiCreator = new LOIObjectCreator(koodistoService, tarjontaRawService, organisaatioRawService);
-        
+
     }
 
     private <T extends LOS> T createLOS(Class<T> type) throws TarjontaParseException {
@@ -485,7 +486,7 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setCreditValue(koulutus.getOpintojenLaajuusarvo().getArvo());
         los.setCreditUnit(getI18nTextEnriched(koulutus.getOpintojenLaajuusyksikko().getMeta()));
         los.setChargeable(koulutus.getOpintojenMaksullisuus()); 
-        
+
 
         try {
             Provider provider = providerService.getByOID(koulutus.getOrganisaatio().getOid());
@@ -528,7 +529,7 @@ public class LOSObjectCreator extends ObjectCreator {
 
         return los;
     }
-    
+
     public AdultUpperSecondaryLOS createAdultUpperSeconcaryLOS(KoulutusLukioV1RDTO koulutus, boolean checkStatus) 
             throws TarjontaParseException, KoodistoException {
 
@@ -575,19 +576,19 @@ public class LOSObjectCreator extends ObjectCreator {
                 && !koulutus.getKuvausKomo().get(KomoTeksti.JATKOOPINTO_MAHDOLLISUUDET).getTekstis().containsKey(UNDEFINED)) {
             los.setAccessToFurtherStudies(getI18nTextEnriched(koulutus.getKuvausKomo().get(KomoTeksti.JATKOOPINTO_MAHDOLLISUUDET)));
         }
-        
+
         if (koulutus.getKuvausKomoto().get(KomotoTeksti.OPPIAINEET_JA_KURSSIT) != null
                 &&!koulutus.getKuvausKomoto().get(KomotoTeksti.OPPIAINEET_JA_KURSSIT).getTekstis().containsKey("UNDEFINED")) {
             los.setSubjectsAndCourses(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.OPPIAINEET_JA_KURSSIT)));
         }
-        
+
         if (koulutus.getKuvausKomoto().get(KomotoTeksti.KOHDERYHMA) != null
                 &&!koulutus.getKuvausKomoto().get(KomotoTeksti.KOHDERYHMA).getTekstis().containsKey("UNDEFINED")) {
             los.setTargetGroup(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.KOHDERYHMA)));
         }
-        
+
         if (koulutus.getKielivalikoima() != null) {//komoto.getTarjotutKielet() != null) {
-            
+
             //Map<String, List<String>> kielivalikoimat = komoto.getTarjotutKielet();
             List<LanguageSelection> languageSelection = Lists.newArrayList();
             KoodiValikoimaV1RDTO kielivalikoima = koulutus.getKielivalikoima();
@@ -612,7 +613,7 @@ public class LOSObjectCreator extends ObjectCreator {
             availableLanguagesMap.put(teachingLanguage.getUri(), teachingLanguage);
         }
         los.setAvailableTranslationLanguages(new ArrayList<Code>(availableLanguagesMap.values()));
-        
+
         if (koulutus.getLukiodiplomit() != null) {
             los.setDiplomas(getI18nTextMultiple(koulutus.getLukiodiplomit()));
         }
@@ -697,7 +698,7 @@ public class LOSObjectCreator extends ObjectCreator {
 
         return los;
     }
-    
+
     private String getEducationType(String uri) {
         if (uri.contains(TarjontaConstants.ED_DEGREE_URI_AMK)) {
             return SolrConstants.ED_TYPE_AMK;
@@ -743,7 +744,7 @@ public class LOSObjectCreator extends ObjectCreator {
         educationRef.setLosType(TarjontaConstants.TYPE_KK);
         return educationRef;
     }
-    
+
     private boolean fetchHakukohdeData(StandaloneLOS los, boolean checkStatus) throws KoodistoException {
         ResultV1RDTO<List<NimiJaOidRDTO>> hakukohteet = loiCreator.tarjontaRawService.getHakukohdesByEducationOid(los.getId());
 
@@ -774,8 +775,8 @@ public class LOSObjectCreator extends ObjectCreator {
             if (checkStatus && !hakuDTO.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
                 continue;
             }
-            
-            
+
+
             try {
 
                 ApplicationOption ao = loiCreator.applicationOptionCreator.createV1EducationApplicationOption(los, hakukohdeDTO, hakuRes.getResult());
@@ -785,7 +786,7 @@ public class LOSObjectCreator extends ObjectCreator {
                     ao.getApplicationSystem().setStatus(hakuDTO.getTila());
                 }
                 aos.add(ao);
-                
+
             } catch (Exception ex) {
                 LOG.debug("Problem fetching ao: " + ex.getMessage());
             }
@@ -821,136 +822,179 @@ public class LOSObjectCreator extends ObjectCreator {
 
         return losRef;
     }
-    
+
     public CompetenceBasedQualificationParentLOS createCBQPLOS(String parentKomoOid, List<String> komotoOids, boolean checkStatus) throws TarjontaParseException, KoodistoException {
-        
+
         CompetenceBasedQualificationParentLOS los = new CompetenceBasedQualificationParentLOS();
-        
+
+        los.setType(TarjontaConstants.TYPE_ADULT_VOCATIONAL);
         List<Code> rawTranslCodes = new ArrayList<Code>();
-        
+
         for (String curKomotoOid : komotoOids) {
             LOG.debug("Cur standalone competence komoto oid: " + curKomotoOid);
             ResultV1RDTO<AmmattitutkintoV1RDTO> res = this.tarjontaRawService.getAdultVocationalLearningOpportunity(curKomotoOid);
             NayttotutkintoV1RDTO dto = res.getResult();
-            
+
             LOG.debug("Got dto ");
-            
-            if (dto == null || dto.getToteutustyyppi() == null || !dto.getToteutustyyppi().name().startsWith(ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO_NAYTTOTUTKINTONA.name())) {
+
+            if (dto == null || dto.getToteutustyyppi() == null || !isAikuAmm(dto)) {
                 LOG.debug("Unfitting komoto, continuing");
+                try {
+                    LOG.debug("Toteutustyyppi: " + dto.getToteutustyyppi().name());
+                } catch (Exception ex) {
+                    LOG.debug("Could not get toteutustyyppi: ");
+                }
                 continue;
             }
             LOG.debug("Toteutustyyppi: " + dto.getToteutustyyppi().name());
             LOG.debug("Ok, creating it");
             try {
+
                 AdultVocationalLOS newLos = createAdultVocationalLOS(dto, checkStatus);
+
+                LOG.debug("Updating parnet los data with dto: " + dto.getOid());
                 
-                if (los.getName() == null) {
-                    //los.setName(newLos.getName());
-                    los.setName(getI18nTextEnriched(dto.getKoulutuskoodi().getMeta()));
-                }
-                if (los.getGoals() == null
-                        && dto.getKuvausKomo().get(KomoTeksti.TAVOITTEET) != null  
-                                && !dto.getKuvausKomo().get(KomoTeksti.TAVOITTEET).getTekstis().containsKey(UNDEFINED)) {
-                    los.setGoals(getI18nTextEnriched(dto.getKuvausKomo().get(KomoTeksti.TAVOITTEET)));
-                    rawTranslCodes.addAll(koodistoService.searchMultiple(
-                            this.getTranslationUris(dto.getKuvausKomo().get(KomoTeksti.TAVOITTEET))));
-                    
-                }
-                if (los.getAccessToFurtherStudies() == null
-                        && dto.getKuvausKomo().get(KomoTeksti.JATKOOPINTO_MAHDOLLISUUDET) != null  
-                        && !dto.getKuvausKomo().get(KomoTeksti.JATKOOPINTO_MAHDOLLISUUDET).getTekstis().containsKey(UNDEFINED)) {
-                    los.setAccessToFurtherStudies(getI18nTextEnriched(dto.getKuvausKomo().get(KomoTeksti.JATKOOPINTO_MAHDOLLISUUDET)));
-                    rawTranslCodes.addAll(koodistoService.searchMultiple(
-                            this.getTranslationUris(dto.getKuvausKomo().get(KomoTeksti.JATKOOPINTO_MAHDOLLISUUDET))));
-                }
-                if (los.getChoosingCompetence() == null
-                        && dto.getKuvausKomoto().get(KomotoTeksti.OSAAMISALAN_VALINTA) != null  
-                        && !dto.getKuvausKomoto().get(KomotoTeksti.OSAAMISALAN_VALINTA).getTekstis().containsKey(UNDEFINED)) {
-                    los.setChoosingCompetence(getI18nTextEnriched(dto.getKuvausKomoto().get(KomotoTeksti.OSAAMISALAN_VALINTA)));
-                    rawTranslCodes.addAll(koodistoService.searchMultiple(
-                            this.getTranslationUris(dto.getKuvausKomoto().get(KomotoTeksti.OSAAMISALAN_VALINTA))));
-                }
-                if (los.getDegreeCompletion() == null
-                        && dto.getKuvausKomoto().get(KomotoTeksti.NAYTTOTUTKINNON_SUORITTAMINEN) != null  
-                        && !dto.getKuvausKomoto().get(KomotoTeksti.NAYTTOTUTKINNON_SUORITTAMINEN).getTekstis().containsKey(UNDEFINED)) {
-                    los.setDegreeCompletion(getI18nTextEnriched(dto.getKuvausKomoto().get(KomotoTeksti.NAYTTOTUTKINNON_SUORITTAMINEN)));
-                    rawTranslCodes.addAll(koodistoService.searchMultiple(
-                            this.getTranslationUris(dto.getKuvausKomoto().get(KomotoTeksti.NAYTTOTUTKINNON_SUORITTAMINEN))));
-                }
-                if (los.getProvider() == null) {
-                    los.setProvider(newLos.getProvider());
-                }
-                if (los.getId() == null) {
-                    los.setId(String.format("%s_%s", parentKomoOid, los.getProvider().getId()));
-                }
-                if (los.getEducationDomain() == null) {
-                    los.setEducationDomain(newLos.getEducationDomain());
-                }
-                if (los.getEducationKind() == null) {
-                    los.setEducationKind(getI18nTextEnriched(dto.getKoulutuslaji().getMeta()));
-                }
-                
-                newLos.setParent(new ParentLOSRef(los.getId(), los.getName()));
+                updateParentLosData(los, rawTranslCodes, dto, parentKomoOid, newLos);
                 if (los.getChildren() == null) {
                     los.setChildren(new ArrayList<AdultVocationalLOS>());
                 }
                 los.getChildren().add(newLos);
+
+                newLos.setParent(new ParentLOSRef(los.getId(), los.getName()));
+
+
             } catch (TarjontaParseException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
-        
-        
-        
+
         if (los == null || los.getChildren() == null || los.getChildren().isEmpty()) {
             if (checkStatus) {
                 throw new TarjontaParseException("No valid children for parent adult vocational: " + parentKomoOid);
             }
             return null;
         }
-        
+
         Map<String,Code> availableLanguagesMap = new HashMap<String,Code>();
         for (Code curCode : rawTranslCodes) {
             availableLanguagesMap.put(curCode.getUri(), curCode);
         }
         los.setAvailableTranslationLanguages(new ArrayList<Code>(availableLanguagesMap.values()));
-        
+
         Map<String,ApplicationOption> aoMap = new HashMap<String,ApplicationOption>();
-        
+        Map<String,Code> topicMap = new HashMap<String,Code>();
+        Map<String,Code> themeMap = new HashMap<String,Code>();
+
         for (AdultVocationalLOS curChild: los.getChildren()) {
             if (curChild.getApplicationOptions() != null) { 
                 for (ApplicationOption ao : curChild.getApplicationOptions()) {
                     aoMap.put(ao.getId(), ao);
                 }
             }
+            for (Code curTopic : curChild.getTopics()) {
+                topicMap.put(curTopic.getUri(), curTopic);
+            }
+            for (Code curTheme : curChild.getThemes()) {
+                themeMap.put(curTheme.getUri(), curTheme);
+            }
         }
-        
-        
+
+        los.setTopics(new ArrayList<Code>(topicMap.values()));
+        los.setThemes(new ArrayList<Code>(themeMap.values()));
+
         if (!aoMap.isEmpty()) {
             los.setApplicationOptions(new ArrayList<ApplicationOption>(aoMap.values()));
         }
-        
+
         return los;
+    }
+
+    private void updateParentLosData(CompetenceBasedQualificationParentLOS los,
+            List<Code> rawTranslCodes, NayttotutkintoV1RDTO dto,
+            String parentKomoOid, AdultVocationalLOS newLos) throws KoodistoException {
+        if (los.getName() == null) {
+            //los.setName(newLos.getName());
+            los.setName(getI18nTextEnriched(dto.getKoulutuskoodi().getMeta()));
+        }
+        if (los.getGoals() == null
+                && dto.getKuvausKomo().get(KomoTeksti.TAVOITTEET) != null  
+                && !dto.getKuvausKomo().get(KomoTeksti.TAVOITTEET).getTekstis().containsKey(UNDEFINED)) {
+            los.setGoals(getI18nTextEnriched(dto.getKuvausKomo().get(KomoTeksti.TAVOITTEET)));
+            rawTranslCodes.addAll(koodistoService.searchMultiple(
+                    this.getTranslationUris(dto.getKuvausKomo().get(KomoTeksti.TAVOITTEET))));
+
+        }
+        if (los.getAccessToFurtherStudies() == null
+                && dto.getKuvausKomo().get(KomoTeksti.JATKOOPINTO_MAHDOLLISUUDET) != null  
+                && !dto.getKuvausKomo().get(KomoTeksti.JATKOOPINTO_MAHDOLLISUUDET).getTekstis().containsKey(UNDEFINED)) {
+            los.setAccessToFurtherStudies(getI18nTextEnriched(dto.getKuvausKomo().get(KomoTeksti.JATKOOPINTO_MAHDOLLISUUDET)));
+            rawTranslCodes.addAll(koodistoService.searchMultiple(
+                    this.getTranslationUris(dto.getKuvausKomo().get(KomoTeksti.JATKOOPINTO_MAHDOLLISUUDET))));
+        }
+        if (los.getChoosingCompetence() == null
+                && dto.getKuvausKomoto().get(KomotoTeksti.OSAAMISALAN_VALINTA) != null  
+                && !dto.getKuvausKomoto().get(KomotoTeksti.OSAAMISALAN_VALINTA).getTekstis().containsKey(UNDEFINED)) {
+            los.setChoosingCompetence(getI18nTextEnriched(dto.getKuvausKomoto().get(KomotoTeksti.OSAAMISALAN_VALINTA)));
+            rawTranslCodes.addAll(koodistoService.searchMultiple(
+                    this.getTranslationUris(dto.getKuvausKomoto().get(KomotoTeksti.OSAAMISALAN_VALINTA))));
+        }
+        if (los.getDegreeCompletion() == null
+                && dto.getKuvausKomoto().get(KomotoTeksti.NAYTTOTUTKINNON_SUORITTAMINEN) != null  
+                && !dto.getKuvausKomoto().get(KomotoTeksti.NAYTTOTUTKINNON_SUORITTAMINEN).getTekstis().containsKey(UNDEFINED)) {
+            los.setDegreeCompletion(getI18nTextEnriched(dto.getKuvausKomoto().get(KomotoTeksti.NAYTTOTUTKINNON_SUORITTAMINEN)));
+            rawTranslCodes.addAll(koodistoService.searchMultiple(
+                    this.getTranslationUris(dto.getKuvausKomoto().get(KomotoTeksti.NAYTTOTUTKINNON_SUORITTAMINEN))));
+        }
+        if (los.getProvider() == null) {
+            los.setProvider(newLos.getProvider());
+        }
+        if (los.getId() == null) {
+            los.setId(dto.getOid());
+        }
+        if (los.getEducationDomain() == null) {
+            los.setEducationDomain(newLos.getEducationDomain());
+        }
+        if (los.getEducationKind() == null) {
+            los.setEducationKind(getI18nTextEnriched(dto.getKoulutuslaji().getMeta()));
+        }
+        if (los.getEducationType() == null) {
+            los.setEducationType(getI18nTextEnriched(dto.getKoulutustyyppi().getMeta()));
+        }
         
+        LOG.debug("setting charge with los: " + los.getId() +" and dto hinta: " + dto.getHinta());
+        if (dto.getHinta() != null) {
+            los.setCharge(dto.getHinta());
+        }
+        los.setChargeable(dto.getOpintojenMaksullisuus());
+        los.setOsaamisala(!dto.getKoulutusmoduuliTyyppi().name().equals(KoulutusmoduuliTyyppi.TUTKINTO.name()));
+        
+    }
+
+
+    private boolean isAikuAmm(NayttotutkintoV1RDTO dto) {
+        return (dto.getToteutustyyppi().name().startsWith(ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO_NAYTTOTUTKINTONA.name()) 
+                || dto.getToteutustyyppi().name().startsWith(ToteutustyyppiEnum.AMMATTITUTKINTO.name()) 
+                || dto.getToteutustyyppi().name().startsWith(ToteutustyyppiEnum.ERIKOISAMMATTITUTKINTO.name()))
+                && dto.getKoulutuslaji().getUri().startsWith("koulutuslaji_a");
     }
 
     public AdultVocationalLOS createAdultVocationalLOS(
             NayttotutkintoV1RDTO koulutus, boolean checkStatus) throws TarjontaParseException, KoodistoException {
-        
+
         LOG.debug("Creating adult vocational los: " + koulutus.getOid());
-        
-        
-        
+
+
+
         AdultVocationalLOS los = new AdultVocationalLOS();
 
         los.setStatus(koulutus.getTila().toString());
-        
+
         los.setType(TarjontaConstants.TYPE_ADULT_VOCATIONAL);//TarjontaConstants.TYPE_ADULT_UPSEC);
         los.setId(koulutus.getOid());
         los.setKomoOid(koulutus.getKomoOid());
         los.setValmistavaKoulutus(koulutus.getValmistavaKoulutus() != null);
-        
+
 
         //Set<Code> availableLanguagaes = Sets.newHashSet();
         Map<String,Code> availableLanguagesMap = new HashMap<String,Code>();
@@ -989,23 +1033,23 @@ public class LOSObjectCreator extends ObjectCreator {
                 && !koulutus.getKuvausKomo().get(KomoTeksti.JATKOOPINTO_MAHDOLLISUUDET).getTekstis().containsKey(UNDEFINED)) {
             los.setAccessToFurtherStudies(getI18nTextEnriched(koulutus.getKuvausKomo().get(KomoTeksti.JATKOOPINTO_MAHDOLLISUUDET)));
         }
-        
+
         if (koulutus.getKuvausKomoto().get(KomotoTeksti.MAKSULLISUUS) != null  
                 && !koulutus.getKuvausKomoto().get(KomotoTeksti.MAKSULLISUUS).getTekstis().containsKey(UNDEFINED)) {
             los.setInfoAboutCharge(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.MAKSULLISUUS)));
             rawTranslCodes.addAll(koodistoService.searchMultiple(
                     this.getTranslationUris(koulutus.getKuvausKomoto().get(KomotoTeksti.MAKSULLISUUS)))); 
         }
-        
+
         if (koulutus.getKuvausKomoto().get(KomotoTeksti.SIJOITTUMINEN_TYOELAMAAN) != null  
                 && !koulutus.getKuvausKomoto().get(KomotoTeksti.SIJOITTUMINEN_TYOELAMAAN).getTekstis().containsKey(UNDEFINED)) {
             los.setCareerOpportunities(getI18nTextEnriched(koulutus.getKuvausKomoto().get(KomotoTeksti.SIJOITTUMINEN_TYOELAMAAN)));
             rawTranslCodes.addAll(koodistoService.searchMultiple(
                     this.getTranslationUris(koulutus.getKuvausKomoto().get(KomotoTeksti.SIJOITTUMINEN_TYOELAMAAN)))); 
         }
-        
-        
-        
+
+
+
 
         los.setTeachingLanguages(createCodes(koulutus.getOpetuskielis()));//koodistoService.searchCodesMultiple(childKomoto.getOpetuskieletUris()));
 
@@ -1031,7 +1075,7 @@ public class LOSObjectCreator extends ObjectCreator {
             }
         }
 
-        
+
         los.setEducationDomain(getI18nTextEnriched(koulutus.getKoulutusala().getMeta()));
         los.setName(getI18nTextEnriched(koulutus.getKoulutusohjelma().getMeta()));
         LOG.debug("Koulutusohjelma for " + koulutus.getOid() + ": " + koulutus.getKoulutusohjelma());
@@ -1045,7 +1089,7 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setDegreeTitle(getI18nTextEnriched(koulutus.getKoulutusohjelma()));
         los.setQualifications(Arrays.asList(getI18nTextEnriched(koulutus.getTutkintonimike().getMeta())));
         los.setDegree(getI18nTextEnriched(koulutus.getTutkinto().getMeta()));
-         
+
         if (koulutus.getKoulutuksenAlkamisPvms() != null && !koulutus.getKoulutuksenAlkamisPvms().isEmpty()) {
             los.setStartDate(koulutus.getKoulutuksenAlkamisPvms().iterator().next());
         }   
@@ -1055,7 +1099,7 @@ public class LOSObjectCreator extends ObjectCreator {
         if (koulutus.getKoulutuksenAlkamiskausi() != null) {    
             los.setStartSeason(getI18nTextEnriched(koulutus.getKoulutuksenAlkamiskausi().getMeta()));
         }
-            
+
         if (koulutus.getValmistavaKoulutus() != null) {
 
             los.setPlannedDuration(koulutus.getValmistavaKoulutus().getSuunniteltuKestoArvo());
@@ -1065,35 +1109,35 @@ public class LOSObjectCreator extends ObjectCreator {
             if (koulutus.getValmistavaKoulutus().getHinta() != null) {
                 los.setCharge(koulutus.getValmistavaKoulutus().getHinta());
             }
-            
+
             if (koulutus.getValmistavaKoulutus().getKuvaus().get(KomotoTeksti.KOHDERYHMA) != null  
                     && !koulutus.getValmistavaKoulutus().getKuvaus().get(KomotoTeksti.KOHDERYHMA).getTekstis().containsKey(UNDEFINED)) {
                 los.setTargetGroup(getI18nTextEnriched(koulutus.getValmistavaKoulutus().getKuvaus().get(KomotoTeksti.KOHDERYHMA)));
                 rawTranslCodes.addAll(koodistoService.searchMultiple(
                         this.getTranslationUris(koulutus.getValmistavaKoulutus().getKuvaus().get(KomotoTeksti.KOHDERYHMA)))); 
             }
-            
+
             if (koulutus.getValmistavaKoulutus().getKuvaus().get(KomotoTeksti.OPISKELUN_HENKILOKOHTAISTAMINEN) != null  
                     && !koulutus.getValmistavaKoulutus().getKuvaus().get(KomotoTeksti.OPISKELUN_HENKILOKOHTAISTAMINEN).getTekstis().containsKey(UNDEFINED)) {
                 los.setPersonalization(getI18nTextEnriched(koulutus.getValmistavaKoulutus().getKuvaus().get(KomotoTeksti.OPISKELUN_HENKILOKOHTAISTAMINEN)));
                 rawTranslCodes.addAll(koodistoService.searchMultiple(
                         this.getTranslationUris(koulutus.getValmistavaKoulutus().getKuvaus().get(KomotoTeksti.OPISKELUN_HENKILOKOHTAISTAMINEN)))); 
             }
-            
+
             if (koulutus.getValmistavaKoulutus().getKuvaus().get(KomotoTeksti.SISALTO) != null  
                     && !koulutus.getValmistavaKoulutus().getKuvaus().get(KomotoTeksti.SISALTO).getTekstis().containsKey(UNDEFINED)) {
                 los.setContent(getI18nTextEnriched(koulutus.getValmistavaKoulutus().getKuvaus().get(KomotoTeksti.SISALTO)));
                 rawTranslCodes.addAll(koodistoService.searchMultiple(
                         this.getTranslationUris(koulutus.getValmistavaKoulutus().getKuvaus().get(KomotoTeksti.SISALTO)))); 
             }
-            
+
             if (koulutus.getValmistavaKoulutus().getKuvaus().get(KomotoTeksti.KANSAINVALISTYMINEN) != null  
                     && !koulutus.getValmistavaKoulutus().getKuvaus().get(KomotoTeksti.KANSAINVALISTYMINEN).getTekstis().containsKey(UNDEFINED)) {
                 los.setInternationalization(getI18nTextEnriched(koulutus.getValmistavaKoulutus().getKuvaus().get(KomotoTeksti.KANSAINVALISTYMINEN)));
                 rawTranslCodes.addAll(koodistoService.searchMultiple(
                         this.getTranslationUris(koulutus.getValmistavaKoulutus().getKuvaus().get(KomotoTeksti.KANSAINVALISTYMINEN)))); 
             }
-            
+
             if (koulutus.getValmistavaKoulutus().getYhteyshenkilos() != null 
                     && !koulutus.getValmistavaKoulutus().getYhteyshenkilos().isEmpty()) {
                 List<ContactPerson> persons = new ArrayList<ContactPerson>();
@@ -1107,25 +1151,24 @@ public class LOSObjectCreator extends ObjectCreator {
                 }
                 los.setPreparatoryContactPersons(persons);
             }
-            
+
             los.setFormOfTeaching(getI18nTextMultiple(koulutus.getValmistavaKoulutus().getOpetusmuodos()));
             los.setFotFacet(this.createCodes(koulutus.getValmistavaKoulutus().getOpetusPaikkas()));
             los.setTimeOfTeachingFacet(this.createCodes(koulutus.getValmistavaKoulutus().getOpetusAikas()));
             los.setFormOfStudyFacet(this.createCodes(koulutus.getValmistavaKoulutus().getOpetusmuodos()));        
             los.setTeachingTimes(getI18nTextMultiple(koulutus.getValmistavaKoulutus().getOpetusAikas()));
             los.setTeachingPlaces(getI18nTextMultiple(koulutus.getValmistavaKoulutus().getOpetusPaikkas()));
-            
-            
+
         }
-        
+
         if (koulutus.getAmmattinimikkeet() != null) {
             los.setProfessionalTitles(getI18nTextMultiple(koulutus.getAmmattinimikkeet()));//getAmmattinimikeUris()));
         }
-        
-        
+
+
         los.setCreditValue(koulutus.getOpintojenLaajuusarvo().getArvo());
         los.setCreditUnit(getI18nTextEnriched(koulutus.getOpintojenLaajuusyksikko().getMeta()));
-        
+
 
         try {
             Provider provider = providerService.getByOID(koulutus.getOrganisaatio().getOid());
@@ -1145,7 +1188,7 @@ public class LOSObjectCreator extends ObjectCreator {
         } catch (Exception ex) {
             throw new KoodistoException("Problem reading jarjestava organisaatio: " + ex.getMessage());
         }
-        
+
 
         boolean existsValidHakukohde = fetchHakukohdeData(los, checkStatus);
 
