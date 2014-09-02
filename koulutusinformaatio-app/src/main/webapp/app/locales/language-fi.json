@@ -150,13 +150,13 @@
     "ects-coordinator": "ECTS-koordinaattori",
     
         
-    "nayttotutkinto-infoteksti": "Hakijan lähtötilanne määrittää tutkinnon suorittamisen aikataulut ja valmistavan koulutuksen tarpeen. Näyttötutkinnon voi suorittaa myös ilman valmistavaa koulutusta.",
+    "nayttotutkinto-infoteksti": "Tutkinnon suorittamisen aikataulu ja valmistavan koulutuksen tarve riippuvat hakijan aiemmasta osaamisesta. Näyttötutkinnon voi suorittaa myös ilman valmistavaa koulutusta.",
     "nayttotutkinnon-kuvaus": "Tutkinnon kuvaus",
     "organizer": "Tutkinnon järjestäjä",
     "choosing-competence": "Osaamisalan valinta",
     "degree-completion": "Tutkinnon suorittaminen",
     "valmistava-koulutus": "Valmistava koulutus",
-    "personalization": "Henkilökohtaistaminen",
+    "personalization": "Opintojen henkilökohtaistaminen",
     "goals-of-degree": "Tutkinnon tavoite",
     "competence-contact-person-title": "Näyttötutkinnon yhteyshenkilö",
     "competences": "Osaamisalat",
@@ -330,6 +330,7 @@
     "intro-next": "Seuraava",
     
      "euro": "euroa",
-     "sopimuksen-mukaan": "Sopimuksen mukaan"
+     "sopimuksen-mukaan": "Sopimuksen mukaan",
+     "structure-of-degree": "Tutkinnon rakenne"
     
 }
