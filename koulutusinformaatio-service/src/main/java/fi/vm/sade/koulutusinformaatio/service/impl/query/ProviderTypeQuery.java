@@ -35,10 +35,11 @@ public class ProviderTypeQuery extends SolrQuery {
     }
 
     private static String resolveStartsWithField(String lang) {
-        if (lang.equalsIgnoreCase("sv")) {
+        if (lang.equalsIgnoreCase("en")) {
+            return SolrUtil.ProviderFields.STARTS_WITH_EN;
+        } else if (lang.equalsIgnoreCase("sv")) {
             return SolrUtil.ProviderFields.STARTS_WITH_SV;
-        }
-        else {
+        } else {
             return SolrUtil.ProviderFields.STARTS_WITH_FI;
         }
     }

@@ -395,9 +395,11 @@ public final class SolrUtil {
     public static class ProviderFields {
         public final static String STARTS_WITH_FI = "startsWith_fi";
         public final static String STARTS_WITH_SV = "startsWith_sv";
+        public final static String STARTS_WITH_EN = "startsWith_en";
         public static final String TYPE_VALUE = "typeValue";
         public static final String TYPE_FI = "type_fi";
         public static final String TYPE_SV = "type_sv";
+        public static final String TYPE_EN = "type_en";
     }
 
     public static class SolrConstants {

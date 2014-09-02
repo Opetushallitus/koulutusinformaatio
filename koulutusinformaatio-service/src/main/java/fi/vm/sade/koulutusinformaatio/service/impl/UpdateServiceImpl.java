@@ -118,7 +118,6 @@ public class UpdateServiceImpl implements UpdateService {
                 }
             }
 
-            
             List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
             LOG.debug("Found higher educations: " + higherEducations.size());
 

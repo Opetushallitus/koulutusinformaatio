@@ -130,6 +130,9 @@ public class SearchServiceSolrImpl implements SearchService {
             if (result != null && result.get("name_sv") != null) {
                 texts.put("sv", result.get("name_sv").toString());
             }
+            if (result != null && result.get("name_en") != null) {
+                texts.put("en", result.get("name_en").toString());
+            }
 
             provider.setName(new I18nText(texts));
             providers.add(provider);
@@ -1108,6 +1111,7 @@ public class SearchServiceSolrImpl implements SearchService {
                             Map<String, String> nameTranslations = Maps.newHashMap();
                             nameTranslations.put("fi", (String) result.get(SolrUtil.ProviderFields.TYPE_FI));
                             nameTranslations.put("sv", (String) result.get(SolrUtil.ProviderFields.TYPE_SV));
+                            nameTranslations.put("en", (String) result.get(SolrUtil.ProviderFields.TYPE_EN));
                             name = new I18nText(nameTranslations);
                         }
                         types.add(new Code((String) result.get(SolrUtil.ProviderFields.TYPE_VALUE), name));
