@@ -386,6 +386,7 @@ public class SearchServiceSolrImpl implements SearchService {
         String name = getName(doc, lang);
         String homeplace = getHomeplace(doc, lang);
         String lopId = doc.get(LearningOpportunity.LOP_ID) != null ? doc.get(LearningOpportunity.LOP_ID).toString() : null;
+        String childName = doc.get(LearningOpportunity.CHILD_NAME) != null ? doc.get(LearningOpportunity.CHILD_NAME).toString() : null;
 
         LOG.debug("gathered info now creating search result: " + id);
         
@@ -393,7 +394,7 @@ public class SearchServiceSolrImpl implements SearchService {
                 id, name,
                 lopId, lopName, prerequisiteText,
                 prerequisiteCodeText, parentId, losId, doc.get("type").toString(),
-                credits, edType, edDegree, edDegreeCode, homeplace);
+                credits, edType, edDegree, edDegreeCode, homeplace, childName);
         
         LOG.debug("Created search result: " + id);
 
@@ -533,6 +534,7 @@ public class SearchServiceSolrImpl implements SearchService {
                     ? doc.get(LearningOpportunity.EDUCATION_DEGREE_CODE).toString() : null;
             String name = getName(doc, lang);
             String homeplace = getHomeplace(doc, lang);
+            String childName = doc.get(LearningOpportunity.CHILD_NAME) != null ? doc.get(LearningOpportunity.CHILD_NAME).toString() : null;
 
             LOSearchResult lo = null;
             try {
@@ -540,7 +542,7 @@ public class SearchServiceSolrImpl implements SearchService {
                         id, name,
                         doc.get(LearningOpportunity.LOP_ID).toString(), lopName, prerequisiteText,
                         prerequisiteCodeText, parentId, losId, doc.get(LearningOpportunity.TYPE).toString(),
-                        credits, edType, edDegree, edDegreeCode, homeplace);
+                        credits, edType, edDegree, edDegreeCode, homeplace, childName);
 
                 updateAsStatus(lo, doc);
             } catch (Exception e) {
