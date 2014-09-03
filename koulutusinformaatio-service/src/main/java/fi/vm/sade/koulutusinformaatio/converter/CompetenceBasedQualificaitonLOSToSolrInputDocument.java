@@ -160,6 +160,14 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
         String childName = SolrUtil.resolveTranslationInTeachingLangUseFallback(
                 curChild.getTeachingLanguages(), curChild.getShortTitle().getTranslations());
         doc.setField(LearningOpportunity.CHILD_NAME, childName);
+        
+        doc.setField(LearningOpportunity.EDUCATION_DEGREE, 
+                SolrUtil.resolveTextWithFallback(teachLang,  
+                        curChild.getEducationDegreeLang().getTranslations()));
+        
+                
+        doc.addField(LearningOpportunity.EDUCATION_DEGREE_CODE, curChild.getEducationDegree());
+
 
         if (teachLang.equals("sv")) {
             doc.addField(LearningOpportunity.CHILD_NAME_SV, SolrUtil.resolveTextWithFallback("sv", curChild.getName().getTranslations()));

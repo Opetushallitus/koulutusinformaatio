@@ -15,7 +15,6 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -97,13 +96,11 @@ public class UpdateServiceImpl implements UpdateService {
             int index = 0;
 
             
-            /*while (count >= MAX_RESULTS) {
+            while (count >= MAX_RESULTS) {
             LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
             List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
             count = loOids.size();
-            index += count;*/
-
-            List<String> loOids = new ArrayList<String>();
+            index += count;
             
                 for (String loOid : loOids) {
                     List<LOS> specifications = null;
@@ -119,9 +116,10 @@ public class UpdateServiceImpl implements UpdateService {
                         this.educationDataUpdateService.save(spec);
                     }
                 }
-            //}
+            }
 
-            /*List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
+            
+            List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
             LOG.debug("Found higher educations: " + higherEducations.size());
 
             for (HigherEducationLOS curLOS : higherEducations) {
@@ -129,7 +127,7 @@ public class UpdateServiceImpl implements UpdateService {
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 this.educationDataUpdateService.save(curLOS);
             }
-            LOG.debug("Higher educations saved.");*/
+            LOG.debug("Higher educations saved.");
             
             
             List<AdultUpperSecondaryLOS> adultUpperSecondaries = this.tarjontaService.findAdultUpperSecondaries();
@@ -141,7 +139,7 @@ public class UpdateServiceImpl implements UpdateService {
                 this.educationDataUpdateService.save(curLOS);
             }
             
-            
+            /*
             
             List<CompetenceBasedQualificationParentLOS> adultVocationals = this.tarjontaService.findAdultVocationals();
             LOG.debug("Indexed " + adultVocationals.size() + "adult comptence based qualifactions");
@@ -149,7 +147,7 @@ public class UpdateServiceImpl implements UpdateService {
                 LOG.debug("Saving adult vocational los: " + curLOS.getId() + " with name: " + curLOS.getName().get("fi"));
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 this.educationDataUpdateService.save(curLOS);
-            }
+            }*/
             
             
             List<Code> edTypeCodes = this.tarjontaService.getEdTypeCodes();
@@ -194,12 +192,13 @@ public class UpdateServiceImpl implements UpdateService {
     }
     
     
+    /*
     private void indexToSolr(CompetenceBasedQualificationParentLOS curLOS,
             HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws Exception {
         this.indexerService.addLearningOpportunitySpecification(curLOS, loUpdateSolr, lopUpdateSolr);
         this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
         
-    }
+    }*/
 
     @Override
     public boolean isRunning() {

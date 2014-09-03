@@ -386,11 +386,11 @@ public class SearchServiceSolrImpl implements SearchService {
         String name = getName(doc, lang);
         String homeplace = getHomeplace(doc, lang);
         String lopId = doc.get(LearningOpportunity.LOP_ID) != null ? doc.get(LearningOpportunity.LOP_ID).toString() : null;
-        String childName = doc.get(LearningOpportunity.CHILD_NAME) != null ? doc.get(LearningOpportunity.CHILD_NAME).toString() : null;
+        String childName = doc.get(LearningOpportunity.CHILD_NAME) != null ? getChildName(doc) : null;
 
         LOG.debug("gathered info now creating search result: " + id);
         
-        LOSearchResult lo = new LOSearchResult(
+        LOSearchResult lo = new LOSearchResult( 
                 id, name,
                 lopId, lopName, prerequisiteText,
                 prerequisiteCodeText, parentId, losId, doc.get("type").toString(),
@@ -404,6 +404,15 @@ public class SearchServiceSolrImpl implements SearchService {
         
         return lo;
 
+    }
+
+    private String getChildName(SolrDocument doc) {
+        @SuppressWarnings("unchecked")
+        List<String> childNames = (List<String>)(doc.get(LearningOpportunity.CHILD_NAME));
+        if (childNames != null && !childNames.isEmpty()) {
+            return childNames.get(0);
+        }
+        return null;
     }
 
     private String getPrerequisiteText(SolrDocument doc, String lang) {
