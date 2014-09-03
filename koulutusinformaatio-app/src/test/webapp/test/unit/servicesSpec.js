@@ -175,6 +175,39 @@ describe('UtilityService', function() {
             expect(data[1].id).toEqual('a');
         });
 
+        it('should sort upcoming as before ended as', function() {
+            var ts = new Date().getTime();
+            var data = [
+                {
+                    id: 'ended',
+                    hakutapa: hakutapa.yhteishaku,
+                    hakutyyppi: hakutyyppi.lisahaku,
+                    applicationOptions: [
+                        {
+                            canBeApplied: false,
+                            applicationStartDate: ts - 15 * 24 * 60 * 60 * 1000 
+                        }
+                    ]
+                },
+                {
+                    id: 'upcoming',
+                    hakutapa: hakutapa.yhteishaku,
+                    hakutyyppi: hakutyyppi.varsinainen,
+                    applicationOptions: [
+                        {
+                            canBeApplied: false,
+                            applicationStartDate: ts + 15 * 24 * 60 * 60 * 1000
+                            
+                        }
+                    ]
+                }
+            ];
+
+            utility.sortApplicationSystems(data);
+            expect(data[0].id).toEqual('upcoming');
+            expect(data[1].id).toEqual('ended');
+        });
+
         it('should sort applications systems by start date', function() {
             var ts = new Date().getTime();
             var data = [

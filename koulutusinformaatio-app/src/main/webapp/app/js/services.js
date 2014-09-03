@@ -284,7 +284,7 @@ service('ParentLOService', ['$http', '$timeout', '$q', '$rootScope', 'LanguageSe
             if (options.lang) {
                 queryParams.lang = options.lang
             }
-            
+
             $http.get('../lo/parent/' + options.id, {
                 params: queryParams
             }).
@@ -992,17 +992,21 @@ service('AdultVocationalTransformer', ['KiSorter', '$rootScope', '$filter', 'Lan
 			if (result.children != null && result.children.length == 1) {
 				result.isStandalone = true;
 				result.selectedChild = result.children[0];
+				if (result.selectedChild.startDate) {
+					var startDate = new Date(result.selectedChild.startDate);
+					result.selectedChild.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
+				}
 				result.hasSelectedChild = true;
 			} else {
 				result.parentId = result.id;
 				angular.forEach(result.children, function(child, childKey) {
-					if (child.id == loId) {
-						result.selectedChild = child;
-						result.hasSelectedChild = true;
-					}
 					if (child.startDate) {
 						var startDate = new Date(child.startDate);
 						child.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
+					}
+					if (child.id == loId) {
+						result.selectedChild = child;
+						result.hasSelectedChild = true;
 					}
 				});
 				
@@ -1998,6 +2002,10 @@ service('KiSorter', ['UtilityService', function(UtilityService) {
             return result;
         }
 
+        var isHakuPaattynyt = function(as) {
+            return (!isHakuKaynnissa(as) && !isHakuTulossaHakuun(as));
+        }
+
         var isVarsinainenYhteishaku = function(as) {
             return UtilityService.isVarsinainenHaku(as) && UtilityService.isYhteishaku(as);
         }
@@ -2054,6 +2062,10 @@ service('KiSorter', ['UtilityService', function(UtilityService) {
                     }
                 } else if (isHakuKaynnissa(a) != isHakuKaynnissa(b)) {
                     return isHakuKaynnissa(a) ? -1 : 1;
+                } else if (isHakuTulossaHakuun(a) && isHakuPaattynyt(b)) {
+                    return -1;
+                } else if(isHakuTulossaHakuun(b) && isHakuPaattynyt(a)) {
+                    return 1;
                 } else {
                     if (isVarsinainenYhteishaku(a) != isVarsinainenYhteishaku(b)) {
                         return isVarsinainenYhteishaku(a) ? -1 : 1

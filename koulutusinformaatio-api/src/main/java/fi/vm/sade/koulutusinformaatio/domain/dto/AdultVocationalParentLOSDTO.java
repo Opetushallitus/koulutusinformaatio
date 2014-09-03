@@ -33,6 +33,9 @@ public class AdultVocationalParentLOSDTO extends LOSDTO {
     private String shortTitle;
     private String goals;
     private String type;
+    private double charge;
+    private boolean chargeable;
+    private boolean osaamisala;
     
     private List<CodeDTO> topics;
     private List<CodeDTO> themes;
@@ -208,6 +211,29 @@ public class AdultVocationalParentLOSDTO extends LOSDTO {
     public List<ArticleResultDTO> getEdTypeSuggestions() {
         return edTypeSuggestions;
     }
-    
+
+    public double getCharge() {
+        return charge;
+    }
+
+    public void setCharge(double charge) {
+        this.charge = charge;
+    }
+
+    public boolean isChargeable() {
+        return chargeable;
+    }
+
+    public void setChargeable(boolean chargeable) {
+        this.chargeable = chargeable;
+    }
+
+    public boolean isOsaamisala() {
+        return osaamisala;
+    }
+
+    public void setOsaamisala(boolean osaamisala) {
+        this.osaamisala = osaamisala;
+    } 
    
 }

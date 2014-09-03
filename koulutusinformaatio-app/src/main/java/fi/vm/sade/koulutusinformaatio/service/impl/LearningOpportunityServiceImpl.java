@@ -314,8 +314,11 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
         
         CompetenceBasedQualificationParentLOS los = this.previewService.previewAdultVocationaParentLearningOpportunity(oid);
         
-        
-        return AdultVocationalParentLOSToDTO.convert(los, lang, uiLang);
+        if (lang != null && !lang.isEmpty()) {
+            return AdultVocationalParentLOSToDTO.convert(los, lang, uiLang);
+        } else {
+            return AdultVocationalParentLOSToDTO.convert(los, uiLang, uiLang);
+        }
     }
 
     @Override
