@@ -306,12 +306,7 @@
     "esikatselu": "Preview",
 
     "error-title": "An unexpected error has occured",
-    "error-body": "We apologize. The information for the study programmes that you searched for cannot be showed at the moment.  Try again later. If the problem occurs again, please contact the Studyinfo customer service.",
-    "error-contact-1": "Telephone: 029 533 1010 (en)",
-    "error-contact-2": "open Mon-Fri from 9 a.m. to 1 p.m.",
-    "error-contact-3": "on the last day of application periods from 9 a.m.-3 p.m.",
-    "error-contact-4": "phone charges from all locations in Finland local network charge / mobile phone charge",
-    "error-contact-5": "E-mail: neuvonta(at)opintopolku.fi (en)",
+    "error-body": "We apologize. The information for the study programmes that you searched for cannot be showed at the moment. Try again later.",
     
     "tarjoaja": "Provider",
     "katso-myos": "See also...",
