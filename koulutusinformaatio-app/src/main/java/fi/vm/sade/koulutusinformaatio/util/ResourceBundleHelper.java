@@ -29,6 +29,7 @@ public class ResourceBundleHelper {
 
     private static final String FI = "fi";
     private static final String SV = "sv";
+    private static final String EN = "en";
     private static final String BUNDLE_NAME = "messages";
 
     Map<String, ResourceBundle> resourceBundles;
@@ -37,6 +38,7 @@ public class ResourceBundleHelper {
         resourceBundles = Maps.newHashMap();
         resourceBundles.put(FI, ResourceBundle.getBundle(BUNDLE_NAME, new Locale(FI)));
         resourceBundles.put(SV, ResourceBundle.getBundle(BUNDLE_NAME, new Locale(SV)));
+        resourceBundles.put(EN, ResourceBundle.getBundle(BUNDLE_NAME, new Locale(EN)));
     }
 
     public ResourceBundle getBundle(String lang) {

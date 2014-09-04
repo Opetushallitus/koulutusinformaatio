@@ -44,6 +44,7 @@ public class LearningOpportunitySearchResultDTO {
     private String educationDegree;
     private String educationDegreeCode;
     private String homeplace;
+    private String childName;
 
 
     public String getId() {
@@ -172,5 +173,13 @@ public class LearningOpportunitySearchResultDTO {
 
     public void setHomeplace(String homeplace) {
         this.homeplace = homeplace;
+    }
+
+    public String getChildName() {
+        return childName;
+    }
+
+    public void setChildName(String childName) {
+        this.childName = childName;
     }
 }

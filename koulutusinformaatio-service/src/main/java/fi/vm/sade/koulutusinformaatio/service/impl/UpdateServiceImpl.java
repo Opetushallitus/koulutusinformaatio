@@ -29,6 +29,7 @@ import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
 import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Article;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
+import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
@@ -101,7 +102,7 @@ public class UpdateServiceImpl implements UpdateService {
             List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
             count = loOids.size();
             index += count;
-
+            
                 for (String loOid : loOids) {
                     List<LOS> specifications = null;
                     try {
@@ -138,8 +139,8 @@ public class UpdateServiceImpl implements UpdateService {
                 this.educationDataUpdateService.save(curLOS);
             }
             
-            
             /*
+            
             List<CompetenceBasedQualificationParentLOS> adultVocationals = this.tarjontaService.findAdultVocationals();
             LOG.debug("Indexed " + adultVocationals.size() + "adult comptence based qualifactions");
             for (CompetenceBasedQualificationParentLOS curLOS : adultVocationals) {
@@ -189,6 +190,7 @@ public class UpdateServiceImpl implements UpdateService {
             }
         }
     }
+    
     
     /*
     private void indexToSolr(CompetenceBasedQualificationParentLOS curLOS,

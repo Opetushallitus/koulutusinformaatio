@@ -130,6 +130,9 @@ public class SearchServiceSolrImpl implements SearchService {
             if (result != null && result.get("name_sv") != null) {
                 texts.put("sv", result.get("name_sv").toString());
             }
+            if (result != null && result.get("name_en") != null) {
+                texts.put("en", result.get("name_en").toString());
+            }
 
             provider.setName(new I18nText(texts));
             providers.add(provider);
@@ -383,14 +386,15 @@ public class SearchServiceSolrImpl implements SearchService {
         String name = getName(doc, lang);
         String homeplace = getHomeplace(doc, lang);
         String lopId = doc.get(LearningOpportunity.LOP_ID) != null ? doc.get(LearningOpportunity.LOP_ID).toString() : null;
+        String childName = doc.get(LearningOpportunity.CHILD_NAME) != null ? getChildName(doc) : null;
 
         LOG.debug("gathered info now creating search result: " + id);
         
-        LOSearchResult lo = new LOSearchResult(
+        LOSearchResult lo = new LOSearchResult( 
                 id, name,
                 lopId, lopName, prerequisiteText,
                 prerequisiteCodeText, parentId, losId, doc.get("type").toString(),
-                credits, edType, edDegree, edDegreeCode, homeplace);
+                credits, edType, edDegree, edDegreeCode, homeplace, childName);
         
         LOG.debug("Created search result: " + id);
 
@@ -400,6 +404,15 @@ public class SearchServiceSolrImpl implements SearchService {
         
         return lo;
 
+    }
+
+    private String getChildName(SolrDocument doc) {
+        @SuppressWarnings("unchecked")
+        List<String> childNames = (List<String>)(doc.get(LearningOpportunity.CHILD_NAME));
+        if (childNames != null && !childNames.isEmpty()) {
+            return childNames.get(0);
+        }
+        return null;
     }
 
     private String getPrerequisiteText(SolrDocument doc, String lang) {
@@ -530,6 +543,7 @@ public class SearchServiceSolrImpl implements SearchService {
                     ? doc.get(LearningOpportunity.EDUCATION_DEGREE_CODE).toString() : null;
             String name = getName(doc, lang);
             String homeplace = getHomeplace(doc, lang);
+            String childName = doc.get(LearningOpportunity.CHILD_NAME) != null ? doc.get(LearningOpportunity.CHILD_NAME).toString() : null;
 
             LOSearchResult lo = null;
             try {
@@ -537,7 +551,7 @@ public class SearchServiceSolrImpl implements SearchService {
                         id, name,
                         doc.get(LearningOpportunity.LOP_ID).toString(), lopName, prerequisiteText,
                         prerequisiteCodeText, parentId, losId, doc.get(LearningOpportunity.TYPE).toString(),
-                        credits, edType, edDegree, edDegreeCode, homeplace);
+                        credits, edType, edDegree, edDegreeCode, homeplace, childName);
 
                 updateAsStatus(lo, doc);
             } catch (Exception e) {
@@ -1094,6 +1108,7 @@ public class SearchServiceSolrImpl implements SearchService {
                             Map<String, String> nameTranslations = Maps.newHashMap();
                             nameTranslations.put("fi", (String) result.get(SolrUtil.ProviderFields.TYPE_FI));
                             nameTranslations.put("sv", (String) result.get(SolrUtil.ProviderFields.TYPE_SV));
+                            nameTranslations.put("en", (String) result.get(SolrUtil.ProviderFields.TYPE_EN));
                             name = new I18nText(nameTranslations);
                         }
                         types.add(new Code((String) result.get(SolrUtil.ProviderFields.TYPE_VALUE), name));

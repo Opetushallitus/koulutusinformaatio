@@ -202,10 +202,16 @@ public class IndexerServiceImpl implements IndexerService {
                 providerDoc.addField("name_sv", nameSv);
                 providerDoc.addField("startsWith_sv", nameSv.substring(0, 1).toUpperCase());
             }
+            String nameEn = resolveTextByLang("en", provider.getName().getTranslations());
+            if (nameEn != null && !nameEn.isEmpty()) {
+                providerDoc.addField("name_en", nameEn);
+                providerDoc.addField("startsWith_en", nameEn.substring(0, 1).toUpperCase());
+            }
             if (provider.getType() != null) {
                 providerDoc.setField(SolrUtil.ProviderFields.TYPE_VALUE, provider.getType().getValue());
-                providerDoc.setField(SolrUtil.ProviderFields.TYPE_FI, provider.getType().getName().getTranslations().get("fi"));
-                providerDoc.setField(SolrUtil.ProviderFields.TYPE_SV, provider.getType().getName().getTranslations().get("sv"));
+                providerDoc.setField(SolrUtil.ProviderFields.TYPE_FI, resolveTextByLang("fi", provider.getType().getName().getTranslations()));
+                providerDoc.setField(SolrUtil.ProviderFields.TYPE_SV, resolveTextByLang("sv", provider.getType().getName().getTranslations()));
+                providerDoc.setField(SolrUtil.ProviderFields.TYPE_EN, resolveTextByLang("en", provider.getType().getName().getTranslations()));
             }
             else {
                 providerDoc.setField(SolrUtil.ProviderFields.TYPE_VALUE, SolrConstants.PROVIDER_TYPE_UNKNOWN);
