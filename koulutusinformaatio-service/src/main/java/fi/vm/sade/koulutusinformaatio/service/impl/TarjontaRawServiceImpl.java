@@ -362,10 +362,13 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
 
     @Override
     public ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> listEducationsByToteutustyyppi(
-            String educationType) {
-        return this.higherEducationResource
-                .path("search")
-                .queryParam("toteutustyyppi", educationType)
+            String... educationType) {
+        WebResource call = this.higherEducationResource
+                .path("search");
+        for (String curType : educationType) {
+            call = call.queryParam("toteutustyyppi", curType);
+        }
+        return call
                 .accept(JSON_UTF8)
                 .get(new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
                 });

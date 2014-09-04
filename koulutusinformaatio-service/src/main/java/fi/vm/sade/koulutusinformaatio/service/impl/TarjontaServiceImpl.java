@@ -539,14 +539,14 @@ public class TarjontaServiceImpl implements TarjontaService {
 
         List<CompetenceBasedQualificationParentLOS> koulutukset = new ArrayList<CompetenceBasedQualificationParentLOS>();
 
-        ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes =  this.tarjontaRawService.listEducationsByToteutustyyppi(ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO_NAYTTOTUTKINTONA.name());// //AMMATTITUTKINTO.name());//listEducations(TarjontaConstants.UPPER_SECONDARY_EDUCATION_TYPE);
+        ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes =  this.tarjontaRawService.listEducationsByToteutustyyppi(ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO_NAYTTOTUTKINTONA.name(), ToteutustyyppiEnum.AMMATTITUTKINTO.name(), ToteutustyyppiEnum.ERIKOISAMMATTITUTKINTO.name());// //AMMATTITUTKINTO.name());//listEducations(TarjontaConstants.UPPER_SECONDARY_EDUCATION_TYPE);
         HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
         /*Map<String,List<HigherEducationLOSRef>> aoToEducationsMap = new HashMap<String,List<HigherEducationLOSRef>>();
 
         Map<String,List<String>> parentChildKomos = new HashMap<String,List<String>>();
         Map<String,List<String>> komoToKomotoMap = new HashMap<String,List<String>>();*/ 
 
-        List<String> createdOids = new ArrayList<String>();
+        //List<String> createdOids = new ArrayList<String>();
 
         for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
             LOG.debug("Cur Adult Vocationals tarjoaja result: " + curRes.getOid());
@@ -558,19 +558,19 @@ public class TarjontaServiceImpl implements TarjontaService {
                     continue;
                 }
 
-                if (!createdOids.contains(curKoulutus.getOid())) {
+                //if (!createdOids.contains(curKoulutus.getOid())) {
                     try {
-                        CompetenceBasedQualificationParentLOS newLos = this.createCBQPLOS(curKoulutus.getOid(), createdOids, true);
+                        CompetenceBasedQualificationParentLOS newLos = this.createCBQPLOS(curKoulutus.getOid(), true);
                         koulutukset.add(newLos);
                     } catch (TarjontaParseException ex) {
                         ex.printStackTrace();
                     } catch (ResourceNotFoundException ex) {
                         ex.printStackTrace();
                     }
-                    if (!createdOids.contains(curKoulutus.getOid())) {
+                    /*if (!createdOids.contains(curKoulutus.getOid())) {
                         createdOids.add(curKoulutus.getOid());
-                    }
-                }
+                    }*/
+                //}
 
             }
         }
@@ -614,7 +614,7 @@ public class TarjontaServiceImpl implements TarjontaService {
     }
 
     @Override
-    public CompetenceBasedQualificationParentLOS createCBQPLOS(String oid, List<String> createdOids, boolean checkStatus)
+    public CompetenceBasedQualificationParentLOS createCBQPLOS(String oid, boolean checkStatus)
             throws TarjontaParseException, KoodistoException,
             ResourceNotFoundException {
 

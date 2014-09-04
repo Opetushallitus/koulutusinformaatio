@@ -37,8 +37,10 @@ public class ProviderQuery extends SolrQuery {
     private final static String AS_IDS = "asIds";
     private final static String NAME_FI = "name_fi";
     private final static String NAME_SV = "name_sv";
+    private final static String NAME_EN = "name_en";
     private final static String NAME_FI_STR = "name_fi_str";
     private final static String NAME_SV_STR = "name_sv_str";
+    private final static String NAME_EN_STR = "name_en_str";
     private final static String NEG_VOCATIONAL = "-vocationalAsIds";
     private final static String NEG_NON_VOCATIONAL = "-nonVocationalAsIds";
 
@@ -71,10 +73,14 @@ public class ProviderQuery extends SolrQuery {
     }
 
     private static String resolveNameField(String lang, boolean prefix) {
-        if (lang.equalsIgnoreCase("sv") && !prefix) {
+        if (lang.equalsIgnoreCase("en") && !prefix) {
+            return NAME_EN;
+        } else if (lang.equalsIgnoreCase("sv") && !prefix) {
             return NAME_SV;
         } else if (!prefix) {
             return NAME_FI;
+        } else if (lang.equals("en") && prefix) {
+            return NAME_EN_STR;
         } else if (lang.equals("sv") && prefix) {
             return NAME_SV_STR;
         } else {

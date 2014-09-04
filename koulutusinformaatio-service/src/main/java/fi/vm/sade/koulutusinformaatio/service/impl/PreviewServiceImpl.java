@@ -86,7 +86,7 @@ public class PreviewServiceImpl implements PreviewService {
         
         try {
             
-            CompetenceBasedQualificationParentLOS los = this.tarjontaService.createCBQPLOS(oid, new ArrayList<String>(), false);
+            CompetenceBasedQualificationParentLOS los = this.tarjontaService.createCBQPLOS(oid, false);
             return los;
             
         } catch (TarjontaParseException e) {
