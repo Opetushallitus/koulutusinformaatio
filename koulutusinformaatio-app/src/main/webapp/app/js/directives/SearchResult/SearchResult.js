@@ -33,22 +33,24 @@ directive('searchResult', ['FilterService', 'TranslationService', function(Filte
     }
 }]).
 
-directive('toggleCollapse', [function () {
+directive('toggleCollapse', ['$timeout', function ($timeout) {
     return {
         restrict: 'A',
         transclude: true,
         controller: function($scope) {
             $scope.toggleExtendedView = function() {
-                if($scope.showExtension == 'closed') {
-                    if(!$scope.extendedLO) {
-                        $scope.fetchLOData();
-                        $scope.showExtension = 'opened';
+                $timeout(function() {
+                    if($scope.showExtension == 'closed') {
+                        if(!$scope.extendedLO) {
+                            $scope.fetchLOData();
+                            $scope.showExtension = 'opened';
+                        } else {
+                            $scope.showExtension = 'opened';
+                        }
                     } else {
-                        $scope.showExtension = 'opened';
+                        $scope.showExtension = 'closed';
                     }
-                } else {
-                    $scope.showExtension = 'closed';
-                }  
+                }, 100);
             }
         },
         link: function (scope, iElement, iAttrs) {
