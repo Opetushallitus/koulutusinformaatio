@@ -49,7 +49,21 @@ public final class ApplicationOptionAttachmentToDTO {
     }
 
     public static List<ApplicationOptionAttachmentDTO> convertAll(final List<ApplicationOptionAttachment> aoas, final String lang) {
-        if (aoas != null && !aoas.isEmpty()) {
+        if (aoas != null && !aoas.isEmpty() && lang != null && !lang.isEmpty()) {
+            String keyLang = lang.toLowerCase();
+            List<ApplicationOptionAttachmentDTO> aoaDTOs = new ArrayList<ApplicationOptionAttachmentDTO>();
+            for (ApplicationOptionAttachment curAttachment : aoas) {
+                if (curAttachment != null 
+                        && curAttachment.getType() != null 
+                        && curAttachment.getType().getTranslations().containsKey(keyLang)) {
+                    aoaDTOs.add(convert(curAttachment, lang));
+                } else if (curAttachment != null && curAttachment.getType() == null) {
+                   aoaDTOs.add(convert(curAttachment, lang)); 
+                }
+            }
+            return aoaDTOs;
+        } else if (aoas != null && !aoas.isEmpty()) {
+        
             return Lists.transform(aoas, new Function<ApplicationOptionAttachment, ApplicationOptionAttachmentDTO>() {
                 @Override
                 public ApplicationOptionAttachmentDTO apply(ApplicationOptionAttachment input) {
@@ -57,6 +71,7 @@ public final class ApplicationOptionAttachmentToDTO {
                 }
             });
         }
+        
         return null;
     }
     
