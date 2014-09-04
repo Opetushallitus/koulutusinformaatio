@@ -150,17 +150,17 @@
     "ects-coordinator": "ECTS-koordinator",
     
         
-    "nayttotutkinto-infoteksti": "Tutkinnon suorittamisen aikataulu ja valmistavan koulutuksen tarve riippuvat hakijan aiemmasta osaamisesta. Näyttötutkinnon voi suorittaa myös ilman valmistavaa koulutusta. (sv)",
-    "nayttotutkinnon-kuvaus": "Tutkinnon kuvaus (sv)",
-    "organizer": "Tutkinnon järjestäjä (sv)",
-    "choosing-competence": "Osaamisalan valinta (sv)",
-    "degree-completion": "Tutkinnon suorittaminen (sv)",
-    "valmistava-koulutus": "Valmistava koulutus (sv)",
-    "personalization": "Opintojen henkilökohtaistaminen (sv)",
-    "goals-of-degree": "Tutkinnon tavoite (sv)",
-    "competence-contact-person-title": "Näyttötutkinnon yhteyshenkilö (sv)",
-    "competences": "Osaamisalat (sv)",
-    "goals-of-competence": "Osaamisalan tavoite (sv)",
+    "nayttotutkinto-infoteksti": "Tidtabellen för avläggande av examen och behovet av förberedande utbildning är beroende av den sökandes tidigare kunnande. En fristående examen kan man avlägga också utan förberedande utbildning.",
+    "nayttotutkinnon-kuvaus": "Examensbeskrivning",
+    "organizer": "Examensanordnare",
+    "choosing-competence": "Val av kompetensområde",
+    "degree-completion": "Avläggande av fristående examen",
+    "valmistava-koulutus": "Förberedande utbildning",
+    "personalization": "Personlig tillämpning av studier",
+    "goals-of-degree": "Examensmål",
+    "competence-contact-person-title": "Kontaktperson f�r fristående examen",
+    "competences": "Kompetensområden",
+    "goals-of-competence": "Mål för kompetensområdet",
 
     "provider-web-page": "Läroanstaltens egna sidor",
 
@@ -324,7 +324,7 @@
     "show-intro": "Visa anvisningar",
     "intro-next": "Följande",
     
-     "euro": "euroa (sv)",
-     "sopimuksen-mukaan": "Sopimuksen mukaan (sv)",
-     "structure-of-degree": "Tutkinnon rakenne (sv)"
+     "euro": "euro",
+     "sopimuksen-mukaan": "Enligt avtal",
+     "structure-of-degree": "Examensstruktur"
 }
