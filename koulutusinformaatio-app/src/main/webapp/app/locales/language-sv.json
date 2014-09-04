@@ -150,17 +150,17 @@
     "ects-coordinator": "ECTS-koordinator",
     
         
-    "nayttotutkinto-infoteksti": "Tutkinnon suorittamisen aikataulu ja valmistavan koulutuksen tarve riippuvat hakijan aiemmasta osaamisesta. Näyttötutkinnon voi suorittaa myös ilman valmistavaa koulutusta. (sv)",
-    "nayttotutkinnon-kuvaus": "Tutkinnon kuvaus (sv)",
-    "organizer": "Tutkinnon järjestäjä (sv)",
-    "choosing-competence": "Osaamisalan valinta (sv)",
-    "degree-completion": "Tutkinnon suorittaminen (sv)",
-    "valmistava-koulutus": "Valmistava koulutus (sv)",
-    "personalization": "Opintojen henkilökohtaistaminen (sv)",
-    "goals-of-degree": "Tutkinnon tavoite (sv)",
-    "competence-contact-person-title": "Näyttötutkinnon yhteyshenkilö (sv)",
-    "competences": "Osaamisalat (sv)",
-    "goals-of-competence": "Osaamisalan tavoite (sv)",
+    "nayttotutkinto-infoteksti": "Tidtabellen för avläggande av examen och behovet av förberedande utbildning är beroende av den sökandes tidigare kunnande. En fristående examen kan man avlägga också utan förberedande utbildning.",
+    "nayttotutkinnon-kuvaus": "Examensbeskrivning",
+    "organizer": "Examensanordnare",
+    "choosing-competence": "Val av kompetensområde",
+    "degree-completion": "Avläggande av fristående examen",
+    "valmistava-koulutus": "Förberedande utbildning",
+    "personalization": "Personlig tillämpning av studier",
+    "goals-of-degree": "Examensmål",
+    "competence-contact-person-title": "Kontaktperson för fristående examen",
+    "competences": "Kompetensområden",
+    "goals-of-competence": "Mål för kompetensområdet",
 
     "provider-web-page": "Läroanstaltens egna sidor",
 
@@ -306,12 +306,7 @@
     "esikatselu": "Förhandsgranskning",
 
     "error-title": "Ett oväntat fel inträffade",
-    "error-body": "Vi beklagar. De utbildningsuppgifter du söker kan inte hittas. Var vänlig och försök igen senare. Kontakta Studieinfo-rådgivningen om problemet återkommer.",
-    "error-contact-1": "Telefon: 029 533 1010",
-    "error-contact-2": "öppen vardagar 9–13",
-    "error-contact-3": "under den sista ansökningsdagen 9–15",
-    "error-contact-4": "samtalsavgift enligt lokalnätsavgift / mobiltelefonavgift",
-    "error-contact-5": "E-post: info(at)studieinfo.fi",
+    "error-body": "Vi beklagar. De utbildningsuppgifter du söker kan inte hittas. Var vänlig och försök igen senare.",
     
     "tarjoaja": "Anordnare",
     "katso-myos": "Se också...",
@@ -329,7 +324,7 @@
     "show-intro": "Visa anvisningar",
     "intro-next": "Följande",
     
-     "euro": "euroa (sv)",
-     "sopimuksen-mukaan": "Sopimuksen mukaan (sv)",
-     "structure-of-degree": "Tutkinnon rakenne (sv)"
+     "euro": "euro",
+     "sopimuksen-mukaan": "Enligt avtal",
+     "structure-of-degree": "Examensstruktur"
 }
