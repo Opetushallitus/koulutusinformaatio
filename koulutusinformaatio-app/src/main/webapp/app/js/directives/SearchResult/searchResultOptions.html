@@ -29,7 +29,7 @@
         </form>
     </div>
 
-    <div data-sr-application-basket data-ng-switch="isItemAddedToBasket(applicationoption.id)" class="col-md-8">
+    <div data-sr-application-basket data-ng-switch="isItemAddedToBasket(applicationoption.id)" class="col-md-8" aria-live="polite" role="status">
         <span data-ng-switch-when="true">
             <span data-ki-i18n="popover-title-success"></span><br/>
             <a href="#!/muistilista" data-ki-i18n="popover-content-link-to-application-basket"></a>

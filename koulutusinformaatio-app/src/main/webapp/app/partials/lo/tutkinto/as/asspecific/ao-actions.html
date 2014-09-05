@@ -20,7 +20,7 @@
     </div>
 
     <div class="col-md-8">
-        <div data-ng-switch="isItemAddedToBasket(ao.id)" class="add-to-basket">
+        <div data-ng-switch="isItemAddedToBasket(ao.id)" class="add-to-basket" aria-live="polite" role="status">
             <span data-ng-switch-when="true">
                 <span data-ki-i18n="popover-title-success"></span><br/>
                 <a href="#!/muistilista" data-ki-i18n="popover-content-link-to-application-basket"></a>
