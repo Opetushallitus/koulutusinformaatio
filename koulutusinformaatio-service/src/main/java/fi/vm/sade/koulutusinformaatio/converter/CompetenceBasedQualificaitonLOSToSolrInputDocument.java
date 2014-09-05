@@ -262,7 +262,12 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
         }
         
         doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMMATILLISET);
-        doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMM_TUTK);
+        
+        if (los.getEdtUri().contains("koulutustyyppi_11") || los.getEdtUri().contains("koulutustyyppi_13")) {
+            doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMM_TUTK);
+        } else if (los.getEdtUri().contains("koulutustyyppi_12")) {
+            doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMM_TUTK_ER);
+        }
 
     }
 

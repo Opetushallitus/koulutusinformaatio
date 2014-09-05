@@ -17,14 +17,14 @@ package fi.vm.sade.koulutusinformaatio.dao;
 
 import org.mongodb.morphia.Datastore;
 
-import fi.vm.sade.koulutusinformaatio.dao.entity.AdultVocationalLOSEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.CompetenceBasedQualificationParentLOSEntity;
 
 /**
  * 
  * @author Markus
  *
  */
-public class AdultVocationalLOSDAO extends LearningOpportunitySpecificationDAO<AdultVocationalLOSEntity, String> {
+public class AdultVocationalLOSDAO extends LearningOpportunitySpecificationDAO<CompetenceBasedQualificationParentLOSEntity, String> {
 
     protected AdultVocationalLOSDAO(Datastore primaryDatastore,
             Datastore secondaryDatastore) {

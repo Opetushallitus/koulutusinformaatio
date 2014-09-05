@@ -92,17 +92,17 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
         else if (learningOpportunitySpecification instanceof AdultUpperSecondaryLOS) {
             saveAdultUpperSecondaryLOS((AdultUpperSecondaryLOS)learningOpportunitySpecification);
         } 
-        else if (learningOpportunitySpecification instanceof AdultUpperSecondaryLOS) {
-            saveAdultVocationalLOS((AdultVocationalLOS)learningOpportunitySpecification);
+        else if (learningOpportunitySpecification instanceof CompetenceBasedQualificationParentLOS) {
+            saveAdultVocationalLOS((CompetenceBasedQualificationParentLOS)learningOpportunitySpecification);
         }
     }
 
     private void saveAdultVocationalLOS(
-            AdultVocationalLOS learningOpportunitySpecification) {
+            CompetenceBasedQualificationParentLOS learningOpportunitySpecification) {
         
         if (learningOpportunitySpecification != null) {
-            AdultVocationalLOSEntity entity =
-                    modelMapper.map(learningOpportunitySpecification, AdultVocationalLOSEntity.class);
+            CompetenceBasedQualificationParentLOSEntity entity =
+                    modelMapper.map(learningOpportunitySpecification, CompetenceBasedQualificationParentLOSEntity.class);
 
             save(entity.getProvider());
 

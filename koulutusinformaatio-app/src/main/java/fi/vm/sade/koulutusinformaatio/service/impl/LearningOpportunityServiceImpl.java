@@ -351,5 +351,30 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
         return AdultUpperSecondaryLOSToDTO.convert(los, lang, uiLang);
     }
 
+    @Override
+    public AdultVocationalParentLOSDTO getAdultVocationalLearningOpportunity(
+            String id) throws ResourceNotFoundException {
+        CompetenceBasedQualificationParentLOS los = educationDataQueryService.getAdultVocationalLearningOpportunity(id);
+        String lang = (los.getChildren() != null && !los.getChildren().isEmpty() 
+                && los.getChildren().get(0).getTeachingLanguages() != null && !los.getChildren().get(0).getTeachingLanguages().isEmpty())  
+                ? los.getChildren().get(0).getTeachingLanguages().get(0).getValue().toLowerCase() : LANG_FI;
+        return AdultVocationalParentLOSToDTO.convert(los, lang, lang);
+    }
+
+    @Override
+    public AdultVocationalParentLOSDTO getAdultVocationalLearningOpportunity(
+            String id, String uiLang) throws ResourceNotFoundException {
+        CompetenceBasedQualificationParentLOS los = educationDataQueryService.getAdultVocationalLearningOpportunity(id);
+        return AdultVocationalParentLOSToDTO.convert(los, uiLang, uiLang);
+    }
+
+    @Override
+    public AdultVocationalParentLOSDTO getAdultVocationalLearningOpportunity(
+            String id, String lang, String uiLang)
+            throws ResourceNotFoundException {
+        CompetenceBasedQualificationParentLOS los = educationDataQueryService.getAdultVocationalLearningOpportunity(id);
+        return AdultVocationalParentLOSToDTO.convert(los, lang, uiLang);
+    }
+
 
 }

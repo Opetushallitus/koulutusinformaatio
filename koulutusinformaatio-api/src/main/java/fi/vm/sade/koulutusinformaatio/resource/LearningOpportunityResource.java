@@ -153,6 +153,23 @@ public interface LearningOpportunityResource {
     public AdultUpperSecondaryLOSDTO getAdultUpperSecondaryLearningOpportunity(@PathParam("id") String id,
                                                                                     @QueryParam("lang") String lang,
                                                                                     @QueryParam("uiLang") String uiLang);
+    
+    
+    /**
+     * Fetches an adult upper secondary learning opportunity specification.
+     *
+     * @param id los id
+     * @param lang translation language
+     * @param uiLang secondary translation language
+     * @return adult upper secondary learning opportunity specification
+     */
+    @GET
+    @Path("adultvocational/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public AdultVocationalParentLOSDTO getAdultVocationalLearningOpportunity(@PathParam("id") String id,
+                                                                                    @QueryParam("lang") String lang,
+                                                                                    @QueryParam("uiLang") String uiLang);
+    
 
     /**
      * Fetches suggested terms to be used in free text search. 

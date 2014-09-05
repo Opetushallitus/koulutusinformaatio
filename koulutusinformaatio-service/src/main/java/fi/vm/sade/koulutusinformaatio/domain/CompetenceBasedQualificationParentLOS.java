@@ -28,6 +28,7 @@ public class CompetenceBasedQualificationParentLOS extends LOS {
     private boolean chargeable;
     private double charge;
     private boolean osaamisala;
+    private String edtUri;
     
    
     public List<AdultVocationalLOS> getChildren() {
@@ -112,6 +113,13 @@ public class CompetenceBasedQualificationParentLOS extends LOS {
     }
     public boolean isOsaamisala() {
         return osaamisala;
+    }
+    public void setEdtUri(String uri) {
+        this.edtUri = uri;
+        
+    }
+    public String getEdtUri() {
+        return edtUri;
     }
 
 

@@ -65,7 +65,7 @@ directive('toggleCollapse', ['$timeout', function ($timeout) {
     };
 }]).
 
-directive('extendedSearchresultData', ['ParentLOService', 'SpecialLOService', 'UpperSecondaryLOService', 'HigherEducationLOService', 'AdultUpperSecondaryLOService', function (ParentLOService, SpecialLOService, UpperSecondaryLOService, HigherEducationLOService, AdultUpperSecondaryLOService) {
+directive('extendedSearchresultData', ['ParentLOService', 'SpecialLOService', 'UpperSecondaryLOService', 'HigherEducationLOService', 'AdultUpperSecondaryLOService', 'AdultVocationalLOService', function (ParentLOService, SpecialLOService, UpperSecondaryLOService, HigherEducationLOService, AdultUpperSecondaryLOService,  AdultVocationalLOService) {
     return {    
         restrict: 'A',
         link: function($scope, ielement, iAttrs) {
@@ -84,6 +84,8 @@ directive('extendedSearchresultData', ['ParentLOService', 'SpecialLOService', 'U
                     $scope.extendedLO = HigherEducationLOService.query({id: $scope.lo.id});
                 } else if (iAttrs.extendedSearchresultData === "aikuislukio") {
                 	$scope.extendedLO = AdultUpperSecondaryLOService.query({id: $scope.lo.id});
+                } else if (iAttrs.extendedSearchresultData === "ammatillinenaikuiskoulutus") {
+                	$scope.extendedLO = AdultVocationalLOService.query({id: $scope.lo.id});
                 }
 
                 $scope.loType = iAttrs.extendedSearchresultData;
