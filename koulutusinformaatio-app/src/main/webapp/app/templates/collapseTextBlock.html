@@ -1,13 +1,13 @@
 <div data-ng-if="content" class="panel panel-tarjonta">
     <div class="panel-heading">
-        <a href="javascript:void(0);" data-ng-click="toggleState()" class="block panel-title" id="{{anchor}}">
+        <a href="javascript:void(0);" data-ng-click="toggleState()" class="block panel-title" id="{{anchor}}" aria-controls="{{title}}">
             <h2 class="collapser" data-ng-class="{opened: !isClose, closed: isClose}">
                 <span data-ki-i18n="{{title}}" data-lang="{{translationLanguage}}"></span> 
             </h2>
         </a>
     </div>
     <div class="panel-body">
-        <div class="tarjonta-content" data-collapse="isClose">
+        <div class="tarjonta-content" data-collapse="isClose" id="{{title}}">
             <div data-ng-bind-html="content | tarjontaFilter | unsafe"></div>
         </div>
     </div>
