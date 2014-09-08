@@ -1,16 +1,13 @@
 <td>
     <h4>{{item.providerName}}, <span class="capitalize">{{item.providerLocation}}</span></h4>
-    <em data-ki-i18n="{{item.educationTypeUri}}"></em>
-    <div class="inside">
-        <span>{{item.qualification}}</span>
-        <div>
-            <span data-ki-i18n="application-prerequisite" data-show-colon="true"></span> <span>{{item.prerequisite.description}}</span>
-        </div>
-    </div>
+    <a href="#!/ammatillinenaikuiskoulutus/{{item.parent.id}}">{{item.parent.name}}<span data-ng-if="item.educationKind">, {{item.educationKind}}</span></a>
+    <ul class="inside list-unstyled">
+        <li data-ng-repeat="child in item.children">{{child.name}}</li>
+    </ul>
 </td>
 
 <td>
-    <a href="#!/lukio/{{item.losId}}" class="block">{{item.providerName}}, {{item.name}}</a>
+    <h4>{{item.name}}</h4>
     <div data-ng-if="isErikseenHaettava(as)" data-ki-application-time data-dates="item.applicationDates" data-hakutapa="item.hakutapaUri" data-label="item.asName"></div>
 </td>
 
@@ -21,3 +18,5 @@
 <td class="last text-right">
     <div data-ng-include src="'js/directives/AppBasket/common/aoActions.html'"></div>
 </td>
+
+

@@ -1697,6 +1697,12 @@ label {
 .margin-right-small {
   margin-right: 10px; }
 
+.capitalize {
+  display: inline-block;
+  text-transform: lowercase; }
+  .capitalize:first-letter {
+    text-transform: uppercase; }
+
 /* columns of same height styles */
 .container-xs-height {
   display: table;
