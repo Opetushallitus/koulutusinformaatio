@@ -1,9 +1,9 @@
 <td>
     <h4>{{item.providerName}}, <span class="capitalize">{{item.providerLocation}}</span></h4>
-    <a href="#!/ammatillinenaikuiskoulutus/{{item.parent.id}}">{{item.parent.name}}<span data-ng-if="item.educationKind">, {{item.educationKind}}</span></a>
-    <ul class="inside list-unstyled">
-        <li data-ng-repeat="child in item.children">{{child.name}}</li>
-    </ul>
+    <div data-ng-repeat="los in losRefs">
+        <a href="#!/ammatillinenaikuiskoulutus/{{los.id}}" class="inline-block">{{los.name}}</a>
+        <span data-ng-if="los.fieldOfExpertise" class="inline-block">{{los.fieldOfExpertise}}</span>
+    </div>
 </td>
 
 <td>
