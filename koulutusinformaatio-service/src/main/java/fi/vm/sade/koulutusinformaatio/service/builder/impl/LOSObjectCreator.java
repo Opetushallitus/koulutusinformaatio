@@ -1206,7 +1206,7 @@ public class LOSObjectCreator extends ObjectCreator {
                 ao.setEducationDegree(los.getEducationDegree());
                 los.getProvider().getApplicationSystemIDs().add(ao.getApplicationSystem().getId());
                 //ao.setParent(createParentLosRef(los));
-                ao.setType(TarjontaConstants.TYPE_ADULT_UPSEC);
+                ao.setType(TarjontaConstants.TYPE_ADULT_VOCATIONAL);//TarjontaConstants.TYPE_ADULT_UPSEC);
             }
         }
 
