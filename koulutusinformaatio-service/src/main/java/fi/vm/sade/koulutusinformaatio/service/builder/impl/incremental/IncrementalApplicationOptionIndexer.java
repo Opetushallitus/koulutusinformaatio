@@ -112,7 +112,7 @@ public class IncrementalApplicationOptionIndexer {
                                     if (this.losIndexer.isAdultUpsecKomo(koulutusRes.getResult().getKomoOid())) {
                                         this.losIndexer.indexAdultUpsecKomo(koulutusRes.getResult().getKomoOid());
                                     } else {
-                                        this.losIndexer.indexAdultVocationalKomoto(koulutusRes.getResult().getKomotoOid());
+                                        this.losIndexer.indexAdultVocationalKomoto(curKoulOid.getOid());
                                     }
                                 } else {
                                     if (this.losIndexer.isAdultUpsecKomo(koulutusRes.getResult().getKomoOid())) {

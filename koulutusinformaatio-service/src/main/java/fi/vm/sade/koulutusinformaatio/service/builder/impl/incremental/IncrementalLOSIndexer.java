@@ -265,6 +265,12 @@ public class IncrementalLOSIndexer {
         
         boolean isLukio = komoRes != null && komoRes.getResult() != null && komoRes.getResult().getKoulutusasteTyyppi().value().equals(KoulutusasteTyyppi.LUKIOKOULUTUS.value());
 
+        if (komoRes.getResult() != null && komoRes.getResult().getKoulutusasteTyyppi() != null) {
+            LOG.debug("komo koulutusaste: " + komoRes.getResult().getKoulutusasteTyyppi().name());
+        } else {
+            LOG.debug("some wierd komo");
+        }
+        
         if (!isLukio) {
             return false;
         }
