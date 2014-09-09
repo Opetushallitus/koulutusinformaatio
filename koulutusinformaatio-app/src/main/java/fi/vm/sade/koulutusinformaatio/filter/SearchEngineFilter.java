@@ -19,6 +19,7 @@ package fi.vm.sade.koulutusinformaatio.filter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +54,7 @@ public class SearchEngineFilter implements Filter {
         if (request.getParameterMap().containsKey(escapedFragment)) {
             HttpServletRequest httpRequest = (HttpServletRequest) request;
             String loId = httpRequest.getParameter(escapedFragment).split("/")[2];
+            loId = URLDecoder.decode(loId, "UTF-8");
             
             String path = null;
             String query = null;
