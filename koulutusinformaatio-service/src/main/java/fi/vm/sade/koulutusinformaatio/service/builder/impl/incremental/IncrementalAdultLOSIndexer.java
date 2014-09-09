@@ -16,6 +16,8 @@
 package fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -24,8 +26,10 @@ import org.slf4j.LoggerFactory;
 
 import fi.vm.sade.koulutusinformaatio.dao.entity.CompetenceBasedQualificationParentLOSEntity;
 import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
+import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOSRef;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
@@ -219,6 +223,7 @@ public class IncrementalAdultLOSIndexer {
                         
                         try {
                             createdLos = this.tarjontaService.createCBQPLOS(curKomoOid, true);//createAdultUpperSecondaryLOS(curKoul.getOid(), true);//createHigherEducationLearningOpportunityTree(curKoul.getOid());
+                            
                         } catch (TarjontaParseException tpe) {
                             createdLos = null;
                         }
@@ -230,6 +235,13 @@ public class IncrementalAdultLOSIndexer {
                             removeAdultVocationalEd(curKomoOid);
                             //continue;
                         } else {
+                            
+                            for (ApplicationOption curAo : createdLos.getApplicationOptions()) {
+                                List<HigherEducationLOSRef> refs = new ArrayList<HigherEducationLOSRef>();
+                                refs.add(tarjontaService.createAdultVocationalLosRef(createdLos, curAo));
+                                curAo.setHigherEdLOSRefs(refs);
+                            }
+                            
                             this.indexToSolr(createdLos);
                             this.dataUpdateService.updateAdultVocationalLos(createdLos);//updateAdultUpsecLos(createdLos);
                         }

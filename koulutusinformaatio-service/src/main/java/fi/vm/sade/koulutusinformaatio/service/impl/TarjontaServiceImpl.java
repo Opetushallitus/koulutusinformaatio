@@ -257,22 +257,27 @@ public class TarjontaServiceImpl implements TarjontaService {
                     aoLoss = new ArrayList<HigherEducationLOSRef>();
                     aoToEducationsMap.put(curAo.getId(), aoLoss);
                 }
-
-                HigherEducationLOSRef newRef = new HigherEducationLOSRef();
-                newRef.setId(los.getId());
-                newRef.setName(los.getName());
-                newRef.setPrerequisite(curAo.getPrerequisite());
-                //newRef.setQualifications(((CompetenceBasedQualificationParentLOS)los).getQualifications());
-                newRef.setProvider(curAo.getProvider().getName());
-                newRef.setFieldOfExpertise(los.getChildren().get(0).getName());
-                newRef.setEducationKind(los.getEducationKind());
-                newRef.setAdultVocational(true);
-                aoLoss.add(newRef);
+                aoLoss.add(createAdultVocationalLosRef(los, curAo));
                 aoToEducationsMap.put(curAo.getId(), aoLoss);
             }
         }
         LOG.debug("ao los references now updated");
 
+    }
+    
+    public HigherEducationLOSRef createAdultVocationalLosRef(CompetenceBasedQualificationParentLOS los, ApplicationOption curAo) {
+        
+        HigherEducationLOSRef newRef = new HigherEducationLOSRef();
+        newRef.setId(los.getId());
+        newRef.setName(los.getName());
+        newRef.setPrerequisite(curAo.getPrerequisite());
+        //newRef.setQualifications(((CompetenceBasedQualificationParentLOS)los).getQualifications());
+        newRef.setProvider(curAo.getProvider().getName());
+        newRef.setFieldOfExpertise(los.getChildren().get(0).getName());
+        newRef.setEducationKind(los.getEducationKind());
+        newRef.setAdultVocational(true);
+        return newRef;
+        
     }
 
     /*
