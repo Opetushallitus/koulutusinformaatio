@@ -21,6 +21,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.Filter;
@@ -35,8 +36,6 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import fi.vm.sade.koulutusinformaatio.service.impl.UpdateServiceImpl;
 
 /**
  * @author Hannu Lyytikainen
@@ -58,6 +57,19 @@ public class SearchEngineFilter implements Filter {
         String lang = request.getParameter(language);
         LOG.error(String.format("INITIAL LANG PARAM: %s", lang));
         
+        Enumeration requestParams = request.getParameterNames();
+        while (requestParams.hasMoreElements()) {
+            String param = (String)requestParams.nextElement();
+            LOG.error(String.format("REQUEST PARAM: %s:%s", param, request.getParameter(param)));
+        }
+        
+        Enumeration requestAttributes = request.getAttributeNames();
+        while (requestAttributes.hasMoreElements()) {
+            String attr = (String)requestAttributes.nextElement();
+            LOG.error(String.format("REQUEST ATTR: %s:%s", attr, request.getAttribute(attr)));
+        }
+        
+        LOG.error("DONE");
         if (request.getParameterMap().containsKey(escapedFragment)) {
             HttpServletRequest httpRequest = (HttpServletRequest) request;
             String fragmentPath = httpRequest.getParameter(escapedFragment);
