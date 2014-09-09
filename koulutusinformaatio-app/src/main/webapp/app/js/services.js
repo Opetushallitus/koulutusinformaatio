@@ -1582,6 +1582,9 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
                 case 'aikuislukio':
                     loRef += ao.losRefs && ao.losRefs.length > 0 ? ao.losRefs[0].id : '';
                     break;
+                case 'ammatillinenaikuiskoulutus':
+                    loRef += ao.losRefs && ao.losRefs.length > 0 ? ao.losRefs[0].id : '';
+                    break;
             }
 
             loRef += '?';

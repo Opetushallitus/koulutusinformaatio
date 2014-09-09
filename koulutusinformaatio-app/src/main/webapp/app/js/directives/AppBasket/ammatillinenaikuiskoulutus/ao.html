@@ -1,6 +1,6 @@
 <td>
     <h4>{{item.providerName}}, <span class="capitalize">{{item.providerLocation}}</span></h4>
-    <div data-ng-repeat="los in losRefs">
+    <div data-ng-repeat="los in item.losRefs">
         <a href="#!/ammatillinenaikuiskoulutus/{{los.id}}" class="inline-block">{{los.name}}</a>
         <span data-ng-if="los.fieldOfExpertise" class="inline-block">{{los.fieldOfExpertise}}</span>
     </div>
