@@ -44,6 +44,7 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunitySpecifi
 import fi.vm.sade.koulutusinformaatio.dao.entity.CompetenceBasedQualificationParentLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.DataStatusEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSRefEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ParentLearningOpportunitySpecificationEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.PictureEntity;
@@ -465,6 +466,14 @@ public class EducationIncrementalDataUpdateServiceImpl implements
 
             if (plos.getApplicationOptions() != null) {
                 for (ApplicationOptionEntity ao : plos.getApplicationOptions()) {
+                    
+                    try {
+                        ApplicationOptionEntity exAo = this.getAo(ao.getId());
+                        updateLosRefs(ao, exAo, plos.getId());
+                    } catch (ResourceNotFoundException ex) {
+                        
+                    }
+                    
                     this.applicationOptionDAO.deleteById(ao.getId());
                     save(ao);
                 }
@@ -472,6 +481,26 @@ public class EducationIncrementalDataUpdateServiceImpl implements
 
             this.adultVocationalLOSDAO.deleteById(plos.getId());
             this.adultVocationalLOSDAO.save(plos);
+        }
+    }
+    
+    private void updateLosRefs(ApplicationOptionEntity ao, ApplicationOptionEntity existingAo, String curLosId) {
+        for (HigherEducationLOSRefEntity curRef : existingAo.getHigherEdLOSRefs()) {
+            if (this.adultVocationalLOSDAO.get(curRef.getId()) != null 
+                    && !curRef.getId().equals(curLosId)) {
+                
+                ao.getHigherEdLOSRefs().add(curRef);
+                
+            }
+        }
+    }
+    
+    private ApplicationOptionEntity getAo(String aoId) throws ResourceNotFoundException {
+        ApplicationOptionEntity aoE = this.applicationOptionDAO.get(aoId);
+        if (aoE != null) {
+            return aoE;
+        } else {
+            throw new ResourceNotFoundException(String.format("ApplicationOption not found: %s", aoId));
         }
     }
     
