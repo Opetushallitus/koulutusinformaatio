@@ -53,8 +53,8 @@ public class SearchEngineFilter implements Filter {
         
         if (request.getParameterMap().containsKey(escapedFragment)) {
             HttpServletRequest httpRequest = (HttpServletRequest) request;
-            String loId = httpRequest.getParameter(escapedFragment).split("/")[2];
-            loId = URLDecoder.decode(loId, "UTF-8");
+            String fragmentPath = httpRequest.getParameter(escapedFragment);
+            fragmentPath = URLDecoder.decode(fragmentPath, "UTF-8");
             
             String path = null;
             String query = null;
@@ -62,13 +62,15 @@ public class SearchEngineFilter implements Filter {
             String newUri;
             
             try {
-                uri = new URI(loId);
+                uri = new URI(fragmentPath);
                 path = uri.getPath();
                 query = uri.getQuery();
             } catch (URISyntaxException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
+            
+            path = path.split("/")[2];
             
             if (lang == null) {
                 List<NameValuePair> params = parseQueryParams(query);
