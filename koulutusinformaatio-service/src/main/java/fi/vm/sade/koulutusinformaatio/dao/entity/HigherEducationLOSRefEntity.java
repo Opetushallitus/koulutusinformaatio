@@ -22,6 +22,11 @@ public class HigherEducationLOSRefEntity {
     private CodeEntity prerequisite;
     @Embedded
     private I18nTextEntity provider;
+    @Embedded
+    private I18nTextEntity fieldOfExpertise;
+    @Embedded
+    private I18nTextEntity educationKind;
+    private boolean adultVocational = false;
     
     public String getId() {
         return id;
@@ -58,6 +63,24 @@ public class HigherEducationLOSRefEntity {
     }
     public void setProvider(I18nTextEntity provider) {
         this.provider = provider;
+    }
+    public I18nTextEntity getFieldOfExpertise() {
+        return fieldOfExpertise;
+    }
+    public void setFieldOfExpertise(I18nTextEntity fieldOfExpertise) {
+        this.fieldOfExpertise = fieldOfExpertise;
+    }
+    public I18nTextEntity getEducationKind() {
+        return educationKind;
+    }
+    public void setEducationKind(I18nTextEntity educationKind) {
+        this.educationKind = educationKind;
+    }
+    public boolean isAdultVocational() {
+        return adultVocational;
+    }
+    public void setAdultVocational(boolean adultVocational) {
+        this.adultVocational = adultVocational;
     }
 
 }

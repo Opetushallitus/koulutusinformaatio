@@ -164,10 +164,61 @@ public class IncrementalLOSIndexer {
                 this.higherEdLOSIndexer.indexHigherEdKomo(koulutusRes.getResult().getKomoOid());
             }
         } else if (isAdultUpsecKomo(komotoDto.getKomoOid())) {
+            LOG.debug("Adult upsec komo: " + komotoDto.getKomoOid());
             this.indexAdultUpsecKomo(komotoDto.getKomoOid());
+        } else if (isAdultVocationalKomo(komotoDto.getKomoOid())) {
+            LOG.debug("Adult vocational komo: " + komotoDto.getKomoOid());
+            this.indexAdultVocationalKomoto(komotoOid);
         }
 
     }
+
+    public void indexAdultVocationalKomoto(String komotoOid) throws Exception {
+        this.adultLosIndexer.indexAdultVocationalKomoto(komotoOid);
+    }
+
+
+    private boolean isAdultVocationalKomo(String komoOid) {
+        ResultV1RDTO<KomoV1RDTO> komoRes = this.tarjontaRawService.getV1Komo(komoOid);
+        
+        
+        boolean isAdultVoc = komoRes != null 
+                            && komoRes.getResult() != null 
+                            && (komoRes.getResult().getKoulutusasteTyyppi().name().equals(KoulutusasteTyyppi.AMMATILLINEN_PERUSTUTKINTO_NAYTTOTUTKINTONA.name())
+                             || komoRes.getResult().getKoulutusasteTyyppi().name().equals(KoulutusasteTyyppi.AMMATTITUTKINTO.name())
+                             || komoRes.getResult().getKoulutusasteTyyppi().name().equals(KoulutusasteTyyppi.ERIKOISAMMATTITUTKINTO.name())
+                             || komoRes.getResult().getKoulutusasteTyyppi().name().equals(KoulutusasteTyyppi.AMMATILLINEN_PERUSKOULUTUS.name()));
+        
+        if (!isAdultVoc) {
+            LOG.debug("Is adult vocational komo, returning: " + isAdultVoc);
+            return false;
+        }
+        
+        
+        LOG.debug("Komo: " + komoRes.getResult().getKoulutusasteTyyppi().name());
+        
+        ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> komotoRes = this.tarjontaRawService.getHigherEducationByKomo(komoOid);
+        
+        if (komotoRes != null 
+                && komotoRes.getResult() != null 
+                && komotoRes.getResult().getTulokset() != null 
+                && !komotoRes.getResult().getTulokset().isEmpty()) {
+
+
+            for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> tarjResult :  komotoRes.getResult().getTulokset()) {
+                if (tarjResult.getTulokset() !=  null && !tarjResult.getTulokset().isEmpty()) {
+                    for (KoulutusHakutulosV1RDTO curKoul : tarjResult.getTulokset()) {
+                        if (curKoul.getKoulutuslajiUri() != null && curKoul.getKoulutuslajiUri().contains(TarjontaConstants.AIKUISKOULUTUS)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        
+        return false;
+    }
+
 
     private boolean isLoiProperlyPublished(KomotoDTO komotoDto) {
 
@@ -652,6 +703,10 @@ public class IncrementalLOSIndexer {
     
     public void removeAdultUpsecEd(String oid, String komoOid) throws Exception {
         this.adultLosIndexer.removeAdultUpsecEd(oid, komoOid);
+    }
+    
+    public void removeAdultVocationalEd(String oid, String komoOid) throws Exception {
+        this.adultLosIndexer.removeAdultVocationalEd(oid);
     }
 
 

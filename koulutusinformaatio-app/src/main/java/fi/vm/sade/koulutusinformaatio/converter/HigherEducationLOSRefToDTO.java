@@ -39,6 +39,11 @@ public class HigherEducationLOSRefToDTO {
         higherEdu.setQualifications(ConverterUtil.getTextsByLanguageUseFallbackLang(ref.getQualifications(), lang));
         higherEdu.setName(ConverterUtil.getTextByLanguageUseFallbackLang(ref.getName(), lang));
         higherEdu.setProvider(ConverterUtil.getTextByLanguageUseFallbackLang(ref.getProvider(), lang));
+        if (ref.isAdultVocational()) {
+            higherEdu.setFieldOfExpertise(ConverterUtil.getTextByLanguageUseFallbackLang(ref.getFieldOfExpertise(), lang));
+            String eduKind = ConverterUtil.getTextByLanguageUseFallbackLang(ref.getEducationKind(), lang);
+            higherEdu.setName(String.format("%s%s",  higherEdu.getName(), (eduKind != null && !eduKind.isEmpty()) ?  String.format(", %s", eduKind.toLowerCase()) : ""));
+        }
         
         return higherEdu;
     }

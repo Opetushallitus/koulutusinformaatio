@@ -128,6 +128,8 @@ public class AdultVocationalLOSEntity {
     private boolean chargeable;
     private double charge;
     
+    private boolean valmistavaKoulutus;
+    
     @Embedded
     private I18nTextEntity organizer;
 
@@ -418,6 +420,12 @@ public class AdultVocationalLOSEntity {
     }
     public void setOrganizer(I18nTextEntity organizer) {
         this.organizer = organizer;
+    }
+    public boolean isValmistavaKoulutus() {
+        return valmistavaKoulutus;
+    }
+    public void setValmistavaKoulutus(boolean valmistavaKoulutus) {
+        this.valmistavaKoulutus = valmistavaKoulutus;
     }
 
 

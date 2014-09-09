@@ -108,9 +108,18 @@ public class IncrementalApplicationOptionIndexer {
                             if (koulutusRes != null && koulutusRes.getResult() != null && koulutusRes.getResult().getKomoOid() != null) {
                                 if (!toRemove) {
                                     LOG.debug("Indexing adult upsec komo: " + koulutusRes.getResult().getKomoOid());
-                                    this.losIndexer.indexAdultUpsecKomo(koulutusRes.getResult().getKomoOid());
+                                    //if (koulutusRe)
+                                    if (this.losIndexer.isAdultUpsecKomo(koulutusRes.getResult().getKomoOid())) {
+                                        this.losIndexer.indexAdultUpsecKomo(koulutusRes.getResult().getKomoOid());
+                                    } else {
+                                        this.losIndexer.indexAdultVocationalKomoto(koulutusRes.getResult().getKomotoOid());
+                                    }
                                 } else {
-                                    this.losIndexer.removeAdultUpsecEd(curKoulOid.getOid(), koulutusRes.getResult().getKomoOid());
+                                    if (this.losIndexer.isAdultUpsecKomo(koulutusRes.getResult().getKomoOid())) {
+                                        this.losIndexer.removeAdultUpsecEd(curKoulOid.getOid(), koulutusRes.getResult().getKomoOid());
+                                    } else {
+                                        this.losIndexer.removeAdultVocationalEd(curKoulOid.getOid(), koulutusRes.getResult().getKomoOid());
+                                    }
                                 }
                             }
 
