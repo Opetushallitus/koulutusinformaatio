@@ -198,10 +198,10 @@ public class EducationDataQueryServiceImpl implements EducationDataQueryService 
     }
     
     @Override
-    public AdultVocationalLOS getAdultVocationalLearningOpportunity(String oid) throws ResourceNotFoundException {
-        AdultVocationalLOSEntity entity = this.adultVocationalLOSDAO.get(oid);
+    public CompetenceBasedQualificationParentLOS getAdultVocationalLearningOpportunity(String oid) throws ResourceNotFoundException {
+        CompetenceBasedQualificationParentLOSEntity entity = this.adultVocationalLOSDAO.get(oid);
         if (entity != null) {
-            return modelMapper.map(entity, AdultVocationalLOS.class);
+            return modelMapper.map(entity, CompetenceBasedQualificationParentLOS.class);
         } else {
             throw new ResourceNotFoundException(String.format("University of applied science learning opportunity specification not found: %s", oid));
         }

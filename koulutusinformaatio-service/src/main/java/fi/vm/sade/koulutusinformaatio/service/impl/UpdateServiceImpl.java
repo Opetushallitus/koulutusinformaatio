@@ -15,6 +15,8 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -102,6 +104,7 @@ public class UpdateServiceImpl implements UpdateService {
             List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
             count = loOids.size();
             index += count;
+
             
                 for (String loOid : loOids) {
                     List<LOS> specifications = null;
@@ -119,6 +122,7 @@ public class UpdateServiceImpl implements UpdateService {
                 }
             }
 
+            
             List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
             LOG.debug("Found higher educations: " + higherEducations.size());
 
@@ -139,7 +143,7 @@ public class UpdateServiceImpl implements UpdateService {
                 this.educationDataUpdateService.save(curLOS);
             }
             
-            /*
+            
             
             List<CompetenceBasedQualificationParentLOS> adultVocationals = this.tarjontaService.findAdultVocationals();
             LOG.debug("Indexed " + adultVocationals.size() + "adult comptence based qualifactions");
@@ -147,7 +151,7 @@ public class UpdateServiceImpl implements UpdateService {
                 LOG.debug("Saving adult vocational los: " + curLOS.getId() + " with name: " + curLOS.getName().get("fi"));
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 this.educationDataUpdateService.save(curLOS);
-            }*/
+            }
             
             
             List<Code> edTypeCodes = this.tarjontaService.getEdTypeCodes();
@@ -192,13 +196,13 @@ public class UpdateServiceImpl implements UpdateService {
     }
     
     
-    /*
+    
     private void indexToSolr(CompetenceBasedQualificationParentLOS curLOS,
             HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws Exception {
         this.indexerService.addLearningOpportunitySpecification(curLOS, loUpdateSolr, lopUpdateSolr);
         this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
         
-    }*/
+    }
 
     @Override
     public boolean isRunning() {

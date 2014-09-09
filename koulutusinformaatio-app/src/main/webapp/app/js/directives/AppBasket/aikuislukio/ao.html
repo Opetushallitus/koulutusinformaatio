@@ -1,5 +1,5 @@
 <td>
-    <h4>{{item.providerName}}, <span>{{item.providerLocation}}</span></h4>
+    <h4>{{item.providerName}}, <span class="capitalize">{{item.providerLocation}}</span></h4>
     <em data-ki-i18n="{{item.educationTypeUri}}"></em>
     <div class="inside">
         <span>{{item.qualification}}</span>
@@ -15,7 +15,7 @@
             <a href="#!/aikuislukio/{{losref.id}}">{{losref.name}}</a>
         </li>
     </ul>
-    <div data-ng-if="isErikseenHaettava(as)" data-ki-application-time data-dates="item.applicationDates" data-hakutapa="item.hakutapaUri"></div>
+    <div data-ng-if="isErikseenHaettava(as)" data-ki-application-time data-dates="item.applicationDates" data-hakutapa="item.hakutapaUri" data-label="item.asName"></div>
 </td>
 
 <td>

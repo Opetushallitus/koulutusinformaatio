@@ -36,7 +36,7 @@ public class AdultVocationalLOS extends StandaloneLOS {
     
     private I18nText personalization;
     private List<ContactPerson> preparatoryContactPersons;
-    private I18nText degreeOrganizer;
+    private I18nText organizer;
     
     public ParentLOSRef getParent() {
         return parent;
@@ -95,13 +95,13 @@ public class AdultVocationalLOS extends StandaloneLOS {
         return preparatoryContactPersons;
     }
 
-    public void setDegreeOrganizer(I18nText name) {
-        this.degreeOrganizer = name;
+    public void setOrganizer(I18nText name) {
+        this.organizer = name;
         
     }
 
-    public I18nText getDegreeOrganizer() {
-        return degreeOrganizer;
+    public I18nText getOrganizer() {
+        return organizer;
     }
     
 

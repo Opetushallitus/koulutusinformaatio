@@ -20,7 +20,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.mongodb.morphia.annotations.Embedded;
-import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Reference;
 
@@ -29,7 +28,7 @@ import org.mongodb.morphia.annotations.Reference;
  * @author Markus
  *
  */
-@Entity("adultVocationalLOS")
+@Embedded
 public class AdultVocationalLOSEntity {
     
 
@@ -128,6 +127,11 @@ public class AdultVocationalLOSEntity {
     
     private boolean chargeable;
     private double charge;
+    
+    private boolean valmistavaKoulutus;
+    
+    @Embedded
+    private I18nTextEntity organizer;
 
     public String getId() {
         return id;
@@ -410,6 +414,18 @@ public class AdultVocationalLOSEntity {
     }
     public void setCharge(double charge) {
         this.charge = charge;
+    }
+    public I18nTextEntity getOrganizer() {
+        return organizer;
+    }
+    public void setOrganizer(I18nTextEntity organizer) {
+        this.organizer = organizer;
+    }
+    public boolean isValmistavaKoulutus() {
+        return valmistavaKoulutus;
+    }
+    public void setValmistavaKoulutus(boolean valmistavaKoulutus) {
+        this.valmistavaKoulutus = valmistavaKoulutus;
     }
 
 

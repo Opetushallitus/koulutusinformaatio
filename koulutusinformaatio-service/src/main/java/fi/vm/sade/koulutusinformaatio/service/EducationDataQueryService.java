@@ -113,6 +113,6 @@ public interface EducationDataQueryService {
     AdultUpperSecondaryLOS getAdultUpperSecondaryLearningOpportunity(final String oid)
             throws ResourceNotFoundException;
 
-    AdultVocationalLOS getAdultVocationalLearningOpportunity(String oid)
+    CompetenceBasedQualificationParentLOS getAdultVocationalLearningOpportunity(String oid)
             throws ResourceNotFoundException;
 }

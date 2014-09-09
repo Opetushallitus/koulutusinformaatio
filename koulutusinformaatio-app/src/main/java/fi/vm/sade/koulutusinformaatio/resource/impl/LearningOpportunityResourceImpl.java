@@ -299,4 +299,33 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
         } 
 
     }
+
+    @Override
+    public AdultVocationalParentLOSDTO getAdultVocationalLearningOpportunity(
+            String id, String lang, String uiLang) {
+       
+        try {
+
+            AdultVocationalParentLOSDTO dto = null;
+
+            if (Strings.isNullOrEmpty(lang) && Strings.isNullOrEmpty(uiLang)) {
+                dto = learningOpportunityService.getAdultVocationalLearningOpportunity(id);
+                /*uiLang = (dto.getChildren() != null
+                        && !dto.getChildren().isEmpty()
+                        && dto.getChildren().get(0).getTeachingLanguages() != null 
+                            && !dto.getChildren().get(0).getTeachingLanguages().isEmpty()) 
+                        ? dto.getChildren().get(0).getTeachingLanguages().get(0).toLowerCase() : LANG_FI;*/
+            }
+            else if (Strings.isNullOrEmpty(lang)) {
+                dto = this.learningOpportunityService.getAdultVocationalLearningOpportunity(id, uiLang.toLowerCase());
+            }
+            else {
+                dto = learningOpportunityService.getAdultVocationalLearningOpportunity(id, lang.toLowerCase(), uiLang.toLowerCase());
+            }
+
+            return dto;
+        } catch (ResourceNotFoundException e) {
+            throw KIExceptionHandler.resolveException(e);
+        } 
+    }
 }

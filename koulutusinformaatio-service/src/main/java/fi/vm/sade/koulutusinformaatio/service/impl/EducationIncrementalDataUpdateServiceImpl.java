@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fi.vm.sade.koulutusinformaatio.dao.AdultUpperSecondaryLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.AdultVocationalLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ApplicationOptionDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityDAO;
 import fi.vm.sade.koulutusinformaatio.dao.DataStatusDAO;
@@ -40,6 +41,7 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.AdultUpperSecondaryLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ApplicationOptionEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunityInstanceEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.ChildLearningOpportunitySpecificationEntity;
+import fi.vm.sade.koulutusinformaatio.dao.entity.CompetenceBasedQualificationParentLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.DataStatusEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.HigherEducationLOSEntity;
 import fi.vm.sade.koulutusinformaatio.dao.entity.LearningOpportunityProviderEntity;
@@ -51,6 +53,7 @@ import fi.vm.sade.koulutusinformaatio.dao.entity.UpperSecondaryLearningOpportuni
 import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
+import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
@@ -85,6 +88,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
     private SpecialLearningOpportunitySpecificationDAO specialLOSDAO;
     private HigherEducationLOSDAO higherEducationLOSDAO;
     private AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSDAO;
+    private AdultVocationalLOSDAO adultVocationalLOSDAO;
 
     @Autowired
     public EducationIncrementalDataUpdateServiceImpl(ModelMapper modelMapper, ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO,
@@ -95,7 +99,8 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO,
             DataStatusDAO dataStatusDAO, SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO,
             HigherEducationLOSDAO higherEducationLOSDAO,
-            AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSDAO) {
+            AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSDAO,
+            AdultVocationalLOSDAO adultVocationalLOSDAO) {
         this.modelMapper = modelMapper;
         this.parentLOSDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;
@@ -107,6 +112,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
         this.specialLOSDAO = specialLearningOpportunitySpecificationDAO; 
         this.higherEducationLOSDAO = higherEducationLOSDAO;
         this.adultUpperSecondaryLOSDAO = adultUpperSecondaryLOSDAO;
+        this.adultVocationalLOSDAO = adultVocationalLOSDAO;
     }
 
     @Override
@@ -318,6 +324,8 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             this.higherEducationLOSDAO.deleteById(los.getId());
         } else if (los instanceof AdultUpperSecondaryLOS) {
             this.adultUpperSecondaryLOSDAO.deleteById(los.getId());
+        } else if (los instanceof CompetenceBasedQualificationParentLOS) {
+            this.adultVocationalLOSDAO.deleteById(los.getId());
         }
         
     }
@@ -431,6 +439,42 @@ public class EducationIncrementalDataUpdateServiceImpl implements
         
     }
     
+    @Override
+    public void updateAdultVocationalLos(
+            CompetenceBasedQualificationParentLOS los) {
+        
+        if (los != null) {
+            
+            try {
+                Provider existingProv = this.getProvider(los.getProvider().getId());
+                for (String curAsId : existingProv.getApplicationSystemIDs()) {
+                    if (!los.getProvider().getApplicationSystemIDs().contains(curAsId)) {
+                        los.getProvider().getApplicationSystemIDs().add(curAsId);
+                    }
+                }
+            } catch (ResourceNotFoundException ex) {
+                LOG.warn("Problem updating provider's application system references");
+            }
+
+            CompetenceBasedQualificationParentLOSEntity plos =
+                    modelMapper.map(los, CompetenceBasedQualificationParentLOSEntity.class);
+
+            this.learningOpportunityProviderDAO.deleteById(plos.getProvider().getId());
+            save(plos.getProvider());
+
+
+            if (plos.getApplicationOptions() != null) {
+                for (ApplicationOptionEntity ao : plos.getApplicationOptions()) {
+                    this.applicationOptionDAO.deleteById(ao.getId());
+                    save(ao);
+                }
+            }
+
+            this.adultVocationalLOSDAO.deleteById(plos.getId());
+            this.adultVocationalLOSDAO.save(plos);
+        }
+    }
+    
     private Provider getProvider(String id) throws ResourceNotFoundException {
         LearningOpportunityProviderEntity entity = learningOpportunityProviderDAO.get(id);
         if (entity != null) {
@@ -440,5 +484,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             throw new ResourceNotFoundException(String.format("Learning opportunity provider not found: %s", id));
         }
     }
+
+
 
 }
