@@ -5,7 +5,7 @@
 
     <groupId>fi.vm.sade.koulutusinformaatio</groupId>
     <artifactId>koulutusinformaatio</artifactId>
-    <version>11.1</version>
+    <version>11.2</version>
     <packaging>pom</packaging>
     <name>Koulutusinformaatio :: Parent</name>
 

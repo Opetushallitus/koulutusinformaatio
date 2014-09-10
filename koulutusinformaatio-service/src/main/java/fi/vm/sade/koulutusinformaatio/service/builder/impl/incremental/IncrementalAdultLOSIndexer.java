@@ -16,15 +16,23 @@
 package fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fi.vm.sade.koulutusinformaatio.dao.entity.CompetenceBasedQualificationParentLOSEntity;
 import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
+import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOSRef;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataUpdateService;
@@ -132,8 +140,16 @@ public class IncrementalAdultLOSIndexer {
     }
 
     private void indexToSolr(AdultUpperSecondaryLOS curLOS) throws IOException, SolrServerException {
-        LOG.debug("Indexing higher ed: " + curLOS.getId());
-        LOG.debug("Indexing higher ed: " + curLOS.getShortTitle());
+        LOG.debug("Indexing adult upper secondary ed: " + curLOS.getId());
+        LOG.debug("Indexing adult upper secondary ed: " + curLOS.getShortTitle());
+        this.indexerService.removeLos(curLOS, loHttpSolrServer);
+        this.indexerService.addLearningOpportunitySpecification(curLOS, loHttpSolrServer, lopHttpSolrServer);
+        this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
+    }
+    
+    private void indexToSolr(CompetenceBasedQualificationParentLOS curLOS) throws IOException, SolrServerException {
+        LOG.debug("Indexing adult vocational ed: " + curLOS.getId());
+        LOG.debug("Indexing adult vocational ed: " + curLOS.getShortTitle());
         this.indexerService.removeLos(curLOS, loHttpSolrServer);
         this.indexerService.addLearningOpportunitySpecification(curLOS, loHttpSolrServer, lopHttpSolrServer);
         this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
@@ -151,6 +167,20 @@ public class IncrementalAdultLOSIndexer {
 
         }
     }
+    
+
+    public void removeAdultVocationalEd(String oid) throws Exception {
+        LOS existingLos = this.dataQueryService.getLos(oid);
+        if (existingLos != null && existingLos instanceof CompetenceBasedQualificationParentLOS) {
+            CompetenceBasedQualificationParentLOS existingAdultUpsecEd = (CompetenceBasedQualificationParentLOS)existingLos;
+           
+            this.indexerService.removeLos(existingAdultUpsecEd, loHttpSolrServer);
+            this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
+            this.dataUpdateService.deleteLos(existingAdultUpsecEd);
+
+        }
+        
+    }
 
     public void updateAdultUpsecLos(AdultUpperSecondaryLOS los) throws Exception {
         
@@ -162,5 +192,67 @@ public class IncrementalAdultLOSIndexer {
         this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
        
     }
+
+    public void indexAdultVocationalKomoto(String curKomoOid) throws Exception {
+        LOG.debug("Indexing adult vocational ed komo: " + curKomoOid);
+
+        /*ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> adultVocationalEdRes = this.tarjontaRawService.getHigherEducationByKomo(curKomoOid);
+        //higherEdRes.getResult().getTulokset().
+
+        if (adultVocationalEdRes != null 
+                && adultVocationalEdRes.getResult() != null 
+                && adultVocationalEdRes.getResult().getTulokset() != null 
+                && !adultVocationalEdRes.getResult().getTulokset().isEmpty()) {
+
+
+            for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> tarjResult :  adultVocationalEdRes.getResult().getTulokset()) {
+                if (tarjResult.getTulokset() !=  null && !tarjResult.getTulokset().isEmpty()) {
+                    for (KoulutusHakutulosV1RDTO curKoul : tarjResult.getTulokset()) {
+                        
+                        if (!(curKoul.getKoulutusasteTyyppi().name().equals(KoulutusasteTyyppi.AMMATILLINEN_PERUSTUTKINTO_NAYTTOTUTKINTONA.name()) 
+                                || curKoul.getKoulutusasteTyyppi().name().equals(KoulutusasteTyyppi.AMMATTITUTKINTO.name())
+                                || curKoul.getKoulutusasteTyyppi().name().equals(KoulutusasteTyyppi.ERIKOISAMMATTITUTKINTO.name())
+                                || curKoul.getKoulutusasteTyyppi().name().equals(KoulutusasteTyyppi.AMMATILLINEN_PERUSKOULUTUS.name())))  {
+                            continue;
+                        }
+                        
+                        LOG.debug("Now indexing adult upper secondary education: " + curKoul.getOid());*/
+                        
+                        CompetenceBasedQualificationParentLOS createdLos = null;
+                        
+                        
+                        try {
+                            createdLos = this.tarjontaService.createCBQPLOS(curKomoOid, true);//createAdultUpperSecondaryLOS(curKoul.getOid(), true);//createHigherEducationLearningOpportunityTree(curKoul.getOid());
+                            
+                        } catch (TarjontaParseException tpe) {
+                            createdLos = null;
+                        }
+
+                        LOG.debug("Created los");
+
+                        if (createdLos == null) {
+                            LOG.debug("Created los is to be removed");
+                            removeAdultVocationalEd(curKomoOid);
+                            //continue;
+                        } else {
+                            
+                            for (ApplicationOption curAo : createdLos.getApplicationOptions()) {
+                                List<HigherEducationLOSRef> refs = new ArrayList<HigherEducationLOSRef>();
+                                refs.add(tarjontaService.createAdultVocationalLosRef(createdLos, curAo));
+                                curAo.setHigherEdLOSRefs(refs);
+                            }
+                            
+                            this.indexToSolr(createdLos);
+                            this.dataUpdateService.updateAdultVocationalLos(createdLos);//updateAdultUpsecLos(createdLos);
+                        }
+                        
+                    /*}
+                }
+            }
+        }*/
+        
+        
+    }
+
 
 }

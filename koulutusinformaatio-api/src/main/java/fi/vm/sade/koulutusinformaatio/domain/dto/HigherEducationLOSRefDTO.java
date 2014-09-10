@@ -32,6 +32,7 @@ public class HigherEducationLOSRefDTO implements Comparable<HigherEducationLOSRe
     private List<String> qualifications;
     private CodeDTO prerequisite;
     private String provider;
+    private String fieldOfExpertise;
     
     public String getId() {
         return id;
@@ -77,6 +78,14 @@ public class HigherEducationLOSRefDTO implements Comparable<HigherEducationLOSRe
             return 0;
         }
         return this.name.compareTo(higherEdLOSRefDTO.name);
+    }
+    
+    public String getFieldOfExpertise() {
+        return fieldOfExpertise;
+    }
+    
+    public void setFieldOfExpertise(String fieldOfExpertise) {
+        this.fieldOfExpertise = fieldOfExpertise;
     }
 
 }

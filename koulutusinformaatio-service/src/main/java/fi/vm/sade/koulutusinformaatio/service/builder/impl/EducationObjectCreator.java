@@ -133,11 +133,11 @@ public class EducationObjectCreator extends ObjectCreator {
     public Address createAddress(OsoiteRDTO osoite) throws KoodistoException {
         if (osoite != null) {
             Address attachmentDeliveryAddress = new Address();
-            
+
             Map<String,String> streetAddrTransls = new HashMap<String,String>();
             Map<String,String> streetAddrTransls2 = new HashMap<String,String>();
             Map<String,String> postOfficeTransls = new HashMap<String,String>();
-            
+
             if (osoite.getOsoiterivi1() != null) {
                 streetAddrTransls.put("fi", osoite.getOsoiterivi1());
                 attachmentDeliveryAddress.setStreetAddress(new I18nText(streetAddrTransls));
@@ -163,21 +163,25 @@ public class EducationObjectCreator extends ObjectCreator {
             List<Exam> exams = Lists.newArrayList();
             for (ValintakoeV1RDTO valintakoe : valintakokeet) {
                 if (valintakoe != null && valintakoe.getValintakokeenKuvaus() != null
-                        && valintakoe.getValintakoeAjankohtas() != null
-                        && !valintakoe.getValintakoeAjankohtas().isEmpty() && valintakoe.getKieliUri() != null) {
+                        && valintakoe.getValintakoeNimi() != null
+                        && valintakoe.getKieliUri() != null) {
                     Exam exam = new Exam();
 
                     exam.setType(getTypeText(valintakoe.getValintakoeNimi(), valintakoe.getKieliUri()));
                     exam.setDescription(getI18nTextEnriched(valintakoe.getValintakokeenKuvaus()));
                     List<ExamEvent> examEvents = Lists.newArrayList();
 
-                    for (ValintakoeAjankohtaRDTO valintakoeAjankohta : valintakoe.getValintakoeAjankohtas()) {
-                        ExamEvent examEvent = new ExamEvent();
-                        examEvent.setAddress(createAddress(valintakoeAjankohta.getOsoite()));
-                        examEvent.setDescription(valintakoeAjankohta.getLisatiedot());
-                        examEvent.setStart(valintakoeAjankohta.getAlkaa());
-                        examEvent.setEnd(valintakoeAjankohta.getLoppuu());
-                        examEvents.add(examEvent);
+                    if (valintakoe.getValintakoeAjankohtas() != null
+                            && !valintakoe.getValintakoeAjankohtas().isEmpty() ) {
+
+                        for (ValintakoeAjankohtaRDTO valintakoeAjankohta : valintakoe.getValintakoeAjankohtas()) {
+                            ExamEvent examEvent = new ExamEvent();
+                            examEvent.setAddress(createAddress(valintakoeAjankohta.getOsoite()));
+                            examEvent.setDescription(valintakoeAjankohta.getLisatiedot());
+                            examEvent.setStart(valintakoeAjankohta.getAlkaa());
+                            examEvent.setEnd(valintakoeAjankohta.getLoppuu());
+                            examEvents.add(examEvent);
+                        }
                     }
                     exam.setExamEvents(examEvents);
                     exams.add(exam);

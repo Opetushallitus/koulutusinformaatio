@@ -69,6 +69,7 @@ public class TransactionManagerImpl implements TransactionManager {
     private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO;
     private HigherEducationLOSDAO higherEducationLOSTransactionDAO;
     private AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSTransactionDAO;
+    private AdultVocationalLOSDAO adultVocationalLOSTransactionDAO;
     private SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO;
     private DataStatusDAO dataStatusTransactionDAO;
 
@@ -81,6 +82,7 @@ public class TransactionManagerImpl implements TransactionManager {
     private UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO;
     private HigherEducationLOSDAO higherEducationLOSDAO;
     private AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSDAO;
+    private AdultVocationalLOSDAO adultVocationalLOSDAO;
     private SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO;
     
     private KoodistoService koodistoService;
@@ -119,6 +121,7 @@ public class TransactionManagerImpl implements TransactionManager {
             UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLOSTransactionDAO,
             HigherEducationLOSDAO higherEducationLOSTransactionDAO,
             AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSTransactionDAO,
+            AdultVocationalLOSDAO adultVocationalLOSTransactionDAO,
             SpecialLearningOpportunitySpecificationDAO specialLOSTransactionDAO,
             DataStatusDAO dataStatusTransactionDAO,
             ParentLearningOpportunitySpecificationDAO parentLearningOpportunitySpecificationDAO,
@@ -130,6 +133,7 @@ public class TransactionManagerImpl implements TransactionManager {
             UpperSecondaryLearningOpportunitySpecificationDAO upperSecondaryLearningOpportunitySpecificationDAO,
             HigherEducationLOSDAO higherEducationLOSDAO, 
             AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSDAO,
+            AdultVocationalLOSDAO adultVocationalLOSDAO,
             SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO,
             KoodistoService koodistoService,
             ProviderService providerService) {
@@ -152,6 +156,7 @@ public class TransactionManagerImpl implements TransactionManager {
         this.upperSecondaryLOSTransactionDAO = upperSecondaryLOSTransactionDAO;
         this.higherEducationLOSTransactionDAO = higherEducationLOSTransactionDAO;
         this.adultUpperSecondaryLOSTransactionDAO = adultUpperSecondaryLOSTransactionDAO;
+        this.adultVocationalLOSTransactionDAO = adultVocationalLOSTransactionDAO;
         this.specialLOSTransactionDAO = specialLOSTransactionDAO;
         this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
         this.applicationOptionDAO = applicationOptionDAO;
@@ -162,6 +167,7 @@ public class TransactionManagerImpl implements TransactionManager {
         this.upperSecondaryLearningOpportunitySpecificationDAO = upperSecondaryLearningOpportunitySpecificationDAO;
         this.higherEducationLOSDAO = higherEducationLOSDAO;
         this.adultUpperSecondaryLOSDAO = adultUpperSecondaryLOSDAO;
+        this.adultVocationalLOSDAO = adultVocationalLOSDAO;
         this.specialLearningOpportunitySpecificationDAO = specialLearningOpportunitySpecificationDAO;
         this.koodistoService = koodistoService;
         this.providerService = providerService;
@@ -245,6 +251,7 @@ public class TransactionManagerImpl implements TransactionManager {
         upperSecondaryLOSTransactionDAO.getCollection().drop();
         higherEducationLOSTransactionDAO.getCollection().drop();
         adultUpperSecondaryLOSTransactionDAO.getCollection().drop();
+        adultVocationalLOSTransactionDAO.getCollection().drop();
         specialLOSTransactionDAO.getCollection().drop();
         dataStatusTransactionDAO.getCollection().drop();
     }
@@ -259,6 +266,7 @@ public class TransactionManagerImpl implements TransactionManager {
         upperSecondaryLearningOpportunitySpecificationDAO.getCollection().drop();
         higherEducationLOSDAO.getCollection().drop();
         adultUpperSecondaryLOSDAO.getCollection().drop();
+        adultVocationalLOSDAO.getCollection().drop();
         specialLearningOpportunitySpecificationDAO.getCollection().drop();
     }
 

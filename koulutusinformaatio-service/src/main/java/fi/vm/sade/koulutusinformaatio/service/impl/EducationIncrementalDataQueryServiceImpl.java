@@ -70,6 +70,7 @@ EducationIncrementalDataQueryService {
     private SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO;
     private HigherEducationLOSDAO higherEducationLOSDAO;
     private AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSDAO;
+    private AdultVocationalLOSDAO adultVocationalLOSDAO;
     private LearningOpportunityProviderDAO learningOpportunityProviderDAO;
 
 
@@ -82,6 +83,7 @@ EducationIncrementalDataQueryService {
             SpecialLearningOpportunitySpecificationDAO specialLearningOpportunitySpecificationDAO, 
             HigherEducationLOSDAO higherEducationLOSDAO,
             AdultUpperSecondaryLOSDAO adultUpperSecondaryLOSDAO,
+            AdultVocationalLOSDAO adultVocationalLOSDAO,
             LearningOpportunityProviderDAO learningOpportunityProviderDAO,
             IndexerService indexerService) {
         this.parentLearningOpportunitySpecificationDAO = parentLearningOpportunitySpecificationDAO;
@@ -94,6 +96,7 @@ EducationIncrementalDataQueryService {
         this.specialLearningOpportunitySpecificationDAO = specialLearningOpportunitySpecificationDAO;
         this.higherEducationLOSDAO = higherEducationLOSDAO;
         this.adultUpperSecondaryLOSDAO = adultUpperSecondaryLOSDAO;
+        this.adultVocationalLOSDAO = adultVocationalLOSDAO;
         this.learningOpportunityProviderDAO = learningOpportunityProviderDAO;
 
     }
@@ -317,6 +320,13 @@ EducationIncrementalDataQueryService {
         if (adultUpsecEdE != null) {
             return modelMapper.map(adultUpsecEdE, AdultUpperSecondaryLOS.class);
         }
+        
+        CompetenceBasedQualificationParentLOSEntity adultVocationalEdE = this.adultVocationalLOSDAO.get(losId);
+        if (adultVocationalEdE != null) {
+            return modelMapper.map(adultVocationalEdE, CompetenceBasedQualificationParentLOS.class);
+        }
+        
+        
 
         return null;
     }

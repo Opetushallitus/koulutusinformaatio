@@ -1,7 +1,7 @@
 <td>
-    <h4>{{item.providerName}}, <span>{{item.providerLocation}}</span></h4>
-    <a href="#!/tutkinto/{{item.parent.id}}?prerequisite={{item.prerequisite.value}}">{{item.parent.name}}</a>
-    <em data-ng-if="!item.kotitalous" data-ki-i18n="{{item.educationTypeUri}}"></em>
+    <h4>{{item.providerName}}, <span class="capitalize">{{item.providerLocation}}</span></h4>
+    <div><a href="#!/tutkinto/{{item.parent.id}}?prerequisite={{item.prerequisite.value}}">{{item.parent.name}}</a></div>
+    <div><em data-ng-if="!item.kotitalous" data-ki-i18n="{{item.educationTypeUri}}"></em></div>
     <div>
         <span data-ng-if="!item.kotitalous">{{item.qualification}}</span>
         <div>
@@ -12,7 +12,7 @@
 
 <td>
     <h4>{{item.name}}</h4>
-    <div data-ng-if="isErikseenHaettava(as)" data-ki-application-time data-dates="item.applicationDates" data-hakutapa="item.hakutapaUri"></div>
+    <div data-ng-if="isErikseenHaettava(as)" data-ki-application-time data-dates="item.applicationDates" data-hakutapa="item.hakutapaUri" data-label="item.asName"></div>
     <ul class="inside">
         <li data-ng-repeat="child in item.children"><a href="#!/koulutusohjelma/{{child.losId}}?prerequisite={{item.prerequisite.value}}">{{child.name}}</a></li>
     </ul>

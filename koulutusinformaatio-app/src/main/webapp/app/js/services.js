@@ -467,7 +467,7 @@ service('HigherEducationLOService', ['$http', '$timeout', '$q', 'LanguageService
 }]).
 
 /**
- * Resource for requesting University of Applied Sciences LO data
+ * Resource for requesting adult upper secondary LO data
  */
 service('AdultUpperSecondaryLOService', ['$http', '$timeout', '$q', 'LanguageService', 'HigherEducationTransformer', function($http, $timeout, $q, LanguageService, HigherEducationTransformer) {
     return {
@@ -489,6 +489,45 @@ service('AdultUpperSecondaryLOService', ['$http', '$timeout', '$q', 'LanguageSer
             
             success(function(result) {
             	HigherEducationTransformer.transform(result);
+                var loResult = {
+                    lo: result,
+                    provider: result.provider
+                }
+                
+                deferred.resolve(loResult);
+            }).
+            error(function(result) {
+                deferred.reject(result);
+            });
+
+            return deferred.promise;
+        }
+    }
+}]).
+
+/**
+ * Resource for requesting adult vocational LO data
+ */
+service('AdultVocationalLOService', ['$http', '$timeout', '$q', 'LanguageService', 'AdultVocationalTransformer', function($http, $timeout, $q, LanguageService, AdultVocationalTransformer) {
+    return {
+        query: function(options) {
+            var deferred = $q.defer();
+            var queryParams = {
+                uiLang: LanguageService.getLanguage()
+            }
+
+            if (options.lang) {
+                queryParams.lang = options.lang
+            }
+
+            var url = '../lo/adultvocational/';
+
+            $http.get(url + options.id, {
+                params: queryParams
+            }).
+            
+            success(function(result) {
+            	AdultVocationalTransformer.transform(result, options.id);
                 var loResult = {
                     lo: result,
                     provider: result.provider
@@ -1541,6 +1580,9 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
                     loRef += ao.parent.id;
                     break;
                 case 'aikuislukio':
+                    loRef += ao.losRefs && ao.losRefs.length > 0 ? ao.losRefs[0].id : '';
+                    break;
+                case 'ammatillinenaikuiskoulutus':
                     loRef += ao.losRefs && ao.losRefs.length > 0 ? ao.losRefs[0].id : '';
                     break;
             }

@@ -960,6 +960,7 @@ public class LOSObjectCreator extends ObjectCreator {
         }
         if (los.getEducationType() == null) {
             los.setEducationType(getI18nTextEnriched(dto.getKoulutustyyppi().getMeta()));
+            los.setEdtUri(dto.getKoulutustyyppi().getUri());
         }
         
         LOG.debug("setting charge with los: " + los.getId() +" and dto hinta: " + dto.getHinta());
@@ -1185,7 +1186,9 @@ public class LOSObjectCreator extends ObjectCreator {
 
         try {
             Provider organizer = providerService.getByOID(koulutus.getJarjestavaOrganisaatio().getOid());
-            los.setDegreeOrganizer(organizer.getName());
+            los.setOrganizer(organizer.getName());
+            
+            
         } catch (Exception ex) {
             throw new KoodistoException("Problem reading jarjestava organisaatio: " + ex.getMessage());
         }
@@ -1203,7 +1206,7 @@ public class LOSObjectCreator extends ObjectCreator {
                 ao.setEducationDegree(los.getEducationDegree());
                 los.getProvider().getApplicationSystemIDs().add(ao.getApplicationSystem().getId());
                 //ao.setParent(createParentLosRef(los));
-                ao.setType(TarjontaConstants.TYPE_ADULT_UPSEC);
+                ao.setType(TarjontaConstants.TYPE_ADULT_VOCATIONAL);//TarjontaConstants.TYPE_ADULT_UPSEC);
             }
         }
 

@@ -246,6 +246,39 @@ public class TarjontaServiceImpl implements TarjontaService {
         LOG.debug("ao los references now updated");
 
     }
+    
+    private void updateAOLosReferences(CompetenceBasedQualificationParentLOS los,
+            Map<String, List<HigherEducationLOSRef>> aoToEducationsMap) {
+        if (los.getApplicationOptions() != null) {
+            for (ApplicationOption curAo : los.getApplicationOptions()) {
+                LOG.debug("Updating ao los references for ao: " + curAo.getId());
+                List<HigherEducationLOSRef> aoLoss = aoToEducationsMap.get(curAo.getId());
+                if (aoLoss == null) {
+                    aoLoss = new ArrayList<HigherEducationLOSRef>();
+                    aoToEducationsMap.put(curAo.getId(), aoLoss);
+                }
+                aoLoss.add(createAdultVocationalLosRef(los, curAo));
+                aoToEducationsMap.put(curAo.getId(), aoLoss);
+            }
+        }
+        LOG.debug("ao los references now updated");
+
+    }
+    
+    public HigherEducationLOSRef createAdultVocationalLosRef(CompetenceBasedQualificationParentLOS los, ApplicationOption curAo) {
+        
+        HigherEducationLOSRef newRef = new HigherEducationLOSRef();
+        newRef.setId(los.getId());
+        newRef.setName(los.getName());
+        newRef.setPrerequisite(curAo.getPrerequisite());
+        //newRef.setQualifications(((CompetenceBasedQualificationParentLOS)los).getQualifications());
+        newRef.setProvider(curAo.getProvider().getName());
+        newRef.setFieldOfExpertise(los.getChildren().get(0).getName());
+        newRef.setEducationKind(los.getEducationKind());
+        newRef.setAdultVocational(true);
+        return newRef;
+        
+    }
 
     /*
      * Creating the learning opportunity hierarchy for higher education
@@ -541,12 +574,7 @@ public class TarjontaServiceImpl implements TarjontaService {
 
         ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes =  this.tarjontaRawService.listEducationsByToteutustyyppi(ToteutustyyppiEnum.AMMATILLINEN_PERUSTUTKINTO_NAYTTOTUTKINTONA.name(), ToteutustyyppiEnum.AMMATTITUTKINTO.name(), ToteutustyyppiEnum.ERIKOISAMMATTITUTKINTO.name());// //AMMATTITUTKINTO.name());//listEducations(TarjontaConstants.UPPER_SECONDARY_EDUCATION_TYPE);
         HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
-        /*Map<String,List<HigherEducationLOSRef>> aoToEducationsMap = new HashMap<String,List<HigherEducationLOSRef>>();
-
-        Map<String,List<String>> parentChildKomos = new HashMap<String,List<String>>();
-        Map<String,List<String>> komoToKomotoMap = new HashMap<String,List<String>>();*/ 
-
-        //List<String> createdOids = new ArrayList<String>();
+        Map<String,List<HigherEducationLOSRef>> aoToEducationsMap = new HashMap<String,List<HigherEducationLOSRef>>();
 
         for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
             LOG.debug("Cur Adult Vocationals tarjoaja result: " + curRes.getOid());
@@ -562,6 +590,10 @@ public class TarjontaServiceImpl implements TarjontaService {
                     try {
                         CompetenceBasedQualificationParentLOS newLos = this.createCBQPLOS(curKoulutus.getOid(), true);
                         koulutukset.add(newLos);
+                        
+                        updateAOLosReferences(newLos, aoToEducationsMap);
+                        LOG.debug("Updated aolos references for: " + newLos.getId());
+                        
                     } catch (TarjontaParseException ex) {
                         ex.printStackTrace();
                     } catch (ResourceNotFoundException ex) {
@@ -572,6 +604,14 @@ public class TarjontaServiceImpl implements TarjontaService {
                     }*/
                 //}
 
+            }
+        }
+        
+        for (CompetenceBasedQualificationParentLOS curLos : koulutukset) {
+            if (curLos.getApplicationOptions() != null) {
+                for (ApplicationOption ao : curLos.getApplicationOptions()) {
+                    ao.setHigherEdLOSRefs(aoToEducationsMap.get(ao.getId()));
+                }
             }
         }
 
@@ -651,7 +691,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                 if (!createdOids.contains(oid)) {
                     createdOids.add(oid);
                 }*/
-                
+
                 return this.creator.createCBQPLOS(dto.getKomoOid(), Arrays.asList(oid), checkStatus);
                 
             /*} else {

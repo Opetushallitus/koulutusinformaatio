@@ -33,22 +33,24 @@ directive('searchResult', ['FilterService', 'TranslationService', function(Filte
     }
 }]).
 
-directive('toggleCollapse', [function () {
+directive('toggleCollapse', ['$timeout', function ($timeout) {
     return {
         restrict: 'A',
         transclude: true,
         controller: function($scope) {
             $scope.toggleExtendedView = function() {
-                if($scope.showExtension == 'closed') {
-                    if(!$scope.extendedLO) {
-                        $scope.fetchLOData();
-                        $scope.showExtension = 'opened';
+                $timeout(function() {
+                    if($scope.showExtension == 'closed') {
+                        if(!$scope.extendedLO) {
+                            $scope.fetchLOData();
+                            $scope.showExtension = 'opened';
+                        } else {
+                            $scope.showExtension = 'opened';
+                        }
                     } else {
-                        $scope.showExtension = 'opened';
+                        $scope.showExtension = 'closed';
                     }
-                } else {
-                    $scope.showExtension = 'closed';
-                }  
+                }, 100);
             }
         },
         link: function (scope, iElement, iAttrs) {
@@ -63,7 +65,7 @@ directive('toggleCollapse', [function () {
     };
 }]).
 
-directive('extendedSearchresultData', ['ParentLOService', 'SpecialLOService', 'UpperSecondaryLOService', 'HigherEducationLOService', 'AdultUpperSecondaryLOService', function (ParentLOService, SpecialLOService, UpperSecondaryLOService, HigherEducationLOService, AdultUpperSecondaryLOService) {
+directive('extendedSearchresultData', ['ParentLOService', 'SpecialLOService', 'UpperSecondaryLOService', 'HigherEducationLOService', 'AdultUpperSecondaryLOService', 'AdultVocationalLOService', function (ParentLOService, SpecialLOService, UpperSecondaryLOService, HigherEducationLOService, AdultUpperSecondaryLOService,  AdultVocationalLOService) {
     return {    
         restrict: 'A',
         link: function($scope, ielement, iAttrs) {
@@ -82,6 +84,8 @@ directive('extendedSearchresultData', ['ParentLOService', 'SpecialLOService', 'U
                     $scope.extendedLO = HigherEducationLOService.query({id: $scope.lo.id});
                 } else if (iAttrs.extendedSearchresultData === "aikuislukio") {
                 	$scope.extendedLO = AdultUpperSecondaryLOService.query({id: $scope.lo.id});
+                } else if (iAttrs.extendedSearchresultData === "ammatillinenaikuiskoulutus") {
+                	$scope.extendedLO = AdultVocationalLOService.query({id: $scope.lo.id});
                 }
 
                 $scope.loType = iAttrs.extendedSearchresultData;

@@ -14,7 +14,10 @@ public class HigherEducationLOSRef {
     private List<I18nText> qualifications;
     private Code prerequisite;
     private I18nText provider;
-    
+    private I18nText fieldOfExpertise;
+    private I18nText educationKind;
+    private boolean adultVocational = false;
+     
     public String getId() {
         return id;
     }
@@ -50,6 +53,27 @@ public class HigherEducationLOSRef {
     }
     public void setProvider(I18nText provider) {
         this.provider = provider;
+    }
+    public void setFieldOfExpertise(I18nText name2) {
+        this.fieldOfExpertise = name2;
+        
+    }
+    public I18nText getFieldOfExpertise() {
+        return fieldOfExpertise;
+    }
+    public void setEducationKind(I18nText educationKind) {
+        this.educationKind = educationKind;
+        
+    }
+    public I18nText getEducationKind() {
+        return educationKind;
+    }
+    public void setAdultVocational(boolean b) {
+        this.adultVocational = b;
+        
+    }
+    public boolean isAdultVocational() {
+        return adultVocational;
     }
 
 }

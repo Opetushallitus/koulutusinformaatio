@@ -123,6 +123,17 @@ public interface LearningOpportunityService {
     AdultUpperSecondaryLOSDTO getAdultUpperSecondaryLearningOpportunity(
             String id, String lang, String uiLang)
             throws ResourceNotFoundException;
+    
+    
+    AdultVocationalParentLOSDTO getAdultVocationalLearningOpportunity(String id) throws ResourceNotFoundException;
+
+    AdultVocationalParentLOSDTO getAdultVocationalLearningOpportunity(
+            String id, String uiLang) throws ResourceNotFoundException;
+
+    AdultVocationalParentLOSDTO getAdultVocationalLearningOpportunity(
+            String id, String lang, String uiLang)
+            throws ResourceNotFoundException;
+    
 
     AdultUpperSecondaryLOSDTO previewAdultUpperSecondaryLearningOpportunity(
             String oid, String lang, String uiLang) throws ResourceNotFoundException;
