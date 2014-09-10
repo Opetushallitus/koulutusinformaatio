@@ -37,7 +37,7 @@ public class CorsFilter implements ContainerResponseFilter {
                 containerResponse.getHttpHeaders().add("Access-Control-Allow-Headers", value );
             }
         }
-        containerResponse.getHttpHeaders().add("Access-Control-Allow-Origin", "https://test-oppija.oph.ware.fi https://itest-oppija.oph.ware.fi https://testi.opintopolku.fi https://opintopolku.fi https://koulutus.opintopolku.fi https://itest-virkailija.oph.ware.fi https://test-virkailija.oph.ware.fi https://testi.virkailija.opintopolku.fi https://virkailija.opintopolku.fi https://koulutus.virkailija.opintopolku.fi");
+        containerResponse.getHttpHeaders().add("Access-Control-Allow-Origin", "*");
         return containerResponse;
     }
 }
