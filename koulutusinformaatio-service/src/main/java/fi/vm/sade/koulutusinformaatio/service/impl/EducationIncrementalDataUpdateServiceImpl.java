@@ -392,6 +392,15 @@ public class EducationIncrementalDataUpdateServiceImpl implements
 
             if (plos.getApplicationOptions() != null) {
                 for (ApplicationOptionEntity ao : plos.getApplicationOptions()) {
+                    
+                    try {
+                        ApplicationOptionEntity exAo = this.getAo(ao.getId());
+                        updateLosRefs(ao, exAo, plos.getId());
+                    } catch (ResourceNotFoundException ex) {
+                        LOG.debug("No existing ao");
+                    }
+                    
+                    
                     this.applicationOptionDAO.deleteById(ao.getId());
                     save(ao);
                 }
@@ -428,6 +437,15 @@ public class EducationIncrementalDataUpdateServiceImpl implements
 
             if (plos.getApplicationOptions() != null) {
                 for (ApplicationOptionEntity ao : plos.getApplicationOptions()) {
+                    
+                    try {
+                        ApplicationOptionEntity exAo = this.getAo(ao.getId());
+                        updateLosRefs(ao, exAo, plos.getId());
+                    } catch (ResourceNotFoundException ex) {
+                        LOG.debug("No existing ao");
+                    }
+                    
+                    
                     this.applicationOptionDAO.deleteById(ao.getId());
                     save(ao);
                 }
@@ -471,7 +489,7 @@ public class EducationIncrementalDataUpdateServiceImpl implements
                         ApplicationOptionEntity exAo = this.getAo(ao.getId());
                         updateLosRefs(ao, exAo, plos.getId());
                     } catch (ResourceNotFoundException ex) {
-                        
+                        LOG.debug("No existing ao");
                     }
                     
                     this.applicationOptionDAO.deleteById(ao.getId());
