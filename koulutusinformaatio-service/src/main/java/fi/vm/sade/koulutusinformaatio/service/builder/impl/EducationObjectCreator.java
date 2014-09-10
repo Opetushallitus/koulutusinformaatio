@@ -163,7 +163,8 @@ public class EducationObjectCreator extends ObjectCreator {
             List<Exam> exams = Lists.newArrayList();
             for (ValintakoeV1RDTO valintakoe : valintakokeet) {
                 if (valintakoe != null && valintakoe.getValintakokeenKuvaus() != null
-                        &&  valintakoe.getKieliUri() != null) {
+                        && valintakoe.getValintakoeNimi() != null
+                        && valintakoe.getKieliUri() != null) {
                     Exam exam = new Exam();
 
                     exam.setType(getTypeText(valintakoe.getValintakoeNimi(), valintakoe.getKieliUri()));
@@ -171,7 +172,7 @@ public class EducationObjectCreator extends ObjectCreator {
                     List<ExamEvent> examEvents = Lists.newArrayList();
 
                     if (valintakoe.getValintakoeAjankohtas() != null
-                            && !valintakoe.getValintakoeAjankohtas().isEmpty()) {
+                            && !valintakoe.getValintakoeAjankohtas().isEmpty() ) {
 
                         for (ValintakoeAjankohtaRDTO valintakoeAjankohta : valintakoe.getValintakoeAjankohtas()) {
                             ExamEvent examEvent = new ExamEvent();
@@ -181,11 +182,8 @@ public class EducationObjectCreator extends ObjectCreator {
                             examEvent.setEnd(valintakoeAjankohta.getLoppuu());
                             examEvents.add(examEvent);
                         }
-
                     }
                     exam.setExamEvents(examEvents);
-
-
                     exams.add(exam);
                 }
             }
