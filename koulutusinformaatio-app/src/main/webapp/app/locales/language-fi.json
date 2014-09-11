@@ -195,7 +195,7 @@
     "application-basket-empty": "Tyhjennä muistilista",
     "application-basket-empty-confirm": "Haluatko varmasti tyhjentää koko muistilistan?",
     "application-basket-overflow-warning": "Tässä haussa voit hakea enintään __itemcount__ koulutukseen, poista ylimääräiset.",
-    "application-basket-fill-form-notification-single-ao": "Jokaiseen tässä listattavaan koulutukseen tulee hakea erikseen. Osaan koulutuksista haetaan oppilaitoksen omien sivujen kautta.",
+    "application-basket-fill-form-notification-single-ao": "Jokaiseen tässä listattavaan koulutukseen tulee hakea erikseen.",
     "application-basket-attachments-exams": "Liitteet ja kokeet",
     "application-basket-no-attachments": "Ei liitteitä",
     "application-basket-attachments-required": "Vaaditaan liitteitä",

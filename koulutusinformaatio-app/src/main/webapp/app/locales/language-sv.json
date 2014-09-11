@@ -195,7 +195,7 @@
     "application-basket-empty": "Töm minneslistan",
     "application-basket-empty-confirm": "Är du säker på att du vill tömma minneslistan?",
     "application-basket-overflow-warning": "I denna ansökan kan du söka till högst __itemcount__ utbildningar, stryk de som är överlopps.",
-    "application-basket-fill-form-notification-single-ao": "Man söker skilt till alla utbildningar som finns listade här. Till en del av utbildningarna söker man via läroanstaltens egna sidor.",
+    "application-basket-fill-form-notification-single-ao": "Man söker skilt till alla utbildningar som finns listade här.",
     "application-basket-attachments-exams": "Bilagor och prov",
     "application-basket-no-attachments": "Inga bilagor",
     "application-basket-attachments-required": "Bilagor krävs",
