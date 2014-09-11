@@ -141,12 +141,16 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
         doc.setField(LearningOpportunity.START_DATE_SORT, earliest);
         
         indexFacetFields(los, doc);
-        for (AdultVocationalLOS curChild : los.getChildren()) {
+        if (los.getChildren() != null) {
+            for (AdultVocationalLOS curChild : los.getChildren()) {
             //for (ChildLOI childLOI : childLOS.getLois()) {
             //    if (childLOI.getPrerequisite() != null && childLOI.getPrerequisite().getValue().equals(prerequisite.getValue())) {
+                if (curChild != null) {
                     indexChildFields(doc, curChild, teachLang);
+                }
                 //}
             //}
+            }
         }
         
         
@@ -156,28 +160,43 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
     
     private void indexChildFields(SolrInputDocument doc,
             AdultVocationalLOS curChild, String teachLang) {
+        if (curChild.getShortTitle() != null 
+                && curChild.getShortTitle().getTranslations() != null 
+                && !curChild.getShortTitle().getTranslations().isEmpty()) {
+            String childName = SolrUtil.resolveTranslationInTeachingLangUseFallback(
+                    curChild.getTeachingLanguages(), curChild.getShortTitle().getTranslations());
+            doc.setField(LearningOpportunity.CHILD_NAME, childName);
+        }
         
-        String childName = SolrUtil.resolveTranslationInTeachingLangUseFallback(
-                curChild.getTeachingLanguages(), curChild.getShortTitle().getTranslations());
-        doc.setField(LearningOpportunity.CHILD_NAME, childName);
+        if (curChild.getEducationDegreeLang() != null 
+                && curChild.getEducationDegreeLang().getTranslations() != null 
+                && !curChild.getEducationDegreeLang().getTranslations().isEmpty()) {
+            doc.setField(LearningOpportunity.EDUCATION_DEGREE, 
+                    SolrUtil.resolveTextWithFallback(teachLang,  
+                            curChild.getEducationDegreeLang().getTranslations()));
+        }
         
-        doc.setField(LearningOpportunity.EDUCATION_DEGREE, 
-                SolrUtil.resolveTextWithFallback(teachLang,  
-                        curChild.getEducationDegreeLang().getTranslations()));
         
-                
-        doc.addField(LearningOpportunity.EDUCATION_DEGREE_CODE, curChild.getEducationDegree());
-
-
-        if (teachLang.equals("sv")) {
-            doc.addField(LearningOpportunity.CHILD_NAME_SV, SolrUtil.resolveTextWithFallback("sv", curChild.getName().getTranslations()));
-        } else if (teachLang.equals("en")) {
-            doc.addField(LearningOpportunity.CHILD_NAME_EN, SolrUtil.resolveTextWithFallback("en", curChild.getName().getTranslations()));
-        } else {
-            doc.addField(LearningOpportunity.CHILD_NAME_FI, SolrUtil.resolveTextWithFallback("fi", curChild.getName().getTranslations()));
+        if (curChild.getEducationDegree() != null) {        
+            doc.addField(LearningOpportunity.EDUCATION_DEGREE_CODE, curChild.getEducationDegree());
         }
 
-        if (curChild.getContent() != null) {
+
+        if (curChild.getName() != null 
+                && curChild.getName().getTranslations() != null 
+                && !curChild.getName().getTranslations().isEmpty()) {
+            if (teachLang.equals("sv")) {
+                doc.addField(LearningOpportunity.CHILD_NAME_SV, SolrUtil.resolveTextWithFallback("sv", curChild.getName().getTranslations()));
+            } else if (teachLang.equals("en")) {
+                doc.addField(LearningOpportunity.CHILD_NAME_EN, SolrUtil.resolveTextWithFallback("en", curChild.getName().getTranslations()));
+            } else {
+                doc.addField(LearningOpportunity.CHILD_NAME_FI, SolrUtil.resolveTextWithFallback("fi", curChild.getName().getTranslations()));
+            }
+        }
+
+        if (curChild.getContent() != null
+                && curChild.getContent().getTranslations() != null
+                && !curChild.getContent().getTranslations().isEmpty()) {
 
             if (teachLang.equals("sv")) {
                 doc.addField(LearningOpportunity.CONTENT_SV,  SolrUtil.resolveTextWithFallback("sv", curChild.getContent().getTranslations()));
@@ -188,11 +207,13 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
             }
         }
 
-        for (ApplicationOption ao : curChild.getApplicationOptions()) {
-            if (ao.getApplicationSystem() != null) {
-                doc.addField(LearningOpportunity.AS_NAME_FI, ao.getApplicationSystem().getName().getTranslations().get("fi"));
-                doc.addField(LearningOpportunity.AS_NAME_SV, ao.getApplicationSystem().getName().getTranslations().get("sv"));
-                doc.addField(LearningOpportunity.AS_NAME_EN, ao.getApplicationSystem().getName().getTranslations().get("en"));
+        if (curChild.getApplicationOptions() != null) {
+            for (ApplicationOption ao : curChild.getApplicationOptions()) {
+                if (ao.getApplicationSystem() != null) {
+                    doc.addField(LearningOpportunity.AS_NAME_FI, ao.getApplicationSystem().getName().getTranslations().get("fi"));
+                    doc.addField(LearningOpportunity.AS_NAME_SV, ao.getApplicationSystem().getName().getTranslations().get("sv"));
+                    doc.addField(LearningOpportunity.AS_NAME_EN, ao.getApplicationSystem().getName().getTranslations().get("en"));
+                }
             }
         }
         
