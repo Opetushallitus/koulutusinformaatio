@@ -461,10 +461,10 @@ a.label:hover, a.label:focus {
   outline: 0;
   background-color: #bfe4f1; }
 
-.dropdown-menu > .disabled > a, .dropdown-menu > .introjs-disabled > a, .dropdown-menu > .disabled > a:hover, .dropdown-menu > .introjs-disabled > a:hover, .dropdown-menu > .disabled > a:focus, .dropdown-menu > .introjs-disabled > a:focus {
+.dropdown-menu > .disabled > a, .dropdown-menu > .disabled > a:hover, .dropdown-menu > .disabled > a:focus {
   color: #999999; }
 
-.dropdown-menu > .disabled > a:hover, .dropdown-menu > .introjs-disabled > a:hover, .dropdown-menu > .disabled > a:focus, .dropdown-menu > .introjs-disabled > a:focus {
+.dropdown-menu > .disabled > a:hover, .dropdown-menu > .disabled > a:focus {
   text-decoration: none;
   background-color: transparent;
   background-image: none;
@@ -585,7 +585,7 @@ h6, .h6 {
     background-image: none;
     -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
     box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125); }
-  .btn.disabled, .disabled.introjs-button, .introjs-button.introjs-disabled, .introjs-button.introjs-disabled:hover, .introjs-button.introjs-disabled:focus, .btn.introjs-disabled, .btn[disabled], [disabled].introjs-button, fieldset[disabled] .btn, fieldset[disabled] .introjs-button {
+  .btn.disabled, .disabled.introjs-button, .btn[disabled], [disabled].introjs-button, fieldset[disabled] .btn, fieldset[disabled] .introjs-button {
     cursor: not-allowed;
     pointer-events: none;
     opacity: 0.65;
@@ -605,7 +605,7 @@ h6, .h6 {
     border-color: #969696; }
   .btn-default:active, .introjs-button:active, .btn-default.active, .active.introjs-button, .open > .btn-default.dropdown-toggle, .open > .dropdown-toggle.introjs-button {
     background-image: none; }
-  .btn-default.disabled, .disabled.introjs-button, .introjs-button.introjs-disabled, .introjs-button.introjs-disabled:hover, .introjs-button.introjs-disabled:focus, .btn-default.introjs-disabled, .btn-default.disabled:hover, .disabled.introjs-button:hover, .introjs-button.introjs-disabled:hover, .btn-default.introjs-disabled:hover, .btn-default.disabled:focus, .disabled.introjs-button:focus, .introjs-button.introjs-disabled:focus, .btn-default.introjs-disabled:focus, .btn-default.disabled:active, .disabled.introjs-button:active, .introjs-button.introjs-disabled:active, .btn-default.introjs-disabled:active, .btn-default.disabled.active, .disabled.active.introjs-button, .active.introjs-button.introjs-disabled, .btn-default.active.introjs-disabled, .btn-default[disabled], [disabled].introjs-button, .btn-default[disabled]:hover, [disabled].introjs-button:hover, .btn-default[disabled]:focus, [disabled].introjs-button:focus, .btn-default[disabled]:active, [disabled].introjs-button:active, .btn-default[disabled].active, [disabled].active.introjs-button, fieldset[disabled] .btn-default, fieldset[disabled] .introjs-button, fieldset[disabled] .btn-default:hover, fieldset[disabled] .introjs-button:hover, fieldset[disabled] .btn-default:focus, fieldset[disabled] .introjs-button:focus, fieldset[disabled] .btn-default:active, fieldset[disabled] .introjs-button:active, fieldset[disabled] .btn-default.active, fieldset[disabled] .active.introjs-button {
+  .btn-default.disabled, .disabled.introjs-button, .btn-default.disabled:hover, .disabled.introjs-button:hover, .btn-default.disabled:focus, .disabled.introjs-button:focus, .btn-default.disabled:active, .disabled.introjs-button:active, .btn-default.disabled.active, .disabled.active.introjs-button, .btn-default[disabled], [disabled].introjs-button, .btn-default[disabled]:hover, [disabled].introjs-button:hover, .btn-default[disabled]:focus, [disabled].introjs-button:focus, .btn-default[disabled]:active, [disabled].introjs-button:active, .btn-default[disabled].active, [disabled].active.introjs-button, fieldset[disabled] .btn-default, fieldset[disabled] .introjs-button, fieldset[disabled] .btn-default:hover, fieldset[disabled] .introjs-button:hover, fieldset[disabled] .btn-default:focus, fieldset[disabled] .introjs-button:focus, fieldset[disabled] .btn-default:active, fieldset[disabled] .introjs-button:active, fieldset[disabled] .btn-default.active, fieldset[disabled] .active.introjs-button {
     background-color: #d4d4d4;
     border-color: #b5b5b5; }
   .btn-default .badge, .introjs-button .badge {
@@ -627,7 +627,7 @@ h6, .h6 {
     border-color: #a17600; }
   .btn-primary:active, .btn-primary.active, .open > .btn-primary.dropdown-toggle {
     background-image: none; }
-  .btn-primary.disabled, .btn-primary.introjs-disabled, .btn-primary.disabled:hover, .btn-primary.introjs-disabled:hover, .btn-primary.disabled:focus, .btn-primary.introjs-disabled:focus, .btn-primary.disabled:active, .btn-primary.introjs-disabled:active, .btn-primary.disabled.active, .btn-primary.active.introjs-disabled, .btn-primary[disabled], .btn-primary[disabled]:hover, .btn-primary[disabled]:focus, .btn-primary[disabled]:active, .btn-primary[disabled].active, fieldset[disabled] .btn-primary, fieldset[disabled] .btn-primary:hover, fieldset[disabled] .btn-primary:focus, fieldset[disabled] .btn-primary:active, fieldset[disabled] .btn-primary.active {
+  .btn-primary.disabled, .btn-primary.disabled:hover, .btn-primary.disabled:focus, .btn-primary.disabled:active, .btn-primary.disabled.active, .btn-primary[disabled], .btn-primary[disabled]:hover, .btn-primary[disabled]:focus, .btn-primary[disabled]:active, .btn-primary[disabled].active, fieldset[disabled] .btn-primary, fieldset[disabled] .btn-primary:hover, fieldset[disabled] .btn-primary:focus, fieldset[disabled] .btn-primary:active, fieldset[disabled] .btn-primary.active {
     background-color: #feba00;
     border-color: #dea300; }
   .btn-primary .badge {
@@ -647,7 +647,7 @@ h6, .h6 {
     border-color: #a17600; }
   .btn-success:active, .btn-success.active, .open > .btn-success.dropdown-toggle {
     background-image: none; }
-  .btn-success.disabled, .btn-success.introjs-disabled, .btn-success.disabled:hover, .btn-success.introjs-disabled:hover, .btn-success.disabled:focus, .btn-success.introjs-disabled:focus, .btn-success.disabled:active, .btn-success.introjs-disabled:active, .btn-success.disabled.active, .btn-success.active.introjs-disabled, .btn-success[disabled], .btn-success[disabled]:hover, .btn-success[disabled]:focus, .btn-success[disabled]:active, .btn-success[disabled].active, fieldset[disabled] .btn-success, fieldset[disabled] .btn-success:hover, fieldset[disabled] .btn-success:focus, fieldset[disabled] .btn-success:active, fieldset[disabled] .btn-success.active {
+  .btn-success.disabled, .btn-success.disabled:hover, .btn-success.disabled:focus, .btn-success.disabled:active, .btn-success.disabled.active, .btn-success[disabled], .btn-success[disabled]:hover, .btn-success[disabled]:focus, .btn-success[disabled]:active, .btn-success[disabled].active, fieldset[disabled] .btn-success, fieldset[disabled] .btn-success:hover, fieldset[disabled] .btn-success:focus, fieldset[disabled] .btn-success:active, fieldset[disabled] .btn-success.active {
     background-color: #529a5a;
     border-color: #dea300; }
   .btn-success .badge {
@@ -666,7 +666,7 @@ h6, .h6 {
     border-color: #62b6d2; }
   .btn-info:active, .btn-info.active, .open > .btn-info.dropdown-toggle {
     background-image: none; }
-  .btn-info.disabled, .btn-info.introjs-disabled, .btn-info.disabled:hover, .btn-info.introjs-disabled:hover, .btn-info.disabled:focus, .btn-info.introjs-disabled:focus, .btn-info.disabled:active, .btn-info.introjs-disabled:active, .btn-info.disabled.active, .btn-info.active.introjs-disabled, .btn-info[disabled], .btn-info[disabled]:hover, .btn-info[disabled]:focus, .btn-info[disabled]:active, .btn-info[disabled].active, fieldset[disabled] .btn-info, fieldset[disabled] .btn-info:hover, fieldset[disabled] .btn-info:focus, fieldset[disabled] .btn-info:active, fieldset[disabled] .btn-info.active {
+  .btn-info.disabled, .btn-info.disabled:hover, .btn-info.disabled:focus, .btn-info.disabled:active, .btn-info.disabled.active, .btn-info[disabled], .btn-info[disabled]:hover, .btn-info[disabled]:focus, .btn-info[disabled]:active, .btn-info[disabled].active, fieldset[disabled] .btn-info, fieldset[disabled] .btn-info:hover, fieldset[disabled] .btn-info:focus, fieldset[disabled] .btn-info:active, fieldset[disabled] .btn-info.active {
     background-color: #d2ecf5;
     border-color: #92cce0; }
   .btn-info .badge {
@@ -686,7 +686,7 @@ h6, .h6 {
     border-color: #fcdc7e; }
   .btn-warning:active, .btn-warning.active, .open > .btn-warning.dropdown-toggle {
     background-image: none; }
-  .btn-warning.disabled, .btn-warning.introjs-disabled, .btn-warning.disabled:hover, .btn-warning.introjs-disabled:hover, .btn-warning.disabled:focus, .btn-warning.introjs-disabled:focus, .btn-warning.disabled:active, .btn-warning.introjs-disabled:active, .btn-warning.disabled.active, .btn-warning.active.introjs-disabled, .btn-warning[disabled], .btn-warning[disabled]:hover, .btn-warning[disabled]:focus, .btn-warning[disabled]:active, .btn-warning[disabled].active, fieldset[disabled] .btn-warning, fieldset[disabled] .btn-warning:hover, fieldset[disabled] .btn-warning:focus, fieldset[disabled] .btn-warning:active, fieldset[disabled] .btn-warning.active {
+  .btn-warning.disabled, .btn-warning.disabled:hover, .btn-warning.disabled:focus, .btn-warning.disabled:active, .btn-warning.disabled.active, .btn-warning[disabled], .btn-warning[disabled]:hover, .btn-warning[disabled]:focus, .btn-warning[disabled]:active, .btn-warning[disabled].active, fieldset[disabled] .btn-warning, fieldset[disabled] .btn-warning:hover, fieldset[disabled] .btn-warning:focus, fieldset[disabled] .btn-warning:active, fieldset[disabled] .btn-warning.active {
     background-color: #fef3d3;
     border-color: #fdecba; }
   .btn-warning .badge {
@@ -703,7 +703,7 @@ h6, .h6 {
     border-color: #fcdc7e; }
   .btn-danger:active, .btn-danger.active, .open > .btn-danger.dropdown-toggle {
     background-image: none; }
-  .btn-danger.disabled, .btn-danger.introjs-disabled, .btn-danger.disabled:hover, .btn-danger.introjs-disabled:hover, .btn-danger.disabled:focus, .btn-danger.introjs-disabled:focus, .btn-danger.disabled:active, .btn-danger.introjs-disabled:active, .btn-danger.disabled.active, .btn-danger.active.introjs-disabled, .btn-danger[disabled], .btn-danger[disabled]:hover, .btn-danger[disabled]:focus, .btn-danger[disabled]:active, .btn-danger[disabled].active, fieldset[disabled] .btn-danger, fieldset[disabled] .btn-danger:hover, fieldset[disabled] .btn-danger:focus, fieldset[disabled] .btn-danger:active, fieldset[disabled] .btn-danger.active {
+  .btn-danger.disabled, .btn-danger.disabled:hover, .btn-danger.disabled:focus, .btn-danger.disabled:active, .btn-danger.disabled.active, .btn-danger[disabled], .btn-danger[disabled]:hover, .btn-danger[disabled]:focus, .btn-danger[disabled]:active, .btn-danger[disabled].active, fieldset[disabled] .btn-danger, fieldset[disabled] .btn-danger:hover, fieldset[disabled] .btn-danger:focus, fieldset[disabled] .btn-danger:active, fieldset[disabled] .btn-danger.active {
     background-color: #fef3d3;
     border-color: #fdecba; }
   .btn-danger .badge {
@@ -1137,13 +1137,10 @@ table th[class*="col-"] {
     .pager .previous > a:active:before,
     .pager .previous > span:active:before {
       background-position: -18px 0; }
-  .pager .disabled > a, .pager .introjs-disabled > a,
+  .pager .disabled > a,
   .pager .disabled > a:hover,
-  .pager .introjs-disabled > a:hover,
   .pager .disabled > a:focus,
-  .pager .introjs-disabled > a:focus,
-  .pager .disabled > span,
-  .pager .introjs-disabled > span {
+  .pager .disabled > span {
     color: #999999;
     background-color: white;
     cursor: not-allowed; }
@@ -1167,9 +1164,9 @@ table th[class*="col-"] {
       .nav > li > a:hover, .nav > li > a:focus {
         text-decoration: none;
         background-color: #bfe4f1; }
-    .nav > li.disabled > a, .nav > li.introjs-disabled > a {
+    .nav > li.disabled > a {
       color: #999999; }
-      .nav > li.disabled > a:hover, .nav > li.introjs-disabled > a:hover, .nav > li.disabled > a:focus, .nav > li.introjs-disabled > a:focus {
+      .nav > li.disabled > a:hover, .nav > li.disabled > a:focus {
         color: #999999;
         text-decoration: none;
         background-color: transparent;
@@ -1493,7 +1490,7 @@ table th[class*="col-"] {
     background-position: -20px center; }
   .helplink:active, .helplink:focus {
     background-position: -40px center; }
-  .helplink:disabled, .helplink.disabled, .helplink.introjs-disabled {
+  .helplink:disabled, .helplink.disabled {
     background-position: -60px center; }
 
 .popover .close {
@@ -1792,7 +1789,7 @@ label {
         padding: 0 4px 0 0; }
     .ribbon .ribbon-content a {
       padding: 0 4px; }
-      .ribbon .ribbon-content a.disabled, .ribbon .ribbon-content a.introjs-disabled {
+      .ribbon .ribbon-content a.disabled {
         cursor: default;
         text-decoration: none;
         color: #3e3e3e; }
@@ -2180,6 +2177,9 @@ tr.introjs-showElement > th {
     opacity: 0.5; }
 
 .introjs-prevbutton {
+  display: none; }
+
+.introjs-disabled, .introjs-disabled:hover, .introjs-disabled:focus {
   display: none; }
 
 .introjs-tooltiptext {

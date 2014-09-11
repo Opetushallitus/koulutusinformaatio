@@ -149,17 +149,17 @@
     "contact-person-title": "Contact persons",
     "ects-coordinator": "ECTS coordinator",
     
-    "nayttotutkinto-infoteksti": "Tutkinnon suorittamisen aikataulu ja valmistavan koulutuksen tarve riippuvat hakijan aiemmasta osaamisesta. Näyttötutkinnon voi suorittaa myös ilman valmistavaa koulutusta. (en)",
-    "nayttotutkinnon-kuvaus": "Tutkinnon kuvaus (en)",
-    "organizer": "Tutkinnon järjestäjä (en)",
-    "choosing-competence": "Osaamisalan valinta (en)",
-    "degree-completion": "Tutkinnon suorittaminen (en)",
-    "valmistava-koulutus": "Valmistava koulutus (en)",
-    "personalization": "Opintojen henkilökohtaistaminen (en)",
-    "goals-of-degree": "Tutkinnon tavoite (en)",
-    "competence-contact-person-title": "Näyttötutkinnon yhteyshenkilö (en)",
-    "competences": "Osaamisalat (en)",
-    "goals-of-competence": "Osaamisalan tavoite (en)",
+    "nayttotutkinto-infoteksti": "The timetable for completing the qualification and the need for preparatory training depends on the applicant's previous knowledge and experience. A competence-based qualification can also be completed without preparatory training.",
+    "nayttotutkinnon-kuvaus": "Description of qualification",
+    "organizer": "Qualification provider",
+    "choosing-competence": "Choosing specialisation",
+    "degree-completion": "Completion of competence-based qualification",
+    "valmistava-koulutus": "Preparatory training",
+    "personalization": "Personalization of studies",
+    "goals-of-degree": "Qualification goal",
+    "competence-contact-person-title": "Contact person for competence-based qualification",
+    "competences": "Specialisation",
+    "goals-of-competence": "Specialisation goal",
     
 
     "provider-web-page": "The institution's own web pages",
@@ -324,8 +324,8 @@
     "show-intro": "Show instructions",
     "intro-next": "Next",
     
-     "euro": "euroa (en)",
-     "sopimuksen-mukaan": "Sopimuksen mukaan (en)",
-     "structure-of-degree": "Tutkinnon rakenne (en)"
+     "euro": "euros",
+     "sopimuksen-mukaan": "According to agreement",
+     "structure-of-degree": "Qualification structure"
     
 }
