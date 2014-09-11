@@ -34,6 +34,7 @@ controller('SearchWizardCtrl', [
     '$rootScope', 
     '$routeParams',
     '$location',
+    '$sanitize',
     'TranslationService', 
     'SearchLearningOpportunityService',
     'SearchWizardService',
@@ -41,12 +42,18 @@ controller('SearchWizardCtrl', [
     'SearchWizardPhaseService',
     'SearchWizardConstants',
     '_',
-    function($scope, $rootScope, $routeParams, $location, TranslationService, SearchLearningOpportunityService, SearchWizardService, SearchWizardSelectionsService, SearchWizardPhaseService, SearchWizardConstants, _) {
+    function($scope, $rootScope, $routeParams, $location, $sanitize, TranslationService, SearchLearningOpportunityService, SearchWizardService, SearchWizardSelectionsService, SearchWizardPhaseService, SearchWizardConstants, _) {
         $rootScope.title = TranslationService.getTranslation('searchwizard:title') + ' - ' + TranslationService.getTranslation('sitename');
 
         var initWizard = function() {
             var qParams = $location.search();
             angular.forEach(qParams, function(val, key) {
+                // sanitize query params
+                if (typeof val === 'string') {
+                    val = $sanitize(val);
+                    qParams[key] = val;
+                }
+
                 var isValidKey = _.contains(_.values(SearchWizardConstants.keys), key);
                 if (isValidKey) {
                     var vParts = val.split(':');
