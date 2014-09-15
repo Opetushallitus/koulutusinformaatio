@@ -59,6 +59,8 @@ public class TarjontaConstants {
     public static final String AIKUISKOULUTUS = "koulutuslaji_a";
     
     public static final String KOTITALOUSKOODI = "koulutus_038411";
+    
+    public static final String KANDI_TUNTEMATON = "699999";
 
     public static final String PREREQUISITE_URI_ER = "pohjakoulutusvaatimustoinenaste_er";
     
