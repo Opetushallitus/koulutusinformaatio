@@ -204,6 +204,6 @@ public class SitemapBuilder {
     public static final String PREFIX_COLLECTION_SEPARATOR = ":";
     public static final String RESTICTION_CONTAINS = "+";
     public static final String QUERY_EXISTS = "$exists";
-    public static final String QUERY_PARAM_LANG = "uilang";
+    public static final String QUERY_PARAM_LANG = "descriptionLang";
     public static final String ID_PREFIX_HIGHERED = "korkeakoulu";
 }

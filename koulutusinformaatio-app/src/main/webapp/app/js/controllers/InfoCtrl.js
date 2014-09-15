@@ -182,9 +182,10 @@
     var loadLo = function(languageCode) {
         
         // force to load content with queried language (used for SEO snapshots)
-        var queryLang = $location.search().uilang;
-        if (queryLang) {
-            languageCode = queryLang;
+        if (languageCode) {
+            $location.search('descriptionLang', languageCode);
+        } else if ($location.search().descriptionLang) {
+            languageCode = $location.search().descriptionLang;
         }
 
         loResource.query({
@@ -206,16 +207,6 @@
         $location.search({prerequisite: prerequisite}).replace();
         loadLo();
     }
-
-    /*
-    $scope.hasChildren = function() {
-        if ($scope.selectedAs && $scope.selectedAs.children) {
-            return $scope.selectedAs.children.length > 0;
-        } else {
-            return false;
-        }
-    };
-    */
 
     // change description language and re-load LO data with the specified language
     $scope.changeDescriptionLanguage = function(languageCode) {

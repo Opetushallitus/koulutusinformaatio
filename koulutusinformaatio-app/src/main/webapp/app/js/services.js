@@ -1501,7 +1501,7 @@ service('LanguageService', ['CookieService', '$location', '_', function(CookieSe
 
             // force ui lang to queried language (used for SEO snapshots)
             // fallback to english
-            var queryLanguage = $location.search().uilang;
+            var queryLanguage = $location.search().descriptionLang;
             if (queryLanguage && isSupportedLanguage(queryLanguage)) {
                 return queryLanguage;
             } else if (queryLanguage) {
