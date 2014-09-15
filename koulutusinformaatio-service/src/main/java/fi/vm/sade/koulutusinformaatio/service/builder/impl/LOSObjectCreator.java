@@ -721,7 +721,10 @@ public class LOSObjectCreator extends ObjectCreator {
 
         List<Code> kandQuals = new ArrayList<Code>();
 
-        if (kandKoul != null && kandKoul.getUri() != null) {
+        if (kandKoul != null 
+                && kandKoul.getUri() != null 
+                && kandKoul.getArvo() != null 
+                && !kandKoul.getArvo().equals(TarjontaConstants.KANDI_TUNTEMATON)) {
 
             kandQuals = this.koodistoService.searchSubCodes(kandKoul.getUri(), TarjontaConstants.TUTKINTONIMIKE_KK_KOODISTO_URI);
         }
