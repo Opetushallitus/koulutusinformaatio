@@ -59,6 +59,12 @@ public final class ChildLOIToDTO {
                     dto.getContactPersons().add(ContactPersonToDTO.convert(contactPerson));
                 }
             }
+            
+            if (childLOI.getTargetGroup() != null 
+                    && childLOI.getTargetGroup().getTranslations() != null 
+                    && !childLOI.getTargetGroup().getTranslations().isEmpty()) {
+                dto.setTargetGroup(ConverterUtil.getTextByLanguage(childLOI.getTargetGroup(), lang));
+            }
 
             return dto;
         }

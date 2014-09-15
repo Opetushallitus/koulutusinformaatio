@@ -27,6 +27,7 @@ public class ChildLearningOpportunityInstanceDTO {
     private List<String> professionalTitles;
     private String workingLifePlacement;
     private String internationalization;
+    private String targetGroup;
     private String cooperation;
     private String content;
     private String selectingDegreeProgram;
@@ -185,5 +186,13 @@ public class ChildLearningOpportunityInstanceDTO {
 
     public void setAvailableTranslationLanguages(List<CodeDTO> availableTranslationLanguages) {
         this.availableTranslationLanguages = availableTranslationLanguages;
+    }
+
+    public String getTargetGroup() {
+        return targetGroup;
+    }
+
+    public void setTargetGroup(String targetGroup) {
+        this.targetGroup = targetGroup;
     }
 }

@@ -1091,6 +1091,9 @@ service('ChildLOTransformer', ['UtilityService', 'KiSorter', '$rootScope', funct
                 if (result.lois.hasOwnProperty(loiIndex)) {
                     var loi = result.lois[loiIndex];
                     loi.availableTranslationLanguages = _.filter(loi.availableTranslationLanguages, function(item) { return item.value.toLowerCase() != result.translationLanguage});
+                    if (loi.targetGroup) {
+                    	result.targetGroup = loi.targetGroup;
+                    } 
                 }
             } 
             

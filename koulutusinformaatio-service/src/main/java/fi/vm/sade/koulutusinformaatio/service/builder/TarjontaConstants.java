@@ -57,6 +57,7 @@ public class TarjontaConstants {
     
     public static final String NUORTEN_KOULUTUS = "koulutuslaji_n";
     public static final String AIKUISKOULUTUS = "koulutuslaji_a";
+    public static final String AVOIN_KAIKILLE = "koulutuslaji_av";
     
     public static final String KOTITALOUSKOODI = "koulutus_038411";
 
