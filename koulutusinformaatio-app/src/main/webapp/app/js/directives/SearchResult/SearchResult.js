@@ -1,9 +1,19 @@
 angular.module('SearchResult', []).
 
+constant('SearchResultConstants', {
+    TUTKINTO: 'tutkinto',
+    KOULUTUSOHJELMA: 'koulutusohjelma',
+    LUKIO: 'lukio',
+    KORKEAKOULU: 'korkeakoulu',
+    ERITYISOPETUS: 'erityisopetus',
+    VALMENTAVA: 'valmentava',
+    VALMISTAVA: 'valmistava'
+}).
+
 /**
  *  Updates the title element of the page.
  */
-directive('searchResult', ['FilterService', 'TranslationService', function(FilterService, TranslationService) {
+directive('searchResult', ['FilterService', 'TranslationService', 'SearchResultConstants', function(FilterService, TranslationService, SearchResultConstants) {
     return {
         restrict: 'A',
         template: '<div data-ng-include="getTemplate()" class="search-result"></div>',
@@ -17,6 +27,7 @@ directive('searchResult', ['FilterService', 'TranslationService', function(Filte
                 return 'js/directives/SearchResult/' + scope.lo.type + '/searchResult.html';
             }
 
+            // remove prerequisite hash from lo id (it's there for solr indexing purposes)
             var hashIndex = scope.lo.id.indexOf('#');
             if ( hashIndex > -1) {
                 scope.lo.id = scope.lo.id.substring(0, hashIndex);
@@ -26,7 +37,7 @@ directive('searchResult', ['FilterService', 'TranslationService', function(Filte
             scope.lo.linkHref = '#!/' + scope.lo.type + '/' + scope.lo.id;
 
             var prerequisite = scope.lo.prerequisiteCode || FilterService.getPrerequisite();
-            if (prerequisite && scope.lo.id.indexOf('#') === -1) {
+            if (prerequisite && scope.lo.type === SearchResultConstants.TUTKINTO && scope.lo.id.indexOf('#') === -1) {
                 scope.lo.linkHref += '?prerequisite=' + prerequisite;
             }
         }
