@@ -1,8 +1,5 @@
 package fi.vm.sade.koulutusinformaatio.dao.entity;
 
-import fi.vm.sade.koulutusinformaatio.domain.Code;
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Reference;
 
@@ -44,7 +41,7 @@ public class ChildLearningOpportunityInstanceEntity {
     @Embedded
     private I18nTextEntity content;
     @Embedded
-    private I18nText selectingDegreeProgram;
+    private I18nTextEntity selectingDegreeProgram;
     @Embedded
     private List<ContactPersonEntity> contactPersons;
     private String plannedDuration;
@@ -60,6 +57,8 @@ public class ChildLearningOpportunityInstanceEntity {
     private List<CodeEntity> formOfStudyFacet = new ArrayList<CodeEntity>();
     @Embedded
     private CodeEntity koulutuslaji;
+    @Embedded
+    private I18nTextEntity targetGroup;
     
     
 
@@ -175,11 +174,11 @@ public class ChildLearningOpportunityInstanceEntity {
         this.content = content;
     }
 
-    public I18nText getSelectingDegreeProgram() {
+    public I18nTextEntity getSelectingDegreeProgram() {
         return selectingDegreeProgram;
     }
 
-    public void setSelectingDegreeProgram(I18nText selectingDegreeProgram) {
+    public void setSelectingDegreeProgram(I18nTextEntity selectingDegreeProgram) {
         this.selectingDegreeProgram = selectingDegreeProgram;
     }
 
@@ -245,5 +244,13 @@ public class ChildLearningOpportunityInstanceEntity {
 
     public void setKoulutuslaji(CodeEntity koulutuslaji) {
         this.koulutuslaji = koulutuslaji;
+    }
+
+    public I18nTextEntity getTargetGroup() {
+        return targetGroup;
+    }
+
+    public void setTargetGroup(I18nTextEntity targetGroup) {
+        this.targetGroup = targetGroup;
     }
 }

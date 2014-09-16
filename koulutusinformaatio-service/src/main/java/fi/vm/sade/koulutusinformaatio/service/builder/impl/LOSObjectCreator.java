@@ -224,6 +224,15 @@ public class LOSObjectCreator extends ObjectCreator {
                     curAo.setVocational(false);
                 }
             }
+            
+            if (childKomoto.getKoulutuslajiUris() != null 
+                    && !childKomoto.getKoulutuslajiUris().isEmpty() 
+                    && childKomoto.getKoulutuslajiUris().get(0).contains(TarjontaConstants.AIKUISKOULUTUS) ) {
+                
+                loi.setTargetGroup(getI18nText(childKomoto.getTekstit().get(KomotoTeksti.KOHDERYHMA)));
+                
+            }
+            
             lois.add(loi);
         }
         if (!lois.isEmpty() && los.getType().equals(TarjontaConstants.TYPE_PREP)) {

@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
+import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
 import fi.vm.sade.koulutusinformaatio.domain.SpecialLOS;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SpecialLearningOpportunitySpecificationDTO;
 
@@ -38,6 +39,12 @@ public final class SpecialLOSToDTO {
         dto.setStructure(ConverterUtil.getTextByLanguage(los.getStructure(), lang));
         dto.setAccessToFurtherStudies(ConverterUtil.getTextByLanguage(los.getAccessToFurtherStudies(), lang));
         dto.setLois(ChildLOIToDTO.convert(los.getLois(), lang, uiLang, defaultLang));
+        if (los.getLois() != null && !los.getLois().isEmpty()) {
+            ChildLOI curLoi = los.getLois().get(0);
+            if (curLoi.getKoulutuslaji() != null) {
+                dto.setEducationKind(CodeToName.convert(curLoi.getKoulutuslaji(), uiLang));
+            }
+        }
         dto.setProvider(ProviderToDTO.convert(los.getProvider(), lang, defaultLang, uiLang));
         dto.setTranslationLanguage(lang);
         dto.setCreditValue(los.getCreditValue());

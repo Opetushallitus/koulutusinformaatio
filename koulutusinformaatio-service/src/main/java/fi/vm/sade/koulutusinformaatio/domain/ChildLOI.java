@@ -19,6 +19,7 @@ public class ChildLOI extends BasicLOI {
     private List<ChildLOIRef> related = new ArrayList<ChildLOIRef>();
     private I18nText workingLifePlacement;
     private I18nText selectingDegreeProgram;
+    private I18nText targetGroup;
 
     public String getLosId() {
         return losId;
@@ -82,5 +83,14 @@ public class ChildLOI extends BasicLOI {
 
     public void setSelectingDegreeProgram(I18nText selectingDegreeProgram) {
         this.selectingDegreeProgram = selectingDegreeProgram;
+    }
+
+    public void setTargetGroup(I18nText i18nText) {
+        this.targetGroup = i18nText;
+        
+    }
+
+    public I18nText getTargetGroup() {
+        return targetGroup;
     }
 }
