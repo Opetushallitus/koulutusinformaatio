@@ -243,11 +243,21 @@ public class IncrementalLOSIndexer {
 
     private boolean isSecondaryEducation(KomotoDTO komotoDto) {
         return !isHigherEdKomo(komotoDto.getKomoOid()) 
-                && ((komotoDto.getKoulutuslajiUris() != null 
+                && (((komotoDto.getKoulutuslajiUris() != null 
                 && !komotoDto.getKoulutuslajiUris().isEmpty() 
                 && !komotoDto.getKoulutuslajiUris().get(0).contains("koulutuslaji_a"))
-                || (komotoDto.getKoulutuslajiUris() == null || komotoDto.getKoulutuslajiUris().isEmpty())); 
+                || (komotoDto.getKoulutuslajiUris() == null || komotoDto.getKoulutuslajiUris().isEmpty()))
+                || this.isRehabLOS(komotoDto.getKomoOid())); 
     }
+
+    private boolean isRehabLOS(String komoOid) {
+        KomoDTO komo = this.tarjontaRawService.getKomo(komoOid);
+        if (komo != null) {
+            return this.isRehabLOS(komo);
+        }
+        return false;
+    }
+
 
     public boolean isHigherEdKomo(String komoOid) {
         //this.tarjontaRawService.getHigherEducationByKomo(curKomoOid)
