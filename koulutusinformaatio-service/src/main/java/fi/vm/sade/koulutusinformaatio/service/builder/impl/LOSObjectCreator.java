@@ -127,7 +127,7 @@ public class LOSObjectCreator extends ObjectCreator {
         parentLOS.setId(CreatorUtil.resolveLOSId(parentKomo.getOid(), providerId));
         Code name = koodistoService.searchFirst(parentKomo.getKoulutusKoodiUri());
         parentLOS.setName(name.getName());
-        parentLOS.setShortTitle(name.getShortName());
+        parentLOS.setShortTitle(name.getShortTitle());
         parentLOS.setGoals(getI18nText(parentKomo.getTekstit().get(KomoTeksti.TAVOITTEET)));
         parentLOS.setCreditValue(parentKomo.getLaajuusArvo());
         parentLOS.setCreditUnit(koodistoService.searchFirstShortName(parentKomo.getLaajuusYksikkoUri()));
@@ -159,7 +159,7 @@ public class LOSObjectCreator extends ObjectCreator {
         childLOS.setId(childLOSId);
         Code name = koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri());
         childLOS.setName(name.getName());
-        childLOS.setShortTitle(name.getShortName());
+        childLOS.setShortTitle(name.getShortTitle());
         childLOS.setQualification(koodistoService.searchFirstName(childKomo.getTutkintonimikeUri()));
         childLOS.setGoals(getI18nText(childKomo.getTekstit().get(KomoTeksti.TAVOITTEET)));
         // strip version out of education code uri
@@ -301,7 +301,7 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setId(specialLOSId);
         Code name = koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri());
         los.setName(name.getName());
-        los.setShortTitle(name.getShortName());
+        los.setShortTitle(name.getShortTitle());
         los.setCreditValue(parentKomo.getLaajuusArvo());
         los.setCreditUnit(koodistoService.searchFirstShortName(parentKomo.getLaajuusYksikkoUri()));
         los.setQualification(koodistoService.searchFirstName(childKomo.getTutkintonimikeUri()));
@@ -344,7 +344,7 @@ public class LOSObjectCreator extends ObjectCreator {
         los.setId(losID);
         Code name = koodistoService.searchFirst(komo.getLukiolinjaUri());
         los.setName(name.getName());
-        los.setShortTitle(name.getShortName());
+        los.setShortTitle(name.getShortTitle());
         los.setTopics(getTopics(parentKomo.getOpintoalaUri()));
         los.setThemes(getThemes(los));
         los.setQualification(koodistoService.searchFirstName(komo.getTutkintonimikeUri()));
