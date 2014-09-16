@@ -1,14 +1,15 @@
 <div id="articleFacetSelections" class="row facet-selections" data-ng-show="areThereArticleFacetSelections()">
-    <div class="col-md-16">
-    <ul class="list-unstyled">
-        <li><span data-ki-i18n="valitut-rajaukset" data-show-colon="true"></span></li>
-        <li data-ng-repeat="fs in articleFacetSelections">
-            <a href="javascript:void(0)" data-ng-click="removeArticleFacetSelection(fs)" title="{{locales.closeFacet}}" class="facet-selection">
-                <span data-ki-i18n="{{fs.facetField}}" data-show-colon="true"></span><span data-ki-i18n="{{fs.valueName}}"></span>
-                <span class="remove">
-                    <span class="sr-only" data-ki-i18n="facet-remove"></span>
-                </span>
-            </a>
-        </li>
-    </ul>
+    <div class="col-xs-16">
+        <ul class="list-unstyled">
+            <li><strong data-ki-i18n="valitut-rajaukset" data-show-colon="true"></strong></li>
+            <li data-ng-repeat="fs in articleFacetSelections">
+                <a href="javascript:void(0)" data-ng-click="removeArticleFacetSelection(fs)" title="{{locales.closeFacet}}" class="facet-selection">
+                    <span data-ki-i18n="{{fs.facetField}}" data-show-colon="true"></span><span data-ki-i18n="{{fs.valueName}}"></span>
+                    <span class="remove">
+                        <span class="sr-only" data-ki-i18n="facet-remove"></span>
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </div>
 </div>

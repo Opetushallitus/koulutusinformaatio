@@ -1,4 +1,10 @@
-<div class="panel panel-filter">
+<div class="row margin-vertical-default">
+    <div class="col-xs-16">
+        <a href="javascript:void(0);" data-ng-click="filterSelectorIsCollapsed = !filterSelectorIsCollapsed" data-ki-i18n="hide-filter-selector-{{filterSelectorIsCollapsed}}"></a>
+    </div>
+</div>
+
+<div class="panel panel-filter" data-collapse="filterSelectorIsCollapsed">
     <div class="panel-heading">
         <h4 class="collapser panel-title" title="{{locales.openCloseFacet}}" data-ng-click="toggleCollapsed(0)" data-ng-class="{opened: !collapsed[0], closed: collapsed[0]}">
             <span data-ki-i18n="facet-aineistotyyppi"></span>      

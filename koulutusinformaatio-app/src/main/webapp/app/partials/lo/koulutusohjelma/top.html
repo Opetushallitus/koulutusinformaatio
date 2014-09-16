@@ -1,7 +1,7 @@
 <section id="main-info">
     <div>
         <h4>{{provider.name}}</h4>
-        <span class="block">{{parent.educationDomain}}<span data-ng-show="lo.qualification">, {{lo.qualification}}</span></span>
+        <div>{{parent.educationDomain}}<span data-ng-show="lo.qualification">, {{lo.qualification}}</span></div>
         <a href="#!/tutkinto/{{parent.id}}?prerequisite={{prerequisite.value}}">{{parent.name}}</a>
     </div>
     <h1>{{lo.name}}</h1>

@@ -255,7 +255,7 @@
     "filter-search-as-upcoming": "Tulossa hakuun",
     "haun-tila": "Haun tila",
     "selaile-koulutuksia": "Rajaa hakutuloksia",
-    "valitse-alue": "Valitse alue, jolta haet koulutuksia",
+    "valitse-alue": "Valitse ensin maakunta, sitten kaupunki / kunta",
     "valitse-alue-link": "Valitse alue",
     "district": "Maakunta",
     "municipality": "Kaupunki / kunta",
@@ -332,6 +332,8 @@
     
      "euro": "euroa",
      "sopimuksen-mukaan": "Sopimuksen mukaan",
-     "structure-of-degree": "Tutkinnon rakenne"
-    
+     "structure-of-degree": "Tutkinnon rakenne",
+
+     "hide-filter-selector-true": "Näytä rajaukset",
+     "hide-filter-selector-false": "Piilota rajaukset"
 }

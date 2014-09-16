@@ -1,21 +1,18 @@
-<div class="container-equal-height container-md-height">
-    <div class="row row-md-height">
-    <div class="col-md-10 col-md-height">
-        <h2 title="{{locales.openEducation}}"><a href="{{lo.linkHref}}">{{lo.name}}</a></h2>
-        <span>{{lo.childName}}</span><br/>
-        <span data-ki-i18n="{{lo.educationType}}"></span><br />
-        <span>{{lo.lopName}}</span><br/>
-        <span>{{lo.homeplace}}</span>
-    </div>
+<div class="container-equal-height container-xs-height">
+    <div class="row row-xs-height">
+        <div class="col-xs-12 col-xs-height">
+            <h2 title="{{locales.openEducation}}"><a href="{{lo.linkHref}}">{{lo.name}}</a></h2>
+            <span>{{lo.childName}}</span><br/>
+            <span data-ki-i18n="{{lo.educationType}}"></span><br />
+            <span>{{lo.lopName}}</span><br/>
+            <span>{{lo.homeplace}}</span>
+        </div>
 
-    <div class="col-md-6 col-md-height">
-            <span data-ki-as-state class="pull-right">&nbsp;</span>
-            <a href="javascript:void(0)" class="collapser" data-ki-i18n="extended-view-{{showExtension}}" data-ng-class="showExtension" data-ng-click="toggleExtendedView()">
-            </a>
-    </div>
-
-<!--  
-    <div class="clear"></div>-->
+        <div class="col-xs-4 col-xs-height text-right">
+                <span data-ki-as-state>&nbsp;</span>
+                <a href="javascript:void(0)" class="collapser hidden-xs" data-ki-i18n="extended-view-{{showExtension}}" data-ng-class="showExtension" data-ng-click="toggleExtendedView()">
+                </a>
+        </div>
     </div>
 </div>
 

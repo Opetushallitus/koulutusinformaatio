@@ -1,4 +1,4 @@
-<div data-ng-switch="loResult.articleCount">
+<div data-ng-switch="loResult.articleCount" id="article-results">
     <div data-ng-switch-when="0">
         <div class="alert alert-info alert-icon">
             <div class="alert-heading">
@@ -9,11 +9,11 @@
     </div>
 
     <div data-ng-switch-default>
-        <div class="panel panel-gray" data-ng-controller="SortCtrl">
+        <div class="panel panel-gray search-result-sort hidden-xs" data-ng-controller="SortCtrl">
             <div class="panel-body">
                 <div class="row">
                     <form class="form-inline" role="form">
-                        <div title="{{locales.resultsToShow}}" class="col-sm-8">
+                        <div title="{{locales.resultsToShow}}" class="col-xs-8">
                             <div class="pull-right">
                                 <label class="control-label" for="items-per-page" data-ki-i18n="sort-criteria-items-per-page-label" data-show-colon="true"></label>
                                 <select 
@@ -26,7 +26,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div title="{{locales.resultsCriteria}}" class="col-sm-8">
+                        <div title="{{locales.resultsCriteria}}" class="col-xs-8">
                             <div class="pull-right">
                                 <label class="control-label" for="sort-items" data-ki-i18n="sort-criteria-sort-label" data-show-colon="true"></label>
                                 <select 
@@ -69,8 +69,8 @@
 
         <div data-ng-show="showPagination" class="text-center">
             <div data-pager
-            data-ng-model="currentArticlePage"
-            data-ng-change="changePage(currentArticlePage)" 
+            data-ng-model="model.currentArticlePage"
+            data-ng-change="changePage(model.currentArticlePage)" 
             data-num-pages="maxPages"
             data-total-items="articleCount"
             data-items-per-page="itemsPerPage"

@@ -56,9 +56,11 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
 		$modalInstance.dismiss('cancel');
 	}
 
+	/*
 	$scope.changeSelection = function() {
 		selectMunicipality();
 	}
+	*/
 
 	var doMunicipalitySearch = function() {
 		var queryDistricts = [];
@@ -91,9 +93,7 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
 	}
 
 	var selectMunicipality = function() {
-		if (!$scope.selectedMunicipalities) {
-			$scope.selectedMunicipalities = [];
-		}
+		$scope.selectedMunicipalities = [];
 
 		angular.forEach($scope.selectedMunicipality, function(mun, munkey){
 
@@ -114,6 +114,12 @@ function LocationDialogCtrl($scope, $modalInstance, $timeout, ChildLocationsServ
 	$scope.$watch('selectedDistricts', function(value) {
 		if (value) {
 			doMunicipalitySearch();
+		}
+	});
+
+	$scope.$watch('selectedMunicipality', function(value) {
+		if (value) {
+			selectMunicipality();
 		}
 	});
 

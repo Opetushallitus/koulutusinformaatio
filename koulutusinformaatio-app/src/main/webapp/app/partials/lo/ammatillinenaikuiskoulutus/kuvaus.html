@@ -1,6 +1,4 @@
-<div class="col-md-9">
-
-	
+<div class="col-md-11">
 	<section data-ng-show="lo.hasSelectedChild && lo.isStandalone && !lo.osaamisala">
 
 		<div class="panel panel-gray">
@@ -21,56 +19,54 @@
 						data-ng-show="lo.selectedChild.startDate">{{lo.selectedChild.startDate}}</strong>
 						<strong data-ng-hide="lo.selectedChild.startDate">{{lo.selectedChild.startSeason}}
 							{{lo.selectedChild.startYear}}</strong>
-					</li>
-					<li data-ng-hide="!lo.selectedChild.valmistavaKoulutus"><span
-						data-ki-i18n="education-starts" data-show-colon="true"></span> <strong><span data-ki-i18n="sopimuksen-mukaan"></span></strong>
-					</li>
-					<li><span data-ki-i18n="organizer" data-show-colon="true"></span>
-						<strong>{{lo.selectedChild.degreeOrganizer}}</strong>
-					</li>
-					<li data-ng-show="lo.chargeable"><span
-						data-ki-i18n="chargeable" data-show-colon="true"></span> <strong>{{lo.charge}} <span data-ki-i18n="euro"></span></strong>  
-					</li>
-				</ul>
+						</li>
+						<li data-ng-hide="!lo.selectedChild.valmistavaKoulutus"><span
+							data-ki-i18n="education-starts" data-show-colon="true"></span> <strong><span data-ki-i18n="sopimuksen-mukaan"></span></strong>
+						</li>
+						<li><span data-ki-i18n="organizer" data-show-colon="true"></span>
+							<strong>{{lo.selectedChild.degreeOrganizer}}</strong>
+						</li>
+						<li data-ng-show="lo.chargeable"><span
+							data-ki-i18n="chargeable" data-show-colon="true"></span> <strong>{{lo.charge}} <span data-ki-i18n="euro"></span></strong>  
+						</li>
+					</ul>
+				</div>
 			</div>
-		</div>
 
-		<div data-ki-language-ribbon
-			data-languages="lo.selectedChild.availableTranslationLanguages"
-			data-change-language="changeDescriptionLanguage" class="ribbon"></div>
+			<div data-ki-language-ribbon data-languages="lo.selectedChild.availableTranslationLanguages" data-change-language="changeDescriptionLanguage" class="ribbon"></div>
 
-		<div data-ki-collapse-text-block data-title="goals-of-degree"
+			<div data-ki-collapse-text-block data-title="goals-of-degree"
 			data-content="lo.selectedChild.goals"></div>
 			
-		<div data-ki-collapse-text-block data-title="degree-completion"
+			<div data-ki-collapse-text-block data-title="degree-completion"
 			data-content="lo.degreeCompletion"></div>
 
-		<div data-ki-collapse-text-block data-title="choosing-competence"
+			<div data-ki-collapse-text-block data-title="choosing-competence"
 			data-content="lo.choosingCompetence"></div> 
 
-		<div data-ki-collapse-text-block data-title="structure-of-degree"
+			<div data-ki-collapse-text-block data-title="structure-of-degree"
 			data-content="lo.selectedChild.structure"></div>
 
-		<div data-ki-collapse-text-block data-title="info-about-charge"
+			<div data-ki-collapse-text-block data-title="info-about-charge"
 			data-content="lo.selectedChild.infoAboutCharge"></div>
 
-		<div data-ki-collapse-text-block data-title="career-opportunities"
+			<div data-ki-collapse-text-block data-title="career-opportunities"
 			data-content="lo.selectedChild.careerOpportunities"></div>
 
-		<div data-ki-collapse-block data-title="profession-title"
+			<div data-ki-collapse-block data-title="profession-title"
 			data-content="lo.selectedChild.professionalTitles">
 			<div data-ki-professional-titles></div>
 		</div>
 
 		<div data-ki-collapse-text-block data-title="cooperation"
-			data-content="lo.selectedChild.cooperation"></div>
+		data-content="lo.selectedChild.cooperation"></div>
 
 		<div data-ki-collapse-text-block
-			data-title="access-to-further-studies"
-			data-content="lo.accessToFurtherStudies"></div>
+		data-title="access-to-further-studies"
+		data-content="lo.accessToFurtherStudies"></div>
 
 		<div data-ki-contact-person-info
-			data-content="lo.selectedChild.contactPersons"></div>
+		data-content="lo.selectedChild.contactPersons"></div>
 
 	</section>
 	
@@ -95,145 +91,145 @@
 						data-ng-show="lo.selectedChild.startDate">{{lo.selectedChild.startDate}}</strong>
 						<strong data-ng-hide="lo.selectedChild.startDate">{{lo.selectedChild.startSeason}}
 							{{lo.selectedChild.startYear}}</strong>
-					</li>
-					<li data-ng-hide="!lo.selectedChild.valmistavaKoulutus"><span
-						data-ki-i18n="education-starts" data-show-colon="true"></span> <strong><span data-ki-i18n="sopimuksen-mukaan"></span></strong>
-					</li>
-					<li><span data-ki-i18n="organizer" data-show-colon="true"></span>
-						<strong>{{lo.selectedChild.degreeOrganizer}}</strong>
-					</li>
-					<li data-ng-show="lo.chargeable"><span
-						data-ki-i18n="chargeable" data-show-colon="true"></span> <strong>{{lo.charge}} <span data-ki-i18n="euro"></span></strong>
-					</li>
-					
+						</li>
+						<li data-ng-hide="!lo.selectedChild.valmistavaKoulutus"><span
+							data-ki-i18n="education-starts" data-show-colon="true"></span> <strong><span data-ki-i18n="sopimuksen-mukaan"></span></strong>
+						</li>
+						<li><span data-ki-i18n="organizer" data-show-colon="true"></span>
+							<strong>{{lo.selectedChild.degreeOrganizer}}</strong>
+						</li>
+						<li data-ng-show="lo.chargeable"><span
+							data-ki-i18n="chargeable" data-show-colon="true"></span> <strong>{{lo.charge}} <span data-ki-i18n="euro"></span></strong>
+						</li>
 
-				</ul>
+
+					</ul>
+				</div>
 			</div>
-		</div>
 
-		<div data-ki-language-ribbon
+			<div data-ki-language-ribbon
 			data-languages="lo.selectedChild.availableTranslationLanguages"
 			data-change-language="changeDescriptionLanguage" class="ribbon"></div>
 
-		<div data-ki-collapse-text-block data-title="goals-of-degree"
+			<div data-ki-collapse-text-block data-title="goals-of-degree"
 			data-content="lo.selectedChild.goals"></div>
 			
-		<div data-ki-collapse-text-block data-title="degree-completion"
+			<div data-ki-collapse-text-block data-title="degree-completion"
 			data-content="lo.degreeCompletion"></div>
 
-		<div data-ki-collapse-text-block data-title="choosing-competence"
+			<div data-ki-collapse-text-block data-title="choosing-competence"
 			data-content="lo.choosingCompetence"></div> 
 
-		<div data-ki-collapse-text-block
+			<div data-ki-collapse-text-block
 			data-title="access-to-further-studies"
 			data-content="lo.accessToFurtherStudies"></div>
 
-		<div data-ki-contact-person-info
+			<div data-ki-contact-person-info
 			data-content="lo.selectedChild.contactPersons"></div>
 
-	</section>
-	
-	<section data-ng-show="lo.hasSelectedChild && lo.isStandalone && lo.osaamisala">
+		</section>
 
-		<hr />
-	
-		<h1>
-			{{lo.selectedChild.name}}
-		</h1>
+		<section data-ng-show="lo.hasSelectedChild && lo.isStandalone && lo.osaamisala">
 
-		<div data-ki-collapse-text-block data-title="structure-of-degree"
+			<hr />
+
+			<h1>
+				{{lo.selectedChild.name}}
+			</h1>
+
+			<div data-ki-collapse-text-block data-title="structure-of-degree"
 			data-content="lo.selectedChild.structure"></div>
 
 		<!-- <div data-ki-collapse-text-block data-title="degree-completion"
-			data-content="lo.degreeCompletion" data-closed="false"></div>-->
+		data-content="lo.degreeCompletion" data-closed="false"></div>-->
 
 		<div data-ki-collapse-text-block data-title="info-about-charge"
-			data-content="lo.selectedChild.infoAboutCharge"></div>
+		data-content="lo.selectedChild.infoAboutCharge"></div>
 
 		
 		<div data-ki-collapse-block data-title="profession-title"
-			data-content="lo.selectedChild.professionalTitles">
-			<div data-ki-professional-titles></div>
-		</div>
-		
-		<div data-ki-collapse-text-block data-title="career-opportunities"
-			data-content="lo.selectedChild.careerOpportunities"></div>
+		data-content="lo.selectedChild.professionalTitles">
+		<div data-ki-professional-titles></div>
+	</div>
 
-		<div data-ki-collapse-text-block data-title="cooperation"
-			data-content="lo.selectedChild.cooperation"></div>
+	<div data-ki-collapse-text-block data-title="career-opportunities"
+	data-content="lo.selectedChild.careerOpportunities"></div>
 
-	</section>
+	<div data-ki-collapse-text-block data-title="cooperation"
+	data-content="lo.selectedChild.cooperation"></div>
 
-	<section
-		data-ng-show="lo.hasSelectedChild && lo.selectedChild.valmistavaKoulutus">
+</section>
 
-		<hr />
+<section
+data-ng-show="lo.hasSelectedChild && lo.selectedChild.valmistavaKoulutus">
 
-		<h1>
-			<span data-ki-i18n="valmistava-koulutus"></span>
-		</h1>
-		<div class="panel panel-gray">
-			<div class="panel-body">
-				<ul class="list-unstyled">
-					<li><span data-ki-i18n="education-starts"
-						data-show-colon="true"></span> <strong
-						data-ng-show="lo.selectedChild.startDate">{{lo.selectedChild.startDate}}</strong>
-						<strong data-ng-hide="lo.selectedChild.startDate">{{lo.selectedChild.startSeason}}
-							{{lo.selectedChild.startYear}}</strong></li>
+<hr />
+
+<h1>
+	<span data-ki-i18n="valmistava-koulutus"></span>
+</h1>
+<div class="panel panel-gray">
+	<div class="panel-body">
+		<ul class="list-unstyled">
+			<li><span data-ki-i18n="education-starts"
+				data-show-colon="true"></span> <strong
+				data-ng-show="lo.selectedChild.startDate">{{lo.selectedChild.startDate}}</strong>
+				<strong data-ng-hide="lo.selectedChild.startDate">{{lo.selectedChild.startSeason}}
+					{{lo.selectedChild.startYear}}</strong></li>
 					<li><span data-ki-i18n="planned-duration"
 						data-show-colon="true"></span> <strong>{{lo.selectedChild.plannedDuration}}
-							{{lo.selectedChild.plannedDurationUnit}}</strong></li>
-					
-					<li data-ng-show="lo.selectedChild.chargeable"><span
-						data-ki-i18n="chargeable" data-show-colon="true"></span> <strong>{{lo.selectedChild.charge}} <span data-ki-i18n="euro"></span></strong>
-					</li>
-					
-					<li><span data-ki-i18n="language-of-instruction"
-						data-show-colon="true"></span> <span
-						data-ng-repeat="tl in lo.selectedChild.teachingLanguages">
+						{{lo.selectedChild.plannedDurationUnit}}</strong></li>
+
+						<li data-ng-show="lo.selectedChild.chargeable"><span
+							data-ki-i18n="chargeable" data-show-colon="true"></span> <strong>{{lo.selectedChild.charge}} <span data-ki-i18n="euro"></span></strong>
+						</li>
+
+						<li><span data-ki-i18n="language-of-instruction"
+							data-show-colon="true"></span> <span
+							data-ng-repeat="tl in lo.selectedChild.teachingLanguages">
 							<strong>{{tl}}</strong><span data-ng-show="!$last">,</span>
-					</span></li>
-					<li><span data-ki-i18n="time-of-teaching"
-						data-show-colon="true"></span> <span
-						data-ng-repeat="tot in lo.selectedChild.teachingTimes"> <strong>{{tot}}</strong><span
+						</span></li>
+						<li><span data-ki-i18n="time-of-teaching"
+							data-show-colon="true"></span> <span
+							data-ng-repeat="tot in lo.selectedChild.teachingTimes"> <strong>{{tot}}</strong><span
 							data-ng-show="!$last">,</span>
-					</span></li>
-					<li><span data-ki-i18n="place-of-teaching"
-						data-show-colon="true"></span> <span
-						data-ng-repeat="top in lo.selectedChild.teachingPlaces"> <strong>{{top}}</strong><span
+						</span></li>
+						<li><span data-ki-i18n="place-of-teaching"
+							data-show-colon="true"></span> <span
+							data-ng-repeat="top in lo.selectedChild.teachingPlaces"> <strong>{{top}}</strong><span
 							data-ng-show="!$last">,</span>
-					</span></li>
-					<li><span data-ki-i18n="form-of-education-higher"
-						data-show-colon="true"></span> <span
-						data-ng-repeat="fot in lo.selectedChild.formOfTeaching"> <strong>{{fot}}</strong><span
+						</span></li>
+						<li><span data-ki-i18n="form-of-education-higher"
+							data-show-colon="true"></span> <span
+							data-ng-repeat="fot in lo.selectedChild.formOfTeaching"> <strong>{{fot}}</strong><span
 							data-ng-show="!$last">,</span>
-					</span></li>
+						</span></li>
 
 
-				</ul>
+					</ul>
+				</div>
 			</div>
-		</div>
 
-		<div data-ki-collapse-text-block data-title="content-of-studies"
+			<div data-ki-collapse-text-block data-title="content-of-studies"
 			data-content="lo.selectedChild.content"></div>
-		<div data-ki-collapse-text-block data-title="target-group"
+			<div data-ki-collapse-text-block data-title="target-group"
 			data-content="lo.selectedChild.targetGroup"></div>
-		<div data-ki-collapse-text-block data-title="personalization"
+			<div data-ki-collapse-text-block data-title="personalization"
 			data-content="lo.selectedChild.personalization"></div>
-		<div data-ki-collapse-text-block data-title="internationalization"
+			<div data-ki-collapse-text-block data-title="internationalization"
 			data-content="lo.selectedChild.internationalization"></div>
-		<div data-ki-contact-person-info
+			<div data-ki-contact-person-info
 			data-content="lo.selectedChild.preparatoryContactPersons"></div>
 
-	</section>
-</div>
+		</section>
+	</div>
 
-<div class="col-md-5 col-md-offset-2">
-	<div data-ng-class="applyFormClass" data-ng-include
+	<div class="col-md-5">
+		<div data-ng-class="applyFormClass" data-ng-include
 		data-src="partialCommonUrl + 'as/higherEducationAs.html'"
 		data-ng-controller="ApplicationCtrl"></div>
-	<div data-ng-include data-src="partialUrl + 'recommendations.html'"></div>
-</div>
+		<div data-ng-include data-src="partialUrl + 'recommendations.html'"></div>
+	</div>
 
 
 
