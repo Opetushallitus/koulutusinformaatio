@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
+import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOSRef;
@@ -234,7 +235,7 @@ public class IncrementalApplicationOptionIndexer {
                         for (NimiJaOidRDTO curKoulOid : koulutusOidRes.getResult()) {
                             ResultV1RDTO<KoulutusKorkeakouluV1RDTO> koulutusRes = this.tarjontaRawService.getHigherEducationLearningOpportunity(curKoulOid.getOid());
                             if (koulutusRes != null && koulutusRes.getResult() != null && koulutusRes.getResult().getKomoOid() != null) {
-                                if (!toRemove) {
+                                if (!toRemove || hasOtherAos(koulutusRes.getResult().getOid(), aoOid)) {
                                     this.losIndexer.indexHigherEdKomo(koulutusRes.getResult().getKomoOid());
                                 } else {
                                     this.losIndexer.removeHigherEd(curKoulOid.getOid(), koulutusRes.getResult().getKomoOid());
@@ -261,5 +262,21 @@ public class IncrementalApplicationOptionIndexer {
 
             }
 
+    }
+
+    private boolean hasOtherAos(String oid, String aoOid) {
+        try {
+            HigherEducationLOS los = this.dataQueryService.getHigherEducationLearningOpportunity(oid);
+            if (los != null && los.getApplicationOptions() != null) {
+                for (ApplicationOption curAo : los.getApplicationOptions()) {
+                    if (!curAo.getId().equals(aoOid)) {
+                        return true;
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            LOG.debug("No higher ed: " + oid);
+        }
+        return false;
     }
 }
