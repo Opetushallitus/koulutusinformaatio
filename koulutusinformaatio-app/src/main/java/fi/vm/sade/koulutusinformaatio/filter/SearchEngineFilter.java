@@ -38,11 +38,9 @@ import org.apache.http.message.BasicNameValuePair;
  * @author Hannu Lyytikainen
  */
 public class SearchEngineFilter implements Filter {
-    
-    //public static final Logger LOG = LoggerFactory.getLogger(SearchEngineFilter.class);
 
     private final String escapedFragment = "_escaped_fragment_";
-    private final String language = "uilang";
+    private final String language = "descriptionLang";
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -52,29 +50,11 @@ public class SearchEngineFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         
         String lang = request.getParameter(language);
-        /*
-        LOG.error(String.format("INITIAL LANG PARAM: %s", lang));
-        
-        Enumeration requestParams = request.getParameterNames();
-        while (requestParams.hasMoreElements()) {
-            String param = (String)requestParams.nextElement();
-            LOG.error(String.format("REQUEST PARAM: %s:%s", param, request.getParameter(param)));
-        }
-        
-        Enumeration requestAttributes = request.getAttributeNames();
-        while (requestAttributes.hasMoreElements()) {
-            String attr = (String)requestAttributes.nextElement();
-            LOG.error(String.format("REQUEST ATTR: %s:%s", attr, request.getAttribute(attr)));
-        }
-        
-        LOG.error("DONE");
-        */
+
         if (request.getParameterMap().containsKey(escapedFragment)) {
             HttpServletRequest httpRequest = (HttpServletRequest) request;
             String fragmentPath = httpRequest.getParameter(escapedFragment);
-            //LOG.error(String.format("INITIAL FRAGMENT PATH: %s", fragmentPath));
             fragmentPath = URLDecoder.decode(fragmentPath, "UTF-8");
-            //LOG.error(String.format("DECODED FRAGMENT PATH: %s", fragmentPath));
             
             String path = null;
             String query = null;
@@ -85,22 +65,17 @@ public class SearchEngineFilter implements Filter {
                 uri = new URI(fragmentPath);
                 path = uri.getPath();
                 query = uri.getQuery();
-                //LOG.error(String.format("URI PATH: %s", path));
-                //LOG.error(String.format("URI QUERY: %s", query));
             } catch (URISyntaxException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             
             path = path.split("/")[2];
-            //LOG.error(String.format("EDUCATION ID: %s", path));
             
             if (lang == null) {
                 List<NameValuePair> params = parseQueryParams(query);
                 lang = getLangParam(params);
             }
-            
-            //LOG.error(String.format("FINAL LANG PARAM: %s", lang));
             
             if (lang != null) {
                 newUri = String.format("snapshot/%s_%s.html", path, lang);
@@ -108,7 +83,6 @@ public class SearchEngineFilter implements Filter {
                 newUri = String.format("snapshot/%s.html", path);
             }
             
-            //LOG.error(String.format("SNAPSHOT URI: %s", newUri));
             //String newUri = String.format("/snapshots/%s.html", httpRequest.getParameter(escapedFragment).split("/")[2]);
             httpRequest.getRequestDispatcher(newUri).forward(request, response);
             //FileInputStream snapshot = new FileInputStream(String.format("/Users/klu/cases/snapshots/%s.html", httpRequest.getParameter(escapedFragment).split("/")[2]));
