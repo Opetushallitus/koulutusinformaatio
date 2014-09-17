@@ -70,10 +70,10 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
             doc.addField(LearningOpportunity.NAME_FI, losName);
         }
         
-        String educationTypeDisplay = SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getChildren().get(0).getTeachingLanguages(), 
-                los.getName().getTranslations());
+        /*String educationTypeDisplay = SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getChildren().get(0).getTeachingLanguages(), 
+                los.getName().getTranslations());*/
         
-        doc.setField(LearningOpportunity.EDUCATION_TYPE_DISPLAY, educationTypeDisplay);
+        //doc.setField(LearningOpportunity.EDUCATION_TYPE_DISPLAY, educationTypeDisplay);
         
         if (provider.getHomePlace() != null) { 
             doc.setField(LearningOpportunity.HOMEPLACE_DISPLAY, 
@@ -286,10 +286,13 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
         
         if (los.getEdtUri().contains("koulutustyyppi_11")) {
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMM_TUTK);
+            doc.addField(LearningOpportunity.EDUCATION_TYPE_DISPLAY, SolrConstants.ED_TYPE_AMM_TUTK);
         } else if (los.getEdtUri().contains("koulutustyyppi_12")) {
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMM_TUTK_ER);
+            doc.addField(LearningOpportunity.EDUCATION_TYPE_DISPLAY, SolrConstants.ED_TYPE_AMM_TUTK_ER);
         } else if (los.getEdtUri().contains("koulutustyyppi_13")) {
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMMATILLINEN);
+            doc.addField(LearningOpportunity.EDUCATION_TYPE_DISPLAY, SolrConstants.ED_TYPE_AMMATILLINEN_NAYTTO);
         }
 
     }

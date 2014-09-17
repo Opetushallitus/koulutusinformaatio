@@ -454,6 +454,7 @@ public final class SolrUtil {
         public static final String MUNICIPALITY_UNKNOWN = "99";
 
         public static final String PROVIDER_TYPE_UNKNOWN = "99";
+        public static final Object ED_TYPE_AMMATILLINEN_NAYTTO = "ammatillinenperustutkintonayttona";
     }
     
     public static void indexLopName(SolrInputDocument doc, Provider provider, String teachLang) {
