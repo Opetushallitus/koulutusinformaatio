@@ -1001,6 +1001,7 @@ public class LOSObjectCreator extends ObjectCreator {
         }
         los.setChargeable(dto.getOpintojenMaksullisuus());
         los.setOsaamisala(!dto.getKoulutusmoduuliTyyppi().name().equals(KoulutusmoduuliTyyppi.TUTKINTO.name()));
+        los.setDeterminer(dto.getTarkenne());
         
     }
 

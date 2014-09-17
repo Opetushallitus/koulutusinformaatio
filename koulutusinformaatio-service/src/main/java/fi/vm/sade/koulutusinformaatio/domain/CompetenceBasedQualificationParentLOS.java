@@ -29,6 +29,7 @@ public class CompetenceBasedQualificationParentLOS extends LOS {
     private double charge;
     private boolean osaamisala;
     private String edtUri;
+    private String determiner;
     
    
     public List<AdultVocationalLOS> getChildren() {
@@ -120,6 +121,12 @@ public class CompetenceBasedQualificationParentLOS extends LOS {
     }
     public String getEdtUri() {
         return edtUri;
+    }
+    public void setDeterminer(String tarkenne) {
+        this.determiner = tarkenne;
+    }
+    public String getDeterminer() {
+        return determiner;
     }
 
 

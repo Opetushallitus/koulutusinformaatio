@@ -58,6 +58,7 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
         String losName = String.format("%s, %s", SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getChildren().get(0).getTeachingLanguages(), 
                 los.getName().getTranslations()), SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getChildren().get(0).getTeachingLanguages(), 
                         los.getEducationKind().getTranslations()).toLowerCase());
+        losName = (los.getDeterminer() != null) && !los.isOsaamisala() ? String.format("%s, %s" , losName, los.getDeterminer()) : losName;
         doc.setField(LearningOpportunity.NAME, losName);
         doc.addField(LearningOpportunity.NAME_SORT, losName.toLowerCase().trim());
         if (teachLang.equals("fi")) {
@@ -146,7 +147,7 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
             //for (ChildLOI childLOI : childLOS.getLois()) {
             //    if (childLOI.getPrerequisite() != null && childLOI.getPrerequisite().getValue().equals(prerequisite.getValue())) {
                 if (curChild != null) {
-                    indexChildFields(doc, curChild, teachLang);
+                    indexChildFields(doc, curChild, teachLang, los.getDeterminer());
                 }
                 //}
             //}
@@ -159,12 +160,13 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
     }
     
     private void indexChildFields(SolrInputDocument doc,
-            AdultVocationalLOS curChild, String teachLang) {
+            AdultVocationalLOS curChild, String teachLang, String determiner) {
         if (curChild.getShortTitle() != null 
                 && curChild.getShortTitle().getTranslations() != null 
                 && !curChild.getShortTitle().getTranslations().isEmpty()) {
             String childName = SolrUtil.resolveTranslationInTeachingLangUseFallback(
                     curChild.getTeachingLanguages(), curChild.getShortTitle().getTranslations());
+            childName = (determiner != null) ? String.format("%s, %s", childName, determiner) : childName;
             doc.setField(LearningOpportunity.CHILD_NAME, childName);
         }
         

@@ -51,7 +51,15 @@ public final class AdultVocationalParentLOSToDTO {
         String descriptionLang = HigherEducationLOSToDTO.getDescriptionLang(lang, los.getAvailableTranslationLanguages());
         descriptionLang = descriptionLang != null ? descriptionLang : "fi";
         dto.setTranslationLanguage(descriptionLang);
-        dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(los.getName(), uiLang));
+        boolean iseducationKind = los.getEducationKind() != null && los.getEducationKind().getTranslations() != null && !los.getEducationKind().getTranslations().isEmpty();
+        String name = iseducationKind?  String.format("%s, %s", ConverterUtil.getTextByLanguageUseFallbackLang(los.getName(), uiLang), ConverterUtil.getTextByLanguageUseFallbackLang(los.getEducationKind(), uiLang).toLowerCase()) : ConverterUtil.getTextByLanguageUseFallbackLang(los.getName(), uiLang);
+        if (los.isOsaamisala()) {
+            dto.setName(name);
+        } else if (los.getDeterminer() != null) {
+            dto.setName(String.format("%s, %s, %s", ConverterUtil.getTextByLanguageUseFallbackLang(los.getName(), uiLang), ConverterUtil.getTextByLanguageUseFallbackLang(los.getEducationKind(), uiLang).toLowerCase(), los.getDeterminer()));
+        } else {
+            dto.setName(name);
+        }
 
         dto.setGoals(ConverterUtil.getTextByLanguage(los.getGoals(), descriptionLang));
         //dto.setStructure(ConverterUtil.getTextByLanguage(los.getStructure(), descriptionLang));
@@ -98,7 +106,7 @@ public final class AdultVocationalParentLOSToDTO {
         
         List<AdultVocationalChildLOSDTO> childList = new ArrayList<AdultVocationalChildLOSDTO>();
         for (AdultVocationalLOS curChild: los.getChildren()) {
-            AdultVocationalChildLOSDTO childDto = AdultVocationalChildLOSToDTO.convert(curChild, lang, uiLang);
+            AdultVocationalChildLOSDTO childDto = AdultVocationalChildLOSToDTO.convert(curChild, los.getDeterminer(), lang, uiLang);
             if (childDto != null) {
                 childList.add(childDto);
             }

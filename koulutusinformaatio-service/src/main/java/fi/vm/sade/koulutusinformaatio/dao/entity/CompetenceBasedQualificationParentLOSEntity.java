@@ -45,6 +45,7 @@ public class CompetenceBasedQualificationParentLOSEntity {
     private boolean osaamisala;
     
     private String edtUri;
+    private String determiner;
     
     @Embedded
     private List<CodeEntity> topics;
@@ -165,6 +166,12 @@ public class CompetenceBasedQualificationParentLOSEntity {
     }
     public void setEdtUri(String edtUri) {
         this.edtUri = edtUri;
+    }
+    public String getDeterminer() {
+        return determiner;
+    }
+    public void setDeterminer(String determiner) {
+        this.determiner = determiner;
     }
     
 }
