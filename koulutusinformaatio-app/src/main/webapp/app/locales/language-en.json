@@ -276,6 +276,9 @@
     "et020103": "Preparatory education for immigrants for vocational education",
     "et020104": "Preparatory education for immigrants for upper secondary education",
     "et0205": "Folk high school study programmes",
+    "et010303": "Further vocational qualification", 
+    "et010304": "Specialist vocational qualification",
+    "ammatillinenperustutkintonayttona": "Vocational upper secondary qualification as competence-based qualification", 
     "PerusopetuksenLisaopetus": "Voluntary additional basic education",
     "AmmOhjaavaJaValmistavaKoulutus": "Introductory and preparatory education for vocational upper secondary education and training ",
     "MaahanmAmmValmistavaKoulutus": "Preparatory education for immigrants for vocational training",
@@ -324,7 +327,7 @@
     "show-intro": "Show instructions",
     "intro-next": "Next",
     
-    "kohderyhma": "Kohderyhmä (en)",
+    "kohderyhma": "Target group",
     
      "euro": "euros",
      "sopimuksen-mukaan": "According to agreement",

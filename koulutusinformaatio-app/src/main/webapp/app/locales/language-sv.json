@@ -276,6 +276,9 @@
     "et020103": "Utbildning som förbereder invandrare för yrkesutbildning",
     "et020104": "Utbildning som förbereder invandrare för gymnasium",
     "et0205": "Folkhögskolornas utbildningar",
+    "et010303": "Yrkesexamen", 
+    "et010304": "Specialyrkesexamen",
+    "ammatillinenperustutkintonayttona": "Yrkesinriktade grundexamen som fristående examen",
     "PerusopetuksenLisaopetus": "Påbyggnadsundervisning för grundläggande utbildning",
     "AmmOhjaavaJaValmistavaKoulutus": "Orienterande och förberedande undervisning för grundläggande yrkesutbildning",
     "MaahanmAmmValmistavaKoulutus": "Utbildning som förbereder invandrare för grundläggande yrkesutbildning",
@@ -324,7 +327,7 @@
     "show-intro": "Visa anvisningar",
     "intro-next": "Följande",
     
-    "kohderyhma": "Kohderyhmä (sv)",
+    "kohderyhma": "Målgrupp",
     
      "euro": "euro",
      "sopimuksen-mukaan": "Enligt avtal",

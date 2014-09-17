@@ -161,6 +161,16 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
                 doc.addField(LearningOpportunity.CONTENT_FI, SolrUtil.resolveTextWithFallback("fi", loi.getContent().getTranslations()));
             }
         }
+        
+        if (loi.getKoulutuslaji() != null && loi.getKoulutuslaji().getName() != null) {
+            if (teachingLang.equals("sv")) {
+                doc.addField(LearningOpportunity.CONTENT_SV,  SolrUtil.resolveTextWithFallback("sv", loi.getKoulutuslaji().getName().getTranslations()));
+            } else if (teachingLang.equals("en")) {
+                doc.addField(LearningOpportunity.CONTENT_EN,  SolrUtil.resolveTextWithFallback("en",  loi.getKoulutuslaji().getName().getTranslations()));
+            } else {
+                doc.addField(LearningOpportunity.CONTENT_FI,  SolrUtil.resolveTextWithFallback("fi", loi.getKoulutuslaji().getName().getTranslations()));
+            }
+        }
 
         for (ApplicationOption ao : loi.getApplicationOptions()) {
             if (ao.getApplicationSystem() != null) {

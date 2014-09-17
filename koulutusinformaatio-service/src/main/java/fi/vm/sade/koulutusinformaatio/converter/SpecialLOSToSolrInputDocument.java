@@ -182,6 +182,16 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
                 doc.addField(SolrUtil.LearningOpportunity.CONTENT_FI, SolrUtil.resolveTextWithFallback("fi", childLOI.getContent().getTranslations()));
             }
         }
+        
+        if (childLOI.getKoulutuslaji() != null && childLOI.getKoulutuslaji().getName() != null) {
+            if (teachingLang.equals("sv")) {
+                doc.addField(LearningOpportunity.CONTENT_SV,  SolrUtil.resolveTextWithFallback("sv", childLOI.getKoulutuslaji().getName().getTranslations()));
+            } else if (teachingLang.equals("en")) {
+                doc.addField(LearningOpportunity.CONTENT_EN,  SolrUtil.resolveTextWithFallback("en",  childLOI.getKoulutuslaji().getName().getTranslations()));
+            } else {
+                doc.addField(LearningOpportunity.CONTENT_FI,  SolrUtil.resolveTextWithFallback("fi", childLOI.getKoulutuslaji().getName().getTranslations()));
+            }
+        }
 
         for (ApplicationOption ao : childLOI.getApplicationOptions()) {
             if (ao.getApplicationSystem() != null) {
@@ -270,6 +280,8 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
             doc.addField(LearningOpportunity.KIND_OF_EDUCATION, childLOI.getKoulutuslaji().getUri());
             usedVals.add(childLOI.getKoulutuslaji().getUri());
         }
+        
+       
         
     }
 
