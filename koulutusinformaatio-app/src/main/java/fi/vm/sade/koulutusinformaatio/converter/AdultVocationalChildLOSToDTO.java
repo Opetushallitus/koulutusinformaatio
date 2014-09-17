@@ -35,7 +35,7 @@ public final class AdultVocationalChildLOSToDTO {
      
     }
     
-    public static AdultVocationalChildLOSDTO convert(final AdultVocationalLOS los, final String lang, final String uiLang) {
+    public static AdultVocationalChildLOSDTO convert(final AdultVocationalLOS los, final String determiner, final String lang, final String uiLang) {
         
         AdultVocationalChildLOSDTO dto =
                 new AdultVocationalChildLOSDTO();
@@ -44,7 +44,11 @@ public final class AdultVocationalChildLOSToDTO {
         
         String descriptionLang = HigherEducationLOSToDTO.getDescriptionLang(lang, los.getAvailableTranslationLanguages());
         dto.setTranslationLanguage(descriptionLang);
-        dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(los.getName(), uiLang));
+        if (determiner == null) {
+            dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(los.getName(), uiLang));
+        } else {
+            dto.setName(String.format("%s, %s", ConverterUtil.getTextByLanguageUseFallbackLang(los.getName(), uiLang), determiner.toLowerCase()));
+        }
         dto.setEducationDegree(los.getEducationDegree());
         dto.setEducationDegreeName(ConverterUtil.getTextByLanguageUseFallbackLang(los.getEducationDegreeLang(), uiLang));
         dto.setDegreeTitle(ConverterUtil.getTextByLanguageUseFallbackLang(los.getDegreeTitle(), uiLang));
