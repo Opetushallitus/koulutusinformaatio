@@ -1091,6 +1091,9 @@ service('ChildLOTransformer', ['UtilityService', 'KiSorter', '$rootScope', funct
                 if (result.lois.hasOwnProperty(loiIndex)) {
                     var loi = result.lois[loiIndex];
                     loi.availableTranslationLanguages = _.filter(loi.availableTranslationLanguages, function(item) { return item.value.toLowerCase() != result.translationLanguage});
+                    if (loi.targetGroup) {
+                    	result.targetGroup = loi.targetGroup;
+                    } 
                 }
             } 
             
@@ -1501,7 +1504,7 @@ service('LanguageService', ['CookieService', '$location', '_', function(CookieSe
 
             // force ui lang to queried language (used for SEO snapshots)
             // fallback to english
-            var queryLanguage = $location.search().uilang;
+            var queryLanguage = $location.search().descriptionLang;
             if (queryLanguage && isSupportedLanguage(queryLanguage)) {
                 return queryLanguage;
             } else if (queryLanguage) {

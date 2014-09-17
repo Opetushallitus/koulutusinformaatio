@@ -64,7 +64,9 @@ public class SEOServiceImpl implements SEOService {
                 "lukio:upperSecondaryLearningOpportunitySpecifications," +
                 "valmentava:specialLearningOpportunitySpecifications:-creditValue," +
                 "erityisopetus:specialLearningOpportunitySpecifications:+creditValue," +
-                "korkeakoulu:universityAppliedScienceLOS";
+                "korkeakoulu:universityAppliedScienceLOS," +
+                "ammatillinenaikuiskoulutus:competenceBasedQualificationParentLOS," +
+                "aikuislukio:adultUpperSecondaryLOS";
         this.sitemapParams.put(SitemapBuilder.PROPERTY_COLLECTIONS, collections);
         this.sitemapLocation = sitemapLocation;
     }

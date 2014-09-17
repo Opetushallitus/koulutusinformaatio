@@ -26,7 +26,7 @@ public class Code {
 
     private String value;
     private I18nText name;
-    private I18nText shortName;
+    private I18nText shortTitle;
     private I18nText description;
     private Code parent;
     private String uri;
@@ -47,7 +47,7 @@ public class Code {
     public Code(String value, I18nText name, I18nText shortName, I18nText description, String uri) {
         this.value = value;
         this.name = name;
-        this.shortName = shortName;
+        this.shortTitle = shortName;
         this.description = description;
         this.uri = uri;
     }
@@ -68,12 +68,12 @@ public class Code {
         this.name = name;
     }
 
-    public I18nText getShortName() {
-        return shortName;
+    public I18nText getShortTitle() {
+        return shortTitle;
     }
 
-    public void setShortName(I18nText shortName) {
-        this.shortName = shortName;
+    public void setShortTitle(I18nText shortName) {
+        this.shortTitle = shortName;
     }
 
     public I18nText getDescription() {

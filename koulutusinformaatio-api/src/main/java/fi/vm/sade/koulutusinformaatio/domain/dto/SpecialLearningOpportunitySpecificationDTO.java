@@ -42,6 +42,7 @@ public class SpecialLearningOpportunitySpecificationDTO {
     private String educationDomain;
     private ParentLOSRefDTO parent;
     private String educationTypeUri;
+    private String educationKind;
 
     public String getId() {
         return id;
@@ -169,5 +170,14 @@ public class SpecialLearningOpportunitySpecificationDTO {
 
     public void setEducationTypeUri(String educationTypeUri) {
         this.educationTypeUri = educationTypeUri;
+    }
+
+    public void setEducationKind(String convert) {
+        this.educationKind = convert;
+        
+    }
+
+    public String getEducationKind() {
+        return educationKind;
     }
 }

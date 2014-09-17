@@ -72,7 +72,7 @@ public class AdminResource {
     @Path("/update")
     public Response updateEducationData() throws URISyntaxException {
         try {
-            if (!updateService.isRunning()) {
+            if (!updateService.isRunning() && !incrementalUpdateService.isRunning()) {
                 updateService.updateAllEducationData();
             }
         } catch (Exception e) {
@@ -86,7 +86,7 @@ public class AdminResource {
     @Path("/updateArticles")
     public Response updateArticles() throws URISyntaxException {
         try {
-            if (!updateService.isRunning()) {
+            if (!updateService.isRunning() && !incrementalUpdateService.isRunning()) {
                 updateService.updateArticles();
             }
         } catch (Exception e) {
@@ -100,7 +100,7 @@ public class AdminResource {
     @Path("/increment")
     public Response incrementEducationData() throws URISyntaxException {
         try {
-            if (!updateService.isRunning()) {
+            if (!updateService.isRunning() && !incrementalUpdateService.isRunning()) {
                 incrementalUpdateService.updateChangedEducationData();
             }
         } catch (Exception e) {

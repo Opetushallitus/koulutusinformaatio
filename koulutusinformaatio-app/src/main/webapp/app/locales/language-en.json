@@ -195,7 +195,7 @@
     "application-basket-empty": "Clear my shortlist",
     "application-basket-empty-confirm": "Are you sure you want to clear your shortlist?",
     "application-basket-overflow-warning": "You can apply to up to __itemcount__ study programmes with this application",
-    "application-basket-fill-form-notification-single-ao": "You should apply separately to all study options listed here. For some of the studies you apply through the educational institution's own web pages.",
+    "application-basket-fill-form-notification-single-ao": "You should apply separately to all study options listed here.",
     "application-basket-attachments-exams": "Attachments and examinations",
     "application-basket-no-attachments": "No attachments",
     "application-basket-attachments-required": "Attachments required",
@@ -323,6 +323,8 @@
 
     "show-intro": "Show instructions",
     "intro-next": "Next",
+    
+    "kohderyhma": "Kohderyhmä (en)",
     
      "euro": "euros",
      "sopimuksen-mukaan": "According to agreement",

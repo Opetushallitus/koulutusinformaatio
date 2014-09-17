@@ -26,6 +26,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import fi.vm.sade.koulutusinformaatio.dao.AdultUpperSecondaryLOSDAO;
+import fi.vm.sade.koulutusinformaatio.dao.AdultVocationalLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ChildLearningOpportunityDAO;
 import fi.vm.sade.koulutusinformaatio.dao.HigherEducationLOSDAO;
 import fi.vm.sade.koulutusinformaatio.dao.ParentLearningOpportunitySpecificationDAO;
@@ -50,12 +52,17 @@ public class SnapshotServiceImpl implements SnapshotService {
     private static final String TYPE_CHILD = "koulutusohjelma";
     private static final String TYPE_UPSEC = "lukio";
     private static final String TYPE_HIGHERED = "korkeakoulu";
+    private static final String TYPE_ADULT_VOCATIONAL = "ammatillinenaikuiskoulutus";
+    private static final String TYPE_ADULT_UPSEC = "aikuislukio";
+    private static final String QUERY_PARAM_LANG = "descriptionLang";
 
     private SpecialLearningOpportunitySpecificationDAO specialDAO;
     private ParentLearningOpportunitySpecificationDAO parentDAO;
     private ChildLearningOpportunityDAO childDAO;
     private UpperSecondaryLearningOpportunitySpecificationDAO upsecDAO;
     private HigherEducationLOSDAO higheredDAO;
+    private AdultVocationalLOSDAO adultvocDAO;
+    private AdultUpperSecondaryLOSDAO adultupecDAO;
     private String phantomjs;
     private String snapshotScript;
     private String snapshotFolder;
@@ -70,6 +77,8 @@ public class SnapshotServiceImpl implements SnapshotService {
                                @Qualifier("upperSecondaryLearningOpportunitySpecificationDAO")
                                UpperSecondaryLearningOpportunitySpecificationDAO upsecDAO,
                                @Qualifier("higherEducationLOSDAO") HigherEducationLOSDAO higheredDAO,
+                               @Qualifier("adultVocationalLOSDAO") AdultVocationalLOSDAO adultvocDAO,
+                               @Qualifier("adultUpperSecondaryLOSDAO") AdultUpperSecondaryLOSDAO adultupsecDAO,
                                @Value("${koulutusinformaatio.phantomjs}") String phantomjs,
                                @Value("${koulutusinformaatio.snapshot.script}") String script,
                                @Value("${koulutusinformaatio.snapshot.folder}") String prerenderFolder,
@@ -79,6 +88,8 @@ public class SnapshotServiceImpl implements SnapshotService {
         this.childDAO = childDAO;
         this.upsecDAO = upsecDAO;
         this.higheredDAO = higheredDAO;
+        this.adultvocDAO = adultvocDAO;
+        this.adultupecDAO = adultupsecDAO;
         this.phantomjs = phantomjs;
         this.snapshotScript = script;
         this.snapshotFolder = prerenderFolder;
@@ -96,26 +107,40 @@ public class SnapshotServiceImpl implements SnapshotService {
         LOG.debug("Child LOs rendered");
         prerender(TYPE_UPSEC, upsecDAO.findIds());
         LOG.debug("Upsec LOs rendered");
-        prerenderHigherEd(higheredDAO.findIds());
+        prerenderWithTeachingLanguages(TYPE_HIGHERED, higheredDAO.findIds());
         LOG.debug("HigherEd LOs rendered");
+        prerender(TYPE_ADULT_VOCATIONAL, adultvocDAO.findIds());
+        LOG.debug("Adult vocational LOs rendered");
+        prerender(TYPE_ADULT_UPSEC, adultupecDAO.findIds());
+        LOG.debug("Adult upper secondary LOs rendered");
         // todo: handle rehabilitating separately
         LOG.info("Rendering html snapshots finished");
     }
     
-    private void prerenderHigherEd(List<String> ids) {
+    private void prerenderWithTeachingLanguages(String type, List<String> ids) {
         for (String id : ids) {
             HigherEducationLOSEntity los = higheredDAO.get(id);
+            
+            // generate snapshot for each teaching language
             for (CodeEntity teachingLang : los.getTeachingLanguages()) {
                 try {
                     String lang = "";
                     if (teachingLang != null && teachingLang.getValue() != null) {
                         lang = teachingLang.getValue().toLowerCase();
                     }
-                    String cmd = generatePhantomJSCommand(TYPE_HIGHERED, id, lang);
+                    String cmd = generatePhantomJSCommand(type, id, lang);
                     invokePhantomJS(cmd, id);
                 } catch (KIException e) {
                     LOG.error(e.getMessage());
                 }
+            }
+            
+            // generate default snapshot
+            try {
+                String cmd = generatePhantomJSCommand(type, id);
+                invokePhantomJS(cmd, id);
+            } catch (KIException e) {
+                LOG.error(e.getMessage());
             }
         }
     }
@@ -137,8 +162,8 @@ public class SnapshotServiceImpl implements SnapshotService {
     }
     
     private String generatePhantomJSCommand(String type, String id, String lang) {
-        return String.format("%s %s %s%s/%s?uilang=%s %s/%s_%s.html",
-                phantomjs, snapshotScript, baseUrl, type, id, lang, snapshotFolder, id, lang);
+        return String.format("%s %s %s%s/%s?%s=%s %s/%s_%s.html",
+                phantomjs, snapshotScript, baseUrl, type, id, QUERY_PARAM_LANG, lang, snapshotFolder, id, lang);
     }
     
     
