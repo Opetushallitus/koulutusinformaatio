@@ -217,6 +217,16 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
             }
         }
         
+        if (curChild.getKoulutuslaji() != null && curChild.getKoulutuslaji().getName() != null) {
+            if (teachLang.equals("sv")) {
+                doc.addField(LearningOpportunity.CONTENT_SV,  SolrUtil.resolveTextWithFallback("sv", curChild.getKoulutuslaji().getName().getTranslations()));
+            } else if (teachLang.equals("en")) {
+                doc.addField(LearningOpportunity.CONTENT_EN,  SolrUtil.resolveTextWithFallback("en",  curChild.getKoulutuslaji().getName().getTranslations()));
+            } else {
+                doc.addField(LearningOpportunity.CONTENT_FI,  SolrUtil.resolveTextWithFallback("fi", curChild.getKoulutuslaji().getName().getTranslations()));
+            }
+        }
+        
     }
 
     /*
