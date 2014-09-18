@@ -246,6 +246,7 @@
     "formOfTeaching_ffm": "Opetustapa",
     "timeOfTeaching_ffm": "Opetusaika",
     "formOfStudy_ffm": "Opiskelumuoto",
+    "kindOfEducation_ffm": "Kohderyhmä",
     "teachingLangCode_ffm": "Opetuskieli",
     "articleContentType_ffm": "Aineistotyyppi",
     "location-rajaus": "Paikka",

@@ -277,9 +277,15 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
         
         if (childLOI.getKoulutuslaji() != null 
                 && !usedVals.contains(childLOI.getKoulutuslaji().getUri())) {
-            doc.addField(LearningOpportunity.KIND_OF_EDUCATION, childLOI.getKoulutuslaji().getUri());
-            usedVals.add(childLOI.getKoulutuslaji().getUri());
-        }
+            
+            if (childLOI.getKoulutuslaji().getUri().startsWith(TarjontaConstants.AVOIN_KAIKILLE)) {
+                doc.addField(LearningOpportunity.KIND_OF_EDUCATION, TarjontaConstants.NUORTEN_KOULUTUS);
+                doc.addField(LearningOpportunity.KIND_OF_EDUCATION, TarjontaConstants.AIKUISKOULUTUS);
+            } else {
+                doc.addField(LearningOpportunity.KIND_OF_EDUCATION, childLOI.getKoulutuslaji().getUri());
+                usedVals.add(childLOI.getKoulutuslaji().getUri());
+            }
+        } 
         
        
         

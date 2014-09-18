@@ -21,6 +21,7 @@ import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 
 import org.apache.solr.common.SolrInputDocument;
 import org.springframework.core.convert.converter.Converter;
@@ -335,9 +336,15 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
                     }
                     if (childLOI.getKoulutuslaji() != null 
                             && !usedVals.contains(childLOI.getKoulutuslaji().getUri())) {
-                        doc.addField(LearningOpportunity.KIND_OF_EDUCATION, childLOI.getKoulutuslaji().getUri());
-                        usedVals.add(childLOI.getKoulutuslaji().getUri());
-                    }
+                        
+                        if (childLOI.getKoulutuslaji().getUri().startsWith(TarjontaConstants.AVOIN_KAIKILLE)) {
+                            doc.addField(LearningOpportunity.KIND_OF_EDUCATION, TarjontaConstants.NUORTEN_KOULUTUS);
+                            doc.addField(LearningOpportunity.KIND_OF_EDUCATION, TarjontaConstants.AIKUISKOULUTUS);
+                        } else {
+                            doc.addField(LearningOpportunity.KIND_OF_EDUCATION, childLOI.getKoulutuslaji().getUri());
+                            usedVals.add(childLOI.getKoulutuslaji().getUri());
+                        }
+                    } 
                 }
 
             }

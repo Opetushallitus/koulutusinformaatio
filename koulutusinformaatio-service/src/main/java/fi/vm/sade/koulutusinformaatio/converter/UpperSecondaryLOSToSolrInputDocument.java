@@ -19,6 +19,7 @@ package fi.vm.sade.koulutusinformaatio.converter;
 import com.google.common.collect.Lists;
 
 import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 
@@ -251,9 +252,15 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
         
         if (loi.getKoulutuslaji() != null 
                 && !usedVals.contains(loi.getKoulutuslaji().getUri())) {
-            doc.addField(LearningOpportunity.KIND_OF_EDUCATION, loi.getKoulutuslaji().getUri());
-            usedVals.add(loi.getKoulutuslaji().getUri());
-        }
+            
+            if (loi.getKoulutuslaji().getUri().startsWith(TarjontaConstants.AVOIN_KAIKILLE)) {
+                doc.addField(LearningOpportunity.KIND_OF_EDUCATION, TarjontaConstants.NUORTEN_KOULUTUS);
+                doc.addField(LearningOpportunity.KIND_OF_EDUCATION, TarjontaConstants.AIKUISKOULUTUS);
+            } else {
+                doc.addField(LearningOpportunity.KIND_OF_EDUCATION, loi.getKoulutuslaji().getUri());
+                usedVals.add(loi.getKoulutuslaji().getUri());
+            }
+        } 
         
     }
 }
