@@ -275,6 +275,18 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
             }
         }
         
+        if (specialLOS.getTopics() != null) {
+            for (Code curTopic : specialLOS.getTopics()) {
+                doc.addField(LearningOpportunity.TOPIC, curTopic.getUri());
+            }
+        }
+
+        if (specialLOS.getThemes() != null) {
+            for (Code curTopic : specialLOS.getThemes()) {
+                doc.addField(LearningOpportunity.THEME, curTopic.getUri());
+            }
+        }
+        
         if (childLOI.getKoulutuslaji() != null 
                 && !usedVals.contains(childLOI.getKoulutuslaji().getUri())) {
             
