@@ -1242,6 +1242,10 @@ public class LOSObjectCreator extends ObjectCreator {
                 ao.setType(TarjontaConstants.TYPE_ADULT_VOCATIONAL);//TarjontaConstants.TYPE_ADULT_UPSEC);
             }
         }
+        
+        if (koulutus.getKoulutuslaji() != null) {
+            los.setKoulutuslaji(this.koodistoService.searchFirst(koulutus.getKoulutuslaji().getUri()));
+        }
 
         los.setFacetPrerequisites(this.getFacetPrequisites(los.getPrerequisites()));
 
