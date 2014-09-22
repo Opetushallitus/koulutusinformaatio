@@ -235,6 +235,16 @@ public final class SolrUtil {
         }
         
         fixed = fixed.trim();
+        if (fixed.length() > 0) {
+            fixed = fixed.replace("\"", "");
+        }
+        if (fixed.length() > 0) {
+            fixed = fixed.replace("(", "");
+        }
+        
+        if (fixed.length() > 0) {
+            fixed = fixed.replace(")", "");
+        }
         
         if (fixed.endsWith("?")) {
             fixed = fixed.substring(0, fixed.lastIndexOf('?'));
@@ -295,6 +305,9 @@ public final class SolrUtil {
         public static final String AS_NAME_FI = "asName_fi";
         public static final String AS_NAME_SV = "asName_sv";
         public static final String AS_NAME_EN = "asName_en";
+        public static final String AO_NAME_FI = "aoName_fi";
+        public static final String AO_NAME_SV = "aoName_sv";
+        public static final String AO_NAME_EN = "aoName_en";
         public static final String PREREQUISITES = "prerequisites";
         public static final String LOS_ID = "losId";
         public static final String PARENT_ID = "parentId";

@@ -209,14 +209,31 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
             }
         }
 
+       
+        
         if (curChild.getApplicationOptions() != null) {
+            String aoNameFi = "";
+            String aoNameSv = "";
+            String aoNameEn = "";
+            
             for (ApplicationOption ao : curChild.getApplicationOptions()) {
                 if (ao.getApplicationSystem() != null) {
                     doc.addField(LearningOpportunity.AS_NAME_FI, ao.getApplicationSystem().getName().getTranslations().get("fi"));
                     doc.addField(LearningOpportunity.AS_NAME_SV, ao.getApplicationSystem().getName().getTranslations().get("sv"));
                     doc.addField(LearningOpportunity.AS_NAME_EN, ao.getApplicationSystem().getName().getTranslations().get("en"));
                 }
+                if (ao.getName() != null) {
+                    aoNameFi = String.format("%s %s", aoNameFi,  SolrUtil.resolveTextWithFallback("fi", ao.getName().getTranslations()));
+                    aoNameSv = String.format("%s %s", aoNameSv,  SolrUtil.resolveTextWithFallback("sv", ao.getName().getTranslations()));
+                    aoNameEn = String.format("%s %s", aoNameEn,  SolrUtil.resolveTextWithFallback("en", ao.getName().getTranslations()));
+                    
+                }
             }
+            
+            doc.addField(LearningOpportunity.AO_NAME_FI, aoNameFi);
+            doc.addField(LearningOpportunity.AO_NAME_SV, aoNameSv);
+            doc.addField(LearningOpportunity.AO_NAME_EN, aoNameEn);
+            
         }
         
         if (curChild.getKoulutuslaji() != null && curChild.getKoulutuslaji().getName() != null) {

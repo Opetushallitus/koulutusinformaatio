@@ -441,7 +441,7 @@ a.label:hover, a.label:focus {
     font-weight: normal;
     line-height: 1.53846;
     color: #333333;
-    white-space: nowrap; }
+    white-space: normal; }
 
 .dropdown-menu > li > a {
   text-decoration: none; }
@@ -709,6 +709,23 @@ h6, .h6 {
   .btn-danger .badge {
     color: #fef3d3;
     background-color: white; }
+
+.btn-tab {
+  color: #dff2f8;
+  background-color: #dff2f8;
+  border-color: gainsboro; }
+  .btn-tab:hover, .btn-tab:focus, .btn-tab:active, .btn-tab.active, .open > .btn-tab.dropdown-toggle {
+    color: #dff2f8;
+    background-color: #b5e1ef;
+    border-color: #bdbdbd; }
+  .btn-tab:active, .btn-tab.active, .open > .btn-tab.dropdown-toggle {
+    background-image: none; }
+  .btn-tab.disabled, .btn-tab.disabled:hover, .btn-tab.disabled:focus, .btn-tab.disabled:active, .btn-tab.disabled.active, .btn-tab[disabled], .btn-tab[disabled]:hover, .btn-tab[disabled]:focus, .btn-tab[disabled]:active, .btn-tab[disabled].active, fieldset[disabled] .btn-tab, fieldset[disabled] .btn-tab:hover, fieldset[disabled] .btn-tab:focus, fieldset[disabled] .btn-tab:active, fieldset[disabled] .btn-tab.active {
+    background-color: #dff2f8;
+    border-color: gainsboro; }
+  .btn-tab .badge {
+    color: #dff2f8;
+    background-color: #dff2f8; }
 
 .btn-link {
   color: #06526b;
@@ -1198,16 +1215,62 @@ table th[class*="col-"] {
       line-height: 1.53846;
       border: none;
       background-color: #dff2f8;
-      text-decoration: none; }
+      text-decoration: none;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      /*
+      @media (max-width: $screen-lg-min) {
+        max-width: ($screen-md / 2);
+      } 
+
+      @media (max-width: $screen-md-min) {
+        max-width: ($screen-sm / 2);
+      } 
+
+      @media (max-width: $screen-sm-min) {
+        max-width: ($screen-xs / 2);
+      }
+      */ }
+      @media (max-width: 767px) {
+        .nav-tabs > li > a {
+          max-width: 240px; } }
+      @media (min-width: 480px) {
+        .nav-tabs > li > a {
+          max-width: 240px; } }
+      @media (min-width: 768px) {
+        .nav-tabs > li > a {
+          max-width: 384px; } }
+      @media (min-width: 992px) {
+        .nav-tabs > li > a {
+          max-width: 496px; } }
+      @media (min-width: 1200px) {
+        .nav-tabs > li > a {
+          max-width: 600px; } }
+    @media (max-width: 992px) {
+      .nav-tabs > li {
+        display: none; } }
     .nav-tabs > li.active {
       border-bottom-width: 0px;
       top: 2px; }
+      @media (max-width: 992px) {
+        .nav-tabs > li.active {
+          display: block; } }
       .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
         font-weight: bold;
         color: #333333;
         background-color: white;
         border: none;
         cursor: default; }
+  .nav-tabs .icon-bar {
+    display: block;
+    width: 22px;
+    height: 2px;
+    border-radius: 1px;
+    border: 1px solid transparent;
+    background-color: #333333; }
+  .nav-tabs .icon-bar + .icon-bar {
+    margin-top: 4px; }
 
 .nav-pills > li {
   float: left; }
@@ -1403,9 +1466,15 @@ table th[class*="col-"] {
     width: 900px; } }
 .app-container {
   margin: 60px 0 220px 0; }
+  @media (max-width: 768px) {
+    .app-container {
+      margin: 20px 0 40px 0; } }
 
 .search-field {
   margin-bottom: 40px; }
+  @media (max-width: 768px) {
+    .search-field {
+      margin-bottom: 20px; } }
   .search-field input {
     font-size: 13px; }
     .search-field input[type=text] {
@@ -1426,6 +1495,12 @@ table th[class*="col-"] {
         box-shadow: none; }
   .search-field .h3 {
     margin: 0; }
+    @media (max-width: 768px) {
+      .search-field .h3 {
+        margin-bottom: 10px; } }
+  @media (max-width: 768px) {
+    .search-field button {
+      width: 100%; } }
 
 .facet-selections {
   margin-bottom: 1em; }
@@ -1435,7 +1510,7 @@ table th[class*="col-"] {
     .facet-selections ul li {
       list-style-type: none;
       display: inline-block;
-      margin: 0 10px 0 0; }
+      margin: 10px 10px 0 0; }
       .facet-selections ul li a.facet-selection {
         display: inline-block;
         padding: 0 10px;
@@ -1542,11 +1617,6 @@ select:hover,
   .panel-ki-default .panel-body {
     padding: 10px;
     border-bottom: 1px solid #dddddd; }
-    .panel-ki-default .panel-body .ao-row {
-      border-bottom: 1px solid #dddddd;
-      padding: 10px 0; }
-      .panel-ki-default .panel-body .ao-row:last-child {
-        border: none; }
 
 .panel-tarjonta {
   margin-bottom: 0; }
@@ -1593,7 +1663,14 @@ select:hover,
 .pager-results {
   display: inline-block;
   position: relative;
-  bottom: 40px; }
+  bottom: 44px; }
+  @media (max-width: 768px) {
+    .pager-results {
+      bottom: 22px; } }
+
+@media (max-width: 768px) {
+  .pager {
+    margin: 60px 0 0; } }
 
 .collapser {
   cursor: pointer;
@@ -1654,6 +1731,21 @@ select:hover,
   padding: 10px 10px 0;
   background-color: #f3fafc;
   border-top: 1px dashed #DDD; }
+
+@media (min-width: 992px) {
+  .ao-row {
+    border-bottom: 1px solid #dddddd;
+    padding: 10px 0; } }
+.ao-row:last-child {
+  border: none; }
+  .ao-row:last-child .ao-item:last-child {
+    border: none; }
+
+@media (max-width: 992px) {
+  .ao-item {
+    border-bottom: 1px solid #dddddd;
+    padding-top: 10px;
+    padding-bottom: 10px; } }
 
 ul.inside,
 ol.inside {
@@ -1981,6 +2073,250 @@ select {
   background-color: white;
   border: 1px solid #dddddd;
   border-radius: 3px; }
+
+.tabdrop {
+  display: none;
+  position: relative;
+  top: 1px;
+  padding: 1px;
+  background: #FFF;
+  border: 1px solid gainsboro;
+  border-radius: 3px 3px 0 0; }
+  .tabdrop .tabdrop-toggler {
+    background: #dff2f8;
+    padding: 10px 20px;
+    cursor: pointer; }
+  .tabdrop .tabdrop-label {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px; }
+  @media (max-width: 992px) {
+    .tabdrop {
+      display: block; } }
+
+.no-svg .historia-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/historia-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.historia-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/historia-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .kauppa-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/kauppa-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.kauppa-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/kauppa-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .kielet-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/kielet-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.kielet-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/kielet-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .laki-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/laki-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.laki-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/laki-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .liikenne-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/liikenne-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.liikenne-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/liikenne-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .luonnontieteet-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/luonnontieteet-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.luonnontieteet-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/luonnontieteet-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .metsatalous-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/metsatalous-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.metsatalous-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/metsatalous-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .matkailu-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/matkailu-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.matkailu-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/matkailu-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .kasvatus-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/kasvatus-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.kasvatus-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/kasvatus-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .taide-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/taide-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.taide-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/taide-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .tekniikka-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/tekniikka-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.tekniikka-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/tekniikka-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .terveys-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/terveys-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.terveys-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/terveys-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .turvallisuus-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/turvallisuus-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.turvallisuus-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/turvallisuus-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .yleissivistava-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/yleissivistava-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.yleissivistava-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/yleissivistava-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
 
 .preview-actions > * {
   margin-left: 10px; }

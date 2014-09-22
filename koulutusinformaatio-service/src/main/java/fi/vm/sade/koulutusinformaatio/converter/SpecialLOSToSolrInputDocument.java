@@ -193,13 +193,26 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
             }
         }
 
+        String aoNameFi = "";
+        String aoNameSv = "";
+        String aoNameEn = "";
+        
         for (ApplicationOption ao : childLOI.getApplicationOptions()) {
             if (ao.getApplicationSystem() != null) {
                 doc.addField(SolrUtil.LearningOpportunity.AS_NAME_FI, ao.getApplicationSystem().getName().getTranslations().get("fi"));
                 doc.addField(SolrUtil.LearningOpportunity.AS_NAME_SV, ao.getApplicationSystem().getName().getTranslations().get("sv"));
                 doc.addField(SolrUtil.LearningOpportunity.AS_NAME_EN, ao.getApplicationSystem().getName().getTranslations().get("en"));
             }
+            if (ao.getName() != null) {
+                aoNameFi = String.format("%s %s", aoNameFi,  SolrUtil.resolveTextWithFallback("fi", ao.getName().getTranslations()));
+                aoNameSv = String.format("%s %s", aoNameSv,  SolrUtil.resolveTextWithFallback("sv", ao.getName().getTranslations()));
+                aoNameEn = String.format("%s %s", aoNameEn,  SolrUtil.resolveTextWithFallback("en", ao.getName().getTranslations()));
+            }
         }
+        
+        doc.addField(LearningOpportunity.AO_NAME_FI, aoNameFi);
+        doc.addField(LearningOpportunity.AO_NAME_SV, aoNameSv);
+        doc.addField(LearningOpportunity.AO_NAME_EN, aoNameEn);
 
         SolrUtil.addApplicationDates(doc, childLOI.getApplicationOptions());
 
@@ -275,11 +288,29 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
             }
         }
         
+        if (specialLOS.getTopics() != null) {
+            for (Code curTopic : specialLOS.getTopics()) {
+                doc.addField(LearningOpportunity.TOPIC, curTopic.getUri());
+            }
+        }
+
+        if (specialLOS.getThemes() != null) {
+            for (Code curTopic : specialLOS.getThemes()) {
+                doc.addField(LearningOpportunity.THEME, curTopic.getUri());
+            }
+        }
+        
         if (childLOI.getKoulutuslaji() != null 
                 && !usedVals.contains(childLOI.getKoulutuslaji().getUri())) {
-            doc.addField(LearningOpportunity.KIND_OF_EDUCATION, childLOI.getKoulutuslaji().getUri());
-            usedVals.add(childLOI.getKoulutuslaji().getUri());
-        }
+            
+            if (childLOI.getKoulutuslaji().getUri().startsWith(TarjontaConstants.AVOIN_KAIKILLE)) {
+                doc.addField(LearningOpportunity.KIND_OF_EDUCATION, TarjontaConstants.NUORTEN_KOULUTUS);
+                doc.addField(LearningOpportunity.KIND_OF_EDUCATION, TarjontaConstants.AIKUISKOULUTUS);
+            } else {
+                doc.addField(LearningOpportunity.KIND_OF_EDUCATION, childLOI.getKoulutuslaji().getUri());
+                usedVals.add(childLOI.getKoulutuslaji().getUri());
+            }
+        } 
         
        
         

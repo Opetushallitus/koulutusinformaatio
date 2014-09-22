@@ -21,6 +21,7 @@ import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.domain.*;
+import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 
 import org.apache.solr.common.SolrInputDocument;
 import org.springframework.core.convert.converter.Converter;
@@ -142,18 +143,35 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         }
 
         List<ApplicationOption> applicationOptions = Lists.newArrayList();
+        String aoNameFi = "";
+        String aoNameSv = "";
+        String aoNameEn = "";
         for (ParentLOI parentLOI : parent.getLois()) {
             if (parentLOI.getPrerequisite() != null && parentLOI.getPrerequisite().getValue().equals(prerequisite.getValue())) {
                 applicationOptions.addAll(parentLOI.getApplicationOptions());
+                
+                
+                
                 for (ApplicationOption ao : parentLOI.getApplicationOptions()) {
                     if (ao.getApplicationSystem() != null) {
                         doc.addField(LearningOpportunity.AS_NAME_FI, ao.getApplicationSystem().getName().getTranslations().get("fi"));
                         doc.addField(LearningOpportunity.AS_NAME_SV, ao.getApplicationSystem().getName().getTranslations().get("sv"));
                         doc.addField(LearningOpportunity.AS_NAME_EN, ao.getApplicationSystem().getName().getTranslations().get("en"));
                     }
+                    if (ao.getName() != null) {
+                        aoNameFi = String.format("%s %s", aoNameFi,  SolrUtil.resolveTextWithFallback("fi", ao.getName().getTranslations()));
+                        aoNameSv = String.format("%s %s", aoNameSv,  SolrUtil.resolveTextWithFallback("sv", ao.getName().getTranslations()));
+                        aoNameEn = String.format("%s %s", aoNameEn,  SolrUtil.resolveTextWithFallback("en", ao.getName().getTranslations()));
+                    }
                 }
+                
+                
             }
+            
         }
+        doc.addField(LearningOpportunity.AO_NAME_FI, aoNameFi);
+        doc.addField(LearningOpportunity.AO_NAME_SV, aoNameSv);
+        doc.addField(LearningOpportunity.AO_NAME_EN, aoNameEn);
         SolrUtil.addApplicationDates(doc, applicationOptions);
 
         Date earliest = null;
@@ -335,9 +353,15 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
                     }
                     if (childLOI.getKoulutuslaji() != null 
                             && !usedVals.contains(childLOI.getKoulutuslaji().getUri())) {
-                        doc.addField(LearningOpportunity.KIND_OF_EDUCATION, childLOI.getKoulutuslaji().getUri());
-                        usedVals.add(childLOI.getKoulutuslaji().getUri());
-                    }
+                        
+                        if (childLOI.getKoulutuslaji().getUri().startsWith(TarjontaConstants.AVOIN_KAIKILLE)) {
+                            doc.addField(LearningOpportunity.KIND_OF_EDUCATION, TarjontaConstants.NUORTEN_KOULUTUS);
+                            doc.addField(LearningOpportunity.KIND_OF_EDUCATION, TarjontaConstants.AIKUISKOULUTUS);
+                        } else {
+                            doc.addField(LearningOpportunity.KIND_OF_EDUCATION, childLOI.getKoulutuslaji().getUri());
+                            usedVals.add(childLOI.getKoulutuslaji().getUri());
+                        }
+                    } 
                 }
 
             }

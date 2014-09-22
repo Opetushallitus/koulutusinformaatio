@@ -1,4 +1,4 @@
-<div data-ng-switch="loResult.loCount">
+<div data-ng-switch="loResult.loCount" id="lo-results">
     <div data-ng-switch-when="0">
         <div class="alert alert-info alert-icon">
             <div class="alert-heading">
@@ -9,11 +9,11 @@
     </div>
 
     <div data-ng-switch-default>
-        <div class="panel panel-gray" data-ng-controller="SortCtrl">
+        <div class="panel panel-gray search-result-sort hidden-xs" data-ng-controller="SortCtrl">
             <div class="panel-body">
                 <div class="row">
                     <form class="form-inline" role="form">
-                        <div title="{{locales.resultsToShow}}" class="col-sm-8">
+                        <div title="{{locales.resultsToShow}}" class="col-xs-8">
                             <div class="pull-right">
                                 <label for="items-per-page-label" data-ki-i18n="sort-criteria-items-per-page-label" data-show-colon="true" class="control-label"></label>
                                 <select 
@@ -26,7 +26,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div title="{{locales.resultsCriteria}}" class="col-sm-8">
+                        <div title="{{locales.resultsCriteria}}" class="col-xs-8">
                             <div class="pull-right">
                                 <label for="sort-items-label" data-ki-i18n="sort-criteria-sort-label" data-show-colon="true" class="control-label"></label>
                                 <select 
