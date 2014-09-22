@@ -152,6 +152,11 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
                         doc.addField(LearningOpportunity.AS_NAME_SV, ao.getApplicationSystem().getName().getTranslations().get("sv"));
                         doc.addField(LearningOpportunity.AS_NAME_EN, ao.getApplicationSystem().getName().getTranslations().get("en"));
                     }
+                    if (ao.getName() != null) {
+                        doc.addField(LearningOpportunity.AO_NAME_FI, SolrUtil.resolveTextWithFallback("fi", ao.getName().getTranslations()));
+                        doc.addField(LearningOpportunity.AO_NAME_SV, SolrUtil.resolveTextWithFallback("sv", ao.getName().getTranslations()));
+                        doc.addField(LearningOpportunity.AO_NAME_EN, SolrUtil.resolveTextWithFallback("en", ao.getName().getTranslations()));
+                    }
                 }
             }
         }

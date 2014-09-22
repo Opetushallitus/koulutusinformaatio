@@ -17,10 +17,12 @@
 package fi.vm.sade.koulutusinformaatio.converter;
 
 import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
+
 import org.apache.solr.common.SolrInputDocument;
 import org.springframework.core.convert.converter.Converter;
 
@@ -127,6 +129,11 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
                     doc.addField(LearningOpportunity.AS_NAME_FI, SolrUtil.resolveTextWithFallback("fi",  names));
                     doc.addField(LearningOpportunity.AS_NAME_SV, SolrUtil.resolveTextWithFallback("sv",  names));
                     doc.addField(LearningOpportunity.AS_NAME_EN, SolrUtil.resolveTextWithFallback("en",  names));
+                }
+                if (ao.getName() != null) {
+                    doc.addField(LearningOpportunity.AO_NAME_FI, SolrUtil.resolveTextWithFallback("fi", ao.getName().getTranslations()));
+                    doc.addField(LearningOpportunity.AO_NAME_SV, SolrUtil.resolveTextWithFallback("sv", ao.getName().getTranslations()));
+                    doc.addField(LearningOpportunity.AO_NAME_EN, SolrUtil.resolveTextWithFallback("en", ao.getName().getTranslations()));
                 }
             }
 
