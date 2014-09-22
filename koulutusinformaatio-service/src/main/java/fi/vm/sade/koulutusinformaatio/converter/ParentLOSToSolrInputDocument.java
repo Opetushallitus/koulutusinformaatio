@@ -143,9 +143,15 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         }
 
         List<ApplicationOption> applicationOptions = Lists.newArrayList();
+        String aoNameFi = "";
+        String aoNameSv = "";
+        String aoNameEn = "";
         for (ParentLOI parentLOI : parent.getLois()) {
             if (parentLOI.getPrerequisite() != null && parentLOI.getPrerequisite().getValue().equals(prerequisite.getValue())) {
                 applicationOptions.addAll(parentLOI.getApplicationOptions());
+                
+                
+                
                 for (ApplicationOption ao : parentLOI.getApplicationOptions()) {
                     if (ao.getApplicationSystem() != null) {
                         doc.addField(LearningOpportunity.AS_NAME_FI, ao.getApplicationSystem().getName().getTranslations().get("fi"));
@@ -153,13 +159,19 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
                         doc.addField(LearningOpportunity.AS_NAME_EN, ao.getApplicationSystem().getName().getTranslations().get("en"));
                     }
                     if (ao.getName() != null) {
-                        doc.addField(LearningOpportunity.AO_NAME_FI, SolrUtil.resolveTextWithFallback("fi", ao.getName().getTranslations()));
-                        doc.addField(LearningOpportunity.AO_NAME_SV, SolrUtil.resolveTextWithFallback("sv", ao.getName().getTranslations()));
-                        doc.addField(LearningOpportunity.AO_NAME_EN, SolrUtil.resolveTextWithFallback("en", ao.getName().getTranslations()));
+                        aoNameFi = String.format("%s %s", aoNameFi,  SolrUtil.resolveTextWithFallback("fi", ao.getName().getTranslations()));
+                        aoNameSv = String.format("%s %s", aoNameSv,  SolrUtil.resolveTextWithFallback("sv", ao.getName().getTranslations()));
+                        aoNameEn = String.format("%s %s", aoNameEn,  SolrUtil.resolveTextWithFallback("en", ao.getName().getTranslations()));
                     }
                 }
+                
+                
             }
+            
         }
+        doc.addField(LearningOpportunity.AO_NAME_FI, aoNameFi);
+        doc.addField(LearningOpportunity.AO_NAME_SV, aoNameSv);
+        doc.addField(LearningOpportunity.AO_NAME_EN, aoNameEn);
         SolrUtil.addApplicationDates(doc, applicationOptions);
 
         Date earliest = null;

@@ -172,6 +172,10 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
                 doc.addField(LearningOpportunity.CONTENT_FI,  SolrUtil.resolveTextWithFallback("fi", loi.getKoulutuslaji().getName().getTranslations()));
             }
         }
+        
+        String aoNameFi = "";
+        String aoNameSv = "";
+        String aoNameEn = "";
 
         for (ApplicationOption ao : loi.getApplicationOptions()) {
             if (ao.getApplicationSystem() != null) {
@@ -180,12 +184,15 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
                 doc.addField(LearningOpportunity.AS_NAME_EN, ao.getApplicationSystem().getName().getTranslations().get("en"));
             }
             if (ao.getName() != null) {
-                doc.addField(LearningOpportunity.AO_NAME_FI, SolrUtil.resolveTextWithFallback("fi", ao.getName().getTranslations()));
-                doc.addField(LearningOpportunity.AO_NAME_SV, SolrUtil.resolveTextWithFallback("sv", ao.getName().getTranslations()));
-                doc.addField(LearningOpportunity.AO_NAME_EN, SolrUtil.resolveTextWithFallback("en", ao.getName().getTranslations()));
+                aoNameFi = String.format("%s %s", aoNameFi,  SolrUtil.resolveTextWithFallback("fi", ao.getName().getTranslations()));
+                aoNameSv = String.format("%s %s", aoNameSv,  SolrUtil.resolveTextWithFallback("sv", ao.getName().getTranslations()));
+                aoNameEn = String.format("%s %s", aoNameEn,  SolrUtil.resolveTextWithFallback("en", ao.getName().getTranslations()));
             }
         }
 
+        doc.addField(LearningOpportunity.AO_NAME_FI, aoNameFi);
+        doc.addField(LearningOpportunity.AO_NAME_SV, aoNameSv);
+        doc.addField(LearningOpportunity.AO_NAME_EN, aoNameEn);
         SolrUtil.addApplicationDates(doc, loi.getApplicationOptions());
 
         //Fields for sorting
