@@ -2094,6 +2094,230 @@ select {
     .tabdrop {
       display: block; } }
 
+.no-svg .historia-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/historia-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.historia-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/historia-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .kauppa-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/kauppa-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.kauppa-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/kauppa-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .kielet-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/kielet-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.kielet-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/kielet-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .laki-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/laki-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.laki-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/laki-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .liikenne-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/liikenne-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.liikenne-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/liikenne-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .luonnontieteet-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/luonnontieteet-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.luonnontieteet-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/luonnontieteet-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .metsatalous-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/metsatalous-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.metsatalous-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/metsatalous-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .matkailu-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/matkailu-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.matkailu-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/matkailu-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .kasvatus-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/kasvatus-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.kasvatus-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/kasvatus-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .taide-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/taide-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.taide-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/taide-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .tekniikka-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/tekniikka-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.tekniikka-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/tekniikka-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .terveys-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/terveys-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.terveys-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/terveys-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .turvallisuus-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/turvallisuus-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.turvallisuus-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/turvallisuus-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .yleissivistava-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/yleissivistava-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.yleissivistava-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/yleissivistava-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
 .preview-actions > * {
   margin-left: 10px; }
 
