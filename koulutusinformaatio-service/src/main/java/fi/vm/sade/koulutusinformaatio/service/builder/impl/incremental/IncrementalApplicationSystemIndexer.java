@@ -260,9 +260,13 @@ public class IncrementalApplicationSystemIndexer {
         
         LOS curLos = this.dataQueryService.getLos(curLosId);
         if (curLos instanceof ChildLOS) {
-            ParentLOS parent = this.dataQueryService.getParentLearningOpportunity(((ChildLOS) curLos).getParent().getId());
-            reIndexAsDataForParentLOS(parent, asDto, as);
-            this.losIndexer.updateParentLos(parent);
+            try {
+                ParentLOS parent = this.dataQueryService.getParentLearningOpportunity(((ChildLOS) curLos).getParent().getId());
+                reIndexAsDataForParentLOS(parent, asDto, as);
+                this.losIndexer.updateParentLos(parent);
+            } catch (ResourceNotFoundException ex) {
+                LOG.warn("Parent resource not found for: " + curLosId);
+            }
 
         } else if (curLos instanceof SpecialLOS) {
             reIndexAsDataForSpecialLOS((SpecialLOS)curLos, asDto, as);
