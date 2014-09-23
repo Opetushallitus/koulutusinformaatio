@@ -58,6 +58,7 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
         String losName = String.format("%s, %s", SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getChildren().get(0).getTeachingLanguages(), 
                 los.getName().getTranslations()), SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getChildren().get(0).getTeachingLanguages(), 
                         los.getEducationKind().getTranslations()).toLowerCase());
+        losName = (los.getDeterminer() != null) && !los.isOsaamisala() ? String.format("%s, %s" , losName, los.getDeterminer()) : losName;
         doc.setField(LearningOpportunity.NAME, losName);
         doc.addField(LearningOpportunity.NAME_SORT, losName.toLowerCase().trim());
         if (teachLang.equals("fi")) {
@@ -70,10 +71,10 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
             doc.addField(LearningOpportunity.NAME_FI, losName);
         }
         
-        String educationTypeDisplay = SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getChildren().get(0).getTeachingLanguages(), 
-                los.getName().getTranslations());
+        /*String educationTypeDisplay = SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getChildren().get(0).getTeachingLanguages(), 
+                los.getName().getTranslations());*/
         
-        doc.setField(LearningOpportunity.EDUCATION_TYPE_DISPLAY, educationTypeDisplay);
+        //doc.setField(LearningOpportunity.EDUCATION_TYPE_DISPLAY, educationTypeDisplay);
         
         if (provider.getHomePlace() != null) { 
             doc.setField(LearningOpportunity.HOMEPLACE_DISPLAY, 
@@ -146,7 +147,7 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
             //for (ChildLOI childLOI : childLOS.getLois()) {
             //    if (childLOI.getPrerequisite() != null && childLOI.getPrerequisite().getValue().equals(prerequisite.getValue())) {
                 if (curChild != null) {
-                    indexChildFields(doc, curChild, teachLang);
+                    indexChildFields(doc, curChild, teachLang, los.getDeterminer());
                 }
                 //}
             //}
@@ -159,12 +160,13 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
     }
     
     private void indexChildFields(SolrInputDocument doc,
-            AdultVocationalLOS curChild, String teachLang) {
+            AdultVocationalLOS curChild, String teachLang, String determiner) {
         if (curChild.getShortTitle() != null 
                 && curChild.getShortTitle().getTranslations() != null 
                 && !curChild.getShortTitle().getTranslations().isEmpty()) {
             String childName = SolrUtil.resolveTranslationInTeachingLangUseFallback(
                     curChild.getTeachingLanguages(), curChild.getShortTitle().getTranslations());
+            childName = (determiner != null) ? String.format("%s, %s", childName, determiner) : childName;
             doc.setField(LearningOpportunity.CHILD_NAME, childName);
         }
         
@@ -207,13 +209,41 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
             }
         }
 
+       
+        
         if (curChild.getApplicationOptions() != null) {
+            String aoNameFi = "";
+            String aoNameSv = "";
+            String aoNameEn = "";
+            
             for (ApplicationOption ao : curChild.getApplicationOptions()) {
                 if (ao.getApplicationSystem() != null) {
                     doc.addField(LearningOpportunity.AS_NAME_FI, ao.getApplicationSystem().getName().getTranslations().get("fi"));
                     doc.addField(LearningOpportunity.AS_NAME_SV, ao.getApplicationSystem().getName().getTranslations().get("sv"));
                     doc.addField(LearningOpportunity.AS_NAME_EN, ao.getApplicationSystem().getName().getTranslations().get("en"));
                 }
+
+                if (ao.getName() != null) {
+                    aoNameFi = String.format("%s %s", aoNameFi,  SolrUtil.resolveTextWithFallback("fi", ao.getName().getTranslations()));
+                    aoNameSv = String.format("%s %s", aoNameSv,  SolrUtil.resolveTextWithFallback("sv", ao.getName().getTranslations()));
+                    aoNameEn = String.format("%s %s", aoNameEn,  SolrUtil.resolveTextWithFallback("en", ao.getName().getTranslations()));
+                    
+                }
+            }
+            
+            doc.addField(LearningOpportunity.AO_NAME_FI, aoNameFi);
+            doc.addField(LearningOpportunity.AO_NAME_SV, aoNameSv);
+            doc.addField(LearningOpportunity.AO_NAME_EN, aoNameEn);
+            
+        }
+        
+        if (curChild.getKoulutuslaji() != null && curChild.getKoulutuslaji().getName() != null) {
+            if (teachLang.equals("sv")) {
+                doc.addField(LearningOpportunity.CONTENT_SV,  SolrUtil.resolveTextWithFallback("sv", curChild.getKoulutuslaji().getName().getTranslations()));
+            } else if (teachLang.equals("en")) {
+                doc.addField(LearningOpportunity.CONTENT_EN,  SolrUtil.resolveTextWithFallback("en",  curChild.getKoulutuslaji().getName().getTranslations()));
+            } else {
+                doc.addField(LearningOpportunity.CONTENT_FI,  SolrUtil.resolveTextWithFallback("fi", curChild.getKoulutuslaji().getName().getTranslations()));
             }
         }
         
@@ -286,10 +316,13 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
         
         if (los.getEdtUri().contains("koulutustyyppi_11")) {
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMM_TUTK);
+            doc.addField(LearningOpportunity.EDUCATION_TYPE_DISPLAY, SolrConstants.ED_TYPE_AMM_TUTK);
         } else if (los.getEdtUri().contains("koulutustyyppi_12")) {
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMM_TUTK_ER);
+            doc.addField(LearningOpportunity.EDUCATION_TYPE_DISPLAY, SolrConstants.ED_TYPE_AMM_TUTK_ER);
         } else if (los.getEdtUri().contains("koulutustyyppi_13")) {
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMMATILLINEN);
+            doc.addField(LearningOpportunity.EDUCATION_TYPE_DISPLAY, SolrConstants.ED_TYPE_AMMATILLINEN_NAYTTO);
         }
 
     }

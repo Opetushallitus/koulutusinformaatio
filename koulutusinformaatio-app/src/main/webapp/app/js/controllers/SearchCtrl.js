@@ -108,11 +108,11 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
         'removeFacet': TranslationService.getTranslation('tooltip:remove-facet'),
         'resultsToShow': TranslationService.getTranslation('tooltip:choose-results-to-show'),
         'resultsCriteria': TranslationService.getTranslation('tooltip:choose-result-criteria'),
-        'tip': TranslationService.getTranslation('tooltip:tip'),
         'searchResultFacetInfo': TranslationService.getTranslation('tooltip:search-result-facet-info')
     }
 
-    $scope.tipPopoverContent = "<p style='width: 400px;'>" + $scope.locales.searchResultFacetInfo + "</p>";
+    // filter selector collapse state
+    $scope.filterSelectorIsCollapsed = false;
     
     /*
      * Selecting a facet value for filtering results
@@ -324,7 +324,7 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
     $scope.changePage = function(page) {
         FilterService.setPage(page);
         $scope.refreshView();
-        $('html, body').scrollTop($('body').offset().top); // scroll to top of list
+        $('html, body').scrollTop($('#lo-results').offset().top); // scroll to top of list
     };
 
     $scope.refreshView = function() {
@@ -602,11 +602,14 @@ function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, 
     }
 
     $scope.showPagination = false;
+    
+    // filter selector collapse state
+    $scope.filterSelectorIsCollapsed = false;
 
     $scope.changePage = function(page) {
         FilterService.setArticlePage(page);
         $scope.doArticleSearching();
-        $('html, body').scrollTop($('body').offset().top); // scroll to top of list
+        $('html, body').scrollTop($('#article-results').offset().top); // scroll to top of list
     }
     
   //Returns true if the language filter is set

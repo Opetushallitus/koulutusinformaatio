@@ -17,10 +17,12 @@
 package fi.vm.sade.koulutusinformaatio.converter;
 
 import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
+
 import org.apache.solr.common.SolrInputDocument;
 import org.springframework.core.convert.converter.Converter;
 
@@ -120,6 +122,9 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
         }
 
         if (los.getApplicationOptions() != null) {
+            String aoNameFi = "";
+            String aoNameSv = "";
+            String aoNameEn = "";
             Map<String,String> names = null;
             for (ApplicationOption ao : los.getApplicationOptions()) {
                 if (ao.getApplicationSystem() != null) {
@@ -128,7 +133,17 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
                     doc.addField(LearningOpportunity.AS_NAME_SV, SolrUtil.resolveTextWithFallback("sv",  names));
                     doc.addField(LearningOpportunity.AS_NAME_EN, SolrUtil.resolveTextWithFallback("en",  names));
                 }
+                if (ao.getName() != null) {
+                    aoNameFi = String.format("%s %s", aoNameFi,  SolrUtil.resolveTextWithFallback("fi", ao.getName().getTranslations()));
+                    aoNameSv = String.format("%s %s", aoNameSv,  SolrUtil.resolveTextWithFallback("sv", ao.getName().getTranslations()));
+                    aoNameEn = String.format("%s %s", aoNameEn,  SolrUtil.resolveTextWithFallback("en", ao.getName().getTranslations()));
+                    
+                }
             }
+            
+            doc.addField(LearningOpportunity.AO_NAME_FI, aoNameFi);
+            doc.addField(LearningOpportunity.AO_NAME_SV, aoNameSv);
+            doc.addField(LearningOpportunity.AO_NAME_EN, aoNameEn);
 
             SolrUtil.addApplicationDates(doc, los.getApplicationOptions());
         }

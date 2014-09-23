@@ -2,33 +2,27 @@
 <h2 data-ng-if="!isErikseenHaettava(as)">
     {{as.applicationSystemName}} <span data-ki-timestamp="{{as.applicationDates.startDate}}"></span> - <span data-ki-timestamp="{{as.applicationDates.endDate}}"></span>
 </h2>
-<table class="table table-bordered table-responsive">
-    <colgroup>
-        <col style="width: 25%;"></col>
-        <col style="width: 30%;"></col>
-        <col style="width: 21%;"></col>
-        <col style="width: 21%;"></col>
-    </colgroup>
-    <thead>
-        <tr>
-            <th></th>
-            <th></th>
-            <th data-ki-i18n="application-basket-attachments-exams"></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <!--
-        <tr class="first">
-            <th></th>
-            <th></th>
-            <th data-ki-i18n="application-basket-attachments-exams"></th>
-            <th class="last"></th>
-        </tr>
-    -->
-        <tr data-ng-repeat="item in as.applicationOptions" data-ng-class="{last: $last}" ki-app-basket-applicationoption="{{item.type}}"></tr>
-    </tbody>
-    <tfoot></tfoot>
-</table>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <colgroup>
+            <col style="width: 25%;"></col>
+            <col style="width: 30%;"></col>
+            <col style="width: 21%;"></col>
+            <col style="width: 21%;"></col>
+        </colgroup>
+        <thead>
+            <tr>
+                <th></th>
+                <th></th>
+                <th data-ki-i18n="application-basket-attachments-exams"></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-ng-repeat="item in as.applicationOptions" data-ng-class="{last: $last}" ki-app-basket-applicationoption="{{item.type}}"></tr>
+        </tbody>
+        <tfoot></tfoot>
+    </table>
+</div>
 <div data-ki-app-basket-applicationsystem-table-info></div>
 <div class="clear"></div>

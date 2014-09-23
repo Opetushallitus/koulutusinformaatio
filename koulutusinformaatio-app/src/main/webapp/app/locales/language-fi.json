@@ -195,7 +195,7 @@
     "application-basket-empty": "Tyhjennä muistilista",
     "application-basket-empty-confirm": "Haluatko varmasti tyhjentää koko muistilistan?",
     "application-basket-overflow-warning": "Tässä haussa voit hakea enintään __itemcount__ koulutukseen, poista ylimääräiset.",
-    "application-basket-fill-form-notification-single-ao": "Jokaiseen tässä listattavaan koulutukseen tulee hakea erikseen. Osaan koulutuksista haetaan oppilaitoksen omien sivujen kautta.",
+    "application-basket-fill-form-notification-single-ao": "Jokaiseen tässä listattavaan koulutukseen tulee hakea erikseen.",
     "application-basket-attachments-exams": "Liitteet ja kokeet",
     "application-basket-no-attachments": "Ei liitteitä",
     "application-basket-attachments-required": "Vaaditaan liitteitä",
@@ -246,6 +246,7 @@
     "formOfTeaching_ffm": "Opetustapa",
     "timeOfTeaching_ffm": "Opetusaika",
     "formOfStudy_ffm": "Opiskelumuoto",
+    "kindOfEducation_ffm": "Kohderyhmä",
     "teachingLangCode_ffm": "Opetuskieli",
     "articleContentType_ffm": "Aineistotyyppi",
     "location-rajaus": "Paikka",
@@ -254,7 +255,7 @@
     "filter-search-as-upcoming": "Tulossa hakuun",
     "haun-tila": "Haun tila",
     "selaile-koulutuksia": "Rajaa hakutuloksia",
-    "valitse-alue": "Valitse alue, jolta haet koulutuksia",
+    "valitse-alue": "Valitse ensin maakunta, sitten kaupunki / kunta",
     "valitse-alue-link": "Valitse alue",
     "district": "Maakunta",
     "municipality": "Kaupunki / kunta",
@@ -276,6 +277,9 @@
     "et020103": "Maahanmuuttajien ammatilliseen valmistava",
     "et020104": "Maahanmuuttajien lukioon valmistava",
     "et0205": "Kansanopistojen koulutukset",
+    "et010303": "Ammattitutkinto", 
+    "et010304": "Erikoisammattitutkinto",
+    "ammatillinenperustutkintonayttona": "Ammatillinen perustutkinto näyttötutkintona", 
     "PerusopetuksenLisaopetus": "Perusopetuksen lisäopetus",
     "AmmOhjaavaJaValmistavaKoulutus": "Ammatilliseen peruskoulutukseen ohjaava ja valmistava opetus",
     "MaahanmAmmValmistavaKoulutus": "Maahanmuuttajien ammatilliseen peruskoulutukseen valmistava koulutus",
@@ -324,8 +328,12 @@
     "show-intro": "Näytä ohjeet",
     "intro-next": "Seuraava",
     
+    "kohderyhma": "Kohderyhmä",
+    
      "euro": "euroa",
      "sopimuksen-mukaan": "Sopimuksen mukaan",
-     "structure-of-degree": "Tutkinnon rakenne"
-    
+     "structure-of-degree": "Tutkinnon rakenne",
+
+     "hide-filter-selector-true": "Näytä rajaukset",
+     "hide-filter-selector-false": "Piilota rajaukset"
 }

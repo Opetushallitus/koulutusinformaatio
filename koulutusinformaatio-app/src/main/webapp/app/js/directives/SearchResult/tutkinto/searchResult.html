@@ -1,7 +1,9 @@
-<div class="container-equal-height container-md-height">
-    <div class="row row-md-height">
-        <div class="col-md-10 col-md-height">
-            <h2 title="{{locales.openEducation}}"><a href="{{lo.linkHref}}">{{lo.name}}, {{lo.credits}}</a></h2>
+<div class="container-equal-height container-xs-height">
+    <div class="row row-xs-height">
+        <div class="col-xs-12 col-xs-height">
+            <h2 title="{{locales.openEducation}}">
+                <a href="{{lo.linkHref}}">{{lo.name}}, {{lo.credits}}</a>
+            </h2>
             <div data-ng-show="!lo.educationType">
             <span class="italic" data-ki-i18n="et3"></span><br />
             </div>
@@ -13,9 +15,9 @@
             <span>{{lo.homeplace}}</span>
         </div>
         
-        <div class="col-md-6 col-md-height">
-            <span data-ki-as-state class="pull-right">&nbsp;</span>
-            <a href="javascript:void(0)" class="collapser" data-ki-i18n="extended-view-{{showExtension}}" data-ng-class="showExtension" data-ng-click="toggleExtendedView()">
+        <div class="col-xs-4 col-xs-height text-right">
+            <span data-ki-as-state>&nbsp;</span>
+            <a href="javascript:void(0)" class="collapser hidden-xs" data-ki-i18n="extended-view-{{showExtension}}" data-ng-class="showExtension" data-ng-click="toggleExtendedView()">
             </a>
         </div>
     </div>

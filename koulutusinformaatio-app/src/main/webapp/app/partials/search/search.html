@@ -45,5 +45,22 @@
                 </div>
             </div>
         </div>
+
+        <!-- responsive tabdrop -->
+        <div class="pull-right tabdrop" dropdown is-open="status.isopen">
+            <div class="dropdown-toggle tabdrop-toggler">
+                <div class="tabdrop-label">
+                    <div class="icon-bar"></div>
+                    <div class="icon-bar"></div>
+                    <div class="icon-bar"></div>
+                </div>
+                <span class="caret"></span>
+                <span class="sr-only">Näytä muut välilehdet</span>
+            </div>
+            <ul class="dropdown-menu" role="menu">
+                <li data-ng-if="!tabs[0].active"><a href="javascript:void(0)" data-ng-click="tabs[0].active = true">{{tabTitles.learningOpportunities}}</a></li>
+                <li data-ng-if="!tabs[1].active"><a href="javascript:void(0)" data-ng-click="tabs[1].active = true">{{tabTitles.articles}}</a></li>
+            </ul>
+        </div>
 	</div>
 </div>

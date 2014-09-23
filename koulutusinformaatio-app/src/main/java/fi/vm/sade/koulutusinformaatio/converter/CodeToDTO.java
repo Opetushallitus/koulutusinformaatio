@@ -37,7 +37,7 @@ public final class CodeToDTO {
             dto.setValue(code.getValue());
             dto.setUri(code.getUri());
             dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(code.getName(), lang));
-            dto.setShortName(ConverterUtil.getTextByLanguageUseFallbackLang(code.getShortName(), lang));
+            dto.setShortName(ConverterUtil.getTextByLanguageUseFallbackLang(code.getShortTitle(), lang));
             dto.setDescription(ConverterUtil.getTextByLanguageUseFallbackLang(code.getDescription(), lang));
             return dto;
         } else {

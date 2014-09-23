@@ -441,7 +441,7 @@ a.label:hover, a.label:focus {
     font-weight: normal;
     line-height: 1.53846;
     color: #333333;
-    white-space: nowrap; }
+    white-space: normal; }
 
 .dropdown-menu > li > a {
   text-decoration: none; }
@@ -461,10 +461,10 @@ a.label:hover, a.label:focus {
   outline: 0;
   background-color: #bfe4f1; }
 
-.dropdown-menu > .disabled > a, .dropdown-menu > .introjs-disabled > a, .dropdown-menu > .disabled > a:hover, .dropdown-menu > .introjs-disabled > a:hover, .dropdown-menu > .disabled > a:focus, .dropdown-menu > .introjs-disabled > a:focus {
+.dropdown-menu > .disabled > a, .dropdown-menu > .disabled > a:hover, .dropdown-menu > .disabled > a:focus {
   color: #999999; }
 
-.dropdown-menu > .disabled > a:hover, .dropdown-menu > .introjs-disabled > a:hover, .dropdown-menu > .disabled > a:focus, .dropdown-menu > .introjs-disabled > a:focus {
+.dropdown-menu > .disabled > a:hover, .dropdown-menu > .disabled > a:focus {
   text-decoration: none;
   background-color: transparent;
   background-image: none;
@@ -585,7 +585,7 @@ h6, .h6 {
     background-image: none;
     -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
     box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125); }
-  .btn.disabled, .disabled.introjs-button, .introjs-button.introjs-disabled, .introjs-button.introjs-disabled:hover, .introjs-button.introjs-disabled:focus, .btn.introjs-disabled, .btn[disabled], [disabled].introjs-button, fieldset[disabled] .btn, fieldset[disabled] .introjs-button {
+  .btn.disabled, .disabled.introjs-button, .btn[disabled], [disabled].introjs-button, fieldset[disabled] .btn, fieldset[disabled] .introjs-button {
     cursor: not-allowed;
     pointer-events: none;
     opacity: 0.65;
@@ -605,7 +605,7 @@ h6, .h6 {
     border-color: #969696; }
   .btn-default:active, .introjs-button:active, .btn-default.active, .active.introjs-button, .open > .btn-default.dropdown-toggle, .open > .dropdown-toggle.introjs-button {
     background-image: none; }
-  .btn-default.disabled, .disabled.introjs-button, .introjs-button.introjs-disabled, .introjs-button.introjs-disabled:hover, .introjs-button.introjs-disabled:focus, .btn-default.introjs-disabled, .btn-default.disabled:hover, .disabled.introjs-button:hover, .introjs-button.introjs-disabled:hover, .btn-default.introjs-disabled:hover, .btn-default.disabled:focus, .disabled.introjs-button:focus, .introjs-button.introjs-disabled:focus, .btn-default.introjs-disabled:focus, .btn-default.disabled:active, .disabled.introjs-button:active, .introjs-button.introjs-disabled:active, .btn-default.introjs-disabled:active, .btn-default.disabled.active, .disabled.active.introjs-button, .active.introjs-button.introjs-disabled, .btn-default.active.introjs-disabled, .btn-default[disabled], [disabled].introjs-button, .btn-default[disabled]:hover, [disabled].introjs-button:hover, .btn-default[disabled]:focus, [disabled].introjs-button:focus, .btn-default[disabled]:active, [disabled].introjs-button:active, .btn-default[disabled].active, [disabled].active.introjs-button, fieldset[disabled] .btn-default, fieldset[disabled] .introjs-button, fieldset[disabled] .btn-default:hover, fieldset[disabled] .introjs-button:hover, fieldset[disabled] .btn-default:focus, fieldset[disabled] .introjs-button:focus, fieldset[disabled] .btn-default:active, fieldset[disabled] .introjs-button:active, fieldset[disabled] .btn-default.active, fieldset[disabled] .active.introjs-button {
+  .btn-default.disabled, .disabled.introjs-button, .btn-default.disabled:hover, .disabled.introjs-button:hover, .btn-default.disabled:focus, .disabled.introjs-button:focus, .btn-default.disabled:active, .disabled.introjs-button:active, .btn-default.disabled.active, .disabled.active.introjs-button, .btn-default[disabled], [disabled].introjs-button, .btn-default[disabled]:hover, [disabled].introjs-button:hover, .btn-default[disabled]:focus, [disabled].introjs-button:focus, .btn-default[disabled]:active, [disabled].introjs-button:active, .btn-default[disabled].active, [disabled].active.introjs-button, fieldset[disabled] .btn-default, fieldset[disabled] .introjs-button, fieldset[disabled] .btn-default:hover, fieldset[disabled] .introjs-button:hover, fieldset[disabled] .btn-default:focus, fieldset[disabled] .introjs-button:focus, fieldset[disabled] .btn-default:active, fieldset[disabled] .introjs-button:active, fieldset[disabled] .btn-default.active, fieldset[disabled] .active.introjs-button {
     background-color: #d4d4d4;
     border-color: #b5b5b5; }
   .btn-default .badge, .introjs-button .badge {
@@ -627,7 +627,7 @@ h6, .h6 {
     border-color: #a17600; }
   .btn-primary:active, .btn-primary.active, .open > .btn-primary.dropdown-toggle {
     background-image: none; }
-  .btn-primary.disabled, .btn-primary.introjs-disabled, .btn-primary.disabled:hover, .btn-primary.introjs-disabled:hover, .btn-primary.disabled:focus, .btn-primary.introjs-disabled:focus, .btn-primary.disabled:active, .btn-primary.introjs-disabled:active, .btn-primary.disabled.active, .btn-primary.active.introjs-disabled, .btn-primary[disabled], .btn-primary[disabled]:hover, .btn-primary[disabled]:focus, .btn-primary[disabled]:active, .btn-primary[disabled].active, fieldset[disabled] .btn-primary, fieldset[disabled] .btn-primary:hover, fieldset[disabled] .btn-primary:focus, fieldset[disabled] .btn-primary:active, fieldset[disabled] .btn-primary.active {
+  .btn-primary.disabled, .btn-primary.disabled:hover, .btn-primary.disabled:focus, .btn-primary.disabled:active, .btn-primary.disabled.active, .btn-primary[disabled], .btn-primary[disabled]:hover, .btn-primary[disabled]:focus, .btn-primary[disabled]:active, .btn-primary[disabled].active, fieldset[disabled] .btn-primary, fieldset[disabled] .btn-primary:hover, fieldset[disabled] .btn-primary:focus, fieldset[disabled] .btn-primary:active, fieldset[disabled] .btn-primary.active {
     background-color: #feba00;
     border-color: #dea300; }
   .btn-primary .badge {
@@ -647,7 +647,7 @@ h6, .h6 {
     border-color: #a17600; }
   .btn-success:active, .btn-success.active, .open > .btn-success.dropdown-toggle {
     background-image: none; }
-  .btn-success.disabled, .btn-success.introjs-disabled, .btn-success.disabled:hover, .btn-success.introjs-disabled:hover, .btn-success.disabled:focus, .btn-success.introjs-disabled:focus, .btn-success.disabled:active, .btn-success.introjs-disabled:active, .btn-success.disabled.active, .btn-success.active.introjs-disabled, .btn-success[disabled], .btn-success[disabled]:hover, .btn-success[disabled]:focus, .btn-success[disabled]:active, .btn-success[disabled].active, fieldset[disabled] .btn-success, fieldset[disabled] .btn-success:hover, fieldset[disabled] .btn-success:focus, fieldset[disabled] .btn-success:active, fieldset[disabled] .btn-success.active {
+  .btn-success.disabled, .btn-success.disabled:hover, .btn-success.disabled:focus, .btn-success.disabled:active, .btn-success.disabled.active, .btn-success[disabled], .btn-success[disabled]:hover, .btn-success[disabled]:focus, .btn-success[disabled]:active, .btn-success[disabled].active, fieldset[disabled] .btn-success, fieldset[disabled] .btn-success:hover, fieldset[disabled] .btn-success:focus, fieldset[disabled] .btn-success:active, fieldset[disabled] .btn-success.active {
     background-color: #529a5a;
     border-color: #dea300; }
   .btn-success .badge {
@@ -666,7 +666,7 @@ h6, .h6 {
     border-color: #62b6d2; }
   .btn-info:active, .btn-info.active, .open > .btn-info.dropdown-toggle {
     background-image: none; }
-  .btn-info.disabled, .btn-info.introjs-disabled, .btn-info.disabled:hover, .btn-info.introjs-disabled:hover, .btn-info.disabled:focus, .btn-info.introjs-disabled:focus, .btn-info.disabled:active, .btn-info.introjs-disabled:active, .btn-info.disabled.active, .btn-info.active.introjs-disabled, .btn-info[disabled], .btn-info[disabled]:hover, .btn-info[disabled]:focus, .btn-info[disabled]:active, .btn-info[disabled].active, fieldset[disabled] .btn-info, fieldset[disabled] .btn-info:hover, fieldset[disabled] .btn-info:focus, fieldset[disabled] .btn-info:active, fieldset[disabled] .btn-info.active {
+  .btn-info.disabled, .btn-info.disabled:hover, .btn-info.disabled:focus, .btn-info.disabled:active, .btn-info.disabled.active, .btn-info[disabled], .btn-info[disabled]:hover, .btn-info[disabled]:focus, .btn-info[disabled]:active, .btn-info[disabled].active, fieldset[disabled] .btn-info, fieldset[disabled] .btn-info:hover, fieldset[disabled] .btn-info:focus, fieldset[disabled] .btn-info:active, fieldset[disabled] .btn-info.active {
     background-color: #d2ecf5;
     border-color: #92cce0; }
   .btn-info .badge {
@@ -686,7 +686,7 @@ h6, .h6 {
     border-color: #fcdc7e; }
   .btn-warning:active, .btn-warning.active, .open > .btn-warning.dropdown-toggle {
     background-image: none; }
-  .btn-warning.disabled, .btn-warning.introjs-disabled, .btn-warning.disabled:hover, .btn-warning.introjs-disabled:hover, .btn-warning.disabled:focus, .btn-warning.introjs-disabled:focus, .btn-warning.disabled:active, .btn-warning.introjs-disabled:active, .btn-warning.disabled.active, .btn-warning.active.introjs-disabled, .btn-warning[disabled], .btn-warning[disabled]:hover, .btn-warning[disabled]:focus, .btn-warning[disabled]:active, .btn-warning[disabled].active, fieldset[disabled] .btn-warning, fieldset[disabled] .btn-warning:hover, fieldset[disabled] .btn-warning:focus, fieldset[disabled] .btn-warning:active, fieldset[disabled] .btn-warning.active {
+  .btn-warning.disabled, .btn-warning.disabled:hover, .btn-warning.disabled:focus, .btn-warning.disabled:active, .btn-warning.disabled.active, .btn-warning[disabled], .btn-warning[disabled]:hover, .btn-warning[disabled]:focus, .btn-warning[disabled]:active, .btn-warning[disabled].active, fieldset[disabled] .btn-warning, fieldset[disabled] .btn-warning:hover, fieldset[disabled] .btn-warning:focus, fieldset[disabled] .btn-warning:active, fieldset[disabled] .btn-warning.active {
     background-color: #fef3d3;
     border-color: #fdecba; }
   .btn-warning .badge {
@@ -703,12 +703,29 @@ h6, .h6 {
     border-color: #fcdc7e; }
   .btn-danger:active, .btn-danger.active, .open > .btn-danger.dropdown-toggle {
     background-image: none; }
-  .btn-danger.disabled, .btn-danger.introjs-disabled, .btn-danger.disabled:hover, .btn-danger.introjs-disabled:hover, .btn-danger.disabled:focus, .btn-danger.introjs-disabled:focus, .btn-danger.disabled:active, .btn-danger.introjs-disabled:active, .btn-danger.disabled.active, .btn-danger.active.introjs-disabled, .btn-danger[disabled], .btn-danger[disabled]:hover, .btn-danger[disabled]:focus, .btn-danger[disabled]:active, .btn-danger[disabled].active, fieldset[disabled] .btn-danger, fieldset[disabled] .btn-danger:hover, fieldset[disabled] .btn-danger:focus, fieldset[disabled] .btn-danger:active, fieldset[disabled] .btn-danger.active {
+  .btn-danger.disabled, .btn-danger.disabled:hover, .btn-danger.disabled:focus, .btn-danger.disabled:active, .btn-danger.disabled.active, .btn-danger[disabled], .btn-danger[disabled]:hover, .btn-danger[disabled]:focus, .btn-danger[disabled]:active, .btn-danger[disabled].active, fieldset[disabled] .btn-danger, fieldset[disabled] .btn-danger:hover, fieldset[disabled] .btn-danger:focus, fieldset[disabled] .btn-danger:active, fieldset[disabled] .btn-danger.active {
     background-color: #fef3d3;
     border-color: #fdecba; }
   .btn-danger .badge {
     color: #fef3d3;
     background-color: white; }
+
+.btn-tab {
+  color: #dff2f8;
+  background-color: #dff2f8;
+  border-color: gainsboro; }
+  .btn-tab:hover, .btn-tab:focus, .btn-tab:active, .btn-tab.active, .open > .btn-tab.dropdown-toggle {
+    color: #dff2f8;
+    background-color: #b5e1ef;
+    border-color: #bdbdbd; }
+  .btn-tab:active, .btn-tab.active, .open > .btn-tab.dropdown-toggle {
+    background-image: none; }
+  .btn-tab.disabled, .btn-tab.disabled:hover, .btn-tab.disabled:focus, .btn-tab.disabled:active, .btn-tab.disabled.active, .btn-tab[disabled], .btn-tab[disabled]:hover, .btn-tab[disabled]:focus, .btn-tab[disabled]:active, .btn-tab[disabled].active, fieldset[disabled] .btn-tab, fieldset[disabled] .btn-tab:hover, fieldset[disabled] .btn-tab:focus, fieldset[disabled] .btn-tab:active, fieldset[disabled] .btn-tab.active {
+    background-color: #dff2f8;
+    border-color: gainsboro; }
+  .btn-tab .badge {
+    color: #dff2f8;
+    background-color: #dff2f8; }
 
 .btn-link {
   color: #06526b;
@@ -1137,13 +1154,10 @@ table th[class*="col-"] {
     .pager .previous > a:active:before,
     .pager .previous > span:active:before {
       background-position: -18px 0; }
-  .pager .disabled > a, .pager .introjs-disabled > a,
+  .pager .disabled > a,
   .pager .disabled > a:hover,
-  .pager .introjs-disabled > a:hover,
   .pager .disabled > a:focus,
-  .pager .introjs-disabled > a:focus,
-  .pager .disabled > span,
-  .pager .introjs-disabled > span {
+  .pager .disabled > span {
     color: #999999;
     background-color: white;
     cursor: not-allowed; }
@@ -1167,9 +1181,9 @@ table th[class*="col-"] {
       .nav > li > a:hover, .nav > li > a:focus {
         text-decoration: none;
         background-color: #bfe4f1; }
-    .nav > li.disabled > a, .nav > li.introjs-disabled > a {
+    .nav > li.disabled > a {
       color: #999999; }
-      .nav > li.disabled > a:hover, .nav > li.introjs-disabled > a:hover, .nav > li.disabled > a:focus, .nav > li.introjs-disabled > a:focus {
+      .nav > li.disabled > a:hover, .nav > li.disabled > a:focus {
         color: #999999;
         text-decoration: none;
         background-color: transparent;
@@ -1201,16 +1215,62 @@ table th[class*="col-"] {
       line-height: 1.53846;
       border: none;
       background-color: #dff2f8;
-      text-decoration: none; }
+      text-decoration: none;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      /*
+      @media (max-width: $screen-lg-min) {
+        max-width: ($screen-md / 2);
+      } 
+
+      @media (max-width: $screen-md-min) {
+        max-width: ($screen-sm / 2);
+      } 
+
+      @media (max-width: $screen-sm-min) {
+        max-width: ($screen-xs / 2);
+      }
+      */ }
+      @media (max-width: 767px) {
+        .nav-tabs > li > a {
+          max-width: 240px; } }
+      @media (min-width: 480px) {
+        .nav-tabs > li > a {
+          max-width: 240px; } }
+      @media (min-width: 768px) {
+        .nav-tabs > li > a {
+          max-width: 384px; } }
+      @media (min-width: 992px) {
+        .nav-tabs > li > a {
+          max-width: 496px; } }
+      @media (min-width: 1200px) {
+        .nav-tabs > li > a {
+          max-width: 600px; } }
+    @media (max-width: 992px) {
+      .nav-tabs > li {
+        display: none; } }
     .nav-tabs > li.active {
       border-bottom-width: 0px;
       top: 2px; }
+      @media (max-width: 992px) {
+        .nav-tabs > li.active {
+          display: block; } }
       .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
         font-weight: bold;
         color: #333333;
         background-color: white;
         border: none;
         cursor: default; }
+  .nav-tabs .icon-bar {
+    display: block;
+    width: 22px;
+    height: 2px;
+    border-radius: 1px;
+    border: 1px solid transparent;
+    background-color: #333333; }
+  .nav-tabs .icon-bar + .icon-bar {
+    margin-top: 4px; }
 
 .nav-pills > li {
   float: left; }
@@ -1406,9 +1466,15 @@ table th[class*="col-"] {
     width: 900px; } }
 .app-container {
   margin: 60px 0 220px 0; }
+  @media (max-width: 768px) {
+    .app-container {
+      margin: 20px 0 40px 0; } }
 
 .search-field {
   margin-bottom: 40px; }
+  @media (max-width: 768px) {
+    .search-field {
+      margin-bottom: 20px; } }
   .search-field input {
     font-size: 13px; }
     .search-field input[type=text] {
@@ -1429,6 +1495,12 @@ table th[class*="col-"] {
         box-shadow: none; }
   .search-field .h3 {
     margin: 0; }
+    @media (max-width: 768px) {
+      .search-field .h3 {
+        margin-bottom: 10px; } }
+  @media (max-width: 768px) {
+    .search-field button {
+      width: 100%; } }
 
 .facet-selections {
   margin-bottom: 1em; }
@@ -1438,7 +1510,7 @@ table th[class*="col-"] {
     .facet-selections ul li {
       list-style-type: none;
       display: inline-block;
-      margin: 0 10px 0 0; }
+      margin: 10px 10px 0 0; }
       .facet-selections ul li a.facet-selection {
         display: inline-block;
         padding: 0 10px;
@@ -1493,7 +1565,7 @@ table th[class*="col-"] {
     background-position: -20px center; }
   .helplink:active, .helplink:focus {
     background-position: -40px center; }
-  .helplink:disabled, .helplink.disabled, .helplink.introjs-disabled {
+  .helplink:disabled, .helplink.disabled {
     background-position: -60px center; }
 
 .popover .close {
@@ -1545,11 +1617,6 @@ select:hover,
   .panel-ki-default .panel-body {
     padding: 10px;
     border-bottom: 1px solid #dddddd; }
-    .panel-ki-default .panel-body .ao-row {
-      border-bottom: 1px solid #dddddd;
-      padding: 10px 0; }
-      .panel-ki-default .panel-body .ao-row:last-child {
-        border: none; }
 
 .panel-tarjonta {
   margin-bottom: 0; }
@@ -1596,7 +1663,14 @@ select:hover,
 .pager-results {
   display: inline-block;
   position: relative;
-  bottom: 40px; }
+  bottom: 44px; }
+  @media (max-width: 768px) {
+    .pager-results {
+      bottom: 22px; } }
+
+@media (max-width: 768px) {
+  .pager {
+    margin: 60px 0 0; } }
 
 .collapser {
   cursor: pointer;
@@ -1657,6 +1731,21 @@ select:hover,
   padding: 10px 10px 0;
   background-color: #f3fafc;
   border-top: 1px dashed #DDD; }
+
+@media (min-width: 992px) {
+  .ao-row {
+    border-bottom: 1px solid #dddddd;
+    padding: 10px 0; } }
+.ao-row:last-child {
+  border: none; }
+  .ao-row:last-child .ao-item:last-child {
+    border: none; }
+
+@media (max-width: 992px) {
+  .ao-item {
+    border-bottom: 1px solid #dddddd;
+    padding-top: 10px;
+    padding-bottom: 10px; } }
 
 ul.inside,
 ol.inside {
@@ -1792,7 +1881,7 @@ label {
         padding: 0 4px 0 0; }
     .ribbon .ribbon-content a {
       padding: 0 4px; }
-      .ribbon .ribbon-content a.disabled, .ribbon .ribbon-content a.introjs-disabled {
+      .ribbon .ribbon-content a.disabled {
         cursor: default;
         text-decoration: none;
         color: #3e3e3e; }
@@ -1984,6 +2073,250 @@ select {
   background-color: white;
   border: 1px solid #dddddd;
   border-radius: 3px; }
+
+.tabdrop {
+  display: none;
+  position: relative;
+  top: 1px;
+  padding: 1px;
+  background: #FFF;
+  border: 1px solid gainsboro;
+  border-radius: 3px 3px 0 0; }
+  .tabdrop .tabdrop-toggler {
+    background: #dff2f8;
+    padding: 10px 20px;
+    cursor: pointer; }
+  .tabdrop .tabdrop-label {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px; }
+  @media (max-width: 992px) {
+    .tabdrop {
+      display: block; } }
+
+.no-svg .historia-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/historia-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.historia-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/historia-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .kauppa-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/kauppa-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.kauppa-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/kauppa-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .kielet-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/kielet-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.kielet-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/kielet-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .laki-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/laki-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.laki-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/laki-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .liikenne-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/liikenne-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.liikenne-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/liikenne-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .luonnontieteet-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/luonnontieteet-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.luonnontieteet-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/luonnontieteet-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .metsatalous-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/metsatalous-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.metsatalous-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/metsatalous-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .matkailu-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/matkailu-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.matkailu-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/matkailu-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .kasvatus-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/kasvatus-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.kasvatus-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/kasvatus-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .taide-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/taide-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.taide-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/taide-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .tekniikka-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/tekniikka-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.tekniikka-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/tekniikka-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .terveys-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/terveys-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.terveys-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/terveys-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .turvallisuus-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/turvallisuus-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.turvallisuus-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/turvallisuus-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.no-svg .yleissivistava-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/png/yleissivistava-icon.png);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
+
+.yleissivistava-icon {
+  float: left;
+  width: 48px;
+  height: 48px;
+  background-image: url(../img/topics/yleissivistava-icon.svg);
+  border: 1px solid #dddddd;
+  margin: 0 10px 10px 0; }
 
 .preview-actions > * {
   margin-left: 10px; }
@@ -2180,6 +2513,9 @@ tr.introjs-showElement > th {
     opacity: 0.5; }
 
 .introjs-prevbutton {
+  display: none; }
+
+.introjs-disabled, .introjs-disabled:hover, .introjs-disabled:focus {
   display: none; }
 
 .introjs-tooltiptext {

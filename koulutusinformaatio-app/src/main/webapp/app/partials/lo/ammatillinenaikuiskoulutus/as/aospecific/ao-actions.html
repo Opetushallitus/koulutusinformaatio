@@ -1,19 +1,23 @@
-<div class="margin-vertical-small">
-    <button 
-        data-ng-if="!as.applicationFormLink" 
-        type="submit" 
-        data-ng-disabled="!ao.canBeApplied" 
-        class="btn btn-default"
-        data-ki-i18n="apply-button-label-additional">
-    </button>
+<div class="row">
+    <div class="col-xs-16">
+        <div class="margin-vertical-small">
+            <button 
+                data-ng-if="!as.applicationFormLink" 
+                type="submit" 
+                data-ng-disabled="!ao.canBeApplied" 
+                class="btn btn-default"
+                data-ki-i18n="apply-button-label-additional">
+            </button>
 
-    <div data-ng-if="as.applicationFormLink">
-        <a data-ng-if="ao.canBeApplied" data-ng-href="{{as.applicationFormLink}}" title="{{tooltips.externalApplicationForm}}" target="_blank">
-            <i class="icon-link-ext-alt"></i>
-            <span data-ki-i18n="apply-button-label"></span>
-        </a>
-        <span data-ng-if="!ao.canBeApplied" class="text-muted">
-            <i class="icon-link-ext-alt"></i><span data-ki-i18n="apply-button-label"></span>
-        </span>
+            <div data-ng-if="as.applicationFormLink">
+                <a data-ng-if="ao.canBeApplied" data-ng-href="{{as.applicationFormLink}}" title="{{tooltips.externalApplicationForm}}" target="_blank">
+                    <i class="icon-link-ext-alt"></i>
+                    <span data-ki-i18n="apply-button-label"></span>
+                </a>
+                <span data-ng-if="!ao.canBeApplied" class="text-muted">
+                    <i class="icon-link-ext-alt"></i><span data-ki-i18n="apply-button-label"></span>
+                </span>
+            </div>
+        </div>
     </div>
 </div>
