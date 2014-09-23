@@ -1637,7 +1637,7 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
     return {
         addItem: function(aoId, itemType) {
 
-            var current = CookieService.get(key);
+            var current = CookieService.get(key, false);
 
             if (current) {
                 current = JSON.parse(current);
@@ -1653,37 +1653,37 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
 
             // save type if defined
             if (itemType) {
-                CookieService.set(typekey, itemType, cookieConfig);
+                CookieService.set(typekey, itemType, cookieConfig, false);
             }
 
-            CookieService.set(key, JSON.stringify(current), cookieConfig);
+            CookieService.set(key, JSON.stringify(current), cookieConfig, false);
         },
 
         removeItem: function(aoId) {
             if (this.getItemCount() > 1) {
-                var value = CookieService.get(key);
+                var value = CookieService.get(key, false);
                 value = JSON.parse(value);
 
                 var index = value.indexOf(aoId);
                 value.splice(index, 1);
 
-                CookieService.set(key, JSON.stringify(value), cookieConfig);
+                CookieService.set(key, JSON.stringify(value), cookieConfig, false);
             } else {
                 this.empty();
             }
         },
 
         empty: function() {
-            CookieService.set(key, null, cookieConfig);
-            CookieService.set(typekey, null, cookieConfig);
+            CookieService.set(key, null, cookieConfig, false);
+            CookieService.set(typekey, null, cookieConfig, false);
         },
 
         getItems: function() {
-            return JSON.parse( CookieService.get(key) );
+            return JSON.parse( CookieService.get(key, false) );
         },
 
         getItemCount: function() {
-            return CookieService.get(key) ? JSON.parse( CookieService.get(key) ).length : 0;
+            return CookieService.get(key, false) ? JSON.parse( CookieService.get(key, false) ).length : 0;
         },
 
         isEmpty: function() {
@@ -1692,7 +1692,7 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
 
         getType: function() {
             if (!this.isEmpty()) {
-                return CookieService.get(typekey);
+                return CookieService.get(typekey, false);
             }
         },
 
