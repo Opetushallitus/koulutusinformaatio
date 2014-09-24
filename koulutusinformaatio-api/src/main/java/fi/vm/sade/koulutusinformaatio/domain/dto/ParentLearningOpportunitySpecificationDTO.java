@@ -41,6 +41,9 @@ public class ParentLearningOpportunitySpecificationDTO {
     private String creditUnit;
 
     private String translationLanguage;
+    
+    private List<CodeDTO> topics;
+    private List<CodeDTO> themes;
 
     public String getId() {
         return id;
@@ -144,5 +147,21 @@ public class ParentLearningOpportunitySpecificationDTO {
 
     public void setCreditUnit(String creditUnit) {
         this.creditUnit = creditUnit;
+    }
+
+    public List<CodeDTO> getTopics() {
+        return topics;
+    }
+
+    public void setTopics(List<CodeDTO> topics) {
+        this.topics = topics;
+    }
+
+    public List<CodeDTO> getThemes() {
+        return themes;
+    }
+
+    public void setThemes(List<CodeDTO> themes) {
+        this.themes = themes;
     }
 }

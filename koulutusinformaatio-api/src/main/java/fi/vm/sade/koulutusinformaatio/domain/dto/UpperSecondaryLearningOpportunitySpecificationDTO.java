@@ -39,6 +39,9 @@ public class UpperSecondaryLearningOpportunitySpecificationDTO {
     private String translationLanguage;
     private String creditValue;
     private String creditUnit;
+    
+    private List<CodeDTO> topics;
+    private List<CodeDTO> themes;
 
     public String getId() {
         return id;
@@ -142,5 +145,21 @@ public class UpperSecondaryLearningOpportunitySpecificationDTO {
 
     public void setCreditUnit(String creditUnit) {
         this.creditUnit = creditUnit;
+    }
+
+    public List<CodeDTO> getTopics() {
+        return topics;
+    }
+
+    public void setTopics(List<CodeDTO> topics) {
+        this.topics = topics;
+    }
+
+    public List<CodeDTO> getThemes() {
+        return themes;
+    }
+
+    public void setThemes(List<CodeDTO> themes) {
+        this.themes = themes;
     }
 }
