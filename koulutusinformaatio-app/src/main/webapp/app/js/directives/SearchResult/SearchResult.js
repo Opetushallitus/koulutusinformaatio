@@ -7,7 +7,23 @@ constant('SearchResultConstants', {
     KORKEAKOULU: 'korkeakoulu',
     ERITYISOPETUS: 'erityisopetus',
     VALMENTAVA: 'valmentava',
-    VALMISTAVA: 'valmistava'
+    VALMISTAVA: 'valmistava',
+    themes: {
+        teemat_1: 'yleissivistava',
+        teemat_2: 'kielet',
+        teemat_3: 'historia',
+        teemat_4: 'laki',
+        teemat_5: 'kauppa',
+        teemat_6: 'liikenne',
+        teemat_7: 'luonnontieteet',
+        teemat_8: 'kasvatus',
+        teemat_9: 'matkailu',
+        teemat_10: 'taide',
+        teemat_11: 'tekniikka',
+        teemat_12: 'terveys',
+        teemat_13: 'turvallisuus',
+        teemat_14: 'metsatalous'
+    }
 }).
 
 /**
@@ -76,7 +92,7 @@ directive('toggleCollapse', ['$timeout', function ($timeout) {
     };
 }]).
 
-directive('extendedSearchresultData', ['ParentLOService', 'SpecialLOService', 'UpperSecondaryLOService', 'HigherEducationLOService', 'AdultUpperSecondaryLOService', 'AdultVocationalLOService', function (ParentLOService, SpecialLOService, UpperSecondaryLOService, HigherEducationLOService, AdultUpperSecondaryLOService,  AdultVocationalLOService) {
+directive('extendedSearchresultData', ['ParentLOService', 'SpecialLOService', 'UpperSecondaryLOService', 'HigherEducationLOService', 'AdultUpperSecondaryLOService', 'AdultVocationalLOService', function (ParentLOService, SpecialLOService, UpperSecondaryLOService, HigherEducationLOService, AdultUpperSecondaryLOService, AdultVocationalLOService) {
     return {    
         restrict: 'A',
         link: function($scope, ielement, iAttrs) {
@@ -116,7 +132,7 @@ directive('extendedSearchresultData', ['ParentLOService', 'SpecialLOService', 'U
                 }, function(error) {
                     //console.error('error fetching extended LO');
                 });
-            }
+            };
         }
     };
 }]).
@@ -225,4 +241,17 @@ directive('srBasicInformation', [function () {
             }
         }
     };
+}])
+
+.directive('srThemeIcons', [function () {
+    return {
+        restrict: 'A',
+        require: '^extendedSearchresultData',
+        template: '<div data-ng-repeat="theme in extendedLO.lo.themes" class="{{themes[theme.uri]}}-icon"></div>',
+        controller: function($scope, SearchResultConstants) {
+            $scope.themes = SearchResultConstants.themes;
+        }
+    };
 }]);
+
+;
