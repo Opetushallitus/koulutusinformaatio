@@ -12,7 +12,9 @@ var kiApp = angular.module('previewApp',
         'angulartics', 
         'angulartics.piwik',
         'underscore',
-        'ngRoute'
+        'ngRoute',
+        'ngSanitize',
+        'ngTouch'
     ])
 
 .config(['$analyticsProvider', function( $analyticsProvider) {
