@@ -33,6 +33,11 @@ function SearchFieldCtrl($scope, $location, $route, $rootScope, SearchService, k
     
     // Perform search using LearningOpportunity service
     $scope.search = function() {
+
+        if (!$scope.queryString || $scope.queryString === '') {
+            $scope.queryString = '*';
+        }
+
         if ($scope.queryString) {
         	
             var activeTab = $location.search().tab;
@@ -55,6 +60,8 @@ function SearchFieldCtrl($scope, $location, $route, $rootScope, SearchService, k
             
             $location.path('/haku/' + encodeURIComponent(queryString));
             $location.search(filters);
+
+            $route.reload();
         }
     };
 };
@@ -549,9 +556,8 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
     			fVal.season = fVal.valueName.split("|")[1];
     			$scope.loResult.upcomingLaterFacet = fVal;
     		}
-    	});
-    	
-    }
+    	});	
+    };
     
 
     $scope.resolveDefLang = function() {
@@ -562,7 +568,11 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
             return 'EN';
         }
     	return 'FI';
-    }
+    };
+
+    $scope.searchAll = function() {
+        SearchLearningOpportunityService.searchAll({tab: 'los'});
+    };
 };
 
 function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, FilterService, SearchLearningOpportunityService, LanguageService, kiAppConstants, TranslationService) {
@@ -780,7 +790,7 @@ function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, 
     		$scope.articleFacetSelections.push(curSelection);
     	});
     	
-    }
+    };
 
     $scope.toggleCollapsed = function(index) {
         if (!$scope.collapsed) {
@@ -788,7 +798,13 @@ function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, 
         }
 
         $scope.collapsed[index] = !$scope.collapsed[index];
+    };
+
+    /*
+    $scope.searchAll = function() {
+        SearchLearningOpportunityService.searchAll({tab: 'articles'});
     }
+    */
 
 };
 

@@ -4,7 +4,12 @@
             <div class="alert-heading">
                 <h3 class="alert-title" data-ki-i18n="no-search-results"></h3>
             </div>
-            <div class="alert-body>">{{noSearchResults}}</div>
+            <div class="alert-body>">
+                <p>{{noSearchResults}}</p>
+                <p>
+                     <span data-ki-i18n="no-search-results-help-1"></span> <a href="javascript:void(0);" data-ng-click="searchAll()" data-ki-i18n="no-search-results-help-2"></a> <span data-ki-i18n="no-search-results-help-3"></span>
+                </p>
+            </div>
         </div>
     </div>
 
