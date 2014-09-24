@@ -23,6 +23,7 @@ public class AdultUpperSecondaryLOSToDTO {
         dto.setId(los.getId());
         
         String descriptionLang = HigherEducationLOSToDTO.getDescriptionLang(lang, los.getAvailableTranslationLanguages());
+        descriptionLang = (descriptionLang) == null ? lang : descriptionLang;
         dto.setTranslationLanguage(descriptionLang);
         dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(los.getName(), uiLang));
         dto.setEducationDegree(los.getEducationDegree());
