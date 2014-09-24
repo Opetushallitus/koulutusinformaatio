@@ -260,7 +260,7 @@ function LoTabCtrl($scope, $location) {
 /**
  *  Controller for adding applications to application basket
  */
-function ApplicationCtrl($scope, ApplicationBasketService, UtilityService, TranslationService) {
+function ApplicationCtrl($scope, ApplicationBasketService, UtilityService, TranslationService, LOTypes) {
 
     $scope.tooltips = {
         externalApplicationForm: TranslationService.getTranslation('tooltip:external-application-form')
@@ -283,7 +283,7 @@ function ApplicationCtrl($scope, ApplicationBasketService, UtilityService, Trans
             ApplicationBasketService.addItem(aoId);
         }
 
-        if ($scope.loType == 'tutkinto' || $scope.loType == 'koulutusohjelma') {
+        if ($scope.loType == LOTypes.TUTKINTO || $scope.loType == LOTypes.KOULUTUSOHJELMA ||  $scope.loType == LOTypes.LUKIO) {
             addVocationalEdToBasket(aoId);
         } else {
             addEducationToBasket(aoId);

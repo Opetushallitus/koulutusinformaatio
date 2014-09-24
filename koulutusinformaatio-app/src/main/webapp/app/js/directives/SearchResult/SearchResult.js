@@ -1,13 +1,6 @@
 angular.module('SearchResult', []).
 
 constant('SearchResultConstants', {
-    TUTKINTO: 'tutkinto',
-    KOULUTUSOHJELMA: 'koulutusohjelma',
-    LUKIO: 'lukio',
-    KORKEAKOULU: 'korkeakoulu',
-    ERITYISOPETUS: 'erityisopetus',
-    VALMENTAVA: 'valmentava',
-    VALMISTAVA: 'valmistava',
     themes: {
         teemat_1: 'yleissivistava',
         teemat_2: 'kielet',
@@ -29,7 +22,7 @@ constant('SearchResultConstants', {
 /**
  *  Updates the title element of the page.
  */
-directive('searchResult', ['FilterService', 'TranslationService', 'SearchResultConstants', function(FilterService, TranslationService, SearchResultConstants) {
+directive('searchResult', ['FilterService', 'TranslationService', 'LOTypes', function(FilterService, TranslationService, LOTypes) {
     return {
         restrict: 'A',
         template: '<div data-ng-include="getTemplate()" class="search-result"></div>',
@@ -53,7 +46,7 @@ directive('searchResult', ['FilterService', 'TranslationService', 'SearchResultC
             scope.lo.linkHref = '#!/' + scope.lo.type + '/' + scope.lo.id;
 
             var prerequisite = scope.lo.prerequisiteCode || FilterService.getPrerequisite();
-            if (prerequisite && scope.lo.type === SearchResultConstants.TUTKINTO && scope.lo.id.indexOf('#') === -1) {
+            if (prerequisite && scope.lo.type === LOTypes.TUTKINTO && scope.lo.id.indexOf('#') === -1) {
                 scope.lo.linkHref += '?prerequisite=' + prerequisite;
             }
         }
@@ -137,7 +130,11 @@ directive('extendedSearchresultData', ['ParentLOService', 'SpecialLOService', 'U
     };
 }]).
 
-directive('srApplicationBasket', ['ApplicationBasketService', 'TranslationService', function (ApplicationBasketService, TranslationService) {
+directive('srApplicationBasket', [
+    'ApplicationBasketService',
+    'TranslationService',
+    'LOTypes',
+    function (ApplicationBasketService, TranslationService, LOTypes) {
     return {
         restrict: 'A',
         controller: function($scope) {
@@ -162,7 +159,7 @@ directive('srApplicationBasket', ['ApplicationBasketService', 'TranslationServic
                     ApplicationBasketService.addItem(aoId);
                 }
 
-                if ($scope.loType == 'tutkinto') {
+                if ($scope.loType == LOTypes.TUTKINTO || $scope.loType == LOTypes.LUKIO) {
                     addVocationalEdToBasket(applicationoptionId);
                 } else {
                     addEducationToBasket(applicationoptionId);
