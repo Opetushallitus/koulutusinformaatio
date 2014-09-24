@@ -30,6 +30,7 @@ public class HigherEducationLOSToDTO {
         dto.setId(los.getId());
         
         String descriptionLang = getDescriptionLang(lang, los.getAvailableTranslationLanguages());
+        descriptionLang = (descriptionLang) == null ? lang : descriptionLang;
         dto.setTranslationLanguage(descriptionLang);
         dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(los.getName(), uiLang));
         dto.setEducationDegree(los.getEducationDegree());
@@ -142,7 +143,7 @@ public class HigherEducationLOSToDTO {
         if (!availableTranslationLanguages.isEmpty()) {
             return availableTranslationLanguages.get(0).getValue().toLowerCase();
         }
-        return null;
+        return lang;
     }
 
     private static String getStructureImageId(HigherEducationLOS los,
