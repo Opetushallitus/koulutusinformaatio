@@ -809,9 +809,11 @@ function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, 
 };
 
 
-function SortCtrl($scope, $location, FilterService) {
+function SortCtrl($scope, $location, FilterService, kiAppConstants) {
     $scope.updateItemsPerPage = function(tab) {
         FilterService.setItemsPerPage($scope.itemsPerPage);
+        FilterService.setPage(kiAppConstants.searchResultsStartPage);
+        FilterService.setArticlePage(kiAppConstants.searchResultsStartPage);
         if (tab == 'los') {
         	$scope.refreshView();
         } else if (tab == 'article') {
