@@ -480,7 +480,7 @@ directive('kiBanner', ['$location', function($location) {
 /**
  *  Fetches a trasnlation with the given key and inserts it inside the element
  */
-directive('kiI18n', ['TranslationService', function(TranslationService) {
+directive('kiI18n', ['$sanitize', 'TranslationService', function($sanitize, TranslationService) {
     return function(scope, element, attrs) {
         var key;
         var lang;
@@ -511,6 +511,7 @@ directive('kiI18n', ['TranslationService', function(TranslationService) {
                     translation += ':';
                 }
 
+                translation = $sanitize(translation);
                 element.append(translation);
             }
         }

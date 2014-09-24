@@ -1534,7 +1534,14 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
 /**
  *  Service for maintaining search filter state
  */
-service('FilterService', ['$q', '$http', '$sanitize', 'UtilityService', 'LanguageService', 'kiAppConstants', '_', function($q, $http, $sanitize, UtilityService, LanguageService, kiAppConstants, _) {
+service('FilterService', [
+    '$q',
+    '$http',
+    'UtilityService',
+    'LanguageService',
+    'kiAppConstants',
+    '_',
+    function($q, $http, UtilityService, LanguageService, kiAppConstants, _) {
     var filters = {};
 
     var filterIsEmpty = function(filter) {
@@ -1569,15 +1576,6 @@ service('FilterService', ['$q', '$http', '$sanitize', 'UtilityService', 'Languag
     return {
         query: function(queryParams) {
             var deferred = $q.defer();
-
-            // sanitize url params
-            angular.forEach(queryParams, function(value, key) {
-                if (typeof value === 'string') {
-                    value = $sanitize(value);
-                }
-                queryParams[key] = value;
-            });
-
             var codes = ''
             var locationCodes = (queryParams.locations && typeof queryParams.locations == 'string') ? UtilityService.getStringAsArray(queryParams.locations) : queryParams.locations || [];
 
