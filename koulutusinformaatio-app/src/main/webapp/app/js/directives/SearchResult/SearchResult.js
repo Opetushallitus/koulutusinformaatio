@@ -244,7 +244,7 @@ directive('srBasicInformation', [function () {
     return {
         restrict: 'A',
         require: '^extendedSearchresultData',
-        template: '<div data-ng-repeat="theme in extendedLO.lo.themes" class="{{themes[theme.uri]}}-icon"></div>',
+        template: '<div data-ng-repeat="theme in extendedLO.lo.themes" class="{{themes[theme.uri]}}-icon" title="{{theme.description}}"></div>',
         controller: function($scope, SearchResultConstants) {
             $scope.themes = SearchResultConstants.themes;
         }

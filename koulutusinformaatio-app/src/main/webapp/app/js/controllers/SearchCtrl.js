@@ -799,13 +799,6 @@ function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, 
 
         $scope.collapsed[index] = !$scope.collapsed[index];
     };
-
-    /*
-    $scope.searchAll = function() {
-        SearchLearningOpportunityService.searchAll({tab: 'articles'});
-    }
-    */
-
 };
 
 
