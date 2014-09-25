@@ -54,7 +54,7 @@ public final class ParentLOSToDTO {
         }
         
         if (parentLOS.getThemes() != null) {
-            parent.setThemes(CodeToDTO.convertAll(parentLOS.getThemes(), uiLang));
+            parent.setThemes(CodeToDTO.convertCodesDistinct(parentLOS.getThemes(), uiLang));
         }
         if (parentLOS.getTopics() != null) {
             parent.setTopics(CodeToDTO.convertAll(parentLOS.getTopics(), uiLang));
