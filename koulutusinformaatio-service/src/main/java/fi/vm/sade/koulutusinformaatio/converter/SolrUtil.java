@@ -460,6 +460,7 @@ public final class SolrUtil {
         public static final String TIMESTAMP_DOC = "loUpdateTimestampDocument";
         public static final String TYPE_FACET = "FASETTI";
         public static final String TYPE_ARTICLE = "ARTIKKELI";
+        public static final String TYPE_APPLICATION_SYSTEM = "HAKU";
         public static final String KESTOTYYPPI_VUOSI = "suunniteltukesto_01";
         public static final String KESTOTYYPPI_KK = "suunniteltukesto_02";
         public static final String PK = "pk";

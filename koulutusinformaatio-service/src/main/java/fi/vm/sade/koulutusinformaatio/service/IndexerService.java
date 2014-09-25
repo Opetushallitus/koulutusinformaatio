@@ -16,7 +16,9 @@
 
 package fi.vm.sade.koulutusinformaatio.service;
 
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.Article;
+import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.Location;
@@ -67,5 +69,7 @@ public interface IndexerService {
     void addArticles(List<Article> articles) throws IOException, SolrServerException;
 
     void rollbackIncrementalSolrChanges() throws SolrServerException, IOException;
+
+    void indexASToSolr(CalendarApplicationSystem curAs, HttpSolrServer loUpdateSolr) throws SolrServerException, IOException;
     
 }

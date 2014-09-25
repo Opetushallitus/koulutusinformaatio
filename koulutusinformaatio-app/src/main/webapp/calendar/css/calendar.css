@@ -1,0 +1,32 @@
+.application-system-calendar-container {
+  display: none; }
+  .application-system-calendar-container ul {
+    margin: 0; }
+  .application-system-calendar-container li {
+    padding: 10px 0 20px;
+    border-bottom: 1px solid gainsboro; }
+    .application-system-calendar-container li:last-child {
+      border: none;
+      padding: 10px 0; }
+  .application-system-calendar-container .icon-wrapper {
+    width: 40px;
+    text-align: center; }
+    .application-system-calendar-container .icon-wrapper .icon-day {
+      background-color: #EFEFEF;
+      border-top-left-radius: 3px;
+      border-top-right-radius: 3px;
+      font-family: 'PT Sans Narrow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 19px; }
+    .application-system-calendar-container .icon-wrapper .icon-month {
+      background-color: #AC4242;
+      color: #FFF;
+      border-bottom-left-radius: 3px;
+      border-bottom-right-radius: 3px;
+      font-family: 'PT Sans Narrow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 12px; }
+  .application-system-calendar-container .panel-toggler:hover {
+    text-decoration: underline; }
+  .application-system-calendar-container .row {
+    margin-bottom: 10px; }
+    .application-system-calendar-container .row:last-child {
+      margin-bottom: 0; }

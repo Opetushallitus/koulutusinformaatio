@@ -16,18 +16,20 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
-import com.google.common.base.Function;
-import com.google.common.base.Strings;
-import com.google.common.collect.Ordering;
-import fi.vm.sade.koulutusinformaatio.domain.DateRange;
-import fi.vm.sade.koulutusinformaatio.domain.I18nText;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.DateRangeDTO;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import com.google.common.base.Function;
+import com.google.common.base.Strings;
+import com.google.common.collect.Ordering;
+
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationPeriod;
+import fi.vm.sade.koulutusinformaatio.domain.DateRange;
+import fi.vm.sade.koulutusinformaatio.domain.I18nText;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.DateRangeDTO;
 
 /**
  * @author Mikko Majapuro
@@ -91,6 +93,15 @@ public final class ConverterUtil {
     public static boolean isOngoing(List<DateRange> dateRanges) {
         for (DateRange dr : dateRanges) {
             if (isOngoing(dr)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public static boolean isCalendarApplicationsystemOngoing(List<ApplicationPeriod> applicationPeriods) {
+        for (ApplicationPeriod ap : applicationPeriods) {
+            if (isOngoing(ap.getDateRange())) {
                 return true;
             }
         }

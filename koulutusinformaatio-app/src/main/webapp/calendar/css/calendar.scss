@@ -1,0 +1,60 @@
+.application-system-calendar-container {
+    display: none;
+
+    ul {
+        margin: 0;
+    }
+
+    li {
+        padding: 10px 0 20px;
+        border-bottom: 1px solid gainsboro;
+
+        &:last-child {
+            border: none;
+            padding: 10px 0;
+        }
+    }
+
+    .icon-wrapper {
+
+        width: 40px;
+
+        text-align: center;
+
+        .icon-day {
+            background-color: #EFEFEF;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+
+            font-family: 'PT Sans Narrow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 19px;
+
+        }
+
+        .icon-month {
+            background-color: #AC4242;
+            color: #FFF;
+            border-bottom-left-radius: 3px;
+            border-bottom-right-radius: 3px;
+
+            font-family: 'PT Sans Narrow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 12px;
+        }
+
+    }
+
+    .panel-toggler {
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    .row {
+        margin-bottom: 10px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+}
