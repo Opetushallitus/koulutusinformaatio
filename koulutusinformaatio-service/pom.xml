@@ -121,7 +121,7 @@
         <dependency>
             <groupId>org.modelmapper</groupId>
             <artifactId>modelmapper</artifactId>
-            <version>0.5.6</version>
+            <version>0.7.2</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
