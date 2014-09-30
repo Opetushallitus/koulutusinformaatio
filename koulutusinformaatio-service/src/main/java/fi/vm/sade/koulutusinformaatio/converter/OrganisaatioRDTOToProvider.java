@@ -77,6 +77,8 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
     private static final String ADDRESS_DATA_TYPE = "osoiteTyyppi";
     private static final String ADDRESS_DATA_TYPE_VISIT = "kaynti";
     private static final String ADDRESS_DATA_TYPE_POSTAL = "posti";
+    private static final String ADDRESS_DATA_TYPE_FOREIGN_VISIT = "ulkomainen_kaynti";
+    private static final String ADDRESS_DATA_TYPE_FOREIGN_POSTAL = "ulkomainen_posti";
     private static final String LANG = "kieli";
 
     private static final String DATA_TYPE = "tyyppi";
@@ -103,8 +105,8 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
             p.setId(o.getOid());
             p.setName(new I18nText(o.getNimi()));
             LOG.debug("Getting postal address for organisation: " + o.getOid());
-            p.setPostalAddress(getLocalizedAddress(o.getYhteystiedot(), ADDRESS_DATA_TYPE_POSTAL));
-            p.setVisitingAddress(getLocalizedAddress(o.getYhteystiedot(), ADDRESS_DATA_TYPE_VISIT));
+            p.setPostalAddress(getLocalizedAddress(o.getYhteystiedot(), ADDRESS_DATA_TYPE_POSTAL, ADDRESS_DATA_TYPE_FOREIGN_POSTAL));
+            p.setVisitingAddress(getLocalizedAddress(o.getYhteystiedot(), ADDRESS_DATA_TYPE_VISIT, ADDRESS_DATA_TYPE_FOREIGN_VISIT));
             p.setEmail(getSimpleContactInfo(o.getYhteystiedot(), DATA_TYPE_EMAIL));
             p.setFax(getPhoneNumber(o.getYhteystiedot(), DATA_TYPE_FAX));
             p.setPhone(getPhoneNumber(o.getYhteystiedot(), DATA_TYPE_PHONE));
@@ -171,7 +173,7 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
         return null;
     }
 
-    private Address getLocalizedAddress(List<Map<String,String>> yhteystiedot, String addressType) throws KoodistoException {
+    private Address getLocalizedAddress(List<Map<String,String>> yhteystiedot, String addressType, String foreignAddressType) throws KoodistoException {
         
         Map<String,String> streetAddrTransls = new HashMap<String,String>();
         Map<String,String> postOfficeTransls = new HashMap<String,String>();
@@ -181,7 +183,7 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
         LOG.debug("Getting " + addressType);
         
         for (Map<String,String> curYht : yhteystiedot) {
-            if (curYht.containsKey(ADDRESS_DATA_TYPE) && curYht.get(ADDRESS_DATA_TYPE).equals(addressType)) {
+            if (curYht.containsKey(ADDRESS_DATA_TYPE) && (curYht.get(ADDRESS_DATA_TYPE).equals(addressType) || curYht.get(ADDRESS_DATA_TYPE).equals(foreignAddressType))) {
                 
                 LOG.debug("Yhteystieto: " + addressType);
                 
@@ -228,8 +230,8 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
             I18nText email = null;
             I18nText www = null;
 
-            visitingAddress = getLocalizedAddress(metadata.getYhteystiedot(), ADDRESS_DATA_TYPE_VISIT);
-            postalAddress = getLocalizedAddress(metadata.getYhteystiedot(), ADDRESS_DATA_TYPE_POSTAL);
+            visitingAddress = getLocalizedAddress(metadata.getYhteystiedot(), ADDRESS_DATA_TYPE_VISIT, ADDRESS_DATA_TYPE_FOREIGN_VISIT);
+            postalAddress = getLocalizedAddress(metadata.getYhteystiedot(), ADDRESS_DATA_TYPE_POSTAL, ADDRESS_DATA_TYPE_FOREIGN_POSTAL);
             
             
             phone = getPhoneNumber(metadata.getYhteystiedot(), DATA_TYPE_PHONE);

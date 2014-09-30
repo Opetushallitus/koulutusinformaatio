@@ -1,19 +1,28 @@
 angular.module('SearchResult', []).
 
 constant('SearchResultConstants', {
-    TUTKINTO: 'tutkinto',
-    KOULUTUSOHJELMA: 'koulutusohjelma',
-    LUKIO: 'lukio',
-    KORKEAKOULU: 'korkeakoulu',
-    ERITYISOPETUS: 'erityisopetus',
-    VALMENTAVA: 'valmentava',
-    VALMISTAVA: 'valmistava'
+    themes: {
+        teemat_1: 'yleissivistava',
+        teemat_2: 'kielet',
+        teemat_3: 'historia',
+        teemat_4: 'laki',
+        teemat_5: 'kauppa',
+        teemat_6: 'liikenne',
+        teemat_7: 'luonnontieteet',
+        teemat_8: 'kasvatus',
+        teemat_9: 'matkailu',
+        teemat_10: 'taide',
+        teemat_11: 'tekniikka',
+        teemat_12: 'terveys',
+        teemat_13: 'turvallisuus',
+        teemat_14: 'metsatalous'
+    }
 }).
 
 /**
  *  Updates the title element of the page.
  */
-directive('searchResult', ['FilterService', 'TranslationService', 'SearchResultConstants', function(FilterService, TranslationService, SearchResultConstants) {
+directive('searchResult', ['FilterService', 'TranslationService', 'LOTypes', function(FilterService, TranslationService, LOTypes) {
     return {
         restrict: 'A',
         template: '<div data-ng-include="getTemplate()" class="search-result"></div>',
@@ -37,7 +46,7 @@ directive('searchResult', ['FilterService', 'TranslationService', 'SearchResultC
             scope.lo.linkHref = '#!/' + scope.lo.type + '/' + scope.lo.id;
 
             var prerequisite = scope.lo.prerequisiteCode || FilterService.getPrerequisite();
-            if (prerequisite && scope.lo.type === SearchResultConstants.TUTKINTO && scope.lo.id.indexOf('#') === -1) {
+            if (prerequisite && scope.lo.type === LOTypes.TUTKINTO && scope.lo.id.indexOf('#') === -1) {
                 scope.lo.linkHref += '?prerequisite=' + prerequisite;
             }
         }
@@ -76,7 +85,7 @@ directive('toggleCollapse', ['$timeout', function ($timeout) {
     };
 }]).
 
-directive('extendedSearchresultData', ['ParentLOService', 'SpecialLOService', 'UpperSecondaryLOService', 'HigherEducationLOService', 'AdultUpperSecondaryLOService', 'AdultVocationalLOService', function (ParentLOService, SpecialLOService, UpperSecondaryLOService, HigherEducationLOService, AdultUpperSecondaryLOService,  AdultVocationalLOService) {
+directive('extendedSearchresultData', ['ParentLOService', 'SpecialLOService', 'UpperSecondaryLOService', 'HigherEducationLOService', 'AdultUpperSecondaryLOService', 'AdultVocationalLOService', function (ParentLOService, SpecialLOService, UpperSecondaryLOService, HigherEducationLOService, AdultUpperSecondaryLOService, AdultVocationalLOService) {
     return {    
         restrict: 'A',
         link: function($scope, ielement, iAttrs) {
@@ -116,12 +125,16 @@ directive('extendedSearchresultData', ['ParentLOService', 'SpecialLOService', 'U
                 }, function(error) {
                     //console.error('error fetching extended LO');
                 });
-            }
+            };
         }
     };
 }]).
 
-directive('srApplicationBasket', ['ApplicationBasketService', 'TranslationService', function (ApplicationBasketService, TranslationService) {
+directive('srApplicationBasket', [
+    'ApplicationBasketService',
+    'TranslationService',
+    'LOTypes',
+    function (ApplicationBasketService, TranslationService, LOTypes) {
     return {
         restrict: 'A',
         controller: function($scope) {
@@ -146,7 +159,7 @@ directive('srApplicationBasket', ['ApplicationBasketService', 'TranslationServic
                     ApplicationBasketService.addItem(aoId);
                 }
 
-                if ($scope.loType == 'tutkinto') {
+                if ($scope.loType == LOTypes.TUTKINTO || $scope.loType == LOTypes.LUKIO) {
                     addVocationalEdToBasket(applicationoptionId);
                 } else {
                     addEducationToBasket(applicationoptionId);
@@ -225,4 +238,17 @@ directive('srBasicInformation', [function () {
             }
         }
     };
+}])
+
+.directive('srThemeIcons', [function () {
+    return {
+        restrict: 'A',
+        require: '^extendedSearchresultData',
+        template: '<div data-ng-repeat="theme in extendedLO.lo.themes" class="{{themes[theme.uri]}}-icon" title="{{theme.description}}"></div>',
+        controller: function($scope, SearchResultConstants) {
+            $scope.themes = SearchResultConstants.themes;
+        }
+    };
 }]);
+
+;

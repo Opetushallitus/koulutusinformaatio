@@ -6,9 +6,6 @@ angular.module('kiApp.CookieService', ['ngResource']).
  *  to avoid cookie handling issues for subdomains in IE. In production cookie names are never prefixed. 
  */
 service('CookieService', ['$location', 'HostResolver', function($location, HostResolver) {
-
-	
-
 	return {
 		get: function(name, usePrefix) {
 			var defaultConfig = {useLocalStorage: false};
@@ -27,6 +24,6 @@ service('CookieService', ['$location', 'HostResolver', function($location, HostR
 			var prefix = HostResolver.getCookiePrefixByDomain( $location.host() );
 			name = usePrefix ? prefix + name : name;
 			$.cookie(name, value, config);
-		},
-	}
+		}
+	};
 }]);

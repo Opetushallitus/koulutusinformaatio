@@ -7,165 +7,9 @@ angular.module('kiApp.services',
     'kiApp.TranslationService',
     'kiApp.CookieService',
     'kiApp.AlertService',
-    'kiApp.AuthService'
+    'kiApp.AuthService',
+    'kiApp.services.SearchLearningOpportunityService'
 ]).
-
-service('SearchLearningOpportunityService', ['$http', '$timeout', '$q', '$analytics', '$rootScope', 'FilterService', 'LearningOpportunitySearchResultTransformer', function($http, $timeout, $q, $analytics, $rootScope, FilterService, LearningOpportunitySearchResultTransformer) {
-    
-    // gather information for analytics
-    var parseFilterValues = function(params) {
-        var getTilaValue = function(params) {
-            var result = 0;
-            result = params.ongoing ? result + 1 : result;
-            result = params.upcoming ? result + 1 : result;
-            result = params.upcomingLater ? result + 1 : result;
-
-            return result;
-        }
-
-        var facetitemIsOfType = function(item, filterKey) {
-            if (item && (typeof item == 'string' || item instanceof String)) {
-                var temp = item.split(':');
-                if (temp && temp[0] && temp[0].indexOf(filterKey) >= 0) {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        var getTyyppiValue = function(params) {
-            var result = 0;
-            if (params.facetFilters) {
-                angular.forEach(params.facetFilters, function(item, key) {
-                    result = facetitemIsOfType(item, 'educationType') ? result + 1: result;
-                });
-            }
-
-            return result;
-        }
-
-        var getPohjakoulutusValue = function(params) {
-            var result = 0;
-            if (params.facetFilters) {
-                angular.forEach(params.facetFilters, function(item, key) {
-                    result = facetitemIsOfType(item, 'prerequisites') ? result + 1: result;
-                });
-            }
-
-            return result;
-        }
-
-        var getPaikkakuntaValue = function(params) {
-            return params.locations ? params.locations.length : 0;
-        }
-
-        var getOpetuskieliValue = function(params) {
-            var result = 0;
-            if (params.facetFilters) {
-                angular.forEach(params.facetFilters, function(item, key) {
-                    result = facetitemIsOfType(item, 'teachingLangCode') ? result + 1: result;
-                });
-            }
-
-            return result;
-        }
-
-        return {
-            page: [
-                {name: 'Haun tila', value: getTilaValue(params)},
-                {name: 'Koulutuksen tyyppi', value: getTyyppiValue(params)},
-                {name: 'Pohjakoulutus', value: getPohjakoulutusValue(params)},
-                {name: 'Paikkakunta', value: getPaikkakuntaValue(params)},
-                {name: 'Opetuskieli', value: getOpetuskieliValue(params)}
-            ]
-        };
-
-    };
-
-    return {
-        query: function(params) {
-            var deferred = $q.defer();
-            var cities = '';
-            
-            if (params.locations) {
-                for (var index = 0; index < params.locations.length; index++) {
-                    if (params.locations.hasOwnProperty(index)) {
-                        cities += '&city=' + params.locations[index];
-                    }
-                }
-
-                cities = cities.substring(1, cities.length);
-            }
-
-            var qParams = '?';
-
-            qParams += (params.start != undefined) ? ('start=' + params.start) : '';
-            qParams += (params.rows != undefined) ? ('&rows=' + params.rows) : '';
-            qParams += (params.prerequisite != undefined) ? ('&prerequisite=' + params.prerequisite) : '';
-            qParams += (params.locations != undefined && params.locations.length > 0) ? ('&' + cities) : '';
-            qParams += (params.ongoing != undefined) ? ('&ongoing=' + params.ongoing) : '';
-            qParams += (params.upcoming != undefined) ? ('&upcoming=' + params.upcoming) : '';
-            qParams += (params.upcomingLater != undefined) ? ('&upcomingLater=' + params.upcomingLater) : '';
-            qParams += (params.lang != undefined) ? ('&lang=' + params.lang) : '';
-            qParams += (params.lopFilter != undefined) ? ('&lopFilter=' + params.lopFilter) : '';
-            qParams += (params.educationCodeFilter != undefined) ? ('&educationCodeFilter=' + params.educationCodeFilter) : '';
-            qParams += (params.searchType != undefined) ? ('&searchType=' + params.searchType) : '&searchType=LO';
-            qParams += (params.queryString != undefined) ? ('&text=' + params.queryString) : '&text= ';
-            
-            if (params.facetFilters != undefined) {
-            	 angular.forEach(params.facetFilters, function(facetFilter, key) {
-            		 qParams += '&facetFilters=' + facetFilter;
-                 });
-            }
-            
-            if (params.articleFacetFilters != undefined) {
-           	 angular.forEach(params.articleFacetFilters, function(facetFilter, key) {
-           		 qParams += '&articleFacetFilters=' + facetFilter;
-                });
-           }
-            
-            if (params.excludes != undefined) {
-            	angular.forEach(params.excludes, function(exclude, key) {
-           		 	qParams += '&excludes=' + exclude;
-                });
-            }
-            
-            var sortField = '';
-            if (params.sortCriteria != undefined) {
-            	if (params.sortCriteria == 1 || params.sortCriteria == 2) {
-            		sortField = 'name_ssort';
-            	} else if (params.sortCriteria == 3 || params.sortCriteria == 4) {
-            		sortField = 'duration_isort';
-            	}
-            } 
-            
-            qParams += (sortField.length > 0) ? ('&sort=' +sortField) : '';
-            qParams += ((params.sortCriteria != undefined) && ((params.sortCriteria == 2) || (params.sortCriteria == 4))) ? ('&order=desc') : '';
-
-            $http.get('../lo/search' + qParams, {}).
-            success(function(result) {
-                LearningOpportunitySearchResultTransformer.transform(result);
-                var variables = parseFilterValues(params);
-                var category;
-                if (params.locations && params.locations.length > 0) {
-                    category = params.locations[0];
-                } else {
-                    category = false;
-                }
-
-                $analytics.siteSearchTrack(params.queryString, category, result.totalCount, variables);
-                deferred.resolve(result);
-            }).
-            error(function(result) {
-                $rootScope.error = true;
-                deferred.reject(result);
-            });
-
-            return deferred.promise;
-        }
-    }
-}]).
 
 service('SearchLocationService', ['$http', '$timeout', '$q', 'LanguageService', function($http, $timeout, $q, LanguageService) {
 
@@ -1258,54 +1102,6 @@ service('ChildLOTransformer', ['UtilityService', 'KiSorter', '$rootScope', funct
     }
 }]).
 
-/**
- *  Transform search result data
- */
-service('LearningOpportunitySearchResultTransformer', ['$filter', '$rootScope', function($filter, $rootScope) {
-    return {
-        transform: function(result) {
-
-            // order themes alphabetically (theme Yleisisivistävä is always first)
-            if (result && result.topicFacet && result.topicFacet.facetValues) {
-                result.topicFacet.facetValues.sort(function(a, b) {
-                    var regexp = /^teemat_1$/;
-                    if (regexp.test(a.valueId)) {
-                        return -1;
-                    } else if (regexp.test(b.valueId)) {
-                        return 1;
-                    } else {
-                        return b.valueName > a.valueName ? -1 : 1;
-                    }
-                });
-
-                // order theme subjects alphabetically
-                angular.forEach(result.topicFacet.facetValues, function(facet, key) {
-                    if (facet.childValues) {
-                        facet.childValues.sort(function(a, b) {
-                            return b.valueName > a.valueName ? -1 : 1;
-                        });
-                    }
-                });
-            }
-
-            // order teaching languages in order: FI, SV, EN, other languages in alphabetical order
-            if (result && result.teachingLangFacet && result.teachingLangFacet.facetValues ) {
-                result.teachingLangFacet.facetValues.sort( function(a, b) {
-
-                    if (a.valueId == "FI" && b.valueId == "SV") return -1;
-                    else if (a.valueId == "SV" && b.valueId == "FI") return 1;
-                    else if (a.valueId == "FI" && b.valueId == "EN") return -1;
-                    else if (a.valueId == "EN" && b.valueId == "FI") return 1;
-                    else if (a.valueId == "SV" && b.valueId == "EN") return -1;
-                    else if (a.valueId == "EN" && b.valueId == "SV") return 1;
-                    else return 1
-
-                });
-            }
-        }
-    }
-}]).
-
 service('SearchResultFacetTransformer', ['UtilityService', '$filter', function(UtilityService, $filter) {
 	
 	var getFacetValById = function(valueId, givenVals) {
@@ -1637,7 +1433,7 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
     return {
         addItem: function(aoId, itemType) {
 
-            var current = CookieService.get(key);
+            var current = CookieService.get(key, false);
 
             if (current) {
                 current = JSON.parse(current);
@@ -1653,37 +1449,37 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
 
             // save type if defined
             if (itemType) {
-                CookieService.set(typekey, itemType, cookieConfig);
+                CookieService.set(typekey, itemType, cookieConfig, false);
             }
 
-            CookieService.set(key, JSON.stringify(current), cookieConfig);
+            CookieService.set(key, JSON.stringify(current), cookieConfig, false);
         },
 
         removeItem: function(aoId) {
             if (this.getItemCount() > 1) {
-                var value = CookieService.get(key);
+                var value = CookieService.get(key, false);
                 value = JSON.parse(value);
 
                 var index = value.indexOf(aoId);
                 value.splice(index, 1);
 
-                CookieService.set(key, JSON.stringify(value), cookieConfig);
+                CookieService.set(key, JSON.stringify(value), cookieConfig, false);
             } else {
                 this.empty();
             }
         },
 
         empty: function() {
-            CookieService.set(key, null, cookieConfig);
-            CookieService.set(typekey, null, cookieConfig);
+            CookieService.set(key, null, cookieConfig, false);
+            CookieService.set(typekey, null, cookieConfig, false);
         },
 
         getItems: function() {
-            return JSON.parse( CookieService.get(key) );
+            return JSON.parse( CookieService.get(key, false) );
         },
 
         getItemCount: function() {
-            return CookieService.get(key) ? JSON.parse( CookieService.get(key) ).length : 0;
+            return CookieService.get(key, false) ? JSON.parse( CookieService.get(key, false) ).length : 0;
         },
 
         isEmpty: function() {
@@ -1692,7 +1488,7 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
 
         getType: function() {
             if (!this.isEmpty()) {
-                return CookieService.get(typekey);
+                return CookieService.get(typekey, false);
             }
         },
 
@@ -1738,7 +1534,14 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
 /**
  *  Service for maintaining search filter state
  */
-service('FilterService', ['$q', '$http', '$sanitize', 'UtilityService', 'LanguageService', 'kiAppConstants', '_', function($q, $http, $sanitize, UtilityService, LanguageService, kiAppConstants, _) {
+service('FilterService', [
+    '$q',
+    '$http',
+    'UtilityService',
+    'LanguageService',
+    'kiAppConstants',
+    '_',
+    function($q, $http, UtilityService, LanguageService, kiAppConstants, _) {
     var filters = {};
 
     var filterIsEmpty = function(filter) {
@@ -1773,15 +1576,6 @@ service('FilterService', ['$q', '$http', '$sanitize', 'UtilityService', 'Languag
     return {
         query: function(queryParams) {
             var deferred = $q.defer();
-
-            // sanitize url params
-            angular.forEach(queryParams, function(value, key) {
-                if (typeof value === 'string') {
-                    value = $sanitize(value);
-                }
-                queryParams[key] = value;
-            });
-
             var codes = ''
             var locationCodes = (queryParams.locations && typeof queryParams.locations == 'string') ? UtilityService.getStringAsArray(queryParams.locations) : queryParams.locations || [];
 

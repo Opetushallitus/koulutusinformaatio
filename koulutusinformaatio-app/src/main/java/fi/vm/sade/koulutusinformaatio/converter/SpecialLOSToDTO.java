@@ -52,6 +52,13 @@ public final class SpecialLOSToDTO {
         dto.setEducationDomain(ConverterUtil.getTextByLanguage(los.getEducationDomain(), uiLang));
         dto.setParent(ParentLOSRefToDTO.convert(los.getParent(), defaultLang));
         dto.setEducationTypeUri(los.getEducationTypeUri());
+        
+        if (los.getThemes() != null) {
+            dto.setThemes(CodeToDTO.convertCodesDistinct(los.getThemes(), uiLang));
+        }
+        if (los.getTopics() != null) {
+            dto.setTopics(CodeToDTO.convertAll(los.getTopics(), uiLang));
+        }
 
         return dto;
     }

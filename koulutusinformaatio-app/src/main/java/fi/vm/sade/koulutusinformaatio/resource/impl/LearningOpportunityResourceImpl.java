@@ -21,6 +21,7 @@ import java.net.URLDecoder;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -69,6 +70,7 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
         this.searchService = searchService;
         this.modelMapper = modelMapper;
         this.learningOpportunityService = learningOpportunityService;
+        this.modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
     }
 
     @Override

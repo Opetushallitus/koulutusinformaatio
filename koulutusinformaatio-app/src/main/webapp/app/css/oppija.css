@@ -2333,8 +2333,13 @@ header.preview-header {
       text-decoration: none; }
 
 .intro-launcher {
+  position: relative;
+  bottom: 56px;
   color: #dba000;
   z-index: 999999; }
+  @media (max-width: 768px) {
+    .intro-launcher {
+      bottom: -22px; } }
   .intro-launcher:hover, .intro-launcher:focus, .intro-launcher:active {
     color: #dba000; }
 

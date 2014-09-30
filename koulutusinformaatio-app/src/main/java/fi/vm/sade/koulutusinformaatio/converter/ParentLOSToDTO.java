@@ -52,6 +52,14 @@ public final class ParentLOSToDTO {
                 parent.getLois().add(ParentLOIToDTO.convert(loi, lang, uiLang, defaultLang));
             }
         }
+        
+        if (parentLOS.getThemes() != null) {
+            parent.setThemes(CodeToDTO.convertCodesDistinct(parentLOS.getThemes(), uiLang));
+        }
+        if (parentLOS.getTopics() != null) {
+            parent.setTopics(CodeToDTO.convertAll(parentLOS.getTopics(), uiLang));
+        }
+        
         return parent;
     }
 }

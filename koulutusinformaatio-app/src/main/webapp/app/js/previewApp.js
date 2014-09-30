@@ -78,6 +78,18 @@ var kiApp = angular.module('previewApp',
     searchResultsStartPage: 1
 })
 
+.constant('LOTypes', {
+    TUTKINTO: 'tutkinto',
+    KOULUTUSOHJELMA: 'koulutusohjelma',
+    LUKIO: 'lukio',
+    KORKEAKOULU: 'korkeakoulu',
+    ERITYISOPETUS: 'erityisopetus',
+    VALMENTAVA: 'valmentava',
+    VALMISTAVA: 'valmistava',
+    AMMATILLINENAIKUISKOULUTUS: 'ammatillinenaikuiskoulutus',
+    AIKUISLUKIO: 'aikuislukio'
+})
+
 // initialize i18n library
 .run(['$location', 'LanguageService', 'HostResolver', 'VirkailijaLanguageService', function($location, LanguageService, HostResolver, VirkailijaLanguageService) {
 	

@@ -5,7 +5,7 @@
     <parent>
         <artifactId>koulutusinformaatio</artifactId>
         <groupId>fi.vm.sade.koulutusinformaatio</groupId>
-        <version>11.4</version>
+        <version>11.5</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>koulutusinformaatio-service</artifactId>
@@ -121,7 +121,7 @@
         <dependency>
             <groupId>org.modelmapper</groupId>
             <artifactId>modelmapper</artifactId>
-            <version>0.5.6</version>
+            <version>0.7.2</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
