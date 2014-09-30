@@ -99,7 +99,7 @@ public final class AdultVocationalParentLOSToDTO {
         }
 
         if (los.getThemes() != null) {
-            dto.setThemes(CodeToDTO.convertAll(los.getThemes(), uiLang));
+            dto.setThemes(CodeToDTO.convertCodesDistinct(los.getThemes(), uiLang));
         }
         if (los.getTopics() != null) {
             dto.setTopics(CodeToDTO.convertAll(los.getTopics(), uiLang));

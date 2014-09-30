@@ -18,10 +18,14 @@ package fi.vm.sade.koulutusinformaatio.converter;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.dto.CodeDTO;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Hannu Lyytikainen
@@ -56,6 +60,19 @@ public final class CodeToDTO {
         } else {
             return null;
         }
+    }
+    
+    public static List<CodeDTO> convertCodesDistinct(List<Code> codes, final String lang) {
+        if (codes != null) {
+            Map<String,CodeDTO> codeMap = new HashMap<String,CodeDTO>(); 
+            for (Code curCode : codes) {
+                CodeDTO converted = convert(curCode, lang);
+                codeMap.put(converted.getUri(), converted);
+            }
+            return new ArrayList<CodeDTO>(codeMap.values());
+        } 
+        
+        return null;
     }
 
 }

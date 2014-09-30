@@ -39,6 +39,7 @@ public abstract class LOS {
         this.id = id;
     }
 
+    
     public I18nText getName() {
         return name;
     }

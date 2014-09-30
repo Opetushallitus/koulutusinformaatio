@@ -43,6 +43,9 @@ public class SpecialLearningOpportunitySpecificationDTO {
     private ParentLOSRefDTO parent;
     private String educationTypeUri;
     private String educationKind;
+    
+    private List<CodeDTO> topics;
+    private List<CodeDTO> themes;
 
     public String getId() {
         return id;
@@ -179,5 +182,21 @@ public class SpecialLearningOpportunitySpecificationDTO {
 
     public String getEducationKind() {
         return educationKind;
+    }
+
+    public List<CodeDTO> getTopics() {
+        return topics;
+    }
+
+    public void setTopics(List<CodeDTO> topics) {
+        this.topics = topics;
+    }
+
+    public List<CodeDTO> getThemes() {
+        return themes;
+    }
+
+    public void setThemes(List<CodeDTO> themes) {
+        this.themes = themes;
     }
 }

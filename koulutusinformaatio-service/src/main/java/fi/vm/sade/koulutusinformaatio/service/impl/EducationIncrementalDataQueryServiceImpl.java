@@ -28,6 +28,7 @@ import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataQueryServi
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.mongodb.morphia.Key;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -98,6 +99,7 @@ EducationIncrementalDataQueryService {
         this.adultUpperSecondaryLOSDAO = adultUpperSecondaryLOSDAO;
         this.adultVocationalLOSDAO = adultVocationalLOSDAO;
         this.learningOpportunityProviderDAO = learningOpportunityProviderDAO;
+        this.modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
     }
 

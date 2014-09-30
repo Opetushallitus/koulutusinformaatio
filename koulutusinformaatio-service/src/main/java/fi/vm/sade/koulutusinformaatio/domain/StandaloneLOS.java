@@ -16,7 +16,7 @@ public class StandaloneLOS extends LOS {
     private I18nText accessToFurtherStudies;
     private List<ContactPerson> contactPersons = new ArrayList<ContactPerson>();
     private I18nText educationDomain;
-    private I18nText name;
+    //private I18nText name;
     private I18nText koulutuskoodi;
     private String educationDegree;
     private I18nText educationDegreeLang;
@@ -74,13 +74,14 @@ public class StandaloneLOS extends LOS {
         this.id = id;
     }
 
+    /*
     public void setName(I18nText name) {
         this.name = name;
     }
 
     public I18nText getName() {
         return this.name;
-    }
+    }*/
 
     public void setEducationDegree(String degree) {
         this.educationDegree = degree;

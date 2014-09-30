@@ -43,6 +43,14 @@ public final class UpperSecondaryLOSToDTO {
         dto.setTranslationLanguage(lang);
         dto.setCreditValue(los.getCreditValue());
         dto.setCreditUnit(ConverterUtil.getTextByLanguage(los.getCreditUnit(), uiLang));
+        
+        if (los.getThemes() != null) {
+            dto.setThemes(CodeToDTO.convertCodesDistinct(los.getThemes(), uiLang));
+        }
+        if (los.getTopics() != null) {
+            dto.setTopics(CodeToDTO.convertAll(los.getTopics(), uiLang));
+        }
+        
         return dto;
     }
 }
