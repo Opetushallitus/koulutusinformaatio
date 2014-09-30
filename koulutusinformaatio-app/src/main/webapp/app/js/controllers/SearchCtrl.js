@@ -805,11 +805,13 @@ function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, 
 function SortCtrl($scope, $location, FilterService, kiAppConstants) {
     $scope.updateItemsPerPage = function(tab) {
         FilterService.setItemsPerPage($scope.itemsPerPage);
-        FilterService.setPage(kiAppConstants.searchResultsStartPage);
-        FilterService.setArticlePage(kiAppConstants.searchResultsStartPage);
         if (tab == 'los') {
+            FilterService.setPage(kiAppConstants.searchResultsStartPage);
+            $scope.$parent.currentPage = kiAppConstants.searchResultsStartPage;
         	$scope.refreshView();
         } else if (tab == 'article') {
+            FilterService.setArticlePage(kiAppConstants.searchResultsStartPage);
+            $scope.$parent.model.currentArticlePage = kiAppConstants.searchResultsStartPage;
         	$scope.refreshArticleView();
         }
     }
