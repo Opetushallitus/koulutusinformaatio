@@ -72,7 +72,8 @@ public final class ApplicationOptionToDTO {
                 dto.setNextApplicationPeriodStarts(applicationOption.getApplicationStartDate());
             }
 
-            dto.setAttachments(ApplicationOptionAttachmentToDTO.convertAll(applicationOption.getAttachments(), lang));
+            boolean isVaadinAo = dto.getHigherEdLOSRefs() == null || dto.getHigherEdLOSRefs().isEmpty();
+            dto.setAttachments(ApplicationOptionAttachmentToDTO.convertAll(applicationOption.getAttachments(), lang, isVaadinAo));
             dto.setEmphasizedSubjects(EmphasizedSubjectToDTO.convertAll(applicationOption.getEmphasizedSubjects(), lang));
             dto.setAdditionalInfo(ConverterUtil.getTextByLanguage(applicationOption.getAdditionalInfo(), lang));
             dto.setAdditionalProof(AdditionalProofToDTO.convert(applicationOption.getAdditionalProof(), lang));

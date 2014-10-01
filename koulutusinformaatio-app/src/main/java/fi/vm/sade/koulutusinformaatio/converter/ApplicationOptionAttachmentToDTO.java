@@ -48,16 +48,18 @@ public final class ApplicationOptionAttachmentToDTO {
         return null;
     }
 
-    public static List<ApplicationOptionAttachmentDTO> convertAll(final List<ApplicationOptionAttachment> aoas, final String lang) {
+    public static List<ApplicationOptionAttachmentDTO> convertAll(final List<ApplicationOptionAttachment> aoas, final String lang, boolean isVaadinAo) {
         if (aoas != null && !aoas.isEmpty() && lang != null && !lang.isEmpty()) {
             String keyLang = lang.toLowerCase();
             List<ApplicationOptionAttachmentDTO> aoaDTOs = new ArrayList<ApplicationOptionAttachmentDTO>();
             for (ApplicationOptionAttachment curAttachment : aoas) {
+                
                 if (curAttachment != null 
                         && curAttachment.getType() != null 
                         && curAttachment.getType().getTranslations().containsKey(keyLang)) {
                     aoaDTOs.add(convert(curAttachment, lang));
-                } else if (curAttachment != null && curAttachment.getType() == null) {
+                } else if (curAttachment != null && (curAttachment.getType() == null || isVaadinAo)) {
+                    
                    aoaDTOs.add(convert(curAttachment, lang)); 
                 }
             }

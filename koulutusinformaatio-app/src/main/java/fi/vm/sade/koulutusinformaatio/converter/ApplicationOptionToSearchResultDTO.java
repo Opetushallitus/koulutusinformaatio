@@ -49,7 +49,8 @@ public final class ApplicationOptionToSearchResultDTO {
             dto.setVocational(applicationOption.isVocational());
             dto.setEducationCodeUri(applicationOption.getEducationCodeUri());
             dto.setOrganizationGroups(OrganizationGroupToDTO.convertAll(applicationOption.getOrganizationGroups()));
-            dto.setAttachments(ApplicationOptionAttachmentToDTO.convertAll(applicationOption.getAttachments(), lang));
+            boolean isVaadinAo = applicationOption.getHigherEdLOSRefs() == null || applicationOption.getHigherEdLOSRefs().isEmpty();
+            dto.setAttachments(ApplicationOptionAttachmentToDTO.convertAll(applicationOption.getAttachments(), lang, isVaadinAo));
             
             if (applicationOption.getProvider() != null) {
                 dto.setAthleteEducation(applicationOption.getProvider().isAthleteEducation() || applicationOption.isAthleteEducation());
