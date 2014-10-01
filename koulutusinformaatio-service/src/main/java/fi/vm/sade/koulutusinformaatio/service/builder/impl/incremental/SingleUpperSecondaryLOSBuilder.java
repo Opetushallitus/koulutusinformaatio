@@ -77,7 +77,7 @@ public class SingleUpperSecondaryLOSBuilder {
                 ao.setProvider(los.getProvider());
                 ao.setEducationDegree(los.getEducationDegree());
                 ao.setType(TarjontaConstants.TYPE_UPSEC);
-                los.getProvider().getApplicationSystemIDs().add(ao.getApplicationSystem().getId());
+                los.getProvider().getApplicationSystemIds().add(ao.getApplicationSystem().getId());
             }
         }
 
