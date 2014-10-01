@@ -363,7 +363,7 @@ public class LearningOpportunityServiceImplTest {
         Provider provider = new Provider();
         provider.setId(id);
         provider.setName(name);
-        provider.setApplicationSystemIDs(asIds);
+        provider.setApplicationSystemIds(asIds);
         return provider;
     }
 

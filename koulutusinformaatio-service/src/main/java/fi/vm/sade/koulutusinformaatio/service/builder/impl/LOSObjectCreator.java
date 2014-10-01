@@ -548,7 +548,7 @@ public class LOSObjectCreator extends ObjectCreator {
             for (ApplicationOption ao : los.getApplicationOptions()) {
                 ao.setProvider(los.getProvider());
                 ao.setEducationDegree(los.getEducationDegree());
-                los.getProvider().getApplicationSystemIDs().add(ao.getApplicationSystem().getId());
+                los.getProvider().getApplicationSystemIds().add(ao.getApplicationSystem().getId());
                 ao.setParent(createParentLosRef(los));
                 ao.setType(TarjontaConstants.TYPE_KK);
             }
@@ -717,7 +717,7 @@ public class LOSObjectCreator extends ObjectCreator {
             for (ApplicationOption ao : los.getApplicationOptions()) {
                 ao.setProvider(los.getProvider());
                 ao.setEducationDegree(los.getEducationDegree());
-                los.getProvider().getApplicationSystemIDs().add(ao.getApplicationSystem().getId());
+                los.getProvider().getApplicationSystemIds().add(ao.getApplicationSystem().getId());
                 //ao.setParent(createParentLosRef(los));
                 ao.setType(TarjontaConstants.TYPE_ADULT_UPSEC);
             }
@@ -1237,7 +1237,7 @@ public class LOSObjectCreator extends ObjectCreator {
             for (ApplicationOption ao : los.getApplicationOptions()) {
                 ao.setProvider(los.getProvider());
                 ao.setEducationDegree(los.getEducationDegree());
-                los.getProvider().getApplicationSystemIDs().add(ao.getApplicationSystem().getId());
+                los.getProvider().getApplicationSystemIds().add(ao.getApplicationSystem().getId());
                 //ao.setParent(createParentLosRef(los));
                 ao.setType(TarjontaConstants.TYPE_ADULT_VOCATIONAL);//TarjontaConstants.TYPE_ADULT_UPSEC);
             }
