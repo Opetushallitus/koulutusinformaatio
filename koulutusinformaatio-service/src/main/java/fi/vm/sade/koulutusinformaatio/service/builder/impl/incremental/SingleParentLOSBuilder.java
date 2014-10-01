@@ -167,7 +167,7 @@ public class SingleParentLOSBuilder {
                         ao.setProvider(parent.getProvider());
                         ao.setParent(new ParentLOSRef(parent.getId(), parent.getName()));
                         ao.setEducationDegree(parent.getEducationDegree());
-                        parent.getProvider().getApplicationSystemIDs().add(ao.getApplicationSystem().getId());
+                        parent.getProvider().getApplicationSystemIds().add(ao.getApplicationSystem().getId());
                         ao.setType(parent.getType());
                     }
 

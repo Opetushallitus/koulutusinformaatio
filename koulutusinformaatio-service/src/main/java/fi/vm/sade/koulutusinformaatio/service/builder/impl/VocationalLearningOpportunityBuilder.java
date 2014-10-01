@@ -184,7 +184,7 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
                         ao.setProvider(parentLOS.getProvider());
                         ao.setParent(new ParentLOSRef(parentLOS.getId(), parentLOS.getName()));
                         ao.setEducationDegree(parentLOS.getEducationDegree());
-                        parentLOS.getProvider().getApplicationSystemIDs().add(ao.getApplicationSystem().getId());
+                        parentLOS.getProvider().getApplicationSystemIds().add(ao.getApplicationSystem().getId());
                         ao.setType(parentLOS.getType());
                     }
 
@@ -222,7 +222,7 @@ public class VocationalLearningOpportunityBuilder extends LearningOpportunityBui
                 for (ApplicationOption curAo : curChild.getApplicationOptions()) {
                     curAo.setType(TarjontaConstants.TYPE_SPECIAL);
                     curAo.setParent(new ParentLOSRef(curSpecial.getId(), curSpecial.getName()));
-                    curSpecial.getProvider().getApplicationSystemIDs().add(curAo.getApplicationSystem().getId());
+                    curSpecial.getProvider().getApplicationSystemIds().add(curAo.getApplicationSystem().getId());
                 }
             }
         }

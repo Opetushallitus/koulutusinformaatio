@@ -29,7 +29,7 @@ public class Provider {
 
     private String id;
     private I18nText name;
-    private Set<String> applicationSystemIDs = new HashSet<String>();
+    private Set<String> applicationSystemIds = new HashSet<String>();
     private Address postalAddress;
     private Address visitingAddress;
     private I18nText webPage;
@@ -79,12 +79,12 @@ public class Provider {
         this.name = name;
     }
 
-    public Set<String> getApplicationSystemIDs() {
-        return applicationSystemIDs;
+    public Set<String> getApplicationSystemIds() {
+        return applicationSystemIds;
     }
 
-    public void setApplicationSystemIDs(Set<String> applicationSystemIDs) {
-        this.applicationSystemIDs = applicationSystemIDs;
+    public void setApplicationSystemIds(Set<String> applicationSystemIDs) {
+        this.applicationSystemIds = applicationSystemIDs;
     }
 
     public Address getPostalAddress() {
