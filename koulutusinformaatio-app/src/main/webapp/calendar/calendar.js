@@ -50,8 +50,10 @@ var ApplicationSystemCalendar = (function() {
 
                 // remove duplicated item
                 data = _.difference(data, remove);
-
                 data = _.groupBy(data, ApplicationSystemCalendar.ApplicationSystemGrouper.group);
+                data = _.sortBy(data, function(value, key) {
+                    return key;
+                });
                 createCalendar(data);
             });
         };
@@ -77,6 +79,11 @@ var ApplicationSystemCalendar = (function() {
         _.each(obj, function(monthobj, index) {
             var list = $('<ul class="list-unstyled"></ul>');
             var month;
+
+            monthobj = _.sortBy(monthobj, function(month) {
+                return ki.Utils.getAsStartDate(month);
+            });
+
             _.each(monthobj, function(item) {
                 list.append( createCalendarItem(item) );
                 month = new Date( ki.Utils.getAsStartDate(item) ).getMonth();
@@ -108,13 +115,10 @@ var ApplicationSystemCalendar = (function() {
     },
 
     createCalendarItem = function(item) {
-        var asStartDate = ki.Utils.getAsStartDate(item);
-        var asName = ki.Utils.getApplicationSystemName(item);
-        //var periodName = ki.Utils.getApplicationPeriodName(item);
-        //var asName = item.name;
-        //asName += periodName ? (', ' + periodName) : '';
-        var listItem = $('<li></li>');
-        var row = $('<div class="row"></div>');
+        var asStartDate = ki.Utils.getAsStartDate(item),
+            asName = ki.Utils.getApplicationSystemName(item),
+            listItem = $('<li></li>'),
+            row = $('<div class="row"></div>');
 
         var iconCol = $('<div class="col-xs-2"></div>');
         iconCol.append( createCalendarIconItem( new Date() ));
@@ -125,8 +129,8 @@ var ApplicationSystemCalendar = (function() {
         infoCol.append(createApplicationTimeItem(item));
         row.append(infoCol);
 
-        var buttonRow = $('<div class="row"></div>');
-        var buttonCol = $('<div class="col-xs-16"></div>');
+        var buttonRow = $('<div class="row"></div>'),
+            buttonCol = $('<div class="col-xs-16"></div>');
         buttonCol.append(createApplicationFormButton(item));
         buttonRow.append(buttonCol);
 
