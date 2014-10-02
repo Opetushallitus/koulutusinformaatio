@@ -122,7 +122,7 @@ public class IncrementalApplicationSystemIndexer {
         CalendarApplicationSystem calAS = this.tarjontaService.createCalendarApplicationSystem(asOid);
         loHttpSolrServer.deleteById(asOid);
         if (calAS != null) {
-            this.indexerService.indexASToSolr(calAS, this.lopHttpSolrServer);
+            this.indexerService.indexASToSolr(calAS, this.loHttpSolrServer);
         }
         this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
     }
