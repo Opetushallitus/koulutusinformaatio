@@ -706,7 +706,7 @@ public class TarjontaServiceImpl implements TarjontaService {
     private boolean isValidCalendarHaku(HakuV1RDTO curHaku) {
         return (curHaku.getTila().equals(TarjontaConstants.STATE_PUBLISHED) || curHaku.getTila().equals(TarjontaConstants.STATE_READY))
                 && (curHaku.getHakutyyppiUri().startsWith(TarjontaConstants.HAKUTYYPPI_VARSINAINEN) || curHaku.getHakutyyppiUri().startsWith(TarjontaConstants.HAKUTYYPPI_LISA))
-                && (curHaku.getHakutapaUri().equals(TarjontaConstants.HAKUTAPA_YHTEISHAKU));
+                && (curHaku.getHakutapaUri().startsWith(TarjontaConstants.HAKUTAPA_YHTEISHAKU));
     }
 
     @Override
