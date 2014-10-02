@@ -676,7 +676,7 @@ public class TarjontaServiceImpl implements TarjontaService {
         }
         
         List<CalendarApplicationSystem> results = new ArrayList<CalendarApplicationSystem>();
-        ResultV1RDTO<List<String>> hakuRes = this.tarjontaRawService.searchHakus(TarjontaConstants.HAKUTAPA_YHTEISHAKU);
+        ResultV1RDTO<List<String>> hakuRes = this.tarjontaRawService.searchHakus(TarjontaConstants.HAKUTAPA_YHTEISHAKUV1);
         
         List<String> hakuOids = hakuRes.getResult();
         
@@ -689,7 +689,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                 
                 ResultV1RDTO<HakuV1RDTO> curHakuResult = this.tarjontaRawService.getV1EducationHakuByOid(curOid);
                 HakuV1RDTO curHaku = curHakuResult.getResult();
-                if (isValidHaku(curHaku)) { //curHaku.getTila().equals(TarjontaConstants.STATE_PUBLISHED) )
+                if (isValidCalendarHaku(curHaku)) { //curHaku.getTila().equals(TarjontaConstants.STATE_PUBLISHED) )
                     CalendarApplicationSystem curAs = this.creator.createApplicationSystemForCalendar(curHaku);
                     results.add(curAs);
                     LOG.debug("Applicatoin system created");
@@ -703,8 +703,22 @@ public class TarjontaServiceImpl implements TarjontaService {
         return results;
     }
 
-    private boolean isValidHaku(HakuV1RDTO curHaku) {
+    private boolean isValidCalendarHaku(HakuV1RDTO curHaku) {
         return (curHaku.getTila().equals(TarjontaConstants.STATE_PUBLISHED) || curHaku.getTila().equals(TarjontaConstants.STATE_READY))
-                && (curHaku.getHakutyyppiUri().startsWith(TarjontaConstants.HAKUTYYPPI_VARSINAINEN) || curHaku.getHakutyyppiUri().startsWith(TarjontaConstants.HAKUTYYPPI_LISA));
+                && (curHaku.getHakutyyppiUri().startsWith(TarjontaConstants.HAKUTYYPPI_VARSINAINEN) || curHaku.getHakutyyppiUri().startsWith(TarjontaConstants.HAKUTYYPPI_LISA))
+                && (curHaku.getHakutapaUri().equals(TarjontaConstants.HAKUTAPA_YHTEISHAKU));
     }
+
+    @Override
+    public CalendarApplicationSystem createCalendarApplicationSystem(
+            String hakuOid) throws KoodistoException {
+        
+        ResultV1RDTO<HakuV1RDTO> curHakuResult = this.tarjontaRawService.getV1EducationHakuByOid(hakuOid);
+        HakuV1RDTO curHaku = curHakuResult.getResult();
+        if (curHaku != null && isValidCalendarHaku(curHaku)) {
+            return this.creator.createApplicationSystemForCalendar(curHaku);
+        }
+        return null;
+    }
+    
 }

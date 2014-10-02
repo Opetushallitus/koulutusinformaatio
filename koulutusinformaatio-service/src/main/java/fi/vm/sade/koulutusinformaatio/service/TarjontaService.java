@@ -98,5 +98,6 @@ public interface TarjontaService {
     public HigherEducationLOSRef createAdultVocationalLosRef(CompetenceBasedQualificationParentLOS los, ApplicationOption curAo);
 
     public List<CalendarApplicationSystem> findApplicationSystemsForCalendar() throws KoodistoException;
-            
+    
+    public CalendarApplicationSystem createCalendarApplicationSystem(String hakuOid) throws KoodistoException;
 }
