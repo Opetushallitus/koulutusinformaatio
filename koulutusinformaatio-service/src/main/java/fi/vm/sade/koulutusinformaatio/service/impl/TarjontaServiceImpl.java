@@ -713,6 +713,10 @@ public class TarjontaServiceImpl implements TarjontaService {
     public CalendarApplicationSystem createCalendarApplicationSystem(
             String hakuOid) throws KoodistoException {
         
+        if (this.creator == null) {
+            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService);
+        }
+        
         ResultV1RDTO<HakuV1RDTO> curHakuResult = this.tarjontaRawService.getV1EducationHakuByOid(hakuOid);
         HakuV1RDTO curHaku = curHakuResult.getResult();
         if (curHaku != null && isValidCalendarHaku(curHaku)) {
