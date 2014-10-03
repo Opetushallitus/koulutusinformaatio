@@ -121,7 +121,7 @@ var ApplicationSystemCalendar = (function() {
             row = $('<div class="row"></div>');
 
         var iconCol = $('<div class="col-xs-2"></div>');
-        iconCol.append( createCalendarIconItem( new Date() ));
+        iconCol.append( createCalendarIconItem( new Date(asStartDate) ));
         row.append( iconCol );
 
         var infoCol = $('<div class="col-xs-13 col-xs-offset-1"></div>');
