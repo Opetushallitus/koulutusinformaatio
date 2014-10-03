@@ -3,38 +3,44 @@
  *
  *  Requires:
  *  jQuery 1.11
- *  underscore 1.7.0
  *  Bootstrap 3.1.1
+ *  underscore 1.7.0 (included during initialization if not present)
+ *  
+ *  Requires 16 column grid for Bootstrap to display properly. See initialization example from index.html.
  */
 
 "use strict";
 
 var ApplicationSystemCalendar = (function() {
 
-    var selector,
+    var o = {},
         calendar,
         panel,
-        lang,
-        stylesheet = '/calendar/css/calendar.css',
-        deps = {
-            underscore: '/calendar/lib/underscore-min.js'
-        },
-        calendarResource = '/as/fetchForCalendar',
 
-    calendar = function(selector, language) {
+    calendar = function(options) {
 
         if (!window.jQuery) throw "jQuery required";
 
-        selector = selector;
-        lang = language || 'fi';
-        ki.i18n.init(lang);
-        calendar = $(selector)
+        var defaultOptions = {
+            lang: 'fi',
+            selector: '[data-application-system-calendar]',
+            deps: {
+                stylesheet: '/calendar/css/calendar.css',
+                underscore: '/calendar/lib/underscore-min.js'
+            },
+            calendarResource: '/as/fetchForCalendar'
+        };
+
+        $.extend(true, o, defaultOptions, options);
+
+        ki.i18n.init(o.lang);
+        calendar = $(o.selector)
                     .append('<div class="application-system-calendar-container"></div>')
                     .find('.application-system-calendar-container');
         panel = $('<div class="panel-group" id="accordion"></div>');
 
         var init = function() {
-            $.getJSON(calendarResource, {uiLang: lang}, function(data) {
+            $.getJSON(o.calendarResource, {uiLang: o.lang}, function(data) {
                 var remove = [];
                 _.each(data, function(item) {
                     if (item.applicationPeriods && item.applicationPeriods.length > 1) {
@@ -66,10 +72,10 @@ var ApplicationSystemCalendar = (function() {
             }).appendTo('head');
         };
 
-        loadCss(stylesheet);
+        loadCss(o.deps.stylesheet);
 
         if (!window._) {
-            $.getScript(deps.underscore, init);
+            $.getScript(o.deps.underscore, init);
         } else {
             init();
         }
