@@ -73,8 +73,22 @@ public class ProviderServiceImpl implements ProviderService {
             provider = inheritMetadata(provider, parent);
 
         }
+        
+        if (provider.getType() == null) {
+            inheritOlTypes(provider, organisaatioRDTO);
+        } else {
+            provider.getOlTypes().add(provider.getType());
+        }
+        
         providerMap.put(oid, provider);
         return provider;
+    }
+
+    private void inheritOlTypes(Provider provider, OrganisaatioRDTO rawProvider) throws ResourceNotFoundException {
+        
+        if (rawProvider.getTyypit().contains("Toimipiste")) {
+            OrganisaatioRDTO inheritableOrg = this.organisaatioRawService.getOrganisaatio(rawProvider.getParentOid());    
+        }
     }
 
     private Provider inheritMetadata(Provider child, Provider parent) {

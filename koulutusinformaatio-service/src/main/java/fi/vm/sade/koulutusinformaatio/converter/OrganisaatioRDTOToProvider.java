@@ -135,6 +135,7 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
             }
             p.setApplicationOffice(getApplicationOffice(o.getMetadata()));
             p.setType(koodistoService.searchFirst(o.getOppilaitosTyyppiUri()));
+            //p.setOrganisationTypes(o.getTyypit());
         } catch (KoodistoException e) {
             throw new KIConversionException("Conversion failed - " + e.getMessage());
         }
