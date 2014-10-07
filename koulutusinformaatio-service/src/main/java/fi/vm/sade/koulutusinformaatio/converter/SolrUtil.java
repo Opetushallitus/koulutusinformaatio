@@ -95,6 +95,7 @@ public final class SolrUtil {
 
     private static final String FALLBACK_LANG = "fi";
     private static final String TYPE_FACET = "FASETTI";
+    public static final String TYPE_ORGANISATION = "ORGANISAATIO";
     
 
     public static final Integer AS_COUNT = 10;

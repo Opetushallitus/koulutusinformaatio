@@ -100,7 +100,7 @@ public class ProviderServiceImplTest {
         when(conversionService.convert(argThat(new IsParentOrganisaatio()), eq(Provider.class))).thenReturn(parentProvider);
 
         OrganisaatioRawService organisaatioRawService = new OrganisaatioRawServiceImpl(BASE_URL);
-        service = new ProviderServiceImpl(conversionService, organisaatioRawService);
+        service = new ProviderServiceImpl(conversionService, organisaatioRawService, koodistoService);
     }
 
     @Test

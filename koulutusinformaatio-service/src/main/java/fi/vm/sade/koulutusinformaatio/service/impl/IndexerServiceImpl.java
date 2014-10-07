@@ -187,10 +187,30 @@ public class IndexerServiceImpl implements IndexerService {
 
         List<SolrInputDocument> docs = conversionService.convert(los, List.class);
 
+        
+        createProviderDocs(provider, 
+                            lopSolr, 
+                            requiredBaseEducations, 
+                            vocationalAsIds, 
+                            nonVocationalAsIds, 
+                            providerAsIds);
+       
+        loSolr.add(docs);
+    }
+    
+    
+
+    private void createProviderDocs(Provider provider, 
+                                    HttpSolrServer lopSolr, 
+                                    Set<String> requiredBaseEducations, 
+                                    Set<String> vocationalAsIds,
+                                    Set<String> nonVocationalAsIds,
+                                    Set<String> providerAsIds) throws SolrServerException, IOException {
         List<SolrInputDocument> providerDocs = Lists.newArrayList();
         if (provider != null) {
             SolrInputDocument providerDoc = new SolrInputDocument();
             providerDoc.addField("id", provider.getId());
+            providerDoc.addField("type", SolrUtil.TYPE_ORGANISATION);
 
             String nameFi = resolveTextByLang("fi", provider.getName().getTranslations());
             if (nameFi != null && !nameFi.isEmpty()) {
@@ -239,20 +259,33 @@ public class IndexerServiceImpl implements IndexerService {
                     nonVocationalAsIds.addAll(nonVocational);
                 }
             }
+            
+            if (provider.getOlTypes() != null) {
+                for (Code curOlType : provider.getOlTypes()) {
+                    if (curOlType != null && curOlType.getUri() != null) {
+                        providerDoc.addField("oltype_ffm", curOlType.getUri());
+                    }
+                }
+            }
 
             providerDoc.setField("asIds", providerAsIds);
             providerDoc.setField("requiredBaseEducations", requiredBaseEducations);
             providerDoc.setField("vocationalAsIds", vocationalAsIds);
             providerDoc.setField("nonVocationalAsIds", nonVocationalAsIds);
             providerDocs.add(providerDoc);
+            
+            if (provider.getOlTypes() != null) {
+                for (Code curOlType : provider.getOlTypes()) {
+                    SolrUtil.indexCodeAsFacetDoc(curOlType, providerDocs, false);
+                }
+            }
+            
         }
         if (!providerDocs.isEmpty()) {
             lopSolr.add(providerDocs);
         }
-        loSolr.add(docs);
+        
     }
-    
-    
 
     @Override
     public void commitLOChanges(HttpSolrServer loUpdateSolr, 
