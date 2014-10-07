@@ -27,6 +27,7 @@ import fi.vm.sade.koulutusinformaatio.service.*;
 import fi.vm.sade.koulutusinformaatio.service.builder.LearningOpportunityBuilder;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.*;
+import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.OidRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.*;
@@ -666,4 +667,62 @@ public class TarjontaServiceImpl implements TarjontaService {
                 return this.creator.createCBQPLOS(dto.getKomoOid(), Arrays.asList(oid), checkStatus);
                 
     }
+
+    @Override
+    public List<CalendarApplicationSystem> findApplicationSystemsForCalendar() throws KoodistoException {
+        
+        if (creator == null) {
+            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService);
+        }
+        
+        List<CalendarApplicationSystem> results = new ArrayList<CalendarApplicationSystem>();
+        ResultV1RDTO<List<String>> hakuRes = this.tarjontaRawService.searchHakus(TarjontaConstants.HAKUTAPA_YHTEISHAKUV1);
+        
+        List<String> hakuOids = hakuRes.getResult();
+        
+        LOG.debug("Fewtching: " + hakuOids.size() + " applicatoin systems");
+        
+        if (hakuOids != null) {
+            for (String curOid : hakuOids) {
+                
+                LOG.debug("fetching application system: " + curOid);
+                
+                ResultV1RDTO<HakuV1RDTO> curHakuResult = this.tarjontaRawService.getV1EducationHakuByOid(curOid);
+                HakuV1RDTO curHaku = curHakuResult.getResult();
+                if (isValidCalendarHaku(curHaku)) { //curHaku.getTila().equals(TarjontaConstants.STATE_PUBLISHED) )
+                    CalendarApplicationSystem curAs = this.creator.createApplicationSystemForCalendar(curHaku);
+                    results.add(curAs);
+                    LOG.debug("Applicatoin system created");
+                }
+                
+            }
+        }
+        
+        LOG.debug("REturning " + results.size() + " results");
+        
+        return results;
+    }
+
+    private boolean isValidCalendarHaku(HakuV1RDTO curHaku) {
+        return (curHaku.getTila().equals(TarjontaConstants.STATE_PUBLISHED) || curHaku.getTila().equals(TarjontaConstants.STATE_READY))
+                && (curHaku.getHakutyyppiUri().startsWith(TarjontaConstants.HAKUTYYPPI_VARSINAINEN) || curHaku.getHakutyyppiUri().startsWith(TarjontaConstants.HAKUTYYPPI_LISA))
+                && (curHaku.getHakutapaUri().startsWith(TarjontaConstants.HAKUTAPA_YHTEISHAKU));
+    }
+
+    @Override
+    public CalendarApplicationSystem createCalendarApplicationSystem(
+            String hakuOid) throws KoodistoException {
+        
+        if (this.creator == null) {
+            creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService);
+        }
+        
+        ResultV1RDTO<HakuV1RDTO> curHakuResult = this.tarjontaRawService.getV1EducationHakuByOid(hakuOid);
+        HakuV1RDTO curHaku = curHakuResult.getResult();
+        if (curHaku != null && isValidCalendarHaku(curHaku)) {
+            return this.creator.createApplicationSystemForCalendar(curHaku);
+        }
+        return null;
+    }
+    
 }

@@ -1253,4 +1253,8 @@ public class LOSObjectCreator extends ObjectCreator {
 
     }
 
+    public CalendarApplicationSystem createApplicationSystemForCalendar(HakuV1RDTO hakuDTO) throws KoodistoException {
+        return this.loiCreator.applicationOptionCreator.getApplicationSystemCreator().createApplicationSystemForCalendar(hakuDTO);
+    }
+
 }

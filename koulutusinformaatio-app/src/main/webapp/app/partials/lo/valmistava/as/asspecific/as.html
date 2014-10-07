@@ -3,6 +3,11 @@
     <div data-ng-switch-when="VapaanSivistystyonKoulutus">
         <div class="panel panel-ki-default">
             <div class="panel-heading">
+                <h4 class="panel-title" data-ki-i18n="application-title"></h4>
+            </div>
+            <div class="panel-body">{{as.name}}</div>
+            
+            <div class="panel-heading">
                 <h4 class="panel-title" data-ki-i18n="application-options"></h4>
             </div>
             <div data-ng-repeat="ao in as.applicationOptions" class="panel-body">

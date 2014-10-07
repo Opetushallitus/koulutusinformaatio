@@ -478,4 +478,58 @@ public class IndexerServiceImpl implements IndexerService {
         locationAliasHttpSolrServer.rollback();
     }
 
+    @Override
+    public void indexASToSolr(CalendarApplicationSystem as, HttpSolrServer loUpdateSolr) throws SolrServerException, IOException {
+       
+        SolrInputDocument asDoc = new SolrInputDocument();
+        
+        asDoc.addField(SolrUtil.LearningOpportunity.ID, as.getId());
+        asDoc.addField(SolrUtil.LearningOpportunity.TYPE, SolrUtil.SolrConstants.TYPE_APPLICATION_SYSTEM);
+        
+        
+        
+        String nameFi = resolveTextByLang("fi", as.getName().getTranslations());
+        if (nameFi != null && !nameFi.isEmpty()) {
+            asDoc.addField(SolrUtil.LearningOpportunity.NAME_FI, nameFi);
+            asDoc.addField(SolrUtil.LearningOpportunity.NAME_DISPLAY_FI, nameFi);
+        }
+        String nameSv = resolveTextByLang("sv", as.getName().getTranslations());
+        if (nameSv != null && !nameSv.isEmpty()) {
+            asDoc.addField(SolrUtil.LearningOpportunity.NAME_SV, nameSv);
+            asDoc.addField(SolrUtil.LearningOpportunity.NAME_DISPLAY_SV, nameSv);
+        }
+        String nameEn = resolveTextByLang("en", as.getName().getTranslations());
+        if (nameEn != null && !nameEn.isEmpty()) {
+            asDoc.addField(SolrUtil.LearningOpportunity.NAME_EN, nameEn);
+            asDoc.addField(SolrUtil.LearningOpportunity.NAME_DISPLAY_EN, nameEn);
+        }
+        
+        int parentApplicationDateRangeIndex = 0;
+        
+        for (ApplicationPeriod ap : as.getApplicationPeriods()) {//getApplicationDates()) {
+            
+            DateRange dr = ap.getDateRange();
+            
+            asDoc.addField(new StringBuilder().append("asStart").append("_").
+                    append(String.valueOf(parentApplicationDateRangeIndex)).toString(), dr.getStartDate());
+            asDoc.addField(new StringBuilder().append("asEnd").append("_").
+                    append(String.valueOf(parentApplicationDateRangeIndex)).toString(), dr.getEndDate());
+            asDoc.addField(new StringBuilder().append("asPeriodName").append("_").
+                    append(String.valueOf(parentApplicationDateRangeIndex)).append("_ss").toString(), ap.getName());
+            
+            parentApplicationDateRangeIndex++;
+            
+            
+            
+        }
+        
+        
+        
+        loUpdateSolr.add(asDoc);
+        
+        
+        
+        
+    }
+
 }

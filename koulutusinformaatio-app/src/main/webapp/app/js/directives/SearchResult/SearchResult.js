@@ -59,18 +59,18 @@ directive('toggleCollapse', ['$timeout', function ($timeout) {
         transclude: true,
         controller: function($scope) {
             $scope.toggleExtendedView = function() {
-                $timeout(function() {
-                    if($scope.showExtension == 'closed') {
-                        if(!$scope.extendedLO) {
-                            $scope.fetchLOData();
+                if($scope.showExtension == 'closed') {
+                    if(!$scope.extendedLO) {
+                        // do not open until data is loaded
+                        $scope.fetchLOData().then(function() {
                             $scope.showExtension = 'opened';
-                        } else {
-                            $scope.showExtension = 'opened';
-                        }
+                        });
                     } else {
-                        $scope.showExtension = 'closed';
+                        $scope.showExtension = 'opened';
                     }
-                }, 100);
+                } else {
+                    $scope.showExtension = 'closed';
+                }
             }
         },
         link: function (scope, iElement, iAttrs) {
@@ -85,32 +85,42 @@ directive('toggleCollapse', ['$timeout', function ($timeout) {
     };
 }]).
 
-directive('extendedSearchresultData', ['ParentLOService', 'SpecialLOService', 'UpperSecondaryLOService', 'HigherEducationLOService', 'AdultUpperSecondaryLOService', 'AdultVocationalLOService', function (ParentLOService, SpecialLOService, UpperSecondaryLOService, HigherEducationLOService, AdultUpperSecondaryLOService, AdultVocationalLOService) {
+directive('extendedSearchresultData', 
+    [
+        '$q',
+        'ParentLOService',
+        'SpecialLOService',
+        'UpperSecondaryLOService',
+        'HigherEducationLOService',
+        'AdultUpperSecondaryLOService',
+        'AdultVocationalLOService',
+        'LOTypes',
+        function ($q, ParentLOService, SpecialLOService, UpperSecondaryLOService, HigherEducationLOService, AdultUpperSecondaryLOService, AdultVocationalLOService, LOTypes) {
     return {    
         restrict: 'A',
         link: function($scope, ielement, iAttrs) {
             $scope.fetchLOData = function() {
+                var deferred = $q.defer(),
+                    LOService;
                 $scope.extendedLO = undefined;
-                
-                if(iAttrs.extendedSearchresultData === "tutkinto") {
-                    $scope.extendedLO = ParentLOService.query({id: $scope.lo.id});
-                } else if(iAttrs.extendedSearchresultData === "valmentava" || 
-                    iAttrs.extendedSearchresultData === "erityisopetus" ||
-                    iAttrs.extendedSearchresultData === "valmistava" ) {
-                    $scope.extendedLO = SpecialLOService.query({id: $scope.lo.id});
-                } else if(iAttrs.extendedSearchresultData === "lukio") {
-                    $scope.extendedLO = UpperSecondaryLOService.query({id: $scope.lo.id});
-                } else if(iAttrs.extendedSearchresultData === "korkeakoulu") {
-                    $scope.extendedLO = HigherEducationLOService.query({id: $scope.lo.id});
-                } else if (iAttrs.extendedSearchresultData === "aikuislukio") {
-                	$scope.extendedLO = AdultUpperSecondaryLOService.query({id: $scope.lo.id});
-                } else if (iAttrs.extendedSearchresultData === "ammatillinenaikuiskoulutus") {
-                	$scope.extendedLO = AdultVocationalLOService.query({id: $scope.lo.id});
+
+                if(iAttrs.extendedSearchresultData === LOTypes.TUTKINTO) {
+                    LOService = ParentLOService;
+                } else if(iAttrs.extendedSearchresultData === LOTypes.VALMENTAVA || 
+                    iAttrs.extendedSearchresultData === LOTypes.ERITYISOPETUS ||
+                    iAttrs.extendedSearchresultData === LOTypes.VALMISTAVA ) {
+                    LOService = SpecialLOService;
+                } else if(iAttrs.extendedSearchresultData === LOTypes.LUKIO) {
+                    LOService = UpperSecondaryLOService;
+                } else if(iAttrs.extendedSearchresultData === LOTypes.KORKEAKOULU) {
+                    LOService = HigherEducationLOService;
+                } else if (iAttrs.extendedSearchresultData === LOTypes.AIKUISLUKIO) {
+                    LOService = AdultUpperSecondaryLOService;
+                } else if (iAttrs.extendedSearchresultData === LOTypes.AMMATILLINENAIKUISKOULUTUS) {
+                    LOService = AdultVocationalLOService;
                 }
 
-                $scope.loType = iAttrs.extendedSearchresultData;
-                    
-                $scope.extendedLO.then(function(result) {
+                LOService.query({id: $scope.lo.id}).then(function(result) {
                     if ($scope.lo.prerequisiteCode) {
                         for(var i = 0; i < result.lo.lois.length; i++) {
                             // filter out unnecessary lois by prerequisite
@@ -120,11 +130,16 @@ directive('extendedSearchresultData', ['ParentLOService', 'SpecialLOService', 'U
                             }
                         }
                     }
-
                     $scope.extendedLO = result;
+
+                    deferred.resolve(result);
                 }, function(error) {
-                    //console.error('error fetching extended LO');
+                    deferred.reject(error);
                 });
+
+                $scope.loType = iAttrs.extendedSearchresultData;
+
+                return deferred.promise;        
             };
         }
     };

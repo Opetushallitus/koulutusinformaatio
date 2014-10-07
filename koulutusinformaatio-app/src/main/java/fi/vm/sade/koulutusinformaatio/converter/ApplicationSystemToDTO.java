@@ -16,8 +16,12 @@
 
 package fi.vm.sade.koulutusinformaatio.converter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationSystemDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.CalendarApplicationSystemDTO;
 
 /**
  * @author Mikko Majapuro
@@ -43,4 +47,17 @@ public final class ApplicationSystemToDTO {
             return null;
         }
     }
+    
+    public static List<ApplicationSystemDTO> covertAll(final List<ApplicationSystem> applicationSystems, final String lang) {
+        List<ApplicationSystemDTO> dtos = new ArrayList<ApplicationSystemDTO>();
+        if (applicationSystems != null) {
+            
+            for (ApplicationSystem curAs : applicationSystems) {
+                dtos.add(convert(curAs, lang));
+            }
+        }
+        return dtos;
+    }
+    
+
 }

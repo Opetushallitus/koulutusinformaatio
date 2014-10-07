@@ -124,7 +124,16 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
                 this.specialLosBuilder,
                 this.upperSecLosBuilder);
         this.aoIndexer = new IncrementalApplicationOptionIndexer(this.tarjontaRawService, this.dataQueryService, this.dataUpdateService, this.losIndexer);
-        this.asIndexer = new IncrementalApplicationSystemIndexer(this.tarjontaRawService, this.dataQueryService, this.koodistoService, this.aoIndexer, this.losIndexer);
+        this.asIndexer = new IncrementalApplicationSystemIndexer(this.tarjontaRawService, 
+                                                                this.tarjontaService,
+                                                                this.dataQueryService, 
+                                                                this.koodistoService, 
+                                                                this.aoIndexer, 
+                                                                this.losIndexer, 
+                                                                this.indexerService,
+                                                                this.loHttpSolrServer,
+                                                                this.lopHttpSolrServer,
+                                                                this.locationHttpSolrServer);
     }
 
     @Override
