@@ -62,4 +62,6 @@ public interface SearchService {
      * @return list of types as code objects
      */
     List<Code> getProviderTypes(String firstCharacter, String lang) throws SearchException;
+
+    List<CalendarApplicationSystem> findApplicationSystemsForCalendar() throws SearchException;
 }

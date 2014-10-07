@@ -33,6 +33,7 @@ module.exports = function(config) {
             appPath + 'app/lib/i18next-1.6.0.js',
             appPath + 'app/lib/angular.treeview.js',
             appPath + 'app/js/**/*.js',
+            appPath + 'calendar/*.js',
             appPath + 'app/templates/*.html',
 
             testPath + 'test/lib/angular/angular-mocks.js',

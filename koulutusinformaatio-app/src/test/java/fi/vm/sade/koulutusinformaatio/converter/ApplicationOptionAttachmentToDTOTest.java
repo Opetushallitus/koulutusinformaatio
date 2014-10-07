@@ -68,13 +68,13 @@ public class ApplicationOptionAttachmentToDTOTest {
                 new ApplicationOptionAttachment(),
                 new ApplicationOptionAttachment()
         );
-        List<ApplicationOptionAttachmentDTO> dtos = ApplicationOptionAttachmentToDTO.convertAll(aoas, "fi");
+        List<ApplicationOptionAttachmentDTO> dtos = ApplicationOptionAttachmentToDTO.convertAll(aoas, "fi", false);
         assertNotNull(dtos);
         assertEquals(3, dtos.size());
     }
     @Test
 
     public void testConvertAllNull() {
-        assertNull(ApplicationOptionAttachmentToDTO.convertAll(null, ""));
+        assertNull(ApplicationOptionAttachmentToDTO.convertAll(null, "", false));
     }
 }

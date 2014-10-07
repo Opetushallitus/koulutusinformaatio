@@ -65,6 +65,10 @@ public class ApplicationOptionCreator extends ObjectCreator {
         this.educationObjectCreator = new EducationObjectCreator(koodistoService, organisaatioRawService);
         this.applicationSystemCreator = new ApplicationSystemCreator(koodistoService);
     }
+    
+    public ApplicationSystemCreator getApplicationSystemCreator() {
+        return applicationSystemCreator;
+    }
 
     private ApplicationOption createApplicationOption(HakukohdeDTO hakukohdeDTO, HakuDTO hakuDTO, KomotoDTO komoto,
                                                       Code prerequisite, String educationCodeUri, String educationType) throws KoodistoException {

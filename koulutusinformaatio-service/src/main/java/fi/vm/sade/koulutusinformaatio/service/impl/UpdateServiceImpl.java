@@ -15,6 +15,7 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,6 +30,7 @@ import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
 import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.Article;
+import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.CompetenceBasedQualificationParentLOS;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
@@ -105,6 +107,7 @@ public class UpdateServiceImpl implements UpdateService {
             count = loOids.size();
             index += count;
             
+            
                 for (String loOid : loOids) {
                     List<LOS> specifications = null;
                     try {
@@ -122,6 +125,7 @@ public class UpdateServiceImpl implements UpdateService {
             }
 
 
+
                 
             List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
             LOG.debug("Found higher educations: " + higherEducations.size());
@@ -132,7 +136,7 @@ public class UpdateServiceImpl implements UpdateService {
                 this.educationDataUpdateService.save(curLOS);
             }
             LOG.debug("Higher educations saved.");
-            
+
             
             List<AdultUpperSecondaryLOS> adultUpperSecondaries = this.tarjontaService.findAdultUpperSecondaries();
             LOG.debug("Found adult upper secondary educations: " + adultUpperSecondaries.size());
@@ -162,6 +166,15 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.debug("Got locations");
             indexerService.addLocations(locations, locationUpdateSolr);
             LOG.debug("Added locations");
+            
+            List<CalendarApplicationSystem> applicationSystems = this.tarjontaService.findApplicationSystemsForCalendar();
+            for (CalendarApplicationSystem curAs : applicationSystems) {
+                LOG.debug("Indexing application system: " + curAs.getId());
+                this.indexerService.indexASToSolr(curAs, loUpdateSolr);
+            }
+            this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
+            LOG.debug("Application systems indexed");
+            
             List<Article> articles = this.articleService.fetchArticles();
             LOG.debug("Articles fetched");
             indexerService.addArticles(loUpdateSolr, articles);

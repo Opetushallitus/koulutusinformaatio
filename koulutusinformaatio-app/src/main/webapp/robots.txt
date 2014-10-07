@@ -2,6 +2,7 @@ User-agent: *
 Disallow: /haku-app/
 Disallow: /etusivu/
 Disallow: /m/
+Disallow: /calendar/
 Disallow: /app/?_escaped_fragment_=/muistilista
 Disallow: /app/?_escaped_fragment_=/haku/
 Disallow: /app/?_escaped_fragment_=/hakuwizard

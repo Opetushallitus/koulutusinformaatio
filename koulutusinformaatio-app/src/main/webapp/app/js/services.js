@@ -1297,16 +1297,6 @@ service('LanguageService', ['CookieService', '$location', '_', function(CookieSe
         key = 'i18next',
 
         getLanguage = function() {
-
-            // force ui lang to queried language (used for SEO snapshots)
-            // fallback to english
-            var queryLanguage = $location.search().descriptionLang;
-            if (queryLanguage && isSupportedLanguage(queryLanguage)) {
-                return queryLanguage;
-            } else if (queryLanguage) {
-                return languages.finnish;
-            }
-
             return CookieService.get(key) || defaultLanguage;
         },
 

@@ -100,5 +100,7 @@ public interface TarjontaRawService {
 
     ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> getAdultEducationByKomo(
             String komoOid);
+
+    public ResultV1RDTO<List<String>> searchHakus(String hakutapaYhteishaku);
     
 }

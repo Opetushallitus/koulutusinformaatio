@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,6 +29,7 @@ import com.google.common.base.Strings;
 import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
+import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
 import fi.vm.sade.koulutusinformaatio.domain.DateRange;
@@ -43,8 +45,10 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.EducationIncrementalDataQueryService;
+import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
+import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.ApplicationSystemCreator;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.CreatorUtil;
@@ -71,18 +75,36 @@ public class IncrementalApplicationSystemIndexer {
     private KoodistoService koodistoService;
     
     private IncrementalApplicationOptionIndexer aoIndexer;
-    private IncrementalLOSIndexer losIndexer;
+    private IncrementalLOSIndexer losIndexer; 
+    private TarjontaService tarjontaService;
+    private IndexerService indexerService;
+    private final HttpSolrServer loHttpSolrServer;
+    // solr client for learning opportunity provider index
+    private final HttpSolrServer lopHttpSolrServer;
+
+    private final HttpSolrServer locationHttpSolrServer;
+    
     
     public IncrementalApplicationSystemIndexer(TarjontaRawService tarjontaRawService, 
+                                                TarjontaService tarjontaService,
                                                 EducationIncrementalDataQueryService dataQueryService, 
                                                 KoodistoService koodistoService,
                                                 IncrementalApplicationOptionIndexer aoIndexer,
-                                                IncrementalLOSIndexer losIndexer) {
+                                                IncrementalLOSIndexer losIndexer,
+                                                IndexerService indexerService,
+                                                HttpSolrServer loHttpSolrServer,
+                                                HttpSolrServer lopHttpSolrServer,
+                                                HttpSolrServer locationHttpSolrServer) {
         this.tarjontaRawService = tarjontaRawService;
         this.dataQueryService = dataQueryService;
         this.koodistoService = koodistoService;
         this.aoIndexer = aoIndexer;
         this.losIndexer = losIndexer;
+        this.tarjontaService = tarjontaService;
+        this.indexerService = indexerService;
+        this.loHttpSolrServer = loHttpSolrServer;
+        this.lopHttpSolrServer = lopHttpSolrServer;
+        this.locationHttpSolrServer = locationHttpSolrServer;
     }
     
     /**
@@ -97,6 +119,12 @@ public class IncrementalApplicationSystemIndexer {
         } else {
             indexHigherEducationAsData(asOid);
         }
+        CalendarApplicationSystem calAS = this.tarjontaService.createCalendarApplicationSystem(asOid);
+        loHttpSolrServer.deleteById(asOid);
+        if (calAS != null) {
+            this.indexerService.indexASToSolr(calAS, this.loHttpSolrServer);
+        }
+        this.indexerService.commitLOChanges(loHttpSolrServer, lopHttpSolrServer, locationHttpSolrServer, true);
     }
     
     private void indexAdultUpsecAsData(String asOid) throws Exception {

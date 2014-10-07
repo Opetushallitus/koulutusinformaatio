@@ -373,4 +373,14 @@ public class TarjontaRawServiceImpl implements TarjontaRawService {
                 .get(new GenericType<ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>>>() {
                 });
     }
+
+    @Override
+    public ResultV1RDTO<List<String>> searchHakus(String hakutapa) {
+        return higherEducationASResource
+                .queryParam("HAKUTAPA", hakutapa)
+                .accept(JSON_UTF8)
+                .get(new GenericType<ResultV1RDTO<List<String>>>() {    
+                });
+                
+    }
 }

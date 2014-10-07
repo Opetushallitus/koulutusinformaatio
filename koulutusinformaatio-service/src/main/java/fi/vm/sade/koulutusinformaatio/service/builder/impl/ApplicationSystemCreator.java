@@ -16,13 +16,16 @@
 
 package fi.vm.sade.koulutusinformaatio.service.builder.impl;
 
+import fi.vm.sade.koulutusinformaatio.domain.ApplicationPeriod;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
+import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.DateRange;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.tarjonta.service.resources.dto.HakuDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.HakuaikaRDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuaikaV1RDTO;
 
 /**
  * @author Hannu Lyytikainen
@@ -64,6 +67,32 @@ public class ApplicationSystemCreator extends ObjectCreator {
         as.setApplicationFormLink( haku.getHakulomakeUri());
         as.setHakutapaUri(koodistoService.searchFirstCodeValue(haku.getHakutapaUri()));
         as.setHakutyyppiUri(koodistoService.searchFirstCodeValue(haku.getHakutyyppiUri()));
+        
+        return as;
+    }
+    
+    public CalendarApplicationSystem createApplicationSystemForCalendar(HakuV1RDTO haku) throws KoodistoException {
+        CalendarApplicationSystem as = new CalendarApplicationSystem();
+        as.setId(haku.getOid());
+        //as.setMaxApplications(haku.getMaxHakukohdes());
+        as.setName(getI18nText(haku.getNimi()));
+        //as.setApplicationFormLink( haku.getHakulomakeUri());
+        //as.setHakutapaUri(koodistoService.searchFirstCodeValue(haku.getHakutapaUri()));
+        //as.setHakutyyppiUri(koodistoService.searchFirstCodeValue(haku.getHakutyyppiUri()));
+        if (haku.getHakuaikas() != null) {
+            for (HakuaikaV1RDTO ha : haku.getHakuaikas()) {
+                DateRange range = new DateRange();
+                range.setStartDate(ha.getAlkuPvm());
+                range.setEndDate(ha.getLoppuPvm());
+                
+                ApplicationPeriod ap = new ApplicationPeriod();
+                ap.setDateRange(range);
+                ap.setName(ha.getNimi());
+                
+                as.getApplicationPeriods().add(ap);
+                //as.getApplicationDates().add(range);
+            }
+        }
         
         return as;
     }
