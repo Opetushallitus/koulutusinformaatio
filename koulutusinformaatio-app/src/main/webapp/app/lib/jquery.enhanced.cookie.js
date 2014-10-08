@@ -42,10 +42,10 @@ if(options.maxNumberOfCookies == undefined)
     options.maxNumberOfCookies = 20;
 }
 
-// Set the usage of the local storage to true by default
+// Set the usage of the local storage to false by default
 if(options.useLocalStorage == undefined)
 {
-    options.useLocalStorage = true;
+    options.useLocalStorage = false;
 }    
 
 // Check if the user tries to delete the cookie
@@ -158,7 +158,7 @@ if(options == undefined)
 // If no value exists in the localStorage, then we continue by checking in the cookies
 // This second checkup is needed in case that a cookie has been created in the past, 
 // using the old cookie jQuery plugin.
-if(isStorageAvailable != false)
+if(options.useLocalStorage && isStorageAvailable != false)
 {
     var value = localStorage.getItem(key);
 
