@@ -61,6 +61,7 @@ import fi.vm.sade.koulutusinformaatio.domain.LOSearchResult;
 import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
 import fi.vm.sade.koulutusinformaatio.domain.Location;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
+import fi.vm.sade.koulutusinformaatio.domain.ProviderResult;
 import fi.vm.sade.koulutusinformaatio.domain.SuggestedTermsResult;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
@@ -219,7 +220,9 @@ public class SearchServiceSolrImpl implements SearchService {
 
     @Override
     public LOSearchResultList searchLearningOpportunities(String term, String prerequisite,
-            List<String> cities, List<String> facetFilters,  List<String> articleFilters,
+            List<String> cities, List<String> facetFilters,  
+            List<String> articleFilters,
+            List<String> providerFilters,
             String lang, boolean ongoing, boolean upcoming, boolean upcomingLater,
             int start, int rows, String sort, String order, 
             String lopFilter, String educationCodeFilter,
@@ -241,10 +244,12 @@ public class SearchServiceSolrImpl implements SearchService {
                         start, rows, sort, order,
                         lopFilter, educationCodeFilter, excludes,
                         upcomingLimit, upcomingLaterLimit);
-            } else if (lopFilter == null && educationCodeFilter == null && (excludes == null || excludes.isEmpty())) {
+            } else if (SearchType.ARTICLE.equals(searchType)) {//lopFilter == null && educationCodeFilter == null && (excludes == null || excludes.isEmpty())) {
                 query = new ArticleQuery(fixed, lang,  
                         start, rows, sort, order,
                         facetFilters, articleFilters);
+            } else if (SearchType.PROVIDER.equals(searchType)) {
+                query = new ProviderQuery(fixed, lang, providerFilters, start, rows, sort, order);
             }
 
             try {
@@ -259,8 +264,10 @@ public class SearchServiceSolrImpl implements SearchService {
 
             QueryResponse response = null;
             try {
-                if (query != null) {
+                if (query != null && !SearchType.PROVIDER.equals(searchType)) {
                     response = loHttpSolrServer.query(query);
+                } else {
+                    response = lopHttpSolrServer.query(query);
                 }
                 setResultCount(searchResultList, response, searchType);
             } catch (SolrServerException e) {
@@ -274,6 +281,8 @@ public class SearchServiceSolrImpl implements SearchService {
                             searchResultList.getResults().add(createLOSearchResult(doc, lang));
                         } else if (SearchType.ARTICLE.equals(searchType)) {
                             searchResultList.getArticleresults().add(createArticleSearchResult(doc));
+                        } else if (SearchType.PROVIDER.equals(searchType)) {
+                            searchResultList.getProviderResults().add(createProviderSearchResult(doc, lang));
                         }
                     } catch (Exception ex) {
                         LOG.warn("Exception while creating search result", ex);
@@ -284,8 +293,10 @@ public class SearchServiceSolrImpl implements SearchService {
 
             if (SearchType.LO.equals(searchType)) {
                 addFacetsToResult(searchResultList, response, lang, facetFilters, upcomingLimit, upcomingLaterLimit);
-            } else if (response != null) {
+            } else if (response != null && SearchType.ARTICLE.equals(searchType)) {
                 addArticleFacetsToResult(searchResultList, response, lang, articleFilters);
+            } else if (response != null) {
+                addProviderFacetsToResult(searchResultList, response, lang, providerFilters);
             }
 
             if (lopFilter != null) {
@@ -298,14 +309,14 @@ public class SearchServiceSolrImpl implements SearchService {
 
             //Setting result counts of other searches (one of article, provider or lo)
             if (searchType.LO.equals(searchType)) {
-                setOtherResultCounts(fixed, lang, start, sort, order, cities, facetFilters, articleFilters,  ongoing, upcoming, upcomingLater,
+                setOtherResultCounts(fixed, lang, start, sort, order, cities, facetFilters, articleFilters, providerFilters, ongoing, upcoming, upcomingLater,
                         lopFilter, educationCodeFilter, excludes, SearchType.ARTICLE, searchResultList, 
                         upcomingLimit, upcomingLaterLimit);
             } else if (SearchType.ARTICLE.equals(searchType)) {
-                setOtherResultCounts(fixed, lang, start, sort, order, cities, facetFilters, articleFilters, ongoing, upcoming, upcomingLater, 
+                setOtherResultCounts(fixed, lang, start, sort, order, cities, facetFilters, articleFilters, providerFilters, ongoing, upcoming, upcomingLater, 
                         lopFilter, educationCodeFilter, excludes, SearchType.LO, searchResultList,
                         upcomingLimit, upcomingLaterLimit);
-            }
+            } 
 
             searchResultList.setTotalCount(searchResultList.getArticleCount() + searchResultList.getLoCount());
 
@@ -314,9 +325,47 @@ public class SearchServiceSolrImpl implements SearchService {
         return searchResultList;
     }
 
+    private void addProviderFacetsToResult(LOSearchResultList searchResultList,
+            QueryResponse response, String lang, List<String> providerFilters) {
+        
+        FacetField providerTypeF = response.getFacetField("oltype_ffm");
+        Facet providerTypeFacet = new Facet();
+        List<FacetValue> values = new ArrayList<FacetValue>();
+        if (providerTypeF != null) {
+            for (Count curC : providerTypeF.getValues()) {
+
+
+                FacetValue newVal = new FacetValue("oltype_ffm",
+                        curC.getName(),
+                        curC.getCount(),
+                        curC.getName());
+                values.add(newVal);
+
+            }
+        }
+        providerTypeFacet.setFacetValues(values);
+        searchResultList.setProviderTypeFacet(providerTypeFacet);
+        
+        
+    }
+
+    private ProviderResult createProviderSearchResult(SolrDocument doc, String lang) {
+        
+        ProviderResult result = new ProviderResult();
+        String name = getTranslatedValue(doc, lang,
+                LearningOpportunity.NAME_FI,
+                LearningOpportunity.NAME_SV,
+                LearningOpportunity.NAME_EN,
+                LearningOpportunity.NAME_FI);
+        result.setName(name);
+        result.setId(doc.getFieldValue("id").toString());
+        
+        return result;
+    }
+
     private void setOtherResultCounts(String term, String lang, int start,
             String sort, String order, List<String> cities,
-            List<String> facetFilters, List<String> articleFilters,
+            List<String> facetFilters, List<String> articleFilters, List<String> providerFilters,
             boolean ongoing, boolean upcoming, boolean upcomingLater,
             String lopFilter, String educationCodeFilter, List<String> excludes,
             SearchType searchType, LOSearchResultList searchResultList,
@@ -324,6 +373,33 @@ public class SearchServiceSolrImpl implements SearchService {
 
         SolrQuery query = null;
 
+        if (SearchType.PROVIDER.equals(searchType)) {
+            query = new LearningOpportunityQuery(term, null, 
+                    cities, facetFilters, 
+                    lang, ongoing, upcoming, upcomingLater, 
+                    start, 0, sort, order,
+                    lopFilter, educationCodeFilter, excludes,
+                    upcomingLimit, upcomingLaterLimit);
+            try {
+                QueryResponse response = loHttpSolrServer.query(query);
+                setResultCount(searchResultList, response, searchType);
+            } catch (SolrServerException e) {
+                throw new SearchException(SOLR_ERROR);
+            }
+            
+            query = new ArticleQuery(term, lang,  
+                    start, 0, sort, order,
+                    facetFilters, articleFilters);
+            
+            try {
+                QueryResponse response = loHttpSolrServer.query(query);
+                setResultCount(searchResultList, response, searchType);
+            } catch (SolrServerException e) {
+                throw new SearchException(SOLR_ERROR);
+            }
+            
+        } else {
+        
         if (SearchType.LO.equals(searchType)) {
             query = new LearningOpportunityQuery(term, null, 
                     cities, facetFilters, 
@@ -331,7 +407,7 @@ public class SearchServiceSolrImpl implements SearchService {
                     start, 0, sort, order,
                     lopFilter, educationCodeFilter, excludes,
                     upcomingLimit, upcomingLaterLimit);
-        } else if (lopFilter == null && educationCodeFilter == null && (excludes == null || excludes.isEmpty())) {
+        } else if (SearchType.ARTICLE.equals(searchType)) {//lopFilter == null && educationCodeFilter == null && (excludes == null || excludes.isEmpty())) {
             query = new ArticleQuery(term, lang,  
                     start, 0, sort, order,
                     facetFilters, articleFilters);
@@ -346,6 +422,17 @@ public class SearchServiceSolrImpl implements SearchService {
         } else {
             searchResultList.setArticleCount(0);
         }
+        
+       
+            query = new ProviderQuery(term, lang, providerFilters, start, 0, sort, order);
+            try {
+                QueryResponse response = lopHttpSolrServer.query(query);
+                setResultCount(searchResultList, response, SearchType.PROVIDER);
+            } catch (SolrServerException ex) {
+                throw new SearchException(SOLR_ERROR);
+            }
+        }
+        
     }
 
     private void setResultCount(LOSearchResultList searchResultList,

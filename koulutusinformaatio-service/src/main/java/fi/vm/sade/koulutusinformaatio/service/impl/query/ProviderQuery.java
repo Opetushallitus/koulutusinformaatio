@@ -24,6 +24,7 @@ import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 
 import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrQuery.ORDER;
 import org.apache.solr.client.solrj.util.ClientUtils;
 
 /**
@@ -52,6 +53,7 @@ public class ProviderQuery extends SolrQuery {
         this.setRows(rows);
         this.setSort(resolveNameField(lang, prefix), ORDER.asc);
 
+        this.addFilterQuery(String.format("type:%s", SolrUtil.TYPE_ORGANISATION));
         if (asId != null) {
             this.addFilterQuery(Joiner.on(":").join(AS_IDS, asId));
 
@@ -70,6 +72,23 @@ public class ProviderQuery extends SolrQuery {
         if (type != null) {
             this.addFilterQuery(Joiner.on(":").join(SolrUtil.ProviderFields.TYPE_VALUE, type));
         }
+    }
+    
+    public ProviderQuery(String q, String lang, List<String> facetFilters, int start, int rows, String sort, String order) {
+        super(Joiner.on(":").join(resolveNameField(lang, false), ClientUtils.escapeQueryChars(q) + "*"));
+        
+        for (String curFilter : facetFilters) {
+            this.addFilterQuery(curFilter);
+        }
+        
+        this.setStart(start);
+        this.setRows(rows);
+        
+        this.setParam("q.op", "AND");
+        if (sort != null) {
+            this.addSort(sort, order.equals("asc") ? ORDER.asc : ORDER.desc);
+        }
+        
     }
 
     private static String resolveNameField(String lang, boolean prefix) {

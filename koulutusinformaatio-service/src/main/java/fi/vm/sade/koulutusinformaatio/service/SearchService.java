@@ -32,7 +32,7 @@ public interface SearchService {
 
     LOSearchResultList searchLearningOpportunities(final String term, final String prerequisite,
                                                    List<String> cities, List<String> facetFilters, 
-                                                   List<String> articleFilters,
+                                                   List<String> articleFilters, List<String> providerFilters,
                                                    String lang, boolean ongoing, boolean upcoming, 
                                                    boolean upcomingLater,
                                                    int start, int rows, String sort, String order, 
