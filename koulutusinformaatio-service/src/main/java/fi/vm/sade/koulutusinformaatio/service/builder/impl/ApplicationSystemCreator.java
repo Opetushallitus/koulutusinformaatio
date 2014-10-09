@@ -87,7 +87,7 @@ public class ApplicationSystemCreator extends ObjectCreator {
                 
                 ApplicationPeriod ap = new ApplicationPeriod();
                 ap.setDateRange(range);
-                ap.setName(ha.getNimi());
+                ap.setName(getI18nText(ha.getNimet()));
                 
                 as.getApplicationPeriods().add(ap);
                 //as.getApplicationDates().add(range);

@@ -22,13 +22,13 @@ package fi.vm.sade.koulutusinformaatio.domain;
  */
 public class ApplicationPeriod {
 
-    private String name;
+    private I18nText name;
     private DateRange dateRange;
     
-    public String getName() {
+    public I18nText getName() {
         return name;
     }
-    public void setName(String name) {
+    public void setName(I18nText name) {
         this.name = name;
     }
     public DateRange getDateRange() {
