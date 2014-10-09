@@ -23,7 +23,7 @@ public final class CalendarApplicationSystemToDTO {
             calendarAS.setId(applicationSystem.getId());
             calendarAS.setName(ConverterUtil.getTextByLanguageUseFallbackLang(applicationSystem.getName(), lang));
             calendarAS.setAsOngoing(ConverterUtil.isCalendarApplicationsystemOngoing(applicationSystem.getApplicationPeriods()));
-            calendarAS.setApplicationPeriods(convertApplicationPeriods(applicationSystem.getApplicationPeriods()));
+            calendarAS.setApplicationPeriods(convertApplicationPeriods(applicationSystem.getApplicationPeriods(), lang));
             return calendarAS;
         } else {
             return null;
@@ -31,13 +31,13 @@ public final class CalendarApplicationSystemToDTO {
     }
     
     private static List<ApplicationPeriodDTO> convertApplicationPeriods(
-            List<ApplicationPeriod> applicationPeriods) {
+            List<ApplicationPeriod> applicationPeriods, final String lang) {
         
         List<ApplicationPeriodDTO> dtos = new ArrayList<ApplicationPeriodDTO>();
         
         if (applicationPeriods != null) {
             for (ApplicationPeriod curPeriod : applicationPeriods) {
-                ApplicationPeriodDTO dto = convertPeriod(curPeriod);
+                ApplicationPeriodDTO dto = convertPeriod(curPeriod, lang);
                 if (dto != null) {
                     dtos.add(dto);
                 }
@@ -51,11 +51,11 @@ public final class CalendarApplicationSystemToDTO {
 
 
     private static ApplicationPeriodDTO convertPeriod(
-            ApplicationPeriod curPeriod) {
+            ApplicationPeriod curPeriod, final String lang) {
         if (curPeriod != null) {
             ApplicationPeriodDTO dto = new ApplicationPeriodDTO();
             dto.setDateRange(DateRangeToDTO.convert(curPeriod.getDateRange()));
-            dto.setName(curPeriod.getName());
+            dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(curPeriod.getName(), lang));
             return dto;
         }
         return null;

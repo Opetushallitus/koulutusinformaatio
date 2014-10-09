@@ -1192,7 +1192,11 @@ public class SearchServiceSolrImpl implements SearchService {
                 
                 ApplicationPeriod ap = new ApplicationPeriod();
                 ap.setDateRange(curRange);
-                ap.setName(periodName);
+                
+                I18nText nameI = new I18nText();
+                nameI.put("fi", periodName);
+                
+                ap.setName(nameI);
                 
                 as.getApplicationPeriods().add(ap);
                 //as.getApplicationDates().add(curRange);

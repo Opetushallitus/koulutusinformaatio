@@ -509,13 +509,18 @@ public class IndexerServiceImpl implements IndexerService {
         for (ApplicationPeriod ap : as.getApplicationPeriods()) {//getApplicationDates()) {
             
             DateRange dr = ap.getDateRange();
+            String nimiFi = "";
+            if (ap.getName() != null && ap.getName().getTranslations() != null && ap.getName().getTranslations().isEmpty()) { 
+                nimiFi = this.resolveTextByLang("fi", ap.getName().getTranslations());
+            }
+       
             
             asDoc.addField(new StringBuilder().append("asStart").append("_").
                     append(String.valueOf(parentApplicationDateRangeIndex)).toString(), dr.getStartDate());
             asDoc.addField(new StringBuilder().append("asEnd").append("_").
                     append(String.valueOf(parentApplicationDateRangeIndex)).toString(), dr.getEndDate());
             asDoc.addField(new StringBuilder().append("asPeriodName").append("_").
-                    append(String.valueOf(parentApplicationDateRangeIndex)).append("_ss").toString(), ap.getName());
+                    append(String.valueOf(parentApplicationDateRangeIndex)).append("_ss").toString(), nimiFi);
             
             parentApplicationDateRangeIndex++;
             
