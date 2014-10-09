@@ -532,7 +532,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                 ResultV1RDTO<KoulutusLukioV1RDTO> koulutusRes = this.tarjontaRawService.getUpperSecondaryLearningOpportunity(curKoulutus.getOid());
                 KoulutusLukioV1RDTO koulutusDTO = koulutusRes.getResult();
 
-                LOG.debug("cur upsec adult education dto: " + koulutusDTO.getOid());
+                //LOG.debug("cur upsec adult education dto: " + koulutusDTO.getOid());
                 if (koulutusDTO == null || koulutusDTO.getKoulutuslaji() == null || koulutusDTO.getKoulutuslaji().getUri().contains(TarjontaConstants.NUORTEN_KOULUTUS)) {
                     continue;
                 }
