@@ -17,7 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.resource;
 
 import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResult;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResultDTO;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -59,7 +59,7 @@ public interface LearningOpportunityProviderResource {
     @GET
     @Path("search/{" + TERM + "}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
-    public List<ProviderSearchResult> searchProviders(@PathParam(TERM) final String term,
+    public List<ProviderSearchResultDTO> searchProviders(@PathParam(TERM) final String term,
                                                  @QueryParam(ASID) final String asId,
                                                  @QueryParam(BASE_EDUCATION) final List<String> baseEducation,
                                                  @DefaultValue(value = "true") @QueryParam(VOCATIONAL) final boolean vocational,

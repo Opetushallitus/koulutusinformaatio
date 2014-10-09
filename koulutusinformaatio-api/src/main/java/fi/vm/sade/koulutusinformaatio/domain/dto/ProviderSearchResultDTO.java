@@ -22,10 +22,11 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
  * @author Hannu Lyytikainen
  */
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
-public class ProviderSearchResult {
+public class ProviderSearchResultDTO {
 
     private String id;
     private String name;
+    private String description;
 
     public String getId() {
         return id;
@@ -41,5 +42,13 @@ public class ProviderSearchResult {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

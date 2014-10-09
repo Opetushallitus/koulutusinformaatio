@@ -22,7 +22,7 @@ import fi.vm.sade.koulutusinformaatio.comparator.ProviderSearchResultComparator;
 import fi.vm.sade.koulutusinformaatio.converter.ConverterUtil;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResult;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResultDTO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
 import fi.vm.sade.koulutusinformaatio.resource.LearningOpportunityProviderResource;
@@ -54,7 +54,7 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
     }
 
     @Override
-    public List<ProviderSearchResult> searchProviders(String term, String asId, List<String> baseEducations, boolean vocational,
+    public List<ProviderSearchResultDTO> searchProviders(String term, String asId, List<String> baseEducations, boolean vocational,
                                                       boolean nonVocational, int start, int rows, final String lang) {
         List<Provider> learningOpportunityProviders = null;
         try {
@@ -67,12 +67,12 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
             key = key.replace("*", "");
             learningOpportunityProviders = searchService.searchLearningOpportunityProviders(key, asId, baseEducations, vocational,
                     nonVocational, start, rows, lang, false, null);
-            List<ProviderSearchResult> result = Lists.newArrayList(
+            List<ProviderSearchResultDTO> result = Lists.newArrayList(
                                                     Lists.transform(learningOpportunityProviders, 
-                                                                    new Function<Provider, ProviderSearchResult>() {
+                                                                    new Function<Provider, ProviderSearchResultDTO>() {
                 @Override
-                public ProviderSearchResult apply(Provider lop) {
-                    ProviderSearchResult result = new ProviderSearchResult();
+                public ProviderSearchResultDTO apply(Provider lop) {
+                    ProviderSearchResultDTO result = new ProviderSearchResultDTO();
                     result.setId(lop.getId());
                     result.setName(ConverterUtil.getTextByLanguageUseFallbackLang(lop.getName(), lang));
                     return result;

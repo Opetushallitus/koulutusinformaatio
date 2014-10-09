@@ -18,7 +18,7 @@ package fi.vm.sade.koulutusinformaatio.service;
 
 import fi.vm.sade.koulutusinformaatio.domain.dto.CodeDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResult;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResultDTO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 
@@ -57,7 +57,7 @@ public interface LearningOpportunityProviderService {
      * @param type type of the provider (oppilaitostyyppi)
      * @return matching providers
      */
-    List<ProviderSearchResult> searchProviders(String term, String lang, String type) throws SearchException;
+    List<ProviderSearchResultDTO> searchProviders(String term, String lang, String type) throws SearchException;
 
     List<CodeDTO> getProviderTypes(String firstCharacter, String lang) throws SearchException;
 }

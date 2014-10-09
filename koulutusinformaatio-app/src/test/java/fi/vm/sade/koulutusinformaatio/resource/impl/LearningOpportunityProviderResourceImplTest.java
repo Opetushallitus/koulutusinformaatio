@@ -18,7 +18,7 @@ package fi.vm.sade.koulutusinformaatio.resource.impl;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResult;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResultDTO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.resource.LearningOpportunityProviderResource;
@@ -90,7 +90,7 @@ public class LearningOpportunityProviderResourceImplTest {
     
     @Test
     public void testSearchProviders() {
-        List<ProviderSearchResult> results = providerResource.searchProviders("prov", "", Arrays.asList(""), true, true, 10, 10, "fi");
+        List<ProviderSearchResultDTO> results = providerResource.searchProviders("prov", "", Arrays.asList(""), true, true, 10, 10, "fi");
         assertEquals(results.size(), 2);
         assertTrue(results.get(0).getId().contains("prov"));
     }

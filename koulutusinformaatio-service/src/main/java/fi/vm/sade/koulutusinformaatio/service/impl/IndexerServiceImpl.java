@@ -267,6 +267,24 @@ public class IndexerServiceImpl implements IndexerService {
                     }
                 }
             }
+            
+            if (provider.getDescription() != null && !provider.getDescription().getTranslations().isEmpty()) {
+                String descrFi = resolveTextByLang("fi", provider.getDescription().getTranslations());
+                if (descrFi != null) {
+                    providerDoc.addField("descr_fi_str_display", descrFi);
+                    providerDoc.addField("text_fi", descrFi);
+                }
+                String descrSv = resolveTextByLang("sv", provider.getDescription().getTranslations());
+                if (descrSv != null) {
+                    providerDoc.addField("descr_sv_str_display", descrSv);
+                    providerDoc.addField("text_sv", descrSv);
+                }
+                String descrEn = resolveTextByLang("en", provider.getDescription().getTranslations());
+                if (descrEn != null) {
+                    providerDoc.addField("descr_en_str_display", descrEn);
+                    providerDoc.addField("text_en", descrEn);
+                }
+            }
 
             providerDoc.setField("asIds", providerAsIds);
             providerDoc.setField("requiredBaseEducations", requiredBaseEducations);
@@ -542,13 +560,17 @@ public class IndexerServiceImpl implements IndexerService {
         for (ApplicationPeriod ap : as.getApplicationPeriods()) {//getApplicationDates()) {
             
             DateRange dr = ap.getDateRange();
+            String periodNameFi = "";
+            if (ap.getName() != null && ap.getName().getTranslations() != null && !ap.getName().getTranslations().isEmpty()) {
+                periodNameFi = resolveTextByLang("fi", ap.getName().getTranslations());
+            }
             
             asDoc.addField(new StringBuilder().append("asStart").append("_").
                     append(String.valueOf(parentApplicationDateRangeIndex)).toString(), dr.getStartDate());
             asDoc.addField(new StringBuilder().append("asEnd").append("_").
                     append(String.valueOf(parentApplicationDateRangeIndex)).toString(), dr.getEndDate());
             asDoc.addField(new StringBuilder().append("asPeriodName").append("_").
-                    append(String.valueOf(parentApplicationDateRangeIndex)).append("_ss").toString(), ap.getName());
+                    append(String.valueOf(parentApplicationDateRangeIndex)).append("_ss").toString(), periodNameFi);
             
             parentApplicationDateRangeIndex++;
             

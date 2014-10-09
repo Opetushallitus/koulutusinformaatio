@@ -336,11 +336,10 @@ public class SearchServiceSolrImpl implements SearchService {
 
 
                 FacetValue newVal = new FacetValue("oltype_ffm",
-                        curC.getName(),
+                        this.getLocalizedLopFacetName(curC.getName(), lang),
                         curC.getCount(),
                         curC.getName());
                 values.add(newVal);
-
             }
         }
         providerTypeFacet.setFacetValues(values);
@@ -359,6 +358,12 @@ public class SearchServiceSolrImpl implements SearchService {
                 LearningOpportunity.NAME_FI);
         result.setName(name);
         result.setId(doc.getFieldValue("id").toString());
+        String descr = getTranslatedValue(doc, lang,
+                "descr_fi_str_display",
+                "descr_sv_str_display",
+                "descr_en_str_display",
+                "descr_fi_str_display");
+        result.setDescription(descr);
         
         return result;
     }
@@ -1011,6 +1016,26 @@ public class SearchServiceSolrImpl implements SearchService {
         }
         return null;
     }
+    
+    /*
+     * Getting the localized name for the facet value.
+     */
+    private String getLocalizedLopFacetName(String id, String lang) {
+        SolrQuery query = new SolrQuery();
+        query.setQuery(String.format("id:%s", id));
+        query.setFields("id", String.format(S_FNAME, lang));
+        query.setStart(0);
+        query.set("defType", "edismax");
+        try {
+            QueryResponse response = lopHttpSolrServer.query(query);
+            for (SolrDocument curDoc : response.getResults()) {
+                return String.format("%s", curDoc.getFieldValue(String.format(S_FNAME, lang)));
+            }
+        } catch (Exception ex) {
+            LOG.warn(ex.getMessage());
+        }
+        return null;
+    }
 
     /*
      * Getting the facet doc.
@@ -1279,7 +1304,9 @@ public class SearchServiceSolrImpl implements SearchService {
                 
                 ApplicationPeriod ap = new ApplicationPeriod();
                 ap.setDateRange(curRange);
-                ap.setName(periodName);
+                I18nText periodNameI = new I18nText();
+                periodNameI.put("fi", periodName);
+                ap.setName(periodNameI);
                 
                 as.getApplicationPeriods().add(ap);
                 //as.getApplicationDates().add(curRange);
