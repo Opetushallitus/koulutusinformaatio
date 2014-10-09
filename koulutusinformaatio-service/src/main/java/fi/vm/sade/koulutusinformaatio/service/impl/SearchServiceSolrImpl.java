@@ -1184,7 +1184,9 @@ public class SearchServiceSolrImpl implements SearchService {
                 // end date may be null for jatkuva haku
                 Date startDate = ((List<Date>) start.getValue()).get(0);
                 Date endDate = doc.get(endKey) != null ? ((List<Date>) doc.get(endKey)).get(0) : null;
-                String periodName = (String)(doc.get(new StringBuilder().append("asPeriodName").append("_").append(indexStr).append("_ss").toString()));
+                String periodNameFi = (String)(doc.get(new StringBuilder().append("asPeriodName").append("_").append(indexStr).append("_fi_ss").toString()));
+                String periodNameSv = (String)(doc.get(new StringBuilder().append("asPeriodName").append("_").append(indexStr).append("_sv_ss").toString()));
+                String periodNameEn = (String)(doc.get(new StringBuilder().append("asPeriodName").append("_").append(indexStr).append("_en_ss").toString()));
 
                 DateRange curRange = new DateRange();
                 curRange.setStartDate(startDate);
@@ -1194,7 +1196,9 @@ public class SearchServiceSolrImpl implements SearchService {
                 ap.setDateRange(curRange);
                 
                 I18nText nameI = new I18nText();
-                nameI.put("fi", periodName);
+                nameI.put("fi", periodNameFi);
+                nameI.put("sv", periodNameSv);
+                nameI.put("en", periodNameEn);
                 
                 ap.setName(nameI);
                 
