@@ -91,7 +91,7 @@ public class ProviderQuery extends SolrQuery {
     
     public ProviderQuery(String q, String lang, List<String> facetFilters, int start, int rows, String sort, String order) {
         super(q);//Joiner.on(":").join(resolveNameField(lang, false), ClientUtils.escapeQueryChars(q) + "*"));
-        
+        this.addFilterQuery("type:ORGANISAATIO");
         for (String curFilter : facetFilters) {
             this.addFilterQuery(curFilter);
         }
@@ -104,6 +104,8 @@ public class ProviderQuery extends SolrQuery {
             this.addSort(sort, order.equals("asc") ? ORDER.asc : ORDER.desc);
         }
         this.setSearchFields(this, lang);
+        this.setFacet(true);
+        this.addFacetField("oltype_ffm");
         
     }
 
