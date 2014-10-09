@@ -216,16 +216,19 @@ public class IndexerServiceImpl implements IndexerService {
             if (nameFi != null && !nameFi.isEmpty()) {
                 providerDoc.addField("name_fi", nameFi);
                 providerDoc.addField("startsWith_fi", nameFi.substring(0, 1).toUpperCase());
+                providerDoc.addField("text_fi", nameFi);
             }
             String nameSv = resolveTextByLang("sv", provider.getName().getTranslations());
             if (nameSv != null && !nameSv.isEmpty()) {
                 providerDoc.addField("name_sv", nameSv);
                 providerDoc.addField("startsWith_sv", nameSv.substring(0, 1).toUpperCase());
+                providerDoc.addField("text_sv", nameSv);
             }
             String nameEn = resolveTextByLang("en", provider.getName().getTranslations());
             if (nameEn != null && !nameEn.isEmpty()) {
                 providerDoc.addField("name_en", nameEn);
                 providerDoc.addField("startsWith_en", nameEn.substring(0, 1).toUpperCase());
+                providerDoc.addField("text_en", nameEn);
             }
             if (provider.getType() != null) {
                 providerDoc.setField(SolrUtil.ProviderFields.TYPE_VALUE, provider.getType().getValue());
