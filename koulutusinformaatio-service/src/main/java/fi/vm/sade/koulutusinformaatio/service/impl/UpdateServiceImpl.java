@@ -107,9 +107,12 @@ public class UpdateServiceImpl implements UpdateService {
             count = loOids.size();
             index += count;*/
             
-            List<String> loOids = new ArrayList<String>();/*Arrays.asList(
+            List<String> loOids = //new ArrayList<String>();
+            Arrays.asList(
                     
                     "1.2.246.562.5.2013061010191484576250", //lukio luonnontieteet
+                    "1.2.246.562.5.2013061010184402991972" // amm
+                    /*
                     "1.2.246.562.5.2013061010184443434255", //amm
                     "1.2.246.562.5.2013061010191530269331", //lukio
                     "1.2.246.562.5.2013112814572429147350", //valmistava
@@ -117,7 +120,8 @@ public class UpdateServiceImpl implements UpdateService {
                     "1.2.246.562.5.2013112814572435006223", //kymppikluokka
                     "1.2.246.562.5.2013112814572438173505",//ammattistartti
                     "1.2.246.562.5.2013112814572441041721"//mamu amm valmistava
-                    );*/
+                    */
+                    );
             
             
                 for (String loOid : loOids) {
@@ -138,7 +142,7 @@ public class UpdateServiceImpl implements UpdateService {
 
 
 
-                
+            /*
             List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
             LOG.debug("Found higher educations: " + higherEducations.size());
 
@@ -168,6 +172,7 @@ public class UpdateServiceImpl implements UpdateService {
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 this.educationDataUpdateService.save(curLOS);
             }
+            */
             
             
             List<Code> edTypeCodes = this.tarjontaService.getEdTypeCodes();
@@ -186,11 +191,12 @@ public class UpdateServiceImpl implements UpdateService {
             }
             this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
             LOG.debug("Application systems indexed");
-            
+            /*
             List<Article> articles = this.articleService.fetchArticles();
             LOG.debug("Articles fetched");
             indexerService.addArticles(loUpdateSolr, articles);
             LOG.debug("Articles indexed to solr");
+            */
             indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, true);
             LOG.debug("Committed to solr");
             this.transactionManager.commit(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);

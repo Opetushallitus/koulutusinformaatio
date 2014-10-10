@@ -1608,6 +1608,7 @@ service('FilterService', [
                 upcomingLater: filters.upcomingLater,
                 page: filters.page,
                 articlePage: filters.articlePage,
+                organisationPage: filters.organisationPage,
                 facetFilters: filters.facetFilters,
                 langCleared: filters.langCleared,
                 itemsPerPage: filters.itemsPerPage,
@@ -1615,7 +1616,8 @@ service('FilterService', [
                 lopFilter: filters.lopFilter,
                 educationCodeFilter: filters.educationCodeFilter,
                 excludes: filters.excludes,
-                articleFacetFilters : filters.articleFacetFilters
+                articleFacetFilters : filters.articleFacetFilters,
+                organisationFacetFilters: filters.organisationFacetFilters
             };
 
             angular.forEach(result, function(value, key) {
@@ -1695,6 +1697,22 @@ service('FilterService', [
             }
         },
 
+        setOrganisationPage: function(value) {
+            if (value && !isNaN(value)) {
+                filters.organisationPage = parseInt(value);
+            } else {
+                filters.organisationPage = 1;
+            }
+        },
+
+        getOrganisationPage: function() {
+            if (filters.organisationPage) {
+                return typeof filters.organisationPage === 'string' ? parseInt(filters.organisationPage) : filters.organisationPage;
+            } else {
+                return 1;
+            }
+        },
+
         getLocationCodes: getLocationCodes,
 
         getParams: function() {
@@ -1713,6 +1731,7 @@ service('FilterService', [
             params += filters.educationCodeFilter ? '&educationCodeFilter=' + filters.educationCodeFilter : '';
             params += (filters.excludes && filters.excludes.length > 0) ? '&excludes=' + filters.excludes.join('|') : '';
             params += (filters.articleFacetFilters && filters.articleFacetFilters.length > 0) ? '&articleFacetFilters=' + filters.articleFacetFilters.join(',') : '';
+            params += (filters.organisationFacetFilters && filters.organisationFacetFilters.length > 0) ? '&providerFacetFilters=' + filters.organisationFacetFilters.join(',') : '';
             params = params.length > 0 ? params.substring(1, params.length) : '';
             return params;
         },
@@ -1731,6 +1750,14 @@ service('FilterService', [
         		return filters.articleFacetFilters;
         	}
         	return filters.articleFacetFilters;
+        },
+
+        getOrganisationFacetFilters: function() {
+            if (filters.organisationFacetFilters != undefined && (typeof filters.organisationFacetFilters == 'string' || filters.organisationFacetFilters instanceof String)) {
+                filters.organisationFacetFilters = filters.organisationFacetFilters.split(',');
+                return filters.organisationFacetFilters;
+            }
+            return filters.organisationFacetFilters;
         },
         
         getLopFilter: function() {

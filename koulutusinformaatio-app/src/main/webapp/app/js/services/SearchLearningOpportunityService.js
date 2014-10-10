@@ -115,16 +115,22 @@ angular.module('kiApp.services.SearchLearningOpportunityService', ['ngResource']
             qParams += (params.queryString != undefined) ? ('&text=' + params.queryString) : '&text= ';
             
             if (params.facetFilters != undefined) {
-                 angular.forEach(params.facetFilters, function(facetFilter, key) {
-                     qParams += '&facetFilters=' + facetFilter;
-                 });
+                angular.forEach(params.facetFilters, function(facetFilter, key) {
+                    qParams += '&facetFilters=' + facetFilter;
+                });
             }
             
             if (params.articleFacetFilters != undefined) {
-             angular.forEach(params.articleFacetFilters, function(facetFilter, key) {
-                 qParams += '&articleFacetFilters=' + facetFilter;
+                angular.forEach(params.articleFacetFilters, function(facetFilter, key) {
+                    qParams += '&articleFacetFilters=' + facetFilter;
                 });
-           }
+            }
+
+            if (params.organisationFacetFilters != undefined) {
+                angular.forEach(params.organisationFacetFilters, function(facetFilter, key) {
+                    qParams += '&providerFacetFilters=' + facetFilter;
+                });
+            }
             
             if (params.excludes != undefined) {
                 angular.forEach(params.excludes, function(exclude, key) {

@@ -1,0 +1,27 @@
+<div class="row margin-vertical-default">
+    <div class="col-xs-16">
+        <a href="javascript:void(0);" data-ng-click="filterSelectorIsCollapsed = !filterSelectorIsCollapsed" data-ki-i18n="hide-filter-selector-{{filterSelectorIsCollapsed}}"></a>
+    </div>
+</div>
+
+<div class="panel panel-filter" data-collapse="filterSelectorIsCollapsed">
+    <div class="panel-heading">
+        <h4 class="collapser panel-title" title="{{locales.openCloseFacet}}" data-ng-click="toggleCollapsed(0)" data-ng-class="{opened: !collapsed[0], closed: collapsed[0]}">
+            <span data-ki-i18n="facet-oppilaitostyyppi"></span>      
+        </h4>
+    </div>
+    <div class="panel-body">
+        <div data-collapse="collapsed[0]" class="collapse">
+            <ul class="list-unstyled">
+                <li data-ng-repeat="fv in loResult.providerTypeFacet.facetValues">
+                    <span data-ng-show="!isOrganisationFacetSelected(fv) && (fv.count > 0)" class="facet-item">
+                        <a href="javascript:void(0)" data-ng-click="selectOrganisationFacetFilter(fv.valueId, fv.facetField)">{{fv.valueName}} ({{fv.count}})</a>
+                    </span>
+                    <span data-ng-show="isOrganisationFacetSelected(fv)" class="facet-item selected">
+                        <span>{{fv.valueName}}</span><a title="{{locales.removeFacet}}" href="javascript:void(0)" class="remove" data-ng-click="removeOrganisationFacetSelection(fv)"></a>
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

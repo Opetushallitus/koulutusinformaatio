@@ -30,6 +30,7 @@
     "search-button": "Hae",
     "search-tab-lo": "Koulutuksia",
     "search-tab-article": "Tietoa ja tarinoita",
+    "search-tab-organisation": "Oppilaitoksia",
 
     "basic-information": "Perustiedot",
     "degree-programmes": "Koulutusohjelmat",
@@ -244,6 +245,7 @@
     "facet-opiskelumuoto": "Rajaa opiskelumuodon mukaan",
     "facet-teemat": "Rajaa aiheen mukaan",
     "facet-aineistotyyppi": "Rajaa aineistotyypin mukaan",
+    "facet-oppilaitostyyppi": "Rajaa oppilaitoksia",
     "topic_ffm": "Aihe",
     "theme_ffm": "Teema",
     "formOfTeaching_ffm": "Opetustapa",

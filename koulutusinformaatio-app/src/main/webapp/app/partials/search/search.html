@@ -46,6 +46,25 @@
             </div>
         </div>
 
+        <div data-ng-controller="OrganisationSearchCtrl"
+             data-tab data-heading="{{tabTitles.organisations}}"
+             data-select="initSearch()"
+             data-active="tabs[2].active"
+             title="{{tabTitles.organisationsTooltip}}"
+             tabindex="-1"
+             aria-selected="false"
+             aria-controls="search-panel3"
+             role="tab"
+             class="tab" >
+            <div role="tabpanel" id="search-panel3">
+                <div data-ng-include="'partials/search/organisations/facet-selections.html'"></div>
+                <div class="row">
+                    <div data-ng-include="'partials/search/organisations/facet-filters.html'" class="col-sm-5"></div>
+                    <div data-ng-include="'partials/search/organisations/search-results.html'" class="col-sm-11"></div>
+                </div>
+            </div>
+        </div>
+
         <!-- responsive tabdrop -->
         <div class="pull-right tabdrop" dropdown is-open="status.isopen">
             <div class="dropdown-toggle tabdrop-toggler">

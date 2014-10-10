@@ -30,6 +30,7 @@
     "search-button": "Search",
     "search-tab-lo": "Study options",
     "search-tab-article": "Information and stories",
+    "search-tab-organisation": "Oppilaitoksia (en)",
 
     "basic-information": "Basic information",
     "degree-programmes": "Study programmes",
@@ -244,6 +245,7 @@
     "facet-opiskelumuoto": "Filter by form of studies",
     "facet-teemat": "Filter by subject",
     "facet-aineistotyyppi": "Filter by material type",
+    "facet-oppilaitostyyppi": "Rajaa oppilaitoksia (en)",
     "topic_ffm": "Subject",
     "theme_ffm": "Theme",
     "formOfTeaching_ffm": "Mode of teaching",
