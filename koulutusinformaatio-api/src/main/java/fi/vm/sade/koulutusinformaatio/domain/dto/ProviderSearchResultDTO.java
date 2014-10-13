@@ -27,6 +27,7 @@ public class ProviderSearchResultDTO {
     private String id;
     private String name;
     private String description;
+    private String thumbnailEncoded;
 
     public String getId() {
         return id;
@@ -50,5 +51,13 @@ public class ProviderSearchResultDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getThumbnailEncoded() {
+        return thumbnailEncoded;
+    }
+
+    public void setThumbnailEncoded(String thumbnailEncoded) {
+        this.thumbnailEncoded = thumbnailEncoded;
     }
 }

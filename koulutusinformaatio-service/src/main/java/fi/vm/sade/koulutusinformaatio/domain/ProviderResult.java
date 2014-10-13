@@ -5,6 +5,7 @@ public class ProviderResult {
     private String id;
     private String name;
     private String description;
+    private String thumbnailEncoded;
     
     public String getId() {
         return id;
@@ -23,6 +24,12 @@ public class ProviderResult {
     }
     public void setDescription(String description) {
         this.description = description;
+    }
+    public String getThumbnailEncoded() {
+        return thumbnailEncoded;
+    }
+    public void setThumbnailEncoded(String thumbnailEncoded) {
+        this.thumbnailEncoded = thumbnailEncoded;
     }
 
 }

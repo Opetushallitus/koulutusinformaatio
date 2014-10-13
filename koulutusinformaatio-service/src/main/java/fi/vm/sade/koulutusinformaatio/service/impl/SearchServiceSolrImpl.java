@@ -60,11 +60,15 @@ import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.LOSearchResult;
 import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
 import fi.vm.sade.koulutusinformaatio.domain.Location;
+import fi.vm.sade.koulutusinformaatio.domain.Picture;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.ProviderResult;
 import fi.vm.sade.koulutusinformaatio.domain.SuggestedTermsResult;
+import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
+import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.ApplicationSystemQuery;
@@ -92,14 +96,19 @@ public class SearchServiceSolrImpl implements SearchService {
     private final HttpSolrServer lopHttpSolrServer;
     private final HttpSolrServer loHttpSolrServer;
     private final HttpSolrServer locationHttpSolrServer;
+    
+    private EducationDataQueryService educationDataQueryService;
+    
 
     @Autowired
     public SearchServiceSolrImpl(@Qualifier("lopAliasSolrServer") final HttpSolrServer lopAliasSolrServer,
             @Qualifier("loAliasSolrServer") final HttpSolrServer loAliasSolrServer,
-            @Qualifier("locationAliasSolrServer") final HttpSolrServer locationAliasSolrServer) {
+            @Qualifier("locationAliasSolrServer") final HttpSolrServer locationAliasSolrServer,
+            EducationDataQueryService educationDataQueryService) {
         this.lopHttpSolrServer = lopAliasSolrServer;
         this.loHttpSolrServer = loAliasSolrServer;
         this.locationHttpSolrServer = locationAliasSolrServer;
+        this.educationDataQueryService = educationDataQueryService;
     }
 
     @Override
@@ -368,6 +377,12 @@ public class SearchServiceSolrImpl implements SearchService {
                 "descr_en_str_display",
                 "descr_fi_str_display");
         result.setDescription(descr);
+        try {
+            Picture pict = this.educationDataQueryService.getPicture(result.getId());
+            result.setThumbnailEncoded(pict.getThumbnailEncoded());
+        } catch (ResourceNotFoundException ex) {
+            LOG.debug("No thumbnail for: " + result.getId());
+        }
 
         return result;
     }

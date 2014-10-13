@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LocationFields;
 import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
@@ -25,8 +26,10 @@ import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.SuggestedTermsResult;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
+import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.ProviderNameFirstCharactersQuery;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.ProviderQuery;
+
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.response.*;
@@ -56,6 +59,7 @@ public class SearchServiceSolrImplTest {
     private HttpSolrServer loHttpSolrServer;
     private HttpSolrServer lopHttpSolrServer;
     private HttpSolrServer locationHttpSolrServer;
+    private EducationDataQueryService queryService;
 
 
     @Before
@@ -125,8 +129,10 @@ public class SearchServiceSolrImplTest {
         QueryResponse firstCharResponse = mock(QueryResponse.class);
         when(firstCharResponse.getGroupResponse()).thenReturn(groupResponse);
         when(lopHttpSolrServer.query(argThat(isProviderNameFirstCharactersQuery()))).thenReturn(firstCharResponse);
+        
+        queryService = mock(EducationDataQueryService.class);
 
-        service = new SearchServiceSolrImpl(lopHttpSolrServer, loHttpSolrServer, locationHttpSolrServer);
+        service = new SearchServiceSolrImpl(lopHttpSolrServer, loHttpSolrServer, locationHttpSolrServer, queryService);
     }
 
     @Test
