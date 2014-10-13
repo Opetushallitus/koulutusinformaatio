@@ -354,7 +354,9 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
             ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
             BufferedImage image = ImageIO.read(bis);
             bis.close();
-            BufferedImage thumbnail = Scalr.resize(image, 100);
+            double ratio = 104 / image.getWidth();
+            int height = (int)(ratio * image.getHeight());
+            BufferedImage thumbnail = Scalr.resize(image, 104, height);
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             ImageIO.write(thumbnail, "jpeg", bos);
             imageByte = bos.toByteArray();
