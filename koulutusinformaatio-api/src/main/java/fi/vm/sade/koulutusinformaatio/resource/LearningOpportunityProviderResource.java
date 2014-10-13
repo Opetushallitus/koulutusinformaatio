@@ -76,6 +76,11 @@ public interface LearningOpportunityProviderResource {
     public PictureDTO getProviderPicture(@PathParam("lopId") final String lopId);
     
     @GET
+    @Path("{lopId}/thumbnail")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    public PictureDTO getProviderThumbnail(@PathParam("lopId") final String lopId);
+    
+    @GET
     @Path("{lopId}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public LearningOpportunityProviderDTO getProvider(@PathParam("lopId") final String lopId,

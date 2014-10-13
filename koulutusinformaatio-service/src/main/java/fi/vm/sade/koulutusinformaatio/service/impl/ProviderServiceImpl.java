@@ -76,6 +76,7 @@ public class ProviderServiceImpl implements ProviderService {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Enriching provider " + organisaatioRDTO.getOid() + " with parent provider " + organisaatioRDTO.getParentOid());
             }
+            
             Provider parent = getByOID(organisaatioRDTO.getParentOid());
             provider = inheritMetadata(provider, parent);
         }

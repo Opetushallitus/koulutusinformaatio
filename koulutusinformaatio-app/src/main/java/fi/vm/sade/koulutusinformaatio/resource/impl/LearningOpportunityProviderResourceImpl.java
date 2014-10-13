@@ -99,6 +99,15 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
             throw KIExceptionHandler.resolveException(e);
         }
     }
+    
+    @Override
+    public PictureDTO getProviderThumbnail(String lopId) {
+        try {
+            return learningOpportunityService.getThumbnail(lopId);
+        } catch (Exception e) {
+            throw KIExceptionHandler.resolveException(e);
+        }
+    }
 
     @Override
     public LearningOpportunityProviderDTO getProvider(String lopId, String lang) {

@@ -382,5 +382,12 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
         return ProviderToDTO.convert(this.educationDataQueryService.getProvider(lopId), lang, lang, lang) ;
     }
 
+    @Override
+    public PictureDTO getThumbnail(String lopId)
+            throws ResourceNotFoundException {
+        Picture pic = educationDataQueryService.getPicture(lopId);
+        return PictureToThumbnail.convert(pic);
+    }
+
 
 }

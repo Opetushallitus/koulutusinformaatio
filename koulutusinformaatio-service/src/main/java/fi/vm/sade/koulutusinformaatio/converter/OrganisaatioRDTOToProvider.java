@@ -26,14 +26,23 @@ import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioMetaDataRDTO;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
 
+import org.imgscalr.Scalr;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
+
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import javax.imageio.ImageIO;
 
 /**
  * @author Hannu Lyytikainen
@@ -329,7 +338,34 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
             Picture pic = new Picture();
             pic.setId(o.getOid());
             pic.setPictureEncoded(metadata.getKuvaEncoded());
+            pic.setThumbnailEncoded(createThumbnail(metadata.getKuvaEncoded(), o.getOid()));
             return pic;
+        }
+        return null;
+    }
+
+    private String createThumbnail(String kuvaEncoded, String orgOid) {
+        if (kuvaEncoded == null || orgOid == null) {
+            return null;
+        }
+        try {
+            BASE64Decoder decoder = new BASE64Decoder();
+            byte[] imageByte = decoder.decodeBuffer(kuvaEncoded);
+            ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
+            BufferedImage image = ImageIO.read(bis);
+            bis.close();
+            BufferedImage thumbnail = Scalr.resize(image, 100);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ImageIO.write(thumbnail, "jpeg", bos);
+            imageByte = bos.toByteArray();
+            BASE64Encoder encoder = new BASE64Encoder();
+            String thumbnailString = encoder.encode(imageByte);
+            bos.close();
+            return thumbnailString;
+            
+        } catch (Exception ex) {
+            LOG.warn("problem creating thumbnail for: " + orgOid);
+            LOG.warn(ex.getMessage());
         }
         return null;
     }

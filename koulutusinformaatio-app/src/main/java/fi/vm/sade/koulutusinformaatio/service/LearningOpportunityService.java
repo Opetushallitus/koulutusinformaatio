@@ -142,4 +142,6 @@ public interface LearningOpportunityService {
             String lang, String uiLang) throws ResourceNotFoundException;
     
     LearningOpportunityProviderDTO getProvider(String lopId, String lang) throws ResourceNotFoundException;
+
+    PictureDTO getThumbnail(String lopId) throws ResourceNotFoundException;
 }
