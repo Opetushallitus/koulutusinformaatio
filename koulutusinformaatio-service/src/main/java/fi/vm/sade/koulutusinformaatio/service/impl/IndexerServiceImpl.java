@@ -288,6 +288,15 @@ public class IndexerServiceImpl implements IndexerService {
                     providerDoc.addField("text_en", descrEn);
                 }
             }
+            
+            if (provider.getHomeDistrict() != null) {
+                List<String> locVals = new ArrayList<String>();
+                locVals.addAll(provider.getHomeDistrict().getTranslations().values());
+                locVals.addAll(provider.getHomePlace().getTranslations().values());
+                providerDoc.addField(LearningOpportunity.LOP_HOMEPLACE, locVals);
+            } else {
+                providerDoc.addField(LearningOpportunity.LOP_HOMEPLACE, provider.getHomePlace().getTranslations().values());
+            }
 
             providerDoc.setField("asIds", providerAsIds);
             providerDoc.setField("requiredBaseEducations", requiredBaseEducations);

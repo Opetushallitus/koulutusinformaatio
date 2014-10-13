@@ -249,7 +249,7 @@ public class SearchServiceSolrImpl implements SearchService {
                         start, rows, sort, order,
                         facetFilters, articleFilters);
             } else if (SearchType.PROVIDER.equals(searchType)) {
-                query = new ProviderQuery(fixed, lang, providerFilters, start, rows, sort, order);
+                query = new ProviderQuery(fixed, lang, providerFilters, cities, start, rows, sort, order);
             }
 
             try {
@@ -433,7 +433,7 @@ public class SearchServiceSolrImpl implements SearchService {
             }
 
 
-            query = new ProviderQuery(term, lang, providerFilters, start, 0, sort, order);
+            query = new ProviderQuery(term, lang, providerFilters, cities, start, 0, sort, order);
             try {
                 QueryResponse response = lopHttpSolrServer.query(query);
                 setResultCount(searchResultList, response, SearchType.PROVIDER);

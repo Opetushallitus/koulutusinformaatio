@@ -89,11 +89,17 @@ public class ProviderQuery extends SolrQuery {
         }
     }
     
-    public ProviderQuery(String q, String lang, List<String> facetFilters, int start, int rows, String sort, String order) {
+    public ProviderQuery(String q, String lang, List<String> facetFilters, List<String> cities, int start, int rows, String sort, String order) {
         super(q);//Joiner.on(":").join(resolveNameField(lang, false), ClientUtils.escapeQueryChars(q) + "*"));
         this.addFilterQuery("type:ORGANISAATIO");
         for (String curFilter : facetFilters) {
             this.addFilterQuery(curFilter);
+        }
+        
+        if (cities != null && !cities.isEmpty()) {
+            this.addFilterQuery(
+                    String.format("%s:(\"%s\")", LearningOpportunity.LOP_HOMEPLACE, Joiner.on("\" OR \"").join(cities))
+                    );
         }
         
         this.setStart(start);
