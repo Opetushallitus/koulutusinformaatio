@@ -565,6 +565,8 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
     			$scope.loResult.upcomingLaterFacet = fVal;
     		}
     	});	
+
+        console.log($scope.facetSelections);
     };
     
 

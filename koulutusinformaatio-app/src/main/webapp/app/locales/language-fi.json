@@ -254,6 +254,7 @@
     "kindOfEducation_ffm": "Kohderyhmä",
     "teachingLangCode_ffm": "Opetuskieli",
     "articleContentType_ffm": "Aineistotyyppi",
+    "oltype_ffm": "Oppilaitostyyppi",
     "location-rajaus": "Paikka",
     "facet-remove": "Poista",
     "facet-focus-filter": "Tarkenna rajaustasi",

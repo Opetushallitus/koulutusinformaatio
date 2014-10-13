@@ -254,6 +254,7 @@
     "kindOfEducation_ffm": "Target group",
     "teachingLangCode_ffm": "Language of instruction",
     "articleContentType_ffm": "Material type",
+    "oltype_ffm": "Oppilaitostyyppi (en)",
     "location-rajaus": "Place",
     "facet-remove": "Remove",
     "facet-focus-filter": "Specify search criteria",

@@ -57,50 +57,56 @@ function OrganisationSearchCtrl($scope, $rootScope, $location, $routeParams, Fil
             organisationFacetFilters: FilterService.getOrganisationFacetFilters(),
             searchType : 'PROVIDER'
         }).then(function(result) {
-            /*
-            if (result.articleCount == 0 && result.loCount > 0 && !$rootScope.tabChangeable) {
-                qParams.tab = 'los';
-                $location.search(qParams).replace();
-                $route.reload();
-                $rootScope.tabChangeable = true;
-            } else {
-                */
-                $scope.loResult = result;
-                $scope.totalItems = result.totalCount;
-                $scope.loCount = result.loCount;
-                $scope.articleCount = result.articleCount;
-                $scope.orgCount = result.orgCount;
-                $scope.maxPages = Math.ceil(result.articleCount / $scope.itemsPerPage);
-                $scope.showPagination = $scope.maxPages > 1;
-                $scope.pageMin = ($scope.model.currentOrganisationPage - 1) * $scope.itemsPerPage + 1;
-                $scope.pageMax = $scope.model.currentOrganisationPage * $scope.itemsPerPage < $scope.orgCount
-                    ? $scope.model.currentOrganisationPage * $scope.itemsPerPage
-                            : $scope.orgCount;
-                $scope.queryString = $routeParams.queryString;
-                $scope.showPagination = $scope.orgCount > $scope.itemsPerPage;
-                $scope.tabTitles.learningOpportunities = TranslationService.getTranslation('search-tab-lo') + ' (' + $scope.loCount + ')';
-                $scope.tabTitles.articles = TranslationService.getTranslation('search-tab-article') + ' (' + $scope.articleCount + ')';
-                $scope.tabTitles.organisations = TranslationService.getTranslation('search-tab-organisation') + ' (' + $scope.orgCount + ')';
-                $scope.tabTitles.queryString = $routeParams.queryString;
-                $scope.tabTitles.totalCount = $scope.loResult.totalCount;
-                $rootScope.tabChangeable = true;
-                $scope.populateOrganisationFacetSelections();
-            //}
+            $scope.loResult = result;
+            $scope.totalItems = result.totalCount;
+            $scope.loCount = result.loCount;
+            $scope.articleCount = result.articleCount;
+            $scope.orgCount = result.orgCount;
+            $scope.maxPages = Math.ceil(result.articleCount / $scope.itemsPerPage);
+            $scope.showPagination = $scope.maxPages > 1;
+            $scope.pageMin = ($scope.model.currentOrganisationPage - 1) * $scope.itemsPerPage + 1;
+            $scope.pageMax = $scope.model.currentOrganisationPage * $scope.itemsPerPage < $scope.orgCount
+                ? $scope.model.currentOrganisationPage * $scope.itemsPerPage
+                        : $scope.orgCount;
+            $scope.queryString = $routeParams.queryString;
+            $scope.showPagination = $scope.orgCount > $scope.itemsPerPage;
+            $scope.tabTitles.learningOpportunities = TranslationService.getTranslation('search-tab-lo') + ' (' + $scope.loCount + ')';
+            $scope.tabTitles.articles = TranslationService.getTranslation('search-tab-article') + ' (' + $scope.articleCount + ')';
+            $scope.tabTitles.organisations = TranslationService.getTranslation('search-tab-organisation') + ' (' + $scope.orgCount + ')';
+            $scope.tabTitles.queryString = $routeParams.queryString;
+            $scope.tabTitles.totalCount = $scope.loResult.totalCount;
+            $rootScope.tabChangeable = true;
+            $scope.populateOrganisationFacetSelections();
         });
         
     }
 
     $scope.populateOrganisationFacetSelections = function() {
+        
         $scope.organisationFacetSelections = [];
         $scope.organisationFacetFilters = FilterService.getOrganisationFacetFilters();
         angular.forEach($scope.organisationFacetFilters, function(fFilter, key) {
+            var curVal = fFilter.split(':')[1];
+            console.log(curVal);
+            /*
             var curSelection = {
                                 facetField: fFilter.split(':')[0], 
                                 valueId: fFilter.split(':')[1],
                                 valueName: fFilter.split(':')[1]
                                 };
-            $scope.organisationFacetSelections.push(curSelection);
+                                */
+            angular.forEach($scope.loResult.providerTypeFacet.facetValues, function(facet) {
+                console.log(facet);
+                if (facet.valueId === curVal) {
+                    $scope.organisationFacetSelections.push(facet);
+                }
+            } )
+
+
+
+            //$scope.organisationFacetSelections.push(curSelection);
         });
+        
         
     };
 
@@ -139,7 +145,6 @@ function OrganisationSearchCtrl($scope, $rootScope, $location, $routeParams, Fil
         });
 
         $scope.organisationFacetFilters = tempFilters;
-        //console.log($scope.organisationFacetFilters);
         $scope.change();
     }
 
@@ -156,5 +161,28 @@ function OrganisationSearchCtrl($scope, $rootScope, $location, $routeParams, Fil
 
         $scope.collapsed[index] = !$scope.collapsed[index];
     };
+
+    //Are there selections to show in the facet selections area
+    $scope.areThereSelections = function() {
+         var locations = FilterService.getLocations();
+         return (($scope.organisationFacetSelections != undefined) && ($scope.organisationFacetSelections.length > 0))
+                || ((locations != undefined) &&  (locations.length > 0));
+    }
+
+    $scope.setFilteredLocations = function(value) {
+        _.each(value, function(location) {
+            if (!$scope.locations) {
+                $scope.locations = [location];
+            } else if (_.where($scope.locations, {code: location.code}).length <= 0) {
+                $scope.locations.push(location);
+            }
+        });
+    }
+
+    //Removing a location from the facet selections area
+    $scope.removeLocation = function(loc) {
+        $scope.locations.splice($scope.locations.indexOf(loc), 1);
+        $scope.change();
+    }
    
 }
