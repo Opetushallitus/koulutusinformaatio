@@ -316,9 +316,13 @@ public class SearchServiceSolrImpl implements SearchService {
                 setOtherResultCounts(fixed, lang, start, sort, order, cities, facetFilters, articleFilters, providerFilters, ongoing, upcoming, upcomingLater, 
                         lopFilter, educationCodeFilter, excludes, SearchType.LO, searchResultList,
                         upcomingLimit, upcomingLaterLimit);
-            } 
+            } else if (SearchType.PROVIDER.equals(searchType)) {
+                setOtherResultCounts(fixed, lang, start, sort, order, cities, facetFilters, articleFilters, providerFilters, ongoing, upcoming, upcomingLater, 
+                        lopFilter, educationCodeFilter, excludes, SearchType.PROVIDER, searchResultList,
+                        upcomingLimit, upcomingLaterLimit);
+            }
 
-            searchResultList.setTotalCount(searchResultList.getArticleCount() + searchResultList.getLoCount());
+            searchResultList.setTotalCount(searchResultList.getArticleCount() + searchResultList.getLoCount() + searchResultList.getOrgCount());
 
         }
 
@@ -327,7 +331,7 @@ public class SearchServiceSolrImpl implements SearchService {
 
     private void addProviderFacetsToResult(LOSearchResultList searchResultList,
             QueryResponse response, String lang, List<String> providerFilters) {
-        
+
         FacetField providerTypeF = response.getFacetField("oltype_ffm");
         Facet providerTypeFacet = new Facet();
         List<FacetValue> values = new ArrayList<FacetValue>();
@@ -344,12 +348,12 @@ public class SearchServiceSolrImpl implements SearchService {
         }
         providerTypeFacet.setFacetValues(values);
         searchResultList.setProviderTypeFacet(providerTypeFacet);
-        
-        
+
+
     }
 
     private ProviderResult createProviderSearchResult(SolrDocument doc, String lang) {
-        
+
         ProviderResult result = new ProviderResult();
         String name = getTranslatedValue(doc, lang,
                 LearningOpportunity.NAME_FI,
@@ -364,7 +368,7 @@ public class SearchServiceSolrImpl implements SearchService {
                 "descr_en_str_display",
                 "descr_fi_str_display");
         result.setDescription(descr);
-        
+
         return result;
     }
 
@@ -387,48 +391,48 @@ public class SearchServiceSolrImpl implements SearchService {
                     upcomingLimit, upcomingLaterLimit);
             try {
                 QueryResponse response = loHttpSolrServer.query(query);
-                setResultCount(searchResultList, response, searchType);
+                setResultCount(searchResultList, response, SearchType.LO);
             } catch (SolrServerException e) {
                 throw new SearchException(SOLR_ERROR);
             }
-            
+
             query = new ArticleQuery(term, lang,  
                     start, 0, sort, order,
                     facetFilters, articleFilters);
-            
+
             try {
                 QueryResponse response = loHttpSolrServer.query(query);
-                setResultCount(searchResultList, response, searchType);
+                setResultCount(searchResultList, response, SearchType.ARTICLE);
             } catch (SolrServerException e) {
                 throw new SearchException(SOLR_ERROR);
             }
-            
+
         } else {
-        
-        if (SearchType.LO.equals(searchType)) {
-            query = new LearningOpportunityQuery(term, null, 
-                    cities, facetFilters, 
-                    lang, ongoing, upcoming, upcomingLater, 
-                    start, 0, sort, order,
-                    lopFilter, educationCodeFilter, excludes,
-                    upcomingLimit, upcomingLaterLimit);
-        } else if (SearchType.ARTICLE.equals(searchType)) {//lopFilter == null && educationCodeFilter == null && (excludes == null || excludes.isEmpty())) {
-            query = new ArticleQuery(term, lang,  
-                    start, 0, sort, order,
-                    facetFilters, articleFilters);
-        } 
-        if (query != null) {
-            try {
-                QueryResponse response = loHttpSolrServer.query(query);
-                setResultCount(searchResultList, response, searchType);
-            } catch (SolrServerException e) {
-                throw new SearchException(SOLR_ERROR);
+
+            if (SearchType.LO.equals(searchType)) {
+                query = new LearningOpportunityQuery(term, null, 
+                        cities, facetFilters, 
+                        lang, ongoing, upcoming, upcomingLater, 
+                        start, 0, sort, order,
+                        lopFilter, educationCodeFilter, excludes,
+                        upcomingLimit, upcomingLaterLimit);
+            } else if (SearchType.ARTICLE.equals(searchType)) {//lopFilter == null && educationCodeFilter == null && (excludes == null || excludes.isEmpty())) {
+                query = new ArticleQuery(term, lang,  
+                        start, 0, sort, order,
+                        facetFilters, articleFilters);
+            } 
+            if (query != null) {
+                try {
+                    QueryResponse response = loHttpSolrServer.query(query);
+                    setResultCount(searchResultList, response, searchType);
+                } catch (SolrServerException e) {
+                    throw new SearchException(SOLR_ERROR);
+                }
+            } else {
+                searchResultList.setArticleCount(0);
             }
-        } else {
-            searchResultList.setArticleCount(0);
-        }
-        
-       
+
+
             query = new ProviderQuery(term, lang, providerFilters, start, 0, sort, order);
             try {
                 QueryResponse response = lopHttpSolrServer.query(query);
@@ -437,7 +441,7 @@ public class SearchServiceSolrImpl implements SearchService {
                 throw new SearchException(SOLR_ERROR);
             }
         }
-        
+
     }
 
     private void setResultCount(LOSearchResultList searchResultList,
@@ -1016,7 +1020,7 @@ public class SearchServiceSolrImpl implements SearchService {
         }
         return null;
     }
-    
+
     /*
      * Getting the localized name for the facet value.
      */
@@ -1256,7 +1260,7 @@ public class SearchServiceSolrImpl implements SearchService {
             for (SolrDocument result : response.getResults()) {
                 CalendarApplicationSystem as = new CalendarApplicationSystem();
                 as.setId((String)(result.get(SolrUtil.LearningOpportunity.ID)));
-                
+
                 LOG.debug("Creating applicatoin system: " + as.getId());
 
                 Map<String, String> nameTranslations = Maps.newHashMap();
@@ -1265,9 +1269,9 @@ public class SearchServiceSolrImpl implements SearchService {
                 nameTranslations.put("en", (String) result.get(SolrUtil.LearningOpportunity.NAME_DISPLAY_EN));
                 I18nText name = new I18nText(nameTranslations);
                 as.setName(name);
-                
+
                 setApplicationDates(as, result);
-                
+
                 results.add(as);
 
             }
@@ -1280,7 +1284,7 @@ public class SearchServiceSolrImpl implements SearchService {
 
         return results;
     }
-    
+
     private void setApplicationDates(CalendarApplicationSystem as, SolrDocument doc) {
         //Date now = new Date();
         //Date nextStarts = null;
@@ -1289,7 +1293,7 @@ public class SearchServiceSolrImpl implements SearchService {
 
             if (start.getKey().startsWith(AS_START_DATE_PREFIX)) {
                 String indexStr = start.getKey().split("_")[1].toString();
-                
+
                 String endKey = new StringBuilder().append(AS_END_DATE_PREFIX)
                         .append(start.getKey().split("_")[1]).toString();
 
@@ -1301,13 +1305,13 @@ public class SearchServiceSolrImpl implements SearchService {
                 DateRange curRange = new DateRange();
                 curRange.setStartDate(startDate);
                 curRange.setEndDate(endDate);
-                
+
                 ApplicationPeriod ap = new ApplicationPeriod();
                 ap.setDateRange(curRange);
                 I18nText periodNameI = new I18nText();
                 periodNameI.put("fi", periodName);
                 ap.setName(periodNameI);
-                
+
                 as.getApplicationPeriods().add(ap);
                 //as.getApplicationDates().add(curRange);
             }
