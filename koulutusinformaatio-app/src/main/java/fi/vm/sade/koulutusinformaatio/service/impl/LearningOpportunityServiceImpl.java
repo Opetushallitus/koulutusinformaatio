@@ -376,5 +376,11 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
         return AdultVocationalParentLOSToDTO.convert(los, lang, uiLang);
     }
 
+    @Override
+    public LearningOpportunityProviderDTO getProvider(String lopId, String lang)
+            throws ResourceNotFoundException {
+        return ProviderToDTO.convert(this.educationDataQueryService.getProvider(lopId), lang, lang, lang) ;
+    }
+
 
 }

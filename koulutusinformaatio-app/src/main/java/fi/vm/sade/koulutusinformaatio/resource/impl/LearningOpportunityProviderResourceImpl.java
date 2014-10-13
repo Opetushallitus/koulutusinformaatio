@@ -18,16 +18,20 @@ package fi.vm.sade.koulutusinformaatio.resource.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.comparator.ProviderSearchResultComparator;
 import fi.vm.sade.koulutusinformaatio.converter.ConverterUtil;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
+import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResultDTO;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.exception.KIExceptionHandler;
 import fi.vm.sade.koulutusinformaatio.resource.LearningOpportunityProviderResource;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import fi.vm.sade.koulutusinformaatio.service.SearchService;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -92,6 +96,15 @@ public class LearningOpportunityProviderResourceImpl implements LearningOpportun
         try {
             return learningOpportunityService.getPicture(lopId);
         } catch (Exception e) {
+            throw KIExceptionHandler.resolveException(e);
+        }
+    }
+
+    @Override
+    public LearningOpportunityProviderDTO getProvider(String lopId, String lang) {
+        try {
+            return this.learningOpportunityService.getProvider(lopId, lang);
+        } catch (ResourceNotFoundException e) {
             throw KIExceptionHandler.resolveException(e);
         }
     }

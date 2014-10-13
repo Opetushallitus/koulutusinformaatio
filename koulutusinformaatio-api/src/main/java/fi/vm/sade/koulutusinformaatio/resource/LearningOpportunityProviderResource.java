@@ -16,11 +16,13 @@
 
 package fi.vm.sade.koulutusinformaatio.resource;
 
+import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResultDTO;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+
 import java.util.List;
 
 /**
@@ -72,5 +74,11 @@ public interface LearningOpportunityProviderResource {
     @Path("{lopId}/picture")
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public PictureDTO getProviderPicture(@PathParam("lopId") final String lopId);
+    
+    @GET
+    @Path("{lopId}")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    public LearningOpportunityProviderDTO getProvider(@PathParam("lopId") final String lopId,
+                                  @DefaultValue(LANG_FI) @QueryParam(LANG) String lang);
 
 }
