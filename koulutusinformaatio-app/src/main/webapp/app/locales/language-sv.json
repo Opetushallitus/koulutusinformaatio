@@ -335,5 +335,8 @@
     
      "euro": "euro",
      "sopimuksen-mukaan": "Enligt avtal",
-     "structure-of-degree": "Examensstruktur"
+     "structure-of-degree": "Examensstruktur",
+
+     "hide-filter-selector-true": "Visa avgränsningarna",
+     "hide-filter-selector-false": "Dölj avgränsningarna"
 }
