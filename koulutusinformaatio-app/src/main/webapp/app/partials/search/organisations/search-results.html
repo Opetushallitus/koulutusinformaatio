@@ -64,7 +64,7 @@
         <div id="organisation-search-results">
             <div data-ng-repeat="provider in loResult.providerResults" class="search-result">
                 <h2><a data-ng-href="#!/organisaatio/{{provider.id}}"><span data-ng-bind-html="provider.name | unsafe"></span></a></h2>
-                <span data-ng-bind-html="provider.description | unsafe"></span>
+                <span data-ng-bind-html="provider.address | unsafe"></span>
                 <!--<img data-ng-src="{{article.imageUrl}}" data-ng-show="article.imageUrl" class="img-responsive content-img"/>-->
                 <div class="clear"></div>
             </div>

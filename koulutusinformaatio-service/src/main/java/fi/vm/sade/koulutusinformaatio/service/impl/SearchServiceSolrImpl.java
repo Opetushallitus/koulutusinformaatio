@@ -372,11 +372,11 @@ public class SearchServiceSolrImpl implements SearchService {
         result.setName(name);
         result.setId(doc.getFieldValue("id").toString());
         String descr = getTranslatedValue(doc, lang,
-                "descr_fi_str_display",
-                "descr_sv_str_display",
-                "descr_en_str_display",
-                "descr_fi_str_display");
-        result.setDescription(descr);
+                "address_fi_str_display",
+                "address_sv_str_display",
+                "address_en_str_display",
+                "address_fi_str_display");
+        result.setAddress(descr);
         try {
             Picture pict = this.educationDataQueryService.getPicture(result.getId());
             result.setThumbnailEncoded(pict.getThumbnailEncoded());

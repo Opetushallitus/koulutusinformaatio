@@ -212,19 +212,19 @@ public class IndexerServiceImpl implements IndexerService {
             providerDoc.addField("id", provider.getId());
             providerDoc.addField("type", SolrUtil.TYPE_ORGANISATION);
 
-            String nameFi = resolveTextByLang("fi", provider.getName().getTranslations());
+            String nameFi = resolveTextByLangWithFallback("fi", provider.getName().getTranslations());
             if (nameFi != null && !nameFi.isEmpty()) {
                 providerDoc.addField("name_fi", nameFi);
                 providerDoc.addField("startsWith_fi", nameFi.substring(0, 1).toUpperCase());
                 providerDoc.addField("text_fi", nameFi);
             }
-            String nameSv = resolveTextByLang("sv", provider.getName().getTranslations());
+            String nameSv = resolveTextByLangWithFallback("sv", provider.getName().getTranslations());
             if (nameSv != null && !nameSv.isEmpty()) {
                 providerDoc.addField("name_sv", nameSv);
                 providerDoc.addField("startsWith_sv", nameSv.substring(0, 1).toUpperCase());
                 providerDoc.addField("text_sv", nameSv);
             }
-            String nameEn = resolveTextByLang("en", provider.getName().getTranslations());
+            String nameEn = resolveTextByLangWithFallback("en", provider.getName().getTranslations());
             if (nameEn != null && !nameEn.isEmpty()) {
                 providerDoc.addField("name_en", nameEn);
                 providerDoc.addField("startsWith_en", nameEn.substring(0, 1).toUpperCase());
@@ -232,9 +232,9 @@ public class IndexerServiceImpl implements IndexerService {
             }
             if (provider.getType() != null) {
                 providerDoc.setField(SolrUtil.ProviderFields.TYPE_VALUE, provider.getType().getValue());
-                providerDoc.setField(SolrUtil.ProviderFields.TYPE_FI, resolveTextByLang("fi", provider.getType().getName().getTranslations()));
-                providerDoc.setField(SolrUtil.ProviderFields.TYPE_SV, resolveTextByLang("sv", provider.getType().getName().getTranslations()));
-                providerDoc.setField(SolrUtil.ProviderFields.TYPE_EN, resolveTextByLang("en", provider.getType().getName().getTranslations()));
+                providerDoc.setField(SolrUtil.ProviderFields.TYPE_FI, resolveTextByLangWithFallback("fi", provider.getType().getName().getTranslations()));
+                providerDoc.setField(SolrUtil.ProviderFields.TYPE_SV, resolveTextByLangWithFallback("sv", provider.getType().getName().getTranslations()));
+                providerDoc.setField(SolrUtil.ProviderFields.TYPE_EN, resolveTextByLangWithFallback("en", provider.getType().getName().getTranslations()));
             }
             else {
                 providerDoc.setField(SolrUtil.ProviderFields.TYPE_VALUE, SolrConstants.PROVIDER_TYPE_UNKNOWN);
@@ -271,22 +271,28 @@ public class IndexerServiceImpl implements IndexerService {
                 }
             }
             
-            if (provider.getDescription() != null && !provider.getDescription().getTranslations().isEmpty()) {
-                String descrFi = resolveTextByLang("fi", provider.getDescription().getTranslations());
-                if (descrFi != null) {
-                    providerDoc.addField("descr_fi_str_display", descrFi);
-                    providerDoc.addField("text_fi", descrFi);
+            
+            if (provider.getVisitingAddress() != null) {
+                Address visitingAddr = provider.getVisitingAddress();
+                String addrEn = this.getAddrStr(visitingAddr, "en");
+                if (addrEn != null && !addrEn.isEmpty()) {
+                    providerDoc.addField("address_en_str_display", addrEn);
+                    providerDoc.addField("text_en", addrEn);
                 }
-                String descrSv = resolveTextByLang("sv", provider.getDescription().getTranslations());
-                if (descrSv != null) {
-                    providerDoc.addField("descr_sv_str_display", descrSv);
-                    providerDoc.addField("text_sv", descrSv);
+               
+                String addrSv = this.getAddrStr(visitingAddr, "sv");
+                if (addrSv != null && !addrSv.isEmpty()) {
+                    providerDoc.addField("address_sv_str_display", addrSv);
+                    providerDoc.addField("text_sv", addrSv);
                 }
-                String descrEn = resolveTextByLang("en", provider.getDescription().getTranslations());
-                if (descrEn != null) {
-                    providerDoc.addField("descr_en_str_display", descrEn);
-                    providerDoc.addField("text_en", descrEn);
+                
+                String addrFi = this.getAddrStr(visitingAddr, "fi");
+                if (addrFi != null && !addrFi.isEmpty()) {
+                    providerDoc.addField("address_fi_str_display", addrFi);
+                    providerDoc.addField("text_fi", addrFi);
                 }
+                
+                
             }
             
             if (provider.getHomeDistrict() != null) {
@@ -315,6 +321,27 @@ public class IndexerServiceImpl implements IndexerService {
             lopSolr.add(providerDocs);
         }
         
+    }
+    
+    private String getAddrStr(Address addr, String lang) {
+        if (lang.equalsIgnoreCase("en")) {
+            return (addr.getStreetAddress() != null && addr.getStreetAddress().getTranslations() != null) ? this.resolveTextByLangEmptyDefault("en", addr.getStreetAddress().getTranslations()) : null;
+        }
+        if (lang.equalsIgnoreCase("fi") || lang.equalsIgnoreCase("sv")) {
+            String addrStr = "";
+            addrStr = (addr.getStreetAddress() != null 
+                    && addr.getStreetAddress().getTranslations() != null
+                    && !addr.getStreetAddress().getTranslations().isEmpty()) 
+                    ? this.resolveTextByLangEmptyDefault(lang, addr.getStreetAddress().getTranslations()) : addrStr;
+            addrStr = (addr.getPostalCode() != null) ? String.format("%s, %s",  addrStr, addr.getPostalCode()) : addrStr;
+            addrStr = (addr.getPostOffice() != null 
+                    && addr.getPostOffice().getTranslations() != null
+                    && !addr.getPostOffice().getTranslations().isEmpty()) 
+                    ? String.format("%s, %s",  addrStr, this.resolveTextByLangWithFallback(lang, addr.getPostOffice().getTranslations())) 
+                            : addrStr;
+           return addrStr;
+        }
+        return null;
     }
 
     @Override
@@ -431,7 +458,7 @@ public class IndexerServiceImpl implements IndexerService {
         return this.locationHttpSolrServer;
     }
 
-    private String resolveTextByLang(String lang, Map<String, String> translations) {
+    private String resolveTextByLangWithFallback(String lang, Map<String, String> translations) {
         if (translations.containsKey(lang)) {
             return translations.get(lang);
         } else if (translations.containsKey(FALLBACK_LANG)) {
@@ -439,6 +466,14 @@ public class IndexerServiceImpl implements IndexerService {
         } else {
             return translations.values().iterator().next();
         }
+    }
+    
+
+    private String resolveTextByLangEmptyDefault(String lang, Map<String, String> translations) {
+        if (translations.containsKey(lang)) {
+            return translations.get(lang);
+        } 
+        return "";
     }
 
     @Override
@@ -551,17 +586,17 @@ public class IndexerServiceImpl implements IndexerService {
         
         
         
-        String nameFi = resolveTextByLang("fi", as.getName().getTranslations());
+        String nameFi = resolveTextByLangWithFallback("fi", as.getName().getTranslations());
         if (nameFi != null && !nameFi.isEmpty()) {
             asDoc.addField(SolrUtil.LearningOpportunity.NAME_FI, nameFi);
             asDoc.addField(SolrUtil.LearningOpportunity.NAME_DISPLAY_FI, nameFi);
         }
-        String nameSv = resolveTextByLang("sv", as.getName().getTranslations());
+        String nameSv = resolveTextByLangWithFallback("sv", as.getName().getTranslations());
         if (nameSv != null && !nameSv.isEmpty()) {
             asDoc.addField(SolrUtil.LearningOpportunity.NAME_SV, nameSv);
             asDoc.addField(SolrUtil.LearningOpportunity.NAME_DISPLAY_SV, nameSv);
         }
-        String nameEn = resolveTextByLang("en", as.getName().getTranslations());
+        String nameEn = resolveTextByLangWithFallback("en", as.getName().getTranslations());
         if (nameEn != null && !nameEn.isEmpty()) {
             asDoc.addField(SolrUtil.LearningOpportunity.NAME_EN, nameEn);
             asDoc.addField(SolrUtil.LearningOpportunity.NAME_DISPLAY_EN, nameEn);
@@ -574,7 +609,7 @@ public class IndexerServiceImpl implements IndexerService {
             DateRange dr = ap.getDateRange();
             String periodNameFi = "";
             if (ap.getName() != null && ap.getName().getTranslations() != null && !ap.getName().getTranslations().isEmpty()) {
-                periodNameFi = resolveTextByLang("fi", ap.getName().getTranslations());
+                periodNameFi = resolveTextByLangWithFallback("fi", ap.getName().getTranslations());
             }
             
             asDoc.addField(new StringBuilder().append("asStart").append("_").
