@@ -341,5 +341,7 @@
      "structure-of-degree": "Tutkinnon rakenne",
 
      "hide-filter-selector-true": "Näytä rajaukset",
-     "hide-filter-selector-false": "Piilota rajaukset"
+     "hide-filter-selector-false": "Piilota rajaukset",
+
+     "search-all-los": "Hae kaikki koulutukset"
 }

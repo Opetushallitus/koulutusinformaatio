@@ -63,10 +63,17 @@
         
         <div id="organisation-search-results">
             <div data-ng-repeat="provider in loResult.providerResults" class="search-result">
-                <h2><a data-ng-href="#!/organisaatio/{{provider.id}}"><span data-ng-bind-html="provider.name | unsafe"></span></a></h2>
-                <span data-ng-bind-html="provider.address | unsafe"></span>
-                <!--<img data-ng-src="{{article.imageUrl}}" data-ng-show="article.imageUrl" class="img-responsive content-img"/>-->
-                <div class="clear"></div>
+                <div class="row">
+                    <div class="col-xs-16 col-md-3 margin-vertical-small">
+                        <img data-ng-src="data:image/jpeg;base64,{{provider.thumbnailEncoded}}" data-ng-show="provider.thumbnailEncoded" class="img-responsive content-img"/>
+                    </div>
+                    <div class="col-xs-16 col-md-13  margin-vertical-small">
+                        <h2><a data-ng-href="#!/organisaatio/{{provider.id}}"><span data-ng-bind-html="provider.name | unsafe"></span></a></h2>
+                        <div>Osoite tähän</div>
+                        <a data-ng-href="#!/haku/*?page=1&facetFilters=teachingLangCode_ffm:FI&lopFilter={{provider.name}}&itemsPerPage=25&sortCriteria=0&tab=los" class="pull-right"><span data-ki-i18n="search-all-los" data-show-colon="true"></span>{{provider.name}}</a>
+                        <!--<span data-ng-bind-html="provider.description | unsafe"></span>-->
+                    </div>
+                </div>
             </div>
         </div>
 
