@@ -81,13 +81,16 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
             upcomingLater: $scope.upcomingLater,
             page: kiAppConstants.searchResultsStartPage,
             articlePage: kiAppConstants.searchResultsStartPage,
+            organisationPage: kiAppConstants.searchResultsStartPage,
             facetFilters: $scope.facetFilters,
             langCleared: $scope.langCleared,
             itemsPerPage: $scope.itemsPerPage,
             sortCriteria: $scope.sortCriteria,
             lopFilter: $scope.lopFilter,
             educationCodeFilter: $scope.educationCodeFilter,
-            excludes: $scope.excludes
+            excludes: $scope.excludes,
+            organisationFacetFilters: $scope.organisationFacetFilters,
+            articleFacetFilters: $scope.articleFacetFilters
         });
         
         if ($scope.lopFilter != undefined) {
@@ -379,6 +382,9 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
                 $scope.lopFilter = FilterService.getLopFilter();
                 $scope.educationCodeFilter = FilterService.getEducationCodeFilter();
                 $scope.excludes = FilterService.getExcludes();
+                $scope.articleFacetFilters = FilterService.getArticleFacetFilters();
+                $scope.organisationFacetFilters = FilterService.getOrganisationFacetFilters();
+
                 
                 if ($scope.lopFilter != undefined) {
                 	$scope.lopRecommendation = true;
@@ -438,6 +444,8 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
     			lopFilter: FilterService.getLopFilter(),
     		    educationCodeFilter: FilterService.getEducationCodeFilter(),
     		    excludes : FilterService.getExcludes(),
+                articleFacetFilters : FilterService.getArticleFacetFilters(),
+                organisationFacetFilters: FilterService.getOrganisationFacetFilters(),
     		    searchType : 'LO'
     		}).then(function(result) {
     			
@@ -594,6 +602,10 @@ function SortCtrl($scope, $location, FilterService, kiAppConstants) {
             FilterService.setArticlePage(kiAppConstants.searchResultsStartPage);
             $scope.$parent.model.currentArticlePage = kiAppConstants.searchResultsStartPage;
         	$scope.refreshArticleView();
+        } else if (tab == 'organisation') {
+            FilterService.setOrganisationPage(kiAppConstants.searchResultsStartPage);
+            $scope.$parent.model.currentOrganisationPage = kiAppConstants.searchResultsStartPage;
+            $scope.refreshOrganisationView();
         }
     }
 
@@ -603,6 +615,8 @@ function SortCtrl($scope, $location, FilterService, kiAppConstants) {
         	$scope.refreshView();
         } else if (tab == 'article') {
         	$scope.refreshArticleView();
+        } else if (tab == 'organisation') {
+            $scope.refreshOrganisationView();
         }
     }
 };

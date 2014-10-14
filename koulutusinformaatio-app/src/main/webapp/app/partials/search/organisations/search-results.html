@@ -69,9 +69,8 @@
                     </div>
                     <div class="col-xs-16 col-md-13  margin-vertical-small">
                         <h2><a data-ng-href="#!/organisaatio/{{provider.id}}"><span data-ng-bind-html="provider.name | unsafe"></span></a></h2>
-                        <div>Osoite tähän</div>
-                        <a data-ng-href="#!/haku/*?page=1&facetFilters=teachingLangCode_ffm:FI&lopFilter={{provider.name}}&itemsPerPage=25&sortCriteria=0&tab=los" class="pull-right"><span data-ki-i18n="search-all-los" data-show-colon="true"></span>{{provider.name}}</a>
-                        <!--<span data-ng-bind-html="provider.description | unsafe"></span>-->
+                        <p>{{provider.address}}</p>
+                        <a data-ng-href="#!/haku/*?page=1&lopFilter={{provider.name}}&itemsPerPage=25&sortCriteria=0&tab=los"><span data-ki-i18n="search-all-los" data-show-colon="true"></span> {{provider.name}}</a>
                     </div>
                 </div>
             </div>

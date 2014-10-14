@@ -46,6 +46,11 @@ var kiApp = angular.module('kiApp',
         }
     });
 
+    $routeProvider.when('/organisaatio/:id', {
+        templateUrl: 'partials/organisation/organisation.html',
+        controller: OrganisationCtrl
+    });
+
     $routeProvider.when('/:loType/:id', {
         templateUrl: 'partials/learningopportunity.html', 
         controller: InfoCtrl,

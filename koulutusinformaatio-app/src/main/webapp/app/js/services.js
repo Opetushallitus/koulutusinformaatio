@@ -8,7 +8,8 @@ angular.module('kiApp.services',
     'kiApp.CookieService',
     'kiApp.AlertService',
     'kiApp.AuthService',
-    'kiApp.services.SearchLearningOpportunityService'
+    'kiApp.SearchLearningOpportunityService',
+    'kiApp.OrganisationService'
 ]).
 
 service('SearchLocationService', ['$http', '$timeout', '$q', 'LanguageService', function($http, $timeout, $q, LanguageService) {

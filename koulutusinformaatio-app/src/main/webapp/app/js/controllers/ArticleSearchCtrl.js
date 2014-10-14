@@ -8,6 +8,7 @@ function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, 
             upcoming: $scope.upcoming,
             page: kiAppConstants.searchResultsStartPage,
             articlePage: kiAppConstants.searchResultsStartPage,
+            organisationPage: kiAppConstants.searchResultsStartPage,
             facetFilters: $scope.facetFilters,
             langCleared: $scope.langCleared,
             itemsPerPage: $scope.itemsPerPage,
@@ -15,6 +16,7 @@ function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, 
             lopFilter: $scope.lopFilter,
             educationCodeFilter: $scope.educationCodeFilter,
             excludes: $scope.excludes,
+            organisationFacetFilters: $scope.organisationFacetFilters,
             articleFacetFilters: $scope.articleFacetFilters
         });
         
@@ -45,7 +47,7 @@ function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, 
         $('html, body').scrollTop($('#article-results').offset().top); // scroll to top of list
     }
     
-  //Returns true if the language filter is set
+    //Returns true if the language filter is set
     //i.e. either a teaching language filter or langCleared (language is explicitely cleared by the user)
     $scope.isLangFilterSet = function() {
         if ($scope.langCleared) {
@@ -96,6 +98,7 @@ function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, 
                 $scope.educationCodeFilter = FilterService.getEducationCodeFilter();
                 $scope.excludes = FilterService.getExcludes();
                 $scope.articleFacetFilters = FilterService.getArticleFacetFilters();
+                $scope.organisationFacetFilters = FilterService.getOrganisationFacetFilters();
 
                 $scope.doArticleSearching();
             });
@@ -122,6 +125,7 @@ function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, 
             educationCodeFilter: FilterService.getEducationCodeFilter(),
             excludes : FilterService.getExcludes(),
             articleFacetFilters : FilterService.getArticleFacetFilters(),
+            organisationFacetFilters: FilterService.getOrganisationFacetFilters(),
             searchType : 'ARTICLE'
         }).then(function(result) {
             

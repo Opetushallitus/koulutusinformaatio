@@ -1,4 +1,4 @@
-angular.module('kiApp.services.SearchLearningOpportunityService', ['ngResource'])
+angular.module('kiApp.SearchLearningOpportunityService', ['ngResource'])
 
 .service('SearchLearningOpportunityService', 
     [

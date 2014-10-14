@@ -5,14 +5,23 @@ function OrganisationSearchCtrl($scope, $rootScope, $location, $routeParams, Fil
 
     $scope.change = function() {
         FilterService.set({
+            prerequisite: $scope.prerequisite,
             locations: $scope.locations,
+            ongoing: $scope.ongoing,
+            upcoming: $scope.upcoming,
+            upcomingLater: $scope.upcomingLater,
             page: kiAppConstants.searchResultsStartPage,
             articlePage: kiAppConstants.searchResultsStartPage,
             organisationPage: kiAppConstants.searchResultsStartPage,
+            facetFilters: $scope.facetFilters,
+            langCleared: $scope.langCleared,
             itemsPerPage: $scope.itemsPerPage,
             sortCriteria: $scope.sortCriteria,
+            lopFilter: $scope.lopFilter,
+            educationCodeFilter: $scope.educationCodeFilter,
             excludes: $scope.excludes,
-            organisationFacetFilters: $scope.organisationFacetFilters
+            organisationFacetFilters: $scope.organisationFacetFilters,
+            articleFacetFilters: $scope.articleFacetFilters
         });
 
         // append filters to url and reload
@@ -24,17 +33,34 @@ function OrganisationSearchCtrl($scope, $rootScope, $location, $routeParams, Fil
         $scope.initSearch();
     }
 
+    $scope.resolveFacetFilters = function() {
+        var filters = FilterService.getFacetFilters();
+        if (filters == undefined) {
+            filters = [];
+        }
+        return filters;
+    }
+
     $scope.initSearch = function() {
         var queryParams = $location.search();
         FilterService.query(queryParams)
             .then(function() {
+                $scope.prerequisite = FilterService.getPrerequisite();
                 $scope.locations = FilterService.getLocations();
+                $scope.ongoing = FilterService.isOngoing();
+                $scope.upcoming = FilterService.isUpcoming(),
+                $scope.upcomingLater = FilterService.isUpcomingLater(),
+                $scope.facetFilters = FilterService.getFacetFilters();
+                $scope.langCleared = FilterService.getLangCleared();
                 $scope.itemsPerPage = FilterService.getItemsPerPage();
                 $scope.sortCriteria = FilterService.getSortCriteria();
                 $scope.model = {
                     currentOrganisationPage: FilterService.getOrganisationPage()
                 };
+                $scope.lopFilter = FilterService.getLopFilter();
+                $scope.educationCodeFilter = FilterService.getEducationCodeFilter();
                 $scope.excludes = FilterService.getExcludes();
+                $scope.articleFacetFilters = FilterService.getArticleFacetFilters();
                 $scope.organisationFacetFilters = FilterService.getOrganisationFacetFilters();
 
                 $scope.doOrganisationSearching();
@@ -50,10 +76,18 @@ function OrganisationSearchCtrl($scope, $rootScope, $location, $routeParams, Fil
             queryString: $routeParams.queryString,
             start: (FilterService.getOrganisationPage()-1) * $scope.itemsPerPage,
             rows: $scope.itemsPerPage,
+            prerequisite: FilterService.getPrerequisite(),
             locations: FilterService.getLocationNames(),
+            ongoing: FilterService.isOngoing(),
+            upcoming: FilterService.isUpcoming(),
+            upcomingLater: FilterService.isUpcomingLater(),
+            facetFilters: $scope.resolveFacetFilters(),
             sortCriteria: FilterService.getSortCriteria(),
             lang: LanguageService.getLanguage(),
+            lopFilter: FilterService.getLopFilter(),
+            educationCodeFilter: FilterService.getEducationCodeFilter(),
             excludes : FilterService.getExcludes(),
+            articleFacetFilters : FilterService.getArticleFacetFilters(),
             organisationFacetFilters: FilterService.getOrganisationFacetFilters(),
             searchType : 'PROVIDER'
         }).then(function(result) {
@@ -87,27 +121,13 @@ function OrganisationSearchCtrl($scope, $rootScope, $location, $routeParams, Fil
         $scope.organisationFacetFilters = FilterService.getOrganisationFacetFilters();
         angular.forEach($scope.organisationFacetFilters, function(fFilter, key) {
             var curVal = fFilter.split(':')[1];
-            console.log(curVal);
-            /*
-            var curSelection = {
-                                facetField: fFilter.split(':')[0], 
-                                valueId: fFilter.split(':')[1],
-                                valueName: fFilter.split(':')[1]
-                                };
-                                */
+
             angular.forEach($scope.loResult.providerTypeFacet.facetValues, function(facet) {
-                console.log(facet);
                 if (facet.valueId === curVal) {
                     $scope.organisationFacetSelections.push(facet);
                 }
-            } )
-
-
-
-            //$scope.organisationFacetSelections.push(curSelection);
+            })
         });
-        
-        
     };
 
     $scope.isOrganisationFacetSelected = function(fv) {
