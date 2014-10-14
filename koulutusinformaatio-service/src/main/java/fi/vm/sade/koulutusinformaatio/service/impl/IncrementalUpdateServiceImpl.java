@@ -207,8 +207,13 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
     private void indexKomotoChanges(List<String> komotoChanges,
             List<String> changedHakukohdeOids) throws Exception {
         for (String curOid : komotoChanges) {
-            List<OidRDTO> aoOidDtos = this.tarjontaRawService.getHakukohdesByKomoto(curOid);
-            if (this.losIndexer.isLoiAlreadyHandled(aoOidDtos, changedHakukohdeOids)) {
+            List<OidRDTO> aoOidDtos = null;
+            try {
+                aoOidDtos = this.tarjontaRawService.getHakukohdesByKomoto(curOid);
+            } catch (Exception ex) {
+                LOG.warn("problem getting hakukohdes for komoto: " + curOid);
+            }
+            if (aoOidDtos == null || this.losIndexer.isLoiAlreadyHandled(aoOidDtos, changedHakukohdeOids)) {
                 LOG.debug("Komoto: " + curOid + " was handled during hakukohde process");
             } else {
                 LOG.debug("Will index changed komoto: " + curOid);
@@ -221,11 +226,18 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
     private void indexHakukohdeChanges(List<String> hakukohdeChanges) throws Exception {
         for (String curOid : hakukohdeChanges) {
             LOG.debug("Changed hakukohde: " + curOid);
-            HakukohdeDTO aoDto = this.tarjontaRawService.getHakukohde(curOid);
-            HakuDTO asDto = this.tarjontaRawService.getHaku(aoDto.getHakuOid());
-            this.aoIndexer.indexApplicationOptionData(aoDto, asDto);
+            HakukohdeDTO aoDto = null;
+            HakuDTO asDto = null;
+            try {
+                aoDto = this.tarjontaRawService.getHakukohde(curOid);
+                asDto = this.tarjontaRawService.getHaku(aoDto.getHakuOid());
+            } catch (Exception ex) {
+                LOG.warn("Problem fetching hakukohde from tarjonta: " + curOid);
+            } 
+            if (aoDto != null && asDto != null) {
+                this.aoIndexer.indexApplicationOptionData(aoDto, asDto);
+            }
         }
-        
     }
 
     private void indexHakuChanges(List<String> hakuChanges) throws Exception {
