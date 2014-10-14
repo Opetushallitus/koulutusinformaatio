@@ -334,6 +334,9 @@
     
      "euro": "euros",
      "sopimuksen-mukaan": "According to agreement",
-     "structure-of-degree": "Qualification structure"
+     "structure-of-degree": "Qualification structure",
+
+     "hide-filter-selector-true": "Show filters",
+     "hide-filter-selector-false": "Hide filters"
     
 }
