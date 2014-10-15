@@ -19,6 +19,7 @@ package fi.vm.sade.koulutusinformaatio.service;
 import java.util.List;
 
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.organisaatio.api.search.OrganisaatioHakutulos;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
 
 /**
@@ -30,5 +31,6 @@ public interface OrganisaatioRawService {
 
     public OrganisaatioRDTO getOrganisaatio(String oid) throws ResourceNotFoundException;
     public List<OrganisaatioRDTO> getChildren(String parentOid) throws ResourceNotFoundException;
+    public OrganisaatioHakutulos fetchOrganisaatiosByType(String organisaatioType) throws ResourceNotFoundException;
 
 }

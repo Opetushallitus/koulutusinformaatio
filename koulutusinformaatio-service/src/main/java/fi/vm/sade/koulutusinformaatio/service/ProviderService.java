@@ -31,5 +31,6 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException
 public interface ProviderService {
 
     public Provider getByOID(String oid) throws KoodistoException, MalformedURLException, IOException, ResourceNotFoundException;
+    //Public 
     void clearCache();
 }

@@ -70,11 +70,11 @@ public class LearningOpportunityQuery extends SolrQuery {
             }
         }
         
-        //leaving the facet and timestamp docs out
+        //leaving the faces, timestamps and application systems docs out
         this.addFilterQuery(String.format("-%s:%s", LearningOpportunity.ID, SolrConstants.TIMESTAMP_DOC));
         this.addFilterQuery(String.format("-%s:%s", LearningOpportunity.TYPE, SolrConstants.TYPE_FACET));
         this.addFilterQuery(String.format("-%s:%s", LearningOpportunity.TYPE, SolrConstants.TYPE_ARTICLE));
-         
+        this.addFilterQuery(String.format("-%s:%s", LearningOpportunity.TYPE, SolrConstants.TYPE_APPLICATION_SYSTEM));
         
         
         addFacetsToQuery(facetFilters);

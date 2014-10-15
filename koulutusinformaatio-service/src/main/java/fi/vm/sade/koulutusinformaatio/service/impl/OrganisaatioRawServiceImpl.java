@@ -11,9 +11,11 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
+import fi.vm.sade.organisaatio.api.search.OrganisaatioHakutulos;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
+
 
 
 
@@ -83,21 +85,31 @@ public class OrganisaatioRawServiceImpl  implements OrganisaatioRawService{
         return orgRes.accept(JSON_UTF8)
                 .get(new GenericType<List<OrganisaatioRDTO>>() {
                 });
-                
-        
-        /*
-        HttpURLConnection conn = null;
-        try {
-            URL orgUrl = new URL(String.format("%s/%s/children", this.organisaatioResourceUrl, parentOid));
-            conn = (HttpURLConnection) (orgUrl.openConnection());
-            conn.setRequestMethod(SolrUtil.SolrConstants.GET);
-            conn.connect();
-            return mapper.readValue(conn.getInputStream(), List.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new ResourceNotFoundException("Organization children for"+parentOid+" not found: "+e.getMessage());
-        }*/
     }
+
+    @Override
+    public OrganisaatioHakutulos fetchOrganisaatiosByType(String organisaatioType)
+            throws ResourceNotFoundException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        JacksonJsonProvider jacksProv = new JacksonJsonProvider(mapper);
+        ClientConfig cc = new DefaultClientConfig();
+        cc.getSingletons().add(jacksProv);
+        Client clientWithJacksonSerializer = Client.create(cc);
+        WebResource orgRes = clientWithJacksonSerializer.resource(String.format("%s/hae", this.organisaatioResourceUrl));
+        return orgRes
+                .queryParam("noCache", String.format("%s", System.currentTimeMillis()))
+                .queryParam("aktiiviset", "true")
+                .queryParam("lakkautetut", "false")
+                .queryParam("suunnitellut", "false")
+                .queryParam("organisaatiotyyppi", organisaatioType)
+                .queryParam("searchstr", "")
+                .accept(JSON_UTF8)
+                .get(new GenericType<OrganisaatioHakutulos>() {
+                });
+    }
+    
+    
     
     
 }
