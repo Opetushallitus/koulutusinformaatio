@@ -413,10 +413,10 @@ public class IndexerServiceImpl implements IndexerService {
     
     @Override
     public boolean isDocumentInIndex(String docId, HttpSolrServer server) {
-        LOGGER.debug("Checking if document is in index");
+        LOGGER.debug("Checking if document is in index: " + docId);
         SolrQuery query = new SolrQuery();
         query.setQuery("*:*");
-        query.addFilterQuery("id:docId");
+        query.addFilterQuery(String.format("id:%s", docId));
         query.setFields("id");
         query.setStart(0);
         query.set("defType", "edismax");
