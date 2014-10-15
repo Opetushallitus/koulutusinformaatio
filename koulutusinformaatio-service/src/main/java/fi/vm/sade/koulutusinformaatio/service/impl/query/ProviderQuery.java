@@ -106,8 +106,10 @@ public class ProviderQuery extends SolrQuery {
         this.setRows(rows);
         
         this.setParam("q.op", "AND");
+        
+        
         if (sort != null) {
-            this.addSort(sort, order.equals("asc") ? ORDER.asc : ORDER.desc);
+            this.addSort(resolveNameField(lang, true), order.equals("asc") ? ORDER.asc : ORDER.desc);
         }
         this.setSearchFields(this, lang);
         this.setFacet(true);
