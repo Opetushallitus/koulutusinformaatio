@@ -345,6 +345,7 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
     }
 
     private String createThumbnail(String kuvaEncoded, String orgOid) {
+        LOG.debug("Creating thumbnail");
         if (kuvaEncoded == null || orgOid == null) {
             return null;
         }
@@ -363,6 +364,7 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
             BASE64Encoder encoder = new BASE64Encoder();
             String thumbnailString = encoder.encode(imageByte);
             bos.close();
+            LOG.debug("thumbnail created");
             return thumbnailString;
             
         } catch (Exception ex) {

@@ -213,6 +213,12 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
             learningOpportunityProviderTransactionDAO.save(learningOpportunityProvider);
         }
     }
+    
+    public void save(Provider provider) {
+        LearningOpportunityProviderEntity provE 
+            = modelMapper.map(provider, LearningOpportunityProviderEntity.class);
+        save(provE);
+    }
 
     private void save(final ApplicationOptionEntity applicationOption) {
         if (applicationOption != null) {

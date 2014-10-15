@@ -200,7 +200,7 @@ public class IndexerServiceImpl implements IndexerService {
     
     
 
-    private void createProviderDocs(Provider provider, 
+    public void createProviderDocs(Provider provider, 
                                     HttpSolrServer lopSolr, 
                                     Set<String> requiredBaseEducations, 
                                     Set<String> vocationalAsIds,
@@ -409,6 +409,24 @@ public class IndexerServiceImpl implements IndexerService {
             return this.loUpdateHttpSolrServer;
         }
         return this.loHttpSolrServer;
+    }
+    
+    @Override
+    public boolean isDocumentInIndex(String docId, HttpSolrServer server) {
+        LOGGER.debug("Checking if document is in index");
+        SolrQuery query = new SolrQuery();
+        query.setQuery("*:*");
+        query.addFilterQuery("id:docId");
+        query.setFields("id");
+        query.setStart(0);
+        query.set("defType", "edismax");
+        try {
+            QueryResponse response = server.query(query);
+            return response.getResults().getNumFound() > 0;
+        } catch (Exception ex) {
+            LOGGER.error(String.format("Could not check if document in index: %s", ex.getMessage()));
+        }
+        return false;
     }
 
     /*

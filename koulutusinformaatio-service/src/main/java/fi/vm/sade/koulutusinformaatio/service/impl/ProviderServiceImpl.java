@@ -25,6 +25,8 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
+import fi.vm.sade.organisaatio.api.search.OrganisaatioHakutulos;
+import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
 
 import org.slf4j.Logger;
@@ -33,6 +35,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -90,6 +95,8 @@ public class ProviderServiceImpl implements ProviderService {
         providerMap.put(oid, provider);
         return provider;
     }
+    
+    
 
     private void inheritOlTypes(Provider provider, OrganisaatioRDTO rawProvider) throws ResourceNotFoundException, KoodistoException {
         
@@ -162,6 +169,29 @@ public class ProviderServiceImpl implements ProviderService {
     @Override
     public void clearCache() {
         providerMap = new HashMap<String,Provider>();   
+    }
+
+    @Override
+    public List<OrganisaatioPerustieto> fetchOpplaitokset()
+            throws MalformedURLException, IOException,
+            ResourceNotFoundException {
+        
+        OrganisaatioHakutulos result = this.organisaatioRawService.fetchOrganisaatiosByType("Oppilaitos");
+        if (result != null && result.getOrganisaatiot() != null) {
+            return result.getOrganisaatiot();
+        }
+        return new ArrayList<OrganisaatioPerustieto>();
+    }
+
+    @Override
+    public List<OrganisaatioPerustieto> fetchToimipisteet()
+            throws MalformedURLException, IOException,
+            ResourceNotFoundException {
+        OrganisaatioHakutulos result = this.organisaatioRawService.fetchOrganisaatiosByType("Toimipiste");
+        if (result != null && result.getOrganisaatiot() != null) {
+            return result.getOrganisaatiot();
+        }
+        return new ArrayList<OrganisaatioPerustieto>();
     }
 
 
