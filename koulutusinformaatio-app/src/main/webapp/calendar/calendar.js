@@ -175,7 +175,7 @@ var ApplicationSystemCalendar = (function() {
         if (!item.asOngoing) {
             button.attr('disabled', 'disabled');
         }
-        var form = $('<form action="/haku-app/lomake/' + item.id + '"></form>');
+        var form = $('<form action="/haku-app/lomake/' + item.id + '" target="hakulomake"></form>');
         form.append(button);
 
         return form;
