@@ -516,7 +516,8 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
     			upcoming: $scope.upcoming,
     			upcomingLater: $scope.upcomingLater,
     			page: kiAppConstants.searchResultsStartPage,
-    			facetFilters: facetFiltersArr.join()
+    			facetFilters: facetFiltersArr.join(),
+                lopFilter: $scope.lopFilter
     		});
 
     		$scope.refreshView();

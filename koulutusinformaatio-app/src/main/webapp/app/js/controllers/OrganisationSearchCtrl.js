@@ -1,4 +1,4 @@
-function OrganisationSearchCtrl($scope, $rootScope, $location, $routeParams, FilterService, SearchLearningOpportunityService, LanguageService, TranslationService, kiAppConstants) {
+function OrganisationSearchCtrl($scope, $rootScope, $location, $location, $route, $routeParams, FilterService, SearchLearningOpportunityService, LanguageService, TranslationService, kiAppConstants) {
 
     // filter selector collapse state
     $scope.filterSelectorIsCollapsed = false;
@@ -203,6 +203,11 @@ function OrganisationSearchCtrl($scope, $rootScope, $location, $routeParams, Fil
     $scope.removeLocation = function(loc) {
         $scope.locations.splice($scope.locations.indexOf(loc), 1);
         $scope.change();
+    }
+
+    $scope.showLosForProvider = function(providerName) {
+        $location.url('/haku/*?page=1&lopFilter=' + providerName + '&itemsPerPage=25&sortCriteria=0&tab=los');
+        $route.reload();
     }
    
 }
