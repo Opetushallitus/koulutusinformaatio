@@ -1,5 +1,10 @@
+/**
+ *  Controller for article search tab. Controls search parameters and filter selection for articles.
+ */
+
 function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, FilterService, SearchLearningOpportunityService, LanguageService, kiAppConstants, TranslationService) {
     
+    // launched when a filter is selected/removed, updates the whole view and appends current filter selection to url
     $scope.change = function() {
         FilterService.set({
             prerequisite: $scope.prerequisite,
@@ -36,11 +41,13 @@ function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, 
         $scope.refreshArticleView();
     }
 
+    // pagination element shown or not
     $scope.showPagination = false;
     
     // filter selector collapse state
     $scope.filterSelectorIsCollapsed = false;
 
+    // change page with pager tool
     $scope.changePage = function(page) {
         FilterService.setArticlePage(page);
         $scope.doArticleSearching();
@@ -76,10 +83,10 @@ function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, 
         return filters;
     }
 
-    //Getting the query params from the url
-    //after which searching is done.
+    // initializes the search params retrieved from url and launches search
     $scope.initSearch = function() {
         var queryParams = $location.search();
+        queryParams.tab = 'articles';
         FilterService.query(queryParams)
             .then(function() {
                 $scope.prerequisite = FilterService.getPrerequisite();
@@ -104,9 +111,9 @@ function ArticleSearchCtrl($scope, $rootScope, $route, $location, $routeParams, 
             });
     }
  
+    // execute article search
     $scope.doArticleSearching = function() {
         var qParams = FilterService.get();
-        qParams.tab = 'articles';
         $location.search(qParams).replace();
         
         SearchLearningOpportunityService.query({

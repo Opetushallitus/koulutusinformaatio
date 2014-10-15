@@ -1610,15 +1610,16 @@ service('FilterService', [
                 page: filters.page,
                 articlePage: filters.articlePage,
                 organisationPage: filters.organisationPage,
-                facetFilters: filters.facetFilters,
                 langCleared: filters.langCleared,
                 itemsPerPage: filters.itemsPerPage,
                 sortCriteria: filters.sortCriteria,
                 lopFilter: filters.lopFilter,
                 educationCodeFilter: filters.educationCodeFilter,
                 excludes: filters.excludes,
+                facetFilters: filters.facetFilters,
                 articleFacetFilters : filters.articleFacetFilters,
-                organisationFacetFilters: filters.organisationFacetFilters
+                organisationFacetFilters: filters.organisationFacetFilters,
+                tab: filters.tab
             };
 
             angular.forEach(result, function(value, key) {
@@ -1732,7 +1733,8 @@ service('FilterService', [
             params += filters.educationCodeFilter ? '&educationCodeFilter=' + filters.educationCodeFilter : '';
             params += (filters.excludes && filters.excludes.length > 0) ? '&excludes=' + filters.excludes.join('|') : '';
             params += (filters.articleFacetFilters && filters.articleFacetFilters.length > 0) ? '&articleFacetFilters=' + filters.articleFacetFilters.join(',') : '';
-            params += (filters.organisationFacetFilters && filters.organisationFacetFilters.length > 0) ? '&providerFacetFilters=' + filters.organisationFacetFilters.join(',') : '';
+            params += (filters.organisationFacetFilters && filters.organisationFacetFilters.length > 0) ? '&organisationFacetFilters=' + filters.organisationFacetFilters.join(',') : '';
+            params += filters.tab ? '&tab=' + filters.tab : '';    
             params = params.length > 0 ? params.substring(1, params.length) : '';
             return params;
         },

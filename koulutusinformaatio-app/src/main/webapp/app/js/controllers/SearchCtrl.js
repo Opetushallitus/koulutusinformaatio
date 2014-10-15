@@ -366,7 +366,7 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
     //after which searching is done.
     $scope.initSearch = function() {
         var queryParams = $location.search();
-        
+        queryParams.tab = 'los';
     	FilterService.query(queryParams)
             .then(function() {
                 $scope.prerequisite = FilterService.getPrerequisite();
@@ -424,7 +424,7 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
     //Searching solr
     $scope.doSearching = function() {
         var qParams = FilterService.get();
-        qParams.tab = 'los';
+        //qParams.tab = 'los';
         $location.search(qParams).replace();
     	//If the language filter is set, the search query is made
     	if ($routeParams.queryString && $scope.isLangFilterSet()) {

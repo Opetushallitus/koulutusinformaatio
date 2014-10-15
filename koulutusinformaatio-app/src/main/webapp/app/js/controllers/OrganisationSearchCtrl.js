@@ -1,8 +1,13 @@
+/**
+ *  Controller for organisation search tab. Controls search parameters and filter selection for organisations.
+ */
+
 function OrganisationSearchCtrl($scope, $rootScope, $location, $location, $route, $routeParams, FilterService, SearchLearningOpportunityService, LanguageService, TranslationService, kiAppConstants) {
 
     // filter selector collapse state
     $scope.filterSelectorIsCollapsed = false;
 
+    // launched when a filter is selected/removed, updates the whole view and appends current filter selection to url
     $scope.change = function() {
         FilterService.set({
             prerequisite: $scope.prerequisite,
@@ -41,8 +46,10 @@ function OrganisationSearchCtrl($scope, $rootScope, $location, $location, $route
         return filters;
     }
 
+    // initializes the search params retrieved from url and launches search
     $scope.initSearch = function() {
         var queryParams = $location.search();
+        queryParams.tab = 'organisations';
         FilterService.query(queryParams)
             .then(function() {
                 $scope.prerequisite = FilterService.getPrerequisite();
@@ -67,9 +74,9 @@ function OrganisationSearchCtrl($scope, $rootScope, $location, $location, $route
             });
     }
 
+    // execute organisation search
     $scope.doOrganisationSearching = function() {
         var qParams = FilterService.get();
-        qParams.tab = 'organisations';
         $location.search(qParams).replace();
         
         SearchLearningOpportunityService.query({
