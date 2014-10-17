@@ -45,6 +45,8 @@ public class SpecialLearningOpportunitySpecificationEntity {
     @Indexed
     @Reference
     private LearningOpportunityProviderEntity provider;
+    @Reference
+    private List<LearningOpportunityProviderEntity> additionalProviders = new ArrayList<LearningOpportunityProviderEntity>();
     @Embedded
     private I18nTextEntity structure;
     @Embedded
@@ -229,5 +231,14 @@ public class SpecialLearningOpportunitySpecificationEntity {
 
     public void setAoIds(List<String> aoIds) {
         this.aoIds = aoIds;
+    }
+
+    public List<LearningOpportunityProviderEntity> getAdditionalProviders() {
+        return additionalProviders;
+    }
+
+    public void setAdditionalProviders(
+            List<LearningOpportunityProviderEntity> additionalProviders) {
+        this.additionalProviders = additionalProviders;
     }
 }

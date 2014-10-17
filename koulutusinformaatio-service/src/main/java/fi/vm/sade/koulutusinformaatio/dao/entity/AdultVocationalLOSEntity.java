@@ -83,6 +83,8 @@ public class AdultVocationalLOSEntity {
     @Reference
     private LearningOpportunityProviderEntity provider;
     @Reference
+    private List<LearningOpportunityProviderEntity> additionalProviders = new ArrayList<LearningOpportunityProviderEntity>();
+    @Reference
     private List<ApplicationOptionEntity> applicationOptions;
 
     private String komoOid;
@@ -426,6 +428,13 @@ public class AdultVocationalLOSEntity {
     }
     public void setValmistavaKoulutus(boolean valmistavaKoulutus) {
         this.valmistavaKoulutus = valmistavaKoulutus;
+    }
+    public List<LearningOpportunityProviderEntity> getAdditionalProviders() {
+        return additionalProviders;
+    }
+    public void setAdditionalProviders(
+            List<LearningOpportunityProviderEntity> additionalProviders) {
+        this.additionalProviders = additionalProviders;
     }
 
 

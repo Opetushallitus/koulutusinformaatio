@@ -38,6 +38,7 @@ public class AdultUpperSecondaryLOSDTO extends StandaloneLOSDTO {
     private List<String> teachingLanguages;
 
     private LearningOpportunityProviderDTO provider;
+    private List<LearningOpportunityProviderDTO> additionalProviders = new ArrayList<LearningOpportunityProviderDTO>();
     private List<ApplicationSystemDTO> applicationSystems = new ArrayList<ApplicationSystemDTO>();
 
     
@@ -402,6 +403,14 @@ public class AdultUpperSecondaryLOSDTO extends StandaloneLOSDTO {
 
     public void setEducationDegreeName(String educationDegreeName) {
         this.educationDegreeName = educationDegreeName;
+    }
+
+    public List<LearningOpportunityProviderDTO> getAdditionalProviders() {
+        return additionalProviders;
+    }
+
+    public void setAdditionalProviders(List<LearningOpportunityProviderDTO> additionalProviders) {
+        this.additionalProviders = additionalProviders;
     }
 
 

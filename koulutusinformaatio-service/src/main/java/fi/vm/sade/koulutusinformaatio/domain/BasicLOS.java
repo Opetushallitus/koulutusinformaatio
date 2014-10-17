@@ -16,12 +16,16 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Hannu Lyytikainen
  */
 public class BasicLOS<T extends LOI> extends InstantiatedLOS<T> {
 
-    private Provider provider;                  // tarjoaja
+    private Provider provider;                  // tarjoaja, koulutuksen luoja
+    private List<Provider> additionalProviders = new ArrayList<Provider>(); //muut tarjoajat
     private I18nText structure;                 // rakenne
     private I18nText accessToFurtherStudies;    // jatko-opintomahdollisuudet
     private String educationDegree;             // koulutusaste, 32
@@ -74,5 +78,13 @@ public class BasicLOS<T extends LOI> extends InstantiatedLOS<T> {
 
     public void setCreditUnit(I18nText creditUnit) {
         this.creditUnit = creditUnit;
+    }
+
+    public List<Provider> getAdditionalProviders() {
+        return additionalProviders;
+    }
+
+    public void setAdditionalProviders(List<Provider> additionalProviders) {
+        this.additionalProviders = additionalProviders;
     }
 }

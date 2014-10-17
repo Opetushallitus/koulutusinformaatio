@@ -37,6 +37,7 @@ public class StandaloneLOS extends LOS {
     private List<Code> teachingLanguages;
 
     private Provider provider;
+    private List<Provider> additionalProviders = new ArrayList<Provider>();
     private List<ApplicationOption> applicationOptions;
 
     private String komoOid;
@@ -415,6 +416,14 @@ public class StandaloneLOS extends LOS {
 
     public void setTargetGroup(I18nText targetGroup) {
         this.targetGroup = targetGroup;
+    }
+
+    public List<Provider> getAdditionalProviders() {
+        return additionalProviders;
+    }
+
+    public void setAdditionalProviders(List<Provider> additionalProviders) {
+        this.additionalProviders = additionalProviders;
     }
 
 }

@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.domain.dto;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,6 +35,7 @@ public class SpecialLearningOpportunitySpecificationDTO {
     private String goals;
     private List<ChildLearningOpportunityInstanceDTO> lois;
     private LearningOpportunityProviderDTO provider;
+    private List<LearningOpportunityProviderDTO> additionalProviders = new ArrayList<LearningOpportunityProviderDTO>();
     private String structure;
     private String accessToFurtherStudies;
     private String creditValue;
@@ -198,5 +200,13 @@ public class SpecialLearningOpportunitySpecificationDTO {
 
     public void setThemes(List<CodeDTO> themes) {
         this.themes = themes;
+    }
+
+    public List<LearningOpportunityProviderDTO> getAdditionalProviders() {
+        return additionalProviders;
+    }
+
+    public void setAdditionalProviders(List<LearningOpportunityProviderDTO> additionalProviders) {
+        this.additionalProviders = additionalProviders;
     }
 }

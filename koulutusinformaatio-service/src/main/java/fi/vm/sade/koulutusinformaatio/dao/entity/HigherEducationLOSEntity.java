@@ -101,6 +101,8 @@ public class HigherEducationLOSEntity {
     @Reference
     private LearningOpportunityProviderEntity provider;
     @Reference
+    private List<LearningOpportunityProviderEntity> additionalProviders = new ArrayList<LearningOpportunityProviderEntity>();
+    @Reference
     private List<ApplicationOptionEntity> applicationOptions;
 
     private String komoOid;
@@ -491,6 +493,13 @@ public class HigherEducationLOSEntity {
     }
     public void setKoulutuslaji(CodeEntity koulutuslaji) {
         this.koulutuslaji = koulutuslaji;
+    }
+    public List<LearningOpportunityProviderEntity> getAdditionalProviders() {
+        return additionalProviders;
+    }
+    public void setAdditionalProviders(
+            List<LearningOpportunityProviderEntity> additionalProviders) {
+        this.additionalProviders = additionalProviders;
     }
 
 }

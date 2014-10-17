@@ -62,6 +62,7 @@ public class HigherEducationLOSDTO extends StandaloneLOSDTO {
     private List<String> teachingLanguages;
 
     private LearningOpportunityProviderDTO provider;
+    private List<LearningOpportunityProviderDTO> additionalProviders = new ArrayList<LearningOpportunityProviderDTO>();
     private List<ApplicationSystemDTO> applicationSystems = new ArrayList<ApplicationSystemDTO>();
 
     private List<HigherEducationChildLosReferenceDTO> children = new ArrayList<HigherEducationChildLosReferenceDTO>();
@@ -510,5 +511,13 @@ public class HigherEducationLOSDTO extends StandaloneLOSDTO {
 
     public void setStructureImage(PictureDTO structureImage) {
         this.structureImage = structureImage;
+    }
+
+    public List<LearningOpportunityProviderDTO> getAdditionalProviders() {
+        return additionalProviders;
+    }
+
+    public void setAdditionalProviders(List<LearningOpportunityProviderDTO> additionalProviders) {
+        this.additionalProviders = additionalProviders;
     }
 }

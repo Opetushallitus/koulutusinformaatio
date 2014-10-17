@@ -71,6 +71,8 @@ public class AdultUpperSecondaryLOSEntity {
     @Reference
     private LearningOpportunityProviderEntity provider;
     @Reference
+    private List<LearningOpportunityProviderEntity> additionalProviders = new ArrayList<LearningOpportunityProviderEntity>();
+    @Reference
     private List<ApplicationOptionEntity> applicationOptions;
 
     private String komoOid;
@@ -415,6 +417,13 @@ public class AdultUpperSecondaryLOSEntity {
     }
     public void setDiplomas(List<I18nTextEntity> diplomas) {
         this.diplomas = diplomas;
+    }
+    public List<LearningOpportunityProviderEntity> getAdditionalProviders() {
+        return additionalProviders;
+    }
+    public void setAdditionalProviders(
+            List<LearningOpportunityProviderEntity> additionalProviders) {
+        this.additionalProviders = additionalProviders;
     }
 
 }
