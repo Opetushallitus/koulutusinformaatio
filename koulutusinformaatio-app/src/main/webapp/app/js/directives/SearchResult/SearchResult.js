@@ -78,7 +78,8 @@ directive('toggleCollapse', ['$timeout', function ($timeout) {
         },
         template:
             '<div class="clear"></div>' +
-            '<div data-collapse="showExtension == \'closed\'">' +
+            //'<div data-collapse="showExtension == \'closed\'">' + // dynamic content in collapse does not work with IE
+            '<div data-ng-if="showExtension == \'opened\'">' +
                 '<div class="search-result-extended" data-ng-transclude></div>' +
             '</div>'
 
