@@ -134,6 +134,12 @@ public class AdultVocationalLOSEntity {
     
     @Embedded
     private I18nTextEntity organizer;
+    
+    @Embedded
+    private I18nTextEntity personalization;
+    
+    @Embedded
+    private I18nTextEntity targetGroup;
 
     public String getId() {
         return id;
@@ -435,6 +441,18 @@ public class AdultVocationalLOSEntity {
     public void setAdditionalProviders(
             List<LearningOpportunityProviderEntity> additionalProviders) {
         this.additionalProviders = additionalProviders;
+    }
+    public I18nTextEntity getPersonalization() {
+        return personalization;
+    }
+    public void setPersonalization(I18nTextEntity personalization) {
+        this.personalization = personalization;
+    }
+    public I18nTextEntity getTargetGroup() {
+        return targetGroup;
+    }
+    public void setTargetGroup(I18nTextEntity targetGroup) {
+        this.targetGroup = targetGroup;
     }
 
 

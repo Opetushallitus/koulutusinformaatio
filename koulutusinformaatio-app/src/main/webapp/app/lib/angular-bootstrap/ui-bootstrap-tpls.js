@@ -3556,7 +3556,6 @@ angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.position', 'ui.bootstrap
           if (onCurrentRequest && hasFocus) {
             if (matches.length > 0) {
 
-              scope.activeIdx = 1;
               scope.matches.length = 0;
 
               //transform labels
@@ -3688,29 +3687,35 @@ angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.position', 'ui.bootstrap
           return;
         }
 
-        evt.preventDefault();
+        if (evt.which === 40 || evt.which === 38) {
+          evt.preventDefault();
 
-        if (evt.which === 40) {
-          scope.activeIdx = (scope.activeIdx + 1) % scope.matches.length;
-          if (scope.matches[scope.activeIdx].model.group) {
+          if (evt.which === 40) {
             scope.activeIdx = (scope.activeIdx + 1) % scope.matches.length;
-          }
-          scope.$digest();
-
-        } else if (evt.which === 38) {
-          scope.activeIdx = (scope.activeIdx ? scope.activeIdx : scope.matches.length) - 1;
-          if (scope.matches[scope.activeIdx].model.group) {
-            scope.activeIdx = (scope.activeIdx ? scope.activeIdx : scope.matches.length) - 1;
-          }
-          scope.$digest();
-
-        } else if (evt.which === 13 || evt.which === 9) {
-          scope.$apply(function () {
-            if (!scope.matches[scope.activeIdx].model.group) {
-              scope.select(scope.activeIdx);
+            if (scope.matches[scope.activeIdx].model.group) {
+              scope.activeIdx = (scope.activeIdx + 1) % scope.matches.length;
             }
-          });
+            scope.$digest();
 
+          } else if (evt.which === 38) {
+            scope.activeIdx = (scope.activeIdx ? scope.activeIdx : scope.matches.length) - 1;
+            if (scope.matches[scope.activeIdx].model.group) {
+              scope.activeIdx = (scope.activeIdx ? scope.activeIdx : scope.matches.length) - 1;
+            }
+            scope.$digest();
+          }
+        } else if (evt.which === 13 || evt.which === 9) {
+          if (scope.activeIdx < 0) {
+            resetMatches();
+            return;
+          } else {
+            evt.preventDefault();
+            scope.$apply(function () {
+              if (!scope.matches[scope.activeIdx].model.group) {
+                scope.select(scope.activeIdx);
+              }
+            });
+          }
         } else if (evt.which === 27) {
           evt.stopPropagation();
 
