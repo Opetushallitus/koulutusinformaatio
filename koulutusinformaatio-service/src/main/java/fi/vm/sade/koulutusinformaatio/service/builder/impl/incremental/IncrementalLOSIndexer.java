@@ -144,7 +144,12 @@ public class IncrementalLOSIndexer {
     //Indexes changed loi data
     public void indexLoiData(String komotoOid) throws Exception {
         LOG.debug(String.format("Indexing loi: %s", komotoOid));
-        KomotoDTO komotoDto = this.tarjontaRawService.getKomoto(komotoOid);
+        KomotoDTO komotoDto = null;
+        try {
+            komotoDto = this.tarjontaRawService.getKomoto(komotoOid);
+        } catch (Exception ex) {
+            return;
+        }
         LOG.debug(String.format("Loi: %s, status: %s", komotoOid, komotoDto.getTila()));
 
         if (isSecondaryEducation(komotoDto)) {

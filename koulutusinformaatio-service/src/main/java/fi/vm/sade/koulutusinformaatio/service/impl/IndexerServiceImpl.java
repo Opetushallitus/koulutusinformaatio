@@ -625,17 +625,31 @@ public class IndexerServiceImpl implements IndexerService {
         for (ApplicationPeriod ap : as.getApplicationPeriods()) {//getApplicationDates()) {
             
             DateRange dr = ap.getDateRange();
-            String periodNameFi = "";
+
+            /*String periodNameFi = "";
             if (ap.getName() != null && ap.getName().getTranslations() != null && !ap.getName().getTranslations().isEmpty()) {
                 periodNameFi = resolveTextByLangWithFallback("fi", ap.getName().getTranslations());
-            }
-            
+            }*/
             asDoc.addField(new StringBuilder().append("asStart").append("_").
                     append(String.valueOf(parentApplicationDateRangeIndex)).toString(), dr.getStartDate());
             asDoc.addField(new StringBuilder().append("asEnd").append("_").
                     append(String.valueOf(parentApplicationDateRangeIndex)).toString(), dr.getEndDate());
+
+            String nimiFi = null;
+            String nimiSv = null;
+            String nimiEn = null;
+            if (ap.getName() != null && ap.getName().getTranslations() != null && !ap.getName().getTranslations().isEmpty()) { 
+                nimiFi = this.resolveTextByLangEmptyDefault("fi", ap.getName().getTranslations());
+                nimiSv = this.resolveTextByLangEmptyDefault("sv", ap.getName().getTranslations());
+                nimiEn = this.resolveTextByLangEmptyDefault("en", ap.getName().getTranslations());
+            }
+            
             asDoc.addField(new StringBuilder().append("asPeriodName").append("_").
-                    append(String.valueOf(parentApplicationDateRangeIndex)).append("_ss").toString(), periodNameFi);
+                    append(String.valueOf(parentApplicationDateRangeIndex)).append("_fi_ss").toString(), nimiFi);
+            asDoc.addField(new StringBuilder().append("asPeriodName").append("_").
+                    append(String.valueOf(parentApplicationDateRangeIndex)).append("_sv_ss").toString(), nimiSv);
+            asDoc.addField(new StringBuilder().append("asPeriodName").append("_").
+                    append(String.valueOf(parentApplicationDateRangeIndex)).append("_en_ss").toString(), nimiEn);
             
             parentApplicationDateRangeIndex++;
             

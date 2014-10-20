@@ -18,8 +18,10 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
 
+import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LocationFields;
+import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
 import fi.vm.sade.koulutusinformaatio.domain.Location;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
@@ -27,6 +29,7 @@ import fi.vm.sade.koulutusinformaatio.domain.SuggestedTermsResult;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
+import fi.vm.sade.koulutusinformaatio.service.impl.query.ApplicationSystemQuery;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.ProviderNameFirstCharactersQuery;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.ProviderQuery;
 
@@ -42,6 +45,8 @@ import org.junit.Test;
 import org.mockito.ArgumentMatcher;
 
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static junit.framework.Assert.*;
@@ -111,7 +116,7 @@ public class SearchServiceSolrImplTest {
         QueryResponse locQueryResponse = mock(QueryResponse.class);
         when(locQueryResponse.getResults()).thenReturn(locDocs);
         loHttpSolrServer = mock(HttpSolrServer.class);
-        when(loHttpSolrServer.query((SolrParams)any())).thenReturn(loQueryResponse);
+        when(loHttpSolrServer.query(argThat(isNotApplicationSystemQuery()))).thenReturn(loQueryResponse);
         locationHttpSolrServer = mock(HttpSolrServer.class);
         when(locationHttpSolrServer.query((SolrParams)any())).thenReturn(locQueryResponse);
 
@@ -133,6 +138,39 @@ public class SearchServiceSolrImplTest {
         queryService = mock(EducationDataQueryService.class);
 
         service = new SearchServiceSolrImpl(lopHttpSolrServer, loHttpSolrServer, locationHttpSolrServer, queryService);
+        
+        mockCalendarApplicationSystemSearch();
+    }
+    
+    private void mockCalendarApplicationSystemSearch() throws SolrServerException {
+        
+        SolrDocumentList calDocs = new SolrDocumentList();
+        SolrDocument calDoc = new SolrDocument();
+        calDoc.addField(LocationFields.ID, "id_calendar1");
+        calDoc.addField(SolrUtil.LearningOpportunity.NAME_DISPLAY_FI , "Kalenterihaku fi");
+        calDoc.addField(SolrUtil.LearningOpportunity.NAME_DISPLAY_SV , "Kalenterihaku sv");
+        calDoc.addField(SolrUtil.LearningOpportunity.NAME_DISPLAY_EN , "Kalenterihaku en");
+        calDoc.addField(LocationFields.TYPE, "HAKU");
+        calDoc.addField("asStart_0", Arrays.asList(new Date()));
+        Calendar end = Calendar.getInstance();
+        end.add(Calendar.MONTH, 6);
+        calDoc.addField("asEnd_0", Arrays.asList(end.getTime()));
+        calDoc.addField("asPeriodName_0_ss", "Hakuajalle annettu nimi");
+        calDocs.add(calDoc);
+        
+        QueryResponse calQueryResponse = mock(QueryResponse.class);
+        when(calQueryResponse.getResults()).thenReturn(calDocs);
+        when(this.loHttpSolrServer.query(argThat(isApplicationSystemQuery()))).thenReturn(calQueryResponse);
+        
+        
+    }
+    
+
+    @Test
+    public void testFindCalendarApplicationSystems() throws SearchException {
+        List<CalendarApplicationSystem> results = service.findApplicationSystemsForCalendar();
+        CalendarApplicationSystem cal = results.get(0);
+        assertEquals("id_calendar1", cal.getId());
     }
 
     @Test
@@ -204,6 +242,24 @@ public class SearchServiceSolrImplTest {
             @Override
             public boolean matches(Object o) {
                 return o instanceof ProviderNameFirstCharactersQuery;
+            }
+        };
+    }
+    
+    private ArgumentMatcher<SolrParams> isApplicationSystemQuery() {
+        return new ArgumentMatcher<SolrParams>() {
+            @Override
+            public boolean matches(Object o) {
+                return o instanceof ApplicationSystemQuery;
+            }
+        };
+    }
+    
+    private ArgumentMatcher<SolrParams> isNotApplicationSystemQuery() {
+        return new ArgumentMatcher<SolrParams>() {
+            @Override
+            public boolean matches(Object o) {
+                return !(o instanceof ApplicationSystemQuery);
             }
         };
     }

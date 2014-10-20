@@ -30,6 +30,7 @@ public class ExamEventDTO {
     private Date end;
     private String description;
     private AddressDTO address;
+    private boolean timeIncluded;
 
     public Date getStart() {
         return start;
@@ -61,5 +62,13 @@ public class ExamEventDTO {
 
     public void setAddress(AddressDTO address) {
         this.address = address;
+    }
+
+    public boolean isTimeIncluded() {
+        return timeIncluded;
+    }
+
+    public void setTimeIncluded(boolean timeIncluded) {
+        this.timeIncluded = timeIncluded;
     }
 }
