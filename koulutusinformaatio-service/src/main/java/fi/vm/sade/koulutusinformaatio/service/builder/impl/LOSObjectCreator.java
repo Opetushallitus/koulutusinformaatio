@@ -520,6 +520,18 @@ public class LOSObjectCreator extends ObjectCreator {
         try {
             Provider provider = providerService.getByOID(koulutus.getOrganisaatio().getOid());
             los.setProvider(provider);
+            
+            for (String curTarjoaja : koulutus.getOpetusTarjoajat()) {
+                if (!curTarjoaja.equals(provider.getId())) {
+                    los.getAdditionalProviders().add(providerService.getByOID(curTarjoaja));
+                }
+            }
+            
+            /*
+            if (koulutus.getOpetusTarjoajat() != null) {
+                
+            }*/
+            
         } catch (Exception ex) {
             throw new KoodistoException("Problem reading organisaatio: " + ex.getMessage());
         }
