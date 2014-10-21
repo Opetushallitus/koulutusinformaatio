@@ -17,6 +17,8 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -108,15 +110,29 @@ public class UpdateServiceImpl implements UpdateService {
             int count = MAX_RESULTS;
             int index = 0;
 
-            while (count >= MAX_RESULTS) {
+            /*while (count >= MAX_RESULTS) {
             LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
             List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
             count = loOids.size();
-            index += count;
+            index += count;*/
             
            
-            
-            
+            List<String> loOids = new ArrayList<String>();
+                    /* Arrays.asList(
+                            
+                            "1.2.246.562.5.2013061010191484576250", //lukio luonnontieteet
+                            "1.2.246.562.5.2013061010184402991972" // amm
+                            /*
+                            "1.2.246.562.5.2013061010184443434255", //amm
+                            "1.2.246.562.5.2013061010191530269331", //lukio
+                            "1.2.246.562.5.2013112814572429147350", //valmistava
+                            "1.2.246.562.5.2013061010184317101998", //amm kuvataide
+                            "1.2.246.562.5.2013112814572435006223", //kymppikluokka
+                            "1.2.246.562.5.2013112814572438173505",//ammattistartti
+                            "1.2.246.562.5.2013112814572441041721"//mamu amm valmistava
+                            
+                            );*/
+                            
                 for (String loOid : loOids) {
                     List<LOS> specifications = null;
                     try {
@@ -131,7 +147,7 @@ public class UpdateServiceImpl implements UpdateService {
                         this.educationDataUpdateService.save(spec);
                     }
                 }
-            }
+            //}
 
 
 
@@ -146,7 +162,7 @@ public class UpdateServiceImpl implements UpdateService {
             }
             LOG.debug("Higher educations saved.");
 
-            
+            /*
             List<AdultUpperSecondaryLOS> adultUpperSecondaries = this.tarjontaService.findAdultUpperSecondaries();
             LOG.debug("Found adult upper secondary educations: " + adultUpperSecondaries.size());
             
@@ -170,7 +186,7 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.debug("Starting provider indexing");
             indexProviders(lopUpdateSolr, loUpdateSolr, locationUpdateSolr);
             LOG.debug("Providers indexed");
-            
+            */
             
             
             List<Code> edTypeCodes = this.tarjontaService.getEdTypeCodes();
@@ -189,12 +205,12 @@ public class UpdateServiceImpl implements UpdateService {
             }
             this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
             LOG.debug("Application systems indexed");
-            
+            /*
             List<Article> articles = this.articleService.fetchArticles();
             LOG.debug("Articles fetched");
             indexerService.addArticles(loUpdateSolr, articles);
             LOG.debug("Articles indexed to solr");
-            
+            */
             indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, true);
             LOG.debug("Committed to solr");
             this.transactionManager.commit(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
