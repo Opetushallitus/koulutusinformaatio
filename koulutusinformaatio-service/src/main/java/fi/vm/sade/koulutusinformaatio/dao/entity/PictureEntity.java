@@ -29,6 +29,7 @@ public class PictureEntity {
     @Id
     private String id;
     private String pictureEncoded;
+    private String thumbnailEncoded;
 
     public PictureEntity() {}
 
@@ -46,5 +47,13 @@ public class PictureEntity {
 
     public void setPictureEncoded(String pictureEncoded) {
         this.pictureEncoded = pictureEncoded;
+    }
+
+    public String getThumbnailEncoded() {
+        return thumbnailEncoded;
+    }
+
+    public void setThumbnailEncoded(String thumbnailEncoded) {
+        this.thumbnailEncoded = thumbnailEncoded;
     }
 }

@@ -23,9 +23,9 @@ public class ProviderQueryTest {
     public void testProviderQuery() {
         ProviderQuery pq = new ProviderQuery(TERM, AS_ID, Arrays.asList(BASE_EDUCATION), 0, 100, true, true, "fi", false, TYPE);
         assertEquals("name_fi:" + TERM + "*", pq.getQuery());
-        assertEquals(3, pq.getFilterQueries().length);
-        assertEquals("asIds:" + AS_ID, pq.getFilterQueries()[0]);
-        assertEquals("requiredBaseEducations:(\"" + BASE_EDUCATION + "\")", pq.getFilterQueries()[1]);
-        assertEquals(String.format("%s:%s", SolrUtil.ProviderFields.TYPE_VALUE, TYPE), pq.getFilterQueries()[2]);
+        assertEquals(4, pq.getFilterQueries().length);
+        assertEquals("type:ORGANISAATIO", pq.getFilterQueries()[0]);
+        assertEquals("asIds:asId", pq.getFilterQueries()[1]);
+        assertEquals(String.format("%s:%s", SolrUtil.ProviderFields.TYPE_VALUE, TYPE), pq.getFilterQueries()[3]);
     }
 }

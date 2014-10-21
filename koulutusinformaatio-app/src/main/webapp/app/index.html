@@ -38,6 +38,7 @@
     <script src="js/services/AlertService.js" type="text/javascript"></script>
     <script src="js/services/AuthService.js" type="text/javascript"></script>
     <script src="js/services/SearchLearningOpportunityService.js" type="text/javascript"></script>
+    <script src="js/services/OrganisationService.js" type="text/javascript"></script>
     <script src="js/services/underscoreService.js" type="text/javascript"></script>
     <script src="js/directives.js" type="text/javascript"></script>
     <script src="js/directives/AjaxLoader.js" type="text/javascript"></script>
@@ -53,9 +54,12 @@
     <script src="js/controllers/InfoCtrl.js" type="text/javascript"></script>
     <script src="js/controllers/AppBasketCtrl.js" type="text/javascript"></script>
     <script src="js/controllers/SearchCtrl.js" type="text/javascript"></script>
+    <script src="js/controllers/ArticleSearchCtrl.js" type="text/javascript"></script>
+    <script src="js/controllers/OrganisationSearchCtrl.js" type="text/javascript"></script>
     <script src="js/controllers/RootCtrl.js" type="text/javascript"></script>
     <script src="js/controllers/SearchWizardCtrl.js" type="text/javascript"></script>
     <script src="js/controllers/IntroCtrl.js" type="text/javascript"></script>
+    <script src="js/controllers/OrganisationCtrl.js" type="text/javascript"></script>
     <script src="js/kiApp.js" type="text/javascript"></script>
     <script src="js/main.js" type="text/javascript"></script>   
     <!--[if lt IE 9]>
@@ -74,7 +78,7 @@
                 <div data-ng-include data-src="'partials/error.html'"></div>
             </div>
             <div data-ng-switch-default>
-                <div data-ng-view></div>
+                <div data-ng-view autoscroll="true"></div>
             </div>
         </div>
         

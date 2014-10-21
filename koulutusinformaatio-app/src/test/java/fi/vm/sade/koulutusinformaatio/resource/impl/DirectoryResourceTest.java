@@ -20,7 +20,7 @@ import com.google.common.collect.Lists;
 import com.sun.jersey.api.view.Viewable;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResult;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResultDTO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityProviderService;
@@ -55,10 +55,10 @@ public class DirectoryResourceTest {
         LearningOpportunityProviderService providerService = mock(LearningOpportunityProviderService.class);
         when(providerService.getProviderNameFirstCharacters(eq("fi")))
                 .thenReturn(Lists.newArrayList("A", "B", "C"));
-        ProviderSearchResult psr1 = new ProviderSearchResult();
+        ProviderSearchResultDTO psr1 = new ProviderSearchResultDTO();
         psr1.setId("1.2.3");
         psr1.setName("provider search result 1");
-        ProviderSearchResult psr2 = new ProviderSearchResult();
+        ProviderSearchResultDTO psr2 = new ProviderSearchResultDTO();
         psr2.setId("2.3.4");
         psr2.setName("provider search result 2");
         when(providerService.searchProviders(anyString(), eq("fi"), anyString())).thenReturn(Lists.newArrayList(psr1, psr2));
@@ -92,7 +92,7 @@ public class DirectoryResourceTest {
         assertNotNull(response);
         Viewable view = ((Viewable) response.getEntity());
         Map<String, Object> model = (HashMap) view.getModel();
-        List<ProviderSearchResult> providers = (List) model.get("providers");
+        List<ProviderSearchResultDTO> providers = (List) model.get("providers");
         assertNotNull(providers);
         assertEquals(2, providers.size());
         assertEquals("1.2.3", providers.get(0).getId());

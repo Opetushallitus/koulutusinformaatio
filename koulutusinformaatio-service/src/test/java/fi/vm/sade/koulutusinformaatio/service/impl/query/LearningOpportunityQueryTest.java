@@ -56,7 +56,7 @@ public class LearningOpportunityQueryTest {
     public void testQueryTeachLangNone() {
         LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FACET_FILTERS, LANG_FI, ONGOING, UPCOMING, UPCOMING_LATER, START, ROWS, SORT, ORDER, null, null, null, UPCOMING_DATE, UPCOMING_DATE);
         assertNotNull(q);
-        assertEquals(7, q.getFilterQueries().length);
+        assertEquals(8, q.getFilterQueries().length);
         String prerequisiteFQ = new StringBuilder("prerequisites:").append(PREREQUISITE).toString();
         assertEquals(prerequisiteFQ, q.getFilterQueries()[0]);
         String lopHomeplaceFQ = new StringBuilder("lopHomeplace:(\"")
@@ -72,7 +72,7 @@ public class LearningOpportunityQueryTest {
         
         LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FF_TEACH_LANG_FI, LANG_FI, ONGOING, UPCOMING,  UPCOMING_LATER, START, ROWS, SORT, ORDER, null, null, null, UPCOMING_DATE, UPCOMING_DATE);
         assertNotNull(q);
-        assertEquals(7, q.getFilterQueries().length);
+        assertEquals(8, q.getFilterQueries().length);
         String prerequisiteFQ = new StringBuilder("prerequisites:").append(PREREQUISITE).toString();
         assertEquals(prerequisiteFQ, q.getFilterQueries()[0]);
         String lopHomeplaceFQ = new StringBuilder("lopHomeplace:(\"")
@@ -89,7 +89,7 @@ public class LearningOpportunityQueryTest {
         
         LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FF_TEACH_LANG_SV, LANG_FI, ONGOING, UPCOMING, UPCOMING_LATER, START, ROWS, SORT, ORDER, null, null, null, UPCOMING_DATE, UPCOMING_DATE);
         assertNotNull(q);
-        assertEquals(7, q.getFilterQueries().length);
+        assertEquals(8, q.getFilterQueries().length);
         String prerequisiteFQ = new StringBuilder("prerequisites:").append(PREREQUISITE).toString();
         assertEquals(prerequisiteFQ, q.getFilterQueries()[0]);
         String lopHomeplaceFQ = new StringBuilder("lopHomeplace:(\"")
@@ -105,7 +105,7 @@ public class LearningOpportunityQueryTest {
     public void testQueryFieldsTeachLangOther() {
         LearningOpportunityQuery q = new LearningOpportunityQuery(TERM, PREREQUISITE, CITIES, FF_TEACH_LANG_OTHER, LANG_FI, ONGOING, UPCOMING, UPCOMING_LATER, START, ROWS, SORT, ORDER, null, null, null, UPCOMING_DATE, UPCOMING_DATE);
         assertNotNull(q);
-        assertEquals(7, q.getFilterQueries().length);
+        assertEquals(8, q.getFilterQueries().length);
         String prerequisiteFQ = new StringBuilder("prerequisites:").append(PREREQUISITE).toString();
         assertEquals(prerequisiteFQ, q.getFilterQueries()[0]);
         String lopHomeplaceFQ = new StringBuilder("lopHomeplace:(\"")

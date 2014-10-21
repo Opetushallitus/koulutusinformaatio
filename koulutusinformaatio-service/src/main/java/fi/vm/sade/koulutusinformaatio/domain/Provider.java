@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -55,6 +56,8 @@ public class Provider {
     private I18nText homeDistrict;
     private ApplicationOffice applicationOffice;
     private Code type;
+    //private List<String> organisationTypes;
+    private List<Code> olTypes = new ArrayList<Code>();
 
     public Provider(String id, I18nText name) {
         this.id = id;
@@ -286,4 +289,20 @@ public class Provider {
     public void setType(Code type) {
         this.type = type;
     }
+
+    public List<Code> getOlTypes() {
+        return olTypes;
+    }
+
+    public void setOlTypes(List<Code> olTypes) {
+        this.olTypes = olTypes;
+    }
+
+    /*public void setOrganisationTypes(List<String> tyypit) {
+        this.organisationTypes = tyypit;
+    }
+
+    public List<String> getOrganisationTypes() {
+        return organisationTypes;
+    }*/
 }

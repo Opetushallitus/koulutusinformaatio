@@ -28,6 +28,7 @@ public class ProviderNameFirstCharactersQuery extends SolrQuery {
 
     public ProviderNameFirstCharactersQuery(String lang) {
         super(Joiner.on(":").join(resolveStartsWithFieldName(lang), "*"));
+        this.addFilterQuery(String.format("type:%s", SolrUtil.TYPE_ORGANISATION));
         this.setParam(GroupParams.GROUP, true);
         this.setParam(GroupParams.GROUP_FIELD, resolveStartsWithFieldName(lang));
         this.setParam(GroupParams.GROUP_LIMIT, "0");

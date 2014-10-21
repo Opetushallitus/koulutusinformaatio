@@ -19,7 +19,7 @@ package fi.vm.sade.koulutusinformaatio.converter;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResult;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResultDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +32,9 @@ public final class ProviderToSearchResult {
     private ProviderToSearchResult() {
     }
 
-    public static ProviderSearchResult convert(final Provider p, final String lang) {
+    public static ProviderSearchResultDTO convert(final Provider p, final String lang) {
         if (p != null) {
-            ProviderSearchResult result = new ProviderSearchResult();
+            ProviderSearchResultDTO result = new ProviderSearchResultDTO();
             result.setId(p.getId());
             result.setName(ConverterUtil.getTextByLanguageUseFallbackLang(p.getName(), lang));
             return result;
@@ -42,15 +42,15 @@ public final class ProviderToSearchResult {
         return null;
     }
 
-    public static List<ProviderSearchResult> convertAll(List<Provider> providers, final String lang) {
+    public static List<ProviderSearchResultDTO> convertAll(List<Provider> providers, final String lang) {
         if (providers != null) {
-            return Lists.transform(providers, new Function<Provider, ProviderSearchResult>() {
+            return Lists.transform(providers, new Function<Provider, ProviderSearchResultDTO>() {
                 @Override
-                public ProviderSearchResult apply(Provider input) {
+                public ProviderSearchResultDTO apply(Provider input) {
                     return convert(input, lang);
                 }
             });
         }
-        return new ArrayList<ProviderSearchResult>();
+        return new ArrayList<ProviderSearchResultDTO>();
     }
 }

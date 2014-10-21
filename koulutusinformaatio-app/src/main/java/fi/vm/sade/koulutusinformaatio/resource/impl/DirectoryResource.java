@@ -22,7 +22,7 @@ import com.sun.jersey.api.view.Viewable;
 import fi.vm.sade.koulutusinformaatio.domain.dto.CodeDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
-import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResult;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResultDTO;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityProviderService;
 import fi.vm.sade.koulutusinformaatio.service.LearningOpportunityService;
 import fi.vm.sade.koulutusinformaatio.util.ResourceBundleHelper;
@@ -130,7 +130,7 @@ public class DirectoryResource {
         }
 
         if (alphabets.contains(letter)) {
-            List<ProviderSearchResult> providers = null;
+            List<ProviderSearchResultDTO> providers = null;
             try {
                 providers = learningOpportunityProviderService.searchProviders(letter, lang, type);
             } catch (Exception e) {

@@ -22,10 +22,12 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
  * @author Hannu Lyytikainen
  */
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_EMPTY)
-public class ProviderSearchResult {
+public class ProviderSearchResultDTO {
 
     private String id;
     private String name;
+    private String address;
+    private String thumbnailEncoded;
 
     public String getId() {
         return id;
@@ -41,5 +43,21 @@ public class ProviderSearchResult {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String description) {
+        this.address = description;
+    }
+
+    public String getThumbnailEncoded() {
+        return thumbnailEncoded;
+    }
+
+    public void setThumbnailEncoded(String thumbnailEncoded) {
+        this.thumbnailEncoded = thumbnailEncoded;
     }
 }

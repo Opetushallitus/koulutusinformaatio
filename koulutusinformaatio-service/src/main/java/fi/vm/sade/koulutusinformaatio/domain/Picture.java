@@ -23,6 +23,7 @@ public class Picture {
 
     private String id;
     private String pictureEncoded;
+    private String thumbnailEncoded;
 
     public String getId() {
         return id;
@@ -38,5 +39,13 @@ public class Picture {
 
     public void setPictureEncoded(String pictureEncoded) {
         this.pictureEncoded = pictureEncoded;
+    }
+
+    public String getThumbnailEncoded() {
+        return thumbnailEncoded;
+    }
+
+    public void setThumbnailEncoded(String thumbnailEncoded) {
+        this.thumbnailEncoded = thumbnailEncoded;
     }
 }

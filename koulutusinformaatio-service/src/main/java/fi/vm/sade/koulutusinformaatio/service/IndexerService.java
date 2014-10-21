@@ -23,6 +23,7 @@ import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.Location;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
+import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 
@@ -31,6 +32,7 @@ import org.apache.solr.client.solrj.impl.HttpSolrServer;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 
 public interface IndexerService {
@@ -72,4 +74,12 @@ public interface IndexerService {
 
     void indexASToSolr(CalendarApplicationSystem curAs, HttpSolrServer loUpdateSolr) throws SolrServerException, IOException;
     
+    boolean isDocumentInIndex(String docId, HttpSolrServer server);
+    
+    void createProviderDocs(Provider provider, 
+            HttpSolrServer lopSolr, 
+            Set<String> requiredBaseEducations, 
+            Set<String> vocationalAsIds,
+            Set<String> nonVocationalAsIds,
+            Set<String> providerAsIds) throws SolrServerException, IOException;
 }

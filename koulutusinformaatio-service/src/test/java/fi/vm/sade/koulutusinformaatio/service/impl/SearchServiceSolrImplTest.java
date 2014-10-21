@@ -28,6 +28,7 @@ import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.SuggestedTermsResult;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
+import fi.vm.sade.koulutusinformaatio.service.EducationDataQueryService;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.ApplicationSystemQuery;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.ProviderNameFirstCharactersQuery;
 import fi.vm.sade.koulutusinformaatio.service.impl.query.ProviderQuery;
@@ -63,6 +64,7 @@ public class SearchServiceSolrImplTest {
     private HttpSolrServer loHttpSolrServer;
     private HttpSolrServer lopHttpSolrServer;
     private HttpSolrServer locationHttpSolrServer;
+    private EducationDataQueryService queryService;
 
 
     @Before
@@ -132,8 +134,10 @@ public class SearchServiceSolrImplTest {
         QueryResponse firstCharResponse = mock(QueryResponse.class);
         when(firstCharResponse.getGroupResponse()).thenReturn(groupResponse);
         when(lopHttpSolrServer.query(argThat(isProviderNameFirstCharactersQuery()))).thenReturn(firstCharResponse);
+        
+        queryService = mock(EducationDataQueryService.class);
 
-        service = new SearchServiceSolrImpl(lopHttpSolrServer, loHttpSolrServer, locationHttpSolrServer);
+        service = new SearchServiceSolrImpl(lopHttpSolrServer, loHttpSolrServer, locationHttpSolrServer, queryService);
         
         mockCalendarApplicationSystemSearch();
     }
@@ -185,13 +189,13 @@ public class SearchServiceSolrImplTest {
 
     @Test
     public void testSearchLearningOpportunities() throws SearchException {
-        LOSearchResultList results = service.searchLearningOpportunities("query", "PK", Lists.newArrayList("HELSINKI"), Lists.newArrayList("teachingLang:suomi"), Lists.newArrayList("contentType:muu"), "fi", false, false, false, 0, 100, "0", "asc", null, null, null, SearchType.LO);
+        LOSearchResultList results = service.searchLearningOpportunities("query", "PK", Lists.newArrayList("HELSINKI"), Lists.newArrayList("teachingLang:suomi"), Lists.newArrayList("contentType:muu"), Lists.newArrayList("contentType:muu"), "fi", false, false, false, 0, 100, "0", "asc", null, null, null, SearchType.LO);
         assertEquals(1, results.getResults().size());
     }
 
     @Test
     public void testSearchLearningOpportunitiesEmptyTerm() throws SearchException {
-        LOSearchResultList results = service.searchLearningOpportunities("", "PK", Lists.newArrayList("HELSINKI"), Lists.newArrayList("teachingLang:suomi"), Lists.newArrayList("contentType:muu"), "fi", false, false, false, 0, 100, "0", "asc", null, null, null, SearchType.LO);
+        LOSearchResultList results = service.searchLearningOpportunities("", "PK", Lists.newArrayList("HELSINKI"), Lists.newArrayList("teachingLang:suomi"), Lists.newArrayList("contentType:muu"), Lists.newArrayList("olType:muu"), "fi", false, false, false, 0, 100, "0", "asc", null, null, null, SearchType.LO);
         assertEquals(0, results.getResults().size());
     }
     

@@ -26,6 +26,7 @@ public class LOSearchResultList {
 
     private List<LOSearchResult> results = new ArrayList<LOSearchResult>();
     private List<ArticleResult> articleresults = new ArrayList<ArticleResult>();
+    private List<ProviderResult> providerResults = new ArrayList<ProviderResult>();
     private long totalCount;
     private Facet teachingLangFacet;
     private Facet filterFacet;
@@ -42,7 +43,7 @@ public class LOSearchResultList {
     private long loCount;
     private long articleCount;
     private long orgCount;
-   
+    private Facet providerTypeFacet;
 
     public List<LOSearchResult> getResults() {
         return results;
@@ -187,5 +188,22 @@ public class LOSearchResultList {
 
     public Facet getFormOfStudyFacet() {
         return formOfStudyFacet;
+    }
+
+    public List<ProviderResult> getProviderResults() {
+        return providerResults;
+    }
+
+    public void setProviderResults(List<ProviderResult> providerResults) {
+        this.providerResults = providerResults;
+    }
+
+    public void setProviderTypeFacet(Facet providerTypeFacet) {
+        
+        this.providerTypeFacet = providerTypeFacet;
+    }
+
+    public Facet getProviderTypeFacet() {
+        return providerTypeFacet;
     }
 }

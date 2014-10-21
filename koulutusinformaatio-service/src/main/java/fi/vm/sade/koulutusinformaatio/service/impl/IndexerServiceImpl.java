@@ -187,61 +187,68 @@ public class IndexerServiceImpl implements IndexerService {
 
         List<SolrInputDocument> docs = conversionService.convert(los, List.class);
 
-        indexProvider(provider, 
-                    providerAsIds, 
-                    requiredBaseEducations, 
-                    vocationalAsIds, 
-                    nonVocationalAsIds, 
-                    lopSolr);
+
+        createProviderDocs(provider, 
+                            lopSolr, 
+                            requiredBaseEducations, 
+                            vocationalAsIds, 
+                            nonVocationalAsIds, 
+                            providerAsIds);
         
         
         if (los instanceof StandaloneLOS) {
             StandaloneLOS uas = (StandaloneLOS)los;
             for (Provider curAddProv : uas.getAdditionalProviders()) {
-                indexProvider(curAddProv,
-                            providerAsIds, 
-                            requiredBaseEducations, 
-                            vocationalAsIds, 
-                            nonVocationalAsIds, 
-                            lopSolr);
+                createProviderDocs(curAddProv,
+                                    lopSolr, 
+                                    requiredBaseEducations, 
+                                    vocationalAsIds, 
+                                    nonVocationalAsIds, 
+                                    providerAsIds);
             }
         }
        
         loSolr.add(docs);
     }
     
-    private void indexProvider(Provider provider,
-                                Set<String> providerAsIds,
-                                Set<String> requiredBaseEducations,
-                                Set<String> vocationalAsIds,
-                                Set<String> nonVocationalAsIds,
-                                HttpSolrServer lopSolr) throws SolrServerException, IOException {
+    
+
+    public void createProviderDocs(Provider provider, 
+                                    HttpSolrServer lopSolr, 
+                                    Set<String> requiredBaseEducations, 
+                                    Set<String> vocationalAsIds,
+                                    Set<String> nonVocationalAsIds,
+                                    Set<String> providerAsIds) throws SolrServerException, IOException {
         
         List<SolrInputDocument> providerDocs = Lists.newArrayList();
         if (provider != null) {
             SolrInputDocument providerDoc = new SolrInputDocument();
             providerDoc.addField("id", provider.getId());
+            providerDoc.addField("type", SolrUtil.TYPE_ORGANISATION);
 
-            String nameFi = resolveTextByLang("fi", provider.getName().getTranslations());
+            String nameFi = resolveTextByLangWithFallback("fi", provider.getName().getTranslations());
             if (nameFi != null && !nameFi.isEmpty()) {
                 providerDoc.addField("name_fi", nameFi);
                 providerDoc.addField("startsWith_fi", nameFi.substring(0, 1).toUpperCase());
+                providerDoc.addField("text_fi", nameFi);
             }
-            String nameSv = resolveTextByLang("sv", provider.getName().getTranslations());
+            String nameSv = resolveTextByLangWithFallback("sv", provider.getName().getTranslations());
             if (nameSv != null && !nameSv.isEmpty()) {
                 providerDoc.addField("name_sv", nameSv);
                 providerDoc.addField("startsWith_sv", nameSv.substring(0, 1).toUpperCase());
+                providerDoc.addField("text_sv", nameSv);
             }
-            String nameEn = resolveTextByLang("en", provider.getName().getTranslations());
+            String nameEn = resolveTextByLangWithFallback("en", provider.getName().getTranslations());
             if (nameEn != null && !nameEn.isEmpty()) {
                 providerDoc.addField("name_en", nameEn);
                 providerDoc.addField("startsWith_en", nameEn.substring(0, 1).toUpperCase());
+                providerDoc.addField("text_en", nameEn);
             }
             if (provider.getType() != null) {
                 providerDoc.setField(SolrUtil.ProviderFields.TYPE_VALUE, provider.getType().getValue());
-                providerDoc.setField(SolrUtil.ProviderFields.TYPE_FI, resolveTextByLang("fi", provider.getType().getName().getTranslations()));
-                providerDoc.setField(SolrUtil.ProviderFields.TYPE_SV, resolveTextByLang("sv", provider.getType().getName().getTranslations()));
-                providerDoc.setField(SolrUtil.ProviderFields.TYPE_EN, resolveTextByLang("en", provider.getType().getName().getTranslations()));
+                providerDoc.setField(SolrUtil.ProviderFields.TYPE_FI, resolveTextByLangWithFallback("fi", provider.getType().getName().getTranslations()));
+                providerDoc.setField(SolrUtil.ProviderFields.TYPE_SV, resolveTextByLangWithFallback("sv", provider.getType().getName().getTranslations()));
+                providerDoc.setField(SolrUtil.ProviderFields.TYPE_EN, resolveTextByLangWithFallback("en", provider.getType().getName().getTranslations()));
             }
             else {
                 providerDoc.setField(SolrUtil.ProviderFields.TYPE_VALUE, SolrConstants.PROVIDER_TYPE_UNKNOWN);
@@ -269,12 +276,60 @@ public class IndexerServiceImpl implements IndexerService {
                     nonVocationalAsIds.addAll(nonVocational);
                 }
             }
+            
+            if (provider.getOlTypes() != null) {
+                for (Code curOlType : provider.getOlTypes()) {
+                    if (curOlType != null && curOlType.getUri() != null) {
+                        providerDoc.addField("oltype_ffm", curOlType.getUri());
+                    }
+                }
+            }
+            
+            
+            if (provider.getVisitingAddress() != null) {
+                Address visitingAddr = provider.getVisitingAddress();
+                String addrEn = this.getAddrStr(visitingAddr, "en");
+                if (addrEn != null && !addrEn.isEmpty()) {
+                    providerDoc.addField("address_en_str_display", addrEn);
+                    providerDoc.addField("text_en", addrEn);
+                }
+               
+                String addrSv = this.getAddrStr(visitingAddr, "sv");
+                if (addrSv != null && !addrSv.isEmpty()) {
+                    providerDoc.addField("address_sv_str_display", addrSv);
+                    providerDoc.addField("text_sv", addrSv);
+                }
+                
+                String addrFi = this.getAddrStr(visitingAddr, "fi");
+                if (addrFi != null && !addrFi.isEmpty()) {
+                    providerDoc.addField("address_fi_str_display", addrFi);
+                    providerDoc.addField("text_fi", addrFi);
+                }
+                
+                
+            }
+            
+            if (provider.getHomeDistrict() != null) {
+                List<String> locVals = new ArrayList<String>();
+                locVals.addAll(provider.getHomeDistrict().getTranslations().values());
+                locVals.addAll(provider.getHomePlace().getTranslations().values());
+                providerDoc.addField(LearningOpportunity.LOP_HOMEPLACE, locVals);
+            } else {
+                providerDoc.addField(LearningOpportunity.LOP_HOMEPLACE, provider.getHomePlace().getTranslations().values());
+            }
 
             providerDoc.setField("asIds", providerAsIds);
             providerDoc.setField("requiredBaseEducations", requiredBaseEducations);
             providerDoc.setField("vocationalAsIds", vocationalAsIds);
             providerDoc.setField("nonVocationalAsIds", nonVocationalAsIds);
             providerDocs.add(providerDoc);
+            
+            if (provider.getOlTypes() != null) {
+                for (Code curOlType : provider.getOlTypes()) {
+                    SolrUtil.indexCodeAsFacetDoc(curOlType, providerDocs, false);
+                }
+            }
+            
         }
         if (!providerDocs.isEmpty()) {
             lopSolr.add(providerDocs);
@@ -282,7 +337,26 @@ public class IndexerServiceImpl implements IndexerService {
         
     }
     
-    
+    private String getAddrStr(Address addr, String lang) {
+        if (lang.equalsIgnoreCase("en")) {
+            return (addr.getStreetAddress() != null && addr.getStreetAddress().getTranslations() != null) ? this.resolveTextByLangEmptyDefault("en", addr.getStreetAddress().getTranslations()) : null;
+        }
+        if (lang.equalsIgnoreCase("fi") || lang.equalsIgnoreCase("sv")) {
+            String addrStr = "";
+            addrStr = (addr.getStreetAddress() != null 
+                    && addr.getStreetAddress().getTranslations() != null
+                    && !addr.getStreetAddress().getTranslations().isEmpty()) 
+                    ? this.resolveTextByLangEmptyDefault(lang, addr.getStreetAddress().getTranslations()) : addrStr;
+            addrStr = (addr.getPostalCode() != null) ? String.format("%s, %s",  addrStr, addr.getPostalCode()) : addrStr;
+            addrStr = (addr.getPostOffice() != null 
+                    && addr.getPostOffice().getTranslations() != null
+                    && !addr.getPostOffice().getTranslations().isEmpty()) 
+                    ? String.format("%s, %s",  addrStr, this.resolveTextByLangWithFallback(lang, addr.getPostOffice().getTranslations())) 
+                            : addrStr;
+           return addrStr;
+        }
+        return null;
+    }
 
     @Override
     public void commitLOChanges(HttpSolrServer loUpdateSolr, 
@@ -350,6 +424,24 @@ public class IndexerServiceImpl implements IndexerService {
         }
         return this.loHttpSolrServer;
     }
+    
+    @Override
+    public boolean isDocumentInIndex(String docId, HttpSolrServer server) {
+        LOGGER.debug("Checking if document is in index: " + docId);
+        SolrQuery query = new SolrQuery();
+        query.setQuery("*:*");
+        query.addFilterQuery(String.format("id:%s", docId));
+        query.setFields("id");
+        query.setStart(0);
+        query.set("defType", "edismax");
+        try {
+            QueryResponse response = server.query(query);
+            return response.getResults().getNumFound() > 0;
+        } catch (Exception ex) {
+            LOGGER.error(String.format("Could not check if document in index: %s", ex.getMessage()));
+        }
+        return false;
+    }
 
     /*
      * Getting the update timestamp for the lo-collection.
@@ -398,7 +490,7 @@ public class IndexerServiceImpl implements IndexerService {
         return this.locationHttpSolrServer;
     }
 
-    private String resolveTextByLang(String lang, Map<String, String> translations) {
+    private String resolveTextByLangWithFallback(String lang, Map<String, String> translations) {
         if (translations.containsKey(lang)) {
             return translations.get(lang);
         } else if (translations.containsKey(FALLBACK_LANG)) {
@@ -406,6 +498,14 @@ public class IndexerServiceImpl implements IndexerService {
         } else {
             return translations.values().iterator().next();
         }
+    }
+    
+
+    private String resolveTextByLangEmptyDefault(String lang, Map<String, String> translations) {
+        if (translations.containsKey(lang)) {
+            return translations.get(lang);
+        } 
+        return "";
     }
 
     @Override
@@ -518,17 +618,17 @@ public class IndexerServiceImpl implements IndexerService {
         
         
         
-        String nameFi = resolveTextByLang("fi", as.getName().getTranslations());
+        String nameFi = resolveTextByLangWithFallback("fi", as.getName().getTranslations());
         if (nameFi != null && !nameFi.isEmpty()) {
             asDoc.addField(SolrUtil.LearningOpportunity.NAME_FI, nameFi);
             asDoc.addField(SolrUtil.LearningOpportunity.NAME_DISPLAY_FI, nameFi);
         }
-        String nameSv = resolveTextByLang("sv", as.getName().getTranslations());
+        String nameSv = resolveTextByLangWithFallback("sv", as.getName().getTranslations());
         if (nameSv != null && !nameSv.isEmpty()) {
             asDoc.addField(SolrUtil.LearningOpportunity.NAME_SV, nameSv);
             asDoc.addField(SolrUtil.LearningOpportunity.NAME_DISPLAY_SV, nameSv);
         }
-        String nameEn = resolveTextByLang("en", as.getName().getTranslations());
+        String nameEn = resolveTextByLangWithFallback("en", as.getName().getTranslations());
         if (nameEn != null && !nameEn.isEmpty()) {
             asDoc.addField(SolrUtil.LearningOpportunity.NAME_EN, nameEn);
             asDoc.addField(SolrUtil.LearningOpportunity.NAME_DISPLAY_EN, nameEn);
@@ -539,7 +639,11 @@ public class IndexerServiceImpl implements IndexerService {
         for (ApplicationPeriod ap : as.getApplicationPeriods()) {//getApplicationDates()) {
             
             DateRange dr = ap.getDateRange();
-                       
+
+            /*String periodNameFi = "";
+            if (ap.getName() != null && ap.getName().getTranslations() != null && !ap.getName().getTranslations().isEmpty()) {
+                periodNameFi = resolveTextByLangWithFallback("fi", ap.getName().getTranslations());
+            }*/
             asDoc.addField(new StringBuilder().append("asStart").append("_").
                     append(String.valueOf(parentApplicationDateRangeIndex)).toString(), dr.getStartDate());
             asDoc.addField(new StringBuilder().append("asEnd").append("_").
@@ -549,9 +653,9 @@ public class IndexerServiceImpl implements IndexerService {
             String nimiSv = null;
             String nimiEn = null;
             if (ap.getName() != null && ap.getName().getTranslations() != null && !ap.getName().getTranslations().isEmpty()) { 
-                nimiFi = this.resolveTextByLang("fi", ap.getName().getTranslations());
-                nimiSv = this.resolveTextByLang("sv", ap.getName().getTranslations());
-                nimiEn = this.resolveTextByLang("en", ap.getName().getTranslations());
+                nimiFi = this.resolveTextByLangEmptyDefault("fi", ap.getName().getTranslations());
+                nimiSv = this.resolveTextByLangEmptyDefault("sv", ap.getName().getTranslations());
+                nimiEn = this.resolveTextByLangEmptyDefault("en", ap.getName().getTranslations());
             }
             
             asDoc.addField(new StringBuilder().append("asPeriodName").append("_").
