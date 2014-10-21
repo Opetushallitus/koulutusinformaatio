@@ -17,8 +17,6 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -33,7 +31,6 @@ import org.springframework.stereotype.Service;
 
 import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
 import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.Article;
 import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
@@ -111,29 +108,13 @@ public class UpdateServiceImpl implements UpdateService {
             int count = MAX_RESULTS;
             int index = 0;
 
-            
-            
-            /*while (count >= MAX_RESULTS) {
+            while (count >= MAX_RESULTS) {
             LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
             List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
             count = loOids.size();
-            index += count;*/
+            index += count;
             
-            List<String> loOids = //new ArrayList<String>();
-            Arrays.asList(
-                    
-                    "1.2.246.562.5.2013061010191484576250", //lukio luonnontieteet
-                    "1.2.246.562.5.2013061010184402991972" // amm
-                    /*
-                    "1.2.246.562.5.2013061010184443434255", //amm
-                    "1.2.246.562.5.2013061010191530269331", //lukio
-                    "1.2.246.562.5.2013112814572429147350", //valmistava
-                    "1.2.246.562.5.2013061010184317101998", //amm kuvataide
-                    "1.2.246.562.5.2013112814572435006223", //kymppikluokka
-                    "1.2.246.562.5.2013112814572438173505",//ammattistartti
-                    "1.2.246.562.5.2013112814572441041721"//mamu amm valmistava
-                    */
-                    );
+           
             
             
                 for (String loOid : loOids) {
@@ -150,11 +131,11 @@ public class UpdateServiceImpl implements UpdateService {
                         this.educationDataUpdateService.save(spec);
                     }
                 }
-            //}
+            }
 
 
 
-            /*
+            
             List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
             LOG.debug("Found higher educations: " + higherEducations.size());
 
@@ -184,7 +165,7 @@ public class UpdateServiceImpl implements UpdateService {
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 this.educationDataUpdateService.save(curLOS);
             }
-            */
+            
             this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);  
             LOG.debug("Starting provider indexing");
             indexProviders(lopUpdateSolr, loUpdateSolr, locationUpdateSolr);
@@ -208,12 +189,12 @@ public class UpdateServiceImpl implements UpdateService {
             }
             this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
             LOG.debug("Application systems indexed");
-            /*
+            
             List<Article> articles = this.articleService.fetchArticles();
             LOG.debug("Articles fetched");
             indexerService.addArticles(loUpdateSolr, articles);
             LOG.debug("Articles indexed to solr");
-            */
+            
             indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, true);
             LOG.debug("Committed to solr");
             this.transactionManager.commit(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
@@ -247,9 +228,7 @@ public class UpdateServiceImpl implements UpdateService {
 
     private void createAndSaveProviders(List<OrganisaatioPerustieto> orgBasics,
             HttpSolrServer lopUpdateSolr) throws KoodistoException, MalformedURLException, ResourceNotFoundException, IOException, SolrServerException {
-        //for (OrganisaatioPerustieto curOrg : orgBasics) {
-        for (int i = 0; i < 100; ++i) {
-            OrganisaatioPerustieto curOrg = orgBasics.get(i);
+        for (OrganisaatioPerustieto curOrg : orgBasics) {
             if (!indexerService.isDocumentInIndex(curOrg.getOid(), lopUpdateSolr)) {
                 LOG.debug("Indexing organisaatio: " + curOrg.getOid());
                 Provider curProv = this.providerService.getByOID(curOrg.getOid());
@@ -258,7 +237,6 @@ public class UpdateServiceImpl implements UpdateService {
                 LOG.debug("Indexed and saved organisaatio: " + curOrg.getOid());
             }
         }
-        
     }
 
     private void indexToSolr(StandaloneLOS curLOS,
