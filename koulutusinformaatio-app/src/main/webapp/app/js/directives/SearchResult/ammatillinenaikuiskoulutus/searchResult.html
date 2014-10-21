@@ -4,7 +4,9 @@
             <h2 title="{{locales.openEducation}}"><a href="{{lo.linkHref}}">{{lo.name}}</a></h2>
             <span>{{lo.childName}}</span><br/>
             <span data-ki-i18n="{{lo.educationType}}"></span><br />
-            <span>{{lo.lopName}}</span><br/>
+            <div data-ng-repeat="lopName in lo.lopNames">
+            	<span>{{lopName}}</span><br/>
+            </div>
             <span>{{lo.homeplace}}</span>
         </div>
 
