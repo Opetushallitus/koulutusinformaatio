@@ -610,12 +610,12 @@ public class IndexerServiceImpl implements IndexerService {
             asDoc.addField(SolrUtil.LearningOpportunity.NAME_FI, nameFi);
             asDoc.addField(SolrUtil.LearningOpportunity.NAME_DISPLAY_FI, nameFi);
         }
-        String nameSv = resolveTextByLangWithFallback("sv", as.getName().getTranslations());
+        String nameSv = resolveTextByLangEmptyDefault("sv", as.getName().getTranslations());
         if (nameSv != null && !nameSv.isEmpty()) {
             asDoc.addField(SolrUtil.LearningOpportunity.NAME_SV, nameSv);
             asDoc.addField(SolrUtil.LearningOpportunity.NAME_DISPLAY_SV, nameSv);
         }
-        String nameEn = resolveTextByLangWithFallback("en", as.getName().getTranslations());
+        String nameEn = resolveTextByLangEmptyDefault("en", as.getName().getTranslations());
         if (nameEn != null && !nameEn.isEmpty()) {
             asDoc.addField(SolrUtil.LearningOpportunity.NAME_EN, nameEn);
             asDoc.addField(SolrUtil.LearningOpportunity.NAME_DISPLAY_EN, nameEn);
