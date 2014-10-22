@@ -48,6 +48,12 @@ public class AdultVocationalLOSEntity {
     @Embedded
     private I18nTextEntity accessToFurtherStudies;
     @Embedded
+    private I18nTextEntity infoAboutCharge;
+    @Embedded
+    private I18nTextEntity careerOpportunities;
+    
+    
+    @Embedded
     private List<ContactPersonEntity> contactPersons = new ArrayList<ContactPersonEntity>();
     @Embedded
     private I18nTextEntity educationDomain;
@@ -132,6 +138,12 @@ public class AdultVocationalLOSEntity {
     
     @Embedded
     private I18nTextEntity organizer;
+    
+    @Embedded
+    private I18nTextEntity personalization;
+    
+    @Embedded
+    private I18nTextEntity targetGroup;
 
     public String getId() {
         return id;
@@ -426,6 +438,30 @@ public class AdultVocationalLOSEntity {
     }
     public void setValmistavaKoulutus(boolean valmistavaKoulutus) {
         this.valmistavaKoulutus = valmistavaKoulutus;
+    }
+    public I18nTextEntity getPersonalization() {
+        return personalization;
+    }
+    public void setPersonalization(I18nTextEntity personalization) {
+        this.personalization = personalization;
+    }
+    public I18nTextEntity getTargetGroup() {
+        return targetGroup;
+    }
+    public void setTargetGroup(I18nTextEntity targetGroup) {
+        this.targetGroup = targetGroup;
+    }
+    public I18nTextEntity getInfoAboutCharge() {
+        return infoAboutCharge;
+    }
+    public void setInfoAboutCharge(I18nTextEntity infoAboutCharge) {
+        this.infoAboutCharge = infoAboutCharge;
+    }
+    public I18nTextEntity getCareerOpportunities() {
+        return careerOpportunities;
+    }
+    public void setCareerOpportunities(I18nTextEntity careerOpportunities) {
+        this.careerOpportunities = careerOpportunities;
     }
 
 
