@@ -50,6 +50,7 @@ public class ApplicationOptionDTO {
     private boolean specificApplicationDates;
     private Date applicationStartDate;
     private Date applicationEndDate;
+    private String applicationPeriodName;
     // if has specific application dates are present, indicates if can be applied at a given moment
     private boolean canBeApplied;
     private Date nextApplicationPeriodStarts;
@@ -397,5 +398,13 @@ public class ApplicationOptionDTO {
 
     public void setOrganizationGroups(List<OrganizationGroupDTO> organizationGroups) {
         this.organizationGroups = organizationGroups;
+    }
+
+    public String getApplicationPeriodName() {
+        return applicationPeriodName;
+    }
+
+    public void setApplicationPeriodName(String applicationPeriodName) {
+        this.applicationPeriodName = applicationPeriodName;
     }
 }
