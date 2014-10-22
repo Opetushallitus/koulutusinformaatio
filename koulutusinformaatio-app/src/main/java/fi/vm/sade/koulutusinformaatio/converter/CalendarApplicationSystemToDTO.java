@@ -89,6 +89,11 @@ public final class CalendarApplicationSystemToDTO {
         List<CalendarApplicationSystemDTO> dtos = new ArrayList<CalendarApplicationSystemDTO>();
         if (applicationSystems != null) {
             for (CalendarApplicationSystem curAs : applicationSystems) {
+                if ("en".equalsIgnoreCase(lang) 
+                        && (curAs.getName() == null 
+                            || curAs.getName().get("en") == null)) {
+                    continue;
+                }
                 CalendarApplicationSystemDTO curDto = convert(curAs, lang);
                 if (curDto != null) {
                     dtos.add(curDto);
