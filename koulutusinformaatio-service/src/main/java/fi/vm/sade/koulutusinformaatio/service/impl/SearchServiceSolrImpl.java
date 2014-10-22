@@ -1284,9 +1284,18 @@ public class SearchServiceSolrImpl implements SearchService {
                 LOG.debug("Creating applicatoin system: " + as.getId());
 
                 Map<String, String> nameTranslations = Maps.newHashMap();
-                nameTranslations.put("fi", (String) result.get(SolrUtil.LearningOpportunity.NAME_DISPLAY_FI));
-                nameTranslations.put("sv", (String) result.get(SolrUtil.LearningOpportunity.NAME_DISPLAY_SV));
-                nameTranslations.put("en", (String) result.get(SolrUtil.LearningOpportunity.NAME_DISPLAY_EN));
+                String nameFi = (String) result.get(SolrUtil.LearningOpportunity.NAME_DISPLAY_FI);
+                if (nameFi != null) {
+                    nameTranslations.put("fi", nameFi);
+                } 
+                String nameSv = (String) result.get(SolrUtil.LearningOpportunity.NAME_DISPLAY_SV);
+                if (nameSv != null) {
+                    nameTranslations.put("sv", nameSv);
+                }
+                String nameEn = (String) result.get(SolrUtil.LearningOpportunity.NAME_DISPLAY_EN);
+                if (nameEn != null) {
+                    nameTranslations.put("en", nameEn);
+                }
                 I18nText name = new I18nText(nameTranslations);
                 as.setName(name);
 
