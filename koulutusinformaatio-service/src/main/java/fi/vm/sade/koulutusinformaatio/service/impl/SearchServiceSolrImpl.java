@@ -361,6 +361,7 @@ public class SearchServiceSolrImpl implements SearchService {
 
     }
 
+    @SuppressWarnings("unchecked")
     private ProviderResult createProviderSearchResult(SolrDocument doc, String lang) {
 
         ProviderResult result = new ProviderResult();
@@ -377,6 +378,10 @@ public class SearchServiceSolrImpl implements SearchService {
                 "address_en_str_display",
                 "address_fi_str_display");
         result.setAddress(descr);
+
+        List<String> asIds = (List<String>)(doc.getFieldValue("asIds"));
+        result.setProviderOrg(asIds != null && asIds.size() > 0);
+        
         try {
             Picture pict = this.educationDataQueryService.getPicture(result.getId());
             result.setThumbnailEncoded(pict.getThumbnailEncoded());
