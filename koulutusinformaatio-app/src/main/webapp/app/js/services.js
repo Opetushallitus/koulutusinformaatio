@@ -661,7 +661,17 @@ service('HigherEducationTransformer', ['KiSorter', '$rootScope', '$filter', 'Lan
 				result.themes = distinctArray;
 			}
 			
-			
+			result.applicationOffices = [];
+			result.provider.applicationOffice.providerName = result.provider.name;
+			result.applicationOffices.push(result.provider.applicationOffice);
+			for (var curProvIndex in result.additionalProviders) {
+				if (result.additionalProviders.hasOwnProperty(curProvIndex)) {
+					var curProvider = result.additionalProviders[curProvIndex];
+					var curApplicationOffice = curProvider.applicationOffice
+					curApplicationOffice.providerName = curProvider.name;
+					result.applicationOffices.push(curApplicationOffice);
+				}
+			}
 
 			for (var asIndex in result.applicationSystems) {
 				if (result.applicationSystems.hasOwnProperty(asIndex)) {

@@ -55,6 +55,31 @@ directive('kiInfoCenterAddress', ['CollapseBlockService', function(CollapseBlock
 }]).
 
 /**
+ * Render contact info block
+ */
+directive('kiInfoCenterAddresses', ['CollapseBlockService', function(CollapseBlockService) {
+    return {
+        restrict: 'A',
+        templateUrl: 'templates/infoCenterAddresses.html',
+        link: function($scope, element, attrs) {
+            $scope.$watch('content', function(value) {
+                if (value) {
+                    $scope.applicationOffices = value;
+                    var showInfoCenterAddresses = ((value.length > 0) 
+                    		&& (value[0].visitingAddress ||
+                    				valuevalue[0].postalAddress ||
+                    				valuevalue[0].name ||
+                    				valuevalue[0].email ||
+                    				valuevalue[0].phone ||
+                    				valuevalue[0].www)) ? true : false;
+                    CollapseBlockService.setBlock($scope.blockId, showInfoCenterAddresses);   
+                }
+            });
+        }
+    };
+}]).
+
+/**
  *  Render contact person info
  */
 directive('kiContactPersonInfo', function() {

@@ -32,7 +32,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
-import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
 import fi.vm.sade.koulutusinformaatio.domain.Article;
 import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
