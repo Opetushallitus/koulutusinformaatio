@@ -52,4 +52,4 @@
     </div>
     <!--<div data-ng-include data-src="'partials/organisation/content.html'"></div>-->
 </section>
-<div class="col-md-5" data-ng-class="providerAsideClass" data-ng-include data-src="partialUrl + 'oppilaitos-aside.html'"></div>
+<div class="col-md-5" data-ng-show="{{lo.additionalProviders.length < 1}}" data-ng-class="providerAsideClass" data-ng-include data-src="partialUrl + 'oppilaitos-aside.html'"></div>
