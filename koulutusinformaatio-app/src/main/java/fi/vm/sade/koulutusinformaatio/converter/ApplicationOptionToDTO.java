@@ -71,6 +71,9 @@ public final class ApplicationOptionToDTO {
                     && applicationOption.getApplicationStartDate().after(new Date())) {
                 dto.setNextApplicationPeriodStarts(applicationOption.getApplicationStartDate());
             }
+            if (applicationOption.getApplicationPeriodName() != null) {
+                dto.setApplicationPeriodName(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getApplicationPeriodName(), defaultLang));
+            }
 
             boolean isVaadinAo = dto.getHigherEdLOSRefs() == null || dto.getHigherEdLOSRefs().isEmpty();
             dto.setAttachments(ApplicationOptionAttachmentToDTO.convertAll(applicationOption.getAttachments(), lang, isVaadinAo));

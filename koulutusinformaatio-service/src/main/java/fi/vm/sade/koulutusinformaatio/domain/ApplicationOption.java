@@ -62,6 +62,7 @@ public class ApplicationOption {
     private boolean specificApplicationDates;
     private Date applicationStartDate;
     private Date applicationEndDate;
+    private I18nText applicationPeriodName;
     private String InternalASDateRef;
     private List<ApplicationOptionAttachment> attachments;
     private List<EmphasizedSubject> emphasizedSubjects;
@@ -435,5 +436,13 @@ public class ApplicationOption {
 
     public List<OrganizationGroup> getOrganizationGroups() {
         return organizationGroups;
+    }
+
+    public I18nText getApplicationPeriodName() {
+        return applicationPeriodName;
+    }
+
+    public void setApplicationPeriodName(I18nText applicationPeriodName) {
+        this.applicationPeriodName = applicationPeriodName;
     }
 }

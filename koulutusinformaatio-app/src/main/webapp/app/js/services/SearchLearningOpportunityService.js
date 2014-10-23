@@ -224,6 +224,15 @@ angular.module('kiApp.SearchLearningOpportunityService', ['ngResource'])
 
                 });
             }
+
+            // order provider types alphabetically
+            if (result && result.providerTypeFacet && result.providerTypeFacet.facetValues) {
+                result.providerTypeFacet.facetValues.sort(function(a, b) {
+                    if (a.valueName < b.valueName) return -1;
+                    else if (a.valueName > b.valueName) return 1;
+                    else return 0;
+                });
+            }
         }
     }
 }]);

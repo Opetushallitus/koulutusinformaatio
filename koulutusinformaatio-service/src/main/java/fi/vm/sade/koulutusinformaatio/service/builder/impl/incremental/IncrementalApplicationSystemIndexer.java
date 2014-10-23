@@ -17,7 +17,10 @@ package fi.vm.sade.koulutusinformaatio.service.builder.impl.incremental;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -34,6 +37,7 @@ import fi.vm.sade.koulutusinformaatio.domain.ChildLOI;
 import fi.vm.sade.koulutusinformaatio.domain.ChildLOS;
 import fi.vm.sade.koulutusinformaatio.domain.DateRange;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
+import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOI;
 import fi.vm.sade.koulutusinformaatio.domain.ParentLOS;
@@ -422,7 +426,7 @@ public class IncrementalApplicationSystemIndexer {
     }
 
     private void reIndexAsDataForStandaloneLOS(StandaloneLOS curLos,
-            HakuV1RDTO asDto, ApplicationSystem as) {
+            HakuV1RDTO asDto, ApplicationSystem as) throws KoodistoException {
         
      for (ApplicationOption curAo : curLos.getApplicationOptions()) {
          if (as != null && curAo.getApplicationSystem().getId().equals(as.getId())) {
@@ -433,7 +437,7 @@ public class IncrementalApplicationSystemIndexer {
         
     }
     
-    private void reIndexHakuaikaForStandaloneLOS(ApplicationOption ao, ApplicationSystem as, HakuV1RDTO haku) {
+    private void reIndexHakuaikaForStandaloneLOS(ApplicationOption ao, ApplicationSystem as, HakuV1RDTO haku) throws KoodistoException {
         HakuaikaV1RDTO aoHakuaika = null;
     
         if (haku.getHakuaikas() != null) {
@@ -454,6 +458,7 @@ public class IncrementalApplicationSystemIndexer {
             ao.setApplicationStartDate(aoHakuaika.getAlkuPvm());
             ao.setApplicationEndDate(aoHakuaika.getLoppuPvm());
             ao.setInternalASDateRef(aoHakuaika.getHakuaikaId());
+            ao.setApplicationPeriodName(this.getI18nText(aoHakuaika.getNimet()));
         } else if (haku.getHakuaikas() != null && !haku.getHakuaikas().isEmpty()) {
             ao.setApplicationStartDate(haku.getHakuaikas().get(0).getAlkuPvm());
             ao.setApplicationEndDate(haku.getHakuaikas().get(0).getLoppuPvm());
@@ -509,7 +514,28 @@ public class IncrementalApplicationSystemIndexer {
             HakuaikaRDTO aoHakuaika =  hakuDTO.getHakuaikas().get(0);
             ao.setApplicationStartDate(aoHakuaika.getAlkuPvm());
             ao.setApplicationEndDate(aoHakuaika.getLoppuPvm());
+            I18nText nimet = new I18nText();
+            nimet.put("fi", aoHakuaika.getNimi());
+            ao.setApplicationPeriodName(nimet);
         }
+    }
+    
+    private I18nText getI18nText(final Map<String, String> texts) throws KoodistoException {
+        if (texts != null && !texts.isEmpty()) {
+            Map<String, String> translations = new HashMap<String, String>();
+            Iterator<Map.Entry<String, String>> i = texts.entrySet().iterator();
+            while (i.hasNext()) {
+                Map.Entry<String, String> entry = i.next();
+                if (!Strings.isNullOrEmpty(entry.getKey()) && !Strings.isNullOrEmpty(entry.getValue())) {
+                    String key = koodistoService.searchFirstCodeValue(entry.getKey());
+                    translations.put(key.toLowerCase(), entry.getValue());
+                }
+            }
+            I18nText i18nText = new I18nText();
+            i18nText.setTranslations(translations);
+            return i18nText;
+        }
+        return null;
     }
 
 }

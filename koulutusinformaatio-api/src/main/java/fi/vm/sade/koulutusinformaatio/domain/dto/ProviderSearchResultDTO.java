@@ -28,6 +28,7 @@ public class ProviderSearchResultDTO {
     private String name;
     private String address;
     private String thumbnailEncoded;
+    private boolean providerOrg;
 
     public String getId() {
         return id;
@@ -59,5 +60,13 @@ public class ProviderSearchResultDTO {
 
     public void setThumbnailEncoded(String thumbnailEncoded) {
         this.thumbnailEncoded = thumbnailEncoded;
+    }
+
+    public boolean isProviderOrg() {
+        return providerOrg;
+    }
+
+    public void setProviderOrg(boolean providerOrg) {
+        this.providerOrg = providerOrg;
     }
 }
