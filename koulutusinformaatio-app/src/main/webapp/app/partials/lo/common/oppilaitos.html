@@ -1,10 +1,15 @@
 <section class="col-md-11">
-    <div class="ribbon">
+    <div data-ng-if="!lo.multipleProviders" class="ribbon">
         <ul class="ribbon-content list-unstyled">
             <li><a href="javascript:void(0)" data-ng-click="scrollToAnchor('oppilaitos-anchor')" data-ki-i18n="academy-description"></a></li>
             <li><a href="javascript:void(0)" data-ng-click="scrollToAnchor('esteettomyys-anchor')" data-ki-i18n="accessibility-anchor"></a></li>
             <li><a href="javascript:void(0)" data-ng-click="scrollToAnchor('edut-anchor')" data-ki-i18n="student-benefits-anchor"></a></li>
             <li><a href="javascript:void(0)" data-ng-click="scrollToAnchor('yhteystiedot-anchor')" data-ki-i18n="contact-information"></a></li>
+        </ul>
+    </div>
+    <div data-ng-if="lo.multipleProviders" class="ribbon">
+        <ul class="ribbon-content list-unstyled" data-ng-repeat="additionalProvider in lo.additionalProviders" >
+        	<li><a href="javascript:void(0)" data-ng-click="scrollToAnchor('{{additionalProvider.id}}')">{{additionalProvider.name}}</a></li>
         </ul>
     </div>
     <figure data-ki-organization-image data-providerimage="provider.providerImage"></figure>
@@ -28,15 +33,9 @@
 <div class="col-md-5" data-ng-if="!lo.multipleProviders" data-ng-class="providerAsideClass" data-ng-include data-src="partialUrl + 'oppilaitos-aside.html'"></div>
 
 <section data-ng-repeat="additionalProvider in lo.additionalProviders" class="col-md-11">
-	<hr/>
-    <div class="ribbon">
-        <ul class="ribbon-content list-unstyled">
-            <li><a href="javascript:void(0)" data-ng-click="scrollToAnchor('{{additionalProvider.id}}oppilaitos-anchor')" data-ki-i18n="academy-description"></a></li>
-            <li><a href="javascript:void(0)" data-ng-click="scrollToAnchor('{{additionalProvider.id}}esteettomyys-anchor')" data-ki-i18n="accessibility-anchor"></a></li>
-            <li><a href="javascript:void(0)" data-ng-click="scrollToAnchor('{{additionalProvider.id}}edut-anchor')" data-ki-i18n="student-benefits-anchor"></a></li>
-            <li><a href="javascript:void(0)" data-ng-click="scrollToAnchor('{{additionalProvider.id}}yhteystiedot-anchor')" data-ki-i18n="contact-information"></a></li>
-        </ul>
-    </div>
+	<div>
+		<hr id="{{additionalProvider.id}}"/>
+	</div>
     <figure data-ki-organization-image data-providerImage="additionalProvider.providerImage"></figure>
     <div data-ki-social-links data-curprovider="additionalProvider"></div>
     <div data-ki-language-ribbon data-languages="lo.availableTranslationLanguages" data-change-language="changeDescriptionLanguage" class="ribbon"></div>
@@ -52,5 +51,4 @@
     <div data-ki-collapse-block data-title="contact-information" data-content="additionalProvider" data-anchor="{{additionalProvider.id}}yhteystiedot-anchor">
         <div data-ki-contact-info></div>
     </div>
-    <!--<div data-ng-include data-src="'partials/organisation/content.html'"></div>-->
 </section>
