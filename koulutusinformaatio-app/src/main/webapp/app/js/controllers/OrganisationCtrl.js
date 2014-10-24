@@ -13,6 +13,7 @@ function OrganisationCtrl($scope, $rootScope, $routeParams, OrganisationService,
         if (result && result.pictureFound) {
             LearningOpportunityProviderPictureService.query({providerId: result.id}).then(function(result) {
                 $scope.providerImage = result;
+                $scope.provider.providerImage = result;
             });
         }
     });

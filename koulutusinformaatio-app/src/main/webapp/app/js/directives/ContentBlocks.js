@@ -147,19 +147,24 @@ directive('kiOrganization', ['CollapseBlockService', function(CollapseBlockServi
  *  Render organization image
  */
 directive('kiOrganizationImage', function() {
-    return function(scope, element, attrs) {
-        scope.$watch('providerImage', function(data) {
-            if (data && data.pictureEncoded) {
-                var imgElem = $('<img>', {
-                    src: 'data:image/jpeg;base64,' + data.pictureEncoded,
-                    alt: 'Oppilaitoksen kuva'
-                });
-                imgElem.addClass('img-responsive');
+    return {
+    	scope: {
+    		providerimage: '='
+    	},
+    	link: function(scope, element, attrs) {
+    		scope.$watch('providerimage', function(data) {
+    			if (data && data.pictureEncoded) {
+    				var imgElem = $('<img>', {
+    					src: 'data:image/jpeg;base64,' + data.pictureEncoded,
+    					alt: 'Oppilaitoksen kuva'
+    				});
+    				imgElem.addClass('img-responsive');
 
-                $(element).empty();
-                element.append(imgElem);
-            }
-        });
+    				$(element).empty();
+    				element.append(imgElem);
+    			}
+    		});
+    	}
     };
 }).
 
@@ -387,10 +392,13 @@ directive('kiSocialLinks', function() {
     return {
         restrict: 'E,A',
         templateUrl: 'templates/socialLinks.html',
+        scope: {
+        	curprovider: '='
+        },
         link: function(scope, element, attrs) {
             scope.anchor = attrs.anchor;
 
-            scope.$watch('provider', function(data) {
+            scope.$watch('curprovider', function(data) {
                 if (data) {
                     scope.showOrganization = (data.learningEnvironment ||
                         data.accessibility) ? true : false;

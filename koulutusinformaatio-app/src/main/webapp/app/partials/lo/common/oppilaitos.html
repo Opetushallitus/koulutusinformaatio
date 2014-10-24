@@ -7,8 +7,8 @@
             <li><a href="javascript:void(0)" data-ng-click="scrollToAnchor('yhteystiedot-anchor')" data-ki-i18n="contact-information"></a></li>
         </ul>
     </div>
-    <figure data-ki-organization-image></figure>
-    <div data-ki-social-links></div>
+    <figure data-ki-organization-image data-providerimage="provider.providerImage"></figure>
+    <div data-ki-social-links data-curprovider="provider"></div>
     <div data-ki-language-ribbon data-languages="lo.availableTranslationLanguages" data-change-language="changeDescriptionLanguage" class="ribbon"></div>
     
     <div data-ki-collapse-block data-title-value="provider.name" data-content="provider" data-anchor="oppilaitos-anchor">
@@ -25,6 +25,8 @@
     <!--<div data-ng-include data-src="'partials/organisation/content.html'"></div>-->
 </section>
 
+<div class="col-md-5" data-ng-if="!lo.multipleProviders" data-ng-class="providerAsideClass" data-ng-include data-src="partialUrl + 'oppilaitos-aside.html'"></div>
+
 <section data-ng-repeat="additionalProvider in lo.additionalProviders" class="col-md-11">
 	<hr/>
     <div class="ribbon">
@@ -35,8 +37,8 @@
             <li><a href="javascript:void(0)" data-ng-click="scrollToAnchor('{{additionalProvider.id}}yhteystiedot-anchor')" data-ki-i18n="contact-information"></a></li>
         </ul>
     </div>
-    <figure data-ki-organization-image></figure>
-    <div data-ki-social-links></div>
+    <figure data-ki-organization-image data-providerImage="additionalProvider.providerImage"></figure>
+    <div data-ki-social-links data-curprovider="additionalProvider"></div>
     <div data-ki-language-ribbon data-languages="lo.availableTranslationLanguages" data-change-language="changeDescriptionLanguage" class="ribbon"></div>
     
     <div data-ki-collapse-block data-title-value="additionalProvider.name" data-content="additionalProvider" data-anchor="{{additionalProvider.id}}oppilaitos-anchor">
@@ -52,4 +54,3 @@
     </div>
     <!--<div data-ng-include data-src="'partials/organisation/content.html'"></div>-->
 </section>
-<div class="col-md-5" data-ng-show="{{lo.additionalProviders.length < 1}}" data-ng-class="providerAsideClass" data-ng-include data-src="partialUrl + 'oppilaitos-aside.html'"></div>

@@ -672,6 +672,8 @@ service('HigherEducationTransformer', ['KiSorter', '$rootScope', '$filter', 'Lan
 					result.applicationOffices.push(curApplicationOffice);
 				}
 			}
+			
+			result.multipleProviders = result.applicationOffices.length > 1;
 
 			for (var asIndex in result.applicationSystems) {
 				if (result.applicationSystems.hasOwnProperty(asIndex)) {

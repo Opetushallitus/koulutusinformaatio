@@ -226,6 +226,7 @@
         if (data && data.pictureFound) {
             LearningOpportunityProviderPictureService.query({providerId: data.id}).then(function(result) {
                 $scope.providerImage = result;
+                $scope.provider.providerImage = result;
             });
         }
     });
@@ -239,6 +240,18 @@
         			$scope.structureImage = result;
         		});
         	}
+        }
+        if (data && data.additionalProviders && data.additionalProviders.length > 0) {
+        	for (var curProvIndex in data.additionalProviders) {
+				if (data.additionalProviders.hasOwnProperty(curProvIndex)) {
+					var curProvider = data.additionalProviders[curProvIndex];
+					if (curProvider && curProvider.pictureFound) {
+						LearningOpportunityProviderPictureService.query({providerId: curProvider.id}).then(function(result) {
+			                curProvider.providerImage = result;
+			            });
+					}
+				}
+			}
         }
     });
 
