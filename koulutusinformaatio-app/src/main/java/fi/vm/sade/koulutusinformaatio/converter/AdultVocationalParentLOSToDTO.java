@@ -87,12 +87,15 @@ public final class AdultVocationalParentLOSToDTO {
             for (ApplicationOption ao : los.getApplicationOptions()) {
                 aoByAs.put(ao.getApplicationSystem(), ao);
             }
+            
 
+            String aoDefLang = uiLang == null ? "fi" : uiLang;
+            
             for (ApplicationSystem as : aoByAs.keySet()) {
                 ApplicationSystemDTO asDTO = ApplicationSystemToDTO.convert(as, uiLang);
                 asDTO.setStatus(as.getStatus());
                 for (ApplicationOption ao : aoByAs.get(as)) {
-                    asDTO.getApplicationOptions().add(ApplicationOptionToDTO.convertHigherEducation(ao, lang, uiLang, "fi"));
+                    asDTO.getApplicationOptions().add(ApplicationOptionToDTO.convertHigherEducation(ao, lang, uiLang, aoDefLang));
                 }
                 dto.getApplicationSystems().add(asDTO);
             }
