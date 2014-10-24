@@ -470,7 +470,8 @@ directive('kiAoApplicationTime', function() {
             startdate: '=',
             enddate: '=',
             hakutapa: '=',
-            label: '@'
+            label: '@',
+            periodName: '='
         },
         controller: function($scope) {
             $scope.isJatkuva = function() {
