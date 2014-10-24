@@ -288,6 +288,9 @@ directive('kiTimestamp', ['TranslationService', 'UtilityService', function(Trans
     };
 }]).
 
+/*
+ *  Parses a time interval from start and end timestamps
+ */
 directive('kiTimeInterval', ['UtilityService', 'TranslationService', function(UtilityService, TranslationService) {
     var isSameDay = function(start, end) {
         if (start.getFullYear() !== end.getFullYear()) {
@@ -304,19 +307,36 @@ directive('kiTimeInterval', ['UtilityService', 'TranslationService', function(Ut
     return {
         restrict: 'A',
         scope: {
-            examEvent: '='
+            startTs: '=',
+            endTs: '=',
+            showTime: '='
         },
-        link: function(scope, element, attrs) {
-            var start = new Date(scope.examEvent.start);
-            var end = new Date(scope.examEvent.end);
+        link: function($scope, element, attrs) {
+            var start = new Date($scope.startTs);
+            var end = new Date($scope.endTs);
 
+            // do not repeat date information if both timestamp are in same day
             if (isSameDay(start, end)) {
                 element.append(start.getDate() + '.' + (start.getMonth() + 1) + '.' + start.getFullYear());
-                element.append(' ' + TranslationService.getTranslation('time-abbreviation') + ' ' + UtilityService.padWithZero(start.getHours()) + ':' + UtilityService.padWithZero(start.getMinutes()));
+
+                // show hours and minutes only if requested
+                if ($scope.showTime) {
+                    element.append(' ' + TranslationService.getTranslation('time-abbreviation') + ' ' + UtilityService.padWithZero(start.getHours()) + ':' + UtilityService.padWithZero(start.getMinutes()));
+                    element.append(' - ');
+                    element.append(UtilityService.padWithZero(end.getHours()) + ':' + UtilityService.padWithZero(end.getMinutes()));
+                }
             } else {
                 element.append(start.getDate() + '.' + (start.getMonth() + 1) + '.' + start.getFullYear());
+                // show hours and minutes only if requested
+                if ($scope.showTime) {
+                    element.append(' ' + TranslationService.getTranslation('time-abbreviation') + ' ' + UtilityService.padWithZero(start.getHours()) + ':' + UtilityService.padWithZero(start.getMinutes()));
+                }
                 element.append(' - ');
                 element.append(end.getDate() + '.' + (end.getMonth() + 1) + '.' + end.getFullYear());
+                // show hours and minutes only if requested
+                if ($scope.showTime) {
+                    element.append(' ' + TranslationService.getTranslation('time-abbreviation') + ' ' + UtilityService.padWithZero(end.getHours()) + ':' + UtilityService.padWithZero(end.getMinutes()));
+                }
             }
         }
     };
