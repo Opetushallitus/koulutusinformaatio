@@ -5,7 +5,7 @@
             <div>
                 <h2>{{ao.name}}</h2>
                 <div class="margin-vertical-default">
-                    <span>{{as.name}}</span> (<span data-ki-timestamp="{{ao.applicationStartDate}}"></span> - <span data-ki-timestamp="{{ao.applicationEndDate}}"></span>)
+                    <span>{{as.name}}</span> (<span data-ki-ao-application-time data-startdate="ao.applicationStartDate" data-enddate="ao.applicationEndDate" data-hakutapa="as.hakutapa" data-period-name="ao.applicationPeriodName"></span>)
                 </div>
             </div>
             <div data-ki-collapse-text-block data-content="ao.selectionCriteria" data-title="selection-criteria"></div>

@@ -692,6 +692,7 @@ service('HigherEducationTransformer', ['KiSorter', '$rootScope', '$filter', 'Lan
 				}
 			}
 
+            // sort exams by start date
 			for (var asIndex in result.applicationSystems) {
 				if (result.applicationSystems.hasOwnProperty(asIndex)) {
 					var as = result.applicationSystems[asIndex];
@@ -712,36 +713,10 @@ service('HigherEducationTransformer', ['KiSorter', '$rootScope', '$filter', 'Lan
 				}
 			}
 
-			// group application systems by prerequisite
-			var applicationSystemsByPrerequisite = {};
-
-			angular.forEach(result.applicationSystems, function(as, askey) {
-
-
-				angular.forEach(as.applicationOptions, function(ao, aokey) { 
-					angular.forEach(ao.requiredBaseEducations, function(prerequisite, prereqKey) {
-						if (applicationSystemsByPrerequisite[prerequisite]) {
-							applicationSystemsByPrerequisite[prerequisite].push(as);
-						} else {
-							applicationSystemsByPrerequisite[prerequisite] = [];
-							applicationSystemsByPrerequisite[prerequisite].push(as);
-						}
-					});
-				});
-
-			});
-
-
-			// sort application systems and select active LOI
-
-			angular.forEach(applicationSystemsByPrerequisite, function(asByPrerequisite, key){
-				KiSorter.sortApplicationSystems(asByPrerequisite);
-
-			});
-
+			// sort application systems
+            KiSorter.sortApplicationSystems(result.applicationSystems);
 
 			// check if application system is of type Lisähaku
-
 			for (var asIndex in result.applicationSystems) {
 				if (result.applicationSystems.hasOwnProperty(asIndex)) {
 					var as = result.applicationSystems[asIndex];
@@ -843,36 +818,10 @@ service('AdultVocationalTransformer', ['KiSorter', '$rootScope', '$filter', 'Lan
 				}
 			}
 
-			// group application systems by prerequisite
-			var applicationSystemsByPrerequisite = {};
-
-			angular.forEach(result.applicationSystems, function(as, askey) {
-
-
-				angular.forEach(as.applicationOptions, function(ao, aokey) { 
-					angular.forEach(ao.requiredBaseEducations, function(prerequisite, prereqKey) {
-						if (applicationSystemsByPrerequisite[prerequisite]) {
-							applicationSystemsByPrerequisite[prerequisite].push(as);
-						} else {
-							applicationSystemsByPrerequisite[prerequisite] = [];
-							applicationSystemsByPrerequisite[prerequisite].push(as);
-						}
-					});
-				});
-
-			});
-
-
-			// sort application systems and select active LOI
-
-			angular.forEach(applicationSystemsByPrerequisite, function(asByPrerequisite, key){
-				KiSorter.sortApplicationSystems(asByPrerequisite);
-
-			});
-
+			// sort application systems
+			KiSorter.sortApplicationSystems(result.applicationSystems);
 
 			// check if application system is of type Lisähaku
-
 			for (var asIndex in result.applicationSystems) {
 				if (result.applicationSystems.hasOwnProperty(asIndex)) {
 					var as = result.applicationSystems[asIndex];
@@ -940,21 +889,25 @@ service('ChildLOTransformer', ['UtilityService', 'KiSorter', '$rootScope', funct
         transform: function(result) {
             var studyplanKey = "KOULUTUSOHJELMA";
 
+            // set translation language for LO content
             if (result && result.translationLanguage) {
                 $rootScope.translationLanguage = result.translationLanguage;
             }
 
+            // remove current translation language from available translation languages
             for (var loiIndex in result.lois) {
                 if (result.lois.hasOwnProperty(loiIndex)) {
                     var loi = result.lois[loiIndex];
                     loi.availableTranslationLanguages = _.filter(loi.availableTranslationLanguages, function(item) { return item.value.toLowerCase() != result.translationLanguage});
+                    
+                    // get target group from loi
                     if (loi.targetGroup) {
                     	result.targetGroup = loi.targetGroup;
                     } 
                 }
             } 
             
-
+            // set loi basic info
             for (var loiIndex in result.lois) {
                 if (result.lois.hasOwnProperty(loiIndex)) {
                     var loi = result.lois[loiIndex];
