@@ -341,5 +341,7 @@
      "structure-of-degree": "Examensstruktur",
 
      "hide-filter-selector-true": "Visa avgränsningarna",
-     "hide-filter-selector-false": "Dölj avgränsningarna"
+     "hide-filter-selector-false": "Dölj avgränsningarna",
+
+     "search-all-los": "Hae kaikki koulutukset (sv)"
 }
