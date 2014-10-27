@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.dao.entity;
 
+import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.OrganizationGroup;
 
 import org.mongodb.morphia.annotations.Embedded;
@@ -72,6 +73,8 @@ public class ApplicationOptionEntity {
     private boolean specificApplicationDates;
     private Date applicationStartDate;
     private Date applicationEndDate;
+    @Embedded
+    private I18nTextEntity applicationPeriodName;
     @Embedded
     private List<ApplicationOptionAttachmentEntity> attachments;
     @Embedded
@@ -405,5 +408,13 @@ public class ApplicationOptionEntity {
 
     public void setOrganizationGroups(List<OrganizationGroupEntity> organizationGroups) {
         this.organizationGroups = organizationGroups;
+    }
+
+    public I18nTextEntity getApplicationPeriodName() {
+        return applicationPeriodName;
+    }
+
+    public void setApplicationPeriodName(I18nTextEntity applicationPeriodName) {
+        this.applicationPeriodName = applicationPeriodName;
     }
 }

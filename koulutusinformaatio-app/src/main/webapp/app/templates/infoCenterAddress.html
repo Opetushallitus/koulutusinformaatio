@@ -1,36 +1,33 @@
-<div data-ng-show="showContact">
-<h2 data-ki-i18n="info-center" data-lang="{{translationLanguage}}"></h2>
 <p>
-    <p data-ng-show="provider.applicationOffice.name" class="bold">
-    {{provider.applicationOffice.name}}
+    <p data-ng-show="applicationOffice.name" class="bold">
+    {{applicationOffice.name}}
     </p>
 
-    <p data-ng-show="provider.applicationOffice.visitingAddress">
+    <p data-ng-show="applicationOffice.visitingAddress">
         <span data-ki-i18n="plain:visiting-address" data-show-colon="true" data-lang="{{translationLanguage}}"></span><br/>
-        <span data-ng-show="provider.applicationOffice.visitingAddress.streetAddress">{{provider.applicationOffice.visitingAddress.streetAddress}}<br/></span>
-        <span data-ng-show="provider.applicationOffice.visitingAddress.streetAddress2">{{provider.applicationOffice.visitingAddress.streetAddress2}}<br/></span>
-        <span data-ng-show="provider.applicationOffice.visitingAddress.postOffice">{{provider.applicationOffice.visitingAddress.postOffice}}</span>
+        <span data-ng-show="applicationOffice.visitingAddress.streetAddress">{{applicationOffice.visitingAddress.streetAddress}}<br/></span>
+        <span data-ng-show="applicationOffice.visitingAddress.streetAddress2">{{applicationOffice.visitingAddress.streetAddress2}}<br/></span>
+        <span data-ng-show="applicationOffice.visitingAddress.postOffice">{{applicationOffice.visitingAddress.postOffice}}</span>
     </p>
 
-    <p data-ng-show="provider.applicationOffice.postalAddress">
+    <p data-ng-show="applicationOffice.postalAddress">
         <span data-ki-i18n="plain:postal-address" data-show-colon="true" data-lang="{{translationLanguage}}"></span><br/>
-        <span data-ng-show="provider.applicationOffice.postalAddress.streetAddress">{{provider.applicationOffice.postalAddress.streetAddress}}<br/></span>
-        <span data-ng-show="provider.applicationOffice.postalAddress.streetAddress2">{{provider.applicationOffice.postalAddress.streetAddress2}}<br/></span>
-        <span data-ng-show="provider.applicationOffice.postalAddress.postalCode">{{provider.applicationOffice.postalAddress.postalCode}}</span>
-        <span data-ng-show="provider.applicationOffice.postalAddress.postOffice">{{provider.applicationOffice.postalAddress.postOffice}}</span>
+        <span data-ng-show="applicationOffice.postalAddress.streetAddress">{{applicationOffice.postalAddress.streetAddress}}<br/></span>
+        <span data-ng-show="applicationOffice.postalAddress.streetAddress2">{{applicationOffice.postalAddress.streetAddress2}}<br/></span>
+        <span data-ng-show="applicationOffice.postalAddress.postalCode">{{applicationOffice.postalAddress.postalCode}}</span>
+        <span data-ng-show="applicationOffice.postalAddress.postOffice">{{applicationOffice.postalAddress.postOffice}}</span>
     </p>
 
-    <span data-ng-show="provider.applicationOffice.email">
-        <span data-ki-i18n="plain:email" data-show-colon="true" data-lang="{{translationLanguage}}"></span> <span data-ki-email="{{provider.applicationOffice.email}}"></span><br/>
+    <span data-ng-show="applicationOffice.email">
+        <span data-ki-i18n="plain:email" data-show-colon="true" data-lang="{{translationLanguage}}"></span> <span data-ki-email="{{applicationOffice.email}}"></span><br/>
     </span>
-    <span data-ng-show="provider.applicationOffice.phone">
-        <span data-ki-i18n="plain:phone" data-show-colon="true" data-lang="{{translationLanguage}}"></span> {{provider.applicationOffice.phone}}<br />
+    <span data-ng-show="applicationOffice.phone">
+        <span data-ki-i18n="plain:phone" data-show-colon="true" data-lang="{{translationLanguage}}"></span> {{applicationOffice.phone}}<br />
     </span>
-    <span data-ng-show="provider.applicationOffice.fax">
-        <span data-ki-i18n="plain:fax" data-show-colon="true" data-lang="{{translationLanguage}}"></span> {{provider.applicationOffice.fax}}<br/>
+    <span data-ng-show="applicationOffice.fax">
+        <span data-ki-i18n="plain:fax" data-show-colon="true" data-lang="{{translationLanguage}}"></span> {{applicationOffice.fax}}<br/>
     </span>
-    <span data-ng-show="provider.applicationOffice.www">
-        <a data-ki-absolute-link="{{provider.applicationOffice.www}}" target="_blank">{{provider.applicationOffice.www}}</a>
+    <span data-ng-show="applicationOffice.www">
+        <a data-ki-absolute-link="{{applicationOffice.www}}" target="_blank">{{applicationOffice.www}}</a>
     </span>
 </p>
-</div>

@@ -15,10 +15,13 @@
  */
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
+import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +31,6 @@ import org.springframework.stereotype.Service;
 
 import fi.vm.sade.koulutusinformaatio.dao.transaction.TransactionManager;
 import fi.vm.sade.koulutusinformaatio.domain.AdultUpperSecondaryLOS;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.Article;
 import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
@@ -37,14 +39,19 @@ import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.Location;
+import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.StandaloneLOS;
+import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
+import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.TarjontaParseException;
 import fi.vm.sade.koulutusinformaatio.service.ArticleService;
 import fi.vm.sade.koulutusinformaatio.service.EducationDataUpdateService;
 import fi.vm.sade.koulutusinformaatio.service.IndexerService;
 import fi.vm.sade.koulutusinformaatio.service.LocationService;
+import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.service.TarjontaService;
 import fi.vm.sade.koulutusinformaatio.service.UpdateService;
+import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
 
 
 
@@ -62,6 +69,7 @@ public class UpdateServiceImpl implements UpdateService {
     private IndexerService indexerService;
     private EducationDataUpdateService educationDataUpdateService;
     private ArticleService articleService;
+    private ProviderService providerService;
 
     private TransactionManager transactionManager;
     private static final int MAX_RESULTS = 100;
@@ -73,6 +81,7 @@ public class UpdateServiceImpl implements UpdateService {
     public UpdateServiceImpl(TarjontaService tarjontaService, IndexerService indexerService,
             EducationDataUpdateService educationDataUpdateService,
             TransactionManager transactionManager, LocationService locationService,
+            ProviderService providerService,
             ArticleService articleService) {
         this.tarjontaService = tarjontaService;
         this.indexerService = indexerService;
@@ -80,6 +89,7 @@ public class UpdateServiceImpl implements UpdateService {
         this.transactionManager = transactionManager;
         this.locationService = locationService;
         this.articleService = articleService;
+        this.providerService = providerService;
     }
 
     @Override
@@ -99,13 +109,13 @@ public class UpdateServiceImpl implements UpdateService {
             int count = MAX_RESULTS;
             int index = 0;
 
-            
-            
             while (count >= MAX_RESULTS) {
             LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
             List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
             count = loOids.size();
             index += count;
+            
+           
             
             
                 for (String loOid : loOids) {
@@ -126,7 +136,7 @@ public class UpdateServiceImpl implements UpdateService {
 
 
 
-                
+            
             List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
             LOG.debug("Found higher educations: " + higherEducations.size());
 
@@ -157,6 +167,12 @@ public class UpdateServiceImpl implements UpdateService {
                 this.educationDataUpdateService.save(curLOS);
             }
             
+            this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);  
+            LOG.debug("Starting provider indexing");
+            indexProviders(lopUpdateSolr, loUpdateSolr, locationUpdateSolr);
+            LOG.debug("Providers indexed");
+            
+            
             
             List<Code> edTypeCodes = this.tarjontaService.getEdTypeCodes();
             indexerService.addEdTypeCodes(edTypeCodes, loUpdateSolr);
@@ -179,6 +195,7 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.debug("Articles fetched");
             indexerService.addArticles(loUpdateSolr, articles);
             LOG.debug("Articles indexed to solr");
+            
             indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, true);
             LOG.debug("Committed to solr");
             this.transactionManager.commit(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
@@ -195,6 +212,42 @@ public class UpdateServiceImpl implements UpdateService {
             runningSince = 0;
         }
 
+    }
+
+    /*
+     * 
+     * Handles the indexing of providers from organisaatio service to solr and MongoDB.
+     * This method is used when indexing organizations (Oppilaitos, Toimipiste) which 
+     * are not providers of learning opportunities.
+     * 
+     */
+    private void indexProviders(HttpSolrServer lopUpdateSolr, HttpSolrServer loUpdateSolr, HttpSolrServer locationUpdateSolr) throws MalformedURLException, ResourceNotFoundException, IOException, KoodistoException, SolrServerException {
+        
+        List<OrganisaatioPerustieto> orgBasics = this.providerService.fetchOpplaitokset();
+        LOG.debug("Oppilaitokset fetched");
+        createAndSaveProviders(orgBasics, lopUpdateSolr);
+        this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
+        LOG.debug("Oppilaitokset saved");
+        orgBasics = this.providerService.fetchToimipisteet();
+        createAndSaveProviders(orgBasics, lopUpdateSolr);
+        this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
+        LOG.debug("toimipisteet saved");
+    }
+
+    /*
+     * Indexes and saves the given list of organizations. 
+     */
+    private void createAndSaveProviders(List<OrganisaatioPerustieto> orgBasics,
+            HttpSolrServer lopUpdateSolr) throws KoodistoException, MalformedURLException, ResourceNotFoundException, IOException, SolrServerException {
+        for (OrganisaatioPerustieto curOrg : orgBasics) {
+            if (!indexerService.isDocumentInIndex(curOrg.getOid(), lopUpdateSolr)) {
+                LOG.debug("Indexing organisaatio: " + curOrg.getOid());
+                Provider curProv = this.providerService.getByOID(curOrg.getOid());
+                this.educationDataUpdateService.save(curProv);
+                this.indexerService.createProviderDocs(curProv, lopUpdateSolr, new HashSet<String>(), new HashSet<String>(), new HashSet<String>(), new HashSet<String>());
+                LOG.debug("Indexed and saved organisaatio: " + curOrg.getOid());
+            }
+        }
     }
 
     private void indexToSolr(StandaloneLOS curLOS,

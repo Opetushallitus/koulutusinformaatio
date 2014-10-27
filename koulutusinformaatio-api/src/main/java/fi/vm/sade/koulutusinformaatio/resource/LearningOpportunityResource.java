@@ -45,6 +45,7 @@ public interface LearningOpportunityResource {
                                                              @QueryParam("city") List<String> cities,
                                                              @QueryParam("facetFilters") List<String> facetFilters,
                                                              @QueryParam("articleFacetFilters") List<String> articleFilters,
+                                                             @QueryParam("providerFacetFilters") List<String> providerFilters,
                                                              @QueryParam("lang") String lang,
                                                              @DefaultValue(value = "false") @QueryParam("ongoing") boolean ongoing,
                                                              @DefaultValue(value = "false") @QueryParam("upcoming") boolean upcoming,

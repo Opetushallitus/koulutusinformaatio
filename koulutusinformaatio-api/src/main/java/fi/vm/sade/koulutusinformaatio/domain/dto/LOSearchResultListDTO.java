@@ -29,6 +29,7 @@ public class LOSearchResultListDTO {
 
     private List<LearningOpportunitySearchResultDTO> results = new ArrayList<LearningOpportunitySearchResultDTO>();
     private List<ArticleResultDTO> articleresults = new ArrayList<ArticleResultDTO>();
+    private List<ProviderSearchResultDTO> providerResults = new ArrayList<ProviderSearchResultDTO>();
     private long totalCount;
     private FacetDTO teachingLangFacet;
     private FacetDTO filterFacet;
@@ -37,6 +38,7 @@ public class LOSearchResultListDTO {
     private FacetDTO prerequisiteFacet;
     private FacetDTO topicFacet;
     private FacetDTO articleContentTypeFacet;
+    private FacetDTO providerTypeFacet;
     private FacetDTO fotFacet;
     private FacetDTO timeOfTeachingFacet;
     private FacetDTO formOfStudyFacet;
@@ -193,5 +195,21 @@ public class LOSearchResultListDTO {
 
     public void setFormOfStudyFacet(FacetDTO formOfStudyFacet) {
         this.formOfStudyFacet = formOfStudyFacet;
+    }
+
+    public List<ProviderSearchResultDTO> getProviderResults() {
+        return providerResults;
+    }
+
+    public void setProviderResults(List<ProviderSearchResultDTO> providerResults) {
+        this.providerResults = providerResults;
+    }
+
+    public FacetDTO getProviderTypeFacet() {
+        return providerTypeFacet;
+    }
+
+    public void setProviderTypeFacet(FacetDTO providerTypeFacet) {
+        this.providerTypeFacet = providerTypeFacet;
     }
 }

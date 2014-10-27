@@ -17,10 +17,12 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.collect.Lists;
+
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
+
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -36,6 +38,7 @@ import org.mockito.MockitoAnnotations.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.core.convert.ConversionService;
 
+import java.io.IOException;
 import java.util.*;
 
 import static junit.framework.Assert.assertEquals;
@@ -177,6 +180,35 @@ public class IndexerServiceImplTest {
     public void getLocationCollectionToUpdateTest() {
         HttpSolrServer result = this.indexerServiceImpl.getLocationCollectionToUpdate(loHttpSolrServer);
         assertEquals(result, locationHttpSolrServer);
+    }
+    
+    /**
+     * Tests isDocumentInIndex method with expected false result.
+     */
+    @Test
+    public void isDocumentInIndexTest() {
+        boolean res = this.indexerServiceImpl.isDocumentInIndex("doc:someId", this.lopUpdateHttpSolrServer);
+        assertEquals(false, res);
+    }
+    
+    /**
+     * Tests the creation of provider docs.
+     * 
+     * @throws SolrServerException
+     * @throws IOException
+     */
+    @Test
+    public void createProviderDocsTest() throws SolrServerException, IOException {
+        Provider prov = new Provider();
+        prov.setId("1.1.1.organisation");
+        I18nText name = new I18nText();
+        name.put("fi", "nimi fi");
+        prov.setName(name);
+        I18nText homeplace = new I18nText();
+        homeplace.put("fi", "Helsinki");
+        prov.setHomePlace(homeplace);
+        this.indexerServiceImpl.createProviderDocs(prov, this.lopUpdateHttpSolrServer, new HashSet<String>(), new HashSet<String>(), new HashSet<String>(), new HashSet<String>());
+        verify(lopUpdateHttpSolrServer).add(argThat(TestUtil.isListOfOneELement()));
     }
 
     private ParentLOS createParentLOS() {

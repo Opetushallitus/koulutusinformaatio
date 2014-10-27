@@ -46,7 +46,7 @@ public abstract class ObjectCreator {
         this.koodistoService = koodistoService;
     }
 
-    protected I18nText getI18nText(final Map<String, String> texts) throws KoodistoException {
+   protected I18nText getI18nText(final Map<String, String> texts) throws KoodistoException {
         if (texts != null && !texts.isEmpty()) {
             Map<String, String> translations = new HashMap<String, String>();
             Iterator<Map.Entry<String, String>> i = texts.entrySet().iterator();

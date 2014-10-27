@@ -24,7 +24,7 @@ import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationOption;
 import fi.vm.sade.koulutusinformaatio.domain.DataStatus;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
-import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
+import fi.vm.sade.koulutusinformaatio.domain.Provider;
 
 /**
  * @author Mikko Majapuro
@@ -34,6 +34,8 @@ public interface EducationDataUpdateService {
     void save(final LOS learningOpportunitySpecification);
 
     void save(final DataStatus dataStatus);
+    
+    void save(final Provider provider);
     
     void deleteLos(LOS los);
     

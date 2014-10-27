@@ -38,6 +38,7 @@ public final class ExamEventToDTO {
             dto.setDescription(event.getDescription());
             dto.setStart(event.getStart());
             dto.setEnd(event.getEnd());
+            dto.setTimeIncluded(event.isTimeIncluded());
             return dto;
         } else {
             return null;

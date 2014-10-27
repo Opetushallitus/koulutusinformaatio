@@ -30,6 +30,7 @@
     "search-button": "Search",
     "search-tab-lo": "Study options",
     "search-tab-article": "Information and stories",
+    "search-tab-organisation": "Oppilaitoksia (en)",
 
     "basic-information": "Basic information",
     "degree-programmes": "Study programmes",
@@ -244,6 +245,7 @@
     "facet-opiskelumuoto": "Filter by form of studies",
     "facet-teemat": "Filter by subject",
     "facet-aineistotyyppi": "Filter by material type",
+    "facet-oppilaitostyyppi": "Rajaa oppilaitoksia (en)",
     "topic_ffm": "Subject",
     "theme_ffm": "Theme",
     "formOfTeaching_ffm": "Mode of teaching",
@@ -252,6 +254,7 @@
     "kindOfEducation_ffm": "Target group",
     "teachingLangCode_ffm": "Language of instruction",
     "articleContentType_ffm": "Material type",
+    "oltype_ffm": "Oppilaitostyyppi (en)",
     "location-rajaus": "Place",
     "facet-remove": "Remove",
     "facet-focus-filter": "Specify search criteria",
@@ -338,6 +341,9 @@
      "structure-of-degree": "Qualification structure",
 
      "hide-filter-selector-true": "Show filters",
-     "hide-filter-selector-false": "Hide filters"
+
+     "hide-filter-selector-false": "Hide filters",
+
+     "search-all-los": "Hae kaikki koulutukset (en)"
     
 }

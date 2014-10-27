@@ -8,52 +8,51 @@ angular.module('kiApp.directives.ContentBlocks', []).
 /**
  * Render contact info block
  */
-directive('kiContactInfo', function() {
+directive('kiContactInfo', ['CollapseBlockService', function(CollapseBlockService) {
     return {
         restrict: 'A',
         templateUrl: 'templates/contactInfo.html',
-        scope: true,
-        link: function(scope, element, attrs) {
-            scope.anchor = attrs.anchor;
-
-            scope.$watch('provider', function(data) {
-                if (data) {
-                    scope.showContact = (data.visitingAddress ||
-                        data.postalAddress ||
-                        data.name ||
-                        data.email ||
-                        data.phone ||
-                        data.fax ||
-                        data.webPage) ? true : false;
+        link: function($scope, element, attrs) {
+            $scope.$watch('content', function(value) {
+                $scope.provider = value;
+                if (value) {
+                    var showContactInfo = (value.visitingAddress ||
+                        value.postalAddress ||
+                        value.name ||
+                        value.email ||
+                        value.phone ||
+                        value.fax ||
+                        value.webPage) ? true : false;
+                    CollapseBlockService.setBlock($scope.blockId, showContactInfo);
                 }
             });
         }
     };
-}).
+}]).
 
 /**
  * Render contact info block
  */
-directive('kiInfoCenterAddress', function() {
+directive('kiInfoCenterAddress', ['CollapseBlockService', function(CollapseBlockService) {
     return {
         restrict: 'A',
         templateUrl: 'templates/infoCenterAddress.html',
-        scope: false,
-        link: function(scope, element, attrs) {
-
-            scope.$watch('provider.applicationOffice', function(data) {
-                if (data) {
-                    scope.showContact = (data.visitingAddress ||
-                        data.postalAddress ||
-                        data.name ||
-                        data.email ||
-                        data.phone ||
-                        data.www) ? true : false;
+        link: function($scope, element, attrs) {
+            $scope.$watch('content', function(value) {
+                if (value) {
+                    $scope.applicationOffice = value;
+                    var showInfoCenterAddress = (value.visitingAddress ||
+                        value.postalAddress ||
+                        value.name ||
+                        value.email ||
+                        value.phone ||
+                        value.www) ? true : false;
+                    CollapseBlockService.setBlock($scope.blockId, showInfoCenterAddress);   
                 }
             });
         }
     };
-}).
+}]).
 
 /**
  *  Render contact person info

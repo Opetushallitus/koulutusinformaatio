@@ -187,66 +187,89 @@ directive('kiAbsoluteLink', function() {
 /**
  *  Creates and controls the breadcrumb
  */
- directive('kiBreadcrumb', ['SearchService', 'Config', 'FilterService', 'TranslationService', function(SearchService, Config, FilterService, TranslationService) {
+directive('kiBreadcrumb', ['SearchService', 'Config', 'FilterService', 'TranslationService', function(SearchService, Config, FilterService, TranslationService) {
     return {
         restrict: 'E,A',
         templateUrl: 'templates/breadcrumb.html',
-        link: function(scope, element, attrs) {
+        scope: {
+            parent: '=',
+            lo: '=',
+            provider: '=',
+            loType: '=',
+            kiBreadcrumb: '@'
+        },
+        link: function($scope, element, attrs) {
             var home = 'home',
                 root = TranslationService.getTranslation('breadcrumb-search-results'),
                 goToTooltip = TranslationService.getTranslation('breadcrumb-go-to-page') + ' ',
                 homeTooltip = TranslationService.getTranslation('tooltip:to-frontpage'),
                 parent,
-                child,
+                lo,
                 provider;
 
-            scope.$watch('parent.name', function(data) {
-                parent = data;
+            $scope.$watch('parent', function(data) {
+                if (data && $scope.loType !== 'lukio' && $scope.loType !== 'erityisopetus') {
+                    parent = {
+                        name: data.name,
+                        linkHref: '#!/tutkinto/' + data.id,
+                        tooltip: goToTooltip + data.name
+                    };
+                }
                 update();
             }, true);
 
-            scope.$watch('lo.name', function(data) {
-                child = data;
+            $scope.$watch('lo', function(data) {
+                if (data) {
+                    if ($scope.loType === 'lukio') {
+                        lo = {
+                            name: data.provider.name + ', ' + data.name
+                        }
+                    } else {
+                        lo = {
+                            name: data.name
+                        }
+                    }
+                }
                 update();
             }, true);
 
-            scope.$watch('provider.name', function(data) {
-                provider = data;
+            $scope.$watch('provider', function(data) {
+                if (data) {
+                    provider = {
+                        name: data.name
+                    }
+                }
                 update();
             }, true);
 
-            attrs.$observe('kiBreadcrumb', function(data) {
-                root = TranslationService.getTranslation(data);
+            
+            $scope.$watch('kiBreadcrumb', function(data) {
+                root = {
+                    name: TranslationService.getTranslation(data),
+                    linkHref: '#!/haku/' + SearchService.getTerm() + '?' + FilterService.getParams(),
+                    tooltip: goToTooltip + root
+                }
                 update();
             });
+            
 
             var update = function() {
-                scope.breadcrumbItems = [];
+                $scope.breadcrumbItems = [];
                 pushItem({name: home, linkHref: Config.get('frontpageUrl'), tooltip: homeTooltip });
-                pushItem({name: root, linkHref: '#!/haku/' + SearchService.getTerm() + '?' + FilterService.getParams(), tooltip: goToTooltip + root });
-
-                if (scope.parent && (scope.loType !== 'lukio' && scope.loType !== 'erityisopetus')) {
-                    pushItem({name: parent, linkHref: '#!/tutkinto/' + scope.parent.id, tooltip: goToTooltip + parent });
-                }
-
-                if (scope.loType === 'lukio') {
-                    pushItem({name: provider + ', ' + child});
-                } else {
-                    pushItem({name: child});
-                }
+                pushItem(root);
+                pushItem(parent);
+                pushItem(lo);
+                pushItem(provider);
             };
 
             var pushItem = function(item) {
-                if (item.name) {
-                    scope.breadcrumbItems.push(item);
+                if (item) {
+                    $scope.breadcrumbItems.push(item);
                 }
             };
         }
     };
 }]).
-
-
-
 
 /**
  *  Creates a human readable date from timestamp
@@ -265,6 +288,9 @@ directive('kiTimestamp', ['TranslationService', 'UtilityService', function(Trans
     };
 }]).
 
+/*
+ *  Parses a time interval from start and end timestamps
+ */
 directive('kiTimeInterval', ['UtilityService', 'TranslationService', function(UtilityService, TranslationService) {
     var isSameDay = function(start, end) {
         if (start.getFullYear() !== end.getFullYear()) {
@@ -281,19 +307,36 @@ directive('kiTimeInterval', ['UtilityService', 'TranslationService', function(Ut
     return {
         restrict: 'A',
         scope: {
-            examEvent: '='
+            startTs: '=',
+            endTs: '=',
+            showTime: '='
         },
-        link: function(scope, element, attrs) {
-            var start = new Date(scope.examEvent.start);
-            var end = new Date(scope.examEvent.end);
+        link: function($scope, element, attrs) {
+            var start = new Date($scope.startTs);
+            var end = new Date($scope.endTs);
 
+            // do not repeat date information if both timestamp are in same day
             if (isSameDay(start, end)) {
                 element.append(start.getDate() + '.' + (start.getMonth() + 1) + '.' + start.getFullYear());
-                element.append(' ' + TranslationService.getTranslation('time-abbreviation') + ' ' + UtilityService.padWithZero(start.getHours()) + ':' + UtilityService.padWithZero(start.getMinutes()));
+
+                // show hours and minutes only if requested
+                if ($scope.showTime) {
+                    element.append(' ' + TranslationService.getTranslation('time-abbreviation') + ' ' + UtilityService.padWithZero(start.getHours()) + ':' + UtilityService.padWithZero(start.getMinutes()));
+                    element.append(' - ');
+                    element.append(UtilityService.padWithZero(end.getHours()) + ':' + UtilityService.padWithZero(end.getMinutes()));
+                }
             } else {
                 element.append(start.getDate() + '.' + (start.getMonth() + 1) + '.' + start.getFullYear());
+                // show hours and minutes only if requested
+                if ($scope.showTime) {
+                    element.append(' ' + TranslationService.getTranslation('time-abbreviation') + ' ' + UtilityService.padWithZero(start.getHours()) + ':' + UtilityService.padWithZero(start.getMinutes()));
+                }
                 element.append(' - ');
                 element.append(end.getDate() + '.' + (end.getMonth() + 1) + '.' + end.getFullYear());
+                // show hours and minutes only if requested
+                if ($scope.showTime) {
+                    element.append(' ' + TranslationService.getTranslation('time-abbreviation') + ' ' + UtilityService.padWithZero(end.getHours()) + ':' + UtilityService.padWithZero(end.getMinutes()));
+                }
             }
         }
     };
@@ -447,7 +490,8 @@ directive('kiAoApplicationTime', function() {
             startdate: '=',
             enddate: '=',
             hakutapa: '=',
-            label: '@'
+            label: '@',
+            periodName: '='
         },
         controller: function($scope) {
             $scope.isJatkuva = function() {

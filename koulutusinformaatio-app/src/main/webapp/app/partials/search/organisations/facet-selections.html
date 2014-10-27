@@ -1,0 +1,23 @@
+<div class="row facet-selections margin-vertical-default" data-ng-show="areThereSelections()">
+    <div class="col-xs-16">
+        <ul class="list-unstyled">
+            <li><strong data-ki-i18n="valitut-rajaukset" data-show-colon="true"></strong></li>
+            <li data-ng-repeat="fs in organisationFacetSelections">
+                <a href="javascript:void(0)" data-ng-click="removeOrganisationFacetSelection(fs)" title="{{locales.closeFacet}}" class="facet-selection">
+                    <span data-ki-i18n="{{fs.facetField}}" data-show-colon="true"></span> <span data-ki-i18n="{{fs.valueName}}"></span>
+                    <span class="remove">
+                        <span class="sr-only" data-ki-i18n="facet-remove"></span>
+                    </span>
+                </a>
+            </li>
+            <li data-ng-repeat="loc in locations">
+                <a href="javascript:void(0)" data-ng-click="removeLocation(loc)" class="facet-selection">
+                    <span data-ki-i18n="location-rajaus" data-show-colon="true"></span> {{loc.name}}
+                    <span class="remove">
+                        <span class="sr-only" data-ki-i18n="facet-remove"></span>
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

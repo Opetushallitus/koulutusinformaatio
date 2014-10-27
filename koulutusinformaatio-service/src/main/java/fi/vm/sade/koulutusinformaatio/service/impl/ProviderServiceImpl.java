@@ -17,19 +17,29 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.google.common.base.Strings;
+
+import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
+import fi.vm.sade.organisaatio.api.search.OrganisaatioHakutulos;
+import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -42,13 +52,15 @@ public class ProviderServiceImpl implements ProviderService {
 
     private ConversionService conversionService;
     private final OrganisaatioRawService organisaatioRawService;
+    private KoodistoService koodistoService;
 
     private static Map<String,Provider> providerMap = new HashMap<String,Provider>();
 
     @Autowired
-    public ProviderServiceImpl(ConversionService conversionService, OrganisaatioRawService organisaatioRawService) {
+    public ProviderServiceImpl(ConversionService conversionService, OrganisaatioRawService organisaatioRawService, KoodistoService koodistoService) {
         this.conversionService = conversionService;
         this.organisaatioRawService = organisaatioRawService;
+        this.koodistoService = koodistoService;
     }
 
     @Override
@@ -69,12 +81,46 @@ public class ProviderServiceImpl implements ProviderService {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Enriching provider " + organisaatioRDTO.getOid() + " with parent provider " + organisaatioRDTO.getParentOid());
             }
+            
             Provider parent = getByOID(organisaatioRDTO.getParentOid());
             provider = inheritMetadata(provider, parent);
-
         }
+        
+        if (provider.getType() == null) {
+            inheritOlTypes(provider, organisaatioRDTO);
+        } else {
+            provider.getOlTypes().add(provider.getType());
+        }
+        
         providerMap.put(oid, provider);
         return provider;
+    }
+    
+    
+
+    private void inheritOlTypes(Provider provider, OrganisaatioRDTO rawProvider) throws ResourceNotFoundException, KoodistoException {
+        
+        if (rawProvider.getTyypit().contains("Oppilaitos")) {
+            Code olTyyppi = koodistoService.searchFirst(rawProvider.getOppilaitosTyyppiUri());
+            if (olTyyppi != null) {
+                provider.getOlTypes().add(olTyyppi);
+            }
+        }
+        else if (rawProvider.getTyypit().contains("Toimipiste")) {
+            OrganisaatioRDTO inheritableOrg = this.organisaatioRawService.getOrganisaatio(rawProvider.getParentOid());
+            inheritOlTypes(provider, inheritableOrg);
+        } else if (rawProvider.getTyypit().contains("Koulutustoimija")) {
+            try {
+            List<OrganisaatioRDTO> childrenRaws = this.organisaatioRawService.getChildren(rawProvider.getOid());
+            if (childrenRaws != null) {
+                for (OrganisaatioRDTO curChild : childrenRaws) {
+                    inheritOlTypes(provider, curChild);
+                }
+            }
+            } catch (Exception ex) {
+                LOG.error("children resources not found:" + rawProvider.getOid());
+            }
+        }
     }
 
     private Provider inheritMetadata(Provider child, Provider parent) {
@@ -123,6 +169,29 @@ public class ProviderServiceImpl implements ProviderService {
     @Override
     public void clearCache() {
         providerMap = new HashMap<String,Provider>();   
+    }
+
+    @Override
+    public List<OrganisaatioPerustieto> fetchOpplaitokset()
+            throws MalformedURLException, IOException,
+            ResourceNotFoundException {
+        
+        OrganisaatioHakutulos result = this.organisaatioRawService.fetchOrganisaatiosByType("Oppilaitos");
+        if (result != null && result.getOrganisaatiot() != null) {
+            return result.getOrganisaatiot();
+        }
+        return new ArrayList<OrganisaatioPerustieto>();
+    }
+
+    @Override
+    public List<OrganisaatioPerustieto> fetchToimipisteet()
+            throws MalformedURLException, IOException,
+            ResourceNotFoundException {
+        OrganisaatioHakutulos result = this.organisaatioRawService.fetchOrganisaatiosByType("Toimipiste");
+        if (result != null && result.getOrganisaatiot() != null) {
+            return result.getOrganisaatiot();
+        }
+        return new ArrayList<OrganisaatioPerustieto>();
     }
 
 

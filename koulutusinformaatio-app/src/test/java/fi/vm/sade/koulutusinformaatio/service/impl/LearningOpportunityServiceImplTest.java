@@ -175,7 +175,28 @@ public class LearningOpportunityServiceImplTest {
         
         when(educationDataQueryService.findLearningOpportunitiesByProviderId("provId")).thenReturn(losses);
 
+        
+        Provider provider = new Provider();
+        provider.setId("prov111");
+        provider.setAccessibility(createI18Text("accessibility"));
+        provider.setDescription(createI18Text("description"));
+        provider.setEmail(createI18Text("has@email.fi"));
+        provider.setHomePlace(createI18Text("Vantaa"));
+        provider.setName(createI18Text("prov111"));
+        
+        when(educationDataQueryService.getProvider("prov111")).thenReturn(provider);
+        
         learningOpportunityService = new LearningOpportunityServiceImpl(educationDataQueryService, previewService, modelMapper);
+    }
+    
+    /**
+     * Tests the fetching of provider from learning opportunity service.
+     * @throws ResourceNotFoundException
+     */
+    @Test
+    public void testGetProvider() throws ResourceNotFoundException {
+        LearningOpportunityProviderDTO prov = learningOpportunityService.getProvider("prov111", "fi");
+        assertEquals("prov111", prov.getId());
     }
 
     @Test

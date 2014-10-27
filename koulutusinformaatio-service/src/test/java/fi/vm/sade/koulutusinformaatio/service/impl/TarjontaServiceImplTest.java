@@ -16,6 +16,7 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
+import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
@@ -27,18 +28,21 @@ import fi.vm.sade.koulutusinformaatio.service.TarjontaRawService;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.koulutusinformaatio.service.builder.impl.*;
 import fi.vm.sade.tarjonta.service.resources.dto.KomoDTO;
+import fi.vm.sade.tarjonta.service.resources.v1.dto.HakuV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.HakutuloksetV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.KoulutusHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.ResultV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.TarjoajaHakutulosV1RDTO;
 import fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KoulutusKorkeakouluV1RDTO;
 import fi.vm.sade.tarjonta.shared.types.TarjontaTila;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.convert.ConversionService;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -54,6 +58,7 @@ public class TarjontaServiceImplTest {
     private static final String KOMO_ID_UPSEC = "upsecKomoId";
     private static final String KOMO_ID_REHAB = "rehabKomoId";
     private static final String KOMO_ID_INVALID = "invalid";
+    private static final String CALENDAR_APPLICATION_SYSTEM_OID = "as1.1.1.1.oid";
 
     ConversionService conversionService;
     KoodistoService koodistoService;
@@ -62,6 +67,7 @@ public class TarjontaServiceImplTest {
     TarjontaRawService tarjontaRawService;
     OrganisaatioRawService organisaatioRawService;
     TarjontaServiceImpl service;
+    LOSObjectCreator creator;
 
     @Before
     public void setup() {
@@ -92,6 +98,7 @@ public class TarjontaServiceImplTest {
                 providerService, loDirector, tarjontaRawService, organisaatioRawService);
         
         mockHigherEdRawRes();
+        this.mockCalendarApplicationSystems();
     }
 
     private void mockHigherEdRawRes() {
@@ -131,7 +138,7 @@ public class TarjontaServiceImplTest {
     	koulutusRes2.setResult(koulutus2);
     	
     	when(tarjontaRawService.getHigherEducationLearningOpportunity(koulEiJulk.getOid())).thenReturn(koulutusRes2);
-    	LOSObjectCreator creator = mock(LOSObjectCreator.class);//new LOSObjectCreator(koodistoService, tarjontaRawService, providerService);
+    	creator = mock(LOSObjectCreator.class);//new LOSObjectCreator(koodistoService, tarjontaRawService, providerService);
     	service.setCreator(creator);
     	
     	
@@ -152,6 +159,35 @@ public class TarjontaServiceImplTest {
         when(tarjontaRawService.getParentsOfHigherEducationLOS(null)).thenReturn(null);
         
 	}
+    
+    private void mockCalendarApplicationSystems() {
+        
+        ResultV1RDTO<List<String>> rawRes = new ResultV1RDTO<List<String>>();
+        //String asOid = "as1.1.1.1.oid";
+        List<String> resOids = Arrays.asList(CALENDAR_APPLICATION_SYSTEM_OID);
+        rawRes.setResult(resOids);
+        when(this.tarjontaRawService.searchHakus(TarjontaConstants.HAKUTAPA_YHTEISHAKUV1)).thenReturn(rawRes);
+        
+        ResultV1RDTO<HakuV1RDTO> curHakuResult = new ResultV1RDTO<HakuV1RDTO>();//this.tarjontaRawService.getV1EducationHakuByOid(curOid);
+        HakuV1RDTO curHaku = new HakuV1RDTO();
+        curHaku.setOid(CALENDAR_APPLICATION_SYSTEM_OID);
+        curHaku.setTila(TarjontaConstants.STATE_PUBLISHED);
+        curHaku.setHakutyyppiUri(TarjontaConstants.HAKUTYYPPI_VARSINAINEN);
+        curHaku.setHakutapaUri(TarjontaConstants.HAKUTAPA_YHTEISHAKU);
+        
+        curHakuResult.setResult(curHaku);
+        when(this.tarjontaRawService.getV1EducationHakuByOid(CALENDAR_APPLICATION_SYSTEM_OID)).thenReturn(curHakuResult);
+        
+        CalendarApplicationSystem calendarAs = new CalendarApplicationSystem();
+        calendarAs.setId(CALENDAR_APPLICATION_SYSTEM_OID);
+        
+        try {
+            when(this.creator.createApplicationSystemForCalendar(curHaku)).thenReturn(calendarAs);
+        } catch (KoodistoException ex) {
+            ex.printStackTrace();
+        }
+        
+    }
 
 	@Test
     public void testVocationalResolveBuilder() throws TarjontaParseException, KoodistoException {
@@ -187,5 +223,20 @@ public class TarjontaServiceImplTest {
     	HigherEducationLOS nonPublished = service.findHigherEducationLearningOpportunity("2.2.3.4");
     	assertEquals(nonPublished.getId(), "2.2.3.4");
     }
+    
+    @Test
+    public void testFindApplicationSystemsForCalendar() throws KoodistoException {
+        List<CalendarApplicationSystem> results = service.findApplicationSystemsForCalendar();
+        CalendarApplicationSystem calAS = results.get(0);
+        assertEquals(CALENDAR_APPLICATION_SYSTEM_OID, calAS.getId());
+    }
+    
+    @Test
+    public void testCreateCalendarApplicationSystem() throws KoodistoException {
+        CalendarApplicationSystem calAS = this.service.createCalendarApplicationSystem(CALENDAR_APPLICATION_SYSTEM_OID);
+        assertEquals(CALENDAR_APPLICATION_SYSTEM_OID, calAS.getId());
+    }
+    
+    
     
 }
