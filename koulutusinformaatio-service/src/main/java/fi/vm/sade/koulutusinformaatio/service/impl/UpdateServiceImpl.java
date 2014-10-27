@@ -213,6 +213,13 @@ public class UpdateServiceImpl implements UpdateService {
 
     }
 
+    /*
+     * 
+     * Handles the indexing of providers from organisaatio service to solr and MongoDB.
+     * This method is used when indexing organizations (Oppilaitos, Toimipiste) which 
+     * are not providers of learning opportunities.
+     * 
+     */
     private void indexProviders(HttpSolrServer lopUpdateSolr, HttpSolrServer loUpdateSolr, HttpSolrServer locationUpdateSolr) throws MalformedURLException, ResourceNotFoundException, IOException, KoodistoException, SolrServerException {
         
         List<OrganisaatioPerustieto> orgBasics = this.providerService.fetchOpplaitokset();
@@ -226,6 +233,9 @@ public class UpdateServiceImpl implements UpdateService {
         LOG.debug("toimipisteet saved");
     }
 
+    /*
+     * Indexes and saves the given list of organizations. 
+     */
     private void createAndSaveProviders(List<OrganisaatioPerustieto> orgBasics,
             HttpSolrServer lopUpdateSolr) throws KoodistoException, MalformedURLException, ResourceNotFoundException, IOException, SolrServerException {
         for (OrganisaatioPerustieto curOrg : orgBasics) {

@@ -74,8 +74,28 @@ public interface IndexerService {
 
     void indexASToSolr(CalendarApplicationSystem curAs, HttpSolrServer loUpdateSolr) throws SolrServerException, IOException;
     
+    /**
+     * Tests whether a document with give id is in the solr given as parameter.
+     * 
+     * @param docId The document id to test
+     * @param server The solr to test
+     * @return true if document is in index, false otherwise.
+     */
     boolean isDocumentInIndex(String docId, HttpSolrServer server);
     
+    /**
+     * 
+     * Indexes the given provider to solr.
+     * 
+     * @param provider - the provider to index.
+     * @param lopSolr - the solr to index.
+     * @param requiredBaseEducations - Base educations to which are required to be a student in this provider.
+     * @param vocationalAsIds - the vocational application system ids relevant for this provider.
+     * @param nonVocationalAsIds - the non-vocational application system ids relevant for this provider.
+     * @param providerAsIds - application system ids relevant for this provider, irrelevant of type. 
+     * @throws SolrServerException
+     * @throws IOException
+     */
     void createProviderDocs(Provider provider, 
             HttpSolrServer lopSolr, 
             Set<String> requiredBaseEducations, 

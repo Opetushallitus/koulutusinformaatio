@@ -414,6 +414,24 @@ public final class SolrUtil {
         public static final String TYPE_FI = "type_fi";
         public static final String TYPE_SV = "type_sv";
         public static final String TYPE_EN = "type_en";
+        public static final String ID = "id";
+        public static final String TYPE = "type"; 
+        public static final String NAME_FI = "name_fi";
+        public static final String NAME_SV = "name_sv";
+        public static final String NAME_EN = "name_en";
+        public static final String TEXT_FI = "text_fi";
+        public static final String TEXT_SV = "text_sv";
+        public static final String TEXT_EN = "text_en";
+        public static final String REQUIRED_BASE_EDUCATIONS = "requiredBaseEducations";
+        public static final String AS_IDS = "asIds";
+        public static final String VOCATIONAL_AS_IDS = "vocationalAsIds";
+        public static final String NON_VOCATIONAL_AS_IDS = "nonVocationalAsIds";
+        public static final String OL_TYPE = "oltype_ffm";
+        public static final String ADDRESS_EN = "address_en_str_display";
+        public static final String ADDRESS_SV = "address_sv_str_display";
+        public static final String ADDRESS_FI = "address_fi_str_display";
+        
+        
     }
 
     public static class SolrConstants {

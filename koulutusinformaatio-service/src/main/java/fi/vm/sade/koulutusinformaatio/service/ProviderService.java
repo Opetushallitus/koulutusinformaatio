@@ -33,7 +33,25 @@ import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
 public interface ProviderService {
 
     public Provider getByOID(String oid) throws KoodistoException, MalformedURLException, IOException, ResourceNotFoundException;
+
+    /**
+     * Fetches list of Organizations of type Oppilaitos from organisaatio service.
+     * 
+     * @return A list of organizations.
+     * @throws MalformedURLException
+     * @throws IOException
+     * @throws ResourceNotFoundException
+     */
     public List<OrganisaatioPerustieto> fetchOpplaitokset() throws MalformedURLException, IOException, ResourceNotFoundException;
+    
+    /**
+     * Fetches list of Organizations of type Toimipiste from organisaatio service.
+     * 
+     * @return A list of organizations.
+     * @throws MalformedURLException
+     * @throws IOException
+     * @throws ResourceNotFoundException
+     */
     public List<OrganisaatioPerustieto> fetchToimipisteet() throws MalformedURLException, IOException, ResourceNotFoundException;
     void clearCache();
 }
