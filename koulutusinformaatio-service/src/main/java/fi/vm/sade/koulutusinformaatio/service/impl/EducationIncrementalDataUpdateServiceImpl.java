@@ -146,9 +146,11 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             
             try {
                 Provider existingProv = this.getProvider(specialLOS.getProvider().getId());
-                for (String curAsId : existingProv.getApplicationSystemIds()) {
-                    if (!specialLOS.getProvider().getApplicationSystemIds().contains(curAsId)) {
-                        specialLOS.getProvider().getApplicationSystemIds().add(curAsId);
+                if (existingProv != null && existingProv.getApplicationSystemIds() != null) {
+                    for (String curAsId : existingProv.getApplicationSystemIds()) {
+                        if (!specialLOS.getProvider().getApplicationSystemIds().contains(curAsId)) {
+                            specialLOS.getProvider().getApplicationSystemIds().add(curAsId);
+                        }
                     }
                 }
             } catch (ResourceNotFoundException ex) {
@@ -174,10 +176,12 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             
             try {
                 Provider existingProv = this.getProvider(upperSecondaryLOS.getProvider().getId());
+                if (existingProv != null && existingProv.getApplicationSystemIds() != null) {
                 for (String curAsId : existingProv.getApplicationSystemIds()) {
                     if (!upperSecondaryLOS.getProvider().getApplicationSystemIds().contains(curAsId)) {
                         upperSecondaryLOS.getProvider().getApplicationSystemIds().add(curAsId);
                     }
+                }
                 }
             } catch (ResourceNotFoundException ex) {
                 LOG.debug("No existing provider");
@@ -202,10 +206,12 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             
             try {
                 Provider existingProv = this.getProvider(parentLOS.getProvider().getId());
+                if (existingProv != null && existingProv.getApplicationSystemIds() != null) {
                 for (String curAsId : existingProv.getApplicationSystemIds()) {
                     if (!parentLOS.getProvider().getApplicationSystemIds().contains(curAsId)) {
                         parentLOS.getProvider().getApplicationSystemIds().add(curAsId);
                     }
+                }
                 }
             } catch (ResourceNotFoundException ex) {
                 LOG.debug("No existing provider");
@@ -274,10 +280,12 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             
             try {
                 Provider existingProv = this.getProvider(los.getProvider().getId());
+                if (existingProv != null && existingProv.getApplicationSystemIds() != null) {
                 for (String curAsId : existingProv.getApplicationSystemIds()) {
                     if (!los.getProvider().getApplicationSystemIds().contains(curAsId)) {
                         los.getProvider().getApplicationSystemIds().add(curAsId);
                     }
+                }
                 }
             } catch (ResourceNotFoundException ex) {
                 LOG.debug("No existing provider");
@@ -365,10 +373,12 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             
             try {
                 Provider existingProv = this.getProvider(los.getProvider().getId());
+                if (existingProv != null && existingProv.getApplicationSystemIds() != null) {
                 for (String curAsId : existingProv.getApplicationSystemIds()) {
                     if (!los.getProvider().getApplicationSystemIds().contains(curAsId)) {
                         los.getProvider().getApplicationSystemIds().add(curAsId);
                     }
+                }
                 }
             } catch (ResourceNotFoundException ex) {
                 LOG.warn("Problem updating provider's application system references");
@@ -421,10 +431,12 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             
             try {
                 Provider existingProv = this.getProvider(los.getProvider().getId());
+                if (existingProv != null && existingProv.getApplicationSystemIds() != null) {
                 for (String curAsId : existingProv.getApplicationSystemIds()) {
                     if (!los.getProvider().getApplicationSystemIds().contains(curAsId)) {
                         los.getProvider().getApplicationSystemIds().add(curAsId);
                     }
+                }
                 }
             } catch (ResourceNotFoundException ex) {
                 LOG.warn("Problem updating provider's application system references");
@@ -468,10 +480,12 @@ public class EducationIncrementalDataUpdateServiceImpl implements
             
             try {
                 Provider existingProv = this.getProvider(los.getProvider().getId());
+                if (existingProv != null && existingProv.getApplicationSystemIds() != null) {
                 for (String curAsId : existingProv.getApplicationSystemIds()) {
                     if (!los.getProvider().getApplicationSystemIds().contains(curAsId)) {
                         los.getProvider().getApplicationSystemIds().add(curAsId);
                     }
+                }
                 }
             } catch (ResourceNotFoundException ex) {
                 LOG.warn("Problem updating provider's application system references");
