@@ -81,6 +81,7 @@ public class ApplicationOption {
     private String type;
     private String educationTypeUri;
     private List<OrganizationGroup> organizationGroups;
+    private I18nText startingQuotaDescription;
 
 
     public String getId() {
@@ -435,5 +436,13 @@ public class ApplicationOption {
 
     public List<OrganizationGroup> getOrganizationGroups() {
         return organizationGroups;
+    }
+
+    public void setStartingQuotaDescription(I18nText aloituspaikkaKuvaus) {
+        this.startingQuotaDescription = aloituspaikkaKuvaus;  
+    }
+
+    public I18nText getStartingQuotaDescription() {
+        return startingQuotaDescription;
     }
 }

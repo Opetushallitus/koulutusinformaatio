@@ -44,6 +44,11 @@ public final class ApplicationOptionToDTO {
             dto.setLastYearApplicantCount(applicationOption.getLastYearApplicantCount());
             dto.setLowestAcceptedAverage(applicationOption.getLowestAcceptedAverage());
             dto.setLowestAcceptedScore(applicationOption.getLowestAcceptedScore());
+            if (applicationOption.getStartingQuotaDescription() != null 
+                    && applicationOption.getStartingQuotaDescription().getTranslations() != null 
+                    && !applicationOption.getStartingQuotaDescription().getTranslations().isEmpty()) {
+                dto.setStartingQuotaDescription(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getStartingQuotaDescription(), defaultLang));
+            }
             dto.setStartingQuota(applicationOption.getStartingQuota());
             dto.setSora(applicationOption.isSora());
             dto.setEducationDegree(applicationOption.getEducationDegree());

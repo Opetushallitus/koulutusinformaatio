@@ -16,8 +16,6 @@
 
 package fi.vm.sade.koulutusinformaatio.dao.entity;
 
-import fi.vm.sade.koulutusinformaatio.domain.OrganizationGroup;
-
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
@@ -48,6 +46,8 @@ public class ApplicationOptionEntity {
     @Embedded
     private List<HigherEducationLOSRefEntity> higherEdLOSRefs = new ArrayList<HigherEducationLOSRefEntity>();
     private Integer startingQuota;
+    @Embedded
+    private I18nTextEntity startingQuotaDescription;
     private Integer lowestAcceptedScore;
     private Double lowestAcceptedAverage;
     private Date attachmentDeliveryDeadline;
@@ -406,4 +406,13 @@ public class ApplicationOptionEntity {
     public void setOrganizationGroups(List<OrganizationGroupEntity> organizationGroups) {
         this.organizationGroups = organizationGroups;
     }
+
+    public I18nTextEntity getStartingQuotaDescription() {
+        return startingQuotaDescription;
+    }
+
+    public void setStartingQuotaDescription(I18nTextEntity startingQuotaDescription) {
+        this.startingQuotaDescription = startingQuotaDescription;
+    }
+
 }
