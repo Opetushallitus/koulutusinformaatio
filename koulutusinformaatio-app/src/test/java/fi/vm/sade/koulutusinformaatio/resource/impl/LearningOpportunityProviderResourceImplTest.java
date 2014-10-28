@@ -17,6 +17,7 @@ package fi.vm.sade.koulutusinformaatio.resource.impl;
 
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
+import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResultDTO;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
@@ -84,8 +85,22 @@ public class LearningOpportunityProviderResourceImplTest {
         
         when(learningOpportunityService.getPicture("prov1")).thenReturn(pict);
         
+        LearningOpportunityProviderDTO dto = new LearningOpportunityProviderDTO(); 
+        dto.setId("prov111");
+        
+        when(learningOpportunityService.getProvider("prov111", "fi")).thenReturn(dto);
+        
         providerResource = new LearningOpportunityProviderResourceImpl(searchService, null, learningOpportunityService);
         
+    }
+    
+    /**
+     * Tests the fetching of provider.
+     */
+    @Test
+    public void testGetProvider() {
+        LearningOpportunityProviderDTO dto = this.providerResource.getProvider("prov111", "fi");
+        assertTrue(dto.getId().equals("prov111"));
     }
     
     @Test

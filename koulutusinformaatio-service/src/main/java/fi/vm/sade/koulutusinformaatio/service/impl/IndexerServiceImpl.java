@@ -224,26 +224,26 @@ public class IndexerServiceImpl implements IndexerService {
         List<SolrInputDocument> providerDocs = Lists.newArrayList();
         if (provider != null) {
             SolrInputDocument providerDoc = new SolrInputDocument();
-            providerDoc.addField("id", provider.getId());
-            providerDoc.addField("type", SolrUtil.TYPE_ORGANISATION);
+            providerDoc.addField(SolrUtil.ProviderFields.ID, provider.getId());
+            providerDoc.addField(SolrUtil.ProviderFields.TYPE, SolrUtil.TYPE_ORGANISATION);
 
             String nameFi = resolveTextByLangWithFallback("fi", provider.getName().getTranslations());
             if (nameFi != null && !nameFi.isEmpty()) {
-                providerDoc.addField("name_fi", nameFi);
-                providerDoc.addField("startsWith_fi", nameFi.substring(0, 1).toUpperCase());
-                providerDoc.addField("text_fi", nameFi);
+                providerDoc.addField(SolrUtil.ProviderFields.NAME_FI, nameFi);
+                providerDoc.addField(SolrUtil.ProviderFields.STARTS_WITH_FI, nameFi.substring(0, 1).toUpperCase());
+                providerDoc.addField(SolrUtil.ProviderFields.TEXT_FI, nameFi);
             }
             String nameSv = resolveTextByLangWithFallback("sv", provider.getName().getTranslations());
             if (nameSv != null && !nameSv.isEmpty()) {
-                providerDoc.addField("name_sv", nameSv);
-                providerDoc.addField("startsWith_sv", nameSv.substring(0, 1).toUpperCase());
-                providerDoc.addField("text_sv", nameSv);
+                providerDoc.addField(SolrUtil.ProviderFields.NAME_SV, nameSv);
+                providerDoc.addField(SolrUtil.ProviderFields.STARTS_WITH_SV, nameSv.substring(0, 1).toUpperCase());
+                providerDoc.addField(SolrUtil.ProviderFields.TEXT_SV, nameSv);
             }
             String nameEn = resolveTextByLangWithFallback("en", provider.getName().getTranslations());
             if (nameEn != null && !nameEn.isEmpty()) {
-                providerDoc.addField("name_en", nameEn);
-                providerDoc.addField("startsWith_en", nameEn.substring(0, 1).toUpperCase());
-                providerDoc.addField("text_en", nameEn);
+                providerDoc.addField(SolrUtil.ProviderFields.NAME_EN, nameEn);
+                providerDoc.addField(SolrUtil.ProviderFields.STARTS_WITH_EN, nameEn.substring(0, 1).toUpperCase());
+                providerDoc.addField(SolrUtil.ProviderFields.TEXT_EN, nameEn);
             }
             if (provider.getType() != null) {
                 providerDoc.setField(SolrUtil.ProviderFields.TYPE_VALUE, provider.getType().getValue());
@@ -260,19 +260,19 @@ public class IndexerServiceImpl implements IndexerService {
             QueryResponse response = lopSolr.query(query);//lopUpdateHttpSolrServer.query(query);
             List<SolrDocument> results = response.getResults();
             if (results != null && results.size() > 0) {
-                List<String> edus = (List<String>) results.get(0).get("requiredBaseEducations");
+                List<String> edus = (List<String>) results.get(0).get(SolrUtil.ProviderFields.REQUIRED_BASE_EDUCATIONS);
                 if (edus != null) {
                     requiredBaseEducations.addAll(edus);
                 }
-                List<String> asids = (List<String>) results.get(0).get("asIds");
+                List<String> asids = (List<String>) results.get(0).get(SolrUtil.ProviderFields.AS_IDS);
                 if (asids != null) {
                     providerAsIds.addAll(asids);
                 }
-                List<String> vocational = (List<String>) results.get(0).get("vocationalAsIds");
+                List<String> vocational = (List<String>) results.get(0).get(SolrUtil.ProviderFields.VOCATIONAL_AS_IDS);
                 if (vocational != null) {
                     vocationalAsIds.addAll(vocational);
                 }
-                List<String> nonVocational = (List<String>) results.get(0).get("nonVocationalAsIds");
+                List<String> nonVocational = (List<String>) results.get(0).get(SolrUtil.ProviderFields.NON_VOCATIONAL_AS_IDS);
                 if (nonVocational != null) {
                     nonVocationalAsIds.addAll(nonVocational);
                 }
@@ -281,7 +281,7 @@ public class IndexerServiceImpl implements IndexerService {
             if (provider.getOlTypes() != null) {
                 for (Code curOlType : provider.getOlTypes()) {
                     if (curOlType != null && curOlType.getUri() != null) {
-                        providerDoc.addField("oltype_ffm", curOlType.getUri());
+                        providerDoc.addField(SolrUtil.ProviderFields.OL_TYPE, curOlType.getUri());
                     }
                 }
             }
@@ -291,20 +291,20 @@ public class IndexerServiceImpl implements IndexerService {
                 Address visitingAddr = provider.getVisitingAddress();
                 String addrEn = this.getAddrStr(visitingAddr, "en");
                 if (addrEn != null && !addrEn.isEmpty()) {
-                    providerDoc.addField("address_en_str_display", addrEn);
-                    providerDoc.addField("text_en", addrEn);
+                    providerDoc.addField(SolrUtil.ProviderFields.ADDRESS_EN, addrEn);
+                    providerDoc.addField(SolrUtil.ProviderFields.TEXT_EN, addrEn);
                 }
                
                 String addrSv = this.getAddrStr(visitingAddr, "sv");
                 if (addrSv != null && !addrSv.isEmpty()) {
-                    providerDoc.addField("address_sv_str_display", addrSv);
-                    providerDoc.addField("text_sv", addrSv);
+                    providerDoc.addField(SolrUtil.ProviderFields.ADDRESS_SV, addrSv);
+                    providerDoc.addField(SolrUtil.ProviderFields.TEXT_SV, addrSv);
                 }
                 
                 String addrFi = this.getAddrStr(visitingAddr, "fi");
                 if (addrFi != null && !addrFi.isEmpty()) {
-                    providerDoc.addField("address_fi_str_display", addrFi);
-                    providerDoc.addField("text_fi", addrFi);
+                    providerDoc.addField(SolrUtil.ProviderFields.ADDRESS_FI, addrFi);
+                    providerDoc.addField(SolrUtil.ProviderFields.TEXT_FI, addrFi);
                 }
                 
                 
@@ -319,10 +319,10 @@ public class IndexerServiceImpl implements IndexerService {
                 providerDoc.addField(LearningOpportunity.LOP_HOMEPLACE, provider.getHomePlace().getTranslations().values());
             }
 
-            providerDoc.setField("asIds", providerAsIds);
-            providerDoc.setField("requiredBaseEducations", requiredBaseEducations);
-            providerDoc.setField("vocationalAsIds", vocationalAsIds);
-            providerDoc.setField("nonVocationalAsIds", nonVocationalAsIds);
+            providerDoc.setField(SolrUtil.ProviderFields.AS_IDS, providerAsIds);
+            providerDoc.setField(SolrUtil.ProviderFields.REQUIRED_BASE_EDUCATIONS, requiredBaseEducations);
+            providerDoc.setField(SolrUtil.ProviderFields.VOCATIONAL_AS_IDS, vocationalAsIds);
+            providerDoc.setField(SolrUtil.ProviderFields.NON_VOCATIONAL_AS_IDS, nonVocationalAsIds);
             providerDocs.add(providerDoc);
             
             if (provider.getOlTypes() != null) {

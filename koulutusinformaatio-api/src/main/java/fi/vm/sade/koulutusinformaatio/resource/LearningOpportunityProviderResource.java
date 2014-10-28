@@ -80,6 +80,14 @@ public interface LearningOpportunityProviderResource {
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public PictureDTO getProviderThumbnail(@PathParam("lopId") final String lopId);
     
+    /**
+     * Returns the Learning opportunity provider (organization) with the given id (lopId).
+     * The information is given with the language specified as parameter.
+     * 
+     * @param lopId The id of the organization.
+     * @param lang The language with which the information is given.
+     * @return The organization with the given id.
+     */
     @GET
     @Path("{lopId}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")

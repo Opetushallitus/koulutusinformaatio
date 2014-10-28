@@ -1,7 +1,7 @@
 {
 	"search-tab-lo-tooltip": "Under denna flik listas utbildningar och examina. Skriv in ditt sökord i sökfältet, välj sedan \"Sök\", och du får en lista med sökresultat som passar ditt sökord. Du kan fortsätta till närmare beskrivningar av utbildningarna genom att klicka på länkarna i sökresultatslistan.",
     "search-tab-article-tooltip": "Under denna flik hittar du  information och artiklar angående ansökan och studier.",
-    "search-tab-organisation-tooltip": "(sv)",
+    "search-tab-organisation-tooltip": "",
     "to-frontpage": "Gå Till framsida",
     "search": "Sök",
     "remove-search-result-facet": "Radera den valda avgränsningen",
