@@ -82,6 +82,7 @@ public class ApplicationOption {
     private String type;
     private String educationTypeUri;
     private List<OrganizationGroup> organizationGroups;
+    private I18nText startingQuotaDescription;
 
 
     public String getId() {
@@ -444,5 +445,13 @@ public class ApplicationOption {
 
     public void setApplicationPeriodName(I18nText applicationPeriodName) {
         this.applicationPeriodName = applicationPeriodName;
+    }
+
+    public void setStartingQuotaDescription(I18nText aloituspaikkaKuvaus) {
+        this.startingQuotaDescription = aloituspaikkaKuvaus;  
+    }
+
+    public I18nText getStartingQuotaDescription() {
+        return startingQuotaDescription;
     }
 }
