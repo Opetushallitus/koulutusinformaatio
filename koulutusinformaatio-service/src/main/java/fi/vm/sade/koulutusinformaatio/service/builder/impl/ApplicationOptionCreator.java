@@ -322,6 +322,7 @@ public class ApplicationOptionCreator extends ObjectCreator {
         }
         ao.setAthleteEducation(false);
         ao.setStartingQuota(hakukohde.getAloituspaikatLkm());
+        ao.setStartingQuotaDescription(getI18nText(hakukohde.getAloituspaikatKuvaukset()));
         ao.setLowestAcceptedScore(hakukohde.getAlinValintaPistemaara());
         ao.setLowestAcceptedAverage(hakukohde.getAlinHyvaksyttavaKeskiarvo());
         ao.setAttachmentDeliveryDeadline(hakukohde.getLiitteidenToimitusPvm());

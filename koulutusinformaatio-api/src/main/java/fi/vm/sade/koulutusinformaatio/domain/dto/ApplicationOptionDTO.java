@@ -32,6 +32,7 @@ public class ApplicationOptionDTO {
     private String name;
     private String aoIdentifier;
     private Integer startingQuota;
+    private String startingQuotaDescription;
     private Integer lowestAcceptedScore;
     private Double lowestAcceptedAverage;
     private Date attachmentDeliveryDeadline;
@@ -406,5 +407,13 @@ public class ApplicationOptionDTO {
 
     public void setApplicationPeriodName(String applicationPeriodName) {
         this.applicationPeriodName = applicationPeriodName;
+    }
+
+    public String getStartingQuotaDescription() {
+        return startingQuotaDescription;
+    }
+
+    public void setStartingQuotaDescription(String startingQuotaDescription) {
+        this.startingQuotaDescription = startingQuotaDescription;
     }
 }
