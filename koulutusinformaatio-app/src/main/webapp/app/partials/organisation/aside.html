@@ -1,5 +1,5 @@
 <div class="panel panel-lift">
     <div class="panel-body">
-        <a data-ng-href="#!/haku/*?page=1&lopFilter={{provider.name}}&itemsPerPage=25&sortCriteria=0&tab=los"><span data-ki-i18n="search-all-los" data-show-colon="true"></span> {{provider.name}}</a>
+        <a data-ng-href="#!/haku/*?page=1&lopFilter={{provider.name | encodeURIComponent}}&itemsPerPage=25&sortCriteria=0&tab=los"><span data-ki-i18n="search-all-los" data-show-colon="true"></span> {{provider.name}}</a>
     </div>
 </div>
