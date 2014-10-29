@@ -294,7 +294,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
                 doc.addField(LearningOpportunity.LOP_NAME_EN, SolrUtil.resolveTextWithFallback(teachingLang, transls));
             }
             if (curProv.getHomePlace() != null) {
-                transls = los.getProvider().getHomePlace().getTranslations();
+                transls = curProv.getHomePlace().getTranslations();
                 homeplaceDisplayFi = homeplaceDisplayFi != null ? String.format("%s, %s", homeplaceDisplayFi, SolrUtil.resolveTextWithFallback("fi",  transls)) : SolrUtil.resolveTextWithFallback("fi",  transls); 
                 homeplaceDisplaySv = homeplaceDisplaySv != null ? String.format("%s, %s", homeplaceDisplaySv, SolrUtil.resolveTextWithFallback("sv",  transls)) : SolrUtil.resolveTextWithFallback("sv",  transls); 
                 homeplaceDisplayEn = homeplaceDisplayEn != null ? String.format("%s, %s", homeplaceDisplayEn, SolrUtil.resolveTextWithFallback("en",  transls)) : SolrUtil.resolveTextWithFallback("en",  transls); 
