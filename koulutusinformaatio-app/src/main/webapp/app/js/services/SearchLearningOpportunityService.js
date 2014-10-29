@@ -9,9 +9,10 @@ angular.module('kiApp.SearchLearningOpportunityService', ['ngResource'])
         '$rootScope',
         '$location',
         '$route',
+        '$filter',
         'FilterService',
         'LearningOpportunitySearchResultTransformer',
-        function($http, $timeout, $q, $analytics, $rootScope, $location, $route, FilterService, LearningOpportunitySearchResultTransformer) {
+        function($http, $timeout, $q, $analytics, $rootScope, $location, $route, $filter, FilterService, LearningOpportunitySearchResultTransformer) {
     
     // gather information for analytics
     var parseFilterValues = function(params) {
@@ -109,10 +110,10 @@ angular.module('kiApp.SearchLearningOpportunityService', ['ngResource'])
             qParams += (params.upcoming != undefined) ? ('&upcoming=' + params.upcoming) : '';
             qParams += (params.upcomingLater != undefined) ? ('&upcomingLater=' + params.upcomingLater) : '';
             qParams += (params.lang != undefined) ? ('&lang=' + params.lang) : '';
-            qParams += (params.lopFilter != undefined) ? ('&lopFilter=' + params.lopFilter) : '';
+            qParams += (params.lopFilter != undefined) ? ('&lopFilter=' + $filter('encodeURIComponent')(params.lopFilter)) : '';
             qParams += (params.educationCodeFilter != undefined) ? ('&educationCodeFilter=' + params.educationCodeFilter) : '';
             qParams += (params.searchType != undefined) ? ('&searchType=' + params.searchType) : '&searchType=LO';
-            qParams += (params.queryString != undefined) ? ('&text=' + params.queryString) : '&text= ';
+            qParams += (params.queryString != undefined) ? ('&text=' + $filter('encodeURIComponent')(params.queryString)) : '&text= ';
             
             if (params.facetFilters != undefined) {
                 angular.forEach(params.facetFilters, function(facetFilter, key) {
