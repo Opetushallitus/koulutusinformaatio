@@ -89,7 +89,7 @@ public class FacetValueDTO {
         return parentId;
     }
 
-    public void setParent(String parentId) {
+    public void setParentId(String parentId) {
         this.parentId = parentId;
     }
 }
