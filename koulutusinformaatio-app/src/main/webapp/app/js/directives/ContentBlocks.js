@@ -409,33 +409,6 @@ directive('kiSocialLinks', function() {
 }).
 
 /**
- *  Renders higher education major selection block
- */
-directive('kiMajorSelection', ['CollapseBlockService', function(CollapseBlockService) {
-    return {
-        restrict: 'A',
-        require: '^kiCollapseBlock',
-        templateUrl: 'templates/majorSelection.html',
-        controller: function($rootScope, $scope) {
-            $rootScope.$watch('translationLanguage', function(value) {
-                $scope.translationLanguage = value;
-            });
-            
-            $scope.$watch('content', function(value) {
-                if (value) {
-                   $scope.textContent = value[0];
-                   $scope.children = value[1];
-                   var showMajorSelection = value && value[0] ? true : false;
-                   CollapseBlockService.setBlock($scope.blockId, showMajorSelection);      
-                } else {
-                    CollapseBlockService.setBlock($scope.blockId, false); 
-                }
-            });
-        }
-    };
-}]).
-
-/**
  *  Renders study plan block
  */
 directive('kiStudyPlan', ['CollapseBlockService', function(CollapseBlockService) {
