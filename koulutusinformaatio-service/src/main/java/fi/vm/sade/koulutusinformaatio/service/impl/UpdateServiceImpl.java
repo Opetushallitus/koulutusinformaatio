@@ -112,7 +112,7 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
             List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
             count = loOids.size();
-            index += count; 
+            index += count;
                             
                 for (String loOid : loOids) {
                     List<LOS> specifications = null;
@@ -129,15 +129,28 @@ public class UpdateServiceImpl implements UpdateService {
                     }
                 }
             }
+           
+            providerService.clearCache();
             
-            List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
-            LOG.debug("Found higher educations: " + higherEducations.size());
+            List<String> higherEdOids = this.tarjontaService.getHigherEdOids();
+            int counter = 1;
+            for (String curOid : higherEdOids) {
+                try { 
+                    HigherEducationLOS curLOS = this.tarjontaService.createHigherEducationLearningOpportunityTree(curOid);
+                    if (curLOS != null) {
+                        LOG.debug("Now saving higher ed los: " + curLOS.getId());
+                        LOG.debug("los count: " + counter);
+                        indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+                        this.educationDataUpdateService.save(curLOS);
+                    }
+                    
+                } catch (TarjontaParseException ex) {
+                    LOG.debug(ex.getMessage());
+                }
+                ++counter;
 
-            for (HigherEducationLOS curLOS : higherEducations) {
-                LOG.debug("Saving highed education: " + curLOS.getId());
-                indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
-                this.educationDataUpdateService.save(curLOS);
             }
+            providerService.clearCache();
             LOG.debug("Higher educations saved.");
 
             
@@ -162,6 +175,7 @@ public class UpdateServiceImpl implements UpdateService {
             
             this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);  
             LOG.debug("Starting provider indexing");
+            providerService.clearCache();
             indexProviders(lopUpdateSolr, loUpdateSolr, locationUpdateSolr);
             LOG.debug("Providers indexed");
             
