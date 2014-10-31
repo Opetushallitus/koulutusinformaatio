@@ -9,7 +9,7 @@
     </div>
     <div data-ng-if="lo.multipleProviders" class="ribbon">
         <ul class="ribbon-content list-unstyled" data-ng-repeat="additionalProvider in lo.additionalProviders" >
-        	<li><a href="javascript:void(0)" data-ng-click="scrollToAnchor('{{additionalProvider.id}}')">{{additionalProvider.name}}</a></li>
+        	<li><a href="javascript:void(0)" data-ng-click="scrollToAnchor('{{additionalProvider.id}}')">{{additionalProvider.name}}</a><span data-ng-show="!$last">|</span></li>
         </ul>
     </div>
     <figure data-ki-organization-image data-providerimage="provider.providerImage"></figure>
