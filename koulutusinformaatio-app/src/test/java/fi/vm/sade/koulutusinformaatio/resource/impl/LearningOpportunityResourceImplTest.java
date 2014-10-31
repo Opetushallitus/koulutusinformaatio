@@ -8,6 +8,7 @@ import fi.vm.sade.koulutusinformaatio.domain.SuggestedTermsResult;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LOSearchResultListDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SpecialLearningOpportunitySpecificationDTO;
@@ -82,6 +83,13 @@ public class LearningOpportunityResourceImplTest {
         
         HigherEducationLOSDTO higherLos = new HigherEducationLOSDTO();
         higherLos.setId("1.2.3.34");
+        LearningOpportunityProviderDTO mainProvider = new LearningOpportunityProviderDTO();
+        mainProvider.setId("mainProvider");
+        higherLos.setProvider(mainProvider);
+        LearningOpportunityProviderDTO aditionalProvider = new LearningOpportunityProviderDTO();
+        aditionalProvider.setId("additionalProvider");
+        higherLos.setAdditionalProviders(Arrays.asList(aditionalProvider));
+        
         
         when(learningOpportunityService.getHigherEducationLearningOpportunity(anyString())).thenReturn(higherLos);
         when(learningOpportunityService.previewHigherEdLearningOpportunity(anyString(), anyString(), anyString())).thenReturn(higherLos);
@@ -147,6 +155,16 @@ public class LearningOpportunityResourceImplTest {
     public void testGetHigherEducationLearningOpportunity() {
     	HigherEducationLOSDTO dto = resource.getHigherEducationLearningOpportunity("1.2.3.34", null, null);
     	assertEquals("1.2.3.34", dto.getId());
+    }
+    
+    /**
+     * Testing learning opportunity with multiple providers
+     */
+    @Test
+    public void testMultipleProviderLearningOpportunity() {
+        HigherEducationLOSDTO dto = resource.getHigherEducationLearningOpportunity("1.2.3.34", null, null);
+        assertEquals("mainProvider", dto.getProvider().getId());
+        assertEquals("additionalProvider", dto.getAdditionalProviders().get(0).getId());
     }
     
     @Test

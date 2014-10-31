@@ -74,6 +74,18 @@ public class EducationDataQueryServiceImplTest extends AbstractEducationServiceT
                 dataStatusDAO, pictureDAO, upperSecondaryLearningOpportunitySpecificationDAO,
                 specialLearningOpportunitySpecificationDAO, higherEdDAO, adultUpsecDAO, adultVocDAO, providerDAO);
     }
+    
+    /**
+     * Testing education with multiple providers.
+     * @throws ResourceNotFoundException
+     */
+    @Test
+    public void testMultipleProviders() throws ResourceNotFoundException {
+        HigherEducationLOS los = this.service.getHigherEducationLearningOpportunity("higherEdId");
+        assertEquals("mainProvider", los.getProvider().getId());
+        assertEquals(1, los.getAdditionalProviders().size());
+        assertEquals("additionalProvider", los.getAdditionalProviders().get(0).getId());
+    }
 
 	@Test
     public void testGetParentLearningOpportunity() throws ResourceNotFoundException {
