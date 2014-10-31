@@ -1,3 +1,4 @@
+// polyfills for older IE browsers (< 9)
 
 // String trim()
 if(typeof String.prototype.trim !== 'function') {
