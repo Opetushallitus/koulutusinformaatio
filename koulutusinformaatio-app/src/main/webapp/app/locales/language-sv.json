@@ -30,7 +30,7 @@
     "search-button": "Sök",
     "search-tab-lo": "Utbildningar",
     "search-tab-article": "Information och berättelser",
-    "search-tab-organisation": "Oppilaitoksia (sv)",
+    "search-tab-organisation": "Läroanstalter",
 
     "basic-information": "Basuppgifter",
     "degree-programmes": "Utbildningsprogram",
@@ -245,7 +245,7 @@
     "facet-opiskelumuoto": "Avgränsa enligt studieform",
     "facet-teemat": "Avgränsa enligt ämne",
     "facet-aineistotyyppi": "Avgränsa enligt materialtyp",
-    "facet-oppilaitostyyppi": "Rajaa oppilaitoksia (sv)",
+    "facet-oppilaitostyyppi": "Avgränsa enligt läroanstalt",
     "topic_ffm": "Ämne",
     "theme_ffm": "Tema",
     "formOfTeaching_ffm": "Undervisningssätt",
@@ -254,7 +254,7 @@
     "kindOfEducation_ffm": "Målgrupp",
     "teachingLangCode_ffm": "Undervisningsspråk",
     "articleContentType_ffm": "Materialtyp",
-    "oltype_ffm": "Oppilaitostyyppi (sv)",
+    "oltype_ffm": "Läroanstaltstyp",
     "location-rajaus": "Plats",
     "facet-remove": "Avlägsna",
     "facet-focus-filter": "Specificera avgränsningen",
@@ -343,7 +343,6 @@
      "hide-filter-selector-true": "Visa avgränsningarna",
      "hide-filter-selector-false": "Dölj avgränsningarna",
 
-     "search-all-los": "Hae kaikki koulutukset (sv)",
-     
+     "search-all-los": "Sök alla utbildningar",
      "qualifications": "Tutkintonimikkeet (sv)"
 }
