@@ -2,7 +2,7 @@
     <div class="row row-xs-height">
         <div class="col-xs-12 col-xs-height">
             <h2 title="{{locales.openEducation}}">
-                <a href="{{lo.linkHref}}">{{lo.lopName}}, {{lo.name}}<span data-ng-show="lo.credits != null">, {{lo.credits}}</span>
+                <a href="{{lo.linkHref}}">{{lo.lopNames[0]}}, {{lo.name}}<span data-ng-show="lo.credits != null">, {{lo.credits}}</span>
                 </a>
             </h2>
             <div data-ng-repeat="lopName in lo.lopNames">
