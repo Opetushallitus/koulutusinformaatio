@@ -17,6 +17,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -113,7 +114,7 @@ public class UpdateServiceImpl implements UpdateService {
             List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
             count = loOids.size();
             index += count;
-              
+
                 for (String loOid : loOids) {
                     List<LOS> specifications = null;
                     try {
@@ -129,30 +130,16 @@ public class UpdateServiceImpl implements UpdateService {
                     }
                 }
             }
-           
-            providerService.clearCache();
-            
-            List<String> higherEdOids = this.tarjontaService.getHigherEdOids();
-            int counter = 1;
-            for (String curOid : higherEdOids) {
-                try { 
-                    HigherEducationLOS curLOS = this.tarjontaService.createHigherEducationLearningOpportunityTree(curOid);
-                    if (curLOS != null) {
-                        LOG.debug("Now saving higher ed los: " + curLOS.getId());
-                        LOG.debug("los count: " + counter);
-                        indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
-                        this.educationDataUpdateService.save(curLOS);
-                    }
-                    
-                } catch (TarjontaParseException ex) {
-                    LOG.debug(ex.getMessage());
-                }
-                ++counter;
 
+            List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
+            LOG.debug("Found higher educations: " + higherEducations.size());
+
+            for (HigherEducationLOS curLOS : higherEducations) {
+                LOG.debug("Saving highed education: " + curLOS.getId());
+                indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+                this.educationDataUpdateService.save(curLOS);
             }
-            providerService.clearCache();
             LOG.debug("Higher educations saved.");
-
             
             List<AdultUpperSecondaryLOS> adultUpperSecondaries = this.tarjontaService.findAdultUpperSecondaries();
             LOG.debug("Found adult upper secondary educations: " + adultUpperSecondaries.size());
@@ -175,7 +162,6 @@ public class UpdateServiceImpl implements UpdateService {
             
             this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);  
             LOG.debug("Starting provider indexing");
-            providerService.clearCache();
             indexProviders(lopUpdateSolr, loUpdateSolr, locationUpdateSolr);
             LOG.debug("Providers indexed");
             

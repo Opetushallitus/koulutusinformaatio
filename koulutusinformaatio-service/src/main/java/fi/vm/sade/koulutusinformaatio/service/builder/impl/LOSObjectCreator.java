@@ -778,6 +778,30 @@ public class LOSObjectCreator extends ObjectCreator {
 
         return qualifications;
     }
+    
+    //tutkintonimike
+    private List<I18nText> getQualificationsForAikuAmm(NayttotutkintoV1RDTO koulutus) throws KoodistoException {
+
+        List<I18nText> qualifications = new ArrayList<I18nText>();
+
+        String osaamisalalUri = koulutus.getKoulutusohjelma().getUri();//getKandidaatinKoulutuskoodi();
+
+        List<Code> quals = new ArrayList<Code>();
+
+        if (osaamisalalUri != null) {
+
+            quals = this.koodistoService.searchSubCodes(osaamisalalUri, TarjontaConstants.TUTKINTONIMIKEET_KOODISTO_URI);
+        }
+        
+        if (quals != null && !quals.isEmpty()) {
+            for (Code curQual : quals) {
+                qualifications.add(curQual.getName());
+            }
+        } else {
+            qualifications.add(getI18nTextEnriched(koulutus.getTutkintonimike().getMeta()));
+        }
+        return qualifications;
+    }
 
 
 
@@ -1125,6 +1149,7 @@ public class LOSObjectCreator extends ObjectCreator {
 
         los.setEducationDomain(getI18nTextEnriched(koulutus.getKoulutusala().getMeta()));
         los.setName(getI18nTextEnriched(koulutus.getKoulutusohjelma().getMeta()));
+        //los.getQualifications()
         LOG.debug("Koulutusohjelma for " + koulutus.getOid() + ": " + koulutus.getKoulutusohjelma());
         los.setShortTitle(getI18nTextEnriched(koulutus.getKoulutusohjelma().getMeta()));
         LOG.debug("Short title: " + los.getShortTitle());
@@ -1134,7 +1159,9 @@ public class LOSObjectCreator extends ObjectCreator {
         //los.setEducationType(getEducationType(koulutus.getKoulutusaste().getUri()));
         los.setEducationDegreeLang(getI18nTextEnriched(koulutus.getKoulutusaste().getMeta()));
         los.setDegreeTitle(getI18nTextEnriched(koulutus.getKoulutusohjelma()));
-        los.setQualifications(Arrays.asList(getI18nTextEnriched(koulutus.getTutkintonimike().getMeta())));
+        los.setQualifications(getQualificationsForAikuAmm(koulutus));//Arrays.asList(getI18nTextEnriched(koulutus.getTutkintonimike().getMeta())));
+        
+        
         los.setDegree(getI18nTextEnriched(koulutus.getTutkinto().getMeta()));
 
         if (koulutus.getKoulutuksenAlkamisPvms() != null && !koulutus.getKoulutuksenAlkamisPvms().isEmpty()) {
