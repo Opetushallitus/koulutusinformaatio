@@ -55,9 +55,5 @@ public class ApplicationSystemResourceImpl implements ApplicationSystemResource 
             } catch (SearchException e) {
                 throw KIExceptionHandler.resolveException(e);
             }
-        
-        
-       
     }
-
 }
