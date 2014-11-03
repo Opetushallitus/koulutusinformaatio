@@ -343,5 +343,7 @@
      "hide-filter-selector-true": "Visa avgränsningarna",
      "hide-filter-selector-false": "Dölj avgränsningarna",
 
-     "search-all-los": "Hae kaikki koulutukset (sv)"
+     "search-all-los": "Hae kaikki koulutukset (sv)",
+     
+     "qualifications": "Tutkintonimikkeet (sv)"
 }
