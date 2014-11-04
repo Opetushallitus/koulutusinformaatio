@@ -19,8 +19,10 @@ var ApplicationSystemCalendar = (function() {
 
     calendar = function(options) {
 
+        // throw error if jQuery is not loaded
         if (!window.jQuery) throw "jQuery required";
 
+        // default options for calendar
         var defaultOptions = {
             lang: 'fi',
             selector: '[data-application-system-calendar]',
@@ -31,14 +33,19 @@ var ApplicationSystemCalendar = (function() {
             calendarResource: '/as/fetchForCalendar'
         };
 
+        // override default options with param opts
         $.extend(true, o, defaultOptions, options);
 
+        // intitalize language
         ki.i18n.init(o.lang);
+
+        // create container for calendar
         calendar = $(o.selector)
                     .append('<div class="application-system-calendar-container"></div>')
                     .find('.application-system-calendar-container');
         panel = $('<div class="panel-group" id="accordion"></div>');
 
+        // fetch calendar data and parse JSON to calendar view
         var init = function() {
             $.getJSON(o.calendarResource, {uiLang: o.lang}, function(data) {
                 var remove = [];
@@ -64,6 +71,7 @@ var ApplicationSystemCalendar = (function() {
             });
         };
 
+        // load given css file
         var loadCss = function(file) {
             $('<link/>', {
                 rel: 'stylesheet',
@@ -187,6 +195,9 @@ var ApplicationSystemCalendar = (function() {
     };
 }());
 
+/*
+ *  Group calendar items by start date year and month 
+ */
 ApplicationSystemCalendar.ApplicationSystemGrouper = (function() {
     var group = function(item) {
         if (!!item.nextApplicationPeriodStarts) {
@@ -195,7 +206,9 @@ ApplicationSystemCalendar.ApplicationSystemGrouper = (function() {
             var date = new Date(_.first(item.applicationPeriods).dateRange.startDate);
         }
 
-        return date.getFullYear() + '' + date.getMonth();
+        // padd one digit months with zero
+        var month = ki.Utils.padWithZero(date.getMonth());
+        return date.getFullYear() + '' + month;
     }
 
     return {
@@ -205,6 +218,9 @@ ApplicationSystemCalendar.ApplicationSystemGrouper = (function() {
 
 var ki = ki || {};
 
+/*
+ *  A simple i18n object used to translate calendar content
+ */
 ki.i18n = (function() {
     var i18nResources = {
         fi: {
@@ -307,7 +323,12 @@ ki.i18n = (function() {
     };
 }());
 
+/*
+ *  Common utils used by calendar
+ */
 ki.Utils = (function() {
+
+    // tells if given date is in the past
     var isInThePast = function(date) {
         var current = new Date().getTime();
         if (date) {
@@ -317,6 +338,7 @@ ki.Utils = (function() {
         return true;
     },
 
+    // get start date of the give application system
     getAsStartDate = function(as) {
         if (as && as.applicationPeriods && as.applicationPeriods.length > 0) {
             var period = _.first(as.applicationPeriods);
@@ -324,6 +346,7 @@ ki.Utils = (function() {
         }
     },
 
+    // get application system name with period name
     getApplicationSystemName = function(as) {
         if (as) {
             var result = as.name;
@@ -336,6 +359,7 @@ ki.Utils = (function() {
         }
     },
 
+    // get date as a human readble timestamp
     getTimestamp = function(date) {
         if (date) {
             return date.getDate() + 
@@ -350,6 +374,7 @@ ki.Utils = (function() {
         }
     },
 
+    // padds a one digit number with zero (leading)
     padWithZero = function(number) {
         number = number.toString();
         if (number.length <= 1) {
