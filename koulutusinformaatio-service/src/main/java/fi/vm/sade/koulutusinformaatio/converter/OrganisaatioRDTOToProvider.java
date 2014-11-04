@@ -248,6 +248,7 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
     }
 
     private boolean isAthleteEducation(final String placeOfBusinessCode) {
+        try {
         if (!Strings.isNullOrEmpty(placeOfBusinessCode)) {
             List<Code> superCodes = null;
             try {
@@ -263,6 +264,9 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
                     }
                 }
             }
+        }
+        } catch (Exception ex) {
+            return false;
         }
         return false;
     }
