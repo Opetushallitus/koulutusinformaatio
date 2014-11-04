@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.dao.entity;
 
 import org.mongodb.morphia.annotations.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,6 +38,8 @@ public class ParentLearningOpportunitySpecificationEntity {
     @Indexed
     @Reference
     private LearningOpportunityProviderEntity provider;
+    @Reference
+    private List<LearningOpportunityProviderEntity> additionalProviders = new ArrayList<LearningOpportunityProviderEntity>();
     @Embedded
     private I18nTextEntity structure;
     @Embedded
@@ -220,5 +223,14 @@ public class ParentLearningOpportunitySpecificationEntity {
 
     public void setKotitalousopetus(boolean kotitalousopetus) {
         this.kotitalousopetus = kotitalousopetus;
+    }
+
+    public List<LearningOpportunityProviderEntity> getAdditionalProviders() {
+        return additionalProviders;
+    }
+
+    public void setAdditionalProviders(
+            List<LearningOpportunityProviderEntity> additionalProviders) {
+        this.additionalProviders = additionalProviders;
     }
 }

@@ -2,7 +2,7 @@
  *  Controller for organisation search tab. Controls search parameters and filter selection for organisations.
  */
 
-function OrganisationSearchCtrl($scope, $rootScope, $location, $location, $route, $routeParams, FilterService, SearchLearningOpportunityService, LanguageService, TranslationService, kiAppConstants) {
+function OrganisationSearchCtrl($scope, $rootScope, $location, $location, $route, $routeParams, $filter, FilterService, SearchLearningOpportunityService, LanguageService, TranslationService, kiAppConstants) {
 
     // filter selector collapse state
     $scope.filterSelectorIsCollapsed = false;
@@ -213,7 +213,7 @@ function OrganisationSearchCtrl($scope, $rootScope, $location, $location, $route
     }
 
     $scope.showLosForProvider = function(providerName) {
-        $location.url('/haku/*?page=1&lopFilter=' + providerName + '&itemsPerPage=25&sortCriteria=0&tab=los');
+        $location.url('/haku/*?page=1&lopFilter=' + $filter('encodeURIComponent')(providerName) + '&itemsPerPage=25&sortCriteria=0&tab=los');
         $route.reload();
     }
    

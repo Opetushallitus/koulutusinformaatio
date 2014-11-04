@@ -1,9 +1,14 @@
+/*
+ *  Filters used in koulutusinformaation ng app
+ */
+
 angular.module('kiApp.filters', [])
 
 .filter('escape', function() {
   return window.escape;
 })
 
+// filter for encoding uri components
 .filter('encodeURIComponent', function() {
     return window.encodeURIComponent;
 })
@@ -60,12 +65,14 @@ angular.module('kiApp.filters', [])
     }
 }])
 
+// trust the html bind with ng-bind-html
 .filter('unsafe', function($sce) {
     return function(val) {
         return $sce.trustAsHtml(val);
     };
 })
 
+// splits the given array into columns
 .filter('columnize', function() {
     var cache = {};
     return function(arr, size) {

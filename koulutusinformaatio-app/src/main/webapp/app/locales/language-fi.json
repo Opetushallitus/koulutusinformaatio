@@ -343,5 +343,7 @@
      "hide-filter-selector-true": "Näytä rajaukset",
      "hide-filter-selector-false": "Piilota rajaukset",
 
-     "search-all-los": "Hae kaikki koulutukset"
+     "search-all-los": "Hae kaikki koulutukset",
+     
+     "qualifications": "Tutkintonimikkeet"
 }

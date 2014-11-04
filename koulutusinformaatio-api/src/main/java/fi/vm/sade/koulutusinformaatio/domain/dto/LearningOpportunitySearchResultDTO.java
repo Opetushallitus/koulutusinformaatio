@@ -18,7 +18,9 @@ package fi.vm.sade.koulutusinformaatio.domain.dto;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Free word education search result.
@@ -30,8 +32,8 @@ public class LearningOpportunitySearchResultDTO {
 
     private String id;
     private String name;
-    private String lopId;
-    private String lopName;
+    private List<String> lopIds = new ArrayList<String>();
+    private List<String> lopNames = new ArrayList<String>();
     private String prerequisite;
     private String prerequisiteCode;
     private String parentId;
@@ -61,22 +63,6 @@ public class LearningOpportunitySearchResultDTO {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getLopId() {
-        return lopId;
-    }
-
-    public void setLopId(String lopId) {
-        this.lopId = lopId;
-    }
-
-    public String getLopName() {
-        return lopName;
-    }
-
-    public void setLopName(String lopName) {
-        this.lopName = lopName;
     }
 
     public String getPrerequisite() {
@@ -181,5 +167,21 @@ public class LearningOpportunitySearchResultDTO {
 
     public void setChildName(String childName) {
         this.childName = childName;
+    }
+
+    public List<String> getLopIds() {
+        return lopIds;
+    }
+
+    public void setLopIds(List<String> lopIds) {
+        this.lopIds = lopIds;
+    }
+
+    public List<String> getLopNames() {
+        return lopNames;
+    }
+
+    public void setLopNames(List<String> lopNames) {
+        this.lopNames = lopNames;
     }
 }

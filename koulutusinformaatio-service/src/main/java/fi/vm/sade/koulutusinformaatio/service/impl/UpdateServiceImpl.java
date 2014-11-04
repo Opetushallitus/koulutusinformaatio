@@ -17,6 +17,7 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -114,10 +115,7 @@ public class UpdateServiceImpl implements UpdateService {
             List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
             count = loOids.size();
             index += count;
-            
-           
-            
-            
+
                 for (String loOid : loOids) {
                     List<LOS> specifications = null;
                     try {
@@ -134,9 +132,6 @@ public class UpdateServiceImpl implements UpdateService {
                 }
             }
 
-
-
-            
             List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
             LOG.debug("Found higher educations: " + higherEducations.size());
 
@@ -146,7 +141,6 @@ public class UpdateServiceImpl implements UpdateService {
                 this.educationDataUpdateService.save(curLOS);
             }
             LOG.debug("Higher educations saved.");
-
             
             List<AdultUpperSecondaryLOS> adultUpperSecondaries = this.tarjontaService.findAdultUpperSecondaries();
             LOG.debug("Found adult upper secondary educations: " + adultUpperSecondaries.size());
@@ -171,7 +165,6 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.debug("Starting provider indexing");
             indexProviders(lopUpdateSolr, loUpdateSolr, locationUpdateSolr);
             LOG.debug("Providers indexed");
-            
             
             
             List<Code> edTypeCodes = this.tarjontaService.getEdTypeCodes();

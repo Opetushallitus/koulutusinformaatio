@@ -149,6 +149,27 @@ public class TarjontaServiceImpl implements TarjontaService {
             }
         });
     }
+    
+    @Override
+    public List<String> getHigherEdOids() {
+        List<String> loOids = new ArrayList<String>();
+        
+        ResultV1RDTO<HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO>> rawRes = this.tarjontaRawService.listEducations(TarjontaConstants.HIGHER_EDUCATION_TYPE);//listHigherEducation();
+        HakutuloksetV1RDTO<KoulutusHakutulosV1RDTO> results = rawRes.getResult();
+        for (TarjoajaHakutulosV1RDTO<KoulutusHakutulosV1RDTO> curRes : results.getTulokset()) {
+            for (KoulutusHakutulosV1RDTO curKoulutus : curRes.getTulokset()) {
+                if (!curKoulutus.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
+                    continue;
+                }
+                ResultV1RDTO<Set<String>> parentRes = this.tarjontaRawService.getParentsOfHigherEducationLOS(curKoulutus.getKomoOid());
+                if (parentRes == null || parentRes.getResult() == null || parentRes.getResult().size() == 0) {
+                    loOids.add(curKoulutus.getOid());
+                }
+            }
+        }
+        
+        return loOids;
+    }
 
     @Override
     public List<HigherEducationLOS> findHigherEducations() throws KoodistoException, ResourceNotFoundException {
@@ -362,9 +383,6 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     @Override
     public HigherEducationLOS createHigherEducationLearningOpportunityTree(String oid) throws TarjontaParseException, KoodistoException, ResourceNotFoundException {
-        if (this.providerService != null) {
-            this.providerService.clearCache();
-        }
         if (creator == null) {
             creator = new LOSObjectCreator(koodistoService, tarjontaRawService, providerService, organisaatioRawService);
         }
@@ -377,9 +395,10 @@ public class TarjontaServiceImpl implements TarjontaService {
         }
 
         LOG.debug("Now creating higherEducation learning opportunity tree");
+
         HigherEducationLOS los = creator.createHigherEducationLOS(koulutusDTO, true);
         los.setStatus(koulutusDTO.getTila().toString());
-
+        
 
         if (los.getApplicationOptions() != null) {
             LOG.debug("now creating higher edu los refs for los: " + los.getId());
@@ -387,6 +406,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                 createEducationreReferencesForAo(curAo, true);
             }
         }
+        
 
         ResultV1RDTO<Set<String>> childKomoOids = this.tarjontaRawService.getChildrenOfParentHigherEducationLOS(koulutusDTO.getKomoOid());
 
@@ -396,6 +416,7 @@ public class TarjontaServiceImpl implements TarjontaService {
             List<String> koulutusOids = getKoulutusoidsForKomo(curChildKomoOid);
             for (String curKoulutusOid : koulutusOids) {
                 try {
+                    
                     HigherEducationLOS curChild = createHigherEducationLearningOpportunityTree(curKoulutusOid);
                     if (curChild != null) {
                         curChild.getParents().add(los);

@@ -48,6 +48,7 @@ public class AdultVocationalParentLOSDTO extends LOSDTO {
     private String educationKind;
     
     private LearningOpportunityProviderDTO provider;
+    private List<LearningOpportunityProviderDTO> additionalProviders = new ArrayList<LearningOpportunityProviderDTO>();
     //private List<ApplicationOptionDTO> applicationOptions;
     private List<ApplicationSystemDTO> applicationSystems = new ArrayList<ApplicationSystemDTO>();
     
@@ -233,6 +234,14 @@ public class AdultVocationalParentLOSDTO extends LOSDTO {
 
     public void setOsaamisala(boolean osaamisala) {
         this.osaamisala = osaamisala;
+    }
+
+    public List<LearningOpportunityProviderDTO> getAdditionalProviders() {
+        return additionalProviders;
+    }
+
+    public void setAdditionalProviders(List<LearningOpportunityProviderDTO> additionalProviders) {
+        this.additionalProviders = additionalProviders;
     } 
    
 }

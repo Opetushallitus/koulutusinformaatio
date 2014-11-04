@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.dao.entity;
 
 import org.mongodb.morphia.annotations.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,6 +45,8 @@ public class UpperSecondaryLearningOpportunitySpecificationEntity {
     @Indexed
     @Reference
     private LearningOpportunityProviderEntity provider;
+    @Reference
+    private List<LearningOpportunityProviderEntity> additionalProviders = new ArrayList<LearningOpportunityProviderEntity>();
     @Embedded
     private I18nTextEntity structure;
     @Embedded
@@ -189,5 +192,14 @@ public class UpperSecondaryLearningOpportunitySpecificationEntity {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public List<LearningOpportunityProviderEntity> getAdditionalProviders() {
+        return additionalProviders;
+    }
+
+    public void setAdditionalProviders(
+            List<LearningOpportunityProviderEntity> additionalProviders) {
+        this.additionalProviders = additionalProviders;
     }
 }

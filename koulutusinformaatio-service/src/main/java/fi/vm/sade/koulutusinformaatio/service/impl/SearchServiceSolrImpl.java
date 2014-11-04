@@ -498,7 +498,7 @@ public class SearchServiceSolrImpl implements SearchService {
         String prerequisiteCodeText = doc.get(LearningOpportunity.PREREQUISITE_CODE) != null
                 ? doc.get(LearningOpportunity.PREREQUISITE_CODE).toString() : null;
                 String credits = doc.get(LearningOpportunity.CREDITS) != null ? doc.get(LearningOpportunity.CREDITS).toString() : null;
-                String lopName = getLopName(doc, lang);
+                List<String> lopNames = getLopNames(doc, lang);
                 String edType = doc.get(LearningOpportunity.EDUCATION_TYPE_DISPLAY) != null
                         ? doc.getFieldValue(LearningOpportunity.EDUCATION_TYPE_DISPLAY).toString().replace(".", "") : null;
                         String edDegree = getEdDegree(doc, lang);
@@ -506,14 +506,14 @@ public class SearchServiceSolrImpl implements SearchService {
                                 ? doc.get(LearningOpportunity.EDUCATION_DEGREE_CODE).toString() : null;
                                 String name = getName(doc, lang);
                                 String homeplace = getHomeplace(doc, lang);
-                                String lopId = doc.get(LearningOpportunity.LOP_ID) != null ? doc.get(LearningOpportunity.LOP_ID).toString() : null;
+                                List<String> lopId = doc.get(LearningOpportunity.LOP_ID) != null ? (List<String>)(doc.get(LearningOpportunity.LOP_ID)) : new ArrayList<String>();
                                 String childName = doc.get(LearningOpportunity.CHILD_NAME) != null ? getChildName(doc) : null;
 
                                 LOG.debug("gathered info now creating search result: " + id);
 
                                 LOSearchResult lo = new LOSearchResult( 
                                         id, name,
-                                        lopId, lopName, prerequisiteText,
+                                        lopId, lopNames, prerequisiteText,
                                         prerequisiteCodeText, parentId, losId, doc.get("type").toString(),
                                         credits, edType, edDegree, edDegreeCode, homeplace, childName);
 
@@ -590,23 +590,24 @@ public class SearchServiceSolrImpl implements SearchService {
                 LearningOpportunity.NAME);
     }
 
-    private String getLopName(SolrDocument doc, String lang) {
+    @SuppressWarnings("unchecked")
+    private List<String> getLopNames(SolrDocument doc, String lang) {
         if (lang.equalsIgnoreCase("fi")
                 && doc.getFieldValue(LearningOpportunity.LOP_NAME_DISPLAY_FI) != null) {
-            return doc.getFieldValue(LearningOpportunity.LOP_NAME_DISPLAY_FI).toString();
+            return (List<String>)(doc.getFieldValue(LearningOpportunity.LOP_NAME_DISPLAY_FI));//toString();
         }
         if (lang.equalsIgnoreCase("sv")
                 && doc.getFieldValue(LearningOpportunity.LOP_NAME_DISPLAY_SV) != null) {
-            return doc.getFieldValue(LearningOpportunity.LOP_NAME_DISPLAY_SV).toString();
+            return (List<String>)(doc.getFieldValue(LearningOpportunity.LOP_NAME_DISPLAY_SV));//.toString();
         }
         if (lang.equalsIgnoreCase("en")
                 && doc.getFieldValue(LearningOpportunity.LOP_NAME_DISPLAY_EN) != null) {
-            return doc.getFieldValue(LearningOpportunity.LOP_NAME_DISPLAY_EN).toString();
+            return (List<String>)(doc.getFieldValue(LearningOpportunity.LOP_NAME_DISPLAY_EN));//.toString();
         }
         if (doc.getFieldValue(LearningOpportunity.LOP_NAME) != null) {
-            return doc.getFieldValue(LearningOpportunity.LOP_NAME).toString();
+            return (List<String>)(doc.getFieldValue(LearningOpportunity.LOP_NAME));//.toString();
         }
-        return null;
+        return new ArrayList<String>();
     }
 
     private String getTranslatedValue(SolrDocument doc, String lang, String fieldFi, String fieldSv, String fieldEn, String field) {
@@ -656,7 +657,7 @@ public class SearchServiceSolrImpl implements SearchService {
                             String prerequisiteCodeText = doc.get(LearningOpportunity.PREREQUISITE_CODE) != null
                                     ? doc.get(LearningOpportunity.PREREQUISITE_CODE).toString() : null;
                                     String credits = doc.get(LearningOpportunity.CREDITS) != null ? doc.get(LearningOpportunity.CREDITS).toString() : null;
-                                    String lopName = getLopName(doc, lang);
+                                    List<String> lopNames = getLopNames(doc, lang);
                                     String edType = doc.get(LearningOpportunity.EDUCATION_TYPE_DISPLAY) != null
                                             ? doc.getFieldValue(LearningOpportunity.EDUCATION_TYPE_DISPLAY).toString().replace(".", "") : null;
                                             String edDegree = getEdDegree(doc, lang);
@@ -665,12 +666,13 @@ public class SearchServiceSolrImpl implements SearchService {
                                                     String name = getName(doc, lang);
                                                     String homeplace = getHomeplace(doc, lang);
                                                     String childName = doc.get(LearningOpportunity.CHILD_NAME) != null ? doc.get(LearningOpportunity.CHILD_NAME).toString() : null;
+                                                    List<String> lopIds = doc.get(LearningOpportunity.LOP_ID) != null ? (List<String>)(doc.get(LearningOpportunity.LOP_ID)) : new ArrayList<String>();
 
                                                     LOSearchResult lo = null;
                                                     try {
                                                         lo = new LOSearchResult(
                                                                 id, name,
-                                                                doc.get(LearningOpportunity.LOP_ID).toString(), lopName, prerequisiteText,
+                                                                lopIds, lopNames, prerequisiteText,
                                                                 prerequisiteCodeText, parentId, losId, doc.get(LearningOpportunity.TYPE).toString(),
                                                                 credits, edType, edDegree, edDegreeCode, homeplace, childName);
 

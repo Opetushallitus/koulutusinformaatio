@@ -8,6 +8,7 @@ import fi.vm.sade.koulutusinformaatio.domain.SuggestedTermsResult;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LOSearchResultListDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunityProviderDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SpecialLearningOpportunitySpecificationDTO;
@@ -53,7 +54,7 @@ public class LearningOpportunityResourceImplTest {
     public void init() throws ResourceNotFoundException, SearchException {
         modelMapper = new ModelMapper();
 
-        LOSearchResult result1 = new LOSearchResult("1.2.3", "term hakutulos", "2.3.4", "oppilaitos nimi", "peruskoulu", "PK", "3.4.5", "4.5.6", "TUTKINTO", "120 ov", "et1", "amk", "code_amk", "homeplace", "childname");
+        LOSearchResult result1 = new LOSearchResult("1.2.3", "term hakutulos", Arrays.asList("2.3.4"), Arrays.asList("oppilaitos nimi"), "peruskoulu", "PK", "3.4.5", "4.5.6", "TUTKINTO", "120 ov", "et1", "amk", "code_amk", "homeplace", "childname");
         LOSearchResultList resultList = new LOSearchResultList();
         resultList.setResults(Lists.newArrayList(result1));
         resultList.setTotalCount(1);
@@ -82,6 +83,13 @@ public class LearningOpportunityResourceImplTest {
         
         HigherEducationLOSDTO higherLos = new HigherEducationLOSDTO();
         higherLos.setId("1.2.3.34");
+        LearningOpportunityProviderDTO mainProvider = new LearningOpportunityProviderDTO();
+        mainProvider.setId("mainProvider");
+        higherLos.setProvider(mainProvider);
+        LearningOpportunityProviderDTO aditionalProvider = new LearningOpportunityProviderDTO();
+        aditionalProvider.setId("additionalProvider");
+        higherLos.setAdditionalProviders(Arrays.asList(aditionalProvider));
+        
         
         when(learningOpportunityService.getHigherEducationLearningOpportunity(anyString())).thenReturn(higherLos);
         when(learningOpportunityService.previewHigherEdLearningOpportunity(anyString(), anyString(), anyString())).thenReturn(higherLos);
@@ -108,8 +116,8 @@ public class LearningOpportunityResourceImplTest {
         assertEquals(1, result.getTotalCount());
         assertEquals("1.2.3", result.getResults().get(0).getId());
         assertEquals("term hakutulos", result.getResults().get(0).getName());
-        assertEquals("2.3.4", result.getResults().get(0).getLopId());
-        assertEquals("oppilaitos nimi", result.getResults().get(0).getLopName());
+        assertEquals("2.3.4", result.getResults().get(0).getLopIds().get(0));
+        assertEquals("oppilaitos nimi", result.getResults().get(0).getLopNames().get(0));
         assertEquals("peruskoulu", result.getResults().get(0).getPrerequisite());
         assertEquals("PK", result.getResults().get(0).getPrerequisiteCode());
         assertEquals("3.4.5", result.getResults().get(0).getParentId());
@@ -147,6 +155,16 @@ public class LearningOpportunityResourceImplTest {
     public void testGetHigherEducationLearningOpportunity() {
     	HigherEducationLOSDTO dto = resource.getHigherEducationLearningOpportunity("1.2.3.34", null, null);
     	assertEquals("1.2.3.34", dto.getId());
+    }
+    
+    /**
+     * Testing learning opportunity with multiple providers
+     */
+    @Test
+    public void testMultipleProviderLearningOpportunity() {
+        HigherEducationLOSDTO dto = resource.getHigherEducationLearningOpportunity("1.2.3.34", null, null);
+        assertEquals("mainProvider", dto.getProvider().getId());
+        assertEquals("additionalProvider", dto.getAdditionalProviders().get(0).getId());
     }
     
     @Test

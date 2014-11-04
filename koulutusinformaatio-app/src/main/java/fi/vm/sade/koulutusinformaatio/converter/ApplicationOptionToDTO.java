@@ -47,7 +47,7 @@ public final class ApplicationOptionToDTO {
             if (applicationOption.getStartingQuotaDescription() != null 
                     && applicationOption.getStartingQuotaDescription().getTranslations() != null 
                     && !applicationOption.getStartingQuotaDescription().getTranslations().isEmpty()) {
-                dto.setStartingQuotaDescription(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getStartingQuotaDescription(), defaultLang));
+                dto.setStartingQuotaDescription(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getStartingQuotaDescription(), uiLang));
             }
             dto.setStartingQuota(applicationOption.getStartingQuota());
             dto.setSora(applicationOption.isSora());

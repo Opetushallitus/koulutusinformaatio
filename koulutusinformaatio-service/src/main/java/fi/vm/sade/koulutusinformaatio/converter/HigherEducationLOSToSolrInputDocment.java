@@ -58,7 +58,12 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
         Provider provider = los.getProvider();
         doc.addField(LearningOpportunity.ID, los.getId());
         doc.addField(LearningOpportunity.LOS_ID, los.getId());
+
         doc.addField(LearningOpportunity.LOP_ID, provider.getId());
+        for (Provider curProv : los.getAdditionalProviders()) {
+            doc.addField(LearningOpportunity.LOP_ID, curProv.getId());
+        }
+
         if (los.getFacetPrerequisites() != null && !los.getFacetPrerequisites().isEmpty()) {
             for (Code curPrereq : los.getFacetPrerequisites()) {
                 doc.addField(LearningOpportunity.PREREQUISITES, curPrereq.getValue());                
@@ -70,7 +75,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
             doc.addField(LearningOpportunity.CREDITS, 
                     String.format("%s %s", los.getCreditValue(), 
                             SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getTeachingLanguages(),
-                    los.getCreditUnit().getTranslations())));
+                                    los.getCreditUnit().getTranslations())));
         }
 
         String teachingLang = los.getTeachingLanguages().isEmpty() ? "EXC" : los.getTeachingLanguages().get(0).getValue().toLowerCase();
@@ -81,45 +86,29 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
 
         doc.setField(LearningOpportunity.NAME, losName);
 
-        
+
         doc.setField(LearningOpportunity.EDUCATION_DEGREE, 
                 SolrUtil.resolveTextWithFallback(teachingLang,  
                         los.getEducationDegreeLang().getTranslations()));
-        
-       if (provider.getHomePlace() != null) { 
-           doc.setField(LearningOpportunity.HOMEPLACE_DISPLAY, 
-                   SolrUtil.resolveTextWithFallback(teachingLang,
-                           provider.getHomePlace().getTranslations()));
-       }
-                
+
+        indexHomeplaceDisplay(provider, los, teachingLang, doc); 
+
+
+
         doc.addField(LearningOpportunity.EDUCATION_DEGREE_CODE, los.getEducationDegree());
 
         indexLanguageFields(los, doc);
 
 
-        doc.setField(LearningOpportunity.LOP_NAME, SolrUtil.resolveTranslationInTeachingLangUseFallback(
+        doc.addField(LearningOpportunity.LOP_NAME, SolrUtil.resolveTranslationInTeachingLangUseFallback(
                 los.getTeachingLanguages(), provider.getName().getTranslations()));
 
-
-        if (provider.getHomeDistrict() != null) {
-
-            List<String> locVals = new ArrayList<String>();
-            locVals.addAll(provider.getHomeDistrict().getTranslations().values());
-            locVals.addAll(provider.getHomePlace().getTranslations().values());
-            doc.addField(LearningOpportunity.LOP_HOMEPLACE, locVals);
-        } else {
-            doc.addField(LearningOpportunity.LOP_HOMEPLACE, provider.getHomePlace().getTranslations().values());
+        for (Provider curProv : los.getAdditionalProviders()) {
+            doc.addField(LearningOpportunity.LOP_NAME, SolrUtil.resolveTranslationInTeachingLangUseFallback(
+                    los.getTeachingLanguages(), curProv.getName().getTranslations()));
         }
 
-        if (provider.getVisitingAddress() != null) {
-            doc.addField(LearningOpportunity.LOP_ADDRESS_FI, provider.getVisitingAddress().getPostOffice());
-        }
-        if (provider.getDescription() != null) {
-            Map<String,String> transls = provider.getDescription().getTranslations();
-            doc.addField(LearningOpportunity.LOP_DESCRIPTION_FI, SolrUtil.resolveTextWithFallback("fi",  transls));
-            doc.addField(LearningOpportunity.LOP_DESCRIPTION_SV, SolrUtil.resolveTextWithFallback("sv",  transls));
-            doc.addField(LearningOpportunity.LOP_DESCRIPTION_EN, SolrUtil.resolveTextWithFallback("en",  transls));
-        }
+        indexAddresses(provider, los.getAdditionalProviders(), doc);
 
         if (los.getApplicationOptions() != null) {
             String aoNameFi = "";
@@ -137,10 +126,10 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
                     aoNameFi = String.format("%s %s", aoNameFi,  SolrUtil.resolveTextWithFallback("fi", ao.getName().getTranslations()));
                     aoNameSv = String.format("%s %s", aoNameSv,  SolrUtil.resolveTextWithFallback("sv", ao.getName().getTranslations()));
                     aoNameEn = String.format("%s %s", aoNameEn,  SolrUtil.resolveTextWithFallback("en", ao.getName().getTranslations()));
-                    
+
                 }
             }
-            
+
             doc.addField(LearningOpportunity.AO_NAME_FI, aoNameFi);
             doc.addField(LearningOpportunity.AO_NAME_SV, aoNameSv);
             doc.addField(LearningOpportunity.AO_NAME_EN, aoNameEn);
@@ -153,8 +142,8 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
         doc.addField(LearningOpportunity.NAME_SORT, String.format("%s, %s",
                 SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getTeachingLanguages(), 
                         provider.getName().getTranslations()).toLowerCase().trim(),
-                SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getTeachingLanguages(), 
-                        los.getShortTitle().getTranslations())).toLowerCase().trim());
+                        SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getTeachingLanguages(), 
+                                los.getShortTitle().getTranslations())).toLowerCase().trim());
 
 
         //For faceting
@@ -163,13 +152,73 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
         return doc;
     }
 
+
+    private void indexAddresses(Provider provider,
+            List<Provider> additionalProviders, SolrInputDocument doc) {
+
+        indexProviderAddresses(provider, doc);
+        for (Provider curProv : additionalProviders) {
+            indexProviderAddresses(curProv, doc);
+        }
+
+
+    }
+
+    private void indexProviderAddresses(Provider provider, SolrInputDocument doc) {
+        if (provider.getHomeDistrict() != null) {
+
+            List<String> locVals = new ArrayList<String>();
+            locVals.addAll(provider.getHomeDistrict().getTranslations().values());
+            locVals.addAll(provider.getHomePlace().getTranslations().values());
+            doc.addField(LearningOpportunity.LOP_HOMEPLACE, locVals);
+        } else {
+            doc.addField(LearningOpportunity.LOP_HOMEPLACE, provider.getHomePlace().getTranslations().values());
+        }
+
+
+
+        if (provider.getVisitingAddress() != null) {
+            doc.addField(LearningOpportunity.LOP_ADDRESS_FI, provider.getVisitingAddress().getPostOffice());
+        }
+        if (provider.getDescription() != null) {
+            Map<String,String> transls = provider.getDescription().getTranslations();
+            doc.addField(LearningOpportunity.LOP_DESCRIPTION_FI, SolrUtil.resolveTextWithFallback("fi",  transls));
+            doc.addField(LearningOpportunity.LOP_DESCRIPTION_SV, SolrUtil.resolveTextWithFallback("sv",  transls));
+            doc.addField(LearningOpportunity.LOP_DESCRIPTION_EN, SolrUtil.resolveTextWithFallback("en",  transls));
+        }
+
+    }
+
+    private void indexHomeplaceDisplay(Provider provider, StandaloneLOS los, String teachingLang, SolrInputDocument doc) {
+        String homePlaceDisplay = null; 
+        if (provider.getHomePlace() != null) {
+            homePlaceDisplay = SolrUtil.resolveTextWithFallback(teachingLang,
+                    provider.getHomePlace().getTranslations());
+            /*doc.setField(LearningOpportunity.HOMEPLACE_DISPLAY, 
+                    );*/
+        }
+
+        for (Provider curProv : los.getAdditionalProviders()) {
+            if (curProv.getHomePlace() != null) {
+                homePlaceDisplay = String.format("%s, %s", homePlaceDisplay, SolrUtil.resolveTextWithFallback(teachingLang,
+                        curProv.getHomePlace().getTranslations()));
+            }
+        }
+
+        if (homePlaceDisplay != null) {
+            doc.setField(LearningOpportunity.HOMEPLACE_DISPLAY, 
+                    homePlaceDisplay);
+        }
+
+    }
+
     /*
      * Indexes language specific fields according to teaching languages
      * and tries to index fi, sv, and en regardles of teaching languages
      */
     private void indexLanguageFields(StandaloneLOS los,
             SolrInputDocument doc) {
-        
+
         boolean fiIndexed = false;
         boolean svIndexed = false;
         boolean enIndexed = false;
@@ -184,7 +233,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
                 enIndexed = true;
             }
         }
-        
+
         if (!fiIndexed) {
             indexLangSpecificFields("fi", los, doc, fiIndexed);
         }
@@ -194,7 +243,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
         if (!enIndexed) {
             indexLangSpecificFields("en", los, doc, fiIndexed);
         }
-        
+
     }
 
     /*
@@ -221,26 +270,53 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
             doc.setField(LearningOpportunity.NAME_EN, losName);
         }
 
+        List<Provider> allProviders = new ArrayList<Provider>();
+        allProviders.add(provider);
+        allProviders.addAll(los.getAdditionalProviders());
+        
+        String homeplaceDisplayFi = null;
+        String homeplaceDisplaySv = null;
+        String homeplaceDisplayEn = null;
 
-        transls =  provider.getName().getTranslations();
-        if (teachingLang.equals("fi")) {
-            doc.setField(LearningOpportunity.LOP_NAME_FI, SolrUtil.resolveTextWithFallback("fi", transls));
-            doc.setField(LearningOpportunity.LOP_NAME_DISPLAY_FI, SolrUtil.resolveTextWithFallback("fi", transls));
-        } else if (teachingLang.equals("sv")) {
-            doc.setField(LearningOpportunity.LOP_NAME_SV, SolrUtil.resolveTextWithFallback("sv", transls));
-            doc.setField(LearningOpportunity.LOP_NAME_DISPLAY_SV, SolrUtil.resolveTextWithFallback("sv", transls));
-        } else if (teachingLang.equals("en")) {
-            doc.setField(LearningOpportunity.LOP_NAME_EN, SolrUtil.resolveTextWithFallback("en", transls));
-            doc.setField(LearningOpportunity.LOP_NAME_DISPLAY_EN, SolrUtil.resolveTextWithFallback("en", transls));
-        } else if (!enIndexed) {
-            doc.setField(LearningOpportunity.LOP_NAME_EN, SolrUtil.resolveTextWithFallback(teachingLang, transls));
+        for (Provider curProv : allProviders) {
+
+            transls =  curProv.getName().getTranslations();
+            if (teachingLang.equals("fi")) {
+                doc.addField(LearningOpportunity.LOP_NAME_FI, SolrUtil.resolveTextWithFallback("fi", transls));
+                doc.addField(LearningOpportunity.LOP_NAME_DISPLAY_FI, SolrUtil.resolveTextWithFallback("fi", transls));
+            } else if (teachingLang.equals("sv")) {
+                doc.addField(LearningOpportunity.LOP_NAME_SV, SolrUtil.resolveTextWithFallback("sv", transls));
+                doc.addField(LearningOpportunity.LOP_NAME_DISPLAY_SV, SolrUtil.resolveTextWithFallback("sv", transls));
+            } else if (teachingLang.equals("en")) {
+                doc.addField(LearningOpportunity.LOP_NAME_EN, SolrUtil.resolveTextWithFallback("en", transls));
+                doc.addField(LearningOpportunity.LOP_NAME_DISPLAY_EN, SolrUtil.resolveTextWithFallback("en", transls));
+            } else if (!enIndexed) {
+                doc.addField(LearningOpportunity.LOP_NAME_EN, SolrUtil.resolveTextWithFallback(teachingLang, transls));
+            }
+            if (curProv.getHomePlace() != null) {
+                transls = curProv.getHomePlace().getTranslations();
+                homeplaceDisplayFi = homeplaceDisplayFi != null ? String.format("%s, %s", homeplaceDisplayFi, SolrUtil.resolveTextWithFallback("fi",  transls)) : SolrUtil.resolveTextWithFallback("fi",  transls); 
+                homeplaceDisplaySv = homeplaceDisplaySv != null ? String.format("%s, %s", homeplaceDisplaySv, SolrUtil.resolveTextWithFallback("sv",  transls)) : SolrUtil.resolveTextWithFallback("sv",  transls); 
+                homeplaceDisplayEn = homeplaceDisplayEn != null ? String.format("%s, %s", homeplaceDisplayEn, SolrUtil.resolveTextWithFallback("en",  transls)) : SolrUtil.resolveTextWithFallback("en",  transls); 
+            }
+                
+        }
+        
+        if (homeplaceDisplayFi != null) {
+            doc.setField(LearningOpportunity.HOMEPLACE_DISPLAY_FI, homeplaceDisplayFi);
+        }
+        if (homeplaceDisplaySv != null) {
+            doc.setField(LearningOpportunity.HOMEPLACE_DISPLAY_SV, homeplaceDisplaySv);
+        }
+        if (homeplaceDisplayEn != null) {
+            doc.setField(LearningOpportunity.HOMEPLACE_DISPLAY_EN, homeplaceDisplayEn);
         }
 
-        
+
         if (los.getQualifications() != null && !los.getQualifications().isEmpty()) {
 
             for (I18nText curQualification : los.getQualifications()) {
-            
+
                 transls = curQualification.getTranslations();
 
                 if (teachingLang.equals("fi")) {
@@ -256,7 +332,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
                 }
             }
         }
-        
+
         if (los.getGoals() != null) {
             transls = los.getGoals().getTranslations();
             if (teachingLang.equals("fi")) {
@@ -287,10 +363,10 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
                 doc.addField(LearningOpportunity.CONTENT_EN, SolrUtil.resolveTextWithFallback(teachingLang, transls));
             }
         }
-        
+
         if (los.getEducationDegreeLang() != null) {
             transls = los.getEducationDegreeLang().getTranslations();
-            
+
             if (teachingLang.equals("fi")) {
                 doc.setField(LearningOpportunity.EDUCATION_DEGREE_FI, SolrUtil.resolveTextWithFallback("fi",  transls));
             } else if (teachingLang.equals("sv")) {
@@ -299,10 +375,10 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
                 doc.setField(LearningOpportunity.EDUCATION_DEGREE_EN, SolrUtil.resolveTextWithFallback("en",  transls));
             } 
         }
-        
+
         if (los.getEducationCode() != null) {
             transls = los.getEducationCode().getName().getTranslations();
-            
+
             if (teachingLang.equals("fi")) {
                 doc.setField(LearningOpportunity.EDUCATION_CODE_DISPLAY_FI, SolrUtil.resolveTextWithFallback("fi",  transls));
             } else if (teachingLang.equals("sv")) {
@@ -313,19 +389,9 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
                 doc.setField(LearningOpportunity.EDUCATION_CODE_DISPLAY_FI, SolrUtil.resolveTextWithFallback("fi",  transls));
             }
         }
+
         
-        if (los.getProvider().getHomePlace() != null) {
-            transls = los.getProvider().getHomePlace().getTranslations();
-            
-            if (teachingLang.equals("fi")) {
-                doc.setField(LearningOpportunity.HOMEPLACE_DISPLAY_FI, SolrUtil.resolveTextWithFallback("fi",  transls));
-            } else if (teachingLang.equals("sv")) {
-                doc.setField(LearningOpportunity.HOMEPLACE_DISPLAY_SV, SolrUtil.resolveTextWithFallback("sv",  transls));
-            } else if (teachingLang.endsWith("en")) {
-                doc.setField(LearningOpportunity.HOMEPLACE_DISPLAY_EN, SolrUtil.resolveTextWithFallback("en",  transls));
-            } 
-        }
-        
+
     }
 
     private void indexFacetFields(SolrInputDocument doc,
@@ -335,7 +401,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
             String curTeachingLang = teachingLangCode.getValue();
             doc.addField(LearningOpportunity.TEACHING_LANGUAGE, curTeachingLang);
         }
-        
+
         if (los.getEducationDegree().contains(TarjontaConstants.ED_DEGREE_URI_AMK)) {
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMKS);
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMK);
@@ -359,8 +425,8 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMM_TUTK);
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMMATILLISET);
         }
-        
-        
+
+
 
         for (Code curTopic : los.getTopics()) {
             doc.addField(LearningOpportunity.TOPIC, curTopic.getUri());
@@ -369,7 +435,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
         for (Code curTopic : los.getThemes()) {
             doc.addField(LearningOpportunity.THEME, curTopic.getUri());
         }
-        
+
         if (los.getFotFacet() != null) {
             List<String> usedVals = new ArrayList<String>();
             for (Code curFOT : los.getFotFacet()) {
@@ -379,7 +445,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
                 }
             }
         }
-        
+
         if (los.getTimeOfTeachingFacet() != null) {
             List<String> usedVals = new ArrayList<String>();
             for (Code curTimeOfTeaching : los.getTimeOfTeachingFacet()) {
@@ -389,7 +455,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
                 }
             }
         }
-        
+
         if (los.getFormOfStudyFacet() != null) {
             List<String> usedVals = new ArrayList<String>();
             for (Code curFormOfStudy : los.getFormOfStudyFacet()) {
@@ -399,7 +465,7 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
                 }
             }
         }
-        
+
         if (los.getKoulutuslaji() != null) {
             doc.addField(LearningOpportunity.KIND_OF_EDUCATION, los.getKoulutuslaji().getUri());
         }

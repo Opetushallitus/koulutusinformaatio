@@ -11,7 +11,9 @@
                 <span data-ki-i18n="application-prerequisite" data-show-colon="true"></span>
                 <span>{{lo.prerequisite}}</span><br />
             </span>
-            <span>{{lo.lopName}}</span><br />
+            <div data-ng-repeat="lopName in lo.lopNames">
+            	<span>{{lopName}}</span><br/>
+            </div>
             <span>{{lo.homeplace}}</span>
         </div>
         

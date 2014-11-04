@@ -15,7 +15,9 @@
                 <span data-ki-i18n="lukioYm"></span><br />
             </span>
             -->
-            <span>{{lo.lopName}}</span><br />
+            <div data-ng-repeat="lopName in lo.lopNames">
+            	<span>{{lopName}}</span><br/>
+            </div>
             <span>{{lo.homeplace}}</span>
         </div>
         <div class="col-xs-4 col-xs-height text-right">

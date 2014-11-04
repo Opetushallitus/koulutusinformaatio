@@ -69,8 +69,12 @@ public class ProviderServiceImpl implements ProviderService {
             LOG.debug("Fetching provider with oid " + oid);
         }
         
-        if (providerMap.containsKey(oid)) {
-            return providerMap.get(oid);
+        Provider cachedProvider = providerMap.get(oid);
+        if (cachedProvider != null) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("\nReturning provider from cache\n");
+            }
+            return cachedProvider; 
         }
 
         OrganisaatioRDTO organisaatioRDTO = organisaatioRawService.getOrganisaatio(oid);
@@ -83,16 +87,21 @@ public class ProviderServiceImpl implements ProviderService {
             }
             
             Provider parent = getByOID(organisaatioRDTO.getParentOid());
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Got parent provider");
+            }
             provider = inheritMetadata(provider, parent);
         }
         
         if (provider.getType() == null) {
             inheritOlTypes(provider, organisaatioRDTO);
-        } else {
+        } 
+        if (provider.getType() != null) {
             provider.getOlTypes().add(provider.getType());
         }
         
         providerMap.put(oid, provider);
+        
         return provider;
     }
     
@@ -109,18 +118,7 @@ public class ProviderServiceImpl implements ProviderService {
         else if (rawProvider.getTyypit().contains("Toimipiste")) {
             OrganisaatioRDTO inheritableOrg = this.organisaatioRawService.getOrganisaatio(rawProvider.getParentOid());
             inheritOlTypes(provider, inheritableOrg);
-        } else if (rawProvider.getTyypit().contains("Koulutustoimija")) {
-            try {
-            List<OrganisaatioRDTO> childrenRaws = this.organisaatioRawService.getChildren(rawProvider.getOid());
-            if (childrenRaws != null) {
-                for (OrganisaatioRDTO curChild : childrenRaws) {
-                    inheritOlTypes(provider, curChild);
-                }
-            }
-            } catch (Exception ex) {
-                LOG.error("children resources not found:" + rawProvider.getOid());
-            }
-        }
+        } 
     }
 
     private Provider inheritMetadata(Provider child, Provider parent) {

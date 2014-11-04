@@ -1,7 +1,7 @@
 {
 	"search-tab-lo-tooltip": "Tällä välilehdellä listataan koulutuksia ja tutkintoja. Kirjoita hakusanasi hakukenttään, valitse Hae, ja saat listan hakusanaasi sopivista tuloksista, joista voit edetä tarkempiin koulutuskuvauksiin.",
     "search-tab-article-tooltip": "Tältä välilehdeltä löydät hakemiseen ja opiskeluun liittyviä tietoja ja artikkeleita.",
-    "search-tab-organisation-tooltip": "",
+    "search-tab-organisation-tooltip": "Tältä välilehdeltä löydät oppilaitoksia ja korkeakouluja.",
     "to-frontpage": "Siirry sivulle Etusivu",
     "search": "Hae",
     "remove-search-result-facet": "Poista hakutuloksille valittu rajaus",

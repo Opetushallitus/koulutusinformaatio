@@ -16,8 +16,11 @@
 
 package fi.vm.sade.koulutusinformaatio.modelmapper;
 
+import java.util.Arrays;
+
 import fi.vm.sade.koulutusinformaatio.domain.LOSearchResult;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LearningOpportunitySearchResultDTO;
+
 import org.junit.Test;
 import org.modelmapper.ModelMapper;
 
@@ -37,14 +40,14 @@ public class ModelMapperTest {
 
     @Test
     public void testMapLearningOpportunityResultToDTO() {
-        LOSearchResult result = new LOSearchResult("loid", "name", "lopid", "lop name", "Peruskoulu", "PK", "parentId", "losId", "TYPE", "credits", "et1", "amk", "code_amk", "homeplace", "childname");
+        LOSearchResult result = new LOSearchResult("loid", "name", Arrays.asList("lopid"), Arrays.asList("lop name"), "Peruskoulu", "PK", "parentId", "losId", "TYPE", "credits", "et1", "amk", "code_amk", "homeplace", "childname");
 
         LearningOpportunitySearchResultDTO dto = modelMapper.map(result, LearningOpportunitySearchResultDTO.class);
 
         assertEquals(result.getId(), dto.getId());
         assertEquals(result.getName(), dto.getName());
-        assertEquals(result.getLopId(), dto.getLopId());
-        assertEquals(result.getLopName(), dto.getLopName());
+        assertEquals(result.getLopIds().get(0), dto.getLopIds().get(0));
+        assertEquals(result.getLopNames().get(0), dto.getLopNames().get(0));
         assertEquals(result.getPrerequisite(), dto.getPrerequisite());
         assertEquals(result.getParentId(), dto.getParentId());
         assertEquals(result.getLosId(), dto.getLosId());

@@ -188,13 +188,26 @@ public class IndexerServiceImpl implements IndexerService {
 
         List<SolrInputDocument> docs = conversionService.convert(los, List.class);
 
-        
+
         createProviderDocs(provider, 
                             lopSolr, 
                             requiredBaseEducations, 
                             vocationalAsIds, 
                             nonVocationalAsIds, 
                             providerAsIds);
+        
+        
+        if (los instanceof StandaloneLOS) {
+            StandaloneLOS uas = (StandaloneLOS)los;
+            for (Provider curAddProv : uas.getAdditionalProviders()) {
+                createProviderDocs(curAddProv,
+                                    lopSolr, 
+                                    requiredBaseEducations, 
+                                    vocationalAsIds, 
+                                    nonVocationalAsIds, 
+                                    providerAsIds);
+            }
+        }
        
         loSolr.add(docs);
     }
@@ -207,6 +220,7 @@ public class IndexerServiceImpl implements IndexerService {
                                     Set<String> vocationalAsIds,
                                     Set<String> nonVocationalAsIds,
                                     Set<String> providerAsIds) throws SolrServerException, IOException {
+        
         List<SolrInputDocument> providerDocs = Lists.newArrayList();
         if (provider != null) {
             SolrInputDocument providerDoc = new SolrInputDocument();
