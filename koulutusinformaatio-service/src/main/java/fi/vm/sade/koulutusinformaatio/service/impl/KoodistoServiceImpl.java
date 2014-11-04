@@ -23,6 +23,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
 import fi.vm.sade.koodisto.service.GenericFault;
 import fi.vm.sade.koodisto.service.types.SearchKoodisCriteriaType;
 import fi.vm.sade.koodisto.service.types.common.KoodiMetadataType;
@@ -34,6 +35,7 @@ import fi.vm.sade.koulutusinformaatio.domain.CodeUriAndVersion;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -438,9 +440,12 @@ public class KoodistoServiceImpl implements KoodistoService {
         Map<String, String> description = Maps.newHashMap();
         for (KoodiMetadataType koodiMetadataType : metadata) {
             String lang = koodiMetadataType.getKieli().value().toLowerCase();
-            name.put(lang, koodiMetadataType.getNimi());
-            shortName.put(lang, koodiMetadataType.getLyhytNimi());
-            description.put(lang, koodiMetadataType.getKuvaus());
+            String nameStr = koodiMetadataType.getNimi() != null ? koodiMetadataType.getNimi() : "";
+            name.put(lang, nameStr);
+            String shortNameStr = koodiMetadataType.getLyhytNimi() != null ? koodiMetadataType.getLyhytNimi() : "";
+            shortName.put(lang, shortNameStr);
+            String descrStr = koodiMetadataType.getKuvaus() != null ? koodiMetadataType.getKuvaus() : "";
+            description.put(lang, descrStr);
         }
         return new Code(koodiType.getKoodiArvo(), new I18nText(name), new I18nText(shortName), new I18nText(description), koodiType.getKoodiUri());
     }

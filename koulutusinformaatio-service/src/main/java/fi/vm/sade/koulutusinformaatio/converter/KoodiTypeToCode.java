@@ -38,9 +38,12 @@ public class KoodiTypeToCode implements Converter<KoodiType, Code> {
         Map<String, String> description = Maps.newHashMap();
         for (KoodiMetadataType koodiMetadataType : metadata) {
             String lang = koodiMetadataType.getKieli().value().toLowerCase();
-            name.put(lang, koodiMetadataType.getNimi());
-            shortName.put(lang, koodiMetadataType.getLyhytNimi());
-            description.put(lang, koodiMetadataType.getKuvaus());
+            String nameStr = koodiMetadataType.getNimi() != null ? koodiMetadataType.getNimi() : "";
+            name.put(lang, nameStr);
+            String shortNameStr = koodiMetadataType.getLyhytNimi() != null ? koodiMetadataType.getLyhytNimi() : "";
+            shortName.put(lang, shortNameStr);
+            String descrStr = koodiMetadataType.getKuvaus() != null ? koodiMetadataType.getKuvaus() : "";
+            description.put(lang, descrStr);
         }
         return new Code(koodiType.getKoodiArvo(), new I18nText(name), new I18nText(shortName), new I18nText(description), koodiType.getKoodiUri());
     }

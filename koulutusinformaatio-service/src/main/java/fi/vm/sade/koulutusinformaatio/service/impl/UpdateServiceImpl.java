@@ -139,12 +139,9 @@ public class UpdateServiceImpl implements UpdateService {
 
             for (HigherEducationLOS curLOS : higherEducations) {
                 LOG.debug("Saving highed education: " + curLOS.getId());
-                try {
+
                     indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                     this.educationDataUpdateService.save(curLOS);
-                } catch (Exception ex) {
-                    LOG.error("Problem saving higher education: " + curLOS);
-                }
             }
             LOG.debug("Higher educations saved.");
             
