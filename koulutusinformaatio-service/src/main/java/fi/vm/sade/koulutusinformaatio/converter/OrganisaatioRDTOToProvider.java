@@ -100,9 +100,10 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
     @Override
     public Provider convert(OrganisaatioRDTO o) {
         Provider p = null;
-        try {
+        //try {
             p = new Provider();
             p.setId(o.getOid());
+            try {
             p.setName(new I18nText(o.getNimi()));
             LOG.debug("Getting postal address for organisation: " + o.getOid());
             p.setPostalAddress(getLocalizedAddress(o.getYhteystiedot(), ADDRESS_DATA_TYPE_POSTAL, ADDRESS_DATA_TYPE_FOREIGN_POSTAL));
@@ -135,8 +136,9 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
             }
             p.setApplicationOffice(getApplicationOffice(o.getMetadata()));
             p.setType(koodistoService.searchFirst(o.getOppilaitosTyyppiUri()));
-        } catch (KoodistoException e) {
-            throw new KIConversionException("Conversion failed - " + e.getMessage());
+        } catch (Exception e) {
+            LOG.error("Problem creatig organisaatio: " + o.getOid());
+            throw new KIConversionException("Conversion failed - " + e.getMessage() + ", organisaatio: " + o.getOid());
         }
         return p;
     }

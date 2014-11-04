@@ -113,8 +113,11 @@ public class UpdateServiceImpl implements UpdateService {
                     try {
                         specifications = tarjontaService.findParentLearningOpportunity(loOid);
                     } catch (TarjontaParseException e) {
-                        LOG.warn(String.format("Exception while updating parent learning opportunity %s: %s", loOid, e.getMessage()));
+                        LOG.error(String.format("Exception while updating parent learning opportunity %s: %s", loOid, e.getMessage()));
                         continue;
+                    }
+                    if (specifications != null) {
+                        LOG.error("Specifications foud: " + specifications.size());
                     }
                     for (LOS spec : specifications) {
                         this.indexerService.addLearningOpportunitySpecification(spec, loUpdateSolr, lopUpdateSolr);
@@ -126,20 +129,25 @@ public class UpdateServiceImpl implements UpdateService {
 
 
 
+            LOG.error("Now indexing higher educations");
                 
             List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
             LOG.debug("Found higher educations: " + higherEducations.size());
 
             for (HigherEducationLOS curLOS : higherEducations) {
                 LOG.debug("Saving highed education: " + curLOS.getId());
+                try {
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 this.educationDataUpdateService.save(curLOS);
+                } catch (Exception ex) {
+                    LOG.error("Problem saving higher education: " + curLOS);
+                }
             }
             LOG.debug("Higher educations saved.");
 
             
             List<AdultUpperSecondaryLOS> adultUpperSecondaries = this.tarjontaService.findAdultUpperSecondaries();
-            LOG.debug("Found adult upper secondary educations: " + adultUpperSecondaries.size());
+            LOG.error("Found adult upper secondary educations: " + adultUpperSecondaries.size());
             
             for (AdultUpperSecondaryLOS curLOS : adultUpperSecondaries) {
                 LOG.debug("Saving adult education: " + curLOS.getId());
