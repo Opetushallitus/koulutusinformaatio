@@ -130,15 +130,14 @@ public class UpdateServiceImpl implements UpdateService {
 
 
             LOG.error("Now indexing higher educations");
-                
             List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
             LOG.debug("Found higher educations: " + higherEducations.size());
 
             for (HigherEducationLOS curLOS : higherEducations) {
                 LOG.debug("Saving highed education: " + curLOS.getId());
                 try {
-                indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
-                this.educationDataUpdateService.save(curLOS);
+                    indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+                    this.educationDataUpdateService.save(curLOS);
                 } catch (Exception ex) {
                     LOG.error("Problem saving higher education: " + curLOS);
                 }

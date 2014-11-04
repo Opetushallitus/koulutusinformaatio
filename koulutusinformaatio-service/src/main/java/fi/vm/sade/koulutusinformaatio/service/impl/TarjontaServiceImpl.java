@@ -196,10 +196,14 @@ public class TarjontaServiceImpl implements TarjontaService {
                     parentOids.add(los.getKomoOid());
                     updateAOLosReferences(los, aoToEducationsMap);
 
-                } catch (Exception ex) {
+                } catch (TarjontaParseException ex) {
                     LOG.error("Problem with higher eductaion: " + koulutusDTO.getOid());
                     continue;
+                } catch (KoodistoException ex) {
+                    LOG.error("Problem with higher education: " + koulutusDTO.getOid());
+                    continue;
                 }
+               
 
             }
         }
