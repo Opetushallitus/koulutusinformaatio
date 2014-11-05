@@ -93,8 +93,7 @@ public class TarjontaServiceImpl implements TarjontaService {
             return loDirector.constructLearningOpportunities(builder);
 
         } catch (KoodistoException e) {
-            e.printStackTrace();
-            LOG.error("Problem creating parent LOS: " + oid + ", " + e.getMessage());
+            LOG.error("Problem creating parent LOS: " + oid, e);
             throw new TarjontaParseException("An error occurred while building parent LOS " + oid + " with koodisto: " + e.getMessage());
         }
         catch (WebApplicationException e) {
@@ -223,8 +222,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                     LOG.warn("Problem with higher eductaion: " + koulutusDTO.getOid() + ", " + ex.getMessage());
                     continue;
                 } catch (KoodistoException ex) {
-                    ex.printStackTrace();
-                    LOG.error("Problem with higher education: " + koulutusDTO.getOid() + ", " + ex.getMessage());
+                    LOG.error("Problem with higher education: " + koulutusDTO.getOid(), ex);
                     continue;
                 }
                
