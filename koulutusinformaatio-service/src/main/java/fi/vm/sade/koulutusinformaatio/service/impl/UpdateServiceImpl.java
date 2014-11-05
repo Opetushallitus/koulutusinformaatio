@@ -124,7 +124,7 @@ public class UpdateServiceImpl implements UpdateService {
                         continue;
                     }
                     if (specifications != null) {
-                        LOG.error("Specifications foud: " + specifications.size());
+                        LOG.debug("Specifications foud: " + specifications.size());
                     }
                     for (LOS spec : specifications) {
                         this.indexerService.addLearningOpportunitySpecification(spec, loUpdateSolr, lopUpdateSolr);
@@ -146,7 +146,7 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.debug("Higher educations saved.");
 
             List<AdultUpperSecondaryLOS> adultUpperSecondaries = this.tarjontaService.findAdultUpperSecondaries();
-            LOG.error("Found adult upper secondary educations: " + adultUpperSecondaries.size());
+            LOG.debug("Found adult upper secondary educations: " + adultUpperSecondaries.size());
 
             for (AdultUpperSecondaryLOS curLOS : adultUpperSecondaries) {
                 LOG.debug("Saving adult education: " + curLOS.getId());
