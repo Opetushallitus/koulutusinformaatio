@@ -93,6 +93,8 @@ public class TarjontaServiceImpl implements TarjontaService {
             return loDirector.constructLearningOpportunities(builder);
 
         } catch (KoodistoException e) {
+            e.printStackTrace();
+            LOG.error("Problem creating parent LOS: " + oid + ", " + e.getMessage());
             throw new TarjontaParseException("An error occurred while building parent LOS " + oid + " with koodisto: " + e.getMessage());
         }
         catch (WebApplicationException e) {
