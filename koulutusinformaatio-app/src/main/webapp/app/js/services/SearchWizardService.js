@@ -28,7 +28,9 @@ service('SelectionBuilder', ['SearchWizardConstants', 'TranslationService', func
         this.prerequisite = prerequisite;
 
         // label of selection, used in UI
-        this.label = TranslationService.getTranslation('searchwizard:' + opt + '-' + code );
+        var labelKey = 'searchwizard:' + opt + '-' + code;
+        labelKey += kind ? ('-' + kind.charAt(kind.length-1)) : '';
+        this.label = TranslationService.getTranslation(labelKey);
     }
 
     var buildPhaseOneSelection = function(code) {
@@ -176,8 +178,8 @@ service('SearchWizardService', ['SearchWizardConstants', 'SelectionBuilder',
                     return [
                         SelectionBuilder.buildEducationTypeSelection('et01.03.01', opt, SearchWizardConstants.educationKind.NUORTEN, SearchWizardConstants.prerequisites.YO),   // Ammatillinen perustutkinto kolmivuotisena
                         SelectionBuilder.buildEducationTypeSelection('et01.03.01', opt, SearchWizardConstants.educationKind.AIKUIS),                                            // Ammatillinen perustutkinto aikuiskoulutuksena
-                        SelectionBuilder.buildEducationTypeSelection('et01.03.01', opt, SearchWizardConstants.educationKind.AIKUIS),                                            // Ammattitutkinto aikuiskoulutuksena
-                        SelectionBuilder.buildEducationTypeSelection('et01.03.01', opt, SearchWizardConstants.educationKind.AIKUIS)                                             // Erikoisammattitutkinto aikuiskoulutuksena
+                        SelectionBuilder.buildEducationTypeSelection('et01.03.03', opt, SearchWizardConstants.educationKind.AIKUIS),                                            // Ammattitutkinto aikuiskoulutuksena
+                        SelectionBuilder.buildEducationTypeSelection('et01.03.04', opt, SearchWizardConstants.educationKind.AIKUIS)                                             // Erikoisammattitutkinto aikuiskoulutuksena
                     ];
                 } else if (opt === SearchWizardConstants.phaseOneOpts.MM_AIKU) {
                     return [
