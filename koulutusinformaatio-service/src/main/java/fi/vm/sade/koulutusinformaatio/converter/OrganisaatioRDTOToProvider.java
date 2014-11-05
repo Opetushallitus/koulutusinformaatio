@@ -112,16 +112,15 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
         try {
             p = new Provider();
             p.setId(o.getOid());
-            //try {
             p.setName(new I18nText(o.getNimi()));
-            LOG.error("Getting postal address for organisation: " + o.getOid());
+            LOG.debug("Getting postal address for organisation: " + o.getOid());
             p.setPostalAddress(getLocalizedAddress(o.getYhteystiedot(), ADDRESS_DATA_TYPE_POSTAL, ADDRESS_DATA_TYPE_FOREIGN_POSTAL));
             p.setVisitingAddress(getLocalizedAddress(o.getYhteystiedot(), ADDRESS_DATA_TYPE_VISIT, ADDRESS_DATA_TYPE_FOREIGN_VISIT));
             p.setEmail(getSimpleContactInfo(o.getYhteystiedot(), DATA_TYPE_EMAIL));
             p.setFax(getPhoneNumber(o.getYhteystiedot(), DATA_TYPE_FAX));
             p.setPhone(getPhoneNumber(o.getYhteystiedot(), DATA_TYPE_PHONE));
             p.setWebPage(getSimpleContactInfo(o.getYhteystiedot(), DATA_TYPE_WWW));
-            LOG.error("Setting descriptions: " + o.getOid());
+            LOG.debug("Setting descriptions: " + o.getOid());
             p.setDescription(getDataValue(o.getMetadata(), METADATA_YLEISKUVAUS));
             p.setHealthcare(getDataValue(o.getMetadata(), METADATA_TERVEYDENHUOLTOPALVELUT));
             p.setAccessibility(getDataValue(o.getMetadata(), METADATA_ESTEETTOMYYS));
@@ -134,7 +133,7 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
             p.setFinancingStudies(getDataValue(o.getMetadata(), METADATA_OPINTOJEN_RAHOITUS));
             p.setInsurances(getDataValue(o.getMetadata(), METADATA_TIETOA_VAKUUTUKSISTA));
             p.setLeisureServices(getDataValue(o.getMetadata(), METADATA_VAPAA_AJAN_PALVELUT));
-            LOG.error("Got descriptions: " + o.getOid());
+            LOG.debug("Got descriptions: " + o.getOid());
             p.setSocial(getSocialLinks(o.getMetadata(), SOCIAL_LINKS));
             p.setPicture(getPicture(o));
             p.setAthleteEducation(isAthleteEducation(o.getToimipistekoodi()));
@@ -148,7 +147,7 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
             p.setType(koodistoService.searchFirst(o.getOppilaitosTyyppiUri()));
 
         } catch (Exception e) {
-            LOG.error("Problem creatig organisaatio: " + o.getOid());
+            LOG.error("Problem creatig organisaatio: " + o.getOid() + ", " + e.getMessage());
             e.printStackTrace();
             throw new KIConversionException("Conversion failed - " + e.getMessage() + ", organisaatio: " + o.getOid());
         }

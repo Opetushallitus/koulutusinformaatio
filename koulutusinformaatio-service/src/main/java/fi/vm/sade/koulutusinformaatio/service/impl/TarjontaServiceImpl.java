@@ -218,10 +218,11 @@ public class TarjontaServiceImpl implements TarjontaService {
                     updateAOLosReferences(los, aoToEducationsMap);
 
                 } catch (TarjontaParseException ex) {
-                    LOG.error("Problem with higher eductaion: " + koulutusDTO.getOid());
+                    LOG.warn("Problem with higher eductaion: " + koulutusDTO.getOid() + ", " + ex.getMessage());
                     continue;
                 } catch (KoodistoException ex) {
-                    LOG.error("Problem with higher education: " + koulutusDTO.getOid());
+                    ex.printStackTrace();
+                    LOG.error("Problem with higher education: " + koulutusDTO.getOid() + ", " + ex.getMessage());
                     continue;
                 }
                

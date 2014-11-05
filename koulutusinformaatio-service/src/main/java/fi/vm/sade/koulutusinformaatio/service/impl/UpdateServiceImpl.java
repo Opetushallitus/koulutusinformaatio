@@ -110,10 +110,10 @@ public class UpdateServiceImpl implements UpdateService {
             int index = 0;
 
             while (count >= MAX_RESULTS) {
-            LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
-            List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
-            count = loOids.size();
-            index += count;
+                LOG.debug("Searching parent learning opportunity oids count: " + count + ", start index: " + index);
+                List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
+                count = loOids.size();
+                index += count;
 
                 for (String loOid : loOids) {
                     List<LOS> specifications = null;
@@ -140,22 +140,22 @@ public class UpdateServiceImpl implements UpdateService {
             for (HigherEducationLOS curLOS : higherEducations) {
                 LOG.debug("Saving highed education: " + curLOS.getId());
 
-                    indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
-                    this.educationDataUpdateService.save(curLOS);
+                indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
+                this.educationDataUpdateService.save(curLOS);
             }
             LOG.debug("Higher educations saved.");
-            
+
             List<AdultUpperSecondaryLOS> adultUpperSecondaries = this.tarjontaService.findAdultUpperSecondaries();
             LOG.error("Found adult upper secondary educations: " + adultUpperSecondaries.size());
-            
+
             for (AdultUpperSecondaryLOS curLOS : adultUpperSecondaries) {
                 LOG.debug("Saving adult education: " + curLOS.getId());
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 this.educationDataUpdateService.save(curLOS);
             }
-            
-            
-            
+
+
+
             List<CompetenceBasedQualificationParentLOS> adultVocationals = this.tarjontaService.findAdultVocationals();
             LOG.debug("Indexed " + adultVocationals.size() + "adult comptence based qualifactions");
             for (CompetenceBasedQualificationParentLOS curLOS : adultVocationals) {
@@ -163,13 +163,13 @@ public class UpdateServiceImpl implements UpdateService {
                 indexToSolr(curLOS, loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
                 this.educationDataUpdateService.save(curLOS);
             }
-            
+
             this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);  
             LOG.debug("Starting provider indexing");
             indexProviders(lopUpdateSolr, loUpdateSolr, locationUpdateSolr);
             LOG.debug("Providers indexed");
-            
-            
+
+
             List<Code> edTypeCodes = this.tarjontaService.getEdTypeCodes();
             indexerService.addEdTypeCodes(edTypeCodes, loUpdateSolr);
             LOG.debug("Education types indexded.");
@@ -178,7 +178,7 @@ public class UpdateServiceImpl implements UpdateService {
             LOG.debug("Got locations");
             indexerService.addLocations(locations, locationUpdateSolr);
             LOG.debug("Added locations");
-            
+
             List<CalendarApplicationSystem> applicationSystems = this.tarjontaService.findApplicationSystemsForCalendar();
             for (CalendarApplicationSystem curAs : applicationSystems) {
                 LOG.debug("Indexing application system: " + curAs.getId());
@@ -186,12 +186,12 @@ public class UpdateServiceImpl implements UpdateService {
             }
             this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
             LOG.debug("Application systems indexed");
-            
+
             List<Article> articles = this.articleService.fetchArticles();
             LOG.debug("Articles fetched");
             indexerService.addArticles(loUpdateSolr, articles);
             LOG.debug("Articles indexed to solr");
-            
+
             indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, true);
             LOG.debug("Committed to solr");
             this.transactionManager.commit(loUpdateSolr, lopUpdateSolr, locationUpdateSolr);
@@ -218,7 +218,7 @@ public class UpdateServiceImpl implements UpdateService {
      * 
      */
     private void indexProviders(HttpSolrServer lopUpdateSolr, HttpSolrServer loUpdateSolr, HttpSolrServer locationUpdateSolr) throws MalformedURLException, ResourceNotFoundException, IOException, KoodistoException, SolrServerException {
-        
+
         List<OrganisaatioPerustieto> orgBasics = this.providerService.fetchOpplaitokset();
         LOG.debug("Oppilaitokset fetched");
         createAndSaveProviders(orgBasics, lopUpdateSolr);
@@ -256,14 +256,14 @@ public class UpdateServiceImpl implements UpdateService {
             }
         }
     }
-    
-    
-    
+
+
+
     private void indexToSolr(CompetenceBasedQualificationParentLOS curLOS,
             HttpSolrServer loUpdateSolr, HttpSolrServer lopUpdateSolr, HttpSolrServer locationUpdateSolr) throws Exception {
         this.indexerService.addLearningOpportunitySpecification(curLOS, loUpdateSolr, lopUpdateSolr);
         this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
-        
+
     }
 
     @Override
@@ -279,35 +279,35 @@ public class UpdateServiceImpl implements UpdateService {
     @Override
     @Async
     public void updateArticles() throws Exception {
-        
+
         if (this.running) {
             return;
         }
-        
+
         LOG.info("Indexing articles");
-        
+
         try {
             running = true;
             runningSince = System.currentTimeMillis();
             this.indexerService.removeArticles();
-            
+
             List<Article> articles = this.articleService.fetchArticles();
             LOG.debug("Articles fetched");
             indexerService.addArticles(articles);
-            
+
             //educationDataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, "SUCCESS"));
             LOG.info("Articles succesfully indexed");
         } catch (Exception ex) {
             indexerService.rollbackIncrementalSolrChanges();
             educationDataUpdateService.save(new DataStatus(new Date(), System.currentTimeMillis() - runningSince, String.format("FAIL: Article indexing %s", ex.getMessage())));
             LOG.error("Article update failed ", ex);
-            
+
         } finally {
             running = false;
             runningSince = 0;
         }
-        
-        
+
+
     }
 
 }
