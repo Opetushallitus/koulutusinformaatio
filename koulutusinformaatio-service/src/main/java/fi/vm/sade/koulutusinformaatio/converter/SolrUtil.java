@@ -95,6 +95,7 @@ public final class SolrUtil {
 
     private static final String FALLBACK_LANG = "fi";
     private static final String TYPE_FACET = "FASETTI";
+    public static final String TYPE_ORGANISATION = "ORGANISAATIO";
     
 
     public static final Integer AS_COUNT = 10;
@@ -331,9 +332,9 @@ public final class SolrUtil {
         public static final String NAME_DISPLAY_FI = "name_fi_ss";
         public static final String NAME_DISPLAY_SV = "name_sv_ss";
         public static final String NAME_DISPLAY_EN = "name_en_ss";
-        public static final String LOP_NAME_DISPLAY_FI = "lopName_fi_ssort";
-        public static final String LOP_NAME_DISPLAY_SV = "lopName_sv_ssort";
-        public static final String LOP_NAME_DISPLAY_EN = "lopName_en_ssort";
+        public static final String LOP_NAME_DISPLAY_FI = "lopName_fi_str_display";
+        public static final String LOP_NAME_DISPLAY_SV = "lopName_sv_str_display";
+        public static final String LOP_NAME_DISPLAY_EN = "lopName_en_str_display";
         public static final String HOMEPLACE_DISPLAY_FI = "homeplace_fi_ss";
         public static final String HOMEPLACE_DISPLAY_SV = "homeplace_sv_ss";
         public static final String HOMEPLACE_DISPLAY_EN = "homeplace_en_ss";
@@ -413,6 +414,24 @@ public final class SolrUtil {
         public static final String TYPE_FI = "type_fi";
         public static final String TYPE_SV = "type_sv";
         public static final String TYPE_EN = "type_en";
+        public static final String ID = "id";
+        public static final String TYPE = "type"; 
+        public static final String NAME_FI = "name_fi";
+        public static final String NAME_SV = "name_sv";
+        public static final String NAME_EN = "name_en";
+        public static final String TEXT_FI = "text_fi";
+        public static final String TEXT_SV = "text_sv";
+        public static final String TEXT_EN = "text_en";
+        public static final String REQUIRED_BASE_EDUCATIONS = "requiredBaseEducations";
+        public static final String AS_IDS = "asIds";
+        public static final String VOCATIONAL_AS_IDS = "vocationalAsIds";
+        public static final String NON_VOCATIONAL_AS_IDS = "nonVocationalAsIds";
+        public static final String OL_TYPE = "oltype_ffm";
+        public static final String ADDRESS_EN = "address_en_str_display";
+        public static final String ADDRESS_SV = "address_sv_str_display";
+        public static final String ADDRESS_FI = "address_fi_str_display";
+        
+        
     }
 
     public static class SolrConstants {

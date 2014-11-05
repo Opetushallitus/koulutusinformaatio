@@ -143,6 +143,14 @@ public class LearningOpportunityServiceImplTest {
         heLOS.setFormOfTeaching(Lists.newArrayList(createI18Text("FormOfTeaching"), createI18Text("FormOfTeaching2")));
         heLOS.setTeachingLanguages(Lists.newArrayList(c));
         
+        Provider mainProvider = new Provider();
+        mainProvider.setId("mainProvider");
+        heLOS.setProvider(mainProvider);
+        
+        Provider additionalProvider = new Provider();
+        additionalProvider.setId("additionalProvider");
+        
+        heLOS.setAdditionalProviders(Arrays.asList(additionalProvider));
         
         when(educationDataQueryService.getHigherEducationLearningOpportunity(heLOS.getId())).thenReturn(heLOS);
         when(previewService.previewHigherEducationLearningOpportunity(heLOS.getId())).thenReturn(heLOS);
@@ -175,7 +183,28 @@ public class LearningOpportunityServiceImplTest {
         
         when(educationDataQueryService.findLearningOpportunitiesByProviderId("provId")).thenReturn(losses);
 
+        
+        Provider provider = new Provider();
+        provider.setId("prov111");
+        provider.setAccessibility(createI18Text("accessibility"));
+        provider.setDescription(createI18Text("description"));
+        provider.setEmail(createI18Text("has@email.fi"));
+        provider.setHomePlace(createI18Text("Vantaa"));
+        provider.setName(createI18Text("prov111"));
+        
+        when(educationDataQueryService.getProvider("prov111")).thenReturn(provider);
+        
         learningOpportunityService = new LearningOpportunityServiceImpl(educationDataQueryService, previewService, modelMapper);
+    }
+    
+    /**
+     * Tests the fetching of provider from learning opportunity service.
+     * @throws ResourceNotFoundException
+     */
+    @Test
+    public void testGetProvider() throws ResourceNotFoundException {
+        LearningOpportunityProviderDTO prov = learningOpportunityService.getProvider("prov111", "fi");
+        assertEquals("prov111", prov.getId());
     }
 
     @Test
@@ -243,6 +272,21 @@ public class LearningOpportunityServiceImplTest {
     	assertEquals("opintoviikkoa fi", losDto.getCreditUnit());
     }
     
+    /**
+     * Testing learnin opportunity with multiple providers
+     * @throws ResourceNotFoundException
+     */
+    @Test
+    public void testMultipleProviderLearningOpportunity() throws ResourceNotFoundException {
+        HigherEducationLOSDTO losDto = learningOpportunityService.getHigherEducationLearningOpportunity("1.3.2.4He");
+        assertEquals("1.3.2.4He", losDto.getId());
+        assertEquals("mainProvider", losDto.getProvider().getId());
+        assertEquals(1, losDto.getAdditionalProviders().size());
+        assertEquals("additionalProvider", losDto.getAdditionalProviders().get(0).getId());
+    }
+    
+    
+    
     @Test
     public void testetHigherEducationLearningOpportunitySv() throws ResourceNotFoundException {
     	HigherEducationLOSDTO losDto = learningOpportunityService.getHigherEducationLearningOpportunity("1.3.2.4He", "sv", "sv");
@@ -256,6 +300,8 @@ public class LearningOpportunityServiceImplTest {
     	assertEquals("1.3.2.4He", losDto.getId());
     	assertEquals("opintoviikkoa en", losDto.getCreditUnit());
     }
+    
+    
     
     @Test
     public void testPreviewLearningOpportunity() throws ResourceNotFoundException {

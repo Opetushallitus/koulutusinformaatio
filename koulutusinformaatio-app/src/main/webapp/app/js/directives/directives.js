@@ -187,66 +187,89 @@ directive('kiAbsoluteLink', function() {
 /**
  *  Creates and controls the breadcrumb
  */
- directive('kiBreadcrumb', ['SearchService', 'Config', 'FilterService', 'TranslationService', function(SearchService, Config, FilterService, TranslationService) {
+directive('kiBreadcrumb', ['SearchService', 'Config', 'FilterService', 'TranslationService', function(SearchService, Config, FilterService, TranslationService) {
     return {
         restrict: 'E,A',
         templateUrl: 'templates/breadcrumb.html',
-        link: function(scope, element, attrs) {
+        scope: {
+            parent: '=',
+            lo: '=',
+            provider: '=',
+            loType: '=',
+            kiBreadcrumb: '@'
+        },
+        link: function($scope, element, attrs) {
             var home = 'home',
                 root = TranslationService.getTranslation('breadcrumb-search-results'),
                 goToTooltip = TranslationService.getTranslation('breadcrumb-go-to-page') + ' ',
                 homeTooltip = TranslationService.getTranslation('tooltip:to-frontpage'),
                 parent,
-                child,
+                lo,
                 provider;
 
-            scope.$watch('parent.name', function(data) {
-                parent = data;
+            $scope.$watch('parent', function(data) {
+                if (data && $scope.loType !== 'lukio' && $scope.loType !== 'erityisopetus') {
+                    parent = {
+                        name: data.name,
+                        linkHref: '#!/tutkinto/' + data.id,
+                        tooltip: goToTooltip + data.name
+                    };
+                }
                 update();
             }, true);
 
-            scope.$watch('lo.name', function(data) {
-                child = data;
+            $scope.$watch('lo', function(data) {
+                if (data) {
+                    if ($scope.loType === 'lukio') {
+                        lo = {
+                            name: data.provider.name + ', ' + data.name
+                        }
+                    } else {
+                        lo = {
+                            name: data.name
+                        }
+                    }
+                }
                 update();
             }, true);
 
-            scope.$watch('provider.name', function(data) {
-                provider = data;
+            $scope.$watch('provider', function(data) {
+                if (data) {
+                    provider = {
+                        name: data.name
+                    }
+                }
                 update();
             }, true);
 
-            attrs.$observe('kiBreadcrumb', function(data) {
-                root = TranslationService.getTranslation(data);
+            
+            $scope.$watch('kiBreadcrumb', function(data) {
+                root = {
+                    name: TranslationService.getTranslation(data),
+                    linkHref: '#!/haku/' + SearchService.getTerm() + '?' + FilterService.getParams(),
+                    tooltip: goToTooltip + root
+                }
                 update();
             });
+            
 
             var update = function() {
-                scope.breadcrumbItems = [];
+                $scope.breadcrumbItems = [];
                 pushItem({name: home, linkHref: Config.get('frontpageUrl'), tooltip: homeTooltip });
-                pushItem({name: root, linkHref: '#!/haku/' + SearchService.getTerm() + '?' + FilterService.getParams(), tooltip: goToTooltip + root });
-
-                if (scope.parent && (scope.loType !== 'lukio' && scope.loType !== 'erityisopetus')) {
-                    pushItem({name: parent, linkHref: '#!/tutkinto/' + scope.parent.id, tooltip: goToTooltip + parent });
-                }
-
-                if (scope.loType === 'lukio') {
-                    pushItem({name: provider + ', ' + child});
-                } else {
-                    pushItem({name: child});
-                }
+                pushItem(root);
+                pushItem(parent);
+                pushItem(lo);
+                pushItem(provider);
             };
 
             var pushItem = function(item) {
-                if (item.name) {
-                    scope.breadcrumbItems.push(item);
+                if (item) {
+                    $scope.breadcrumbItems.push(item);
                 }
             };
         }
     };
 }]).
-
-
-
 
 /**
  *  Creates a human readable date from timestamp
@@ -467,7 +490,8 @@ directive('kiAoApplicationTime', function() {
             startdate: '=',
             enddate: '=',
             hakutapa: '=',
-            label: '@'
+            label: '@',
+            periodName: '='
         },
         controller: function($scope) {
             $scope.isJatkuva = function() {

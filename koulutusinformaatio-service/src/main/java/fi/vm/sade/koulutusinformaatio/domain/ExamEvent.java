@@ -27,6 +27,7 @@ public class ExamEvent {
     private Date end;
     private String description;
     private Address address;
+    private boolean timeIncluded;
 
     public Date getStart() {
         return start;
@@ -58,5 +59,13 @@ public class ExamEvent {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public boolean isTimeIncluded() {
+        return timeIncluded;
+    }
+
+    public void setTimeIncluded(boolean timeIncluded) {
+        this.timeIncluded = timeIncluded;
     }
 }

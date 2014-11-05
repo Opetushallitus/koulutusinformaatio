@@ -2,13 +2,12 @@
     <li>
     	<h2>{{ao.name}}</h2>
     </li>
-    <li class="text-muted">
+    <li class="text-muted" data-ng-if="ao.startingQuota > 0">
     	<span data-ki-i18n="starting-quota" data-show-colon="true"></span>
     	<span>{{ao.startingQuota}}</span>
     </li>
     <li class="text-muted">
-        <span data-ki-i18n="application-period" data-show-colon="true"></span>
-        <span data-ki-timestamp="{{ao.applicationStartDate}}"></span> &ndash; <span data-ki-timestamp="{{ao.applicationEndDate}}"></span>
+        <div data-ki-ao-application-time data-startdate="ao.applicationStartDate" data-enddate="ao.applicationEndDate" data-hakutapa="as.hakutapa" data-label="application-period" data-period-name="ao.applicationPeriodName"></div>
     </li>
 </ul>
 <ul class="inside">

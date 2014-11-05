@@ -100,6 +100,8 @@ public final class AdultVocationalParentLOSToDTO {
                 dto.getApplicationSystems().add(asDTO);
             }
         }
+        
+        dto.setType(los.getEdtUri());
 
         if (los.getThemes() != null) {
             dto.setThemes(CodeToDTO.convertCodesDistinct(los.getThemes(), uiLang));

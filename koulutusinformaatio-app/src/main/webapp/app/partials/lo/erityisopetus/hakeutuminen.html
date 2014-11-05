@@ -6,7 +6,7 @@
             <div>
                 <h2>{{ao.name}}</h2>
                 <div class="margin-vertical-default">
-                    <span>{{as.name}}</span> (<span data-ki-timestamp="{{ao.applicationStartDate}}"></span> - <span data-ki-timestamp="{{ao.applicationEndDate}}"></span>)
+                    <span>{{as.name}}</span> (<span data-ki-ao-application-time data-startdate="ao.applicationStartDate" data-enddate="ao.applicationEndDate" data-hakutapa="as.hakutapa" data-period-name="ao.applicationPeriodName"></span>)
                 </div>
             </div>
             <div data-ki-collapse-text-block data-title="selection-criteria" data-content="ao.selectionCriteria"></div>
@@ -20,6 +20,8 @@
             <hr/>
         </div>
     </div>
-    <div data-ki-info-center-address></div>
+    <div data-ki-collapse-block data-title="info-center" data-content="provider.applicationOffice">
+        <div data-ki-info-center-address></div>
+    </div>
 </section>
 <div class="col-md-5" data-ng-class="applyFormClass" data-ng-include data-src="partialCommonUrl + 'as/as.html'" data-ng-controller="ApplicationCtrl"></div>

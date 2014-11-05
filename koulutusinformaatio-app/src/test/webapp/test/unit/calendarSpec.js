@@ -6,6 +6,25 @@ describe('ki', function() {
         ApplicationSystemCalendar.calendar('selector', 'fi');
     })
 
+    describe('ApplicationSystemGrouper', function() {
+
+        var date1 = (new Date(2014, 2, 1));
+        var date2 = (new Date(2014, 10, 1));
+
+        var as1 = {
+                nextApplicationPeriodStarts: date1.getTime()
+            },
+            as2 = {
+                nextApplicationPeriodStarts: date2.getTime()
+            }
+
+        it('should group and sort application systems with one digit month value', function() {
+            expect( ApplicationSystemCalendar.ApplicationSystemGrouper.group(as1) ).toEqual('201402');
+            expect( ApplicationSystemCalendar.ApplicationSystemGrouper.group(as2) ).toEqual('201410');
+        })
+
+    });
+
     describe('Utils', function() {
 
         describe('isInThePast', function() {

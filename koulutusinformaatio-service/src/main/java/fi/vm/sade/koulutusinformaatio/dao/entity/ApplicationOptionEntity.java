@@ -73,6 +73,8 @@ public class ApplicationOptionEntity {
     private Date applicationStartDate;
     private Date applicationEndDate;
     @Embedded
+    private I18nTextEntity applicationPeriodName;
+    @Embedded
     private List<ApplicationOptionAttachmentEntity> attachments;
     @Embedded
     private List<EmphasizedSubjectEntity> emphasizedSubjects;
@@ -407,6 +409,14 @@ public class ApplicationOptionEntity {
         this.organizationGroups = organizationGroups;
     }
 
+    public I18nTextEntity getApplicationPeriodName() {
+        return applicationPeriodName;
+    }
+
+    public void setApplicationPeriodName(I18nTextEntity applicationPeriodName) {
+        this.applicationPeriodName = applicationPeriodName;
+    }
+
     public I18nTextEntity getStartingQuotaDescription() {
         return startingQuotaDescription;
     }
@@ -414,5 +424,4 @@ public class ApplicationOptionEntity {
     public void setStartingQuotaDescription(I18nTextEntity startingQuotaDescription) {
         this.startingQuotaDescription = startingQuotaDescription;
     }
-
 }

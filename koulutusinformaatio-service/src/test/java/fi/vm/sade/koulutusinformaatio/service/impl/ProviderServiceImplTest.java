@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
+
 import fi.vm.sade.koulutusinformaatio.converter.OrganisaatioRDTOToProvider;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.I18nText;
@@ -25,8 +26,12 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
+import fi.vm.sade.koulutusinformaatio.service.ProviderService;
 import fi.vm.sade.koulutusinformaatio.util.TestUtil;
+import fi.vm.sade.organisaatio.api.search.OrganisaatioHakutulos;
+import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
+
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Before;
 import org.junit.Rule;
@@ -35,7 +40,10 @@ import org.mockito.ArgumentMatcher;
 import org.springframework.core.convert.ConversionService;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.Assert.assertEquals;
@@ -69,7 +77,7 @@ public class ProviderServiceImplTest {
     public WireMockRule wireMockRule = new WireMockRule(PORT);
 
     @Before
-    public void setup() throws IOException, KoodistoException {
+    public void setup() throws IOException, KoodistoException, ResourceNotFoundException {
         stubFor(get(urlEqualTo("/" + CHILD_ORGANISAATIO_OID))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -100,7 +108,8 @@ public class ProviderServiceImplTest {
         when(conversionService.convert(argThat(new IsParentOrganisaatio()), eq(Provider.class))).thenReturn(parentProvider);
 
         OrganisaatioRawService organisaatioRawService = new OrganisaatioRawServiceImpl(BASE_URL);
-        service = new ProviderServiceImpl(conversionService, organisaatioRawService);
+        service = new ProviderServiceImpl(conversionService, organisaatioRawService, koodistoService);
+        
     }
 
     @Test
@@ -122,6 +131,40 @@ public class ProviderServiceImplTest {
         assertEquals("ruokailu", p.getDining().getTranslations().get("fi"));
         assertEquals("kustannukset", p.getLivingExpenses().getTranslations().get("fi"));
     }
+    
+    /**
+     * 
+     * Tests fetching of organizations with type Oppilaitos from organisaatio service.
+     * 
+     * @throws MalformedURLException
+     * @throws ResourceNotFoundException
+     * @throws IOException
+     */
+    @Test
+    public void testFetchOppilaitokset() throws MalformedURLException, ResourceNotFoundException, IOException {
+        
+        ProviderService service = prepareWithMockRawService();
+        List<OrganisaatioPerustieto> result = service.fetchOpplaitokset();
+        assertEquals(1, result.size());
+        assertEquals("1.1.1.oppilaitos", result.get(0).getOid());
+    }
+    
+    /**
+     * 
+     * Tests fetching of organizations with type Toimipiste from organisaatio service.
+     * 
+     * @throws MalformedURLException
+     * @throws ResourceNotFoundException
+     * @throws IOException
+     */
+    @Test
+    public void testFetchToimipisteet() throws MalformedURLException, ResourceNotFoundException, IOException {
+        
+        ProviderService service = prepareWithMockRawService();
+        List<OrganisaatioPerustieto> result = service.fetchToimipisteet();
+        assertEquals(1, result.size());
+        assertEquals("1.1.1.toimipiste", result.get(0).getOid());
+    }
 
     class IsChildOrganisaatio extends ArgumentMatcher<OrganisaatioRDTO> {
         @Override
@@ -135,6 +178,33 @@ public class ProviderServiceImplTest {
         public boolean matches(Object o) {
             return o != null && ((OrganisaatioRDTO) o).getOid().equals(PARENT_ORGANISAATIO_OID);
         }
+    }
+    
+    /*
+     * Prepares a ProviderServiceImpl with a mock OrganisaatioRawService.
+     */
+    private ProviderServiceImpl prepareWithMockRawService() throws ResourceNotFoundException {
+        KoodistoService koodistoService = mock(KoodistoService.class);
+        ConversionService conversionService = mock(ConversionService.class);
+        OrganisaatioRawService organisaatioRawService = mock(OrganisaatioRawService.class);
+        
+        OrganisaatioPerustieto orgPerus = new OrganisaatioPerustieto();
+        orgPerus.setOid("1.1.1.oppilaitos");
+        
+        OrganisaatioHakutulos orgRes = new OrganisaatioHakutulos();
+        orgRes.setOrganisaatiot(Arrays.asList(orgPerus));
+        
+        when(organisaatioRawService.fetchOrganisaatiosByType("Oppilaitos")).thenReturn(orgRes);
+        
+        OrganisaatioPerustieto orgPerus2 = new OrganisaatioPerustieto();
+        orgPerus2.setOid("1.1.1.toimipiste");
+        
+        OrganisaatioHakutulos orgRes2 = new OrganisaatioHakutulos();
+        orgRes2.setOrganisaatiot(Arrays.asList(orgPerus2));
+        
+        when(organisaatioRawService.fetchOrganisaatiosByType("Toimipiste")).thenReturn(orgRes2);
+        
+        return new ProviderServiceImpl(conversionService, organisaatioRawService, koodistoService);
     }
 
 

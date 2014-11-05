@@ -16,7 +16,9 @@
 
 package fi.vm.sade.koulutusinformaatio.domain;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Learning opportunity result. Can be a specification (LOS) or an instance (LOI).
@@ -27,8 +29,8 @@ public class LOSearchResult {
 
     private String id;
     private String name;
-    private String lopId;
-    private String lopName;
+    private List<String> lopIds = new ArrayList<String>();
+    private List<String> lopNames = new ArrayList<String>();
     private String prerequisite;
     private String prerequisiteCode;
     private String parentId;
@@ -43,14 +45,14 @@ public class LOSearchResult {
     private String homeplace;
     private String childName;
 
-    public LOSearchResult(String id, String name, String lopId, String lopName,
+    public LOSearchResult(String id, String name, List<String> lopIds, List<String> lopNames,
             String prerequisite, String prerequisiteCode, String parentId, 
             String losId, String type, String credits, String educationType, 
             String educationDegree, String educationDegreeCode, String homeplace, String childName) {
         this.id = id;
         this.name = name;
-        this.lopId = lopId;
-        this.lopName = lopName;
+        this.lopIds = lopIds;
+        this.lopNames = lopNames;
         this.prerequisite = prerequisite;
         this.prerequisiteCode = prerequisiteCode;
         this.parentId = parentId;
@@ -83,20 +85,20 @@ public class LOSearchResult {
         this.name = name;
     }
 
-    public String getLopId() {
-        return lopId;
+    public List<String> getLopIds() {
+        return lopIds;
     }
 
-    public void setLopId(String lopId) {
-        this.lopId = lopId;
+    public void setLopIds(List<String> lopIds) {
+        this.lopIds = lopIds;
     }
 
-    public String getLopName() {
-        return lopName;
+    public List<String> getLopNames() {
+        return lopNames;
     }
 
-    public void setLopName(String lopName) {
-        this.lopName = lopName;
+    public void setLopNames(List<String> lopNames) {
+        this.lopNames = lopNames;
     }
 
     public String getPrerequisite() {

@@ -122,7 +122,11 @@ public class ApplicationOptionCreator extends ObjectCreator {
             HakuaikaRDTO aoHakuaika =  hakuDTO.getHakuaikas().get(0);
             ao.setApplicationStartDate(aoHakuaika.getAlkuPvm());
             ao.setApplicationEndDate(aoHakuaika.getLoppuPvm());
+            I18nText names = new I18nText();
+            names.put("fi", aoHakuaika.getNimi());
+            ao.setApplicationPeriodName(names);
         }
+
         ao.setAttachmentDeliveryAddress(educationObjectCreator.createAddress(hakukohdeDTO.getLiitteidenToimitusosoite()));
         ao.setAttachments(educationObjectCreator.createApplicationOptionAttachments(hakukohdeDTO.getLiitteet()));
         ao.setAdditionalInfo(getI18nText(hakukohdeDTO.getLisatiedot()));
@@ -358,11 +362,11 @@ public class ApplicationOptionCreator extends ObjectCreator {
         }
 
         ao.setTeachingLanguages(extractCodeVales(los.getTeachingLanguages()));
-
+        
         ao.setSpecificApplicationDates(hakukohde.isKaytetaanHakukohdekohtaistaHakuaikaa());
         if (ao.isSpecificApplicationDates()) {
             ao.setApplicationStartDate(hakukohde.getHakuaikaAlkuPvm());
-            ao.setApplicationEndDate(hakukohde.getHakuaikaLoppuPvm());
+            ao.setApplicationEndDate(hakukohde.getHakuaikaLoppuPvm());   
         } else if (aoHakuaika != null) {
             ao.setApplicationStartDate(aoHakuaika.getAlkuPvm());
             ao.setApplicationEndDate(aoHakuaika.getLoppuPvm());
@@ -370,7 +374,12 @@ public class ApplicationOptionCreator extends ObjectCreator {
         } else if (haku.getHakuaikas() != null && !haku.getHakuaikas().isEmpty()) {
             ao.setApplicationStartDate(haku.getHakuaikas().get(0).getAlkuPvm());
             ao.setApplicationEndDate(haku.getHakuaikas().get(0).getLoppuPvm());
+            ao.setApplicationPeriodName(super.getI18nText(haku.getHakuaikas().get(0).getNimet()));
             ao.setInternalASDateRef(haku.getHakuaikas().get(0).getHakuaikaId());
+        }
+        
+        if (aoHakuaika != null && aoHakuaika.getNimet() != null && !aoHakuaika.getNimet().isEmpty()) {
+            ao.setApplicationPeriodName(super.getI18nText(aoHakuaika.getNimet()));
         }
 
         ao.setAttachmentDeliveryAddress(educationObjectCreator.createAddress(hakukohde.getLiitteidenToimitusOsoite()));

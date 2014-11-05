@@ -124,6 +124,10 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
                     modelMapper.map(learningOpportunitySpecification, AdultUpperSecondaryLOSEntity.class);
 
             save(entity.getProvider());
+            
+            for (LearningOpportunityProviderEntity addProv : entity.getAdditionalProviders()) {
+                save(addProv);
+            }
 
                 for (ApplicationOptionEntity ao : entity.getApplicationOptions()) {
                     save(ao);
@@ -146,6 +150,10 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
                     modelMapper.map(specialLOS, SpecialLearningOpportunitySpecificationEntity.class);
 
             save(entity.getProvider());
+            
+            for (LearningOpportunityProviderEntity addProv : entity.getAdditionalProviders()) {
+                save(addProv);
+            }
 
             for (ChildLearningOpportunityInstanceEntity loi : entity.getLois()) {
                 for (ApplicationOptionEntity ao : loi.getApplicationOptions()) {
@@ -162,6 +170,10 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
                     modelMapper.map(upperSecondaryLOS, UpperSecondaryLearningOpportunitySpecificationEntity.class);
 
             save(entity.getProvider());
+            
+            for (LearningOpportunityProviderEntity addProv : entity.getAdditionalProviders()) {
+                save(addProv);
+            }
 
             for (UpperSecondaryLearningOpportunityInstanceEntity loi : entity.getLois()) {
                 for (ApplicationOptionEntity ao : loi.getApplicationOptions()) {
@@ -177,6 +189,10 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
             ParentLearningOpportunitySpecificationEntity plos =
                     modelMapper.map(parentLOS, ParentLearningOpportunitySpecificationEntity.class);
             save(plos.getProvider());
+            
+            for (LearningOpportunityProviderEntity addProv : plos.getAdditionalProviders()) {
+                save(addProv);
+            }
 
             if (plos.getChildren() != null) {
                 for (ChildLearningOpportunitySpecificationEntity cLO : plos.getChildren()) {
@@ -213,6 +229,12 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
             learningOpportunityProviderTransactionDAO.save(learningOpportunityProvider);
         }
     }
+    
+    public void save(Provider provider) {
+        LearningOpportunityProviderEntity provE 
+            = modelMapper.map(provider, LearningOpportunityProviderEntity.class);
+        save(provE);
+    }
 
     private void save(final ApplicationOptionEntity applicationOption) {
         if (applicationOption != null) {
@@ -238,6 +260,10 @@ public class EducationDataUpdateServiceImpl implements EducationDataUpdateServic
                     modelMapper.map(los, HigherEducationLOSEntity.class);
 
             save(plos.getProvider());
+            
+            for (LearningOpportunityProviderEntity addProv : plos.getAdditionalProviders()) {
+                save(addProv);
+            }
             
             
             if (plos.getStructureImage() != null 

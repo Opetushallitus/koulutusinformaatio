@@ -47,7 +47,7 @@ public final class ApplicationOptionToDTO {
             if (applicationOption.getStartingQuotaDescription() != null 
                     && applicationOption.getStartingQuotaDescription().getTranslations() != null 
                     && !applicationOption.getStartingQuotaDescription().getTranslations().isEmpty()) {
-                dto.setStartingQuotaDescription(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getStartingQuotaDescription(), defaultLang));
+                dto.setStartingQuotaDescription(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getStartingQuotaDescription(), uiLang));
             }
             dto.setStartingQuota(applicationOption.getStartingQuota());
             dto.setSora(applicationOption.isSora());
@@ -75,6 +75,9 @@ public final class ApplicationOptionToDTO {
             if (applicationOption.getApplicationStartDate() != null 
                     && applicationOption.getApplicationStartDate().after(new Date())) {
                 dto.setNextApplicationPeriodStarts(applicationOption.getApplicationStartDate());
+            }
+            if (applicationOption.getApplicationPeriodName() != null) {
+                dto.setApplicationPeriodName(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getApplicationPeriodName(), defaultLang));
             }
 
             boolean isVaadinAo = dto.getHigherEdLOSRefs() == null || dto.getHigherEdLOSRefs().isEmpty();

@@ -2,7 +2,7 @@ describe('SearchWizard', function() {
     var utility;
 
     beforeEach(function() {
-        module('kiApp', 'SearchWizard');
+        module('kiApp', 'kiApp.SearchWizard');
 
         inject(function(SearchWizardSelectionsService) {
             utility = SearchWizardSelectionsService;
@@ -11,23 +11,10 @@ describe('SearchWizard', function() {
 
     describe('SearchWizardSelectionsService', function() {
 
-        it('should not add empty items', function() {
-            utility.addSelection();
-            utility.addSelection('item1');
-            expect(utility.getSelections().length).toEqual(0);
-        });
-
         it('should add selections correctly', function() {
-            utility.addSelection('item1', 'value1');
-            utility.addSelection('item2', 'value2');
+            utility.addSelection({name: 'item1', code: 'value1'});
+            utility.addSelection({name: 'item2', code: 'value2'});
             expect(utility.getSelections().length).toEqual(2);
-        });
-
-        it('should override overlapping selections correctly', function() {
-            utility.addSelection('item1', 'value1');
-            utility.addSelection('item1', 'value2');
-            expect(utility.getSelections().length).toEqual(1);
-            expect(utility.getSelectionValueByKey('item1')).toEqual('value2');
         });
 
     });

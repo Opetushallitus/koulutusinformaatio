@@ -18,10 +18,12 @@ package fi.vm.sade.koulutusinformaatio.service;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.List;
 
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KoodistoException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
+import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
 
 /**
  * Hides integration to the Organisaatio service.
@@ -31,5 +33,25 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException
 public interface ProviderService {
 
     public Provider getByOID(String oid) throws KoodistoException, MalformedURLException, IOException, ResourceNotFoundException;
+
+    /**
+     * Fetches list of Organizations of type Oppilaitos from organisaatio service.
+     * 
+     * @return A list of organizations.
+     * @throws MalformedURLException
+     * @throws IOException
+     * @throws ResourceNotFoundException
+     */
+    public List<OrganisaatioPerustieto> fetchOpplaitokset() throws MalformedURLException, IOException, ResourceNotFoundException;
+    
+    /**
+     * Fetches list of Organizations of type Toimipiste from organisaatio service.
+     * 
+     * @return A list of organizations.
+     * @throws MalformedURLException
+     * @throws IOException
+     * @throws ResourceNotFoundException
+     */
+    public List<OrganisaatioPerustieto> fetchToimipisteet() throws MalformedURLException, IOException, ResourceNotFoundException;
     void clearCache();
 }

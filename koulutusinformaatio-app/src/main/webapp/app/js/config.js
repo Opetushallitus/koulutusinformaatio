@@ -1,7 +1,7 @@
 window.Config = window.Config || {};
 window.Config.app = window.Config.app || {};
 
-/* Configurations common for all environments */
+/* Configurations common for all environments, some are language specific */
 window.Config.app.common = {
 	fi: {
         frontpageUrl: '/wp/fi/',

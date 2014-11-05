@@ -17,6 +17,7 @@
 package fi.vm.sade.koulutusinformaatio.service.impl.query;
 
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
+
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.common.params.GroupParams;
 
@@ -27,6 +28,7 @@ public class ProviderTypeQuery extends SolrQuery {
 
     public ProviderTypeQuery(String firstCharacter, String lang) {
         super(String.format("%s:%s", resolveStartsWithField(lang), firstCharacter));
+        this.addFilterQuery(String.format("type:%s", SolrUtil.TYPE_ORGANISATION));
         this.setParam(GroupParams.GROUP, true);
         this.setParam(GroupParams.GROUP_FIELD, SolrUtil.ProviderFields.TYPE_VALUE);
         this.setParam(GroupParams.GROUP_LIMIT, "1");

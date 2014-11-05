@@ -16,17 +16,17 @@
 
 package fi.vm.sade.koulutusinformaatio.comparator;
 
-import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResult;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResultDTO;
 
 import java.util.Comparator;
 
 /**
  * @author Mikko Majapuro
  */
-public class ProviderSearchResultComparator implements Comparator<ProviderSearchResult> {
+public class ProviderSearchResultComparator implements Comparator<ProviderSearchResultDTO> {
 
     @Override
-    public int compare(ProviderSearchResult providerSearchResult, ProviderSearchResult providerSearchResult2) {
+    public int compare(ProviderSearchResultDTO providerSearchResult, ProviderSearchResultDTO providerSearchResult2) {
         return providerSearchResult.getName().compareToIgnoreCase(providerSearchResult2.getName());
     }
 }

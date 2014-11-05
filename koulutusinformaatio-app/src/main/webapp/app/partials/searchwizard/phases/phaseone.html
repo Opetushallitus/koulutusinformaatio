@@ -1,0 +1,11 @@
+<h2 data-ki-i18n="searchwizard:{{currentPhase}}-title" data-show-colon="true"></h2>
+<div>
+    <ul class="list-unstyled">
+        <li data-ng-repeat="option in phase.options">
+            <!--
+            <a href="javascript:void(0)" data-ng-click="makeSelection('phaseone', option)" data-ki-i18n="searchwizard:phaseone-{{option.code}}"></a>
+        -->
+            <a href="javascript:void(0)" data-ng-click="makeSelection(option)">{{option.label}}</a>
+        </li>
+    </ul>
+</div>

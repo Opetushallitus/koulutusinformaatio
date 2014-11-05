@@ -1,4 +1,4 @@
-/*  Application module */
+/*  Preview application module */
 
 var kiApp = angular.module('previewApp', 
     [
@@ -6,7 +6,7 @@ var kiApp = angular.module('previewApp',
         'kiApp.services',
         'kiApp.directives',
         'ApplicationBasket',
-        'SearchWizard',
+        'kiApp.SearchWizard',
         'SearchResult', 
         'ui.bootstrap', 
         'angulartics', 
@@ -17,13 +17,14 @@ var kiApp = angular.module('previewApp',
         'ngTouch'
     ])
 
+// initialize piwik analytics tool
 .config(['$analyticsProvider', function( $analyticsProvider) {
-    // initialize piwik analytics tool
     OPH.Common.initPiwik(window.Config.app.common.piwikUrl);
     $analyticsProvider.virtualPageviews(true);
     $analyticsProvider.firstPageview(false);
 }])
 
+// routes provided by previewApp
 .config(['$routeProvider', function($routeProvider) {
 	
     $routeProvider.when('/:loType/:id', {
@@ -69,15 +70,16 @@ var kiApp = angular.module('previewApp',
 .config(function($httpProvider){
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
-    //$httpProvider.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 })
 
+// general constants used in previewApp
 .constant('kiAppConstants', {
     searchResultsPerPage: 25,
     defaultSortCriteria: '0',
     searchResultsStartPage: 1
 })
 
+// LO type constants
 .constant('LOTypes', {
     TUTKINTO: 'tutkinto',
     KOULUTUSOHJELMA: 'koulutusohjelma',
@@ -124,6 +126,7 @@ var kiApp = angular.module('previewApp',
     });
 }])
 
+// create config object
 .value('appConfig', window.Config.app)
 .factory('Config', function($location, appConfig, LanguageService, HostResolver) {
     return {
@@ -142,8 +145,8 @@ var kiApp = angular.module('previewApp',
     }
 })
 
+// Piwik analytics
 var OPH = OPH || {};
-
 OPH.Common = {
     initHeader: function() {},
     initPiwik: function(piwikUrl) {

@@ -23,6 +23,7 @@ import fi.vm.sade.koulutusinformaatio.domain.Code;
 import fi.vm.sade.koulutusinformaatio.domain.LOS;
 import fi.vm.sade.koulutusinformaatio.domain.Location;
 import fi.vm.sade.koulutusinformaatio.domain.HigherEducationLOS;
+import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.exception.KIException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
 
@@ -31,6 +32,7 @@ import org.apache.solr.client.solrj.impl.HttpSolrServer;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 
 public interface IndexerService {
@@ -72,4 +74,32 @@ public interface IndexerService {
 
     void indexASToSolr(CalendarApplicationSystem curAs, HttpSolrServer loUpdateSolr) throws SolrServerException, IOException;
     
+    /**
+     * Tests whether a document with give id is in the solr given as parameter.
+     * 
+     * @param docId The document id to test
+     * @param server The solr to test
+     * @return true if document is in index, false otherwise.
+     */
+    boolean isDocumentInIndex(String docId, HttpSolrServer server);
+    
+    /**
+     * 
+     * Indexes the given provider to solr.
+     * 
+     * @param provider - the provider to index.
+     * @param lopSolr - the solr to index.
+     * @param requiredBaseEducations - Base educations to which are required to be a student in this provider.
+     * @param vocationalAsIds - the vocational application system ids relevant for this provider.
+     * @param nonVocationalAsIds - the non-vocational application system ids relevant for this provider.
+     * @param providerAsIds - application system ids relevant for this provider, irrelevant of type. 
+     * @throws SolrServerException
+     * @throws IOException
+     */
+    void createProviderDocs(Provider provider, 
+            HttpSolrServer lopSolr, 
+            Set<String> requiredBaseEducations, 
+            Set<String> vocationalAsIds,
+            Set<String> nonVocationalAsIds,
+            Set<String> providerAsIds) throws SolrServerException, IOException;
 }

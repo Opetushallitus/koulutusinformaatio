@@ -130,7 +130,7 @@ public class IncrementalApplicationOptionIndexer {
                     if (!curAo.getTila().equals(TarjontaConstants.STATE_PUBLISHED) || toRemove) {
                         LOG.debug("Removing ao: " + curAo.getOid() + " with tila: " + curAo.getTila());
                         try {
-                        ApplicationOption ao = this.dataQueryService.getApplicationOption(aoOid);
+                            ApplicationOption ao = this.dataQueryService.getApplicationOption(aoOid);
                         if (ao != null) {
                             this.dataUpdateService.deleteAo(ao);
                         }

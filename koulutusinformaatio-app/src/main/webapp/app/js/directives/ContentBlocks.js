@@ -8,52 +8,76 @@ angular.module('kiApp.directives.ContentBlocks', []).
 /**
  * Render contact info block
  */
-directive('kiContactInfo', function() {
+directive('kiContactInfo', ['CollapseBlockService', function(CollapseBlockService) {
     return {
         restrict: 'A',
         templateUrl: 'templates/contactInfo.html',
-        scope: true,
-        link: function(scope, element, attrs) {
-            scope.anchor = attrs.anchor;
-
-            scope.$watch('provider', function(data) {
-                if (data) {
-                    scope.showContact = (data.visitingAddress ||
-                        data.postalAddress ||
-                        data.name ||
-                        data.email ||
-                        data.phone ||
-                        data.fax ||
-                        data.webPage) ? true : false;
+        link: function($scope, element, attrs) {
+            $scope.$watch('content', function(value) {
+                $scope.provider = value;
+                if (value) {
+                    var showContactInfo = (value.visitingAddress ||
+                        value.postalAddress ||
+                        value.name ||
+                        value.email ||
+                        value.phone ||
+                        value.fax ||
+                        value.webPage) ? true : false;
+                    CollapseBlockService.setBlock($scope.blockId, showContactInfo);
                 }
             });
         }
     };
-}).
+}]).
 
 /**
  * Render contact info block
  */
-directive('kiInfoCenterAddress', function() {
+directive('kiInfoCenterAddress', ['CollapseBlockService', function(CollapseBlockService) {
     return {
         restrict: 'A',
         templateUrl: 'templates/infoCenterAddress.html',
-        scope: false,
-        link: function(scope, element, attrs) {
-
-            scope.$watch('provider.applicationOffice', function(data) {
-                if (data) {
-                    scope.showContact = (data.visitingAddress ||
-                        data.postalAddress ||
-                        data.name ||
-                        data.email ||
-                        data.phone ||
-                        data.www) ? true : false;
+        link: function($scope, element, attrs) {
+            $scope.$watch('content', function(value) {
+                if (value) {
+                    $scope.applicationOffice = value;
+                    var showInfoCenterAddress = (value.visitingAddress ||
+                        value.postalAddress ||
+                        value.name ||
+                        value.email ||
+                        value.phone ||
+                        value.www) ? true : false;
+                    CollapseBlockService.setBlock($scope.blockId, showInfoCenterAddress);   
                 }
             });
         }
     };
-}).
+}]).
+
+/**
+ * Render contact info block
+ */
+directive('kiInfoCenterAddresses', ['CollapseBlockService', function(CollapseBlockService) {
+    return {
+        restrict: 'A',
+        templateUrl: 'templates/infoCenterAddresses.html',
+        link: function($scope, element, attrs) {
+            $scope.$watch('content', function(value) {
+                if (value) {
+                    $scope.applicationOffices = value;
+                    var showInfoCenterAddresses = ((value.length > 0) 
+                    		&& (value[0].visitingAddress ||
+                    				valuevalue[0].postalAddress ||
+                    				valuevalue[0].name ||
+                    				valuevalue[0].email ||
+                    				valuevalue[0].phone ||
+                    				valuevalue[0].www)) ? true : false;
+                    CollapseBlockService.setBlock($scope.blockId, showInfoCenterAddresses);   
+                }
+            });
+        }
+    };
+}]).
 
 /**
  *  Render contact person info
@@ -123,19 +147,24 @@ directive('kiOrganization', ['CollapseBlockService', function(CollapseBlockServi
  *  Render organization image
  */
 directive('kiOrganizationImage', function() {
-    return function(scope, element, attrs) {
-        scope.$watch('providerImage', function(data) {
-            if (data && data.pictureEncoded) {
-                var imgElem = $('<img>', {
-                    src: 'data:image/jpeg;base64,' + data.pictureEncoded,
-                    alt: 'Oppilaitoksen kuva'
-                });
-                imgElem.addClass('img-responsive');
+    return {
+    	scope: {
+    		providerimage: '='
+    	},
+    	link: function(scope, element, attrs) {
+    		scope.$watch('providerimage', function(data) {
+    			if (data && data.pictureEncoded) {
+    				var imgElem = $('<img>', {
+    					src: 'data:image/jpeg;base64,' + data.pictureEncoded,
+    					alt: 'Oppilaitoksen kuva'
+    				});
+    				imgElem.addClass('img-responsive');
 
-                $(element).empty();
-                element.append(imgElem);
-            }
-        });
+    				$(element).empty();
+    				element.append(imgElem);
+    			}
+    		});
+    	}
     };
 }).
 
@@ -363,10 +392,13 @@ directive('kiSocialLinks', function() {
     return {
         restrict: 'E,A',
         templateUrl: 'templates/socialLinks.html',
+        scope: {
+        	curprovider: '='
+        },
         link: function(scope, element, attrs) {
             scope.anchor = attrs.anchor;
 
-            scope.$watch('provider', function(data) {
+            scope.$watch('curprovider', function(data) {
                 if (data) {
                     scope.showOrganization = (data.learningEnvironment ||
                         data.accessibility) ? true : false;
@@ -375,33 +407,6 @@ directive('kiSocialLinks', function() {
         }
     };
 }).
-
-/**
- *  Renders higher education major selection block
- */
-directive('kiMajorSelection', ['CollapseBlockService', function(CollapseBlockService) {
-    return {
-        restrict: 'A',
-        require: '^kiCollapseBlock',
-        templateUrl: 'templates/majorSelection.html',
-        controller: function($rootScope, $scope) {
-            $rootScope.$watch('translationLanguage', function(value) {
-                $scope.translationLanguage = value;
-            });
-            
-            $scope.$watch('content', function(value) {
-                if (value) {
-                   $scope.textContent = value[0];
-                   $scope.children = value[1];
-                   var showMajorSelection = value && value[0] ? true : false;
-                   CollapseBlockService.setBlock($scope.blockId, showMajorSelection);      
-                } else {
-                    CollapseBlockService.setBlock($scope.blockId, false); 
-                }
-            });
-        }
-    };
-}]).
 
 /**
  *  Renders study plan block

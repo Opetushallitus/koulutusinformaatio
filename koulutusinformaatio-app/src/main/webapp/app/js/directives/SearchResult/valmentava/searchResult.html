@@ -5,7 +5,9 @@
                 <a href="{{lo.linkHref}}">{{lo.name}}, {{lo.credits}}</a>
             </h2>
             <span class="italic" data-ki-i18n="et5"></span><br />
-            <span>{{lo.lopName}}</span><br />
+            <div data-ng-repeat="lopName in lo.lopNames">
+            	<span>{{lopName}}</span><br/>
+            </div>
             <span>{{lo.homeplace}}</span>
         </div>
 

@@ -6,7 +6,7 @@ var kiApp = angular.module('kiApp',
         'kiApp.services',
         'kiApp.directives',
         'ApplicationBasket',
-        'SearchWizard',
+        'kiApp.SearchWizard',
         'Intro',
         'SearchResult', 
         'ui.bootstrap', 
@@ -18,13 +18,14 @@ var kiApp = angular.module('kiApp',
         'ngTouch'
     ])
 
+// initialize piwik analytics tool
 .config(['$analyticsProvider', function( $analyticsProvider) {
-    // initialize piwik analytics tool
     OPH.Common.initPiwik(window.Config.app.common.piwikUrl);
     $analyticsProvider.virtualPageviews(true);
     $analyticsProvider.firstPageview(false);
 }])
 
+// routes provided by kiApp
 .config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/haku/:queryString?', {
     	templateUrl: 'partials/search/search.html', 
@@ -44,6 +45,11 @@ var kiApp = angular.module('kiApp',
                 }
             }
         }
+    });
+
+    $routeProvider.when('/organisaatio/:id', {
+        templateUrl: 'partials/organisation/organisation.html',
+        controller: OrganisationCtrl
     });
 
     $routeProvider.when('/:loType/:id', {
@@ -100,12 +106,14 @@ var kiApp = angular.module('kiApp',
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
 }])
 
+// general constants used in kiApp
 .constant('kiAppConstants', {
     searchResultsPerPage: 25,
     defaultSortCriteria: '0',
     searchResultsStartPage: 1
 })
 
+// LO type constants
 .constant('LOTypes', {
     TUTKINTO: 'tutkinto',
     KOULUTUSOHJELMA: 'koulutusohjelma',
@@ -143,6 +151,7 @@ var kiApp = angular.module('kiApp',
     $rootScope.isStudyInfo = LanguageService.getLanguage() === 'en';
 }])
 
+// create config object
 .value('appConfig', window.Config.app)
 .factory('Config', function($location, appConfig, LanguageService, HostResolver) {
     return {
@@ -161,8 +170,8 @@ var kiApp = angular.module('kiApp',
     }
 });
 
+// Piwik analytics
 var OPH = OPH || {};
-
 OPH.Common = {
     initPiwik: function(piwikUrl) {
         var siteDomain = document.domain;

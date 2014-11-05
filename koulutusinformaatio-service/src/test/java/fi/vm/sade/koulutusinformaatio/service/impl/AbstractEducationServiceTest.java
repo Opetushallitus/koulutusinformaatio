@@ -23,6 +23,7 @@ import fi.vm.sade.koulutusinformaatio.dao.*;
 import fi.vm.sade.koulutusinformaatio.dao.entity.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -130,6 +131,13 @@ public class AbstractEducationServiceTest {
     	HigherEducationLOSDAO dao = mock(HigherEducationLOSDAO.class);
     	HigherEducationLOSEntity entity = new HigherEducationLOSEntity();
     	entity.setId("higherEdId");
+    	LearningOpportunityProviderEntity providerE = new LearningOpportunityProviderEntity();
+    	providerE.setId("mainProvider");
+    	entity.setProvider(providerE);
+    	LearningOpportunityProviderEntity additionalProvE = new LearningOpportunityProviderEntity();
+    	additionalProvE.setId("additionalProvider");
+    	entity.setAdditionalProviders(Arrays.asList(additionalProvE));
+    	
     	when(dao.get(eq(entity.getId()))).thenReturn(entity);
         when(dao.get(eq(NOTFOUND))).thenReturn(null);
 		return dao;

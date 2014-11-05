@@ -31,6 +31,7 @@ public class ExamEventEntity {
     private String description;
     @Embedded
     private AddressEntity address;
+    private boolean timeIncluded;
 
     public ExamEventEntity() {
     }
@@ -65,5 +66,13 @@ public class ExamEventEntity {
 
     public void setAddress(AddressEntity address) {
         this.address = address;
+    }
+
+    public boolean isTimeIncluded() {
+        return timeIncluded;
+    }
+
+    public void setTimeIncluded(boolean timeIncluded) {
+        this.timeIncluded = timeIncluded;
     }
 }

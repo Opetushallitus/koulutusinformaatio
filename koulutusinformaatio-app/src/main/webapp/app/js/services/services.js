@@ -8,7 +8,8 @@ angular.module('kiApp.services',
     'kiApp.CookieService',
     'kiApp.AlertService',
     'kiApp.AuthService',
-    'kiApp.services.SearchLearningOpportunityService'
+    'kiApp.SearchLearningOpportunityService',
+    'kiApp.OrganisationService'
 ]).
 
 service('SearchLocationService', ['$http', '$timeout', '$q', 'LanguageService', function($http, $timeout, $q, LanguageService) {
@@ -660,7 +661,19 @@ service('HigherEducationTransformer', ['KiSorter', '$rootScope', '$filter', 'Lan
 				result.themes = distinctArray;
 			}
 			
+			result.applicationOffices = [];
+			result.provider.applicationOffice.providerName = result.provider.name;
+			result.applicationOffices.push(result.provider.applicationOffice);
+			for (var curProvIndex in result.additionalProviders) {
+				if (result.additionalProviders.hasOwnProperty(curProvIndex)) {
+					var curProvider = result.additionalProviders[curProvIndex];
+					var curApplicationOffice = curProvider.applicationOffice
+					curApplicationOffice.providerName = curProvider.name;
+					result.applicationOffices.push(curApplicationOffice);
+				}
+			}
 			
+			result.multipleProviders = result.applicationOffices.length > 1;
 
 			for (var asIndex in result.applicationSystems) {
 				if (result.applicationSystems.hasOwnProperty(asIndex)) {
@@ -1561,14 +1574,17 @@ service('FilterService', [
                 upcomingLater: filters.upcomingLater,
                 page: filters.page,
                 articlePage: filters.articlePage,
-                facetFilters: filters.facetFilters,
+                organisationPage: filters.organisationPage,
                 langCleared: filters.langCleared,
                 itemsPerPage: filters.itemsPerPage,
                 sortCriteria: filters.sortCriteria,
                 lopFilter: filters.lopFilter,
                 educationCodeFilter: filters.educationCodeFilter,
                 excludes: filters.excludes,
-                articleFacetFilters : filters.articleFacetFilters
+                facetFilters: filters.facetFilters,
+                articleFacetFilters : filters.articleFacetFilters,
+                organisationFacetFilters: filters.organisationFacetFilters,
+                tab: filters.tab
             };
 
             angular.forEach(result, function(value, key) {
@@ -1648,6 +1664,22 @@ service('FilterService', [
             }
         },
 
+        setOrganisationPage: function(value) {
+            if (value && !isNaN(value)) {
+                filters.organisationPage = parseInt(value);
+            } else {
+                filters.organisationPage = 1;
+            }
+        },
+
+        getOrganisationPage: function() {
+            if (filters.organisationPage) {
+                return typeof filters.organisationPage === 'string' ? parseInt(filters.organisationPage) : filters.organisationPage;
+            } else {
+                return 1;
+            }
+        },
+
         getLocationCodes: getLocationCodes,
 
         getParams: function() {
@@ -1666,6 +1698,8 @@ service('FilterService', [
             params += filters.educationCodeFilter ? '&educationCodeFilter=' + filters.educationCodeFilter : '';
             params += (filters.excludes && filters.excludes.length > 0) ? '&excludes=' + filters.excludes.join('|') : '';
             params += (filters.articleFacetFilters && filters.articleFacetFilters.length > 0) ? '&articleFacetFilters=' + filters.articleFacetFilters.join(',') : '';
+            params += (filters.organisationFacetFilters && filters.organisationFacetFilters.length > 0) ? '&organisationFacetFilters=' + filters.organisationFacetFilters.join(',') : '';
+            params += filters.tab ? '&tab=' + filters.tab : '';    
             params = params.length > 0 ? params.substring(1, params.length) : '';
             return params;
         },
@@ -1684,6 +1718,14 @@ service('FilterService', [
         		return filters.articleFacetFilters;
         	}
         	return filters.articleFacetFilters;
+        },
+
+        getOrganisationFacetFilters: function() {
+            if (filters.organisationFacetFilters != undefined && (typeof filters.organisationFacetFilters == 'string' || filters.organisationFacetFilters instanceof String)) {
+                filters.organisationFacetFilters = filters.organisationFacetFilters.split(',');
+                return filters.organisationFacetFilters;
+            }
+            return filters.organisationFacetFilters;
         },
         
         getLopFilter: function() {

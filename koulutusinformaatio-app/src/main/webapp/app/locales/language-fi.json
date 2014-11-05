@@ -30,6 +30,7 @@
     "search-button": "Hae",
     "search-tab-lo": "Koulutuksia",
     "search-tab-article": "Tietoa ja tarinoita",
+    "search-tab-organisation": "Oppilaitoksia",
 
     "basic-information": "Perustiedot",
     "degree-programmes": "Koulutusohjelmat",
@@ -244,6 +245,7 @@
     "facet-opiskelumuoto": "Rajaa opiskelumuodon mukaan",
     "facet-teemat": "Rajaa aiheen mukaan",
     "facet-aineistotyyppi": "Rajaa aineistotyypin mukaan",
+    "facet-oppilaitostyyppi": "Rajaa oppilaitoksia",
     "topic_ffm": "Aihe",
     "theme_ffm": "Teema",
     "formOfTeaching_ffm": "Opetustapa",
@@ -252,6 +254,7 @@
     "kindOfEducation_ffm": "Kohderyhmä",
     "teachingLangCode_ffm": "Opetuskieli",
     "articleContentType_ffm": "Aineistotyyppi",
+    "oltype_ffm": "Oppilaitostyyppi",
     "location-rajaus": "Paikka",
     "facet-remove": "Poista",
     "facet-focus-filter": "Tarkenna rajaustasi",
@@ -338,5 +341,9 @@
      "structure-of-degree": "Tutkinnon rakenne",
 
      "hide-filter-selector-true": "Näytä rajaukset",
-     "hide-filter-selector-false": "Piilota rajaukset"
+     "hide-filter-selector-false": "Piilota rajaukset",
+
+     "search-all-los": "Hae kaikki koulutukset",
+     
+     "qualifications": "Tutkintonimikkeet"
 }

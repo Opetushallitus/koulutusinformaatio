@@ -62,6 +62,7 @@ public class EducationObjectCreator extends ObjectCreator {
                     examEvent.setDescription(valintakoeAjankohta.getLisatiedot());
                     examEvent.setStart(valintakoeAjankohta.getAlkaa());
                     examEvent.setEnd(valintakoeAjankohta.getLoppuu());
+                    examEvent.setTimeIncluded(valintakoeAjankohta.isKellonaikaKaytossa());
                     examEvents.add(examEvent);
                 }
                 exam.setExamEvents(examEvents);
@@ -90,6 +91,7 @@ public class EducationObjectCreator extends ObjectCreator {
                         examEvent.setDescription(valintakoeAjankohta.getLisatiedot());
                         examEvent.setStart(valintakoeAjankohta.getAlkaa());
                         examEvent.setEnd(valintakoeAjankohta.getLoppuu());
+                        examEvent.setTimeIncluded(valintakoeAjankohta.isKellonaikaKaytossa());
                         examEvents.add(examEvent);
                     }
                     exam.setExamEvents(examEvents);
@@ -180,6 +182,7 @@ public class EducationObjectCreator extends ObjectCreator {
                             examEvent.setDescription(valintakoeAjankohta.getLisatiedot());
                             examEvent.setStart(valintakoeAjankohta.getAlkaa());
                             examEvent.setEnd(valintakoeAjankohta.getLoppuu());
+                            examEvent.setTimeIncluded(valintakoeAjankohta.isKellonaikaKaytossa());
                             examEvents.add(examEvent);
                         }
                     }

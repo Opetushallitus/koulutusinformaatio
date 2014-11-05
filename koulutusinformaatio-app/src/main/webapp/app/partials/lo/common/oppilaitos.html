@@ -1,5 +1,5 @@
 <section class="col-md-11">
-    <div class="ribbon">
+    <div data-ng-if="!lo.multipleProviders" class="ribbon">
         <ul class="ribbon-content list-unstyled">
             <li><a href="javascript:void(0)" data-ng-click="scrollToAnchor('oppilaitos-anchor')" data-ki-i18n="academy-description"></a></li>
             <li><a href="javascript:void(0)" data-ng-click="scrollToAnchor('esteettomyys-anchor')" data-ki-i18n="accessibility-anchor"></a></li>
@@ -7,18 +7,51 @@
             <li><a href="javascript:void(0)" data-ng-click="scrollToAnchor('yhteystiedot-anchor')" data-ki-i18n="contact-information"></a></li>
         </ul>
     </div>
-    <figure data-ki-organization-image></figure>
-    <div data-ki-social-links></div>
-    <div data-ki-language-ribbon data-languages="lo.availableTranslationLanguages" data-change-language="changeDescriptionLanguage" class="ribbon"></div>
-    
-    <div data-ki-collapse-block data-title-value="provider.name" data-content="provider" data-anchor="oppilaitos-anchor">
-        <div data-ki-organization></div>
-    </div>
-    <div data-ki-collapse-text-block data-title="accessibility-and-learning-support" data-content="provider.accessibility" data-anchor="esteettomyys-anchor"></div>
-    <div data-ki-collapse-block data-title="student-benefits" data-content="provider" data-anchor="edut-anchor">
-        <div data-ki-student-benefits></div>
+    <div data-ng-if="lo.multipleProviders" class="ribbon">
+        <ul class="ribbon-content list-unstyled">
+            <li>
+                <a href="javascript:void(0)" data-ng-click="scrollToAnchor('{{provider.id}}')">{{provider.name}}</a>
+            </li>
+        	<li data-ng-repeat="additionalProvider in lo.additionalProviders">
+                <a href="javascript:void(0)" data-ng-click="scrollToAnchor('{{additionalProvider.id}}')">{{additionalProvider.name}}</a>
+            </li>
+        </ul>
     </div>
 
-    <div data-ki-contact-info="provider" data-anchor="yhteystiedot-anchor"></div>
+    <!-- main provider -->
+    <div id="{{provider.id}}">
+        <figure data-ki-organization-image data-providerimage="provider.providerImage"></figure>
+        <div data-ki-social-links data-curprovider="provider"></div>
+        <div data-ki-language-ribbon data-languages="lo.availableTranslationLanguages" data-change-language="changeDescriptionLanguage" class="ribbon"></div>
+        <div data-ki-collapse-block data-title-value="provider.name" data-content="provider" data-anchor="oppilaitos-anchor">
+            <div data-ki-organization></div>
+        </div>
+        <div data-ki-collapse-text-block data-title="accessibility-and-learning-support" data-content="provider.accessibility" data-anchor="esteettomyys-anchor"></div>
+        <div data-ki-collapse-block data-title="student-benefits" data-content="provider" data-anchor="edut-anchor">
+            <div data-ki-student-benefits></div>
+        </div>
+        <div data-ki-collapse-block data-title="contact-information" data-content="provider" data-anchor="yhteystiedot-anchor">
+            <div data-ki-contact-info></div>
+        </div>
+    </div>
+
+    <!-- additional providers -->
+    <div data-ng-repeat="additionalProvider in lo.additionalProviders">
+    	<hr id="{{additionalProvider.id}}"/>
+        <figure data-ki-organization-image data-providerImage="additionalProvider.providerImage"></figure>
+        <div data-ki-social-links data-curprovider="additionalProvider"></div>
+        <div data-ki-language-ribbon data-languages="lo.availableTranslationLanguages" data-change-language="changeDescriptionLanguage" class="ribbon"></div>
+        <div data-ki-collapse-block data-title-value="additionalProvider.name" data-content="additionalProvider" data-anchor="{{additionalProvider.id}}oppilaitos-anchor">
+            <div data-ki-organization></div>
+        </div>
+        <div data-ki-collapse-text-block data-title="accessibility-and-learning-support" data-content="additionalProvider.accessibility" data-anchor="{{additionalProvider.id}}esteettomyys-anchor"></div>
+        <div data-ki-collapse-block data-title="student-benefits" data-content="additionalProvider" data-anchor="{{additionalProvider.id}}edut-anchor">
+            <div data-ki-student-benefits></div>
+        </div>
+        <div data-ki-collapse-block data-title="contact-information" data-content="additionalProvider" data-anchor="{{additionalProvider.id}}yhteystiedot-anchor">
+            <div data-ki-contact-info></div>
+        </div>
+    </div>
 </section>
-<div class="col-md-5" data-ng-class="providerAsideClass" data-ng-include data-src="partialUrl + 'oppilaitos-aside.html'"></div>
+
+<div class="col-md-5" data-ng-if="!lo.multipleProviders" data-ng-class="providerAsideClass" data-ng-include data-src="partialUrl + 'oppilaitos-aside.html'"></div>

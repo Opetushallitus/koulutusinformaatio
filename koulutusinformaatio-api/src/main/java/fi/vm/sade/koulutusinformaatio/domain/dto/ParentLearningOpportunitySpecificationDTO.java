@@ -30,6 +30,7 @@ public class ParentLearningOpportunitySpecificationDTO {
     private String id;
     private String name;
     private LearningOpportunityProviderDTO provider;
+    private List<LearningOpportunityProviderDTO> additionalProviders = new ArrayList<LearningOpportunityProviderDTO>();
     private String educationDegree;
     private String structure;
     private String accessToFurtherStudies;
@@ -163,5 +164,13 @@ public class ParentLearningOpportunitySpecificationDTO {
 
     public void setThemes(List<CodeDTO> themes) {
         this.themes = themes;
+    }
+
+    public List<LearningOpportunityProviderDTO> getAdditionalProviders() {
+        return additionalProviders;
+    }
+
+    public void setAdditionalProviders(List<LearningOpportunityProviderDTO> additionalProviders) {
+        this.additionalProviders = additionalProviders;
     }
 }
