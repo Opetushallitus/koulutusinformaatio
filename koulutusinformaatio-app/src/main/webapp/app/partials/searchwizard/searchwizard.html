@@ -8,10 +8,9 @@
                 <hr/>
             </div>
             <div data-ng-if="selections">
+                <strong data-ki-i18n="searchwizard:breadcrumb-label" data-show-colon="true" class="pull-left margin-right-small"></strong>
                 <ol class="breadcrumb">
-                    <strong data-ki-i18n="searchwizard:breadcrumb-label" data-show-colon="true"></strong>
                     <li data-ng-repeat="selection in selections">
-                        <!--<span data-ng-if="!selection.label" data-ki-i18n="searchwizard:{{selection.name}}-{{selection.value}}"></span>-->
                         <span data-ng-if="selection.label">{{selection.label}}</span>
                     </li>
                 </ol>
@@ -20,37 +19,9 @@
 
             <div data-ng-if="resultCount == 0">
                 <div class="alert alert-info alert-icon" data-ki-i18n="searchwizard:no-results"></div>
-                <!-- <button type="button" class="btn btn-primary"  data-ng-click="gotoPreviousPhase()" data-ki-i18n="searchwizard:to-previous-phase"></button> -->
             </div>
             <div data-ng-if="resultCount != 0">
-
-                <!--<div data-ng-switch="currentPhase">-->
-                    <!--
-                    <div data-ng-switch-when="baseeducation">
-                        <div data-ng-include src="'partials/searchwizard/phases/baseeducation.html'"></div>
-                    </div>
-                    <div data-ng-switch-when="educationtype">
-                        <div data-ng-include src="'partials/searchwizard/phases/educationtype.html'"></div>
-                    </div>
-                    <div data-ng-switch-when="theme">
-                        <div data-ng-include src="'partials/searchwizard/phases/theme.html'"></div>
-                    </div>
-                    <div data-ng-switch-when="topic">
-                        <div data-ng-include src="'partials/searchwizard/phases/topic.html'"></div>
-                    </div>
-                    <div data-ng-switch-when="location">
-                        <div data-ng-include src="'partials/searchwizard/phases/location.html'"></div>
-                    </div>
-                    -->
                     <div data-ng-include="'partials/searchwizard/phases/' + currentPhase + '.html'"></div>
-
-                    <!-- go to first phase by default -->
-                    <!--
-                    <div data-ng-switch-default>
-                        <div data-ng-include src="'partials/searchwizard/phases/baseeducation.html'"></div>
-                    </div>
-                -->
-                </div>
             </div>
         </div>
     </div>
