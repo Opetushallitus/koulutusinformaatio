@@ -203,7 +203,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                     continue;
                 }
                 try {
-                    LOG.error("Indexing higher education: " + koulutusDTO.getOid());
+                    LOG.debug("Indexing higher education: " + koulutusDTO.getOid());
                     HigherEducationLOS los = creator.createHigherEducationLOS(koulutusDTO, true);
                     los.setStructureImage(retrieveStructureImage(curKoulutus.getOid()));
                     koulutukset.add(los);
