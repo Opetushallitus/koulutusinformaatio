@@ -17,7 +17,6 @@ package fi.vm.sade.koulutusinformaatio.service.impl;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -120,7 +119,7 @@ public class UpdateServiceImpl implements UpdateService {
                     try {
                         specifications = tarjontaService.findParentLearningOpportunity(loOid);
                     } catch (TarjontaParseException e) {
-                        LOG.error(String.format("Exception while updating parent learning opportunity %s: %s", loOid, e.getMessage()));
+                        LOG.warn(String.format("Exception while updating parent learning opportunity %s: %s", loOid, e.getMessage()));
                         continue;
                     }
                     if (specifications != null) {
