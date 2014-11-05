@@ -202,6 +202,7 @@ public class TarjontaServiceImpl implements TarjontaService {
                     continue;
                 }
                 try {
+                    LOG.error("Indexing higher education: " + koulutusDTO.getOid());
                     HigherEducationLOS los = creator.createHigherEducationLOS(koulutusDTO, true);
                     los.setStructureImage(retrieveStructureImage(curKoulutus.getOid()));
                     koulutukset.add(los);
@@ -217,8 +218,14 @@ public class TarjontaServiceImpl implements TarjontaService {
                     updateAOLosReferences(los, aoToEducationsMap);
 
                 } catch (TarjontaParseException ex) {
+                    LOG.warn("Problem with higher eductaion: " + koulutusDTO.getOid() + ", " + ex.getMessage());
+                    continue;
+                } catch (KoodistoException ex) {
+                    ex.printStackTrace();
+                    LOG.error("Problem with higher education: " + koulutusDTO.getOid() + ", " + ex.getMessage());
                     continue;
                 }
+               
 
             }
         }

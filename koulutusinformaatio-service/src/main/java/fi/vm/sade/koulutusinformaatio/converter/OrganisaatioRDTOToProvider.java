@@ -120,6 +120,7 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
             p.setFax(getPhoneNumber(o.getYhteystiedot(), DATA_TYPE_FAX));
             p.setPhone(getPhoneNumber(o.getYhteystiedot(), DATA_TYPE_PHONE));
             p.setWebPage(getSimpleContactInfo(o.getYhteystiedot(), DATA_TYPE_WWW));
+            LOG.debug("Setting descriptions: " + o.getOid());
             p.setDescription(getDataValue(o.getMetadata(), METADATA_YLEISKUVAUS));
             p.setHealthcare(getDataValue(o.getMetadata(), METADATA_TERVEYDENHUOLTOPALVELUT));
             p.setAccessibility(getDataValue(o.getMetadata(), METADATA_ESTEETTOMYYS));
@@ -132,7 +133,7 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
             p.setFinancingStudies(getDataValue(o.getMetadata(), METADATA_OPINTOJEN_RAHOITUS));
             p.setInsurances(getDataValue(o.getMetadata(), METADATA_TIETOA_VAKUUTUKSISTA));
             p.setLeisureServices(getDataValue(o.getMetadata(), METADATA_VAPAA_AJAN_PALVELUT));
-            
+            LOG.debug("Got descriptions: " + o.getOid());
             p.setSocial(getSocialLinks(o.getMetadata(), SOCIAL_LINKS));
             p.setPicture(getPicture(o));
             p.setAthleteEducation(isAthleteEducation(o.getToimipistekoodi()));
@@ -144,9 +145,11 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
             }
             p.setApplicationOffice(getApplicationOffice(o.getMetadata()));
             p.setType(koodistoService.searchFirst(o.getOppilaitosTyyppiUri()));
-            //p.setOrganisationTypes(o.getTyypit());
-        } catch (KoodistoException e) {
-            throw new KIConversionException("Conversion failed - " + e.getMessage());
+
+        } catch (Exception e) {
+            LOG.error("Problem creatig organisaatio: " + o.getOid() + ", " + e.getMessage());
+            e.printStackTrace();
+            throw new KIConversionException("Conversion failed - " + e.getMessage() + ", organisaatio: " + o.getOid());
         }
         return p;
     }
@@ -254,6 +257,7 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
     }
 
     private boolean isAthleteEducation(final String placeOfBusinessCode) {
+        try {
         if (!Strings.isNullOrEmpty(placeOfBusinessCode)) {
             List<Code> superCodes = null;
             try {
@@ -269,6 +273,9 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
                     }
                 }
             }
+        }
+        } catch (Exception ex) {
+            return false;
         }
         return false;
     }
