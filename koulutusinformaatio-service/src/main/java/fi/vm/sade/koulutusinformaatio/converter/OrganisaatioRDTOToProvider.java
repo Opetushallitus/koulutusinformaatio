@@ -147,8 +147,7 @@ public class OrganisaatioRDTOToProvider implements Converter<OrganisaatioRDTO, P
             p.setType(koodistoService.searchFirst(o.getOppilaitosTyyppiUri()));
 
         } catch (Exception e) {
-            LOG.error("Problem creatig organisaatio: " + o.getOid() + ", " + e.getMessage());
-            e.printStackTrace();
+            LOG.error("Problem creatig organisaatio: " + o.getOid(), e);
             throw new KIConversionException("Conversion failed - " + e.getMessage() + ", organisaatio: " + o.getOid());
         }
         return p;
