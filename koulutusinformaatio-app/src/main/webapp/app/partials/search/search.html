@@ -1,7 +1,10 @@
 <div class="container">
     <div data-ki-breadcrumb="breadcrumb-search-results" id="breadcrumb"></div>
     <h1>
-    	<span data-ki-i18n="search-result-title"></span> &rdquo;<span data-ng-bind="tabTitles.queryString"></span>&rdquo; ({{tabTitles.totalCount}} <span data-ki-i18n="search-result-count-unit"></span>)
+    	<span data-ki-i18n="search-result-title"></span> &rdquo;<span data-ng-bind="tabTitles.queryString"></span>&rdquo; 
+        <!-- total count removed (temporarily) to fix usability issue
+        ({{tabTitles.totalCount}} <span data-ki-i18n="search-result-count-unit"></span>) 
+        -->
     </h1>
     <div id="search-tablist" data-tabset role="tablist">
         <div data-tab data-heading="{{tabTitles.learningOpportunities}}"
