@@ -96,6 +96,8 @@ public class SingleSpecialLOSBuilder {
             for (ApplicationOption curAo : curChild.getApplicationOptions()) {
                 curAo.setType(TarjontaConstants.TYPE_SPECIAL);
                 curAo.setParent(new ParentLOSRef(newSpecial.getId(), newSpecial.getName()));
+                newSpecial.getProvider().getApplicationSystemIds().add(curAo.getApplicationSystem().getId());
+                curAo.setProvider(newSpecial.getProvider());
             }
         }
 
