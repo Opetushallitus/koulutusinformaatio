@@ -75,6 +75,9 @@ public class CalendarApplicationSystemToRSS {
                 builder.append( sdf.format( ap.getDateRange().getEndDate() ) );
                 rssItem.setDescription( builder.toString() );
              
+                // set guid to differentiate items
+                rssItem.setGuid( cas.getId() + '_' + ap.getDateRange().getStartDate().getTime() + '_' + ap.getDateRange().getEndDate().getTime() + '_' + lang );
+                
                 // set timestamp for ordering
                 rssItem.setTimestamp( ap.getDateRange().getStartDate() );
                     

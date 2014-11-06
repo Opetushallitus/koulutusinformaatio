@@ -9,11 +9,12 @@ import javax.xml.bind.annotation.XmlType;
 /*
  * POJO representing RSS channel item
  */
-@XmlType (propOrder={"title", "description"})
+@XmlType (propOrder={"title", "description", "guid"})
 public class RSSChannelItemDTO {
 
     private String title;
     private String description;
+    private String guid;
     
     private Date timestamp;
     
@@ -33,6 +34,15 @@ public class RSSChannelItemDTO {
     
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @XmlElement
+    public String getGuid() {
+        return guid;
+    }
+
+    public void setGuid(String guid) {
+        this.guid = guid;
     }
 
     @XmlTransient
