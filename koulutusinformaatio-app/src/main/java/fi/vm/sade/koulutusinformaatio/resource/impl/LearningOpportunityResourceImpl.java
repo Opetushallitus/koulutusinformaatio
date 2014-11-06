@@ -104,7 +104,7 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
                     cities, facetFilters, articleFilters, providerFilters, lang, ongoing, upcoming, upcomingLater, start, rows, sort, order, 
                     lopFilter, educationCodeFilter, excludes, searchType);
             LOSearchResultListDTO resultList = modelMapper.map(learningOpportunities, LOSearchResultListDTO.class);
-            if (lopFilter != null && searchType.equals(SearchType.LO)) {
+            if (lopFilter != null && !lopFilter.isEmpty() && searchType.equals(SearchType.LO)) {
                 resultList.setArticleCount(0);
                 resultList.setOrgCount(0);
                 resultList.setTotalCount(resultList.getLoCount());
