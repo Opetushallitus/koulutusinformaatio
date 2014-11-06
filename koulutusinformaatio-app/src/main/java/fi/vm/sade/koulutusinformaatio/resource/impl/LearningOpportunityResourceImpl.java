@@ -107,6 +107,7 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
             if (lopFilter != null && searchType.equals(SearchType.LO)) {
                 resultList.setArticleCount(0);
                 resultList.setOrgCount(0);
+                resultList.setTotalCount(resultList.getLoCount());
             }
             return resultList; 
         } catch (SearchException e) {
