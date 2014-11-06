@@ -18,6 +18,7 @@ package fi.vm.sade.koulutusinformaatio.resource.impl;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -34,12 +35,14 @@ import fi.vm.sade.koulutusinformaatio.domain.LOSearchResultList;
 import fi.vm.sade.koulutusinformaatio.domain.SuggestedTermsResult;
 import fi.vm.sade.koulutusinformaatio.domain.dto.AdultUpperSecondaryLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.AdultVocationalParentLOSDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ArticleResultDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ChildLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.HigherEducationLOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LOSDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.LOSearchResultListDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ParentLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.ProviderSearchResultDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SpecialLearningOpportunitySpecificationDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.StandaloneLOSDTO;
@@ -103,13 +106,7 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
             LOSearchResultList learningOpportunities = searchService.searchLearningOpportunities(key, prerequisite,
                     cities, facetFilters, articleFilters, providerFilters, lang, ongoing, upcoming, upcomingLater, start, rows, sort, order, 
                     lopFilter, educationCodeFilter, excludes, searchType);
-            LOSearchResultListDTO resultList = modelMapper.map(learningOpportunities, LOSearchResultListDTO.class);
-            if (lopFilter != null && !lopFilter.isEmpty() && searchType.equals(SearchType.LO)) {
-                resultList.setArticleCount(0);
-                resultList.setOrgCount(0);
-                resultList.setTotalCount(resultList.getLoCount());
-            }
-            return resultList; 
+            return modelMapper.map(learningOpportunities, LOSearchResultListDTO.class);
         } catch (SearchException e) {
             throw KIExceptionHandler.resolveException(e);
         }
