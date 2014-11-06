@@ -103,7 +103,12 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
             LOSearchResultList learningOpportunities = searchService.searchLearningOpportunities(key, prerequisite,
                     cities, facetFilters, articleFilters, providerFilters, lang, ongoing, upcoming, upcomingLater, start, rows, sort, order, 
                     lopFilter, educationCodeFilter, excludes, searchType);
-            return modelMapper.map(learningOpportunities, LOSearchResultListDTO.class);
+            LOSearchResultListDTO resultList = modelMapper.map(learningOpportunities, LOSearchResultListDTO.class);
+            if (lopFilter != null && searchType.equals(SearchType.LO)) {
+                resultList.setArticleCount(0);
+                resultList.setOrgCount(0);
+            }
+            return resultList; 
         } catch (SearchException e) {
             throw KIExceptionHandler.resolveException(e);
         }
