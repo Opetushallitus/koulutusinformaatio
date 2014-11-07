@@ -721,7 +721,7 @@ public class SearchServiceSolrImpl implements SearchService {
         searchResultList.setAppStatusFacet(getHaunTila(response, upcomingLimit, upcomingLaterLimit));
         searchResultList.setEdTypeFacet(getEdTypeFacet(response, lang));
         searchResultList.setFilterFacet(getFilterFacet(facetFilters, lang));
-        searchResultList.setPrerequisiteFacet(getPrerequisiteFacet(response));
+        searchResultList.setPrerequisiteFacet(getPrerequisiteFacet(response, facetFilters));
         searchResultList.setTopicFacet(getTopicFacet(response, lang));
         searchResultList.setFotFacet(getFotFacet(response, lang));
         searchResultList.setTimeOfTeachingFacet(getTimeOfTeachingFacet(response, lang));
@@ -795,17 +795,24 @@ public class SearchServiceSolrImpl implements SearchService {
     /*
      * Adding the prerequisite facet to the search result.
      */
-    private Facet getPrerequisiteFacet(QueryResponse response) {
+    private Facet getPrerequisiteFacet(QueryResponse response, List<String> facetFilters) {
         FacetField prerequisiteF = response.getFacetField(LearningOpportunity.PREREQUISITES);
         Facet prerequisiteFacet = new Facet();
         List<FacetValue> values = new ArrayList<FacetValue>();
+        boolean isPrereqSet = false;
+        for (String curFilter : facetFilters) {
+            if (curFilter.startsWith("prerequisites")) {
+                isPrereqSet = true;
+            }
+        }
         if (prerequisiteF != null) {
             for (Count curC : prerequisiteF.getValues()) {
 
-
+                long count = isPrereqSet ? 0 : curC.getCount();
+                
                 FacetValue newVal = new FacetValue(LearningOpportunity.PREREQUISITES,
                         curC.getName(),
-                        curC.getCount(),
+                        count,
                         curC.getName());
                 values.add(newVal);
 
