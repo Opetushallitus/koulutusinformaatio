@@ -466,10 +466,6 @@ service('ParentLOTransformer', ['KiSorter', '$filter', '$rootScope', function(Ki
                 $rootScope.translationLanguage = result.translationLanguage;
             }
 
-            if (result && result.provider && result.provider.name) {
-                result.provider.encodedName = $filter('encodeURIComponent')('"' + result.provider.name + '"');
-            }
-
             for (var loiIndex in result.lois) {
                 if (result.lois.hasOwnProperty(loiIndex)) {
                     var loi = result.lois[loiIndex];
@@ -636,9 +632,6 @@ service('HigherEducationTransformer', ['KiSorter', '$rootScope', '$filter', 'Lan
                 result.availableTranslationLanguages = _.filter(result.availableTranslationLanguages, function(item) { return item.value.toLowerCase() != result.translationLanguage});
 			}
 
-			if (result && result.provider && result.provider.name) {
-				result.provider.encodedName = $filter('encodeURIComponent')('"' + result.provider.name + '"');
-			}
 			if (result.startDate) {
 				var startDate = new Date(result.startDate);
 				result.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
@@ -754,9 +747,6 @@ service('AdultVocationalTransformer', ['KiSorter', '$rootScope', '$filter', 'Lan
                 result.availableTranslationLanguages = _.filter(result.availableTranslationLanguages, function(item) { return item.value.toLowerCase() != result.translationLanguage});
 			}
 
-			if (result && result.provider && result.provider.name) {
-				result.provider.encodedName = $filter('encodeURIComponent')('"' + result.provider.name + '"');
-			}
 			if (result.startDate) {
 				var startDate = new Date(result.startDate);
 				result.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();

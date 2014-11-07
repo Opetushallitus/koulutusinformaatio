@@ -7,7 +7,7 @@
 		<ul class="list-unstyled" data-ng-if="!lo.preview">
 			<li>
 				<i class="icon-angle-double-right"></i>
-				<a data-ng-href="#!/haku/*?page=1&facetFilters=teachingLangCode_ffm:{{lo.translationLanguage.toUpperCase()}}&lopFilter={{lo.provider.name}}&excludes=-id:{{lo.id}}&itemsPerPage=25&sortCriteria=0&tab=los">
+				<a data-ng-href="#!/haku/*?page=1&facetFilters=teachingLangCode_ffm:{{lo.translationLanguage.toUpperCase()}}&lopFilter={{lo.provider.name | encodeURIComponent}}&excludes=-id:{{lo.id}}&itemsPerPage=25&sortCriteria=0&tab=los">
 					<span data-ki-i18n="tarjoajan"></span> {{lo.provider.name}}</a>
 			</li>
 			<li>
