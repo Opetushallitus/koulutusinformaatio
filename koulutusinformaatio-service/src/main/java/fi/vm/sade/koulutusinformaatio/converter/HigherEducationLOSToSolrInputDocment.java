@@ -24,6 +24,8 @@ import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 
 import org.apache.solr.common.SolrInputDocument;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 
 import java.util.ArrayList;
@@ -36,6 +38,8 @@ import java.util.Map;
  */
 public class HigherEducationLOSToSolrInputDocment implements Converter<StandaloneLOS, List<SolrInputDocument>> {
 
+    private static final Logger LOG = LoggerFactory.getLogger(HigherEducationLOSToSolrInputDocment.class);
+    
     @Override
     public List<SolrInputDocument> convert(StandaloneLOS los) {
         List<SolrInputDocument> docs = Lists.newArrayList();
@@ -401,8 +405,16 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
             String curTeachingLang = teachingLangCode.getValue();
             doc.addField(LearningOpportunity.TEACHING_LANGUAGE, curTeachingLang);
         }
+        
+        String educationUri = los.getEducationCode() != null && los.getEducationCode().getUri() != null ? los.getEducationCode().getUri() : "";
+        LOG.debug("Education code: " + educationUri);
 
-        if (los.getEducationDegree().contains(TarjontaConstants.ED_DEGREE_URI_AMK)) {
+        if (educationUri.contains(SolrConstants.ED_CODE_AMM_OPETTAJA) 
+                || educationUri.contains(SolrConstants.ED_CODE_AMM_ER_OPETTAJA) || educationUri.contains(SolrConstants.ED_CODE_AMM_OPO)) {
+            doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_MUU);
+            doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMM_OPETTAJA);
+        }
+        else if (los.getEducationDegree().contains(TarjontaConstants.ED_DEGREE_URI_AMK)) {
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMKS);
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMK);
             //doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_TUTKINTOON);

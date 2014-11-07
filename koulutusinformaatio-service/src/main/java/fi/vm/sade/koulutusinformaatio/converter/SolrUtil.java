@@ -473,7 +473,12 @@ public final class SolrUtil {
         public static final String ED_TYPE_KANSANOPISTO = "et02.05";
         public static final String ED_TYPE_VALMENTAVA = "et02.02";
         public static final String ED_TYPE_KOTITALOUS = "et02.015";
+        public static final String ED_TYPE_AMM_OPETTAJA = "et02.11";
         public static final String ED_TYPE_KOTITALOUS_DISPLAY = "kotitalous";
+        
+        public static final String ED_CODE_AMM_OPETTAJA = "koulutus_000001";
+        public static final String ED_CODE_AMM_ER_OPETTAJA = "koulutus_000002";
+        public static final String ED_CODE_AMM_OPO = "koulutus_000003";
         
         public static final String SPECIAL_EDUCATION = "ER";
         public static final String TIMESTAMP_DOC = "loUpdateTimestampDocument";

@@ -144,6 +144,7 @@ public class UpdateServiceImpl implements UpdateService {
             }
             LOG.debug("Higher educations saved.");
 
+            
             List<AdultUpperSecondaryLOS> adultUpperSecondaries = this.tarjontaService.findAdultUpperSecondaries();
             LOG.debug("Found adult upper secondary educations: " + adultUpperSecondaries.size());
 
@@ -186,6 +187,7 @@ public class UpdateServiceImpl implements UpdateService {
             this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
             LOG.debug("Application systems indexed");
 
+            
             List<Article> articles = this.articleService.fetchArticles();
             LOG.debug("Articles fetched");
             indexerService.addArticles(loUpdateSolr, articles);
