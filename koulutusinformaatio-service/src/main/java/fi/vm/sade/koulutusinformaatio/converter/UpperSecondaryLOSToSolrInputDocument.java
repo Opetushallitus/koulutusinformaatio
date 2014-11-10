@@ -39,7 +39,20 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
         List<SolrInputDocument> docs = Lists.newArrayList();
         FacetIndexer fIndexer = new FacetIndexer();
 
-        for (UpperSecondaryLOI loi : los.getLois()) {
+        UpperSecondaryLOI loi = null;
+        
+        for (UpperSecondaryLOI curLoi : los.getLois()) {
+            if (loi == null) {
+                loi = curLoi;
+            }
+            if (curLoi.getStartDate().after(loi.getStartDate())) {
+                loi = curLoi;
+            }
+            //docs.add(createDoc(los, loi));
+            //docs.addAll(fIndexer.createFacetDocs(loi, los));
+        }
+        
+        if (loi != null) {
             docs.add(createDoc(los, loi));
             docs.addAll(fIndexer.createFacetDocs(loi, los));
         }
@@ -53,7 +66,7 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
         SolrInputDocument doc = new SolrInputDocument();
         doc.addField(LearningOpportunity.TYPE, los.getType());
         Provider provider = los.getProvider();
-        doc.addField(LearningOpportunity.ID, loi.getId());
+        doc.addField(LearningOpportunity.ID, los.getId());//loi.getId());
         doc.addField(LearningOpportunity.LOS_ID, los.getId());
         doc.addField(LearningOpportunity.LOP_ID, provider.getId());
 
