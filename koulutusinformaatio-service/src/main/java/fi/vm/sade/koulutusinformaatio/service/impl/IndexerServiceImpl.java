@@ -566,9 +566,9 @@ public class IndexerServiceImpl implements IndexerService {
                 loHttpSolrServer.deleteById(curChild.getId());
             }
         } else if (curLos instanceof UpperSecondaryLOS) {
-            for (UpperSecondaryLOI curLoi : ((UpperSecondaryLOS) curLos).getLois()) {
-                loHttpSolrServer.deleteById(curLoi.getId());
-            }
+            
+            loHttpSolrServer.deleteById(curLos.getId());
+
         } else if ((curLos instanceof HigherEducationLOS) 
                     || (curLos instanceof AdultUpperSecondaryLOS)
                     || (curLos instanceof CompetenceBasedQualificationParentLOS)) {
