@@ -48,8 +48,6 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
             if (curLoi.getStartDate().after(loi.getStartDate())) {
                 loi = curLoi;
             }
-            //docs.add(createDoc(los, loi));
-            //docs.addAll(fIndexer.createFacetDocs(loi, los));
         }
         
         if (loi != null) {
