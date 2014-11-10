@@ -247,6 +247,16 @@ public final class SolrUtil {
             fixed = fixed.replace(")", "");
         }
         
+        if (fixed.length() > 0) {
+            fixed = fixed.replace(':', ' ');
+        }
+        
+        if (fixed.length() > 0) {
+            fixed = fixed.replace('-', ' ');
+        }
+        
+        
+        
         if (fixed.endsWith("?")) {
             fixed = fixed.substring(0, fixed.lastIndexOf('?'));
         }
