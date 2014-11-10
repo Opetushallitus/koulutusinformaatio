@@ -127,7 +127,7 @@ service('SearchWizardService', ['SearchWizardConstants', 'SelectionBuilder',
                     return [
                         SelectionBuilder.buildEducationTypeSelection('et01.03.01', opt, SearchWizardConstants.educationKind.NUORTEN, SearchWizardConstants.prerequisites.YO),   // Ammatillinen koulutus
                         SelectionBuilder.buildEducationTypeSelection('et01.04.01', opt, undefined, SearchWizardConstants.prerequisites.YO),                                     // Ammattikorkeakoulututkinto
-                        SelectionBuilder.buildEducationTypeSelection('et01.05.01', opt, undefined, SearchWizardConstants.prerequisites.YO),                                     // Yliopisto (alempi)
+                        SelectionBuilder.buildEducationTypeSelection('et01.05', opt, undefined, SearchWizardConstants.prerequisites.YO),                                     // Yliopisto (alempi)
                         SelectionBuilder.buildEducationTypeSelection('et02.05', opt, undefined, SearchWizardConstants.prerequisites.YO),                                        // Kansanopistojen pitkät linjat
                         SelectionBuilder.buildEducationTypeSelection('et02.015', opt, undefined, SearchWizardConstants.prerequisites.YO)                                        // Kotitalousopetus
                     ];
@@ -148,7 +148,7 @@ service('SearchWizardService', ['SearchWizardConstants', 'SelectionBuilder',
                         SelectionBuilder.buildEducationTypeSelection('et01.03.03', opt, SearchWizardConstants.educationKind.AIKUIS),                                            // Ammattitutkinto aikuiskoulutuksena
                         SelectionBuilder.buildEducationTypeSelection('et01.03.04', opt, SearchWizardConstants.educationKind.AIKUIS),                                            // Erikoisammattitutkinto aikuiskoulutuksena
                         SelectionBuilder.buildEducationTypeSelection('et01.04.01', opt),                                                                                        // Ammattikorkeakoulututkinto
-                        SelectionBuilder.buildEducationTypeSelection('et01.05.01', opt),                                                                                        // Alempi tutkinto yliopistossa
+                        SelectionBuilder.buildEducationTypeSelection('et01.05', opt),                                                                                        // Alempi tutkinto yliopistossa
                         SelectionBuilder.buildEducationTypeSelection('et02.05', opt, undefined, SearchWizardConstants.prerequisites.YO)                                         // Kansanopistojen pitkät linjat
                     ];
                 } else if (opt === SearchWizardConstants.phaseTwoOpts.AMM_PT_AIKU) {
@@ -156,7 +156,7 @@ service('SearchWizardService', ['SearchWizardConstants', 'SelectionBuilder',
                         SelectionBuilder.buildEducationTypeSelection('et01.03.03', opt, SearchWizardConstants.educationKind.AIKUIS),    // Ammattitutkinto aikuiskoulutuksena
                         SelectionBuilder.buildEducationTypeSelection('et01.03.04', opt, SearchWizardConstants.educationKind.AIKUIS),    // Erikoisammattitutkinto aikuiskoulutuksena
                         SelectionBuilder.buildEducationTypeSelection('et01.04.01', opt),                                                // Ammattikorkeakoulututkinto
-                        SelectionBuilder.buildEducationTypeSelection('et01.05.01', opt),                                                // Alempi tutkinto yliopistossa (kandidaatti ym)
+                        SelectionBuilder.buildEducationTypeSelection('et01.05', opt),                                                // Alempi tutkinto yliopistossa (kandidaatti ym)
                         SelectionBuilder.buildEducationTypeSelection('et02.05', opt, undefined, SearchWizardConstants.prerequisites.YO) // Kansanopistojen koulutukset
                     ];
                 } else if (opt === SearchWizardConstants.phaseTwoOpts.ALEMPI_KK_AIKU) {
@@ -405,6 +405,10 @@ service('SearchWizardSelectionsService', ['SearchWizardService', 'LanguageServic
                             result.facetFilters.push('kindOfEducation_ffm:' + selection.kind)
                         }
 
+                        if (selection.prerequisite) {
+                            result.facetFilters.push('prerequisites:' + selection.prerequisite);
+                        }
+
                     }
                 });
 
@@ -426,7 +430,11 @@ service('SearchWizardSelectionsService', ['SearchWizardService', 'LanguageServic
                         query += '&facetFilters=' + selection.name + ':' +  selection.code;
 
                         if (selection.kind) {
-                            query += '&facetFilters=' + 'kindOfEducation_ffm:' + selection.kind;
+                            query += '&facetFilters=kindOfEducation_ffm:' + selection.kind;
+                        }
+
+                        if (selection.prerequisite) {
+                            query += '&facetFilters=prerequisites:' + selection.prerequisite;
                         }
                     }
                 });
