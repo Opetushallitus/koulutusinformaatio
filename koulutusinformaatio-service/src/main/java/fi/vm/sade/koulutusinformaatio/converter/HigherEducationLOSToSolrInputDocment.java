@@ -439,13 +439,17 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
         }
 
 
-
-        for (Code curTopic : los.getTopics()) {
-            doc.addField(LearningOpportunity.TOPIC, curTopic.getUri());
+        if (los.getTopics() != null) {
+        
+            for (Code curTopic : los.getTopics()) {
+                doc.addField(LearningOpportunity.TOPIC, curTopic.getUri());
+            }
         }
 
-        for (Code curTopic : los.getThemes()) {
-            doc.addField(LearningOpportunity.THEME, curTopic.getUri());
+        if (los.getThemes() != null) {
+            for (Code curTopic : los.getThemes()) {
+                doc.addField(LearningOpportunity.THEME, curTopic.getUri());
+            }
         }
 
         if (los.getFotFacet() != null) {

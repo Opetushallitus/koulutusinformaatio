@@ -231,12 +231,17 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_KAKSOIS);
             doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_AMMATILLISET);
         }
-        for (Code curTopic : los.getTopics()) {
-            doc.addField(LearningOpportunity.TOPIC, curTopic.getUri());
+        
+        if (los.getTopics() != null) {
+            for (Code curTopic : los.getTopics()) {
+                doc.addField(LearningOpportunity.TOPIC, curTopic.getUri());
+            }
         }
 
-        for (Code curTopic : los.getThemes()) {
-            doc.addField(LearningOpportunity.THEME, curTopic.getUri());
+        if (los.getThemes() != null) {
+            for (Code curTopic : los.getThemes()) {
+                doc.addField(LearningOpportunity.THEME, curTopic.getUri());
+            }
         }
         
         List<String> usedVals = new ArrayList<String>();
