@@ -11,7 +11,8 @@ angular.module('kiApp.directives',
         'kiApp.directives.TextBlocks',
         'kiApp.directives.ContentBlocks',
         'kiApp.directives.AppBasket',
-        'kiApp.directives.AjaxLoader',]).
+        'kiApp.directives.AjaxLoader',
+        'kiApp.directives.ThemeIcon']).
 
 /**
  *  Updates the title element of the page.

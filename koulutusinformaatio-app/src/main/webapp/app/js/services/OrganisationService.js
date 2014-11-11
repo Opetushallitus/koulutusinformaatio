@@ -3,10 +3,11 @@ angular.module('kiApp.OrganisationService', ['ngResource']).
 /**
  * Service for retrieving districts (maakunnat). Used in faceted search
  */
-service('OrganisationService', ['$http', '$timeout', '$q', 'LanguageService', function($http, $timeout, $q, LanguageService) {
+service('OrganisationService', ['$http', '$rootScope', '$q', 'LanguageService', function($http, $rootScope, $q, LanguageService) {
 
     return {
         query: function(id) {
+            $rootScope.isLoading = true;
             var deferred = $q.defer();
 
             $http.get('../lop/' + id, {
@@ -15,9 +16,11 @@ service('OrganisationService', ['$http', '$timeout', '$q', 'LanguageService', fu
                 }
             }).
             success(function(result) {
+                $rootScope.isLoading = false;
                 deferred.resolve(result);
             }).
             error(function(result) {
+                $rootScope.isLoading = false;
                 deferred.reject(result);
             });
 

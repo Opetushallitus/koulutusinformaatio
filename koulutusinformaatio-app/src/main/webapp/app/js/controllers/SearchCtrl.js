@@ -1,7 +1,7 @@
 /**
  *  Controller for search field in header
  */
-function SearchFieldCtrl($scope, $location, $route, $rootScope, SearchService, kiAppConstants, FilterService, AutocompleteService, TranslationService) {
+function SearchFieldCtrl($scope, $location, $route, $rootScope, SearchService, kiAppConstants, FilterService, AutocompleteService, TranslationService, Config) {
     $scope.searchFieldPlaceholder = TranslationService.getTranslation('search-field-placeholder'); 
     $scope.suggestions = [];
     
@@ -300,7 +300,7 @@ function SearchFilterCtrl($scope, $location, SearchLearningOpportunityService, k
 /**
  *  Controller for search functionality 
  */
-function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route, SearchLearningOpportunityService, SearchService, kiAppConstants, FilterService, Config, LanguageService, TranslationService, $timeout, SearchResultFacetTransformer) {
+function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route, SearchLearningOpportunityService, SearchService, kiAppConstants, FilterService, LanguageService, TranslationService, $timeout, SearchResultFacetTransformer) {
     var queryParams;
     $scope.selectAreaVisible = false;
     $rootScope.title = TranslationService.getTranslation('title-search-results') + ' - ' + TranslationService.getTranslation('sitename');
