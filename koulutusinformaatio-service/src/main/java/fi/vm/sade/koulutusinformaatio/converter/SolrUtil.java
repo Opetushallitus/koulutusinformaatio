@@ -196,11 +196,11 @@ public final class SolrUtil {
     
     public static void setSearchFields(List<String> facetFilters, SolrQuery query) {
         
-        List<String> teachingLangs = getTeachingLangs(facetFilters);
+        //List<String> teachingLangs = getTeachingLangs(facetFilters);
         
         List<String> searchFields = new ArrayList<String>();
         
-        if (teachingLangs.contains("fi")) {
+        /*if (teachingLangs.contains("fi")) {
             searchFields.addAll(SolrUtil.FIELDS_FI);
         } 
         
@@ -215,7 +215,7 @@ public final class SolrUtil {
         if (searchFields.isEmpty() 
                 && !teachingLangs.isEmpty()) {
             searchFields.addAll(SolrUtil.FIELDS_FI);
-        }
+        }*/
         
         if (searchFields.isEmpty()){
             query.setParam(DisMaxParams.QF, Joiner.on(" ").join(SolrUtil.FIELDS));

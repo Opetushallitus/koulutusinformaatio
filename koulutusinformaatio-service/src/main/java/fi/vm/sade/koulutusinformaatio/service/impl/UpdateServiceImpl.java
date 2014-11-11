@@ -126,9 +126,14 @@ public class UpdateServiceImpl implements UpdateService {
                         LOG.debug("Specifications foud: " + specifications.size());
                     }
                     for (LOS spec : specifications) {
-                        this.indexerService.addLearningOpportunitySpecification(spec, loUpdateSolr, lopUpdateSolr);
-                        this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
-                        this.educationDataUpdateService.save(spec);
+                        try {
+                            this.indexerService.addLearningOpportunitySpecification(spec, loUpdateSolr, lopUpdateSolr);
+                            this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
+                            this.educationDataUpdateService.save(spec);
+                        } catch (Exception exc) {
+                            LOG.error("Problem indexing los: " + spec.getId(), exc);
+                            throw exc;
+                        }
                     }
                 }
             }
