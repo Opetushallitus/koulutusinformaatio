@@ -9,7 +9,8 @@ angular.module('kiApp.services',
     'kiApp.AlertService',
     'kiApp.AuthService',
     'kiApp.SearchLearningOpportunityService',
-    'kiApp.OrganisationService'
+    'kiApp.OrganisationService',
+    'kiApp.LanguageService'
 ]).
 
 service('SearchLocationService', ['$http', '$timeout', '$q', 'LanguageService', function($http, $timeout, $q, LanguageService) {
@@ -1236,43 +1237,6 @@ service('LearningOpportunityPictureService', ['$http', '$timeout', '$q', functio
                 CookieService.set(key, newTerm);
             }
         }
-    };
-}]).
-
-/**
- *  Service keeping track of the current language selection
- */
-service('LanguageService', ['CookieService', '$location', '_', function(CookieService, $location, _) {
-    var languages = {
-            finnish: 'fi',
-            swedish: 'sv',
-            english: 'en'
-        },
-        supportedLanguages = _.values(languages),
-        defaultLanguage = languages.finnish,
-        key = 'i18next',
-
-        getLanguage = function() {
-            return CookieService.get(key) || defaultLanguage;
-        },
-
-        setLanguage = function(language) {
-            CookieService.set(key, language);
-        },
-
-        getDefaultLanguage = function() {
-            return defaultLanguage;
-        },
-
-        isSupportedLanguage = function(lang) {
-            return supportedLanguages.indexOf(lang) > -1;
-        };
-
-    return {
-        getLanguage: getLanguage,
-        setLanguage: setLanguage,
-        getDefaultLanguage: getDefaultLanguage,
-        isSupportedLanguage: isSupportedLanguage
     };
 }]).
 
