@@ -117,7 +117,7 @@ public class HigherEducationLOSEntity {
     private List<HigherEducationLOSEntity> parents;
 
     @Embedded
-    private List<CodeEntity> prerequisites;
+    private List<CodeEntity> prerequisites = new ArrayList<CodeEntity>();
     @Embedded
     private List<I18nTextEntity> teachingTimes;
     @Embedded
@@ -131,7 +131,7 @@ public class HigherEducationLOSEntity {
     private List<CodeEntity> availableTranslationLanguages;
 
     @Embedded
-    private List<CodeEntity> facetPrerequisites;
+    private List<CodeEntity> facetPrerequisites = new ArrayList<CodeEntity>();
     
     @Embedded
     private List<CodeEntity> topics;

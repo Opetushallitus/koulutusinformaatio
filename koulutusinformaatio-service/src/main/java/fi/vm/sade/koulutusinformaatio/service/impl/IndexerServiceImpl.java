@@ -220,6 +220,7 @@ public class IndexerServiceImpl implements IndexerService {
                                     Set<String> vocationalAsIds,
                                     Set<String> nonVocationalAsIds,
                                     Set<String> providerAsIds) throws SolrServerException, IOException {
+
         
         List<SolrInputDocument> providerDocs = Lists.newArrayList();
         if (provider != null) {
@@ -254,6 +255,15 @@ public class IndexerServiceImpl implements IndexerService {
             else {
                 providerDoc.setField(SolrUtil.ProviderFields.TYPE_VALUE, SolrConstants.PROVIDER_TYPE_UNKNOWN);
             }
+            
+            Set<String> aggregatedBaseEdus = new HashSet<String>();
+            aggregatedBaseEdus.addAll(requiredBaseEducations);
+            Set<String> aggregatedProviderAsIds = new HashSet<String>();
+            aggregatedProviderAsIds.addAll(providerAsIds);
+            Set<String> aggregatedVocationalAsIds = new HashSet<String>();
+            aggregatedVocationalAsIds.addAll(vocationalAsIds);
+            Set<String> aggregatedNonVocationalAsIds = new HashSet<String>();
+            aggregatedNonVocationalAsIds.addAll(nonVocationalAsIds);
 
             // check if provider exists and update base education and as id values
             SolrQuery query = new SolrQuery("id:" + provider.getId());
@@ -262,19 +272,19 @@ public class IndexerServiceImpl implements IndexerService {
             if (results != null && results.size() > 0) {
                 List<String> edus = (List<String>) results.get(0).get(SolrUtil.ProviderFields.REQUIRED_BASE_EDUCATIONS);
                 if (edus != null) {
-                    requiredBaseEducations.addAll(edus);
+                    aggregatedBaseEdus.addAll(edus);
                 }
                 List<String> asids = (List<String>) results.get(0).get(SolrUtil.ProviderFields.AS_IDS);
                 if (asids != null) {
-                    providerAsIds.addAll(asids);
+                    aggregatedProviderAsIds.addAll(asids);
                 }
                 List<String> vocational = (List<String>) results.get(0).get(SolrUtil.ProviderFields.VOCATIONAL_AS_IDS);
                 if (vocational != null) {
-                    vocationalAsIds.addAll(vocational);
+                    aggregatedVocationalAsIds.addAll(vocational);
                 }
                 List<String> nonVocational = (List<String>) results.get(0).get(SolrUtil.ProviderFields.NON_VOCATIONAL_AS_IDS);
                 if (nonVocational != null) {
-                    nonVocationalAsIds.addAll(nonVocational);
+                    aggregatedNonVocationalAsIds.addAll(nonVocational);
                 }
             }
             
@@ -319,10 +329,10 @@ public class IndexerServiceImpl implements IndexerService {
                 providerDoc.addField(LearningOpportunity.LOP_HOMEPLACE, provider.getHomePlace().getTranslations().values());
             }
 
-            providerDoc.setField(SolrUtil.ProviderFields.AS_IDS, providerAsIds);
-            providerDoc.setField(SolrUtil.ProviderFields.REQUIRED_BASE_EDUCATIONS, requiredBaseEducations);
-            providerDoc.setField(SolrUtil.ProviderFields.VOCATIONAL_AS_IDS, vocationalAsIds);
-            providerDoc.setField(SolrUtil.ProviderFields.NON_VOCATIONAL_AS_IDS, nonVocationalAsIds);
+            providerDoc.setField(SolrUtil.ProviderFields.AS_IDS, aggregatedProviderAsIds);
+            providerDoc.setField(SolrUtil.ProviderFields.REQUIRED_BASE_EDUCATIONS, aggregatedBaseEdus);
+            providerDoc.setField(SolrUtil.ProviderFields.VOCATIONAL_AS_IDS, aggregatedVocationalAsIds);
+            providerDoc.setField(SolrUtil.ProviderFields.NON_VOCATIONAL_AS_IDS, aggregatedNonVocationalAsIds);
             providerDocs.add(providerDoc);
             
             if (provider.getOlTypes() != null) {
@@ -556,9 +566,9 @@ public class IndexerServiceImpl implements IndexerService {
                 loHttpSolrServer.deleteById(curChild.getId());
             }
         } else if (curLos instanceof UpperSecondaryLOS) {
-            for (UpperSecondaryLOI curLoi : ((UpperSecondaryLOS) curLos).getLois()) {
-                loHttpSolrServer.deleteById(curLoi.getId());
-            }
+            
+            loHttpSolrServer.deleteById(curLos.getId());
+
         } else if ((curLos instanceof HigherEducationLOS) 
                     || (curLos instanceof AdultUpperSecondaryLOS)
                     || (curLos instanceof CompetenceBasedQualificationParentLOS)) {

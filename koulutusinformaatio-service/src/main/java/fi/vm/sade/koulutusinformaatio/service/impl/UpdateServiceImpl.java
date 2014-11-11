@@ -127,13 +127,18 @@ public class UpdateServiceImpl implements UpdateService {
                         LOG.debug("Specifications foud: " + specifications.size());
                     }
                     for (LOS spec : specifications) {
-                        this.indexerService.addLearningOpportunitySpecification(spec, loUpdateSolr, lopUpdateSolr);
-                        this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
-                        this.educationDataUpdateService.save(spec);
+                        try {
+                            this.indexerService.addLearningOpportunitySpecification(spec, loUpdateSolr, lopUpdateSolr);
+                            this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
+                            this.educationDataUpdateService.save(spec);
+                        } catch (Exception exc) {
+                            LOG.error("Problem indexing los: " + spec.getId(), exc);
+                            throw exc;
+                        }
                     }
                 }
             }
-
+            
             List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
             LOG.debug("Found higher educations: " + higherEducations.size());
 
@@ -145,6 +150,7 @@ public class UpdateServiceImpl implements UpdateService {
             }
             LOG.debug("Higher educations saved.");
 
+            
             List<AdultUpperSecondaryLOS> adultUpperSecondaries = this.tarjontaService.findAdultUpperSecondaries();
             LOG.debug("Found adult upper secondary educations: " + adultUpperSecondaries.size());
 
@@ -187,6 +193,7 @@ public class UpdateServiceImpl implements UpdateService {
             this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
             LOG.debug("Application systems indexed");
 
+            
             List<Article> articles = this.articleService.fetchArticles();
             LOG.debug("Articles fetched");
             indexerService.addArticles(loUpdateSolr, articles);
@@ -238,10 +245,17 @@ public class UpdateServiceImpl implements UpdateService {
         for (OrganisaatioPerustieto curOrg : orgBasics) {
             if (!indexerService.isDocumentInIndex(curOrg.getOid(), lopUpdateSolr)) {
                 LOG.debug("Indexing organisaatio: " + curOrg.getOid());
-                Provider curProv = this.providerService.getByOID(curOrg.getOid());
+                Provider curProv = null;
+                try {
+                    curProv = this.providerService.getByOID(curOrg.getOid());
+                } catch (Exception ex) {
+                    LOG.error("Problem indexing organization: " + curOrg.getOid(), ex);
+                    continue;
+                }
                 this.educationDataUpdateService.save(curProv);
                 this.indexerService.createProviderDocs(curProv, lopUpdateSolr, new HashSet<String>(), new HashSet<String>(), new HashSet<String>(), new HashSet<String>());
                 LOG.debug("Indexed and saved organisaatio: " + curOrg.getOid());
+                
             }
         }
     }

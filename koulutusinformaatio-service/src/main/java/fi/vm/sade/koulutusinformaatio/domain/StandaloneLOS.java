@@ -42,7 +42,7 @@ public class StandaloneLOS extends LOS {
 
     private String komoOid;
 
-    private List<Code> prerequisites;
+    private List<Code> prerequisites = new ArrayList<Code>();
     private List<I18nText> formOfTeaching;
     private List<I18nText> teachingTimes;
     private List<I18nText> teachingPlaces;
@@ -55,7 +55,7 @@ public class StandaloneLOS extends LOS {
     private List<Code> availableTranslationLanguages;
     
 
-    private List<Code> facetPrerequisites;
+    private List<Code> facetPrerequisites = new ArrayList<Code>();
     private String educationType;
     
     private List<Code> fotFacet = new ArrayList<Code>();

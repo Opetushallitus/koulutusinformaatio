@@ -16,6 +16,9 @@ function OrganisationCtrl($scope, $rootScope, $routeParams, OrganisationService,
                 $scope.provider.providerImage = result;
             });
         }
+
+        // set variable telling if this organisation has any published learning opportunities
+        $scope.hasLOs = (angular.isArray(result.applicationSystemIds) && result.applicationSystemIds.length > 0) ? true : false;
     });
 
 };

@@ -44,7 +44,7 @@
 
     "yo-et010301-n": "Yrkesutbildning",
     "yo-et010401": "Yrkeshögskoleexamen",
-    "yo-et010501": "Universitet, lägre examen (kandidat mm.)",
+    "yo-et0105": "Universitet, lägre examen (kandidat mm.)",
     "yo-et0205": "Folkhögskolornas allmänbildande linjer",
     "yo-et02015": "Undervisning i huslig ekonomi (Hushållsskolan)",
 
@@ -59,13 +59,13 @@
     "yo_aiku-et010303-a": "Yrkesexamen som vuxenutbildning - ofta krävs dessutom 3 års arbetserfarenhet eller på annat sätt inhämtade kunskaper",
     "yo_aiku-et010304-a": "Specialyrkesexamen som vuxenutbildning - ofta krävs dessutom 5 års arbetserfarenhet eller på annat sätt inhämtade kunskaper",
     "yo_aiku-et010401": "Yrkeshögskoleexamen",
-    "yo_aiku-et010501": "Lägre examen vid universitet",
+    "yo_aiku-et0105": "Lägre examen vid universitet",
     "yo_aiku-et0205": "Folkhögskolornas långa linjer",
 
     "amm_pt_aiku-et010303-a": "Yrkesexamen som vuxenutbildning - ofta krävs dessutom 3 års arbetserfarenhet eller på annat sätt inhämtade kunskaper",
     "amm_pt_aiku-et010304-a": "Specialyrkesexamen som vuxenutbildning - ofta krävs dessutom 5 års arbetserfarenhet eller på annat sätt inhämtade kunskaper",
     "amm_pt_aiku-et010401": "Yrkeshögskoleexamen",
-    "amm_pt_aiku-et010501": "Lägre examen vid universitet (kandidat etc.)",
+    "amm_pt_aiku-et0105": "Lägre examen vid universitet (kandidat etc.)",
     "amm_pt_aiku-et0205": "Folkhögskolornas utbildningar",
 
     "alempi_kk_aiku-et010402": "Högre yrkeshögskoleexamen",

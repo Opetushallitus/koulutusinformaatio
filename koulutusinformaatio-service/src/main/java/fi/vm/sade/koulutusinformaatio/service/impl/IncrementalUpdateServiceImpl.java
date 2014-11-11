@@ -166,7 +166,7 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             //If there are changes in komo-data, a full update is performed
             if ((result.containsKey("koulutusmoduuli") && !result.get("koulutusmoduuli").isEmpty()) || updatePeriod == 0) {
                 LOG.warn(String.format("Komos changed. Update period was: %s", updatePeriod));
-                indexKomoChanges(result.get("koulutusmoduuli"));
+                    indexKomoChanges(result.get("koulutusmoduuli"));
             } 
 
             //If changes in haku objects indexing them
@@ -210,17 +210,17 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             List<OidRDTO> aoOidDtos = null;
             try {
                 aoOidDtos = this.tarjontaRawService.getHakukohdesByKomoto(curOid);
+            
+                if (aoOidDtos == null || this.losIndexer.isLoiAlreadyHandled(aoOidDtos, changedHakukohdeOids)) {
+                    LOG.debug("Komoto: " + curOid + " was handled during hakukohde process");
+                } else {
+                    LOG.debug("Will index changed komoto: " + curOid);
+                    this.losIndexer.indexLoiData(curOid);
+                }
             } catch (Exception ex) {
-                LOG.warn("problem getting hakukohdes for komoto: " + curOid);
-            }
-            if (aoOidDtos == null || this.losIndexer.isLoiAlreadyHandled(aoOidDtos, changedHakukohdeOids)) {
-                LOG.debug("Komoto: " + curOid + " was handled during hakukohde process");
-            } else {
-                LOG.debug("Will index changed komoto: " + curOid);
-                this.losIndexer.indexLoiData(curOid);
+                LOG.error("problem indexing komoto: " + curOid, ex);
             }
         }
-        
     }
 
     private void indexHakukohdeChanges(List<String> hakukohdeChanges) throws Exception {
@@ -231,27 +231,34 @@ public class IncrementalUpdateServiceImpl implements IncrementalUpdateService {
             try {
                 aoDto = this.tarjontaRawService.getHakukohde(curOid);
                 asDto = this.tarjontaRawService.getHaku(aoDto.getHakuOid());
-            } catch (Exception ex) {
-                LOG.warn("Problem fetching hakukohde from tarjonta: " + curOid);
-            } 
-            if (aoDto != null && asDto != null) {
                 this.aoIndexer.indexApplicationOptionData(aoDto, asDto);
-            }
+            } catch (Exception ex) {
+                LOG.error("Problem indexing hakukohde: " + curOid, ex);
+            } 
+
         }
     }
 
     private void indexHakuChanges(List<String> hakuChanges) throws Exception {
         for (String curOid : hakuChanges) {
-            LOG.debug("Changed haku: " + curOid);
-            this.asIndexer.indexApplicationSystemData(curOid);
+            try {
+                LOG.debug("Changed haku: " + curOid);
+                this.asIndexer.indexApplicationSystemData(curOid);
+            } catch (Exception ex) {
+                LOG.error("Error indexing application system: " + curOid, ex);
+            }
         }
         
     }
 
     private void indexKomoChanges(List<String> komoChanges) throws Exception {
         for (String curKomoOid : komoChanges) {
-            if (this.losIndexer.isHigherEdKomo(curKomoOid)) { 
-                this.losIndexer.indexHigherEdKomo(curKomoOid);
+            try {
+                if (this.losIndexer.isHigherEdKomo(curKomoOid)) { 
+                    this.losIndexer.indexHigherEdKomo(curKomoOid);
+                }
+            } catch (Exception ex) {
+                LOG.error("Error indexing komo: " + curKomoOid, ex);
             }
         }
     }
