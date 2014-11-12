@@ -357,7 +357,7 @@ public class IndexerServiceImpl implements IndexerService {
             addrStr = (addr.getStreetAddress() != null 
                     && addr.getStreetAddress().getTranslations() != null
                     && !addr.getStreetAddress().getTranslations().isEmpty()) 
-                    ? this.resolveTextByLangEmptyDefault(lang, addr.getStreetAddress().getTranslations()) : addrStr;
+                    ? this.resolveTextByLangWithFallback(lang, addr.getStreetAddress().getTranslations()) : addrStr;
             addrStr = (addr.getPostalCode() != null) ? String.format("%s, %s",  addrStr, addr.getPostalCode()) : addrStr;
             addrStr = (addr.getPostOffice() != null 
                     && addr.getPostOffice().getTranslations() != null

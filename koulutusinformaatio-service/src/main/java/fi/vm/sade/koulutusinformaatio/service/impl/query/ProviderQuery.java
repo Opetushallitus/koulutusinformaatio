@@ -95,9 +95,6 @@ public class ProviderQuery extends SolrQuery {
     
     public ProviderQuery(String q, String lang, List<String> facetFilters, List<String> cities, int start, int rows, String sort, String order) {
         super(preprocess(q, lang));
-        
-        //super(Joiner.on(":").join(resolveNameField(lang, false), ClientUtils.escapeQueryChars(q)));
-        //super(q);//Joiner.on(":").join(resolveNameField(lang, false), ClientUtils.escapeQueryChars(q) + "*"));
         this.addFilterQuery("type:ORGANISAATIO");
         for (String curFilter : facetFilters) {
             this.addFilterQuery(curFilter);
@@ -121,14 +118,13 @@ public class ProviderQuery extends SolrQuery {
         this.setParam(DisMaxParams.QF, Joiner.on(" ").join(FIELDS));
         this.setFacet(true);
         this.addFacetField("oltype_ffm");
-        
     }
 
     private static String preprocess(String q, String lang) {
         if ("*".equals(q)) {
             return Joiner.on(":").join(resolveNameField(lang, false), q);
         } else {
-            return Joiner.on(":").join(resolveNameField(lang, false), ClientUtils.escapeQueryChars(q));
+            return String.format("%s OR %s OR %s", Joiner.on(":").join(resolveNameField("fi", false), ClientUtils.escapeQueryChars(q)), Joiner.on(":").join(resolveNameField("sv", false), ClientUtils.escapeQueryChars(q)), Joiner.on(":").join(resolveNameField("en", false), ClientUtils.escapeQueryChars(q)));
         }
     }
 
