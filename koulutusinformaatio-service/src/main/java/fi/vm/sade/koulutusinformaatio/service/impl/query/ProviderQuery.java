@@ -16,7 +16,6 @@
 
 package fi.vm.sade.koulutusinformaatio.service.impl.query;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.base.Joiner;
@@ -26,7 +25,6 @@ import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 
 import org.apache.solr.client.solrj.SolrQuery;
-import org.apache.solr.client.solrj.SolrQuery.ORDER;
 import org.apache.solr.client.solrj.util.ClientUtils;
 import org.apache.solr.common.params.DisMaxParams;
 
@@ -38,15 +36,21 @@ import org.apache.solr.common.params.DisMaxParams;
 public class ProviderQuery extends SolrQuery {
     
     public static final List<String> FIELDS_SV = Lists.newArrayList(
-            LearningOpportunity.TEXT_SV
+            LearningOpportunity.NAME_SV
     );
     
     public static final List<String> FIELDS_FI = Lists.newArrayList(
-            LearningOpportunity.TEXT_FI
+            LearningOpportunity.NAME_FI
     );
     
     public static final List<String> FIELDS_EN = Lists.newArrayList(
-            LearningOpportunity.TEXT_EN
+            LearningOpportunity.NAME_EN
+    );
+    
+    public static final List<String> FIELDS = Lists.newArrayList(
+            LearningOpportunity.NAME_EN/*,
+            LearningOpportunity.NAME_SV,
+            LearningOpportunity.NAME_FI*/
     );
 
     private final static String BASE_EDUCATIONS = "requiredBaseEducations";
@@ -90,7 +94,10 @@ public class ProviderQuery extends SolrQuery {
     }
     
     public ProviderQuery(String q, String lang, List<String> facetFilters, List<String> cities, int start, int rows, String sort, String order) {
-        super(q);//Joiner.on(":").join(resolveNameField(lang, false), ClientUtils.escapeQueryChars(q) + "*"));
+        super(preprocess(q, lang));
+        
+        //super(Joiner.on(":").join(resolveNameField(lang, false), ClientUtils.escapeQueryChars(q)));
+        //super(q);//Joiner.on(":").join(resolveNameField(lang, false), ClientUtils.escapeQueryChars(q) + "*"));
         this.addFilterQuery("type:ORGANISAATIO");
         for (String curFilter : facetFilters) {
             this.addFilterQuery(curFilter);
@@ -111,10 +118,18 @@ public class ProviderQuery extends SolrQuery {
         if (sort != null) {
             this.addSort(resolveNameField(lang, true), order.equals("asc") ? ORDER.asc : ORDER.desc);
         }
-        this.setSearchFields(this, lang);
+        this.setParam(DisMaxParams.QF, Joiner.on(" ").join(FIELDS));
         this.setFacet(true);
         this.addFacetField("oltype_ffm");
         
+    }
+
+    private static String preprocess(String q, String lang) {
+        if ("*".equals(q)) {
+            return Joiner.on(":").join(resolveNameField(lang, false), q);
+        } else {
+            return Joiner.on(":").join(resolveNameField(lang, false), ClientUtils.escapeQueryChars(q));
+        }
     }
 
     private static String resolveNameField(String lang, boolean prefix) {
@@ -131,32 +146,5 @@ public class ProviderQuery extends SolrQuery {
         } else {
             return NAME_FI_STR;
         }
-    }
-    
-    private void setSearchFields(SolrQuery query, String lang) {
-        
-        //List<String> teachingLangs = getTeachingLangs(facetFilters);
-        
-        List<String> searchFields = new ArrayList<String>();
-        
-        if (lang.equalsIgnoreCase("fi")) {
-            searchFields.addAll(FIELDS_FI);
-        } 
-        
-        if (lang.equalsIgnoreCase("sv")) {
-            searchFields.addAll(FIELDS_SV);
-        } 
-        
-        if (lang.equalsIgnoreCase("en")) {
-            searchFields.addAll(FIELDS_EN);
-        } 
-        
-        if (searchFields.isEmpty() ) {
-            searchFields.addAll(FIELDS_FI);
-        }
-        
-        query.setParam(DisMaxParams.QF, Joiner.on(" ").join(searchFields));
-        
-        
     }
 }
