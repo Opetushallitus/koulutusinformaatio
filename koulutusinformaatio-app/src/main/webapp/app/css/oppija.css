@@ -7065,6 +7065,11 @@ select:hover,
   -webkit-box-shadow: inset 0 0 3px 0 rgba(0, 0, 0, 0.14);
   box-shadow: inset 0 0 3px 0 rgba(0, 0, 0, 0.14); }
 
+.panel-lift-blue {
+  background-color: #dff2f8;
+  -webkit-box-shadow: inset 0 0 3px 0 rgba(0, 0, 0, 0.14);
+  box-shadow: inset 0 0 3px 0 rgba(0, 0, 0, 0.14); }
+
 .alert {
   -webkit-box-shadow: 0px 1px 3px #828282;
   box-shadow: 0px 1px 3px #828282; }

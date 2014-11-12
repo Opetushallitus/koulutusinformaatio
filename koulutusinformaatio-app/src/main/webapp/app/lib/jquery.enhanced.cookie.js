@@ -150,7 +150,7 @@ if(options == undefined)
 
   if(options.useLocalStorage == undefined)
   {
-      options.useLocalStorage = true;
+      options.useLocalStorage = false; // do not use local storage by default
   }    
 }
 

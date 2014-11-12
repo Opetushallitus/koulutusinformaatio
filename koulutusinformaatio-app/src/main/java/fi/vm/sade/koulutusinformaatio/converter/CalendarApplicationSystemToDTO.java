@@ -23,6 +23,7 @@ import fi.vm.sade.koulutusinformaatio.domain.ApplicationPeriod;
 import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.dto.ApplicationPeriodDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.CalendarApplicationSystemDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.rss.RSSChannelItemDTO;
 
 /**
  * 

@@ -31,6 +31,15 @@
     <security:http entry-point-ref="casEntryPoint" use-expressions="true" request-matcher="regex" pattern="/app/preview.html.*">
         <security:intercept-url pattern="/**" access="hasRole('ROLE_APP_TARJONTA')"/>
     </security:http>
+    
+    <!-- resource bundle for localized messages -->
+    <bean id="messageSource"
+        class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename">
+            <value>messages</value>
+        </property>
+    </bean>
+    
     <import resource="file:///${user.home:''}/oph-configuration/security-context-backend.xml"/>
     
     <!-- Service configurations -->

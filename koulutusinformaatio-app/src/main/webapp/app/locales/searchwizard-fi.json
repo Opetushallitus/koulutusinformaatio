@@ -44,7 +44,7 @@
 
     "yo-et010301-n": "Ammatillinen koulutus",
     "yo-et010401": "Ammattikorkeakoulututkinto",
-    "yo-et010501": "Yliopisto, alempi tutkinto (kandidaatti ym.)",
+    "yo-et0105": "Yliopisto, alempi tutkinto (kandidaatti ym.)",
     "yo-et0205": "Kansanopistojen pitkät linjat",
     "yo-et02015": "Kotitalousopetus ylioppilaille (Talouskoulu)",
 
@@ -59,13 +59,13 @@
     "yo_aiku-et010303-a": "Ammattitutkinto aikuiskoulutuksena - usein vaaditaan myös 3 vuotta työkokemusta tai muuten hankittua osaamista",
     "yo_aiku-et010304-a": "Erikoisammattitutkinto aikuiskoulutuksena - usein vaaditaan myös 5 vuotta työkokemusta tai muuten hankittua osaamista",
     "yo_aiku-et010401": "Ammattikorkeakoulututkinto",
-    "yo_aiku-et010501": "Alempi tutkinto yliopistossa",
+    "yo_aiku-et0105": "Alempi tutkinto yliopistossa",
     "yo_aiku-et0205": "Kansanopistojen pitkät linjat",
 
     "amm_pt_aiku-et010303-a": "Ammattitutkinto aikuiskoulutuksena - usein vaaditaan myös 3 vuotta työkokemusta tai muuten hankittua osaamista",
     "amm_pt_aiku-et010304-a": "Erikoisammattitutkinto aikuiskoulutuksena - usein vaaditaan myös 5 vuotta työkokemusta tai muuten hankittua osaamista",
     "amm_pt_aiku-et010401": "Ammattikorkeakoulututkinto",
-    "amm_pt_aiku-et010501": "Alempi tutkinto yliopistossa (kandidaatti ym)",
+    "amm_pt_aiku-et0105": "Alempi tutkinto yliopistossa (kandidaatti ym)",
     "amm_pt_aiku-et0205": "Kansanopistojen koulutukset",
 
     "alempi_kk_aiku-et010402": "Ylempi ammattikorkeakoulututkinto",

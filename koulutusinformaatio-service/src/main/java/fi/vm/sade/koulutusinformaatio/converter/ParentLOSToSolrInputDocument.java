@@ -366,13 +366,17 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
 
             }
         }
-
-        for (Code curTopic : parent.getTopics()) {
-            doc.addField(LearningOpportunity.TOPIC, curTopic.getUri());
+        
+        if (parent.getTopics() != null) {
+            for (Code curTopic : parent.getTopics()) {
+                doc.addField(LearningOpportunity.TOPIC, curTopic.getUri());
+            }
         }
 
-        for (Code curTopic : parent.getThemes()) {
-            doc.addField(LearningOpportunity.THEME, curTopic.getUri());
+        if (parent.getThemes() != null) {
+            for (Code curTopic : parent.getThemes()) {
+                doc.addField(LearningOpportunity.THEME, curTopic.getUri());
+            }
         }
 
     }
