@@ -61,6 +61,9 @@ public class CompetenceBasedQualificaitonLOSToSolrInputDocument implements Conve
         losName = (los.getDeterminer() != null) && !los.isOsaamisala() ? String.format("%s, %s" , losName, los.getDeterminer()) : losName;
         doc.setField(LearningOpportunity.NAME, losName);
         doc.addField(LearningOpportunity.NAME_SORT, losName.toLowerCase().trim());
+        doc.addField(LearningOpportunity.NAME_FI_SORT, losName.toLowerCase().trim());
+        doc.addField(LearningOpportunity.NAME_SV_SORT, losName.toLowerCase().trim());
+        doc.addField(LearningOpportunity.NAME_EN_SORT, losName.toLowerCase().trim());
         if (teachLang.equals("fi")) {
             doc.addField(LearningOpportunity.NAME_FI, String.format("%s, %s", SolrUtil.resolveTextWithFallback("fi", los.getName().getTranslations()), SolrUtil.resolveTextWithFallback("fi", los.getEducationKind().getTranslations()).toLowerCase()));
         } else if (teachLang.equals("sv")) {

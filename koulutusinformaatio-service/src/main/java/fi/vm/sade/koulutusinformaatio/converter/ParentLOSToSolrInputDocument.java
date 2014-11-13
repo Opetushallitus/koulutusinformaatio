@@ -92,6 +92,9 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
                     SolrUtil.resolveTranslationInTeachingLangUseFallback(parent.getTeachingLanguages(),parent.getCreditUnit().getTranslations())));
         }
 
+        doc.addField(LearningOpportunity.NAME_FI_SORT, parentName.toLowerCase().trim());
+        doc.addField(LearningOpportunity.NAME_SV_SORT, parentName.toLowerCase().trim());
+        doc.addField(LearningOpportunity.NAME_EN_SORT, parentName.toLowerCase().trim());
         doc.addField(LearningOpportunity.NAME_SORT, parentName.toLowerCase().trim());
 
         if (teachLang.equals("fi")) {

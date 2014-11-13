@@ -196,26 +196,7 @@ public final class SolrUtil {
     
     public static void setSearchFields(List<String> facetFilters, SolrQuery query) {
         
-        //List<String> teachingLangs = getTeachingLangs(facetFilters);
-        
         List<String> searchFields = new ArrayList<String>();
-        
-        /*if (teachingLangs.contains("fi")) {
-            searchFields.addAll(SolrUtil.FIELDS_FI);
-        } 
-        
-        if (teachingLangs.contains("sv")) {
-            searchFields.addAll(SolrUtil.FIELDS_SV);
-        } 
-        
-        if (teachingLangs.contains("en")) {
-            searchFields.addAll(SolrUtil.FIELDS_EN);
-        } 
-        
-        if (searchFields.isEmpty() 
-                && !teachingLangs.isEmpty()) {
-            searchFields.addAll(SolrUtil.FIELDS_FI);
-        }*/
         
         if (searchFields.isEmpty()){
             query.setParam(DisMaxParams.QF, Joiner.on(" ").join(SolrUtil.FIELDS));
@@ -379,6 +360,9 @@ public final class SolrUtil {
         //Fields for sorting
         public static final String START_DATE_SORT = "startDate_dsort";
         public static final String NAME_SORT = "name_ssort";
+        public static final String NAME_FI_SORT = "name_fi_ssort";
+        public static final String NAME_SV_SORT = "name_sv_ssort";
+        public static final String NAME_EN_SORT = "name_en_ssort";
         public static final String DURATION_SORT = "duration_isort";
 
         //Fields for autocomplete

@@ -84,7 +84,13 @@ public class LearningOpportunityQuery extends SolrQuery {
         SolrUtil.setSearchFields(facetFilters, this);
         
         this.setParam("q.op", "AND");
-        if (sort != null) {
+        if (sort != null && "fi".equals(lang)) {
+            this.addSort(LearningOpportunity.NAME_FI_SORT, order.equals("asc") ? ORDER.asc : ORDER.desc);
+        } else if (sort != null && "sv".equals(lang)) {
+            this.addSort(LearningOpportunity.NAME_SV_SORT, order.equals("asc") ? ORDER.asc : ORDER.desc);
+        } else if (sort != null && "en".equals(lang)) {
+            this.addSort(LearningOpportunity.NAME_EN_SORT, order.equals("asc") ? ORDER.asc : ORDER.desc);
+        } else if (sort != null) {
             this.addSort(sort, order.equals("asc") ? ORDER.asc : ORDER.desc);
         }
     }
