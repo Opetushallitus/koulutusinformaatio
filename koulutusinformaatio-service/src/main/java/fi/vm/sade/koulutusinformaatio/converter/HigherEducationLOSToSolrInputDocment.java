@@ -143,12 +143,16 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
         //Fields for sorting
         doc.addField(LearningOpportunity.START_DATE_SORT, los.getStartDate());
         //indexDurationField(loi, doc);
-        doc.addField(LearningOpportunity.NAME_SORT, String.format("%s, %s",
+        if (los.getType().equals(TarjontaConstants.TYPE_ADULT_UPSEC)) {
+            doc.addField(LearningOpportunity.NAME_SORT, String.format("%s, %s",
                 SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getTeachingLanguages(), 
                         provider.getName().getTranslations()).toLowerCase().trim(),
                         SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getTeachingLanguages(), 
                                 los.getShortTitle().getTranslations())).toLowerCase().trim());
-
+        } else {
+            doc.addField(LearningOpportunity.NAME_SORT, SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getTeachingLanguages(), 
+                                    los.getShortTitle().getTranslations()).toLowerCase().trim());
+        }
 
         //For faceting
         indexFacetFields(doc, los);

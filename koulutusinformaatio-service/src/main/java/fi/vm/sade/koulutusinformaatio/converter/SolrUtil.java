@@ -114,10 +114,10 @@ public final class SolrUtil {
                 }
             }
         }
-        if (translation == null) {
+        if (translation == null || translation.isEmpty()) {
             translation = translations.get(FALLBACK_LANG);
         }
-        if (translation == null) {
+        if (translation == null || translation.isEmpty()) {
             translation = translations.values().iterator().next();
         }
 
