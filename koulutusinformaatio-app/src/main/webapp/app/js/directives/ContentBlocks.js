@@ -397,13 +397,6 @@ directive('kiSocialLinks', function() {
         },
         link: function(scope, element, attrs) {
             scope.anchor = attrs.anchor;
-
-            scope.$watch('curprovider', function(data) {
-                if (data) {
-                    scope.showOrganization = (data.learningEnvironment ||
-                        data.accessibility) ? true : false;
-                }
-            });
         }
     };
 }).
