@@ -58,6 +58,7 @@ public class Provider {
     private Code type;
     //private List<String> organisationTypes;
     private List<Code> olTypes = new ArrayList<Code>();
+    private List<Code> olTypeFacets = new ArrayList<Code>();
 
     public Provider(String id, I18nText name) {
         this.id = id;
@@ -296,6 +297,14 @@ public class Provider {
 
     public void setOlTypes(List<Code> olTypes) {
         this.olTypes = olTypes;
+    }
+
+    public List<Code> getOlTypeFacets() {
+        return olTypeFacets;
+    }
+
+    public void setOlTypeFacets(List<Code> olTypeFacets) {
+        this.olTypeFacets = olTypeFacets;
     }
 
     /*public void setOrganisationTypes(List<String> tyypit) {

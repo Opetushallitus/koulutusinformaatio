@@ -99,6 +99,12 @@ public class ProviderServiceImpl implements ProviderService {
         if (provider.getType() != null) {
             provider.getOlTypes().add(provider.getType());
         }
+        if (provider.getOlTypes() != null) {
+            for (Code curOlType : provider.getOlTypes()) {
+                List<Code> olFacets = this.koodistoService.searchSuperCodes(curOlType.getUri(), "oppilaitostyyppifasetti");
+                provider.getOlTypeFacets().addAll(olFacets);
+            }
+        }
         
         providerMap.put(oid, provider);
         
@@ -173,24 +179,75 @@ public class ProviderServiceImpl implements ProviderService {
     public List<OrganisaatioPerustieto> fetchOpplaitokset()
             throws MalformedURLException, IOException,
             ResourceNotFoundException {
+        List<OrganisaatioPerustieto> resOrgs = new ArrayList<OrganisaatioPerustieto>();
         
         OrganisaatioHakutulos result = this.organisaatioRawService.fetchOrganisaatiosByType("Oppilaitos");
         if (result != null && result.getOrganisaatiot() != null) {
-            return result.getOrganisaatiot();
+            
+            for (OrganisaatioPerustieto curOrg : result.getOrganisaatiot()) {
+                String olTyyppi = curOrg.getOppilaitostyyppi();
+                if (olTyyppi != null) {
+                    try {
+                        List<Code> olFacets = this.koodistoService.searchSuperCodes(olTyyppi, "oppilaitostyyppifasetti");
+                        if (olFacets != null && !olFacets.isEmpty()) {
+                            resOrgs.add(curOrg);
+                        }
+                    } catch (KoodistoException ex) {
+                        LOG.error("Problem checking oppilaitostyyppifasetti for: " + curOrg.getOid(), ex);
+                        continue;
+                    }
+                }
+            }
+            
         }
-        return new ArrayList<OrganisaatioPerustieto>();
+        return resOrgs;
     }
 
     @Override
     public List<OrganisaatioPerustieto> fetchToimipisteet()
             throws MalformedURLException, IOException,
             ResourceNotFoundException {
+        List<OrganisaatioPerustieto> resOrgs = new ArrayList<OrganisaatioPerustieto>();
         OrganisaatioHakutulos result = this.organisaatioRawService.fetchOrganisaatiosByType("Toimipiste");
         if (result != null && result.getOrganisaatiot() != null) {
-            return result.getOrganisaatiot();
+            for (OrganisaatioPerustieto curOrg : result.getOrganisaatiot()) {
+                
+                if(isFacetableToimipiste(curOrg)) {
+                    resOrgs.add(curOrg);
+                }   
+            }
         }
-        return new ArrayList<OrganisaatioPerustieto>();
+        return resOrgs;
     }
 
+    private boolean isFacetableToimipiste(OrganisaatioPerustieto toimipiste) {
+        if (toimipiste.getOppilaitostyyppi() != null) {
+            try {
+                List<Code> olFacets = this.koodistoService.searchSuperCodes(toimipiste.getOppilaitostyyppi(), "oppilaitostyyppifasetti");
+                if (olFacets != null && !olFacets.isEmpty()) {
+                   return true;
+                }
+            } catch (KoodistoException ex) {
+                LOG.error("Problem checking oppilaitostyyppifasetti for: " + toimipiste.getOid() + " and olType: " + toimipiste.getOppilaitostyyppi(), ex);
+            }
+        }
+        
+        String parentOidPath = toimipiste.getParentOidPath();
+        if (parentOidPath != null && !parentOidPath.isEmpty()) {
+            String[] ancestorOids = parentOidPath.split("\\|");
+            for (String curAncestor : ancestorOids) {
+                try {
+                    Provider ancestorOrg = this.getByOID(curAncestor);
+                    if (ancestorOrg.getOlTypeFacets() != null && !ancestorOrg.getOlTypeFacets().isEmpty()) {
+                        return true;
+                    }
+                } catch (Exception ex) {
+                    LOG.error("Problem checking inherited oltype facets for: " + toimipiste.getOid() + " with ancestor: " + curAncestor, ex);
+                }
+            }
+
+        }
+        return false;
+    }
 
 }
