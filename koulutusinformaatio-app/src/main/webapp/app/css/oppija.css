@@ -7513,7 +7513,7 @@ select {
   margin: 0; }
 
 .ajax-loader {
-  position: absolute;
+  position: fixed;
   bottom: 50%;
   left: 50%;
   z-index: 1001;
@@ -7765,6 +7765,21 @@ select {
   background-image: url(../img/topics/yleissivistava-icon.svg);
   border: 1px solid #dddddd;
   margin: 0 10px 10px 0; }
+
+.selectable {
+  padding: 10px;
+  transition: background-color 0.5s ease;
+  border-radius: 3px;
+  border: 1px solid transparent; }
+  .selectable:hover {
+    background-color: #dff2f8;
+    cursor: pointer; }
+  .selectable:focus {
+    outline: none;
+    border: 1px solid #bfe4f1; }
+  .selectable.selected {
+    border: 1px solid #bfe4f1;
+    background-color: #dff2f8; }
 
 .preview-actions > * {
   margin-left: 10px; }

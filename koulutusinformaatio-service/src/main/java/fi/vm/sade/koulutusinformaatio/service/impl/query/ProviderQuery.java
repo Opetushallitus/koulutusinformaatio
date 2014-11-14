@@ -121,6 +121,9 @@ public class ProviderQuery extends SolrQuery {
     }
 
     private static String preprocess(String q, String lang) {
+        if ("".equals(q)) {
+            return q;
+        }
         if ("*".equals(q)) {
             return Joiner.on(":").join(resolveNameField(lang, false), q);
         } else {

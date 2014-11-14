@@ -16,8 +16,6 @@
 
 package fi.vm.sade.koulutusinformaatio.resource.impl;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -91,15 +89,9 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
                                                             String educationCodeFilter,
                                                             List<String> excludes, 
                                                             SearchType searchType) {
-        String key = null;
-        try {
-            key = URLDecoder.decode(text, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            key = text;
-        }
         try {
             sort = (sort != null && !sort.isEmpty()) ? sort : null;
-            LOSearchResultList learningOpportunities = searchService.searchLearningOpportunities(key, prerequisite,
+            LOSearchResultList learningOpportunities = searchService.searchLearningOpportunities(text, prerequisite,
                     cities, facetFilters, articleFilters, providerFilters, lang, ongoing, upcoming, upcomingLater, start, rows, sort, order, 
                     lopFilter, educationCodeFilter, excludes, searchType);
             return modelMapper.map(learningOpportunities, LOSearchResultListDTO.class);
@@ -179,14 +171,8 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
 
     @Override
     public SuggestedTermsResultDTO getSuggestedTerms(String term, String lang) {
-        String key = null;
         try {
-            key = URLDecoder.decode(term, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            key = term;
-        }
-        try {
-            SuggestedTermsResult suggestedTerms = this.searchService.searchSuggestedTerms(key, lang);
+            SuggestedTermsResult suggestedTerms = this.searchService.searchSuggestedTerms(term, lang);
             return modelMapper.map(suggestedTerms, SuggestedTermsResultDTO.class);
         } catch (SearchException e) {
             throw KIExceptionHandler.resolveException(e);
