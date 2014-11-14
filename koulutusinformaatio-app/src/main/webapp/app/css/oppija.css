@@ -7328,28 +7328,35 @@ label {
         color: #3e3e3e; }
 
 #social li {
-  display: inline-block;
+  display: block;
   margin: 0 6px 0 0; }
-  #social li a {
+  #social li .social-icon {
     display: inline-block;
     height: 26px;
     width: 26px;
+    margin: 0 6px 6px 0;
     color: transparent;
-    font-size: 0px; }
-    #social li a.facebook {
+    font-size: 0px;
+    vertical-align: top; }
+    #social li .social-icon.facebook {
       background: transparent url("../img/social/facebook.png") no-repeat scroll 0 0; }
-    #social li a.linked_in {
+    #social li .social-icon.linked_in {
       background: transparent url("../img/social/linkedin.png") no-repeat scroll 0 0; }
-    #social li a.twitter {
+    #social li .social-icon.twitter {
       background: transparent url("../img/social/twitter.png") no-repeat scroll 0 0; }
-    #social li a.google_plus {
+    #social li .social-icon.google_plus {
       background: transparent url("../img/social/googleplus.png") no-repeat scroll 0 0; }
-    #social li a.muu {
+    #social li .social-icon.muu {
       background: transparent url("../img/social/other.png") no-repeat scroll 0 0; }
-    #social li a:hover {
+    #social li .social-icon:hover {
       background-position: -26px 0px; }
-    #social li a:active {
+    #social li .social-icon:active {
       background-position: -52px 0px; }
+  #social li .social-link:before {
+    font-family: "fontello";
+    content: '\e800';
+    margin-right: .2em;
+    display: inline-block;}
 
 .application-basket-container h1 {
   background-image: url(../img/muistilista_ikoni.png);
