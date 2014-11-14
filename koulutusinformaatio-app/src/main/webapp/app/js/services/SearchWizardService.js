@@ -293,7 +293,7 @@ service('SearchWizardPhaseService', ['SearchWizardService', 'SearchWizardSelecti
             },
 
             // get next phase of a specific phase
-            getNextPhase: function(currentPhase) {
+            getNextPhase: function(currentPhase, searchResult) {
                 var index = phases.indexOf(currentPhase) + 1;
 
                 // check if phase two selection is required
@@ -313,12 +313,21 @@ service('SearchWizardPhaseService', ['SearchWizardService', 'SearchWizardSelecti
                         return phases[indexAfterTopic];
                     }
                 }
+
+                // skip topic selection if theme contains 0 topics
+                if (phases[index] === SearchWizardConstants.phases.TOPIC) {
+                    var topics = SearchWizardService.getTopicsByTheme(SearchWizardSelectionsService.getSelectionValueByKey(SearchWizardConstants.keys.THEME), searchResult);
+                    if (!topics || topics.length <= 0) {
+                        var indexAfterTopic = phases.indexOf(SearchWizardConstants.phases.TOPIC) + 1;
+                        return phases[indexAfterTopic];
+                    }
+                }
                 
                 return phases[index];
             },
 
             // get previous phase of a specific phase
-            getPreviousPhase: function(currentPhase) {
+            getPreviousPhase: function(currentPhase, searchResult) {
                 var index = phases.indexOf(currentPhase) - 1;
 
                 // check if phase two selection is required
@@ -336,6 +345,15 @@ service('SearchWizardPhaseService', ['SearchWizardService', 'SearchWizardSelecti
                     if (edTypesRequiringTheme.indexOf( SearchWizardSelectionsService.getSelectionValueByKey(SearchWizardConstants.keys.EDTYPE) ) < 0) {
                         var indexBeforeTheme = phases.indexOf(SearchWizardConstants.phases.THEME) - 1;
                         return phases[indexBeforeTheme];
+                    }
+                }
+
+                // skip topic selection if theme contains 0 topics
+                if (phases[index] === SearchWizardConstants.phases.TOPIC) {
+                    var topics = SearchWizardService.getTopicsByTheme(SearchWizardSelectionsService.getSelectionValueByKey(SearchWizardConstants.keys.THEME), searchResult);
+                    if (!topics || topics.length <= 0) {
+                        var indexBeforeTopic = phases.indexOf(SearchWizardConstants.phases.TOPIC) - 1;
+                        return phases[indexBeforeTopic];
                     }
                 }
 
