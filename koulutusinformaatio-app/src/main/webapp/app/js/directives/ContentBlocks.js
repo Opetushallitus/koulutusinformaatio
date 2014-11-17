@@ -66,12 +66,12 @@ directive('kiInfoCenterAddresses', ['CollapseBlockService', function(CollapseBlo
                 if (value) {
                     $scope.applicationOffices = value;
                     var showInfoCenterAddresses = ((value.length > 0) 
-                    		&& (value[0].visitingAddress ||
-                    				valuevalue[0].postalAddress ||
-                    				valuevalue[0].name ||
-                    				valuevalue[0].email ||
-                    				valuevalue[0].phone ||
-                    				valuevalue[0].www)) ? true : false;
+                            && (value[0].visitingAddress ||
+                                    valuevalue[0].postalAddress ||
+                                    valuevalue[0].name ||
+                                    valuevalue[0].email ||
+                                    valuevalue[0].phone ||
+                                    valuevalue[0].www)) ? true : false;
                     CollapseBlockService.setBlock($scope.blockId, showInfoCenterAddresses);   
                 }
             });
@@ -148,23 +148,23 @@ directive('kiOrganization', ['CollapseBlockService', function(CollapseBlockServi
  */
 directive('kiOrganizationImage', function() {
     return {
-    	scope: {
-    		providerimage: '='
-    	},
-    	link: function(scope, element, attrs) {
-    		scope.$watch('providerimage', function(data) {
-    			if (data && data.pictureEncoded) {
-    				var imgElem = $('<img>', {
-    					src: 'data:image/jpeg;base64,' + data.pictureEncoded,
-    					alt: 'Oppilaitoksen kuva'
-    				});
-    				imgElem.addClass('img-responsive');
+        scope: {
+            providerimage: '='
+        },
+        link: function(scope, element, attrs) {
+            scope.$watch('providerimage', function(data) {
+                if (data && data.pictureEncoded) {
+                    var imgElem = $('<img>', {
+                        src: 'data:image/jpeg;base64,' + data.pictureEncoded,
+                        alt: 'Oppilaitoksen kuva'
+                    });
+                    imgElem.addClass('img-responsive');
 
-    				$(element).empty();
-    				element.append(imgElem);
-    			}
-    		});
-    	}
+                    $(element).empty();
+                    element.append(imgElem);
+                }
+            });
+        }
     };
 }).
 
@@ -392,8 +392,19 @@ directive('kiSocialLinks', function() {
     return {
         restrict: 'E,A',
         templateUrl: 'templates/socialLinks.html',
+        controller: function($scope, TranslationService) {
+            $scope.getTooltip = function getTooltip(socialItem){
+                var text = TranslationService.getTranslation('external-social-link-'+socialItem.name)
+                if(socialItem.name === 'muu'){
+                    return text + socialItem.url;
+                } else {
+                    return text;
+                }
+                return socialItem.name;
+            };
+        },
         scope: {
-        	curprovider: '='
+            curprovider: '='
         },
         link: function(scope, element, attrs) {
             scope.anchor = attrs.anchor;
