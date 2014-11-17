@@ -221,10 +221,12 @@ public class ProviderServiceImpl implements ProviderService {
     }
 
     private boolean isFacetableToimipiste(OrganisaatioPerustieto toimipiste) {
+        LOG.debug("\nCchecking is facetable: " + toimipiste.getOid());
         if (toimipiste.getOppilaitostyyppi() != null) {
             try {
                 List<Code> olFacets = this.koodistoService.searchSuperCodes(toimipiste.getOppilaitostyyppi(), "oppilaitostyyppifasetti");
                 if (olFacets != null && !olFacets.isEmpty()) {
+                    LOG.debug("returning straight true");
                    return true;
                 }
             } catch (KoodistoException ex) {
@@ -234,11 +236,14 @@ public class ProviderServiceImpl implements ProviderService {
         
         String parentOidPath = toimipiste.getParentOidPath();
         if (parentOidPath != null && !parentOidPath.isEmpty()) {
-            String[] ancestorOids = parentOidPath.split("\\|");
+            String[] ancestorOids = parentOidPath.split("\\/");
+            LOG.debug("\nParent splits length" + ancestorOids.length);
             for (String curAncestor : ancestorOids) {
+                LOG.debug("CurAncestor: " + curAncestor);
                 try {
                     Provider ancestorOrg = this.getByOID(curAncestor);
                     if (ancestorOrg.getOlTypeFacets() != null && !ancestorOrg.getOlTypeFacets().isEmpty()) {
+                        LOG.debug("Returning true");
                         return true;
                     }
                 } catch (Exception ex) {
@@ -247,6 +252,7 @@ public class ProviderServiceImpl implements ProviderService {
             }
 
         }
+        LOG.debug("returning false");
         return false;
     }
 
