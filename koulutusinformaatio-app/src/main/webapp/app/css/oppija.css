@@ -1924,27 +1924,45 @@ label {
 
 #social li {
   display: inline-block;
-  margin: 0 6px 0 0; }
+  margin: 0 10px 0 0; }
   #social li a {
+    position: relative;
     display: inline-block;
-    height: 26px;
-    width: 26px;
-    color: transparent;
-    font-size: 0px; }
+    height: 30px;
+    width: 30px;
+    color: #FFF;
+    font-size: 18px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+    transition: background 0.25s ease;
+    line-height: 30px; }
     #social li a.facebook {
-      background: transparent url("../img/social/facebook.png") no-repeat scroll 0 0; }
+      background: #3b5998; }
+      #social li a.facebook:hover {
+        background: #2d4373; }
     #social li a.linked_in {
-      background: transparent url("../img/social/linkedin.png") no-repeat scroll 0 0; }
+      background: #007bb6; }
+      #social li a.linked_in:hover {
+        background: #005983; }
     #social li a.twitter {
-      background: transparent url("../img/social/twitter.png") no-repeat scroll 0 0; }
+      background: #55acee; }
+      #social li a.twitter:hover {
+        background: #2795e9; }
     #social li a.google_plus {
-      background: transparent url("../img/social/googleplus.png") no-repeat scroll 0 0; }
+      background: #dd4b35; }
+      #social li a.google_plus:hover {
+        background: #bf3520; }
     #social li a.muu {
-      background: transparent url("../img/social/other.png") no-repeat scroll 0 0; }
-    #social li a:hover {
-      background-position: -26px 0px; }
-    #social li a:active {
-      background-position: -52px 0px; }
+      background: #149ecb; }
+      #social li a.muu:hover {
+        background: #0f7a9d; }
+    #social li a i {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 28px;
+      text-align: center; }
 
 .application-basket-container h1 {
   background-image: url(../img/muistilista_ikoni.png);

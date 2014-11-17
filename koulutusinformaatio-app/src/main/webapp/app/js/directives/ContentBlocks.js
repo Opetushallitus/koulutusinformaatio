@@ -402,6 +402,18 @@ directive('kiSocialLinks', function() {
                 }
                 return socialItem.name;
             };
+
+            $scope.getIconClass = function(socialItem) {
+                var iconMap = {
+                    facebook: 'facebook',
+                    linked_in: 'linkedin',
+                    twitter: 'twitter',
+                    google_plus: 'gplus',
+                    muu: 'link-ext-alt'
+                }
+
+                return iconMap[socialItem.name];
+            };
         },
         scope: {
             curprovider: '='
