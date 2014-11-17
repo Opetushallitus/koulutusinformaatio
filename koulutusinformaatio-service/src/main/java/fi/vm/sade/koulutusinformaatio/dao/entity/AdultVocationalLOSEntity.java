@@ -477,6 +477,13 @@ public class AdultVocationalLOSEntity {
     public void setCareerOpportunities(I18nTextEntity careerOpportunities) {
         this.careerOpportunities = careerOpportunities;
     }
+    public List<ContactPersonEntity> getPreparatoryContactPersons() {
+        return preparatoryContactPersons;
+    }
+    public void setPreparatoryContactPersons(
+            List<ContactPersonEntity> preparatoryContactPersons) {
+        this.preparatoryContactPersons = preparatoryContactPersons;
+    }
 
 
 }
