@@ -246,9 +246,8 @@ public class UpdateServiceImpl implements UpdateService {
     private void createAndSaveProviders(List<OrganisaatioPerustieto> orgBasics,
             HttpSolrServer lopUpdateSolr) throws KoodistoException, MalformedURLException, ResourceNotFoundException, IOException, SolrServerException {
         LOG.debug("organisations length: " + orgBasics.size());
-        //for (OrganisaatioPerustieto curOrg : orgBasics) {
-        for (int i = 0; i < 50 && i < orgBasics.size(); ++i) {
-            OrganisaatioPerustieto curOrg = orgBasics.get(i); 
+        for (OrganisaatioPerustieto curOrg : orgBasics) {
+       
             LOG.debug("Fetching org " + curOrg.getOid());
             if (!indexerService.isDocumentInIndex(curOrg.getOid(), lopUpdateSolr)) {
                 LOG.debug("Indexing organisaatio: " + curOrg.getOid());
