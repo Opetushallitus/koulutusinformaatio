@@ -17,7 +17,8 @@ controller('AppBasketCtrl',
         'AlertService',
         'AuthService',
         'Config', 
-    function($scope, $rootScope, ApplicationBasketService, SearchService, FilterService, TranslationService, AlertService, AuthService, Config) {
+        'LanguageService',
+    function($scope, $rootScope, ApplicationBasketService, SearchService, FilterService, TranslationService, AlertService, AuthService, Config, LanguageService) {
         $rootScope.title = TranslationService.getTranslation('title-application-basket') + ' - ' + TranslationService.getTranslation('sitename');
         $rootScope.description = $rootScope.title;
         $scope.hakuAppUrl = Config.get('hakulomakeUrl');
@@ -50,6 +51,10 @@ controller('AppBasketCtrl',
 
         $scope.hideAlert = function() {
             return AlertService.getAlert('appbasket');
+        };
+        $scope.lang = LanguageService.getLanguage();
+        $scope.images = {
+            logo: 'img/opintopolku_large-' + $scope.lang + '.png'
         };
         
 }]);
