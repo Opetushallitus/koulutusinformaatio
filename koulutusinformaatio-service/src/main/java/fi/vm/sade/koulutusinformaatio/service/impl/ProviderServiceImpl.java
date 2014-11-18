@@ -105,6 +105,11 @@ public class ProviderServiceImpl implements ProviderService {
                 provider.getOlTypeFacets().addAll(olFacets);
             }
         }
+        if (organisaatioRDTO.getTyypit() != null && organisaatioRDTO.getTyypit().contains("Oppisopimustoimipiste")) {
+            Code opSopToim = koodistoService.searchFirst("oppilaitostyyppifasetti_15");
+            provider.getOlTypeFacets().add(opSopToim);
+        }
+        
         
         providerMap.put(oid, provider);
         
@@ -209,6 +214,17 @@ public class ProviderServiceImpl implements ProviderService {
             throws MalformedURLException, IOException,
             ResourceNotFoundException {
         OrganisaatioHakutulos result = this.organisaatioRawService.fetchOrganisaatiosByType("Toimipiste");
+        if (result != null && result.getOrganisaatiot() != null) {
+            return result.getOrganisaatiot();
+        }
+        return new ArrayList<OrganisaatioPerustieto>();
+    }
+
+    @Override
+    public List<OrganisaatioPerustieto> fetchOppisopimusToimipisteet()
+            throws MalformedURLException, IOException,
+            ResourceNotFoundException {
+        OrganisaatioHakutulos result = this.organisaatioRawService.fetchOrganisaatiosByType("Oppisopimustoimipiste");
         if (result != null && result.getOrganisaatiot() != null) {
             return result.getOrganisaatiot();
         }

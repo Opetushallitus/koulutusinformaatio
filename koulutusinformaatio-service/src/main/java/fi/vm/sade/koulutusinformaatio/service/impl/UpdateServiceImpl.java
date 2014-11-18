@@ -113,7 +113,7 @@ public class UpdateServiceImpl implements UpdateService {
                 List<String> loOids = tarjontaService.listParentLearnignOpportunityOids(count, index);
                 count = loOids.size();
                 index += count;
-
+            
                 for (String loOid : loOids) {
                     List<LOS> specifications = null;
                     try {
@@ -137,6 +137,7 @@ public class UpdateServiceImpl implements UpdateService {
                     }
                 }
             }
+            
             
             List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
             LOG.debug("Found higher educations: " + higherEducations.size());
@@ -233,6 +234,9 @@ public class UpdateServiceImpl implements UpdateService {
         orgBasics = this.providerService.fetchToimipisteet();
         createAndSaveProviders(orgBasics, lopUpdateSolr);
         this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
+        orgBasics = this.providerService.fetchOppisopimusToimipisteet();
+        createAndSaveProviders(orgBasics, lopUpdateSolr);
+        this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
         LOG.debug("toimipisteet saved");
     }
 
@@ -242,7 +246,9 @@ public class UpdateServiceImpl implements UpdateService {
     private void createAndSaveProviders(List<OrganisaatioPerustieto> orgBasics,
             HttpSolrServer lopUpdateSolr) throws KoodistoException, MalformedURLException, ResourceNotFoundException, IOException, SolrServerException {
         LOG.debug("organisations length: " + orgBasics.size());
-        for (OrganisaatioPerustieto curOrg : orgBasics) {
+        //for (OrganisaatioPerustieto curOrg : orgBasics) {
+        for (int i = 0; i < 50 && i < orgBasics.size(); ++i) {
+            OrganisaatioPerustieto curOrg = orgBasics.get(i); 
             LOG.debug("Fetching org " + curOrg.getOid());
             if (!indexerService.isDocumentInIndex(curOrg.getOid(), lopUpdateSolr)) {
                 LOG.debug("Indexing organisaatio: " + curOrg.getOid());

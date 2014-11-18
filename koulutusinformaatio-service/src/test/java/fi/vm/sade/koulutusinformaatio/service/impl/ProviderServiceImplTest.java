@@ -151,6 +151,23 @@ public class ProviderServiceImplTest {
     
     /**
      * 
+     * Tests fetching of organizations with type oppisopimustoimipiste from organisaatio service.
+     * 
+     * @throws MalformedURLException
+     * @throws ResourceNotFoundException
+     * @throws IOException
+     */
+    @Test
+    public void testFetchOppisopimustoimipisteet() throws MalformedURLException, ResourceNotFoundException, IOException, KoodistoException {
+        
+        ProviderService service = prepareWithMockRawService();
+        List<OrganisaatioPerustieto> result = service.fetchOppisopimusToimipisteet();
+        assertEquals(1, result.size());
+        assertEquals("1.1.1.oppisopimusToimipiste", result.get(0).getOid());
+    }
+    
+    /**
+     * 
      * Tests fetching of organizations with type Toimipiste from organisaatio service.
      * 
      * @throws MalformedURLException
@@ -208,6 +225,14 @@ public class ProviderServiceImplTest {
         orgRes2.setOrganisaatiot(Arrays.asList(orgPerus2));
         
         when(organisaatioRawService.fetchOrganisaatiosByType("Toimipiste")).thenReturn(orgRes2);
+        
+        OrganisaatioPerustieto orgPerus3 = new OrganisaatioPerustieto();
+        orgPerus3.setOid("1.1.1.oppisopimusToimipiste");
+        
+        OrganisaatioHakutulos orgRes3 = new OrganisaatioHakutulos();
+        orgRes3.setOrganisaatiot(Arrays.asList(orgPerus3));
+        
+        when(organisaatioRawService.fetchOrganisaatiosByType("Oppisopimustoimipiste")).thenReturn(orgRes3);
         
         
         return new ProviderServiceImpl(conversionService, organisaatioRawService, koodistoService);
