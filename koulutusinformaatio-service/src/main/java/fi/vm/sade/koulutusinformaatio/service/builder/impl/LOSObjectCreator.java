@@ -831,8 +831,7 @@ public class LOSObjectCreator extends ObjectCreator {
             HakukohdeV1RDTO hakukohdeDTO = hakukohdeRes.getResult();
 
 
-
-            if (checkStatus && !hakukohdeDTO.getTila().toString().equals(TarjontaTila.JULKAISTU.toString())) {
+            if (checkStatus && (hakukohdeDTO == null || hakukohdeDTO.getTila() == null || !hakukohdeDTO.getTila().toString().equals(TarjontaTila.JULKAISTU.toString()))) {
                 continue;
             }
 
