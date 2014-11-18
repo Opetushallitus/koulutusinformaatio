@@ -125,6 +125,12 @@
     "accommodation-anchor": "Tietoa asumisesta",
     "student-benefits-anchor": "Opiskelijan edut",
     "contact-information": "Yhteystiedot",
+    
+    "external-social-link-facebook": "Siirry oppilaitoksen Facebook-sivulle.",
+    "external-social-link-google_plus": "Siirry oppilaitoksen Google+ -sivulle.",
+    "external-social-link-linked_in": "Siirry oppilaitoksen LinkedIn-sivulle.",
+    "external-social-link-twitter": "Siirry oppilaitoksen Twitter-sivulle.",
+    "external-social-link-muu": "Siirry oppilaitoksen sivuille ",
 
     "learning-environment-info": "Tietoa oppimisympäristöstä",
     "accommodation-info": "Tietoa asumisesta",
@@ -345,5 +351,6 @@
 
      "search-all-los": "Hae kaikki koulutukset",
      
-     "qualifications": "Tutkintonimikkeet"
+     "qualifications": "Tutkintonimikkeet",
+     "double-exam": "Mahdollisuus suorittaa lukio-opintoja ja / tai ylioppilastutkinto"
 }

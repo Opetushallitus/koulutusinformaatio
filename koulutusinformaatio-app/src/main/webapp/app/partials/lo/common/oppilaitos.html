@@ -20,7 +20,7 @@
 
     <!-- main provider -->
     <div id="{{provider.id}}">
-        <figure data-ki-organization-image data-providerimage="provider.providerImage"></figure>
+        <figure data-ki-organization-image data-providerimage="provider.providerImage" class="margin-vertical-default"></figure>
         <div data-ki-social-links data-curprovider="provider"></div>
         <div data-ki-language-ribbon data-languages="lo.availableTranslationLanguages" data-change-language="changeDescriptionLanguage" class="ribbon"></div>
         <div data-ki-collapse-block data-title-value="provider.name" data-content="provider" data-anchor="oppilaitos-anchor">
@@ -38,7 +38,7 @@
     <!-- additional providers -->
     <div data-ng-repeat="additionalProvider in lo.additionalProviders">
     	<hr id="{{additionalProvider.id}}"/>
-        <figure data-ki-organization-image data-providerImage="additionalProvider.providerImage"></figure>
+        <figure data-ki-organization-image data-providerImage="additionalProvider.providerImage" class="margin-vertical-default"></figure>
         <div data-ki-social-links data-curprovider="additionalProvider"></div>
         <div data-ki-language-ribbon data-languages="lo.availableTranslationLanguages" data-change-language="changeDescriptionLanguage" class="ribbon"></div>
         <div data-ki-collapse-block data-title-value="additionalProvider.name" data-content="additionalProvider" data-anchor="{{additionalProvider.id}}oppilaitos-anchor">

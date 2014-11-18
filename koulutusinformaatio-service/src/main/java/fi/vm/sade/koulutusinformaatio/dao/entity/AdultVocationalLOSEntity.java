@@ -23,6 +23,8 @@ import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Reference;
 
+import fi.vm.sade.koulutusinformaatio.domain.ContactPerson;
+
 /**
  * 
  * @author Markus
@@ -146,6 +148,9 @@ public class AdultVocationalLOSEntity {
     
     @Embedded
     private I18nTextEntity targetGroup;
+    
+    @Embedded
+    private List<ContactPersonEntity> preparatoryContactPersons = new ArrayList<ContactPersonEntity>();
 
     public String getId() {
         return id;
@@ -471,6 +476,13 @@ public class AdultVocationalLOSEntity {
     }
     public void setCareerOpportunities(I18nTextEntity careerOpportunities) {
         this.careerOpportunities = careerOpportunities;
+    }
+    public List<ContactPersonEntity> getPreparatoryContactPersons() {
+        return preparatoryContactPersons;
+    }
+    public void setPreparatoryContactPersons(
+            List<ContactPersonEntity> preparatoryContactPersons) {
+        this.preparatoryContactPersons = preparatoryContactPersons;
     }
 
 

@@ -115,6 +115,7 @@ controller('SearchWizardCtrl', [
             SearchLearningOpportunityService.query(
                 SearchWizardSelectionsService.getAsSearchParams()
             ).then(function(result) {
+                $scope.searchResult = result;
                 $scope.currentPhase = phase;
                 $scope.resultCount = result.loCount;
                 $scope.phase = {
@@ -127,7 +128,7 @@ controller('SearchWizardCtrl', [
         };
 
         var gotoNextPhase = function() {
-            var nextPhase = SearchWizardPhaseService.getNextPhase($scope.currentPhase);
+            var nextPhase = SearchWizardPhaseService.getNextPhase($scope.currentPhase, $scope.searchResult);
             initPhase(nextPhase);
         };
 
@@ -138,7 +139,7 @@ controller('SearchWizardCtrl', [
 
         // rewind back to previous wizard phase
         $scope.gotoPreviousPhase = function() {
-            var previousPhase = SearchWizardPhaseService.getPreviousPhase($scope.currentPhase);
+            var previousPhase = SearchWizardPhaseService.getPreviousPhase($scope.currentPhase, $scope.searchResult);
             SearchWizardSelectionsService.removeLatestSelection();
             initPhase(previousPhase);
         };
