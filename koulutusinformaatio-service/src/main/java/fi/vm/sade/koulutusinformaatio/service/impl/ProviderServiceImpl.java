@@ -203,57 +203,16 @@ public class ProviderServiceImpl implements ProviderService {
         return resOrgs;
     }
 
+    
     @Override
     public List<OrganisaatioPerustieto> fetchToimipisteet()
             throws MalformedURLException, IOException,
             ResourceNotFoundException {
-        List<OrganisaatioPerustieto> resOrgs = new ArrayList<OrganisaatioPerustieto>();
         OrganisaatioHakutulos result = this.organisaatioRawService.fetchOrganisaatiosByType("Toimipiste");
         if (result != null && result.getOrganisaatiot() != null) {
-            for (OrganisaatioPerustieto curOrg : result.getOrganisaatiot()) {
-                
-                if(isFacetableToimipiste(curOrg)) {
-                    resOrgs.add(curOrg);
-                }   
-            }
+            return result.getOrganisaatiot();
         }
-        return resOrgs;
-    }
-
-    private boolean isFacetableToimipiste(OrganisaatioPerustieto toimipiste) {
-        LOG.debug("\nCchecking is facetable: " + toimipiste.getOid());
-        if (toimipiste.getOppilaitostyyppi() != null) {
-            try {
-                List<Code> olFacets = this.koodistoService.searchSuperCodes(toimipiste.getOppilaitostyyppi(), "oppilaitostyyppifasetti");
-                if (olFacets != null && !olFacets.isEmpty()) {
-                    LOG.debug("returning straight true");
-                   return true;
-                }
-            } catch (KoodistoException ex) {
-                LOG.error("Problem checking oppilaitostyyppifasetti for: " + toimipiste.getOid() + " and olType: " + toimipiste.getOppilaitostyyppi(), ex);
-            }
-        }
-        
-        String parentOidPath = toimipiste.getParentOidPath();
-        if (parentOidPath != null && !parentOidPath.isEmpty()) {
-            String[] ancestorOids = parentOidPath.split("\\/");
-            LOG.debug("\nParent splits length" + ancestorOids.length);
-            for (String curAncestor : ancestorOids) {
-                LOG.debug("CurAncestor: " + curAncestor);
-                try {
-                    Provider ancestorOrg = this.getByOID(curAncestor);
-                    if (ancestorOrg.getOlTypeFacets() != null && !ancestorOrg.getOlTypeFacets().isEmpty()) {
-                        LOG.debug("Returning true");
-                        return true;
-                    }
-                } catch (Exception ex) {
-                    LOG.error("Problem checking inherited oltype facets for: " + toimipiste.getOid() + " with ancestor: " + curAncestor, ex);
-                }
-            }
-
-        }
-        LOG.debug("returning false");
-        return false;
+        return new ArrayList<OrganisaatioPerustieto>();
     }
 
 }
