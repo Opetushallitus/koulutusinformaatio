@@ -13,8 +13,11 @@ service('LanguageService', ['CookieService', '$location', '_', function(CookieSe
         defaultLanguage = languages.finnish,
         key = 'i18next',
 
+        // initialize app language with value from cookie
+        currentLanguage = CookieService.get(key) || defaultLanguage,
+
         getLanguage = function() {
-            return CookieService.get(key) || defaultLanguage;
+            return currentLanguage;
         },
 
         setLanguage = function(language) {
