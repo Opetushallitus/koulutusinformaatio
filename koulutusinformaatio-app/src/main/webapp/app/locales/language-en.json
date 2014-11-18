@@ -126,6 +126,12 @@
     "student-benefits-anchor": "Student benefits",
     "contact-information": "Contact information",
 
+    "external-social-link-facebook": "Go to the institution's Facebook page.",
+    "external-social-link-google_plus": "Go to the institution's Google+ page.",
+    "external-social-link-linked_in": "Go to the institution's LinkedIn page.",
+    "external-social-link-twitter": "Go to the institution's Twitter page.",
+    "external-social-link-muu": "Go to the institution's web page ",
+    
     "learning-environment-info": "Learning environment",
     "accommodation-info": "Information about accommodations",
     "financing-studies": "Financing your studies",
@@ -345,5 +351,6 @@
      "hide-filter-selector-false": "Hide filters",
 
      "search-all-los": "Find all study options",
-     "qualifications": "Qualifications"
+     "qualifications": "Qualifications",
+     "double-exam": "Mahdollisuus suorittaa lukio-opintoja ja / tai ylioppilastutkinto (en)"
 }

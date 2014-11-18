@@ -24,30 +24,4 @@ directive('kiSearchwizardLocationSelector', ['SearchLocationService', 'SearchWiz
             }
         }
     }
-]).
-
-
-/*
- *  Ajax loader directive for phase model loading.
- */
-directive('phaseLoader', function () {
-    return {
-        restrict: 'A',
-        template: 
-            '<div class="ajax-loader text-center">' +
-                '<img src="img/ajax-loader-big.gif" />' +
-            '</div>',
-        scope: {
-            active: '='
-        },
-        link: function (scope, elm, attrs) {
-            scope.$watch('active', function (v) {
-                if (v) {
-                    elm.show();
-                } else {
-                    elm.hide();
-                }
-            });
-        }
-    };
-});
+]);

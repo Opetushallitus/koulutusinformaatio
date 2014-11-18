@@ -142,17 +142,9 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
         }
         //Fields for sorting
         doc.addField(LearningOpportunity.START_DATE_SORT, los.getStartDate());
-        //indexDurationField(loi, doc);
-        if (los.getType().equals(TarjontaConstants.TYPE_ADULT_UPSEC)) {
-            doc.addField(LearningOpportunity.NAME_SORT, String.format("%s, %s",
-                SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getTeachingLanguages(), 
-                        provider.getName().getTranslations()).toLowerCase().trim(),
-                        SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getTeachingLanguages(), 
-                                los.getShortTitle().getTranslations())).toLowerCase().trim());
-        } else {
-            doc.addField(LearningOpportunity.NAME_SORT, SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getTeachingLanguages(), 
-                                    los.getShortTitle().getTranslations()).toLowerCase().trim());
-        }
+
+        setSortFields(los, doc, provider);
+        
 
         //For faceting
         indexFacetFields(doc, los);
@@ -160,6 +152,31 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
         return doc;
     }
 
+
+    private void setSortFields(StandaloneLOS los, SolrInputDocument doc,
+            Provider provider) {
+        if (los.getType().equals(TarjontaConstants.TYPE_ADULT_UPSEC)) {
+            String nameSort = String.format("%s, %s",
+                    SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getTeachingLanguages(), 
+                            provider.getName().getTranslations()).toLowerCase().trim(),
+                            SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getTeachingLanguages(), 
+                                    los.getShortTitle().getTranslations())).toLowerCase().trim();
+            doc.addField(LearningOpportunity.NAME_FI_SORT, nameSort);
+            doc.addField(LearningOpportunity.NAME_SV_SORT, nameSort);
+            doc.addField(LearningOpportunity.NAME_EN_SORT, nameSort);
+            doc.addField(LearningOpportunity.NAME_SORT, nameSort);
+        } else {
+            doc.addField(LearningOpportunity.NAME_FI_SORT, SolrUtil.resolveTextWithFallback("fi", 
+                                    los.getShortTitle().getTranslations()).toLowerCase().trim());
+            doc.addField(LearningOpportunity.NAME_SV_SORT, SolrUtil.resolveTextWithFallback("sv", 
+                    los.getShortTitle().getTranslations()).toLowerCase().trim());
+            doc.addField(LearningOpportunity.NAME_EN_SORT, SolrUtil.resolveTextWithFallback("en", 
+                    los.getShortTitle().getTranslations()).toLowerCase().trim());
+            doc.addField(LearningOpportunity.NAME_SORT, SolrUtil.resolveTranslationInTeachingLangUseFallback(los.getTeachingLanguages(), 
+                    los.getShortTitle().getTranslations()).toLowerCase().trim());
+        }
+        
+    }
 
     private void indexAddresses(Provider provider,
             List<Provider> additionalProviders, SolrInputDocument doc) {

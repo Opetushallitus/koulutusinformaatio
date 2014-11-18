@@ -14,7 +14,7 @@ public class RSSChannelItemDTO {
 
     private String title;
     private String description;
-    private String guid;
+    private RSSChannelItemGuidDTO guid;
     
     private Date timestamp;
     
@@ -37,11 +37,11 @@ public class RSSChannelItemDTO {
     }
 
     @XmlElement
-    public String getGuid() {
+    public RSSChannelItemGuidDTO getGuid() {
         return guid;
     }
 
-    public void setGuid(String guid) {
+    public void setGuid(RSSChannelItemGuidDTO guid) {
         this.guid = guid;
     }
 

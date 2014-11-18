@@ -99,6 +99,12 @@ public class ProviderServiceImpl implements ProviderService {
         if (provider.getType() != null) {
             provider.getOlTypes().add(provider.getType());
         }
+        if (provider.getOlTypes() != null) {
+            for (Code curOlType : provider.getOlTypes()) {
+                List<Code> olFacets = this.koodistoService.searchSuperCodes(curOlType.getUri(), "oppilaitostyyppifasetti");
+                provider.getOlTypeFacets().addAll(olFacets);
+            }
+        }
         
         providerMap.put(oid, provider);
         
@@ -173,14 +179,31 @@ public class ProviderServiceImpl implements ProviderService {
     public List<OrganisaatioPerustieto> fetchOpplaitokset()
             throws MalformedURLException, IOException,
             ResourceNotFoundException {
+        List<OrganisaatioPerustieto> resOrgs = new ArrayList<OrganisaatioPerustieto>();
         
         OrganisaatioHakutulos result = this.organisaatioRawService.fetchOrganisaatiosByType("Oppilaitos");
         if (result != null && result.getOrganisaatiot() != null) {
-            return result.getOrganisaatiot();
+            
+            for (OrganisaatioPerustieto curOrg : result.getOrganisaatiot()) {
+                String olTyyppi = curOrg.getOppilaitostyyppi();
+                if (olTyyppi != null) {
+                    try {
+                        List<Code> olFacets = this.koodistoService.searchSuperCodes(olTyyppi, "oppilaitostyyppifasetti");
+                        if (olFacets != null && !olFacets.isEmpty()) {
+                            resOrgs.add(curOrg);
+                        }
+                    } catch (KoodistoException ex) {
+                        LOG.error("Problem checking oppilaitostyyppifasetti for: " + curOrg.getOid(), ex);
+                        continue;
+                    }
+                }
+            }
+            
         }
-        return new ArrayList<OrganisaatioPerustieto>();
+        return resOrgs;
     }
 
+    
     @Override
     public List<OrganisaatioPerustieto> fetchToimipisteet()
             throws MalformedURLException, IOException,
@@ -191,6 +214,5 @@ public class ProviderServiceImpl implements ProviderService {
         }
         return new ArrayList<OrganisaatioPerustieto>();
     }
-
 
 }

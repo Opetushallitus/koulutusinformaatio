@@ -21,6 +21,7 @@ import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Reference;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -67,6 +68,11 @@ public class LearningOpportunityProviderEntity {
     
     private I18nTextEntity homePlace;
     private I18nTextEntity homeDistrict;
+    
+    @Embedded
+    private List<CodeEntity> olTypes = new ArrayList<CodeEntity>();
+    @Embedded
+    private List<CodeEntity> olTypeFacets = new ArrayList<CodeEntity>();
 
     public LearningOpportunityProviderEntity() {
     }
@@ -285,5 +291,21 @@ public class LearningOpportunityProviderEntity {
 
     public void setHomeDistrict(I18nTextEntity homeDistrict) {
         this.homeDistrict = homeDistrict;
+    }
+
+    public List<CodeEntity> getOlTypes() {
+        return olTypes;
+    }
+
+    public void setOlTypes(List<CodeEntity> olTypes) {
+        this.olTypes = olTypes;
+    }
+
+    public List<CodeEntity> getOlTypeFacets() {
+        return olTypeFacets;
+    }
+
+    public void setOlTypeFacets(List<CodeEntity> olTypeFacets) {
+        this.olTypeFacets = olTypeFacets;
     }
 }
