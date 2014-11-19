@@ -7,6 +7,7 @@
         </div>
     </div>
     <img class="show-only-in-print" data-ng-src="{{images.logo}}"/>
+    <button class="btn btn-info pull-right hide-in-print" onclick="window.print();"><i class="icon-print"> </i>Tulosta</button>
     <h1>{{title}} ({{itemCount}})</h1>
     <div class="hide-in-print" data-alert type="warning" data-close="closeAlert()" data-ng-if="!hideAlert() && !isAuthenticated">
         <strong data-ki-i18n="appbasket:alert-title"></strong>
