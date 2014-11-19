@@ -366,14 +366,16 @@ public class SearchServiceSolrImpl implements SearchService {
                 LearningOpportunity.NAME_FI,
                 LearningOpportunity.NAME_SV,
                 LearningOpportunity.NAME_EN,
-                LearningOpportunity.NAME_FI);
+                LearningOpportunity.NAME_FI,
+                "ORGANISAATIO");
         result.setName(name);
         result.setId(doc.getFieldValue("id").toString());
         String descr = getTranslatedValue(doc, lang,
                 "address_fi_str_display",
                 "address_sv_str_display",
                 "address_en_str_display",
-                "address_fi_str_display");
+                "address_fi_str_display",
+                "ORGANISAATIO");
         result.setAddress(descr);
 
         List<String> asIds = (List<String>)(doc.getFieldValue("asIds"));
@@ -477,6 +479,7 @@ public class SearchServiceSolrImpl implements SearchService {
             searchResultList.setLoCount(count);
         }
 
+
     }
 
     private ArticleResult createArticleSearchResult(SolrDocument doc) throws Exception {
@@ -579,7 +582,8 @@ public class SearchServiceSolrImpl implements SearchService {
                 LearningOpportunity.EDUCATION_DEGREE_FI,
                 LearningOpportunity.EDUCATION_DEGREE_SV,
                 LearningOpportunity.EDUCATION_DEGREE_EN,
-                LearningOpportunity.EDUCATION_DEGREE);
+                LearningOpportunity.EDUCATION_DEGREE,
+                TarjontaConstants.TYPE_KK);
     }
 
     private String getName(SolrDocument doc, String lang) {
@@ -587,7 +591,8 @@ public class SearchServiceSolrImpl implements SearchService {
                 LearningOpportunity.NAME_DISPLAY_FI,
                 LearningOpportunity.NAME_DISPLAY_SV,
                 LearningOpportunity.NAME_DISPLAY_EN,
-                LearningOpportunity.NAME);
+                LearningOpportunity.NAME,
+                TarjontaConstants.TYPE_KK);
     }
 
     @SuppressWarnings("unchecked")
@@ -610,21 +615,21 @@ public class SearchServiceSolrImpl implements SearchService {
         return new ArrayList<String>();
     }
 
-    private String getTranslatedValue(SolrDocument doc, String lang, String fieldFi, String fieldSv, String fieldEn, String field) {
+    private String getTranslatedValue(SolrDocument doc, String lang, String fieldFi, String fieldSv, String fieldEn, String field, String type) {
         if (doc.getFieldValue(LearningOpportunity.TYPE) != null
-                && doc.getFieldValue(LearningOpportunity.TYPE).toString().equals(TarjontaConstants.TYPE_KK)
+                && doc.getFieldValue(LearningOpportunity.TYPE).toString().equals(type)//TarjontaConstants.TYPE_KK)
                 && lang.equalsIgnoreCase("fi")
                 && doc.getFieldValue(fieldFi) != null) {
             return doc.getFieldValue(fieldFi).toString();
         }
         if (doc.getFieldValue(LearningOpportunity.TYPE) != null
-                && doc.getFieldValue(LearningOpportunity.TYPE).toString().equals(TarjontaConstants.TYPE_KK)
+                && doc.getFieldValue(LearningOpportunity.TYPE).toString().equals(type)
                 && lang.equalsIgnoreCase("sv")
                 && doc.getFieldValue(fieldSv) != null) {
             return doc.getFieldValue(fieldSv).toString();
         }
         if (doc.getFieldValue(LearningOpportunity.TYPE) != null
-                && doc.getFieldValue(LearningOpportunity.TYPE).toString().equals(TarjontaConstants.TYPE_KK)
+                && doc.getFieldValue(LearningOpportunity.TYPE).toString().equals(type)
                 && lang.equalsIgnoreCase("en")
                 && doc.getFieldValue(fieldEn) != null) {
             return doc.getFieldValue(fieldEn).toString();

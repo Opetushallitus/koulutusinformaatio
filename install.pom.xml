@@ -21,7 +21,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>fi.vm.sade.koulutusinformaatio</groupId>
     <artifactId>koulutusinformaatio-app</artifactId>
-    <version>12.4</version>
+    <version>13.0</version>
     <packaging>war</packaging>
 
     <dependencies>

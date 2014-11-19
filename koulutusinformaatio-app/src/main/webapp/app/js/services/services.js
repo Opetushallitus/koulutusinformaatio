@@ -1414,6 +1414,7 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
         },
 
         query: function(params) {
+            $rootScope.isLoading = true;
             var deferred = $q.defer();
             var basketItems = this.getItems();
 
@@ -1429,10 +1430,12 @@ service('ApplicationBasketService', ['$http', '$q', '$rootScope', 'LanguageServi
             $http.get('../basket/items?' + qParams).
             success(function(result) {
                 result = transformData(result);
+                $rootScope.isLoading = false;
                 deferred.resolve(result);
             }).
             error(function(result) {
                 $rootScope.error = true;
+                $rootScope.isLoading = false;
                 deferred.reject(result);
             });
 

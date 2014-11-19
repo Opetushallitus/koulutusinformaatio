@@ -1,0 +1,35 @@
+<section class="container">
+    <div data-ki-ajax-loader data-active="!themes"></div>
+    <div class="row">
+        <div class="col-md-16">
+            <div data-ki-breadcrumb="searchbysubject:title-search-by-subject" id="breadcrumb" class="pull-left"></div>
+        </div>
+    </div>
+    <h1 data-ki-i18n="searchbysubject:title-search-by-subject"></h1>
+
+    <div class="row">
+        <div data-ng-repeat="theme in themes" class="col-xs-16 col-sm-8 col-md-4">
+            <div data-ng-click="selectTheme(theme)" data-ng-keypress="selectTheme(theme, $event)" class="selectable" data-ng-class="{selected: theme === selectedTheme}" tabindex="0">
+                <div data-ki-theme-icon data-theme="theme" class="pull-left"></div>
+                <span>{{theme.valueName}}</span>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div data-ng-if="!selectedTheme">
+        <div class="alert alert-info alert-icon">
+            <div class="alert-body>">
+                <p data-ki-i18n="searchbysubject:no-theme-selected"></p>
+            </div>
+        </div>
+    </div>
+    <div data-ng-if="selectedTheme">
+        <h2>{{selectedTheme.valueName}}</h2>
+        <ul class="inside spacious">
+            <li data-ng-repeat="topic in selectedTheme.childValues">
+                <a href="javascript:void(0)" data-ng-click="selectTopic(topic)">{{topic.valueName}}</a>
+            </li>
+        </ul>
+    </div>
+</section>

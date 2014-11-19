@@ -87,6 +87,8 @@ angular.module('kiApp.SearchLearningOpportunityService', ['ngResource'])
 
     return {
         query: function(params) {
+            $rootScope.isLoading = true;
+
             var deferred = $q.defer();
             var cities = '';
             
@@ -163,10 +165,14 @@ angular.module('kiApp.SearchLearningOpportunityService', ['ngResource'])
                 }
 
                 $analytics.siteSearchTrack(params.queryString, category, result.totalCount, variables);
+                $rootScope.isLoading = false;
+
                 deferred.resolve(result);
             }).
             error(function(result) {
                 $rootScope.error = true;
+                $rootScope.isLoading = false;
+                
                 deferred.reject(result);
             });
 

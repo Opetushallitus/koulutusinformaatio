@@ -6,3 +6,4 @@ Disallow: /calendar/
 Disallow: /app/?_escaped_fragment_=/muistilista
 Disallow: /app/?_escaped_fragment_=/haku/
 Disallow: /app/?_escaped_fragment_=/hakuwizard
+Disallow: /app/?_escaped_fragment_=/selailu/aihe

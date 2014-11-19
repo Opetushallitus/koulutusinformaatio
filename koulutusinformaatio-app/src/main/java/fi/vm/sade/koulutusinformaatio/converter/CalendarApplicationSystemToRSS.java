@@ -12,6 +12,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationPeriod;
 import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.dto.rss.RSSChannelItemDTO;
+import fi.vm.sade.koulutusinformaatio.domain.dto.rss.RSSChannelItemGuidDTO;
 
 /*
  * Converts CalendarApplicationSystem to an RSS feed channel item
@@ -76,7 +77,10 @@ public class CalendarApplicationSystemToRSS {
                 rssItem.setDescription( builder.toString() );
              
                 // set guid to differentiate items
-                rssItem.setGuid( cas.getId() + '_' + ap.getDateRange().getStartDate().getTime() + '_' + ap.getDateRange().getEndDate().getTime() + '_' + lang );
+                RSSChannelItemGuidDTO guid = new RSSChannelItemGuidDTO();
+                guid.setGuid( cas.getId() + '_' + ap.getDateRange().getStartDate().getTime() + '_' + ap.getDateRange().getEndDate().getTime() + '_' + lang );
+                guid.setPermaLink(false);
+                rssItem.setGuid( guid );
                 
                 // set timestamp for ordering
                 rssItem.setTimestamp( ap.getDateRange().getStartDate() );

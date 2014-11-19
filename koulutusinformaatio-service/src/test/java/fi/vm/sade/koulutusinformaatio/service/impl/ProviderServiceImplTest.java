@@ -141,7 +141,7 @@ public class ProviderServiceImplTest {
      * @throws IOException
      */
     @Test
-    public void testFetchOppilaitokset() throws MalformedURLException, ResourceNotFoundException, IOException {
+    public void testFetchOppilaitokset() throws MalformedURLException, ResourceNotFoundException, IOException, KoodistoException {
         
         ProviderService service = prepareWithMockRawService();
         List<OrganisaatioPerustieto> result = service.fetchOpplaitokset();
@@ -158,7 +158,7 @@ public class ProviderServiceImplTest {
      * @throws IOException
      */
     @Test
-    public void testFetchToimipisteet() throws MalformedURLException, ResourceNotFoundException, IOException {
+    public void testFetchToimipisteet() throws MalformedURLException, ResourceNotFoundException, IOException, KoodistoException {
         
         ProviderService service = prepareWithMockRawService();
         List<OrganisaatioPerustieto> result = service.fetchToimipisteet();
@@ -183,26 +183,32 @@ public class ProviderServiceImplTest {
     /*
      * Prepares a ProviderServiceImpl with a mock OrganisaatioRawService.
      */
-    private ProviderServiceImpl prepareWithMockRawService() throws ResourceNotFoundException {
+    private ProviderServiceImpl prepareWithMockRawService() throws ResourceNotFoundException, KoodistoException {
         KoodistoService koodistoService = mock(KoodistoService.class);
         ConversionService conversionService = mock(ConversionService.class);
         OrganisaatioRawService organisaatioRawService = mock(OrganisaatioRawService.class);
         
         OrganisaatioPerustieto orgPerus = new OrganisaatioPerustieto();
         orgPerus.setOid("1.1.1.oppilaitos");
+        orgPerus.setOppilaitostyyppi("olType1");
         
         OrganisaatioHakutulos orgRes = new OrganisaatioHakutulos();
         orgRes.setOrganisaatiot(Arrays.asList(orgPerus));
         
+        List<Code> olFasetCodes = Arrays.asList(new Code());
+        
         when(organisaatioRawService.fetchOrganisaatiosByType("Oppilaitos")).thenReturn(orgRes);
+        when(koodistoService.searchSuperCodes("olType1", "oppilaitostyyppifasetti")).thenReturn(olFasetCodes);
         
         OrganisaatioPerustieto orgPerus2 = new OrganisaatioPerustieto();
         orgPerus2.setOid("1.1.1.toimipiste");
+        orgPerus2.setOppilaitostyyppi("olType1");
         
         OrganisaatioHakutulos orgRes2 = new OrganisaatioHakutulos();
         orgRes2.setOrganisaatiot(Arrays.asList(orgPerus2));
         
         when(organisaatioRawService.fetchOrganisaatiosByType("Toimipiste")).thenReturn(orgRes2);
+        
         
         return new ProviderServiceImpl(conversionService, organisaatioRawService, koodistoService);
     }

@@ -242,7 +242,9 @@ public class UpdateServiceImpl implements UpdateService {
      */
     private void createAndSaveProviders(List<OrganisaatioPerustieto> orgBasics,
             HttpSolrServer lopUpdateSolr) throws KoodistoException, MalformedURLException, ResourceNotFoundException, IOException, SolrServerException {
+        LOG.debug("organisations length: " + orgBasics.size());
         for (OrganisaatioPerustieto curOrg : orgBasics) {
+            LOG.debug("Fetching org " + curOrg.getOid());
             if (!indexerService.isDocumentInIndex(curOrg.getOid(), lopUpdateSolr)) {
                 LOG.debug("Indexing organisaatio: " + curOrg.getOid());
                 Provider curProv = null;
@@ -252,9 +254,11 @@ public class UpdateServiceImpl implements UpdateService {
                     LOG.error("Problem indexing organization: " + curOrg.getOid(), ex);
                     continue;
                 }
-                this.educationDataUpdateService.save(curProv);
-                this.indexerService.createProviderDocs(curProv, lopUpdateSolr, new HashSet<String>(), new HashSet<String>(), new HashSet<String>(), new HashSet<String>());
-                LOG.debug("Indexed and saved organisaatio: " + curOrg.getOid());
+                if (curProv.getOlTypeFacets() != null && !curProv.getOlTypeFacets().isEmpty()) {
+                    this.educationDataUpdateService.save(curProv);
+                    this.indexerService.createProviderDocs(curProv, lopUpdateSolr, new HashSet<String>(), new HashSet<String>(), new HashSet<String>(), new HashSet<String>());
+                    LOG.debug("Indexed and saved organisaatio: " + curOrg.getOid());
+                }
                 
             }
         }

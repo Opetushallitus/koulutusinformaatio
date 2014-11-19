@@ -1,9 +1,11 @@
 <div class="row">
     <div class="col-md-16">
-    	<ul id="social" class="list-unstyled">
-    		<li data-ng-repeat="socialItem in provider.social">
-    			<a data-ki-absolute-link="{{socialItem.url}}" class="{{socialItem.name}}" target="_blank"><span>{{socialItem.name}}</span></a>
-    		</li>
-    	</ul>
+        <ul id="social" class="list-unstyled">
+            <li data-ng-repeat="socialItem in curprovider.social">
+                <a data-ki-absolute-link="{{socialItem.url}}" class="{{socialItem.name}}" target="_blank" title="{{getTooltip(socialItem)}}">
+                    <i class="icon-{{getIconClass(socialItem)}}"></i>
+                </a>
+            </li>
+        </ul>
     </div>
 </div>

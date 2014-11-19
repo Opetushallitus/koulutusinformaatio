@@ -7,6 +7,7 @@ var kiApp = angular.module('kiApp',
         'kiApp.directives',
         'ApplicationBasket',
         'kiApp.SearchWizard',
+        'kiApp.SearchBySubject',
         'Intro',
         'SearchResult', 
         'ui.bootstrap', 
@@ -45,6 +46,11 @@ var kiApp = angular.module('kiApp',
                 }
             }
         }
+    });
+
+    $routeProvider.when('/selailu/aihe', {
+        templateUrl: 'partials/searchbysubject/searchbysubject.html',
+        controller: 'SearchBySubjectCtrl'
     });
 
     $routeProvider.when('/organisaatio/:id', {
@@ -137,7 +143,7 @@ var kiApp = angular.module('kiApp',
         lng : LanguageService.getLanguage(),
         preload: ['fi', 'sv', 'en'],
         ns: {
-            namespaces: ['language', 'tooltip', 'plain', 'searchwizard', 'appbasket'],
+            namespaces: ['language', 'tooltip', 'plain', 'searchwizard', 'appbasket', 'searchbysubject'],
             defaultNs: 'language'
         },
         cookieName: i18nCookieName,

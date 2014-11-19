@@ -6,9 +6,10 @@
         <div data-ng-repeat="ao in as.applicationOptions">
             <div>
                 <h2>{{ao.name}}</h2>
-                <div class="margin-vertical-default">
+                <p>
                     <span>{{as.name}}</span> (<span data-ki-ao-application-time data-startdate="ao.applicationStartDate" data-enddate="ao.applicationEndDate" data-hakutapa="as.hakutapa" data-period-name="ao.applicationPeriodName"></span>)
-                </div>
+                </p>
+                <p data-ng-if="ao.kaksoistutkinto" data-ki-i18n="double-exam"></p>
             </div>
             <div data-ki-collapse-text-block data-title="selection-criteria" data-content="ao.selectionCriteria"></div>
             <div data-ki-collapse-block data-title="emphasized-subjects" data-content="ao.emphasizedSubjects">

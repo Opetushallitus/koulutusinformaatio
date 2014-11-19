@@ -288,8 +288,8 @@ public class IndexerServiceImpl implements IndexerService {
                 }
             }
             
-            if (provider.getOlTypes() != null) {
-                for (Code curOlType : provider.getOlTypes()) {
+            if (provider.getOlTypeFacets() != null) {
+                for (Code curOlType : provider.getOlTypeFacets()) {
                     if (curOlType != null && curOlType.getUri() != null) {
                         providerDoc.addField(SolrUtil.ProviderFields.OL_TYPE, curOlType.getUri());
                     }
@@ -335,8 +335,8 @@ public class IndexerServiceImpl implements IndexerService {
             providerDoc.setField(SolrUtil.ProviderFields.NON_VOCATIONAL_AS_IDS, aggregatedNonVocationalAsIds);
             providerDocs.add(providerDoc);
             
-            if (provider.getOlTypes() != null) {
-                for (Code curOlType : provider.getOlTypes()) {
+            if (provider.getOlTypeFacets() != null) {
+                for (Code curOlType : provider.getOlTypeFacets()) {
                     SolrUtil.indexCodeAsFacetDoc(curOlType, providerDocs, false);
                 }
             }
@@ -357,7 +357,7 @@ public class IndexerServiceImpl implements IndexerService {
             addrStr = (addr.getStreetAddress() != null 
                     && addr.getStreetAddress().getTranslations() != null
                     && !addr.getStreetAddress().getTranslations().isEmpty()) 
-                    ? this.resolveTextByLangEmptyDefault(lang, addr.getStreetAddress().getTranslations()) : addrStr;
+                    ? this.resolveTextByLangWithFallback(lang, addr.getStreetAddress().getTranslations()) : addrStr;
             addrStr = (addr.getPostalCode() != null) ? String.format("%s, %s",  addrStr, addr.getPostalCode()) : addrStr;
             addrStr = (addr.getPostOffice() != null 
                     && addr.getPostOffice().getTranslations() != null
