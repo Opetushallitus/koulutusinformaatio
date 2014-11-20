@@ -143,6 +143,7 @@ public class LearningOpportunityQuery extends SolrQuery {
 
     private void addFacetsToQuery(List<String> facetFilters) {
         this.setFacet(true);
+        this.setFacetLimit(-1);
         this.addFacetField(LearningOpportunity.TEACHING_LANGUAGE);
         this.addFacetField(LearningOpportunity.EDUCATION_TYPE);
         this.addFacetField(LearningOpportunity.PREREQUISITES);
