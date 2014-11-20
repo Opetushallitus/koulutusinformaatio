@@ -9,10 +9,12 @@ module.exports = function(config) {
             'karma-jasmine', 
             'karma-ng-html2js-preprocessor',
             'karma-chrome-launcher',
-            'karma-junit-reporter'
+            'karma-junit-reporter',
+            'karma-coverage'
         ],
         preprocessors: {
-            'main/webapp/app/templates/*.html': 'ng-html2js'
+            'main/webapp/app/templates/*.html': 'ng-html2js',
+            'main/webapp/app/js/**/*.js': ['coverage']
         },
         ngHtml2JsPreprocessor: {
             stripPrefix: 'main/webapp/app/'
@@ -43,9 +45,13 @@ module.exports = function(config) {
         logLevel: config.LOG_DEBUG,
         autoWatch: true,
         singleRun: false,
-        reporters: ['progress', 'junit'],
+        reporters: ['progress', 'junit', 'coverage'],
         junitReporter: {
             outputFile: testPath + 'test_out/unit.xml'
         },
+        coverageReporter: {
+            type: 'html',
+            dir: testPath + 'coverage/'
+        }
     });
 };
