@@ -191,11 +191,15 @@ public class LOSObjectCreator extends ObjectCreator {
 
         los.setId(specialLOSId);
         String teachingLang = koodistoService.searchFirstCodeValue(childKomoto.getOpetuskieletUris().get(0)).toLowerCase();
-        if (!los.getType().equals(TarjontaConstants.TYPE_PREP)) {
+        if (!los.getType().equals(TarjontaConstants.TYPE_PREP) && !los.getType().equals(TarjontaConstants.TYPE_SPECIAL)) {
             Map<String, String> nameTranslations = Maps.newHashMap();
             nameTranslations.put(teachingLang, childKomoto.getKoulutusohjelmanNimi());
             los.setName(new I18nText(nameTranslations));
             los.setShortTitle(new I18nText(nameTranslations));
+        } else if (los.getType().equals(TarjontaConstants.TYPE_SPECIAL)) {
+            Code name = koodistoService.searchFirst(parentKomo.getKoulutusKoodiUri());
+            los.setName(name.getName());
+            los.setShortTitle(name.getShortTitle());
         }
         los.setCreditValue(childKomoto.getLaajuusArvo());
         los.setCreditUnit(koodistoService.searchFirstShortName(childKomoto.getLaajuusYksikkoUri()));
@@ -299,7 +303,10 @@ public class LOSObjectCreator extends ObjectCreator {
         }
 
         los.setId(specialLOSId);
-        Code name = koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri());
+        Code name = los.getType().equals(TarjontaConstants.TYPE_SPECIAL) 
+                    ? koodistoService.searchFirst(parentKomo.getKoulutusKoodiUri())
+                            : koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri());
+
         los.setName(name.getName());
         los.setShortTitle(name.getShortTitle());
         los.setCreditValue(parentKomo.getLaajuusArvo());
