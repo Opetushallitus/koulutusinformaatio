@@ -5,11 +5,11 @@
 /**
  *  Controls the selected user interface language
  */
-function LanguageCtrl($scope, LanguageService) {
+function LanguageCtrl($scope, LanguageService, $window) {
     $scope.changeLanguage = function(code) {
        LanguageService.setLanguage(code);
        i18n.setLng(code);
-       document.location.reload(true);
+       $window.location.reload(true);
    }
 };
 
@@ -18,10 +18,6 @@ function LanguageCtrl($scope, LanguageService) {
  */
 function HeaderCtrl($scope, ApplicationBasketService, TranslationService, LanguageService, Config) {
     $scope.lang = LanguageService.getLanguage();
-
-    $scope.appBasketItemCount = function() {
-        return ApplicationBasketService.getItemCount();
-    }
 
     $scope.links = {
         frontpage: Config.get('frontpageUrl')

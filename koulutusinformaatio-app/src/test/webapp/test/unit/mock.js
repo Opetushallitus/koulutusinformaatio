@@ -7,6 +7,15 @@ var i18n = {
 	t: function(key, options) {
 		return this.map[key] || key;
 	},
+
+	setLng: function() {},
 	
 	init: function() {}
-}
+};
+
+// avoid page reloads durign tests
+mockWindow = {
+	location: {
+		reload: function() {}
+	}
+};
