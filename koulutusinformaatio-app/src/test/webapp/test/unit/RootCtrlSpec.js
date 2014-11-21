@@ -26,4 +26,4 @@ describe('RootCtrl', function() {
         rs.$broadcast('$locationChangeStart', {});
         expect(rs.error).toBeUndefined();
     });
-})
+});

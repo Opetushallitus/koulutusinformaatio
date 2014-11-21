@@ -1,6 +1,6 @@
 "use strict";
 
-describe('SearchWizardCtrl', function() {
+xdescribe('SearchWizardCtrl', function() {
 
     var ctrl, $scope, $httpBackend;
 

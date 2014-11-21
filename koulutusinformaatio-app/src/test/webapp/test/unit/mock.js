@@ -19,3 +19,23 @@ mockWindow = {
 		reload: function() {}
 	}
 };
+
+angular.module('kiMock', [])
+
+.value('themeFacet', {
+	topicFacet: { 
+		facetValues: [
+			{
+				valueName: "themeName", 
+				valueId: "themeId",
+				childValues: [
+					{
+						valueName: "topicName",
+						valueId: "topicId"
+					}
+				]
+			}
+		]
+	}
+});
+

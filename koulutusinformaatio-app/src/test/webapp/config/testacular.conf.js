@@ -13,7 +13,8 @@ module.exports = function(config) {
             'karma-coverage'
         ],
         preprocessors: {
-            'main/webapp/app/templates/*.html': 'ng-html2js',
+            'main/webapp/app/templates/**/*.html': 'ng-html2js',
+            'main/webapp/app/partials/**/*.html': 'ng-html2js',
             'main/webapp/app/js/**/*.js': ['coverage']
         },
         ngHtml2JsPreprocessor: {
@@ -27,7 +28,8 @@ module.exports = function(config) {
             appPath + 'app/lib/angular/1.2.13/angular-touch.min.js',
             appPath + 'app/lib/underscore/*.js',
             appPath + 'app/lib/angular-bootstrap/*.js',
-            appPath + 'app/lib/angulartics/*.js',
+            //appPath + 'app/lib/angulartics/*.js',
+            testPath + 'test/unit/mocks/*.js',
             appPath + 'app/lib/intro/*.js',
             appPath + 'app/lib/jquery/jquery-1.8.0.min.js',
             appPath + 'app/lib/modernizr/modernizr-2.6.2.min.js',
@@ -37,6 +39,7 @@ module.exports = function(config) {
             appPath + 'app/js/**/*.js',
             appPath + 'calendar/*.js',
             appPath + 'app/templates/*.html',
+            appPath + 'app/partials/**/*.html',
 
             testPath + 'test/lib/angular/angular-mocks.js',
             testPath + 'test/unit/**/*.js',

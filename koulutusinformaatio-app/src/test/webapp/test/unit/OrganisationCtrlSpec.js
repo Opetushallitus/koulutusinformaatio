@@ -35,4 +35,4 @@ describe('OrganisationCtrl', function() {
         expect(scope.hasLOs).toBeTruthy();
     })
 
-})
+});
