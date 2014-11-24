@@ -129,7 +129,6 @@ controller('SearchWizardCtrl', [
 
         var gotoNextPhase = function() {
             var nextPhase = SearchWizardPhaseService.getNextPhase($scope.currentPhase, $scope.searchResult);
-            console.log(nextPhase);
             initPhase(nextPhase);
         };
 
