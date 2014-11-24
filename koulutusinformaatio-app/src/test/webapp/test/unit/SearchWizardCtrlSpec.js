@@ -34,6 +34,11 @@ describe('SearchWizardCtrl', function() {
             httpBackend.flush();
         });
 
+        afterEach(function() {
+            httpBackend.verifyNoOutstandingExpectation();
+            httpBackend.verifyNoOutstandingRequest();
+        });
+
         it('should be in the first phase', function() {
             expect(scope.isFirstPhase()).toBeTruthy();
         });
@@ -65,6 +70,11 @@ describe('SearchWizardCtrl', function() {
             httpBackend.when('GET', 'partials/search/search.html').respond(''); // for some unknown reason this gets requested
             ctrl = controller('SearchWizardCtrl', { $scope: scope });
             httpBackend.flush();
+        });
+
+        afterEach(function() {
+            httpBackend.verifyNoOutstandingExpectation();
+            httpBackend.verifyNoOutstandingRequest();
         });
 
         it('should initalize wizard to phase defined by query parameters', function() {

@@ -22,6 +22,11 @@ describe('OrganisationCtrl', function() {
         });
     });
 
+    afterEach(function() {
+        httpBackend.verifyNoOutstandingExpectation();
+        httpBackend.verifyNoOutstandingRequest();
+    });
+
     it('should fetch organisation data correctly', function() {
         expect(scope.provider.id).toEqual("123");
         expect(scope.provider.name).toEqual("organisation name");

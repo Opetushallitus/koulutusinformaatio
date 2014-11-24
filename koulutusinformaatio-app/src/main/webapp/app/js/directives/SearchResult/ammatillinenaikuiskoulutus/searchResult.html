@@ -1,6 +1,6 @@
 <div class="container-equal-height container-xs-height">
     <div class="row row-xs-height">
-        <div class="col-xs-12 col-xs-height">
+        <div class="col-xs-10 col-xs-height">
             <h2 title="{{locales.openEducation}}"><a href="{{lo.linkHref}}">{{lo.name}}</a></h2>
             <span>{{lo.childName}}</span><br/>
             <span data-ki-i18n="{{lo.educationType}}"></span><br />
@@ -10,11 +10,7 @@
             <span>{{lo.homeplace}}</span>
         </div>
 
-        <div class="col-xs-4 col-xs-height text-right">
-                <div data-ki-as-state></div>
-                <a href="javascript:void(0)" class="collapser hidden-xs" data-ki-i18n="extended-view-{{showExtension}}" data-ng-class="showExtension" data-ng-click="toggleExtendedView()">
-                </a>
-        </div>
+        <div class="col-xs-6 col-xs-height text-right" data-ng-include="'js/directives/SearchResult/searchResultCollapserCol.html'"></div>
     </div>
 </div>
 

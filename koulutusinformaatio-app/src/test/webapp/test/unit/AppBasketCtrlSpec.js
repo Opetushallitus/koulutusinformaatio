@@ -21,6 +21,11 @@ describe('AppBasketCtrl', function() {
         });
     });
 
+    afterEach(function() {
+        httpBackend.verifyNoOutstandingExpectation();
+        httpBackend.verifyNoOutstandingRequest();
+    });
+
     describe('empty basket', function() {
 
         it('should be empty', function() {

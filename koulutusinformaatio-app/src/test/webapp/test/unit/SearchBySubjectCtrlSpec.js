@@ -28,6 +28,11 @@ describe('SearchBySubjectCtrl', function() {
         });
     });
 
+    afterEach(function() {
+        httpBackend.verifyNoOutstandingExpectation();
+        httpBackend.verifyNoOutstandingRequest();
+    });
+
     
     it('should initialize themes', function() {
         expect(scope.themes).toBeDefined();

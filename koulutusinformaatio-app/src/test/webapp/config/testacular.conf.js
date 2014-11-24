@@ -13,12 +13,13 @@ module.exports = function(config) {
             'karma-coverage'
         ],
         preprocessors: {
-            'main/webapp/app/templates/**/*.html': 'ng-html2js',
+            'main/webapp/app/templates/*.html': 'ng-html2js',
             'main/webapp/app/partials/**/*.html': 'ng-html2js',
             'main/webapp/app/js/**/*.js': ['coverage']
         },
         ngHtml2JsPreprocessor: {
-            stripPrefix: 'main/webapp/app/'
+            stripPrefix: 'main/webapp/app/',
+            moduleName: 'kiTemplates'
         },
         files: [
             appPath + 'app/lib/angular/1.2.13/angular.min.js',

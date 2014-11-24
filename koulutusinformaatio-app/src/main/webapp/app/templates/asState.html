@@ -1,6 +1,6 @@
 <div data-ng-class="{hidden: !isPeriodsForthcoming()}">
-<span data-ki-i18n="search-as-next"></span>
-<ul>
+<span data-ki-i18n="search-as-next" data-show-colon="true"></span>
+<ul data-ng-class="{'list-unstyled': lo.parsedAppPeriods.length <= 1, 'inside': lo.parsedAppPeriods.length > 1}">
 	<li data-ng-repeat="period in lo.parsedAppPeriods">
 		{{period}}
 	</li>

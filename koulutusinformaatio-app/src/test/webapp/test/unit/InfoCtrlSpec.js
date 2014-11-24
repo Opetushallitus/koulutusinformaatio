@@ -28,6 +28,11 @@ describe('InfoCtrl', function() {
         });
     });
 
+    afterEach(function() {
+        httpBackend.verifyNoOutstandingExpectation();
+        httpBackend.verifyNoOutstandingRequest();
+    });
+
     it('should change prerequisite value', function() {
         expect(scope.selectedLOI.prerequisite.value).toEqual('YO');
         scope.changePrerequisiteSelection('PK');
