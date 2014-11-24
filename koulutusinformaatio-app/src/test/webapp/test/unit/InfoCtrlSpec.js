@@ -1,30 +1,36 @@
 "use strict";
 
-describe('SearchWizardCtrl', function() {
+describe('InfoCtrl', function() {
 
     var ctrl,
         scope,
         rs,
         httpBackend,
         controller,
-        location,
-        constants,
-        builder;
+        location;
 
     beforeEach(function() {
         module('kiApp');
 
-        inject(function($controller, $httpBackend, $rootScope, $location, SearchWizardConstants, SelectionBuilder) {
+        inject(function($controller, $httpBackend, $rootScope, $location, ParentLOService) {
             rs = $rootScope;
             scope = $rootScope.$new();
             controller = $controller;
             httpBackend = $httpBackend;
             location = $location;
-            constants = SearchWizardConstants;
-            builder = SelectionBuilder;
+
+
+            httpBackend.when('GET', '../lo/parent/123?uiLang=fi').respond('{}');
+            ctrl = controller('InfoCtrl', { $scope: scope, $routeParams: {id: '123'}, loResource: ParentLOService });
+            httpBackend.flush();
         });
     });
 
+    it('should...', function() {
+
+    });
+
+    /*
     describe('starting from first phase by default', function() {
 
         beforeEach(function() {
@@ -77,6 +83,7 @@ describe('SearchWizardCtrl', function() {
         })
 
     })
+*/
 
     
     
