@@ -1,0 +1,9 @@
+<div data-ng-class="{hidden: !isPeriodsForthcoming()}">
+<span data-ki-i18n="search-as-next"></span>
+<ul>
+	<li data-ng-repeat="period in lo.parsedAppPeriods">
+		{{period}}
+	</li>
+</ul>
+</div>
+<span data-ng-class="{hidden: !lo.asOngoing}" data-ki-i18n="search-as-ongoing"></span>
