@@ -105,6 +105,10 @@
   content: '\e80f'; }
 
 /* '' */
+.icon-print:before {
+  content: '\e810'; }
+
+/* '' */
 .breadcrumb {
   padding: 0px 0px;
   margin-bottom: 20px;
