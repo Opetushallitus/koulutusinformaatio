@@ -1130,7 +1130,7 @@ public class SearchServiceSolrImpl implements SearchService {
     private void updateAsStatus(LOSearchResult lo, SolrDocument doc) {
         lo.setAsOngoing(false);
         Date now = new Date();
-        Date nextStarts = null;
+        //Date nextStarts = null;
 
         for (Map.Entry<String, Object> start : doc.entrySet()) {
 
@@ -1155,13 +1155,12 @@ public class SearchServiceSolrImpl implements SearchService {
                     }
                 }
 
-                if ((nextStarts == null && startDate.after(now)) || (startDate.after(now) && startDate.before(nextStarts))) {
-                    nextStarts = startDate;
+                if (startDate.after(now)) {
+                    lo.getNextApplicationPeriodStarts().add(startDate);
                 }
             }
         }
 
-        lo.setNextApplicationPeriodStarts(nextStarts);
     }
 
     @Override

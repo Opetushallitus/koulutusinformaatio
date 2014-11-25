@@ -54,4 +54,6 @@ public interface ProviderService {
      */
     public List<OrganisaatioPerustieto> fetchToimipisteet() throws MalformedURLException, IOException, ResourceNotFoundException;
     void clearCache();
+
+    public List<OrganisaatioPerustieto> fetchOppisopimusToimipisteet() throws MalformedURLException, IOException, ResourceNotFoundException;
 }

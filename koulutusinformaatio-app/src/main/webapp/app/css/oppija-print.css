@@ -1,0 +1,18 @@
+@media screen {
+  .show-only-in-print {
+    display: none; } }
+@media print {
+  #siteheader, #sitefooter {
+    display: none; }
+
+  #raamit-container {
+    width: 100%;
+    margin: 0; }
+
+  .hide-in-print {
+    display: none; }
+
+  @page {
+    margin: 0.5cm; } }
+
+/*# sourceMappingURL=oppija-print.css.map */

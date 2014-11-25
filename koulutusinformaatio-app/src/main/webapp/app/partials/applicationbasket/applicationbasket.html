@@ -1,13 +1,15 @@
 <section class="container">
     <div data-ki-ajax-loader data-active="isLoading"></div>
-    <div class="row">
+    <div class="hide-in-print" class="row">
         <div class="col-md-16">
             <div data-ki-breadcrumb="title-application-basket-content" id="breadcrumb" class="pull-left"></div>
             <a class="pull-right" href="#!/haku/{{queryString}}" data-ki-i18n="application-basket-back"></a>
         </div>
     </div>
+    <img class="show-only-in-print" data-ng-src="{{images.logo}}"/>
+    <button class="btn btn-info pull-right hide-in-print" onclick="window.print();"><i class="icon-print"> </i>Tulosta</button>
     <h1>{{title}} ({{itemCount}})</h1>
-    <div data-alert type="warning" data-close="closeAlert()" data-ng-if="!hideAlert() && !isAuthenticated">
+    <div class="hide-in-print" data-alert type="warning" data-close="closeAlert()" data-ng-if="!hideAlert() && !isAuthenticated">
         <strong data-ki-i18n="appbasket:alert-title"></strong>
         <p>
             <span data-ki-i18n="appbasket:alert-text-1"></span>
@@ -15,7 +17,7 @@
             <span data-ki-i18n="appbasket:alert-text-2"></span>
         </p>
     </div>
-    <p data-ki-i18n="application-basket-description"></p>
+    <p class="hide-in-print" data-ki-i18n="application-basket-description"></p>
     <div data-ng-switch="basketIsEmpty">
         <div data-ng-switch-when="true">
             <p data-ki-i18n="application-basket-no-content"></p>

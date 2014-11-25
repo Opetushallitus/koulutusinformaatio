@@ -9,13 +9,17 @@ module.exports = function(config) {
             'karma-jasmine', 
             'karma-ng-html2js-preprocessor',
             'karma-chrome-launcher',
-            'karma-junit-reporter'
+            'karma-junit-reporter',
+            'karma-coverage'
         ],
         preprocessors: {
-            'main/webapp/app/templates/*.html': 'ng-html2js'
+            'main/webapp/app/templates/*.html': 'ng-html2js',
+            'main/webapp/app/partials/**/*.html': 'ng-html2js',
+            'main/webapp/app/js/**/*.js': ['coverage']
         },
         ngHtml2JsPreprocessor: {
-            stripPrefix: 'main/webapp/app/'
+            stripPrefix: 'main/webapp/app/',
+            moduleName: 'kiTemplates'
         },
         files: [
             appPath + 'app/lib/angular/1.2.13/angular.min.js',
@@ -25,16 +29,19 @@ module.exports = function(config) {
             appPath + 'app/lib/angular/1.2.13/angular-touch.min.js',
             appPath + 'app/lib/underscore/*.js',
             appPath + 'app/lib/angular-bootstrap/*.js',
-            appPath + 'app/lib/angulartics/*.js',
+            //appPath + 'app/lib/angulartics/*.js',
+            testPath + 'test/unit/mocks/*.js',
             appPath + 'app/lib/intro/*.js',
             appPath + 'app/lib/jquery/jquery-1.8.0.min.js',
             appPath + 'app/lib/modernizr/modernizr-2.6.2.min.js',
             appPath + 'app/lib/jquery.enhanced.cookie.js',
             appPath + 'app/lib/i18next-1.6.0.js',
             appPath + 'app/lib/angular.treeview.js',
+            appPath + 'app/lib/keyboardnavigation/TabsKeyboardNavigation.js',
             appPath + 'app/js/**/*.js',
             appPath + 'calendar/*.js',
             appPath + 'app/templates/*.html',
+            appPath + 'app/partials/**/*.html',
 
             testPath + 'test/lib/angular/angular-mocks.js',
             testPath + 'test/unit/**/*.js',
@@ -43,9 +50,13 @@ module.exports = function(config) {
         logLevel: config.LOG_DEBUG,
         autoWatch: true,
         singleRun: false,
-        reporters: ['progress', 'junit'],
+        reporters: ['progress', 'junit', 'coverage'],
         junitReporter: {
             outputFile: testPath + 'test_out/unit.xml'
         },
+        coverageReporter: {
+            type: 'html',
+            dir: testPath + 'coverage/'
+        }
     });
 };

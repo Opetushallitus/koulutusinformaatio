@@ -32,8 +32,13 @@ public final class AddressToDTO {
             AddressDTO addrs = new AddressDTO();
             addrs.setStreetAddress(ConverterUtil.getTextByLanguageUseFallbackLang(address.getStreetAddress(), lang));
             addrs.setStreetAddress2(ConverterUtil.getTextByLanguageUseFallbackLang(address.getSecondForeignAddr(), lang));
-            addrs.setPostalCode(address.getPostalCode());
-            addrs.setPostOffice(ConverterUtil.getTextByLanguageUseFallbackLang(address.getPostOffice(), lang));
+            if (!("en".equalsIgnoreCase(lang) 
+                    && address.getStreetAddress() != null 
+                    && address.getStreetAddress().getTranslations() != null 
+                    && address.getStreetAddress().getTranslations().containsKey(lang))) {
+                addrs.setPostalCode(address.getPostalCode());
+                addrs.setPostOffice(ConverterUtil.getTextByLanguageUseFallbackLang(address.getPostOffice(), lang));
+            }
             return addrs;
         } else {
             return null;

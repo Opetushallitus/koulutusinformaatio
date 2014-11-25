@@ -224,6 +224,9 @@ public class TarjontaServiceImpl implements TarjontaService {
                 } catch (KoodistoException ex) {
                     LOG.error("Problem with higher education: " + koulutusDTO.getOid(), ex);
                     continue;
+                } catch (Exception exc) {
+                    LOG.error("Problem indexing higher education los: " + koulutusDTO.getOid(), exc);
+                    throw new KoodistoException(exc);
                 }
                
 

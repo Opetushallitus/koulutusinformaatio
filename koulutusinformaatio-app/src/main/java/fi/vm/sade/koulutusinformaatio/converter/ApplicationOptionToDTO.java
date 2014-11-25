@@ -111,7 +111,7 @@ public final class ApplicationOptionToDTO {
             return null;
         }
         if (applicationOption.getEligibilityDescription() != null) {
-            dto.setEligibilityDescription(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getEligibilityDescription(), uiLang));            
+            dto.setEligibilityDescription(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getEligibilityDescription(), lang));            
         }
         dto.setSelectionCriteria(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getSelectionCriteria(), lang));
         dto.setSoraDescription(ConverterUtil.getTextByLanguageUseFallbackLang(applicationOption.getSoraDescription(), lang));

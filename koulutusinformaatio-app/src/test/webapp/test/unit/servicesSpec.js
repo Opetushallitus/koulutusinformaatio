@@ -569,6 +569,10 @@ describe('ApplicationBasketService', function() {
         });
     });
 
+    afterEach(function() {
+        service.empty();
+    });
+
     describe('isEmpty', function() {
 
         beforeEach(function() {

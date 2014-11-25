@@ -25,6 +25,7 @@ import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException
 import fi.vm.sade.koulutusinformaatio.service.KoodistoService;
 import fi.vm.sade.koulutusinformaatio.service.OrganisaatioRawService;
 import fi.vm.sade.koulutusinformaatio.service.ProviderService;
+import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioHakutulos;
 import fi.vm.sade.organisaatio.api.search.OrganisaatioPerustieto;
 import fi.vm.sade.organisaatio.resource.dto.OrganisaatioRDTO;
@@ -101,10 +102,15 @@ public class ProviderServiceImpl implements ProviderService {
         }
         if (provider.getOlTypes() != null) {
             for (Code curOlType : provider.getOlTypes()) {
-                List<Code> olFacets = this.koodistoService.searchSuperCodes(curOlType.getUri(), "oppilaitostyyppifasetti");
+                List<Code> olFacets = this.koodistoService.searchSuperCodes(curOlType.getUri(), TarjontaConstants.KOODISTO_OPPILAITOSTYYPPIFASETTI);
                 provider.getOlTypeFacets().addAll(olFacets);
             }
         }
+        if (organisaatioRDTO.getTyypit() != null && organisaatioRDTO.getTyypit().contains(TarjontaConstants.ORG_TYPE_OPPISOPIMUSTOIMIPISTE)) {
+            Code opSopToim = koodistoService.searchFirst(TarjontaConstants.OPPILAITOSTYYPPIFASETT_OPPISOPIMUS);
+            provider.getOlTypeFacets().add(opSopToim);
+        }
+        
         
         providerMap.put(oid, provider);
         
@@ -115,13 +121,13 @@ public class ProviderServiceImpl implements ProviderService {
 
     private void inheritOlTypes(Provider provider, OrganisaatioRDTO rawProvider) throws ResourceNotFoundException, KoodistoException {
         
-        if (rawProvider.getTyypit().contains("Oppilaitos")) {
+        if (rawProvider.getTyypit().contains(TarjontaConstants.ORG_TYPE_OPPILAITOS)) {
             Code olTyyppi = koodistoService.searchFirst(rawProvider.getOppilaitosTyyppiUri());
             if (olTyyppi != null) {
                 provider.getOlTypes().add(olTyyppi);
             }
         }
-        else if (rawProvider.getTyypit().contains("Toimipiste")) {
+        else if (rawProvider.getTyypit().contains(TarjontaConstants.ORG_TYPE_TOIMIPISTE)) {
             OrganisaatioRDTO inheritableOrg = this.organisaatioRawService.getOrganisaatio(rawProvider.getParentOid());
             inheritOlTypes(provider, inheritableOrg);
         } 
@@ -181,14 +187,14 @@ public class ProviderServiceImpl implements ProviderService {
             ResourceNotFoundException {
         List<OrganisaatioPerustieto> resOrgs = new ArrayList<OrganisaatioPerustieto>();
         
-        OrganisaatioHakutulos result = this.organisaatioRawService.fetchOrganisaatiosByType("Oppilaitos");
+        OrganisaatioHakutulos result = this.organisaatioRawService.fetchOrganisaatiosByType(TarjontaConstants.ORG_TYPE_OPPILAITOS);
         if (result != null && result.getOrganisaatiot() != null) {
             
             for (OrganisaatioPerustieto curOrg : result.getOrganisaatiot()) {
                 String olTyyppi = curOrg.getOppilaitostyyppi();
                 if (olTyyppi != null) {
                     try {
-                        List<Code> olFacets = this.koodistoService.searchSuperCodes(olTyyppi, "oppilaitostyyppifasetti");
+                        List<Code> olFacets = this.koodistoService.searchSuperCodes(olTyyppi, TarjontaConstants.KOODISTO_OPPILAITOSTYYPPIFASETTI);
                         if (olFacets != null && !olFacets.isEmpty()) {
                             resOrgs.add(curOrg);
                         }
@@ -208,7 +214,18 @@ public class ProviderServiceImpl implements ProviderService {
     public List<OrganisaatioPerustieto> fetchToimipisteet()
             throws MalformedURLException, IOException,
             ResourceNotFoundException {
-        OrganisaatioHakutulos result = this.organisaatioRawService.fetchOrganisaatiosByType("Toimipiste");
+        OrganisaatioHakutulos result = this.organisaatioRawService.fetchOrganisaatiosByType(TarjontaConstants.ORG_TYPE_TOIMIPISTE);
+        if (result != null && result.getOrganisaatiot() != null) {
+            return result.getOrganisaatiot();
+        }
+        return new ArrayList<OrganisaatioPerustieto>();
+    }
+
+    @Override
+    public List<OrganisaatioPerustieto> fetchOppisopimusToimipisteet()
+            throws MalformedURLException, IOException,
+            ResourceNotFoundException {
+        OrganisaatioHakutulos result = this.organisaatioRawService.fetchOrganisaatiosByType(TarjontaConstants.ORG_TYPE_OPPISOPIMUSTOIMIPISTE);
         if (result != null && result.getOrganisaatiot() != null) {
             return result.getOrganisaatiot();
         }
