@@ -319,6 +319,9 @@ public final class SolrUtil {
         public static final String CONTENT_SV = "content_sv";
         public static final String CONTENT_EN = "content_en";
         public static final String CREDITS = "credits_ss";
+        public static final String CREDITS_FI = "credits_fi_ss";
+        public static final String CREDITS_SV = "credits_sv_ss";
+        public static final String CREDITS_EN = "credits_en_ss";
         public static final String EDUCATION_DEGREE = "educationDegree_ss";
         public static final String EDUCATION_DEGREE_CODE = "educationDegreeCode_ss";
         public static final String EDUCATION_DEGREE_FI = "educationDegree_fi_ss";

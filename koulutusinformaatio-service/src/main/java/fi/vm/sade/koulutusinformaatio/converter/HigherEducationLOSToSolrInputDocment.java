@@ -294,6 +294,27 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
         } else if (!enIndexed) {
             doc.setField(LearningOpportunity.NAME_EN, losName);
         }
+        
+        if (los.getCreditValue() != null && teachingLang.equals("fi")) {
+            
+            doc.setField(LearningOpportunity.CREDITS_FI, 
+                    String.format("%s %s", los.getCreditValue(), 
+                            SolrUtil.resolveTextWithFallback("fi",
+                                    los.getCreditUnit().getTranslations())));
+            
+        } else if (los.getCreditValue() != null && teachingLang.equals("sv")) {
+            
+            doc.setField(LearningOpportunity.CREDITS_SV, 
+                    String.format("%s %s", los.getCreditValue(), 
+                            SolrUtil.resolveTextWithFallback("sv",
+                                    los.getCreditUnit().getTranslations())));
+        } else if (los.getCreditValue() != null && teachingLang.equals("en")) {
+            
+            doc.setField(LearningOpportunity.CREDITS_EN, 
+                    String.format("%s %s", los.getCreditValue(), 
+                            SolrUtil.resolveTextWithFallback("en",
+                                    los.getCreditUnit().getTranslations())));
+        }
 
         List<Provider> allProviders = new ArrayList<Provider>();
         allProviders.add(provider);
