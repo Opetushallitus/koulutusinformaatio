@@ -19,9 +19,10 @@ describe('InfoCtrl', function() {
             httpBackend = $httpBackend;
             location = $location;
 
-
             httpBackend.when('GET', '../lo/parent/123?uiLang=fi').respond(parentLO);
             httpBackend.when('GET', '../lop/123_provider/picture').respond('imagedata');
+            httpBackend.when('GET', '../lo/picture/structure_image_id').respond('structureimagedata');
+            httpBackend.when('GET', '../lop/additional_provider_id/picture').respond('additional_provider_image_data');
 
             ctrl = controller('InfoCtrl', { $scope: scope, $routeParams: {id: '123'}, loResource: ParentLOService });
             httpBackend.flush();
@@ -39,4 +40,12 @@ describe('InfoCtrl', function() {
         httpBackend.flush();
         expect(scope.selectedLOI.prerequisite.value).toEqual('PK');
     });
+
+    it('should load the structure image if image id is present', function() {
+        expect(scope.structureImage).toBeDefined();
+    });
+
+    it('should load images for additional providers', function() {
+        expect(scope.lo.additionalProviders[0].providerImage).toBeDefined();
+    })
 });
