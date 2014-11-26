@@ -32,6 +32,8 @@ public class SpecialLearningOpportunitySpecificationEntity {
     @Embedded
     private I18nTextEntity name;
     @Embedded
+    private I18nTextEntity subName;
+    @Embedded
     private I18nTextEntity shortTitle;
     private String educationDegree;
     @Embedded
@@ -69,6 +71,7 @@ public class SpecialLearningOpportunitySpecificationEntity {
     private String type;
     
     private List<String> aoIds = new ArrayList<String>();
+
 
     public SpecialLearningOpportunitySpecificationEntity() {
     }
@@ -240,5 +243,13 @@ public class SpecialLearningOpportunitySpecificationEntity {
     public void setAdditionalProviders(
             List<LearningOpportunityProviderEntity> additionalProviders) {
         this.additionalProviders = additionalProviders;
+    }
+
+    public I18nTextEntity getSubName() {
+        return subName;
+    }
+
+    public void setSubName(I18nTextEntity subName) {
+        this.subName = subName;
     }
 }

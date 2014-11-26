@@ -5,7 +5,7 @@
     $scope.loType = $routeParams.loType;
 
     $scope.queryString = SearchService.getTerm();
-    $scope.descriptionLanguage = 'fi';
+    //$scope.descriptionLanguage = 'fi';
     $scope.hakuAppUrl = Config.get('hakulomakeUrl');
     $scope.uiLang = LanguageService.getLanguage();
     $scope.virkailijaLang = VirkailijaLanguageService.getLanguage();
@@ -152,13 +152,6 @@
                 return loi.applicationSystems[0];
             }
         };
-
-        var getPrerequisite = function(loi) {
-            var as = getFirstApplicationSystem(loi);
-            if (as && as.applicationOptions && as.applicationOptions.length > 0) {
-                return as.applicationOptions[0].prerequisite;
-            }
-        }
 
         for (var loiIndex in $scope.lois) {
             if ($scope.lois.hasOwnProperty(loiIndex)) {

@@ -656,14 +656,18 @@ service('HigherEducationTransformer', ['KiSorter', '$rootScope', '$filter', 'Lan
 			}
 			
 			result.applicationOffices = [];
-			result.provider.applicationOffice.providerName = result.provider.name;
-			result.applicationOffices.push(result.provider.applicationOffice);
+			if (result.provider.applicationOffice) {
+				result.provider.applicationOffice.providerName = result.provider.name;
+				result.applicationOffices.push(result.provider.applicationOffice);
+			}
 			for (var curProvIndex in result.additionalProviders) {
 				if (result.additionalProviders.hasOwnProperty(curProvIndex)) {
 					var curProvider = result.additionalProviders[curProvIndex];
 					var curApplicationOffice = curProvider.applicationOffice
-					curApplicationOffice.providerName = curProvider.name;
-					result.applicationOffices.push(curApplicationOffice);
+					if (curApplicationOffice) {
+						curApplicationOffice.providerName = curProvider.name;
+						result.applicationOffices.push(curApplicationOffice);
+					}
 				}
 			}
 			

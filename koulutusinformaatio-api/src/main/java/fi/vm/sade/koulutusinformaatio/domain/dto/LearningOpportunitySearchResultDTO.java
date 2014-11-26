@@ -39,7 +39,7 @@ public class LearningOpportunitySearchResultDTO {
     private String parentId;
     private String losId;
     private boolean asOngoing;
-    private Date nextApplicationPeriodStarts;
+    private List<Date> nextApplicationPeriodStarts = new ArrayList<Date>();
     private String type;
     private String credits;
     private String educationType;
@@ -105,11 +105,11 @@ public class LearningOpportunitySearchResultDTO {
         this.asOngoing = asOngoing;
     }
 
-    public Date getNextApplicationPeriodStarts() {
+    public List<Date> getNextApplicationPeriodStarts() {
         return nextApplicationPeriodStarts;
     }
 
-    public void setNextApplicationPeriodStarts(Date nextApplicationPeriodStarts) {
+    public void setNextApplicationPeriodStarts(List<Date> nextApplicationPeriodStarts) {
         this.nextApplicationPeriodStarts = nextApplicationPeriodStarts;
     }
 

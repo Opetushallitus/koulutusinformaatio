@@ -29,6 +29,7 @@ public class SpecialLearningOpportunitySpecificationDTO {
 
     private String id;
     private String name;
+    private String subName;
     private String educationDegree;
     private String degreeTitle;
     private String qualification;
@@ -208,5 +209,13 @@ public class SpecialLearningOpportunitySpecificationDTO {
 
     public void setAdditionalProviders(List<LearningOpportunityProviderDTO> additionalProviders) {
         this.additionalProviders = additionalProviders;
+    }
+
+    public String getSubName() {
+        return subName;
+    }
+
+    public void setSubName(String subName) {
+        this.subName = subName;
     }
 }

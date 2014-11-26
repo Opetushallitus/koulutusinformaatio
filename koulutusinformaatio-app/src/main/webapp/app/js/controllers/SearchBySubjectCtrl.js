@@ -19,16 +19,17 @@ controller('SearchBySubjectCtrl', [
         SearchLearningOpportunityService.query({
             lang: LanguageService.getLanguage(),
             queryString: '*',
-            rows: 0
+            rows: 0,
+            start: 0
         }).then(function(result) {
             $scope.themes = result.topicFacet.facetValues;
-        })
+        });
 
         $scope.selectTheme = function(theme, $event) {
             if (!$event || ($event && $event.keyCode === 13)) {
                 $scope.selectedTheme = theme;
             }
-        }
+        };
 
         $scope.selectTopic = function(topic) {
             var action = 'haku/',
@@ -38,6 +39,6 @@ controller('SearchBySubjectCtrl', [
             query += 'facetFilters=topic_ffm:' + topic.valueId;
 
             $location.url( action + queryString + query );
-        }
+        };
     }
 ]);

@@ -105,6 +105,10 @@
   content: '\e80f'; }
 
 /* '' */
+.icon-print:before {
+  content: '\e810'; }
+
+/* '' */
 .breadcrumb {
   padding: 0px 0px;
   margin-bottom: 20px;
@@ -1751,10 +1755,12 @@ select:hover,
   .search-result ul {
     margin: 0;
     padding: 0; }
+  .search-result .collapser-container {
+    height: 30px; }
   .search-result .collapser {
     position: absolute;
     bottom: 0;
-    right: 20px;
+    right: 10px;
     text-decoration: none; }
 
 .search-result-extended-container {
@@ -1824,6 +1830,12 @@ label {
 
 .margin-right-small {
   margin-right: 10px; }
+
+.margin-top-default {
+  margin-top: 20px; }
+
+.margin-top-small {
+  margin-top: 10px; }
 
 .capitalize {
   display: inline-block;

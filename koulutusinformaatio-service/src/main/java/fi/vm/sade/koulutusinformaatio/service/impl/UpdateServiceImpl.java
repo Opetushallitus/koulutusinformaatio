@@ -115,6 +115,7 @@ public class UpdateServiceImpl implements UpdateService {
                 count = loOids.size();
                 index += count;
 
+            
                 for (String loOid : loOids) {
                     List<LOS> specifications = null;
                     try {
@@ -138,6 +139,7 @@ public class UpdateServiceImpl implements UpdateService {
                     }
                 }
             }
+            
             
             List<HigherEducationLOS> higherEducations = this.tarjontaService.findHigherEducations();
             LOG.debug("Found higher educations: " + higherEducations.size());
@@ -234,6 +236,9 @@ public class UpdateServiceImpl implements UpdateService {
         orgBasics = this.providerService.fetchToimipisteet();
         createAndSaveProviders(orgBasics, lopUpdateSolr);
         this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
+        orgBasics = this.providerService.fetchOppisopimusToimipisteet();
+        createAndSaveProviders(orgBasics, lopUpdateSolr);
+        this.indexerService.commitLOChanges(loUpdateSolr, lopUpdateSolr, locationUpdateSolr, false);
         LOG.debug("toimipisteet saved");
     }
 
@@ -244,6 +249,7 @@ public class UpdateServiceImpl implements UpdateService {
             HttpSolrServer lopUpdateSolr) throws KoodistoException, MalformedURLException, ResourceNotFoundException, IOException, SolrServerException {
         LOG.debug("organisations length: " + orgBasics.size());
         for (OrganisaatioPerustieto curOrg : orgBasics) {
+       
             LOG.debug("Fetching org " + curOrg.getOid());
             if (!indexerService.isDocumentInIndex(curOrg.getOid(), lopUpdateSolr)) {
                 LOG.debug("Indexing organisaatio: " + curOrg.getOid());

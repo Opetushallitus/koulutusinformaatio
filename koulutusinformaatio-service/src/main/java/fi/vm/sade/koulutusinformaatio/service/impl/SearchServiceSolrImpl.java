@@ -500,7 +500,7 @@ public class SearchServiceSolrImpl implements SearchService {
         String prerequisiteText = getPrerequisiteText(doc, lang);
         String prerequisiteCodeText = doc.get(LearningOpportunity.PREREQUISITE_CODE) != null
                 ? doc.get(LearningOpportunity.PREREQUISITE_CODE).toString() : null;
-                String credits = doc.get(LearningOpportunity.CREDITS) != null ? doc.get(LearningOpportunity.CREDITS).toString() : null;
+                String credits = getCredits(doc, lang);
                 List<String> lopNames = getLopNames(doc, lang);
                 String edType = doc.get(LearningOpportunity.EDUCATION_TYPE_DISPLAY) != null
                         ? doc.getFieldValue(LearningOpportunity.EDUCATION_TYPE_DISPLAY).toString().replace(".", "") : null;
@@ -594,6 +594,15 @@ public class SearchServiceSolrImpl implements SearchService {
                 LearningOpportunity.NAME,
                 TarjontaConstants.TYPE_KK);
     }
+    
+    private String getCredits(SolrDocument doc, String lang) {
+        return getTranslatedValue(doc, lang,
+                LearningOpportunity.CREDITS_FI,
+                LearningOpportunity.CREDITS_SV,
+                LearningOpportunity.CREDITS_EN,
+                LearningOpportunity.CREDITS,
+                TarjontaConstants.TYPE_KK);
+    }
 
     @SuppressWarnings("unchecked")
     private List<String> getLopNames(SolrDocument doc, String lang) {
@@ -661,7 +670,7 @@ public class SearchServiceSolrImpl implements SearchService {
                             ? doc.get(LearningOpportunity.PREREQUISITE).toString() : null;
                             String prerequisiteCodeText = doc.get(LearningOpportunity.PREREQUISITE_CODE) != null
                                     ? doc.get(LearningOpportunity.PREREQUISITE_CODE).toString() : null;
-                                    String credits = doc.get(LearningOpportunity.CREDITS) != null ? doc.get(LearningOpportunity.CREDITS).toString() : null;
+                                    String credits = getCredits(doc, lang);
                                     List<String> lopNames = getLopNames(doc, lang);
                                     String edType = doc.get(LearningOpportunity.EDUCATION_TYPE_DISPLAY) != null
                                             ? doc.getFieldValue(LearningOpportunity.EDUCATION_TYPE_DISPLAY).toString().replace(".", "") : null;
@@ -1130,7 +1139,7 @@ public class SearchServiceSolrImpl implements SearchService {
     private void updateAsStatus(LOSearchResult lo, SolrDocument doc) {
         lo.setAsOngoing(false);
         Date now = new Date();
-        Date nextStarts = null;
+        //Date nextStarts = null;
 
         for (Map.Entry<String, Object> start : doc.entrySet()) {
 
@@ -1155,13 +1164,12 @@ public class SearchServiceSolrImpl implements SearchService {
                     }
                 }
 
-                if ((nextStarts == null && startDate.after(now)) || (startDate.after(now) && startDate.before(nextStarts))) {
-                    nextStarts = startDate;
+                if (startDate.after(now)) {
+                    lo.getNextApplicationPeriodStarts().add(startDate);
                 }
             }
         }
 
-        lo.setNextApplicationPeriodStarts(nextStarts);
     }
 
     @Override

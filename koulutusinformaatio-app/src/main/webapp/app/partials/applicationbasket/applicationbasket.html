@@ -1,21 +1,37 @@
 <section class="container">
     <div data-ki-ajax-loader data-active="isLoading"></div>
-    <div class="row">
+    <div class="hide-in-print row">
         <div class="col-md-16">
             <div data-ki-breadcrumb="title-application-basket-content" id="breadcrumb" class="pull-left"></div>
             <a class="pull-right" href="#!/haku/{{queryString}}" data-ki-i18n="application-basket-back"></a>
         </div>
     </div>
-    <h1>{{title}} ({{itemCount}})</h1>
-    <div data-alert type="warning" data-close="closeAlert()" data-ng-if="!hideAlert() && !isAuthenticated">
-        <strong data-ki-i18n="appbasket:alert-title"></strong>
+    <img class="show-only-in-print" data-ng-src="{{images.logo}}"/>
+    <div class="row margin-vertical-small">
+        <div class="col-xs-8">
+            <h1>{{title}} ({{itemCount}})</h1>
+        </div>
+        <div class="col-xs-8">
+            <button class="btn btn-info pull-right margin-top-default hide-in-print" onclick="window.print();"><i class="icon-print"> </i><span data-ki-i18n="print"></span></button>
+        </div>
+    </div>
+    <div class="hide-in-print" data-alert type="warning" data-close="closeAlert()" data-ng-if="!hideAlert() && !isAuthenticated">
+        <div class="alert-heading">
+            <h3 class="alert-title" data-ki-i18n="appbasket:alert-title"></h3>
+        </div>
+        <p data-ki-i18n="appbasket:alert-paragraph-1"></p>
+        <ul>
+            <li data-ki-i18n="appbasket:alert-bullet-1"></li>
+            <li data-ki-i18n="appbasket:alert-bullet-2"></li>
+            <li data-ki-i18n="appbasket:alert-bullet-3"></li>
+            <li data-ki-i18n="appbasket:alert-bullet-4"></li>
+        </ul>   
         <p>
-            <span data-ki-i18n="appbasket:alert-text-1"></span>
-            <a data-ng-href="{{loginUrl}}" data-ki-i18n="appbasket:alert-link"></a>
-            <span data-ki-i18n="appbasket:alert-text-2"></span>
+            <a data-ng-if="!isStudyInfo" data-ng-href="{{loginUrl}}" data-ki-i18n="appbasket:alert-link"></a>
+            <span data-ki-i18n="appbasket:alert-paragraph-2"></span>
         </p>
     </div>
-    <p data-ki-i18n="application-basket-description"></p>
+    <p class="hide-in-print" data-ki-i18n="application-basket-description"></p>
     <div data-ng-switch="basketIsEmpty">
         <div data-ng-switch-when="true">
             <p data-ki-i18n="application-basket-no-content"></p>

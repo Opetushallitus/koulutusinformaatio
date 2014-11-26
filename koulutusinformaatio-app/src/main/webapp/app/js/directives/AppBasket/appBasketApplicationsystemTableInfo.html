@@ -4,13 +4,13 @@
             <span class="pull-right">{{getNotificationText(as.maxApplicationOptions)}}</span>
         </div>
     </div>
-    <div class="row margin-vertical-default">
+    <div class="row margin-vertical-default hide-in-print">
         <div class="col-md-16">
             <span class="pull-right" data-ki-i18n="application-basket-fill-form-notification-2"></span>
         </div>
     </div>
 
-        <form action="{{hakuAppUrl + 'lomake/' + as.applicationSystemId}}" id="application-form-{{as.applicationSystemId}}" method="post" target="hakulomake">
+        <form class="hide-in-print" action="{{hakuAppUrl + 'lomake/' + as.applicationSystemId}}" id="application-form-{{as.applicationSystemId}}" method="post" target="hakulomake">
             <span data-ng-repeat="item in as.applicationOptions">
                 <input type="hidden" name="preference{{$index + 1}}-Opetuspiste" value="{{item.providerName}}"/>
                 <input type="hidden" name="preference{{$index + 1}}-Opetuspiste-id" value="{{item.providerId}}"/>
@@ -56,7 +56,7 @@
                             <span data-ki-i18n="apply-button-label"></span>
                         </span>
                     </div>
-                    <a href="javascript:void(0)" data-ng-click="removeApplicationSystemFromBasket(as)" data-ki-i18n="application-basket-empty" class="pull-right"></a>
+                    <a href="javascript:void(0)" data-ng-click="removeApplicationSystemFromBasket(as)" data-ki-i18n="application-basket-empty" class="pull-right hide-in-print"></a>
                 </div>
             </div>
 
@@ -76,7 +76,7 @@
         </div>
         <div class="row margin-vertical-default">
             <div class="col-md-16">
-                <a href="javascript:void(0)" data-ng-click="removeApplicationSystemFromBasket(as)" data-ki-i18n="application-basket-empty" class="pull-right"></a>
+                <a href="javascript:void(0)" data-ng-click="removeApplicationSystemFromBasket(as)" data-ki-i18n="application-basket-empty" class="pull-right hide-in-print"></a>
             </div>
         </div>
     </div>
