@@ -284,15 +284,52 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
         Map<String,String> transls = los.getName().getTranslations();
         if (teachingLang.equals("fi")) {
             doc.setField(LearningOpportunity.NAME_FI, SolrUtil.resolveTextWithFallback("fi", transls));
-            doc.setField(LearningOpportunity.NAME_DISPLAY_FI, SolrUtil.resolveTextWithFallback("fi", transls));
+            if (los.getCreditValue() != null && los.getEducationType() != null && los.getEducationType().equals(TarjontaConstants.TYPE_KK)) {
+                createDisplayNameForHigherEd("fi", transls, los.getCreditUnit().getTranslations(), LearningOpportunity.NAME_DISPLAY_FI, doc);
+            } else {
+                doc.setField(LearningOpportunity.NAME_DISPLAY_FI, SolrUtil.resolveTextWithFallback("fi", transls));
+            }
+            
         } else if (teachingLang.equals("sv")) {
             doc.setField(LearningOpportunity.NAME_SV, SolrUtil.resolveTextWithFallback("sv", transls));
-            doc.setField(LearningOpportunity.NAME_DISPLAY_SV, SolrUtil.resolveTextWithFallback("sv", transls));
+            if (los.getCreditValue() != null && los.getEducationType() != null && los.getEducationType().equals(TarjontaConstants.TYPE_KK)) {
+                createDisplayNameForHigherEd("sv", transls, los.getCreditUnit().getTranslations(), LearningOpportunity.NAME_DISPLAY_SV, doc);
+            } else {
+                doc.setField(LearningOpportunity.NAME_DISPLAY_SV, SolrUtil.resolveTextWithFallback("sv", transls));
+            }
+            
         } else if (teachingLang.equals("en")) {
             doc.setField(LearningOpportunity.NAME_EN, SolrUtil.resolveTextWithFallback("en", transls));
-            doc.setField(LearningOpportunity.NAME_DISPLAY_EN, SolrUtil.resolveTextWithFallback("en", transls));
+            if (los.getCreditValue() != null && los.getEducationType() != null && los.getEducationType().equals(TarjontaConstants.TYPE_KK)) {
+                createDisplayNameForHigherEd("en", transls, los.getCreditUnit().getTranslations(), LearningOpportunity.NAME_DISPLAY_EN, doc);
+            } else {
+                doc.setField(LearningOpportunity.NAME_DISPLAY_EN, SolrUtil.resolveTextWithFallback("en", transls));
+            }
+
         } else if (!enIndexed) {
             doc.setField(LearningOpportunity.NAME_EN, losName);
+        }
+        
+        if (los.getCreditValue() != null && teachingLang.equals("fi")) {
+            
+            
+            doc.setField(LearningOpportunity.CREDITS_FI, 
+                    String.format("%s %s", los.getCreditValue(), 
+                            SolrUtil.resolveTextWithFallback("fi",
+                                    los.getCreditUnit().getTranslations())));
+            
+        } else if (los.getCreditValue() != null && teachingLang.equals("sv")) {
+            
+            doc.setField(LearningOpportunity.CREDITS_SV, 
+                    String.format("%s %s", los.getCreditValue(), 
+                            SolrUtil.resolveTextWithFallback("sv",
+                                    los.getCreditUnit().getTranslations())));
+        } else if (los.getCreditValue() != null && teachingLang.equals("en")) {
+            
+            doc.setField(LearningOpportunity.CREDITS_EN, 
+                    String.format("%s %s", los.getCreditValue(), 
+                            SolrUtil.resolveTextWithFallback("en",
+                                    los.getCreditUnit().getTranslations())));
         }
 
         List<Provider> allProviders = new ArrayList<Provider>();
@@ -417,6 +454,38 @@ public class HigherEducationLOSToSolrInputDocment implements Converter<Standalon
 
         
 
+    }
+
+    private void createDisplayNameForHigherEd(String lang, Map<String, String> nameTransls,
+            Map<String, String> creditTransls, String nameDisplayField,
+            SolrInputDocument doc) {
+        
+        String translation = nameTransls.get(lang);
+        String creditTranslation = creditTransls.get(lang);
+        if (translation == null) {
+            translation = nameTransls.get(SolrUtil.FALLBACK_LANG);
+            creditTranslation = creditTransls.get(SolrUtil.FALLBACK_LANG);
+        }
+        if ((translation == null)
+                && !nameTransls.isEmpty() 
+                && !nameTransls.values().isEmpty()) {
+            String key = nameTransls.keySet().iterator().next();
+            translation = nameTransls.get(key);
+            creditTranslation = creditTransls.get(key);
+        }
+        if (creditTranslation == null) {
+            creditTranslation = creditTransls.get(SolrUtil.FALLBACK_LANG);
+        }
+        if ((creditTranslation == null)
+                && !creditTransls.isEmpty() 
+                && !creditTransls.values().isEmpty()) {
+            creditTranslation = creditTransls.values().iterator().next();
+        }
+        
+        //return translation;
+        
+        doc.setField(nameDisplayField, String.format("%s, %s", translation, creditTranslation));
+        
     }
 
     private void indexFacetFields(SolrInputDocument doc,

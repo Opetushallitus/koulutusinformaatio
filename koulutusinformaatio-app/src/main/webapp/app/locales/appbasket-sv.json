@@ -1,8 +1,12 @@
 {
     "alert-title": "Tjänster för inloggade användare",
+    "alert-paragraph-1": "Genom att identifiera dig med antingen nätbankskoder, mobilcertifikat eller ett elektroniskt ID-kort kan du ta i användning Min Studieinfo -tjänsten. I första skedet kan en identifierad användare bearbeta sin ansökningsblankett under ansökningstiden:",
+    "alert-bullet-1": "ändra prioritetsordningen för sina ansökningsönskemål",
+    "alert-bullet-2": "lägga till och ta bort ansökningsönskemål",
+    "alert-bullet-3": "få uppgifter om antagningsresultaten",
+    "alert-bullet-4": "ta emot studieplatsen",
     "alert-link": "Logga in",
-    "alert-text-1": "Genom att identifiera dig med antingen nätbankskoder, mobilcertifikat eller ett elektroniskt ID-kort kan du ta i användning Min Studieinfo -tjänsten. I första skedet kan en identifierad användare bearbeta sin ansökningsblankett under ansökningstiden: ändra prioritetsordningen för sina ansökningsönskemål, lägga till och ta bort ansökningsönskemål. Senare under hösten 2014 kommer tjänsterna i Min Studieinfo även att inkludera information om antagningsresultaten samt möjlighet att ta emot studieplatsen.",
-    "alert-text-2": "här eller via länken högst upp på sidan.",
+    "alert-paragraph-2": "här eller via länken högst upp på sidan.",
 
     "no-prerequisite-requirement": "Inget krav på grundutbildning"
 }

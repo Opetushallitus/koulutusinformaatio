@@ -33,6 +33,12 @@ public final class SpecialLOSToDTO {
 
         dto.setId(los.getId());
         dto.setName(ConverterUtil.getTextByLanguageUseFallbackLang(los.getName(), defaultLang));
+        if (los.getSubName() != null 
+                && los.getSubName().getTranslations() != null 
+                && !los.getSubName().getTranslations().isEmpty()) {
+            dto.setSubName(ConverterUtil.getTextByLanguageUseFallbackLang(los.getSubName(), defaultLang));
+        }
+        
         dto.setEducationDegree(los.getEducationDegree());
         dto.setQualification(ConverterUtil.getTextByLanguageUseFallbackLang(los.getQualification(), uiLang));
         dto.setGoals(ConverterUtil.getTextByLanguage(los.getGoals(), lang));

@@ -1831,6 +1831,12 @@ label {
 .margin-right-small {
   margin-right: 10px; }
 
+.margin-top-default {
+  margin-top: 20px; }
+
+.margin-top-small {
+  margin-top: 10px; }
+
 .capitalize {
   display: inline-block;
   text-transform: lowercase; }
