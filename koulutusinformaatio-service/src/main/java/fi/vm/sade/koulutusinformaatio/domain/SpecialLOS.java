@@ -35,6 +35,8 @@ public class SpecialLOS extends BasicLOS<ChildLOI> {
     
     private List<String> aoIds = new ArrayList<String>();
 
+    private I18nText subName;
+
     public List<ChildLOI> getLois() {
         return lois;
     }
@@ -81,5 +83,14 @@ public class SpecialLOS extends BasicLOS<ChildLOI> {
 
     public void setAoIds(List<String> aoIds) {
         this.aoIds = aoIds;
+    }
+
+    public void setSubName(I18nText name) {
+        this.subName = name;
+        
+    }
+
+    public I18nText getSubName() {
+        return subName;
     }
 }

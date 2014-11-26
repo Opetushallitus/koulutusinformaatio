@@ -200,6 +200,8 @@ public class LOSObjectCreator extends ObjectCreator {
             Code name = koodistoService.searchFirst(parentKomo.getKoulutusKoodiUri());
             los.setName(name.getName());
             los.setShortTitle(name.getShortTitle());
+            Code subName = koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri());
+            los.setSubName(subName.getName());
         }
         los.setCreditValue(childKomoto.getLaajuusArvo());
         los.setCreditUnit(koodistoService.searchFirstShortName(childKomoto.getLaajuusYksikkoUri()));
@@ -309,6 +311,10 @@ public class LOSObjectCreator extends ObjectCreator {
 
         los.setName(name.getName());
         los.setShortTitle(name.getShortTitle());
+        if (los.getType().equals(TarjontaConstants.TYPE_SPECIAL)) {
+            Code subName = koodistoService.searchFirst(childKomo.getKoulutusOhjelmaKoodiUri());
+            los.setSubName(subName.getName());
+        }
         los.setCreditValue(parentKomo.getLaajuusArvo());
         los.setCreditUnit(koodistoService.searchFirstShortName(parentKomo.getLaajuusYksikkoUri()));
         los.setQualification(koodistoService.searchFirstName(childKomo.getTutkintonimikeUri()));
