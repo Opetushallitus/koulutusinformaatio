@@ -188,7 +188,7 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         }
         doc.setField(LearningOpportunity.START_DATE_SORT, earliest);
 
-        indexFacetFields(parent, doc, prereqVal);
+        indexFacetFields(parent, doc, prereqVal, teachLang);
         for (ChildLOS childLOS : parent.getChildren()) {
             for (ChildLOI childLOI : childLOS.getLois()) {
                 if (childLOI.getPrerequisite() != null && childLOI.getPrerequisite().getValue().equals(prerequisite.getValue())) {
@@ -298,7 +298,7 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
     /*
      * Indexes fields used in facet search for ParentLOS learning opportunities
      */
-    private void indexFacetFields(ParentLOS parent, SolrInputDocument doc, String prereqVal) {
+    private void indexFacetFields(ParentLOS parent, SolrInputDocument doc, String prereqVal, String teachLang) {
         List<String> usedVals = new ArrayList<String>();
         for (ChildLOS childLOS : parent.getChildren()) {
             for (ChildLOI childLOI : childLOS.getLois()) {
@@ -373,12 +373,28 @@ public class ParentLOSToSolrInputDocument implements Converter<ParentLOS, List<S
         if (parent.getTopics() != null) {
             for (Code curTopic : parent.getTopics()) {
                 doc.addField(LearningOpportunity.TOPIC, curTopic.getUri());
+                I18nText name = curTopic.getName();
+                if (teachLang.equals("sv")) {
+                    doc.addField(LearningOpportunity.PROFESSIONAL_TITLES_SV,  SolrUtil.resolveTextWithFallback("sv", name.getTranslations()));
+                } else if (teachLang.equals("en")) {
+                    doc.addField(LearningOpportunity.PROFESSIONAL_TITLES_EN,  SolrUtil.resolveTextWithFallback("en", name.getTranslations()));
+                } else{
+                    doc.addField(LearningOpportunity.PROFESSIONAL_TITLES_FI,  SolrUtil.resolveTextWithFallback("fi", name.getTranslations()));
+                }
             }
         }
 
         if (parent.getThemes() != null) {
             for (Code curTopic : parent.getThemes()) {
                 doc.addField(LearningOpportunity.THEME, curTopic.getUri());
+                I18nText name = curTopic.getName();
+                if (teachLang.equals("sv")) {
+                    doc.addField(LearningOpportunity.PROFESSIONAL_TITLES_SV,  SolrUtil.resolveTextWithFallback("sv", name.getTranslations()));
+                } else if (teachLang.equals("en")) {
+                    doc.addField(LearningOpportunity.PROFESSIONAL_TITLES_EN,  SolrUtil.resolveTextWithFallback("en", name.getTranslations()));
+                } else{
+                    doc.addField(LearningOpportunity.PROFESSIONAL_TITLES_FI,  SolrUtil.resolveTextWithFallback("fi", name.getTranslations()));
+                }
             }
         }
 
