@@ -288,6 +288,10 @@ service('SearchWizardPhaseService', ['SearchWizardService', 'SearchWizardSelecti
                 return currentPhase === phases[0];
             },
 
+            isLastPhase: function(currentPhase) {
+                return currentPhase === phases[phases.length-1];
+            },
+
             getFirstPhase: function() {
                 return phases[0];
             },
@@ -430,6 +434,10 @@ service('SearchWizardSelectionsService', ['SearchWizardService', 'LanguageServic
                     }
                 });
 
+                // add current UI language as teaching language
+                result.facetFilters.push('teachingLangCode_ffm:' + LanguageService.getLanguage().toUpperCase());
+
+                // add locations
                 angular.forEach(locations, function(location) {
                     result.locations.push('city:' + location.name);
                 });
@@ -457,6 +465,10 @@ service('SearchWizardSelectionsService', ['SearchWizardService', 'LanguageServic
                     }
                 });
 
+                // add current UI language as teaching language
+                query += '&facetFilters=teachingLangCode_ffm:' + LanguageService.getLanguage().toUpperCase();
+
+                // add locations
                 angular.forEach(locations, function(location) {
                     query += '&locations=' +  location.code;
                 });

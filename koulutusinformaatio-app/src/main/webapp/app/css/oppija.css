@@ -1496,6 +1496,10 @@ table th[class*="col-"] {
 @media (min-width: 992px) {
   .modal-lg {
     width: 900px; } }
+input[type="radio"],
+input[type="checkbox"] {
+  margin: 4px 4px 0 0; }
+
 .app-container {
   margin: 60px 0 220px 0; }
   @media (max-width: 768px) {
