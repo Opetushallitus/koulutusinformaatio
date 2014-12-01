@@ -75,6 +75,9 @@ controller('SearchWizardCtrl', [
     function($scope, $rootScope, $routeParams, $location, $sanitize, TranslationService, SearchLearningOpportunityService, SearchWizardService, SearchWizardSelectionsService, SearchWizardPhaseService, SearchWizardConstants, SelectionBuilder, _) {
         $rootScope.title = TranslationService.getTranslation('searchwizard:title') + ' - ' + TranslationService.getTranslation('sitename');
 
+        // do not show search bar in search wizard pages
+        $rootScope.hideSearchbar = true;
+
         // init wizard based on query params
         var initWizard = function() {
             var qParams = $location.search();
@@ -105,7 +108,6 @@ controller('SearchWizardCtrl', [
                 $scope.currentPhase = SearchWizardPhaseService.getFirstPhase();
             }
 
-            $location.search({}).replace();
             initPhase($scope.currentPhase);
         };
 
