@@ -520,7 +520,7 @@ public class IndexerServiceImpl implements IndexerService {
     }
 
     @Override
-    public void addEdTypeCodes(List<Code> edTypeCodes,
+    public void addFacetCodes(List<Code> edTypeCodes,
             HttpSolrServer loUpdateSolr) throws IOException,
             SolrServerException {
         List<SolrInputDocument> edTypeDocs = Lists.newArrayList();

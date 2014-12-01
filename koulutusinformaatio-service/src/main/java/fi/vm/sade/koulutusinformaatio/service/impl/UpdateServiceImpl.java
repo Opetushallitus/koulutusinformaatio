@@ -178,8 +178,12 @@ public class UpdateServiceImpl implements UpdateService {
 
 
             List<Code> edTypeCodes = this.tarjontaService.getEdTypeCodes();
-            indexerService.addEdTypeCodes(edTypeCodes, loUpdateSolr);
+            indexerService.addFacetCodes(edTypeCodes, loUpdateSolr);
             LOG.debug("Education types indexded.");
+            
+            List<Code> edBaseEdCodes = this.tarjontaService.getEdBaseEducationCodes();
+            indexerService.addFacetCodes(edBaseEdCodes, loUpdateSolr);
+            LOG.debug("Base educations indexded.");
 
             List<Location> locations = locationService.getMunicipalities();
             LOG.debug("Got locations");
