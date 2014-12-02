@@ -1,8 +1,10 @@
 {
-    "title": "Minne hakisin?",
+    "title": "Minne hakisin - ohjaava haku",
+    "description": "Valitse jokin listan vaihtoehdoista ja paina Seuraava-painiketta. Haku etenee valintoja rajaamalla sivu sivulta ja vie lopuksi hakutuloslistalle valintojesi mukaiseen koulutuslistaukseen.",
 
     "breadcrumb-label": "Valintasi",
-    "to-previous-phase": "Palaa edelliseen",
+    "to-next-phase": "Seuraava",
+    "to-previous-phase": "Edellinen",
     "no-results": "Valitsemillasi vaihtoehdoilla ei tällä hetkellä löydy koulutuksia. Palaa edelliseen vaiheeseen ja valitse jokin toinen vaihtoehto.",
 
     "phaseone-title": "Valitse",
