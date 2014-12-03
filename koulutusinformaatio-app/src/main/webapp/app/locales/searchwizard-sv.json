@@ -1,8 +1,10 @@
 {
-    "title": "Vart ska jag söka?",
+    "title": "Vart ska jag söka – sökfunktion med handledning",
+    "description": "Välj något av alternativen ur listan och klicka på Följande. Sökningen framskrider enligt dina egna val och avgränsningar och ger slutligen en sida med en lista över utbildningar du valt.",
 
     "breadcrumb-label": "Ditt val",
-    "to-previous-phase": "Återgå till föregående",
+    "to-next-phase": "Följande",
+    "to-previous-phase": "Föregående",
     "no-results": "Med de valda alternativen hittades för tillfället inga utbildningar. Återgå till föregående skede och välj något annat alternativ.",
 
     "phaseone-title": "Välj",
@@ -16,7 +18,7 @@
     "educationtype-mm_aiku-title": "Nu är jag intresserad av...",
     "theme-title": "Välj tema",
     "topic-title": "Välj ämne",
-    "location-title": "Välj studieort",
+    "location-title": "Välj studieort eller klicka på Visa studieplatser",
 
     "phaseone-pk": "Jag har gått ut grundskolan",
     "phaseone-yo": "Jag har gått ut gymnasiet och avlagt studentexamen",

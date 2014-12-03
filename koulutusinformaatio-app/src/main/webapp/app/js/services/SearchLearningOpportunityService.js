@@ -86,7 +86,11 @@ angular.module('kiApp.SearchLearningOpportunityService', ['ngResource'])
     };
 
     return {
-        query: function(params) {
+        /**
+         *  @param {object} params Parameters for performing the search
+         *  @param {boolean} noTracking no analytics tracking if set to true 
+         */
+        query: function(params, noTracking) {
             $rootScope.isLoading = true;
 
             var deferred = $q.defer();
@@ -164,7 +168,9 @@ angular.module('kiApp.SearchLearningOpportunityService', ['ngResource'])
                     category = false;
                 }
 
-                $analytics.siteSearchTrack(params.queryString, category, result.totalCount, variables);
+                if (!noTracking) {
+                    $analytics.siteSearchTrack(params.queryString, category, result.totalCount, variables);
+                }
                 $rootScope.isLoading = false;
 
                 deferred.resolve(result);

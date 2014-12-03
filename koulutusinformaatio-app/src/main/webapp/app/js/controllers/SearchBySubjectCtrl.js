@@ -21,7 +21,7 @@ controller('SearchBySubjectCtrl', [
             queryString: '*',
             rows: 0,
             start: 0
-        }).then(function(result) {
+        }, true).then(function(result) {
             $scope.themes = result.topicFacet.facetValues;
         });
 

@@ -31,6 +31,8 @@ import java.util.List;
  * @author Hannu Lyytikainen
  */
 public final class ApplicationOptionAttachmentToDTO {
+    
+    private static final String FALLBACK_LANG_DEFAULT = "fi";
 
     private ApplicationOptionAttachmentToDTO() {
     }
@@ -83,22 +85,50 @@ public final class ApplicationOptionAttachmentToDTO {
         }
         else {
             
+            // get attachemnts with requested language
+            List<ApplicationOptionAttachmentDTO> convertedAttachments = getApplicationOptionsByLang(aoas, lang);
+            if (convertedAttachments == null || convertedAttachments.isEmpty() ) {
+                // fallback to language fi
+                convertedAttachments = getApplicationOptionsByLang(aoas, FALLBACK_LANG_DEFAULT);
+                if (convertedAttachments == null || convertedAttachments.isEmpty() ) {
+                    // fallback to any existing language
+                    convertedAttachments = getApplicationOptionsByLang(aoas, aoas.get(0).getType().getTranslations().keySet().iterator().next());
+                }
+            }
+            
+            return !convertedAttachments.isEmpty() ? convertedAttachments : null;
+        }
+    }
+    
+    /**
+     * Returns attachemnts with specified language 
+     * 
+     * @param aoas
+     * @param lang
+     * @return
+     */
+    private static List<ApplicationOptionAttachmentDTO> getApplicationOptionsByLang(final List<ApplicationOptionAttachment> aoas, final String lang) {
+        if (aoas == null) {
+            return null;
+        } else {
+
             List<ApplicationOptionAttachmentDTO> convertedAttachments = new ArrayList<ApplicationOptionAttachmentDTO>();
             String keyLang = lang.toLowerCase();
             
             for (ApplicationOptionAttachment curAttachment : aoas) {
                 ApplicationOptionAttachmentDTO attachment = null;
-                if (curAttachment != null 
-                        && curAttachment.getType() != null 
-                        && curAttachment.getType().getTranslations().containsKey(keyLang)) {
+                if (curAttachment != null
+                        && curAttachment.getType() != null
+                        && curAttachment.getType().getTranslations().containsKey(keyLang) ) {
                     attachment = convert(curAttachment, lang);
                 }
+                
                 if (attachment != null) {
                     convertedAttachments.add(attachment);
                 }
             }
             
-            return !convertedAttachments.isEmpty() ? convertedAttachments : null;
+            return convertedAttachments;
         }
     }
 }

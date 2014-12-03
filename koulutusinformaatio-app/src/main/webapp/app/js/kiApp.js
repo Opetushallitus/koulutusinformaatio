@@ -37,7 +37,6 @@ var kiApp = angular.module('kiApp',
     $routeProvider.when('/hakuwizard', {
         templateUrl: 'partials/searchwizard/searchwizard.html',
         controller: 'SearchWizardCtrl',
-        reloadOnSearch: false,
         resolve: {
             factory: function($rootScope, $location) {
                 // studyinfo has no search wizard

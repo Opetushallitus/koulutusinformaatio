@@ -732,7 +732,7 @@ public class SearchServiceSolrImpl implements SearchService {
         searchResultList.setAppStatusFacet(getHaunTila(response, upcomingLimit, upcomingLaterLimit));
         searchResultList.setEdTypeFacet(getEdTypeFacet(response, lang));
         searchResultList.setFilterFacet(getFilterFacet(facetFilters, lang));
-        searchResultList.setPrerequisiteFacet(getPrerequisiteFacet(response, facetFilters));
+        searchResultList.setPrerequisiteFacet(getPrerequisiteFacet(response, facetFilters, lang));
         searchResultList.setTopicFacet(getTopicFacet(response, lang));
         searchResultList.setFotFacet(getFotFacet(response, lang, facetFilters));
         searchResultList.setTimeOfTeachingFacet(getTimeOfTeachingFacet(response, lang, facetFilters));
@@ -806,7 +806,7 @@ public class SearchServiceSolrImpl implements SearchService {
     /*
      * Adding the prerequisite facet to the search result.
      */
-    private Facet getPrerequisiteFacet(QueryResponse response, List<String> facetFilters) {
+    private Facet getPrerequisiteFacet(QueryResponse response, List<String> facetFilters, String lang) {
         FacetField prerequisiteF = response.getFacetField(LearningOpportunity.PREREQUISITES);
         Facet prerequisiteFacet = new Facet();
         List<FacetValue> values = new ArrayList<FacetValue>();
@@ -822,7 +822,7 @@ public class SearchServiceSolrImpl implements SearchService {
                 long count = isPrereqSet ? 0 : curC.getCount();
                 
                 FacetValue newVal = new FacetValue(LearningOpportunity.PREREQUISITES,
-                        curC.getName(),
+                        getLocalizedFacetName(curC.getName(), lang),
                         count,
                         curC.getName());
                 values.add(newVal);

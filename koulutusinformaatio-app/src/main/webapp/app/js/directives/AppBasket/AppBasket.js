@@ -61,10 +61,10 @@ directive('kiAppBasketApplicationoption', function() {
         replace: true,
         require: '^kiAppBasketApplicationsystemTable',
         template: '<tr data-ng-include="getTemplate()"></tr>',
-        link: function($scope, element, attrs) {
+        controller: function($scope) {
             $scope.getTemplate = function() {
                 return 'js/directives/AppBasket/' + $scope.item.type + '/ao.html';
-            }
+            };
         }
     }   
 }).

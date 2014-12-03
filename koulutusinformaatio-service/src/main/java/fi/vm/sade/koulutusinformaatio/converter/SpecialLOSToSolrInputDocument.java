@@ -22,7 +22,6 @@ import fi.vm.sade.koulutusinformaatio.domain.*;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.SolrConstants;
 import fi.vm.sade.koulutusinformaatio.service.builder.TarjontaConstants;
-import fi.vm.sade.koulutusinformaatio.service.builder.impl.LOSObjectCreator;
 
 import org.apache.solr.common.SolrInputDocument;
 import org.slf4j.Logger;
@@ -226,7 +225,7 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
         SolrUtil.addApplicationDates(doc, childLOI.getApplicationOptions());
 
         doc.addField(SolrUtil.LearningOpportunity.START_DATE_SORT, childLOI.getStartDate());
-        indexFacetFields(childLOI, specialLOS, doc);
+        indexFacetFields(childLOI, specialLOS, doc, teachingLang);
         SolrUtil.setLopAndHomeplaceDisplaynames(doc, provider, childLOI.getPrerequisite());
 
         return doc;
@@ -235,7 +234,7 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
     /*
      * Indexes fields used in facet search for ChildLOS
      */
-    private void indexFacetFields(ChildLOI childLOI, SpecialLOS specialLOS, SolrInputDocument doc) {
+    private void indexFacetFields(ChildLOI childLOI, SpecialLOS specialLOS, SolrInputDocument doc, String teachLang) {
         doc.addField(SolrUtil.LearningOpportunity.TEACHING_LANGUAGE, childLOI.getTeachingLanguages().get(0).getValue());
        
         if (specialLOS.getType().equals(TarjontaConstants.TYPE_REHAB)) {
@@ -300,12 +299,28 @@ public class SpecialLOSToSolrInputDocument implements Converter<SpecialLOS, List
         if (specialLOS.getTopics() != null) {
             for (Code curTopic : specialLOS.getTopics()) {
                 doc.addField(LearningOpportunity.TOPIC, curTopic.getUri());
+                I18nText name = curTopic.getName();
+                if (teachLang.equals("sv")) {
+                    doc.addField(LearningOpportunity.PROFESSIONAL_TITLES_SV,  SolrUtil.resolveTextWithFallback("sv", name.getTranslations()));
+                } else if (teachLang.equals("en")) {
+                    doc.addField(LearningOpportunity.PROFESSIONAL_TITLES_EN,  SolrUtil.resolveTextWithFallback("en", name.getTranslations()));
+                } else{
+                    doc.addField(LearningOpportunity.PROFESSIONAL_TITLES_FI,  SolrUtil.resolveTextWithFallback("fi", name.getTranslations()));
+                }
             }
         }
 
         if (specialLOS.getThemes() != null) {
             for (Code curTopic : specialLOS.getThemes()) {
                 doc.addField(LearningOpportunity.THEME, curTopic.getUri());
+                I18nText name = curTopic.getName();
+                if (teachLang.equals("sv")) {
+                    doc.addField(LearningOpportunity.PROFESSIONAL_TITLES_SV,  SolrUtil.resolveTextWithFallback("sv", name.getTranslations()));
+                } else if (teachLang.equals("en")) {
+                    doc.addField(LearningOpportunity.PROFESSIONAL_TITLES_EN,  SolrUtil.resolveTextWithFallback("en", name.getTranslations()));
+                } else{
+                    doc.addField(LearningOpportunity.PROFESSIONAL_TITLES_FI,  SolrUtil.resolveTextWithFallback("fi", name.getTranslations()));
+                }
             }
         }
         

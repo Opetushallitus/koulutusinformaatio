@@ -118,38 +118,11 @@ service('ChildLocationsService', ['$http', '$timeout', '$q', 'LanguageService', 
 /**
  *  Resource for requesting parent LO data
  */
-service('ParentLOService', ['$http', '$timeout', '$q', '$rootScope', 'LanguageService', 'ParentLOTransformer', function($http, $timeout, $q, $rootScope, LanguageService, ParentLOTransformer) {
+service('ParentLOService', ['GeneralLOService', 'ParentLOTransformer', function(GeneralLOService, ParentLOTransformer) {
     
     return {
         query: function(options) {
-            var deferred = $q.defer();
-            var queryParams = {
-                uiLang: LanguageService.getLanguage()
-            }
-
-            if (options.lang) {
-                queryParams.lang = options.lang
-            }
-
-            $http.get('../lo/parent/' + options.id, {
-                params: queryParams
-            }).
-
-            success(function(result) {
-                ParentLOTransformer.transform(result);
-                var loResult = {
-                    lo: result,
-                    provider: result.provider
-                }
-
-                deferred.resolve(loResult);
-            }).
-            error(function(result) {
-                $rootScope.error = true;
-                deferred.reject(result);
-            });
-
-            return deferred.promise;
+            return GeneralLOService.query(options, '../lo/parent/', ParentLOTransformer);
         }
     }
 }]).
@@ -202,35 +175,10 @@ service('ChildLOService', ['$http', '$timeout', '$q', '$rootScope', 'LanguageSer
     }
 }]).
 
-service('SpecialLOService', ['$http', '$timeout', '$q', '$rootScope', 'LanguageService', 'ChildLOTransformer', function($http, $timeout, $q, $rootScope, LanguageService, ChildLOTransformer) {
+service('SpecialLOService', ['GeneralLOService', 'ChildLOTransformer', function(GeneralLOService, ChildLOTransformer) {
     return {
         query: function(options) {
-            var deferred = $q.defer();
-            var queryParams = {
-                uiLang: LanguageService.getLanguage()
-            }
-
-            if (options.lang) {
-                queryParams.lang = options.lang
-            }
-
-            $http.get('../lo/special/' + options.id, {
-                params: queryParams
-            }).
-            success(function(result) {
-                ChildLOTransformer.transform(result);
-                var loResult = {
-                    lo: result,
-                    provider: result.provider
-                }
-                deferred.resolve(loResult);
-            }).
-            error(function(result) {
-                $rootScope.error = true;
-                deferred.reject(result);
-            });
-
-            return deferred.promise;
+            return GeneralLOService.query(options, '../lo/special/', ChildLOTransformer);
         }
     }
 }]).
@@ -238,37 +186,10 @@ service('SpecialLOService', ['$http', '$timeout', '$q', '$rootScope', 'LanguageS
 /**
  * Resource for requesting Upper Secondary LO data
  */
-service('UpperSecondaryLOService', ['$http', '$timeout', '$q', '$rootScope', 'LanguageService', 'ChildLOTransformer', function($http, $timeout, $q, $rootScope, LanguageService, ChildLOTransformer) {
+service('UpperSecondaryLOService', ['GeneralLOService', 'ChildLOTransformer', function(GeneralLOService, ChildLOTransformer) {
     return {
         query: function(options) {
-            var deferred = $q.defer();
-            var queryParams = {
-                uiLang: LanguageService.getLanguage()
-            }
-
-            if (options.lang) {
-                queryParams.lang = options.lang
-            }
-
-            var url = '../lo/upsec/';
-
-            $http.get(url + options.id, {
-                params: queryParams
-            }).
-            success(function(result) {
-                ChildLOTransformer.transform(result);
-                var loResult = {
-                    lo: result,
-                    provider: result.provider
-                }
-                deferred.resolve(loResult);
-            }).
-            error(function(result) {
-                $rootScope.error = true;
-                deferred.reject(result);
-            });
-
-            return deferred.promise;
+            return GeneralLOService.query(options, '../lo/upsec/', ChildLOTransformer);
         }
     }
 }]).
@@ -276,38 +197,10 @@ service('UpperSecondaryLOService', ['$http', '$timeout', '$q', '$rootScope', 'La
 /**
  * Resource for requesting University of Applied Sciences LO data
  */
-service('HigherEducationLOService', ['$http', '$timeout', '$q', 'LanguageService', 'HigherEducationTransformer', function($http, $timeout, $q, LanguageService, HigherEducationTransformer) {
+service('HigherEducationLOService', ['GeneralLOService', 'HigherEducationTransformer', function(GeneralLOService, HigherEducationTransformer) {
     return {
         query: function(options) {
-            var deferred = $q.defer();
-            var queryParams = {
-                uiLang: LanguageService.getLanguage()
-            }
-
-            if (options.lang) {
-                queryParams.lang = options.lang
-            }
-
-            var url = '../lo/highered/';
-
-            $http.get(url + options.id, {
-                params: queryParams
-            }).
-            
-            success(function(result) {
-            	HigherEducationTransformer.transform(result);
-                var loResult = {
-                    lo: result,
-                    provider: result.provider
-                }
-                
-                deferred.resolve(loResult);
-            }).
-            error(function(result) {
-                deferred.reject(result);
-            });
-
-            return deferred.promise;
+            return GeneralLOService.query(options, '../lo/highered/', HigherEducationTransformer);
         }
     }
 }]).
@@ -315,38 +208,10 @@ service('HigherEducationLOService', ['$http', '$timeout', '$q', 'LanguageService
 /**
  * Resource for requesting adult upper secondary LO data
  */
-service('AdultUpperSecondaryLOService', ['$http', '$timeout', '$q', 'LanguageService', 'HigherEducationTransformer', function($http, $timeout, $q, LanguageService, HigherEducationTransformer) {
+service('AdultUpperSecondaryLOService', ['GeneralLOService', 'HigherEducationTransformer', function(GeneralLOService, HigherEducationTransformer) {
     return {
         query: function(options) {
-            var deferred = $q.defer();
-            var queryParams = {
-                uiLang: LanguageService.getLanguage()
-            }
-
-            if (options.lang) {
-                queryParams.lang = options.lang
-            }
-
-            var url = '../lo/adultupsec/';
-
-            $http.get(url + options.id, {
-                params: queryParams
-            }).
-            
-            success(function(result) {
-            	HigherEducationTransformer.transform(result);
-                var loResult = {
-                    lo: result,
-                    provider: result.provider
-                }
-                
-                deferred.resolve(loResult);
-            }).
-            error(function(result) {
-                deferred.reject(result);
-            });
-
-            return deferred.promise;
+            return GeneralLOService.query(options, '../lo/adultupsec/', HigherEducationTransformer);
         }
     }
 }]).
@@ -354,9 +219,20 @@ service('AdultUpperSecondaryLOService', ['$http', '$timeout', '$q', 'LanguageSer
 /**
  * Resource for requesting adult vocational LO data
  */
-service('AdultVocationalLOService', ['$http', '$timeout', '$q', 'LanguageService', 'AdultVocationalTransformer', function($http, $timeout, $q, LanguageService, AdultVocationalTransformer) {
+service('AdultVocationalLOService', ['GeneralLOService', 'AdultVocationalTransformer', function(GeneralLOService, AdultVocationalTransformer) {
     return {
         query: function(options) {
+            return GeneralLOService.query(options, '../lo/adultvocational/', AdultVocationalTransformer);
+        }
+    }
+}]).
+
+/**
+ *  General service used to request LO data. Used by services for different LO types.
+ */
+service('GeneralLOService', ['$http', '$timeout', '$q', '$rootScope', 'LanguageService', function($http, $timeout, $q, $rootScope, LanguageService) {
+    return {
+        query: function(options, serviceUrl, transformer) {
             var deferred = $q.defer();
             var queryParams = {
                 uiLang: LanguageService.getLanguage()
@@ -366,14 +242,12 @@ service('AdultVocationalLOService', ['$http', '$timeout', '$q', 'LanguageService
                 queryParams.lang = options.lang
             }
 
-            var url = '../lo/adultvocational/';
-
-            $http.get(url + options.id, {
+            $http.get(serviceUrl + options.id, {
                 params: queryParams
             }).
             
             success(function(result) {
-            	AdultVocationalTransformer.transform(result, options.id);
+                transformer.transform(result, options.id);
                 var loResult = {
                     lo: result,
                     provider: result.provider
@@ -382,6 +256,7 @@ service('AdultVocationalLOService', ['$http', '$timeout', '$q', 'LanguageService
                 deferred.resolve(loResult);
             }).
             error(function(result) {
+                $rootScope.error = true;
                 deferred.reject(result);
             });
 
@@ -458,7 +333,7 @@ service('HigherEducationPreviewLOService', ['$http', '$timeout', '$q', 'Language
 /**
  * Transformer for parent LO data
  */
-service('ParentLOTransformer', ['KiSorter', '$filter', '$rootScope', function(KiSorter, $filter, $rootScope) {
+service('ParentLOTransformer', ['KiSorter', '$filter', '$rootScope', '_', function(KiSorter, $filter, $rootScope, _) {
     return {
         transform: function(result) {
 
@@ -614,14 +489,6 @@ service('ParentLOTransformer', ['KiSorter', '$filter', '$rootScope', function(Ki
  */
 service('HigherEducationTransformer', ['KiSorter', '$rootScope', '$filter', 'LanguageService', '_', function(KiSorter, $rootScope, $filter, LanguageService, _) {
 
-	var getFirstItemInList = function(list) {
-		if (list && list[0]) {
-			return list[0];
-		} else {
-			return '';
-		}
-	};
-
 	return {
 		transform: function(result) {
 
@@ -640,7 +507,7 @@ service('HigherEducationTransformer', ['KiSorter', '$rootScope', '$filter', 'Lan
 			if (result.educationDegree && (result.educationDegree == 'koulutusasteoph2002_62' || result.educationDegree == 'koulutusasteoph2002_71')) {
 				result.polytechnic = true;
 			}
-			result.teachingLanguage = getFirstItemInList(result.teachingLanguages);
+			result.teachingLanguage = _.first(result.teachingLanguages);
 
 			if (result.themes != undefined && result.themes != null) {
 				var distinctMap = {};
@@ -733,14 +600,6 @@ service('HigherEducationTransformer', ['KiSorter', '$rootScope', '$filter', 'Lan
  */
 service('AdultVocationalTransformer', ['KiSorter', '$rootScope', '$filter', 'LanguageService', '_', function(KiSorter, $rootScope, $filter, LanguageService, _) {
 
-	var getFirstItemInList = function(list) {
-		if (list && list[0]) {
-			return list[0];
-		} else {
-			return '';
-		}
-	};
-
 	return {
 		transform: function(result, loId) {
 
@@ -759,7 +618,7 @@ service('AdultVocationalTransformer', ['KiSorter', '$rootScope', '$filter', 'Lan
 			if (result.educationDegree && (result.educationDegree == 'koulutusasteoph2002_62' || result.educationDegree == 'koulutusasteoph2002_71')) {
 				result.polytechnic = true;
 			}
-			result.teachingLanguage = getFirstItemInList(result.teachingLanguages);
+			result.teachingLanguage = _.first(result.teachingLanguages);
 
 			if (result.themes != undefined && result.themes != null) {
 				var distinctMap = {};
@@ -870,15 +729,7 @@ service('AdultVocationalTransformer', ['KiSorter', '$rootScope', '$filter', 'Lan
 /**
  * Transformer for child LO data
  */
-service('ChildLOTransformer', ['UtilityService', 'KiSorter', '$rootScope', function(UtilityService, KiSorter, $rootScope) {
-
-    var getFirstItemInList = function(list) {
-        if (list && list[0]) {
-            return list[0];
-        } else {
-            return '';
-        }
-    };
+service('ChildLOTransformer', ['UtilityService', 'KiSorter', '$rootScope', '_', function(UtilityService, KiSorter, $rootScope, _) {
 
     return {
         transform: function(result) {
@@ -909,9 +760,9 @@ service('ChildLOTransformer', ['UtilityService', 'KiSorter', '$rootScope', funct
 
                     var startDate = new Date(loi.startDate);
                     loi.startDate = startDate.getDate() + '.' + (startDate.getMonth() + 1) + '.' + startDate.getFullYear();
-                    loi.teachingLanguage = getFirstItemInList(loi.teachingLanguages);
+                    loi.teachingLanguage = _.first(loi.teachingLanguages);
                     loi.formsOfTeaching = loi.formOfTeaching;
-                    loi.formOfTeaching = getFirstItemInList(loi.formOfTeaching);
+                    loi.formOfTeaching = _.first(loi.formOfTeaching);
                     
 
                     if (loi.webLinks) {

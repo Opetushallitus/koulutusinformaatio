@@ -191,7 +191,10 @@ public class LOSObjectCreator extends ObjectCreator {
 
         los.setId(specialLOSId);
         String teachingLang = koodistoService.searchFirstCodeValue(childKomoto.getOpetuskieletUris().get(0)).toLowerCase();
-        if (!los.getType().equals(TarjontaConstants.TYPE_PREP) && !los.getType().equals(TarjontaConstants.TYPE_SPECIAL)) {
+        if ((!los.getType().equals(TarjontaConstants.TYPE_PREP) 
+                && !los.getType().equals(TarjontaConstants.TYPE_SPECIAL))
+                || (TarjontaConstants.KANSANOPISTO_TYPE.equals(los.getEducationTypeUri()) 
+                        && childKomoto.getKoulutusohjelmanNimi() != null)) {
             Map<String, String> nameTranslations = Maps.newHashMap();
             nameTranslations.put(teachingLang, childKomoto.getKoulutusohjelmanNimi());
             los.setName(new I18nText(nameTranslations));
@@ -241,7 +244,11 @@ public class LOSObjectCreator extends ObjectCreator {
             
             lois.add(loi);
         }
-        if (!lois.isEmpty() && los.getType().equals(TarjontaConstants.TYPE_PREP)) {
+        if (!lois.isEmpty() 
+                && los.getType().equals(TarjontaConstants.TYPE_PREP) 
+                && (!TarjontaConstants.KANSANOPISTO_TYPE.equals(los.getEducationTypeUri())
+                        || (TarjontaConstants.KANSANOPISTO_TYPE.equals(los.getEducationTypeUri()) 
+                                && childKomoto.getKoulutusohjelmanNimi() == null))) {
             createNameForLos(lois, los);
         }
         los.setLois(lois);
