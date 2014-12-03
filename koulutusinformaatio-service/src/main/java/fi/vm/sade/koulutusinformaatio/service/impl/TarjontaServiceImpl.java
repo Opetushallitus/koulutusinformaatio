@@ -68,7 +68,7 @@ public class TarjontaServiceImpl implements TarjontaService {
     private TarjontaRawService tarjontaRawService;
     private LOSObjectCreator creator;
 
-    private static final String ED_TYPE_FACET_KOODISTO = "koulutustyyppifasetti";
+    //private static final String ED_TYPE_FACET_KOODISTO = "koulutustyyppifasetti";
 
     @Autowired
     public TarjontaServiceImpl(ConversionService conversionService, KoodistoService koodistoService,
@@ -538,7 +538,12 @@ public class TarjontaServiceImpl implements TarjontaService {
 
     @Override
     public List<Code> getEdTypeCodes() throws KoodistoException {
-        return koodistoService.searchByKoodisto(ED_TYPE_FACET_KOODISTO, null);
+        return koodistoService.searchByKoodisto(TarjontaConstants.KOULUTUSTYYPPIFASETTI_KOODISTO_URI, null);
+    }
+    
+    @Override
+    public List<Code> getEdBaseEducationCodes() throws KoodistoException {
+        return koodistoService.searchByKoodisto(TarjontaConstants.POHJAKOULUTUSFASETTI_KOODISTO_URI, null);
     }
 
     @Override

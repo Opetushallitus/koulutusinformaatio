@@ -517,7 +517,8 @@ function SearchCtrl($scope, $rootScope, $location, $window, $routeParams, $route
     			upcomingLater: $scope.upcomingLater,
     			page: kiAppConstants.searchResultsStartPage,
     			facetFilters: facetFiltersArr.join(),
-                lopFilter: $scope.lopFilter
+                lopFilter: $scope.lopFilter,
+                educationCodeFilter: $scope.educationCodeFilter
     		});
 
     		$scope.refreshView();

@@ -1,9 +1,9 @@
 <h2 data-ki-i18n="searchwizard:{{currentPhase}}-title" data-show-colon="true"></h2>
 <div>
-    <ul class="inside spacious">
+    <ul class="list-unstyled  spacious">
         <li data-ng-repeat="option in phase.options">
-            <a href="javascript:void(0)" data-ng-click="makeSelection(option)">{{option.label}}</a>
-            <span>({{option.count}})</span>
+            <input type="radio" data-ng-model="phaseSelection.option" data-ng-value="option" id="{{currentPhase}}-{{$index}}" name="topic" required/>
+            <label for="{{currentPhase}}-{{$index}}">{{option.label}} ({{option.count}})</label>
         </li>
     </ul>
 </div>

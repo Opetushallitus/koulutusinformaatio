@@ -60,7 +60,7 @@ public interface IndexerService {
 
 	HttpSolrServer getLocationCollectionToUpdate(HttpSolrServer loUpdateSolr);
 
-    void addEdTypeCodes(List<Code> edTypeCodes, HttpSolrServer loUpdateSolr) throws IOException, SolrServerException;
+    void addFacetCodes(List<Code> edTypeCodes, HttpSolrServer loUpdateSolr) throws IOException, SolrServerException;
     
     void addArticles(HttpSolrServer loUpdateSolr, List<Article> articles) throws IOException, SolrServerException;
 

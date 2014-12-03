@@ -102,4 +102,6 @@ public interface TarjontaService {
     public CalendarApplicationSystem createCalendarApplicationSystem(String hakuOid) throws KoodistoException;
     
     public List<String> getHigherEdOids();
+
+    List<Code> getEdBaseEducationCodes() throws KoodistoException;
 }

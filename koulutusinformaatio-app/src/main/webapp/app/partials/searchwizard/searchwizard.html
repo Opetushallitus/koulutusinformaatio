@@ -1,28 +1,38 @@
 <div class="container">
+    <div data-ki-ajax-loader data-active="phaseIsLoading"></div>
     <h1 data-ki-i18n="searchwizard:title"></h1>
-    <div class="panel panel-gray">
+    <p data-ki-i18n="searchwizard:description"></p>
+    <div data-ng-if="!phaseIsLoading" class="panel panel-gray">
         <div class="panel-body relative">
-            <div data-ki-ajax-loader data-active="phaseIsLoading"></div>
-            <div data-ng-if="!isFirstPhase()">
-                <button type="button" class="btn btn-primary"  data-ng-click="gotoPreviousPhase()" data-ki-i18n="searchwizard:to-previous-phase"></button>
-                <hr/>
-            </div>
             <div data-ng-if="selections">
                 <strong data-ki-i18n="searchwizard:breadcrumb-label" data-show-colon="true" class="pull-left margin-right-small"></strong>
-                <ol class="breadcrumb">
+                <ol class="breadcrumb margin-top-small">
                     <li data-ng-repeat="selection in selections">
-                        <span data-ng-if="selection.label">{{selection.label}}</span>
+                        <span data-ng-if="selection.label">{{$index+1}}. {{selection.label}}</span>
                     </li>
                 </ol>
                 <hr/>
             </div>
+            <form name="searchWizardForm" novalidate>
+                <div data-ng-if="resultCount == 0">
+                    <div class="alert alert-info alert-icon" data-ki-i18n="searchwizard:no-results"></div>
 
-            <div data-ng-if="resultCount == 0">
-                <div class="alert alert-info alert-icon" data-ki-i18n="searchwizard:no-results"></div>
-            </div>
-            <div data-ng-if="resultCount != 0">
+                    <!-- button to previous phase -->
+                    <button data-ng-if="!isFirstPhase()" data-ng-click="gotoPreviousPhase()" data-ki-i18n="searchwizard:to-previous-phase" type="button" class="btn btn-default margin-right-small"></button>
+                </div>
+                <div data-ng-if="resultCount != 0">
                     <div data-ng-include="'partials/searchwizard/phases/' + currentPhase + '.html'"></div>
-            </div>
+
+                    <!-- button to previous phase -->
+                    <button data-ng-if="!isFirstPhase()" data-ng-click="gotoPreviousPhase()" data-ki-i18n="searchwizard:to-previous-phase" type="button" class="btn btn-default margin-right-small"></button>
+
+                    <!-- button to next phase -->
+                    <button data-ng-if="!isLastPhase()" data-ng-click="makeSelection(phaseSelection.option)" data-ki-i18n="searchwizard:to-next-phase" data-ng-disabled="searchWizardForm.$invalid" type="button" class="btn btn-primary"></button>
+
+                    <!-- button to search results -->
+                    <button data-ng-if="isLastPhase()" data-ng-click="showResults()" data-ki-i18n="searchwizard:show-results" type="button" class="btn btn-primary"></button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

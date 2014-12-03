@@ -28,7 +28,7 @@ describe('SearchWizardCtrl', function() {
     describe('starting from first phase by default', function() {
 
         beforeEach(function() {
-            httpBackend.when('GET', '../lo/search?start=0&rows=0&lang=fi&searchType=LO&text=*').respond('{}');
+            httpBackend.when('GET', '../lo/search?start=0&rows=0&lang=fi&searchType=LO&text=*&facetFilters=teachingLangCode_ffm:FI').respond('{}');
             httpBackend.when('GET', 'partials/search/search.html').respond(''); // for some unknown reason this gets requested
             ctrl = controller('SearchWizardCtrl', { $scope: scope });
             httpBackend.flush();
@@ -66,7 +66,7 @@ describe('SearchWizardCtrl', function() {
 
         beforeEach(function() {
             location.search({qParam1: 'qValue1', qParam2: 'qValue2', phaseone: 'phaseoneValue', phase: constants.keys.PHASEONE});
-            httpBackend.when('GET', '../lo/search?start=0&rows=0&lang=fi&searchType=LO&text=*').respond('{}');
+            httpBackend.when('GET', '../lo/search?start=0&rows=0&lang=fi&searchType=LO&text=*&facetFilters=teachingLangCode_ffm:FI').respond('{}');
             httpBackend.when('GET', 'partials/search/search.html').respond(''); // for some unknown reason this gets requested
             ctrl = controller('SearchWizardCtrl', { $scope: scope });
             httpBackend.flush();
@@ -83,7 +83,7 @@ describe('SearchWizardCtrl', function() {
 
         it('should create correct search url from selections', function() {
             scope.showResults();
-            expect(location.url()).toEqual('/haku/*?tab=los');
+            expect(location.url()).toEqual('/haku/*?facetFilters=teachingLangCode_ffm:FI&tab=los');
         })
 
     })

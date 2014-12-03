@@ -75,6 +75,9 @@ controller('SearchWizardCtrl', [
     function($scope, $rootScope, $routeParams, $location, $sanitize, TranslationService, SearchLearningOpportunityService, SearchWizardService, SearchWizardSelectionsService, SearchWizardPhaseService, SearchWizardConstants, SelectionBuilder, _) {
         $rootScope.title = TranslationService.getTranslation('searchwizard:title') + ' - ' + TranslationService.getTranslation('sitename');
 
+        // do not show search bar in search wizard pages
+        $rootScope.hideSearchbar = true;
+
         // init wizard based on query params
         var initWizard = function() {
             var qParams = $location.search();
@@ -105,7 +108,6 @@ controller('SearchWizardCtrl', [
                 $scope.currentPhase = SearchWizardPhaseService.getFirstPhase();
             }
 
-            $location.search({}).replace();
             initPhase($scope.currentPhase);
         };
 
@@ -113,7 +115,7 @@ controller('SearchWizardCtrl', [
         var initPhase = function(phase) {
             $scope.phaseIsLoading = true;
             SearchLearningOpportunityService.query(
-                SearchWizardSelectionsService.getAsSearchParams()
+                SearchWizardSelectionsService.getAsSearchParams(), true
             ).then(function(result) {
                 $scope.searchResult = result;
                 $scope.currentPhase = phase;
@@ -123,6 +125,7 @@ controller('SearchWizardCtrl', [
                 };
                 $scope.selections = SearchWizardSelectionsService.getSelections();
                 $scope.baseEducation = SearchWizardSelectionsService.getSelectionValueByKey(SearchWizardConstants.keys.PHASEONE);
+                $scope.phaseSelection = {};
                 $scope.phaseIsLoading = false;
             });
         };
@@ -135,6 +138,10 @@ controller('SearchWizardCtrl', [
         // tell if current phase is first
         $scope.isFirstPhase = function() {
             return SearchWizardPhaseService.isFirstPhase($scope.currentPhase);
+        };
+
+        $scope.isLastPhase = function() {
+            return SearchWizardPhaseService.isLastPhase($scope.currentPhase);
         };
 
         // rewind back to previous wizard phase

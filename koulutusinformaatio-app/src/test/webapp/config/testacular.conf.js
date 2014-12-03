@@ -15,6 +15,8 @@ module.exports = function(config) {
         preprocessors: {
             'main/webapp/app/templates/*.html': 'ng-html2js',
             'main/webapp/app/partials/**/*.html': 'ng-html2js',
+            'main/webapp/app/js/directives/AppBasket/**/*.html': 'ng-html2js',
+            'main/webapp/app/js/directives/SearchResult/**/*.html': 'ng-html2js',
             'main/webapp/app/js/**/*.js': ['coverage']
         },
         ngHtml2JsPreprocessor: {
@@ -23,6 +25,7 @@ module.exports = function(config) {
         },
         files: [
             appPath + 'app/lib/angular/1.2.13/angular.min.js',
+            //testPath + 'test/lib/angular/angular.js',
             appPath + 'app/lib/angular/1.2.13/angular-resource.min.js',
             appPath + 'app/lib/angular/1.2.13/angular-route.min.js',
             appPath + 'app/lib/angular/1.2.13/angular-sanitize.min.js',
@@ -42,6 +45,8 @@ module.exports = function(config) {
             appPath + 'calendar/*.js',
             appPath + 'app/templates/*.html',
             appPath + 'app/partials/**/*.html',
+            appPath + 'app/js/directives/AppBasket/**/*.html',
+            appPath + 'app/js/directives/SearchResult/**/*.html',
 
             testPath + 'test/lib/angular/angular-mocks.js',
             testPath + 'test/unit/**/*.js',

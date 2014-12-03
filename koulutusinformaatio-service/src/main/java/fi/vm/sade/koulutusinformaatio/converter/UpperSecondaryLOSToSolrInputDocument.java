@@ -222,13 +222,13 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
 
 
         //For faceting
-        indexFacetFields(doc, los, loi);
+        indexFacetFields(doc, los, loi, teachingLang);
         SolrUtil.setLopAndHomeplaceDisplaynames(doc, provider, loi.getPrerequisite());
 
         return doc;
     }
 
-    private void indexFacetFields(SolrInputDocument doc, UpperSecondaryLOS los,  UpperSecondaryLOI loi) {
+    private void indexFacetFields(SolrInputDocument doc, UpperSecondaryLOS los,  UpperSecondaryLOI loi, String teachLang) {
         doc.addField(LearningOpportunity.TEACHING_LANGUAGE, loi.getTeachingLanguages().get(0).getValue());
         doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_LUKIO);
         doc.addField(LearningOpportunity.EDUCATION_TYPE, SolrConstants.ED_TYPE_NUORTENLUKIO);
@@ -241,12 +241,28 @@ public class UpperSecondaryLOSToSolrInputDocument implements Converter<UpperSeco
         if (los.getTopics() != null) {
             for (Code curTopic : los.getTopics()) {
                 doc.addField(LearningOpportunity.TOPIC, curTopic.getUri());
+                I18nText name = curTopic.getName();
+                if (teachLang.equals("sv")) {
+                    doc.addField(LearningOpportunity.PROFESSIONAL_TITLES_SV,  SolrUtil.resolveTextWithFallback("sv", name.getTranslations()));
+                } else if (teachLang.equals("en")) {
+                    doc.addField(LearningOpportunity.PROFESSIONAL_TITLES_EN,  SolrUtil.resolveTextWithFallback("en", name.getTranslations()));
+                } else{
+                    doc.addField(LearningOpportunity.PROFESSIONAL_TITLES_FI,  SolrUtil.resolveTextWithFallback("fi", name.getTranslations()));
+                }
             }
         }
 
         if (los.getThemes() != null) {
             for (Code curTopic : los.getThemes()) {
                 doc.addField(LearningOpportunity.THEME, curTopic.getUri());
+                I18nText name = curTopic.getName();
+                if (teachLang.equals("sv")) {
+                    doc.addField(LearningOpportunity.PROFESSIONAL_TITLES_SV,  SolrUtil.resolveTextWithFallback("sv", name.getTranslations()));
+                } else if (teachLang.equals("en")) {
+                    doc.addField(LearningOpportunity.PROFESSIONAL_TITLES_EN,  SolrUtil.resolveTextWithFallback("en", name.getTranslations()));
+                } else{
+                    doc.addField(LearningOpportunity.PROFESSIONAL_TITLES_FI,  SolrUtil.resolveTextWithFallback("fi", name.getTranslations()));
+                }
             }
         }
         

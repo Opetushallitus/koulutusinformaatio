@@ -51,5 +51,16 @@ describe('Filters', function() {
             expect(filter('tarjontaFilter')(html)).toEqual(output);
         });
 
-    })
+    });
+
+    describe('columnize list', function() {
+
+        it('should create a two dimensional structure from an array', function() {
+            var array = [0, 1, 2];
+            var columnized = filter('columnize')(array, 2);
+            expect(columnized.length).toEqual(2);
+            expect(columnized[0].length).toEqual(2);
+            expect(columnized[1].length).toEqual(1);
+        });
+    });
 });
