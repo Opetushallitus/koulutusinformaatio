@@ -322,10 +322,25 @@ public class LearningOpportunityResourceImpl implements LearningOpportunityResou
             else {
                 dto = learningOpportunityService.getAdultVocationalLearningOpportunity(id, lang.toLowerCase(), uiLang.toLowerCase());
             }
+            
+            String koulutuskoodi = dto.getChildren().get(0).getKoulutuskoodi();
+            String edType = dto.getChildren().get(0).getEducationType();
+            List<ArticleResult> edCodeSuggestions = this.searchService.searchArticleSuggestions(String.format("%s:%s", LearningOpportunity.ARTICLE_EDUCATION_CODE, koulutuskoodi), uiLang);
+            List<ArticleResult> edTypeSuggestions = this.searchService.searchArticleSuggestions(String.format("%s:%s", LearningOpportunity.EDUCATION_TYPE, edType), uiLang);
+            if (edCodeSuggestions.size() < edTypeSuggestions.size()) {
+                dto.setEdCodeSuggestions(ArticleResultToDTO.convert(edCodeSuggestions, 3));
+                dto.setEdTypeSuggestions(ArticleResultToDTO.convert(edTypeSuggestions, 6 - dto.getEdCodeSuggestions().size()));
+            } else {
+                dto.setEdTypeSuggestions(ArticleResultToDTO.convert(edTypeSuggestions, 3));
+                dto.setEdCodeSuggestions(ArticleResultToDTO.convert(edCodeSuggestions, 6 - dto.getEdTypeSuggestions().size()));
+
+            }
 
             return dto;
         } catch (ResourceNotFoundException e) {
             throw KIExceptionHandler.resolveException(e);
-        } 
+        } catch (SearchException se) {
+            throw KIExceptionHandler.resolveException(se);
+        }
     }
 }
