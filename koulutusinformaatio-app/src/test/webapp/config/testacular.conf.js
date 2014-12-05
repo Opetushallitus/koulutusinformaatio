@@ -4,9 +4,10 @@ var testPath = 'test/webapp/';
 module.exports = function(config) {
     config.set({
         basePath: '../../../',
-        frameworks: ['jasmine'],
+        frameworks: ['jasmine', 'sinon'],
         plugins: [
-            'karma-jasmine', 
+            'karma-jasmine',
+            'karma-sinon',
             'karma-ng-html2js-preprocessor',
             'karma-chrome-launcher',
             'karma-junit-reporter',

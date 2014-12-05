@@ -49,6 +49,7 @@ var ApplicationSystemCalendar = (function() {
         var init = function() {
             $.getJSON(o.calendarResource, {uiLang: o.lang}, function(data) {
                 var remove = [];
+                // split as to periods
                 _.each(data, function(item) {
                     if (item.applicationPeriods && item.applicationPeriods.length > 1) {
                         _.each(item.applicationPeriods, function(period) {
@@ -61,12 +62,15 @@ var ApplicationSystemCalendar = (function() {
                     }
                 });
 
-                // remove duplicated item
+                // remove duplicated items
                 data = _.difference(data, remove);
+                // group items by month of year
                 data = _.groupBy(data, ApplicationSystemCalendar.ApplicationSystemGrouper.group);
+                // sort by start date
                 data = _.sortBy(data, function(value, key) {
                     return key;
                 });
+
                 createCalendar(data);
             });
         };
@@ -205,6 +209,10 @@ ApplicationSystemCalendar.ApplicationSystemGrouper = (function() {
         } else {
             var date = new Date(_.first(item.applicationPeriods).dateRange.startDate);
         }
+
+        // if period start date is in the past group it under ongoing month
+        var now = new Date();
+        date = (date < now) ? now : date;
 
         // padd one digit months with zero
         var month = ki.Utils.padWithZero(date.getMonth());
