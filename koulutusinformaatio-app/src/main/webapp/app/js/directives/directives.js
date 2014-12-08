@@ -394,31 +394,19 @@ directive('kiAsStateLabel', ['UtilityService', 'TranslationService', function(Ut
  *  Render application system state for search result view
  */
 directive('kiAsState', ['TranslationService', 'UtilityService', function(TranslationService, UtilityService) {
-    return { 
-    	templateUrl: 'templates/asState.html',
-    	controller: function($scope) {
-    		
-    		if ($scope.lo.nextApplicationPeriodStarts && $scope.lo.nextApplicationPeriodStarts.length > 0) {
-    			var parsedPeriods = [];
-    			for (var i = 0; i < $scope.lo.nextApplicationPeriodStarts.length; ++i) {
-    				var ts = new Date($scope.lo.nextApplicationPeriodStarts[i]);
-    				var parsedPeriod = ts.getDate() +
-            			'.' + (ts.getMonth() + 1) +
-            			'.' + ts.getFullYear() +
-            			' ' + TranslationService.getTranslation('time-abbreviation') + 
-            			' ' + UtilityService.padWithZero(ts.getHours()) +
-            			':' + UtilityService.padWithZero(ts.getMinutes());
-    				if (parsedPeriods.indexOf(parsedPeriod) < 0) {
-    					parsedPeriods.push(parsedPeriod);
-    				}
-    				
-    			}
-    			$scope.lo.parsedAppPeriods = parsedPeriods;
-    		}
-            
-            $scope.isPeriodsForthcoming = function() {
-            	return !$scope.lo.asOngoing && $scope.lo.nextApplicationPeriodStarts && $scope.lo.nextApplicationPeriodStarts.length > 0;
-            }
+    return function(scope, element, attrs) {
+        if (scope.lo.asOngoing) {
+            element.text(TranslationService.getTranslation('search-as-ongoing'));
+        } else if (scope.lo.nextApplicationPeriodStarts) {
+            var ts = new Date(scope.lo.nextApplicationPeriodStarts);
+            var content = TranslationService.getTranslation('search-as-next') +
+                ' ' + ts.getDate() +
+                '.' + (ts.getMonth() + 1) +
+                '.' + ts.getFullYear() +
+                ' ' + TranslationService.getTranslation('time-abbreviation') + 
+                ' ' + UtilityService.padWithZero(ts.getHours()) +
+                ':' + UtilityService.padWithZero(ts.getMinutes());
+            element.text(content);
         }
     };
 }]).
