@@ -49,7 +49,6 @@ import fi.vm.sade.koulutusinformaatio.converter.SolrUtil;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LearningOpportunity;
 import fi.vm.sade.koulutusinformaatio.converter.SolrUtil.LocationFields;
 import fi.vm.sade.koulutusinformaatio.domain.ApplicationPeriod;
-import fi.vm.sade.koulutusinformaatio.domain.ApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.ArticleResult;
 import fi.vm.sade.koulutusinformaatio.domain.CalendarApplicationSystem;
 import fi.vm.sade.koulutusinformaatio.domain.Code;
@@ -64,7 +63,6 @@ import fi.vm.sade.koulutusinformaatio.domain.Picture;
 import fi.vm.sade.koulutusinformaatio.domain.Provider;
 import fi.vm.sade.koulutusinformaatio.domain.ProviderResult;
 import fi.vm.sade.koulutusinformaatio.domain.SuggestedTermsResult;
-import fi.vm.sade.koulutusinformaatio.domain.dto.PictureDTO;
 import fi.vm.sade.koulutusinformaatio.domain.dto.SearchType;
 import fi.vm.sade.koulutusinformaatio.domain.exception.ResourceNotFoundException;
 import fi.vm.sade.koulutusinformaatio.domain.exception.SearchException;
@@ -1320,18 +1318,31 @@ public class SearchServiceSolrImpl implements SearchService {
         }
         return types;
     }
+    
+    @Override
+    public List<CalendarApplicationSystem> findApplicationSystemsForCalendar(String targetGroupCode) 
+        throws SearchException {
+        
+        SolrQuery asQuery = new ApplicationSystemQuery(targetGroupCode);
+        return queryCalendarApplicationSystems(asQuery);
+    }
 
     @Override
     public List<CalendarApplicationSystem> findApplicationSystemsForCalendar()
             throws SearchException {
 
-
         SolrQuery asQuery = new ApplicationSystemQuery();
+        return queryCalendarApplicationSystems(asQuery);
+        
+    }
+    
+    private List<CalendarApplicationSystem> queryCalendarApplicationSystems(SolrQuery query)
+        throws SearchException {
         QueryResponse response = null;
 
         List<CalendarApplicationSystem> results = new ArrayList<CalendarApplicationSystem>();
         try {
-            response = loHttpSolrServer.query(asQuery);
+            response = loHttpSolrServer.query(query);
 
 
             for (SolrDocument result : response.getResults()) {

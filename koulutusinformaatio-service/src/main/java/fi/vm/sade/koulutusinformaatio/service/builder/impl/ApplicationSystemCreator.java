@@ -79,6 +79,7 @@ public class ApplicationSystemCreator extends ObjectCreator {
         //as.setApplicationFormLink( haku.getHakulomakeUri());
         //as.setHakutapaUri(koodistoService.searchFirstCodeValue(haku.getHakutapaUri()));
         //as.setHakutyyppiUri(koodistoService.searchFirstCodeValue(haku.getHakutyyppiUri()));
+        as.setTargetGroupCode(koodistoService.searchFirstCodeValue( haku.getKohdejoukkoUri() ));
         if (haku.getHakuaikas() != null) {
             for (HakuaikaV1RDTO ha : haku.getHakuaikas()) {
                 DateRange range = new DateRange();

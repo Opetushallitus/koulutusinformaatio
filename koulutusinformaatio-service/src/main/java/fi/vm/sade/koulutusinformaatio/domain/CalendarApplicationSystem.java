@@ -28,6 +28,7 @@ public class CalendarApplicationSystem {
     private String id;
     private I18nText name;
     private List<ApplicationPeriod> applicationPeriods = new ArrayList<ApplicationPeriod>();
+    private String targetGroupCode;
     
     public String getId() {
         return id;
@@ -46,6 +47,12 @@ public class CalendarApplicationSystem {
     }
     public void setApplicationPeriods(List<ApplicationPeriod> applicationPeriods) {
         this.applicationPeriods = applicationPeriods;
+    }
+    public String getTargetGroupCode() {
+        return targetGroupCode;
+    }
+    public void setTargetGroupCode(String targetGroupCode) {
+        this.targetGroupCode = targetGroupCode;
     }
 
 }

@@ -645,6 +645,8 @@ public class IndexerServiceImpl implements IndexerService {
             asDoc.addField(SolrUtil.LearningOpportunity.NAME_DISPLAY_EN, nameEn);
         }
         
+        asDoc.addField(SolrUtil.LearningOpportunity.AS_TARGET_GROUP_CODE, as.getTargetGroupCode());
+        
         int parentApplicationDateRangeIndex = 0;
         
         for (ApplicationPeriod ap : as.getApplicationPeriods()) {//getApplicationDates()) {
