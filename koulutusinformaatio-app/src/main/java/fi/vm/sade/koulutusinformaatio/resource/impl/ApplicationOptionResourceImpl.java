@@ -46,8 +46,12 @@ public class ApplicationOptionResourceImpl implements ApplicationOptionResource 
                                                                            String baseEducation,
                                                                            boolean vocational,
                                                                            boolean nonVocational,
+                                                                           boolean ongoing,
                                                                            String uiLang) {
-        return learningOpportunityService.searchApplicationOptions(asId, lopId, baseEducation, vocational, nonVocational,
+        return learningOpportunityService.searchApplicationOptions(asId, lopId, baseEducation, 
+                vocational, 
+                nonVocational,
+                ongoing,
                 uiLang);
     }
 

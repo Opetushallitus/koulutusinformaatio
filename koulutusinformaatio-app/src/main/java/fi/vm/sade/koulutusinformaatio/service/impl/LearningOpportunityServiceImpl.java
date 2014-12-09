@@ -32,6 +32,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -147,16 +148,30 @@ public class LearningOpportunityServiceImpl implements LearningOpportunityServic
             String baseEducation, 
             boolean vocational, 
             boolean nonVocational,
+            boolean ongoing,
             final String uiLang) {
 
         List<ApplicationOption> applicationOptions = educationDataQueryService.findApplicationOptions(asId, lopId, baseEducation,
                 vocational, nonVocational);
-        return Lists.transform(applicationOptions, new Function<ApplicationOption, ApplicationOptionSearchResultDTO>() {
-            @Override
-            public ApplicationOptionSearchResultDTO apply(ApplicationOption applicationOption) {
-                return ApplicationOptionToSearchResultDTO.convert(applicationOption, resolveDefaultLanguage(applicationOption), uiLang);
+        
+        List<ApplicationOptionSearchResultDTO> res = new ArrayList<ApplicationOptionSearchResultDTO>();
+        for (ApplicationOption curAo : applicationOptions) {
+            if (!ongoing) {
+                res.add(ApplicationOptionToSearchResultDTO.convert(curAo, resolveDefaultLanguage(curAo), uiLang));
+            } else if (ongoing 
+                    && curAo.getApplicationStartDate() != null 
+                    && curAo.getApplicationEndDate() != null) {
+                if (ConverterUtil.isOngoing(new DateRange(curAo.getApplicationStartDate(),
+                        curAo.getApplicationEndDate()))) {
+                    res.add(ApplicationOptionToSearchResultDTO.convert(curAo, resolveDefaultLanguage(curAo), uiLang));
+                }
+            } else if (ongoing) {
+                if (ConverterUtil.isOngoing(curAo.getApplicationSystem().getApplicationDates())) {
+                    res.add(ApplicationOptionToSearchResultDTO.convert(curAo, resolveDefaultLanguage(curAo), uiLang));
+                }    
             }
-        });
+        }
+        return res;
     }
 
     @Override

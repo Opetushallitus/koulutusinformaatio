@@ -37,6 +37,7 @@ public interface ApplicationOptionResource {
             @QueryParam("baseEducation") final String baseEducation,
             @DefaultValue("true") @QueryParam("vocational") boolean vocational,
             @DefaultValue("true") @QueryParam("nonVocational") boolean nonVocational,
+            @DefaultValue("false") @QueryParam("ongoing") boolean ongoing,
             @DefaultValue("fi") @QueryParam("uiLang") String uiLang);
 
     @GET
