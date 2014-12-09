@@ -85,7 +85,8 @@ public interface LearningOpportunityService {
                                                                     String lopId, 
                                                                     String baseEducation, 
                                                                     boolean vocational, 
-                                                                    boolean nonVocational, 
+                                                                    boolean nonVocational,
+                                                                    boolean ongoing,
                                                                     String uiLang);
 
     ApplicationOptionDTO getApplicationOption(String aoId, String lang, String uiLang) throws ResourceNotFoundException;

@@ -217,7 +217,7 @@ public class LearningOpportunityServiceImplTest {
     
     @Test
     public void testSearchApplicationOptions() {
-        List<ApplicationOptionSearchResultDTO> results = learningOpportunityService.searchApplicationOptions("as123", "", "", true, true, "fi");
+        List<ApplicationOptionSearchResultDTO> results = learningOpportunityService.searchApplicationOptions("as123", "", "", true, true, false, "fi");
         assertEquals(results.size(), 1);
         assertEquals(results.get(0).getId(), "ao123");
     }

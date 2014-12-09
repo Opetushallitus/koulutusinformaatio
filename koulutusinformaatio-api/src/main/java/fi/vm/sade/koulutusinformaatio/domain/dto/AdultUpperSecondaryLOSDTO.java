@@ -67,6 +67,8 @@ public class AdultUpperSecondaryLOSDTO extends StandaloneLOSDTO {
     private String subjectsAndCourses;
     private List<LanguageSelectionDTO> languageSelection;
     private List<String> diplomas = new ArrayList<String>();
+    private List<ArticleResultDTO> edCodeSuggestions;
+    private List<ArticleResultDTO> edTypeSuggestions;
 
     public String getId() {
         return id;
@@ -411,6 +413,23 @@ public class AdultUpperSecondaryLOSDTO extends StandaloneLOSDTO {
 
     public void setAdditionalProviders(List<LearningOpportunityProviderDTO> additionalProviders) {
         this.additionalProviders = additionalProviders;
+    }
+
+    public void setEdCodeSuggestions(List<ArticleResultDTO> edCodeSuggestions) {
+        this.edCodeSuggestions = edCodeSuggestions;
+    }
+
+    public List<ArticleResultDTO> getEdCodeSuggestions() {
+        return edCodeSuggestions;
+    }
+
+    public void setEdTypeSuggestions(List<ArticleResultDTO> edTypeSuggestions) {
+        this.edTypeSuggestions = edTypeSuggestions;
+        
+    }
+
+    public List<ArticleResultDTO> getEdTypeSuggestions() {
+        return edTypeSuggestions;
     }
 
 
